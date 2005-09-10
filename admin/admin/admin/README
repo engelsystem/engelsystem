@@ -1,0 +1,80 @@
+$Id: README,v 1.12 2002/08/14 21:24:28 swix Exp $
+
+phpMyAdmin - Readme
+===================
+
+  A set of PHP-scripts to administrate MySQL over the WWW.
+
+  Version 2.3.0 - August 2002
+  ---------------------------
+  http://www.phpmyadmin.net/
+
+    Copyright (C) 1998-2000 Tobias Ratschiller <tobias.ratschiller_at_maguma.com>
+    Copyright (C) 2001-     Olivier Müller <om_at_omnis.ch>
+                            Loïc Chapeaux <lolo_at_phpHeaven.net>
+                Marc Delisle <DelislMa_at_CollegeSherbrooke.qc.ca>
+                [check Documentation.txt/.html file for more details]
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+  Requirements:
+    PHP3 (>= 3.0.8) or PHP4
+    MySQL (tested with 3.21.x, 3.22.x, 3.23.x and 4.0.x)
+    a web-browser (doh!)
+
+  Summary:
+    phpMyAdmin is intended to handle the adminstration of MySQL over the WWW.
+    Currently it can:
+      - create and drop databases
+      - create, copy, drop and alter tables
+      - delete, edit and add fields
+      - execute any SQL-statement, even batch-queries
+      - manage keys on fields
+      - load text files into tables
+      - create and read dumps of tables
+      - export and import CSV data
+      - administer one single database
+      - communicate in more than 38 different languages
+
+  Download:
+    You can get the newest version at http://www.phpmyadmin.net/.
+
+  Credits:
+    Please see the Documentation.txt/.html file.
+
+  Installation:
+    Please see the Documentation.txt/.html file.
+
+  ChangeLog:
+    Now in ChangeLog
+
+  Documentation:
+    Basic documentation available in Documentation.txt/.html
+
+  Support:
+    There is are 2 support forums under http://www.phpmyadmin.net/
+
+
+    Enjoy!
+        The phpMyAdmin Devel team
+
+
+  PS: Please, don't send us emails with question like "How do I compile
+      PHP3 with MySQL-support". We do answer all emails regarding
+      phpMyAdmin, but we just don't have the time to be your free helpdesk.
+      Please send your questions to the appropiate mailinglists / forums.
+      Before contacting us, please read the Documentation.html (esp. the
+      FAQ part).
+

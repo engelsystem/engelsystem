@@ -1,0 +1,32 @@
+/bookmark.lib.php3/1.10/Wed Oct 23 04:17:25 2002//
+/build_dump.lib.php3/1.34/Sat Nov 16 10:53:56 2002//
+/charset_conversion.lib.php3/1.14/Wed Oct 23 04:17:26 2002//
+/common.lib.php3/1.175/Wed Nov 13 18:18:42 2002//
+/config_import.lib.php3/1.24/Thu Nov  7 19:26:56 2002//
+/db_config.lib.php3/1.3/Wed Oct 23 04:17:26 2002//
+/db_table_exists.lib.php3/1.3/Wed Oct 23 04:17:26 2002//
+/defines.lib.php3/1.42/Wed Oct 23 04:17:26 2002//
+/defines_php.lib.php3/1.19/Wed Dec  4 18:22:00 2002//
+/display_tbl.lib.php3/1.118/Sat Nov 23 12:05:28 2002//
+/functions.js/1.26/Fri Oct 25 14:11:06 2002//
+/get_foreign.lib.php3/1.4/Wed Oct 23 04:17:26 2002//
+/grab_globals.lib.php3/1.12/Mon Dec  2 06:14:30 2002//
+/indexes.js/1.2/Sat Nov 24 16:59:53 2001//
+/ip_allow_deny.lib.php3/1.3/Wed Oct 23 04:17:26 2002//
+/kanji-encoding.lib.php3/1.4/Fri Oct 25 13:55:56 2002//
+/left.js/1.12/Sat Apr 20 07:59:58 2002//
+/mysql_wrappers.lib.php3/1.4/Wed Oct 23 04:17:26 2002//
+/ob.lib.php3/1.5/Wed Oct 23 04:17:26 2002//
+/relation.lib.php3/1.22/Wed Oct 23 04:17:26 2002//
+/select_lang.lib.php3/1.86/Tue Nov 19 17:25:19 2002//
+/sqlparser.data.php3/1.6/Tue Nov 26 18:26:33 2002//
+/sqlparser.lib.php3/1.50/Wed Nov 27 11:47:07 2002//
+/sqlvalidator.class.php3/1.9/Wed Oct 23 04:17:26 2002//
+/sqlvalidator.lib.php3/1.6/Wed Oct 23 04:17:26 2002//
+/string.lib.php3/1.10/Fri Oct 25 13:55:56 2002//
+/tbl_change.js/1.2/Fri Sep 20 21:09:39 2002//
+/user_details.js/1.11/Fri Jun 14 19:12:09 2002//
+/zip.lib.php3/1.7/Wed Oct 23 04:17:26 2002//
+D/auth////
+D/fpdf////
+D/xpath////

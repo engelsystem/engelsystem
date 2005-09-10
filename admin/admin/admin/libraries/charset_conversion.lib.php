@@ -1,0 +1,334 @@
+<?php
+/* $Id: charset_conversion.lib.php,v 1.14 2002/10/23 04:17:26 robbat2 Exp $ */
+// vim: expandtab sw=4 ts=4 sts=4:
+
+
+/**
+ * Charset conversion functions.
+ */
+
+
+if (!defined('PMA_CHARSET_CONVERSION_LIB_INCLUDED')){
+    define('PMA_CHARSET_CONVERSION_LIB_INCLUDED', 1);
+
+    /**
+     * Loads the recode or iconv extensions if any of it is not loaded yet
+     *
+     * (do not put a "@" before the dl() because we want to see the error
+     * message: multithreaded web servers don't support dl() but we cannot
+     * detect if the server is multithreaded, and under PHP 4.2.1 at least,
+     * it reports that the function dl exists...)
+     */
+    if (isset($cfg['AllowAnywhereRecoding'])
+        && $cfg['AllowAnywhereRecoding']
+        && $allow_recoding
+        && ((PMA_PHP_INT_VERSION >= 40000 && !@ini_get('safe_mode') && @ini_get('enable_dl'))
+        || (PMA_PHP_INT_VERSION < 40000 && PMA_PHP_INT_VERSION > 30009 && !@get_cfg_var('safe_mode')))
+        && @function_exists('dl')) {
+
+        if (PMA_IS_WINDOWS) {
+            $suffix = '.dll';
+        } else {
+            $suffix = '.so';
+        }
+
+        // Initializes configuration for default, if not set:
+        if (!isset($cfg['RecodingEngine'])) {
+            $cfg['RecodingEngine'] = 'auto';
+        }
+
+        if ($cfg['RecodingEngine'] == 'recode') {
+            if (!@extension_loaded('recode')) {
+                @dl('recode' . $suffix);
+                if (!@extension_loaded('recode')) {
+                    echo $strCantLoadRecodeIconv;
+                    exit();
+                }
+            }
+            $PMA_recoding_engine             = 'recode';
+        } else if ($cfg['RecodingEngine'] == 'iconv') {
+            if (!@extension_loaded('iconv')) {
+                @dl('iconv' . $suffix);
+                if (!@extension_loaded('iconv')) {
+                    echo $strCantLoadRecodeIconv;
+                    exit();
+                }
+            }
+            $PMA_recoding_engine             = 'iconv';
+        } else {
+            if (@extension_loaded('iconv')) {
+                $PMA_recoding_engine = 'iconv';
+            } else if (@extension_loaded('recode')) {
+                $PMA_recoding_engine         = 'recode';
+            } else {
+                @dl('iconv' . $suffix);
+                if (!@extension_loaded('iconv')) {
+                    @dl('recode' . $suffix);
+                    if (!@extension_loaded('recode')) {
+                        echo $strCantLoadRecodeIconv;
+                        exit();
+                    } else {
+                        $PMA_recoding_engine = 'recode';
+                    }
+                } else {
+                    $PMA_recoding_engine     = 'iconv';
+                }
+            }
+        }
+    } // end load recode/iconv extension
+
+    define('PMA_CHARSET_NONE', 0);
+    define('PMA_CHARSET_ICONV', 1);
+    define('PMA_CHARSET_LIBICONV', 2);
+    define('PMA_CHARSET_RECODE', 3);
+
+    // Finally detects which function will we use:
+    if (isset($cfg['AllowAnywhereRecoding'])
+        && $cfg['AllowAnywhereRecoding']
+        && $allow_recoding) {
+
+        if (!isset($PMA_recoding_engine)) {
+            $PMA_recoding_engine = $cfg['RecodingEngine'];
+        }
+        if ($PMA_recoding_engine == 'iconv') {
+            if (@function_exists('iconv')) {
+                $PMA_recoding_engine = PMA_CHARSET_ICONV;
+            } else if (@function_exists('libiconv')) {
+                $PMA_recoding_engine = PMA_CHARSET_LIBICONV;
+            } else {
+                $PMA_recoding_engine = PMA_CHARSET_NONE;
+
+                if (!isset($GLOBALS['is_header_sent'])) {
+                    include('./header.inc.php');
+                }
+                echo $strCantUseRecodeIconv;
+                include('./footer.inc.php');
+                exit();
+            }
+        } else if ($PMA_recoding_engine == 'recode') {
+            if (@function_exists('recode_string')) {
+                $PMA_recoding_engine = PMA_CHARSET_RECODE;
+            } else {
+                $PMA_recoding_engine = PMA_CHARSET_NONE;
+
+                if (!isset($GLOBALS['is_header_sent'])) {
+                    include('./header.inc.php');
+                }
+                echo $strCantUseRecodeIconv;
+                include('./footer.inc.php');
+                exit();
+            }
+        } else {
+            if (@function_exists('iconv')) {
+                $PMA_recoding_engine = PMA_CHARSET_ICONV;
+            } else if (@function_exists('libiconv')) {
+                $PMA_recoding_engine = PMA_CHARSET_LIBICONV;
+            } elseif (@function_exists('recode_string')) {
+                $PMA_recoding_engine = PMA_CHARSET_RECODE;
+            } else {
+                $PMA_recoding_engine = PMA_CHARSET_NONE;
+
+                if (!isset($GLOBALS['is_header_sent'])) {
+                    include('./header.inc.php');
+                }
+                echo $strCantUseRecodeIconv;
+                include('./footer.inc.php');
+                exit();
+            }
+        }
+    } else {
+        $PMA_recoding_engine         = PMA_CHARSET_NONE;
+    }
+
+
+    /**
+     * Converts encoding according to current settings.
+     *
+     * @param   mixed    what to convert (string or array of strings or object returned by mysql_fetch_field)
+     *
+     * @return  string   converted string or array of strings
+     *
+     * @global  array    the configuration array
+     * @global  boolean  whether recoding is allowed or not
+     * @global  string   the current charset
+     * @global  array    the charset to convert to
+     *
+     * @access  public
+     *
+     * @author  nijel
+     */
+    function PMA_convert_display_charset($what) {
+        global $cfg, $allow_recoding, $charset, $convcharset;
+
+        if (!(isset($cfg['AllowAnywhereRecoding']) && $cfg['AllowAnywhereRecoding'] && $allow_recoding)) {
+            return $what;
+        }
+        else if (is_array($what)) {
+            $result = array();
+            reset($what);
+            while (list($key, $val) = each($what)) {
+                if (is_string($val) || is_array($val)) {
+                    if (is_string($key)) {
+                        $result[PMA_convert_display_charset($key)] = PMA_convert_display_charset($val);
+                    } else {
+                        $result[$key] = PMA_convert_display_charset($val);
+                    }
+                } else {
+                    $result[$key]     = $val;
+                }
+            } // end while
+            return $result;
+        }
+        else if (is_string($what)) {
+            switch ($GLOBALS['PMA_recoding_engine']) {
+                case PMA_CHARSET_RECODE:
+                    return recode_string($convcharset . '..'  . $charset, $what);
+                    break;
+                case PMA_CHARSET_ICONV:
+                    return iconv($convcharset, $charset, $what);
+                    break;
+                case PMA_CHARSET_LIBICONV:
+                    return libiconv($convcharset, $charset, $what);
+                    break;
+                default:
+                    return $what;
+            }
+        }
+        else if (is_object($what)) {
+            // isn't it object returned from mysql_fetch_field ?
+            if (@is_string($what->name)) {
+                $what->name = PMA_convert_display_charset($what->name);
+            }
+            if (@is_string($what->table)) {
+                $what->table = PMA_convert_display_charset($what->table);
+            }
+            if (@is_string($what->Database)) {
+                $what->Database = PMA_convert_display_charset($what->Database);
+            }
+            return $what;
+        }
+        else {
+            // when we don't know what it is we don't touch it...
+            return $what;
+        }
+    } //  end of the "PMA_convert_display_charset()" function
+
+
+    /**
+     * Converts encoding of text according to current settings.
+     *
+     * @param   string   what to convert
+     *
+     * @return  string   converted text
+     *
+     * @global  array    the configuration array
+     * @global  boolean  whether recoding is allowed or not
+     * @global  string   the current charset
+     * @global  array    the charset to convert to
+     *
+     * @access  public
+     *
+     * @author  nijel
+     */
+    function PMA_convert_charset($what) {
+        global $cfg, $allow_recoding, $charset, $convcharset;
+
+        if (!(isset($cfg['AllowAnywhereRecoding']) && $cfg['AllowAnywhereRecoding'] && $allow_recoding)) {
+            return $what;
+        } else {
+            switch ($GLOBALS['PMA_recoding_engine']) {
+                case PMA_CHARSET_RECODE:
+                    return recode_string($charset . '..'  . $convcharset, $what);
+                    break;
+                case PMA_CHARSET_ICONV:
+                    return iconv($charset, $convcharset, $what);
+                    break;
+                case PMA_CHARSET_LIBICONV:
+                    return libiconv($charset, $convcharset, $what);
+                    break;
+                default:
+                    return $what;
+            }
+        }
+    } //  end of the "PMA_convert_charset()" function
+
+    /**
+     * Converts encoding of text according to parameters with detected
+     * conversion function.
+     *
+     * @param   string   source charset
+     * @param   string   target charset
+     * @param   string   what to convert
+     *
+     * @return  string   converted text
+     *
+     * @access  public
+     *
+     * @author  nijel
+     */
+    function PMA_convert_string($src_charset, $dest_charset, $what) {
+        switch ($GLOBALS['PMA_recoding_engine']) {
+            case PMA_CHARSET_RECODE:
+                return recode_string($src_charset . '..'  . $dest_charset, $what);
+                break;
+            case PMA_CHARSET_ICONV:
+                return iconv($src_charset, $dest_charset, $what);
+                break;
+            case PMA_CHARSET_LIBICONV:
+                return libiconv($src_charset, $dest_charset, $what);
+                break;
+            default:
+                return $what;
+        }
+    } //  end of the "PMA_convert_string()" function
+
+
+    /**
+     * Converts encoding of file according to parameters with detected
+     * conversion function. The old file will be unlinked and new created and
+     * its file name is returned.
+     *
+     * @param   string   source charset
+     * @param   string   target charset
+     * @param   string   file to convert
+     *
+     * @return  string   new temporay file
+     *
+     * @access  public
+     *
+     * @author  nijel
+     */
+    function PMA_convert_file($src_charset, $dest_charset, $file) {
+        switch ($GLOBALS['PMA_recoding_engine']) {
+            case PMA_CHARSET_RECODE:
+            case PMA_CHARSET_ICONV:
+            case PMA_CHARSET_LIBICONV:
+                $tmpfname = tempnam('', 'PMA_convert_file');
+                $fin      = fopen($file, 'r');
+                $fout     = fopen($tmpfname, 'w');
+                if ($GLOBALS['PMA_recoding_engine'] == PMA_CHARSET_RECODE) {
+                    recode_file($src_charset . '..'  . $dest_charset, $fin, $fout);
+                } else {
+                    while (!feof($fin)) {
+                        $line = fgets($fin, 4096);
+                        if ($GLOBALS['PMA_recoding_engine'] == PMA_CHARSET_ICONV) {
+                            $dist = iconv($src_charset, $dest_charset, $line);
+                        } else {
+                            $dist = libiconv($src_charset, $dest_charset, $line);
+                        }
+                        fputs($fout, $dist);
+                    } // end while
+                }
+                fclose($fin);
+                fclose($fout);
+                unlink($file);
+
+                return $tmpfname;
+                break;
+            default:
+                return $file;
+        }
+    } //  end of the "PMA_convert_file()" function
+
+} // $__PMA_CHARSET_CONVERSION_LIB__
+?>

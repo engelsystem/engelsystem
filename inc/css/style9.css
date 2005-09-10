@@ -1,0 +1,84 @@
+
+body {
+	background-color: #ffffff;
+
+	color: black;
+
+	line-height: 150%;
+	font-family: Trebuchet MS, Lucida Grande, Arial, sans-serif;
+
+	margin-bottom: 20px;
+}
+
+a {
+	text-decoration: none;
+	color: #304930
+}
+
+td {
+	font-size: small
+}
+
+a:active, a:hover {
+	font-weight: bold
+}
+	
+li {
+	font-size: small
+}
+
+.content {
+	background-color: #ffffff;
+	color: #000000
+}
+
+.contenttopic {
+	font-weight: bold;
+	font-size: small;
+	color: #000000;
+	background-color: #A4C93C
+}
+
+.border {
+	background-color: #A4C93C
+}
+
+.menu {
+	background-color: #ffffff;
+	color: #000000;
+	font-size: small
+}
+h4.menu { 
+	background-color: #A4C93C;
+	font-weight: bold;
+	font-size: small;
+	color: #000000
+}
+
+.linkbox {
+	background-color: #ffffff
+}
+
+.linkboxtitle {
+	font-weight: bold;
+	background-color: #000000;
+	color: #ffffff
+}
+
+.question {
+	font-weight: bold;
+	font-size: 9pt
+}
+
+.engeltreffen {
+        font-weight: bold;
+        font-size: 9pt;
+	color: #ff0000;
+}
+
+.answer {
+	font-size:  9pt;
+}
+.comment {
+	font-size : 6pt;
+}
