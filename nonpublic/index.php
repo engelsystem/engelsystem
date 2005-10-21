@@ -1,7 +1,7 @@
 <?
-
 $title = "Index";
 $header = "Index";
+$Page["Public"] = "Y";
 
 include ("./inc/db.php");
 include ("./inc/crypt.php");
@@ -16,7 +16,6 @@ if (!IsSet($_SESSION['UID'])) {
 
 	// anzahl zeilen
 	$user_anz  = mysql_num_rows($userstring);
-
 
 	if ($user_anz == 1) { // Check, ob User angemeldet wird...
 		if (mysql_result($userstring, 0, "Passwort") == PassCrypt($password)) { // Passwort ok...
@@ -60,7 +59,6 @@ if (!IsSet($_SESSION['UID'])) {
 			include ("./inc/header.php");
 	  
 			echo Get_Text("pub_index_pass_no_ok");
-			die();
 			include ("./inc/login_eingabefeld.php");
 
 		} // Ende Passwort-Check
@@ -99,8 +97,6 @@ else
 <a href="nonpublic/list.php"> list.php </a> -->
 <?
 include ("./inc/footer.php");
-
-
 
 ?>
 

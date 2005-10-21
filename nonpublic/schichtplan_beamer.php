@@ -1,16 +1,24 @@
 <?php
-$title = "Himmel";
-$header = "Schichtpl&auml;ne f&uuml;r Beamer";
-$Page["Public"] = "Y";
-$Page["ShowTabel"] = "N";
-$Page["AutoReload"] = 30;
+include ("./inc/config.php");
+include ("./inc/db.php");
+include ("./inc/funktion_lang.php");
 
-include ("./inc/header.php");
 include ("./inc/funktion_user.php");
 include ("./inc/funktionen.php");
 include ("./inc/funktion_schichtplan_beamer.php");
 
 $Time = time()+3600+3600;
+//$Time = 1104241344;
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>Schichtpl&auml;ne f&uuml;r Beamer</TITLE>
+<!--<link rel=stylesheet type="text/css" href="./inc/css/style1.css">-->
+<meta http-equiv="refresh" content="30; URL=<?substr($url, 0, strlen($url)-1). $ENGEL_ROOT. $Page["Name"]?>">
+</HEAD>
+<BODY>
+<?
 
 echo "<table border=\"1\" width=\"100%\" height=\"100%\" cellpadding=\"0\" cellspacing=\"0\" frame=\"void\">\n";
 
@@ -49,8 +57,8 @@ foreach( $Room as $RoomEntry  )
 	echo $Out;
 }
 
-echo "</table>";
+echo "</table>\n";
 
-
-include ("./inc/footer.php");
 ?>
+</BODY>
+</HTML>

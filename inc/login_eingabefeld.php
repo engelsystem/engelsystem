@@ -1,6 +1,9 @@
-<!-- <form action="<?echo $url.$ENGEL_ROOT; ?>nonpublic/index.php" method="post">--> 
 
-<form action="./nonpublic/index.php" method="post">
+
+<form action="<?
+include ("./inc/config.php");
+echo substr($url, 0, strlen($url)-1). $ENGEL_ROOT
+?>nonpublic/index.php" method="post">
 <table>
 <tr>
  <td align="right"><? echo Get_Text("index_lang_nick");?></td>
@@ -14,3 +17,5 @@
 <br>
 <input type="submit" value="<? echo Get_Text("index_lang_send");?>">
 </form>
+
+
