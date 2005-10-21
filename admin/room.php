@@ -21,7 +21,10 @@ if( !IsSet($action) )
 
 	for( $i = 1; $i < mysql_num_fields($Erg); $i++ )
 	{
-		echo "\t<td>". mysql_field_name($Erg, $i). "</td>";
+		if( substr( mysql_field_name($Erg, $i), 0, 12) == "DEFAULT_EID_")
+			echo "\t<td> Anzahl ". $EngelTypeID[substr( mysql_field_name($Erg, $i), 12)]. "</td>";
+		else
+			echo "\t<td>". mysql_field_name($Erg, $i)."</td>";
 	}
 	echo "\t<td>&Auml;ndern</td>";
 	echo "</tr>";
@@ -52,11 +55,14 @@ case 'new':
 	
 	for( $Uj = 1; $Uj < mysql_num_fields($Erg); $Uj++ )
 	{
-		echo "<td>".mysql_field_name($Erg, $Uj)."</td>".
-	        	"<td><input type=\"text\" size=\"40\" name=\"".mysql_field_name($Erg, $Uj)."\">";
 		//sonderfall fuer Default Engel 
 		if( substr( mysql_field_name($Erg, $Uj), 0, 12) == "DEFAULT_EID_")
-			echo " ". $EngelTypeID[substr( mysql_field_name($Erg, $Uj), 12)];
+			$FeldName = "Anzahl ". $EngelTypeID[substr( mysql_field_name($Erg, $Uj), 12)];
+		else
+			$FeldName = mysql_field_name($Erg, $Uj);
+		
+		echo "<td>$FeldName</td>".
+	        	"<td><input type=\"text\" size=\"40\" name=\"".mysql_field_name($Erg, $Uj)."\">";
 		echo "</td></tr>\n";
 	}
 	echo "</table>\n";
@@ -105,12 +111,15 @@ case 'change':
         
         for ($Uj = 1; $Uj < mysql_num_fields($ERG); $Uj++)
 	{
-		echo "<tr><td>".mysql_field_name($ERG, $Uj)."</td>".
-		     "<td><input type=\"text\" size=\"40\" name=\"e".mysql_field_name($ERG, $Uj)."\" ".
-		     "value=\"".mysql_result($ERG, 0, $Uj)."\">";
 		//sonderfall fuer Default Engel 
 		if( substr( mysql_field_name($ERG, $Uj), 0, 12) == "DEFAULT_EID_")
-			echo " ". $EngelTypeID[substr( mysql_field_name($ERG, $Uj), 12)];
+			$FeldName = "Anzahl ". $EngelTypeID[substr( mysql_field_name($ERG, $Uj), 12)];
+		else
+			$FeldName = mysql_field_name($ERG, $Uj);
+		
+		echo "<tr><td>$FeldName</td>".
+		     "<td><input type=\"text\" size=\"40\" name=\"e".mysql_field_name($ERG, $Uj)."\" ".
+		     "value=\"".mysql_result($ERG, 0, $Uj)."\">";
 		echo"</td></tr>\n";
 	}			    
 	echo "</table>\n";
@@ -149,8 +158,8 @@ case 'delete':
 	SetHeaderGo2Back();
 	break;
 
-}
-}
+} //switch
+
 
 // Update ???
 
@@ -165,6 +174,8 @@ if (IsSet($SQL)){
 	     echo "<br><br>".mysql_error( $con ). "<br>($SQL)<br>";
 	}
 } // Ende Update								
+
+} //IF IsSet($action)
 
 include ("./inc/footer.php");
 ?>
