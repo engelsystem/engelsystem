@@ -107,7 +107,8 @@ function readXMLfile( $file )
 	xml_set_character_data_handler($xml_parser, "character_data_handler");
 	if (!($fp = fopen($file, "r")))
 	{
-		die("could not open XML input");
+		echo(" <h1>could not open XML file \"$file\"</h1>");
+		return -1;
 	}
 
 	if( $XMLDEBUG)	echo "<pre>";
@@ -122,6 +123,7 @@ function readXMLfile( $file )
 	}
 	if( $XMLDEBUG)	echo "</pre>";
 	xml_parser_free($xml_parser);
+	return 0;
 }
 
 /*#######################################################################################*/
@@ -132,7 +134,7 @@ function getXMLsubPease( $Sourse, $Name )
 			return $value;
 	
 	echo "<h1>Fehler: getXMLsubPease( $Sourse, $Name ) not found</h1>";
-	die;
+//	die;
 }
 
 ?>

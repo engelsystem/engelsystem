@@ -58,9 +58,8 @@ else
 
 
 //readXMLfile("xml.php.xml");
-readXMLfile("/tmp/engelXML");
-
-
+if( readXMLfile("/tmp/engelXML") == 0)
+{
 /*
 echo "<pre><br>";
 echo $XMLmain->name;
@@ -442,6 +441,7 @@ echo "<form action=\"dbUpdateFromXLS.php\">\n";
 echo "\t<input type=\"submit\" name=\"UpdateALL\" value=\"now\">\n";
 echo "</form>\n";
 
+} //if XMLopenOOK
 
 include ("./inc/footer.php");
 ?>
