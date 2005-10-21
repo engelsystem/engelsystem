@@ -33,6 +33,8 @@ echo "Hallo ".$_SESSION['Nick'].",<br>\n";
 if (!IsSet($action)) 
 	$action = "new";
 
+$Time = time()+3600+3600;
+
 switch ($action){
 
 case 'new':
@@ -60,11 +62,11 @@ mehrere Schichten auf einmal erfasst werden:
   <tr><td><u>Zeit:</u></td></tr>
   <tr>
     <td align="right">Month.Jahr:</td>
-    <td><input type="ext" name="MonthJahr" size="7" value="2004-12"></td>
+    <td><input type="ext" name="MonthJahr" size="7" value="<?echo gmdate("Y-m", $Time)?>"></td>
   </tr>
   <tr>
     <td align="right">Beginn:</td>
-    <td>Date<input type="text" name="SDatum" size="5" value="27">
+    <td>Date<input type="text" name="SDatum" size="5" value="<?echo gmdate("d", $Time)?>">
         Time<input type="text" name="STime" size="5" value="10"></td>
   </tr>
   <tr>
@@ -73,12 +75,12 @@ mehrere Schichten auf einmal erfasst werden:
   </tr>
   <tr>
     <td align="right">End:</td>
-    <td>Date<input type="text" name="EDatum" size="5" value="29">
+    <td>Date<input type="text" name="EDatum" size="5" value="<?echo gmdate("d", $Time)?>">
         Time<input type="text" name="ETime" size="5" value="12"></td>
   </tr>
   <tr>
     <td align="right">L&auml;nge in h:</td>
-    <td><input type="text" name="len" size="5" value="2"> (max 24h)</td>
+    <td><input type="text" name="len" size="5" value="2"></td>
   </tr>
   <tr>
     <td align="right">Sonderschichten ein:</td>
