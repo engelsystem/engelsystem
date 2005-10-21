@@ -9,7 +9,7 @@ if (!IsSet($enterUID)){
 
 	// Userliste, keine UID uebergeben...
 
-	echo "<a href=\"../makeuser.php\">Neuen Engel eintragen</a><br><br>\n\n";
+	echo "<a href=\"../makeuser.php\">Neuen Engel eintragen</a><br><br>\n";
 
 	if( !isset($OrderBy) ) $OrderBy = "Nick";
 	$SQL = "SELECT * FROM User ORDER BY ". $OrderBy. " ASC";
@@ -19,11 +19,10 @@ if (!IsSet($enterUID)){
 	// anzahl zeilen
 	$Zeilen  = mysql_num_rows($Erg);
 
-	echo "Anzahl Engel: $Zeilen<br><br>";
+	echo "Anzahl Engel: $Zeilen<br><br>\n";
 
-	?>
-	<table width="100%" class="border" cellpadding="2" cellspacing="1"> 
-		<tr class="contenttopic">
+	?><table width="100%" class="border" cellpadding="2" cellspacing="1"> 
+	<tr class="contenttopic">
 		<td><a href="<? echo $PHP_SELF; ?>?OrderBy=Nick">Nick</a></td>
 		<td><a href="<? echo $PHP_SELF; ?>?OrderBy=Name">Name</a></td>
 		<td><a href="<? echo $PHP_SELF; ?>?OrderBy=Vorname">Vorname</a></td>
@@ -36,41 +35,42 @@ if (!IsSet($enterUID)){
 		<td>&Auml;nd.</td>
 		<td>Secure</td>
 	</tr>
+
+
 	<?
 	$Gekommen = 0;
 	$Active = 0;
 	$Tshirt = 0;
 	
 	for ($n = 0 ; $n < $Zeilen ; $n++) {
-		echo " <tr class=\"content\">\n";
-		echo "  <td>".mysql_result($Erg, $n, "Nick"). "</td>\n";
-		echo "  <td>".mysql_result($Erg, $n, "Name")."</td>\n";
-		echo "  <td>".mysql_result($Erg, $n, "Vorname")."</td>\n";
-		echo "  <td>".mysql_result($Erg, $n, "Alter")."</td>\n";
-		echo "  <td>";
-		if( strlen( mysql_result($Erg, $n, "Telefon"))>0)
-			echo "Tel: ". mysql_result($Erg, $n, "Telefon"). "<br>";
-		if( strlen( mysql_result($Erg, $n, "Handy"))>0)
-			echo "Handy: ". mysql_result($Erg, $n, "Handy"). "<br>";
-		if( strlen( mysql_result($Erg, $n, "DECT"))>0)
-			echo "<a href=\"./dect.php?custum=". mysql_result($Erg, $n, "DECT"). "\">DECT: </a>".
-				mysql_result($Erg, $n, "DECT"). "<br>";
-		$Mail = mysql_result($Erg, $n, "email");
-//		if( strlen($Mail) > 15 ) 
-//			$Mail = substr($Mail, 0, 12). "...";
-		if( strlen( $Mail)>0)
-			echo "email: <a href=\"mailto:".mysql_result($Erg, $n, "email")."\">$Mail</a>\n";
-		echo "</td>\n";
-		echo "  <td>".mysql_result($Erg, $n, "Size")."</td>\n";
+		echo "<tr class=\"content\">\n";
+		echo "\t<td>".mysql_result($Erg, $n, "Nick"). "</td>\n";
+		echo "\t<td>".mysql_result($Erg, $n, "Name")."</td>\n";
+		echo "\t<td>".mysql_result($Erg, $n, "Vorname")."</td>\n";
+		echo "\t<td>".mysql_result($Erg, $n, "Alter")."</td>\n";
+		echo "\t<td>";
+			if( strlen( mysql_result($Erg, $n, "Telefon"))>0)
+				echo "\n\t\tTel: ". mysql_result($Erg, $n, "Telefon"). "<br>";
+			if( strlen( mysql_result($Erg, $n, "Handy"))>0)
+				echo "\n\t\tHandy: ". mysql_result($Erg, $n, "Handy"). "<br>";
+			if( strlen( mysql_result($Erg, $n, "DECT"))>0)
+				echo "\n\t\tDECT: <a href=\"./dect.php?custum=". mysql_result($Erg, $n, "DECT"). "\">".
+					mysql_result($Erg, $n, "DECT"). "</a><br>";
+			if( strlen( mysql_result($Erg, $n, "email"))>0)
+				echo "\n\t\temail: <a href=\"mailto:".mysql_result($Erg, $n, "email")."\">".
+					mysql_result($Erg, $n, "email")."</a>";
+			echo "</td>\n";
+		echo "\t<td>".mysql_result($Erg, $n, "Size")."</td>\n";
 		$Gekommen += mysql_result($Erg, $n, "Gekommen");
-		echo "  <td>".mysql_result($Erg, $n, "Gekommen")."</td>\n";
+		echo "\t<td>".mysql_result($Erg, $n, "Gekommen")."</td>\n";
 		$Active += mysql_result($Erg, $n, "Aktiv");
-		echo "  <td>".mysql_result($Erg, $n, "Aktiv")."</td>\n";
+		echo "\t<td>".mysql_result($Erg, $n, "Aktiv")."</td>\n";
 		$Tshirt += mysql_result($Erg, $n, "Tshirt");
-		echo "  <td>".mysql_result($Erg, $n, "Tshirt")."</td>\n";
-		echo "  <td><a href=\"./user.php?enterUID=".
+		echo "\t<td>".mysql_result($Erg, $n, "Tshirt")."</td>\n";
+		echo "\t<td><a href=\"./user.php?enterUID=".
 			mysql_result($Erg, $n, "UID")."&Type=Normal\">&Auml;nd.</a></td>\n";
-		echo "  <td>";
+		echo "\t<td>";
+		
 		//check userCVS=OK
 		$SQL2 = "SELECT UID FROM UserCVS WHERE (UID=". mysql_result($Erg, $n, "UID"). ")";
 		$Erg2 = mysql_query($SQL2, $con);
@@ -86,7 +86,7 @@ if (!IsSet($enterUID)){
 		}
 		echo "<a href=\"./user.php?enterUID=".
 			mysql_result($Erg, $n, "UID")."&Type=Secure\">Secure</a></td>\n";
-		echo " </tr>\n";
+		echo "</tr>\n";
 	}
 	echo "<tr>".
 		"<td></td><td></td><td></td><td></td><td></td><td></td>".
