@@ -6,9 +6,12 @@ $Page["CVS"] = $_SESSION['CVS'][ $Page["Name"] ];
 
 if( $DEBUG ) 
 {
-	echo "UserID:". $_SESSION["UID"]. "<br>";
-	echo "Nick:". $_SESSION["Nick"]. "<br>";
-	
+//	echo "UserID:". $_SESSION["UID"]. "<br>";
+//	echo "Nick:". $_SESSION["Nick"]. "<br>";
+
+	foreach( $_SESSION as $k => $v)
+		echo "$k = $v<br>\n";
+
 	if( strlen($Page["CVS"]) == 0 )
 		echo "<h1><u> CVS ERROR, on page '". $Page["Name"]. "'</u></h1>";
 	else
