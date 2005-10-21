@@ -128,10 +128,10 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		// ausgabe benötigter Engel
 		////////////////////////////
 		//in vergangenheit
-		$SQLtime = "SELECT `DateS` FROM `Shifts` WHERE (SID='$SID' AND `DateS`> '". 
+		$SQLtime = "SELECT `DateE` FROM `Shifts` WHERE (SID='$SID' AND `DateS` >= '". 
 			gmdate("Y-m-d H:i:s", time()+ 3600). "')";
 		$Ergtime = mysql_query($SQLtime, $con);
-		if( mysql_num_rows( $Ergtime))
+		if( mysql_num_rows( $Ergtime) > 0)
 		{
 		 //mit sonder status
 		 $SQLerlaubnis = "SELECT Name FROM `EngelType` WHERE TID = '". $TempValue["TID"]. "'";
@@ -190,43 +190,68 @@ function CreateRoomShifts( $raum )
 {
 	global $Spalten, $ausdatum, $con, $DEBUG, $GlobalZeileProStunde;
 	
-	$ZeitZeiger = 0;
-	
-	$SQLSonder = "SELECT `SID`, `DateS`, `Len`, `Man` FROM `Shifts` ".
-		     "WHERE ((`RID` = '$raum') AND (`DateE` like '$ausdatum%') AND ".
-		     	"(`DateS` < '$ausdatum') ) ORDER BY `DateS`;";
-      	$ErgSonder = mysql_query($SQLSonder, $con);
+	/////////////////////////////////////////////////////////////
+	// beginnt die erste schicht vor dem heutigen tag und geht darüber hinaus
+	/////////////////////////////////////////////////////////////
+	$SQLSonder = "SELECT `SID`, `DateS`, `DateE` , `Len`, `Man` FROM `Shifts` ".
+		     "WHERE ((`RID` = '$raum') AND (`DateE` > '$ausdatum 23:59:59') AND ".
+		     	"(`DateS` < '$ausdatum 00:00:00') ) ORDER BY `DateS`;";
+	$ErgSonder = mysql_query($SQLSonder, $con);
 	if( (mysql_num_rows( $ErgSonder) > 1) )
 	{
 		echo Get_Text("pub_schichtplan_colision"). " ".
 			mysql_result($ErgSonder, $i, "DateS"). 
 			" '". mysql_result($ErgSonder, $i, "Man"). "' ".
-			" (".  mysql_result($ErgSonder, $i, "SID"). " R$raum)###<br><br>";
+			" (".  mysql_result($ErgSonder, $i, "SID"). " R$raum) (00-24)<br><br>";
 	}
 	elseif( (mysql_num_rows( $ErgSonder) == 1) )
 	{
-		
-		$ZeitZeiger =	substr( mysql_result($ErgSonder, 0, "DateS"), 11, 2 )+
-				(substr( mysql_result($ErgSonder, 0, "DateS"), 14, 2 ) / 60)+
-				mysql_result($ErgSonder, 0, "Len") - 24;
-		if( $ZeitZeiger > 0)
-		       	$Spalten[0].= 
-				"\t\t<td valign=\"top\" rowspan=\"". ($ZeitZeiger * $GlobalZeileProStunde). "\">\n".
+		$Spalten[0].=	"\t\t<td valign=\"top\" rowspan=\"". (24 * $GlobalZeileProStunde). "\">\n".
+				"\t\t\t<h3>&uarr;&uarr;&uarr;</h3>".
+	        		Ausgabe_Feld_Inhalt( mysql_result($ErgSonder, 0, "SID"), 
+						     mysql_result($ErgSonder, 0, "Man") ).
+				"\t\t\t<h3>&darr;&darr;&darr;</h3>".
+	       			"\n\t\t</td>\n";
+		return;
+	}
+	
+	$ZeitZeiger = 0;
+
+	/////////////////////////////////////////////////////////////
+	// beginnt die erste schicht vor dem heutigen tag?
+	/////////////////////////////////////////////////////////////
+	$SQLSonder = "SELECT `SID`, `DateS`, `DateE` , `Len`, `Man` FROM `Shifts` ".
+		     "WHERE ((`RID` = '$raum') AND (`DateE` > '$ausdatum 00:00:00') AND ".
+		     	"(`DateS` < '$ausdatum 00:00:00') ) ORDER BY `DateS`;";
+	$ErgSonder = mysql_query($SQLSonder, $con);
+	if( (mysql_num_rows( $ErgSonder) > 1) )
+	{
+		echo Get_Text("pub_schichtplan_colision"). " ".
+			mysql_result($ErgSonder, $i, "DateS"). 
+			" '". mysql_result($ErgSonder, $i, "Man"). "' ".
+			" (".  mysql_result($ErgSonder, $i, "SID"). " R$raum) (00-xx)<br><br>";
+	}
+	elseif( (mysql_num_rows( $ErgSonder) == 1) )
+	{
+		$ZeitZeiger =	substr( mysql_result($ErgSonder, 0, "DateE"), 11, 2 )+
+				(substr( mysql_result($ErgSonder, 0, "DateE"), 14, 2 ) / 60);
+		$Spalten[0].=	"\t\t<td valign=\"top\" rowspan=\"". ($ZeitZeiger * $GlobalZeileProStunde). "\">\n".
 				"\t\t\t<h3>&uarr;&uarr;&uarr;</h3>".
 	        		Ausgabe_Feld_Inhalt( mysql_result($ErgSonder, 0, "SID"), 
 						     mysql_result($ErgSonder, 0, "Man") ).
 	       			"\n\t\t</td>\n";
-		
-		
 	}
-		
 		     
-	$SQL = "SELECT `SID`, `DateS`, `Len`, `Man` FROM `Shifts` ".
-	       "WHERE ((`RID` = '$raum') and (`DateS` like '$ausdatum%')) ORDER BY `DateS`;";
+	/////////////////////////////////////////////////////////////
+	// gibt die schichten für den tag aus
+	/////////////////////////////////////////////////////////////
+	$SQL =	"SELECT `SID`, `DateS`, `Len`, `Man` FROM `Shifts` ".
+		"WHERE ((`RID` = '$raum') and ".
+		"(`DateS` >= '$ausdatum $ZeitZeiger:00:00') and ".
+		"(`DateS` like '$ausdatum%')) ORDER BY `DateS`;";
       	$Erg = mysql_query($SQL, $con);
-
 	for( $i = 0; $i < mysql_num_rows($Erg); ++$i )
-	{
+	{	
 		$ZeitPos = substr( mysql_result($Erg, $i, "DateS"), 11, 2 )+
 			  (substr( mysql_result($Erg, $i, "DateS"), 14, 2 ) / 60);
 		$len = mysql_result($Erg, $i, "Len");
@@ -241,11 +266,16 @@ function CreateRoomShifts( $raum )
 		}
 		if($ZeitZeiger == $ZeitPos )
 		{
+			//sonderfall wenn die schicht über dei 24 stunden hinaus geht
+			// (eintrag abkürzen, pfeiel ausgeben)
 	       		$Spalten[$ZeitZeiger * $GlobalZeileProStunde].= 
-					"\t\t<td valign=\"top\" rowspan=\"". ( $len * $GlobalZeileProStunde). "\">\n".
+					"\t\t<td valign=\"top\" rowspan=\"". 
+					( ( ($len+$ZeitZeiger)? $len : 24-$len+$ZeitZeiger) * $GlobalZeileProStunde). 
+					"\">\n".
 					"\t\t\t".
 	        			Ausgabe_Feld_Inhalt( mysql_result($Erg, $i, "SID"), 
 							     mysql_result($Erg, $i, "Man") ).
+					(( ($ZeitZeiger+$len) > 24)? "\t\t\t<h3>&darr;&darr;&darr;</h3>" : "").
 	       				"\n\t\t</td>\n";
 			$ZeitZeiger += $len;
 		}
@@ -254,7 +284,7 @@ function CreateRoomShifts( $raum )
 			echo Get_Text("pub_schichtplan_colision"). " ".
 				mysql_result($Erg, $i, "DateS"). 
 				" '". mysql_result($Erg, $i, "Man"). "' ".
-				" (".  mysql_result($Erg, $i, "SID"). " R$raum)<br><br>";
+				" (".  mysql_result($Erg, $i, "SID"). " R$raum) (xx-xx)<br><br>";
 		}
 	}
 	if( $ZeitZeiger <= 24 )
@@ -321,8 +351,9 @@ function SummRoomShifts( $raum )
 	global $ausdatum, $con, $DEBUG, $GlobalZeileProStunde;
 	
 	$SQLSonder = "SELECT `SID`, `DateS`, `Len`, `Man` FROM `Shifts` ".
-		     "WHERE ((`RID` = '$raum') AND (`DateE` like '$ausdatum%') AND ".
-		     	"(`DateS` like '$ausdatum%') ) ORDER BY `DateS`;";
+		     "WHERE ((`RID` = '$raum') AND (`DateE` >= '$ausdatum 00:00:00') AND ".
+		     	"(`DateS` <= '$ausdatum 23:59:59') ) ORDER BY `DateS`;";
+
       	$ErgSonder = mysql_query($SQLSonder, $con);
 	
 	return mysql_num_rows($ErgSonder);
