@@ -6,6 +6,7 @@ include ("./inc/header.php");
 include ("./inc/funktion_user.php");
 include ("./inc/funktionen.php");
 include ("./inc/funktion_schichtplan.php");
+include ("./inc/funktion_schichtplan_Tage.php");
 ?>
 
 <? echo Get_Text("Hello").$_SESSION['Nick'].",<br>".
@@ -13,6 +14,26 @@ include ("./inc/funktion_schichtplan.php");
 <br><br>
 <?
 
+function ShowSwitchDay()
+{
+	GLOBAL $VeranstaltungsTage, $VeranstaltungsTageMax, $ausdatum, $raum;
+	
+	echo "\n\n<table border=\"0\" width=\"100%\"><tr>\n";
+	
+	foreach( $VeranstaltungsTage as $k => $v)
+		if( $ausdatum == $v)
+		{
+			if( $k > 0)
+				echo "\t\t\t<td align=\"left\">".
+					"<a href='./schichtplan.php?ausdatum=". $VeranstaltungsTage[$k-1]. 
+					"&raum=$raum'>". $VeranstaltungsTage[$k-1]. "</a></td>\n";
+			if( $k < $VeranstaltungsTageMax)
+				echo "\t\t\t<td align=\"right\">".
+					"<a href='./schichtplan.php?ausdatum=". $VeranstaltungsTage[$k+1]. 
+					"&raum=$raum'>". $VeranstaltungsTage[$k+1]. "</a></td>\n";
+		}
+	echo "\n\n</table>";
+}
 
 // wenn kein Datum gesetzt ist (die Seite zum ersten mal aufgerufen wird),
 // das Datum auf den ersten Tag setzen...
@@ -59,6 +80,8 @@ else
 	else 
 		echo Get_Text("pub_schicht_Anzeige_1"). $ausdatum. 
 		     Get_Text("pub_schicht_Anzeige_2"). $RoomID[$raum]. "<br><br>";
+	
+	ShowSwitchDay();
 
 	echo "\n\n<table border=\"0\" width=\"100%\" class=\"border\" cellpadding=\"2\" cellspacing=\"1\">\n";
 	echo "\t<tr class=\"contenttopic\">\n";
@@ -116,6 +139,9 @@ else
 		echo $Spalten[$i]."\t</tr>\n";
 
   	echo "</table>\n";
+	
+	ShowSwitchDay();
+
 }//if (isset($raum))
 
 include ("./inc/footer.php");
