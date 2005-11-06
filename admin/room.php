@@ -8,7 +8,7 @@ include ("./inc/funktion_schichtplan.php");
 $Sql = "SELECT * FROM `Room` ORDER BY Number, Name";
 $Erg = mysql_query($Sql, $con);
 
-if( !IsSet($action) )
+if( !IsSet($_GET["action"]) )
 {
 	echo "Hallo ".$_SESSION['Nick'].
 		",<br>\nhier hast du die M&ouml;glichkeit, neue R&auml;ume f&uuml;r die Schichtpl&auml;ne einzutragen ".
@@ -46,11 +46,11 @@ else
 
 UnSet($SQL);
 
-switch ($action) {
+switch ($_GET["action"]) {
 
 case 'new':
 	echo "Neuen Raum einrichten: <br>";
-	echo "<form action=\"./room.php\" method=\"POST\">\n";
+	echo "<form action=\"./room.php\" method=\"GET\">\n";
 	echo "<table>\n";
 	
 	for( $Uj = 1; $Uj < mysql_num_fields($Erg); $Uj++ )
@@ -72,10 +72,13 @@ case 'new':
 	break;
 
 case 'newsave':
-	$vars = $HTTP_POST_VARS;
+	$vars = $HTTP_GET_VARS;
 	$count = count($vars) - 1;
 	$vars = array_splice($vars, 0, $count);
-	foreach($vars as $key => $value){
+	$Keys = "";
+	$Values = "";
+	foreach($vars as $key => $value)
+	{
 		$Keys   .= ", `$key`";
 		$Values .= ", '$value'";
 	}
@@ -95,7 +98,7 @@ case 'newsave':
 	break;
 
 case 'change':
-	if (! IsSet($RID)) {
+	if (! IsSet($_GET["RID"])) {
 		echo "Fehlerhafter Aufruf!"; 
 	} else {
 
@@ -103,10 +106,10 @@ case 'change':
 
 	echo "Hier kannst du eintragen, welche und wieviele Engel f&uuml;r den Raum zur Verfügung stehen m&uuml;ssen.";
 	
-	echo "<form action=\"./room.php\" method=\"POST\">\n";
+	echo "<form action=\"./room.php\" method=\"GET\">\n";
 	echo "<table>\n";
 	
-	$SQL2 = "SELECT * FROM `Room` WHERE `RID`='$RID'";
+	$SQL2 = "SELECT * FROM `Room` WHERE `RID`='". $_GET["RID"]. "'";
 	$ERG = mysql_query($SQL2, $con);
         
         for ($Uj = 1; $Uj < mysql_num_fields($ERG); $Uj++)
@@ -123,12 +126,12 @@ case 'change':
 		echo"</td></tr>\n";
 	}			    
 	echo "</table>\n";
-	echo "<input type=\"hidden\" name=\"eRID\" value=\"$RID\">\n";
+	echo "<input type=\"hidden\" name=\"eRID\" value=\"". $_GET["RID"]. "\">\n";
 	echo "<input type=\"hidden\" name=\"action\" value=\"changesave\">\n";
 	echo "<input type=\"submit\" value=\"sichern...\">\n";
 	echo "</form>";
-        echo "<form action=\"./room.php\" method=\"POST\">\n";
-        echo "<input type=\"hidden\" name=\"RID\" value=\"$RID\">\n";
+        echo "<form action=\"./room.php\" method=\"GET\">\n";
+        echo "<input type=\"hidden\" name=\"RID\" value=\"". $_GET["RID"]. "\">\n";
         echo "<input type=\"hidden\" name=\"action\" value=\"delete\">\n";
         echo "<input type=\"submit\" value=\"L&ouml;schen...\">";
         echo "</form>";
@@ -137,7 +140,7 @@ case 'change':
 	
 case 'changesave':
 	$sql="";
-        $vars = $HTTP_POST_VARS;
+        $vars = $HTTP_GET_VARS;
         $count = count($vars) - 2;
         $vars = array_splice($vars, 0, $count);
         foreach($vars as $key => $value){
@@ -145,13 +148,13 @@ case 'changesave':
 		$sql .= ", `".$keys."`='".$value."' ";
 	       
         }
-	$SQL = "UPDATE `Room` SET ". substr($sql, 2). " WHERE `RID`='".$eRID."'";
+	$SQL = "UPDATE `Room` SET ". substr($sql, 2). " WHERE `RID`='". $_GET["eRID"]. "'";
 	SetHeaderGo2Back();
 	break;
 
 case 'delete':
-	if (IsSet($RID)) {
-		$SQL="DELETE FROM `Room` WHERE `RID`='$RID'";		
+	if (IsSet($_GET["RID"])) {
+		$SQL="DELETE FROM `Room` WHERE `RID`='". $_GET["RID"]. "'";		
 	} else {
 		echo "Fehlerhafter Aufruf";
 	}
