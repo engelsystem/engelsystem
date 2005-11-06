@@ -2,6 +2,9 @@
 //soll dein funktion entahlten die alle übergebenen parameter überprüft
 //'`'" 
 
+if( $DEBUG)
+	echo "secure.php START<br>\n";
+
 foreach ($_GET as $k => $v) 
 {	
   	$v = htmlspecialchars($v);
@@ -13,7 +16,9 @@ foreach ($_GET as $k => $v)
 		exit;
 	}
 	$_GET[$k] = $v;
-	echo "GET $k=\"$v\"<br>";
+
+	if( $DEBUG)
+		echo "GET $k=\"$v\"<br>";
 }
   
 foreach ($_POST as $k => $v) 
@@ -26,7 +31,11 @@ foreach ($_POST as $k => $v)
 		exit;
 	}
 	$_POST[$k] = $v;
-	echo "POST $k=\"$v\"<br>";
+	
+	if( $DEBUG)
+		echo "POST $k=\"$v\"<br>";
 }
+if( $DEBUG)
+	echo "secure.php END<br>\n";
 
 ?>

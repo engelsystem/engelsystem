@@ -7,7 +7,7 @@ include ("./inc/crypt.php");
 
 session_start(); // alte Session - falls vorhanden - wiederherstellen...
 
-if (!IsSet($_SESSION['UID'])) {
+if ( IsSet($_POST["user"])) {
 
 	$sql = "select * from User where Nick = '". $_POST["user"]. "'";
 
