@@ -1,13 +1,17 @@
 <?php
 $title = "Himmel";
 $header = "FAQ / Fragen an die Erzengel";
+$submenus = 1;
 include ("./inc/header.php");
 include ("./inc/funktion_user.php");
-$submenus = 1;
 
-if (IsSet($quest)) {
+//var init
+$quest_bearb=0;
 
-switch ($quest) {
+if (IsSet($_GET["quest"])) {
+
+switch ($_GET["quest"]) 
+{
 
 // *---------------------------------------------------------------------------
 // * Anfragen - Bearbeitung
@@ -63,15 +67,15 @@ case "open":
 	break;
 case "edit":
 	$quest_bearb=0; // keine Fragenliste anzeigen, Frage editieren...
-	if (!IsSet($QID)){
+	if (!IsSet($_GET["QID"])){
 ?>
 		Fehlerhafter Aufruf...<br>Bitte die Bearbeitung nochmals beginnen :)
 <?php
 	} else {
-	$SQL = "SELECT * FROM Questions where QID=$QID";
+	$SQL = "SELECT * FROM Questions where QID=". $_GET["QID"];
 	$Erg = mysql_query($SQL, $con);
 ?>
-	<form action="./faq.php" method="post">
+	<form action="./faq.php" method="GET">
 		Anfrage von <b><?php echo UID2NICK(mysql_result($Erg, 0, "UID")); ?></b>:<br>
 		<textarea name="Question" rows="3" cols="80"><?php echo mysql_result($Erg, 0, "Question"); ?></textarea>
 		<br><br>
@@ -89,7 +93,7 @@ case "edit":
 <?php
 	}
 ?>
-		<input type="hidden" name="QID" value="<? echo $QID ?>">
+		<input type="hidden" name="QID" value="<? echo $_GET["QID"]; ?>">
 		<input type="hidden" name="quest" value="save">
 		<input type="submit" value="Sichern...">
 	</form>
@@ -106,12 +110,14 @@ case "edit":
 	break;
 
 case "save":
-	if (!IsSet($QID)){
+	if (!IsSet($_GET["QID"])){
 ?>
 	  Fehlerhafter Aufruf... Bitte die Bearbeitung nochmal starten...
 <?php
         } else {
-	  $SQL = "UPDATE Questions SET Question=\"$Question\", AID=\"".$_SESSION['UID']."\" , Answer=\"$Answer\" where QID = \"".$QID."\" LIMIT 1";
+	  $SQL = "UPDATE Questions SET Question=\"". $_GET["Question"]. 
+	  	 "\", AID=\"". $_SESSION['UID']. "\" , Answer=\"". $_GET["Answer"]. "\" ".
+		 "where QID = \"". $_GET["QID"]. "\" LIMIT 1";
           $Erg = mysql_query($SQL, $con);
           if ($Erg == 1) {
 ?>
@@ -126,15 +132,16 @@ case "save":
 	break;
 
 case "transfer":
-	if (!IsSet($QID)){
+	if (!IsSet($_GET["QID"])){
 ?>
 	  Fehlerhafter Aufruf... Bitte die Bearbeitung nochmal starten...
 <?php
         } else {
 	
-		$SQL1="Select * from Questions where QID=$QID";
+		$SQL1="Select * from Questions where QID=". $_GET["QID"];
 		$Erg = mysql_query($SQL1, $con);
-		$SQL2="Insert into FAQ Values (\"\", \"".mysql_result($Erg, 0, "Question")."\", \"".mysql_result($Erg, 0, "Answer")."\")";
+		$SQL2="Insert into FAQ Values (\"\", \"".
+			mysql_result($Erg, 0, "Question")."\", \"".mysql_result($Erg, 0, "Answer")."\")";
 		$Erg = mysql_query($SQL2, $con);
 		if ($Erg == 1) {
 ?>
@@ -182,30 +189,31 @@ case "faq":
 	break;
 
 case "faqedit":
-       if (!IsSet($FAQID)){
+       if (!IsSet($_GET["FAQID"]))
+       {
 ?>
 	 Fehlerhafter Aufruf...<br>Bitte die Bearbeitung nochmals beginnen :)
 <?php
 	} else {
 
-	$SQL = "SELECT * FROM FAQ where FID=$FAQID";
+	$SQL = "SELECT * FROM FAQ where FID=". $_GET["FAQID"];
 	$Erg = mysql_query($SQL, $con);
 
 	// anzahl zeilen
 	$Zeilen  = mysql_num_rows($Erg);
 ?>
-	<form action="./faq.php" method="post">
+	<form action="./faq.php" method="GET">
 		Frage:<br>
 	<textarea name="Frage" rows="3" cols="80"><?php echo mysql_result($Erg, 0, "Frage"); ?></textarea>
 	<br><br>
 	Antwort:<br>
 	<textarea name="Antwort" rows="5" cols="80"><?php echo mysql_result($Erg, 0, "Antwort"); ?></textarea><br>
-	<input type="hidden" name="FAQID" value="<? echo $FAQID; ?>">
+	<input type="hidden" name="FAQID" value="<? echo $_GET["FAQID"]; ?>">
 	<input type="hidden" name="quest" value="faqsave">
 	<input type="submit" value="Sichern...">
 	</form>
 	<form action="./faq.php">	
-        <input type="hidden" name="FAQID" value="<? echo $FAQID; ?>">
+        <input type="hidden" name="FAQID" value="<? echo $_GET["FAQID"]; ?>">
         <input type="hidden" name="quest" value="faqdelete">
         <input type="submit" value="L&ouml;schen...">
 	</form>
@@ -214,12 +222,13 @@ case "faqedit":
 	break;
 
 case "faqdelete";
-	if (!IsSet($FAQID)){
+	if (!IsSet($_GET["FAQID"]))
+	{
 ?>
 		Fehlerhafter Aufruf... Bitte die Bearbeitung nochmal starten...
 <?php 
 	} else {
-		$SQL = "delete from FAQ where FID = \"$FAQID\" LIMIT 1";
+		$SQL = "delete from FAQ where FID = \"". $_GET["FAQID"]. "\" LIMIT 1";
 		$Erg = mysql_query($SQL, $con);
 		if ($Erg == 1) {
 ?>
@@ -234,12 +243,14 @@ case "faqdelete";
 	break;
 
 case "faqsave";
-        if (!IsSet($FAQID)){
+        if (!IsSet($_GET["FAQID"]))
+	{
 ?>
 	  Fehlerhafter Aufruf... Bitte die Bearbeitung nochmal starten...
 <?php
         } else {
-          $SQL = "UPDATE FAQ SET Frage=\"$Frage\", Antwort=\"$Antwort\" where FID = \"$FAQID\" LIMIT 1";
+          $SQL = "UPDATE FAQ SET Frage=\"". $_GET["Frage"]. "\", Antwort=\"". $_GET["Antwort"]. 
+	  	 "\" where FID = \"". $_GET["FAQID"]. "\" LIMIT 1";
           $Erg = mysql_query($SQL, $con);
           if ($Erg == 1) {
 ?>
@@ -255,7 +266,7 @@ case "faqsave";
 
 case "faqnew":
 ?>
-	<form action="./faq.php" method="post">
+	<form action="./faq.php" method="GET">
         Frage:<br>
         <textarea name="Frage" rows="3" cols="80">Frage...</textarea><br><br>
         Antwort:<br>
@@ -266,7 +277,7 @@ case "faqnew":
 <?php
 	break;
 case "faqnewsave";
-        $SQL = "INSERT INTO FAQ VALUES (\"\", \"$Frage\", \"$Antwort\")";
+        $SQL = "INSERT INTO FAQ VALUES (\"\", \"". $_GET["Frage"]. "\", \"". $_GET["Antwort"]. "\")";
         $Erg = mysql_query($SQL, $con);
         if ($Erg == 1) {
 ?>

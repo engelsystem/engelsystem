@@ -5,7 +5,7 @@ $header = "Liste der existierenden Sprcheintr&auml;ge";
 include ("./inc/header.php");
 
 
-if( !isset( $TextID )  )
+if( !isset( $_GET["TextID"] )  )
 {
 	echo Get_Text("Hello").$_SESSION['Nick'].", <br>\n";
 	echo Get_Text("pub_sprache_text1")."<br><br>\n";
@@ -75,18 +75,18 @@ if( !isset( $TextID )  )
 } /*if( !isset( $TextID )  )*/
 else
 {
-	echo "edit: ". $TextID. "<br><br>";
+	echo "edit: ". $_GET["TextID"]. "<br><br>";
 	foreach ($_GET as $k => $v) {
 		if( $k != "TextID" ) 
 		{
 			$sql_test = "SELECT * FROM `Sprache` ".
-				"WHERE `TextID`='$TextID' AND `Sprache`='$k'";
+				"WHERE `TextID`='". $_GET["TextID"]. "' AND `Sprache`='$k'";
 			$erg_test = mysql_query($sql_test, $con);
 
 			if( mysql_num_rows($erg_test)==0 )
 			{
 				$sql_save = "INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) ".
-					"VALUES ('$TextID', '$k', '$v')";
+					"VALUES ('". $_GET["TextID"]. "', '$k', '$v')";
 		        	$Erg = mysql_query($sql_save, $con);
 			        if ($Erg == 1)
 			                echo "\t $k Save: OK<br>\n";
@@ -96,7 +96,7 @@ else
 			else if( mysql_result($erg_test, 0, "Text")!=$v )
 			{
 				$sql_save = "UPDATE `Sprache` SET `Text`='$v' ".
-					"WHERE `TextID`='$TextID' AND `Sprache`='$k' ";
+					"WHERE `TextID`='". $_GET["TextID"]. "' AND `Sprache`='$k' ";
 				  echo $sql_save."<br>";
 		        	$Erg = mysql_query($sql_save, $con);
 			        if ($Erg == 1)
