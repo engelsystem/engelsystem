@@ -25,7 +25,7 @@ echo "<form action=\"./aktiv.php\" method=\"post\">\n";
 	echo "\t<br><input type=\"submit\" name=\"ResetActive\" value=\"reset Active setting\">\n";
 echo "</form>\n";
 
-if( Isset($ResetActive) )
+if( Isset($_POST["ResetActive"]) )
 {
 	$SQLreset = "UPDATE `User` SET `Aktiv` = '0'";
 	$ErgReset = mysql_query($SQLreset, $con);
@@ -35,8 +35,8 @@ if( Isset($ResetActive) )
 		echo "Active wurde erfolgreich zurueckgesetzt\n";
 }
 
-if( IsSet($Anzahl) )
-	echo "<br>\n\n".Get_Text("pub_aktive_Text5_1"). $Anzahl. Get_Text("pub_aktive_Text5_2"). ":";
+if( IsSet($_POST["Anzahl"]) )
+	echo "<br>\n\n".Get_Text("pub_aktive_Text5_1"). $_POST["Anzahl"]. Get_Text("pub_aktive_Text5_2"). ":";
 
 echo "<br><br>\n\n";
 
@@ -68,11 +68,11 @@ for ($i=0; $i<$rowcount; $i++)
 	echo "\t\t<td>". mysql_result($Erg, $i, "NR"). "</td>\n";
 	echo "\t\t<td>". mysql_result($Erg, $i, "LEN"). "h</td>\n";
 	echo "\t\t<td>";
-	if (IsSet($Anzahl))
+	if (IsSet($_POST["Anzahl"]))
 	{	
-		if( $Anzahl < mysql_result($Erg, $i, "LEN") )
+		if( $_POST["Anzahl"] < mysql_result($Erg, $i, "LEN") )
 		{
-			if( $SendType=="Show..")
+			if( $_POST["SendType"]=="Show..")
 				echo "show set";
 			else
 			{

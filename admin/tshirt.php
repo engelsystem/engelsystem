@@ -7,13 +7,13 @@ include ("./inc/funktion_db_list.php");
 include ("./inc/funktion_user.php");
 
 
-If (IsSet($aktiv)) {
+If (IsSet($_GET["aktiv"])) {
 
-	$SQL="Update User set Tshirt=\"1\" where UID=\"$aktiv\" limit 1";
+	$SQL="Update User set Tshirt=\"1\" where UID=\"". $_GET["aktiv"]. "\" limit 1";
 	$Erg = mysql_query($SQL, $con);
         if ($Erg == 1) {
         } else {
-           echo "Fehler beim speichern bei Engel ".UID2Nick($eUID)."<br>";
+           echo "Fehler beim speichern bei Engel ". UID2Nick($_GET["aktive"]). "<br>";
         }
 }
 
