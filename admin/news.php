@@ -7,7 +7,7 @@ include ("./inc/funktion_db_list.php");
 include ("./inc/funktion_user.php");
 
 
-if (!IsSet($action)) {
+if (!IsSet($_GET["action"])) {
 
 $SQL = "SELECT * from News order by Datum DESC";
 $Erg = mysql_query($SQL, $con);
@@ -44,51 +44,62 @@ echo "</table>";
 
 } else {
 
-switch ($action) {
+switch ($_GET["action"]) 
+{
 
 case 'change':
-	$SQL = "SELECT * from News where (Datum='$date')";
+	$SQL = "SELECT * from News where (Datum='". $_GET["date"]. "')";
 	$Erg = mysql_query($SQL, $con);
 
-	echo "<form action=\"./news.php\" method=\"post\">\n";
+	echo "<form action=\"./news.php\" method=\"GET\">\n";
 
 	echo "<table>\n";
-	echo "  <tr><td>Datum</td><td><input type=\"text\" size=\"40\" name=\"date\" value=\"".mysql_result($Erg, 0, "Datum")."\" disabled></td></tr>\n";
-	echo "  <tr><td>Betreff</td><td><input type=\"text\" size=\"40\" name=\"eBetreff\" value=\"".mysql_result($Erg, 0, "Betreff")."\"></td></tr>\n";
-	echo "  <tr><td>Text</td><td><textarea rows=\"10\" cols=\"80\" name=\"eText\">".mysql_result($Erg, 0, "Text")."</textarea></td></tr>\n";
-	echo "  <tr><td>Engel</td><td><input type=\"text\" size=\"40\" name=\"eUser\" value=\"".UID2Nick(mysql_result($Erg, 0, "UID"))."\" disabled></td></tr>\n";
-	echo "  <tr><td>Treffen</td><td><input type=\"text\" size=\"40\" name=\"eTreffen\" value=\"".mysql_result($Erg, 0, "Treffen")."\"></td></tr>\n";
+	echo "  <tr><td>Datum</td><td><input type=\"text\" size=\"40\" name=\"date\" value=\"".
+		mysql_result($Erg, 0, "Datum")."\" disabled></td></tr>\n";
+	echo "  <tr><td>Betreff</td><td><input type=\"text\" size=\"40\" name=\"eBetreff\" value=\"".
+		mysql_result($Erg, 0, "Betreff")."\"></td></tr>\n";
+	echo "  <tr><td>Text</td><td><textarea rows=\"10\" cols=\"80\" name=\"eText\">".
+		mysql_result($Erg, 0, "Text")."</textarea></td></tr>\n";
+	echo "  <tr><td>Engel</td><td><input type=\"text\" size=\"40\" name=\"eUser\" value=\"".
+		UID2Nick(mysql_result($Erg, 0, "UID"))."\" disabled></td></tr>\n";
+	echo "  <tr><td>Treffen</td><td><input type=\"text\" size=\"40\" name=\"eTreffen\" value=\"".
+		mysql_result($Erg, 0, "Treffen")."\"></td></tr>\n";
 	echo "</table>";
 
-        echo "<input type=\"hidden\" name=\"date\" value=\"$date\">\n";
+        echo "<input type=\"hidden\" name=\"date\" value=\"". $_GET["date"]. "\">\n";
 	echo "<input type=\"hidden\" name=\"action\" value=\"change_save\">\n";
 	echo "<input type=\"submit\" value=\"Abschicken...\">\n";
 	echo "</form>";
 
 	echo "<form action=\"./news.php?action=delete\" method=\"POST\">\n";
-	echo "<input type=\"hidden\" name=\"date\" value=\"$date\">\n";
+	echo "<input type=\"hidden\" name=\"date\" value=\"". $_GET["date"]. "\">\n";
 	echo "<input type=\"submit\" value=\"l&ouml;schen...\">\n";
 	echo "</form>";
-	
 
 	break;
 
 case 'change_save':
-	$chsql="update News set Betreff = '$eBetreff', Text = '$eText', Treffen = '$eTreffen' where (Datum = '$date') limit 1";
+	$chsql="UPDATE News set Betreff = \"". $_GET["eBetreff"]. "\", Text = \"". $_GET["eText"]. 
+		"\", Treffen=". $_GET["eTreffen"]. " where (Datum = '". $_GET["date"]. "') limit 1";
 	break;
 
 case 'delete':
-        $chsql="delete from News where Datum = '$date' limit 1";
+        $chsql="DELETE from News where Datum = '". $_POST["date"]. "' limit 1";
 	break;
 }
 
 if (IsSet($chsql)) {
 // SQL-Statement ausführen...
 	$Erg = mysql_query($chsql, $con);
-	If ($Erg == 1){
+	If ($Erg == 1)
+	{
 		echo "&Auml;nderung erfolgreich gesichert...";
-	} else {
-		echo "Ein Fehler ist aufgetreten... probiere es am besten nocheinmal... :)";
+	} 
+	else 
+	{
+		echo "Ein Fehler ist aufgetreten... probiere es am besten nocheinmal... :)<br><br>\n";
+		echo mysql_error($con);
+		echo "<br><br>\n[$chsql]";
 	}
 }
 
