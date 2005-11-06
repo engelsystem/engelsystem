@@ -157,7 +157,7 @@ function ausgabe_Zeile( $RID, $Time, &$AnzahlEintraege )
 			" (`DateS` like '". gmdate("Y-m-d H", $Time). "%')) ) ORDER BY `DateS`;";
 	
 	$ErgRoom = mysql_query($SQL, $con);
-	$Out.= "\t<td>";
+	$Out= "\t<td>";
 	if( mysql_num_rows( $ErgRoom)>0 )
 		for( $i=1; $i<=mysql_num_rows( $ErgRoom); $i++ )
 		{

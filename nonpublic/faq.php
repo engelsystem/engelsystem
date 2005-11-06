@@ -5,9 +5,9 @@ include ("./inc/header.php");
 
 
 // Erstaufruf, oder Frage bereits abgeschickt?
-if (!IsSet($eUID)) {
-
-Print_Text(35);
+if (!IsSet($_POST["eUID"])) 
+{
+	Print_Text(35);
 ?>
 <br><br>
 <form action="./faq.php" method="POST">
@@ -20,9 +20,9 @@ Print_Text(35);
 } else {
 // Auswertung d. Formular-Daten:
 
-echo "<b>".Get_Text(37)."</b><br><br>\n".nl2br($frage)."<br><br>\n".Get_Text(38)."<br>\n";
+echo "<b>".Get_Text(37)."</b><br><br>\n".nl2br($_POST["frage"])."<br><br>\n".Get_Text(38)."<br>\n";
 
-$SQL = "INSERT into Questions VALUES (\"\", \"".$_SESSION['UID']."\", \"$frage\", \"\", \"\")";
+$SQL = "INSERT into Questions VALUES (\"\", \"".$_SESSION['UID']."\", \"". $_POST["frage"]. "\", \"\", \"\")";
 $Erg = mysql_query($SQL, $con);
 
 }

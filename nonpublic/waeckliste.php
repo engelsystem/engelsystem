@@ -6,19 +6,6 @@ $header = "Weckdienst - Liste der zu weckenden Engel";
 
 include ("./inc/header.php");
 
-if ($eintragen == "Weck mich!") {
-  $SQL = "INSERT INTO Wecken (`UID`, `Date`, `Ort`, `Bemerkung`) VALUES (".$_SESSION['UID'].", \"$Date\", \"$Ort\", \"$Bemerkung\") ";
-  $Erg = mysql_query($SQL, $con);
-  if ($Erg == 1) { Print_Text(4); }
-}
-
-if ($eintragen == "loeschen") {
-  $SQL = "Delete from Wecken where UID = ".$_SESSION['UID']." and ID = $weckID limit 1";
-  $Erg = mysql_query($SQL, $con);
-  if ($Erg == 1) { 
-  	Print_Text(4); 
-  }
-}
 ?>
 
 <? echo Get_Text(1). $_SESSION['Nick'].",<br>\n".

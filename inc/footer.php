@@ -16,7 +16,7 @@ if( $Page["ShowTabel"]=="Y" )
 		<br>
 			<p align="center">
 				<?PHP If (IsSet($_SESSION['oldurl']))
-					echo "<a href=\"".$oldurl."\">".Get_Text(11)."</a>&nbsp;";
+					echo "<a href=\"". $_SESSION["oldurl"]. "\">".Get_Text(11)."</a>&nbsp;";
 				?>
 				<a href="#top"><?PHP echo Get_Text(12); ?></a>
 			</p>
@@ -48,11 +48,18 @@ $MenueTableEnd="
 include("./inc/funktion_menu.php");
 include("./menu.php");
 
-ShowMenu( $Menu );
-echo "<br>";
-ShowMenu( $MenuAdmin );
+if( isset( $Menu))
+{
+	ShowMenu( $Menu );
+	echo "<br>";
+}
+if( isset( $MenuAdmin))
+	ShowMenu( $MenuAdmin );
 
 echo "<br>";
+
+if( !isset($submenus))
+	$submenus = 0;
 
 if ($submenus >= 1 ) {
   $inc_name=$_SERVER['PHP_SELF'];

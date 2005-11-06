@@ -5,19 +5,24 @@ $header = "Weckdienst";
 include ("./inc/header.php");
 include ("./inc/funktion_user.php");
 
-if ($eintragen == Get_Text("pub_wake_bouton") ) {
-  $SQL = "INSERT INTO Wecken (`UID`, `Date`, `Ort`, `Bemerkung`) VALUES (".$_SESSION['UID'].", \"$Date\", \"$Ort\", \"$Bemerkung\") ";
-  $Erg = mysql_query($SQL, $con);
-  if ($Erg == 1) { Print_Text(4); }
-}
-
-if ($eintragen == "loeschen") {
-  $SQL = "Delete from Wecken where UID = ".$_SESSION['UID']." and ID = $weckID limit 1";
-  $Erg = mysql_query($SQL, $con);
-  if ($Erg == 1) { 
-  	Print_Text(4); 
-  }
-}
+if( isset($_POST["eintragen"]))
+	if( $_POST["eintragen"] == Get_Text("pub_wake_bouton") ) 
+	{
+		$SQL = "INSERT INTO Wecken (`UID`, `Date`, `Ort`, `Bemerkung`) ".
+			"VALUES (".$_SESSION['UID'].", \"". $_POST["Date"]. "\", \"". $_POST["Ort"]. 
+				"\", \"". $_POST["Bemerkung"]. "\") ";
+		$Erg = mysql_query($SQL, $con);
+		if ($Erg == 1) 
+			Print_Text(4);
+	}
+if( isset($_GET["eintragen"]))
+	if ($_GET["eintragen"] == "loeschen") 
+	{
+		$SQL = "Delete from Wecken where UID = ".$_SESSION['UID']." and ID = ". $_GET["weckID"]." limit 1";
+		$Erg = mysql_query($SQL, $con);
+		if ($Erg == 1)
+			Print_Text(4); 
+	}
 ?>
 
 <? echo Get_Text("Hello").$_SESSION['Nick'].",<br>".Get_Text("pub_wake_beschreibung")?>

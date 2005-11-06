@@ -2,7 +2,8 @@
 
 function Get_Text ($TextID)
 {
-if ($_SESSION['Sprache']=="") $_SESSION['Sprache']="EN";
+if( !isset($_SESSION['Sprache'])) $_SESSION['Sprache'] = "EN";
+if( $_SESSION['Sprache']=="") $_SESSION['Sprache']="EN";
 
 GLOBAL $con;
 $SQL = "SELECT * FROM `Sprache` WHERE TextID=\"$TextID\" AND Sprache ='".$_SESSION['Sprache']."'";

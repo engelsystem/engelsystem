@@ -8,7 +8,7 @@ include ("./inc/funktionen.php");
 include ("./inc/funktion_schichtplan.php");
 
 
-If( !IsSet($action) ) 
+If( !IsSet($_GET["action"]) ) 
 {
 
 	echo Get_Text("Hello").$_SESSION['Nick'].", <br>\n";
@@ -81,12 +81,12 @@ echo "</table>\n\n";
 } 
 else
 {
-    If( $action == "austragen" ) 
+    If( $_GET["action"] == "austragen" ) 
     {
 	echo Get_Text("pub_mywake_delate1")."<br>\n";
 
 	$sql = "SELECT * FROM `Shifts` WHERE ";
-	$sql.= "(SID = \"$SID\")";
+	$sql.= "(SID = \"". $_GET["SID"]. "\")";
 	$Erg = mysql_query($sql, $con);
 
 	$schichtdate = mysql_result( $Erg, 0, "DateS" );
@@ -106,7 +106,7 @@ else
 	{
 		$sql2 = "UPDATE `ShiftEntry` ".
 			"SET `UID` = '0', `Comment` = NULL ".
-		        "WHERE `SID` = '$SID' AND `UID` = '". $_SESSION['UID']. "' LIMIT 1;";
+		        "WHERE `SID` = '". $_GET["SID"]. "' AND `UID` = '". $_SESSION['UID']. "' LIMIT 1;";
 		$Erg2 = mysql_query($sql2, $con);
 		if ($Erg2 == 1)
 	   		echo Get_Text("pub_mywake_add_ok"). "\n";
@@ -116,27 +116,27 @@ else
 	else 
 		echo Get_Text("pub_mywake_after"). "\n";
     }
-    elseif( $action == "edit" ) 
+    elseif( $_GET["action"] == "edit" ) 
     {
     	echo Get_Text("pub_myshift_Edit_Text1"). "\n";
 	
 	$sql = "SELECT * FROM `ShiftEntry` WHERE ";
-	$sql.= "(SID=\"$SID\" AND UID=\"". $_SESSION['UID']. "\" )";
+	$sql.= "(SID=\"". $_GET["SID"]. "\" AND UID=\"". $_SESSION['UID']. "\" )";
 	$Erg = mysql_query($sql, $con);
 
 	echo "<form action=\"./myschichtplan.php\" method=\"post\">\n";
 	echo "<textarea name='newtext' cols='50' rows='10'>". mysql_result( $Erg, 0, "Comment" ). "</textarea><br><br>\n";
 	echo "<input type=\"submit\" value=\"save\">\n";
-	echo "<input type=\"hidden\" name=\"SID\" value=\"$SID\">\n";
+	echo "<input type=\"hidden\" name=\"SID\" value=\"". $_GET["SID"]. "\">\n";
 	echo "<input type=\"hidden\" name=\"action\" value=\"editSave\">\n";
 	echo "</form>";
     }
-    elseif( $action == "editSave" ) 
+    elseif( $_GET["action"] == "editSave" ) 
     {
     	echo Get_Text("pub_myshift_EditSave_Text1"). "<br>\n";
 	$sql = "UPDATE `ShiftEntry` ".
-	       "SET `Comment` = \"". $newtext. "\" ".
-	       "WHERE `SID`='$SID' AND `UID`='". $_SESSION['UID']. "' LIMIT 1;";
+	       "SET `Comment` = \"". $_GET["newtext"]. "\" ".
+	       "WHERE `SID`='". $_GET["SID"]. "' AND `UID`='". $_SESSION['UID']. "' LIMIT 1;";
 	$Erg = mysql_query($sql, $con);
 	if ($Erg == 1)
 		echo "\t ...". Get_Text("pub_myshift_EditSave_OK"). "\n";

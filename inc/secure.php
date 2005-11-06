@@ -1,7 +1,7 @@
 <?php
 //soll dein funktion entahlten die alle übergebenen parameter überprüft
 //'`'" 
-  
+
 foreach ($_GET as $k => $v) 
 {	
   	$v = htmlspecialchars($v);
@@ -13,6 +13,7 @@ foreach ($_GET as $k => $v)
 		exit;
 	}
 	$_GET[$k] = $v;
+	echo "GET $k=\"$v\"<br>";
 }
   
 foreach ($_POST as $k => $v) 
@@ -25,6 +26,7 @@ foreach ($_POST as $k => $v)
 		exit;
 	}
 	$_POST[$k] = $v;
+	echo "POST $k=\"$v\"<br>";
 }
 
 ?>

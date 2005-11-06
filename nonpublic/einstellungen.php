@@ -4,12 +4,10 @@ $header = "Deine pers&ouml;nlichen Einstellungen";
 include ("./inc/header.php");
 include ("./inc/crypt.php");
 
-if (!IsSet($action)) {
-
-echo Get_Text(1).$_SESSION['Nick'].",<br>\n\n";
-
-Print_Text(13);
-
+if (!IsSet($_POST["action"])) 
+{
+	echo Get_Text(1).$_SESSION['Nick'].",<br>\n\n";
+	Print_Text(13);
 ?>
 <hr width=\"100%\">
 <? Print_Text("pub_einstellungen_Text_UserData");?>
@@ -115,17 +113,16 @@ Print_Text(13);
 
 //$ANZ_AVATAR= shell_exec("ls ".$_SERVER["DOCUMENT_ROOT"].$ENGEL_ROOT."inc/avatar/ | wc -l");
 $ANZ_AVATAR= shell_exec("ls inc/avatar/ | wc -l");
-
 	    ?> 
 	    
 	    <select name="eAvatar" onChange="document.avatar.src = './inc/avatar/avatar' + this.value  + '.gif'"
 	    			   onKeyup= "document.avatar.src = './inc/avatar/avatar' + this.value  + '.gif'"> 
-	    <option value="0" name="eAvatar" <?php if ($_SESSION['Avatar'] == $i) { echo " selected"; } ?>> <?PHP Print_Text(24); ?> </option>
 	    <?php
-	    for ($i=1; $i <= $ANZ_AVATAR; $i++ ){
-	     echo "\t\t\t\t<option value=\"$i\"";
-	     if ($_SESSION['Avatar'] == $i) { echo " selected"; }
-	     echo ">avatar$i</option>\n";
+	    for ($i=1; $i <= $ANZ_AVATAR; $i++ )
+	    {
+	    	echo "\t\t\t\t<option value=\"$i\"";
+		if ($_SESSION['Avatar'] == $i) { echo " selected"; }
+	    	echo ">avatar$i</option>\n";
 	    }
 	    echo "\n";
 	    ?>
@@ -141,17 +138,18 @@ $ANZ_AVATAR= shell_exec("ls inc/avatar/ | wc -l");
 
 } else {
 
-switch ($action) {
+switch ($_POST["action"]) {
 
 case 'set':
-  if ($new1==$new2){
+  if ($_POST["new1"]==$_POST["new2"]){
 	Print_Text(25); 
 	$sql = "select * from User where UID=".$_SESSION['UID'];
 	$Erg = mysql_query($sql, $con);
-	if (PassCrypt($old)==mysql_result($Erg, $i, "Passwort")) {
+	if (PassCrypt($_POST["old"])==mysql_result($Erg, 0, "Passwort")) {
 		Print_Text(26);
 		Print_Text(27);
-		$usql = "update User set Passwort='".PassCrypt($new1)."' where UID=".$_SESSION['UID']." limit 1";
+		$usql = "update User set Passwort='".PassCrypt($_POST["new1"])."' ".
+			"where UID=".$_SESSION['UID']." limit 1";
 		$Erg = mysql_query($usql, $con);
 		if ($Erg==1) {
 			Print_Text(28);
@@ -168,9 +166,9 @@ case 'set':
 
 case 'colour':
 
-	$chsql="Update User set color= \"$colourid\" where UID = \"".$_SESSION['UID']."\" limit 1";
+	$chsql="Update User set color= \"". $_POST["colourid"]. "\" where UID = \"".$_SESSION['UID']."\" limit 1";
 	$Erg = mysql_query($chsql, $con);
-	$_SESSION['color']=$colourid;
+	$_SESSION['color']=$_POST["colourid"];
 	if ($Erg==1) {
 		Print_Text(32);
 	} else {
@@ -181,9 +179,9 @@ case 'colour':
 
 case 'sprache':
 
-	$chsql="Update User set Sprache = \"$language\" where UID = \"".$_SESSION['UID']."\" limit 1";
+	$chsql="Update User set Sprache = \"". $_POST["language"]. "\" where UID = \"".$_SESSION['UID']."\" limit 1";
 	$Erg = mysql_query($chsql, $con);
-	$_SESSION['Sprache']=$language;
+	$_SESSION['Sprache']=$_POST["language"];
 	if ($Erg==1) {
 		Print_Text(33);
 	} else {
@@ -192,11 +190,10 @@ case 'sprache':
 																		
 	break;
 
-
 case 'avatar':
-	$chsql="Update User set Avatar = \"$eAvatar\" where UID = \"".$_SESSION['UID']."\" limit 1";
+	$chsql="Update User set Avatar = \"". $_POST["eAvatar"]. "\" where UID = \"". $_SESSION['UID']. "\" limit 1";
         $Erg = mysql_query($chsql, $con);
-	$_SESSION['Avatar']=$eAvatar;
+	$_SESSION['Avatar']=$_POST["eAvatar"];
 	if ($Erg==1) {
 		Print_Text(34);
         } else {
@@ -206,22 +203,23 @@ case 'avatar':
 
 case 'setUserData':
 	$chsql= "UPDATE User SET ".
-		"`Nick`='$eNick', `Name`='$eName', `Vorname`='$eVorname', ".
-		"`Alter`='$eAlter', `Telefon`='$eTelefon', `Handy`='$eHandy', ".
-		"`DECT`='$eDECT', `email`='$eemail' ".
+		"`Nick`='". $_POST["eNick"]. "', `Name`='". $_POST["eName"]. "', ".
+		"`Vorname`='". $_POST["eVorname"]. "', `Alter`='". $_POST["eAlter"]. "', ".
+		"`Telefon`='". $_POST["eTelefon"]. "', `Handy`='". $_POST["eHandy"]. "', ".
+		"`DECT`='". $_POST["eDECT"]. "', `email`='". $_POST["eemail"]. "' ".
 		"WHERE UID='". $_SESSION['UID']. "' LIMIT 1;";
         $Erg = mysql_query($chsql, $con);
 
 	if ($Erg==1) 
 	{
-		$_SESSION['Nick'] = $eNick;
-		$_SESSION['Name'] = $eName;
-		$_SESSION['Vorname'] = $eVorname;
-		$_SESSION['Alter'] = $eAlter;
-		$_SESSION['Telefon'] = $eTelefon;
-		$_SESSION['Handy'] = $eHandy;
-		$_SESSION['DECT'] = $eDECT;
-		$_SESSION['email'] = $eemail;
+		$_SESSION['Nick'] = $_POST["eNick"];
+		$_SESSION['Name'] = $_POST["eName"];
+		$_SESSION['Vorname'] = $_POST["eVorname"];
+		$_SESSION['Alter'] = $_POST["eAlter"];
+		$_SESSION['Telefon'] = $_POST["eTelefon"];
+		$_SESSION['Handy'] = $_POST["eHandy"];
+		$_SESSION['DECT'] = $_POST["eDECT"];
+		$_SESSION['email'] = $_POST["eemail"];
 	
 		Print_Text("pub_einstellungen_UserDateSaved");
         } 

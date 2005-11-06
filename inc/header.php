@@ -89,9 +89,11 @@ if( $Page["ShowTabel"]=="Y" )
 echo "\n\n\n";
  
 if (IsSet($_SESSION['UID'])) {
-	$BACKUP_SESSION_OLDURL = $_SESSION['oldurl'];
-	$_SESSION['oldurl'] = $_SESSION['newurl'];
-	$_SESSION['newurl'] = $REQUEST_URI;
+	if( isset($_SESSION['oldurl']))
+		$BACKUP_SESSION_OLDURL = $_SESSION['oldurl'];
+	if( isset($_SESSION['newurl']))
+		$_SESSION['oldurl'] = $_SESSION['newurl'];
+	$_SESSION['newurl'] = $_SERVER["REQUEST_URI"];
 } 
 
 

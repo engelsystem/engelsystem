@@ -10,7 +10,7 @@ session_start(); // alte Session - falls vorhanden - wiederherstellen...
 
 if (!IsSet($_SESSION['UID'])) {
 
-	$sql = "select * from User where Nick = '$user'";
+	$sql = "select * from User where Nick = '". $_POST["user"]. "'";
 
 	$userstring = mysql_query($sql, $con);
 
@@ -18,7 +18,7 @@ if (!IsSet($_SESSION['UID'])) {
 	$user_anz  = mysql_num_rows($userstring);
 
 	if ($user_anz == 1) { // Check, ob User angemeldet wird...
-		if (mysql_result($userstring, 0, "Passwort") == PassCrypt($password)) { // Passwort ok...
+		if (mysql_result($userstring, 0, "Passwort") == PassCrypt($_POST["password"])) { // Passwort ok...
 			// Session wird eingeleitet und Session-Variablen gesetzt..
 			//  session_start();
 			session_name("Himmel");

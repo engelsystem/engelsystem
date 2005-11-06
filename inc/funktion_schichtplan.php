@@ -45,6 +45,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 	//form Config
 	global $CCC_Start, $CCC_End, $DEBUG;
 
+	$Spalten = "";
 	
 	///////////////////////////////////////////////////////////////////
 	// Schow Admin Page
@@ -72,10 +73,13 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 	
 	$Anzahl = mysql_num_rows($Erg);
 	$Feld=0;
+	$Temp_TID_old=-1;
 	for( $i = 0; $i < $Anzahl; $i++ )
 	{
-		$Temp_TID_old = $Temp[$Feld]["TID"];
-		$Temp_UID_old = $Temp[$Feld]["UID"];
+		if( isset($Temp[$Feld]["TID"]))
+			$Temp_TID_old = $Temp[$Feld]["TID"];
+		if( isset($Temp[$Feld]["UID"]))
+			$Temp_UID_old = $Temp[$Feld]["UID"];
 		
 		$Temp_TID = mysql_result($Erg, $i, "TID");
 		
@@ -95,7 +99,12 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		
 		// ist es eine zu vergeben schicht?
 		if( $Temp[$Feld]["UID"] == 0 )
-			$Temp[$Feld]["free"]++;
+		{
+			if( isset($Temp[$Feld]["free"]))
+				$Temp[$Feld]["free"]++;
+			else
+				$Temp[$Feld]["free"]=1;
+		}
 		else
 			$Temp[$Feld]["Engel"][] = $Temp[$Feld]["UID"];
 	} // FOR
@@ -111,8 +120,9 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		$Spalten.= $EngelTypeID[ $TempValue["TID"] ]. " ";
 		
 		// ausgabe Eingetragener Engel
-		if( count($TempValue["Engel"]) > 0  )
-		{
+		if( isset($TempValue["Engel"]))
+		  if( count($TempValue["Engel"]) > 0  )
+		  {
 			if( count($TempValue["Engel"]) == 1  )
 				$Spalten.= Get_Text("inc_schicht_ist"). ":<br>\n\t\t";
 			else 
@@ -123,7 +133,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
       					   DisplayAvatar( $TempEngelID ).
 					   "<br>\n\t\t";
 			$Spalten = substr( $Spalten, 0, strlen($Spalten)-7 );
-		}
+		  }
 		
 		// ausgabe benötigter Engel
 		////////////////////////////
@@ -137,10 +147,12 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		 $SQLerlaubnis = "SELECT Name FROM `EngelType` WHERE TID = '". $TempValue["TID"]. "'";
 		 $Ergerlaubnis =  mysql_query( $SQLerlaubnis, $con);
 		 if( mysql_num_rows( $Ergerlaubnis))
-		  if( $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "Y" ||
-			$_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "")
-		    if( $TempValue["free"] > 0 )
-		    {
+		   //setzen wenn nicht definiert
+		   if( !isset($_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")]))
+		   	 $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] = "Y";
+		   if( $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "Y")
+		     if( $TempValue["free"] > 0 )
+		     {
 			$Spalten.= "<br>\n\t\t&nbsp;&nbsp;<a href=\"./schichtplan_add.php?SID=$SID&TID=".
 				   $TempValue["TID"]."\">";
 			$Spalten.= $TempValue["free"];
@@ -154,12 +166,14 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 					   Get_Text("inc_schicht_werden");
 			$Spalten.= Get_Text("inc_schicht_noch_gesucht");
 			$Spalten.= "</a>";
-		   }   
+		     }   
 		}
 		else
 		{
-			if( $TempValue["free"] > 0 )
-				$Spalten.= "<br>\n\t\t&nbsp;&nbsp;<h3><a>Fehlen noch: ". $TempValue["free"]. "</a></h3>";
+			if( isset($TempValue["free"]))
+				if( $TempValue["free"] > 0 )
+					$Spalten.= "<br>\n\t\t&nbsp;&nbsp;<h3><a>Fehlen noch: ". 
+							$TempValue["free"]. "</a></h3>";
 		}
 		$Spalten.= "<br>\n\t\t";
 	
@@ -287,8 +301,8 @@ function CreateRoomShifts( $raum )
 				" (".  mysql_result($Erg, $i, "SID"). " R$raum) (xx-xx)<br><br>";
 		}
 	}
-	if( $ZeitZeiger <= 24 )
-       		$Spalten[$ZeitZeiger * $GlobalZeileProStunde].=	
+	if( $ZeitZeiger < 24 )
+       		$Spalten[($ZeitZeiger * $GlobalZeileProStunde)].=	
 					"\t\t<td valign=\"top\" rowspan=\"". 
 					((24 - $ZeitZeiger) * $GlobalZeileProStunde ). 
 					"\">&nbsp;</td>\n";

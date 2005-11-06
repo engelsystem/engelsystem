@@ -1,8 +1,10 @@
 <?php
 
+if( !isset($Page["Public"])) $Page["Public"]="N";
 
 $Page["Name"] = substr( $_SERVER['PHP_SELF'], strlen($ENGEL_ROOT) );
-$Page["CVS"] = $_SESSION['CVS'][ $Page["Name"] ];
+if( isset( $_SESSION['CVS'][ $Page["Name"] ]))
+	$Page["CVS"] = $_SESSION['CVS'][ $Page["Name"] ];
 
 if( $DEBUG ) 
 {

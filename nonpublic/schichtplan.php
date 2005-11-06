@@ -2,6 +2,12 @@
 $title = "Himmel";
 $header = "Schichtpl&auml;ne";
 $submenus = 2;
+
+if( isset($_GET["ausdatum"]))
+	$ausdatum = $_GET["ausdatum"];
+if( isset($_GET["raum"]))
+	$raum = $_GET["raum"];
+
 include ("./inc/header.php");
 include ("./inc/funktion_user.php");
 include ("./inc/funktionen.php");
