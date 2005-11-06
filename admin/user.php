@@ -5,14 +5,14 @@ $header = "Editieren der Engelliste";
 include ("./inc/header.php");
 include ("./inc/funktion_db_list.php");
 
-if (!IsSet($enterUID)){
-
+if (!IsSet($_GET["enterUID"]))
+{
 	// Userliste, keine UID uebergeben...
 
 	echo "<a href=\"../makeuser.php\">Neuen Engel eintragen</a><br><br>\n";
 
-	if( !isset($OrderBy) ) $OrderBy = "Nick";
-	$SQL = "SELECT * FROM User ORDER BY ". $OrderBy. " ASC";
+	if( !isset($_GET["OrderBy"]) ) $_GET["OrderBy"] = "Nick";
+	$SQL = "SELECT * FROM User ORDER BY ". $_GET["OrderBy"]. " ASC";
 	$Erg = mysql_query($SQL, $con);
 	echo mysql_error($con);
 
@@ -98,13 +98,13 @@ else
 { 
 	// UserID wurde mit uebergeben --> Aendern...
 
-	$SQL = "SELECT * FROM User where UID=$enterUID";
+	$SQL = "SELECT * FROM User where UID=". $_GET["enterUID"];
 	$Erg = mysql_query($SQL, $con);
 
 	$anzahl  = mysql_num_rows($Erg);
 
 	if ($anzahl != 1) 
-		echo "Sorry, der Engel (UID=$enterUID) wurde in der Liste nicht gefunden.";
+		echo "Sorry, der Engel (UID=". $_GET["enterUID"]. ") wurde in der Liste nicht gefunden.";
 	else
 	{
 		echo "Hallo,<br>".
@@ -116,9 +116,9 @@ else
 
 		echo "<form action=\"./user2.php?action=change\" method=\"POST\">\n";
 		echo "<table>\n";
-		echo "<input type=\"hidden\" name=\"Type\" value=\"$Type\">\n";
+		echo "<input type=\"hidden\" name=\"Type\" value=\"". $_GET["Type"]. "\">\n";
 
-		if( $Type == "Normal" )
+		if( $_GET["Type"] == "Normal" )
 		{
 			echo "  <tr><td>Nick</td><td>".
 				"<input type=\"text\" size=\"40\" name=\"eNick\" value=\"".
@@ -193,12 +193,12 @@ else
 			echo "</td></tr>\n";
 		} //IF TYPE
 
-		if( $Type == "Secure" )
+		if( $_GET["Type"] == "Secure" )
 		{
 			// CVS-Rechte
 			echo "  <tr><td><br><u>Rights of \"". mysql_result($Erg, 0, "Nick"). "\":</u></td></tr>\n";
 
-			$SQL_CVS = "SELECT * FROM `UserCVS` WHERE UID=$enterUID";
+			$SQL_CVS = "SELECT * FROM `UserCVS` WHERE UID=". $_GET["enterUID"];
 			$Erg_CVS =  mysql_query($SQL_CVS, $con);
 			$CVS_Data = mysql_fetch_array($Erg_CVS);
 			$CVS_Data_i = 1;
@@ -227,14 +227,14 @@ else
 		// Ende Formular
 		echo "</td></tr>\n";
 		echo "</table>\n";
-		echo "<input type=\"hidden\" name=\"enterUID\" value=\"$enterUID\">\n";
+		echo "<input type=\"hidden\" name=\"enterUID\" value=\"". $_GET["enterUID"]. "\">\n";
 		echo "<input type=\"submit\" value=\"sichern...\">\n";
 		echo "</form>";
 
-		if( $Type == "Normal" )
+		if( $_GET["Type"] == "Normal" )
 		{
 			echo "<form action=\"./user2.php?action=delete\" method=\"POST\">\n";
-			echo "<input type=\"hidden\" name=\"enterUID\" value=\"$enterUID\">\n";
+			echo "<input type=\"hidden\" name=\"enterUID\" value=\"". $_GET["enterUID"]. "\">\n";
 			echo "<input type=\"submit\" value=\"l&ouml;schen...\">\n";
 			echo "</form>";
 		}

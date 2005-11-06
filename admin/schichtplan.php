@@ -5,7 +5,7 @@ $submenus = 1;
 include ("./inc/header.php");
 include ("./inc/funktion_user.php");
 
-if (!IsSet($action)) {
+if (!IsSet($_GET["action"])) {
 echo "Hallo ".$_SESSION['Nick'].",<br>\n";
 echo "hier kannst du Schichten anlegen, &auml;ndern oder l&ouml;schen.<br><br>";
 echo "<a href=\"./shiftadd.php\">Neue Schicht einplanen</a><br><br>\n\n";
@@ -31,10 +31,13 @@ for( $i = 0; $i < $rowcount; $i++)
   
 	$sql2= "SELECT `Name` FROM `Room` WHERE `RID`=\"".mysql_result($Erg, $i, "RID")."\"";
 	$Erg2 = mysql_query($sql2, $con);
-	echo "\t\t<td>".mysql_result($Erg2, 0, "Name")."</td>\n";
-  
+	if( mysql_num_rows($Erg2) > 0)
+		echo "\t\t<td>".mysql_result($Erg2, 0, "Name")."</td>\n";
+	else
+		echo "\t\t<td>Unbenkannt (RID=". mysql_result($Erg, $i, "RID"). ")</td>\n";
 	echo "\t\t<td>".mysql_result($Erg, $i, "Len")." Std. </td>\n";
-	echo "\t\t<td><a href=\"./schichtplan.php?action=change&SID=".mysql_result($Erg, $i, "SID")."\">####</a></td>\n";
+	echo "\t\t<td><a href=\"./schichtplan.php?action=change&SID=".
+		mysql_result($Erg, $i, "SID")."\">####</a></td>\n";
 	echo "\t</tr>\n";
 }
 echo "</table>";
@@ -45,22 +48,22 @@ echo "</table>";
 // aus sicherheitzgründen wegen späterer genuzung
 UnSet($chSQL);
 
-switch ($action){
+switch ($_GET["action"]){
 
 case 'change':
-	if ( !IsSet($SID) ){
+	if ( !IsSet($_GET["SID"]) ){
 		echo "Fehlerhafter Aufruf!\n";
 	} 
 	else 
 	{
 	
-	$sql = "SELECT * FROM `Shifts` WHERE (`SID` = \"$SID\" )";
+	$sql = "SELECT * FROM `Shifts` WHERE (`SID` = \"". $_GET["SID"]. "\" )";
 	$Erg = mysql_query($sql, $con);
 
         echo "Schicht ab&auml;ndern: <br>\n";
 
 	// Anzeige Allgemeiner schaischt daten
-        echo "<form action=\"".$_SERVER['SCRIPT_NAME']."\" method=\"POST\" >";
+        echo "<form action=\"".$_SERVER['SCRIPT_NAME']."\" method=\"GET\" >";
         echo "<table>\n";
         echo "  <tr><td>Schichtbeginn</td>".
 		"<td><input value=\"". mysql_result($Erg, 0, "DateS"). 
@@ -88,14 +91,14 @@ case 'change':
 		"\" type=\"text\" size=\"40\" name=\"eName\"></td></tr>\n";
         echo "</table>\n";
 	 
-        echo "<input type=\"hidden\" name=\"SID\" value=\"$SID\">\n";
+        echo "<input type=\"hidden\" name=\"SID\" value=\"". $_GET["SID"]. "\">\n";
         echo "<input type=\"hidden\" name=\"action\" value=\"changesave\">\n";
         echo "<input type=\"submit\" value=\"sichern...\">\n";
         echo "</form>\n\n";
          
 	// Löschen
-	echo "<form action=\"".$_SERVER['SCRIPT_NAME']."\" method=\"POST\" >\n";
-        echo "<input type=\"hidden\" name=\"SID\" value=\"$SID\">\n";
+	echo "<form action=\"". $_SERVER['SCRIPT_NAME']. "\" method=\"GET\" >\n";
+        echo "<input type=\"hidden\" name=\"SID\" value=\"". $_GET["SID"]. "\">\n";
         echo "<input type=\"hidden\" name=\"action\" value=\"delete\">\n";
         echo "<input type=\"submit\" value=\"L&ouml;schen...\">\n";
         echo "</form>\n\n";
@@ -106,7 +109,7 @@ case 'change':
 	echo "<br><hr>\n\n\n\n";
 	
 	//Freie Engelschichten
-	$sql3 = "SELECT TID FROM `ShiftEntry` WHERE SID=$SID AND UID=0";
+	$sql3 = "SELECT TID FROM `ShiftEntry` WHERE SID=". $_GET["SID"]. " AND UID=0";
 	$Erg3 = mysql_query($sql3, $con);
 	$rowcount = mysql_num_rows($Erg3);
 	
@@ -115,13 +118,13 @@ case 'change':
 	for ($j=0; $j < $rowcount; $j++)
 	{
 		$TID = mysql_result($Erg3, $j, 0);
-		echo "<a href=\"./schichtplan.php?action=engelshiftdel&SID=$SID&TID=$TID\">". 
+		echo "<a href=\"./schichtplan.php?action=engelshiftdel&SID=". $_GET["SID"]. "&TID=$TID\">". 
 			"freie ". TID2Type($TID). Get_Text("inc_schicht_Engel"). "schicht loeschen</a><br>\n";
 	}	
 	echo "<br><hr>\n\n\n\n";
 
 	//Ausgabe eingetragener schischten
-	$sql3 = "SELECT * FROM `ShiftEntry` WHERE SID=$SID AND NOT UID=0";
+	$sql3 = "SELECT * FROM `ShiftEntry` WHERE SID=". $_GET["SID"]. " AND NOT UID=0";
 	$Erg3 = mysql_query($sql3, $con);
 	$rowcount = mysql_num_rows($Erg3);
 	 
@@ -130,7 +133,7 @@ case 'change':
 	for ($j=0; $j < $rowcount; $j++)
 	{
 		$userUID=mysql_result($Erg3, $j, "UID");
-		echo "<a href=\"./schichtplan.php?action=engeldel&SID=$SID&UIDs=$userUID\">". 
+		echo "<a href=\"./schichtplan.php?action=engeldel&SID=". $_GET["SID"]. "&UIDs=$userUID\">". 
 			UID2Nick($userUID).
 			" (". TID2Type(mysql_result($Erg3, $j, "TID")). Get_Text("inc_schicht_Engel").
 			") austragen</a><br>\n";
@@ -140,8 +143,8 @@ case 'change':
 
 	//Nachtragen von Engeln
 	echo "Hat ein anderer Engel die Schicht &uuml;bernommen, trage ihn bitte ein:";
-	echo "<form action=\"".$_SERVER['SCRIPT_NAME']."\" method=\"POST\" >\n";
-	echo "<input type=\"hidden\" name=\"SID\" value=\"$SID\">\n";
+	echo "<form action=\"".$_SERVER['SCRIPT_NAME']."\" method=\"GET\" >\n";
+	echo "<input type=\"hidden\" name=\"SID\" value=\"". $_GET["SID"]. "\">\n";
         echo "<input type=\"hidden\" name=\"action\" value=\"engeladd\">\n";
 	
 	// Listet alle Nicks auf
@@ -163,7 +166,7 @@ case 'change':
 	
 	// holt eine liste der benötigten Engel zu dieser Schischt
 	$sql3 = "SELECT Count(`TID`) AS `CTID`, `TID` FROM `ShiftEntry` ";
-	$sql3.= "WHERE (`SID`='$SID' AND `UID`='0') ";
+	$sql3.= "WHERE (`SID`='". $_GET["SID"]. "' AND `UID`='0') ";
 	$sql3.= "GROUP BY `SID`, `TID`, `UID` ";
 	$Erg3 = mysql_query($sql3, $con);
 	$i=-1;
@@ -181,7 +184,7 @@ case 'change':
 		$EngelTID = mysql_result($Erg2, $l, "TID");
 		echo "<option value=\"$EngelTID\">";
 		echo mysql_result($Erg2, $l, "Name"). Get_Text("inc_schicht_engel");
-		if( $EngelNeed[$EngelTID] == "" )
+		if( !isset($EngelNeed[$EngelTID]) )
 			echo " (0)";
 		else
 			echo " (".$EngelNeed[$EngelTID].")";
@@ -196,60 +199,64 @@ case 'change':
 	break;
 
 case 'engeladd':
-	if( $UIDs>0)
+	if( $_GET["UIDs"]>0)
 	{
-		$SQL = "SELECT * FROM `ShiftEntry` WHERE (`SID`='$SID' AND `TID`='$TID' AND `UID`='0')";
+		$SQL = "SELECT * FROM `ShiftEntry` ".
+			"WHERE (`SID`='". $_GET["SID"]. "' AND `TID`='". $_GET["TID"]. "' AND `UID`='0')";
 		$ERG = mysql_query($SQL, $con);
 		if( mysql_num_rows($ERG) != 0 )
 		{
 			$chSQL  = "UPDATE `ShiftEntry` SET ".
-				 "`UID`='$UIDs', `Comment`='shift added by ".$_SESSION['Nick']."' ";
-			$chSQL .= "WHERE (`SID`='$SID' AND `TID`='$TID' AND `UID`='0' ) LIMIT 1";
+				  "`UID`='". $_GET["UIDs"]. "', `Comment`='shift added by ".$_SESSION['Nick']."' ";
+			$chSQL .= "WHERE (`SID`='". $_GET["SID"]. "' AND ".
+				  "`TID`='". $_GET["TID"]. "' AND `UID`='0' ) LIMIT 1";
 		}
 		else
 		{
 			$chSQL  = "INSERT INTO `ShiftEntry` (`SID`, `TID`, `UID`, `Comment`) VALUES (";
-			$chSQL .= "'$SID', '$TID', '$UIDs', 'shift added by ".$_SESSION['Nick']."')";
+			$chSQL .= "'". $_GET["SID"]. "', '". $_GET["TID"]. "', ".
+				  "'". $_GET["UIDs"]. "', 'shift added by ".$_SESSION['Nick']."')";
 		}
 	
 		echo "Es wird folgende Schicht zus&auml;tzlich eingetragen:<br>\n";
-		echo "Engel: ".UID2Nick($UIDs)."<br>\n";
+		echo "Engel: ".UID2Nick($_GET["UIDs"])."<br>\n";
 		echo "Bemerkung: Schicht eingetragen durch Erzengel ".$_SESSION['Nick']."<br>\n<br>\n";
 	}
 	else
 	{
 		$chSQL  = "INSERT INTO `ShiftEntry` (`SID`, `TID`, `UID`, `Comment`) VALUES (";
-		$chSQL .= "'$SID', '$TID', '0', NULL)";
+		$chSQL .= "'". $_GET["SID"]. "', '". $_GET["TID"]. "', '0', NULL)";
 		echo "Es wird eine weitere Schicht eingetragen:<br>\n";
 	}
 	break;
 
 case 'engeldel':
-	$chSQL = "UPDATE `ShiftEntry` SET `UID`='0', `Comment`= 'NULL' WHERE (`SID`='$SID' AND `UID`='$UIDs') LIMIT 1"; 
+	$chSQL = "UPDATE `ShiftEntry` SET `UID`='0', `Comment`= 'NULL' WHERE (`SID`='". $_GET["SID"]. 
+		 "' AND `UID`='". $_GET["UIDs"]. "') LIMIT 1"; 
 	break;
 
 case 'engelshiftdel':
-	$chSQL = "DELETE FROM `ShiftEntry` WHERE `SID`='$SID' AND `TID`='$TID' AND `UID`='0' LIMIT 1"; 
+	$chSQL = "DELETE FROM `ShiftEntry` WHERE `SID`='". $_GET["SID"]. "' AND `TID`='". 
+			$_GET["TID"]. "' AND `UID`='0' LIMIT 1"; 
 	break;
 
 case 'changesave':
-	$query = mysql_query("SELECT DATE_ADD('".$eDate."', INTERVAL '+0 ".$eDauer."' DAY_HOUR)", $con);
+	$query = mysql_query("SELECT DATE_ADD('". $_GET["eDate"]. "', INTERVAL '+0 ". $_GET["eDauer"]. "' DAY_HOUR)", $con);
 	$enddate = mysql_fetch_row($query);
 	
-	$chSQL = "UPDATE `Shifts` SET `DateS`='$eDate', `DateE`='".$enddate[0]."', `RID`='$eRID', `Len`='$eDauer', ".
-	         "`Man`='$eName' WHERE `SID`=$SID";
+	$chSQL = "UPDATE `Shifts` SET `DateS`='". $_GET["eDate"]. "', `DateE`='".$enddate[0].
+		 "', `RID`='". $_GET["eRID"]. "', `Len`='". $_GET["eDauer"]. "', ".
+	         "`Man`='". $_GET["eName"]. "' WHERE `SID`=". $_GET["SID"];
 	SetHeaderGo2Back();
 	break;
 	
 case 'delete':
-	$chSQL = "DELETE FROM `Shifts` WHERE `SID`=$SID LIMIT 1";
-	$ch2SQL = "DELETE FROM `ShiftEntry` WHERE `SID`=$SID";
+	$chSQL = "DELETE FROM `Shifts` WHERE `SID`=". $_GET["SID"]. " LIMIT 1";
+	$ch2SQL = "DELETE FROM `ShiftEntry` WHERE `SID`=". $_GET["SID"];
 	SetHeaderGo2Back();
 	break;
 
 } // end switch
-
-// Update ???
 
 if (IsSet($chSQL)){
 //     echo $chSQL;

@@ -113,9 +113,10 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 	///////////////////////////////////////////////////////////////////
 	// Aus gabe der Schicht
 	///////////////////////////////////////////////////////////////////
-	if( count($Temp) )
-	  foreach( $Temp as $TempEntry => $TempValue )
-	  {
+	if( isset($Temp))
+	  if( count($Temp) )
+	    foreach( $Temp as $TempEntry => $TempValue )
+	    {
 		// ausgabe EngelType
 		$Spalten.= $EngelTypeID[ $TempValue["TID"] ]. " ";
 		
@@ -331,6 +332,7 @@ function showEmptyShifts( )
 
 	$angezeigt = 0;
 	for ($i=0; ($i<mysql_num_rows($Erg)) && ($angezeigt< 15); $i++)
+	  if( isset($RoomID[mysql_result( $Erg, $i, "RID")]))
 	   if( $RoomID[mysql_result( $Erg, $i, "RID")]!="" )
 	   {
  		$Sql2 = "SELECT `UID` FROM `ShiftEntry` ".

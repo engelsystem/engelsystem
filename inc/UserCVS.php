@@ -5,6 +5,8 @@ if( !isset($Page["Public"])) $Page["Public"]="N";
 $Page["Name"] = substr( $_SERVER['PHP_SELF'], strlen($ENGEL_ROOT) );
 if( isset( $_SESSION['CVS'][ $Page["Name"] ]))
 	$Page["CVS"] = $_SESSION['CVS'][ $Page["Name"] ];
+else
+	$Page["CVS"] = "";
 
 if( $DEBUG ) 
 {

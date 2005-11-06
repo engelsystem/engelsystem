@@ -6,7 +6,7 @@ include ("./inc/header.php");
 include ("./inc/funktion_db_list.php");
 include ("./inc/crypt.php");
 
-if (IsSet($action)) 
+if (IsSet($_GET["action"])) 
 {
 	
 	function SQLExec( $SQL )
@@ -23,40 +23,46 @@ if (IsSet($action))
 	}
 
 	SetHeaderGo2Back();
-	echo "Gesendeter Befehl: $action<br>";
+	echo "Gesendeter Befehl: ". $_GET["action"]. "<br>";
 
-	switch ($action) {
-
+	switch ($_GET["action"]) 
+	{
 	case "change":
-		if (IsSet($enterUID))
+		if (IsSet($_POST["enterUID"]))
 		{
-			if ($Type == "Normal")
+			if ($_POST["Type"] == "Normal")
 			{
 				$SQL = "UPDATE `User` SET ";
-				$SQL.= " `Nick` = '$eNick', `Name` = '$eName', `Vorname` = '$eVorname', ".
-					"`Telefon` = '$eTelefon', `Handy` = '$eHandy', `DECT` = '$eDECT', ".
-					"`email` = '$eemail', `Size` = '$eSize', ".
-					"`Gekommen`= '$eGekommen', `Aktiv`= '$eAktiv', ".
-					"`Tshirt` = '$eTshirt' ";
-				$SQL.= "WHERE `UID` = '$enterUID' LIMIT 1;";
+				$SQL.= " `Nick` = '". $_POST["eNick"]. "', `Name` = '". $_POST["eName"]. "', ".
+					"`Vorname` = '". $_POST["eVorname"]. "', ".
+					"`Telefon` = '". $_POST["eTelefon"]. "', ".
+					"`Handy` = '". $_POST["eHandy"]. "', ".
+					"`DECT` = '". $_POST["eDECT"]. "', ".
+					"`email` = '". $_POST["eemail"]. "', ".
+					"`Size` = '". $_POST["eSize"]. "', ".
+					"`Gekommen`= '". $_POST["eGekommen"]. "', ".
+					"`Aktiv`= '". $_POST["eAktiv"]. "', ".
+					"`Tshirt` = '". $_POST["eTshirt"]. "' ".
+					"WHERE `UID` = '". $_POST["enterUID"]. 
+					"' LIMIT 1;";
 				echo "User-";
 				SQLExec( $SQL );
 			}
-			if ($Type == "Secure")
+			if ($_POST["Type"] == "Secure")
 			{
 				$SQL2 = "UPDATE `UserCVS` SET ";
-			  	$SQL_CVS = "SELECT * FROM `UserCVS` WHERE UID=$enterUID";
+			  	$SQL_CVS = "SELECT * FROM `UserCVS` WHERE UID=". $_POST["enterUID"];
 				$Erg_CVS =  mysql_query($SQL_CVS, $con);
 				$CVS_Data = mysql_fetch_array($Erg_CVS);
 				$CVS_Data_i = 1;
 				foreach ($CVS_Data as $CVS_Data_Name => $CVS_Data_Value) 
 				{
 					if( ($CVS_Data_i+1)%2 && $CVS_Data_Name!="UID")
-						$SQL2.= "`$CVS_Data_Name` = '".$$CVS_Data_i."', ";
+						$SQL2.= "`$CVS_Data_Name` = '". $_POST[$CVS_Data_i]."', ";
 			    		$CVS_Data_i++;
 					}
 				$SQL2 = substr( $SQL2, 0, strlen($SQL2)-2 );
-				$SQL2.= "  WHERE `UID` = '$enterUID' LIMIT 1;";
+				$SQL2.= "  WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
 				echo "<br>Secure-";
 				SQLExec( $SQL2 );
 			}
@@ -64,14 +70,17 @@ if (IsSet($action))
 		break;
 
 	case "delete":
-		if (IsSet($enterUID))
+		if (IsSet($_POST["enterUID"]))
 		{
-			$SQL="delete from `User` WHERE `UID` = '$enterUID' LIMIT 1;";
+			echo "delate User...";
+			$SQL="delete from `User` WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
 			SQLExec( $SQL );
-			$SQL2="delete from `UserCVS` WHERE `UID` = '$enterUID' LIMIT 1;";
+			echo "<br>\ndelate UserCVS...";
+			$SQL2="delete from `UserCVS` WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
 			SQLExec( $SQL2 );
+			echo "<br>\ndelate UserEntry...";
 			$SQL3="UPDATE `ShiftEntry` SET `UID` = '0', `Comment` = NULL ".
-				"WHERE `UID` = '$enterUID' LIMIT 1;";
+				"WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
 			SQLExec( $SQL3 );
 		}
 		break;
@@ -80,24 +89,25 @@ if (IsSet($action))
 	case "newpw":
 		echo "Bitte neues Kennwort f&uuml;r <b>";
 		// Get Nick
-		$USQL = "SELECT * FROM User where UID=$eUID";
+		$USQL = "SELECT * FROM User where UID=". $_POST["eUID"];
 		$Erg = mysql_query($USQL, $con);
 		echo mysql_result($Erg, 0, "Nick");
 		echo "</b> eingeben:<br>";
 		echo "<form action=\"./user2.php\" method=\"POST\">\n";	
 		echo "<input type=\"Password\" name=\"ePasswort\">";
 		echo "<input type=\"Password\" name=\"ePasswort2\">";
-		echo "<input type=\"hidden\" name=\"eUID\" value=\"$eUID\">";
+		echo "<input type=\"hidden\" name=\"eUID\" value=\"". $_POST["eUID"]. "\">";
 		echo "<input type=\"hidden\" name=\"action\" value=\"newpwsave\">\n";
 	        echo "<input type=\"submit\" value=\"sichern...\">\n";
 	        echo "</form>";
 		break;
 
 	case "newpwsave":
-		if ($ePasswort == $ePasswort2) 
+		if ($_POST["ePasswort"] == $_POST["ePasswort2"]) 
 		{	// beide Passwoerter passen... 
-			$ePasswort = PassCrypt($ePasswort);
-			$SQL="UPDATE `User` SET `Passwort`='$ePasswort' where `UID` = '$eUID'";
+			$_POST["ePasswort"] = PassCrypt($_POST["ePasswort"]);
+			$SQL =	"UPDATE `User` SET `Passwort`='". $_POST["ePasswort"]. "' ".
+				"where `UID` = '". $_POST["eUID"]. "'";
 			SQLExec( $SQL );
 		} 
 		else 
@@ -110,7 +120,7 @@ if (IsSet($action))
 else 
 {
 	// kein Action gesetzt -> abbruch
-	echo "Unzul&auml;ssiger Aufruf. Bitte neu editieren...";
+	echo "Unzul&auml;ssiger Aufruf.<br>Bitte neu editieren...";
 }
 
 include ("./inc/footer.php");

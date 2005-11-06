@@ -15,7 +15,7 @@ echo "Hallo ".$_SESSION['Nick'].",<br>\n";
 	for ($i=0; $i<$rowcount; $i++) 
 	{
 		$Room[$i]["RID"]  = mysql_result($Erg, $i, "RID");
-		$Room[$i]["Name"]	= mysql_result($Erg, $i, "Name");
+		$Room[$i]["Name"] = mysql_result($Erg, $i, "Name");
 	}
 
 // erstellt ein Aray der Engeltypen
@@ -26,16 +26,17 @@ echo "Hallo ".$_SESSION['Nick'].",<br>\n";
 	for ($i=0; $i<$rowcount; $i++) 
 	{
 		$EngelType[$i]["TID"]  = mysql_result($Erg, $i, "TID");
-		$EngelType[$i]["Name"]	= mysql_result($Erg, $i, "Name").Get_Text("inc_schicht_engel");
+		$EngelType[$i]["Name"] = mysql_result($Erg, $i, "Name").Get_Text("inc_schicht_engel");
 	}
 
 
-if (!IsSet($action)) 
-	$action = "new";
+if (!IsSet($_GET["action"])) 
+	$_GET["action"] = "new";
 
 $Time = time()+3600+3600;
 
-switch ($action){
+switch( $_GET["action"])
+{
 
 case 'new':
 ?>
@@ -110,11 +111,14 @@ mehrere Schichten auf einmal erfasst werden:
 	break; // Ende new
 
 case 'newsave':
-    if (isset($SDatum) && ($len > 0)) {
-	$lenOrg = $len;
-	if( $NachtON == "ON" )
+    if (isset($_GET["SDatum"]) && ($_GET["len"] > 0))
+    {
+	$lenOrg = $_GET["len"];
+	if( !isset($_GET["NachtON"])) 
+		$_GET["NachtON"] = "OFF";
+	if( $_GET["NachtON"] == "ON" )
 	{	
-		$lenArrayDummy = explode( ";", $len_night);
+		$lenArrayDummy = explode( ";", $_GET["len_night"]);
                 foreach ( $lenArrayDummy as $Temp )
                 {
 			if( isset($Temp2) )
@@ -138,20 +142,22 @@ case 'newsave':
 	echo "\t<td valign=\"top\" align=\"center\">Entrys</td>\n";
 	echo "</tr>\n";
  	
-	$DateEnd = $SDatum;
- 	$TimeEnd = $STime;
-	do {	
+	$DateEnd = $_GET["SDatum"];
+ 	$TimeEnd = $_GET["STime"];
+	$len=0;
+	do
+	{	
 		// define Start time
 		$Date = $DateEnd;
 		$Time = $TimeEnd;
-		$_DateS = $MonthJahr. "-". $Date. " ". $Time. ":00:00";
+		$_DateS = $_GET["MonthJahr"]. "-". $Date. " ". $Time. ":00:00";
 			
 		// define End time
-	 	if( $NachtON == "ON" )
+	 	if( $_GET["NachtON"] == "ON" )
 		{
-			$len = $lenArray[$Time];
+			$_GET["len"] = $lenArray[$Time];
 		}
-		$TimeEnd = $Time+ $len;
+		$TimeEnd = $Time+ $_GET["len"];
 		
 		//Tagesüberschreitung
 		while( $TimeEnd >= 24 )
@@ -159,43 +165,43 @@ case 'newsave':
 			$TimeEnd -= 24;
 			$DateEnd += 1;
 		}
-		//ist schischt zu lang dan verkürzen	
-		if( $DateEnd > $EDatum || ($DateEnd == $EDatum && $TimeEnd >= $ETime) ) 
+		//ist schischt zu lang dan verkürzen
+		if( $DateEnd > $_GET["EDatum"] || ($DateEnd == $_GET["EDatum"] && $TimeEnd >= $_GET["ETime"]) ) 
 		{
-			$len -= ($DateEnd- $EDatum)*24; 
-			$len -= ($TimeEnd- $ETime);		// -(-) ->> +
-			$DateEnd = $EDatum;
-			$TimeEnd = $ETime;
+			$_GET["len"] -= ($DateEnd- $_GET["EDatum"])*24; 
+			$_GET["len"] -= ($TimeEnd- $_GET["ETime"]);		// -(-) ->> +
+			$DateEnd = $_GET["EDatum"];
+			$TimeEnd = $_GET["ETime"];
 		}
-		$_DateE = $MonthJahr. "-". $DateEnd. " ". $TimeEnd. ":00:00";
+		$_DateE = $_GET["MonthJahr"]. "-". $DateEnd. " ". $TimeEnd. ":00:00";
 
 		if( $_DateS != $_DateE )
 			CreateNewEntry();
 		
-		if( $MoreThenOne!="ON" ) break;
-		if( $DateEnd == $EDatum && $TimeEnd >= $ETime ) break;
+		if( $_GET["MoreThenOne"]!="ON" ) break;
+		if( $DateEnd == $_GET["EDatum"] && $TimeEnd >= $_GET["ETime"] ) break;
 	} while( true );
 	echo "</table>";
 	
-	if( $OnlyShow!="" ) 
+	if( $_GET["OnlyShow"]=="ON" ) 
 	{
 		echo "<form action=\"". $_SERVER['SCRIPT_NAME']. "\">";
-		echo "\n\t<Input type=\"hidden\" name=\"SchichtName\" value=\"$SchichtName\">";
-		echo "\n\t<input type=\"hidden\" name=\"MonthJahr\" value=\"$MonthJahr\">";
-		echo "\n\t<input type=\"hidden\" name=\"SDatum\" value=\"$SDatum\">";
-		echo "\n\t<input type=\"hidden\" name=\"STime\" value=\"$STime\">";
-		echo "\n\t<input type=\"hidden\" name=\"MoreThenOne\" value=\"$MoreThenOne\">";
-		echo "\n\t<input type=\"hidden\" name=\"EDatum\" value=\"$EDatum\">";
-		echo "\n\t<input type=\"hidden\" name=\"ETime\" value=\"$ETime\">";
-		echo "\n\t<input type=\"hidden\" name=\"len\" value=\"$lenOrg\">";
-		echo "\n\t<input type=\"hidden\" name=\"RID\" value=\"$RID\">";
-		echo "\n\t<input type=\"hidden\" name=\"NachtON\" value=\"$NachtON\">";
-		echo "\n\t<input type=\"hidden\" name=\"len_night\" value=\"$len_night\">";
-		echo "\n\t<input type=\"hidden\" name=\"OnlyShow\" value=\"\">";
+		echo "\n\t<Input type=\"hidden\" name=\"SchichtName\" value=\"". $_GET["SchichtName"]. "\">";
+		echo "\n\t<input type=\"hidden\" name=\"MonthJahr\" value=\"". $_GET["MonthJahr"]. "\">";
+		echo "\n\t<input type=\"hidden\" name=\"SDatum\" value=\"". $_GET["SDatum"]. "\">";
+		echo "\n\t<input type=\"hidden\" name=\"STime\" value=\"". $_GET["STime"]. "\">";
+		echo "\n\t<input type=\"hidden\" name=\"MoreThenOne\" value=\"". $_GET["MoreThenOne"]. "\">";
+		echo "\n\t<input type=\"hidden\" name=\"EDatum\" value=\"". $_GET["EDatum"]. "\">";
+		echo "\n\t<input type=\"hidden\" name=\"ETime\" value=\"". $_GET["ETime"]. "\">";
+		echo "\n\t<input type=\"hidden\" name=\"len\" value=\"". $lenOrg. "\">";
+		echo "\n\t<input type=\"hidden\" name=\"RID\" value=\"". $_GET["RID"]. "\">";
+		echo "\n\t<input type=\"hidden\" name=\"NachtON\" value=\"". $_GET["NachtON"]. "\">";
+		echo "\n\t<input type=\"hidden\" name=\"len_night\" value=\"". $_GET["len_night"]. "\">";
+		echo "\n\t<input type=\"hidden\" name=\"OnlyShow\" value=\"OFF\">";
 		foreach ($EngelType As $TTemp)
 		{
 			$Temp = "EngelType".$TTemp["TID"];
-			echo "\n\t<input type=\"hidden\" name=\"". $Temp. "\" value=\"".$$Temp."\">";
+			echo "\n\t<input type=\"hidden\" name=\"". $Temp. "\" value=\"". $_GET[$Temp]. "\">";
 		}	
 		echo "\n\t<input type=\"hidden\" name=\"action\" value=\"newsave\">";
 		echo "\n\t<input type=\"submit\" value=\"mach mal Gabriel!\">";
@@ -213,7 +219,7 @@ case 'engeldel':
 
 function CreateNewEntry() 
 {
-	global $con, $_DateS, $_DateE, $len, $RID, $SchichtName, $OnlyShow, $EngelType, $DEBUG;
+	global $con, $_DateS, $_DateE, $EngelType, $DEBUG;
 	foreach ($EngelType As $TTemp)
 	{
 		$Temp = "EngelType".$TTemp["TID"];
@@ -224,9 +230,9 @@ function CreateNewEntry()
 
 	echo "\t<td>$_DateS</td>\n";
 	echo "\t<td>$_DateE</td>\n";
-	echo "\t<td>$len</td\n>";
-	echo "\t<td>$RID</td>\n";
-	echo "\t<td>$SchichtName</td>\n";
+	echo "\t<td>". $_GET["len"]. "</td>\n";
+	echo "\t<td>". $_GET["RID"]. "</td>\n";
+	echo "\t<td>". $_GET["SchichtName"]. "</td>\n";
 	
 	
 	// Ist eintarg schon vorhanden?	
@@ -234,12 +240,12 @@ function CreateNewEntry()
 	$SQL .=	"WHERE (".
 		"`DateS` = '". $_DateS. "' AND ".
 		"`DateE` = '". $_DateE. "' AND ".
-		"`RID` = '". $RID. "');";
+		"`RID` = '". $_GET["RID"]. "');";
 	$Erg = mysql_query($SQL, $con);
 	
 	if( mysql_num_rows($Erg) != 0 )
 		echo "\t<td>exists</td>";
-	elseif( $OnlyShow == "" )   
+	elseif( $_GET["OnlyShow"] == "OFF" )   
 	{
 		//Suchet nach letzter SID
 		$SQLin = "SELECT `SID` FROM `Shifts` ".
@@ -254,8 +260,8 @@ function CreateNewEntry()
 		// erstellt Eintrag in Shifts für die algemeine schicht
 		$SQL  = "INSERT INTO `Shifts` (`SID`, `DateS`, `DateE`, `Len`, `RID`, `Man`) VALUES ('$newSID', ";
 		$SQL .= "'". $_DateS. "', '". $_DateE. "', ";
-		$SQL .= "'". $len. "', '". $RID. "', ";
-		$SQL .= "'". $SchichtName. "');";
+		$SQL .= "'". $_GET["len"]. "', '". $_GET["RID"]. "', ";
+		$SQL .= "'". $_GET["SchichtName"]. "');";
 		$Erg = mysql_query($SQL, $con);
 
 		$SQLFail = "\n\t<br>[".$SQL. "]";
@@ -271,15 +277,15 @@ function CreateNewEntry()
 	$SQL .=	"WHERE (".
 		"`DateS` = '". $_DateS. "' AND ".
 		"`DateE` = '". $_DateE. "' AND ".
-		"`Len` = '". $len. "' AND ".
-		"`RID` = '". $RID. "');";
+		"`Len` = '". $_GET["len"]. "' AND ".
+		"`RID` = '". $_GET["RID"]. "');";
 	$Erg = mysql_query($SQL, $con);
 	if( mysql_num_rows($Erg) == 0 )
 		echo "\t<td>?</td>";
 	else	
 	{
 		$SID = mysql_result($Erg, 0, "SID");
-		echo "\t<td>$SID</td>";
+		echo "\t<td>". $SID. "</td>";
 	}
 
 	// erstellt für jeden Engeltypen die eintrage in 'ShiftEntry'
@@ -288,18 +294,18 @@ function CreateNewEntry()
 	{
 		$Temp = "EngelType".$TTemp["TID"];
 		
-		if( $$Temp > 0 )
+		if( $_GET[$Temp] > 0 )
 		{
 			$i = 0;
-			echo $$Temp. " ".$TTemp["Name"]. "<br>\t";
-			while( $i++ < $$Temp )
+			echo $_GET[$Temp]. " ".$TTemp["Name"]. "<br>\t";
+			while( $i++ < $_GET[$Temp] )
 			{
-				$SQL  = "INSERT INTO `ShiftEntry` (`SID`, `TID`) VALUES (";
-				$SQL .= "'$SID', ";
-				$SQL .= "'". $TTemp["TID"]. "');";
-
-				if( $OnlyShow == "" )
+				if( $_GET["OnlyShow"] == "OFF" )
 				{
+					$SQL  = "INSERT INTO `ShiftEntry` (`SID`, `TID`) VALUES (";
+					$SQL .= "'". $SID. "', ";
+					$SQL .= "'". $TTemp["TID"]. "');";
+
 					$Erg = mysql_query($SQL, $con);
 
 					if( $DEBUG ) $SQLFail = "\n\t<br>[".$SQL. "]";
@@ -309,13 +315,12 @@ function CreateNewEntry()
 
 				}
 				else
-					echo "'only show' ";
+					echo "+";
 			}
 			echo "<br>";
 		} // IF $$TEMP
 	} // FOREACH
 	echo "</td>";
-
 	
 	echo "</tr>\n";
 }

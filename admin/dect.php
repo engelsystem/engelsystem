@@ -7,6 +7,9 @@ include ("./inc/header.php");
 
 include ("./inc/funktion_modem.php");
 
+if( !isset($_GET["dial"])) $_GET["dial"] = "";
+if( !isset($_GET["custum"])) $_GET["custum"] = "";
+
 if( $_GET["dial"]=="dial")
 {
 	if( $_GET["DECT"]=="")

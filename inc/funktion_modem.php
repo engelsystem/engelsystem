@@ -3,7 +3,7 @@
 $Dev="/dev/ttyS0";	// COM port
 $WackupNumber="**3";
 
-ob_end_flush();		//ausgabe obwohl skript nich in arbeit
+//ob_end_flush();		//ausgabe obwohl skript nich in arbeit
 set_time_limit(50000);	//Timeout erhöhen;
 
 function DialNumber( $Number )
