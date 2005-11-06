@@ -1,0 +1,16 @@
+DIRS:
+-----
+./DB
+	Standart DB File
+./www
+	daten für http verbindung
+./www-ssl
+	daten für https verbindung
+
+Systemconfig:
+-------------
+./www-ssl/inc/config.php
+	algemeien einstellungen
+./www-ssl/inc/db.php
+	einstellungen der DB
+	Achtung: DB user braucht folgende Rechte: SELECT, CREATE, INSERT, ALTER, UPDATE, INDEX, DELETE, DROP
