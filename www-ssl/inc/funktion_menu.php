@@ -18,10 +18,11 @@ function ShowMenu( $Menu )
 			$MenuFile = $Menu["Path"]. $Entry["File"];
 	
 		if( $_SESSION['CVS'][$MenuFile] == "Y")
+		{
 			echo "\t\t\t<li><a href=\"". $Entry["File"]. "\">". $Entry["Name"]. "</a></li>\n";
-		if( isset($Entry["Line"]))
-			echo $Entry["Line"];
-
+			if( isset($Entry["Line"]))
+				echo $Entry["Line"];
+		}
 
 		//DEBUG
 		if( $DEBUG ) 

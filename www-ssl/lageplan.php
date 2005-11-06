@@ -1,7 +1,6 @@
 <?php
 $title = "Index";
 $header = "Lageplan";
-$Page["Public"] = "Y";
 include ("./inc/header.php");
 ?>
 

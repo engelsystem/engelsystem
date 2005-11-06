@@ -1,8 +1,6 @@
 <?PHP
-
 $title = "DB Update from XML";
 $header = "DB Update from XML";
-$Page["Public"] = "N";
 include ("./inc/header.php");
 include ("./inc/funktion_user.php");
 include ("./inc/funktion_xml.php");

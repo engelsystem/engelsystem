@@ -2,7 +2,6 @@
 
 $title = "Engelsystem - DECT";
 $header = "DECT send call";
-$Page["Public"] = "N";
 include ("./inc/header.php");
 
 include ("./inc/funktion_modem.php");

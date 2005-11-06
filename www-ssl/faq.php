@@ -1,7 +1,6 @@
 <?php
 $title = "Index";
 $header = "FAQ";
-$Page["Public"] = "Y";
 include ("./inc/header.php");
 
 

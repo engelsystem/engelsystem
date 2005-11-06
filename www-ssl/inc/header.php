@@ -9,6 +9,9 @@ include ("./inc/secure.php");
 	exit ();
 } // Ende Rechte f. Nonpublic'*/
 
+if( !isset($_SESSION['IP'])) 
+	$_SESSION['IP'] = $_SERVER['REMOTE_ADDR'];
+
 if (IsSet($_SESSION['UID']) and ($_SESSION['IP'] <> $_SERVER['REMOTE_ADDR']))
 {
 	header("Location: https://".$_SERVER['HTTP_HOST'].$ENGEL_ROOT);
@@ -64,7 +67,8 @@ if( $Page["ShowTabel"]=="Y" )
 
 ?>
 	<div align="center">
-	<a name="#top"><img src="./inc/himmel<? if ($_SESSION['color']==6) { echo "_w"; } ?>.png" alt="Unser Himmel"></a>
+	<a name="#top"><img src="./inc/himmel<? if( isset($_SESSION['color'])) 
+						if ($_SESSION['color']==6) echo "_w"; ?>.png" alt="Unser Himmel"></a>
 	<p>
 <table width="95%" align="center" border="0" cellpadding="7" cellspacing="0">
 	<tr>
@@ -108,7 +112,7 @@ function SetHeaderGo2Back ()
 }
 
 
-if ( $Page["Public"]!= "Y" && $Page["CVS"] != "Y" ) {
+if ( $Page["CVS"] != "Y" ) {
         echo "Du besitzt kein Rechte für diesen Bereich.<br>\n";
         If (IsSet($_SESSION['oldurl'])) 
 		echo "<a href=\"".$oldurl."\">".Get_Text(11)."</a> geht's zur&uuml;ck...\n";

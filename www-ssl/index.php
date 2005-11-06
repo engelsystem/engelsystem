@@ -1,7 +1,6 @@
 <?php
 $title = "Index";
 $header = "Index";
-$Page["Public"] = "Y";
 include ("./inc/header.php");
 
 echo Get_Text("index_text1")."<br><br>";

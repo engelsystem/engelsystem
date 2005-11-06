@@ -1,7 +1,6 @@
 <?php
 $title = "Himmel";
 $header = "News";
-$Page["Public"] = "Y";
 
 // Die Session zerstoeren...
 session_start();

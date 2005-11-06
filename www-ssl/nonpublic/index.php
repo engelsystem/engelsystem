@@ -1,7 +1,6 @@
 <?
 $title = "Index";
 $header = "Index";
-$Page["Public"] = "Y";
 
 include ("./inc/db.php");
 include ("./inc/crypt.php");

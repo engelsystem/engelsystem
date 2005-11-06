@@ -2,7 +2,6 @@
 
 $title = "MakeNewUser";
 $header = "Make New User";
-$Page["Public"]="N^";
 include ("./inc/header.php");
 include ("./inc/db.php");
 include ("./inc/crypt.php");
