@@ -28,23 +28,6 @@ CREATE TABLE IF NOT EXISTS `EngelType` (
   UNIQUE KEY `Name` (`Name`)
 ) TYPE=MyISAM AUTO_INCREMENT=24 ;
 
---
--- Daten für Tabelle `EngelType`
---
-
-INSERT INTO `EngelType` (`TID`, `Name`, `Man`) VALUES (1, 'Info', 'give some informations'),
-(2, 'Kassen', 'sell tickets'),
-(19, 'Springer', ''),
-(4, 'Schutz', 'save the ...'),
-(5, 'Audio', 'Micros rumreichen'),
-(6, 'Video', 'Kammera bedienen'),
-(8, 'Strom', 'sorgen dafür dass das Licht nie ausgeht'),
-(15, 'Netz', 'Hüter des netzen und des NOCs'),
-(17, 'Essen', ''),
-(18, 'Gaderoben', ''),
-(20, 'Aufräum', ''),
-(21, 'Abbau', '');
-
 -- --------------------------------------------------------
 
 --
