@@ -1,0 +1,129 @@
+<?PHP
+
+$title = "Anmeldung zum Chaos-Engel";
+$header = "Anmeldung zum Chaos-Engel";
+
+include ("./inc/header.php");
+include ("./inc/db.php");
+include ("./inc/crypt.php");
+
+if( $_POST)
+{
+	$eNick = trim($_POST["Nick"]);
+	if( strlen($_POST["Nick"]) < 2 ) {
+		$error= "Fehler: Nickname '".$_POST["eNick"]."' ist zu kurz gew&auml;hlt (Mindestens 2 Zeichen).";
+	} elseif( strlen($_POST["email"]) <= 6 && strstr($_POST["email"], "@") == FALSE && strstr($_POST["email"], ".") == FALSE ) {
+		$error= "Fehler: E-Mail-Adresse ist nicht g&uuml;ltig.";
+	} elseif( $_POST["Passwort"] != $_POST["Passwort2"] ) {
+		$error= "Fehler: Passw&ouml;rter sind nicht identisch.";
+	} elseif( strlen($_POST["Passwort"]) < 6 ) {
+		$error= "Fehler: Passwort ist zu kurz (Mindestens 6 Zeichen)";
+	} else {
+		$_POST["Passwort"] =  PassCrypt($_POST["Passwort"]);
+		unset($_POST["Passwort2"]);
+		
+		function mysqlinsert($table, $con, $array){
+			foreach($array as $key => $value){
+
+				$value = strtr($value, get_html_translation_table(HTML_ENTITIES));
+				$keys .= $key.", ";
+				$values .= "'".$value."', ";
+			}
+			$keys = substr($keys, 0, -2);
+			$values = substr($values, 0, -2);
+			$sql = "INSERT INTO $table (".$keys.") VALUES (".$values.")";
+			mysql_query($sql, $con);
+		}
+
+		mysqlinsert('User', $con, $_POST);
+		$Erg = mysql_affected_rows();
+		
+		if ($Erg != 1) {
+			echo "Fehler: Kann die eingegebenen Daten nicht sichern?!?<br>";
+			echo "\n<h6>(Fehler: ".mysql_error($con).")</h6>";
+		} else {
+			echo "<p class=\"important\">Die Anmeldung war erfolgreich. Vielen Dank f&uuml;r deine Anmeldung.</p><p></p>\n<br><br>";
+	
+
+			$SQL2 = "SELECT UID FROM `User` WHERE Nick='". $_POST["Nick"]. "';";
+			$Erg2 = mysql_query($SQL2, $con);
+			$Data = mysql_fetch_array($Erg2);
+		}
+	}
+	  if( !isset($error) ){
+		echo "Wenn du dich zum Chaos-Engel anmelden m&ouml;chtest, f&uuml;lle bitte folgendes Formular aus: <br>";
+	  } else {
+                echo "<p class=\"warning\">\n$error\n</p>";
+	  }
+}
+else
+{
+	//init vars
+	$_POST["Nick"] = "";
+	$_POST["Name"] = "";
+	$_POST["Vorname"] = "";
+	$_POST["Alta"] = "";
+	$_POST["Telefon"] = "";
+	$_POST["DECT"] = "";
+	$_POST["Handy"] = "";
+	$_POST["email"] = "";
+	$_POST["Size"] = "";
+	$_POST["Art"] = "";
+}
+?>
+
+<h1>Anmeldung zum Chaos-Engel</h1>
+
+Mit dieser Maske meldet Ihr euch im Engelsystem an. Durch das Engelsystem findet auf dem Congress die Aufgabenverteilung der Engel statt. 
+
+
+	  <form action="https://<?php echo $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];?>" method="post">
+	  <table>
+	    <tr><td>Nickname*</td><td><input type="text" size="40" name="Nick" value="<?php echo $_POST["Nick"]; ?>"/></td></tr>
+	    <tr><td>Nachname</td><td><input type="text" size="40" name="Name" value="<?php echo $_POST["Name"]; ?>"/></td></tr>
+	    <tr><td>Vorname</td><td><input type="text" size="40" name="Vorname" value="<?php echo $_POST["Vorname"]; ?>"/></td></tr>
+	    <tr><td>Alter</td><td><input type="text" size="40" name="Alta" value="<?php echo $_POST["Alta"]; ?>"/></td></tr>
+	    <tr><td>Telefon</td><td><input type="text" size="40" name="Telefon" value="<?php echo $_POST["Telefon"]; ?>"/></td></tr>
+	    <tr><td>DECT</td><td><input type="text" size="40" name="DECT" value="<?php echo $_POST["DECT"]; ?>"/></td><td><!--a href="https://21c3.ccc.de/wiki/index.php/POC"><img src="./pic/external.png" alt="external: " /> DECT</a--></td></tr>
+	    <tr><td>Handy</td><td><input type="text" size="40" name="Handy" value="<?php echo $_POST["Handy"]; ?>"/></td></tr>
+	    <tr><td>E-Mail*</td><td><input type="text" size="40" name="email" value="<?php echo $_POST["email"]; ?>"/></td></tr>
+	    <tr><td>T-Shirt Gr&ouml;sse*</td><td align="left">
+		<select name="Size">
+			<option value="S"<?php if ($_POST["Size"]=="S") {echo " selected";}; ?>>S</option>
+			<option value="M"<?php if ($_POST["Size"]=="M") {echo " selected";}; ?>>M</option>
+			<option value="L"<?php if ($_POST["Size"]=="L") {echo " selected";}; ?>>L</option>
+			<option value="XL"<?php if ($_POST["Size"]=="XL") {echo " selected";}; ?>>XL</option>
+			<option value="XXL"<?php if ($_POST["Size"]=="XXL") {echo " selected";}; ?>>XXL</option>
+		</select>
+	    </td></tr>
+	    <tr><td>Engelart</td><td align="left">
+		<select name="Art">
+			<option value="Konferenz"<?php if ($_POST["Art"]=="Konferenz") {echo " selected";}; ?>>Konferenz</option>
+			<option value="Dokumentation"<?php if ($_POST["Art"]=="Dokumentation") {echo " selected";}; ?>>Dokumentation</option>
+			<option value="Eingang"<?php if ($_POST["Art"]=="Eingang") {echo " selected";}; ?>>Eingang</option>
+			<option value="Schutzengel"<?php if ($_POST["Art"]=="Schutzengel") {echo " selected";}; ?>>Schutzengel</option>
+			<option value="Netzengel"<?php if ($_POST["Art"]=="Netzengel") {echo " selected";}; ?>>Netzengel</option>
+			<option value="Rettung"<?php if ($_POST["Art"]=="Rettung") {echo " selected";}; ?>>Rettung</option>
+                        <option value="Verpflegung"<?php if ($_POST["Art"]=="Verpflegung") {echo " selected";}; ?>>Verpflegung</option>
+			<option value="egal"<?php if ($_POST["Art"]=="egal") {echo " selected";}; ?>>Egal-Engel</option>
+		</select>
+	        </td><td><!--a href="https://www.ccc.de/congress/2004/engel.de.html#d5e23"><img src="./pic/external.png" alt="external: " /> Congress 21C3</a--></td>
+	    </tr>
+	    <tr>
+	    	<td>Habt ihr schon einmal am<br />
+		    Congress mitgeholfen? <br />
+		    Wenn ja, in welchem/<br />
+		    welchen Aufgabengebiet(en)?</td>
+		<td><textarea rows="5" cols="40" name="qualifikationen"></textarea></td>
+	    </tr>
+	    <tr><td>Passwort*</td><td><input type="password" size="40" name="Passwort"/></td></tr>
+	    <tr><td>Passwort Best&auml;tigung*</td><td><input type="password" size="40" name="Passwort2"/></td></tr>
+	    <tr><td>&nbsp;</td><td><input type="submit" value="Anmelden..."/></td></tr>
+
+	  </table>
+  	  </form>
+	  * Dieser Eintrag ist eine Pflichtangabe.
+<?php
+include ("./inc/footer.php");
+?>
+

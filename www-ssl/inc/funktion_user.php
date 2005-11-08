@@ -7,7 +7,15 @@ function UID2Nick($UID) {
   $Erg = mysql_query($SQL, $con);
 
   //echo $UID."#";
-  return mysql_result($Erg, 0);
+  if( mysql_num_rows($Erg))
+	return mysql_result($Erg, 0);
+  else
+  {
+  	if( $UID == -1)
+		return "logout User";
+	else
+	  	return "UserID $UID not found";
+  }
 }
 
 

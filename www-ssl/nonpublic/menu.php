@@ -24,7 +24,9 @@ $Menu["Entry"][8]["File"] = "../logout.php";
 $Menu["Entry"][8]["Name"] = Get_Text("pub_menu_Abmelden");
 
 
-if ($_SESSION['CVS']["MenueShowAdminSection"] == "Y") {
+if ($_SESSION['CVS']["MenueShowAdminSection"] == "Y") 
+{
+	$MenuAdmin["Path"] = "";
 	$MenuAdmin["Name"] = "Erzengel";
 	$MenuAdmin["Entry"][0]["File"] = "../admin/index.php";
 	$MenuAdmin["Entry"][0]["Name"] = "Erzengel-Men&uuml;";

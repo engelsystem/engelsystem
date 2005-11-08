@@ -34,4 +34,13 @@ $Menu["Entry"][3]["Line"] = "<br>";
 $Menu["Entry"][4]["File"] = "nonpublic/schichtplan_beamer.php";
 $Menu["Entry"][4]["Name"] = Get_Text("pub_menu_SchichtplanBeamer");
 
+if ($_SESSION['CVS']["nonpublic/index.php"] == "Y") 
+{
+	$MenuAdmin["Path"] = "";
+	$MenuAdmin["Name"] = Get_Text("pub_menu_menuname");
+	$MenuAdmin["Entry"][0]["File"] = "nonpublic/index.php";
+	$MenuAdmin["Entry"][0]["Name"] = "Engel-Men&uuml;";
+} // MenueShowAdminSection
+			
+
 ?>

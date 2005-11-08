@@ -4,12 +4,15 @@ $title = "User-Liste";
 $header = "Editieren der Engelliste";
 include ("./inc/header.php");
 include ("./inc/funktion_db_list.php");
+include ("./inc/funktion_user.php");
 
 if (!IsSet($_GET["enterUID"]))
 {
 	// Userliste, keine UID uebergeben...
 
 	echo "<a href=\"../makeuser.php\">Neuen Engel eintragen</a><br><br>\n";
+	
+	echo "\n<a href=\"./user.php?enterUID=-1&Type=Secure\">Edit logout User</a><br><br>\n";
 
 	if( !isset($_GET["OrderBy"]) ) $_GET["OrderBy"] = "Nick";
 	$SQL = "SELECT * FROM User ORDER BY ". $_GET["OrderBy"]. " ASC";
@@ -98,27 +101,26 @@ else
 { 
 	// UserID wurde mit uebergeben --> Aendern...
 
-	$SQL = "SELECT * FROM User where UID=". $_GET["enterUID"];
-	$Erg = mysql_query($SQL, $con);
+	echo "Hallo,<br>".
+	 	"hier kannst du den Eintrag &auml;ndern. Unter dem Punkt 'Gekommen' ".
+		"wird der Engel als anwesend markiert, ein Ja bei Aktiv bedeutet, ".
+		"dass der Engel aktiv war und damit ein Anspruch auf ein T-Shirt hat. ".
+		"Wenn T-Shirt ein 'Ja' enth&auml;lt, bedeutet dies, dass der Engel ".
+		"bereits sein T-Shirt erhalten hat.<br><br>\n";
 
-	$anzahl  = mysql_num_rows($Erg);
+	echo "<form action=\"./user2.php?action=change\" method=\"POST\">\n";
+	echo "<table>\n";
+	echo "<input type=\"hidden\" name=\"Type\" value=\"". $_GET["Type"]. "\">\n";
 
-	if ($anzahl != 1) 
-		echo "Sorry, der Engel (UID=". $_GET["enterUID"]. ") wurde in der Liste nicht gefunden.";
-	else
+	if( $_GET["Type"] == "Normal" )
 	{
-		echo "Hallo,<br>".
-		 	"hier kannst du den Eintrag &auml;ndern. Unter dem Punkt 'Gekommen' ".
-			"wird der Engel als anwesend markiert, ein Ja bei Aktiv bedeutet, ".
-			"dass der Engel aktiv war und damit ein Anspruch auf ein T-Shirt hat. ".
-			"Wenn T-Shirt ein 'Ja' enth&auml;lt, bedeutet dies, dass der Engel ".
-			"bereits sein T-Shirt erhalten hat.<br><br>\n";
-
-		echo "<form action=\"./user2.php?action=change\" method=\"POST\">\n";
-		echo "<table>\n";
-		echo "<input type=\"hidden\" name=\"Type\" value=\"". $_GET["Type"]. "\">\n";
-
-		if( $_GET["Type"] == "Normal" )
+		$SQL = "SELECT * FROM User where UID=". $_GET["enterUID"];
+		$Erg = mysql_query($SQL, $con);
+		
+		if (mysql_num_rows($Erg) != 1) 
+			echo "<tr><td>Sorry, der Engel (UID=". $_GET["enterUID"]. 
+				") wurde in der Liste nicht gefunden.</td></tr>";
+		else
 		{
 			echo "  <tr><td>Nick</td><td>".
 				"<input type=\"text\" size=\"40\" name=\"eNick\" value=\"".
@@ -192,14 +194,19 @@ else
 			echo ">Yes \n";
 			echo "</td></tr>\n";
 		} //IF TYPE
+	}
+	if( $_GET["Type"] == "Secure" )
+	{
+		// CVS-Rechte
+		echo "  <tr><td><br><u>Rights of \"". UID2Nick($_GET["enterUID"]). "\":</u></td></tr>\n";
 
-		if( $_GET["Type"] == "Secure" )
+		$SQL_CVS = "SELECT * FROM `UserCVS` WHERE UID=". $_GET["enterUID"];
+		$Erg_CVS =  mysql_query($SQL_CVS, $con);
+		
+		if( mysql_num_rows($Erg_CVS) != 1) 
+			echo "Sorry, der Engel (UID=". $_GET["enterUID"]. ") wurde in der Liste nicht gefunden.";
+		else
 		{
-			// CVS-Rechte
-			echo "  <tr><td><br><u>Rights of \"". mysql_result($Erg, 0, "Nick"). "\":</u></td></tr>\n";
-
-			$SQL_CVS = "SELECT * FROM `UserCVS` WHERE UID=". $_GET["enterUID"];
-			$Erg_CVS =  mysql_query($SQL_CVS, $con);
 			$CVS_Data = mysql_fetch_array($Erg_CVS);
 			$CVS_Data_i = 1;
 			foreach ($CVS_Data as $CVS_Data_Name => $CVS_Data_Value) 
@@ -222,25 +229,22 @@ else
 			} //Foreach	    
 			echo "</td></tr>\n";
 		} // IF TYPE
+	}
 
+	// Ende Formular
+	echo "</td></tr>\n";
+	echo "</table>\n";
+	echo "<input type=\"hidden\" name=\"enterUID\" value=\"". $_GET["enterUID"]. "\">\n";
+	echo "<input type=\"submit\" value=\"sichern...\">\n";
+	echo "</form>";
 
-		// Ende Formular
-		echo "</td></tr>\n";
-		echo "</table>\n";
+	if( $_GET["Type"] == "Normal" )
+	{
+		echo "<form action=\"./user2.php?action=delete\" method=\"POST\">\n";
 		echo "<input type=\"hidden\" name=\"enterUID\" value=\"". $_GET["enterUID"]. "\">\n";
-		echo "<input type=\"submit\" value=\"sichern...\">\n";
+		echo "<input type=\"submit\" value=\"l&ouml;schen...\">\n";
 		echo "</form>";
-
-		if( $_GET["Type"] == "Normal" )
-		{
-			echo "<form action=\"./user2.php?action=delete\" method=\"POST\">\n";
-			echo "<input type=\"hidden\" name=\"enterUID\" value=\"". $_GET["enterUID"]. "\">\n";
-			echo "<input type=\"submit\" value=\"l&ouml;schen...\">\n";
-			echo "</form>";
-		}
-
-	} 
-
+	}
 }
 
 include ("./inc/footer.php");
