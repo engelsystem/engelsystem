@@ -1,5 +1,23 @@
 <?PHP
 
+// Functionen gibt es nicht auf ellen rechern
+if( !function_exists("bcdiv"))
+{
+	function bcdiv( $param1, $param2)
+	{
+		return floor( $param1 / $param2);
+	}
+}
+
+if( !function_exists("bcmod"))
+{
+	function bcmod( $param1, $param2)
+	{
+		return $param1 - ( $param2 * bcdiv( $param1, $param2));
+	}
+}
+
+
 echo "<h4 class=\"menu\">Engels Online</h4>";
 
 $SQL = "SELECT Nick, lastLogIn ".
@@ -15,7 +33,6 @@ $Tist =	(gmdate("d", time()) * 60 * 60 * 24) +	// Tag
 	(gmdate("i", time()) * 60) +		// Minute
 	(gmdate("s", time()) ); 		// Sekunde
 
-
 for( $i=0; $i<mysql_num_rows($Erg); $i++)
 {
 	echo "\t\t\t<li>";
@@ -26,7 +43,7 @@ for( $i=0; $i<mysql_num_rows($Erg); $i++)
 		(substr( mysql_result( $Erg, $i, "lastLogIn"), 17, 2) );		// Sekunde
 	
  	$Tlog = $Tist-$Tlog;
-	echo " ". bcmod( $Tlog/60, 60). ":";
+	echo " ". bcdiv( $Tlog, 60). ":";
 	if( strlen(bcmod( $Tlog, 60))==1)
 		echo "0";
 	echo bcmod( $Tlog, 60);
