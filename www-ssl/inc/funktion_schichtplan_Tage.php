@@ -55,12 +55,15 @@ do
 		"WHERE ( (`DateS` like '$DateS%') AND NOT (`DateE` like '%00:00:00'))";
 	$Erg2 = mysql_query($SQL2, $con);
 	$DateE = substr(mysql_result($Erg2, 0 , 0), 0,10);
-	
-	while( $DateS != $DateE)
-	{
-		$DateS = DatumUm1TagErhoehen( $DateS);
-		$VeranstaltungsTage[$Pos++] = $DateS;
-	}
+
+	if( strlen($DateE) == 0)
+		$DateE = $DateS;
+	else
+		while( $DateS != $DateE)
+		{
+			$DateS = DatumUm1TagErhoehen( $DateS);
+			$VeranstaltungsTage[$Pos++] = $DateS;
+		}
 
 	//suchen den nästen eintrag
 	$SQL = "SELECT `DateS` FROM `Shifts` ".

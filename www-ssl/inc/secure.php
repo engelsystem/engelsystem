@@ -10,7 +10,7 @@ foreach ($_GET as $k => $v)
   	$v = htmlspecialchars($v);
 	$v = mysql_escape_string($v);
 //	$v = htmlentities($v);
-	if (preg_match('/([\"`])/', $v, $match)) 
+	if (preg_match('/([\'"`\'])/', $v, $match)) 
 	{
 		print "sorry get has illegal char '$match[1]'";
 		exit;
