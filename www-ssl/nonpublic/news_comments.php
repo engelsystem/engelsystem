@@ -6,19 +6,22 @@ include ("./inc/db.php");
 include ("./inc/funktion_user.php");
 
 
-if (IsSet($nid)) {
+if( IsSet( $_GET["nid"])) 
+{
 
 
-if (IsSet($date) && IsSet($text)){
-	
-	$ch_sql="INSERT INTO news_comments (Refid, Datum, Text, UID) VALUES ('$nid', '$date', '$text', '".$_SESSION[UID]."')";
+if( IsSet( $_GET["text"]))
+{
+	$ch_sql="INSERT INTO news_comments (Refid, Datum, Text, UID) VALUES ('".
+		$_GET["nid"]. "', '". date("Y-m-d H:i:s"). "', '". $_GET["text"]. "', '". $_SESSION["UID"]. "')";
 	$Erg = mysql_query($ch_sql, $con);
-	if ($Erg == 1) { echo "Eintrag wurde gespeichert<br><br>"; }
+	if ($Erg == 1)
+		echo "Eintrag wurde gespeichert<br><br>"; 
 }
 
-$SQL = "SELECT * FROM news_comments where Refid = $nid ORDER BY 'ID'";
+$SQL = "SELECT * FROM news_comments where Refid = ". $_GET["nid"]. " ORDER BY 'ID'";
 $Erg = mysql_query($SQL, $con);
-
+echo mysql_error( $con);
 // anzahl zeilen
 $news_rows  = mysql_num_rows($Erg);
 
@@ -60,9 +63,8 @@ echo "</table>";
 <h4>Neuer Kommentar:</h4>
 <a name="Neu">&nbsp;</a>
 
-<form action="./news_comments.php" method="post">
-<input type="hidden" name="date" value="<? echo date("Y-m-d H:i:s"); ?>">
-<input type="hidden" name="nid" value="<? echo $nid; ?>">
+<form action="./news_comments.php" method="GET">
+<input type="hidden" name="nid" value="<? echo $_GET["nid"]; ?>">
 <table>
  <tr>
   <td align="right" valign="top">Text:</td>
@@ -76,12 +78,11 @@ echo "</table>";
 <?
 
 
-} else {
-
+} 
+else 
+{
   echo "Fehlerhafter Aufruf!";
-
-
-   
 }
+
 include ("./inc/footer.php");
 ?>
