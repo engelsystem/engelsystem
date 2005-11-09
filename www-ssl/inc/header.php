@@ -24,7 +24,7 @@ include ("./inc/UserCVS.php");
 if( isset($_SESSION['UID']))
 {
 	$SQLlastLogIn = "UPDATE `User` SET ".
-			"`lastLogIn` = ". gmdate("YmjHis", time()).
+			"`lastLogIn` = '". gmdate("Y-m-j H:i:s", time()). "'".
 			" WHERE `UID` = '". $_SESSION['UID']. "' LIMIT 1;";
 	mysql_query ($SQLlastLogIn, $con);
 }								  
