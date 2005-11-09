@@ -4,14 +4,12 @@ $header = "Schichtpl&auml;ne";
 $submenus = 1;
 
 
-if (!IsSet($action)) {
-include ("./inc/header.php");
-include ("./inc/funktionen.php");
-
-include ("./inc/funktion_schichtplan.php");
-include ("./inc/funktion_user.php");
-
-
+if (!IsSet($_POST["action"])) 
+{
+	include ("./inc/header.php");
+	include ("./inc/funktionen.php");
+	include ("./inc/funktion_schichtplan.php");
+	include ("./inc/funktion_user.php");
 ?>
 
 Hallo <? echo $_SESSION['Nick']?>,<br>
@@ -51,16 +49,14 @@ for ($i = 0 ; $i < mysql_fetch_row($Erg) ; $i++)
 			<select name="Raum">
 <?php 
 
-$res = mysql_query("SELECT Name, RID FROM `Room` WHERE `show`!='N' ORDER BY Name;",$con);
+	$res = mysql_query("SELECT Name, RID FROM `Room` WHERE `show`!='N' ORDER BY Name;",$con);
 
-for ($i = 0; $i < mysql_num_rows($res); $i++) 
-{
-	$rid=mysql_result($res,$i,"RID");
-	$raum_name=mysql_result($res, $i, "Name");
-	echo "\t\t\t\t<option value=\"$rid\">$raum_name</option>\n";
-}
-
-
+	for ($i = 0; $i < mysql_num_rows($res); $i++) 
+	{
+		$rid=mysql_result($res,$i,"RID");
+		$raum_name=mysql_result($res, $i, "Name");
+		echo "\t\t\t\t<option value=\"$rid\">$raum_name</option>\n";
+	}
 ?>
 			</select>
 		</td>
@@ -73,22 +69,24 @@ for ($i = 0; $i < mysql_num_rows($res); $i++)
 
 <br><br>
 <?
-
-include ("./inc/footer.php");
-
+	include ("./inc/footer.php");
 } 
-else 
+else 	//#################################################################
 {
+   if (IsSet($_POST["Raum"]) AND IsSet($_POST["ausdatum"])) 
+	{
+   	$Raum = $_POST["Raum"];
+	$ausdatum = $_POST["ausdatum"];
 
-
-if (IsSet($Raum) AND IsSet($ausdatum)) 
-{
-include ("./inc/db.php");
-include ("./inc/config.php");
-include ("./inc/funktion_lang.php");
-include ("./inc/funktion_schichtplan.php");
-include ("./inc/funktion_user.php");
-?>
+	include ("./inc/db.php");
+	include ("./inc/config.php");
+	include ("./inc/secure.php");
+	//var wird nur gesetzt immer edit auszublenden, achtung sesion darf nicht gestart sein !!!
+	$_SESSION['CVS'][ "admin/schichtplan.php" ] = "N";	
+	include ("./inc/funktion_lang.php");
+	include ("./inc/funktion_schichtplan.php");
+	include ("./inc/funktion_user.php");
+	?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -110,7 +108,7 @@ include ("./inc/funktion_user.php");
 	<tr>
 		<td width="250" align="left">
 			<span style="font-weight:bold;font-size:100%">Datum:</span> 
-			<span style="font-weight:bold;font-size:200%"><? echo $date; ?></span>
+			<span style="font-weight:bold;font-size:200%"><? echo $ausdatum; ?></span>
 		</td>
 		<td width="350" align="right">
 			<span style="font-weight:bold;font-size:100%">Raum:</span>
