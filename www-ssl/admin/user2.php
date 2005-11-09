@@ -89,15 +89,14 @@ if (IsSet($_GET["action"]))
 	case "newpw":
 		echo "Bitte neues Kennwort f&uuml;r <b>";
 		// Get Nick
-		$USQL = "SELECT * FROM User where UID=". $_POST["eUID"];
+		$USQL = "SELECT * FROM User where UID=". $_GET["eUID"];
 		$Erg = mysql_query($USQL, $con);
 		echo mysql_result($Erg, 0, "Nick");
 		echo "</b> eingeben:<br>";
-		echo "<form action=\"./user2.php\" method=\"POST\">\n";	
+		echo "<form action=\"./user2.php?action=newpwsave\" method=\"POST\">\n";	
 		echo "<input type=\"Password\" name=\"ePasswort\">";
 		echo "<input type=\"Password\" name=\"ePasswort2\">";
-		echo "<input type=\"hidden\" name=\"eUID\" value=\"". $_POST["eUID"]. "\">";
-		echo "<input type=\"hidden\" name=\"action\" value=\"newpwsave\">\n";
+		echo "<input type=\"hidden\" name=\"eUID\" value=\"". $_GET["eUID"]. "\">";
 	        echo "<input type=\"submit\" value=\"sichern...\">\n";
 	        echo "</form>";
 		break;
