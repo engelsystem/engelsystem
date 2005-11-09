@@ -5,6 +5,8 @@ $header = "Neue Schichten erfassen";
 include ("./inc/header.php");
 include ("./inc/funktion_user.php");
 
+$Time = time()+3600+3600;
+
 echo "Hallo ".$_SESSION['Nick'].",<br>\n";
 
 // erstellt ein Array der Reume
@@ -29,15 +31,40 @@ echo "Hallo ".$_SESSION['Nick'].",<br>\n";
 		$EngelType[$i]["Name"] = mysql_result($Erg, $i, "Name").Get_Text("inc_schicht_engel");
 	}
 
+// sesion mit stanadrt werten befüllen
+if( !isset( $_SESSION['shiftadd.php']['SchichtName']))
+{
+	$_SESSION['shiftadd.php']['SchichtName'] = "--???--";
+	$_SESSION['shiftadd.php']['RID'] = "";
+	$_SESSION['shiftadd.php']['MonthJahr'] = gmdate("Y-m", $Time);
+	$_SESSION['shiftadd.php']['SDatum'] = gmdate("d", $Time);
+	$_SESSION['shiftadd.php']['STime'] = "10";
+	$_SESSION['shiftadd.php']['MoreThenOne'] = "ON";
+	$_SESSION['shiftadd.php']['EDatum'] = gmdate("d", $Time);
+	$_SESSION['shiftadd.php']['ETime'] = "12";
+	$_SESSION['shiftadd.php']['len'] = "2";
+	$_SESSION['shiftadd.php']['NachtON'] = "OFF";
+	$_SESSION['shiftadd.php']['len_night'] = "0;4;8;10;12;14;16;18;20;22;24";
+}
+// wenn werte übergeben in sesion eintragen
+if( !isset($_GET["NachtON"]))
+	$_GET["NachtON"] = "OFF";
+if( !isset($_GET["MoreThenOne"]))
+	$_GET["MoreThenOne"] = "OFF";
+if( isset( $_GET["SchichtName"]))
+{
+	foreach ($_GET as $k => $v)
+	{
+		$_SESSION['shiftadd.php'][$k] = $v;
+	}
+}
+
 
 if (!IsSet($_GET["action"])) 
 	$_GET["action"] = "new";
 
-$Time = time()+3600+3600;
-
 switch( $_GET["action"])
 {
-
 case 'new':
 ?>
 Hier kannst du neue Schichten eintragen. Dazu musst du den Anfang und das Ende der Schichten eintragen.
@@ -48,14 +75,19 @@ mehrere Schichten auf einmal erfasst werden:
   <table>
   <tr>
     <td align="right">Name:</td>
-    <td><input type="text" name="SchichtName" size="50" value="--???--"></td>
+    <td><input type="text" name="SchichtName" size="50" value="<? echo $_SESSION["shiftadd.php"]["SchichtName"]; ?>"></td>
   </tr>
   <tr>
     <td align="right">Ort:</td>
     <td><select name="RID">
-	<?
-	foreach ($Room As $RTemp) 
-		echo "\t<option value=\"". $RTemp["RID"]. "\">". $RTemp["Name"]. "</option>\n";
+<?
+	foreach ($Room As $RTemp)
+	{
+		echo "\t<option value=\"". $RTemp["RID"]. "\"";
+		if( $RTemp["RID"] == $_SESSION["shiftadd.php"]["RID"])
+			echo " SELECTED";
+		echo ">". $RTemp["Name"]. "</option>\n";
+	}
 	?>
     </select></td>
   </tr>
@@ -63,33 +95,39 @@ mehrere Schichten auf einmal erfasst werden:
   <tr><td><u>Zeit:</u></td></tr>
   <tr>
     <td align="right">Month.Jahr:</td>
-    <td><input type="ext" name="MonthJahr" size="7" value="<?echo gmdate("Y-m", $Time)?>"></td>
+    <td><input type="ext" name="MonthJahr" size="7" value="<? echo $_SESSION["shiftadd.php"]["MonthJahr"]; ?>"></td>
   </tr>
   <tr>
     <td align="right">Beginn:</td>
-    <td>Date<input type="text" name="SDatum" size="5" value="<?echo gmdate("d", $Time)?>">
-        Time<input type="text" name="STime" size="5" value="10"></td>
+    <td>Date<input type="text" name="SDatum" size="5" value="<? echo $_SESSION["shiftadd.php"]["SDatum"]; ?>">
+        Time<input type="text" name="STime" size="5" value="<? echo $_SESSION["shiftadd.php"]["STime"]; ?>"></td>
   </tr>
   <tr>
     <td align="right">More then One</td>
-    <td><input type="checkbox" name="MoreThenOne" value="ON" checked></td>
+    <td><input type="checkbox" name="MoreThenOne" value="ON" <? 
+   	if( $_SESSION["shiftadd.php"]["MoreThenOne"]=="ON")
+		echo " CHECKED";
+	?>></td>
   </tr>
   <tr>
     <td align="right">End:</td>
-    <td>Date<input type="text" name="EDatum" size="5" value="<?echo gmdate("d", $Time)?>">
-        Time<input type="text" name="ETime" size="5" value="12"></td>
+    <td>Date<input type="text" name="EDatum" size="5" value="<? echo $_SESSION["shiftadd.php"]["EDatum"]; ?>">
+        Time<input type="text" name="ETime" size="5" value="<? echo $_SESSION["shiftadd.php"]["ETime"]; ?>"></td>
   </tr>
   <tr>
     <td align="right">L&auml;nge in h:</td>
-    <td><input type="text" name="len" size="5" value="2"></td>
+    <td><input type="text" name="len" size="5" value="<? echo $_SESSION["shiftadd.php"]["len"]; ?>"></td>
   </tr>
   <tr>
     <td align="right">Sonderschichten ein:</td>
-    <td><input type="checkbox" name="NachtON" value="ON"></td>
+    <td><input type="checkbox" name="NachtON" value="ON" <? 
+    	if($_SESSION["shiftadd.php"]["NachtON"]=="ON")
+		echo " CHECKED";
+	?>></td>
   </tr>
   <tr>
     <td align="right">Sonder in h (Time;Time):</td>
-    <td><input type="text" name="len_night" size="50" value="0;4;8;10;12;14;16;18;20;22;24"></td>
+    <td><input type="text" name="len_night" size="50" value="<? echo $_SESSION["shiftadd.php"]["len_night"]; ?>"></td>
   </tr>
   
   <tr><td><u>Anzahl Engel je Type:</u></td></tr>
@@ -97,7 +135,12 @@ mehrere Schichten auf einmal erfasst werden:
 	foreach ($EngelType As $TTemp)
 	{
 		echo "  <tr><td align=\"right\">". $TTemp["Name"]. ":</td>\n";
-		echo "      <td><input type=\"text\" name=\"EngelType". $TTemp["TID"]. "\" size=\"5\" value=\"0\"></td>\n";
+		echo "      <td><input type=\"text\" name=\"EngelType". $TTemp["TID"]. "\" size=\"5\" value=\"";
+		if( isset($_SESSION["shiftadd.php"][ "EngelType". $TTemp["TID"] ]))
+			echo $_SESSION["shiftadd.php"][ "EngelType". $TTemp["TID"] ];
+		else
+			echo "0";
+		echo "\"></td>\n";
 	}
 ?>
 </table>
@@ -114,8 +157,6 @@ case 'newsave':
     if (isset($_GET["SDatum"]) && ($_GET["len"] > 0))
     {
 	$lenOrg = $_GET["len"];
-	if( !isset($_GET["NachtON"])) 
-		$_GET["NachtON"] = "OFF";
 	if( $_GET["NachtON"] == "ON" )
 	{	
 		$lenArrayDummy = explode( ";", $_GET["len_night"]);
