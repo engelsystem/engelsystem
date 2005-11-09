@@ -7,10 +7,20 @@ include ("./inc/crypt.php");
 
 session_start(); // alte Session - falls vorhanden - wiederherstellen...
 
-if ( IsSet($_POST["user"])) {
+function LoginOK()
+{
+	include ("./inc/config.php");
+	header("HTTP/1.1 302 Moved Temporarily");
+	header("Location: ". substr($url, 0, strlen($url)-1). $ENGEL_ROOT. "nonpublic/news.php");
+}
 
+if ( !IsSet($_POST["user"]))
+{ // User ist bereits angemeldet... normaler Inhalt...
+	LoginOK();
+} 
+else
+{ // User ist noch nicht angemeldet 
 	$sql = "select * from User where Nick = '". $_POST["user"]. "'";
-
 	$userstring = mysql_query($sql, $con);
 
 	// anzahl zeilen
@@ -43,58 +53,26 @@ if ( IsSet($_POST["user"])) {
 			$SQL = "SELECT * FROM `UserCVS` WHERE UID=".$_SESSION['UID'];
 			$Erg_CVS =  mysql_query($SQL, $con);
 			$_SESSION['CVS'] = mysql_fetch_array($Erg_CVS);
-	  
-			include ("./inc/header.php");
-
-			echo Get_Text(1).$_SESSION['Nick'];
-			echo nl2br(Get_Text(2));
-	
-			include ("./news_output.php");
-	      
+			
+			LoginOK();
 		} 
 		else 
 		{ // Passwort nicht ok...
-
-			include ("./inc/header.php");
-	  
-			echo Get_Text("pub_index_pass_no_ok");
-			include ("./inc/login_eingabefeld.php");
-
+			$ErrorText = "pub_index_pass_no_ok";
 		} // Ende Passwort-Check
-	
 	} 
 	else 
 	{ // Anzahl der User in User-Tabelle <> 1 --> keine Anmeldung
-		include ("./inc/header.php");
 		if ($user_anz == 0) 
-		{
-	  		echo Get_Text("pub_index_User_unset");
-		} 
+	  		$ErrorText = "pub_index_User_unset";
 		else 
-		{
-			echo Get_Text("pub_index_User_more_as_one");
-		}
-
-		include ("./inc/login_eingabefeld.php");
+			$ErrorText = "pub_index_User_more_as_one";
 	} // Ende Check, ob User angemeldet wurde
 } 
-else 
-{ // User ist bereits angemeldet... normaler Inhalt...
 
-	include ("./inc/header.php");
-        echo Get_Text(1).$_SESSION['Nick'];
-        echo nl2br(Get_Text(2));
-		    
-	include ("./news_output.php");
-
-} // Ende Ueberpruefung, ob User bereits angemeldet...
-	
-
-
-?>
-<!-- <br>
-<a href="nonpublic/list.php"> list.php </a> -->
-<?
+include ("./inc/header.php");
+echo "<h2>". Get_Text($ErrorText). "</h2><br>\n";
+include ("./inc/login_eingabefeld.php");
 include ("./inc/footer.php");
 
 ?>
