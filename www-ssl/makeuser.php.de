@@ -48,6 +48,19 @@ if( $_POST)
 			$SQL2 = "SELECT UID FROM `User` WHERE Nick='". $_POST["Nick"]. "';";
 			$Erg2 = mysql_query($SQL2, $con);
 			$Data = mysql_fetch_array($Erg2);
+
+			$SQL3 = "INSERT INTO `UserCVS` (`UID`) VALUES (". $Data["UID"]. ");";
+			$Erg3 = mysql_query($SQL3, $con);
+			if ($Erg3 != 1)
+			{
+				echo "error: can't save userright... <br><h6>(".mysql_error($con).")</h6>";
+			}
+			else
+			{
+				echo "userright was saved...<br>";
+				echo "<br><br> Your acount was sucsessfull creat, hafe al lot of fun.";
+			}
+			
 		}
 	}
 	  if( !isset($error) ){
