@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `EngelType` (
   `Man` text,
   PRIMARY KEY  (`TID`),
   UNIQUE KEY `Name` (`Name`)
-) TYPE=MyISAM AUTO_INCREMENT=24 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `News` (
   `UID` int(11) NOT NULL default '0',
   `Treffen` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM AUTO_INCREMENT=70 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `Room` (
   `show` char(1) NOT NULL default 'Y',
   `Number` int(11) default NULL,
   PRIMARY KEY  (`RID`)
-) TYPE=MyISAM AUTO_INCREMENT=10017 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `Shifts` (
   `Man` text,
   `FromPentabarf` char(1) NOT NULL default 'N',
   PRIMARY KEY  (`SID`)
-) TYPE=MyISAM AUTO_INCREMENT=10935 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -555,7 +555,7 @@ CREATE TABLE IF NOT EXISTS `User` (
   `kommentar` text,
   PRIMARY KEY  (`UID`,`Nick`),
   UNIQUE KEY `Nick` (`Nick`)
-) TYPE=MyISAM AUTO_INCREMENT=274 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `lastLogIn`, `Art`, `kommentar`) VALUES (1, 'admin', '', '', 0, '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 6, 'EN', 115, '0000-00-00 00:00:00', '', '');
 
@@ -571,7 +571,6 @@ INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`
 DROP TABLE IF EXISTS `UserCVS`;
 CREATE TABLE IF NOT EXISTS `UserCVS` (
   `UID` int(11) NOT NULL default '0',
-  `MenueShowAdminSection` char(1) NOT NULL default 'N',
   `index.php` char(1) NOT NULL default 'Y',
   `logout.php` char(1) NOT NULL default 'Y',
   `faq.php` char(1) NOT NULL default 'Y',
@@ -583,7 +582,6 @@ CREATE TABLE IF NOT EXISTS `UserCVS` (
   `nonpublic/news_comments.php` char(1) NOT NULL default 'Y',
   `nonpublic/myschichtplan.php` char(1) NOT NULL default 'Y',
   `nonpublic/engelbesprechung.php` char(1) NOT NULL default 'Y',
-  `admin/index.php` char(1) NOT NULL default 'N',
   `nonpublic/schichtplan.php` char(1) NOT NULL default 'Y',
   `nonpublic/schichtplan_add.php` char(1) NOT NULL default 'Y',
   `nonpublic/schichtplan_beamer.php` char(1) NOT NULL default 'Y',
@@ -591,6 +589,8 @@ CREATE TABLE IF NOT EXISTS `UserCVS` (
   `nonpublic/waeckliste.php` char(1) NOT NULL default 'N',
   `nonpublic/faq.php` char(1) NOT NULL default 'Y',
   `nonpublic/einstellungen.php` char(1) NOT NULL default 'Y',
+  `MenueShowAdminSection` char(1) NOT NULL default 'N',
+  `admin/index.php` char(1) NOT NULL default 'N',
   `admin/list.php` char(1) NOT NULL default 'N',
   `admin/dbUpdateFromXLS.php` char(1) NOT NULL default 'N',
   `admin/room.php` char(1) NOT NULL default 'N',
@@ -635,7 +635,7 @@ CREATE TABLE IF NOT EXISTS `Wecken` (
   `Ort` text NOT NULL,
   `Bemerkung` text NOT NULL,
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM AUTO_INCREMENT=4 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
