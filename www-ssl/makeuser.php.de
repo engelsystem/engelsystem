@@ -22,11 +22,14 @@ if( $_POST)
 		$_POST["Passwort"] =  PassCrypt($_POST["Passwort"]);
 		unset($_POST["Passwort2"]);
 		
-		function mysqlinsert($table, $con, $array){
-			foreach($array as $key => $value){
-
+		function mysqlinsert($table, $con, $array)
+		{
+			$keys = "";
+			$values = "";
+			foreach($array as $key => $value)
+			{
 				$value = strtr($value, get_html_translation_table(HTML_ENTITIES));
-				$keys .= "'$key', ";
+				$keys .= "´$key´, ";
 				$values .= "'".$value."', ";
 			}
 			$keys = substr($keys, 0, -2);
@@ -38,13 +41,15 @@ if( $_POST)
 		mysqlinsert('User', $con, $_POST);
 		$Erg = mysql_affected_rows();
 		
-		if ($Erg != 1) {
+		if ($Erg != 1) 
+		{
 			echo "Fehler: Kann die eingegebenen Daten nicht sichern?!?<br>";
 			echo "\n<h6>(Fehler: ".mysql_error($con).")</h6>";
-		} else {
-			echo "<p class=\"important\">Die Anmeldung war erfolgreich. Vielen Dank f&uuml;r deine Anmeldung.</p><p></p>\n<br><br>";
+		} 
+		else 
+		{
+			echo "<p class=\"important\">Die Anmeldung war erfolgreich.";
 	
-
 			$SQL2 = "SELECT UID FROM `User` WHERE Nick='". $_POST["Nick"]. "';";
 			$Erg2 = mysql_query($SQL2, $con);
 			$Data = mysql_fetch_array($Erg2);
@@ -53,14 +58,14 @@ if( $_POST)
 			$Erg3 = mysql_query($SQL3, $con);
 			if ($Erg3 != 1)
 			{
-				echo "error: can't save userright... <br><h6>(".mysql_error($con).")</h6>";
+				echo "<h1>error: can't save userright... <br><h6>(".mysql_error($con).")</h6></h1>";
 			}
 			else
 			{
 				echo "userright was saved...<br>";
-				echo "<br><br> Your acount was sucsessfull creat, hafe al lot of fun.";
+				echo "<h1> Your acount was sucsessfull creat, hafe al lot of fun.</h1>";
 			}
-			
+			echo "Vielen Dank f&uuml;r deine Anmeldung.</p><p></p>\n<br><br>";
 		}
 	}
 	  if( !isset($error) ){
@@ -82,6 +87,7 @@ else
 	$_POST["email"] = "";
 	$_POST["Size"] = "";
 	$_POST["Art"] = "";
+	$_POST["kommentar"] = "";
 }
 ?>
 
@@ -127,7 +133,7 @@ Mit dieser Maske meldet Ihr euch im Engelsystem an. Durch das Engelsystem findet
 		    Congress mitgeholfen? <br />
 		    Wenn ja, in welchem/<br />
 		    welchen Aufgabengebiet(en)?</td>
-		<td><textarea rows="5" cols="40" name="qualifikationen"></textarea></td>
+		<td><textarea rows="5" cols="40" name="kommentar"><?php echo $_POST["kommentar"]; ?></textarea></td>
 	    </tr>
 	    <tr><td>Passwort*</td><td><input type="password" size="40" name="Passwort"/></td></tr>
 	    <tr><td>Passwort Best&auml;tigung*</td><td><input type="password" size="40" name="Passwort2"/></td></tr>

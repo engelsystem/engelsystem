@@ -21,11 +21,14 @@ if( $_POST)
 		$_POST["Passwort"] =  PassCrypt($_POST["Passwort"]);
 		unset($_POST["Passwort2"]);
 		
-		function mysqlinsert($table, $con, $array){
-			foreach($array as $key => $value){
-
+		function mysqlinsert($table, $con, $array)
+		{
+			$keys = "";
+			$values = "";
+			foreach($array as $key => $value)
+			{
 				$value = strtr($value, get_html_translation_table(HTML_ENTITIES));
-				$keys .= "'$key', ";
+				$keys .= "`$key`, ";
 				$values .= "'".$value."', ";
 			}
 			$keys = substr($keys, 0, -2);
@@ -37,10 +40,14 @@ if( $_POST)
 		mysqlinsert('User', $con, $_POST);
 		$Erg = mysql_affected_rows();
 		
-		if ($Erg != 1) {
-			echo "error: can't save your data...<br><h6>(error: ".mysql_error($con).")</h6>";
-		} else {
-                        echo "<p class=\"important\">transmitted. Thank you for your participation..</p><p></p>\n<br><br>";
+		if ($Erg != 1) 
+		{
+			echo "error: can't save your data...<br>";
+			echo "<h6>(error: ".mysql_error($con).")</h6>";
+		} 
+		else 
+		{
+                        echo "<p class=\"important\">transmitted. ";
 
 			$SQL2 = "SELECT UID FROM `User` WHERE Nick='". $_POST["Nick"]. "';";
 			$Erg2 = mysql_query($SQL2, $con);
@@ -50,14 +57,14 @@ if( $_POST)
 			$Erg3 = mysql_query($SQL3, $con);
 			if ($Erg3 != 1)
 			{
-				echo "error: can't save userright... <br><h6>(".mysql_error($con).")</h6>";
+				echo "<h1>error: can't save userright... <br><h6>(".mysql_error($con).")</h6></h1>";
 			}
 			else
 			{
 				echo "userright was saved...<br>";
-				echo "<br><br> Your acount was sucsessfull creat, hafe al lot of fun.";
+				echo "<h1>Your acount was sucsessfull creat, hafe al lot of fun.</h1>";
 			}
-			
+			echo "Thank you for your participation..</p><p></p>\n<br><br>";
 		}
 	}
 	  if( !isset($error) ){
@@ -79,8 +86,10 @@ else
 	$_POST["email"] = "";
 	$_POST["Size"] = "";
 	$_POST["Art"] = "";
+	$_POST["kommentar"] = "";
 }
 ?>
+
 <h1>Chaos-Angel registration</h1>
 
 By completing this form you're registering as a Chaos-Angel. This script will create you an account in the congress angel task system. 
@@ -122,7 +131,7 @@ By completing this form you're registering as a Chaos-Angel. This script will cr
 			congresses and which tasks <br />
 			have you performed then? <br />
 		</td>
-		<td><textarea rows="5" cols="40" name="qualifikationen"></textarea>
+		<td><textarea rows="5" cols="40" name="kommentar"><?php echo $_POST["kommentar"]; ?></textarea>
 		</td>
 	    </tr>
 	    <tr><td>password*</td><td><input type="password" size="40" name="Passwort"/></td></tr>
