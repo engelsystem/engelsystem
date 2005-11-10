@@ -26,7 +26,7 @@ if( $_POST)
 			foreach($array as $key => $value){
 
 				$value = strtr($value, get_html_translation_table(HTML_ENTITIES));
-				$keys .= $key.", ";
+				$keys .= "'$key', ";
 				$values .= "'".$value."', ";
 			}
 			$keys = substr($keys, 0, -2);
@@ -75,7 +75,7 @@ else
 	$_POST["Nick"] = "";
 	$_POST["Name"] = "";
 	$_POST["Vorname"] = "";
-	$_POST["Alta"] = "";
+	$_POST["Alter"] = "";
 	$_POST["Telefon"] = "";
 	$_POST["DECT"] = "";
 	$_POST["Handy"] = "";
@@ -95,7 +95,7 @@ Mit dieser Maske meldet Ihr euch im Engelsystem an. Durch das Engelsystem findet
 	    <tr><td>Nickname*</td><td><input type="text" size="40" name="Nick" value="<?php echo $_POST["Nick"]; ?>"/></td></tr>
 	    <tr><td>Nachname</td><td><input type="text" size="40" name="Name" value="<?php echo $_POST["Name"]; ?>"/></td></tr>
 	    <tr><td>Vorname</td><td><input type="text" size="40" name="Vorname" value="<?php echo $_POST["Vorname"]; ?>"/></td></tr>
-	    <tr><td>Alter</td><td><input type="text" size="40" name="Alta" value="<?php echo $_POST["Alta"]; ?>"/></td></tr>
+	    <tr><td>Alter</td><td><input type="text" size="40" name="Alter" value="<?php echo $_POST["Alter"]; ?>"/></td></tr>
 	    <tr><td>Telefon</td><td><input type="text" size="40" name="Telefon" value="<?php echo $_POST["Telefon"]; ?>"/></td></tr>
 	    <tr><td>DECT</td><td><input type="text" size="40" name="DECT" value="<?php echo $_POST["DECT"]; ?>"/></td><td><!--a href="https://21c3.ccc.de/wiki/index.php/POC"><img src="./pic/external.png" alt="external: " /> DECT</a--></td></tr>
 	    <tr><td>Handy</td><td><input type="text" size="40" name="Handy" value="<?php echo $_POST["Handy"]; ?>"/></td></tr>
