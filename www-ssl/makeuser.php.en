@@ -72,7 +72,7 @@ else
 	$_POST["Nick"] = "";
 	$_POST["Name"] = "";
 	$_POST["Vorname"] = "";
-	$_POST["Alta"] = "";
+	$_POST["Alter"] = "";
 	$_POST["Telefon"] = "";
 	$_POST["DECT"] = "";
 	$_POST["Handy"] = "";
@@ -90,7 +90,7 @@ By completing this form you're registering as a Chaos-Angel. This script will cr
 	    <tr><td>nick*</td><td><input type="text" size="40" name="Nick" value="<?php echo $_POST["Nick"]; ?>"/></td></tr>
 	    <tr><td>last name</td><td><input type="text" size="40" name="Name" value="<?php echo $_POST["Name"]; ?>"/></td></tr>
 	    <tr><td>first name</td><td><input type="text" size="40" name="Vorname" value="<?php echo $_POST["Vorname"]; ?>"/></td></tr>
-	    <tr><td>age</td><td><input type="text" size="40" name="Alta" value="<?php echo $_POST["Alta"]; ?>"/></td></tr>
+	    <tr><td>age</td><td><input type="text" size="40" name="Alter" value="<?php echo $_POST["Alter"]; ?>"/></td></tr>
 	    <tr><td>phone</td><td><input type="text" size="40" name="Telefon" value="<?php echo $_POST["Telefon"]; ?>"/></td></tr>
 	    <tr><td>DECT</td><td><input type="text" size="40" name="DECT" value="<?php echo $_POST["DECT"]; ?>"/></td><td><!--a href="https://21c3.ccc.de/wiki/index.php/POC"><img src="./pic/external.png" alt="external: " /> DECT</a--></td></tr>
 	    <tr><td>mobile</td><td><input type="text" size="40" name="Handy" value="<?php echo $_POST["Handy"]; ?>"/></td></tr>
