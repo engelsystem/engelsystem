@@ -34,7 +34,7 @@ $Menu["Entry"][9]["Line"] = "<br><br>";
 $Menu["Entry"][11]["File"] = "sprache.php";
 $Menu["Entry"][11]["Name"] = "Language";
 $Menu["Entry"][11]["Line"] = "<br><br>";
-$Menu["Entry"][10]["File"] = "list.php";
+$Menu["Entry"][10]["File"] = "debug.php";
 $Menu["Entry"][10]["Name"] = "Debug";
 
 if ($_SESSION['CVS']["nonpublic/index.php"] == "Y")
