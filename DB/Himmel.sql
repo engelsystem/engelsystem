@@ -589,7 +589,6 @@ CREATE TABLE IF NOT EXISTS `UserCVS` (
   `nonpublic/waeckliste.php` char(1) NOT NULL default 'N',
   `nonpublic/faq.php` char(1) NOT NULL default 'Y',
   `nonpublic/einstellungen.php` char(1) NOT NULL default 'Y',
-  `MenueShowAdminSection` char(1) NOT NULL default 'N',
   `admin/index.php` char(1) NOT NULL default 'N',
   `admin/list.php` char(1) NOT NULL default 'N',
   `admin/dbUpdateFromXLS.php` char(1) NOT NULL default 'N',
@@ -616,7 +615,7 @@ CREATE TABLE IF NOT EXISTS `UserCVS` (
 -- Daten für Tabelle `UserCVS`
 --
 
-INSERT INTO `UserCVS` (`UID`, `MenueShowAdminSection`, `index.php`, `logout.php`, `faq.php`, `lageplan.php`, `makeuser.php`, `nonpublic/index.php`, `nonpublic/news.php`, `nonpublic/newsAddMeting`, `nonpublic/news_comments.php`, `nonpublic/myschichtplan.php`, `nonpublic/engelbesprechung.php`, `admin/index.php`, `nonpublic/schichtplan.php`, `nonpublic/schichtplan_add.php`, `nonpublic/schichtplan_beamer.php`, `nonpublic/wecken.php`, `nonpublic/waeckliste.php`, `nonpublic/faq.php`, `nonpublic/einstellungen.php`, `admin/list.php`, `admin/dbUpdateFromXLS.php`, `admin/room.php`, `admin/EngelType.php`, `admin/schichtplan.php`, `admin/shiftadd.php`, `admin/schichtplan_druck.php`, `admin/user.php`, `admin/user2.php`, `admin/aktiv.php`, `admin/tshirt.php`, `admin/news.php`, `admin/faq.php`, `admin/free.php`, `admin/sprache.php`, `admin/dect.php`, `Netz`, `Kassen`) VALUES (-1, 'N', 'Y', 'N', 'N', 'N', 'N', 'Y', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'), (1, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y');
+INSERT INTO `UserCVS` (`UID`, `index.php`, `logout.php`, `faq.php`, `lageplan.php`, `makeuser.php`, `nonpublic/index.php`, `nonpublic/news.php`, `nonpublic/newsAddMeting`, `nonpublic/news_comments.php`, `nonpublic/myschichtplan.php`, `nonpublic/engelbesprechung.php`, `admin/index.php`, `nonpublic/schichtplan.php`, `nonpublic/schichtplan_add.php`, `nonpublic/schichtplan_beamer.php`, `nonpublic/wecken.php`, `nonpublic/waeckliste.php`, `nonpublic/faq.php`, `nonpublic/einstellungen.php`, `admin/list.php`, `admin/dbUpdateFromXLS.php`, `admin/room.php`, `admin/EngelType.php`, `admin/schichtplan.php`, `admin/shiftadd.php`, `admin/schichtplan_druck.php`, `admin/user.php`, `admin/user2.php`, `admin/aktiv.php`, `admin/tshirt.php`, `admin/news.php`, `admin/faq.php`, `admin/free.php`, `admin/sprache.php`, `admin/dect.php`, `Netz`, `Kassen`) VALUES (-1, 'Y', 'N', 'N', 'N', 'N', 'Y', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'), (1, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y');
 
 -- --------------------------------------------------------
 
