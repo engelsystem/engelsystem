@@ -62,7 +62,7 @@ if( $_POST)
 			else
 			{
 				echo "userright was saved...<br>";
-				echo "<h1>Your acount was sucsessfull creat, hafe al lot of fun.</h1>";
+				echo "<h1>Your acount was successfuly created, hafe al lot of fun.</h1>";
 			}
 			echo "Thank you for your participation..</p><p></p>\n<br><br>";
 		}
