@@ -101,6 +101,7 @@ if (IsSet($chsql)) {
 		echo mysql_error($con);
 		echo "<br><br>\n[$chsql]";
 	}
+	SetHeaderGo2Back();
 }
 
 }
