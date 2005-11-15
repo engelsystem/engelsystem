@@ -35,4 +35,8 @@ $GlobalZeileProStunde = 4;
 //ist ein modem angeschlossen
 $ModemEnable = false;
 
+//soll das xcal-file von penterbarf 
+$DataGetMeth="wget";
+//$DataGetMeth="lynx";
+
 ?>

@@ -9,10 +9,10 @@ include ("./inc/funktion_xml.php");
 // DEBUG //
 ///////////
 $ShowDataStrukture = 0;
-$EnableRoomFunctions = 0;
+$EnableRoomFunctions = 1;
 $EnableRooms = 0;
 $EnableRoomsDB = 0;
-$EnableSchudleFunctions = 1;
+$EnableSchudleFunctions = 0;
 $EnableSchudle = 1;
 $EnableSchudleDB = 0;
 
@@ -43,13 +43,15 @@ echo "\n\n<br>\n<h1>XML File:</h1>\n";
 if( isset($_POST["PentabarfUser"]) && isset($_POST["PentabarfPasswd"]) && isset($_POST["PentabarfURL"]))
 {
 	echo "Update XML-File from Pentabarf..";
-	$Command = "wget --http-user=". $_POST["PentabarfUser"]. " --http-passwd=".$_POST["PentabarfPasswd"]. " ".
-			$_POST["PentabarfURL"].
-			" --output-file=/tmp/engelXMLwgetLog --output-document=/tmp/engelXML".
-			" --no-check-certificate";
 	
-//	$Command = "lynx -auth=". $_POST["PentabarfUser"]. ":".$_POST["PentabarfPasswd"]. " -dump ".
-//			$_POST["PentabarfURL"].	" > /tmp/engelXML";
+	if( $DataGetMeth=="wget")
+		$Command = "wget --http-user=". $_POST["PentabarfUser"]. " --http-passwd=".$_POST["PentabarfPasswd"]. " ".
+				$_POST["PentabarfURL"].
+				" --output-file=/tmp/engelXMLwgetLog --output-document=/tmp/engelXML".
+				" --no-check-certificate";
+	elseif( $DataGetMeth=="lynx")
+		$Command = "lynx -auth=". $_POST["PentabarfUser"]. ":".$_POST["PentabarfPasswd"]. " -dump ".
+				$_POST["PentabarfURL"].	" > /tmp/engelXML";
 	echo system( $Command, $Status);
 
 	if( $Status==0)
