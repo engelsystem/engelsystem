@@ -82,18 +82,7 @@ case 'newsave':
 		$Keys   .= ", `$key`";
 		$Values .= ", '$value'";
 	}
-	
-	//ermitteln des letzten eintrages
-	$SQLin = "SELECT `RID` FROM `Room` ".
-		 "WHERE NOT (`FromPentabarf` = 'Y') ".
-		 "ORDER BY `RID` DESC";
-	$Ergin = mysql_query($SQLin, $con);
-	if( mysql_num_rows( $Ergin) > 0)
-		$RID = mysql_result( $Ergin, 0, 0)+1;
-	else
-		$RID = 10000;
-	
-	$SQL  = "INSERT INTO `Room` (`RID`$Keys) VALUES ( '$RID'$Values)";
+	$SQL  = "INSERT INTO `Room` (". substr( $Keys, 2). ") VALUES (". substr( $Values, 2). ")";
 	SetHeaderGo2Back();
 	break;
 

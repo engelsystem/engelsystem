@@ -288,18 +288,8 @@ function CreateNewEntry()
 		echo "\t<td>exists</td>";
 	elseif( $_GET["OnlyShow"] == "OFF" )   
 	{
-		//Suchet nach letzter SID
-		$SQLin = "SELECT `SID` FROM `Shifts` ".
-			 "WHERE NOT (`FromPentabarf` = 'Y') ".
-			 "ORDER BY `SID` DESC";
-		$Ergin = mysql_query($SQLin, $con);
-		if( mysql_num_rows( $Ergin) > 0)
-			$newSID = mysql_result( $Ergin, 0, 0)+1;
-		else
-			$newSID = 10000;
-		
 		// erstellt Eintrag in Shifts für die algemeine schicht
-		$SQL  = "INSERT INTO `Shifts` (`SID`, `DateS`, `DateE`, `Len`, `RID`, `Man`) VALUES ('$newSID', ";
+		$SQL  = "INSERT INTO `Shifts` ( `DateS`, `DateE`, `Len`, `RID`, `Man`) VALUES ( ";
 		$SQL .= "'". $_DateS. "', '". $_DateE. "', ";
 		$SQL .= "'". $_GET["len"]. "', '". $_GET["RID"]. "', ";
 		$SQL .= "'". $_GET["SchichtName"]. "');";
