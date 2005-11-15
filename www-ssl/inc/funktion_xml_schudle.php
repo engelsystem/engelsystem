@@ -11,7 +11,7 @@ function SaveSchedule()
 	global  $RoomID, $RoomName;
 
 	include ("./inc/db.php");
-	if( isset($_GET["SIDXML"]) && 
+	if( isset($_GET["PSIDXML"]) && 
 	    isset($_GET["DateXML"]) &&
 	    isset($_GET["RIDXML"]) &&
 	    isset($_GET["LenXML"]) &&
@@ -37,18 +37,17 @@ function SaveSchedule()
 		$_GET["RIDXML"] = $RoomName[$_GET["RIDXML"]];
 		
 		//Update OR insert ?
-		$SQL1 = "Select `SID` FROM `Shifts` WHERE `SID`='". $_GET["SIDXML"]. "';";
+		$SQL1 = "Select `SID` FROM `Shifts` WHERE `PSID`='". $_GET["PSIDXML"]. "';";
 		$Erg1 =  mysql_query($SQL1, $con);
 		
 		if( mysql_num_rows($Erg1)==0)
-			$SQL= "INSERT INTO `Shifts` (`SID`, `DateS`, `DateE`, `Len`, `RID`, `Man`, `FromPentabarf`, `URL`) ".
-				"VALUES ('". $_GET["SIDXML"]. "', ".
+			$SQL= "INSERT INTO `Shifts` (`PSID`, `DateS`, `DateE`, `Len`, `RID`, `Man`, `URL`) ".
+				"VALUES ('". $_GET["PSIDXML"]. "', ".
 					"'". $_GET["DateXML"]. "', ".
 					"'". $DateEnd. "', ".
 					"'". $_GET["LenXML"]. "', ".
 					"'". $_GET["RIDXML"]. "', ".
 					"'". mysql_escape_string($_GET["ManXML"]). "', ".
-					"'Y', ".
 					"'". $_GET["URLXML"]. "'".
 					");";
 		else
@@ -58,16 +57,19 @@ function SaveSchedule()
 				"`Len` = '". $_GET["LenXML"]. "', ".
 				"`RID` = '". $_GET["RIDXML"]. "', ".
 				"`Man` = '". mysql_escape_string($_GET["ManXML"]). "', ".
-				"`FromPentabarf`= 'Y', ".
 				"`URL`= '". $_GET["URLXML"]. "' ".
-				"WHERE `SID` = '". $_GET["SIDXML"]. "' LIMIT 1;";
+				"WHERE `PSID` = '". $_GET["PSIDXML"]. "' LIMIT 1;";
 		$Erg = mysql_query($SQL, $con);
 		if( $Erg )
 		{
-			echo "Aenderung, am Schedule '". $_GET["SIDXML"]. "', war erfogreich<br>\n";
+			echo "Aenderung, am Schedule '". $_GET["PSIDXML"]. "', war erfogreich<br>\n";
 			if( mysql_num_rows($Erg1)==0)
 			{
 				echo "-->Create Shifts:<br>\n";
+
+				//SID auslesen
+				$SQL1 = "Select `SID` FROM `Shifts` WHERE `PSID`='". $_GET["PSIDXML"]. "';";
+				$Erg1 =  mysql_query($SQL1, $con);
 				
 				// erstellt ein Array der Reume
 			        $sql2 =	"SELECT * FROM `Room` ".
@@ -83,7 +85,7 @@ function SaveSchedule()
 						for( $i=0; $i < mysql_result($Erg2, 0, $j); $i++ )
 						{
 							$SQL3  = "INSERT INTO `ShiftEntry` (`SID`, `TID`) VALUES (".
-								 "'". $_GET["SIDXML"]. "', ".
+								 "'". mysql_result($Erg1, 0, 0). "', ".
 								 "'". substr(  mysql_field_name($Erg2, $j), 12). "');";
 
 							$Erg3 = mysql_query($SQL3, $con);
@@ -100,7 +102,7 @@ function SaveSchedule()
 			}
 		}
 		else
-			echo "Aenderung, am Schedule '". $_GET["SIDXML"]. "', war <u>nicht</u> erfogreich.(". 
+			echo "Aenderung, am Schedule '". $_GET["PSIDXML"]. "', war <u>nicht</u> erfogreich.(". 
 				mysql_error($con). ")<br>[$SQL]<br>\n";
 	}
 	else 
@@ -117,7 +119,7 @@ $Where = "";
 
 //ausgabe
 echo "<table border=\"0\">\n";
-echo "<tr><th>SID</th><th>Date</th>".
+echo "<tr><th>PSID</th><th>Date</th>".
 	"<th>Room</th><th>Len</th><th>Name</th><th>state</th></tr>\n";
 echo "<tr align=\"center\"><td>XML - DB</td><td>XML - DB</td>".
 	"<td>XML - DB</td><td>XML - DB</td><td>XML - DB</td><td></td></tr>\n";
@@ -130,7 +132,7 @@ foreach($XMLmain->sub as $EventKey => $Event)
 		echo "<form action=\"dbUpdateFromXLS.php\">\n";
 		echo "\t<tr>\n";
 	
-		$SIDXML  = substr( getXMLsubData( $Event, "UID"), 0, strpos( getXMLsubData( $Event, "UID"), "@" )); 
+		$PSIDXML  = getXMLsubData( $Event, "UID"); 
 		$DateXML = 
 			substr( getXMLsubData( $Event, "DTSTART"), 0, 4). "-".
 			substr( getXMLsubData( $Event, "DTSTART"), 4, 2). "-".
@@ -144,7 +146,7 @@ foreach($XMLmain->sub as $EventKey => $Event)
 	
 		if( isset($_GET["UpdateALL"]))
 		{
-			$_GET["SIDXML"]  = $SIDXML;
+			$_GET["PSIDXML"]  = $PSIDXML;
 			$_GET["DateXML"] = $DateXML;
 			$_GET["LenXML"]  = $LenXML;
 			$_GET["RIDXML"]  = $RIDXML;
@@ -153,11 +155,12 @@ foreach($XMLmain->sub as $EventKey => $Event)
 			SaveSchedule();
 		}
 			
-		$SQL = "SELECT * FROM `Shifts` WHERE SID=$SIDXML";
+		$SQL = "SELECT * FROM `Shifts` WHERE PSID='$PSIDXML'";
 		$Erg = mysql_query($SQL, $con);
 		if(mysql_num_rows($Erg)>0)
 		{
 			$SIDDB  = mysql_result($Erg, 0, "SID");
+			$PSIDDB  = mysql_result($Erg, 0, "PSID");
 			$TimeDB = mysql_result($Erg, 0, "DateS");
 			$LenDB  = mysql_result($Erg, 0, "Len");
 			if( isset($RoomID[mysql_result($Erg, 0, "RID")]))
@@ -169,9 +172,9 @@ foreach($XMLmain->sub as $EventKey => $Event)
 			$URLDB  = mysql_result($Erg, 0, "URL");
 		}
 		else
-			$SIDDB  = $TimeDB = $LenDB  = $RIDDB  = $ManDB =  $URLDB = "";
+			$SIDDB = $PSIDDB  = $TimeDB = $LenDB  = $RIDDB  = $ManDB =  $URLDB = "";
 
-		echo "\t<td><input name=\"SIDXML\" type=\"text\" value=\"$SIDXML\" size=\"2\" eadonly></td>\n";
+		echo "\t<td><input name=\"PSIDXML\" type=\"text\" value=\"$PSIDXML\" size=\"2\" eadonly></td>\n";
 		echo "\t<td><input name=\"DateXML\" type=\"text\" value=\"$DateXML\" size=\"17\" readonly>\n\t\t".
 		   "<input name=\"DateDB\" type=\"text\" value=\"$TimeDB\" size=\"17\" readonly></td>\n";
 		echo "\t<td><input name=\"RIDXML\" type=\"text\" value=\"$RIDXML\" size=\"15\" readonly>\n\t\t".
@@ -180,10 +183,9 @@ foreach($XMLmain->sub as $EventKey => $Event)
 		   "<input name=\"LenDB\" type=\"text\" value=\"$LenDB\" size=\"1\"readonly></td>\n";
 		echo "\t<td><input name=\"ManXML\" type=\"text\" value=\"$ManXML\" size=\"40\"readonly>\n\t\t".
 		   "<input name=\"ManDB\" type=\"text\" value=\"$ManDB\" size=\"40\"readonly></td>\n";
-		
 		echo "\t<td><input name=\"URLXML\" type=\"hidden\" value=\"$URLXML\"></td>\n";
 		echo "\t<td><input name=\"URLDB\" type=\"hidden\" value=\"$URLDB\"></td>\n";
-		if( !(	$SIDXML==$SIDDB && 
+		if( !(	$PSIDXML==$PSIDDB && 
 			$DateXML==$TimeDB && 
 			$RIDXML==$RIDDB && 
 			$LenXML==$LenDB &&
@@ -195,12 +197,12 @@ foreach($XMLmain->sub as $EventKey => $Event)
 		}
 		else
 		{
-			echo "\t<td><a href=\"./schichtplan.php?action=change&SID=$SIDXML\">edit</a></td>\n";
+			echo "\t<td><a href=\"./schichtplan.php?action=change&SID=$SIDDB\">edit</a></td>\n";
 			$DS_OK++;
 		}
 		echo "\t</tr>\n";
 		echo "</form>\n";
-		$Where.= " OR SID=$SIDXML";
+		$Where.= " OR `PSID`='$PSIDXML'";
 	}
 }
 echo "<tr><td colspan=\"6\">status: $DS_KO/$DS_OK nicht Aktuel.</td></tr>\n";
@@ -208,11 +210,12 @@ echo "<tr><td colspan=\"6\">status: $DS_KO/$DS_OK nicht Aktuel.</td></tr>\n";
 
 //Anzeige von nicht im XML File vorkommende entraege
 if( $Where =="")
-	$SQL2 = "SELECT * FROM `Shifts` WHERE FromPentabarf =  'Y';";
+	$SQL2 = "SELECT * FROM `Shifts` WHERE NOT PSID = '';";
 else
-	$SQL2 = "SELECT * FROM `Shifts` WHERE NOT (".substr( $Where, 4). ") AND FromPentabarf =  'Y';";
+	$SQL2 = "SELECT * FROM `Shifts` WHERE NOT (".substr( $Where, 4). ") AND NOT PSID = '';";
 	
 $Erg2 = mysql_query($SQL2, $con);
+echo mysql_error($con);
 if(mysql_num_rows($Erg2)>0 && $EnableSchudleDB )
 	for( $i=0; $i<mysql_num_rows( $Erg2); $i++)
 	{

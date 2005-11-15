@@ -158,8 +158,8 @@ CREATE TABLE IF NOT EXISTS `Shifts` (
   `Len` float NOT NULL default '0',
   `RID` int(11) NOT NULL default '0',
   `Man` text,
-  `FromPentabarf` char(1) NOT NULL default 'N',
   `URL` text,
+  `PSID` text,
   PRIMARY KEY  (`SID`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 

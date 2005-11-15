@@ -115,9 +115,6 @@ case 'change':
 	echo "  <tr><td>Beschreibung</td>".
 	 	"<td><input value=\"". mysql_result($Erg, 0, "Man").
 		"\" type=\"text\" size=\"40\" name=\"eName\"></td></tr>\n";
-	echo "  <tr><td>FromPentabarf</td>".
-	 	"<td><input value=\"". mysql_result($Erg, 0, "FromPentabarf").
-		"\" type=\"text\" size=\"40\" name=\"eFromPentabarf\"></td></tr>\n";
 	echo "  <tr><td>URL</td>".
 	 	"<td><input value=\"". mysql_result($Erg, 0, "URL").
 		"\" type=\"text\" size=\"40\" name=\"eURL\"></td></tr>\n";
@@ -282,7 +279,6 @@ case 'changesave':
 			"`RID`='". $_GET["eRID"]. "', ".
 			"`Len`='". $_GET["eDauer"]. "', ".
 			"`Man`='". $_GET["eName"]. "', ".
-			"`FromPentabarf`='". $_GET["eFromPentabarf"]. "', ".
 			"`URL`='". $_GET["eURL"]. "' ".
 			"WHERE `SID`=". $_GET["SID"];
 	SetHeaderGo2Back();
