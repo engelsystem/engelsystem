@@ -5,14 +5,33 @@ $submenus = 1;
 include ("./inc/header.php");
 include ("./inc/funktion_user.php");
 
+function executeSQL( $SQL)
+{
+	global $DEBUG, $con;
+	
+	$Erg = mysql_query($SQL, $con);
+	if( $DEBUG ) 
+		echo "DEBUG SQL: $SQL<br>\n";
+	if ($Erg == 1) 
+	{
+	     	echo "SQL war erfolgreich";
+	}
+	else 
+	{
+		echo "SQL Fehler (". mysql_error($con).")" ;
+	}
+}
+
 if (!IsSet($_GET["action"])) {
 echo "Hallo ".$_SESSION['Nick'].",<br>\n";
 echo "hier kannst du Schichten anlegen, &auml;ndern oder l&ouml;schen.<br><br>";
 echo "<a href=\"./shiftadd.php\">Neue Schicht einplanen</a><br><br>\n\n";
 
+echo "<form action=\"".$_SERVER['SCRIPT_NAME']."\" method=\"GET\" >\n";
 ?>
 <table width="100%" class="border" cellpadding="2" cellspacing="1">
 	<tr class="contenttopic">
+		<td></td>
 		<td>Datum</td>
 		<td>Raum</td>
 		<td>Dauer</td>
@@ -27,6 +46,8 @@ $rowcount = mysql_num_rows($Erg);
 for( $i = 0; $i < $rowcount; $i++)
 {
 	echo "\t<tr class=\"content\">\n";
+	echo "\t\t<td><input type=\"checkbox\" name=\"SID". mysql_result($Erg, $i, "SID"). "\" ".
+		"value=\"". mysql_result($Erg, $i, "SID"). "\"></td>\n";
 	echo "\t\t<td>".mysql_result($Erg, $i, "DateS")."</td>\n";
   
 	$sql2= "SELECT `Name` FROM `Room` WHERE `RID`=\"".mysql_result($Erg, $i, "RID")."\"";
@@ -40,7 +61,11 @@ for( $i = 0; $i < $rowcount; $i++)
 		mysql_result($Erg, $i, "SID")."\">####</a></td>\n";
 	echo "\t</tr>\n";
 }
-echo "</table>";
+echo "</table>\n";
+
+echo "<input type=\"hidden\" name=\"action\" value=\"deleteShifs\">\n";
+echo "<input type=\"submit\" value=\"L&ouml;schen...\">\n";
+echo "</form>\n";
 
 
 } else {
@@ -51,7 +76,8 @@ UnSet($chSQL);
 switch ($_GET["action"]){
 
 case 'change':
-	if ( !IsSet($_GET["SID"]) ){
+	if ( !IsSet($_GET["SID"]) )
+	{
 		echo "Fehlerhafter Aufruf!\n";
 	} 
 	else 
@@ -89,6 +115,12 @@ case 'change':
 	echo "  <tr><td>Beschreibung</td>".
 	 	"<td><input value=\"". mysql_result($Erg, 0, "Man").
 		"\" type=\"text\" size=\"40\" name=\"eName\"></td></tr>\n";
+	echo "  <tr><td>FromPentabarf</td>".
+	 	"<td><input value=\"". mysql_result($Erg, 0, "FromPentabarf").
+		"\" type=\"text\" size=\"40\" name=\"eFromPentabarf\"></td></tr>\n";
+	echo "  <tr><td>URL</td>".
+	 	"<td><input value=\"". mysql_result($Erg, 0, "URL").
+		"\" type=\"text\" size=\"40\" name=\"eURL\"></td></tr>\n";
         echo "</table>\n";
 	 
         echo "<input type=\"hidden\" name=\"SID\" value=\"". $_GET["SID"]. "\">\n";
@@ -244,9 +276,15 @@ case 'changesave':
 	$query = mysql_query("SELECT DATE_ADD('". $_GET["eDate"]. "', INTERVAL '+0 ". $_GET["eDauer"]. "' DAY_HOUR)", $con);
 	$enddate = mysql_fetch_row($query);
 	
-	$chSQL = "UPDATE `Shifts` SET `DateS`='". $_GET["eDate"]. "', `DateE`='".$enddate[0].
-		 "', `RID`='". $_GET["eRID"]. "', `Len`='". $_GET["eDauer"]. "', ".
-	         "`Man`='". $_GET["eName"]. "' WHERE `SID`=". $_GET["SID"];
+	$chSQL = "UPDATE `Shifts` SET ".
+			"`DateS`='". $_GET["eDate"]. "', ".
+			"`DateE`='".$enddate[0]. "', ".
+			"`RID`='". $_GET["eRID"]. "', ".
+			"`Len`='". $_GET["eDauer"]. "', ".
+			"`Man`='". $_GET["eName"]. "', ".
+			"`FromPentabarf`='". $_GET["eFromPentabarf"]. "', ".
+			"`URL`='". $_GET["eURL"]. "' ".
+			"WHERE `SID`=". $_GET["SID"];
 	SetHeaderGo2Back();
 	break;
 	
@@ -254,6 +292,19 @@ case 'delete':
 	$chSQL = "DELETE FROM `Shifts` WHERE `SID`=". $_GET["SID"]. " LIMIT 1";
 	$ch2SQL = "DELETE FROM `ShiftEntry` WHERE `SID`=". $_GET["SID"];
 	SetHeaderGo2Back();
+	break;
+
+case 'deleteShifs':
+	foreach ($_GET as $k => $v)
+		if( strpos( " ".$k, "SID") == 1)
+		{
+			echo "Shifts $v wird gelöscht...";
+			executeSQL( "DELETE FROM `Shifts` WHERE `SID`=$v LIMIT 1");
+			echo "<br>\n";
+			echo "ShiftEntry $v wird gelöscht...";
+			executeSQL( "DELETE FROM `ShiftEntry` WHERE `SID`= $v");
+			echo "<br><br>\n";
+		}
 	break;
 
 } // end switch
