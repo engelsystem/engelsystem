@@ -36,7 +36,7 @@ $GlobalZeileProStunde = 4;
 $ModemEnable = false;
 
 //soll das xcal-file von penterbarf 
-$DataGetMeth="wget";
-//$DataGetMeth="lynx";
+//$DataGetMeth="wget";
+$DataGetMeth="lynx";
 
 ?>

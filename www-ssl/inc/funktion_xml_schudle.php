@@ -150,7 +150,11 @@ foreach($XMLmain->sub as $EventKey => $Event)
 			$SIDDB  = mysql_result($Erg, 0, "SID");
 			$TimeDB = mysql_result($Erg, 0, "DateS");
 			$LenDB  = mysql_result($Erg, 0, "Len");
-			$RIDDB  = $RoomID[mysql_result($Erg, 0, "RID")];
+			if( isset($RoomID[mysql_result($Erg, 0, "RID")]))
+				$RIDDB  = $RoomID[mysql_result($Erg, 0, "RID")];
+			else
+				$RIDDB  = "RID". mysql_result($Erg, 0, "RID");
+			
 			$ManDB  = mysql_result($Erg, 0, "Man");
 		}
 		else

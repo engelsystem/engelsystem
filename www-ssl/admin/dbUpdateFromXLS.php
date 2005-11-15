@@ -10,9 +10,9 @@ include ("./inc/funktion_xml.php");
 ///////////
 $ShowDataStrukture = 0;
 $EnableRoomFunctions = 1;
-$EnableRooms = 0;
-$EnableRoomsDB = 0;
-$EnableSchudleFunctions = 0;
+$EnableRooms = 1;
+$EnableRoomsDB = 1;
+$EnableSchudleFunctions = 1;
 $EnableSchudle = 1;
 $EnableSchudleDB = 0;
 
@@ -20,21 +20,25 @@ $EnableSchudleDB = 0;
 /*##############################################################################################
 				erstellt Arrays der Reume
   ##############################################################################################*/
-$sql =	"SELECT `RID`, `Name` FROM `Room` ".
-	"WHERE `Show`='Y'".
-	"ORDER BY `Number`, `Name`;";
-$Erg = mysql_query($sql, $con);
-$rowcount = mysql_num_rows($Erg);
-
-for ($i=0; $i<$rowcount; $i++)
+function CreateRoomArrays()
 {
-	$Room[$i]["RID"]  = mysql_result($Erg, $i, "RID");
-	$Room[$i]["Name"] = mysql_result($Erg, $i, "Name");
-	$RoomID[ mysql_result($Erg, $i, "RID") ] =  mysql_result($Erg, $i, "Name");
-	$RoomName[ mysql_result($Erg, $i, "Name") ] = mysql_result($Erg, $i, "RID");
+	global $Room, $RoomID, $RoomName, $con;
+
+	$sql =	"SELECT `RID`, `Name` FROM `Room` ".
+		"WHERE `Show`='Y'".
+		"ORDER BY `Number`, `Name`;";
+	$Erg = mysql_query($sql, $con);
+	$rowcount = mysql_num_rows($Erg);
+
+	for ($i=0; $i<$rowcount; $i++)
+	{
+		$Room[$i]["RID"]  = mysql_result($Erg, $i, "RID");
+		$Room[$i]["Name"] = mysql_result($Erg, $i, "Name");
+		$RoomID[ mysql_result($Erg, $i, "RID") ] =  mysql_result($Erg, $i, "Name");
+		$RoomName[ mysql_result($Erg, $i, "Name") ] = mysql_result($Erg, $i, "RID");
+	}
 }
-
-
+CreateRoomArrays();
 
 /*##############################################################################################
 				           F I L E
