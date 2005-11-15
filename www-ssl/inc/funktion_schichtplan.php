@@ -59,8 +59,10 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 	///////////////////////////////////////////////////////////////////
   	// Ausgabe des Schischtnamens
 	///////////////////////////////////////////////////////////////////
-	if( isset($CCC_Start) && $SID<10000) 
-		$Spalten.="<a href=\"$CCC_Start$SID$CCC_End\" target=\"_black\"><u>$Man:</u></a><br>";
+	$SQL = "SELECT `URL` FROM `Shifts` WHERE (`SID` = '$SID');";
+	$Erg = mysql_query($SQL, $con);
+	if( mysql_result($Erg, 0, 0) != "")
+		$Spalten.="<a href=\"". mysql_result($Erg, 0, 0). "\" target=\"_black\"><u>$Man:</u></a><br>";
 	else
   		$Spalten.="<u>".$Man.":</u><br>";
 

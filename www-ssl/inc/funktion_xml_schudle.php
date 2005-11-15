@@ -15,7 +15,8 @@ function SaveSchedule()
 	    isset($_GET["DateXML"]) &&
 	    isset($_GET["RIDXML"]) &&
 	    isset($_GET["LenXML"]) &&
-	    isset($_GET["ManXML"])  )
+	    isset($_GET["ManXML"]) &&
+	    isset($_GET["URLXML"])  )
 	{
 		//erzeuge von `DateE`
 		$TimeStart = substr( $_GET["DateXML"], 11, 2) + (substr($_GET["DateXML"], 14, 2)/60);
@@ -40,10 +41,16 @@ function SaveSchedule()
 		$Erg1 =  mysql_query($SQL1, $con);
 		
 		if( mysql_num_rows($Erg1)==0)
-			$SQL= "INSERT INTO `Shifts` (`SID`, `DateS`, `DateE`, `Len`, `RID`, `Man`, `FromPentabarf`) ".
-				"VALUES ('". $_GET["SIDXML"]. "', '". $_GET["DateXML"]. "', '". 
-					     $DateEnd. "', '". $_GET["LenXML"]. "', '". 
-					     $_GET["RIDXML"]. "', '". mysql_escape_string($_GET["ManXML"]). "', 'Y');";
+			$SQL= "INSERT INTO `Shifts` (`SID`, `DateS`, `DateE`, `Len`, `RID`, `Man`, `FromPentabarf`, `URL`) ".
+				"VALUES ('". $_GET["SIDXML"]. "', ".
+					"'". $_GET["DateXML"]. "', ".
+					"'". $DateEnd. "', ".
+					"'". $_GET["LenXML"]. "', ".
+					"'". $_GET["RIDXML"]. "', ".
+					"'". mysql_escape_string($_GET["ManXML"]). "', ".
+					"'Y', ".
+					"'". $_GET["URLXML"]. "'".
+					");";
 		else
 			$SQL= "UPDATE `Shifts` SET ".
 				"`DateS` = '". $_GET["DateXML"]. "', ".
@@ -51,7 +58,8 @@ function SaveSchedule()
 				"`Len` = '". $_GET["LenXML"]. "', ".
 				"`RID` = '". $_GET["RIDXML"]. "', ".
 				"`Man` = '". mysql_escape_string($_GET["ManXML"]). "', ".
-				"`FromPentabarf`= 'Y' ".
+				"`FromPentabarf`= 'Y', ".
+				"`URL`= '". $_GET["URLXML"]. "' ".
 				"WHERE `SID` = '". $_GET["SIDXML"]. "' LIMIT 1;";
 		$Erg = mysql_query($SQL, $con);
 		if( $Erg )
@@ -132,6 +140,7 @@ foreach($XMLmain->sub as $EventKey => $Event)
 		$LenXML  = substr( getXMLsubData( $Event, "DURATION"), 0, strlen(getXMLsubData( $Event, "DURATION"))-1);
 		$RIDXML  = getXMLsubData( $Event, "LOCATION");
 		$ManXML  = getXMLsubData( $Event, "SUMMARY");
+		$URLXML  = getXMLsubData( $Event, "URL");
 	
 		if( isset($_GET["UpdateALL"]))
 		{
@@ -140,6 +149,7 @@ foreach($XMLmain->sub as $EventKey => $Event)
 			$_GET["LenXML"]  = $LenXML;
 			$_GET["RIDXML"]  = $RIDXML;
 			$_GET["ManXML"]  = $ManXML;
+			$_GET["URLXML"]  = $URLXML;
 			SaveSchedule();
 		}
 			
@@ -156,9 +166,10 @@ foreach($XMLmain->sub as $EventKey => $Event)
 				$RIDDB  = "RID". mysql_result($Erg, 0, "RID");
 			
 			$ManDB  = mysql_result($Erg, 0, "Man");
+			$URLDB  = mysql_result($Erg, 0, "URL");
 		}
 		else
-			$SIDDB  = $TimeDB = $LenDB  = $RIDDB  = $ManDB= "";
+			$SIDDB  = $TimeDB = $LenDB  = $RIDDB  = $ManDB =  $URLDB = "";
 
 		echo "\t<td><input name=\"SIDXML\" type=\"text\" value=\"$SIDXML\" size=\"2\" eadonly></td>\n";
 		echo "\t<td><input name=\"DateXML\" type=\"text\" value=\"$DateXML\" size=\"17\" readonly>\n\t\t".
@@ -169,11 +180,15 @@ foreach($XMLmain->sub as $EventKey => $Event)
 		   "<input name=\"LenDB\" type=\"text\" value=\"$LenDB\" size=\"1\"readonly></td>\n";
 		echo "\t<td><input name=\"ManXML\" type=\"text\" value=\"$ManXML\" size=\"40\"readonly>\n\t\t".
 		   "<input name=\"ManDB\" type=\"text\" value=\"$ManDB\" size=\"40\"readonly></td>\n";
+		
+		echo "\t<td><input name=\"URLXML\" type=\"hidden\" value=\"$URLXML\"></td>\n";
+		echo "\t<td><input name=\"URLDB\" type=\"hidden\" value=\"$URLDB\"></td>\n";
 		if( !(	$SIDXML==$SIDDB && 
 			$DateXML==$TimeDB && 
 			$RIDXML==$RIDDB && 
 			$LenXML==$LenDB &&
-			$ManXML==$ManDB) )
+			$ManXML==$ManDB &&
+			$URLXML==$URLDB) )
 		{
 			echo "\t<td><input type=\"submit\" name=\"ScheduleUpdate\" value=\"update\"></td>\n";
 			$DS_KO++;
@@ -185,9 +200,8 @@ foreach($XMLmain->sub as $EventKey => $Event)
 		}
 		echo "\t</tr>\n";
 		echo "</form>\n";
-		$Where.= " OR SID=$SIDXML";		
-
-		}
+		$Where.= " OR SID=$SIDXML";
+	}
 }
 echo "<tr><td colspan=\"6\">status: $DS_KO/$DS_OK nicht Aktuel.</td></tr>\n";
 
