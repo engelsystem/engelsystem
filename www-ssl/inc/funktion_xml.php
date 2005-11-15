@@ -18,6 +18,7 @@ $XMLpos = array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
    
 function convertValues( $Data)
 {
+	global $XMLDEBUG;
 	if( $XMLDEBUG)
 	{
 		$Data = htmlspecialchars($Data);
@@ -101,6 +102,8 @@ function character_data_handler($parser, $data)
 /*#######################################################################################*/
 function readXMLfile( $file ) 
 {
+	global $XMLDEBUG;
+	
 	//$xml_parser = xml_parser_create_ns();
 	$xml_parser = xml_parser_create("UTF-8");
 	xml_set_element_handler($xml_parser, "start_element_handler", "end_element_handler");
@@ -137,4 +140,10 @@ function getXMLsubPease( $Sourse, $Name )
 //	die;
 }
 
+/*#######################################################################################*/
+function getXMLsubData( $Sourse, $Name ) 
+{
+	$XML = getXMLsubPease( $Sourse, $Name);
+	return $XML->data;
+}
 ?>
