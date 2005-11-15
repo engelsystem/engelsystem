@@ -159,6 +159,7 @@ CREATE TABLE IF NOT EXISTS `Shifts` (
   `RID` int(11) NOT NULL default '0',
   `Man` text,
   `FromPentabarf` char(1) NOT NULL default 'N',
+  `URL` text,
   PRIMARY KEY  (`SID`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
