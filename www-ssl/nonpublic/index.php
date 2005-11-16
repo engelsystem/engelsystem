@@ -71,7 +71,8 @@ else
 } 
 
 include ("./inc/header.php");
-echo "<h2>". Get_Text($ErrorText). "</h2><br>\n";
+if( isset($ErrorText)
+	echo "<h2>". Get_Text($ErrorText). "</h2><br>\n";
 include ("./inc/login_eingabefeld.php");
 include ("./inc/footer.php");
 

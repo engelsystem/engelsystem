@@ -18,7 +18,7 @@ if( isset( $_POST["text"]) && isset( $_POST["betreff"]) && IsSet( $_POST["date"]
 
 if( !IsSet( $_GET["news_begin"]))
 	$_GET["news_begin"]=0;
-
+	
 if( !IsSet( $_GET["DISPLAY_NEWS"]))
   $_GET["DISPLAY_NEWS"] = 5;
  
@@ -66,7 +66,7 @@ $dis_rows =  round (($rows / $DISPLAY_NEWS)+0.5);
 Print_Text(5);
 
 for ($i=1; $i <= $dis_rows; $i++) {
-	if (!((($i * $DISPLAY_NEWS) - $news_begin) == $DISPLAY_NEWS)) {
+	if (!((($i * $DISPLAY_NEWS) - $_GET["news_begin"]) == $DISPLAY_NEWS)) {
 		echo "<a href=\"./news.php?news_begin=".(($i*$DISPLAY_NEWS) - $DISPLAY_NEWS)."\">$i</a>&nbsp; ";
 	} else {
 		echo "$i&nbsp; ";
