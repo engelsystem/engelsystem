@@ -38,8 +38,10 @@ if ($_SESSION['CVS']["nonpublic/news.php"] == "Y")
 {
 	$MenuAdmin["Path"] = "";
 	$MenuAdmin["Name"] = Get_Text("pub_menu_menuname");
-	$MenuAdmin["Entry"][0]["File"] = "nonpublic/news.php";
-	$MenuAdmin["Entry"][0]["Name"] = "Engel-Men&uuml;";
+	$MenuAdmin["Entry"][0]["File"] = "admin/index.php";
+	$MenuAdmin["Entry"][0]["Name"] = "Erzengel-Men&uuml;";
+	$MenuAdmin["Entry"][1]["File"] = "nonpublic/news.php";
+	$MenuAdmin["Entry"][1]["Name"] = "Engel-Men&uuml;";
 } // MenueShowAdminSection
 
 ?>
