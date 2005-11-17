@@ -1,12 +1,17 @@
 <?PHP
 
-if( !isset($_SESSION['Sprache'])) $_SESSION['Sprache'] = "EN";
-if( $_SESSION['Sprache']=="") $_SESSION['Sprache']="EN";
 
 function Get_Text ($TextID)
 {
-
 	GLOBAL $con;
+	
+	if( !isset($_SESSION['Sprache'])) 
+		$_SESSION['Sprache'] = "EN";
+	if( $_SESSION['Sprache']=="") 
+		$_SESSION['Sprache']="EN";
+	if( isset($_GET["SetLanguage"]))
+		$_SESSION['Sprache']= $_GET["SetLanguage"];
+
 	$SQL = "SELECT * FROM `Sprache` WHERE TextID=\"$TextID\" AND Sprache ='".$_SESSION['Sprache']."'";
 	@$Erg = mysql_query($SQL, $con);
 //	if(!mysql_error($con))
@@ -23,7 +28,14 @@ function Get_Text ($TextID)
 function Print_Text ($TextID)
 {
 	GLOBAL $con;
-
+	
+	if( !isset($_SESSION['Sprache'])) 
+		$_SESSION['Sprache'] = "EN";
+	if( $_SESSION['Sprache']=="") 
+		$_SESSION['Sprache']="EN";
+	if( isset($_GET["SetLanguage"]))
+		$_SESSION['Sprache']= $_GET["SetLanguage"];
+	
 	$SQL = "SELECT * FROM `Sprache` WHERE TextID=\"$TextID\" AND Sprache ='".$_SESSION['Sprache']."'";
 	@$Erg = mysql_query($SQL, $con);
 

@@ -110,8 +110,11 @@ if( isset($_SESSION['UID']))
 	</tr>
 	<tr>
 		<td colspan="2">
-			<h5 align="center"> &#169; copyleft - <a href="mailto:erzengel@lists.ccc.de">Kontakt</a></h5>
-			<? include( "./inc/funktion_counter.php"); ?>
+			<h5 align="center"> &#169; copyleft - <a href="mailto:erzengel@lists.ccc.de">Kontakt</a>
+			<? 
+				include( "./inc/funktion_counter.php"); 
+				include( "./inc/funktion_flag.php"); 
+			?></h5>
         	</td>
 	</tr>
 </table>
