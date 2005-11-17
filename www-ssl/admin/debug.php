@@ -5,6 +5,8 @@ $header = "Datenbank-Auszug";
 include ("./inc/header.php");
 include ("./inc/funktion_db_list.php");
 
+echo "<h1>Counter</h1> <br>";
+funktion_db_list("Counter");
 
 /*
 echo "<h1>Raeume</h1> <br>";
@@ -25,9 +27,8 @@ funktion_db_list("News");
 echo "<h1>FAQ</h1> <br>";
 funktion_db_list("FAQ");
 
-*/
-
 echo "Deaktiviert";
+*/
 
 include ("./inc/footer.php");
 ?>
