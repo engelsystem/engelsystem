@@ -1,8 +1,6 @@
 <?PHP
-
 $title = "Anmeldung zum Chaos-Engel";
 $header = "Anmeldung zum Chaos-Engel";
-
 include ("./inc/header.php");
 include ("./inc/db.php");
 include ("./inc/crypt.php");

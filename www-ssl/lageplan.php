@@ -2,17 +2,10 @@
 $title = "Index";
 $header = "Lageplan";
 include ("./inc/header.php");
-?>
 
-<p>
-Hier eine Übersicht über die Raumssituation auf dem Camp.
-</p>
+echo "<p>". Get_Text("lageplan_text1"). "</p>";
+echo "<p><img src=\"./pic/lageplan/lageplan.jpg\"/>.";
 
-<p>
-<img src="./pic/lageplan/lageplan.jpg" alt="Lageplan" />.
-</p>
-
-<?
 include ("./inc/footer.php");
 ?>
 

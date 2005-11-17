@@ -1,5 +1,4 @@
 <?PHP
-
 $title = "Chaos-Angel Registration";
 $header = "Chaos-Angel Registration";
 include ("./inc/header.php");
