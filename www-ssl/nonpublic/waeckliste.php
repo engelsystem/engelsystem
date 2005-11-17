@@ -8,7 +8,7 @@ include ("./inc/header.php");
 
 ?>
 
-<? echo Get_Text(1). $_SESSION['Nick'].",<br>\n".
+<? echo Get_Text("Hello"). $_SESSION['Nick'].",<br>\n".
         Get_Text("pub_waeckliste_Text1")?>
 <br><br>
 <table border="0" width="100%" class="border" cellpadding="2" cellspacing="1">

@@ -6,7 +6,7 @@ include ("./inc/crypt.php");
 
 if (!IsSet($_POST["action"])) 
 {
-	echo Get_Text(1).$_SESSION['Nick'].",<br>\n\n";
+	echo Get_Text("Hallo").$_SESSION['Nick'].",<br>\n\n";
 	Print_Text(13);
 ?>
 <hr width=\"100%\">
@@ -31,7 +31,7 @@ if (!IsSet($_POST["action"]))
 		<tr>	<td><? Print_Text("pub_einstellungen_email"); ?></td>
 	  		<td><input type="text" name="eemail" size="40" value="<? echo $_SESSION['email']; ?>"></td></tr>
 	</table>
-	<input type="submit" value="<?PHP Print_Text(10); ?>">
+	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
 <br>
 
@@ -45,7 +45,7 @@ if (!IsSet($_POST["action"]))
 	  <tr><td><?PHP Print_Text(16); ?></td><td><input type="password" name="new1" size="20"></td></tr>
 	  <tr><td><?PHP Print_Text(17); ?></td><td><input type="password" name="new2" size="20"></td></tr>
 	</table>
-	<input type="submit" value="<?PHP Print_Text(10); ?>">
+	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
 <br>
 
@@ -71,7 +71,7 @@ if (!IsSet($_POST["action"]))
 		</select>
 	   </td></tr>
 	</table>
-	<input type="submit" value="<?PHP Print_Text(10); ?>">
+	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
 <br>
 <hr width="100%">
@@ -89,7 +89,7 @@ if (!IsSet($_POST["action"]))
 		</select>
 	   </td></tr>
 	</table>
-	<input type="submit" value="<?PHP Print_Text(10); ?>">
+	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
 <br>
 <hr width="100%">
@@ -130,7 +130,7 @@ $ANZ_AVATAR= shell_exec("ls inc/avatar/ | wc -l");
 	    <img src="./inc/avatar/avatar<?php echo $_SESSION['Avatar']; ?>.gif" name="avatar" border="0" alt="" align="top">
 	  </td></tr>
 	</table>
-	<input type="submit" value="<?PHP Print_Text(10); ?>">
+	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
 
 

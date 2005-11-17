@@ -3,7 +3,8 @@ include ("./inc/db.php");
 include ("./inc/funktion_user.php");
 
 
-if( isset( $_POST["text"]) && isset( $_POST["betreff"]) && IsSet( $_POST["date"]) ) {
+if( isset( $_POST["text"]) && isset( $_POST["betreff"]) && IsSet( $_POST["date"]) ) 
+{
   if( !isset( $_POST["treffen"])) 
   	$_POST["treffen"] = 0;
   //$escaped_text = htmlescape($text);
@@ -109,5 +110,5 @@ if ($_SESSION['CVS']["nonpublic/newsAddMeting"] == "Y") {
 ?>
 </table>
 <br>
-<input type="submit" value="<?PHP Print_Text(10); ?>">
+<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>

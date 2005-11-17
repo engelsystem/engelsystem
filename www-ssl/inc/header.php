@@ -78,7 +78,7 @@ if( $Page["ShowTabel"]=="Y" )
 		<td>
 <?
 		echo "\t<a name=\"#$header\" class=\"contenttopic\">";
-		if( strlen(Get_Text($Page["Name"])) > 0 )
+		if( strlen( $header) == 0 )
 			echo "\n\t<b>". Get_Text($Page["Name"]). "</b></a>\n";
 		else
 			echo "\n\t<b>$header</b></a>\n";
@@ -115,9 +115,9 @@ function SetHeaderGo2Back ()
 if ( $Page["CVS"] != "Y" ) {
         echo "Du besitzt kein Rechte für diesen Bereich.<br>\n";
         If (IsSet($_SESSION['oldurl'])) 
-		echo "<a href=\"".$oldurl."\">".Get_Text(11)."</a> geht's zur&uuml;ck...\n";
+		echo "<a href=\"".$oldurl."\">".Get_Text("back")."</a> geht's zur&uuml;ck...\n";
 	else
-		echo "<a href=\"../nonpublic\">".Get_Text(11)."</a> geht's zur&uuml;ck...\n";
+		echo "<a href=\"../nonpublic\">".Get_Text("back")."</a> geht's zur&uuml;ck...\n";
         exit ();
 }
 ?>
