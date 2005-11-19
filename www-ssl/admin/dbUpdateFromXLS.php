@@ -14,7 +14,7 @@ $EnableRooms = 1;
 $EnableRoomsDB = 1;
 $EnableSchudleFunctions = 1;
 $EnableSchudle = 1;
-$EnableSchudleDB = 0;
+$EnableSchudleDB = 1;
 
 
 /*##############################################################################################

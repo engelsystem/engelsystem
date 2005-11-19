@@ -28,7 +28,6 @@ if( !isset( $_GET["TextID"] )  )
 	echo "\t\t</tr>";
 
 
-/*
 	// ausgabe eintraege
 	$SQL = "SELECT * FROM `Sprache` ORDER BY `TextID`;";
 	$erg = mysql_query($SQL, $con);
