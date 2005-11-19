@@ -22,7 +22,7 @@ function runSQL( $SQL)
 }
 
 
-$Sql = "SELECT * FROM `EngelType`";
+$Sql = "SELECT * FROM `EngelType` ORDER BY NAME";
 $Erg = mysql_query($Sql, $con);
 
 if( !IsSet($_GET["action"]) )
