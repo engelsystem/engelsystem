@@ -61,7 +61,9 @@ if (!IsSet($_GET["enterUID"]))
 					mysql_result($Erg, $n, "DECT"). "</a><br>";
 			if( strlen( mysql_result($Erg, $n, "email"))>0)
 				echo "\n\t\temail: <a href=\"mailto:".mysql_result($Erg, $n, "email")."\">".
-					mysql_result($Erg, $n, "email")."</a>";
+					mysql_result($Erg, $n, "email")."</a><br>";
+			if( strlen( mysql_result($Erg, $n, "lastLogIn"))>0)
+				echo "\n\t\tlastLogIn: ". mysql_result($Erg, $n, "lastLogIn"). "<br>";
 			echo "</td>\n";
 		echo "\t<td>".mysql_result($Erg, $n, "Size")."</td>\n";
 		$Gekommen += mysql_result($Erg, $n, "Gekommen");
