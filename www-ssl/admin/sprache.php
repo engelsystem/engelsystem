@@ -46,6 +46,7 @@ if( !isset( $_GET["TextID"] )  )
 		
 			foreach( $Sprachen as $Name => $Value )
 			{
+				$Value = html_entity_decode( $Value, ENT_QUOTES);
 				echo "\t\t<td><textarea name=\"$Name\" cols=\"22\" rows=\"8\">$Value</textarea></td>\n";
 				$Sprachen[ $Name ] = "";
 			}
@@ -87,6 +88,7 @@ else
 			{
 				$sql_save = "INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) ".
 					"VALUES ('". $_GET["TextID"]. "', '$k', '$v')";
+				  echo $sql_save."<br>";
 		        	$Erg = mysql_query($sql_save, $con);
 			        if ($Erg == 1)
 			                echo "\t $k Save: OK<br>\n";

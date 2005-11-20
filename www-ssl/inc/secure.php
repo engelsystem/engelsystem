@@ -7,9 +7,9 @@ if( $DEBUG)
 
 foreach ($_GET as $k => $v) 
 {	
-  	$v = htmlspecialchars($v);
-	$v = mysql_escape_string($v);
-//	$v = htmlentities($v);
+//  	$v = htmlspecialchars($v, ENT_QUOTES);
+//	$v = mysql_escape_string($v);
+	$v = htmlentities($v, ENT_QUOTES);
 	if (preg_match('/([\'"`\'])/', $v, $match)) 
 	{
 		print "sorry get has illegal char '$match[1]'";
@@ -23,9 +23,9 @@ foreach ($_GET as $k => $v)
   
 foreach ($_POST as $k => $v) 
 {
-  	$v = htmlspecialchars($v);
-	$v = mysql_escape_string($v);
-//	$v = htmlentities($v);
+//  	$v = htmlspecialchars($v, ENT_QUOTES);
+//	$v = mysql_escape_string($v);
+	$v = htmlentities($v, ENT_QUOTES);
 	if (preg_match('/([\'"`\'])/', $v, $match)) {
 		print "sorry post has illegal char '$match[1]'";
 		exit;

@@ -1,24 +1,24 @@
 -- phpMyAdmin SQL Dump
 -- version 2.6.2
 -- http://www.phpmyadmin.net
--- 
+--
 -- Host: localhost
 -- Erstellungszeit: 19. November 2005 um 19:57
 -- Server Version: 4.0.24
 -- PHP-Version: 4.3.10-15
--- 
+--
 -- Datenbank: `Himmel`
--- 
+--
 
 -- --------------------------------------------------------
 
--- 
--- Tabellenstruktur für Tabelle `Sprache`
--- 
+--
+-- Tabellenstruktur f&uuml;r Tabelle `Sprache`
+--
 -- Erzeugt am: 17. November 2005 um 01:48
 -- Aktualisiert am: 19. November 2005 um 19:53
 -- Letzter Check am: 17. November 2005 um 01:48
--- 
+--
 
 DROP TABLE IF EXISTS `Sprache`;
 CREATE TABLE `Sprache` (
@@ -28,13 +28,13 @@ CREATE TABLE `Sprache` (
   KEY `TextID` (`TextID`,`Sprache`)
 ) TYPE=MyISAM;
 
--- 
--- Daten für Tabelle `Sprache`
--- 
+--
+-- Daten f&uuml;r Tabelle `Sprache`
+--
 
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hallo '),
 ('Hallo', 'EN', 'Hello '),
-('2', 'DE', ',\r\n\r\ndu bist jetzt in unserem Engelsystem angemeldet.\r\nWähle zum Abmelden bitte immer den Abmelden-Button auf der rechten Seite.'),
+('2', 'DE', ',\r\n\r\ndu bist jetzt in unserem Engelsystem angemeldet.\r\nW&auml;hle zum Abmelden bitte immer den Abmelden-Button auf der rechten Seite.'),
 ('3', 'DE', 'Neuen Eintrag erfassen...'),
 ('3', 'EN', 'Create new entry...'),
 ('4', 'EN', 'Entry saved.\r\n\r\n'),
@@ -52,19 +52,19 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('9', 'EN', 'Meeting:'),
 ('save', 'DE', 'Sichern'),
 ('save', 'EN', 'save'),
-('back', 'DE', 'zurück '),
+('back', 'DE', 'zur&uuml;ck '),
 ('back', 'EN', 'back '),
 ('top', 'DE', 'top'),
 ('top', 'EN', 'top '),
-('13', 'DE', 'auf dieser Seite kannst Du deine persönlichen Einstellungen ändern, wie zum Beispiel dein Kennwort, Farbeinstellungen usw.\r\n\r\n'),
+('13', 'DE', 'auf dieser Seite kannst Du deine pers&ouml;nlichen Einstellungen &auml;ndern, wie zum Beispiel dein Kennwort, Farbeinstellungen usw.\r\n\r\n'),
 ('13', 'EN', 'here you can change your personal settings i.e. password, colour settings etc.\r\n\r\n'),
-('14', 'DE', 'Hier kannst du dein Kennwort für unsere Himmelsverwaltung ändern. '),
+('14', 'DE', 'Hier kannst du dein Kennwort f&uuml;r unsere Himmelsverwaltung &auml;ndern. '),
 ('14', 'EN', 'Here you can change your password.'),
 ('15', 'DE', 'Altes Passwort:'),
 ('15', 'EN', 'Old password:'),
 ('16', 'DE', 'Neues Passwort:'),
 ('16', 'EN', 'New password:'),
-('17', 'DE', 'Passwortbestätigung:'),
+('17', 'DE', 'Passwortbest&auml;tigung:'),
 ('17', 'EN', 'password confirmation:'),
 ('18', 'DE', 'Hier kannst du dir dein Farblayout aussuchen:'),
 ('18', 'EN', 'Here you can choose your colour settings:'),
@@ -74,13 +74,13 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('20', 'EN', 'Here you can choose your language:\r\nHier kannst Du dir deine Sprache aussuchen:'),
 ('21', 'DE', 'Sprache:'),
 ('21', 'EN', 'Language:'),
-('22', 'DE', 'Hier kannst du dir einen Avatar aussuchen. Dies lässt neben deinem Nick z. B. in den News das Bildchen erscheinen.'),
+('22', 'DE', 'Hier kannst du dir einen Avatar aussuchen. Dies l&auml;sst neben deinem Nick z. B. in den News das Bildchen erscheinen.'),
 ('22', 'EN', 'Here you can choose your avatar. It will be displayed next to your Nick. '),
 ('23', 'DE', 'Avatar:'),
 ('23', 'EN', 'Avatar:'),
 ('24', 'DE', 'Keiner'),
 ('24', 'EN', 'nobody'),
-('25', 'DE', 'Eingegebene Kennwörter sind nicht gleich -> OK.\r\nCheck ob altes Passwort ok ist:'),
+('25', 'DE', 'Eingegebene Kennw&ouml;rter sind nicht gleich -> OK.\r\nCheck ob altes Passwort ok ist:'),
 ('25', 'EN', 'Check if the incoming passwords are identic. -> OK.\r\nCheck if the old password is correct:'),
 ('26', 'DE', '-> OK.\r\n'),
 ('26', 'EN', '-> OK.'),
@@ -92,16 +92,16 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('29', 'EN', 'An error has occured.\r\nPlease try again.'),
 ('30', 'DE', '-> nicht OK.\r\nBitte nocheinmal probieren.'),
 ('30', 'EN', '-> not OK.\r\nPlease try again.\r\n'),
-('31', 'DE', 'Kennwörter sind nicht gleich. Bitte wiederholen.'),
+('31', 'DE', 'Kennw&ouml;rter sind nicht gleich. Bitte wiederholen.'),
 ('31', 'EN', 'The passwords are not identic. Please try again.'),
-('32', 'DE', 'Neues Farblayout wurde gesetzt. Mit der nächsten Seite wird es aktiv.'),
+('32', 'DE', 'Neues Farblayout wurde gesetzt. Mit der n&auml;chsten Seite wird es aktiv.'),
 ('32', 'EN', 'New colour settings are saved. On the next page it will be active.'),
-('33', 'DE', 'Sprache wurde gesetzt. Mit der nächsten Seite wies es aktiv.'),
+('33', 'DE', 'Sprache wurde gesetzt. Mit der n&auml;chsten Seite wies es aktiv.'),
 ('33', 'EN', 'Language is saved. On the next page it will be active.'),
 ('34', 'DE', 'Avatar wurde gesetzt.'),
 ('34', 'EN', 'Avatar is saved.'),
 ('34', 'EN', 'Avatar is saved.'),
-('35', 'DE', '<b>Neue Anfrage:</b>\r\nIn diesem Formular hast du die Möglichkeit, den Erzengeln eine Frage zu stellen. Wenn diese beantwortet ist, wirst du hier darüber informiert. Sollte die Frage von allgemeinen Interesse sein, wird diese in die Engel-FAQ übernommen.'),
+('35', 'DE', '<b>Neue Anfrage:</b>\r\nIn diesem Formular hast du die M&ouml;glichkeit, den Erzengeln eine Frage zu stellen. Wenn diese beantwortet ist, wirst du hier dar&uuml;ber informiert. Sollte die Frage von allgemeinen Interesse sein, wird diese in die Engel-FAQ &uuml;bernommen.'),
 ('35', 'EN', '<b>New Question:</b>\r\nWith the form you have the choice to ask your (local) Archangels. If you question is answered you will be informed (Section: answered questions).\r\n'),
 ('36', 'DE', 'Stelle hier deine Frage'),
 ('36', 'EN', 'Tell us your question'),
@@ -145,7 +145,7 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('pub_wake_Datum', 'DE', 'Datum'),
 ('pub_wake_Ort', 'DE', 'Ort'),
 ('pub_wake_Bemerkung', 'DE', 'Bermerkung'),
-('lageplan_text1', 'DE', 'Hier eine Übersicht über die Raumssituation:'),
+('lageplan_text1', 'DE', 'Hier eine &Uuml;bersicht &uuml;ber die Raumssituation:'),
 ('pub_wake_Text2', 'DE', 'Hier kannst du einen neuen Eintrag erfassen:'),
 ('pub_wake_bouton', 'DE', 'Weck mich!'),
 ('pub_wake_bouton', 'EN', 'wake me up!'),
@@ -190,8 +190,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('pub_wake_Ort', 'EN', 'Place'),
 ('pub_wake_change', 'EN', 'delete'),
 ('pub_wake_Bemerkung', 'EN', 'Notes'),
-('pub_wake_change', 'DE', 'löschen'),
-('pub_wake_del', 'DE', 'löschen'),
+('pub_wake_change', 'DE', 'l&ouml;schen'),
+('pub_wake_del', 'DE', 'l&ouml;schen'),
 ('pub_wake_Text2', 'EN', 'Schedule a new wake-up here::'),
 ('pub_mywake_beschreibung1', 'EN', 'Here are the shifts that you have signed up for.\r\n'),
 ('pub_mywake_beschreibung2', 'EN', 'Please try to arrive for your shift on time.  Be punctual!\r\n'),
@@ -217,7 +217,7 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('index_text3', 'DE', 'Dazu beantworte mir bitte folgende Fragen:'),
 ('index_text2', 'EN', 'I''m Gabriel and must decide now, if you are an angel or a daemon.'),
 ('index_text4', 'EN', 'Please note: You have to activate cookies!'),
-('index_text4', 'DE', 'Achtung: Cookies müssen aktiviert sein'),
+('index_text4', 'DE', 'Achtung: Cookies m&uuml;ssen aktiviert sein'),
 ('index_text3', 'EN', 'Please answer the following questions:'),
 ('index_lang_nick', 'DE', 'Wie ist Dein Nick:'),
 ('index_lang_pass', 'DE', 'Wie ist Dein Passwort:'),
@@ -269,15 +269,15 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('pub_waeckliste_Text1', 'EN', 'this is the wack-up list. Peace show hire, how wont to wack-up and wack up this person... schliesslich willst du bestimmt nicht deren Schichten uebernehmen :-)\r\n<br><br>\r\nShow all entreys:'),
 ('nonpublic/waeckliste.php', 'DE', 'Weckdienst - Liste der zu weckenden Engel'),
 ('nonpublic/waeckliste.php', 'EN', 'Wackup list - list of the to wackup engels'),
-('pub_schichtplan_add_ToManyYousers', 'DE', 'FEHLER: Es wurden keine weiteren Engel benötigt !!'),
+('pub_schichtplan_add_ToManyYousers', 'DE', 'FEHLER: Es wurden keine weiteren Engel ben&ouml;tigt !!'),
 ('pub_schichtplan_add_ToManyYousers', 'EN', 'ERROR: There are enogh Engels for this chip'),
-('pub_mywake_Len', 'DE', 'Länge'),
+('pub_mywake_Len', 'DE', 'L&auml;nge'),
 ('pub_mywake_Len', 'EN', 'lenght'),
 ('pub_schichtplan_add_AllreadyinShift', 'DE', 'du bist bereits in einer Schicht eingetragen!'),
 ('pub_schichtplan_add_AllreadyinShift', 'EN', 'you are at this time entrit in another shift'),
 ('pub_schichtplan_add_Error', 'DE', 'Ein Fehler ist aufgetreten'),
-('pub_schichtplan_add_WriteOK', 'DE', 'Du bist jetzt der Schicht zugeteilt. Vielen Dank für deine Mitarbeit.'),
-('pub_schichtplan_add_Text1', 'DE', 'Hier kannst du dich in eine Schicht eintragen. Als Kommentar kannst du etwas x-belibiges eintragen, wie z. B.\r\nwelcher Vortrag dies ist oder ähnliches. Den Kommentar kannst nur du sehen. '),
+('pub_schichtplan_add_WriteOK', 'DE', 'Du bist jetzt der Schicht zugeteilt. Vielen Dank f&uuml;r deine Mitarbeit.'),
+('pub_schichtplan_add_Text1', 'DE', 'Hier kannst du dich in eine Schicht eintragen. Als Kommentar kannst du etwas x-belibiges eintragen, wie z. B.\r\nwelcher Vortrag dies ist oder &auml;hnliches. Den Kommentar kannst nur du sehen. '),
 ('pub_schichtplan_add_Date', 'DE', 'Datum'),
 ('pub_schichtplan_add_Place', 'DE', 'Ort'),
 ('pub_schichtplan_add_Job', 'DE', 'Aufgabe'),
@@ -285,13 +285,13 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('pub_schichtplan_add_TextFor', 'DE', 'Text zur Schicht'),
 ('pub_schichtplan_add_Comment', 'DE', 'Dein Kommentar'),
 ('pub_schichtplan_add_submit', 'DE', 'Ja, ich will helfen..."'),
-('index_text5', 'DE', 'Bitte überprüfen Sie den SSL Key'),
+('index_text5', 'DE', 'Bitte &uuml;berpr&uuml;fen Sie den SSL Key'),
 ('index_text5', 'EN', 'Please check your SSL-Key:'),
-('pub_myshift_Edit_Text1', 'DE', 'Hier könnt ihr euren Kommentar ändern:'),
+('pub_myshift_Edit_Text1', 'DE', 'Hier k&ouml;nnt ihr euren Kommentar &auml;ndern:'),
 ('pub_myshift_EditSave_Text1', 'DE', 'Text wird gespeichert'),
 ('pub_myshift_EditSave_OK', 'DE', 'erfolgreich gespeichert.'),
 ('pub_myshift_EditSave_KO', 'DE', 'Fehler beim speichern'),
-('pub_sprache_text1', 'DE', 'hir kanst du die übersetzten text bearbeiten.'),
+('pub_sprache_text1', 'DE', 'hir kanst du die &uuml;bersetzten text bearbeiten.'),
 ('pub_sprache_text1', 'EN', 'hire can you edit the text of the engelsystem'),
 ('pub_sprache_TextID', 'EN', 'TextID'),
 ('pub_sprache_TextID', 'DE', 'TextID'),
@@ -306,9 +306,9 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('pub_myshift_EditSave_Text1', 'EN', 'Text was saved'),
 ('pub_myshift_Edit_Text1', 'EN', 'Here can you change your comment:'),
 ('pub_schichtplan_add_Comment', 'EN', 'Your comment'),
-('pub_aktive_Text1', 'DE', 'Diese Funktion ermöglicht es den Erzengeln, schnell die Engel mit einer vorgebbaren Anzahl an der Stunden als Aktiv zu markieren.'),
+('pub_aktive_Text1', 'DE', 'Diese Funktion erm&ouml;glicht es den Erzengeln, schnell die Engel mit einer vorgebbaren Anzahl an der Stunden als Aktiv zu markieren.'),
 ('pub_aktive_Text1', 'EN', 'This Funktion enabled the erzengels, to set engels as Active, who has enough hours worked.'),
-('pub_aktive_Text2', 'DE', 'Über die Engelliste kann dies für einzelne Engel erledigt werden.'),
+('pub_aktive_Text2', 'DE', '&Uuml;ber die Engelliste kann dies f&uuml;r einzelne Engel erledigt werden.'),
 ('pub_aktive_Text2', 'EN', 'Over the engellist can you do this for singel engels.'),
 ('pub_aktive_Text31', 'DE', 'Alle Engel mit mindestens'),
 ('pub_aktive_Text31', 'EN', 'All engels with at least'),
@@ -332,7 +332,7 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('pub_schichtplan_add_TextFor', 'EN', 'text for shift'),
 ('pub_schichtplan_add_WriteOK', 'EN', 'You was written for the shift as an engel. Thank you for your cooperation.'),
 ('pub_schichtplan_add_Text1', 'EN', 'Hire can you entry you for a shift. As commend can you written wat you wont, it is only for you.'),
-('pub_schichtplan_colision', 'DE', '<h1>Fehler</h1>\r\nÜberschneidung von schichten:'),
+('pub_schichtplan_colision', 'DE', '<h1>Fehler</h1>\r\n&Uuml;berschneidung von schichten:'),
 ('pub_schichtplan_colision', 'EN', '<h1>error</h1>\r\noverlap on shift:'),
 ('pub_schicht_EmptyShifts', 'DE', 'Die n&auml;sten 15 freien Schichten:'),
 ('pub_schicht_EmptyShifts', 'EN', 'The next 15 empty shifts:'),
@@ -363,11 +363,11 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('nonpublic/news.php', 'DE', 'News'),
 ('nonpublic/news.php', 'EN', 'News'),
 ('pub_einstellungen_Text_UserData', 'EN', 'Here you can change your user details.'),
-('pub_einstellungen_UserDateSaved', 'DE', 'Deine Beschreibung für unsere Himmelsverwaltung wurde ändern.'),
+('pub_einstellungen_UserDateSaved', 'DE', 'Deine Beschreibung f&uuml;r unsere Himmelsverwaltung wurde &auml;ndern.'),
 ('pub_einstellungen_UserDateSaved', 'EN', 'Your user details was saved.'),
-('pub_menu_SchichtplanBeamer', 'DE', 'Schischtplan für Beamer optimiert'),
+('pub_menu_SchichtplanBeamer', 'DE', 'Schischtplan f&uuml;r Beamer optimiert'),
 ('pub_menu_SchichtplanBeamer', 'EN', 'Shifts for beamer optimice'),
-('pub_einstellungen_Text_UserData', 'DE', 'Hier kannst du deine Beschreibung für unsere Himmelsverwaltung ändern.'),
+('pub_einstellungen_Text_UserData', 'DE', 'Hier kannst du deine Beschreibung f&uuml;r unsere Himmelsverwaltung &auml;ndern.'),
 ('lageplan_text1', 'EN', 'Here is a plan of the rooms:'),
 ('makeuser.php', 'DE', 'Anmeldung zum Chaos-Engel'),
 ('makeuser.php', 'EN', 'Chaos-Angel Registration'),
@@ -391,13 +391,13 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('makeuser_Handy', 'EN', 'mobile'),
 ('makeuser_E-Mail', 'DE', 'E-Mail'),
 ('makeuser_E-Mail', 'EN', 'e-mail'),
-('makeuser_T-Shirt', 'DE', 'T-Shirt größe'),
+('makeuser_T-Shirt', 'DE', 'T-Shirt gr&ouml;ße'),
 ('makeuser_T-Shirt', 'EN', 'shirt size'),
 ('makeuser_Engelart', 'DE', 'Engelart'),
 ('makeuser_Engelart', 'EN', 'type of angel'),
 ('makeuser_Passwort', 'DE', 'Passwort'),
 ('makeuser_Passwort', 'EN', 'password'),
-('makeuser_Passwort2', 'DE', 'Passwort Bestätigung'),
+('makeuser_Passwort2', 'DE', 'Passwort Best&auml;tigung'),
 ('makeuser_Passwort2', 'EN', 'password confirm'),
 ('makeuser_Anmelden', 'DE', 'Anmelden...'),
 ('makeuser_Anmelden', 'EN', 'register me...'),
