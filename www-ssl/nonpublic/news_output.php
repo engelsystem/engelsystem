@@ -7,8 +7,6 @@ if( isset( $_POST["text"]) && isset( $_POST["betreff"]) && IsSet( $_POST["date"]
 {
   if( !isset( $_POST["treffen"])) 
   	$_POST["treffen"] = 0;
-  //$escaped_text = htmlescape($text);
-  //$escaped_betreff = htmlescape($betreff);
   $SQL = "INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`) ";
   $SQL.= "VALUES ('". $_POST["date"]. "', '". $_POST["betreff"]. "', '". $_POST["text"]. "', '".$_SESSION['UID'];
   $SQL.= "', '". $_POST["treffen"]. "');";
@@ -21,11 +19,7 @@ if( !IsSet( $_GET["news_begin"]))
 	$_GET["news_begin"]=0;
 	
 if( !IsSet( $_GET["DISPLAY_NEWS"]))
-  $_GET["DISPLAY_NEWS"] = 5;
- 
-//if (($news_begin-$DISPLAY_NEWS) >= 0 ) {
-//	echo "<br><br><a href=\"./news.php?news_begin=".($news_begin-$DISPLAY_NEWS)."\">Die vorherigen $DISPLAY_NEWS News anzeigen...</a><br>";
-//} 
+	$_GET["DISPLAY_NEWS"] = 5;
    
 $SQL = "SELECT * FROM `News` ORDER BY 'ID' DESC LIMIT ". $_GET["news_begin"]. ",". $_GET["DISPLAY_NEWS"];
 $Erg = mysql_query($SQL, $con);
@@ -48,7 +42,7 @@ for ($n = 0 ; $n < $news_rows ; $n++) {
   // avatar anzeigen?
   echo DisplayAvatar (mysql_result($Erg, $n, "UID"));
   echo "</p>\n";
-  echo "<p class='answer'>".nl2br(mysql_result($Erg, $n, "Text"))."</p>\n";
+  echo "<p class='answer'>". nl2br(mysql_result($Erg, $n, "Text"))."</p>\n";
   $RefID=mysql_result($Erg, $n, "ID");
   $countSQL="SELECT COUNT(*) from news_comments where Refid = '$RefID'";
   $countErg = mysql_query($countSQL, $con);
@@ -57,7 +51,6 @@ for ($n = 0 ; $n < $news_rows ; $n++) {
 
 
 }
-//echo "<a href=\"./news.php?news_begin=".($news_begin+$DISPLAY_NEWS)."\">Die n&auml;chsten $DISPLAY_NEWS News anzeigen...</a><br><br>\n";
 
 echo "<div align=\"center\">\n\n";
 $rowerg = mysql_query("select * from News", $con);
