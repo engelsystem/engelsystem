@@ -44,6 +44,7 @@ else
 			$_SESSION['Gekommen'] = mysql_result($userstring, 0, "Gekommen");
 			$_SESSION['Aktiv'] = mysql_result($userstring, 0, "Aktiv");
 			$_SESSION['Tshirt'] = mysql_result($userstring, 0, "Tshirt");
+			$_SESSION['Menu'] = mysql_result($userstring, 0, "Menu");
 			$_SESSION['color'] = mysql_result($userstring, 0, "color");
 			$_SESSION['Avatar'] = mysql_result($userstring, 0, "Avatar");
 			$_SESSION['Sprache'] = mysql_result($userstring, 0, "Sprache");

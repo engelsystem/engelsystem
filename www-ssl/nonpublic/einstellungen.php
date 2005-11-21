@@ -70,6 +70,12 @@ if (!IsSet($_POST["action"]))
 			<option <?php if($_SESSION['color'] == 9) { echo "selected"; } ?> value="9">Test Style 21c3 </option>
 		</select>
 	   </td></tr>
+	   <tr><td>Menu</td>
+	   	<td><input type="radio" name="eMenu" value="L"<? 
+			if ($_SESSION['Menu']=='L') echo " checked"; ?>>L
+		    <input type="radio" name="eMenu" value="R"<?
+			if ($_SESSION['Menu']=='R') echo " checked"; ?>>R
+	   	</td></tr>
 	</table>
 	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
@@ -166,15 +172,19 @@ case 'set':
 
 case 'colour':
 
-	$chsql="Update User set color= \"". $_POST["colourid"]. "\" where UID = \"".$_SESSION['UID']."\" limit 1";
+	$chsql="Update User set ".
+		"`color` = \"". $_POST["colourid"]. "\", ".
+		"`Menu`= \"". $_POST["eMenu"]. "\" ".
+		"where UID = \"".$_SESSION['UID']."\" limit 1";
 	$Erg = mysql_query($chsql, $con);
+	echo mysql_error($con);
 	$_SESSION['color']=$_POST["colourid"];
+	$_SESSION['Menu']=$_POST["eMenu"];
 	if ($Erg==1) {
 		Print_Text(32);
 	} else {
 		Print_Text(29);
 	}
-																		
 	break;
 
 case 'sprache':
@@ -187,7 +197,6 @@ case 'sprache':
 	} else {
 		Print_Text(29);
 	}
-																		
 	break;
 
 case 'avatar':

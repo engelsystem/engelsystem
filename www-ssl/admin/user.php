@@ -195,6 +195,18 @@ else
 				echo " checked";
 			echo ">Yes \n";
 			echo "</td></tr>\n";
+
+			// Menu links/rechts 
+			echo "  <tr><td>Menu</td><td>\n";
+			echo "      <input type=\"radio\" name=\"eMenu\" value=\"L\"";
+			if (mysql_result($Erg, 0, "Menu")=='L')
+				echo " checked";
+			echo ">L \n";
+			echo "      <input type=\"radio\" name=\"eMenu\" value=\"R\"";
+			if (mysql_result($Erg, 0, "Menu")=='R') 
+				echo " checked";
+			echo ">R \n";
+			echo "</td></tr>\n";
 		} //IF TYPE
 	}
 	if( $_GET["Type"] == "Secure" )

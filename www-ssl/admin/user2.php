@@ -17,7 +17,7 @@ if (IsSet($_GET["action"]))
 		if ($Erg == 1) {
 			echo "&Auml;nderung wurde gesichert...\n";
 		} else {
-			echo "Fehler beim speichern...\n";
+			echo "Fehler beim speichern...\n(". mysql_error($con). ")";
 		}
 
 	}
@@ -42,7 +42,8 @@ if (IsSet($_GET["action"]))
 					"`Size` = '". $_POST["eSize"]. "', ".
 					"`Gekommen`= '". $_POST["eGekommen"]. "', ".
 					"`Aktiv`= '". $_POST["eAktiv"]. "', ".
-					"`Tshirt` = '". $_POST["eTshirt"]. "' ".
+					"`Tshirt` = '". $_POST["eTshirt"]. "', ".
+					"`Menu` = '". $_POST["eMenu"]. "' ".
 					"WHERE `UID` = '". $_POST["enterUID"]. 
 					"' LIMIT 1;";
 				echo "User-";
