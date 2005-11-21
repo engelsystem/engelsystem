@@ -42,14 +42,12 @@ for ($n = 0 ; $n < $news_rows ; $n++) {
   // avatar anzeigen?
   echo DisplayAvatar (mysql_result($Erg, $n, "UID"));
   echo "</p>\n";
-  echo "<p class='answer'>". nl2br(mysql_result($Erg, $n, "Text"))."</p>\n";
+  echo "<p class='answer'>". ReplaceSmilies(nl2br(mysql_result($Erg, $n, "Text"))) ."</p>\n";
   $RefID=mysql_result($Erg, $n, "ID");
   $countSQL="SELECT COUNT(*) from news_comments where Refid = '$RefID'";
   $countErg = mysql_query($countSQL, $con);
   $countcom = mysql_result($countErg, 0, "COUNT(*)");
   echo "<p class='comment' align='right'><a href=\"./news_comments.php?nid=$RefID\">$countcom comments</a></p>\n\n";
-
-
 }
 
 echo "<div align=\"center\">\n\n";

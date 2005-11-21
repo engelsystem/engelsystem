@@ -29,15 +29,9 @@ function TID2Type($TID) {
 }
 
 
-function htmlescape($eckig) {
+function ReplaceSmilies($eckig) {
 
 	$neueckig = $eckig;
-	$neueckig = str_replace("&","&amp;",$neueckig);
-	$neueckig = str_replace("<","&lt;",$neueckig); 
-	$neueckig = str_replace(">","&gt;",$neueckig);
-
-	// replace smilies
-	
 	$neueckig = str_replace(";o))","<img src=\"./inc/smiles/icon_redface.gif\">",$neueckig);
 	$neueckig = str_replace(":-))","<img src=\"./inc/smiles/icon_redface.gif\">",$neueckig);
 	$neueckig = str_replace(";o)","<img src=\"./inc/smiles/icon_wind.gif\">",$neueckig);
