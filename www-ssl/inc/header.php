@@ -2,6 +2,7 @@
 include ("./inc/config.php");
 include ("./inc/db.php");
 include ("./inc/funktion_lang.php");
+include("./inc/funktion_menu.php");
 session_start(); 
 include ("./inc/secure.php");
 /*if ( (!IsSet($_SESSION['UID'])) && (strstr ($_SERVER['PHP_SELF'], "nonpublic") !="" ) ) {
@@ -72,6 +73,10 @@ if( $Page["ShowTabel"]=="Y" )
 	<p>
 <table width="95%" align="center" border="0" cellpadding="7" cellspacing="0">
 	<tr>
+<?
+if( !isset($_SESSION['Menu']))		$_SESSION['Menu'] = "L";
+if( $_SESSION['Menu'] =="L")		include("./inc/menu.php");
+?>
 		<td valign="top" align="center">
 <table border="0" width="100%" align="center" class="border" cellpadding="5" cellspacing="1">
 	<tr class="contenttopic">
