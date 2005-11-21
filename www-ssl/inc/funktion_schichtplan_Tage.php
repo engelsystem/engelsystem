@@ -1,7 +1,9 @@
 <?PHP
 
-function DatumUm1TagErhoehen( $Datum)
+if( !function_exists("DatumUm1TagErhoehen"))
 {
+    function DatumUm1TagErhoehen( $Datum)
+    {
 	$Jahr  = substr( $Datum, 0, 4);
 	$Monat = substr( $Datum, 5, 2);
 	$Tag   = substr( $Datum, 8, 2);
@@ -37,7 +39,8 @@ function DatumUm1TagErhoehen( $Datum)
 	}
 
 	return ("$Jahr-$Monat-$Tag");
-} //function DatumUm1Tagerhoehen(
+    } //function DatumUm1Tagerhoehen(
+}
 
 //suchen den ersten eintrags
 $SQL = "SELECT `DateS` FROM `Shifts` ORDER BY `DateS` LIMIT 1";

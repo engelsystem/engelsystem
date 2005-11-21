@@ -16,7 +16,10 @@ if( IsSet( $_GET["text"]))
 		$_GET["nid"]. "', '". date("Y-m-d H:i:s"). "', '". $_GET["text"]. "', '". $_SESSION["UID"]. "')";
 	$Erg = mysql_query($ch_sql, $con);
 	if ($Erg == 1)
+	{
 		echo "Eintrag wurde gespeichert<br><br>"; 
+		SetHeaderGo2Back();
+	}
 }
 
 $SQL = "SELECT * FROM news_comments where Refid = ". $_GET["nid"]. " ORDER BY 'ID'";
