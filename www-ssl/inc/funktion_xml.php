@@ -38,7 +38,9 @@ function dataXMLmain( $Data, &$Objekt, $Tiefe )
 	  echo "?$Tiefe$depth";
 	if( ($depth-1)==$Tiefe)
 	{	
-		$Objekt->sub[ $XMLpos[$Tiefe] ]->data .= convertValues($Data);
+//		$Objekt->sub[ $XMLpos[$Tiefe] ]->data .= convertValues($Data);
+		$Objekt->sub[ $XMLpos[$Tiefe] ]->data .= htmlentities( convertValues($Data), ENT_QUOTES);
+		 
 		if( $XMLDEBUG)
 		  echo "???". $Objekt->sub[ $XMLpos[$Tiefe] ]->name. "|$Data|$Tiefe???<br>";
 	}
