@@ -6,6 +6,7 @@ include ("./inc/header.php");
 include ("./inc/funktion_user.php");
 include ("./inc/funktionen.php");
 include ("./inc/funktion_schichtplan.php");
+include ("./inc/funktion_schichtplan_aray.php");
 
 
 If( !IsSet($_GET["action"]) ) 

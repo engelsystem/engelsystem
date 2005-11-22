@@ -8,6 +8,7 @@ if (!IsSet($_POST["action"]))
 {
 	include ("./inc/header.php");
 	include ("./inc/funktionen.php");
+	include ("./inc/funktion_schichtplan_aray.php");
 	include ("./inc/funktion_schichtplan.php");
 	include ("./inc/funktion_user.php");
 ?>
@@ -85,6 +86,7 @@ else 	//#################################################################
 	$_SESSION['CVS'][ "admin/schichtplan.php" ] = "N";	
 	include ("./inc/funktion_lang.php");
 	include ("./inc/funktion_schichtplan.php");
+	include ("./inc/funktion_schichtplan_aray.php");
 	include ("./inc/funktion_user.php");
 	?>
 

@@ -4,6 +4,7 @@ $header = "Schichtpl&auml;ne";
 include ("./inc/header.php");
 include ("./inc/funktion_user.php");
 include ("./inc/funktion_schichtplan.php");
+include ("./inc/funktion_schichtplan_aray.php");
 include ("./inc/funktionen.php");
 
 if (isset($_POST["newtext"]) && isset($_POST["SID"]) && isset($_POST["TID"])) {
