@@ -48,6 +48,7 @@ else
 			$_SESSION['color'] = mysql_result($userstring, 0, "color");
 			$_SESSION['Avatar'] = mysql_result($userstring, 0, "Avatar");
 			$_SESSION['Sprache'] = mysql_result($userstring, 0, "Sprache");
+			$_SESSION['Hometown'] = mysql_result($userstring, 0, "Hometown");
 			$_SESSION['IP'] = $_SERVER['REMOTE_ADDR'];
 		
 			// CVS import Data

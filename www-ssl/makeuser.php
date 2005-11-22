@@ -47,14 +47,16 @@ if( isset($_POST["send"]))
 				"`Telefon`, ".	"`DECT`, ".
 				"`Handy`, ".	"`email`, ".
 				"`Size`, ".	"`Passwort`, ".
-				"`Art` , ".	"`kommentar` ) ".
+				"`Art` , ".	"`kommentar`, ".
+				"`Hometown` ) ".
 			"VALUES ( ".
 				"'". $_POST["Nick"]. "', ".		"'". $_POST["Name"]. "', ".
 				"'". $_POST["Vorname"]. "', ".		$_POST["Alter"]. ", ".
 				"'". $_POST["Telefon"]. "', ".		"'". $_POST["DECT"]. "', ".
 				"'". $_POST["Handy"]. "', ".		"'". $_POST["email"]. "', ".
 				"'". $_POST["Size"]. "', ".		"'". $_POST["Passwort"]. "', ".
-				"'". $_POST["Art"]. "', ".		"'". $_POST["kommentar"]. "' );";
+				"'". $_POST["Art"]. "', ".		"'". $_POST["kommentar"]. "', ".
+				"'". $_POST["Hometown"]. "' );";
 		$Erg = mysql_query($SQL, $con);
 
 		if ($Erg != 1)
@@ -104,6 +106,7 @@ else
 	$_POST["Size"] = "";
 	$_POST["Art"] = "";
 	$_POST["kommentar"] = "";
+	$_POST["Hometown"] = "";
 }
 
 Print_Text("makeuser_text1");
@@ -163,6 +166,8 @@ echo "\t\t\t<tr>\n";
 echo "\t\t\t\t<td>". Get_Text("makeuser_text2"). "</td>\n";
 echo "\t\t\t<td><textarea rows=\"5\" cols=\"40\" name=\"kommentar\">". $_POST["kommentar"]. "</textarea></td>\n";
 echo "\t\t\t</tr>\n";
+echo "\t\t\t<tr><td>". Get_Text("makeuser_Hometown"). 
+	"</td><td><input type=\"text\" size=\"40\" name=\"Hometown\" value=\"". $_POST["Hometown"]. "\"></td></tr>\n";
 echo "\t\t\t<tr><td>". Get_Text("makeuser_Passwort"). 
 	"*</td><td><input type=\"password\" size=\"40\" name=\"Passwort\"/></td></tr>\n";
 echo "\t\t\t<tr><td>". Get_Text("makeuser_Passwort2"). 

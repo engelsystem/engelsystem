@@ -30,6 +30,8 @@ if (!IsSet($_POST["action"]))
 	  		<td><input type="text" name="eDECT" size="4" value="<? echo $_SESSION['DECT']; ?>"></td></tr>
 		<tr>	<td><? Print_Text("pub_einstellungen_email"); ?></td>
 	  		<td><input type="text" name="eemail" size="40" value="<? echo $_SESSION['email']; ?>"></td></tr>
+		<tr>	<td><? Print_Text("pub_einstellungen_Hometown"); ?></td>
+	  		<td><input type="text" name="Hometown" size="40" value="<? echo $_SESSION['Hometown']; ?>"></td></tr>
 	</table>
 	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
@@ -215,7 +217,7 @@ case 'setUserData':
 		"`Nick`='". $_POST["eNick"]. "', `Name`='". $_POST["eName"]. "', ".
 		"`Vorname`='". $_POST["eVorname"]. "', `Alter`='". $_POST["eAlter"]. "', ".
 		"`Telefon`='". $_POST["eTelefon"]. "', `Handy`='". $_POST["eHandy"]. "', ".
-		"`DECT`='". $_POST["eDECT"]. "', `email`='". $_POST["eemail"]. "' ".
+		"`DECT`='". $_POST["eDECT"]. "', `email`='". $_POST["eemail"]. "', `Hometown`='". $_POST["Hometown"]. "' ".
 		"WHERE UID='". $_SESSION['UID']. "' LIMIT 1;";
         $Erg = mysql_query($chsql, $con);
 
@@ -229,6 +231,7 @@ case 'setUserData':
 		$_SESSION['Handy'] = $_POST["eHandy"];
 		$_SESSION['DECT'] = $_POST["eDECT"];
 		$_SESSION['email'] = $_POST["eemail"];
+		$_SESSION['Hometown'] = $_POST["Hometown"];
 	
 		Print_Text("pub_einstellungen_UserDateSaved");
         } 
