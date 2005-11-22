@@ -62,6 +62,8 @@ if (!IsSet($_GET["enterUID"]))
 			if( strlen( mysql_result($Erg, $n, "email"))>0)
 				echo "\n\t\temail: <a href=\"mailto:".mysql_result($Erg, $n, "email")."\">".
 					mysql_result($Erg, $n, "email")."</a><br>";
+			if( strlen( mysql_result($Erg, $n, "Hometown"))>0)
+				echo "\n\t\tHometown: ". mysql_result($Erg, $n, "Hometown"). "<br>";
 			if( strlen( mysql_result($Erg, $n, "lastLogIn"))>0)
 				echo "\n\t\tlastLogIn: ". mysql_result($Erg, $n, "lastLogIn"). "<br>";
 			echo "</td>\n";
@@ -207,6 +209,10 @@ else
 				echo " checked";
 			echo ">R \n";
 			echo "</td></tr>\n";
+			
+			echo "  <tr><td>Hometown</td><td>".
+				"<input type=\"text\" size=\"40\" name=\"Hometown\" value=\"".
+				mysql_result($Erg, 0, "Hometown")."\"></td></tr>\n";
 		} //IF TYPE
 	}
 	if( $_GET["Type"] == "Secure" )
@@ -247,7 +253,7 @@ else
 
 	// Ende Formular
 	echo "</td></tr>\n";
-	echo "</table>\n";
+	echo "</table>\n<br>\n";
 	echo "<input type=\"hidden\" name=\"enterUID\" value=\"". $_GET["enterUID"]. "\">\n";
 	echo "<input type=\"submit\" value=\"sichern...\">\n";
 	echo "</form>";
