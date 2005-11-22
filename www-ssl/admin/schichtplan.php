@@ -222,6 +222,9 @@ case 'change':
 	echo "</select>\n";
 	
 	echo "<input type=\"submit\" value=\"eintragen...\">\n";
+	
+	echo "<br>\n<input value=\"1\" type=\"text\" size=\"5\" name=\"eAnzahlNew\"> Anzahl New\n";
+	
 	echo "</form>";
 
 	} // IF ISSET(
@@ -230,6 +233,7 @@ case 'change':
 case 'engeladd':
 	if( $_GET["UIDs"]>0)
 	{
+		
 		$SQL = "SELECT * FROM `ShiftEntry` ".
 			"WHERE (`SID`='". $_GET["SID"]. "' AND `TID`='". $_GET["TID"]. "' AND `UID`='0')";
 		$ERG = mysql_query($SQL, $con);
@@ -246,16 +250,32 @@ case 'engeladd':
 			$chSQL .= "'". $_GET["SID"]. "', '". $_GET["TID"]. "', ".
 				  "'". $_GET["UIDs"]. "', 'shift added by ".$_SESSION['Nick']."')";
 		}
-	
 		echo "Es wird folgende Schicht zus&auml;tzlich eingetragen:<br>\n";
 		echo "Engel: ".UID2Nick($_GET["UIDs"])."<br>\n";
 		echo "Bemerkung: Schicht eingetragen durch Erzengel ".$_SESSION['Nick']."<br>\n<br>\n";
 	}
 	else
 	{
-		$chSQL  = "INSERT INTO `ShiftEntry` (`SID`, `TID`, `UID`, `Comment`) VALUES (";
-		$chSQL .= "'". $_GET["SID"]. "', '". $_GET["TID"]. "', '0', NULL)";
-		echo "Es wird eine weitere Schicht eingetragen:<br>\n";
+		echo "Es wird folgende Schicht wurde ". $_GET["eAnzahlNew"]. "x zus&auml;tzlich eingetragen:<br>\n";
+		for( $i=0; $i<$_GET["eAnzahlNew"]; $i++)
+		{
+			echo "$i. <br>\n";
+			$SQL  = "INSERT INTO `ShiftEntry` (`SID`, `TID`, `UID`, `Comment`) VALUES (";
+			$SQL .= "'". $_GET["SID"]. "', '". $_GET["TID"]. "', '0', NULL)";
+			$ERG = mysql_query($SQL, $con);
+			if( $DEBUG ) 
+				echo "DEBUG SQL: $SQL<br>\n";
+			if ($ERG == 1) 
+			{
+			     	echo "&Auml;nderung wurde gesichert...<br>";
+			}
+			else 
+			{
+				echo "Fehler beim speichern... bitte noch ein mal probieren :)<br>";
+				echo mysql_error($con);
+			}
+			echo "Es wird eine weitere Schicht eingetragen:<br><br>\n";
+		}
 	}
 	break;
 
