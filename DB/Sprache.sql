@@ -1,24 +1,20 @@
 -- phpMyAdmin SQL Dump
 -- version 2.6.2
 -- http://www.phpmyadmin.net
---
+-- 
 -- Host: localhost
--- Erstellungszeit: 19. November 2005 um 19:57
+-- Erstellungszeit: 22. November 2005 um 20:10
 -- Server Version: 4.0.24
 -- PHP-Version: 4.3.10-15
---
+-- 
 -- Datenbank: `Himmel`
---
+-- 
 
 -- --------------------------------------------------------
 
---
--- Tabellenstruktur f&uuml;r Tabelle `Sprache`
---
--- Erzeugt am: 17. November 2005 um 01:48
--- Aktualisiert am: 19. November 2005 um 19:53
--- Letzter Check am: 17. November 2005 um 01:48
---
+-- 
+-- Tabellenstruktur für Tabelle `Sprache`
+-- 
 
 DROP TABLE IF EXISTS `Sprache`;
 CREATE TABLE `Sprache` (
@@ -28,9 +24,9 @@ CREATE TABLE `Sprache` (
   KEY `TextID` (`TextID`,`Sprache`)
 ) TYPE=MyISAM;
 
---
--- Daten f&uuml;r Tabelle `Sprache`
---
+-- 
+-- Daten für Tabelle `Sprache`
+-- 
 
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hallo '),
 ('Hallo', 'EN', 'Hello '),
@@ -428,4 +424,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('makeuser_text4', 'DE', 'Wenn du dich zum Chaos-Engel anmelden m&amp;ouml;chtest, f&amp;uuml;lle bitte folgendes Formular aus:'),
 ('makeuser_text4', 'EN', 'If you would like to be an chaos angel please insert following details into this form:'),
 ('makeuser_error_nick3', 'DE', '" existiert bereits.'),
-('makeuser_error_nick3', 'EN', '" allready exist.');
+('makeuser_error_nick3', 'EN', '" allready exist.'),
+('makeuser_Hometown', 'EN', 'hometown'),
+('makeuser_Hometown', 'DE', 'Wohnort'),
+('pub_einstellungen_Hometown', 'DE', 'Wohnort'),
+('pub_einstellungen_Hometown', 'EN', 'hometown');
