@@ -11,7 +11,6 @@ include ("./inc/funktion_xml.php");
 $ShowDataStrukture = 0;
 $EnableRoomFunctions = 1;
 $EnableRooms = 1;
-$EnableRoomsDB = 1;
 $EnableSchudleFunctions = 1;
 $EnableSchudle = 1;
 $EnableSchudleDB = 1;
