@@ -134,6 +134,7 @@ echo "\t\t\t\t<option value=\"M\"";	if ($_POST["Size"]=="M") 	echo " selected";	
 echo "\t\t\t\t<option value=\"L\"";	if ($_POST["Size"]=="L") 	echo " selected";	echo ">L</option>\n";
 echo "\t\t\t\t<option value=\"XL\"";	if ($_POST["Size"]=="XL") 	echo " selected";	echo ">XL</option>\n";
 echo "\t\t\t\t<option value=\"XXL\"";	if ($_POST["Size"]=="XXL") 	echo " selected";	echo  ">XXL</option>\n";
+echo "\t\t\t\t<option value=\"XXXL\"";	if ($_POST["Size"]=="XXXL") 	echo " selected";	echo  ">XXXL</option>\n";
 echo "\t\t\t</select>\n";
 echo "\t\t\t</td></tr>\n";
 echo "\t\t\t<tr><td>". Get_Text("makeuser_Engelart"). 
