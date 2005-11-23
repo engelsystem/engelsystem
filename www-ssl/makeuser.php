@@ -9,6 +9,8 @@ include ("./inc/crypt.php");
 if( isset($_POST["send"]))
 {
 	$eNick = trim($_POST["Nick"]);
+	if( $_POST["Alter"]=="")	$_POST["Alter"] = 0;
+	
 	//user vorhanden?
 	$SQLans = "SELECT UID FROM `User` WHERE `Nick`='". $_POST["Nick"]. "'";
 	$Ergans = mysql_query($SQLans, $con);
@@ -26,6 +28,10 @@ if( isset($_POST["send"]))
 	{
 		$error= Get_Text("makeuser_error_mail");
 	} 
+	elseif( !is_numeric($_POST["Alter"])) 
+	{
+		$error= Get_Text("makeuser_error_Alter");
+	}
 	elseif( $_POST["Passwort"] != $_POST["Passwort2"] ) 
 	{
 		$error= Get_Text("makeuser_error_password1");
@@ -39,8 +45,6 @@ if( isset($_POST["send"]))
 		$_POST["Passwort"] = PassCrypt($_POST["Passwort"]);
 		unset($_POST["Passwort2"]);
 
-		if( $_POST["Alter"]=="") $_POST["Alter"] = 0;
-		
 		$SQL = "INSERT INTO `User` (".
 				"`Nick` , ".	"`Name` , ".
 				"`Vorname`, ".	"`Alter` , ".
