@@ -69,8 +69,8 @@ if ( !isset($raum) )
 		$RoomEntry["Name"]. "</a></li>\n";
 
 	echo "<br><br>";
-	echo Get_Text("pub_schicht_alles_1"). "<a href='./schichtplan.php?ausdatum=$ausdatum&raum=-1'><u> ".
-	     Get_Text("pub_schicht_alles_2"). "</u></a>".Get_Text("pub_schicht_alles_3");
+	echo Get_Text("pub_schicht_alles_1"). "<a href='./schichtplan.php?ausdatum=$ausdatum&raum=-1'> <u>".
+	     Get_Text("pub_schicht_alles_2"). "</u> </a>".Get_Text("pub_schicht_alles_3");
 	echo "\n<br><br>\n\n";
 	echo "<hr>\n\n";
 	echo Get_Text("pub_schicht_EmptyShifts"). "\n";
