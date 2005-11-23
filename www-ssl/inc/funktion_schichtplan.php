@@ -86,6 +86,9 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 	  if( count($Temp) )
 	    foreach( $Temp as $TempEntry => $TempValue )
 	    {
+		if( !isset($TempValue["free"]))
+			$TempValue["free"] = 0;
+		
 		// ausgabe EngelType
 		$Spalten.= $EngelTypeID[ $TempValue["TID"] ]. " ";
 		
