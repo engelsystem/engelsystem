@@ -117,12 +117,13 @@ function SetHeaderGo2Back ()
 }
 
 
-if ( $Page["CVS"] != "Y" ) {
+if ( $Page["CVS"] != "Y" ) 
+{
         echo "Du besitzt kein Rechte für diesen Bereich.<br>\n";
         If (IsSet($_SESSION['oldurl'])) 
-		echo "<a href=\"".$oldurl."\">".Get_Text("back")."</a> geht's zur&uuml;ck...\n";
+		echo "<a href=\"". $_SESSION["oldurl"]. "\">".Get_Text("back")."</a> geht's zur&uuml;ck...\n";
 	else
-		echo "<a href=\"../nonpublic\">".Get_Text("back")."</a> geht's zur&uuml;ck...\n";
+		echo "<a href=\"". $url. substr($ENGEL_ROOT, 0, -1 )."\">".Get_Text("back")."</a> geht's zur&uuml;ck...\n";
         exit ();
 }
 ?>
