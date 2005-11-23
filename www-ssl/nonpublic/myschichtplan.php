@@ -125,7 +125,7 @@ else
 	$sql.= "(SID=\"". $_GET["SID"]. "\" AND UID=\"". $_SESSION['UID']. "\" )";
 	$Erg = mysql_query($sql, $con);
 
-	echo "<form action=\"./myschichtplan.php\" method=\"post\">\n";
+	echo "<form action=\"./myschichtplan.php\" method=\"GET\">\n";
 	echo "<textarea name='newtext' cols='50' rows='10'>". mysql_result( $Erg, 0, "Comment" ). "</textarea><br><br>\n";
 	echo "<input type=\"submit\" value=\"save\">\n";
 	echo "<input type=\"hidden\" name=\"SID\" value=\"". $_GET["SID"]. "\">\n";
