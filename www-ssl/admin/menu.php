@@ -40,7 +40,7 @@ $Menu["Entry"][10]["Name"] = "Debug";
 if ($_SESSION['CVS']["nonpublic/index.php"] == "Y")
 {
         $MenuAdmin["Name"] = "Erzengel";
-        $MenuAdmin["Entry"][0]["File"] = "../nonpublic/index.php";
+        $MenuAdmin["Entry"][0]["File"] = "../nonpublic/news.php";
         $MenuAdmin["Entry"][0]["Name"] = "Engel-Men&uuml;";
 	$MenuAdmin["Entry"][1]["File"] = "../index.php";
 	$MenuAdmin["Entry"][1]["Name"] = "Login-Men&uuml;";
