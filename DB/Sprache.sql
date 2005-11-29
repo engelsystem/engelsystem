@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: 127.0.1.2
--- Erstellungszeit: 23. November 2005 um 22:56
+-- Erstellungszeit: 30. November 2005 um 00:47
 -- Server Version: 4.1.14
 -- PHP-Version: 4.4.0
 -- 
@@ -95,6 +95,7 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('33', 'DE', 'Sprache wurde gesetzt. Mit der n&auml;chsten Seite wird es aktiv.'),
 ('33', 'EN', 'Language is saved. On the next page it will be active.'),
 ('34', 'DE', 'Avatar wurde gesetzt.'),
+('pub_menu_messages', 'EN', 'messages'),
 ('34', 'EN', 'Avatar is saved.'),
 ('35', 'DE', '&lt;b&gt;Neue Anfrage:&lt;/b&gt;\r\nIn diesem Formular hast du die M&ouml;glichkeit, den Erzengeln eine Frage zu stellen. Wenn diese beantwortet ist, wirst du hier dar&uuml;ber informiert. Sollte die Frage von allgemeinen Interesse sein, wird diese in die Engel-FAQ &uuml;bernommen.'),
 ('35', 'EN', '&lt;b&gt;New Question:&lt;/b&gt;\r\nWith this form you have the choice to ask your (local) Archangels. If you question is answered you will be informed (Section: answered questions). If the question should be from general interest, this is transferred to the Angel-FAQ.\r\n'),
@@ -428,5 +429,42 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hall
 ('makeuser_Hometown', 'DE', 'Wohnort'),
 ('pub_einstellungen_Hometown', 'DE', 'Wohnort'),
 ('pub_einstellungen_Hometown', 'EN', 'hometown'),
+('nonpublic/messages.php', 'DE', 'Nachrichten'),
+('pub_menu_messages', 'DE', 'Nachrichten'),
 ('makeuser_error_Alter', 'DE', 'Fehler: Dein Alter muss eine Zahl oder leer sein'),
-('makeuser_error_Alter', 'EN', 'error: your age must be a number or empty');
+('makeuser_error_Alter', 'EN', 'error: your age must be a number or empty'),
+('nonpublic/messages.php', 'EN', 'messages'),
+('pub_messages_Datum', 'DE', 'Datum'),
+('pub_messages_Datum', 'EN', 'date'),
+('pub_messages_Von', 'DE', 'Gesendet'),
+('pub_messages_Von', 'EN', 'sender'),
+('pub_messages_An', 'DE', 'Empf&auml;nger'),
+('pub_messages_An', 'EN', 'resiver'),
+('pub_messages_Text', 'DE', 'Text'),
+('pub_messages_Text', 'EN', 'text'),
+('pub_messages_Send1', 'DE', 'Nachricht wird gesendet'),
+('pub_messages_Send1', 'EN', 'message will be send'),
+('pub_messages_Send_OK', 'DE', 'Senden erfolgeich'),
+('pub_messages_Send_OK', 'EN', 'transmitting was OK'),
+('pub_messages_Send_Error', 'DE', 'Senden ist Fehlgeschlagen'),
+('pub_messages_Send_Error', 'EN', 'transmitting was terminate with an Error'),
+('pub_messages_MarkRead', 'DE', 'als gelesen Makierne'),
+('pub_messages_MarkRead', 'EN', 'mark as read'),
+('pub_messages_NoCommand', 'DE', 'kein Kommando erkannt'),
+('pub_messages_NoCommand', 'EN', 'no command recognised'),
+('pub_messages_MarkRead_OK', 'DE', 'als gelesen Markiert'),
+('pub_messages_MarkRead_OK', 'EN', 'mark as read'),
+('pub_messages_MarkRead_KO', 'DE', 'fehler beim als gelesen Markieren'),
+('pub_messages_MarkRead_KO', 'EN', 'error on mark as read'),
+('pub_messages_text1', 'DE', 'hier kanst du nachrichten an ender engel versenden'),
+('pub_messages_text1', 'EN', 'hire can you write messages to other engels'),
+('pub_messages_DelMsg', 'DE', 'Nachricht l&ouml;schen'),
+('pub_messages_DelMsg', 'EN', 'delate message'),
+('pub_messages_DelMsg_OK', 'DE', 'nachricht gel&ouml;scht'),
+('pub_messages_DelMsg_OK', 'EN', 'delate message'),
+('pub_messages_DelMsg_KO', 'DE', 'nachricht konte nicht gel&ouml;scht werden'),
+('pub_messages_DelMsg_KO', 'EN', 'message can not delate'),
+('pub_messages_new1', 'DE', 'Du hast'),
+('pub_messages_new1', 'EN', 'You have'),
+('pub_messages_new2', 'DE', 'neue nachrichten'),
+('pub_messages_new2', 'EN', 'new messages');

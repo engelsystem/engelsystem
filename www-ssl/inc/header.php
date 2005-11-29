@@ -71,12 +71,28 @@ if( $Page["ShowTabel"]=="Y" )
 	<a name="#top"><img src="./inc/himmel<? if( isset($_SESSION['color'])) 
 						if ($_SESSION['color']==6) echo "_w"; ?>.png" alt="Unser Himmel"></a>
 	<p>
+<?
+//ausgabe new message
+if( isset($_SESSION['CVS']["nonpublic/messages.php"]))
+    if( $_SESSION['CVS']["nonpublic/messages.php"] == "Y")
+    {
+	$SQL = "SELECT `Datum` FROM `Messages` WHERE `RUID`=". $_SESSION["UID"]. " AND `isRead`='N'";
+	$erg = mysql_query($SQL, $con);
+	if( mysql_num_rows( $erg ) > 0 )
+		echo "<br><a href=\"". $url. substr($ENGEL_ROOT, 1).
+			"nonpublic/messages.php\">". Get_Text("pub_messages_new1").
+			" ".  mysql_num_rows( $erg ). " ".
+			Get_Text("pub_messages_new2"). "</a><br><br>";
+    }
+?>
 <table width="95%" align="center" border="0" cellpadding="7" cellspacing="0">
 	<tr>
 <?
+//ausgaeb Menu
 if( !isset($_SESSION['Menu']))		$_SESSION['Menu'] = "L";
 if( $_SESSION['Menu'] =="L")		include("./inc/menu.php");
 ?>
+
 		<td valign="top" align="center">
 <table border="0" width="100%" align="center" class="border" cellpadding="5" cellspacing="1">
 	<tr class="contenttopic">
