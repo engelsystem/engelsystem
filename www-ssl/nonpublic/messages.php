@@ -46,6 +46,12 @@ switch( $_GET["action"])
 					echo "<br><br><a href=\"?action=MarkRead&Datum=". mysql_result( $erg, $i, "Datum" ). 
 						"\">". Get_Text("pub_messages_MarkRead"). "</a>";
 			}
+			else
+			{
+				if( mysql_result( $erg, $i, "isRead")=="N")
+					echo Get_Text("pub_messages_NotRead");
+			}
+			
 			echo "</td>\n";
 			echo "</tr>\n";
 		}
@@ -59,7 +65,7 @@ switch( $_GET["action"])
 		echo "\t<td></td>\n";
 		// Listet alle Nicks auf
 		echo "\t<td><select name=\"RUID\">\n";
-			$usql="select * from User order by Nick";
+			$usql="SELECT * FROM `User` WHERE (`UID`!='". $_SESSION["UID"] ."') ORDER BY `Nick`";
 			$uErg = mysql_query($usql, $con);
 			$urowcount = mysql_num_rows($uErg);
 			for ($k=0; $k<$urowcount; $k++)
@@ -94,7 +100,7 @@ switch( $_GET["action"])
 	
 	case "MarkRead":
 		$SQL = "UPDATE `Messages` SET `isRead` = 'Y' ".
-			"WHERE `Datum` = '". $_GET["Datum"]. "' AND `SUID`=". $_SESSION["UID"]. " ".
+			"WHERE `Datum` = '". $_GET["Datum"]. "' AND `RUID`=". $_SESSION["UID"]. " ".
 			"LIMIT 1 ;";
 		$Erg = mysql_query($SQL, $con);
 		if ($Erg == 1) 
