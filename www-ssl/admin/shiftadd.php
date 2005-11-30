@@ -71,16 +71,16 @@ Hier kannst du neue Schichten eintragen. Dazu musst du den Anfang und das Ende d
 &Uuml;ber die L&auml;nge der Schichten errechnet sich dadurch die Anzahl dieser. Dadurch k&ouml;nnen gleich
 mehrere Schichten auf einmal erfasst werden:
 
-<form action="<? echo $_SERVER['SCRIPT_NAME']; ?>" >
+<form action="<?PHP echo $_SERVER['SCRIPT_NAME']; ?>" >
   <table>
   <tr>
     <td align="right">Name:</td>
-    <td><input type="text" name="SchichtName" size="50" value="<? echo $_SESSION["shiftadd.php"]["SchichtName"]; ?>"></td>
+    <td><input type="text" name="SchichtName" size="50" value="<?PHP echo $_SESSION["shiftadd.php"]["SchichtName"]; ?>"></td>
   </tr>
   <tr>
     <td align="right">Ort:</td>
     <td><select name="RID">
-<?
+<?PHP
 	foreach ($Room As $RTemp)
 	{
 		echo "\t<option value=\"". $RTemp["RID"]. "\"";
@@ -95,43 +95,43 @@ mehrere Schichten auf einmal erfasst werden:
   <tr><td><u>Zeit:</u></td></tr>
   <tr>
     <td align="right">Month.Jahr:</td>
-    <td><input type="ext" name="MonthJahr" size="7" value="<? echo $_SESSION["shiftadd.php"]["MonthJahr"]; ?>"></td>
+    <td><input type="ext" name="MonthJahr" size="7" value="<?PHP echo $_SESSION["shiftadd.php"]["MonthJahr"]; ?>"></td>
   </tr>
   <tr>
     <td align="right">Beginn:</td>
-    <td>Date<input type="text" name="SDatum" size="5" value="<? echo $_SESSION["shiftadd.php"]["SDatum"]; ?>">
-        Time<input type="text" name="STime" size="5" value="<? echo $_SESSION["shiftadd.php"]["STime"]; ?>"></td>
+    <td>Date<input type="text" name="SDatum" size="5" value="<?PHP echo $_SESSION["shiftadd.php"]["SDatum"]; ?>">
+        Time<input type="text" name="STime" size="5" value="<?PHP echo $_SESSION["shiftadd.php"]["STime"]; ?>"></td>
   </tr>
   <tr>
     <td align="right">More then One</td>
-    <td><input type="checkbox" name="MoreThenOne" value="ON" <? 
+    <td><input type="checkbox" name="MoreThenOne" value="ON" <?PHP 
    	if( $_SESSION["shiftadd.php"]["MoreThenOne"]=="ON")
 		echo " CHECKED";
 	?>></td>
   </tr>
   <tr>
     <td align="right">End:</td>
-    <td>Date<input type="text" name="EDatum" size="5" value="<? echo $_SESSION["shiftadd.php"]["EDatum"]; ?>">
-        Time<input type="text" name="ETime" size="5" value="<? echo $_SESSION["shiftadd.php"]["ETime"]; ?>"></td>
+    <td>Date<input type="text" name="EDatum" size="5" value="<?PHP echo $_SESSION["shiftadd.php"]["EDatum"]; ?>">
+        Time<input type="text" name="ETime" size="5" value="<?PHP echo $_SESSION["shiftadd.php"]["ETime"]; ?>"></td>
   </tr>
   <tr>
     <td align="right">L&auml;nge in h:</td>
-    <td><input type="text" name="len" size="5" value="<? echo $_SESSION["shiftadd.php"]["len"]; ?>"></td>
+    <td><input type="text" name="len" size="5" value="<?PHP echo $_SESSION["shiftadd.php"]["len"]; ?>"></td>
   </tr>
   <tr>
     <td align="right">Sonderschichten ein:</td>
-    <td><input type="checkbox" name="NachtON" value="ON" <? 
+    <td><input type="checkbox" name="NachtON" value="ON" <?PHP 
     	if($_SESSION["shiftadd.php"]["NachtON"]=="ON")
 		echo " CHECKED";
 	?>></td>
   </tr>
   <tr>
     <td align="right">Sonder in h (Time;Time):</td>
-    <td><input type="text" name="len_night" size="50" value="<? echo $_SESSION["shiftadd.php"]["len_night"]; ?>"></td>
+    <td><input type="text" name="len_night" size="50" value="<?PHP echo $_SESSION["shiftadd.php"]["len_night"]; ?>"></td>
   </tr>
   
   <tr><td><u>Anzahl Engel je Type:</u></td></tr>
-<?
+<?PHP
 	foreach ($EngelType As $TTemp)
 	{
 		echo "  <tr><td align=\"right\">". $TTemp["Name"]. ":</td>\n";
@@ -150,7 +150,7 @@ mehrere Schichten auf einmal erfasst werden:
 <input type="submit" value="zeig mal Gabriel!">
 </form>
 
-<?
+<?PHP
 	break; // Ende new
 
 case 'newsave':

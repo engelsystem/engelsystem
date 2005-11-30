@@ -37,7 +37,7 @@ echo "<form action=\"".$_SERVER['SCRIPT_NAME']."\" method=\"GET\" >\n";
 		<td>Dauer</td>
 		<td>&Auml;ndern</td>
 	</tr>
-<?
+<?PHP
 
 $sql =  "SELECT `SID`, `DateS`, `RID`, `Len` FROM `Shifts` ".
 	"ORDER BY RID, DateS ";

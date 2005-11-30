@@ -9,12 +9,9 @@ include ("./inc/funktion_user.php");
 
 echo "Hallo ".$_SESSION['Nick'].",<br>\n";
 
-?>
-hier findest du alle Engel, welche zur Zeit in Schichten verplant sind:
-<br><br>
+echo "hier findest du alle Engel, welche zur Zeit in Schichten verplant sind:\n<br><br>\n";
 
 
-<?
 #######################################################
 # Ermitteln freier Engel
 # 

@@ -1,7 +1,7 @@
 
 <!-- anfang des menue parts //-->
 	<td width="160"  valign="top">
-<?
+<?PHP
 $MenueTableStart="
 <table align=\"center\" class=\"border\" cellpadding=\"3\" cellspacing=\"1\">
 	<tr> 
@@ -49,7 +49,7 @@ if ($submenus >= 1 ) {
 </table>
 
 <br>
-<?
+<?PHP
     }
 }
 
@@ -63,7 +63,7 @@ if( isset($_SESSION['UID']))
 		</td>
 	</tr>
 </table>
-<?
+<?PHP
 }
 ?>
 		</td> 

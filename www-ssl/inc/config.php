@@ -1,4 +1,4 @@
-<?
+<?PHP
 // Adresse des Webservers
 $url = "https://linuxeurobook/";
 

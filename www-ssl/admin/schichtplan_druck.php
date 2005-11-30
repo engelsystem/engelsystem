@@ -13,7 +13,7 @@ if (!IsSet($_POST["action"]))
 	include ("./inc/funktion_user.php");
 ?>
 
-Hallo <? echo $_SESSION['Nick']?>,<br>
+Hallo <?PHP echo $_SESSION['Nick']?>,<br>
 auf dieser Seite kannst du dir den Schichtplan in einer Druckansicht generieren lassen. W&auml;hle hierf&uuml;r ein Datum und den Raum:
 <br><br>
 <form action="./schichtplan_druck.php" method="post" target="_print">
@@ -25,7 +25,7 @@ auf dieser Seite kannst du dir den Schichtplan in einer Druckansicht generieren 
 		<td align="right">Datum:</td>
 		<td align="left">
 			<select name="ausdatum">
-<?
+<?PHP
 $SQL = "SELECT DateS FROM `Shifts` ORDER BY 'DateS'";
 $Erg = mysql_query($SQL, $con);
 if (!isset($ausdatum)) 
@@ -69,7 +69,7 @@ for ($i = 0 ; $i < mysql_fetch_row($Erg) ; $i++)
 </form>
 
 <br><br>
-<?
+<?PHP
 	include ("./inc/footer.php");
 } 
 else 	//#################################################################
@@ -110,24 +110,24 @@ else 	//#################################################################
 	<tr>
 		<td width="250" align="left">
 			<span style="font-weight:bold;font-size:100%">Datum:</span> 
-			<span style="font-weight:bold;font-size:200%"><? echo $ausdatum; ?></span>
+			<span style="font-weight:bold;font-size:200%"><?PHP echo $ausdatum; ?></span>
 		</td>
 		<td width="350" align="right">
 			<span style="font-weight:bold;font-size:100%">Raum:</span>
-			<span style="font-weight:bold;font-size:200%"><? echo $RoomID[$Raum]; ?> </span>
+			<span style="font-weight:bold;font-size:200%"><?PHP echo $RoomID[$Raum]; ?> </span>
 		</td>
 	</tr>
 </table>
 
 <table border="2" width="650" class="border" cellpadding="2" cellspacing="1">
-<? 
-//Ausgabe Spalten überschrift
-?>
+ 
+<!--Ausgabe Spalten überschrift-->
+
 	<tr class="contenttopic">
 		<th bgcolor="#E0E0E0">Uhrzeit</th>
 		<th bgcolor="#E0E0E0">Schichtplanbelegung</th>
 	</tr>
-<?
+<?PHP
 
 //Zeit Ausgeben
 for( $i = 0; $i < 24; $i++ )

@@ -1,4 +1,4 @@
-<?
+<?PHP
 
 $Menu["Path"] = "nonpublic/";
 $Menu["Name"] = Get_Text("pub_menu_menuname");

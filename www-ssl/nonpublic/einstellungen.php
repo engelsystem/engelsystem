@@ -1,4 +1,4 @@
-<?
+<?PHP
 $title = "Himmel";
 $header = "Deine pers&ouml;nlichen Einstellungen";
 include ("./inc/header.php");
@@ -10,28 +10,28 @@ if (!IsSet($_POST["action"]))
 	Print_Text(13);
 ?>
 <hr width=\"100%\">
-<? Print_Text("pub_einstellungen_Text_UserData");?>
+<?PHP Print_Text("pub_einstellungen_Text_UserData");?>
 <form action="./einstellungen.php" method="post">
 	<input type="hidden" name="action" value="setUserData">
 	<table>
-		<tr>	<td><? Print_Text("pub_einstellungen_Nick"); ?></td>
-	  		<td><input type="text" name="eNick" size="23" value="<? echo $_SESSION["Nick"]; ?>"></td></tr>
-		<tr>	<td><? Print_Text("pub_einstellungen_Name"); ?></td>
-	  		<td><input type="text" name="eName" size="23" value="<? echo $_SESSION['Name']; ?>"></td></tr>
-		<tr>	<td><? Print_Text("pub_einstellungen_Vorname"); ?></td>
-	  		<td><input type="text" name="eVorname" size="23" value="<? echo $_SESSION['Vorname']; ?>"></td></tr>
-		<tr>	<td><? Print_Text("pub_einstellungen_Alter"); ?></td>
-	  		<td><input type="text" name="eAlter" size="3" value="<? echo $_SESSION['Alter']; ?>"></td></tr>
-		<tr>	<td><? Print_Text("pub_einstellungen_Telefon"); ?></td>
-	  		<td><input type="text" name="eTelefon" size="40" value="<? echo $_SESSION['Telefon']; ?>"></td></tr>
-		<tr>	<td><? Print_Text("pub_einstellungen_Handy"); ?></td>
-	  		<td><input type="text" name="eHandy" size="40" value="<? echo $_SESSION['Handy']; ?>"></td></tr>
-		<tr>	<td><? Print_Text("pub_einstellungen_DECT"); ?></td>
-	  		<td><input type="text" name="eDECT" size="4" value="<? echo $_SESSION['DECT']; ?>"></td></tr>
-		<tr>	<td><? Print_Text("pub_einstellungen_email"); ?></td>
-	  		<td><input type="text" name="eemail" size="40" value="<? echo $_SESSION['email']; ?>"></td></tr>
-		<tr>	<td><? Print_Text("pub_einstellungen_Hometown"); ?></td>
-	  		<td><input type="text" name="Hometown" size="40" value="<? echo $_SESSION['Hometown']; ?>"></td></tr>
+		<tr>	<td><?PHP Print_Text("pub_einstellungen_Nick"); ?></td>
+	  		<td><input type="text" name="eNick" size="23" value="<?PHP echo $_SESSION["Nick"]; ?>"></td></tr>
+		<tr>	<td><?PHP Print_Text("pub_einstellungen_Name"); ?></td>
+	  		<td><input type="text" name="eName" size="23" value="<?PHP echo $_SESSION['Name']; ?>"></td></tr>
+		<tr>	<td><?PHP Print_Text("pub_einstellungen_Vorname"); ?></td>
+	  		<td><input type="text" name="eVorname" size="23" value="<?PHP echo $_SESSION['Vorname']; ?>"></td></tr>
+		<tr>	<td><?PHP Print_Text("pub_einstellungen_Alter"); ?></td>
+	  		<td><input type="text" name="eAlter" size="3" value="<?PHP echo $_SESSION['Alter']; ?>"></td></tr>
+		<tr>	<td><?PHP Print_Text("pub_einstellungen_Telefon"); ?></td>
+	  		<td><input type="text" name="eTelefon" size="40" value="<?PHP echo $_SESSION['Telefon']; ?>"></td></tr>
+		<tr>	<td><?PHP Print_Text("pub_einstellungen_Handy"); ?></td>
+	  		<td><input type="text" name="eHandy" size="40" value="<?PHP echo $_SESSION['Handy']; ?>"></td></tr>
+		<tr>	<td><?PHP Print_Text("pub_einstellungen_DECT"); ?></td>
+	  		<td><input type="text" name="eDECT" size="4" value="<?PHP echo $_SESSION['DECT']; ?>"></td></tr>
+		<tr>	<td><?PHP Print_Text("pub_einstellungen_email"); ?></td>
+	  		<td><input type="text" name="eemail" size="40" value="<?PHP echo $_SESSION['email']; ?>"></td></tr>
+		<tr>	<td><?PHP Print_Text("pub_einstellungen_Hometown"); ?></td>
+	  		<td><input type="text" name="Hometown" size="40" value="<?PHP echo $_SESSION['Hometown']; ?>"></td></tr>
 	</table>
 	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
@@ -39,7 +39,7 @@ if (!IsSet($_POST["action"]))
 
 
 <hr width=\"100%\">
-<? Print_Text(14);?>
+<?PHP Print_Text(14);?>
 <form action="./einstellungen.php" method="post">
 	<input type="hidden" name="action" value="set">
 	<table>
@@ -73,9 +73,9 @@ if (!IsSet($_POST["action"]))
 		</select>
 	   </td></tr>
 	   <tr><td>Menu</td>
-	   	<td><input type="radio" name="eMenu" value="L"<? 
+	   	<td><input type="radio" name="eMenu" value="L"<?PHP 
 			if ($_SESSION['Menu']=='L') echo " checked"; ?>>L
-		    <input type="radio" name="eMenu" value="R"<?
+		    <input type="radio" name="eMenu" value="R"<?PHP
 			if ($_SESSION['Menu']=='R') echo " checked"; ?>>R
 	   	</td></tr>
 	</table>
@@ -113,13 +113,8 @@ if (!IsSet($_POST["action"]))
 		</tr>
 		<tr>
 			<td>
-
-
-<?
-
+<?PHP
 // Anzahl der installierten Avatars
-
-//$ANZ_AVATAR= shell_exec("ls ".$_SERVER["DOCUMENT_ROOT"].$ENGEL_ROOT."inc/avatar/ | wc -l");
 $ANZ_AVATAR= shell_exec("ls inc/avatar/ | wc -l");
 	    ?> 
 	    
@@ -142,7 +137,7 @@ $ANZ_AVATAR= shell_exec("ls inc/avatar/ | wc -l");
 </form>
 
 
-<?
+<?PHP
 
 } else {
 

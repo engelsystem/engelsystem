@@ -34,7 +34,7 @@ case "all":
 			<th>change</th>
                 </tr>
 
-<?
+<?PHP
 
         $Erg = mysql_query($SQL, $con);
         // anzahl zeilen
@@ -93,7 +93,7 @@ case "edit":
 <?php
 	}
 ?>
-		<input type="hidden" name="QID" value="<? echo $_GET["QID"]; ?>">
+		<input type="hidden" name="QID" value="<?PHP echo $_GET["QID"]; ?>">
 		<input type="hidden" name="quest" value="save">
 		<input type="submit" value="Sichern...">
 	</form>
@@ -208,12 +208,12 @@ case "faqedit":
 	<br><br>
 	Antwort:<br>
 	<textarea name="Antwort" rows="5" cols="80"><?php echo mysql_result($Erg, 0, "Antwort"); ?></textarea><br>
-	<input type="hidden" name="FAQID" value="<? echo $_GET["FAQID"]; ?>">
+	<input type="hidden" name="FAQID" value="<?PHP echo $_GET["FAQID"]; ?>">
 	<input type="hidden" name="quest" value="faqsave">
 	<input type="submit" value="Sichern...">
 	</form>
 	<form action="./faq.php">	
-        <input type="hidden" name="FAQID" value="<? echo $_GET["FAQID"]; ?>">
+        <input type="hidden" name="FAQID" value="<?PHP echo $_GET["FAQID"]; ?>">
         <input type="hidden" name="quest" value="faqdelete">
         <input type="submit" value="L&ouml;schen...">
 	</form>

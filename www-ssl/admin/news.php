@@ -14,7 +14,7 @@ $Erg = mysql_query($SQL, $con);
 
 $rowcount = mysql_num_rows($Erg);
 ?>
-Hallo <? echo $_SESSION['Nick'] ?>, <br>
+Hallo <?PHP echo $_SESSION['Nick'] ?>, <br>
 hier kannst du die News s&auml;bern... falls jemand auf die Idee kommt, 
 hier herumzuspamen oder aus Versehen falsche Informationen zu hinterlegen :)<br><br>
 
@@ -27,7 +27,7 @@ hier herumzuspamen oder aus Versehen falsche Informationen zu hinterlegen :)<br>
          <td>Engeltreff</td>
 	 <td>&Auml;nd.</td>
 	</tr>
-<?				  
+<?PHP			  
 
 for ($i=0; $i < $rowcount; $i++) {
 	echo "\t<tr class=\"content\">\n";

@@ -38,7 +38,7 @@ $news_rows  = mysql_num_rows($Erg);
 		<th align="left" colspan=2>Kommentar</th>
 	</tr>
 
-<?
+<?PHP
 for ($n = 0 ; $n < $news_rows ; $n++) {
   echo "\t<tr class=\"content\">";
   echo "\t\t<td width=100>";
@@ -67,7 +67,7 @@ echo "</table>";
 <a name="Neu">&nbsp;</a>
 
 <form action="./news_comments.php" method="GET">
-<input type="hidden" name="nid" value="<? echo $_GET["nid"]; ?>">
+<input type="hidden" name="nid" value="<?PHP echo $_GET["nid"]; ?>">
 <table>
  <tr>
   <td align="right" valign="top">Text:</td>
@@ -78,7 +78,7 @@ echo "</table>";
 <input type="submit" value="sichern...">
 </form>
 
-<?
+<?PHP
 
 
 } 

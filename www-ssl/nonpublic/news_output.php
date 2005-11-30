@@ -74,11 +74,11 @@ echo "</div>";
 <a name="Neu">&nbsp;</a>
 
 <form action="<? echo $ENGEL_ROOT ?>nonpublic/news.php" method="post">
-<? 
+<?PHP 
 // Datum mit uebergeben, um doppelte Eintraege zu verhindern 
 // (Reload nach dem Eintragen!)
 ?>
-<input type="hidden" name="date" value="<? echo date("Y-m-d H:i:s"); ?>">
+<input type="hidden" name="date" value="<?PHP echo date("Y-m-d H:i:s"); ?>">
 <table>
  <tr>
   <td align="right"><?PHP Print_Text(7); ?></td>
@@ -89,14 +89,14 @@ echo "</div>";
   <td><textarea name="text" cols="50" rows="10"></textarea></td>
  </tr>
 
-<?
+<?PHP
 if ($_SESSION['CVS']["nonpublic/newsAddMeting"] == "Y") {
 ?>
  <tr>
   <td align="right"><?PHP Print_Text(9); ?></td>
   <td><input type="checkbox" name="treffen" size="1" value="1"></td>
  </tr>
-<?
+<?PHP
 }
 ?>
 </table>

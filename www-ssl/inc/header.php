@@ -1,4 +1,4 @@
-<? 
+<?PHP 
 include ("./inc/config.php");
 include ("./inc/db.php");
 include ("./inc/funktion_lang.php");
@@ -35,7 +35,7 @@ echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n";
 ?>
 <HTML>
 <HEAD>
-<?
+<?PHP
 echo "<TITLE>--- $title  ---</TITLE>";
 ?>
 <meta name="keywords" content="Engel, Himmelsverwaltung">
@@ -45,8 +45,13 @@ echo "<TITLE>--- $title  ---</TITLE>";
 <meta name="robots" content="index">
 <meta name="revisit-after" content="1 days">
 <meta http-equiv="content-language" content="de">
-<link rel=stylesheet type="text/css" href="./inc/css/style<? if (!IsSet($_SESSION['color'])) { echo "1"; } else { echo $_SESSION['color']; } ?>.css">
-<?
+<link rel=stylesheet type="text/css" href="./inc/css/style<?PHP
+	if (!IsSet($_SESSION['color'])) 
+		echo "1"; 
+	else 
+		echo $_SESSION['color'];
+	?>.css">
+<?PHP
 if (isset($reload)) {
  if ($reload=="") $reload=3330;
  echo "\n<meta http-equiv=\"refresh\" content=\"".$reload.
@@ -60,7 +65,7 @@ if (isset($Page["AutoReload"])) {
 ?>
 </HEAD>
 <BODY>
-<?
+<?PHP
 if( !isset($Page["ShowTabel"]) ) $Page["ShowTabel"]="Y";
 if( $Page["ShowTabel"]=="Y" )
 {
@@ -68,10 +73,10 @@ if( $Page["ShowTabel"]=="Y" )
 
 ?>
 	<div align="center">
-	<a name="#top"><img src="./inc/himmel<? if( isset($_SESSION['color'])) 
+	<a name="#top"><img src="./inc/himmel<?PHP if( isset($_SESSION['color'])) 
 						if ($_SESSION['color']==6) echo "_w"; ?>.png" alt="Unser Himmel"></a>
 	<p>
-<?
+<?PHP
 //ausgabe new message
 if( isset($_SESSION['CVS']["nonpublic/messages.php"]))
     if( $_SESSION['CVS']["nonpublic/messages.php"] == "Y")
@@ -87,7 +92,7 @@ if( isset($_SESSION['CVS']["nonpublic/messages.php"]))
 ?>
 <table width="95%" align="center" border="0" cellpadding="7" cellspacing="0">
 	<tr>
-<?
+<?PHP
 //ausgaeb Menu
 if( !isset($_SESSION['Menu']))		$_SESSION['Menu'] = "L";
 if( $_SESSION['Menu'] =="L")		include("./inc/menu.php");
@@ -97,7 +102,7 @@ if( $_SESSION['Menu'] =="L")		include("./inc/menu.php");
 <table border="0" width="100%" align="center" class="border" cellpadding="5" cellspacing="1">
 	<tr class="contenttopic">
 		<td>
-<?
+<?PHP
 		echo "\t<a name=\"#$header\" class=\"contenttopic\">";
 		if( strlen( $header) == 0 )
 			echo "\n\t<b>". Get_Text($Page["Name"]). "</b></a>\n";

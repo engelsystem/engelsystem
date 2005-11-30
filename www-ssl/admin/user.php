@@ -26,21 +26,21 @@ if (!IsSet($_GET["enterUID"]))
 
 	?><table width="100%" class="border" cellpadding="2" cellspacing="1"> 
 	<tr class="contenttopic">
-		<td><a href="<? echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Nick">Nick</a></td>
-		<td><a href="<? echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Name">Name</a></td>
-		<td><a href="<? echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Vorname">Vorname</a></td>
+		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Nick">Nick</a></td>
+		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Name">Name</a></td>
+		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Vorname">Vorname</a></td>
 		<td>Alter</td>
-		<td>Telefon <a href="<? echo $_SERVER["PHP_SELF"]; ?>?OrderBy=email">@</a></td>
-		<td><a href="<? echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Size">Gr&ouml;&szlig;e</a></td>
-		<td><a href="<? echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Gekommen">G</a></td>
-		<td><a href="<? echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Aktiv">A</a></td>
-		<td><a href="<? echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Tshirt">T</a></td>
+		<td>Telefon <a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=email">@</a></td>
+		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Size">Gr&ouml;&szlig;e</a></td>
+		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Gekommen">G</a></td>
+		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Aktiv">A</a></td>
+		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Tshirt">T</a></td>
 		<td>&Auml;nd.</td>
 		<td>Secure</td>
 	</tr>
 
 
-	<?
+	<?PHP
 	$Gekommen = 0;
 	$Active = 0;
 	$Tshirt = 0;

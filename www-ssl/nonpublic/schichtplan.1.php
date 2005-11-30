@@ -1,6 +1,6 @@
 <h4>&nbsp;Tage </h4>
 
-<?
+<?PHP
 include ("./inc/funktion_schichtplan_aray.php");
 
 function Printlink( $Datum)

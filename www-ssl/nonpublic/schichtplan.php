@@ -15,10 +15,8 @@ include ("./inc/funktion_schichtplan.php");
 include ("./inc/funktion_schichtplan_aray.php");
 ?>
 
-<? echo Get_Text("Hello").$_SESSION['Nick'].",<br>".
-        Get_Text("pub_schicht_beschreibung");?>
-<br><br>
-<?
+<?PHP echo Get_Text("Hello").$_SESSION['Nick'].",<br>".
+     	   Get_Text("pub_schicht_beschreibung"). "<br><br>";
 
 function ShowSwitchDay()
 {

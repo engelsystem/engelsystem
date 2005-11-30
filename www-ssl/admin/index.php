@@ -13,7 +13,7 @@ du bist jetzt im Erzengel-Bereich. Hier kannst du die Engel-Verwaltung vornehmen
 
 Bitte melde dich <a href="../logout.php">hier</a> nach getaner Arbeit immer ab, damit kein anderer hier &Auml;nderungen vornehmen kann.
 
-<?
+<?PHP
 include ("./inc/footer.php");
 ?>
 

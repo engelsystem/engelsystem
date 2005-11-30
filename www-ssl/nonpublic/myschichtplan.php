@@ -28,14 +28,14 @@ If( !IsSet($_GET["action"]) )
 	?>
 	<table border="0" class="border" cellpadding="2" cellspacing="1">
 		<tr>
-			<td class="contenttopic"><b><? echo Get_Text("pub_mywake_Datum");?></b></td>
-			<td class="contenttopic"><b><? echo Get_Text("pub_mywake_Uhrzeit");?></b></td>
-			<td class="contenttopic"><b><? echo Get_Text("pub_mywake_Len");?></b></td>
-			<td class="contenttopic"><b><? echo Get_Text("pub_mywake_Ort");?></b></td>
-			<td class="contenttopic"><b><? echo Get_Text("pub_mywake_Bemerkung");?></b></td>
-			<td class="contenttopic"><b><? echo Get_Text("pub_mywake_Austragen");?></b></td>
+			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Datum");?></b></td>
+			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Uhrzeit");?></b></td>
+			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Len");?></b></td>
+			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Ort");?></b></td>
+			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Bemerkung");?></b></td>
+			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Austragen");?></b></td>
 		</tr>
-	<?
+	<?PHP
 
 	for( $i=0; $i<mysql_num_rows( $erg ); $i++ )
 	{

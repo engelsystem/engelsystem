@@ -1,4 +1,4 @@
-<?
+<?PHP
 $title = "Index";
 $header = "Index";
 

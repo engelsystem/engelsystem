@@ -11,11 +11,11 @@ if (!IsSet($_POST["eUID"]))
 ?>
 <br><br>
 <form action="./faq.php" method="POST">
-  <input type="hidden" name="eUID" value="<? echo $_SESSION['UID'] ?>">
+  <input type="hidden" name="eUID" value="<?PHP echo $_SESSION['UID'] ?>">
   <textarea name="frage"  cols="40" rows="10"><?PHP Print_Text(36); ?></textarea><br><br>
   <input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
-<?
+<?PHP
 
 } else {
 // Auswertung d. Formular-Daten:

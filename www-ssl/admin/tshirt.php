@@ -24,7 +24,7 @@ Hinter diesem erscheint ein Link, &uuml;ber den man eintragen kann, dass der Eng
 
 Liste aller aktiven Engel:
 
-<?
+<?PHP
 $SQL = "SELECT * from User where (Aktiv = 1) ORDER BY Nick ASC"; 
 $Erg = mysql_query($SQL, $con);
 
@@ -37,7 +37,7 @@ $rowcount = mysql_num_rows($Erg);
 	 <td>Gr&ouml;sse</td>
 	 <td>T-Shirt ausgeben:</td>
 	</td>
-<?
+<?PHP
 for ($i=0; $i<$rowcount; $i++){
   echo "\t<tr class=\"content\">\n";
     $eUID=mysql_result($Erg, $i, "UID");
