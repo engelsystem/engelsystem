@@ -9,7 +9,8 @@ if( !isset( $_GET["TextID"] )  )
 {
 	echo Get_Text("Hello").$_SESSION['Nick'].", <br>\n";
 	echo Get_Text("pub_sprache_text1")."<br><br>\n";
-	
+
+	echo "<a href=\"?ShowEntry=y\">". Get_Text("pub_sprache_ShowEntry"). "</a>";
 	// ausgabe Tabellenueberschift
 	$SQL_Sprachen = "SELECT `Sprache` FROM `Sprache` GROUP BY `Sprache`;";
 	$erg_Sprachen = mysql_query($SQL_Sprachen, $con);
@@ -28,6 +29,8 @@ if( !isset( $_GET["TextID"] )  )
 	echo "\t\t</tr>";
 
 
+	if( isset($_GET["ShowEntry"]))
+	{
 	// ausgabe eintraege
 	$SQL = "SELECT * FROM `Sprache` ORDER BY `TextID`;";
 	$erg = mysql_query($SQL, $con);
@@ -58,6 +61,7 @@ if( !isset( $_GET["TextID"] )  )
 		}
 		$Sprachen[ mysql_result( $erg, $i, "Sprache" ) ] = mysql_result( $erg, $i, "Text" );
 	} /*FOR*/
+	}
 	
 	//fuer neu eintraege
 	echo "<form action=\"sprache.php\">";
