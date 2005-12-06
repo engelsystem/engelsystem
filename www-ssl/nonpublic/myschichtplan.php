@@ -31,6 +31,7 @@ If( !IsSet($_GET["action"]) )
 			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Datum");?></b></td>
 			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Uhrzeit");?></b></td>
 			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Len");?></b></td>
+			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Name");?></b></td>
 			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Ort");?></b></td>
 			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Bemerkung");?></b></td>
 			<td class="contenttopic"><b><?PHP echo Get_Text("pub_mywake_Austragen");?></b></td>
@@ -44,6 +45,7 @@ If( !IsSet($_GET["action"]) )
 		echo "<td>". substr(mysql_result( $erg, $i, "DateS" ), 0, 10). "</td>\n";
 		echo "<td>". substr(mysql_result( $erg, $i, "DateS" ), 11). "</td>\n";
 		echo "<td>". mysql_result( $erg, $i, "Len" ). " h</td>\n";
+		echo "<td>". mysql_result( $erg, $i, "Man" ). "</td>\n";
 		echo "<td>". $RoomID[mysql_result( $erg, $i, "RID" )]. "<br>\n".
 		     "(". TID2Type(mysql_result( $erg, $i, "TID" )).Get_Text("inc_schicht_engel"). ")".
 		     "</td>\n";
