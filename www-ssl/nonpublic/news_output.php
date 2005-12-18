@@ -73,7 +73,7 @@ echo "</div>";
 <h4><?PHP Print_Text(6); ?></h4>
 <a name="Neu">&nbsp;</a>
 
-<form action="<? echo $ENGEL_ROOT ?>nonpublic/news.php" method="post">
+<form action="<?PHP echo $ENGEL_ROOT ?>nonpublic/news.php" method="post">
 <?PHP 
 // Datum mit uebergeben, um doppelte Eintraege zu verhindern 
 // (Reload nach dem Eintragen!)

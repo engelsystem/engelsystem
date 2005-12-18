@@ -15,7 +15,7 @@ if (!IsSet($_GET["enterUID"]))
 	echo "\n<a href=\"./user.php?enterUID=-1&Type=Secure\">Edit logout User</a><br><br>\n";
 
 	if( !isset($_GET["OrderBy"]) ) $_GET["OrderBy"] = "Nick";
-	$SQL = "SELECT * FROM User ORDER BY ". $_GET["OrderBy"]. " ASC";
+	$SQL = "SELECT * FROM User ORDER BY `". $_GET["OrderBy"]. "` ASC";
 	$Erg = mysql_query($SQL, $con);
 	echo mysql_error($con);
 
@@ -29,8 +29,14 @@ if (!IsSet($_GET["enterUID"]))
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Nick">Nick</a></td>
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Name">Name</a></td>
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Vorname">Vorname</a></td>
-		<td>Alter</td>
-		<td>Telefon <a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=email">@</a></td>
+		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Alter">Alter</a></td>
+		<td>
+			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=email">@</a> | 
+			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=DECT">DECT</a> | 
+			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Hometown">Hometown</a> | 
+			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=lastLogIn">lastLogIn</a> | 
+			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Art">Type</a> 
+		</td>
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Size">Gr&ouml;&szlig;e</a></td>
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Gekommen">G</a></td>
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Aktiv">A</a></td>
@@ -66,6 +72,8 @@ if (!IsSet($_GET["enterUID"]))
 				echo "\n\t\tHometown: ". mysql_result($Erg, $n, "Hometown"). "<br>";
 			if( strlen( mysql_result($Erg, $n, "lastLogIn"))>0)
 				echo "\n\t\tlastLogIn: ". mysql_result($Erg, $n, "lastLogIn"). "<br>";
+			if( strlen( mysql_result($Erg, $n, "Art"))>0)
+				echo "\n\t\tType: ". mysql_result($Erg, $n, "Art"). "<br>";
 			echo "</td>\n";
 		echo "\t<td>".mysql_result($Erg, $n, "Size")."</td>\n";
 		$Gekommen += mysql_result($Erg, $n, "Gekommen");
