@@ -149,8 +149,8 @@ echo "\t\t\t<tr><td>". Get_Text("makeuser_Engelart").
 echo "\t\t\t<select name=\"Art\">\n";
 echo "\t\t\t\t<option value=\"Konferenz\""; 	if ($_POST["Art"]=="Konferenz")		echo " selected"; 
 	echo ">Konferenz</option>\n";
-echo "\t\t\t\t<option value=\"Dokumentation\"";	if ($_POST["Art"]=="Dokumentation")	echo " selected";
-	echo ">Dokumentation</option>\n";
+//echo "\t\t\t\t<option value=\"Dokumentation\"";	if ($_POST["Art"]=="Dokumentation")	echo " selected";
+//	echo ">Dokumentation</option>\n";
 echo "\t\t\t\t<option value=\"Eingang\"";	if ($_POST["Art"]=="Eingang")		echo " selected";
 	echo ">Eingang</option>\n";
 echo "\t\t\t\t<option value=\"Schutzengel\"";	if ($_POST["Art"]=="Schutzengel")	echo " selected";
