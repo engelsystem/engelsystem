@@ -102,9 +102,26 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 				$Spalten.= Get_Text("inc_schicht_sind"). ":<br>\n\t\t";
 			
 			foreach( $TempValue["Engel"] as $TempEngelEntry=> $TempEngelID )
-      				$Spalten.= "&nbsp;&nbsp;". UID2Nick( $TempEngelID ).
-      					   DisplayAvatar( $TempEngelID ).
-					   "<br>\n\t\t";
+			{
+
+				if( $_SESSION['CVS'][ "admin/schichtplan.php" ] == "Y" )
+				{
+					if( UIDgekommen( $TempEngelID ) == "1")
+	      					$Spalten.= "&nbsp;&nbsp;<span style=\"color: blue;\">". 
+							   UID2Nick( $TempEngelID ).
+      							   DisplayAvatar( $TempEngelID ).
+							   "</span><br>\n\t\t";
+					else
+      						$Spalten.= "&nbsp;&nbsp;<span style=\"color: red;\">". 
+							   UID2Nick( $TempEngelID ).
+      							   DisplayAvatar( $TempEngelID ).
+							   "</span><br>\n\t\t";
+				}
+				else
+      					$Spalten.= "&nbsp;&nbsp;". UID2Nick( $TempEngelID ).
+      						   DisplayAvatar( $TempEngelID ).
+						   "<br>\n\t\t";
+			}
 			$Spalten = substr( $Spalten, 0, strlen($Spalten)-7 );
 		  }
 		

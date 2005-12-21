@@ -56,15 +56,13 @@ function ReplaceSmilies($eckig) {
 }
 
 function displayavatar($dumdidum) {
-include ("./inc/db.php");
+	include ("./inc/db.php");
+	global $displayavatar;
         
        $asql = "select * from User where UID = $dumdidum";
        $aerg = mysql_query ($asql, $con);
-       $displayavatar= mysql_result($aerg, 0, "Avatar");
-       if ($displayavatar<>0){
-            return ("&nbsp;<img src=\"./inc/avatar/avatar$displayavatar.gif\">");
-       }
-
+       if (($displayavatar<>0) && (mysql_num_rows($Erg)) )
+            return ("&nbsp;<img src=\"./inc/avatar/avatar". mysql_result($aerg, 0, "Avatar"). ".gif\">");
 }
 
 function Ausgabe_Feld($RID) {
@@ -80,6 +78,20 @@ function Ausgabe_Feld($RID) {
 	}
 	return mysql_query($SQL2, $con);
 }
+
+function UIDgekommen($UID) {
+  include ("./inc/db.php");
+  
+  $SQL = "SELECT `Gekommen` FROM `User` WHERE UID='$UID'";
+  $Erg = mysql_query($SQL, $con);
+
+  //echo $UID."#";
+  if( mysql_num_rows($Erg))
+	return mysql_result($Erg, 0);
+  else
+  	return "0";
+}
+
 
 
 ?>
