@@ -128,10 +128,9 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		$SQLerlaubnis = "SELECT Name FROM `EngelType` WHERE TID = '". $TempValue["TID"]. "'";
 		$Ergerlaubnis =  mysql_query( $SQLerlaubnis, $con);
 		if( mysql_num_rows( $Ergerlaubnis))
-		  if( $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "Y" ||
-			$_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "")
-		    for($i=1; $i<=$TempValue["free"]; $i++ )
-			$Out.= "free";
+			if( $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "Y" ||
+			    $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "")
+				$Out.= $TempValue["free"]. "x free ";
 		$Out.= "</td>\n";
 		$Out.= "\t\t\t</tr>\n";
 	
