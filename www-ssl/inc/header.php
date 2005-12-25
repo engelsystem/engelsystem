@@ -66,6 +66,16 @@ if (isset($Page["AutoReload"])) {
 </HEAD>
 <BODY>
 <?PHP
+
+if( isset($SystemDisableMessage))
+	if( strlen($SystemDisableMessage)>0)
+	{
+		echo $SystemDisableMessage;
+		echo "\n\n<BODY>\n</HTML>";
+		die();
+	}
+
+
 if( !isset($Page["ShowTabel"]) ) $Page["ShowTabel"]="Y";
 if( $Page["ShowTabel"]=="Y" )
 {

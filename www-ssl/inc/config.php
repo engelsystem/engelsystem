@@ -5,6 +5,9 @@ $url = "https://linuxeurobook/";
 // Startverzeichnis des Engelhome
 $ENGEL_ROOT = "/engel/";
 
+// System disable message, ist ist set is: bages schow only this text
+//$SystemDisableMessage="<H1>This system ist moved to a server in the BCC, you can in the moment only youse it in the in Engel Room</H1>";
+
 // Anzahl der News, die auf einer Seite ausgeben werden koennen...
 $DISPLAY_NEWS = 6;
 
@@ -27,7 +30,8 @@ $CCC_Start = "http://www.ccc.de/congress/2004/fahrplan/event/";
 $CCC_End   = ".de.html";
 
 // SSL Cert-KEY
-$show_SSLCERT = "MD5:<br>AF:32:B9:BE:3F:AE:53:78:1E:1B:6E:82:48:E0:DB:94<br>SHA1:<br>B8:07:E8:A4:F3:1A:EF:03:81:C2:44:0C:50:25:3D:1A:A0:E4:AA:76";
+$show_SSLCERT = "MD5:<br>AF:32:B9:BE:3F:AE:53:78:1E:1B:6E:82:48:E0:DB:94<br>\n".
+		"SHA1:<br>B8:07:E8:A4:F3:1A:EF:03:81:C2:44:0C:50:25:3D:1A:A0:E4:AA:76";
 
 //globale const. fuer schischtplan
 $GlobalZeileProStunde = 4;
