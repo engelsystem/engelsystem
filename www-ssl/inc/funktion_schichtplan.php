@@ -8,9 +8,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 {
 // gibt, nach übergabe der der SchichtID (SID) und der RaumBeschreibung,
 // die eingetragenden und und offenden Schichteintäge zurück
-	global $EngelType, $EngelTypeID, $con;
-	//form Config
-	global $CCC_Start, $CCC_End, $DEBUG;
+	global $EngelType, $EngelTypeID, $con, $DEBUG;
 
 	$Spalten = "";
 	
