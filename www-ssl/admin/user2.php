@@ -9,19 +9,6 @@ include ("./inc/crypt.php");
 if (IsSet($_GET["action"])) 
 {
 	
-	function SQLExec( $SQL )
-	{ 
-		global $con;
-	
-		$Erg = mysql_query($SQL, $con);
-		if ($Erg == 1) {
-			echo "&Auml;nderung wurde gesichert...\n";
-		} else {
-			echo "Fehler beim speichern...\n(". mysql_error($con). ")";
-		}
-
-	}
-
 	SetHeaderGo2Back();
 	echo "Gesendeter Befehl: ". $_GET["action"]. "<br>";
 
@@ -48,7 +35,12 @@ if (IsSet($_GET["action"]))
 					"WHERE `UID` = '". $_POST["enterUID"]. 
 					"' LIMIT 1;";
 				echo "User-";
-				SQLExec( $SQL );
+				$Erg = db_query($SQL, "change user details");
+				if ($Erg == 1) {
+					echo "&Auml;nderung wurde gesichert...\n";
+				} else {
+					echo "Fehler beim speichern...\n(". mysql_error($con). ")";
+				}
 			}
 			if ($_POST["Type"] == "Secure")
 			{
@@ -66,7 +58,12 @@ if (IsSet($_GET["action"]))
 				$SQL2 = substr( $SQL2, 0, strlen($SQL2)-2 );
 				$SQL2.= "  WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
 				echo "<br>Secure-";
-				SQLExec( $SQL2 );
+				$Erg = db_query($SQL2, "change user CVS");
+				if ($Erg == 1) {
+					echo "&Auml;nderung wurde gesichert...\n";
+				} else {
+					echo "Fehler beim speichern...\n(". mysql_error($con). ")";
+				}
 			}
 		}
 		break;
@@ -75,15 +72,32 @@ if (IsSet($_GET["action"]))
 		if (IsSet($_POST["enterUID"]))
 		{
 			echo "delate User...";
-			$SQL="delete from `User` WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
-			SQLExec( $SQL );
+			$SQL="DELETE FROM `User` WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
+			$Erg = db_query($SQL, "User delete");
+			if ($Erg == 1) {
+				echo "&Auml;nderung wurde gesichert...\n";
+			} else {
+				echo "Fehler beim speichern...\n(". mysql_error($con). ")";
+			}
+			
 			echo "<br>\ndelate UserCVS...";
-			$SQL2="delete from `UserCVS` WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
-			SQLExec( $SQL2 );
+			$SQL2="DELETE FROM `UserCVS` WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
+			$Erg = db_query($SQL2, "User CVS delete");
+			if ($Erg == 1) {
+				echo "&Auml;nderung wurde gesichert...\n";
+			} else {
+				echo "Fehler beim speichern...\n(". mysql_error($con). ")";
+			}
+			
 			echo "<br>\ndelate UserEntry...";
 			$SQL3="UPDATE `ShiftEntry` SET `UID` = '0', `Comment` = NULL ".
 				"WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
-			SQLExec( $SQL3 );
+			$Erg = db_query($SQL3, "delate UserEntry");
+			if ($Erg == 1) {
+				echo "&Auml;nderung wurde gesichert...\n";
+			} else {
+				echo "Fehler beim speichern...\n(". mysql_error($con). ")";
+			}
 		}
 		break;
 
@@ -109,7 +123,12 @@ if (IsSet($_GET["action"]))
 			$_POST["ePasswort"] = PassCrypt($_POST["ePasswort"]);
 			$SQL =	"UPDATE `User` SET `Passwort`='". $_POST["ePasswort"]. "' ".
 				"where `UID` = '". $_POST["eUID"]. "'";
-			SQLExec( $SQL );
+			$Erg = db_query($SQL, "User new passwort");
+			if ($Erg == 1) {
+				echo "&Auml;nderung wurde gesichert...\n";
+			} else {
+				echo "Fehler beim speichern...\n(". mysql_error($con). ")";
+			}
 		} 
 		else 
 			echo "Das Passwort wurde nicht &uuml;bereinstimmend eingegeben!";

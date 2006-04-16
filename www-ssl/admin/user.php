@@ -93,7 +93,7 @@ if (!IsSet($_GET["enterUID"]))
 		if( mysql_num_rows($Erg2)==0)
 		{
 			$SQL3 = "INSERT INTO `UserCVS` ( `UID`) VALUES ( '". mysql_result($Erg, $n, "UID"). "');";
-			$Erg3 = mysql_query($SQL3, $con);
+			$Erg3 = db_query($SQL3, "admin/user.php auto CVS create");
 			if( $Erg3 )
 				echo "was create<br>\n";
 			else
