@@ -130,7 +130,10 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		if( mysql_num_rows( $Ergerlaubnis))
 			if( $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "Y" ||
 			    $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "")
-				$Out.= $TempValue["free"]. "x free ";
+                        {
+				if ( $TempValue["free"] > 0)
+					$Out.= ", ". $TempValue["free"]. "x free ";
+			}
 		$Out.= "</td>\n";
 		$Out.= "\t\t\t</tr>\n";
 	

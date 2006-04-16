@@ -119,14 +119,16 @@ case "save":
 	  	 "\", AID=\"". $_SESSION['UID']. "\" , Answer=\"". $_GET["Answer"]. "\" ".
 		 "where QID = \"". $_GET["QID"]. "\" LIMIT 1";
           $Erg = mysql_query($SQL, $con);
-          if ($Erg == 1) {
-?>
-		Der Eintrag wurde ge&auml;ndert<br>
-<?php
-          } else {
-?>
-		Ein Fehler ist aufgetreten. Sorry, du kannst es aber ja nochmal probieren :)
-<?php
+          if ($Erg == 1) 
+	  {
+
+		echo "Der Eintrag wurde ge&auml;ndert<br>";
+		SetHeaderGo2Back();
+	
+          } 
+	  else 
+	  {
+		echo "Ein Fehler ist aufgetreten. Sorry, du kannst es aber ja nochmal probieren :)";
 	  }
         }
 	break;

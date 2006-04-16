@@ -126,7 +126,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		// ausgabe benötigter Engel
 		////////////////////////////
 		//in vergangenheit
-		$SQLtime = "SELECT `DateE` FROM `Shifts` WHERE (SID='$SID' AND `DateS` >= '". 
+		$SQLtime = "SELECT `DateE` FROM `Shifts` WHERE (SID='$SID' AND `DateE` >= '". 
 			gmdate("Y-m-d H:i:s", time()+ 3600). "')";
 		$Ergtime = mysql_query($SQLtime, $con);
 		if( mysql_num_rows( $Ergtime) > 0)
