@@ -2,6 +2,7 @@
 $title = "Himmel";
 $header = "FAQ / Fragen an die Erzengel";
 include ("./inc/header.php");
+include ("./inc/funktion_user.php");
 
 
 // Erstaufruf, oder Frage bereits abgeschickt?
@@ -62,7 +63,8 @@ if ($Zeilen==0){
 } else {
 	for ($n = 0 ; $n < $Zeilen ; $n++) {
 	  echo "<p class='question'>".nl2br(mysql_result($Erg, $n, "Question"))."<br>\n";
-	  echo "<p class='answer'>".nl2br(mysql_result($Erg, $n, "Answer"))."\n";
+	  echo "<p class='answer'>".nl2br(mysql_result($Erg, $n, "Answer")).
+	  	"@". UID2Nick(mysql_result($Erg, $n, "AID"))."\n";
 	  echo "\n<br>---<br>";
 	}
 }
