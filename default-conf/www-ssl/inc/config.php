@@ -1,6 +1,6 @@
 <?PHP
 // Adresse des Webservers
-$url = "https://linuxeurobook/";
+$url = "https://172.16.16.40/";
 
 // Startverzeichnis des Engelhome
 $ENGEL_ROOT = "/engel/";
