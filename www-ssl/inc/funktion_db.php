@@ -50,12 +50,22 @@ if( !function_exists("db_query"))
 
 			//Daten auslesen
 			$Diff .= Ausgabe_Daten( "SELECT * FROM $Table $Where");
-	
+
 			//execute command
 			$querry_erg = mysql_query($SQL, $con);
 			
 			//Daten auslesen
 			$Diff .= Ausgabe_Daten( "SELECT * FROM $Table $Where");
+		}
+		elseif( strpos( "#$SQL", "DELETE") > 0)
+		{
+			$TableWhere = substr( $SQL, 6);
+			
+			//Daten auslesen
+			$Diff .= Ausgabe_Daten( "SELECT * $TableWhere");
+
+			//execute command
+			$querry_erg = mysql_query($SQL, $con);
 		}
 		elseif( strpos( "#$SQL", "INSERT") > 0)
 		{
