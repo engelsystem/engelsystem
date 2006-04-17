@@ -28,7 +28,7 @@ echo "</form>\n";
 if( Isset($_POST["ResetActive"]) )
 {
 	$SQLreset = "UPDATE `User` SET `Aktiv` = '0'";
-	$ErgReset = mysql_query($SQLreset, $con);
+	$ErgReset = db_query($SQLreset, "Reset Active");
 	if ($ErgReset != 1)
 		echo "Fehler beim zuruecksetzen der Activ\n";
 	else

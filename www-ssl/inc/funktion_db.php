@@ -5,7 +5,8 @@ if( !function_exists("db_query"))
 	function Ausgabe_Daten($SQL)
 	{
 		global $con;	
-		
+	
+	
 		$Erg = mysql_query($SQL, $con);
 		echo mysql_error($con);
 		
@@ -46,7 +47,7 @@ if( !function_exists("db_query"))
 			$Where = substr( $SQL, $Where_Start);
 			
 			// sicherheitsprüfung !!!!
-			if( $Where_Start == 0) die("<h1>DIE: kein WHERE im SQL ausdruck gefunden</h1>");
+			if( $Where_Start == 0)	$Where = ";"; 
 
 			//Daten auslesen
 			$Diff .= Ausgabe_Daten( "SELECT * FROM $Table $Where");
@@ -77,6 +78,9 @@ if( !function_exists("db_query"))
 			$querry_erg = mysql_query($SQL, $con);
 		}
 
+		//abschneiden wenn zu lang
+		if( strlen( $Diff) > 5120) 	$Diff = "too mutch (len ". strlen( $Diff). ")";
+
 		//LOG commands in DB
 		$SQL_SEC =	"INSERT INTO `ChangeLog` ( `UID` , `SQLCommad` , `Commend` ) ".
 				" VALUES ( ".
@@ -85,9 +89,9 @@ if( !function_exists("db_query"))
 					 "Diff:<br>$Diff', ".
 					"'". htmlentities( $comment, ENT_QUOTES). "' );";
 		$erg = mysql_query($SQL_SEC, $con);
+echo "##$erg";
 		echo mysql_error($con);
-		
-		
+echo "##";
 		return $querry_erg;
 	}//function db_query(
 }
