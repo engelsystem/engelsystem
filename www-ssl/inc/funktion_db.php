@@ -44,6 +44,9 @@ if( !function_exists("db_query"))
 			//WHERE ermitteln
 			$Where_Start = strpos( $SQL, "WHERE");
 			$Where = substr( $SQL, $Where_Start);
+			
+			// sicherheitsprüfung !!!!
+			if( $Where_Start == 0) die("<h1>DIE: kein WHERE im SQL ausdruck gefunden</h1>");
 
 			//Daten auslesen
 			$Diff .= Ausgabe_Daten( "SELECT * FROM $Table $Where");
@@ -53,6 +56,10 @@ if( !function_exists("db_query"))
 			
 			//Daten auslesen
 			$Diff .= Ausgabe_Daten( "SELECT * FROM $Table $Where");
+		}
+		elseif( strpos( "#$SQL", "INSERT") > 0)
+		{
+			echo "##### LOG: INSERT #####";
 		}
 		else
 		{
