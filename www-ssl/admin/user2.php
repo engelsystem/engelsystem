@@ -91,7 +91,7 @@ if (IsSet($_GET["action"]))
 			
 			echo "<br>\ndelate UserEntry...";
 			$SQL3="UPDATE `ShiftEntry` SET `UID` = '0', `Comment` = NULL ".
-				"WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
+				"WHERE `UID` = '". $_POST["enterUID"]. "';";
 			$Erg = db_query($SQL3, "delate UserEntry");
 			if ($Erg == 1) {
 				echo "&Auml;nderung wurde gesichert...\n";
