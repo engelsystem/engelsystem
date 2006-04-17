@@ -105,7 +105,7 @@ if (IsSet($_GET["action"]))
 	case "newpw":
 		echo "Bitte neues Kennwort f&uuml;r <b>";
 		// Get Nick
-		$USQL = "SELECT * FROM User where UID=". $_GET["eUID"];
+		$USQL = "SELECT * FROM User WHERE UID=". $_GET["eUID"];
 		$Erg = mysql_query($USQL, $con);
 		echo mysql_result($Erg, 0, "Nick");
 		echo "</b> eingeben:<br>";
@@ -122,7 +122,7 @@ if (IsSet($_GET["action"]))
 		{	// beide Passwoerter passen... 
 			$_POST["ePasswort"] = PassCrypt($_POST["ePasswort"]);
 			$SQL =	"UPDATE `User` SET `Passwort`='". $_POST["ePasswort"]. "' ".
-				"where `UID` = '". $_POST["eUID"]. "'";
+				"WHERE `UID` = '". $_POST["eUID"]. "'";
 			$Erg = db_query($SQL, "User new passwort");
 			if ($Erg == 1) {
 				echo "&Auml;nderung wurde gesichert...\n";

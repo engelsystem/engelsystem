@@ -126,7 +126,7 @@ else
 
 	if( $_GET["Type"] == "Normal" )
 	{
-		$SQL = "SELECT * FROM User where UID=". $_GET["enterUID"];
+		$SQL = "SELECT * FROM User WHERE UID=". $_GET["enterUID"];
 		$Erg = mysql_query($SQL, $con);
 		
 		if (mysql_num_rows($Erg) != 1) 
