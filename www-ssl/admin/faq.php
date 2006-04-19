@@ -70,7 +70,6 @@ case "open":
 	break;
 	
 case "edit":
-	$quest_bearb=0; // keine Fragenliste anzeigen, Frage editieren...
 	if (!IsSet($_GET["QID"]))
 		echo "\t\tFehlerhafter Aufruf...<br>Bitte die Bearbeitung nochmals beginnen :)\n";
 	else 
@@ -105,10 +104,10 @@ case "save":
 		echo "\tFehlerhafter Aufruf... Bitte die Bearbeitung nochmal starten...";
         else
 	{
-		$SQL = "UPDATE Questions SET Question=\"". $_GET["Question"]. 
+		$SQL = "UPDATE `Questions` SET Question=\"". $_GET["Question"]. 
 	  		 "\", AID=\"". $_SESSION['UID']. "\" , Answer=\"". $_GET["Answer"]. "\" ".
-			 "where QID = \"". $_GET["QID"]. "\" LIMIT 1";
-        	$Erg = mysql_query($SQL, $con);
+			 "WHERE QID = \"". $_GET["QID"]. "\" LIMIT 1";
+        	$Erg = db_query($SQL, "save Question");
 		if ($Erg == 1) 
 		{
 			echo "\tDer Eintrag wurde ge&auml;ndert<br>\n";
@@ -126,9 +125,9 @@ case "transfer":
 	{
 		$SQL1="Select * from Questions where QID=". $_GET["QID"];
 		$Erg = mysql_query($SQL1, $con);
-		$SQL2="Insert into FAQ Values (\"\", \"".
+		$SQL2="INSERT into `FAQ` Values (\"\", \"".
 			mysql_result($Erg, 0, "Question")."\", \"".mysql_result($Erg, 0, "Answer")."\")";
-		$Erg = mysql_query($SQL2, $con);
+		$Erg = db_query($SQL2, "trasfert to request to the FAQ");
 		if ($Erg == 1) 
 			echo "\tDer Eintrag wurde &uuml;bertragen.<br>\n";
 	        else
@@ -199,8 +198,8 @@ case "faqdelete";
 		echo "\tFehlerhafter Aufruf... Bitte die Bearbeitung nochmal starten...\n";
 	else 
 	{
-		$SQL = "delete from FAQ where FID = \"". $_GET["FAQID"]. "\" LIMIT 1";
-		$Erg = mysql_query($SQL, $con);
+		$SQL = "DELETE FROM `FAQ` WHERE FID = \"". $_GET["FAQID"]. "\" LIMIT 1";
+		$Erg = db_query($SQL, "delate faq item");
 		if ($Erg == 1) 
 			echo "\tDer Eintrag wurde gel&ouml;scht<br>\n";
 		else
@@ -213,9 +212,9 @@ case "faqsave";
 		echo "\tFehlerhafter Aufruf... Bitte die Bearbeitung nochmal starten...\n";
         else 
 	{
-        	$SQL = "UPDATE FAQ SET Frage=\"". $_GET["Frage"]. "\", Antwort=\"". $_GET["Antwort"]. 
-	  	 	"\" where FID = \"". $_GET["FAQID"]. "\" LIMIT 1";
-		$Erg = mysql_query($SQL, $con);
+        	$SQL = "UPDATE `FAQ` SET Frage=\"". $_GET["Frage"]. "\", Antwort=\"". $_GET["Antwort"]. 
+	  	 	"\" WHERE FID = \"". $_GET["FAQID"]. "\" LIMIT 1";
+		$Erg = db_query($SQL, $con);
 		if ($Erg == 1) 
 			echo "\tDer Eintrag wurde ge&auml;ndert<br>\n";
           	else
@@ -237,8 +236,8 @@ case "faqnew":
 	break;
 
 case "faqnewsave";
-        $SQL = "INSERT INTO FAQ VALUES (\"\", \"". $_GET["Frage"]. "\", \"". $_GET["Antwort"]. "\")";
-        $Erg = mysql_query($SQL, $con);
+        $SQL = "INSERT INTO `FAQ` VALUES (\"\", \"". $_GET["Frage"]. "\", \"". $_GET["Antwort"]. "\")";
+        $Erg = db_query($SQL, "Save new FAQ entry");
         if ($Erg == 1)
 		echo "\tDer Eintrag wurde erfasst.<br>\n";
         else
