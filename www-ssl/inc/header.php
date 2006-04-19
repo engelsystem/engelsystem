@@ -2,7 +2,7 @@
 include ("./inc/config.php");
 include ("./inc/db.php");
 include ("./inc/funktion_lang.php");
-include("./inc/funktion_menu.php");
+include ("./inc/funktion_menu.php");
 session_start(); 
 include ("./inc/secure.php");
 /*if ( (!IsSet($_SESSION['UID'])) && (strstr ($_SERVER['PHP_SELF'], "nonpublic") !="" ) ) {

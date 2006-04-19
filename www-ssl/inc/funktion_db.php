@@ -31,7 +31,7 @@ if( !function_exists("db_query"))
 
 	function db_query( $SQL, $comment)
 	{
-		global $con;	
+		global $con, $Page;	
 		
 		//commed anlyse udn daten sicherung
 		$Diff = "";
@@ -41,6 +41,9 @@ if( !function_exists("db_query"))
 			$Table_Start = strpos( $SQL, "`");
 			$Table_End   = strpos( $SQL, "`", $Table_Start+1);
 			$Table = substr( $SQL, $Table_Start, ($Table_End-$Table_Start+1));
+			
+			//SecureTest
+			if( $Table_Start == 0 || $Table_End == 0) die("<h1>funktion_db ERROR SQL: '$SQL' nicht OK</h1>");
 	
 			//WHERE ermitteln
 			$Where_Start = strpos( $SQL, "WHERE");
@@ -79,19 +82,19 @@ if( !function_exists("db_query"))
 		}
 
 		//abschneiden wenn zu lang
-		if( strlen( $Diff) > 5120) 	$Diff = "too mutch (len ". strlen( $Diff). ")";
+		if( strlen( $Where) < 2) 	$Diff = "can't show, too mutch data (no filter was set)";
+//		if( strlen( $Diff) > 5120) 	$Diff = "too mutch (len ". strlen( $Diff). "bytes)";
 
+		$SQLCommand = "SQL:<br>". htmlentities( $SQL, ENT_QUOTES). "<br><br>Diff:<br>$Diff";
+		$Commend = htmlentities( ($Page["Name"]. ": ". $comment), ENT_QUOTES);
 		//LOG commands in DB
 		$SQL_SEC =	"INSERT INTO `ChangeLog` ( `UID` , `SQLCommad` , `Commend` ) ".
 				" VALUES ( ".
 					"'". $_SESSION['UID']. "', ".
-					"'SQL:<br>". htmlentities( $SQL, ENT_QUOTES). "<br><br>".
-					 "Diff:<br>$Diff', ".
-					"'". htmlentities( $comment, ENT_QUOTES). "' );";
+					"'". mysql_escape_string( $SQLCommand). "', ".
+					"'". mysql_escape_string( $Commend). "' );";
 		$erg = mysql_query($SQL_SEC, $con);
-echo "##$erg";
 		echo mysql_error($con);
-echo "##";
 		return $querry_erg;
 	}//function db_query(
 }
