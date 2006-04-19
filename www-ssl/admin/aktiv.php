@@ -76,8 +76,8 @@ for ($i=0; $i<$rowcount; $i++)
 				echo "show set";
 			else
 			{
-				$SQL2="UPDATE User SET Aktiv=1 WHERE UID=". mysql_result($Erg, $i, "UID"). " LIMIT 1";
-				$Erg2 = mysql_query($SQL2, $con);
+				$SQL2="UPDATE `User` SET Aktiv=1 WHERE UID=". mysql_result($Erg, $i, "UID"). " LIMIT 1";
+				$Erg2 = db_query($SQL2, "update Active State");
 				if ($Erg2 != 1)
 					echo "Fehler beim speichern bei Engel ".UID2Nick(mysql_result($Erg, $i, "UID"));
 				else
