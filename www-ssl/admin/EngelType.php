@@ -9,17 +9,41 @@ function runSQL( $SQL)
 	include( "./inc/db.php");
 	// hier muesste das SQL ausgefuehrt werden...
 	$Erg = mysql_query($SQL, $con);
-	if ($Erg == 1) {
+	if ($Erg) 
+	{
 		echo "&Auml;nderung wurde gesichert...<br>";
 		echo "[$SQL]<br>"; 
 		return 1;
-	} else {
+	} 
+	else 
+	{
 		echo "Fehler beim speichern... bitte noch ein mal probieren :)";
 		echo "<br><br>".mysql_error( $con ). "<br>";
 		echo "[$SQL]<br>"; 
 		return 0;
 	}
 }
+
+function runSQL_log( $SQL, $commed)
+{
+	include( "./inc/db.php");
+	// hier muesste das SQL ausgefuehrt werden...
+	$Erg = db_query($SQL, $commed);
+	if ($Erg) 
+	{
+		echo "&Auml;nderung wurde gesichert...<br>";
+		echo "[$SQL]<br>"; 
+		return 1;
+	} 
+	else 
+	{
+		echo "Fehler beim speichern... bitte noch ein mal probieren :)";
+		echo "<br><br>".mysql_error( $con ). "<br>";
+		echo "[$SQL]<br>"; 
+		return 0;
+	}
+}
+
 
 
 $Sql = "SELECT * FROM `EngelType` ORDER BY NAME";
@@ -87,7 +111,8 @@ case 'newsave':
 		$Values .= ", '$value'";
 	}
 	
-	if( runSQL( "INSERT INTO `EngelType` (". substr($Keys, 2). ") VALUES (". substr($Values, 2). ")") )
+	if( runSQL_log( "INSERT INTO `EngelType` (". substr($Keys, 2). ") VALUES (". substr($Values, 2). ")", 
+			"save new EngelType") )
 	{
 		SetHeaderGo2Back();
 		
@@ -95,9 +120,9 @@ case 'newsave':
 		$ERG = mysql_query($SQL2, $con);
 	
 		if( mysql_num_rows($ERG) == 1)
-			runSQL( "ALTER TABLE `Room` ADD `DEFAULT_EID_". 
-				mysql_result( $ERG, 0, 0). 
-				"` INT DEFAULT '0' NOT NULL;");
+			runSQL_log( "ALTER TABLE `Room` ADD `DEFAULT_EID_". mysql_result( $ERG, 0, 0). 
+				     "` INT DEFAULT '0' NOT NULL;",
+				    "add new EngelType in Romm Table");
 	}
 	break;
 
@@ -145,15 +170,16 @@ case 'changesave':
   	      $keys = substr($key,1);
 	      $sql .= ", `".$keys."`='".$value."'";
         }
-	runSQL( "UPDATE `EngelType` SET ". substr($sql, 2). " WHERE `TID`='". $_GET["eTID"]. "'");
+	runSQL_log( "UPDATE `EngelType` SET ". substr($sql, 2). " WHERE `TID`='". $_GET["eTID"]. "'", 
+		    "Save Change EngelType");
 	SetHeaderGo2Back();
 	break;
 
 case 'delete':
 	if (IsSet($_GET["TID"])) 
 	{
-		runSQL( "DELETE FROM `EngelType` WHERE `TID`='". $_GET["TID"]. "'");		
-		runSQL( "ALTER TABLE `Room` DROP `DEFAULT_EID_". $_GET["TID"]. "`;");
+		runSQL_log( "DELETE FROM `EngelType` WHERE `TID`='". $_GET["TID"]. "'", "delate EngelType");		
+		runSQL_log( "ALTER TABLE `Room` DROP `DEFAULT_EID_". $_GET["TID"]. "`;", "delate EngelType in Room Table");
 	} else {
 		echo "Fehlerhafter Aufruf";
 	}
