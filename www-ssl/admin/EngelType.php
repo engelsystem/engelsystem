@@ -127,36 +127,33 @@ case 'newsave':
 	break;
 
 case 'change':
-	if (! IsSet($_GET["TID"])) {
+	if (! IsSet($_GET["TID"])) 
 		echo "Fehlerhafter Aufruf!"; 
-	} else {
-
-	echo "Raum ab&auml;ndern:\n";
-
-	echo "Hier kannst du eintragen, den EngelType &auml;ndern.";
-	
-	echo "<form action=\"./EngelType.php\" method=\"GET\">\n";
-	echo "<table>\n";
-	
-	$SQL2 = "SELECT * FROM `EngelType` WHERE `TID`='". $_GET["TID"]. "'";
-	$ERG = mysql_query($SQL2, $con);
-        
-        for ($Uj = 1; $Uj < mysql_num_fields($ERG); $Uj++)
+	else
 	{
-		echo "<tr><td>". mysql_field_name($ERG, $Uj). "</td>".
-		     "<td><input type=\"text\" size=\"40\" name=\"e". mysql_field_name($ERG, $Uj). "\" ".
-		     "value=\"". mysql_result($ERG, 0, $Uj). "\"></td></tr>\n";
-	}			    
-	echo "</table>\n";
-	echo "<input type=\"hidden\" name=\"eTID\" value=\"". $_GET["TID"]. "\">\n";
-	echo "<input type=\"hidden\" name=\"action\" value=\"changesave\">\n";
-	echo "<input type=\"submit\" value=\"sichern...\">\n";
-	echo "</form>";
-        echo "<form action=\"./EngelType.php\" method=\"GET\">\n";
-        echo "<input type=\"hidden\" name=\"TID\" value=\"". $_GET["TID"]. "\">\n";
-        echo "<input type=\"hidden\" name=\"action\" value=\"delete\">\n";
-        echo "<input type=\"submit\" value=\"L&ouml;schen...\">";
-        echo "</form>";
+		echo "Raum ab&auml;ndern:\n";
+		echo "Hier kannst du eintragen, den EngelType &auml;ndern.";
+		echo "<form action=\"./EngelType.php\" method=\"GET\">\n";
+		echo "<table>\n";
+	
+		$SQL2 = "SELECT * FROM `EngelType` WHERE `TID`='". $_GET["TID"]. "'";
+		$ERG = mysql_query($SQL2, $con);
+        
+	        for ($Uj = 1; $Uj < mysql_num_fields($ERG); $Uj++)
+			echo "<tr><td>". mysql_field_name($ERG, $Uj). "</td>".
+		     		"<td><input type=\"text\" size=\"40\" name=\"e". mysql_field_name($ERG, $Uj). "\" ".
+		     		"value=\"". mysql_result($ERG, 0, $Uj). "\"></td></tr>\n";
+
+		echo "</table>\n";
+		echo "<input type=\"hidden\" name=\"eTID\" value=\"". $_GET["TID"]. "\">\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"changesave\">\n";
+		echo "<input type=\"submit\" value=\"sichern...\">\n";
+		echo "</form>";
+	        echo "<form action=\"./EngelType.php\" method=\"GET\">\n";
+	        echo "<input type=\"hidden\" name=\"TID\" value=\"". $_GET["TID"]. "\">\n";
+	        echo "<input type=\"hidden\" name=\"action\" value=\"delete\">\n";
+	        echo "<input type=\"submit\" value=\"L&ouml;schen...\">";
+	        echo "</form>";
 	}
 	break;
 	
@@ -166,9 +163,10 @@ case 'changesave':
         $vars = array_splice($vars, 0, $count);
 	$keys="";
 	$sql="";
-        foreach($vars as $key => $value){
-  	      $keys = substr($key,1);
-	      $sql .= ", `".$keys."`='".$value."'";
+        foreach($vars as $key => $value)
+	{
+  	      $keys = substr( $key, 1);
+	      $sql .= ", `". $keys. "`='". $value. "'";
         }
 	runSQL_log( "UPDATE `EngelType` SET ". substr($sql, 2). " WHERE `TID`='". $_GET["eTID"]. "'", 
 		    "Save Change EngelType");
@@ -178,11 +176,12 @@ case 'changesave':
 case 'delete':
 	if (IsSet($_GET["TID"])) 
 	{
-		runSQL_log( "DELETE FROM `EngelType` WHERE `TID`='". $_GET["TID"]. "'", "delate EngelType");		
-		runSQL_log( "ALTER TABLE `Room` DROP `DEFAULT_EID_". $_GET["TID"]. "`;", "delate EngelType in Room Table");
-	} else {
-		echo "Fehlerhafter Aufruf";
+		if( runSQL_log( "DELETE FROM `EngelType` WHERE `TID`='". $_GET["TID"]. "'", "delate EngelType"))
+			runSQL_log( "ALTER TABLE `Room` DROP `DEFAULT_EID_". $_GET["TID"]. "`;", 
+					"delate EngelType in Room Table");
 	}
+	else
+		echo "Fehlerhafter Aufruf";
 	SetHeaderGo2Back();
 	break;
 }
