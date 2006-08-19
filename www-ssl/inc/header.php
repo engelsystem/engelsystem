@@ -1,4 +1,5 @@
 <?PHP 
+include ("./inc/error_handler.php");
 include ("./inc/config.php");
 include ("./inc/db.php");
 include ("./inc/funktion_lang.php");
