@@ -301,3 +301,13 @@ CREATE TABLE IF NOT EXISTS `news_comments` (
   KEY `Refid` (`Refid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
+-- 
+-- Tabellenstruktur für Tabelle `Counter`
+-- 
+
+DROP TABLE IF EXISTS `Counter`;
+CREATE TABLE IF NOT EXISTS `Counter` (
+  `URL` varchar(255) NOT NULL default '',
+   `Anz` bigint(20) NOT NULL default '0',
+   PRIMARY KEY  (`URL`)
+) TYPE=MyISAM COMMENT='Counter alles der Seiten';´              
