@@ -38,6 +38,9 @@ if( !function_exists("DatumUm1TagErhoehen"))
 		$Jahr++;
 	}
 
+	$Tag = strlen( $Tag ) == 1 ? "0".$Tag : $Tag;
+	$Monat = strlen( $Monat ) == 1 ? "0".$Monat : $Monat;
+
 	return ("$Jahr-$Monat-$Tag");
     } //function DatumUm1Tagerhoehen(
 }
