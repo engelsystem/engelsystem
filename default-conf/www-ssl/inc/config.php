@@ -38,4 +38,7 @@ $ModemEnable = false;
 //$DataGetMeth="wget";
 $DataGetMeth="lynx";
 
+//Tempdir
+$Tempdir="/tmp";
+
 ?>

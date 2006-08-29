@@ -50,11 +50,11 @@ if( isset($_POST["PentabarfUser"]) && isset($_POST["PentabarfPasswd"]) && isset(
 	if( $DataGetMeth=="wget")
 		$Command = "wget --http-user=". $_POST["PentabarfUser"]. " --http-passwd=".$_POST["PentabarfPasswd"]. " ".
 				$_POST["PentabarfURL"].
-				" --output-file=/tmp/engelXMLwgetLog --output-document=/tmp/engelXML".
+				" --output-file=$Tempdir/engelXMLwgetLog --output-document=$Tempdir/engelXML".
 				" --no-check-certificate";
 	elseif( $DataGetMeth=="lynx")
 		$Command = "lynx -auth=". $_POST["PentabarfUser"]. ":".$_POST["PentabarfPasswd"]. " -dump ".
-				$_POST["PentabarfURL"].	" > /tmp/engelXML";
+				$_POST["PentabarfURL"].	" > $Tempdir/engelXML";
 	echo system( $Command, $Status);
 
 	if( $Status==0)
@@ -81,7 +81,7 @@ else
 
 
 //readXMLfile("xml.php.xml");
-if( readXMLfile("/tmp/engelXML") == 0)
+if( readXMLfile("$Tempdir/engelXML") == 0)
 {
 $XMLmain = getXMLsubPease( $XMLmain, "VCALENDAR");
 
