@@ -185,6 +185,8 @@ CREATE TABLE IF NOT EXISTS `User` (
   `DECT` varchar(4) default NULL,
   `Handy` varchar(40) default NULL,
   `email` varchar(123) default NULL,
+  `ICQ`  VARCHAR( 30 )  default NULL,
+  `jabber` VARCHAR( 200 ) default NULL, 
   `Size` varchar(4) default NULL,
   `Passwort` varchar(40) default NULL,
   `Gekommen` tinyint(4) NOT NULL default '0',
