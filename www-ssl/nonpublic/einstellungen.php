@@ -113,21 +113,11 @@ if (!IsSet($_POST["action"]))
 		</tr>
 		<tr>
 			<td>
-<?PHP
-// Anzahl der installierten Avatars
-$ANZ_AVATAR= shell_exec("ls inc/avatar/ | wc -l");
-	    ?> 
-	    
 	    <select name="eAvatar" onChange="document.avatar.src = './inc/avatar/avatar' + this.value  + '.gif'"
 	    			   onKeyup= "document.avatar.src = './inc/avatar/avatar' + this.value  + '.gif'"> 
 	    <?php
-	    for ($i=1; $i <= $ANZ_AVATAR; $i++ )
-	    {
-	    	echo "\t\t\t\t<option value=\"$i\"";
-		if ($_SESSION['Avatar'] == $i) { echo " selected"; }
-	    	echo ">avatar$i</option>\n";
-	    }
-	    echo "\n";
+	    for ($i=1; file_exists("./inc/avatar/avatar$i.gif"); $i++ )
+	    	echo "\t\t\t\t<option value=\"$i\"". ($_SESSION['Avatar'] == $i ? " selected":""). ">avatar$i</option>\n";
 	    ?>
 	    </select>&nbsp;&nbsp;
 	    <img src="./inc/avatar/avatar<?php echo $_SESSION['Avatar']; ?>.gif" name="avatar" border="0" alt="" align="top">
