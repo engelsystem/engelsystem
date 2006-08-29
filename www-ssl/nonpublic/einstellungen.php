@@ -30,6 +30,10 @@ if (!IsSet($_POST["action"]))
 	  		<td><input type="text" name="eDECT" size="4" value="<?PHP echo $_SESSION['DECT']; ?>"></td></tr>
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_email"); ?></td>
 	  		<td><input type="text" name="eemail" size="40" value="<?PHP echo $_SESSION['email']; ?>"></td></tr>
+		<tr>	<td>ICQ</td>
+	  		<td><input type="text" name="eICQ" size="40" value="<?PHP echo $_SESSION['ICQ']; ?>"></td></tr>
+		<tr>	<td>jabber</td>
+	  		<td><input type="text" name="ejabber" size="40" value="<?PHP echo $_SESSION['jabber']; ?>"></td></tr>
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_Hometown"); ?></td>
 	  		<td><input type="text" name="Hometown" size="40" value="<?PHP echo $_SESSION['Hometown']; ?>"></td></tr>
 	</table>
@@ -199,10 +203,12 @@ case 'avatar':
 
 case 'setUserData':
 	$chsql= "UPDATE User SET ".
-		"`Nick`='". $_POST["eNick"]. "', `Name`='". $_POST["eName"]. "', ".
-		"`Vorname`='". $_POST["eVorname"]. "', `Alter`='". $_POST["eAlter"]. "', ".
-		"`Telefon`='". $_POST["eTelefon"]. "', `Handy`='". $_POST["eHandy"]. "', ".
-		"`DECT`='". $_POST["eDECT"]. "', `email`='". $_POST["eemail"]. "', `Hometown`='". $_POST["Hometown"]. "' ".
+		"`Nick`='".     $_POST["eNick"].	"', `Name`='".   $_POST["eName"].  "', ".
+		"`Vorname`='".  $_POST["eVorname"].	"', `Alter`='".  $_POST["eAlter"]. "', ".
+		"`Telefon`='".  $_POST["eTelefon"].	"', `Handy`='".  $_POST["eHandy"]. "', ".
+		"`DECT`='".     $_POST["eDECT"]. 	"', `email`='".  $_POST["eemail"]. "', ".
+		"`ICQ`='".      $_POST["eICQ"].		"', `jabber`='". $_POST["ejabber"]."', ".
+		"`Hometown`='". $_POST["Hometown"].	"' ".
 		"WHERE UID='". $_SESSION['UID']. "' LIMIT 1;";
         $Erg = mysql_query($chsql, $con);
 
@@ -216,6 +222,8 @@ case 'setUserData':
 		$_SESSION['Handy'] = $_POST["eHandy"];
 		$_SESSION['DECT'] = $_POST["eDECT"];
 		$_SESSION['email'] = $_POST["eemail"];
+		$_SESSION['ICQ'] = $_POST["eICQ"];
+		$_SESSION['jabber'] = $_POST["ejabber"];
 		$_SESSION['Hometown'] = $_POST["Hometown"];
 	
 		Print_Text("pub_einstellungen_UserDateSaved");

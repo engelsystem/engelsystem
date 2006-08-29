@@ -40,6 +40,8 @@ else
 			$_SESSION['Handy'] = mysql_result($userstring, 0, "Handy");
 			$_SESSION['DECT'] = mysql_result($userstring, 0, "DECT");
 			$_SESSION['email'] = mysql_result($userstring, 0, "email");
+			$_SESSION['ICQ'] = mysql_result($userstring, 0, "ICQ");
+			$_SESSION['jabber'] = mysql_result($userstring, 0, "jabber");
 			$_SESSION['Size'] = mysql_result($userstring, 0, "Size");
 			$_SESSION['Gekommen'] = mysql_result($userstring, 0, "Gekommen");
 			$_SESSION['Aktiv'] = mysql_result($userstring, 0, "Aktiv");

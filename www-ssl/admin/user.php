@@ -35,7 +35,9 @@ if (!IsSet($_GET["enterUID"]))
 			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=DECT">DECT</a> | 
 			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Hometown">Hometown</a> | 
 			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=lastLogIn">lastLogIn</a> | 
-			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Art">Type</a> 
+			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Art">Type</a> | 
+			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=ICQ">ICQ</a> |
+			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=jabber">jabber</a> 
 		</td>
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Size">Gr&ouml;&szlig;e</a></td>
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Gekommen">G</a></td>
@@ -74,6 +76,10 @@ if (!IsSet($_GET["enterUID"]))
 				echo "\n\t\tlastLogIn: ". mysql_result($Erg, $n, "lastLogIn"). "<br>";
 			if( strlen( mysql_result($Erg, $n, "Art"))>0)
 				echo "\n\t\tType: ". mysql_result($Erg, $n, "Art"). "<br>";
+			if( strlen( mysql_result($Erg, $n, "ICQ"))>0)
+				echo "\n\t\tICQ: ". mysql_result($Erg, $n, "ICQ"). "<br>";
+			if( strlen( mysql_result($Erg, $n, "jabber"))>0)
+				echo "\n\t\tjabber: ". mysql_result($Erg, $n, "jabber"). "<br>";
 			echo "</td>\n";
 		echo "\t<td>".mysql_result($Erg, $n, "Size")."</td>\n";
 		$Gekommen += mysql_result($Erg, $n, "Gekommen");
@@ -161,6 +167,12 @@ else
 			echo "  <tr><td>email</td><td>".
 				"<input type=\"text\" size=\"40\" name=\"eemail\" value=\"".
 				mysql_result($Erg, 0, "email")."\"></td></tr>\n";
+			echo "  <tr><td>ICQ</td><td>".
+				"<input type=\"text\" size=\"40\" name=\"eICQ\" value=\"".
+				mysql_result($Erg, 0, "ICQ")."\"></td></tr>\n";
+			echo "  <tr><td>jabber</td><td>".
+				"<input type=\"text\" size=\"40\" name=\"ejabber\" value=\"".
+				mysql_result($Erg, 0, "jabber")."\"></td></tr>\n";
 			echo "  <tr><td>Size</td><td>".
 				"<input type=\"text\" size=\"5\" name=\"eSize\" value=\"".
 				mysql_result($Erg, 0, "Size")."\"></td></tr>\n";

@@ -26,6 +26,8 @@ if (IsSet($_GET["action"]))
 					"`Handy` = '". $_POST["eHandy"]. "', ".
 					"`DECT` = '". $_POST["eDECT"]. "', ".
 					"`email` = '". $_POST["eemail"]. "', ".
+					"`ICQ` = '". $_POST["eICQ"]. "', ".
+					"`jabber` = '". $_POST["ejabber"]. "', ".
 					"`Size` = '". $_POST["eSize"]. "', ".
 					"`Gekommen`= '". $_POST["eGekommen"]. "', ".
 					"`Aktiv`= '". $_POST["eAktiv"]. "', ".

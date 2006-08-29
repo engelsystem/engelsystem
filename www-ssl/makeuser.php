@@ -50,6 +50,7 @@ if( isset($_POST["send"]))
 				"`Vorname`, ".	"`Alter` , ".
 				"`Telefon`, ".	"`DECT`, ".
 				"`Handy`, ".	"`email`, ".
+				"`ICQ`, ".	"`jabber`, ".
 				"`Size`, ".	"`Passwort`, ".
 				"`Art` , ".	"`kommentar`, ".
 				"`Hometown` ) ".
@@ -58,6 +59,7 @@ if( isset($_POST["send"]))
 				"'". $_POST["Vorname"]. "', ".		$_POST["Alter"]. ", ".
 				"'". $_POST["Telefon"]. "', ".		"'". $_POST["DECT"]. "', ".
 				"'". $_POST["Handy"]. "', ".		"'". $_POST["email"]. "', ".
+				"'". $_POST["ICQ"]. "', ".		"'". $_POST["jabber"]. "', ".
 				"'". $_POST["Size"]. "', ".		"'". $_POST["Passwort"]. "', ".
 				"'". $_POST["Art"]. "', ".		"'". $_POST["kommentar"]. "', ".
 				"'". $_POST["Hometown"]. "' );";
@@ -107,6 +109,8 @@ else
 	$_POST["DECT"] = "";
 	$_POST["Handy"] = "";
 	$_POST["email"] = "";
+	$_POST["ICQ"] = "";
+	$_POST["jabber"] = "";
 	$_POST["Size"] = "";
 	$_POST["Art"] = "";
 	$_POST["kommentar"] = "";
@@ -133,6 +137,8 @@ echo "\t\t\t<tr><td>". Get_Text("makeuser_Handy").
 	"</td><td><input type=\"text\" size=\"40\" name=\"Handy\" value=\"". $_POST["Handy"]. "\"></td></tr>\n";
 echo "\t\t\t<tr><td>". Get_Text("makeuser_E-Mail"). 
 	"*</td><td><input type=\"text\" size=\"40\" name=\"email\" value=\"". $_POST["email"]. "\"></td></tr>\n";
+echo "\t\t\t<tr><td>ICQ</td><td><input type=\"text\" size=\"40\" name=\"ICQ\" value=\"". $_POST["ICQ"]. "\"></td></tr>\n";
+echo "\t\t\t<tr><td>jabber</td><td><input type=\"text\" size=\"40\" name=\"jabber\" value=\"". $_POST["jabber"]. "\"></td></tr>\n";
 echo "\t\t\t<tr><td>". Get_Text("makeuser_T-Shirt"). 
 	" Gr&ouml;sse*</td><td align=\"left\">\n";
 echo "\t\t\t<select name=\"Size\">\n";
