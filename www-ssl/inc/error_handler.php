@@ -42,7 +42,7 @@
       $message .= "_SERVER: $k = $v\n"; 
     if( isset( $_POST))
       foreach ($_POST as $k => $v ) 	 
-        $message .= "_POST: $k = $v\n"; 
+          $message .= "_POST: $k = ". ( $k!="password"? $v : "???..."). "\n"; 
     if( isset( $_GET))
       foreach ($_GET as $k => $v ) 	 
 	$message .= "_GET: $k = $v\n"; 

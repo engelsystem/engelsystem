@@ -4,12 +4,10 @@ include ("./inc/config.php");
 include ("./inc/db.php");
 include ("./inc/funktion_lang.php");
 include ("./inc/funktion_menu.php");
-session_start(); 
+
+if( !isset($_SESSION)) 
+	session_start(); 
 include ("./inc/secure.php");
-/*if ( (!IsSet($_SESSION['UID'])) && (strstr ($_SERVER['PHP_SELF'], "nonpublic") !="" ) ) {
-	header("Location: https://".$_SERVER['HTTP_HOST'].$ENGEL_ROOT);
-	exit ();
-} // Ende Rechte f. Nonpublic'*/
 
 if( !isset($_SESSION['IP'])) 
 	$_SESSION['IP'] = $_SERVER['REMOTE_ADDR'];
