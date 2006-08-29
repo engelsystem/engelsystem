@@ -103,16 +103,27 @@ case 'change':
         
         for ($Uj = 1; $Uj < mysql_num_fields($ERG); $Uj++)
 	{
-		//sonderfall fuer Default Engel 
-		if( substr( mysql_field_name($ERG, $Uj), 0, 12) == "DEFAULT_EID_")
-			$FeldName = "Anzahl ". $EngelTypeID[substr( mysql_field_name($ERG, $Uj), 12)];
+		if( mysql_field_name($ERG, $Uj) == "show")
+		{
+			echo "<tr><td>show</td>".
+			     "<td>".
+			     "<input type=\"radio\" name=\"eshow\" value=\"Y\"". (mysql_result($ERG, 0, $Uj)=='Y'? " checked":""). ">Yes".
+			     "<input type=\"radio\" name=\"eshow\" value=\"N\"". (mysql_result($ERG, 0, $Uj)=='N'? " checked":""). ">No".
+			     "</td></tr>\n";
+		}
 		else
-			$FeldName = mysql_field_name($ERG, $Uj);
-		
-		echo "<tr><td>$FeldName</td>".
-		     "<td><input type=\"text\" size=\"40\" name=\"e".mysql_field_name($ERG, $Uj)."\" ".
-		     "value=\"".mysql_result($ERG, 0, $Uj)."\">";
-		echo"</td></tr>\n";
+		{
+			if( substr( mysql_field_name($ERG, $Uj), 0, 12) == "DEFAULT_EID_")
+				//sonderfall fuer Default Engel 
+				$FeldName = "Anzahl ". $EngelTypeID[substr( mysql_field_name($ERG, $Uj), 12)];
+			else
+				$FeldName = mysql_field_name($ERG, $Uj);
+
+			echo "<tr><td>$FeldName</td>".
+			     "<td><input type=\"text\" size=\"40\" name=\"e".mysql_field_name($ERG, $Uj)."\" ".
+			     "value=\"".mysql_result($ERG, 0, $Uj)."\">".
+			     "</td></tr>\n";
+		}
 	}			    
 	echo "</table>\n";
 	echo "<input type=\"hidden\" name=\"eRID\" value=\"". $_GET["RID"]. "\">\n";
