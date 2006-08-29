@@ -93,7 +93,7 @@ if (!IsSet($_POST["action"]))
 		<select name="language">
 		   <option value="DE" <?php if($_SESSION['Sprache'] == 'DE') { echo "selected"; } ?>>Deutsch</option>
 		   <option value="EN" <?php if($_SESSION['Sprache'] == 'EN') { echo "selected"; } ?>>English</option>
-		   <option value="NL" <?php if($_SESSION['Sprache'] == 'NL') { echo "selected"; } ?>>Dutch</option>
+<?PHP /*		   <option value="NL" <?php if($_SESSION['Sprache'] == 'NL') { echo "selected"; } ?>>Dutch</option>  */?>
 		</select>
 	   </td></tr>
 	</table>
