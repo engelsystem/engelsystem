@@ -27,15 +27,17 @@
     $url = $_SERVER['PHP_SELF'];
 
     $message = "";
-    if (isset($_SERVER['PHP_AUTH_USER']))
-      $message .= "Person: ".$_SERVER['PHP_AUTH_USER']."\n";
-    $message .= "URL: $url\n";
-    if (isset($_SERVER['HTTP_USER_AGENT']) && strstr($_SERVER['HTTP_USER_AGENT'], 'Firefox') === false)
-      $message .= "UA: ".$_SERVER['HTTP_USER_AGENT']."\n";
-    if (isset($_SERVER['HTTP_REFERER']))
-      $message .= "Referer: ".$_SERVER['HTTP_REFERER']."\n";
     foreach($error_messages as $value)
       $message .= $value."\n";
+    $message .= "\n\n\n\n\n";
+    
+    if( isset( $_SESSION))
+      foreach ($_SESSION as $k => $v ) 	 
+        $message .= "_SESSION: $k = $v\n"; 
+    if( isset( $_SESSION['CVS']))
+      foreach ($_SESSION['CVS'] as $k => $v ) 	 
+        if( strlen($k)>3 ) 
+          $message .= "_SESSION['CVS']: $k = $v\n"; 
     foreach ($_SERVER as $k => $v ) 	 
       $message .= "_SERVER: $k = $v\n"; 
     if( isset( $_POST))
@@ -43,7 +45,7 @@
         $message .= "_POST: $k = $v\n"; 
     if( isset( $_GET))
       foreach ($_GET as $k => $v ) 	 
-        $message .= "_GET: $k = $v\n"; 
+	$message .= "_GET: $k = $v\n"; 
 
     send_message($message);
 
