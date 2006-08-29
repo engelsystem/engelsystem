@@ -110,9 +110,18 @@ function readXMLfile( $file )
 	$xml_parser = xml_parser_create("UTF-8");
 	xml_set_element_handler($xml_parser, "start_element_handler", "end_element_handler");
 	xml_set_character_data_handler($xml_parser, "character_data_handler");
-	if (!($fp = fopen($file, "r")))
+	
+	if (file_exists($file)) 
 	{
-		echo(" <h1>could not open XML file \"$file\"</h1>");
+		if (!($fp = fopen($file, "r")))
+		{
+			echo(" <h1>could not open XML file \"$file\"</h1>");
+			return -1;
+		}
+	}
+	else
+	{
+		echo(" <h1>XML file \"$file\" not exist</h1>");
 		return -1;
 	}
 
