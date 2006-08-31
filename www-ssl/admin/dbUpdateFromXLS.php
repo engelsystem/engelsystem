@@ -43,36 +43,48 @@ CreateRoomArrays();
 				           F I L E
   ##############################################################################################*/
 echo "\n\n<br>\n<h1>XML File:</h1>\n";
-if( isset($_POST["PentabarfUser"]) && isset($_POST["PentabarfPasswd"]) && isset($_POST["PentabarfURL"]))
+if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST["PentabarfURL"]))
 {
-	echo "Update XML-File from Pentabarf..";
+	echo "Update XCAL-File from Pentabarf..";
 	
-	if( $DataGetMeth=="wget")
-		$Command = "wget --http-user=". $_POST["PentabarfUser"]. " --http-passwd=".$_POST["PentabarfPasswd"]. " ".
-				$_POST["PentabarfURL"].
-				" --output-file=$Tempdir/engelXMLwgetLog --output-document=$Tempdir/engelXML".
-				" --no-check-certificate";
-	elseif( $DataGetMeth=="lynx")
-		$Command = "lynx -auth=". $_POST["PentabarfUser"]. ":".$_POST["PentabarfPasswd"]. " -dump ".
-				$_POST["PentabarfURL"].	" > $Tempdir/engelXML";
-	echo system( $Command, $Status);
+	//user uns password in url einbauen
+	$StartURL = strpos( $_POST["PentabarfURL"], "://") + 3;
+	$FileNameIn =	substr( $_POST["PentabarfURL"], 0, $StartURL). 
+			$_POST["PentabarfUser"]. ":". 
+			$_POST["password"]. "@".
+			substr( $_POST["PentabarfURL"], $StartURL);
 
-	if( $Status==0)
-		echo "OK.<br>";
+	if( ($fileIn = fopen( $FileNameIn, "r")) != FALSE)
+	{
+		if( ($fileOut = fopen( "$Tempdir/engelXML", "w")) != FALSE)
+		{
+			$Zeilen = 0;
+			while (!feof($fileIn)) 
+			{	
+				$Zeilen++;
+				fputs( $fileOut, fgets( $fileIn));	
+			}
+			fclose( $fileOut);
+			echo "<br>Es wurden $Zeilen Zeilen eingelesen<br>";
+		}
+		else
+			echo "<h2>fail: File '$Tempdir/engelXML' not writeable!</h2>";
+		fclose( $fileIn);
+	}
 	else
-		echo "fail ($Status)($Command).<br>";
+		echo "<h2>fail: File '". $_POST["PentabarfURL"]. "' not readable!</h2>";
 }
 else
 {
 	echo "<form action=\"dbUpdateFromXLS.php\" method=\"post\">\n";
 	echo "<table border=\"0\">\n";
-	echo "\t<tr><td>XML-File:</td>".
+	echo "\t<tr><td>XCAL-File:</td>".
 		"<td><input name=\"PentabarfURL\" type=\"text\" size=\"100\" maxlength=\"1000\" ".
-		"value=\"https://pentabarf.cccv.de/~sven/xcal/conference/7\"></td></tr>\n";
+		"value=\"$PentabarXCALurl\"></td></tr>\n";
 	echo "\t<tr><td>Username:</td>".
 		"<td><input name=\"PentabarfUser\" type=\"text\" size=\"30\" maxlength=\"30\"></td></tr>\n";
 	echo "\t<tr><td>Password:</td>".
-		"<td><input name=\"PentabarfPasswd\" type=\"password\" size=\"30\" maxlength=\"30\"></td></tr>\n";
+		"<td><input name=\"password\" type=\"password\" size=\"30\" maxlength=\"30\"></td></tr>\n";
 	echo "\t<tr><td></td><td><input type=\"submit\" name=\"FileUpload\" value=\"upload\"></td></tr>\n";
 	echo "</table>\n";
 	echo "</form>\n";
