@@ -35,7 +35,22 @@ echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n";
 <HTML>
 <HEAD>
 <?PHP
-echo "<TITLE>--- $title  ---</TITLE>";
+
+$Version = "";
+
+if( is_readable( "./inc/.svn/entries"))
+{
+	$file = fopen( "./inc/.svn/entries", "r");
+	while(!feof($file))
+		if( strpos( ($temp = fgets($file)) , "revision" ) ) $Version = $temp;
+	fclose( $file);
+
+	$start = strpos( $Version, "=\"")+2;
+	$len = strpos( $Version, "\"/") - $start;
+	$Version = "(r ". substr( $Version, $start, $len ). ")";
+}
+
+echo "<TITLE>--- $title  $Version ---</TITLE>";
 ?>
 <meta name="keywords" content="Engel, Himmelsverwaltung">
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
