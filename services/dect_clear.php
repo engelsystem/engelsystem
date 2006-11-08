@@ -1,5 +1,5 @@
 <?PHP
-
+// löscht alle eintrag in der telefonanlage, indem jede nummer einzähln gelöscht wir (#10<NUMBER>)
 
 include ("./inc/db.php");
 include ("./inc/config.php");
