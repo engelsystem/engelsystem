@@ -13,9 +13,9 @@ function Printlink( $Datum)
 	echo "'>$Datum</a></li>\n";
 } //function Printlink(
 
-foreach( $VeranstaltungsTage as $k => $v)
-{
-	Printlink( $v);
-}
+if( isset ($VeranstaltungsTage))
+	foreach( $VeranstaltungsTage as $k => $v)
+		Printlink( $v);
+
 
 ?>

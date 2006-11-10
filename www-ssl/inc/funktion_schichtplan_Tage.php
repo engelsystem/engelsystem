@@ -50,8 +50,11 @@ $SQL = "SELECT `DateS` FROM `Shifts` ORDER BY `DateS` LIMIT 1";
 $Erg = mysql_query($SQL, $con);
 
 $Pos=0;
-do
+
+if( mysql_num_rows($Erg)>0)
 {
+    do
+    {
 	//Startdatum einlesen und link ausgeben
 	$DateS = substr(mysql_result($Erg, 0 , 0), 0,10);
 	$VeranstaltungsTage[$Pos++] = $DateS;
@@ -77,7 +80,8 @@ do
 		"ORDER BY `DateS` ".
 		"LIMIT 1";
 	$Erg = mysql_query($SQL, $con);
-} while( mysql_fetch_row($Erg) > 0);
+    } while( mysql_fetch_row($Erg) > 0);
+}
 $VeranstaltungsTageMax = $Pos-1;
 
 ?>

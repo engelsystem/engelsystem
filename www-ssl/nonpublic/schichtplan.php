@@ -51,7 +51,10 @@ if( !isset($ausdatum) )
  		$sql = "SELECT `DateS` FROM `Shifts` ORDER BY `DateS` ASC LIMIT 0, 1";
   		$Erg = mysql_query($sql, $con);
 	}
-	$ausdatum = substr(mysql_result($Erg,0,"DateS"),0,10);
+	if( mysql_num_rows( $Erg ) > 0 )
+		$ausdatum = substr(mysql_result($Erg,0,"DateS"),0,10);
+	else
+		$ausdatum = gmdate("Y-m-d", time()+3600);
 
 }
 
@@ -61,10 +64,10 @@ if ( !isset($raum) )
 {
 	// Ausgabe wenn kein Raum Ausgewählt:
 	echo Get_Text("pub_schicht_auswahl_raeume"). "<br><br>\n";
-	
-	foreach( $Room as $RoomEntry  )
-		echo "\t<li><a href='./schichtplan.php?ausdatum=$ausdatum&raum=". $RoomEntry["RID"]. "'>".
-		$RoomEntry["Name"]. "</a></li>\n";
+	if( isset($Room))	
+		foreach( $Room as $RoomEntry  )
+			echo "\t<li><a href='./schichtplan.php?ausdatum=$ausdatum&raum=". $RoomEntry["RID"]. "'>".
+				$RoomEntry["Name"]. "</a></li>\n";
 
 	echo "<br><br>";
 	echo Get_Text("pub_schicht_alles_1"). "<a href='./schichtplan.php?ausdatum=$ausdatum&raum=-1'> <u>".
