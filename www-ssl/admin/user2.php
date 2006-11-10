@@ -68,10 +68,10 @@ if (IsSet($_GET["action"]))
 				}
 			}
 			else
-				echo "<h1>Fehler: Unbekanter Type (". $_POST["Type"]. ") übergeben\n</h1>\n"
+				echo "<h1>Fehler: Unbekanter Type (". $_POST["Type"]. ") übergeben\n</h1>\n";
 		}
 		else
-			echo "<h1>Fehler: UserID (enterUID) wurde nicht per POST übergeben</h1>\n"
+			echo "<h1>Fehler: UserID (enterUID) wurde nicht per POST übergeben</h1>\n";
 		break;
 
 	case "delete":
