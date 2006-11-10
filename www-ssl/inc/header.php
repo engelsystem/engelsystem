@@ -14,7 +14,8 @@ if( !isset($_SESSION['IP']))
 
 if (IsSet($_SESSION['UID']) and ($_SESSION['IP'] <> $_SERVER['REMOTE_ADDR']))
 {
-	header("Location: https://".$_SERVER['HTTP_HOST'].$ENGEL_ROOT);
+	session_destroy ();
+	header("Location: $url". substr($ENGEL_ROOT,1) );
 }
 
 include ("./inc/UserCVS.php");
