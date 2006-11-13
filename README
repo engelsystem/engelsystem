@@ -14,3 +14,8 @@ Systemconfig:
 ./www-ssl/inc/db.php
 	einstellungen der DB
 	Achtung: DB user braucht folgende Rechte: SELECT, CREATE, INSERT, ALTER, UPDATE, INDEX, DELETE, DROP
+
+php.ini:
+--------
+add:
+	allow_url_fopen = On

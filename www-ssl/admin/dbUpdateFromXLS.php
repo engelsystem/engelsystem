@@ -47,35 +47,59 @@ if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST[
 {
 	echo "Update XCAL-File from Pentabarf..";
 	
-	//user uns password in url einbauen
-	$FileNameIn =	"pentabarf.cccv.de";/*. 
-			$_POST["PentabarfUser"]. ":". 
-			$_POST["password"]. "@".
-			$_POST["PentabarfURL"];*/
 	//backup error messeges and delate
 	$Backuperror_messages = $error_messages;
-		$fp = fsockopen( $FileNameIn, 443, $errno, $errstr, 30);
+		$fp = fsockopen( "ssl://$PentabarfXMLhost", 443, $errno, $errstr, 30);
 	$error_messages = $Backuperror_messages;
 	
 	if( !$fp)
 	{
-	   echo "<h2>fail: File 'ssl://". $_POST["PentabarfURL"]. "' not readable!</h2>".
-	   	"[$errstr ($errno)]<br>\n";
+	   echo "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath$PentabarfXMLEventID' not readable!".
+	   	"[$errstr ($errno)]</h2>";
 	}
 	else
 	{
-//		if( ($fileOut = fopen( "$Tempdir/engelXML", "w")) != FALSE)
-		if( 1)
+		if( ($fileOut = fopen( "$Tempdir/engelXML", "w")) != FALSE)
 		{
-			fputs( $fp, "GET / HTTP/1.0\r\n\r\n");
-			$Zeilen = 0;
+			$head =	'GET /'. $PentabarfXMLpath. $PentabarfXMLEventID. ' HTTP/1.1'."\r\n".
+				'Host: '. $PentabarfXMLhost. "\r\n".
+				'User-Agent: Engelsystem'. "\r\n".
+				'Authorization: Basic '.
+				base64_encode($_POST["PentabarfUser"]. ':'. $_POST["password"])."\r\n".
+				"\r\n";
+			fputs( $fp, $head);
+			$Zeilen = -1;
 			while (!feof($fp))
 			{	
-				$Zeilen++;
-//				fputs( $fileOut, fgets($fp,128));
-				echo fgets($fp,128);
+				$Temp= fgets($fp,1024);
+				
+				// ende des headers
+				if( $Temp== "f20\r\n" )
+				{
+					$Zeilen = 0;
+					$Temp="";
+				}
+				
+				//file ende?
+				if( $Temp=="0\r\n")
+					break;
+
+				if( ($Zeilen>-1) && ($Temp!="ffb\r\n") )
+				{
+					//steuerzeichen ausfiltern
+					if( strpos( "#$Temp", "\r\n") > 0)
+						$Temp = substr($Temp, 0, strlen($Temp)-2);
+					if( strpos( "#$Temp", "1005") > 0)
+						$Temp = "";
+					if( strpos( "#$Temp", "783") > 0)
+						$Temp = "";
+					//schreiben in file
+					fputs( $fileOut, $Temp);
+					$Zeilen++;
+				}
 			}
-//			fclose( $fileOut);
+			fclose( $fileOut);
+			
 			echo "<br>Es wurden $Zeilen Zeilen eingelesen<br>";
 		}
 		else
@@ -87,9 +111,9 @@ else
 {
 	echo "<form action=\"dbUpdateFromXLS.php\" method=\"post\">\n";
 	echo "<table border=\"0\">\n";
-	echo "\t<tr><td>XCAL-File: https://</td>".
-		"<td><input name=\"PentabarfURL\" type=\"text\" size=\"100\" maxlength=\"1000\" ".
-		"value=\"$PentabarXCALurl\"></td></tr>\n";
+	echo "\t<tr><td>XCAL-File: https://$PentabarfXMLhost/$PentabarfXMLpath</td>".
+		"<td><input name=\"PentabarfURL\" type=\"text\" size=\"4\" maxlength=\"5\" ".
+		"value=\"$PentabarfXMLEventID\"></td></tr>\n";
 	echo "\t<tr><td>Username:</td>".
 		"<td><input name=\"PentabarfUser\" type=\"text\" size=\"30\" maxlength=\"30\"></td></tr>\n";
 	echo "\t<tr><td>Password:</td>".

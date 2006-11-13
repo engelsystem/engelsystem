@@ -38,6 +38,8 @@ $ModemEnable = false;
 $Tempdir="/tmp";
 
 //Pentabarf ConferenzDI für UpdateDB
-$PentabarXCALurl="https://pentabarf.cccv.de/xcal/conference/<ConfereneceID>";
+$PentabarfXMLhost = "pentabarf.cccv.de";
+$PentabarfXMLpath = "Xcal/conference/";
+$PentabarfXMLEventID = "31";
 
 ?>
