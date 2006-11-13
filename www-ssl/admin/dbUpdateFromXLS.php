@@ -48,37 +48,44 @@ if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST[
 	echo "Update XCAL-File from Pentabarf..";
 	
 	//user uns password in url einbauen
-	$StartURL = strpos( $_POST["PentabarfURL"], "://") + 3;
-	$FileNameIn =	substr( $_POST["PentabarfURL"], 0, $StartURL). 
+	$FileNameIn =	"https://". 
 			$_POST["PentabarfUser"]. ":". 
 			$_POST["password"]. "@".
-			substr( $_POST["PentabarfURL"], $StartURL);
-
-	if( ($fileIn = fopen( $FileNameIn, "r")) != FALSE)
+			$_POST["PentabarfURL"];
+	//backup error messeges and delate
+	$Backuperror_messages = $error_messages;
+		$fp = fsockopen( $FileNameIn, 443, $errno, $errstr, 30);
+	$error_messages = $Backuperror_messages;
+	
+	if( !$fp)
+	{
+	   echo "$errstr ($errno)<br />\n";
+	   echo "<h2>fail: File 'https://". $_POST["PentabarfURL"]. "' not readable!</h2>";
+	}
+	else
 	{
 		if( ($fileOut = fopen( "$Tempdir/engelXML", "w")) != FALSE)
 		{
+			fputs( $fp, "GET / HTTP/1.0\r\n\r\n");
 			$Zeilen = 0;
-			while (!feof($fileIn)) 
+			while (!feof($fp))
 			{	
 				$Zeilen++;
-				fputs( $fileOut, fgets( $fileIn));	
+				fputs( $fileOut, fgets($fp,128));
 			}
 			fclose( $fileOut);
 			echo "<br>Es wurden $Zeilen Zeilen eingelesen<br>";
 		}
 		else
 			echo "<h2>fail: File '$Tempdir/engelXML' not writeable!</h2>";
-		fclose( $fileIn);
+		fclose($fp);
 	}
-	else
-		echo "<h2>fail: File '". $_POST["PentabarfURL"]. "' not readable!</h2>";
 }
 else
 {
 	echo "<form action=\"dbUpdateFromXLS.php\" method=\"post\">\n";
 	echo "<table border=\"0\">\n";
-	echo "\t<tr><td>XCAL-File:</td>".
+	echo "\t<tr><td>XCAL-File: https://</td>".
 		"<td><input name=\"PentabarfURL\" type=\"text\" size=\"100\" maxlength=\"1000\" ".
 		"value=\"$PentabarXCALurl\"></td></tr>\n";
 	echo "\t<tr><td>Username:</td>".
