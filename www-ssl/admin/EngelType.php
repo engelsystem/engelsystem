@@ -3,6 +3,7 @@ $title = "R&auml;ume";
 $header = "Verwaltung der R&auml;ume";
 include ("./inc/header.php");
 include ("./inc/funktion_user.php");
+include("./inc/funktion_db.php");
 
 function runSQL( $SQL)
 {

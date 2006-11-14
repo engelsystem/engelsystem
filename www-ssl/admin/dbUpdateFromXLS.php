@@ -50,7 +50,7 @@ if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST[
 	//backup error messeges and delate
 	$Backuperror_messages = $error_messages;
 		$fp = fsockopen( "ssl://$PentabarfXMLhost", 443, $errno, $errstr, 30);
-	$error_messages = $Backuperror_messages;
+//	$error_messages = $Backuperror_messages;
 	
 	if( !$fp)
 	{
