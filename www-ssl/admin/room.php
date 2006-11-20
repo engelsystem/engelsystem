@@ -55,15 +55,26 @@ case 'new':
 	
 	for( $Uj = 1; $Uj < mysql_num_fields($Erg); $Uj++ )
 	{
-		//sonderfall fuer Default Engel 
-		if( substr( mysql_field_name($Erg, $Uj), 0, 12) == "DEFAULT_EID_")
-			$FeldName = "Anzahl ". $EngelTypeID[substr( mysql_field_name($Erg, $Uj), 12)];
+		if( (mysql_field_name($Erg, $Uj) == "show") || (mysql_field_name($Erg, $Uj) == "FromPentabarf") )
+		{
+			echo "<tr><td>show</td>".
+			     "<td>".
+			     "<input type=\"radio\" name=\"e". mysql_field_name($Erg, $Uj). "\" value=\"Y\">Yes".
+			     "<input type=\"radio\" name=\"e". mysql_field_name($Erg, $Uj). "\" value=\"N\">No".
+			     "</td></tr>\n";
+		}
 		else
-			$FeldName = mysql_field_name($Erg, $Uj);
+		{
+			//sonderfall fuer Default Engel 
+			if( substr( mysql_field_name($Erg, $Uj), 0, 12) == "DEFAULT_EID_")
+				$FeldName = "Anzahl ". $EngelTypeID[substr( mysql_field_name($Erg, $Uj), 12)];
+			else
+				$FeldName = mysql_field_name($Erg, $Uj);
 		
-		echo "<td>$FeldName</td>".
-	        	"<td><input type=\"text\" size=\"40\" name=\"".mysql_field_name($Erg, $Uj)."\">";
-		echo "</td></tr>\n";
+			echo "<td>$FeldName</td>".
+		        	"<td><input type=\"text\" size=\"40\" name=\"".mysql_field_name($Erg, $Uj)."\">";
+			echo "</td></tr>\n";
+		}
 	}
 	echo "</table>\n";
 	echo "<input type=\"hidden\" name=\"action\" value=\"newsave\">\n";
@@ -103,12 +114,12 @@ case 'change':
         
         for ($Uj = 1; $Uj < mysql_num_fields($ERG); $Uj++)
 	{
-		if( mysql_field_name($ERG, $Uj) == "show")
+		if( (mysql_field_name($ERG, $Uj) == "show") || (mysql_field_name($ERG, $Uj) == "FromPentabarf") )
 		{
 			echo "<tr><td>show</td>".
 			     "<td>".
-			     "<input type=\"radio\" name=\"eshow\" value=\"Y\"". (mysql_result($ERG, 0, $Uj)=='Y'? " checked":""). ">Yes".
-			     "<input type=\"radio\" name=\"eshow\" value=\"N\"". (mysql_result($ERG, 0, $Uj)=='N'? " checked":""). ">No".
+			     "<input type=\"radio\" name=\"e". mysql_field_name($ERG, $Uj). "\" value=\"Y\"". (mysql_result($ERG, 0, $Uj)=='Y'? " checked":""). ">Yes".
+			     "<input type=\"radio\" name=\"e". mysql_field_name($ERG, $Uj). "\" value=\"N\"". (mysql_result($ERG, 0, $Uj)=='N'? " checked":""). ">No".
 			     "</td></tr>\n";
 		}
 		else
