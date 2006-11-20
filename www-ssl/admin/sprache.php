@@ -66,7 +66,7 @@ if( !isset( $_GET["TextID"] )  )
 	//fuer neu eintraege
 	echo "<form action=\"sprache.php\">";
 	echo "<tr class=\"content\">\n";
-	echo "\t\t<td><input name=\"TextID\" type=\"text\" value=\"new\"> </td>\n";
+	echo "\t\t<td><input name=\"TextID\" type=\"text\" size=\"40\" value=\"new\"> </td>\n";
 		
 	foreach( $Sprachen as $Name => $Value )
 		echo "\t\t<td><textarea name=\"$Name\" cols=\"22\" rows=\"8\">$Name Text</textarea></td>\n";

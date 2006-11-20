@@ -41,9 +41,6 @@ for ($i=0; $i<$rowcount; $i++)
 	echo mysql_result($Erg, $i, 1). "x '".  mysql_result($Erg, $i, 0). "'<br>\n";
 
 
-echo "<h1>ChangeLog</h1> <br>";
-funktion_db_list("ChangeLog");
-
 include ("./inc/footer.php");
 ?>
 
