@@ -57,10 +57,10 @@ case 'new':
 	{
 		if( (mysql_field_name($Erg, $Uj) == "show") || (mysql_field_name($Erg, $Uj) == "FromPentabarf") )
 		{
-			echo "<tr><td>show</td>".
+			echo "<tr><td>". mysql_field_name($Erg, $Uj). "</td>".
 			     "<td>".
-			     "<input type=\"radio\" name=\"e". mysql_field_name($Erg, $Uj). "\" value=\"Y\">Yes".
-			     "<input type=\"radio\" name=\"e". mysql_field_name($Erg, $Uj). "\" value=\"N\">No".
+			     "<input type=\"radio\" name=\"". mysql_field_name($Erg, $Uj). "\" value=\"Y\">Yes".
+			     "<input type=\"radio\" name=\"". mysql_field_name($Erg, $Uj). "\" value=\"N\">No".
 			     "</td></tr>\n";
 		}
 		else
