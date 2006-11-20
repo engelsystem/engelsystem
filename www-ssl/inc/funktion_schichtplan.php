@@ -144,7 +144,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 			$Spalten.= "<br>\n\t\t&nbsp;&nbsp;<a href=\"./schichtplan_add.php?SID=$SID&TID=".
 				   $TempValue["TID"]."\">";
 			$Spalten.= $TempValue["free"];
-			if( $TempValue["free"] == 1 )
+			if( $TempValue["free"] != 1 )
 				$Spalten.= Get_Text("inc_schicht_weitere").
     					   " ".Get_Text("inc_schicht_Engel").
     					   Get_Text("inc_schicht_wird");
