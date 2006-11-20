@@ -1,7 +1,8 @@
 <?php
 
-function UID2Nick($UID) {
-  include ("./inc/db.php");
+function UID2Nick($UID) 
+{
+  global $con;
   
   $SQL = "SELECT Nick FROM `User` WHERE UID='$UID'";
   $Erg = mysql_query($SQL, $con);
@@ -19,8 +20,9 @@ function UID2Nick($UID) {
 }
 
 
-function TID2Type($TID) {
-  include ("./inc/db.php");
+function TID2Type($TID) 
+{
+  global $con;
   
   $SQL = "SELECT Name FROM `EngelType` WHERE TID='$TID'";
   $Erg = mysql_query($SQL, $con);
@@ -55,32 +57,20 @@ function ReplaceSmilies($eckig) {
 	return $neueckig;
 }
 
-function displayavatar($dumdidum) {
-	include ("./inc/db.php");
-	global $displayavatar;
+function displayavatar($UID) 
+{
+	global $con;
         
-       $asql = "select * from User where UID = $dumdidum";
-       $aerg = mysql_query ($asql, $con);
-       if (($displayavatar<>0) && (mysql_num_rows($Erg)) )
-            return ("&nbsp;<img src=\"./inc/avatar/avatar". mysql_result($aerg, 0, "Avatar"). ".gif\">");
+	$asql = "select * from User where UID = $UID";
+	$aerg = mysql_query ($asql, $con);
+	if( mysql_num_rows($aerg) )
+		if( mysql_result($aerg, 0, "Avatar") > 0)
+          		return ("&nbsp;<img src=\"./inc/avatar/avatar". mysql_result($aerg, 0, "Avatar"). ".gif\">");
 }
 
-function Ausgabe_Feld($RID) {
-// gibt, nach übergabe der der SchichtID (SID) und der RaumID (RID),
-// die eingetragenden und und offenden Schichteintäge zurück
- 	include ("./inc/db.php");
-    	include ("./inc/config.php");
-//echo "####################", $Erg, "####################<br>";
-	
-        $SQL2 = "SELECT * FROM `Raeume` ";
-	if ($RID != "") {
-		$SQL2.= "WHERE (RID = '".$RID."')";
-	}
-	return mysql_query($SQL2, $con);
-}
-
-function UIDgekommen($UID) {
-  include ("./inc/db.php");
+function UIDgekommen($UID) 
+{
+  global $con;
   
   $SQL = "SELECT `Gekommen` FROM `User` WHERE UID='$UID'";
   $Erg = mysql_query($SQL, $con);
@@ -91,7 +81,5 @@ function UIDgekommen($UID) {
   else
   	return "0";
 }
-
-
 
 ?>
