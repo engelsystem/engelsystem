@@ -28,6 +28,6 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Debug', 'D
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Debug', 'EN', 'Debug');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Recentchanges', 'DE', 'Letzte Änderungen');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Recentchanges', 'EN', 'recentchanges');
-
-
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Language', 'DE', 'Sprachen');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Language', 'EN', 'Language');
 
