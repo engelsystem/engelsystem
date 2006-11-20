@@ -2,33 +2,45 @@
 
 if( !function_exists("db_query"))
 {
-	function Ausgabe_Daten($SQL)
+	function db_querry_getDatenAssocArray($SQL)
 	{
-		global $con;	
-	
-	
+		global $con;
+		
 		$Erg = mysql_query($SQL, $con);
 		echo mysql_error($con);
 		
-		$Zeilen  = mysql_num_rows($Erg);
-		$Anzahl_Felder = mysql_num_fields($Erg);
+		$Daten = array();
+		for( $i=0; $i<mysql_num_rows($Erg); $i++)
+			$Daten[$i] = mysql_fetch_assoc($Erg);
 		
-		$Diff  = "<table border=1>";
-		$Diff .= "<tr>";
-		for ($m = 0 ; $m < $Anzahl_Felder ; $m++)
-			$Diff .= "<th>". mysql_field_name($Erg, $m). "</th>";
-		$Diff .= "</tr>";
-		for ($n = 0 ; $n < $Zeilen ; $n++) 
-		{
-			$Diff .= "<tr>";
-		        for ($m = 0 ; $m < $Anzahl_Felder ; $m++)
-  	  			$Diff .= "<td>".mysql_result($Erg, $n, $m). "</td>";
-        		$Diff .= "</tr>";
-		}
-		$Diff .= "</table>";
-		return $Diff;
+		return $Daten;
 	}
 
+	function db_querry_diffDaten($Daten1, $Daten2)
+	{
+		$gefunden=False;
+		
+		$Diff  = "\n<table border=1>\n";
+		$Diff .= "<tr>\n\t<th>Feldname</th>\n\t<th>old Value</th>\n\t<th>new Value</th>\n";
+		$Diff .= "</tr>\n";
+		foreach($Daten1 as $DataKey => $Data1)
+		{
+			$Data2 = $Daten2[$DataKey];
+			foreach($Data1 as $key => $value)
+				if( $value != $Data2[$key])
+				{
+					$Gefunden=TRUE;
+					$Diff .= "<tr>\n\t<td>$key</td>\n\t<td>$value</td>\n\t<td>".$Data2[$key]."</rd>\n</tr>";
+				}
+		}
+		$Diff .= "</table>\n";
+		
+		if( $Gefunden)
+			return $Diff;
+		else
+			return "\nno changes Fount\n";
+	}
+	
 	function db_query( $SQL, $comment)
 	{
 		global $con, $Page;	
@@ -57,10 +69,10 @@ if( !function_exists("db_query"))
 			}
 			else
 			{
-				$Diff .= Ausgabe_Daten( "SELECT * FROM $Table $Where");
-				//execute command
-				$querry_erg = mysql_query($SQL, $con);
-				$Diff .= Ausgabe_Daten( "SELECT * FROM $Table $Where");
+				$Daten1 = db_querry_getDatenAssocArray( "SELECT * FROM $Table $Where");
+					$querry_erg = mysql_query($SQL, $con);
+				$Daten2 = db_querry_getDatenAssocArray( "SELECT * FROM $Table $Where");
+				$Diff  = db_querry_diffDaten($Daten1, $Daten2);
 			}
 		}
 		elseif( strpos( "#$SQL", "DELETE") > 0)
