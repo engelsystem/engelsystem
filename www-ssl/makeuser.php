@@ -2,7 +2,7 @@
 $title = "Anmeldung zum Chaos-Engel";
 $header = "";
 include ("./inc/header.php");
-include ("./inc/db.php");
+include ("./inc/config_db.php");
 include ("./inc/crypt.php");
 
 		

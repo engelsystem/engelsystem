@@ -2,7 +2,7 @@
 $title = "Kommentare zu den News";
 $header = "Kommentar";
 include ("./inc/header.php");
-include ("./inc/db.php");
+include ("./inc/config_db.php");
 include ("./inc/funktion_user.php");
 
 

@@ -3,7 +3,7 @@
 /****************************************************************************************************/
 //					INCLUDE
 /****************************************************************************************************/
-require_once('./inc/jabber.php');
+require_once('./inc/config_jabber.php');
 require_once("./inc/funktion_jabber.php");
 include("./inc/config_MessegeServer.php");
 

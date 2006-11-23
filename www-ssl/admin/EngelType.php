@@ -7,7 +7,7 @@ include("./inc/funktion_db.php");
 
 function runSQL( $SQL)
 {
-	include( "./inc/db.php");
+	global $con;
 	// hier muesste das SQL ausgefuehrt werden...
 	$Erg = mysql_query($SQL, $con);
 	if ($Erg) 
@@ -27,7 +27,7 @@ function runSQL( $SQL)
 
 function runSQL_log( $SQL, $commed)
 {
-	include( "./inc/db.php");
+	global $con;
 	// hier muesste das SQL ausgefuehrt werden...
 	$Erg = db_query($SQL, $commed);
 	if ($Erg) 

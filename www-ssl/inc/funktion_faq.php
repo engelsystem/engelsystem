@@ -1,7 +1,7 @@
 <?PHP
 
 function noAnswer() {
-  include ("./inc/db.php");
+  global $con;
 
   $SQL = "SELECT UID FROM Questions WHERE (Answer=\"\")";
   $Res=mysql_query($SQL, $con);

@@ -9,8 +9,8 @@ echo "\n\n<h1>Schudle:</h1>\n";
 function SaveSchedule()
 {
 	global  $RoomID, $RoomName;
+	global $con;
 
-	include ("./inc/db.php");
 	if( isset($_GET["PSIDXML"]) && 
 	    isset($_GET["DateXML"]) &&
 	    isset($_GET["RIDXML"]) &&

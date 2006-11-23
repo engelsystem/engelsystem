@@ -2,7 +2,7 @@
 $title = "Index";
 $header = "Index";
 
-include ("./inc/db.php");
+include ("./inc/config_db.php");
 include ("./inc/crypt.php");
 
 session_start(); // alte Session - falls vorhanden - wiederherstellen...

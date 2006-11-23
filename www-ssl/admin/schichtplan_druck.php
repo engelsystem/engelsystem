@@ -79,7 +79,7 @@ else 	//#################################################################
    	$Raum = $_POST["Raum"];
 	$ausdatum = $_POST["ausdatum"];
 
-	include ("./inc/db.php");
+	include ("./inc/config_db.php");
 	include ("./inc/config.php");
 	include ("./inc/secure.php");
 	//var wird nur gesetzt immer edit auszublenden, achtung sesion darf nicht gestart sein !!!

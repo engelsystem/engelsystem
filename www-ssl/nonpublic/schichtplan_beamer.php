@@ -1,6 +1,6 @@
 <?php
 include ("./inc/config.php");
-include ("./inc/db.php");
+include ("./inc/config_db.php");
 include ("./inc/funktion_lang.php");
 
 include ("./inc/funktion_user.php");

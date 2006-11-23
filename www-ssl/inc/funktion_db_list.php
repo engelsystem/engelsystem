@@ -2,7 +2,7 @@
 
 function funktion_db_list($Table_Name) {
 
-include ("./inc/db.php");
+	global $con;
 
 $SQL = "SELECT * FROM `".$Table_Name."`";
 $Erg = mysql_query($SQL, $con);
