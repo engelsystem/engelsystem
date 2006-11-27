@@ -14,8 +14,11 @@
 
   // register error handler
   set_error_handler("Error_Handler");
+
   ini_set( "error_reporting", E_ALL);
-  error_reporting(E_ALL); 
+  ini_set( "display_errors", "On");
+  ini_set( "display_startup_errors", "On");
+  ini_set( "html_errors", "On");
   
   // send errors 
   function send_errors()
