@@ -52,12 +52,21 @@ if( !function_exists("db_query"))
 		$Diff .= "</tr>\n";
 		foreach($Daten1 as $DataKey => $Data1)
 		{
-			$Data2 = $Daten2[$DataKey];
-			foreach($Data1 as $key => $value)
-				if( $value != $Data2[$key])
+			if( isset( $Daten2[$DataKey]))
+			{
+				$Data2 = $Daten2[$DataKey];
+				foreach($Data1 as $key => $value)
+					if( $value != $Data2[$key])
+					{
+						$Gefunden=TRUE;
+						$Diff .= "<tr>\n\t<td>$key</td>\n\t<td>$value</td>\n\t<td>".$Data2[$key]."</rd>\n</tr>";
+					}
+			}
+			else
+				foreach($Data1 as $key => $value)
 				{
 					$Gefunden=TRUE;
-					$Diff .= "<tr>\n\t<td>$key</td>\n\t<td>$value</td>\n\t<td>".$Data2[$key]."</rd>\n</tr>";
+					$Diff .= "<tr>\n\t<td>$key</td>\n\t<td>$value</td>\n\t<td></rd>\n</tr>";
 				}
 		}
 		$Diff .= "</table>\n";
