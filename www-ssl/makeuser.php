@@ -117,7 +117,7 @@ else
 	$_POST["Hometown"] = "";
 }
 
-echo "<h1>". Get_Text("makeuser_text1"). "</h1>";
+echo "<h1>".Get_Text("makeuser_text0")."</h1>". "<h2>". Get_Text("makeuser_text1"). "</h2>";
 echo "\t<form action=\"\" method=\"post\">\n";
 echo "\t\t<table>\n";
 echo "\t\t\t<tr><td>". Get_Text("makeuser_Nickname").
