@@ -13,10 +13,10 @@
   }
 
   // register error handler
-//  set_error_handler("Error_Handler", E_ALL);
   set_error_handler("Error_Handler");
-
-
+  ini_set( "error_reporting", E_ALL);
+  error_reporting(E_ALL); 
+  
   // send errors 
   function send_errors()
   {
