@@ -98,7 +98,8 @@ else
 	//Ausgabe Spalten überschrift
 	if( $raum == -1 )
 	{
-		foreach( $Room as $RoomEntry  )
+		if( isset($Room))
+		   foreach( $Room as $RoomEntry  )
 			if (SummRoomShifts($RoomEntry["RID"]) > 0)
 				echo "\t\t<th>". $RoomEntry["Name"]. "</th>\n";
 	}
@@ -135,7 +136,8 @@ else
 	
 	if( $raum == -1 )
 	{
-		foreach( $Room as $RoomEntry  )
+		if( isset($Room))
+		    foreach( $Room as $RoomEntry  )
 			if (SummRoomShifts($RoomEntry["RID"]) > 0)
 				CreateRoomShifts( $RoomEntry["RID"] );
 	}
