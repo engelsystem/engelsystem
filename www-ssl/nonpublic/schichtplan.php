@@ -24,7 +24,8 @@ function ShowSwitchDay()
 	
 	echo "\n\n<table border=\"0\" width=\"100%\"><tr>\n";
 	
-	foreach( $VeranstaltungsTage as $k => $v)
+	if( isset($VeranstaltungsTage))
+	    foreach( $VeranstaltungsTage as $k => $v)
 		if( $ausdatum == $v)
 		{
 			if( $k > 0)
