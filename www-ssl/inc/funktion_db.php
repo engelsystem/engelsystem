@@ -2,6 +2,33 @@
 
 if( !function_exists("db_query"))
 {
+	function Ausgabe_Daten($SQL)
+	{
+		global $con;
+		$Erg = mysql_query($SQL, $con); 
+		
+		echo mysql_error($con); 
+		              
+		$Zeilen  = mysql_num_rows($Erg); 
+		$Anzahl_Felder = mysql_num_fields($Erg); 
+		
+		$Diff  = "<table border=1>"; 
+		$Diff .= "<tr>"; 
+		for ($m = 0 ; $m < $Anzahl_Felder ; $m++) 
+			$Diff .= "<th>". mysql_field_name($Erg, $m). "</th>"; 
+		$Diff .= "</tr>"; 
+		
+		for ($n = 0 ; $n < $Zeilen ; $n++)  
+		{ 
+			$Diff .= "<tr>"; 
+			for ($m = 0 ; $m < $Anzahl_Felder ; $m++) 
+		        	$Diff .= "<td>".mysql_result($Erg, $n, $m). "</td>"; 
+			$Diff .= "</tr>"; 
+		} 
+		$Diff .= "</table>"; 
+		return $Diff; 
+	}
+	
 	function db_querry_getDatenAssocArray($SQL)
 	{
 		global $con;
@@ -18,7 +45,7 @@ if( !function_exists("db_query"))
 
 	function db_querry_diffDaten($Daten1, $Daten2)
 	{
-		$gefunden=False;
+		$Gefunden=False;
 		
 		$Diff  = "\n<table border=1>\n";
 		$Diff .= "<tr>\n\t<th>Feldname</th>\n\t<th>old Value</th>\n\t<th>new Value</th>\n";
