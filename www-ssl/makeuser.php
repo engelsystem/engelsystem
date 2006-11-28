@@ -53,7 +53,7 @@ if( isset($_POST["send"]))
 				"`ICQ`, ".	"`jabber`, ".
 				"`Size`, ".	"`Passwort`, ".
 				"`Art` , ".	"`kommentar`, ".
-				"`Hometown` ) ".
+				"`Hometown`,".  "`CreateDate` ) ".
 			"VALUES ( ".
 				"'". $_POST["Nick"]. "', ".		"'". $_POST["Name"]. "', ".
 				"'". $_POST["Vorname"]. "', ".		$_POST["Alter"]. ", ".
@@ -62,7 +62,7 @@ if( isset($_POST["send"]))
 				"'". $_POST["ICQ"]. "', ".		"'". $_POST["jabber"]. "', ".
 				"'". $_POST["Size"]. "', ".		"'". $_POST["Passwort"]. "', ".
 				"'". $_POST["Art"]. "', ".		"'". $_POST["kommentar"]. "', ".
-				"'". $_POST["Hometown"]. "' );";
+				"'". $_POST["Hometown"]. "',".		"NOW());";
 		$Erg = mysql_query($SQL, $con);
 
 		if ($Erg != 1)

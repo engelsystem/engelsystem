@@ -26,7 +26,10 @@ if (!IsSet($_GET["enterUID"]))
 
 	?><table width="100%" class="border" cellpadding="2" cellspacing="1"> 
 	<tr class="contenttopic">
-		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Nick">Nick</a></td>
+		<td>
+			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Nick">Nick</a> |
+			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=CreateDate">CreateDate</a>
+		</td>
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Name">Name</a></td>
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Vorname">Vorname</a></td>
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Alter">Alter</a></td>
@@ -55,7 +58,7 @@ if (!IsSet($_GET["enterUID"]))
 	
 	for ($n = 0 ; $n < $Zeilen ; $n++) {
 		echo "<tr class=\"content\">\n";
-		echo "\t<td>".mysql_result($Erg, $n, "Nick"). "</td>\n";
+		echo "\t<td>".mysql_result($Erg, $n, "Nick"). "<br>(Create: ". mysql_result($Erg, $n, "CreateDate"). ")</td>\n";
 		echo "\t<td>".mysql_result($Erg, $n, "Name")."</td>\n";
 		echo "\t<td>".mysql_result($Erg, $n, "Vorname")."</td>\n";
 		echo "\t<td>".mysql_result($Erg, $n, "Alter")."</td>\n";
