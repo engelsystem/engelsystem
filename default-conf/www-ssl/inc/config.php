@@ -31,9 +31,6 @@ $show_SSLCERT = "MD5:<br>FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF<br>\n".
 //globale const. fuer schischtplan
 $GlobalZeileProStunde = 4;
 
-//ist ein modem angeschlossen
-$ModemEnable = false;
-
 //Tempdir
 $Tempdir="/tmp";
 
