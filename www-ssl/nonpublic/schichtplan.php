@@ -123,7 +123,7 @@ else
 			$SpaltenTemp.= ($TempMinuten<10)? "0$TempMinuten": "$TempMinuten";
 				
 			//aktuelle stunde markieren
-			if( ($i == gmdate("H", time()+3600)) && (gmdate("Y-m-d", time()+ 3600) == $ausdatum) )
+			if( ($j==0) && ($i == gmdate("H", time()+3600)) && (gmdate("Y-m-d", time()+ 3600) == $ausdatum) )
 				$SpaltenTemp = "<h1>$SpaltenTemp</h1>";
 				
 			$SpaltenTemp = "<td>$SpaltenTemp</td>\n";
