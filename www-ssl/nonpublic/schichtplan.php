@@ -113,25 +113,21 @@ else
 		{
 			$Spalten[$i * $GlobalZeileProStunde + $j] = 
 				"\t<tr class=\"content\">\n\t\t";
-			if( $j==0)
-			{
-				$SpaltenTemp = "<td rowspan=\"$GlobalZeileProStunde\">";
-				if( ($i == gmdate("H", time()+3600)) && (gmdate("Y-m-d", time()+ 3600) == $ausdatum) )
-					$SpaltenTemp.= "<h1>";
+
+			//Stunde:
+			$SpaltenTemp="";	
+			$SpaltenTemp.= ($i<10)? "0$i:": "$i:";
+
+			//Minute
+			$TempMinuten = (($j*60) / $GlobalZeileProStunde);
+			$SpaltenTemp.= ($TempMinuten<10)? "0$TempMinuten": "$TempMinuten";
 				
-				if( $i < 10 ) 
-					$SpaltenTemp.= "0"; 
-				$SpaltenTemp.= "$i:";
-				if( ( ($j*60) / $GlobalZeileProStunde) < 10 ) 
-					$SpaltenTemp.= "0"; 
+			//aktuelle stunde markieren
+			if( ($i == gmdate("H", time()+3600)) && (gmdate("Y-m-d", time()+ 3600) == $ausdatum) )
+				$SpaltenTemp = "<h1>$SpaltenTemp</h1>";
 				
-				$SpaltenTemp.= ( ($j*60) / $GlobalZeileProStunde);
-				if( ($i == gmdate("H", time()+3600)) && (gmdate("Y-m-d", time()+ 3600) == $ausdatum) )
-					$SpaltenTemp.= "</h1>";
-					
-				$SpaltenTemp.= "</td>\n";
-				$Spalten[$i * $GlobalZeileProStunde + $j].= $SpaltenTemp;
-			}
+			$SpaltenTemp = "<td>$SpaltenTemp</td>\n";
+			$Spalten[$i * $GlobalZeileProStunde + $j].= $SpaltenTemp;
 		}
 	
 	if( $raum == -1 )
@@ -146,7 +142,9 @@ else
 
 	//Ausageb Zeilen
 	for ($i = 0; $i < (24 * $GlobalZeileProStunde); $i++) 
+	{
 		echo $Spalten[$i]."\t</tr>\n";
+	}
 
   	echo "</table>\n";
 	

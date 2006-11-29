@@ -260,10 +260,12 @@ function CreateRoomShifts( $raum )
 		
 		if( $ZeitZeiger < $ZeitPos  )
 		{
+//			for( $iLeer = ($ZeitZeiger*$GlobalZeileProStunde); $iLeer<($ZeitPos*$GlobalZeileProStunde); $iLeer++)
+//				$Spalten[$iLeer] .= "\t\t<td valign=\"top\" rowspan=\"1\"></td>\n";
+												
 	       		$Spalten[$ZeitZeiger * $GlobalZeileProStunde].=	
-				"\t\t<td valign=\"top\" rowspan=\"". 
-				( ($ZeitPos - $ZeitZeiger ) * $GlobalZeileProStunde ). 
-				"\">&nbsp;</td>\n";
+				"\t\t<td valign=\"top\" rowspan=\"". ( ($ZeitPos - $ZeitZeiger ) * $GlobalZeileProStunde ). "\">&nbsp;</td>\n";
+
 			$ZeitZeiger += $ZeitPos - $ZeitZeiger;
 		}
 		if($ZeitZeiger == $ZeitPos )
