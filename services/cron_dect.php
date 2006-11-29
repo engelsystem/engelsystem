@@ -10,7 +10,8 @@ include ("./inc/funktion_cron.php");
 //ausfuerungs Ruetmuss (in s)
 $StartTimeBeforEvent = (60/4)*60; 
 $AnrufDelay = -5;
-$DebugDECT=FALSE;
+$DebugDECT = FALSE;
+//$DebugDECT = TRUE;
 
 //Timeout erhöhen;
 set_time_limit(50000); 

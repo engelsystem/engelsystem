@@ -26,7 +26,7 @@ function TID2Engeltype($TID)
 
 function DialNumberIAX( $DECTnumber, $Time, $RID, $TID)
 {
-	global $IAXenable, $IAXcontent, $IAXserver, $AnrufDelay;
+	global $IAXenable, $IAXcontent, $IAXserver, $AnrufDelay, $DebugDECT;
 	
 	//Parameter verarbeiten
 	$TimeH = substr( $Time, 11, 2);
@@ -48,6 +48,7 @@ function DialNumberIAX( $DECTnumber, $Time, $RID, $TID)
 	
 	if( $IAXenable)
 	{
+		if($DebugDECT) echo "IAX create file for dialing Number $DECTnumber\n";
 		$file = fopen( $CallFile, 'w' );
 		if( $file != FALSE)
 		{
@@ -63,13 +64,12 @@ function DialNumberIAX( $DECTnumber, $Time, $RID, $TID)
 			fputs( $file, "SetVar: Room=".  RID2Room( $RID). "\n");
 			fputs( $file, "SetVar: Engeltype=". TID2Engeltype( $TID). "\n");
 			fclose($file);
-			system( "cat $CallFile");
 			system( "chmod 777 $CallFile");
 			system( "mv $CallFile /var/spool/asterisk/outgoing");
 		}
 	}
 	else
-		echo "IAX is disable\n";
+		if($DebugDECT) echo "IAX is disable\n";
 }
 
 function DialNumberModem( $DECTnumber, $Time)
