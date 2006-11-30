@@ -27,17 +27,21 @@ $Erg = mysql_query($SQL, $con);
 // anzahl zeilen
 $news_rows  = mysql_num_rows($Erg);
 
-for ($n = 0 ; $n < $news_rows ; $n++) {
+for ($n = 0 ; $n < $news_rows ; $n++) 
+{
 
-  if (mysql_result($Erg, $n, "Treffen") == 0) {
+  if (mysql_result($Erg, $n, "Treffen") == 0) 
   	echo "<p class='question'>";
-  } else {	
+  else 
 	echo "<p class='engeltreffen'>";
-  }
-  echo "<u>".mysql_result($Erg, $n, "Betreff")."</u><br>\n";
+  
+  echo "<u>".mysql_result($Erg, $n, "Betreff")."</u>\n";
 
+  // Schow Admin Page
+  if( $_SESSION['CVS'][ "admin/news.php" ] == "Y" )
+	echo " <a href=\"./../admin/news.php?action=change&date=". mysql_result($Erg, $n, "Datum"). "\">[edit]</a><br>\n\t\t";
 
-  echo "&nbsp; &nbsp;<font size=1>".mysql_result($Erg, $n, "Datum").", ";
+  echo "<br>&nbsp; &nbsp;<font size=1>".mysql_result($Erg, $n, "Datum").", ";
   echo UID2Nick(mysql_result($Erg, $n, "UID"))."</font>";
   // avatar anzeigen?
   echo DisplayAvatar (mysql_result($Erg, $n, "UID"));
