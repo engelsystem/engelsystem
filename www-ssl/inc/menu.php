@@ -14,8 +14,6 @@ $MenueTableEnd="
 </table><br>
 ";
 
-include("./menu.php");
-
 ShowMenu("");
 ShowMenu("nonpublic");
 ShowMenu("admin");
