@@ -11,20 +11,14 @@ $MenueTableEnd="
 				<br>
 		</td>
 	</tr>
-</table>
+</table><br>
 ";
 
 include("./menu.php");
 
-if( isset( $Menu))
-{
-	ShowMenu( $Menu );
-	echo "<br>";
-}
-if( isset( $MenuAdmin))
-	ShowMenu( $MenuAdmin );
-
-echo "<br>";
+ShowMenu("");
+ShowMenu("nonpublic");
+ShowMenu("admin");
 
 if( !isset($submenus))
 	$submenus = 0;

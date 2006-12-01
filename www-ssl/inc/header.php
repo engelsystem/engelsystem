@@ -1,6 +1,6 @@
 <?PHP 
-include ("./inc/error_handler.php");
 include ("./inc/config.php");
+include ("./inc/error_handler.php");
 include ("./inc/config_db.php");
 include ("./inc/funktion_lang.php");
 include ("./inc/funktion_menu.php");

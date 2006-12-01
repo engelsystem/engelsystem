@@ -1,42 +1,40 @@
 <?PHP
 
-function ShowMenu( $Menu )
+function ShowMenu( $MenuName)
 {
-	if( !isset($Menu["Entry"]) ) return;
+	global $MenueTableStart, $MenueTableEnd, $_SESSION, $DEBUG, $url, $ENGEL_ROOT;
+	$Gefunden=FALSE;
+
+	//Überschift
+	$Text = "<h4 class=\"menu\">". Get_Text("$MenuName/"). "</h4>";
 	
-	global $MenueTableStart, $MenueTableEnd, $_SESSION, $DEBUG;
-	
-	echo $MenueTableStart;
-	echo "<h4 class=\"menu\">". $Menu["Name"]. "</h4>";
-
-	foreach( $Menu["Entry"] as $Entry )
-	{
-		//wenn File mit ../ beginnt wird "../" abgeschnitten und der Ordener weggelassen
-		if( strstr( $Entry["File"], "../" ) != FALSE )
-			$MenuFile = substr( $Entry["File"], strpos( $Entry["File"], "../" )+ 3)  ;
-		else
-			$MenuFile = $Menu["Path"]. $Entry["File"];
-	
-		if( $_SESSION['CVS'][$MenuFile] == "Y")
-		{
-			echo "\t\t\t<li><a href=\"". $Entry["File"]. "\">". $Entry["Name"]. "</a></li>\n";
-			if( isset($Entry["Line"]))
-				echo $Entry["Line"];
-		}
-
-		//DEBUG
-		if( $DEBUG ) 
-		{ 
-		    if( !isset($_SESSION['CVS'][$MenuFile] ) )
-			echo "ERROR CVS: '". $MenuFile. "' not set";
-			
-		    if( $_SESSION['CVS'][$MenuFile] != "Y")
-		    	echo "\t\t\t<li>". $Entry["File"]. " (". $Entry["Name"]. ")</li>\n";
-		} // DEBUG
-	} //foreach
-
-	echo $MenueTableEnd;
-} //function ShowMenue
-
+	//einträge
+	foreach( $_SESSION['CVS'] as $Key => $Entry )
+		if( strpos( $Key, ".php") > 0)
+			if( (strpos( "00$Key", "0$MenuName") > 0) ||
+			    ((strlen($MenuName)==0) && (strpos( "0$Key", "/") == 0) ) )
+			{
+				$TempName = Get_Text($Key, TRUE);
+				if(( TRUE||$DEBUG) && (strlen($TempName)==0) )
+					$TempName = "not found: \"$Key\"";
+				
+				if( $Entry == "Y")
+				{
+					//zum absichtlkichen ausblenden von einträgen
+					if( strlen($TempName)>1)
+					{
+						$Gefunden = TRUE;
+						$Text .= "\t\t\t<li><a href=\"". $url. substr( $ENGEL_ROOT, 1). $Key. "\">$TempName</a></li>\n";
+					}
+				}
+				elseif( $DEBUG ) 
+				{
+					$Gefunden = TRUE;
+					$Text .= "\t\t\t<li>$TempName ($Key)</li>\n";
+				}
+			}
+	if( $Gefunden)
+		echo $MenueTableStart.$Text.$MenueTableEnd;
+}//function ShowMenue
 
 ?>
