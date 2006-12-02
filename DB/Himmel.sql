@@ -163,107 +163,6 @@ CREATE TABLE IF NOT EXISTS `Shifts` (
   PRIMARY KEY  (`SID`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `User`
---
--- Erzeugt am: 25. März 2005 um 12:16
--- Aktualisiert am: 06. November 2005 um 16:38
--- Letzter Check am: 16. September 2005 um 19:24
---
-
-DROP TABLE IF EXISTS `User`;
-CREATE TABLE IF NOT EXISTS `User` (
-  `UID` int(11) NOT NULL auto_increment,
-  `Nick` varchar(23) NOT NULL default '',
-  `Name` varchar(23) default NULL,
-  `Vorname` varchar(23) default NULL,
-  `Alter` int(4) default NULL,
-  `Telefon` varchar(40) default NULL,
-  `DECT` varchar(4) default NULL,
-  `Handy` varchar(40) default NULL,
-  `email` varchar(123) default NULL,
-  `ICQ`  VARCHAR( 30 )  default NULL,
-  `jabber` VARCHAR( 200 ) default NULL, 
-  `Size` varchar(4) default NULL,
-  `Passwort` varchar(40) default NULL,
-  `Gekommen` tinyint(4) NOT NULL default '0',
-  `Aktiv` tinyint(4) NOT NULL default '0',
-  `Tshirt` tinyint(4) default '0',
-  `color` tinyint(4) default '1',
-  `Sprache` char(2) default 'EN',
-  `Avatar` int(11) default '0',
-  `lastLogIn` datetime NOT NULL default '0000-00-00 00:00:00',
-  `CreateDate` datetime NOT NULL default '0000-00-00 00:00:00',
-  `Art` varchar(30) default NULL,
-  `kommentar` text,
-  PRIMARY KEY  (`UID`,`Nick`),
-  UNIQUE KEY `Nick` (`Nick`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
-
-INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `lastLogIn`, `Art`, `kommentar`) VALUES (1, 'admin', '', '', 0, '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 6, 'EN', 115, '0000-00-00 00:00:00', '', '');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `UserCVS`
---
--- Erzeugt am: 06. November 2005 um 17:47
--- Aktualisiert am: 06. November 2005 um 18:00
---
-
-DROP TABLE IF EXISTS `UserCVS`;
-CREATE TABLE IF NOT EXISTS `UserCVS` (
-  `UID` int(11) NOT NULL default '0',
-  `index.php` char(1) NOT NULL default 'Y',
-  `logout.php` char(1) NOT NULL default 'Y',
-  `faq.php` char(1) NOT NULL default 'Y',
-  `lageplan.php` char(1) NOT NULL default 'Y',
-  `makeuser.php` char(1) NOT NULL default 'Y',
-  `nonpublic/index.php` char(1) NOT NULL default 'Y',
-  `nonpublic/news.php` char(1) NOT NULL default 'Y',
-  `nonpublic/newsAddMeting` char(1) NOT NULL default 'N',
-  `nonpublic/news_comments.php` char(1) NOT NULL default 'Y',
-  `nonpublic/myschichtplan.php` char(1) NOT NULL default 'Y',
-  `nonpublic/engelbesprechung.php` char(1) NOT NULL default 'Y',
-  `nonpublic/schichtplan.php` char(1) NOT NULL default 'Y',
-  `nonpublic/schichtplan_add.php` char(1) NOT NULL default 'Y',
-  `nonpublic/schichtplan_beamer.php` char(1) NOT NULL default 'Y',
-  `nonpublic/wecken.php` char(1) NOT NULL default 'N',
-  `nonpublic/waeckliste.php` char(1) NOT NULL default 'N',
-  `nonpublic/faq.php` char(1) NOT NULL default 'Y',
-  `nonpublic/einstellungen.php` char(1) NOT NULL default 'Y',
-  `admin/index.php` char(1) NOT NULL default 'N',
-  `admin/debug.php` char(1) NOT NULL default 'N',
-  `admin/dbUpdateFromXLS.php` char(1) NOT NULL default 'N',
-  `admin/room.php` char(1) NOT NULL default 'N',
-  `admin/EngelType.php` char(1) NOT NULL default 'N',
-  `admin/schichtplan.php` char(1) NOT NULL default 'N',
-  `admin/shiftadd.php` char(1) NOT NULL default 'N',
-  `admin/schichtplan_druck.php` char(1) NOT NULL default 'N',
-  `admin/userDefaultSetting.php` char(1) NOT NULL default 'N',
-  `admin/user.php` char(1) NOT NULL default 'N',
-  `admin/user2.php` char(1) NOT NULL default 'N',
-  `admin/aktiv.php` char(1) NOT NULL default 'N',
-  `admin/tshirt.php` char(1) NOT NULL default 'N',
-  `admin/news.php` char(1) NOT NULL default 'N',
-  `admin/faq.php` char(1) NOT NULL default 'N',
-  `admin/free.php` char(1) NOT NULL default 'N',
-  `admin/sprache.php` char(1) NOT NULL default 'N',
-  `admin/dect.php` char(1) NOT NULL default 'N',
-  `Netz` char(1) NOT NULL default 'N',
-  `Kassen` char(1) NOT NULL default 'N',
-  PRIMARY KEY  (`UID`)
-) TYPE=MyISAM;
-
---
--- Daten für Tabelle `UserCVS`
---
-
-INSERT INTO `UserCVS` (`UID`, `index.php`, `logout.php`, `faq.php`, `lageplan.php`, `makeuser.php`, `nonpublic/index.php`, `nonpublic/news.php`, `nonpublic/newsAddMeting`, `nonpublic/news_comments.php`, `nonpublic/myschichtplan.php`, `nonpublic/engelbesprechung.php`, `admin/index.php`, `nonpublic/schichtplan.php`, `nonpublic/schichtplan_add.php`, `nonpublic/schichtplan_beamer.php`, `nonpublic/wecken.php`, `nonpublic/waeckliste.php`, `nonpublic/faq.php`, `nonpublic/einstellungen.php`, `admin/debug.php`, `admin/dbUpdateFromXLS.php`, `admin/room.php`, `admin/EngelType.php`, `admin/schichtplan.php`, `admin/shiftadd.php`, `admin/schichtplan_druck.php`, `admin/userDefaultSetting.php`, `admin/user.php`, `admin/user2.php`, `admin/aktiv.php`, `admin/tshirt.php`, `admin/news.php`, `admin/faq.php`, `admin/free.php`, `admin/sprache.php`, `admin/dect.php`, `Netz`, `Kassen`) VALUES (-1, 'Y', 'N', 'N', 'N', 'N', 'Y', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'), (1, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y');
-
 -- --------------------------------------------------------
 
 --
@@ -304,13 +203,13 @@ CREATE TABLE IF NOT EXISTS `news_comments` (
   KEY `Refid` (`Refid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Tabellenstruktur für Tabelle `Counter`
--- 
+--
 
 DROP TABLE IF EXISTS `Counter`;
 CREATE TABLE IF NOT EXISTS `Counter` (
   `URL` varchar(255) NOT NULL default '',
    `Anz` bigint(20) NOT NULL default '0',
    PRIMARY KEY  (`URL`)
-) TYPE=MyISAM COMMENT='Counter alles der Seiten';´              
+) TYPE=MyISAM COMMENT='Counter alles der Seiten';´
