@@ -17,7 +17,7 @@ switch( $_GET["action"])
 		//#####################
 		//show exist Messages
 		//#####################
-		$SQL = "SELECT * FROM `Messages` WHERE `SUID`=". $_SESSION["UID"]. " OR `RUID`=". $_SESSION["UID"];
+		$SQL = "SELECT * FROM `Messages` WHERE `SUID`='". $_SESSION["UID"]. "' OR `RUID`='". $_SESSION["UID"]. "'";
 		$erg = mysql_query($SQL, $con);
 	
 		echo "<table border=\"0\" class=\"border\" cellpadding=\"2\" cellspacing=\"1\">\n";
@@ -100,7 +100,7 @@ switch( $_GET["action"])
 	
 	case "MarkRead":
 		$SQL = "UPDATE `Messages` SET `isRead` = 'Y' ".
-			"WHERE `Datum` = '". $_GET["Datum"]. "' AND `RUID`=". $_SESSION["UID"]. " ".
+			"WHERE `Datum` = '". $_GET["Datum"]. "' AND `RUID`='". $_SESSION["UID"]. "' ".
 			"LIMIT 1 ;";
 		$Erg = mysql_query($SQL, $con);
 		if ($Erg == 1) 
@@ -111,7 +111,7 @@ switch( $_GET["action"])
 	
 	case "DelMsg":
 		$SQL = "DELETE FROM `Messages` ".
-			"WHERE `Datum` = '". $_GET["Datum"]. "' AND `RUID` = ". $_SESSION["UID"]. " ".
+			"WHERE `Datum` = '". $_GET["Datum"]. "' AND `RUID` ='". $_SESSION["UID"]. "' ".
 			"LIMIT 1;";
 		$Erg = mysql_query($SQL, $con);
 		if ($Erg == 1) 

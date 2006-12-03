@@ -54,7 +54,7 @@ else
 			$_SESSION['IP'] = $_SERVER['REMOTE_ADDR'];
 		
 			// CVS import Data
-			$SQL = "SELECT * FROM `UserCVS` WHERE UID=".$_SESSION['UID'];
+			$SQL = "SELECT * FROM `UserCVS` WHERE UID='".$_SESSION['UID']."'";
 			$Erg_CVS =  mysql_query($SQL, $con);
 			$_SESSION['CVS'] = mysql_fetch_array($Erg_CVS);
 			
