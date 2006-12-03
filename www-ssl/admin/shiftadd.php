@@ -44,7 +44,7 @@ if( !isset( $_SESSION['shiftadd.php']['SchichtName']))
 	$_SESSION['shiftadd.php']['ETime'] = "12";
 	$_SESSION['shiftadd.php']['len'] = "2";
 	$_SESSION['shiftadd.php']['NachtON'] = "OFF";
-	$_SESSION['shiftadd.php']['len_night'] = "0;4;8;10;12;14;16;18;20;22;24";
+	$_SESSION['shiftadd.php']['len_night'] = "00-04-08-10-12-14-16-18-20-22-24";
 }
 // wenn werte übergeben in sesion eintragen
 if( !isset($_GET["NachtON"]))
@@ -159,13 +159,11 @@ case 'newsave':
 	$lenOrg = $_GET["len"];
 	if( $_GET["NachtON"] == "ON" )
 	{	
-		$lenArrayDummy = explode( ";", $_GET["len_night"]);
+		$lenArrayDummy = explode( "-", $_GET["len_night"]);
                 foreach ( $lenArrayDummy as $Temp )
                 {
 			if( isset($Temp2) )
-			{
 				$lenArray[$Temp2] = $Temp-$Temp2;
-			}
 			$Temp2 = $Temp;
 			
         	}//foreach
@@ -195,9 +193,7 @@ case 'newsave':
 			
 		// define End time
 	 	if( $_GET["NachtON"] == "ON" )
-		{
 			$_GET["len"] = $lenArray[$Time];
-		}
 		$TimeEnd = $Time+ $_GET["len"];
 		
 		//Tagesüberschreitung
