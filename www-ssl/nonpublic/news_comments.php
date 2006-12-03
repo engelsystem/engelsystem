@@ -22,7 +22,7 @@ if( IsSet( $_GET["text"]))
 	}
 }
 
-$SQL = "SELECT * FROM news_comments where Refid = ". $_GET["nid"]. " ORDER BY 'ID'";
+$SQL = "SELECT * FROM news_comments where Refid = '". $_GET["nid"]. "' ORDER BY 'ID'";
 $Erg = mysql_query($SQL, $con);
 echo mysql_error( $con);
 // anzahl zeilen
