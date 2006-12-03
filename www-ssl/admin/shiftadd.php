@@ -163,7 +163,7 @@ case 'newsave':
                 foreach ( $lenArrayDummy as $Temp )
                 {
 			if( isset($Temp2) )
-				$lenArray[$Temp2] = $Temp-$Temp2;
+				$lenArray[$Temp2] = intval($Temp)-intval($Temp2);
 			$Temp2 = $Temp;
 			
         	}//foreach
@@ -182,7 +182,7 @@ case 'newsave':
 	echo "</tr>\n";
  	
 	$DateEnd = $_GET["SDatum"];
- 	$TimeEnd = $_GET["STime"];
+ 	$TimeEnd = intval($_GET["STime"]);
 	$len=0;
 	do
 	{	
@@ -216,7 +216,7 @@ case 'newsave':
 			CreateNewEntry();
 		
 		if( $_GET["MoreThenOne"]!="ON" ) break;
-		if( $DateEnd == $_GET["EDatum"] && $TimeEnd >= $_GET["ETime"] ) break;
+		if( $DateEnd >= $_GET["EDatum"] && $TimeEnd >= intval($_GET["ETime"]) ) break;
 	} while( true );
 	echo "</table>";
 	
