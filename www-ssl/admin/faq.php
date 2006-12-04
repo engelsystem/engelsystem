@@ -76,7 +76,7 @@ case "edit":
 		echo "\t\tFehlerhafter Aufruf...<br>Bitte die Bearbeitung nochmals beginnen :)\n";
 	else 
 	{
-		$SQL = "SELECT * FROM `Questions` WHERE `QID`=`". $_GET["QID"]. "'";
+		$SQL = "SELECT * FROM `Questions` WHERE `QID`='". $_GET["QID"]. "'";
 		$Erg = mysql_query($SQL, $con);
 		echo "\t\t<form action=\"./faq.php\" method=\"GET\">\n";
 		echo "\t\tAnfrage von <b>". UID2NICK(mysql_result($Erg, 0, "UID")). "</b>:<br>\n";
