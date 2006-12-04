@@ -78,7 +78,7 @@ if( isset($_POST["send"]))
 			$Erg2 = mysql_query($SQL2, $con);
 			$Data = mysql_fetch_array($Erg2);
 
-			$SQL3 = "INSERT INTO `UserCVS` (`UID`) VALUES (". $Data["UID"]. ");";
+			$SQL3 = "INSERT INTO `UserCVS` (`UID`) VALUES ('". $Data["UID"]. "');";
 			$Erg3 = mysql_query($SQL3, $con);
 			if ($Erg3 != 1)
 			{

@@ -9,7 +9,7 @@ include ("./inc/funktion_user.php");
 
 if (!IsSet($_GET["action"]))
 {
-	$SQL = "SELECT * from News order by Datum DESC";
+	$SQL = "SELECT * FROM `News` ORDER BY `Datum` DESC";
 	$Erg = mysql_query($SQL, $con);
 
 	$rowcount = mysql_num_rows($Erg);
@@ -52,7 +52,7 @@ else
 	case 'change':
 		if (isset($_GET["date"]))
 		{
-			$SQL = "SELECT * from News where (Datum='". $_GET["date"]. "')";
+			$SQL = "SELECT * FROM `News` WHERE (`Datum`='". $_GET["date"]. "')";
 			$Erg = mysql_query($SQL, $con);
 
 			if( mysql_num_rows( $Erg)==1)
@@ -91,15 +91,15 @@ else
 
 	case 'change_save':
 		if( isset($_GET["date"]) && isset($_GET["eBetreff"]) && isset($_GET["eText"]) )
-			$chsql="UPDATE News set Betreff = \"". $_GET["eBetreff"]. "\", Text = \"". $_GET["eText"]. 
-				"\", Treffen=". $_GET["eTreffen"]. " where (Datum = '". $_GET["date"]. "') limit 1";
+			$chsql="UPDATE `News` SET `Betreff`='". $_GET["eBetreff"]. "', `Text`='". $_GET["eText"]. 
+				"', `Treffen`='". $_GET["eTreffen"]. "' WHERE (`Datum`='". $_GET["date"]. "') limit 1";
 		else
 			echo "Fehler: nicht genügend parameter übergeben";
 		break;
 
 	case 'delete':
 		if (isset($_POST["date"]))
-		        $chsql="DELETE from News where Datum = '". $_POST["date"]. "' limit 1";
+		        $chsql="DELETE FROM 'News' WHERE `Datum`='". $_POST["date"]. "' LIMIT 1";
 		else
 			echo "Fehler: \"date\" nicht übergeben";
 		break;

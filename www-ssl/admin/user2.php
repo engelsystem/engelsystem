@@ -48,7 +48,7 @@ if (IsSet($_GET["action"]))
 			elseif ($_POST["Type"] == "Secure")
 			{
 				$SQL2 = "UPDATE `UserCVS` SET ";
-			  	$SQL_CVS = "SELECT * FROM `UserCVS` WHERE UID=". $_POST["enterUID"];
+			  	$SQL_CVS = "SELECT * FROM `UserCVS` WHERE `UID`='". $_POST["enterUID"]. "'";
 				$Erg_CVS =  mysql_query($SQL_CVS, $con);
 				$CVS_Data = mysql_fetch_array($Erg_CVS);
 				$CVS_Data_i = 1;
@@ -59,7 +59,7 @@ if (IsSet($_GET["action"]))
 			    		$CVS_Data_i++;
 					}
 				$SQL2 = substr( $SQL2, 0, strlen($SQL2)-2 );
-				$SQL2.= "  WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
+				$SQL2.= "  WHERE `UID`='". $_POST["enterUID"]. "' LIMIT 1;";
 				echo "<br>Secure-";
 				$Erg = db_query($SQL2, "change user CVS");
 				if ($Erg == 1) {
@@ -79,7 +79,7 @@ if (IsSet($_GET["action"]))
 		if (IsSet($_POST["enterUID"]))
 		{
 			echo "delate User...";
-			$SQL="DELETE FROM `User` WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
+			$SQL="DELETE FROM `User` WHERE `UID`='". $_POST["enterUID"]. "' LIMIT 1;";
 			$Erg = db_query($SQL, "User delete");
 			if ($Erg == 1) {
 				echo "&Auml;nderung wurde gesichert...\n";
@@ -88,7 +88,7 @@ if (IsSet($_GET["action"]))
 			}
 			
 			echo "<br>\ndelate UserCVS...";
-			$SQL2="DELETE FROM `UserCVS` WHERE `UID` = '". $_POST["enterUID"]. "' LIMIT 1;";
+			$SQL2="DELETE FROM `UserCVS` WHERE `UID`='". $_POST["enterUID"]. "' LIMIT 1;";
 			$Erg = db_query($SQL2, "User CVS delete");
 			if ($Erg == 1) {
 				echo "&Auml;nderung wurde gesichert...\n";
@@ -97,8 +97,8 @@ if (IsSet($_GET["action"]))
 			}
 			
 			echo "<br>\ndelate UserEntry...";
-			$SQL3="UPDATE `ShiftEntry` SET `UID` = '0', `Comment` = NULL ".
-				"WHERE `UID` = '". $_POST["enterUID"]. "';";
+			$SQL3="UPDATE `ShiftEntry` SET `UID`='0', `Comment`=NULL ".
+				  "WHERE `UID`='". $_POST["enterUID"]. "';";
 			$Erg = db_query($SQL3, "delate UserEntry");
 			if ($Erg == 1) {
 				echo "&Auml;nderung wurde gesichert...\n";
@@ -112,7 +112,7 @@ if (IsSet($_GET["action"]))
 	case "newpw":
 		echo "Bitte neues Kennwort f&uuml;r <b>";
 		// Get Nick
-		$USQL = "SELECT * FROM User WHERE UID=". $_GET["eUID"];
+		$USQL = "SELECT * FROM `User` WHERE `UID`='". $_GET["eUID"]. "'";
 		$Erg = mysql_query($USQL, $con);
 		echo mysql_result($Erg, 0, "Nick");
 		echo "</b> eingeben:<br>";
@@ -129,7 +129,7 @@ if (IsSet($_GET["action"]))
 		{	// beide Passwoerter passen... 
 			$_POST["ePasswort"] = PassCrypt($_POST["ePasswort"]);
 			$SQL =	"UPDATE `User` SET `Passwort`='". $_POST["ePasswort"]. "' ".
-				"WHERE `UID` = '". $_POST["eUID"]. "'";
+				"WHERE `UID`='". $_POST["eUID"]. "'";
 			$Erg = db_query($SQL, "User new passwort");
 			if ($Erg == 1) {
 				echo "&Auml;nderung wurde gesichert...\n";

@@ -20,7 +20,7 @@ if ( !IsSet($_POST["user"]))
 } 
 else
 { // User ist noch nicht angemeldet 
-	$sql = "select * from User where Nick = '". $_POST["user"]. "'";
+	$sql = "SELECT * FROM `User` WHERE `Nick`='". $_POST["user"]. "'";
 	$userstring = mysql_query($sql, $con);
 
 	// anzahl zeilen
@@ -54,7 +54,7 @@ else
 			$_SESSION['IP'] = $_SERVER['REMOTE_ADDR'];
 		
 			// CVS import Data
-			$SQL = "SELECT * FROM `UserCVS` WHERE UID='".$_SESSION['UID']."'";
+			$SQL = "SELECT * FROM `UserCVS` WHERE `UID`='".$_SESSION['UID']."'";
 			$Erg_CVS =  mysql_query($SQL, $con);
 			$_SESSION['CVS'] = mysql_fetch_array($Erg_CVS);
 			

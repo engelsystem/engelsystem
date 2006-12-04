@@ -12,8 +12,8 @@ if( IsSet( $_GET["nid"]))
 
 if( IsSet( $_GET["text"]))
 {
-	$ch_sql="INSERT INTO news_comments (Refid, Datum, Text, UID) VALUES ('".
-		$_GET["nid"]. "', '". date("Y-m-d H:i:s"). "', '". $_GET["text"]. "', '". $_SESSION["UID"]. "')";
+	$ch_sql="INSERT INTO `news_comments` (`Refid`, `Datum`, `Text`, `UID`) ".
+			"VALUES ('". $_GET["nid"]. "', '". date("Y-m-d H:i:s"). "', '". $_GET["text"]. "', '". $_SESSION["UID"]. "')";
 	$Erg = mysql_query($ch_sql, $con);
 	if ($Erg == 1)
 	{
@@ -22,7 +22,7 @@ if( IsSet( $_GET["text"]))
 	}
 }
 
-$SQL = "SELECT * FROM news_comments where Refid = '". $_GET["nid"]. "' ORDER BY 'ID'";
+$SQL = "SELECT * FROM `news_comments` WHERE `Refid`='". $_GET["nid"]. "' ORDER BY 'ID'";
 $Erg = mysql_query($SQL, $con);
 echo mysql_error( $con);
 // anzahl zeilen

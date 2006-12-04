@@ -35,7 +35,7 @@ if (isset($_POST["newtext"]) && isset($_POST["SID"]) && isset($_POST["TID"])) {
 	{
 		//ermitteln der noch gesuchten
 		$SQL3 = "SELECT * FROM `ShiftEntry`".
-			" WHERE ((`SID` = '". $_POST["SID"]. "') and (`TID` = '". $_POST["TID"]. "') and (`UID` = '0'));";
+			" WHERE ((`SID` = '". $_POST["SID"]. "') AND (`TID` = '". $_POST["TID"]. "') AND (`UID` = '0'));";
 		$Erg3 = mysql_query($SQL3, $con);
 
 		if( mysql_num_rows($Erg3) <= 0 ) 
@@ -65,7 +65,7 @@ elseif (isset($_GET["SID"]) && isset($_GET["TID"])) {
 	"<table border=\"0\">\n";
 
   $SQL = "SELECT * FROM `Shifts` WHERE ";
-  $SQL .="(SID = '". $_GET["SID"]. "')";
+  $SQL .="(`SID` = '". $_GET["SID"]. "')";
   $Erg = mysql_query($SQL, $con);
   
   echo "<tr><td>". Get_Text("pub_schichtplan_add_Date"). ":</td> <td>".

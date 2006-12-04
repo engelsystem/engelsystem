@@ -50,7 +50,7 @@ for( $i = 0; $i < $rowcount; $i++)
 		"value=\"". mysql_result($Erg, $i, "SID"). "\"></td>\n";
 	echo "\t\t<td>".mysql_result($Erg, $i, "DateS")."</td>\n";
   
-	$sql2= "SELECT `Name` FROM `Room` WHERE `RID`=\"".mysql_result($Erg, $i, "RID")."\"";
+	$sql2= "SELECT `Name` FROM `Room` WHERE `RID`='".mysql_result($Erg, $i, "RID")."'";
 	$Erg2 = mysql_query($sql2, $con);
 	if( mysql_num_rows($Erg2) > 0)
 		echo "\t\t<td>".mysql_result($Erg2, 0, "Name")."</td>\n";
@@ -83,7 +83,7 @@ case 'change':
 	else 
 	{
 	
-	$sql = "SELECT * FROM `Shifts` WHERE (`SID` = \"". $_GET["SID"]. "\" )";
+	$sql = "SELECT * FROM `Shifts` WHERE (`SID` = '". $_GET["SID"]. "' )";
 	$Erg = mysql_query($sql, $con);
 
         echo "Schicht ab&auml;ndern: <br>\n";
@@ -138,7 +138,7 @@ case 'change':
 	echo "<br><hr>\n\n\n\n";
 	
 	//Freie Engelschichten
-	$sql3 = "SELECT TID FROM `ShiftEntry` WHERE SID=". $_GET["SID"]. " AND UID=0";
+	$sql3 = "SELECT `TID` FROM `ShiftEntry` WHERE `SID`='". $_GET["SID"]. "' AND `UID`='0'";
 	$Erg3 = mysql_query($sql3, $con);
 	$rowcount = mysql_num_rows($Erg3);
 	
@@ -153,7 +153,7 @@ case 'change':
 	echo "<br><hr>\n\n\n\n";
 
 	//Ausgabe eingetragener schischten
-	$sql3 = "SELECT * FROM `ShiftEntry` WHERE SID=". $_GET["SID"]. " AND NOT UID=0";
+	$sql3 = "SELECT * FROM `ShiftEntry` WHERE `SID`='". $_GET["SID"]. "' AND NOT `UID`='0'";
 	$Erg3 = mysql_query($sql3, $con);
 	$rowcount = mysql_num_rows($Erg3);
 	 
@@ -180,7 +180,7 @@ case 'change':
 	echo "<select name=\"UIDs\">\n";
 	echo "\t<option value=\"0\">--neu--</option>\n";
 	
-	$usql="select * from User order by Nick";
+	$usql="SELECT * FROM `User` ORDER BY `Nick`";
 	$uErg = mysql_query($usql, $con);
 	$urowcount = mysql_num_rows($uErg);
 	for ($k=0; $k<$urowcount; $k++)
@@ -240,15 +240,15 @@ case 'engeladd':
 		if( mysql_num_rows($ERG) != 0 )
 		{
 			$chSQL  = "UPDATE `ShiftEntry` SET ".
-				  "`UID`='". $_GET["UIDs"]. "', `Comment`='shift added by ".$_SESSION['Nick']."' ";
-			$chSQL .= "WHERE (`SID`='". $_GET["SID"]. "' AND ".
+				  "`UID`='". $_GET["UIDs"]. "', `Comment`='shift added by ".$_SESSION['Nick']."' ".
+			      "WHERE (`SID`='". $_GET["SID"]. "' AND ".
 				  "`TID`='". $_GET["TID"]. "' AND `UID`='0' ) LIMIT 1";
 		}
 		else
 		{
-			$chSQL  = "INSERT INTO `ShiftEntry` (`SID`, `TID`, `UID`, `Comment`) VALUES (";
-			$chSQL .= "'". $_GET["SID"]. "', '". $_GET["TID"]. "', ".
-				  "'". $_GET["UIDs"]. "', 'shift added by ".$_SESSION['Nick']."')";
+			$chSQL  = "INSERT INTO `ShiftEntry` (`SID`, `TID`, `UID`, `Comment`) VALUES (".
+			          "'". $_GET["SID"]. "', '". $_GET["TID"]. "', ".
+				      "'". $_GET["UIDs"]. "', 'shift added by ".$_SESSION['Nick']."')";
 		}
 		echo "Es wird folgende Schicht zus&auml;tzlich eingetragen:<br>\n";
 		echo "Engel: ".UID2Nick($_GET["UIDs"])."<br>\n";
@@ -305,8 +305,8 @@ case 'changesave':
 	break;
 	
 case 'delete':
-	$chSQL = "DELETE FROM `Shifts` WHERE `SID`=". $_GET["SID"]. " LIMIT 1";
-	$ch2SQL = "DELETE FROM `ShiftEntry` WHERE `SID`=". $_GET["SID"];
+	$chSQL = "DELETE FROM `Shifts` WHERE `SID`='". $_GET["SID"]. "' LIMIT 1";
+	$ch2SQL = "DELETE FROM `ShiftEntry` WHERE `SID`='". $_GET["SID"]. "'";
 	SetHeaderGo2Back();
 	break;
 

@@ -46,7 +46,7 @@ if( isset( $_GET["Field"]) && isset( $_GET["Default"]) && isset( $_GET["Send"]))
 					"[". mysql_error(). "]<br><br>";
 			break;
 		case "SetForAllUser":
-			$SQL = "UPDATE `UserCVS` SET `". $_GET["Field"]. "` = '". $_GET["Default"]. "'";
+			$SQL = "UPDATE `UserCVS` SET `". $_GET["Field"]. "`='". $_GET["Default"]. "'";
 			$Erg = mysql_query( $SQL, $con);
 			if( $Erg == 1)
 				echo "<H2>UPDATE ".$_GET["Field"]. " = ". $_GET["Default"]. " for all Users succesfull</h2>\n";

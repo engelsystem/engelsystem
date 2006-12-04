@@ -273,7 +273,7 @@ function CreateNewEntry()
 	
 	
 	// Ist eintarg schon vorhanden?	
-	$SQL  = "SELECT SID FROM `Shifts` ";
+	$SQL  = "SELECT `SID` FROM `Shifts` ";
 	$SQL .=	"WHERE (".
 		"`DateS` = '". $_DateS. "' AND ".
 		"`DateE` = '". $_DateE. "' AND ".

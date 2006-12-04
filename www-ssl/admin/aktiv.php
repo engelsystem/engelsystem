@@ -27,7 +27,7 @@ echo "</form>\n";
 
 if( Isset($_POST["ResetActive"]) )
 {
-	$SQLreset = "UPDATE `User` SET `Aktiv` = '0'";
+	$SQLreset = "UPDATE `User` SET `Aktiv`='0'";
 	$ErgReset = db_query($SQLreset, "Reset Active");
 	if ($ErgReset != 1)
 		echo "Fehler beim zuruecksetzen der Activ\n";
@@ -50,11 +50,11 @@ echo "\t<td>". Get_Text("pub_aktive_Active"). "</td>\n";
 echo "</tr>\n";
 	
 $SQL = "SELECT ShiftEntry.UID, COUNT(ShiftEntry.UID) AS NR, SUM(Shifts.Len) as LEN ".
-	"FROM `ShiftEntry` ".
-	"LEFT JOIN `Shifts` ON ShiftEntry.SID=Shifts.SID ".
-	"WHERE NOT UID=0 ".
-	"GROUP BY UID ".
-	"ORDER BY LEN DESC, NR DESC, UID ";
+	   "FROM `ShiftEntry` ".
+	   "LEFT JOIN `Shifts` ON ShiftEntry.SID=Shifts.SID ".
+	   "WHERE NOT UID=0 ".
+	   "GROUP BY UID ".
+	   "ORDER BY LEN DESC, NR DESC, UID ";
 $Erg = mysql_query($SQL, $con);
 echo mysql_error($con);
 $rowcount = mysql_num_rows($Erg);
@@ -76,7 +76,7 @@ for ($i=0; $i<$rowcount; $i++)
 				echo "show set";
 			else
 			{
-				$SQL2="UPDATE `User` SET Aktiv=1 WHERE UID=". mysql_result($Erg, $i, "UID"). " LIMIT 1";
+				$SQL2="UPDATE `User` SET `Aktiv`='1' WHERE `UID`='". mysql_result($Erg, $i, "UID"). "' LIMIT 1";
 				$Erg2 = db_query($SQL2, "update Active State");
 				if ($Erg2 != 1)
 					echo "Fehler beim speichern bei Engel ".UID2Nick(mysql_result($Erg, $i, "UID"));

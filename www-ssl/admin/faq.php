@@ -66,7 +66,7 @@ case "all":
 	break;
 	
 case "open":
-	$SQL="SELECT * FROM `Questions` WHERE AID = \"0\" ORDER BY QID DESC";
+	$SQL="SELECT * FROM `Questions` WHERE `AID`='0' ORDER BY `QID` DESC";
 	$quest_bearb=1; // Fragenliste anzeigen
 	echo "\t\tOffene Anfragen:<br>\n";
 	break;
@@ -76,7 +76,7 @@ case "edit":
 		echo "\t\tFehlerhafter Aufruf...<br>Bitte die Bearbeitung nochmals beginnen :)\n";
 	else 
 	{
-		$SQL = "SELECT * FROM Questions where QID=". $_GET["QID"];
+		$SQL = "SELECT * FROM `Questions` WHERE `QID`=`". $_GET["QID"]. "'";
 		$Erg = mysql_query($SQL, $con);
 		echo "\t\t<form action=\"./faq.php\" method=\"GET\">\n";
 		echo "\t\tAnfrage von <b>". UID2NICK(mysql_result($Erg, 0, "UID")). "</b>:<br>\n";
@@ -106,9 +106,9 @@ case "save":
 		echo "\tFehlerhafter Aufruf... Bitte die Bearbeitung nochmal starten...";
         else
 	{
-		$SQL = "UPDATE `Questions` SET Question=\"". $_GET["Question"]. 
-	  		 "\", AID=\"". $_SESSION['UID']. "\" , Answer=\"". $_GET["Answer"]. "\" ".
-			 "WHERE QID = \"". $_GET["QID"]. "\" LIMIT 1";
+		$SQL = "UPDATE `Questions` SET `Question`='". $_GET["Question"]. 
+	  		 "', `AID`='". $_SESSION['UID']. "' , `Answer`='". $_GET["Answer"]. "' ".
+			 "WHERE `QID`='". $_GET["QID"]. "' LIMIT 1";
         	$Erg = db_query($SQL, "save Question");
 		if ($Erg == 1) 
 		{
@@ -125,10 +125,10 @@ case "transfer":
 		echo "\tFehlerhafter Aufruf... Bitte die Bearbeitung nochmal starten...\n";
 	else
 	{
-		$SQL1="Select * from Questions where QID=". $_GET["QID"];
+		$SQL1="SELECT * FROM `Questions` WHERE `QID`='". $_GET["QID"]. "'";
 		$Erg = mysql_query($SQL1, $con);
-		$SQL2="INSERT into `FAQ` Values (\"\", \"".
-			mysql_result($Erg, 0, "Question")."\", \"".mysql_result($Erg, 0, "Answer")."\")";
+		$SQL2="INSERT INTO `FAQ` Values ('', '".
+			mysql_result($Erg, 0, "Question")."', '".mysql_result($Erg, 0, "Answer")."')";
 		$Erg = db_query($SQL2, "trasfert to request to the FAQ");
 		if ($Erg == 1) 
 			echo "\tDer Eintrag wurde &uuml;bertragen.<br>\n";
@@ -170,7 +170,7 @@ case "faqedit":
 		echo "\tFehlerhafter Aufruf...<br>Bitte die Bearbeitung nochmals beginnen :)\n";
 	else
 	{
-		$SQL = "SELECT * FROM FAQ where FID=". $_GET["FAQID"];
+		$SQL = "SELECT * FROM `FAQ` WHERE `FID`='". $_GET["FAQID"]. "'";
 		$Erg = mysql_query($SQL, $con);
 
 		// anzahl zeilen
@@ -200,7 +200,7 @@ case "faqdelete";
 		echo "\tFehlerhafter Aufruf... Bitte die Bearbeitung nochmal starten...\n";
 	else 
 	{
-		$SQL = "DELETE FROM `FAQ` WHERE FID = \"". $_GET["FAQID"]. "\" LIMIT 1";
+		$SQL = "DELETE FROM `FAQ` WHERE `FID`='". $_GET["FAQID"]. "' LIMIT 1";
 		$Erg = db_query($SQL, "delate faq item");
 		if ($Erg == 1) 
 			echo "\tDer Eintrag wurde gel&ouml;scht<br>\n";
@@ -214,8 +214,8 @@ case "faqsave";
 		echo "\tFehlerhafter Aufruf... Bitte die Bearbeitung nochmal starten...\n";
         else 
 	{
-        	$SQL = "UPDATE `FAQ` SET Frage=\"". $_GET["Frage"]. "\", Antwort=\"". $_GET["Antwort"]. 
-	  	 	"\" WHERE FID = \"". $_GET["FAQID"]. "\" LIMIT 1";
+        	$SQL = "UPDATE `FAQ` SET `Frage`='". $_GET["Frage"]. "', `Antwort`='". $_GET["Antwort"]. 
+	  	 	"' WHERE `FID`='". $_GET["FAQID"]. "' LIMIT 1";
 		$Erg = db_query($SQL, $con);
 		if ($Erg == 1) 
 			echo "\tDer Eintrag wurde ge&auml;ndert<br>\n";
@@ -238,7 +238,7 @@ case "faqnew":
 	break;
 
 case "faqnewsave";
-        $SQL = "INSERT INTO `FAQ` VALUES (\"\", \"". $_GET["Frage"]. "\", \"". $_GET["Antwort"]. "\")";
+        $SQL = "INSERT INTO `FAQ` VALUES ('', '". $_GET["Frage"]. "', '". $_GET["Antwort"]. "')";
         $Erg = db_query($SQL, "Save new FAQ entry");
         if ($Erg == 1)
 		echo "\tDer Eintrag wurde erfasst.<br>\n";

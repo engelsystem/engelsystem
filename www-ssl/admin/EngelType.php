@@ -47,7 +47,7 @@ function runSQL_log( $SQL, $commed)
 
 
 
-$Sql = "SELECT * FROM `EngelType` ORDER BY NAME";
+$Sql = "SELECT * FROM `EngelType` ORDER BY `NAME`";
 $Erg = mysql_query($Sql, $con);
 
 if( !IsSet($_GET["action"]) )
@@ -177,9 +177,9 @@ case 'changesave':
 case 'delete':
 	if (IsSet($_GET["TID"])) 
 	{
-		if( runSQL_log( "DELETE FROM `EngelType` WHERE `TID`='". $_GET["TID"]. "'", "delate EngelType"))
+		if( runSQL_log( "DELETE FROM `EngelType` WHERE `TID`='". $_GET["TID"]. "'", "delete EngelType"))
 			runSQL_log( "ALTER TABLE `Room` DROP `DEFAULT_EID_". $_GET["TID"]. "`;", 
-					"delate EngelType in Room Table");
+					"delete EngelType in Room Table");
 	}
 	else
 		echo "Fehlerhafter Aufruf";

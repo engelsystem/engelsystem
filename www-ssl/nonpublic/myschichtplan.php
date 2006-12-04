@@ -88,8 +88,7 @@ else
     {
 	echo Get_Text("pub_mywake_delate1")."<br>\n";
 
-	$sql = "SELECT * FROM `Shifts` WHERE ";
-	$sql.= "(SID = \"". $_GET["SID"]. "\")";
+	$sql = "SELECT * FROM `Shifts` WHERE (`SID` = '". $_GET["SID"]. "')";
 	$Erg = mysql_query($sql, $con);
 
 	$schichtdate = mysql_result( $Erg, 0, "DateS" );
@@ -124,7 +123,7 @@ else
     	echo Get_Text("pub_myshift_Edit_Text1"). "\n";
 	
 	$sql = "SELECT * FROM `ShiftEntry` WHERE ";
-	$sql.= "(SID=\"". $_GET["SID"]. "\" AND UID=\"". $_SESSION['UID']. "\" )";
+	$sql.= "(`SID`='". $_GET["SID"]. "' AND `UID`='". $_SESSION['UID']. "')";
 	$Erg = mysql_query($sql, $con);
 
 	echo "<form action=\"./myschichtplan.php\" method=\"GET\">\n";
@@ -138,7 +137,7 @@ else
     {
     	echo Get_Text("pub_myshift_EditSave_Text1"). "<br>\n";
 	$sql = "UPDATE `ShiftEntry` ".
-	       "SET `Comment` = \"". $_GET["newtext"]. "\" ".
+	       "SET `Comment` = '". $_GET["newtext"]. "' ".
 	       "WHERE `SID`='". $_GET["SID"]. "' AND `UID`='". $_SESSION['UID']. "' LIMIT 1;";
 	$Erg = mysql_query($sql, $con);
 	if ($Erg == 1)

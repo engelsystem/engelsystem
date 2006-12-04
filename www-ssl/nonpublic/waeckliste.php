@@ -20,7 +20,7 @@ include ("./inc/header.php");
         </tr>
 						
 <?PHP
-  $sql = "Select * from Wecken order by Date asc";
+  $sql = "SELECT * FROM `Wecken` ORDER BY `Date` ASC";
   $Erg = mysql_query($sql, $con);
   $count = mysql_num_rows($Erg);
 

@@ -140,13 +140,13 @@ switch ($_POST["action"]) {
 case 'set':
   if ($_POST["new1"]==$_POST["new2"]){
 	Print_Text(25); 
-	$sql = "select * from User where UID=".$_SESSION['UID'];
+	$sql = "SELECT * FROM `User` WHERE `UID`='".$_SESSION['UID']. "'";
 	$Erg = mysql_query($sql, $con);
 	if (PassCrypt($_POST["old"])==mysql_result($Erg, 0, "Passwort")) {
 		Print_Text(26);
 		Print_Text(27);
-		$usql = "update User set Passwort='".PassCrypt($_POST["new1"])."' ".
-			"where UID=".$_SESSION['UID']." limit 1";
+		$usql = "UPDATE `User` SET `Passwort`='". PassCrypt($_POST["new1"]). "' ".
+                " WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1";
 		$Erg = mysql_query($usql, $con);
 		if ($Erg==1) {
 			Print_Text(28);
@@ -163,10 +163,10 @@ case 'set':
 
 case 'colour':
 
-	$chsql="Update User set ".
-		"`color` = \"". $_POST["colourid"]. "\", ".
-		"`Menu`= \"". $_POST["eMenu"]. "\" ".
-		"where UID = \"".$_SESSION['UID']."\" limit 1";
+	$chsql="UPDATE `User` SET ".
+		"`color`= '". $_POST["colourid"]. "', ".
+		"`Menu`= '". $_POST["eMenu"]. "' ".
+		"WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1";
 	$Erg = mysql_query($chsql, $con);
 	echo mysql_error($con);
 	$_SESSION['color']=$_POST["colourid"];
@@ -180,7 +180,7 @@ case 'colour':
 
 case 'sprache':
 
-	$chsql="Update User set Sprache = \"". $_POST["language"]. "\" where UID = \"".$_SESSION['UID']."\" limit 1";
+	$chsql="UPDATE `User` SET `Sprache` = '". $_POST["language"]. "' WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1";
 	$Erg = mysql_query($chsql, $con);
 	$_SESSION['Sprache']=$_POST["language"];
 	if ($Erg==1) {
@@ -191,7 +191,7 @@ case 'sprache':
 	break;
 
 case 'avatar':
-	$chsql="Update User set Avatar = \"". $_POST["eAvatar"]. "\" where UID = \"". $_SESSION['UID']. "\" limit 1";
+	$chsql="UPDATE `User` SET `Avatar`='". $_POST["eAvatar"]. "' WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1";
         $Erg = mysql_query($chsql, $con);
 	$_SESSION['Avatar']=$_POST["eAvatar"];
 	if ($Erg==1) {
@@ -202,14 +202,14 @@ case 'avatar':
         break;
 
 case 'setUserData':
-	$chsql= "UPDATE User SET ".
+	$chsql= "UPDATE `User` SET ".
 		"`Nick`='".     $_POST["eNick"].	"', `Name`='".   $_POST["eName"].  "', ".
 		"`Vorname`='".  $_POST["eVorname"].	"', `Alter`='".  $_POST["eAlter"]. "', ".
 		"`Telefon`='".  $_POST["eTelefon"].	"', `Handy`='".  $_POST["eHandy"]. "', ".
 		"`DECT`='".     $_POST["eDECT"]. 	"', `email`='".  $_POST["eemail"]. "', ".
 		"`ICQ`='".      $_POST["eICQ"].		"', `jabber`='". $_POST["ejabber"]."', ".
 		"`Hometown`='". $_POST["Hometown"].	"' ".
-		"WHERE UID='". $_SESSION['UID']. "' LIMIT 1;";
+		"WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1;";
         $Erg = mysql_query($chsql, $con);
 
 	if ($Erg==1) 

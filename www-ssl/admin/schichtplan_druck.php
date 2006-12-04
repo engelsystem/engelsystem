@@ -50,7 +50,7 @@ for ($i = 0 ; $i < mysql_fetch_row($Erg) ; $i++)
 			<select name="Raum">
 <?php 
 
-	$res = mysql_query("SELECT Name, RID FROM `Room` WHERE `show`!='N' ORDER BY Name;",$con);
+	$res = mysql_query("SELECT Name, RID FROM `Room` WHERE `show`!='N' ORDER BY `Name`;",$con);
 
 	for ($i = 0; $i < mysql_num_rows($res); $i++) 
 	{

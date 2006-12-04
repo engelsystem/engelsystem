@@ -15,7 +15,7 @@ if (!IsSet($_GET["enterUID"]))
 	echo "\n<a href=\"./user.php?enterUID=-1&Type=Secure\">Edit logout User</a><br><br>\n";
 
 	if( !isset($_GET["OrderBy"]) ) $_GET["OrderBy"] = "Nick";
-	$SQL = "SELECT * FROM User ORDER BY `". $_GET["OrderBy"]. "` ASC";
+	$SQL = "SELECT * FROM `User` ORDER BY `". $_GET["OrderBy"]. "` ASC";
 	$Erg = mysql_query($SQL, $con);
 	echo mysql_error($con);
 
@@ -96,12 +96,12 @@ if (!IsSet($_GET["enterUID"]))
 		echo "\t<td>";
 		
 		//check userCVS=OK
-		$SQL2 = "SELECT UID FROM UserCVS WHERE (UID=". mysql_result($Erg, $n, "UID"). ")";
+		$SQL2 = "SELECT `UID` FROM `UserCVS` WHERE (`UID`='". mysql_result($Erg, $n, "UID"). "')";
 		$Erg2 = mysql_query($SQL2, $con);
 		echo mysql_error($con);
 		if( mysql_num_rows($Erg2)==0)
 		{
-			$SQL3 = "INSERT INTO `UserCVS` ( `UID`) VALUES ( '". mysql_result($Erg, $n, "UID"). "');";
+			$SQL3 = "INSERT INTO `UserCVS` (`UID`) VALUES ('". mysql_result($Erg, $n, "UID"). "');";
 			$Erg3 = db_query($SQL3, "admin/user.php auto CVS create");
 			if( $Erg3 )
 				echo "was create<br>\n";
@@ -135,7 +135,7 @@ else
 
 	if( $_GET["Type"] == "Normal" )
 	{
-		$SQL = "SELECT * FROM User WHERE UID=". $_GET["enterUID"];
+		$SQL = "SELECT * FROM `User` WHERE `UID`='". $_GET["enterUID"]. "'";
 		$Erg = mysql_query($SQL, $con);
 		
 		if (mysql_num_rows($Erg) != 1) 
@@ -243,7 +243,7 @@ else
 		// CVS-Rechte
 		echo "  <tr><td><br><u>Rights of \"". UID2Nick($_GET["enterUID"]). "\":</u></td></tr>\n";
 
-		$SQL_CVS = "SELECT * FROM `UserCVS` WHERE UID=". $_GET["enterUID"];
+		$SQL_CVS = "SELECT * FROM `UserCVS` WHERE `UID`='". $_GET["enterUID"]. "'";
 		$Erg_CVS =  mysql_query($SQL_CVS, $con);
 		
 		if( mysql_num_rows($Erg_CVS) != 1) 

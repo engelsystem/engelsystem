@@ -23,7 +23,7 @@ if (!IsSet($_POST["eUID"]))
 
 echo "<b>".Get_Text(37)."</b><br><br>\n".nl2br($_POST["frage"])."<br><br>\n".Get_Text(38)."<br>\n";
 
-$SQL = "INSERT into Questions VALUES (\"\", \"".$_SESSION['UID']."\", \"". $_POST["frage"]. "\", \"\", \"\")";
+$SQL = "INSERT INTO `Questions` VALUES ('', '".$_SESSION['UID']."', '". $_POST["frage"]. "', '', '')";
 $Erg = mysql_query($SQL, $con);
 
 }
@@ -32,7 +32,7 @@ echo "<br>\n<b>".Get_Text(39)."</b><br>\n";
 echo "<hr width=\"99%\">\n";
 echo "<br><b>".Get_Text(40)."</b><br>\n";
 
-$SQL = "SELECT * from Questions where UID = ".$_SESSION['UID']." and AID=\"0\" ORDER BY 'QID' DESC";
+$SQL = "SELECT * FROM `Questions` WHERE `UID` = ". $_SESSION['UID']. " AND `AID`='0' ORDER BY 'QID' DESC";
 $Erg = mysql_query($SQL, $con);
 
 // anzahl zeilen
@@ -52,7 +52,7 @@ if ($Zeilen==0){
 
 echo "<hr width=\"99%\">\n";
 echo "<br><b>".Get_Text(42)."</b><br>\n";
-$SQL = "SELECT * from Questions where UID = ".$_SESSION['UID']." and AID<>\"0\" ORDER BY 'QID' DESC";
+$SQL = "SELECT * FROM `Questions` WHERE `UID`='".$_SESSION['UID']."' and `AID`<>'0' ORDER BY 'QID' DESC";
 $Erg = mysql_query($SQL, $con);
 
 // anzahl zeilen

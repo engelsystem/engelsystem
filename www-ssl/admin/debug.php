@@ -32,7 +32,7 @@ echo "Deaktiviert";
 
 
 echo "<h1>Tshirt-Size</h1>";
-$SQL="SELECT `Size`, COUNT(`Size`) FROM User GROUP BY `Size`";
+$SQL="SELECT `Size`, COUNT(`Size`) FROM `User` GROUP BY `Size`";
 $Erg = mysql_query($SQL, $con);
 echo mysql_error($con);
 $rowcount = mysql_num_rows($Erg);

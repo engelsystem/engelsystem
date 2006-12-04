@@ -9,7 +9,7 @@ include ("./inc/funktion_user.php");
 
 If (IsSet($_GET["aktiv"])) {
 
-	$SQL="Update User set Tshirt=\"1\" where UID=\"". $_GET["aktiv"]. "\" limit 1";
+	$SQL="UPDATE `User` SET `Tshirt`='1' WHERE `UID`='". $_GET["aktiv"]. "' limit 1";
 	$Erg = mysql_query($SQL, $con);
         if ($Erg == 1) {
         } else {
@@ -25,7 +25,7 @@ Hinter diesem erscheint ein Link, &uuml;ber den man eintragen kann, dass der Eng
 Liste aller aktiven Engel:
 
 <?PHP
-$SQL = "SELECT * from User where (Aktiv = 1) ORDER BY Nick ASC"; 
+$SQL = "SELECT * FROM `User` WHERE (`Aktiv`='1') ORDER BY `Nick` ASC"; 
 $Erg = mysql_query($SQL, $con);
 
 $rowcount = mysql_num_rows($Erg);

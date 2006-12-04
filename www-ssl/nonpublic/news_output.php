@@ -7,9 +7,9 @@ if( isset( $_POST["text"]) && isset( $_POST["betreff"]) && IsSet( $_POST["date"]
 {
   if( !isset( $_POST["treffen"])) 
   	$_POST["treffen"] = 0;
-  $SQL = "INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`) ";
-  $SQL.= "VALUES ('". $_POST["date"]. "', '". $_POST["betreff"]. "', '". $_POST["text"]. "', '".$_SESSION['UID'];
-  $SQL.= "', '". $_POST["treffen"]. "');";
+  $SQL = "INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`) ".
+			"VALUES ('". $_POST["date"]. "', '". $_POST["betreff"]. "', '". $_POST["text"]. "', '".$_SESSION['UID'].
+			"', '". $_POST["treffen"]. "');";
   $Erg = mysql_query($SQL, $con);
   if ($Erg == 1)
   	Print_Text(4);
@@ -21,7 +21,7 @@ if( !IsSet( $_GET["news_begin"]))
 if( !IsSet( $_GET["DISPLAY_NEWS"]))
 	$_GET["DISPLAY_NEWS"] = 5;
    
-$SQL = "SELECT * FROM `News` ORDER BY 'ID' DESC LIMIT ". $_GET["news_begin"]. ",". $_GET["DISPLAY_NEWS"];
+$SQL = "SELECT * FROM `News` ORDER BY 'ID' DESC LIMIT ". intval($_GET["news_begin"]). ", ". intval($_GET["DISPLAY_NEWS"]);
 $Erg = mysql_query($SQL, $con);
 
 // anzahl zeilen
@@ -48,14 +48,14 @@ for ($n = 0 ; $n < $news_rows ; $n++)
   echo "</p>\n";
   echo "<p class='answer'>". ReplaceSmilies(nl2br(mysql_result($Erg, $n, "Text"))) ."</p>\n";
   $RefID=mysql_result($Erg, $n, "ID");
-  $countSQL="SELECT COUNT(*) from news_comments where Refid = '$RefID'";
+  $countSQL="SELECT COUNT(*) FROM `news_comments` WHERE `Refid`='$RefID'";
   $countErg = mysql_query($countSQL, $con);
   $countcom = mysql_result($countErg, 0, "COUNT(*)");
   echo "<p class='comment' align='right'><a href=\"./news_comments.php?nid=$RefID\">$countcom comments</a></p>\n\n";
 }
 
 echo "<div align=\"center\">\n\n";
-$rowerg = mysql_query("select * from News", $con);
+$rowerg = mysql_query("SELECT * FROM `News`", $con);
 $rows  = mysql_num_rows($rowerg);
 $dis_rows =  round (($rows / $DISPLAY_NEWS)+0.5);
 

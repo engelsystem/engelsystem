@@ -38,7 +38,7 @@ if( $_GET["dial"]=="dial")
 	echo "<select name=\"DECT\">\n";
 	echo "\t<option value=\"\">costum</option>\n";
 
-	$usql="SELECT * FROM User WHERE NOT DECT='' ORDER BY Nick";
+	$usql="SELECT * FROM `User` WHERE NOT `DECT`='' ORDER BY `Nick`";
 	$uErg = mysql_query($usql, $con);
 	$urowcount = mysql_num_rows($uErg);
 	for ($k=0; $k<$urowcount; $k++)

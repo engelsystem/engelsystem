@@ -8,9 +8,9 @@ include ("./inc/funktion_user.php");
 if( isset($_POST["eintragen"]))
 	if( $_POST["eintragen"] == Get_Text("pub_wake_bouton") ) 
 	{
-		$SQL = "INSERT INTO Wecken (`UID`, `Date`, `Ort`, `Bemerkung`) ".
-			"VALUES (".$_SESSION['UID'].", \"". $_POST["Date"]. "\", \"". $_POST["Ort"]. 
-				"\", \"". $_POST["Bemerkung"]. "\") ";
+		$SQL = "INSERT INTO `Wecken` (`UID`, `Date`, `Ort`, `Bemerkung`) ".
+			"VALUES ('". $_SESSION['UID']. "', '". $_POST["Date"]. "', '". $_POST["Ort"]. "', ".
+					"'". $_POST["Bemerkung"]. "')";
 		$Erg = mysql_query($SQL, $con);
 		if ($Erg == 1) 
 			Print_Text(4);
@@ -18,7 +18,7 @@ if( isset($_POST["eintragen"]))
 if( isset($_GET["eintragen"]))
 	if ($_GET["eintragen"] == "loeschen") 
 	{
-		$SQL = "Delete from Wecken where UID = ".$_SESSION['UID']." and ID = ". $_GET["weckID"]." limit 1";
+		$SQL = "DELETE FROM `Wecken` WHERE `UID`='". $_SESSION['UID']. "' AND `ID`='". $_GET["weckID"]."' LIMIT 1";
 		$Erg = mysql_query($SQL, $con);
 		if ($Erg == 1)
 			Print_Text(4); 
@@ -38,7 +38,7 @@ echo Get_Text("pub_wake_beschreibung2"); ?>
         </tr>
 						
 <?PHP
-  $sql = "Select * from Wecken where UID='".$_SESSION['UID']."' order by Date asc";
+  $sql = "SELECT * FROM `Wecken` WHERE `UID`='". $_SESSION['UID']. "' ORDER BY `Date` ASC";
   $Erg = mysql_query($sql, $con);
   $count = mysql_num_rows($Erg);
 

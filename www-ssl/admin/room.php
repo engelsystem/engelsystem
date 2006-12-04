@@ -5,7 +5,7 @@ include ("./inc/header.php");
 include ("./inc/funktion_user.php");
 include ("./inc/funktion_schichtplan_aray.php");
 
-$Sql = "SELECT * FROM `Room` ORDER BY Number, Name";
+$Sql = "SELECT * FROM `Room` ORDER BY `Number`, `Name`";
 $Erg = mysql_query($Sql, $con);
 
 if( !IsSet($_GET["action"]) )
