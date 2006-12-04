@@ -2,7 +2,6 @@
 $title = "Himmel";
 $header = "FAQ / Fragen an die Erzengel";
 $submenus = 1;
-include ("./inc/funktion_faq.php");
 include ("./inc/header.php");
 include ("./inc/funktion_user.php");
 include ("./inc/funktion_db.php");

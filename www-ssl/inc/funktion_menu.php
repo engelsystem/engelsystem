@@ -23,8 +23,12 @@ function ShowMenu( $MenuName)
 					//zum absichtlkichen ausblenden von einträgen
 					if( strlen($TempName)>1)
 					{
-						$Gefunden = TRUE;
+						//sonderfälle:
+						if( $Key=="admin/faq.php")
+							$TempName .= " (". noAnswer(). ")";
+						//ausgabe
 						$Text .= "\t\t\t<li><a href=\"". $url. substr( $ENGEL_ROOT, 1). $Key. "\">$TempName</a></li>\n";
+						$Gefunden = TRUE;
 					}
 				}
 				elseif( $DEBUG ) 

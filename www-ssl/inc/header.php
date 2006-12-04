@@ -3,6 +3,7 @@ include ("./inc/config.php");
 include ("./inc/error_handler.php");
 include ("./inc/config_db.php");
 include ("./inc/funktion_lang.php");
+include ("./inc/funktion_faq.php"); //für noAnswer() im menu
 include ("./inc/funktion_menu.php");
 
 if( !isset($_SESSION)) 
