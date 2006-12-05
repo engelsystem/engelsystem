@@ -163,9 +163,8 @@ case 'newsave':
                 foreach ( $lenArrayDummy as $Temp )
                 {
 			if( isset($Temp2) )
-				$lenArray[$Temp2] = intval($Temp)-intval($Temp2);
+				$lenArray[intval($Temp2)] = intval($Temp)-intval($Temp2);
 			$Temp2 = $Temp;
-			
         	}//foreach
 	}//IF( $NachtON == "ON" )
 
@@ -193,7 +192,11 @@ case 'newsave':
 			
 		// define End time
 	 	if( $_GET["NachtON"] == "ON" )
+		{
+			if( !isset($lenArray[$Time])) die("Zeit $Time h nicht definiert.");
 			$_GET["len"] = $lenArray[$Time];
+			if( $_GET["len"]<1) die("len <1");
+		}
 		$TimeEnd = $Time+ $_GET["len"];
 		
 		//Tagesüberschreitung
