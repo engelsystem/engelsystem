@@ -98,67 +98,71 @@ case 'newsave':
 	break;
 
 case 'change':
-	if (! IsSet($_GET["RID"])) {
+	if (! IsSet($_GET["RID"])) 
 		echo "Fehlerhafter Aufruf!"; 
-	} else {
-
-	echo "Raum ab&auml;ndern:\n";
-
-	echo "Hier kannst du eintragen, welche und wieviele Engel f&uuml;r den Raum zur Verfügung stehen m&uuml;ssen.";
-	
-	echo "<form action=\"./room.php\" method=\"GET\">\n";
-	echo "<table>\n";
-	
-	$SQL2 = "SELECT * FROM `Room` WHERE `RID`='". $_GET["RID"]. "'";
-	$ERG = mysql_query($SQL2, $con);
-        
-        for ($Uj = 1; $Uj < mysql_num_fields($ERG); $Uj++)
+	else
 	{
-		if( (mysql_field_name($ERG, $Uj) == "show") || (mysql_field_name($ERG, $Uj) == "FromPentabarf") )
+		$SQL2 = "SELECT * FROM `Room` WHERE `RID`='". $_GET["RID"]. "'";
+		$ERG = mysql_query($SQL2, $con);
+		
+		if( mysql_num_rows( $ERG)>0)
 		{
-			echo "<tr><td>show</td>".
-			     "<td>".
-			     "<input type=\"radio\" name=\"e". mysql_field_name($ERG, $Uj). "\" value=\"Y\"". (mysql_result($ERG, 0, $Uj)=='Y'? " checked":""). ">Yes".
-			     "<input type=\"radio\" name=\"e". mysql_field_name($ERG, $Uj). "\" value=\"N\"". (mysql_result($ERG, 0, $Uj)=='N'? " checked":""). ">No".
-			     "</td></tr>\n";
+			echo "Raum ab&auml;ndern:\n";
+			echo "Hier kannst du eintragen, welche und wieviele Engel f&uuml;r den Raum zur Verfügung stehen m&uuml;ssen.";	
+			echo "<form action=\"./room.php\" method=\"GET\">\n";
+			echo "<table>\n";
+		
+			for ($Uj = 1; $Uj < mysql_num_fields($ERG); $Uj++)
+			{
+				if( (mysql_field_name($ERG, $Uj) == "show") || (mysql_field_name($ERG, $Uj) == "FromPentabarf") )
+				{
+					echo "<tr><td>show</td>".
+					     "<td>".
+					     "<input type=\"radio\" name=\"e". mysql_field_name($ERG, $Uj). 
+					     	"\" value=\"Y\"". (mysql_result($ERG, 0, $Uj)=='Y'? " checked":""). ">Yes".
+					     "<input type=\"radio\" name=\"e". mysql_field_name($ERG, $Uj). 
+					     	"\" value=\"N\"". (mysql_result($ERG, 0, $Uj)=='N'? " checked":""). ">No".
+					     "</td></tr>\n";
+				}
+				else
+				{
+					if( substr( mysql_field_name($ERG, $Uj), 0, 12) == "DEFAULT_EID_")
+						//sonderfall fuer Default Engel 
+						$FeldName = "Anzahl ". $EngelTypeID[substr( mysql_field_name($ERG, $Uj), 12)];
+					else
+						$FeldName = mysql_field_name($ERG, $Uj);
+					echo "<tr><td>$FeldName</td>".
+					     "<td><input type=\"text\" size=\"40\" name=\"e".mysql_field_name($ERG, $Uj)."\" ".
+					     "value=\"".mysql_result($ERG, 0, $Uj)."\">".
+					     "</td></tr>\n";
+				}
+			}
+			echo "</table>\n";
+			echo "<input type=\"hidden\" name=\"eRID\" value=\"". $_GET["RID"]. "\">\n";
+			echo "<input type=\"hidden\" name=\"action\" value=\"changesave\">\n";
+			echo "<input type=\"submit\" value=\"sichern...\">\n";
+			echo "</form>";
+			echo "<form action=\"./room.php\" method=\"GET\">\n";
+			echo "<input type=\"hidden\" name=\"RID\" value=\"". $_GET["RID"]. "\">\n";
+			echo "<input type=\"hidden\" name=\"action\" value=\"delete\">\n";
+			echo "<input type=\"submit\" value=\"L&ouml;schen...\">";
+			echo "</form>";
 		}
 		else
-		{
-			if( substr( mysql_field_name($ERG, $Uj), 0, 12) == "DEFAULT_EID_")
-				//sonderfall fuer Default Engel 
-				$FeldName = "Anzahl ". $EngelTypeID[substr( mysql_field_name($ERG, $Uj), 12)];
-			else
-				$FeldName = mysql_field_name($ERG, $Uj);
-
-			echo "<tr><td>$FeldName</td>".
-			     "<td><input type=\"text\" size=\"40\" name=\"e".mysql_field_name($ERG, $Uj)."\" ".
-			     "value=\"".mysql_result($ERG, 0, $Uj)."\">".
-			     "</td></tr>\n";
-		}
-	}			    
-	echo "</table>\n";
-	echo "<input type=\"hidden\" name=\"eRID\" value=\"". $_GET["RID"]. "\">\n";
-	echo "<input type=\"hidden\" name=\"action\" value=\"changesave\">\n";
-	echo "<input type=\"submit\" value=\"sichern...\">\n";
-	echo "</form>";
-        echo "<form action=\"./room.php\" method=\"GET\">\n";
-        echo "<input type=\"hidden\" name=\"RID\" value=\"". $_GET["RID"]. "\">\n";
-        echo "<input type=\"hidden\" name=\"action\" value=\"delete\">\n";
-        echo "<input type=\"submit\" value=\"L&ouml;schen...\">";
-        echo "</form>";
+			echo "FEHLER: Room ID ". $_GET["RID"]. " nicht gefunden";
 	}
 	break;
 	
 case 'changesave':
 	$sql="";
-        $vars = $HTTP_GET_VARS;
-        $count = count($vars) - 2;
-        $vars = array_splice($vars, 0, $count);
-        foreach($vars as $key => $value){
- 		$keys = substr($key,1);
-		$sql .= ", `".$keys."`='".$value."' ";
-	       
-        }
+		$vars = $HTTP_GET_VARS;
+		$count = count($vars) - 2;
+		$vars = array_splice($vars, 0, $count);
+		foreach($vars as $key => $value)
+		{
+	 		$keys = substr($key,1);
+			$sql .= ", `".$keys."`='".$value."' ";
+		}
 	$SQL = "UPDATE `Room` SET ". substr($sql, 2). " WHERE `RID`='". $_GET["eRID"]. "'";
 	SetHeaderGo2Back();
 	break;
@@ -181,9 +185,10 @@ if (IsSet($SQL)){
 //	echo $SQL; 
 	// hier muesste das SQL ausgefuehrt werden...
 	$Erg = mysql_query($SQL, $con);
-	if ($Erg == 1) {
+	if ($Erg == 1) 
 	     echo "&Auml;nderung wurde gesichert...<br>";
-	} else {
+	else
+	{
 	     echo "Fehler beim speichern... bitte noch ein mal probieren :)";
 	     echo "<br><br>".mysql_error( $con ). "<br>($SQL)<br>";
 	}
