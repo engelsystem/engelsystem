@@ -56,7 +56,7 @@ if( isset($_POST["send"]))
 				"`Hometown`,".  "`CreateDate` ) ".
 			"VALUES ( ".
 				"'". $_POST["Nick"]. "', ".		"'". $_POST["Name"]. "', ".
-				"'". $_POST["Vorname"]. "', ".		$_POST["Alter"]. ", ".
+				"'". $_POST["Vorname"]. "', ".		"'". $_POST["Alter"]. "', ".
 				"'". $_POST["Telefon"]. "', ".		"'". $_POST["DECT"]. "', ".
 				"'". $_POST["Handy"]. "', ".		"'". $_POST["email"]. "', ".
 				"'". $_POST["ICQ"]. "', ".		"'". $_POST["jabber"]. "', ".
@@ -74,7 +74,7 @@ if( isset($_POST["send"]))
 		{
 			echo "<p class=\"important\">". Get_Text("makeuser_writeOK"). "\n";
 
-			$SQL2 = "SELECT UID FROM `User` WHERE Nick='". $_POST["Nick"]. "';";
+			$SQL2 = "SELECT `UID` FROM `User` WHERE `Nick`='". $_POST["Nick"]. "';";
 			$Erg2 = mysql_query($SQL2, $con);
 			$Data = mysql_fetch_array($Erg2);
 
