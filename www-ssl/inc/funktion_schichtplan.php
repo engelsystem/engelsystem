@@ -201,10 +201,14 @@ function CreateRoomShifts( $raum )
 	$ErgSonder = mysql_query($SQLSonder, $con);
 	if( (mysql_num_rows( $ErgSonder) > 1) )
 	{
-		echo Get_Text("pub_schichtplan_colision"). " ".
-			mysql_result($ErgSonder, $i, "DateS"). 
-			" '". mysql_result($ErgSonder, $i, "Man"). "' ".
-			" (".  mysql_result($ErgSonder, $i, "SID"). " R$raum) (00-24)<br><br>";
+		if( $_SESSION['CVS'][ "admin/schichtplan.php" ] == "Y" )
+		{
+			echo "<h1>". Get_Text("pub_schichtplan_colision"). "</h1> ";
+			echo "<a href=\"./../admin/schichtplan.php?action=change&SID=". mysql_result($ErgSonder, 0, "SID"). "\">".
+				mysql_result($ErgSonder, 0, "DateS"). 
+				" '". mysql_result($ErgSonder, 0, "Man"). "' (00-24)".
+				"</a><br>\n\t\t";
+		}
 	}
 	elseif( (mysql_num_rows( $ErgSonder) == 1) )
 	{
@@ -228,10 +232,14 @@ function CreateRoomShifts( $raum )
 	$ErgSonder = mysql_query($SQLSonder, $con);
 	if( (mysql_num_rows( $ErgSonder) > 1) )
 	{
-		echo Get_Text("pub_schichtplan_colision"). " ".
-			mysql_result($ErgSonder, $i, "DateS"). 
-			" '". mysql_result($ErgSonder, $i, "Man"). "' ".
-			" (".  mysql_result($ErgSonder, $i, "SID"). " R$raum) (00-xx)<br><br>";
+		if( $_SESSION['CVS'][ "admin/schichtplan.php" ] == "Y" )
+		{
+			echo "<h1>". Get_Text("pub_schichtplan_colision"). "</h1> ";
+			echo "<a href=\"./../admin/schichtplan.php?action=change&SID=". mysql_result($ErgSonder, 0, "SID"). "\">".
+				mysql_result($ErgSonder, 0, "DateS"). 
+				" '". mysql_result($ErgSonder, 0, "Man"). "' (00-xx)".
+				"</a><br>\n\t\t";
+		}
 	}
 	elseif( (mysql_num_rows( $ErgSonder) == 1) )
 	{
