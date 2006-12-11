@@ -8,7 +8,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 {
 // gibt, nach übergabe der der SchichtID (SID) und der RaumBeschreibung,
 // die eingetragenden und und offenden Schichteintäge zurück
-	global $EngelType, $EngelTypeID, $con, $DEBUG;
+	global $EngelType, $EngelTypeID, $TID2Name, $con, $DEBUG;
 
 	$Spalten = "";
 	
@@ -126,7 +126,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		// ausgabe benötigter Engel
 		////////////////////////////
 		//in vergangenheit
-		$SQLtime = "SELECT `DateE` FROM `Shifts` WHERE (SID='$SID' AND `DateE` >= '". 
+		$SQLtime = "SELECT `DateE` FROM `Shifts` WHERE (`SID`='$SID' AND `DateE` >= '". 
 			gmdate("Y-m-d H:i:s", time()+ 3600). "')";
 		$Ergtime = mysql_query($SQLtime, $con);
 		if( mysql_num_rows( $Ergtime) > 0)
