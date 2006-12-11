@@ -30,7 +30,7 @@ function SaveSchedule()
 				   (substr($_GET["DateXML"], 8, 2)+1). " ";
 		}
 		else
-			$dAteEnd = substr($_GET["DateXML"], 0, 11);
+			$DateEnd = substr($_GET["DateXML"], 0, 11);
 		$DateEnd .= "$TimeH:$TimeM:00";
 		
 		//Namen ermitteln
