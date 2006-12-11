@@ -30,7 +30,7 @@ function SaveSchedule()
 				   (substr($_GET["DateXML"], 8, 2)+1). " ";
 		}
 		else
-			$DateEnd = substr($_GET["DateXML"], 0, 11);
+			$dAteEnd = substr($_GET["DateXML"], 0, 11);
 		$DateEnd .= "$TimeH:$TimeM:00";
 		
 		//Namen ermitteln
@@ -73,7 +73,7 @@ function SaveSchedule()
 				
 				// erstellt ein Array der Reume
 			        $sql2 =	"SELECT * FROM `Room` ".
-					"WHERE `RID` = ".$_GET["RIDXML"]. " ".
+					"WHERE `RID`='".$_GET["RIDXML"]. "' ".
 		        		"ORDER BY `Number`, `Name`;";
 				$Erg2 = mysql_query( $sql2, $con);
 				for( $j=0; $j<mysql_num_fields( $Erg2); $j++)
@@ -155,7 +155,7 @@ foreach($XMLmain->sub as $EventKey => $Event)
 			SaveSchedule();
 		}
 			
-		$SQL = "SELECT * FROM `Shifts` WHERE PSID='$PSIDXML'";
+		$SQL = "SELECT * FROM `Shifts` WHERE `PSID`='$PSIDXML'";
 		$Erg = mysql_query($SQL, $con);
 		if(mysql_num_rows($Erg)>0)
 		{
@@ -210,7 +210,7 @@ echo "<tr><td colspan=\"6\">status: $DS_KO/$DS_OK nicht Aktuel.</td></tr>\n";
 
 //Anzeige von nicht im XML File vorkommende entraege
 if( $Where =="")
-	$SQL2 = "SELECT * FROM `Shifts` WHERE NOT PSID = '';";
+	$SQL2 = "SELECT * FROM `Shifts` WHERE NOT `PSID`='';";
 else
 	$SQL2 = "SELECT * FROM `Shifts` WHERE NOT (".substr( $Where, 4). ") AND NOT PSID = '';";
 	

@@ -40,7 +40,7 @@ echo "<form action=\"".$_SERVER['SCRIPT_NAME']."\" method=\"GET\" >\n";
 <?PHP
 
 $sql =  "SELECT `SID`, `DateS`, `RID`, `Len` FROM `Shifts` ".
-	"ORDER BY RID, DateS ";
+	"ORDER BY `RID`, `DateS` ";
 $Erg = mysql_query($sql, $con);
 $rowcount = mysql_num_rows($Erg);
 for( $i = 0; $i < $rowcount; $i++)
@@ -300,7 +300,7 @@ case 'changesave':
 			"`Len`='". $_GET["eDauer"]. "', ".
 			"`Man`='". $_GET["eName"]. "', ".
 			"`URL`='". $_GET["eURL"]. "' ".
-			"WHERE `SID`=". $_GET["SID"];
+			"WHERE `SID`='". $_GET["SID"]. "'";
 	SetHeaderGo2Back();
 	break;
 	
@@ -315,10 +315,10 @@ case 'deleteShifs':
 		if( strpos( " ".$k, "SID") == 1)
 		{
 			echo "Shifts $v wird gelöscht...";
-			executeSQL( "DELETE FROM `Shifts` WHERE `SID`=$v LIMIT 1");
+			executeSQL( "DELETE FROM `Shifts` WHERE `SID`='$v' LIMIT 1");
 			echo "<br>\n";
 			echo "ShiftEntry $v wird gelöscht...";
-			executeSQL( "DELETE FROM `ShiftEntry` WHERE `SID`= $v");
+			executeSQL( "DELETE FROM `ShiftEntry` WHERE `SID`='$v'");
 			echo "<br><br>\n";
 		}
 	break;
