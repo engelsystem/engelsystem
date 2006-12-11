@@ -131,30 +131,36 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		$Ergtime = mysql_query($SQLtime, $con);
 		if( mysql_num_rows( $Ergtime) > 0)
 		{
-		 //mit sonder status
-		 $SQLerlaubnis = "SELECT Name FROM `EngelType` WHERE TID = '". $TempValue["TID"]. "'";
-		 $Ergerlaubnis =  mysql_query( $SQLerlaubnis, $con);
-		 if( mysql_num_rows( $Ergerlaubnis))
-		   //setzen wenn nicht definiert
-		   if( !isset($_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")]))
-		   	 $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] = "Y";
-		   if( $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "Y")
-		     if( $TempValue["free"] > 0 )
-		     {
-			$Spalten.= "<br>\n\t\t&nbsp;&nbsp;<a href=\"./schichtplan_add.php?SID=$SID&TID=".
-				   $TempValue["TID"]."\">";
-			$Spalten.= $TempValue["free"];
-			if( $TempValue["free"] != 1 )
-				$Spalten.= Get_Text("inc_schicht_weitere").
-    					   " ".Get_Text("inc_schicht_Engel").
-    					   Get_Text("inc_schicht_wird");
-			else
-				$Spalten.= Get_Text("inc_schicht_weiterer").
-    					   " ".Get_Text("inc_schicht_Engel").
-					   Get_Text("inc_schicht_werden");
-			$Spalten.= Get_Text("inc_schicht_noch_gesucht");
-			$Spalten.= "</a>";
-		     }   
+			
+//			$EngelTypeID[$TempValue["TID"]]
+			$SQLerlaubnis = "SELECT Name FROM `EngelType` WHERE TID = '". $TempValue["TID"]. "'";
+			$Ergerlaubnis =  mysql_query( $SQLerlaubnis, $con);
+			if( mysql_num_rows( $Ergerlaubnis))
+			
+			{
+			
+			//wenn keien rechte definiert sind 
+		   	if( !isset($_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")]))
+		   	 	$_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] = "Y";
+
+			if( $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "Y")
+				if( $TempValue["free"] > 0 )
+				{
+					$Spalten.= "<br>\n\t\t&nbsp;&nbsp;<a href=\"./schichtplan_add.php?SID=$SID&TID=".
+						   $TempValue["TID"]."\">";
+					$Spalten.= $TempValue["free"];
+					if( $TempValue["free"] != 1 )
+						$Spalten.= Get_Text("inc_schicht_weitere").
+    							" ".Get_Text("inc_schicht_Engel").
+    							Get_Text("inc_schicht_wird");
+					else
+						$Spalten.= Get_Text("inc_schicht_weiterer").
+    							   " ".Get_Text("inc_schicht_Engel").
+							   Get_Text("inc_schicht_werden");
+					$Spalten.= Get_Text("inc_schicht_noch_gesucht");
+					$Spalten.= "</a>";
+			     }  
+			} 
 		}
 		else
 		{
@@ -206,7 +212,7 @@ function CreateRoomShifts( $raum )
 			echo "<h1>". Get_Text("pub_schichtplan_colision"). "</h1> ";
 			echo "<a href=\"./../admin/schichtplan.php?action=change&SID=". mysql_result($ErgSonder, 0, "SID"). "\">".
 				mysql_result($ErgSonder, 0, "DateS"). 
-				" '". mysql_result($ErgSonder, 0, "Man"). "' (00-24)".
+				" '". mysql_result($ErgSonder, 0, "Man")."' (RID $raum) (00-24)".
 				"</a><br>\n\t\t";
 		}
 	}
@@ -237,7 +243,7 @@ function CreateRoomShifts( $raum )
 			echo "<h1>". Get_Text("pub_schichtplan_colision"). "</h1> ";
 			echo "<a href=\"./../admin/schichtplan.php?action=change&SID=". mysql_result($ErgSonder, 0, "SID"). "\">".
 				mysql_result($ErgSonder, 0, "DateS"). 
-				" '". mysql_result($ErgSonder, 0, "Man"). "' (00-xx)".
+				" '". mysql_result($ErgSonder, 0, "Man")."' (RID $raum) (00-xx)".
 				"</a><br>\n\t\t";
 		}
 	}
