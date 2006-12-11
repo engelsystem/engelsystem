@@ -31,6 +31,7 @@
 
 		$EngelTypeID[ mysql_result($Erg, $i, "TID") ] = 
 			mysql_result($Erg, $i, "Name").Get_Text("inc_schicht_engel");
+		$TID2Name[ mysql_result($Erg, $i, "TID") ] = mysql_result($Erg, $i, "Name");
 	}												
 
 include ("./inc/funktion_schichtplan_Tage.php");

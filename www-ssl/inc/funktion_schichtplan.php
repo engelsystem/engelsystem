@@ -131,19 +131,11 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		$Ergtime = mysql_query($SQLtime, $con);
 		if( mysql_num_rows( $Ergtime) > 0)
 		{
-			
-//			$EngelTypeID[$TempValue["TID"]]
-			$SQLerlaubnis = "SELECT Name FROM `EngelType` WHERE TID = '". $TempValue["TID"]. "'";
-			$Ergerlaubnis =  mysql_query( $SQLerlaubnis, $con);
-			if( mysql_num_rows( $Ergerlaubnis))
-			
-			{
-			
 			//wenn keien rechte definiert sind 
-		   	if( !isset($_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")]))
-		   	 	$_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] = "Y";
+		   	if( !isset($_SESSION['CVS'][ $TID2Name[$TempValue["TID"]] ]))
+		   	 	$_SESSION['CVS'][ $TID2Name[$TempValue["TID"]] ] = "Y";
 
-			if( $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "Y")
+			if( $_SESSION['CVS'][ $TID2Name[$TempValue["TID"]] ] == "Y")
 				if( $TempValue["free"] > 0 )
 				{
 					$Spalten.= "<br>\n\t\t&nbsp;&nbsp;<a href=\"./schichtplan_add.php?SID=$SID&TID=".
@@ -159,8 +151,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 							   Get_Text("inc_schicht_werden");
 					$Spalten.= Get_Text("inc_schicht_noch_gesucht");
 					$Spalten.= "</a>";
-			     }  
-			} 
+			     }   
 		}
 		else
 		{
