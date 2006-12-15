@@ -143,6 +143,8 @@ else
 				") wurde in der Liste nicht gefunden.</td></tr>";
 		else
 		{
+			echo "<tr><td>\n";
+			echo "<table>\n";
 			echo "  <tr><td>Nick</td><td>".
 				"<input type=\"text\" size=\"40\" name=\"eNick\" value=\"".
 				mysql_result($Erg, 0, "Nick")."\"></td></tr>\n";
@@ -236,8 +238,10 @@ else
 			echo "  <tr><td>Hometown</td><td>".
 				"<input type=\"text\" size=\"40\" name=\"Hometown\" value=\"".
 				mysql_result($Erg, 0, "Hometown")."\"></td></tr>\n";
-		} //IF TYPE
-	}
+			
+			echo "</table>\n</td><td valign=\"top\">". displayavatar($_GET["enterUID"], FALSE). "</td></tr>";
+		}
+	}//IF TYPE Normal
 	if( $_GET["Type"] == "Secure" )
 	{
 		// CVS-Rechte
