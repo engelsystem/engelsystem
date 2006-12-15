@@ -22,8 +22,9 @@ if( mysql_num_rows($res) == 1)
 		header( "HTTP/1.0 403 Forbidden");
 		die( "403 Forbidden");
 	}
+	
 	// ist das bild sichtbar?
-	if( mysql_result($res, 0, "show")=="N" )
+	if( (mysql_result($res, 0, "show")=="N") AND ($_SESSION['UID']!=$_GET["UID"]) )
 	{
 		$SQL= "SELECT * FROM `UserPicture` WHERE `UID`='-1'";
 		$res = mysql_query( $SQL, $con);

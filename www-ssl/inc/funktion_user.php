@@ -58,21 +58,40 @@ function ReplaceSmilies($eckig) {
 }
 
 
-/* Parameter: 
-	<UserID>
-	[<Höhe des Bildes (wenn die höhe kleiner 1 ist wird die höhe nicht begrenzt)>] */
-function displayavatar($UID, $height="30") 
+function GetPicturShow($UID)
 {
 	global $con;
 
-	// ist ein foto hinterlegt?
-	$SQL= "SELECT * FROM `UserPicture` WHERE `UID`='$UID' AND `show`='Y'";
+	$SQL= "SELECT `show` FROM `UserPicture` WHERE `UID`='$UID'";
 	$res = mysql_query( $SQL, $con);
 	if( mysql_num_rows($res) == 1)
-		if( $height > 0)
-			return( "&nbsp;<img src=\"./inc/ShowUserPicture.php?UID=$UID\" height=\"$height\" alt=\"picture of USER$UID\">");
-		else
-			return( "&nbsp;<img src=\"./inc/ShowUserPicture.php?UID=$UID\" alt=\"picture of USER$UID\">");
+		return mysql_result( $res, 0, 0);
+	else
+		return "";
+}
+
+
+/* Parameter: 
+	<UserID>
+	[<Höhe des Bildes (wenn die höhe kleiner 1 ist wird die höhe nicht begrenzt)>] */
+function displayPictur($UID, $height="30") 
+{
+	if( $height > 0)
+		return( "<img src=\"./inc/ShowUserPicture.php?UID=$UID\" height=\"$height\" alt=\"picture of USER$UID\">");
+	else
+		return( "<img src=\"./inc/ShowUserPicture.php?UID=$UID\" alt=\"picture of USER$UID\">");
+}
+
+
+/* Parameter: 
+	<UserID>
+	[<Höhe des Bildes (wenn die höhe kleiner 1 ist wird die höhe nicht begrenzt)>] */
+function displayavatar( $UID, $height="30") 
+{
+	global $con;
+
+	if( GetPicturShow($UID) == 'Y')
+		return "&nbsp;". displayPictur(  $UID, $height);
         
 	// show avator
 	$asql = "select * from User where UID = $UID";

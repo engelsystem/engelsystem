@@ -3,6 +3,7 @@ $title = "Himmel";
 $header = "Deine pers&ouml;nlichen Einstellungen";
 include ("./inc/header.php");
 include ("./inc/crypt.php");
+include ("./inc/funktion_user.php");
 
 if (!IsSet($_POST["action"])) 
 {
@@ -103,35 +104,60 @@ if (!IsSet($_POST["action"]))
 	</table>
 	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
-<br>
-<hr width="100%">
-<br>
-<?PHP Print_Text(22); ?>
-<form action="./einstellungen.php" method="post">
-        <input type="hidden" name="action" value="avatar">
-	<table>
-		<tr>
-			<td><?PHP Print_Text(23); ?><br></td>
-			<td>
-			</td>
-		</tr>
-		<tr>
-			<td>
-	    <select name="eAvatar" onChange="document.avatar.src = './inc/avatar/avatar' + this.value  + '.gif'"
-	    			   onKeyup= "document.avatar.src = './inc/avatar/avatar' + this.value  + '.gif'"> 
-	    <?php
-	    for ($i=1; file_exists("./inc/avatar/avatar$i.gif"); $i++ )
-	    	echo "\t\t\t\t<option value=\"$i\"". ($_SESSION['Avatar'] == $i ? " selected":""). ">avatar$i</option>\n";
-	    ?>
-	    </select>&nbsp;&nbsp;
-	    <img src="./inc/avatar/avatar<?php echo $_SESSION['Avatar']; ?>.gif" name="avatar" border="0" alt="" align="top">
-	  </td></tr>
-	</table>
-	<input type="submit" value="<?PHP Print_Text("save"); ?>">
-</form>
+<?PHP 
 
+	
+	if( get_cfg_var("file_uploads"))
+	{
+		echo "<br>\n<hr width=\"100%\">\n<br>\n\n";
+		echo Get_Text('pub_einstellungen_PictureUpload')."<br>";
+		echo "<form action=\"./einstellungen.php\" method=\"post\" enctype=\"multipart/form-data\">\n";
+		echo "\t<input type=\"hidden\" name=\"action\" value=\"sendPicture\">\n";
+		echo "\t<input name=\"file\" type=\"file\" size=\"50\" maxlength=\"". get_cfg_var("post_max_size"). "\">\n";
+		echo "\t(max ". get_cfg_var("post_max_size"). "Byte)<br>\n";
+		echo "\t<input type=\"submit\" value=\"". Get_Text("upload"),"\">\n";
+		echo "</form>\n";
+	}
 
-<?PHP
+	switch( GetPicturShow( $_SESSION['UID']))
+	{
+		case 'Y':
+			echo Get_Text('pub_einstellungen_PictureShow'). "<br>";
+			echo displayPictur($_SESSION['UID'], 0);
+			echo "<form action=\"./einstellungen.php\" method=\"post\">\n";
+			echo "\t<input type=\"hidden\" name=\"action\" value=\"delPicture\">\n";
+			echo "\t<input type=\"submit\" value=\"". Get_Text("delete"),"\">\n";
+			echo "</form>\n";
+			break;
+		case 'N':
+			echo Get_Text('pub_einstellungen_PictureNoShow'). "<br>";
+			echo displayPictur($_SESSION['UID'], 0);
+			echo "<form action=\"./einstellungen.php\" method=\"post\">\n";
+			echo "\t<input type=\"hidden\" name=\"action\" value=\"delPicture\">\n";
+			echo "\t<input type=\"submit\" value=\"". Get_Text("delete"),"\">\n";
+			echo "</form>\n";
+			echo "<br>\n<hr width=\"100%\">\n<br>\n\n";
+		case '':	
+			echo "<br>\n<hr width=\"100%\">\n<br>\n\n";
+			echo Get_Text(22). "<br>"; 
+			echo "\n<form action=\"./einstellungen.php\" method=\"post\">\n";
+			echo "\t<input type=\"hidden\" name=\"action\" value=\"avatar\">\n";
+			echo "\t<table>\n";
+			echo "\t\t<tr>\n\t\t\t<td>". Get_Text(23). "<br></td>\n\t\t</tr>\n";
+			echo "\t\t<tr>\n";
+			echo "\t\t\t<td>\n";
+		    	echo "\t\t\t\t<select name=\"eAvatar\" onChange=\"document.avatar.src = './inc/avatar/avatar' + this.value  + '.gif'\"".
+		    		"onKeyup=\"document.avatar.src = './inc/avatar/avatar' + this.value  + '.gif'\">\n"; 
+			for ($i=1; file_exists("./inc/avatar/avatar$i.gif"); $i++ )
+		    		echo "\t\t\t\t\t<option value=\"$i\"". ($_SESSION['Avatar'] == $i ? " selected":""). ">avatar$i</option>\n";
+		    	echo "\t\t\t\t</select>&nbsp;&nbsp;\n";
+			echo "\t\t\t\t<img src=\"./inc/avatar/avatar". $_SESSION['Avatar']. ".gif\" name=\"avatar\" border=\"0\" align=\"top\">\n";
+			echo "\t\t\t</td>\n\t\t</tr>\n";
+			echo "\t</table>\n";
+			echo "\t<input type=\"submit\" value=\"". Get_Text("save"),"\">\n";
+			echo "</form>\n";
+			break;
+	} //CASE
 
 } else {
 
@@ -194,11 +220,10 @@ case 'avatar':
 	$chsql="UPDATE `User` SET `Avatar`='". $_POST["eAvatar"]. "' WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1";
         $Erg = mysql_query($chsql, $con);
 	$_SESSION['Avatar']=$_POST["eAvatar"];
-	if ($Erg==1) {
+	if ($Erg==1)
 		Print_Text(34);
-        } else {
+        else
 		Print_Text(29);
-	}
         break;
 
 case 'setUserData':
@@ -235,6 +260,49 @@ case 'setUserData':
 	}
 	break;
 
+case 'sendPicture':
+	if( $_FILES["file"]["size"] > 0)
+	{
+	  if( ($_FILES["file"]["type"] == "image/jpeg") || 
+	      ($_FILES["file"]["type"] == "image/png")  ||
+	      ($_FILES["file"]["type"] == "image/gif")  )
+	  {		
+		$data = addslashes(fread(fopen($_FILES["file"]["tmp_name"], "r"), filesize($_FILES["file"]["tmp_name"])));
+
+		if( GetPicturShow( $_SESSION['UID']) == "")
+			$SQL = "INSERT INTO `UserPicture` ".
+				"( `UID`,`Bild`, `ContentType`, `show`) ".
+				"VALUES ('". $_SESSION['UID']. "', '$data', '". $_FILES["file"]["type"]. "', 'N')";
+		else
+			$SQL = "UPDATE `UserPicture` SET ".
+				"`Bild`='$data', ".
+				"`ContentType`='". $_FILES["file"]["type"]. "', ".
+				"`show`='N' ".
+				"WHERE `UID`='". $_SESSION['UID']. "'";
+		
+		$res = mysql_query( $SQL, $con);
+		if( $res)
+			Print_Text("pub_einstellungen_send_OK");
+		else
+			Print_Text("pub_einstellungen_send_KO");
+	
+		echo "<h6>('" . $_FILES["file"]["name"] . "', MIME-Type: " . $_FILES["file"]["type"]. ", " . $_FILES["file"]["size"]. " Byte)</h6>";
+	  }
+	  else
+		Print_Text("pub_einstellungen_send_KO");	
+	}
+	else
+		Print_Text("pub_einstellungen_send_KO");	
+	break;
+
+case 'delPicture':
+	$chsql="DELETE FROM `UserPicture` WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1";
+        $Erg = mysql_query($chsql, $con);
+	if ($Erg==1)
+		Print_Text("pub_einstellungen_del_OK");
+        else
+		Print_Text("pub_einstellungen_del_KO");
+	Break;
 }
 }
 include ("./inc/footer.php");
