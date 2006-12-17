@@ -24,7 +24,9 @@ if( mysql_num_rows($res) == 1)
 	}
 	
 	// ist das bild sichtbar?
-	if( (mysql_result($res, 0, "show")=="N") AND ($_SESSION['UID']!=$_GET["UID"]) )
+	if( (mysql_result($res, 0, "show")=="N") AND
+	    ($_SESSION['UID']!=$_GET["UID"]) AND 
+	    ($_SESSION['CVS'][ "admin/UserPicture.php" ] == "N"))
 	{
 		$SQL= "SELECT * FROM `UserPicture` WHERE `UID`='-1'";
 		$res = mysql_query( $SQL, $con);
