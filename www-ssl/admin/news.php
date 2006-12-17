@@ -99,7 +99,7 @@ else
 
 	case 'delete':
 		if (isset($_POST["date"]))
-		        $chsql="DELETE FROM 'News' WHERE `Datum`='". $_POST["date"]. "' LIMIT 1";
+		        $chsql="DELETE FROM `News` WHERE `Datum`='". $_POST["date"]. "' LIMIT 1";
 		else
 			echo "Fehler: \"date\" nicht übergeben";
 		break;
