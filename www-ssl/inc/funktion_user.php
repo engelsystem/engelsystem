@@ -77,7 +77,7 @@ function GetPicturShow($UID)
 function displayPictur($UID, $height="30") 
 {
 	if( $height > 0)
-		return( "<img src=\"./inc/ShowUserPicture.php?UID=$UID\" height=\"$height\" alt=\"picture of USER$UID\">");
+		return( "<img src=\"./inc/ShowUserPicture.php?UID=$UID\" height=\"$height\" alt=\"picture of USER$UID\" class=\"photo\">");
 	else
 		return( "<img src=\"./inc/ShowUserPicture.php?UID=$UID\" alt=\"picture of USER$UID\">");
 }

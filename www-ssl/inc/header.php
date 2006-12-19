@@ -61,6 +61,7 @@ echo "<TITLE>--- $title  $Version ---</TITLE>";
 <meta name="robots" content="index">
 <meta name="revisit-after" content="1 days">
 <meta http-equiv="content-language" content="de">
+<script type="text/javascript" src="./inc/css/grossbild.js"></script>
 <link rel=stylesheet type="text/css" href="./inc/css/style<?PHP
 	if (!IsSet($_SESSION['color'])) 
 		echo "1"; 
