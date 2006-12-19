@@ -116,7 +116,7 @@ case 'change':
 			{
 				if( (mysql_field_name($ERG, $Uj) == "show") || (mysql_field_name($ERG, $Uj) == "FromPentabarf") )
 				{
-					echo "<tr><td>show</td>".
+					echo "<tr><td>". mysql_field_name($Erg, $Uj). "</td>".
 					     "<td>".
 					     "<input type=\"radio\" name=\"e". mysql_field_name($ERG, $Uj). 
 					     	"\" value=\"Y\"". (mysql_result($ERG, 0, $Uj)=='Y'? " checked":""). ">Yes".
