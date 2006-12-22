@@ -44,6 +44,9 @@ if( mysql_num_rows($res) == 1)
 	header( "Accept-Ranges: bytes");
 	header( "Content-Length: ". strlen($bild));
 	header( "Content-type: ". mysql_result($res, 0, "ContentType"));
+	header( "Cache-control: public");
+	header( "Cache-request-directive: min-fresh = 120");
+	header( "Cache-request-directive: max-age = 360");
 	echo $bild;
 }
 else
