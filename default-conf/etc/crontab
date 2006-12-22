@@ -1,0 +1,1 @@
+*/15    * * * * www-data  (cd /var/www.ssl/admin ; php4 dect_cron.php)
