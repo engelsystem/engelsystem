@@ -3,7 +3,6 @@ $title = "Himmel";
 $header = "Deine pers&ouml;nlichen Einstellungen";
 include ("./inc/header.php");
 include ("./inc/crypt.php");
-include ("./inc/funktion_user.php");
 
 if (!IsSet($_POST["action"])) 
 {

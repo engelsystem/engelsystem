@@ -2,7 +2,6 @@
 $title = "Himmel";
 $header = "Engelbesprechung";
 include ("./inc/header.php");
-include ("./inc/funktion_user.php");
 ?>
 
 <br>

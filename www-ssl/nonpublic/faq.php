@@ -2,7 +2,6 @@
 $title = "Himmel";
 $header = "FAQ / Fragen an die Erzengel";
 include ("./inc/header.php");
-include ("./inc/funktion_user.php");
 
 
 // Erstaufruf, oder Frage bereits abgeschickt?

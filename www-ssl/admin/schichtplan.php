@@ -3,7 +3,6 @@ $title = "Schichtplan";
 $header = "Neue Schichten erfassen";
 $submenus = 1;
 include ("./inc/header.php");
-include ("./inc/funktion_user.php");
 
 function executeSQL( $SQL)
 {

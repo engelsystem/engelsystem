@@ -3,7 +3,6 @@ $title = "Schicht Hinzufügen";
 $header = "Neue Schichten erfassen";
 
 include ("./inc/header.php");
-include ("./inc/funktion_user.php");
 
 $Time = time()+3600+3600;
 

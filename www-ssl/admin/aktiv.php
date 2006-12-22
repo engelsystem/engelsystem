@@ -4,7 +4,6 @@ $title = "akive Engel";
 $header = "Liste der aktiven Engel";
 include ("./inc/header.php");
 include ("./inc/funktion_db_list.php");
-include ("./inc/funktion_user.php");
 
 echo "<form action=\"./aktiv.php\" method=\"post\">";
 echo Get_Text("pub_aktive_Text1")."<br>\n";

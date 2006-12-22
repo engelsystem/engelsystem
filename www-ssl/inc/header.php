@@ -5,6 +5,7 @@ include ("./inc/config_db.php");
 include ("./inc/funktion_lang.php");
 include ("./inc/funktion_faq.php"); //für noAnswer() im menu
 include ("./inc/funktion_menu.php");
+include ("./inc/funktion_user.php");
 
 if( !isset($_SESSION)) 
 	session_start(); 

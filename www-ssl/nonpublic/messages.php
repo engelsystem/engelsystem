@@ -3,7 +3,6 @@ $title = "Himmel";
 $header = "";
 
 include ("./inc/header.php");
-include ("./inc/funktion_user.php");
 
 If( !isset($_GET["action"]) ) 
 	$_GET["action"] = "start";

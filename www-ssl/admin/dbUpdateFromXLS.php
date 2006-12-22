@@ -2,7 +2,6 @@
 $title = "DB Update from XML";
 $header = "DB Update from XML";
 include ("./inc/header.php");
-include ("./inc/funktion_user.php");
 include ("./inc/funktion_xml.php");
 
 ///////////

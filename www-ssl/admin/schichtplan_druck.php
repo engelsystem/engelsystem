@@ -10,7 +10,6 @@ if (!IsSet($_POST["action"]))
 	include ("./inc/funktionen.php");
 	include ("./inc/funktion_schichtplan_aray.php");
 	include ("./inc/funktion_schichtplan.php");
-	include ("./inc/funktion_user.php");
 ?>
 
 Hallo <?PHP echo $_SESSION['Nick']?>,<br>

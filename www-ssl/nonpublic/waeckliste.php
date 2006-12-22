@@ -1,6 +1,4 @@
 <?php
-include ("./inc/funktion_user.php");
-
 $title = "Himmel";
 $header = "Weckdienst - Liste der zu weckenden Engel";
 

@@ -4,7 +4,6 @@ $title = "T-Shirt-Ausgabe";
 $header = "T-Shirt-Ausgabe f&uuml;r aktiven Engel";
 include ("./inc/header.php");
 include ("./inc/funktion_db_list.php");
-include ("./inc/funktion_user.php");
 
 
 If (IsSet($_GET["aktiv"])) {

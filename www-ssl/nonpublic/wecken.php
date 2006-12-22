@@ -3,7 +3,6 @@ $title = "Himmel";
 $header = "Weckdienst";
 
 include ("./inc/header.php");
-include ("./inc/funktion_user.php");
 
 if( isset($_POST["eintragen"]))
 	if( $_POST["eintragen"] == Get_Text("pub_wake_bouton") ) 

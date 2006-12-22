@@ -4,7 +4,6 @@ $title = "Newsverwaltung";
 $header = "Verwaltung der News";
 include ("./inc/header.php");
 include ("./inc/funktion_db_list.php");
-include ("./inc/funktion_user.php");
 
 
 if (!IsSet($_GET["action"]))

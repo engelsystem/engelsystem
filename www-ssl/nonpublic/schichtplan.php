@@ -9,7 +9,6 @@ if( isset($_GET["raum"]))
 	$raum = $_GET["raum"];
 
 include ("./inc/header.php");
-include ("./inc/funktion_user.php");
 include ("./inc/funktionen.php");
 include ("./inc/funktion_schichtplan.php");
 include ("./inc/funktion_schichtplan_aray.php");

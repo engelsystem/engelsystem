@@ -5,7 +5,7 @@ $header = "Index";
 include ("./inc/header.php");
 include ("./inc/funktion_db_list.php");
 include ("./inc/crypt.php");
-include("./inc/funktion_db.php");
+include ("./inc/funktion_db.php");
 
 if (IsSet($_GET["action"])) 
 {

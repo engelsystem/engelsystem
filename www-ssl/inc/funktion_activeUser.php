@@ -36,12 +36,14 @@ $Tist =	(gmdate("d", time()) * 60 * 60 * 24) +	// Tag
 for( $i=0; $i<mysql_num_rows($Erg); $i++)
 {
 	echo "\t\t\t<li>";
+	echo DisplayAvatar( mysql_result( $Erg, $i, "UID"));
 	// Schow Admin Page
 	if( $_SESSION['CVS'][ "admin/user.php" ] == "Y" )
 		echo " <a href=\"./../admin/user.php?enterUID=". mysql_result( $Erg, $i, "UID"). "&Type=Normal\">". 
 			mysql_result( $Erg, $i, "Nick"). "</a>";
 	else
 		echo mysql_result( $Erg, $i, "Nick");
+
 	$Tlog =	(substr( mysql_result( $Erg, $i, "lastLogIn"),  8, 2) * 60 * 60 * 24) +	// Tag
 		(substr( mysql_result( $Erg, $i, "lastLogIn"), 11, 2) * 60 * 60) +	// Stunde
 		(substr( mysql_result( $Erg, $i, "lastLogIn"), 14, 2) * 60) +		// Minute

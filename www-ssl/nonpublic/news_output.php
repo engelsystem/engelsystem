@@ -1,7 +1,4 @@
 <?php
-include ("./inc/config_db.php");
-include ("./inc/funktion_user.php");
-
 
 if( isset( $_POST["text"]) && isset( $_POST["betreff"]) && IsSet( $_POST["date"]) ) 
 {
