@@ -43,8 +43,7 @@ if( IsSet($_GET["action"]) )
 		        	        else
                 			        $SQL = "UPDATE `UserPicture` SET ".
 		                        	        "`Bild`='$data', ".
-                		                	"`ContentType`='". $_FILES["file"]["type"]. "', ".
-	                                		"`show`='N' ".
+                		                	"`ContentType`='". $_FILES["file"]["type"]. "' ".
 			                                "WHERE `UID`='". $_POST['UID']. "'";
 
 			                	echo "Upload Pictur:'" . $_FILES["file"]["name"] . "', ".
