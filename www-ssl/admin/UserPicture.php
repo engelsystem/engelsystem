@@ -12,6 +12,53 @@ if( IsSet($_GET["action"]) )
 
 	switch ($_GET["action"]) 
 	{
+		case 'FormUpload':
+			echo "Hier kannst Du ein Foto hochladen für:";
+			echo "<form action=\"./UserPicture.php?action=sendPicture\" method=\"post\" enctype=\"multipart/form-data\">\n";
+			echo "\t<select name=\"UID\">\n";
+			$usql="SELECT * FROM `User` ORDER BY `Nick`";
+			$uErg = mysql_query($usql, $con);
+			for ($k=0; $k<mysql_num_rows($uErg); $k++)
+				echo "\t\t<option value=\"".mysql_result($uErg, $k, "UID")."\">". mysql_result($uErg, $k, "Nick"). "</option>\n";
+			echo "\t</select>\n";
+			echo "\t<input type=\"hidden\" name=\"action\" value=\"sendPicture\">\n";
+			echo "\t<input name=\"file\" type=\"file\" size=\"50\" maxlength=\"". get_cfg_var("post_max_size"). "\">\n";
+			echo "\t(max ". get_cfg_var("post_max_size"). "Byte)<br>\n";
+			echo "\t<input type=\"submit\" value=\"". Get_Text("upload"),"\">\n";
+			echo "</form>\n";
+			break;
+		case 'sendPicture':
+		        if( ($_FILES["file"]["size"] > 0) && (isset( $_POST["UID"])) )
+		        {
+			        if( ($_FILES["file"]["type"] == "image/jpeg") ||
+			            ($_FILES["file"]["type"] == "image/png")  ||
+			            ($_FILES["file"]["type"] == "image/gif")  )
+		        	{
+	                		$data = addslashes(fread(fopen($_FILES["file"]["tmp_name"], "r"), filesize($_FILES["file"]["tmp_name"])));
+
+					if( GetPicturShow( $_POST['UID']) == "")
+	                		        $SQL = "INSERT INTO `UserPicture` ".
+			                                "( `UID`,`Bild`, `ContentType`, `show`) ".
+                			                "VALUES ('". $_POST['UID']. "', '$data', '". $_FILES["file"]["type"]. "', 'N')";
+		        	        else
+                			        $SQL = "UPDATE `UserPicture` SET ".
+		                        	        "`Bild`='$data', ".
+                		                	"`ContentType`='". $_FILES["file"]["type"]. "', ".
+	                                		"`show`='N' ".
+			                                "WHERE `UID`='". $_POST['UID']. "'";
+
+			                	echo "Upload Pictur:'" . $_FILES["file"]["name"] . "', ".
+							"MIME-Type: " . $_FILES["file"]["type"]. ", ". 
+							$_FILES["file"]["size"]. " Byte ".
+							"for ". UID2Nick( $_POST["UID"]);
+				}
+				else
+			                Print_Text("pub_einstellungen_send_KO");
+		        }
+		        else
+                		Print_Text("pub_einstellungen_send_KO");
+		        break;
+
 		case 'SetN':
 			if (IsSet($_GET["UID"]))
 			{
@@ -97,6 +144,8 @@ for( $t = 0; $t < mysql_num_rows($Erg); $t++ )
 	echo "\t</tr>\n";
 } // ende Auflistung Raeume
 echo "</table>";
+
+echo "<br><a href=\"./UserPicture.php?action=FormUpload\">picture upload</a>\n";
 
 include ("./inc/footer.php");
 ?>
