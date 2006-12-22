@@ -36,7 +36,8 @@ $Tist =	(gmdate("d", time()) * 60 * 60 * 24) +	// Tag
 for( $i=0; $i<mysql_num_rows($Erg); $i++)
 {
 	echo "\t\t\t<li>";
-	echo DisplayAvatar( mysql_result( $Erg, $i, "UID"));
+	if( $_SESSION['UID']>0 )
+		echo DisplayAvatar( mysql_result( $Erg, $i, "UID"));
 	// Schow Admin Page
 	if( $_SESSION['CVS'][ "admin/user.php" ] == "Y" )
 		echo " <a href=\"./../admin/user.php?enterUID=". mysql_result( $Erg, $i, "UID"). "&Type=Normal\">". 
