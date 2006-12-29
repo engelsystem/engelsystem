@@ -54,7 +54,7 @@ else
 			$SQL = "SELECT * FROM `News` WHERE (`Datum`='". $_GET["date"]. "')";
 			$Erg = mysql_query($SQL, $con);
 
-			if( mysql_num_rows( $Erg)==1)
+			if( mysql_num_rows( $Erg)>0)
 			{
 				echo "<form action=\"./news.php\" method=\"GET\">\n";
 
