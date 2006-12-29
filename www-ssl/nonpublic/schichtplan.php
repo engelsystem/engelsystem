@@ -87,7 +87,7 @@ else
 	else 
 		echo Get_Text("pub_schicht_Anzeige_1"). $ausdatum. 
 		     Get_Text("pub_schicht_Anzeige_2"). $RoomID[$raum]. "<br><br>";
-	
+
 	ShowSwitchDay();
 
 	echo "\n\n<table border=\"0\" width=\"100%\" class=\"border\" cellpadding=\"2\" cellspacing=\"1\">\n";
@@ -138,7 +138,7 @@ else
 	}
 	else
 		CreateRoomShifts( $raum );
-
+	
 	//Ausageb Zeilen
 	for ($i = 0; $i < (24 * $GlobalZeileProStunde); $i++) 
 	{
@@ -150,6 +150,8 @@ else
 	ShowSwitchDay();
 
 }//if (isset($raum))
+
+echo "<a href=\"". $_SESSION["newurl"]. "&Icon=0\">@</a>";
 
 include ("./inc/footer.php");
 ?>
