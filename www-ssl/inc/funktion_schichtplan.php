@@ -11,7 +11,10 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 	global $EngelType, $EngelTypeID, $TID2Name, $con, $DEBUG;
 
 	$Spalten = "";
-	
+
+	if( !isset($_GET["Icon"]))
+		$_GET["Icon"]=1;
+
 	///////////////////////////////////////////////////////////////////
 	// Schow Admin Page
 	///////////////////////////////////////////////////////////////////
@@ -107,17 +110,17 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 					if( UIDgekommen( $TempEngelID ) == "1")
 	      					$Spalten.= "&nbsp;&nbsp;<span style=\"color: blue;\">". 
 							   UID2Nick( $TempEngelID ).
-      							   DisplayAvatar( $TempEngelID ).
+      							   ($_GET["Icon"]==1? DisplayAvatar( $TempEngelID ): "").
 							   "</span><br>\n\t\t";
 					else
       						$Spalten.= "&nbsp;&nbsp;<span style=\"color: red;\">". 
 							   UID2Nick( $TempEngelID ).
-      							   DisplayAvatar( $TempEngelID ).
+      							   ($_GET["Icon"]==1? DisplayAvatar( $TempEngelID ): "").
 							   "</span><br>\n\t\t";
 				}
 				else
       					$Spalten.= "&nbsp;&nbsp;". UID2Nick( $TempEngelID ).
-      						   DisplayAvatar( $TempEngelID ).
+      						   ($_GET["Icon"]==1? DisplayAvatar( $TempEngelID ): "").
 						   "<br>\n\t\t";
 			}
 			$Spalten = substr( $Spalten, 0, strlen($Spalten)-7 );
@@ -187,7 +190,7 @@ function Ausgabe_Feld_Inhalt_Druck($RID, $Man )
 #######################################################*/
 function CreateRoomShifts( $raum )
 {
-	global $Spalten, $ausdatum, $con, $DEBUG, $GlobalZeileProStunde;
+	global $Spalten, $ausdatum, $con, $DEBUG, $GlobalZeileProStunde, $error_messages;
 	
 	/////////////////////////////////////////////////////////////
 	// beginnt die erste schicht vor dem heutigen tag und geht darüber hinaus
@@ -262,12 +265,12 @@ function CreateRoomShifts( $raum )
 		$ZeitPos = substr( mysql_result($Erg, $i, "DateS"), 11, 2 )+
 			  (substr( mysql_result($Erg, $i, "DateS"), 14, 2 ) / 60);
 		$len = mysql_result($Erg, $i, "Len");
+
+		if( $len <= 0)
+			array_push( $error_messages, "Error in shift denition SID=". mysql_result($Erg, $i, "SID"). " Len=$len");
 		
 		if( $ZeitZeiger < $ZeitPos  )
 		{
-//			for( $iLeer = ($ZeitZeiger*$GlobalZeileProStunde); $iLeer<($ZeitPos*$GlobalZeileProStunde); $iLeer++)
-//				$Spalten[$iLeer] .= "\t\t<td valign=\"top\" rowspan=\"1\"></td>\n";
-												
 	       		$Spalten[$ZeitZeiger * $GlobalZeileProStunde].=	
 				"\t\t<td valign=\"top\" rowspan=\"". ( ($ZeitPos - $ZeitZeiger ) * $GlobalZeileProStunde ). "\">&nbsp;</td>\n";
 
