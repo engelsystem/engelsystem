@@ -4,79 +4,40 @@ $header = "Schichtpl&auml;ne";
 $submenus = 1;
 
 
-if (!IsSet($_POST["action"])) 
+if (!IsSet($_GET["action"])) 
 {
 	include ("./inc/header.php");
 	include ("./inc/funktionen.php");
 	include ("./inc/funktion_schichtplan_aray.php");
 	include ("./inc/funktion_schichtplan.php");
-?>
 
-Hallo <?PHP echo $_SESSION['Nick']?>,<br>
-auf dieser Seite kannst du dir den Schichtplan in einer Druckansicht generieren lassen. W&auml;hle hierf&uuml;r ein Datum und den Raum:
-<br><br>
-<form action="./schichtplan_druck.php" method="post" target="_print">
-<input type="hidden" name="action" value="1">
-
-
-<table>
-	<tr>
-		<td align="right">Datum:</td>
-		<td align="left">
-			<select name="ausdatum">
-<?PHP
-$SQL = "SELECT DateS FROM `Shifts` ORDER BY 'DateS'";
-$Erg = mysql_query($SQL, $con);
-if (!isset($ausdatum)) 
-	$ausdatum = substr(mysql_result($Erg, $i , 0), 0,10);
-
-for ($i = 0 ; $i < mysql_fetch_row($Erg) ; $i++) 
-{
-	if ($tmp != substr(mysql_result($Erg, $i , 0), 0,10)) 
-	{
-		$tmp =  substr(mysql_result($Erg, $i , 0), 0,10);
-		echo "\t\t\t\t<option value=\"$tmp\">$tmp</option>\n";
-	}
-} 
-
-?>
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td align="right">Raum:</td>
-		<td align="left">
-			<select name="Raum">
-<?php 
-
-	$res = mysql_query("SELECT Name, RID FROM `Room` WHERE `show`!='N' ORDER BY `Name`;",$con);
-
-	for ($i = 0; $i < mysql_num_rows($res); $i++) 
-	{
-		$rid=mysql_result($res,$i,"RID");
-		$raum_name=mysql_result($res, $i, "Name");
-		echo "\t\t\t\t<option value=\"$rid\">$raum_name</option>\n";
-	}
-?>
-			</select>
-		</td>
-	</tr>
+	echo "Hallo ". $_SESSION['Nick']. "<br>\n".
+		"auf dieser Seite kannst du dir den Schichtplan in einer Druckansicht generieren lassen. W&auml;hle hierf&uuml;r ein Datum und den Raum:\n".
+		"<br>\n";
 	
-</table>
-<br>
-<input type="submit" value="generieren...">
-</form>
-
-<br><br>
-<?PHP
+	foreach( $VeranstaltungsTage as $k => $v)
+	{
+	
+		$res = mysql_query("SELECT Name, RID FROM `Room` WHERE `show`!='N' ORDER BY `Name`;",$con);
+		for ($i = 0; $i < mysql_num_rows($res); $i++) 
+		{
+			$Tag = $VeranstaltungsTage[$k];
+			$RID = mysql_result($res,$i,"RID");
+			$Rname = mysql_result($res, $i, "Name");
+			echo "\t<a href=\"./schichtplan_druck.php?action=1&Raum=$RID&ausdatum=$Tag\" target=\"_blank\">$Tag $Rname</a><br>\n";
+		}
+		echo "<br>\n";
+	}
+	echo "<br><br>";
+	
 	include ("./inc/footer.php");
 } 
 else 	//#################################################################
 {
-   if (IsSet($_POST["Raum"]) AND IsSet($_POST["ausdatum"])) 
+   if (IsSet($_GET["Raum"]) AND IsSet($_GET["ausdatum"])) 
 	{
-   	$Raum = $_POST["Raum"];
-	$ausdatum = $_POST["ausdatum"];
+   	$Raum = $_GET["Raum"];
+	$ausdatum = $_GET["ausdatum"];
 
 	include ("./inc/config_db.php");
 	include ("./inc/config.php");
