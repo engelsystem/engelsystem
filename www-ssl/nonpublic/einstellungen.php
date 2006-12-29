@@ -36,6 +36,8 @@ if (!IsSet($_POST["action"]))
 	  		<td><input type="text" name="ejabber" size="40" value="<?PHP echo $_SESSION['jabber']; ?>"></td></tr>
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_Hometown"); ?></td>
 	  		<td><input type="text" name="Hometown" size="40" value="<?PHP echo $_SESSION['Hometown']; ?>"></td></tr>
+                <tr>    <td><?PHP Print_Text("makeuser_T-Shirt"); ?></td>
+                        <td><?PHP echo $_SESSION['Size']; ?></td></tr>				 
 	</table>
 	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
