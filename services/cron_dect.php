@@ -7,6 +7,7 @@ include ("./inc/error_handler.php");
 include ("./inc/funktion_modem.php");
 include ("./inc/funktion_cron.php");
 
+
 //ausfuerungs Ruetmuss (in s)
 $StartTimeBeforEvent = (60/4)*60; 
 $AnrufDelay = -5;
@@ -29,6 +30,7 @@ else
 $Erg = mysql_query($SQL, $con);
 echo mysql_error($con);
 
+$Z=0;
 for( $i=0; $i<mysql_num_rows($Erg); $i++)
 {  
    if( mysql_result($Erg, $i, "UID")>0)
@@ -36,12 +38,18 @@ for( $i=0; $i<mysql_num_rows($Erg); $i++)
 	$DECTnumber = UID2DECT(mysql_result($Erg, $i, "UID"));
 	if( $DECTnumber!="")
 	{
+		echo "dial $DECTnumber\n";
 		DialNumberIAX( $DECTnumber,
 		               mysql_result($Erg, $i, "DateS"),
 		               mysql_result($Erg, $i, "RID"),
 			       mysql_result($Erg, $i, "TID"));
 		DialNumberModem( $DECTnumber,
 		                 mysql_result($Erg, $i, "DateS"));
+		if( $Z++>10)
+		{
+			$Z=0;
+			sleep(30);
+		}
 	}
   }
 }
