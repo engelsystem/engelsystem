@@ -43,11 +43,38 @@ function DialNumberIAX( $DECTnumber, $Time, $RID, $TID)
 	if( strlen( $TimeH) == 1)
 		$TimeH = "0".$TimeH;
 	
-	// IAX file Schareiebn
-	$CallFile = "/tmp/call_". date("Ymd_His"). "_$DECTnumber";
-	
 	if( $IAXenable)
 	{
+		$post_data = array();
+		$post_data['code'] = "89o8eu9cg4";
+		$post_data['callerid'] = "1023";
+		$post_data['nr'] = "$DECTnumber";
+		//$post_data['message'] = "Deine schicht beginnt in ein paar minuten . . . your shift beginns in a few minutes ";
+		$post_data['message'] = "die-nee shisht beh-kinned , in where-neegin me-nooten . . . your shift beginns in a few minutes ";
+		$url = "https://23c3.eventphone.de/~bef/call.php";
+
+		$o="";
+		foreach ($post_data as $k=>$v)
+		{
+		   $o.= "$k=".urlencode(utf8_encode($v))."&";
+		}
+		$post_data=substr($o,0,-1);
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_URL, $url);   
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		$result = curl_exec($ch);
+		echo curl_error($ch);
+		curl_close($ch);
+
+		   
+		/*
+		// IAX file Schareiebn
+		$CallFile = "/tmp/call_". date("Ymd_His"). "_$DECTnumber";
+	
 		if($DebugDECT) echo "IAX create file for dialing Number $DECTnumber\n";
 		$file = fopen( $CallFile, 'w' );
 		if( $file != FALSE)
@@ -66,7 +93,7 @@ function DialNumberIAX( $DECTnumber, $Time, $RID, $TID)
 			fclose($file);
 			system( "chmod 777 $CallFile");
 			system( "mv $CallFile /var/spool/asterisk/outgoing");
-		}
+		}*/
 	}
 	else
 		if($DebugDECT) echo "IAX is disable\n";

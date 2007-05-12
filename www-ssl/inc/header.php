@@ -1,4 +1,6 @@
 <?PHP 
+ini_set( "session.gc_maxlifetime", "65535");
+
 include ("./inc/config.php");
 include ("./inc/error_handler.php");
 include ("./inc/config_db.php");

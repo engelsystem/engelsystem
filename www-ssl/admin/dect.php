@@ -4,7 +4,9 @@ $title = "Engelsystem - DECT";
 $header = "DECT send call";
 include ("./inc/header.php");
 
-include ("./inc/funktion_modem.php");
+include ("./inc/config_IAX.php");
+//include ("./inc/funktion_modem.php");
+include ("./inc/funktion_cron.php");
 
 if( !isset($_GET["dial"])) $_GET["dial"] = "";
 if( !isset($_GET["custum"])) $_GET["custum"] = "";
@@ -22,7 +24,8 @@ if( $_GET["dial"]=="dial")
 	if( strlen( $_GET["timem"])== 1)
 		 $_GET["timem"] = "0".  $_GET["timem"];
 		
-	SetWackeup( $Number, $_GET["timeh"], $_GET["timem"]);
+//	SetWackeup( $Number, $_GET["timeh"], $_GET["timem"]);
+	DialNumberIAX($Number, $_GET["timeh"], $_GET["timem"],0);
 
 	$_GET["custum"] = $Number;
 }
