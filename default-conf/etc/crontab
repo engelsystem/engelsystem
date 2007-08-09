@@ -1,1 +1,1 @@
-*/15    * * * * www-data  (cd /var/www.ssl/admin ; php4 dect_cron.php)
+*/15    * * * * www-data  (cd /home/engel-system/services ; php4 cron_dect.php)
