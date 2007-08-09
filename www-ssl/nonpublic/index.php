@@ -73,7 +73,6 @@ else
 			$ErrorText = "pub_index_User_more_as_one";
 	} // Ende Check, ob User angemeldet wurde
 } 
-
 include ("./inc/header.php");
 if( isset($ErrorText))
 	echo "<h2>". Get_Text($ErrorText). "</h2><br>\n";

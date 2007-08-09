@@ -8,7 +8,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 {
 // gibt, nach übergabe der der SchichtID (SID) und der RaumBeschreibung,
 // die eingetragenden und und offenden Schichteintäge zurück
-	global $EngelType, $EngelTypeID, $TID2Name, $con, $DEBUG;
+	global $EngelType, $EngelTypeID, $TID2Name, $con, $DEBUG, $gmdateOffset;
 
 	$Spalten = "";
 
@@ -130,7 +130,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		////////////////////////////
 		//in vergangenheit
 		$SQLtime = "SELECT `DateE` FROM `Shifts` WHERE (`SID`='$SID' AND `DateE` >= '". 
-			gmdate("Y-m-d H:i:s", time()+ 3600). "')";
+			gmdate("Y-m-d H:i:s", time()+ $gmdateOffset). "')";
 		$Ergtime = mysql_query($SQLtime, $con);
 		if( mysql_num_rows( $Ergtime) > 0)
 		{
@@ -312,7 +312,7 @@ function CreateRoomShifts( $raum )
 #######################################################*/
 function showEmptyShifts( )
 {
-	global $con, $DEBUG, $RoomID;
+	global $con, $DEBUG, $RoomID, $gmdateOffset;
 
 	echo "<table border=\"1\">\n";
 	echo "<tr>\n";
@@ -323,7 +323,7 @@ function showEmptyShifts( )
 	echo "</tr>\n";
 	
 	$sql = "SELECT `SID`, `DateS`, `Man`, `RID` FROM `Shifts` ".
-		"WHERE (`Shifts`.`DateS`>='". gmdate("Y-m-d H:i:s", time()+3600). "') ".
+		"WHERE (`Shifts`.`DateS`>='". gmdate("Y-m-d H:i:s", time()+$gmdateOffset). "') ".
 		"ORDER BY `DateS`, `RID`;";
 	$Erg = mysql_query($sql, $con);
 

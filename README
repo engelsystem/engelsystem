@@ -7,6 +7,10 @@ DIRS:
 ./www-ssl
 	daten für https verbindung
 
+Anfordeungen:
+-------------
+	PHP 4.xx
+
 Systemconfig:
 -------------
 ./www-ssl/inc/config.php
@@ -19,3 +23,4 @@ php.ini:
 --------
 add:
 	allow_url_fopen = On
+	date.timezone = Europe/Berlin

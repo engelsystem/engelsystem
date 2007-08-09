@@ -3,6 +3,8 @@ $title = "Himmel";
 $header = "Schichtpl&auml;ne";
 $submenus = 2;
 
+$gmdateOffset=3600+3600;
+
 if( isset($_GET["ausdatum"]))
 	$ausdatum = $_GET["ausdatum"];
 if( isset($_GET["raum"]))
@@ -43,7 +45,7 @@ function ShowSwitchDay()
 // das Datum auf den ersten Tag setzen...
 if( !isset($ausdatum) ) 
 {
-	$sql = "SELECT `DateS` FROM `Shifts` WHERE `DateS` like '". gmdate("Y-m-d", time()+3600). "%' ORDER BY `DateS`";
+	$sql = "SELECT `DateS` FROM `Shifts` WHERE `DateS` like '". gmdate("Y-m-d", time()+$gmdateOffset). "%' ORDER BY `DateS`";
 //	$sql = "SELECT `DateS` FROM `Shifts` WHERE `DateS` like '2004-12-29%' ORDER BY `DateS`";
 	$Erg = mysql_query($sql, $con);
 	if( mysql_num_rows( $Erg ) == 0 )
@@ -54,7 +56,7 @@ if( !isset($ausdatum) )
 	if( mysql_num_rows( $Erg ) > 0 )
 		$ausdatum = substr(mysql_result($Erg,0,"DateS"),0,10);
 	else
-		$ausdatum = gmdate("Y-m-d", time()+3600);
+		$ausdatum = gmdate("Y-m-d", time()+$gmdateOffset);
 
 }
 
@@ -122,7 +124,7 @@ else
 			$SpaltenTemp.= ($TempMinuten<10)? "0$TempMinuten": "$TempMinuten";
 				
 			//aktuelle stunde markieren
-			if( ($j==0) && ($i == gmdate("H", time()+3600)) && (gmdate("Y-m-d", time()+ 3600) == $ausdatum) )
+			if( ($j==0) && ($i == gmdate("H", time()+$gmdateOffset)) && (gmdate("Y-m-d", time()+ $gmdateOffset) == $ausdatum) )
 				$SpaltenTemp = "<h1>$SpaltenTemp</h1>";
 				
 			$SpaltenTemp = "<td>$SpaltenTemp</td>\n";
