@@ -41,19 +41,10 @@ echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n";
 <HEAD>
 <?PHP
 
-$Version = "";
-
-if( is_readable( "./inc/.svn/entries"))
-{
-	$file = fopen( "./inc/.svn/entries", "r");
-	while(!feof($file))
-		if( strpos( ($temp = fgets($file)) , "revision" ) ) $Version = $temp;
-	fclose( $file);
-
-	$start = strpos( $Version, "=\"")+2;
-	$len = strpos( $Version, "\"/") - $start;
-	$Version = "(r ". substr( $Version, $start, $len ). ")";
-}
+// SVN versions auswertung
+exec("svnversion", $VersionArray);
+if( strlen($VersionArray[0]))
+	$Version = "(r ". $VersionArray[0]. ")";
 
 echo "<TITLE>--- $title  $Version ---</TITLE>";
 ?>
