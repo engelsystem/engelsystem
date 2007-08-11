@@ -181,8 +181,6 @@ else
 				"<input type=\"text\" size=\"5\" name=\"eSize\" value=\"".
 				mysql_result($Erg, 0, "Size")."\"></td></tr>\n";
 			echo "  <tr><td>Passwort</td><td>".
-				"<input type=\"text\" size=\"40\" name=\"ePasswort\" value=\"".
-				mysql_result($Erg, 0, "Passwort")."\" disabled> ".
 				"<a href=\"./user2.php?action=newpw&eUID="
 				.mysql_result($Erg, 0, "UID")."\">neues Kennwort setzen</a></td></tr>\n";
   
