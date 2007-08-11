@@ -18,7 +18,7 @@ if( !IsSet( $_GET["news_begin"]))
 if( !IsSet( $_GET["DISPLAY_NEWS"]))
 	$_GET["DISPLAY_NEWS"] = 5;
    
-$SQL = "SELECT * FROM `News` ORDER BY 'ID' DESC LIMIT ". intval($_GET["news_begin"]). ", ". intval($_GET["DISPLAY_NEWS"]);
+$SQL = "SELECT * FROM `News` ORDER BY `ID` DESC LIMIT ". intval($_GET["news_begin"]). ", ". intval($_GET["DISPLAY_NEWS"]);
 $Erg = mysql_query($SQL, $con);
 
 // anzahl zeilen
