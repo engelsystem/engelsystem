@@ -16,6 +16,7 @@
 -- Tabellenstruktur für Tabelle `UserCVS`
 -- 
 
+DROP TABLE IF EXISTS `UserCVS`;
 CREATE TABLE `UserCVS` (
   `UID` int(11) NOT NULL default '0',
   `index.php` char(1) NOT NULL default 'N',
