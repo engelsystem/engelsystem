@@ -58,7 +58,7 @@ CREATE TABLE `UserCVS` (
   `admin/dbUpdateFromXLS.php` char(1) NOT NULL default 'N',
   `admin/Recentchanges.php` char(1) NOT NULL default 'N',
   `admin/debug.php` char(1) NOT NULL default 'N',
-  PRIMARY KEY  (`UID`,`UID`)
+  PRIMARY KEY  (`UID`)
 ) TYPE=MyISAM;
 
 --

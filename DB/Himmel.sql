@@ -212,4 +212,4 @@ CREATE TABLE IF NOT EXISTS `Counter` (
   `URL` varchar(255) NOT NULL default '',
    `Anz` bigint(20) NOT NULL default '0',
    PRIMARY KEY  (`URL`)
-) TYPE=MyISAM COMMENT='Counter alles der Seiten';´
+) TYPE=MyISAM COMMENT='Counter alles der Seiten';
