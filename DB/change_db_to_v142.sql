@@ -1,2 +1,0 @@
-ALTER TABLE `User` ADD `ICQ`  VARCHAR( 30 )  NULL AFTER `email` , ADD `jabber` VARCHAR( 200 ) NULL AFTER `ICQ` ;
-
