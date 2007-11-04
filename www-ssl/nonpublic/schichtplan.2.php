@@ -1,4 +1,4 @@
-<h4>&nbsp;Raum übersicht</h4>
+<h4>&nbsp;Raum &uuml;bersicht</h4>
 
 <?php
 

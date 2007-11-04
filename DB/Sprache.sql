@@ -97,7 +97,7 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('33', 'EN', 'Languag
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('34', 'DE', 'Avatar wurde gesetzt.');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('34', 'EN', 'Avatar is saved.');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('35', 'DE', '&lt;b&gt;Neue Anfrage:&lt;/b&gt;\r\nIn diesem Formular hast du die M&ouml;glichkeit, den Erzengeln eine Frage zu stellen. Wenn diese beantwortet ist, wirst du hier dar&uuml;ber informiert. Sollte die Frage von allgemeinem Interesse sein, wird diese in die Engel-FAQ &uuml;bernommen.');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('35', 'EN', '&lt;b&gt;New Question:&lt;/b&gt;\r\nWith this form you may sumbit questions to our Archangels. Topics of common interest may be added to the FAQ. (Section: answered questions).\r\n');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('35', 'EN', '<b>New Question</b>\r\nWith this form you may sumbit questions to our Archangels. Topics of common interest may be added to the FAQ. (Section: answered questions).\r\n');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('36', 'DE', 'Stelle hier deine Frage');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('36', 'EN', 'Tell us your question');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('37', 'DE', 'Deine Anfrage war:');
@@ -542,6 +542,10 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/faq.php',
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/faq.php', 'EN', 'Questions for the ArchAngels');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/index.php', 'DE', ' ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/index.php', 'EN', ' ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_einstellungen_PictureUpload', 'DE', 'Hochzuladendes Bild ausw&auml;hlen:');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_einstellungen_PictureUpload', 'EN', 'Choose a picture to Upload:');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('upload', 'DE', 'Upload');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('upload', 'EN', 'Upload');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/room.php', 'DE', 'Räume');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/room.php', 'EN', 'rooms');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/EngelType.php', 'DE', 'Engeltypen');
@@ -558,10 +562,14 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dbUpdateFromX
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dbUpdateFromXLS.php', 'EN', 'UpdateDB');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect.php', 'DE', 'Dect');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect.php', 'EN', 'Dect');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect_call.php', 'DE', 'Dect-Call');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect_call.php', 'EN', 'Dect-Call');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/user.php', 'DE', 'Engelliste');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/user.php', 'EN', 'Engel-list');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userDefaultSetting.php', 'DE', 'Engel Voreinstellungen');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userDefaultSetting.php', 'EN', 'Engel Default Setting');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/UserPicture.php', 'DE', 'Benutzerbilder');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/UserPicture.php', 'EN', 'User Pictures');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/aktiv.php', 'DE', 'Aktiv Liste');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/aktiv.php', 'EN', 'active list');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/tshirt.php', 'DE', 'T-Shirtausgabe');

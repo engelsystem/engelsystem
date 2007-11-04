@@ -80,7 +80,7 @@ if ( !isset($raum) )
 	
 	
 	// zeit die naesten freien schichten
-	showEmptyShifts();
+	showEmptyShifts(); 
 } 
 else 
 { 	// Wenn einraum Ausgewählt ist:
@@ -153,7 +153,7 @@ else
 
 }//if (isset($raum))
 
-echo "<a href=\"". $_SESSION["newurl"]. "&Icon=0\">@</a>";
+//echo "<a href=\"". $_SESSION["newurl"]. "&Icon=0\">@</a>";
 
 include ("./inc/footer.php");
 ?>

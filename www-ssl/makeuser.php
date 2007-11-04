@@ -1,6 +1,8 @@
 <?PHP
 $title = "Anmeldung zum Chaos-Engel";
 $header = "";
+$success = "none"; 
+include ("./inc/config.php");
 include ("./inc/header.php");
 include ("./inc/config_db.php");
 include ("./inc/crypt.php");
@@ -91,12 +93,16 @@ if( isset($_POST["send"]))
 				echo "<h1>". Get_Text("makeuser_writeOK3"). "</h1>\n";
 			}
 			echo Get_Text("makeuser_writeOK4"). "</p><p></p>\n<br><br>\n";
+			$success="any";
+
 		}
 	}
-	if( !isset($error) )
-		echo Get_Text("makeuser_text4"). "<br>\n";
-	else 
+	if( !isset($error) ){
+		echo Get_Text("makeuser_text4"). "<a href=";
+		echo($url). ">Login</a><br>\n";
+	}else{ 
                 echo "<p class=\"warning\">\n$error\n</p>\n\n";
+	}
 }
 else
 {
@@ -116,7 +122,7 @@ else
 	$_POST["kommentar"] = "";
 	$_POST["Hometown"] = "";
 }
-
+if( $success=="none" ){
 echo "<h1>".Get_Text("makeuser_text0")."</h1>". "<h2>". Get_Text("makeuser_text1"). "</h2>";
 echo "\t<form action=\"\" method=\"post\">\n";
 echo "\t\t<table>\n";
@@ -187,7 +193,7 @@ echo "\t\t\t<tr><td>&nbsp;</td><td><input type=\"submit\" name=\"send\" value=\"
 echo "\t\t</table>\n";
 echo "\t</form>\n";
 Print_Text("makeuser_text3");
-
+}
 include ("./inc/footer.php");
 ?>
 
