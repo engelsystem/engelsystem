@@ -45,66 +45,117 @@ echo "\n\n<br>\n<h1>XML File:</h1>\n";
 if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST["PentabarfURL"]))
 {
 	echo "Update XCAL-File from Pentabarf..";
-	
-	//backup error messeges and delate
-	$Backuperror_messages = $error_messages;
-		$fp = fsockopen( "ssl://$PentabarfXMLhost", 443, $errno, $errstr, 30);
+	if($PentabarfGetWith=="fsockopen")
+	{
+		//backup error messeges and delate
+		$Backuperror_messages = $error_messages;
+			$fp = fsockopen( "ssl://$PentabarfXMLhost", 443, $errno, $errstr, 30);
 //	$error_messages = $Backuperror_messages;
-	
-	if( !$fp)
-	{
-	   echo "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath$PentabarfXMLEventID' not readable!".
-	   	"[$errstr ($errno)]</h2>";
-	}
-	else
-	{
-		if( ($fileOut = fopen( "$Tempdir/engelXML", "w")) != FALSE)
+		
+		if( !$fp)
 		{
-			$head =	'GET /'. $PentabarfXMLpath. $PentabarfXMLEventID. ' HTTP/1.1'."\r\n".
-				'Host: '. $PentabarfXMLhost. "\r\n".
-				'User-Agent: Engelsystem'. "\r\n".
-				'Authorization: Basic '.
-				base64_encode($_POST["PentabarfUser"]. ':'. $_POST["password"])."\r\n".
-				"\r\n";
-			fputs( $fp, $head);
-			$Zeilen = -1;
-			while (!feof($fp))
-			{	
-				$Temp= fgets($fp,1024);
-				
-				// ende des headers
-				if( $Temp== "f20\r\n" )
-				{
-					$Zeilen = 0;
-					$Temp="";
-				}
-				
-				//file ende?
-				if( $Temp=="0\r\n")
-					break;
-
-				if( ($Zeilen>-1) && ($Temp!="ffb\r\n") )
-				{
-					//steuerzeichen ausfiltern
-					if( strpos( "#$Temp", "\r\n") > 0)
-						$Temp = substr($Temp, 0, strlen($Temp)-2);
-					if( strpos( "#$Temp", "1005") > 0)
-						$Temp = "";
-					if( strpos( "#$Temp", "783") > 0)
-						$Temp = "";
-					//schreiben in file
-					fputs( $fileOut, $Temp);
-					$Zeilen++;
-				}
-			}
-			fclose( $fileOut);
-			
-			echo "<br>Es wurden $Zeilen Zeilen eingelesen<br>";
+		   echo "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath$PentabarfXMLEventID' not readable!".
+		   	"[$errstr ($errno)]</h2>";
 		}
 		else
-			echo "<h2>fail: File '$Tempdir/engelXML' not writeable!</h2>";
-		fclose($fp);
-	}
+		{
+			if( ($fileOut = fopen( "$Tempdir/engelXML", "w")) != FALSE)
+			{
+				$head =	'GET /'. $PentabarfXMLpath. $PentabarfXMLEventID. ' HTTP/1.1'."\r\n".
+					'Host: '. $PentabarfXMLhost. "\r\n".
+					'User-Agent: Engelsystem'. "\r\n".
+					'Authorization: Basic '.
+					base64_encode($_POST["PentabarfUser"]. ':'. $_POST["password"])."\r\n".
+					"\r\n";
+				fputs( $fp, $head);
+				$Zeilen = -1;
+				while (!feof($fp))
+				{	
+					$Temp= fgets($fp,1024);
+					
+					// ende des headers
+					if( $Temp== "f20\r\n" )
+					{
+						$Zeilen = 0;
+						$Temp="";
+					}
+					
+					//file ende?
+					if( $Temp=="0\r\n")
+						break;
+
+					if( ($Zeilen>-1) && ($Temp!="ffb\r\n") )
+					{
+						//steuerzeichen ausfiltern
+						if( strpos( "#$Temp", "\r\n") > 0)
+							$Temp = substr($Temp, 0, strlen($Temp)-2);
+						if( strpos( "#$Temp", "1005") > 0)
+							$Temp = "";
+						if( strpos( "#$Temp", "783") > 0)
+							$Temp = "";
+						//schreiben in file
+						fputs( $fileOut, $Temp);
+						$Zeilen++;
+					}
+				}
+				fclose( $fileOut);
+				
+				echo "<br>Es wurden $Zeilen Zeilen eingelesen<br>";
+			}
+			else
+				echo "<h2>fail: File '$Tempdir/engelXML' not writeable!</h2>";
+			fclose($fp);
+			}
+		}
+		elseif($PentabarfGetWith=="fopen")
+		{
+			//user uns password in url einbauen
+			$FileNameIn =	"https://". $_POST["PentabarfUser"]. ':'. $_POST["password"]. "@". 
+							$PentabarfXMLhost. "/". $PentabarfXMLpath. $PentabarfXMLEventID;
+			if( ($fileIn = fopen( $FileNameIn, "r")) != FALSE)
+			{
+				if( ($fileOut = fopen( "$Tempdir/engelXML", "w")) != FALSE)
+				{
+					$Zeilen = 0;
+					while (!feof($fileIn)) 
+					{	
+						$Zeilen++;
+						fputs( $fileOut, fgets( $fileIn));	
+					}
+					fclose( $fileOut);
+					echo "<br>Es wurden $Zeilen Zeilen eingelesen<br>";
+				}
+				else
+					echo "<h2>fail: File '$Tempdir/engelXML' not writeable!</h2>";
+				fclose( $fileIn);
+			}
+			else
+				echo "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath$PentabarfXMLEventID' not readable!</h2>";		
+		}
+		elseif( $PentabarfGetWith=="wget")
+		{
+			$Command = "wget --http-user=". $_POST["PentabarfUser"]. " --http-passwd=".$_POST["password"]. " ".
+						"https://$PentabarfXMLhost/$PentabarfXMLpath$PentabarfXMLEventID".
+					" --output-file=$Tempdir/engelXMLwgetLog --output-document=$Tempdir/engelXML".
+					" --no-check-certificate";
+			echo system( $Command, $Status);
+			if( $Status==0)
+				echo "OK.<br>";
+			else
+				echo "fail ($Status)($Command).<br>";
+		}
+		elseif( $PentabarfGetWith=="lynx")
+		{
+			$Command = "lynx -auth=". $_POST["PentabarfUser"]. ":".$_POST["password"]. " -dump ".
+						"https://$PentabarfXMLhost/$PentabarfXMLpath$PentabarfXMLEventID > $Tempdir/engelXML";
+			echo system( $Command, $Status);
+			if( $Status==0)
+				echo "OK.<br>";
+			else
+				echo "fail ($Status)($Command).<br>";
+		}
+		else
+			echo "<h1>The PentabarfGetWith='$PentabarfGetWith' not supported</h1>";
 }
 else
 {

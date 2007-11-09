@@ -35,8 +35,9 @@ $GlobalZeileProStunde = 4;
 $Tempdir="/tmp";
 
 //Pentabarf ConferenzDI für UpdateDB
-$PentabarfXMLhost = "pentabarf.cccv.de";
+$PentabarfXMLhost = "cccv.pentabarf.org";
 $PentabarfXMLpath = "Xcal/conference/";
 $PentabarfXMLEventID = "31";
+$PentabarfGetWith = "fsockopen";        // "fsockopen"/"fopen"/"wget"/"lynx"
 
 ?>
