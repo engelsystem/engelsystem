@@ -524,8 +524,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/engelbesp
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/engelbesprechung.php', 'EN', 'Angel meeting');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/schichtplan.php', 'DE', 'Schichtplan');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/schichtplan.php', 'EN', 'Available Shifts');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/schichtplan_add.php', 'DE', 'Schichtplan');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/schichtplan_add.php', 'EN', 'Available Shifts');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/schichtplan_add.php', 'DE', ' ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/schichtplan_add.php', 'EN', ' ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/myschichtplan.php', 'DE', 'Mein Schichtplan');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/myschichtplan.php', 'EN', 'My Shifts');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/einstellungen.php', 'DE', 'Einstellungen');
