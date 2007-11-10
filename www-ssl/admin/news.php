@@ -14,7 +14,7 @@ if (!IsSet($_GET["action"]))
 	$rowcount = mysql_num_rows($Erg);
 	?>
 Hallo <?PHP echo $_SESSION['Nick'] ?>, <br>
-hier kannst du die News s&auml;bern... falls jemand auf die Idee kommt, 
+hier kannst du die News s&auml;ubern... falls jemand auf die Idee kommt, 
 hier herumzuspamen oder aus Versehen falsche Informationen zu hinterlegen :)<br><br>
 
 <table width="100%" class="border" cellpadding="2" cellspacing="1">
