@@ -109,21 +109,24 @@ NameVirtualHost *:80
 	/etc/apache2/sites-available/https:
 
 <VirtualHost *:443>
-# SSL (START)
-SSLEngine on
-SSLCertificateFile /etc/apache2/ssl/apache.pem
-SSLCertificateKeyFile /etc/apache2/apache.pem
-# SSL (ENDE)
-ServerAdmin ichdasich@jabber.ccc.de
-#kann auch einfach eine IP sein
-ServerName localhost
-DocumentRoot /var/www/https
-<Directory /var/www/https>
-Order Deny,Allow
-Allow from all
-# Zeige keine Verzeichnisse an
-Options -Indexes
-</Directory>
+	# SSL (START)
+	SSLEngine on
+	SSLCertificateFile /etc/apache2/ssl/apache.pem
+	SSLCertificateKeyFile /etc/apache2/apache.pem
+	
+	# SSL (ENDE)
+	ServerAdmin ichdasich@jabber.ccc.de
+
+	#kann auch einfach eine IP sein
+	ServerName localhost
+	DocumentRoot /var/www/https
+	<Directory /var/www/https>
+		Order Deny,Allow
+		Allow from all
+		# Zeige keine Verzeichnisse an
+		Options -Indexes
+		AddDefaultCharset ISO-8859-1
+	</Directory>
 </VirtualHost>
 
 	/etc/apache2/ports.conf:
