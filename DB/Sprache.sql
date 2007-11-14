@@ -562,8 +562,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dbUpdateFromX
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dbUpdateFromXLS.php', 'EN', 'UpdateDB');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect.php', 'DE', 'Dect');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect.php', 'EN', 'Dect');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect_call.php', 'DE', 'Dect-Call');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect_call.php', 'EN', 'Dect-Call');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect_call.php', 'DE', ' ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect_call.php', 'EN', ' ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/user.php', 'DE', 'Engelliste');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/user.php', 'EN', 'Engel-list');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userDefaultSetting.php', 'DE', 'Engel Voreinstellungen');
