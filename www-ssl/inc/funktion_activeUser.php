@@ -18,7 +18,7 @@ if( !function_exists("bcmod"))
 }
 
 
-echo "<h4 class=\"menu\">Engels Online</h4>";
+echo "<h4 class=\"menu\">Engel online</h4>";
 
 $SQL = "SELECT UID, Nick, lastLogIn ".
 	"FROM User ".

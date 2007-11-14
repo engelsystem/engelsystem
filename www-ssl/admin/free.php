@@ -8,7 +8,7 @@ include ("./inc/funktion_db_list.php");
 
 echo "Hallo ".$_SESSION['Nick'].",<br>\n";
 
-echo "hier findest du alle Engel, welche zur Zeit in Schichten verplant sind:\n<br><br>\n";
++echo "<br><br>\n\nHier findest du alle Engel, welche zur Zeit in keiner Schicht verplant sind:<br><br>\n";
 
 
 #######################################################

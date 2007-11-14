@@ -1,5 +1,4 @@
-<h4>&nbsp;Raum &uuml;bersicht</h4>
-
+<h4>&nbsp;Raum&uuml;bersicht</h4>
 <?php
 
 include ("./inc/funktion_schichtplan_aray.php");
