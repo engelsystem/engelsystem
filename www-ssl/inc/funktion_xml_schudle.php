@@ -139,7 +139,7 @@ foreach($XMLmain->sub as $EventKey => $Event)
 			substr( getXMLsubData( $Event, "DTSTART"), 6, 2). " ".
 			   substr( getXMLsubData( $Event, "DTSTART"), 9, 2). ":".
 			   substr( getXMLsubData( $Event, "DTSTART"), 11,2). ":00";
-		$LenXML  = substr( getXMLsubData( $Event, "DURATION"), 0, strlen(getXMLsubData( $Event, "DURATION"))-1);
+		$LenXML  = substr( getXMLsubData( $Event, "DURATION"), 0, 2) + ( substr( getXMLsubData( $Event, "DURATION"), 3, 2)/60);
 		$RIDXML  = getXMLsubData( $Event, "LOCATION");
 		$ManXML  = getXMLsubData( $Event, "SUMMARY");
 		$URLXML  = getXMLsubData( $Event, "URL");
