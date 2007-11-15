@@ -54,14 +54,14 @@ if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST[
 		
 		if( !$fp)
 		{
-		   echo "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath$PentabarfXMLEventID' not readable!".
+		   echo "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath". $_POST["PentabarfURL"]. "' not readable!".
 		   	"[$errstr ($errno)]</h2>";
 		}
 		else
 		{
 			if( ($fileOut = fopen( "$Tempdir/engelXML", "w")) != FALSE)
 			{
-				$head =	'GET /'. $PentabarfXMLpath. $PentabarfXMLEventID. ' HTTP/1.1'."\r\n".
+				$head =	'GET /'. $PentabarfXMLpath. $_POST["PentabarfURL"]. ' HTTP/1.1'."\r\n".
 					'Host: '. $PentabarfXMLhost. "\r\n".
 					'User-Agent: Engelsystem'. "\r\n".
 					'Authorization: Basic '.
@@ -111,7 +111,7 @@ if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST[
 		{
 			//user uns password in url einbauen
 			$FileNameIn =	"https://". $_POST["PentabarfUser"]. ':'. $_POST["password"]. "@". 
-							$PentabarfXMLhost. "/". $PentabarfXMLpath. $PentabarfXMLEventID;
+							$PentabarfXMLhost. "/". $PentabarfXMLpath. $_POST["PentabarfURL"];
 			if( ($fileIn = fopen( $FileNameIn, "r")) != FALSE)
 			{
 				if( ($fileOut = fopen( "$Tempdir/engelXML", "w")) != FALSE)
@@ -130,12 +130,12 @@ if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST[
 				fclose( $fileIn);
 			}
 			else
-				echo "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath$PentabarfXMLEventID' not readable!</h2>";		
+				echo "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath". $_POST["PentabarfURL"]. "' not readable!</h2>";		
 		}
 		elseif( $PentabarfGetWith=="wget")
 		{
 			$Command = "wget --http-user=". $_POST["PentabarfUser"]. " --http-passwd=".$_POST["password"]. " ".
-						"https://$PentabarfXMLhost/$PentabarfXMLpath$PentabarfXMLEventID".
+						"https://$PentabarfXMLhost/$PentabarfXMLpath". $_POST["PentabarfURL"].
 					" --output-file=$Tempdir/engelXMLwgetLog --output-document=$Tempdir/engelXML".
 					" --no-check-certificate";
 			echo system( $Command, $Status);
@@ -147,7 +147,7 @@ if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST[
 		elseif( $PentabarfGetWith=="lynx")
 		{
 			$Command = "lynx -auth=". $_POST["PentabarfUser"]. ":".$_POST["password"]. " -dump ".
-						"https://$PentabarfXMLhost/$PentabarfXMLpath$PentabarfXMLEventID > $Tempdir/engelXML";
+						"https://$PentabarfXMLhost/$PentabarfXMLpath". $_POST["PentabarfURL"]. " > $Tempdir/engelXML";
 			echo system( $Command, $Status);
 			if( $Status==0)
 				echo "OK.<br>";
