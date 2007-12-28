@@ -45,30 +45,13 @@ echo "\n\n<br>\n<h1>XML File:</h1>\n";
 if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST["PentabarfURL"]))
 {
 	echo "Update XCAL-File from Pentabarf..";
-<<<<<<< .mine
 	if($PentabarfGetWith=="fsockopen")
 	{
-<<<<<<< .mine
 
 	//backup error messeges and delate
 	$Backuperror_messages = $error_messages;
 		$fp = fsockopen( "ssl://$PentabarfXMLhost", 443, $errno, $errstr, 30);
-=======
-	if($PentabarfGetWith=="fsockopen")
-	{
-		//backup error messeges and delate
-		$Backuperror_messages = $error_messages;
-			$fp = fsockopen( "ssl://$PentabarfXMLhost", 443, $errno, $errstr, 30);
-=======
-
-	//backup error messeges and delate
-	$Backuperror_messages = $error_messages;
-		$fp = fsockopen( "ssl://$PentabarfXMLhost", 443, $errno, $errstr, 30);
->>>>>>> .r257
->>>>>>> .r256
 //	$error_messages = $Backuperror_messages;
-<<<<<<< .mine
-<<<<<<< .mine
 	
 	if( !$fp)
 	{
@@ -78,39 +61,7 @@ if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST[
 	else
 	{
 		if( ($fileOut = fopen( "$Tempdir/engelXML", "w")) != FALSE)
-=======
-		
-		if( !$fp)
-=======
-	
-	if( !$fp)
-	{
-	   echo "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath". $_POST["PentabarfURL"]. "' not readable!".
-	   	"[$errstr ($errno)]</h2>";
-	}
-	else
-	{
-		if( ($fileOut = fopen( "$Tempdir/engelXML", "w")) != FALSE)
->>>>>>> .r257
->>>>>>> .r256
 		{
-<<<<<<< .mine
-<<<<<<< .mine
-			$head =	'GET /'. $PentabarfXMLpath. $_POST["PentabarfURL"]. ' HTTP/1.1'."\r\n".
-				'Host: '. $PentabarfXMLhost. "\r\n".
-				'User-Agent: Engelsystem'. "\r\n".
-				'Authorization: Basic '.
-				base64_encode($_POST["PentabarfUser"]. ':'. $_POST["password"])."\r\n".
-				"\r\n";
-			fputs( $fp, $head);
-			$Zeilen = -1;
-			while (!feof($fp))
-			{	
-				$Temp= fgets($fp,1024);
-=======
-		   echo "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath". $_POST["PentabarfURL"]. "' not readable!".
-		   	"[$errstr ($errno)]</h2>";
-=======
 			$head =	'GET /'. $PentabarfXMLpath. $_POST["PentabarfURL"]. ' HTTP/1.1'."\r\n".
 				'Host: '. $PentabarfXMLhost. "\r\n".
 				'User-Agent: Engelsystem'. "\r\n".
@@ -151,7 +102,6 @@ if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST[
 			fclose( $fileOut);
 			
 			echo "<br>Es wurden $Zeilen Zeilen eingelesen<br>";
->>>>>>> .r257
 		}
 		else
 			echo "<h2>fail: File '$Tempdir/engelXML' not writeable!</h2>";
@@ -176,11 +126,6 @@ if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST[
 					fputs( $fileOut, fgets( $fileIn));	
 				}
 				fclose( $fileOut);
-<<<<<<< .mine
->>>>>>> .r256
-				
-=======
->>>>>>> .r257
 				echo "<br>Es wurden $Zeilen Zeilen eingelesen<br>";
 			}
 			else
