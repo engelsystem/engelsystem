@@ -17,10 +17,40 @@ If( !IsSet($_GET["action"]) )
 	echo Get_Text("pub_mywake_beschreibung3").($LETZTES_AUSTRAGEN).
 	     Get_Text("pub_mywake_beschreibung4")."<br><br>\n";
 
+	$USER_ID = $_SESSION['UID'];
+	if( $_SESSION['CVS'][ "admin/aktiv.php" ] == "Y" )
+	{
+		if( !isset( $_GET["UIDs"]) )
+			$_GET["UIDs"] = $_SESSION['UID'];
+		else
+			$USER_ID = $_GET["UIDs"];
+		
+		echo "<form action=\"".$_SERVER['SCRIPT_NAME']."\" method=\"GET\" >";
+
+		echo "Liste von <select name=\"UIDs\">\n";
+		$usql="SELECT * FROM `User` ORDER BY `Nick`";
+		$uErg = mysql_query($usql, $con);
+		$urowcount = mysql_num_rows($uErg);
+		for ($k=0; $k<$urowcount; $k++)
+		{
+			echo "\t<option value=\"".mysql_result($uErg, $k, "UID")."\" ".
+				( ($_GET["UIDs"]==mysql_result($uErg, $k, "UID")) ? " selected":""). ">".
+				mysql_result($uErg, $k, "Nick").
+				"</option>\n";
+		}
+		echo "</select> anzeigen.\n";
+		echo mysql_error($con);
+		
+		echo "<input type=\"submit\" value=\"zeigen\">\n";
+
+		echo "</form>";
+
+	}
+	
 	$SQL = "SELECT *, `ShiftEntry`.`Comment`, `ShiftEntry`.`TID` FROM `Shifts` ".
 	       "INNER JOIN `ShiftEntry` ".
 	       "ON `Shifts`.`SID`=`ShiftEntry`.`SID` ".
-	       "WHERE `ShiftEntry`.`UID`='". $_SESSION['UID']. "' ".
+	       "WHERE `ShiftEntry`.`UID`='$USER_ID' ".
 	       "ORDER BY `DateS`";
 	$erg = mysql_query($SQL, $con);
 
