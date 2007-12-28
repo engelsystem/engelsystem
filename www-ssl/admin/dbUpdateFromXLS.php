@@ -157,9 +157,6 @@ if( isset($_POST["PentabarfUser"]) && isset($_POST["password"]) && isset($_POST[
 		else
 			echo "fail ($Status)($Command).<br>";
 	}
-	else
-		echo "<h1>The PentabarfGetWith='$PentabarfGetWith' not supported</h1>";
-	}
 	elseif($PentabarfGetWith=="fopen")
 	{
 		//user uns password in url einbauen
