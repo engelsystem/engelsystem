@@ -58,8 +58,7 @@ $Erg = mysql_query($SQL, $con);
 echo mysql_error($con);
 $rowcount = mysql_num_rows($Erg);
 
-echo "Anzahl eintraege: $rowcount<br><br>";
-
+$aktivecount=0;
 for ($i=0; $i<$rowcount; $i++)
 {
 	echo "\n\n\t<tr class=\"content\">\n";
@@ -71,6 +70,7 @@ for ($i=0; $i<$rowcount; $i++)
 	{	
 		if( $_POST["Anzahl"] < mysql_result($Erg, $i, "LEN") )
 		{
+			$aktivecount++;
 			if( $_POST["SendType"]=="Show..")
 				echo "show set";
 			else
@@ -89,6 +89,8 @@ for ($i=0; $i<$rowcount; $i++)
 } // ende Auflistung aktive Engel 
 
 echo "</table>";
+
+echo "<br>Anzahl eintraege: $aktivecount / $rowcount (Aktive/Mitschichten)<br><br>";
 
 include ("./inc/footer.php");
 ?>
