@@ -153,7 +153,7 @@ else
 
 }//if (isset($raum))
 
-//echo "<a href=\"". $_SESSION["newurl"]. "&Icon=0\">@</a>";
+echo "<a href=\"". $_SESSION["newurl"]. "&Icon=0\">@</a>";
 
 include ("./inc/footer.php");
 ?>
