@@ -104,11 +104,13 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 			
 			foreach( $TempValue["Engel"] as $TempEngelEntry=> $TempEngelID )
 			{
+				if( $_SESSION['CVS'][ "admin/user.php" ] == "Y" )
+					$Spalten.= " <a href=\"./../admin/user.php?enterUID=$TempEngelID&Type=Normal\">"; 
 
 				if( $_SESSION['CVS'][ "admin/schichtplan.php" ] == "Y" )
 				{
 					if( UIDgekommen( $TempEngelID ) == "1")
-	      					$Spalten.= "&nbsp;&nbsp;<span style=\"color: blue;\">". 
+	      					$Spalten.= "&nbsp;&nbsp;<span style=\"color: blue;\">".
 							   UID2Nick( $TempEngelID ).
       							   ($_GET["Icon"]==1? DisplayAvatar( $TempEngelID ): "").
 							   "</span><br>\n\t\t";
@@ -122,6 +124,8 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
       					$Spalten.= "&nbsp;&nbsp;". UID2Nick( $TempEngelID ).
       						   ($_GET["Icon"]==1? DisplayAvatar( $TempEngelID ): "").
 						   "<br>\n\t\t";
+				if( $_SESSION['CVS'][ "admin/user.php" ] == "Y" )
+					$Spalten.= " </a>"; 
 			}
 			$Spalten = substr( $Spalten, 0, strlen($Spalten)-7 );
 		  }
