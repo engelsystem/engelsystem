@@ -3,8 +3,6 @@ $title = "Himmel";
 $header = "Schichtpl&auml;ne";
 $submenus = 2;
 
-$gmdateOffset=3600+3600;
-
 if( isset($_GET["ausdatum"]))
 	$ausdatum = $_GET["ausdatum"];
 if( isset($_GET["raum"]))

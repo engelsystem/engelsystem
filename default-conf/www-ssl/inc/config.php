@@ -20,6 +20,11 @@ $LETZTES_AUSTRAGEN=3;
 $crypt_system="md5";
 //$crypt_system="crypt";
 
+// the archangels
+$arch_angels="Daisy, BugBlue, TabascoEye";
+
+// timezonen offsett
+$gmdateOffset=3600;
 
 // für Developen 1, sonst = 0
 $DEBUG = 0;
