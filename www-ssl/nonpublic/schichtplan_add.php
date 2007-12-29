@@ -15,6 +15,12 @@ if (isset($_POST["newtext"]) && isset($_POST["SID"]) && isset($_POST["TID"])) {
 	$beginSchicht = mysql_result($ShiftErg, 0, "DateS");
 	$endSchicht   = mysql_result($ShiftErg, 0, "DateE");
 
+	//wenn keien rechte definiert sind
+	if( !isset($_SESSION['CVS'][ $TID2Name[$_POST["TID"]] ]))
+		$_SESSION['CVS'][ $TID2Name[$_POST["TID"]] ] = "Y";
+
+	if( $_SESSION['CVS'][ $TID2Name[$_POST["TID"]] ] == "Y")
+	{
 	// Ueberpruefung, ob der Engel bereits für eine Schicht zu dieser Zeit eingetragen ist
 	$SSQL="SELECT * FROM `Shifts`".
 		" INNER JOIN `ShiftEntry` ON `ShiftEntry`.`SID` = `Shifts`.`SID`".
@@ -57,40 +63,62 @@ if (isset($_POST["newtext"]) && isset($_POST["SID"]) && isset($_POST["TID"])) {
 			
 		}//TO Many USERS
 	}//Allready in Shift
+	}
+	else
+	{
+		echo "<h1>:-(</h1>";
+		array_push($error_messages, "Hack atteck\n");
+	}
 }
-elseif (isset($_GET["SID"]) && isset($_GET["TID"])) {
-  echo Get_Text("pub_schichtplan_add_Text1"). "<br><br>\n\n".
-	"<form action=\"./schichtplan_add.php\" method=\"post\">\n".
-	"<table border=\"0\">\n";
+elseif (isset($_GET["SID"]) && isset($_GET["TID"])) 
+{
+	//wenn keien rechte definiert sind
+	if( !isset($_SESSION['CVS'][ $TID2Name[$_GET["TID"]] ]))
+		$_SESSION['CVS'][ $TID2Name[$_GET["TID"]] ] = "Y";
+	
 
-  $SQL = "SELECT * FROM `Shifts` WHERE ";
-  $SQL .="(`SID` = '". $_GET["SID"]. "')";
-  $Erg = mysql_query($SQL, $con);
+
+	if( $_SESSION['CVS'][ $TID2Name[$_GET["TID"]] ] == "Y")
+	{
+
+		echo Get_Text("pub_schichtplan_add_Text1"). "<br><br>\n\n".
+			"<form action=\"./schichtplan_add.php\" method=\"post\">\n".
+			"<table border=\"0\">\n";
+	
+		$SQL = "SELECT * FROM `Shifts` WHERE ";
+		$SQL .="(`SID` = '". $_GET["SID"]. "')";
+		$Erg = mysql_query($SQL, $con);
   
-  echo "<tr><td>". Get_Text("pub_schichtplan_add_Date"). ":</td> <td>".
-       mysql_result($Erg, 0, "DateS"). "</td></tr>\n";
+		echo "<tr><td>". Get_Text("pub_schichtplan_add_Date"). ":</td> <td>".
+			mysql_result($Erg, 0, "DateS"). "</td></tr>\n";
 
-  echo "<tr><td>". Get_Text("pub_schichtplan_add_Place"). ":</td> <td>".
-       $RoomID[ mysql_result($Erg, 0, "RID") ]. "</td></tr>\n";
+		echo "<tr><td>". Get_Text("pub_schichtplan_add_Place"). ":</td> <td>".
+		       $RoomID[ mysql_result($Erg, 0, "RID") ]. "</td></tr>\n";
        
-  echo "<tr><td>". Get_Text("pub_schichtplan_add_Job"). ":</td> <td>".
-       $EngelTypeID[$_GET["TID"]]. "</td></tr>\n";
+		echo "<tr><td>". Get_Text("pub_schichtplan_add_Job"). ":</td> <td>".
+		       $EngelTypeID[$_GET["TID"]]. "</td></tr>\n";
        
-  echo "<tr><td>". Get_Text("pub_schichtplan_add_Len"). ":</td> <td>".
-       mysql_result($Erg, 0, "Len"). "h</td></tr>\n";
+		echo "<tr><td>". Get_Text("pub_schichtplan_add_Len"). ":</td> <td>".
+		       mysql_result($Erg, 0, "Len"). "h</td></tr>\n";
        
-  echo "<tr><td>". Get_Text("pub_schichtplan_add_TextFor"). ":</td> <td>".
-       mysql_result($Erg, 0, "Man"). "</td></tr>\n";
+		echo "<tr><td>". Get_Text("pub_schichtplan_add_TextFor"). ":</td> <td>".
+		       mysql_result($Erg, 0, "Man"). "</td></tr>\n";
        
-  echo "<tr><td valign='top'>". Get_Text("pub_schichtplan_add_Comment"). ":</td>\n <td>".
-       "<textarea name='newtext' cols='50' rows='10'></textarea> </td></tr>\n";
+		echo "<tr><td valign='top'>". Get_Text("pub_schichtplan_add_Comment"). ":</td>\n <td>".
+			"<textarea name='newtext' cols='50' rows='10'></textarea> </td></tr>\n";
 
-  echo "<tr><td>&nbsp;</td>\n".
-	"<td><input type=\"submit\" value=\"". Get_Text("pub_schichtplan_add_submit"). "\"> </td></tr>\n".
-	"</table>\n".
-	"<input type=\"hidden\" name=\"SID\" value=\"". $_GET["SID"]. "\">\n".
-	"<input type=\"hidden\" name=\"TID\" value=\"". $_GET["TID"]. "\">\n".
-	"</form>";
+		echo "<tr><td>&nbsp;</td>\n".
+			"<td><input type=\"submit\" value=\"". Get_Text("pub_schichtplan_add_submit"). "\"> </td></tr>\n".
+			"</table>\n".
+			"<input type=\"hidden\" name=\"SID\" value=\"". $_GET["SID"]. "\">\n".
+			"<input type=\"hidden\" name=\"TID\" value=\"". $_GET["TID"]. "\">\n".
+			"</form>";
+	}
+	else
+	{
+		echo "<h1>:-(</h1>";
+		array_push($error_messages, "Hack atteck\n");
+	}
 
 }
 

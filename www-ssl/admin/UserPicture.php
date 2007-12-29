@@ -12,7 +12,7 @@ if( IsSet($_GET["action"]) )
 	switch ($_GET["action"]) 
 	{
 		case 'FormUpload':
-			echo "Hier kannst Du ein Foto hochladen für:";
+			echo "Hier kannst Du ein Foto hochladen f&ouml;r:";
 			echo "<form action=\"./UserPicture.php?action=sendPicture\" method=\"post\" enctype=\"multipart/form-data\">\n";
 			echo "\t<select name=\"UID\">\n";
 			$usql="SELECT * FROM `User` ORDER BY `Nick`";
@@ -76,13 +76,13 @@ if( IsSet($_GET["action"]) )
 				echo "Fehlerhafter Aufruf";
 			break;
 		case 'del':
-			echo "Wollen Sie das Bild von '". UID2Nick( $_GET["UID"]). "' wirklich löschen? ".
+			echo "Wollen Sie das Bild von '". UID2Nick( $_GET["UID"]). "' wirklich l&ouml;schen? ".
 				"<a href=\"./UserPicture.php?action=delYes&UID=". $_GET["UID"]. "\">Yes</a>";
 			break;
 		case 'delYes':
 			if (IsSet($_GET["UID"]))
 			{
-				echo "Bild von '". UID2Nick( $_GET["UID"]). "' wurde gelöscht:<br>";
+				echo "Bild von '". UID2Nick( $_GET["UID"]). "' wurde gel&ouml;scht:<br>";
 				$SQL = "DELETE FROM `UserPicture` WHERE `UID`='". $_GET["UID"]. "' LIMIT 1";
 			}
 			else
@@ -121,24 +121,24 @@ echo "<tr class=\"contenttopic\">\n";
 echo "\t<td>User</td>\n";
 echo "\t<td>Bild</td>\n";
 echo "\t<td>Status</td>\n";
-echo "\t<td>Löschen</td>\n";
+echo "\t<td>L&ouml;schen</td>\n";
 echo "</tr>";
 
 for( $t = 0; $t < mysql_num_rows($Erg); $t++ ) 
 {	
-	$UID = mysql_result($Erg, $t, "UID");
+	$UIDs = mysql_result($Erg, $t, "UID");
 	echo "\t<tr class=\"content\">\n";
  		
 	echo "\t\t<td>". UID2Nick(mysql_result($Erg, $t, "UID")). "</td>\n";
-	echo "\t\t<td>". displayPictur( $UID, 0). "</td>\n";
+	echo "\t\t<td>". displayPictur( $UIDs, 0). "</td>\n";
 	
-	if( GetPicturShow( $UID) == "Y")	
-		echo "\t\t<td><a href=\"./UserPicture.php?action=SetN&UID=$UID\">sperren</a></td>\n";
-	elseif( GetPicturShow( $UID) == "N")
-		echo "\t\t<td><a href=\"./UserPicture.php?action=SetY&UID=$UID\">freigeben</a></td>\n";
+	if( GetPicturShow( $UIDs) == "Y")	
+		echo "\t\t<td><a href=\"./UserPicture.php?action=SetN&UID=$UIDs\">sperren</a></td>\n";
+	elseif( GetPicturShow( $UIDs) == "N")
+		echo "\t\t<td><a href=\"./UserPicture.php?action=SetY&UID=$UIDs\">freigeben</a></td>\n";
 	else
-		echo "\t\t<td>ERROR: show='". GetPicturShow( $UID). "'</td>\n";
-	echo "\t\t<td><a href=\"./UserPicture.php?action=del&UID=$UID\">del</a></td>\n";
+		echo "\t\t<td>ERROR: show='". GetPicturShow( $UIDs). "'</td>\n";
+	echo "\t\t<td><a href=\"./UserPicture.php?action=del&UID=$UIDs\">del</a></td>\n";
 	echo "\t</tr>\n";
 } // ende Auflistung Raeume
 echo "</table>";
