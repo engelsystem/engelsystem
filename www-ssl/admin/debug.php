@@ -31,7 +31,7 @@ echo "Deaktiviert";
 */
 
 
-echo "<h1>Tshirt-Size</h1>";
+echo "<h1>Tshirt-Size aller engel</h1>";
 $SQL="SELECT `Size`, COUNT(`Size`) FROM `User` GROUP BY `Size`";
 $Erg = mysql_query($SQL, $con);
 echo mysql_error($con);
@@ -40,6 +40,23 @@ $rowcount = mysql_num_rows($Erg);
 for ($i=0; $i<$rowcount; $i++)
 	echo mysql_result($Erg, $i, 1). "x '".  mysql_result($Erg, $i, 0). "'<br>\n";
 
+echo "<h1>Tshirt ausgegeben</h1>";
+$SQL="SELECT `Size`, COUNT(`Size`) FROM `User` WHERE `Tshirt`='1' GROUP BY `Size`";
+$Erg = mysql_query($SQL, $con);
+echo mysql_error($con);
+$rowcount = mysql_num_rows($Erg);
+
+for ($i=0; $i<$rowcount; $i++)
+	echo mysql_result($Erg, $i, 1). "x '".  mysql_result($Erg, $i, 0). "'<br>\n";
+
+echo "<h1>Tshirt nicht  ausgegeben (Gekommen=1)</h1>";
+$SQL="SELECT `Size`, COUNT(`Size`) FROM `User` WHERE `Gekommen`='1' and `Tshirt`='0' GROUP BY `Size`";
+$Erg = mysql_query($SQL, $con);
+echo mysql_error($con);
+$rowcount = mysql_num_rows($Erg);
+
+for ($i=0; $i<$rowcount; $i++)
+	echo mysql_result($Erg, $i, 1). "x '".  mysql_result($Erg, $i, 0). "'<br>\n";
 
 include ("./inc/footer.php");
 ?>
