@@ -1,9 +1,9 @@
 <?PHP
 // Adresse des Webservers
-$url = "https://engelsystem.url/";
+$url = "https://SEDENGELURL/";
 
 // Startverzeichnis des Engelhome
-$ENGEL_ROOT = "/engel/";
+$ENGEL_ROOT = "/";
 
 // System disable message, ist ist set is: bages schow only this text
 //$SystemDisableMessage="<H1>This system ist moved to a server in the BCC, you can in the moment only youse it in the in Engel Room</H1>";
