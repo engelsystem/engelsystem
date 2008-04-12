@@ -43,11 +43,7 @@ echo "setting sources in place"
 	cp -r `pwd`/engel-system/default-conf/www-ssl/inc/* /var/www/https/inc/
 	
 	rm /var/www/https/inc/config.php
-	#cat `pwd`/engel-system/default-conf/www-ssl/inc/config.php|sed s/SEDENGELURL/`cat /etc/hostname`.`dnsdomainname`/ >> /var/www/https/inc/config.php
 	cat `pwd`/engel-system/default-conf/www-ssl/inc/config.php|sed s/SEDENGELURL/`cat /etc/hostname`.`dnsdomainname`/ |sed s/MD5SED/`openssl x509 -noout -fingerprint -md5 -in /etc/apache2/ssl/apache.pem|sed s/MD5\ Fingerprint\=//`/|sed s/SHA1SED/`openssl x509 -noout -fingerprint -sha1 -in /etc/apache2/ssl/apache.pem|sed s/SHA1\ Fingerprint\=//`/ >> /var/www/https/inc/config.php
-	#openssl x509 -noout -fingerprint -sha1 -in /etc/apache2/ssl/apache.pem|sed s/SHA1\ Fingerprint\=//
-	
-	#openssl x509 -noout -fingerprint -md5 -in /etc/apache2/ssl/apache.pem|sed s/MD5\ Fingerprint\=//
 
         mysql tabel -u root < `pwd`/engel-system/DB/ChangeLog.sql
         mysql tabel -u root < `pwd`/engel-system/DB/Himmel.sql
