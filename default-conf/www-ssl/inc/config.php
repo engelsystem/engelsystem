@@ -31,7 +31,7 @@ $DEBUG = 0;
 
 // SSL Cert-KEY
 $show_SSLCERT = "MD5:<br>MD5SED<br>\n".
-		"SHA1:<br>SHA1SED
+		"SHA1:<br>SHA1SED";
 
 //globale const. fuer schischtplan
 $GlobalZeileProStunde = 4;
