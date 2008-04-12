@@ -30,8 +30,8 @@ $gmdateOffset=3600;
 $DEBUG = 0;
 
 // SSL Cert-KEY
-$show_SSLCERT = "MD5:<br>FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF<br>\n".
-		"SHA1:<br>FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF:FF";
+$show_SSLCERT = "MD5:<br>MD5SED<br>\n".
+		"SHA1:<br>SHA1SED
 
 //globale const. fuer schischtplan
 $GlobalZeileProStunde = 4;
