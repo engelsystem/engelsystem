@@ -1,7 +1,7 @@
 #!/bin/sh
 # todo: -fix the sql-server pw-stuff (idea: random-seed, printed in the end)
+#       -set random admin-pw (same as sql-foo)
 #	-install asterisk
-#	-do checkup for md5/sha
 #	-use ip if dns not configured
 #	-check ssl-stuff (want to have userinput when the script just started)
 
