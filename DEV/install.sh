@@ -1,19 +1,27 @@
-#!/bin/sh
+#!/bin/bash
 # todo:	-install asterisk
-#	-use ip if dns not configured
-#	-check ssl-stuff (want to have userinput when the script just started)
+#	-use ip if dns not configured (dig +short @141.1.1.1)
 
 echo "updating system"
-	apt-get -qqq update
-	apt-get -qqq upgrade
+	apt-get -qq update
+	apt-get -qq upgrade
 
 echo "installing software"
 	apt-get -qq install vim apache2 mysql-common mysql-server php5-mysql \
 		libapache2-mod-php5 subversion openssl ssl-cert ssh less makepasswd
 
 echo "setting local vars"
-SQL_PASSWD=`makepasswd --chars=8 --noverbose`
-ADM_PASSWD=`makepasswd --chars=8 --noverbose`
+	SQL_PASSWD=`makepasswd --chars=8 --noverbose`
+	ADM_PASSWD=`makepasswd --chars=8 --noverbose`
+
+	state=DE
+	province=Berlin
+	town=Berlin
+	org="CCC e.V."
+	section="Congress"
+	adminmail="admin@`cat /etc/hostname`.`dnsdomainname`"
+
+	FQDN=`cat /etc/hostname`.`dnsdomainname`
 
 echo "getting sources"
 	svn co svn://svn.cccv.de/engel-system
@@ -24,7 +32,7 @@ echo "setting up apache2"
 
 	mkdir /etc/apache2/ssl/
 
-	openssl req $@ -new -x509 -days 365 -nodes -out /etc/apache2/ssl/apache.pem -keyout /etc/apache2/apache.pem
+	echo -ne $state'\n'$province'\n'$town'\n'$org'\n'$section'\n'$FQDN'\n'$adminmail'\n'|openssl req $@ -new -x509 -days 365 -nodes -out /etc/apache2/ssl/apache.pem -keyout /etc/apache2/apache.pem
 
 	chmod 600 /etc/apache2/ssl/apache.pem
 
@@ -46,7 +54,7 @@ echo "setting sources in place"
 	cp -r `pwd`/engel-system/default-conf/www-ssl/inc/* /var/www/https/inc/
 	
 	rm /var/www/https/inc/config.php
-	cat `pwd`/engel-system/default-conf/www-ssl/inc/config.php|sed s/SEDENGELURL/`cat /etc/hostname`.`dnsdomainname`/ |sed s/MD5SED/`openssl x509 -noout -fingerprint -md5 -in /etc/apache2/ssl/apache.pem|sed s/MD5\ Fingerprint\=//`/|sed s/SHA1SED/`openssl x509 -noout -fingerprint -sha1 -in /etc/apache2/ssl/apache.pem|sed s/SHA1\ Fingerprint\=//`/ >> /var/www/https/inc/config.php
+	cat `pwd`/engel-system/default-conf/www-ssl/inc/config.php|sed s/SEDENGELURL/$FQND/ |sed s/MD5SED/`openssl x509 -noout -fingerprint -md5 -in /etc/apache2/ssl/apache.pem|sed s/MD5\ Fingerprint\=//`/|sed s/SHA1SED/`openssl x509 -noout -fingerprint -sha1 -in /etc/apache2/ssl/apache.pem|sed s/SHA1\ Fingerprint\=//`/ >> /var/www/https/inc/config.php
 	
 	rm /var/www/https/inc/config_db.php
         cat `pwd`/engel-system/default-conf/www-ssl/inc/config_db.php|sed s/changeme/$SQL_PASSWD/ >> /var/www/https/inc/config_db.php
@@ -75,8 +83,6 @@ echo "cleaning up"
 	echo "Web-Pass: $ADM_PASSWD" >> /root/cfg.info
 
 echo "final hints:"
-echo "-reset passwort for sqluser, don't forget to change /var/www/https/inc/config_db.php"
-echo "-change the adminpassword in the webfrontend"
 echo "-the webfrontend user/pass combo is: admin:$ADM_PASSWD"
 echo "-the sql-server uses root:$SQL_PASSWD"
 echo "-you can find further information and the passwords in /root/cfg.info"
