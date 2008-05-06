@@ -14,6 +14,9 @@ echo "setting local vars"
 	SQL_PASSWD=`makepasswd --chars=8 --noverbose`
 	ADM_PASSWD=`makepasswd --chars=8 --noverbose`
 
+	SQL_USER=`makepasswd --chars=8 --noverbose`
+	SQL_UPWD=`makepasswd --chars=8 --noverbose`
+
 	state=DE
 	province=Berlin
 	town=Berlin
@@ -21,7 +24,7 @@ echo "setting local vars"
 	section="Congress"
 	adminmail="admin@`cat /etc/hostname`.`dnsdomainname`"
 
-	FQDN=`cat /etc/hostname`.`dnsdomainname`
+	FQDN=`/bin/hostname -f`
 
 echo "getting sources"
 	svn co svn://svn.cccv.de/engel-system
@@ -47,17 +50,17 @@ echo "setting up apache2"
 
 echo "setting up mysql"
 	mysql -u root mysql -e "CREATE DATABASE tabel;"	
-
+	
 echo "setting sources in place"
 	cp -r `pwd`/engel-system/www/* /var/www/http/
 	cp -r `pwd`/engel-system/www-ssl/* /var/www/https/
 	cp -r `pwd`/engel-system/default-conf/www-ssl/inc/* /var/www/https/inc/
 	
 	rm /var/www/https/inc/config.php
-	cat `pwd`/engel-system/default-conf/www-ssl/inc/config.php|sed s/SEDENGELURL/$FQND/ |sed s/MD5SED/`openssl x509 -noout -fingerprint -md5 -in /etc/apache2/ssl/apache.pem|sed s/MD5\ Fingerprint\=//`/|sed s/SHA1SED/`openssl x509 -noout -fingerprint -sha1 -in /etc/apache2/ssl/apache.pem|sed s/SHA1\ Fingerprint\=//`/ >> /var/www/https/inc/config.php
+	cat `pwd`/engel-system/default-conf/www-ssl/inc/config.php|sed s/SEDENGELURL/$FQDN/ |sed s/MD5SED/`openssl x509 -noout -fingerprint -md5 -in /etc/apache2/ssl/apache.pem|sed s/MD5\ Fingerprint\=//`/|sed s/SHA1SED/`openssl x509 -noout -fingerprint -sha1 -in /etc/apache2/ssl/apache.pem|sed s/SHA1\ Fingerprint\=//`/ >> /var/www/https/inc/config.php
 	
 	rm /var/www/https/inc/config_db.php
-        cat `pwd`/engel-system/default-conf/www-ssl/inc/config_db.php|sed s/changeme/$SQL_PASSWD/ >> /var/www/https/inc/config_db.php
+        cat `pwd`/engel-system/default-conf/www-ssl/inc/config_db.php|sed s/changeme/$SQL_UPWD/|sed s/root/$SQL_USER/ >> /var/www/https/inc/config_db.php
 	
 	cp `pwd`/engel-system/DB/User.sql `pwd`/engel-system/DB/User.sql2
 	rm `pwd`/engel-system/DB/User.sql
@@ -74,17 +77,26 @@ echo "setting sources in place"
 
 echo "cleaning up"
 	rm -rf `pwd`/engel-system/
-	mysql -u root mysql -e "UPDATE user SET Password=PASSWORD('$SQL_PASSWD') WHERE user='root';"
-	mysql -u root mysql -e "FLUSH PRIVILEGES;"
+
+	mysql -u root mysql -e "GRANT SELECT,INSERT,ALTER,UPDATE,INDEX,DELETE,DROP,CREATE ON tabel.* TO '$SQL_USER'@'localhost' IDENTIFIED BY 'password';"
 	
-	echo "SQL-User: root" >> /root/cfg.info
-	echo "SQL-Pass: $SQL_PASSWD" >> /root/cfg.info
+	mysql -u root mysql -e "UPDATE user SET Password=PASSWORD('$SQL_PASSWD') WHERE user='root';"
+	mysql -u root mysql -e "UPDATE user SET Password=PASSWORD('$SQL_UPWD') WHERE user='$SQL_USER';"
+	
+	mysql -u root mysql -e "DELETE FROM user WHERE User='debian-sys-maint';"
+	mysql -u root mysql -e "FLUSH PRIVILEGES;"
+
+	echo "SQL-Root: root" >> /root/cfg.info
+	echo "SQL-Root-Pass: $SQL_PASSWD" >> /root/cfg.info
+        echo "SQL-User: $SQL_USER" >> /root/cfg.info
+        echo "SQL-User-Pass: $SQL_UPWD" >> /root/cfg.info	
 	echo "Web-User: admin" >> /root/cfg.info
-	echo "Web-Pass: $ADM_PASSWD" >> /root/cfg.info
+	echo "Web-User-Pass: $ADM_PASSWD" >> /root/cfg.info
 
 echo "final hints:"
 echo "-the webfrontend user/pass combo is: admin:$ADM_PASSWD"
-echo "-the sql-server uses root:$SQL_PASSWD"
+echo "-the sql-server root account is: root:$SQL_PASSWD"
+echo "-the sql-server user account is: $SQL_USER:$SQL_UPWD"
 echo "-you can find further information and the passwords in /root/cfg.info"
 echo "-make sure \$url in /var/www/https/inc/config.php is correct"
 
