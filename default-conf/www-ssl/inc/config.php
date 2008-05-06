@@ -39,6 +39,9 @@ $GlobalZeileProStunde = 4;
 //Tempdir
 $Tempdir="/tmp";
 
+// local timezone
+date_default_timezone_set("Europe/Berlin");
+
 //Pentabarf ConferenzDI für UpdateDB
 $PentabarfXMLhost = "cccv.pentabarf.org";
 $PentabarfXMLpath = "Xcal/conference/";
