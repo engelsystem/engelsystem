@@ -21,7 +21,7 @@ $crypt_system="md5";
 //$crypt_system="crypt";
 
 // the archangels
-$arch_angels="Daisy, BugBlue, TabascoEye";
+$arch_angels="fnord";
 
 // timezonen offsett
 $gmdateOffset=3600;
@@ -37,7 +37,7 @@ $show_SSLCERT = "MD5:<br>MD5SED<br>\n".
 $GlobalZeileProStunde = 4;
 
 //Tempdir
-$Tempdir="/tmp";
+$Tempdir="./tmp";
 
 // local timezone
 date_default_timezone_set("Europe/Berlin");
