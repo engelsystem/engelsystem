@@ -1,7 +1,7 @@
 <?php
 $title = "Index";
 $header = "FAQ";
-include ("./inc/header.php");
+include ("../includes/header.php");
 
 
 $SQL = "SELECT * FROM `FAQ`";
@@ -17,6 +17,6 @@ for ($n = 0 ; $n < $Zeilen ; $n++) {
   }
 }
 
-include ("./inc/footer.php");
+include ("../includes/footer.php");
 ?>
 

@@ -2,10 +2,10 @@
 $title = "Anmeldung zum Chaos-Engel";
 $header = "";
 $success = "none"; 
-include ("./inc/config.php");
-include ("./inc/header.php");
-include ("./inc/config_db.php");
-include ("./inc/crypt.php");
+include ("../includes/config.php");
+include ("../includes/header.php");
+include ("../includes/config_db.php");
+include ("../includes/crypt.php");
 
 		
 if( isset($_POST["send"]))
@@ -194,6 +194,6 @@ echo "\t\t</table>\n";
 echo "\t</form>\n";
 Print_Text("makeuser_text3");
 }
-include ("./inc/footer.php");
+include ("../includes/footer.php");
 ?>
 

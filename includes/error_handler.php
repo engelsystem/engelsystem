@@ -1,6 +1,6 @@
 <?php
 
-  require_once("./inc/funktion_jabber.php");
+  require_once("./funktion_jabber.php");
 
   // global array for collected error_messages
   $error_messages = array();
@@ -104,7 +104,7 @@
   function send_message(&$message)
   {
     chdir(dirname(__FILE__));
-    require_once('../inc/config_jabber.php');
+    require_once('./config_jabber.php');
 
     if (isset($jabber_recipient) && count($jabber_recipient)) {
       $jabber = new Jabber($server, $port, $username, $password, $resource);

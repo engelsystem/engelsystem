@@ -1,5 +1,5 @@
 <?php
-include ("./inc/config.php");
+include ("../includes/config.php");
 
 // Die Session zerstoeren...
 session_start();

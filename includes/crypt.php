@@ -2,7 +2,7 @@
 
 
 function PassCrypt($passwort) {
-include "./inc/config.php";
+include "./config.php";
 
 switch ($crypt_system) {
   case "crypt":

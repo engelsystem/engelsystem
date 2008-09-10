@@ -51,7 +51,7 @@ if( isset($_SESSION['UID']))
 <table align="center" class="border" cellpadding="3" cellspacing="1">
 	<tr>
 		<td width="160" class="menu">
-		<?php include("./inc/funktion_activeUser.php"); ?>
+		<?php include("./funktion_activeUser.php"); ?>
 		</td>
 	</tr>
 </table>

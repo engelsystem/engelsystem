@@ -1,10 +1,10 @@
 <?PHP
 
-include ("./inc/config.php");
-include ("./inc/error_handler.php");
-include ("./inc/config_db.php");
+include ("./config.php");
+include ("./error_handler.php");
+include ("./config_db.php");
 if( !isset($_SESSION))	session_start();
-include ("./inc/secure.php");
+include ("./secure.php");
 
 
 // Parameter check

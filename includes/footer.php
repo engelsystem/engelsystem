@@ -30,7 +30,7 @@ if( $Page["ShowTabel"]=="Y" )
 
 <!-- anfang des menue parts //-->
 <?PHP
-if( $_SESSION['Menu'] =="R")            include("./inc/menu.php");
+if( $_SESSION['Menu'] =="R")            include("./menu.php");
 ?>
 		</td> 
 
@@ -45,8 +45,8 @@ if( $_SESSION['Menu'] =="R")            include("./inc/menu.php");
 		<td colspan="2">
 			<h5 align="center"> &#169; copyleft - <a href="mailto:erzengel@lists.ccc.de">Kontakt</a>
 			<?PHP 
-				include( "./inc/funktion_counter.php"); 
-				include( "./inc/funktion_flag.php"); 
+				include( "./funktion_counter.php"); 
+				include( "./funktion_flag.php"); 
 			?></h5>
         	</td>
 	</tr>

@@ -1,5 +1,5 @@
 <?PHP
-include "./inc/config_modem.php";
+include "./config_modem.php";
 
 function DialNumber( $Number )
 {

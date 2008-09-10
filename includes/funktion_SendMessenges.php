@@ -3,7 +3,7 @@
 
 function SendData($Data)
 {
-	include("./inc/config_MessegeServer.php");
+	include("./config_MessegeServer.php");
 	// Create a UDP socket
 	$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 	//send packed
