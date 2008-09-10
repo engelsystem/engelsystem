@@ -2,7 +2,7 @@
 $title = "Himmel";
 $header = "";
 
-include ("./inc/header.php");
+include ("../../includes/header.php");
 
 If( !isset($_GET["action"]) ) 
 	$_GET["action"] = "start";
@@ -123,5 +123,5 @@ switch( $_GET["action"])
 		echo Get_Text("pub_messages_NoCommand");
 }
 
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>

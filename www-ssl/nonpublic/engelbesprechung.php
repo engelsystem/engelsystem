@@ -1,7 +1,7 @@
 <?php
 $title = "Himmel";
 $header = "Engelbesprechung";
-include ("./inc/header.php");
+include ("../../includes/header.php");
 ?>
 
 <br>
@@ -33,5 +33,5 @@ for ($n = 0 ; $n < $Zeilen ; $n++)
 }
 	    
 
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>

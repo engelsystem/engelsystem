@@ -8,10 +8,10 @@ if( isset($_GET["ausdatum"]))
 if( isset($_GET["raum"]))
 	$raum = $_GET["raum"];
 
-include ("./inc/header.php");
-include ("./inc/funktionen.php");
-include ("./inc/funktion_schichtplan.php");
-include ("./inc/funktion_schichtplan_aray.php");
+include ("../../includes/header.php");
+include ("../../includes/inc/funktionen.php");
+include ("../../includes/funktion_schichtplan.php");
+include ("../../includes/funktion_schichtplan_aray.php");
 ?>
 
 <?PHP echo Get_Text("Hello").$_SESSION['Nick'].",<br>".
@@ -153,5 +153,5 @@ else
 
 echo "<a href=\"". $_SESSION["newurl"]. "&Icon=0\">@</a>";
 
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>

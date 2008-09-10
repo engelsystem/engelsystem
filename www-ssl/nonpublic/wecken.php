@@ -2,7 +2,7 @@
 $title = "Himmel";
 $header = "Weckdienst";
 
-include ("./inc/header.php");
+include ("../../includes/header.php");
 
 if( isset($_POST["eintragen"]))
 	if( $_POST["eintragen"] == Get_Text("pub_wake_bouton") ) 
@@ -77,5 +77,5 @@ echo Get_Text("pub_wake_beschreibung2"); ?>
 <input type="submit" name="eintragen" value="<?PHP echo Get_Text("pub_wake_bouton"); ?>">
 </form>
 <?PHP
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>

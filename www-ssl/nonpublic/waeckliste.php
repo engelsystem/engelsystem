@@ -2,7 +2,7 @@
 $title = "Himmel";
 $header = "Weckdienst - Liste der zu weckenden Engel";
 
-include ("./inc/header.php");
+include ("../../includes/header.php");
 
 ?>
 
@@ -36,5 +36,5 @@ include ("./inc/header.php");
 ?>
 </table>
 <?PHP
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>

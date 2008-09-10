@@ -41,21 +41,21 @@ ich@DenkBrett www-ssl % find . -name \*.php -exec grep -l './inc' {} \;
 #./inc/ShowUserPicture.php
 #./inc/login_eingabefeld.php
 #./inc/funktion_SendMessenges.php
-./nonpublic/waeckliste.php
-./nonpublic/schichtplan.1.php
-./nonpublic/schichtplan.php
-./nonpublic/schichtplan.2.php
-./nonpublic/myschichtplan.php
-./nonpublic/messages.php
-./nonpublic/index.php
-./nonpublic/faq.php
-./nonpublic/schichtplan_add.php
-./nonpublic/schichtplan_beamer.php
-./nonpublic/news.php
-./nonpublic/einstellungen.php
-./nonpublic/wecken.php
-./nonpublic/engelbesprechung.php
-./nonpublic/news_comments.php
+#./nonpublic/waeckliste.php
+#./nonpublic/schichtplan.1.php
+#./nonpublic/schichtplan.php
+#./nonpublic/schichtplan.2.php
+#./nonpublic/myschichtplan.php
+#./nonpublic/messages.php
+#./nonpublic/index.php
+#./nonpublic/faq.php
+#./nonpublic/schichtplan_add.php
+./nonpublic/schichtplan_beamer.php # Special fix needed, css
+#./nonpublic/news.php
+./nonpublic/einstellungen.php # Special fix needed
+#./nonpublic/wecken.php
+#./nonpublic/engelbesprechung.php
+#./nonpublic/news_comments.php
 #./logout.php
 #./makeuser.php
 #./lageplan.php
