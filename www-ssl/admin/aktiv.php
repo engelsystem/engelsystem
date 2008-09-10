@@ -2,8 +2,8 @@
 
 $title = "akive Engel";
 $header = "Liste der aktiven Engel";
-include ("./inc/header.php");
-include ("./inc/funktion_db_list.php");
+include ("../../includes/header.php");
+include ("../../includes/funktion_db_list.php");
 
 echo "<form action=\"./aktiv.php\" method=\"post\">";
 echo Get_Text("pub_aktive_Text1")."<br>\n";
@@ -92,6 +92,6 @@ echo "</table>";
 
 echo "<br>Anzahl eintraege: $aktivecount / $rowcount (Aktive/Mitschichten)<br><br>";
 
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>
 

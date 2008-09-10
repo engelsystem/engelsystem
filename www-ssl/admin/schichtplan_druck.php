@@ -6,10 +6,10 @@ $submenus = 1;
 
 if (!IsSet($_GET["action"])) 
 {
-	include ("./inc/header.php");
-	include ("./inc/funktionen.php");
-	include ("./inc/funktion_schichtplan_aray.php");
-	include ("./inc/funktion_schichtplan.php");
+	include ("../../includes/header.php");
+	include ("../../includes/funktionen.php");
+	include ("../../includes/funktion_schichtplan_aray.php");
+	include ("../../includes/funktion_schichtplan.php");
 
 	echo "Hallo ". $_SESSION['Nick']. "<br>\n".
 		"auf dieser Seite kannst du dir den Schichtplan in einer Druckansicht generieren lassen. W&auml;hle hierf&uuml;r ein Datum und den Raum:\n".
@@ -30,7 +30,7 @@ if (!IsSet($_GET["action"]))
 	}
 	echo "<br><br>";
 	
-	include ("./inc/footer.php");
+	include ("../../includes/footer.php");
 } 
 else 	//#################################################################
 {
@@ -39,15 +39,15 @@ else 	//#################################################################
    	$Raum = $_GET["Raum"];
 	$ausdatum = $_GET["ausdatum"];
 
-	include ("./inc/config_db.php");
-	include ("./inc/config.php");
-	include ("./inc/secure.php");
+	include ("../../includes/config_db.php");
+	include ("../../includes/config.php");
+	include ("../../includes/secure.php");
 	//var wird nur gesetzt immer edit auszublenden, achtung sesion darf nicht gestart sein !!!
 	$_SESSION['CVS'][ "admin/schichtplan.php" ] = "N";	
-	include ("./inc/funktion_lang.php");
-	include ("./inc/funktion_schichtplan.php");
-	include ("./inc/funktion_schichtplan_aray.php");
-	include ("./inc/funktion_user.php");
+	include ("../../includes/funktion_lang.php");
+	include ("../../includes/funktion_schichtplan.php");
+	include ("../../includes/funktion_schichtplan_aray.php");
+	include ("../../includes/funktion_user.php");
 	?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

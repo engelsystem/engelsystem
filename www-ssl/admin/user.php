@@ -2,8 +2,8 @@
 
 $title = "User-Liste";
 $header = "Editieren der Engelliste";
-include ("./inc/header.php");
-include ("./inc/funktion_db_list.php");
+include ("../../includes/header.php");
+include ("../../includes/funktion_db_list.php");
 
 if (!IsSet($_GET["enterUID"]))
 {
@@ -291,7 +291,7 @@ else
 	}
 }
 
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>
 
 

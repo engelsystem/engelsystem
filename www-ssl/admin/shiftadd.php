@@ -2,7 +2,7 @@
 $title = "Schicht Hinzufügen";
 $header = "Neue Schichten erfassen";
 
-include ("./inc/header.php");
+include ("../../includes/header.php");
 
 $Time = time()+3600+3600;
 
@@ -354,5 +354,5 @@ function CreateNewEntry()
 	echo "</tr>\n";
 }
 
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>

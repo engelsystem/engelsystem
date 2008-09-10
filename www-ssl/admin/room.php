@@ -1,8 +1,8 @@
 <?php
 $title = "R&auml;ume";
 $header = "Verwaltung der R&auml;ume";
-include ("./inc/header.php");
-include ("./inc/funktion_schichtplan_aray.php");
+include ("../../includes/header.php");
+include ("../../includes/funktion_schichtplan_aray.php");
 
 $Sql = "SELECT * FROM `Room` ORDER BY `Number`, `Name`";
 $Erg = mysql_query($Sql, $con);
@@ -195,5 +195,5 @@ if (IsSet($SQL)){
 
 } //IF IsSet($action)
 
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>

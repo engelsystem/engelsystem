@@ -2,8 +2,8 @@
 
 $title = "Newsverwaltung";
 $header = "Verwaltung der News";
-include ("./inc/header.php");
-include ("./inc/funktion_db_list.php");
+include ("../../includes/header.php");
+include ("../../includes/funktion_db_list.php");
 
 
 if (!IsSet($_GET["action"]))
@@ -117,6 +117,6 @@ else
 	}
 }// IF-ELSE
 
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>
 

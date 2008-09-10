@@ -1,8 +1,8 @@
 <?php
 $title = "R&auml;ume";
 $header = "Verwaltung der R&auml;ume";
-include ("./inc/header.php");
-include("./inc/funktion_db.php");
+include ("../../includes/header.php");
+include("../../includes/funktion_db.php");
 
 function runSQL( $SQL)
 {
@@ -187,5 +187,5 @@ case 'delete':
 }
 }
 
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>

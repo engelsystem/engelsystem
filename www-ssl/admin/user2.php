@@ -2,10 +2,10 @@
 
 $title = "User-Liste";
 $header = "Index";
-include ("./inc/header.php");
-include ("./inc/funktion_db_list.php");
-include ("./inc/crypt.php");
-include ("./inc/funktion_db.php");
+include ("../../includes/header.php");
+include ("../../includes/funktion_db_list.php");
+include ("../../includes/crypt.php");
+include ("../../includes/funktion_db.php");
 
 if (IsSet($_GET["action"])) 
 {
@@ -150,6 +150,6 @@ else
 	echo "Unzul&auml;ssiger Aufruf.<br>Bitte neu editieren...";
 }
 
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>
 

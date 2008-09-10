@@ -2,8 +2,8 @@
 
 $title = "Debug-Liste";
 $header = "Datenbank-Auszug";
-include ("./inc/header.php");
-include ("./inc/funktion_db_list.php");
+include ("../../includes/header.php");
+include ("../../includes/funktion_db_list.php");
 
 echo "<h1>Web Counter</h1>";
 funktion_db_list("Counter");
@@ -58,6 +58,6 @@ $rowcount = mysql_num_rows($Erg);
 for ($i=0; $i<$rowcount; $i++)
 	echo mysql_result($Erg, $i, 1). "x '".  mysql_result($Erg, $i, 0). "'<br>\n";
 
-include ("./inc/footer.php");
+include ("../../includes/footer.php");
 ?>
 
