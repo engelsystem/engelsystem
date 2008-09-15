@@ -1,0 +1,105 @@
+body {
+	font-size : small;
+	font-family : Arial;
+	background-color : #f3b115;
+	color : navy;
+}
+a  {
+	font-family : Arial;
+	font-size : small;
+	text-decoration : none;
+	color : #0000a0;
+}
+
+td  {
+        font-size : small;
+}
+
+A:Visited  {
+	font-family : Arial;
+	font-size : small;
+	color : #0000a0;
+	text-decoration : none;
+}
+
+A:Active  {
+        text-decoration : none;
+        font-family : Arial;
+        font-size : small;
+}
+
+A:Hover {
+	font-family : Arial;
+	font-size : small;
+	color : #0000a0;
+	text-decoration : underline;
+	font-weight : bold;
+}	
+
+li {
+        font-size: small
+}
+
+
+H4  {
+       font-family : Arial,Verdana;
+}
+
+
+B  {
+	font-weight : bold;
+	font-family : Arial;
+	font-size : small;
+}	
+
+.content {
+        background-color: #ffeba2;
+        color: #000000
+}
+
+.contenttopic {
+        font-weight: bold;
+        font-size: small;
+        color: #ffa000;
+        background-color: navy 
+}
+						
+
+
+a.title {
+	color:#ffa000;	
+}
+.border {
+        background-color: #050509
+	}
+
+.menu {
+        background-color: #ffeba2;
+        color: navy;
+        font-size: small
+}
+
+h4.menu {
+        font-weight: bold;
+        font-size: small;
+}
+
+.question {
+        font-weight: bold;
+        font-size: 9pt
+}
+
+.engeltreffen {
+        font-weight: bold;
+        font-size: 9pt;
+        color: #ff0000;
+}
+
+.answer {
+        font-size:  9pt;
+}
+
+.comment {
+        font-size : 6pt;
+}
+															

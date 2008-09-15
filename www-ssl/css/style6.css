@@ -1,0 +1,68 @@
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #121327;
+	color: #FFFFFF;
+	font-size: small
+}
+
+a {
+	text-decoration: none;
+	color: #ff9900
+}
+
+td {
+	font-size: small
+}
+
+a:active, a:hover {
+	font-weight: bold
+}
+	
+li {
+	font-size: small
+}
+
+.content {
+	background-color: #636e77;
+	color: #FFFFFF
+}
+
+.contenttopic {
+	font-weight: bold;
+	font-size: small;
+	color: #FF9900;
+	background-color: #333e47
+}
+
+.border {
+	background-color: #000000
+}
+
+.menu {
+	background-color: #1f203f;
+	color: #fff3bf;
+	font-size: small
+}
+h4.menu { 
+	font-weight: bold;
+	font-size: small;
+	color: #fff3bf
+}
+.question {
+	font-weight: bold;
+	font-size: 9pt
+}
+
+.engeltreffen {
+        font-weight: bold;
+        font-size: 9pt;
+        color: #FF0000;
+}
+
+.answer {
+	font-size:  9pt;
+}
+.comment {
+	font-size : 6pt;
+}
