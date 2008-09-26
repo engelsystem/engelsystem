@@ -1,11 +1,11 @@
 <?php
-include ("./inc/config.php");
-include ("./inc/config_db.php");
-include ("./inc/funktion_lang.php");
+include ("../../includes/config.php");
+include ("../../includes/config_db.php");
+include ("../../includes/funktion_lang.php");
 
-include ("./inc/funktion_user.php");
-include ("./inc/funktionen.php");
-include ("./inc/funktion_schichtplan_beamer.php");
+include ("../../includes/funktion_user.php");
+include ("../../includes/funktionen.php");
+include ("../../includes/funktion_schichtplan_beamer.php");
 
 $Time = time()+3600+3600;
 //$Time = 1104241344;
@@ -14,7 +14,7 @@ $Time = time()+3600+3600;
 <HTML>
 <HEAD>
 <TITLE>Schichtpl&auml;ne f&uuml;r Beamer</TITLE>
-<!--<link rel=stylesheet type="text/css" href="./inc/css/style1.css">-->
+<!--<link rel=stylesheet type="text/css" href="/css/style1.css">-->
 <meta http-equiv="refresh" content="30; URL=<?PHP echo substr($url, 0, strlen($url)-1). $_SERVER['PHP_SELF']?>">
 </HEAD>
 <BODY>
