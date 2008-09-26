@@ -54,6 +54,7 @@ echo "setting up mysql"
 echo "setting sources in place"
 	cp -r `pwd`/engel-system/www/* /var/www/http/
 	cp -r `pwd`/engel-system/www-ssl/* /var/www/https/
+	cp -r `pwd`/engel-system/includes/ /var/www/
 	cp -r `pwd`/engel-system/default-conf/www-ssl/inc/* /var/www/https/inc/
 	
 	rm /var/www/https/inc/config.php
