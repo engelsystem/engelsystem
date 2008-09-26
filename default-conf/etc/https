@@ -8,6 +8,7 @@
    ServerAdmin webmaster@localhost
    #kann auch einfach eine IP sein
    ServerName localhost
+   php_admin_value open_basedir "/var/www/"
    DocumentRoot /var/www/https
    <Directory /var/www/https>
        Order Deny,Allow

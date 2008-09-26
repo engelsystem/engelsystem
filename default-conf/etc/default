@@ -1,8 +1,9 @@
 NameVirtualHost *:80
 <VirtualHost *:80>
        ServerAdmin webmaster@localhost
-
+ 
        DocumentRoot /var/www/http/
+       php_admin_value open_basedir "/var/www/"
        <Directory />
                Options FollowSymLinks
                AllowOverride None
