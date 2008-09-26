@@ -33,10 +33,10 @@ ich@DenkBrett www-ssl % find . -name \*.php -exec grep -l './inc' {} \;
 #./inc/footer.php
 #./inc/menu.php
 #./inc/funktion_modem.php
-./inc/funktion_flag.php # Special fix needed. ich geh ins bett
+#./inc/funktion_flag.php # Special fix needed. ich geh ins bett
 #./inc/error_handler.php
-./inc/header.php # Special fix needed
-./inc/funktion_user.php # Special fix needed
+#./inc/header.php # Special fix needed
+#./inc/funktion_user.php # Special fix needed
 #./inc/crypt.php
 #./inc/ShowUserPicture.php
 #./inc/login_eingabefeld.php
