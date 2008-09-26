@@ -50,9 +50,9 @@ ich@DenkBrett www-ssl % find . -name \*.php -exec grep -l './inc' {} \;
 #./nonpublic/index.php
 #./nonpublic/faq.php
 #./nonpublic/schichtplan_add.php
-./nonpublic/schichtplan_beamer.php # Special fix needed, css
+#./nonpublic/schichtplan_beamer.php # Special fix needed, css
 #./nonpublic/news.php
-./nonpublic/einstellungen.php # Special fix needed
+#./nonpublic/einstellungen.php # Special fix needed
 #./nonpublic/wecken.php
 #./nonpublic/engelbesprechung.php
 #./nonpublic/news_comments.php
@@ -64,8 +64,4 @@ ich@DenkBrett www-ssl % find . -name \*.php -exec grep -l './inc' {} \;
 
 
 todo:
-./inc > ../inc
-change includes in every fucking file
-FUCKING MOOOOOVE the pictures out of inc to /pic, where they belong. -.-'
-same as above for css-files
 change installscript to place inc outside of http-root. exactly ONE dir ahead.
