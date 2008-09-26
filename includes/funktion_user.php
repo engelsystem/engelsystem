@@ -34,26 +34,26 @@ function TID2Type($TID)
 function ReplaceSmilies($eckig) {
 
 	$neueckig = $eckig;
-	$neueckig = str_replace(";o))","<img src=\"./inc/smiles/icon_redface.gif\">",$neueckig);
-	$neueckig = str_replace(":-))","<img src=\"./inc/smiles/icon_redface.gif\">",$neueckig);
-	$neueckig = str_replace(";o)","<img src=\"./inc/smiles/icon_wind.gif\">",$neueckig);
-	$neueckig = str_replace(":)","<img src=\"./inc/smiles/icon_smile.gif\">",$neueckig);
-        $neueckig = str_replace(":-)","<img src=\"./inc/smiles/icon_smile.gif\">",$neueckig);
-	$neueckig = str_replace(":(","<img src=\"./inc/smiles/icon_sad.gif\">",$neueckig);
-        $neueckig = str_replace(":-(","<img src=\"./inc/smiles/icon_sad.gif\">",$neueckig);
-	$neueckig = str_replace(":o(","<img src=\"./inc/smiles/icon_sad.gif\">",$neueckig);
-	$neueckig = str_replace(":o)","<img src=\"./inc/smiles/icon_lol.gif\">",$neueckig);
-	$neueckig = str_replace(";o(","<img src=\"./inc/smiles/icon_cry.gif\">",$neueckig);
-	$neueckig = str_replace(";(","<img src=\"./inc/smiles/icon_cry.gif\">",$neueckig);
-        $neueckig = str_replace(";-(","<img src=\"./inc/smiles/icon_cry.gif\">",$neueckig);
-        $neueckig = str_replace("8)","<img src=\"./inc/smiles/icon_rolleyes.gif\">",$neueckig);
-	$neueckig = str_replace("8o)","<img src=\"./inc/smiles/icon_rolleyes.gif\">",$neueckig);
-	$neueckig = str_replace(":P","<img src=\"./inc/smiles/icon_evil.gif\">",$neueckig);
-	$neueckig = str_replace(":-P","<img src=\"./inc/smiles/icon_evil.gif\">",$neueckig);
-	$neueckig = str_replace(":oP","<img src=\"./inc/smiles/icon_evil.gif\">",$neueckig);
-	$neueckig = str_replace(";P","<img src=\"./inc/smiles/icon_mad.gif\">",$neueckig);
-	$neueckig = str_replace(";oP","<img src=\"./inc/smiles/icon_mad.gif\">",$neueckig);
-	$neueckig = str_replace("?)","<img src=\"./inc/smiles/icon_question.gif\">",$neueckig);
+	$neueckig = str_replace(";o))","<img src=\"/pic/smiles/icon_redface.gif\">",$neueckig);
+	$neueckig = str_replace(":-))","<img src=\"/pic/smiles/icon_redface.gif\">",$neueckig);
+	$neueckig = str_replace(";o)","<img src=\"/pic/smiles/icon_wind.gif\">",$neueckig);
+	$neueckig = str_replace(":)","<img src=\"/pic/smiles/icon_smile.gif\">",$neueckig);
+        $neueckig = str_replace(":-)","<img src=\"/pic/smiles/icon_smile.gif\">",$neueckig);
+	$neueckig = str_replace(":(","<img src=\"/pic/smiles/icon_sad.gif\">",$neueckig);
+        $neueckig = str_replace(":-(","<img src=\"/pic/smiles/icon_sad.gif\">",$neueckig);
+	$neueckig = str_replace(":o(","<img src=\"/pic/smiles/icon_sad.gif\">",$neueckig);
+	$neueckig = str_replace(":o)","<img src=\"/pic/smiles/icon_lol.gif\">",$neueckig);
+	$neueckig = str_replace(";o(","<img src=\"/pic/smiles/icon_cry.gif\">",$neueckig);
+	$neueckig = str_replace(";(","<img src=\"/pic/smiles/icon_cry.gif\">",$neueckig);
+        $neueckig = str_replace(";-(","<img src=\"/pic/smiles/icon_cry.gif\">",$neueckig);
+        $neueckig = str_replace("8)","<img src=\"/pic/smiles/icon_rolleyes.gif\">",$neueckig);
+	$neueckig = str_replace("8o)","<img src=\"/pic/smiles/icon_rolleyes.gif\">",$neueckig);
+	$neueckig = str_replace(":P","<img src=\"/pic/smiles/icon_evil.gif\">",$neueckig);
+	$neueckig = str_replace(":-P","<img src=\"/pic/smiles/icon_evil.gif\">",$neueckig);
+	$neueckig = str_replace(":oP","<img src=\"/pic/smiles/icon_evil.gif\">",$neueckig);
+	$neueckig = str_replace(";P","<img src=\"/pic/smiles/icon_mad.gif\">",$neueckig);
+	$neueckig = str_replace(";oP","<img src=\"/pic/smiles/icon_mad.gif\">",$neueckig);
+	$neueckig = str_replace("?)","<img src=\"/pic/smiles/icon_question.gif\">",$neueckig);
 	return $neueckig;
 }
 
@@ -98,7 +98,7 @@ function displayavatar( $UID, $height="30")
 	$aerg = mysql_query ($asql, $con);
 	if( mysql_num_rows($aerg) )
 		if( mysql_result($aerg, 0, "Avatar") > 0)
-          		return ("&nbsp;<img src=\"./inc/avatar/avatar". mysql_result($aerg, 0, "Avatar"). ".gif\">");
+          		return ("&nbsp;<img src=\"/pic/avatar/avatar". mysql_result($aerg, 0, "Avatar"). ".gif\">");
 
 }
 
