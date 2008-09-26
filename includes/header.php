@@ -1,17 +1,17 @@
 <?PHP 
 ini_set( "session.gc_maxlifetime", "65535");
 
-include ("./inc/config.php");
-include ("./inc/error_handler.php");
-include ("./inc/config_db.php");
-include ("./inc/funktion_lang.php");
-include ("./inc/funktion_faq.php"); //für noAnswer() im menu
-include ("./inc/funktion_menu.php");
-include ("./inc/funktion_user.php");
+include ("./config.php");
+include ("./error_handler.php");
+include ("./config_db.php");
+include ("./funktion_lang.php");
+include ("./funktion_faq.php"); //für noAnswer() im menu
+include ("./funktion_menu.php");
+include ("./funktion_user.php");
 
 if( !isset($_SESSION)) 
 	session_start(); 
-include ("./inc/secure.php");
+include ("./secure.php");
 
 if( !isset($_SESSION['IP'])) 
 	$_SESSION['IP'] = $_SERVER['REMOTE_ADDR'];
@@ -22,7 +22,7 @@ if (IsSet($_SESSION['UID']) and ($_SESSION['IP'] <> $_SERVER['REMOTE_ADDR']))
 	header("Location: $url". substr($ENGEL_ROOT,1) );
 }
 
-include ("./inc/UserCVS.php");
+include ("./UserCVS.php");
 
 
 //UPdate LASTlogin
@@ -55,8 +55,8 @@ echo "<TITLE>--- $title  $Version ---</TITLE>";
 <meta name="robots" content="index">
 <meta name="revisit-after" content="1 days">
 <meta http-equiv="content-language" content="de">
-<script type="text/javascript" src="./inc/css/grossbild.js"></script>
-<link rel=stylesheet type="text/css" href="./inc/css/style<?PHP
+<script type="text/javascript" src="/css/grossbild.js"></script>
+<link rel=stylesheet type="text/css" href="/css/style<?PHP
 	if (!IsSet($_SESSION['color'])) 
 		echo "1"; 
 	else 
@@ -94,7 +94,7 @@ if( $Page["ShowTabel"]=="Y" )
 
 ?>
 	<div align="center">
-	<a name="#top"><img src="./inc/himmel<?PHP if( isset($_SESSION['color'])) 
+	<a name="#top"><img src="/pic/himmel<?PHP if( isset($_SESSION['color'])) 
 						if ($_SESSION['color']==6) echo "_w"; ?>.png" alt="Unser Himmel"></a>
 	<p>
 <?PHP
@@ -116,7 +116,7 @@ if( isset($_SESSION['CVS']["nonpublic/messages.php"]))
 <?PHP
 //ausgaeb Menu
 if( !isset($_SESSION['Menu']))		$_SESSION['Menu'] = "L";
-if( $_SESSION['Menu'] =="L")		include("./inc/menu.php");
+if( $_SESSION['Menu'] =="L")		include("./menu.php");
 ?>
 
 		<td valign="top" align="center">

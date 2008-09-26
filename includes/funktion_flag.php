@@ -6,7 +6,7 @@ if( strpos( $_SERVER["REQUEST_URI"], "?") >0)
 else
 	$URL = $_SERVER["REQUEST_URI"]. "?SetLanguage=";
 
-echo "<a href=\"". $URL. "DE\"><img src=\"./inc/flag/de.gif\" alt=\"DE\"></a> ";
-echo "<a href=\"". $URL. "EN\"><img src=\"./inc/flag/en.gif\" alt=\"En\"></a> ";
+echo "<a href=\"". $URL. "DE\"><img src=\"/pic/flag/de.gif\" alt=\"DE\"></a> ";
+echo "<a href=\"". $URL. "EN\"><img src=\"/pic/flag/en.gif\" alt=\"EN\"></a> ";
 
 ?>
