@@ -1,17 +1,17 @@
 <?PHP 
 ini_set( "session.gc_maxlifetime", "65535");
 
-include ("./config.php");
-include ("./error_handler.php");
-include ("./config_db.php");
-include ("./funktion_lang.php");
-include ("./funktion_faq.php"); //für noAnswer() im menu
-include ("./funktion_menu.php");
-include ("./funktion_user.php");
+include ("config.php");
+include ("error_handler.php");
+include ("config_db.php");
+include ("funktion_lang.php");
+include ("funktion_faq.php"); //für noAnswer() im menu
+include ("funktion_menu.php");
+include ("funktion_user.php");
 
 if( !isset($_SESSION)) 
 	session_start(); 
-include ("./secure.php");
+include ("secure.php");
 
 if( !isset($_SESSION['IP'])) 
 	$_SESSION['IP'] = $_SERVER['REMOTE_ADDR'];
@@ -22,7 +22,7 @@ if (IsSet($_SESSION['UID']) and ($_SESSION['IP'] <> $_SERVER['REMOTE_ADDR']))
 	header("Location: $url". substr($ENGEL_ROOT,1) );
 }
 
-include ("./UserCVS.php");
+include ("UserCVS.php");
 
 
 //UPdate LASTlogin
@@ -116,7 +116,7 @@ if( isset($_SESSION['CVS']["nonpublic/messages.php"]))
 <?PHP
 //ausgaeb Menu
 if( !isset($_SESSION['Menu']))		$_SESSION['Menu'] = "L";
-if( $_SESSION['Menu'] =="L")		include("./menu.php");
+if( $_SESSION['Menu'] =="L")		include("menu.php");
 ?>
 
 		<td valign="top" align="center">

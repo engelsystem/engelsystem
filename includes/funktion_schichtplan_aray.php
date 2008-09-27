@@ -34,5 +34,5 @@
 		$TID2Name[ mysql_result($Erg, $i, "TID") ] = mysql_result($Erg, $i, "Name");
 	}												
 
-include ("./funktion_schichtplan_Tage.php");
+include ("funktion_schichtplan_Tage.php");
 ?>

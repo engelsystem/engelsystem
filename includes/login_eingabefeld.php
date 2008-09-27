@@ -1,7 +1,7 @@
 
 
 <form action="<?PHP
-include ("./config.php");
+include ("config.php");
 echo substr($url, 0, strlen($url)-1). $ENGEL_ROOT
 ?>nonpublic/index.php" method="post">
 <table>

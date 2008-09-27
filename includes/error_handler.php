@@ -1,6 +1,6 @@
 <?php
 
-  require_once("./funktion_jabber.php");
+  require_once("funktion_jabber.php");
 
   // global array for collected error_messages
   $error_messages = array();
