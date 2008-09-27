@@ -147,12 +147,12 @@ if (!IsSet($_POST["action"]))
 			echo "\t\t<tr>\n\t\t\t<td>". Get_Text(23). "<br></td>\n\t\t</tr>\n";
 			echo "\t\t<tr>\n";
 			echo "\t\t\t<td>\n";
-		    	echo "\t\t\t\t<select name=\"eAvatar\" onChange=\"document.avatar.src = '/pic/avatar/avatar' + this.value  + '.gif'\"".
-		    		"onKeyup=\"document.avatar.src = '/pic/avatar/avatar' + this.value  + '.gif'\">\n"; 
-			for ($i=1; file_exists("/pic/avatar/avatar$i.gif"); $i++ )
+		    	echo "\t\t\t\t<select name=\"eAvatar\" onChange=\"document.avatar.src = './pic/avatar/avatar' + this.value  + '.gif'\"".
+		    		"onKeyup=\"document.avatar.src = './pic/avatar/avatar' + this.value  + '.gif'\">\n"; 
+			for ($i=1; file_exists("./pic/avatar/avatar$i.gif"); $i++ )
 		    		echo "\t\t\t\t\t<option value=\"$i\"". ($_SESSION['Avatar'] == $i ? " selected":""). ">avatar$i</option>\n";
 		    	echo "\t\t\t\t</select>&nbsp;&nbsp;\n";
-			echo "\t\t\t\t<img src=\"/pic/avatar/avatar". $_SESSION['Avatar']. ".gif\" name=\"avatar\" border=\"0\" align=\"top\">\n";
+			echo "\t\t\t\t<img src=\"./pic/avatar/avatar". $_SESSION['Avatar']. ".gif\" name=\"avatar\" border=\"0\" align=\"top\">\n";
 			echo "\t\t\t</td>\n\t\t</tr>\n";
 			echo "\t</table>\n";
 			echo "\t<input type=\"submit\" value=\"". Get_Text("save"),"\">\n";
