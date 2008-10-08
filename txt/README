@@ -9,20 +9,21 @@ DIRS:
 
 Anfordeungen:
 -------------
-	PHP 4.xx
+	PHP 5.xx
+	mysql >=4.0
 
 Systemconfig:
 -------------
-./www-ssl/inc/config.php
+../includes/config.php
 	algemeien einstellungen
-./www-ssl/inc/db.php
+../includes/config_db.php
 	einstellungen der DB
 	Achtung: DB user braucht folgende Rechte: SELECT, CREATE, INSERT, ALTER, UPDATE, INDEX, DELETE, DROP
 
 php.ini:
 --------
 add:
-	allow_url_fopen = On
+	allow_url_fopen = On ## deprecated, ought be removed
 	date.timezone = Europe/Berlin
 Engelsystem Setup-Guide
 
@@ -30,8 +31,8 @@ Engelsystem Setup-Guide
 Ich gehe in der Doku von Debian Etch mit Apache2, mysql5 und php4 aus.
 
 1.1. Installieren der benoetigten Programme:
-	apt-get install vim apache2 mysql-common mysql-server php4-mysql \
-	libapache2-mod-php4 subversion openssl ssl-cert
+	apt-get install vim apache2 mysql-common mysql-server php5-mysql \
+	libapache2-mod-php5 subversion openssl ssl-cert
 
 1.2. Configuration von apache2:
 Erstellen von http und https http-root:

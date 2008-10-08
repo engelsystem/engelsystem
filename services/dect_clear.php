@@ -1,9 +1,9 @@
 <?PHP
 // löscht alle eintrag in der telefonanlage, indem jede nummer einzähln gelöscht wir (#10<NUMBER>)
 
-include ("./inc/db.php");
-include ("./inc/config.php");
-include ("./inc/funktion_modem.php");
+include ("../includes/db.php");
+include ("../includes/config.php");
+include ("../includes/funktion_modem.php");
 
 
 $SQL =  "SELECT DECT FROM `User`;";

@@ -3,9 +3,9 @@
 /****************************************************************************************************/
 //					INCLUDE
 /****************************************************************************************************/
-require_once('./inc/config_jabber.php');
-require_once("./inc/funktion_jabber.php");
-include("./inc/config_MessegeServer.php");
+require_once('../includes/config_jabber.php');
+require_once("../includes/funktion_jabber.php");
+include("../includes/config_MessegeServer.php");
 
 // Set time limit to indefinite execution
 set_time_limit( 0 );

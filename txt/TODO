@@ -1,0 +1,4 @@
+* schichten ueber monatsgrenzen einbaue im moment werden die tage nur 
+  hochgezaehlt und die monatzgrenzen werden ignoriert
+* veryfy use of dect_clear.php and jabberserver.php
+

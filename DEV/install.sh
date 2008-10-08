@@ -52,16 +52,17 @@ echo "setting up mysql"
 	mysql -u root mysql -e "CREATE DATABASE tabel;"	
 	
 echo "setting sources in place"
-	cp -r `pwd`/engel-system/www/* /var/www/http/
+	cp -r `pwd`/engel-system/www/* /var/www/http/ # meant to be removed
 	cp -r `pwd`/engel-system/www-ssl/* /var/www/https/
 	cp -r `pwd`/engel-system/includes/ /var/www/
-	cp -r `pwd`/engel-system/default-conf/www-ssl/inc/* /var/www/https/inc/
+	cp -r `pwd`/engel-system/default-conf/var_www_includes/* /var/www/includes/
+	cp -r `pwd`/engel-system/service/ /var/www/
+
+	rm /var/www/includes/config.php
+	cat `pwd`/engel-system/default-conf/var_www_includes/config.php|sed s/SEDENGELURL/$FQDN/ |sed s/MD5SED/`openssl x509 -noout -fingerprint -md5 -in /etc/apache2/ssl/apache.pem|sed s/MD5\ Fingerprint\=//`/|sed s/SHA1SED/`openssl x509 -noout -fingerprint -sha1 -in /etc/apache2/ssl/apache.pem|sed s/SHA1\ Fingerprint\=//`/ >> /var/www/includes/config.php
 	
-	rm /var/www/https/inc/config.php
-	cat `pwd`/engel-system/default-conf/www-ssl/inc/config.php|sed s/SEDENGELURL/$FQDN/ |sed s/MD5SED/`openssl x509 -noout -fingerprint -md5 -in /etc/apache2/ssl/apache.pem|sed s/MD5\ Fingerprint\=//`/|sed s/SHA1SED/`openssl x509 -noout -fingerprint -sha1 -in /etc/apache2/ssl/apache.pem|sed s/SHA1\ Fingerprint\=//`/ >> /var/www/https/inc/config.php
-	
-	rm /var/www/https/inc/config_db.php
-        cat `pwd`/engel-system/default-conf/www-ssl/inc/config_db.php|sed s/changeme/$SQL_UPWD/|sed s/root/$SQL_USER/ >> /var/www/https/inc/config_db.php
+	rm /var/www/includes/config_db.php
+        cat `pwd`/engel-system/default-conf/var_www_includes/config_db.php|sed s/changeme/$SQL_UPWD/|sed s/root/$SQL_USER/ >> /var/www/includes/config_db.php
 	
 	cp `pwd`/engel-system/DB/User.sql `pwd`/engel-system/DB/User.sql2
 	rm `pwd`/engel-system/DB/User.sql
@@ -99,5 +100,5 @@ echo "-the webfrontend user/pass combo is: admin:$ADM_PASSWD"
 echo "-the sql-server root account is: root:$SQL_PASSWD"
 echo "-the sql-server user account is: $SQL_USER:$SQL_UPWD"
 echo "-you can find further information and the passwords in /root/cfg.info"
-echo "-make sure \$url in /var/www/https/inc/config.php is correct"
+echo "-make sure \$url in /var/www/includes/config.php is correct"
 

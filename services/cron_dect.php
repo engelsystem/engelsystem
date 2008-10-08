@@ -1,11 +1,11 @@
 <?PHP
 
-include ("./inc/config.php");
-include ("./inc/config_IAX.php");
-include ("./inc/config_db.php");
-include ("./inc/error_handler.php");
-include ("./inc/funktion_modem.php");
-include ("./inc/funktion_cron.php");
+include ("../includes/config.php");
+include ("../includes/config_IAX.php");
+include ("../includes/config_db.php");
+include ("../includes/error_handler.php");
+include ("../includes/funktion_modem.php");
+include ("../includes/funktion_cron.php");
 
 
 //ausfuerungs Ruetmuss (in s)
