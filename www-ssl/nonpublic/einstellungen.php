@@ -52,19 +52,15 @@ if (!IsSet($_POST["action"]))
 	  		<td><input type="text" name="Hometown" size="40" value="<?PHP echo $_SESSION['Hometown']; ?>"></td></tr>
 
                 <tr>    <td><?PHP Print_Text("makeuser_T-Shirt"); ?></td>	           <td>
-                <select name="colourid">
-                        <option <?php if($_SESSION['color'] == 1) { echo "selected"; } ?> value="1">Standard-Style</option>
-                        <option <?php if($_SESSION['color'] == 2) { echo "selected"; } ?> value="2">Rot/Gelber Style</option>
-                        <option <?php if($_SESSION['color'] == 3) { echo "selected"; } ?> value="3">Club-Mate Style</option>
-                        <option <?php if($_SESSION['color'] == 5) { echo "selected"; } ?> value="5">Debian Style</option>
-                        <option <?php if($_SESSION['color'] == 6) { echo "selected"; } ?> value="6">c-base Style</option>
-                        <option <?php if($_SESSION['color'] == 7) { echo "selected"; } ?> value="7">Blau/Gelber Style </option>
-                        <option <?php if($_SESSION['color'] == 8) { echo "selected"; } ?> value="8">Pastel Style</option>
-                        <option <?php if($_SESSION['color'] == 4) { echo "selected"; } ?> value="4">Test Style</option>
-                        <option <?php if($_SESSION['color'] == 9) { echo "selected"; } ?> value="9">Test Style 21c3 </option>
+                <select name="Sizeid">
+                        <option <?php if($_SESSION['Size'] == S) { echo "selected"; } ?> value="S">S</option>
+                        <option <?php if($_SESSION['Size'] == M) { echo "selected"; } ?> value="M">M</option>
+                        <option <?php if($_SESSION['Size'] == L) { echo "selected"; } ?> value="L">L</option>
+                        <option <?php if($_SESSION['Size'] == XL) { echo "selected"; } ?> value="XL">XL</option>
+                        <option <?php if($_SESSION['Size'] == XXL) { echo "selected"; } ?> value="XXL">XXL</option>
+                        <option <?php if($_SESSION['Size'] == XXXL) { echo "selected"; } ?> value="XXXL">XXXL</option>
                 </select>
            </td>	
-                        <td><input type="text" name="Size" size="4" value="<?PHP echo $_SESSION['Size']; ?>"></td></tr>
 	</table>
 	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
@@ -261,7 +257,7 @@ case 'setUserData':
 		"`Telefon`='".  $_POST["eTelefon"].	"', `Handy`='".  $_POST["eHandy"]. "', ".
 		"`DECT`='".     $_POST["eDECT"]. 	"', `email`='".  $_POST["eemail"]. "', ".
 		"`ICQ`='".      $_POST["eICQ"].		"', `jabber`='". $_POST["ejabber"]."', ".
-		"`Hometown`='". $_POST["Hometown"].	"', `Size`='". $_POST["Size"]."' ".
+		"`Hometown`='". $_POST["Hometown"].	"', `Size`='". $_POST["Sizeid"]."' ".
 		"WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1;";
         $Erg = mysql_query($chsql, $con);
 
@@ -278,7 +274,7 @@ case 'setUserData':
 		$_SESSION['ICQ'] = $_POST["eICQ"];
 		$_SESSION['jabber'] = $_POST["ejabber"];
 		$_SESSION['Hometown'] = $_POST["Hometown"];
-		$_SESSION['Size'] = $_POST["Size"];
+		$_SESSION['Size']=$_POST["Sizeid"];		
 	
 		Print_Text("pub_einstellungen_UserDateSaved");
         } 
