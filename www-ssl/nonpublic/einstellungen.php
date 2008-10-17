@@ -51,7 +51,19 @@ if (!IsSet($_POST["action"]))
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_Hometown"); ?></td>
 	  		<td><input type="text" name="Hometown" size="40" value="<?PHP echo $_SESSION['Hometown']; ?>"></td></tr>
 
-                <tr>    <td><?PHP Print_Text("makeuser_T-Shirt"); ?></td>
+                <tr>    <td><?PHP Print_Text("makeuser_T-Shirt"); ?></td>	           <td>
+                <select name="colourid">
+                        <option <?php if($_SESSION['color'] == 1) { echo "selected"; } ?> value="1">Standard-Style</option>
+                        <option <?php if($_SESSION['color'] == 2) { echo "selected"; } ?> value="2">Rot/Gelber Style</option>
+                        <option <?php if($_SESSION['color'] == 3) { echo "selected"; } ?> value="3">Club-Mate Style</option>
+                        <option <?php if($_SESSION['color'] == 5) { echo "selected"; } ?> value="5">Debian Style</option>
+                        <option <?php if($_SESSION['color'] == 6) { echo "selected"; } ?> value="6">c-base Style</option>
+                        <option <?php if($_SESSION['color'] == 7) { echo "selected"; } ?> value="7">Blau/Gelber Style </option>
+                        <option <?php if($_SESSION['color'] == 8) { echo "selected"; } ?> value="8">Pastel Style</option>
+                        <option <?php if($_SESSION['color'] == 4) { echo "selected"; } ?> value="4">Test Style</option>
+                        <option <?php if($_SESSION['color'] == 9) { echo "selected"; } ?> value="9">Test Style 21c3 </option>
+                </select>
+           </td>	
                         <td><input type="text" name="Size" size="4" value="<?PHP echo $_SESSION['Size']; ?>"></td></tr>
 	</table>
 	<input type="submit" value="<?PHP Print_Text("save"); ?>">
