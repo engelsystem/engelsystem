@@ -1,4 +1,8 @@
 <?PHP
+/* Todo: -add if-construct with configvar for user-shirt-settings 
+ *      
+ *
+ */
 $title = "Himmel";
 $header = "Deine pers&ouml;nlichen Einstellungen";
 include ("../../includes/header.php");
@@ -16,28 +20,40 @@ if (!IsSet($_POST["action"]))
 	<table>
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_Nick"); ?></td>
 	  		<td><input type="text" name="eNick" size="23" value="<?PHP echo $_SESSION["Nick"]; ?>"></td></tr>
+
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_Name"); ?></td>
 	  		<td><input type="text" name="eName" size="23" value="<?PHP echo $_SESSION['Name']; ?>"></td></tr>
+
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_Vorname"); ?></td>
 	  		<td><input type="text" name="eVorname" size="23" value="<?PHP echo $_SESSION['Vorname']; ?>"></td></tr>
+
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_Alter"); ?></td>
 	  		<td><input type="text" name="eAlter" size="3" value="<?PHP echo $_SESSION['Alter']; ?>"></td></tr>
+
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_Telefon"); ?></td>
 	  		<td><input type="text" name="eTelefon" size="40" value="<?PHP echo $_SESSION['Telefon']; ?>"></td></tr>
+
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_Handy"); ?></td>
 	  		<td><input type="text" name="eHandy" size="40" value="<?PHP echo $_SESSION['Handy']; ?>"></td></tr>
+
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_DECT"); ?></td>
 	  		<td><input type="text" name="eDECT" size="4" value="<?PHP echo $_SESSION['DECT']; ?>"></td></tr>
+
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_email"); ?></td>
 	  		<td><input type="text" name="eemail" size="40" value="<?PHP echo $_SESSION['email']; ?>"></td></tr>
+
 		<tr>	<td>ICQ</td>
 	  		<td><input type="text" name="eICQ" size="40" value="<?PHP echo $_SESSION['ICQ']; ?>"></td></tr>
+
 		<tr>	<td>jabber</td>
 	  		<td><input type="text" name="ejabber" size="40" value="<?PHP echo $_SESSION['jabber']; ?>"></td></tr>
+
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_Hometown"); ?></td>
 	  		<td><input type="text" name="Hometown" size="40" value="<?PHP echo $_SESSION['Hometown']; ?>"></td></tr>
+
                 <tr>    <td><?PHP Print_Text("makeuser_T-Shirt"); ?></td>
-                        <td><?PHP echo $_SESSION['Size']; ?></td></tr>				 
+                        <td><input type="text" name="Size" size="40" value="<?PHP echo $_SESSION['Size']; ?>"></td></tr>
+//                        <td><?PHP echo $_SESSION['Size']; ?></td></tr>				 
 	</table>
 	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
@@ -234,7 +250,7 @@ case 'setUserData':
 		"`Telefon`='".  $_POST["eTelefon"].	"', `Handy`='".  $_POST["eHandy"]. "', ".
 		"`DECT`='".     $_POST["eDECT"]. 	"', `email`='".  $_POST["eemail"]. "', ".
 		"`ICQ`='".      $_POST["eICQ"].		"', `jabber`='". $_POST["ejabber"]."', ".
-		"`Hometown`='". $_POST["Hometown"].	"' ".
+		"`Hometown`='". $_POST["Hometown"].	"', `Size`='". $_POST["Size"]."' ".
 		"WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1;";
         $Erg = mysql_query($chsql, $con);
 
@@ -251,6 +267,7 @@ case 'setUserData':
 		$_SESSION['ICQ'] = $_POST["eICQ"];
 		$_SESSION['jabber'] = $_POST["ejabber"];
 		$_SESSION['Hometown'] = $_POST["Hometown"];
+		$_SESSION['Size'] = $_POST["Size"];
 	
 		Print_Text("pub_einstellungen_UserDateSaved");
         } 
