@@ -1,4 +1,5 @@
 * schichten ueber monatsgrenzen einbaue im moment werden die tage nur 
   hochgezaehlt und die monatzgrenzen werden ignoriert
-* veryfy use of dect_clear.php and jabberserver.php
-
+* verify use of dect_clear.php and jabberserver.php
+* check logged in angels
+* multi lingu-support for loginpage
