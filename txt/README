@@ -181,7 +181,3 @@ Das System sollte nun funktionieren. Einloggen kann man sich mit 'admin:admin'
 (aendern nicht vergessen ;-)). Es sollte sich dir dann die Adminoberflaeche des
 Systems zeigen.
 
-3.2. Importieren der DB fuer die Conference:
-Unter UpdateDB koennt ihr den aktuellen Plan fuer die jewl. Conference 
-importieren. Dazu braucht ihr einen Pentabarfaccount. Falls das nicht klappt,
-fragt cookie, ich hab das auch noch nie gemacht.
