@@ -82,7 +82,7 @@ case 'new':
 	break;
 
 case 'newsave':
-	$vars = $HTTP_GET_VARS;
+	$vars = $_GET;
 	$count = count($vars) - 1;
 	$vars = array_splice($vars, 0, $count);
 	$Keys = "";
@@ -107,7 +107,7 @@ case 'change':
 		if( mysql_num_rows( $ERG)>0)
 		{
 			echo "Raum ab&auml;ndern:\n";
-			echo "Hier kannst du eintragen, welche und wieviele Engel f&uuml;r den Raum zur Verfügung stehen m&uuml;ssen.";	
+			echo "Hier kannst du eintragen, welche und wieviele Engel f&uuml;r den Raum zur Verf?gung stehen m&uuml;ssen.";	
 			echo "<form action=\"./room.php\" method=\"GET\">\n";
 			echo "<table>\n";
 		
@@ -154,7 +154,7 @@ case 'change':
 	
 case 'changesave':
 	$sql="";
-		$vars = $HTTP_GET_VARS;
+		$vars = $_GET;
 		$count = count($vars) - 2;
 		$vars = array_splice($vars, 0, $count);
 		foreach($vars as $key => $value)

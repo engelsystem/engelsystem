@@ -101,7 +101,7 @@ case 'new':
 	break;
 
 case 'newsave':
-	$vars = $HTTP_GET_VARS;
+	$vars = $_GET;
 	$count = count($vars) - 1;
 	$vars = array_splice($vars, 0, $count);
 	$Keys="";
@@ -158,7 +158,7 @@ case 'change':
 	break;
 	
 case 'changesave':
-        $vars = $HTTP_GET_VARS;
+        $vars = $_GET;
         $count = count($vars) - 2;
         $vars = array_splice($vars, 0, $count);
 	$keys="";
