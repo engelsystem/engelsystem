@@ -143,12 +143,14 @@ function readXMLfile( $file )
 /*#######################################################################################*/
 function getXMLsubPease( $Sourse, $Name ) 
 {
-	while(list($key, $value) = each($Sourse->sub))
-		if( $value->name == $Name)
-			return $value;
-	
+	foreach($Sourse->sub as $key => $value) {
+		if ($value->name == $Name) {
+			return $value; 
+		}
+	}
+
 	echo "<h1>Fehler: getXMLsubPease( $Sourse, $Name ) not found</h1>";
-//	die;
+//		die;  
 }
 
 /*#######################################################################################*/
