@@ -119,6 +119,7 @@ function SaveSchedule()
 								echo "fail <u>". mysql_error($con). 
 									"</u>($SQL3)<br>\n";
 						}
+						echo "<br>\n";
 					}
 					else if ($EngelNeeded < 0)
 					{
