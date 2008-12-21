@@ -63,43 +63,89 @@ function SaveSchedule()
 		if( $Erg )
 		{
 			echo "Aenderung, am Schedule '". $_GET["PSIDXML"]. "', war erfogreich<br>\n";
-			if( mysql_num_rows($Erg1)==0)
-			{
-				echo "-->Create Shifts:<br>\n";
 
-				//SID auslesen
-				$SQL1 = "Select `SID` FROM `Shifts` WHERE `PSID`='". $_GET["PSIDXML"]. "';";
-				$Erg1 =  mysql_query($SQL1, $con);
-				
-				// erstellt ein Array der Reume
-			        $sql2 =	"SELECT * FROM `Room` ".
-					"WHERE `RID`='".$_GET["RIDXML"]. "' ".
-		        		"ORDER BY `Number`, `Name`;";
-				$Erg2 = mysql_query( $sql2, $con);
-				for( $j=0; $j<mysql_num_fields( $Erg2); $j++)
-					if( substr( mysql_field_name($Erg2, $j), 0, 12)=="DEFAULT_EID_" && 
-					    mysql_result($Erg2, 0, $j) > 0 )
+			//SID auslesen
+			$SQL1 = "Select `SID` FROM `Shifts` WHERE `PSID`='". $_GET["PSIDXML"]. "';";
+			$Erg1 =  mysql_query($SQL1, $con);
+			$newSID = mysql_result($Erg1, 0, 0);
+
+			// erstellt ein Array der Reume
+		        $sql2 =	"SELECT * FROM `Room` ".
+				"WHERE `RID`='".$_GET["RIDXML"]. "' ".
+	        		"ORDER BY `Number`, `Name`;";
+			$Erg2 = mysql_query( $sql2, $con);
+			for( $j=0; $j<mysql_num_fields( $Erg2); $j++)
+			{
+				if( substr( mysql_field_name($Erg2, $j), 0, 12)=="DEFAULT_EID_" )
+				{
+					// extract db values
+					$EngelNeeded = mysql_result($Erg2, 0, $j);
+					$EngelTypeID = substr( mysql_field_name($Erg2, $j), 12);
+
+
+					// chech exist shifts
+		        		$sqlShifts =	"SELECT * FROM `ShiftEntry` ".
+							"WHERE   `SID`='". $newSID. "' AND ".
+								"`TID` = '". $EngelTypeID. "';";
+					$ErgShifts = mysql_query( $sqlShifts, $con);
+					$EngelNeeded -= mysql_num_rows( $ErgShifts);
+					
+					// check for not empty shifts
+		        		$sqlShiftsNotEmpty =	"SELECT * FROM `ShiftEntry` ".
+								"WHERE   `SID`='". $newSID. "' AND ".
+									"`TID` = '". $EngelTypeID. "' AND ".
+									"`UID` != 0 ;";
+					$ErgShiftsNotEmpty = mysql_query( $sqlShiftsNotEmpty, $con);
+					if( (mysql_num_rows( $ErgShiftsNotEmpty) > 0) && ($EngelNeeded < 0) )
 					{
-						echo "---->Create engeltype: ". substr( mysql_field_name($Erg2, $j), 12). 
-							" ".  mysql_result($Erg2, 0, $j). "x<br>\n";
-						for( $i=0; $i < mysql_result($Erg2, 0, $j); $i++ )
+						echo "---> WARING ". mysql_num_rows( $ErgShiftsNotEmpty). " shift is used, can't deleting all shifts<br>\n";
+						$EngelNeeded += mysql_num_rows( $ErgShiftsNotEmpty);
+					}
+
+
+					// Angel create/delte?
+					if( $EngelNeeded > 0)
+					{
+						echo "---->Create Shifts for engeltype: ". $EngelTypeID. " ".  $EngelNeeded. "x<br>\n------>\n";
+						for( $i=0; $i < $EngelNeeded; $i++ )
 						{
 							$SQL3  = "INSERT INTO `ShiftEntry` (`SID`, `TID`) VALUES (".
-								 "'". mysql_result($Erg1, 0, 0). "', ".
-								 "'". substr(  mysql_field_name($Erg2, $j), 12). "');";
-
+								 "'". $newSID. "', ".
+								 "'". $EngelTypeID. "');";
 							$Erg3 = mysql_query($SQL3, $con);
 							if ($Erg3 == 1) 
-								echo "------>pass<br>\n";
+								echo "pass ";
 							else
-								echo "------>fail <u>". 
-									mysql_error($con). 
+								echo "fail <u>". mysql_error($con). 
 									"</u>($SQL3)<br>\n";
 						}
-						
 					}
-				echo "<br>\n";
+					else if ($EngelNeeded < 0)
+					{
+						echo "---->Delete empty Shifts for engeltype: ". $EngelTypeID. " ".  $EngelNeeded. "x<br>\n------>\n";
+						for( ; $EngelNeeded < 0; $EngelNeeded++ )
+						{
+							$SQL3  = "DELETE FROM `ShiftEntry` ".
+								 "WHERE  `SID` = ". $newSID. " AND ".
+								 	"`TID` = ". $EngelTypeID. " AND ".
+									"`UID` = 0 ".
+									"LIMIT 1;";
+							$Erg3 = mysql_query($SQL3, $con);
+							if ($Erg3 == 1) 
+								echo "pass ";
+							else
+								echo "fail <u>". mysql_error($con). 
+									"</u>($SQL3)<br>\n";
+						}
+						echo "<br>\n";
+					}
+					else
+					{
+//						echo "---->Nothing to do, for engeltype: ". $EngelTypeID. "<br>\n";
+					}
+				}
 			}
+
 		}
 		else
 			echo "Aenderung, am Schedule '". $_GET["PSIDXML"]. "', war <u>nicht</u> erfogreich.(". 
