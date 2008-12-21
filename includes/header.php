@@ -55,8 +55,8 @@ echo "<TITLE>--- $title  $Version ---</TITLE>";
 <meta name="robots" content="index">
 <meta name="revisit-after" content="1 days">
 <meta http-equiv="content-language" content="de">
-<script type="text/javascript" src="/css/grossbild.js"></script>
-<link rel=stylesheet type="text/css" href="/css/style<?PHP
+<script type="text/javascript" src="<? echo $url. substr( $ENGEL_ROOT, 1); ?>/css/grossbild.js"></script>
+<link rel=stylesheet type="text/css" href="<? echo $url. substr( $ENGEL_ROOT, 1); ?>css/style<?PHP
 	if (!IsSet($_SESSION['color'])) 
 		echo "1"; 
 	else 
@@ -94,7 +94,7 @@ if( $Page["ShowTabel"]=="Y" )
 
 ?>
 	<div align="center">
-	<a name="#top"><img src="/pic/himmel<?PHP if( isset($_SESSION['color'])) 
+	<a name="#top"><img src="<? echo $url. substr( $ENGEL_ROOT, 1); ?>pic/himmel<?PHP if( isset($_SESSION['color'])) 
 						if ($_SESSION['color']==6) echo "_w"; ?>.png" alt="Unser Himmel"></a>
 	<p>
 <?PHP
