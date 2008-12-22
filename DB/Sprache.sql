@@ -528,6 +528,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/schichtpl
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/schichtplan_add.php', 'EN', ' ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/myschichtplan.php', 'DE', 'Mein Schichtplan');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/myschichtplan.php', 'EN', 'My Shifts');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/myschichtplan_ical.php', 'DE', ' ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/myschichtplan_ical.php', 'EN', ' ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/einstellungen.php', 'DE', 'Einstellungen');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/einstellungen.php', 'EN', 'Options');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('nonpublic/wecken.php', 'DE', 'Wecken');
@@ -600,3 +602,5 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/sprache.php',
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/sprache.php', 'EN', 'Language');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/faq.php', 'DE', 'FAQ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/faq.php', 'EN', 'FAQ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_myschichtplan_ical', 'DE', 'export my Shifts as iCal file');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_myschichtplan_ical', 'EN', 'iCal File exportieren');

@@ -1,9 +1,6 @@
 <?php
-include ("../../includes/config.php");
-include ("../../includes/config_db.php");
-include ("../../includes/funktion_lang.php");
+include ("../../includes/header_start.php");
 
-include ("../../includes/funktion_user.php");
 include ("../../includes/funktionen.php");
 include ("../../includes/funktion_schichtplan_beamer.php");
 

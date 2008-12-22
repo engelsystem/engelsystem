@@ -1,0 +1,7 @@
+1. Create file
+2. Create DB entry in table UserCVS (admin/userDefaultSetting.php9
+3. update file DB/UserCVS.sql
+4. Create DB entry in table Sprache (admin/sprache.php)
+	When you down't wont a menupount set the Text to ' '
+5. update file DB/Sprache.sql
+

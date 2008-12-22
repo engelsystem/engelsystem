@@ -110,6 +110,11 @@ If( !IsSet($_GET["action"]) )
 	}
 echo "</table>\n\n";
 
+if( $_SESSION['CVS'][ "nonpublic/myschichtplan_ical.php" ] == "Y" )
+{
+	echo "<br><a href=\"./myschichtplan_ical.php\">". Get_Text("pub_myschichtplan_ical"). "</a>\n";
+}
+
 } 
 else
 {
