@@ -56,12 +56,12 @@ if( $_SESSION['CVS'][ "Change T_Shirt Size" ] == "Y" )
 ?>
                 <tr>    <td><?PHP Print_Text("makeuser_T-Shirt"); ?></td>
 			<td><select name="Sizeid">
-        	         	<option <?php if($_SESSION['Size'] == S) { echo "selected"; } ?> value="S">S</option>
-                		<option <?php if($_SESSION['Size'] == M) { echo "selected"; } ?> value="M">M</option>
-                        	<option <?php if($_SESSION['Size'] == L) { echo "selected"; } ?> value="L">L</option>
-                        	<option <?php if($_SESSION['Size'] == XL) { echo "selected"; } ?> value="XL">XL</option>
-                        	<option <?php if($_SESSION['Size'] == XXL) { echo "selected"; } ?> value="XXL">XXL</option>
-                        	<option <?php if($_SESSION['Size'] == XXXL) { echo "selected"; } ?> value="XXXL">XXXL</option>
+        	         	<option <?php if($_SESSION['Size'] == 'S') { echo "selected"; } ?> value="S">S</option>
+                		<option <?php if($_SESSION['Size'] == 'M') { echo "selected"; } ?> value="M">M</option>
+                        	<option <?php if($_SESSION['Size'] == 'L') { echo "selected"; } ?> value="L">L</option>
+                        	<option <?php if($_SESSION['Size'] == 'XL') { echo "selected"; } ?> value="XL">XL</option>
+                        	<option <?php if($_SESSION['Size'] == 'XXL') { echo "selected"; } ?> value="XXL">XXL</option>
+                        	<option <?php if($_SESSION['Size'] == 'XXXL') { echo "selected"; } ?> value="XXXL">XXXL</option>
 	                </select></td></tr>
 <?PHP
 }
