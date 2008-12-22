@@ -50,17 +50,22 @@ if (!IsSet($_POST["action"]))
 
 		<tr>	<td><?PHP Print_Text("pub_einstellungen_Hometown"); ?></td>
 	  		<td><input type="text" name="Hometown" size="40" value="<?PHP echo $_SESSION['Hometown']; ?>"></td></tr>
-
-                <tr>    <td><?PHP Print_Text("makeuser_T-Shirt"); ?></td>	           <td>
-                <select name="Sizeid">
-                        <option <?php if($_SESSION['Size'] == S) { echo "selected"; } ?> value="S">S</option>
-                        <option <?php if($_SESSION['Size'] == M) { echo "selected"; } ?> value="M">M</option>
-                        <option <?php if($_SESSION['Size'] == L) { echo "selected"; } ?> value="L">L</option>
-                        <option <?php if($_SESSION['Size'] == XL) { echo "selected"; } ?> value="XL">XL</option>
-                        <option <?php if($_SESSION['Size'] == XXL) { echo "selected"; } ?> value="XXL">XXL</option>
-                        <option <?php if($_SESSION['Size'] == XXXL) { echo "selected"; } ?> value="XXXL">XXXL</option>
-                </select>
-           </td>	
+<?PHP
+if( $_SESSION['CVS'][ "Change T_Shirt Size" ] == "Y" )
+{
+?>
+                <tr>    <td><?PHP Print_Text("makeuser_T-Shirt"); ?></td>
+			<td><select name="Sizeid">
+        	         	<option <?php if($_SESSION['Size'] == S) { echo "selected"; } ?> value="S">S</option>
+                		<option <?php if($_SESSION['Size'] == M) { echo "selected"; } ?> value="M">M</option>
+                        	<option <?php if($_SESSION['Size'] == L) { echo "selected"; } ?> value="L">L</option>
+                        	<option <?php if($_SESSION['Size'] == XL) { echo "selected"; } ?> value="XL">XL</option>
+                        	<option <?php if($_SESSION['Size'] == XXL) { echo "selected"; } ?> value="XXL">XXL</option>
+                        	<option <?php if($_SESSION['Size'] == XXXL) { echo "selected"; } ?> value="XXXL">XXXL</option>
+	                </select></td></tr>
+<?PHP
+}
+?>
 	</table>
 	<input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
@@ -251,14 +256,28 @@ case 'avatar':
         break;
 
 case 'setUserData':
-	$chsql= "UPDATE `User` SET ".
-		"`Nick`='".     $_POST["eNick"].	"', `Name`='".   $_POST["eName"].  "', ".
-		"`Vorname`='".  $_POST["eVorname"].	"', `Alter`='".  $_POST["eAlter"]. "', ".
-		"`Telefon`='".  $_POST["eTelefon"].	"', `Handy`='".  $_POST["eHandy"]. "', ".
-		"`DECT`='".     $_POST["eDECT"]. 	"', `email`='".  $_POST["eemail"]. "', ".
-		"`ICQ`='".      $_POST["eICQ"].		"', `jabber`='". $_POST["ejabber"]."', ".
-		"`Hometown`='". $_POST["Hometown"].	"', `Size`='". $_POST["Sizeid"]."' ".
-		"WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1;";
+	if( $_SESSION['CVS'][ "Change T_Shirt Size" ] == "Y" )
+	{
+		$chsql= "UPDATE `User` SET ".
+			"`Nick`='".     $_POST["eNick"].	"', `Name`='".   $_POST["eName"].  "', ".
+			"`Vorname`='".  $_POST["eVorname"].	"', `Alter`='".  $_POST["eAlter"]. "', ".
+			"`Telefon`='".  $_POST["eTelefon"].	"', `Handy`='".  $_POST["eHandy"]. "', ".
+			"`DECT`='".     $_POST["eDECT"]. 	"', `email`='".  $_POST["eemail"]. "', ".
+			"`ICQ`='".      $_POST["eICQ"].		"', `jabber`='". $_POST["ejabber"]."', ".
+			"`Hometown`='". $_POST["Hometown"].	"', `Size`='".   $_POST["Sizeid"]. "' ".
+			"WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1;";
+	}
+	else
+	{
+		$chsql= "UPDATE `User` SET ".
+			"`Nick`='".     $_POST["eNick"].	"', `Name`='".   $_POST["eName"].  "', ".
+			"`Vorname`='".  $_POST["eVorname"].	"', `Alter`='".  $_POST["eAlter"]. "', ".
+			"`Telefon`='".  $_POST["eTelefon"].	"', `Handy`='".  $_POST["eHandy"]. "', ".
+			"`DECT`='".     $_POST["eDECT"]. 	"', `email`='".  $_POST["eemail"]. "', ".
+			"`ICQ`='".      $_POST["eICQ"].		"', `jabber`='". $_POST["ejabber"]."', ".
+			"`Hometown`='". $_POST["Hometown"].	"' ".
+			"WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1;";
+	}
         $Erg = mysql_query($chsql, $con);
 
 	if ($Erg==1) 
@@ -274,7 +293,15 @@ case 'setUserData':
 		$_SESSION['ICQ'] = $_POST["eICQ"];
 		$_SESSION['jabber'] = $_POST["ejabber"];
 		$_SESSION['Hometown'] = $_POST["Hometown"];
-		$_SESSION['Size']=$_POST["Sizeid"];		
+		if( $_SESSION['CVS'][ "Change T_Shirt Size" ] == "Y" )
+		{
+			$_SESSION['Size']=$_POST["Sizeid"];		
+		}
+		else if( $_SESSION['Size'] != $_POST["Sizeid"]) 
+		{
+			array_push($error_messages, "einstellungen.php, change t-shirt size not allowed\n");
+		}
+
 	
 		Print_Text("pub_einstellungen_UserDateSaved");
         } 
