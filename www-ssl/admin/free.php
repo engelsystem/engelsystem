@@ -35,7 +35,7 @@ $SQL =  "SELECT Shifts.*, ShiftEntry.*, User.Nick ".
 */
 $SQL =  "SELECT Shifts.*, ShiftEntry.* ".
 	"FROM `Shifts` INNER JOIN ShiftEntry ON Shifts.SID = ShiftEntry.SID ".
-	"WHERE (Shifts.DateS<=Now() AND Shifts.DateE>=Now() );";		
+	"WHERE (Shifts.DateS<=Now() AND Shifts.DateE>=Now() AND  ShiftEntry.UID>0);";		
 
 //SELECT User.Nick, Schichtplan.*, Schichtbelegung. * FROM User LEFT JOIN Schichtbelegung ON User.UID=Schichtbelegung.UID, Schichtplan LEFT JOIN Schichtbelegung ON Schichtplan.SID = Schichtbelegung.SID WHERE Schichtplan.Date < now() and Schichtplan.EndDate > now() ORDER BY Nick
 
