@@ -126,7 +126,11 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		if( $_SESSION['CVS']["nonpublic/schichtplan_add.php"] == "Y")
                 {
 			if ( $TempValue["free"] > 0)
-				$Out.= ", ". $TempValue["free"]. "x free ";
+			{
+				if( count($TempValue["Engel"]) > 0)
+					$Out.= ", ";
+				$Out.= $TempValue["free"]. "x free ";
+			}
 		}
 		$Out.= "</td>\n";
 		$Out.= "\t\t\t</tr>\n";
