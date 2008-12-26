@@ -45,6 +45,8 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 	//form Config
 	global $DEBUG;
 
+	$Out = "";
+
 	$Out.= "<table border=\"0\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" frame=\"void\">\n";
 
 	$Out.= "\t\t\t<colgroup span=\"2\"  align=\"left\" valign=\"center\">\n".
@@ -59,33 +61,30 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 	$Erg = mysql_query($SQL, $con);
 	
 	$Anzahl = mysql_num_rows($Erg);
-	$Feld=0;
+	$Feld=-1;
 	for( $i = 0; $i < $Anzahl; $i++ )
 	{
-		$Temp_TID_old = $Temp[$Feld]["TID"];
-		$Temp_UID_old = $Temp[$Feld]["UID"];
 		
 		$Temp_TID = mysql_result($Erg, $i, "TID");
 		
 		// wenn sich der Type ändert wird zumnästen feld geweckselt
-		if( $Temp_TID_old != $Temp_TID )
+		if( ($i==0) || ($Temp_TID_old != $Temp_TID) )
+		{
 			$Feld++;
+			$Temp[$Feld]["free"]=0;
+			$Temp[$Feld]["Engel"]=array();
+		}
 			
 		$Temp[$Feld]["TID"] = $Temp_TID;
 		$Temp[$Feld]["UID"] = mysql_result($Erg, $i, "UID");
-		
-		// sonderfall ersten durchlauf
-		if( $i == 0 )
-		{
-			$Temp_TID_old = $Temp[$Feld]["TID"];
-			$Temp_UID_old = $Temp[$Feld]["UID"];
-		}
 		
 		// ist es eine zu vergeben schicht?
 		if( $Temp[$Feld]["UID"] == 0 )
 			$Temp[$Feld]["free"]++;
 		else
 			$Temp[$Feld]["Engel"][] = $Temp[$Feld]["UID"];
+		
+		$Temp_TID_old = $Temp[$Feld]["TID"];
 	} // FOR
 	
 
@@ -124,16 +123,11 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 		
 		// ausgabe benötigter Engel
 		////////////////////////////
-		//mit sonder status
-		$SQLerlaubnis = "SELECT Name FROM `EngelType` WHERE TID = '". $TempValue["TID"]. "'";
-		$Ergerlaubnis =  mysql_query( $SQLerlaubnis, $con);
-		if( mysql_num_rows( $Ergerlaubnis))
-			if( $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "Y" ||
-			    $_SESSION['CVS'][mysql_result( $Ergerlaubnis, 0, "Name")] == "")
-                        {
-				if ( $TempValue["free"] > 0)
-					$Out.= ", ". $TempValue["free"]. "x free ";
-			}
+		if( $_SESSION['CVS']["nonpublic/schichtplan_add.php"] == "Y")
+                {
+			if ( $TempValue["free"] > 0)
+				$Out.= ", ". $TempValue["free"]. "x free ";
+		}
 		$Out.= "</td>\n";
 		$Out.= "\t\t\t</tr>\n";
 	
