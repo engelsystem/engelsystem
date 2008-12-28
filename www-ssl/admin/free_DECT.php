@@ -64,19 +64,14 @@ for ($i=0; $i < $Zeilen; $i++)
 	// get shift types
 	$SQL_TYPES = "SELECT TID FROM `ShiftEntry` WHERE UID=". mysql_result($Erg, $i, "UID"). " GROUP BY TID;";
 	$Erg_TYPES = mysql_query($SQL_TYPES, $con);
-	if( mysql_num_rows( $Erg_TYPES) > 0)
+	$Zeilen_Typen  = mysql_num_rows($Erg_TYPES);
+	for ($i=0; $i < $Zeilen_Typen; $i++)
 	{
-		$UserTypes = mysql_fetch_array($Erg_TYPES);
-		foreach( $UserTypes as $Var => $Value)
-		{
-			if( is_numeric($Var) === false)
-			{
-				echo "\"". TID2Type($Value). "\"=Y\t";	
-			}
-		}
+		echo "\"TID_". TID2Type( mysql_result($Erg_TYPES, $i, "TID")). "\"=Y\t";	
 	}
 
 	echo "\n";
+	echo "<br>";
 }
 
 ?>
