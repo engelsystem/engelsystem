@@ -65,13 +65,13 @@ for ($i=0; $i < $Zeilen; $i++)
 	$SQL_TYPES = "SELECT TID FROM `ShiftEntry` WHERE UID=". mysql_result($Erg, $i, "UID"). " GROUP BY TID;";
 	$Erg_TYPES = mysql_query($SQL_TYPES, $con);
 	$Zeilen_Typen  = mysql_num_rows($Erg_TYPES);
-	for ($i=0; $i < $Zeilen_Typen; $i++)
+	for ($j=0; $j < $Zeilen_Typen; $j++)
 	{
-		echo "\"TID_". TID2Type( mysql_result($Erg_TYPES, $i, "TID")). "\"=Y\t";	
+		echo "\"TID_". TID2Type( mysql_result($Erg_TYPES, $j, "TID")). "\"=Y\t";	
 	}
 
 	echo "\n";
-	echo "<br>";
+//	echo "<br>";
 }
 
 ?>
