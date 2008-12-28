@@ -27,7 +27,10 @@ function TID2Type($TID)
   $SQL = "SELECT Name FROM `EngelType` WHERE TID='$TID'";
   $Erg = mysql_query($SQL, $con);
 
-  return mysql_result($Erg, 0);
+  if( mysql_num_rows($Erg))
+  	return mysql_result($Erg, 0);
+  else
+  	return "";
 }
 
 

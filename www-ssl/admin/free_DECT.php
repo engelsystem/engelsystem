@@ -2,6 +2,7 @@
 
 include ("../../includes/config_db.php");
 include ("../../includes/funktion_db_list.php");
+include ("../../includes/funktion_user.php");
 
 
 #######################################################
@@ -25,7 +26,13 @@ for ($i=0; $i < $Zeilen; $i++)
 	$inuse.= "(UID = \"". mysql_result($Erg, $i, "UID"). "\")";
 }
 if ($inuse!="") 
+{
 	$inuse=" WHERE (NOT (".$inuse.")) AND (DECT!='')";
+}
+else
+{
+	$inuse=" WHERE (DECT!='')";
+}
 
 
 //##########################################################################################################
@@ -35,14 +42,40 @@ $Erg = mysql_query($SQL, $con);
 $Zeilen  = mysql_num_rows($Erg);
 for ($i=0; $i < $Zeilen; $i++)
 {
+	// get DECT number
+	echo mysql_result($Erg, $i, "DECT"). "\t";
+
+	// get all user rights
 	$SQL_RIGHT = "SELECT * FROM UserCVS WHERE UID=". mysql_result($Erg, $i, "UID"). ";";
 	$Erg_RIGHT = mysql_query($SQL_RIGHT, $con);
+	$UserRights = mysql_fetch_array($Erg_RIGHT);
 
-	echo mysql_result($Erg, $i, "DECT"). "\t";
-	echo "Info=". mysql_result($Erg_RIGHT, 0, "Info"). "\t";
-	echo "Herald=". mysql_result($Erg_RIGHT, 0, "Herald"). "\t";
-	echo "Conference=". mysql_result($Erg_RIGHT, 0, "Conference"). "\t";
-	
+	foreach( $UserRights as $Var => $Value)
+	{
+		if( 	(strpos( $Var, ".php") === false) AND 
+			(strpos( $Var, "/") === false) AND
+			(strpos( $Var, "UID") === false) AND
+			(is_numeric($Var) === false) )
+		{
+			echo "\"".$Var. "\"=". $Value. "\t";
+		}
+	}
+
+	// get shift types
+	$SQL_TYPES = "SELECT TID FROM `ShiftEntry` WHERE UID=". mysql_result($Erg, $i, "UID"). " GROUP BY TID;";
+	$Erg_TYPES = mysql_query($SQL_TYPES, $con);
+	if( mysql_num_rows( $Erg_TYPES) > 0)
+	{
+		$UserTypes = mysql_fetch_array($Erg_TYPES);
+		foreach( $UserTypes as $Var => $Value)
+		{
+			if( is_numeric($Var) === false)
+			{
+				echo "\"". TID2Type($Value). "\"=Y\t";	
+			}
+		}
+	}
+
 	echo "\n";
 }
 
