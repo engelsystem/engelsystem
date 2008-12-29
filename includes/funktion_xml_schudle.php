@@ -41,6 +41,8 @@ function SaveSchedule()
 		$Erg1 =  mysql_query($SQL1, $con);
 		
 		if( mysql_num_rows($Erg1)==0)
+		{
+			echo "Aenderung, am Schedule '". $_GET["PSIDXML"]. "'";
 			$SQL= "INSERT INTO `Shifts` (`PSID`, `DateS`, `DateE`, `Len`, `RID`, `Man`, `URL`) ".
 				"VALUES ('". $_GET["PSIDXML"]. "', ".
 					"'". $_GET["DateXML"]. "', ".
@@ -50,7 +52,11 @@ function SaveSchedule()
 					"'". mysql_escape_string($_GET["ManXML"]). "', ".
 					"'". $_GET["URLXML"]. "'".
 					");";
+		}
 		else
+		{
+			echo "Aenderung, am Schedule '". $_GET["PSIDXML"]. "' (SID ". 
+				mysql_result( $Erg1, 0, "SID"). ")";
 			$SQL= "UPDATE `Shifts` SET ".
 				"`DateS` = '". $_GET["DateXML"]. "', ".
 				"`DateE` = '". $DateEnd. "', ".
@@ -59,10 +65,11 @@ function SaveSchedule()
 				"`Man` = '". mysql_escape_string($_GET["ManXML"]). "', ".
 				"`URL`= '". $_GET["URLXML"]. "' ".
 				"WHERE `PSID` = '". $_GET["PSIDXML"]. "' LIMIT 1;";
+		}
 		$Erg = mysql_query($SQL, $con);
 		if( $Erg )
 		{
-			echo "Aenderung, am Schedule '". $_GET["PSIDXML"]. "', war erfogreich<br>\n";
+			echo ", war erfogreich<br>\n";
 
 			//SID auslesen
 			$SQL1 = "Select `SID` FROM `Shifts` WHERE `PSID`='". $_GET["PSIDXML"]. "';";
@@ -88,7 +95,7 @@ function SaveSchedule()
 							"WHERE   `SID`='". $newSID. "' AND ".
 								"`TID` = '". $EngelTypeID. "';";
 					$ErgShifts = mysql_query( $sqlShifts, $con);
-					$EngelNeeded -= mysql_num_rows( $ErgShifts);
+					$EngelNeeded_Exist = mysql_num_rows( $ErgShifts);
 					
 					// check for not empty shifts
 		        		$sqlShiftsNotEmpty =	"SELECT * FROM `ShiftEntry` ".
@@ -96,18 +103,14 @@ function SaveSchedule()
 									"`TID` = '". $EngelTypeID. "' AND ".
 									"`UID` != 0 ;";
 					$ErgShiftsNotEmpty = mysql_query( $sqlShiftsNotEmpty, $con);
-					if( (mysql_num_rows( $ErgShiftsNotEmpty) > 0) && ($EngelNeeded < 0) )
-					{
-						echo "---> WARING ". mysql_num_rows( $ErgShiftsNotEmpty). " shift is used, can't deleting all shifts<br>\n";
-						$EngelNeeded += mysql_num_rows( $ErgShiftsNotEmpty);
-					}
-
-
+					$EngelNeeded_NotEmpty = mysql_num_rows( $ErgShiftsNotEmpty);
+					
 					// Angel create/delte?
-					if( $EngelNeeded > 0)
+					if( $EngelNeeded > $EngelNeeded_Exist)
 					{
-						echo "---->Create Shifts for engeltype: ". $EngelTypeID. " ".  $EngelNeeded. "x<br>\n------>\n";
-						for( $i=0; $i < $EngelNeeded; $i++ )
+						echo "---->Create Shifts for engeltype: ". TID2Type($EngelTypeID). " ".
+							($EngelNeeded-$EngelNeeded_Exist). "x<br>\n------>\n";
+						for( $i=0; $i < ($EngelNeeded-$EngelNeeded_Exist); $i++ )
 						{
 							$SQL3  = "INSERT INTO `ShiftEntry` (`SID`, `TID`) VALUES (".
 								 "'". $newSID. "', ".
@@ -121,10 +124,22 @@ function SaveSchedule()
 						}
 						echo "<br>\n";
 					}
-					else if ($EngelNeeded < 0)
+					else if ($EngelNeeded < $EngelNeeded_Exist)
 					{
-						echo "---->Delete empty Shifts for engeltype: ". $EngelTypeID. " ".  $EngelNeeded. "x<br>\n------>\n";
-						for( ; $EngelNeeded < 0; $EngelNeeded++ )
+						if( $EngelNeeded > $EngelNeeded_NotEmpty)
+						{
+							$EngelMin = $EngelNeeded;
+						}
+						else
+						{
+							$EngelMin = $EngelNeeded_NotEmpty;
+							echo "---> WARING ". $EngelNeeded_NotEmpty. 
+								" shift is used, can't del ". TID2Type($EngelTypeID). " shifts\t";
+						}
+
+						echo "---->Delete empty Shifts for engeltype: ". TID2Type($EngelTypeID). " ".  
+								($EngelNeeded_Exist-$EngelMin)."x<br>\n------>\n";
+						for( $i=$EngelMin; $i<$EngelNeeded_Exist; $i++ )
 						{
 							$SQL3  = "DELETE FROM `ShiftEntry` ".
 								 "WHERE  `SID` = ". $newSID. " AND ".
@@ -142,14 +157,14 @@ function SaveSchedule()
 					}
 					else
 					{
-//						echo "---->Nothing to do, for engeltype: ". $EngelTypeID. "<br>\n";
+//						echo "---->Nothing to do, for engeltype: ". TID2Type($EngelTypeID). "<br>\n";
 					}
 				}
 			}
 
 		}
 		else
-			echo "Aenderung, am Schedule '". $_GET["PSIDXML"]. "', war <u>nicht</u> erfogreich.(". 
+			echo ", war <u>nicht</u> erfogreich.(". 
 				mysql_error($con). ")<br>[$SQL]<br>\n";
 	}
 	else 
