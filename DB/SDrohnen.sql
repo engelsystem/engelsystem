@@ -13,7 +13,7 @@
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur f?r Tabelle `Sprache`
+-- Tabellenstruktur fuer Tabelle `Sprache`
 --
 
 DROP TABLE IF EXISTS `Sprache`;
@@ -25,7 +25,7 @@ CREATE TABLE `Sprache` (
 ) TYPE=MyISAM;
 
 --
--- Daten f?r Tabelle `Sprache`
+-- Daten fuer Tabelle `Sprache`
 --
 
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('Hallo', 'DE', 'Hallo ');
@@ -54,7 +54,7 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('top', 'DE', 'top');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('top', 'EN', 'top ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('13', 'DE', 'auf dieser Seite kannst Du deine pers&ouml;nlichen Einstellungen &auml;ndern, wie zum Beispiel dein Kennwort, Farbeinstellungen usw.\r\n\r\n');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('13', 'EN', 'here you can change your personal settings i.e. password, color settings etc.\r\n\r\n');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('14', 'DE', 'Hier kannst du dein Kennwort f&uuml;r unsere Drohnenverwaltung &auml;ndern. ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('14', 'DE', 'Hier kannst du dein Kennwort &auml;ndern.. ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('14', 'EN', 'Here you can change your password.');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('15', 'DE', 'Altes Passwort:');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('15', 'EN', 'Old password:');
@@ -230,20 +230,20 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_menuname',
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('menu_plan', 'EN', 'Map');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_news', 'EN', 'News');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_news', 'DE', 'News');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Drohnebesprechung', 'DE', 'Drohnebesprechung');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Engelbesprechung', 'DE', 'Drohnebesprechung');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_menuname', 'EN', 'Menu');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Schichtplan', 'DE', 'Schichtplan');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Wecken', 'DE', 'Wecken');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_mySchichtplan', 'DE', 'Mein Schichtplan');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_questionDrohne', 'DE', 'Anfragen an die Dispatcher');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_questionEngel', 'DE', 'Anfragen an die Dispatcher');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Einstellungen', 'DE', 'Einstellungen');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Drohnebesprechung', 'EN', 'Drone meeting');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Engelbesprechung', 'EN', 'Drone meeting');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Abmelden', 'DE', 'Abmelden');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Schichtplan', 'EN', 'Available Shifts');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Wecken', 'EN', 'Wake-up Service');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('index_lang_send', 'EN', 'do it Gabriel!');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('index_lang_send', 'EN', 'Fullfill order!');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_mySchichtplan', 'EN', 'My Shifts');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_questionDrohne', 'EN', 'Questions for the Dispatcher');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_questionEngel', 'EN', 'Questions for the Dispatcher');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Abmelden', 'EN', 'Logout');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Einstellungen', 'EN', 'Options');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('menu_Name', 'DE', 'Garage');
@@ -360,14 +360,14 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_Schichtpla
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_menu_SchichtplanBeamer', 'EN', 'Shifts for beamer optimice');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_einstellungen_Text_UserData', 'DE', 'Hier kannst du deine Beschreibung f&uuml;r unsere Drohnenverwaltung &auml;ndern.');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('lageplan_text1', 'EN', 'This is a map of available rooms:');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser.php', 'DE', 'Anmeldung zum Chaos-Drohne');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser.php', 'DE', 'Registration als Chaos-Drohne');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser.php', 'EN', 'Chaos-Drone Registration');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_text1', 'DE', 'Mit dieser Maske meldet ihr euch im Drohnesystem an. Durch das Drohnesystem findet auf dem Congress die Aufgabenverteilung der Drohne statt.\r\n\r\n');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_text1', 'EN', 'By completing this form you&#039;re registering as a Chaos-Drone. This script will create you an account in the congress drone task system.\r\n\r\n');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_text1', 'EN', 'By completing this form you&#039;re registering as a Chaos-Drone. This script will create you an account in the drone task sheduler.\r\n\r\n');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_Nickname', 'DE', 'Nickname');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_Nickname', 'EN', 'nick');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_text2', 'DE', 'Habt ihr schon einmal am<br />\r\nCongress mitgeholfen? <br />\r\nWenn ja, in welchem <br />\r\nwelchen Aufgabengebiet(en)?');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_text2', 'EN', 'Did you help at former <br />\r\ncongresses and which tasks <br />\r\nhave you performed then?');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_text2', 'DE', 'Habt ihr schon einmal bei der<br />\r\nSigINT mitgeholfen? <br />\r\nWenn ja, in welchem <br />\r\nwelchen Aufgabengebiet(en)?');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_text2', 'EN', 'Did you help at former <br />\r\nSigINT and which tasks <br />\r\nhave you performed then?');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_Nachname', 'DE', 'Nachname');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_Nachname', 'EN', 'last name');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_Vorname', 'DE', 'Vorname');
@@ -406,7 +406,7 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_error_pass
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_error_password2', 'EN', 'error: your password is to short (at least 6 characters)');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_error_write1', 'DE', 'Fehler: Kann die eingegebenen Daten nicht sichern?!?');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_error_write1', 'EN', 'error: can t save your data...');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_writeOK', 'DE', 'Die Anmeldung war erfolgreich.');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_writeOK', 'DE', 'Registration erfolgreich.');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_writeOK', 'EN', 'transmitted.');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_error_write2', 'DE', 'Fehler: Beim Speichern der Userrechte...');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_error_write2', 'EN', 'error: can&#039;t save userrights... ');
@@ -414,8 +414,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_writeOK2',
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_writeOK2', 'EN', 'userright was saved...');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_writeOK3', 'EN', 'Your account was successfully created, have a lot of fun.');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_writeOK3', 'DE', 'Dein Account wurde erfolgreich gespeichert, have a lot of fun.');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_writeOK4', 'DE', 'Vielen Dank f&amp;uuml;r deine Anmeldung.');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_writeOK4', 'EN', 'Thank you for your participation..');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_writeOK4', 'DE', 'Drohne Registriert!');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_writeOK4', 'EN', 'Drone registered!');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_text4', 'DE', 'Wenn du dich als Drohne registrieren  m&ouml;chtest, f&uuml;lle bitte folgendes Formular aus:');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_text4', 'EN', 'If you would like to be a chaos drone please insert following details into this form:');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_error_nick3', 'DE', '&quot; existiert bereits.');
