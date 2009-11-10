@@ -94,13 +94,20 @@ if( isset($_POST["send"]))
 			}
 			echo Get_Text("makeuser_writeOK4"). "</p><p></p>\n<br><br>\n";
 			$success="any";
+			
+			if ( isset($SubscribeMailinglist) )
+			{
+				if ( $_POST["subscribe-mailinglist"] == "")
+				{
+					$headers =	"From: ". $_POST["email"]. "\r\n" .
+							"X-Mailer: PHP/" . phpversion();
+					mail( $SubscribeMailinglist, "subject", "message", $headers);
+				}
+			}
 
 		}
 	}
-	if( !isset($error) ){
-		echo Get_Text("makeuser_text4"). "<a href=";
-		echo($url). ">Login</a><br>\n";
-	}else{ 
+	if( isset($error) ){
                 echo "<p class=\"warning\">\n$error\n</p>\n\n";
 	}
 }
@@ -115,6 +122,7 @@ else
 	$_POST["DECT"] = "";
 	$_POST["Handy"] = "";
 	$_POST["email"] = "";
+	$_POST["subscribe-mailinglist"] = "";
 	$_POST["ICQ"] = "";
 	$_POST["jabber"] = "";
 	$_POST["Size"] = "";
@@ -122,6 +130,7 @@ else
 	$_POST["kommentar"] = "";
 	$_POST["Hometown"] = "";
 }
+
 if( $success=="none" ){
 echo "<h1>".Get_Text("makeuser_text0")."</h1>". "<h2>". Get_Text("makeuser_text1"). "</h2>";
 echo "\t<form action=\"\" method=\"post\">\n";
@@ -143,6 +152,11 @@ echo "\t\t\t<tr><td>". Get_Text("makeuser_Handy").
 	"</td><td><input type=\"text\" size=\"40\" name=\"Handy\" value=\"". $_POST["Handy"]. "\"></td></tr>\n";
 echo "\t\t\t<tr><td>". Get_Text("makeuser_E-Mail"). 
 	"*</td><td><input type=\"text\" size=\"40\" name=\"email\" value=\"". $_POST["email"]. "\"></td></tr>\n";
+if ( isset($SubscribeMailinglist) )
+{
+	echo "\t\t\t<tr><td>". Get_Text("makeuser_subscribe-mailinglist"). 
+		"</td><td><input type=\"checkbox\" name=\"subscribe-mailinglist\" value=\"". $_POST["subscribe-mailinglist"]. "\">($SubscribeMailinglist)</td></tr>\n";
+}
 echo "\t\t\t<tr><td>ICQ</td><td><input type=\"text\" size=\"40\" name=\"ICQ\" value=\"". $_POST["ICQ"]. "\"></td></tr>\n";
 echo "\t\t\t<tr><td>jabber</td><td><input type=\"text\" size=\"40\" name=\"jabber\" value=\"". $_POST["jabber"]. "\"></td></tr>\n";
 echo "\t\t\t<tr><td>". Get_Text("makeuser_T-Shirt"). 
@@ -159,24 +173,18 @@ echo "\t\t\t</td></tr>\n";
 echo "\t\t\t<tr><td>". Get_Text("makeuser_Engelart"). 
 	"</td><td align=\"left\">\n";
 echo "\t\t\t<select name=\"Art\">\n";
-echo "\t\t\t\t<option value=\"Konferenz\""; 	if ($_POST["Art"]=="Konferenz")		echo " selected"; 
-	echo ">Konferenz</option>\n";
-//echo "\t\t\t\t<option value=\"Dokumentation\"";	if ($_POST["Art"]=="Dokumentation")	echo " selected";
-//	echo ">Dokumentation</option>\n";
-echo "\t\t\t\t<option value=\"Eingang\"";	if ($_POST["Art"]=="Eingang")		echo " selected";
-	echo ">Eingang</option>\n";
-echo "\t\t\t\t<option value=\"Schutzengel\"";	if ($_POST["Art"]=="Schutzengel")	echo " selected";
-	echo ">Schutzengel</option>\n";
-echo "\t\t\t\t<option value=\"Netzengel\"";	if ($_POST["Art"]=="Netzengel")		echo " selected";
-	echo ">Netzengel</option>\n";
-echo "\t\t\t\t<option value=\"Rettung\"";	if ($_POST["Art"]=="Rettung")		echo " selected";
-	echo ">Rettung</option>\n";
-echo "\t\t\t\t<option value=\"Verpflegung\"";	if ($_POST["Art"]=="Verpflegung")	echo " selected";
-	echo ">Verpflegung</option>\n";
-echo "\t\t\t\t<option value=\"egal\"";		if ($_POST["Art"]=="egal")		echo " selected";
-	echo ">Egal-Engel</option>\n";
+$Sql = "SELECT * FROM `EngelType` ORDER BY `NAME`";
+$Erg = mysql_query($Sql, $con);
+for( $t = 0; $t < mysql_num_rows($Erg); $t++ )
+{
+	$Name = mysql_result($Erg, $t, "Name"). Get_Text("inc_schicht_engel");
+	echo "\t\t\t\t<option value=\"$Name\"";
+	if ($_POST["Art"]==$Name)
+		echo " selected"; 
+	echo ">$Name</option>\n";
+}
 echo "\t\t\t</select>\n";
-echo "\t\t\t</td><td><!--a href=\"https://www.ccc.de/congress/2004/engel.de.html#d5e23\"><img src=\"./pic/external.png\" alt=\"external: \" /> Congress 21C3</a--></td>\n";
+echo "\t\t\t</td>\n";
 echo "\t\t\t</tr>\n";
 echo "\t\t\t<tr>\n";
 echo "\t\t\t\t<td>". Get_Text("makeuser_text2"). "</td>\n";
@@ -194,6 +202,7 @@ echo "\t\t</table>\n";
 echo "\t</form>\n";
 Print_Text("makeuser_text3");
 }
+
 include ("../includes/footer.php");
 ?>
 

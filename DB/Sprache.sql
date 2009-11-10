@@ -382,6 +382,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_Handy', 'D
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_Handy', 'EN', 'mobile');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_E-Mail', 'DE', 'E-Mail');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_E-Mail', 'EN', 'e-mail');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_subscribe-mailinglist', 'DE', 'Der Mailinglisten Beitreten')
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_subscribe-mailinglist', 'EN', 'subscribe the mailing list')
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_T-Shirt', 'DE', 'T-Shirt Gr&ouml;&szlig;e');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_T-Shirt', 'EN', 'shirt size');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('makeuser_Engelart', 'DE', 'Engelart');
