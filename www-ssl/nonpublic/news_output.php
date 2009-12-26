@@ -60,7 +60,7 @@ Print_Text(5);
 
 for ($i=1; $i <= $dis_rows; $i++) {
 	if (!((($i * $DISPLAY_NEWS) - $_GET["news_begin"]) == $DISPLAY_NEWS)) {
-		echo "<a href=\"./news.php?news_begin=".(($i*$DISPLAY_NEWS) - $DISPLAY_NEWS)."\">$i</a>&nbsp; ";
+		echo "<a href=\"./news.php?news_begin=".(($i*$DISPLAY_NEWS) - $DISPLAY_NEWS - 1)."\">$i</a>&nbsp; ";
 	} else {
 		echo "$i&nbsp; ";
 	}
