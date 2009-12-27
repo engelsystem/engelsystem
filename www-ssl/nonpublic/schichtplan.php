@@ -6,7 +6,20 @@ $submenus = 2;
 if( isset($_GET["ausdatum"]))
 	$ausdatum = $_GET["ausdatum"];
 if( isset($_GET["raum"]))
+{
 	$raum = $_GET["raum"];
+	if( $raum==-1 &&  isset($_GET["show"]))
+	{
+		$raum = "";
+		foreach ($_GET as $k => $v) 
+		{	
+			if( substr($k, 0, 5) == "raum_") 
+			{
+				$raum = $raum. ";". $v;
+			}
+		}
+	}
+}
 
 include ("../../includes/header.php");
 include ("../../includes/funktionen.php");
@@ -64,10 +77,21 @@ if ( !isset($raum) )
 {
 	// Ausgabe wenn kein Raum Ausgewählt:
 	echo Get_Text("pub_schicht_auswahl_raeume"). "<br><br>\n";
-	if( isset($Room))	
+
+	if( isset($Room))
+	{
+		echo "<form action=\"./schichtplan.php\" method=\"GET\">\n";
 		foreach( $Room as $RoomEntry  )
-			echo "\t<li><a href='./schichtplan.php?ausdatum=$ausdatum&raum=". $RoomEntry["RID"]. "'>".
-				$RoomEntry["Name"]. "</a></li>\n";
+		{
+			echo "\t<li><input type=\"checkbox\" name=\"raum_". $RoomEntry["RID"]. "\" value=\"". $RoomEntry["RID"]." \">";
+			echo "<a href='./schichtplan.php?ausdatum=$ausdatum&raum=". $RoomEntry["RID"]. "'>". $RoomEntry["Name"]. "</a>";
+			echo "</input></li>\n";
+		}
+		echo "<input type=\"hidden\" name=\"ausdatum\" value=\"$ausdatum\">";
+		echo "<input type=\"hidden\" name=\"raum\" value=\"-1\">";
+		echo "<input type=\"submit\" name=\"show\" value=\"show\">\n";
+		echo "</form>\n";
+	}
 
 	echo "<br><br>";
 	echo Get_Text("pub_schicht_alles_1"). "<a href='./schichtplan.php?ausdatum=$ausdatum&raum=-1'> <u>".
@@ -83,6 +107,8 @@ if ( !isset($raum) )
 else 
 { 	// Wenn einraum Ausgewählt ist:
 	if( $raum == -1 ) 
+		echo Get_Text("pub_schicht_Anzeige_1").$ausdatum.":<br><br>";
+	elseif( substr( $raum, 0, 1) == ";" )
 		echo Get_Text("pub_schicht_Anzeige_1").$ausdatum.":<br><br>";
 	else 
 		echo Get_Text("pub_schicht_Anzeige_1"). $ausdatum. 
@@ -101,6 +127,15 @@ else
 		   foreach( $Room as $RoomEntry  )
 			if (SummRoomShifts($RoomEntry["RID"]) > 0)
 				echo "\t\t<th>". $RoomEntry["Name"]. "</th>\n";
+	}
+	elseif( substr( $raum, 0, 1) == ";" )
+	{
+		$words = preg_split("/;/", $raum); 
+		foreach ($words as $word)
+		{
+			if( strlen(trim($word)) > 0)
+				echo "\t\t<th>". $RoomID[trim($word)]. "</th>\n";
+		}
 	}
 	else
 		echo "\t\t<th>". $RoomID[$raum]. "</th>\n";
@@ -135,6 +170,19 @@ else
 		    foreach( $Room as $RoomEntry  )
 			if (SummRoomShifts($RoomEntry["RID"]) > 0)
 				CreateRoomShifts( $RoomEntry["RID"] );
+	}
+	elseif( substr( $raum, 0, 1) == ";" )
+	{
+		if( isset($Room))
+		{
+		    $words = preg_split("/;/", $raum); 
+		    foreach ($words as $word)
+		    {
+			if( strlen(trim($word)) > 0)
+				if (SummRoomShifts($word) > 0)
+					CreateRoomShifts( $word );
+		    }
+		}
 	}
 	else
 		CreateRoomShifts( $raum );

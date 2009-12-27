@@ -4,6 +4,9 @@ $IAXenable = TRUE;
 
 //Setting Asterisk
 $IAXcontent="Engelsystem";
-$IAXserver="Engelsystem:engelengel@10.1.1.1";
+$IAXserver="voip.eventphone.de";
+
+//Asterisk output dir
+$AsteriskOutputDir="/var/spool/asterisk/outgoing";
 
 ?>

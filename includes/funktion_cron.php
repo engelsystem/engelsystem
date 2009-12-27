@@ -35,7 +35,7 @@ function TID2Engeltype($TID)
 
 function DialNumberIAX( $DECTnumber, $Time, $RID, $TID)
 {
-	global $IAXenable, $IAXcontent, $IAXserver, $AnrufDelay, $DebugDECT;
+	global $IAXenable, $IAXcontent, $IAXserver, $AnrufDelay, $DebugDECT, $Tempdir, $AsteriskOutputDir;
 	
 	//Parameter verarbeiten
 	$TimeH = substr( $Time, 11, 2);
@@ -84,7 +84,7 @@ function DialNumberIAX( $DECTnumber, $Time, $RID, $TID)
 		else
 		{
 			// IAX file Schareiebn
-			$CallFile = "/tmp/call_". date("Ymd_His"). "_$DECTnumber";
+			$CallFile = $Tempdir. "/call_". date("Ymd_His"). "_$DECTnumber";
 	
 			if($DebugDECT) echo "IAX create file for dialing Number $DECTnumber\n";
 			$file = fopen( $CallFile, 'w' );
@@ -104,8 +104,9 @@ function DialNumberIAX( $DECTnumber, $Time, $RID, $TID)
 //				fputs( $file, "SetVar: Room=".  RID2Room( $RID). "\n");
 //				fputs( $file, "SetVar: Engeltype=". TID2Engeltype( $TID). "\n");
 				fclose($file);
-				system( "chmod 777 $CallFile");
-				system( "mv $CallFile /var/spool/asterisk/outgoing");
+				system( "chmod 777 ". $CallFile);
+				system( "mv ". $CallFile. " ". $AsteriskOutputDir);
+				
 			}
 			else
 				echo "error: $CallFile not created";
