@@ -64,8 +64,8 @@ for ($i=0; $i < $Zeilen; $i++)
 {
 	echo "<tr class=\"content\">\n";
 	echo "<td><a href=\"./user.php?Type=Normal&enterUID=". mysql_result($Erg, $i, "UID"). "\">". 
-		mysql_result($Erg, $i, "Nick"). "</td></a>\n";
-	echo "<td>". UID2Nick(mysql_result($Erg, $i, "UID")). "</td>\n";
+		UID2Nick(mysql_result($Erg, $i, "UID")). "</td></a>\n";
+	echo "<td></td>\n";
 	echo "<td>". mysql_result($Erg, $i, "RID"). "</td>\n";
 	echo "<td>". mysql_result($Erg, $i, "DateS"). "</td>\n";
 	echo "<td>". mysql_result($Erg, $i, "DateE"). "</td>\n";
