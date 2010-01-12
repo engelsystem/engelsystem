@@ -129,7 +129,7 @@ else
 		"bereits sein T-Shirt erhalten hat.<br><br>\n";
 
 	echo "<form action=\"./user2.php?action=change\" method=\"POST\">\n";
-	echo "<table>\n";
+	echo "<table border=\"0\">\n";
 	echo "<input type=\"hidden\" name=\"Type\" value=\"". $_GET["Type"]. "\">\n";
 
 	if( $_GET["Type"] == "Normal" )
@@ -259,16 +259,43 @@ else
 				//nur jeder zweiter sonst wird für jeden text noch die position (Zahl) ausgegeben
 				if( $CVS_Data_i%2 && $CVS_Data_Name!="UID") 
 				{
-				    echo "<tr><td>$CVS_Data_Name</td>\n<td>";
-				    echo "<input type=\"radio\" name=\"".($CVS_Data_i-1)."\" value=\"Y\" ";
-				    if( $CVS_Data_Value == "Y" )	
-				    	echo " checked";
-				    echo ">allow \n";
-				    echo "<input type=\"radio\" name=\"".($CVS_Data_i-1)."\" value=\"N\" ";
-				    if( $CVS_Data_Value == "N" )
-				    	echo " checked";
-				    echo ">denied \n";
-				    echo "</td></tr>";
+					if($CVS_Data_Name=="GroupID") {
+						if( $_GET["enterUID"] > 0 )
+						{
+							echo "<tr><td><b>Group</b></td>\n".
+								"<td><select name=\"GroupID\">";
+
+							$SQL_Group = "SELECT * FROM `UserGroups`";
+							$Erg_Group =  mysql_query($SQL_Group, $con);
+							for ($n = 0 ; $n < mysql_num_rows($Erg_Group) ; $n++)
+							{
+								$UID =  mysql_result($Erg_Group, $n, "UID");
+								echo "\t<option value=\"$UID\"";
+								if( $CVS_Data_Value == $UID)
+									echo " selected";
+								echo ">". mysql_result($Erg_Group, $n, "Name"). "</option>\n";
+							}
+							echo "</select></td></tr>";
+						}
+					} else {
+						echo "<tr><td>$CVS_Data_Name</td>\n<td>";
+						echo "<input type=\"radio\" name=\"".($CVS_Data_i-1)."\" value=\"Y\" ";
+						if( $CVS_Data_Value == "Y" )	
+					   		echo " checked";
+						echo ">allow \n";
+						echo "<input type=\"radio\" name=\"".($CVS_Data_i-1)."\" value=\"N\" ";
+						if( $CVS_Data_Value == "N" )
+					    		echo " checked";
+						echo ">denied \n";
+						if( $_GET["enterUID"] > 0 )
+						{
+							echo "<input type=\"radio\" name=\"".($CVS_Data_i-1)."\" value=\"G\" ";
+							if( $CVS_Data_Value == "G" )
+					    			echo " checked";
+							echo ">group-setting \n";
+							echo "</td></tr>";
+					    	}
+					}
 				} //IF
 			} //Foreach	    
 			echo "</td></tr>\n";

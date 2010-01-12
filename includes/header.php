@@ -7,12 +7,7 @@ echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n";
 <HEAD>
 <?PHP
 
-// SVN versions auswertung
-exec("svnversion", $VersionArray);
-if( strlen($VersionArray[0]))
-	$Version = "(r ". $VersionArray[0]. ")";
-
-echo "<TITLE>--- $title  $Version ---</TITLE>";
+echo "<TITLE>--- $title ---</TITLE>";
 ?>
 <meta name="keywords" content="Engel, Himmelsverwaltung">
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">

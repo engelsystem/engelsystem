@@ -3,15 +3,22 @@
 function UID2Nick($UID) 
 {
   global $con;
-  
-  $SQL = "SELECT Nick FROM `User` WHERE UID='$UID'";
+
+  if( $UID>0) {
+	$SQL = "SELECT Nick FROM `User` WHERE UID='$UID'";
+  } else {
+	$SQL = "SELECT Name FROM `UserGroups` WHERE UID='$UID'";
+  }
   $Erg = mysql_query($SQL, $con);
 
   //echo $UID."#";
-  if( mysql_num_rows($Erg))
-	return mysql_result($Erg, 0);
-  else
-  {
+  if( mysql_num_rows($Erg)) {
+	if( $UID>0 ) {
+		return mysql_result($Erg, 0);
+	} else {
+		return "Group-".mysql_result($Erg, 0);
+	}
+  } else {
   	if( $UID == -1)
 		return "logout User";
 	else

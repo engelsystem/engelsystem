@@ -54,10 +54,17 @@ if (IsSet($_GET["action"]))
 				$CVS_Data_i = 1;
 				foreach ($CVS_Data as $CVS_Data_Name => $CVS_Data_Value) 
 				{
-					if( ($CVS_Data_i+1)%2 && $CVS_Data_Name!="UID")
-						$SQL2.= "`$CVS_Data_Name` = '". $_POST[$CVS_Data_i]."', ";
-			    		$CVS_Data_i++;
+					if( ($CVS_Data_i+1)%2 && $CVS_Data_Name!="UID") {
+						if( $CVS_Data_Name == "GroupID")
+						{
+							if( $_POST["enterUID"] > 0 )
+								$SQL2.= "`$CVS_Data_Name` = ". $_POST["GroupID"].", ";
+						} else {
+							$SQL2.= "`$CVS_Data_Name` = '". $_POST[$CVS_Data_i]."', ";
+						}
 					}
+			    		$CVS_Data_i++;
+				}
 				$SQL2 = substr( $SQL2, 0, strlen($SQL2)-2 );
 				$SQL2.= "  WHERE `UID`='". $_POST["enterUID"]. "' LIMIT 1;";
 				echo "<br>Secure-";
