@@ -1,0 +1,24 @@
+ALTER TABLE `UserCVS` ADD `admin/userArrived.php` CHAR( 1 ) NOT NULL DEFAULT 'N' AFTER `admin/UserPicture.php` ;
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userArrived.php', 'DE', 'User gekommen');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userArrived.php', 'EN', 'User Arrived');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_WriteError', 'DE', 'Fehler beim speichern bei Engel');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_WriteError', 'EN', 'Error by writing Engel');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_Text1', 'DE', 'Über die Suchen-Funktion des Browsers kann diese Liste schnell nach einem Nick abgesucht werden.');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_Text1', 'EN', 'Use the search function of the browser, this list can be quickly searched for a nick.');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_Text2', 'DE', 'Hinter diesem erscheint ein Link, über den man eintragen kann, dass der Engel gekommen ist.');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_Text2', 'EN', 'Behind that will see a link that you can enter, that the angel has come.');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_TableToppic', 'DE', 'Liste aller Engel:');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_TableToppic', 'EN', 'List of Engels:');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_TableTD_Nick', 'DE', 'Nick');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_TableTD_Nick', 'EN', 'Nick');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_TableTD_ArrivedShow', 'DE', 'Gekommen?');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_TableTD_ArrivedShow', 'EN', 'Arrived?');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_TableTD_ArrivedSet', 'DE', 'Gekommen Setzen:');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_TableTD_ArrivedSet', 'EN', 'Set arrived:');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_TableEntry_Arrived', 'DE', 'anwesend');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_TableEntry_Arrived', 'EN', 'arrived');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_TableEntry_Set', 'DE', 'XXXXXXXX');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_TableEntry_Set', 'EN', 'XXXXXXXX');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_WriteOK', 'DE', 'Als gekommen makiert');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pri_userArrived_WriteOK', 'EN', 'Set as arrived');
+

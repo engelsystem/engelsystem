@@ -48,6 +48,7 @@ CREATE TABLE `UserCVS` (
   `admin/user2.php` char(1) NOT NULL default 'N',
   `admin/userDefaultSetting.php` char(1) NOT NULL default 'N',
   `admin/UserPicture.php` char(1) NOT NULL default 'N',
+  `admin/userArrived.php` char(1) NOT NULL default 'N',
   `admin/aktiv.php` char(1) NOT NULL default 'N',
   `admin/tshirt.php` char(1) NOT NULL default 'N',
   `admin/news.php` char(1) NOT NULL default 'N',
