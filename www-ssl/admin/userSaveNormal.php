@@ -45,36 +45,6 @@ if (IsSet($_GET["action"]))
 					echo "Fehler beim speichern...\n(". mysql_error($con). ")";
 				}
 			}
-			elseif ($_POST["Type"] == "Secure")
-			{
-				$SQL2 = "UPDATE `UserCVS` SET ";
-			  	$SQL_CVS = "SELECT * FROM `UserCVS` WHERE `UID`='". $_POST["enterUID"]. "'";
-				$Erg_CVS =  mysql_query($SQL_CVS, $con);
-				$CVS_Data = mysql_fetch_array($Erg_CVS);
-				$CVS_Data_i = 1;
-				foreach ($CVS_Data as $CVS_Data_Name => $CVS_Data_Value) 
-				{
-					if( ($CVS_Data_i+1)%2 && $CVS_Data_Name!="UID") {
-						if( $CVS_Data_Name == "GroupID")
-						{
-							if( $_POST["enterUID"] > 0 )
-								$SQL2.= "`$CVS_Data_Name` = ". $_POST["GroupID"].", ";
-						} else {
-							$SQL2.= "`$CVS_Data_Name` = '". $_POST[$CVS_Data_i]."', ";
-						}
-					}
-			    		$CVS_Data_i++;
-				}
-				$SQL2 = substr( $SQL2, 0, strlen($SQL2)-2 );
-				$SQL2.= "  WHERE `UID`='". $_POST["enterUID"]. "' LIMIT 1;";
-				echo "<br>Secure-";
-				$Erg = db_query($SQL2, "change user CVS");
-				if ($Erg == 1) {
-					echo "&Auml;nderung wurde gesichert...\n";
-				} else {
-					echo "Fehler beim speichern...\n(". mysql_error($con). ")";
-				}
-			}
 			else
 				echo "<h1>Fehler: Unbekanter Type (". $_POST["Type"]. ") übergeben\n</h1>\n";
 		}
