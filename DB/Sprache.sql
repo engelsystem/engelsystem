@@ -574,8 +574,14 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/shiftadd.php'
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/shiftadd.php', 'EN', ' ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/schichtplan_druck.php', 'DE', ' ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/schichtplan_druck.php', 'EN', ' ');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/user2.php', 'DE', ' ');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/user2.php', 'EN', ' ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userChangeNormal.php', 'DE', ' ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userChangeNormal.php', 'EN', ' ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userChangeSecure.php', 'DE', ' ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userChangeSecure.php', 'EN', ' ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userSaveNormal.php', 'DE', ' ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userSaveNormal.php', 'EN', ' ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userSaveSecure.php', 'DE', ' ');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userSaveSecure.php', 'EN', ' ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dbUpdateFromXLS.php', 'DE', 'UpdateDB');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dbUpdateFromXLS.php', 'EN', 'UpdateDB');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect.php', 'DE', 'Dect');
@@ -584,6 +590,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect_call.php
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect_call.php', 'EN', ' ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/user.php', 'DE', 'Engelliste');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/user.php', 'EN', 'Engel-list');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/group.php', 'DE', 'Benutzer Gruppen');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/group.php', 'EN', 'User Group');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userDefaultSetting.php', 'DE', 'Engel Voreinstellungen');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/userDefaultSetting.php', 'EN', 'Engel Default Setting');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/UserPicture.php', 'DE', 'Benutzerbilder');

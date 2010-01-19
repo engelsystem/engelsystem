@@ -90,24 +90,11 @@ if (!IsSet($_GET["enterUID"]))
 		echo "\t<td>".mysql_result($Erg, $n, "Aktiv")."</td>\n";
 		$Tshirt += mysql_result($Erg, $n, "Tshirt");
 		echo "\t<td>".mysql_result($Erg, $n, "Tshirt")."</td>\n";
-		echo "\t<td><a href=\"./user.php?enterUID=".
+		echo "\t<td><a href=\"./userChangeNormal.php?enterUID=".
 			mysql_result($Erg, $n, "UID")."&Type=Normal\">&Auml;nd.</a></td>\n";
 		echo "\t<td>";
 		
-		//check userCVS=OK
-		$SQL2 = "SELECT `UID` FROM `UserCVS` WHERE (`UID`='". mysql_result($Erg, $n, "UID"). "')";
-		$Erg2 = mysql_query($SQL2, $con);
-		echo mysql_error($con);
-		if( mysql_num_rows($Erg2)==0)
-		{
-			$SQL3 = "INSERT INTO `UserCVS` (`UID`) VALUES ('". mysql_result($Erg, $n, "UID"). "');";
-			$Erg3 = db_query($SQL3, "admin/user.php auto CVS create");
-			if( $Erg3 )
-				echo "was create<br>\n";
-			else
-				echo mysql_error($con);
-		}
-		echo "<a href=\"./user.php?enterUID=".
+		echo "<a href=\"./userChangeSecure.php?enterUID=".
 			mysql_result($Erg, $n, "UID")."&Type=Secure\">Secure</a></td>\n";
 		echo "</tr>\n";
 	}
