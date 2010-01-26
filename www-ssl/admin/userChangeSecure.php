@@ -16,12 +16,6 @@ if (IsSet($_GET["enterUID"]))
 		"Wenn T-Shirt ein 'Ja' enth&auml;lt, bedeutet dies, dass der Engel ".
 		"bereits sein T-Shirt erhalten hat.<br><br>\n";
 
-	echo "<form action=\"./userSaveSecure.php?action=change\" method=\"POST\">\n";
-	echo "<table border=\"0\">\n";
-	echo "<input type=\"hidden\" name=\"Type\" value=\"Secure\">\n";
-
-	// CVS-Rechte
-	echo "  <tr><td><br><u>Rights of \"". UID2Nick($_GET["enterUID"]). "\":</u></td></tr>\n";
 
 	$SQL_CVS = "SELECT * FROM `UserCVS` WHERE `UID`='". $_GET["enterUID"]. "'";
 	$Erg_CVS =  mysql_query($SQL_CVS, $con);
@@ -30,6 +24,25 @@ if (IsSet($_GET["enterUID"]))
 		echo "Sorry, der Engel (UID=". $_GET["enterUID"]. ") wurde in der Liste nicht gefunden.";
 	else
 	{
+		// Rename if is an group
+		if( $_GET["enterUID"] < 0 ) {
+			$SQLname = "SELECT `Name` FROM `UserGroups` WHERE `UID`='". $_GET["enterUID"]. "'";
+		        $ErgName = mysql_query($SQLname, $con);
+		        echo mysql_error($con);
+
+			echo "<form action=\"./userSaveSecure.php?action=changeGroupName\" method=\"POST\">\n";
+			echo "<input type=\"hidden\" name=\"enterUID\" value=\"". $_GET["enterUID"]. "\">\n";
+			echo "<input type=\"text\" name=\"GroupName\" value=\"". mysql_result($ErgName, 0, "Name"). "\">\n";
+			echo "<input type=\"submit\" value=\"rename\">\n";
+			echo "</form>";
+		}
+
+		echo "<form action=\"./userSaveSecure.php?action=change\" method=\"POST\">\n";
+		echo "<table border=\"0\">\n";
+		echo "<input type=\"hidden\" name=\"Type\" value=\"Secure\">\n";
+		echo "  <tr><td><br><u>Rights of \"". UID2Nick($_GET["enterUID"]). "\":</u></td></tr>\n";
+
+
 		$CVS_Data = mysql_fetch_array($Erg_CVS);
 		$CVS_Data_i = 1;
 		foreach ($CVS_Data as $CVS_Data_Name => $CVS_Data_Value) 
@@ -78,19 +91,19 @@ if (IsSet($_GET["enterUID"]))
 			} //IF
 		} //Foreach	    
 		echo "</td></tr>\n";
-	} // IF TYPE
+		
+		// Ende Formular
+		echo "</td></tr>\n";
+		echo "</table>\n<br>\n";
+		echo "<input type=\"hidden\" name=\"enterUID\" value=\"". $_GET["enterUID"]. "\">\n";
+		echo "<input type=\"submit\" value=\"sichern...\">\n";
+		echo "</form>";
 
-	// Ende Formular
-	echo "</td></tr>\n";
-	echo "</table>\n<br>\n";
-	echo "<input type=\"hidden\" name=\"enterUID\" value=\"". $_GET["enterUID"]. "\">\n";
-	echo "<input type=\"submit\" value=\"sichern...\">\n";
-	echo "</form>";
-
-	echo "<form action=\"./userSaveSecure.php?action=delete\" method=\"POST\">\n";
-	echo "<input type=\"hidden\" name=\"enterUID\" value=\"". $_GET["enterUID"]. "\">\n";
-	echo "<input type=\"submit\" value=\"l&ouml;schen...\">\n";
-	echo "</form>";
+		echo "<br><form action=\"./userSaveSecure.php?action=delete\" method=\"POST\">\n";
+		echo "<input type=\"hidden\" name=\"enterUID\" value=\"". $_GET["enterUID"]. "\">\n";
+		echo "<input type=\"submit\" value=\"l&ouml;schen...\">\n";
+		echo "</form>";
+	} 
 }
 
 include ("../../includes/footer.php");

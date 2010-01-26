@@ -65,8 +65,23 @@ if ( ($Right=="Y") && IsSet($_GET["action"]))
 			echo "<h1>Fehler: UserID (enterUID) wurde nicht per POST übergeben</h1>\n";
 		break;
 
+	case "changeGroupName":
+		if (IsSet($_POST["enterUID"]) && ($_POST["enterUID"]<0) )
+		{
+			$SQL = "UPDATE `UserGroups` SET `Name`='". $_POST["GroupName"]. "' WHERE `UID`='". $_POST["enterUID"]. "' LIMIT 1 ;";
+			$Erg = db_query($SQL, "Update Group Name");
+			if ($Erg == 1) {
+				echo "&Auml;nderung wurde gesichert...\n";
+			} else {
+				echo "Fehler beim speichern...\n(". mysql_error($con). ")";
+			}
+		}
+		else
+			echo "<h1>Fehler: UserID (enterUID) wurde nicht per POST übergeben</h1>\n";
+		break;
+
 	case "delete":
-		if (IsSet($_POST["enterUID"]))
+		if (IsSet($_POST["enterUID"]) && ($_POST["enterUID"]>0) )
 		{
 			echo "delate User...";
 			$SQL="DELETE FROM `User` WHERE `UID`='". $_POST["enterUID"]. "' LIMIT 1;";
@@ -95,6 +110,25 @@ if ( ($Right=="Y") && IsSet($_GET["action"]))
 			} else {
 				echo "Fehler beim speichern...\n(". mysql_error($con). ")";
 			}
+		} elseif (IsSet($_POST["enterUID"]) && ($_POST["enterUID"]<0) ) {
+			echo "delate Group...";
+			$SQL="DELETE FROM `UserGroups` WHERE `UID`='". $_POST["enterUID"]. "' LIMIT 1;";
+			$Erg = db_query($SQL, "Group delete");
+			if ($Erg == 1) {
+				echo "&Auml;nderung wurde gesichert...\n";
+			} else {
+				echo "Fehler beim speichern...\n(". mysql_error($con). ")";
+			}
+			
+			echo "<br>\ndelate UserCVS...";
+			$SQL2="DELETE FROM `UserCVS` WHERE `UID`='". $_POST["enterUID"]. "' LIMIT 1;";
+			$Erg = db_query($SQL2, "User CVS delete");
+			if ($Erg == 1) {
+				echo "&Auml;nderung wurde gesichert...\n";
+			} else {
+				echo "Fehler beim speichern...\n(". mysql_error($con). ")";
+			}
+			
 		}
 		break;
 	} // end switch
