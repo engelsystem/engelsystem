@@ -16,7 +16,7 @@ if (IsSet($_GET["enterUID"]))
 		"Wenn T-Shirt ein 'Ja' enth&auml;lt, bedeutet dies, dass der Engel ".
 		"bereits sein T-Shirt erhalten hat.<br><br>\n";
 
-	echo "<form action=\"./userChangeSecure.php?action=change\" method=\"POST\">\n";
+	echo "<form action=\"./userSaveSecure.php?action=change\" method=\"POST\">\n";
 	echo "<table border=\"0\">\n";
 	echo "<input type=\"hidden\" name=\"Type\" value=\"Secure\">\n";
 

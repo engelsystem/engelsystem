@@ -18,7 +18,7 @@
 DROP TABLE IF EXISTS `UserCVS`;
 CREATE TABLE `UserCVS` (
   `UID` int(11) NOT NULL default '0',
-  `GroupID` int(11) default NULL,
+  `GroupID` int(11) default '-2',
   `index.php` char(1) NOT NULL default 'G',
   `logout.php` char(1) NOT NULL default 'G',
   `faq.php` char(1) NOT NULL default 'G',
@@ -47,7 +47,9 @@ CREATE TABLE `UserCVS` (
   `admin/schichtplan_druck.php` char(1) NOT NULL default 'G',
   `admin/user.php` char(1) NOT NULL default 'G',
   `admin/userChangeNormal.php` char(1) NOT NULL default 'G',
+  `admin/userSaveNormal.php` char(1) NOT NULL default 'G',
   `admin/userChangeSecure.php` char(1) NOT NULL default 'G',
+  `admin/userSaveSecure.php` char(1) NOT NULL default 'G',
   `admin/userSaveNormal.php` char(1) NOT NULL default 'G',
   `admin/userSaveSecure.php` char(1) NOT NULL default 'G',
   `admin/group.php` char(1) NOT NULL default 'G',

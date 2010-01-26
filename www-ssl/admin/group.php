@@ -16,10 +16,10 @@ if (!IsSet($_GET["enterGID"]))
 	// anzahl zeilen
 	$Zeilen  = mysql_num_rows($Erg);
 
-	echo "<table width=\"100%\" class=\"border\" cellpadding=\"2\" cellspacing=\"1\">\n";
+	echo "<table class=\"border\" cellpadding=\"2\" cellspacing=\"1\">\n";
 	echo "<tr class=\"contenttopic\">\n";
 	echo "\t<td>Groupname</td>\n";
-	echo "\t<td>-</td>\n";
+	echo "\t<td>Link</td>\n";
 	echo "</tr>\n";
 
 	for ($n = 0 ; $n < $Zeilen ; $n++) {
@@ -30,6 +30,15 @@ if (!IsSet($_GET["enterGID"]))
 			mysql_result($Erg, $n, "UID")."&Type=Secure\">change</a></td>\n";
 		echo "</tr>\n";
 	}
+	
+	// new form
+	echo "<tr class=\"content\">\n";
+	echo "\t<form action=\"userSaveSecure.php?new=newGroup\"  method=\"POST\">\n";
+	echo "\t\t<td><input name=\"GroupName\" type=\"text\" value=\"--new group--\"></td>\n";
+	echo "\t\t<td><input type=\"submit\" name=\"Send\" value=\"Save\"></td>\n";
+	echo "\t</form>\n";
+	echo "</tr>\n";
+
 	echo "\t</table>\n";
 	// Ende Userliste
 } 

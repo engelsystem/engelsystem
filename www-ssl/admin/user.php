@@ -11,8 +11,6 @@ if (!IsSet($_GET["enterUID"]))
 
 	echo "<a href=\"../makeuser.php\">Neuen Engel eintragen</a><br><br>\n";
 	
-	echo "\n<a href=\"./user.php?enterUID=-1&Type=Secure\">Edit logout User</a><br><br>\n";
-
 	if( !isset($_GET["OrderBy"]) ) $_GET["OrderBy"] = "Nick";
 	$SQL = "SELECT * FROM `User` ORDER BY `". $_GET["OrderBy"]. "` ASC";
 	$Erg = mysql_query($SQL, $con);

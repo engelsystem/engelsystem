@@ -7,12 +7,20 @@ include ("../../includes/funktion_db_list.php");
 include ("../../includes/crypt.php");
 include ("../../includes/funktion_db.php");
 
-if (IsSet($_GET["action"])) 
+if( !IsSet($_POST["enterUID"]) ) 
 {
-	
+	$Right = "N";
+} elseif( $_POST["enterUID"] > 0 ) {
+	$Right = $_SESSION['CVS'][ "admin/user.php"];
+} else {
+	$Right = $_SESSION['CVS'][ "admin/group.php"];
+}
+
+if ( ($Right=="Y") && IsSet($_GET["action"])) 
+{
 	SetHeaderGo2Back();
 	echo "Gesendeter Befehl: ". $_GET["action"]. "<br>";
-
+	
 	switch ($_GET["action"]) 
 	{
 	case "change":
@@ -31,7 +39,9 @@ if (IsSet($_GET["action"]))
 						if( $CVS_Data_Name == "GroupID")
 						{
 							if( $_POST["enterUID"] > 0 )
-								$SQL2.= "`$CVS_Data_Name` = ". $_POST["GroupID"].", ";
+								$SQL2.= "`$CVS_Data_Name` = '". $_POST["GroupID"]."', ";
+							else
+								$SQL2.= "`$CVS_Data_Name` = NULL, ";
 						} else {
 							$SQL2.= "`$CVS_Data_Name` = '". $_POST[$CVS_Data_i]."', ";
 						}
@@ -90,9 +100,41 @@ if (IsSet($_GET["action"]))
 	} // end switch
 
 // ende - Action ist gesetzt 
-} 
-else 
-{
+} elseif ( IsSet($_GET["new"]) &&  ($_SESSION['CVS']["admin/group.php"]=="Y") ) {
+	echo "Gesendeter Befehl: ". $_GET["new"]. "<br>";
+	
+	switch ($_GET["new"]) 
+	{
+	case "newGroup":
+		echo "\tGenerate new Group ID...\n";
+		$SQLid="SELECT MIN(`UID`) FROM `UserCVS`;";
+		$Erg = mysql_query( $SQLid);
+		
+		if( mysql_num_rows($Erg) == 1) {
+			$NewId = mysql_result( $Erg, 0, 0)-1;
+			$SQLnew1 = "INSERT INTO `UserGroups` (`UID`, `Name`) VALUES ('$NewId', '". $_POST["GroupName"]. "' );";
+			$SQLnew2 = "INSERT INTO `UserCVS` (`UID`, `GroupID`) VALUES ('$NewId', NULL );";
+			echo "\t<br>Generate new UserGroup ...\n";
+			$ErgNew1 = db_query($SQLnew1, "create UserGroups Entry");
+			if ($ErgNew1 == 1) 
+			{
+				echo "\t<br>Generate new User rights...\n";
+				$ErgNew2 = db_query($SQLnew2, "UserCVS Entry");
+				if ($ErgNew1 == 1) {
+					echo "\t<br>New group was created.\n";
+				} else {
+					echo "Error on creation\n(". mysql_error($con). ")";
+				}
+			} else {
+				echo "Error on creation\n(". mysql_error($con). ")";
+			}
+
+		}
+
+		
+		break;
+	}
+} else {
 	// kein Action gesetzt -> abbruch
 	echo "Unzul&auml;ssiger Aufruf.<br>Bitte neu editieren...";
 }

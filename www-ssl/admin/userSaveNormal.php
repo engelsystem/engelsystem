@@ -9,7 +9,6 @@ include ("../../includes/funktion_db.php");
 
 if (IsSet($_GET["action"])) 
 {
-	
 	SetHeaderGo2Back();
 	echo "Gesendeter Befehl: ". $_GET["action"]. "<br>";
 
