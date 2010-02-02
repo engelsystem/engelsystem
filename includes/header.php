@@ -19,7 +19,7 @@ echo "<TITLE>--- $title ---</TITLE>";
 <script type="text/javascript" src="<?PHP echo $url. substr( $ENGEL_ROOT, 1); ?>/css/grossbild.js"></script>
 <link rel=stylesheet type="text/css" href="<?PHP echo $url. substr( $ENGEL_ROOT, 1); ?>css/style<?PHP
 	if (!IsSet($_SESSION['color'])) 
-		echo "1"; 
+		echo "6"; 
 	else 
 		echo $_SESSION['color'];
 	?>.css">

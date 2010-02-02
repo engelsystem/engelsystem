@@ -24,7 +24,7 @@ CREATE TABLE `User` (
   `Gekommen` tinyint(4) NOT NULL default '0',
   `Aktiv` tinyint(4) NOT NULL default '0',
   `Tshirt` tinyint(4) default '0',
-  `color` tinyint(4) default '1',
+  `color` tinyint(4) default '6',
   `Sprache` char(2) default 'EN',
   `Avatar` int(11) default '0',
   `Menu` char(1) NOT NULL default 'L',
