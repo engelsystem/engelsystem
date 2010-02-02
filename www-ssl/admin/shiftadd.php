@@ -291,7 +291,7 @@ function CreateNewEntry()
 		$SQL .= "'". $_DateS. "', '". $_DateE. "', ";
 		$SQL .= "'". $_GET["len"]. "', '". $_GET["RID"]. "', ";
 		$SQL .= "'". $_GET["SchichtName"]. "');";
-		$Erg = mysql_query($SQL, $con);
+		$Erg = db_query($SQL, "create shift");
 
 		$SQLFail = "\n\t<br>[".$SQL. "]";
 

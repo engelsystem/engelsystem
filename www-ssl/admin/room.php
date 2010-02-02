@@ -183,7 +183,7 @@ case 'delete':
 if (IsSet($SQL)){ 
 //	echo $SQL; 
 	// hier muesste das SQL ausgefuehrt werden...
-	$Erg = mysql_query($SQL, $con);
+	$Erg = db_query($SQL, "exec SQL");
 	if ($Erg == 1) 
 	     echo "&Auml;nderung wurde gesichert...<br>";
 	else
