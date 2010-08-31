@@ -1,6 +1,6 @@
 <?PHP
 // Adresse des Webservers
-$url = "https://SEDENGELURL/";
+$url = "https://SEDENGELURL";
 
 // Startverzeichnis des Engelhome
 $ENGEL_ROOT = "/";

@@ -7,7 +7,7 @@ echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n";
 <HEAD>
 <?PHP
 
-echo "<TITLE>--- $title ---</TITLE>";
+echo "<TITLE>--- $title ---</TITLE>\n";
 ?>
 <meta name="keywords" content="Engel, Himmelsverwaltung">
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
@@ -16,61 +16,64 @@ echo "<TITLE>--- $title ---</TITLE>";
 <meta name="robots" content="index">
 <meta name="revisit-after" content="1 days">
 <meta http-equiv="content-language" content="de">
-<script type="text/javascript" src="<?PHP echo $url. substr( $ENGEL_ROOT, 1); ?>/css/grossbild.js"></script>
-<link rel=stylesheet type="text/css" href="<?PHP echo $url. substr( $ENGEL_ROOT, 1); ?>css/style<?PHP
+<script type="text/javascript" src="<?PHP echo $url. $ENGEL_ROOT; ?>/css/grossbild.js"></script>
+<link rel=stylesheet type="text/css" href="<?PHP echo $url. $ENGEL_ROOT; ?>css/style<?PHP
 	if (!IsSet($_SESSION['color'])) 
 		echo "6"; 
 	else 
 		echo $_SESSION['color'];
 	?>.css">
 <?PHP
-if (isset($reload)) {
- if ($reload=="") $reload=3330;
- echo "\n<meta http-equiv=\"refresh\" content=\"".$reload.
-      "; URL=./?reload=".$reload."\">\n";
- }
-
-if (isset($Page["AutoReload"])) {
- echo "\n<meta http-equiv=\"refresh\" content=\"". $Page["AutoReload"].
-      "; URL=". substr($url, 0, strlen($url)-1). $ENGEL_ROOT. $Page["Name"]."\">\n";
- }
-?>
-</HEAD>
-<BODY>
-<?PHP
-
-if( isset($SystemDisableMessage))
-	if( strlen($SystemDisableMessage)>0)
-	{
-		echo $SystemDisableMessage;
-		echo "\n\n<BODY>\n</HTML>";
-		die();
-	}
-
-
-if( !isset($Page["ShowTabel"]) ) $Page["ShowTabel"]="Y";
-if( $Page["ShowTabel"]=="Y" )
+if (isset($reload)) 
 {
-//############################### ShowTable Start ##############################
+	if ($reload=="") 
+	{
+		$reload=3330;
+	}	
+	echo "\n<meta http-equiv=\"refresh\" content=\"".$reload.
+	"; URL=./?reload=".$reload."\">\n";
+}
 
-?>
-	<div align="center">
-	<a name="#top"><img src="<?PHP echo $url. substr( $ENGEL_ROOT, 1); ?>pic/himmel<?PHP if( isset($_SESSION['color'])) 
-						if ($_SESSION['color']==6) echo "_w"; ?>.png" alt="Unser Himmel"></a>
-	<p>
-<?PHP
+if (isset($Page["AutoReload"])) 
+{
+	echo "\n<meta http-equiv=\"refresh\" content=\"". $Page["AutoReload"].
+		"; URL=". $url. $ENGEL_ROOT. $Page["Name"]."\">\n";
+}
+
+echo "</HEAD>\n";
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////// B O D Y
+/////////////////////////////////////////////////////////////////////////////////////////////
+echo "<BODY>\n";
+
+echo "<div name=\"topic\" align=\"center\">\n\n";
+
+if( isset($_SESSION['color']) && ($_SESSION['color']==6) )
+{
+	echo 	"\t<a name=\"#top\"><img src=\"". $url. $ENGEL_ROOT. "pic/himmel_w.png\" alt=\"Unser Himmel\"></a>\n";
+}
+else
+{
+	echo 	"\t<a name=\"#top\"><img src=\"". $url. $ENGEL_ROOT. "pic/himmel.png\" alt=\"Unser Himmel\"></a>\n";
+}
+echo "</div>\n\n";
+
+
 //ausgabe new message
 if( isset($_SESSION['CVS']["nonpublic/messages.php"]))
+{
     if( $_SESSION['CVS']["nonpublic/messages.php"] == "Y")
     {
 	$SQL = "SELECT `Datum` FROM `Messages` WHERE `RUID`=". $_SESSION["UID"]. " AND `isRead`='N'";
 	$erg = mysql_query($SQL, $con);
 	if( mysql_num_rows( $erg ) > 0 )
-		echo "<br><a href=\"". $url. substr($ENGEL_ROOT, 1).
+		echo "<br><a href=\"". $url. $ENGEL_ROOT.
 			"nonpublic/messages.php\">". Get_Text("pub_messages_new1").
 			" ".  mysql_num_rows( $erg ). " ".
 			Get_Text("pub_messages_new2"). "</a><br><br>";
     }
+}
 ?>
 <table width="95%" align="center" border="0" cellpadding="7" cellspacing="0">
 	<tr>
@@ -109,10 +112,6 @@ if (IsSet($_SESSION['UID'])) {
 } 
 
 
-//############################### ShowTable Start ##############################
-}	/* if (ShowTabel....*/
-
-
 function SetHeaderGo2Back ()
 {
 	global $BACKUP_SESSION_OLDURL;
@@ -126,7 +125,7 @@ if ( $Page["CVS"] != "Y" )
         If (IsSet($_SESSION['oldurl'])) 
 		echo "<a href=\"". $_SESSION["oldurl"]. "\">".Get_Text("back")."</a> geht's zur&uuml;ck...\n";
 	else
-		echo "<a href=\"". $url. substr($ENGEL_ROOT, 0, -1 )."\">".Get_Text("back")."</a> geht's zur&uuml;ck...\n";
+		echo "<a href=\"". $url. $ENGEL_ROOT. "\">".Get_Text("back")."</a> geht's zur&uuml;ck...\n";
         exit ();
 }
 ?>

@@ -41,29 +41,31 @@ function TID2Type($TID)
 }
 
 
-function ReplaceSmilies($eckig) {
+function ReplaceSmilies($eckig) 
+{
+	global $url, $ENGEL_ROOT;
 
 	$neueckig = $eckig;
-	$neueckig = str_replace(";o))","<img src=\"/pic/smiles/icon_redface.gif\">",$neueckig);
-	$neueckig = str_replace(":-))","<img src=\"/pic/smiles/icon_redface.gif\">",$neueckig);
-	$neueckig = str_replace(";o)","<img src=\"/pic/smiles/icon_wind.gif\">",$neueckig);
-	$neueckig = str_replace(":)","<img src=\"/pic/smiles/icon_smile.gif\">",$neueckig);
-        $neueckig = str_replace(":-)","<img src=\"/pic/smiles/icon_smile.gif\">",$neueckig);
-	$neueckig = str_replace(":(","<img src=\"/pic/smiles/icon_sad.gif\">",$neueckig);
-        $neueckig = str_replace(":-(","<img src=\"/pic/smiles/icon_sad.gif\">",$neueckig);
-	$neueckig = str_replace(":o(","<img src=\"/pic/smiles/icon_sad.gif\">",$neueckig);
-	$neueckig = str_replace(":o)","<img src=\"/pic/smiles/icon_lol.gif\">",$neueckig);
-	$neueckig = str_replace(";o(","<img src=\"/pic/smiles/icon_cry.gif\">",$neueckig);
-	$neueckig = str_replace(";(","<img src=\"/pic/smiles/icon_cry.gif\">",$neueckig);
-        $neueckig = str_replace(";-(","<img src=\"/pic/smiles/icon_cry.gif\">",$neueckig);
-        $neueckig = str_replace("8)","<img src=\"/pic/smiles/icon_rolleyes.gif\">",$neueckig);
-	$neueckig = str_replace("8o)","<img src=\"/pic/smiles/icon_rolleyes.gif\">",$neueckig);
-	$neueckig = str_replace(":P","<img src=\"/pic/smiles/icon_evil.gif\">",$neueckig);
-	$neueckig = str_replace(":-P","<img src=\"/pic/smiles/icon_evil.gif\">",$neueckig);
-	$neueckig = str_replace(":oP","<img src=\"/pic/smiles/icon_evil.gif\">",$neueckig);
-	$neueckig = str_replace(";P","<img src=\"/pic/smiles/icon_mad.gif\">",$neueckig);
-	$neueckig = str_replace(";oP","<img src=\"/pic/smiles/icon_mad.gif\">",$neueckig);
-	$neueckig = str_replace("?)","<img src=\"/pic/smiles/icon_question.gif\">",$neueckig);
+	$neueckig = str_replace(";o))",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_redface.gif\">",$neueckig);
+	$neueckig = str_replace(":-))",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_redface.gif\">",$neueckig);
+	$neueckig = str_replace(";o)",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_wind.gif\">",$neueckig);
+	$neueckig = str_replace(":)",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_smile.gif\">",$neueckig);
+        $neueckig = str_replace(":-)",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_smile.gif\">",$neueckig);
+	$neueckig = str_replace(":(",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_sad.gif\">",$neueckig);
+        $neueckig = str_replace(":-(",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_sad.gif\">",$neueckig);
+	$neueckig = str_replace(":o(",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_sad.gif\">",$neueckig);
+	$neueckig = str_replace(":o)",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_lol.gif\">",$neueckig);
+	$neueckig = str_replace(";o(",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_cry.gif\">",$neueckig);
+	$neueckig = str_replace(";(",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_cry.gif\">",$neueckig);
+        $neueckig = str_replace(";-(",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_cry.gif\">",$neueckig);
+        $neueckig = str_replace("8)",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_rolleyes.gif\">",$neueckig);
+	$neueckig = str_replace("8o)",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_rolleyes.gif\">",$neueckig);
+	$neueckig = str_replace(":P",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_evil.gif\">",$neueckig);
+	$neueckig = str_replace(":-P",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_evil.gif\">",$neueckig);
+	$neueckig = str_replace(":oP",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_evil.gif\">",$neueckig);
+	$neueckig = str_replace(";P",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_mad.gif\">",$neueckig);
+	$neueckig = str_replace(";oP",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_mad.gif\">",$neueckig);
+	$neueckig = str_replace("?)",	"<img src=\"". $url. $ENGEL_ROOT. "pic/smiles/icon_question.gif\">",$neueckig);
 	return $neueckig;
 }
 
@@ -98,7 +100,7 @@ function displayPictur($UID, $height="30")
 	[<Höhe des Bildes (wenn die höhe kleiner 1 ist wird die höhe nicht begrenzt)>] */
 function displayavatar( $UID, $height="30") 
 {
-	global $con;
+	global $con, $url, $ENGEL_ROOT;
 
 	if( GetPicturShow($UID) == 'Y')
 		return "&nbsp;". displayPictur(  $UID, $height);
@@ -108,7 +110,7 @@ function displayavatar( $UID, $height="30")
 	$aerg = mysql_query ($asql, $con);
 	if( mysql_num_rows($aerg) )
 		if( mysql_result($aerg, 0, "Avatar") > 0)
-          		return ("&nbsp;<img src=\"/pic/avatar/avatar". mysql_result($aerg, 0, "Avatar"). ".gif\">");
+          		return ("&nbsp;<img src=\"". $url. $ENGEL_ROOT. "pic/avatar/avatar". mysql_result($aerg, 0, "Avatar"). ".gif\">");
 
 }
 

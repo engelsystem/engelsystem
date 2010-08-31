@@ -32,7 +32,7 @@ for ($n = 0 ; $n < $news_rows ; $n++)
   else 
 	echo "<p class='engeltreffen'>";
   
-  echo "<u>".mysql_result($Erg, $n, "Betreff")."</u>\n";
+  echo "<u>". ReplaceSmilies(mysql_result($Erg, $n, "Betreff")) ."</u>\n";
 
   // Schow Admin Page
   if( $_SESSION['CVS'][ "admin/news.php" ] == "Y" )

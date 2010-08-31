@@ -35,7 +35,7 @@ for( $i=0; $i<mysql_num_rows( $erg ); $i++ )
 	echo "SUMMARY:". str_replace( ',', '\\,',mysql_result( $erg, $i, "Man" ) ). "\n";
 	echo "CLASS:PUBLIC\n";
 	echo "STATUS:CONFIRMED\n";
-	echo "URL:". $url. substr($ENGEL_ROOT,1). "nonpublic/myschichtplan.php\n";
+	echo "URL:". $url. $ENGEL_ROOT. "nonpublic/myschichtplan.php\n";
 	echo "LOCATION:". $RoomID[mysql_result( $erg, $i, "RID" )]. "\n";
 	echo "BEGIN:VALARM\n";
 	echo "TRIGGER;VALUE=DURATION:-PT5M\n";

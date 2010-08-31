@@ -11,7 +11,7 @@ function LoginOK()
 {
 	include ("../../includes/config.php");
 	header("HTTP/1.1 302 Moved Temporarily");
-	header("Location: ". substr($url, 0, strlen($url)-1). $ENGEL_ROOT. "nonpublic/news.php");
+	header("Location: ". $url. $ENGEL_ROOT. "nonpublic/news.php");
 }
 
 if ( !IsSet($_POST["user"]))

@@ -1,21 +1,18 @@
-
-
-<form action="<?PHP
+<?PHP
 include ("config.php");
-echo substr($url, 0, strlen($url)-1). $ENGEL_ROOT
-?>nonpublic/index.php" method="post">
-<table>
-<tr>
- <td align="right"><?PHP echo Get_Text("index_lang_nick");?></td>
- <td><input type="text" name="user" size="23"></td>
-</tr>
-<tr>
- <td align="right"><?PHP echo Get_Text("index_lang_pass");?></td>
- <td><input type="password" name="password" size="23"></td>
-</tr>
-</table>
-<br>
-<input type="submit" value="<?PHP echo Get_Text("index_lang_send");?>">
-</form>
+
+echo "<form action=\"". $url. $ENGEL_ROOT. "nonpublic/index.php\" method=\"post\">";
+echo "<table>\n".
+	"\t<tr>".
+	"\t\t<td align=\"right\">". Get_Text("index_lang_nick"). "</td>".
+	"\t\t<td><input type=\"text\" name=\"user\" size=\"23\"></td>".
+	"\t</tr>".
+	"\t<tr>".
+	"\t\t<td align=\"right\">". Get_Text("index_lang_pass"). "</td>".
+	"\t\t<td><input type=\"password\" name=\"password\" size=\"23\"></td>".
+	"\t</tr>".
+	"</table>".
+	"<br><input type=\"submit\" value=\"". Get_Text("index_lang_send"). "\">";
+echo "</form>";
 
 

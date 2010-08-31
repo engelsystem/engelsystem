@@ -12,7 +12,7 @@ $Time = time()+3600+3600;
 <HEAD>
 <TITLE>Schichtpl&auml;ne f&uuml;r Beamer</TITLE>
 <!--<link rel=stylesheet type="text/css" href="/css/style1.css">-->
-<meta http-equiv="refresh" content="30; URL=<?PHP echo substr($url, 0, strlen($url)-1). $_SERVER['PHP_SELF']?>">
+<meta http-equiv="refresh" content="30; URL=<?PHP echo $url. $_SERVER['PHP_SELF']?>">
 </HEAD>
 <BODY>
 <?PHP

@@ -27,7 +27,7 @@ function ShowMenu( $MenuName)
 						if( $Key=="admin/faq.php")
 							$TempName .= " (". noAnswer(). ")";
 						//ausgabe
-						$Text .= "\t\t\t<li><a href=\"". $url. substr( $ENGEL_ROOT, 1). $Key. "\">$TempName</a></li>\n";
+						$Text .= "\t\t\t<li><a href=\"". $url. $ENGEL_ROOT. $Key. "\">$TempName</a></li>\n";
 						$Gefunden = TRUE;
 					}
 				}

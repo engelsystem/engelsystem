@@ -8,6 +8,6 @@ session_destroy ();
 session_start();
 
 header("HTTP/1.1 302 Moved Temporarily");
-header("Location: ". substr($url, 0, strlen($url)-1). $ENGEL_ROOT);
+header("Location: ". $url. $ENGEL_ROOT);
 
 ?>

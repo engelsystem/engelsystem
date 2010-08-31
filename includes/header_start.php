@@ -9,17 +9,30 @@ include ("funktion_faq.php"); //für noAnswer() im menu
 include ("funktion_menu.php");
 include ("funktion_user.php");
 
+
+if( isset($SystemDisableMessage) && ( strlen($SystemDisableMessage)>0) )
+{
+	echo "<HTML>\n".
+		"<BODY>\n". $SystemDisableMessage. "\n<BODY>\n".
+		"</HTML>";
+	die();
+}
+
 if( !isset($_SESSION)) 
+{
 	session_start(); 
+}
 include ("secure.php");
 
 if( !isset($_SESSION['IP'])) 
+{
 	$_SESSION['IP'] = $_SERVER['REMOTE_ADDR'];
+}
 
 if (IsSet($_SESSION['UID']) and ($_SESSION['IP'] <> $_SERVER['REMOTE_ADDR']))
 {
 	session_destroy ();
-	header("Location: $url". substr($ENGEL_ROOT,1) );
+	header("Location: $url". $ENGEL_ROOT );
 }
 
 include ("UserCVS.php");

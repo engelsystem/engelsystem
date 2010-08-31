@@ -1,9 +1,5 @@
 <?PHP
 
-if( $Page["ShowTabel"]=="Y" )
-{
-//############################### ShowTable Start ##############################
-
 ?>
 
 
@@ -55,12 +51,6 @@ if( $_SESSION['Menu'] =="R")            include("menu.php");
 <!-- </div> -->
 <?php mysql_close($con); ?>
 </div>
-
-
-<?PHP
-//############################### ShowTable Start ##############################
-}       /* if (ShowTabel....*/
-?>
 
 
 </BODY>

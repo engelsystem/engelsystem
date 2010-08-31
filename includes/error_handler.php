@@ -46,8 +46,6 @@
 
     if (!$error_messages) return;
     
-    $url = $_SERVER['PHP_SELF'];
-
     $message = "";
     foreach($error_messages as $value)
       $message .= $value."\n";
