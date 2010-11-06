@@ -88,10 +88,11 @@ function GetPicturShow($UID)
 	[<Höhe des Bildes (wenn die höhe kleiner 1 ist wird die höhe nicht begrenzt)>] */
 function displayPictur($UID, $height="30") 
 {
+	global $url, $ENGEL_ROOT;
 	if( $height > 0)
-		return( "<img src=\"/ShowUserPicture.php?UID=$UID\" height=\"$height\" alt=\"picture of USER$UID\" class=\"photo\">");
+		return( "<img src=\"". $url. $ENGEL_ROOT. "ShowUserPicture.php?UID=$UID\" height=\"$height\" alt=\"picture of USER$UID\" class=\"photo\">");
 	else
-		return( "<img src=\"/ShowUserPicture.php?UID=$UID\" alt=\"picture of USER$UID\">");
+		return( "<img src=\"". $url. $ENGEL_ROOT. "ShowUserPicture.php?UID=$UID\" alt=\"picture of USER$UID\">");
 }
 
 
