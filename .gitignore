@@ -1,0 +1,5 @@
+# ignore local config files
+includes/config.php
+includes/config_IAX.php
+includes/config_db.php
+includes/config_jabber.php
