@@ -1,3 +1,2 @@
-rem hole(sql-injection) in makeuser.php (no secure.php but sql-query)
 todo: replace secure.php
 

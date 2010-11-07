@@ -63,7 +63,7 @@ $inuse="";
 for ($i=0; $i < $Zeilen; $i++)
 {
 	echo "<tr class=\"content\">\n";
-	echo "<td><a href=\"./user.php?Type=Normal&enterUID=". mysql_result($Erg, $i, "UID"). "\">". 
+	echo "<td><a href=\"./userChangeNormal.php?Type=Normal&enterUID=". mysql_result($Erg, $i, "UID"). "\">". 
 		UID2Nick(mysql_result($Erg, $i, "UID")). "</td></a>\n";
 	echo "<td></td>\n";
 	echo "<td>". mysql_result($Erg, $i, "RID"). "</td>\n";
@@ -92,7 +92,7 @@ $Zeilen  = mysql_num_rows($Erg);
 for ($i=0; $i < $Zeilen; $i++)
 {
 	echo "\t<tr class=\"content\">\n";
-	echo "\t\t<td><a href=\"./user.php?Type=Normal&enterUID=". mysql_result($Erg, $i, "UID"). "\">".
+	echo "\t\t<td><a href=\"./userChangeNormal.php?Type=Normal&enterUID=". mysql_result($Erg, $i, "UID"). "\">".
 		mysql_result($Erg, $i, "Nick"). "</a></td>\n";
 	echo "\t\t<td>". mysql_result($Erg, $i, "DECT"). "</td>\n";
  	echo "\n</tr>\n";

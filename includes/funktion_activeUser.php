@@ -39,8 +39,8 @@ for( $i=0; $i<mysql_num_rows($Erg); $i++)
 	if( $_SESSION['UID']>0 )
 		echo DisplayAvatar( mysql_result( $Erg, $i, "UID"));
 	// Schow Admin Page
-	if( $_SESSION['CVS'][ "admin/user.php" ] == "Y" )
-		echo " <a href=\"./../admin/user.php?enterUID=". mysql_result( $Erg, $i, "UID"). "&Type=Normal\">". 
+	if( $_SESSION['CVS'][ "admin/userChangeNormal.php" ] == "Y" )
+		echo " <a href=\"./../admin/userChangeNormal.php?enterUID=". mysql_result( $Erg, $i, "UID"). "&Type=Normal\">". 
 			mysql_result( $Erg, $i, "Nick"). "</a>";
 	else
 		echo mysql_result( $Erg, $i, "Nick");
