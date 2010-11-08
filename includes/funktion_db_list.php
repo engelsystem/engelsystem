@@ -12,9 +12,10 @@ function funktion_db_list($Table_Name)
 
 	$Anzahl_Felder = mysql_num_fields($Erg);
 
-	echo "<table border=1>";
+	echo "<table class=\"border\" cellpadding=\"2\" cellspacing=\"1\">";
+	echo "<caption>DB: $Table_Name</caption>";
 
-	echo "<tr>";
+	echo "<tr class=\"contenttopic\">";
 	for ($m = 0 ; $m < $Anzahl_Felder ; $m++)
 	{
 		echo "<th>". mysql_field_name($Erg, $m). "</th>";
@@ -23,7 +24,7 @@ function funktion_db_list($Table_Name)
 
 	for ($n = 0 ; $n < $Zeilen ; $n++)
 	{
-		echo "<tr>";
+		echo "<tr class=\"content\">";
 		for ($m = 0 ; $m < $Anzahl_Felder ; $m++)
 		{
 			echo "<td>".mysql_result($Erg, $n, $m). "</td>"; 
@@ -44,7 +45,7 @@ function funktion_db_element_list_2row( $TopicName, $SQL)
 	$Erg = mysql_query($SQL, $con);
 	echo mysql_error($con);
 	
-	echo "<tr  class=\"contenttopic\">";
+	echo "<tr class=\"contenttopic\">";
 	for ($m = 0 ; $m < mysql_num_fields($Erg) ; $m++)
 	{
 		echo "<th>". mysql_field_name($Erg, $m). "</th>";
