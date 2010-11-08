@@ -101,6 +101,15 @@ if (!IsSet($_GET["enterUID"]))
 		"<td>$Gekommen</td><td>$Active</td><td>$Tshirt</td><td></td></tr>\n";
 	echo "\t</table>\n";
 	// Ende Userliste
+
+	echo "<h1>Statistics</h1>";
+	funktion_db_element_list_2row( "Hometown",
+        	                        "SELECT COUNT(`Hometown`), `Hometown` FROM `User` GROUP BY `Hometown`");
+
+	echo "<br>\n";
+
+	funktion_db_element_list_2row( "Engeltypen",
+                                        "SELECT COUNT(`Art`), `Art` FROM `User` GROUP BY `Art`");
 }
 else
 {
