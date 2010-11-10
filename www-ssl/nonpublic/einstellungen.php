@@ -5,8 +5,8 @@
  */
 $title = "Himmel";
 $header = "Deine pers&ouml;nlichen Einstellungen";
-include ("../../includes/header.php");
-include ("../../includes/crypt.php");
+include ("../../../27c3/includes/header.php");
+include ("../../../27c3/includes/crypt.php");
 
 if (!IsSet($_POST["action"])) 
 {
@@ -357,5 +357,5 @@ case 'delPicture':
 	Break;
 }
 }
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>

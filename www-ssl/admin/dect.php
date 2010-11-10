@@ -2,11 +2,11 @@
 
 $title = "Engelsystem - DECT";
 $header = "DECT send call";
-include ("../../includes/header.php");
+include ("../../../27c3/includes/header.php");
 
-include ("../../includes/config_IAX.php");
-//include ("../../includes/funktion_modem.php");
-include ("../../includes/funktion_cron.php");
+include ("../../../27c3/includes/config_IAX.php");
+//include ("../../../27c3/includes/funktion_modem.php");
+include ("../../../27c3/includes/funktion_cron.php");
 
 if( !isset($_GET["dial"])) $_GET["dial"] = "";
 if( !isset($_GET["custum"])) $_GET["custum"] = "";
@@ -65,6 +65,6 @@ if( $_GET["dial"]=="dial")
 	echo "</form>";
 
 
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>
 

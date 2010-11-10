@@ -1,8 +1,8 @@
 <?php
-include ("../../includes/header_start.php");
+include ("../../../27c3/includes/header_start.php");
 
-include ("../../includes/funktionen.php");
-include ("../../includes/funktion_schichtplan_beamer.php");
+include ("../../../27c3/includes/funktionen.php");
+include ("../../../27c3/includes/funktion_schichtplan_beamer.php");
 
 $Time = time()+3600+3600;
 //$Time = 1104241344;

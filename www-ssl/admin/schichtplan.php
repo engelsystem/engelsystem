@@ -2,7 +2,7 @@
 $title = "Schichtplan";
 $header = "Neue Schichten erfassen";
 $submenus = 1;
-include ("../../includes/header.php");
+include ("../../../27c3/includes/header.php");
 
 function executeSQL( $SQL)
 {
@@ -353,5 +353,5 @@ if (IsSet($chSQL)){
 }
 
 
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>

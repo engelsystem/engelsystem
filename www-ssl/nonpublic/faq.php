@@ -1,7 +1,7 @@
 <?php
 $title = "Himmel";
 $header = "FAQ / Fragen an die Erzengel";
-include ("../../includes/header.php");
+include ("../../../27c3/includes/header.php");
 
 
 // Erstaufruf, oder Frage bereits abgeschickt?
@@ -68,5 +68,5 @@ if ($Zeilen==0){
 	}
 }
 
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>

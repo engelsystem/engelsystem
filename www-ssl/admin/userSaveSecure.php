@@ -2,10 +2,10 @@
 
 $title = "User-Liste";
 $header = "Index";
-include ("../../includes/header.php");
-include ("../../includes/funktion_db_list.php");
-include ("../../includes/crypt.php");
-include ("../../includes/funktion_db.php");
+include ("../../../27c3/includes/header.php");
+include ("../../../27c3/includes/funktion_db_list.php");
+include ("../../../27c3/includes/crypt.php");
+include ("../../../27c3/includes/funktion_db.php");
 
 if( !IsSet($_POST["enterUID"]) ) 
 {
@@ -173,6 +173,6 @@ if ( ($Right=="Y") && IsSet($_GET["action"]))
 	echo "Unzul&auml;ssiger Aufruf.<br>Bitte neu editieren...";
 }
 
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>
 

@@ -2,14 +2,14 @@
 $title = "Index";
 $header = "Index";
 
-include ("../../includes/config_db.php");
-include ("../../includes/crypt.php");
+include ("../../../27c3/includes/config_db.php");
+include ("../../../27c3/includes/crypt.php");
 
 session_start(); // alte Session - falls vorhanden - wiederherstellen...
 
 function LoginOK()
 {
-	include ("../../includes/config.php");
+	include ("../../../27c3/includes/config.php");
 	header("HTTP/1.1 302 Moved Temporarily");
 	header("Location: ". $url. $ENGEL_ROOT. "nonpublic/news.php");
 }
@@ -73,11 +73,11 @@ else
 			$ErrorText = "pub_index_User_more_as_one";
 	} // Ende Check, ob User angemeldet wurde
 } 
-include ("../../includes/header.php");
+include ("../../../27c3/includes/header.php");
 if( isset($ErrorText))
 	echo "<h2>". Get_Text($ErrorText). "</h2><br>\n";
-include ("../../includes/login_eingabefeld.php");
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/login_eingabefeld.php");
+include ("../../../27c3/includes/footer.php");
 
 ?>
 

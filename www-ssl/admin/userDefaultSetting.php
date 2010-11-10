@@ -2,8 +2,8 @@
 
 $title = "Defalut User Setting";
 $header = "Defalut User Setting";
-include ("../../includes/header.php");
-include ("../../includes/funktion_db_list.php");
+include ("../../../27c3/includes/header.php");
+include ("../../../27c3/includes/funktion_db_list.php");
 
 echo "Hallo ".$_SESSION['Nick'].
 	",<br>\nhier hast du die M&ouml;glichkeit, die Defaulteinstellungen f&uuml;r neue User einzustellen:<br><br>\n";
@@ -139,6 +139,6 @@ echo "\t</tr>\n";
 
 echo "</table>\n";
 
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>
 

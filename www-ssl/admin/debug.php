@@ -2,8 +2,8 @@
 
 $title = "Debug-Liste";
 $header = "Datenbank-Auszug";
-include ("../../includes/header.php");
-include ("../../includes/funktion_db_list.php");
+include ("../../../27c3/includes/header.php");
+include ("../../../27c3/includes/funktion_db_list.php");
 
 echo "<h1>Web Counter</h1>";
 funktion_db_list("Counter");
@@ -51,6 +51,6 @@ funktion_db_element_list_2row( "Engeltypen",
 					"SELECT COUNT(`Art`), `Art` FROM `User` GROUP BY `Art`");
 
 
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>
 

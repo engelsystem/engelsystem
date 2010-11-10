@@ -1,8 +1,8 @@
 <?PHP
 $title = "DB Update from XML";
 $header = "DB Update from XML";
-include ("../../includes/header.php");
-include ("../../includes/funktion_xml.php");
+include ("../../../27c3/includes/header.php");
+include ("../../../27c3/includes/funktion_xml.php");
 
 ///////////
 // DEBUG //
@@ -271,10 +271,10 @@ echo "<hr>\n";
 				           V e r s i o n
   ##############################################################################################*/
 if( $EnableRoomFunctions)
-	include("../../includes/funktion_xml_room.php");
+	include("../../../27c3/includes/funktion_xml_room.php");
 
 if( $EnableSchudleFunctions)
-	include("../../includes/funktion_xml_schudle.php");
+	include("../../../27c3/includes/funktion_xml_schudle.php");
 
 
 /*##############################################################################################
@@ -288,6 +288,6 @@ echo "</form>\n";
 
 } //if XMLopenOOK
 
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>
 

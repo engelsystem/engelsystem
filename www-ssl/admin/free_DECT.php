@@ -1,8 +1,8 @@
 <?PHP
 
-include ("../../includes/config_db.php");
-include ("../../includes/funktion_db_list.php");
-include ("../../includes/funktion_user.php");
+include ("../../../27c3/includes/config_db.php");
+include ("../../../27c3/includes/funktion_db_list.php");
+include ("../../../27c3/includes/funktion_user.php");
 
 
 #######################################################

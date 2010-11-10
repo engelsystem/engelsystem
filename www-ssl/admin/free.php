@@ -2,8 +2,8 @@
 
 $title = "Erzengel";
 $header = "Freie Engel";
-include ("../../includes/header.php");
-include ("../../includes/funktion_db_list.php");
+include ("../../../27c3/includes/header.php");
+include ("../../../27c3/includes/funktion_db_list.php");
 
 
 echo "Hallo ".$_SESSION['Nick'].",<br>\n";
@@ -99,6 +99,6 @@ for ($i=0; $i < $Zeilen; $i++)
 }
 echo "</table>\n";
 
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>
 

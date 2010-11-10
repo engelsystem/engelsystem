@@ -2,8 +2,8 @@
 
 $title = "Engel Arrived";
 $header = "Engel was arrived";
-include ("../../includes/header.php");
-include ("../../includes/funktion_db_list.php");
+include ("../../../27c3/includes/header.php");
+include ("../../../27c3/includes/funktion_db_list.php");
 
 
 If (IsSet($_GET["arrived"])) {
@@ -49,6 +49,6 @@ for ($i=0; $i<$rowcount; $i++){
 }
 echo "</table>";
 
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>
 

@@ -1,8 +1,8 @@
 <?php
 $title = "UserPicture";
 $header = "Verwaltung der User Picture";
-include ("../../includes/header.php");
-include ("../../includes/funktion_schichtplan_aray.php");
+include ("../../../27c3/includes/header.php");
+include ("../../../27c3/includes/funktion_schichtplan_aray.php");
 
 
 if( IsSet($_GET["action"]) )
@@ -145,5 +145,5 @@ echo "</table>";
 
 echo "<br><a href=\"./UserPicture.php?action=FormUpload\">picture upload</a>\n";
 
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>

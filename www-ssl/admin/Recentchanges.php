@@ -2,7 +2,7 @@
 
 $title = "ChangeLog";
 $header = "Datenbank-Auszug";
-include ("../../includes/header.php");
+include ("../../../27c3/includes/header.php");
 
 $SQL = "SELECT * FROM `ChangeLog` ORDER BY `Time` DESC LIMIT 0,10000";
 $Erg = mysql_query($SQL, $con);
@@ -24,6 +24,6 @@ for ($n = 0 ; $n < mysql_num_rows($Erg) ; $n++)
 
 echo "</table>\n";
 
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>
 

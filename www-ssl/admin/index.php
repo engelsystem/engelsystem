@@ -2,8 +2,8 @@
 
 $title = "Erzengel";
 $header = "Index";
-include ("../../includes/header.php");
-include ("../../includes/funktion_db_list.php");
+include ("../../../27c3/includes/header.php");
+include ("../../../27c3/includes/funktion_db_list.php");
 
 echo "Hallo Erzengel ".$_SESSION['Nick'].",<br>\n";
 
@@ -14,6 +14,6 @@ du bist jetzt im Erzengel-Bereich. Hier kannst du die Engel-Verwaltung vornehmen
 Bitte melde dich <a href="../logout.php">hier</a> nach getaner Arbeit immer ab, damit kein anderer hier &Auml;nderungen vornehmen kann.
 
 <?PHP
-include ("../../includes/footer.php");
+include ("../../../27c3/includes/footer.php");
 ?>
 
