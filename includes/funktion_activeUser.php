@@ -39,11 +39,9 @@ for( $i=0; $i<mysql_num_rows($Erg); $i++)
 	if( $_SESSION['UID']>0 )
 		echo DisplayAvatar( mysql_result( $Erg, $i, "UID"));
 	// Schow Admin Page
-	if( $_SESSION['CVS'][ "admin/userChangeNormal.php" ] == "Y" )
-		echo " <a href=\"./../admin/userChangeNormal.php?enterUID=". mysql_result( $Erg, $i, "UID"). "&Type=Normal\">". 
-			mysql_result( $Erg, $i, "Nick"). "</a>";
-	else
-		echo mysql_result( $Erg, $i, "Nick");
+	echo funktion_isLinkAllowed_addLink_OrLinkText(
+		"admin/userChangeNormal.php?enterUID=". mysql_result( $Erg, $i, "UID"). "&Type=Normal",
+		mysql_result( $Erg, $i, "Nick"));
 
 	$Tlog =	(substr( mysql_result( $Erg, $i, "lastLogIn"),  8, 2) * 60 * 60 * 24) +	// Tag
 		(substr( mysql_result( $Erg, $i, "lastLogIn"), 11, 2) * 60 * 60) +	// Stunde

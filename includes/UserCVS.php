@@ -50,4 +50,53 @@ if( $DEBUG )
 	
 }
 
+function funktion_isLinkAllowed( $PageName)
+{
+        global $_SESSION;
+
+	// separate page parameter
+	$ParameterPos = strpos( $PageName, ".php?");
+	if( $ParameterPos === FALSE)
+	{
+		$pName = $PageName;
+	}
+	else
+	{
+		$pName = substr( $PageName, 0, $ParameterPos + 4);
+	}
+	
+	// check rights
+	if( (isset( $_SESSION['CVS'][ $pName ]) === TRUE) &&
+	    ($_SESSION['CVS'][ $pName ] == "Y") )
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+function funktion_isLinkAllowed_addLink_OrLinkText( $PageName, $LinkText)
+{
+        global $url, $ENGEL_ROOT;
+
+	if( funktion_isLinkAllowed( $PageName) === TRUE)
+	{
+		return "<a href=\"". $url. $ENGEL_ROOT. $PageName. "\">". $LinkText. "</a>";
+	}
+	
+	return $LinkText;
+}
+
+function funktion_isLinkAllowed_addLink_OrEmpty( $PageName, $LinkText)
+{
+        global $url, $ENGEL_ROOT;
+
+	if( funktion_isLinkAllowed( $PageName) === TRUE)
+	{
+		return "<a href=\"". $url. $ENGEL_ROOT. $PageName. "\">". $LinkText. "</a>";
+	}
+
+	return "";
+}
+
 ?>

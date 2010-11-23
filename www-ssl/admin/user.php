@@ -88,12 +88,16 @@ if (!IsSet($_GET["enterUID"]))
 		echo "\t<td>".mysql_result($Erg, $n, "Aktiv")."</td>\n";
 		$Tshirt += mysql_result($Erg, $n, "Tshirt");
 		echo "\t<td>".mysql_result($Erg, $n, "Tshirt")."</td>\n";
-		echo "\t<td><a href=\"./userChangeNormal.php?enterUID=".
-			mysql_result($Erg, $n, "UID")."&Type=Normal\">&Auml;nd.</a></td>\n";
-		echo "\t<td>";
-		
-		echo "<a href=\"./userChangeSecure.php?enterUID=".
-			mysql_result($Erg, $n, "UID")."&Type=Secure\">Secure</a></td>\n";
+		echo "\t<td>". funktion_isLinkAllowed_addLink_OrEmpty( 
+				"admin/userChangeNormal.php?enterUID=". 
+					mysql_result($Erg, $n, "UID")."&Type=Normal",
+				"&Auml;nd.").
+			"</td>\n";
+		echo "\t<td>". funktion_isLinkAllowed_addLink_OrEmpty( 
+				"admin/userChangeSecure.php?enterUID=". 
+					mysql_result($Erg, $n, "UID")."&Type=Secure",
+				"Secure").
+			"</td>\n";
 		echo "</tr>\n";
 	}
 	echo "<tr>".

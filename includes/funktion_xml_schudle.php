@@ -259,7 +259,7 @@ foreach($XMLmain->sub as $EventKey => $Event)
 		}
 		else
 		{
-			echo "\t<td><a href=\"./schichtplan.php?action=change&SID=$SIDDB\">edit</a></td>\n";
+			echo "\t<td>". funktion_isLinkAllowed_addLink_OrLinkText("admin/schichtplan.php?action=change&SID=".$SIDDB, "edit"). "</td>\n";
 			$DS_OK++;
 		}
 		echo "\t</tr>\n";
@@ -299,7 +299,8 @@ if(mysql_num_rows($Erg2)>0 && $EnableSchudleDB )
 			   "<input name=\"LenDB\" type=\"text\" value=\"$Len\" size=\"1\"readonly></td>\n";
 		echo "\t<td><input name=\"ManXML\" type=\"text\" value=\"\" size=\"40\"readonly>\n\t\t".
 			   "<input name=\"ManDB\" type=\"text\" value=\"$Man\" size=\"40\"readonly></td>\n";
-		echo "\t<td><a href=\"./schichtplan.php?action=change&SID=$SID\">edit</a></td>\n";
+		echo "\t<td>". funktion_isLinkAllowed_addLink_OrLinkText( "admin/schichtplan.php?action=change&SID=".$SID, "edit"). 
+				"</td>\n";
 		echo "\t<tr>\n";
 	}
 echo "</table>";
