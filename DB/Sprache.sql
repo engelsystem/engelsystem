@@ -96,8 +96,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('33', 'DE', 'Sprache
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('33', 'EN', 'Language is saved. On the next page it will be active.');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('34', 'DE', 'Avatar wurde gesetzt.');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('34', 'EN', 'Avatar is saved.');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('35', 'DE', '&lt;b&gt;Neue Anfrage:&lt;/b&gt;\r\nIn diesem Formular hast du die M&ouml;glichkeit, den Erzengeln eine Frage zu stellen. Wenn diese beantwortet ist, wirst du hier dar&uuml;ber informiert. Sollte die Frage von allgemeinem Interesse sein, wird diese in die Engel-FAQ &uuml;bernommen.');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('35', 'EN', '<b>New Question</b>\r\nWith this form you may sumbit questions to our Archangels. Topics of common interest may be added to the FAQ. (Section: answered questions).\r\n');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('35', 'DE', 'Neue Anfrage In diesem Formular hast du die M&ouml;glichkeit, den Erzengeln eine Frage zu stellen. Wenn diese beantwortet ist, wirst du hier dar&uuml;ber informiert. Sollte die Frage von allgemeinem Interesse sein, wird diese in die Engel-FAQ &uuml;bernommen.');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('35', 'EN', 'New Question With this form you may sumbit questions to our Archangels. Topics of common interest may be added to the FAQ. (Section: answered questions).\r\n');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('36', 'DE', 'Stelle hier deine Frage');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('36', 'EN', 'Tell us your question');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('37', 'DE', 'Deine Anfrage war:');
@@ -325,8 +325,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_aktive_Active',
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_schichtplan_add_TextFor', 'EN', 'text for shift');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_schichtplan_add_WriteOK', 'EN', 'Now, you signed up for this shift. Thank you for your cooperation.');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_schichtplan_add_Text1', 'EN', 'Here you can sign up for a shift. As commend can you write what you want, it is only for you.');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_schichtplan_colision', 'DE', '&lt;h1&gt;Fehler&lt;/h1&gt;\r\n&Uuml;berschneidung von Schichten:');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_schichtplan_colision', 'EN', '&lt;h1&gt;error&lt;/h1&gt;\r\noverlap on shift:');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_schichtplan_colision', 'DE', 'Fehler &Uuml;berschneidung von Schichten:');
+INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_schichtplan_colision', 'EN', 'error noverlap on shift:');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_schicht_EmptyShifts', 'DE', 'Die n&auml;chsten 15 freien Schichten:');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('pub_schicht_EmptyShifts', 'EN', 'The next 15 empty shifts:');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('inc_schicht_date', 'DE', 'Datum');

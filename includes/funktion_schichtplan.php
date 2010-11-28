@@ -18,11 +18,9 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 	///////////////////////////////////////////////////////////////////
 	// Schow Admin Page
 	///////////////////////////////////////////////////////////////////
-	if( $_SESSION['CVS'][ "admin/schichtplan.php" ] == "Y" )
-	{
-		$Spalten.= "<a href=\"./../admin/schichtplan.php?action=change&SID=$SID\">edit</a><br>\n\t\t";
-	}
-	
+	$Spalten.=funktion_isLinkAllowed_addLink_OrEmpty( 
+		"admin/schichtplan.php?action=change&SID=$SID",
+		"edit<br>\n\t\t");
 
 	///////////////////////////////////////////////////////////////////
   	// Ausgabe des Schischtnamens
@@ -104,28 +102,30 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 			
 			foreach( $TempValue["Engel"] as $TempEngelEntry=> $TempEngelID )
 			{
-				if( $_SESSION['CVS'][ "admin/userChangeNormal.php" ] == "Y" )
-					$Spalten.= " <a href=\"./../admin/userChangeNormal.php?enterUID=$TempEngelID&Type=Normal\">"; 
-
-				if( $_SESSION['CVS'][ "admin/schichtplan.php" ] == "Y" )
+				if( funktion_isLinkAllowed( "admin/user.php") === TRUE)
 				{
-					if( UIDgekommen( $TempEngelID ) == "1")
-	      					$Spalten.= "&nbsp;&nbsp;<span style=\"color: blue;\">".
-							   UID2Nick( $TempEngelID ).
-      							   ($_GET["Icon"]==1? DisplayAvatar( $TempEngelID ): "").
-							   "</span><br>\n\t\t";
-					else
-      						$Spalten.= "&nbsp;&nbsp;<span style=\"color: red;\">". 
-							   UID2Nick( $TempEngelID ).
-      							   ($_GET["Icon"]==1? DisplayAvatar( $TempEngelID ): "").
-							   "</span><br>\n\t\t";
+					// add color, wenn Engel "Gekommen"
+	      				$TempText= 
+						((UIDgekommen( $TempEngelID ) == "1")
+							? "<span style=\"color: blue;\">"
+							: "<span style=\"color: red;\">").
+						UID2Nick( $TempEngelID). "</span>";
 				}
 				else
-      					$Spalten.= "&nbsp;&nbsp;". UID2Nick( $TempEngelID ).
-      						   ($_GET["Icon"]==1? DisplayAvatar( $TempEngelID ): "").
-						   "<br>\n\t\t";
-				if( $_SESSION['CVS'][ "admin/userChangeNormal.php" ] == "Y" )
-					$Spalten.= " </a>"; 
+				{
+					$TempText = UID2Nick( $TempEngelID );
+				}
+				
+				// add link to user
+				$TempText= funktion_isLinkAllowed_addLink_OrLinkText(
+					"admin/userChangeNormal.php?enterUID=$TempEngelID&Type=Normal",
+					$TempText);
+				
+				$Spalten.= "&nbsp;&nbsp;". $TempText.
+						( ($_GET["Icon"]==1) ? DisplayAvatar( $TempEngelID): "").
+						"<br>\n\t\t";
+
+
 			}
 			$Spalten = substr( $Spalten, 0, strlen($Spalten)-7 );
 		  }
@@ -205,13 +205,17 @@ function CreateRoomShifts( $raum )
 	$ErgSonder = mysql_query($SQLSonder, $con);
 	if( (mysql_num_rows( $ErgSonder) > 1) )
 	{
-		if( $_SESSION['CVS'][ "admin/schichtplan.php" ] == "Y" )
+		if( funktion_isLinkAllowed( "admin/schichtplan.php") === TRUE )
 		{
 			echo "<h1>". Get_Text("pub_schichtplan_colision"). "</h1> ";
-			echo "<a href=\"./../admin/schichtplan.php?action=change&SID=". mysql_result($ErgSonder, 0, "SID"). "\">".
-				mysql_result($ErgSonder, 0, "DateS"). 
-				" '". mysql_result($ErgSonder, 0, "Man")."' (RID $raum) (00-24)".
-				"</a><br>\n\t\t";
+			for( $i=0; $i<mysql_num_rows( $ErgSonder); $i++)
+			{
+				echo "<a href=\"./../admin/schichtplan.php?action=change&SID=". 
+					mysql_result($ErgSonder, $i, "SID"). "\">".
+					mysql_result($ErgSonder, $i, "DateS"). 
+					" '". mysql_result($ErgSonder, $i, "Man")."' (RID $raum) (00-24)".
+					"</a><br>\n\t\t";
+			}
 		}
 	}
 	elseif( (mysql_num_rows( $ErgSonder) == 1) )
@@ -236,13 +240,17 @@ function CreateRoomShifts( $raum )
 	$ErgSonder = mysql_query($SQLSonder, $con);
 	if( (mysql_num_rows( $ErgSonder) > 1) )
 	{
-		if( $_SESSION['CVS'][ "admin/schichtplan.php" ] == "Y" )
+		if( funktion_isLinkAllowed( "admin/schichtplan.php") === TRUE )
 		{
 			echo "<h1>". Get_Text("pub_schichtplan_colision"). "</h1> ";
-			echo "<a href=\"./../admin/schichtplan.php?action=change&SID=". mysql_result($ErgSonder, 0, "SID"). "\">".
-				mysql_result($ErgSonder, 0, "DateS"). 
-				" '". mysql_result($ErgSonder, 0, "Man")."' (RID $raum) (00-xx)".
-				"</a><br>\n\t\t";
+			for( $i=0; $i<mysql_num_rows( $ErgSonder); $i++)
+			{
+				echo "<a href=\"./../admin/schichtplan.php?action=change&SID=". 
+					mysql_result($ErgSonder, $i, "SID"). "\">".
+					mysql_result($ErgSonder, $i, "DateS"). 
+					" '". mysql_result($ErgSonder, $i, "Man")."' (RID $raum) (00-xx)".
+					"</a><br>\n\t\t";
+			}
 		}
 	}
 	elseif( (mysql_num_rows( $ErgSonder) == 1) )
@@ -297,10 +305,12 @@ function CreateRoomShifts( $raum )
 		}
 		else
 		{
-			echo Get_Text("pub_schichtplan_colision"). " ".
+			echo "<h1>". Get_Text("pub_schichtplan_colision"). "</h1> ";
+			echo "<a href=\"./../admin/schichtplan.php?action=change&SID=". 
+				mysql_result($Erg, $i, "SID"). "\">".
 				mysql_result($Erg, $i, "DateS"). 
 				" '". mysql_result($Erg, $i, "Man"). "' ".
-				" (".  mysql_result($Erg, $i, "SID"). " R$raum) (xx-xx)<br><br>";
+				" (".  mysql_result($Erg, $i, "SID"). " R$raum) (xx-xx)</a><br><br>";
 		}
 	}
 	if( $ZeitZeiger < 24 )
