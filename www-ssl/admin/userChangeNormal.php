@@ -67,7 +67,7 @@ if (IsSet($_GET["enterUID"]))
 			"<input type=\"text\" size=\"5\" name=\"eSize\" value=\"".
 			mysql_result($Erg, 0, "Size")."\"></td></tr>\n";
 		echo "  <tr><td>Passwort</td><td>".
-			"<a href=\"./user2.php?action=newpw&eUID="
+			"<a href=\"./userSaveNormal.php?action=newpw&eUID="
 			.mysql_result($Erg, 0, "UID")."\">neues Kennwort setzen</a></td></tr>\n";
  
 		// Gekommen? 

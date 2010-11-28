@@ -572,8 +572,6 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/shiftadd.php'
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/shiftadd.php', 'EN', ' ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/schichtplan_druck.php', 'DE', ' ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/schichtplan_druck.php', 'EN', ' ');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/user2.php', 'DE', ' ');
-INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/user2.php', 'EN', ' ');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dbUpdateFromXLS.php', 'DE', 'UpdateDB');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dbUpdateFromXLS.php', 'EN', 'UpdateDB');
 INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES ('admin/dect.php', 'DE', 'Dect');
