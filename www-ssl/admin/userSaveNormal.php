@@ -92,7 +92,7 @@ if (IsSet($_GET["action"]))
 		$Erg = mysql_query($USQL, $con);
 		echo mysql_result($Erg, 0, "Nick");
 		echo "</b> eingeben:<br>";
-		echo "<form action=\"./user2.php?action=newpwsave\" method=\"POST\">\n";	
+		echo "<form action=\"./userSaveNormal.php?action=newpwsave\" method=\"POST\">\n";	
 		echo "<input type=\"Password\" name=\"ePasswort\">";
 		echo "<input type=\"Password\" name=\"ePasswort2\">";
 		echo "<input type=\"hidden\" name=\"eUID\" value=\"". $_GET["eUID"]. "\">";
