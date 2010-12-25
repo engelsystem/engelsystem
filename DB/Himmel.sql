@@ -212,4 +212,18 @@ CREATE TABLE IF NOT EXISTS `Counter` (
   `URL` varchar(255) NOT NULL default '',
    `Anz` bigint(20) NOT NULL default '0',
    PRIMARY KEY  (`URL`)
-) TYPE=MyISAM COMMENT='Counter alles der Seiten';
+) TYPE=MyISAM COMMENT='Counter der Seiten';
+
+--
+-- Tabellenstruktur für Tabelle `ShiftFreeloader`
+--
+
+CREATE TABLE IF NOT EXISTS `ShiftFreeloader` (
+  `ID` int(11) NOT NULL auto_increment,
+  `Remove_Time` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `UID` int(11) NOT NULL,
+  `Length` int(11) NOT NULL,
+  `Comment` text NOT NULL,
+  PRIMARY KEY  (`ID`)
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
+
