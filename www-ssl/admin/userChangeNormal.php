@@ -106,18 +106,6 @@ if (IsSet($_GET["enterUID"]))
 		echo ">Yes \n";
 		echo "</td></tr>\n";
 
-		// Menu links/rechts 
-		echo "  <tr><td>Menu</td><td>\n";
-		echo "      <input type=\"radio\" name=\"eMenu\" value=\"L\"";
-		if (mysql_result($Erg, 0, "Menu")=='L')
-			echo " checked";
-		echo ">L \n";
-		echo "      <input type=\"radio\" name=\"eMenu\" value=\"R\"";
-		if (mysql_result($Erg, 0, "Menu")=='R') 
-			echo " checked";
-		echo ">R \n";
-		echo "</td></tr>\n";
-			
 		echo "  <tr><td>Hometown</td><td>".
 			"<input type=\"text\" size=\"40\" name=\"Hometown\" value=\"".
 			mysql_result($Erg, 0, "Hometown")."\"></td></tr>\n";
@@ -135,6 +123,12 @@ if (IsSet($_GET["enterUID"]))
 	echo "<input type=\"hidden\" name=\"enterUID\" value=\"". $_GET["enterUID"]. "\">\n";
 	echo "<input type=\"submit\" value=\"l&ouml;schen...\">\n";
 	echo "</form>";
+
+	
+	echo "<hr>";
+	funktion_db_element_list_2row( 
+		"Freeloader Shifts", 
+		"SELECT `Remove_Time`, `Length`, `Comment` FROM `ShiftFreeloader` WHERE UID=". $_GET["enterUID"]); 
 }
 
 include ("../../includes/footer.php");

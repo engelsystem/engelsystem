@@ -158,16 +158,26 @@ case 'change':
 	 
 	echo "Folgende Engel Sind fuer die Schicht eingetargen.\n";
 	echo "Und koennen, wenn diese nicht zu Schicht erschienen sind ausgetragen werden:<br>\n";
+	echo "<table border=\"1\">\n".
+		"<tr class=\"contenttopic\">".
+		"<th>nick</th>". 
+		"<th>type</th>". 
+		"<th>normal</th>". 
+		"<th>freeloader :-(</th>". 
+		"</tr>";
+	
 	for ($j=0; $j < $rowcount; $j++)
 	{
 		$userUID=mysql_result($Erg3, $j, "UID");
-		echo "<a href=\"./schichtplan.php?action=engeldel&SID=". $_GET["SID"]. "&UIDs=$userUID\">". 
-			UID2Nick($userUID).
-			" (". TID2Type(mysql_result($Erg3, $j, "TID")). Get_Text("inc_schicht_Engel").
-			") austragen</a><br>\n";
+		echo "\t<tr>\n";
+		echo "\t\t<td>". UID2Nick($userUID). "</td>\n";
+		echo "\t\t<td>". TID2Type(mysql_result($Erg3, $j, "TID")). Get_Text("inc_schicht_Engel"). "</td>\n";
+		echo "\t\t<td><a href=\"./schichtplan.php?action=engeldel&SID=". $_GET["SID"]. "&UIDs=$userUID&freeloader=0\">###-austragen-###</a></td>\n";
+		echo "\t\t<td><a href=\"./schichtplan.php?action=engeldel&SID=". $_GET["SID"]. "&UIDs=$userUID&freeloader=1\">###-austragen-###</a></td>\n";
+		echo "\t</tr>\n";
 	} // FOR
 
-	echo "<br><hr>\n\n\n\n";
+	echo "</table><br><hr>\n\n\n\n";
 
 	//Nachtragen von Engeln
 	echo "Hat ein anderer Engel die Schicht &uuml;bernommen, trage ihn bitte ein:";
@@ -281,6 +291,22 @@ case 'engeladd':
 case 'engeldel':
 	$chSQL = "UPDATE `ShiftEntry` SET `UID`='0', `Comment`= 'NULL' WHERE (`SID`='". $_GET["SID"]. 
 		 "' AND `UID`='". $_GET["UIDs"]. "') LIMIT 1"; 
+	if( isset($_GET["freeloader"]) && $_GET["freeloader"]==1)
+	{
+		$sql = "SELECT * FROM `Shifts` WHERE (`SID` = '". $_GET["SID"]. "' )";
+		$Erg = mysql_query($sql, $con);
+		if( mysql_num_rows( $Erg) == 1)
+		{
+			$UID = $_GET["UIDs"];
+	 		$Length = mysql_result($Erg, 0, "Len");
+			$Comment = 	"Start: ". mysql_result($Erg, 0, "DateS"). "; ".
+					"Beschreibung: ". mysql_result($Erg, 0, "Man"). "; ".
+					"Removed by ". $_SESSION['Nick'];
+			$ch2SQL = 
+				"INSERT INTO `ShiftFreeloader` (`Remove_Time`, `UID`, `Length`, `Comment`) ".
+				"VALUES ( CURRENT_TIMESTAMP, '$UID', '$Length', '$Comment');";
+		}
+	}
 	break;
 
 case 'engelshiftdel':
