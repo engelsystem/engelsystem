@@ -9,7 +9,7 @@ include ("../../includes/funktion_db_list.php");
 If (IsSet($_GET["arrived"])) {
 
 	$SQL="UPDATE `User` SET `Gekommen`='1' WHERE `UID`='". $_GET["arrived"]. "' limit 1";
-	$Erg = mysql_query($SQL, $con);
+	$Erg = db_query($SQL, "Set User as Gekommen");
         if ($Erg == 1) {
 		echo "<h2>". Get_Text("pri_userArrived_WriteOK"). " \"". UID2Nick($_GET["arrived"]). "\"</h2>";
         } else {
