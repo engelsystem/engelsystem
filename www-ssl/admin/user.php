@@ -12,7 +12,10 @@ if (!IsSet($_GET["enterUID"]))
 	echo "<a href=\"../makeuser.php\">Neuen Engel eintragen</a><br><br>\n";
 	
 	if( !isset($_GET["OrderBy"]) ) $_GET["OrderBy"] = "Nick";
-	$SQL = "SELECT * FROM `User` ORDER BY `". $_GET["OrderBy"]. "` ASC";
+	$SQL = "SELECT User.*, UserGroups.Name AS 'Group' FROM `User` ".
+		"LEFT JOIN `UserCVS` ON User.UID = UserCVS.UID ".
+		"LEFT JOIN `UserGroups` ON UserGroups.UID = UserCVS.GroupID ".
+		"ORDER BY `". $_GET["OrderBy"]. "` ASC";
 	$Erg = mysql_query($SQL, $con);
 	echo mysql_error($con);
 
@@ -37,7 +40,8 @@ if (!IsSet($_GET["enterUID"]))
 			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=lastLogIn">lastLogIn</a> | 
 			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Art">Type</a> | 
 			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=ICQ">ICQ</a> |
-			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=jabber">jabber</a> 
+			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=jabber">jabber</a> |
+			<a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Group">Group</a> 
 		</td>
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Size">Gr&ouml;&szlig;e</a></td>
 		<td><a href="<?PHP echo $_SERVER["PHP_SELF"]; ?>?OrderBy=Gekommen">G</a></td>
@@ -80,6 +84,7 @@ if (!IsSet($_GET["enterUID"]))
 				echo "\n\t\tICQ: ". mysql_result($Erg, $n, "ICQ"). "<br>";
 			if( strlen( mysql_result($Erg, $n, "jabber"))>0)
 				echo "\n\t\tjabber: ". mysql_result($Erg, $n, "jabber"). "<br>";
+			echo "\n\t\tGroup: ". mysql_result($Erg, $n, "Group"). "<br>";
 			echo "</td>\n";
 		echo "\t<td>".mysql_result($Erg, $n, "Size")."</td>\n";
 		$Gekommen += mysql_result($Erg, $n, "Gekommen");
@@ -114,6 +119,15 @@ if (!IsSet($_GET["enterUID"]))
 
 	funktion_db_element_list_2row( "Engeltypen",
                                         "SELECT COUNT(`Art`), `Art` FROM `User` GROUP BY `Art`");
+
+	echo "<br>\n";
+
+	funktion_db_element_list_2row( "Used Groups",
+		"SELECT UserGroups.Name AS 'GroupName', COUNT(UserGroups.Name) AS Count FROM `UserCVS` ".
+		"LEFT JOIN `UserGroups` ON UserGroups.UID = UserCVS.GroupID ".
+		"WHERE (UserCVS.GroupID!='NULL') ".
+		"GROUP BY `GroupName` ".
+		"");
 }
 else
 {
