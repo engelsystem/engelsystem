@@ -95,15 +95,19 @@ case 'change':
 		"\" type=\"text\" size=\"40\" name=\"eDate\"></td></tr>\n";
 	echo "  <tr><td>Raum</td><td>\n<select name=\"eRID\">\n";
 	
-	$sql2 = "SELECT `RID`, `Name` FROM `Room`";
+	$sql2 = "SELECT `RID`, `Name`, `FromPentabarf` FROM `Room`";
         $Erg2 = mysql_query($sql2, $con);
 	$rowcount = mysql_num_rows($Erg2);
+	$FromPentabarf = "N";
 	for( $i = 0; $i < $rowcount; $i++ )
 	{
 		$RID=mysql_result($Erg2, $i, "RID");
 		echo "   <option value=\"".$RID."\"";
 		if( $RID == mysql_result($Erg, 0, "RID") )
-		echo " selected";
+		{
+			echo " selected";
+			$FromPentabarf = mysql_result($Erg2, $i, "FromPentabarf");
+		}
 		echo ">".mysql_result($Erg2, $i, "Name")."</option>\n";
 	}
 	echo "  </select>\n</td></tr>\n";
@@ -117,6 +121,11 @@ case 'change':
 	echo "  <tr><td>URL</td>".
 	 	"<td><input value=\"". mysql_result($Erg, 0, "URL").
 		"\" type=\"text\" size=\"40\" name=\"eURL\"></td></tr>\n";
+	if( $FromPentabarf == "Y")
+	{
+		echo "  <tr><td></td>".
+		 	"<td><h1>!!! Imported from Pentabarf !!!</h1></td></tr>\n";
+	}
         echo "</table>\n";
 	 
         echo "<input type=\"hidden\" name=\"SID\" value=\"". $_GET["SID"]. "\">\n";
@@ -173,7 +182,7 @@ case 'change':
 		echo "\t\t<td>". UID2Nick($userUID). "</td>\n";
 		echo "\t\t<td>". TID2Type(mysql_result($Erg3, $j, "TID")). Get_Text("inc_schicht_Engel"). "</td>\n";
 		echo "\t\t<td><a href=\"./schichtplan.php?action=engeldel&SID=". $_GET["SID"]. "&UIDs=$userUID&freeloader=0\">###-austragen-###</a></td>\n";
-		echo "\t\t<td><a href=\"./schichtplan.php?action=engeldel&SID=". $_GET["SID"]. "&UIDs=$userUID&freeloader=1\">###-austragen-###</a></td>\n";
+		echo "\t\t<td><a href=\"./schichtplan.php?action=engeldel&SID=". $_GET["SID"]. "&UIDs=$userUID&freeloader=1\">###-austragen-freeloader-###</a></td>\n";
 		echo "\t</tr>\n";
 	} // FOR
 
@@ -187,7 +196,10 @@ case 'change':
 	
 	// Listet alle Nicks auf
 	echo "<select name=\"UIDs\">\n";
-	echo "\t<option value=\"0\">--neu--</option>\n";
+	if( $FromPentabarf != "Y")
+	{
+		echo "\t<option value=\"0\">--neu--</option>\n";
+	}
 	
 	$usql="SELECT * FROM `User` ORDER BY `Nick`";
 	$uErg = mysql_query($usql, $con);
