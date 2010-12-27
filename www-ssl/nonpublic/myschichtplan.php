@@ -18,7 +18,7 @@ If( !IsSet($_GET["action"]) )
 	     Get_Text("pub_mywake_beschreibung4")."<br><br>\n";
 
 	$USER_ID = $_SESSION['UID'];
-	if( $_SESSION['CVS'][ "admin/aktiv.php" ] == "Y" )
+	if( $_SESSION['CVS'][ "admin/schichtplan.php" ] == "Y" )
 	{
 		if( !isset( $_GET["UIDs"]) )
 			$_GET["UIDs"] = $_SESSION['UID'];
