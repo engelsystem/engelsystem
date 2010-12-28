@@ -45,15 +45,22 @@ echo "<tr class=\"contenttopic\">\n";
 echo "\t<td>". Get_Text("pub_aktive_Nick"). "</td>\n";
 echo "\t<td>". Get_Text("pub_aktive_Anzahl"). "</td>\n";
 echo "\t<td>". Get_Text("pub_aktive_Time"). "</td>\n";
+echo "\t<td>". Get_Text("pub_aktive_Time"). " Weight</td>\n";
+echo "\t<td>Freeloader ". Get_Text("pub_aktive_Anzahl"). "</td>\n";
+echo "\t<td>Freeloader ". Get_Text("pub_aktive_Time"). "</td>\n";
+echo "\t<td>". Get_Text("pub_aktive_Time"). " result</td>\n";
 echo "\t<td>". Get_Text("pub_aktive_Active"). "</td>\n";
 echo "</tr>\n";
 	
-$SQL = "SELECT ShiftEntry.UID, COUNT(ShiftEntry.UID) AS NR, SUM(Shifts.Len) as LEN ".
-	   "FROM `ShiftEntry` ".
-	   "LEFT JOIN `Shifts` ON ShiftEntry.SID=Shifts.SID ".
-	   "WHERE NOT UID=0 ".
-	   "GROUP BY UID ".
-	   "ORDER BY LEN DESC, NR DESC, UID ";
+$SQL = "
+SELECT d.UID, d.nr, d.len, d.lenWeight, f.nr AS nrFree, f.len AS lenFree, d.lenWeight - COALESCE(f.len, 0) as lenReal
+	FROM
+		(SELECT e.UID, COUNT(s.Len) as nr, SUM(s.Len) as len, SUM( s.Len*(1+(((HOUR(s.DateS)+2)%24)<10 and ((HOUR(s.DateE)+2)%24)<10)) ) as lenWeight FROM `Shifts` AS s INNER JOIN `ShiftEntry` AS e USING(SID) WHERE NOT UID=0 GROUP BY UID) as d
+		LEFT JOIN
+		(SELECT UID, COUNT(Length) AS nr, SUM(Length) AS len FROM `ShiftFreeloader` GROUP BY UID) AS f
+		USING(UID)
+	ORDER BY lenReal DESC, nr DESC, UID";
+
 $Erg = mysql_query($SQL, $con);
 echo mysql_error($con);
 $rowcount = mysql_num_rows($Erg);
@@ -63,12 +70,18 @@ for ($i=0; $i<$rowcount; $i++)
 {
 	echo "\n\n\t<tr class=\"content\">\n";
 	echo "\t\t<td>". UID2Nick(mysql_result($Erg, $i, "UID")). "</td>\n";
-	echo "\t\t<td>". mysql_result($Erg, $i, "NR"). "</td>\n";
-	echo "\t\t<td>". mysql_result($Erg, $i, "LEN"). "h</td>\n";
+	echo "\t\t<td>". mysql_result($Erg, $i, "nr"). "x</td>\n";
+	echo "\t\t<td>". mysql_result($Erg, $i, "len"). "h</td>\n";
+	echo "\t\t<td>". mysql_result($Erg, $i, "lenWeight"). "h</td>\n";
+	echo "\t\t<td>". mysql_result($Erg, $i, "nrFree"). "x</td>\n";
+	echo "\t\t<td>". mysql_result($Erg, $i, "lenFree"). "h</td>\n";
+	echo "\t\t<td>". mysql_result($Erg, $i, "lenReal"). "h</td>\n";
+
+	
 	echo "\t\t<td>";
 	if (IsSet($_POST["Anzahl"]))
 	{	
-		if( $_POST["Anzahl"] < mysql_result($Erg, $i, "LEN") )
+		if( $_POST["Anzahl"] < mysql_result($Erg, $i, "lenReal") )
 		{
 			$aktivecount++;
 			if( $_POST["SendType"]=="Show..")
