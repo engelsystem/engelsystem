@@ -52,4 +52,7 @@ $PentabarfGetWith = "fsockopen";        // "fsockopen"/"fopen"/"wget"/"lynx"
 //Mailing List: is is not defined, the option is not shown
 //$SubscribeMailinglist = "*-subscribe@lists.*";
 
+/// Passord for external Authorization, function only active if the var is defined
+//$CurrentExternAuthPass = 23;
+
 ?>
