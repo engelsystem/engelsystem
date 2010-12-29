@@ -91,7 +91,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 	///////////////////////////////////////////////////////////////////
 	// Aus gabe der Schicht
 	///////////////////////////////////////////////////////////////////
-	if( count($Temp) )
+	if( isset($Temp) && count($Temp) )
 	  foreach( $Temp as $TempEntry => $TempValue )
 	  {
 	  	$Out.= "\t\t\t<tr>\n";
