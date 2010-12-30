@@ -55,7 +55,7 @@ echo "</tr>\n";
 $SQL = "
 SELECT d.UID, d.nr, d.len, d.lenWeight, f.nr AS nrFree, f.len AS lenFree, d.lenWeight - COALESCE(f.len, 0) as lenReal
 	FROM
-		(SELECT e.UID, COUNT(s.Len) as nr, SUM(s.Len) as len, SUM( s.Len*(1+(((HOUR(s.DateS)+2)%24)<10 and ((HOUR(s.DateE)+2)%24)<10)) ) as lenWeight FROM `Shifts` AS s INNER JOIN `ShiftEntry` AS e USING(SID) WHERE NOT UID=0 GROUP BY UID) as d
+		(SELECT e.UID, COUNT(s.Len) as nr, SUM(s.Len) as len, SUM( s.Len*(1+(((HOUR(s.DateS)+2)%24)<10 and ((HOUR(s.DateE)+2)%24)<=10)) ) as lenWeight FROM `Shifts` AS s INNER JOIN `ShiftEntry` AS e USING(SID) WHERE NOT UID=0 GROUP BY UID) as d
 		LEFT JOIN
 		(SELECT UID, COUNT(Length) AS nr, SUM(Length) AS len FROM `ShiftFreeloader` GROUP BY UID) AS f
 		USING(UID)
