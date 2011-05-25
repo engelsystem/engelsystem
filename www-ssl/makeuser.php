@@ -125,7 +125,7 @@ else
 	$_POST["subscribe-mailinglist"] = "";
 	$_POST["ICQ"] = "";
 	$_POST["jabber"] = "";
-	$_POST["Size"] = "";
+	$_POST["Size"] = "L";
 	$_POST["Art"] = "";
 	$_POST["kommentar"] = "";
 	$_POST["Hometown"] = "";
@@ -166,8 +166,14 @@ echo "\t\t\t\t<option value=\"S\"";	if ($_POST["Size"]=="S") 	echo " selected";	
 echo "\t\t\t\t<option value=\"M\"";	if ($_POST["Size"]=="M") 	echo " selected";	echo ">M</option>\n";
 echo "\t\t\t\t<option value=\"L\"";	if ($_POST["Size"]=="L") 	echo " selected";	echo ">L</option>\n";
 echo "\t\t\t\t<option value=\"XL\"";	if ($_POST["Size"]=="XL") 	echo " selected";	echo ">XL</option>\n";
-echo "\t\t\t\t<option value=\"XXL\"";	if ($_POST["Size"]=="XXL") 	echo " selected";	echo  ">XXL</option>\n";
-echo "\t\t\t\t<option value=\"XXXL\"";	if ($_POST["Size"]=="XXXL") 	echo " selected";	echo  ">XXXL</option>\n";
+echo "\t\t\t\t<option value=\"2XL\"";	if ($_POST["Size"]=="2XL") 	echo " selected";	echo ">2XL</option>\n";
+echo "\t\t\t\t<option value=\"3XL\"";	if ($_POST["Size"]=="3XL") 	echo " selected";	echo ">3XL</option>\n";
+echo "\t\t\t\t<option value=\"4XL\"";	if ($_POST["Size"]=="4XL") 	echo " selected";	echo ">4XL</option>\n";
+echo "\t\t\t\t<option value=\"5XL\"";	if ($_POST["Size"]=="5XL") 	echo " selected";	echo ">5XL</option>\n";
+echo "\t\t\t\t<option value=\"S-G\"";	if ($_POST["Size"]=="S-G") 	echo " selected";	echo ">S Girl</option>\n";
+echo "\t\t\t\t<option value=\"M-G\"";	if ($_POST["Size"]=="M-G") 	echo " selected";	echo ">M Girl</option>\n";
+echo "\t\t\t\t<option value=\"L-G\"";	if ($_POST["Size"]=="L-G") 	echo " selected";	echo ">L Girl</option>\n";
+echo "\t\t\t\t<option value=\"XL-G\"";	if ($_POST["Size"]=="XL-G") 	echo " selected";	echo ">XL Girl</option>\n";
 echo "\t\t\t</select>\n";
 echo "\t\t\t</td></tr>\n";
 echo "\t\t\t<tr><td>". Get_Text("makeuser_Engelart"). 
