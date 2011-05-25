@@ -1,5 +1,6 @@
 <?php
 
+
 if( !isset($_SESSION['UID'])) 
 	$_SESSION['UID'] = -1;
 
@@ -26,7 +27,7 @@ if( isset( $_SESSION['CVS'][ "GroupID" ]))
 //pagename ermitteln
 $Page["Name"] = substr( $_SERVER['PHP_SELF'], strlen($ENGEL_ROOT) );
 
-//recht für diese seite auslesen
+//recht f?r diese seite auslesen
 if( isset( $_SESSION['CVS'][ $Page["Name"] ]))
 	$Page["CVS"] = $_SESSION['CVS'][ $Page["Name"] ];
 else
