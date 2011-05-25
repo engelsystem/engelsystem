@@ -2,8 +2,8 @@
 $title = "Himmel";
 $header = "FAQ / Fragen an die Erzengel";
 $submenus = 1;
-include ("../../../27c3/includes/header.php");
-include ("../../../27c3/includes/funktion_db.php");
+include ("../../../camp2011/includes/header.php");
+include ("../../../camp2011/includes/funktion_db.php");
 
 //var init
 $quest_bearb=0;
@@ -279,5 +279,5 @@ else
 	echo "</ul>\n";
 }
 
-include ("../../../27c3/includes/footer.php");
+include ("../../../camp2011/includes/footer.php");
 ?>

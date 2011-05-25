@@ -2,8 +2,8 @@
 
 $title = "T-Shirt-Ausgabe";
 $header = "T-Shirt-Ausgabe f&uuml;r aktiven Engel";
-include ("../../../27c3/includes/header.php");
-include ("../../../27c3/includes/funktion_db_list.php");
+include ("../../../camp2011/includes/header.php");
+include ("../../../camp2011/includes/funktion_db_list.php");
 
 
 If (IsSet($_GET["aktiv"])) {
@@ -54,6 +54,6 @@ for ($i=0; $i<$rowcount; $i++){
 
 echo "</table>";
 
-include ("../../../27c3/includes/footer.php");
+include ("../../../camp2011/includes/footer.php");
 ?>
 

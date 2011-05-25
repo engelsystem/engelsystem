@@ -2,7 +2,7 @@
 
 $title = "Sprache";
 $header = "Liste der existierenden Sprcheintr&auml;ge";
-include ("../../../27c3/includes/header.php");
+include ("../../../camp2011/includes/header.php");
 
 
 if( !isset( $_GET["TextID"] )  )
@@ -117,6 +117,6 @@ else
 	   
 }
 
-include ("../../../27c3/includes/footer.php");
+include ("../../../camp2011/includes/footer.php");
 ?>
 

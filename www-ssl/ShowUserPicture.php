@@ -1,10 +1,10 @@
 <?PHP
 
-include ("../../27c3/includes/config.php");
-include ("../../27c3/includes/error_handler.php");
-include ("../../27c3/includes/config_db.php");
+include ("../../camp2011/includes/config.php");
+include ("../../camp2011/includes/error_handler.php");
+include ("../../camp2011/includes/config_db.php");
 if( !isset($_SESSION))	session_start();
-include ("../../27c3/includes/secure.php");
+include ("../../camp2011/includes/secure.php");
 
 
 // Parameter check

@@ -1,8 +1,8 @@
 <?PHP
 header('Content-Type: application/json');
 
-include ("../../../27c3/includes/config.php");
-include ("../../../27c3/includes/config_db.php");
+include ("../../../camp2011/includes/config.php");
+include ("../../../camp2011/includes/config_db.php");
 
 $User = $_POST['user'];
 $Pass = $_POST['pw'];

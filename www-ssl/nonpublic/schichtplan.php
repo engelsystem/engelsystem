@@ -21,10 +21,10 @@ if( isset($_GET["raum"]))
 	}
 }
 
-include ("../../../27c3/includes/header.php");
-include ("../../../27c3/includes/funktionen.php");
-include ("../../../27c3/includes/funktion_schichtplan.php");
-include ("../../../27c3/includes/funktion_schichtplan_aray.php");
+include ("../../../camp2011/includes/header.php");
+include ("../../../camp2011/includes/funktionen.php");
+include ("../../../camp2011/includes/funktion_schichtplan.php");
+include ("../../../camp2011/includes/funktion_schichtplan_aray.php");
 ?>
 
 <?PHP echo Get_Text("Hello").$_SESSION['Nick'].",<br>".
@@ -201,5 +201,5 @@ else
 
 echo "<a href=\"". $_SESSION["newurl"]. "&Icon=0\">@</a>";
 
-include ("../../../27c3/includes/footer.php");
+include ("../../../camp2011/includes/footer.php");
 ?>

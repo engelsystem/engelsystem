@@ -2,8 +2,8 @@
 
 $title = "User-Liste";
 $header = "Editieren der Engelliste";
-include ("../../../27c3/includes/header.php");
-include ("../../../27c3/includes/funktion_db_list.php");
+include ("../../../camp2011/includes/header.php");
+include ("../../../camp2011/includes/funktion_db_list.php");
 
 if (!IsSet($_GET["enterGID"]))
 {
@@ -43,7 +43,7 @@ if (!IsSet($_GET["enterGID"]))
 	// Ende Userliste
 } 
 
-include ("../../../27c3/includes/footer.php");
+include ("../../../camp2011/includes/footer.php");
 ?>
 
 

@@ -1,10 +1,10 @@
 <?php
 $title = "Himmel";
 $header = "Schichtpl&auml;ne";
-include ("../../../27c3/includes/header.php");
-include ("../../../27c3/includes/funktion_schichtplan.php");
-include ("../../../27c3/includes/funktion_schichtplan_aray.php");
-include ("../../../27c3/includes/funktionen.php");
+include ("../../../camp2011/includes/header.php");
+include ("../../../camp2011/includes/funktion_schichtplan.php");
+include ("../../../camp2011/includes/funktion_schichtplan_aray.php");
+include ("../../../camp2011/includes/funktionen.php");
 
 if (isset($_POST["newtext"]) && isset($_POST["SID"]) && isset($_POST["TID"])) {
 	SetHeaderGo2Back();
@@ -122,5 +122,5 @@ elseif (isset($_GET["SID"]) && isset($_GET["TID"]))
 
 }
 
-include ("../../../27c3/includes/footer.php");
+include ("../../../camp2011/includes/footer.php");
 ?>

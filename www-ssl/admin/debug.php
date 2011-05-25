@@ -2,8 +2,8 @@
 
 $title = "Debug-Liste";
 $header = "Datenbank-Auszug";
-include ("../../../27c3/includes/header.php");
-include ("../../../27c3/includes/funktion_db_list.php");
+include ("../../../camp2011/includes/header.php");
+include ("../../../camp2011/includes/funktion_db_list.php");
 
 echo "<h1>Web Counter</h1>";
 funktion_db_list("Counter");
@@ -64,6 +64,6 @@ funktion_db_element_list_2row( "Geleisteter Arbeit (Ohne Raum aufabau (RID=7)",
 
 
 
-include ("../../../27c3/includes/footer.php");
+include ("../../../camp2011/includes/footer.php");
 ?>
 

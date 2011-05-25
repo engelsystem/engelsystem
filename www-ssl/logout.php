@@ -1,5 +1,5 @@
 <?php
-include ("../../27c3/includes/config.php");
+include ("../../camp2011/includes/config.php");
 
 // Die Session zerstoeren...
 session_start();

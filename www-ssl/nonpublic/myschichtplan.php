@@ -2,10 +2,10 @@
 $title = "Himmel";
 $header = "Mein Schichtplan";
 
-include ("../../../27c3/includes/header.php");
-include ("../../../27c3/includes/funktionen.php");
-include ("../../../27c3/includes/funktion_schichtplan.php");
-include ("../../../27c3/includes/funktion_schichtplan_aray.php");
+include ("../../../camp2011/includes/header.php");
+include ("../../../camp2011/includes/funktionen.php");
+include ("../../../camp2011/includes/funktion_schichtplan.php");
+include ("../../../camp2011/includes/funktion_schichtplan_aray.php");
 
 
 If( !IsSet($_GET["action"]) ) 
@@ -181,5 +181,5 @@ else
 	SetHeaderGo2Back();	
     }
 }
-include ("../../../27c3/includes/footer.php");
+include ("../../../camp2011/includes/footer.php");
 ?>

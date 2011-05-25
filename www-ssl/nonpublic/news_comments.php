@@ -1,7 +1,7 @@
 <?php
 $title = "Kommentare zu den News";
 $header = "Kommentar";
-include ("../../../27c3/includes/header.php");
+include ("../../../camp2011/includes/header.php");
 
 
 if( IsSet( $_GET["nid"])) 
@@ -85,5 +85,5 @@ else
   echo "Fehlerhafter Aufruf!";
 }
 
-include ("../../../27c3/includes/footer.php");
+include ("../../../camp2011/includes/footer.php");
 ?>

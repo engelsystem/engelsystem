@@ -1,7 +1,7 @@
 <?php
-include ("../../../27c3/includes/header_start.php");
+include ("../../../camp2011/includes/header_start.php");
 
-include ("../../../27c3/includes/funktion_schichtplan_aray.php");
+include ("../../../camp2011/includes/funktion_schichtplan_aray.php");
 
 $SQL = "SELECT *, `ShiftEntry`.`Comment`, `ShiftEntry`.`TID` FROM `Shifts` ".
        "INNER JOIN `ShiftEntry` ".
@@ -46,7 +46,7 @@ for( $i=0; $i<mysql_num_rows( $erg ); $i++ )
 }
 echo "END:VCALENDAR\n";
 
-include( "../../../27c3/includes/funktion_counter.php");
+include( "../../../camp2011/includes/funktion_counter.php");
 
 ?>
 
