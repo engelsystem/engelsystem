@@ -15,7 +15,7 @@ function ShowMenu($MenuName) {
 			if ((strpos("00$Key", "0$MenuName") > 0) || ((strlen($MenuName) == 0) && (strpos("0$Key", "/") == 0))) {
 				$TempName = Get_Text($Key, true);
 
-				if ((true || $debug) && (strlen($TempName) == 0))
+				if ((true || $debug) && ($TempName == ""))
 					$TempName = "not found: \"$Key\"";
 
 				if ($Entry == "Y") {
