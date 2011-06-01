@@ -1,7 +1,7 @@
 <h4>&nbsp;Raum&uuml;bersicht</h4>
 <?php
 
-include ("../../includes/funktion_schichtplan_aray.php");
+include ("../../includes/funktion_schichtplan_array.php");
 
 if( isset ($Room))
     foreach( $Room as $RoomEntry  )

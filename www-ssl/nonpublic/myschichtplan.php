@@ -5,7 +5,7 @@ $header = "Mein Schichtplan";
 include ("../../includes/header.php");
 include ("../../includes/funktionen.php");
 include ("../../includes/funktion_schichtplan.php");
-include ("../../includes/funktion_schichtplan_aray.php");
+include ("../../includes/funktion_schichtplan_array.php");
 
 
 If( !IsSet($_GET["action"]) ) 
@@ -98,7 +98,7 @@ If( !IsSet($_GET["action"]) )
 		$lastAustragen = $LETZTES_AUSTRAGEN*3600;
 		$nowdate = time();
 		// wenn Schichtbeginn > jetziges Datum + $LETZTES_AUSTRAGEN - Stunden soll ein Austragen 
-		// noch möglich sein
+		// noch mï¿½glich sein
 		if( $schichtdatum > ($lastAustragen + $nowdate) ) 
 			echo "<td> <a href=\"./myschichtplan.php?action=austragen&SID=".
 		             mysql_result( $erg, $i, "SID" )."\">".
@@ -137,7 +137,7 @@ else
 	$lastAustragen = $LETZTES_AUSTRAGEN*3600;
 	$nowdate = time();
 	// wenn Schichtbeginn > jetziges Datum + $LETZTES_AUSTRAGEN - Stunden soll ein Austragen 
-	// noch möglich sein
+	// noch mï¿½glich sein
 	if( $schichtdatum > ($lastAustragen + $nowdate) ) 
 	{
 		$sql2 = "UPDATE `ShiftEntry` ".

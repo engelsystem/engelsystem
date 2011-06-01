@@ -2,7 +2,7 @@
 $title = "UserPicture";
 $header = "Verwaltung der User Picture";
 include ("../../includes/header.php");
-include ("../../includes/funktion_schichtplan_aray.php");
+include ("../../includes/funktion_schichtplan_array.php");
 
 
 if( IsSet($_GET["action"]) )

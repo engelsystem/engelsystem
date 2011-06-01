@@ -8,7 +8,7 @@ if (!IsSet($_GET["action"]))
 {
 	include ("../../includes/header.php");
 	include ("../../includes/funktionen.php");
-	include ("../../includes/funktion_schichtplan_aray.php");
+	include ("../../includes/funktion_schichtplan_array.php");
 	include ("../../includes/funktion_schichtplan.php");
 
 	echo "Hallo ". $_SESSION['Nick']. "<br>\n".
@@ -46,7 +46,7 @@ else 	//#################################################################
 	$_SESSION['CVS'][ "admin/schichtplan.php" ] = "N";	
 	include ("../../includes/funktion_lang.php");
 	include ("../../includes/funktion_schichtplan.php");
-	include ("../../includes/funktion_schichtplan_aray.php");
+	include ("../../includes/funktion_schichtplan_array.php");
 	include ("../../includes/funktion_user.php");
 	?>
 
@@ -81,7 +81,7 @@ else 	//#################################################################
 
 <table border="2" width="650" class="border" cellpadding="2" cellspacing="1">
  
-<!--Ausgabe Spalten überschrift-->
+<!--Ausgabe Spalten ï¿½berschrift-->
 
 	<tr class="contenttopic">
 		<th bgcolor="#E0E0E0">Uhrzeit</th>

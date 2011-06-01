@@ -1,7 +1,7 @@
 <?php
 include ("../../includes/header_start.php");
 
-include ("../../includes/funktion_schichtplan_aray.php");
+include ("../../includes/funktion_schichtplan_array.php");
 
 $SQL = "SELECT *, `ShiftEntry`.`Comment`, `ShiftEntry`.`TID` FROM `Shifts` ".
        "INNER JOIN `ShiftEntry` ".

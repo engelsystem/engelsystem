@@ -2,7 +2,7 @@
 $title = "R&auml;ume";
 $header = "Verwaltung der R&auml;ume";
 include ("../../includes/header.php");
-include ("../../includes/funktion_schichtplan_aray.php");
+include ("../../includes/funktion_schichtplan_array.php");
 
 $Sql = "SELECT * FROM `Room` ORDER BY `Number`, `Name`";
 $Erg = mysql_query($Sql, $con);

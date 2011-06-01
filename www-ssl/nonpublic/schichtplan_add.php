@@ -3,7 +3,7 @@ $title = "Himmel";
 $header = "Schichtpl&auml;ne";
 include ("../../includes/header.php");
 include ("../../includes/funktion_schichtplan.php");
-include ("../../includes/funktion_schichtplan_aray.php");
+include ("../../includes/funktion_schichtplan_array.php");
 include ("../../includes/funktionen.php");
 
 if (isset($_POST["newtext"]) && isset($_POST["SID"]) && isset($_POST["TID"])) {
@@ -21,7 +21,7 @@ if (isset($_POST["newtext"]) && isset($_POST["SID"]) && isset($_POST["TID"])) {
 
 	if( $_SESSION['CVS'][ $TID2Name[$_POST["TID"]] ] == "Y")
 	{
-	// Ueberpruefung, ob der Engel bereits für eine Schicht zu dieser Zeit eingetragen ist
+	// Ueberpruefung, ob der Engel bereits fï¿½r eine Schicht zu dieser Zeit eingetragen ist
 	$SSQL="SELECT * FROM `Shifts`".
 		" INNER JOIN `ShiftEntry` ON `ShiftEntry`.`SID` = `Shifts`.`SID`".
 		" WHERE ((".

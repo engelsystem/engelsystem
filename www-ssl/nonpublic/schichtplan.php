@@ -24,7 +24,7 @@ if( isset($_GET["raum"]))
 include ("../../includes/header.php");
 include ("../../includes/funktionen.php");
 include ("../../includes/funktion_schichtplan.php");
-include ("../../includes/funktion_schichtplan_aray.php");
+include ("../../includes/funktion_schichtplan_array.php");
 ?>
 
 <?PHP echo Get_Text("Hello").$_SESSION['Nick'].",<br>".
@@ -75,7 +75,7 @@ if( !isset($ausdatum) )
 
 if ( !isset($raum) )
 {
-	// Ausgabe wenn kein Raum Ausgewählt:
+	// Ausgabe wenn kein Raum Ausgewï¿½hlt:
 	echo Get_Text("pub_schicht_auswahl_raeume"). "<br><br>\n";
 
 	if( isset($Room))
@@ -105,7 +105,7 @@ if ( !isset($raum) )
 	showEmptyShifts(); 
 } 
 else 
-{ 	// Wenn einraum Ausgewählt ist:
+{ 	// Wenn einraum Ausgewï¿½hlt ist:
 	if( $raum == -1 ) 
 		echo Get_Text("pub_schicht_Anzeige_1").$ausdatum.":<br><br>";
 	elseif( substr( $raum, 0, 1) == ";" )
@@ -120,7 +120,7 @@ else
 	echo "\t<tr class=\"contenttopic\">\n";
 	echo "\t\t<td>start</td>\n";
 
-	//Ausgabe Spalten überschrift
+	//Ausgabe Spalten ï¿½berschrift
 	if( $raum == -1 )
 	{
 		if( isset($Room))
