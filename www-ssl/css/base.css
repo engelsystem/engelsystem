@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+	display: block;
+	width: 100%;
+}
+
+footer {
+	display: block;
+	text-align: center;
+	width: 100%;
+}
+
+footer p {
+	margin: 10px auto;
+}
+
+#logo {
+    background: url('../pic/himmel.png') top left no-repeat;
+    display: block;
+	height: 32px;
+	margin: 10px auto;
+    width: 380px;
+}
+
+#body {
+	margin: 0 5%;
+}
+
+td {
+	padding: 4px;
+}
+
+.menu ul {
+	margin: 0 0 0 20px;
+}

@@ -58,6 +58,10 @@ if( isset($_SESSION['UID']))
 <?php
 }
 ?>
+
+<?php
+include ("funktion_flag.php");
+?>
     </td> 
 
 <!-- ende des menue parts //-->

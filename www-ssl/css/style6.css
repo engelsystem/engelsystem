@@ -6,6 +6,10 @@ body {
 	font-size: small
 }
 
+#logo {
+	background-image: url('../pic/himmel_w.png');
+}
+
 a {
 	text-decoration: none;
 	color: #ff9900
