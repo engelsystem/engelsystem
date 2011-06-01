@@ -6,7 +6,7 @@ $header = "DECT send call";
 include ("includes/header.php");
 
 include ("config/config_IAX.php");
-//include ("../../../camp2011/includes/funktion_modem.php");
+//include ("includes/funktion_modem.php");
 include ("includes/funktion_cron.php");
 
 if (!isset ($_GET["dial"]))

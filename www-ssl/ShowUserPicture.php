@@ -1,51 +1,53 @@
 <?php
-  include "../../camp2011/includes/config.php";
-  include "../../camp2011/includes/error_handler.php";
-  include "../../camp2011/includes/config_db.php";
+require_once ('bootstrap.php');
 
-  if(!isset($_SESSION))
-    session_start();
+include "config/config.php";
+include "includes/error_handler.php";
+include "config/config_db.php";
 
-  include "../../camp2011/includes/secure.php";
+if (!isset ($_SESSION))
+	session_start();
 
-  // Parameter check
-  if(!isset($_GET["UID"]))
-    $_GET["UID"] = "-1";
+include "includes/secure.php";
 
-  $SQL = "SELECT * FROM `UserPicture` WHERE `UID`='" . $_GET["UID"] . "'";
-  $res = mysql_query($SQL, $con);
+// Parameter check
+if (!isset ($_GET["UID"]))
+	$_GET["UID"] = "-1";
 
-  if(mysql_num_rows($res) == 1) {
-    // genuegend rechte
-    if(!isset($_SESSION['UID']) || $_SESSION['UID'] == -1) {
-      header("HTTP/1.0 403 Forbidden");
-      die("403 Forbidden");
-    }
+$SQL = "SELECT * FROM `UserPicture` WHERE `UID`='" . $_GET["UID"] . "'";
+$res = mysql_query($SQL, $con);
 
-    // ist das bild sichtbar?
-    if((mysql_result($res, 0, "show") == "N") AND ($_SESSION['UID']!=$_GET["UID"]) AND ($_SESSION['CVS'][ "admin/UserPicture.php" ] == "N")) {
-      $SQL = "SELECT * FROM `UserPicture` WHERE `UID`='-1'";
-      $res = mysql_query($SQL, $con);
+if (mysql_num_rows($res) == 1) {
+	// genuegend rechte
+	if (!isset ($_SESSION['UID']) || $_SESSION['UID'] == -1) {
+		header("HTTP/1.0 403 Forbidden");
+		die("403 Forbidden");
+	}
 
-      if(mysql_num_rows($res) != 1) {
-        header("HTTP/1.0 404 Not Found");
-        die("404 Not Found");
-      }
-    }
+	// ist das bild sichtbar?
+	if ((mysql_result($res, 0, "show") == "N") AND ($_SESSION['UID'] != $_GET["UID"]) AND ($_SESSION['CVS']["admin/UserPicture.php"] == "N")) {
+		$SQL = "SELECT * FROM `UserPicture` WHERE `UID`='-1'";
+		$res = mysql_query($SQL, $con);
 
-    // bild aus db auslesen
-    $bild = mysql_result($res, 0, "Bild");
+		if (mysql_num_rows($res) != 1) {
+			header("HTTP/1.0 404 Not Found");
+			die("404 Not Found");
+		}
+	}
 
-    // ausgabe bild
-    header("Accept-Ranges: bytes");
-    header("Content-Length: " . strlen($bild));
-    header("Content-type: " . mysql_result($res, 0, "ContentType"));
-    header("Cache-control: public");
-    header("Cache-request-directive: min-fresh = 120");
-    header("Cache-request-directive: max-age = 360");
-    echo $bild;
-  } else {
-    header("HTTP/1.0 404 Not Found");
-    die( "404 Not Found");
-  }
+	// bild aus db auslesen
+	$bild = mysql_result($res, 0, "Bild");
+
+	// ausgabe bild
+	header("Accept-Ranges: bytes");
+	header("Content-Length: " . strlen($bild));
+	header("Content-type: " . mysql_result($res, 0, "ContentType"));
+	header("Cache-control: public");
+	header("Cache-request-directive: min-fresh = 120");
+	header("Cache-request-directive: max-age = 360");
+	echo $bild;
+} else {
+	header("HTTP/1.0 404 Not Found");
+	die("404 Not Found");
+}
 ?>
