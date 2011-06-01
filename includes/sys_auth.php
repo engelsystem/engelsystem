@@ -5,6 +5,14 @@
 function load_auth() {
 	global $user;
 
+	if (!isset ($_SESSION['IP']))
+		$_SESSION['IP'] = $_SERVER['REMOTE_ADDR'];
+
+	if ($_SESSION['IP'] != $_SERVER['REMOTE_ADDR']) {
+		session_destroy();
+		header("Location: " . link_to_page($start));
+	}
+
 	$user = null;
 	if (isset ($_SESSION['uid'])) {
 		$user = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($_SESSION['uid']) . " LIMIT 1");
