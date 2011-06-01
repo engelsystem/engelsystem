@@ -5,6 +5,9 @@ $url = "https://SEDENGELURL";
 // Startverzeichnis des Engelhome
 $ENGEL_ROOT = "/";
 
+// Default-Theme auf der Startseite, 1=style1.css usw.
+$default_theme = 10;
+
 // System disable message, ist ist set is: bages schow only this text
 //$SystemDisableMessage="<H1>This system ist moved to a server in the BCC, you can in the moment only youse it in the in Engel Room</H1>";
 
@@ -16,7 +19,7 @@ $LETZTES_AUSTRAGEN=3;
 
 //Setzt den zu verwendenden Crypto algorismis 
 // mp5 oder crypt
-// achtung crypt schaltet password ändern ab
+// achtung crypt schaltet password ï¿½ndern ab
 $crypt_system="md5";
 //$crypt_system="crypt";
 
@@ -26,7 +29,7 @@ $arch_angels="fnord";
 // timezonen offsett
 $gmdateOffset=3600;
 
-// für Developen 1, sonst = 0
+// fï¿½r Developen 1, sonst = 0
 $debug = 0;
 
 // SSL Cert-KEY
@@ -42,7 +45,7 @@ $Tempdir="./tmp";
 // local timezone
 date_default_timezone_set("Europe/Berlin");
 
-//Pentabarf ConferenzDI für UpdateDB
+//Pentabarf ConferenzDI fï¿½r UpdateDB
 $PentabarfXMLhost = "cccv.pentabarf.org";
 $PentabarfXMLpath = "Xcal/conference/";
 $PentabarfXMLEventID = "31";

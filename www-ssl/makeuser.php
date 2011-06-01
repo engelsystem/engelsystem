@@ -3,10 +3,10 @@
   $header = "";
   $success = "none";
 
-  include "../../camp2011/includes/config.php";
-  include "../../camp2011/includes/header.php";
-  include "../../camp2011/includes/config_db.php";
-  include "../../camp2011/includes/crypt.php";
+  include "../config/config.php";
+  include "../includes/header.php";
+  include "../config/config_db.php";
+  include "../includes/crypt.php";
 
   if(isset($_POST["send"])) {
     $eNick = trim($_POST["Nick"]);
@@ -177,5 +177,5 @@
     Print_Text("makeuser_text3");
   }
 
-  include "../../camp2011/includes/footer.php";
+  include "../includes/footer.php";
 ?>

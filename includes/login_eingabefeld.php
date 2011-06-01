@@ -1,5 +1,5 @@
 <?php
-  include "config.php";
+  include "config/config.php";
 ?>
 
 <form action="<?php echo $url . $ENGEL_ROOT; ?>nonpublic/index.php" method="post">

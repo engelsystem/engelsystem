@@ -1,9 +1,9 @@
 <?php
   ini_set("session.gc_maxlifetime", "65535");
 
-  include "config.php";
+  include "config/config.php";
   include "error_handler.php";
-  include "config_db.php";
+  include "config/config_db.php";
   include "funktion_lang.php";
   include "funktion_faq.php"; // fuer noAnswer() im menu
   include "funktion_menu.php";

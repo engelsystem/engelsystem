@@ -1,22 +1,24 @@
 <?php
-  $title = "Index";
-  $header = "FAQ";
-  include "../../camp2011/includes/header.php";
+require_once ('bootstrap.php');
 
-  $SQL = "SELECT * FROM `FAQ`";
-  $Erg = mysql_query($SQL, $con);
+$title = "FAQ";
+$header = "FAQ";
+include "includes/header.php";
 
-  // anzahl Zeilen
-  $Zeilen  = mysql_num_rows($Erg);
+$SQL = "SELECT * FROM `FAQ`";
+$Erg = mysql_query($SQL, $con);
 
-  for ($n = 0; $n < $Zeilen; $n++) {
-    if (mysql_result($Erg, $n, "Antwort") != "") {
-      echo "<dl>";
-      echo "<dt>" . mysql_result($Erg, $n, "Frage") . "</dt>";
-      echo "<dd>" . mysql_result($Erg, $n, "Antwort") . "</dd>";
-      echo "</dl>";
-    }
-  }
+// anzahl Zeilen
+$Zeilen = mysql_num_rows($Erg);
 
-  include "../../camp2011/includes/footer.php";
+for ($n = 0; $n < $Zeilen; $n++) {
+	if (mysql_result($Erg, $n, "Antwort") != "") {
+		echo "<dl>";
+		echo "<dt>" . mysql_result($Erg, $n, "Frage") . "</dt>";
+		echo "<dd>" . mysql_result($Erg, $n, "Antwort") . "</dd>";
+		echo "</dl>";
+	}
+}
+
+include "includes/footer.php";
 ?>

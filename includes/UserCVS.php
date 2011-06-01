@@ -20,13 +20,14 @@
   }
 
   // pagename ermitteln
-  $Page["Name"] = basename($_SERVER['PHP_SELF']);
+  //$Page["Name"] = basename($_SERVER['PHP_SELF']);
+  $Page["Name"] = str_replace($ENGEL_ROOT, '', $_SERVER['PHP_SELF']);
 
   //recht fuer diese seite auslesen
   if(isset($_SESSION['CVS'][$Page["Name"]]))
     $Page["CVS"] = $_SESSION['CVS'][$Page["Name"]];
   else {
-    echo "SYSTEM ERROR: now right for " . $Page["Name"] . " exists.";
+    echo "SYSTEM ERROR: no right for " . $Page["Name"] . " exists.";
     die;
   }
 

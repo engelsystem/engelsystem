@@ -17,7 +17,9 @@ echo "<!DOCTYPE html>\n";
 <meta name="revisit-after" content="1 days" />
 <script type="text/javascript" src="css/grossbild.js"></script>
 <link rel="stylesheet" type="text/css" href="css/base.css" />
-<link rel="stylesheet" type="text/css" href="css/style<?php echo isset($_SESSION['color']) ? $_SESSION['color'] : "6" ?>.css" />
+<link rel="stylesheet" type="text/css" href="css/style<?php echo isset($_SESSION['color']) ? $_SESSION['color'] : $default_theme ?>.css" />
+<link rel="stylesheet" type="text/css" href="../css/base.css" />
+<link rel="stylesheet" type="text/css" href="../css/style<?php echo isset($_SESSION['color']) ? $_SESSION['color'] : $default_theme ?>.css" />
 
 <?php
 

@@ -100,7 +100,7 @@
   function send_message(&$message)
   {
     chdir(dirname(__FILE__));
-    require_once('./config_jabber.php');
+    require_once('../config/config_jabber.php');
 
     if (isset($jabber_recipient) && count($jabber_recipient)) {
       $jabber = new Jabber($server, $port, $username, $password, $resource);

@@ -1,6 +1,6 @@
 <?php
   function PassCrypt($passwort) {
-    include "config.php";
+    include "../../config/config.php";
 
     switch ($crypt_system) {
       case "crypt":
