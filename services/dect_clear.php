@@ -1,25 +1,19 @@
-<?PHP
-// löscht alle eintrag in der telefonanlage, indem jede nummer einzähln gelöscht wir (#10<NUMBER>)
+<?php
+  include "../includes/db.php";
+  include "../includes/config.php";
+  include "../includes/funktion_modem.php";
 
-include ("../includes/db.php");
-include ("../includes/config.php");
-include ("../includes/funktion_modem.php");
+  $SQL = "SELECT DECT FROM `User`;";
+  $Erg = mysql_query($SQL, $con);
 
+  echo mysql_error($con);
 
-$SQL =  "SELECT DECT FROM `User`;";
+  for($i=0; $i < mysql_num_rows($Erg); $i++) {
+    $Number = "#10" . mysql_result($Erg, $i, "DECT");
 
-$Erg = mysql_query($SQL, $con);
+    if(strlen($Number) == 7)
+      DialNumber($Number);
+  }
 
-echo mysql_error($con);
-
-for( $i=0; $i<mysql_num_rows($Erg); $i++)
-{ 
- 	$Number = "#10". mysql_result($Erg, $i, "DECT");
-	if( strlen($Number)==7)
-		DialNumber(  $Number);
-}
-
-return 0;
-
+  return 0;
 ?>
-

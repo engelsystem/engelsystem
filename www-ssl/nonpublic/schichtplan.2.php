@@ -6,17 +6,17 @@ include ("../../../camp2011/includes/funktion_schichtplan_aray.php");
 if( isset ($Room))
     foreach( $Room as $RoomEntry  )
     {
-	if(isset($ausdatum))
-	  echo "\t<li><a href='./schichtplan.php?ausdatum=$ausdatum&raum=". $RoomEntry["RID"]. "'>".
-	       $RoomEntry["Name"]. "</a></li>\n";
-	else
-	  echo "\t<li><a href='./schichtplan.php?raum=". $RoomEntry["RID"]. "'>".
-	       $RoomEntry["Name"]. "</a></li>\n";
+  if(isset($ausdatum))
+    echo "\t<li><a href='./schichtplan.php?ausdatum=$ausdatum&raum=". $RoomEntry["RID"]. "'>".
+         $RoomEntry["Name"]. "</a></li>\n";
+  else
+    echo "\t<li><a href='./schichtplan.php?raum=". $RoomEntry["RID"]. "'>".
+         $RoomEntry["Name"]. "</a></li>\n";
     }
-echo "<br>";
+echo "<br />";
 if(isset($ausdatum))
-	echo "<li><a href='./schichtplan.php?ausdatum=$ausdatum&raum=-1'>alle</a></li>";
+  echo "<li><a href='./schichtplan.php?ausdatum=$ausdatum&raum=-1'>alle</a></li>";
 else
-	echo "<li><a href='./schichtplan.php?raum=-1'>alle</a></li>";
+  echo "<li><a href='./schichtplan.php?raum=-1'>alle</a></li>";
 ?>
 

@@ -18,8 +18,8 @@
 
 DROP TABLE IF EXISTS `ChangeLog`;
 CREATE TABLE IF NOT EXISTS `ChangeLog` (
-  `Time` timestamp(14) NOT NULL,
-  `UID` int(11) NOT NULL default '0',
+  `Time` timestamp NOT NULL,
+  `UID` int(11) NOT NULL default 0,
   `Commend` text NOT NULL,
   `SQLCommad` text NOT NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

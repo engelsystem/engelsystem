@@ -1,4 +1,3 @@
-<?PHP
-header("Location: https://".$_SERVER['HTTP_HOST']."/");
+<?php
+  header("Location: https://" . $_SERVER['HTTP_HOST'] . "/");
 ?>
-

@@ -27,22 +27,22 @@ echo "X-WR-CALNAME;VALUE=TEXT:". "Himmel - Schichtplan\n";
 
 for( $i=0; $i<mysql_num_rows( $erg ); $i++ ) 
 {
-	echo "BEGIN:VEVENT\n";
-	echo "UID:". md5(mysql_result( $erg, $i, "Man" ). mysql_result( $erg, $i, "DateS" ))."\n";
-	echo "METHOD:PUBLISH\n";
-	echo "DTSTART;TZID=Europe/Berlin:". date( 'Ymd\THis', strtotime( mysql_result( $erg, $i, "DateS" ) ) ). "\n";
-	echo "DTEND;TZID=Europe/Berlin:". date( 'Ymd\THis', strtotime( mysql_result( $erg, $i, "DateE" ) ) ). "\n";
-	echo "SUMMARY:". str_replace( ',', '\\,',mysql_result( $erg, $i, "Man" ) ). "\n";
-	echo "CLASS:PUBLIC\n";
-	echo "STATUS:CONFIRMED\n";
-	echo "URL:". $url. $ENGEL_ROOT. "nonpublic/myschichtplan.php\n";
-	echo "LOCATION:". $RoomID[mysql_result( $erg, $i, "RID" )]. "\n";
-	echo "BEGIN:VALARM\n";
-	echo "TRIGGER;VALUE=DURATION:-PT5M\n";
-	echo "DESCRIPTION:". str_replace( ',', '\\,',mysql_result( $erg, $i, "Man" ) ). "\n";
-	echo "ACTION:DISPLAY\n";
-	echo "END:VALARM\n";
-	echo "END:VEVENT\n";
+  echo "BEGIN:VEVENT\n";
+  echo "UID:". md5(mysql_result( $erg, $i, "Man" ). mysql_result( $erg, $i, "DateS" ))."\n";
+  echo "METHOD:PUBLISH\n";
+  echo "DTSTART;TZID=Europe/Berlin:". date( 'Ymd\THis', strtotime( mysql_result( $erg, $i, "DateS" ) ) ). "\n";
+  echo "DTEND;TZID=Europe/Berlin:". date( 'Ymd\THis', strtotime( mysql_result( $erg, $i, "DateE" ) ) ). "\n";
+  echo "SUMMARY:". str_replace( ',', '\\,',mysql_result( $erg, $i, "Man" ) ). "\n";
+  echo "CLASS:PUBLIC\n";
+  echo "STATUS:CONFIRMED\n";
+  echo "URL:". $url. $ENGEL_ROOT. "nonpublic/myschichtplan.php\n";
+  echo "LOCATION:". $RoomID[mysql_result( $erg, $i, "RID" )]. "\n";
+  echo "BEGIN:VALARM\n";
+  echo "TRIGGER;VALUE=DURATION:-PT5M\n";
+  echo "DESCRIPTION:". str_replace( ',', '\\,',mysql_result( $erg, $i, "Man" ) ). "\n";
+  echo "ACTION:DISPLAY\n";
+  echo "END:VALARM\n";
+  echo "END:VEVENT\n";
 }
 echo "END:VCALENDAR\n";
 

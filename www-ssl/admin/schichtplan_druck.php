@@ -6,49 +6,49 @@ $submenus = 1;
 
 if (!IsSet($_GET["action"])) 
 {
-	include ("../../../camp2011/includes/header.php");
-	include ("../../../camp2011/includes/funktionen.php");
-	include ("../../../camp2011/includes/funktion_schichtplan_aray.php");
-	include ("../../../camp2011/includes/funktion_schichtplan.php");
+  include ("../../../camp2011/includes/header.php");
+  include ("../../../camp2011/includes/funktionen.php");
+  include ("../../../camp2011/includes/funktion_schichtplan_aray.php");
+  include ("../../../camp2011/includes/funktion_schichtplan.php");
 
-	echo "Hallo ". $_SESSION['Nick']. "<br>\n".
-		"auf dieser Seite kannst du dir den Schichtplan in einer Druckansicht generieren lassen. W&auml;hle hierf&uuml;r ein Datum und den Raum:\n".
-		"<br>\n";
-	
-	foreach( $VeranstaltungsTage as $k => $v)
-	{
-	
-		$res = mysql_query("SELECT Name, RID FROM `Room` WHERE `show`!='N' ORDER BY `Name`;",$con);
-		for ($i = 0; $i < mysql_num_rows($res); $i++) 
-		{
-			$Tag = $VeranstaltungsTage[$k];
-			$RID = mysql_result($res,$i,"RID");
-			$Rname = mysql_result($res, $i, "Name");
-			echo "\t<a href=\"./schichtplan_druck.php?action=1&Raum=$RID&ausdatum=$Tag\" target=\"_blank\">$Tag $Rname</a><br>\n";
-		}
-		echo "<br>\n";
-	}
-	echo "<br><br>";
-	
-	include ("../../../camp2011/includes/footer.php");
+  echo "Hallo ". $_SESSION['Nick']. "<br />\n".
+    "auf dieser Seite kannst du dir den Schichtplan in einer Druckansicht generieren lassen. W&auml;hle hierf&uuml;r ein Datum und den Raum:\n".
+    "<br />\n";
+  
+  foreach( $VeranstaltungsTage as $k => $v)
+  {
+  
+    $res = mysql_query("SELECT Name, RID FROM `Room` WHERE `show`!='N' ORDER BY `Name`;",$con);
+    for ($i = 0; $i < mysql_num_rows($res); $i++) 
+    {
+      $Tag = $VeranstaltungsTage[$k];
+      $RID = mysql_result($res,$i,"RID");
+      $Rname = mysql_result($res, $i, "Name");
+      echo "\t<a href=\"./schichtplan_druck.php?action=1&Raum=$RID&ausdatum=$Tag\" target=\"_blank\">$Tag $Rname</a><br />\n";
+    }
+    echo "<br />\n";
+  }
+  echo "<br /><br />";
+  
+  include ("../../../camp2011/includes/footer.php");
 } 
-else 	//#################################################################
+else   //#################################################################
 {
    if (IsSet($_GET["Raum"]) AND IsSet($_GET["ausdatum"])) 
-	{
-   	$Raum = $_GET["Raum"];
-	$ausdatum = $_GET["ausdatum"];
+  {
+     $Raum = $_GET["Raum"];
+  $ausdatum = $_GET["ausdatum"];
 
-	include ("../../../camp2011/includes/config_db.php");
-	include ("../../../camp2011/includes/config.php");
-	include ("../../../camp2011/includes/secure.php");
-	//var wird nur gesetzt immer edit auszublenden, achtung sesion darf nicht gestart sein !!!
-	$_SESSION['CVS'][ "admin/schichtplan.php" ] = "N";	
-	include ("../../../camp2011/includes/funktion_lang.php");
-	include ("../../../camp2011/includes/funktion_schichtplan.php");
-	include ("../../../camp2011/includes/funktion_schichtplan_aray.php");
-	include ("../../../camp2011/includes/funktion_user.php");
-	?>
+  include ("../../../camp2011/includes/config_db.php");
+  include ("../../../camp2011/includes/config.php");
+  include ("../../../camp2011/includes/secure.php");
+  //var wird nur gesetzt immer edit auszublenden, achtung sesion darf nicht gestart sein !!!
+  $_SESSION['CVS'][ "admin/schichtplan.php" ] = "N";  
+  include ("../../../camp2011/includes/funktion_lang.php");
+  include ("../../../camp2011/includes/funktion_schichtplan.php");
+  include ("../../../camp2011/includes/funktion_schichtplan_aray.php");
+  include ("../../../camp2011/includes/funktion_user.php");
+  ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -67,55 +67,55 @@ else 	//#################################################################
 <h1>Schichtplan</h1>
 
 <table>
-	<tr>
-		<td width="250" align="left">
-			<span style="font-weight:bold;font-size:100%">Datum:</span> 
-			<span style="font-weight:bold;font-size:200%"><?PHP echo $ausdatum; ?></span>
-		</td>
-		<td width="350" align="right">
-			<span style="font-weight:bold;font-size:100%">Raum:</span>
-			<span style="font-weight:bold;font-size:200%"><?PHP echo $RoomID[$Raum]; ?> </span>
-		</td>
-	</tr>
+  <tr>
+    <td width="250" align="left">
+      <span style="font-weight:bold;font-size:100%">Datum:</span> 
+      <span style="font-weight:bold;font-size:200%"><?php echo $ausdatum; ?></span>
+    </td>
+    <td width="350" align="right">
+      <span style="font-weight:bold;font-size:100%">Raum:</span>
+      <span style="font-weight:bold;font-size:200%"><?php echo $RoomID[$Raum]; ?> </span>
+    </td>
+  </tr>
 </table>
 
 <table border="2" width="650" class="border" cellpadding="2" cellspacing="1">
  
 <!--Ausgabe Spalten überschrift-->
 
-	<tr class="contenttopic">
-		<th bgcolor="#E0E0E0">Uhrzeit</th>
-		<th bgcolor="#E0E0E0">Schichtplanbelegung</th>
-	</tr>
-<?PHP
+  <tr class="contenttopic">
+    <th bgcolor="#E0E0E0">Uhrzeit</th>
+    <th bgcolor="#E0E0E0">Schichtplanbelegung</th>
+  </tr>
+<?php
 
 //Zeit Ausgeben
 for( $i = 0; $i < 24; $i++ )
-	for( $j = 0; $j < $GlobalZeileProStunde; $j++)
-	{
-		$Spalten[$i * $GlobalZeileProStunde + $j] =
-			"\t<tr class=\"content\">\n";
-		if( $j==0)
-		{
-			$Spalten[$i * $GlobalZeileProStunde + $j].=
-				"\t\t<td rowspan=\"$GlobalZeileProStunde\">";
-			if( $i < 10 )
-				$Spalten[$i * $GlobalZeileProStunde + $j].= "0";
-			$Spalten[$i * $GlobalZeileProStunde + $j].= "$i:";
-			if( ( ($j*60) / $GlobalZeileProStunde) < 10 )
-				$Spalten[$i * $GlobalZeileProStunde + $j].= "0";
-			$Spalten[$i * $GlobalZeileProStunde + $j].=
-				( ($j*60) / $GlobalZeileProStunde). "</td>\n";
-			
-		}
-	}
+  for( $j = 0; $j < $GlobalZeileProStunde; $j++)
+  {
+    $Spalten[$i * $GlobalZeileProStunde + $j] =
+      "\t<tr class=\"content\">\n";
+    if( $j==0)
+    {
+      $Spalten[$i * $GlobalZeileProStunde + $j].=
+        "\t\t<td rowspan=\"$GlobalZeileProStunde\">";
+      if( $i < 10 )
+        $Spalten[$i * $GlobalZeileProStunde + $j].= "0";
+      $Spalten[$i * $GlobalZeileProStunde + $j].= "$i:";
+      if( ( ($j*60) / $GlobalZeileProStunde) < 10 )
+        $Spalten[$i * $GlobalZeileProStunde + $j].= "0";
+      $Spalten[$i * $GlobalZeileProStunde + $j].=
+        ( ($j*60) / $GlobalZeileProStunde). "</td>\n";
+      
+    }
+  }
 
 
 CreateRoomShifts( $Raum );
 
 
 // Ausgabe Zeilen
-	for ($i = 0; $i < (24 * $GlobalZeileProStunde); $i++) echo $Spalten[$i];
+  for ($i = 0; $i < (24 * $GlobalZeileProStunde); $i++) echo $Spalten[$i];
 // Ende
 echo "</table>\n";
 

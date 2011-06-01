@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 $title = "ChangeLog";
 $header = "Datenbank-Auszug";
@@ -14,12 +14,12 @@ echo "<tr>\n\t<th>Time</th>\n\t<th>User</th>\n\t<th>Commend</th>\n\t<th>SQL Comm
 
 for ($n = 0 ; $n < mysql_num_rows($Erg) ; $n++)
 {
-	echo "<tr>\n";
-	echo "\t<td>". mysql_result( $Erg, $n, "Time"). "</td>\n";
-	echo "\t<td>". UID2Nick(mysql_result( $Erg, $n, "UID")). displayavatar(mysql_result( $Erg, $n, "UID")). "</td>\n";
-	echo "\t<td>". mysql_result( $Erg, $n, "Commend"). "</td>\n";
-	echo "\t<td>". mysql_result( $Erg, $n, "SQLCommad"). "</td>\n";
-	echo "</tr>\n";
+  echo "<tr>\n";
+  echo "\t<td>". mysql_result( $Erg, $n, "Time"). "</td>\n";
+  echo "\t<td>". UID2Nick(mysql_result( $Erg, $n, "UID")). displayavatar(mysql_result( $Erg, $n, "UID")). "</td>\n";
+  echo "\t<td>". mysql_result( $Erg, $n, "Commend"). "</td>\n";
+  echo "\t<td>". mysql_result( $Erg, $n, "SQLCommad"). "</td>\n";
+  echo "</tr>\n";
 }
 
 echo "</table>\n";

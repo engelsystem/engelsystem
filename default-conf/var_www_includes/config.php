@@ -1,4 +1,4 @@
-<?PHP
+<?php
 // Adresse des Webservers
 $url = "https://SEDENGELURL";
 
@@ -27,11 +27,11 @@ $arch_angels="fnord";
 $gmdateOffset=3600;
 
 // für Developen 1, sonst = 0
-$DEBUG = 0;
+$debug = 0;
 
 // SSL Cert-KEY
 $show_SSLCERT = "MD5:<br>MD5SED<br>\n".
-		"SHA1:<br>SHA1SED";
+    "SHA1:<br>SHA1SED";
 
 //globale const. fuer schischtplan
 $GlobalZeileProStunde = 4;

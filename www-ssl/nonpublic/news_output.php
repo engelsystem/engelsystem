@@ -3,20 +3,20 @@
 if( isset( $_POST["text"]) && isset( $_POST["betreff"]) && IsSet( $_POST["date"]) ) 
 {
   if( !isset( $_POST["treffen"])) 
-  	$_POST["treffen"] = 0;
+    $_POST["treffen"] = 0;
   $SQL = "INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`) ".
-			"VALUES ('". $_POST["date"]. "', '". $_POST["betreff"]. "', '". $_POST["text"]. "', '".$_SESSION['UID'].
-			"', '". $_POST["treffen"]. "');";
+      "VALUES ('". $_POST["date"]. "', '". $_POST["betreff"]. "', '". $_POST["text"]. "', '".$_SESSION['UID'].
+      "', '". $_POST["treffen"]. "');";
   $Erg = mysql_query($SQL, $con);
   if ($Erg == 1)
-  	Print_Text(4);
+    Print_Text(4);
 }
 
 if( !IsSet( $_GET["news_begin"]))
-	$_GET["news_begin"]=0;
-	
+  $_GET["news_begin"]=0;
+  
 if( !IsSet( $_GET["DISPLAY_NEWS"]))
-	$_GET["DISPLAY_NEWS"] = 5;
+  $_GET["DISPLAY_NEWS"] = 5;
    
 $SQL = "SELECT * FROM `News` ORDER BY `ID` DESC LIMIT ". intval($_GET["news_begin"]). ", ". intval($_GET["DISPLAY_NEWS"]);
 $Erg = mysql_query($SQL, $con);
@@ -28,17 +28,17 @@ for ($n = 0 ; $n < $news_rows ; $n++)
 {
 
   if (mysql_result($Erg, $n, "Treffen") == 0) 
-  	echo "<p class='question'>";
+    echo "<p class='question'>";
   else 
-	echo "<p class='engeltreffen'>";
+  echo "<p class='engeltreffen'>";
   
   echo "<u>". ReplaceSmilies(mysql_result($Erg, $n, "Betreff")) ."</u>\n";
 
   // Schow Admin Page
   if( $_SESSION['CVS'][ "admin/news.php" ] == "Y" )
-	echo " <a href=\"./../admin/news.php?action=change&date=". mysql_result($Erg, $n, "Datum"). "\">[edit]</a><br>\n\t\t";
+  echo " <a href=\"./../admin/news.php?action=change&date=". mysql_result($Erg, $n, "Datum"). "\">[edit]</a><br />\n\t\t";
 
-  echo "<br>&nbsp; &nbsp;<font size=1>".mysql_result($Erg, $n, "Datum").", ";
+  echo "<br />&nbsp; &nbsp;<font size=1>".mysql_result($Erg, $n, "Datum").", ";
   echo UID2Nick(mysql_result($Erg, $n, "UID"))."</font>";
   // avatar anzeigen?
   echo DisplayAvatar (mysql_result($Erg, $n, "UID"));
@@ -59,17 +59,17 @@ $dis_rows =  round (($rows / $DISPLAY_NEWS)+0.5);
 Print_Text(5);
 
 for ($i=1; $i <= $dis_rows; $i++) {
-	if (!((($i * $DISPLAY_NEWS) - $_GET["news_begin"]) == $DISPLAY_NEWS)) {
-		echo "<a href=\"./news.php?news_begin=".(($i*$DISPLAY_NEWS) - $DISPLAY_NEWS - 1)."\">$i</a>&nbsp; ";
-	} else {
-		echo "$i&nbsp; ";
-	}
+  if (!((($i * $DISPLAY_NEWS) - $_GET["news_begin"]) == $DISPLAY_NEWS)) {
+    echo "<a href=\"./news.php?news_begin=".(($i*$DISPLAY_NEWS) - $DISPLAY_NEWS - 1)."\">$i</a>&nbsp; ";
+  } else {
+    echo "$i&nbsp; ";
+  }
 }
 echo "</div>";
 
 ?>
 
-<br>
+<br />
 <hr>
 <h4><?PHP Print_Text(6); ?></h4>
 <a name="Neu">&nbsp;</a>
@@ -101,6 +101,6 @@ if ($_SESSION['CVS']["nonpublic/newsAddMeting"] == "Y") {
 }
 ?>
 </table>
-<br>
+<br />
 <input type="submit" value="<?PHP Print_Text("save"); ?>">
 </form>
