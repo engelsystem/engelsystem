@@ -81,8 +81,16 @@ nav {
     padding: 10px;
 }
 
+p {
+    padding: 0 0 10px 0;
+}
+
+#menu p {
+    padding: 4px;
+}
+
 a.sprache img {
-    margin: 5px;
+    margin-right: 5px;
 }
 
 .background {
@@ -95,4 +103,12 @@ a.sprache img {
 
 .content {
     background: #fff;
+}
+
+.error {
+	color: #f00;
+}
+
+.success {
+	color: #090;
 }

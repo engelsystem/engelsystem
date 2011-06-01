@@ -1,0 +1,72 @@
+<?php
+function page_link_to($page) {
+	return '?p=' . $page;
+}
+
+function make_navigation() {
+	global $p;
+	global $privileges;
+	$menu_items = $privileges;
+	$menu_items[] = "faq";
+
+	$menu = '<nav class="container"><h4>' . Get_Text('/') . '</h4><ul class="content">';
+	foreach ($menu_items as $item)
+		$menu .= '<li' . ($item == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($item) . '">' . Get_Text($item) . '</a></li>';
+	$menu .= '</ul></nav>';
+	return $menu;
+}
+
+function make_menu() {
+	return make_navigation() . make_onlineusers() . make_langselect();
+}
+
+function make_onlineusers() {
+	global $privileges, $user;
+	$html = '<nav class="container"><h4>Engel online</h4>';
+
+	$query = "SELECT UID, Nick, lastLogIn " . "FROM User " . "WHERE (`lastLogIn` > '" . (time() - 60 * 60) . "') " . "ORDER BY lastLogIn DESC";
+	$users = sql_select($query);
+
+	if (count($users) > 0) {
+		$html .= "<ul class=\"content\">";
+
+		foreach ($users as $online_user) {
+			if (isset ($user) && $online_user['UID'] == $user['UID'])
+				continue;
+
+			$html .= "<li>";
+
+			if (isset ($user))
+				$html .= DisplayAvatar($online_user['UID']);
+
+			// Show Admin Page
+			if (in_array("admin_user_edit", $privileges)) {
+				$html .= '<a href="admin/userChangeNormal.php?enterUID=' . $online_user['UID'] . '&Type=Normal">' . $online_user['Nick'] . '</a>';
+			} else {
+				$html .= $online_user['Nick'];
+			}
+			$last_action = time() - $online_user['lastLogIn'];
+
+			$html .= " " . date("i:s", $last_action);
+			$html .= "</li>\n";
+		}
+
+		$html .= "</ul>";
+	} else {
+		$html .= '<p class="content">Nobody...</p>';
+	}
+	$html .= '</nav>';
+	return $html;
+}
+
+function make_langselect() {
+	if (strpos($_SERVER["REQUEST_URI"], "?") > 0)
+		$URL = $_SERVER["REQUEST_URI"] . "&SetLanguage=";
+	else
+		$URL = $_SERVER["REQUEST_URI"] . "?SetLanguage=";
+
+	$html = '<p class="content"><a class="sprache" href="' . $URL . 'DE"><img src="pic/flag/de.png" alt="DE" title="Deutsch"></a>';
+	$html .= '<a class="sprache" href="' . $URL . 'EN"><img src="pic/flag/en.png" alt="EN" title="English"></a></p>';
+	return '<nav class="container"><h4>' . Get_Text("Sprache") . '</h4>' . $html . '</nav>';
+}
+?>

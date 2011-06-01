@@ -16,7 +16,6 @@ function Get_Text($TextID, $NoError = false) {
 		return (@ mysql_result($Erg, 0, "Text"));
 	elseif ($NoError && !$debug) return "";
 	else {
-		array_push($error_messages, "Get_Text, '$TextID' found " . mysql_num_rows($Erg) . "x in Sprache Database Table for Language (" . $_SESSION['Sprache'] . ")\n");
 		return "Error Data, '$TextID' found " . mysql_num_rows($Erg) . "x";
 	}
 }
