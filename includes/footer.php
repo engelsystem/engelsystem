@@ -25,7 +25,7 @@ if ($_SESSION['Menu'] == "R")
 <footer>
 	<p>
 		&copy; copyleft - <a href="mailto:erzengel@lists.ccc.de">Kontakt</a><br />
-		This is hell. Really.
+		This is hell. Temporarily.
 	</p>
 </footer>
 
