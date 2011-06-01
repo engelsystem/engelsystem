@@ -10,7 +10,7 @@ include ("includes/crypt.php");
 session_start(); // alte Session - falls vorhanden - wiederherstellen...
 
 function LoginOK() {
-	include ("../../config/config.php");
+	include ("config/config.php");
 	header("HTTP/1.1 302 Moved Temporarily");
 	header("Location: " . $url . $ENGEL_ROOT . "nonpublic/news.php");
 }

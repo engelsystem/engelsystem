@@ -7,7 +7,7 @@ function ShowMenu($MenuName) {
 	$Gefunden = false;
 
 	// Ueberschift
-	$Text = "<h4 class=\"menu\">" . Get_Text("$MenuName/") . "</h4><ul>";
+	$Text = "";
 
 	// Eintraege
 	foreach ($_SESSION['CVS'] as $Key => $Entry)
@@ -37,6 +37,6 @@ function ShowMenu($MenuName) {
 				}
 			}
 	if ($Gefunden)
-		echo $MenueTableStart . $Text . $MenueTableEnd;
+		echo '<nav><h4>' . Get_Text("$MenuName/") . '</h4><ul>' . $Text . '</ul></nav>';
 } //function ShowMenue
 ?>

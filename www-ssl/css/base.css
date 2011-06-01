@@ -4,6 +4,7 @@
 }
 
 body {
+	font-size: 14px;
 }
 
 header {
@@ -13,6 +14,7 @@ header {
 
 footer {
 	display: block;
+	font-size: 12px;
 	text-align: center;
 	width: 100%;
 }
@@ -41,10 +43,18 @@ dt {
 	font-weight: bold;
 }
 
+dd {
+	margin-left: 20px;
+}
+
 h4 {
 	padding: 0 4px;
 }
 
 ul {
 	margin: 0 0 0 20px;
+}
+
+a.sprache img {
+	margin: 5px;
 }
