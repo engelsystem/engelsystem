@@ -1,7 +1,8 @@
 <?php
-include ("../../../camp2011/includes/header.php");
+require_once ('../bootstrap.php');
 
+include ("includes/header.php");
 
-include ("../../../camp2011/includes/footer.php");
+include ("includes/footer.php");
 ?>
 
