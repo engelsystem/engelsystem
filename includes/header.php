@@ -57,8 +57,8 @@ if (isset ($_SESSION['CVS']["nonpublic/messages.php"])) {
 	}
 }
 ?>
-<table id="body" width="90%" align="center" border="0" cellpadding="7" cellspacing="0">
-  <tr>
+<div id="body">
+<div id="menu">
 <?php
 
 
@@ -68,27 +68,13 @@ if (!isset ($_SESSION['Menu']))
 if ($_SESSION['Menu'] == "L")
 	include ("menu.php");
 ?>
-
-    <td valign="top" align="center">
-<table border="0" width="100%" align="center" class="border" cellpadding="5" cellspacing="1">
-  <tr class="contenttopic">
-    <td>
+</div>
+<div id="content">
 <?php
 
 
-echo "<a name=\"" . $header . "\" class=\"contenttopic\">";
-if (strlen($header) == 0)
-	echo "\n<b>" . Get_Text($Page["Name"]) . "</b></a>\n";
-else
-	echo "\n<b>$header</b></a>\n";
-?>
-    </td>
-  </tr>
-  <tr class="content">
-     <td>
-<br />
-<?php
-
+echo '<h1>' . (strlen($header) == 0 ? Get_Text($Page["Name"]) : $header) . '</h1>';
+echo '<article>';
 
 if (isset ($_SESSION['UID'])) {
 	if (isset ($_SESSION['oldurl']))

@@ -4,57 +4,92 @@
 }
 
 body {
-	font-size: 14px;
+    background: #f0f0f0;
+    font-family: Arial;
+    sans-serif;
+    font-size:
+    14px;
 }
 
 header {
-	display: block;
-	width: 100%;
+    display: block;
+    width: 100%;
 }
 
 footer {
-	display: block;
-	font-size: 12px;
-	text-align: center;
-	width: 100%;
+    clear: both;
+    display: block;
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
 }
 
 footer p {
-	margin: 10px auto;
+    margin: 10px auto;
 }
 
 #logo {
     background: url('../pic/himmel.png') top left no-repeat;
     display: block;
-	height: 32px;
-	margin: 10px auto;
+    height: 32px;
+    margin: 10px auto;
     width: 380px;
 }
 
 #body {
-	margin: 0 5%;
+    margin: 0 5%;
+}
+
+#menu {
+    float: left;
+    width: 200px;
+}
+
+#content {
+    margin-left: 200px;
+}
+
+a {
+    color: #000;
 }
 
 td, dt, dd {
-	padding: 4px;
+    padding: 4px;
 }
 
 dt {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 dd {
-	margin-left: 20px;
+    margin-left: 20px;
 }
 
-h4 {
-	padding: 0 4px;
+h1, h4 {
+    font-size: 16px;
+    padding: 0 4px;
 }
 
 ul {
-	margin: 0 0 0 20px;
+    padding: 5px 0 5px 20px;
+}
+
+nav {
+    margin: 0 10px 10px 0;
+}
+
+nav, #content {
+    border: 1px solid #888;
+}
+
+#content article {
+    padding: 10px;
+}
+
+nav ul, nav p, #content article {
+    background: #fff;
 }
 
 a.sprache img {
-	margin: 5px;
+    margin: 5px;
 }

@@ -1,27 +1,7 @@
-<!-- anfang des footers //-->
-    <br />
-      <p align="center">
-        <?php
-if (IsSet ($_SESSION['oldurl']))
-	echo "<a href=\"" . $_SESSION["oldurl"] . "\">" . Get_Text("back") . "</a>&nbsp;";
-?>
-        <a href="#top"><?php echo Get_Text("top"); ?></a>
-      </p>
-    </td>
-  </tr>
-</table>
-</td>
+</article>
+</div>
+</div>
 
-<!-- anfang des menue parts //-->
-<?php
-
-
-if ($_SESSION['Menu'] == "R")
-	include ("menu.php");
-?>
-
-<!-- ende des menue parts //-->
-</table>
 <footer>
 	<p>
 		&copy; copyleft | <a href="mailto:erzengel@lists.ccc.de">Kontakt</a> | <a href="<?php echo $ENGEL_ROOT; ?>credits.php">Credits</a><br />
@@ -30,8 +10,6 @@ if ($_SESSION['Menu'] == "R")
 </footer>
 
 <?php
-
-
 include ("funktion_counter.php");
 mysql_close($con);
 ?>
