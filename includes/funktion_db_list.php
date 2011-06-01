@@ -38,7 +38,7 @@ function funktion_db_element_list_2row( $TopicName, $SQL)
 
   echo "<table class=\"border\" cellpadding=\"2\" cellspacing=\"1\">\n";
   echo "<caption>$TopicName</caption>";
-#  echo "\t<tr class=\"contenttopic\"> <td><h1>$TopicName</h1></td> </tr>\n";
+#  echo "<tr class=\"contenttopic\"> <td><h1>$TopicName</h1></td> </tr>\n";
 
   $Erg = mysql_query($SQL, $con);
   echo mysql_error($con);

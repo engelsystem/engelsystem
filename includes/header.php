@@ -3,7 +3,7 @@ include "header_start.php";
 
 echo "<!DOCTYPE html>\n";
 ?>
-<html> 
+<html>
 <head>
 
 <title><?php echo $title; ?> - Engelsystem</title>
@@ -22,8 +22,6 @@ echo "<!DOCTYPE html>\n";
 <link rel="stylesheet" type="text/css" href="../css/style<?php echo isset($_SESSION['color']) ? $_SESSION['color'] : $default_theme ?>.css" />
 
 <?php
-
-
 if (isset ($reload)) {
 	if ($reload == "")
 		$reload = 3330;
@@ -93,9 +91,9 @@ if ($Page["CVS"] != "Y") {
 	echo "Du besitzt kein Rechte f&uuml;r diesen Bereich.<br />\n";
 
 	if (isset ($_SESSION['oldurl']))
-		echo "<a href=\"" . $_SESSION["oldurl"] . "\">" . Get_Text("back") . "</a> geht's zur&uuml;ck...\n";
+		echo "<a href=\"" . $_SESSION["oldurl"] . "\">hier</a> gehts zur&uuml;ck...\n";
 	else
-		echo "<a href=\"" . $url . $ENGEL_ROOT . "\">" . Get_Text("back") . "</a> geht's zur&uuml;ck...\n";
+		echo "<a href=\"" . $url . $ENGEL_ROOT . "\">hier</a> geht's zur&uuml;ck...\n";
 
 	exit ();
 }

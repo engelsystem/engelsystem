@@ -1,6 +1,4 @@
 <?php
-
-
 // path and include settings
 $rootpath = str_replace(DIRECTORY_SEPARATOR . 'bootstrap.php', '', __FILE__);
 define('ROOTPATH', $rootpath);

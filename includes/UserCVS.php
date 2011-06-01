@@ -20,8 +20,8 @@
   }
 
   // pagename ermitteln
-  //$Page["Name"] = basename($_SERVER['PHP_SELF']);
-  $Page["Name"] = str_replace($ENGEL_ROOT, '', $_SERVER['PHP_SELF']);
+  $Page["Name"] = basename($_SERVER['PHP_SELF']);
+//  $Page["Name"] = str_replace($ENGEL_ROOT, '', $_SERVER['PHP_SELF']);
 
   //recht fuer diese seite auslesen
   if(isset($_SESSION['CVS'][$Page["Name"]]))

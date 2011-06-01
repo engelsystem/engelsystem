@@ -49,10 +49,10 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
 
   $Out.= "<table border=\"0\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" frame=\"void\">\n";
 
-  $Out.= "\t\t\t<colgroup span=\"2\"  align=\"left\" valign=\"center\">\n".
-    "\t\t\t\t<col width=\"45%\">\n".
-    "\t\t\t\t<col width=\"*\">\n".
-    "\t\t\t\t</colgroup>\n";
+  $Out.= "<colgroup span=\"2\"  align=\"left\" valign=\"center\">\n".
+    "<col width=\"45%\">\n".
+    "<col width=\"*\">\n".
+    "</colgroup>\n";
 
   ///////////////////////////////////////////////////////////////////
   // SQL abfrage für die benötigten schichten
@@ -94,10 +94,10 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
   if( isset($Temp) && count($Temp) )
     foreach( $Temp as $TempEntry => $TempValue )
     {
-      $Out.= "\t\t\t<tr>\n";
+      $Out.= "<tr>\n";
     
     // ausgabe EngelType
-    $Out.= "\t\t\t\t<td>". $EngelTypeID[ $TempValue["TID"] ];
+    $Out.= "<td>". $EngelTypeID[ $TempValue["TID"] ];
     
     // ausgabe Eingetragener Engel
     if( count($TempValue["Engel"]) > 0  )
@@ -107,7 +107,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
       else 
         $Out.= " ". trim(Get_Text("inc_schicht_sind")). ":";
       $Out.= "</td>\n";
-      $Out.= "\t\t\t\t<td>";
+      $Out.= "<td>";
       
       foreach( $TempValue["Engel"] as $TempEngelEntry=> $TempEngelID )
               $Out.= UID2Nick( $TempEngelID ). ", ";
@@ -117,7 +117,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
     else
     {
       $Out.= ":</td>\n";
-      $Out.= "\t\t\t\t<td>\n";
+      $Out.= "<td>\n";
     }
       
     
@@ -133,11 +133,11 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
       }
     }
     $Out.= "</td>\n";
-    $Out.= "\t\t\t</tr>\n";
+    $Out.= "</tr>\n";
   
   } // FOREACH
 
-  $Out.= "\t\t\t</table>\n\t";
+  $Out.= "</table>\n";
   
   return $Out;
 } // function Ausgabe_Feld_Inhalt
@@ -157,7 +157,7 @@ function ausgabe_Zeile( $RID, $Time, &$AnzahlEintraege )
       " (`DateS` like '". gmdate("Y-m-d H", $Time). "%')) ) ORDER BY `DateS`;";
   
   $ErgRoom = mysql_query($SQL, $con);
-  $Out= "\t<td>";
+  $Out= "<td>";
   if( mysql_num_rows( $ErgRoom)>0 )
     for( $i=1; $i<=mysql_num_rows( $ErgRoom); $i++ )
     {
@@ -166,7 +166,7 @@ function ausgabe_Zeile( $RID, $Time, &$AnzahlEintraege )
               mysql_result( $ErgRoom, $i-1, "Man"));
       if( (mysql_num_rows( $ErgRoom) > 1) && !($i==mysql_num_rows( $ErgRoom)) )
         $Out.= "<br />";
-//        $Out.= "<hr width=\"95%\" align=\"center\">\n\t\t\t\t";
+//        $Out.= "<hr width=\"95%\" align=\"center\">\n";
       
     }
   else

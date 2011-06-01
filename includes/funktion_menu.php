@@ -1,7 +1,5 @@
 <?php
-
-
-// Menü generieren
+// Menue generieren
 function ShowMenu($MenuName) {
 	global $MenueTableStart, $MenueTableEnd, $_SESSION, $debug, $url, $ENGEL_ROOT;
 	$Gefunden = false;
@@ -27,13 +25,13 @@ function ShowMenu($MenuName) {
 							$TempName .= " (" . noAnswer() . ")";
 						elseif ($Key == "credits.php") continue;
 						//ausgabe
-						$Text .= "\t\t\t<li><a href=\"" . $url . $ENGEL_ROOT . $Key . "\">$TempName</a></li>\n";
+						$Text .= "<li><a href=\"" . $url . $ENGEL_ROOT . $Key . "\">$TempName</a></li>\n";
 						$Gefunden = true;
 					}
 				}
 				elseif ($debug) {
 					$Gefunden = true;
-					$Text .= "\t\t\t<li>$TempName ($Key)</li>\n";
+					$Text .= "<li>$TempName ($Key)</li>\n";
 				}
 			}
 	if ($Gefunden)

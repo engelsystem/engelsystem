@@ -48,7 +48,7 @@
       $Gefunden = false;
 
       $Diff  = "\n<table border=1>\n";
-      $Diff .= "<tr>\n\t<th>Feldname</th>\n\t<th>old Value</th>\n\t<th>new Value</th>\n";
+      $Diff .= "<tr>\n<th>Feldname</th>\n<th>old Value</th>\n<th>new Value</th>\n";
       $Diff .= "</tr>\n";
 
       foreach($Daten1 as $DataKey => $Data1) {
@@ -58,12 +58,12 @@
           foreach($Data1 as $key => $value)
             if( $value != $Data2[$key]) {
             $Gefunden = true;
-            $Diff .= "<tr>\n\t<td>$key</td>\n\t<td>$value</td>\n\t<td>" . $Data2[$key] . "</rd>\n</tr>";
+            $Diff .= "<tr>\n<td>$key</td>\n<td>$value</td>\n<td>" . $Data2[$key] . "</rd>\n</tr>";
           }
         } else
           foreach($Data1 as $key => $value) {
             $Gefunden = true;
-            $Diff .= "<tr>\n\t<td>$key</td>\n\t<td>$value</td>\n\t<td></rd>\n</tr>";
+            $Diff .= "<tr>\n<td>$key</td>\n<td>$value</td>\n<td></rd>\n</tr>";
           }
       }
 

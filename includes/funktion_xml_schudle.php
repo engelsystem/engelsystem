@@ -134,7 +134,7 @@ function SaveSchedule()
             {
               $EngelMin = $EngelNeeded_NotEmpty;
               echo "---> WARING ". $EngelNeeded_NotEmpty. 
-                " shift is used, can't del ". TID2Type($EngelTypeID). " shifts\t";
+                " shift is used, can't del ". TID2Type($EngelTypeID). " shifts";
             }
 
             echo "---->Delete empty Shifts for engeltype: ". TID2Type($EngelTypeID). " ".  
@@ -192,7 +192,7 @@ foreach($XMLmain->sub as $EventKey => $Event)
   if( $Event->name == "VEVENT")
   {
     echo "<form action=\"dbUpdateFromXLS.php\">\n";
-    echo "\t<tr>\n";
+    echo "<tr>\n";
   
     $PSIDXML  = getXMLsubData( $Event, "UID"); 
     $DateXML = 
@@ -236,17 +236,17 @@ foreach($XMLmain->sub as $EventKey => $Event)
     else
       $SIDDB = $PSIDDB  = $TimeDB = $LenDB  = $RIDDB  = $ManDB =  $URLDB = "";
 
-    echo "\t<td><input name=\"PSIDXML\" type=\"text\" value=\"$PSIDXML\" size=\"2\" eadonly></td>\n";
-    echo "\t<td><input name=\"DateXML\" type=\"text\" value=\"$DateXML\" size=\"17\" readonly>\n\t\t".
+    echo "<td><input name=\"PSIDXML\" type=\"text\" value=\"$PSIDXML\" size=\"2\" eadonly></td>\n";
+    echo "<td><input name=\"DateXML\" type=\"text\" value=\"$DateXML\" size=\"17\" readonly>\n".
        "<input name=\"DateDB\" type=\"text\" value=\"$TimeDB\" size=\"17\" readonly></td>\n";
-    echo "\t<td><input name=\"RIDXML\" type=\"text\" value=\"$RIDXML\" size=\"15\" readonly>\n\t\t".
+    echo "<td><input name=\"RIDXML\" type=\"text\" value=\"$RIDXML\" size=\"15\" readonly>\n".
        "<input name=\"RIDDB\" type=\"text\" value=\"$RIDDB\" size=\"15\" readonly></td>\n";
-    echo "\t<td><input name=\"LenXML\" type=\"text\" value=\"$LenXML\" size=\"1\"readonly>\n\t\t".
+    echo "<td><input name=\"LenXML\" type=\"text\" value=\"$LenXML\" size=\"1\"readonly>\n".
        "<input name=\"LenDB\" type=\"text\" value=\"$LenDB\" size=\"1\"readonly></td>\n";
-    echo "\t<td><input name=\"ManXML\" type=\"text\" value=\"$ManXML\" size=\"40\"readonly>\n\t\t".
+    echo "<td><input name=\"ManXML\" type=\"text\" value=\"$ManXML\" size=\"40\"readonly>\n".
        "<input name=\"ManDB\" type=\"text\" value=\"$ManDB\" size=\"40\"readonly></td>\n";
-    echo "\t<td><input name=\"URLXML\" type=\"hidden\" value=\"$URLXML\"></td>\n";
-    echo "\t<td><input name=\"URLDB\" type=\"hidden\" value=\"$URLDB\"></td>\n";
+    echo "<td><input name=\"URLXML\" type=\"hidden\" value=\"$URLXML\"></td>\n";
+    echo "<td><input name=\"URLDB\" type=\"hidden\" value=\"$URLDB\"></td>\n";
     if( !(  $PSIDXML==$PSIDDB && 
       $DateXML==$TimeDB && 
       $RIDXML==$RIDDB && 
@@ -254,15 +254,15 @@ foreach($XMLmain->sub as $EventKey => $Event)
       $ManXML==$ManDB &&
       $URLXML==$URLDB) )
     {
-      echo "\t<td><input type=\"submit\" name=\"ScheduleUpdate\" value=\"update\"></td>\n";
+      echo "<td><input type=\"submit\" name=\"ScheduleUpdate\" value=\"update\"></td>\n";
       $DS_KO++;
     }
     else
     {
-      echo "\t<td>". funktion_isLinkAllowed_addLink_OrLinkText("admin/schichtplan.php?action=change&SID=".$SIDDB, "edit"). "</td>\n";
+      echo "<td>". funktion_isLinkAllowed_addLink_OrLinkText("admin/schichtplan.php?action=change&SID=".$SIDDB, "edit"). "</td>\n";
       $DS_OK++;
     }
-    echo "\t</tr>\n";
+    echo "</tr>\n";
     echo "</form>\n";
     $Where.= " OR `PSID`='$PSIDXML'";
   }
@@ -281,7 +281,7 @@ echo mysql_error($con);
 if(mysql_num_rows($Erg2)>0 && $EnableSchudleDB )
   for( $i=0; $i<mysql_num_rows( $Erg2); $i++)
   {
-    echo "\t<tr>\n";
+    echo "<tr>\n";
     $SID  = mysql_result($Erg2, $i, "SID");
     $Time = mysql_result($Erg2, $i, "DateS");
     $Len  = mysql_result($Erg2, $i, "Len");
@@ -290,18 +290,18 @@ if(mysql_num_rows($Erg2)>0 && $EnableSchudleDB )
     else
       $RID  = "RID.". mysql_result($Erg2, $i, "RID");
     $Man  = mysql_result($Erg2, $i, "Man");
-    echo "\t<td><input name=\"SIDXML\" type=\"text\" value=\"$SID\" size=\"2\" eadonly></td>\n";
-    echo "\t<td><input name=\"DateXML\" type=\"text\" value=\"\" size=\"17\" readonly>\n\t\t".
+    echo "<td><input name=\"SIDXML\" type=\"text\" value=\"$SID\" size=\"2\" eadonly></td>\n";
+    echo "<td><input name=\"DateXML\" type=\"text\" value=\"\" size=\"17\" readonly>\n".
          "<input name=\"DateDB\" type=\"text\" value=\"$Time\" size=\"17\" readonly></td>\n";
-    echo "\t<td><input name=\"RIDXML\" type=\"text\" value=\"\" size=\"15\" readonly>\n\t\t".
+    echo "<td><input name=\"RIDXML\" type=\"text\" value=\"\" size=\"15\" readonly>\n".
          "<input name=\"RIDDB\" type=\"text\" value=\"$RID\" size=\"15\" readonly></td>\n";
-    echo "\t<td><input name=\"LenXML\" type=\"text\" value=\"\" size=\"1\"readonly>\n\t\t".
+    echo "<td><input name=\"LenXML\" type=\"text\" value=\"\" size=\"1\"readonly>\n".
          "<input name=\"LenDB\" type=\"text\" value=\"$Len\" size=\"1\"readonly></td>\n";
-    echo "\t<td><input name=\"ManXML\" type=\"text\" value=\"\" size=\"40\"readonly>\n\t\t".
+    echo "<td><input name=\"ManXML\" type=\"text\" value=\"\" size=\"40\"readonly>\n".
          "<input name=\"ManDB\" type=\"text\" value=\"$Man\" size=\"40\"readonly></td>\n";
-    echo "\t<td>". funktion_isLinkAllowed_addLink_OrLinkText( "admin/schichtplan.php?action=change&SID=".$SID, "edit"). 
+    echo "<td>". funktion_isLinkAllowed_addLink_OrLinkText( "admin/schichtplan.php?action=change&SID=".$SID, "edit"). 
         "</td>\n";
-    echo "\t<tr>\n";
+    echo "<tr>\n";
   }
 echo "</table>";
 

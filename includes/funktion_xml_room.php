@@ -43,11 +43,11 @@
             CreateRoomArrays();
           } else {
             echo "<form action=\"dbUpdateFromXLS.php\">\n";
-            echo "\t<tr>\n";
-            echo "\t<td><input name=\"NameXML\" type=\"text\" value=\"$NameXML\" readonly></td>\n";
-            echo "\t<td><input type=\"submit\" name=\"RoomUpdate\" value=\"update\"></td>\n";
+            echo "<tr>\n";
+            echo "<td><input name=\"NameXML\" type=\"text\" value=\"$NameXML\" readonly></td>\n";
+            echo "<td><input type=\"submit\" name=\"RoomUpdate\" value=\"update\"></td>\n";
             $DS_KO++;
-            echo "\t</tr>\n";
+            echo "</tr>\n";
             echo "</form>\n";
             echo "<br />";
           }

@@ -20,7 +20,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
   ///////////////////////////////////////////////////////////////////
   $Spalten.=funktion_isLinkAllowed_addLink_OrEmpty( 
     "admin/schichtplan.php?action=change&SID=$SID",
-    "edit<br />\n\t\t");
+    "edit<br />\n");
 
   ///////////////////////////////////////////////////////////////////
     // Ausgabe des Schischtnamens
@@ -96,9 +96,9 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
       if( count($TempValue["Engel"]) > 0  )
       {
       if( count($TempValue["Engel"]) == 1  )
-        $Spalten.= Get_Text("inc_schicht_ist"). ":<br />\n\t\t";
+        $Spalten.= Get_Text("inc_schicht_ist"). ":<br />\n";
       else 
-        $Spalten.= Get_Text("inc_schicht_sind"). ":<br />\n\t\t";
+        $Spalten.= Get_Text("inc_schicht_sind"). ":<br />\n";
       
       foreach( $TempValue["Engel"] as $TempEngelEntry=> $TempEngelID )
       {
@@ -123,7 +123,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
         
         $Spalten.= "&nbsp;&nbsp;". $TempText.
             ( ($_GET["Icon"]==1) ? DisplayAvatar( $TempEngelID): "").
-            "<br />\n\t\t";
+            "<br />\n";
 
 
       }
@@ -145,7 +145,7 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
       if( $_SESSION['CVS'][ $TID2Name[$TempValue["TID"]] ] == "Y")
         if( $TempValue["free"] > 0 )
         {
-          $Spalten.= "<br />\n\t\t&nbsp;&nbsp;<a href=\"./schichtplan_add.php?SID=$SID&TID=".
+          $Spalten.= "<br />\n&nbsp;&nbsp;<a href=\"./schichtplan_add.php?SID=$SID&TID=".
                $TempValue["TID"]."\">";
           $Spalten.= $TempValue["free"];
           if( $TempValue["free"] != 1 )
@@ -164,10 +164,10 @@ function ausgabe_Feld_Inhalt( $SID, $Man )
     {
       if( isset($TempValue["free"]))
         if( $TempValue["free"] > 0 )
-          $Spalten.= "<br />\n\t\t&nbsp;&nbsp;<h3><a>Fehlen noch: ". 
+          $Spalten.= "<br />\n&nbsp;&nbsp;<h3><a>Fehlen noch: ". 
               $TempValue["free"]. "</a></h3>";
     }
-    $Spalten.= "<br />\n\t\t";
+    $Spalten.= "<br />\n";
   
   } // FOREACH
   return $Spalten;
@@ -214,18 +214,18 @@ function CreateRoomShifts( $raum )
           mysql_result($ErgSonder, $i, "SID"). "\">".
           mysql_result($ErgSonder, $i, "DateS"). 
           " '". mysql_result($ErgSonder, $i, "Man")."' (RID $raum) (00-24)".
-          "</a><br />\n\t\t";
+          "</a><br />\n";
       }
     }
   }
   elseif( (mysql_num_rows( $ErgSonder) == 1) )
   {
-    $Spalten[0].=  "\t\t<td valign=\"top\" rowspan=\"". (24 * $GlobalZeileProStunde). "\">\n".
-        "\t\t\t<h3>&uarr;&uarr;&uarr;</h3>".
+    $Spalten[0].=  "<td valign=\"top\" rowspan=\"". (24 * $GlobalZeileProStunde). "\">\n".
+        "<h3>&uarr;&uarr;&uarr;</h3>".
               Ausgabe_Feld_Inhalt( mysql_result($ErgSonder, 0, "SID"), 
                  mysql_result($ErgSonder, 0, "Man") ).
-        "\t\t\t<h3>&darr;&darr;&darr;</h3>".
-               "\n\t\t</td>\n";
+        "<h3>&darr;&darr;&darr;</h3>".
+               "\n</td>\n";
     return;
   }
   
@@ -249,7 +249,7 @@ function CreateRoomShifts( $raum )
           mysql_result($ErgSonder, $i, "SID"). "\">".
           mysql_result($ErgSonder, $i, "DateS"). 
           " '". mysql_result($ErgSonder, $i, "Man")."' (RID $raum) (00-xx)".
-          "</a><br />\n\t\t";
+          "</a><br />\n";
       }
     }
   }
@@ -257,11 +257,11 @@ function CreateRoomShifts( $raum )
   {
     $ZeitZeiger =  substr( mysql_result($ErgSonder, 0, "DateE"), 11, 2 )+
         (substr( mysql_result($ErgSonder, 0, "DateE"), 14, 2 ) / 60);
-    $Spalten[0].=  "\t\t<td valign=\"top\" rowspan=\"". ($ZeitZeiger * $GlobalZeileProStunde). "\">\n".
-        "\t\t\t<h3>&uarr;&uarr;&uarr;</h3>".
+    $Spalten[0].=  "<td valign=\"top\" rowspan=\"". ($ZeitZeiger * $GlobalZeileProStunde). "\">\n".
+        "<h3>&uarr;&uarr;&uarr;</h3>".
               Ausgabe_Feld_Inhalt( mysql_result($ErgSonder, 0, "SID"), 
                  mysql_result($ErgSonder, 0, "Man") ).
-               "\n\t\t</td>\n";
+               "\n</td>\n";
   }
          
   /////////////////////////////////////////////////////////////
@@ -284,7 +284,7 @@ function CreateRoomShifts( $raum )
     if( $ZeitZeiger < $ZeitPos  )
     {
              $Spalten[$ZeitZeiger * $GlobalZeileProStunde].=  
-        "\t\t<td valign=\"top\" rowspan=\"". ( ($ZeitPos - $ZeitZeiger ) * $GlobalZeileProStunde ). "\">&nbsp;</td>\n";
+        "<td valign=\"top\" rowspan=\"". ( ($ZeitPos - $ZeitZeiger ) * $GlobalZeileProStunde ). "\">&nbsp;</td>\n";
 
       $ZeitZeiger += $ZeitPos - $ZeitZeiger;
     }
@@ -293,14 +293,14 @@ function CreateRoomShifts( $raum )
       //sonderfall wenn die schicht über dei 24 stunden hinaus geht
       // (eintrag abkürzen, pfeiel ausgeben)
              $Spalten[$ZeitZeiger * $GlobalZeileProStunde].= 
-          "\t\t<td valign=\"top\" rowspan=\"". 
+          "<td valign=\"top\" rowspan=\"". 
           ( ( ($len+$ZeitZeiger)? $len : 24-$len+$ZeitZeiger) * $GlobalZeileProStunde). 
           "\">\n".
-          "\t\t\t".
+          "".
                 Ausgabe_Feld_Inhalt( mysql_result($Erg, $i, "SID"), 
                    mysql_result($Erg, $i, "Man") ).
-          (( ($ZeitZeiger+$len) > 24)? "\t\t\t<h3>&darr;&darr;&darr;</h3>" : "").
-                 "\n\t\t</td>\n";
+          (( ($ZeitZeiger+$len) > 24)? "<h3>&darr;&darr;&darr;</h3>" : "").
+                 "\n</td>\n";
       $ZeitZeiger += $len;
     }
     else
@@ -315,7 +315,7 @@ function CreateRoomShifts( $raum )
   }
   if( $ZeitZeiger < 24 )
            $Spalten[($ZeitZeiger * $GlobalZeileProStunde)].=  
-          "\t\t<td valign=\"top\" rowspan=\"". 
+          "<td valign=\"top\" rowspan=\"". 
           ((24 - $ZeitZeiger) * $GlobalZeileProStunde ). 
           "\">&nbsp;</td>\n";
 } // function CreateRoomShifts
@@ -330,10 +330,10 @@ function showEmptyShifts( )
 
   echo "<table border=\"1\">\n";
   echo "<tr>\n";
-  echo "\t<th>". Get_Text("inc_schicht_date"). "</th>\n";
-  echo "\t<th>". Get_Text("inc_schicht_time"). "</th>\n";
-  echo "\t<th>". Get_Text("inc_schicht_room"). "</th>\n";
-  echo "\t<th>". Get_Text("inc_schicht_commend"). "</th>\n";
+  echo "<th>". Get_Text("inc_schicht_date"). "</th>\n";
+  echo "<th>". Get_Text("inc_schicht_time"). "</th>\n";
+  echo "<th>". Get_Text("inc_schicht_room"). "</th>\n";
+  echo "<th>". Get_Text("inc_schicht_commend"). "</th>\n";
   echo "</tr>\n";
   
   $sql = "SELECT `SID`, `DateS`, `Man`, `RID` FROM `Shifts` ".
@@ -355,10 +355,10 @@ function showEmptyShifts( )
     {
       $angezeigt++;
       echo "<tr>\n";
-      echo "\t<td>". substr(mysql_result( $Erg, $i, "DateS"), 0, 10). "</td>\n";
-      echo "\t<td>". substr(mysql_result( $Erg, $i, "DateS"), 11). "</td>\n";
-      echo "\t<td>". $RoomID[mysql_result( $Erg, $i, "RID")]. "</td>\n";
-      echo "\t<td>". 
+      echo "<td>". substr(mysql_result( $Erg, $i, "DateS"), 0, 10). "</td>\n";
+      echo "<td>". substr(mysql_result( $Erg, $i, "DateS"), 11). "</td>\n";
+      echo "<td>". $RoomID[mysql_result( $Erg, $i, "RID")]. "</td>\n";
+      echo "<td>". 
         ausgabe_Feld_Inhalt( mysql_result( $Erg, $i, "SID"), mysql_result( $Erg, $i, "Man")).
         "</td>\n";
       echo "</tr>\n";
