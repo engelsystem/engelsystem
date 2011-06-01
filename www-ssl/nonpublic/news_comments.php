@@ -1,26 +1,28 @@
 <?php
+require_once ('../bootstrap.php');
+
 $title = "Kommentare zu den News";
 $header = "Kommentar";
-include ("../../../camp2011/includes/header.php");
+include ("includes/header.php");
 
-if(isset($_GET["nid"])) {
-  if(isset( $_GET["text"])) {
-    $ch_sql = "INSERT INTO `news_comments` (`Refid`, `Datum`, `Text`, `UID`) ".
-              "VALUES ('". $_GET["nid"]. "', '". date("Y-m-d H:i:s"). "', '". $_GET["text"]. "', '". $_SESSION["UID"]. "')";
-    $Erg = mysql_query($ch_sql, $con);
+if (isset ($_GET["nid"])) {
+	if (isset ($_GET["text"])) {
+		$ch_sql = "INSERT INTO `news_comments` (`Refid`, `Datum`, `Text`, `UID`) " .
+		"VALUES ('" . $_GET["nid"] . "', '" . date("Y-m-d H:i:s") . "', '" . $_GET["text"] . "', '" . $_SESSION["UID"] . "')";
+		$Erg = mysql_query($ch_sql, $con);
 
-    if ($Erg == 1) {
-      echo "Eintrag wurde gespeichert<br /><br />"; 
-      SetHeaderGo2Back();
-    }
-  }
+		if ($Erg == 1) {
+			echo "Eintrag wurde gespeichert<br /><br />";
+			SetHeaderGo2Back();
+		}
+	}
 
-  $SQL = "SELECT * FROM `news_comments` WHERE `Refid`='". $_GET["nid"]. "' ORDER BY 'ID'";
-  $Erg = mysql_query($SQL, $con);
-  echo mysql_error( $con);
+	$SQL = "SELECT * FROM `news_comments` WHERE `Refid`='" . $_GET["nid"] . "' ORDER BY 'ID'";
+	$Erg = mysql_query($SQL, $con);
+	echo mysql_error($con);
 
-  // anzahl zeilen
-  $news_rows  = mysql_num_rows($Erg);
+	// anzahl zeilen
+	$news_rows = mysql_num_rows($Erg);
 ?>
 
 <table border="0" width="100%" class="border" cellpadding="2" cellspacing="1">
@@ -33,26 +35,27 @@ if(isset($_GET["nid"])) {
   </tr>
 
 <?php
-for ($n = 0 ; $n < $news_rows ; $n++) {
-  echo "\t<tr class=\"content\">";
-  echo "\t\t<td width=100>";
-    echo mysql_result($Erg, $n, "Datum");
-  echo "\t\t</td>";
-  echo "\t\t<td>";
-    echo UID2Nick(mysql_result($Erg, $n, "UID"));
-    // avatar anzeigen?
-    echo DisplayAvatar (mysql_result($Erg, $n, "UID"));
-  echo "\t\t</td>";
-  echo "</tr>";
-  echo "\t<tr class=\"content\">";
-  echo "\t\t<td colspan=\"2\">";
-    echo nl2br(mysql_result($Erg, $n, "Text"))."\n";
-  echo "\t\t</td>";
-  echo "</tr>";
-}
 
-echo "</table>";
 
+	for ($n = 0; $n < $news_rows; $n++) {
+		echo "\t<tr class=\"content\">";
+		echo "\t\t<td width=100>";
+		echo mysql_result($Erg, $n, "Datum");
+		echo "\t\t</td>";
+		echo "\t\t<td>";
+		echo UID2Nick(mysql_result($Erg, $n, "UID"));
+		// avatar anzeigen?
+		echo DisplayAvatar(mysql_result($Erg, $n, "UID"));
+		echo "\t\t</td>";
+		echo "</tr>";
+		echo "\t<tr class=\"content\">";
+		echo "\t\t<td colspan=\"2\">";
+		echo nl2br(mysql_result($Erg, $n, "Text")) . "\n";
+		echo "\t\t</td>";
+		echo "</tr>";
+	}
+
+	echo "</table>";
 ?>
 
 <br />
@@ -75,11 +78,9 @@ echo "</table>";
 <?php
 
 
-} 
-else 
-{
-  echo "Fehlerhafter Aufruf!";
+} else {
+	echo "Fehlerhafter Aufruf!";
 }
 
-include ("../../../camp2011/includes/footer.php");
+include ("includes/footer.php");
 ?>

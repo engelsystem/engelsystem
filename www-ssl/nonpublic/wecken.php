@@ -1,32 +1,34 @@
 <?php
-  $title = "Himmel";
-  $header = "Weckdienst";
+require_once ('../bootstrap.php');
 
-  include "../../../camp2011/includes/header.php";
+$title = "Himmel";
+$header = "Weckdienst";
 
-  if(isset($_POST["eintragen"])) {
-    if($_POST["eintragen"] == Get_Text("pub_wake_bouton")) {
-      $SQL = "INSERT INTO `Wecken` (`UID`, `Date`, `Ort`, `Bemerkung`) ".
-             "VALUES ('". $_SESSION['UID']. "', '". $_POST["Date"]. "', '". $_POST["Ort"]. "', ".
-             "'". $_POST["Bemerkung"]. "')";
-      $Erg = mysql_query($SQL, $con);
+include "includes/header.php";
 
-      if($Erg == 1) 
-        Print_Text(4);
-    }
-  }
+if (isset ($_POST["eintragen"])) {
+	if ($_POST["eintragen"] == Get_Text("pub_wake_bouton")) {
+		$SQL = "INSERT INTO `Wecken` (`UID`, `Date`, `Ort`, `Bemerkung`) " .
+		"VALUES ('" . $_SESSION['UID'] . "', '" . $_POST["Date"] . "', '" . $_POST["Ort"] . "', " .
+		"'" . $_POST["Bemerkung"] . "')";
+		$Erg = mysql_query($SQL, $con);
 
-  if(isset($_GET["eintragen"])) {
-    if ($_GET["eintragen"] == "loeschen") {
-      $SQL = "DELETE FROM `Wecken` WHERE `UID`='" . $_SESSION['UID'] . "' AND `ID`='" . $_GET["weckID"] . "' LIMIT 1";
-      $Erg = mysql_query($SQL, $con);
-      if ($Erg == 1)
-        Print_Text(4); 
-    }
-  }
+		if ($Erg == 1)
+			Print_Text(4);
+	}
+}
 
-  echo "<p>" . Get_Text("Hello") . $_SESSION['Nick'] . ",<br />" . Get_Text("pub_wake_beschreibung") . "</p>\n\n";
-  echo Get_Text("pub_wake_beschreibung2");
+if (isset ($_GET["eintragen"])) {
+	if ($_GET["eintragen"] == "loeschen") {
+		$SQL = "DELETE FROM `Wecken` WHERE `UID`='" . $_SESSION['UID'] . "' AND `ID`='" . $_GET["weckID"] . "' LIMIT 1";
+		$Erg = mysql_query($SQL, $con);
+		if ($Erg == 1)
+			Print_Text(4);
+	}
+}
+
+echo "<p>" . Get_Text("Hello") . $_SESSION['Nick'] . ",<br />" . Get_Text("pub_wake_beschreibung") . "</p>\n\n";
+echo Get_Text("pub_wake_beschreibung2");
 ?>
 
 <table border="0" width="100%" class="border" cellpadding="2" cellspacing="1">
@@ -38,12 +40,13 @@
         </tr>
 
 <?php
-  $sql = "SELECT * FROM `Wecken` WHERE `UID`='" . $_SESSION['UID'] . "' ORDER BY `Date` ASC";
-  $Erg = mysql_query($sql, $con);
-  $count = mysql_num_rows($Erg);
 
-  for ($i=0; $i < $count; $i++) {
-    $row = mysql_fetch_row($Erg);
+$sql = "SELECT * FROM `Wecken` WHERE `UID`='" . $_SESSION['UID'] . "' ORDER BY `Date` ASC";
+$Erg = mysql_query($sql, $con);
+$count = mysql_num_rows($Erg);
+
+for ($i = 0; $i < $count; $i++) {
+	$row = mysql_fetch_row($Erg);
 ?>
   <tr class="content">
     <td align="left"><?php echo mysql_result($Erg, $i, "Date"); ?> </td>
@@ -52,7 +55,8 @@
     <td align="left"><a href="./wecken.php?eintragen=loeschen&weckID=<?php echo mysql_result($Erg, $i, "ID") . "\">" . Get_Text("pub_wake_del"); ?></a></td>
   </tr>
 <?php
-  }
+
+}
 ?>
 </table>
 <br /><br />
@@ -77,5 +81,6 @@
 <input type="submit" name="eintragen" value="<?php echo Get_Text("pub_wake_bouton"); ?>" />
 </form>
 <?php
-include ("../../../camp2011/includes/footer.php");
+
+include ("includes/footer.php");
 ?>

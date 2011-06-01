@@ -1,8 +1,10 @@
 <?php
-  $title = "Himmel";
-  $header = "Weckdienst - Liste der zu weckenden Engel";
+require_once ('../bootstrap.php');
 
-  include "../../../camp2011/includes/header.php";
+$title = "Himmel";
+$header = "Weckdienst - Liste der zu weckenden Engel";
+
+include "includes/header.php";
 ?>
 
 <p><?php echo Get_Text("Hello") . $_SESSION['Nick'] . ",<br />\n" . Get_Text("pub_waeckliste_Text1"); ?></p>
@@ -15,12 +17,14 @@
   </tr>
 
 <?php
-  $sql = "SELECT * FROM `Wecken` ORDER BY `Date` ASC";
-  $Erg = mysql_query($sql, $con);
-  $count = mysql_num_rows($Erg);
 
-  for ($i = 0; $i < $count; $i++) {
-    $row = mysql_fetch_row($Erg);
+
+$sql = "SELECT * FROM `Wecken` ORDER BY `Date` ASC";
+$Erg = mysql_query($sql, $con);
+$count = mysql_num_rows($Erg);
+
+for ($i = 0; $i < $count; $i++) {
+	$row = mysql_fetch_row($Erg);
 ?>
   <tr class="content">
     <td align="left"><?php echo UID2Nick(mysql_result($Erg, $i, "UID")); ?> </td>
@@ -29,10 +33,14 @@
     <td align="left"><?php echo mysql_result($Erg, $i, "Bemerkung"); ?> </td>
   </tr>
 <?php
-  }
+
+
+}
 ?>
 </table>
 
 <?php
-  include "../../../camp2011/includes/footer.php";
+
+
+include "includes/footer.php";
 ?>

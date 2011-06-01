@@ -1,12 +1,14 @@
 <?php
-  $title = "Himmel";
-  $header = "Deine pers&ouml;nlichen Einstellungen";
-  include "../../../camp2011/includes/header.php";
-  include "../../../camp2011/includes/crypt.php";
+require_once ('../bootstrap.php');
 
-  if(!isset($_POST["action"])) {
-    echo Get_Text("Hallo").$_SESSION['Nick'].",<br />\n\n";
-    Print_Text(13);
+$title = "Himmel";
+$header = "Deine pers&ouml;nlichen Einstellungen";
+include "includes/header.php";
+include "includes/crypt.php";
+
+if (!isset ($_POST["action"])) {
+	echo Get_Text("Hallo") . $_SESSION['Nick'] . ",<br />\n\n";
+	Print_Text(13);
 ?>
 <hr width="100%">
 <?php Print_Text("pub_einstellungen_Text_UserData"); ?>
@@ -69,7 +71,9 @@
     </tr>
 
 <?php
-if($_SESSION['CVS']["Change T_Shirt Size"] == "Y") {
+
+
+	if ($_SESSION['CVS']["Change T_Shirt Size"] == "Y") {
 ?>
     <tr>
       <td><?php Print_Text("makeuser_T-Shirt"); ?></td>
@@ -83,7 +87,9 @@ if($_SESSION['CVS']["Change T_Shirt Size"] == "Y") {
       </select></td>
     </tr>
 <?php
-}
+
+
+	}
 ?>
   </table>
   <input type="submit" value="<?php Print_Text("save"); ?>">
@@ -147,7 +153,11 @@ if($_SESSION['CVS']["Change T_Shirt Size"] == "Y") {
       <select name="language">
         <option value="DE" <?php if($_SESSION['Sprache'] == 'DE') { echo "selected"; } ?>>Deutsch</option>
         <option value="EN" <?php if($_SESSION['Sprache'] == 'EN') { echo "selected"; } ?>>English</option>
-<?php /*       <option value="NL" <?php if($_SESSION['Sprache'] == 'NL') { echo "selected"; } ?>>Dutch</option>  */ ?>
+<?php
+
+
+	/*       <option value="NL" <?php if($_SESSION['Sprache'] == 'NL') { echo "selected"; } ?>>Dutch</option>  */
+?>
       </select>
     </td></tr>
   </table>
@@ -155,224 +165,211 @@ if($_SESSION['CVS']["Change T_Shirt Size"] == "Y") {
 </form>
 
 <?php
-  if(get_cfg_var("file_uploads")) {
-    echo "<br />\n<hr width=\"100%\">\n<br />\n\n";
-    echo Get_Text('pub_einstellungen_PictureUpload') . "<br />";
-    echo "<form action=\"./einstellungen.php\" method=\"post\" enctype=\"multipart/form-data\">\n";
-    echo "<input type=\"hidden\" name=\"action\" value=\"sendPicture\">\n";
-    echo "<input name=\"file\" type=\"file\" size=\"50\" maxlength=\"". get_cfg_var("post_max_size"). "\">\n";
-    echo "(max ". get_cfg_var("post_max_size"). "Byte)<br />\n";
-    echo "<input type=\"submit\" value=\"". Get_Text("upload"),"\">\n";
-    echo "</form>\n";
-  }
 
-  switch( GetPicturShow( $_SESSION['UID'])) {
-    case 'Y':
-      echo Get_Text('pub_einstellungen_PictureShow'). "<br />";
-      echo displayPictur($_SESSION['UID'], 0);
-      echo "<form action=\"./einstellungen.php\" method=\"post\">\n";
-      echo "<input type=\"hidden\" name=\"action\" value=\"delPicture\">\n";
-      echo "<input type=\"submit\" value=\"". Get_Text("delete"),"\">\n";
-      echo "</form>\n";
-      break;
-    case 'N':
-      echo Get_Text('pub_einstellungen_PictureNoShow'). "<br />";
-      echo displayPictur($_SESSION['UID'], 0);
-      echo "<form action=\"./einstellungen.php\" method=\"post\">\n";
-      echo "<input type=\"hidden\" name=\"action\" value=\"delPicture\">\n";
-      echo "<input type=\"submit\" value=\"". Get_Text("delete"),"\">\n";
-      echo "</form>\n";
-      echo "<br />\n<hr width=\"100%\">\n<br />\n\n";
-    case '':  
-      echo "<br />\n<hr width=\"100%\">\n<br />\n\n";
-      echo Get_Text(22). "<br />"; 
-      echo "\n<form action=\"./einstellungen.php\" method=\"post\">\n";
-      echo "<input type=\"hidden\" name=\"action\" value=\"avatar\">\n";
-      echo "<table>\n";
-      echo "<tr>\n<td>". Get_Text(23). "<br /></td>\n</tr>\n";
-      echo "<tr>\n";
-      echo "<td>\n";
-      echo "<select name=\"eAvatar\" onChange=\"document.avatar.src = '". $url. $ENGEL_ROOT. "pic/avatar/avatar' + this.value  + '.gif'\" onKeyup=\"document.avatar.src = '". $url. $ENGEL_ROOT. "pic/avatar/avatar' + this.value  + '.gif'\">\n"; 
 
-      for($i = 1; file_exists("../pic/avatar/avatar" . $i . ".gif"); $i++)
-        echo "<option value=\"" . $i . "\"" . ($_SESSION['Avatar'] == $i ? " selected" : "") . ">avatar" . $i . "</option>\n";
+	if (get_cfg_var("file_uploads")) {
+		echo "<br />\n<hr width=\"100%\">\n<br />\n\n";
+		echo Get_Text('pub_einstellungen_PictureUpload') . "<br />";
+		echo "<form action=\"./einstellungen.php\" method=\"post\" enctype=\"multipart/form-data\">\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"sendPicture\">\n";
+		echo "<input name=\"file\" type=\"file\" size=\"50\" maxlength=\"" . get_cfg_var("post_max_size") . "\">\n";
+		echo "(max " . get_cfg_var("post_max_size") . "Byte)<br />\n";
+		echo "<input type=\"submit\" value=\"" . Get_Text("upload"), "\">\n";
+		echo "</form>\n";
+	}
 
-      echo "</select>&nbsp;&nbsp;\n";
-      echo "<img src=\"" . $url . $ENGEL_ROOT . "pic/avatar/avatar" . $_SESSION['Avatar'] . ".gif\" name=\"avatar\" border=\"0\" align=\"top\">\n";
-      echo "</td>\n</tr>\n";
-      echo "</table>\n";
-      echo "<input type=\"submit\" value=\"" . Get_Text("save") . "\">\n";
-      echo "</form>\n";
-      break;
-  } //CASE
+	switch (GetPicturShow($_SESSION['UID'])) {
+		case 'Y' :
+			echo Get_Text('pub_einstellungen_PictureShow') . "<br />";
+			echo displayPictur($_SESSION['UID'], 0);
+			echo "<form action=\"./einstellungen.php\" method=\"post\">\n";
+			echo "<input type=\"hidden\" name=\"action\" value=\"delPicture\">\n";
+			echo "<input type=\"submit\" value=\"" . Get_Text("delete"), "\">\n";
+			echo "</form>\n";
+			break;
+		case 'N' :
+			echo Get_Text('pub_einstellungen_PictureNoShow') . "<br />";
+			echo displayPictur($_SESSION['UID'], 0);
+			echo "<form action=\"./einstellungen.php\" method=\"post\">\n";
+			echo "<input type=\"hidden\" name=\"action\" value=\"delPicture\">\n";
+			echo "<input type=\"submit\" value=\"" . Get_Text("delete"), "\">\n";
+			echo "</form>\n";
+			echo "<br />\n<hr width=\"100%\">\n<br />\n\n";
+		case '' :
+			echo "<br />\n<hr width=\"100%\">\n<br />\n\n";
+			echo Get_Text(22) . "<br />";
+			echo "\n<form action=\"./einstellungen.php\" method=\"post\">\n";
+			echo "<input type=\"hidden\" name=\"action\" value=\"avatar\">\n";
+			echo "<table>\n";
+			echo "<tr>\n<td>" . Get_Text(23) . "<br /></td>\n</tr>\n";
+			echo "<tr>\n";
+			echo "<td>\n";
+			echo "<select name=\"eAvatar\" onChange=\"document.avatar.src = '" . $url . $ENGEL_ROOT . "pic/avatar/avatar' + this.value  + '.gif'\" onKeyup=\"document.avatar.src = '" . $url . $ENGEL_ROOT . "pic/avatar/avatar' + this.value  + '.gif'\">\n";
 
-  } else {
-    switch ($_POST["action"]) {
-      case 'set':
-        if($_POST["new1"] == $_POST["new2"]) {
-          Print_Text(25); 
-          $sql = "SELECT * FROM `User` WHERE `UID`='".$_SESSION['UID']. "'";
-          $Erg = mysql_query($sql, $con);
+			for ($i = 1; file_exists("../pic/avatar/avatar" . $i . ".gif"); $i++)
+				echo "<option value=\"" . $i . "\"" . ($_SESSION['Avatar'] == $i ? " selected" : "") . ">avatar" . $i . "</option>\n";
 
-          if(PassCrypt($_POST["old"]) == mysql_result($Erg, 0, "Passwort")) {
-            Print_Text(26);
-            Print_Text(27);
-            $usql = "UPDATE `User` SET `Passwort`='". PassCrypt($_POST["new1"]). "' WHERE `UID`='" . $_SESSION['UID'] . "' LIMIT 1";
-           $Erg = mysql_query($usql, $con);
+			echo "</select>&nbsp;&nbsp;\n";
+			echo "<img src=\"" . $url . $ENGEL_ROOT . "pic/avatar/avatar" . $_SESSION['Avatar'] . ".gif\" name=\"avatar\" border=\"0\" align=\"top\">\n";
+			echo "</td>\n</tr>\n";
+			echo "</table>\n";
+			echo "<input type=\"submit\" value=\"" . Get_Text("save") . "\">\n";
+			echo "</form>\n";
+			break;
+	} //CASE
 
-           if ($Erg==1) {
-             Print_Text(28);
-           } else {
-             Print_Text(29);
-           }
-         } else {
-           Print_Text(30);
-         }
-       } else {
-         Print_Text(31);
-       }
-    break;
+} else {
+	switch ($_POST["action"]) {
+		case 'set' :
+			if ($_POST["new1"] == $_POST["new2"]) {
+				Print_Text(25);
+				$sql = "SELECT * FROM `User` WHERE `UID`='" . $_SESSION['UID'] . "'";
+				$Erg = mysql_query($sql, $con);
 
-    case 'colour':
+				if (PassCrypt($_POST["old"]) == mysql_result($Erg, 0, "Passwort")) {
+					Print_Text(26);
+					Print_Text(27);
+					$usql = "UPDATE `User` SET `Passwort`='" . PassCrypt($_POST["new1"]) . "' WHERE `UID`='" . $_SESSION['UID'] . "' LIMIT 1";
+					$Erg = mysql_query($usql, $con);
 
-  $chsql="UPDATE `User` SET ".
-    "`color`= '". $_POST["colourid"]. "', ".
-    "`Menu`= '". $_POST["eMenu"]. "' ".
-    "WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1";
-  $Erg = mysql_query($chsql, $con);
-  echo mysql_error($con);
-  $_SESSION['color']=$_POST["colourid"];
-  $_SESSION['Menu']=$_POST["eMenu"];
-  if ($Erg==1) {
-    Print_Text(32);
-  } else {
-    Print_Text(29);
-  }
-  break;
+					if ($Erg == 1) {
+						Print_Text(28);
+					} else {
+						Print_Text(29);
+					}
+				} else {
+					Print_Text(30);
+				}
+			} else {
+				Print_Text(31);
+			}
+			break;
 
-case 'sprache':
+		case 'colour' :
 
-  $chsql="UPDATE `User` SET `Sprache` = '". $_POST["language"]. "' WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1";
-  $Erg = mysql_query($chsql, $con);
-  $_SESSION['Sprache']=$_POST["language"];
-  if ($Erg==1) {
-    Print_Text(33);
-  } else {
-    Print_Text(29);
-  }
-  break;
+			$chsql = "UPDATE `User` SET " .
+			"`color`= '" . $_POST["colourid"] . "', " .
+			"`Menu`= '" . $_POST["eMenu"] . "' " .
+			"WHERE `UID`='" . $_SESSION['UID'] . "' LIMIT 1";
+			$Erg = mysql_query($chsql, $con);
+			echo mysql_error($con);
+			$_SESSION['color'] = $_POST["colourid"];
+			$_SESSION['Menu'] = $_POST["eMenu"];
+			if ($Erg == 1) {
+				Print_Text(32);
+			} else {
+				Print_Text(29);
+			}
+			break;
 
-case 'avatar':
-  $chsql="UPDATE `User` SET `Avatar`='". $_POST["eAvatar"]. "' WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1";
-        $Erg = mysql_query($chsql, $con);
-  $_SESSION['Avatar']=$_POST["eAvatar"];
-  if ($Erg==1)
-    Print_Text(34);
-        else
-    Print_Text(29);
-        break;
+		case 'sprache' :
 
-case 'setUserData':
-  if( $_SESSION['CVS'][ "Change T_Shirt Size" ] == "Y" )
-  {
-    $chsql= "UPDATE `User` SET ".
-      "`Nick`='".     $_POST["eNick"].  "', `Name`='".   $_POST["eName"].  "', ".
-      "`Vorname`='".  $_POST["eVorname"].  "', `Alter`='".  $_POST["eAlter"]. "', ".
-      "`Telefon`='".  $_POST["eTelefon"].  "', `Handy`='".  $_POST["eHandy"]. "', ".
-      "`DECT`='".     $_POST["eDECT"].   "', `email`='".  $_POST["eemail"]. "', ".
-      "`ICQ`='".      $_POST["eICQ"].    "', `jabber`='". $_POST["ejabber"]."', ".
-      "`Hometown`='". $_POST["Hometown"].  "', `Size`='".   $_POST["Sizeid"]. "' ".
-      "WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1;";
-  }
-  else
-  {
-    $chsql= "UPDATE `User` SET ".
-      "`Nick`='".     $_POST["eNick"].  "', `Name`='".   $_POST["eName"].  "', ".
-      "`Vorname`='".  $_POST["eVorname"].  "', `Alter`='".  $_POST["eAlter"]. "', ".
-      "`Telefon`='".  $_POST["eTelefon"].  "', `Handy`='".  $_POST["eHandy"]. "', ".
-      "`DECT`='".     $_POST["eDECT"].   "', `email`='".  $_POST["eemail"]. "', ".
-      "`ICQ`='".      $_POST["eICQ"].    "', `jabber`='". $_POST["ejabber"]."', ".
-      "`Hometown`='". $_POST["Hometown"].  "' ".
-      "WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1;";
-  }
-        $Erg = mysql_query($chsql, $con);
+			$chsql = "UPDATE `User` SET `Sprache` = '" . $_POST["language"] . "' WHERE `UID`='" . $_SESSION['UID'] . "' LIMIT 1";
+			$Erg = mysql_query($chsql, $con);
+			$_SESSION['Sprache'] = $_POST["language"];
+			if ($Erg == 1) {
+				Print_Text(33);
+			} else {
+				Print_Text(29);
+			}
+			break;
 
-  if ($Erg==1) 
-  {
-    $_SESSION['Nick'] = $_POST["eNick"];
-    $_SESSION['Name'] = $_POST["eName"];
-    $_SESSION['Vorname'] = $_POST["eVorname"];
-    $_SESSION['Alter'] = $_POST["eAlter"];
-    $_SESSION['Telefon'] = $_POST["eTelefon"];
-    $_SESSION['Handy'] = $_POST["eHandy"];
-    $_SESSION['DECT'] = $_POST["eDECT"];
-    $_SESSION['email'] = $_POST["eemail"];
-    $_SESSION['ICQ'] = $_POST["eICQ"];
-    $_SESSION['jabber'] = $_POST["ejabber"];
-    $_SESSION['Hometown'] = $_POST["Hometown"];
-    if( $_SESSION['CVS'][ "Change T_Shirt Size" ] == "Y" )
-    {
-      $_SESSION['Size']=$_POST["Sizeid"];    
-    }
-    else if( $_SESSION['Size'] != $_POST["Sizeid"]) 
-    {
-      array_push($error_messages, "einstellungen.php, change t-shirt size not allowed\n");
-    }
+		case 'avatar' :
+			$chsql = "UPDATE `User` SET `Avatar`='" . $_POST["eAvatar"] . "' WHERE `UID`='" . $_SESSION['UID'] . "' LIMIT 1";
+			$Erg = mysql_query($chsql, $con);
+			$_SESSION['Avatar'] = $_POST["eAvatar"];
+			if ($Erg == 1)
+				Print_Text(34);
+			else
+				Print_Text(29);
+			break;
 
-  
-    Print_Text("pub_einstellungen_UserDateSaved");
-        } 
-  else
-  {
-    Print_Text(29);
-    echo mysql_error( $con);
-  }
-  break;
+		case 'setUserData' :
+			if ($_SESSION['CVS']["Change T_Shirt Size"] == "Y") {
+				$chsql = "UPDATE `User` SET " .
+				"`Nick`='" . $_POST["eNick"] . "', `Name`='" . $_POST["eName"] . "', " .
+				"`Vorname`='" . $_POST["eVorname"] . "', `Alter`='" . $_POST["eAlter"] . "', " .
+				"`Telefon`='" . $_POST["eTelefon"] . "', `Handy`='" . $_POST["eHandy"] . "', " .
+				"`DECT`='" . $_POST["eDECT"] . "', `email`='" . $_POST["eemail"] . "', " .
+				"`ICQ`='" . $_POST["eICQ"] . "', `jabber`='" . $_POST["ejabber"] . "', " .
+				"`Hometown`='" . $_POST["Hometown"] . "', `Size`='" . $_POST["Sizeid"] . "' " .
+				"WHERE `UID`='" . $_SESSION['UID'] . "' LIMIT 1;";
+			} else {
+				$chsql = "UPDATE `User` SET " .
+				"`Nick`='" . $_POST["eNick"] . "', `Name`='" . $_POST["eName"] . "', " .
+				"`Vorname`='" . $_POST["eVorname"] . "', `Alter`='" . $_POST["eAlter"] . "', " .
+				"`Telefon`='" . $_POST["eTelefon"] . "', `Handy`='" . $_POST["eHandy"] . "', " .
+				"`DECT`='" . $_POST["eDECT"] . "', `email`='" . $_POST["eemail"] . "', " .
+				"`ICQ`='" . $_POST["eICQ"] . "', `jabber`='" . $_POST["ejabber"] . "', " .
+				"`Hometown`='" . $_POST["Hometown"] . "' " .
+				"WHERE `UID`='" . $_SESSION['UID'] . "' LIMIT 1;";
+			}
+			$Erg = mysql_query($chsql, $con);
 
-case 'sendPicture':
-  if( $_FILES["file"]["size"] > 0)
-  {
-    if( ($_FILES["file"]["type"] == "image/jpeg") || 
-        ($_FILES["file"]["type"] == "image/png")  ||
-        ($_FILES["file"]["type"] == "image/gif")  )
-    {    
-    $data = addslashes(fread(fopen($_FILES["file"]["tmp_name"], "r"), filesize($_FILES["file"]["tmp_name"])));
+			if ($Erg == 1) {
+				$_SESSION['Nick'] = $_POST["eNick"];
+				$_SESSION['Name'] = $_POST["eName"];
+				$_SESSION['Vorname'] = $_POST["eVorname"];
+				$_SESSION['Alter'] = $_POST["eAlter"];
+				$_SESSION['Telefon'] = $_POST["eTelefon"];
+				$_SESSION['Handy'] = $_POST["eHandy"];
+				$_SESSION['DECT'] = $_POST["eDECT"];
+				$_SESSION['email'] = $_POST["eemail"];
+				$_SESSION['ICQ'] = $_POST["eICQ"];
+				$_SESSION['jabber'] = $_POST["ejabber"];
+				$_SESSION['Hometown'] = $_POST["Hometown"];
+				if ($_SESSION['CVS']["Change T_Shirt Size"] == "Y") {
+					$_SESSION['Size'] = $_POST["Sizeid"];
+				} else
+					if ($_SESSION['Size'] != $_POST["Sizeid"]) {
+						array_push($error_messages, "einstellungen.php, change t-shirt size not allowed\n");
+					}
 
-    if( GetPicturShow( $_SESSION['UID']) == "")
-      $SQL = "INSERT INTO `UserPicture` ".
-        "( `UID`,`Bild`, `ContentType`, `show`) ".
-        "VALUES ('". $_SESSION['UID']. "', '$data', '". $_FILES["file"]["type"]. "', 'N')";
-    else
-      $SQL = "UPDATE `UserPicture` SET ".
-        "`Bild`='$data', ".
-        "`ContentType`='". $_FILES["file"]["type"]. "', ".
-        "`show`='N' ".
-        "WHERE `UID`='". $_SESSION['UID']. "'";
-    
-    $res = mysql_query( $SQL, $con);
-    if( $res)
-      Print_Text("pub_einstellungen_send_OK");
-    else
-      Print_Text("pub_einstellungen_send_KO");
-  
-    echo "<h6>('" . $_FILES["file"]["name"] . "', MIME-Type: " . $_FILES["file"]["type"]. ", " . $_FILES["file"]["size"]. " Byte)</h6>";
-    }
-    else
-    Print_Text("pub_einstellungen_send_KO");  
-  }
-  else
-    Print_Text("pub_einstellungen_send_KO");  
-  break;
+				Print_Text("pub_einstellungen_UserDateSaved");
+			} else {
+				Print_Text(29);
+				echo mysql_error($con);
+			}
+			break;
 
-case 'delPicture':
-  $chsql="DELETE FROM `UserPicture` WHERE `UID`='". $_SESSION['UID']. "' LIMIT 1";
-        $Erg = mysql_query($chsql, $con);
-  if ($Erg==1)
-    Print_Text("pub_einstellungen_del_OK");
-        else
-    Print_Text("pub_einstellungen_del_KO");
-  Break;
+		case 'sendPicture' :
+			if ($_FILES["file"]["size"] > 0) {
+				if (($_FILES["file"]["type"] == "image/jpeg") || ($_FILES["file"]["type"] == "image/png") || ($_FILES["file"]["type"] == "image/gif")) {
+					$data = addslashes(fread(fopen($_FILES["file"]["tmp_name"], "r"), filesize($_FILES["file"]["tmp_name"])));
+
+					if (GetPicturShow($_SESSION['UID']) == "")
+						$SQL = "INSERT INTO `UserPicture` " .
+						"( `UID`,`Bild`, `ContentType`, `show`) " .
+						"VALUES ('" . $_SESSION['UID'] . "', '$data', '" . $_FILES["file"]["type"] . "', 'N')";
+					else
+						$SQL = "UPDATE `UserPicture` SET " .
+						"`Bild`='$data', " .
+						"`ContentType`='" . $_FILES["file"]["type"] . "', " .
+						"`show`='N' " .
+						"WHERE `UID`='" . $_SESSION['UID'] . "'";
+
+					$res = mysql_query($SQL, $con);
+					if ($res)
+						Print_Text("pub_einstellungen_send_OK");
+					else
+						Print_Text("pub_einstellungen_send_KO");
+
+					echo "<h6>('" . $_FILES["file"]["name"] . "', MIME-Type: " . $_FILES["file"]["type"] . ", " . $_FILES["file"]["size"] . " Byte)</h6>";
+				} else
+					Print_Text("pub_einstellungen_send_KO");
+			} else
+				Print_Text("pub_einstellungen_send_KO");
+			break;
+
+		case 'delPicture' :
+			$chsql = "DELETE FROM `UserPicture` WHERE `UID`='" . $_SESSION['UID'] . "' LIMIT 1";
+			$Erg = mysql_query($chsql, $con);
+			if ($Erg == 1)
+				Print_Text("pub_einstellungen_del_OK");
+			else
+				Print_Text("pub_einstellungen_del_KO");
+			Break;
+	}
 }
-}
-include ("../../../camp2011/includes/footer.php");
+include ("includes/footer.php");
 ?>

@@ -1,9 +1,10 @@
 <?php
+require_once('../bootstrap.php');
 
 $title = "Newsverwaltung";
 $header = "Verwaltung der News";
-include ("../../../camp2011/includes/header.php");
-include ("../../../camp2011/includes/funktion_db_list.php");
+include ("includes/header.php");
+include ("includes/funktion_db_list.php");
 
 
 if (!IsSet($_GET["action"]))
@@ -85,7 +86,7 @@ else
         echo "FEHLER: Eintrag \"". $_GET["date"]. "\" nicht gefunden";
     }
     else
-      echo "Fehler: \"date\" nicht übergeben";
+      echo "Fehler: \"date\" nicht ï¿½bergeben";
     break;
 
   case 'change_save':
@@ -93,20 +94,20 @@ else
       $chsql="UPDATE `News` SET `Betreff`='". $_GET["eBetreff"]. "', `Text`='". $_GET["eText"]. 
         "', `Treffen`='". $_GET["eTreffen"]. "' WHERE (`Datum`='". $_GET["date"]. "') limit 1";
     else
-      echo "Fehler: nicht genügend parameter übergeben";
+      echo "Fehler: nicht genï¿½gend parameter ï¿½bergeben";
     break;
 
   case 'delete':
     if (isset($_POST["date"]))
             $chsql="DELETE FROM `News` WHERE `Datum`='". $_POST["date"]. "' LIMIT 1";
     else
-      echo "Fehler: \"date\" nicht übergeben";
+      echo "Fehler: \"date\" nicht ï¿½bergeben";
     break;
   } //SWITCH
 
   if (IsSet($chsql)) 
   {
-    // SQL-Statement ausführen...
+    // SQL-Statement ausfï¿½hren...
     $Erg = mysql_query($chsql, $con);
     If ($Erg == 1)
       echo "&Auml;nderung erfolgreich gesichert...";
@@ -117,6 +118,6 @@ else
   }
 }// IF-ELSE
 
-include ("../../../camp2011/includes/footer.php");
+include ("includes/footer.php");
 ?>
 

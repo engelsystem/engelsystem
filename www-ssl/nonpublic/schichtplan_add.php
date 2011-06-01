@@ -1,111 +1,114 @@
 <?php
-  $title = "Himmel";
-  $header = "Schichtpl&auml;ne";
-  include "../../../camp2011/includes/header.php";
-  include "../../../camp2011/includes/funktion_schichtplan.php";
-  include "../../../camp2011/includes/funktion_schichtplan_aray.php";
-  include "../../../camp2011/includes/funktionen.php";
+require_once ('../bootstrap.php');
 
-  if(isset($_POST["newtext"]) && isset($_POST["SID"]) && isset($_POST["TID"])) {
-    SetHeaderGo2Back();
- 
-    // datum der einzutragenden Schicht heraussuhen...
-    $ShiftSQL = "SELECT `DateS`, `DateE` FROM `Shifts` WHERE `SID`='" . $_POST["SID"] . ".'";
-    $ShiftErg = mysql_query ($ShiftSQL, $con);
-    $beginSchicht = mysql_result($ShiftErg, 0, "DateS");
-    $endSchicht   = mysql_result($ShiftErg, 0, "DateE");
+$title = "Himmel";
+$header = "Schichtpl&auml;ne";
+include "includes/header.php";
+include "includes/funktion_schichtplan.php";
+include "includes/funktion_schichtplan_aray.php";
+include "includes/funktionen.php";
 
-    // wenn keien rechte definiert sind
-    if(!isset($_SESSION['CVS'][$TID2Name[$_POST["TID"]]]))
-      $_SESSION['CVS'][$TID2Name[$_POST["TID"]]] = "Y";
+if (isset ($_POST["newtext"]) && isset ($_POST["SID"]) && isset ($_POST["TID"])) {
+	SetHeaderGo2Back();
 
-    if($_SESSION['CVS'][$TID2Name[$_POST["TID"]]] == "Y") {
-      // Ueberpruefung, ob der Engel bereits fuer eine Schicht zu dieser Zeit eingetragen ist
-      $SSQL = "SELECT * FROM `Shifts`".
-              " INNER JOIN `ShiftEntry` ON `ShiftEntry`.`SID` = `Shifts`.`SID`".
-              " WHERE ((".
-              " ((`Shifts`.`DateS` >= '$beginSchicht') and ".
-              "  (`Shifts`.`DateS` < '$endSchicht'))".
-              " OR ".
-              " ((`Shifts`.`DateE` > '$beginSchicht') and ".
-              "  (`Shifts`.`DateE` <= '$endSchicht')) ".
-              ") and ".
-              "(`ShiftEntry`.`UID` = '". $_SESSION['UID']. "'));";
-      $bErg = mysql_query($SSQL, $con);
+	// datum der einzutragenden Schicht heraussuhen...
+	$ShiftSQL = "SELECT `DateS`, `DateE` FROM `Shifts` WHERE `SID`='" . $_POST["SID"] . ".'";
+	$ShiftErg = mysql_query($ShiftSQL, $con);
+	$beginSchicht = mysql_result($ShiftErg, 0, "DateS");
+	$endSchicht = mysql_result($ShiftErg, 0, "DateE");
 
-      if(mysql_num_rows($bErg) != 0)
-        echo Get_Text("pub_schichtplan_add_AllreadyinShift");
-      else {
-        // ermitteln der noch gesuchten
-        $SQL3 = "SELECT * FROM `ShiftEntry`".
-                " WHERE ((`SID` = '". $_POST["SID"]. "') AND (`TID` = '". $_POST["TID"]. "') AND (`UID` = '0'));";
-        $Erg3 = mysql_query($SQL3, $con);
+	// wenn keien rechte definiert sind
+	if (!isset ($_SESSION['CVS'][$TID2Name[$_POST["TID"]]]))
+		$_SESSION['CVS'][$TID2Name[$_POST["TID"]]] = "Y";
 
-        if(mysql_num_rows($Erg3) <= 0)
-          echo Get_Text("pub_schichtplan_add_ToManyYousers");
-        else {
-          //write shift
-          $SQL = "UPDATE `ShiftEntry` SET ".
-                 "`UID` = '". $_SESSION['UID']. "', ".
-                 "`Comment` = '". $_POST["newtext"]. "' ".
-                 "WHERE ( (`SID` = '". $_POST["SID"]. "') and ".
-                 "(`TID` = '". $_POST["TID"]. "') and ".
-                 "(`UID` = '0')) LIMIT 1;";
-          $Erg = mysql_query($SQL, $con);
+	if ($_SESSION['CVS'][$TID2Name[$_POST["TID"]]] == "Y") {
+		// Ueberpruefung, ob der Engel bereits fuer eine Schicht zu dieser Zeit eingetragen ist
+		$SSQL = "SELECT * FROM `Shifts`" .
+		" INNER JOIN `ShiftEntry` ON `ShiftEntry`.`SID` = `Shifts`.`SID`" .
+		" WHERE ((" .
+		" ((`Shifts`.`DateS` >= '$beginSchicht') and " .
+		"  (`Shifts`.`DateS` < '$endSchicht'))" .
+		" OR " .
+		" ((`Shifts`.`DateE` > '$beginSchicht') and " .
+		"  (`Shifts`.`DateE` <= '$endSchicht')) " .
+		") and " .
+		"(`ShiftEntry`.`UID` = '" . $_SESSION['UID'] . "'));";
+		$bErg = mysql_query($SSQL, $con);
 
-          if($Erg != 1)
-            echo Get_Text("pub_schichtplan_add_Error");
-          else
-            echo Get_Text("pub_schichtplan_add_WriteOK");
-        }
-      }
-    } else {
-      echo "<h1>:-(</h1>";
-      array_push($error_messages, "Hack atteck\n");
-    }
-  } elseif (isset($_GET["SID"]) && isset($_GET["TID"])) {
-    //wenn keine Rechte definiert sind
-    if( !isset($_SESSION['CVS'][ $TID2Name[$_GET["TID"]] ]))
-      $_SESSION['CVS'][ $TID2Name[$_GET["TID"]] ] = "Y";
+		if (mysql_num_rows($bErg) != 0)
+			echo Get_Text("pub_schichtplan_add_AllreadyinShift");
+		else {
+			// ermitteln der noch gesuchten
+			$SQL3 = "SELECT * FROM `ShiftEntry`" .
+			" WHERE ((`SID` = '" . $_POST["SID"] . "') AND (`TID` = '" . $_POST["TID"] . "') AND (`UID` = '0'));";
+			$Erg3 = mysql_query($SQL3, $con);
 
-    if( $_SESSION['CVS'][ $TID2Name[$_GET["TID"]] ] == "Y") {
-      echo Get_Text("pub_schichtplan_add_Text1"). "<br /><br />\n\n".
-        "<form action=\"./schichtplan_add.php\" method=\"post\">\n".
-        "<table border=\"0\">\n";
+			if (mysql_num_rows($Erg3) <= 0)
+				echo Get_Text("pub_schichtplan_add_ToManyYousers");
+			else {
+				//write shift
+				$SQL = "UPDATE `ShiftEntry` SET " .
+				"`UID` = '" . $_SESSION['UID'] . "', " .
+				"`Comment` = '" . $_POST["newtext"] . "' " .
+				"WHERE ( (`SID` = '" . $_POST["SID"] . "') and " .
+				"(`TID` = '" . $_POST["TID"] . "') and " .
+				"(`UID` = '0')) LIMIT 1;";
+				$Erg = mysql_query($SQL, $con);
 
-      $SQL = "SELECT * FROM `Shifts` WHERE ";
-      $SQL .="(`SID` = '". $_GET["SID"]. "')";
-      $Erg = mysql_query($SQL, $con);
+				if ($Erg != 1)
+					echo Get_Text("pub_schichtplan_add_Error");
+				else
+					echo Get_Text("pub_schichtplan_add_WriteOK");
+			}
+		}
+	} else {
+		echo "<h1>:-(</h1>";
+		array_push($error_messages, "Hack atteck\n");
+	}
+}
+elseif (isset ($_GET["SID"]) && isset ($_GET["TID"])) {
+	//wenn keine Rechte definiert sind
+	if (!isset ($_SESSION['CVS'][$TID2Name[$_GET["TID"]]]))
+		$_SESSION['CVS'][$TID2Name[$_GET["TID"]]] = "Y";
 
-      echo "<tr><td>". Get_Text("pub_schichtplan_add_Date"). ":</td> <td>".
-        mysql_result($Erg, 0, "DateS"). "</td></tr>\n";
+	if ($_SESSION['CVS'][$TID2Name[$_GET["TID"]]] == "Y") {
+		echo Get_Text("pub_schichtplan_add_Text1") . "<br /><br />\n\n" .
+		"<form action=\"./schichtplan_add.php\" method=\"post\">\n" .
+		"<table border=\"0\">\n";
 
-      echo "<tr><td>". Get_Text("pub_schichtplan_add_Place"). ":</td> <td>".
-        $RoomID[ mysql_result($Erg, 0, "RID") ]. "</td></tr>\n";
+		$SQL = "SELECT * FROM `Shifts` WHERE ";
+		$SQL .= "(`SID` = '" . $_GET["SID"] . "')";
+		$Erg = mysql_query($SQL, $con);
 
-      echo "<tr><td>". Get_Text("pub_schichtplan_add_Job"). ":</td> <td>".
-        $EngelTypeID[$_GET["TID"]]. "</td></tr>\n";
+		echo "<tr><td>" . Get_Text("pub_schichtplan_add_Date") . ":</td> <td>" .
+		mysql_result($Erg, 0, "DateS") . "</td></tr>\n";
 
-      echo "<tr><td>". Get_Text("pub_schichtplan_add_Len"). ":</td> <td>".
-        mysql_result($Erg, 0, "Len"). "h</td></tr>\n";
+		echo "<tr><td>" . Get_Text("pub_schichtplan_add_Place") . ":</td> <td>" .
+		$RoomID[mysql_result($Erg, 0, "RID")] . "</td></tr>\n";
 
-      echo "<tr><td>". Get_Text("pub_schichtplan_add_TextFor"). ":</td> <td>".
-        mysql_result($Erg, 0, "Man"). "</td></tr>\n";
+		echo "<tr><td>" . Get_Text("pub_schichtplan_add_Job") . ":</td> <td>" .
+		$EngelTypeID[$_GET["TID"]] . "</td></tr>\n";
 
-      echo "<tr><td valign='top'>". Get_Text("pub_schichtplan_add_Comment"). ":</td>\n <td>".
-        "<textarea name='newtext' cols='50' rows='10'></textarea> </td></tr>\n";
+		echo "<tr><td>" . Get_Text("pub_schichtplan_add_Len") . ":</td> <td>" .
+		mysql_result($Erg, 0, "Len") . "h</td></tr>\n";
 
-      echo "<tr><td>&nbsp;</td>\n".
-        "<td><input type=\"submit\" value=\"". Get_Text("pub_schichtplan_add_submit"). "\"> </td></tr>\n".
-        "</table>\n".
-        "<input type=\"hidden\" name=\"SID\" value=\"". $_GET["SID"]. "\">\n".
-        "<input type=\"hidden\" name=\"TID\" value=\"". $_GET["TID"]. "\">\n".
-        "</form>";
-    } else {
-      echo "<h1>:-(</h1>";
-      array_push($error_messages, "Hack atteck\n");
-    }
-  }
+		echo "<tr><td>" . Get_Text("pub_schichtplan_add_TextFor") . ":</td> <td>" .
+		mysql_result($Erg, 0, "Man") . "</td></tr>\n";
 
-  include "../../../camp2011/includes/footer.php";
+		echo "<tr><td valign='top'>" . Get_Text("pub_schichtplan_add_Comment") . ":</td>\n <td>" .
+		"<textarea name='newtext' cols='50' rows='10'></textarea> </td></tr>\n";
+
+		echo "<tr><td>&nbsp;</td>\n" .
+		"<td><input type=\"submit\" value=\"" . Get_Text("pub_schichtplan_add_submit") . "\"> </td></tr>\n" .
+		"</table>\n" .
+		"<input type=\"hidden\" name=\"SID\" value=\"" . $_GET["SID"] . "\">\n" .
+		"<input type=\"hidden\" name=\"TID\" value=\"" . $_GET["TID"] . "\">\n" .
+		"</form>";
+	} else {
+		echo "<h1>:-(</h1>";
+		array_push($error_messages, "Hack atteck\n");
+	}
+}
+
+include "includes/footer.php";
 ?>

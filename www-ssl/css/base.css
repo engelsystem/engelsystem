@@ -33,7 +33,7 @@ footer p {
 	margin: 0 5%;
 }
 
-td {
+td, dt, dd {
 	padding: 4px;
 }
 
