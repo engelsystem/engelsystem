@@ -34,7 +34,7 @@ function guest_register() {
 			"`ICQ`, " . "`jabber`, " .
 			"`Size`, " . "`Passwort`, " .
 			"`Art` , " . "`kommentar`, " .
-			"`Hometown`," . "`CreateDate` ) " .
+			"`Hometown`," . "`CreateDate`, `Sprache` ) " .
 			"VALUES ( " .
 			"'" . $_POST["Nick"] . "', " . "'" . $_POST["Name"] . "', " .
 			"'" . $_POST["Vorname"] . "', " . "'" . $_POST["Alter"] . "', " .
@@ -43,7 +43,7 @@ function guest_register() {
 			"'" . $_POST["ICQ"] . "', " . "'" . $_POST["jabber"] . "', " .
 			"'" . $_POST["Size"] . "', " . "'" . $_POST["Passwort"] . "', " .
 			"'" . $_POST["Art"] . "', " . "'" . $_POST["kommentar"] . "', " .
-			"'" . $_POST["Hometown"] . "'," . "NOW())");
+			"'" . $_POST["Hometown"] . "'," . "NOW(), '" . $_SESSION['Sprache'] . "')");
 
 			if ($Erg != 1) {
 				$html .= Get_Text("makeuser_error_write1") . "<br />\n";
@@ -51,16 +51,11 @@ function guest_register() {
 			} else {
 				$html .= "<p class=\"success\">" . Get_Text("makeuser_writeOK") . "\n";
 
-				$SQL2 = "SELECT `UID` FROM `User` WHERE `Nick`='" . $_POST["Nick"] . "';";
-				$Erg2 = mysql_query($SQL2, $con);
-				$Data = mysql_fetch_array($Erg2);
-
-				$SQL3 = "INSERT INTO `UserCVS` (`UID`) VALUES ('" . $Data["UID"] . "');";
-				$Erg3 = mysql_query($SQL3, $con);
+				$Erg3 = mysql_query("INSERT INTO `UserGroups` SET `uid`=" . sql_escape(sql_id()) . ", `group_id`=-2");
 
 				if ($Erg3 != 1) {
 					$html .= "<h1>" . Get_Text("makeuser_error_write2") . "<br />\n";
-					$error = mysql_error($con);
+					$error = sql_error();
 				} else {
 					$html .= Get_Text("makeuser_writeOK2") . "<br />\n";
 					$html .= "<h1>" . Get_Text("makeuser_writeOK3") . "</h1>\n";
