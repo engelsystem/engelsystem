@@ -20,15 +20,9 @@ if ($submenus >= 1) {
 
 	for ($index_nummer = 1; $index_nummer <= $submenus; $index_nummer++) {
 ?>
-<table align="center" class="border" cellpadding="3" cellspacing="1">
-  <tr>
-    <td width="160" class="menu"> 
+<nav class="container">
     <?php include ("./".$filepost.".".$index_nummer.$filepre); ?>
-    </td>
-  </tr>
-</table>
-
-<br />
+</nav>
 <?php
 
 

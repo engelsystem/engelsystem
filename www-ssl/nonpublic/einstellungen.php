@@ -128,6 +128,7 @@ if (!isset ($_POST["action"])) {
            <option <?php if($_SESSION['color'] == 8) { echo "selected"; } ?> value="8">Pastel Style</option>
            <option <?php if($_SESSION['color'] == 4) { echo "selected"; } ?> value="4">Test Style</option>
            <option <?php if($_SESSION['color'] == 9) { echo "selected"; } ?> value="9">Test Style 21c3 </option>
+           <option <?php if($_SESSION['color'] == 10) { echo "selected"; } ?> value="10">msquare (cccamp2011)</option>
          </select>
        </td>
      </tr>
