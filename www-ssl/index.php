@@ -7,6 +7,7 @@ require_once ('includes/sys_menu.php');
 require_once ('includes/sys_mysql.php');
 require_once ('includes/sys_page.php');
 require_once ('includes/sys_template.php');
+require_once ('includes/sys_user.php');
 
 require_once ('config/config.php');
 require_once ('config/config_db.php');
@@ -28,8 +29,8 @@ $content = "";
 // Recht dafür vorhanden?
 if (in_array($p, $privileges)) {
 	if ($p == "news") {
-		//require_once ('includes/pages/user_news.php');
-		$content = "news";
+		require_once ('includes/pages/user_news.php');
+		$content = user_news();
 	}
 	elseif ($p == "login") {
 		require_once ('includes/pages/guest_login.php');
