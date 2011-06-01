@@ -36,8 +36,8 @@ function make_onlineusers() {
 
 			$html .= "<li>";
 
-			if (isset ($user))
-				$html .= DisplayAvatar($online_user['UID']);
+			//if (isset ($user))
+			//$html .= DisplayAvatar($online_user['UID']);
 
 			// Show Admin Page
 			if (in_array("admin_user_edit", $privileges)) {

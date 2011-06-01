@@ -1,6 +1,7 @@
 <?php
 require_once ('bootstrap.php');
 require_once ('includes/sys_auth.php');
+require_once ('includes/sys_counter.php');
 require_once ('includes/sys_lang.php');
 require_once ('includes/sys_menu.php');
 require_once ('includes/sys_mysql.php');
@@ -70,4 +71,6 @@ echo template_render('../templates/layout.html', array (
 	'menu' => make_menu(),
 	'content' => $content
 ));
+
+counter();
 ?>
