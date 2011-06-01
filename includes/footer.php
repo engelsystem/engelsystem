@@ -24,7 +24,7 @@ if ($_SESSION['Menu'] == "R")
 </table>
 <footer>
 	<p>
-		&copy; copyleft - <a href="mailto:erzengel@lists.ccc.de">Kontakt</a><br />
+		&copy; copyleft | <a href="mailto:erzengel@lists.ccc.de">Kontakt</a> | <a href="credits.php">Credits</a><br />
 		This is hell. Temporarily.
 	</p>
 </footer>
