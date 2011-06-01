@@ -40,7 +40,7 @@ echo "</head>\n";
 /////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// B O D Y
 /////////////////////////////////////////////////////////////////////////////////////////////
-echo "<body>\n";
+echo "<body class=\"background\">\n";
 
 echo '<header><a href="' . $url . $ENGEL_ROOT . '" id="logo"></a></header>';
 
@@ -69,12 +69,12 @@ if ($_SESSION['Menu'] == "L")
 	include ("menu.php");
 ?>
 </div>
-<div id="content">
+<div id="content" class="container">
 <?php
 
 
 echo '<h1>' . (strlen($header) == 0 ? Get_Text($Page["Name"]) : $header) . '</h1>';
-echo '<article>';
+echo '<article class="content">';
 
 if (isset ($_SESSION['UID'])) {
 	if (isset ($_SESSION['oldurl']))

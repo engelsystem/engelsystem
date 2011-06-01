@@ -37,6 +37,6 @@ function ShowMenu($MenuName) {
 				}
 			}
 	if ($Gefunden)
-		echo '<nav><h4>' . Get_Text("$MenuName/") . '</h4><ul>' . $Text . '</ul></nav>';
+		echo '<nav class="container"><h4>' . Get_Text("$MenuName/") . '</h4><ul class="content">' . $Text . '</ul></nav>';
 } //function ShowMenue
 ?>

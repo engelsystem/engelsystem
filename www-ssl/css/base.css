@@ -4,7 +4,6 @@
 }
 
 body {
-    background: #f0f0f0;
     font-family: Arial;
     sans-serif;
     font-size:
@@ -78,18 +77,22 @@ nav {
     margin: 0 10px 10px 0;
 }
 
-nav, #content {
-    border: 1px solid #888;
-}
-
 #content article {
     padding: 10px;
 }
 
-nav ul, nav p, #content article {
-    background: #fff;
-}
-
 a.sprache img {
     margin: 5px;
+}
+
+.background {
+    background: #f0f0f0;
+}
+
+.container {
+    border: 1px solid #888;
+}
+
+.content {
+    background: #fff;
 }

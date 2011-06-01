@@ -31,26 +31,28 @@ if ($submenus >= 1) {
 <br />
 <?php
 
+
 	}
 }
 
 if (isset ($_SESSION['UID'])) {
 ?>
-<nav>
+<nav class="container">
     <?php include("funktion_activeUser.php"); ?>
 </nav>
 <?php
 
+
 }
 ?>
 
-<nav>
+<nav class="container">
 <h4><?php echo Get_Text("Sprache") ?></h4>
 <?php
+
 
 include ("funktion_flag.php");
 ?>
 </nav>
-    </td> 
 
 <!-- ende des menue parts //-->

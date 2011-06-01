@@ -1,84 +1,83 @@
 
-body {
-	background-color: #131313;
-
-	color: #424242;
-
-	line-height: 150%;
-	font-family: Trebuchet MS, Lucida Grande, Arial, sans-serif;
-
-	margin-bottom: 20px;
+body, .background {
+    background-color: #131313;
+    color: #424242;
+    line-height: 150%;
+    font-family: Trebuchet MS, Lucida Grande, Arial, sans-serif;
 }
 
 a {
-	text-decoration: none;
-	color: #424242
+    text-decoration: none;
+    color: #424242
 }
 
 td {
-	font-size: small
+    font-size: small
 }
 
 a:active, a:hover {
-	font-weight: bold
+    font-weight: bold
 }
-	
+
 li {
-	font-size: small
+    font-size: small
 }
 
 .content {
-	background-color: #131313;
-	color: 		#424242;
+    background-color: #131313;
+    color: #424242;
 }
 
-.contenttopic {
-	font-weight: bold;
-	font-size: small;
-	color: #000000;
-	background-color: #333333
+.contenttopic, h1 {
+    font-weight: bold;
+    font-size: small;
+    color: #000000;
+    background-color: #333333
 }
 
-.border {
-	background-color: #333333
+.border, .container {
+    background-color: #333333;
+	border: 1px solid #424242;
 }
 
 .menu {
-	background-color: #131313;
-	color: #424242;
-	font-size: small
+    background-color: #131313;
+    color: #424242;
+    font-size: small
 }
-h4.menu { 
-	background-color: #333333;
-	font-weight: bold;
-	font-size: small;
-	color: #000000
+
+h4 {
+    background-color: #333333;
+    font-weight: bold;
+    font-size: small;
+    color: #000000
 }
 
 .linkbox {
-	background-color: #ffffff
+    background-color: #ffffff
 }
 
 .linkboxtitle {
-	font-weight: bold;
-	background-color: #000000;
-	color: #ffffff
+    font-weight: bold;
+    background-color: #000000;
+    color: #ffffff
 }
 
 .question {
-	font-weight: bold;
-	font-size: 9pt
+    font-weight: bold;
+    font-size: 9pt
 }
 
 .engeltreffen {
-        font-weight: bold;
-        font-size: 9pt;
-	color: #ff0000;
+    font-weight: bold;
+    font-size: 9pt;
+    color: #ff0000;
 }
 
 .answer {
-	font-size:  9pt;
+    font-size: 9pt;
 }
+
 .comment {
-	font-size : 6pt;
+    font-size: 6pt;
 }

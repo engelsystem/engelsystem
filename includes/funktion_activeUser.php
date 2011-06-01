@@ -11,7 +11,7 @@ $SQL = "SELECT UID, Nick, lastLogIn " .
 
 $Erg = mysql_query($SQL, $con);
 
-echo "<ul>";
+echo "<ul class=\"content\">";
 
 for ($i = 0; $i < mysql_num_rows($Erg); $i++) {
 	echo "<li>";
