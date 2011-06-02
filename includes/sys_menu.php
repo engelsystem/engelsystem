@@ -22,6 +22,8 @@ function make_navigation() {
 	// Engel Navigation
 	$menu .= make_navigation_for(Get_Text('inc_schicht_engel'), array (
 		"news",
+		"user_myshifts",
+		"user_shifts",
 		"user_messages",
 		"user_questions",
 		"user_settings"
@@ -29,8 +31,10 @@ function make_navigation() {
 
 	// Admin Navigation
 	$menu .= make_navigation_for(Get_Text('admin/'), array (
+		"admin_usershifts",
 		"admin_questions",
 		"admin_angel_types",
+		"admin_shifts",
 		"admin_rooms",
 		"admin_groups",
 		"admin_faq"

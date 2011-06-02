@@ -1,3 +1,15 @@
+jetzt:
+ * news kommentieren
+ * news administrieren
+ * user administrieren
+ * schichtimport
+ * schichtadministration
+ * meine schichten
+ * schichten
+ * meetings
+ * weckservice?
+
+später:
  * MD5-Passwörter mit Salt speichern
  * Passwort-Mindestanforderungen stellen
  * User-Avatare (code liegt auskommentiert in user_settings.php)
