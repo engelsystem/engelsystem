@@ -8,8 +8,22 @@ function make_navigation() {
 	global $privileges;
 	$menu_items = $privileges;
 	$menu_items[] = "faq";
+	$menu = "";
 
-	$menu = '<nav class="container"><h4>' . Get_Text('/') . '</h4><ul class="content">';
+	// Standard Navigation
+	$menu .= '<nav class="container"><h4>' . Get_Text('/') . '</h4><ul class="content">';
+	foreach ($menu_items as $item)
+		$menu .= '<li' . ($item == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($item) . '">' . Get_Text($item) . '</a></li>';
+	$menu .= '</ul></nav>';
+
+	// Engel Navigation
+	$menu .= '<nav class="container"><h4>' . Get_Text('inc_schicht_engel') . '</h4><ul class="content">';
+	foreach ($menu_items as $item)
+		$menu .= '<li' . ($item == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($item) . '">' . Get_Text($item) . '</a></li>';
+	$menu .= '</ul></nav>';
+
+	// Admin Navigation
+	$menu .= '<nav class="container"><h4>' . Get_Text('admin/') . '</h4><ul class="content">';
 	foreach ($menu_items as $item)
 		$menu .= '<li' . ($item == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($item) . '">' . Get_Text($item) . '</a></li>';
 	$menu .= '</ul></nav>';
