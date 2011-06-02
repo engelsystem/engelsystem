@@ -11,22 +11,36 @@ function make_navigation() {
 	$menu = "";
 
 	// Standard Navigation
-	$menu .= '<nav class="container"><h4>' . Get_Text('/') . '</h4><ul class="content">';
-	foreach ($menu_items as $item)
-		$menu .= '<li' . ($item == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($item) . '">' . Get_Text($item) . '</a></li>';
-	$menu .= '</ul></nav>';
+	$menu .= make_navigation_for(Get_Text('/'), array (
+		"start",
+		"login",
+		"logout",
+		"register",
+		"faq"
+	));
 
 	// Engel Navigation
-	$menu .= '<nav class="container"><h4>' . Get_Text('inc_schicht_engel') . '</h4><ul class="content">';
-	foreach ($menu_items as $item)
-		$menu .= '<li' . ($item == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($item) . '">' . Get_Text($item) . '</a></li>';
-	$menu .= '</ul></nav>';
+	$menu .= make_navigation_for(Get_Text('inc_schicht_engel'), array (
+		"news"
+	));
 
 	// Admin Navigation
-	$menu .= '<nav class="container"><h4>' . Get_Text('admin/') . '</h4><ul class="content">';
-	foreach ($menu_items as $item)
-		$menu .= '<li' . ($item == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($item) . '">' . Get_Text($item) . '</a></li>';
-	$menu .= '</ul></nav>';
+	$menu .= make_navigation_for(Get_Text('admin/'), array (
+		"admin_rooms"
+	));
+	return $menu;
+}
+
+function make_navigation_for($name, $pages) {
+	global $privileges, $p;
+
+	$menu = "";
+	foreach ($pages as $page)
+		if (in_array($page, $privileges))
+			$menu .= '<li' . ($page == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($page) . '">' . Get_Text($page) . '</a></li>';
+
+	if ($menu != "")
+		$menu = '<nav class="container"><h4>' . $name . '</h4><ul class="content">' . $menu . '</ul></nav>';
 	return $menu;
 }
 
