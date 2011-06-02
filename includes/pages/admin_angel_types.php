@@ -1,7 +1,5 @@
 <?php
 function admin_angel_types() {
-	include ("includes/funktion_db.php");
-
 	$html = "";
 	if (!isset ($_REQUEST['action'])) {
 		$table = "";
