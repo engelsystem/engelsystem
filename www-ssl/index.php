@@ -13,6 +13,8 @@ require_once ('includes/sys_user.php');
 require_once ('config/config.php');
 require_once ('config/config_db.php');
 
+require_once ('includes/pages/user_messages.php');
+
 session_start();
 
 sql_connect($config['host'], $config['user'], $config['pw'], $config['db']);
@@ -20,7 +22,7 @@ sql_connect($config['host'], $config['user'], $config['pw'], $config['db']);
 load_auth();
 
 // Gewünschte Seite/Funktion
-$p = "start";
+$p = isset ($user) ? "news" : "start";
 if (isset ($_REQUEST['p']))
 	$p = $_REQUEST['p'];
 
@@ -32,6 +34,9 @@ if (in_array($p, $privileges)) {
 	if ($p == "news") {
 		require_once ('includes/pages/user_news.php');
 		$content = user_news();
+	}
+	elseif ($p == "user_messages") {
+		$content = user_messages();
 	}
 	elseif ($p == "user_settings") {
 		require_once ('includes/pages/user_settings.php');
@@ -78,6 +83,10 @@ elseif ($p == "faq") {
 		header("Location: " . page_link_to("login"));
 	}
 }
+
+// Hinweis für ungelesene Nachrichten
+if (isset ($user) && $p != "user_messages")
+	$content = user_unread_messages() . $content;
 
 echo template_render('../templates/layout.html', array (
 	'theme' => isset ($user) ? $user['color'] : $default_theme,

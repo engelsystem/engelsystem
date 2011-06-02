@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 02. Juni 2011 um 18:17
+-- Erstellungszeit: 02. Juni 2011 um 19:37
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -71,16 +71,17 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 44),
-('login', 12),
-('logout', 5),
-('start', 13),
+('news', 73),
+('login', 18),
+('logout', 11),
+('start', 23),
 ('faq', 4),
 ('credits', 3),
 ('register', 3),
 ('admin_rooms', 70),
-('admin_angel_types', 68),
-('user_settings', 109);
+('admin_angel_types', 69),
+('user_settings', 111),
+('user_messages', 102);
 
 -- --------------------------------------------------------
 
@@ -124,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
@@ -138,7 +139,8 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (5, -1, 5),
 (6, -4, 6),
 (7, -4, 7),
-(8, -2, 8);
+(8, -2, 8),
+(9, -2, 9);
 
 -- --------------------------------------------------------
 
@@ -170,18 +172,28 @@ INSERT INTO `Groups` (`Name`, `UID`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `Messages` (
-  `Datum` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Datum` int(11) NOT NULL,
   `SUID` int(11) NOT NULL DEFAULT '0',
   `RUID` int(11) NOT NULL DEFAULT '0',
   `isRead` char(1) NOT NULL DEFAULT 'N',
   `Text` text NOT NULL,
-  PRIMARY KEY (`Datum`,`SUID`,`RUID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Fuers interen Communikationssystem';
+  PRIMARY KEY (`id`),
+  KEY `Datum` (`Datum`),
+  KEY `SUID` (`SUID`),
+  KEY `RUID` (`RUID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Fuers interen Communikationssystem' AUTO_INCREMENT=8 ;
 
 --
 -- Daten für Tabelle `Messages`
 --
 
+INSERT INTO `Messages` (`id`, `Datum`, `SUID`, `RUID`, `isRead`, `Text`) VALUES
+(2, 1307042342, 1, 147, 'Y', 'asdfasdfasdfasdf'),
+(4, 1307042622, 1, 147, 'Y', 'asdfasdfasdf'),
+(5, 1307042643, 1, 147, 'Y', 'foobar'),
+(6, 1307042663, 1, 147, 'Y', 'foobar'),
+(7, 1307042692, 147, 1, 'Y', 'foobar');
 
 -- --------------------------------------------------------
 
@@ -197,19 +209,16 @@ CREATE TABLE IF NOT EXISTS `News` (
   `UID` int(11) NOT NULL DEFAULT '0',
   `Treffen` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Daten für Tabelle `News`
 --
 
 INSERT INTO `News` (`ID`, `Datum`, `Betreff`, `Text`, `UID`, `Treffen`) VALUES
-(3, '2011-06-02 01:32:31', '', '', 0, 0),
-(4, '2011-06-02 01:36:27', 'Darf ich News erstellen?', 'Darf ich.', 0, 0),
-(5, '2011-06-02 01:36:35', 'Darf ich News erstellen?', 'asdfasdfasdf', 1, 0),
-(6, '2011-06-02 01:38:59', '"''>', '"''>\r\n', 1, 0),
-(7, '2011-06-02 01:38:59', '"''>', '"''>\r\n', 1, 0),
-(8, '2011-06-02 01:38:59', '"''>', '"''>\r\n', 1, 0);
+(1, '2011-06-02 21:35:27', '', '', 1, 0),
+(2, '2011-06-02 21:36:57', '', '', 1, 0),
+(3, '2011-06-02 21:36:57', '', '', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -244,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -258,7 +267,8 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (5, 'register', 'Einen neuen Engel registerieren'),
 (6, 'admin_rooms', 'Räume administrieren'),
 (7, 'admin_angel_types', 'Engel Typen administrieren'),
-(8, 'user_settings', 'User profile settings');
+(8, 'user_settings', 'User profile settings'),
+(9, 'user_messages', 'Writing and reading messages from user to user');
 
 -- --------------------------------------------------------
 
@@ -800,8 +810,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('pub_einstellungen_Hometown', 'EN', 'hometown'),
 ('makeuser_error_Alter', 'DE', 'Fehler: Dein Alter muss eine Zahl oder leer sein'),
 ('makeuser_error_Alter', 'EN', 'error: your age must be a number or empty'),
-('pub_menu_messages', 'DE', 'Nachrichten'),
-('pub_menu_messages', 'EN', 'messages'),
+('user_messages', 'DE', 'Nachrichten'),
+('user_messages', 'EN', 'Messages'),
 ('pub_messages_Datum', 'DE', 'Datum'),
 ('pub_messages_Datum', 'EN', 'date'),
 ('pub_messages_Von', 'DE', 'Gesendet'),
@@ -983,7 +993,9 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('login', 'DE', 'Login'),
 ('login', 'EN', 'Login'),
 ('credits', 'DE', 'Credits'),
-('credits', 'EN', 'Credits');
+('credits', 'EN', 'Credits'),
+('pub_messages_Neu', 'DE', 'Neu'),
+('pub_messages_Neu', 'EN', 'New');
 
 -- --------------------------------------------------------
 
@@ -1026,8 +1038,8 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307038600, '0000-00-00 00:00:00', '', '', ''),
-(147, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', 'L', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 0, 6, 'EN', 0, 'L', 1306971362, '2011-06-02 00:55:09', '', '', '');
+(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307043433, '0000-00-00 00:00:00', '', '', ''),
+(147, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', 'L', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 0, 6, 'EN', 0, 'L', 1307042703, '2011-06-02 00:55:09', '', '', '');
 
 -- --------------------------------------------------------
 

@@ -1,6 +1,9 @@
  * MD5-Passwörter mit Salt speichern
  * Passwort-Mindestanforderungen stellen
- * Avatare
+ * User-Avatare
+ * user_messages schön machen
+ * Formulare weg von Tabellen
+ * user_news lässt sich nicht bedienen (POST ohne redirects...)
 
 
 * schichten ueber monatsgrenzen einbaue im moment werden die tage nur 

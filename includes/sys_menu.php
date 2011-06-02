@@ -22,6 +22,7 @@ function make_navigation() {
 	// Engel Navigation
 	$menu .= make_navigation_for(Get_Text('inc_schicht_engel'), array (
 		"news",
+		"user_messages",
 		"user_settings"
 	));
 
