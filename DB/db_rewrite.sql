@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 02. Juni 2011 um 15:01
+-- Erstellungszeit: 02. Juni 2011 um 15:48
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -25,15 +25,15 @@ CREATE TABLE IF NOT EXISTS `AngelTypes` (
   `Man` text,
   PRIMARY KEY (`TID`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Daten für Tabelle `AngelTypes`
 --
 
 INSERT INTO `AngelTypes` (`TID`, `Name`, `Man`) VALUES
-(1, 'Video', NULL),
-(2, 'Audio', NULL);
+(1, 'Sex', ''),
+(4, 'Audio', '');
 
 -- --------------------------------------------------------
 
@@ -75,9 +75,10 @@ INSERT INTO `Counter` (`URL`, `Anz`) VALUES
 ('logout', 2),
 ('start', 8),
 ('faq', 4),
-('credits', 1),
+('credits', 2),
 ('register', 1),
-('admin_rooms', 64);
+('admin_rooms', 64),
+('admin_angel_types', 58);
 
 -- --------------------------------------------------------
 
@@ -121,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
@@ -133,7 +134,8 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (3, -2, 3),
 (4, -2, 4),
 (5, -1, 5),
-(6, -4, 6);
+(6, -4, 6),
+(7, -4, 7);
 
 -- --------------------------------------------------------
 
@@ -239,7 +241,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -251,7 +253,8 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (3, 'news', 'Anzeigen der News-Seite'),
 (4, 'logout', 'User darf sich ausloggen'),
 (5, 'register', 'Einen neuen Engel registerieren'),
-(6, 'admin_rooms', 'Räume administrieren');
+(6, 'admin_rooms', 'Räume administrieren'),
+(7, 'admin_angel_types', 'Engel Typen administrieren');
 
 -- --------------------------------------------------------
 
@@ -314,7 +317,6 @@ CREATE TABLE IF NOT EXISTS `RoomAngelTypes` (
 --
 
 INSERT INTO `RoomAngelTypes` (`id`, `room_id`, `angel_type_id`, `count`) VALUES
-(1, 1, 2, 2),
 (2, 1, 1, 3);
 
 -- --------------------------------------------------------
@@ -494,7 +496,7 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('pub_schicht_Anzeige_2', 'DE', ' im Raum: '),
 ('pub_schicht_Anzeige_3', 'DE', 'Anzeige des Schichtplans f&uuml;r den '),
 ('inc_schicht_engel', 'DE', 'Engel'),
-('inc_schicht_engel', 'EN', 'Drone'),
+('inc_schicht_engel', 'EN', 'Angel'),
 ('inc_schicht_ist', 'DE', 'ist'),
 ('inc_schicht_sind', 'DE', 'sind'),
 ('inc_schicht_weitere', 'DE', ' weitere'),
@@ -838,8 +840,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('pub_sprache_ShowEntry', 'EN', 'show entrys'),
 ('admin_rooms', 'DE', 'Räume'),
 ('admin_rooms', 'EN', 'Rooms'),
-('pub_menu_Engeltypen', 'DE', 'Engeltypen'),
-('pub_menu_Engeltypen', 'EN', 'Dronetypes'),
+('admin_angel_types', 'DE', 'Engeltypen'),
+('admin_angel_types', 'EN', 'Angel types'),
 ('pub_menu_SchichtplanEdit', 'DE', 'Schichtplan'),
 ('pub_menu_SchichtplanEdit', 'EN', 'Shiftplan'),
 ('pub_menu_UpdateDB', 'DE', 'UpdateDB'),
@@ -987,30 +989,30 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 
 CREATE TABLE IF NOT EXISTS `User` (
   `UID` int(11) NOT NULL AUTO_INCREMENT,
-  `Nick` varchar(23) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `Name` varchar(23) CHARACTER SET utf8 DEFAULT NULL,
-  `Vorname` varchar(23) CHARACTER SET utf8 DEFAULT NULL,
+  `Nick` varchar(23) NOT NULL DEFAULT '',
+  `Name` varchar(23) DEFAULT NULL,
+  `Vorname` varchar(23) DEFAULT NULL,
   `Alter` int(4) DEFAULT NULL,
-  `Telefon` varchar(40) CHARACTER SET utf8 DEFAULT NULL,
-  `DECT` varchar(4) CHARACTER SET utf8 DEFAULT NULL,
-  `Handy` varchar(40) CHARACTER SET utf8 DEFAULT NULL,
-  `email` varchar(123) CHARACTER SET utf8 DEFAULT NULL,
-  `ICQ` varchar(30) CHARACTER SET utf8 DEFAULT NULL,
-  `jabber` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
-  `Size` varchar(4) CHARACTER SET utf8 DEFAULT NULL,
-  `Passwort` varchar(40) CHARACTER SET utf8 DEFAULT NULL,
+  `Telefon` varchar(40) DEFAULT NULL,
+  `DECT` varchar(4) DEFAULT NULL,
+  `Handy` varchar(40) DEFAULT NULL,
+  `email` varchar(123) DEFAULT NULL,
+  `ICQ` varchar(30) DEFAULT NULL,
+  `jabber` varchar(200) DEFAULT NULL,
+  `Size` varchar(4) DEFAULT NULL,
+  `Passwort` varchar(40) DEFAULT NULL,
   `Gekommen` tinyint(4) NOT NULL DEFAULT '0',
   `Aktiv` tinyint(4) NOT NULL DEFAULT '0',
   `Tshirt` tinyint(4) DEFAULT '0',
   `color` tinyint(4) DEFAULT '6',
-  `Sprache` char(2) CHARACTER SET utf8 DEFAULT 'EN',
+  `Sprache` char(2) DEFAULT 'EN',
   `Avatar` int(11) DEFAULT '0',
-  `Menu` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'L',
+  `Menu` char(1) NOT NULL DEFAULT 'L',
   `lastLogIn` int(11) NOT NULL,
   `CreateDate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `Art` varchar(30) CHARACTER SET utf8 DEFAULT NULL,
-  `kommentar` text CHARACTER SET utf8,
-  `Hometown` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `Art` varchar(30) DEFAULT NULL,
+  `kommentar` text,
+  `Hometown` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`UID`,`Nick`),
   UNIQUE KEY `Nick` (`Nick`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=148 ;
@@ -1020,7 +1022,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', '', '', 0, '', '', '', '', NULL, NULL, '', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307026626, '0000-00-00 00:00:00', '', '', ''),
+(1, 'admin', '', '', 0, '', '', '', '', NULL, NULL, '', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307029663, '0000-00-00 00:00:00', '', '', ''),
 (147, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', 'L', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 0, 6, 'EN', 0, 'L', 1306971362, '2011-06-02 00:55:09', '', '', '');
 
 -- --------------------------------------------------------
@@ -1032,58 +1034,58 @@ INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`
 CREATE TABLE IF NOT EXISTS `UserCVS` (
   `UID` int(11) NOT NULL DEFAULT '0',
   `GroupID` int(11) DEFAULT '-2',
-  `index.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `logout.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `faq.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `lageplan.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `makeuser.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/index.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/news.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/newsAddMeting` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/news_comments.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/myschichtplan.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/myschichtplan_ical.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/schichtplan_beamer.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/engelbesprechung.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/schichtplan.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/schichtplan_add.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/wecken.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/waeckliste.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/messages.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/faq.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `nonpublic/einstellungen.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `Change T_Shirt Size` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/index.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/room.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/EngelType.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/schichtplan.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/shiftadd.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/schichtplan_druck.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/user.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/userChangeNormal.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/userSaveNormal.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/userChangeSecure.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/userSaveSecure.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/group.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/userDefaultSetting.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/UserPicture.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/userArrived.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/aktiv.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/tshirt.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/news.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/faq.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/free.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/sprache.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/dect.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/dect_call.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/dbUpdateFromXLS.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/Recentchanges.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `admin/debug.php` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `Herald` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `Info` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `Conference` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `Kasse` char(1) CHARACTER SET utf8 NOT NULL DEFAULT 'G',
-  `credits.php` char(1) CHARACTER SET utf8 NOT NULL,
+  `index.php` char(1) NOT NULL DEFAULT 'G',
+  `logout.php` char(1) NOT NULL DEFAULT 'G',
+  `faq.php` char(1) NOT NULL DEFAULT 'G',
+  `lageplan.php` char(1) NOT NULL DEFAULT 'G',
+  `makeuser.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/index.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/news.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/newsAddMeting` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/news_comments.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/myschichtplan.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/myschichtplan_ical.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/schichtplan_beamer.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/engelbesprechung.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/schichtplan.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/schichtplan_add.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/wecken.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/waeckliste.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/messages.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/faq.php` char(1) NOT NULL DEFAULT 'G',
+  `nonpublic/einstellungen.php` char(1) NOT NULL DEFAULT 'G',
+  `Change T_Shirt Size` char(1) NOT NULL DEFAULT 'G',
+  `admin/index.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/room.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/EngelType.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/schichtplan.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/shiftadd.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/schichtplan_druck.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/user.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/userChangeNormal.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/userSaveNormal.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/userChangeSecure.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/userSaveSecure.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/group.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/userDefaultSetting.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/UserPicture.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/userArrived.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/aktiv.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/tshirt.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/news.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/faq.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/free.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/sprache.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/dect.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/dect_call.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/dbUpdateFromXLS.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/Recentchanges.php` char(1) NOT NULL DEFAULT 'G',
+  `admin/debug.php` char(1) NOT NULL DEFAULT 'G',
+  `Herald` char(1) NOT NULL DEFAULT 'G',
+  `Info` char(1) NOT NULL DEFAULT 'G',
+  `Conference` char(1) NOT NULL DEFAULT 'G',
+  `Kasse` char(1) NOT NULL DEFAULT 'G',
+  `credits.php` char(1) NOT NULL,
   PRIMARY KEY (`UID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
