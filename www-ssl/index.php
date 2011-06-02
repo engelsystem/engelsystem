@@ -6,6 +6,7 @@ require_once ('includes/sys_lang.php');
 require_once ('includes/sys_menu.php');
 require_once ('includes/sys_mysql.php');
 require_once ('includes/sys_page.php');
+require_once ('includes/sys_shift.php');
 require_once ('includes/sys_template.php');
 require_once ('includes/sys_user.php');
 
@@ -43,6 +44,10 @@ if (in_array($p, $privileges)) {
 	elseif ($p == "logout") {
 		require_once ('includes/pages/guest_login.php');
 		$content = guest_logout();
+	}
+	elseif ($p == "admin_rooms") {
+		require_once ('includes/pages/admin_rooms.php');
+		$content = admin_rooms();
 	} else {
 		require_once ('includes/pages/guest_start.php');
 		$content = guest_start();

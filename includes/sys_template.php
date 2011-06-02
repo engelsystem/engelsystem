@@ -14,4 +14,12 @@ function template_render($file, $data) {
 		die('Cannot find template file &laquo;' . $file . '&raquo;.');
 	}
 }
+
+function html_options($name, $options, $selected = "") {
+	$html = "";
+	foreach ($options as $value => $label)
+		$html .= '<input type="radio"' . ($value == $selected ? ' selected="selected"' : '') . ' name="' . $name . '" value="' . $value . '"> ' . $label;
+
+	return $html;
+}
 ?>

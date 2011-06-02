@@ -64,43 +64,43 @@ function user_news_output() {
 
 	for ($i = 1; $i <= $dis_rows; $i++) {
 		if (!((($i * $DISPLAY_NEWS) - $_GET["news_begin"]) == $DISPLAY_NEWS)) {
-			$html .= "<a href=\"./news.php?news_begin=" . (($i * $DISPLAY_NEWS) - $DISPLAY_NEWS -1) . "\">$i</a>&nbsp; ";
+			$html .= '<a href="' . page_link_to("news") . '&news_begin=' . (($i * $DISPLAY_NEWS) - $DISPLAY_NEWS -1) . '">' . $i . '</a>&nbsp; ';
 		} else {
 			$html .= "$i&nbsp; ";
 		}
 	}
 	$html .= '</div>
-			<br /><hr />
-			<h2>' . Get_Text(6) . '</h2>
-			<a name="Neu">&nbsp;</a>
-			
-			<form action="" method="post">
-			<?PHP
-			
-				// Datum mit uebergeben, um doppelte Eintraege zu verhindern 
-				// (Reload nach dem Eintragen!)
-			?>
-			<input type="hidden" name="date" value="' . date("Y-m-d H:i:s") . '">
-			<table>
-			 <tr>
-			  <td align="right">' . Get_Text(7) . '</td>
-			  <td><input type="text" name="betreff" size="60"></td>
-			 </tr>
-			 <tr>
-			  <td align="right">' . Get_Text(8) . '</td>
-			  <td><textarea name="text" cols="50" rows="10"></textarea></td>
-			 </tr>';
+					<br /><hr />
+					<h2>' . Get_Text(6) . '</h2>
+					<a name="Neu">&nbsp;</a>
+					
+					<form action="" method="post">
+					<?PHP
+					
+						// Datum mit uebergeben, um doppelte Eintraege zu verhindern 
+						// (Reload nach dem Eintragen!)
+					?>
+					<input type="hidden" name="date" value="' . date("Y-m-d H:i:s") . '">
+					<table>
+					 <tr>
+					  <td align="right">' . Get_Text(7) . '</td>
+					  <td><input type="text" name="betreff" size="60"></td>
+					 </tr>
+					 <tr>
+					  <td align="right">' . Get_Text(8) . '</td>
+					  <td><textarea name="text" cols="50" rows="10"></textarea></td>
+					 </tr>';
 	if (in_array('news_add_meeting', $privileges)) {
 		$html .= ' <tr>
-						  <td align="right">' . Get_Text(9) . '</td>
-						  <td><input type="checkbox" name="treffen" size="1" value="1"></td>
-						 </tr>';
+										  <td align="right">' . Get_Text(9) . '</td>
+										  <td><input type="checkbox" name="treffen" size="1" value="1"></td>
+										 </tr>';
 
 	}
 	$html .= '</table>
-			<br />
-			<input type="submit" value="' . Get_Text("save") . '">
-			</form>';
+					<br />
+					<input type="submit" value="' . Get_Text("save") . '">
+					</form>';
 	return $html;
 }
 ?>

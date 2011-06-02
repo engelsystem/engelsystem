@@ -93,6 +93,22 @@ a.sprache img {
     margin-right: 5px;
 }
 
+table {
+	border-collapse: collapse;
+}
+
+tr:hover > td {
+	background: #f0f0f0;
+}
+
+th {
+	background: #f0f0f0;
+}
+
+td, th {
+	border: 1px solid #888;
+}
+
 .background {
     background: #f0f0f0;
 }
