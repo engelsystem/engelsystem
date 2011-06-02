@@ -5,6 +5,8 @@ function user_news() {
 
 function user_news_output() {
 	global $DISPLAY_NEWS, $privileges;
+	
+	$html = "";
 
 	if (isset ($_POST["text"]) && isset ($_POST["betreff"]) && IsSet ($_POST["date"])) {
 		if (!isset ($_POST["treffen"]))
