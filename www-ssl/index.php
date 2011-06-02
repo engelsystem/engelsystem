@@ -33,6 +33,10 @@ if (in_array($p, $privileges)) {
 		require_once ('includes/pages/user_news.php');
 		$content = user_news();
 	}
+	elseif ($p == "user_settings") {
+		require_once ('includes/pages/user_settings.php');
+		$content = user_settings();
+	}
 	elseif ($p == "login") {
 		require_once ('includes/pages/guest_login.php');
 		$content = guest_login();

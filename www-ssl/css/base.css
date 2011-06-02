@@ -101,10 +101,6 @@ table {
 	border-collapse: collapse;
 }
 
-tr:hover > td {
-	background: #f0f0f0;
-}
-
 th {
 	background: #f0f0f0;
 }

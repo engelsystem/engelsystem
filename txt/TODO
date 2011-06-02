@@ -1,3 +1,8 @@
+ * MD5-Passwörter mit Salt speichern
+ * Passwort-Mindestanforderungen stellen
+ * Avatare
+
+
 * schichten ueber monatsgrenzen einbaue im moment werden die tage nur 
   hochgezaehlt und die monatzgrenzen werden ignoriert
 * verify use of dect_clear.php and jabberserver.php

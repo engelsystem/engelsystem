@@ -22,4 +22,15 @@ function html_options($name, $options, $selected = "") {
 
 	return $html;
 }
+
+function html_select_key($name, $rows, $selected) {
+	$html = '<select name="' . $name . '">';
+	foreach ($rows as $key => $row)
+		if (($key == $selected) || ($row == $selected))
+			$html .= '<option value="' . $key . '" selected="selected">' . $row . '</option>';
+		else
+			$html .= '<option value="' . $key . '">' . $row . '</option>';
+	$html .= '</select>';
+	return $html;
+}
 ?>
