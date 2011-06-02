@@ -29,6 +29,7 @@ function make_navigation() {
 
 	// Admin Navigation
 	$menu .= make_navigation_for(Get_Text('admin/'), array (
+		"admin_questions",
 		"admin_angel_types",
 		"admin_rooms",
 		"admin_groups"
@@ -39,9 +40,13 @@ function make_navigation() {
 function make_navigation_for($name, $pages) {
 	global $privileges, $p;
 
+	$specials = array (
+		"faq"
+	);
+
 	$menu = "";
 	foreach ($pages as $page)
-		if (in_array($page, $privileges))
+		if (in_array($page, $privileges) || in_array($page, $specials))
 			$menu .= '<li' . ($page == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($page) . '">' . Get_Text($page) . '</a></li>';
 
 	if ($menu != "")

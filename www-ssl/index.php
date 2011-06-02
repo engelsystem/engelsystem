@@ -13,6 +13,7 @@ require_once ('includes/sys_user.php');
 require_once ('config/config.php');
 require_once ('config/config_db.php');
 
+require_once ('includes/pages/admin_questions.php');
 require_once ('includes/pages/user_messages.php');
 
 session_start();
@@ -58,6 +59,9 @@ if (in_array($p, $privileges)) {
 		require_once ('includes/pages/guest_login.php');
 		$content = guest_logout();
 	}
+	elseif ($p == "admin_questions") {
+		$content = admin_questions();
+	}
 	elseif ($p == "admin_angel_types") {
 		require_once ('includes/pages/admin_angel_types.php');
 		$content = admin_angel_types();
@@ -95,6 +99,10 @@ elseif ($p == "faq") {
 // Hinweis für ungelesene Nachrichten
 if (isset ($user) && $p != "user_messages")
 	$content = user_unread_messages() . $content;
+
+// Erzengel Hinweis für unbeantwortete Fragen
+if (isset ($user) && $p != "admin_questions")
+	$content = admin_new_questions() . $content;
 
 echo template_render('../templates/layout.html', array (
 	'theme' => isset ($user) ? $user['color'] : $default_theme,

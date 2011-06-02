@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 02. Juni 2011 um 21:45
+-- Erstellungszeit: 02. Juni 2011 um 22:21
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -71,19 +71,20 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 78),
-('login', 20),
-('logout', 12),
-('start', 24),
-('faq', 4),
+('news', 80),
+('login', 24),
+('logout', 13),
+('start', 25),
+('faq', 6),
 ('credits', 3),
 ('register', 3),
 ('admin_rooms', 70),
 ('admin_angel_types', 69),
 ('user_settings', 116),
-('user_messages', 107),
-('admin_groups', 94),
-('user_questions', 30);
+('user_messages', 108),
+('admin_groups', 99),
+('user_questions', 53),
+('admin_questions', 41);
 
 -- --------------------------------------------------------
 
@@ -127,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
@@ -139,11 +140,12 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (31, -2, 11),
 (30, -2, 9),
 (23, -1, 2),
-(6, -4, 6),
-(7, -4, 7),
+(34, -4, 12),
+(33, -4, 7),
 (29, -2, 3),
 (28, -2, 4),
-(12, -5, 10);
+(12, -5, 10),
+(35, -4, 6);
 
 -- --------------------------------------------------------
 
@@ -254,7 +256,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -271,7 +273,8 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (8, 'user_settings', 'User profile settings'),
 (9, 'user_messages', 'Writing and reading messages from user to user'),
 (10, 'admin_groups', 'Manage usergroups and their rights'),
-(11, 'user_questions', 'Let users ask questions');
+(11, 'user_questions', 'Let users ask questions'),
+(12, 'admin_questions', 'Answer user''s questions');
 
 -- --------------------------------------------------------
 
@@ -286,14 +289,14 @@ CREATE TABLE IF NOT EXISTS `Questions` (
   `AID` int(11) NOT NULL DEFAULT '0',
   `Answer` text NOT NULL,
   PRIMARY KEY (`QID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Fragen und Antworten' AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Fragen und Antworten' AUTO_INCREMENT=5 ;
 
 --
 -- Daten für Tabelle `Questions`
 --
 
 INSERT INTO `Questions` (`QID`, `UID`, `Question`, `AID`, `Answer`) VALUES
-(3, 1, 'Ficken?', 0, '');
+(4, 1, 'Hallo?\nEy?', 1, 'Jo,\nJo!');
 
 -- --------------------------------------------------------
 
@@ -1004,7 +1007,9 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('admin_groups', 'DE', 'Gruppenrechte'),
 ('admin_groups', 'EN', 'Grouprights'),
 ('user_questions', 'DE', 'Erzengel fragen'),
-('user_questions', 'EN', 'Ask arch angel');
+('user_questions', 'EN', 'Ask arch angel'),
+('admin_questions', 'DE', 'Fragen beantworten'),
+('admin_questions', 'EN', 'Answer questions');
 
 -- --------------------------------------------------------
 
@@ -1047,7 +1052,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307051093, '0000-00-00 00:00:00', '', '', ''),
+(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307053257, '0000-00-00 00:00:00', '', '', ''),
 (147, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', 'L', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 0, 6, 'EN', 0, 'L', 1307042703, '2011-06-02 00:55:09', '', '', '');
 
 -- --------------------------------------------------------

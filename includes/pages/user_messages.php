@@ -1,11 +1,13 @@
 <?php
 function user_unread_messages() {
-	global $user;
+	global $user, $privileges;
 
-	$new_messages = sql_num_query("SELECT * FROM `Messages` WHERE isRead='N' AND `RUID`=" . sql_escape($user['UID']));
+	if (in_array("user_messages", $privileges)) {
+		$new_messages = sql_num_query("SELECT * FROM `Messages` WHERE isRead='N' AND `RUID`=" . sql_escape($user['UID']));
 
-	if ($new_messages > 0)
-		return '<p class="notice"><a href="' . page_link_to("user_messages") . '">' . Get_Text("pub_messages_new1") . " " . $new_messages . " " . Get_Text("pub_messages_new2") . '</a></p><hr />';
+		if ($new_messages > 0)
+			return '<p class="notice"><a href="' . page_link_to("user_messages") . '">' . Get_Text("pub_messages_new1") . " " . $new_messages . " " . Get_Text("pub_messages_new2") . '</a></p><hr />';
+	}
 
 	return "";
 }
