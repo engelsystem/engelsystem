@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 02. Juni 2011 um 19:37
+-- Erstellungszeit: 02. Juni 2011 um 20:39
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -80,8 +80,9 @@ INSERT INTO `Counter` (`URL`, `Anz`) VALUES
 ('register', 3),
 ('admin_rooms', 70),
 ('admin_angel_types', 69),
-('user_settings', 111),
-('user_messages', 102);
+('user_settings', 115),
+('user_messages', 102),
+('admin_groups', 86);
 
 -- --------------------------------------------------------
 
@@ -125,22 +126,22 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
 --
 
 INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
-(1, -1, 1),
-(2, -1, 2),
+(24, -1, 5),
 (3, -2, 3),
 (4, -2, 4),
-(5, -1, 5),
+(23, -1, 2),
 (6, -4, 6),
 (7, -4, 7),
 (8, -2, 8),
-(9, -2, 9);
+(9, -2, 9),
+(12, -5, 10);
 
 -- --------------------------------------------------------
 
@@ -253,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -268,7 +269,8 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (6, 'admin_rooms', 'Räume administrieren'),
 (7, 'admin_angel_types', 'Engel Typen administrieren'),
 (8, 'user_settings', 'User profile settings'),
-(9, 'user_messages', 'Writing and reading messages from user to user');
+(9, 'user_messages', 'Writing and reading messages from user to user'),
+(10, 'admin_groups', 'Manage usergroups and their rights');
 
 -- --------------------------------------------------------
 
@@ -995,7 +997,9 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('credits', 'DE', 'Credits'),
 ('credits', 'EN', 'Credits'),
 ('pub_messages_Neu', 'DE', 'Neu'),
-('pub_messages_Neu', 'EN', 'New');
+('pub_messages_Neu', 'EN', 'New'),
+('admin_groups', 'DE', 'Gruppenrechte'),
+('admin_groups', 'EN', 'Grouprights');
 
 -- --------------------------------------------------------
 
@@ -1038,7 +1042,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307043433, '0000-00-00 00:00:00', '', '', ''),
+(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307046926, '0000-00-00 00:00:00', '', '', ''),
 (147, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', 'L', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 0, 6, 'EN', 0, 'L', 1307042703, '2011-06-02 00:55:09', '', '', '');
 
 -- --------------------------------------------------------

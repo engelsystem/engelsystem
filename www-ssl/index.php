@@ -61,6 +61,10 @@ if (in_array($p, $privileges)) {
 	elseif ($p == "admin_rooms") {
 		require_once ('includes/pages/admin_rooms.php');
 		$content = admin_rooms();
+	}
+	elseif ($p == "admin_groups") {
+		require_once ('includes/pages/admin_groups.php');
+		$content = admin_groups();
 	} else {
 		require_once ('includes/pages/guest_start.php');
 		$content = guest_start();

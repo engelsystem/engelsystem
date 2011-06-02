@@ -4,6 +4,8 @@
  * user_messages schön machen
  * Formulare weg von Tabellen
  * user_news lässt sich nicht bedienen (POST ohne redirects...)
+ * Privilegien korrigieren (an die vom CVS anpassen)
+ * Beim Raum-Management die benötigten Engel anzeigen
 
 
 * schichten ueber monatsgrenzen einbaue im moment werden die tage nur 
