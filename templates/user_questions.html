@@ -1,0 +1,52 @@
+Not yet answered questions:
+<table>
+    <thead>
+        <tr>
+            <th>
+                Question
+            </th>
+            <th>
+                &nbsp;
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        %open_questions%
+    </tbody>
+</table>
+<hr/> Answered questions:
+<table>
+    <thead>
+        <tr>
+            <th>
+                Question
+            </th>
+            <th>
+                From
+            </th>
+            <th>
+                Answer
+            </th>
+            <th>
+                &nbsp;
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        %answered_questions%
+    </tbody>
+</table>
+<hr/>
+<form action="%link%&action=ask" method="post">
+    <table>
+        <tr>
+            <td>
+                Question:
+            </td>
+            <td>
+                <textarea name="question"></textarea>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" name="submit" value="Ask" />
+</form>

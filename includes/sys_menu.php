@@ -23,6 +23,7 @@ function make_navigation() {
 	$menu .= make_navigation_for(Get_Text('inc_schicht_engel'), array (
 		"news",
 		"user_messages",
+		"user_questions",
 		"user_settings"
 	));
 

@@ -1,12 +1,12 @@
  * MD5-Passwörter mit Salt speichern
  * Passwort-Mindestanforderungen stellen
- * User-Avatare
+ * User-Avatare (code liegt auskommentiert in user_settings.php)
  * user_messages schön machen
  * Formulare weg von Tabellen
  * user_news lässt sich nicht bedienen (POST ohne redirects...)
  * Privilegien korrigieren (an die vom CVS anpassen)
  * Beim Raum-Management die benötigten Engel anzeigen
-
+ * Löschen nur mit Rückfrage
 
 * schichten ueber monatsgrenzen einbaue im moment werden die tage nur 
   hochgezaehlt und die monatzgrenzen werden ignoriert

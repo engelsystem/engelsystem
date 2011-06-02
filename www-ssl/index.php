@@ -38,6 +38,10 @@ if (in_array($p, $privileges)) {
 	elseif ($p == "user_messages") {
 		$content = user_messages();
 	}
+	elseif ($p == "user_questions") {
+		require_once ('includes/pages/user_questions.php');
+		$content = user_questions();
+	}
 	elseif ($p == "user_settings") {
 		require_once ('includes/pages/user_settings.php');
 		$content = user_settings();
