@@ -26,6 +26,7 @@ function make_navigation() {
 
 	// Admin Navigation
 	$menu .= make_navigation_for(Get_Text('admin/'), array (
+		"admin_angel_types",
 		"admin_rooms"
 	));
 	return $menu;

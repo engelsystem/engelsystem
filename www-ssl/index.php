@@ -45,6 +45,10 @@ if (in_array($p, $privileges)) {
 		require_once ('includes/pages/guest_login.php');
 		$content = guest_logout();
 	}
+	elseif ($p == "admin_angel_types") {
+		require_once ('includes/pages/admin_angel_types.php');
+		$content = admin_angel_types();
+	}
 	elseif ($p == "admin_rooms") {
 		require_once ('includes/pages/admin_rooms.php');
 		$content = admin_rooms();
