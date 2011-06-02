@@ -109,6 +109,11 @@ td, th {
 	border: 1px solid #888;
 }
 
+textarea {
+	height: 200px;
+	width: 300px;
+}
+
 .background {
     background: #f0f0f0;
 }

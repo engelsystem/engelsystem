@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 02. Juni 2011 um 22:21
+-- Erstellungszeit: 02. Juni 2011 um 23:02
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -75,16 +75,17 @@ INSERT INTO `Counter` (`URL`, `Anz`) VALUES
 ('login', 24),
 ('logout', 13),
 ('start', 25),
-('faq', 6),
+('faq', 16),
 ('credits', 3),
 ('register', 3),
 ('admin_rooms', 70),
 ('admin_angel_types', 69),
 ('user_settings', 116),
-('user_messages', 108),
-('admin_groups', 99),
-('user_questions', 53),
-('admin_questions', 41);
+('user_messages', 111),
+('admin_groups', 104),
+('user_questions', 54),
+('admin_questions', 41),
+('admin_faq', 53);
 
 -- --------------------------------------------------------
 
@@ -94,27 +95,29 @@ INSERT INTO `Counter` (`URL`, `Anz`) VALUES
 
 CREATE TABLE IF NOT EXISTS `FAQ` (
   `FID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `Frage` text NOT NULL,
-  `Antwort` text NOT NULL,
+  `Frage_de` text NOT NULL,
+  `Antwort_de` text NOT NULL,
+  `Frage_en` text NOT NULL,
+  `Antwort_en` text NOT NULL,
   PRIMARY KEY (`FID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
 
 --
 -- Daten für Tabelle `FAQ`
 --
 
-INSERT INTO `FAQ` (`FID`, `Frage`, `Antwort`) VALUES
-(1, 'Komme ich als Engel billiger/kostenlos auf den Congress?<br />\r\nDo I get in cheaper / for free to the congress as an angel ?', 'Nein, jeder Engel muss normal Eintritt bezahlen.<br />\r\nNo, every angel has to pay full price.'),
-(2, 'Was bekomme ich f&uuml;r meine Mitarbeit?<br />\r\nWhat can i expect in return for my help? \r\n', 'Jeder Engel der arbeitet bekommt ein kostenloses T-Shirt nach der Veranstalltung <br />\r\nEvery working angel gets a free shirt after the event. '),
-(3, 'Wie lange muss ich als Engel arbeiten?<br />\r\nHow long do I have to work as an angel ?', 'Diese Frage ist schwer zu beantworten. Es h&auml;ngt z.B. davon ab, was man macht (z.B. Workshop-Engel) und wieviele Engel wir zusammen bekommen. <br />\r\nThis is difficult to answer. It depends on what you decide to do (e.g. workshop angel) and how many people will attend. '),
-(6, 'Ich bin erst XX Jahre alt. Kann ich &uuml;berhaupt helfen?<br />\r\nI''m only XX years old. Can I help anyway?', 'Wir k&ouml;nnen jede helfende Hand gebrauchen. Wenn du alt genug bist, um zum Congress zu kommen, bist du auch alt genug zu helfen. <br />\r\nWe need every help we can get. If your old enough to come to the congress, your old enough to help.'),
-(8, 'Wer sind eigentlich die Erzengel?<br />\r\nWho <b>are</b> the Arch-Angels?\r\n', 'Erzengel sind dieses Jahr: BugBlue, TabascoEye, Jeedi, Daizy, volty<br /> \r\nThe ArchAngels for this year are: BugBlue, TabascoEye, Jeedi, Daizy, volty\r\n'),
-(9, 'Gibt es dieses Jahr wieder einen IRC-Channel f&uuml;r Engel?<br />\r\nWill there be an IRC-channel for angels again?', 'Ja, im IRC-Net existiert #chaos-angel. Einfach mal reinschaun!<br />\r\nYes, in the IRC-net there''s #chaos-angel. Just have a look!'),
-(10, 'Wie gehe ich mit den Besuchern um? <br />\r\nHow do I treat visitors?', 'Man soll gegen&uuml;ber den Besuchern immer h&ouml;flich und freundlich sein, auch wenn diese gestresst sind. Wenn man das Gef&uuml;hl hat, dass man mit der Situation nicht mehr klarkommt, sollte man sich jemanden zur Unterst&uuml;tzung holen, bevor man selbst auch gestresst wird :-)  <br />\r\nYou should always be polite and friendly, especially if they are stressed. When you feel you can''t handle it on your own, get someone to help you out before you get so stressed yourself that you get impolite.'),
-(11, 'Wann sind die Engelbesprechungen? <br />\r\nWhen are the angels briefings?', 'Das wird vor Ort noch festgelegt und steht im Himmelnewssystem.<br />\r\nThe information on the Angel Briefings will be in the news section of this system.'),
-(12, 'Was muss ich noch bedenken?<br />\r\nAnything else I should know?', 'Man sollte nicht total &uuml;berm&uuml;det oder ausgehungert, wenn n man einen Einsatz hat. Eine gewisse Fitness ist hilfreich.<br />\r\nYou should not be exhausted or starving when you arrive for a shift. A reasonable amount of fitness for work would be very helpful.'),
-(13, 'Ich habe eine Frage, auf die ich in der FAQ keine Antwort gefunden habe. Wohin soll ich mich wenden? <br />\r\nI have a guestion not answered here. Who can I ask?', 'Bei weitere Fragen kannst du die Anfragen an die Erzengel Formular benutzen.<br />\r\nIf you have further questions, you can use the Questions for the ArchAngels form.'),
-(20, 'Wer muss alles Eintritt zahlen?<br />\r\nWho has to pay the full entrance price?', 'Jeder. Zumindest, solange er/sie &auml;lter als 12 Jahre ist...<br />\r\nEveryone who is at older than 12 years old.');
+INSERT INTO `FAQ` (`FID`, `Frage_de`, `Antwort_de`, `Frage_en`, `Antwort_en`) VALUES
+(1, 'Komme ich als Engel billiger/kostenlos auf den Congress?', 'Nein, jeder Engel muss normal Eintritt bezahlen.', 'Do I get in cheaper / for free to the congress as an angel ?', 'No, every angel has to pay full price.'),
+(2, 'Was bekomme ich f&uuml;r meine Mitarbeit?', 'Jeder Engel der arbeitet bekommt ein kostenloses T-Shirt nach der Veranstalltung', 'What can i expect in return for my help?', 'Every working angel gets a free shirt after the event.'),
+(3, 'Wie lange muss ich als Engel arbeiten?', 'Diese Frage ist schwer zu beantworten. Es h&auml;ngt z.B. davon ab, was man macht (z.B. Workshop-Engel) und wieviele Engel wir zusammen bekommen.', 'How long do I have to work as an angel ?', 'This is difficult to answer. It depends on what you decide to do (e.g. workshop angel) and how many people will attend.'),
+(6, 'Ich bin erst XX Jahre alt. Kann ich &uuml;berhaupt helfen?', 'Wir k&ouml;nnen jede helfende Hand gebrauchen. Wenn du alt genug bist, um zum Congress zu kommen, bist du auch alt genug zu helfen.', 'I''m only XX years old. Can I help anyway?', 'We need every help we can get. If your old enough to come to the congress, your old enough to help.'),
+(8, 'Wer sind eigentlich die Erzengel?', 'Erzengel sind dieses Jahr: BugBlue, TabascoEye, Jeedi, Daizy, volty', 'Who <b>are</b> the Arch-Angels?', 'The ArchAngels for this year are: BugBlue, TabascoEye, Jeedi, Daizy, volty'),
+(9, 'Gibt es dieses Jahr wieder einen IRC-Channel f&uuml;r Engel?', 'Ja, im IRC-Net existiert #chaos-angel. Einfach mal reinschaun!', 'Will there be an IRC-channel for angels again?', 'Yes, in the IRC-net there''s #chaos-angel. Just have a look!'),
+(10, 'Wie gehe ich mit den Besuchern um?', 'Man soll gegen&uuml;ber den Besuchern immer h&ouml;flich und freundlich sein, auch wenn diese gestresst sind. Wenn man das Gef&uuml;hl hat, dass man mit der Situation nicht mehr klarkommt, sollte man sich jemanden zur Unterst&uuml;tzung holen, bevor man selbst auch gestresst wird :-)', 'How do I treat visitors?', 'You should always be polite and friendly, especially if they are stressed. When you feel you can''t handle it on your own, get someone to help you out before you get so stressed yourself that you get impolite.'),
+(11, 'Wann sind die Engelbesprechungen?', 'Das wird vor Ort noch festgelegt und steht im Himmelnewssystem.', 'When are the angels briefings?', 'The information on the Angel Briefings will be in the news section of this system.'),
+(12, 'Was muss ich noch bedenken?', 'Man sollte nicht total &uuml;berm&uuml;det oder ausgehungert, wenn n man einen Einsatz hat. Eine gewisse Fitness ist hilfreich.', 'Anything else I should know?', 'You should not be exhausted or starving when you arrive for a shift. A reasonable amount of fitness for work would be very helpful.'),
+(13, 'Ich habe eine Frage, auf die ich in der FAQ keine Antwort gefunden habe. Wohin soll ich mich wenden?', 'Bei weitere Fragen kannst du die Anfragen an die Erzengel Formular benutzen.', 'I have a guestion not answered here. Who can I ask?', 'If you have further questions, you can use the Questions for the ArchAngels form.'),
+(20, 'Wer muss alles Eintritt zahlen?', 'Jeder. Zumindest, solange er/sie &auml;lter als 12 Jahre ist...', 'Who has to pay the full entrance price?', 'Everyone who is at older than 12 years old.');
 
 -- --------------------------------------------------------
 
@@ -128,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=40 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
@@ -140,12 +143,13 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (31, -2, 11),
 (30, -2, 9),
 (23, -1, 2),
-(34, -4, 12),
-(33, -4, 7),
+(36, -4, 7),
+(37, -4, 13),
 (29, -2, 3),
 (28, -2, 4),
 (12, -5, 10),
-(35, -4, 6);
+(38, -4, 12),
+(39, -4, 6);
 
 -- --------------------------------------------------------
 
@@ -256,7 +260,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -274,7 +278,8 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (9, 'user_messages', 'Writing and reading messages from user to user'),
 (10, 'admin_groups', 'Manage usergroups and their rights'),
 (11, 'user_questions', 'Let users ask questions'),
-(12, 'admin_questions', 'Answer user''s questions');
+(12, 'admin_questions', 'Answer user''s questions'),
+(13, 'admin_faq', 'Edit FAQs');
 
 -- --------------------------------------------------------
 
@@ -1009,7 +1014,9 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('user_questions', 'DE', 'Erzengel fragen'),
 ('user_questions', 'EN', 'Ask arch angel'),
 ('admin_questions', 'DE', 'Fragen beantworten'),
-('admin_questions', 'EN', 'Answer questions');
+('admin_questions', 'EN', 'Answer questions'),
+('admin_faq', 'DE', 'FAQs bearbeiten'),
+('admin_faq', 'EN', 'Edit FAQs');
 
 -- --------------------------------------------------------
 
@@ -1052,7 +1059,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307053257, '0000-00-00 00:00:00', '', '', ''),
+(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307055685, '0000-00-00 00:00:00', '', '', ''),
 (147, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', 'L', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 0, 6, 'EN', 0, 'L', 1307042703, '2011-06-02 00:55:09', '', '', '');
 
 -- --------------------------------------------------------

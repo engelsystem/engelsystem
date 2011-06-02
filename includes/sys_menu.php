@@ -32,7 +32,8 @@ function make_navigation() {
 		"admin_questions",
 		"admin_angel_types",
 		"admin_rooms",
-		"admin_groups"
+		"admin_groups",
+		"admin_faq"
 	));
 	return $menu;
 }
