@@ -12,6 +12,7 @@ jetzt:
 
 später:
  * Zurück-/Backlinks setzen
+ * Pagination
  * MD5-Passwörter mit Salt speichern
  * Passwort-Mindestanforderungen stellen
  * User-Avatare (code liegt auskommentiert in user_settings.php)
