@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 03. Juni 2011 um 05:44
+-- Erstellungszeit: 03. Juni 2011 um 06:12
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -71,24 +71,24 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 192),
-('login', 26),
-('logout', 13),
-('start', 26),
+('news', 193),
+('login', 28),
+('logout', 14),
+('start', 27),
 ('faq', 19),
 ('credits', 3),
-('register', 8),
+('register', 10),
 ('admin_rooms', 89),
 ('admin_angel_types', 71),
-('user_settings', 131),
+('user_settings', 134),
 ('user_messages', 113),
-('admin_groups', 129),
+('admin_groups', 130),
 ('user_questions', 55),
 ('admin_questions', 43),
 ('admin_faq', 55),
 ('admin_news', 33),
 ('news_comments', 151),
-('admin_user', 157),
+('admin_user', 196),
 ('user_meetings', 5);
 
 -- --------------------------------------------------------
@@ -1065,7 +1065,7 @@ CREATE TABLE IF NOT EXISTS `User` (
   `Gekommen` tinyint(4) NOT NULL DEFAULT '0',
   `Aktiv` tinyint(4) NOT NULL DEFAULT '0',
   `Tshirt` tinyint(4) DEFAULT '0',
-  `color` tinyint(4) DEFAULT '6',
+  `color` tinyint(4) DEFAULT '10',
   `Sprache` char(2) DEFAULT 'EN',
   `Avatar` int(11) DEFAULT '0',
   `Menu` char(1) NOT NULL DEFAULT 'L',
@@ -1076,14 +1076,15 @@ CREATE TABLE IF NOT EXISTS `User` (
   `Hometown` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`UID`,`Nick`),
   UNIQUE KEY `Nick` (`Nick`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=148 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=149 ;
 
 --
 -- Daten für Tabelle `User`
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 0, 0, 10, 'DE', 115, 'L', 1307079838, '0000-00-00 00:00:00', '', '', '');
+(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '4297f44b13955235245b2497399d7a93', 1, 1, 0, 10, 'DE', 115, 'L', 1307081238, '0000-00-00 00:00:00', '', '', ''),
+(148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 1, 1, 10, 'DE', 0, 'L', 1307081543, '2011-06-03 07:55:24', 'AudioEngel', '', '');
 
 -- --------------------------------------------------------
 
@@ -1173,7 +1174,7 @@ CREATE TABLE IF NOT EXISTS `UserGroups` (
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`,`group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Daten für Tabelle `UserGroups`
@@ -1183,7 +1184,10 @@ INSERT INTO `UserGroups` (`id`, `uid`, `group_id`) VALUES
 (1, 1, -2),
 (2, 1, -3),
 (3, 1, -5),
-(4, 1, -4);
+(4, 1, -4),
+(8, 148, -2),
+(9, 148, -3),
+(10, 148, -4);
 
 -- --------------------------------------------------------
 
