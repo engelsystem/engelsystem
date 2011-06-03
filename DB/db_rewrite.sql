@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 03. Juni 2011 um 03:12
+-- Erstellungszeit: 03. Juni 2011 um 03:49
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -71,23 +71,23 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 164),
+('news', 187),
 ('login', 26),
 ('logout', 13),
 ('start', 26),
-('faq', 18),
+('faq', 19),
 ('credits', 3),
 ('register', 3),
-('admin_rooms', 75),
-('admin_angel_types', 70),
-('user_settings', 125),
-('user_messages', 112),
-('admin_groups', 114),
+('admin_rooms', 89),
+('admin_angel_types', 71),
+('user_settings', 126),
+('user_messages', 113),
+('admin_groups', 117),
 ('user_questions', 55),
 ('admin_questions', 42),
 ('admin_faq', 55),
-('admin_news', 2),
-('news_comments', 144);
+('admin_news', 32),
+('news_comments', 151);
 
 -- --------------------------------------------------------
 
@@ -226,10 +226,6 @@ CREATE TABLE IF NOT EXISTS `News` (
 -- Daten für Tabelle `News`
 --
 
-INSERT INTO `News` (`ID`, `Datum`, `Betreff`, `Text`, `UID`, `Treffen`) VALUES
-(1, 1307070566, 'asdf', 'asdf', 1, 0),
-(2, 1307070579, 'Achtung, Treffen!', 'Uiuiuiui.', 1, 0),
-(3, 1307070686, 'Achtung, Treffen!', 'Jojojo!', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -245,7 +241,7 @@ CREATE TABLE IF NOT EXISTS `news_comments` (
   `UID` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   KEY `Refid` (`Refid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Daten für Tabelle `news_comments`
@@ -254,7 +250,8 @@ CREATE TABLE IF NOT EXISTS `news_comments` (
 INSERT INTO `news_comments` (`ID`, `Refid`, `Datum`, `Text`, `UID`) VALUES
 (1, 10, '2011-06-03 04:12:28', 'FOobar :)', 1),
 (2, 10, '2011-06-03 04:13:03', 'FOobar :)', 1),
-(3, 10, '2011-06-03 04:13:06', 'FOobar :)', 1);
+(3, 10, '2011-06-03 04:13:06', 'FOobar :)', 1),
+(4, 3, '2011-06-03 05:20:05', 'Fünününü!', 1);
 
 -- --------------------------------------------------------
 
@@ -327,12 +324,14 @@ CREATE TABLE IF NOT EXISTS `Room` (
   `show` char(1) NOT NULL DEFAULT 'Y',
   `Number` int(11) DEFAULT NULL,
   PRIMARY KEY (`RID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `Room`
 --
 
+INSERT INTO `Room` (`RID`, `Name`, `Man`, `FromPentabarf`, `show`, `Number`) VALUES
+(2, 'Mein Zimmer', 'msquare', 'N', 'Y', 1337);
 
 -- --------------------------------------------------------
 
@@ -1028,7 +1027,9 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('admin_faq', 'DE', 'FAQs bearbeiten'),
 ('admin_faq', 'EN', 'Edit FAQs'),
 ('news_comments', 'DE', 'News Kommentare'),
-('news_comments', 'EN', 'News comments');
+('news_comments', 'EN', 'News comments'),
+('admin_news', 'DE', 'News verwalten'),
+('admin_news', 'EN', 'Manage news');
 
 -- --------------------------------------------------------
 
@@ -1071,7 +1072,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307070695, '0000-00-00 00:00:00', '', '', ''),
+(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307072950, '0000-00-00 00:00:00', '', '', ''),
 (147, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', 'L', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 0, 6, 'EN', 0, 'L', 1307042703, '2011-06-02 00:55:09', '', '', '');
 
 -- --------------------------------------------------------

@@ -66,6 +66,10 @@ if (in_array($p, $privileges)) {
 	elseif ($p == "admin_questions") {
 		$content = admin_questions();
 	}
+	elseif ($p == "admin_news") {
+		require_once ('includes/pages/admin_news.php');
+		$content = admin_news();
+	}
 	elseif ($p == "admin_angel_types") {
 		require_once ('includes/pages/admin_angel_types.php');
 		$content = admin_angel_types();

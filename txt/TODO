@@ -1,5 +1,4 @@
 jetzt:
- * news administrieren
  * user administrieren
  * schichtimport
  * schichtadministration
@@ -20,6 +19,7 @@ später:
  * Löschen nur mit Rückfrage
  * FAQ ordentlich mehrsprachig machen
  * Fertig übersetzen/Sprachwirrwarr beseitigen
+ * Übersetzung
 
 * schichten ueber monatsgrenzen einbaue im moment werden die tage nur 
   hochgezaehlt und die monatzgrenzen werden ignoriert
