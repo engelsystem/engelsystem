@@ -1,4 +1,7 @@
 <?php
+// Momentan keine Avatar-Funktionen
+die();
+
 require_once ('bootstrap.php');
 
 include "config/config.php";

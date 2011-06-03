@@ -23,9 +23,6 @@ $LETZTES_AUSTRAGEN=3;
 $crypt_system="md5";
 //$crypt_system="crypt";
 
-// the archangels
-$arch_angels="fnord";
-
 // timezonen offsett
 $gmdateOffset=3600;
 
