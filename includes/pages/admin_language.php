@@ -72,19 +72,29 @@ function admin_language() {
 		foreach ($_POST as $k => $v) {
 			if ($k != "TextID") {
 				$sql_test = "SELECT * FROM `Sprache` " .
-				"WHERE `TextID`='" . $_POST["TextID"] . "' AND `Sprache`='$k'";
+				"WHERE `TextID`='" . sql_escape($_POST["TextID"])
+				. "' AND `Sprache`='"
+				. sql_escape($k) . "'";
+
 				$erg_test = sql_query($sql_test);
 
 				if (mysql_num_rows($erg_test) == 0) {
 					$sql_save = "INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) " .
-					"VALUES ('" . $_POST["TextID"] . "', '$k', '$v')";
+					"VALUES ('" . sql_escape($_POST["TextID"]) . "', '"
+					. sql_escape($k) . "', '"
+					. sql_escape($v) . "')";
+
 					$html .= $sql_save . "<br />";
 					$Erg = sql_query($sql_save);
 					$html .= success("$k Save: OK<br />\n");
 				} else
 					if (mysql_result($erg_test, 0, "Text") != $v) {
-						$sql_save = "UPDATE `Sprache` SET `Text`='$v' " .
-						"WHERE `TextID`='" . $_POST["TextID"] . "' AND `Sprache`='$k' ";
+						$sql_save = "UPDATE `Sprache` SET `Text`='"
+						. sql_escape($v) . "' " .
+						"WHERE `TextID`='"
+						. sql_escape($_POST["TextID"])
+						. "' AND `Sprache`='" . sql_escape($k) . "' ";
+
 						$html .= $sql_save . "<br />";
 						$Erg = sql_query($sql_save);
 						$html .= success(" $k Update: OK<br />\n");

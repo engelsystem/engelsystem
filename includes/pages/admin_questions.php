@@ -18,19 +18,28 @@ function admin_questions() {
 	if (!isset ($_REQUEST['action'])) {
 		$open_questions = "";
 		$questions = sql_select("SELECT * FROM `Questions` WHERE `AID`=0");
-		foreach ($questions as $question) {
-			$open_questions .= '<tr><td>' . UID2Nick($question['UID']) . '</td><td>' . str_replace("\n", '<br />', $question['Question']) . '</td>';
-			$open_questions .= '<td><form action="' . page_link_to("admin_questions") . '&action=answer" method="post"><textarea name="answer"></textarea><input type="hidden" name="id" value="' . $question['QID'] . '" /><br /><input type="submit" name="submit" value="Send" /></form></td>';
-			$open_questions .= '<td><a href="' . page_link_to("admin_questions") . '&action=delete&id=' . $question['QID'] . '">Delete</a></td><tr>';
-		}
+		foreach ($questions as $question)
+			$open_questions .= template_render(
+				'../templates/admin_question_unanswered.html', array (
+				'question_nick' => UID2Nick($question['UID']),
+				'question_id'   => $question['QID'],
+				'link'          => page_link_to("admin_questions"),
+				'question'      => str_replace("\n", '<br />', $question['Question'])
+			));
 
 		$answered_questions = "";
 		$questions = sql_select("SELECT * FROM `Questions` WHERE `AID`>0");
-		foreach ($questions as $question) {
-			$answered_questions .= '<tr><td>' . UID2Nick($question['UID']) . '</td><td>' . str_replace("\n", '<br />', $question['Question']) . '</td>';
-			$answered_questions .= '<td>' . UID2Nick($question['AID']) . '</td><td>' . str_replace("\n", '<br />', $question['Answer']) . '</td>';
-			$answered_questions .= '<td><a href="' . page_link_to("admin_questions") . '&action=delete&id=' . $question['QID'] . '">Delete</a></td><tr>';
-		}
+
+		foreach ($questions as $question)
+			$answered_questions .= template_render(
+				'../templates/admin_question_answered.html', array (
+				'question_id'   => $question['QID'],
+				'question_nick' => UID2Nick($question['UID']),
+				'question'      => str_replace("\n", "<br />", $question['Question']),
+				'answer_nick'   => UID2Nick($question['AID']),
+				'answer'        => str_replace("\n", "<br />", $question['Answer']),
+				'link'          => page_link_to("admin_questions"),
+			));
 
 		return template_render('../templates/admin_questions.html', array (
 			'link' => page_link_to("admin_questions"),

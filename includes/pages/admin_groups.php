@@ -44,7 +44,17 @@ function admin_groups() {
 					$privileges = sql_select("SELECT `Privileges`.*, `GroupPrivileges`.`group_id` FROM `Privileges` LEFT OUTER JOIN `GroupPrivileges` ON (`Privileges`.`id` = `GroupPrivileges`.`privilege_id` AND `GroupPrivileges`.`group_id`=" . sql_escape($id) . ") ORDER BY `Privileges`.`name`");
 					$privileges_html = "";
 					foreach ($privileges as $priv)
-						$privileges_html .= '<tr><td><input type="checkbox" name="privileges[]" value="' . $priv['id'] . '"' . ($priv['group_id'] != "" ? ' checked="checked"' : '') . ' /></td><td>' . $priv['name'] . '</td><td>' . $priv['desc'] . '</td></tr>';
+						$privileges_html .= sprintf(
+							'<tr><td><input type="checkbox" '
+							. 'name="privileges[]" value="%s" %s />'
+							. '</td> <td>%s</td> <td>%s</td></tr>',
+							$priv['id'],
+							($priv['group_id'] != ""
+							? 'checked="checked"'
+							: ''),
+							$priv['name'],
+							$priv['desc']
+						);
 
 					$html .= template_render('../templates/admin_groups_edit_form.html', array (
 						'link' => page_link_to("admin_groups"),
