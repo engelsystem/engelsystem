@@ -55,6 +55,10 @@ if (in_array($p, $privileges)) {
 		require_once ('includes/pages/user_questions.php');
 		$content = user_questions();
 	}
+	elseif ($p == "user_wakeup") {
+		require_once ('includes/pages/user_wakeup.php');
+		$content = user_wakeup();
+	}
 	elseif ($p == "user_settings") {
 		require_once ('includes/pages/user_settings.php');
 		$content = user_settings();

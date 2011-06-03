@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 03. Juni 2011 um 12:43
+-- Erstellungszeit: 03. Juni 2011 um 14:20
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -71,27 +71,28 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 198),
-('login', 34),
-('logout', 15),
-('start', 28),
-('faq', 19),
+('news', 206),
+('login', 42),
+('logout', 19),
+('start', 32),
+('faq', 27),
 ('credits', 7),
-('register', 10),
+('register', 12),
 ('admin_rooms', 90),
 ('admin_angel_types', 71),
-('user_settings', 134),
+('user_settings', 137),
 ('user_messages', 113),
-('admin_groups', 141),
+('admin_groups', 149),
 ('user_questions', 55),
 ('admin_questions', 43),
-('admin_faq', 55),
+('admin_faq', 56),
 ('admin_news', 33),
 ('news_comments', 151),
 ('admin_user', 206),
 ('user_meetings', 5),
-('admin_language', 25),
-('admin_log', 5);
+('admin_language', 29),
+('admin_log', 19),
+('user_wakeup', 61);
 
 -- --------------------------------------------------------
 
@@ -137,32 +138,34 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=74 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=85 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
 --
 
 INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
-(69, -2, 11),
+(83, -2, 8),
 (24, -1, 5),
-(68, -2, 9),
-(67, -2, 17),
+(82, -2, 11),
+(81, -2, 9),
 (23, -1, 2),
 (62, -4, 16),
 (61, -4, 6),
-(66, -2, 15),
-(65, -2, 3),
-(71, -5, 10),
+(80, -2, 17),
+(79, -2, 15),
+(75, -5, 18),
 (60, -4, 12),
 (59, -4, 14),
-(64, -2, 4),
+(78, -2, 3),
 (58, -4, 13),
 (57, -4, 7),
 (63, -4, 5),
-(70, -2, 8),
-(72, -5, 18),
-(73, -3, 19);
+(77, -2, 4),
+(74, -5, 10),
+(73, -3, 19),
+(76, -5, 20),
+(84, -2, 20);
 
 -- --------------------------------------------------------
 
@@ -276,7 +279,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -301,7 +304,8 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (16, 'admin_user', 'Administrate the angels'),
 (17, 'user_meetings', 'Lists meetings (news)'),
 (18, 'admin_language', 'Translate the system'),
-(19, 'admin_log', 'Display recent changes');
+(19, 'admin_log', 'Display recent changes'),
+(20, 'user_wakeup', 'User wakeup-service organization');
 
 -- --------------------------------------------------------
 
@@ -557,7 +561,7 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('inc_schicht_noch_gesucht', 'DE', ' noch gesucht'),
 ('inc_schicht_und', 'DE', ' und '),
 ('pub_wake_beschreibung', 'DE', 'hier kannst du dich zum Wecken eintragen. Dazu sage einfach wann und wo und der Engel vom Dienst wird dich wecken.'),
-('pub_wake_beschreibung2', 'DE', 'Deine bisherigen eingetragenen Zeiten:'),
+('pub_wake_beschreibung2', 'DE', 'Alle eingetragenen Weckwünsche, die nächsten zuerst.'),
 ('pub_wake_Datum', 'DE', 'Datum'),
 ('pub_wake_Ort', 'DE', 'Ort'),
 ('pub_wake_Bemerkung', 'DE', 'Bermerkung'),
@@ -601,7 +605,7 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('inc_schicht_wird', 'EN', ' is  '),
 ('inc_schicht_noch_gesucht', 'EN', ' still needed '),
 ('inc_schicht_und', 'EN', ' and '),
-('pub_wake_beschreibung2', 'EN', 'The wake-up calls you have ordered:\r\n'),
+('pub_wake_beschreibung2', 'EN', 'All ordered wake-up calls, next first.'),
 ('pub_wake_Datum', 'EN', 'Date'),
 ('pub_wake_Ort', 'EN', 'Place'),
 ('pub_wake_change', 'EN', 'delete'),
@@ -1050,7 +1054,9 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('admin_language', 'DE', 'Übersetzung'),
 ('admin_language', 'EN', 'Translation'),
 ('admin_log', 'EN', 'Log'),
-('admin_log', 'DE', 'Log');
+('admin_log', 'DE', 'Log'),
+('user_wakeup', 'DE', 'Weckservice'),
+('user_wakeup', 'EN', 'Wakeup service');
 
 -- --------------------------------------------------------
 
@@ -1093,8 +1099,8 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '4297f44b13955235245b2497399d7a93', 1, 1, 0, 10, 'DE', 115, 'L', 1307105002, '0000-00-00 00:00:00', '', '', ''),
-(148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 1, 1, 10, 'DE', 0, 'L', 1307082872, '2011-06-03 07:55:24', 'AudioEngel', '', '');
+(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0, 10, 'DE', 115, 'L', 1307110821, '0000-00-00 00:00:00', '', '', ''),
+(148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 1, 1, 10, 'DE', 0, 'L', 1307110798, '2011-06-03 07:55:24', 'AudioEngel', '', '');
 
 -- --------------------------------------------------------
 
@@ -1227,13 +1233,16 @@ INSERT INTO `UserPicture` (`UID`, `Bild`, `ContentType`, `show`) VALUES
 CREATE TABLE IF NOT EXISTS `Wecken` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `UID` int(11) NOT NULL DEFAULT '0',
-  `Date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `Date` int(11) NOT NULL,
   `Ort` text NOT NULL,
   `Bemerkung` text NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Daten für Tabelle `Wecken`
 --
 
+INSERT INTO `Wecken` (`ID`, `UID`, `Date`, `Ort`, `Bemerkung`) VALUES
+(4, 1, 1307109840, 'Tent 23', 'knock knock leo, follow the white rabbit to the blue tent'),
+(5, 1, 1307109840, 'Tent 23', 'knock knock leo, follow the white rabbit to the blue tent');

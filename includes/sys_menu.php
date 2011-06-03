@@ -27,6 +27,7 @@ function make_navigation() {
 		"user_shifts",
 		"user_messages",
 		"user_questions",
+		"user_wakeup",
 		"user_settings"
 	));
 
