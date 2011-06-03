@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 03. Juni 2011 um 06:12
+-- Erstellungszeit: 03. Juni 2011 um 12:37
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -71,25 +71,26 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 193),
-('login', 28),
-('logout', 14),
-('start', 27),
+('news', 198),
+('login', 34),
+('logout', 15),
+('start', 28),
 ('faq', 19),
-('credits', 3),
+('credits', 7),
 ('register', 10),
-('admin_rooms', 89),
+('admin_rooms', 90),
 ('admin_angel_types', 71),
 ('user_settings', 134),
 ('user_messages', 113),
-('admin_groups', 130),
+('admin_groups', 135),
 ('user_questions', 55),
 ('admin_questions', 43),
 ('admin_faq', 55),
 ('admin_news', 33),
 ('news_comments', 151),
-('admin_user', 196),
-('user_meetings', 5);
+('admin_user', 206),
+('user_meetings', 5),
+('admin_language', 22);
 
 -- --------------------------------------------------------
 
@@ -135,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=71 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=73 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
@@ -151,14 +152,15 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (61, -4, 6),
 (66, -2, 15),
 (65, -2, 3),
-(12, -5, 10),
+(71, -5, 10),
 (60, -4, 12),
 (59, -4, 14),
 (64, -2, 4),
 (58, -4, 13),
 (57, -4, 7),
 (63, -4, 5),
-(70, -2, 8);
+(70, -2, 8),
+(72, -5, 18);
 
 -- --------------------------------------------------------
 
@@ -272,7 +274,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -295,7 +297,8 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (14, 'admin_news', 'Administrate the news section'),
 (15, 'news_comments', 'User can comment news'),
 (16, 'admin_user', 'Administrate the angels'),
-(17, 'user_meetings', 'Lists meetings (news)');
+(17, 'user_meetings', 'Lists meetings (news)'),
+(18, 'admin_language', 'Translate the system');
 
 -- --------------------------------------------------------
 
@@ -1040,7 +1043,9 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('admin_news', 'DE', 'News verwalten'),
 ('admin_news', 'EN', 'Manage news'),
 ('user_meetings', 'DE', 'Treffen'),
-('user_meetings', 'EN', 'Meetings');
+('user_meetings', 'EN', 'Meetings'),
+('admin_language', 'DE', 'Übersetzung'),
+('admin_language', 'EN', 'Translation');
 
 -- --------------------------------------------------------
 
@@ -1083,8 +1088,8 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '4297f44b13955235245b2497399d7a93', 1, 1, 0, 10, 'DE', 115, 'L', 1307081238, '0000-00-00 00:00:00', '', '', ''),
-(148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 1, 1, 10, 'DE', 0, 'L', 1307081543, '2011-06-03 07:55:24', 'AudioEngel', '', '');
+(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '4297f44b13955235245b2497399d7a93', 1, 1, 0, 10, 'DE', 115, 'L', 1307104634, '0000-00-00 00:00:00', '', '', ''),
+(148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 1, 1, 10, 'DE', 0, 'L', 1307082872, '2011-06-03 07:55:24', 'AudioEngel', '', '');
 
 -- --------------------------------------------------------
 
@@ -1174,7 +1179,7 @@ CREATE TABLE IF NOT EXISTS `UserGroups` (
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`,`group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Daten für Tabelle `UserGroups`
@@ -1185,9 +1190,7 @@ INSERT INTO `UserGroups` (`id`, `uid`, `group_id`) VALUES
 (2, 1, -3),
 (3, 1, -5),
 (4, 1, -4),
-(8, 148, -2),
-(9, 148, -3),
-(10, 148, -4);
+(11, 148, -2);
 
 -- --------------------------------------------------------
 

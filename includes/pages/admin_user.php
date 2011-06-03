@@ -243,7 +243,7 @@ function admin_user() {
 																																					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></th>
 																																					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></th>
 																																					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></th>
-																																					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=CreateDate">Registrier</a></th>
+																																					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=CreateDate">Registriert</a></th>
 																																					    <th>&Auml;nd.</th>
 																																					  </tr></thead>';
 		$Gekommen = 0;

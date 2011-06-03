@@ -39,7 +39,8 @@ function make_navigation() {
 		"admin_shifts",
 		"admin_rooms",
 		"admin_groups",
-		"admin_faq"
+		"admin_faq",
+		"admin_language"
 	));
 	return $menu;
 }

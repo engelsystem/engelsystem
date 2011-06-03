@@ -93,6 +93,10 @@ if (in_array($p, $privileges)) {
 	elseif ($p == "admin_faq") {
 		require_once ('includes/pages/admin_faq.php');
 		$content = admin_faq();
+	} 
+	elseif ($p == "admin_language") {
+		require_once ('includes/pages/admin_language.php');
+		$content = admin_language();
 	} else {
 		require_once ('includes/pages/guest_start.php');
 		$content = guest_start();
