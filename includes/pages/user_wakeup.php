@@ -77,9 +77,9 @@ function user_wakeup() {
 		'date_text'     => Get_Text("pub_wake_Datum"),
 		'date_value'    => date("Y-m-d H:i"),
 		'place_text'    => Get_Text("pub_wake_Ort"),
-		'comment_text'  => Get_Text("pub_wake_Ort"),
+		'comment_text'  => Get_Text("pub_wake_Bemerkung"),
 		'comment_value' => "Knock knock Leo, follow the white rabbit to the blue tent",
-		'submit_text'   => Get_Text("pub_wake_button")
+		'submit_text'   => Get_Text("pub_wake_bouton")
 	));
 	return $html;
 }
