@@ -106,6 +106,10 @@ if (in_array($p, $privileges)) {
 		require_once ('includes/pages/admin_language.php');
 		$content = admin_language();
 	}
+	elseif ($p == "admin_import") {
+		require_once ('includes/pages/admin_import.php');
+		$content = admin_import();
+	}
 	elseif ($p == "admin_log") {
 		require_once ('includes/pages/admin_log.php');
 		$content = admin_log();

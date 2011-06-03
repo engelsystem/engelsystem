@@ -42,6 +42,7 @@ function make_navigation() {
 		"admin_groups",
 		"admin_faq",
 		"admin_language",
+		"admin_import",
 		"admin_log"
 	));
 	return $menu;
