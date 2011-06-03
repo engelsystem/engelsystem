@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 02. Juni 2011 um 23:02
+-- Erstellungszeit: 03. Juni 2011 um 03:12
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -71,21 +71,23 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 80),
-('login', 24),
+('news', 164),
+('login', 26),
 ('logout', 13),
-('start', 25),
-('faq', 16),
+('start', 26),
+('faq', 18),
 ('credits', 3),
 ('register', 3),
-('admin_rooms', 70),
-('admin_angel_types', 69),
-('user_settings', 116),
-('user_messages', 111),
-('admin_groups', 104),
-('user_questions', 54),
-('admin_questions', 41),
-('admin_faq', 53);
+('admin_rooms', 75),
+('admin_angel_types', 70),
+('user_settings', 125),
+('user_messages', 112),
+('admin_groups', 114),
+('user_questions', 55),
+('admin_questions', 42),
+('admin_faq', 55),
+('admin_news', 2),
+('news_comments', 144);
 
 -- --------------------------------------------------------
 
@@ -131,25 +133,27 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=40 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=51 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
 --
 
 INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
-(32, -2, 8),
+(42, -2, 15),
 (24, -1, 5),
-(31, -2, 11),
-(30, -2, 9),
+(40, -2, 4),
+(41, -2, 3),
 (23, -1, 2),
-(36, -4, 7),
-(37, -4, 13),
-(29, -2, 3),
-(28, -2, 4),
+(48, -4, 14),
+(46, -4, 7),
+(44, -2, 11),
+(43, -2, 9),
 (12, -5, 10),
-(38, -4, 12),
-(39, -4, 6);
+(47, -4, 13),
+(49, -4, 12),
+(45, -2, 8),
+(50, -4, 6);
 
 -- --------------------------------------------------------
 
@@ -210,7 +214,7 @@ INSERT INTO `Messages` (`id`, `Datum`, `SUID`, `RUID`, `isRead`, `Text`) VALUES
 
 CREATE TABLE IF NOT EXISTS `News` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Datum` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `Datum` int(11) NOT NULL,
   `Betreff` varchar(150) NOT NULL DEFAULT '',
   `Text` text NOT NULL,
   `UID` int(11) NOT NULL DEFAULT '0',
@@ -223,9 +227,9 @@ CREATE TABLE IF NOT EXISTS `News` (
 --
 
 INSERT INTO `News` (`ID`, `Datum`, `Betreff`, `Text`, `UID`, `Treffen`) VALUES
-(1, '2011-06-02 21:35:27', '', '', 1, 0),
-(2, '2011-06-02 21:36:57', '', '', 1, 0),
-(3, '2011-06-02 21:36:57', '', '', 1, 0);
+(1, 1307070566, 'asdf', 'asdf', 1, 0),
+(2, 1307070579, 'Achtung, Treffen!', 'Uiuiuiui.', 1, 0),
+(3, 1307070686, 'Achtung, Treffen!', 'Jojojo!', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -241,12 +245,16 @@ CREATE TABLE IF NOT EXISTS `news_comments` (
   `UID` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   KEY `Refid` (`Refid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Daten für Tabelle `news_comments`
 --
 
+INSERT INTO `news_comments` (`ID`, `Refid`, `Datum`, `Text`, `UID`) VALUES
+(1, 10, '2011-06-03 04:12:28', 'FOobar :)', 1),
+(2, 10, '2011-06-03 04:13:03', 'FOobar :)', 1),
+(3, 10, '2011-06-03 04:13:06', 'FOobar :)', 1);
 
 -- --------------------------------------------------------
 
@@ -260,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -279,7 +287,9 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (10, 'admin_groups', 'Manage usergroups and their rights'),
 (11, 'user_questions', 'Let users ask questions'),
 (12, 'admin_questions', 'Answer user''s questions'),
-(13, 'admin_faq', 'Edit FAQs');
+(13, 'admin_faq', 'Edit FAQs'),
+(14, 'admin_news', 'Administrate the news section'),
+(15, 'news_comments', 'User can comment news');
 
 -- --------------------------------------------------------
 
@@ -1016,7 +1026,9 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('admin_questions', 'DE', 'Fragen beantworten'),
 ('admin_questions', 'EN', 'Answer questions'),
 ('admin_faq', 'DE', 'FAQs bearbeiten'),
-('admin_faq', 'EN', 'Edit FAQs');
+('admin_faq', 'EN', 'Edit FAQs'),
+('news_comments', 'DE', 'News Kommentare'),
+('news_comments', 'EN', 'News comments');
 
 -- --------------------------------------------------------
 
@@ -1059,7 +1071,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307055685, '0000-00-00 00:00:00', '', '', ''),
+(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307070695, '0000-00-00 00:00:00', '', '', ''),
 (147, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', 'L', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 0, 6, 'EN', 0, 'L', 1307042703, '2011-06-02 00:55:09', '', '', '');
 
 -- --------------------------------------------------------

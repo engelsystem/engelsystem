@@ -75,9 +75,9 @@ function displayPictur($UID, $height = "30") {
 	global $url, $ENGEL_ROOT;
 
 	if ($height > 0)
-		return ("<img src=\"" . $url . $ENGEL_ROOT . "ShowUserPicture.php?UID=$UID\" height=\"$height\" alt=\"picture of USER$UID\" class=\"photo\">");
+		return ("<div class=\"avatar\"><img src=\"" . $url . $ENGEL_ROOT . "ShowUserPicture.php?UID=$UID\" height=\"$height\" alt=\"picture of USER$UID\" class=\"photo\"></div>");
 	else
-		return ("<img src=\"" . $url . $ENGEL_ROOT . "ShowUserPicture.php?UID=$UID\" alt=\"picture of USER$UID\">");
+		return ("<div class=\"avatar\"><img class=\"avatar\" src=\"" . $url . $ENGEL_ROOT . "ShowUserPicture.php?UID=$UID\" alt=\"picture of USER$UID\"></div>");
 }
 
 function displayavatar($UID, $height = "30") {
@@ -92,7 +92,7 @@ function displayavatar($UID, $height = "30") {
 
 	if (mysql_num_rows($aerg))
 		if (mysql_result($aerg, 0, "Avatar") > 0)
-			return ("&nbsp;<img src=\"" . $url . $ENGEL_ROOT . "pic/avatar/avatar" . mysql_result($aerg, 0, "Avatar") . ".gif\">");
+			return'<div class="avatar">'. ("&nbsp;<img src=\"" . $url . $ENGEL_ROOT . "pic/avatar/avatar" . mysql_result($aerg, 0, "Avatar") . ".gif\">").'</div>';
 }
 
 function UIDgekommen($UID) {

@@ -36,6 +36,10 @@ if (in_array($p, $privileges)) {
 		require_once ('includes/pages/user_news.php');
 		$content = user_news();
 	}
+	elseif ($p == "news_comments") {
+		require_once ('includes/pages/user_news.php');
+		$content = user_news_comments();
+	}
 	elseif ($p == "user_messages") {
 		$content = user_messages();
 	}

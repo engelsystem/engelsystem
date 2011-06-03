@@ -15,6 +15,12 @@ header {
     width: 100%;
 }
 
+article, details {
+    clear: none;
+    display: block;
+    float: none;
+}
+
 footer {
     clear: both;
     display: block;
@@ -64,13 +70,13 @@ dd {
     margin-left: 20px;
 }
 
-h1, h4 {
+h1, h2, h3, h4 {
     font-size: 16px;
     padding: 0 4px;
 }
 
 hr {
-	margin: 10px 0;
+    margin: 10px 0;
 }
 
 ul {
@@ -81,7 +87,7 @@ nav {
     margin: 0 10px 10px 0;
 }
 
-#content article {
+#content > article {
     padding: 10px;
 }
 
@@ -98,20 +104,28 @@ a.sprache img {
 }
 
 table {
-	border-collapse: collapse;
+    border-collapse: collapse;
 }
 
 th {
-	background: #f0f0f0;
+    background: #f0f0f0;
 }
 
 td, th {
-	border: 1px solid #888;
+    border: 1px solid #888;
 }
 
 textarea {
-	height: 200px;
-	width: 300px;
+    height: 200px;
+    width: 300px;
+}
+
+.clear {
+    clear: both;
+}
+
+.pagination {
+    text-align: center;
 }
 
 .background {
@@ -127,20 +141,49 @@ textarea {
 }
 
 .error {
-	color: #f00;
+    color: #f00;
 }
 
 .success {
-	color: #090;
+    color: #090;
 }
 
 .notice {
-	background: #f0f0f0;
-	border: 2px solid #888;
-	margin: 10px;
-	padding: 10px;
+    background: #f0f0f0;
+    border: 2px solid #888;
+    margin: 10px;
+    padding: 10px;
 }
 
 .new_message {
-	font-weight: bold;
+    font-weight: bold;
+}
+
+.news_comment, .news {
+    border: 1px solid #888;
+    margin: 10px 0;
+}
+
+.news_comment details, .news details {
+    background: #f0f0f0;
+    padding: 4px;
+}
+
+.news_comment p, .news p, h3 {
+    padding: 4px;
+}
+
+.news_comment p, .news_comment details {
+    margin-left: 72px;
+}
+
+.avatar {
+    float: left;
+    margin: 4px;
+    max-width: 64px;
+}
+
+.news.meeting {
+    border: 1px solid #000;
+    box-shadow: 1px 1px 5px #888;
 }
