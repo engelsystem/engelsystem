@@ -7,14 +7,14 @@ function guest_faq() {
 		if ($_SESSION['Sprache'] == "DE") {
 			$html .= sprintf(
 				'<dt>%s</dt> <dd>%s</dd>',
-				$faq['frage_de'],
-				$faq['antwort_de']
+				$faq['Frage_de'],
+				$faq['Antwort_de']
 			);
 		} else {
 			$html .= sprintf(
 				'<dt>%s</dt> <dd>%s</dd>',
-				$faq['frage_en'],
-				$faq['antwort_en']
+				$faq['Frage_en'],
+				$faq['Antwort_en']
 			);
 		}
 		$html .= "</dl>";
