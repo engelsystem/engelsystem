@@ -22,6 +22,10 @@ sql_connect($config['host'], $config['user'], $config['pw'], $config['db']);
 
 load_auth();
 
+// JSON Authorisierung gewünscht?
+if (isset ($_REQUEST['auth']))
+	json_auth_service();
+
 // Gewünschte Seite/Funktion
 $p = isset ($user) ? "news" : "start";
 if (isset ($_REQUEST['p']))
@@ -89,15 +93,15 @@ if (in_array($p, $privileges)) {
 	elseif ($p == "admin_groups") {
 		require_once ('includes/pages/admin_groups.php');
 		$content = admin_groups();
-	} 
+	}
 	elseif ($p == "admin_faq") {
 		require_once ('includes/pages/admin_faq.php');
 		$content = admin_faq();
-	} 
+	}
 	elseif ($p == "admin_language") {
 		require_once ('includes/pages/admin_language.php');
 		$content = admin_language();
-	}  
+	}
 	elseif ($p == "admin_log") {
 		require_once ('includes/pages/admin_log.php');
 		$content = admin_log();
