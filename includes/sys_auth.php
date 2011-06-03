@@ -19,7 +19,10 @@ function load_auth() {
 		if (count($user) > 0) {
 			// User ist eingeloggt, Datensatz zur Verfügung stellen und Timestamp updaten
 			list ($user) = $user;
-			sql_query("UPDATE `User` SET " . "`lastLogIn` = '" . time() . "'" . " WHERE `UID` = '" . $_SESSION['uid'] . "' LIMIT 1;");
+			sql_query("UPDATE `User` SET "
+				. "`lastLogIn` = '" . time() . "'"
+				. " WHERE `UID` = '" . sql_escape($_SESSION['uid']) . "' LIMIT 1;"
+			);
 		} else
 			unset ($_SESSION['uid']);
 	}

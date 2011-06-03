@@ -7,15 +7,23 @@ function admin_groups() {
 	if (!isset ($_REQUEST["action"])) {
 		$groups_html = "";
 		foreach ($groups as $group) {
-			$groups_html .= '<tr>';
-			$groups_html .= '<td>' . $group['Name'] . '</td>';
+			$groups_html .= sprintf(
+				'<tr><td>%s</td>',
+				$group['Name']
+			);
 			$privileges = sql_select("SELECT * FROM `GroupPrivileges` JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `group_id`=" . sql_escape($group['UID']));
 			$privileges_html = array ();
+
 			foreach ($privileges as $priv)
 				$privileges_html[] = $priv['name'];
-			$groups_html .= '<td>' . join(", ", $privileges_html) . '</td>';
-			$groups_html .= '<td><a href="' . page_link_to("admin_groups") . '&action=edit&id=' . $group['UID'] . '">Ändern</a></td>';
-			$groups_html .= '</tr>';
+
+			$groups_html .= sprintf(
+				'<td>%s</td>'
+				. '<td><a href="%s&action=edit&id=%s">Ändern</a></td>',
+				join(', ', $privileges_html),
+				page_link_to("admin_groups"),
+				$group['UID']
+			);
 		}
 
 		return template_render('../templates/admin_groups.html', array (

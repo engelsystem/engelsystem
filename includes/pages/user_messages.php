@@ -6,7 +6,13 @@ function user_unread_messages() {
 		$new_messages = sql_num_query("SELECT * FROM `Messages` WHERE isRead='N' AND `RUID`=" . sql_escape($user['UID']));
 
 		if ($new_messages > 0)
-			return '<p class="notice"><a href="' . page_link_to("user_messages") . '">' . Get_Text("pub_messages_new1") . " " . $new_messages . " " . Get_Text("pub_messages_new2") . '</a></p><hr />';
+			return sprintf(
+				'<p class="notice"><a href="%s">%s %s %s</a></p><hr />',
+				page_link_to("user_messages"),
+				Get_Text("pub_messages_new1"),
+				$new_messages,
+				Get_Text("pub_messages_new2")
+			);
 	}
 
 	return "";
@@ -16,23 +22,37 @@ function user_messages() {
 	global $user;
 
 	if (!isset ($_REQUEST['action'])) {
-		$users = sql_select("SELECT * FROM `User` WHERE NOT `UID`=" . sql_escape($user['UID']) . " ORDER BY `Nick`");
+		$users = sql_select("SELECT * FROM `User` WHERE NOT `UID`="
+			. sql_escape($user['UID']) . " ORDER BY `Nick`");
+
 		$to_select_data = array (
 			"" => "Select receiver..."
 		);
+
 		foreach ($users as $u)
 			$to_select_data[$u['UID']] = $u['Nick'];
+
 		$to_select = html_select_key('to', $to_select_data, '');
 
 		$messages_html = "";
-		$messages = sql_select("SELECT * FROM `Messages` WHERE `SUID`=" . sql_escape($user['UID']) . " OR `RUID`=" . sql_escape($user['UID']) . " ORDER BY `isRead`,`Datum` DESC");
+		$messages = sql_select("SELECT * FROM `Messages` WHERE `SUID`="
+			. sql_escape($user['UID'])
+			. " OR `RUID`=" . sql_escape($user['UID'])
+			. " ORDER BY `isRead`,`Datum` DESC"
+		);
 		foreach ($messages as $message) {
-			$messages_html .= '<tr' . ($message['isRead'] == 'N' ? ' class="new_message"' : '') . '>';
-			$messages_html .= '<td>' . ($message['isRead'] == 'N' ? '•' : '') . '</td>';
-			$messages_html .= '<td>' . date("Y-m-d H:i", $message['Datum']) . '</td>';
-			$messages_html .= '<td>' . UID2Nick($message['SUID']) . '</td>';
-			$messages_html .= '<td>' . UID2Nick($message['RUID']) . '</td>';
-			$messages_html .= '<td>' . str_replace("\n", '<br />', $message['Text']) . '</td>';
+
+			$messages_html .= sprintf(
+				'<tr %s> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td>'
+				.'<td>%s</td>',
+				($message['isRead'] == 'N' ? ' class="new_message"' : ''),
+				($message['isRead'] == 'N' ? '•' : ''),
+				date("Y-m-d H:i", $message['Datum']),
+				UID2Nick($message['SUID']),
+				UID2Nick($message['RUID']),
+				str_replace("\n", '<br />', $message['Text'])
+			);
+
 			$messages_html .= '<td>';
 			if ($message['RUID'] == $user['UID']) {
 				if ($message['isRead'] == 'N')
@@ -45,7 +65,8 @@ function user_messages() {
 
 		return template_render('../templates/user_messages.html', array (
 			'link' => page_link_to("user_messages"),
-			'greeting' => Get_Text("Hello") . $user['Nick'] . ", <br />\n" . Get_Text("pub_messages_text1") . "<br /><br />\n",
+			'greeting' => Get_Text("Hello") . $user['Nick'] . ", <br />\n"
+			            . Get_Text("pub_messages_text1") . "<br /><br />\n",
 			'messages' => $messages_html,
 			'new_label' => Get_Text("pub_messages_Neu"),
 			'date_label' => Get_Text("pub_messages_Datum"),

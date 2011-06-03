@@ -4,8 +4,14 @@ function admin_faq() {
 		$faqs_html = "";
 		$faqs = sql_select("SELECT * FROM `FAQ`");
 		foreach ($faqs as $faq) {
-			$faqs_html .= '<tr><td><dl><dt>' . $faq['Frage_de'] . '</dt><dd>' . $faq['Antwort_de'] . '</dd></dl></td><td><dl><dt>' . $faq['Frage_en'] . '</dt><dd>' . $faq['Antwort_en'] . '</dd></dl></td>';
-			$faqs_html .= '<td><a href="' . page_link_to("admin_faq") . '&action=edit&id=' . $faq['FID'] . '">Edit</a></td></tr>';
+			$faqs_html .= sprintf(
+				'<tr><td> <dl><dt>%s</dt><dd>%s</dd></dl> </td>'
+				.   '<td> <dl><dt>%s</dt><dd>%s</dd></dl> </td>'
+				. '<td><a href="%s&action=edit&id=%s">Edit</a></td></tr>',
+				$faq['Frage_de'], $faq['Antwort_de'],
+				$faq['Frage_en'], $faq['Antwort_en'],
+				page_link_to('admin_faq'), $faq['FID']
+			);
 		}
 		return template_render('../templates/admin_faq.html', array (
 			'link' => page_link_to("admin_faq"),
@@ -14,11 +20,18 @@ function admin_faq() {
 	} else {
 		switch ($_REQUEST['action']) {
 			case 'create' :
-				$frage = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['frage']));
-				$antwort = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['antwort']));
-				$question = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['question']));
-				$answer = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['answer']));
-				sql_query("INSERT INTO `FAQ` SET `Frage_de`='" . sql_escape($frage) . "', `Frage_en`='" . sql_escape($question) . "', `Antwort_de`='" . sql_escape($antwort) . "', `Antwort_en`='" . sql_escape($answer) . "'");
+				$frage    = strip_request_item_nl('frage');
+				$antwort  = strip_request_item_nl('antwort');
+				$question = strip_request_item_nl('question');
+				$answer   = strip_request_item_nl('answer');
+
+				sql_query("INSERT INTO `FAQ` SET `Frage_de`='" . sql_escape($frage)
+					. "', `Frage_en`='" . sql_escape($question)
+					. "', `Antwort_de`='" . sql_escape($antwort)
+					. "', `Antwort_en`='" . sql_escape($answer)
+					. "'"
+				);
+
 				header("Location: " . page_link_to("admin_faq"));
 				break;
 
@@ -32,11 +45,18 @@ function admin_faq() {
 				if (count($faq) > 0) {
 					list ($faq) = $faq;
 
-					$frage = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['frage']));
-					$antwort = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['antwort']));
-					$question = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['question']));
-					$answer = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['answer']));
-					sql_query("UPDATE `FAQ` SET `Frage_de`='" . sql_escape($frage) . "', `Frage_en`='" . sql_escape($question) . "', `Antwort_de`='" . sql_escape($antwort) . "', `Antwort_en`='" . sql_escape($answer) . "' WHERE `FID`=" . sql_escape($id) . " LIMIT 1");
+					$frage    = strip_request_item_nl('frage');
+					$antwort  = strip_request_item_nl('antwort');
+					$question = strip_request_item_nl('question');
+					$answer   = strip_request_item_nl('answer');
+
+					sql_query("UPDATE `FAQ` SET `Frage_de`='" . sql_escape($frage)
+						. "', `Frage_en`='" . sql_escape($question)
+						. "', `Antwort_de`='" . sql_escape($antwort)
+						. "', `Antwort_en`='" . sql_escape($answer)
+						. "' WHERE `FID`=" . sql_escape($id) . " LIMIT 1"
+					);
+
 					header("Location: " . page_link_to("admin_faq"));
 				} else
 					return error("No FAQ found.");
