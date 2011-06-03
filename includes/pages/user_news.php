@@ -1,16 +1,45 @@
 <?php
+function user_meetings() {
+	global $DISPLAY_NEWS, $privileges, $user;
+
+	$html = "";
+
+	if (isset ($_REQUEST['page']) && preg_match("/^[0-9]{1,}$/", $_REQUEST['page']))
+		$page = $_REQUEST['page'];
+	else
+		$page = 0;
+
+	$news = sql_select("SELECT * FROM `News` WHERE `Treffen`=1 ORDER BY `ID` DESC LIMIT " . ($page * $DISPLAY_NEWS) . ", " . $DISPLAY_NEWS);
+	foreach ($news as $entry)
+		$html .= display_news($entry);
+
+	$html .= "<div class=\"pagination\">\n\n";
+	$dis_rows = ceil(sql_num_query("SELECT * FROM `News` WHERE `Treffen`=1") / $DISPLAY_NEWS);
+
+	$html .= Get_Text(5);
+
+	for ($i = 0; $i < $dis_rows; $i++) {
+		if ($i == $_REQUEST['page'])
+			$html .= ($i +1) . "&nbsp; ";
+		else
+			$html .= '<a href="' . page_link_to("news") . '&page=' . $i . '">' . ($i +1) . '</a>&nbsp; ';
+	}
+	$html .= '</div>';
+	return $html;
+}
+
 function display_news($news) {
 	global $privileges, $p;
 
 	$html .= "";
 	$html .= '<article class="news' . ($news['Treffen'] == 1 ? ' meeting' : '') . '">';
 	$html .= '<details>';
-	$html .= date("Y-m-d H:i",$news['Datum']) . ', ';
+	$html .= date("Y-m-d H:i", $news['Datum']) . ', ';
 	$html .= UID2Nick($news['UID']);
 	if ($p != "news_comments")
 		$html .= ', <a href="' . page_link_to("news_comments") . '&nid=' . $news['ID'] . '">Kommentare (' . sql_num_query("SELECT * FROM `news_comments` WHERE `Refid`='" . sql_escape($news['ID']) . "'") . ') &raquo;</a>';
 	$html .= '</details>';
-	$html .= '<h3>'.($news['Treffen'] == 1 ? '[Meeting] ' : '') . ReplaceSmilies($news['Betreff']) . '</h3>';
+	$html .= '<h3>' . ($news['Treffen'] == 1 ? '[Meeting] ' : '') . ReplaceSmilies($news['Betreff']) . '</h3>';
 	$html .= '<p>' . ReplaceSmilies(nl2br($news['Text'])) . '</p>';
 	if (in_array("admin_news", $privileges))
 		$html .= "<details><a href=\"" . page_link_to("admin_news") . "&action=edit&id=" . $news['ID'] . "\">Edit</a></details>\n";
@@ -51,22 +80,22 @@ function user_news_comments() {
 
 		$html .= "</table>";
 		$html .= '
-					<br />
-					<hr>
-					<h2>Neuer Kommentar:</h2>
-					<a name="Neu">&nbsp;</a>
-					
-					<form action="' . page_link_to("news_comments") . '" method="post">
-					<input type="hidden" name="nid" value="' . $_REQUEST["nid"] . '">
-					<table>
-					 <tr>
-					  <td align="right" valign="top">Text:</td>
-					  <td><textarea name="text" cols="50" rows="10"></textarea></td>
-					 </tr>
-					</table>
-					<br />
-					<input type="submit" value="sichern...">
-					</form>';
+						<br />
+						<hr>
+						<h2>Neuer Kommentar:</h2>
+						<a name="Neu">&nbsp;</a>
+						
+						<form action="' . page_link_to("news_comments") . '" method="post">
+						<input type="hidden" name="nid" value="' . $_REQUEST["nid"] . '">
+						<table>
+						 <tr>
+						  <td align="right" valign="top">Text:</td>
+						  <td><textarea name="text" cols="50" rows="10"></textarea></td>
+						 </tr>
+						</table>
+						<br />
+						<input type="submit" value="sichern...">
+						</form>';
 	} else {
 		$html .= "Fehlerhafter Aufruf!";
 	}
@@ -125,9 +154,9 @@ function user_news() {
 			 </tr>';
 	if (in_array('admin_news', $privileges)) {
 		$html .= ' <tr>
-		  <td align="right">' . Get_Text(9) . '</td>
-		  <td><input type="checkbox" name="treffen" size="1" value="1"></td>
-		 </tr>';
+			  <td align="right">' . Get_Text(9) . '</td>
+			  <td><input type="checkbox" name="treffen" size="1" value="1"></td>
+			 </tr>';
 
 	}
 	$html .= '</table>
