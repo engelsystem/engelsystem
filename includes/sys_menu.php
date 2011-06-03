@@ -40,7 +40,8 @@ function make_navigation() {
 		"admin_rooms",
 		"admin_groups",
 		"admin_faq",
-		"admin_language"
+		"admin_language",
+		"admin_log"
 	));
 	return $menu;
 }

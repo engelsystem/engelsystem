@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 03. Juni 2011 um 12:37
+-- Erstellungszeit: 03. Juni 2011 um 12:43
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -82,7 +82,7 @@ INSERT INTO `Counter` (`URL`, `Anz`) VALUES
 ('admin_angel_types', 71),
 ('user_settings', 134),
 ('user_messages', 113),
-('admin_groups', 135),
+('admin_groups', 141),
 ('user_questions', 55),
 ('admin_questions', 43),
 ('admin_faq', 55),
@@ -90,7 +90,8 @@ INSERT INTO `Counter` (`URL`, `Anz`) VALUES
 ('news_comments', 151),
 ('admin_user', 206),
 ('user_meetings', 5),
-('admin_language', 22);
+('admin_language', 25),
+('admin_log', 5);
 
 -- --------------------------------------------------------
 
@@ -136,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=73 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=74 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
@@ -160,7 +161,8 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (57, -4, 7),
 (63, -4, 5),
 (70, -2, 8),
-(72, -5, 18);
+(72, -5, 18),
+(73, -3, 19);
 
 -- --------------------------------------------------------
 
@@ -274,7 +276,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -298,7 +300,8 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (15, 'news_comments', 'User can comment news'),
 (16, 'admin_user', 'Administrate the angels'),
 (17, 'user_meetings', 'Lists meetings (news)'),
-(18, 'admin_language', 'Translate the system');
+(18, 'admin_language', 'Translate the system'),
+(19, 'admin_log', 'Display recent changes');
 
 -- --------------------------------------------------------
 
@@ -1045,7 +1048,9 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('user_meetings', 'DE', 'Treffen'),
 ('user_meetings', 'EN', 'Meetings'),
 ('admin_language', 'DE', 'Übersetzung'),
-('admin_language', 'EN', 'Translation');
+('admin_language', 'EN', 'Translation'),
+('admin_log', 'EN', 'Log'),
+('admin_log', 'DE', 'Log');
 
 -- --------------------------------------------------------
 
@@ -1088,7 +1093,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '4297f44b13955235245b2497399d7a93', 1, 1, 0, 10, 'DE', 115, 'L', 1307104634, '0000-00-00 00:00:00', '', '', ''),
+(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '4297f44b13955235245b2497399d7a93', 1, 1, 0, 10, 'DE', 115, 'L', 1307105002, '0000-00-00 00:00:00', '', '', ''),
 (148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 1, 1, 10, 'DE', 0, 'L', 1307082872, '2011-06-03 07:55:24', 'AudioEngel', '', '');
 
 -- --------------------------------------------------------
