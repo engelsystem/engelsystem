@@ -35,7 +35,7 @@ function user_news_comments() {
 		$html .= '<a href="' . page_link_to("news") . '">&laquo; Back</a>';
 		$html .= display_news($news);
 
-		$html .= '<h2>Comments</h2>';
+		$html .= '<h2>Kommentare</h2>';
 
 		$comments = sql_select("SELECT * FROM `news_comments` WHERE `Refid`='" . $nid . "' ORDER BY 'ID'");
 		foreach ($comments as $comment) {

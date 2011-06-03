@@ -9,8 +9,6 @@ function admin_rooms() {
 		",<br />\nhier hast du die M&ouml;glichkeit, neue R&auml;ume f&uuml;r die Schichtpl&auml;ne einzutragen " .
 		"oder vorhandene abzu&auml;ndern:<br /><br />\n";
 
-		$html .= "<a href=\"" . page_link_to("admin_rooms") . "&action=new\">Neuen Raum/Ort eintragen</a><br />\n";
-
 		// Räume auflisten
 		if (count($rooms) > 0) {
 			$html .= '<table><thead><tr>';
@@ -20,9 +18,7 @@ function admin_rooms() {
 
 			// Tabellenüberschriften generieren
 			foreach ($rooms[0] as $attr => $tmp)
-				if ($attr == 'RID')
-					$html .= '<th>Anzahl: ' . count($rooms) . '</th>';
-				else
+				if ($attr != 'RID')
 					$html .= '<th>' . $attr . '</th>';
 			$html .= '<th>&nbsp;</th>';
 			$html .= '</tr></thead><tbody>';
@@ -30,9 +26,7 @@ function admin_rooms() {
 			foreach ($rooms as $i => $room) {
 				$html .= '<tr>';
 				foreach ($room as $attr => $value)
-					if ($attr == 'RID')
-						$html .= '<td>' . ($i +1) . '</td>';
-					else
+					if ($attr != 'RID')
 						$html .= '<td>' . $value . '</td>';
 				$html .= '<td><a href="' . page_link_to("admin_rooms") . '&action=change&RID=' . $room['RID'] . '">Edit</a></td>';
 				$html .= '</tr>';
@@ -40,6 +34,7 @@ function admin_rooms() {
 
 			$html .= '</tbody></table>';
 		}
+		$html .= "<hr /><a href=\"" . page_link_to("admin_rooms") . "&action=new\">Neuen Raum/Ort eintragen</a><br />\n";
 	} else {
 		switch ($_REQUEST["action"]) {
 

@@ -1,5 +1,4 @@
 jetzt:
- * news kommentieren
  * news administrieren
  * user administrieren
  * schichtimport
@@ -14,12 +13,13 @@ später:
  * MD5-Passwörter mit Salt speichern
  * Passwort-Mindestanforderungen stellen
  * User-Avatare (code liegt auskommentiert in user_settings.php)
- * user_messages schön machen
+ * user_messages schön machen (dialogbasiert)
  * Formulare weg von Tabellen
  * Privilegien korrigieren (an die vom CVS anpassen)
- * Beim Raum-Management die benötigten Engel anzeigen
+ * (Beim Raum-Management die benötigten Engel anzeigen)
  * Löschen nur mit Rückfrage
  * FAQ ordentlich mehrsprachig machen
+ * Fertig übersetzen/Sprachwirrwarr beseitigen
 
 * schichten ueber monatsgrenzen einbaue im moment werden die tage nur 
   hochgezaehlt und die monatzgrenzen werden ignoriert
