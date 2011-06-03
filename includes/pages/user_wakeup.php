@@ -10,11 +10,12 @@ function user_wakeup() {
 				$date = DateTime::createFromFormat("Y-m-d H:i", $_REQUEST['Date']);
 				if ($date != null) {
 					$date = $date->getTimestamp();
-					$bemerkung = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['Bemerkung']));
-					$ort = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}]{1,})/ui", '', strip_tags($_REQUEST['Ort']));
-					$SQL = "INSERT INTO `Wecken` (`UID`, `Date`, `Ort`, `Bemerkung`) " .
-					"VALUES ('" . $user['UID'] . "', '" . $date . "', '" . $ort . "', " .
-					"'" . $bemerkung . "')";
+					$bemerkung = strip_request_item_nl('Bemerkung');
+					$ort = strip_request_item('Ort');
+					$SQL = "INSERT INTO `Wecken` (`UID`, `Date`, `Ort`, `Bemerkung`) "
+					. "VALUES ('" . sql_escape($user['UID']) . "', '"
+					. sql_escape($date) . "', '" . sql_escape($ort) . "', " . "'"
+					. sql_escape($bemerkung) . "')";
 					sql_query($SQL);
 					$html .= success(Get_Text(4));
 				} else
@@ -37,7 +38,8 @@ function user_wakeup() {
 		}
 	}
 
-	$html .= "<p>" . Get_Text("Hello") . $user['Nick'] . ",<br />" . Get_Text("pub_wake_beschreibung") . "</p>\n\n";
+	$html .= "<p>" . Get_Text("Hello") . $user['Nick'] . ",<br />"
+		. Get_Text("pub_wake_beschreibung") . "</p>\n\n";
 	$html .= Get_Text("pub_wake_beschreibung2");
 	$html .= '
 <table border="0" width="100%" class="border" cellpadding="2" cellspacing="1">
@@ -68,25 +70,17 @@ function user_wakeup() {
 		$html .= '</tr>';
 	}
 
-	$html .= '</table><hr />' . Get_Text("pub_wake_Text2") . '
-<form action="' . page_link_to("user_wakeup") . '&action=create" method="post">
-<table>
- <tr>
-   <td align="right">' . Get_Text("pub_wake_Datum") . ':</td>
-   <td><input type="text" name="Date" value="' . date("Y-m-d H:i") . '"></td>
- </tr>
- <tr>
-   <td align="right">' . Get_Text("pub_wake_Ort") . '</td>
-  <td><input type="text" name="Ort" value="Tent 23"></td>
- </tr>
- <tr>
-   <td align="right">' . Get_Text("pub_wake_Bemerkung") . '</td>
-  <td><textarea name="Bemerkung" rows="5" cols="40">knock knock leo, follow the white rabbit to the blue tent</textarea></td>
- </tr>
-</table>
-<input type="submit" name="submit" value="' . Get_Text("pub_wake_bouton") . '" />
-</form>';
+	$html .= '</table><hr />' . Get_Text("pub_wake_Text2");
 
+	$html .= template_render('../templates/user_wakeup.html', array (
+		'wakeup_link'   => page_link_to("user_wakeup"),
+		'date_text'     => Get_Text("pub_wake_Datum"),
+		'date_value'    => date("Y-m-d H:i"),
+		'place_text'    => Get_Text("pub_wake_Ort"),
+		'comment_text'  => Get_Text("pub_wake_Ort"),
+		'comment_value' => "Knock knock Leo, follow the white rabbit to the blue tent",
+		'submit_text'   => Get_Text("pub_wake_button")
+	));
 	return $html;
 }
 ?>
