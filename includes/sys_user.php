@@ -86,13 +86,10 @@ function displayavatar($UID, $height = "30") {
 	if (GetPicturShow($UID) == 'Y')
 		return "&nbsp;" . displayPictur($UID, $height);
 
-	// show avator
-	$asql = "select * from User where UID = $UID";
-	$aerg = mysql_query($asql, $con);
-
-	if (mysql_num_rows($aerg))
-		if (mysql_result($aerg, 0, "Avatar") > 0)
-			return'<div class="avatar">'. ("&nbsp;<img src=\"" . $url . $ENGEL_ROOT . "pic/avatar/avatar" . mysql_result($aerg, 0, "Avatar") . ".gif\">").'</div>';
+	$user = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($UID) . " LIMIT 1");
+	if (count($user) > 0)
+		if ($user[0]['Avatar'] > 0)
+			return '<div class="avatar">' . ("&nbsp;<img src=\"pic/avatar/avatar" . $user[0]['Avatar'] . ".gif\">") . '</div>';
 }
 
 function UIDgekommen($UID) {

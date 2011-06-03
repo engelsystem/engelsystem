@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 03. Juni 2011 um 04:47
+-- Erstellungszeit: 03. Juni 2011 um 05:44
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -80,15 +80,15 @@ INSERT INTO `Counter` (`URL`, `Anz`) VALUES
 ('register', 8),
 ('admin_rooms', 89),
 ('admin_angel_types', 71),
-('user_settings', 126),
+('user_settings', 131),
 ('user_messages', 113),
 ('admin_groups', 129),
 ('user_questions', 55),
-('admin_questions', 42),
+('admin_questions', 43),
 ('admin_faq', 55),
 ('admin_news', 33),
 ('news_comments', 151),
-('admin_user', 59),
+('admin_user', 157),
 ('user_meetings', 5);
 
 -- --------------------------------------------------------
@@ -1083,8 +1083,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307076377, '0000-00-00 00:00:00', '', '', ''),
-(147, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', 'L', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 0, 6, 'EN', 0, 'L', 1307042703, '2011-06-02 00:55:09', '', '', '');
+(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 0, 0, 10, 'DE', 115, 'L', 1307079838, '0000-00-00 00:00:00', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1184,8 +1183,7 @@ INSERT INTO `UserGroups` (`id`, `uid`, `group_id`) VALUES
 (1, 1, -2),
 (2, 1, -3),
 (3, 1, -5),
-(4, 1, -4),
-(5, 147, -2);
+(4, 1, -4);
 
 -- --------------------------------------------------------
 
