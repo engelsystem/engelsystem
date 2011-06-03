@@ -16,12 +16,25 @@ function guest_register() {
 		$Ergans = sql_select("SELECT UID FROM `User` WHERE `Nick`='" . sql_escape($_POST["Nick"]) . "'");
 
 		if (strlen($_POST["Nick"]) < 2)
-			$error = Get_Text("makeuser_error_nick1") . $_POST["Nick"] . Get_Text("makeuser_error_nick2");
-		elseif (count($Ergans) > 0) $error = Get_Text("makeuser_error_nick1") . $_POST["Nick"] . Get_Text("makeuser_error_nick3");
-		elseif (strlen($_POST["email"]) <= 6 && strstr($_POST["email"], "@") == FALSE && strstr($_POST["email"], ".") == false) $error = Get_Text("makeuser_error_mail");
-		elseif (!is_numeric($_POST["Alter"])) $error = Get_Text("makeuser_error_Alter");
-		elseif ($_POST["Passwort"] != $_POST["Passwort2"]) $error = Get_Text("makeuser_error_password1");
-		elseif (strlen($_POST["Passwort"]) < 6) $error = Get_Text("makeuser_error_password2");
+			$error = Get_Text("makeuser_error_nick1")
+				. $_POST["Nick"] . Get_Text("makeuser_error_nick2");
+
+		elseif (count($Ergans) > 0)
+			$error = Get_Text("makeuser_error_nick1")
+				. $_POST["Nick"] . Get_Text("makeuser_error_nick3");
+
+		elseif (strlen($_POST["email"]) <= 6 && strstr($_POST["email"], "@") == FALSE && strstr($_POST["email"], ".") == false)
+			$error = Get_Text("makeuser_error_mail");
+
+		elseif (!is_numeric($_POST["Alter"]))
+			$error = Get_Text("makeuser_error_Alter");
+
+		elseif ($_POST["Passwort"] != $_POST["Passwort2"])
+			$error = Get_Text("makeuser_error_password1");
+
+		elseif (strlen($_POST["Passwort"]) < 6)
+			$error = Get_Text("makeuser_error_password2");
+
 		else {
 			$_POST["Passwort"] = PassCrypt($_POST["Passwort"]);
 			unset ($_POST["Passwort2"]);
@@ -35,15 +48,26 @@ function guest_register() {
 			"`Size`, " . "`Passwort`, " .
 			"`Art` , " . "`kommentar`, " .
 			"`Hometown`," . "`CreateDate`, `Sprache` ) " .
-			"VALUES ( " .
-			"'" . $_POST["Nick"] . "', " . "'" . $_POST["Name"] . "', " .
-			"'" . $_POST["Vorname"] . "', " . "'" . $_POST["Alter"] . "', " .
-			"'" . $_POST["Telefon"] . "', " . "'" . $_POST["DECT"] . "', " .
-			"'" . $_POST["Handy"] . "', " . "'" . $_POST["email"] . "', " .
-			"'" . $_POST["ICQ"] . "', " . "'" . $_POST["jabber"] . "', " .
-			"'" . $_POST["Size"] . "', " . "'" . $_POST["Passwort"] . "', " .
-			"'" . $_POST["Art"] . "', " . "'" . $_POST["kommentar"] . "', " .
-			"'" . $_POST["Hometown"] . "'," . "NOW(), '" . $_SESSION['Sprache'] . "')");
+			"VALUES ( '"
+				. sql_escape($_POST["Nick"]) . "', " . "'"
+				. sql_escape($_POST["Name"]) . "', " . "'"
+				. sql_escape($_POST["Vorname"]) . "', " . "'"
+				. sql_escape($_POST["Alter"]) . "', " . "'"
+				. sql_escape($_POST["Telefon"]) . "', " . "'"
+				. sql_escape($_POST["DECT"]) . "', " . "'"
+				. sql_escape($_POST["Handy"]) . "', " . "'"
+				. sql_escape($_POST["email"]) . "', " . "'"
+				. sql_escape($_POST["ICQ"]) . "', " . "'"
+				. sql_escape($_POST["jabber"]) . "', " . "'"
+				. sql_escape($_POST["Size"]) . "', " . "'"
+				. sql_escape($_POST["Passwort"]) . "', " . "'"
+				. sql_escape($_POST["Art"]) . "', " . "'"
+				. sql_escape($_POST["kommentar"]) . "', " . "'"
+				. sql_escape($_POST["Hometown"]) . "',"
+				. "NOW(), '"
+				. sql_escape($_SESSION["Sprache"])
+				. "')"
+			);
 
 			if ($Erg != 1) {
 				$html .= Get_Text("makeuser_error_write1") . "<br />\n";

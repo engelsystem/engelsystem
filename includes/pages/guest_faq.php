@@ -5,11 +5,17 @@ function guest_faq() {
 	foreach ($faqs as $faq) {
 		$html .= "<dl>";
 		if ($_SESSION['Sprache'] == "DE") {
-			$html .= "<dt>" . $faq['Frage_de'] . "</dt>";
-			$html .= "<dd>" . $faq['Antwort_de'] . "</dd>";
+			$html .= sprintf(
+				'<dt>%s</dt> <dd>%s</dd>',
+				$faq['frage_de'],
+				$faq['antwort_de']
+			);
 		} else {
-			$html .= "<dt>" . $faq['Frage_en'] . "</dt>";
-			$html .= "<dd>" . $faq['Antwort_en'] . "</dd>";
+			$html .= sprintf(
+				'<dt>%s</dt> <dd>%s</dd>',
+				$faq['frage_en'],
+				$faq['antwort_en']
+			);
 		}
 		$html .= "</dl>";
 	}
