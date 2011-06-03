@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 03. Juni 2011 um 03:49
+-- Erstellungszeit: 03. Juni 2011 um 04:40
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -71,23 +71,24 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 187),
+('news', 190),
 ('login', 26),
 ('logout', 13),
 ('start', 26),
 ('faq', 19),
 ('credits', 3),
-('register', 3),
+('register', 8),
 ('admin_rooms', 89),
 ('admin_angel_types', 71),
 ('user_settings', 126),
 ('user_messages', 113),
-('admin_groups', 117),
+('admin_groups', 125),
 ('user_questions', 55),
 ('admin_questions', 42),
 ('admin_faq', 55),
 ('admin_news', 32),
-('news_comments', 151);
+('news_comments', 151),
+('admin_user', 55);
 
 -- --------------------------------------------------------
 
@@ -133,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=51 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=64 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
@@ -145,15 +146,17 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (40, -2, 4),
 (41, -2, 3),
 (23, -1, 2),
-(48, -4, 14),
-(46, -4, 7),
+(62, -4, 16),
+(61, -4, 6),
 (44, -2, 11),
 (43, -2, 9),
 (12, -5, 10),
-(47, -4, 13),
-(49, -4, 12),
+(60, -4, 12),
+(59, -4, 14),
 (45, -2, 8),
-(50, -4, 6);
+(58, -4, 13),
+(57, -4, 7),
+(63, -4, 5);
 
 -- --------------------------------------------------------
 
@@ -265,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -286,7 +289,8 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (12, 'admin_questions', 'Answer user''s questions'),
 (13, 'admin_faq', 'Edit FAQs'),
 (14, 'admin_news', 'Administrate the news section'),
-(15, 'news_comments', 'User can comment news');
+(15, 'news_comments', 'User can comment news'),
+(16, 'admin_user', 'Administrate the angels');
 
 -- --------------------------------------------------------
 
@@ -984,8 +988,8 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('admin/dect.php', 'EN', 'Dect'),
 ('admin/dect_call.php', 'DE', ' '),
 ('admin/dect_call.php', 'EN', ' '),
-('admin/user.php', 'DE', 'Engelliste'),
-('admin/user.php', 'EN', 'Drone-list'),
+('admin_user', 'DE', 'Engelliste'),
+('admin_user', 'EN', 'Manage angels'),
 ('admin/userDefaultSetting.php', 'DE', 'Engel Voreinstellungen'),
 ('admin/userDefaultSetting.php', 'EN', 'Drone Default Setting'),
 ('admin/UserPicture.php', 'DE', 'Benutzerbilder'),
@@ -1072,7 +1076,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307072950, '0000-00-00 00:00:00', '', '', ''),
+(1, 'admin', '', '', 0, '', '', '', '', '', '', 'L', '21232f297a57a5a743894a0e4a801fc3', 0, 0, 0, 10, 'DE', 115, 'L', 1307075960, '0000-00-00 00:00:00', '', '', ''),
 (147, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', 'L', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 0, 6, 'EN', 0, 'L', 1307042703, '2011-06-02 00:55:09', '', '', '');
 
 -- --------------------------------------------------------

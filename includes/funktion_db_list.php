@@ -34,32 +34,31 @@
 
 function funktion_db_element_list_2row( $TopicName, $SQL) 
 {
-  global $con;
+	$html = "";
+  $html .= "<table class=\"border\" cellpadding=\"2\" cellspacing=\"1\">\n";
+  $html .= "<caption>$TopicName</caption>";
+#  $html .= "<tr class=\"contenttopic\"> <td><h1>$TopicName</h1></td> </tr>\n";
 
-  echo "<table class=\"border\" cellpadding=\"2\" cellspacing=\"1\">\n";
-  echo "<caption>$TopicName</caption>";
-#  echo "<tr class=\"contenttopic\"> <td><h1>$TopicName</h1></td> </tr>\n";
-
-  $Erg = mysql_query($SQL, $con);
-  echo mysql_error($con);
+  $Erg = sql_query($SQL);
   
-  echo "<tr class=\"contenttopic\">";
+  $html .= "<tr class=\"contenttopic\">";
   for ($m = 0 ; $m < mysql_num_fields($Erg) ; $m++)
   {
-    echo "<th>". mysql_field_name($Erg, $m). "</th>";
+    $html .= "<th>". mysql_field_name($Erg, $m). "</th>";
   }
-  echo "</tr>";
+  $html .= "</tr>";
 
   for ($n = 0 ; $n < mysql_num_rows($Erg) ; $n++)
   {
-    echo "<tr class=\"content\">";
+    $html .= "<tr class=\"content\">";
     for ($m = 0 ; $m < mysql_num_fields($Erg) ; $m++)
     {
-      echo "<td>".mysql_result($Erg, $n, $m). "</td>"; 
+      $html .= "<td>".mysql_result($Erg, $n, $m). "</td>"; 
     }
-    echo "</tr>";
+    $html .= "</tr>";
   }
-  echo "</table>\n";
+  $html .= "</table>\n";
+  return $html;
 }
 
 ?>

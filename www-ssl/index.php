@@ -66,6 +66,10 @@ if (in_array($p, $privileges)) {
 	elseif ($p == "admin_questions") {
 		$content = admin_questions();
 	}
+	elseif ($p == "admin_user") {
+		require_once ('includes/pages/admin_user.php');
+		$content = admin_user();
+	}
 	elseif ($p == "admin_news") {
 		require_once ('includes/pages/admin_news.php');
 		$content = admin_news();

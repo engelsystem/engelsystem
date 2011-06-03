@@ -120,6 +120,22 @@ textarea {
     width: 300px;
 }
 
+.hidden {
+	background: #fff;
+	border: 1px solid #888;
+	display: none;
+	font-size: 12px;
+	padding: 4px;
+}
+
+td .hidden {
+	position: absolute;
+}
+
+tr:hover .hidden {
+	display: block;
+}
+
 .clear {
     clear: both;
 }
