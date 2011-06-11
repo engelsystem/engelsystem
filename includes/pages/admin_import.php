@@ -175,7 +175,7 @@ function admin_import() {
 	}
 
 	//readXMLfile("xml.php.xml");
-	if (readXMLfile("$Tempdir/engelXML") == 0) {
+	if (readXMLfile("../import/27C3_sample.xcs.xml") == 0) {
 		$XMLmain = getXMLsubPease($XMLmain, "VCALENDAR");
 
 		if ($ShowDataStrukture) {

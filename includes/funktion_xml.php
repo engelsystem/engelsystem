@@ -141,8 +141,6 @@ function getXMLsubPease($Sourse, $Name) {
 			return $value;
 		}
 	}
-
-	echo "<h1>Fehler: getXMLsubPease( $Sourse, $Name ) not found</h1>";
 	//    die;  
 }
 
