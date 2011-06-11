@@ -71,7 +71,7 @@ function ausgabe_Feld_Inhalt($SID, $Man) {
 	$Spalten .= funktion_isLinkAllowed_addLink_OrEmpty("admin/schichtplan.php?action=change&SID=$SID", "edit<br />\n");
 
 	///////////////////////////////////////////////////////////////////
-	// Ausgabe des Schischtnamens
+	// Ausgabe des Schichtnamens
 	///////////////////////////////////////////////////////////////////
 	$SQL = "SELECT `URL` FROM `Shifts` WHERE (`SID` = '$SID');";
 	$Erg = mysql_query($SQL, $con);
@@ -84,7 +84,7 @@ function ausgabe_Feld_Inhalt($SID, $Man) {
 	///////////////////////////////////////////////////////////////////
 	// SQL abfrage f�r die ben�tigten schichten
 	///////////////////////////////////////////////////////////////////
-	$SQL = "SELECT * FROM `ShiftEntry` WHERE (`SID` = '$SID') ORDER BY `TID`, `UID` DESC ;";
+	$SQL = "SELECT * FROM `ShiftEntry` WHERE (`SID` = '" . sql_escape($SID) . "') ORDER BY `TID`, `UID` DESC ;";
 	$Erg = mysql_query($SQL, $con);
 
 	$Anzahl = mysql_num_rows($Erg);
@@ -164,7 +164,7 @@ function ausgabe_Feld_Inhalt($SID, $Man) {
 				// ausgabe ben�tigter Engel
 				////////////////////////////
 				//in vergangenheit
-				$SQLtime = "SELECT `DateE` FROM `Shifts` WHERE (`SID`='$SID' AND `DateE` >= '" .
+				$SQLtime = "SELECT `DateE` FROM `Shifts` WHERE (`SID`='" . sql_escape($SID) . "' AND `DateE` >= '" .
 				gmdate("Y-m-d H:i:s", time() + $gmdateOffset) . "')";
 				$Ergtime = mysql_query($SQLtime, $con);
 				if (mysql_num_rows($Ergtime) > 0) {
@@ -219,8 +219,8 @@ function CreateRoomShifts($raum) {
 	// beginnt die erste schicht vor dem heutigen tag und geht dar�ber hinaus
 	/////////////////////////////////////////////////////////////
 	$SQLSonder = "SELECT `SID`, `DateS`, `DateE` , `Len`, `Man` FROM `Shifts` " .
-	"WHERE ((`RID` = '$raum') AND (`DateE` > '$ausdatum 23:59:59') AND " .
-	"(`DateS` < '$ausdatum 00:00:00') ) ORDER BY `DateS`;";
+	"WHERE ((`RID` = '" . sql_escape($raum) . "') AND (`DateE` > '$ausdatum 23:59:59') AND " .
+	"(`DateS` < '" . sql_escape($ausdatum) . " 00:00:00') ) ORDER BY `DateS`;";
 	$ErgSonder = mysql_query($SQLSonder, $con);
 	if ((mysql_num_rows($ErgSonder) > 1)) {
 		if (funktion_isLinkAllowed("admin/schichtplan.php") === TRUE) {
@@ -249,8 +249,9 @@ function CreateRoomShifts($raum) {
 	// beginnt die erste schicht vor dem heutigen tag?
 	/////////////////////////////////////////////////////////////
 	$SQLSonder = "SELECT `SID`, `DateS`, `DateE` , `Len`, `Man` FROM `Shifts` " .
-	"WHERE ((`RID` = '$raum') AND (`DateE` > '$ausdatum 00:00:00') AND " .
-	"(`DateS` < '$ausdatum 00:00:00') ) ORDER BY `DateS`;";
+	"WHERE ((`RID` = '" . sql_escape($raum) . "') AND (`DateE` > '" . sql_escape($ausdatum) . " 00:00:00') AND " .
+	"(`DateS` < '" . sql_escape($ausdatum) . " 00:00:00') ) ORDER BY `DateS`;";
+
 	$ErgSonder = mysql_query($SQLSonder, $con);
 	if ((mysql_num_rows($ErgSonder) > 1)) {
 		if (funktion_isLinkAllowed("admin/schichtplan.php") === TRUE) {
@@ -276,9 +277,9 @@ function CreateRoomShifts($raum) {
 	// gibt die schichten f�r den tag aus
 	/////////////////////////////////////////////////////////////
 	$SQL = "SELECT `SID`, `DateS`, `Len`, `Man` FROM `Shifts` " .
-	"WHERE ((`RID` = '$raum') and " .
-	"(`DateS` >= '$ausdatum $ZeitZeiger:00:00') and " .
-	"(`DateS` like '$ausdatum%')) ORDER BY `DateS`;";
+	"WHERE ((`RID` = '" . sql_escape($raum) . "') and " .
+	"(`DateS` >= '" . sql_escape($ausdatum) . ' ' . sql_escape($ZeitZeiger) . ":00:00') and " .
+	"(`DateS` like '" . sql_escape($ausdatum) . "%')) ORDER BY `DateS`;";
 	$Erg = mysql_query($SQL, $con);
 	for ($i = 0; $i < mysql_num_rows($Erg); ++ $i) {
 		$ZeitPos = substr(mysql_result($Erg, $i, "DateS"), 11, 2) + (substr(mysql_result($Erg, $i, "DateS"), 14, 2) / 60);
@@ -370,7 +371,7 @@ function SummRoomShifts($raum) {
 	global $ausdatum, $con, $debug, $GlobalZeileProStunde;
 
 	$SQLSonder = "SELECT `SID`, `DateS`, `Len`, `Man` FROM `Shifts` " .
-	"WHERE ((`RID` = '$raum') AND (`DateE` >= '$ausdatum 00:00:00') AND " .
+	"WHERE ((`RID` = '" . sql_escape($raum) . "') AND (`DateE` >= '$ausdatum 00:00:00') AND " .
 	"(`DateS` <= '$ausdatum 23:59:59') ) ORDER BY `DateS`;";
 
 	$ErgSonder = mysql_query($SQLSonder, $con);

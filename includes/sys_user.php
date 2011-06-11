@@ -1,9 +1,9 @@
 <?php
 function UID2Nick($UID) {
 	if ($UID > 0)
-		$SQL = "SELECT Nick FROM `User` WHERE UID='$UID'";
+		$SQL = "SELECT Nick FROM `User` WHERE UID='" . sql_escape($UID) . "'";
 	else
-		$SQL = "SELECT Name FROM `Groups` WHERE UID='$UID'";
+		$SQL = "SELECT Name FROM `Groups` WHERE UID='" . sql_escape($UID) . "'";
 
 	$Erg = sql_select($SQL);
 
@@ -23,7 +23,7 @@ function UID2Nick($UID) {
 function TID2Type($TID) {
 	global $con;
 
-	$SQL = "SELECT Name FROM `EngelType` WHERE TID='$TID'";
+	$SQL = "SELECT Name FROM `EngelType` WHERE TID='" . sql_escape($TID) . "'";
 	$Erg = mysql_query($SQL, $con);
 
 	if (mysql_num_rows($Erg))
@@ -62,7 +62,7 @@ function ReplaceSmilies($neueckig) {
 function GetPicturShow($UID) {
 	global $con;
 
-	$SQL = "SELECT `show` FROM `UserPicture` WHERE `UID`='$UID'";
+	$SQL = "SELECT `show` FROM `UserPicture` WHERE `UID`='" . sql_escape($UID) . "'";
 	$res = mysql_query($SQL, $con);
 
 	if (mysql_num_rows($res) == 1)
@@ -95,7 +95,7 @@ function displayavatar($UID, $height = "30") {
 function UIDgekommen($UID) {
 	global $con;
 
-	$SQL = "SELECT `Gekommen` FROM `User` WHERE UID='$UID'";
+	$SQL = "SELECT `Gekommen` FROM `User` WHERE UID='" . sql_escape($UID) . "'";
 	$Erg = mysql_query($SQL, $con);
 
 	if (mysql_num_rows($Erg))
