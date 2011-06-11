@@ -22,7 +22,7 @@ CREATE TABLE `UserPicture` (
   `ContentType` varchar(20) NOT NULL default '',
   `show` char(1) NOT NULL default 'N',
   PRIMARY KEY  (`UID`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- 
 -- Daten für Tabelle `UserPicture`

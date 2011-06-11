@@ -22,7 +22,7 @@ CREATE TABLE `Sprache` (
   `Sprache` char(2) NOT NULL default 'DE',
   `Text` text NOT NULL,
   KEY `TextID` (`TextID`,`Sprache`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 --
 -- Daten fuer Tabelle `Sprache`

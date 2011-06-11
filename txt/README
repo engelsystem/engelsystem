@@ -3,9 +3,9 @@ DIRS:
 ./DB
 	Standart DB File
 ./www
-	daten für http verbindung
+	daten fuer http verbindung
 ./www-ssl
-	daten für https verbindung
+	daten fuer https verbindung
 
 Anfordeungen:
 -------------

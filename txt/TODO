@@ -1,3 +1,32 @@
+jetzt:
+ * aktiv
+ * gekommen
+ * tshirt
+ * schichtimport
+ * schichtadministration
+ * meine schichten
+ * schichten
+ * Services?
+ * DECT-kram?
+ * weckservice?
+
+später:
+ * Zurück-/Backlinks setzen
+ * Pagination
+ * MD5-Passwörter mit Salt speichern
+ * Passwort-Mindestanforderungen stellen
+ * User-Avatare (code liegt auskommentiert in user_settings.php)
+ * user_messages schön machen (dialogbasiert)
+ * Formulare weg von Tabellen
+ * Privilegien korrigieren (an die vom CVS anpassen)
+ * (Beim Raum-Management die benötigten Engel anzeigen)
+ * Löschen nur mit Rückfrage
+ * FAQ ordentlich mehrsprachig machen
+ * Fertig übersetzen/Sprachwirrwarr beseitigen
+ * Übersetzung
+ * Infotresen-Support (Engel angekommen/Badge gekriegt ohne Adminrechte
+   setzen)
+
 * schichten ueber monatsgrenzen einbaue im moment werden die tage nur 
   hochgezaehlt und die monatzgrenzen werden ignoriert
 * verify use of dect_clear.php and jabberserver.php

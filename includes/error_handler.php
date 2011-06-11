@@ -1,88 +1,86 @@
 <?php
-
-  require_once("funktion_jabber.php");
+  require_once "funktion_jabber.php";
 
   // global array for collected error_messages
   $error_messages = array();
 
   // general error handler collecting all messages in an array
-  function Error_Handler($error_number, $error_string, $error_file, $error_line, $error_context)
-  {
+  function Error_Handler($error_number, $error_string, $error_file, $error_line, $error_context) {
     global $error_messages, $con;
 
-    //SQL error genauer analysiert
+    // SQL error genauer analysiert
     $Temp = "";
-    foreach ($error_context as $k => $v )
-        if( (strpos( "0$k", "sql") > 0) || (strpos( "0$k", "SQL") > 0))
-            $Temp .= "Error Context: $k = $v\n";
+    foreach ($error_context as $k => $v)
+      if((strpos( "0$k", "sql") > 0) || (strpos( "0$k", "SQL") > 0))
+        $Temp .= "Error Context: $k = $v\n";
 
-    if( (strpos( "0$error_string", "MySQL") > 0) )
-    	$Temp .= "Error MySQL: ". mysql_error($con). "\n";
-   
-    //übergeben des arrays
-    array_push( $error_messages, "Error Number: $error_number\n".
-    				 "Error String: $error_string\n".
-				 "Error File: $error_file\n".
-				 "Error Line: $error_line\n".
-				 (strlen($Temp)? "$Temp": "")
-				 );
+    if((strpos( "0$error_string", "MySQL") > 0))
+      $Temp .= "Error MySQL: ". mysql_error($con). "\n";
+
+    // Uebergeben des arrays
+    array_push($error_messages, "Error Number: " . $error_number . "\n".
+         "Error String: " . $error_string . "\n".
+         "Error File: " . $error_file . "\n".
+         "Error Line: " . $error_line . "\n".
+         (strlen($Temp)? "$Temp": ""));
   }
 
   // register error handler
   set_error_handler("Error_Handler");
 
-  ini_set( "error_reporting", E_ALL);
-  if( $DEBUG)
-  {
-	  ini_set( "display_errors", "On");
-	  ini_set( "display_startup_errors", "On");
-	  ini_set( "html_errors", "On");
+  error_reporting(E_ALL);
+
+  if($debug) {
+    ini_set("display_errors", "On");
+    ini_set("display_startup_errors", "On");
+    ini_set("html_errors", "On");
   }
   
   // send errors 
-  function send_errors()
-  {
+  function send_errors() {
     global $error_messages;
 
-    if (!$error_messages) return;
-    
+    if(!$error_messages)
+      return;
+
     $message = "";
     foreach($error_messages as $value)
       $message .= $value."\n";
+
     $message .= "\n";
-    
-    if( isset( $_POST))
-    {
-      foreach ($_POST as $k => $v ) 	 
+
+    if(isset($_POST)) {
+      foreach ($_POST as $k => $v)
           $message .= "_POST: $k = ". ( $k!="password"? $v : "???..."). "\n"; 
+
       $message .= "\n";
     }
-    
-    if( isset( $_GET))
-    {
-      foreach ($_GET as $k => $v ) 	 
-	$message .= "_GET: $k = $v\n"; 
+
+    if(isset($_GET)) {
+      foreach ($_GET as $k => $v)
+        $message .= "_GET: $k = $v\n";
+
       $message .= "\n";
     }
-    
+
     $message .= "\n\n";
     
     if( isset( $_SESSION))
     {
-      foreach ($_SESSION as $k => $v ) 	 
+      foreach ($_SESSION as $k => $v )    
         $message .= "_SESSION: $k = $v\n"; 
       $message .= "\n";
     }
     
     if( isset( $_SESSION['CVS']))
     {
-      foreach ($_SESSION['CVS'] as $k => $v ) 	 
+      foreach ($_SESSION['CVS'] as $k => $v )    
         if( strlen($k)>3 ) 
           $message .= "_SESSION['CVS']: $k = $v\n"; 
       $message .= "\n";
     }
-    
-    foreach ($_SERVER as $k => $v ) 	 
+
+    foreach ($_SERVER as $k => $v )    
       if( strpos( "0$k", "SERVER_")==0)
           $message .= "_SERVER: $k = $v\n"; 
 
@@ -102,7 +100,7 @@
   function send_message(&$message)
   {
     chdir(dirname(__FILE__));
-    require_once('./config_jabber.php');
+    require_once('../config/config_jabber.php');
 
     if (isset($jabber_recipient) && count($jabber_recipient)) {
       $jabber = new Jabber($server, $port, $username, $password, $resource);

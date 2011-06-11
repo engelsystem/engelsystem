@@ -1,0 +1,11 @@
+#logo {
+    background: url('../pic/engelsystem_logo.png') top left no-repeat;
+    display: block;
+    height: 69px;
+    margin: 10px auto;
+    width: 523px;
+}
+
+tr:hover > td {
+	background: #f0f0f0;
+}

@@ -1,0 +1,56 @@
+<table>
+    <thead>
+        <tr>
+            <th>
+                Deutsch
+            </th>
+            <th>
+                English
+            </th>
+            <th>
+                &nbsp;
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        %faqs%
+    </tbody>
+</table>
+<hr/>Create new FAQ:
+<form action="%link%&action=create" method="post">
+    <table>
+        <tr>
+            <td>
+                Frage
+            </td>
+            <td>
+                <textarea name="frage"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Antwort
+            </td>
+            <td>
+                <textarea name="antwort"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Question
+            </td>
+            <td>
+                <textarea name="question"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Answer
+            </td>
+            <td>
+                <textarea name="answer"></textarea>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" name="submit" value="Create" />
+</form>
