@@ -1,8 +1,42 @@
 <?php
 function admin_import() {
+	$html = "";
+
+	$step = "input";
+	if (isset ($_REQUEST['step']))
+		$step = $_REQUEST['step'];
+
+	$html .= '<p>';
+	$html .= $step == "input" ? '<b>1. Input</b>' : '1. Input';
+	$html .= ' &raquo; ';
+	$html .= $step == "check" ? '<b>2. Validate</b>' : '2. Validate';
+	$html .= ' &raquo; ';
+	$html .= $step == "import" ? '<b>3. Import</b>' : '3. Import';
+	$html .= '</p>';
+
+	switch ($step) {
+		case "input" :
+			$html .= template_render('../templates/admin_import_input.html', array (
+				'link' => page_link_to('admin_import')
+			));
+			
+			$data = new SimpleXMLElement(file_get_contents('../import/27C3_sample.xcs'));
+			print_r($data->vcalendar);
+			break;
+
+		case "check" :
+			break;
+
+		case "import" :
+			break;
+	}
+
+	return $html;
+
+	##############################################################################################
 	global $Room, $RoomID, $RoomName;
 	global $PentabarfGetWith, $PentabarfXMLpath, $PentabarfXMLhost;
-	
+
 	require_once ("includes/funktion_xml.php");
 	///////////
 	// DEBUG //
@@ -175,7 +209,7 @@ function admin_import() {
 	}
 
 	//readXMLfile("xml.php.xml");
-	if (readXMLfile("../import/27C3_sample.xcs.xml") == 0) {
+	if (readXMLfile("../import/27C3_sample.xcs") == 0) {
 		$XMLmain = getXMLsubPease($XMLmain, "VCALENDAR");
 
 		if ($ShowDataStrukture) {
