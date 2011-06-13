@@ -28,7 +28,7 @@ if (isset ($_REQUEST['auth']))
 
 // Gewünschte Seite/Funktion
 $p = isset ($user) ? "news" : "start";
-if (isset ($_REQUEST['p']))
+if (isset ($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && sql_num_query("SELECT * FROM `Privileges` WHERE `name`='" . sql_escape($_REQUEST['p']) . "' LIMIT 1") > 0)
 	$p = $_REQUEST['p'];
 
 $title = Get_Text($p);
