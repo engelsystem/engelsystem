@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 03. Juni 2011 um 14:20
+-- Erstellungszeit: 13. Juni 2011 um 17:08
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -71,28 +71,29 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 206),
-('login', 42),
-('logout', 19),
-('start', 32),
-('faq', 27),
-('credits', 7),
-('register', 12),
+('news', 223),
+('login', 70),
+('logout', 20),
+('start', 49),
+('faq', 34),
+('credits', 11),
+('register', 20),
 ('admin_rooms', 90),
-('admin_angel_types', 71),
-('user_settings', 137),
-('user_messages', 113),
-('admin_groups', 149),
-('user_questions', 55),
-('admin_questions', 43),
-('admin_faq', 56),
+('admin_angel_types', 72),
+('user_settings', 148),
+('user_messages', 115),
+('admin_groups', 156),
+('user_questions', 58),
+('admin_questions', 45),
+('admin_faq', 59),
 ('admin_news', 33),
 ('news_comments', 151),
 ('admin_user', 206),
-('user_meetings', 5),
-('admin_language', 29),
+('user_meetings', 9),
+('admin_language', 35),
 ('admin_log', 19),
-('user_wakeup', 61);
+('user_wakeup', 64),
+('admin_import', 39);
 
 -- --------------------------------------------------------
 
@@ -138,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=85 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=89 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
@@ -154,7 +155,7 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (61, -4, 6),
 (80, -2, 17),
 (79, -2, 15),
-(75, -5, 18),
+(86, -5, 21),
 (60, -4, 12),
 (59, -4, 14),
 (78, -2, 3),
@@ -162,10 +163,11 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (57, -4, 7),
 (63, -4, 5),
 (77, -2, 4),
-(74, -5, 10),
+(87, -5, 18),
 (73, -3, 19),
-(76, -5, 20),
-(84, -2, 20);
+(85, -5, 10),
+(84, -2, 20),
+(88, -1, 1);
 
 -- --------------------------------------------------------
 
@@ -279,7 +281,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -305,7 +307,10 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (17, 'user_meetings', 'Lists meetings (news)'),
 (18, 'admin_language', 'Translate the system'),
 (19, 'admin_log', 'Display recent changes'),
-(20, 'user_wakeup', 'User wakeup-service organization');
+(20, 'user_wakeup', 'User wakeup-service organization'),
+(21, 'admin_import', 'Import rooms and shifts from pentabarf'),
+(22, 'credits', 'View credits'),
+(23, 'faq', 'View FAQ');
 
 -- --------------------------------------------------------
 
@@ -1056,7 +1061,9 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('admin_log', 'EN', 'Log'),
 ('admin_log', 'DE', 'Log'),
 ('user_wakeup', 'DE', 'Weckservice'),
-('user_wakeup', 'EN', 'Wakeup service');
+('user_wakeup', 'EN', 'Wakeup service'),
+('admin_import', 'DE', 'Pentabarf Import'),
+('admin_import', 'EN', 'Pentabarf import');
 
 -- --------------------------------------------------------
 
@@ -1099,7 +1106,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0, 10, 'DE', 115, 'L', 1307110821, '0000-00-00 00:00:00', '', '', ''),
+(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0, 10, 'DE', 115, 'L', 1307984924, '0000-00-00 00:00:00', '', '', ''),
 (148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 1, 1, 10, 'DE', 0, 'L', 1307110798, '2011-06-03 07:55:24', 'AudioEngel', '', '');
 
 -- --------------------------------------------------------
