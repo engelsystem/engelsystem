@@ -3,6 +3,8 @@
 
 // Engel registrieren
 function guest_register() {
+	global $SubscribeMailinglist;
+	
 	$html = "";
 	$success = "none";
 
@@ -75,15 +77,11 @@ function guest_register() {
 			} else {
 				$html .= "<p class=\"success\">" . Get_Text("makeuser_writeOK") . "\n";
 
-				$Erg3 = mysql_query("INSERT INTO `UserGroups` SET `uid`=" . sql_escape(sql_id()) . ", `group_id`=-2");
+				// Assign user-group
+				sql_query("INSERT INTO `UserGroups` SET `uid`=" . sql_escape(sql_id()) . ", `group_id`=-2");
 
-				if ($Erg3 != 1) {
-					$html .= "<h1>" . Get_Text("makeuser_error_write2") . "<br />\n";
-					$error = sql_error();
-				} else {
-					$html .= Get_Text("makeuser_writeOK2") . "<br />\n";
-					$html .= "<h1>" . Get_Text("makeuser_writeOK3") . "</h1>\n";
-				}
+				$html .= Get_Text("makeuser_writeOK2") . "<br />\n";
+				$html .= "<h1>" . Get_Text("makeuser_writeOK3") . "</h1>\n";
 
 				$html .= Get_Text("makeuser_writeOK4") . "</p><p></p>\n<br /><br />\n";
 				$success = "any";

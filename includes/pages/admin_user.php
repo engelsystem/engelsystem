@@ -2,7 +2,7 @@
 function admin_user() {
 	global $user;
 
-	include ("includes/funktion_db_list.php");
+	include ("includes_old/funktion_db_list.php");
 
 	$html = "";
 
@@ -20,7 +20,7 @@ function admin_user() {
 			$html .= "<table border=\"0\">\n";
 			$html .= "<input type=\"hidden\" name=\"Type\" value=\"Normal\">\n";
 
-			$SQL = "SELECT * FROM `User` WHERE `UID`='" . $id . "'";
+			$SQL = "SELECT * FROM `User` WHERE `UID`='" . sql_escape($id) . "'";
 			$Erg = sql_query($SQL);
 
 			$html .= "<tr><td>\n";
@@ -184,21 +184,21 @@ function admin_user() {
 
 				case 'save' :
 					$SQL = "UPDATE `User` SET ";
-					$SQL .= " `Nick` = '" . $_POST["eNick"] . "', `Name` = '" . $_POST["eName"] . "', " .
-					"`Vorname` = '" . $_POST["eVorname"] . "', " .
-					"`Telefon` = '" . $_POST["eTelefon"] . "', " .
-					"`Handy` = '" . $_POST["eHandy"] . "', " .
-					"`Alter` = '" . $_POST["eAlter"] . "', " .
-					"`DECT` = '" . $_POST["eDECT"] . "', " .
-					"`email` = '" . $_POST["eemail"] . "', " .
-					"`ICQ` = '" . $_POST["eICQ"] . "', " .
-					"`jabber` = '" . $_POST["ejabber"] . "', " .
-					"`Size` = '" . $_POST["eSize"] . "', " .
-					"`Gekommen`= '" . $_POST["eGekommen"] . "', " .
-					"`Aktiv`= '" . $_POST["eAktiv"] . "', " .
-					"`Tshirt` = '" . $_POST["eTshirt"] . "', " .
-					"`Hometown` = '" . $_POST["Hometown"] . "' " .
-					"WHERE `UID` = '" . $id .
+					$SQL .= " `Nick` = '" . sql_escape($_POST["eNick"]) . "', `Name` = '" . sql_escape($_POST["eName"]) . "', " .
+					"`Vorname` = '" . sql_escape($_POST["eVorname"]) . "', " .
+					"`Telefon` = '" . sql_escape($_POST["eTelefon"]) . "', " .
+					"`Handy` = '" . sql_escape($_POST["eHandy"]) . "', " .
+					"`Alter` = '" . sql_escape($_POST["eAlter"]) . "', " .
+					"`DECT` = '" . sql_escape($_POST["eDECT"]) . "', " .
+					"`email` = '" . sql_escape($_POST["eemail"]) . "', " .
+					"`ICQ` = '" . sql_escape($_POST["eICQ"]) . "', " .
+					"`jabber` = '" . sql_escape($_POST["ejabber"]) . "', " .
+					"`Size` = '" . sql_escape($_POST["eSize"]) . "', " .
+					"`Gekommen`= '" . sql_escape($_POST["eGekommen"]) . "', " .
+					"`Aktiv`= '" . sql_escape($_POST["eAktiv"]) . "', " .
+					"`Tshirt` = '" . sql_escape($_POST["eTshirt"]) . "', " .
+					"`Hometown` = '" .sql_escape( $_POST["Hometown"]) . "' " .
+					"WHERE `UID` = '" . sql_escape($id) .
 					"' LIMIT 1;";
 					sql_query($SQL);
 					$html .= success("Änderung wurde gespeichert...\n");
@@ -229,23 +229,23 @@ function admin_user() {
 
 		$html .= "Anzahl Engel: $Zeilen<br /><br />\n";
 		$html .= '
-																																					<table width="100%" class="border" cellpadding="2" cellspacing="1"> <thead>
-																																					  <tr class="contenttopic">
-																																					    <th>
-																																					      <a href="' . page_link_to("admin_user") . '&OrderBy=Nick">Nick</a>
-																																					    </th>
-																																					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&OrderBy=Name">Name</a></th>
-																																					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Alter">Alter</a></th>
-																																					    <th>
-																																					      <a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a>
-																																					    </th>
-																																					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></th>
-																																					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></th>
-																																					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></th>
-																																					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></th>
-																																					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=CreateDate">Registriert</a></th>
-																																					    <th>&Auml;nd.</th>
-																																					  </tr></thead>';
+			<table width="100%" class="border" cellpadding="2" cellspacing="1"> <thead>
+			  <tr class="contenttopic">
+			    <th>
+			      <a href="' . page_link_to("admin_user") . '&OrderBy=Nick">Nick</a>
+			    </th>
+			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&OrderBy=Name">Name</a></th>
+			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Alter">Alter</a></th>
+			    <th>
+			      <a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a>
+			    </th>
+			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></th>
+			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></th>
+			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></th>
+			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></th>
+			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=CreateDate">Registriert</a></th>
+			    <th>&Auml;nd.</th>
+			  </tr></thead>';
 		$Gekommen = 0;
 		$Active = 0;
 		$Tshirt = 0;

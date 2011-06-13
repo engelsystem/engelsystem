@@ -63,12 +63,12 @@ function admin_log() {
 	$html .= "<hr>\n";
 	$html .= funktion_db_element_list_2row("Gesamte Arbeit", "SELECT COUNT(*) AS `Count [x]`, SUM(Shifts.Len) as `Sum [h]` from Shifts LEFT JOIN ShiftEntry USING(SID)");
 	$html .= "<br />\n";
-	$html .= funktion_db_element_list_2row("Geleisteter Arbeit", "SELECT COUNT(*) AS `Count [x]`, SUM(Shifts.Len) as `Sum [h]` from Shifts LEFT JOIN ShiftEntry USING(SID) WHERE (ShiftEntry.UID!=0)");
+	$html .= funktion_db_element_list_2row("Geleistete Arbeit", "SELECT COUNT(*) AS `Count [x]`, SUM(Shifts.Len) as `Sum [h]` from Shifts LEFT JOIN ShiftEntry USING(SID) WHERE (ShiftEntry.UID!=0)");
 
 	$html .= "<hr>\n";
-	$html .= funktion_db_element_list_2row("Gesamte Arbeit (Ohne Raum aufabau (RID=7)", "SELECT COUNT(*) AS `Count [x]`, SUM(Shifts.Len) as `Sum [h]` from Shifts LEFT JOIN ShiftEntry USING(SID) WHERE (Shifts.RID!=7)");
+	$html .= funktion_db_element_list_2row("Gesamte Arbeit (Ohne Raum Aufbau (RID=7)", "SELECT COUNT(*) AS `Count [x]`, SUM(Shifts.Len) as `Sum [h]` from Shifts LEFT JOIN ShiftEntry USING(SID) WHERE (Shifts.RID!=7)");
 	$html .= "<br />\n";
-	$html .= funktion_db_element_list_2row("Geleisteter Arbeit (Ohne Raum aufabau (RID=7)", "SELECT COUNT(*) AS `Count [x]`, SUM(Shifts.Len) as `Sum [h]` from Shifts LEFT JOIN ShiftEntry USING(SID) WHERE (ShiftEntry.UID!=0) AND (Shifts.RID!=7)");
+	$html .= funktion_db_element_list_2row("Geleistete Arbeit (Ohne Raum Aufbau (RID=7)", "SELECT COUNT(*) AS `Count [x]`, SUM(Shifts.Len) as `Sum [h]` from Shifts LEFT JOIN ShiftEntry USING(SID) WHERE (ShiftEntry.UID!=0) AND (Shifts.RID!=7)");
 
 	return $html;
 }
