@@ -16,13 +16,16 @@ function admin_import() {
 
 	switch ($step) {
 		case "input" :
-			$html .= template_render('../templates/admin_import_input.html', array (
-				'link' => page_link_to('admin_import')
-			));
-			
-			$data = new SimpleXMLElement(file_get_contents('../import/27C3_sample.xcs'));
-			print_r($data->vcalendar);
-			break;
+			$ok = false;
+			if (!$ok) {
+				$html .= template_render('../templates/admin_import_input.html', array (
+					'link' => page_link_to('admin_import')
+				));
+
+				$data = new SimpleXMLElement(file_get_contents('../import/27C3_sample.xcs'));
+				print_r($data->vcalendar);
+				break;
+			}
 
 		case "check" :
 			break;
