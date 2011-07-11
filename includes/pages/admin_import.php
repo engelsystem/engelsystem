@@ -70,8 +70,6 @@ function admin_import() {
 	$EnableSchudle = 1;
 	$EnableSchudleDB = 1;
 
-	CreateRoomArrays();
-
 	$html = "";
 
 	/*##############################################################################################
@@ -230,80 +228,7 @@ function admin_import() {
 		$html .= "</form>\n";
 	}
 
-	//readXMLfile("xml.php.xml");
-	if (readXMLfile("../import/27C3_sample.xcs") == 0) {
-		$XMLmain = getXMLsubPease($XMLmain, "VCALENDAR");
-
-		if ($ShowDataStrukture) {
-			$html .= "<pre><br />";
-			$html .= $XMLmain->name;
-			$html .= "<br />";
-			print_r(array_values($XMLmain->sub));
-			$html .= "</pre>";
-		}
-
-		/*
-		$html .= "<br />";
-		$Feld=7;
-		$html .= "$Feld#". $XMLmain->sub[$Feld]->name. "<br />";
-		$html .= "$Feld#". $XMLmain->sub[$Feld]->sub;
-		//print_r(array_values ($XMLmain->sub[$Feld]->sub));
-		while(list($key, $value) = each($XMLmain->sub[$Feld]->sub))
-		  $html .= "?ID".$value->sub[1]->data. "=". $value->sub[2]->data. "\n";
-		$html .= "</pre>";
-		*/
-
-		/*##############################################################################################
-		                   V e r s i o n
-		  ##############################################################################################*/
-
-		$html .= "<hr>\n";
-		$XMLrelease = getXMLsubPease($XMLmain, "X-WR-CALDESC");
-		$html .= "release: " . $XMLrelease->data . "<br />\n";
-		//$XMLreleaseDate = getXMLsubPease( $XMLmain, "RELEASE-DATE");
-		//$html .= "release date: ". $XMLreleaseDate->data. "<br />\n";
-		$html .= "<hr>\n";
-
-		/*##############################################################################################
-		                   V e r s i o n
-		  ##############################################################################################*/
-		if ($EnableRoomFunctions)
-			include ("includes/funktion_xml_room.php");
-
-		if ($EnableSchudleFunctions)
-			include ("includes/funktion_xml_schudle.php");
-
-		/*##############################################################################################
-		                 U P D A T E  A L L 
-		  ##############################################################################################*/
-		$html .= "\n\n<br />\n<h1>Update ALL:</h1>\n";
-
-		$html .= "<form action=\"dbUpdateFromXLS.php\">\n";
-		$html .= "\t<input type=\"submit\" name=\"UpdateALL\" value=\"now\">\n";
-		$html .= "</form>\n";
-
-	} //if XMLopenOOK
 	return $html;
-}
-
-/*##############################################################################################
-        erstellt Arrays der Reume
-  ##############################################################################################*/
-function CreateRoomArrays() {
-	global $Room, $RoomID, $RoomName, $con;
-
-	$sql = "SELECT `RID`, `Name` FROM `Room` " .
-	"WHERE `Show`='Y'" .
-	"ORDER BY `Number`, `Name`;";
-	$Erg = mysql_query($sql, $con);
-	$rowcount = mysql_num_rows($Erg);
-
-	for ($i = 0; $i < $rowcount; $i++) {
-		$Room[$i]["RID"] = mysql_result($Erg, $i, "RID");
-		$Room[$i]["Name"] = mysql_result($Erg, $i, "Name");
-		$RoomID[mysql_result($Erg, $i, "RID")] = mysql_result($Erg, $i, "Name");
-		$RoomName[mysql_result($Erg, $i, "Name")] = mysql_result($Erg, $i, "RID");
-	}
 }
 
 function prepare_rooms() {
