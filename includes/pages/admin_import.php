@@ -1,5 +1,6 @@
 <?php
 function admin_import() {
+	global $rooms_import;
 	$html = "";
 
 	$step = "input";
@@ -33,21 +34,30 @@ function admin_import() {
 				'rooms_new' => count($rooms_new) == 0 ? "<tr><td>None</td></tr>" : table_body($rooms_new),
 				'rooms_deleted' => count($rooms_deleted) == 0 ? "<tr><td>None</td></tr>" : table_body($rooms_deleted),
 				'events_new' => count($events_new) == 0 ? "<tr><td>None</td><td></td><td></td><td></td></tr>" : table_body(shifts_printable($events_new)),
-				'events_updated' => count($events_updated) == 0 ? "<tr><td>None</td><td></td><td></td><td></td></tr>" : table_body($events_updated),
-				'events_deleted' => count($events_deleted) == 0 ? "<tr><td>None</td><td></td><td></td><td></td></tr>" : table_body($events_deleted)
+				'events_updated' => count($events_updated) == 0 ? "<tr><td>None</td><td></td><td></td><td></td></tr>" : table_body(shifts_printable($events_updated)),
+				'events_deleted' => count($events_deleted) == 0 ? "<tr><td>None</td><td></td><td></td><td></td></tr>" : table_body(shifts_printable($events_deleted))
 			));
 			break;
 
 		case "import" :
 			list ($rooms_new, $rooms_deleted) = prepare_rooms();
-			foreach ($rooms_new as $room)
+			foreach ($rooms_new as $room) {
 				sql_query("INSERT INTO `Room` SET `Name`='" . sql_escape($room) . "', `FromPentabarf`='Y', `Show`='Y'");
+				$rooms_import[trim($room)] = sql_id();
+			}
 			foreach ($rooms_deleted as $room)
 				sql_query("DELETE FROM `Room` WHERE `Name`='" . sql_escape($room) . "' LIMIT 1");
 
 			list ($events_new, $events_updated, $events_deleted) = prepare_events();
 			foreach ($events_new as $event)
 				sql_query("INSERT INTO `Shifts` SET `start`=" . sql_escape($event['start']) . ", `end`=" . sql_escape($event['end']) . ", `RID`=" . sql_escape($event['RID']) . ", `PSID`=" . sql_escape($event['PSID']) . ", `URL`='" . sql_escape($event['URL']) . "'");
+
+			foreach ($events_updated as $event)
+				sql_query("UPDATE `Shifts` SET `start`=" . sql_escape($event['start']) . ", `end`=" . sql_escape($event['end']) . ", `RID`=" . sql_escape($event['RID']) . ", `PSID`=" . sql_escape($event['PSID']) . ", `URL`='" . sql_escape($event['URL']) . "' WHERE `PSID`=" . sql_escape($event['PSID']) . " LIMIT 1");
+
+			foreach ($events_deleted as $event)
+				sql_query("DELETE FROM `Shifts` WHERE `PSID`=" .
+				sql_escape($event['PSID']) . " LIMIT 1");
 
 			$html .= template_render('../templates/admin_import_import.html', array ());
 			break;
@@ -246,8 +256,11 @@ function prepare_rooms() {
 
 	$events = $data->vcalendar->vevent;
 	$rooms_pb = array ();
-	foreach ($events as $event)
+	foreach ($events as $event) {
 		$rooms_pb[] = $event->location;
+		if (!isset ($rooms_import[trim($event->location)]))
+			$rooms_import[trim($event->location)] = trim($event->location);
+	}
 	$rooms_pb = array_unique($rooms_pb);
 
 	$rooms_new = array_diff($rooms_pb, $rooms_db);
@@ -272,20 +285,42 @@ function prepare_events() {
 	$shifts_pb = array ();
 	foreach ($events as $event) {
 		$event_pb = $event->children("http://pentabarf.org");
-		$shifts_pb[] = array (
+		$event_id = trim($event_pb-> {
+			'event-id' });
+		$shifts_pb[$event_id] = array (
 			'start' => DateTime :: createFromFormat("Ymd\THis", $event->dtstart)->getTimestamp(),
 			'end' => DateTime :: createFromFormat("Ymd\THis", $event->dtend)->getTimestamp(),
 			'RID' => $rooms_import[trim($event->location)],
 			'URL' => trim($event->url),
-			'PSID' => trim($event_pb-> {
-				'event-id' })
+			'PSID' => $event_id
 		);
 	}
 
+	$shifts = sql_select("SELECT * FROM `Shifts` WHERE `PSID` IS NOT NULL ORDER BY `start`");
+	$shifts_db = array ();
+	foreach ($shifts as $shift)
+		$shifts_db[$shift['PSID']] = $shift;
+
+	$shifts_new = array ();
+	$shifts_updated = array ();
+	foreach ($shifts_pb as $shift)
+		if (!isset ($shifts_db[$shift['PSID']]))
+			$shifts_new[] = $shift;
+		else {
+			$tmp = $shifts_db[$shift['PSID']];
+			if ($shift['start'] != $tmp['start'] || $shift['end'] != $tmp['end'] || $shift['RID'] != $tmp['RID'] || $shift['URL'] != $tmp['URL'])
+				$shifts_updated[] = $shift;
+		}
+
+	$shifts_deleted = array();
+	foreach ($shifts_db as $shift)
+		if (!isset ($shifts_pb[$shift['PSID']]))
+			$shifts_deleted[] = $shift;
+
 	return array (
-		$shifts_pb,
-		array (),
-		array ()
+		$shifts_new,
+		$shifts_updated,
+		$shifts_deleted
 	);
 }
 
@@ -300,7 +335,7 @@ function shifts_printable($shifts) {
 	global $rooms_import;
 	$rooms = array_flip($rooms_import);
 
-	usort($shifts, 'shift_sort');
+	uasort($shifts, 'shift_sort');
 
 	$shifts_printable = array ();
 	foreach ($shifts as $shift)
