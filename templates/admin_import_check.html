@@ -1,0 +1,31 @@
+<form action="%link%&step=import" method="post">
+    <fieldset>
+        <h3>Rooms to create</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            	%rooms_new%
+            </tbody>
+        </table>
+        <h3>Rooms to delete</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            	%rooms_deleted%
+            </tbody>
+        </table>
+        <input type="submit" name="submit" value="Submit" />
+    </fieldset>
+</form>

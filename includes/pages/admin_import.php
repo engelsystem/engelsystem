@@ -21,16 +21,27 @@ function admin_import() {
 				$html .= template_render('../templates/admin_import_input.html', array (
 					'link' => page_link_to('admin_import')
 				));
-
-				$data = new SimpleXMLElement(file_get_contents('../import/27C3_sample.xcs'));
-				print_r($data->vcalendar);
 				break;
 			}
 
 		case "check" :
+			list ($rooms_new, $rooms_deleted) = prepare_rooms();
+
+			$html .= template_render('../templates/admin_import_check.html', array (
+				'link' => page_link_to('admin_import'),
+				'rooms_new' => count($rooms_new) == 0 ? "<td>None</td>" : table_body($rooms_new),
+				'rooms_deleted' => count($rooms_deleted) == 0 ? "<td>None</td>" : table_body($rooms_deleted)
+			));
 			break;
 
 		case "import" :
+			list ($rooms_new, $rooms_deleted) = prepare_rooms();
+			foreach ($rooms_new as $room)
+				sql_query("INSERT INTO `Room` SET `Name`='" . sql_escape($room) . "', `FromPentabarf`='Y', `Show`='Y'");
+			foreach ($rooms_deleted as $room)
+				sql_query("DELETE FROM `Room` WHERE `Name`='" . sql_escape($room) . "' LIMIT 1");
+
+			$html .= template_render('../templates/admin_import_import.html', array ());
 			break;
 	}
 
@@ -285,6 +296,30 @@ function CreateRoomArrays() {
 		$RoomID[mysql_result($Erg, $i, "RID")] = mysql_result($Erg, $i, "Name");
 		$RoomName[mysql_result($Erg, $i, "Name")] = mysql_result($Erg, $i, "RID");
 	}
+}
+
+function prepare_rooms() {
+	$data = new SimpleXMLElement(file_get_contents('../import/27C3_sample.xcs'));
+
+	// Load rooms from db for compare with input
+	$rooms = sql_select("SELECT * FROM `Room` WHERE `FromPentabarf`='Y'");
+	$rooms_db = array ();
+	foreach ($rooms as $room)
+		$rooms_db[] = $room['Name'];
+
+	$events = $data->vcalendar->vevent;
+	$rooms_pb = array ();
+	foreach ($events as $event)
+		$rooms_pb[] = $event->location;
+	$rooms_pb = array_unique($rooms_pb);
+
+	$rooms_new = array_diff($rooms_pb, $rooms_db);
+	$rooms_deleted = array_diff($rooms_db, $rooms_pb);
+
+	return array (
+		$rooms_new,
+		$rooms_deleted
+	);
 }
 ?>
 

@@ -107,6 +107,10 @@ table {
     border-collapse: collapse;
 }
 
+fieldset table {
+	margin: 4px;
+}
+
 th {
     background: #f0f0f0;
 }

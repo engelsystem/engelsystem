@@ -15,6 +15,20 @@ function template_render($file, $data) {
 	}
 }
 
+function table_body($array) {
+	$html = "";
+	foreach ($array as $line) {
+		$html .= "<tr>";
+		if (is_array($line)) {
+
+		} else {
+			$html .= "<td>" . $line . "</td>";
+		}
+		$html .= "</tr>";
+	}
+	return $html;
+}
+
 function html_options($name, $options, $selected = "") {
 	$html = "";
 	foreach ($options as $value => $label)
