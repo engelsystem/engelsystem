@@ -26,11 +26,15 @@ function admin_import() {
 
 		case "check" :
 			list ($rooms_new, $rooms_deleted) = prepare_rooms();
+			list ($events_new, $events_updated, $events_deleted) = prepare_events();
 
 			$html .= template_render('../templates/admin_import_check.html', array (
 				'link' => page_link_to('admin_import'),
-				'rooms_new' => count($rooms_new) == 0 ? "<td>None</td>" : table_body($rooms_new),
-				'rooms_deleted' => count($rooms_deleted) == 0 ? "<td>None</td>" : table_body($rooms_deleted)
+				'rooms_new' => count($rooms_new) == 0 ? "<tr><td>None</td></tr>" : table_body($rooms_new),
+				'rooms_deleted' => count($rooms_deleted) == 0 ? "<tr><td>None</td></tr>" : table_body($rooms_deleted),
+				'events_new' => count($events_new) == 0 ? "<tr><td>None</td><td></td><td></td><td></td></tr>" : table_body(shifts_printable($events_new)),
+				'events_updated' => count($events_updated) == 0 ? "<tr><td>None</td><td></td><td></td><td></td></tr>" : table_body($events_updated),
+				'events_deleted' => count($events_deleted) == 0 ? "<tr><td>None</td><td></td><td></td><td></td></tr>" : table_body($events_deleted)
 			));
 			break;
 
@@ -40,6 +44,10 @@ function admin_import() {
 				sql_query("INSERT INTO `Room` SET `Name`='" . sql_escape($room) . "', `FromPentabarf`='Y', `Show`='Y'");
 			foreach ($rooms_deleted as $room)
 				sql_query("DELETE FROM `Room` WHERE `Name`='" . sql_escape($room) . "' LIMIT 1");
+
+			list ($events_new, $events_updated, $events_deleted) = prepare_events();
+			foreach ($events_new as $event)
+				sql_query("INSERT INTO `Shifts` SET `start`=" . sql_escape($event['start']) . ", `end`=" . sql_escape($event['end']) . ", `RID`=" . sql_escape($event['RID']) . ", `PSID`=" . sql_escape($event['PSID']) . ", `URL`='" . sql_escape($event['URL']) . "'");
 
 			$html .= template_render('../templates/admin_import_import.html', array ());
 			break;
@@ -299,13 +307,17 @@ function CreateRoomArrays() {
 }
 
 function prepare_rooms() {
-	$data = new SimpleXMLElement(file_get_contents('../import/27C3_sample.xcs'));
+	global $rooms_import;
+	$data = read_xml();
 
 	// Load rooms from db for compare with input
 	$rooms = sql_select("SELECT * FROM `Room` WHERE `FromPentabarf`='Y'");
 	$rooms_db = array ();
-	foreach ($rooms as $room)
+	$rooms_import = array ();
+	foreach ($rooms as $room) {
 		$rooms_db[] = $room['Name'];
+		$rooms_import[$room['Name']] = $room['RID'];
+	}
 
 	$events = $data->vcalendar->vevent;
 	$rooms_pb = array ();
@@ -320,6 +332,64 @@ function prepare_rooms() {
 		$rooms_new,
 		$rooms_deleted
 	);
+}
+
+function prepare_events() {
+	global $rooms_import;
+	$data = read_xml();
+
+	$rooms = sql_select("SELECT * FROM `Room`");
+	$rooms_db = array ();
+	foreach ($rooms as $room)
+		$rooms_db[$room['Name']] = $room['RID'];
+
+	$events = $data->vcalendar->vevent;
+	$shifts_pb = array ();
+	foreach ($events as $event) {
+		$event_pb = $event->children("http://pentabarf.org");
+		$shifts_pb[] = array (
+			'start' => DateTime :: createFromFormat("Ymd\THis", $event->dtstart)->getTimestamp(),
+			'end' => DateTime :: createFromFormat("Ymd\THis", $event->dtend)->getTimestamp(),
+			'RID' => $rooms_import[trim($event->location)],
+			'URL' => trim($event->url),
+			'PSID' => trim($event_pb-> {
+				'event-id' })
+		);
+	}
+
+	return array (
+		$shifts_pb,
+		array (),
+		array ()
+	);
+}
+
+function read_xml() {
+	global $xml_import;
+	if (!isset ($xml_import))
+		$xml_import = new SimpleXMLElement(file_get_contents('../import/27C3_sample.xcs'));
+	return $xml_import;
+}
+
+function shifts_printable($shifts) {
+	global $rooms_import;
+	$rooms = array_flip($rooms_import);
+
+	usort($shifts, 'shift_sort');
+
+	$shifts_printable = array ();
+	foreach ($shifts as $shift)
+		$shifts_printable[] = array (
+			'day' => date("l, Y-m-d", $shift['start']),
+			'start' => date("H:i", $shift['start']),
+			'end' => date("H:i", $shift['end']),
+			'room' => $rooms[$shift['RID']]
+		);
+	return $shifts_printable;
+}
+
+function shift_sort($a, $b) {
+	return ($a['start'] < $b['start']) ? -1 : 1;
 }
 ?>
 

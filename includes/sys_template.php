@@ -20,7 +20,8 @@ function table_body($array) {
 	foreach ($array as $line) {
 		$html .= "<tr>";
 		if (is_array($line)) {
-
+			foreach ($line as $td)
+				$html .= "<td>" . $td . "</td>";
 		} else {
 			$html .= "<td>" . $line . "</td>";
 		}
