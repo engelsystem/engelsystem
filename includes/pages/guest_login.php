@@ -3,8 +3,8 @@
 
 // Engel registrieren
 function guest_register() {
-	global $SubscribeMailinglist;
-	
+	global $SubscribeMailinglist, $enable_tshirt_size;
+
 	$html = "";
 	$success = "none";
 
@@ -18,24 +18,17 @@ function guest_register() {
 		$Ergans = sql_select("SELECT UID FROM `User` WHERE `Nick`='" . sql_escape($_POST["Nick"]) . "'");
 
 		if (strlen($_POST["Nick"]) < 2)
-			$error = Get_Text("makeuser_error_nick1")
-				. $_POST["Nick"] . Get_Text("makeuser_error_nick2");
+			$error = Get_Text("makeuser_error_nick1") . $_POST["Nick"] . Get_Text("makeuser_error_nick2");
 
-		elseif (count($Ergans) > 0)
-			$error = Get_Text("makeuser_error_nick1")
-				. $_POST["Nick"] . Get_Text("makeuser_error_nick3");
+		elseif (count($Ergans) > 0) $error = Get_Text("makeuser_error_nick1") . $_POST["Nick"] . Get_Text("makeuser_error_nick3");
 
-		elseif (strlen($_POST["email"]) <= 6 && strstr($_POST["email"], "@") == FALSE && strstr($_POST["email"], ".") == false)
-			$error = Get_Text("makeuser_error_mail");
+		elseif (strlen($_POST["email"]) <= 6 && strstr($_POST["email"], "@") == FALSE && strstr($_POST["email"], ".") == false) $error = Get_Text("makeuser_error_mail");
 
-		elseif (!is_numeric($_POST["Alter"]))
-			$error = Get_Text("makeuser_error_Alter");
+		elseif (!is_numeric($_POST["Alter"])) $error = Get_Text("makeuser_error_Alter");
 
-		elseif ($_POST["Passwort"] != $_POST["Passwort2"])
-			$error = Get_Text("makeuser_error_password1");
+		elseif ($_POST["Passwort"] != $_POST["Passwort2"]) $error = Get_Text("makeuser_error_password1");
 
-		elseif (strlen($_POST["Passwort"]) < 6)
-			$error = Get_Text("makeuser_error_password2");
+		elseif (strlen($_POST["Passwort"]) < 6) $error = Get_Text("makeuser_error_password2");
 
 		else {
 			$_POST["Passwort"] = PassCrypt($_POST["Passwort"]);
@@ -50,26 +43,7 @@ function guest_register() {
 			"`Size`, " . "`Passwort`, " .
 			"`Art` , " . "`kommentar`, " .
 			"`Hometown`," . "`CreateDate`, `Sprache` ) " .
-			"VALUES ( '"
-				. sql_escape($_POST["Nick"]) . "', " . "'"
-				. sql_escape($_POST["Name"]) . "', " . "'"
-				. sql_escape($_POST["Vorname"]) . "', " . "'"
-				. sql_escape($_POST["Alter"]) . "', " . "'"
-				. sql_escape($_POST["Telefon"]) . "', " . "'"
-				. sql_escape($_POST["DECT"]) . "', " . "'"
-				. sql_escape($_POST["Handy"]) . "', " . "'"
-				. sql_escape($_POST["email"]) . "', " . "'"
-				. sql_escape($_POST["ICQ"]) . "', " . "'"
-				. sql_escape($_POST["jabber"]) . "', " . "'"
-				. sql_escape($_POST["Size"]) . "', " . "'"
-				. sql_escape($_POST["Passwort"]) . "', " . "'"
-				. sql_escape($_POST["Art"]) . "', " . "'"
-				. sql_escape($_POST["kommentar"]) . "', " . "'"
-				. sql_escape($_POST["Hometown"]) . "',"
-				. "NOW(), '"
-				. sql_escape($_SESSION["Sprache"])
-				. "')"
-			);
+			"VALUES ( '" . sql_escape($_POST["Nick"]) . "', " . "'" . sql_escape($_POST["Name"]) . "', " . "'" . sql_escape($_POST["Vorname"]) . "', " . "'" . sql_escape($_POST["Alter"]) . "', " . "'" . sql_escape($_POST["Telefon"]) . "', " . "'" . sql_escape($_POST["DECT"]) . "', " . "'" . sql_escape($_POST["Handy"]) . "', " . "'" . sql_escape($_POST["email"]) . "', " . "'" . sql_escape($_POST["ICQ"]) . "', " . "'" . sql_escape($_POST["jabber"]) . "', " . "'" . sql_escape($_POST["Size"]) . "', " . "'" . sql_escape($_POST["Passwort"]) . "', " . "'" . sql_escape($_POST["Art"]) . "', " . "'" . sql_escape($_POST["kommentar"]) . "', " . "'" . sql_escape($_POST["Hometown"]) . "'," . "NOW(), '" . sql_escape($_SESSION["Sprache"]) . "')");
 
 			if ($Erg != 1) {
 				$html .= Get_Text("makeuser_error_write1") . "<br />\n";
@@ -137,58 +111,60 @@ function guest_register() {
 
 		$html .= "<tr><td>ICQ</td><td><input type=\"text\" size=\"40\" name=\"ICQ\" value=\"" . $_POST["ICQ"] . "\"></td></tr>\n";
 		$html .= "<tr><td>jabber</td><td><input type=\"text\" size=\"40\" name=\"jabber\" value=\"" . $_POST["jabber"] . "\"></td></tr>\n";
-		$html .= "<tr><td>" . Get_Text("makeuser_T-Shirt") . " Gr&ouml;sse*</td><td align=\"left\">\n";
-		$html .= "<select name=\"Size\">\n";
-		$html .= "<option value=\"S\"";
-		if ($_POST["Size"] == "S")
-			$html .= " selected";
-		$html .= ">S</option>\n";
-		$html .= "<option value=\"M\"";
-		if ($_POST["Size"] == "M")
-			$html .= " selected";
-		$html .= ">M</option>\n";
-		$html .= "<option value=\"L\"";
-		if ($_POST["Size"] == "L")
-			$html .= " selected";
-		$html .= ">L</option>\n";
-		$html .= "<option value=\"XL\"";
-		if ($_POST["Size"] == "XL")
-			$html .= " selected";
-		$html .= ">XL</option>\n";
-		$html .= "<option value=\"2XL\"";
-		if ($_POST["Size"] == "2XL")
-			$html .= " selected";
-		$html .= ">2XL</option>\n";
-		$html .= "<option value=\"3XL\"";
-		if ($_POST["Size"] == "3XL")
-			$html .= " selected";
-		$html .= ">3XL</option>\n";
-		$html .= "<option value=\"4XL\"";
-		if ($_POST["Size"] == "4XL")
-			$html .= " selected";
-		$html .= ">4XL</option>\n";
-		$html .= "<option value=\"5XL\"";
-		if ($_POST["Size"] == "5XL")
-			$html .= " selected";
-		$html .= ">5XL</option>\n";
-		$html .= "<option value=\"S-G\"";
-		if ($_POST["Size"] == "S-G")
-			$html .= " selected";
-		$html .= ">S Girl</option>\n";
-		$html .= "<option value=\"M-G\"";
-		if ($_POST["Size"] == "M-G")
-			$html .= " selected";
-		$html .= ">M Girl</option>\n";
-		$html .= "<option value=\"L-G\"";
-		if ($_POST["Size"] == "L-G")
-			$html .= " selected";
-		$html .= ">L Girl</option>\n";
-		$html .= "<option value=\"XL-G\"";
-		if ($_POST["Size"] == "XL-G")
-			$html .= " selected";
-		$html .= ">XL Girl</option>\n";
-		$html .= "</select>\n";
-		$html .= "</td></tr>\n";
+		if ($enable_tshirt_size) {
+			$html .= "<tr><td>" . Get_Text("makeuser_T-Shirt") . " Gr&ouml;sse*</td><td align=\"left\">\n";
+			$html .= "<select name=\"Size\">\n";
+			$html .= "<option value=\"S\"";
+			if ($_POST["Size"] == "S")
+				$html .= " selected";
+			$html .= ">S</option>\n";
+			$html .= "<option value=\"M\"";
+			if ($_POST["Size"] == "M")
+				$html .= " selected";
+			$html .= ">M</option>\n";
+			$html .= "<option value=\"L\"";
+			if ($_POST["Size"] == "L")
+				$html .= " selected";
+			$html .= ">L</option>\n";
+			$html .= "<option value=\"XL\"";
+			if ($_POST["Size"] == "XL")
+				$html .= " selected";
+			$html .= ">XL</option>\n";
+			$html .= "<option value=\"2XL\"";
+			if ($_POST["Size"] == "2XL")
+				$html .= " selected";
+			$html .= ">2XL</option>\n";
+			$html .= "<option value=\"3XL\"";
+			if ($_POST["Size"] == "3XL")
+				$html .= " selected";
+			$html .= ">3XL</option>\n";
+			$html .= "<option value=\"4XL\"";
+			if ($_POST["Size"] == "4XL")
+				$html .= " selected";
+			$html .= ">4XL</option>\n";
+			$html .= "<option value=\"5XL\"";
+			if ($_POST["Size"] == "5XL")
+				$html .= " selected";
+			$html .= ">5XL</option>\n";
+			$html .= "<option value=\"S-G\"";
+			if ($_POST["Size"] == "S-G")
+				$html .= " selected";
+			$html .= ">S Girl</option>\n";
+			$html .= "<option value=\"M-G\"";
+			if ($_POST["Size"] == "M-G")
+				$html .= " selected";
+			$html .= ">M Girl</option>\n";
+			$html .= "<option value=\"L-G\"";
+			if ($_POST["Size"] == "L-G")
+				$html .= " selected";
+			$html .= ">L Girl</option>\n";
+			$html .= "<option value=\"XL-G\"";
+			if ($_POST["Size"] == "XL-G")
+				$html .= " selected";
+			$html .= ">XL Girl</option>\n";
+			$html .= "</select>\n";
+			$html .= "</td></tr>\n";
+		}
 		$html .= "<tr><td>" . Get_Text("makeuser_Engelart") . "</td><td align=\"left\">\n";
 		$html .= "<select name=\"Art\">\n";
 

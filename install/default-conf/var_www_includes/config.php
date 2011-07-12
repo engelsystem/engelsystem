@@ -23,6 +23,9 @@ $LETZTES_AUSTRAGEN=3;
 $crypt_system="md5";
 //$crypt_system="crypt";
 
+// Wenn Engel beim Registrieren oder in ihrem Profil eine T-Shirt Größe angeben sollen, auf true setzen:
+$enable_tshirt_size = false;
+
 // timezonen offsett
 $gmdateOffset=3600;
 
@@ -46,8 +49,6 @@ date_default_timezone_set("Europe/Berlin");
 $PentabarfXMLhost = "cccv.pentabarf.org";
 $PentabarfXMLpath = "Xcal/conference/";
 $PentabarfXMLEventID = "31";
-$PentabarfGetWith = "fsockopen";        // "fsockopen"/"fopen"/"wget"/"lynx"
-
 
 //Mailing List: is is not defined, the option is not shown
 //$SubscribeMailinglist = "*-subscribe@lists.*";

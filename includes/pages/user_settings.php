@@ -1,25 +1,29 @@
 <?php
 function user_settings() {
+	global $enable_tshirt_size;
 	global $user;
 
 	if (!isset ($_REQUEST['action'])) {
-		$tshirt_html = template_render('../templates/user_settings_tshirt.html', array (
-			'label_size' => Get_Text("makeuser_T-Shirt"),
-			'size_select' => ($user['Tshirt'] == 0) ? html_select_key('size', array (
-				'S' => "S",
-				'M' => "M",
-				'L' => "L",
-				'XL' => "XL",
-				'2XL' => "2XL",
-				'3XL' => "3XL",
-				'4XL' => "4XL",
-				'5XL' => "5XL",
-				'S-G' => "S Girl",
-				'M-G' => "M Girl",
-				'L-G' => "L Girl",
-				'XL-G' => "XL Girl"
-			), $user['Size']) : $user['Size']
-		));
+		if ($enable_tshirt_size)
+			$tshirt_html = template_render('../templates/user_settings_tshirt.html', array (
+				'label_size' => Get_Text("makeuser_T-Shirt"),
+				'size_select' => ($user['Tshirt'] == 0) ? html_select_key('size', array (
+					'S' => "S",
+					'M' => "M",
+					'L' => "L",
+					'XL' => "XL",
+					'2XL' => "2XL",
+					'3XL' => "3XL",
+					'4XL' => "4XL",
+					'5XL' => "5XL",
+					'S-G' => "S Girl",
+					'M-G' => "M Girl",
+					'L-G' => "L Girl",
+					'XL-G' => "XL Girl"
+				), $user['Size']) : $user['Size']
+			));
+		else
+			$tshirt_html = "";
 
 		return template_render('../templates/user_settings.html', array (
 			'link' => page_link_to("user_settings"),
