@@ -60,6 +60,7 @@ a {
 
 td, dt, dd {
     padding: 4px;
+	vertical-align: top;
 }
 
 dt {

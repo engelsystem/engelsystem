@@ -19,7 +19,7 @@ $LETZTES_AUSTRAGEN=3;
 
 //Setzt den zu verwendenden Crypto algorismis 
 // mp5 oder crypt
-// achtung crypt schaltet password �ndern ab
+// achtung crypt schaltet password ändern ab
 $crypt_system="md5";
 //$crypt_system="crypt";
 
@@ -29,7 +29,7 @@ $enable_tshirt_size = false;
 // timezonen offsett
 $gmdateOffset=3600;
 
-// f�r Developen 1, sonst = 0
+// für Developen 1, sonst = 0
 $debug = 0;
 
 // SSL Cert-KEY
@@ -45,7 +45,7 @@ $Tempdir="./tmp";
 // local timezone
 date_default_timezone_set("Europe/Berlin");
 
-//Pentabarf ConferenzDI f�r UpdateDB
+//Pentabarf ConferenzDI für UpdateDB
 $PentabarfXMLhost = "cccv.pentabarf.org";
 $PentabarfXMLpath = "Xcal/conference/";
 $PentabarfXMLEventID = "31";

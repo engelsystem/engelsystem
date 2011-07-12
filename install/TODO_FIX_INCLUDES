@@ -1,5 +1,0 @@
-find . -name \*.php -exec grep -l './inc' {} \;
-
-
-todo:
-change installscript to place inc outside of http-root. exactly ONE dir ahead.
