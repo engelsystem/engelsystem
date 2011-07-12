@@ -111,6 +111,16 @@ fieldset table {
 	margin: 4px;
 }
 
+fieldset p {
+	margin: 4px;
+}
+
+fieldset p label {
+	display: block;
+	float: left;
+	width: 200px;
+}
+
 th {
     background: #f0f0f0;
 }

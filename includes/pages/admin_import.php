@@ -1,6 +1,8 @@
 <?php
 function admin_import() {
+	global $PentabarfXMLhost, $PentabarfXMLpath;
 	global $rooms_import;
+	global $user;
 	$html = "";
 
 	$step = "input";
@@ -15,19 +17,101 @@ function admin_import() {
 	$html .= $step == "import" ? '<b>3. Import</b>' : '3. Import';
 	$html .= '</p>';
 
+	$import_file = '../import/import_' . $user['UID'] . '.xml';
+
 	switch ($step) {
 		case "input" :
 			$ok = false;
-			if (!$ok) {
-				$html .= template_render('../templates/admin_import_input.html', array (
-					'link' => page_link_to('admin_import')
-				));
-				break;
+			if ($test_handle = fopen('../import/tmp', 'w')) {
+				fclose($test_handle);
+				unlink('../import/tmp');
+			} else {
+				$msg = error("Webserver has no write-permission on import directory.");
 			}
 
+			if (isset ($_REQUEST['submit'])) {
+				$ok = true;
+				if (isset ($_REQUEST['user']) && $_REQUEST['user'] != "" && isset ($_REQUEST['password']) && $_REQUEST['password'] != "") {
+					$fp = fsockopen("ssl://$PentabarfXMLhost", 443, $errno, $errstr, 5);
+
+					if (!$fp) {
+						$ok = false;
+						$msg = error("File 'https://$PentabarfXMLhost/$PentabarfXMLpath" . $_REQUEST["url"] . "' not readable!" . "[$errstr ($errno)]");
+					} else {
+						$fileOut = fopen($import_file, "w");
+						$head = 'GET /' . $PentabarfXMLpath . $_REQUEST["url"] . ' HTTP/1.1' . "\r\n" .
+						'Host: ' . $PentabarfXMLhost . "\r\n" .
+						'User-Agent: Engelsystem' . "\r\n" .
+						'Authorization: Basic ' .
+						base64_encode($_REQUEST["user"] . ':' . $_REQUEST["password"]) . "\r\n" .
+						"\r\n";
+						fputs($fp, $head);
+						$Zeilen = -1;
+						while (!feof($fp)) {
+							$Temp = fgets($fp, 1024);
+
+							// ende des headers
+							if ($Temp == "f20\r\n") {
+								$Zeilen = 0;
+								$Temp = "";
+							}
+
+							//file ende?
+							if ($Temp == "0\r\n")
+								break;
+
+							if (($Zeilen > -1) && ($Temp != "ffb\r\n")) {
+								//steuerzeichen ausfiltern
+								if (strpos("#$Temp", "\r\n") > 0)
+									$Temp = substr($Temp, 0, strlen($Temp) - 2);
+								if (strpos("#$Temp", "1005") > 0)
+									$Temp = "";
+								if (strpos("#$Temp", "783") > 0)
+									$Temp = "";
+								//schreiben in file
+								fputs($fileOut, $Temp);
+								$Zeilen++;
+							}
+						}
+						fclose($fileOut);
+						fclose($fp);
+						$msg .= success("Es wurden $Zeilen Zeilen eingelesen.");
+					}
+				}
+				elseif (isset ($_FILES['xcal_file']) && ($_FILES['xcal_file']['error'] == 0)) {
+					if (move_uploaded_file($_FILES['xcal_file']['tmp_name'], $import_file)) {
+						libxml_use_internal_errors(true);
+						if (simplexml_load_file($import_file) === false) {
+							$ok = false;
+							$msg = error("No valid xml/xcal file provided.");
+							unlink($import_file);
+						}
+					} else {
+						$ok = false;
+						$msg = error("File upload went wrong.");
+					}
+				} else {
+					$ok = false;
+					$msg = error("Please provide some data.");
+				}
+			}
+
+			if ($ok)
+				header("Location: " . page_link_to('admin_import') . "&step=check");
+			else
+				$html .= template_render('../templates/admin_import_input.html', array (
+					'link' => page_link_to('admin_import'),
+					'msg' => $msg,
+					'url' => "https://$PentabarfXMLhost/$PentabarfXMLpath"
+				));
+			break;
+
 		case "check" :
-			list ($rooms_new, $rooms_deleted) = prepare_rooms();
-			list ($events_new, $events_updated, $events_deleted) = prepare_events();
+			if (!file_exists($import_file))
+				header("Location: " . page_link_to('admin_import'));
+
+			list ($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
+			list ($events_new, $events_updated, $events_deleted) = prepare_events($import_file);
 
 			$html .= template_render('../templates/admin_import_check.html', array (
 				'link' => page_link_to('admin_import'),
@@ -40,7 +124,10 @@ function admin_import() {
 			break;
 
 		case "import" :
-			list ($rooms_new, $rooms_deleted) = prepare_rooms();
+			if (!file_exists($import_file))
+				header("Location: " . page_link_to('admin_import'));
+
+			list ($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
 			foreach ($rooms_new as $room) {
 				sql_query("INSERT INTO `Room` SET `Name`='" . sql_escape($room) . "', `FromPentabarf`='Y', `Show`='Y'");
 				$rooms_import[trim($room)] = sql_id();
@@ -48,7 +135,7 @@ function admin_import() {
 			foreach ($rooms_deleted as $room)
 				sql_query("DELETE FROM `Room` WHERE `Name`='" . sql_escape($room) . "' LIMIT 1");
 
-			list ($events_new, $events_updated, $events_deleted) = prepare_events();
+			list ($events_new, $events_updated, $events_deleted) = prepare_events($import_file);
 			foreach ($events_new as $event)
 				sql_query("INSERT INTO `Shifts` SET `start`=" . sql_escape($event['start']) . ", `end`=" . sql_escape($event['end']) . ", `RID`=" . sql_escape($event['RID']) . ", `PSID`=" . sql_escape($event['PSID']) . ", `URL`='" . sql_escape($event['URL']) . "'");
 
@@ -59,191 +146,18 @@ function admin_import() {
 				sql_query("DELETE FROM `Shifts` WHERE `PSID`=" .
 				sql_escape($event['PSID']) . " LIMIT 1");
 
+			unlink($import_file);
+
 			$html .= template_render('../templates/admin_import_import.html', array ());
 			break;
 	}
 
 	return $html;
-
-	##############################################################################################
-	global $Room, $RoomID, $RoomName;
-	global $PentabarfGetWith, $PentabarfXMLpath, $PentabarfXMLhost;
-
-	require_once ("includes/funktion_xml.php");
-	///////////
-	// DEBUG //
-	///////////
-	$ShowDataStrukture = 0;
-	$EnableRoomFunctions = 1;
-	$EnableRooms = 1;
-	$EnableSchudleFunctions = 1;
-	$EnableSchudle = 1;
-	$EnableSchudleDB = 1;
-
-	$html = "";
-
-	/*##############################################################################################
-	                   F I L E
-	  ##############################################################################################*/
-	$html .= "\n\n<br />\n<h1>XML File:</h1>\n";
-	if (isset ($_POST["PentabarfUser"]) && isset ($_POST["password"]) && isset ($_POST["PentabarfURL"])) {
-		$html .= "Update XCAL-File from Pentabarf..";
-		if ($PentabarfGetWith == "fsockopen") {
-
-			//backup error messeges and delate
-			$Backuperror_messages = $error_messages;
-			$fp = fsockopen("ssl://$PentabarfXMLhost", 443, $errno, $errstr, 30);
-			//  $error_messages = $Backuperror_messages;
-
-			if (!$fp) {
-				$html .= "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath" . $_POST["PentabarfURL"] . "' not readable!" .
-				"[$errstr ($errno)]</h2>";
-			} else {
-				if (($fileOut = fopen("$Tempdir/engelXML", "w")) != FALSE) {
-					$head = 'GET /' . $PentabarfXMLpath . $_POST["PentabarfURL"] . ' HTTP/1.1' . "\r\n" .
-					'Host: ' . $PentabarfXMLhost . "\r\n" .
-					'User-Agent: Engelsystem' . "\r\n" .
-					'Authorization: Basic ' .
-					base64_encode($_POST["PentabarfUser"] . ':' . $_POST["password"]) . "\r\n" .
-					"\r\n";
-					fputs($fp, $head);
-					$Zeilen = -1;
-					while (!feof($fp)) {
-						$Temp = fgets($fp, 1024);
-
-						// ende des headers
-						if ($Temp == "f20\r\n") {
-							$Zeilen = 0;
-							$Temp = "";
-						}
-
-						//file ende?
-						if ($Temp == "0\r\n")
-							break;
-
-						if (($Zeilen > -1) && ($Temp != "ffb\r\n")) {
-							//steuerzeichen ausfiltern
-							if (strpos("#$Temp", "\r\n") > 0)
-								$Temp = substr($Temp, 0, strlen($Temp) - 2);
-							if (strpos("#$Temp", "1005") > 0)
-								$Temp = "";
-							if (strpos("#$Temp", "783") > 0)
-								$Temp = "";
-							//schreiben in file
-							fputs($fileOut, $Temp);
-							$Zeilen++;
-						}
-					}
-					fclose($fileOut);
-
-					$html .= "<br />Es wurden $Zeilen Zeilen eingelesen<br />";
-				} else
-					$html .= "<h2>fail: File '$Tempdir/engelXML' not writeable!</h2>";
-				fclose($fp);
-			}
-		}
-		elseif ($PentabarfGetWith == "fopen") {
-			//user uns password in url einbauen
-			$FileNameIn = "https://" . $_POST["PentabarfUser"] . ':' . $_POST["password"] . "@" .
-			$PentabarfXMLhost . "/" . $PentabarfXMLpath . $_POST["PentabarfURL"];
-
-			if (($fileIn = fopen($FileNameIn, "r")) != FALSE) {
-				if (($fileOut = fopen("$Tempdir/engelXML", "w")) != FALSE) {
-					$Zeilen = 0;
-					while (!feof($fileIn)) {
-						$Zeilen++;
-						fputs($fileOut, fgets($fileIn));
-					}
-					fclose($fileOut);
-					$html .= "<br />Es wurden $Zeilen Zeilen eingelesen<br />";
-				} else
-					$html .= "<h2>fail: File '$Tempdir/engelXML' not writeable!</h2>";
-				fclose($fileIn);
-			} else
-				$html .= "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath" . $_POST["PentabarfURL"] . "' not readable!</h2>";
-		}
-		elseif ($PentabarfGetWith == "wget") {
-			$Command = "wget --http-user=" . $_POST["PentabarfUser"] . " --http-passwd=" . $_POST["password"] . " " .
-			"https://$PentabarfXMLhost/$PentabarfXMLpath" . $_POST["PentabarfURL"] .
-			" --output-file=$Tempdir/engelXMLwgetLog --output-document=$Tempdir/engelXML" .
-			" --no-check-certificate";
-			$html .= system($Command, $Status);
-			if ($Status == 0)
-				$html .= "OK.<br />";
-			else
-				$html .= "fail ($Status)($Command).<br />";
-		}
-		elseif ($PentabarfGetWith == "lynx") {
-			$Command = "lynx -auth=" . $_POST["PentabarfUser"] . ":" . $_POST["password"] . " -dump " .
-			"https://$PentabarfXMLhost/$PentabarfXMLpath" . $_POST["PentabarfURL"] . " > $Tempdir/engelXML";
-			$html .= system($Command, $Status);
-			if ($Status == 0)
-				$html .= "OK.<br />";
-			else
-				$html .= "fail ($Status)($Command).<br />";
-		}
-		elseif ($PentabarfGetWith == "fopen") {
-			//user uns password in url einbauen
-			$FileNameIn = "https://" . $_POST["PentabarfUser"] . ':' . $_POST["password"] . "@" .
-			$PentabarfXMLhost . "/" . $PentabarfXMLpath . $_POST["PentabarfURL"];
-
-			if (($fileIn = fopen($FileNameIn, "r")) != FALSE) {
-				if (($fileOut = fopen("$Tempdir/engelXML", "w")) != FALSE) {
-					$Zeilen = 0;
-					while (!feof($fileIn)) {
-						$Zeilen++;
-						fputs($fileOut, fgets($fileIn));
-					}
-					fclose($fileOut);
-					$html .= "<br />Es wurden $Zeilen Zeilen eingelesen<br />";
-				} else
-					$html .= "<h2>fail: File '$Tempdir/engelXML' not writeable!</h2>";
-				fclose($fileIn);
-			} else
-				$html .= "<h2>fail: File 'https://$PentabarfXMLhost/$PentabarfXMLpath" . $_POST["PentabarfURL"] . "' not readable!</h2>";
-		}
-		elseif ($PentabarfGetWith == "wget") {
-			$Command = "wget --http-user=" . $_POST["PentabarfUser"] . " --http-passwd=" . $_POST["password"] . " " .
-			"https://$PentabarfXMLhost/$PentabarfXMLpath" . $_POST["PentabarfURL"] .
-			" --output-file=$Tempdir/engelXMLwgetLog --output-document=$Tempdir/engelXML" .
-			" --no-check-certificate";
-			$html .= system($Command, $Status);
-			if ($Status == 0)
-				$html .= "OK.<br />";
-			else
-				$html .= "fail ($Status)($Command).<br />";
-		}
-		elseif ($PentabarfGetWith == "lynx") {
-			$Command = "lynx -auth=" . $_POST["PentabarfUser"] . ":" . $_POST["password"] . " -dump " .
-			"https://$PentabarfXMLhost/$PentabarfXMLpath" . $_POST["PentabarfURL"] . " > $Tempdir/engelXML";
-			$html .= system($Command, $Status);
-			if ($Status == 0)
-				$html .= "OK.<br />";
-			else
-				$html .= "fail ($Status)($Command).<br />";
-		} else
-			$html .= "<h1>The PentabarfGetWith='$PentabarfGetWith' not supported</h1>";
-	} else {
-		$html .= "<form action=\"dbUpdateFromXLS.php\" method=\"post\">\n";
-		$html .= "<table border=\"0\">\n";
-		$html .= "\t<tr><td>XCAL-File: https://$PentabarfXMLhost/$PentabarfXMLpath</td>" .
-		"<td><input name=\"PentabarfURL\" type=\"text\" size=\"4\" maxlength=\"5\" " .
-		"value=\"$PentabarfXMLEventID\"></td></tr>\n";
-		$html .= "\t<tr><td>Username:</td>" .
-		"<td><input name=\"PentabarfUser\" type=\"text\" size=\"30\" maxlength=\"30\"></td></tr>\n";
-		$html .= "\t<tr><td>Password:</td>" .
-		"<td><input name=\"password\" type=\"password\" size=\"30\" maxlength=\"30\"></td></tr>\n";
-		$html .= "\t<tr><td></td><td><input type=\"submit\" name=\"FileUpload\" value=\"upload\"></td></tr>\n";
-		$html .= "</table>\n";
-		$html .= "</form>\n";
-	}
-
-	return $html;
 }
 
-function prepare_rooms() {
+function prepare_rooms($file) {
 	global $rooms_import;
-	$data = read_xml();
+	$data = read_xml($file);
 
 	// Load rooms from db for compare with input
 	$rooms = sql_select("SELECT * FROM `Room` WHERE `FromPentabarf`='Y'");
@@ -272,9 +186,9 @@ function prepare_rooms() {
 	);
 }
 
-function prepare_events() {
+function prepare_events($file) {
 	global $rooms_import;
-	$data = read_xml();
+	$data = read_xml($file);
 
 	$rooms = sql_select("SELECT * FROM `Room`");
 	$rooms_db = array ();
@@ -312,7 +226,7 @@ function prepare_events() {
 				$shifts_updated[] = $shift;
 		}
 
-	$shifts_deleted = array();
+	$shifts_deleted = array ();
 	foreach ($shifts_db as $shift)
 		if (!isset ($shifts_pb[$shift['PSID']]))
 			$shifts_deleted[] = $shift;
@@ -324,10 +238,10 @@ function prepare_events() {
 	);
 }
 
-function read_xml() {
+function read_xml($file) {
 	global $xml_import;
 	if (!isset ($xml_import))
-		$xml_import = new SimpleXMLElement(file_get_contents('../import/27C3_sample.xcs'));
+		$xml_import = simplexml_load_file($file);
 	return $xml_import;
 }
 
@@ -352,4 +266,3 @@ function shift_sort($a, $b) {
 	return ($a['start'] < $b['start']) ? -1 : 1;
 }
 ?>
-

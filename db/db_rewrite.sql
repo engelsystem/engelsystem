@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 13. Juni 2011 um 17:08
+-- Erstellungszeit: 12. Juli 2011 um 14:02
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS `AngelTypes` (
 --
 
 INSERT INTO `AngelTypes` (`TID`, `Name`, `Man`) VALUES
-(1, 'Sex', ''),
 (4, 'Audio', ''),
 (5, 'Massage', '');
 
@@ -71,29 +70,29 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 223),
-('login', 70),
+('news', 231),
+('login', 77),
 ('logout', 20),
-('start', 49),
+('start', 52),
 ('faq', 34),
-('credits', 11),
-('register', 20),
-('admin_rooms', 90),
-('admin_angel_types', 72),
+('credits', 12),
+('register', 21),
+('admin_rooms', 95),
+('admin_angel_types', 81),
 ('user_settings', 148),
-('user_messages', 115),
+('user_messages', 123),
 ('admin_groups', 156),
 ('user_questions', 58),
 ('admin_questions', 45),
 ('admin_faq', 59),
-('admin_news', 33),
-('news_comments', 151),
-('admin_user', 206),
-('user_meetings', 9),
+('admin_news', 35),
+('news_comments', 154),
+('admin_user', 208),
+('user_meetings', 10),
 ('admin_language', 35),
 ('admin_log', 19),
 ('user_wakeup', 64),
-('admin_import', 39);
+('admin_import', 216);
 
 -- --------------------------------------------------------
 
@@ -209,15 +208,14 @@ CREATE TABLE IF NOT EXISTS `Messages` (
   KEY `Datum` (`Datum`),
   KEY `SUID` (`SUID`),
   KEY `RUID` (`RUID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Fuers interen Communikationssystem' AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Fuers interen Communikationssystem' AUTO_INCREMENT=9 ;
 
 --
 -- Daten für Tabelle `Messages`
 --
 
 INSERT INTO `Messages` (`id`, `Datum`, `SUID`, `RUID`, `isRead`, `Text`) VALUES
-(2, 1307042342, 1, 147, 'Y', 'asdfasdfasdfasdf'),
-(4, 1307042622, 1, 147, 'Y', 'asdfasdfasdf'),
+(8, 1307985371, 1, 148, 'N', 'asdfasdfasdfasdfasdfasdfasdfasdf'),
 (7, 1307042692, 147, 1, 'Y', 'foobar');
 
 -- --------------------------------------------------------
@@ -347,15 +345,19 @@ CREATE TABLE IF NOT EXISTS `Room` (
   `FromPentabarf` char(1) NOT NULL DEFAULT 'N',
   `show` char(1) NOT NULL DEFAULT 'Y',
   `Number` int(11) DEFAULT NULL,
-  PRIMARY KEY (`RID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+  PRIMARY KEY (`RID`),
+  UNIQUE KEY `Name` (`Name`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Daten für Tabelle `Room`
 --
 
 INSERT INTO `Room` (`RID`, `Name`, `Man`, `FromPentabarf`, `show`, `Number`) VALUES
-(2, 'Mein Zimmer', 'msquare', 'N', 'Y', 1337);
+(2, 'Mein Zimmer', 'msquare', 'N', 'Y', 1337),
+(3, 'Saal 1', NULL, 'Y', 'Y', NULL),
+(4, 'Saal 2', NULL, 'Y', 'Y', NULL),
+(5, 'Saal 3', NULL, 'Y', 'Y', NULL);
 
 -- --------------------------------------------------------
 
@@ -376,8 +378,6 @@ CREATE TABLE IF NOT EXISTS `RoomAngelTypes` (
 -- Daten für Tabelle `RoomAngelTypes`
 --
 
-INSERT INTO `RoomAngelTypes` (`id`, `room_id`, `angel_type_id`, `count`) VALUES
-(2, 1, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -425,20 +425,116 @@ CREATE TABLE IF NOT EXISTS `ShiftFreeloader` (
 
 CREATE TABLE IF NOT EXISTS `Shifts` (
   `SID` int(11) NOT NULL AUTO_INCREMENT,
-  `DateS` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `DateE` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `Len` float NOT NULL DEFAULT '0',
+  `start` int(11) NOT NULL,
+  `end` int(11) NOT NULL,
   `RID` int(11) NOT NULL DEFAULT '0',
   `Man` text,
   `URL` text,
-  `PSID` text,
-  PRIMARY KEY (`SID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `PSID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`SID`),
+  UNIQUE KEY `PSID` (`PSID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=99 ;
 
 --
 -- Daten für Tabelle `Shifts`
 --
 
+INSERT INTO `Shifts` (`SID`, `start`, `end`, `RID`, `Man`, `URL`, `PSID`) VALUES
+(1, 1293445800, 1293449400, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4302.en.html', 4302),
+(2, 1293618600, 1293622200, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4244.en.html', 4244),
+(3, 1293487200, 1293490800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4245.en.html', 4245),
+(4, 1293569100, 1293572700, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4057.en.html', 4057),
+(5, 1293715800, 1293717600, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4168.en.html', 4168),
+(6, 1293471000, 1293474600, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4046.en.html', 4046),
+(7, 1293639300, 1293642900, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4114.en.html', 4114),
+(8, 1293639300, 1293642900, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4151.en.html', 4151),
+(9, 1293548400, 1293552000, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4144.en.html', 4144),
+(10, 1293462000, 1293465600, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4160.en.html', 4160),
+(11, 1293552900, 1293556500, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4061.en.html', 4061),
+(12, 1293618600, 1293625800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4298.en.html', 4298),
+(13, 1293651000, 1293654600, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4211.en.html', 4211),
+(14, 1293730200, 1293733800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4299.en.html', 4299),
+(15, 1293450300, 1293453900, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4096.en.html', 4096),
+(16, 1293627600, 1293631200, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4276.en.html', 4276),
+(17, 1293634800, 1293638400, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4087.en.html', 4087),
+(18, 1293454800, 1293458400, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4140.en.html', 4140),
+(19, 1293450300, 1293453900, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4103.en.html', 4103),
+(20, 1293709500, 1293712200, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4003.en.html', 4003),
+(21, 1293714000, 1293717600, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4067.en.html', 4067),
+(22, 1293569100, 1293572700, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4231.en.html', 4231),
+(23, 1293478200, 1293481800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4190.en.html', 4190),
+(24, 1293557400, 1293561000, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4123.en.html', 4123),
+(25, 1293478200, 1293481800, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4017.en.html', 4017),
+(26, 1293482700, 1293486300, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4297.en.html', 4297),
+(27, 1293651000, 1293654600, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4085.en.html', 4085),
+(28, 1293532200, 1293535800, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4203.en.html', 4203),
+(29, 1293634800, 1293638400, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4006.en.html', 4006),
+(30, 1293462000, 1293465600, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4111.en.html', 4111),
+(31, 1293532200, 1293535800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4099.en.html', 4099),
+(32, 1293655500, 1293659100, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4070.en.html', 4070),
+(33, 1293655500, 1293659100, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4334.en.html', 4334),
+(34, 1293466500, 1293470100, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4164.en.html', 4164),
+(35, 1293450300, 1293453900, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4175.en.html', 4175),
+(36, 1293660000, 1293663600, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4018.en.html', 4018),
+(37, 1293660000, 1293667200, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4141.en.html', 4141),
+(38, 1293660000, 1293667200, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4333.en.html', 4333),
+(39, 1293713100, 1293714900, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/3983.en.html', 3983),
+(40, 1293478200, 1293481800, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4176.en.html', 4176),
+(41, 1293471000, 1293474600, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4265.en.html', 4265),
+(42, 1293725700, 1293729300, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4193.en.html', 4193),
+(43, 1293564600, 1293568200, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4295.en.html', 4295),
+(44, 1293721200, 1293724800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4301.en.html', 4301),
+(45, 1293709500, 1293713100, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4089.en.html', 4089),
+(46, 1293541200, 1293544800, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4149.en.html', 4149),
+(47, 1293626700, 1293628500, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4084.en.html', 4084),
+(48, 1293639300, 1293642900, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4206.en.html', 4206),
+(49, 1293643800, 1293647400, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4237.en.html', 4237),
+(50, 1293721200, 1293724800, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4236.en.html', 4236),
+(51, 1293548400, 1293552000, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4121.en.html', 4121),
+(52, 1293454800, 1293458400, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4011.en.html', 4011),
+(53, 1293536700, 1293540300, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4296.en.html', 4296),
+(54, 1293618600, 1293626700, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4239.en.html', 4239),
+(55, 1293705000, 1293713100, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4300.en.html', 4300),
+(56, 1293552900, 1293556500, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4195.en.html', 4195),
+(57, 1293543000, 1293544800, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4073.en.html', 4073),
+(58, 1293537600, 1293539400, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4210.en.html', 4210),
+(59, 1293552900, 1293556500, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4081.en.html', 4081),
+(60, 1293471000, 1293476400, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4094.en.html', 4094),
+(61, 1293725700, 1293729300, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4261.en.html', 4261),
+(62, 1293540300, 1293542100, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4142.en.html', 4142),
+(63, 1293705000, 1293708600, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4221.en.html', 4221),
+(64, 1293721200, 1293724800, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4339.en.html', 4339),
+(65, 1293548400, 1293552000, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4143.en.html', 4143),
+(66, 1293491700, 1293495300, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4253.en.html', 4253),
+(67, 1293627600, 1293631200, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4326.en.html', 4326),
+(68, 1293482700, 1293486300, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/3957.en.html', 3957),
+(69, 1293651000, 1293654600, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4036.en.html', 4036),
+(70, 1293536700, 1293540300, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4159.en.html', 4159),
+(71, 1293487200, 1293490800, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4082.en.html', 4082),
+(72, 1293643800, 1293647400, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/3952.en.html', 3952),
+(73, 1293634800, 1293638400, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4183.en.html', 4183),
+(74, 1293573600, 1293577200, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4138.en.html', 4138),
+(75, 1293725700, 1293729300, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4230.en.html', 4230),
+(76, 1293629400, 1293631200, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4181.en.html', 4181),
+(77, 1293466500, 1293470100, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4060.en.html', 4060),
+(78, 1293487200, 1293490800, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4125.en.html', 4125),
+(79, 1293564600, 1293568200, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4145.en.html', 4145),
+(80, 1293578100, 1293581700, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4184.en.html', 4184),
+(81, 1293557400, 1293561000, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4097.en.html', 4097),
+(82, 1293622200, 1293625800, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4055.en.html', 4055),
+(83, 1293564600, 1293568200, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4090.en.html', 4090),
+(84, 1293557400, 1293561000, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4201.en.html', 4201),
+(85, 1293573600, 1293577200, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4174.en.html', 4174),
+(86, 1293573600, 1293577200, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4263.en.html', 4263),
+(87, 1293714000, 1293717600, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4124.en.html', 4124),
+(88, 1293705000, 1293708600, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4098.en.html', 4098),
+(89, 1293466500, 1293470100, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4234.en.html', 4234),
+(90, 1293454800, 1293458400, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4252.en.html', 4252),
+(91, 1293462000, 1293465600, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4185.en.html', 4185),
+(92, 1293541200, 1293544800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4208.en.html', 4208),
+(93, 1293532200, 1293535800, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4338.en.html', 4338),
+(94, 1293643800, 1293647400, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4187.en.html', 4187),
+(95, 1293655500, 1293659100, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4209.en.html', 4209);
 
 -- --------------------------------------------------------
 
@@ -1106,7 +1202,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0, 10, 'DE', 115, 'L', 1307984924, '0000-00-00 00:00:00', '', '', ''),
+(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0, 10, 'DE', 115, 'L', 1310479337, '0000-00-00 00:00:00', '', '', ''),
 (148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 1, 1, 10, 'DE', 0, 'L', 1307110798, '2011-06-03 07:55:24', 'AudioEngel', '', '');
 
 -- --------------------------------------------------------
