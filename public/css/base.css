@@ -113,6 +113,7 @@ fieldset table {
 }
 
 fieldset p {
+	clear: both;
 	margin: 4px;
 }
 
