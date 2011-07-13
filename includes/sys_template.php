@@ -18,7 +18,7 @@ function template_render($file, $data) {
 function shorten($str) {
 	if (strlen($str) < 50)
 		return $str;
-	return substr($str, 0, 47) . '...';
+	return '<span title="' . htmlentities($str, ENT_COMPAT, 'UTF-8') . '">' . substr($str, 0, 47) . '...</span>';
 }
 
 function table_body($array) {
