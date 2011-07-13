@@ -132,7 +132,10 @@ td, th {
 }
 
 textarea {
+	font-family: inherit;
+	font-size: inherit;
     height: 200px;
+	padding: 2px;
     width: 300px;
 }
 
