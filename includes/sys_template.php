@@ -15,6 +15,12 @@ function template_render($file, $data) {
 	}
 }
 
+function shorten($str) {
+	if (strlen($str) < 50)
+		return $str;
+	return substr($str, 0, 47) . '...';
+}
+
 function table_body($array) {
 	$html = "";
 	foreach ($array as $line) {

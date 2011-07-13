@@ -48,6 +48,10 @@ if (in_array($p, $privileges)) {
 		require_once ('includes/pages/user_news.php');
 		$content = user_meetings();
 	}
+	elseif ($p == "user_shifts") {
+		require_once ('includes/pages/user_shifts.php');
+		$content = user_shifts();
+	}
 	elseif ($p == "user_messages") {
 		$content = user_messages();
 	}

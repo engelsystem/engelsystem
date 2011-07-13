@@ -117,9 +117,9 @@ function admin_import() {
 				'link' => page_link_to('admin_import'),
 				'rooms_new' => count($rooms_new) == 0 ? "<tr><td>None</td></tr>" : table_body($rooms_new),
 				'rooms_deleted' => count($rooms_deleted) == 0 ? "<tr><td>None</td></tr>" : table_body($rooms_deleted),
-				'events_new' => count($events_new) == 0 ? "<tr><td>None</td><td></td><td></td><td></td></tr>" : table_body(shifts_printable($events_new)),
-				'events_updated' => count($events_updated) == 0 ? "<tr><td>None</td><td></td><td></td><td></td></tr>" : table_body(shifts_printable($events_updated)),
-				'events_deleted' => count($events_deleted) == 0 ? "<tr><td>None</td><td></td><td></td><td></td></tr>" : table_body(shifts_printable($events_deleted))
+				'events_new' => count($events_new) == 0 ? "<tr><td>None</td><td></td><td></td><td></td><td></td></tr>" : table_body(shifts_printable($events_new)),
+				'events_updated' => count($events_updated) == 0 ? "<tr><td>None</td><td></td><td></td><td></td><td></td></tr>" : table_body(shifts_printable($events_updated)),
+				'events_deleted' => count($events_deleted) == 0 ? "<tr><td>None</td><td></td><td></td><td></td><td></td></tr>" : table_body(shifts_printable($events_deleted))
 			));
 			break;
 
@@ -137,10 +137,12 @@ function admin_import() {
 
 			list ($events_new, $events_updated, $events_deleted) = prepare_events($import_file);
 			foreach ($events_new as $event)
-				sql_query("INSERT INTO `Shifts` SET `start`=" . sql_escape($event['start']) . ", `end`=" . sql_escape($event['end']) . ", `RID`=" . sql_escape($event['RID']) . ", `PSID`=" . sql_escape($event['PSID']) . ", `URL`='" . sql_escape($event['URL']) . "'");
+				sql_query("INSERT INTO `Shifts` SET `name`='" .
+				sql_escape($event['name']) . "', `start`=" . sql_escape($event['start']) . ", `end`=" . sql_escape($event['end']) . ", `RID`=" . sql_escape($event['RID']) . ", `PSID`=" . sql_escape($event['PSID']) . ", `URL`='" . sql_escape($event['URL']) . "'");
 
 			foreach ($events_updated as $event)
-				sql_query("UPDATE `Shifts` SET `start`=" . sql_escape($event['start']) . ", `end`=" . sql_escape($event['end']) . ", `RID`=" . sql_escape($event['RID']) . ", `PSID`=" . sql_escape($event['PSID']) . ", `URL`='" . sql_escape($event['URL']) . "' WHERE `PSID`=" . sql_escape($event['PSID']) . " LIMIT 1");
+				sql_query("UPDATE `Shifts` SET `name`='" .
+				sql_escape($event['name']) . "', `start`=" . sql_escape($event['start']) . ", `end`=" . sql_escape($event['end']) . ", `RID`=" . sql_escape($event['RID']) . ", `PSID`=" . sql_escape($event['PSID']) . ", `URL`='" . sql_escape($event['URL']) . "' WHERE `PSID`=" . sql_escape($event['PSID']) . " LIMIT 1");
 
 			foreach ($events_deleted as $event)
 				sql_query("DELETE FROM `Shifts` WHERE `PSID`=" .
@@ -205,6 +207,7 @@ function prepare_events($file) {
 			'start' => DateTime :: createFromFormat("Ymd\THis", $event->dtstart)->getTimestamp(),
 			'end' => DateTime :: createFromFormat("Ymd\THis", $event->dtend)->getTimestamp(),
 			'RID' => $rooms_import[trim($event->location)],
+			'name' => trim($event->summary),
 			'URL' => trim($event->url),
 			'PSID' => $event_id
 		);
@@ -222,7 +225,7 @@ function prepare_events($file) {
 			$shifts_new[] = $shift;
 		else {
 			$tmp = $shifts_db[$shift['PSID']];
-			if ($shift['start'] != $tmp['start'] || $shift['end'] != $tmp['end'] || $shift['RID'] != $tmp['RID'] || $shift['URL'] != $tmp['URL'])
+			if ($shift['name'] != $tmp['name'] || $shift['start'] != $tmp['start'] || $shift['end'] != $tmp['end'] || $shift['RID'] != $tmp['RID'] || $shift['URL'] != $tmp['URL'])
 				$shifts_updated[] = $shift;
 		}
 
@@ -256,6 +259,7 @@ function shifts_printable($shifts) {
 		$shifts_printable[] = array (
 			'day' => date("l, Y-m-d", $shift['start']),
 			'start' => date("H:i", $shift['start']),
+			'name' => shorten($shift['name']),
 			'end' => date("H:i", $shift['end']),
 			'room' => $rooms[$shift['RID']]
 		);
