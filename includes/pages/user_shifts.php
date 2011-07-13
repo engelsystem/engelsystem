@@ -1,7 +1,25 @@
 <?php
 function user_shifts() {
 	if (isset ($_REQUEST['shift_id'])) {
-		return template_render('../templates/user_shifts_add.html', array ());
+		if (isset ($_REQUEST['shift_id']) && preg_match("/^[0-9]*$/", $_REQUEST['shift_id']))
+			$shift_id = $_REQUEST['shift_id'];
+		else
+			header("Location: " . page_link_to('user_shifts'));
+
+		$shift = sql_select("SELECT * FROM `Shifts` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+		if (count($shift) == 0)
+			header("Location: " . page_link_to('user_shifts'));
+		$shift = $shift[0];
+
+		if (isset ($_REQUEST['type_id']) && preg_match("/^[0-9]*$/", $_REQUEST['type_id']))
+			$type_id = $_REQUEST['type_id'];
+		else
+			header("Location: " . page_link_to('user_shifts'));
+
+		return template_render('../templates/user_shifts_add.html', array (
+			'date' => date("Y-m-d H:i", $shift['start']) . ', ' . date("H:i", $shift['end'] - $shift['start']) . 'h',
+			'title' => $shift['name']
+		));
 	} else {
 		$shifts = sql_select("SELECT * FROM `Shifts` ORDER BY `start`");
 		$days = array ();
