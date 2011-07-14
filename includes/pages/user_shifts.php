@@ -1,12 +1,14 @@
 <?php
 function user_shifts() {
+	global $user, $privileges;
 	if (isset ($_REQUEST['shift_id'])) {
+
 		if (isset ($_REQUEST['shift_id']) && preg_match("/^[0-9]*$/", $_REQUEST['shift_id']))
 			$shift_id = $_REQUEST['shift_id'];
 		else
 			header("Location: " . page_link_to('user_shifts'));
 
-		$shift = sql_select("SELECT * FROM `Shifts` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+		$shift = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
 		if (count($shift) == 0)
 			header("Location: " . page_link_to('user_shifts'));
 		$shift = $shift[0];
@@ -16,9 +18,23 @@ function user_shifts() {
 		else
 			header("Location: " . page_link_to('user_shifts'));
 
+		$type = sql_select("SELECT * FROM `AngelTypes` WHERE `TID`=" . sql_escape($type_id) . " LIMIT 1");
+		if (count($type) == 0)
+			header("Location: " . page_link_to('user_shifts'));
+		$type = $type[0];
+
+		if (isset ($_REQUEST['submit'])) {
+			$comment = strip_request_item_nl($_REQUEST['comment']);
+			sql_query("INSERT INTO `ShiftEntry` SET `UID`=" . sql_escape($user['UID']) . ", `TID`=" . sql_escape($type_id) . ", `SID`=" . sql_escape($shift_id));
+			return success("Now it's your shift. Thank you!") . '<a href="' . page_link_to('user_myshifts') . '">View my shifts &raquo;</a>';
+		}
+
 		return template_render('../templates/user_shifts_add.html', array (
 			'date' => date("Y-m-d H:i", $shift['start']) . ', ' . date("H:i", $shift['end'] - $shift['start']) . 'h',
-			'title' => $shift['name']
+			'title' => $shift['name'],
+			'location' => $shift['Name'],
+			'angel' => $user['Nick'],
+			'type' => $type['Name']
 		));
 	} else {
 		$shifts = sql_select("SELECT * FROM `Shifts` ORDER BY `start`");
@@ -38,21 +54,26 @@ function user_shifts() {
 		$id = $rooms[0]['RID'];
 		if (isset ($_REQUEST['room_id']) && preg_match("/^[0-9]*$/", $_REQUEST['room_id']))
 			$id = $_REQUEST['room_id'];
-
-		$day_timestamp = DateTime :: createFromFormat("Y-m-d", $day)->getTimestamp();
+		$day_timestamp = DateTime :: createFromFormat("Y-m-d-Hi", $day . "-0000")->getTimestamp();
 		$shifts = sql_select("SELECT * FROM `Shifts` WHERE `RID`=" . sql_escape($id) . " AND `start` >= " . sql_escape($day_timestamp) . " AND `start` < " . sql_escape($day_timestamp +24 * 60 * 60) . " ORDER BY `start`");
 
 		$shifts_table = "";
 		foreach ($shifts as $shift) {
 			$shifts_table .= '<tr><td>' . date("H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . '</td><td>' . $shift['name'] . '<br />';
 			$angeltypes = sql_select("SELECT * FROM `RoomAngelTypes` JOIN `AngelTypes` ON (`RoomAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `room_id`=" . sql_escape($id) . " AND `count` > 0 ORDER BY `AngelTypes`.`Name`");
-			if (count($angeltypes)) {
+			if (count($angeltypes) > 0) {
+				$my_shift = sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0;
 				foreach ($angeltypes as $angeltype) {
 					$shifts_table .= '<b>' . $angeltype['Name'] . ':</b> ';
 					$entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`=" . sql_escape($shift['SID']) . " AND `TID`=" . sql_escape($angeltype['TID']) . " ORDER BY `Nick`");
 					$entry_list = array ();
+					foreach ($entries as $entry)
+						$entry_list[] = $entry['Nick'];
 					if ($angeltype['count'] - count($entries) > 0)
-						$entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['TID'] . '">' . ($angeltype['count'] - count($entries)) . ' missing &raquo;</a>';
+						if (!$my_shift || in_array('user_shift_admin', $privileges))
+							$entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['TID'] . '">' . ($angeltype['count'] - count($entries)) . ' angel missing &raquo;</a>';
+						else
+							$entry_list[] = ($angeltype['count'] - count($entries)) . ' angel missing';
 					$shifts_table .= join(", ", $entry_list);
 					$shifts_table .= '<br />';
 				}
