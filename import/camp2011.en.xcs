@@ -1,0 +1,1257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iCalendar xmlns:xCal="urn:ietf:params:xml:ns:xcal" xmlns:pentabarf="http://pentabarf.org">
+  <vcalendar>
+    <version>2.0</version>
+    <prodid>-//Pentabarf//Schedule #&lt;Conference_release::Row:0x309a0916eee0&gt;//EN</prodid>
+    <x-wr-caldesc>Camp 2011 Schedule Release #&lt;Conference_release::Row:0x309a0916eee0&gt;</x-wr-caldesc>
+    <x-wr-calname>Camp 2011 Schedule</x-wr-calname>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4462@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4462</pentabarf:event-id>
+  <pentabarf:event-slug>accessblocking</pentabarf:event-slug>
+  <pentabarf:title>Accessblocking/Internetsperren</pentabarf:title>
+  <pentabarf:subtitle>#Censilia and beyond</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110811T210000</dtstart>
+  <dtend>20110811T220000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Accessblocking/Internetsperren- #Censilia and beyond</summary>
+  <description>Die Debatte in Deutschland 2009 war nur der Auftakt f&#252;r die EUweite Einf&#252;hrung vom Netzsperren. Durch das Inkrafttreten des Lissabon-Vertrages verz&#246;gert, wird seit dem Kommissionsentwurf im M&#228;rz 2010 die Einf&#252;hrung von Internetsperren in der EU diskutiert.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4462.en.html</url>
+  <location>Kourou</location>
+  <attendee>Christian Bahls MOGiS e.V.</attendee>
+  <attendee>J&#233;r&#233;mie Zimmermann</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4451@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4451</pentabarf:event-id>
+  <pentabarf:event-slug>a_modern_manifest_of_cyberspace</pentabarf:event-slug>
+  <pentabarf:title>A modern manifest of cyberspace</pentabarf:title>
+  <pentabarf:subtitle>The internet is dead, long live the internet</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110812T163000</dtstart>
+  <dtend>20110812T173000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>A modern manifest of cyberspace- The internet is dead, long live the internet</summary>
+  <description>The internet is increasingly falling under the control and restrictions of governments and multinational corporations. Internet connections are filtered and censored, not only in China but blatantly so in 'western' countries such as Australia and Canada. The content industry is clamping down on infringement on intellectual property and calls for ever more far-fetching and over-reaching laws to be put into effect. Meanwhile, telco's are making deals with content providers to decide how gets premium access and who gets degraded access to their networks.
+</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4451.en.html</url>
+  <location>Kourou</location>
+  <attendee>gmc</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4496@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4496</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Applied Research on security of TETRA radio</pentabarf:title>
+  <pentabarf:subtitle>digital radio technology beyond GSM</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110812T210000</dtstart>
+  <dtend>20110812T220000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Applied Research on security of TETRA radio- digital radio technology beyond GSM</summary>
+  <description>The digital professional mobile radio system TETRA is used by a wide range of users in almost all continents of the world.  
+
+The OsmocomTETRA project has created a software radio receiver for the TETRA air interface, similar to what airprobe has done for GSM.  Using this receiver plus associated protocol analysis tools, we are able to investigate and research the security level of real-world TETRA networks.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4496.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Harald Welte</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4497@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4497</pentabarf:event-id>
+  <pentabarf:event-slug>a_short_history_of_ipv4</pentabarf:event-slug>
+  <pentabarf:title>A short history of IPv4</pentabarf:title>
+  <pentabarf:subtitle></pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110813T180000</dtstart>
+  <dtend>20110813T190000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>A short history of IPv4</summary>
+  <description>A few short weeks ago, APNIC's supply of IPv4 address space reached depletion. ARIN and the RIPE NCC will follow soon, most likely somewhere this year. In this talk I will discuss the history of the internet as seen from the point of view of the RIRs.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4497.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Djinh</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4467@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4467</pentabarf:event-id>
+  <pentabarf:event-slug>avionics</pentabarf:event-slug>
+  <pentabarf:title>Avionics</pentabarf:title>
+  <pentabarf:subtitle>Design and implementation of flight electronics</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110813T150000</dtstart>
+  <dtend>20110813T160000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Avionics- Design and implementation of flight electronics</summary>
+  <description>Flying hardware must peform its intended function under harsh environmental conditions while fulfilling strict requirements due to boundary conditions like weight, size, and power consumption. The design must exhibit redundancy and resilience against adversary conditions and special care has to be given to thermal management and energy sources. We will discuss design rules to cope with specific problems and present a prototype system based on the multicore chip P8X32A.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4467.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4426@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4426</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Certified programming with dependent types</pentabarf:title>
+  <pentabarf:subtitle>Because the future of defense is liberal application of math</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110812T223000</dtstart>
+  <dtend>20110812T233000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Certified programming with dependent types- Because the future of defense is liberal application of math</summary>
+  <description>Dependent types expand the concept of types in programming languages by arbitrary predicates depending on the value of the type. This lecture will introduce the concept and show how it can be used to develop formally verified code.
+</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4426.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Andreas Bogk</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4554@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4554</pentabarf:event-id>
+  <pentabarf:event-slug>closing</pentabarf:event-slug>
+  <pentabarf:title>Closing Event</pentabarf:title>
+  <pentabarf:subtitle>Good Bye and have a safe trip home!</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110814T180000</dtstart>
+  <dtend>20110814T183000</dtend>
+  <duration>00H30M00S</duration>
+  <summary>Closing Event- Good Bye and have a safe trip home!</summary>
+  <description></description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4554.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4395@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4395</pentabarf:event-id>
+  <pentabarf:event-slug>counselling_mischief_as_thought_crime</pentabarf:event-slug>
+  <pentabarf:title>Counselling Mischief as Thought Crime</pentabarf:title>
+  <pentabarf:subtitle>Social Networks, Free Speech and the Criminalization of Dissent in Canada </pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110812T193000</dtstart>
+  <dtend>20110812T203000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Counselling Mischief as Thought Crime- Social Networks, Free Speech and the Criminalization of Dissent in Canada </summary>
+  <description>This presentation will show how the RCMP, CSIS, CSEC and other groups worked to "secure" the 2010 Olympics, G8 and G20 by criminalising dissent, and the use of "Open Source Surveillance" to attempt to crack down on all opposition to these mega-events.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4395.en.html</url>
+  <location>Kourou</location>
+  <attendee>Joe</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4445@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4445</pentabarf:event-id>
+  <pentabarf:event-slug>data_mining_your_city</pentabarf:event-slug>
+  <pentabarf:title>Data Mining Your City</pentabarf:title>
+  <pentabarf:subtitle>Early lessons in open city data from Philadelphia, PA, USA</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110814T150000</dtstart>
+  <dtend>20110814T160000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Data Mining Your City- Early lessons in open city data from Philadelphia, PA, USA</summary>
+  <description>Philadelphia (USA) recently launched an initiative to open up tons of city records and municipal data.  This talk will review some of the things people are using it for, and show how open city data is useful to many kinds of people.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4445.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Steph Alarcon</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4389@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4389</pentabarf:event-id>
+  <pentabarf:event-slug>decentralized_clustering</pentabarf:event-slug>
+  <pentabarf:title>Decentralized clustering</pentabarf:title>
+  <pentabarf:subtitle>Making the net - even if your local dicators hate it!</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110812T133000</dtstart>
+  <dtend>20110812T143000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Decentralized clustering- Making the net - even if your local dicators hate it!</summary>
+  <description>In January 2011 the fear of all internauts became bitter truth. A whole country was kill-switched by the government. The flow of data was interrupted, communication laid waste. Not only the Internets was taken down, other means of communication were interrupted too. Cell Phone  providers took down their services. So, there was no Internets in Egypt. Internauts had no chance to  communicate what is happening, mothers and fathers could not send emails to theire relatives. No data was flowing. As the phone lines were  working, this was the solutions: Modems.
+</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4389.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Herr Urbach</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4478@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4478</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Die psychologischen Grundlagen des Social Engineerings</pentabarf:title>
+  <pentabarf:subtitle></pentabarf:subtitle>
+  <pentabarf:language>German</pentabarf:language>
+  <pentabarf:language-code>de</pentabarf:language-code>
+  <dtstart>20110811T150000</dtstart>
+  <dtend>20110811T163000</dtend>
+  <duration>01H30M00S</duration>
+  <summary>Die psychologischen Grundlagen des Social Engineerings</summary>
+  <description>Dieser Vortrag zeigt, wie Social-Engineering funktioniert und erkl&#228;rt die zugrundeliegenden Tricks und Kniffe anhand sozialpsychologischer Studien und Experimente. Au&#223;erdem werden Beispiele, Warnsignale und Gegenma&#223;nahmen vorgestellt.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4478.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Stefan Schumacher</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4449@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4449</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>"Digitale Gesellschaft e.V." </pentabarf:title>
+  <pentabarf:subtitle>Ein neuer Ansatz, um digitale B&#252;rgerrechte zu erhalten</pentabarf:subtitle>
+  <pentabarf:language>German</pentabarf:language>
+  <pentabarf:language-code>de</pentabarf:language-code>
+  <dtstart>20110811T133000</dtstart>
+  <dtend>20110811T143000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>"Digitale Gesellschaft e.V." - Ein neuer Ansatz, um digitale B&#252;rgerrechte zu erhalten</summary>
+  <description>Im April 2011 wurde mit "Digitale Gesellschaft" ein neuer Verein zum Erhalt und Ausbau von digitalen B&#252;rgerrechten pr&#228;sentiert. </description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4449.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Markus Beckedahl</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4438@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4438</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Dudle: Mehrseitig sichere Web 2.0-Umfragen</pentabarf:title>
+  <pentabarf:subtitle></pentabarf:subtitle>
+  <pentabarf:language>German</pentabarf:language>
+  <pentabarf:language-code>de</pentabarf:language-code>
+  <dtstart>20110814T120000</dtstart>
+  <dtend>20110814T130000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Dudle: Mehrseitig sichere Web 2.0-Umfragen</summary>
+  <description>In diesem Vortrag wird eine Web-2.0 Applikation vorgestellt mit der Umfragen durchgef&#252;hrt werden k&#246;nnen. Im Gegensatz zu anderen Anwendungen muss bei dieser dem Serveradministrator nicht vertraut werden.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4438.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Benjamin Kellermann</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4406@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4406</pentabarf:event-id>
+  <pentabarf:event-slug>giving_great_workshops</pentabarf:event-slug>
+  <pentabarf:title>Giving Great Workshops</pentabarf:title>
+  <pentabarf:subtitle>You can create your own successful workshop</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110811T120000</dtstart>
+  <dtend>20110811T130000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Giving Great Workshops- You can create your own successful workshop</summary>
+  <description>Mitch Altman has taught well over 10,000 people to solder and make cool things at workshops around the world. Drawing from his experiences, this lecture will show you how to create and give your own successful workshops about what you know.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4406.en.html</url>
+  <location>Kourou</location>
+  <attendee>Mitch</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4504@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4504</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>GPRS Intercept</pentabarf:title>
+  <pentabarf:subtitle>Wardriving phone networks</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110812T163000</dtstart>
+  <dtend>20110812T173000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>GPRS Intercept- Wardriving phone networks</summary>
+  <description>GPRS data networks provide the backbone for our mobile society. Just like their siblings, GSM networks, the GPRS infrastructure is often lacking an appropriate level of protection.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4504.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Karsten Nohl</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4561@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4561</pentabarf:event-id>
+  <pentabarf:event-slug>hacker_jeopardy</pentabarf:event-slug>
+  <pentabarf:title>Hacker Jeopardy</pentabarf:title>
+  <pentabarf:subtitle>Number guessing for geeks</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110814T000000</dtstart>
+  <dtend>20110814T020000</dtend>
+  <duration>02H00M00S</duration>
+  <summary>Hacker Jeopardy- Number guessing for geeks</summary>
+  <description>The Hacker Jeopardy is a quiz show.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4561.en.html</url>
+  <location>Kourou</location>
+  <attendee>Ray</attendee>
+  <attendee>Stefan 'Sec' Zehl</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4551@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4551</pentabarf:event-id>
+  <pentabarf:event-slug>hackers_in_space</pentabarf:event-slug>
+  <pentabarf:title>Hackers in Space</pentabarf:title>
+  <pentabarf:subtitle>A Modest Proposal for the Next 23 Years</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110810T123000</dtstart>
+  <dtend>20110810T130000</dtend>
+  <duration>00H30M00S</duration>
+  <summary>Hackers in Space- A Modest Proposal for the Next 23 Years</summary>
+  <description>Four years ago, the global Hackerspace movement was kicked off at the 2007 CCCamp, having led to a worldwide, decentralised, collaborative network of hackerspaces on every continent. Fueled by the DIY and hacker spirit, we have come a long way. Now that we have the infrastructure in place, what do we do with it? In times when nation states abandon their space programs, we see the exploration of outer space as our goal for the coming decades.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4551.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4472@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4472</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Hacking DNA</pentabarf:title>
+  <pentabarf:subtitle>Compiling code for living systems</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110811T193000</dtstart>
+  <dtend>20110811T203000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Hacking DNA- Compiling code for living systems</summary>
+  <description>Genetic modification is getting cheaper and biohackers are making it more accessible. This talk outlines the state of DIYbio and institutional synthetic biology; current challenges in biological programming and why you should be hacking biology.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4472.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Marc Juul</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4447@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4447</pentabarf:event-id>
+  <pentabarf:event-slug>hybrid_rocket_engines</pentabarf:event-slug>
+  <pentabarf:title>Hybrid rocket engines</pentabarf:title>
+  <pentabarf:subtitle>Design and implementation of rocket engines with two-phase propellants</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110812T133000</dtstart>
+  <dtend>20110812T143000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Hybrid rocket engines- Design and implementation of rocket engines with two-phase propellants</summary>
+  <description></description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4447.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4503@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4503</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Ich und 23</pentabarf:title>
+  <pentabarf:subtitle>Fingerabdr&#252;cke der DNA</pentabarf:subtitle>
+  <pentabarf:language>German</pentabarf:language>
+  <pentabarf:language-code>de</pentabarf:language-code>
+  <dtstart>20110811T180000</dtstart>
+  <dtend>20110811T190000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Ich und 23- Fingerabdr&#252;cke der DNA</summary>
+  <description>Der Vortrag wird zun&#228;chst die Grundlagen des DNA-Fingerprinting auf unseren 23 Chromosomenpaaren zusammenfassen. Dabei wird besprochen, wie ein genetischer Fingerabdruck praktisch f&#252;r die Verwendung in der Forensik entsteht und in welcher Form die Speicherung in einer Datenbank vorgenommen wird. Darauf aufbauend werden St&#228;rken und Risiken der Technologie er&#246;rtert.  </description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4503.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Mirko Swillus</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4423@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4423</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Ihr kotzt mich alle an.</pentabarf:title>
+  <pentabarf:subtitle>Wir haben Probleme. Und ihr merkt es nicht mal.</pentabarf:subtitle>
+  <pentabarf:language>German</pentabarf:language>
+  <pentabarf:language-code>de</pentabarf:language-code>
+  <dtstart>20110811T000000</dtstart>
+  <dtend>20110811T010000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Ihr kotzt mich alle an.- Wir haben Probleme. Und ihr merkt es nicht mal.</summary>
+  <description>Manchmal find ich ja ganz toll was so geht, aber meistens kotzt ihr mich alle ziemlich an.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4423.en.html</url>
+  <location>Kourou</location>
+  <attendee>Moritz Bartl</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4450@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4450</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Imagine the Future of Money</pentabarf:title>
+  <pentabarf:subtitle>Economic transformations, hacker culture and why we should be so lucky</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110811T223000</dtstart>
+  <dtend>20110811T233000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Imagine the Future of Money- Economic transformations, hacker culture and why we should be so lucky</summary>
+  <description>What comes after capitalism? We will give an overview on the development of complementary and alternative monetary systems: Which ones are there to stay, how they influence social development, how they can be improved and why hackers should really care.
+
+</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4450.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Jaromil</attendee>
+  <attendee>radium</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4458@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4458</pentabarf:event-id>
+  <pentabarf:event-slug>inertial_navigation</pentabarf:event-slug>
+  <pentabarf:title>Inertial navigation</pentabarf:title>
+  <pentabarf:subtitle>Rigid body dynamics and its application to dead reckoning</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110811T150000</dtstart>
+  <dtend>20110811T160000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Inertial navigation- Rigid body dynamics and its application to dead reckoning</summary>
+  <description>The motion of objects through space can be observed in everyday life and the analysis of their dynamics leads to a fundamental notion of theoretical mechanics, the rigid body. Inertial navigation is based on continuous measurement of acceleration and angular velocities and the inversion of the rigid body's equations of motion. Additionally, the modeling of noise and error propagation is essential to correctly estimate position and attitude.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4458.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4495@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4495</pentabarf:event-id>
+  <pentabarf:event-slug>introduction_to_multicast_security</pentabarf:event-slug>
+  <pentabarf:title>Introduction to Multicast Security</pentabarf:title>
+  <pentabarf:subtitle>Beyond SSL/TLS</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110814T120000</dtstart>
+  <dtend>20110814T130000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Introduction to Multicast Security- Beyond SSL/TLS</summary>
+  <description>For scaling real time applications multicast transport is the enabling technology. This event will present solutions for multicast security, that can be used for group conferencing and scaling data distribution services as transport layer security. Keywords: SRTP, AES-CM, Keystream, Multimedia Internet KEYing</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4495.en.html</url>
+  <location>Kourou</location>
+  <attendee>frehberg</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4442@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4442</pentabarf:event-id>
+  <pentabarf:event-slug>satellite_communications</pentabarf:event-slug>
+  <pentabarf:title>Introduction to Satellite Communications</pentabarf:title>
+  <pentabarf:subtitle>Installation and Operation of Satellite Systems; illustrated with Postage Stamps</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110810T150000</dtstart>
+  <dtend>20110810T160000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Introduction to Satellite Communications- Installation and Operation of Satellite Systems; illustrated with Postage Stamps</summary>
+  <description>We've come a long way since Sputnik; in this talk I'll cover how, why and in which orbit different satellites operate, how they get there and what must be considered when establishing connections or determining positions on earth.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4442.en.html</url>
+  <location>Kourou</location>
+  <attendee>Irmi Meister</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4490@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4490</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>iOS application security</pentabarf:title>
+  <pentabarf:subtitle>a look at the security of 3rd party iOS applications</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110811T210000</dtstart>
+  <dtend>20110811T220000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>iOS application security- a look at the security of 3rd party iOS applications</summary>
+  <description>&lt;todo&gt;</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4490.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Ilja van Sprundel</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4502@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4502</pentabarf:event-id>
+  <pentabarf:event-slug>is_this_the_mobile_gadget_world_we_created</pentabarf:event-slug>
+  <pentabarf:title>Is this the Mobile Gadget World We Created?</pentabarf:title>
+  <pentabarf:subtitle>The story of the world's first socially responsible mobile phone.</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110810T163000</dtstart>
+  <dtend>20110810T173000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Is this the Mobile Gadget World We Created?- The story of the world's first socially responsible mobile phone.</summary>
+  <description>  The most ubiquitous device on the planet is arguably the mobile phone. Tragically, it is also a device built under some of the worst living and working conditions in the world. This is the story of a mission - To build the world's first ethical phone. </description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4502.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Bicyclemark</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4412@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4412</pentabarf:event-id>
+  <pentabarf:event-slug>latest_developments_around_the_milkymist_system_on_chip</pentabarf:event-slug>
+  <pentabarf:title>Latest developments around the Milkymist System-on-Chip</pentabarf:title>
+  <pentabarf:subtitle>A roundup of one the most advanced open hardware projects</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110811T193000</dtstart>
+  <dtend>20110811T203000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Latest developments around the Milkymist System-on-Chip- A roundup of one the most advanced open hardware projects</summary>
+  <description>Milkymist develops a comprehensive solution for the live synthesis of interactive visual effects. It features one of the first open source system-on-chip designs. This talk gives a roundup of what has happened during the last 1.5 year in this project.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4412.en.html</url>
+  <location>Kourou</location>
+  <attendee>S&#233;bastien Bourdeauducq</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4550@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4550</pentabarf:event-id>
+  <pentabarf:event-slug>learning_secrets_by_watching_people</pentabarf:event-slug>
+  <pentabarf:title>Learning Secrets by Watching People</pentabarf:title>
+  <pentabarf:subtitle>Gesture, Expression, and Behavior Analysis for Hackers</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110813T133000</dtstart>
+  <dtend>20110813T143000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Learning Secrets by Watching People- Gesture, Expression, and Behavior Analysis for Hackers</summary>
+  <description>If someone has a secret in their head, that secret may be visible in how they move, the expressions they make, and the actions they take -- even the person is trying to conceal the secret. This talk will cover ways to read those outward signs.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4550.en.html</url>
+  <location>Baikonur</location>
+  <attendee>spoolpin</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4429@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4429</pentabarf:event-id>
+  <pentabarf:event-slug>life_foods</pentabarf:event-slug>
+  <pentabarf:title>Life foods</pentabarf:title>
+  <pentabarf:subtitle>Benefits of use of microbial fermentations in food and beverage preparations.</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110811T163000</dtstart>
+  <dtend>20110811T173000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Life foods- Benefits of use of microbial fermentations in food and beverage preparations.</summary>
+  <description>The regular consumption of life foods was very important for healthy life style thousands years ago and the same applies for today. The use of today's scientific knowledge in combination with current technology will allow us to optimise these techniques.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4429.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4439@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4439</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Machine-to-machine (M2M) security</pentabarf:title>
+  <pentabarf:subtitle>When physical security depends on IT security</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110813T163000</dtstart>
+  <dtend>20110813T173000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Machine-to-machine (M2M) security- When physical security depends on IT security</summary>
+  <description>Today, more and more real-world things and machines are equipped with some kind of connection back home to the vendor. Such machine-to-machine (M2M) communication is often poorly secured and some day, the shit will hit the fan!</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4439.en.html</url>
+  <location>Baikonur</location>
+  <attendee>hunz</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4553@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4553</pentabarf:event-id>
+  <pentabarf:event-slug>opening</pentabarf:event-slug>
+  <pentabarf:title>Opening Event</pentabarf:title>
+  <pentabarf:subtitle>Welcome to the Chaos Communication Camp 2011</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110810T120000</dtstart>
+  <dtend>20110810T123000</dtend>
+  <duration>00H30M00S</duration>
+  <summary>Opening Event- Welcome to the Chaos Communication Camp 2011</summary>
+  <description></description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4553.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4552@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4552</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>OpenLeaks</pentabarf:title>
+  <pentabarf:subtitle>where leaking meets engineering</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110810T133000</dtstart>
+  <dtend>20110810T143000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>OpenLeaks- where leaking meets engineering</summary>
+  <description>This talk will introduce the next phase of the OpenLeaks project. We will present a more detailed insight into the project and take you on a tour around the different OL subprojects. We will also announce the activities we are planning for this years camp.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4552.en.html</url>
+  <location>Baikonur</location>
+  <attendee>OpenLeaks</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4446@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4446</pentabarf:event-id>
+  <pentabarf:event-slug>open_source_4g_radio</pentabarf:event-slug>
+  <pentabarf:title>Open-source 4G radio</pentabarf:title>
+  <pentabarf:subtitle>It's time to start WiMAX and LTE hacking</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110812T150000</dtstart>
+  <dtend>20110812T160000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Open-source 4G radio- It's time to start WiMAX and LTE hacking</summary>
+  <description>We will walk through a PHY level of mobile WiMAX and outline common and different parts with LTE. Surprisingly, the WiMAX PHY level is not as hard as you may think. We will also present our effort to create an open-source implementation of 4G radio modem.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4446.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Alexander Chemeris</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4476@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4476</pentabarf:event-id>
+  <pentabarf:event-slug>photovoltaics</pentabarf:event-slug>
+  <pentabarf:title>Open source photovoltaics</pentabarf:title>
+  <pentabarf:subtitle>power for off-grid devices</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110813T163000</dtstart>
+  <dtend>20110813T170000</dtend>
+  <duration>00H30M00S</duration>
+  <summary>Open source photovoltaics- power for off-grid devices</summary>
+  <description>Opensource-solar.org is working on open hardware power supplies for off-grid applications. The systems consist of self-build solar panels, charge controllers with microcontroller, and LiFePo4 rechargeable batteries. Green energy for your gadgets !</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4476.en.html</url>
+  <location>Kourou</location>
+  <attendee>Moritz von Buttlar</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4424@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4424</pentabarf:event-id>
+  <pentabarf:event-slug>poker_bots</pentabarf:event-slug>
+  <pentabarf:title>Poker bots</pentabarf:title>
+  <pentabarf:subtitle>Developing and running autonomous pokerbots at online casinos</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110813T150000</dtstart>
+  <dtend>20110813T160000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Poker bots- Developing and running autonomous pokerbots at online casinos</summary>
+  <description>For a few years I was part of a team that developed and ran autonomous poker playing robots on commercial Internet poker sites; playing poker with real money against real people in real time. The project failed...</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4424.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Torbj&#246;rn Lofterud</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4461@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4461</pentabarf:event-id>
+  <pentabarf:event-slug>post_privacy_und_darueber_hinaus</pentabarf:event-slug>
+  <pentabarf:title>Post-Privacy und dar&#252;ber hinaus</pentabarf:title>
+  <pentabarf:subtitle>Was, wenn wir alle nackt w&#228;ren?</pentabarf:subtitle>
+  <pentabarf:language>German</pentabarf:language>
+  <pentabarf:language-code>de</pentabarf:language-code>
+  <dtstart>20110813T120000</dtstart>
+  <dtend>20110813T123000</dtend>
+  <duration>00H30M00S</duration>
+  <summary>Post-Privacy und dar&#252;ber hinaus- Was, wenn wir alle nackt w&#228;ren?</summary>
+  <description>Was passiert wenn wir die Idee der Sozialen Netze weiter spinnen und von einer Gesellschaft ausgehen, in der jeder alles &#252;ber jeden wei&#223;?
+M&#246;gliche Szenarien sollen hier an Situationen und Gesellschaftlichen Strukturen erl&#228;utert werden.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4461.en.html</url>
+  <location>Kourou</location>
+  <attendee>Daniel</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4491@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4491</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Rethinking online news</pentabarf:title>
+  <pentabarf:subtitle>Journalism needs hackers to survive</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110813T223000</dtstart>
+  <dtend>20110813T233000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Rethinking online news- Journalism needs hackers to survive</summary>
+  <description>Journalism needs hackers to survive.
+We present our project to revolutionize online news and encourage you to start your own.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4491.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Christopher Clay / c3o</attendee>
+  <attendee>fin</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4500@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4500</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Reviving smart card analysis</pentabarf:title>
+  <pentabarf:subtitle></pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110813T210000</dtstart>
+  <dtend>20110813T220000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Reviving smart card analysis</summary>
+  <description>Smart cards chips -- originally invented as a protection for cryptographic keys -- are increasingly used to keep protocols secret. This talk challenges the chips' security measures to unlock the protocols for public analysis.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4500.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Karsten Nohl</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4436@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4436</pentabarf:event-id>
+  <pentabarf:event-slug>rocket_propulsion</pentabarf:event-slug>
+  <pentabarf:title>Rocket propulsion basics</pentabarf:title>
+  <pentabarf:subtitle>An introduction to rocket engines and their application for space travel</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110810T133000</dtstart>
+  <dtend>20110810T150000</dtend>
+  <duration>01H30M00S</duration>
+  <summary>Rocket propulsion basics- An introduction to rocket engines and their application for space travel</summary>
+  <description>We will discuss the basic principles of thermochemical engines and their application for rocket propulsion. The three main types of chemical rocket engines, i.e. solid, liquid, and hybrid, will be presented and compared.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4436.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4399@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4399</pentabarf:event-id>
+  <pentabarf:event-slug>runtine_reconfigurable_processors</pentabarf:event-slug>
+  <pentabarf:title>Runtime Reconfigurable Processors</pentabarf:title>
+  <pentabarf:subtitle></pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110812T120000</dtstart>
+  <dtend>20110812T130000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Runtime Reconfigurable Processors</summary>
+  <description>The talk will give the audience an introduction to the world of runtime reconfigurable processors.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4399.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Dominik Meyer</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4440@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4440</pentabarf:event-id>
+  <pentabarf:event-slug>solid_rocket_engines</pentabarf:event-slug>
+  <pentabarf:title>Solid rocket engines</pentabarf:title>
+  <pentabarf:subtitle>Design and implementation of engines with solid propellant</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110811T133000</dtstart>
+  <dtend>20110811T143000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Solid rocket engines- Design and implementation of engines with solid propellant</summary>
+  <description>We will present the design and construction of a solid rocket motor and discuss results from recent test campaigns.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4440.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4411@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4411</pentabarf:event-id>
+  <pentabarf:event-slug>space_debris</pentabarf:event-slug>
+  <pentabarf:title>Space Debris</pentabarf:title>
+  <pentabarf:subtitle>Simulation of orbital debris and its impacts on space travel</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110814T150000</dtstart>
+  <dtend>20110814T160000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Space Debris- Simulation of orbital debris and its impacts on space travel</summary>
+  <description>This talk is about different sources of space debris and how they are a problem for current and future space travel. I'll introduce some of the computational models that are used to simulate space debris objects and some ideas to prevent them.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4411.en.html</url>
+  <location>Kourou</location>
+  <attendee>Marek M&#246;ckel</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4493@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4493</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Space Federation</pentabarf:title>
+  <pentabarf:subtitle>Linking and Launching Earth-Based Hacker Spaces</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110810T180000</dtstart>
+  <dtend>20110810T190000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Space Federation- Linking and Launching Earth-Based Hacker Spaces</summary>
+  <description>Our mission is to provide financial and organizational support to open communities in shared physical spaces who use innovative methods and technology in hands-on education. We'll speak to the global community about the progress in America.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4493.en.html</url>
+  <location>Kourou</location>
+  <attendee>willowbl00</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4549@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4549</pentabarf:event-id>
+  <pentabarf:event-slug>sport_fuer_nerds</pentabarf:event-slug>
+  <pentabarf:title>Sport f&#252;r Nerds</pentabarf:title>
+  <pentabarf:subtitle></pentabarf:subtitle>
+  <pentabarf:language>German</pentabarf:language>
+  <pentabarf:language-code>de</pentabarf:language-code>
+  <dtstart>20110812T120000</dtstart>
+  <dtend>20110812T130000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Sport f&#252;r Nerds</summary>
+  <description>Viele von uns sitzen l&#228;nger vorm Rechner als es ihnen gut tut, irgendwann geht dann die Suche nach einer geeigneten Sportart los &#8230;
+</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4549.en.html</url>
+  <location>Kourou</location>
+  <attendee>Shorty</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4492@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4492</pentabarf:event-id>
+  <pentabarf:event-slug>stalker</pentabarf:event-slug>
+  <pentabarf:title>Stalker - Die strahlende Reise der Gebr&#252;der Strugazki</pentabarf:title>
+  <pentabarf:subtitle>Ein audiovisuelles Live-H&#246;rspiel</pentabarf:subtitle>
+  <pentabarf:language>German</pentabarf:language>
+  <pentabarf:language-code>de</pentabarf:language-code>
+  <dtstart>20110813T000000</dtstart>
+  <dtend>20110813T010000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Stalker - Die strahlende Reise der Gebr&#252;der Strugazki- Ein audiovisuelles Live-H&#246;rspiel</summary>
+  <description>Die atomar verstrahlten Ruinen eines ehemaligen Kernkraftwerkes sind Symbole f&#252;r das bevorstehende Ende der Zivilisation, aber gleichzeitig die Wunschmaschine, die alle Sehns&#252;chte stillen kann. Dieser Ort ist nicht Fukushima und auch nicht Tschernobyl, sondern der Zielort der Protagonisten im Roman &#8222;Picknick am Wegesrand&#8220; der russischen Autorenbr&#252;der Arkadi und Boris Strugazki. </description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4492.en.html</url>
+  <location>Kourou</location>
+  <attendee>Agata Kr&#243;likowski</attendee>
+  <attendee>Ina  Kwasniewski</attendee>
+  <attendee>Jens-Martin Loebel</attendee>
+  <attendee>Kai Kittler</attendee>
+  <attendee>Marcus Mews</attendee>
+  <attendee>Marcus  Richter</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4505@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4505</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Strahlung im Weltall</pentabarf:title>
+  <pentabarf:subtitle>Hell yeah, it's radiation science!</pentabarf:subtitle>
+  <pentabarf:language>German</pentabarf:language>
+  <pentabarf:language-code>de</pentabarf:language-code>
+  <dtstart>20110812T150000</dtstart>
+  <dtend>20110812T160000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Strahlung im Weltall- Hell yeah, it's radiation science!</summary>
+  <description>Wer eine Mission zum Mond plant, muss sich &#252;ber das, was die Umgebung dort bereith&#228;lt, Gedanken machen. Neben Temperaturen von -180 bis +120&#176; C ist Strahlung eine der gr&#246;&#223;ten Herausforderungen bei einer derartigen Mission. So genannte Single Event Upsets (SEU) k&#246;nnen in einer Speicherzelle Datenbits flippen. Mit diesen umgekippten Bits muss man dann zurechtkommen. </description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4505.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4421@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4421</pentabarf:event-id>
+  <pentabarf:event-slug>strong_encryption_of_credit_card_information</pentabarf:event-slug>
+  <pentabarf:title>Strong encryption of credit card information</pentabarf:title>
+  <pentabarf:subtitle>Attacks on common failures when encrypting credit card information</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110810T150000</dtstart>
+  <dtend>20110810T160000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Strong encryption of credit card information- Attacks on common failures when encrypting credit card information</summary>
+  <description>The PCI DSS standard require strong cryptography or secure hashing as ways to protect cardholder information. But one important factor is missing; detailed instructions for how to correctly apply cryptography to credit card numbers.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4421.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Torbj&#246;rn Lofterud</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4453@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4453</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Stuff you don't see - every day</pentabarf:title>
+  <pentabarf:subtitle>GNU Radio Internals - how to use the Framework</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110810T180000</dtstart>
+  <dtend>20110810T190000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Stuff you don't see - every day- GNU Radio Internals - how to use the Framework</summary>
+  <description>Software Defined Radio defines a new approach to analyze signals with software. With the flexibility of software SDR literally opened a new spectrum of hacking. 
+</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4453.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Marius Ciepluch</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4466@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4466</pentabarf:event-id>
+  <pentabarf:event-slug>rocket_telemetry</pentabarf:event-slug>
+  <pentabarf:title>Telemetry </pentabarf:title>
+  <pentabarf:subtitle>Real-time communication during rocket flight</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110813T133000</dtstart>
+  <dtend>20110813T143000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Telemetry - Real-time communication during rocket flight</summary>
+  <description>Retrieval of information is essential for every experiment, especially involving rockets. The use of electromagnetic waves is the natural choice for communication with a rocket and sometimes the only means to retrieve flight hardware afterwards.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4466.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4402@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4402</pentabarf:event-id>
+  <pentabarf:event-slug>tempo_phythm_echo</pentabarf:event-slug>
+  <pentabarf:title>Tempo/Rhythm/Echo extraction from Music</pentabarf:title>
+  <pentabarf:subtitle></pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110811T223000</dtstart>
+  <dtend>20110811T233000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Tempo/Rhythm/Echo extraction from Music</summary>
+  <description>This talk explains how the tempo of music can accurately be measured and how it can be used afterwards to extract rhythmical information and composition properties. These can further be used to find similar songs, generate synthetic rhythms and mix music.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4402.en.html</url>
+  <location>Kourou</location>
+  <attendee>Werner Van Belle</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4455@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4455</pentabarf:event-id>
+  <pentabarf:event-slug>arguna</pentabarf:event-slug>
+  <pentabarf:title>The "Arguna" rocket family</pentabarf:title>
+  <pentabarf:subtitle>An overview of our recent sounding rocket campaigns</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110814T133000</dtstart>
+  <dtend>20110814T143000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>The "Arguna" rocket family- An overview of our recent sounding rocket campaigns</summary>
+  <description>The "Arguna" rocket family consist of four one-stage sounding rockets that can reach altitudes up to 10km. We will present the designs of these rockets and discuss the performed flights and results from avionics experiments.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4455.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4427@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4427</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>The blackbox in your phone</pentabarf:title>
+  <pentabarf:subtitle>Some details about SIM cards</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110810T210000</dtstart>
+  <dtend>20110810T220000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>The blackbox in your phone- Some details about SIM cards</summary>
+  <description>This talk sheds some light on a cellphone-component, that's inevitable, virtually unclonable and as closed as it gets: the SIM. The SIM can do a lot more than just user-authentication nowadays: the SIM Application Toolkit gives it control over your phone</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4427.en.html</url>
+  <location>Baikonur</location>
+  <attendee>hunz</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4428@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4428</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>The Joy of Intellectual Vampirism</pentabarf:title>
+  <pentabarf:subtitle>Mindfucking with Shared Information</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110813T193000</dtstart>
+  <dtend>20110813T203000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>The Joy of Intellectual Vampirism- Mindfucking with Shared Information</summary>
+  <description>What makes us gravitate towards other people? In Intellectual Vampires it is the craving for fresh ideas, and in Intellectual Fangbangers it is the joy of sharing them. A talk on the fine art of communication, channels, contexts, and language.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4428.en.html</url>
+  <location>Kourou</location>
+  <attendee>Christiane Ruetten</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4443@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4443</pentabarf:event-id>
+  <pentabarf:event-slug>theres_gold_in_them_circuit_boards</pentabarf:event-slug>
+  <pentabarf:title>There's Gold in Them Circuit Boards</pentabarf:title>
+  <pentabarf:subtitle>Why E-Waste Recycling Is Smart and How To Make It Smarter</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110813T180000</dtstart>
+  <dtend>20110813T190000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>There's Gold in Them Circuit Boards- Why E-Waste Recycling Is Smart and How To Make It Smarter</summary>
+  <description>Everything we do as technologists depends on the critical minerals from which our devices are made.  Recycling junk electronics is no longer just the right thing to do, it's the smart thing to do.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4443.en.html</url>
+  <location>Kourou</location>
+  <attendee>Steph Alarcon</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4459@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4459</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Transition Telecom</pentabarf:title>
+  <pentabarf:subtitle>Telecommunications and networking during energy descent</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110810T193000</dtstart>
+  <dtend>20110810T203000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Transition Telecom- Telecommunications and networking during energy descent</summary>
+  <description>We'll need to come to grips with the challenges that declining oil production and increasing temperatures present. This talk explores positive future scenarios for the world of networking and communications past the great global energy free-for-all.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4459.en.html</url>
+  <location>Baikonur</location>
+  <attendee>Frank Rieger</attendee>
+  <attendee>Rop Gonggrijp</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4471@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4471</pentabarf:event-id>
+  <pentabarf:event-slug>who_is_snitching_my_milk</pentabarf:event-slug>
+  <pentabarf:title>Who's snitching my milk?</pentabarf:title>
+  <pentabarf:subtitle>Nonlinear dynamics/analysis of vanishing bovine products in an office environment.</pentabarf:subtitle>
+  <pentabarf:language>English</pentabarf:language>
+  <pentabarf:language-code>en</pentabarf:language-code>
+  <dtstart>20110812T000000</dtstart>
+  <dtend>20110812T003000</dtend>
+  <duration>00H30M00S</duration>
+  <summary>Who's snitching my milk?- Nonlinear dynamics/analysis of vanishing bovine products in an office environment.</summary>
+  <description>Nowadays many office environments offer small tea kitchens for their employees. From subjective experiences there seems to be a milk drain in these environments. However, fundamentel research is still missing.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4471.en.html</url>
+  <location>Kourou</location>
+  <attendee>Andr&#233; Franz</attendee>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4506@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4506</pentabarf:event-id>
+  <pentabarf:event-slug>mondmission</pentabarf:event-slug>
+  <pentabarf:title>Wie finanziere ich eine Mondmission? (Funtalk)</pentabarf:title>
+  <pentabarf:subtitle>Von W&#252;rstchen verkaufen bis Ballonfl&#252;ge - ein Erfahrungsbericht.</pentabarf:subtitle>
+  <pentabarf:language>German</pentabarf:language>
+  <pentabarf:language-code>de</pentabarf:language-code>
+  <dtstart>20110814T163000</dtstart>
+  <dtend>20110814T173000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Wie finanziere ich eine Mondmission? (Funtalk)- Von W&#252;rstchen verkaufen bis Ballonfl&#252;ge - ein Erfahrungsbericht.</summary>
+  <description></description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4506.en.html</url>
+  <location>Kourou</location>
+</vevent>
+<vevent>
+  <method>PUBLISH</method>
+  <uid>4435@Camp 2011@pentabarf.org</uid>
+  <pentabarf:event-id>4435</pentabarf:event-id>
+  <pentabarf:event-slug></pentabarf:event-slug>
+  <pentabarf:title>Windkraftanlagen</pentabarf:title>
+  <pentabarf:subtitle>Aufbau, Betrieb, Probleme</pentabarf:subtitle>
+  <pentabarf:language>German</pentabarf:language>
+  <pentabarf:language-code>de</pentabarf:language-code>
+  <dtstart>20110812T180000</dtstart>
+  <dtend>20110812T190000</dtend>
+  <duration>01H00M00S</duration>
+  <summary>Windkraftanlagen- Aufbau, Betrieb, Probleme</summary>
+  <description>Windenergie ist momentan noch interessanter geworden, aber kaum jemand wei&#223; &#252;ber die eingesetzte Technik Bescheid.
+Daher soll sowohl der Aufbau als auch der Betrieb erkl&#228;rt werden. Zus&#228;tzlich wird auf potentielle Probleme eingegangen.</description>
+  <class>PUBLIC</class>
+  <status>CONFIRMED</status>
+  <category>Lecture</category>
+  <url>https://events.ccc.de/camp/2011/Fahrplan/events/4435.en.html</url>
+  <location>Kourou</location>
+  <attendee>luky</attendee>
+</vevent>
+  </vcalendar>
+</iCalendar>
