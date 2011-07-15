@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 12. Juli 2011 um 14:02
+-- Erstellungszeit: 15. Juli 2011 um 15:31
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -70,29 +70,31 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 231),
-('login', 77),
-('logout', 20),
-('start', 52),
-('faq', 34),
+('news', 238),
+('login', 84),
+('logout', 22),
+('start', 58),
+('faq', 35),
 ('credits', 12),
-('register', 21),
-('admin_rooms', 95),
-('admin_angel_types', 81),
-('user_settings', 148),
+('register', 24),
+('admin_rooms', 115),
+('admin_angel_types', 82),
+('user_settings', 156),
 ('user_messages', 123),
-('admin_groups', 156),
-('user_questions', 58),
+('admin_groups', 178),
+('user_questions', 61),
 ('admin_questions', 45),
 ('admin_faq', 59),
 ('admin_news', 35),
-('news_comments', 154),
-('admin_user', 208),
-('user_meetings', 10),
+('news_comments', 157),
+('admin_user', 213),
+('user_meetings', 11),
 ('admin_language', 35),
 ('admin_log', 19),
-('user_wakeup', 64),
-('admin_import', 216);
+('user_wakeup', 66),
+('admin_import', 231),
+('user_shifts', 334),
+('user_myshifts', 3);
 
 -- --------------------------------------------------------
 
@@ -138,35 +140,37 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=89 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=109 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
 --
 
 INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
-(83, -2, 8),
+(107, -2, 24),
 (24, -1, 5),
-(82, -2, 11),
-(81, -2, 9),
+(106, -2, 8),
+(105, -2, 11),
 (23, -1, 2),
 (62, -4, 16),
 (61, -4, 6),
-(80, -2, 17),
-(79, -2, 15),
+(104, -2, 26),
+(103, -2, 9),
 (86, -5, 21),
 (60, -4, 12),
 (59, -4, 14),
-(78, -2, 3),
+(102, -2, 17),
 (58, -4, 13),
 (57, -4, 7),
 (63, -4, 5),
-(77, -2, 4),
+(101, -2, 15),
 (87, -5, 18),
-(73, -3, 19),
+(100, -2, 3),
 (85, -5, 10),
-(84, -2, 20),
-(88, -1, 1);
+(99, -2, 4),
+(88, -1, 1),
+(98, -3, 25),
+(108, -2, 20);
 
 -- --------------------------------------------------------
 
@@ -255,7 +259,7 @@ CREATE TABLE IF NOT EXISTS `news_comments` (
   `UID` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   KEY `Refid` (`Refid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Daten für Tabelle `news_comments`
@@ -265,7 +269,8 @@ INSERT INTO `news_comments` (`ID`, `Refid`, `Datum`, `Text`, `UID`) VALUES
 (1, 10, '2011-06-03 04:12:28', 'FOobar :)', 1),
 (2, 10, '2011-06-03 04:13:03', 'FOobar :)', 1),
 (3, 10, '2011-06-03 04:13:06', 'FOobar :)', 1),
-(4, 3, '2011-06-03 05:20:05', 'Fünününü!', 1);
+(4, 3, '2011-06-03 05:20:05', 'Fünününü!', 1),
+(5, 4, '2011-07-13 13:22:17', 'asdfasdf', 1);
 
 -- --------------------------------------------------------
 
@@ -279,7 +284,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -308,7 +313,10 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (20, 'user_wakeup', 'User wakeup-service organization'),
 (21, 'admin_import', 'Import rooms and shifts from pentabarf'),
 (22, 'credits', 'View credits'),
-(23, 'faq', 'View FAQ');
+(23, 'faq', 'View FAQ'),
+(24, 'user_shifts', 'Signup for shifts'),
+(25, 'user_shifts_admin', 'Signup other angels for shifts.'),
+(26, 'user_myshifts', 'Allow angels to view their own shifts and cancel them.');
 
 -- --------------------------------------------------------
 
@@ -329,8 +337,6 @@ CREATE TABLE IF NOT EXISTS `Questions` (
 -- Daten für Tabelle `Questions`
 --
 
-INSERT INTO `Questions` (`QID`, `UID`, `Question`, `AID`, `Answer`) VALUES
-(4, 1, 'Hallo?\nEy?', 1, 'Jo,\nJo!');
 
 -- --------------------------------------------------------
 
@@ -347,7 +353,7 @@ CREATE TABLE IF NOT EXISTS `Room` (
   `Number` int(11) DEFAULT NULL,
   PRIMARY KEY (`RID`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Daten für Tabelle `Room`
@@ -355,9 +361,8 @@ CREATE TABLE IF NOT EXISTS `Room` (
 
 INSERT INTO `Room` (`RID`, `Name`, `Man`, `FromPentabarf`, `show`, `Number`) VALUES
 (2, 'Mein Zimmer', 'msquare', 'N', 'Y', 1337),
-(3, 'Saal 1', NULL, 'Y', 'Y', NULL),
-(4, 'Saal 2', NULL, 'Y', 'Y', NULL),
-(5, 'Saal 3', NULL, 'Y', 'Y', NULL);
+(10, 'Kourou', '', 'Y', 'Y', 0),
+(11, 'Baikonur', '', 'Y', 'Y', 0);
 
 -- --------------------------------------------------------
 
@@ -372,12 +377,21 @@ CREATE TABLE IF NOT EXISTS `RoomAngelTypes` (
   `count` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `room_id` (`room_id`,`angel_type_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Daten für Tabelle `RoomAngelTypes`
 --
 
+INSERT INTO `RoomAngelTypes` (`id`, `room_id`, `angel_type_id`, `count`) VALUES
+(4, 3, 5, 2),
+(3, 3, 4, 2),
+(5, 2, 4, 0),
+(6, 2, 5, 2),
+(10, 11, 5, 0),
+(9, 11, 4, 2),
+(11, 10, 4, 2),
+(12, 10, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -386,11 +400,13 @@ CREATE TABLE IF NOT EXISTS `RoomAngelTypes` (
 --
 
 CREATE TABLE IF NOT EXISTS `ShiftEntry` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `SID` int(11) NOT NULL DEFAULT '0',
   `TID` int(11) NOT NULL DEFAULT '0',
   `UID` int(11) NOT NULL DEFAULT '0',
-  `Comment` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Comment` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Daten für Tabelle `ShiftEntry`
@@ -428,113 +444,77 @@ CREATE TABLE IF NOT EXISTS `Shifts` (
   `start` int(11) NOT NULL,
   `end` int(11) NOT NULL,
   `RID` int(11) NOT NULL DEFAULT '0',
-  `Man` text,
+  `name` varchar(1024) DEFAULT NULL,
   `URL` text,
   `PSID` int(11) DEFAULT NULL,
   PRIMARY KEY (`SID`),
   UNIQUE KEY `PSID` (`PSID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=99 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=158 ;
 
 --
 -- Daten für Tabelle `Shifts`
 --
 
-INSERT INTO `Shifts` (`SID`, `start`, `end`, `RID`, `Man`, `URL`, `PSID`) VALUES
-(1, 1293445800, 1293449400, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4302.en.html', 4302),
-(2, 1293618600, 1293622200, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4244.en.html', 4244),
-(3, 1293487200, 1293490800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4245.en.html', 4245),
-(4, 1293569100, 1293572700, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4057.en.html', 4057),
-(5, 1293715800, 1293717600, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4168.en.html', 4168),
-(6, 1293471000, 1293474600, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4046.en.html', 4046),
-(7, 1293639300, 1293642900, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4114.en.html', 4114),
-(8, 1293639300, 1293642900, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4151.en.html', 4151),
-(9, 1293548400, 1293552000, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4144.en.html', 4144),
-(10, 1293462000, 1293465600, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4160.en.html', 4160),
-(11, 1293552900, 1293556500, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4061.en.html', 4061),
-(12, 1293618600, 1293625800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4298.en.html', 4298),
-(13, 1293651000, 1293654600, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4211.en.html', 4211),
-(14, 1293730200, 1293733800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4299.en.html', 4299),
-(15, 1293450300, 1293453900, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4096.en.html', 4096),
-(16, 1293627600, 1293631200, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4276.en.html', 4276),
-(17, 1293634800, 1293638400, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4087.en.html', 4087),
-(18, 1293454800, 1293458400, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4140.en.html', 4140),
-(19, 1293450300, 1293453900, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4103.en.html', 4103),
-(20, 1293709500, 1293712200, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4003.en.html', 4003),
-(21, 1293714000, 1293717600, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4067.en.html', 4067),
-(22, 1293569100, 1293572700, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4231.en.html', 4231),
-(23, 1293478200, 1293481800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4190.en.html', 4190),
-(24, 1293557400, 1293561000, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4123.en.html', 4123),
-(25, 1293478200, 1293481800, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4017.en.html', 4017),
-(26, 1293482700, 1293486300, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4297.en.html', 4297),
-(27, 1293651000, 1293654600, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4085.en.html', 4085),
-(28, 1293532200, 1293535800, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4203.en.html', 4203),
-(29, 1293634800, 1293638400, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4006.en.html', 4006),
-(30, 1293462000, 1293465600, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4111.en.html', 4111),
-(31, 1293532200, 1293535800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4099.en.html', 4099),
-(32, 1293655500, 1293659100, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4070.en.html', 4070),
-(33, 1293655500, 1293659100, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4334.en.html', 4334),
-(34, 1293466500, 1293470100, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4164.en.html', 4164),
-(35, 1293450300, 1293453900, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4175.en.html', 4175),
-(36, 1293660000, 1293663600, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4018.en.html', 4018),
-(37, 1293660000, 1293667200, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4141.en.html', 4141),
-(38, 1293660000, 1293667200, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4333.en.html', 4333),
-(39, 1293713100, 1293714900, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/3983.en.html', 3983),
-(40, 1293478200, 1293481800, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4176.en.html', 4176),
-(41, 1293471000, 1293474600, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4265.en.html', 4265),
-(42, 1293725700, 1293729300, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4193.en.html', 4193),
-(43, 1293564600, 1293568200, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4295.en.html', 4295),
-(44, 1293721200, 1293724800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4301.en.html', 4301),
-(45, 1293709500, 1293713100, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4089.en.html', 4089),
-(46, 1293541200, 1293544800, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4149.en.html', 4149),
-(47, 1293626700, 1293628500, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4084.en.html', 4084),
-(48, 1293639300, 1293642900, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4206.en.html', 4206),
-(49, 1293643800, 1293647400, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4237.en.html', 4237),
-(50, 1293721200, 1293724800, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4236.en.html', 4236),
-(51, 1293548400, 1293552000, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4121.en.html', 4121),
-(52, 1293454800, 1293458400, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4011.en.html', 4011),
-(53, 1293536700, 1293540300, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4296.en.html', 4296),
-(54, 1293618600, 1293626700, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4239.en.html', 4239),
-(55, 1293705000, 1293713100, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4300.en.html', 4300),
-(56, 1293552900, 1293556500, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4195.en.html', 4195),
-(57, 1293543000, 1293544800, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4073.en.html', 4073),
-(58, 1293537600, 1293539400, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4210.en.html', 4210),
-(59, 1293552900, 1293556500, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4081.en.html', 4081),
-(60, 1293471000, 1293476400, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4094.en.html', 4094),
-(61, 1293725700, 1293729300, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4261.en.html', 4261),
-(62, 1293540300, 1293542100, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4142.en.html', 4142),
-(63, 1293705000, 1293708600, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4221.en.html', 4221),
-(64, 1293721200, 1293724800, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4339.en.html', 4339),
-(65, 1293548400, 1293552000, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4143.en.html', 4143),
-(66, 1293491700, 1293495300, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4253.en.html', 4253),
-(67, 1293627600, 1293631200, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4326.en.html', 4326),
-(68, 1293482700, 1293486300, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/3957.en.html', 3957),
-(69, 1293651000, 1293654600, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4036.en.html', 4036),
-(70, 1293536700, 1293540300, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4159.en.html', 4159),
-(71, 1293487200, 1293490800, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4082.en.html', 4082),
-(72, 1293643800, 1293647400, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/3952.en.html', 3952),
-(73, 1293634800, 1293638400, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4183.en.html', 4183),
-(74, 1293573600, 1293577200, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4138.en.html', 4138),
-(75, 1293725700, 1293729300, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4230.en.html', 4230),
-(76, 1293629400, 1293631200, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4181.en.html', 4181),
-(77, 1293466500, 1293470100, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4060.en.html', 4060),
-(78, 1293487200, 1293490800, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4125.en.html', 4125),
-(79, 1293564600, 1293568200, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4145.en.html', 4145),
-(80, 1293578100, 1293581700, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4184.en.html', 4184),
-(81, 1293557400, 1293561000, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4097.en.html', 4097),
-(82, 1293622200, 1293625800, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4055.en.html', 4055),
-(83, 1293564600, 1293568200, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4090.en.html', 4090),
-(84, 1293557400, 1293561000, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4201.en.html', 4201),
-(85, 1293573600, 1293577200, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4174.en.html', 4174),
-(86, 1293573600, 1293577200, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4263.en.html', 4263),
-(87, 1293714000, 1293717600, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4124.en.html', 4124),
-(88, 1293705000, 1293708600, 4, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4098.en.html', 4098),
-(89, 1293466500, 1293470100, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4234.en.html', 4234),
-(90, 1293454800, 1293458400, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4252.en.html', 4252),
-(91, 1293462000, 1293465600, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4185.en.html', 4185),
-(92, 1293541200, 1293544800, 3, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4208.en.html', 4208),
-(93, 1293532200, 1293535800, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4338.en.html', 4338),
-(94, 1293643800, 1293647400, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4187.en.html', 4187),
-(95, 1293655500, 1293659100, 5, NULL, 'http://events.ccc.de/congress/2010/Fahrplan/events/4209.en.html', 4209);
+INSERT INTO `Shifts` (`SID`, `start`, `end`, `RID`, `name`, `URL`, `PSID`) VALUES
+(99, 1313089200, 1313092800, 10, 'Accessblocking/Internetsperren- #Censilia and beyond', 'https://events.ccc.de/camp/2011/Fahrplan/events/4462.en.html', 4462),
+(100, 1313159400, 1313163000, 10, 'A modern manifest of cyberspace- The internet is dead, long live the internet', 'https://events.ccc.de/camp/2011/Fahrplan/events/4451.en.html', 4451),
+(101, 1313175600, 1313179200, 11, 'Applied Research on security of TETRA radio- digital radio technology beyond GSM', 'https://events.ccc.de/camp/2011/Fahrplan/events/4496.en.html', 4496),
+(102, 1313251200, 1313254800, 11, 'A short history of IPv4', 'https://events.ccc.de/camp/2011/Fahrplan/events/4497.en.html', 4497),
+(103, 1313240400, 1313244000, 10, 'Avionics- Design and implementation of flight electronics', 'https://events.ccc.de/camp/2011/Fahrplan/events/4467.en.html', 4467),
+(104, 1313181000, 1313184600, 11, 'Certified programming with dependent types- Because the future of defense is liberal application of math', 'https://events.ccc.de/camp/2011/Fahrplan/events/4426.en.html', 4426),
+(105, 1313337600, 1313339400, 10, 'Closing Event- Good Bye and have a safe trip home!', 'https://events.ccc.de/camp/2011/Fahrplan/events/4554.en.html', 4554),
+(106, 1313170200, 1313173800, 10, 'Counselling Mischief as Thought Crime- Social Networks, Free Speech and the Criminalization of Dissent in Canada', 'https://events.ccc.de/camp/2011/Fahrplan/events/4395.en.html', 4395),
+(107, 1313326800, 1313330400, 11, 'Data Mining Your City- Early lessons in open city data from Philadelphia, PA, USA', 'https://events.ccc.de/camp/2011/Fahrplan/events/4445.en.html', 4445),
+(108, 1313148600, 1313152200, 11, 'Decentralized clustering- Making the net - even if your local dicators hate it!', 'https://events.ccc.de/camp/2011/Fahrplan/events/4389.en.html', 4389),
+(109, 1313067600, 1313073000, 11, 'Die psychologischen Grundlagen des Social Engineerings', 'https://events.ccc.de/camp/2011/Fahrplan/events/4478.en.html', 4478),
+(110, 1313062200, 1313065800, 11, '"Digitale Gesellschaft e.V." - Ein neuer Ansatz, um digitale Bürgerrechte zu erhalten', 'https://events.ccc.de/camp/2011/Fahrplan/events/4449.en.html', 4449),
+(111, 1313316000, 1313319600, 11, 'Dudle: Mehrseitig sichere Web 2.0-Umfragen', 'https://events.ccc.de/camp/2011/Fahrplan/events/4438.en.html', 4438),
+(112, 1313056800, 1313060400, 10, 'Giving Great Workshops- You can create your own successful workshop', 'https://events.ccc.de/camp/2011/Fahrplan/events/4406.en.html', 4406),
+(113, 1313159400, 1313163000, 11, 'GPRS Intercept- Wardriving phone networks', 'https://events.ccc.de/camp/2011/Fahrplan/events/4504.en.html', 4504),
+(114, 1313272800, 1313280000, 10, 'Hacker Jeopardy- Number guessing for geeks', 'https://events.ccc.de/camp/2011/Fahrplan/events/4561.en.html', 4561),
+(115, 1312972200, 1312974000, 10, 'Hackers in Space- A Modest Proposal for the Next 23 Years', 'https://events.ccc.de/camp/2011/Fahrplan/events/4551.en.html', 4551),
+(116, 1313083800, 1313087400, 11, 'Hacking DNA- Compiling code for living systems', 'https://events.ccc.de/camp/2011/Fahrplan/events/4472.en.html', 4472),
+(117, 1313148600, 1313152200, 10, 'Hybrid rocket engines- Design and implementation of rocket engines with two-phase propellants', 'https://events.ccc.de/camp/2011/Fahrplan/events/4447.en.html', 4447),
+(118, 1313078400, 1313082000, 11, 'Ich und 23- Fingerabdrücke der DNA', 'https://events.ccc.de/camp/2011/Fahrplan/events/4503.en.html', 4503),
+(119, 1313013600, 1313017200, 10, 'Ihr kotzt mich alle an.- Wir haben Probleme. Und ihr merkt es nicht mal.', 'https://events.ccc.de/camp/2011/Fahrplan/events/4423.en.html', 4423),
+(120, 1313094600, 1313098200, 11, 'Imagine the Future of Money- Economic transformations, hacker culture and why we should be so lucky', 'https://events.ccc.de/camp/2011/Fahrplan/events/4450.en.html', 4450),
+(121, 1313067600, 1313071200, 10, 'Inertial navigation- Rigid body dynamics and its application to dead reckoning', 'https://events.ccc.de/camp/2011/Fahrplan/events/4458.en.html', 4458),
+(122, 1313316000, 1313319600, 10, 'Introduction to Multicast Security- Beyond SSL/TLS', 'https://events.ccc.de/camp/2011/Fahrplan/events/4495.en.html', 4495),
+(123, 1312981200, 1312984800, 10, 'Introduction to Satellite Communications- Installation and Operation of Satellite Systems; illustrated with Postage Stamps', 'https://events.ccc.de/camp/2011/Fahrplan/events/4442.en.html', 4442),
+(124, 1313089200, 1313092800, 11, 'iOS application security- a look at the security of 3rd party iOS applications', 'https://events.ccc.de/camp/2011/Fahrplan/events/4490.en.html', 4490),
+(125, 1312986600, 1312990200, 11, 'Is this the Mobile Gadget World We Created?- The story of the world''s first socially responsible mobile phone.', 'https://events.ccc.de/camp/2011/Fahrplan/events/4502.en.html', 4502),
+(126, 1313083800, 1313087400, 10, 'Latest developments around the Milkymist System-on-Chip- A roundup of one the most advanced open hardware projects', 'https://events.ccc.de/camp/2011/Fahrplan/events/4412.en.html', 4412),
+(127, 1313235000, 1313238600, 11, 'Learning Secrets by Watching People- Gesture, Expression, and Behavior Analysis for Hackers', 'https://events.ccc.de/camp/2011/Fahrplan/events/4550.en.html', 4550),
+(128, 1313073000, 1313076600, 10, 'Life foods- Benefits of use of microbial fermentations in food and beverage preparations.', 'https://events.ccc.de/camp/2011/Fahrplan/events/4429.en.html', 4429),
+(129, 1313245800, 1313249400, 11, 'Machine-to-machine (M2M) security- When physical security depends on IT security', 'https://events.ccc.de/camp/2011/Fahrplan/events/4439.en.html', 4439),
+(130, 1312970400, 1312972200, 10, 'Opening Event- Welcome to the Chaos Communication Camp 2011', 'https://events.ccc.de/camp/2011/Fahrplan/events/4553.en.html', 4553),
+(131, 1312975800, 1312979400, 11, 'OpenLeaks- where leaking meets engineering', 'https://events.ccc.de/camp/2011/Fahrplan/events/4552.en.html', 4552),
+(132, 1313154000, 1313157600, 11, 'Open-source 4G radio- It''s time to start WiMAX and LTE hacking', 'https://events.ccc.de/camp/2011/Fahrplan/events/4446.en.html', 4446),
+(133, 1313245800, 1313247600, 10, 'Open source photovoltaics- power for off-grid devices', 'https://events.ccc.de/camp/2011/Fahrplan/events/4476.en.html', 4476),
+(134, 1313240400, 1313244000, 11, 'Poker bots- Developing and running autonomous pokerbots at online casinos', 'https://events.ccc.de/camp/2011/Fahrplan/events/4424.en.html', 4424),
+(135, 1313229600, 1313231400, 10, 'Post-Privacy und darüber hinaus- Was, wenn wir alle nackt wären?', 'https://events.ccc.de/camp/2011/Fahrplan/events/4461.en.html', 4461),
+(136, 1313267400, 1313271000, 11, 'Rethinking online news- Journalism needs hackers to survive', 'https://events.ccc.de/camp/2011/Fahrplan/events/4491.en.html', 4491),
+(137, 1313262000, 1313265600, 11, 'Reviving smart card analysis', 'https://events.ccc.de/camp/2011/Fahrplan/events/4500.en.html', 4500),
+(138, 1312975800, 1312981200, 10, 'Rocket propulsion basics- An introduction to rocket engines and their application for space travel', 'https://events.ccc.de/camp/2011/Fahrplan/events/4436.en.html', 4436),
+(139, 1313143200, 1313146800, 11, 'Runtime Reconfigurable Processors', 'https://events.ccc.de/camp/2011/Fahrplan/events/4399.en.html', 4399),
+(140, 1313062200, 1313065800, 10, 'Solid rocket engines- Design and implementation of engines with solid propellant', 'https://events.ccc.de/camp/2011/Fahrplan/events/4440.en.html', 4440),
+(141, 1313326800, 1313330400, 10, 'Space Debris- Simulation of orbital debris and its impacts on space travel', 'https://events.ccc.de/camp/2011/Fahrplan/events/4411.en.html', 4411),
+(142, 1312992000, 1312995600, 10, 'Space Federation- Linking and Launching Earth-Based Hacker Spaces', 'https://events.ccc.de/camp/2011/Fahrplan/events/4493.en.html', 4493),
+(143, 1313143200, 1313146800, 10, 'Sport für Nerds', 'https://events.ccc.de/camp/2011/Fahrplan/events/4549.en.html', 4549),
+(144, 1313186400, 1313190000, 10, 'Stalker - Die strahlende Reise der Gebrüder Strugazki- Ein audiovisuelles Live-Hörspiel', 'https://events.ccc.de/camp/2011/Fahrplan/events/4492.en.html', 4492),
+(145, 1313154000, 1313157600, 10, 'Strahlung im Weltall- Hell yeah, it''s radiation science!', 'https://events.ccc.de/camp/2011/Fahrplan/events/4505.en.html', 4505),
+(146, 1312981200, 1312984800, 11, 'Strong encryption of credit card information- Attacks on common failures when encrypting credit card information', 'https://events.ccc.de/camp/2011/Fahrplan/events/4421.en.html', 4421),
+(147, 1312992000, 1312995600, 11, 'Stuff you don''t see - every day- GNU Radio Internals - how to use the Framework', 'https://events.ccc.de/camp/2011/Fahrplan/events/4453.en.html', 4453),
+(148, 1313235000, 1313238600, 10, 'Telemetry - Real-time communication during rocket flight', 'https://events.ccc.de/camp/2011/Fahrplan/events/4466.en.html', 4466),
+(149, 1313094600, 1313098200, 10, 'Tempo/Rhythm/Echo extraction from Music', 'https://events.ccc.de/camp/2011/Fahrplan/events/4402.en.html', 4402),
+(150, 1313321400, 1313325000, 10, 'The "Arguna" rocket family- An overview of our recent sounding rocket campaigns', 'https://events.ccc.de/camp/2011/Fahrplan/events/4455.en.html', 4455),
+(151, 1313002800, 1313006400, 11, 'The blackbox in your phone- Some details about SIM cards', 'https://events.ccc.de/camp/2011/Fahrplan/events/4427.en.html', 4427),
+(152, 1313256600, 1313260200, 10, 'The Joy of Intellectual Vampirism- Mindfucking with Shared Information', 'https://events.ccc.de/camp/2011/Fahrplan/events/4428.en.html', 4428),
+(153, 1313251200, 1313254800, 10, 'There''s Gold in Them Circuit Boards- Why E-Waste Recycling Is Smart and How To Make It Smarter', 'https://events.ccc.de/camp/2011/Fahrplan/events/4443.en.html', 4443),
+(154, 1312997400, 1313001000, 11, 'Transition Telecom- Telecommunications and networking during energy descent', 'https://events.ccc.de/camp/2011/Fahrplan/events/4459.en.html', 4459),
+(155, 1313100000, 1313101800, 10, 'Who''s snitching my milk?- Nonlinear dynamics/analysis of vanishing bovine products in an office environment.', 'https://events.ccc.de/camp/2011/Fahrplan/events/4471.en.html', 4471),
+(156, 1313332200, 1313335800, 10, 'Wie finanziere ich eine Mondmission? (Funtalk)- Von Würstchen verkaufen bis Ballonflüge - ein Erfahrungsbericht.', 'https://events.ccc.de/camp/2011/Fahrplan/events/4506.en.html', 4506),
+(157, 1313164800, 1313168400, 10, 'Windkraftanlagen- Aufbau, Betrieb, Probleme', 'https://events.ccc.de/camp/2011/Fahrplan/events/4435.en.html', 4435);
 
 -- --------------------------------------------------------
 
@@ -1159,7 +1139,11 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('user_wakeup', 'DE', 'Weckservice'),
 ('user_wakeup', 'EN', 'Wakeup service'),
 ('admin_import', 'DE', 'Pentabarf Import'),
-('admin_import', 'EN', 'Pentabarf import');
+('admin_import', 'EN', 'Pentabarf import'),
+('user_shifts', 'DE', 'Schichtplan'),
+('user_shifts', 'EN', 'Shifts'),
+('user_myshifts', 'DE', 'Meine Schichten'),
+('user_myshifts', 'EN', 'My shifts');
 
 -- --------------------------------------------------------
 
@@ -1202,7 +1186,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0, 10, 'DE', 115, 'L', 1310479337, '0000-00-00 00:00:00', '', '', ''),
+(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0, 10, 'DE', 115, 'L', 1310743880, '0000-00-00 00:00:00', '', '', ''),
 (148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 1, 1, 10, 'DE', 0, 'L', 1307110798, '2011-06-03 07:55:24', 'AudioEngel', '', '');
 
 -- --------------------------------------------------------

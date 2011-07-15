@@ -44,6 +44,8 @@ function user_shifts() {
 			} else
 				$user_id = $user['UID'];
 
+
+			// TODO: Kollisionserkennung, andere Schichten zur gleichen Uhrzeit darf der Engel auch nicht belegt haben...
 			$entries = sql_select("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']));
 			foreach ($entries as $entry)
 				if ($entry['UID'] == $user_id)
