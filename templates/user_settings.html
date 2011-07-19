@@ -1,106 +1,162 @@
-%greeting%
-
-<hr width="100%">
-%text_user_data%
+<p>
+    %greeting%
+</p>
+<hr/>
+<p>
+    %text_user_data%
+</p>
 <form action="%link%&action=setUserData" method="post">
-  <table>
-    <tr>
-      <td>%label_nick%</td>
-      <td><input type="text" name="nick" size="23" value="%nick%"></td>
-    </tr>
-
-    <tr>
-      <td>%label_name%</td>
-      <td><input type="text" name="name" size="23" value="%name%"></td>
-    </tr>
-
-    <tr>
-      <td>%label_prename%</td>
-      <td><input type="text" name="prename" size="23" value="%prename%"></td>
-    </tr>
-
-    <tr>
-      <td>%label_age%</td>
-      <td><input type="text" name="age" size="3" value="%age%"></td>
-    </tr>
-
-    <tr>
-      <td>%label_tel%</td>
-      <td><input type="text" name="tel" size="40" value="%tel%"></td>
-    </tr>
-
-    <tr>
-      <td>%label_mobile%</td>
-      <td><input type="text" name="mobile" size="40" value="%mobile%"></td>
-    </tr>
-
-    <tr>
-      <td>%label_dect%</td>
-      <td><input type="text" name="dect" size="4" value="%dect%"></td>
-    </tr>
-
-    <tr>
-      <td>%label_mail%</td>
-      <td><input type="text" name="mail" size="40" value="%mail%"></td>
-    </tr>
-
-    <tr>
-      <td>ICQ</td>
-      <td><input type="text" name="icq" size="40" value="%icq%"></td>
-    </tr>
-
-    <tr>
-      <td>jabber</td>
-      <td><input type="text" name="jabber" size="40" value="%jabber%"></td>
-    </tr>
-
-    <tr>
-      <td>%label_hometown%</td>
-      <td><input type="text" name="hometown" size="40" value="%hometown%"></td>
-    </tr>
-%tshirts%
-  </table>
-  <input type="submit" value="%label_save%">
-</form>
-
-<hr />
-
-%text_password%
+    <table>
+        <tr>
+            <td>
+                %label_nick%
+            </td>
+            <td>
+                <input type="text" name="nick" size="23" value="%nick%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %label_name%
+            </td>
+            <td>
+                <input type="text" name="name" size="23" value="%name%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %label_prename%
+            </td>
+            <td>
+                <input type="text" name="prename" size="23" value="%prename%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %label_age%
+            </td>
+            <td>
+                <input type="text" name="age" size="3" value="%age%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %label_tel%
+            </td>
+            <td>
+                <input type="text" name="tel" size="40" value="%tel%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %label_mobile%
+            </td>
+            <td>
+                <input type="text" name="mobile" size="40" value="%mobile%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %label_dect%
+            </td>
+            <td>
+                <input type="text" name="dect" size="4" value="%dect%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %label_mail%
+            </td>
+            <td>
+                <input type="text" name="mail" size="40" value="%mail%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                ICQ
+            </td>
+            <td>
+                <input type="text" name="icq" size="40" value="%icq%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                jabber
+            </td>
+            <td>
+                <input type="text" name="jabber" size="40" value="%jabber%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %label_hometown%
+            </td>
+            <td>
+                <input type="text" name="hometown" size="40" value="%hometown%">
+            </td>
+        </tr>%tshirts%
+    </table><input type="submit" value="%label_save%">
+</form><hr/>
+<p>
+    %text_password%
+</p>
 <form action="%link%&action=set" method="post">
-  <table>
-    <tr><td>%current_pw_label%</td><td><input type="password" name="current_pw" size="20"></td></tr>
-    <tr><td>%new_pw_label%</td><td><input type="password" name="new_pw" size="20"></td></tr>
-    <tr><td>%new_pw2_label%</td><td><input type="password" name="new_pw2" size="20"></td></tr>
-  </table>
-  <input type="submit" value="%label_save%">
-</form>
-
-<hr />
-
-%text_theme%
+    <table>
+        <tr>
+            <td>
+                %current_pw_label%
+            </td>
+            <td>
+                <input type="password" name="current_pw" size="20">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %new_pw_label%
+            </td>
+            <td>
+                <input type="password" name="new_pw" size="20">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %new_pw2_label%
+            </td>
+            <td>
+                <input type="password" name="new_pw2" size="20">
+            </td>
+        </tr>
+    </table><input type="submit" value="%label_save%">
+</form><hr/>
+<p>
+    %text_theme%
+</p>
 <form action="%link%&action=colour" method="post">
-  <table>
-     <tr>
-       <td>%theme_label%</td>
-       <td>
-       	%theme_select%
-       </td>
-     </tr>
-  </table>
-  <input type="submit" value="%label_save%">
-</form>
-
-<hr />
-
-%text_language%
+    <table>
+        <tr>
+            <td>
+                %theme_label%
+            </td>
+            <td>
+                %theme_select%
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="%label_save%">
+</form><hr/>
+<p>
+    %text_language%
+</p>
 <form action="%link%&action=sprache" method="post">
-  <table>
-  <tr>
-    <td>%language_label%</td>
-    <td>
-    	%language_select%
-    </td>
-	</tr>
-  </table>
-  <input type="submit" value="%label_save%">
+    <table>
+        <tr>
+            <td>
+                %language_label%
+            </td>
+            <td>
+                %language_select%
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="%label_save%">
 </form>
