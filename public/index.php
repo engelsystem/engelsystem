@@ -90,6 +90,10 @@ if (in_array($p, $privileges)) {
 		require_once ('includes/pages/admin_user.php');
 		$content = admin_user();
 	}
+	elseif ($p == "admin_arrive") {
+		require_once ('includes/pages/admin_arrive.php');
+		$content = admin_arrive();
+	}
 	elseif ($p == "admin_news") {
 		require_once ('includes/pages/admin_news.php');
 		$content = admin_news();
