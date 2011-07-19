@@ -58,7 +58,7 @@ a {
     color: #000;
 }
 
-td, dt, dd {
+th, td, dt, dd {
     padding: 4px;
 	vertical-align: top;
 }

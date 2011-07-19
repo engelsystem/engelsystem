@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 19. Juli 2011 um 17:30
+-- Erstellungszeit: 19. Juli 2011 um 19:07
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -70,32 +70,32 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 242),
+('news', 243),
 ('login', 85),
 ('logout', 22),
 ('start', 59),
 ('faq', 35),
 ('credits', 12),
 ('register', 24),
-('admin_rooms', 116),
+('admin_rooms', 117),
 ('admin_angel_types', 84),
 ('user_settings', 163),
 ('user_messages', 124),
-('admin_groups', 187),
+('admin_groups', 188),
 ('user_questions', 63),
 ('admin_questions', 51),
 ('admin_faq', 60),
 ('admin_news', 35),
-('news_comments', 157),
+('news_comments', 158),
 ('admin_user', 219),
-('user_meetings', 13),
+('user_meetings', 15),
 ('admin_language', 37),
 ('admin_log', 19),
 ('user_wakeup', 70),
 ('admin_import', 241),
-('user_shifts', 368),
-('user_myshifts', 52),
-('admin_arrive', 3);
+('user_shifts', 371),
+('user_myshifts', 94),
+('admin_arrive', 44);
 
 -- --------------------------------------------------------
 
@@ -416,8 +416,6 @@ CREATE TABLE IF NOT EXISTS `ShiftEntry` (
 -- Daten für Tabelle `ShiftEntry`
 --
 
-INSERT INTO `ShiftEntry` (`id`, `SID`, `TID`, `UID`, `Comment`) VALUES
-(13, 130, 4, 1, 'asdfasdfasdf');
 
 -- --------------------------------------------------------
 
@@ -1194,8 +1192,8 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0, 10, 'DE', 115, 'L', 1311096594, '0000-00-00 00:00:00', '', '', ''),
-(148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 1, 1, 10, 'DE', 0, 'L', 1307110798, '2011-06-03 07:55:24', 'AudioEngel', '', '');
+(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 0, 1, 0, 10, 'DE', 115, 'L', 1311102448, '0000-00-00 00:00:00', '', '', ''),
+(148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 1, 1, 1, 10, 'DE', 0, 'L', 1307110798, '2011-06-03 07:55:24', 'AudioEngel', '', '');
 
 -- --------------------------------------------------------
 
