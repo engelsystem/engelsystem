@@ -44,15 +44,14 @@ function user_shifts() {
 			} else
 				$user_id = $user['UID'];
 
-
 			// TODO: Kollisionserkennung, andere Schichten zur gleichen Uhrzeit darf der Engel auch nicht belegt haben...
 			$entries = sql_select("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']));
 			foreach ($entries as $entry)
 				if ($entry['UID'] == $user_id)
 					return error("This angel does already have an entry for this shift.");
 
-			$comment = strip_request_item_nl($_REQUEST['comment']);
-			sql_query("INSERT INTO `ShiftEntry` SET `UID`=" . sql_escape($user_id) . ", `TID`=" . sql_escape($type_id) . ", `SID`=" . sql_escape($shift_id));
+			$comment = strip_request_item_nl('comment');
+			sql_query("INSERT INTO `ShiftEntry` SET `Comment`='" . sql_escape($comment) . "', `UID`=" . sql_escape($user_id) . ", `TID`=" . sql_escape($type_id) . ", `SID`=" . sql_escape($shift_id));
 			return success("Now it's your shift. Thank you!") . '<a href="' . page_link_to('user_myshifts') . '">View my shifts &raquo;</a>';
 		}
 
@@ -96,7 +95,7 @@ function user_shifts() {
 		$shifts_table = "";
 		$row_count = 0;
 		foreach ($shifts as $shift) {
-			$shift_row = '<tr><td>' . date(($id == 0 ? "Y-m-d " : "") . "H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) .($id == 0 ? "<br />".$shift['Name'] : ""). '</td><td>' . $shift['name'] . '<br />';
+			$shift_row = '<tr><td>' . date(($id == 0 ? "Y-m-d " : "") . "H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . ($id == 0 ? "<br />" . $shift['Name'] : "") . '</td><td>' . $shift['name'] . '<br />';
 			$show_shift = false;
 			$angeltypes = sql_select("SELECT * FROM `RoomAngelTypes` JOIN `AngelTypes` ON (`RoomAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `room_id`=" . sql_escape($shift['RID']) . " AND `count` > 0 ORDER BY `AngelTypes`.`Name`");
 
