@@ -69,7 +69,8 @@ function user_shifts() {
 			'title' => $shift['name'],
 			'location' => $shift['Name'],
 			'angel' => $user_text,
-			'type' => $type['Name']
+			'type' => $type['Name'],
+			'comment' => ""
 		));
 	} else {
 		$shifts = sql_select("SELECT * FROM `Shifts` ORDER BY `start`");
