@@ -89,7 +89,7 @@ function user_shifts() {
 		$day_timestamp = DateTime :: createFromFormat("Y-m-d-Hi", $day . "-0000")->getTimestamp();
 
 		if ($id == 0)
-			$shifts = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) ORDER BY `start`");
+			$shifts = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `start` > " . sql_escape(time()) . " ORDER BY `start`");
 		else
 			$shifts = sql_select("SELECT * FROM `Shifts` WHERE `RID`=" . sql_escape($id) . " AND `start` >= " . sql_escape($day_timestamp) . " AND `start` < " . sql_escape($day_timestamp +24 * 60 * 60) . " ORDER BY `start`");
 
