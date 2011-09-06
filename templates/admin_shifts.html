@@ -1,0 +1,67 @@
+<form action="" method="post">
+    <fieldset>
+        <p>
+            <label>
+                Name/Beschreibung:
+            </label>
+            <input type="text" name="name" value="%name%" />
+        </p>
+        <p>
+            <label>
+                Ort:
+            </label>%room_select%
+        </p>
+        <p>
+            <label>
+                Beginn:
+            </label>
+            <input type="text" value="" />
+        </p>
+        <p>
+            <label>
+                Ende:
+            </label>
+            <input type="text" value="" />
+        </p><h2>Modus:</h2>
+        <p>
+            <label>
+                <input type="radio" name="method" value="single" />
+            </label>Eine Schicht erstellen.
+        </p>
+        <p>
+            <label>
+                <input type="radio" name="method" value="multi" />
+            </label>Mehrere Schichten erstellen:
+        </p>
+        <p>
+            <label>
+                Schichtlänge in Minuten:
+            </label>
+            <input type="text" name="length" value="120" />
+        </p>
+        <p>
+            <label>
+                <input type="radio" name="method" value="variable" />
+            </label>Mehrere Schichten mit variabler Länge erstellen:
+        </p>
+        <p>
+            <label>
+                Schichtwechsel-Stunden:
+            </label>
+            <input type="text" name="change_hours" value="00, 04, 08, 10, 12, 14, 16, 18, 20, 22" />
+        </p><h2>Benötigte Engel:</h2>
+        <p>
+            <label>
+                <input type="radio" name="angelmode" value="location" />
+            </label>Benötigte Engel vom Ort übernehmen.
+        </p>
+        <p>
+            <label>
+                <input type="radio" name="angelmode" value="manually" />
+            </label>Es werden folgende Engel benötigt:
+        </p>%angel_types%
+        <p>
+            <input type="submit" name="preview" value="Vorschau" />
+        </p>
+    </fieldset>
+</form>

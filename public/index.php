@@ -122,6 +122,10 @@ if (in_array($p, $privileges)) {
 		require_once ('includes/pages/admin_import.php');
 		$content = admin_import();
 	}
+	elseif ($p == "admin_shifts") {
+		require_once ('includes/pages/admin_shifts.php');
+		$content = admin_shifts();
+	}
 	elseif ($p == "admin_log") {
 		require_once ('includes/pages/admin_log.php');
 		$content = admin_log();
