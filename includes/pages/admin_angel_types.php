@@ -83,7 +83,7 @@ function admin_angel_types() {
 				$angel_type = sql_select("SELECT * FROM `AngelTypes` WHERE `TID`=" . sql_escape($id) . " LIMIT 1");
 				if (count($angel_type) > 0) {
 					sql_query("DELETE FROM `AngelTypes` WHERE `TID`=" . sql_escape($id) . " LIMIT 1");
-					sql_query("DELETE FROM `RoomAngelTypes` WHERE `angel_type_id`=" . sql_escape($id) . " LIMIT 1");
+					sql_query("DELETE FROM `NeededAngelTypes` WHERE `angel_type_id`=" . sql_escape($id) . " LIMIT 1");
 					header("Location: " . page_link_to("admin_angel_types"));
 				} else
 					return error("No Angel Type found.");

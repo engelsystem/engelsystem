@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 19. Juli 2011 um 19:07
+-- Erstellungszeit: 07. September 2011 um 21:23
 -- Server Version: 5.1.44
 -- PHP-Version: 5.3.1
 
@@ -70,32 +70,33 @@ CREATE TABLE IF NOT EXISTS `Counter` (
 --
 
 INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('news', 243),
-('login', 85),
+('news', 248),
+('login', 89),
 ('logout', 22),
-('start', 59),
-('faq', 35),
-('credits', 12),
+('start', 65),
+('faq', 36),
+('credits', 13),
 ('register', 24),
-('admin_rooms', 117),
-('admin_angel_types', 84),
+('admin_rooms', 123),
+('admin_angel_types', 85),
 ('user_settings', 163),
 ('user_messages', 124),
-('admin_groups', 188),
+('admin_groups', 196),
 ('user_questions', 63),
 ('admin_questions', 51),
-('admin_faq', 60),
+('admin_faq', 61),
 ('admin_news', 35),
 ('news_comments', 158),
-('admin_user', 219),
+('admin_user', 225),
 ('user_meetings', 15),
-('admin_language', 37),
+('admin_language', 38),
 ('admin_log', 19),
 ('user_wakeup', 70),
-('admin_import', 241),
-('user_shifts', 371),
-('user_myshifts', 94),
-('admin_arrive', 44);
+('admin_import', 245),
+('user_shifts', 414),
+('user_myshifts', 101),
+('admin_arrive', 89),
+('admin_shifts', 145);
 
 -- --------------------------------------------------------
 
@@ -141,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `privilege_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=110 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=118 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
@@ -153,17 +154,17 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (106, -2, 8),
 (105, -2, 11),
 (23, -1, 2),
-(62, -5, 16),
-(61, -5, 6),
+(116, -5, 16),
+(115, -5, 28),
 (104, -2, 26),
 (103, -2, 9),
 (86, -6, 21),
-(60, -5, 12),
-(59, -5, 14),
+(114, -5, 6),
+(113, -5, 12),
 (102, -2, 17),
-(58, -5, 13),
-(57, -5, 7),
-(63, -5, 5),
+(112, -5, 14),
+(111, -5, 13),
+(110, -5, 7),
 (101, -2, 15),
 (87, -6, 18),
 (100, -2, 3),
@@ -172,7 +173,8 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (88, -1, 1),
 (98, -3, 25),
 (108, -2, 20),
-(109, -4, 27);
+(109, -4, 27),
+(117, -5, 5);
 
 -- --------------------------------------------------------
 
@@ -224,6 +226,37 @@ CREATE TABLE IF NOT EXISTS `Messages` (
 INSERT INTO `Messages` (`id`, `Datum`, `SUID`, `RUID`, `isRead`, `Text`) VALUES
 (8, 1307985371, 1, 148, 'N', 'asdfasdfasdfasdfasdfasdfasdfasdf'),
 (7, 1307042692, 147, 1, 'Y', 'foobar');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `NeededAngelTypes`
+--
+
+CREATE TABLE IF NOT EXISTS `NeededAngelTypes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `room_id` int(11) DEFAULT NULL,
+  `shift_id` int(11) DEFAULT NULL,
+  `angel_type_id` int(11) NOT NULL,
+  `count` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `room_id` (`room_id`,`angel_type_id`),
+  KEY `shift_id` (`shift_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+
+--
+-- Daten für Tabelle `NeededAngelTypes`
+--
+
+INSERT INTO `NeededAngelTypes` (`id`, `room_id`, `shift_id`, `angel_type_id`, `count`) VALUES
+(4, 3, NULL, 5, 2),
+(3, 3, NULL, 4, 2),
+(5, 2, NULL, 4, 0),
+(6, 2, NULL, 5, 2),
+(10, 11, NULL, 5, 0),
+(9, 11, NULL, 4, 2),
+(11, 10, NULL, 4, 2),
+(12, 10, NULL, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -287,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -320,7 +353,8 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (24, 'user_shifts', 'Signup for shifts'),
 (25, 'user_shifts_admin', 'Signup other angels for shifts.'),
 (26, 'user_myshifts', 'Allow angels to view their own shifts and cancel them.'),
-(27, 'admin_arrive', 'Mark angels when they arrive.');
+(27, 'admin_arrive', 'Mark angels when they arrive.'),
+(28, 'admin_shifts', 'Create shifts');
 
 -- --------------------------------------------------------
 
@@ -371,35 +405,6 @@ INSERT INTO `Room` (`RID`, `Name`, `Man`, `FromPentabarf`, `show`, `Number`) VAL
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `RoomAngelTypes`
---
-
-CREATE TABLE IF NOT EXISTS `RoomAngelTypes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `room_id` int(11) NOT NULL,
-  `angel_type_id` int(11) NOT NULL,
-  `count` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `room_id` (`room_id`,`angel_type_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
-
---
--- Daten für Tabelle `RoomAngelTypes`
---
-
-INSERT INTO `RoomAngelTypes` (`id`, `room_id`, `angel_type_id`, `count`) VALUES
-(4, 3, 5, 2),
-(3, 3, 4, 2),
-(5, 2, 4, 0),
-(6, 2, 5, 2),
-(10, 11, 5, 0),
-(9, 11, 4, 2),
-(11, 10, 4, 2),
-(12, 10, 5, 0);
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `ShiftEntry`
 --
 
@@ -410,12 +415,14 @@ CREATE TABLE IF NOT EXISTS `ShiftEntry` (
   `UID` int(11) NOT NULL DEFAULT '0',
   `Comment` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Daten für Tabelle `ShiftEntry`
 --
 
+INSERT INTO `ShiftEntry` (`id`, `SID`, `TID`, `UID`, `Comment`) VALUES
+(14, 131, 4, 1, 'asdfasdfasdf');
 
 -- --------------------------------------------------------
 
@@ -1149,7 +1156,9 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('user_myshifts', 'DE', 'Meine Schichten'),
 ('user_myshifts', 'EN', 'My shifts'),
 ('admin_arrive', 'DE', 'Engel Ankunft'),
-('admin_arrive', 'EN', 'Arrived angels');
+('admin_arrive', 'EN', 'Arrived angels'),
+('admin_shifts', 'DE', 'Schichten erstellen'),
+('admin_shifts', 'EN', 'Create shifts');
 
 -- --------------------------------------------------------
 
@@ -1192,8 +1201,8 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 0, 1, 0, 10, 'DE', 115, 'L', 1311102448, '0000-00-00 00:00:00', '', '', ''),
-(148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 1, 1, 1, 10, 'DE', 0, 'L', 1307110798, '2011-06-03 07:55:24', 'AudioEngel', '', '');
+(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0, 10, 'DE', 115, 'L', 1315430361, '0000-00-00 00:00:00', '', '', ''),
+(148, 'msquare', '', '', 23, '', '', '', 'msquare@notrademark.de', '', '', '', '4297f44b13955235245b2497399d7a93', 0, 1, 1, 10, 'DE', 0, 'L', 1307110798, '2011-06-03 07:55:24', 'AudioEngel', '', '');
 
 -- --------------------------------------------------------
 

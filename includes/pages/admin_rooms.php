@@ -63,7 +63,7 @@ function admin_rooms() {
 				$room = sql_select("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
 				if (count($room) > 0) {
 					list ($room) = $room;
-					$room_angel_types = sql_select("SELECT * FROM `AngelTypes` LEFT OUTER JOIN `RoomAngelTypes` ON (`AngelTypes`.`TID` = `RoomAngelTypes`.`angel_type_id` AND `RoomAngelTypes`.`room_id`=" . sql_escape($rid) . ") ORDER BY `AngelTypes`.`Name`");
+					$room_angel_types = sql_select("SELECT * FROM `AngelTypes` LEFT OUTER JOIN `NeededAngelTypes` ON (`AngelTypes`.`TID` = `NeededAngelTypes`.`angel_type_id` AND `NeededAngelTypes`.`room_id`=" . sql_escape($rid) . ") ORDER BY `AngelTypes`.`Name`");
 
 					$angel_types = "";
 					foreach ($room_angel_types as $room_angel_type) {
@@ -101,7 +101,7 @@ function admin_rooms() {
 				$room = sql_select("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
 				if (count($room) > 0) {
 					list ($room) = $room;
-					$room_angel_types = sql_select("SELECT * FROM `AngelTypes` LEFT OUTER JOIN `RoomAngelTypes` ON (`AngelTypes`.`TID` = `RoomAngelTypes`.`angel_type_id` AND `RoomAngelTypes`.`room_id`=" . sql_escape($rid) . ") ORDER BY `AngelTypes`.`Name`");
+					$room_angel_types = sql_select("SELECT * FROM `AngelTypes` LEFT OUTER JOIN `NeededAngelTypes` ON (`AngelTypes`.`TID` = `NeededAngelTypes`.`angel_type_id` AND `NeededAngelTypes`.`room_id`=" . sql_escape($rid) . ") ORDER BY `AngelTypes`.`Name`");
 
 					$name = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}]{1,})/ui", '', strip_tags($_REQUEST['Name']));
 					$man = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}]{1,})/ui", '', strip_tags($_REQUEST['Man']));
@@ -109,13 +109,13 @@ function admin_rooms() {
 					$show = preg_replace("/([^YN]{1,})/ui", '', strip_tags($_REQUEST['Show']));
 					$number = preg_replace("/([^0-9]{1,})/ui", '', strip_tags($_REQUEST['Number']));
 					sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `Man`='" . sql_escape($man) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($show) . "', `Number`='" . sql_escape($number) . "' WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
-					sql_query("DELETE FROM `RoomAngelTypes` WHERE `room_id`=" . sql_escape($rid));
+					sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($rid));
 					foreach ($room_angel_types as $room_angel_type) {
 						if (isset ($_REQUEST['angel_type_' . $room_angel_type['TID']]) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['angel_type_' . $room_angel_type['TID']]))
 							$count = $_REQUEST['angel_type_' . $room_angel_type['TID']];
 						else
 							$count = "0";
-						sql_query("INSERT INTO `RoomAngelTypes` SET `room_id`=" . sql_escape($rid) . ", `angel_type_id`=" . sql_escape($room_angel_type['TID']) . ", `count`=" . sql_escape($count));
+						sql_query("INSERT INTO `NeededAngelTypes` SET `room_id`=" . sql_escape($rid) . ", `angel_type_id`=" . sql_escape($room_angel_type['TID']) . ", `count`=" . sql_escape($count));
 					}
 					header("Location: " . page_link_to("admin_rooms"));
 				} else
@@ -130,7 +130,7 @@ function admin_rooms() {
 
 				if (sql_num_query("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1") > 0) {
 					sql_query("DELETE FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
-					sql_query("DELETE FROM `RoomAngelTypes` WHERE `room_id`=" . sql_escape($rid) . " LIMIT 1");
+					sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($rid) . " LIMIT 1");
 					header("Location: " . page_link_to("admin_rooms"));
 				} else
 					return error("No Room found.");
