@@ -76,7 +76,7 @@ function admin_shifts() {
 				}
 			}
 			elseif ($_REQUEST['mode'] == 'variable') {
-				if (isset ($_REQUEST['change_hours']) && preg_match("/^([0-9]+(,|$))/", trim(str_replace(" ", "", $_REQUEST['change_hours'])))) {
+				if (isset ($_REQUEST['change_hours']) && preg_match("/^([0-9]{2}(,|$))/", trim(str_replace(" ", "", $_REQUEST['change_hours'])))) {
 					$mode = 'variable';
 					$change_hours = explode(",", $_REQUEST['change_hours']);
 				} else {
@@ -106,6 +106,84 @@ function admin_shifts() {
 				$ok = false;
 				$msg .= error("Bitte Wähle einen Modus für die benötigten Engel.");
 			}
+		}
+
+		// Alle Eingaben in Ordnung
+		if ($ok) {
+			$shifts = array ();
+			if ($mode == 'single') {
+				$shifts[] = array (
+					'start' => $start,
+					'end' => $end,
+					'RID' => $rid,
+					'name' => $name
+				);
+			}
+			elseif ($mode == 'multi') {
+				$shift_start = $start;
+				do {
+					$shift_end = $shift_start + $length * 60;
+
+					if ($shift_end > $end)
+						$shift_end = $end;
+					if ($shift_start >= $shift_end)
+						break;
+
+					$shifts[] = array (
+						'start' => $shift_start,
+						'end' => $shift_end,
+						'RID' => $rid,
+						'name' => $name
+					);
+
+					$shift_start = $shift_end;
+				} while ($shift_end < $end);
+			}
+			elseif ($mode == 'variable') {
+				sort($change_hours);
+				$day = DateTime :: createFromFormat("Y-m-d H:i", date("Y-m-d", $start) . " 00:00")->getTimestamp();
+				$change_index = 0;
+				// Ersten/nächsten passenden Schichtwechsel suchen
+				foreach ($change_hours as $i => $change_hour) {
+					if ($start < $day + $change_hour * 60 * 60)
+						$change_index = $i;
+					elseif ($start == $day + $change_hour * 60 * 60) {
+						// Start trifft Schichtwechsel
+						$change_index = ($i +1) % count($change_hours);
+						break;
+					} else
+						break;
+				}
+
+				$shift_start = $start;
+				do {
+					$day = DateTime :: createFromFormat("Y-m-d H:i", date("Y-m-d", $shift_start) . " 00:00")->getTimestamp();
+					$shift_end = $day + $change_hours[$change_index] * 60 * 60;
+
+					if ($shift_end > $end)
+						$shift_end = $end;
+					if ($shift_start >= $shift_end)
+						$shift_end += 24 * 60 * 60;
+
+					$shifts[] = array (
+						'start' => $shift_start,
+						'end' => $shift_end,
+						'RID' => $rid,
+						'name' => $name
+					);
+
+					$shift_start = $shift_end;
+					$change_index = ($change_index +1) % count($change_hours);
+				} while ($shift_end < $end);
+			}
+			$shifts_table = "";
+			foreach ($shifts as $shift) {
+				$shifts_table .= '<tr><td>' . date("Y-m-d H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . '<br />' . $room_array[$shift['RID']] . '</td>';
+				$shifts_table .= '<td>' . $shift['name'] . '</td></tr>';
+			}
+			return template_render('../templates/admin_shift_preview.html', array (
+				'shifts_table' => $shifts_table
+			));
 		}
 	}
 
