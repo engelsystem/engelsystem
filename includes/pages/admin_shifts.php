@@ -6,7 +6,6 @@ function admin_shifts() {
 	$msg = "";
 	$ok = true;
 
-	$name = "";
 	$rid = 0;
 	$start = DateTime :: createFromFormat("Y-m-d H:i", date("Y-m-d") . " 00:00")->getTimestamp();
 	$end = $start +24 * 60 * 60;
@@ -26,13 +25,8 @@ function admin_shifts() {
 		$needed_angel_types[$type['TID']] = 0;
 
 	if (isset ($_REQUEST['preview'])) {
-		// Name/Bezeichnung der Schicht, darf nicht leer sein
-		if (isset ($_REQUEST['name']) && strlen($_REQUEST['name']) > 0)
-			$name = strip_request_item('name');
-		else {
-			$ok = false;
-			$msg .= error("Gib bitte einen Namen für die Schicht(en) an.");
-		}
+		// Name/Bezeichnung der Schicht, darf leer sein
+		$name = strip_request_item('name');
 
 		// Auswahl der sichtbaren Locations für die Schichten
 		if (isset ($_REQUEST['rid']) && preg_match("/^[0-9]+$/", $_REQUEST['rid']) && isset ($room_array[$_REQUEST['rid']]))
@@ -217,7 +211,7 @@ function admin_shifts() {
 			header("Location: ?p=admin_shifts");
 			die();
 		}
-		
+
 		foreach ($_SESSION['admin_shifts_shifts'] as $shift) {
 			sql_query("INSERT INTO `Shifts` SET `start`=" . sql_escape($shift['start']) . ",  `end`=" . sql_escape($shift['end']) . ", `RID`=" . sql_escape($shift['RID']) . ", `name`='" . sql_escape($shift['name']) . "'");
 			$shift_id = sql_id();
