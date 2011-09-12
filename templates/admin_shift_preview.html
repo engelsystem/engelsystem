@@ -1,17 +1,23 @@
 <h3>Vorschau:</h3>
-<table>
-    <thead>
-        <tr>
-            <th>
-                Timeslot
-            </th>
-            <th>
-                Entries
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        %shifts_table%
-    </tbody>
-</table>
-
+<form action="" method="post">
+    <fieldset>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Timeslot
+                    </th>
+                    <th>
+                        Entries
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                %shifts_table%
+            </tbody>
+        </table>
+        <p>
+            <input type="submit" name="submit" value="Erstellen" />
+        </p>
+    </fieldset>
+</form>

@@ -10,8 +10,8 @@ function admin_shifts() {
 	$rid = 0;
 	$start = DateTime :: createFromFormat("Y-m-d H:i", date("Y-m-d") . " 00:00")->getTimestamp();
 	$end = $start +24 * 60 * 60;
-	$mode = 'single';
-	$angelmode = 'location';
+	$mode = '';
+	$angelmode = '';
 
 	// Locations laden
 	$rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
@@ -94,6 +94,7 @@ function admin_shifts() {
 				$angelmode = 'location';
 			}
 			elseif ($_REQUEST['angelmode'] == 'manually') {
+				$angelmode = 'manually';
 				foreach ($types as $type) {
 					if (isset ($_REQUEST['type_' . $type['TID']]) && preg_match("/^[0-9]+$/", trim($_REQUEST['type_' . $type['TID']]))) {
 						$needed_angel_types[$type['TID']] = trim($_REQUEST['type_' . $type['TID']]);
@@ -102,14 +103,27 @@ function admin_shifts() {
 						$msg .= error("Bitte überprüfe die Eingaben für die benötigten Engel des Typs " . $type['Name'] . ".");
 					}
 				}
+				if (array_sum($needed_angel_types) == 0) {
+					$ok = false;
+					$msg .= error("Es werden 0 Engel benötigt. Bitte wähle benötigte Engel.");
+				}
 			} else {
 				$ok = false;
 				$msg .= error("Bitte Wähle einen Modus für die benötigten Engel.");
 			}
+		} else {
+			$ok = false;
+			$msg .= error("Bitte wähle benötigte Engel.");
 		}
 
 		// Alle Eingaben in Ordnung
 		if ($ok) {
+			if ($angelmode == 'location') {
+				$needed_angel_types = array ();
+				$needed_angel_types_location = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($rid));
+				foreach ($needed_angel_types_location as $type)
+					$needed_angel_types[$type['angel_type_id']] = $type['count'];
+			}
 			$shifts = array ();
 			if ($mode == 'single') {
 				$shifts[] = array (
@@ -140,7 +154,7 @@ function admin_shifts() {
 				} while ($shift_end < $end);
 			}
 			elseif ($mode == 'variable') {
-				sort($change_hours);
+				rsort($change_hours);
 				$day = DateTime :: createFromFormat("Y-m-d H:i", date("Y-m-d", $start) . " 00:00")->getTimestamp();
 				$change_index = 0;
 				// Ersten/nächsten passenden Schichtwechsel suchen
@@ -149,7 +163,7 @@ function admin_shifts() {
 						$change_index = $i;
 					elseif ($start == $day + $change_hour * 60 * 60) {
 						// Start trifft Schichtwechsel
-						$change_index = ($i +1) % count($change_hours);
+						$change_index = ($i +count($change_hours) - 1) % count($change_hours);
 						break;
 					} else
 						break;
@@ -173,18 +187,45 @@ function admin_shifts() {
 					);
 
 					$shift_start = $shift_end;
-					$change_index = ($change_index +1) % count($change_hours);
+					$change_index = ($change_index +count($change_hours) - 1) % count($change_hours);
 				} while ($shift_end < $end);
 			}
+
 			$shifts_table = "";
 			foreach ($shifts as $shift) {
 				$shifts_table .= '<tr><td>' . date("Y-m-d H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . '<br />' . $room_array[$shift['RID']] . '</td>';
-				$shifts_table .= '<td>' . $shift['name'] . '</td></tr>';
+				$shifts_table .= '<td>' . $shift['name'];
+				foreach ($types as $type) {
+					if (isset ($needed_angel_types[$type['TID']]) && $needed_angel_types[$type['TID']] > 0)
+						$shifts_table .= '<br /><b>' . $type['Name'] . ':</b> ' . $needed_angel_types[$type['TID']] . ' missing';
+				}
+				$shifts_table .= '</td></tr>';
 			}
+
+			// Fürs Anlegen zwischenspeichern:
+			$_SESSION['admin_shifts_shifts'] = $shifts;
+			$_SESSION['admin_shifts_types'] = $needed_angel_types;
+
 			return template_render('../templates/admin_shift_preview.html', array (
 				'shifts_table' => $shifts_table
 			));
 		}
+
+	}
+	elseif (isset ($_REQUEST['submit'])) {
+		if (!is_array($_SESSION['admin_shifts_shifts']) || !is_array($_SESSION['admin_shifts_types'])) {
+			header("Location: ?p=admin_shifts");
+			die();
+		}
+
+		foreach ($_SESSION['admin_shifts_shifts'] as $shift) {
+			foreach ($_SESSION['admin_shifts_types'] as $type) {
+
+			}
+		}
+	} else {
+		unset ($_SESSION['admin_shifts_shifts']);
+		unset ($_SESSION['admin_shifts_types']);
 	}
 
 	$room_select = html_select_key('rid', $room_array, '');
