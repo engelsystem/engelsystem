@@ -217,12 +217,16 @@ function admin_shifts() {
 			header("Location: ?p=admin_shifts");
 			die();
 		}
-
+		
 		foreach ($_SESSION['admin_shifts_shifts'] as $shift) {
-			foreach ($_SESSION['admin_shifts_types'] as $type) {
-
+			sql_query("INSERT INTO `Shifts` SET `start`=" . sql_escape($shift['start']) . ",  `end`=" . sql_escape($shift['end']) . ", `RID`=" . sql_escape($shift['RID']) . ", `name`='" . sql_escape($shift['name']) . "'");
+			$shift_id = sql_id();
+			foreach ($_SESSION['admin_shifts_types'] as $type_id => $count) {
+				sql_query("INSERT INTO `NeededAngelTypes` SET `shift_id`=" . sql_escape($shift_id) . ", `angel_type_id`=" . sql_escape($type_id) . ", `count`=" . sql_escape($count));
 			}
 		}
+
+		$msg = success("Schichten angelegt.");
 	} else {
 		unset ($_SESSION['admin_shifts_shifts']);
 		unset ($_SESSION['admin_shifts_types']);
