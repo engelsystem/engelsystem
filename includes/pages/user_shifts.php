@@ -3,12 +3,40 @@ function user_shifts() {
 	global $user, $privileges;
 	if (isset ($_REQUEST['entry_id']) && in_array('user_shifts_admin', $privileges)) {
 		if (isset ($_REQUEST['entry_id']) && preg_match("/^[0-9]*$/", $_REQUEST['entry_id']))
-			$shift_id = $_REQUEST['entry_id'];
+			$entry_id = $_REQUEST['entry_id'];
 		else
 			header("Location: " . page_link_to('user_shifts'));
 
-		sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($shift_id) . " LIMIT 1");
+		sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($entry_id) . " LIMIT 1");
 		return success("The shift entry has been deleted.");
+	}
+	// Schicht komplett löschen (nur für admins/user mit user_shifts_admin privileg)
+	elseif (isset ($_REQUEST['delete_shift']) && in_array('user_shifts_admin', $privileges)) {
+		if (isset ($_REQUEST['delete_shift']) && preg_match("/^[0-9]*$/", $_REQUEST['delete_shift']))
+			$shift_id = $_REQUEST['delete_shift'];
+		else
+			header("Location: " . page_link_to('user_shifts'));
+
+		$shift = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+		if (count($shift) == 0)
+			header("Location: " . page_link_to('user_shifts'));
+		$shift = $shift[0];
+
+		// Schicht löschen bestätigt
+		if (isset ($_REQUEST['delete'])) {
+			sql_query("DELETE FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift_id));
+			sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`=" . sql_escape($shift_id));
+			sql_query("DELETE FROM `Shifts` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+
+			return success("Die Schicht wurde gelöscht.");
+		}
+
+		return template_render('../templates/user_shifts_admin_delete.html', array (
+			'name' => $shift['name'],
+			'start' => date("Y-m-d H:i", $shift['start']),
+			'end' => date("H:i", $shift['end']),
+			'id' => $shift_id
+		));
 	}
 	elseif (isset ($_REQUEST['shift_id'])) {
 		if (isset ($_REQUEST['shift_id']) && preg_match("/^[0-9]*$/", $_REQUEST['shift_id']))
@@ -96,7 +124,10 @@ function user_shifts() {
 		$shifts_table = "";
 		$row_count = 0;
 		foreach ($shifts as $shift) {
-			$shift_row = '<tr><td>' . date(($id == 0 ? "Y-m-d " : "") . "H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . ($id == 0 ? "<br />" . $shift['Name'] : "") . '</td><td>' . $shift['name'] . '<br />';
+			$shift_row = '<tr><td>' . date(($id == 0 ? "Y-m-d " : "") . "H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . ($id == 0 ? "<br />" . $shift['Name'] : "") . '</td><td>' . $shift['name'];
+			if (in_array('admin_shifts', $privileges))
+				$shift_row .= ' <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
+			$shift_row .= '<br />';
 			$show_shift = false;
 			$angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `shift_id`=" . sql_escape($shift['SID']) . " AND `count` > 0 ORDER BY `AngelTypes`.`Name`");
 			if (count($angeltypes) == 0)
