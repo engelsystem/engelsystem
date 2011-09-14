@@ -6,7 +6,7 @@ function admin_new_questions() {
 		$new_messages = sql_num_query("SELECT * FROM `Questions` WHERE `AID`=0");
 
 		if ($new_messages > 0)
-			return '<p class="notice"><a href="' . page_link_to("admin_questions") . '">There are unanswered questions!</a></p><hr />';
+			return '<p class="notice"><a href="' . page_link_to("admin_questions") . '">Es gibt unbeantwortete Fragen!</a></p><hr />';
 	}
 
 	return "";
@@ -62,7 +62,7 @@ function admin_questions() {
 						sql_query("UPDATE `Questions` SET `AID`=" . sql_escape($user['UID']) . ", `Answer`='" . sql_escape($answer) . "' WHERE `QID`=" . sql_escape($id) . " LIMIT 1");
 						header("Location: " . page_link_to("admin_questions"));
 					} else
-						return error("Please enter an answer!");
+						return error("Gib eine Antwort ein!");
 				} else
 					return error("No question found.");
 				break;

@@ -6,14 +6,14 @@ function user_questions() {
 		$open_questions = "";
 		$questions = sql_select("SELECT * FROM `Questions` WHERE `AID`=0 AND `UID`=" . sql_escape($user['UID']));
 		foreach ($questions as $question)
-			$open_questions .= '<tr><td>' . str_replace("\n", '<br />', $question['Question']) . '</td><td><a href="' . page_link_to("user_questions") . '&action=delete&id=' . $question['QID'] . '">Delete</a></td><tr>';
+			$open_questions .= '<tr><td>' . str_replace("\n", '<br />', $question['Question']) . '</td><td><a href="' . page_link_to("user_questions") . '&action=delete&id=' . $question['QID'] . '">Löschen</a></td><tr>';
 
 		$answered_questions = "";
 		$questions = sql_select("SELECT * FROM `Questions` WHERE `AID`>0 AND `UID`=" . sql_escape($user['UID']));
 		foreach ($questions as $question) {
 			$answered_questions .= '<tr><td>' . str_replace("\n", '<br />', $question['Question']) . '</td>';
 			$answered_questions .= '<td>' . UID2Nick($question['AID']) . '</td><td>' . str_replace("\n", '<br />', $question['Answer']) . '</td>';
-			$answered_questions .= '<td><a href="' . page_link_to("user_questions") . '&action=delete&id=' . $question['QID'] . '">Delete</a></td><tr>';
+			$answered_questions .= '<td><a href="' . page_link_to("user_questions") . '&action=delete&id=' . $question['QID'] . '">Löschen</a></td><tr>';
 		}
 
 		return template_render('../templates/user_questions.html', array (
@@ -29,7 +29,7 @@ function user_questions() {
 					sql_query("INSERT INTO `Questions` SET `UID`=" . sql_escape($user['UID']) . ", `Question`='" . sql_escape($question) . "'");
 					header("Location: " . page_link_to("user_questions"));
 				} else
-					return error("Please enter a question!");
+					return error("Gib eine Frage ein!");
 				break;
 			case 'delete' :
 				if (isset ($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id']))
