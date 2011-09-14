@@ -103,61 +103,64 @@ function user_shifts() {
 	} else {
 		$shifts = sql_select("SELECT * FROM `Shifts` ORDER BY `start`");
 		$days = array ();
-		foreach ($shifts as $shift)
-			$days[] = date("Y-m-d", $shift['start']);
-		$days = array_unique($days);
-		$day = $days[0];
-		if (isset ($_REQUEST['day']))
-			$day = $_REQUEST['day'];
+		$rooms = array ();
+		if (count($shifts) > 0) {
+			foreach ($shifts as $shift)
+				$days[] = date("Y-m-d", $shift['start']);
+			$days = array_unique($days);
+			$day = $days[0];
+			if (isset ($_REQUEST['day']))
+				$day = $_REQUEST['day'];
 
-		$rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
-		$id = 0;
-		if (isset ($_REQUEST['room_id']) && preg_match("/^[0-9]*$/", $_REQUEST['room_id']))
-			$id = $_REQUEST['room_id'];
-		$day_timestamp = DateTime :: createFromFormat("Y-m-d-Hi", $day . "-0000")->getTimestamp();
+			$rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
+			$id = 0;
+			if (isset ($_REQUEST['room_id']) && preg_match("/^[0-9]*$/", $_REQUEST['room_id']))
+				$id = $_REQUEST['room_id'];
+			$day_timestamp = DateTime :: createFromFormat("Y-m-d-Hi", $day . "-0000")->getTimestamp();
 
-		if ($id == 0)
-			$shifts = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `start` > " . sql_escape(time()) . " ORDER BY `start`");
-		else
-			$shifts = sql_select("SELECT * FROM `Shifts` WHERE `RID`=" . sql_escape($id) . " AND `start` >= " . sql_escape($day_timestamp) . " AND `start` < " . sql_escape($day_timestamp +24 * 60 * 60) . " ORDER BY `start`");
+			if ($id == 0)
+				$shifts = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `start` > " . sql_escape(time()) . " ORDER BY `start`");
+			else
+				$shifts = sql_select("SELECT * FROM `Shifts` WHERE `RID`=" . sql_escape($id) . " AND `start` >= " . sql_escape($day_timestamp) . " AND `start` < " . sql_escape($day_timestamp +24 * 60 * 60) . " ORDER BY `start`");
 
-		$shifts_table = "";
-		$row_count = 0;
-		foreach ($shifts as $shift) {
-			$shift_row = '<tr><td>' . date(($id == 0 ? "Y-m-d " : "") . "H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . ($id == 0 ? "<br />" . $shift['Name'] : "") . '</td><td>' . $shift['name'];
-			if (in_array('admin_shifts', $privileges))
-				$shift_row .= ' <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
-			$shift_row .= '<br />';
-			$show_shift = false;
-			$angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `shift_id`=" . sql_escape($shift['SID']) . " AND `count` > 0 ORDER BY `AngelTypes`.`Name`");
-			if (count($angeltypes) == 0)
-				$angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `room_id`=" . sql_escape($shift['RID']) . " AND `count` > 0 ORDER BY `AngelTypes`.`Name`");
+			$shifts_table = "";
+			$row_count = 0;
+			foreach ($shifts as $shift) {
+				$shift_row = '<tr><td>' . date(($id == 0 ? "Y-m-d " : "") . "H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . ($id == 0 ? "<br />" . $shift['Name'] : "") . '</td><td>' . $shift['name'];
+				if (in_array('admin_shifts', $privileges))
+					$shift_row .= ' <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
+				$shift_row .= '<br />';
+				$show_shift = false;
+				$angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `shift_id`=" . sql_escape($shift['SID']) . " AND `count` > 0 ORDER BY `AngelTypes`.`Name`");
+				if (count($angeltypes) == 0)
+					$angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `room_id`=" . sql_escape($shift['RID']) . " AND `count` > 0 ORDER BY `AngelTypes`.`Name`");
 
-			if (count($angeltypes) > 0) {
-				$my_shift = sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0;
-				foreach ($angeltypes as $angeltype) {
-					$entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`=" . sql_escape($shift['SID']) . " AND `TID`=" . sql_escape($angeltype['TID']) . " ORDER BY `Nick`");
-					$entry_list = array ();
-					foreach ($entries as $entry) {
-						if (in_array('user_shifts_admin', $privileges))
-							$entry_list[] = $entry['Nick'] . ' <a href="' . page_link_to('user_shifts') . '&entry_id=' . $entry['id'] . '">[x]</a>';
-						else
-							$entry_list[] = $entry['Nick'];
+				if (count($angeltypes) > 0) {
+					$my_shift = sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0;
+					foreach ($angeltypes as $angeltype) {
+						$entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`=" . sql_escape($shift['SID']) . " AND `TID`=" . sql_escape($angeltype['TID']) . " ORDER BY `Nick`");
+						$entry_list = array ();
+						foreach ($entries as $entry) {
+							if (in_array('user_shifts_admin', $privileges))
+								$entry_list[] = $entry['Nick'] . ' <a href="' . page_link_to('user_shifts') . '&entry_id=' . $entry['id'] . '">[x]</a>';
+							else
+								$entry_list[] = $entry['Nick'];
+						}
+						if ($angeltype['count'] - count($entries) > 0)
+							if (!$my_shift || in_array('user_shifts_admin', $privileges)) {
+								$entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['TID'] . '">' . ($angeltype['count'] - count($entries)) . ' angel' . ($angeltype['count'] - count($entries) != 1 ? 's' : '') . ' missing &raquo;</a>';
+								$show_shift = true;
+							} else
+								$entry_list[] = ($angeltype['count'] - count($entries)) . ' angel missing';
+
+						$shift_row .= '<b>' . $angeltype['Name'] . ':</b> ';
+						$shift_row .= join(", ", $entry_list);
+						$shift_row .= '<br />';
 					}
-					if ($angeltype['count'] - count($entries) > 0)
-						if (!$my_shift || in_array('user_shifts_admin', $privileges)) {
-							$entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['TID'] . '">' . ($angeltype['count'] - count($entries)) . ' angel' . ($angeltype['count'] - count($entries) != 1 ? 's' : '') . ' missing &raquo;</a>';
-							$show_shift = true;
-						} else
-							$entry_list[] = ($angeltype['count'] - count($entries)) . ' angel missing';
-
-					$shift_row .= '<b>' . $angeltype['Name'] . ':</b> ';
-					$shift_row .= join(", ", $entry_list);
-					$shift_row .= '<br />';
 				}
+				if ($id != 0 || ($show_shift && $row_count++ < 15))
+					$shifts_table .= $shift_row . '</td></tr>';
 			}
-			if ($id != 0 || ($show_shift && $row_count++ < 15))
-				$shifts_table .= $shift_row . '</td></tr>';
 		}
 
 		return template_render('../templates/user_shifts.html', array (
