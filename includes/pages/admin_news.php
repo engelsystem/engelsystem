@@ -75,7 +75,7 @@ function admin_news() {
 				if (count($news) > 0) {
 					list ($news) = $news;
 
-					sql_query("DELETE FROM `news` WHERE `ID`=" . sql_escape($id) . " LIMIT 1");
+					sql_query("DELETE FROM `News` WHERE `ID`=" . sql_escape($id) . " LIMIT 1");
 					header("Location: " . page_link_to("news"));
 				} else
 					return error("No News found.");
