@@ -80,22 +80,22 @@ function user_news_comments() {
 
 		$html .= "</table>";
 		$html .= '
-						<br />
-						<hr>
-						<h2>Neuer Kommentar:</h2>
-						<a name="Neu">&nbsp;</a>
-						
-						<form action="' . page_link_to("news_comments") . '" method="post">
-						<input type="hidden" name="nid" value="' . $_REQUEST["nid"] . '">
-						<table>
-						 <tr>
-						  <td align="right" valign="top">Text:</td>
-						  <td><textarea name="text" cols="50" rows="10"></textarea></td>
-						 </tr>
-						</table>
-						<br />
-						<input type="submit" value="sichern...">
-						</form>';
+							<br />
+							<hr>
+							<h2>Neuer Kommentar:</h2>
+							<a name="Neu">&nbsp;</a>
+							
+							<form action="' . page_link_to("news_comments") . '" method="post">
+							<input type="hidden" name="nid" value="' . $_REQUEST["nid"] . '">
+							<table>
+							 <tr>
+							  <td align="right" valign="top">Text:</td>
+							  <td><textarea name="text" cols="50" rows="10"></textarea></td>
+							 </tr>
+							</table>
+							<br />
+							<input type="submit" value="sichern...">
+							</form>';
 	} else {
 		$html .= "Fehlerhafter Aufruf!";
 	}
@@ -108,7 +108,7 @@ function user_news() {
 
 	$html = "";
 
-	if (isset ($_POST["text"]) && isset ($_POST["betreff"])) {
+	if (isset ($_POST["text"]) && isset ($_POST["betreff"]) && in_array("admin_news", $privileges)) {
 		if (!isset ($_POST["treffen"]) || !in_array("admin_news", $privileges))
 			$_POST["treffen"] = 0;
 		sql_query("INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`) " .
@@ -137,32 +137,34 @@ function user_news() {
 		else
 			$html .= '<a href="' . page_link_to("news") . '&page=' . $i . '">' . ($i +1) . '</a>&nbsp; ';
 	}
-	$html .= '</div>
-			<br /><hr />
-			<h2>' . Get_Text(6) . '</h2>
-			<a name="Neu">&nbsp;</a>
-			
-			<form action="" method="post">
-			<table>
-			 <tr>
-			  <td align="right">' . Get_Text(7) . '</td>
-			  <td><input type="text" name="betreff" size="60"></td>
-			 </tr>
-			 <tr>
-			  <td align="right">' . Get_Text(8) . '</td>
-			  <td><textarea name="text" cols="50" rows="10"></textarea></td>
-			 </tr>';
-	if (in_array('admin_news', $privileges)) {
-		$html .= ' <tr>
-			  <td align="right">' . Get_Text(9) . '</td>
-			  <td><input type="checkbox" name="treffen" size="1" value="1"></td>
-			 </tr>';
+	$html .= '</div>';
+	if (in_array("admin_news", $privileges)) {
+		$html .= '<br /><hr />
+				<h2>' . Get_Text(6) . '</h2>
+				<a name="Neu">&nbsp;</a>
+				
+				<form action="" method="post">
+				<table>
+				 <tr>
+				  <td align="right">' . Get_Text(7) . '</td>
+				  <td><input type="text" name="betreff" size="60"></td>
+				 </tr>
+				 <tr>
+				  <td align="right">' . Get_Text(8) . '</td>
+				  <td><textarea name="text" cols="50" rows="10"></textarea></td>
+				 </tr>';
+		if (in_array('admin_news', $privileges)) {
+			$html .= ' <tr>
+					  <td align="right">' . Get_Text(9) . '</td>
+					  <td><input type="checkbox" name="treffen" size="1" value="1"></td>
+					 </tr>';
 
+		}
+		$html .= '</table>
+			<br />
+			<input type="submit" value="' . Get_Text("save") . '">
+			</form>';
 	}
-	$html .= '</table>
-		<br />
-		<input type="submit" value="' . Get_Text("save") . '">
-		</form>';
 	return $html;
 }
 ?>
