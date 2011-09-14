@@ -2,8 +2,6 @@
 function admin_user() {
 	global $user;
 
-	include ("includes_old/funktion_db_list.php");
-
 	$html = "";
 
 	if (isset ($_REQUEST['id']) && preg_match("/^[0-9]{1,}$/", $_REQUEST['id']) && sql_num_query("SELECT * FROM `User` WHERE `UID`=" . sql_escape($_REQUEST['id'])) > 0) {
@@ -303,21 +301,6 @@ function admin_user() {
 		"<td>$Gekommen</td><td>$Active</td><td>$Tshirt</td><td></td><td></td></tr>\n";
 		$html .= "\t</table>\n";
 		// Ende Userliste
-
-		$html .= "<hr /><h2>Statistics</h2>";
-		$html .= funktion_db_element_list_2row("Hometown", "SELECT COUNT(`Hometown`), `Hometown` FROM `User` GROUP BY `Hometown`");
-
-		$html .= "<br />\n";
-
-		$html .= funktion_db_element_list_2row("Engeltypen", "SELECT COUNT(`Art`), `Art` FROM `User` GROUP BY `Art`");
-
-		$html .= "<br />\n";
-
-		$html .= funktion_db_element_list_2row("Used Groups", "SELECT Groups.Name AS 'GroupName', COUNT(Groups.Name) AS Count FROM `UserGroups` " .
-		"LEFT JOIN `Groups` ON Groups.UID = UserGroups.group_id " .
-		"WHERE (UserGroups.group_id!='NULL') " .
-		"GROUP BY `GroupName` " .
-		"");
 	}
 	return $html;
 }
