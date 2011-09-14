@@ -12,7 +12,6 @@ function make_navigation() {
 
 	// Standard Navigation
 	$menu .= make_navigation_for(Get_Text('/'), array (
-		"start",
 		"login",
 		"logout",
 		"register",

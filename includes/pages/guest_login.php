@@ -237,7 +237,11 @@ function guest_login_form() {
 		'link' => page_link_to("login"),
 		'nick' => Get_Text("index_lang_nick"),
 		'pass' => Get_Text("index_lang_pass"),
-		'send' => Get_Text("index_lang_send")
+		'send' => Get_Text("index_lang_send"),
+		'text1' => Get_Text("index_text1"),
+		'text2' => Get_Text("index_text2"),
+		'text3' => Get_Text("index_text3"),
+		'text4' => Get_Text("index_text4")
 	));
 }
 ?>

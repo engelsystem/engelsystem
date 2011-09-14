@@ -27,7 +27,7 @@ if (isset ($_REQUEST['auth']))
 	json_auth_service();
 
 // Gewünschte Seite/Funktion
-$p = isset ($user) ? "news" : "start";
+$p = isset ($user) ? "news" : "login";
 if (isset ($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && sql_num_query("SELECT * FROM `Privileges` WHERE `name`='" . sql_escape($_REQUEST['p']) . "' LIMIT 1") > 0)
 	$p = $_REQUEST['p'];
 
