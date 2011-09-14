@@ -8,7 +8,7 @@ function user_shifts() {
 			header("Location: " . page_link_to('user_shifts'));
 
 		sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($entry_id) . " LIMIT 1");
-		return success("The shift entry has been deleted.");
+		return success("Der Schicht-Eintrag wurde gelöscht..");
 	}
 	// Schicht komplett löschen (nur für admins/user mit user_shifts_admin privileg)
 	elseif (isset ($_REQUEST['delete_shift']) && in_array('user_shifts_admin', $privileges)) {
@@ -80,7 +80,7 @@ function user_shifts() {
 
 			$comment = strip_request_item_nl('comment');
 			sql_query("INSERT INTO `ShiftEntry` SET `Comment`='" . sql_escape($comment) . "', `UID`=" . sql_escape($user_id) . ", `TID`=" . sql_escape($type_id) . ", `SID`=" . sql_escape($shift_id));
-			return success("Now it's your shift. Thank you!") . '<a href="' . page_link_to('user_myshifts') . '">View my shifts &raquo;</a>';
+			return success("Du bist eingetragen. Danke!") . '<a href="' . page_link_to('user_myshifts') . '">Meine Schichten &raquo;</a>';
 		}
 
 		if (in_array('user_shifts_admin', $privileges)) {
@@ -148,10 +148,10 @@ function user_shifts() {
 						}
 						if ($angeltype['count'] - count($entries) > 0)
 							if (!$my_shift || in_array('user_shifts_admin', $privileges)) {
-								$entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['TID'] . '">' . ($angeltype['count'] - count($entries)) . ' angel' . ($angeltype['count'] - count($entries) != 1 ? 's' : '') . ' missing &raquo;</a>';
+								$entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['TID'] . '">' . ($angeltype['count'] - count($entries)) . ' Helfer' . ($angeltype['count'] - count($entries) != 1 ? '' : '') . ' gebraucht &raquo;</a>';
 								$show_shift = true;
 							} else
-								$entry_list[] = ($angeltype['count'] - count($entries)) . ' angel missing';
+								$entry_list[] = ($angeltype['count'] - count($entries)) . ' Helfer gebraucht';
 
 						$shift_row .= '<b>' . $angeltype['Name'] . ':</b> ';
 						$shift_row .= join(", ", $entry_list);
@@ -191,9 +191,9 @@ function make_room_select($rooms, $id, $day) {
 			$html[] = '<a href="' . page_link_to('user_shifts') . '&room_id=' . $room['RID'] . '&day=' . $day . '">' . $room['Name'] . '</a>';
 	}
 	if ($id == 0)
-		$html[] = '<b>Next 15 free shifts</b>';
+		$html[] = '<b>Nächste freie Schichten</b>';
 	else
-		$html[] = '<a href="' . page_link_to('user_shifts') . '&room_id=0">Next 15 free shifts</a>';
+		$html[] = '<a href="' . page_link_to('user_shifts') . '&room_id=0">Nächste freie Schichten</a>';
 	return join(' | ', $html);
 }
 ?>
