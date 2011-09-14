@@ -33,8 +33,6 @@ function TID2Type($TID) {
 }
 
 function ReplaceSmilies($neueckig) {
-	global $url, $ENGEL_ROOT;
-
 	$neueckig = str_replace(";o))", "<img src=\"pic/smiles/icon_redface.gif\">", $neueckig);
 	$neueckig = str_replace(":-))", "<img src=\"pic/smiles/icon_redface.gif\">", $neueckig);
 	$neueckig = str_replace(";o)", "<img src=\"pic/smiles/icon_wind.gif\">", $neueckig);
@@ -59,7 +57,7 @@ function ReplaceSmilies($neueckig) {
 	return $neueckig;
 }
 
-function GetPicturShow($UID) {
+function GetPictureShow($UID) {
 	global $con;
 
 	$SQL = "SELECT `show` FROM `UserPicture` WHERE `UID`='" . sql_escape($UID) . "'";
@@ -71,7 +69,7 @@ function GetPicturShow($UID) {
 		return "";
 }
 
-function displayPictur($UID, $height = "30") {
+function displayPicture($UID, $height = "30") {
 	global $url, $ENGEL_ROOT;
 
 	if ($height > 0)
@@ -83,8 +81,8 @@ function displayPictur($UID, $height = "30") {
 function displayavatar($UID, $height = "30") {
 	global $con, $url, $ENGEL_ROOT;
 
-	if (GetPicturShow($UID) == 'Y')
-		return "&nbsp;" . displayPictur($UID, $height);
+	if (GetPictureShow($UID) == 'Y')
+		return "&nbsp;" . displayPicture($UID, $height);
 
 	$user = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($UID) . " LIMIT 1");
 	if (count($user) > 0)
