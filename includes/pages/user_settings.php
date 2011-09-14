@@ -155,10 +155,10 @@ function user_settings() {
 			echo "</form>\n";
 		}
 	
-		switch (GetPicturShow($_SESSION['UID'])) {
+		switch (GetPictureShow($_SESSION['UID'])) {
 			case 'Y' :
 				echo Get_Text('pub_einstellungen_PictureShow') . "<br />";
-				echo displayPictur($_SESSION['UID'], 0);
+				echo displayPicture($_SESSION['UID'], 0);
 				echo "<form action=\"./einstellungen.php\" method=\"post\">\n";
 				echo "<input type=\"hidden\" name=\"action\" value=\"delPicture\">\n";
 				echo "<input type=\"submit\" value=\"" . Get_Text("delete"), "\">\n";
@@ -166,7 +166,7 @@ function user_settings() {
 				break;
 			case 'N' :
 				echo Get_Text('pub_einstellungen_PictureNoShow') . "<br />";
-				echo displayPictur($_SESSION['UID'], 0);
+				echo displayPicture($_SESSION['UID'], 0);
 				echo "<form action=\"./einstellungen.php\" method=\"post\">\n";
 				echo "<input type=\"hidden\" name=\"action\" value=\"delPicture\">\n";
 				echo "<input type=\"submit\" value=\"" . Get_Text("delete"), "\">\n";
@@ -217,7 +217,7 @@ function user_settings() {
 					if (($_FILES["file"]["type"] == "image/jpeg") || ($_FILES["file"]["type"] == "image/png") || ($_FILES["file"]["type"] == "image/gif")) {
 						$data = addslashes(fread(fopen($_FILES["file"]["tmp_name"], "r"), filesize($_FILES["file"]["tmp_name"])));
 	
-						if (GetPicturShow($_SESSION['UID']) == "")
+						if (GetPictureShow($_SESSION['UID']) == "")
 							$SQL = "INSERT INTO `UserPicture` " .
 							"( `UID`,`Bild`, `ContentType`, `show`) " .
 							"VALUES ('" . $_SESSION['UID'] . "', '$data', '" . $_FILES["file"]["type"] . "', 'N')";
