@@ -37,9 +37,9 @@ function user_myshifts() {
 			$shift = $shift[0];
 			if (($shift['start'] - time() < $LETZTES_AUSTRAGEN * 60) || in_array('user_shifts_admin', $privileges)) {
 				sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
-				$msg = success("Your shift has been canceled successfully.");
+				$msg = success("Du wurdest aus der Schicht ausgetragen.");
 			} else
-				$msg = error("It's too late to cancel this shift.'");
+				$msg = error("Es ist zu spät um sich aus der Schicht auszutragen. Frage ggf. einen Orga.'");
 		} else
 			header("Location: " . page_link_to('user_myshifts'));
 	}
@@ -56,14 +56,14 @@ function user_myshifts() {
 		$html .= '<td>' . $shift['name'] . '</td>';
 		$html .= '<td>' . $shift['Comment'] . '</td>';
 		$html .= '<td>';
-		$html .= '<a href="' . page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '">edit</a>';
+		$html .= '<a href="' . page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '">bearbeiten</a>';
 		if ($shift['start'] - time() > $LETZTES_AUSTRAGEN * 60)
-			$html .= ' | <a href="' . page_link_to('user_myshifts') . '&cancel=' . $shift['id'] . '">cancel</a>';
+			$html .= ' | <a href="' . page_link_to('user_myshifts') . '&cancel=' . $shift['id'] . '">austragen</a>';
 		$html .= '</td>';
 		$html .= '</tr>';
 	}
 	if ($html == "")
-		$html = '<tr><td>None...</td><td></td><td></td><td></td><td></td><td>Go to <a href="' . page_link_to('user_shifts') . '">Shifts</a> to sign up for a shift.</td></tr>';
+		$html = '<tr><td>Keine...</td><td></td><td></td><td></td><td></td><td>Gehe zum <a href="' . page_link_to('user_shifts') . '">Schichtplan</a> um Dich für Schichten einzutragen.</td></tr>';
 
 	return template_render('../templates/user_myshifts.html', array (
 		'h' => $LETZTES_AUSTRAGEN,

@@ -71,7 +71,7 @@ function make_menu() {
 
 function make_onlineusers() {
 	global $privileges, $user;
-	$html = '<nav class="container"><h4>Engel online</h4>';
+	$html = '<nav class="container"><h4>Helfer online</h4>';
 
 	$query = "SELECT UID, Nick, lastLogIn " . "FROM User " . "WHERE (`lastLogIn` > '" . (time() - 60 * 60) . "') " . "ORDER BY lastLogIn DESC";
 	$users = sql_select($query);
