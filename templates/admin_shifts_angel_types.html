@@ -6,11 +6,17 @@
     <script type="text/javascript">
         document.getElementById("type_%id%_up").onclick = function(e){
             document.getElementById("type_%id%").value = (parseInt(document.getElementById("type_%id%").value) + 101) % 100;
-			return false;
+            document.getElementById("manual_angelmode").checked = true;
+            return false;
         };
         document.getElementById("type_%id%_down").onclick = function(e){
             document.getElementById("type_%id%").value = (parseInt(document.getElementById("type_%id%").value) +99) % 100;
-			return false;
+            document.getElementById("manual_angelmode").checked = true;
+            return false;
+        };
+        document.getElementById("type_%id%").onchange = function(e){
+            document.getElementById("manual_angelmode").checked = true;
+            return false;
         };
     </script>
 </p>

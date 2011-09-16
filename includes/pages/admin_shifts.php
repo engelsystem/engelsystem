@@ -226,7 +226,7 @@ function admin_shifts() {
 		unset ($_SESSION['admin_shifts_types']);
 	}
 
-	$room_select = html_select_key('rid', $room_array, '');
+	$room_select = html_select_key('rid', $room_array, $_REQUEST['rid']);
 	$angel_types = "";
 	foreach ($types as $type) {
 		$angel_types .= template_render('../templates/admin_shifts_angel_types.html', array (
@@ -244,7 +244,9 @@ function admin_shifts() {
 		'end' => date("Y-m-d H:i", $end),
 		'mode_single_selected' => $_REQUEST['mode'] == 'single' ? 'checked="checked"' : '',
 		'mode_multi_selected' => $_REQUEST['mode'] == 'multi' ? 'checked="checked"' : '',
+		'mode_multi_length' => !empty($_REQUEST['length'])? $_REQUEST['length'] : '120',
 		'mode_variable_selected' => $_REQUEST['mode'] == 'variable' ? 'checked="checked"' : '',
+		'mode_variable_hours' => !empty($_REQUEST['change_hours'])? $_REQUEST['change_hours'] : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22',
 		'angelmode_location_selected' => $_REQUEST['angelmode'] == 'location' ? 'checked="checked"' : '',
 		'angelmode_manually_selected' => $_REQUEST['angelmode'] == 'manually' ? 'checked="checked"' : ''
 	));

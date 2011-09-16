@@ -34,25 +34,25 @@
         </p>
         <p>
             <label>
-                <input type="radio" name="mode" value="multi" %mode_multi_selected%/>
+                <input type="radio" name="mode" id="multi_shifts" value="multi" %mode_multi_selected%/>
             </label>Mehrere Schichten erstellen:
         </p>
         <p>
             <label>
                 Schichtlänge in Minuten:
             </label>
-            <input type="text" name="length" value="120" />
+            <input type="text" name="length" value="%mode_multi_length%" onchange="document.getElementById('multi_shifts').checked = true;" />
         </p>
         <p>
             <label>
-                <input type="radio" name="mode" value="variable" %mode_variable_selected%/>
+                <input type="radio" name="mode" id="var_multi_shifts" value="variable" %mode_variable_selected%/>
             </label>Mehrere Schichten mit variabler Länge erstellen:
         </p>
         <p>
             <label>
                 Schichtwechsel-Stunden:
             </label>
-            <input type="text" name="change_hours" style="width: 300px;" value="00, 04, 08, 10, 12, 14, 16, 18, 20, 22" />
+            <input type="text" name="change_hours" style="width: 300px;" value="%mode_variable_hours%" onchange="document.getElementById('var_multi_shifts').checked = true;" />
         </p><h2>Benötigte Engel:</h2>
         <p>
             <label>
@@ -61,7 +61,7 @@
         </p>
         <p>
             <label>
-                <input type="radio" name="angelmode" value="manually" %angelmode_manually_selected%/>
+                <input type="radio" name="angelmode" id="manual_angelmode" value="manually" %angelmode_manually_selected%/>
             </label>Es werden folgende Engel benötigt:
         </p>%angel_types%
         <p>
