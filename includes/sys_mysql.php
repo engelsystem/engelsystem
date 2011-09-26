@@ -26,6 +26,7 @@ function sql_select($query) {
 		}
 		return $data;
 	} else {
+		print_r(debug_backtrace());
 		die('MySQL-query error: ' . $query . ", " . mysql_error($con));
 	}
 }

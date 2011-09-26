@@ -117,11 +117,16 @@ function admin_user() {
 			$html .= "Hier kannst Du die Benutzergruppen des Engels festlegen:<form action=\"" . page_link_to("admin_user") . "&action=save_groups&id=" . $id . "\" method=\"post\">\n";
 			$html .= '<table>';
 
-			list ($my_highest_group) = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($user['UID']) . " ORDER BY `uid`");
-			list ($his_highest_group) = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($id) . " ORDER BY `uid`");
+			$my_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($user['UID']) . " ORDER BY `uid` LIMIT 1");
+			if (count($my_highest_group) > 0)
+				$my_highest_group = $my_highest_group[0]['group_id'];			
+			
+			$his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($id) . " ORDER BY `uid` LIMIT 1");
+			if (count($his_highest_group) > 0)
+				$his_highest_group = $his_highest_group[0]['group_id'];
 
 			if ($id != $user['UID'] && $my_highest_group <= $his_highest_group) {
-				$groups = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = " . sql_escape($id) . ") WHERE `Groups`.`UID` >= " . sql_escape($my_highest_group['group_id']) . " ORDER BY `Groups`.`Name`");
+				$groups = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = " . sql_escape($id) . ") WHERE `Groups`.`UID` >= " . sql_escape($my_highest_group) . " ORDER BY `Groups`.`Name`");
 				foreach ($groups as $group)
 					$html .= '<tr><td><input type="checkbox" name="groups[]" value="' . $group['UID'] . '"' . ($group['group_id'] != "" ? ' checked="checked"' : '') . ' /></td><td>' . $group['Name'] . '</td></tr>';
 
@@ -138,7 +143,7 @@ function admin_user() {
 			$html .= "</form>";
 
 			$html .= "<hr />";
-			$html .= funktion_db_element_list_2row("Freeloader Shifts", "SELECT `Remove_Time`, `Length`, `Comment` FROM `ShiftFreeloader` WHERE UID=" . $_REQUEST['id']);
+			//$html .= funktion_db_element_list_2row("Freeloader Shifts", "SELECT `Remove_Time`, `Length`, `Comment` FROM `ShiftFreeloader` WHERE UID=" . $_REQUEST['id']);
 		} else {
 			switch ($_REQUEST['action']) {
 				case 'save_groups' :
@@ -195,7 +200,7 @@ function admin_user() {
 					"`Gekommen`= '" . sql_escape($_POST["eGekommen"]) . "', " .
 					"`Aktiv`= '" . sql_escape($_POST["eAktiv"]) . "', " .
 					"`Tshirt` = '" . sql_escape($_POST["eTshirt"]) . "', " .
-					"`Hometown` = '" .sql_escape( $_POST["Hometown"]) . "' " .
+					"`Hometown` = '" . sql_escape($_POST["Hometown"]) . "' " .
 					"WHERE `UID` = '" . sql_escape($id) .
 					"' LIMIT 1;";
 					sql_query($SQL);
@@ -227,23 +232,23 @@ function admin_user() {
 
 		$html .= "Anzahl Engel: $Zeilen<br /><br />\n";
 		$html .= '
-			<table width="100%" class="border" cellpadding="2" cellspacing="1"> <thead>
-			  <tr class="contenttopic">
-			    <th>
-			      <a href="' . page_link_to("admin_user") . '&OrderBy=Nick">Nick</a>
-			    </th>
-			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&OrderBy=Name">Name</a></th>
-			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Alter">Alter</a></th>
-			    <th>
-			      <a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a>
-			    </th>
-			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></th>
-			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></th>
-			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></th>
-			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></th>
-			    <th><a href="' . page_link_to("admin_user") . '&OrderBy=CreateDate">Registriert</a></th>
-			    <th>&Auml;nd.</th>
-			  </tr></thead>';
+					<table width="100%" class="border" cellpadding="2" cellspacing="1"> <thead>
+					  <tr class="contenttopic">
+					    <th>
+					      <a href="' . page_link_to("admin_user") . '&OrderBy=Nick">Nick</a>
+					    </th>
+					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&OrderBy=Name">Name</a></th>
+					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Alter">Alter</a></th>
+					    <th>
+					      <a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a>
+					    </th>
+					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></th>
+					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></th>
+					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></th>
+					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></th>
+					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=CreateDate">Registriert</a></th>
+					    <th>&Auml;nd.</th>
+					  </tr></thead>';
 		$Gekommen = 0;
 		$Active = 0;
 		$Tshirt = 0;

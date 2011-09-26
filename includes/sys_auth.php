@@ -10,7 +10,7 @@ function load_auth() {
 
 	if ($_SESSION['IP'] != $_SERVER['REMOTE_ADDR']) {
 		session_destroy();
-		header("Location: " . link_to_page($start));
+		header("Location: " . link_to_page('start'));
 	}
 
 	$user = null;
