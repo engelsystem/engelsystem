@@ -93,7 +93,8 @@ function user_shifts() {
 			$user_text = $user['Nick'];
 
 		return template_render('../templates/user_shifts_add.html', array (
-			'date' => date("Y-m-d H:i", $shift['start']) . ', ' . date("H:i", $shift['end'] - $shift['start']) . 'h',
+			//'date' => date("Y-m-d H:i", $shift['start']) . ', ' . date("H:i", $shift['end'] - $shift['start']) . 'h',
+			'date' => date("Y-m-d H:i", $shift['start']) . ', ' . shift_length($shift),
 			'title' => $shift['name'],
 			'location' => $shift['Name'],
 			'angel' => $user_text,

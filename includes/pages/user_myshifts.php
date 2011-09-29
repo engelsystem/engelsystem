@@ -21,7 +21,7 @@ function user_myshifts() {
 
 			return template_render('../templates/user_shifts_add.html', array (
 				'angel' => $user['Nick'],
-				'date' => date("Y-m-d H:i", $shift['start']) . ', ' . date("H", $shift['end'] - $shift['start']) . ' h',
+				'date' => date("Y-m-d H:i", $shift['start']) . ', ' . shift_length($shift),
 				'location' => $shift['Name'],
 				'title' => $shift['name'],
 				'type' => $shift['angel_type'],
