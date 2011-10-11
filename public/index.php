@@ -34,8 +34,12 @@ if (isset ($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && s
 $title = Get_Text($p);
 $content = "";
 
+if ($p == "ical") {
+	require_once ('includes/pages/user_ical.php');
+	user_ical();
+}
 // Recht dafür vorhanden?
-if (in_array($p, $privileges)) {
+elseif (in_array($p, $privileges)) {
 	if ($p == "news") {
 		require_once ('includes/pages/user_news.php');
 		$content = user_news();

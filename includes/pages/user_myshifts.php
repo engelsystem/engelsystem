@@ -1,7 +1,7 @@
 <?php
 
 
-//
+// Zeigt die Schichten an, die ein Benutzer belegt
 function user_myshifts() {
 	global $LETZTES_AUSTRAGEN;
 	global $user, $privileges;
@@ -44,6 +44,7 @@ function user_myshifts() {
 			header("Location: " . page_link_to('user_myshifts'));
 	}
 	$shifts = sql_select("SELECT * FROM `ShiftEntry` JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `UID`=" . sql_escape($user['UID']) . " ORDER BY `start`");
+	
 	$html = "";
 	foreach ($shifts as $shift) {
 		if (time() > $shift['end'])
