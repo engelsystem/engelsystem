@@ -1,6 +1,7 @@
 <?php
 function user_shifts() {
 	global $user, $privileges;
+	// Löschen einzelner Schicht-Einträge (Also Belegung einer Schicht von Engeln) durch Admins
 	if (isset ($_REQUEST['entry_id']) && in_array('user_shifts_admin', $privileges)) {
 		if (isset ($_REQUEST['entry_id']) && preg_match("/^[0-9]*$/", $_REQUEST['entry_id']))
 			$entry_id = $_REQUEST['entry_id'];
@@ -9,6 +10,58 @@ function user_shifts() {
 
 		sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($entry_id) . " LIMIT 1");
 		return success("Der Schicht-Eintrag wurde gelöscht..");
+	}
+	// Schicht bearbeiten
+	elseif (isset ($_REQUEST['edit_shift']) && in_array('admin_shifts', $privileges)) {
+		$msg = "";
+		$ok = true;
+
+		if (isset ($_REQUEST['edit_shift']) && preg_match("/^[0-9]*$/", $_REQUEST['edit_shift']))
+			$shift_id = $_REQUEST['edit_shift'];
+		else
+			header("Location: " . page_link_to('user_shifts'));
+
+		$shift = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+		if (count($shift) == 0)
+			header("Location: " . page_link_to('user_shifts'));
+		$shift = $shift[0];
+
+		// Locations laden
+		$rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
+		$room_array = array ();
+		foreach ($rooms as $room)
+			$room_array[$room['RID']] = $room['Name'];
+
+		// Engeltypen laden
+		$types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `Name`");
+		$needed_angel_types = array ();
+		foreach ($types as $type)
+			$needed_angel_types[$type['TID']] = 0;
+
+		$name = $shift['name'];
+		$rid = $shift['RID'];
+		$start = $shift['start'];
+		$end = $shift['end'];
+
+		$room_select = html_select_key('rid', $room_array, $rid);
+		$angel_types = "";
+		foreach ($types as $type) {
+			$angel_types .= template_render('../templates/admin_shifts_angel_types.html', array (
+				'id' => $type['TID'],
+				'type' => $type['Name'],
+				'value' => $needed_angel_types[$type['TID']]
+			));
+		}
+		return template_render('../templates/user_shifts_edit.html', array (
+			'msg' => $msg,
+			'name' => $name,
+			'room_select' => $room_select,
+			'start' => date("Y-m-d H:i", $start),
+			'end' => date("Y-m-d H:i", $end),
+			'angelmode_location_selected' => $_REQUEST['angelmode'] == 'location' ? 'checked="checked"' : '',
+			'angelmode_manually_selected' => $_REQUEST['angelmode'] == 'manually' ? 'checked="checked"' : '',
+			'angel_types' => $angel_types
+		));
 	}
 	// Schicht komplett löschen (nur für admins/user mit user_shifts_admin privileg)
 	elseif (isset ($_REQUEST['delete_shift']) && in_array('user_shifts_admin', $privileges)) {
@@ -129,7 +182,7 @@ function user_shifts() {
 			foreach ($shifts as $shift) {
 				$shift_row = '<tr><td>' . date(($id == 0 ? "Y-m-d " : "") . "H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . ($id == 0 ? "<br />" . $shift['Name'] : "") . '</td><td>' . $shift['name'];
 				if (in_array('admin_shifts', $privileges))
-					$shift_row .= ' <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
+					$shift_row .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
 				$shift_row .= '<br />';
 				$show_shift = false;
 				$angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `shift_id`=" . sql_escape($shift['SID']) . " AND `count` > 0 ORDER BY `AngelTypes`.`Name`");
