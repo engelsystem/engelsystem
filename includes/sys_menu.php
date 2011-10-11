@@ -3,6 +3,10 @@ function page_link_to($page) {
 	return '?p=' . $page;
 }
 
+function page_link_to_absolute($page) {
+	return (isset ($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . preg_replace("/\?.*$/", '', $_SERVER['REQUEST_URI']) . page_link_to($page);
+}
+
 function make_navigation() {
 	global $p;
 	global $privileges;

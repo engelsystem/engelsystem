@@ -44,7 +44,7 @@ function user_myshifts() {
 			header("Location: " . page_link_to('user_myshifts'));
 	}
 	$shifts = sql_select("SELECT * FROM `ShiftEntry` JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `UID`=" . sql_escape($user['UID']) . " ORDER BY `start`");
-	
+
 	$html = "";
 	foreach ($shifts as $shift) {
 		if (time() > $shift['end'])
@@ -66,10 +66,17 @@ function user_myshifts() {
 	if ($html == "")
 		$html = '<tr><td>Keine...</td><td></td><td></td><td></td><td></td><td>Gehe zum <a href="' . page_link_to('user_shifts') . '">Schichtplan</a> um Dich für Schichten einzutragen.</td></tr>';
 
+	if ($user['ical_key'] == "") {
+		$user['ical_key'] = md5($user['Nick'] . time() . rand());
+		sql_query("UPDATE `User` SET `ical_key`='" . sql_escape($user['ical_key']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
+	}
+
 	return template_render('../templates/user_myshifts.html', array (
 		'h' => $LETZTES_AUSTRAGEN,
 		'shifts' => $html,
-		'msg' => $msg
+		'msg' => $msg,
+		'ical_link' => page_link_to_absolute('ical') . '&key=' . $user['ical_key'],
+		'reset_link' => page_link_to('user_myshifts') . '&reset'
 	));
 }
 ?>
