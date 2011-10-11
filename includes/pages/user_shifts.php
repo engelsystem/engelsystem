@@ -21,6 +21,9 @@ function user_shifts() {
 		else
 			header("Location: " . page_link_to('user_shifts'));
 
+		if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1") > 0)
+			return error("Du kannst nur Schichten bearbeiten, bei denen niemand eingetragen ist.");
+
 		$shift = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
 		if (count($shift) == 0)
 			header("Location: " . page_link_to('user_shifts'));
@@ -33,7 +36,7 @@ function user_shifts() {
 			$room_array[$room['RID']] = $room['Name'];
 
 		// Engeltypen laden
-		$types = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `shift_id`=".sql_escape($shift_id)." ORDER BY `AngelTypes`.`Name`");
+		$types = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `shift_id`=" . sql_escape($shift_id) . " ORDER BY `AngelTypes`.`Name`");
 		$needed_angel_types = array ();
 		foreach ($types as $type)
 			$needed_angel_types[$type['TID']] = $type['count'];
@@ -42,6 +45,60 @@ function user_shifts() {
 		$rid = $shift['RID'];
 		$start = $shift['start'];
 		$end = $shift['end'];
+
+		if (isset ($_REQUEST['submit'])) {
+			// Name/Bezeichnung der Schicht, darf leer sein
+			$name = strip_request_item('name');
+
+			// Auswahl der sichtbaren Locations für die Schichten
+			if (isset ($_REQUEST['rid']) && preg_match("/^[0-9]+$/", $_REQUEST['rid']) && isset ($room_array[$_REQUEST['rid']]))
+				$rid = $_REQUEST['rid'];
+			else {
+				$ok = false;
+				$rid = $rooms[0]['RID'];
+				$msg .= error("Wähle bitte einen Raum aus.");
+			}
+
+			if (isset ($_REQUEST['start']) && $tmp = DateTime :: createFromFormat("Y-m-d H:i", trim($_REQUEST['start'])))
+				$start = $tmp->getTimestamp();
+			else {
+				$ok = false;
+				$msg .= error("Bitte gib einen Startzeitpunkt für die Schichten an.");
+			}
+
+			if (isset ($_REQUEST['end']) && $tmp = DateTime :: createFromFormat("Y-m-d H:i", trim($_REQUEST['end'])))
+				$end = $tmp->getTimestamp();
+			else {
+				$ok = false;
+				$msg .= error("Bitte gib einen Endzeitpunkt für die Schichten an.");
+			}
+
+			if ($start >= $end) {
+				$ok = false;
+				$msg .= error("Das Ende muss nach dem Startzeitpunkt liegen!");
+			}
+
+			foreach ($types as $type) {
+				if (isset ($_REQUEST['type_' . $type['TID']]) && preg_match("/^[0-9]+$/", trim($_REQUEST['type_' . $type['TID']]))) {
+					$needed_angel_types[$type['TID']] = trim($_REQUEST['type_' . $type['TID']]);
+				} else {
+					$ok = false;
+					$msg .= error("Bitte überprüfe die Eingaben für die benötigten Engel des Typs " . $type['Name'] . ".");
+				}
+			}
+			if (array_sum($needed_angel_types) == 0) {
+				$ok = false;
+				$msg .= error("Es werden 0 Engel benötigt. Bitte wähle benötigte Engel.");
+			}
+
+			if ($ok) {
+				sql_query("UPDATE `Shifts` SET `start`=" . sql_escape($start) . ", `end`=" . sql_escape($end) . ", `RID`=" . sql_escape($rid) . ", `name`='" . sql_escape($name) . "' WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+				sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`=" . sql_escape($shift_id));
+				foreach ($needed_angel_types as $type_id => $count)
+					sql_query("INSERT INTO `NeededAngelTypes` SET `shift_id`=" . sql_escape($shift_id) . ", `angel_type_id`=" . sql_escape($type_id) . ", `count`=" . sql_escape($count));
+				return success("Schicht gespeichert.");
+			}
+		}
 
 		$room_select = html_select_key('rid', $room_array, $rid);
 		$angel_types = "";
