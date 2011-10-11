@@ -33,10 +33,10 @@ function user_shifts() {
 			$room_array[$room['RID']] = $room['Name'];
 
 		// Engeltypen laden
-		$types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `Name`");
+		$types = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `shift_id`=".sql_escape($shift_id)." ORDER BY `AngelTypes`.`Name`");
 		$needed_angel_types = array ();
 		foreach ($types as $type)
-			$needed_angel_types[$type['TID']] = 0;
+			$needed_angel_types[$type['TID']] = $type['count'];
 
 		$name = $shift['name'];
 		$rid = $shift['RID'];
@@ -58,8 +58,6 @@ function user_shifts() {
 			'room_select' => $room_select,
 			'start' => date("Y-m-d H:i", $start),
 			'end' => date("Y-m-d H:i", $end),
-			'angelmode_location_selected' => $_REQUEST['angelmode'] == 'location' ? 'checked="checked"' : '',
-			'angelmode_manually_selected' => $_REQUEST['angelmode'] == 'manually' ? 'checked="checked"' : '',
 			'angel_types' => $angel_types
 		));
 	}
