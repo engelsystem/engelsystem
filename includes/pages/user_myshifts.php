@@ -7,7 +7,14 @@ function user_myshifts() {
 	global $user, $privileges;
 	$msg = "";
 
-	if (isset ($_REQUEST['edit']) && preg_match("/^[0-9]*$/", $_REQUEST['edit'])) {
+	if (isset ($_REQUEST['reset'])) {
+		if ($_REQUEST['reset'] == "ack") {
+			user_reset_ical_key();
+			return success("Key geändert.");
+		}
+		return template_render('../templates/user_myshifts_reset.html', array ());
+	}
+	elseif (isset ($_REQUEST['edit']) && preg_match("/^[0-9]*$/", $_REQUEST['edit'])) {
 		$id = $_REQUEST['edit'];
 		$shift = sql_select("SELECT `ShiftEntry`.`Comment`, `Shifts`.*, `Room`.`Name`, `AngelTypes`.`Name` as `angel_type` FROM `ShiftEntry` JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`TID`) JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `id`=" . sql_escape($id) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1");
 		if (count($shift) > 0) {
@@ -66,10 +73,8 @@ function user_myshifts() {
 	if ($html == "")
 		$html = '<tr><td>Keine...</td><td></td><td></td><td></td><td></td><td>Gehe zum <a href="' . page_link_to('user_shifts') . '">Schichtplan</a> um Dich für Schichten einzutragen.</td></tr>';
 
-	if ($user['ical_key'] == "") {
-		$user['ical_key'] = md5($user['Nick'] . time() . rand());
-		sql_query("UPDATE `User` SET `ical_key`='" . sql_escape($user['ical_key']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
-	}
+	if ($user['ical_key'] == "")
+		user_reset_ical_key();
 
 	return template_render('../templates/user_myshifts.html', array (
 		'h' => $LETZTES_AUSTRAGEN,
@@ -78,5 +83,11 @@ function user_myshifts() {
 		'ical_link' => page_link_to_absolute('ical') . '&key=' . $user['ical_key'],
 		'reset_link' => page_link_to('user_myshifts') . '&reset'
 	));
+}
+
+function user_reset_ical_key() {
+	global $user;
+	$user['ical_key'] = md5($user['Nick'] . time() . rand());
+	sql_query("UPDATE `User` SET `ical_key`='" . sql_escape($user['ical_key']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
 }
 ?>
