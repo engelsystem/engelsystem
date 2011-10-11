@@ -2,11 +2,11 @@
 ALTER TABLE `User` ADD `ical_key` VARCHAR( 32 ) NOT NULL;
 ALTER TABLE `User` ADD INDEX ( `ical_key` );
 
-INSERT INTO `engelsystem`.`Privileges` (
+INSERT INTO `Privileges` (
 `id` ,
 `name` ,
 `desc`
 )
 VALUES (
-NULL , 'ical', 'iCal Schicht Export'
+NULL , 'ical', 'iCal shift export'
 );
