@@ -133,6 +133,10 @@ fieldset p label {
 	width: 200px;
 }
 
+fieldset p label[for] {
+	width: auto;
+}
+
 fieldset p label input {
 	float: right;
 	margin: 2px 10px 0 0;

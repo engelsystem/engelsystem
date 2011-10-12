@@ -29,40 +29,55 @@
         </p><h2>Modus:</h2>
         <p>
             <label>
-                <input type="radio" name="mode" value="single" %mode_single_selected%/>
-            </label>Eine Schicht erstellen.
+                <input id="mode_single" type="radio" name="mode" value="single" %mode_single_selected%/>
+            </label>
+            <label for="mode_single">
+                Eine Schicht erstellen.
+            </label>
         </p>
         <p>
             <label>
                 <input type="radio" name="mode" id="multi_shifts" value="multi" %mode_multi_selected%/>
-            </label>Mehrere Schichten erstellen:
+            </label>
+            <label for="multi_shifts">
+                Mehrere Schichten erstellen:
+            </label>
         </p>
         <p>
             <label>
                 Schichtlänge in Minuten:
             </label>
-            <input type="text" name="length" value="%mode_multi_length%" onchange="document.getElementById('multi_shifts').checked = true;" />
+            <input type="text" name="length" value="%mode_multi_length%" onchange="document.getElementById('multi_shifts').checked = true;"/>
         </p>
         <p>
             <label>
                 <input type="radio" name="mode" id="var_multi_shifts" value="variable" %mode_variable_selected%/>
-            </label>Mehrere Schichten mit variabler Länge erstellen:
+            </label>
+            <label for="var_multi_shifts">
+                Mehrere Schichten mit variabler Länge erstellen:
+            </label>
         </p>
         <p>
             <label>
                 Schichtwechsel-Stunden:
             </label>
-            <input type="text" name="change_hours" style="width: 300px;" value="%mode_variable_hours%" onchange="document.getElementById('var_multi_shifts').checked = true;" />
+            <input type="text" name="change_hours" style="width: 300px;" value="%mode_variable_hours%" onchange="document.getElementById('var_multi_shifts').checked = true;"/>
         </p><h2>Benötigte Engel:</h2>
         <p>
             <label>
-                <input type="radio" name="angelmode" value="location" %angelmode_location_selected%/>
-            </label>Benötigte Engel vom Ort übernehmen.
+                <input id="angelmode_location" type="radio" name="angelmode" value="location" %angelmode_location_selected%/>
+            </label>
+            <label for="angelmode_location">
+                Benötigte Engel vom Ort übernehmen.
+            </label>
         </p>
         <p>
             <label>
                 <input type="radio" name="angelmode" id="manual_angelmode" value="manually" %angelmode_manually_selected%/>
-            </label>Es werden folgende Engel benötigt:
+            </label>
+            <label for="manual_angelmode">
+                Es werden folgende Engel benötigt:
+            </label>
         </p>%angel_types%
         <p>
             <input type="submit" name="preview" value="Vorschau" />

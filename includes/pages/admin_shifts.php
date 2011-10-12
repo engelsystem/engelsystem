@@ -11,6 +11,8 @@ function admin_shifts() {
 	$end = $start +24 * 60 * 60;
 	$mode = '';
 	$angelmode = '';
+	$length = '';
+	$change_hours = '';
 
 	// Locations laden
 	$rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
@@ -24,7 +26,7 @@ function admin_shifts() {
 	foreach ($types as $type)
 		$needed_angel_types[$type['TID']] = 0;
 
-	if (isset ($_REQUEST['preview'])) {
+	if (isset ($_REQUEST['preview']) || isset ($_REQUEST['back'])) {
 		// Name/Bezeichnung der Schicht, darf leer sein
 		$name = strip_request_item('name');
 
@@ -109,6 +111,10 @@ function admin_shifts() {
 			$ok = false;
 			$msg .= error("Bitte wähle benötigte Engel.");
 		}
+
+		// Beim Zurück-Knopf das Formular zeigen
+		if (isset ($_REQUEST['back']))
+			$ok = false;
 
 		// Alle Eingaben in Ordnung
 		if ($ok) {
@@ -200,8 +206,20 @@ function admin_shifts() {
 			$_SESSION['admin_shifts_shifts'] = $shifts;
 			$_SESSION['admin_shifts_types'] = $needed_angel_types;
 
+			$hidden_types = "";
+			foreach ($needed_angel_types as $type_id => $count)
+				$hidden_types .= '<input type="hidden" name="type_' . $type_id . '" value="' . $count . '" />';
 			return template_render('../templates/admin_shift_preview.html', array (
-				'shifts_table' => $shifts_table
+				'shifts_table' => $shifts_table,
+				'name' => $name,
+				'rid' => $rid,
+				'start' => date("Y-m-d H:i", $start),
+				'end' => date("Y-m-d H:i", $end),
+				'mode' => $mode,
+				'length' => $length,
+				'change_hours' => $change_hours,
+				'angelmode' => $angelmode,
+				'needed_angel_types' => $hidden_types
 			));
 		}
 
@@ -244,9 +262,9 @@ function admin_shifts() {
 		'end' => date("Y-m-d H:i", $end),
 		'mode_single_selected' => $_REQUEST['mode'] == 'single' ? 'checked="checked"' : '',
 		'mode_multi_selected' => $_REQUEST['mode'] == 'multi' ? 'checked="checked"' : '',
-		'mode_multi_length' => !empty($_REQUEST['length'])? $_REQUEST['length'] : '120',
+		'mode_multi_length' => !empty ($_REQUEST['length']) ? $_REQUEST['length'] : '120',
 		'mode_variable_selected' => $_REQUEST['mode'] == 'variable' ? 'checked="checked"' : '',
-		'mode_variable_hours' => !empty($_REQUEST['change_hours'])? $_REQUEST['change_hours'] : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22',
+		'mode_variable_hours' => !empty ($_REQUEST['change_hours']) ? $_REQUEST['change_hours'] : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22',
 		'angelmode_location_selected' => $_REQUEST['angelmode'] == 'location' ? 'checked="checked"' : '',
 		'angelmode_manually_selected' => $_REQUEST['angelmode'] == 'manually' ? 'checked="checked"' : ''
 	));
