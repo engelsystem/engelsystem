@@ -1,6 +1,6 @@
 <?php
 function admin_user() {
-	global $user;
+	global $user, $privileges;
 
 	$html = "";
 
@@ -119,8 +119,8 @@ function admin_user() {
 
 			$my_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($user['UID']) . " ORDER BY `uid` LIMIT 1");
 			if (count($my_highest_group) > 0)
-				$my_highest_group = $my_highest_group[0]['group_id'];			
-			
+				$my_highest_group = $my_highest_group[0]['group_id'];
+
 			$his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($id) . " ORDER BY `uid` LIMIT 1");
 			if (count($his_highest_group) > 0)
 				$his_highest_group = $his_highest_group[0]['group_id'];
@@ -232,23 +232,23 @@ function admin_user() {
 
 		$html .= "Anzahl Engel: $Zeilen<br /><br />\n";
 		$html .= '
-					<table width="100%" class="border" cellpadding="2" cellspacing="1"> <thead>
-					  <tr class="contenttopic">
-					    <th>
-					      <a href="' . page_link_to("admin_user") . '&OrderBy=Nick">Nick</a>
-					    </th>
-					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&OrderBy=Name">Name</a></th>
-					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Alter">Alter</a></th>
-					    <th>
-					      <a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a>
-					    </th>
-					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></th>
-					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></th>
-					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></th>
-					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></th>
-					    <th><a href="' . page_link_to("admin_user") . '&OrderBy=CreateDate">Registriert</a></th>
-					    <th>&Auml;nd.</th>
-					  </tr></thead>';
+										<table width="100%" class="border" cellpadding="2" cellspacing="1"> <thead>
+										  <tr class="contenttopic">
+										    <th>
+										      <a href="' . page_link_to("admin_user") . '&OrderBy=Nick">Nick</a>
+										    </th>
+										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&OrderBy=Name">Name</a></th>
+										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Alter">Alter</a></th>
+										    <th>
+										      <a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a>
+										    </th>
+										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></th>
+										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></th>
+										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></th>
+										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></th>
+										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=CreateDate">Registriert</a></th>
+										    <th>&Auml;nd.</th>
+										  </tr></thead>';
 		$Gekommen = 0;
 		$Active = 0;
 		$Tshirt = 0;
@@ -280,7 +280,10 @@ function admin_user() {
 				$title .= "jabber: " . mysql_result($Erg, $n, "jabber") . "<br />";
 
 			$html .= "<tr class=\"content\">\n";
-			$html .= "\t<td>" . mysql_result($Erg, $n, "Nick") . "</td>\n";
+			if (in_array("user_shifts_admin", $privileges))
+				$html .= "\t<td><a href=\"" . page_link_to("user_myshifts") . "&id=" . mysql_result($Erg, $n, "UID") . "\">" . mysql_result($Erg, $n, "Nick") . "</a></td>\n";
+			else
+				$html .= "\t<td>" . mysql_result($Erg, $n, "Nick") . "</td>\n";
 			$html .= "\t<td>" . mysql_result($Erg, $n, "Vorname") . " " . mysql_result($Erg, $n, "Name") . "</td>\n";
 			$html .= "\t<td>" . mysql_result($Erg, $n, "Alter") . "</td>\n";
 			$html .= "\t<td>";

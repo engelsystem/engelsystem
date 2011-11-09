@@ -7,6 +7,17 @@ function user_myshifts() {
 	global $user, $privileges;
 	$msg = "";
 
+	if (isset ($_REQUEST['id']) && in_array("user_shifts_admin", $privileges) && preg_match("/^[0-9]{1,}$/", $_REQUEST['id']) && sql_num_query("SELECT * FROM `User` WHERE `UID`=" . sql_escape($_REQUEST['id'])) > 0) {
+		$id = $_REQUEST['id'];
+	} else {
+		$id = $user['UID'];
+	}
+
+	list ($shifts_user) = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+
+	if ($id != $user['UID'])
+		$msg .= error("Du betrachtest die Schichten von " . $shifts_user['Nick'] . ".");
+
 	if (isset ($_REQUEST['reset'])) {
 		if ($_REQUEST['reset'] == "ack") {
 			user_reset_ical_key();
@@ -16,7 +27,7 @@ function user_myshifts() {
 	}
 	elseif (isset ($_REQUEST['edit']) && preg_match("/^[0-9]*$/", $_REQUEST['edit'])) {
 		$id = $_REQUEST['edit'];
-		$shift = sql_select("SELECT `ShiftEntry`.`Comment`, `Shifts`.*, `Room`.`Name`, `AngelTypes`.`Name` as `angel_type` FROM `ShiftEntry` JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`TID`) JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `id`=" . sql_escape($id) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1");
+		$shift = sql_select("SELECT `ShiftEntry`.`Comment`, `Shifts`.*, `Room`.`Name`, `AngelTypes`.`Name` as `angel_type` FROM `ShiftEntry` JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`TID`) JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `id`=" . sql_escape($id) . " AND `UID`=" . sql_escape($shifts_user['UID']) . " LIMIT 1");
 		if (count($shift) > 0) {
 			$shift = $shift[0];
 
@@ -27,7 +38,7 @@ function user_myshifts() {
 			}
 
 			return template_render('../templates/user_shifts_add.html', array (
-				'angel' => $user['Nick'],
+				'angel' => $shifts_user['Nick'],
 				'date' => date("Y-m-d H:i", $shift['start']) . ', ' . shift_length($shift),
 				'location' => $shift['Name'],
 				'title' => $shift['name'],
@@ -39,18 +50,18 @@ function user_myshifts() {
 	}
 	elseif (isset ($_REQUEST['cancel']) && preg_match("/^[0-9]*$/", $_REQUEST['cancel'])) {
 		$id = $_REQUEST['cancel'];
-		$shift = sql_select("SELECT * FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1");
+		$shift = sql_select("SELECT * FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " AND `UID`=" . sql_escape($shifts_user['UID']) . " LIMIT 1");
 		if (count($shift) > 0) {
 			$shift = $shift[0];
 			if (($shift['start'] - time() < $LETZTES_AUSTRAGEN * 60) || in_array('user_shifts_admin', $privileges)) {
 				sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
-				$msg = success("Du wurdest aus der Schicht ausgetragen.");
+				$msg .= success("Du wurdest aus der Schicht ausgetragen.");
 			} else
-				$msg = error("Es ist zu spät um sich aus der Schicht auszutragen. Frage ggf. einen Orga.'");
+				$msg .= error("Es ist zu spät um sich aus der Schicht auszutragen. Frage ggf. einen Orga.'");
 		} else
 			header("Location: " . page_link_to('user_myshifts'));
 	}
-	$shifts = sql_select("SELECT * FROM `ShiftEntry` JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `UID`=" . sql_escape($user['UID']) . " ORDER BY `start`");
+	$shifts = sql_select("SELECT * FROM `ShiftEntry` JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `UID`=" . sql_escape($shifts_user['UID']) . " ORDER BY `start`");
 
 	$html = "";
 	foreach ($shifts as $shift) {
@@ -73,20 +84,19 @@ function user_myshifts() {
 	if ($html == "")
 		$html = '<tr><td>Keine...</td><td></td><td></td><td></td><td></td><td>Gehe zum <a href="' . page_link_to('user_shifts') . '">Schichtplan</a> um Dich für Schichten einzutragen.</td></tr>';
 
-	if ($user['ical_key'] == "")
-		user_reset_ical_key();
+	if ($shifts_user['ical_key'] == "")
+		user_reset_ical_key($shifts_user);
 
 	return template_render('../templates/user_myshifts.html', array (
 		'h' => $LETZTES_AUSTRAGEN,
 		'shifts' => $html,
 		'msg' => $msg,
-		'ical_link' => page_link_to_absolute('ical') . '&key=' . $user['ical_key'],
+		'ical_link' => page_link_to_absolute('ical') . '&key=' . $shifts_user['ical_key'],
 		'reset_link' => page_link_to('user_myshifts') . '&reset'
 	));
 }
 
-function user_reset_ical_key() {
-	global $user;
+function user_reset_ical_key($user) {
 	$user['ical_key'] = md5($user['Nick'] . time() . rand());
 	sql_query("UPDATE `User` SET `ical_key`='" . sql_escape($user['ical_key']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
 }

@@ -251,7 +251,7 @@ function user_shifts() {
 						$entry_list = array ();
 						foreach ($entries as $entry) {
 							if (in_array('user_shifts_admin', $privileges))
-								$entry_list[] = $entry['Nick'] . ' <a href="' . page_link_to('user_shifts') . '&entry_id=' . $entry['id'] . '">[x]</a>';
+								$entry_list[] = '<a href="' . page_link_to('user_myshifts') . '&id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> <a href="' . page_link_to('user_shifts') . '&entry_id=' . $entry['id'] . '">[x]</a>';
 							else
 								$entry_list[] = $entry['Nick'];
 						}
