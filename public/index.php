@@ -98,6 +98,10 @@ elseif (in_array($p, $privileges)) {
 		require_once ('includes/pages/admin_arrive.php');
 		$content = admin_arrive();
 	}
+	elseif ($p == "admin_active") {
+		require_once ('includes/pages/admin_active.php');
+		$content = admin_active();
+	}
 	elseif ($p == "admin_news") {
 		require_once ('includes/pages/admin_news.php');
 		$content = admin_news();

@@ -37,6 +37,7 @@ function make_navigation() {
 	// Admin Navigation
 	$menu .= make_navigation_for(Get_Text('admin/'), array (
 		"admin_arrive",
+		"admin_active",
 		"admin_user",
 		"admin_usershifts",
 		"admin_questions",
