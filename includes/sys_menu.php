@@ -39,6 +39,7 @@ function make_navigation() {
 		"admin_arrive",
 		"admin_active",
 		"admin_user",
+		"admin_free",
 		"admin_usershifts",
 		"admin_questions",
 		"admin_angel_types",

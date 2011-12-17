@@ -10,3 +10,6 @@ INSERT INTO `Privileges` (
 VALUES (
 NULL , 'ical', 'iCal shift export'
 );
+
+/* DECT Nummern können für GSM auch 5-stellig sein. */
+ALTER TABLE `User` CHANGE `DECT` `DECT` VARCHAR( 5 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;

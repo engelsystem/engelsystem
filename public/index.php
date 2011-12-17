@@ -102,6 +102,10 @@ elseif (in_array($p, $privileges)) {
 		require_once ('includes/pages/admin_active.php');
 		$content = admin_active();
 	}
+	elseif ($p == "admin_free") {
+		require_once ('includes/pages/admin_free.php');
+		$content = admin_free();
+	}
 	elseif ($p == "admin_news") {
 		require_once ('includes/pages/admin_news.php');
 		$content = admin_news();
