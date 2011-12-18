@@ -1,185 +1,23 @@
+= Installation eines frischen Engelsystems =
 
-DIRS:
------
-./DB
-	Standart DB File
-./www
-	daten fuer http verbindung
-./www-ssl
-	daten fuer https verbindung
+Mindestvorrausetzungen (bzw. getestet unter):
+ * PHP 5.3.3-7+squeeze3 with Suhosin-Patch (cgi-fcgi)
+ * mysqld  Ver 5.1.49-3 for debian-linux-gnu on x86_64 ((Debian))
+ * Webserver mit PHP-Anbindung, z.B. lighttpd, nginx oder Apache
 
-Anfordeungen:
--------------
-	PHP 5.xx
-	mysql >=4.0
+Vorgehen:
+ * Auschecken der Dateien vom master unter https://vcs.wybt.net/engelsystem/git/
+ * Der Webserver muss Schreibrechte auf das Verzeichnis import bekommen, für alle anderen Dateien reichen Leserechte.
+ * Der Webserver muss auf public als http-root zeigen.
+ * Empfehlung: Dirlisting sollte deaktiviert sein.
+ * Es muss eine MySQL-Datenbank angelegt werden und ein User existieren, der alle Rechte auf dieser Datenbank besitzt.
+ * Es muss die db/install.sql importiert/ausgeführt werden.
+ * Es müssen die Default-Configs von install/default-conf/*.php nach config/ kopiert werden.
+ * Die kopierten Configs in config/ müssen an die Installation angepasst werden, Erklärungen dazu gibt es in der jeweiligen Config-Datei.
+ * Engelsystem im Browser aufrufen, Anmeldung mit admin:admin vornehmen und Admin-Passwort ändern.
 
-Systemconfig:
--------------
-../includes/config.php
-	algemeien einstellungen
-../includes/config_db.php
-	einstellungen der DB
-	Achtung: DB user braucht folgende Rechte: SELECT, CREATE, INSERT, ALTER, UPDATE, INDEX, DELETE, DROP
+Das Engelsystem ist jetzt einsatzbereit.
 
-php.ini:
---------
-add:
-	allow_url_fopen = On ## deprecated, ought be removed
-	date.timezone = Europe/Berlin
-Engelsystem Setup-Guide
+Fehler bitte an bugs@engelsystem.de melden.
 
-1. Installation des Grundsystems:
-Ich gehe in der Doku von Debian Etch mit Apache2, mysql5 und php4 aus.
-
-1.1. Installieren der benoetigten Programme:
-	apt-get install vim apache2 mysql-common mysql-server php5-mysql \
-	libapache2-mod-php5 subversion openssl ssl-cert
-
-1.2. Configuration von apache2:
-Erstellen von http und https http-root:
-	mkdir /var/www/http/
-	mkdir /var/www/https/
-Erstellen der SSL-Certifikate:
-	mkdir /etc/apache2/ssl/
-	openssl req $@ -new -x509 -days 365 -nodes -out \
-	/etc/apache2/ssl/apache.pem -keyout /etc/apache2/apache.pem
-
-Ausgabe:
-	Generating a 1024 bit RSA private key
-	writing new private key to ?/etc/apache2/ssl/apache.pem?
-	...
-	Country Name (2 letter code) [AU]: DE
-	State or Province Name (full name) [Some-State]: B
-	Locality Name (eg, city): Berlin
-	Organization Name (eg, company) [Internet Widgits Pty Ltd]: CCC e.V.
-	Organizational Unit Name (eg, section): Angels
-	Common Name (eg, YOUR name): $server_url
-	Email Address: $admin_mail
-Dann:
-	chmod 600 /etc/apache2/ssl/apache.pem
-
-Apache2 Configs:
-	/etc/apache2/sites-available/default:
-
-NameVirtualHost *:80
-<VirtualHost *:80>
-        ServerAdmin webmaster@localhost
-
-        DocumentRoot /var/www/http/
-        <Directory />
-                Options FollowSymLinks
-                AllowOverride None
-        </Directory>
-        <Directory /var/www/http/>
-                Options Indexes FollowSymLinks MultiViews
-                AllowOverride None
-                Order allow,deny
-                allow from all
-                # This directive allows us to have apache2's default start page
-                # in /apache2-default/, but still have / go to the right place
-                #RedirectMatch ^/$ /apache2-default/
-        </Directory>
-
-        ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-        <Directory "/usr/lib/cgi-bin">
-                AllowOverride None
-                Options ExecCGI -MultiViews +SymLinksIfOwnerMatch
-                Order allow,deny
-                Allow from all
-        </Directory>
-
-        ErrorLog /var/log/apache2/error.log
-
-        # Possible values include: debug, info, notice, warn, error, crit,
-        # alert, emerg.
-        LogLevel warn
-
-        CustomLog /var/log/apache2/access.log combined
-        ServerSignature On
-
-    Alias /doc/ "/usr/share/doc/"
-    <Directory "/usr/share/doc/">
-        Options Indexes MultiViews FollowSymLinks
-        AllowOverride None
-        Order deny,allow
-        Deny from all
-        Allow from 127.0.0.0/255.0.0.0 ::1/128
-    </Directory>
-
-</VirtualHost>
-
-	/etc/apache2/sites-available/https:
-
-<VirtualHost *:443>
-	# SSL (START)
-	SSLEngine on
-	SSLCertificateFile /etc/apache2/ssl/apache.pem
-	SSLCertificateKeyFile /etc/apache2/apache.pem
-	
-	# SSL (ENDE)
-	ServerAdmin ichdasich@jabber.ccc.de
-
-	#kann auch einfach eine IP sein
-	ServerName localhost
-	DocumentRoot /var/www/https
-	<Directory /var/www/https>
-		Order Deny,Allow
-		Allow from all
-		# Zeige keine Verzeichnisse an
-		Options -Indexes
-		AddDefaultCharset ISO-8859-1
-	</Directory>
-</VirtualHost>
-
-	/etc/apache2/ports.conf:
-
-Listen 80
-Listen 443
-
-Dann:
-	a2enmod ssl
-	a2ensite https
-	/etc/init.d/apache2 restart
-
-1.3. MySQL configurieren:
-MySQL-Passwort fuer root setzen:
-	mysql -u root mysql
-	UPDATE user SET Password=PASSWORD('neues_passwort') WHERE user='root';
-	mysql> FLUSH PRIVILEGES;
-	mysql -u root -p
-	mysql> CREATE DATABASE tabel;
-
-2. Engelsystem besorgen und installieren:
-
-2.1. Auschecken aus dem SVN:
-	cd /root/
-	svn co svn://svn.cccv.de/engel-system
-
-2.2. Kopieren der Dateien ins http/s-root:
-	cp /root/engel-system/www/* /var/www/http/
-	cp /root/engel-system/www-ssl/* /var/www/https/
-	cp /root/engel-system/default-conf/www-ssl/inc/ /var/www/https/
-
-2.3. Bearbeiten der Configurationsdatein:
-	vim /var/www/https/inc/config_db.php
-	-> Daten entsprechend anpassen
-	vim /var/www/https/inc/config.php
-	$url: url des servers
-	$ENGEL_ROOT = "/";
-2.4. Einfuegen der Datenbanken:
-	mysql tabel -u root -ppassword < ChangeLog.sql
-        mysql tabel -u root -ppassword < Himmel.sql
-        mysql tabel -u root -ppassword < Messages.sql
-        mysql tabel -u root -ppassword < Sprache.sql
-        mysql tabel -u root -ppassword < User.sql
-        mysql tabel -u root -ppassword < UserCVS.sql
-        mysql tabel -u root -ppassword < UserPicture.sql
-
-3. Das Engelsystem an sich:
-	
-3.1. User und Passwoerter:
-Das System sollte nun funktionieren. Einloggen kann man sich mit 'admin:admin'
-(aendern nicht vergessen ;-)). Es sollte sich dir dann die Adminoberflaeche des
-Systems zeigen.
-
-
+Trac: https://vcs.wybt.net/engelsystem/trac/
