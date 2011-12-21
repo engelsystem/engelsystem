@@ -3,6 +3,7 @@
 
 // Engel registrieren
 function guest_register() {
+	/*
 	$nick = "";
 	$lastname = "";
 	$prename = "";
@@ -27,7 +28,7 @@ function guest_register() {
 			form_submit('submit', Get_Text("makeuser_Anmelden"))
 		))
 	));
-
+*/
 	global $SubscribeMailinglist, $enable_tshirt_size;
 
 	$html = "";
@@ -96,7 +97,7 @@ function guest_register() {
 		}
 
 		if (isset ($error))
-			$html .= error($error);
+			$html .= error($error, true);
 	} else {
 		// init vars
 		$_POST["Nick"] = "";
@@ -252,7 +253,7 @@ function guest_login() {
 		} // Ende Check, ob User angemeldet wurde}
 	}
 	if (isset ($ErrorText))
-		$html .= error(Get_Text($ErrorText));
+		$html .= error(Get_Text($ErrorText), true);
 	$html .= guest_login_form();
 	return $html;
 }

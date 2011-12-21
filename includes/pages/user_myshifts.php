@@ -16,12 +16,12 @@ function user_myshifts() {
 	list ($shifts_user) = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
 
 	if ($id != $user['UID'])
-		$msg .= error("Du betrachtest die Schichten von " . $shifts_user['Nick'] . ".");
+		$msg .= info(sprintf("You are viewing %s's shifts.", $shifts_user['Nick']), true);
 
 	if (isset ($_REQUEST['reset'])) {
 		if ($_REQUEST['reset'] == "ack") {
 			user_reset_ical_key();
-			return success("Key geändert.");
+			return success("Key geändert.", true);
 		}
 		return template_render('../templates/user_myshifts_reset.html', array ());
 	}
@@ -55,9 +55,9 @@ function user_myshifts() {
 			$shift = $shift[0];
 			if (($shift['start'] - time() < $LETZTES_AUSTRAGEN * 60) || in_array('user_shifts_admin', $privileges)) {
 				sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
-				$msg .= success("Du wurdest aus der Schicht ausgetragen.");
+				$msg .= success("Du wurdest aus der Schicht ausgetragen.", true);
 			} else
-				$msg .= error("Es ist zu spät um sich aus der Schicht auszutragen. Frage ggf. einen Orga.'");
+				$msg .= error("Es ist zu spät um sich aus der Schicht auszutragen. Frage ggf. einen Orga.", true);
 		} else
 			header("Location: " . page_link_to('user_myshifts'));
 	}

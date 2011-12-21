@@ -29,20 +29,20 @@ function user_questions() {
 					sql_query("INSERT INTO `Questions` SET `UID`=" . sql_escape($user['UID']) . ", `Question`='" . sql_escape($question) . "'");
 					header("Location: " . page_link_to("user_questions"));
 				} else
-					return error("Gib eine Frage ein!");
+					return error("Gib eine Frage ein!", true);
 				break;
 			case 'delete' :
 				if (isset ($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id']))
 					$id = $_REQUEST['id'];
 				else
-					return error("Incomplete call, missing Question ID.");
+					return error("Incomplete call, missing Question ID.", true);
 
 				$question = sql_select("SELECT * FROM `Questions` WHERE `QID`=" . sql_escape($id) . " LIMIT 1");
 				if (count($question) > 0 && $question[0]['UID'] == $user['UID']) {
 					sql_query("DELETE FROM `Questions` WHERE `QID`=" . sql_escape($id) . " LIMIT 1");
 					header("Location: " . page_link_to("user_questions"));
 				} else
-					return error("No question found.");
+					return error("No question found.", true);
 				break;
 		}
 	}

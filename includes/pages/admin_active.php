@@ -15,7 +15,7 @@ function admin_active() {
 			$count = strip_request_item('count');
 		else {
 			$ok = false;
-			$msg .= error("Please enter a number of angels to be marked as active.");
+			$msg .= error("Please enter a number of angels to be marked as active.", true);
 		}
 
 		if ($ok)
@@ -27,7 +27,7 @@ function admin_active() {
 				sql_query("UPDATE `User` SET `Aktiv` = 1 WHERE `UID`=" . sql_escape($usr['UID']));
 
 			$limit = "";
-			$msg = success("Marked angels.");
+			$msg = success("Marked angels.", true);
 		} else {
 			$set_active = '<a href="' . page_link_to('admin_active') . '&amp;serach=' . $search . '">&laquo; back</a> | <a href="' . page_link_to('admin_active') . '&amp;search=' . $search . '&amp;count=' . $count . '&amp;set_active&amp;ack">apply</a>';
 		}
@@ -36,22 +36,22 @@ function admin_active() {
 	if (isset ($_REQUEST['active']) && preg_match("/^[0-9]+$/", $_REQUEST['active'])) {
 		$id = $_REQUEST['active'];
 		sql_query("UPDATE `User` SET `Aktiv`=1 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-		$msg = success("Angel has been marked as active.");
+		$msg = success("Angel has been marked as active.", true);
 	}
 	elseif (isset ($_REQUEST['not_active']) && preg_match("/^[0-9]+$/", $_REQUEST['not_active'])) {
 		$id = $_REQUEST['not_active'];
 		sql_query("UPDATE `User` SET `Aktiv`=0 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-		$msg = success("Angel has been marked as not active.");
+		$msg = success("Angel has been marked as not active.", true);
 	}
 	elseif (isset ($_REQUEST['tshirt']) && preg_match("/^[0-9]+$/", $_REQUEST['tshirt'])) {
 		$id = $_REQUEST['tshirt'];
 		sql_query("UPDATE `User` SET `Tshirt`=1 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-		$msg = success("Angel has got a t-shirt.");
+		$msg = success("Angel has got a t-shirt.", true);
 	}
 	elseif (isset ($_REQUEST['not_tshirt']) && preg_match("/^[0-9]+$/", $_REQUEST['not_tshirt'])) {
 		$id = $_REQUEST['not_tshirt'];
 		sql_query("UPDATE `User` SET `Tshirt`=0 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-		$msg = success("Angel has got no t-shirt.");
+		$msg = success("Angel has got no t-shirt.", true);
 	}
 
 	$users = sql_select("SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, SUM(`end`-`start`) as `shift_length` FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` WHERE `User`.`Gekommen` = 1 GROUP BY `User`.`UID` ORDER BY `shift_length` DESC" . $limit);

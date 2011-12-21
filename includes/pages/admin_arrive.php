@@ -8,12 +8,12 @@ function admin_arrive() {
 	if (isset ($_REQUEST['reset']) && preg_match("/^[0-9]*$/", $_REQUEST['reset'])) {
 		$id = $_REQUEST['reset'];
 		sql_query("UPDATE `User` SET `Gekommen`=0 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-		$msg = success("Reset done. Angel has not arrived.");
+		$msg = success("Reset done. Angel has not arrived.", true);
 	}
 	elseif (isset ($_REQUEST['arrived']) && preg_match("/^[0-9]*$/", $_REQUEST['arrived'])) {
 		$id = $_REQUEST['arrived'];
 		sql_query("UPDATE `User` SET `Gekommen`=1 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-		$msg = success("Angel has been marked as arrived.");
+		$msg = success("Angel has been marked as arrived.", true);
 	}
 
 	$users = sql_select("SELECT * FROM `User` ORDER BY `Nick`");

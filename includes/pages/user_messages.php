@@ -64,28 +64,28 @@ function user_messages() {
 				if (isset ($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id']))
 					$id = $_REQUEST['id'];
 				else
-					return error("Incomplete call, missing Message ID.");
+					return error("Incomplete call, missing Message ID.", true);
 
 				$message = sql_select("SELECT * FROM `Messages` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
 				if (count($message) > 0 && $message[0]['RUID'] == $user['UID']) {
 					sql_query("UPDATE `Messages` SET `isRead`='Y' WHERE `id`=" . sql_escape($id) . " LIMIT 1");
 					header("Location: " . page_link_to("user_messages"));
 				} else
-					return error("No Message found.");
+					return error("No Message found.", true);
 				break;
 
 			case "delete" :
 				if (isset ($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id']))
 					$id = $_REQUEST['id'];
 				else
-					return error("Incomplete call, missing Message ID.");
+					return error("Incomplete call, missing Message ID.", true);
 
 				$message = sql_select("SELECT * FROM `Messages` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
 				if (count($message) > 0 && $message[0]['SUID'] == $user['UID']) {
 					sql_query("DELETE FROM `Messages` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
 					header("Location: " . page_link_to("user_messages"));
 				} else
-					return error("No Message found.");
+					return error("No Message found.", true);
 				break;
 
 			case "send" :
@@ -95,12 +95,12 @@ function user_messages() {
 					sql_query("INSERT INTO `Messages` SET `Datum`=" . sql_escape(time()) . ", `SUID`=" . sql_escape($user['UID']) . ", `RUID`=" . sql_escape($to) . ", `Text`='" . sql_escape($text) . "'");
 					header("Location: " . page_link_to("user_messages"));
 				} else {
-					return error(Get_Text("pub_messages_Send_Error"));
+					return error(Get_Text("pub_messages_Send_Error"), true);
 				}
 				break;
 
 			default :
-				return error("Wrong action.");
+				return error("Wrong action.", true);
 		}
 	}
 }

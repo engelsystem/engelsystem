@@ -26,7 +26,7 @@ function admin_import() {
 				fclose($test_handle);
 				unlink('../import/tmp');
 			} else {
-				$msg = error("Webserver has no write-permission on import directory.");
+				$msg = error("Webserver has no write-permission on import directory.", true);
 			}
 
 			if (isset ($_REQUEST['submit'])) {
@@ -36,7 +36,7 @@ function admin_import() {
 
 					if (!$fp) {
 						$ok = false;
-						$msg = error("File 'https://$PentabarfXMLhost/$PentabarfXMLpath" . $_REQUEST["url"] . "' not readable!" . "[$errstr ($errno)]");
+						$msg = error("File 'https://$PentabarfXMLhost/$PentabarfXMLpath" . $_REQUEST["url"] . "' not readable!" . "[$errstr ($errno)]", true);
 					} else {
 						$fileOut = fopen($import_file, "w");
 						$head = 'GET /' . $PentabarfXMLpath . $_REQUEST["url"] . ' HTTP/1.1' . "\r\n" .
@@ -75,7 +75,7 @@ function admin_import() {
 						}
 						fclose($fileOut);
 						fclose($fp);
-						$msg .= success("Es wurden $Zeilen Zeilen eingelesen.");
+						$msg .= success("Es wurden $Zeilen Zeilen eingelesen.", true);
 					}
 				}
 				elseif (isset ($_FILES['xcal_file']) && ($_FILES['xcal_file']['error'] == 0)) {
@@ -83,16 +83,16 @@ function admin_import() {
 						libxml_use_internal_errors(true);
 						if (simplexml_load_file($import_file) === false) {
 							$ok = false;
-							$msg = error("No valid xml/xcal file provided.");
+							$msg = error("No valid xml/xcal file provided.", true);
 							unlink($import_file);
 						}
 					} else {
 						$ok = false;
-						$msg = error("File upload went wrong.");
+						$msg = error("File upload went wrong.", true);
 					}
 				} else {
 					$ok = false;
-					$msg = error("Please provide some data.");
+					$msg = error("Please provide some data.", true);
 				}
 			}
 

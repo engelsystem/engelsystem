@@ -58,7 +58,7 @@ function user_news_comments() {
 		if (isset ($_REQUEST["text"])) {
 			$text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['text']));
 			sql_query("INSERT INTO `news_comments` (`Refid`, `Datum`, `Text`, `UID`) VALUES ('" . sql_escape($nid) . "', '" . date("Y-m-d H:i:s") . "', '" . sql_escape($text) . "', '" . sql_escape($user["UID"]) . "')");
-			$html .= success("Eintrag wurde gespeichert");
+			$html .= success("Eintrag wurde gespeichert", true);
 		}
 
 		$html .= '<a href="' . page_link_to("news") . '">&laquo; Back</a>';
@@ -114,7 +114,7 @@ function user_news() {
 		sql_query("INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`) " .
 		"VALUES ('" . sql_escape(time()) . "', '" . sql_escape($_POST["betreff"]) . "', '" . sql_escape($_POST["text"]) . "', '" . sql_escape($user['UID']) .
 		"', '" . sql_escape($_POST["treffen"]) . "');");
-		$html .= success(Get_Text(4));
+		$html .= success(Get_Text(4), true);
 	}
 
 	if (isset ($_REQUEST['page']) && preg_match("/^[0-9]{1,}$/", $_REQUEST['page']))

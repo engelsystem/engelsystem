@@ -36,7 +36,7 @@ function admin_groups() {
 				if (isset ($_REQUEST['id']) && preg_match("/^-[0-9]{1,11}$/", $_REQUEST['id']))
 					$id = $_REQUEST['id'];
 				else
-					return error("Incomplete call, missing Groups ID.");
+					return error("Incomplete call, missing Groups ID.", true);
 
 				$room = sql_select("SELECT * FROM `Groups` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
 				if (count($room) > 0) {
@@ -62,14 +62,14 @@ function admin_groups() {
 						'privileges' => $privileges_html
 					));
 				} else
-					return error("No Group found.");
+					return error("No Group found.", true);
 				break;
 
 			case 'save' :
 				if (isset ($_REQUEST['id']) && preg_match("/^-[0-9]{1,11}$/", $_REQUEST['id']))
 					$id = $_REQUEST['id'];
 				else
-					return error("Incomplete call, missing Groups ID.");
+					return error("Incomplete call, missing Groups ID.", true);
 
 				$room = sql_select("SELECT * FROM `Groups` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
 				if (!is_array($_REQUEST['privileges']))
@@ -82,7 +82,7 @@ function admin_groups() {
 							sql_query("INSERT INTO `GroupPrivileges` SET `group_id`=" . sql_escape($id) . ", `privilege_id`=" . sql_escape($priv));
 					header("Location: " . page_link_to("admin_groups"));
 				} else
-					return error("No Group found.");
+					return error("No Group found.", true);
 				break;
 		}
 	}

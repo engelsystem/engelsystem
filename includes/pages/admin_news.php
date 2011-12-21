@@ -11,7 +11,7 @@ function admin_news() {
 				if (isset ($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id']))
 					$id = $_REQUEST['id'];
 				else
-					return error("Incomplete call, missing News ID.");
+					return error("Incomplete call, missing News ID.", true);
 
 				$news = sql_select("SELECT * FROM `News` WHERE `ID`=" . sql_escape($id) . " LIMIT 1");
 				if (count($news) > 0) {
@@ -45,14 +45,14 @@ function admin_news() {
 					$html .= "<input type=\"submit\" name=\"submit\" value=\"Löschen\">\n";
 					$html .= "</form>";
 				} else
-					return error("No News found.");
+					return error("No News found.", true);
 				break;
 
 			case 'save' :
 				if (isset ($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id']))
 					$id = $_REQUEST['id'];
 				else
-					return error("Incomplete call, missing News ID.");
+					return error("Incomplete call, missing News ID.", true);
 
 				$news = sql_select("SELECT * FROM `News` WHERE `ID`=" . sql_escape($id) . " LIMIT 1");
 				if (count($news) > 0) {
@@ -62,14 +62,14 @@ function admin_news() {
 					"', `Treffen`='" . sql_escape($_POST["eTreffen"]) . "' WHERE `ID`=".sql_escape($id)." LIMIT 1");
 					header("Location: " . page_link_to("news"));
 				} else
-					return error("No News found.");
+					return error("No News found.", true);
 				break;
 
 			case 'delete' :
 				if (isset ($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id']))
 					$id = $_REQUEST['id'];
 				else
-					return error("Incomplete call, missing News ID.");
+					return error("Incomplete call, missing News ID.", true);
 
 				$news = sql_select("SELECT * FROM `News` WHERE `ID`=" . sql_escape($id) . " LIMIT 1");
 				if (count($news) > 0) {
@@ -78,7 +78,7 @@ function admin_news() {
 					sql_query("DELETE FROM `News` WHERE `ID`=" . sql_escape($id) . " LIMIT 1");
 					header("Location: " . page_link_to("news"));
 				} else
-					return error("No News found.");
+					return error("No News found.", true);
 				break;
 		}
 	}

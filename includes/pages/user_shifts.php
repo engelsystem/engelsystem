@@ -9,7 +9,7 @@ function user_shifts() {
 			header("Location: " . page_link_to('user_shifts'));
 
 		sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($entry_id) . " LIMIT 1");
-		return success("Der Schicht-Eintrag wurde gelöscht..");
+		return success("Der Schicht-Eintrag wurde gelöscht..", true);
 	}
 	// Schicht bearbeiten
 	elseif (isset ($_REQUEST['edit_shift']) && in_array('admin_shifts', $privileges)) {
@@ -22,7 +22,7 @@ function user_shifts() {
 			header("Location: " . page_link_to('user_shifts'));
 
 		if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1") > 0)
-			return error("Du kannst nur Schichten bearbeiten, bei denen niemand eingetragen ist.");
+			return error("Du kannst nur Schichten bearbeiten, bei denen niemand eingetragen ist.", true);
 
 		$shift = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
 		if (count($shift) == 0)
@@ -56,26 +56,26 @@ function user_shifts() {
 			else {
 				$ok = false;
 				$rid = $rooms[0]['RID'];
-				$msg .= error("Wähle bitte einen Raum aus.");
+				$msg .= error("Wähle bitte einen Raum aus.", true);
 			}
 
 			if (isset ($_REQUEST['start']) && $tmp = DateTime :: createFromFormat("Y-m-d H:i", trim($_REQUEST['start'])))
 				$start = $tmp->getTimestamp();
 			else {
 				$ok = false;
-				$msg .= error("Bitte gib einen Startzeitpunkt für die Schichten an.");
+				$msg .= error("Bitte gib einen Startzeitpunkt für die Schichten an.", true);
 			}
 
 			if (isset ($_REQUEST['end']) && $tmp = DateTime :: createFromFormat("Y-m-d H:i", trim($_REQUEST['end'])))
 				$end = $tmp->getTimestamp();
 			else {
 				$ok = false;
-				$msg .= error("Bitte gib einen Endzeitpunkt für die Schichten an.");
+				$msg .= error("Bitte gib einen Endzeitpunkt für die Schichten an.", true);
 			}
 
 			if ($start >= $end) {
 				$ok = false;
-				$msg .= error("Das Ende muss nach dem Startzeitpunkt liegen!");
+				$msg .= error("Das Ende muss nach dem Startzeitpunkt liegen!", true);
 			}
 
 			foreach ($types as $type) {
@@ -83,12 +83,12 @@ function user_shifts() {
 					$needed_angel_types[$type['id']] = trim($_REQUEST['type_' . $type['id']]);
 				} else {
 					$ok = false;
-					$msg .= error("Bitte überprüfe die Eingaben für die benötigten Engel des Typs " . $type['name'] . ".");
+					$msg .= error("Bitte überprüfe die Eingaben für die benötigten Engel des Typs " . $type['name'] . ".", true);
 				}
 			}
 			if (array_sum($needed_angel_types) == 0) {
 				$ok = false;
-				$msg .= error("Es werden 0 Engel benötigt. Bitte wähle benötigte Engel.");
+				$msg .= error("Es werden 0 Engel benötigt. Bitte wähle benötigte Engel.", true);
 			}
 
 			if ($ok) {
@@ -96,7 +96,7 @@ function user_shifts() {
 				sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`=" . sql_escape($shift_id));
 				foreach ($needed_angel_types as $type_id => $count)
 					sql_query("INSERT INTO `NeededAngelTypes` SET `shift_id`=" . sql_escape($shift_id) . ", `angel_type_id`=" . sql_escape($type_id) . ", `count`=" . sql_escape($count));
-				return success("Schicht gespeichert.");
+				return success("Schicht gespeichert.", true);
 			}
 		}
 
@@ -136,7 +136,7 @@ function user_shifts() {
 			sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`=" . sql_escape($shift_id));
 			sql_query("DELETE FROM `Shifts` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
 
-			return success("Die Schicht wurde gelöscht.");
+			return success("Die Schicht wurde gelöscht.", true);
 		}
 
 		return template_render('../templates/user_shifts_admin_delete.html', array (
@@ -184,11 +184,11 @@ function user_shifts() {
 			$entries = sql_select("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']));
 			foreach ($entries as $entry)
 				if ($entry['UID'] == $user_id)
-					return error("This angel does already have an entry for this shift.");
+					return error("This angel does already have an entry for this shift.", true);
 
 			$comment = strip_request_item_nl('comment');
 			sql_query("INSERT INTO `ShiftEntry` SET `Comment`='" . sql_escape($comment) . "', `UID`=" . sql_escape($user_id) . ", `TID`=" . sql_escape($type_id) . ", `SID`=" . sql_escape($shift_id));
-			return success("Du bist eingetragen. Danke!") . '<a href="' . page_link_to('user_myshifts') . '">Meine Schichten &raquo;</a>';
+			return success("Du bist eingetragen. Danke!", true) . '<a href="' . page_link_to('user_myshifts') . '">Meine Schichten &raquo;</a>';
 		}
 
 		if (in_array('user_shifts_admin', $privileges)) {

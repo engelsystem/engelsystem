@@ -36,26 +36,26 @@ function admin_shifts() {
 		else {
 			$ok = false;
 			$rid = $rooms[0]['RID'];
-			$msg .= error("Wähle bitte einen Raum aus.");
+			$msg .= error("Wähle bitte einen Raum aus.", true);
 		}
 
 		if (isset ($_REQUEST['start']) && $tmp = DateTime :: createFromFormat("Y-m-d H:i", trim($_REQUEST['start'])))
 			$start = $tmp->getTimestamp();
 		else {
 			$ok = false;
-			$msg .= error("Bitte gib einen Startzeitpunkt für die Schichten an.");
+			$msg .= error("Bitte gib einen Startzeitpunkt für die Schichten an.", true);
 		}
 
 		if (isset ($_REQUEST['end']) && $tmp = DateTime :: createFromFormat("Y-m-d H:i", trim($_REQUEST['end'])))
 			$end = $tmp->getTimestamp();
 		else {
 			$ok = false;
-			$msg .= error("Bitte gib einen Endzeitpunkt für die Schichten an.");
+			$msg .= error("Bitte gib einen Endzeitpunkt für die Schichten an.", true);
 		}
 
 		if ($start >= $end) {
 			$ok = false;
-			$msg .= error("Das Ende muss nach dem Startzeitpunkt liegen!");
+			$msg .= error("Das Ende muss nach dem Startzeitpunkt liegen!", true);
 		}
 
 		if (isset ($_REQUEST['mode'])) {
@@ -68,7 +68,7 @@ function admin_shifts() {
 					$length = trim($_REQUEST['length']);
 				} else {
 					$ok = false;
-					$msg .= error("Bitte gib eine Schichtlänge in Minuten an.");
+					$msg .= error("Bitte gib eine Schichtlänge in Minuten an.", true);
 				}
 			}
 			elseif ($_REQUEST['mode'] == 'variable') {
@@ -77,12 +77,12 @@ function admin_shifts() {
 					$change_hours = explode(",", $_REQUEST['change_hours']);
 				} else {
 					$ok = false;
-					$msg .= error("Bitte gib die Schichtwechsel-Stunden kommagetrennt ein.");
+					$msg .= error("Bitte gib die Schichtwechsel-Stunden kommagetrennt ein.", true);
 				}
 			}
 		} else {
 			$ok = false;
-			$msg .= error("Bitte wähle einen Modus.");
+			$msg .= error("Bitte wähle einen Modus.", true);
 		}
 
 		if (isset ($_REQUEST['angelmode'])) {
@@ -96,20 +96,20 @@ function admin_shifts() {
 						$needed_angel_types[$type['id']] = trim($_REQUEST['type_' . $type['id']]);
 					} else {
 						$ok = false;
-						$msg .= error("Bitte überprüfe die Eingaben für die benötigten Engel des Typs " . $type['name'] . ".");
+						$msg .= error("Bitte überprüfe die Eingaben für die benötigten Engel des Typs " . $type['name'] . ".", true);
 					}
 				}
 				if (array_sum($needed_angel_types) == 0) {
 					$ok = false;
-					$msg .= error("Es werden 0 Engel benötigt. Bitte wähle benötigte Engel.");
+					$msg .= error("Es werden 0 Engel benötigt. Bitte wähle benötigte Engel.", true);
 				}
 			} else {
 				$ok = false;
-				$msg .= error("Bitte Wähle einen Modus für die benötigten Engel.");
+				$msg .= error("Bitte Wähle einen Modus für die benötigten Engel.", true);
 			}
 		} else {
 			$ok = false;
-			$msg .= error("Bitte wähle benötigte Engel.");
+			$msg .= error("Bitte wähle benötigte Engel.", true);
 		}
 
 		// Beim Zurück-Knopf das Formular zeigen
@@ -238,7 +238,7 @@ function admin_shifts() {
 			}
 		}
 
-		$msg = success("Schichten angelegt.");
+		$msg = success("Schichten angelegt.", true);
 	} else {
 		unset ($_SESSION['admin_shifts_shifts']);
 		unset ($_SESSION['admin_shifts_types']);

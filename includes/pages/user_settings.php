@@ -101,10 +101,10 @@ function user_settings() {
 						sql_query("UPDATE `User` SET `Passwort`='" . sql_escape(PassCrypt($_REQUEST['new_pw'])) . "' WHERE `UID`=" . sql_escape($user['UID']) . " LIMIT 1");
 						header("Location: " . page_link_to("user_settings"));
 					} else {
-						$html .= error(Get_Text(30));
+						$html .= error(Get_Text(30), true);
 					}
 				} else {
-					$html .= error(Get_Text(31));
+					$html .= error(Get_Text(31), true);
 				}
 				return $html;
 				break;

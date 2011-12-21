@@ -165,12 +165,12 @@ function admin_user() {
 								if (in_array($group, $grouplist))
 									sql_query("INSERT INTO `UserGroups` SET `uid`=" .
 									sql_escape($id) . ", `group_id`=" . sql_escape($group));
-							$html .= success("Benutzergruppen gespeichert.");
+							$html .= success("Benutzergruppen gespeichert.", true);
 						} else {
-							$html .= error("Du kannst keine Engel mit mehr Rechten bearbeiten.");
+							$html .= error("Du kannst keine Engel mit mehr Rechten bearbeiten.", true);
 						}
 					} else {
-						$html .= error("Du kannst Deine eigenen Rechte nicht bearbeiten.");
+						$html .= error("Du kannst Deine eigenen Rechte nicht bearbeiten.", true);
 					}
 					break;
 
@@ -179,9 +179,9 @@ function admin_user() {
 						sql_query("DELETE FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
 						sql_query("DELETE FROM `UserGroups` WHERE `uid`=" . sql_escape($id));
 						sql_query("UPDATE `ShiftEntry` SET `UID`=0, `Comment`=NULL WHERE `UID`=" . sql_escape($id));
-						$html .= success("Benutzer gelöscht!");
+						$html .= success("Benutzer gelöscht!", true);
 					} else {
-						$html .= error("Du kannst Dich nicht selber löschen!");
+						$html .= error("Du kannst Dich nicht selber löschen!", true);
 					}
 					break;
 
@@ -204,15 +204,15 @@ function admin_user() {
 					"WHERE `UID` = '" . sql_escape($id) .
 					"' LIMIT 1;";
 					sql_query($SQL);
-					$html .= success("Änderung wurde gespeichert...\n");
+					$html .= success("Änderung wurde gespeichert...\n", true);
 					break;
 
 				case 'change_pw' :
 					if ($_REQUEST['new_pw'] != "" && $_REQUEST['new_pw'] == $_REQUEST['new_pw2']) {
 						sql_query("UPDATE `User` SET `Passwort`='" . sql_escape(PassCrypt($_REQUEST['new_pw'])) . "' WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-						$html .= success("Passwort neu gesetzt.");
+						$html .= success("Passwort neu gesetzt.", true);
 					} else {
-						$html .= error("Die Eingaben müssen übereinstimmen und dürfen nicht leer sein!");
+						$html .= error("Die Eingaben müssen übereinstimmen und dürfen nicht leer sein!", true);
 					}
 					break;
 			}

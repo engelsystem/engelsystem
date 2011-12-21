@@ -58,7 +58,7 @@ function admin_rooms() {
 				if (isset ($_REQUEST['RID']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['RID']))
 					$rid = $_REQUEST['RID'];
 				else
-					return error("Incomplete call, missing Room ID.");
+					return error("Incomplete call, missing Room ID.", true);
 
 				$room = sql_select("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
 				if (count($room) > 0) {
@@ -89,14 +89,14 @@ function admin_rooms() {
 						'angel_types' => $angel_types
 					));
 				} else
-					return error("No Room found.");
+					return error("No Room found.", true);
 				break;
 
 			case 'changesave' :
 				if (isset ($_REQUEST['RID']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['RID']))
 					$rid = $_REQUEST['RID'];
 				else
-					return error("Incomplete call, missing Room ID.");
+					return error("Incomplete call, missing Room ID.", true);
 
 				$room = sql_select("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
 				if (count($room) > 0) {
@@ -119,21 +119,21 @@ function admin_rooms() {
 					}
 					header("Location: " . page_link_to("admin_rooms"));
 				} else
-					return error("No Room found.");
+					return error("No Room found.", true);
 				break;
 
 			case 'delete' :
 				if (isset ($_REQUEST['RID']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['RID']))
 					$rid = $_REQUEST['RID'];
 				else
-					return error("Incomplete call, missing Room ID.");
+					return error("Incomplete call, missing Room ID.", true);
 
 				if (sql_num_query("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1") > 0) {
 					sql_query("DELETE FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
 					sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($rid) . " LIMIT 1");
 					header("Location: " . page_link_to("admin_rooms"));
 				} else
-					return error("No Room found.");
+					return error("No Room found.", true);
 				break;
 
 		}

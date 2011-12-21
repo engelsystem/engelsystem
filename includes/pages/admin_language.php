@@ -86,7 +86,7 @@ function admin_language() {
 
 					$html .= $sql_save . "<br />";
 					$Erg = sql_query($sql_save);
-					$html .= success("$k Save: OK<br />\n");
+					$html .= success("$k Save: OK<br />\n", true);
 				} else
 					if (mysql_result($erg_test, 0, "Text") != $v) {
 						$sql_save = "UPDATE `Sprache` SET `Text`='"
@@ -97,7 +97,7 @@ function admin_language() {
 
 						$html .= $sql_save . "<br />";
 						$Erg = sql_query($sql_save);
-						$html .= success(" $k Update: OK<br />\n");
+						$html .= success(" $k Update: OK<br />\n", true);
 					} else
 						$html .= "\t $k no changes<br />\n";
 			}
