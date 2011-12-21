@@ -3,6 +3,31 @@
 
 // Engel registrieren
 function guest_register() {
+	$nick = "";
+	$lastname = "";
+	$prename = "";
+	$age = 23;
+	$tel = "";
+	$dect = "";
+	$mobile = "";
+	$mail = "";
+
+	return page(array (
+		Get_Text("makeuser_text1"),
+		form(array (
+			form_text('nick', Get_Text("makeuser_Nickname") . "*", $nick),
+			form_text('lastname', Get_Text("makeuser_Nachname"), $lastname),
+			form_text('lastname', Get_Text("makeuser_Vorname"), $lastname),
+			form_text('age', Get_Text("makeuser_Alter"), $age),
+			form_text('tel', Get_Text("makeuser_Telefon"), $tel),
+			form_text('dect', Get_Text("makeuser_DECT"), $tel),
+			form_text('mobile', Get_Text("makeuser_Handy"), $mobile),
+			form_text('mail', Get_Text("makeuser_E-Mail") . "*", $mail),
+			info(Get_Text("makeuser_text3"), true),
+			form_submit('submit', Get_Text("makeuser_Anmelden"))
+		))
+	));
+
 	global $SubscribeMailinglist, $enable_tshirt_size;
 
 	$html = "";
@@ -170,7 +195,7 @@ function guest_register() {
 
 		$engel_types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
 		foreach ($engel_types as $engel_type) {
-			$Name = $engel_type['Name'] . Get_Text("inc_schicht_engel");
+			$Name = $engel_type['name'] . Get_Text("inc_schicht_engel");
 			$html .= "<option value=\"" . $Name . "\"";
 
 			if ($_POST["Art"] == $Name)

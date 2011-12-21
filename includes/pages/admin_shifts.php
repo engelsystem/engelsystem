@@ -24,7 +24,7 @@ function admin_shifts() {
 	$types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
 	$needed_angel_types = array ();
 	foreach ($types as $type)
-		$needed_angel_types[$type['TID']] = 0;
+		$needed_angel_types[$type['id']] = 0;
 
 	if (isset ($_REQUEST['preview']) || isset ($_REQUEST['back'])) {
 		// Name/Bezeichnung der Schicht, darf leer sein
@@ -92,11 +92,11 @@ function admin_shifts() {
 			elseif ($_REQUEST['angelmode'] == 'manually') {
 				$angelmode = 'manually';
 				foreach ($types as $type) {
-					if (isset ($_REQUEST['type_' . $type['TID']]) && preg_match("/^[0-9]+$/", trim($_REQUEST['type_' . $type['TID']]))) {
-						$needed_angel_types[$type['TID']] = trim($_REQUEST['type_' . $type['TID']]);
+					if (isset ($_REQUEST['type_' . $type['id']]) && preg_match("/^[0-9]+$/", trim($_REQUEST['type_' . $type['id']]))) {
+						$needed_angel_types[$type['id']] = trim($_REQUEST['type_' . $type['id']]);
 					} else {
 						$ok = false;
-						$msg .= error("Bitte überprüfe die Eingaben für die benötigten Engel des Typs " . $type['Name'] . ".");
+						$msg .= error("Bitte überprüfe die Eingaben für die benötigten Engel des Typs " . $type['name'] . ".");
 					}
 				}
 				if (array_sum($needed_angel_types) == 0) {
@@ -196,8 +196,8 @@ function admin_shifts() {
 				$shifts_table .= '<tr><td>' . date("Y-m-d H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . '<br />' . $room_array[$shift['RID']] . '</td>';
 				$shifts_table .= '<td>' . $shift['name'];
 				foreach ($types as $type) {
-					if (isset ($needed_angel_types[$type['TID']]) && $needed_angel_types[$type['TID']] > 0)
-						$shifts_table .= '<br /><b>' . $type['Name'] . ':</b> ' . $needed_angel_types[$type['TID']] . ' missing';
+					if (isset ($needed_angel_types[$type['id']]) && $needed_angel_types[$type['id']] > 0)
+						$shifts_table .= '<br /><b>' . $type['name'] . ':</b> ' . $needed_angel_types[$type['id']] . ' missing';
 				}
 				$shifts_table .= '</td></tr>';
 			}
@@ -249,8 +249,8 @@ function admin_shifts() {
 	foreach ($types as $type) {
 		$angel_types .= template_render('../templates/admin_shifts_angel_types.html', array (
 			'id' => $type['TID'],
-			'type' => $type['Name'],
-			'value' => $needed_angel_types[$type['TID']]
+			'type' => $type['name'],
+			'value' => $needed_angel_types[$type['id']]
 		));
 	}
 	return template_render('../templates/admin_shifts.html', array (

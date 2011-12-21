@@ -69,7 +69,7 @@ function admin_rooms() {
 					foreach ($room_angel_types as $room_angel_type) {
 						if ($room_angel_type['count'] == "")
 							$room_angel_type['count'] = "0";
-						$angel_types .= '<tr><td>' . $room_angel_type['Name'] . '</td><td><input type="text" name="angel_type_' . $room_angel_type['TID'] . '" value="' . $room_angel_type['count'] . '" /></td></tr>';
+						$angel_types .= '<tr><td>' . $room_angel_type['name'] . '</td><td><input type="text" name="angel_type_' . $room_angel_type['TID'] . '" value="' . $room_angel_type['count'] . '" /></td></tr>';
 					}
 
 					$html .= template_render('../templates/admin_rooms_edit_form.html', array (

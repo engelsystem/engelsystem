@@ -24,14 +24,14 @@ function load_shift_basics() {
 	}
 
 	// erstellt ein Array der Engeltypen
-	$engel_types = sql_select("SELECT `TID`, `Name` FROM `EngelType` ORDER BY `Name`");
+	$engel_types = sql_select("SELECT * FROM `EngelType` ORDER BY `name`");
 	foreach ($engel_types as $engel_type) {
 		$EngelType[$i] = array (
-			'TID' => $engel_type['TID'],
-			'Name' => $engel_type['Name'] . Get_Text("inc_schicht_engel")
+			'id' => $engel_type['id'],
+			'name' => $engel_type['name'] . Get_Text("inc_schicht_engel")
 		);
-		$EngelTypeID[$engel_type['TID']] = $engel_type['Name'] . Get_Text("inc_schicht_engel");
-		$TID2Name[$engel_type['TID']] = $engel_type['Name'];
+		$EngelTypeID[$engel_type['id']] = $engel_type['name'] . Get_Text("inc_schicht_engel");
+		$TID2Name[$engel_type['id']] = $engel_type['name'];
 	}
 
 	// Erste Schicht suchen

@@ -79,11 +79,11 @@ function user_shifts() {
 			}
 
 			foreach ($types as $type) {
-				if (isset ($_REQUEST['type_' . $type['TID']]) && preg_match("/^[0-9]+$/", trim($_REQUEST['type_' . $type['TID']]))) {
-					$needed_angel_types[$type['TID']] = trim($_REQUEST['type_' . $type['TID']]);
+				if (isset ($_REQUEST['type_' . $type['id']]) && preg_match("/^[0-9]+$/", trim($_REQUEST['type_' . $type['id']]))) {
+					$needed_angel_types[$type['id']] = trim($_REQUEST['type_' . $type['id']]);
 				} else {
 					$ok = false;
-					$msg .= error("Bitte überprüfe die Eingaben für die benötigten Engel des Typs " . $type['Name'] . ".");
+					$msg .= error("Bitte überprüfe die Eingaben für die benötigten Engel des Typs " . $type['name'] . ".");
 				}
 			}
 			if (array_sum($needed_angel_types) == 0) {
@@ -105,8 +105,8 @@ function user_shifts() {
 		foreach ($types as $type) {
 			$angel_types .= template_render('../templates/admin_shifts_angel_types.html', array (
 				'id' => $type['TID'],
-				'type' => $type['Name'],
-				'value' => $needed_angel_types[$type['TID']]
+				'type' => $type['name'],
+				'value' => $needed_angel_types[$type['id']]
 			));
 		}
 		return template_render('../templates/user_shifts_edit.html', array (
@@ -206,7 +206,7 @@ function user_shifts() {
 			'title' => $shift['name'],
 			'location' => $shift['Name'],
 			'angel' => $user_text,
-			'type' => $type['Name'],
+			'type' => $type['name'],
 			'comment' => ""
 		));
 	} else {
@@ -262,7 +262,7 @@ function user_shifts() {
 							} else
 								$entry_list[] = ($angeltype['count'] - count($entries)) . ' Helfer gebraucht';
 
-						$shift_row .= '<b>' . $angeltype['Name'] . ':</b> ';
+						$shift_row .= '<b>' . $angeltype['name'] . ':</b> ';
 						$shift_row .= join(", ", $entry_list);
 						$shift_row .= '<br />';
 					}
