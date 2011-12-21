@@ -106,6 +106,7 @@ a.sprache img {
 
 table {
     border-collapse: collapse;
+	margin-top: 5px;
 }
 
 fieldset hr {
@@ -194,12 +195,22 @@ tr:hover .hidden {
     background: #fff;
 }
 
+.error, .info, .success {
+	background: #f0f0f0;
+	border: 1px solid #888;
+	border-radius: 2px;
+	color: #000;
+	padding: 5px;
+}
+
 .error {
-    color: #f00;
+	background: #f99;
+	border-color: #900;
 }
 
 .success {
-    color: #090;
+	background: #9f9;
+	border-color: #090;
 }
 
 .notice {
@@ -261,4 +272,74 @@ tr:hover .hidden {
 	margin: 0;
 	text-align: right;
 	width: 42px;
+}
+
+.toolbar {
+	margin: 5px 0 10px 0;
+}
+
+.button {
+	background: #f0f0f0;
+	border: 1px solid #888;
+	border-radius: 4px;
+	margin-right: 5px;
+	padding: 2px 5px;
+	text-decoration: none;
+}
+
+.button:hover {
+	background: #fff;
+}
+
+
+.form {
+	border: 1px solid #888;
+	border-radius: 2px;
+	margin: 10px 0;
+	padding: 10px 10px 0 10px;
+}
+
+.form_element {
+	/* clear: left; */
+	min-height: 32px;
+	margin-bottom: 10px;
+}
+
+.form_label {
+	display: block;
+	float: left;
+	width: 250px;
+}
+
+.form_input {
+	margin-left: 250px;
+}
+
+.form input[type="text"], .form textarea {
+	background: #fff;
+	border: 1px solid #888;
+	color: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	padding: 2px;
+	width: 350px;
+}
+
+.form input[disabled="disabled"] {
+	background: #f0f0f0;
+	color: #999;
+}
+
+.form input[type="submit"] {
+	cursor: pointer;
+	font-family: inherit;
+	font-size: inherit;
+}
+
+.form input[type="checkbox"] {
+	margin-right: 10px;
+}
+
+.form ul {
+	list-style: none;
 }

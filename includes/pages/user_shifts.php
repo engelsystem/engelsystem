@@ -36,7 +36,7 @@ function user_shifts() {
 			$room_array[$room['RID']] = $room['Name'];
 
 		// Engeltypen laden
-		$types = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `shift_id`=" . sql_escape($shift_id) . " ORDER BY `AngelTypes`.`Name`");
+		$types = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`) WHERE `shift_id`=" . sql_escape($shift_id) . " ORDER BY `AngelTypes`.`name`");
 		$needed_angel_types = array ();
 		foreach ($types as $type)
 			$needed_angel_types[$type['TID']] = $type['count'];
@@ -162,7 +162,7 @@ function user_shifts() {
 		else
 			header("Location: " . page_link_to('user_shifts'));
 
-		$type = sql_select("SELECT * FROM `AngelTypes` WHERE `TID`=" . sql_escape($type_id) . " LIMIT 1");
+		$type = sql_select("SELECT * FROM `AngelTypes` WHERE `id`=" . sql_escape($type_id) . " LIMIT 1");
 		if (count($type) == 0)
 			header("Location: " . page_link_to('user_shifts'));
 		$type = $type[0];
@@ -240,9 +240,9 @@ function user_shifts() {
 					$shift_row .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
 				$shift_row .= '<br />';
 				$show_shift = false;
-				$angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `shift_id`=" . sql_escape($shift['SID']) . " AND `count` > 0 ORDER BY `AngelTypes`.`Name`");
+				$angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`) WHERE `shift_id`=" . sql_escape($shift['SID']) . " AND `count` > 0 ORDER BY `AngelTypes`.`name`");
 				if (count($angeltypes) == 0)
-					$angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`TID`) WHERE `room_id`=" . sql_escape($shift['RID']) . " AND `count` > 0 ORDER BY `AngelTypes`.`Name`");
+					$angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`) WHERE `room_id`=" . sql_escape($shift['RID']) . " AND `count` > 0 ORDER BY `AngelTypes`.`name`");
 
 				if (count($angeltypes) > 0) {
 					$my_shift = sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0;

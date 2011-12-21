@@ -63,7 +63,7 @@ function admin_rooms() {
 				$room = sql_select("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
 				if (count($room) > 0) {
 					list ($room) = $room;
-					$room_angel_types = sql_select("SELECT * FROM `AngelTypes` LEFT OUTER JOIN `NeededAngelTypes` ON (`AngelTypes`.`TID` = `NeededAngelTypes`.`angel_type_id` AND `NeededAngelTypes`.`room_id`=" . sql_escape($rid) . ") ORDER BY `AngelTypes`.`Name`");
+					$room_angel_types = sql_select("SELECT * FROM `AngelTypes` LEFT OUTER JOIN `NeededAngelTypes` ON (`AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id` AND `NeededAngelTypes`.`room_id`=" . sql_escape($rid) . ") ORDER BY `AngelTypes`.`name`");
 
 					$angel_types = "";
 					foreach ($room_angel_types as $room_angel_type) {
@@ -101,7 +101,7 @@ function admin_rooms() {
 				$room = sql_select("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
 				if (count($room) > 0) {
 					list ($room) = $room;
-					$room_angel_types = sql_select("SELECT * FROM `AngelTypes` LEFT OUTER JOIN `NeededAngelTypes` ON (`AngelTypes`.`TID` = `NeededAngelTypes`.`angel_type_id` AND `NeededAngelTypes`.`room_id`=" . sql_escape($rid) . ") ORDER BY `AngelTypes`.`Name`");
+					$room_angel_types = sql_select("SELECT * FROM `AngelTypes` LEFT OUTER JOIN `NeededAngelTypes` ON (`AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id` AND `NeededAngelTypes`.`room_id`=" . sql_escape($rid) . ") ORDER BY `AngelTypes`.`name`");
 
 					$name = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}]{1,})/ui", '', strip_tags($_REQUEST['Name']));
 					$man = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}]{1,})/ui", '', strip_tags($_REQUEST['Man']));

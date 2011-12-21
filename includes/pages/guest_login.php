@@ -168,7 +168,7 @@ function guest_register() {
 		$html .= "<tr><td>" . Get_Text("makeuser_Engelart") . "</td><td align=\"left\">\n";
 		$html .= "<select name=\"Art\">\n";
 
-		$engel_types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `NAME`");
+		$engel_types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
 		foreach ($engel_types as $engel_type) {
 			$Name = $engel_type['Name'] . Get_Text("inc_schicht_engel");
 			$html .= "<option value=\"" . $Name . "\"";

@@ -21,7 +21,7 @@ function admin_shifts() {
 		$room_array[$room['RID']] = $room['Name'];
 
 	// Engeltypen laden
-	$types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `Name`");
+	$types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
 	$needed_angel_types = array ();
 	foreach ($types as $type)
 		$needed_angel_types[$type['TID']] = 0;
