@@ -40,18 +40,25 @@ function admin_import() {
 					} else {
 						$fileOut = fopen($import_file, "w");
 						$head = 'GET /' . $PentabarfXMLpath . $_REQUEST["url"] . ' HTTP/1.1' . "\r\n" .
-						'Host: ' . $PentabarfXMLhost . "\r\n" .
-						'User-Agent: Engelsystem' . "\r\n" .
-						'Authorization: Basic ' .
-						base64_encode($_REQUEST["user"] . ':' . $_REQUEST["password"]) . "\r\n" .
-						"\r\n";
+							'Host: ' . $PentabarfXMLhost . "\r\n" .
+							'User-Agent: Engelsystem' . "\r\n" .
+							'Authorization: Basic ' .
+							base64_encode($_REQUEST["user"] . ':' . $_REQUEST["password"]) . "\r\n" . 
+							"\r\n";
 						fputs($fp, $head);
 						$Zeilen = -1;
+						echo "<pre>";
 						while (!feof($fp)) {
 							$Temp = fgets($fp, 1024);
 
+							// show header
+							if ($Zeilen == -1) {
+								echo $Temp;
+							}
+
 							// ende des headers
-							if ($Temp == "f20\r\n") {
+							if ($Temp == "\r\n") {
+								echo "</pre>\n";
 								$Zeilen = 0;
 								$Temp = "";
 							}
