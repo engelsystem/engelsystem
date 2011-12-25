@@ -67,7 +67,8 @@ function user_settings() {
 				"8" => "Pastel Style",
 				"4" => "Test Style",
 				"9" => "Test Style 21c3",
-				"10" => "msquare (cccamp2011)"
+				"10" => "msquare (cccamp2011)",
+				"11" => "msquare (28c3)"
 			), $user['color']),
 			'text_language' => Get_Text(20),
 			'language_label' => Get_Text(21),

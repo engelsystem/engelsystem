@@ -1,9 +1,9 @@
 #logo {
-    background: url('../pic/engelsystem_logo.png') top left no-repeat;
+    background: url('../pic/engelsystem_logo_cccamp2011.png') top left no-repeat;
     display: block;
     height: 69px;
     margin: 10px auto;
-    width: 378px;
+    width: 523px;
 }
 
 tr:hover > td {
