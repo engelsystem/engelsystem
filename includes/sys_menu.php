@@ -43,6 +43,7 @@ function make_navigation() {
 		"admin_usershifts",
 		"admin_questions",
 		"admin_angel_types",
+		"admin_user_angeltypes",
 		"admin_shifts",
 		"admin_rooms",
 		"admin_groups",

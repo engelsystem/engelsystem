@@ -99,9 +99,13 @@ function user_settings() {
 			"', `Hometown`='" . sql_escape($hometown) . "' WHERE `UID`=" . sql_escape($user['UID']));
 
 			// Assign angel-types
-			sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user['UID']));
+			foreach ($angel_types_source as $angel_type)
+				if (!in_array($angel_type['id'], $selected_angel_types))
+					sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user['UID']) . " AND `angeltype_id`=" . sql_escape($angel_type['id']) . " LIMIT 1");
+
 			foreach ($selected_angel_types as $selected_angel_type_id)
-				sql_query("INSERT INTO `UserAngelTypes` SET `user_id`=" . sql_escape($user['UID']) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
+				if (sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user['UID']) . " AND `angeltype_id`=" . sql_escape($selected_angel_type_id) . " LIMIT 1") == 0)
+					sql_query("INSERT INTO `UserAngelTypes` SET `user_id`=" . sql_escape($user['UID']) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
 
 			success("Settings saved.");
 			redirect(page_link_to('user_settings'));

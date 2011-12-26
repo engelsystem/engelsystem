@@ -14,6 +14,7 @@ require_once ('config/config.php');
 require_once ('config/config_db.php');
 
 require_once ('includes/pages/admin_questions.php');
+require_once ('includes/pages/admin_user_angeltypes.php');
 require_once ('includes/pages/user_messages.php');
 
 session_start();
@@ -94,6 +95,10 @@ elseif (in_array($p, $privileges)) {
 		require_once ('includes/pages/admin_user.php');
 		$content = admin_user();
 	}
+	elseif ($p == "admin_user_angeltypes") {
+		require_once ('includes/pages/admin_user_angeltypes.php');
+		$content = admin_user_angeltypes();
+	}
 	elseif ($p == "admin_arrive") {
 		require_once ('includes/pages/admin_arrive.php');
 		$content = admin_arrive();
@@ -171,6 +176,10 @@ if (isset ($user) && $p != "user_messages")
 // Erzengel Hinweis für unbeantwortete Fragen
 if (isset ($user) && $p != "admin_questions")
 	$content = admin_new_questions() . $content;
+
+// Erzengel Hinweis für freizuschaltende Engeltypen
+if (isset ($user) && $p != "admin_user_angeltypes")
+	$content = admin_new_user_angeltypes() . $content;
 
 echo template_render('../templates/layout.html', array (
 	'theme' => isset ($user) ? $user['color'] : $default_theme,
