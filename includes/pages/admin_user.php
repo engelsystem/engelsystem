@@ -1,6 +1,6 @@
 <?php
 function admin_user() {
-	global $user, $privileges;
+	global $user, $privileges, $tshirt_sizes, $privileges;
 
 	$html = "";
 
@@ -20,6 +20,7 @@ function admin_user() {
 
 			$SQL = "SELECT * FROM `User` WHERE `UID`='" . sql_escape($id) . "'";
 			$Erg = sql_query($SQL);
+			list ($user_source) = sql_select($SQL);
 
 			$html .= "<tr><td>\n";
 			$html .= "<table>\n";
@@ -56,20 +57,7 @@ function admin_user() {
 			"<input type=\"text\" size=\"40\" name=\"ejabber\" value=\"" .
 			mysql_result($Erg, 0, "jabber") . "\"></td></tr>\n";
 			$html .= "  <tr><td>Size</td><td>" .
-			html_select_key('size', 'size', array (
-				'S' => "S",
-				'M' => "M",
-				'L' => "L",
-				'XL' => "XL",
-				'2XL' => "2XL",
-				'3XL' => "3XL",
-				'4XL' => "4XL",
-				'5XL' => "5XL",
-				'S-G' => "S Girl",
-				'M-G' => "M Girl",
-				'L-G' => "L Girl",
-				'XL-G' => "XL Girl"
-			), mysql_result($Erg, 0, "Size")) . "</td></tr>\n";
+			html_select_key('size', 'size', $tshirt_sizes, mysql_result($Erg, 0, "Size")) . "</td></tr>\n";
 
 			$options = array (
 				'1' => "Yes",
@@ -98,6 +86,49 @@ function admin_user() {
 			$html .= "</table>\n<br />\n";
 			$html .= "<input type=\"submit\" value=\"Speichern\">\n";
 			$html .= "</form>";
+
+			$html .= "<hr />";
+
+			// UserAngelType subform
+			list ($user_source) = sql_select($SQL);
+
+			$selected_angel_types_source = sql_select("SELECT * FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']));
+			$selected_angel_types = array ();
+			foreach ($selected_angel_types_source as $selected_angel_type)
+				$selected_angel_types[] = $selected_angel_type['angeltype_id'];
+
+			$angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
+			$angel_types = array ();
+			foreach ($angel_types_source as $angel_type)
+				$angel_types[$angel_type['id']] = $angel_type['name'] . ($angel_type['restricted'] ? " (restricted)" : "");
+
+			if (isset ($_REQUEST['submit_user_angeltypes'])) {
+				$selected_angel_types = array ();
+				foreach ($angel_types as $angel_type_id => $angel_type_name)
+					if (isset ($_REQUEST['angel_types_' . $angel_type_id]))
+						$selected_angel_types[] = $angel_type_id;
+
+				// Assign angel-types
+				foreach ($angel_types_source as $angel_type)
+					if (!in_array($angel_type['id'], $selected_angel_types))
+						sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']) . " AND `angeltype_id`=" . sql_escape($angel_type['id']) . " LIMIT 1");
+
+				foreach ($selected_angel_types as $selected_angel_type_id)
+					if (sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']) . " AND `angeltype_id`=" . sql_escape($selected_angel_type_id) . " LIMIT 1") == 0)
+						if (in_array("admin_user_angeltypes", $privileges))
+							sql_query("INSERT INTO `UserAngelTypes` SET `confirm_user_id`=" . sql_escape($user['UID']) . ", `user_id`=" . sql_escape($user_source['UID']) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
+						else
+							sql_query("INSERT INTO `UserAngelTypes` SET `user_id`=" . sql_escape($user_source['UID']) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
+
+				success("Angeltypes saved.");
+				redirect(page_link_to('admin_user') . '&id=' . $user_source['UID']);
+			}
+
+			$html .= form(array (
+				msg(),
+				form_checkboxes('angel_types', "Angeltypes", $angel_types, $selected_angel_types),
+				form_submit('submit_user_angeltypes', Get_Text("Save"))
+			));
 
 			$html .= "<hr />";
 
@@ -232,23 +263,23 @@ function admin_user() {
 
 		$html .= "Anzahl Engel: $Zeilen<br /><br />\n";
 		$html .= '
-										<table width="100%" class="border" cellpadding="2" cellspacing="1"> <thead>
-										  <tr class="contenttopic">
-										    <th>
-										      <a href="' . page_link_to("admin_user") . '&OrderBy=Nick">Nick</a>
-										    </th>
-										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&OrderBy=Name">Name</a></th>
-										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Alter">Alter</a></th>
-										    <th>
-										      <a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a>
-										    </th>
-										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></th>
-										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></th>
-										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></th>
-										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></th>
-										    <th><a href="' . page_link_to("admin_user") . '&OrderBy=CreateDate">Registriert</a></th>
-										    <th>&Auml;nd.</th>
-										  </tr></thead>';
+																														<table width="100%" class="border" cellpadding="2" cellspacing="1"> <thead>
+																														  <tr class="contenttopic">
+																														    <th>
+																														      <a href="' . page_link_to("admin_user") . '&OrderBy=Nick">Nick</a>
+																														    </th>
+																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&OrderBy=Name">Name</a></th>
+																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Alter">Alter</a></th>
+																														    <th>
+																														      <a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a>
+																														    </th>
+																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></th>
+																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></th>
+																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></th>
+																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></th>
+																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=CreateDate">Registriert</a></th>
+																														    <th>&Auml;nd.</th>
+																														  </tr></thead>';
 		$Gekommen = 0;
 		$Active = 0;
 		$Tshirt = 0;

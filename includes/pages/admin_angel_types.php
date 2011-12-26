@@ -73,6 +73,7 @@ function admin_angel_types() {
 				sql_query("DELETE FROM `NeededAngelTypes` WHERE `angel_type_id`=" . sql_escape($id) . " LIMIT 1");
 				sql_query("DELETE FROM `ShiftEntry` WHERE `TID`=" . sql_escape($id) . " LIMIT 1");
 				sql_query("DELETE FROM `AngelTypes` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
+				sql_query("DELETE FROM `UserAngelTypes` WHERE `angeltype_id`=" . sql_escape($id) . " LIMIT 1");
 				success(sprintf("Angel type %s deleted.", $name));
 				redirect(page_link_to('admin_angel_types'));
 			}
