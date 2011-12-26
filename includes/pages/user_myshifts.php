@@ -20,7 +20,7 @@ function user_myshifts() {
 
 	if (isset ($_REQUEST['reset'])) {
 		if ($_REQUEST['reset'] == "ack") {
-			user_reset_ical_key();
+			user_reset_ical_key($user);
 			return success("Key geändert.", true);
 		}
 		return template_render('../templates/user_myshifts_reset.html', array ());
