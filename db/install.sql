@@ -1170,6 +1170,13 @@ CREATE TABLE IF NOT EXISTS `Wecken` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Daten für Tabelle `Wecken`
+-- Tabellenstruktur für Tabelle `UserAngelTypes`
 --
 
+CREATE TABLE `engelsystem`.`UserAngelTypes` (
+`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`user_id` INT NOT NULL ,
+`angeltype_id` INT NOT NULL ,
+`confirm_user_id` INT NULL ,
+INDEX ( `user_id` , `angeltype_id` , `confirm_user_id` )
+) ENGINE = MYISAM ;
