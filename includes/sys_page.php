@@ -40,6 +40,13 @@ function strip_item($item) {
 }
 
 /**
+ * Überprüft eine E-Mail-Adresse.
+ */
+function check_email($email) {
+	return (bool) preg_match("#^([a-zA-Z0-9_\-])+(\.([a-zA-Z0-9_\-])+)*@((\[(((([0-1])?([0-9])?[0-9])|(2[0-4][0-9])|(2[0-5][0-5])))\.(((([0-1])?([0-9])?[0-9])|(2[0-4][0-9])|(2[0-5][0-5])))\.(((([0-1])?([0-9])?[0-9])|(2[0-4][0-9])|(2[0-5][0-5])))\.(((([0-1])?([0-9])?[0-9])|(2[0-4][0-9])|(2[0-5][0-5]))\]))|((([\p{L}0-9])+(([\-])+([\p{L}0-9])+)*\.)+([\p{L}])+(([\-])+([\p{L}0-9])+)*))$#u", $email);
+}
+
+/**
  * Gibt zwischengespeicherte Fehlermeldungen zurück und löscht den Zwischenspeicher
  */
 function msg() {

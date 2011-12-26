@@ -30,7 +30,7 @@ function admin_news() {
 					$news["Text"] . "</textarea></td></tr>\n";
 					$html .= "  <tr><td>Engel</td><td>" .
 					UID2Nick($news["UID"]) . "</td></tr>\n";
-					$html .= "  <tr><td>Treffen</td><td>" . html_select_key('eTreffen', array (
+					$html .= "  <tr><td>Treffen</td><td>" . html_select_key('eTreffen', 'eTreffen', array (
 						'1' => "Ja",
 						'0' => "Nein"
 					), $news['Treffen']) . "</td></tr>\n";

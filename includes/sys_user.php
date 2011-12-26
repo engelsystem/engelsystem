@@ -1,4 +1,24 @@
 <?php
+
+
+/**
+ * Available T-Shirt sizes
+ */
+$tshirt_sizes = array (
+	'S' => "S",
+	'M' => "M",
+	'L' => "L",
+	'XL' => "XL",
+	'2XL' => "2XL",
+	'3XL' => "3XL",
+	'4XL' => "4XL",
+	'5XL' => "5XL",
+	'S-G' => "S Girl",
+	'M-G' => "M Girl",
+	'L-G' => "L Girl",
+	'XL-G' => "XL Girl"
+);
+
 function UID2Nick($UID) {
 	if ($UID > 0)
 		$SQL = "SELECT Nick FROM `User` WHERE UID='" . sql_escape($UID) . "'";

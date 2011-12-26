@@ -244,7 +244,7 @@ function admin_shifts() {
 		unset ($_SESSION['admin_shifts_types']);
 	}
 
-	$room_select = html_select_key('rid', $room_array, $_REQUEST['rid']);
+	$room_select = html_select_key('rid', 'rid', $room_array, $_REQUEST['rid']);
 	$angel_types = "";
 	foreach ($types as $type) {
 		$angel_types .= template_render('../templates/admin_shifts_angel_types.html', array (

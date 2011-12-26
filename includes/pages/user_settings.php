@@ -7,7 +7,7 @@ function user_settings() {
 		if ($enable_tshirt_size)
 			$tshirt_html = template_render('../templates/user_settings_tshirt.html', array (
 				'label_size' => Get_Text("makeuser_T-Shirt"),
-				'size_select' => ($user['Tshirt'] == 0) ? html_select_key('size', array (
+				'size_select' => ($user['Tshirt'] == 0) ? html_select_key('size', 'size', array (
 					'S' => "S",
 					'M' => "M",
 					'L' => "L",
@@ -57,7 +57,7 @@ function user_settings() {
 			'new_pw2_label' => Get_Text(17),
 			'text_theme' => Get_Text(18),
 			'theme_label' => Get_Text(19),
-			'theme_select' => html_select_key('theme', array (
+			'theme_select' => html_select_key('theme', 'theme', array (
 				"1" => "Standard-Style",
 				"2" => "ot/Gelber Style",
 				"3" => "Club-Mate Style",
@@ -67,11 +67,11 @@ function user_settings() {
 				"8" => "Pastel Style",
 				"4" => "Test Style",
 				"9" => "Test Style 21c3",
-				"10" => "msquare (cccamp2011)"
+				"10" => "msquare (28C3)"
 			), $user['color']),
 			'text_language' => Get_Text(20),
 			'language_label' => Get_Text(21),
-			'language_select' => html_select_key('language', array (
+			'language_select' => html_select_key('language', 'language', array (
 				'DE' => "Deutsch",
 				'EN' => "English"
 			), $user['Sprache'])

@@ -25,7 +25,7 @@ function user_messages() {
 		foreach ($users as $u)
 			$to_select_data[$u['UID']] = $u['Nick'];
 
-		$to_select = html_select_key('to', $to_select_data, '');
+		$to_select = html_select_key('to', 'to', $to_select_data, '');
 
 		$messages_html = "";
 		$messages = sql_select("SELECT * FROM `Messages` WHERE `SUID`=" . sql_escape($user['UID']) . " OR `RUID`=" . sql_escape($user['UID']) . " ORDER BY `isRead`,`Datum` DESC");

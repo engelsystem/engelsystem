@@ -316,7 +316,7 @@ tr:hover .hidden {
 	margin-left: 250px;
 }
 
-.form input[type="text"], .form textarea {
+.form input[type="text"], .form input[type="password"], .form textarea {
 	background: #fff;
 	border: 1px solid #888;
 	color: inherit;

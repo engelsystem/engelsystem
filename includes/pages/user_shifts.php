@@ -100,7 +100,7 @@ function user_shifts() {
 			}
 		}
 
-		$room_select = html_select_key('rid', $room_array, $rid);
+		$room_select = html_select_key('rid', 'rid', $room_array, $rid);
 		$angel_types = "";
 		foreach ($types as $type) {
 			$angel_types .= template_render('../templates/admin_shifts_angel_types.html', array (
@@ -196,7 +196,7 @@ function user_shifts() {
 			$users_select = array ();
 			foreach ($users as $usr)
 				$users_select[$usr['UID']] = $usr['Nick'];
-			$user_text = html_select_key('user_id', $users_select, $user['UID']);
+			$user_text = html_select_key('user_id', 'user_id', $users_select, $user['UID']);
 		} else
 			$user_text = $user['Nick'];
 

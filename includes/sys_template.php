@@ -49,6 +49,14 @@ function form_text($name, $label, $value, $disabled = false) {
 }
 
 /**
+ * Rendert ein Formular-Passwortfeld
+ */
+function form_password($name, $label, $disabled = false) {
+	$disabled = $disabled ? ' disabled="disabled"' : '';
+	return form_element($label, '<input id="form_' . $name . '" type="password" name="' . $name . '" value="" ' . $disabled . '/>', 'form_' . $name);
+}
+
+/**
  * Rendert ein Formular-Textfeld
  */
 function form_textarea($name, $label, $value, $disabled = false) {
@@ -168,13 +176,15 @@ function html_options($name, $options, $selected = "") {
 	return $html;
 }
 
-function html_select_key($name, $rows, $selected) {
-	$html = '<select name="' . $name . '">';
-	foreach ($rows as $key => $row)
-		if (($key == $selected) || ($row == $selected))
+function html_select_key($id, $name, $rows, $selected) {
+	$html = '<select id="' . $id . '" name="' . $name . '">';
+	foreach ($rows as $key => $row) {
+		if (($key == $selected) || ($row == $selected)) {
 			$html .= '<option value="' . $key . '" selected="selected">' . $row . '</option>';
-		else
+		} else {
 			$html .= '<option value="' . $key . '">' . $row . '</option>';
+		}
+	}
 	$html .= '</select>';
 	return $html;
 }

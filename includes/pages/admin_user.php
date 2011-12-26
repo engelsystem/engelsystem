@@ -56,7 +56,7 @@ function admin_user() {
 			"<input type=\"text\" size=\"40\" name=\"ejabber\" value=\"" .
 			mysql_result($Erg, 0, "jabber") . "\"></td></tr>\n";
 			$html .= "  <tr><td>Size</td><td>" .
-			html_select_key('size', array (
+			html_select_key('size', 'size', array (
 				'S' => "S",
 				'M' => "M",
 				'L' => "L",

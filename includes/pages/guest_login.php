@@ -3,7 +3,9 @@
 
 // Engel registrieren
 function guest_register() {
-	/*
+	global $tshirt_sizes, $enable_tshirt_size;
+
+	$msg = "";
 	$nick = "";
 	$lastname = "";
 	$prename = "";
@@ -12,215 +14,121 @@ function guest_register() {
 	$dect = "";
 	$mobile = "";
 	$mail = "";
+	$icq = "";
+	$jabber = "";
+	$hometown = "";
+	$comment = "";
+	$tshirt_size = 'S';
+	$password_hash = "";
+
+	if (isset ($_REQUEST['submit'])) {
+		$ok = true;
+
+		if (isset ($_REQUEST['nick']) && strlen(strip_request_item('nick')) > 1) {
+			$nick = strip_request_item('nick');
+			if (sql_num_query("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "' LIMIT 1") > 0) {
+				$ok = false;
+				$msg .= error(sprintf(Get_Text("makeuser_error_nick1") . "%s" . Get_Text("makeuser_error_nick3"), $nick), true);
+			}
+		} else {
+			$ok = false;
+			$msg .= error(sprintf(Get_Text("makeuser_error_nick1") . "%s" . Get_Text("makeuser_error_nick2"), strip_request_item('nick')), true);
+		}
+
+		if (isset ($_REQUEST['mail']) && strlen(strip_request_item('mail')) > 0) {
+			$mail = strip_request_item('mail');
+			if (!check_email($mail)) {
+				$ok = false;
+				$msg .= error(Get_Text("makeuser_error_mail"), true);
+			}
+		} else {
+			$ok = false;
+			$msg .= error("Please enter your e-mail.", true);
+		}
+
+		if (isset ($_REQUEST['icq']))
+			$icq = strip_request_item('icq');
+		if (isset ($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
+			$jabber = strip_request_item('jabber');
+			if (!check_email($jabber)) {
+				$ok = false;
+				$msg .= error("Please check your jabber.", true);
+			}
+		}
+
+		if (isset ($_REQUEST['tshirt_size']) && isset ($tshirt_sizes[$_REQUEST['tshirt_size']]))
+			$tshirt_size = $_REQUEST['tshirt_size'];
+		else {
+			$ok = false;
+		}
+
+		if (isset ($_REQUEST['password']) && strlen($_REQUEST['password']) >= 6) {
+			if ($_REQUEST['password'] == $_REQUEST['password2']) {
+				$password_hash = PassCrypt($_REQUEST['password']);
+			} else {
+				$ok = false;
+				$msg .= error(Get_Text("makeuser_error_password1"), true);
+			}
+		} else {
+			$ok = false;
+			$msg .= error(Get_Text("makeuser_error_password2"), true);
+		}
+
+		// Trivia
+		if (isset ($_REQUEST['lastname']))
+			$lastname = strip_request_item('lastname');
+		if (isset ($_REQUEST['prename']))
+			$prename = strip_request_item('prename');
+		if (isset ($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age']))
+			$age = strip_request_item('age');
+		if (isset ($_REQUEST['tel']))
+			$tel = strip_request_item('tel');
+		if (isset ($_REQUEST['dect']))
+			$dect = strip_request_item('dect');
+		if (isset ($_REQUEST['mobile']))
+			$mobile = strip_request_item('mobile');
+		if (isset ($_REQUEST['hometown']))
+			$hometown = strip_request_item('hometown');
+		if (isset ($_REQUEST['comment']))
+			$comment = strip_request_item_nl('comment');
+
+		if ($ok) {
+			sql_query("INSERT INTO `User` SET `Nick`='" . sql_escape($nick) . "', `Vorname`='" . sql_escape($prename) . "', `Name`='" . sql_escape($lastname) .
+			"', `Alter`='" . sql_escape($age) . "', `Telefon`='" . sql_escape($tel) . "', `DECT`='" . sql_escape($dect) . "', `Handy`='" . sql_escape($mobile) .
+			"', `email`='" . sql_escape($mail) . "', `ICQ`='" . sql_escape($icq) . "', `jabber`='" . sql_escape($jabber) . "', `Size`='" . sql_escape($tshirt_size) .
+			"', `Passwort`='" . sql_escape($password_hash) . "', `kommentar`='" . sql_escape($comment) . "', `Hometown`='" . sql_escape($hometown) . "', `CreateDate`=NOW(), `Sprache`='" . sql_escape($_SESSION["Sprache"]) . "'");
+
+			// Assign user-group
+			sql_query("INSERT INTO `UserGroups` SET `uid`=" . sql_escape(sql_id()) . ", `group_id`=-2");
+
+			success(Get_Text("makeuser_writeOK4"));
+			redirect(page_link_to('login'));
+		}
+	}
 
 	return page(array (
 		Get_Text("makeuser_text1"),
+		$msg,
 		form(array (
 			form_text('nick', Get_Text("makeuser_Nickname") . "*", $nick),
 			form_text('lastname', Get_Text("makeuser_Nachname"), $lastname),
-			form_text('lastname', Get_Text("makeuser_Vorname"), $lastname),
+			form_text('prename', Get_Text("makeuser_Vorname"), $prename),
 			form_text('age', Get_Text("makeuser_Alter"), $age),
 			form_text('tel', Get_Text("makeuser_Telefon"), $tel),
 			form_text('dect', Get_Text("makeuser_DECT"), $tel),
 			form_text('mobile', Get_Text("makeuser_Handy"), $mobile),
 			form_text('mail', Get_Text("makeuser_E-Mail") . "*", $mail),
+			form_text('icq', "ICQ", $icq),
+			form_text('jabber', "Jabber", $jabber),
+			form_text('hometown', Get_Text("makeuser_Hometown"), $hometown),
+			$enable_tshirt_size ? form_select('tshirt_size', Get_Text("makeuser_T-Shirt"), $tshirt_sizes, $tshirt_size) : '',
+			form_textarea('comment', Get_Text("makeuser_text2"), $comment),
+			form_password('password', Get_Text("makeuser_Passwort")),
+			form_password('password2', Get_Text("makeuser_Passwort2")),
 			info(Get_Text("makeuser_text3"), true),
 			form_submit('submit', Get_Text("makeuser_Anmelden"))
 		))
 	));
-*/
-	global $SubscribeMailinglist, $enable_tshirt_size;
-
-	$html = "";
-	$success = "none";
-
-	if (isset ($_POST["send"])) {
-		$eNick = trim($_POST["Nick"]);
-
-		if ($_POST["Alter"] == "")
-			$_POST["Alter"] = 23;
-
-		// user vorhanden?
-		$Ergans = sql_select("SELECT UID FROM `User` WHERE `Nick`='" . sql_escape($_POST["Nick"]) . "'");
-
-		if (strlen($_POST["Nick"]) < 2)
-			$error = Get_Text("makeuser_error_nick1") . $_POST["Nick"] . Get_Text("makeuser_error_nick2");
-
-		elseif (count($Ergans) > 0) $error = Get_Text("makeuser_error_nick1") . $_POST["Nick"] . Get_Text("makeuser_error_nick3");
-
-		elseif (strlen($_POST["email"]) <= 6 && strstr($_POST["email"], "@") == FALSE && strstr($_POST["email"], ".") == false) $error = Get_Text("makeuser_error_mail");
-
-		elseif (!is_numeric($_POST["Alter"])) $error = Get_Text("makeuser_error_Alter");
-
-		elseif ($_POST["Passwort"] != $_POST["Passwort2"]) $error = Get_Text("makeuser_error_password1");
-
-		elseif (strlen($_POST["Passwort"]) < 6) $error = Get_Text("makeuser_error_password2");
-
-		else {
-			$_POST["Passwort"] = PassCrypt($_POST["Passwort"]);
-			unset ($_POST["Passwort2"]);
-
-			$Erg = sql_query("INSERT INTO `User` (" .
-			"`Nick` , " . "`Name` , " .
-			"`Vorname`, " . "`Alter` , " .
-			"`Telefon`, " . "`DECT`, " .
-			"`Handy`, " . "`email`, " .
-			"`ICQ`, " . "`jabber`, " .
-			"`Size`, " . "`Passwort`, " .
-			"`Art` , " . "`kommentar`, " .
-			"`Hometown`," . "`CreateDate`, `Sprache` ) " .
-			"VALUES ( '" . sql_escape($_POST["Nick"]) . "', " . "'" . sql_escape($_POST["Name"]) . "', " . "'" . sql_escape($_POST["Vorname"]) . "', " . "'" . sql_escape($_POST["Alter"]) . "', " . "'" . sql_escape($_POST["Telefon"]) . "', " . "'" . sql_escape($_POST["DECT"]) . "', " . "'" . sql_escape($_POST["Handy"]) . "', " . "'" . sql_escape($_POST["email"]) . "', " . "'" . sql_escape($_POST["ICQ"]) . "', " . "'" . sql_escape($_POST["jabber"]) . "', " . "'" . sql_escape($_POST["Size"]) . "', " . "'" . sql_escape($_POST["Passwort"]) . "', " . "'" . sql_escape($_POST["Art"]) . "', " . "'" . sql_escape($_POST["kommentar"]) . "', " . "'" . sql_escape($_POST["Hometown"]) . "'," . "NOW(), '" . sql_escape($_SESSION["Sprache"]) . "')");
-
-			if ($Erg != 1) {
-				$html .= Get_Text("makeuser_error_write1") . "<br />\n";
-				$error = sql_error();
-			} else {
-				$html .= "<p class=\"success\">" . Get_Text("makeuser_writeOK") . "\n";
-
-				// Assign user-group
-				sql_query("INSERT INTO `UserGroups` SET `uid`=" . sql_escape(sql_id()) . ", `group_id`=-2");
-
-				$html .= Get_Text("makeuser_writeOK2") . "<br />\n";
-				$html .= "<h1>" . Get_Text("makeuser_writeOK3") . "</h1>\n";
-
-				$html .= Get_Text("makeuser_writeOK4") . "</p><p></p>\n<br /><br />\n";
-				$success = "any";
-
-				if (isset ($SubscribeMailinglist)) {
-					if ($_POST["subscribe-mailinglist"] == "") {
-						$headers = "From: " . $_POST["email"] . "\r\n" .
-						"X-Mailer: PHP/" . phpversion();
-						mail($SubscribeMailinglist, "subject", "message", $headers);
-					}
-				}
-			}
-		}
-
-		if (isset ($error))
-			$html .= error($error, true);
-	} else {
-		// init vars
-		$_POST["Nick"] = "";
-		$_POST["Name"] = "";
-		$_POST["Vorname"] = "";
-		$_POST["Alter"] = "";
-		$_POST["Telefon"] = "";
-		$_POST["DECT"] = "";
-		$_POST["Handy"] = "";
-		$_POST["email"] = "";
-		$_POST["subscribe-mailinglist"] = "";
-		$_POST["ICQ"] = "";
-		$_POST["jabber"] = "";
-		$_POST["Size"] = "L";
-		$_POST["Art"] = "";
-		$_POST["kommentar"] = "";
-		$_POST["Hometown"] = "";
-	}
-
-	if ($success == "none") {
-		$html .= "<h1>" . Get_Text("makeuser_text0") . "</h1>\n";
-		$html .= "<h2>" . Get_Text("makeuser_text1") . "</h2>\n";
-		$html .= "<form action=\"\" method=\"post\">\n";
-		$html .= "<table>\n";
-		$html .= "<tr><td>" . Get_Text("makeuser_Nickname") . "*</td><td><input type=\"text\" size=\"40\" name=\"Nick\" value=\"" . $_POST["Nick"] . "\" /></td></tr>\n";
-		$html .= "<tr><td>" . Get_Text("makeuser_Nachname") . "</td><td><input type=\"text\" size=\"40\" name=\"Name\" value=\"" . $_POST["Name"] . "\" /></td></tr>\n";
-		$html .= "<tr><td>" . Get_Text("makeuser_Vorname") . "</td><td><input type=\"text\" size=\"40\" name=\"Vorname\" value=\"" . $_POST["Vorname"] . "\" /></td></tr>\n";
-		$html .= "<tr><td>" . Get_Text("makeuser_Alter") . "</td><td><input type=\"text\" size=\"40\" name=\"Alter\" value=\"" . $_POST["Alter"] . "\"></td></tr>\n";
-		$html .= "<tr><td>" . Get_Text("makeuser_Telefon") . "</td><td><input type=\"text\" size=\"40\" name=\"Telefon\" value=\"" . $_POST["Telefon"] . "\"></td></tr>\n";
-		$html .= "<tr><td>" . Get_Text("makeuser_DECT") . "</td><td><input type=\"text\" size=\"40\" name=\"DECT\" value=\"" . $_POST["DECT"] . "\"></td><td>\n";
-		$html .= "<!--a href=\"https://21c3.ccc.de/wiki/index.php/POC\"><img src=\"./pic/external.png\" alt=\"external: \">DECT</a--></td></tr>\n";
-		$html .= "<tr><td>" . Get_Text("makeuser_Handy") . "</td><td><input type=\"text\" size=\"40\" name=\"Handy\" value=\"" . $_POST["Handy"] . "\"></td></tr>\n";
-		$html .= "<tr><td>" . Get_Text("makeuser_E-Mail") . "*</td><td><input type=\"text\" size=\"40\" name=\"email\" value=\"" . $_POST["email"] . "\"></td></tr>\n";
-
-		if (isset ($SubscribeMailinglist))
-			$html .= "<tr><td>" . Get_Text("makeuser_subscribe-mailinglist") . "</td><td><input type=\"checkbox\" name=\"subscribe-mailinglist\" value=\"" . $_POST["subscribe-mailinglist"] . "\">($SubscribeMailinglist)</td></tr>\n";
-
-		$html .= "<tr><td>ICQ</td><td><input type=\"text\" size=\"40\" name=\"ICQ\" value=\"" . $_POST["ICQ"] . "\"></td></tr>\n";
-		$html .= "<tr><td>jabber</td><td><input type=\"text\" size=\"40\" name=\"jabber\" value=\"" . $_POST["jabber"] . "\"></td></tr>\n";
-		if ($enable_tshirt_size) {
-			$html .= "<tr><td>" . Get_Text("makeuser_T-Shirt") . " Gr&ouml;sse*</td><td align=\"left\">\n";
-			$html .= "<select name=\"Size\">\n";
-			$html .= "<option value=\"S\"";
-			if ($_POST["Size"] == "S")
-				$html .= " selected";
-			$html .= ">S</option>\n";
-			$html .= "<option value=\"M\"";
-			if ($_POST["Size"] == "M")
-				$html .= " selected";
-			$html .= ">M</option>\n";
-			$html .= "<option value=\"L\"";
-			if ($_POST["Size"] == "L")
-				$html .= " selected";
-			$html .= ">L</option>\n";
-			$html .= "<option value=\"XL\"";
-			if ($_POST["Size"] == "XL")
-				$html .= " selected";
-			$html .= ">XL</option>\n";
-			$html .= "<option value=\"2XL\"";
-			if ($_POST["Size"] == "2XL")
-				$html .= " selected";
-			$html .= ">2XL</option>\n";
-			$html .= "<option value=\"3XL\"";
-			if ($_POST["Size"] == "3XL")
-				$html .= " selected";
-			$html .= ">3XL</option>\n";
-			$html .= "<option value=\"4XL\"";
-			if ($_POST["Size"] == "4XL")
-				$html .= " selected";
-			$html .= ">4XL</option>\n";
-			$html .= "<option value=\"5XL\"";
-			if ($_POST["Size"] == "5XL")
-				$html .= " selected";
-			$html .= ">5XL</option>\n";
-			$html .= "<option value=\"S-G\"";
-			if ($_POST["Size"] == "S-G")
-				$html .= " selected";
-			$html .= ">S Girl</option>\n";
-			$html .= "<option value=\"M-G\"";
-			if ($_POST["Size"] == "M-G")
-				$html .= " selected";
-			$html .= ">M Girl</option>\n";
-			$html .= "<option value=\"L-G\"";
-			if ($_POST["Size"] == "L-G")
-				$html .= " selected";
-			$html .= ">L Girl</option>\n";
-			$html .= "<option value=\"XL-G\"";
-			if ($_POST["Size"] == "XL-G")
-				$html .= " selected";
-			$html .= ">XL Girl</option>\n";
-			$html .= "</select>\n";
-			$html .= "</td></tr>\n";
-		}
-		$html .= "<tr><td>" . Get_Text("makeuser_Engelart") . "</td><td align=\"left\">\n";
-		$html .= "<select name=\"Art\">\n";
-
-		$engel_types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
-		foreach ($engel_types as $engel_type) {
-			$Name = $engel_type['name'] . Get_Text("inc_schicht_engel");
-			$html .= "<option value=\"" . $Name . "\"";
-
-			if ($_POST["Art"] == $Name)
-				$html .= " selected";
-
-			$html .= ">$Name</option>\n";
-		}
-
-		$html .= "</select>\n";
-		$html .= "</td>\n";
-		$html .= "</tr>\n";
-		$html .= "<tr>\n";
-		$html .= "<td>" . Get_Text("makeuser_text2") . "</td>\n";
-		$html .= "<td><textarea rows=\"5\" cols=\"40\" name=\"kommentar\">" . $_POST["kommentar"] . "</textarea></td>\n";
-		$html .= "</tr>\n";
-		$html .= "<tr><td>" . Get_Text("makeuser_Hometown") . "</td><td><input type=\"text\" size=\"40\" name=\"Hometown\" value=\"" . $_POST["Hometown"] . "\"></td></tr>\n";
-		$html .= "<tr><td>" . Get_Text("makeuser_Passwort") . "*</td><td><input type=\"password\" size=\"40\" name=\"Passwort\"/></td></tr>\n";
-		$html .= "<tr><td>" . Get_Text("makeuser_Passwort2") . "*</td><td><input type=\"password\" size=\"40\" name=\"Passwort2\"/></td></tr>\n";
-		$html .= "<tr><td>&nbsp;</td><td><input type=\"submit\" name=\"send\" value=\"" . Get_Text("makeuser_Anmelden") . "\"/></td></tr>\n";
-		$html .= "</table>\n";
-		$html .= "</form>\n";
-		$html .= Get_Text("makeuser_text3");
-	}
-	return $html;
 }
 
 function guest_logout() {
@@ -230,44 +138,55 @@ function guest_logout() {
 
 function guest_login() {
 	global $user;
+
+	$msg = "";
+	$nick = "";
+
 	unset ($_SESSION['uid']);
 
-	$html = "";
-	if (isset ($_REQUEST['login_submit'])) {
-		$login_user = sql_select("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($_REQUEST["user"]) . "'");
+	if (isset ($_REQUEST['submit'])) {
+		$ok = true;
 
-		if (count($login_user) == 1) { // Check, ob User angemeldet wird...
-			$login_user = $login_user[0];
-			if ($login_user["Passwort"] == PassCrypt($_REQUEST["password"])) { // Passwort ok...
-				$_SESSION['uid'] = $login_user['UID'];
-				$_SESSION['Sprache'] = $login_user['Sprache'];
-				header("Location: " . page_link_to("news"));
-			} else { // Passwort nicht ok...
-				$ErrorText = "pub_index_pass_no_ok";
-			} // Ende Passwort-Check
-		} else { // Anzahl der User in User-Tabelle <> 1 --> keine Anmeldung
-			if ($user_anz == 0)
-				$ErrorText = "pub_index_User_unset";
-			else
-				$ErrorText = "pub_index_User_more_as_one";
-		} // Ende Check, ob User angemeldet wurde}
+		if (isset ($_REQUEST['nick']) && strlen(strip_request_item('nick')) > 0) {
+			$nick = strip_request_item('nick');
+			$login_user = sql_select("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "'");
+			if (count($login_user) > 0) {
+				$login_user = $login_user[0];
+				if (isset ($_REQUEST['password'])) {
+					if ($login_user['Passwort'] != PassCrypt($_REQUEST['password'])) {
+						$ok = false;
+						$msg .= error(Get_Text("pub_index_pass_no_ok"), true);
+					}
+				} else {
+					$ok = false;
+					$msg .= error("Please enter a password.", true);
+				}
+			} else {
+				$ok = false;
+				$msg .= error(Get_Text("pub_index_User_unset"), true);
+			}
+		} else {
+			$ok = false;
+			$msg .= error("Please enter a nickname.", true);
+		}
+
+		if ($ok) {
+			$_SESSION['uid'] = $login_user['UID'];
+			$_SESSION['Sprache'] = $login_user['Sprache'];
+			redirect(page_link_to('news'));
+		}
 	}
-	if (isset ($ErrorText))
-		$html .= error(Get_Text($ErrorText), true);
-	$html .= guest_login_form();
-	return $html;
-}
 
-function guest_login_form() {
-	return template_render("../templates/guest_login_form.html", array (
-		'link' => page_link_to("login"),
-		'nick' => Get_Text("index_lang_nick"),
-		'pass' => Get_Text("index_lang_pass"),
-		'send' => Get_Text("index_lang_send"),
-		'text1' => Get_Text("index_text1"),
-		'text2' => Get_Text("index_text2"),
-		'text3' => Get_Text("index_text3"),
-		'text4' => Get_Text("index_text4")
+	return page(array (
+		Get_Text("index_text1") . " " . Get_Text("index_text2") . " " . Get_Text("index_text3"),
+		$msg,
+		msg(),
+		form(array (
+			form_text('nick', Get_Text("index_lang_nick"), $nick),
+			form_password('password', Get_Text("index_lang_pass")),
+			form_submit('submit', Get_Text("index_lang_send"))
+		)),
+		info(Get_Text("index_text4"), true)
 	));
 }
 ?>
