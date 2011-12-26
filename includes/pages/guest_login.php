@@ -80,6 +80,11 @@ function guest_register() {
 			$msg .= error(Get_Text("makeuser_error_password2"), true);
 		}
 
+		$selected_angel_types = array ();
+		foreach ($angel_types as $angel_type_id => $angel_type_name)
+			if (isset ($_REQUEST['angel_types_' . $angel_type_id]))
+				$selected_angel_types[] = $angel_type_id;
+
 		// Trivia
 		if (isset ($_REQUEST['lastname']))
 			$lastname = strip_request_item('lastname');
@@ -105,16 +110,23 @@ function guest_register() {
 			"', `Passwort`='" . sql_escape($password_hash) . "', `kommentar`='" . sql_escape($comment) . "', `Hometown`='" . sql_escape($hometown) . "', `CreateDate`=NOW(), `Sprache`='" . sql_escape($_SESSION["Sprache"]) . "'");
 
 			// Assign user-group
-			sql_query("INSERT INTO `UserGroups` SET `uid`=" . sql_escape(sql_id()) . ", `group_id`=-2");
+			$user_id = sql_id();
+			sql_query("INSERT INTO `UserGroups` SET `uid`=" . sql_escape($user_id) . ", `group_id`=-2");
+
+			// Assign angel-types
+			foreach ($selected_angel_types as $selected_angel_type_id)
+				sql_query("INSERT INTO `UserAngelTypes` SET `user_id`=" . sql_escape($user_id) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
 
 			success(Get_Text("makeuser_writeOK4"));
-			redirect(page_link_to('login'));
+			if (!isset ($_SESSION['uid']))
+				redirect(page_link_to('login'));
 		}
 	}
 
 	return page(array (
 		Get_Text("makeuser_text1"),
 		$msg,
+		msg(),
 		form(array (
 			form_text('nick', Get_Text("makeuser_Nickname") . "*", $nick),
 			form_text('lastname', Get_Text("makeuser_Nachname"), $lastname),
@@ -129,6 +141,8 @@ function guest_register() {
 			form_text('hometown', Get_Text("makeuser_Hometown"), $hometown),
 			$enable_tshirt_size ? form_select('tshirt_size', Get_Text("makeuser_T-Shirt"), $tshirt_sizes, $tshirt_size) : '',
 			form_textarea('comment', Get_Text("makeuser_text2"), $comment),
+			form_checkboxes('angel_types', "What do you want to do?", $angel_types, $selected_angel_types),
+			form_info("", "Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section."),
 			form_password('password', Get_Text("makeuser_Passwort")),
 			form_password('password2', Get_Text("makeuser_Passwort2")),
 			info(Get_Text("makeuser_text3"), true),

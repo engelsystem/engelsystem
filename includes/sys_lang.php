@@ -1,4 +1,14 @@
 <?php
+
+
+/**
+ * Liste verfügbarer Sprachen
+ */
+$languages = array (
+	'DE' => "Deutsch",
+	'EN' => "English"
+);
+
 function Get_Text($TextID, $NoError = false) {
 	global $con, $error_messages, $debug;
 

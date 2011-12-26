@@ -2,6 +2,23 @@
 
 
 /**
+ * Liste der verfügbaren Themes
+ */
+$themes = array (
+	"1" => "Standard-Style",
+	"2" => "ot/Gelber Style",
+	"3" => "Club-Mate Style",
+	"5" => "Debian Style",
+	"6" => "c-base Style",
+	"7" => "Blau/Gelber Style",
+	"8" => "Pastel Style",
+	"4" => "Test Style",
+	"9" => "Test Style 21c3",
+	"10" => "msquare (cccamp2011)",
+	"11" => "msquare (28c3)"
+);
+
+/**
  * Rendert eine Liste von Checkboxen für ein Formular
  * @param name Die Namen der Checkboxen werden aus name_key gebildet
  * @param label Die Beschriftung der Liste
