@@ -248,7 +248,7 @@ function admin_shifts() {
 	$angel_types = "";
 	foreach ($types as $type) {
 		$angel_types .= template_render('../templates/admin_shifts_angel_types.html', array (
-			'id' => $type['TID'],
+			'id' => $type['id'],
 			'type' => $type['name'],
 			'value' => $needed_angel_types[$type['id']]
 		));

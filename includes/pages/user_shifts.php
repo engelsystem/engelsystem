@@ -36,10 +36,10 @@ function user_shifts() {
 			$room_array[$room['RID']] = $room['Name'];
 
 		// Engeltypen laden
-		$types = sql_select("SELECT * FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`) WHERE `shift_id`=" . sql_escape($shift_id) . " ORDER BY `AngelTypes`.`name`");
+		$types = sql_select("SELECT `AngelTypes`.*, `NeededAngelTypes`.`count` FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`) WHERE `shift_id`=" . sql_escape($shift_id) . " ORDER BY `AngelTypes`.`name`");
 		$needed_angel_types = array ();
 		foreach ($types as $type)
-			$needed_angel_types[$type['TID']] = $type['count'];
+			$needed_angel_types[$type['id']] = $type['count'];
 
 		$name = $shift['name'];
 		$rid = $shift['RID'];
@@ -104,7 +104,7 @@ function user_shifts() {
 		$angel_types = "";
 		foreach ($types as $type) {
 			$angel_types .= template_render('../templates/admin_shifts_angel_types.html', array (
-				'id' => $type['TID'],
+				'id' => $type['id'],
 				'type' => $type['name'],
 				'value' => $needed_angel_types[$type['id']]
 			));
@@ -247,7 +247,7 @@ function user_shifts() {
 				if (count($angeltypes) > 0) {
 					$my_shift = sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0;
 					foreach ($angeltypes as $angeltype) {
-						$entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`=" . sql_escape($shift['SID']) . " AND `TID`=" . sql_escape($angeltype['TID']) . " ORDER BY `Nick`");
+						$entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`=" . sql_escape($shift['SID']) . " AND `TID`=" . sql_escape($angeltype['id']) . " ORDER BY `Nick`");
 						$entry_list = array ();
 						foreach ($entries as $entry) {
 							if (in_array('user_shifts_admin', $privileges))
@@ -257,7 +257,7 @@ function user_shifts() {
 						}
 						if ($angeltype['count'] - count($entries) > 0)
 							if (!$my_shift || in_array('user_shifts_admin', $privileges)) {
-								$entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['TID'] . '">' . ($angeltype['count'] - count($entries)) . ' Helfer' . ($angeltype['count'] - count($entries) != 1 ? '' : '') . ' gebraucht &raquo;</a>';
+								$entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">' . ($angeltype['count'] - count($entries)) . ' Helfer' . ($angeltype['count'] - count($entries) != 1 ? '' : '') . ' gebraucht &raquo;</a>';
 								$show_shift = true;
 							} else
 								$entry_list[] = ($angeltype['count'] - count($entries)) . ' Helfer gebraucht';
