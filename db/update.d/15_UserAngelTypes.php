@@ -11,7 +11,7 @@ if(sql_num_query("SHOW TABLES LIKE 'UserAngelTypes'") === 0) {
                 SELECT `User`.`UID`, `AngelTypes`.`id`
                 FROM `User`
                 INNER JOIN `AngelTypes`
-                ON TRIM(TRAILING 'Angel' FROM `User`.`Art`) = `AngelTypes`.`name`");
+                ON TRIM(TRAILING 'Engel' FROM TRIM(TRAILING 'Angel' FROM `User`.`Art`)) = `AngelTypes`.`name`");
 
     $applied = true;
 }
