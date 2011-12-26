@@ -20,6 +20,12 @@ function guest_register() {
 	$comment = "";
 	$tshirt_size = 'S';
 	$password_hash = "";
+	$selected_angel_types = array ();
+
+	$angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
+	$angel_types = array ();
+	foreach ($angel_types_source as $angel_type)
+		$angel_types[$angel_type['id']] = $angel_type['name'] . ($angel_type['restricted'] ? " (restricted)" : "");
 
 	if (isset ($_REQUEST['submit'])) {
 		$ok = true;
