@@ -20,12 +20,12 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 CREATE TABLE IF NOT EXISTS `AngelTypes` (
-  `TID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(25) NOT NULL DEFAULT '',
-  `Man` text,
-  PRIMARY KEY (`TID`),
-  UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) NOT NULL DEFAULT '',
+  `restricted` int(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Name` (`name`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Daten für Tabelle `AngelTypes`
