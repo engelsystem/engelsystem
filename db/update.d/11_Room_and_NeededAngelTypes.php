@@ -29,5 +29,24 @@ if(sql_num_query("SHOW TABLES LIKE 'NeededAngelTypes'") === 0) {
 
     $applied = true;
 }
+
+if(sql_num_query("SELECT * FROM `ShiftEntry` WHERE `UID` = 0")) {
+    $data = sql_query("
+        INSERT INTO `NeededAngelTypes` (`shift_id`, `angel_type_id`, `count`)
+            SELECT se.`SID`, se.`TID`, se.`count` FROM (
+                SELECT `SID`, `TID`, COUNT(`TID`) AS `count`
+                    FROM `ShiftEntry`
+                    GROUP BY `SID`, `TID`
+                ) AS se
+                INNER JOIN `Shifts` AS s ON s.`SID` = se.`SID`
+                INNER JOIN `Room` AS r ON s.`RID` = r.`RID`
+                LEFT JOIN `NeededAngelTypes` AS nat ON (nat.`room_id` = r.`RID` AND nat.`angel_type_id` = se.`TID`)
+                WHERE nat.`count` IS NULL OR nat.`count` != se.`count`
+    ");
+
+    sql_query("DELETE FROM `ShiftEntry` WHERE `UID` = 0 AND `Comment` IS NULL");
+
+    $applied = true;
+}
 _add_index("Room", array("Name"));
 ?>

@@ -7,6 +7,8 @@ if(sql_num_query("SHOW COLUMNS FROM `Shifts` LIKE 'Date_'") == 2) {
             sql_query("ALTER TABLE `Shifts` DROP `Len`");
         }
     }
+    _datetime_to_int("Shifts", "DateS");
+    _datetime_to_int("Shifts", "DateE");
     sql_query("ALTER TABLE `Shifts` CHANGE `DateS` `start` INT NOT NULL, CHANGE `DateE` `end` INT NOT NULL");
 
     $applied = true;
