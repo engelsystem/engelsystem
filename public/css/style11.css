@@ -9,3 +9,12 @@
 tr:hover > td {
 	background: #f0f0f0;
 }
+
+.selection ul li.heading {
+	text-align: center;
+	font-weight: bold;
+}
+
+.selection ul li:nth-child(even) {
+	background: #f0f0f0;
+}

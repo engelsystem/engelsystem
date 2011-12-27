@@ -351,3 +351,21 @@ tr:hover .hidden {
 .form ul {
 	list-style: none;
 }
+
+.selection ul {
+	list-style: none;
+	padding: 0;
+}
+
+.selection.rooms,
+.selection.days,
+.selection.types,
+.selection.filled {
+	display: inline-block;
+	vertical-align: top;
+	margin-right: 15px;
+}
+
+#filter {
+	padding: 10px;
+}
