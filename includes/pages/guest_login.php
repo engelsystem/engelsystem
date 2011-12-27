@@ -143,8 +143,8 @@ function guest_register() {
 			form_textarea('comment', Get_Text("makeuser_text2"), $comment),
 			form_checkboxes('angel_types', "What do you want to do?", $angel_types, $selected_angel_types),
 			form_info("", "Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section."),
-			form_password('password', Get_Text("makeuser_Passwort")),
-			form_password('password2', Get_Text("makeuser_Passwort2")),
+			form_password('password', Get_Text("makeuser_Passwort") . "*"),
+			form_password('password2', Get_Text("makeuser_Passwort2") . "*"),
 			info(Get_Text("makeuser_text3"), true),
 			form_submit('submit', Get_Text("makeuser_Anmelden"))
 		))
