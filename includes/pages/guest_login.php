@@ -62,10 +62,11 @@ function guest_register() {
 			}
 		}
 
-		if (isset ($_REQUEST['tshirt_size']) && isset ($tshirt_sizes[$_REQUEST['tshirt_size']]))
-			$tshirt_size = $_REQUEST['tshirt_size'];
-		else {
-			$ok = false;
+		if ($enable_tshirt_size) {
+			if (isset ($_REQUEST['tshirt_size']) && isset ($tshirt_sizes[$_REQUEST['tshirt_size']]))
+				$tshirt_size = $_REQUEST['tshirt_size'];
+			else
+				$ok = false;
 		}
 
 		if (isset ($_REQUEST['password']) && strlen($_REQUEST['password']) >= 6) {
@@ -119,7 +120,7 @@ function guest_register() {
 
 			success(Get_Text("makeuser_writeOK4"));
 			//if (!isset ($_SESSION['uid']))
-				redirect(page_link_to('login'));
+			redirect(page_link_to('login'));
 		}
 	}
 
