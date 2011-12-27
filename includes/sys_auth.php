@@ -10,6 +10,7 @@ function load_auth() {
 
 	if ($_SESSION['IP'] != $_SERVER['REMOTE_ADDR']) {
 		session_destroy();
+		error("Your session has been destroyed because your ip-address changed.");
 		header("Location: " . page_link_to('start'));
 	}
 
