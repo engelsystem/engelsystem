@@ -213,28 +213,33 @@ function user_shifts() {
 		$shifts = sql_select("SELECT COUNT(*) AS `count` FROM `Shifts` ORDER BY `start`");
 		$days = array ();
 		$rooms = array ();
+		if (!isset ($_SESSION['user_shifts']))
+			$_SESSION['user_shifts'] = array ();
+
 		if ($shifts[0]["count"] > 0) {
 			$days = sql_select("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) FROM `Shifts`");
 			$days = array_map('array_pop', $days);
-			$day = $days[0];
+			if (!isset ($_SESSION['user_shifts']['day']))
+				$_SESSION['user_shifts']['day'] = $days[0];
 			if (isset ($_REQUEST['day']))
-				$day = $_REQUEST['day'];
+				$_SESSION['user_shifts']['day'] = $_REQUEST['day'];
 
 			$rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
-			$id = 0;
+			if (!isset ($_SESSION['user_shifts']['id']))
+				$_SESSION['user_shifts']['id'] = 0;
 			if (isset ($_REQUEST['room_id']) && preg_match("/^[0-9]*$/", $_REQUEST['room_id']))
-				$id = $_REQUEST['room_id'];
-			$day_timestamp = DateTime :: createFromFormat("Y-m-d-Hi", $day . "-0000")->getTimestamp();
+				$_SESSION['user_shifts']['id'] = $_REQUEST['room_id'];
+			$day_timestamp = DateTime :: createFromFormat("Y-m-d-Hi", $_SESSION['user_shifts']['day'] . "-0000")->getTimestamp();
 
-			if ($id == 0)
+			if ($_SESSION['user_shifts']['id'] == 0)
 				$shifts = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `start` > " . sql_escape(time()) . " ORDER BY `start`");
 			else
-				$shifts = sql_select("SELECT * FROM `Shifts` WHERE `RID`=" . sql_escape($id) . " AND `start` >= " . sql_escape($day_timestamp) . " AND `start` < " . sql_escape($day_timestamp +24 * 60 * 60) . " ORDER BY `start`");
+				$shifts = sql_select("SELECT * FROM `Shifts` WHERE `RID`=" . sql_escape($_SESSION['user_shifts']['id']) . " AND `start` >= " . sql_escape($day_timestamp) . " AND `start` < " . sql_escape($day_timestamp +24 * 60 * 60) . " ORDER BY `start`");
 
 			$shifts_table = "";
 			$row_count = 0;
 			foreach ($shifts as $shift) {
-				$shift_row = '<tr><td>' . date(($id == 0 ? "Y-m-d " : "") . "H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . ($id == 0 ? "<br />" . $shift['Name'] : "") . '</td><td>' . $shift['name'];
+				$shift_row = '<tr><td>' . date(($_SESSION['user_shifts']['id'] == 0 ? "Y-m-d " : "") . "H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . ($_SESSION['user_shifts']['id'] == 0 ? "<br />" . $shift['Name'] : "") . '</td><td>' . $shift['name'];
 				if (in_array('admin_shifts', $privileges))
 					$shift_row .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
 				$shift_row .= '<br />';
@@ -266,42 +271,34 @@ function user_shifts() {
 						$shift_row .= '<br />';
 					}
 				}
-				if ($id != 0 || ($show_shift && $row_count++ < 15))
+				if ($_SESSION['user_shifts']['id'] != 0 || ($show_shift && $row_count++ < 15))
 					$shifts_table .= $shift_row . '</td></tr>';
 			}
 		}
 
 		return template_render('../templates/user_shifts.html', array (
-			'room_select' => make_room_select($rooms, $id, $day),
-			'day_select' => make_day_select($days, $day, $id),
+			'room_select' => make_room_select($rooms, $_SESSION['user_shifts']['id'], $_SESSION['user_shifts']['day']),
+			'day_select' => make_day_select($days, $_SESSION['user_shifts']['day'], $_SESSION['user_shifts']['id']),
 			'shifts_table' => $shifts_table
 		));
 	}
 }
 
 function make_day_select($days, $day, $id) {
+	if ($id == 0)
+		return "";
 	$html = array ();
-	foreach ($days as $d) {
-		if ($day == $d && $id != 0)
-			$html[] = '<b>' . $d . '</b>';
-		else
-			$html[] = '<a href="' . page_link_to('user_shifts') . '&day=' . $d . '&room_id=' . $id . '">' . $d . '</a>';
-	}
-	return join(' | ', $html);
+	foreach ($days as $d)
+		$html[] = button(page_link_to('user_shifts') . '&day=' . $d, $d, $day == $d && $id != 0 ? 'on' : '');
+	return buttons($html);
 }
 
 function make_room_select($rooms, $id, $day) {
 	$html = array ();
 	foreach ($rooms as $room) {
-		if ($room['RID'] == $id)
-			$html[] = '<b>' . $room['Name'] . '</b>';
-		else
-			$html[] = '<a href="' . page_link_to('user_shifts') . '&room_id=' . $room['RID'] . '&day=' . $day . '">' . $room['Name'] . '</a>';
+		$html[] = button(page_link_to('user_shifts') . '&room_id=' . $room['RID'], $room['Name'], $room['RID'] == $id ? 'on' : '');
 	}
-	if ($id == 0)
-		$html[] = '<b>Nächste freie Schichten</b>';
-	else
-		$html[] = '<a href="' . page_link_to('user_shifts') . '&room_id=0">Nächste freie Schichten</a>';
-	return join(' | ', $html);
+	$html[] = button(page_link_to('user_shifts') . '&room_id=0', "Next free shifts.", $id == 0 ? 'on' : '');
+	return buttons($html);
 }
 ?>

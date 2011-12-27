@@ -276,19 +276,26 @@ tr:hover .hidden {
 }
 
 .toolbar {
-	margin: 5px 0 10px 0;
+	margin: 0 0 10px 0;
 }
 
 .button {
 	background: #f0f0f0;
 	border: 1px solid #888;
 	border-radius: 4px;
-	margin-right: 5px;
+	line-height: 25px;
 	padding: 2px 5px;
 	text-decoration: none;
+	white-space: nowrap;
+}
+
+.button.on {
+	color: #fff;
+	background: #444;
 }
 
 .button:hover {
+	color: #000;
 	background: #fff;
 }
 

@@ -147,7 +147,7 @@ function button($href, $label, $class = "") {
  * Rendert eine Toolbar mit Knöpfen
  */
 function buttons($buttons = array ()) {
-	return '<div class="toolbar">' . join($buttons) . '</div>';
+	return '<div class="toolbar">' . join(' ', $buttons) . '</div>';
 }
 
 // Load and render template

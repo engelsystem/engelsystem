@@ -3,7 +3,7 @@ function admin_rooms() {
 	global $user;
 
 	$html = "";
-	$rooms = sql_select("SELECT * FROM `Room` ORDER BY `Number`, `Name`");
+	$rooms = sql_select("SELECT * FROM `Room` ORDER BY `Name`");
 	if (!isset ($_REQUEST["action"])) {
 		$html .= "Hallo " . $user['Nick'] .
 		",<br />\nhier hast du die M&ouml;glichkeit, neue R&auml;ume f&uuml;r die Schichtpl&auml;ne einzutragen " .
