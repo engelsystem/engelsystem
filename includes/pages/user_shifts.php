@@ -210,13 +210,12 @@ function user_shifts() {
 			'comment' => ""
 		));
 	} else {
-		$shifts = sql_select("SELECT * FROM `Shifts` ORDER BY `start`");
+		$shifts = sql_select("SELECT COUNT(*) AS `count` FROM `Shifts` ORDER BY `start`");
 		$days = array ();
 		$rooms = array ();
-		if (count($shifts) > 0) {
-			foreach ($shifts as $shift)
-				$days[] = date("Y-m-d", $shift['start']);
-			$days = array_unique($days);
+		if ($shifts[0]["count"] > 0) {
+			$days = sql_select("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) FROM `Shifts`");
+			$days = array_map('array_pop', $days);
 			$day = $days[0];
 			if (isset ($_REQUEST['day']))
 				$day = $_REQUEST['day'];
