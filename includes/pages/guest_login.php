@@ -118,7 +118,7 @@ function guest_register() {
 				sql_query("INSERT INTO `UserAngelTypes` SET `user_id`=" . sql_escape($user_id) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
 
 			success(Get_Text("makeuser_writeOK4"));
-			if (!isset ($_SESSION['uid']))
+			//if (!isset ($_SESSION['uid']))
 				redirect(page_link_to('login'));
 		}
 	}
