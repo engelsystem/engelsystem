@@ -153,7 +153,7 @@ function guest_register() {
 }
 
 function guest_logout() {
-	unset ($_SESSION['uid']);
+	session_destroy();
 	header("Location: " . page_link_to("start"));
 }
 

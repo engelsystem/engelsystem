@@ -12,6 +12,10 @@ function admin_angel_types() {
 	}
 
 	if (isset ($_REQUEST['show'])) {
+		$msg = "";
+		$name = "";
+		$restricted = 0;
+
 		if (test_request_int('id')) {
 			$angel_type = sql_select("SELECT * FROM `AngelTypes` WHERE `id`=" . sql_escape($_REQUEST['id']));
 			if (count($angel_type) > 0) {
@@ -23,10 +27,6 @@ function admin_angel_types() {
 		}
 
 		if ($_REQUEST['show'] == 'edit') {
-			$msg = "";
-			$name = "";
-			$restricted = 0;
-
 			if (isset ($_REQUEST['submit'])) {
 				$ok = true;
 

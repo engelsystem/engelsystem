@@ -2,142 +2,140 @@
 function admin_rooms() {
 	global $user;
 
-	$html = "";
-	$rooms = sql_select("SELECT * FROM `Room` ORDER BY `Name`");
-	if (!isset ($_REQUEST["action"])) {
-		$html .= "Hallo " . $user['Nick'] .
-		",<br />\nhier hast du die M&ouml;glichkeit, neue R&auml;ume f&uuml;r die Schichtpl&auml;ne einzutragen " .
-		"oder vorhandene abzu&auml;ndern:<br /><br />\n";
+	$rooms_source = sql_select("SELECT * FROM `Room` ORDER BY `Name`");
+	$rooms = array ();
+	foreach ($rooms_source as $room)
+		$rooms[] = array (
+			'name' => $room['Name'],
+			'from_pentabarf' => $room['FromPentabarf'] == 'Y' ? '&#10003;' : '',
+			'public' => $room['show'] == 'Y' ? '&#10003;' : '',
+			'actions' => '<a class="ection edit" href="' . page_link_to('admin_rooms') . '&show=edit&id=' . $room['RID'] . '">edit</a> <a class="action delete" href="' . page_link_to('admin_rooms') . '&show=delete&id=' . $room['RID'] . '">delete</a>'
+		);
 
-		// Räume auflisten
-		if (count($rooms) > 0) {
-			$html .= '<table><thead><tr>';
+	if (isset ($_REQUEST['show'])) {
+		$msg = "";
+		$name = "";
+		$from_pentabarf = "";
+		$public = 'Y';
+		$number = "";
 
-			$html .= "<table width=\"100%\" class=\"border\" cellpadding=\"2\" cellspacing=\"1\">\n";
-			$html .= "<tr class=\"contenttopic\">\n";
+		$angeltypes_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
+		$angeltypes = array ();
+		$angeltypes_count = array ();
+		foreach ($angeltypes_source as $angeltype) {
+			$angeltypes[$angeltype['id']] = $angeltype['name'];
+			$angeltypes_count[$angeltype['id']] = 0;
+		}
 
-			// Tabellenüberschriften generieren
-			foreach ($rooms[0] as $attr => $tmp)
-				if ($attr != 'RID')
-					$html .= '<th>' . $attr . '</th>';
-			$html .= '<th>&nbsp;</th>';
-			$html .= '</tr></thead><tbody>';
+		if (test_request_int('id')) {
+			$room = sql_select("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($_REQUEST['id']));
+			if (count($room) > 0) {
+				$id = $_REQUEST['id'];
+				$name = $room[0]['Name'];
+				$from_pentabarf = $room[0]['FromPentabarf'];
+				$public = $room[0]['show'];
+				$needed_angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($id));
+				foreach ($needed_angeltypes as $needed_angeltype)
+					$angeltypes_count[$needed_angeltype['angel_type_id']] = $needed_angeltype['count'];
+			} else
+				redirect(page_link_to('admin_rooms'));
+		}
 
-			foreach ($rooms as $i => $room) {
-				$html .= '<tr>';
-				foreach ($room as $attr => $value)
-					if ($attr != 'RID')
-						$html .= '<td>' . $value . '</td>';
-				$html .= '<td><a href="' . page_link_to("admin_rooms") . '&action=change&RID=' . $room['RID'] . '">Edit</a></td>';
-				$html .= '</tr>';
+		if ($_REQUEST['show'] == 'edit') {
+			if (isset ($_REQUEST['submit'])) {
+				$ok = true;
+
+				if (isset ($_REQUEST['name']) && strlen(strip_request_item('name')) > 0)
+					$name = strip_request_item('name');
+				else {
+					$ok = false;
+					$msg .= error("Please enter a name.", true);
+				}
+
+				if (isset ($_REQUEST['from_pentabarf']))
+					$from_pentabarf = 'Y';
+				else
+					$from_pentabarf = '';
+
+				if (isset ($_REQUEST['public']))
+					$public = 'Y';
+				else
+					$public = '';
+
+				if (isset ($_REQUEST['number']))
+					$number = strip_request_item('number');
+				else
+					$ok = false;
+
+				foreach ($angeltypes as $angeltype_id => $angeltype)
+					if (isset ($_REQUEST['angeltype_count_' . $angeltype_id]) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['angeltype_count_' . $angeltype_id]))
+						$angeltypes_count[$angeltype_id] = $_REQUEST['angeltype_count_' . $angeltype_id];
+					else {
+						$ok = false;
+						$msg .= error(sprintf("Please enter needed angels for type %s.", $angeltype), true);
+					}
+
+				if ($ok) {
+					sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "' WHERE `RID`=" . sql_escape($id) . " LIMIT 1");
+					sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($id));
+					foreach ($angeltypes_count as $angeltype_id => $angeltype_count)
+						sql_query("INSERT INTO `NeededAngelTypes` SET `room_id`=" . sql_escape($id) . ", `angel_type_id`=" . sql_escape($angeltype_id) . ", `count`=" . sql_escape($angeltype_count));
+
+					success("Room saved.");
+					redirect(page_link_to("admin_rooms"));
+				}
+			}
+			$angeltypes_count_form = array ();
+			foreach ($angeltypes as $angeltype_id => $angeltype)
+				$angeltypes_count_form[] = form_text('angeltype_count_' . $angeltype_id, $angeltype, $angeltypes_count[$angeltype_id]);
+
+			return page(array (
+				buttons(array (
+					button(page_link_to('admin_rooms'), "Back", 'back')
+				)),
+				$msg,
+				form(array (
+					form_text('name', "Name", $name),
+					form_checkbox('from_pentabarf', "Pentabarf-Import", $from_pentabarf),
+					form_checkbox('public', "Public", $public),
+					form_text('number', "Number", $number),
+					form_info("Needed angels:", ""),
+					join($angeltypes_count_form),
+					form_submit('submit', 'Save')
+				))
+			));
+		}
+		elseif ($_REQUEST['show'] == 'delete') {
+			if (isset ($_REQUEST['ack'])) {
+				sql_query("DELETE FROM `Room` WHERE `RID`=" . sql_escape($id) . " LIMIT 1");
+				sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($id) . " LIMIT 1");
+				success(sprintf("Room %s deleted.", $name));
+				redirect(page_link_to('admin_rooms'));
 			}
 
-			$html .= '</tbody></table>';
-		}
-		$html .= "<hr /><a href=\"" . page_link_to("admin_rooms") . "&action=new\">Neuen Raum/Ort eintragen</a><br />\n";
-	} else {
-		switch ($_REQUEST["action"]) {
-
-			case 'new' :
-				$html .= template_render('../templates/admin_rooms_new_form.html', array (
-					'link' => page_link_to("admin_rooms")
-				));
-				break;
-
-			case 'newsave' :
-				$name = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}]{1,})/ui", '', strip_tags($_REQUEST['Name']));
-				$man = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}]{1,})/ui", '', strip_tags($_REQUEST['Man']));
-				$from_pentabarf = preg_replace("/([^YN]{1,})/ui", '', strip_tags($_REQUEST['FromPentabarf']));
-				$show = preg_replace("/([^YN]{1,})/ui", '', strip_tags($_REQUEST['Show']));
-				$number = preg_replace("/([^0-9]{1,})/ui", '', strip_tags($_REQUEST['Number']));
-				sql_query("INSERT INTO `Room` SET `Name`='" . sql_escape($name) . "', `Man`='" . sql_escape($man) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($show) . "', `Number`='" . sql_escape($number) . "'");
-				header("Location: " . page_link_to("admin_rooms"));
-				break;
-
-			case 'change' :
-				if (isset ($_REQUEST['RID']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['RID']))
-					$rid = $_REQUEST['RID'];
-				else
-					return error("Incomplete call, missing Room ID.", true);
-
-				$room = sql_select("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
-				if (count($room) > 0) {
-					list ($room) = $room;
-					$room_angel_types = sql_select("SELECT `AngelTypes`.*, `NeededAngelTypes`.`count` FROM `AngelTypes` LEFT OUTER JOIN `NeededAngelTypes` ON (`AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id` AND `NeededAngelTypes`.`room_id`=" . sql_escape($rid) . ") ORDER BY `AngelTypes`.`name`");
-
-					$angel_types = "";
-					foreach ($room_angel_types as $room_angel_type) {
-						if ($room_angel_type['count'] == "")
-							$room_angel_type['count'] = "0";
-						$angel_types .= '<tr><td>' . $room_angel_type['name'] . '</td><td><input type="text" name="angel_type_' . $room_angel_type['id'] . '" value="' . $room_angel_type['count'] . '" /></td></tr>';
-					}
-
-					$html .= template_render('../templates/admin_rooms_edit_form.html', array (
-						'link' => page_link_to("admin_rooms"),
-						'room_id' => $rid,
-						'name' => $room['Name'],
-						'man' => $room['Man'],
-						'number' => $room['Number'],
-						'from_pentabarf_options' => html_options('FromPentabarf', array (
-							'Y' => 'Yes',
-							'N' => 'No'
-						), $room['FromPentabarf']),
-						'show_options' => html_options('Show', array (
-							'Y' => 'Yes',
-							'N' => 'No'
-						), $room['show']),
-						'angel_types' => $angel_types
-					));
-				} else
-					return error("No Room found.", true);
-				break;
-
-			case 'changesave' :
-				if (isset ($_REQUEST['RID']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['RID']))
-					$rid = $_REQUEST['RID'];
-				else
-					return error("Incomplete call, missing Room ID.", true);
-
-				$room = sql_select("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
-				if (count($room) > 0) {
-					list ($room) = $room;
-					$room_angel_types = sql_select("SELECT `AngelTypes`.* FROM `AngelTypes` LEFT OUTER JOIN `NeededAngelTypes` ON (`AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id` AND `NeededAngelTypes`.`room_id`=" . sql_escape($rid) . ") ORDER BY `AngelTypes`.`name`");
-
-					$name = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}]{1,})/ui", '', strip_tags($_REQUEST['Name']));
-					$man = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}]{1,})/ui", '', strip_tags($_REQUEST['Man']));
-					$from_pentabarf = preg_replace("/([^YN]{1,})/ui", '', strip_tags($_REQUEST['FromPentabarf']));
-					$show = preg_replace("/([^YN]{1,})/ui", '', strip_tags($_REQUEST['Show']));
-					$number = preg_replace("/([^0-9]{1,})/ui", '', strip_tags($_REQUEST['Number']));
-					sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `Man`='" . sql_escape($man) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($show) . "', `Number`='" . sql_escape($number) . "' WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
-					sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($rid));
-					foreach ($room_angel_types as $room_angel_type) {
-						if (isset ($_REQUEST['angel_type_' . $room_angel_type['id']]) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['angel_type_' . $room_angel_type['id']]))
-							$count = $_REQUEST['angel_type_' . $room_angel_type['id']];
-						else
-							$count = "0";
-						sql_query("INSERT INTO `NeededAngelTypes` SET `room_id`=" . sql_escape($rid) . ", `angel_type_id`=" . sql_escape($room_angel_type['id']) . ", `count`=" . sql_escape($count));
-					}
-					header("Location: " . page_link_to("admin_rooms"));
-				} else
-					return error("No Room found.", true);
-				break;
-
-			case 'delete' :
-				if (isset ($_REQUEST['RID']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['RID']))
-					$rid = $_REQUEST['RID'];
-				else
-					return error("Incomplete call, missing Room ID.", true);
-
-				if (sql_num_query("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1") > 0) {
-					sql_query("DELETE FROM `Room` WHERE `RID`=" . sql_escape($rid) . " LIMIT 1");
-					sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($rid) . " LIMIT 1");
-					header("Location: " . page_link_to("admin_rooms"));
-				} else
-					return error("No Room found.", true);
-				break;
-
+			return page(array (
+				buttons(array (
+					button(page_link_to('admin_rooms'), "Back", 'back')
+				)),
+				sprintf("Do you want to delete room %s?", $name),
+				buttons(array (
+					button(page_link_to('admin_rooms') . '&show=delete&id=' . $id . '&ack', "Delete", 'delete')
+				))
+			));
 		}
 	}
-	return $html;
+
+	return page(array (
+		buttons(array (
+			button(page_link_to('admin_rooms'), "Add", 'add')
+		)),
+		msg(),
+		table(array (
+			'name' => "Name",
+			'from_pentabarf' => "Pentabarf-Import",
+			'public' => "Public",
+			'actions' => ""
+		), $rooms)
+	));
 }
 ?>
