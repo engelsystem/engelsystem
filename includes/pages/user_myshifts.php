@@ -95,9 +95,4 @@ function user_myshifts() {
 		'reset_link' => page_link_to('user_myshifts') . '&reset'
 	));
 }
-
-function user_reset_ical_key($user) {
-	$user['ical_key'] = md5($user['Nick'] . time() . rand());
-	sql_query("UPDATE `User` SET `ical_key`='" . sql_escape($user['ical_key']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
-}
 ?>

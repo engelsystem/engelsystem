@@ -165,7 +165,7 @@ elseif ($p == "faq") {
 		$content = Get_Text("no_access_text");
 	} else {
 		// Sonst zur Loginseite leiten
-		header("Location: " . page_link_to("login"));
+		redirect(page_link_to("login"));
 	}
 }
 

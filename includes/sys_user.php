@@ -19,6 +19,11 @@ $tshirt_sizes = array (
 	'XL-G' => "XL Girl"
 );
 
+function user_reset_ical_key($user) {
+	$user['ical_key'] = md5($user['Nick'] . time() . rand());
+	sql_query("UPDATE `User` SET `ical_key`='" . sql_escape($user['ical_key']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
+}
+
 function UID2Nick($UID) {
 	if ($UID > 0)
 		$SQL = "SELECT Nick FROM `User` WHERE UID='" . sql_escape($UID) . "'";

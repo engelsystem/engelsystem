@@ -1,6 +1,7 @@
 <?php
 function user_shifts() {
 	global $user, $privileges;
+
 	// Löschen einzelner Schicht-Einträge (Also Belegung einer Schicht von Engeln) durch Admins
 	if (isset ($_REQUEST['entry_id']) && in_array('user_shifts_admin', $privileges)) {
 		if (isset ($_REQUEST['entry_id']) && preg_match("/^[0-9]*$/", $_REQUEST['entry_id']))
@@ -210,107 +211,149 @@ function user_shifts() {
 			'comment' => ""
 		));
 	} else {
-		$days = sql_select("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` FROM `Shifts`");
-		$rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
-		$types = sql_select("SELECT `id`, `name` FROM `AngelTypes`");
-		$filled = array(array('id' => '1', 'name' => 'Volle'), array('id' => '0', 'name' => 'Freie'));
-
-		if (!isset ($_SESSION['user_shifts']))
-			$_SESSION['user_shifts'] = array ();
-
-		if (!isset ($_SESSION['user_shifts']['filled'])) {
-			$_SESSION['user_shifts']['filled'] = array (0);
-		}
-
-		foreach(array('rooms', 'types', 'filled') as $key) {
-			if (isset ($_REQUEST[$key])) {
-				$filtered = array_filter($_REQUEST[$key], 'is_numeric');
-				if (!empty($filtered))
-					$_SESSION['user_shifts'][$key] = $filtered;
-				unset($filtered);
-			}
-			if (!isset ($_SESSION['user_shifts'][$key]))
-				$_SESSION['user_shifts'][$key] = array_map('get_ids_from_array', $$key);
-		}
-
-		if (isset($_REQUEST['days'])) {
-			$filtered = array_filter($_REQUEST['days'], create_function('$a', 'return preg_match("/^\d\d\d\d-\d\d-\d\d\\$/", $a);'));
-			if (!empty($filtered))
-				$_SESSION['user_shifts']['days'] = $filtered;
-			unset($filtered);
-		}
-		if (!isset ($_SESSION['user_shifts']['days']))
-			$_SESSION['user_shifts']['days'] = array(date('Y-m-d'));
-
-		$shifts = sql_select("SELECT * FROM `Shifts`
-					WHERE `RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
-						AND DATE(FROM_UNIXTIME(`start`)) IN ('" . implode("','", $_SESSION['user_shifts']['days']) . "')
-					ORDER BY `start`
-		");
-
-		$shifts_table = "";
-		$row_count = 0;
-		foreach ($shifts as $shift) {
-			$shift_row = '<tr><td>' . date(($_SESSION['user_shifts']['id'] == 0 ? "Y-m-d " : "") . "H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . ($_SESSION['user_shifts']['id'] == 0 ? "<br />" . $shift['Name'] : "") . '</td><td>' . $shift['name'];
-			if (in_array('admin_shifts', $privileges))
-				$shift_row .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
-			$shift_row .= '<br />';
-			$is_free = false;
-			$shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
-			$query = "SELECT *
-					FROM `NeededAngelTypes`
-					JOIN `AngelTypes`
-						ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
-					WHERE ";
-			if($shift_has_special_needs)
-				$query .= "`shift_id` = " . sql_escape($shift['SID']);
-			else
-				$query .= "`room_id` = " . sql_escape($shift['RID']);
-			$query .= "		AND `count` > 0
-						AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ")
-					ORDER BY `AngelTypes`.`name`";
-			$angeltypes = sql_select($query);
-
-			if (count($angeltypes) > 0) {
-				$my_shift = sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0;
-				foreach ($angeltypes as $angeltype) {
-					$entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`=" . sql_escape($shift['SID']) . " AND `TID`=" . sql_escape($angeltype['id']) . " ORDER BY `Nick`");
-					$entry_list = array ();
-					foreach ($entries as $entry) {
-						if (in_array('user_shifts_admin', $privileges))
-							$entry_list[] = '<a href="' . page_link_to('user_myshifts') . '&id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> <a href="' . page_link_to('user_shifts') . '&entry_id=' . $entry['id'] . '">[x]</a>';
-						else
-							$entry_list[] = $entry['Nick'];
-					}
-					if ($angeltype['count'] - count($entries) > 0) {
-						if (!$my_shift || in_array('user_shifts_admin', $privileges)) {
-							$entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">' . ($angeltype['count'] - count($entries)) . ' Helfer' . ($angeltype['count'] - count($entries) != 1 ? '' : '') . ' gebraucht &raquo;</a>';
-						} else {
-							$entry_list[] = ($angeltype['count'] - count($entries)) . ' Helfer gebraucht';
-						}
-						$is_free = true;
-					}
-
-					$shift_row .= '<b>' . $angeltype['name'] . ':</b> ';
-					$shift_row .= join(", ", $entry_list);
-					$shift_row .= '<br />';
-				}
-				if (($is_free && in_array(0, $_SESSION['user_shifts']['filled']))
-				|| (!$is_free && in_array(1, $_SESSION['user_shifts']['filled']))) {
-					$shifts_table .= $shift_row . '</td></tr>';
-					$row_count++;
-				}
-			}
-		}
-
-		return template_render('../templates/user_shifts.html', array (
-			'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", "Räume"),
-			'day_select' => make_select($days, $_SESSION['user_shifts']['days'], "days", "Tage"),
-			'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", "Aufgaben"),
-			'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", "Besetzung"),
-			'shifts_table' => $shifts_table
-		));
+		return view_user_shifts();
 	}
+}
+
+function view_user_shifts() {
+	global $user, $privileges;
+	global $ical_shifts;
+
+	$days = sql_select("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` FROM `Shifts`");
+	$rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
+	$types = sql_select("SELECT `id`, `name` FROM `AngelTypes`");
+	$filled = array (
+		array (
+			'id' => '1',
+			'name' => 'Volle'
+		),
+		array (
+			'id' => '0',
+			'name' => 'Freie'
+		)
+	);
+
+	if (!isset ($_SESSION['user_shifts']))
+		$_SESSION['user_shifts'] = array ();
+
+	if (!isset ($_SESSION['user_shifts']['filled'])) {
+		$_SESSION['user_shifts']['filled'] = array (
+			0
+		);
+	}
+
+	foreach (array (
+			'rooms',
+			'types',
+			'filled'
+		) as $key) {
+		if (isset ($_REQUEST[$key])) {
+			$filtered = array_filter($_REQUEST[$key], 'is_numeric');
+			if (!empty ($filtered))
+				$_SESSION['user_shifts'][$key] = $filtered;
+			unset ($filtered);
+		}
+		if (!isset ($_SESSION['user_shifts'][$key]))
+			$_SESSION['user_shifts'][$key] = array_map('get_ids_from_array', $$key);
+	}
+
+	if (isset ($_REQUEST['days'])) {
+		$filtered = array_filter($_REQUEST['days'], create_function('$a', 'return preg_match("/^\d\d\d\d-\d\d-\d\d\\$/", $a);'));
+		if (!empty ($filtered))
+			$_SESSION['user_shifts']['days'] = $filtered;
+		unset ($filtered);
+	}
+	if (!isset ($_SESSION['user_shifts']['days']))
+		$_SESSION['user_shifts']['days'] = array (
+			date('Y-m-d')
+		);
+
+	$shifts = sql_select("SELECT * FROM `Shifts`
+															WHERE `RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
+																AND DATE(FROM_UNIXTIME(`start`)) IN ('" . implode("','", $_SESSION['user_shifts']['days']) . "')
+															ORDER BY `start`
+												");
+
+	$shifts_table = "";
+	$row_count = 0;
+	foreach ($shifts as $shift) {
+		$shift_row = '<tr><td>' . date(($_SESSION['user_shifts']['id'] == 0 ? "Y-m-d " : "") . "H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . ($_SESSION['user_shifts']['id'] == 0 ? "<br />" . $shift['Name'] : "") . '</td><td>' . $shift['name'];
+		if (in_array('admin_shifts', $privileges))
+			$shift_row .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
+		$shift_row .= '<br />';
+		$is_free = false;
+		$shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
+		$query = "SELECT *
+																							FROM `NeededAngelTypes`
+																							JOIN `AngelTypes`
+																								ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
+																							WHERE ";
+		if ($shift_has_special_needs)
+			$query .= "`shift_id` = " . sql_escape($shift['SID']);
+		else
+			$query .= "`room_id` = " . sql_escape($shift['RID']);
+		$query .= "		AND `count` > 0
+																								AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ")
+																							ORDER BY `AngelTypes`.`name`";
+		$angeltypes = sql_select($query);
+
+		if (count($angeltypes) > 0) {
+			$my_shift = sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0;
+			foreach ($angeltypes as $angeltype) {
+				$entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`=" . sql_escape($shift['SID']) . " AND `TID`=" . sql_escape($angeltype['id']) . " ORDER BY `Nick`");
+				$entry_list = array ();
+				foreach ($entries as $entry) {
+					if (in_array('user_shifts_admin', $privileges))
+						$entry_list[] = '<a href="' . page_link_to('user_myshifts') . '&id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> <a href="' . page_link_to('user_shifts') . '&entry_id=' . $entry['id'] . '">[x]</a>';
+					else
+						$entry_list[] = $entry['Nick'];
+				}
+				if ($angeltype['count'] - count($entries) > 0) {
+					if (!$my_shift || in_array('user_shifts_admin', $privileges)) {
+						$entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">' . ($angeltype['count'] - count($entries)) . ' Helfer' . ($angeltype['count'] - count($entries) != 1 ? '' : '') . ' gebraucht &raquo;</a>';
+					} else {
+						$entry_list[] = ($angeltype['count'] - count($entries)) . ' Helfer gebraucht';
+					}
+					$is_free = true;
+				}
+
+				$shift_row .= '<b>' . $angeltype['name'] . ':</b> ';
+				$shift_row .= join(", ", $entry_list);
+				$shift_row .= '<br />';
+			}
+			if (($is_free && in_array(0, $_SESSION['user_shifts']['filled'])) || (!$is_free && in_array(1, $_SESSION['user_shifts']['filled']))) {
+				$shifts_table .= $shift_row . '</td></tr>';
+				$row_count++;
+				$ical_shifts[] = $shift;
+			}
+		}
+	}
+
+	if ($user['ical_key'] == "")
+		user_reset_ical_key($user);
+
+	return template_render('../templates/user_shifts.html', array (
+		'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", "Räume"),
+		'day_select' => make_select($days, $_SESSION['user_shifts']['days'], "days", "Tage"),
+		'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", "Aufgaben"),
+		'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", "Besetzung"),
+		'shifts_table' => $shifts_table,
+		'ical_link' => make_user_shifts_ical_link($user['ical_key']),
+		'reset_link' => page_link_to('user_myshifts') . '&reset'
+	));
+}
+
+function make_user_shifts_ical_link($key) {
+	$link = "";
+	foreach ($_SESSION['user_shifts']['rooms'] as $room)
+		$link .= '&rooms[]=' . $room;
+	foreach ($_SESSION['user_shifts']['days'] as $day)
+		$link .= '&days[]=' . $day;
+	foreach ($_SESSION['user_shifts']['types'] as $type)
+		$link .= '&types[]=' . $type;
+	foreach ($_SESSION['user_shifts']['filled'] as $filled)
+		$link .= '&filled[]=' . $filled;
+	return page_link_to_absolute('ical') . $link . '&export=user_shifts&key=' . $key;
 }
 
 function get_ids_from_array($array) {
@@ -319,18 +362,18 @@ function get_ids_from_array($array) {
 
 function make_select($items, $selected, $name, $title = null) {
 	$html_items = array ();
-	if(isset($title))
+	if (isset ($title))
 		$html_items[] = '<li class="heading">' . $title . '</li>' . "\n";
 
 	foreach ($items as $i)
-		$html_items[] = '<li><label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '"' . (in_array($i['id'], $selected)? ' checked="checked"' : '') . '> ' . $i['name'] . '</label></li>';
-	$html  = '<div class="selection ' . $name . '">' . "\n";
+		$html_items[] = '<li><label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '"' . (in_array($i['id'], $selected) ? ' checked="checked"' : '') . '> ' . $i['name'] . '</label></li>';
+	$html = '<div class="selection ' . $name . '">' . "\n";
 	$html .= '<ul id="selection_' . $name . '">' . "\n";
 	$html .= implode("\n", $html_items);
 	$html .= '</ul>' . "\n";
-	$html .= buttons(array(
-			button("javascript: check_all('selection_" . $name . "')", "Alle", ""),
-			button("javascript: uncheck_all('selection_" . $name . "')", "Keine", "")
+	$html .= buttons(array (
+		button("javascript: check_all('selection_" . $name . "')", "Alle", ""),
+		button("javascript: uncheck_all('selection_" . $name . "')", "Keine", "")
 	));
 	$html .= '</div>' . "\n";
 	return $html;
