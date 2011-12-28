@@ -219,6 +219,7 @@ function view_user_shifts() {
 	global $user, $privileges;
 	global $ical_shifts;
 
+	$ical_shifts = array ();
 	$days = sql_select("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` FROM `Shifts`");
 	$rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
 	$types = sql_select("SELECT `id`, `name` FROM `AngelTypes`");
@@ -269,10 +270,9 @@ function view_user_shifts() {
 		);
 
 	$shifts = sql_select("SELECT * FROM `Shifts`
-															WHERE `RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
-																AND DATE(FROM_UNIXTIME(`start`)) IN ('" . implode("','", $_SESSION['user_shifts']['days']) . "')
-															ORDER BY `start`
-												");
+								WHERE `RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
+									AND DATE(FROM_UNIXTIME(`start`)) IN ('" . implode("','", $_SESSION['user_shifts']['days']) . "')
+								ORDER BY `start`");
 
 	$shifts_table = "";
 	$row_count = 0;
@@ -284,17 +284,17 @@ function view_user_shifts() {
 		$is_free = false;
 		$shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
 		$query = "SELECT *
-																							FROM `NeededAngelTypes`
-																							JOIN `AngelTypes`
-																								ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
-																							WHERE ";
+									FROM `NeededAngelTypes`
+									JOIN `AngelTypes`
+										ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
+									WHERE ";
 		if ($shift_has_special_needs)
 			$query .= "`shift_id` = " . sql_escape($shift['SID']);
 		else
 			$query .= "`room_id` = " . sql_escape($shift['RID']);
 		$query .= "		AND `count` > 0
-																								AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ")
-																							ORDER BY `AngelTypes`.`name`";
+										AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ")
+									ORDER BY `AngelTypes`.`name`";
 		$angeltypes = sql_select($query);
 
 		if (count($angeltypes) > 0) {

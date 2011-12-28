@@ -3,7 +3,7 @@
 
 // Öffentlich zugängliche Funktion zum Abrufen von iCal-Exports der eigenen Schichten
 function user_ical() {
-	global $ical_shifts;
+	global $ical_shifts, $user;
 
 	if (isset ($_REQUEST['key']) && preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key']))
 		$key = $_REQUEST['key'];
@@ -24,18 +24,20 @@ function user_ical() {
 	}
 
 	header("Content-Type: text/calendar; charset=utf-8");
-	echo "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//-//Engelsystem//DE\r\nCALSCALE:GREGORIAN\r\n";
+	$html = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//-//Engelsystem//DE\r\nCALSCALE:GREGORIAN\r\n";
 	foreach ($ical_shifts as $shift) {
-		echo "BEGIN:VEVENT\r\n";
-		echo "UID:" . md5($shift['start'] . $shift['end'] . $shift['name']) . "\r\n";
-		echo "SUMMARY:" . str_replace("\n", "\\n", preg_replace("/[^a-z]*/i", '', $shift['name'])) . "\r\n";
-		echo "DESCRIPTION:" . str_replace("\n", "\\n", $shift['Comment']) . "\r\n";
-		echo "DTSTART;TZID=Europe/Berlin:" . date("Ymd\THis", $shift['start']) . "\r\n";
-		echo "DTEND;TZID=Europe/Berlin:" . date("Ymd\THis", $shift['end']) . "\r\n";
-		echo "LOCATION:" . $shift['Name'] . "\r\n";
-		echo "END:VEVENT\r\n";
+		$html .= "BEGIN:VEVENT\r\n";
+		$html .= "UID:" . md5($shift['start'] . $shift['end'] . $shift['name']) . "\r\n";
+		$html .= "SUMMARY:" . str_replace("\n", "\\n", $shift['name']) . "\r\n";
+		$html .= "DESCRIPTION:" . str_replace("\n", "\\n", $shift['Comment']) . "\r\n";
+		$html .= "DTSTART;TZID=Europe/Berlin:" . date("Ymd\THis", $shift['start']) . "\r\n";
+		$html .= "DTEND;TZID=Europe/Berlin:" . date("Ymd\THis", $shift['end']) . "\r\n";
+		$html .= "LOCATION:" . $shift['Name'] . "\r\n";
+		$html .= "END:VEVENT\r\n";
 	}
-	echo "END:VCALENDAR\r\n";
+	$html .= "END:VCALENDAR\r\n";
+	header("Content-Length: " . strlen($html));
+	echo $html;
 	die();
 }
 ?>
