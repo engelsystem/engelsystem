@@ -21,7 +21,8 @@ function user_myshifts() {
 	if (isset ($_REQUEST['reset'])) {
 		if ($_REQUEST['reset'] == "ack") {
 			user_reset_ical_key($user);
-			return success("Key geändert.", true);
+			success("Key geändert.");
+			redirect(page_link_to('user_myshifts'));
 		}
 		return template_render('../templates/user_myshifts_reset.html', array ());
 	}
@@ -34,7 +35,9 @@ function user_myshifts() {
 			if (isset ($_REQUEST['submit'])) {
 				$comment = strip_request_item_nl('comment');
 				sql_query("UPDATE `ShiftEntry` SET `Comment`='" . sql_escape($comment) . "' WHERE `id`=" . sql_escape($id) . " LIMIT 1");
-				header("Location: " . page_link_to('user_myshifts'));
+
+				success("Schicht gespeichert.");
+				redirect(page_link_to('user_myshifts'));
 			}
 
 			return template_render('../templates/user_shifts_add.html', array (
@@ -46,7 +49,7 @@ function user_myshifts() {
 				'comment' => $shift['Comment']
 			));
 		} else
-			header("Location: " . page_link_to('user_myshifts'));
+			redirect(page_link_to('user_myshifts'));
 	}
 	elseif (isset ($_REQUEST['cancel']) && preg_match("/^[0-9]*$/", $_REQUEST['cancel'])) {
 		$id = $_REQUEST['cancel'];
@@ -59,7 +62,7 @@ function user_myshifts() {
 			} else
 				$msg .= error("Es ist zu spät um sich aus der Schicht auszutragen. Frage ggf. einen Orga.", true);
 		} else
-			header("Location: " . page_link_to('user_myshifts'));
+			redirect(page_link_to('user_myshifts'));
 	}
 	$shifts = sql_select("SELECT * FROM `ShiftEntry` JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `UID`=" . sql_escape($shifts_user['UID']) . " ORDER BY `start`");
 
@@ -87,7 +90,7 @@ function user_myshifts() {
 	if ($shifts_user['ical_key'] == "")
 		user_reset_ical_key($shifts_user);
 
-	return template_render('../templates/user_myshifts.html', array (
+	return msg().template_render('../templates/user_myshifts.html', array (
 		'h' => $LETZTES_AUSTRAGEN,
 		'shifts' => $html,
 		'msg' => $msg,

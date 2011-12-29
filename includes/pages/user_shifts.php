@@ -4,30 +4,33 @@ function user_shifts() {
 
 	// Löschen einzelner Schicht-Einträge (Also Belegung einer Schicht von Engeln) durch Admins
 	if (isset ($_REQUEST['entry_id']) && in_array('user_shifts_admin', $privileges)) {
-		if (isset ($_REQUEST['entry_id']) && preg_match("/^[0-9]*$/", $_REQUEST['entry_id']))
+		if (isset ($_REQUEST['entry_id']) && test_request_int('entry_id'))
 			$entry_id = $_REQUEST['entry_id'];
 		else
-			header("Location: " . page_link_to('user_shifts'));
+			redirect(page_link_to('user_shifts'));
 
 		sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($entry_id) . " LIMIT 1");
-		return success("Der Schicht-Eintrag wurde gelöscht..", true);
+		success("Der Schicht-Eintrag wurde gelöscht.");
+		redirect(page_link_to('user_shifts'));
 	}
 	// Schicht bearbeiten
 	elseif (isset ($_REQUEST['edit_shift']) && in_array('admin_shifts', $privileges)) {
 		$msg = "";
 		$ok = true;
 
-		if (isset ($_REQUEST['edit_shift']) && preg_match("/^[0-9]*$/", $_REQUEST['edit_shift']))
+		if (isset ($_REQUEST['edit_shift']) && test_request_int('edit_shift'))
 			$shift_id = $_REQUEST['edit_shift'];
 		else
-			header("Location: " . page_link_to('user_shifts'));
+			redirect(page_link_to('user_shifts'));
 
-		if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1") > 0)
-			return error("Du kannst nur Schichten bearbeiten, bei denen niemand eingetragen ist.", true);
+		if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1") > 0) {
+			error("Du kannst nur Schichten bearbeiten, bei denen niemand eingetragen ist.");
+			redirect(page_link_to('user_shift'));
+		}
 
 		$shift = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
 		if (count($shift) == 0)
-			header("Location: " . page_link_to('user_shifts'));
+			redirect(page_link_to('user_shifts'));
 		$shift = $shift[0];
 
 		// Locations laden
@@ -37,10 +40,10 @@ function user_shifts() {
 			$room_array[$room['RID']] = $room['Name'];
 
 		// Engeltypen laden
-		$types = sql_select("SELECT `AngelTypes`.*, `NeededAngelTypes`.`count` FROM `NeededAngelTypes` JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`) WHERE `shift_id`=" . sql_escape($shift_id) . " ORDER BY `AngelTypes`.`name`");
+		$needed_angel_types_source = sql_select("SELECT `AngelTypes`.*, `NeededAngelTypes`.`count` FROM `AngelTypes` LEFT JOIN `NeededAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id` AND `NeededAngelTypes`.`shift_id`=" . sql_escape($shift_id) . ") ORDER BY `AngelTypes`.`name`");
 		$needed_angel_types = array ();
-		foreach ($types as $type)
-			$needed_angel_types[$type['id']] = $type['count'];
+		foreach ($needed_angel_types_source as $type)
+			$needed_angel_types[$type['id']] = $type['count'] != "" ? $type['count'] : "0";
 
 		$name = $shift['name'];
 		$rid = $shift['RID'];
@@ -79,7 +82,7 @@ function user_shifts() {
 				$msg .= error("Das Ende muss nach dem Startzeitpunkt liegen!", true);
 			}
 
-			foreach ($types as $type) {
+			foreach ($needed_angel_types_source as $type) {
 				if (isset ($_REQUEST['type_' . $type['id']]) && preg_match("/^[0-9]+$/", trim($_REQUEST['type_' . $type['id']]))) {
 					$needed_angel_types[$type['id']] = trim($_REQUEST['type_' . $type['id']]);
 				} else {
@@ -87,23 +90,20 @@ function user_shifts() {
 					$msg .= error("Bitte überprüfe die Eingaben für die benötigten Engel des Typs " . $type['name'] . ".", true);
 				}
 			}
-			if (array_sum($needed_angel_types) == 0) {
-				$ok = false;
-				$msg .= error("Es werden 0 Engel benötigt. Bitte wähle benötigte Engel.", true);
-			}
 
 			if ($ok) {
 				sql_query("UPDATE `Shifts` SET `start`=" . sql_escape($start) . ", `end`=" . sql_escape($end) . ", `RID`=" . sql_escape($rid) . ", `name`='" . sql_escape($name) . "' WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
 				sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`=" . sql_escape($shift_id));
 				foreach ($needed_angel_types as $type_id => $count)
 					sql_query("INSERT INTO `NeededAngelTypes` SET `shift_id`=" . sql_escape($shift_id) . ", `angel_type_id`=" . sql_escape($type_id) . ", `count`=" . sql_escape($count));
-				return success("Schicht gespeichert.", true);
+				success("Schicht gespeichert.");
+				redirect(page_link_to('user_shifts'));
 			}
 		}
 
 		$room_select = html_select_key('rid', 'rid', $room_array, $rid);
 		$angel_types = "";
-		foreach ($types as $type) {
+		foreach ($needed_angel_types_source as $type) {
 			$angel_types .= template_render('../templates/admin_shifts_angel_types.html', array (
 				'id' => $type['id'],
 				'type' => $type['name'],
@@ -137,7 +137,8 @@ function user_shifts() {
 			sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`=" . sql_escape($shift_id));
 			sql_query("DELETE FROM `Shifts` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
 
-			return success("Die Schicht wurde gelöscht.", true);
+			success("Die Schicht wurde gelöscht.");
+			redirect(page_link_to('user_shifts'));
 		}
 
 		return template_render('../templates/user_shifts_admin_delete.html', array (
@@ -169,6 +170,7 @@ function user_shifts() {
 		$type = $type[0];
 
 		if (isset ($_REQUEST['submit'])) {
+			$selected_type_id = $type_id;
 			if (in_array('user_shifts_admin', $privileges)) {
 				if (isset ($_REQUEST['user_id']) && preg_match("/^[0-9]*$/", $_REQUEST['user_id']))
 					$user_id = $_REQUEST['user_id'];
@@ -177,6 +179,9 @@ function user_shifts() {
 
 				if (sql_num_query("SELECT * FROM `User` WHERE `UID`=" . sql_escape($user_id) . " LIMIT 1") == 0)
 					redirect(page_link_to('user_shifts'));
+
+				if (isset ($_REQUEST['angeltype_id']) && test_request_int('angeltype_id') && sql_num_query("SELECT * FROM `AngelTypes` WHERE `id`=" . sql_escape($_REQUEST['angeltype_id']) . " LIMIT 1") > 0)
+					$selected_type_id = $_REQUEST['angeltype_id'];
 			} else
 				$user_id = $user['UID'];
 
@@ -187,8 +192,10 @@ function user_shifts() {
 					return error("This angel does already have an entry for this shift.", true);
 
 			$comment = strip_request_item_nl('comment');
-			sql_query("INSERT INTO `ShiftEntry` SET `Comment`='" . sql_escape($comment) . "', `UID`=" . sql_escape($user_id) . ", `TID`=" . sql_escape($type_id) . ", `SID`=" . sql_escape($shift_id));
-			return success("Du bist eingetragen. Danke!", true) . '<a href="' . page_link_to('user_myshifts') . '">Meine Schichten &raquo;</a>';
+			sql_query("INSERT INTO `ShiftEntry` SET `Comment`='" . sql_escape($comment) . "', `UID`=" . sql_escape($user_id) . ", `TID`=" . sql_escape($selected_type_id) . ", `SID`=" . sql_escape($shift_id));
+
+			success("Du bist eingetragen. Danke!" . ' <a href="' . page_link_to('user_myshifts') . '">Meine Schichten &raquo;</a>');
+			redirect(page_link_to('user_shifts'));
 		}
 
 		if (in_array('user_shifts_admin', $privileges)) {
@@ -277,9 +284,9 @@ function view_user_shifts() {
 		);
 
 	$shifts = sql_select("SELECT `Shifts`.*, `Room`.`Name` as `room_name` FROM `Shifts` JOIN `Room` USING (`RID`)
-												WHERE `Shifts`.`RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
-													AND DATE(FROM_UNIXTIME(`start`)) IN ('" . implode("','", $_SESSION['user_shifts']['days']) . "')
-												ORDER BY `start`");
+																					WHERE `Shifts`.`RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
+																						AND DATE(FROM_UNIXTIME(`start`)) IN ('" . implode("','", $_SESSION['user_shifts']['days']) . "')
+																					ORDER BY `start`");
 
 	$shifts_table = "";
 	$row_count = 0;
@@ -299,17 +306,17 @@ function view_user_shifts() {
 		$is_free = false;
 		$shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
 		$query = "SELECT *
-																	FROM `NeededAngelTypes`
-																	JOIN `AngelTypes`
-																		ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
-																	WHERE ";
+																																			FROM `NeededAngelTypes`
+																																			JOIN `AngelTypes`
+																																				ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
+																																			WHERE ";
 		if ($shift_has_special_needs)
 			$query .= "`shift_id` = " . sql_escape($shift['SID']);
 		else
 			$query .= "`room_id` = " . sql_escape($shift['RID']);
 		$query .= "		AND `count` > 0
-																		AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ")
-																	ORDER BY `AngelTypes`.`name`";
+																																				AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ")
+																																			ORDER BY `AngelTypes`.`name`";
 		$angeltypes = sql_select($query);
 
 		if (count($angeltypes) > 0) {
