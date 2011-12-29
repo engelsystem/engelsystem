@@ -1,5 +1,7 @@
 <?php
 function admin_active() {
+	global $tshirt_sizes;
+	
 	$msg = "";
 	$search = "";
 	$count = 0;
@@ -75,6 +77,7 @@ function admin_active() {
 		}
 		$table .= '<tr>';
 		$table .= '<td>' . $usr['Nick'] . '</td>';
+		$table .= '<td>' . $tshirt_sizes[$usr['Size']] . '</td>';
 		$table .= '<td>' . $usr['shift_count'] . '</td>';
 
 		if ($usr['shift_count'] == 0)

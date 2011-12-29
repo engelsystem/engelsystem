@@ -277,9 +277,9 @@ function view_user_shifts() {
 		);
 
 	$shifts = sql_select("SELECT `Shifts`.*, `Room`.`Name` as `room_name` FROM `Shifts` JOIN `Room` USING (`RID`)
-											WHERE `Shifts`.`RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
-												AND DATE(FROM_UNIXTIME(`start`)) IN ('" . implode("','", $_SESSION['user_shifts']['days']) . "')
-											ORDER BY `start`");
+												WHERE `Shifts`.`RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
+													AND DATE(FROM_UNIXTIME(`start`)) IN ('" . implode("','", $_SESSION['user_shifts']['days']) . "')
+												ORDER BY `start`");
 
 	$shifts_table = "";
 	$row_count = 0;
@@ -290,27 +290,26 @@ function view_user_shifts() {
 		$info[] = date("H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']);
 		if (count($_SESSION['user_shifts']['rooms']) > 1)
 			$info[] = $shift['room_name'];
-
 		$shift_row = '<tr><td>' . join('<br />', $info) . '</td>';
 		$shift_row .= '<td>' . $shift['name'];
-		//$shift_row = '<tr><td>' . date(($_SESSION['user_shifts']['id'] == 0 ? "Y-m-d " : "") . "H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . '</td><td>' . $shift['name'];
+
 		if (in_array('admin_shifts', $privileges))
 			$shift_row .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
 		$shift_row .= '<br />';
 		$is_free = false;
 		$shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
 		$query = "SELECT *
-															FROM `NeededAngelTypes`
-															JOIN `AngelTypes`
-																ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
-															WHERE ";
+																	FROM `NeededAngelTypes`
+																	JOIN `AngelTypes`
+																		ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
+																	WHERE ";
 		if ($shift_has_special_needs)
 			$query .= "`shift_id` = " . sql_escape($shift['SID']);
 		else
 			$query .= "`room_id` = " . sql_escape($shift['RID']);
 		$query .= "		AND `count` > 0
-																AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ")
-															ORDER BY `AngelTypes`.`name`";
+																		AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ")
+																	ORDER BY `AngelTypes`.`name`";
 		$angeltypes = sql_select($query);
 
 		if (count($angeltypes) > 0) {
