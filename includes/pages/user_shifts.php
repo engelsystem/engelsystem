@@ -282,6 +282,8 @@ function view_user_shifts() {
 		$_SESSION['user_shifts']['days'] = array (
 			date('Y-m-d')
 		);
+	if (!isset ($_SESSION['user_shifts']['rooms']) || count($_SESSION['user_shifts']['rooms']) == 0)
+	  $_SESSION['user_shifts']['rooms'] = array(0);
 
 	$shifts = sql_select("SELECT `Shifts`.*, `Room`.`Name` as `room_name` FROM `Shifts` JOIN `Room` USING (`RID`)
 																					WHERE `Shifts`.`RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")

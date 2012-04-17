@@ -31,7 +31,7 @@ function user_meetings() {
 function display_news($news) {
 	global $privileges, $p;
 
-	$html .= "";
+	$html = "";
 	$html .= '<article class="news' . ($news['Treffen'] == 1 ? ' meeting' : '') . '">';
 	$html .= '<details>';
 	$html .= date("Y-m-d H:i", $news['Datum']) . ', ';
@@ -132,7 +132,7 @@ function user_news() {
 	$html .= Get_Text(5);
 
 	for ($i = 0; $i < $dis_rows; $i++) {
-		if ($i == $_REQUEST['page'])
+		if (isset($_REQUEST['page']) && $i == $_REQUEST['page'])
 			$html .= ($i +1) . "&nbsp; ";
 		else
 			$html .= '<a href="' . page_link_to("news") . '&page=' . $i . '">' . ($i +1) . '</a>&nbsp; ';

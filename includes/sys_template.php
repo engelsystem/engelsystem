@@ -14,7 +14,7 @@ $themes = array (
 	"8" => "Pastel Style",
 	"4" => "Test Style",
 	"9" => "Test Style 21c3",
-	"10" => "msquare (cccamp2011)",
+	"10" => "Engelsystem 2.0",
 	"11" => "msquare (28c3)"
 );
 
