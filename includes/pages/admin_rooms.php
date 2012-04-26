@@ -127,7 +127,7 @@ function admin_rooms() {
 
 	return page(array (
 		buttons(array (
-			button(page_link_to('admin_rooms'), "Add", 'add')
+			button(page_link_to('admin_rooms') . '&show=edit', "Add", 'add')
 		)),
 		msg(),
 		table(array (
