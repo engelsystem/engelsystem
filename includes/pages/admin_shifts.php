@@ -14,8 +14,8 @@ function admin_shifts() {
 	$length = '';
 	$change_hours = '';
 
-	// Locations laden
-	$rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
+	// Locations laden (auch unsichtbare - fuer Erzengel ist das ok)
+	$rooms = sql_select("SELECT * FROM `Room` ORDER BY `Name`");
 	$room_array = array ();
 	foreach ($rooms as $room)
 		$room_array[$room['RID']] = $room['Name'];
