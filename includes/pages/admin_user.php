@@ -57,7 +57,7 @@ function admin_user() {
 			"<input type=\"text\" size=\"40\" name=\"ejabber\" value=\"" .
 			mysql_result($Erg, 0, "jabber") . "\"></td></tr>\n";
 			$html .= "  <tr><td>Size</td><td>" .
-			html_select_key('size', 'size', $tshirt_sizes, mysql_result($Erg, 0, "Size")) . "</td></tr>\n";
+			html_select_key('size', 'eSize', $tshirt_sizes, mysql_result($Erg, 0, "Size")) . "</td></tr>\n";
 
 			$options = array (
 				'1' => "Yes",
@@ -262,24 +262,23 @@ function admin_user() {
 		$Zeilen = mysql_num_rows($Erg);
 
 		$html .= "Anzahl Engel: $Zeilen<br /><br />\n";
-		$html .= '
-																														<table width="100%" class="border" cellpadding="2" cellspacing="1"> <thead>
-																														  <tr class="contenttopic">
-																														    <th>
-																														      <a href="' . page_link_to("admin_user") . '&OrderBy=Nick">Nick</a>
-																														    </th>
-																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&OrderBy=Name">Name</a></th>
-																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Alter">Alter</a></th>
-																														    <th>
-																														      <a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a>
-																														    </th>
-																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></th>
-																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></th>
-																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></th>
-																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></th>
-																														    <th><a href="' . page_link_to("admin_user") . '&OrderBy=CreateDate">Registriert</a></th>
-																														    <th>&Auml;nd.</th>
-																														  </tr></thead>';
+		$html .= '<table width="100%" class="border" cellpadding="2" cellspacing="1"> <thead>
+  						  <tr class="contenttopic">
+  						    <th>
+  						      <a href="' . page_link_to("admin_user") . '&OrderBy=Nick">Nick</a>
+  						    </th>
+  						    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&OrderBy=Name">Name</a></th>
+  						    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Alter">Alter</a></th>
+  						    <th>
+  						      <a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a>
+  						    </th>
+  						    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></th>
+  						    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></th>
+  						    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></th>
+  						    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></th>
+  						    <th><a href="' . page_link_to("admin_user") . '&OrderBy=CreateDate">Registriert</a></th>
+  						    <th>&Auml;nd.</th>
+  						  </tr></thead>';
 		$Gekommen = 0;
 		$Active = 0;
 		$Tshirt = 0;
