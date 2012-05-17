@@ -234,7 +234,7 @@ function view_user_shifts() {
 	global $ical_shifts;
 
 	$ical_shifts = array ();
-	$days = sql_select("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` FROM `Shifts`");
+	$days = sql_select("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` FROM `Shifts` ORDER BY `start`");
 	$rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
 	$types = sql_select("SELECT `id`, `name` FROM `AngelTypes`");
 	$filled = array (
