@@ -23,10 +23,12 @@ function user_shifts() {
     else
       redirect(page_link_to('user_shifts'));
 
+    /*
     if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1") > 0) {
       error("Du kannst nur Schichten bearbeiten, bei denen niemand eingetragen ist.");
       redirect(page_link_to('user_shift'));
     }
+    */
 
     $shift = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
     if (count($shift) == 0)
@@ -40,8 +42,18 @@ function user_shifts() {
       $room_array[$room['RID']] = $room['Name'];
 
     // Engeltypen laden
-    $needed_angel_types_source = sql_select("SELECT `AngelTypes`.*, `NeededAngelTypes`.`count` FROM `AngelTypes` LEFT JOIN `NeededAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id` AND `NeededAngelTypes`.`shift_id`=" . sql_escape($shift_id) . ") ORDER BY `AngelTypes`.`name`");
+    $types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
     $needed_angel_types = array ();
+    foreach ($types as $type)
+      $needed_angel_types[$type['id']] = 0;
+
+    // Benötigte Engeltypen vom Raum
+    $needed_angel_types_source = sql_select("SELECT `AngelTypes`.*, `NeededAngelTypes`.`count` FROM `AngelTypes` LEFT JOIN `NeededAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id` AND `NeededAngelTypes`.`room_id`=" . sql_escape($shift['RID']) . ") ORDER BY `AngelTypes`.`name`");
+    foreach ($needed_angel_types_source as $type)
+      $needed_angel_types[$type['id']] = $type['count'] != "" ? $type['count'] : "0";
+
+    // Benötigte Engeltypen von der Schicht
+    $needed_angel_types_source = sql_select("SELECT `AngelTypes`.*, `NeededAngelTypes`.`count` FROM `AngelTypes` LEFT JOIN `NeededAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id` AND `NeededAngelTypes`.`shift_id`=" . sql_escape($shift_id) . ") ORDER BY `AngelTypes`.`name`");
     foreach ($needed_angel_types_source as $type)
       $needed_angel_types[$type['id']] = $type['count'] != "" ? $type['count'] : "0";
 
@@ -102,14 +114,16 @@ function user_shifts() {
     }
 
     $room_select = html_select_key('rid', 'rid', $room_array, $rid);
+    
     $angel_types = "";
-    foreach ($needed_angel_types_source as $type) {
+    foreach ($types as $type) {
       $angel_types .= template_render('../templates/admin_shifts_angel_types.html', array (
         'id' => $type['id'],
         'type' => $type['name'],
         'value' => $needed_angel_types[$type['id']]
       ));
     }
+    
     return template_render('../templates/user_shifts_edit.html', array (
       'msg' => $msg,
       'name' => $name,
