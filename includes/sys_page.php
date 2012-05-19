@@ -29,14 +29,14 @@ function test_request_int($name) {
  * Gibt den gefilterten REQUEST Wert mit Zeilenumbrüchen zurück
  */
 function strip_request_item_nl($name) {
-	return preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}+\n]{1,})/ui", '', strip_tags($_REQUEST[$name]));
+	return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]{1,})/ui", '', strip_tags($_REQUEST[$name]));
 }
 
 /**
  * Entfernt unerwünschte Zeichen
  */
 function strip_item($item) {
-	return preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}+]{1,})/ui", '', strip_tags($item));
+	return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+]{1,})/ui", '', strip_tags($item));
 }
 
 /**
