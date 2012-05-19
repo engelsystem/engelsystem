@@ -24,9 +24,9 @@ function user_shifts() {
       redirect(page_link_to('user_shifts'));
 
     /*
-    if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1") > 0) {
-      error("Du kannst nur Schichten bearbeiten, bei denen niemand eingetragen ist.");
-      redirect(page_link_to('user_shift'));
+     if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1") > 0) {
+    error("Du kannst nur Schichten bearbeiten, bei denen niemand eingetragen ist.");
+    redirect(page_link_to('user_shift'));
     }
     */
 
@@ -49,13 +49,17 @@ function user_shifts() {
 
     // Benötigte Engeltypen vom Raum
     $needed_angel_types_source = sql_select("SELECT `AngelTypes`.*, `NeededAngelTypes`.`count` FROM `AngelTypes` LEFT JOIN `NeededAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id` AND `NeededAngelTypes`.`room_id`=" . sql_escape($shift['RID']) . ") ORDER BY `AngelTypes`.`name`");
-    foreach ($needed_angel_types_source as $type)
-      $needed_angel_types[$type['id']] = $type['count'] != "" ? $type['count'] : "0";
+    foreach ($needed_angel_types_source as $type) {
+      if($type['count'] != "")
+        $needed_angel_types[$type['id']] =$type['count'];
+    }
 
     // Benötigte Engeltypen von der Schicht
     $needed_angel_types_source = sql_select("SELECT `AngelTypes`.*, `NeededAngelTypes`.`count` FROM `AngelTypes` LEFT JOIN `NeededAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id` AND `NeededAngelTypes`.`shift_id`=" . sql_escape($shift_id) . ") ORDER BY `AngelTypes`.`name`");
-    foreach ($needed_angel_types_source as $type)
-      $needed_angel_types[$type['id']] = $type['count'] != "" ? $type['count'] : "0";
+    foreach ($needed_angel_types_source as $type){
+      if($type['count'] != "")
+        $needed_angel_types[$type['id']] =$type['count'];
+    }
 
     $name = $shift['name'];
     $rid = $shift['RID'];
@@ -114,7 +118,7 @@ function user_shifts() {
     }
 
     $room_select = html_select_key('rid', 'rid', $room_array, $rid);
-    
+
     $angel_types = "";
     foreach ($types as $type) {
       $angel_types .= template_render('../templates/admin_shifts_angel_types.html', array (
@@ -123,7 +127,7 @@ function user_shifts() {
         'value' => $needed_angel_types[$type['id']]
       ));
     }
-    
+
     return template_render('../templates/user_shifts_edit.html', array (
       'msg' => $msg,
       'name' => $name,

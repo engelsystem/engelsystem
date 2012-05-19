@@ -67,21 +67,23 @@ function admin_rooms() {
         else
           $ok = false;
 
-        foreach ($angeltypes as $angeltype_id => $angeltype)
-          if (isset ($_REQUEST['angeltype_count_' . $angeltype_id]) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['angeltype_count_' . $angeltype_id]))
-          $angeltypes_count[$angeltype_id] = $_REQUEST['angeltype_count_' . $angeltype_id];
-        else {
-          $ok = false;
-          $msg .= error(sprintf("Please enter needed angels for type %s.", $angeltype), true);
+        foreach ($angeltypes as $angeltype_id => $angeltype) {
+          if (isset ($_REQUEST['angeltype_count_' . $angeltype_id]) && preg_match("/^[0-9]{1,4}$/", $_REQUEST['angeltype_count_' . $angeltype_id]))
+            $angeltypes_count[$angeltype_id] = $_REQUEST['angeltype_count_' . $angeltype_id];
+          else {
+            $ok = false;
+            $msg .= error(sprintf("Please enter needed angels for type %s.", $angeltype), true);
+          }
         }
 
         if ($ok) {
           if(isset($id))
             sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "' WHERE `RID`=" . sql_escape($id) . " LIMIT 1");
-          else
+          else {
             sql_query("INSERT INTO `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "'");
-          $id = sql_id();
-          	
+            $id = sql_id();
+          }
+
           sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($id));
           foreach ($angeltypes_count as $angeltype_id => $angeltype_count)
             sql_query("INSERT INTO `NeededAngelTypes` SET `room_id`=" . sql_escape($id) . ", `angel_type_id`=" . sql_escape($angeltype_id) . ", `count`=" . sql_escape($angeltype_count));
