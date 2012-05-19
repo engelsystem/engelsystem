@@ -181,7 +181,7 @@ function user_settings() {
 			form_text('prename', Get_Text("makeuser_Vorname"), $prename),
 			form_text('age', Get_Text("makeuser_Alter"), $age),
 			form_text('tel', Get_Text("makeuser_Telefon"), $tel),
-			form_text('dect', Get_Text("makeuser_DECT"), $tel),
+			form_text('dect', Get_Text("makeuser_DECT"), $dect),
 			form_text('mobile', Get_Text("makeuser_Handy"), $mobile),
 			form_text('mail', Get_Text("makeuser_E-Mail") . "*", $mail),
 			form_text('icq', "ICQ", $icq),
