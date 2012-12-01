@@ -5,6 +5,7 @@
  * Available T-Shirt sizes
  */
 $tshirt_sizes = array (
+  '' => "Please select...",
 	'S' => "S",
 	'M' => "M",
 	'L' => "L",
