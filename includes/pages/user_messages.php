@@ -19,7 +19,7 @@ function user_messages() {
 		$users = sql_select("SELECT * FROM `User` WHERE NOT `UID`=" . sql_escape($user['UID']) . " ORDER BY `Nick`");
 
 		$to_select_data = array (
-			"" => "Select receiver..."
+			"" => "Select recipient..."
 		);
 
 		foreach ($users as $u)
