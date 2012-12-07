@@ -15,7 +15,7 @@ $themes = array (
 	"4" => "Test Style",
 	"9" => "Test Style 21c3",
 	"10" => "Engelsystem 2.0",
-	"11" => "msquare (28c3)"
+	"11" => "msquare (29c3)"
 );
 
 /**
@@ -88,7 +88,7 @@ function form_select($name, $label, $values, $selected) {
 	return form_element($label, html_select_key('form_' . $name, $name, $values, $selected), 'form_' . $name);
 }
 
-/** 
+/**
  * Rendert ein Formular-Element
  */
 function form_element($label, $input, $for = "") {
