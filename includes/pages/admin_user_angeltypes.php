@@ -19,7 +19,7 @@ function admin_user_angeltypes() {
     redirect(page_link_to('admin_user_angeltypes'));
   }
 
-  $users_source = sql_select("SELECT `UserAngelTypes`.`id`, `AngelTypes`.`name`, `User`.`Nick` FROM `UserAngelTypes` JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id` JOIN `User` ON `UserAngelTypes`.`user_id`=`User`.`UID` WHERE `AngelTypes`.`restricted`=1 AND `UserAngelTypes`.`confirm_user_id` IS NULL");
+  $users_source = sql_select("SELECT `UserAngelTypes`.`id`, `AngelTypes`.`name`, `User`.`Nick` FROM `UserAngelTypes` JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id` JOIN `User` ON `UserAngelTypes`.`user_id`=`User`.`UID` WHERE `AngelTypes`.`restricted`=1 AND `UserAngelTypes`.`confirm_user_id` IS NULL ORDER BY `AngelTypes`.`name`");
   $users = array ();
   foreach ($users_source as $user) {
     $user['actions'] = '<a href="' . page_link_to('admin_user_angeltypes') . '&confirm=' . $user['id'] . '">confirm</a>';
