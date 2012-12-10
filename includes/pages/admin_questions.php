@@ -6,7 +6,7 @@ function admin_new_questions() {
 		$new_messages = sql_num_query("SELECT * FROM `Questions` WHERE `AID`=0");
 
 		if ($new_messages > 0)
-			return '<p class="notice"><a href="' . page_link_to("admin_questions") . '">Es gibt unbeantwortete Fragen!</a></p><hr />';
+			return '<p class="info"><a href="' . page_link_to("admin_questions") . '">Es gibt unbeantwortete Fragen!</a></p><hr />';
 	}
 
 	return "";

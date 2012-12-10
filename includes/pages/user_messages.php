@@ -6,7 +6,7 @@ function user_unread_messages() {
 		$new_messages = sql_num_query("SELECT * FROM `Messages` WHERE isRead='N' AND `RUID`=" . sql_escape($user['UID']));
 
 		if ($new_messages > 0)
-			return sprintf('<p class="notice"><a href="%s">%s %s %s</a></p><hr />', page_link_to("user_messages"), Get_Text("pub_messages_new1"), $new_messages, Get_Text("pub_messages_new2"));
+			return sprintf('<p class="info"><a href="%s">%s %s %s</a></p><hr />', page_link_to("user_messages"), Get_Text("pub_messages_new1"), $new_messages, Get_Text("pub_messages_new2"));
 	}
 
 	return "";
