@@ -214,13 +214,6 @@ tr:hover .hidden {
 	border-color: #090;
 }
 
-.notice {
-    background: #f0f0f0;
-    border: 2px solid #888;
-    margin: 10px;
-    padding: 10px;
-}
-
 .new_message {
     font-weight: bold;
 }

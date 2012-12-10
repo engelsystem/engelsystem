@@ -40,8 +40,15 @@ tr:hover > td {
 }
 
 .error {
-	background: #fff;
+  background: #fff;
   border-color: #ed1a3b;
   color: #ed1a3b;
+  font-weight: bold;
+}
+
+.success {
+  background: #fff;
+  border-color: rgb(0, 178, 107);
+  color: rgb(0, 178, 107);
   font-weight: bold;
 }
