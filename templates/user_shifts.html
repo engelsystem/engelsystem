@@ -5,7 +5,7 @@
 %type_select%
 %day_select%
 %filled_select%
-<input class="button" type="submit" style="width: 100%;" value="Filtern">
+<input class="button" type="submit" style="width: 100%;" value="%filter%">
 </fieldset>
 </form>
 
@@ -13,10 +13,10 @@
     <thead>
         <tr>
             <th>
-                Zeit/Raum
+                %header1%
             </th>
             <th>
-                Einträge
+                %header2%
             </th>
         </tr>
     </thead>
@@ -26,7 +26,5 @@
 </table>
 <h2>iCal Export</h2>
 <p>
-    Zum abonnieren in Deiner Kalender-Software benutze folgenden öffentlichen Link (daher bitte geheimhalten, im Notfall Deinen <a href="%reset_link%">Key zurücksetzen</a>):
-    <br/>
-	<a href="%ical_link%">%ical_link%</a>
+    %ical_text%
 </p>
