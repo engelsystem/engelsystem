@@ -399,10 +399,11 @@ function view_user_shifts() {
   return msg() . template_render('../templates/user_shifts.html', array (
     'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", ucfirst(Get_Text("rooms"))),
     'day_select' => make_select($days, $_SESSION['user_shifts']['days'], "days", ucfirst(Get_Text("days"))),
-    'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", ucfirst(Get_Text("tasks"))) . Get_Text("pub_schichtplan_tasks_notice"),
+    'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", ucfirst(Get_Text("tasks")) . '<sup>1</sup>'),
     'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", ucfirst(Get_Text("occupancy"))),
+    'task_notice' => '<sup>1</sup>' . Get_Text("pub_schichtplan_tasks_notice"),
     'shifts_table' => $shifts_table,
-    'ical_text' => sprintf(Get_Text('pub_schichtplan_ical_text'), make_user_shifts_ical_link($user['ical_key']), page_link_to('user_myshifts') . '&reset'),
+    'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'), make_user_shifts_ical_link($user['ical_key']), page_link_to('user_myshifts') . '&reset'),
     'header1' => ucfirst(Get_Text("time")) . "/" . ucfirst(Get_Text("room")),
     'header2' => ucfirst(Get_Text("entries")),
     'filter' => ucfirst(Get_Text("to_filter")),

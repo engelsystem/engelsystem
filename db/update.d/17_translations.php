@@ -21,11 +21,11 @@ $res = mysql_query("INSERT IGNORE INTO `Sprache` (`TextID`, `Sprache`, `Text`) V
 ('tasks', 'DE', 'Aufgaben'),
 ('tasks', 'EN', 'tasks'),
 ('occupancy', 'DE', 'Belegung'),
-('occupancy' ,'EN', 'occupancy')
+('occupancy' ,'EN', 'occupancy'),
 ('all', 'DE', 'alle'),
 ('all', 'EN', 'all'),
 ('none', 'DE', 'keine'),
-('none', 'EN', 'none')
+('none', 'EN', 'none'),
 ('entries', 'DE', 'Einträge'),
 ('entries', 'EN', 'entries'),
 ('time', 'DE', 'Zeit'),
@@ -53,8 +53,7 @@ $res = mysql_query("INSERT IGNORE INTO `Sprache` (`TextID`, `Sprache`, `Text`) V
 ('pub_myshifts_too_late', 'DE', 'Es ist zu spät um sich aus der Schicht auszutragen. Frage ggf. den Schichtkoordinator, ob er dich austragen kann.'),
 ('pub_myshifts_too_late', 'EN', 'It\'s too late to sign yourself off the shift. If neccessary, as the dispatcher to do so.'),
 ('sign_off', 'DE', 'austragen'),
-('sign_off', 'EN', 'sign off'),
-;");
+('sign_off', 'EN', 'sign off');");
 
 if(mysql_affected_rows() > 0)
     $applied = true;

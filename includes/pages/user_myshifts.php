@@ -94,7 +94,7 @@ function user_myshifts() {
 		'intro' => sprintf(Get_Text('pub_myshifts_intro'), $LETZTES_AUSTRAGEN),
 		'shifts' => $html,
 		'msg' => $msg,
-		'ical_text' => sprintf(Get_Text('pub_schichtplan_ical_text'),
+		'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'),
 			page_link_to_absolute('ical') . '&key=' . $shifts_user['ical_key'],
 			page_link_to('user_myshifts') . '&reset'),
 ));
