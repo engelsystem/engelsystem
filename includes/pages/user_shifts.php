@@ -273,11 +273,11 @@ function view_user_shifts() {
   $filled = array (
     array (
       'id' => '1',
-      'name' => 'Volle'
+      'name' => Get_Text('occupied')
     ),
     array (
       'id' => '0',
-      'name' => 'Freie'
+      'name' => Get_Text('free')
     )
   );
 
