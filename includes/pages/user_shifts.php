@@ -325,7 +325,146 @@ function view_user_shifts() {
 
   $shifts_table = "";
   $row_count = 0;
-  foreach ($shifts as $shift) {
+  //qqqq
+  /*
+  [0] => Array
+  (
+      [SID] => 1
+      [start] => 1355958000
+      [end] => 1355961600
+      [RID] => 1
+      [name] =>
+      [URL] =>
+      [PSID] =>
+      [room_name] => test1
+  )
+  */
+  if(count($_SESSION['user_shifts']['days'])==1) {
+    $myrooms=$rooms;
+    foreach($myrooms as $k => $v) {
+      if(array_search($v["id"],$_SESSION['user_shifts']['rooms'])===FALSE)
+        unset($myrooms[$k]);
+    }
+    $first=date("U",strtotime($_SESSION['user_shifts']['days'][0]." 00:00:00"));
+    $last=date("U",strtotime($_SESSION['user_shifts']['days'][0]." 23:59:59"));
+    $maxshow=24*4;
+    $block=array();
+    foreach($myrooms as $room) {
+      $rid=$room["id"];
+      foreach($shifts as $shift) {
+        if($shift["RID"]==$rid) {
+          $blocks=($shift["end"]-$shift["start"])/(15*60);
+          $firstblock=floor(($shift["start"]-$first)/(15*60));
+          for($i=$firstblock;$i<$blocks+$firstblock && $i < $maxshow;$i++) {
+            $block[$rid][$i]++;
+          }
+        }
+      }
+    }
+    $shifts_table="<table><tr><th>-</th>";
+    foreach($myrooms as $room) {
+      $rid=$room["id"];
+      $colspan=1;
+      foreach($block[$rid] as $max) if($max>$colspan) $colspan=$max;
+      for($i=0;$i<$maxshow;$i++)
+        $todo[$rid][$i]=$colspan;
+      $shifts_table.="<th colspan=\"$colspan\">".$room['name']."</th>\n";
+    }
+    $shifts_table.="</tr>";
+    for($i=0;$i<24*4;$i++) {
+      $thistime=$first+($i*15*60);
+      if($thistime%(60*60)==0) {
+        $shifts_table.="<tr><th>".date("H:i",$thistime)."</th>";
+      } else {
+        $shifts_table.="<tr><th></th>";
+      }
+      foreach($myrooms as $room) {
+        $rid=$room["id"];
+        foreach($shifts as $shift) {
+          if($shift["RID"]==$rid) {
+            if(floor($shift["start"]/(15*60)) == $thistime/(15*60)) {
+              $blocks=($shift["end"]-$shift["start"])/(15*60);
+              if($blocks<1) $blocks=1;
+              // qqqqqq
+              $is_free = false;
+              $shifts_row="";
+              if (in_array('admin_shifts', $privileges))
+                $shifts_row .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
+              $shifts_row.= '<br />';
+              $shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
+              $query = "SELECT *
+              FROM `NeededAngelTypes`
+              JOIN `AngelTypes`
+              ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
+              WHERE ";
+              if ($shift_has_special_needs)
+                $query .= "`shift_id` = " . sql_escape($shift['SID']);
+              else
+                $query .= "`room_id` = " . sql_escape($shift['RID']);
+              $query .= "		AND `count` > 0
+              AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ")
+              ORDER BY `AngelTypes`.`name`";
+              $angeltypes = sql_select($query);
+
+              if (count($angeltypes) > 0) {
+                $my_shift = sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0;
+                foreach ($angeltypes as $angeltype) {
+                  $entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`=" . sql_escape($shift['SID']) . " AND `TID`=" . sql_escape($angeltype['id']) . " ORDER BY `Nick`");
+                  $entry_list = array ();
+                  foreach ($entries as $entry) {
+                    if($entry['Gekommen']==1)
+                      $style="font-weight:bold;";
+                    else
+                      $style="font-weight:normal;";
+                    if (in_array('user_shifts_admin', $privileges))
+                      $entry_list[] = "<span style=\"$style\">" . '<a href="' . page_link_to('user_myshifts') . '&id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> <a href="' . page_link_to('user_shifts') . '&entry_id=' . $entry['id'] . '">[x]</a></span>';
+                    else
+                      $entry_list[] = "<span style=\"$style\">" . $entry['Nick']."</span";
+                  }
+                  if ($angeltype['count'] - count($entries) > 0) {
+                    if ((time() < $shift['end'] && !$my_shift) || in_array('user_shifts_admin', $privileges)) {
+                      $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">' . ($angeltype['count'] - count($entries)) . ' Helfer' . ($angeltype['count'] - count($entries) != 1 ? '' : '') . ' gebraucht &raquo;</a>';
+                    } else {
+                      $entry_list[] = ($angeltype['count'] - count($entries)) . ' Helfer gebraucht';
+                    }
+                    $is_free = true;
+                  }
+
+                  $shifts_row .= '<b>' . $angeltype['name'] . ':</b> ';
+                  $shifts_row .= join(", ", $entry_list);
+                  $shifts_row .= '<br />';
+                }
+                if (in_array('user_shifts_admin', $privileges)) {
+                  $shifts_row .= '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">Weitere Helfer eintragen &raquo;</a>';
+                }
+              }
+              $color="";
+              if($is_free) {
+                $color="style=\"background: #F6CECE\";";
+              } else {
+                $color="style=\"background: #BCF5A9\";";
+              }
+              $shifts_table.="<td rowspan=$blocks $color>";
+              if (($is_free && in_array(0, $_SESSION['user_shifts']['filled'])) || (!$is_free && in_array(1, $_SESSION['user_shifts']['filled']))) {
+                $shifts_table.=$shifts_row;
+              }
+              $shifts_table.="</td>";
+              for($j=0;$j<$blocks;$j++) {
+                $todo[$rid][$i+$j]--;
+              }
+            }
+          }
+        }
+        while($todo[$rid][$i]) {
+          $shifts_table.='<td style="border: 1px"></td>';
+          $todo[$rid][$i]--;
+        }
+      }
+      $shifts_table.="</tr>\n";
+    }
+    $shifts_table.="</table>";
+    // qqq
+  } else foreach ($shifts as $shift) {
     $info = array ();
     if (count($_SESSION['user_shifts']['days']) > 1)
       $info[] = date("Y-m-d", $shift['start']);
