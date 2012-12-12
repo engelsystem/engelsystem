@@ -58,9 +58,9 @@ function user_myshifts() {
 			$shift = $shift[0];
 			if (($shift['start'] - time() < $LETZTES_AUSTRAGEN * 60) || in_array('user_shifts_admin', $privileges)) {
 				sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
-				$msg .= success("Du wurdest aus der Schicht ausgetragen.", true);
+				$msg .= success(Get_Text("pub_myshifts_signed_off"), true);
 			} else
-				$msg .= error("Es ist zu spät um sich aus der Schicht auszutragen. Frage ggf. einen Orga.", true);
+				$msg .= error(Get_Text("pub_myshifts_too_late"), true);
 		} else
 			redirect(page_link_to('user_myshifts'));
 	}
@@ -78,24 +78,25 @@ function user_myshifts() {
 		$html .= '<td>' . $shift['name'] . '</td>';
 		$html .= '<td>' . $shift['Comment'] . '</td>';
 		$html .= '<td>';
-		$html .= '<a href="' . page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '">bearbeiten</a>';
+		$html .= '<a href="' . page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '">' . Get_Text('edit') . '</a>';
 		if ($shift['start'] - time() > $LETZTES_AUSTRAGEN * 60)
-			$html .= ' | <a href="' . page_link_to('user_myshifts') . '&cancel=' . $shift['id'] . '">austragen</a>';
+			$html .= ' | <a href="' . page_link_to('user_myshifts') . '&cancel=' . $shift['id'] . '">' . Get_Text('sign_off') . '</a>';
 		$html .= '</td>';
 		$html .= '</tr>';
 	}
 	if ($html == "")
-		$html = '<tr><td>Keine...</td><td></td><td></td><td></td><td></td><td>Gehe zum <a href="' . page_link_to('user_shifts') . '">Schichtplan</a> um Dich für Schichten einzutragen.</td></tr>';
+		$html = '<tr><td>' . ucfirst(Get_Text('none')) . '...</td><td></td><td></td><td></td><td></td><td>' . sprintf(Get_Text('pub_myshifts_goto_shifts'), page_link_to('user_shifts')) . '</td></tr>';
 
 	if ($shifts_user['ical_key'] == "")
 		user_reset_ical_key($shifts_user);
 
 	return msg().template_render('../templates/user_myshifts.html', array (
-		'h' => $LETZTES_AUSTRAGEN,
+		'intro' => sprintf(Get_Text('pub_myshifts_intro'), $LETZTES_AUSTRAGEN),
 		'shifts' => $html,
 		'msg' => $msg,
-		'ical_link' => page_link_to_absolute('ical') . '&key=' . $shifts_user['ical_key'],
-		'reset_link' => page_link_to('user_myshifts') . '&reset'
-	));
+		'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'),
+			page_link_to_absolute('ical') . '&key=' . $shifts_user['ical_key'],
+			page_link_to('user_myshifts') . '&reset'),
+));
 }
 ?>

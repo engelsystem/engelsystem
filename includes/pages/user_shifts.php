@@ -268,14 +268,16 @@ function view_user_shifts() {
     $types = sql_select("SELECT `id`, `name` FROM `AngelTypes`");
   else
     $types = sql_select("SELECT `AngelTypes`.`id`, `AngelTypes`.`name` FROM `UserAngelTypes` JOIN `AngelTypes` ON (`UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`) WHERE `UserAngelTypes`.`user_id` = " . sql_escape($user['UID']) . " AND (`AngelTypes`.`restricted` = 0 OR NOT `UserAngelTypes`.`confirm_user_id` IS NULL)");
+  if (empty($types))
+    $types = sql_select("SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0");
   $filled = array (
     array (
       'id' => '1',
-      'name' => 'Volle'
+      'name' => Get_Text('occupied')
     ),
     array (
       'id' => '0',
-      'name' => 'Freie'
+      'name' => Get_Text('free')
     )
   );
 
@@ -347,9 +349,10 @@ function view_user_shifts() {
       $query .= "`shift_id` = " . sql_escape($shift['SID']);
     else
       $query .= "`room_id` = " . sql_escape($shift['RID']);
-    $query .= "		AND `count` > 0
-    AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ")
-    ORDER BY `AngelTypes`.`name`";
+    $query .= "		AND `count` > 0 ";
+    if (!empty($_SESSION['user_shifts']['types']))
+      $query .= "AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ") ";
+    $query .= "ORDER BY `AngelTypes`.`name`";
     $angeltypes = sql_select($query);
 
     if (count($angeltypes) > 0) {
@@ -363,12 +366,15 @@ function view_user_shifts() {
           else
             $entry_list[] = $entry['Nick'];
         }
+        // do we need more angles of this type?
         if ($angeltype['count'] - count($entries) > 0) {
-          if ((time() < $shift['end'] && !$my_shift) || in_array('user_shifts_admin', $privileges)) {
-            $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">' . ($angeltype['count'] - count($entries)) . ' Helfer' . ($angeltype['count'] - count($entries) != 1 ? '' : '') . ' gebraucht &raquo;</a>';
-          } else {
-            $entry_list[] = ($angeltype['count'] - count($entries)) . ' Helfer gebraucht';
-          }
+          $inner_text = ($angeltype['count'] - count($entries)) . ' ' . Get_Text($angeltype['count'] - count($entries) == 1 ? 'helper' : 'helpers') . ' ' . Get_Text('needed');
+          // is the shift still running or alternatively is the user shift admin?
+          if ((time() < $shift['end'] && !$my_shift) || in_array('user_shifts_admin', $privileges))
+            $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">' . $inner_text . ' &raquo;</a>';
+          else
+            $entry_list[] = $inner_text;
+          unset($inner_text);
           $is_free = true;
         }
 
@@ -391,13 +397,16 @@ function view_user_shifts() {
     user_reset_ical_key($user);
 
   return msg() . template_render('../templates/user_shifts.html', array (
-    'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", "Räume"),
-    'day_select' => make_select($days, $_SESSION['user_shifts']['days'], "days", "Tage"),
-    'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", "Aufgaben"),
-    'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", "Besetzung"),
+    'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", ucfirst(Get_Text("rooms"))),
+    'day_select' => make_select($days, $_SESSION['user_shifts']['days'], "days", ucfirst(Get_Text("days"))),
+    'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", ucfirst(Get_Text("tasks")) . '<sup>1</sup>'),
+    'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", ucfirst(Get_Text("occupancy"))),
+    'task_notice' => '<sup>1</sup>' . Get_Text("pub_schichtplan_tasks_notice"),
     'shifts_table' => $shifts_table,
-    'ical_link' => make_user_shifts_ical_link($user['ical_key']),
-    'reset_link' => page_link_to('user_myshifts') . '&reset'
+    'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'), make_user_shifts_ical_link($user['ical_key']), page_link_to('user_myshifts') . '&reset'),
+    'header1' => ucfirst(Get_Text("time")) . "/" . ucfirst(Get_Text("room")),
+    'header2' => ucfirst(Get_Text("entries")),
+    'filter' => ucfirst(Get_Text("to_filter")),
   ));
 }
 
@@ -430,8 +439,8 @@ function make_select($items, $selected, $name, $title = null) {
   $html .= implode("\n", $html_items);
   $html .= '</ul>' . "\n";
   $html .= buttons(array (
-    button("javascript: check_all('selection_" . $name . "')", "Alle", ""),
-    button("javascript: uncheck_all('selection_" . $name . "')", "Keine", "")
+    button("javascript: check_all('selection_" . $name . "')", Get_Text("all"), ""),
+    button("javascript: uncheck_all('selection_" . $name . "')", Get_Text("none"), "")
   ));
   $html .= '</div>' . "\n";
   return $html;

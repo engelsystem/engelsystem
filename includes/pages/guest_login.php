@@ -71,10 +71,8 @@ function guest_register() {
       }
     }
 
-    if (isset ($_REQUEST['password']) && strlen($_REQUEST['password']) >= 6) {
-      if ($_REQUEST['password'] == $_REQUEST['password2']) {
-        $password_hash = PassCrypt($_REQUEST['password']);
-      } else {
+    if (isset ($_REQUEST['password']) && strlen($_REQUEST['password']) >= MIN_PASSWORD_LENGTH) {
+      if ($_REQUEST['password'] != $_REQUEST['password2']) {
         $ok = false;
         $msg .= error(Get_Text("makeuser_error_password1"), true);
       }
@@ -112,9 +110,10 @@ function guest_register() {
           "', `email`='" . sql_escape($mail) . "', `ICQ`='" . sql_escape($icq) . "', `jabber`='" . sql_escape($jabber) . "', `Size`='" . sql_escape($tshirt_size) .
           "', `Passwort`='" . sql_escape($password_hash) . "', `kommentar`='" . sql_escape($comment) . "', `Hometown`='" . sql_escape($hometown) . "', `CreateDate`=NOW(), `Sprache`='" . sql_escape($_SESSION["Sprache"]) . "'");
 
-      // Assign user-group
+      // Assign user-group and set password
       $user_id = sql_id();
       sql_query("INSERT INTO `UserGroups` SET `uid`=" . sql_escape($user_id) . ", `group_id`=-2");
+      set_password($user_id, $_REQUEST['password']);
 
       // Assign angel-types
       foreach ($selected_angel_types as $selected_angel_type_id)
@@ -176,7 +175,7 @@ function guest_login() {
       if (count($login_user) > 0) {
         $login_user = $login_user[0];
         if (isset ($_REQUEST['password'])) {
-          if ($login_user['Passwort'] != PassCrypt($_REQUEST['password'])) {
+          if (!verify_password($_REQUEST['password'], $login_user['Passwort'], $login_user['UID'])) {
             $ok = false;
             $msg .= error(Get_Text("pub_index_pass_no_ok"), true);
           }
