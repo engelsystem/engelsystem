@@ -5,6 +5,8 @@
  * Auf dieser Seite können Erzengel Engeltypen für bestimmte Nutzer freischalten, z.B. nachdem diese für die Aufgabe geschult wurden.
  */
 function admin_user_angeltypes() {
+  global $privileges;
+
   if (isset ($_REQUEST['confirm']) && test_request_int('confirm') && sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `id`=" . sql_escape($_REQUEST['confirm']) . " AND `confirm_user_id` IS NULL") > 0) {
     sql_query("UPDATE `UserAngelTypes` SET `confirm_user_id`=" . sql_escape($_SESSION['uid']) . " WHERE `id`=" . sql_escape($_REQUEST['confirm']) . " LIMIT 1");
 
@@ -19,9 +21,11 @@ function admin_user_angeltypes() {
     redirect(page_link_to('admin_user_angeltypes'));
   }
 
-  $users_source = sql_select("SELECT `UserAngelTypes`.`id`, `AngelTypes`.`name`, `User`.`Nick` FROM `UserAngelTypes` JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id` JOIN `User` ON `UserAngelTypes`.`user_id`=`User`.`UID` WHERE `AngelTypes`.`restricted`=1 AND `UserAngelTypes`.`confirm_user_id` IS NULL ORDER BY `AngelTypes`.`name`, `User`.`Nick`");
+  $users_source = sql_select("SELECT `UserAngelTypes`.`id`, `AngelTypes`.`name`, `User`.`Nick`, `User`.`UID` FROM `UserAngelTypes` JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id` JOIN `User` ON `UserAngelTypes`.`user_id`=`User`.`UID` WHERE `AngelTypes`.`restricted`=1 AND `UserAngelTypes`.`confirm_user_id` IS NULL ORDER BY `AngelTypes`.`name`, `User`.`Nick`");
   $users = array ();
   foreach ($users_source as $user) {
+    if(in_array("admin_user", $privileges))
+      $user['Nick'] = '<a href="' . page_link_to('admin_user') . '&id=' . $user['UID'] . '">' . $user['Nick'] . '</a>';
     $user['actions'] = '<a href="' . page_link_to('admin_user_angeltypes') . '&confirm=' . $user['id'] . '">confirm</a>';
     $user['actions'] .= ' | <a href="' . page_link_to('admin_user_angeltypes') . '&discard=' . $user['id'] . '">discard</a>';
     $users[] = $user;
