@@ -388,7 +388,7 @@ function view_user_shifts() {
               if($blocks<1) $blocks=1;
               // qqqqqq
               $is_free = false;
-              $shifts_row="";
+              $shifts_row = $shift['name'];
               if (in_array('admin_shifts', $privileges))
                 $shifts_row .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
               $shifts_row.= '<br />';
