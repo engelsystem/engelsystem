@@ -365,7 +365,8 @@ function view_user_shifts() {
     foreach($myrooms as $room) {
       $rid=$room["id"];
       $colspan=1;
-      foreach($block[$rid] as $max) if($max>$colspan) $colspan=$max;
+      if(is_array($block[$rid]))
+        foreach($block[$rid] as $max) if($max>$colspan) $colspan=$max;
       for($i=0;$i<$maxshow;$i++)
         $todo[$rid][$i]=$colspan;
       $shifts_table.="<th colspan=\"$colspan\">".$room['name']."</th>\n";
