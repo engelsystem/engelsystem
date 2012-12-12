@@ -116,7 +116,7 @@ function user_settings() {
 
 		if (!isset ($_REQUEST['password']) || !verify_password($_REQUEST['password'], $user['Passwort'], $user['UID']))
 			$msg .= error(Get_Text(30), true);
-		elseif (strlen($_REQUEST['new_password']) <= MIN_PASSWORD_LENGTH)
+		elseif (strlen($_REQUEST['new_password']) < MIN_PASSWORD_LENGTH)
 			$msg .= error(Get_Text("makeuser_error_password2"));
 		elseif ($_REQUEST['new_password'] != $_REQUEST['new_password2'])
 			$msg .= error(Get_Text("makeuser_error_password1"), true);
