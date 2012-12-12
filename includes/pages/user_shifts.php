@@ -265,9 +265,9 @@ function view_user_shifts() {
   $days = sql_select("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` FROM `Shifts` ORDER BY `start`");
   $rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
   if (in_array('admin_shifts', $privileges))
-    $types = sql_select("SELECT `id`, `name` FROM `AngelTypes`");
+    $types = sql_select("SELECT `id`, `name` FROM `AngelTypes` ORDER BY `AngelTypes`.`name`");
   else
-    $types = sql_select("SELECT `AngelTypes`.`id`, `AngelTypes`.`name` FROM `UserAngelTypes` JOIN `AngelTypes` ON (`UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`) WHERE `UserAngelTypes`.`user_id` = " . sql_escape($user['UID']) . " AND (`AngelTypes`.`restricted` = 0 OR NOT `UserAngelTypes`.`confirm_user_id` IS NULL)");
+    $types = sql_select("SELECT `AngelTypes`.`id`, `AngelTypes`.`name` FROM `UserAngelTypes` JOIN `AngelTypes` ON (`UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`) WHERE `UserAngelTypes`.`user_id` = " . sql_escape($user['UID']) . " AND (`AngelTypes`.`restricted` = 0 OR NOT `UserAngelTypes`.`confirm_user_id` IS NULL) ORDER BY `AngelTypes`.`name`");
   if (empty($types))
     $types = sql_select("SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0");
   $filled = array (
