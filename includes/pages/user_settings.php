@@ -114,29 +114,17 @@ function user_settings() {
 	elseif (isset ($_REQUEST['submit_password'])) {
 		$ok = true;
 
-		if (!isset ($_REQUEST['password']) || $user['Passwort'] != PassCrypt($_REQUEST['password'])) {
-			$ok = false;
+		if (!isset ($_REQUEST['password']) || !verify_password($_REQUEST['password'], $user['Passwort'], $user['UID']))
 			$msg .= error(Get_Text(30), true);
-		}
-
-		if (isset ($_REQUEST['new_password']) && strlen($_REQUEST['new_password']) >= 6) {
-			if ($_REQUEST['new_password'] == $_REQUEST['new_password2']) {
-				$password_hash = PassCrypt($_REQUEST['new_password']);
-			} else {
-				$ok = false;
-				$msg .= error(Get_Text("makeuser_error_password1"), true);
-			}
-		} else {
-			$ok = false;
-			$msg .= error(Get_Text("makeuser_error_password2"), true);
-		}
-
-		if ($ok) {
-			sql_query("UPDATE `User` SET `Passwort`='" . sql_escape($password_hash) . "' WHERE `UID`=" . sql_escape($user['UID']));
-
+		elseif (strlen($_REQUEST['new_password']) <= MIN_PASSWORD_LENGTH)
+			$msg .= error(Get_Text("makeuser_error_password2"));
+		elseif ($_REQUEST['new_password'] != $_REQUEST['new_password2'])
+			$msg .= error(Get_Text("makeuser_error_password1"), true);
+		elseif(set_password($user['UID'], $_REQUEST['new_password']))
 			success("Password saved.");
-			redirect(page_link_to('user_settings'));
-		}
+		else
+			error("Failed setting password.");
+		redirect(page_link_to('user_settings'));
 	}
 	elseif (isset ($_REQUEST['submit_theme'])) {
 		$ok = true;

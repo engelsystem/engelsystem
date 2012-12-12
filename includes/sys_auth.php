@@ -28,15 +28,40 @@ function load_auth() {
 	$privileges = isset ($user) ? privileges_for_user($user['UID']) : privileges_for_group(-1);
 }
 
-function PassCrypt($passwort) {
-	global $crypt_system;
-
-	switch ($crypt_system) {
-		case "crypt" :
-			return "{crypt}" . crypt($passwort, "77");
-		case "md5" :
-			return md5($passwort);
+// generate a salt (random string) of arbitrary length suitable for the use with crypt()
+function generate_salt($length = 16) {
+	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+	$salt = "";
+	for ($i = 0; $i < $length; $i++) {
+		$salt .= $alphabet[rand(0, strlen($alphabet)-1)];
 	}
+	return $salt;
+}
+
+// set the password of a user
+function set_password($uid, $password) {
+	$res = sql_query("UPDATE `User` SET `Passwort` = '" . sql_escape(crypt($password, CRYPT_ALG . '$' . generate_salt(16) . '$')) . "' WHERE `UID` = " . intval($uid) . " LIMIT 1");
+	return $res && (mysql_affected_rows() > 0);
+}
+
+// verify a password given a precomputed salt.
+// if $uid is given and $salt is an old-style salt (plain md5), we convert it automatically
+function verify_password($password, $salt, $uid = false) {
+	$correct = false;
+	if (substr($salt, 0, 1) == '$') // new-style crypt()
+		$correct = crypt($password, $salt) == $salt;
+	elseif (substr($salt, 0, 7) == '{crypt}') // old-style crypt() with DES and static salt - not used anymore
+		$correct = crypt($password, '77') == $salt;
+	elseif (strlen($salt) == 32) // old-style md5 without salt - not used anymore
+		$correct = md5($password) == $salt;
+
+	if($correct && substr($salt, 0, strlen(CRYPT_ALG)) != CRYPT_ALG && $uid) {
+		// this password is stored in another format than we want it to be.
+		// let's update it!
+		// we duplicate the query from the above set_password() function to have the extra safety of checking the old hash
+		sql_query("UPDATE `User` SET `Passwort` = '" . sql_escape(crypt($password, CRYPT_ALG . '$' . generate_salt() . '$')) . "' WHERE `UID` = " . intval($uid) . " AND `Passwort` = '" . sql_escape($salt) . "' LIMIT 1");
+	}
+	return $correct;
 }
 
 // JSON Authorisierungs-Schnittstelle
@@ -50,11 +75,12 @@ function json_auth_service() {
 	$SourceOuth = $_REQUEST['so'];
 
 	if (isset ($CurrentExternAuthPass) && $SourceOuth == $CurrentExternAuthPass) {
-		$sql = "SELECT * FROM `User` WHERE `Nick`='" . sql_escape($User) . "'";
-		$Erg = sql_query($sql);
+		$sql = "SELECT `UID`, `Passwort` FROM `User` WHERE `Nick`='" . sql_escape($User) . "'";
+		$Erg = sql_select($sql);
 
-		if (mysql_num_rows($Erg) == 1) {
-			if (mysql_result($Erg, 0, "Passwort") == PassCrypt($Pass)) {
+		if (count($Erg) == 1) {
+			$Erg = $Erg[0];
+			if (verify_password($Pass, $Erg["Passwort"], $Erg["UID"])) {
 				$UID = mysql_result($Erg, 0, "UID");
 
 				$user_privs = sql_select("SELECT `Privileges`.`name` FROM `User` JOIN `UserGroups` ON (`User`.`UID` = `UserGroups`.`uid`) JOIN `GroupPrivileges` ON (`UserGroups`.`group_id` = `GroupPrivileges`.`group_id`) JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `User`.`UID`=" . sql_escape($UID) . ";");

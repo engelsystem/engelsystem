@@ -240,7 +240,7 @@ function admin_user() {
 
         case 'change_pw' :
           if ($_REQUEST['new_pw'] != "" && $_REQUEST['new_pw'] == $_REQUEST['new_pw2']) {
-            sql_query("UPDATE `User` SET `Passwort`='" . sql_escape(PassCrypt($_REQUEST['new_pw'])) . "' WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+            set_password($id, $_REQUEST['new_pw']);
             $html .= success("Passwort neu gesetzt.", true);
           } else {
             $html .= error("Die Eingaben müssen übereinstimmen und dürfen nicht leer sein!", true);
