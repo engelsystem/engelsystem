@@ -420,7 +420,7 @@ function view_user_shifts() {
                     if (in_array('user_shifts_admin', $privileges))
                       $entry_list[] = "<span style=\"$style\">" . '<a href="' . page_link_to('user_myshifts') . '&id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> <a href="' . page_link_to('user_shifts') . '&entry_id=' . $entry['id'] . '">[x]</a></span>';
                     else
-                      $entry_list[] = "<span style=\"$style\">" . $entry['Nick']."</span";
+                      $entry_list[] = "<span style=\"$style\">" . $entry['Nick']."</span>";
                   }
                   if ($angeltype['count'] - count($entries) > 0) {
                     if ((time() < $shift['end'] && !$my_shift) || in_array('user_shifts_admin', $privileges)) {
