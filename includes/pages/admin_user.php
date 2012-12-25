@@ -184,10 +184,10 @@ function admin_user() {
       switch ($_REQUEST['action']) {
         case 'save_groups' :
           if ($id != $user['UID']) {
-            list ($my_highest_group) = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($user['UID']) . " ORDER BY `group_id`");
-            list ($his_highest_group) = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($id) . " ORDER BY `group_id`");
+            $my_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($user['UID']) . " ORDER BY `group_id`");
+            $his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($id) . " ORDER BY `group_id`");
 
-            if ($my_highest_group['group_id'] <= $his_highest_group['group_id']) {
+            if (count($my_highest_group) > 0 && (count($his_highest_group) == 0 || ($my_highest_group[0]['group_id'] <= $his_highest_group[0]['group_id']))) {
               $groups = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = " . sql_escape($id) . ") WHERE `Groups`.`UID` >= " . sql_escape($my_highest_group['group_id']) . " ORDER BY `Groups`.`Name`");
               $grouplist = array ();
               foreach ($groups as $group)
