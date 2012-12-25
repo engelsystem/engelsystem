@@ -104,21 +104,26 @@ function admin_user() {
 
       if (isset ($_REQUEST['submit_user_angeltypes'])) {
         $selected_angel_types = array ();
-        foreach ($angel_types as $angel_type_id => $angel_type_name)
+        foreach ($angel_types as $angel_type_id => $angel_type_name) {
           if (isset ($_REQUEST['angel_types_' . $angel_type_id]))
-          $selected_angel_types[] = $angel_type_id;
+            $selected_angel_types[] = $angel_type_id;
+        }
 
         // Assign angel-types
-        foreach ($angel_types_source as $angel_type)
+        foreach ($angel_types_source as $angel_type) {
           if (!in_array($angel_type['id'], $selected_angel_types))
-          sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']) . " AND `angeltype_id`=" . sql_escape($angel_type['id']) . " LIMIT 1");
+            sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']) . " AND `angeltype_id`=" . sql_escape($angel_type['id']) . " LIMIT 1");
+        }
 
-        foreach ($selected_angel_types as $selected_angel_type_id)
-          if (sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']) . " AND `angeltype_id`=" . sql_escape($selected_angel_type_id) . " LIMIT 1") == 0)
-          if (in_array("admin_user_angeltypes", $privileges))
-          sql_query("INSERT INTO `UserAngelTypes` SET `confirm_user_id`=" . sql_escape($user['UID']) . ", `user_id`=" . sql_escape($user_source['UID']) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
-        else
-          sql_query("INSERT INTO `UserAngelTypes` SET `user_id`=" . sql_escape($user_source['UID']) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
+        foreach ($selected_angel_types as $selected_angel_type_id) {
+          if (sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']) . " AND `angeltype_id`=" . sql_escape($selected_angel_type_id) . " LIMIT 1") == 0) {
+            if (in_array("admin_user_angeltypes", $privileges)) {
+              sql_query("INSERT INTO `UserAngelTypes` SET `confirm_user_id`=" . sql_escape($user['UID']) . ", `user_id`=" . sql_escape($user_source['UID']) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
+            } else {
+              sql_query("INSERT INTO `UserAngelTypes` SET `user_id`=" . sql_escape($user_source['UID']) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
+            }
+          }
+        }
 
         success("Angeltypes saved.");
         redirect(page_link_to('admin_user') . '&id=' . $user_source['UID']);
@@ -182,7 +187,7 @@ function admin_user() {
             list ($my_highest_group) = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($user['UID']) . " ORDER BY `group_id`");
             list ($his_highest_group) = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($id) . " ORDER BY `group_id`");
 
-            if ($my_highest_group <= $his_highest_group) {
+            if ($my_highest_group['group_id'] <= $his_highest_group['group_id']) {
               $groups = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = " . sql_escape($id) . ") WHERE `Groups`.`UID` >= " . sql_escape($my_highest_group['group_id']) . " ORDER BY `Groups`.`Name`");
               $grouplist = array ();
               foreach ($groups as $group)
