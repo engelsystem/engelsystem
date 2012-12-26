@@ -11,6 +11,9 @@ require_once ('includes/sys_shift.php');
 require_once ('includes/sys_template.php');
 require_once ('includes/sys_user.php');
 
+require_once ('includes/model/LogEntries_model.php');
+require_once ('includes/model/User_model.php');
+
 require_once ('config/config.php');
 require_once ('config/config_db.php');
 
