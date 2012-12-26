@@ -1,6 +1,6 @@
 <?php
 function admin_active() {
-  global $tshirt_sizes;
+  global $tshirt_sizes, $shift_sum_formula;
 
   $msg = "";
   $search = "";
@@ -24,7 +24,7 @@ function admin_active() {
       $limit = " LIMIT " . $count;
     if (isset ($_REQUEST['ack'])) {
       sql_query("UPDATE `User` SET `Aktiv` = 0 WHERE `Tshirt` = 0");
-      $users = sql_select("SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, SUM(`end`-`start`) as `shift_length` FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` WHERE `User`.`Gekommen` = 1 GROUP BY `User`.`UID` ORDER BY `shift_length` DESC" . $limit);
+      $users = sql_select("SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` WHERE `User`.`Gekommen` = 1 GROUP BY `User`.`UID` ORDER BY `shift_length` DESC" . $limit);
       $user_nicks = array();
       foreach ($users as $usr) {
         sql_query("UPDATE `User` SET `Aktiv` = 1 WHERE `UID`=" . sql_escape($usr['UID']));
@@ -80,7 +80,7 @@ function admin_active() {
     else $msg = error("Angel not found.", true);
   }
 
-  $users = sql_select("SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, SUM(`end`-`start`) as `shift_length` FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` WHERE `User`.`Gekommen` = 1 GROUP BY `User`.`UID` ORDER BY `shift_length` DESC" . $limit);
+  $users = sql_select("SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` WHERE `User`.`Gekommen` = 1 GROUP BY `User`.`UID` ORDER BY `shift_length` DESC" . $limit);
 
   $table = "";
   if ($search == "")
