@@ -56,7 +56,7 @@ function user_myshifts() {
 		$shift = sql_select("SELECT * FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " AND `UID`=" . sql_escape($shifts_user['UID']) . " LIMIT 1");
 		if (count($shift) > 0) {
 			$shift = $shift[0];
-			if (($shift['start'] - time() < $LETZTES_AUSTRAGEN * 60) || in_array('user_shifts_admin', $privileges)) {
+			if (($shift['start'] - time() < $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges)) {
 				sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
 				$msg .= success(Get_Text("pub_myshifts_signed_off"), true);
 			} else
@@ -79,7 +79,7 @@ function user_myshifts() {
 		$html .= '<td>' . $shift['Comment'] . '</td>';
 		$html .= '<td>';
 		$html .= '<a href="' . page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '">' . Get_Text('edit') . '</a>';
-		if ($shift['start'] - time() > $LETZTES_AUSTRAGEN * 60)
+		if ($shift['start'] - time() > $LETZTES_AUSTRAGEN * 3600)
 			$html .= ' | <a href="' . page_link_to('user_myshifts') . '&cancel=' . $shift['id'] . '">' . Get_Text('sign_off') . '</a>';
 		$html .= '</td>';
 		$html .= '</tr>';
