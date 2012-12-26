@@ -6,7 +6,22 @@ function admin_free() {
 	if (isset ($_REQUEST['search']))
 		$search = strip_request_item('search');
 
-	$users = sql_select("SELECT `User`.* FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID` AND `Shifts`.`start` < " . sql_escape(time()) . " AND `Shifts`.`end` > " . sql_escape(time()) . ") WHERE `User`.`Gekommen` = 1 AND `Shifts`.`SID` IS NULL GROUP BY `User`.`UID` ORDER BY `Nick`");
+	$angeltypesearch = "";
+	if (empty ($_REQUEST['angeltype']))
+		$_REQUEST['angeltype'] = '';
+	else {
+		$angeltypesearch = " INNER JOIN `UserAngelTypes` ON (`UserAngelTypes`.`angeltype_id` = '" . sql_escape($_REQUEST['angeltype']) . "' AND `UserAngelTypes`.`user_id` = `User`.`UID`";
+		if (isset ($_REQUEST['confirmed_only']))
+			$angeltypesearch .= " AND `UserAngelTypes`.`confirm_user_id`";
+		$angeltypesearch .= ") ";
+	}
+
+	$angel_types_source = sql_select("SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`");
+	$angel_types = array('' => 'alle Typen');
+	foreach ($angel_types_source as $angel_type)
+	  $angel_types[$angel_type['id']] = $angel_type['name'];
+
+	$users = sql_select("SELECT `User`.* FROM `User` ${angeltypesearch} LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID` AND `Shifts`.`start` < " . sql_escape(time()) . " AND `Shifts`.`end` > " . sql_escape(time()) . ") WHERE `User`.`Gekommen` = 1 AND `Shifts`.`SID` IS NULL GROUP BY `User`.`UID` ORDER BY `Nick`");
 
 	$table = "";
 	if ($search == "")
@@ -41,6 +56,7 @@ function admin_free() {
 	}
 	return template_render('../templates/admin_free.html', array (
 		'search' => $search,
+		'angeltypes' => html_select_key('angeltype', 'angeltype', $angel_types, $_REQUEST['angeltype']),
 		'table' => $table,
 		'link' => page_link_to('admin_free')
 	));
