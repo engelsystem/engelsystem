@@ -233,11 +233,18 @@ function admin_shifts() {
     foreach ($_SESSION['admin_shifts_shifts'] as $shift) {
       sql_query("INSERT INTO `Shifts` SET `start`=" . sql_escape($shift['start']) . ",  `end`=" . sql_escape($shift['end']) . ", `RID`=" . sql_escape($shift['RID']) . ", `name`='" . sql_escape($shift['name']) . "'");
       $shift_id = sql_id();
+      engelsystem_log("Shift created: " . $shift['name'] . " from " . date("Y-m-d H:i", $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']));
+      $needed_angel_types_info = array();
       foreach ($_SESSION['admin_shifts_types'] as $type_id => $count) {
-        sql_query("INSERT INTO `NeededAngelTypes` SET `shift_id`=" . sql_escape($shift_id) . ", `angel_type_id`=" . sql_escape($type_id) . ", `count`=" . sql_escape($count));
+        $angel_type_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`=" . sql_escape($type_id) . " LIMIT 1");
+        if(count($angel_type_source) > 0) {
+          sql_query("INSERT INTO `NeededAngelTypes` SET `shift_id`=" . sql_escape($shift_id) . ", `angel_type_id`=" . sql_escape($type_id) . ", `count`=" . sql_escape($count));
+          $needed_angel_types_info[] = $angel_type_source[0]['name'] . ": " . $count;
+        }
       }
     }
 
+    engelsystem_log("Shift needs following angel types: " . join(", ", $needed_angel_types_info));
     $msg = success("Schichten angelegt.", true);
   } else {
     unset ($_SESSION['admin_shifts_shifts']);

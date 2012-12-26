@@ -77,17 +77,26 @@ function admin_rooms() {
         }
 
         if ($ok) {
-          if(isset($id))
+          if(isset($id)) {
             sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "' WHERE `RID`=" . sql_escape($id) . " LIMIT 1");
-          else {
+            engelsystem_log("Room updated: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);
+          } else {
             sql_query("INSERT INTO `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "'");
             $id = sql_id();
+            engelsystem_log("Room created: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);
           }
 
           sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($id));
-          foreach ($angeltypes_count as $angeltype_id => $angeltype_count)
-            sql_query("INSERT INTO `NeededAngelTypes` SET `room_id`=" . sql_escape($id) . ", `angel_type_id`=" . sql_escape($angeltype_id) . ", `count`=" . sql_escape($angeltype_count));
+          $needed_angeltype_info = array();
+          foreach ($angeltypes_count as $angeltype_id => $angeltype_count) {
+            $angeltype_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`=" . sql_escape($angeltype_id) . " LIMIT 1");
+            if(count($angeltype_source) > 0) {
+              sql_query("INSERT INTO `NeededAngelTypes` SET `room_id`=" . sql_escape($id) . ", `angel_type_id`=" . sql_escape($angeltype_id) . ", `count`=" . sql_escape($angeltype_count));
+              $needed_angeltype_info[] = $angeltypes_source[0]['name'] . ": " . $angeltype_count;
+            }
+          }
 
+          engelsystem_log("Set needed angeltypes of room " . $name . " to: " . join(", ", $needed_angeltype_info));
           success("Room saved.");
           redirect(page_link_to("admin_rooms"));
         }
@@ -116,6 +125,8 @@ function admin_rooms() {
       if (isset ($_REQUEST['ack'])) {
         sql_query("DELETE FROM `Room` WHERE `RID`=" . sql_escape($id) . " LIMIT 1");
         sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($id) . " LIMIT 1");
+
+        engelsystem_log("Room deleted: " . $name);
         success(sprintf("Room %s deleted.", $name));
         redirect(page_link_to('admin_rooms'));
       }

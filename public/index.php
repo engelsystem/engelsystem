@@ -3,6 +3,7 @@ require_once ('bootstrap.php');
 require_once ('includes/sys_auth.php');
 require_once ('includes/sys_counter.php');
 require_once ('includes/sys_lang.php');
+require_once ('includes/sys_log.php');
 require_once ('includes/sys_menu.php');
 require_once ('includes/sys_mysql.php');
 require_once ('includes/sys_page.php');
