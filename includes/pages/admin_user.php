@@ -135,6 +135,7 @@ function admin_user() {
           }
         }
 
+        engelsystem_log("Set angeltypes of " . $user_source['Nick'] . " to: " . join(", ", $user_angel_type_info));
         success("Angeltypes saved.");
         redirect(page_link_to('admin_user') . '&id=' . $user_source['UID']);
       }
@@ -202,19 +203,26 @@ function admin_user() {
             $his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($id) . " ORDER BY `group_id`");
 
             if (count($my_highest_group) > 0 && (count($his_highest_group) == 0 || ($my_highest_group[0]['group_id'] <= $his_highest_group[0]['group_id']))) {
-              $groups = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = " . sql_escape($id) . ") WHERE `Groups`.`UID` >= " . sql_escape($my_highest_group[0]['group_id']) . " ORDER BY `Groups`.`Name`");
+              $groups_source = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = " . sql_escape($id) . ") WHERE `Groups`.`UID` >= " . sql_escape($my_highest_group[0]['group_id']) . " ORDER BY `Groups`.`Name`");
+              $groups = array();
               $grouplist = array ();
-              foreach ($groups as $group)
+              foreach ($groups_source as $group) {
+                $groups[$group['UID']] = $group;
                 $grouplist[] = $group['UID'];
+              }
 
               if (!is_array($_REQUEST['groups']))
                 $_REQUEST['groups'] = array ();
 
               sql_query("DELETE FROM `UserGroups` WHERE `uid`=" . sql_escape($id));
-              foreach ($_REQUEST['groups'] as $group)
-                if (in_array($group, $grouplist))
-                sql_query("INSERT INTO `UserGroups` SET `uid`=" .
-                    sql_escape($id) . ", `group_id`=" . sql_escape($group));
+              $user_groups_info = array();
+              foreach ($_REQUEST['groups'] as $group) {
+                if (in_array($group, $grouplist)) {
+                  sql_query("INSERT INTO `UserGroups` SET `uid`=" . sql_escape($id) . ", `group_id`=" . sql_escape($group));
+                  $user_groups_info[] = $groups[$group]['Name'];
+                }
+              }
+              engelsystem_log("Set groups of " . $user_source['Nick'] . " to: " . join(", ", $user_groups_info));
               $html .= success("Benutzergruppen gespeichert.", true);
             } else {
               $html .= error("Du kannst keine Engel mit mehr Rechten bearbeiten.", true);
@@ -229,6 +237,7 @@ function admin_user() {
             sql_query("DELETE FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
             sql_query("DELETE FROM `UserGroups` WHERE `uid`=" . sql_escape($id));
             sql_query("UPDATE `ShiftEntry` SET `UID`=0, `Comment`=NULL WHERE `UID`=" . sql_escape($id));
+            engelsystem_log("Deleted user " . $user_source['Nick']);
             $html .= success("Benutzer gelöscht!", true);
           } else {
             $html .= error("Du kannst Dich nicht selber löschen!", true);
@@ -254,12 +263,14 @@ function admin_user() {
               "WHERE `UID` = '" . sql_escape($id) .
               "' LIMIT 1;";
           sql_query($SQL);
+          engelsystem_log("Updated user: " . $_POST["eNick"] . ", " . $_POST["eSize"] . ", arrived: " . $_POST["eGekommen"] . ", active: " . $_POST["eAktiv"] . ", tshirt: " . $_POST["eTshirt"]);
           $html .= success("Änderung wurde gespeichert...\n", true);
           break;
 
         case 'change_pw' :
           if ($_REQUEST['new_pw'] != "" && $_REQUEST['new_pw'] == $_REQUEST['new_pw2']) {
             set_password($id, $_REQUEST['new_pw']);
+            engelsystem_log("Set new password for " . $user_source['Nick']);
             $html .= success("Passwort neu gesetzt.", true);
           } else {
             $html .= error("Die Eingaben müssen übereinstimmen und dürfen nicht leer sein!", true);
