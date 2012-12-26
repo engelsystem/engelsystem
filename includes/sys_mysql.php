@@ -31,6 +31,12 @@ function sql_select($query) {
 	}
 }
 
+function sql_select_single_col($query) {
+	$result = sql_select($query);
+	return array_map('array_pop', $result);
+
+}
+
 // Execute a query
 function sql_query($query) {
 	global $con;
@@ -58,5 +64,18 @@ function sql_num_query($query) {
 function sql_error() {
 	global $con;
 	return mysql_error($con);
+}
+
+$sql_transaction_counter = 0;
+function sql_start_transaction() {
+	global $sql_transaction_counter;
+	if ($sql_transaction_counter++ == 0)
+		sql_query("START TRANSACTION");
+}
+
+function sql_stop_transaction() {
+	global $sql_transaction_counter;
+	if ($sql_transaction_counter-- == 1)
+		sql_query("COMMIT");
 }
 ?>

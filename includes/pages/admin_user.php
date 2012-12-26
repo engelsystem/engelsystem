@@ -92,28 +92,38 @@ function admin_user() {
       // UserAngelType subform
       list ($user_source) = sql_select($SQL);
 
-      $selected_angel_types_source = sql_select("SELECT * FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']));
-      $selected_angel_types = array ();
-      foreach ($selected_angel_types_source as $selected_angel_type)
-        $selected_angel_types[] = $selected_angel_type['angeltype_id'];
+      $selected_angel_types = sql_select_single_col("SELECT `angeltype_id` FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']));
+      $accepted_angel_types = sql_select_single_col("SELECT `angeltype_id` FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']) . " AND `confirm_user_id` IS NOT NULL");
+      $nonrestricted_angel_types = sql_select_single_col("SELECT `id` FROM `AngelTypes` WHERE `restricted` = 0");
 
-      $angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
-      $angel_types = array ();
+      $angel_types_source = sql_select("SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`");
+      $angel_types = array();
       foreach ($angel_types_source as $angel_type)
-        $angel_types[$angel_type['id']] = $angel_type['name'] . ($angel_type['restricted'] ? " (restricted)" : "");
+        $angel_types[$angel_type['id']] = $angel_type['name'];
 
       if (isset ($_REQUEST['submit_user_angeltypes'])) {
-        $selected_angel_types = array ();
-        foreach ($angel_types as $angel_type_id => $angel_type_name) {
-          if (isset ($_REQUEST['angel_types_' . $angel_type_id]))
-            $selected_angel_types[] = $angel_type_id;
-        }
+        $selected_angel_types = array_intersect($_REQUEST['selected_angel_types'], array_keys($angel_types));
+        $accepted_angel_types = array_diff(array_intersect($_REQUEST['accepted_angel_types'], array_keys($angel_types)), $nonrestricted_angel_types);
+        if (in_array("admin_user_angeltypes", $privileges))
+          $selected_angel_types = array_merge($selected_angel_types, $accepted_angel_types);
 
         // Assign angel-types
-        foreach ($angel_types_source as $angel_type) {
-          if (!in_array($angel_type['id'], $selected_angel_types))
-            sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']) . " AND `angeltype_id`=" . sql_escape($angel_type['id']) . " LIMIT 1");
+        sql_start_transaction();
+        sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']));
+        if (!empty($selected_angel_types)) {
+          $SQL = "INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`) VALUES ";
+          foreach ($selected_angel_types as $selected_angel_type_id)
+            $SQL .= "(${user_source['UID']}, ${selected_angel_type_id}),";
+          // remove superfluous comma
+          $SQL = substr($SQL, 0, -1);
+          sql_query($SQL);
         }
+        if (in_array("admin_user_angeltypes", $privileges)) {
+          sql_query("UPDATE `UserAngelTypes` SET `confirm_user_id` = NULL WHERE `user_id` = " . sql_escape($user_source['UID']));
+          if (!empty($accepted_angel_types))
+            sql_query("UPDATE `UserAngelTypes` SET `confirm_user_id` = '" . sql_escape($user['UID']) . "' WHERE `user_id` = '" . sql_escape($user_source['UID']) . "' AND `angeltype_id` IN (" . implode(',', $accepted_angel_types) . ")");
+        }
+        sql_stop_transaction();
 
         foreach ($selected_angel_types as $selected_angel_type_id) {
           if (sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']) . " AND `angeltype_id`=" . sql_escape($selected_angel_type_id) . " LIMIT 1") == 0) {
@@ -131,7 +141,11 @@ function admin_user() {
 
       $html .= form(array (
         msg(),
-        form_checkboxes('angel_types', "Angeltypes", $angel_types, $selected_angel_types),
+        form_multi_checkboxes(array('selected_angel_types' => 'gewünscht', 'accepted_angel_types' => 'akzeptiert'),
+          "Angeltypes",
+          $angel_types,
+          array('selected_angel_types' => $selected_angel_types, 'accepted_angel_types' => array_merge($accepted_angel_types, $nonrestricted_angel_types)),
+          array('accepted_angel_types' => $nonrestricted_angel_types)),
         form_submit('submit_user_angeltypes', Get_Text("Save"))
       ));
 
