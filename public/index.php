@@ -40,6 +40,10 @@ if ($p == "ical") {
 	require_once ('includes/pages/user_ical.php');
 	user_ical();
 }
+elseif ($p == "atom") {
+	require_once ('includes/pages/user_atom.php');
+	user_atom();
+}
 // Recht dafür vorhanden?
 elseif (in_array($p, $privileges)) {
 	if ($p == "news") {
@@ -185,6 +189,7 @@ if (isset ($user) && $p != "admin_user_angeltypes")
 echo template_render('../templates/layout.html', array (
 	'theme' => isset ($user) ? $user['color'] : $default_theme,
 	'title' => $title,
+	'atom_link' => ($p == 'news' || $p == 'user_meetings')? '<link href="' . page_link_to('atom') . (($p == 'user_meetings')? '&amp;meetings=1' : '') . '&amp;key=' . $user['ical_key'] . '" type="application/atom+xml" rel="alternate" title="Atom Feed">' : '',
 	'menu' => make_menu(),
 	'content' => $content
 ));
