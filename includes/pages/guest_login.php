@@ -146,7 +146,7 @@ function guest_register() {
       form_text('hometown', Get_Text("makeuser_Hometown"), $hometown),
       $enable_tshirt_size ? form_select('tshirt_size', Get_Text("makeuser_T-Shirt"), $tshirt_sizes, $tshirt_size) : '',
       form_textarea('comment', Get_Text("makeuser_text2"), $comment),
-      form_checkboxes('angel_types', "What do you want to do?", $angel_types, $selected_angel_types),
+      form_checkboxes('angel_types', "What do you want to do?<br>(<a href=\"https://events.ccc.de/congress/2012/wiki/Volunteers#What_kind_of_volunteers_are_needed.3F\">Description of job types</a>)", $angel_types, $selected_angel_types),
       form_info("", "Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section."),
       form_password('password', Get_Text("makeuser_Passwort") . "*"),
       form_password('password2', Get_Text("makeuser_Passwort2") . "*"),
