@@ -293,16 +293,15 @@ function admin_user() {
     <a href="' . page_link_to("admin_user") . '&OrderBy=Nick">Nick</a>
     </th>
     <th><a href="' . page_link_to("admin_user") . '&OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&OrderBy=Name">Name</a></th>
+    <th><a href="' . page_link_to("admin_user") . '&OrderBy=DECT">DECT</a></th>
     <th><a href="' . page_link_to("admin_user") . '&OrderBy=Alter">Alter</a></th>
-    <th>
-    <a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a>
-    </th>
-    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></th>
-    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></th>
-    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></th>
-    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></th>
+    <th><a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a></th>
+    <th class="rotate"><div><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></div></th>
+    <th class="rotate"><div><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></div></th>
+    <th class="rotate"><div><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></div></th>
+    <th class="rotate"><div><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></div></th>
     <th><a href="' . page_link_to("admin_user") . '&OrderBy=lastLogIn">Last login</a></th>
-    <th>&Auml;nd.</th>
+    <th>Edit</th>
     </tr></thead>';
     $Gekommen = 0;
     $Active = 0;
@@ -340,6 +339,7 @@ function admin_user() {
       else
         $html .= "\t<td>" . mysql_result($Erg, $n, "Nick") . "</td>\n";
       $html .= "\t<td>" . mysql_result($Erg, $n, "Vorname") . " " . mysql_result($Erg, $n, "Name") . "</td>\n";
+      $html .= "\t<td>" . mysql_result($Erg, $n, "DECT") . "</td>\n";
       $html .= "\t<td>" . mysql_result($Erg, $n, "Alter") . "</td>\n";
       $html .= "\t<td>";
       if (strlen(mysql_result($Erg, $n, "email")) > 0)
@@ -347,25 +347,25 @@ function admin_user() {
         mysql_result($Erg, $n, "email") . "</a>";
       $html .= '<div class="hidden">' . $title . '</div>';
       $html .= "</td>\n";
-      $html .= "\t<td>" . mysql_result($Erg, $n, "Size") . "</td>\n";
       $Gekommen += mysql_result($Erg, $n, "Gekommen");
-      $html .= "\t<td>" . mysql_result($Erg, $n, "Gekommen") . "</td>\n";
+      $html .= "\t<td class=\"" . (mysql_result($Erg, $n, "Gekommen") == 1? 'true' : 'false') . "\">" . mysql_result($Erg, $n, "Gekommen") . "</td>\n";
       $Active += mysql_result($Erg, $n, "Aktiv");
-      $html .= "\t<td>" . mysql_result($Erg, $n, "Aktiv") . "</td>\n";
+      $html .= "\t<td class=\"" . (mysql_result($Erg, $n, "Aktiv") == 1? 'true' : 'false') . "\">" . mysql_result($Erg, $n, "Aktiv") . "</td>\n";
       $Tshirt += mysql_result($Erg, $n, "Tshirt");
-      $html .= "\t<td>" . mysql_result($Erg, $n, "Tshirt") . "</td>\n";
+      $html .= "\t<td class=\"" . (mysql_result($Erg, $n, "Tshirt") == 1? 'true' : 'false') . "\">" . mysql_result($Erg, $n, "Tshirt") . "</td>\n";
+      $html .= "\t<td>" . mysql_result($Erg, $n, "Size") . "</td>\n";
       $last_login = mysql_result($Erg, $n, "lastLogIn");
       if($last_login == 0)
         $html .= "<td>never</td>";
       else
-        $html .= "<td>" . date("Y-m-d H:i", $last_login) . "</td>";
+        $html .= "<td>" . date('d.m.&\n\b\s\p;H:i', $last_login) . "</td>";
       $html .= "\t<td>" . '<a href="' . page_link_to("admin_user") . '&id=' . mysql_result($Erg, $n, "UID") . '">Edit</a>' .
           "</td>\n";
       $html .= "</tr>\n";
     }
     $html .= "<tr>" .
-        "<td></td><td></td><td></td><td></td><td></td>" .
-        "<td>$Gekommen</td><td>$Active</td><td>$Tshirt</td><td></td><td></td></tr>\n";
+        "<th>Summe</th><th></th><th></th><th></th><th></th>" .
+        "<th>$Gekommen</th><th>$Active</th><th>$Tshirt</th><th></th><th></th><th></th></tr>\n";
     $html .= "\t</table>\n";
     // Ende Userliste
   }
