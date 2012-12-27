@@ -3,12 +3,16 @@ require_once ('bootstrap.php');
 require_once ('includes/sys_auth.php');
 require_once ('includes/sys_counter.php');
 require_once ('includes/sys_lang.php');
+require_once ('includes/sys_log.php');
 require_once ('includes/sys_menu.php');
 require_once ('includes/sys_mysql.php');
 require_once ('includes/sys_page.php');
 require_once ('includes/sys_shift.php');
 require_once ('includes/sys_template.php');
 require_once ('includes/sys_user.php');
+
+require_once ('includes/model/LogEntries_model.php');
+require_once ('includes/model/User_model.php');
 
 require_once ('config/config.php');
 require_once ('config/config_db.php');
@@ -38,6 +42,10 @@ $content = "";
 if ($p == "ical") {
 	require_once ('includes/pages/user_ical.php');
 	user_ical();
+}
+elseif ($p == "atom") {
+	require_once ('includes/pages/user_atom.php');
+	user_atom();
 }
 // Recht dafür vorhanden?
 elseif (in_array($p, $privileges)) {
@@ -184,6 +192,7 @@ if (isset ($user) && $p != "admin_user_angeltypes")
 echo template_render('../templates/layout.html', array (
 	'theme' => isset ($user) ? $user['color'] : $default_theme,
 	'title' => $title,
+	'atom_link' => ($p == 'news' || $p == 'user_meetings')? '<link href="' . page_link_to('atom') . (($p == 'user_meetings')? '&amp;meetings=1' : '') . '&amp;key=' . $user['ical_key'] . '" type="application/atom+xml" rel="alternate" title="Atom Feed">' : '',
 	'menu' => make_menu(),
 	'content' => $content
 ));

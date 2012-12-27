@@ -37,10 +37,6 @@ $gmdateOffset=3600;
 // für Developen 1, sonst = 0
 $debug = 0;
 
-// SSL Cert-KEY
-$show_SSLCERT = "MD5:<br>MD5SED<br>\n".
-    "SHA1:<br>SHA1SED";
-
 //globale const. fuer schischtplan
 $GlobalZeileProStunde = 4;
 
@@ -61,4 +57,15 @@ $PentabarfXMLEventID = "31";
 /// Passord for external Authorization, function only active if the var is defined
 //$CurrentExternAuthPass = 23;
 
+// multiply "night shifts" (start or end between 2 and 6 exclusive) by 2
+$shift_sum_formula = "SUM(
+  (1+(
+    (HOUR(FROM_UNIXTIME(`Shifts`.`end`)) > 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) < 6)
+    OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) > 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`start`)) < 6)
+    OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) <= 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) >= 6)
+  ))*(`Shifts`.`end` - `Shifts`.`start`)
+)";
+
+// weigh every shift the same
+//$shift_sum_formula = "SUM(`end` - `start`)";
 ?>

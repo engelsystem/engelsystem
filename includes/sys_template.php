@@ -37,6 +37,34 @@ function form_checkboxes($name, $label, $items, $selected) {
 }
 
 /**
+ * Rendert eine Tabelle von Checkboxen für ein Formular
+ * @param names Assoziatives Array mit Namen der Checkboxen als Keys und Überschriften als Values
+ * @param label Die Beschriftung der gesamten Tabelle
+ * @param items Array mit den Beschriftungen der Zeilen
+ * @param selected Mehrdimensionales Array, wobei $selected[foo] ein Array der in der Datenreihe foo markierten Checkboxen ist
+ * @param disabled Wie selected, nur dass die entsprechenden Checkboxen deaktiviert statt markiert sind
+ */
+function form_multi_checkboxes($names, $label, $items, $selected, $disabled = array()) {
+	$html = "<table><thead><tr>";
+	foreach ($names as $title)
+		$html .= "<th>$title</th>";
+	$html .= "</tr></thead><tbody>";
+	foreach ($items as $key => $item) {
+		$html .= "<tr>";
+		foreach ($names as $name => $title) {
+			$id = $name . '_' . $key;
+			$sel = array_search($key, $selected[$name]) !== false ? ' checked="checked"' : "";
+			if (!empty($disabled) && !empty($disabled[$name]) && array_search($key, $disabled[$name]) !== false)
+				$sel .= ' disabled="disabled"';
+			$html .= '<td style="text-align: center;"><input type="checkbox" id="' . $id . '" name="' . $name . '[]" value="' . $key . '"' . $sel . ' /></td>';
+		}
+		$html .= '<td><label for="' . $id . '">' . $item . '</label></td></tr>';
+	}
+	$html .= "</tbody></table>";
+	return form_element($label, $html);
+}
+
+/**
  * Rendert eine Checkbox
  */
 function form_checkbox($name, $label, $selected, $value = 'checked') {

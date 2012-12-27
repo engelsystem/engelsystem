@@ -58,6 +58,7 @@ function user_news_comments() {
     if (isset ($_REQUEST["text"])) {
       $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['text']));
       sql_query("INSERT INTO `news_comments` (`Refid`, `Datum`, `Text`, `UID`) VALUES ('" . sql_escape($nid) . "', '" . date("Y-m-d H:i:s") . "', '" . sql_escape($text) . "', '" . sql_escape($user["UID"]) . "')");
+      engelsystem_log("Created news_comment: " . $text);
       $html .= success("Eintrag wurde gespeichert", true);
     }
 
@@ -114,6 +115,7 @@ function user_news() {
     sql_query("INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`) " .
         "VALUES ('" . sql_escape(time()) . "', '" . sql_escape($_POST["betreff"]) . "', '" . sql_escape($_POST["text"]) . "', '" . sql_escape($user['UID']) .
         "', '" . sql_escape($_POST["treffen"]) . "');");
+    engelsystem_log("Created news: " . $_POST["betreff"] . ", treffen: " . $_POST["treffen"]);
     $html .= success(Get_Text(4), true);
   }
 

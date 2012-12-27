@@ -47,10 +47,13 @@ function admin_angel_types() {
           $restricted = 0;
 
         if ($ok) {
-          if (isset ($id))
+          if (isset ($id)) {
             sql_query("UPDATE `AngelTypes` SET `name`='" . sql_escape($name) . "', `restricted`=" . sql_escape($restricted) . " WHERE `id`=" . sql_escape($id) . " LIMIT 1");
-          else
+            engelsystem_log("Updated angeltype: " . $name . ", restricted: " . $restricted);
+          } else {
             sql_query("INSERT INTO `AngelTypes` SET `name`='" . sql_escape($name) . "', `restricted`=" . sql_escape($restricted));
+            engelsystem_log("Created angeltype: " . $name . ", restricted: " . $restricted);
+          }
 
           success("Angel type saved.");
           redirect(page_link_to('admin_angel_types'));
@@ -76,6 +79,7 @@ function admin_angel_types() {
         sql_query("DELETE FROM `ShiftEntry` WHERE `TID`=" . sql_escape($id) . " LIMIT 1");
         sql_query("DELETE FROM `AngelTypes` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
         sql_query("DELETE FROM `UserAngelTypes` WHERE `angeltype_id`=" . sql_escape($id) . " LIMIT 1");
+        engelsystem_log("Deleted angel type: " . $name);
         success(sprintf("Angel type %s deleted.", $name));
         redirect(page_link_to('admin_angel_types'));
       }
