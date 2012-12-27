@@ -108,6 +108,10 @@ table {
 	display: block;
 }
 
+#shifts {
+	background-color: #fff;
+}
+
 table.scrollable {
 	max-width: 100%;
 	overflow-x: scroll;

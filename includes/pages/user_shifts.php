@@ -384,7 +384,7 @@ function view_user_shifts() {
         }
       }
     }
-    $shifts_table="<table id=\"shifts\" style=\"background-color: #fff\"><colgroup><col><col span=\"100\"></colgroup><thead><tr><th>-</th>";
+    $shifts_table="<table id=\"shifts\"><thead><tr><th>-</th>";
     foreach($myrooms as $room) {
       $rid=$room["id"];
       $colspan=1;
