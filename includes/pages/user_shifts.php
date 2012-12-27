@@ -286,7 +286,7 @@ function view_user_shifts() {
   if(in_array('user_shifts_admin', $privileges))
     $types = sql_select("SELECT `id`, `name` FROM `AngelTypes` ORDER BY `AngelTypes`.`name`");
   else
-    $types = sql_select("SELECT `AngelTypes`.`id`, `AngelTypes`.`name`, (`AngelTypes`.`restricted`=0 OR NOT `UserAngelTypes`.`confirm_user_id` IS NULL) as `enabled` FROM `AngelTypes` LEFT JOIN `UserAngelTypes` ON (`UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id` AND `UserAngelTypes`.`user_id`=" . sql_escape($user['UID']) . ") ORDER BY `AngelTypes`.`name`");
+    $types = sql_select("SELECT `AngelTypes`.`id`, `AngelTypes`.`name`, (`AngelTypes`.`restricted`=0 OR (NOT `UserAngelTypes`.`confirm_user_id` IS NULL OR `UserAngelTypes`.`id` IS NULL)) as `enabled` FROM `AngelTypes` LEFT JOIN `UserAngelTypes` ON (`UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id` AND `UserAngelTypes`.`user_id`=" . sql_escape($user['UID']) . ") ORDER BY `AngelTypes`.`name`");
   if (empty($types))
     $types = sql_select("SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0");
   $filled = array (
@@ -412,16 +412,16 @@ function view_user_shifts() {
                 $shifts_row .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
               $shifts_row.= '<br />';
               $shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
-              $query = "SELECT `NeededAngelTypes`.`count`, `AngelTypes`.`id`, `AngelTypes`.`restricted`, `UserAngelTypes`.`confirm_user_id`, `AngelTypes`.`name`
+              $query = "SELECT `NeededAngelTypes`.`count`, `AngelTypes`.`id`, `AngelTypes`.`restricted`, `UserAngelTypes`.`confirm_user_id`, `AngelTypes`.`name`, `UserAngelTypes`.`user_id`
               FROM `NeededAngelTypes`
               JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
-              LEFT JOIN `UserAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `UserAngelTypes`.`angeltype_id`)
+              LEFT JOIN `UserAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `UserAngelTypes`.`angeltype_id`AND `UserAngelTypes`.`user_id`=" . sql_escape($user['UID']) . ")
               WHERE ";
               if ($shift_has_special_needs)
                 $query .= "`shift_id` = " . sql_escape($shift['SID']);
               else
                 $query .= "`room_id` = " . sql_escape($shift['RID']);
-              $query .= "		AND `count` > 0 AND `UserAngelTypes`.`user_id`=" . sql_escape($user['UID']) . " ";
+              $query .= "		AND `count` > 0 ";
               if (!empty($_SESSION['user_shifts']['types']))
                 $query .= "AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ") ";
               $query .= "ORDER BY `AngelTypes`.`name`";
@@ -451,26 +451,30 @@ function view_user_shifts() {
                     $user_may_join_shift &= !$my_shift;
 
                     // you cannot join if user is not of this angel type
-                    $user_may_join_shift &= in_array($angeltype['id'], $_SESSION['user_shifts']['types']);
+                    $user_may_join_shift &= isset($angeltype['user_id']);
+
+                    // you cannot join if you are not confirmed
+                    if($angeltype['restricted'] == 1 && isset($angeltype['user_id']))
+                      $user_may_join_shift &= isset($angeltype['confirm_user_id']);
 
                     // you can only join if the shift is in future or running
                     $user_may_join_shift &= time() < $shift['end'];
 
                     // User shift admins may join anybody in every shift
                     $user_may_join_shift |= in_array('user_shifts_admin', $privileges);
-
                     if ($user_may_join_shift)
                       $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">' . $inner_text . ' &raquo;</a>';
                     else {
-                      if(!in_array('user_shifts_admin', $privileges) && $angeltype['restricted'] == 1 && !isset($angeltype['confirm_user_id'])) {
+                      if(time() > $shift['end']) {
+                        $entry_list[] = $inner_text . ' (vorbei)';
+                      } elseif($angeltype['restricted'] == 1 && isset($angeltype['user_id']) && !isset($angeltype['confirm_user_id'])) {
                         $entry_list[] = $inner_text . ' <img src="pic/lock.png" alt="unconfirmed" title="Du bist für diesen Engeltyp noch nicht freigeschaltet." />';
-                      } elseif(time() < $shift['end']) {
-                        $entry_list[] = $inner_text . ' <a href="' . page_link_to('user_settings') . '#angel_types_anchor">(Werde ' . $angeltype['name'] .')</a>';
                       } else {
-                        $entry_list[] = $inner_text;
+                        $entry_list[] = $inner_text . ' <a href="' . page_link_to('user_settings') . '#angel_types_anchor">(Werde ' . $angeltype['name'] .')</a>';
                       }
                     }
 
+                    unset($inner_text);
                     $is_free = true;
                   }
 
@@ -528,16 +532,16 @@ function view_user_shifts() {
       $shift_row['entries'] .= '<br />';
       $is_free = false;
       $shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
-      $query = "SELECT `NeededAngelTypes`.`count`, `AngelTypes`.`id`, `AngelTypes`.`restricted`, `UserAngelTypes`.`confirm_user_id`, `AngelTypes`.`name`
+      $query = "SELECT `NeededAngelTypes`.`count`, `AngelTypes`.`id`, `AngelTypes`.`restricted`, `UserAngelTypes`.`confirm_user_id`, `AngelTypes`.`name`, `UserAngelTypes`.`user_id`
       FROM `NeededAngelTypes`
       JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
-      LEFT JOIN `UserAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `UserAngelTypes`.`angeltype_id`)
+      LEFT JOIN `UserAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `UserAngelTypes`.`angeltype_id`AND `UserAngelTypes`.`user_id`=" . sql_escape($user['UID']) . ")
       WHERE ";
       if ($shift_has_special_needs)
         $query .= "`shift_id` = " . sql_escape($shift['SID']);
       else
         $query .= "`room_id` = " . sql_escape($shift['RID']);
-      $query .= "		AND `count` > 0 AND `UserAngelTypes`.`user_id`=" . sql_escape($user['UID']) . " ";
+      $query .= "		AND `count` > 0 ";
       if (!empty($_SESSION['user_shifts']['types']))
         $query .= "AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ") ";
       $query .= "ORDER BY `AngelTypes`.`name`";
@@ -563,23 +567,26 @@ function view_user_shifts() {
             $user_may_join_shift &= !$my_shift;
 
             // you cannot join if user is not of this angel type
-            $user_may_join_shift &= in_array($angeltype['id'], $_SESSION['user_shifts']['types']);
+            $user_may_join_shift &= isset($angeltype['user_id']);
+
+            // you cannot join if you are not confirmed
+            if($angeltype['restricted'] == 1 && isset($angeltype['user_id']))
+              $user_may_join_shift &= isset($angeltype['confirm_user_id']);
 
             // you can only join if the shift is in future or running
             $user_may_join_shift &= time() < $shift['end'];
 
             // User shift admins may join anybody in every shift
             $user_may_join_shift |= in_array('user_shifts_admin', $privileges);
-
             if ($user_may_join_shift)
               $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">' . $inner_text . ' &raquo;</a>';
             else {
-              if(!in_array('user_shifts_admin', $privileges) && $angeltype['restricted'] == 1 && !isset($angeltype['confirm_user_id'])) {
+              if(time() > $shift['end']) {
+                $entry_list[] = $inner_text . ' (vorbei)';
+              } elseif($angeltype['restricted'] == 1 && isset($angeltype['user_id']) && !isset($angeltype['confirm_user_id'])) {
                 $entry_list[] = $inner_text . ' <img src="pic/lock.png" alt="unconfirmed" title="Du bist für diesen Engeltyp noch nicht freigeschaltet." />';
-              } elseif(time() < $shift['end']) {
-                $entry_list[] = $inner_text . ' <a href="' . page_link_to('user_settings') . '#angel_types_anchor">(Werde ' . $angeltype['name'] .')</a>';
               } else {
-                $entry_list[] = $inner_text;
+                $entry_list[] = $inner_text . ' <a href="' . page_link_to('user_settings') . '#angel_types_anchor">(Werde ' . $angeltype['name'] .')</a>';
               }
             }
 
