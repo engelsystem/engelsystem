@@ -5,15 +5,6 @@
 function load_auth() {
 	global $user, $privileges;
 
-	if (!isset ($_SESSION['IP']))
-		$_SESSION['IP'] = $_SERVER['REMOTE_ADDR'];
-
-	if ($_SESSION['IP'] != $_SERVER['REMOTE_ADDR']) {
-		session_destroy();
-		error("Your session has been destroyed because your ip-address changed.");
-		header("Location: " . page_link_to('start'));
-	}
-
 	$user = null;
 	if (isset ($_SESSION['uid'])) {
 		$user = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($_SESSION['uid']) . " LIMIT 1");
