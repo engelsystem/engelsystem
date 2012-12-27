@@ -27,7 +27,7 @@ footer, footer a {
 }
 
 tr:hover > td {
-	background: #f0f0f0;
+	background-color: #f0f0f0;
 }
 
 .selection ul li.heading {
