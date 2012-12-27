@@ -281,93 +281,65 @@ function admin_user() {
     if (!isset ($_GET["OrderBy"]))
       $_GET["OrderBy"] = "Nick";
     $SQL = "SELECT * FROM `User` ORDER BY `" . sql_escape($_GET["OrderBy"]) . "` ASC";
-    $Erg = sql_query($SQL);
+    $angels = sql_select($SQL);
 
     // anzahl zeilen
-    $Zeilen = mysql_num_rows($Erg);
+    $Zeilen = count($angels);
 
     $html .= "Anzahl Engel: $Zeilen<br /><br />\n";
-    $html .= '<table width="100%" class="border" cellpadding="2" cellspacing="1"> <thead>
-    <tr class="contenttopic">
-    <th>
-    <a href="' . page_link_to("admin_user") . '&OrderBy=Nick">Nick</a>
-    </th>
-    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&OrderBy=Name">Name</a></th>
-    <th><a href="' . page_link_to("admin_user") . '&OrderBy=DECT">DECT</a></th>
-    <th><a href="' . page_link_to("admin_user") . '&OrderBy=Alter">Alter</a></th>
-    <th><a href="' . page_link_to("admin_user") . '&OrderBy=email">E-Mail</a></th>
-    <th class="rotate"><div><a href="' . page_link_to("admin_user") . '&OrderBy=Gekommen">Gekommen</a></div></th>
-    <th class="rotate"><div><a href="' . page_link_to("admin_user") . '&OrderBy=Aktiv">Aktiv</a></div></th>
-    <th class="rotate"><div><a href="' . page_link_to("admin_user") . '&OrderBy=Tshirt">T-Shirt</a></div></th>
-    <th class="rotate"><div><a href="' . page_link_to("admin_user") . '&OrderBy=Size">Gr&ouml;&szlig;e</a></div></th>
-    <th><a href="' . page_link_to("admin_user") . '&OrderBy=lastLogIn">Last login</a></th>
-    <th>Edit</th>
-    </tr></thead>';
-    $Gekommen = 0;
-    $Active = 0;
-    $Tshirt = 0;
 
-    for ($n = 0; $n < $Zeilen; $n++) {
-      $title = "";
-      $user_groups = sql_select("SELECT * FROM `UserGroups` JOIN `Groups` ON (`Groups`.`UID` = `UserGroups`.`group_id`) WHERE `UserGroups`.`uid`=" . sql_escape(mysql_result($Erg, $n, "UID")) . " ORDER BY `Groups`.`Name`");
-      $groups = array ();
-      foreach ($user_groups as $user_group) {
-        $groups[] = $user_group['Name'];
-      }
-      $title .= 'Groups: ' . join(", ", $groups) . "<br />";
-      if (strlen(mysql_result($Erg, $n, "Telefon")) > 0)
-        $title .= "Tel: " . mysql_result($Erg, $n, "Telefon") . "<br />";
-      if (strlen(mysql_result($Erg, $n, "Handy")) > 0)
-        $title .= "Handy: " . mysql_result($Erg, $n, "Handy") . "<br />";
-      if (strlen(mysql_result($Erg, $n, "DECT")) > 0)
-        $title .= "DECT: <a href=\"./dect.php?custum=" . mysql_result($Erg, $n, "DECT") . "\">" .
-        mysql_result($Erg, $n, "DECT") . "</a><br />";
-      if (strlen(mysql_result($Erg, $n, "Hometown")) > 0)
-        $title .= "Hometown: " . mysql_result($Erg, $n, "Hometown") . "<br />";
-      if (strlen(mysql_result($Erg, $n, "CreateDate")) > 0)
-        $title .= "Registered: " . mysql_result($Erg, $n, "CreateDate") . "<br />";
-      if (strlen(mysql_result($Erg, $n, "Art")) > 0)
-        $title .= "Type: " . mysql_result($Erg, $n, "Art") . "<br />";
-      if (strlen(mysql_result($Erg, $n, "ICQ")) > 0)
-        $title .= "ICQ: " . mysql_result($Erg, $n, "ICQ") . "<br />";
-      if (strlen(mysql_result($Erg, $n, "jabber")) > 0)
-        $title .= "jabber: " . mysql_result($Erg, $n, "jabber") . "<br />";
-
-      $html .= "<tr class=\"content\">\n";
-      if (in_array("user_shifts_admin", $privileges))
-        $html .= "\t<td><a href=\"" . page_link_to("user_myshifts") . "&id=" . mysql_result($Erg, $n, "UID") . "\">" . mysql_result($Erg, $n, "Nick") . "</a></td>\n";
-      else
-        $html .= "\t<td>" . mysql_result($Erg, $n, "Nick") . "</td>\n";
-      $html .= "\t<td>" . mysql_result($Erg, $n, "Vorname") . " " . mysql_result($Erg, $n, "Name") . "</td>\n";
-      $html .= "\t<td>" . mysql_result($Erg, $n, "DECT") . "</td>\n";
-      $html .= "\t<td>" . mysql_result($Erg, $n, "Alter") . "</td>\n";
-      $html .= "\t<td>";
-      if (strlen(mysql_result($Erg, $n, "email")) > 0)
-        $html .= "<a href=\"mailto:" . mysql_result($Erg, $n, "email") . "\">" .
-        mysql_result($Erg, $n, "email") . "</a>";
-      $html .= '<div class="hidden">' . $title . '</div>';
-      $html .= "</td>\n";
-      $Gekommen += mysql_result($Erg, $n, "Gekommen");
-      $html .= "\t<td class=\"" . (mysql_result($Erg, $n, "Gekommen") == 1? 'true' : 'false') . "\">" . mysql_result($Erg, $n, "Gekommen") . "</td>\n";
-      $Active += mysql_result($Erg, $n, "Aktiv");
-      $html .= "\t<td class=\"" . (mysql_result($Erg, $n, "Aktiv") == 1? 'true' : 'false') . "\">" . mysql_result($Erg, $n, "Aktiv") . "</td>\n";
-      $Tshirt += mysql_result($Erg, $n, "Tshirt");
-      $html .= "\t<td class=\"" . (mysql_result($Erg, $n, "Tshirt") == 1? 'true' : 'false') . "\">" . mysql_result($Erg, $n, "Tshirt") . "</td>\n";
-      $html .= "\t<td>" . mysql_result($Erg, $n, "Size") . "</td>\n";
-      $last_login = mysql_result($Erg, $n, "lastLogIn");
-      if($last_login == 0)
-        $html .= "<td>never</td>";
-      else
-        $html .= "<td>" . date('d.m.&\n\b\s\p;H:i', $last_login) . "</td>";
-      $html .= "\t<td>" . '<a href="' . page_link_to("admin_user") . '&id=' . mysql_result($Erg, $n, "UID") . '">Edit</a>' .
-          "</td>\n";
-      $html .= "</tr>\n";
+    function prepare_angel_table($angel) {
+      global $privileges;
+      $groups = sql_select_single_col("SELECT `Name` FROM `UserGroups` JOIN `Groups` ON (`Groups`.`UID` = `UserGroups`.`group_id`) WHERE `UserGroups`.`uid`=" . sql_escape($angel["UID"]) . " ORDER BY `Groups`.`Name`");
+      $popup = '<div class="hidden">Groups: ' . implode(', ', $groups);
+      if (strlen($angel["Telefon"]) > 0)
+        $popup .= "<br>Tel: " . $angel["Telefon"];
+      if (strlen($angel["Handy"]) > 0)
+        $popup .= "<br>Handy: " . $angel["Handy"];
+      if (strlen($angel["DECT"]) > 0)
+        $popup .= "<br>DECT: " . $angel["DECT"];
+      if (strlen($angel["Hometown"]) > 0)
+        $popup .= "<br>Hometown: " . $angel["Hometown"];
+      if (strlen($angel["CreateDate"]) > 0)
+        $popup .= "<br>Registered: " . $angel["CreateDate"];
+      if (strlen($angel["Art"]) > 0)
+        $popup .= "<br>Type: " . $angel["Art"];
+      if (strlen($angel["ICQ"]) > 0)
+        $popup .= "<br>ICQ: " . $angel["ICQ"];
+      if (strlen($angel["jabber"]) > 0)
+        $popup .= "<br>Jabber: " . $angel["jabber"];
+      return array(
+        'Nick' => in_array('user_shifts_admin', $privileges)? '<a href="' . page_link_to("user_myshifts") . '&amp;id=' . $angel["UID"] . '">' . htmlspecialchars($angel["Nick"]) . '</a>' : htmlspecialchars($angel['Nick']),
+        'Name' => htmlspecialchars($angel['Vorname'] . ' ' . $angel['Name']),
+        'DECT' => htmlspecialchars($angel['DECT']),
+        'Alter' => htmlspecialchars($angel['Alter']),
+        'email' => '<a href="mailto:' . htmlspecialchars($angel['email']) . '">' . htmlspecialchars($angel['email']) . '</a>' . $popup,
+        'Gekommen' => '<img src="pic/icons/' . ($angel['Gekommen'] == 1? 'tick' : 'cross') . '.png" alt="' . $angel['Gekommen'] . '">',
+        'Aktiv' => '<img src="pic/icons/' . ($angel['Aktiv'] == 1? 'tick' : 'cross') . '.png" alt="' . $angel['Aktiv'] . '">',
+        'Tshirt' => '<img src="pic/icons/' . ($angel['Tshirt'] == 1? 'tick' : 'cross') . '.png" alt="' . $angel['Tshirt'] . '">',
+        'Size' => $angel['Size'],
+        'lastLogIn' => date('d.m.&\n\b\s\p;H:i', $angel['lastLogIn']),
+        'edit' => '<a href="' . page_link_to("admin_user") . '&amp;id=' . $angel["UID"] . '"><img src="pic/icons/pencil.png" alt="' . Get_Text('Edit') . '" title="' . Get_Text('Edit') . '"></a>',
+      );
     }
-    $html .= "<tr>" .
-        "<th>Summe</th><th></th><th></th><th></th><th></th>" .
-        "<th>$Gekommen</th><th>$Active</th><th>$Tshirt</th><th></th><th></th><th></th></tr>\n";
-    $html .= "\t</table>\n";
-    // Ende Userliste
+    $angels = array_map('prepare_angel_table', $angels);
+    $Gekommen = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1");
+    $Active = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1");
+    $Tshirt = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1");
+    $angels[] = array('Nick' => '<strong>Summe</strong>', 'Gekommen' => $Gekommen, 'Aktiv' => $Active, 'Tshirt' => $Tshirt);
+    $html .= table(array(
+      'Nick' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=Nick">Nick</a>',
+      'Name' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&amp;OrderBy=Name">Name</a>',
+      'DECT' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=DECT">DECT</a>',
+      'Alter' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=Alter">Alter</a>',
+      'email' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=email">E-Mail</a>',
+      'Gekommen' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=Gekommen">Gekommen</a></div>',
+      'Aktiv' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=Aktiv">Aktiv</a></div>',
+      'Tshirt' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=Tshirt">T-Shirt</a></div>',
+      'Size' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=Size">Gr&ouml;&szlig;e</a></div>',
+      'lastLogIn' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=lastLogIn">Last login</a>',
+      'edit' => ''),
+      $angels);
   }
   return $html;
 }

@@ -33,8 +33,11 @@ function sql_select($query) {
 
 function sql_select_single_col($query) {
 	$result = sql_select($query);
-	return array_map('array_pop', $result);
+	return array_map('array_shift', $result);
+}
 
+function sql_select_single_cell($query) {
+	return array_shift(array_shift(sql_select($query)));
 }
 
 // Execute a query

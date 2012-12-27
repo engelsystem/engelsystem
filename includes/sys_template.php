@@ -147,7 +147,7 @@ function table($columns, $rows, $data = true) {
 	$html .= '<table' . ($data ? ' class="data"' : '') . '>';
 	$html .= '<thead><tr>';
 	foreach ($columns as $key => $column)
-		$html .= '<th>' . $column . '</th>';
+		$html .= '<th class="' . $key . '">' . $column . '</th>';
 	$html .= '</tr></thead>';
 	$html .= '<tbody>';
 	foreach ($rows as $row) {
