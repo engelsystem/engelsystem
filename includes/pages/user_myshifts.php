@@ -79,9 +79,10 @@ function user_myshifts() {
     $html .= '<td>' . $shift['name'] . '</td>';
     $html .= '<td>' . $shift['Comment'] . '</td>';
     $html .= '<td>';
-    $html .= '<a href="' . page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '">' . Get_Text('edit') . '</a>';
-    if ($shift['start'] - time() > $LETZTES_AUSTRAGEN * 3600)
-      $html .= ' | <a href="' . page_link_to('user_myshifts') . '&cancel=' . $shift['id'] . '">' . Get_Text('sign_off') . '</a>';
+    if ($id == $user['UID'])
+      $html .= '<a href="' . page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '">' . Get_Text('edit') . '</a>';
+    if (($shift['start'] - time() > $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges))
+      $html .= ' | <a href="' . page_link_to('user_myshifts') . (($id != $user['UID'])? '&id=' . $id : '') . '&cancel=' . $shift['id'] . '">' . Get_Text('sign_off') . '</a>';
     $html .= '</td>';
     $html .= '</tr>';
   }

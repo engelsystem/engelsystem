@@ -92,7 +92,7 @@ function admin_active() {
       $match = false;
       $index = join("", $usr);
       foreach ($tokens as $t)
-        if (strstr($index, trim($t))) {
+        if (stristr($index, trim($t))) {
         $match = true;
         break;
       }
