@@ -324,6 +324,11 @@ function view_user_shifts() {
       $_SESSION['user_shifts'][$key] = array_map('get_ids_from_array', $$key);
   }
 
+  if (!isset($_REQUEST['new_style']))
+    $_SESSION['user_shifts']['new_style'] = false;
+  else
+    $_SESSION['user_shifts']['new_style'] = true;
+
   if (isset ($_REQUEST['days'])) {
     $filtered = array_filter($_REQUEST['days'], create_function('$a', 'return preg_match("/^\d\d\d\d-\d\d-\d\d\\$/", $a);'));
     if (!empty ($filtered))
@@ -343,7 +348,6 @@ function view_user_shifts() {
       ORDER BY `start`");
 
   $shifts_table = "";
-  $row_count = 0;
   //qqqq
   /*
   [0] => Array
@@ -358,7 +362,7 @@ function view_user_shifts() {
       [room_name] => test1
   )
   */
-  if(count($_SESSION['user_shifts']['days'])==1) {
+  if(count($_SESSION['user_shifts']['days'])==1 && $_SESSION['user_shifts']['new_style']) {
     $myrooms=$rooms;
     foreach($myrooms as $k => $v) {
       if(array_search($v["id"],$_SESSION['user_shifts']['rooms'])===FALSE)
@@ -380,7 +384,7 @@ function view_user_shifts() {
         }
       }
     }
-    $shifts_table="<table><tr><th>-</th>";
+    $shifts_table="<table id=\"shifts\" style=\"background-color: #fff\"><colgroup><col><col span=\"100\"></colgroup><thead><tr><th>-</th>";
     foreach($myrooms as $room) {
       $rid=$room["id"];
       $colspan=1;
@@ -390,7 +394,7 @@ function view_user_shifts() {
         $todo[$rid][$i]=$colspan;
       $shifts_table.="<th colspan=\"$colspan\">".$room['name']."</th>\n";
     }
-    $shifts_table.="</tr>";
+    $shifts_table.="</tr></thead><tbody>";
     for($i=0;$i<24*4;$i++) {
       $thistime=$first+($i*15*60);
       if($thistime%(60*60)==0) {
@@ -486,13 +490,13 @@ function view_user_shifts() {
                   $shifts_row .= '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">Weitere Helfer eintragen &raquo;</a>';
                 }
               }
-              $color="";
-              if($is_free) {
-                $color="style=\"background: #F6CECE\";";
-              } else {
-                $color="style=\"background: #BCF5A9\";";
-              }
-              $shifts_table.="<td rowspan=$blocks $color>";
+              if ($is_free && in_array(0, $_SESSION['user_shifts']['filled']))
+                $style='background-color: #F6CECE';
+              elseif (!$is_free && in_array(1, $_SESSION['user_shifts']['filled']))
+                $style='background-color: #BCF5A9';
+              else
+                $style='border: 0';
+              $shifts_table.="<td rowspan=$blocks style=\"$style\">";
               if (($is_free && in_array(0, $_SESSION['user_shifts']['filled'])) || (!$is_free && in_array(1, $_SESSION['user_shifts']['filled']))) {
                 $shifts_table.=$shifts_row;
               }
@@ -504,13 +508,13 @@ function view_user_shifts() {
           }
         }
         while($todo[$rid][$i]) {
-          $shifts_table.='<td style="border: 1px"></td>';
+          $shifts_table.='<td style="border: 0"></td>';
           $todo[$rid][$i]--;
         }
       }
       $shifts_table.="</tr>\n";
     }
-    $shifts_table.="</table>";
+    $shifts_table.='</tbody></table><script type="text/javascript">scrolltable(document.getElementById("shifts"))</script>';
     // qqq
   } else {
     $shifts_table = array();
@@ -623,6 +627,7 @@ function view_user_shifts() {
     'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", ucfirst(Get_Text("tasks")) . '<sup>1</sup>'),
     'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", ucfirst(Get_Text("occupancy"))),
     'task_notice' => '<sup>1</sup>' . Get_Text("pub_schichtplan_tasks_notice"),
+    'new_style_checkbox' => '<label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style']? ' checked' : '') . '> Use new style if possible</label>',
     'shifts_table' => $shifts_table,
     'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'), make_user_shifts_ical_link($user['ical_key']), page_link_to('user_myshifts') . '&reset'),
     'filter' => ucfirst(Get_Text("to_filter")),
