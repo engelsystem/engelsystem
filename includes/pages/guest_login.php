@@ -119,7 +119,7 @@ function guest_register() {
       $user_angel_types_info = array();
       foreach ($selected_angel_types as $selected_angel_type_id) {
         sql_query("INSERT INTO `UserAngelTypes` SET `user_id`=" . sql_escape($user_id) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
-        $user_angel_types_info[] = $angel_types[$selected_angel_type_id]['name'];
+        $user_angel_types_info[] = $angel_types[$selected_angel_type_id];
       }
       engelsystem_log("User " . $nick . " signed up as: " . join(", ", $user_angel_types_info));
       success(Get_Text("makeuser_writeOK4"));
