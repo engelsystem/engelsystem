@@ -4,10 +4,8 @@
 }
 
 body {
-    font-family: Arial;
-    sans-serif;
-    font-size:
-    14px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
 }
 
 header {
@@ -107,6 +105,29 @@ a.sprache img {
 table {
     border-collapse: collapse;
 	margin-top: 5px;
+	display: block;
+}
+
+table.scrollable {
+	max-width: 100%;
+	overflow-x: scroll;
+	overflow-y: hidden;
+}
+
+table.scrollable thead tr {
+	display: block;
+	position: relative;
+}
+
+table.scrollable tbody {
+	display: block;
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+table.scrollable tbody * {
+	width: auto;
 }
 
 fieldset hr {
