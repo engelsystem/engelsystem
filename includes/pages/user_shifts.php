@@ -235,7 +235,7 @@ function user_shifts() {
 
       $comment = strip_request_item_nl('comment');
       sql_query("INSERT INTO `ShiftEntry` SET `Comment`='" . sql_escape($comment) . "', `UID`=" . sql_escape($user_id) . ", `TID`=" . sql_escape($selected_type_id) . ", `SID`=" . sql_escape($shift_id));
-      if (sql_num_query("SELECT * FROM `UserAngelTypes` INNER JOIN `AngelTypes` ON `AngelTypes`.`id` = `UserAngelTypes`.`angeltype_id` WHERE `AngelTypes`.`restricted` = 0 AND `user_id` = '" . sql_escape($user_id) . "' AND `angeltype_id` = '" . sql_escape($selected_type_id) . "'") == 0)
+      if ($type['restricted'] == 0 && sql_num_query("SELECT * FROM `UserAngelTypes` INNER JOIN `AngelTypes` ON `AngelTypes`.`id` = `UserAngelTypes`.`angeltype_id` WHERE `angeltype_id` = '" . sql_escape($selected_type_id) . "' AND `user_id` = '" . sql_escape($user_id) . "' ") == 0)
         sql_query("INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`) VALUES ('" . sql_escape($user_id) . "', '" . sql_escape($selected_type_id) . "')");
 
       $user_source = User($user_id);
@@ -458,7 +458,7 @@ function view_user_shifts() {
                       $user_may_join_shift &= isset($angeltype['confirm_user_id']);
 
                     // you can only join if the shift is in future or running
-                    $user_may_join_shift &= time() < $shift['end'];
+                    $user_may_join_shift &= time() < $shift['start'];
 
                     // User shift admins may join anybody in every shift
                     $user_may_join_shift |= in_array('user_shifts_admin', $privileges);
@@ -574,7 +574,7 @@ function view_user_shifts() {
               $user_may_join_shift &= isset($angeltype['confirm_user_id']);
 
             // you can only join if the shift is in future or running
-            $user_may_join_shift &= time() < $shift['end'];
+            $user_may_join_shift &= time() < $shift['start'];
 
             // User shift admins may join anybody in every shift
             $user_may_join_shift |= in_array('user_shifts_admin', $privileges);
