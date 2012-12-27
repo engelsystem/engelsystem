@@ -123,10 +123,10 @@ function user_shifts() {
         $needed_angel_types_info = array();
         foreach ($needed_angel_types as $type_id => $count) {
           sql_query("INSERT INTO `NeededAngelTypes` SET `shift_id`=" . sql_escape($shift_id) . ", `angel_type_id`=" . sql_escape($type_id) . ", `count`=" . sql_escape($count));
-          $needed_angel_types_info[] = $angel_types[$type_id];
+          $needed_angel_types_info[] = $angel_types[$type_id]['name'] . ": " . $count;
         }
 
-        engelsystem_log("Updated shift " . $name . " from " . date("y-m-d H:i", $start) . " to " . date("y-m-d H:i", $end) . " with angel types " . join(", ", $needed_angel_types_info));
+        engelsystem_log("Updated shift '" . $name . "' from " . date("y-m-d H:i", $start) . " to " . date("y-m-d H:i", $end) . " with angel types " . join(", ", $needed_angel_types_info));
         success("Schicht gespeichert.");
         redirect(page_link_to('user_shifts'));
       }
