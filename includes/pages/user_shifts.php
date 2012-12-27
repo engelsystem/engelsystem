@@ -483,72 +483,82 @@ function view_user_shifts() {
     }
     $shifts_table.="</table>";
     // qqq
-  } else foreach ($shifts as $shift) {
-    $info = array ();
-    if (count($_SESSION['user_shifts']['days']) > 1)
-      $info[] = date("Y-m-d", $shift['start']);
-    $info[] = date("H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']);
-    if (count($_SESSION['user_shifts']['rooms']) > 1)
-      $info[] = $shift['room_name'];
-    $shift_row = '<tr><td>' . join('<br />', $info) . '</td>';
-    $shift_row .= '<td>' . $shift['name'];
+  } else {
+    $shifts_table = array();
+    foreach ($shifts as $shift) {
+      $info = array ();
+      if (count($_SESSION['user_shifts']['days']) > 1)
+        $info[] = date("Y-m-d", $shift['start']);
+      $info[] = date("H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']);
+      if (count($_SESSION['user_shifts']['rooms']) > 1)
+        $info[] = $shift['room_name'];
 
-    if (in_array('admin_shifts', $privileges))
-      $shift_row .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
-    $shift_row .= '<br />';
-    $is_free = false;
-    $shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
-    $query = "SELECT *
-    FROM `NeededAngelTypes`
-    JOIN `AngelTypes`
-    ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
-    WHERE ";
-    if ($shift_has_special_needs)
-      $query .= "`shift_id` = " . sql_escape($shift['SID']);
-    else
-      $query .= "`room_id` = " . sql_escape($shift['RID']);
-    $query .= "		AND `count` > 0 ";
-    if (!empty($_SESSION['user_shifts']['types']))
-      $query .= "AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ") ";
-    $query .= "ORDER BY `AngelTypes`.`name`";
-    $angeltypes = sql_select($query);
+      $shift_row = array(
+        'info' => join('<br />', $info),
+        'entries' => $shift['name']
+      );
 
-    if (count($angeltypes) > 0) {
-      $my_shift = sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0;
-      foreach ($angeltypes as $angeltype) {
-        $entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`=" . sql_escape($shift['SID']) . " AND `TID`=" . sql_escape($angeltype['id']) . " ORDER BY `Nick`");
-        $entry_list = array ();
-        foreach ($entries as $entry) {
-          if (in_array('user_shifts_admin', $privileges))
-            $entry_list[] = '<a href="' . page_link_to('user_myshifts') . '&id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> <a href="' . page_link_to('user_shifts') . '&entry_id=' . $entry['id'] . '">[x]</a>';
-          else
-            $entry_list[] = $entry['Nick'];
+      if (in_array('admin_shifts', $privileges))
+        $shift_row['entries'] .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
+      $shift_row['entries'] .= '<br />';
+      $is_free = false;
+      $shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
+      $query = "SELECT *
+      FROM `NeededAngelTypes`
+      JOIN `AngelTypes`
+      ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
+      WHERE ";
+      if ($shift_has_special_needs)
+        $query .= "`shift_id` = " . sql_escape($shift['SID']);
+      else
+        $query .= "`room_id` = " . sql_escape($shift['RID']);
+      $query .= "		AND `count` > 0 ";
+      if (!empty($_SESSION['user_shifts']['types']))
+        $query .= "AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ") ";
+      $query .= "ORDER BY `AngelTypes`.`name`";
+      $angeltypes = sql_select($query);
+
+      if (count($angeltypes) > 0) {
+        $my_shift = sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0;
+        foreach ($angeltypes as $angeltype) {
+          $entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`=" . sql_escape($shift['SID']) . " AND `TID`=" . sql_escape($angeltype['id']) . " ORDER BY `Nick`");
+          $entry_list = array ();
+          foreach ($entries as $entry) {
+            if (in_array('user_shifts_admin', $privileges))
+              $entry_list[] = '<a href="' . page_link_to('user_myshifts') . '&id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> <a href="' . page_link_to('user_shifts') . '&entry_id=' . $entry['id'] . '">[x]</a>';
+            else
+              $entry_list[] = $entry['Nick'];
+          }
+          // do we need more angles of this type?
+          if ($angeltype['count'] - count($entries) > 0) {
+            $inner_text = ($angeltype['count'] - count($entries)) . ' ' . Get_Text($angeltype['count'] - count($entries) == 1 ? 'helper' : 'helpers') . ' ' . Get_Text('needed');
+            // is the shift still running or alternatively is the user shift admin?
+            if ((time() < $shift['end'] && !$my_shift) || in_array('user_shifts_admin', $privileges))
+              $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">' . $inner_text . ' &raquo;</a>';
+            else
+              $entry_list[] = $inner_text;
+            unset($inner_text);
+            $is_free = true;
+          }
+
+          $shift_row['entries'] .= '<b>' . $angeltype['name'] . ':</b> ';
+          $shift_row['entries'] .= join(", ", $entry_list);
+          $shift_row['entries'] .= '<br />';
         }
-        // do we need more angles of this type?
-        if ($angeltype['count'] - count($entries) > 0) {
-          $inner_text = ($angeltype['count'] - count($entries)) . ' ' . Get_Text($angeltype['count'] - count($entries) == 1 ? 'helper' : 'helpers') . ' ' . Get_Text('needed');
-          // is the shift still running or alternatively is the user shift admin?
-          if ((time() < $shift['end'] && !$my_shift) || in_array('user_shifts_admin', $privileges))
-            $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">' . $inner_text . ' &raquo;</a>';
-          else
-            $entry_list[] = $inner_text;
-          unset($inner_text);
-          $is_free = true;
+        if (in_array('user_shifts_admin', $privileges)) {
+          $shift_row['entries'] .= '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">Weitere Helfer eintragen &raquo;</a>';
         }
-
-        $shift_row .= '<b>' . $angeltype['name'] . ':</b> ';
-        $shift_row .= join(", ", $entry_list);
-        $shift_row .= '<br />';
-      }
-      if (in_array('user_shifts_admin', $privileges)) {
-        $shift_row .= '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">Weitere Helfer eintragen &raquo;</a>';
-      }
-      if (($is_free && in_array(0, $_SESSION['user_shifts']['filled'])) || (!$is_free && in_array(1, $_SESSION['user_shifts']['filled']))) {
-        $shifts_table .= $shift_row . '</td></tr>';
-        $row_count++;
-        $ical_shifts[] = $shift;
+        if (($is_free && in_array(0, $_SESSION['user_shifts']['filled'])) || (!$is_free && in_array(1, $_SESSION['user_shifts']['filled']))) {
+          $shifts_table[] = $shift_row;
+          $row_count++;
+          $ical_shifts[] = $shift;
+        }
       }
     }
+    $shifts_table = table(array(
+      'info' => ucfirst(Get_Text("time")) . "/" . ucfirst(Get_Text("room")),
+      'entries' => ucfirst(Get_Text("entries"))
+    ), $shifts_table);
   }
 
   if ($user['ical_key'] == "")
@@ -562,8 +572,6 @@ function view_user_shifts() {
     'task_notice' => '<sup>1</sup>' . Get_Text("pub_schichtplan_tasks_notice"),
     'shifts_table' => $shifts_table,
     'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'), make_user_shifts_ical_link($user['ical_key']), page_link_to('user_myshifts') . '&reset'),
-    'header1' => ucfirst(Get_Text("time")) . "/" . ucfirst(Get_Text("room")),
-    'header2' => ucfirst(Get_Text("entries")),
     'filter' => ucfirst(Get_Text("to_filter")),
   ));
 }
