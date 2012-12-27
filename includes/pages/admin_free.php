@@ -57,6 +57,7 @@ function admin_free() {
 	return template_render('../templates/admin_free.html', array (
 		'search' => $search,
 		'angeltypes' => html_select_key('angeltype', 'angeltype', $angel_types, $_REQUEST['angeltype']),
+		'confirmed_only' => isset($_REQUEST['confirmed_only'])? 'checked' : '',
 		'table' => $table,
 		'link' => page_link_to('admin_free')
 	));

@@ -103,9 +103,10 @@ function admin_user() {
 
       if (isset ($_REQUEST['submit_user_angeltypes'])) {
         $selected_angel_types = array_intersect($_REQUEST['selected_angel_types'], array_keys($angel_types));
-        $accepted_angel_types = array_diff(array_intersect($_REQUEST['accepted_angel_types'], array_keys($angel_types)), $nonrestricted_angel_types);
+        $accepted_angel_types = array_unique(array_diff(array_intersect($_REQUEST['accepted_angel_types'], array_keys($angel_types)), $nonrestricted_angel_types));
         if (in_array("admin_user_angeltypes", $privileges))
-          $selected_angel_types = array_merge($selected_angel_types, $accepted_angel_types);
+          $selected_angel_types = array_merge((array) $selected_angel_types, $accepted_angel_types);
+        $selected_angel_types = array_unique($selected_angel_types);
 
         // Assign angel-types
         sql_start_transaction();
@@ -227,10 +228,11 @@ function admin_user() {
 
         case 'delete' :
           if ($user['UID'] != $id) {
+            $nickname = sql_select("SELECT `Nick` FROM `User` WHERE `UID` = '" . sql_escape($id) . "' LIMIT 1");
             sql_query("DELETE FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
             sql_query("DELETE FROM `UserGroups` WHERE `uid`=" . sql_escape($id));
             sql_query("UPDATE `ShiftEntry` SET `UID`=0, `Comment`=NULL WHERE `UID`=" . sql_escape($id));
-            engelsystem_log("Deleted user " . $user_source['Nick']);
+            engelsystem_log("Deleted user " . $nickname[0]['Nick']);
             $html .= success("Benutzer gelöscht!", true);
           } else {
             $html .= error("Du kannst Dich nicht selber löschen!", true);
