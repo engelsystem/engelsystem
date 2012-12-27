@@ -8,7 +8,7 @@ function admin_user_angeltypes() {
   global $privileges;
 
   if (isset ($_REQUEST['confirm']) && test_request_int('confirm') && sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `id`=" . sql_escape($_REQUEST['confirm']) . " AND `confirm_user_id` IS NULL") > 0) {
-    $user_angel_type_source = sql_select("SELECT `UserAngelTypes`.*, `User`.`Nick`, `AngelTypes`.`name` FROM `UserAngelTypes` JOIN `User` ON `User`.`UID`=`UserAngelTypes`.`user_id` JOIN `AngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id` WHERE `id`=" . sql_escape($_REQUEST['confirm']) . " LIMIT 1");
+    $user_angel_type_source = sql_select("SELECT `UserAngelTypes`.*, `User`.`Nick`, `AngelTypes`.`name` FROM `UserAngelTypes` JOIN `User` ON `User`.`UID`=`UserAngelTypes`.`user_id` JOIN `AngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id` WHERE `UserAngelTypes`.`id`=" . sql_escape($_REQUEST['confirm']) . " LIMIT 1");
     if(count($user_angel_type_source) > 0) {
       sql_query("UPDATE `UserAngelTypes` SET `confirm_user_id`=" . sql_escape($_SESSION['uid']) . " WHERE `id`=" . sql_escape($_REQUEST['confirm']) . " LIMIT 1");
       engelsystem_log("Confirmed " . $user_angel_type_source[0]['Nick'] . " as " . $user_angel_type_source[0]['name']);
@@ -19,7 +19,7 @@ function admin_user_angeltypes() {
   }
 
   if (isset ($_REQUEST['discard']) && test_request_int('discard') && sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `id`=" . sql_escape($_REQUEST['discard']) . " AND `confirm_user_id` IS NULL") > 0) {
-    $user_angel_type_source = sql_select("SELECT `UserAngelTypes`.*, `User`.`Nick`, `AngelTypes`.`name` FROM `UserAngelTypes` JOIN `User` ON `User`.`UID`=`UserAngelTypes`.`user_id` JOIN `AngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id` WHERE `id`=" . sql_escape($_REQUEST['discard']) . " LIMIT 1");
+    $user_angel_type_source = sql_select("SELECT `UserAngelTypes`.*, `User`.`Nick`, `AngelTypes`.`name` FROM `UserAngelTypes` JOIN `User` ON `User`.`UID`=`UserAngelTypes`.`user_id` JOIN `AngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id` WHERE `UserAngelTypes`.`id`=" . sql_escape($_REQUEST['discard']) . " LIMIT 1");
     if(count($user_angel_type_source) > 0) {
       sql_query("DELETE FROM `UserAngelTypes` WHERE `id`=" . sql_escape($_REQUEST['discard']) . " LIMIT 1");
       engelsystem_log("Discarded " . $user_angel_type_source[0]['Nick'] . " as " . $user_angel_type_source[0]['name']);
