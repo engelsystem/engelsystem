@@ -207,7 +207,7 @@ function user_shifts() {
     if (in_array('user_shifts_admin', $privileges))
       $type = sql_select("SELECT * FROM `AngelTypes` WHERE `id`=" . sql_escape($type_id) . " LIMIT 1");
     else
-      $type = sql_select("SELECT * FROM `UserAngelTypes` JOIN `AngelTypes` ON (`UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`) WHERE `AngelTypes`.`id` = " . sql_escape($type_id) . " AND `UserAngelTypes`.`user_id` = " . sql_escape($user['UID']) . " AND (`AngelTypes`.`restricted` = 0 OR NOT `UserAngelTypes`.`confirm_user_id` IS NULL) LIMIT 1");
+      $type = sql_select("SELECT * FROM `UserAngelTypes` JOIN `AngelTypes` ON (`UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`) WHERE `AngelTypes`.`id` = " . sql_escape($type_id) . " AND (`AngelTypes`.`restricted` = 0 OR (`UserAngelTypes`.`user_id` = " . sql_escape($user['UID']) . " AND NOT `UserAngelTypes`.`confirm_user_id` IS NULL)) LIMIT 1");
 
     if (count($type) == 0)
       header("Location: " . page_link_to('user_shifts'));
@@ -230,13 +230,13 @@ function user_shifts() {
         $user_id = $user['UID'];
 
       // TODO: Kollisionserkennung, andere Schichten zur gleichen Uhrzeit darf der Engel auch nicht belegt haben...
-      $entries = sql_select("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']));
-      foreach ($entries as $entry)
-        if ($entry['UID'] == $user_id)
+      if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`='" . sql_escape($shift['SID']) . "' AND `UID` = '" . sql_escape($user_id) . "'"))
         return error("This angel does already have an entry for this shift.", true);
 
       $comment = strip_request_item_nl('comment');
       sql_query("INSERT INTO `ShiftEntry` SET `Comment`='" . sql_escape($comment) . "', `UID`=" . sql_escape($user_id) . ", `TID`=" . sql_escape($selected_type_id) . ", `SID`=" . sql_escape($shift_id));
+      if (sql_num_query("SELECT * FROM `UserAngelTypes` INNER JOIN `AngelTypes` ON `AngelTypes`.`id` = `UserAngelTypes`.`angeltype_id` WHERE `AngelTypes`.`restricted` = 0 AND `user_id` = '" . sql_escape($user_id) . "' AND `angeltype_id` = '" . sql_escape($selected_type_id) . "'") == 0)
+        sql_query("INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`) VALUES ('" . sql_escape($user_id) . "', '" . sql_escape($selected_type_id) . "')");
 
       $user_source = User($user_id);
       engelsystem_log("User " . $user_source['Nick'] . " signed up for shift " . $shift['name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']));
