@@ -110,10 +110,13 @@ function admin_user() {
         // Assign angel-types
         sql_start_transaction();
         sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']));
+        $user_angel_type_info = array();
         if (!empty($selected_angel_types)) {
           $SQL = "INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`) VALUES ";
-          foreach ($selected_angel_types as $selected_angel_type_id)
-            $SQL .= "(${user_source['UID']}, ${selected_angel_type_id}),";
+          foreach ($selected_angel_types as $selected_angel_type_id) {
+            $SQL .= "(" . $user_source['UID'] . ", " . $selected_angel_type_id . "),";
+            $user_angel_type_info[] = $angel_types[$selected_angel_type_id] . (in_array($selected_angel_type_id, $accepted_angel_types) ? ' (confirmed)' : '');
+          }
           // remove superfluous comma
           $SQL = substr($SQL, 0, -1);
           sql_query($SQL);
@@ -125,16 +128,6 @@ function admin_user() {
         }
         sql_stop_transaction();
 
-        foreach ($selected_angel_types as $selected_angel_type_id) {
-          if (sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']) . " AND `angeltype_id`=" . sql_escape($selected_angel_type_id) . " LIMIT 1") == 0) {
-            if (in_array("admin_user_angeltypes", $privileges)) {
-              sql_query("INSERT INTO `UserAngelTypes` SET `confirm_user_id`=" . sql_escape($user['UID']) . ", `user_id`=" . sql_escape($user_source['UID']) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
-            } else {
-              sql_query("INSERT INTO `UserAngelTypes` SET `user_id`=" . sql_escape($user_source['UID']) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
-            }
-          }
-        }
-
         engelsystem_log("Set angeltypes of " . $user_source['Nick'] . " to: " . join(", ", $user_angel_type_info));
         success("Angeltypes saved.");
         redirect(page_link_to('admin_user') . '&id=' . $user_source['UID']);
@@ -143,10 +136,10 @@ function admin_user() {
       $html .= form(array (
         msg(),
         form_multi_checkboxes(array('selected_angel_types' => 'gewünscht', 'accepted_angel_types' => 'akzeptiert'),
-          "Angeltypes",
-          $angel_types,
-          array('selected_angel_types' => $selected_angel_types, 'accepted_angel_types' => array_merge($accepted_angel_types, $nonrestricted_angel_types)),
-          array('accepted_angel_types' => $nonrestricted_angel_types)),
+            "Angeltypes",
+            $angel_types,
+            array('selected_angel_types' => $selected_angel_types, 'accepted_angel_types' => array_merge($accepted_angel_types, $nonrestricted_angel_types)),
+            array('accepted_angel_types' => $nonrestricted_angel_types)),
         form_submit('submit_user_angeltypes', Get_Text("Save"))
       ));
 
