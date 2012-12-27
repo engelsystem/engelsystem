@@ -182,7 +182,7 @@ function user_settings() {
       form_text('jabber', "Jabber", $jabber),
       form_text('hometown', Get_Text("makeuser_Hometown"), $hometown),
       $enable_tshirt_size ? form_select('tshirt_size', Get_Text("makeuser_T-Shirt"), $tshirt_sizes, $tshirt_size) : '',
-      form_checkboxes('angel_types', "<span id=\"angel_types_anchor\">What do you want to do?</span><br>(<a href=\"https://events.ccc.de/congress/2012/wiki/Volunteers#What_kind_of_volunteers_are_needed.3F\">Description of job types</a>)", $angel_types, $selected_angel_types),
+      form_checkboxes('angel_types', "What do you want to do?<br>(<a href=\"https://events.ccc.de/congress/2012/wiki/Volunteers#What_kind_of_volunteers_are_needed.3F\">Description of job types</a>)", $angel_types, $selected_angel_types),
       form_submit('submit', Get_Text("save"))
     )),
     form(array (
