@@ -112,6 +112,22 @@ table {
 	display: block;
 }
 
+#shifts {
+	background-color: #fff;
+}
+
+#shifts td.free {
+	background-color: #F6CECE;
+}
+
+#shifts td.occupied {
+	background-color: #BCF5A9;
+}
+
+#shifts td:not(.free):not(.occupied) {
+	border: 0;
+}
+
 table.scrollable {
 	max-width: 100%;
 	overflow-x: scroll;
@@ -170,6 +186,8 @@ fieldset p label input {
 
 th {
     background: #f0f0f0;
+}
+thead th {
     vertical-align: bottom;
 }
 
