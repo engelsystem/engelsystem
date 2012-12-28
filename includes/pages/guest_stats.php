@@ -19,6 +19,9 @@ function guest_stats() {
         $done_shifts_seconds += $done_shift['end'] - $done_shift['start'];
       $stats['done_work_hours'] = round($done_shifts_seconds / (60*60), 0);
 
+      $users_in_action_source = sql_select("SELECT `Shifts`.`start`, `Shifts`.`end` FROM `ShiftEntry` JOIN `Shifts` ON `Shifts`.`SID`=`ShiftEntry`.`SID` WHERE `Shifts`.`start` < " . time() . " AND `Shifts`.`end` > " . time());
+      $stats['users_in_action'] = count($users_in_action_source);
+
       header("Content-Type: application/json");
       die(json_encode($stats));
     } else die(json_encode(array('error' => "Wrong api_key.")));
