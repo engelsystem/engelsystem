@@ -324,9 +324,13 @@ function view_user_shifts() {
       $_SESSION['user_shifts'][$key] = array_map('get_ids_from_array', $$key);
   }
 
-  if (!isset($_REQUEST['new_style']))
-    $_SESSION['user_shifts']['new_style'] = false;
-  else
+  if (isset($_REQUEST['rooms'])) {
+    if (isset($_REQUEST['new_style']))
+      $_SESSION['user_shifts']['new_style'] = true;
+    else
+      $_SESSION['user_shifts']['new_style'] = false;
+  }
+  if (!isset ($_SESSION['user_shifts']['new_style']))
     $_SESSION['user_shifts']['new_style'] = true;
 
   if (isset ($_REQUEST['days'])) {
@@ -488,7 +492,7 @@ function view_user_shifts() {
                     if ($user_may_join_shift)
                       $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . $inner_text . ' &raquo;</a>';
                     else {
-                      if(time() > $shift['end']) {
+                      if(time() > $shift['start']) {
                         $entry_list[] = $inner_text . ' (vorbei)';
                       } elseif($angeltype['restricted'] == 1 && isset($angeltype['user_id']) && !isset($angeltype['confirm_user_id'])) {
                         $entry_list[] = $inner_text . ' <img src="pic/lock.png" alt="unconfirmed" title="Du bist für diesen Engeltyp noch nicht freigeschaltet." />';
