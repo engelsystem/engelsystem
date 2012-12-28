@@ -357,7 +357,7 @@ function view_user_shifts() {
   if (count($_SESSION['user_shifts']['filled']) == 1) {
     if ($_SESSION['user_shifts']['filled'][0] == 0)
       $SQL .= "
-        AND NOT (nat.`count` <= entries.`count`) ";
+        AND (nat.`count` > entries.`count` OR entries.`count` IS NULL) ";
     elseif ($_SESSION['user_shifts']['filled'][0] == 1)
       $SQL .= "
         AND (nat.`count` <= entries.`count`) ";
