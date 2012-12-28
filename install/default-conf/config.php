@@ -68,4 +68,8 @@ $shift_sum_formula = "SUM(
 
 // weigh every shift the same
 //$shift_sum_formula = "SUM(`end` - `start`)";
+
+// For accessing stats
+$api_key = "";
+
 ?>

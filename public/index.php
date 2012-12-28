@@ -33,7 +33,7 @@ if (isset ($_REQUEST['auth']))
 
 // Gewünschte Seite/Funktion
 $p = isset ($user) ? "news" : "login";
-if (isset ($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && sql_num_query("SELECT * FROM `Privileges` WHERE `name`='" . sql_escape($_REQUEST['p']) . "' LIMIT 1") > 0)
+if (isset ($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && ($_REQUEST['p'] == 'stats' || (sql_num_query("SELECT * FROM `Privileges` WHERE `name`='" . sql_escape($_REQUEST['p']) . "' LIMIT 1") > 0)))
 	$p = $_REQUEST['p'];
 
 $title = Get_Text($p);
@@ -46,6 +46,10 @@ if ($p == "ical") {
 elseif ($p == "atom") {
 	require_once ('includes/pages/user_atom.php');
 	user_atom();
+}
+elseif ($p == "stats") {
+	require_once ('includes/pages/guest_stats.php');
+	guest_stats();
 }
 // Recht dafür vorhanden?
 elseif (in_array($p, $privileges)) {
