@@ -102,8 +102,12 @@ function admin_user() {
         $angel_types[$angel_type['id']] = $angel_type['name'];
 
       if (isset ($_REQUEST['submit_user_angeltypes'])) {
-        $selected_angel_types = array_intersect($_REQUEST['selected_angel_types'], array_keys($angel_types));
-        $accepted_angel_types = array_unique(array_diff(array_intersect($_REQUEST['accepted_angel_types'], array_keys($angel_types)), $nonrestricted_angel_types));
+        $selected_angel_types = isset($_REQUEST['selected_angel_types']) && is_array($_REQUEST['selected_angel_types'])?
+          array_intersect($_REQUEST['selected_angel_types'], array_keys($angel_types))
+          : array();
+        $accepted_angel_types = isset($_REQUEST['accepted_angel_types']) && is_array($_REQUEST['accepted_angel_types'])?
+          array_unique(array_diff(array_intersect($_REQUEST['accepted_angel_types'], array_keys($angel_types)), $nonrestricted_angel_types))
+          : array();
         if (in_array("admin_user_angeltypes", $privileges))
           $selected_angel_types = array_merge((array) $selected_angel_types, $accepted_angel_types);
         $selected_angel_types = array_unique($selected_angel_types);

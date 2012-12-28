@@ -67,7 +67,7 @@ function user_settings() {
 
     if (isset ($_REQUEST['tshirt_size']) && isset ($tshirt_sizes[$_REQUEST['tshirt_size']]))
       $tshirt_size = $_REQUEST['tshirt_size'];
-    else {
+    elseif($enable_tshirt_size) {
       $ok = false;
     }
 
@@ -100,12 +100,10 @@ function user_settings() {
 
       // Assign angel-types
       $user_angel_type_info = array();
-      foreach ($angel_types_source as $angel_type) {
-        if (!in_array($angel_type['id'], $selected_angel_types))
-          sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user['UID']) . " AND `angeltype_id`=" . sql_escape($angel_type['id']) . " LIMIT 1");
-        else
+      sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`='" . sql_escape($user['UID']) . "' AND `angeltype_id` IN (" . implode(",", array_diff(array_keys($angel_types), $selected_angel_types)) . ")");
+      foreach ($angel_types_source as $angel_type)
+        if (in_array($angel_type['id'], $selected_angel_types))
           $user_angel_type_info[] = $angel_type['name'];
-      }
 
       foreach ($selected_angel_types as $selected_angel_type_id) {
         if (sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user['UID']) . " AND `angeltype_id`=" . sql_escape($selected_angel_type_id) . " LIMIT 1") == 0)
