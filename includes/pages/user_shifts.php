@@ -472,7 +472,7 @@ function view_user_shifts() {
                       if(time() > $shift['end']) {
                         $entry_list[] = $inner_text . ' (vorbei)';
                       } elseif($angeltype['restricted'] == 1 && isset($angeltype['user_id']) && !isset($angeltype['confirm_user_id'])) {
-                        $entry_list[] = $inner_text . ' <img src="pic/lock.png" alt="unconfirmed" title="Du bist für diesen Engeltyp noch nicht freigeschaltet." />';
+                        $entry_list[] = $inner_text . ' <img src="pic/icons/lock.png" alt="unconfirmed" title="Du bist für diesen Engeltyp noch nicht freigeschaltet." />';
                       } else {
                         $entry_list[] = $inner_text . ' <a href="' . page_link_to('user_settings') . '#angel_types_anchor">(Werde ' . $angeltype['name'] .')</a>';
                       }
@@ -588,7 +588,7 @@ function view_user_shifts() {
               if(time() > $shift['end']) {
                 $entry_list[] = $inner_text . ' (vorbei)';
               } elseif($angeltype['restricted'] == 1 && isset($angeltype['user_id']) && !isset($angeltype['confirm_user_id'])) {
-                $entry_list[] = $inner_text . ' <img src="pic/lock.png" alt="unconfirmed" title="Du bist für diesen Engeltyp noch nicht freigeschaltet." />';
+                $entry_list[] = $inner_text . ' <img src="pic/icons/lock.png" alt="unconfirmed" title="Du bist für diesen Engeltyp noch nicht freigeschaltet." />';
               } else {
                 $entry_list[] = $inner_text . ' <a href="' . page_link_to('user_settings') . '#angel_types_anchor">(Werde ' . $angeltype['name'] .')</a>';
               }
@@ -657,7 +657,7 @@ function make_select($items, $selected, $name, $title = null) {
     $html_items[] = '<li class="heading">' . $title . '</li>' . "\n";
 
   foreach ($items as $i)
-    $html_items[] = '<li><label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '"' . (in_array($i['id'], $selected) ? ' checked="checked"' : '') . '> ' . $i['name'] . '</label>' . (!isset($i['enabled']) || $i['enabled'] ? '' : ' <img src="pic/lock.png" alt="unconfirmed" title="Du bist für diesen Engeltyp noch nicht freigeschaltet." />') . '</li>';
+    $html_items[] = '<li><label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '"' . (in_array($i['id'], $selected) ? ' checked="checked"' : '') . '> ' . $i['name'] . '</label>' . (!isset($i['enabled']) || $i['enabled'] ? '' : ' <img src="pic/icons/lock.png" alt="unconfirmed" title="Du bist für diesen Engeltyp noch nicht freigeschaltet." />') . '</li>';
   $html = '<div class="selection ' . $name . '">' . "\n";
   $html .= '<ul id="selection_' . $name . '">' . "\n";
   $html .= implode("\n", $html_items);

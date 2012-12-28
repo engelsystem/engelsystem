@@ -90,6 +90,10 @@ nav {
     padding: 10px;
 }
 
+#content h2 {
+	margin-top: 20px;
+}
+
 p {
     padding: 0 0 10px 0;
 }

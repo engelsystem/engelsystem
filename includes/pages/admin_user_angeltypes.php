@@ -7,6 +7,46 @@
 function admin_user_angeltypes() {
   global $privileges;
 
+  if (isset ($_REQUEST['confirm_all']) && test_request_int('confirm_all') && sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `angeltype_id`=" . sql_escape($_REQUEST['confirm_all']) . " AND `confirm_user_id` IS NULL") > 0) {
+    $angel_type_source = sql_select("SELECT `AngelTypes`.* FROM `AngelTypes` WHERE `AngelTypes`.`id`=" . sql_escape($_REQUEST['confirm_all']) . " LIMIT 1");
+    if(count($angel_type_source) > 0) {
+      if(!isset($_REQUEST['confirmed'])) {
+        return page(array(
+          info("Möchtest Du wirklich alle Engel vom Typ " . $angel_type_source[0]['name'] . " freischalten?", true),
+          buttons(array(
+            button(page_link_to('admin_user_angeltypes'), "Abbrechen", 'cancel'),
+            button(page_link_to('admin_user_angeltypes') . '&amp;confirm_all=' . $_REQUEST['confirm_all'] . '&amp;confirmed', "Ok", 'ok')
+          ))
+        ));
+      }
+      sql_query("UPDATE `UserAngelTypes` SET `confirm_user_id`=" . sql_escape($_SESSION['uid']) . " WHERE `angeltype_id`=" . sql_escape($_REQUEST['confirm_all']) . " LIMIT 1");
+      engelsystem_log("Confirmed all " . $angel_type_source[0]['name']);
+      success("Confirmed all.");
+    }
+    else error("Entry not found.");
+    redirect(page_link_to('admin_user_angeltypes'));
+  }
+
+  if (isset ($_REQUEST['deny_all']) && test_request_int('deny_all') && sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `angeltype_id`=" . sql_escape($_REQUEST['deny_all']) . " AND `confirm_user_id` IS NULL") > 0) {
+    $angel_type_source = sql_select("SELECT `AngelTypes`.* FROM `AngelTypes` WHERE `AngelTypes`.`id`=" . sql_escape($_REQUEST['deny_all']));
+    if(count($angel_type_source) > 0) {
+      if(!isset($_REQUEST['confirmed'])) {
+        return page(array(
+          info("Möchtest Du wirklich alle Engel vom Typ " . $angel_type_source[0]['name'] . " ablehnen?", true),
+          buttons(array(
+            button(page_link_to('admin_user_angeltypes'), "Abbrechen", 'cancel'),
+            button(page_link_to('admin_user_angeltypes') . '&amp;deny_all=' . $_REQUEST['deny_all'] . '&amp;confirmed', "Ok", 'ok')
+          ))
+        ));
+      }
+      sql_query("DELETE FROM `UserAngelTypes` WHERE `angeltype_id`=" . sql_escape($_REQUEST['deny_all']));
+      engelsystem_log("Denied all " . $angel_type_source[0]['name']);
+      success("Denied all.");
+    }
+    else error("Entry not found.");
+    redirect(page_link_to('admin_user_angeltypes'));
+  }
+
   if (isset ($_REQUEST['confirm']) && test_request_int('confirm') && sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `id`=" . sql_escape($_REQUEST['confirm']) . " AND `confirm_user_id` IS NULL") > 0) {
     $user_angel_type_source = sql_select("SELECT `UserAngelTypes`.*, `User`.`Nick`, `AngelTypes`.`name` FROM `UserAngelTypes` JOIN `User` ON `User`.`UID`=`UserAngelTypes`.`user_id` JOIN `AngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id` WHERE `UserAngelTypes`.`id`=" . sql_escape($_REQUEST['confirm']) . " LIMIT 1");
     if(count($user_angel_type_source) > 0) {
@@ -18,34 +58,40 @@ function admin_user_angeltypes() {
     redirect(page_link_to('admin_user_angeltypes'));
   }
 
-  if (isset ($_REQUEST['discard']) && test_request_int('discard') && sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `id`=" . sql_escape($_REQUEST['discard']) . " AND `confirm_user_id` IS NULL") > 0) {
-    $user_angel_type_source = sql_select("SELECT `UserAngelTypes`.*, `User`.`Nick`, `AngelTypes`.`name` FROM `UserAngelTypes` JOIN `User` ON `User`.`UID`=`UserAngelTypes`.`user_id` JOIN `AngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id` WHERE `UserAngelTypes`.`id`=" . sql_escape($_REQUEST['discard']) . " LIMIT 1");
+  if (isset ($_REQUEST['deny']) && test_request_int('deny') && sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `id`=" . sql_escape($_REQUEST['deny']) . " AND `confirm_user_id` IS NULL") > 0) {
+    $user_angel_type_source = sql_select("SELECT `UserAngelTypes`.*, `User`.`Nick`, `AngelTypes`.`name` FROM `UserAngelTypes` JOIN `User` ON `User`.`UID`=`UserAngelTypes`.`user_id` JOIN `AngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id` WHERE `UserAngelTypes`.`id`=" . sql_escape($_REQUEST['deny']) . " LIMIT 1");
     if(count($user_angel_type_source) > 0) {
-      sql_query("DELETE FROM `UserAngelTypes` WHERE `id`=" . sql_escape($_REQUEST['discard']) . " LIMIT 1");
-      engelsystem_log("Discarded " . $user_angel_type_source[0]['Nick'] . " as " . $user_angel_type_source[0]['name']);
-      success("Discarded.");
+      sql_query("DELETE FROM `UserAngelTypes` WHERE `id`=" . sql_escape($_REQUEST['deny']) . " LIMIT 1");
+      engelsystem_log("Denied " . $user_angel_type_source[0]['Nick'] . " as " . $user_angel_type_source[0]['name']);
+      success("Denied.");
     }
     else error("Entry not found.");
     redirect(page_link_to('admin_user_angeltypes'));
   }
 
-  $users_source = sql_select("SELECT `UserAngelTypes`.`id`, `AngelTypes`.`name`, `User`.`Nick`, `User`.`UID` FROM `UserAngelTypes` JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id` JOIN `User` ON `UserAngelTypes`.`user_id`=`User`.`UID` WHERE `AngelTypes`.`restricted`=1 AND `UserAngelTypes`.`confirm_user_id` IS NULL ORDER BY `AngelTypes`.`name`, `User`.`Nick`");
-  $users = array ();
-  foreach ($users_source as $user) {
-    if(in_array("admin_user", $privileges))
-      $user['Nick'] = '<a href="' . page_link_to('admin_user') . '&id=' . $user['UID'] . '">' . $user['Nick'] . '</a>';
-    $user['actions'] = '<a href="' . page_link_to('admin_user_angeltypes') . '&confirm=' . $user['id'] . '">confirm</a>';
-    $user['actions'] .= ' | <a href="' . page_link_to('admin_user_angeltypes') . '&discard=' . $user['id'] . '">discard</a>';
-    $users[] = $user;
+  $angel_types_source = sql_select("SELECT * FROM `AngelTypes` WHERE `restricted`=1 ORDER BY `name`");
+  $content = array();
+  foreach($angel_types_source as $angel_type) {
+    $user_angel_types_source = sql_select("SELECT `UserAngelTypes`.`id`, `User`.`Nick`, `User`.`UID` FROM `UserAngelTypes` JOIN `User` ON `UserAngelTypes`.`user_id`=`User`.`UID` WHERE `UserAngelTypes`.`angeltype_id`=" . sql_escape($angel_type['id']) . " AND `UserAngelTypes`.`confirm_user_id` IS NULL ORDER BY `User`.`Nick`");
+    if(count($user_angel_types_source)) {
+      $users = array ();
+      foreach ($user_angel_types_source as $user) {
+        if(in_array("admin_user", $privileges))
+          $user['Nick'] = '<a href="' . page_link_to('admin_user') . '&id=' . $user['UID'] . '">' . $user['Nick'] . '</a>';
+        $user['actions'] = '<a href="' . page_link_to('admin_user_angeltypes') . '&confirm=' . $user['id'] . '"><img src="pic/icons/tick.png" alt="confirm" title="confirm"></a>';
+        $user['actions'] .= '&nbsp;&nbsp;<a href="' . page_link_to('admin_user_angeltypes') . '&deny=' . $user['id'] . '"><img src="pic/icons/cross.png" alt="deny" title="deny"></a>';
+        $users[] = $user;
+      }
+      $content[] = '<h2>' . $angel_type['name'] . ' <small><a href="' . page_link_to('admin_user_angeltypes') . '&confirm_all=' . $angel_type['id'] . '"><img src="pic/icons/tick.png" alt="">confirm all</a> <a href="' . page_link_to('admin_user_angeltypes') . '&deny_all=' . $angel_type['id'] . '"><img src="pic/icons/cross.png" alt="">deny all</a></small></h2>' . table(array (
+        'Nick' => "Nick",
+        'actions' => ""
+      ), $users);
+    }
   }
 
   return page(array (
     msg(),
-    table(array (
-      'name' => "Angeltype",
-      'Nick' => "Nick",
-      'actions' => ""
-    ), $users)
+    join('', $content)
   ));
 }
 
