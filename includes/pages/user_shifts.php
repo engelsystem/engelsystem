@@ -342,10 +342,25 @@ function view_user_shifts() {
   if (!isset ($_SESSION['user_shifts']['rooms']) || count($_SESSION['user_shifts']['rooms']) == 0)
     $_SESSION['user_shifts']['rooms'] = array(0);
 
-  $shifts = sql_select("SELECT `Shifts`.*, `Room`.`Name` as `room_name` FROM `Shifts` JOIN `Room` USING (`RID`)
+  $SQL = "SELECT DISTINCT `Shifts`.*, `Room`.`Name` as `room_name`, nat2.`special_needs` > 0 AS 'has_special_needs'
+      FROM `Shifts`
+        INNER JOIN `Room` USING (`RID`)
+        LEFT JOIN (SELECT COUNT(*) AS special_needs , nat3.`shift_id` FROM `NeededAngelTypes` AS nat3 WHERE `shift_id` IS NOT NULL GROUP BY nat3.`shift_id`) AS nat2 ON nat2.`shift_id` = `Shifts`.`SID`
+        INNER JOIN `NeededAngelTypes` AS nat ON nat.`count` != 0 AND ((nat2.`special_needs` > 0 AND nat.`shift_id` = `Shifts`.`SID`) OR ((nat2.`special_needs` = 0 OR nat2.`special_needs` IS NULL) AND nat.`room_id` = `RID`))
+        LEFT JOIN (SELECT se.`SID`, se.`TID`, COUNT(*) as count FROM `ShiftEntry` AS se GROUP BY se.`SID`, se.`TID`) AS entries ON entries.`SID` = `Shifts`.`SID` AND entries.`TID` = nat.`angel_type_id`
       WHERE `Shifts`.`RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
-      AND DATE(FROM_UNIXTIME(`start`)) IN ('" . implode("','", $_SESSION['user_shifts']['days']) . "')
-      ORDER BY `start`");
+        AND DATE(FROM_UNIXTIME(`start`)) IN ('" . implode("','", $_SESSION['user_shifts']['days']) . "') ";
+  if (count($_SESSION['user_shifts']['filled']) == 1) {
+    if ($_SESSION['user_shifts']['filled'][0] == 0)
+      $SQL .= "
+        AND NOT (nat.`count` <= entries.`count`) ";
+    elseif ($_SESSION['user_shifts']['filled'][0] == 1)
+      $SQL .= "
+        AND (nat.`count` <= entries.`count`) ";
+  }
+  $SQL .= "
+      ORDER BY `start`";
+  $shifts = sql_select($SQL);
 
   $shifts_table = "";
   //qqqq
@@ -360,6 +375,8 @@ function view_user_shifts() {
       [URL] =>
       [PSID] =>
       [room_name] => test1
+      [has_special_needs] => 1
+      [is_full] => 0
   )
   */
   if(count($_SESSION['user_shifts']['days'])==1 && $_SESSION['user_shifts']['new_style']) {
@@ -372,10 +389,13 @@ function view_user_shifts() {
     $last=date("U",strtotime($_SESSION['user_shifts']['days'][0]." 23:59:59"));
     $maxshow=24*4;
     $block=array();
+    $todo=array();
     foreach($myrooms as $room) {
       $rid=$room["id"];
+      $block[$rid] = array_fill(0, $maxshow, 0);
       foreach($shifts as $shift) {
         if($shift["RID"]==$rid) {
+          // calculate number of parallel shifts in each timeslot for one room
           $blocks=($shift["end"]-$shift["start"])/(15*60);
           $firstblock=floor(($shift["start"]-$first)/(15*60));
           for($i=$firstblock;$i<$blocks+$firstblock && $i < $maxshow;$i++) {
@@ -387,15 +407,14 @@ function view_user_shifts() {
     $shifts_table="<table id=\"shifts\"><thead><tr><th>-</th>";
     foreach($myrooms as $room) {
       $rid=$room["id"];
-      $colspan=1;
-      if(is_array($block[$rid]))
-        foreach($block[$rid] as $max) if($max>$colspan) $colspan=$max;
-      for($i=0;$i<$maxshow;$i++)
-        $todo[$rid][$i]=$colspan;
-      $shifts_table.="<th colspan=\"$colspan\">".$room['name']."</th>\n";
+      $colspan = call_user_func_array('max', $block[$rid]);
+      if($colspan == 0)
+        $colspan = 1;
+      $todo[$rid] = array_fill(0, $maxshow, $colspan);
+      $shifts_table.="<th" . (($colspan > 1)? ' colspan="' . $colspan . '"' : '') . ">${room['name']}</th>\n";
     }
     $shifts_table.="</tr></thead><tbody>";
-    for($i=0;$i<24*4;$i++) {
+    for($i=0;$i<$maxshow;$i++) {
       $thistime=$first+($i*15*60);
       if($thistime%(60*60)==0) {
         $shifts_table.="<tr><th>".date("H:i",$thistime)."</th>";
@@ -413,22 +432,22 @@ function view_user_shifts() {
               $is_free = false;
               $shifts_row = $shift['name'];
               if (in_array('admin_shifts', $privileges))
-                $shifts_row .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
+                $shifts_row .= ' <a href="?p=user_shifts&amp;edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&amp;delete_shift=' . $shift['SID'] . '">[x]</a>';
               $shifts_row.= '<br />';
-              $shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
               $query = "SELECT `NeededAngelTypes`.`count`, `AngelTypes`.`id`, `AngelTypes`.`restricted`, `UserAngelTypes`.`confirm_user_id`, `AngelTypes`.`name`, `UserAngelTypes`.`user_id`
               FROM `NeededAngelTypes`
               JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
               LEFT JOIN `UserAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `UserAngelTypes`.`angeltype_id`AND `UserAngelTypes`.`user_id`=" . sql_escape($user['UID']) . ")
-              WHERE ";
-              if ($shift_has_special_needs)
+              WHERE
+                `count` > 0
+                AND ";
+              if ($shift['has_special_needs'])
                 $query .= "`shift_id` = " . sql_escape($shift['SID']);
               else
                 $query .= "`room_id` = " . sql_escape($shift['RID']);
-              $query .= "		AND `count` > 0 ";
               if (!empty($_SESSION['user_shifts']['types']))
-                $query .= "AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ") ";
-              $query .= "ORDER BY `AngelTypes`.`name`";
+                $query .= " AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ") ";
+              $query .= " ORDER BY `AngelTypes`.`name`";
               $angeltypes = sql_select($query);
 
               if (count($angeltypes) > 0) {
@@ -442,7 +461,7 @@ function view_user_shifts() {
                     else
                       $style="font-weight:normal;";
                     if (in_array('user_shifts_admin', $privileges))
-                      $entry_list[] = "<span style=\"$style\">" . '<a href="' . page_link_to('user_myshifts') . '&id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> <a href="' . page_link_to('user_shifts') . '&entry_id=' . $entry['id'] . '">[x]</a></span>';
+                      $entry_list[] = "<span style=\"$style\">" . '<a href="' . page_link_to('user_myshifts') . '&amp;id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> <a href="' . page_link_to('user_shifts') . '&amp;entry_id=' . $entry['id'] . '">[x]</a></span>';
                     else
                       $entry_list[] = "<span style=\"$style\">" . $entry['Nick']."</span>";
                   }
@@ -451,7 +470,7 @@ function view_user_shifts() {
                     // is the shift still running or alternatively is the user shift admin?
                     $user_may_join_shift = true;
 
-                    /* you cannot join if user already joined this shift */
+                    // you cannot join if user already joined this shift
                     $user_may_join_shift &= !$my_shift;
 
                     // you cannot join if user is not of this angel type
@@ -467,7 +486,7 @@ function view_user_shifts() {
                     // User shift admins may join anybody in every shift
                     $user_may_join_shift |= in_array('user_shifts_admin', $privileges);
                     if ($user_may_join_shift)
-                      $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">' . $inner_text . ' &raquo;</a>';
+                      $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . $inner_text . ' &raquo;</a>';
                     else {
                       if(time() > $shift['end']) {
                         $entry_list[] = $inner_text . ' (vorbei)';
@@ -487,30 +506,23 @@ function view_user_shifts() {
                   $shifts_row .= '<br />';
                 }
                 if (in_array('user_shifts_admin', $privileges)) {
-                  $shifts_row .= '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">Weitere Helfer eintragen &raquo;</a>';
+                  $shifts_row .= '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">Weitere Helfer eintragen &raquo;</a>';
                 }
               }
-              if ($is_free && in_array(0, $_SESSION['user_shifts']['filled']))
-                $style='background-color: #F6CECE';
-              elseif (!$is_free && in_array(1, $_SESSION['user_shifts']['filled']))
-                $style='background-color: #BCF5A9';
-              else
-                $style='border: 0';
-              $shifts_table.="<td rowspan=$blocks style=\"$style\">";
+              $shifts_table.='<td rowspan="' . $blocks . '" class="' . ($is_free? 'free' : 'occupied') . '">';
               if (($is_free && in_array(0, $_SESSION['user_shifts']['filled'])) || (!$is_free && in_array(1, $_SESSION['user_shifts']['filled']))) {
                 $shifts_table.=$shifts_row;
               }
               $shifts_table.="</td>";
-              for($j=0;$j<$blocks;$j++) {
+              for($j=0;$j<$blocks&& $i+$j < $maxshow;$j++) {
                 $todo[$rid][$i+$j]--;
               }
             }
           }
         }
-        while($todo[$rid][$i]) {
-          $shifts_table.='<td style="border: 0"></td>';
-          $todo[$rid][$i]--;
-        }
+        // fill up row with empty <td>
+        while($todo[$rid][$i]--)
+          $shifts_table.='<td></td>';
       }
       $shifts_table.="</tr>\n";
     }
@@ -532,7 +544,7 @@ function view_user_shifts() {
       );
 
       if (in_array('admin_shifts', $privileges))
-        $shift_row['entries'] .= ' <a href="?p=user_shifts&edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shifts&delete_shift=' . $shift['SID'] . '">[x]</a>';
+        $shift_row['entries'] .= ' <a href="?p=user_shifts&amp;edit_shift=' . $shift['SID'] . '">[edit]</a> <a href="?p=user_shiftsamp;&delete_shift=' . $shift['SID'] . '">[x]</a>';
       $shift_row['entries'] .= '<br />';
       $is_free = false;
       $shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
@@ -545,7 +557,7 @@ function view_user_shifts() {
         $query .= "`shift_id` = " . sql_escape($shift['SID']);
       else
         $query .= "`room_id` = " . sql_escape($shift['RID']);
-      $query .= "		AND `count` > 0 ";
+      $query .= "               AND `count` > 0 ";
       if (!empty($_SESSION['user_shifts']['types']))
         $query .= "AND `angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ") ";
       $query .= "ORDER BY `AngelTypes`.`name`";
@@ -557,7 +569,7 @@ function view_user_shifts() {
           $entry_list = array ();
           foreach ($entries as $entry) {
             if (in_array('user_shifts_admin', $privileges))
-              $entry_list[] = '<a href="' . page_link_to('user_myshifts') . '&id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> <a href="' . page_link_to('user_shifts') . '&entry_id=' . $entry['id'] . '">[x]</a>';
+              $entry_list[] = '<a href="' . page_link_to('user_myshifts') . '&amp;id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> <a href="' . page_link_to('user_shifts') . '&amp;entry_id=' . $entry['id'] . '">[x]</a>';
             else
               $entry_list[] = $entry['Nick'];
           }
@@ -583,7 +595,7 @@ function view_user_shifts() {
             // User shift admins may join anybody in every shift
             $user_may_join_shift |= in_array('user_shifts_admin', $privileges);
             if ($user_may_join_shift)
-              $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">' . $inner_text . ' &raquo;</a>';
+              $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . $inner_text . ' &raquo;</a>';
             else {
               if(time() > $shift['end']) {
                 $entry_list[] = $inner_text . ' (vorbei)';
@@ -603,7 +615,7 @@ function view_user_shifts() {
           $shift_row['entries'] .= '<br />';
         }
         if (in_array('user_shifts_admin', $privileges)) {
-          $shift_row['entries'] .= '<a href="' . page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'] . '">Weitere Helfer eintragen &raquo;</a>';
+          $shift_row['entries'] .= '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">Weitere Helfer eintragen &raquo;</a>';
         }
         if (($is_free && in_array(0, $_SESSION['user_shifts']['filled'])) || (!$is_free && in_array(1, $_SESSION['user_shifts']['filled']))) {
           $shifts_table[] = $shift_row;
@@ -629,7 +641,7 @@ function view_user_shifts() {
     'task_notice' => '<sup>1</sup>' . Get_Text("pub_schichtplan_tasks_notice"),
     'new_style_checkbox' => '<label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style']? ' checked' : '') . '> Use new style if possible</label>',
     'shifts_table' => $shifts_table,
-    'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'), make_user_shifts_ical_link($user['ical_key']), page_link_to('user_myshifts') . '&reset'),
+    'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'), htmlspecialchars(make_user_shifts_ical_link($user['ical_key'])), page_link_to('user_myshifts') . '&amp;reset'),
     'filter' => ucfirst(Get_Text("to_filter")),
   ));
 }
