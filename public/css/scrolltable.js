@@ -12,11 +12,7 @@ function scrolltable(elem) {
 	elem.className = elem.className + ' scrollable';
 	var tbodywidth = widths.pop();
 	tbody.style.width = (tbodywidth + 16) + 'px';
-<<<<<<< HEAD
-	tbody.style.height = (window.innerHeight - 50) + 'px';
-=======
 	tbody.style.height = (window.innerHeight - 100) + 'px';
->>>>>>> cc8f117ed128cf9b046f9835640b84362d151883
 	for(var i = 0; i < ths.length; i++) {
 		var paddingLeft = parseInt(window.getComputedStyle(ths[i], null).getPropertyValue('padding-left'));
 		var paddingRight = parseInt(window.getComputedStyle(ths[i], null).getPropertyValue('padding-right'));
