@@ -350,6 +350,20 @@ tr:hover .hidden {
 	background: #fff;
 }
 
+.button.edit {
+  background: url('../pic/icons/pencil.png') 2px 2px no-repeat;
+  padding-left: 20px;
+}
+
+.button.ok {
+  background: url('../pic/icons/tick.png') 2px 2px no-repeat;
+  padding-left: 20px;
+}
+
+.button.cancel {
+  background: url('../pic/icons/cross.png') 2px 2px no-repeat;
+  padding-left: 20px;
+}
 
 .form {
 	border: 1px solid #888;

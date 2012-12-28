@@ -15,8 +15,11 @@ function user_myshifts() {
 
   list ($shifts_user) = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
 
-  if ($id != $user['UID'])
+  if ($id != $user['UID']) {
     $msg .= info(sprintf("You are viewing %s's shifts.", $shifts_user['Nick']), true);
+    if(in_array('admin_user', $privileges))
+      $msg .= buttons(array(button(page_link_to('admin_user') . '&amp;id=' . $shifts_user['UID'], "Edit " . $shifts_user['Nick'], 'edit')));
+  }
 
   if (isset ($_REQUEST['reset'])) {
     if ($_REQUEST['reset'] == "ack") {
@@ -76,7 +79,21 @@ function user_myshifts() {
     $html .= '<td>' . date("Y-m-d", $shift['start']) . '</td>';
     $html .= '<td>' . date("H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . '</td>';
     $html .= '<td>' . $shift['Name'] . '</td>';
-    $html .= '<td>' . $shift['name'] . '</td>';
+    $html .= '<td>' . $shift['name'];
+
+    $needed_angel_types_source = sql_select("SELECT DISTINCT `AngelTypes`.* FROM `ShiftEntry` JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id` WHERE `ShiftEntry`.`SID`=" . sql_escape($shift['SID']) . "  ORDER BY `AngelTypes`.`name`");
+    foreach($needed_angel_types_source as $needed_angel_type) {
+      $html .= '<br><b>' . $needed_angel_type['name'] . ':</b> ';
+
+      $users_source = sql_select("SELECT `User`.* FROM `ShiftEntry` JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID` WHERE `ShiftEntry`.`SID`=" . sql_escape($shift['SID']) . " AND `ShiftEntry`.`TID`=" . sql_escape($needed_angel_type['id']));
+      $shift_entries = array();
+      foreach($users_source as $user_source) {
+        $shift_entries[] = $user_source['Nick'];
+      }
+      $html .= join(", ", $shift_entries);
+    }
+
+    $html .= '</td>';
     $html .= '<td>' . $shift['Comment'] . '</td>';
     $html .= '<td>';
     if ($id == $user['UID'])

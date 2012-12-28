@@ -86,11 +86,11 @@ function admin_angel_types() {
 
       return page(array (
         buttons(array (
-          button(page_link_to('admin_angel_types'), "Back", 'back')
+          button(page_link_to('admin_angel_types'), "Back", 'cancel')
         )),
         sprintf("Do you want to delete angel type %s?", $name),
         buttons(array (
-          button(page_link_to('admin_angel_types') . '&show=delete&id=' . $id . '&ack', "Delete", 'delete')
+          button(page_link_to('admin_angel_types') . '&show=delete&id=' . $id . '&ack', "Delete", 'ok')
         ))
       ));
     } else
