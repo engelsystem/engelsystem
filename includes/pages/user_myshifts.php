@@ -60,7 +60,7 @@ function user_myshifts() {
     $shift = sql_select("SELECT * FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " AND `UID`=" . sql_escape($shifts_user['UID']) . " LIMIT 1");
     if (count($shift) > 0) {
       $shift = $shift[0];
-      if (($shift['start'] - time() < $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges)) {
+      if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges)) {
         sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
         $msg .= success(Get_Text("pub_myshifts_signed_off"), true);
       } else
@@ -89,7 +89,10 @@ function user_myshifts() {
       $users_source = sql_select("SELECT `User`.* FROM `ShiftEntry` JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID` WHERE `ShiftEntry`.`SID`=" . sql_escape($shift['SID']) . " AND `ShiftEntry`.`TID`=" . sql_escape($needed_angel_type['id']));
       $shift_entries = array();
       foreach($users_source as $user_source) {
-        $shift_entries[] = $user_source['Nick'];
+        if($user['UID'] == $user_source['UID'])
+          $shift_entries[] = '<b>' . $user_source['Nick'] . '</b>';
+        else
+          $shift_entries[] = $user_source['Nick'];
       }
       $html .= join(", ", $shift_entries);
       $timesum += ($shift['end'] - $shift['start']) / (60*60);
