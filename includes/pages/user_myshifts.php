@@ -106,11 +106,12 @@ function user_myshifts() {
       $html .= img_button(page_link_to('user_myshifts') . (($id != $user['UID'])? '&id=' . $id : '') . '&cancel=' . $shift['id'], 'cross', 'sign_off');
     $html .= '</td>';
     $html .= '</tr>';
+
+    $timesum += $shift['end'] - $shift['start'];
   }
   if ($html == "")
     $html = '<tr><td>' . ucfirst(Get_Text('none')) . '...</td><td></td><td></td><td></td><td></td><td>' . sprintf(Get_Text('pub_myshifts_goto_shifts'), page_link_to('user_shifts')) . '</td></tr>';
 
-  $timesum += $shift['end'] - $shift['start'];
 
   return msg().template_render('../templates/user_myshifts.html', array (
     'intro' => sprintf(Get_Text('pub_myshifts_intro'), $LETZTES_AUSTRAGEN),
