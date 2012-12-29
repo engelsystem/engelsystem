@@ -23,11 +23,13 @@ function Get_Text($TextID, $NoError = false) {
 	@ $Erg = mysql_query($SQL, $con);
 
 	if (mysql_num_rows($Erg) == 1)
-		return (@ mysql_result($Erg, 0, "Text"));
-	elseif ($NoError && !$debug) return "";
-	else {
+		return mysql_result($Erg, 0, "Text");
+	elseif ($NoError && !$debug)
+		return "";
+	elseif ($debug)
 		return "Error Data, '$TextID' found " . mysql_num_rows($Erg) . "x";
-	}
+	else
+		return $TextID;
 }
 
 function Print_Text($TextID, $NoError = false) {

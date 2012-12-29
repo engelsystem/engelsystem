@@ -78,11 +78,12 @@ function admin_user_angeltypes() {
       foreach ($user_angel_types_source as $user) {
         if(in_array("admin_user", $privileges))
           $user['Nick'] = '<a href="' . page_link_to('admin_user') . '&id=' . $user['UID'] . '">' . $user['Nick'] . '</a>';
-        $user['actions'] = '<a href="' . page_link_to('admin_user_angeltypes') . '&confirm=' . $user['id'] . '"><img src="pic/icons/tick.png" alt="confirm" title="confirm"></a>';
-        $user['actions'] .= '&nbsp;&nbsp;<a href="' . page_link_to('admin_user_angeltypes') . '&deny=' . $user['id'] . '"><img src="pic/icons/cross.png" alt="deny" title="deny"></a>';
+        $user['actions'] = img_button(page_link_to('admin_user_angeltypes') . '&confirm=' . $user['id'], 'tick', 'confirm');
+        $user['actions'] .= '&nbsp;&nbsp;';
+        $user['actions'] .= img_button(page_link_to('admin_user_angeltypes') . '&deny=' . $user['id'], 'cross', 'deny');
         $users[] = $user;
       }
-      $content[] = '<h2>' . $angel_type['name'] . ' <small><a href="' . page_link_to('admin_user_angeltypes') . '&confirm_all=' . $angel_type['id'] . '"><img src="pic/icons/tick.png" alt="">confirm all</a> <a href="' . page_link_to('admin_user_angeltypes') . '&deny_all=' . $angel_type['id'] . '"><img src="pic/icons/cross.png" alt="">deny all</a></small></h2>' . table(array (
+      $content[] = '<h2>' . $angel_type['name'] . ' <small>' . img_button(page_link_to('admin_user_angeltypes') . '&confirm_all=' . $angel_type['id'], 'tick', '', 'confirm all') . ' ' . img_button(page_link_to('admin_user_angeltypes') . '&deny_all=' . $angel_type['id'], 'cross', '', 'deny all') . '</small></h2>' . table(array (
         'Nick' => "Nick",
         'actions' => ""
       ), $users);

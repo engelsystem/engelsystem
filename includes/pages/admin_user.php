@@ -323,7 +323,7 @@ function admin_user() {
         'Tshirt' => '<img src="pic/icons/' . ($angel['Tshirt'] == 1? 'tick' : 'cross') . '.png" alt="' . $angel['Tshirt'] . '">',
         'Size' => $angel['Size'],
         'lastLogIn' => date('d.m.&\n\b\s\p;H:i', $angel['lastLogIn']),
-        'edit' => '<a href="' . page_link_to("admin_user") . '&amp;id=' . $angel["UID"] . '"><img src="pic/icons/pencil.png" alt="' . Get_Text('Edit') . '" title="' . Get_Text('Edit') . '"></a>',
+        'edit' => img_button(page_link_to('admin_user') . '&id=' . $angel['UID'], 'pencil', 'edit'),
       );
     }
     $angels = array_map('prepare_angel_table', $angels);

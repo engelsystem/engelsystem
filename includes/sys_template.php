@@ -233,4 +233,9 @@ function html_select_key($id, $name, $rows, $selected) {
 	$html .= '</select>';
 	return $html;
 }
+
+function img_button($link, $icon, $text, $extra_text = '') {
+	$translation = empty($text)? '' : Get_Text($text);
+	return '<a href="' . htmlspecialchars($link) . '"><img src="pic/icons/' . htmlspecialchars($icon) . '.png" alt="' . $translation . '" ' . (empty($translation)? '' : 'title="' . $translation . '"') . '>' . (empty($extra_text)? '' : ' ' . $extra_text) . '</a>';
+}
 ?>
