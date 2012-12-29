@@ -71,6 +71,7 @@ function user_myshifts() {
   $shifts = sql_select("SELECT * FROM `ShiftEntry` JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `UID`=" . sql_escape($shifts_user['UID']) . " ORDER BY `start`");
 
   $html = "";
+  $timesum = 0;
   foreach ($shifts as $shift) {
     if (time() > $shift['end'])
       $html .= '<tr class="done">';
@@ -91,6 +92,7 @@ function user_myshifts() {
         $shift_entries[] = $user_source['Nick'];
       }
       $html .= join(", ", $shift_entries);
+      $timesum += ($shift['end'] - $shift['start']) / (60*60);
     }
 
     $html .= '</td>';
@@ -109,6 +111,7 @@ function user_myshifts() {
   return msg().template_render('../templates/user_myshifts.html', array (
     'intro' => sprintf(Get_Text('pub_myshifts_intro'), $LETZTES_AUSTRAGEN),
     'shifts' => $html,
+    'time_sum' => $timesum,
     'msg' => $msg,
     'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'),
         page_link_to_absolute('ical') . '&key=' . $shifts_user['ical_key'],

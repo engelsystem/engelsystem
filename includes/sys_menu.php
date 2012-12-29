@@ -121,8 +121,8 @@ function make_langselect() {
 	else
 		$URL = $_SERVER["REQUEST_URI"] . "?SetLanguage=";
 
-	$html = '<p class="content"><a class="sprache" href="' . $URL . 'DE"><img src="pic/flag/de.png" alt="DE" title="Deutsch"></a>';
-	$html .= '<a class="sprache" href="' . $URL . 'EN"><img src="pic/flag/en.png" alt="EN" title="English"></a></p>';
+	$html = '<p class="content"><a class="sprache" href="' . htmlspecialchars($URL) . 'DE"><img src="pic/flag/de.png" alt="DE" title="Deutsch"></a>';
+	$html .= '<a class="sprache" href="' . htmlspecialchars($URL) . 'EN"><img src="pic/flag/en.png" alt="EN" title="English"></a></p>';
 	return '<nav class="container"><h4>' . Get_Text("Sprache") . '</h4>' . $html . '</nav>';
 }
 ?>
