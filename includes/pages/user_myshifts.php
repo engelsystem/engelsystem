@@ -95,7 +95,6 @@ function user_myshifts() {
           $shift_entries[] = $user_source['Nick'];
       }
       $html .= join(", ", $shift_entries);
-      $timesum += $shift['end'] - $shift['start'];
     }
 
     $html .= '</td>';
@@ -110,6 +109,8 @@ function user_myshifts() {
   }
   if ($html == "")
     $html = '<tr><td>' . ucfirst(Get_Text('none')) . '...</td><td></td><td></td><td></td><td></td><td>' . sprintf(Get_Text('pub_myshifts_goto_shifts'), page_link_to('user_shifts')) . '</td></tr>';
+
+  $timesum += $shift['end'] - $shift['start'];
 
   return msg().template_render('../templates/user_myshifts.html', array (
     'intro' => sprintf(Get_Text('pub_myshifts_intro'), $LETZTES_AUSTRAGEN),
