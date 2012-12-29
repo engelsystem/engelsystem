@@ -103,7 +103,7 @@ function user_myshifts() {
     $html .= '<td>';
     if ($id == $user['UID'])
       $html .= img_button(page_link_to('user_myshifts') . '&edit=' . $shift['id'], 'pencil', 'edit');
-    if (($shift['start'] - time() > $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges))
+    if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges))
       $html .= img_button(page_link_to('user_myshifts') . (($id != $user['UID'])? '&id=' . $id : '') . '&cancel=' . $shift['id'], 'cross', 'sign_off');
     $html .= '</td>';
     $html .= '</tr>';
