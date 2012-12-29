@@ -52,6 +52,11 @@ footer p {
     margin-left: 200px;
 }
 
+.container.online .content {
+    max-height: 15em;
+    overflow: auto;
+}
+
 a {
     color: #000;
 }
