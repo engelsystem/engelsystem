@@ -39,7 +39,7 @@ function admin_user_angeltypes() {
           ))
         ));
       }
-      sql_query("DELETE FROM `UserAngelTypes` WHERE `angeltype_id`=" . sql_escape($_REQUEST['deny_all']));
+      sql_query("DELETE FROM `UserAngelTypes` WHERE `confirm_user_id` IS NULL AND `angeltype_id`=" . sql_escape($_REQUEST['deny_all']));
       engelsystem_log("Denied all " . $angel_type_source[0]['name']);
       success("Denied all.");
     }
