@@ -135,24 +135,7 @@ table {
 
 table.scrollable {
 	max-width: 100%;
-	overflow-x: scroll;
-	overflow-y: hidden;
-}
-
-table.scrollable thead tr {
-	display: block;
-	position: relative;
-}
-
-table.scrollable tbody {
-	display: block;
-	position: relative;
-	overflow-x: hidden;
-	overflow-y: auto;
-}
-
-table.scrollable tbody * {
-	width: auto;
+	overflow: auto;
 }
 
 fieldset hr {

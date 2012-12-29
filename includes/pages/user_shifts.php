@@ -409,7 +409,7 @@ function view_user_shifts() {
         $block[$rid][$i]++;
     }
 
-    $shifts_table = "<table id=\"shifts\"><thead><tr><th>-</th>";
+    $shifts_table = "<table id=\"shifts\" class=\"scrollable\"><thead><tr><th>-</th>";
     foreach($myrooms as $key => $room) {
       $rid = $room["id"];
       if(array_sum($block[$rid]) == 0) {
@@ -540,7 +540,7 @@ function view_user_shifts() {
       }
       $shifts_table .= "</tr>\n";
     }
-    $shifts_table .= '</tbody></table><script type="text/javascript">scrolltable(document.getElementById("shifts"))</script>';
+    $shifts_table .= '</tbody></table>';
     // qqq
   } else {
     $shifts_table = array();
