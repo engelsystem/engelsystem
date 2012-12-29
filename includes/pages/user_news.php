@@ -107,7 +107,7 @@ function user_news_comments() {
 function user_news() {
   global $DISPLAY_NEWS, $privileges, $user;
 
-  $html = "";
+  $html = msg();
 
   if (isset ($_POST["text"]) && isset ($_POST["betreff"]) && in_array("admin_news", $privileges)) {
     if (!isset ($_POST["treffen"]) || !in_array("admin_news", $privileges))
@@ -116,7 +116,8 @@ function user_news() {
         "VALUES ('" . sql_escape(time()) . "', '" . sql_escape($_POST["betreff"]) . "', '" . sql_escape($_POST["text"]) . "', '" . sql_escape($user['UID']) .
         "', '" . sql_escape($_POST["treffen"]) . "');");
     engelsystem_log("Created news: " . $_POST["betreff"] . ", treffen: " . $_POST["treffen"]);
-    $html .= success(Get_Text(4), true);
+    success(Get_Text(4));
+    redirect(page_link_to('user_news'));
   }
 
   if (isset ($_REQUEST['page']) && preg_match("/^[0-9]{1,}$/", $_REQUEST['page']))
