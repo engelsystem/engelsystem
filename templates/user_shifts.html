@@ -1,8 +1,19 @@
+<script type="text/javascript">
+function set_to_now(id) {
+  var now = new Date();
+  document.getElementById(id + '_time').value = now.getHours() + ':' + now.getMinutes();
+  var days = document.getElementById(id + '_day').getElementsByTagName('option');
+  for(var i = 0; i < days.length; i++) {
+    if(days[i].value == (1900 + now.getYear()) + '-' + (1 + now.getMonth()) + '-' + now.getDate())
+      days[i].selected = true;
+  }
+}
+</script>
 <form action="#shifts" type="get">
 <fieldset class="form" id="filter"><legend>Filter</legend>
 <div>
-%start_select% <input type="time" name="start_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%">
-&#8211; %end_select% <input type="time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%">
+%start_select% <input type="time" id="start_time" name="start_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%"> <img src="pic/icons/clock.png" alt="Now" title="Now" style="cursor: pointer;vertical-align: middle;" onclick="set_to_now('start');">
+&#8211; %end_select% <input type="time" id="end_time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%"> <img src="pic/icons/clock.png" alt="Now" title="Now" style="cursor: pointer;vertical-align: middle;" onclick="set_to_now('end');">
 </div>
 <input type="hidden" name="p" value="user_shifts">
 %room_select%

@@ -431,6 +431,10 @@ tr:hover .hidden {
 	padding: 10px;
 }
 
+#filter input[type="submit"] {
+	padding: 15px;
+}
+
 td .entries img {
 	vertical-align: bottom;
 }
