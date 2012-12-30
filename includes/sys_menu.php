@@ -73,46 +73,7 @@ function make_navigation_for($name, $pages) {
 }
 
 function make_menu() {
-	return make_navigation() . make_onlineusers() . make_langselect();
-}
-
-function make_onlineusers() {
-	global $privileges, $user;
-	$html = '<nav class="container online"><h4>Helfer online</h4>';
-
-	$query = "SELECT UID, Nick, lastLogIn " . "FROM User " . "WHERE (`lastLogIn` > '" . (time() - 60 * 60) . "') " . "ORDER BY lastLogIn DESC";
-	$users = sql_select($query);
-
-	if (count($users) > 0) {
-		$html .= "<ul class=\"content\">";
-
-		foreach ($users as $online_user) {
-			if (isset ($user) && $online_user['UID'] == $user['UID'])
-				continue;
-
-			$html .= "<li>";
-
-			//if (isset ($user))
-			//$html .= DisplayAvatar($online_user['UID']);
-
-			// Show Admin Page
-			if (in_array("admin_user_edit", $privileges)) {
-				$html .= '<a href="admin/userChangeNormal.php?enterUID=' . $online_user['UID'] . '&Type=Normal">' . $online_user['Nick'] . '</a>';
-			} else {
-				$html .= $online_user['Nick'];
-			}
-			$last_action = time() - $online_user['lastLogIn'];
-
-			$html .= " " . date("i:s", $last_action);
-			$html .= "</li>\n";
-		}
-
-		$html .= "</ul>";
-	} else {
-		$html .= '<p class="content">Nobody...</p>';
-	}
-	$html .= '</nav>';
-	return $html;
+	return make_navigation() . make_langselect();
 }
 
 function make_langselect() {

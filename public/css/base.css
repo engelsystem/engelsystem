@@ -19,16 +19,8 @@ article, details {
     float: none;
 }
 
-footer {
-    clear: both;
-    display: block;
+.small {
     font-size: 12px;
-    text-align: center;
-    width: 100%;
-}
-
-footer p {
-    margin: 10px auto;
 }
 
 #logo {
@@ -52,11 +44,6 @@ footer p {
     margin-left: 200px;
 }
 
-.container.online .content {
-    max-height: 15em;
-    overflow: auto;
-}
-
 a {
     color: #000;
 }
@@ -76,6 +63,9 @@ dd {
 
 h1, h2, h3, h4 {
     font-size: 16px;
+}
+
+h1, h4 {
     padding: 0 4px;
 }
 
@@ -96,7 +86,11 @@ nav {
 }
 
 #content h2 {
-	margin-top: 20px;
+    margin-top: 15px;
+}
+
+#content h2:first-child {
+    margin-top: 0;
 }
 
 p {
