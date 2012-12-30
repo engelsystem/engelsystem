@@ -74,7 +74,7 @@ function admin_shifts() {
       elseif ($_REQUEST['mode'] == 'variable') {
         if (isset ($_REQUEST['change_hours']) && preg_match("/^([0-9]{2}(,|$))/", trim(str_replace(" ", "", $_REQUEST['change_hours'])))) {
           $mode = 'variable';
-          $change_hours = explode(",", $_REQUEST['change_hours']);
+          $change_hours = array_map('trim', explode(",", $_REQUEST['change_hours']));
         } else {
           $ok = false;
           $msg .= error("Bitte gib die Schichtwechsel-Stunden kommagetrennt ein.", true);
@@ -209,6 +209,7 @@ function admin_shifts() {
       $hidden_types = "";
       foreach ($needed_angel_types as $type_id => $count)
         $hidden_types .= '<input type="hidden" name="type_' . $type_id . '" value="' . $count . '" />';
+      sort($change_hours);
       return template_render('../templates/admin_shift_preview.html', array (
         'shifts_table' => $shifts_table,
         'name' => $name,
@@ -217,7 +218,7 @@ function admin_shifts() {
         'end' => date("Y-m-d H:i", $end),
         'mode' => $mode,
         'length' => $length,
-        'change_hours' => $change_hours,
+        'change_hours' => implode(', ', $change_hours),
         'angelmode' => $angelmode,
         'needed_angel_types' => $hidden_types
       ));
