@@ -185,6 +185,10 @@ elseif ($p == "faq") {
 if (isset ($user) && $p != "user_messages")
 	$content = user_unread_messages() . $content;
 
+// Hinweis für Engel, die noch nicht angekommen sind
+if(isset($user) && $user['Gekommen'] == 0)
+  $content = error("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already.", true) . $content;
+
 // Erzengel Hinweis für unbeantwortete Fragen
 if (isset ($user) && $p != "admin_questions")
 	$content = admin_new_questions() . $content;
