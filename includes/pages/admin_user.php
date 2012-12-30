@@ -103,11 +103,11 @@ function admin_user() {
 
       if (isset ($_REQUEST['submit_user_angeltypes'])) {
         $selected_angel_types = isset($_REQUEST['selected_angel_types']) && is_array($_REQUEST['selected_angel_types'])?
-          array_intersect($_REQUEST['selected_angel_types'], array_keys($angel_types))
-          : array();
+        array_intersect($_REQUEST['selected_angel_types'], array_keys($angel_types))
+        : array();
         $accepted_angel_types = isset($_REQUEST['accepted_angel_types']) && is_array($_REQUEST['accepted_angel_types'])?
-          array_unique(array_diff(array_intersect($_REQUEST['accepted_angel_types'], array_keys($angel_types)), $nonrestricted_angel_types))
-          : array();
+        array_unique(array_diff(array_intersect($_REQUEST['accepted_angel_types'], array_keys($angel_types)), $nonrestricted_angel_types))
+        : array();
         if (in_array("admin_user_angeltypes", $privileges))
           $selected_angel_types = array_merge((array) $selected_angel_types, $accepted_angel_types);
         $selected_angel_types = array_unique($selected_angel_types);
@@ -133,7 +133,7 @@ function admin_user() {
         }
         sql_stop_transaction();
 
-        engelsystem_log("Set angeltypes of " . $user_source['Nick'] . " to: " . join(", ", $user_angel_type_info));
+        engelsystem_log("Set angeltypes of " . User_Nick_render($user_source) . " to: " . join(", ", $user_angel_type_info));
         success("Angeltypes saved.");
         redirect(page_link_to('admin_user') . '&id=' . $user_source['UID']);
       }
@@ -220,7 +220,8 @@ function admin_user() {
                   $user_groups_info[] = $groups[$group]['Name'];
                 }
               }
-              engelsystem_log("Set groups of " . $user_source['Nick'] . " to: " . join(", ", $user_groups_info));
+              $user_source = User($id);
+              engelsystem_log("Set groups of " . User_Nick_render($user_source) . " to: " . join(", ", $user_groups_info));
               $html .= success("Benutzergruppen gespeichert.", true);
             } else {
               $html .= error("Du kannst keine Engel mit mehr Rechten bearbeiten.", true);
@@ -232,11 +233,11 @@ function admin_user() {
 
         case 'delete' :
           if ($user['UID'] != $id) {
-            $nickname = sql_select("SELECT `Nick` FROM `User` WHERE `UID` = '" . sql_escape($id) . "' LIMIT 1");
+            $user_source = sql_select("SELECT `Nick`, `UID` FROM `User` WHERE `UID` = '" . sql_escape($id) . "' LIMIT 1");
             sql_query("DELETE FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
             sql_query("DELETE FROM `UserGroups` WHERE `uid`=" . sql_escape($id));
             sql_query("UPDATE `ShiftEntry` SET `UID`=0, `Comment`=NULL WHERE `UID`=" . sql_escape($id));
-            engelsystem_log("Deleted user " . $nickname[0]['Nick']);
+            engelsystem_log("Deleted user " . User_Nick_render($user_source));
             $html .= success("Benutzer gelöscht!", true);
           } else {
             $html .= error("Du kannst Dich nicht selber löschen!", true);
@@ -269,7 +270,8 @@ function admin_user() {
         case 'change_pw' :
           if ($_REQUEST['new_pw'] != "" && $_REQUEST['new_pw'] == $_REQUEST['new_pw2']) {
             set_password($id, $_REQUEST['new_pw']);
-            engelsystem_log("Set new password for " . $user_source['Nick']);
+            $user_source = User($id);
+            engelsystem_log("Set new password for " . User_Nick_render($user_source));
             $html .= success("Passwort neu gesetzt.", true);
           } else {
             $html .= error("Die Eingaben müssen übereinstimmen und dürfen nicht leer sein!", true);
@@ -313,7 +315,7 @@ function admin_user() {
       if (strlen($angel["jabber"]) > 0)
         $popup .= "<br>Jabber: " . $angel["jabber"];
       return array(
-        'Nick' => in_array('user_shifts_admin', $privileges)? '<a href="' . page_link_to("user_myshifts") . '&amp;id=' . $angel["UID"] . '">' . htmlspecialchars($angel["Nick"]) . '</a>' : htmlspecialchars($angel['Nick']),
+        'Nick' => User_Nick_render($angel),
         'Name' => htmlspecialchars($angel['Vorname'] . ' ' . $angel['Name']),
         'DECT' => htmlspecialchars($angel['DECT']),
         'Alter' => htmlspecialchars($angel['Alter']),
@@ -343,7 +345,7 @@ function admin_user() {
       'Size' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=Size">Gr&ouml;&szlig;e</a></div>',
       'lastLogIn' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=lastLogIn">Last login</a>',
       'edit' => ''),
-      $angels);
+        $angels);
   }
   return $html;
 }

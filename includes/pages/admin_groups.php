@@ -27,7 +27,7 @@ function admin_groups() {
     }
 
     return template_render('../templates/admin_groups.html', array (
-      'nick' => $user['Nick'],
+      'nick' => User_Nick_render($user),
       'groups' => $groups_html
     ));
   } else {

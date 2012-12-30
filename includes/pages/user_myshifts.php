@@ -39,13 +39,13 @@ function user_myshifts() {
         $comment = strip_request_item_nl('comment');
         $user_source = User($shift['UID']);
         sql_query("UPDATE `ShiftEntry` SET `Comment`='" . sql_escape($comment) . "' WHERE `id`=" . sql_escape($id) . " LIMIT 1");
-        engelsystem_log("Updated " . $user_source['Nick'] . "'s shift " . $shift['name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']) . " with comment " . $comment);
+        engelsystem_log("Updated " . User_Nick_render($user_source) . "'s shift " . $shift['name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']) . " with comment " . $comment);
         success("Schicht gespeichert.");
         redirect(page_link_to('user_myshifts'));
       }
 
       return template_render('../templates/user_shifts_add.html', array (
-        'angel' => $shifts_user['Nick'],
+        'angel' => User_Nick_render($shifts_user),
         'date' => date("Y-m-d H:i", $shift['start']) . ', ' . shift_length($shift),
         'location' => $shift['Name'],
         'title' => $shift['name'],
@@ -92,7 +92,7 @@ function user_myshifts() {
         if($user['UID'] == $user_source['UID'])
           $shift_entries[] = '<b>' . $user_source['Nick'] . '</b>';
         else
-          $shift_entries[] = $user_source['Nick'];
+          $shift_entries[] = User_Nick_render($user_source);
       }
       $html .= join(", ", $shift_entries);
     }

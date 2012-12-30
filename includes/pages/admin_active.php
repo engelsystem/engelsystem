@@ -28,7 +28,7 @@ function admin_active() {
       $user_nicks = array();
       foreach ($users as $usr) {
         sql_query("UPDATE `User` SET `Aktiv` = 1 WHERE `UID`=" . sql_escape($usr['UID']));
-        $user_nicks[] = $usr['Nick'];
+        $user_nicks[] = User_Nick_render($usr);
       }
       engelsystem_log("These angels are active now: " . join(", ", $user_nicks));
 
@@ -44,7 +44,7 @@ function admin_active() {
     $user_source = User($id);
     if($user_source != null) {
       sql_query("UPDATE `User` SET `Aktiv`=1 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-      engelsystem_log("User " . $user_source['Nick'] . " is active now.");
+      engelsystem_log("User " . User_Nick_render($user_source) . " is active now.");
       $msg = success("Angel has been marked as active.", true);
     }
     else $msg = error("Angel not found.", true);
@@ -54,7 +54,7 @@ function admin_active() {
     $user_source = User($id);
     if($user_source != null) {
       sql_query("UPDATE `User` SET `Aktiv`=0 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-      engelsystem_log("User " . $user_source['Nick'] . " is NOT active now.");
+      engelsystem_log("User " . User_Nick_render($user_source) . " is NOT active now.");
       $msg = success("Angel has been marked as not active.", true);
     }
     else $msg = error("Angel not found.", true);
@@ -64,7 +64,7 @@ function admin_active() {
     $user_source = User($id);
     if($user_source != null) {
       sql_query("UPDATE `User` SET `Tshirt`=1 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-      engelsystem_log("User " . $user_source['Nick'] . " has tshirt now.");
+      engelsystem_log("User " . User_Nick_render($user_source) . " has tshirt now.");
       $msg = success("Angel has got a t-shirt.", true);
     }
     else $msg = error("Angel not found.", true);
@@ -74,7 +74,7 @@ function admin_active() {
     $user_source = User($id);
     if($user_source != null) {
       sql_query("UPDATE `User` SET `Tshirt`=0 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-      engelsystem_log("User " . $user_source['Nick'] . " NO tshirt.");
+      engelsystem_log("User " . User_Nick_render($user_source) . " has NO tshirt.");
       $msg = success("Angel has got no t-shirt.", true);
     }
     else $msg = error("Angel not found.", true);
@@ -100,7 +100,7 @@ function admin_active() {
         continue;
     }
     $table .= '<tr>';
-    $table .= '<td>' . $usr['Nick'] . '</td>';
+    $table .= '<td>' . User_Nick_render($usr) . '</td>';
     $table .= '<td>' . $tshirt_sizes[$usr['Size']] . '</td>';
     $table .= '<td>' . $usr['shift_count'] . '</td>';
 

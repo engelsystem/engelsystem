@@ -46,7 +46,7 @@ function user_messages() {
 
 		return template_render('../templates/user_messages.html', array (
 			'link' => page_link_to("user_messages"),
-			'greeting' => Get_Text("Hello") . $user['Nick'] . ", <br />\n" . Get_Text("pub_messages_text1") . "<br /><br />\n",
+			'greeting' => Get_Text("Hello") . User_Nick_render($user) . ", <br />\n" . Get_Text("pub_messages_text1") . "<br /><br />\n",
 			'messages' => $messages_html,
 			'new_label' => Get_Text("pub_messages_Neu"),
 			'date_label' => Get_Text("pub_messages_Datum"),
@@ -54,7 +54,7 @@ function user_messages() {
 			'to_label' => Get_Text("pub_messages_An"),
 			'text_label' => Get_Text("pub_messages_Text"),
 			'date' => date("Y-m-d H:i"),
-			'from' => $user['Nick'],
+			'from' => User_Nick_render($user),
 			'to_select' => $to_select,
 			'submit_label' => Get_Text("save")
 		));

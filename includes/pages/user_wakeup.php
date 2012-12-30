@@ -38,7 +38,7 @@ function user_wakeup() {
 		}
 	}
 
-	$html .= "<p>" . Get_Text("Hello") . $user['Nick'] . ",<br />"
+	$html .= "<p>" . Get_Text("Hello") . User_Nick_render($user) . ",<br />"
 		. Get_Text("pub_wake_beschreibung") . "</p>\n\n";
 	$html .= Get_Text("pub_wake_beschreibung2");
 	$html .= '

@@ -4,7 +4,7 @@ function admin_language() {
 
 	$html = "";
 	if (!isset ($_POST["TextID"])) {
-		$html .= Get_Text("Hello") . $user['Nick'] . ", <br />\n";
+		$html .= Get_Text("Hello") . User_Nick_render($user) . ", <br />\n";
 		$html .= Get_Text("pub_sprache_text1") . "<br /><br />\n";
 
 		$html .= "<a href=\"" . page_link_to("admin_language") . "&ShowEntry=y\">" . Get_Text("pub_sprache_ShowEntry") . "</a>";

@@ -163,7 +163,7 @@ function user_settings() {
   }
 
   return page(array (
-    sprintf(Get_Text("Hallo") . "%s,<br />" . Get_Text(13), $user['Nick']),
+    sprintf(Get_Text("Hallo") . "%s,<br />" . Get_Text(13), User_Nick_render($user)),
     $msg,
     msg(),
     form(array (

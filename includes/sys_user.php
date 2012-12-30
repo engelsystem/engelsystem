@@ -1,5 +1,13 @@
 <?php
 
+function User_Nick_render($user_source) {
+  global $user, $privileges;
+  if($user['UID'] == $user_source['UID'] || in_array('user_shifts_admin', $privileges))
+    return '<a href="' . page_link_to('user_myshifts') . '&amp;id=' . $user_source['UID'] . '">' . htmlspecialchars($user_source['Nick']) . '</a>';
+  else
+    return htmlspecialchars($user_source['Nick']);
+}
+
 
 /**
  * Available T-Shirt sizes
