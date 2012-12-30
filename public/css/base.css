@@ -129,7 +129,15 @@ table {
 	background-color: #BCF5A9;
 }
 
-#shifts td:not(.free):not(.occupied) {
+#shifts td.own {
+	background-color: #CECEF6;
+}
+
+#shifts td.collides {
+	background-color: #9B9B9B;
+}
+
+#shifts td.empty {
 	border: 0;
 }
 
