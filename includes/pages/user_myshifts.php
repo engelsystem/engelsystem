@@ -57,7 +57,7 @@ function user_myshifts() {
   }
   elseif (isset ($_REQUEST['cancel']) && preg_match("/^[0-9]*$/", $_REQUEST['cancel'])) {
     $id = $_REQUEST['cancel'];
-    $shift = sql_select("SELECT * FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " AND `UID`=" . sql_escape($shifts_user['UID']) . " LIMIT 1");
+    $shift = sql_select("SELECT `Shifts`.`start` FROM `Shifts` INNER JOIN `ShiftEntry` USING (`SID`) WHERE `ShiftEntry`.`id`=" . sql_escape($id) . " AND `UID`=" . sql_escape($shifts_user['UID']) . " LIMIT 1");
     if (count($shift) > 0) {
       $shift = $shift[0];
       if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges)) {
