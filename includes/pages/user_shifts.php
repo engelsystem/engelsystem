@@ -469,7 +469,7 @@ function view_user_shifts() {
               $is_free = false;
               $shifts_row = $shift['name'];
               if (in_array('admin_shifts', $privileges))
-                $shifts_row .= ' ' . img_button('?p=user_shifts&edit_shift=' . $shift['SID'], 'pencil', 'edit') . img_button('?p=user_shifts&delete_shift=' . $shift['SID'], 'cross', 'delete');
+                $shifts_row .= ' ' . img_button('?p=user_shifts&edit_shift=' . $shift['SID'], 'pencil', 'edit') . img_button('?p=user_shifts&delete_shift=' . $shift['SID'], 'bin', 'delete');
               $shifts_row .= '<br />';
               $query = "SELECT `NeededAngelTypes`.`count`, `AngelTypes`.`id`, `AngelTypes`.`restricted`, `UserAngelTypes`.`confirm_user_id`, `AngelTypes`.`name`, `UserAngelTypes`.`user_id`
               FROM `NeededAngelTypes`
@@ -497,7 +497,7 @@ function view_user_shifts() {
                     else
                       $style="font-weight:normal;";
                     if (in_array('user_shifts_admin', $privileges))
-                      $entry_list[] = "<span style=\"$style\">" . '<a href="' . page_link_to('user_myshifts') . '&amp;id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> <a href="' . page_link_to('user_shifts') . '&amp;entry_id=' . $entry['id'] . '">[x]</a></span>';
+                      $entry_list[] = "<span style=\"$style\">" . '<a href="' . page_link_to('user_myshifts') . '&amp;id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> ' . img_button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], 'bin', 'delete') . '</span>';
                     else
                       $entry_list[] = "<span style=\"$style\">" . $entry['Nick']."</span>";
                   }
@@ -595,7 +595,7 @@ function view_user_shifts() {
       );
 
       if (in_array('admin_shifts', $privileges))
-        $shift_row['info'] .= ' ' . img_button('?p=user_shifts&edit_shift=' . $shift['SID'], 'pencil', 'edit') . img_button('?p=user_shifts&delete_shift=' . $shift['SID'], 'cross', 'delete');
+        $shift_row['info'] .= ' ' . img_button('?p=user_shifts&edit_shift=' . $shift['SID'], 'pencil', 'edit') . img_button('?p=user_shifts&delete_shift=' . $shift['SID'], 'bin', 'delete');
       $shift_row['entries'] .= '<br />';
       $is_free = false;
       $shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
@@ -620,7 +620,7 @@ function view_user_shifts() {
           $entry_list = array ();
           foreach ($entries as $entry) {
             if (in_array('user_shifts_admin', $privileges))
-              $entry_list[] = '<a href="' . page_link_to('user_myshifts') . '&amp;id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> ' . img_button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], 'cross', 'delete');
+              $entry_list[] = '<a href="' . page_link_to('user_myshifts') . '&amp;id=' . $entry['UID'] . '">' . $entry['Nick'] . '</a> ' . img_button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], 'bin', 'delete');
             else
               $entry_list[] = $entry['Nick'];
           }
