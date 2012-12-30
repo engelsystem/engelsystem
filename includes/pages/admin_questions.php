@@ -61,7 +61,7 @@ function admin_questions() {
           if ($answer != "") {
             sql_query("UPDATE `Questions` SET `AID`=" . sql_escape($user['UID']) . ", `Answer`='" . sql_escape($answer) . "' WHERE `QID`=" . sql_escape($id) . " LIMIT 1");
             engelsystem_log("Question " . $question[0]['Question'] . " answered: " . $answer);
-            header("Location: " . page_link_to("admin_questions"));
+            redirect(page_link_to("admin_questions"));
           } else
             return error("Gib eine Antwort ein!", true);
         } else
@@ -77,7 +77,7 @@ function admin_questions() {
         if (count($question) > 0) {
           sql_query("DELETE FROM `Questions` WHERE `QID`=" . sql_escape($id) . " LIMIT 1");
           engelsystem_log("Question deleted: " . $question[0]['Question']);
-          header("Location: " . page_link_to("admin_questions"));
+          redirect(page_link_to("admin_questions"));
         } else
           return error("No question found.", true);
         break;

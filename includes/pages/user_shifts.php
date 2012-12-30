@@ -157,11 +157,11 @@ function user_shifts() {
     if (isset ($_REQUEST['delete_shift']) && preg_match("/^[0-9]*$/", $_REQUEST['delete_shift']))
       $shift_id = $_REQUEST['delete_shift'];
     else
-      header("Location: " . page_link_to('user_shifts'));
+      redirect(page_link_to('user_shifts'));
 
     $shift = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
     if (count($shift) == 0)
-      header("Location: " . page_link_to('user_shifts'));
+      redirect(page_link_to('user_shifts'));
     $shift = $shift[0];
 
     // Schicht löschen bestätigt
@@ -186,28 +186,28 @@ function user_shifts() {
     if (isset ($_REQUEST['shift_id']) && preg_match("/^[0-9]*$/", $_REQUEST['shift_id']))
       $shift_id = $_REQUEST['shift_id'];
     else
-      header("Location: " . page_link_to('user_shifts'));
+      redirect(page_link_to('user_shifts'));
 
     $shift = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
     if (count($shift) == 0)
-      header("Location: " . page_link_to('user_shifts'));
+      redirect(page_link_to('user_shifts'));
     $shift = $shift[0];
 
     if (isset ($_REQUEST['type_id']) && preg_match("/^[0-9]*$/", $_REQUEST['type_id']))
       $type_id = $_REQUEST['type_id'];
     else
-      header("Location: " . page_link_to('user_shifts'));
+      redirect(page_link_to('user_shifts'));
 
     // Schicht läuft schon, Eintragen für Engel nicht mehr möglich
     if(!in_array('user_shifts_admin', $privileges) && time() > $shift['start']) {
       error("Diese Schicht läuft gerade oder ist bereits vorbei. Bitte kontaktiere den Schichtkoordinator um Dich eintragen zu lassen.");
-      header("Location: " . page_link_to('user_shifts'));
+      redirect(page_link_to('user_shifts'));
     }
 
     // Another shift the user is signed up for collides with this one
     if(!in_array('user_shifts_admin', $privileges) && sql_num_query("SELECT `Shifts`.`SID` FROM `Shifts` INNER JOIN `ShiftEntry` ON (`Shifts`.`SID` = `ShiftEntry`.`SID` AND `ShiftEntry`.`UID` = " . sql_escape($user['UID']) . ") WHERE `start` < '" . sql_escape($shift['end']) . "' AND `end` > '" . sql_escape($shift['start']) . "'") > 0) {
       error("Du bist bereits in einer parallelen Schicht eingetragen. Bitte kontaktiere den Schichtkoordinator, um dich eintragen zu lassen.");
-      header("Location: " . page_link_to('user_shifts'));
+      redirect(page_link_to('user_shifts'));
     }
 
     if (in_array('user_shifts_admin', $privileges))
@@ -216,7 +216,7 @@ function user_shifts() {
       $type = sql_select("SELECT * FROM `UserAngelTypes` JOIN `AngelTypes` ON (`UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`) WHERE `AngelTypes`.`id` = " . sql_escape($type_id) . " AND (`AngelTypes`.`restricted` = 0 OR (`UserAngelTypes`.`user_id` = " . sql_escape($user['UID']) . " AND NOT `UserAngelTypes`.`confirm_user_id` IS NULL)) LIMIT 1");
 
     if (count($type) == 0)
-      header("Location: " . page_link_to('user_shifts'));
+      redirect(page_link_to('user_shifts'));
     $type = $type[0];
 
     if (isset ($_REQUEST['submit'])) {

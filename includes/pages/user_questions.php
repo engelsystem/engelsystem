@@ -27,7 +27,7 @@ function user_questions() {
         $question = strip_request_item_nl('question');
         if ($question != "") {
           sql_query("INSERT INTO `Questions` SET `UID`=" . sql_escape($user['UID']) . ", `Question`='" . sql_escape($question) . "'");
-          header("Location: " . page_link_to("user_questions"));
+          redirect(page_link_to("user_questions"));
         } else
           return error("Gib eine Frage ein!", true);
         break;
@@ -40,7 +40,7 @@ function user_questions() {
         $question = sql_select("SELECT * FROM `Questions` WHERE `QID`=" . sql_escape($id) . " LIMIT 1");
         if (count($question) > 0 && $question[0]['UID'] == $user['UID']) {
           sql_query("DELETE FROM `Questions` WHERE `QID`=" . sql_escape($id) . " LIMIT 1");
-          header("Location: " . page_link_to("user_questions"));
+          redirect(page_link_to("user_questions"));
         } else
           return error("No question found.", true);
         break;

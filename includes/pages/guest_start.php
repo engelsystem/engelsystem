@@ -1,6 +1,5 @@
 <?php
 function guest_start() {
-	header("Location: ?p=login");
-	die();
+  redirect(page_link_to('login'));
 }
 ?>

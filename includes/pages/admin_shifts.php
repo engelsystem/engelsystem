@@ -226,10 +226,8 @@ function admin_shifts() {
 
   }
   elseif (isset ($_REQUEST['submit'])) {
-    if (!is_array($_SESSION['admin_shifts_shifts']) || !is_array($_SESSION['admin_shifts_types'])) {
-      header("Location: ?p=admin_shifts");
-      die();
-    }
+    if (!is_array($_SESSION['admin_shifts_shifts']) || !is_array($_SESSION['admin_shifts_types']))
+      redirect(page_link_to('admin_shifts'));
 
     foreach ($_SESSION['admin_shifts_shifts'] as $shift) {
       sql_query("INSERT INTO `Shifts` SET `start`=" . sql_escape($shift['start']) . ",  `end`=" . sql_escape($shift['end']) . ", `RID`=" . sql_escape($shift['RID']) . ", `name`='" . sql_escape($shift['name']) . "'");

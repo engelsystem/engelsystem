@@ -3,7 +3,7 @@ function admin_news() {
   global $user;
 
   if (!isset ($_GET["action"])) {
-    header("Location: " . page_link_to("news"));
+    redirect(page_link_to("news"));
   } else {
     $html = "";
     switch ($_GET["action"]) {
@@ -61,7 +61,7 @@ function admin_news() {
           sql_query("UPDATE `News` SET `Datum`='" . sql_escape(time()) . "', `Betreff`='" . sql_escape($_POST["eBetreff"]) . "', `Text`='" . sql_escape($_POST["eText"]) . "', `UID`='" . sql_escape($user['UID']) .
               "', `Treffen`='" . sql_escape($_POST["eTreffen"]) . "' WHERE `ID`=".sql_escape($id)." LIMIT 1");
           engelsystem_log("News updated: " . $_POST["eBetreff"]);
-          header("Location: " . page_link_to("news"));
+          redirect(page_link_to("news"));
         } else
           return error("No News found.", true);
         break;
@@ -78,7 +78,7 @@ function admin_news() {
 
           sql_query("DELETE FROM `News` WHERE `ID`=" . sql_escape($id) . " LIMIT 1");
           engelsystem_log("News deleted: " . $news['Betreff']);
-          header("Location: " . page_link_to("news"));
+          redirect(page_link_to("news"));
         } else
           return error("No News found.", true);
         break;

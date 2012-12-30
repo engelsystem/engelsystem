@@ -88,7 +88,7 @@ function admin_groups() {
             }
           }
           engelsystem_log("Group privileges of group " . $room['Name'] . " edited: " . join(", ", $privilege_names));
-          header("Location: " . page_link_to("admin_groups"));
+          redirect(page_link_to("admin_groups"));
         } else
           return error("No Group found.", true);
         break;

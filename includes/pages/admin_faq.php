@@ -20,7 +20,7 @@ function admin_faq() {
 
 				sql_query("INSERT INTO `FAQ` SET `Frage_de`='" . sql_escape($frage) . "', `Frage_en`='" . sql_escape($question) . "', `Antwort_de`='" . sql_escape($antwort) . "', `Antwort_en`='" . sql_escape($answer) . "'");
 
-				header("Location: " . page_link_to("admin_faq"));
+				redirect(page_link_to("admin_faq"));
 				break;
 
 			case 'save' :
@@ -40,7 +40,7 @@ function admin_faq() {
 
 					sql_query("UPDATE `FAQ` SET `Frage_de`='" . sql_escape($frage) . "', `Frage_en`='" . sql_escape($question) . "', `Antwort_de`='" . sql_escape($antwort) . "', `Antwort_en`='" . sql_escape($answer) . "' WHERE `FID`=" . sql_escape($id) . " LIMIT 1");
 
-					header("Location: " . page_link_to("admin_faq"));
+					redirect(page_link_to("admin_faq"));
 				} else
 					return error("No FAQ found.", true);
 				break;
@@ -78,7 +78,7 @@ function admin_faq() {
 					list ($faq) = $faq;
 
 					sql_query("DELETE FROM `FAQ` WHERE `FID`=" . sql_escape($id) . " LIMIT 1");
-					header("Location: " . page_link_to("admin_faq"));
+					redirect(page_link_to("admin_faq"));
 				} else
 					return error("No FAQ found.", true);
 				break;

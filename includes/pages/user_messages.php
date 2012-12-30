@@ -69,7 +69,7 @@ function user_messages() {
 				$message = sql_select("SELECT * FROM `Messages` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
 				if (count($message) > 0 && $message[0]['RUID'] == $user['UID']) {
 					sql_query("UPDATE `Messages` SET `isRead`='Y' WHERE `id`=" . sql_escape($id) . " LIMIT 1");
-					header("Location: " . page_link_to("user_messages"));
+					redirect(page_link_to("user_messages"));
 				} else
 					return error("No Message found.", true);
 				break;
@@ -83,7 +83,7 @@ function user_messages() {
 				$message = sql_select("SELECT * FROM `Messages` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
 				if (count($message) > 0 && $message[0]['SUID'] == $user['UID']) {
 					sql_query("DELETE FROM `Messages` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
-					header("Location: " . page_link_to("user_messages"));
+					redirect(page_link_to("user_messages"));
 				} else
 					return error("No Message found.", true);
 				break;
@@ -93,7 +93,7 @@ function user_messages() {
 				$to = preg_replace("/([^0-9]{1,})/ui", '', strip_tags($_REQUEST['to']));
 				if ($text != "" && is_numeric($to) && sql_num_query("SELECT * FROM `User` WHERE `UID`=" . sql_escape($to) . " AND NOT `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0) {
 					sql_query("INSERT INTO `Messages` SET `Datum`=" . sql_escape(time()) . ", `SUID`=" . sql_escape($user['UID']) . ", `RUID`=" . sql_escape($to) . ", `Text`='" . sql_escape($text) . "'");
-					header("Location: " . page_link_to("user_messages"));
+					redirect(page_link_to("user_messages"));
 				} else {
 					return error(Get_Text("pub_messages_Send_Error"), true);
 				}

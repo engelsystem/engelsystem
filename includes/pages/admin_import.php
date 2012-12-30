@@ -104,7 +104,7 @@ function admin_import() {
       }
 
       if ($ok)
-        header("Location: " . page_link_to('admin_import') . "&step=check");
+        redirect(page_link_to('admin_import') . "&step=check");
       else
         $html .= template_render('../templates/admin_import_input.html', array (
           'link' => page_link_to('admin_import'),
@@ -115,7 +115,7 @@ function admin_import() {
 
     case "check" :
       if (!file_exists($import_file))
-        header("Location: " . page_link_to('admin_import'));
+        redirect(page_link_to('admin_import'));
 
       list ($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
       list ($events_new, $events_updated, $events_deleted) = prepare_events($import_file);
@@ -132,7 +132,7 @@ function admin_import() {
 
     case "import" :
       if (!file_exists($import_file))
-        header("Location: " . page_link_to('admin_import'));
+        redirect(page_link_to('admin_import'));
 
       list ($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
       foreach ($rooms_new as $room) {

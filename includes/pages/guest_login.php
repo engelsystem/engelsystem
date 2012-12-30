@@ -158,7 +158,7 @@ function guest_register() {
 
 function guest_logout() {
   session_destroy();
-  header("Location: " . page_link_to("start"));
+  redirect(page_link_to("start"));
 }
 
 function guest_login() {
