@@ -235,7 +235,6 @@ function user_shifts() {
       } else
         $user_id = $user['UID'];
 
-      // TODO: Kollisionserkennung, andere Schichten zur gleichen Uhrzeit darf der Engel auch nicht belegt haben...
       if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`='" . sql_escape($shift['SID']) . "' AND `UID` = '" . sql_escape($user_id) . "'"))
         return error("This angel does already have an entry for this shift.", true);
 
@@ -285,7 +284,7 @@ function view_user_shifts() {
   global $ical_shifts;
 
   $ical_shifts = array ();
-  $days = sql_select("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` FROM `Shifts` ORDER BY `start`");
+  $days = sql_select_single_col("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` FROM `Shifts` ORDER BY `start`");
   $rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
 
   if(in_array('user_shifts_admin', $privileges))
@@ -337,17 +336,32 @@ function view_user_shifts() {
   }
   if (!isset ($_SESSION['user_shifts']['new_style']))
     $_SESSION['user_shifts']['new_style'] = true;
-
-  if (isset ($_REQUEST['days'])) {
-    $filtered = array_filter($_REQUEST['days'], create_function('$a', 'return preg_match("/^\d\d\d\d-\d\d-\d\d\\$/", $a);'));
-    if (!empty ($filtered))
-      $_SESSION['user_shifts']['days'] = $filtered;
-    unset ($filtered);
+  foreach (array ('start', 'end') as $key) {
+    if (isset ($_REQUEST[$key . '_day'])) {
+      $filtered = array_intersect($_REQUEST[$key . '_day'], $days);
+      if (!empty ($filtered))
+        $_SESSION['user_shifts'][$key . '_day'] = $filtered;
+      unset ($filtered);
+    }
+    if (isset ($_REQUEST[$key . '_time']) && preg_match('#^\d{1,2}:\d\d$#', $_REQUEST[$key . '_time']))
+      $_SESSION['user_shifts'][$key . '_time'] = $_REQUEST[$key . '_time'];
+    if (!isset ($_SESSION['user_shifts'][$key . '_day'])) {
+      $time = date('Y-m-d', time() + ($key == 'end'? 24*60*60 : 0));
+      $_SESSION['user_shifts'][$key . '_day'] = in_array($time, $days)? $time : ($key == 'end'? max($days) : min($days));
+    }
+    if (!isset ($_SESSION['user_shifts'][$key . '_time']))
+      $_SESSION['user_shifts'][$key . '_time'] = date('H:i');
   }
-  if (!isset ($_SESSION['user_shifts']['days']))
-    $_SESSION['user_shifts']['days'] = array (
-      date('Y-m-d')
-    );
+  if ($_SESSION['user_shifts']['start_day'] > $_SESSION['user_shifts']['end_day'])
+    $_SESSION['user_shifts']['end_day'] = $_SESSION['user_shifts']['start_day'];
+  if ($_SESSION['user_shifts']['start_day'] == $_SESSION['user_shifts']['end_day'] && $_SESSION['user_shifts']['start_time'] >= $_SESSION['user_shifts']['end_time'])
+    $_SESSION['user_shifts']['end_time'] = '23:59';
+
+  $starttime = DateTime :: createFromFormat("Y-m-d H:i", $_SESSION['user_shifts']['start_day'] . $_SESSION['user_shifts']['start_time']);
+  $starttime = $starttime->getTimestamp();
+  $endtime = DateTime :: createFromFormat("Y-m-d H:i", $_SESSION['user_shifts']['end_day'] . $_SESSION['user_shifts']['end_time']);
+  $endtime = $endtime->getTimestamp();
+
   if (!isset ($_SESSION['user_shifts']['rooms']) || count($_SESSION['user_shifts']['rooms']) == 0)
     $_SESSION['user_shifts']['rooms'] = array(0);
 
@@ -358,7 +372,7 @@ function view_user_shifts() {
         INNER JOIN `NeededAngelTypes` AS nat ON nat.`count` != 0 AND nat.`angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ") AND ((nat2.`special_needs` > 0 AND nat.`shift_id` = `Shifts`.`SID`) OR ((nat2.`special_needs` = 0 OR nat2.`special_needs` IS NULL) AND nat.`room_id` = `RID`))
         LEFT JOIN (SELECT se.`SID`, se.`TID`, COUNT(*) as count FROM `ShiftEntry` AS se GROUP BY se.`SID`, se.`TID`) AS entries ON entries.`SID` = `Shifts`.`SID` AND entries.`TID` = nat.`angel_type_id`
       WHERE `Shifts`.`RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
-        AND DATE(FROM_UNIXTIME(`start`)) IN ('" . implode("','", $_SESSION['user_shifts']['days']) . "') ";
+        AND `start` BETWEEN " . $starttime . " AND " . $endtime;
   if (count($_SESSION['user_shifts']['filled']) == 1) {
     if ($_SESSION['user_shifts']['filled'][0] == 0)
       $SQL .= "
@@ -372,7 +386,7 @@ function view_user_shifts() {
   $shifts = sql_select($SQL);
   $ownshifts_source = sql_select("SELECT `Shifts`.* FROM `Shifts` INNER JOIN `ShiftEntry` ON (`Shifts`.`SID` = `ShiftEntry`.`SID` AND `ShiftEntry`.`UID` = '" . sql_escape($user['UID']) . "')
       WHERE `Shifts`.`RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
-        AND DATE(FROM_UNIXTIME(`start`)) IN ('" . implode("','", $_SESSION['user_shifts']['days']) . "') ");
+        AND `start` BETWEEN " . $starttime . " AND " . $endtime);
   $ownshifts = array();
   foreach ($ownshifts_source as $ownshift)
     $ownshifts[$ownshift['SID']] = $ownshift;
@@ -395,10 +409,9 @@ function view_user_shifts() {
       [is_full] => 0
   )
   */
-  if(count($_SESSION['user_shifts']['days'])==1 && $_SESSION['user_shifts']['new_style']) {
-    $first=date("U",strtotime($_SESSION['user_shifts']['days'][0]." 00:00:00"));
-    $last=date("U",strtotime($_SESSION['user_shifts']['days'][0]." 23:59:59"));
-    $maxshow=24*4;
+  if($_SESSION['user_shifts']['new_style']) {
+    $first = 15*60*floor($starttime/(15*60));
+    $maxshow = ceil(($endtime - $first) / (60*15));
     $block=array();
     $todo=array();
     $myrooms = $rooms;
@@ -546,9 +559,9 @@ function view_user_shifts() {
                   $shifts_row .= '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">Weitere Helfer eintragen&nbsp;&raquo;</a>';
                 }
               }
-              if ($shift['own'] && !in_array('admin_shifts', $privileges))
+              if ($shift['own'] && !in_array('user_shifts_admin', $privileges))
                 $class = 'own';
-              elseif ($collides && !in_array('admin_shifts', $privileges))
+              elseif ($collides && !in_array('user_shifts_admin', $privileges))
                 $class = 'collides';
               elseif ($is_free)
                 $class = 'free';
@@ -564,7 +577,7 @@ function view_user_shifts() {
               }
             }
           }
-          if ($shift['own'] && !in_array('admin_shifts', $privileges)) {
+          if ($shift['own'] && !in_array('user_shifts_admin', $privileges)) {
             $blocks = ($shift["end"]-$shift["start"]) / (15*60);
             $firstblock = floor(($shift["start"]-$first) / (15*60));
             if ($i >= $firstblock && $i < $firstblock + $blocks)
@@ -583,7 +596,7 @@ function view_user_shifts() {
     $shifts_table = array();
     foreach ($shifts as $shift) {
       $info = array ();
-      if (count($_SESSION['user_shifts']['days']) > 1)
+      if ($_SESSION['user_shifts']['start_day'] != $_SESSION['user_shifts']['end_day'])
         $info[] = date("Y-m-d", $shift['start']);
       $info[] = date("H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']);
       if (count($_SESSION['user_shifts']['rooms']) > 1)
@@ -685,7 +698,10 @@ function view_user_shifts() {
 
   return msg() . template_render('../templates/user_shifts.html', array (
     'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", ucfirst(Get_Text("rooms"))),
-    'day_select' => make_select($days, $_SESSION['user_shifts']['days'], "days", ucfirst(Get_Text("days"))),
+    'start_select' => html_select_key("start_day", "start_day", array_combine($days, $days), $_SESSION['user_shifts']['start_day']),
+    'start_time' => $_SESSION['user_shifts']['start_time'],
+    'end_select' => html_select_key("end_day", "end_day", array_combine($days, $days), $_SESSION['user_shifts']['end_day']),
+    'end_time' => $_SESSION['user_shifts']['end_time'],
     'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", ucfirst(Get_Text("tasks")) . '<sup>1</sup>'),
     'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", ucfirst(Get_Text("occupancy"))),
     'task_notice' => '<sup>1</sup>' . Get_Text("pub_schichtplan_tasks_notice"),
@@ -697,11 +713,12 @@ function view_user_shifts() {
 }
 
 function make_user_shifts_ical_link($key) {
-  $link = "";
+  $link = "&start_day=" . $_SESSION['user_shifts']['start_day'];
+  $link = "&start_time=" . $_SESSION['user_shifts']['start_time'];
+  $link = "&end_day=" . $_SESSION['user_shifts']['end_day'];
+  $link = "&end_time=" . $_SESSION['user_shifts']['end_time'];
   foreach ($_SESSION['user_shifts']['rooms'] as $room)
     $link .= '&rooms[]=' . $room;
-  foreach ($_SESSION['user_shifts']['days'] as $day)
-    $link .= '&days[]=' . $day;
   foreach ($_SESSION['user_shifts']['types'] as $type)
     $link .= '&types[]=' . $type;
   foreach ($_SESSION['user_shifts']['filled'] as $filled)
