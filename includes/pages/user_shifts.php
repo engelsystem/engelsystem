@@ -337,12 +337,8 @@ function view_user_shifts() {
   if (!isset ($_SESSION['user_shifts']['new_style']))
     $_SESSION['user_shifts']['new_style'] = true;
   foreach (array ('start', 'end') as $key) {
-    if (isset ($_REQUEST[$key . '_day'])) {
-      $filtered = array_intersect($_REQUEST[$key . '_day'], $days);
-      if (!empty ($filtered))
-        $_SESSION['user_shifts'][$key . '_day'] = $filtered;
-      unset ($filtered);
-    }
+    if (isset ($_REQUEST[$key . '_day']) && in_array($_REQUEST[$key . '_day'], $days))
+      $_SESSION['user_shifts'][$key . '_day'] = $_REQUEST[$key . '_day'];
     if (isset ($_REQUEST[$key . '_time']) && preg_match('#^\d{1,2}:\d\d$#', $_REQUEST[$key . '_time']))
       $_SESSION['user_shifts'][$key . '_time'] = $_REQUEST[$key . '_time'];
     if (!isset ($_SESSION['user_shifts'][$key . '_day'])) {
@@ -454,11 +450,12 @@ function view_user_shifts() {
     $shifts_table.="</tr></thead><tbody>";
     for($i = 0; $i < $maxshow; $i++) {
       $thistime = $first + ($i*15*60);
-      if($thistime%(60*60) == 0) {
-        $shifts_table .= "<tr><th>" . date("H:i",$thistime) . "</th>";
-      } else {
-        $shifts_table .= "<tr><th></th>";
-      }
+      $shifts_table .= "<tr><th>";
+      if($thistime%(24*60*60) == 23*60*60 && $endtime - $starttime > 24*60*60)
+        $shifts_table .= date('y-m-d<b\r>H:i', $thistime);
+      elseif($thistime%(60*60) == 0)
+        $shifts_table .= date("H:i", $thistime);
+      $shifts_table .= "</th>";
       foreach($myrooms as $room) {
         $rid = $room["id"];
         $empty_collides = false;
