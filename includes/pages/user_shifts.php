@@ -204,6 +204,12 @@ function user_shifts() {
       header("Location: " . page_link_to('user_shifts'));
     }
 
+    // Another shift the user is signed up for collides with this one
+    if(!in_array('user_shifts_admin', $privileges) && sql_num_query("SELECT `Shifts`.`SID` FROM `Shifts` INNER JOIN `ShiftEntry` ON (`Shifts`.`SID` = `ShiftEntry`.`SID` AND `ShiftEntry`.`UID` = " . sql_escape($user['UID']) . ") WHERE `start` < '" . sql_escape($shift['end']) . "' AND `end` > '" . sql_escape($shift['start']) . "'") > 0) {
+      error("Du bist bereits in einer parallelen Schicht eingetragen. Bitte kontaktiere den Schichtkoordinator, um dich eintragen zu lassen.");
+      header("Location: " . page_link_to('user_shifts'));
+    }
+
     if (in_array('user_shifts_admin', $privileges))
       $type = sql_select("SELECT * FROM `AngelTypes` WHERE `id`=" . sql_escape($type_id) . " LIMIT 1");
     else
