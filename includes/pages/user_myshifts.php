@@ -101,8 +101,8 @@ function user_myshifts() {
     $timesum += $shift['end'] - $shift['start'];
     $myshifts_table[] = $myshift;
   }
-  if (count($shifts) == 0)
-    $html = '<tr><td>' . ucfirst(Get_Text('none')) . '...</td><td></td><td></td><td></td><td></td><td>' . sprintf(Get_Text('pub_myshifts_goto_shifts'), page_link_to('user_shifts')) . '</td></tr>';
+  if(count($myshifts_table) > 0)
+    $myshifts_table[] = array('date' => "<b>Summe:</b>", 'time' => "<b>" . round($timesum / (60*60), 1) . " h</b>", 'room' => "", 'shift_info' => "", 'comment' => "", 'actions' => "");
 
   return page(array(
     msg(),

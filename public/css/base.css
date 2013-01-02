@@ -432,3 +432,7 @@ tr:hover .hidden {
 td .entries img {
 	vertical-align: bottom;
 }
+
+td.time {
+	text-align: right;
+}
