@@ -2,5 +2,6 @@ includes_old
 www-ssl_old
 .project
 .buildpath
+.settings
 .*.swp
 _vimrc_local.vim
