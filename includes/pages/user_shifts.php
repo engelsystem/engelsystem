@@ -625,7 +625,7 @@ function view_user_shifts() {
     $angeltypes = sql_select($query);
     if (count($angeltypes) > 0) {
       $my_shift = sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0;
-      foreach ($angeltypes as $angeltype) {
+      foreach ($angeltypes as &$angeltype) {
         $entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`=" . sql_escape($shift['SID']) . " AND `TID`=" . sql_escape($angeltype['id']) . " ORDER BY `Nick`");
         $entry_list = array ();
         foreach ($entries as $entry) {
@@ -634,6 +634,7 @@ function view_user_shifts() {
           else
             $entry_list[] = User_Nick_render($entry);
         }
+        $angeltype['taken'] = count($entries);
         // do we need more angles of this type?
         if ($angeltype['count'] - count($entries) > 0) {
           $inner_text = ($angeltype['count'] - count($entries)) . ' ' . Get_Text($angeltype['count'] - count($entries) == 1 ? 'helper' : 'helpers') . ' ' . Get_Text('needed');
@@ -680,6 +681,7 @@ function view_user_shifts() {
       }
       if (($is_free && in_array(0, $_SESSION['user_shifts']['filled'])) || (!$is_free && in_array(1, $_SESSION['user_shifts']['filled']))) {
         $shifts_table[] = $shift_row;
+        $shift['angeltypes'] = $angeltypes;
         $ical_shifts[] = $shift;
       }
     }
