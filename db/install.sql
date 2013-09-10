@@ -1161,7 +1161,7 @@ INSERT INTO `Sprache` (`TextID`, `Sprache`, `Text`) VALUES
 ('to_filter', 'EN', 'filter'),
 ('pub_schichtplan_tasks_notice', 'DE', 'Die hier angezeigten Aufgaben werden durch die Präferenzen in deinen Einstellungen beeinflusst! <a href="https://events.ccc.de/congress/2012/wiki/Volunteers#What_kind_of_volunteers_are_needed.3F">Beschreibung der einzelnen Aufgaben</a>.'),
 ('pub_schichtplan_tasks_notice', 'EN', 'The tasks shown here are influenced by the preferences you defined in your settings! <a href="https://events.ccc.de/congress/2012/wiki/Volunteers#What_kind_of_volunteers_are_needed.3F">Description of the jobs</a>.'),
-('inc_schicht_ical_text', 'DE', 'Zum Abonnieren der angezeigten Schichten in deiner Kalender-Software benutze <a href="%s">diesen Link</a> (bitte geheimhalten, im Notfall Deinen <a href="%s">iCal-Key zurücksetzen</a>).'),
+('inc_schicht_ical_text', 'DE', 'Zum Abonnieren der angezeigten Schichten in deiner Kalender-Software benutze <a href="%s">diesen Link</a> (bitte geheimhalten, im Notfall Deinen <a href="%s">API-Key zurücksetzen</a>).'),
 ('inc_schicht_ical_text', 'EN', 'To subscribe the shifts shown in your calendar software, use <a href="%s">this link</a> (please keep secret, otherwise <a href="%s">reset the ical key</a>).'),
 ('helpers', 'DE', 'Helfer'),
 ('helpers', 'EN', 'helpers'),
