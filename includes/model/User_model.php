@@ -29,7 +29,7 @@ function User_by_api_key($api_key) {
  * Generates a new api key for given user.
  * @param User $user
  */
-function User_reset_api_key($user) {
+function User_reset_api_key(&$user) {
   $user['api_key'] = md5($user['Nick'] . time() . rand());
   sql_query("UPDATE `User` SET `api_key`='" . sql_escape($user['api_key']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
   engelsystem_log("API key resetted.");

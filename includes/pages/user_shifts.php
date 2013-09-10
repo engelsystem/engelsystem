@@ -704,12 +704,12 @@ return msg() . template_render('../templates/user_shifts.html', array (
   'task_notice' => '<sup>1</sup>' . Get_Text("pub_schichtplan_tasks_notice"),
   'new_style_checkbox' => '<label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style']? ' checked' : '') . '> Use new style if possible</label>',
   'shifts_table' => $shifts_table,
-  'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'), htmlspecialchars(make_user_shifts_ical_link($user['api_key'])), page_link_to('user_myshifts') . '&amp;reset'),
+  'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'), htmlspecialchars(make_user_shifts_export_link('ical', $user['api_key'])), htmlspecialchars(make_user_shifts_export_link('shifts_json_export', $user['api_key'])), page_link_to('user_myshifts') . '&amp;reset'),
   'filter' => ucfirst(Get_Text("to_filter")),
 ));
 }
 
-function make_user_shifts_ical_link($key) {
+function make_user_shifts_export_link($page, $key) {
   $link = "&start_day=" . $_SESSION['user_shifts']['start_day'];
   $link = "&start_time=" . $_SESSION['user_shifts']['start_time'];
   $link = "&end_day=" . $_SESSION['user_shifts']['end_day'];
@@ -720,7 +720,7 @@ function make_user_shifts_ical_link($key) {
     $link .= '&types[]=' . $type;
   foreach ($_SESSION['user_shifts']['filled'] as $filled)
     $link .= '&filled[]=' . $filled;
-  return page_link_to_absolute('ical') . $link . '&export=user_shifts&key=' . $key;
+  return page_link_to_absolute($page) . $link . '&export=user_shifts&key=' . $key;
 }
 
 function get_ids_from_array($array) {

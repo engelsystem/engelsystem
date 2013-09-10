@@ -118,7 +118,7 @@ function user_myshifts() {
       'actions' => "Aktion"
     ), $myshifts_table),
     $id == $user['UID'] && count($shifts) == 0 ? error(sprintf(Get_Text('pub_myshifts_goto_shifts'), page_link_to('user_shifts')), true) : '',
-    "<h2>iCal Export</h2>" . sprintf(Get_Text('inc_schicht_ical_text'), page_link_to_absolute('ical') . '&key=' . $shifts_user['api_key'], page_link_to('user_myshifts') . '&reset')
+    "<h2>Exports</h2>" . sprintf(Get_Text('inc_schicht_ical_text'), page_link_to_absolute('ical') . '&key=' . $shifts_user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $shifts_user['api_key'], page_link_to('user_myshifts') . '&reset')
   ));
 }
 ?>
