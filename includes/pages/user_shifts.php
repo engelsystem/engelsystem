@@ -690,8 +690,8 @@ function view_user_shifts() {
   ), $shifts_table);
 }
 
-if ($user['ical_key'] == "")
-  user_reset_ical_key($user);
+if ($user['api_key'] == "")
+  User_reset_api_key($user);
 
 return msg() . template_render('../templates/user_shifts.html', array (
   'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", ucfirst(Get_Text("rooms"))),
@@ -704,7 +704,7 @@ return msg() . template_render('../templates/user_shifts.html', array (
   'task_notice' => '<sup>1</sup>' . Get_Text("pub_schichtplan_tasks_notice"),
   'new_style_checkbox' => '<label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style']? ' checked' : '') . '> Use new style if possible</label>',
   'shifts_table' => $shifts_table,
-  'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'), htmlspecialchars(make_user_shifts_ical_link($user['ical_key'])), page_link_to('user_myshifts') . '&amp;reset'),
+  'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'), htmlspecialchars(make_user_shifts_ical_link($user['api_key'])), page_link_to('user_myshifts') . '&amp;reset'),
   'filter' => ucfirst(Get_Text("to_filter")),
 ));
 }

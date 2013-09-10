@@ -9,16 +9,19 @@ function user_atom() {
   else
     die("Missing key.");
 
-  $user = sql_select("SELECT * FROM `User` WHERE `ical_key`='" . sql_escape($key) . "' LIMIT 1");
-  if (count($user) == 0)
+  $user = User_by_api_key($key);
+  if($user === false)
+    die("Unable to find user.");
+  if($user == null)
     die("Key invalid.");
+  if(!in_array('atom', privileges_for_user($user['UID'])))
+    die("No privilege for atom.");
 
-  $user = $user[0];
   $news = sql_select("SELECT * FROM `News` " . (empty($_REQUEST['meetings'])? '' : 'WHERE `Treffen` = 1 ') . "ORDER BY `ID` DESC LIMIT " . sql_escape($DISPLAY_NEWS));
 
   header('Content-Type: application/atom+xml; charset=utf-8');
   $html = '<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+  <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Engelsystem</title>
   <id>' . $_SERVER['HTTP_HOST'] . htmlspecialchars(preg_replace('#[&?]key=[a-f0-9]{32}#', '', $_SERVER['REQUEST_URI'])) . '</id>
   <updated>' . date('Y-m-d\TH:i:sP', $news[0]['Datum']) . "</updated>\n";
@@ -29,11 +32,11 @@ function user_atom() {
     <id>" . preg_replace('#^https?://#', '', page_link_to_absolute("news")) . "-${news_entry['ID']}</id>
     <updated>" . date('Y-m-d\TH:i:sP', $news_entry['Datum']) . "</updated>
     <summary type=\"html\">" . htmlspecialchars($news_entry['Text']) . "</summary>
-  </entry>\n";
-  }
-  $html .= "</feed>";
-  header("Content-Length: " . strlen($html));
-  echo $html;
-  die();
+    </entry>\n";
+}
+$html .= "</feed>";
+header("Content-Length: " . strlen($html));
+echo $html;
+die();
 }
 ?>

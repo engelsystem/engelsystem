@@ -12,7 +12,7 @@ function admin_shifts() {
   $mode = '';
   $angelmode = '';
   $length = '';
-  $change_hours = '';
+  $change_hours = array();
 
   // Locations laden (auch unsichtbare - fuer Erzengel ist das ok)
   $rooms = sql_select("SELECT * FROM `Room` ORDER BY `Name`");
@@ -209,7 +209,6 @@ function admin_shifts() {
       $hidden_types = "";
       foreach ($needed_angel_types as $type_id => $count)
         $hidden_types .= '<input type="hidden" name="type_' . $type_id . '" value="' . $count . '" />';
-      sort($change_hours);
       return template_render('../templates/admin_shift_preview.html', array (
         'shifts_table' => $shifts_table,
         'name' => $name,

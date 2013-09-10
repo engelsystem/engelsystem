@@ -10,11 +10,13 @@ function user_ical() {
   else
     die("Missing key.");
 
-  $user = sql_select("SELECT * FROM `User` WHERE `ical_key`='" . sql_escape($key) . "' LIMIT 1");
-  if (count($user) == 0)
+  $user = User_by_api_key($key);
+  if($user === false)
+    die("Unable to find user.");
+  if($user == null)
     die("Key invalid.");
-
-  $user = $user[0];
+  if(!in_array('ical', privileges_for_user($user['UID'])))
+    die("No privilege for ical.");
 
   if (isset ($_REQUEST['export']) && $_REQUEST['export'] == 'user_shifts') {
     require_once ('includes/pages/user_shifts.php');

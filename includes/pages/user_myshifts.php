@@ -17,7 +17,7 @@ function user_myshifts() {
 
   if (isset ($_REQUEST['reset'])) {
     if ($_REQUEST['reset'] == "ack") {
-      user_reset_ical_key($user);
+      User_reset_api_key($user);
       success("Key geändert.");
       redirect(page_link_to('user_myshifts'));
     }
@@ -118,7 +118,7 @@ function user_myshifts() {
       'actions' => "Aktion"
     ), $myshifts_table),
     $id == $user['UID'] && count($shifts) == 0 ? error(sprintf(Get_Text('pub_myshifts_goto_shifts'), page_link_to('user_shifts')), true) : '',
-    "<h2>iCal Export</h2>" . sprintf(Get_Text('inc_schicht_ical_text'), page_link_to_absolute('ical') . '&key=' . $shifts_user['ical_key'], page_link_to('user_myshifts') . '&reset')
+    "<h2>iCal Export</h2>" . sprintf(Get_Text('inc_schicht_ical_text'), page_link_to_absolute('ical') . '&key=' . $shifts_user['api_key'], page_link_to('user_myshifts') . '&reset')
   ));
 }
 ?>

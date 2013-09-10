@@ -128,61 +128,6 @@ INSERT INTO `FAQ` (`FID`, `Frage_de`, `Antwort_de`, `Frage_en`, `Antwort_en`, `S
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `GroupPrivileges`
---
-
-DROP TABLE IF EXISTS `GroupPrivileges`;
-CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL,
-  `privilege_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=191 ;
-
---
--- Daten für Tabelle `GroupPrivileges`
---
-
-INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
-(187, -3, 28),
-(24, -1, 5),
-(177, -2, 24),
-(176, -2, 8),
-(23, -1, 2),
-(142, -5, 16),
-(141, -5, 28),
-(175, -2, 11),
-(174, -2, 26),
-(86, -6, 21),
-(140, -5, 6),
-(139, -5, 12),
-(173, -2, 9),
-(138, -5, 14),
-(137, -5, 13),
-(136, -5, 7),
-(172, -2, 17),
-(87, -6, 18),
-(171, -2, 15),
-(85, -6, 10),
-(170, -2, 3),
-(88, -1, 1),
-(186, -3, 19),
-(169, -2, 4),
-(109, -4, 27),
-(135, -5, 31),
-(184, -3, 27),
-(143, -5, 5),
-(144, -5, 33),
-(188, -3, 16),
-(185, -3, 32),
-(189, -3, 33),
-(168, -2, 34),
-(190, -3, 25);
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `Groups`
 --
 
@@ -323,6 +268,62 @@ CREATE TABLE IF NOT EXISTS `news_comments` (
 
 
 -- --------------------------------------------------------
+--
+-- Tabellenstruktur für Tabelle `GroupPrivileges`
+--
+
+DROP TABLE IF EXISTS `GroupPrivileges`;
+CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL,
+  `privilege_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`,`privilege_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=203 ;
+
+--
+-- Daten für Tabelle `GroupPrivileges`
+--
+
+INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
+(187, -3, 28),
+(24, -1, 5),
+(200, -2, 11),
+(199, -2, 26),
+(23, -1, 2),
+(142, -5, 16),
+(141, -5, 28),
+(198, -2, 9),
+(197, -2, 17),
+(86, -6, 21),
+(140, -5, 6),
+(139, -5, 12),
+(196, -2, 35),
+(138, -5, 14),
+(137, -5, 13),
+(136, -5, 7),
+(195, -2, 15),
+(87, -6, 18),
+(194, -2, 3),
+(85, -6, 10),
+(193, -2, 4),
+(88, -1, 1),
+(186, -3, 19),
+(192, -2, 30),
+(109, -4, 27),
+(135, -5, 31),
+(184, -3, 27),
+(143, -5, 5),
+(144, -5, 33),
+(188, -3, 16),
+(185, -3, 32),
+(189, -3, 33),
+(191, -2, 34),
+(190, -3, 25),
+(201, -2, 8),
+(202, -2, 24);
+
+-- --------------------------------------------------------
 
 --
 -- Tabellenstruktur für Tabelle `Privileges`
@@ -335,19 +336,19 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36 ;
 
 --
 -- Daten für Tabelle `Privileges`
 --
 
 INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
-(1, 'start', 'Startseite fÃƒÂ¼r GÃƒÂ¤ste/Nicht eingeloggte User'),
+(1, 'start', 'Startseite für Gäste/Nicht eingeloggte User'),
 (2, 'login', 'Logindialog'),
 (3, 'news', 'Anzeigen der News-Seite'),
 (4, 'logout', 'User darf sich ausloggen'),
 (5, 'register', 'Einen neuen Engel registerieren'),
-(6, 'admin_rooms', 'RÃƒÂ¤ume administrieren'),
+(6, 'admin_rooms', 'Räume administrieren'),
 (7, 'admin_angel_types', 'Engel Typen administrieren'),
 (8, 'user_settings', 'User profile settings'),
 (9, 'user_messages', 'Writing and reading messages from user to user'),
@@ -374,7 +375,9 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (31, 'admin_active', 'Mark angels as active and if they got a t-shirt.'),
 (32, 'admin_free', 'Show a list of free/unemployed angels.'),
 (33, 'admin_user_angeltypes', 'Confirm restricted angel types'),
-(34, 'atom', ' Atom news export');
+(34, 'atom', ' Atom news export'),
+(35, 'shifts_json_export', 'Export shifts in JSON format');
+
 
 -- --------------------------------------------------------
 
@@ -1216,18 +1219,18 @@ CREATE TABLE IF NOT EXISTS `User` (
   `Art` varchar(30) DEFAULT NULL,
   `kommentar` text,
   `Hometown` varchar(255) NOT NULL DEFAULT '',
-  `ical_key` varchar(32) NOT NULL,
+  `api_key` varchar(32) NOT NULL,
   PRIMARY KEY (`UID`,`Nick`),
   UNIQUE KEY `Nick` (`Nick`),
-  KEY `ical_key` (`ical_key`)
+  KEY `api_key` (`api_key`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Daten für Tabelle `User`
 --
 
-INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `ical_key`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '$23PstrXfk7Nw', 1, 1, 0, 10, 'DE', 115, 'L', 1371899094, '0000-00-00 00:00:00', '', '', '', '1b02f4586319e75000b3919380624ab5');
+INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`) VALUES
+(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '$23PstrXfk7Nw', 1, 1, 0, 10, 'DE', 115, 'L', 1371899094, '0000-00-00 00:00:00', '', '', '', '');
 
 -- --------------------------------------------------------
 
