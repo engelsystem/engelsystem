@@ -17,6 +17,10 @@ function admin_news() {
         if (count($news) > 0) {
           list ($news) = $news;
 
+          $user_source = User($news['UID']);
+          if($user_source === false)
+            engelsystem_error("Unable to load user.");
+
           $html .= '<a href="' . page_link_to("news") . '">&laquo Back</a>';
 
           $html .= "<form action=\"" . page_link_to("admin_news") . "&action=save\" method=\"post\">\n";
@@ -29,7 +33,7 @@ function admin_news() {
           $html .= "  <tr><td>Text</td><td><textarea rows=\"10\" cols=\"80\" name=\"eText\">" .
               $news["Text"] . "</textarea></td></tr>\n";
           $html .= "  <tr><td>Engel</td><td>" .
-              UID2Nick($news["UID"]) . "</td></tr>\n";
+              User_Nick_render($user_source) . "</td></tr>\n";
           $html .= "  <tr><td>Treffen</td><td>" . html_select_key('eTreffen', 'eTreffen', array (
             '1' => "Ja",
             '0' => "Nein"

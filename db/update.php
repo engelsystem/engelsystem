@@ -1,6 +1,6 @@
 <?php
 require_once (dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'bootstrap.php');
-require_once ('includes/sys_mysql.php');
+require_once ('includes/mysql_provider.php');
 require_once ('config/config.php');
 require_once ('config/config_db.php');
 sql_connect($config['host'], $config['user'], $config['pw'], $config['db']);

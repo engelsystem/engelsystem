@@ -35,7 +35,12 @@ function display_news($news) {
   $html .= '<article class="news' . ($news['Treffen'] == 1 ? ' meeting' : '') . '">';
   $html .= '<details>';
   $html .= date("Y-m-d H:i", $news['Datum']) . ', ';
-  $html .= UID2Nick($news['UID']);
+
+  $user_source = User($news['UID']);
+  if($user_source === false)
+    engelsystem_error("Unable to load user.");
+
+  $html .= User_Nick_render($user_source);
   if ($p != "news_comments")
     $html .= ', <a href="' . page_link_to("news_comments") . '&nid=' . $news['ID'] . '">Kommentare (' . sql_num_query("SELECT * FROM `news_comments` WHERE `Refid`='" . sql_escape($news['ID']) . "'") . ') &raquo;</a>';
   $html .= '</details>';
@@ -69,11 +74,15 @@ function user_news_comments() {
 
     $comments = sql_select("SELECT * FROM `news_comments` WHERE `Refid`='" . sql_escape($nid) . "' ORDER BY 'ID'");
     foreach ($comments as $comment) {
+      $user_source = User($comment['UID']);
+      if($user_source === false)
+        engelsystem_error("Unable to load user.");
+
       $html .= '<article class="news_comment">';
-      $html .= DisplayAvatar($comment['UID']);
+      $html .= User_Avatar_render($user_source);
       $html .= '<details>';
       $html .= $comment['Datum'] . ', ';
-      $html .= UID2Nick($comment['UID']);
+      $html .= User_Nick_render($user_source);
       $html .= '</details>';
       $html .= '<p>' . nl2br($comment['Text']) . '</p>';
       $html .= '</article>';

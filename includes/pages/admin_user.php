@@ -26,38 +26,38 @@ function admin_user() {
       $html .= "<table>\n";
       $html .= "  <tr><td>Nick</td><td>" .
           "<input type=\"text\" size=\"40\" name=\"eNick\" value=\"" .
-          mysql_result($Erg, 0, "Nick") . "\"></td></tr>\n";
+          $user_source['Nick'] . "\"></td></tr>\n";
       $html .= "  <tr><td>lastLogIn</td><td>" .
-          date("Y-m-d H:i", mysql_result($Erg, 0, "lastLogIn")) . "</td></tr>\n";
+          date("Y-m-d H:i", $user_source['lastLogIn']) . "</td></tr>\n";
       $html .= "  <tr><td>Name</td><td>" .
           "<input type=\"text\" size=\"40\" name=\"eName\" value=\"" .
-          mysql_result($Erg, 0, "Name") . "\"></td></tr>\n";
+          $user_source['Name'] . "\"></td></tr>\n";
       $html .= "  <tr><td>Vorname</td><td>" .
           "<input type=\"text\" size=\"40\" name=\"eVorname\" value=\"" .
-          mysql_result($Erg, 0, "Vorname") . "\"></td></tr>\n";
+          $user_source['Vorname'] . "\"></td></tr>\n";
       $html .= "  <tr><td>Alter</td><td>" .
           "<input type=\"text\" size=\"5\" name=\"eAlter\" value=\"" .
-          mysql_result($Erg, 0, "Alter") . "\"></td></tr>\n";
+          $user_source['Alter'] . "\"></td></tr>\n";
       $html .= "  <tr><td>Telefon</td><td>" .
           "<input type=\"text\" size=\"40\" name=\"eTelefon\" value=\"" .
-          mysql_result($Erg, 0, "Telefon") . "\"></td></tr>\n";
+          $user_source['Telefon'] . "\"></td></tr>\n";
       $html .= "  <tr><td>Handy</td><td>" .
           "<input type=\"text\" size=\"40\" name=\"eHandy\" value=\"" .
-          mysql_result($Erg, 0, "Handy") . "\"></td></tr>\n";
+          $user_source['Handy'] . "\"></td></tr>\n";
       $html .= "  <tr><td>DECT</td><td>" .
           "<input type=\"text\" size=\"4\" name=\"eDECT\" value=\"" .
-          mysql_result($Erg, 0, "DECT") . "\"></td></tr>\n";
+          $user_source['DECT'] . "\"></td></tr>\n";
       $html .= "  <tr><td>email</td><td>" .
           "<input type=\"text\" size=\"40\" name=\"eemail\" value=\"" .
-          mysql_result($Erg, 0, "email") . "\"></td></tr>\n";
+          $user_source['email'] . "\"></td></tr>\n";
       $html .= "  <tr><td>ICQ</td><td>" .
           "<input type=\"text\" size=\"40\" name=\"eICQ\" value=\"" .
-          mysql_result($Erg, 0, "ICQ") . "\"></td></tr>\n";
+          $user_source['ICQ'] . "\"></td></tr>\n";
       $html .= "  <tr><td>jabber</td><td>" .
           "<input type=\"text\" size=\"40\" name=\"ejabber\" value=\"" .
-          mysql_result($Erg, 0, "jabber") . "\"></td></tr>\n";
+          $user_source['jabber'] . "\"></td></tr>\n";
       $html .= "  <tr><td>Size</td><td>" .
-          html_select_key('size', 'eSize', $tshirt_sizes, mysql_result($Erg, 0, "Size")) . "</td></tr>\n";
+          html_select_key('size', 'eSize', $tshirt_sizes, $user_source['Size']) . "</td></tr>\n";
 
       $options = array (
         '1' => "Yes",
@@ -66,21 +66,21 @@ function admin_user() {
 
       // Gekommen?
       $html .= "  <tr><td>Gekommen</td><td>\n";
-      $html .= html_options('eGekommen', $options, mysql_result($Erg, 0, "Gekommen")) . "</td></tr>\n";
+      $html .= html_options('eGekommen', $options, $user_source['Gekommen']) . "</td></tr>\n";
 
       // Aktiv?
       $html .= "  <tr><td>Aktiv</td><td>\n";
-      $html .= html_options('eAktiv', $options, mysql_result($Erg, 0, "Aktiv")) . "</td></tr>\n";
+      $html .= html_options('eAktiv', $options, $user_source['Aktiv']) . "</td></tr>\n";
 
       // T-Shirt bekommen?
       $html .= "  <tr><td>T-Shirt</td><td>\n";
-      $html .= html_options('eTshirt', $options, mysql_result($Erg, 0, "Tshirt")) . "</td></tr>\n";
+      $html .= html_options('eTshirt', $options, $user_source['Tshirt']) . "</td></tr>\n";
 
       $html .= "  <tr><td>Hometown</td><td>" .
           "<input type=\"text\" size=\"40\" name=\"Hometown\" value=\"" .
-          mysql_result($Erg, 0, "Hometown") . "\"></td></tr>\n";
+          $user_source['Hometown'] . "\"></td></tr>\n";
 
-      $html .= "</table>\n</td><td valign=\"top\">" . displayavatar($id, false) . "</td></tr>";
+      $html .= "</table>\n</td><td valign=\"top\">" . User_Avatar_render($user_source) . "</td></tr>";
 
       $html .= "</td></tr>\n";
       $html .= "</table>\n<br />\n";
@@ -113,7 +113,7 @@ function admin_user() {
         $selected_angel_types = array_unique($selected_angel_types);
 
         // Assign angel-types
-        sql_start_transaction();
+        sql_transaction_start();
         sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']));
         $user_angel_type_info = array();
         if (!empty($selected_angel_types)) {
@@ -131,7 +131,7 @@ function admin_user() {
           if (!empty($accepted_angel_types))
             sql_query("UPDATE `UserAngelTypes` SET `confirm_user_id` = '" . sql_escape($user['UID']) . "' WHERE `user_id` = '" . sql_escape($user_source['UID']) . "' AND `angeltype_id` IN (" . implode(',', $accepted_angel_types) . ")");
         }
-        sql_stop_transaction();
+        sql_transaction_commit();
 
         engelsystem_log("Set angeltypes of " . User_Nick_render($user_source) . " to: " . join(", ", $user_angel_type_info));
         success("Angeltypes saved.");

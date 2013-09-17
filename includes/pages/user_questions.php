@@ -12,7 +12,12 @@ function user_questions() {
     $questions = sql_select("SELECT * FROM `Questions` WHERE `AID`>0 AND `UID`=" . sql_escape($user['UID']));
     foreach ($questions as $question) {
       $answered_questions .= '<tr><td>' . str_replace("\n", '<br />', $question['Question']) . '</td>';
-      $answered_questions .= '<td>' . UID2Nick($question['AID']) . '</td><td>' . str_replace("\n", '<br />', $question['Answer']) . '</td>';
+
+      $answer_user_source = User($question['AID']);
+      if($answer_user_source === false)
+        engelsystem_error("Unable to load user.");
+
+      $answered_questions .= '<td>' . User_Nick_render($answer_user_source) . '</td><td>' . str_replace("\n", '<br />', $question['Answer']) . '</td>';
       $answered_questions .= '<td><a href="' . page_link_to("user_questions") . '&action=delete&id=' . $question['QID'] . '">Löschen</a></td><tr>';
     }
 

@@ -18,28 +18,42 @@ function admin_questions() {
   if (!isset ($_REQUEST['action'])) {
     $open_questions = "";
     $questions = sql_select("SELECT * FROM `Questions` WHERE `AID`=0");
-    foreach ($questions as $question)
+    foreach ($questions as $question) {
+      $user_source = User($question['UID']);
+      if($user_source === false)
+        engelsystem_error("Unable to load user.");
+
       $open_questions .= template_render(
           '../templates/admin_question_unanswered.html', array (
-            'question_nick' => UID2Nick($question['UID']),
+            'question_nick' => User_Nick_render($user_source),
             'question_id'   => $question['QID'],
             'link'          => page_link_to("admin_questions"),
             'question'      => str_replace("\n", '<br />', $question['Question'])
           ));
+    }
 
     $answered_questions = "";
     $questions = sql_select("SELECT * FROM `Questions` WHERE `AID`>0");
 
-    foreach ($questions as $question)
+    foreach ($questions as $question) {
+      $user_source = User($question['UID']);
+      if($user_source === false)
+        engelsystem_error("Unable to load user.");
+
+      $answer_user_source = User($question['AID']);
+      if($answer_user_source === false)
+        engelsystem_error("Unable to load user.");
+
       $answered_questions .= template_render(
           '../templates/admin_question_answered.html', array (
             'question_id'   => $question['QID'],
-            'question_nick' => UID2Nick($question['UID']),
+            'question_nick' => User_Nick_render($user_source),
             'question'      => str_replace("\n", "<br />", $question['Question']),
-            'answer_nick'   => UID2Nick($question['AID']),
+            'answer_nick'   => User_Nick_render($answer_user_source),
             'answer'        => str_replace("\n", "<br />", $question['Answer']),
             'link'          => page_link_to("admin_questions"),
           ));
+    }
 
     return template_render('../templates/admin_questions.html', array (
       'link' => page_link_to("admin_questions"),

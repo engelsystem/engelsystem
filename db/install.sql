@@ -1289,26 +1289,6 @@ INSERT INTO `UserGroups` (`id`, `uid`, `group_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `UserPicture`
---
-
-DROP TABLE IF EXISTS `UserPicture`;
-CREATE TABLE IF NOT EXISTS `UserPicture` (
-  `UID` int(11) NOT NULL DEFAULT '0',
-  `Bild` longblob NOT NULL,
-  `ContentType` varchar(20) NOT NULL DEFAULT '',
-  `show` char(1) NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`UID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `UserPicture`
---
-
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `Wecken`
 --
 

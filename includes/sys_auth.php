@@ -31,8 +31,7 @@ function generate_salt($length = 16) {
 
 // set the password of a user
 function set_password($uid, $password) {
-	$res = sql_query("UPDATE `User` SET `Passwort` = '" . sql_escape(crypt($password, CRYPT_ALG . '$' . generate_salt(16) . '$')) . "' WHERE `UID` = " . intval($uid) . " LIMIT 1");
-	return $res && (mysql_affected_rows() > 0);
+	return sql_query("UPDATE `User` SET `Passwort` = '" . sql_escape(crypt($password, CRYPT_ALG . '$' . generate_salt(16) . '$')) . "' WHERE `UID` = " . intval($uid) . " LIMIT 1");
 }
 
 // verify a password given a precomputed salt.
@@ -72,8 +71,6 @@ function json_auth_service() {
 		if (count($Erg) == 1) {
 			$Erg = $Erg[0];
 			if (verify_password($Pass, $Erg["Passwort"], $Erg["UID"])) {
-				$UID = mysql_result($Erg, 0, "UID");
-
 				$user_privs = sql_select("SELECT `Privileges`.`name` FROM `User` JOIN `UserGroups` ON (`User`.`UID` = `UserGroups`.`uid`) JOIN `GroupPrivileges` ON (`UserGroups`.`group_id` = `GroupPrivileges`.`group_id`) JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `User`.`UID`=" . sql_escape($UID) . ";");
 				foreach ($user_privs as $user_priv)
 					$privileges[] = $user_priv['name'];

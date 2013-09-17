@@ -1,18 +1,25 @@
 <?php
 require_once ('bootstrap.php');
+
+require_once ('includes/mysql_provider.php');
+
 require_once ('includes/sys_auth.php');
 require_once ('includes/sys_counter.php');
-require_once ('includes/sys_lang.php');
 require_once ('includes/sys_log.php');
 require_once ('includes/sys_menu.php');
-require_once ('includes/sys_mysql.php');
 require_once ('includes/sys_page.php');
-require_once ('includes/sys_shift.php');
 require_once ('includes/sys_template.php');
-require_once ('includes/sys_user.php');
 
 require_once ('includes/model/LogEntries_model.php');
+require_once ('includes/model/Sprache_model.php');
 require_once ('includes/model/User_model.php');
+
+require_once ('includes/view/Shifts_view.php');
+require_once ('includes/view/Sprache_view.php');
+require_once ('includes/view/User_view.php');
+
+require_once ('includes/helper/message_helper.php');
+require_once ('includes/helper/error_helper.php');
 
 require_once ('config/config.php');
 require_once ('config/config_db.php');
