@@ -4,7 +4,7 @@
  * Gibt zwischengespeicherte Fehlermeldungen zurück und löscht den Zwischenspeicher
  */
 function msg() {
-  if (!isset ($_SESSION['msg']))
+  if (! isset($_SESSION['msg']))
     return "";
   $msg = $_SESSION['msg'];
   $_SESSION['msg'] = "";
@@ -20,7 +20,7 @@ function info($msg, $immediatly = false) {
       return "";
     return '<p class="info">' . $msg . '</p>';
   } else {
-    if (!isset ($_SESSION['msg']))
+    if (! isset($_SESSION['msg']))
       $_SESSION['msg'] = "";
     $_SESSION['msg'] .= info($msg, true);
   }
@@ -35,7 +35,7 @@ function error($msg, $immediatly = false) {
       return "";
     return '<p class="error">' . $msg . '</p>';
   } else {
-    if (!isset ($_SESSION['msg']))
+    if (! isset($_SESSION['msg']))
       $_SESSION['msg'] = "";
     $_SESSION['msg'] .= error($msg, true);
   }
@@ -50,7 +50,7 @@ function success($msg, $immediatly = false) {
       return "";
     return '<p class="success">' . $msg . '</p>';
   } else {
-    if (!isset ($_SESSION['msg']))
+    if (! isset($_SESSION['msg']))
       $_SESSION['msg'] = "";
     $_SESSION['msg'] .= success($msg, true);
   }

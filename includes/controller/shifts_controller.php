@@ -1,25 +1,26 @@
 <?php
 
 /**
- * Export filtered shifts via JSON. (Like iCal Export or shifts view)
+ * Export filtered shifts via JSON.
+ * (Like iCal Export or shifts view)
  */
 function shifts_json_export_controller() {
   global $ical_shifts, $user;
 
-  if (isset ($_REQUEST['key']) && preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key']))
+  if (isset($_REQUEST['key']) && preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key']))
     $key = $_REQUEST['key'];
   else
     die("Missing key.");
 
   $user = User_by_api_key($key);
-  if($user === false)
+  if ($user === false)
     die("Unable to find user.");
-  if($user == null)
+  if ($user == null)
     die("Key invalid.");
-  if(!in_array('shifts_json_export', privileges_for_user($user['UID'])))
+  if (! in_array('shifts_json_export', privileges_for_user($user['UID'])))
     die("No privilege for shifts_json_export.");
 
-  if (isset ($_REQUEST['export']) && $_REQUEST['export'] == 'user_shifts') {
+  if (isset($_REQUEST['export']) && $_REQUEST['export'] == 'user_shifts') {
     require_once ('includes/pages/user_shifts.php');
     view_user_shifts();
   } else {

@@ -1,89 +1,109 @@
 <?php
+
 function page_link_to($page) {
-	return '?p=' . $page;
+  return '?p=' . $page;
 }
 
 function page_link_to_absolute($page) {
-	return (isset ($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . preg_replace("/\?.*$/", '', $_SERVER['REQUEST_URI']) . page_link_to($page);
+  return (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . preg_replace("/\?.*$/", '', $_SERVER['REQUEST_URI']) . page_link_to($page);
+}
+
+/**
+ * Renders the header toolbar containing search, login/logout, user and settings links.
+ */
+function header_toolbar() {
+  global $p, $privileges, $user;
+
+  $toolbar_items = array();
+
+  if(in_array('register', $privileges))
+    $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'register', "Register", $p == 'register');
+
+  if(in_array('user_myshifts', $privileges))
+    $toolbar_items[] = toolbar_item_link(page_link_to('user_myshifts'), 'engel', $user['Nick'], $p == 'user_myshifts');
+
+  if(in_array('user_settings', $privileges))
+    $toolbar_items[] = toolbar_item_link(page_link_to('user_settings'), 'settings', "Settings", $p == 'user_settings');
+
+  if(in_array('login', $privileges))
+    $toolbar_items[] = toolbar_item_link(page_link_to('login'), 'login', "Login", $p == 'login');
+
+  if(in_array('logout', $privileges))
+    $toolbar_items[] = toolbar_item_link(page_link_to('logout'), 'logout', "Logout", $p == 'logout');
+
+  return toolbar($toolbar_items);
 }
 
 function make_navigation() {
-	global $p;
-	global $privileges;
-	$menu_items = $privileges;
-	$menu_items[] = "faq";
-	$menu = "";
+  global $p;
+  global $privileges;
+  $menu = "";
 
-	// Standard Navigation
-	$menu .= make_navigation_for(Get_Text('/'), array (
-		"login",
-		"logout",
-		"register",
-		"faq"
-	));
+  $specials = array(
+      "faq"
+  );
 
-	// Engel Navigation
-	$menu .= make_navigation_for(Get_Text('inc_schicht_engel'), array (
-		"news",
-		"user_meetings",
-		"user_myshifts",
-		"user_shifts",
-		"user_messages",
-		"user_questions",
-		"user_wakeup",
-		"user_settings"
-	));
+  $pages = array(
+      "news",
+      "user_meetings",
+      "user_myshifts",
+      "user_shifts",
+      "user_messages",
+      "user_questions",
+      "user_wakeup",
+      "admin_arrive",
+      "admin_active",
+      "admin_user",
+      "admin_free",
+      "admin_usershifts",
+      "admin_questions",
+      "admin_angel_types",
+      "admin_user_angeltypes",
+      "admin_shifts",
+      "admin_rooms",
+      "admin_groups",
+      "admin_faq",
+      "admin_language",
+      "admin_import",
+      "admin_log"
+  );
 
-	// Admin Navigation
-	$menu .= make_navigation_for(Get_Text('admin/'), array (
-		"admin_arrive",
-		"admin_active",
-		"admin_user",
-		"admin_free",
-		"admin_usershifts",
-		"admin_questions",
-		"admin_angel_types",
-		"admin_user_angeltypes",
-		"admin_shifts",
-		"admin_rooms",
-		"admin_groups",
-		"admin_faq",
-		"admin_language",
-		"admin_import",
-		"admin_log"
-	));
-	return $menu;
+  foreach ($pages as $page)
+    if (in_array($page, $privileges) || in_array($page, $specials))
+      $menu .= '<li' . ($page == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($page) . '">' . Get_Text($page) . '</a></li>';
+
+  return '<nav><ul>' . $menu . '</ul></nav>';
 }
 
 function make_navigation_for($name, $pages) {
-	global $privileges, $p;
+  global $privileges, $p;
 
-	$specials = array (
-		"faq"
-	);
+  $specials = array(
+      "faq"
+  );
 
-	$menu = "";
-	foreach ($pages as $page)
-		if (in_array($page, $privileges) || in_array($page, $specials))
-			$menu .= '<li' . ($page == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($page) . '">' . Get_Text($page) . '</a></li>';
+  $menu = "";
+  foreach ($pages as $page)
+    if (in_array($page, $privileges) || in_array($page, $specials))
+      $menu .= '<li' . ($page == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($page) . '">' . Get_Text($page) . '</a></li>';
 
-	if ($menu != "")
-		$menu = '<nav class="container"><h4>' . $name . '</h4><ul class="content">' . $menu . '</ul></nav>';
-	return $menu;
+  if ($menu != "")
+    $menu = '<nav class="container"><h4>' . $name . '</h4><ul class="content">' . $menu . '</ul></nav>';
+  return $menu;
 }
 
 function make_menu() {
-	return make_navigation() . make_langselect();
+  return make_navigation() . make_langselect();
 }
 
 function make_langselect() {
-	if (strpos($_SERVER["REQUEST_URI"], "?") > 0)
-		$URL = $_SERVER["REQUEST_URI"] . "&SetLanguage=";
-	else
-		$URL = $_SERVER["REQUEST_URI"] . "?SetLanguage=";
+  if (strpos($_SERVER["REQUEST_URI"], "?") > 0)
+    $URL = $_SERVER["REQUEST_URI"] . "&SetLanguage=";
+  else
+    $URL = $_SERVER["REQUEST_URI"] . "?SetLanguage=";
 
-	$html = '<p class="content"><a class="sprache" href="' . htmlspecialchars($URL) . 'DE"><img src="pic/flag/de.png" alt="DE" title="Deutsch"></a>';
-	$html .= '<a class="sprache" href="' . htmlspecialchars($URL) . 'EN"><img src="pic/flag/en.png" alt="EN" title="English"></a></p>';
-	return '<nav class="container"><h4>' . Get_Text("Sprache") . '</h4>' . $html . '</nav>';
+  $html = '<p class="content"><a class="sprache" href="' . htmlspecialchars($URL) . 'DE"><img src="pic/flag/de.png" alt="DE" title="Deutsch"></a>';
+  $html .= '<a class="sprache" href="' . htmlspecialchars($URL) . 'EN"><img src="pic/flag/en.png" alt="EN" title="English"></a></p>';
+  return '<nav class="container"><h4>' . Get_Text("Sprache") . '</h4>' . $html . '</nav>';
 }
 ?>

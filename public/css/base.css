@@ -1,114 +1,158 @@
 * {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    font-size: 14px;
+  background: #fff;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
 }
 
 header {
-    display: block;
-    width: 100%;
+	background: #f0f0f0;
+	border-bottom: 1px solid #000;
+	display: block;
+	padding: 5px;
 }
 
-article, details {
-    clear: none;
-    display: block;
-    float: none;
+header .toolbar {
+	position: absolute;
+	right: 17px;
+	top: 17px;
+}
+
+.toolbar a {
+	padding: 0 10px 0 0;
+}
+
+article,details {
+	clear: none;
+	display: block;
+	float: none;
 }
 
 .small {
-    font-size: 12px;
+	font-size: 12px;
 }
 
 #logo {
-    background: url('../pic/himmel.png') top left no-repeat;
-    display: block;
-    height: 32px;
-    margin: 10px auto;
-    width: 380px;
-}
-
-#body {
-    margin: 0 20px 20px 20px;
+	background: url('../pic/engelsystem_logo_30c3.png') top left no-repeat;
+	display: block;
+	float: left;
+	height: 42px;
+	margin: 0;
+	width: 202px;
 }
 
 #menu {
-    float: left;
-    width: 200px;
+	float: left;
+	padding: 10px;
+	width: 180px;
+}
+
+#menu p {
+  padding: 4px;
+}
+
+#menu h4 {
+	font-size: 14px;
+	padding: 3px;
+	text-transform: capitalize;
+}
+
+#menu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#menu li a {
+	display: block;
+	padding: 3px;
+}
+
+#menu li a:hover, .toolbar a:hover {
+	color: #900;
+}
+
+#menu li.selected a, .toolbar a.selected {
+  color: #900;
+	font-weight: bold;
 }
 
 #content {
-    margin-left: 200px;
+	margin-left: 200px;
+	padding: 10px;
 }
 
 a {
-    color: #000;
+	color: #000;
 }
 
-th, td, dt, dd {
-    padding: 4px;
+th,td,dt,dd {
+	padding: 4px;
 	vertical-align: top;
 }
 
 dt {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 dd {
-    margin-left: 20px;
+	margin-left: 20px;
 }
 
-h1, h2, h3, h4 {
-    font-size: 16px;
+h1,h2,h3,h4 {
+  font-size: 16px;
+  padding: 3px;
 }
 
-h1, h4 {
-    padding: 0 4px;
+h1 {
+	font-size: 18px;
+	margin-bottom: 10px;
 }
 
 hr {
-    margin: 10px 0;
+	margin: 10px 0;
 }
 
 ul {
-    padding: 5px 0 5px 20px;
+	padding: 5px 0 5px 20px;
 }
 
 nav {
-    margin: 0 10px 10px 0;
+	margin: 0 0 20px 0;
 }
 
-#content > article {
-    padding: 10px;
+#content>article {
+	padding: 3px;
 }
 
 #content h2 {
-    margin-top: 15px;
+	margin-top: 15px;
 }
 
 #content h2:first-child {
-    margin-top: 0;
+	margin-top: 0;
 }
 
 p {
-    padding: 0 0 10px 0;
-}
-
-#menu p {
-    padding: 4px;
+	padding: 0 0 10px 0;
 }
 
 a.sprache img {
-    margin-right: 5px;
+	margin-right: 5px;
 }
 
 table {
-    border-collapse: collapse;
+	border-collapse: collapse;
 	margin-top: 5px;
 	display: block;
+}
+
+tr:hover > td {
+  background-color: #f0f0f0;
 }
 
 #shifts {
@@ -175,14 +219,15 @@ fieldset p label input {
 }
 
 th {
-    background: #f0f0f0;
-}
-thead th {
-    vertical-align: bottom;
+	background: #f0f0f0;
 }
 
-td, th {
-    border: 1px solid #888;
+thead th {
+	vertical-align: bottom;
+}
+
+td,th {
+	border: 1px solid #888;
 }
 
 th.Gekommen {
@@ -202,9 +247,9 @@ div.rotate {
 textarea {
 	font-family: inherit;
 	font-size: inherit;
-    height: 200px;
+	height: 200px;
 	padding: 2px;
-    width: 300px;
+	width: 300px;
 }
 
 .hidden {
@@ -224,26 +269,14 @@ tr:hover .hidden {
 }
 
 .clear {
-    clear: both;
+	clear: both;
 }
 
 .pagination {
-    text-align: center;
+	text-align: center;
 }
 
-.background {
-    background: #f0f0f0;
-}
-
-.container {
-    border: 1px solid #888;
-}
-
-.content {
-    background: #fff;
-}
-
-.error, .info, .success {
+.error,.info,.success {
 	background: #f0f0f0;
 	border: 1px solid #888;
 	border-radius: 2px;
@@ -253,46 +286,50 @@ tr:hover .hidden {
 }
 
 .error {
-	background: #f99;
-	border-color: #900;
+  background: #fff;
+  border-color: #ed1a3b;
+  color: #ed1a3b;
+  font-weight: bold;
 }
 
 .success {
-	background: #9f9;
-	border-color: #090;
+  background: #fff;
+  border-color: rgb(0, 178, 107);
+  color: rgb(0, 178, 107);
+  font-weight: bold;
 }
 
 .new_message {
-    font-weight: bold;
+	font-weight: bold;
 }
 
-.news_comment, .news {
-    border: 1px solid #888;
-    margin: 10px 0;
+.news_comment,.news {
+	border: 1px solid #888;
+	margin: 10px 0;
 }
 
-.news_comment details, .news details {
-    background: #f0f0f0;
-    padding: 4px;
+.news_comment details,.news details {
+	background: #f0f0f0;
+	padding: 4px;
 }
 
-.news_comment p, .news p, h3 {
-    padding: 4px;
+.news_comment p,.news p,h3 {
+	padding: 4px;
 }
 
-.news_comment p, .news_comment details {
-    margin-left: 72px;
+.news_comment p,.news_comment details {
+	margin-left: 72px;
 }
 
 .avatar {
-    float: left;
-    margin: 4px;
-    max-width: 64px;
+	float: left;
+	margin: 4px;
+	max-width: 64px;
 }
 
 .news.meeting {
-    border: 1px solid #000;
-    box-shadow: 1px 1px 5px #888;
+	border: 1px solid #000;
+	box-shadow: 1px 1px 5px #888;
 }
 
 .done {
@@ -320,7 +357,7 @@ tr:hover .hidden {
 	margin: 0 0 10px 0;
 }
 
-.button {
+a.button {
 	background: #f0f0f0;
 	border: 1px solid #888;
 	border-radius: 4px;
@@ -340,18 +377,38 @@ tr:hover .hidden {
 	background: #fff;
 }
 
+.button.add {
+  background: url('../pic/icons/add.png') 2px 2px no-repeat;
+  padding-left: 20px;
+}
+
 .button.edit {
   background: url('../pic/icons/pencil.png') 2px 2px no-repeat;
   padding-left: 20px;
 }
 
 .button.ok {
-  background: url('../pic/icons/tick.png') 2px 2px no-repeat;
-  padding-left: 20px;
+	background: url('../pic/icons/tick.png') 2px 2px no-repeat;
+	padding-left: 20px;
 }
 
 .button.cancel {
-  background: url('../pic/icons/cross.png') 2px 2px no-repeat;
+	background: url('../pic/icons/cross.png') 2px 2px no-repeat;
+	padding-left: 20px;
+}
+
+a.engel {
+  background: url('../pic/icons/engel.png') no-repeat;
+  padding-left: 20px;
+}
+
+a.logout {
+  background: url('../pic/icons/door_in.png') no-repeat;
+  padding-left: 20px;
+}
+
+a.settings {
+  background: url('../pic/icons/application_form_edit.png') no-repeat;
   padding-left: 20px;
 }
 
@@ -378,7 +435,7 @@ tr:hover .hidden {
 	margin-left: 250px;
 }
 
-.form input[type="text"], .form input[type="password"], .form textarea {
+.form input[type="text"],.form input[type="password"],.form textarea {
 	background: #fff;
 	border: 1px solid #888;
 	color: inherit;
@@ -412,13 +469,19 @@ tr:hover .hidden {
 	padding: 0;
 }
 
-.selection.rooms,
-.selection.days,
-.selection.types,
-.selection.filled {
+.selection.rooms,.selection.days,.selection.types,.selection.filled {
 	display: inline-block;
 	vertical-align: top;
 	margin-right: 15px;
+}
+
+.selection ul li.heading {
+  text-align: center;
+  font-weight: bold;
+}
+
+.selection ul li:nth-child(even) {
+  background: #f0f0f0;
 }
 
 #filter {

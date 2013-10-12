@@ -15,7 +15,7 @@ function sql_close() {
 function sql_transaction_start() {
   global $sql_nested_transaction_level;
 
-  if($sql_nested_transaction_level++ == 0)
+  if ($sql_nested_transaction_level ++ == 0)
     return sql_query("BEGIN");
   else
     return true;
@@ -27,7 +27,7 @@ function sql_transaction_start() {
 function sql_transaction_commit() {
   global $sql_nested_transaction_level;
 
-  if(--$sql_nested_transaction_level == 0)
+  if (-- $sql_nested_transaction_level == 0)
     return sql_query("COMMIT");
   else
     return true;
@@ -39,7 +39,7 @@ function sql_transaction_commit() {
 function sql_transaction_rollback() {
   global $sql_nested_transaction_level;
 
-  if(--$sql_nested_transaction_level == 0)
+  if (-- $sql_nested_transaction_level == 0)
     return sql_query("ROLLBACK");
   else
     return true;
@@ -47,6 +47,7 @@ function sql_transaction_rollback() {
 
 /**
  * Logs an sql error.
+ *
  * @param string $message
  * @return false
  */
@@ -63,10 +64,15 @@ function sql_error($message) {
 
 /**
  * Connect to mysql server.
- * @param string $host Host
- * @param string $user Username
- * @param string $pass Password
- * @param string $db DB to select
+ *
+ * @param string $host
+ *          Host
+ * @param string $user
+ *          Username
+ * @param string $pass
+ *          Password
+ * @param string $db
+ *          DB to select
  * @return mysqli The connection handler
  */
 function sql_connect($host, $user, $pass, $db) {
@@ -89,18 +95,21 @@ function sql_connect($host, $user, $pass, $db) {
 
 /**
  * Change the selected db in current mysql-connection.
- * @param $db_name
+ *
+ * @param
+ *          $db_name
  * @return bool true on success, false on error
  */
 function sql_select_db($db_name) {
   global $sql_connection;
-  if (!$sql_connection->select_db($db_name))
+  if (! $sql_connection->select_db($db_name))
     return sql_error("No database selected.");
   return true;
 }
 
 /**
  * MySQL SELECT query
+ *
  * @param string $query
  * @return Result array or false on error
  */
@@ -119,8 +128,9 @@ function sql_select($query) {
 
 /**
  * MySQL execute a query
+ *
  * @param string $query
- * @return mysqli_result|boolean Result resource or false on error
+ * @return mysqli_result boolean resource or false on error
  */
 function sql_query($query) {
   global $sql_connection;
@@ -129,7 +139,7 @@ function sql_query($query) {
   if ($result) {
     return $result;
   } else
-    usr_error("MySQL-query error: " . $query . " (" . $sql_connection->errno . ") " . $sql_connection->error);
+    return sql_error("MySQL-query error: " . $query . " (" . $sql_connection->errno . ") " . $sql_connection->error);
 }
 
 /**
@@ -165,12 +175,12 @@ function sql_num_query($query) {
 }
 
 function sql_select_single_col($query) {
-	$result = sql_select($query);
-	return array_map('array_shift', $result);
+  $result = sql_select($query);
+  return array_map('array_shift', $result);
 }
 
 function sql_select_single_cell($query) {
-	return array_shift(array_shift(sql_select($query)));
+  return array_shift(array_shift(sql_select($query)));
 }
 
 ?>

@@ -1,29 +1,46 @@
 <?php
 
-
 /**
  * Liste der verfügbaren Themes
  */
-$themes = array (
-  "1" => "Standard-Style",
-  "2" => "ot/Gelber Style",
-  "3" => "Club-Mate Style",
-  "5" => "Debian Style",
-  "6" => "c-base Style",
-  "7" => "Blau/Gelber Style",
-  "8" => "Pastel Style",
-  "4" => "Test Style",
-  "9" => "Test Style 21c3",
-  "10" => "Engelsystem 2.0",
-  "11" => "msquare (29c3)"
+$themes = array(
+    "1" => "30C3 light",
+    "2" => "30C3 dark"
 );
 
 /**
+ * Render a toolbar.
+ *
+ * @param array $items
+ * @return string
+ */
+function toolbar($items = array()) {
+  return '<div class="toolbar">' . join("\n", $items) . '</div>';
+}
+
+/**
+ * Render a link for a toolbar.
+ * @param string $href
+ * @param string $class
+ * @param string $label
+ * @param bool $selected
+ * @return string
+ */
+function toolbar_item_link($href, $class, $label, $selected = false) {
+  return '<a href="' . $href . '" class="' . ($selected ? 'selected ' : '') . '' . $class . '">' . $label . '</a>';
+}
+
+/**
  * Rendert eine Liste von Checkboxen für ein Formular
- * @param name Die Namen der Checkboxen werden aus name_key gebildet
- * @param label Die Beschriftung der Liste
- * @param items Array mit den einzelnen Checkboxen
- * @param selected Array mit den Keys, die ausgewählt sind
+ *
+ * @param
+ *          name Die Namen der Checkboxen werden aus name_key gebildet
+ * @param
+ *          label Die Beschriftung der Liste
+ * @param
+ *          items Array mit den einzelnen Checkboxen
+ * @param
+ *          selected Array mit den Keys, die ausgewählt sind
  */
 function form_checkboxes($name, $label, $items, $selected) {
   $html = "<ul>";
@@ -38,11 +55,17 @@ function form_checkboxes($name, $label, $items, $selected) {
 
 /**
  * Rendert eine Tabelle von Checkboxen für ein Formular
- * @param names Assoziatives Array mit Namen der Checkboxen als Keys und Überschriften als Values
- * @param label Die Beschriftung der gesamten Tabelle
- * @param items Array mit den Beschriftungen der Zeilen
- * @param selected Mehrdimensionales Array, wobei $selected[foo] ein Array der in der Datenreihe foo markierten Checkboxen ist
- * @param disabled Wie selected, nur dass die entsprechenden Checkboxen deaktiviert statt markiert sind
+ *
+ * @param
+ *          names Assoziatives Array mit Namen der Checkboxen als Keys und Überschriften als Values
+ * @param
+ *          label Die Beschriftung der gesamten Tabelle
+ * @param
+ *          items Array mit den Beschriftungen der Zeilen
+ * @param
+ *          selected Mehrdimensionales Array, wobei $selected[foo] ein Array der in der Datenreihe foo markierten Checkboxen ist
+ * @param
+ *          disabled Wie selected, nur dass die entsprechenden Checkboxen deaktiviert statt markiert sind
  */
 function form_multi_checkboxes($names, $label, $items, $selected, $disabled = array()) {
   $html = "<table><thead><tr>";
@@ -54,7 +77,7 @@ function form_multi_checkboxes($names, $label, $items, $selected, $disabled = ar
     foreach ($names as $name => $title) {
       $id = $name . '_' . $key;
       $sel = array_search($key, $selected[$name]) !== false ? ' checked="checked"' : "";
-      if (!empty($disabled) && !empty($disabled[$name]) && array_search($key, $disabled[$name]) !== false)
+      if (! empty($disabled) && ! empty($disabled[$name]) && array_search($key, $disabled[$name]) !== false)
         $sel .= ' disabled="disabled"';
       $html .= '<td style="text-align: center;"><input type="checkbox" id="' . $id . '" name="' . $name . '[]" value="' . $key . '"' . $sel . ' /></td>';
     }
@@ -131,7 +154,8 @@ function form($elements, $action = "") {
 }
 
 /**
- * Generiert HTML Code für eine "Seite". Fügt dazu die übergebenen Elemente zusammen.
+ * Generiert HTML Code für eine "Seite".
+ * Fügt dazu die übergebenen Elemente zusammen.
  */
 function page($elements) {
   return join($elements);
@@ -153,10 +177,10 @@ function table($columns, $rows, $data = true) {
   foreach ($rows as $row) {
     $html .= '<tr>';
     foreach ($columns as $key => $column)
-      if (isset ($row[$key]))
-      $html .= '<td class="' . $key . '">' . $row[$key] . '</td>';
-    else
-      $html .= '<td class="' . $key . '">&nbsp;</td>';
+      if (isset($row[$key]))
+        $html .= '<td class="' . $key . '">' . $row[$key] . '</td>';
+      else
+        $html .= '<td class="' . $key . '">&nbsp;</td>';
     $html .= '</tr>';
   }
   $html .= '</tbody>';
@@ -184,8 +208,8 @@ function template_render($file, $data) {
     $template = file_get_contents($file);
     if (is_array($data))
       foreach ($data as $name => $content) {
-      $template = str_replace("%" . $name . "%", $content, $template);
-    }
+        $template = str_replace("%" . $name . "%", $content, $template);
+      }
     return $template;
   } else {
     die('Cannot find template file &laquo;' . $file . '&raquo;.');
@@ -235,10 +259,9 @@ function html_select_key($id, $name, $rows, $selected) {
 }
 
 function img_button($link, $icon, $text, $extra_text = '') {
-  $translation = empty($text)? '' : Get_Text($text);
-  return '<a href="' . htmlspecialchars($link) . '"><img src="pic/icons/' . htmlspecialchars($icon) . '.png" alt="' . $translation . '" ' . (empty($translation)? '' : 'title="' . $translation . '"') . '>' . (empty($extra_text)? '' : ' ' . $extra_text) . '</a>';
+  $translation = empty($text) ? '' : Get_Text($text);
+  return '<a href="' . htmlspecialchars($link) . '"><img src="pic/icons/' . htmlspecialchars($icon) . '.png" alt="' . $translation . '" ' . (empty($translation) ? '' : 'title="' . $translation . '"') . '>' . (empty($extra_text) ? '' : ' ' . $extra_text) . '</a>';
 }
-
 
 function ReplaceSmilies($neueckig) {
   $neueckig = str_replace(";o))", "<img src=\"pic/smiles/icon_redface.gif\">", $neueckig);
