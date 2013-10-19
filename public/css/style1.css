@@ -1,3 +1,16 @@
 #logo {
-    background-image: url('../pic/engelsystem_logo_30c3.png');
+	background-image: url('../pic/engelsystem_logo_30c3.png');
+}
+
+header {
+	background-image: url('../pic/header_30c3.png');
+}
+
+#menu li.selected a,#menu li a:hover
+  {
+  color: #0094B3;
+}
+
+.toolbar a.selected, .toolbar a:hover {
+  color: #fff;
 }

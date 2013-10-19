@@ -3,7 +3,11 @@ body {
 	color: #bbb;
 }
 
-header, details,.news_comment details, .news details {
+header {
+  background-image: url('../pic/header_30c3.png');
+}
+
+details,.news_comment details, .news details {
 	background-color: #333;
 }
 
@@ -15,9 +19,13 @@ a {
 	color: #fff;
 }
 
-#menu li.selected a,.toolbar a.selected,#menu li a:hover,.toolbar a:hover
+#menu li.selected a,#menu li a:hover
 	{
-	color: #090;
+	color: #0094B3;
+}
+
+.toolbar a.selected, .toolbar a:hover {
+	color: #000;
 }
 
 .form input[type="text"],.form input[type="password"],.form textarea {
