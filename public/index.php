@@ -18,6 +18,7 @@ require_once ('includes/view/Shifts_view.php');
 require_once ('includes/view/Sprache_view.php');
 require_once ('includes/view/User_view.php');
 
+require_once ('includes/helper/internationalization_helper.php');
 require_once ('includes/helper/message_helper.php');
 require_once ('includes/helper/error_helper.php');
 
@@ -30,6 +31,8 @@ require_once ('includes/pages/user_messages.php');
 
 session_start();
 
+gettext_init();
+
 sql_connect($config['host'], $config['user'], $config['pw'], $config['db']);
 
 load_auth();
@@ -37,7 +40,7 @@ load_auth();
 // JSON Authorisierung gewünscht?
 if (isset($_REQUEST['auth']))
   json_auth_service();
-
+  
   // Gewünschte Seite/Funktion
 $p = isset($user) ? "news" : "login";
 if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && ($_REQUEST['p'] == 'stats' || (sql_num_query("SELECT * FROM `Privileges` WHERE `name`='" . sql_escape($_REQUEST['p']) . "' LIMIT 1") > 0)))
@@ -163,26 +166,26 @@ elseif (in_array($p, $privileges)) {
 // Hinweis für ungelesene Nachrichten
 if (isset($user) && $p != "user_messages")
   $content = user_unread_messages() . $content;
-
+  
   // Hinweis für Engel, die noch nicht angekommen sind
 if (isset($user) && $user['Gekommen'] == 0)
   $content = error("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already.", true) . $content;
-
+  
   // Erzengel Hinweis für unbeantwortete Fragen
 if (isset($user) && $p != "admin_questions")
   $content = admin_new_questions() . $content;
-
+  
   // Erzengel Hinweis für freizuschaltende Engeltypen
 if (isset($user) && $p != "admin_user_angeltypes")
   $content = admin_new_user_angeltypes() . $content;
 
-echo template_render('../templates/layout.html', array (
+echo template_render('../templates/layout.html', array(
     'theme' => isset($user) ? $user['color'] : $default_theme,
     'title' => $title,
     'atom_link' => ($p == 'news' || $p == 'user_meetings') ? '<link href="' . page_link_to('atom') . (($p == 'user_meetings') ? '&amp;meetings=1' : '') . '&amp;key=' . $user['api_key'] . '" type="application/atom+xml" rel="alternate" title="Atom Feed">' : '',
     'menu' => make_menu(),
     'content' => $content,
-    'header_toolbar' => header_toolbar()
+    'header_toolbar' => header_toolbar() 
 ));
 
 counter();

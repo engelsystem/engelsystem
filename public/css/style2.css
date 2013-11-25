@@ -33,6 +33,7 @@ a {
 }
 
 .error,.success,.info {
+	color: #fff;
 	background-color: #333;
 }
 

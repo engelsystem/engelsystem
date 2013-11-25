@@ -9,7 +9,7 @@ function guest_register() {
   $nick = "";
   $lastname = "";
   $prename = "";
-  $age = 23;
+  $age = "";
   $tel = "";
   $dect = "";
   $mobile = "";
