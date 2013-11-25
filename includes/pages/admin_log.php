@@ -1,4 +1,8 @@
 <?php
+function admin_log_title() {
+  return _("Log");
+}
+
 function admin_log() {
   $log_entries_source = LogEntries();
   $log_entries = array();

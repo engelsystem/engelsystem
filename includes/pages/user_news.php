@@ -1,4 +1,12 @@
 <?php
+function news_title() {
+  return _("News");
+}
+
+function meetings_title() {
+  return _("Meetings");
+}
+
 function user_meetings() {
   global $DISPLAY_NEWS, $privileges, $user;
 
@@ -16,7 +24,7 @@ function user_meetings() {
   $html .= "<div class=\"pagination\">\n\n";
   $dis_rows = ceil(sql_num_query("SELECT * FROM `News` WHERE `Treffen`=1") / $DISPLAY_NEWS);
 
-  $html .= Get_Text(5);
+  $html .= _("Page:");
 
   for ($i = 0; $i < $dis_rows; $i++) {
     if (isset($_REQUEST['page']) && $i == $_REQUEST['page'])
@@ -42,7 +50,7 @@ function display_news($news) {
 
   $html .= User_Nick_render($user_source);
   if ($p != "news_comments")
-    $html .= ', <a href="' . page_link_to("news_comments") . '&nid=' . $news['ID'] . '">Kommentare (' . sql_num_query("SELECT * FROM `news_comments` WHERE `Refid`='" . sql_escape($news['ID']) . "'") . ') &raquo;</a>';
+    $html .= ', <a href="' . page_link_to("news_comments") . '&nid=' . $news['ID'] . '">' . _("Comments") . ' (' . sql_num_query("SELECT * FROM `news_comments` WHERE `Refid`='" . sql_escape($news['ID']) . "'") . ') &raquo;</a>';
   $html .= '</details>';
   $html .= '<h3>' . ($news['Treffen'] == 1 ? '[Meeting] ' : '') . ReplaceSmilies($news['Betreff']) . '</h3>';
   $html .= '<p>' . ReplaceSmilies(nl2br($news['Text'])) . '</p>';
@@ -70,7 +78,7 @@ function user_news_comments() {
     $html .= '<a href="' . page_link_to("news") . '">&laquo; Back</a>';
     $html .= display_news($news);
 
-    $html .= '<h2>Kommentare</h2>';
+    $html .= '<h2>' . _("Comments") . '</h2>';
 
     $comments = sql_select("SELECT * FROM `news_comments` WHERE `Refid`='" . sql_escape($nid) . "' ORDER BY 'ID'");
     foreach ($comments as $comment) {
@@ -125,7 +133,7 @@ function user_news() {
         "VALUES ('" . sql_escape(time()) . "', '" . sql_escape($_POST["betreff"]) . "', '" . sql_escape($_POST["text"]) . "', '" . sql_escape($user['UID']) .
         "', '" . sql_escape($_POST["treffen"]) . "');");
     engelsystem_log("Created news: " . $_POST["betreff"] . ", treffen: " . $_POST["treffen"]);
-    success(Get_Text(4));
+    success(_("Entry saved."));
     redirect(page_link_to('user_news'));
   }
 
@@ -141,7 +149,7 @@ function user_news() {
   $html .= "<div class=\"pagination\">\n\n";
   $dis_rows = ceil(sql_num_query("SELECT * FROM `News`") / $DISPLAY_NEWS);
 
-  $html .= Get_Text(5);
+  $html .= _("Page:");
 
   for ($i = 0; $i < $dis_rows; $i++) {
     if (isset($_REQUEST['page']) && $i == $_REQUEST['page'])
@@ -152,29 +160,29 @@ function user_news() {
   $html .= '</div>';
   if (in_array("admin_news", $privileges)) {
     $html .= '<br /><hr />
-    <h2>' . Get_Text(6) . '</h2>
+    <h2>' . _("Create news:") . '</h2>
     <a name="Neu">&nbsp;</a>
 
     <form action="" method="post">
     <table>
     <tr>
-    <td align="right">' . Get_Text(7) . '</td>
+    <td align="right">' . _("Subject") . ':</td>
     <td><input type="text" name="betreff" size="60"></td>
     </tr>
     <tr>
-    <td align="right">' . Get_Text(8) . '</td>
+    <td align="right">' . _("Message") . ':</td>
     <td><textarea name="text" cols="50" rows="10"></textarea></td>
     </tr>';
     if (in_array('admin_news', $privileges)) {
       $html .= ' <tr>
-      <td align="right">' . Get_Text(9) . '</td>
+      <td align="right">' . _("Meeting") . ':</td>
       <td><input type="checkbox" name="treffen" size="1" value="1"></td>
       </tr>';
 
     }
     $html .= '</table>
     <br />
-    <input type="submit" value="' . Get_Text("save") . '">
+    <input type="submit" value="' . _("Save") . '">
     </form>';
   }
   return $html;

@@ -1,4 +1,8 @@
 <?php
+function admin_groups_title() {
+  return _("Grouprights");
+}
+
 function admin_groups() {
   global $user;
 

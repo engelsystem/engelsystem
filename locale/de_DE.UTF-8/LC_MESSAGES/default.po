@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2013-11-25 19:11+0100\n"
-"PO-Revision-Date: 2013-11-25 19:11+0100\n"
+"POT-Creation-Date: 2013-11-25 19:30+0100\n"
+"PO-Revision-Date: 2013-11-25 19:32+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -20,6 +20,142 @@ msgstr ""
 #: /Users/msquare/workspace/projects/engelsystem/includes/helper/internationalization_helper.php:40
 msgid "Language"
 msgstr "Sprache"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_user.php:148
+msgid "Save"
+msgstr "Speichern"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:36
+#, php-format
+msgid "Your nick &quot;%s&quot; already exists."
+msgstr "Der Nick &quot;%s&quot; existiert schon."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:40
+#, php-format
+msgid "Your nick &quot;%s&quot; is too short (min. 2 characters)."
+msgstr "Der Nick &quot;%s&quot; ist zu kurz (Mindestens 2 Zeichen)."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:47
+msgid "E-mail address is not correct."
+msgstr "Die E-Mail Adresse ist nicht in Ordnung."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:51
+msgid "Please enter your e-mail."
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:60
+msgid "Please check your jabber account information."
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:69
+msgid "Please select your shirt size."
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:76
+msgid "Your passwords don't match."
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:80
+msgid "Your password is to short (please use at least 6 characters)."
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:121
+msgid "Angel registration successful!"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:128
+msgid ""
+"By completing this form you're registering as a Chaos-Angel. This script "
+"will create you an account in the angel task sheduler."
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:132
+msgid "Nick"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:133
+msgid "Last name"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:134
+msgid "First name"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:135
+msgid "Age"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:136
+msgid "Phone"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:137
+msgid "DECT"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:138
+msgid "Mobile"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:139
+msgid "E-Mail"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:140
+msgid "ICQ"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:141
+msgid "Jabber"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:142
+msgid "Hometown"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:143
+msgid "Shirt size"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:144
+msgid ""
+"Did you help at former CCC events and which tasks have you performed then?"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:145
+msgid "What do you want to do?"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:145
+msgid "Description of job types"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:146
+msgid ""
+"Restricted angel types need will be confirmed later by an archangel. You can "
+"change your selection in the options section."
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:147
+msgid "Password"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:148
+msgid "Confirm password"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:149
+msgid "Entry required!"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:150
+msgid "Register"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:9
+#, php-format
+msgid "You have %s new messages."
+msgstr ""
 
 #~ msgid "asdf"
 #~ msgstr "fdsa"

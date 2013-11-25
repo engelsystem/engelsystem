@@ -1,4 +1,8 @@
 <?php
+function admin_angel_types_title() {
+  return _("Angeltypes");
+}
+
 function admin_angel_types() {
   $angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
   $angel_types = array ();

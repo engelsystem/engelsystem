@@ -40,37 +40,35 @@ function make_navigation() {
   $menu = "";
   
   $specials = array(
-      "faq" 
+      "faq"
   );
   
   $pages = array(
-      "news",
-      "user_meetings",
-      "user_myshifts",
-      "user_shifts",
-      "user_messages",
-      "user_questions",
-      "user_wakeup",
-      "admin_arrive",
-      "admin_active",
-      "admin_user",
-      "admin_free",
-      "admin_usershifts",
-      "admin_questions",
-      "admin_angel_types",
-      "admin_user_angeltypes",
-      "admin_shifts",
-      "admin_rooms",
-      "admin_groups",
-      "admin_faq",
-      "admin_language",
-      "admin_import",
-      "admin_log" 
+      "news" => news_title(),
+      "user_meetings" => meetings_title(),
+      "user_myshifts" => myshifts_title(),
+      "user_shifts" => shifts_title(),
+      "user_messages" => messages_title(),
+      "user_questions" => questions_title(),
+      "user_wakeup" => wakeup_title(),
+      "admin_arrive" => admin_arrive_title(),
+      "admin_active" => admin_active_title(),
+      "admin_user" => admin_user_title(),
+      "admin_free" => admin_free_title(),
+      "admin_questions" => admin_questions_title(),
+      "admin_angel_types" => admin_angel_types_title(),
+      "admin_user_angeltypes" => admin_user_angeltypes_title(),
+      "admin_shifts" => admin_shifts_title(),
+      "admin_rooms" => admin_rooms_title(),
+      "admin_groups" => admin_groups_title(),
+      "admin_faq" => admin_faq_title(),
+      "admin_import" => admin_import_title(),
+      "admin_log" => admin_log_title()
   );
   
-  foreach ($pages as $page)
+  foreach ($pages as $page => $title)
     if (in_array($page, $privileges) || in_array($page, $specials))
-      $menu .= '<li' . ($page == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($page) . '">' . Get_Text($page) . '</a></li>';
+      $menu .= '<li' . ($page == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($page) . '">' . $title . '</a></li>';
   
   return '<nav><ul>' . $menu . '</ul></nav>';
 }

@@ -1,4 +1,8 @@
 <?php
+function admin_rooms_title() {
+  return _("Rooms");
+}
+
 function admin_rooms() {
   global $user;
 

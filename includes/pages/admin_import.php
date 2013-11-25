@@ -1,4 +1,8 @@
 <?php
+function admin_import_title() {
+  return _("Pentabarf import");
+}
+
 function admin_import() {
   global $PentabarfXMLhost, $PentabarfXMLpath;
   global $rooms_import;

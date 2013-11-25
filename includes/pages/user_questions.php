@@ -1,4 +1,8 @@
 <?php
+function questions_title() {
+  return _("Ask an archangel");
+}
+
 function user_questions() {
   global $user;
 

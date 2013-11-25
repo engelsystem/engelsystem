@@ -1,5 +1,7 @@
 <?php
-
+function admin_shifts_title() {
+  return _("Create shifts");
+}
 
 // Assistent zum Anlegen mehrerer neuer Schichten
 function admin_shifts() {

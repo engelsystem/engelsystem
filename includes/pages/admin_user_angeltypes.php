@@ -1,5 +1,7 @@
 <?php
-
+function admin_user_angeltypes_title() {
+  return _("Confirm angeltypes");
+}
 
 /**
  * Auf dieser Seite können Erzengel Engeltypen für bestimmte Nutzer freischalten, z.B. nachdem diese für die Aufgabe geschult wurden.
@@ -77,12 +79,12 @@ function admin_user_angeltypes() {
       $users = array ();
       foreach ($user_angel_types_source as $user) {
         $user['name'] = User_Nick_render($user);
-        $user['actions'] = img_button(page_link_to('admin_user_angeltypes') . '&confirm=' . $user['id'], 'tick', 'confirm');
+        $user['actions'] = img_button(page_link_to('admin_user_angeltypes') . '&confirm=' . $user['id'], 'tick', _("confirm"));
         $user['actions'] .= '&nbsp;&nbsp;';
-        $user['actions'] .= img_button(page_link_to('admin_user_angeltypes') . '&deny=' . $user['id'], 'cross', 'deny');
+        $user['actions'] .= img_button(page_link_to('admin_user_angeltypes') . '&deny=' . $user['id'], 'cross', _("deny"));
         $users[] = $user;
       }
-      $content[] = '<h2>' . $angel_type['name'] . ' <small>' . img_button(page_link_to('admin_user_angeltypes') . '&confirm_all=' . $angel_type['id'], 'tick', '', 'confirm all') . ' ' . img_button(page_link_to('admin_user_angeltypes') . '&deny_all=' . $angel_type['id'], 'cross', '', 'deny all') . '</small></h2>' . table(array (
+      $content[] = '<h2>' . $angel_type['name'] . ' <small>' . img_button(page_link_to('admin_user_angeltypes') . '&confirm_all=' . $angel_type['id'], 'tick', '', _("confirm all")) . ' ' . img_button(page_link_to('admin_user_angeltypes') . '&deny_all=' . $angel_type['id'], 'cross', '', _("deny all")) . '</small></h2>' . table(array (
         'name' => "Nick",
         'actions' => ""
       ), $users);

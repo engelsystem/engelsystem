@@ -1,4 +1,8 @@
 <?php
+function admin_arrive_title() {
+  return _("Arrived angels");
+}
+
 function admin_arrive() {
   $msg = "";
   $search = "";

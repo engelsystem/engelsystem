@@ -1,4 +1,8 @@
 <?php
+function admin_active_title() {
+  return _("Active angels");
+}
+
 function admin_active() {
   global $tshirt_sizes, $shift_sum_formula;
 

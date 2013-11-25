@@ -1,4 +1,8 @@
 <?php
+function shifts_title() {
+  return _("All Shifts");
+}
+
 function user_shifts() {
   global $user, $privileges;
 
@@ -296,11 +300,11 @@ function view_user_shifts() {
   $filled = array (
     array (
       'id' => '1',
-      'name' => Get_Text('occupied')
+      'name' => _('occupied')
     ),
     array (
       'id' => '0',
-      'name' => Get_Text('free')
+      'name' => _('free')
     )
   );
 
@@ -479,7 +483,7 @@ function view_user_shifts() {
             $is_free = false;
             $shifts_row = $shift['name'];
             if (in_array('admin_shifts', $privileges))
-              $shifts_row .= ' ' . img_button('?p=user_shifts&edit_shift=' . $shift['SID'], 'pencil', 'edit') . img_button('?p=user_shifts&delete_shift=' . $shift['SID'], 'bin', 'delete');
+              $shifts_row .= ' ' . img_button('?p=user_shifts&edit_shift=' . $shift['SID'], 'pencil', _("edit")) . img_button('?p=user_shifts&delete_shift=' . $shift['SID'], 'bin', _("delete"));
             $shifts_row .= '<br />';
             $query = "SELECT `NeededAngelTypes`.`count`, `AngelTypes`.`id`, `AngelTypes`.`restricted`, `UserAngelTypes`.`confirm_user_id`, `AngelTypes`.`name`, `UserAngelTypes`.`user_id`
             FROM `NeededAngelTypes`
@@ -507,12 +511,12 @@ function view_user_shifts() {
                   else
                     $style="font-weight:normal;";
                   if (in_array('user_shifts_admin', $privileges))
-                    $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) . ' ' . img_button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], 'bin', 'delete') . '</span>';
+                    $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) . ' ' . img_button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], 'bin', _("delete")) . '</span>';
                   else
                     $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) ."</span>";
                 }
                 if ($angeltype['count'] - count($entries) > 0) {
-                  $inner_text = ($angeltype['count'] - count($entries)) . ' ' . Get_Text($angeltype['count'] - count($entries) == 1 ? 'helper' : 'helpers') . ' ' . Get_Text('needed');
+                  $inner_text = sprintf(ngettext("%d helper needed", "%d helpers needed", $angeltype['count'] - count($entries)), $angeltype['count'] - count($entries));
                   // is the shift still running or alternatively is the user shift admin?
                   $user_may_join_shift = true;
 
@@ -605,7 +609,7 @@ function view_user_shifts() {
     );
 
     if (in_array('admin_shifts', $privileges))
-      $shift_row['info'] .= ' ' . img_button('?p=user_shifts&edit_shift=' . $shift['SID'], 'pencil', 'edit') . img_button('?p=user_shifts&delete_shift=' . $shift['SID'], 'bin', 'delete');
+      $shift_row['info'] .= ' ' . img_button('?p=user_shifts&edit_shift=' . $shift['SID'], 'pencil', 'edit') . img_button('?p=user_shifts&delete_shift=' . $shift['SID'], 'bin', _("delete"));
     $shift_row['entries'] .= '<br />';
     $is_free = false;
     $shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
@@ -630,14 +634,14 @@ function view_user_shifts() {
         $entry_list = array ();
         foreach ($entries as $entry) {
           if (in_array('user_shifts_admin', $privileges))
-            $entry_list[] = User_Nick_render($entry) . ' ' . img_button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], 'bin', 'delete');
+            $entry_list[] = User_Nick_render($entry) . ' ' . img_button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], 'bin', _("delete"));
           else
             $entry_list[] = User_Nick_render($entry);
         }
         $angeltype['taken'] = count($entries);
         // do we need more angles of this type?
         if ($angeltype['count'] - count($entries) > 0) {
-          $inner_text = ($angeltype['count'] - count($entries)) . ' ' . Get_Text($angeltype['count'] - count($entries) == 1 ? 'helper' : 'helpers') . ' ' . Get_Text('needed');
+          $inner_text = sprintf(ngettext("%d helper needed", "%d helpers needed", $angeltype['count'] - count($entries)), $angeltype['count'] - count($entries));
           // is the shift still running or alternatively is the user shift admin?
           $user_may_join_shift = true;
 
@@ -687,8 +691,8 @@ function view_user_shifts() {
     }
   }
   $shifts_table = table(array(
-    'info' => ucfirst(Get_Text("time")) . "/" . ucfirst(Get_Text("room")),
-    'entries' => ucfirst(Get_Text("entries"))
+    'info' => _("Time") . "/" . _("Room"),
+    'entries' => _("Entries")
   ), $shifts_table);
 }
 
@@ -696,18 +700,18 @@ if ($user['api_key'] == "")
   User_reset_api_key($user);
 
 return msg() . template_render('../templates/user_shifts.html', array (
-  'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", ucfirst(Get_Text("rooms"))),
+  'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", _("Rooms")),
   'start_select' => html_select_key("start_day", "start_day", array_combine($days, $days), $_SESSION['user_shifts']['start_day']),
   'start_time' => $_SESSION['user_shifts']['start_time'],
   'end_select' => html_select_key("end_day", "end_day", array_combine($days, $days), $_SESSION['user_shifts']['end_day']),
   'end_time' => $_SESSION['user_shifts']['end_time'],
-  'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", ucfirst(Get_Text("tasks")) . '<sup>1</sup>'),
-  'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", ucfirst(Get_Text("occupancy"))),
-  'task_notice' => '<sup>1</sup>' . Get_Text("pub_schichtplan_tasks_notice"),
+  'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", _("Tasks") . '<sup>1</sup>'),
+  'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", _("Occupancy")),
+  'task_notice' => '<sup>1</sup>' . _("The tasks shown here are influenced by the preferences you defined in your settings! <a href=\"https://events.ccc.de/congress/2012/wiki/Volunteers#What_kind_of_volunteers_are_needed.3F\">Description of the jobs</a>."),
   'new_style_checkbox' => '<label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style']? ' checked' : '') . '> Use new style if possible</label>',
   'shifts_table' => $shifts_table,
-  'ical_text' => sprintf(Get_Text('inc_schicht_ical_text'), htmlspecialchars(make_user_shifts_export_link('ical', $user['api_key'])), htmlspecialchars(make_user_shifts_export_link('shifts_json_export', $user['api_key'])), page_link_to('user_myshifts') . '&amp;reset'),
-  'filter' => ucfirst(Get_Text("to_filter")),
+  'ical_text' => sprintf(_("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."), page_link_to_absolute('ical') . '&key=' . $user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'], page_link_to('user_myshifts') . '&reset'),
+  'filter' => _("Filter"),
 ));
 }
 
@@ -741,8 +745,8 @@ function make_select($items, $selected, $name, $title = null) {
   $html .= implode("\n", $html_items);
   $html .= '</ul>' . "\n";
   $html .= buttons(array (
-    button("javascript: check_all('selection_" . $name . "')", Get_Text("all"), ""),
-    button("javascript: uncheck_all('selection_" . $name . "')", Get_Text("none"), "")
+    button("javascript: check_all('selection_" . $name . "')", _("All"), ""),
+    button("javascript: uncheck_all('selection_" . $name . "')", _("None"), "")
   ));
   $html .= '</div>' . "\n";
   return $html;

@@ -1,4 +1,8 @@
 <?php
+function admin_questions_title() {
+  return _("Answer questions");
+}
+
 function admin_new_questions() {
   global $user, $privileges;
 

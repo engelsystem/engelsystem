@@ -1,5 +1,7 @@
 <?php
-
+function myshifts_title() {
+  return _("My shifts");
+}
 
 // Zeigt die Schichten an, die ein Benutzer belegt
 function user_myshifts() {
@@ -56,9 +58,9 @@ function user_myshifts() {
       $shift = $shift[0];
       if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges)) {
         sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
-        $msg .= success(Get_Text("pub_myshifts_signed_off"), true);
+        $msg .= success(_("You have been signed off from the shift."), true);
       } else
-        $msg .= error(Get_Text("pub_myshifts_too_late"), true);
+        $msg .= error(_("It's too late to sign yourself off the shift. If neccessary, as the dispatcher to do so."), true);
     } else
       redirect(page_link_to('user_myshifts'));
   }
@@ -94,9 +96,9 @@ function user_myshifts() {
 
     $myshift['actions'] = "";
     if ($id == $user['UID'])
-      $myshift['actions'] .= img_button(page_link_to('user_myshifts') . '&edit=' . $shift['id'], 'pencil', 'edit');
+      $myshift['actions'] .= img_button(page_link_to('user_myshifts') . '&edit=' . $shift['id'], 'pencil', _("edit"));
     if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges))
-      $myshift['actions'] .= img_button(page_link_to('user_myshifts') . (($id != $user['UID'])? '&id=' . $id : '') . '&cancel=' . $shift['id'], 'cross', 'sign_off');
+      $myshift['actions'] .= img_button(page_link_to('user_myshifts') . (($id != $user['UID'])? '&id=' . $id : '') . '&cancel=' . $shift['id'], 'cross', _("sign off"));
 
     $timesum += $shift['end'] - $shift['start'];
     $myshifts_table[] = $myshift;
@@ -106,7 +108,7 @@ function user_myshifts() {
 
   return page(array(
     msg(),
-    $id == $user['UID'] ? sprintf(Get_Text('pub_myshifts_intro'), $LETZTES_AUSTRAGEN) : '',
+    $id == $user['UID'] ? sprintf(_('These are your shifts.<br/>Please try to appear <b>15 minutes</b> before your shift begins!<br/>You can remove yourself from a shift up to %d hours before it starts.'), $LETZTES_AUSTRAGEN) : '',
     $id != $user['UID'] ? info(sprintf("You are viewing %s's shifts.", $shifts_user['Nick']), true) : '',
     $id != $user['UID'] ? buttons(array(button(page_link_to('admin_user') . '&amp;id=' . $shifts_user['UID'], "Edit " . $shifts_user['Nick'], 'edit'))) : '',
     table(array(
@@ -117,8 +119,8 @@ function user_myshifts() {
       'comment' => "Kommentar",
       'actions' => "Aktion"
     ), $myshifts_table),
-    $id == $user['UID'] && count($shifts) == 0 ? error(sprintf(Get_Text('pub_myshifts_goto_shifts'), page_link_to('user_shifts')), true) : '',
-    "<h2>Exports</h2>" . sprintf(Get_Text('inc_schicht_ical_text'), page_link_to_absolute('ical') . '&key=' . $shifts_user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $shifts_user['api_key'], page_link_to('user_myshifts') . '&reset')
+    $id == $user['UID'] && count($shifts) == 0 ? error(sprintf(_("Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some shifts."), page_link_to('user_shifts')), true) : '',
+    "<h2>Exports</h2>" . sprintf(_("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."), page_link_to_absolute('ical') . '&key=' . $shifts_user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $shifts_user['api_key'], page_link_to('user_myshifts') . '&reset')
   ));
 }
 ?>

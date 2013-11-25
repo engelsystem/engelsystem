@@ -1,4 +1,8 @@
 <?php
+function admin_user_title() {
+  return _("All Angels");
+}
+
 function admin_user() {
   global $user, $privileges, $tshirt_sizes, $privileges;
 
@@ -145,7 +149,7 @@ function admin_user() {
             $angel_types,
             array('selected_angel_types' => $selected_angel_types, 'accepted_angel_types' => array_merge($accepted_angel_types, $nonrestricted_angel_types)),
             array('accepted_angel_types' => $nonrestricted_angel_types)),
-        form_submit('submit_user_angeltypes', Get_Text("Save"))
+        form_submit('submit_user_angeltypes', _("Save"))
       ));
 
       $html .= "<hr />";
@@ -325,7 +329,7 @@ function admin_user() {
         'Tshirt' => '<img src="pic/icons/' . ($angel['Tshirt'] == 1? 'tick' : 'cross') . '.png" alt="' . $angel['Tshirt'] . '">',
         'Size' => $angel['Size'],
         'lastLogIn' => date('d.m.&\n\b\s\p;H:i', $angel['lastLogIn']),
-        'edit' => img_button(page_link_to('admin_user') . '&id=' . $angel['UID'], 'pencil', 'edit'),
+        'edit' => img_button(page_link_to('admin_user') . '&id=' . $angel['UID'], 'pencil', _("edit")),
       );
     }
     $angels = array_map('prepare_angel_table', $angels);

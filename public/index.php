@@ -25,9 +25,26 @@ require_once ('includes/helper/error_helper.php');
 require_once ('config/config.php');
 require_once ('config/config_db.php');
 
+require_once ('includes/pages/admin_active.php');
+require_once ('includes/pages/admin_angel_types.php');
+require_once ('includes/pages/admin_arrive.php');
+require_once ('includes/pages/admin_faq.php');
+require_once ('includes/pages/admin_free.php');
+require_once ('includes/pages/admin_groups.php');
+require_once ('includes/pages/admin_import.php');
+require_once ('includes/pages/admin_log.php');
 require_once ('includes/pages/admin_questions.php');
+require_once ('includes/pages/admin_rooms.php');
+require_once ('includes/pages/admin_shifts.php');
+require_once ('includes/pages/admin_user.php');
 require_once ('includes/pages/admin_user_angeltypes.php');
+require_once ('includes/pages/guest_faq.php');
 require_once ('includes/pages/user_messages.php');
+require_once ('includes/pages/user_myshifts.php');
+require_once ('includes/pages/user_news.php');
+require_once ('includes/pages/user_questions.php');
+require_once ('includes/pages/user_shifts.php');
+require_once ('includes/pages/user_wakeup.php');
 
 session_start();
 
@@ -46,7 +63,7 @@ $p = isset($user) ? "news" : "login";
 if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && ($_REQUEST['p'] == 'stats' || (sql_num_query("SELECT * FROM `Privileges` WHERE `name`='" . sql_escape($_REQUEST['p']) . "' LIMIT 1") > 0)))
   $p = $_REQUEST['p'];
 
-$title = Get_Text($p);
+$title = $p;
 $content = "";
 
 if ($p == "ical") {
@@ -64,27 +81,28 @@ if ($p == "ical") {
 } // Recht dafür vorhanden?
 elseif (in_array($p, $privileges)) {
   if ($p == "news") {
-    require_once ('includes/pages/user_news.php');
+    $title = news_title();
     $content = user_news();
   } elseif ($p == "news_comments") {
     require_once ('includes/pages/user_news.php');
     $content = user_news_comments();
   } elseif ($p == "user_meetings") {
-    require_once ('includes/pages/user_news.php');
+    $title = meetings_title();
     $content = user_meetings();
   } elseif ($p == "user_myshifts") {
-    require_once ('includes/pages/user_myshifts.php');
+    $title = myshifts_title();
     $content = user_myshifts();
   } elseif ($p == "user_shifts") {
-    require_once ('includes/pages/user_shifts.php');
+    $title = shifts_title();
     $content = user_shifts();
   } elseif ($p == "user_messages") {
+    $title = messages_title();
     $content = user_messages();
   } elseif ($p == "user_questions") {
-    require_once ('includes/pages/user_questions.php');
+    $title = questions_title();
     $content = user_questions();
   } elseif ($p == "user_wakeup") {
-    require_once ('includes/pages/user_wakeup.php');
+    $title = wakeup_title();
     $content = user_wakeup();
   } elseif ($p == "user_settings") {
     require_once ('includes/pages/user_settings.php');
@@ -99,48 +117,49 @@ elseif (in_array($p, $privileges)) {
     require_once ('includes/pages/guest_login.php');
     $content = guest_logout();
   } elseif ($p == "admin_questions") {
+    $title = admin_questions_title();
     $content = admin_questions();
   } elseif ($p == "admin_user") {
-    require_once ('includes/pages/admin_user.php');
+    $title = admin_user_title();
     $content = admin_user();
   } elseif ($p == "admin_user_angeltypes") {
-    require_once ('includes/pages/admin_user_angeltypes.php');
+    $title = admin_user_angeltypes_title();
     $content = admin_user_angeltypes();
   } elseif ($p == "admin_arrive") {
-    require_once ('includes/pages/admin_arrive.php');
+    $title = admin_arrive_title();
     $content = admin_arrive();
   } elseif ($p == "admin_active") {
-    require_once ('includes/pages/admin_active.php');
+    $title = admin_active_title();
     $content = admin_active();
   } elseif ($p == "admin_free") {
-    require_once ('includes/pages/admin_free.php');
+    $title = admin_free_title();
     $content = admin_free();
   } elseif ($p == "admin_news") {
     require_once ('includes/pages/admin_news.php');
     $content = admin_news();
   } elseif ($p == "admin_angel_types") {
-    require_once ('includes/pages/admin_angel_types.php');
+    $title = admin_angel_types_title();
     $content = admin_angel_types();
   } elseif ($p == "admin_rooms") {
-    require_once ('includes/pages/admin_rooms.php');
+    $title = admin_rooms_title();
     $content = admin_rooms();
   } elseif ($p == "admin_groups") {
-    require_once ('includes/pages/admin_groups.php');
+    $title = admin_groups_title();
     $content = admin_groups();
   } elseif ($p == "admin_faq") {
-    require_once ('includes/pages/admin_faq.php');
+    $title = admin_faq_title();
     $content = admin_faq();
   } elseif ($p == "admin_language") {
     require_once ('includes/pages/admin_language.php');
     $content = admin_language();
   } elseif ($p == "admin_import") {
-    require_once ('includes/pages/admin_import.php');
+    $title = admin_import_title();
     $content = admin_import();
   } elseif ($p == "admin_shifts") {
-    require_once ('includes/pages/admin_shifts.php');
+    $title = admin_shifts_title();
     $content = admin_shifts();
   } elseif ($p == "admin_log") {
-    require_once ('includes/pages/admin_log.php');
+    $title = admin_log_title();
     $content = admin_log();
   } else {
     require_once ('includes/pages/guest_start.php');
@@ -150,13 +169,13 @@ elseif (in_array($p, $privileges)) {
   require_once ('includes/pages/guest_credits.php');
   $content = guest_credits();
 } elseif ($p == "faq") {
-  require_once ('includes/pages/guest_faq.php');
+  $title = faq_title();
   $content = guest_faq();
 } else {
   // Wenn schon eingeloggt, keine-Berechtigung-Seite anzeigen
   if (isset($user)) {
-    $title = Get_Text("no_access_title");
-    $content = Get_Text("no_access_text");
+    $title = _("No Access");
+    $content = _("You don't have permission to view this page. You probably have to sign in or register in order to gain access!");
   } else {
     // Sonst zur Loginseite leiten
     redirect(page_link_to("login"));
@@ -169,7 +188,7 @@ if (isset($user) && $p != "user_messages")
   
   // Hinweis für Engel, die noch nicht angekommen sind
 if (isset($user) && $user['Gekommen'] == 0)
-  $content = error("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already.", true) . $content;
+  $content = error(_("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already."), true) . $content;
   
   // Erzengel Hinweis für unbeantwortete Fragen
 if (isset($user) && $p != "admin_questions")
