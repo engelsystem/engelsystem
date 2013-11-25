@@ -83,7 +83,7 @@ function make_navigation_for($name, $pages) {
   $menu = "";
   foreach ($pages as $page)
     if (in_array($page, $privileges) || in_array($page, $specials))
-      $menu .= '<li' . ($page == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($page) . '">' . Get_Text($page) . '</a></li>';
+      $menu .= '<li' . ($page == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($page) . '">' . $title . '</a></li>';
   
   if ($menu != "")
     $menu = '<nav class="container"><h4>' . $name . '</h4><ul class="content">' . $menu . '</ul></nav>';

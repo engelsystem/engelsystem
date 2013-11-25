@@ -11,11 +11,9 @@ require_once ('includes/sys_page.php');
 require_once ('includes/sys_template.php');
 
 require_once ('includes/model/LogEntries_model.php');
-require_once ('includes/model/Sprache_model.php');
 require_once ('includes/model/User_model.php');
 
 require_once ('includes/view/Shifts_view.php');
-require_once ('includes/view/Sprache_view.php');
 require_once ('includes/view/User_view.php');
 
 require_once ('includes/helper/internationalization_helper.php');
