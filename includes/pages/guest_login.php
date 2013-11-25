@@ -1,4 +1,15 @@
 <?php
+function login_title() {
+  return _("Login");
+}
+
+function register_title() {
+  return _("Register");
+}
+
+function logout_title() {
+  return _("Logout");
+}
 
 // Engel registrieren
 function guest_register() {

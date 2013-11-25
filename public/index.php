@@ -13,7 +13,9 @@ require_once ('includes/sys_template.php');
 require_once ('includes/model/LogEntries_model.php');
 require_once ('includes/model/User_model.php');
 
+require_once ('includes/view/Questions_view.php');
 require_once ('includes/view/Shifts_view.php');
+require_once ('includes/view/ShiftEntry_view.php');
 require_once ('includes/view/User_view.php');
 
 require_once ('includes/helper/internationalization_helper.php');
@@ -37,10 +39,12 @@ require_once ('includes/pages/admin_shifts.php');
 require_once ('includes/pages/admin_user.php');
 require_once ('includes/pages/admin_user_angeltypes.php');
 require_once ('includes/pages/guest_faq.php');
+require_once ('includes/pages/guest_login.php');
 require_once ('includes/pages/user_messages.php');
 require_once ('includes/pages/user_myshifts.php');
 require_once ('includes/pages/user_news.php');
 require_once ('includes/pages/user_questions.php');
+require_once ('includes/pages/user_settings.php');
 require_once ('includes/pages/user_shifts.php');
 require_once ('includes/pages/user_wakeup.php');
 
@@ -83,6 +87,7 @@ elseif (in_array($p, $privileges)) {
     $content = user_news();
   } elseif ($p == "news_comments") {
     require_once ('includes/pages/user_news.php');
+    $title = user_news_comments_title();
     $content = user_news_comments();
   } elseif ($p == "user_meetings") {
     $title = meetings_title();
@@ -103,16 +108,16 @@ elseif (in_array($p, $privileges)) {
     $title = wakeup_title();
     $content = user_wakeup();
   } elseif ($p == "user_settings") {
-    require_once ('includes/pages/user_settings.php');
+    $title = settings_title();
     $content = user_settings();
   } elseif ($p == "login") {
-    require_once ('includes/pages/guest_login.php');
+    $title = login_title();
     $content = guest_login();
   } elseif ($p == "register") {
-    require_once ('includes/pages/guest_login.php');
+    $title = register_title();
     $content = guest_register();
   } elseif ($p == "logout") {
-    require_once ('includes/pages/guest_login.php');
+    $title = logout_title();
     $content = guest_logout();
   } elseif ($p == "admin_questions") {
     $title = admin_questions_title();
@@ -165,6 +170,7 @@ elseif (in_array($p, $privileges)) {
   }
 } elseif ($p == "credits") {
   require_once ('includes/pages/guest_credits.php');
+  $title = credits_title();
   $content = guest_credits();
 } elseif ($p == "faq") {
   $title = faq_title();

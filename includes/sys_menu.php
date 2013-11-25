@@ -17,19 +17,19 @@ function header_toolbar() {
   $toolbar_items = array();
   
   if (in_array('register', $privileges))
-    $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'register', "Register", $p == 'register');
+    $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'register', register_title(), $p == 'register');
   
   if (in_array('user_myshifts', $privileges))
     $toolbar_items[] = toolbar_item_link(page_link_to('user_myshifts'), 'engel', $user['Nick'], $p == 'user_myshifts');
   
   if (in_array('user_settings', $privileges))
-    $toolbar_items[] = toolbar_item_link(page_link_to('user_settings'), 'settings', "Settings", $p == 'user_settings');
+    $toolbar_items[] = toolbar_item_link(page_link_to('user_settings'), 'settings', settings_title(), $p == 'user_settings');
   
   if (in_array('login', $privileges))
-    $toolbar_items[] = toolbar_item_link(page_link_to('login'), 'login', "Login", $p == 'login');
+    $toolbar_items[] = toolbar_item_link(page_link_to('login'), 'login', login_title(), $p == 'login');
   
   if (in_array('logout', $privileges))
-    $toolbar_items[] = toolbar_item_link(page_link_to('logout'), 'logout', "Logout", $p == 'logout');
+    $toolbar_items[] = toolbar_item_link(page_link_to('logout'), 'logout', logout_title(), $p == 'logout');
   
   return toolbar($toolbar_items);
 }

@@ -1,4 +1,8 @@
 <?php
+function settings_title() {
+  return _("Settings");
+}
+
 function user_settings() {
   global $enable_tshirt_size, $tshirt_sizes, $themes, $locales;
   global $user;
@@ -108,7 +112,7 @@ function user_settings() {
       }
       
       engelsystem_log("Own angel types set to: " . join(", ", $user_angel_type_info));
-      success("Settings saved.");
+      success(_("Settings saved."));
       redirect(page_link_to('user_settings'));
     }
   } elseif (isset($_REQUEST['submit_password'])) {

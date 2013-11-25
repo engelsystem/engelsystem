@@ -1,4 +1,8 @@
 <?php
+function user_news_comments_title() {
+  return _("News comments");
+}
+
 function news_title() {
   return _("News");
 }
@@ -72,7 +76,7 @@ function user_news_comments() {
       $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['text']));
       sql_query("INSERT INTO `news_comments` (`Refid`, `Datum`, `Text`, `UID`) VALUES ('" . sql_escape($nid) . "', '" . date("Y-m-d H:i:s") . "', '" . sql_escape($text) . "', '" . sql_escape($user["UID"]) . "')");
       engelsystem_log("Created news_comment: " . $text);
-      $html .= success("Eintrag wurde gespeichert", true);
+      $html .= success(_("Entry saved."), true);
     }
 
     $html .= '<a href="' . page_link_to("news") . '">&laquo; Back</a>';
@@ -100,22 +104,22 @@ function user_news_comments() {
     $html .= '
     <br />
     <hr>
-    <h2>Neuer Kommentar:</h2>
+    <h2>' . _("New Comment:") . '</h2>
     <a name="Neu">&nbsp;</a>
 
     <form action="' . page_link_to("news_comments") . '" method="post">
     <input type="hidden" name="nid" value="' . $_REQUEST["nid"] . '">
     <table>
     <tr>
-    <td align="right" valign="top">Text:</td>
+    <td align="right" valign="top">' . _("Message:") . '</td>
     <td><textarea name="text" cols="50" rows="10"></textarea></td>
     </tr>
     </table>
     <br />
-    <input type="submit" value="sichern...">
+    <input type="submit" value="' . _("Save") . '">
     </form>';
   } else {
-    $html .= "Fehlerhafter Aufruf!";
+    $html .= _("Fehlerhafter Aufruf!");
   }
 
   return $html;
