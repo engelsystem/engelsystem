@@ -20,7 +20,7 @@ function user_myshifts() {
   if (isset($_REQUEST['reset'])) {
     if ($_REQUEST['reset'] == "ack") {
       User_reset_api_key($user);
-      success("Key geändert.");
+      success(_("Key changed."));
       redirect(page_link_to('user_myshifts'));
     }
     return template_render('../templates/user_myshifts_reset.html', array());
@@ -35,7 +35,7 @@ function user_myshifts() {
         $user_source = User($shift['UID']);
         sql_query("UPDATE `ShiftEntry` SET `Comment`='" . sql_escape($comment) . "' WHERE `id`=" . sql_escape($id) . " LIMIT 1");
         engelsystem_log("Updated " . User_Nick_render($user_source) . "'s shift " . $shift['name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']) . " with comment " . $comment);
-        success("Schicht gespeichert.");
+        success(_("Shift saved."));
         redirect(page_link_to('user_myshifts'));
       }
       

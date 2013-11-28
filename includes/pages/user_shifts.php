@@ -19,9 +19,9 @@ function user_shifts() {
       sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($entry_id) . " LIMIT 1");
       
       engelsystem_log("Deleted " . User_Nick_render($shift_entry_source) . "'s shift: " . $shift_entry_source['name'] . " at " . $shift_entry_source['Name'] . " from " . date("y-m-d H:i", $shift_entry_source['start']) . " to " . date("y-m-d H:i", $shift_entry_source['end']) . " as " . $shift_entry_source['angel_type']);
-      success("Der Schicht-Eintrag wurde gelöscht.");
+      success(_("Shift entry deleted."));
     } else
-      error("Entry not found.");
+      error(_("Entry not found."));
     redirect(page_link_to('user_shifts'));
   }  // Schicht bearbeiten
   elseif (isset($_REQUEST['edit_shift']) && in_array('admin_shifts', $privileges)) {
@@ -86,26 +86,26 @@ function user_shifts() {
       else {
         $ok = false;
         $rid = $rooms[0]['RID'];
-        $msg .= error("Wähle bitte einen Raum aus.", true);
+        $msg .= error(_("Please select a room."), true);
       }
       
       if (isset($_REQUEST['start']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['start'])))
         $start = $tmp->getTimestamp();
       else {
         $ok = false;
-        $msg .= error("Bitte gib einen Startzeitpunkt für die Schichten an.", true);
+        $msg .= error(_("Please enter a valid starting time for the shifts."), true);
       }
       
       if (isset($_REQUEST['end']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['end'])))
         $end = $tmp->getTimestamp();
       else {
         $ok = false;
-        $msg .= error("Bitte gib einen Endzeitpunkt für die Schichten an.", true);
+        $msg .= error(_("Please enter a valid ending time for the shifts."), true);
       }
       
       if ($start >= $end) {
         $ok = false;
-        $msg .= error("Das Ende muss nach dem Startzeitpunkt liegen!", true);
+        $msg .= error(_("The ending time has to be after the starting time."), true);
       }
       
       foreach ($needed_angel_types_source as $type) {
@@ -113,7 +113,7 @@ function user_shifts() {
           $needed_angel_types[$type['id']] = trim($_REQUEST['type_' . $type['id']]);
         } else {
           $ok = false;
-          $msg .= error("Bitte überprüfe die Eingaben für die benötigten Engel des Typs " . $type['name'] . ".", true);
+          $msg .= error(sprintf(_("Please check your input for needed angels of type %s."), $type['name']), true);
         }
       }
       
@@ -127,7 +127,7 @@ function user_shifts() {
         }
         
         engelsystem_log("Updated shift '" . $name . "' from " . date("y-m-d H:i", $start) . " to " . date("y-m-d H:i", $end) . " with angel types " . join(", ", $needed_angel_types_info));
-        success("Schicht gespeichert.");
+        success(_("Shift updated."));
         redirect(page_link_to('user_shifts'));
       }
     }
@@ -143,13 +143,18 @@ function user_shifts() {
       ));
     }
     
-    return template_render('../templates/user_shifts_edit.html', array(
-        'msg' => $msg,
-        'name' => $name,
-        'room_select' => $room_select,
-        'start' => date("Y-m-d H:i", $start),
-        'end' => date("Y-m-d H:i", $end),
-        'angel_types' => $angel_types 
+    return page(array(
+    	msg(),
+        '<noscript>' . info(_("This page is much more comfortable with javascript."), true) . '</noscript>',
+        form(array(
+        	form_text('name', _("Name/Description:"), $name),
+            form_select('rid', _("Room:"), $room_array, $rid),
+            form_text('start', _("Start:"), date("Y-m-d H:i", $start)),
+            form_text('end', _("End:"), date("Y-m-d H:i", $end)),
+            '<h2>' . _("Needed angels") . '</h2>',
+            $angel_types,
+            form_submit('submit', _("Save"))
+        ))
     ));
   }  // Schicht komplett löschen (nur für admins/user mit user_shifts_admin privileg)
   elseif (isset($_REQUEST['delete_shift']) && in_array('user_shifts_admin', $privileges)) {
@@ -170,15 +175,13 @@ function user_shifts() {
       sql_query("DELETE FROM `Shifts` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
       
       engelsystem_log("Deleted shift " . $shift['name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']));
-      success("Die Schicht wurde gelöscht.");
+      success(_("Shift deleted."));
       redirect(page_link_to('user_shifts'));
     }
     
-    return template_render('../templates/user_shifts_admin_delete.html', array(
-        'name' => $shift['name'],
-        'start' => date("Y-m-d H:i", $shift['start']),
-        'end' => date("H:i", $shift['end']),
-        'id' => $shift_id 
+    return page(array(
+    	error(sprintf(_("Do you want to delete the shift %s from %s to %s?"), $shift['name'], date("Y-m-d H:i", $shift['start']), date("H:i", $shift['end'])), true),
+        '<a class="button" href="?p=user_shifts&delete_shift=' . $shift_id . '&delete">' . _("delete") . '</a>'
     ));
   } elseif (isset($_REQUEST['shift_id'])) {
     if (isset($_REQUEST['shift_id']) && preg_match("/^[0-9]*$/", $_REQUEST['shift_id']))
@@ -198,13 +201,13 @@ function user_shifts() {
       
       // Schicht läuft schon, Eintragen für Engel nicht mehr möglich
     if (! in_array('user_shifts_admin', $privileges) && time() > $shift['start']) {
-      error("Diese Schicht läuft gerade oder ist bereits vorbei. Bitte kontaktiere den Schichtkoordinator um Dich eintragen zu lassen.");
+      error(_("This shift is running now or ended already. Please contact a dispatcher to join the shift."));
       redirect(page_link_to('user_shifts'));
     }
     
     // Another shift the user is signed up for collides with this one
     if (! in_array('user_shifts_admin', $privileges) && sql_num_query("SELECT `Shifts`.`SID` FROM `Shifts` INNER JOIN `ShiftEntry` ON (`Shifts`.`SID` = `ShiftEntry`.`SID` AND `ShiftEntry`.`UID` = " . sql_escape($user['UID']) . ") WHERE `start` < '" . sql_escape($shift['end']) . "' AND `end` > '" . sql_escape($shift['start']) . "'") > 0) {
-      error("Du bist bereits in einer parallelen Schicht eingetragen. Bitte kontaktiere den Schichtkoordinator, um dich eintragen zu lassen.");
+      error(_("You already subscribed to shift in the same timeslot. Please contact a dispatcher to join the shift."));
       redirect(page_link_to('user_shifts'));
     }
     
@@ -243,7 +246,7 @@ function user_shifts() {
       
       $user_source = User($user_id);
       engelsystem_log("User " . User_Nick_render($user_source) . " signed up for shift " . $shift['name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']));
-      success("Du bist eingetragen. Danke!" . ' <a href="' . page_link_to('user_myshifts') . '">Meine Schichten &raquo;</a>');
+      success(_("You are subscribed. Thank you!") . ' <a href="' . page_link_to('user_myshifts') . '">' . _("My shifts") . ' &raquo;</a>');
       redirect(page_link_to('user_shifts'));
     }
     
@@ -521,7 +524,7 @@ function view_user_shifts() {
                       if (time() > $shift['start'])
                         $entry_list[] = $inner_text . ' (vorbei)';
                       elseif ($angeltype['restricted'] == 1 && isset($angeltype['user_id']) && ! isset($angeltype['confirm_user_id']))
-                        $entry_list[] = $inner_text . ' <img src="pic/lock.png" alt="unconfirmed" title="Du bist für diesen Engeltyp noch nicht freigeschaltet." />';
+                        $entry_list[] = $inner_text . ' <img src="pic/lock.png" alt="unconfirmed" title="' . _("You are not confirmed for this angel type.") . '" />';
                       elseif ($collides)
                         $entry_list[] = $inner_text;
                       else
@@ -537,7 +540,7 @@ function view_user_shifts() {
                   $shifts_row .= '<br />';
                 }
                 if (in_array('user_shifts_admin', $privileges)) {
-                  $shifts_row .= '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">Weitere Helfer eintragen&nbsp;&raquo;</a>';
+                  $shifts_row .= '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . _("Add more angels") .'&nbsp;&raquo;</a>';
                 }
               }
               if ($shift['own'] && ! in_array('user_shifts_admin', $privileges))
@@ -687,11 +690,11 @@ function view_user_shifts() {
       'end_time' => $_SESSION['user_shifts']['end_time'],
       'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", _("Tasks") . '<sup>1</sup>'),
       'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", _("Occupancy")),
-      'task_notice' => '<sup>1</sup>' . _("The tasks shown here are influenced by the preferences you defined in your settings! <a href=\"https://events.ccc.de/congress/2012/wiki/Volunteers#What_kind_of_volunteers_are_needed.3F\">Description of the jobs</a>."),
+      'task_notice' => '<sup>1</sup>' . _("The tasks shown here are influenced by the preferences you defined in your settings!") . " <a href=\"https://events.ccc.de/congress/2013/wiki/Volunteers#What_kind_of_volunteers_are_needed.3F\">" . _("Description of the jobs.") . "</a>",
       'new_style_checkbox' => '<label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style'] ? ' checked' : '') . '> Use new style if possible</label>',
       'shifts_table' => $shifts_table,
-      'ical_text' => sprintf(_("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."), page_link_to_absolute('ical') . '&key=' . $user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'], page_link_to('user_myshifts') . '&reset'),
-      'filter' => _("Filter") 
+      'ical_text' => '<h2>' . _("iCal export") . '</h2><p>' . sprintf(_("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."), page_link_to_absolute('ical') . '&key=' . $user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'], page_link_to('user_myshifts') . '&reset') . '</p>',
+      'filter' => _("Filter")
   ));
 }
 

@@ -50,7 +50,7 @@ function display_news($news) {
 
   $user_source = User($news['UID']);
   if($user_source === false)
-    engelsystem_error("Unable to load user.");
+    engelsystem_error(_("Unable to load user."));
 
   $html .= User_Nick_render($user_source);
   if ($p != "news_comments")
@@ -59,7 +59,7 @@ function display_news($news) {
   $html .= '<h3>' . ($news['Treffen'] == 1 ? '[Meeting] ' : '') . ReplaceSmilies($news['Betreff']) . '</h3>';
   $html .= '<p>' . ReplaceSmilies(nl2br($news['Text'])) . '</p>';
   if (in_array("admin_news", $privileges))
-    $html .= "<details><a href=\"" . page_link_to("admin_news") . "&action=edit&id=" . $news['ID'] . "\">Edit</a></details>\n";
+    $html .= '<details><a href="' . page_link_to("admin_news") . '&action=edit&id=' . $news['ID'] . '">' . _("edit") . '</a></details>';
 
   $html .= '</article>';
   return $html;
@@ -79,7 +79,7 @@ function user_news_comments() {
       $html .= success(_("Entry saved."), true);
     }
 
-    $html .= '<a href="' . page_link_to("news") . '">&laquo; Back</a>';
+    $html .= '<a href="' . page_link_to("news") . '">&laquo; ' . _("back") . '</a>';
     $html .= display_news($news);
 
     $html .= '<h2>' . _("Comments") . '</h2>';
@@ -88,7 +88,7 @@ function user_news_comments() {
     foreach ($comments as $comment) {
       $user_source = User($comment['UID']);
       if($user_source === false)
-        engelsystem_error("Unable to load user.");
+        engelsystem_error(_("Unable to load user."));
 
       $html .= '<article class="news_comment">';
       $html .= User_Avatar_render($user_source);

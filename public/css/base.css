@@ -336,14 +336,14 @@ tr:hover .hidden {
 	text-decoration: line-through;
 }
 
-.spinner a {
+.form .form_input.spinner a {
 	background: #f0f0f0;
 	border: 1px solid #888;
 	padding: 1px 5px;
 	text-decoration: none;
 }
 
-.spinner input {
+.form .form_input.spinner input {
 	border: 1px solid #888;
 	border-left: none;
 	border-right: none;

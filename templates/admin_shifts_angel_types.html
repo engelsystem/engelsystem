@@ -1,8 +1,8 @@
-<p>
-    <label>
+<div class="form_element">
+    <label class="form_label">
         %type%:
     </label>
-    <span class="spinner"><a id="type_%id%_down" href="#">-</a><input type="text" id="type_%id%" name="type_%id%" value="%value%" /><a id="type_%id%_up" href="#">+</a></span>
+    <div class="form_input spinner"><a id="type_%id%_down" href="#">-</a><input type="text" id="type_%id%" name="type_%id%" value="%value%" /><a id="type_%id%_up" href="#">+</a></div>
     <script type="text/javascript">
         document.getElementById("type_%id%_up").onclick = function(e){
             document.getElementById("type_%id%").value = (parseInt(document.getElementById("type_%id%").value) + 101) % 100;
@@ -19,4 +19,4 @@
             return false;
         };
     </script>
-</p>
+</div>

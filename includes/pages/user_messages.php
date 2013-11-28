@@ -10,7 +10,7 @@ function user_unread_messages() {
     $new_messages = sql_num_query("SELECT * FROM `Messages` WHERE isRead='N' AND `RUID`=" . sql_escape($user['UID']));
     
     if ($new_messages > 0)
-      return sprintf('<p class="info"><a href="%s">%s</a></p><hr />', page_link_to("user_messages"), sprintf(_("You have %s new messages.", $new_messages)));
+      return sprintf('<p class="info"><a href="%s">%s</a></p><hr />', page_link_to("user_messages"), sprintf(ngettext("You have %s new message.", "You have %s new messages.", $new_messages), $new_messages));
   }
   
   return "";
@@ -23,7 +23,7 @@ function user_messages() {
     $users = sql_select("SELECT * FROM `User` WHERE NOT `UID`=" . sql_escape($user['UID']) . " ORDER BY `Nick`");
     
     $to_select_data = array(
-        "" => "Select recipient..." 
+        "" => _("Select recipient...")
     );
     
     foreach ($users as $u)
@@ -36,10 +36,10 @@ function user_messages() {
     foreach ($messages as $message) {
       $sender_user_source = User($message['SUID']);
       if ($sender_user_source === false)
-        engelsystem_error("Unable to load user.");
+        engelsystem_error(_("Unable to load user."));
       $receiver_user_source = User($message['RUID']);
       if ($receiver_user_source === false)
-        engelsystem_error("Unable to load user.");
+        engelsystem_error(_("Unable to load user."));
       
       $messages_html .= sprintf('<tr %s> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td><td>%s</td>', ($message['isRead'] == 'N' ? ' class="new_message"' : ''), ($message['isRead'] == 'N' ? '•' : ''), date("Y-m-d H:i", $message['Datum']), User_Nick_render($sender_user_source), User_Nick_render($receiver_user_source), str_replace("\n", '<br />', $message['Text']));
       
@@ -55,7 +55,7 @@ function user_messages() {
     
     return template_render('../templates/user_messages.html', array(
         'link' => page_link_to("user_messages"),
-        'greeting' => _(sprintf("Hello %s, here can you leave messages for other angels", User_Nick_render($user))) . '<br /><br />',
+        'greeting' => sprintf(_("Hello %s, here can you leave messages for other angels"), User_Nick_render($user)) . '<br /><br />',
         'messages' => $messages_html,
         'new_label' => _("New"),
         'date_label' => _("Date"),

@@ -140,7 +140,7 @@ function user_settings() {
     if ($ok) {
       sql_query("UPDATE `User` SET `color`='" . sql_escape($selected_theme) . "' WHERE `UID`=" . sql_escape($user['UID']));
       
-      success("Theme changed.");
+      success(_("Theme changed."));
       redirect(page_link_to('user_settings'));
     }
   } elseif (isset($_REQUEST['submit_language'])) {

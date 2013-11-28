@@ -9,8 +9,8 @@ function set_to_now(id) {
   }
 }
 </script>
-<form action="#shifts" type="get">
-<fieldset class="form" id="filter"><legend>Filter</legend>
+<form action="#shifts" method="get">
+<fieldset class="form" id="filter"><legend>%filter%</legend>
 <div>
 %start_select% <input type="time" id="start_time" name="start_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%"> <img src="pic/icons/clock.png" alt="Now" title="Now" style="cursor: pointer;vertical-align: middle;" onclick="set_to_now('start');">
 &#8211; %end_select% <input type="time" id="end_time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%"> <img src="pic/icons/clock.png" alt="Now" title="Now" style="cursor: pointer;vertical-align: middle;" onclick="set_to_now('end');">
@@ -27,7 +27,4 @@ function set_to_now(id) {
 
 %shifts_table%
 
-<h2>iCal Export</h2>
-<p>
-    %ical_text%
-</p>
+%ical_text%

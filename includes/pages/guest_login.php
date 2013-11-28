@@ -152,7 +152,7 @@ function guest_register() {
           form_text('jabber', _("Jabber"), $jabber),
           form_text('hometown', _("Hometown"), $hometown),
           $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',
-          form_textarea('comment', _("Did you help at former CCC events and which tasks have you performed then?"), $comment),
+          // form_textarea('comment', _("Did you help at former CCC events and which tasks have you performed then?"), $comment),
           form_checkboxes('angel_types', _("What do you want to do?") . sprintf("<br>(<a href=\"https://events.ccc.de/congress/2012/wiki/Volunteers#What_kind_of_volunteers_are_needed.3F\">%s</a>)", _("Description of job types")), $angel_types, $selected_angel_types),
           form_info("", _("Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section.")),
           form_password('password', _("Password") . "*"),
@@ -171,7 +171,6 @@ function guest_logout() {
 function guest_login() {
   global $user;
   
-  $msg = "";
   $nick = "";
   
   unset($_SESSION['uid']);
@@ -187,19 +186,19 @@ function guest_login() {
         if (isset($_REQUEST['password'])) {
           if (! verify_password($_REQUEST['password'], $login_user['Passwort'], $login_user['UID'])) {
             $ok = false;
-            $msg .= error(_("Your password is incorrect.  Please try it again."), true);
+            error(_("Your password is incorrect.  Please try it again."));
           }
         } else {
           $ok = false;
-          $msg .= error(_("Please enter a password."), true);
+          error(_("Please enter a password."));
         }
       } else {
         $ok = false;
-        $msg .= error(_("No user was found with that Nickname. Please try again. If you are still having problems, ask an Dispatcher."), true);
+        error(_("No user was found with that Nickname. Please try again. If you are still having problems, ask an Dispatcher."));
       }
     } else {
       $ok = false;
-      $msg .= error(_("Please enter a nickname."), true);
+      error(_("Please enter a nickname."));
     }
     
     if ($ok) {
@@ -210,7 +209,6 @@ function guest_login() {
   }
   
   return page(array(
-      $msg,
       msg(),
       _("Resistance is futile! Your biological and physical parameters will be added to our collectiv! Assimilating angel:"),
       form(array(
