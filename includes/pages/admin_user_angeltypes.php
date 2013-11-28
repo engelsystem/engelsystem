@@ -23,9 +23,9 @@ function admin_user_angeltypes() {
       }
       sql_query("UPDATE `UserAngelTypes` SET `confirm_user_id`=" . sql_escape($_SESSION['uid']) . " WHERE `angeltype_id`=" . sql_escape($_REQUEST['confirm_all']) . " LIMIT 1");
       engelsystem_log("Confirmed all " . $angel_type_source[0]['name']);
-      success("Confirmed all.");
+      success(_("Confirmed all."));
     }
-    else error("Entry not found.");
+    else error(_("Entry not found."));
     redirect(page_link_to('admin_user_angeltypes'));
   }
 
@@ -107,7 +107,7 @@ function admin_new_user_angeltypes() {
     $unconfirmed_angeltypes = sql_num_query("SELECT * FROM `UserAngelTypes` JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id` WHERE `UserAngelTypes`.`angeltype_id` IN (SELECT `angeltype_id` FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user['UID']) . ") AND `AngelTypes`.`restricted`=1 AND `UserAngelTypes`.`confirm_user_id` IS NULL LIMIT 1") > 0;
 
     if ($unconfirmed_angeltypes)
-      return info('<a href="' . page_link_to('admin_user_angeltypes') . '">There are unconfirmed angeltypes!</a>', true);
+      return info('<a href="' . page_link_to('admin_user_angeltypes') . '">' . _("There are unconfirmed angeltypes!") . '</a>', true);
   }
   return "";
 }

@@ -119,7 +119,7 @@ function user_news_comments() {
     <input type="submit" value="' . _("Save") . '">
     </form>';
   } else {
-    $html .= _("Fehlerhafter Aufruf!");
+    $html .= _("Invalid request.");
   }
 
   return $html;
