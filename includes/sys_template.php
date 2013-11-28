@@ -166,7 +166,7 @@ function page($elements) {
  */
 function table($columns, $rows, $data = true) {
   if (count($rows) == 0)
-    return info("No data available.", true);
+    return info(_("No data found."), true);
   $html = "";
   $html .= '<table' . ($data ? ' class="data"' : '') . '>';
   $html .= '<thead><tr>';
