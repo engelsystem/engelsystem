@@ -194,10 +194,10 @@ if (isset($user) && $p != "user_messages")
 if (isset($user) && $user['Gekommen'] == 0)
   $content = error(_("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already."), true) . $content;
   
-if($enable_tshirt_size && $user['Size'] == "")
+if(isset($user) && $enable_tshirt_size && $user['Size'] == "")
   $content = error(_("You need to specify a tshirt size in your settings!"), true) . $content;
 
-if($user['DECT'] == "")
+if(isset($user) && $user['DECT'] == "")
   $content = error(_("You need to specify a DECT phone number in your settings! If you don't have a DECT phone, just enter \"-\"."), true) . $content;
 
   // Erzengel Hinweis für unbeantwortete Fragen
