@@ -350,10 +350,17 @@ function view_user_shifts() {
   if ($_SESSION['user_shifts']['start_day'] == $_SESSION['user_shifts']['end_day'] && $_SESSION['user_shifts']['start_time'] >= $_SESSION['user_shifts']['end_time'])
     $_SESSION['user_shifts']['end_time'] = '23:59';
   
-  $starttime = DateTime::createFromFormat("Y-m-d H:i", $_SESSION['user_shifts']['start_day'] . $_SESSION['user_shifts']['start_time']);
-  $starttime = $starttime->getTimestamp();
-  $endtime = DateTime::createFromFormat("Y-m-d H:i", $_SESSION['user_shifts']['end_day'] . $_SESSION['user_shifts']['end_time']);
-  $endtime = $endtime->getTimestamp();
+  if(isset($_SESSION['user_shifts']['start_day'])) {
+    $starttime = DateTime::createFromFormat("Y-m-d H:i", $_SESSION['user_shifts']['start_day'] . $_SESSION['user_shifts']['start_time']);
+    $starttime = $starttime->getTimestamp();
+  } else
+    $starttime = now();
+  
+  if(isset($_SESSION['user_shifts']['end_day'])) {
+    $endtime = DateTime::createFromFormat("Y-m-d H:i", $_SESSION['user_shifts']['end_day'] . $_SESSION['user_shifts']['end_time']);
+    $endtime = $endtime->getTimestamp();
+  } else
+    $endtime = now() + 24*60*60;
   
   if (! isset($_SESSION['user_shifts']['rooms']) || count($_SESSION['user_shifts']['rooms']) == 0)
     $_SESSION['user_shifts']['rooms'] = array(
