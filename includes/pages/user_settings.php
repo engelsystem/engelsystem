@@ -173,7 +173,7 @@ function user_settings() {
           form_text('prename', _("First name"), $prename),
           form_text('age', _("Age"), $age),
           form_text('tel', _("Phone"), $tel),
-          form_text('dect', _("DECT"), $tel),
+          form_text('dect', _("DECT"), $dect),
           form_text('mobile', _("Mobile"), $mobile),
           form_text('mail', _("E-Mail") . "*", $mail),
           form_text('icq', _("ICQ"), $icq),
