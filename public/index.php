@@ -197,6 +197,9 @@ if (isset($user) && $user['Gekommen'] == 0)
 if($enable_tshirt_size && $user['Size'] == "")
   $content = error(_("You need to specify a tshirt size in your settings!"), true) . $content;
 
+if($user['DECT'] == "")
+  $content = error(_("You need to specify a DECT phone number in your settings! If you don't have a DECT phone, just enter \"-\"."), true) . $content;
+
   // Erzengel Hinweis für unbeantwortete Fragen
 if (isset($user) && $p != "admin_questions")
   $content = admin_new_questions() . $content;
