@@ -101,7 +101,9 @@ function user_settings() {
       
       // Assign angel-types
       $user_angel_type_info = array();
-      sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`='" . sql_escape($user['UID']) . "' AND `angeltype_id` IN (" . implode(",", array_diff(array_keys($angel_types), $selected_angel_types)) . ")");
+      $deleted_angel_types = array_diff(array_keys($angel_types), $selected_angel_types);
+      if(count($deleted_angel_types) > 0)
+        sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`='" . sql_escape($user['UID']) . "' AND `angeltype_id` IN (" . implode(",", $deleted_angel_types) . ")");
       foreach ($angel_types_source as $angel_type)
         if (in_array($angel_type['id'], $selected_angel_types))
           $user_angel_type_info[] = $angel_type['name'];
