@@ -13,7 +13,7 @@ function logout_title() {
 
 // Engel registrieren
 function guest_register() {
-  global $tshirt_sizes, $enable_tshirt_size;
+  global $tshirt_sizes, $enable_tshirt_size, $default_theme;
   
   $msg = "";
   $nick = "";
@@ -115,7 +115,7 @@ function guest_register() {
       $comment = strip_request_item_nl('comment');
     
     if ($ok) {
-      sql_query("INSERT INTO `User` SET `Nick`='" . sql_escape($nick) . "', `Vorname`='" . sql_escape($prename) . "', `Name`='" . sql_escape($lastname) . "', `Alter`='" . sql_escape($age) . "', `Telefon`='" . sql_escape($tel) . "', `DECT`='" . sql_escape($dect) . "', `Handy`='" . sql_escape($mobile) . "', `email`='" . sql_escape($mail) . "', `ICQ`='" . sql_escape($icq) . "', `jabber`='" . sql_escape($jabber) . "', `Size`='" . sql_escape($tshirt_size) . "', `Passwort`='" . sql_escape($password_hash) . "', `kommentar`='" . sql_escape($comment) . "', `Hometown`='" . sql_escape($hometown) . "', `CreateDate`=NOW(), `Sprache`='" . sql_escape($_SESSION["locale"]) . "'");
+      sql_query("INSERT INTO `User` SET `color`=" . sql_escape($default_theme) . ", `Nick`='" . sql_escape($nick) . "', `Vorname`='" . sql_escape($prename) . "', `Name`='" . sql_escape($lastname) . "', `Alter`='" . sql_escape($age) . "', `Telefon`='" . sql_escape($tel) . "', `DECT`='" . sql_escape($dect) . "', `Handy`='" . sql_escape($mobile) . "', `email`='" . sql_escape($mail) . "', `ICQ`='" . sql_escape($icq) . "', `jabber`='" . sql_escape($jabber) . "', `Size`='" . sql_escape($tshirt_size) . "', `Passwort`='" . sql_escape($password_hash) . "', `kommentar`='" . sql_escape($comment) . "', `Hometown`='" . sql_escape($hometown) . "', `CreateDate`=NOW(), `Sprache`='" . sql_escape($_SESSION["locale"]) . "'");
       
       // Assign user-group and set password
       $user_id = sql_id();
