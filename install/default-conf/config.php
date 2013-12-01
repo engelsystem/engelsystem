@@ -1,12 +1,6 @@
 <?php
-// Adresse des Webservers
-$url = "https://SEDENGELURL";
-
-// Startverzeichnis des Engelhome
-$ENGEL_ROOT = "/";
-
 // Default-Theme auf der Startseite, 1=style1.css usw.
-$default_theme = 10;
+$default_theme = 1;
 
 // System disable message, ist ist set is: bages schow only this text
 //$SystemDisableMessage="<H1>This system ist moved to a server in the BCC, you can in the moment only youse it in the in Engel Room</H1>";
