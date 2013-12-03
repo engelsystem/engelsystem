@@ -1,1 +1,0 @@
-*/15    * * * * www-data  (cd /var/www/services/ ; php5 cron_dect.php)

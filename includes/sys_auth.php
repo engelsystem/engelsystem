@@ -55,7 +55,7 @@ function verify_password($password, $salt, $uid = false) {
 
 // JSON Authorisierungs-Schnittstelle
 function json_auth_service() {
-  global $CurrentExternAuthPass;
+  global $api_key;
 
   header("Content-Type: application/json");
 
@@ -63,7 +63,7 @@ function json_auth_service() {
   $Pass = $_REQUEST['pw'];
   $SourceOuth = $_REQUEST['so'];
 
-  if (isset($CurrentExternAuthPass) && $SourceOuth == $CurrentExternAuthPass) {
+  if (isset($api_key) && $SourceOuth == $api_key) {
     $sql = "SELECT `UID`, `Passwort` FROM `User` WHERE `Nick`='" . sql_escape($User) . "'";
     $Erg = sql_select($sql);
 

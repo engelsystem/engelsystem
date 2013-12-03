@@ -22,8 +22,9 @@ require_once ('includes/helper/internationalization_helper.php');
 require_once ('includes/helper/message_helper.php');
 require_once ('includes/helper/error_helper.php');
 
-require_once ('config/config.php');
-require_once ('config/config_db.php');
+require_once ('config/config.default.php');
+if(file_exists('config/config.php'))
+  require_once ('config/config.php');
 
 require_once ('includes/pages/admin_active.php');
 require_once ('includes/pages/admin_angel_types.php');

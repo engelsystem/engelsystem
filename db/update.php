@@ -1,8 +1,9 @@
 <?php
 require_once (dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'bootstrap.php');
 require_once ('includes/mysql_provider.php');
-require_once ('config/config.php');
-require_once ('config/config_db.php');
+require_once('config/config.default.php');
+if(file_exists('config/config.php'))
+  require_once ('config/config.php');
 sql_connect($config['host'], $config['user'], $config['pw'], $config['db']);
 
 error_reporting(E_ALL | E_NOTICE);
