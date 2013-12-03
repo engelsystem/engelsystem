@@ -29,7 +29,6 @@ if(file_exists('config/config.php'))
 require_once ('includes/pages/admin_active.php');
 require_once ('includes/pages/admin_angel_types.php');
 require_once ('includes/pages/admin_arrive.php');
-require_once ('includes/pages/admin_faq.php');
 require_once ('includes/pages/admin_free.php');
 require_once ('includes/pages/admin_groups.php');
 require_once ('includes/pages/admin_import.php');
@@ -39,7 +38,6 @@ require_once ('includes/pages/admin_rooms.php');
 require_once ('includes/pages/admin_shifts.php');
 require_once ('includes/pages/admin_user.php');
 require_once ('includes/pages/admin_user_angeltypes.php');
-require_once ('includes/pages/guest_faq.php');
 require_once ('includes/pages/guest_login.php');
 require_once ('includes/pages/user_messages.php');
 require_once ('includes/pages/user_myshifts.php');
@@ -150,9 +148,6 @@ elseif (in_array($p, $privileges)) {
   } elseif ($p == "admin_groups") {
     $title = admin_groups_title();
     $content = admin_groups();
-  } elseif ($p == "admin_faq") {
-    $title = admin_faq_title();
-    $content = admin_faq();
   } elseif ($p == "admin_language") {
     require_once ('includes/pages/admin_language.php');
     $content = admin_language();
@@ -173,9 +168,6 @@ elseif (in_array($p, $privileges)) {
   require_once ('includes/pages/guest_credits.php');
   $title = credits_title();
   $content = guest_credits();
-} elseif ($p == "faq") {
-  $title = faq_title();
-  $content = guest_faq();
 } else {
   // Wenn schon eingeloggt, keine-Berechtigung-Seite anzeigen
   if (isset($user)) {
@@ -215,7 +207,8 @@ echo template_render('../templates/layout.html', array(
     'atom_link' => ($p == 'news' || $p == 'user_meetings') ? '<link href="' . page_link_to('atom') . (($p == 'user_meetings') ? '&amp;meetings=1' : '') . '&amp;key=' . $user['api_key'] . '" type="application/atom+xml" rel="alternate" title="Atom Feed">' : '',
     'menu' => make_menu(),
     'content' => $content,
-    'header_toolbar' => header_toolbar() 
+    'header_toolbar' => header_toolbar(),
+    'faq_url' => $faq_url
 ));
 
 counter();

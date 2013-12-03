@@ -13,7 +13,7 @@ function logout_title() {
 
 // Engel registrieren
 function guest_register() {
-  global $tshirt_sizes, $enable_tshirt_size, $default_theme;
+  global $tshirt_sizes, $enable_tshirt_size, $default_theme, $faq_url;
   
   $msg = "";
   $nick = "";
@@ -153,7 +153,7 @@ function guest_register() {
           form_text('hometown', _("Hometown"), $hometown),
           $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',
           // form_textarea('comment', _("Did you help at former CCC events and which tasks have you performed then?"), $comment),
-          form_checkboxes('angel_types', _("What do you want to do?") . sprintf("<br>(<a href=\"https://events.ccc.de/congress/2012/wiki/Volunteers#What_kind_of_volunteers_are_needed.3F\">%s</a>)", _("Description of job types")), $angel_types, $selected_angel_types),
+          form_checkboxes('angel_types', _("What do you want to do?") . sprintf("<br>(<a href=\"%s\">%s</a>)", $faq_url, _("Description of job types")), $angel_types, $selected_angel_types),
           form_info("", _("Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section.")),
           form_password('password', _("Password") . "*"),
           form_password('password2', _("Confirm password") . "*"),

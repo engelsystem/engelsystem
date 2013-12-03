@@ -92,42 +92,6 @@ INSERT INTO `Counter` (`URL`, `Anz`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `FAQ`
---
-
-DROP TABLE IF EXISTS `FAQ`;
-CREATE TABLE IF NOT EXISTS `FAQ` (
-  `FID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `Frage_de` text NOT NULL,
-  `Antwort_de` text NOT NULL,
-  `Frage_en` text NOT NULL,
-  `Antwort_en` text NOT NULL,
-  `Sprache` set('de','en') NOT NULL,
-  `QID` int(11) NOT NULL,
-  PRIMARY KEY (`FID`),
-  KEY `Sprache` (`Sprache`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
-
---
--- Daten für Tabelle `FAQ`
---
-
-INSERT INTO `FAQ` (`FID`, `Frage_de`, `Antwort_de`, `Frage_en`, `Antwort_en`, `Sprache`, `QID`) VALUES
-(1, 'Komme ich als Engel billiger/kostenlos auf den Congress?', 'Nein, jeder Engel muss normal Eintritt bezahlen.', 'Do I get in cheaper / for free to the congress as an angel ?', 'No, every angel has to pay full price.', '', 0),
-(2, 'Was bekomme ich f&uuml;r meine Mitarbeit?', 'Jeder Engel der arbeitet bekommt ein kostenloses T-Shirt nach der Veranstalltung', 'What can i expect in return for my help?', 'Every working angel gets a free shirt after the event.', '', 0),
-(3, 'Wie lange muss ich als Engel arbeiten?', 'Diese Frage ist schwer zu beantworten. Es h&auml;ngt z.B. davon ab, was man macht (z.B. Workshop-Engel) und wieviele Engel wir zusammen bekommen.', 'How long do I have to work as an angel ?', 'This is difficult to answer. It depends on what you decide to do (e.g. workshop angel) and how many people will attend.', '', 0),
-(6, 'Ich bin erst XX Jahre alt. Kann ich &uuml;berhaupt helfen?', 'Wir k&ouml;nnen jede helfende Hand gebrauchen. Wenn du alt genug bist, um zum Congress zu kommen, bist du auch alt genug zu helfen.', 'I''m only XX years old. Can I help anyway?', 'We need every help we can get. If your old enough to come to the congress, your old enough to help.', '', 0),
-(8, 'Wer sind eigentlich die Erzengel?', 'Erzengel sind dieses Jahr: BugBlue, TabascoEye, Jeedi, Daizy, volty', 'Who <b>are</b> the Arch-Angels?', 'The ArchAngels for this year are: BugBlue, TabascoEye, Jeedi, Daizy, volty', '', 0),
-(9, 'Gibt es dieses Jahr wieder einen IRC-Channel f&uuml;r Engel?', 'Ja, im IRC-Net existiert #chaos-angel. Einfach mal reinschaun!', 'Will there be an IRC-channel for angels again?', 'Yes, in the IRC-net there''s #chaos-angel. Just have a look!', '', 0),
-(10, 'Wie gehe ich mit den Besuchern um?', 'Man soll gegen&uuml;ber den Besuchern immer h&ouml;flich und freundlich sein, auch wenn diese gestresst sind. Wenn man das Gef&uuml;hl hat, dass man mit der Situation nicht mehr klarkommt, sollte man sich jemanden zur Unterst&uuml;tzung holen, bevor man selbst auch gestresst wird :-)', 'How do I treat visitors?', 'You should always be polite and friendly, especially if they are stressed. When you feel you can''t handle it on your own, get someone to help you out before you get so stressed yourself that you get impolite.', '', 0),
-(11, 'Wann sind die Engelbesprechungen?', 'Das wird vor Ort noch festgelegt und steht im Himmelnewssystem.', 'When are the angels briefings?', 'The information on the Angel Briefings will be in the news section of this system.', '', 0),
-(12, 'Was muss ich noch bedenken?', 'Man sollte nicht total &uuml;berm&uuml;det oder ausgehungert, wenn n man einen Einsatz hat. Eine gewisse Fitness ist hilfreich.', 'Anything else I should know?', 'You should not be exhausted or starving when you arrive for a shift. A reasonable amount of fitness for work would be very helpful.', '', 0),
-(13, 'Ich habe eine Frage, auf die ich in der FAQ keine Antwort gefunden habe. Wohin soll ich mich wenden?', 'Bei weitere Fragen kannst du die Anfragen an die Erzengel Formular benutzen.', 'I have a guestion not answered here. Who can I ask?', 'If you have further questions, you can use the Questions for the ArchAngels form.', '', 0),
-(20, 'Wer muss alles Eintritt zahlen?', 'Jeder. Zumindest, solange er/sie &auml;lter als 12 Jahre ist...', 'Who has to pay the full entrance price?', 'Everyone who is at older than 12 years old.', '', 0);
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `Groups`
 --
 
@@ -300,7 +264,6 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (139, -5, 12),
 (196, -2, 35),
 (138, -5, 14),
-(137, -5, 13),
 (136, -5, 7),
 (195, -2, 15),
 (87, -6, 18),
@@ -355,7 +318,6 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (10, 'admin_groups', 'Manage usergroups and their rights'),
 (11, 'user_questions', 'Let users ask questions'),
 (12, 'admin_questions', 'Answer user''s questions'),
-(13, 'admin_faq', 'Edit FAQs'),
 (14, 'admin_news', 'Administrate the news section'),
 (15, 'news_comments', 'User can comment news'),
 (16, 'admin_user', 'Administrate the angels'),
@@ -365,7 +327,6 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (20, 'user_wakeup', 'User wakeup-service organization'),
 (21, 'admin_import', 'Import rooms and shifts from pentabarf'),
 (22, 'credits', 'View credits'),
-(23, 'faq', 'View FAQ'),
 (24, 'user_shifts', 'Signup for shifts'),
 (25, 'user_shifts_admin', 'Signup other angels for shifts.'),
 (26, 'user_myshifts', 'Allow angels to view their own shifts and cancel them.'),
@@ -446,28 +407,6 @@ CREATE TABLE IF NOT EXISTS `ShiftEntry` (
 
 --
 -- Daten für Tabelle `ShiftEntry`
---
-
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `ShiftFreeloader`
---
-
-DROP TABLE IF EXISTS `ShiftFreeloader`;
-CREATE TABLE IF NOT EXISTS `ShiftFreeloader` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Remove_Time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `UID` int(11) NOT NULL,
-  `Length` int(11) NOT NULL,
-  `Comment` text NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `UID` (`UID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Daten für Tabelle `ShiftFreeloader`
 --
 
 

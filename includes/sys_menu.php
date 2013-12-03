@@ -39,10 +39,6 @@ function make_navigation() {
   global $privileges;
   $menu = "";
   
-  $specials = array(
-      "faq"
-  );
-  
   $pages = array(
       "news" => news_title(),
       "user_meetings" => meetings_title(),
@@ -61,13 +57,12 @@ function make_navigation() {
       "admin_shifts" => admin_shifts_title(),
       "admin_rooms" => admin_rooms_title(),
       "admin_groups" => admin_groups_title(),
-      "admin_faq" => admin_faq_title(),
       "admin_import" => admin_import_title(),
       "admin_log" => admin_log_title()
   );
   
   foreach ($pages as $page => $title)
-    if (in_array($page, $privileges) || in_array($page, $specials))
+    if (in_array($page, $privileges))
       $menu .= '<li' . ($page == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($page) . '">' . $title . '</a></li>';
   
   return '<nav><ul>' . $menu . '</ul></nav>';
@@ -75,14 +70,10 @@ function make_navigation() {
 
 function make_navigation_for($name, $pages) {
   global $privileges, $p;
-  
-  $specials = array(
-      "faq" 
-  );
-  
+
   $menu = "";
   foreach ($pages as $page)
-    if (in_array($page, $privileges) || in_array($page, $specials))
+    if (in_array($page, $privileges))
       $menu .= '<li' . ($page == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($page) . '">' . $title . '</a></li>';
   
   if ($menu != "")

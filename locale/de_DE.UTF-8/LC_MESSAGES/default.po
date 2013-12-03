@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2013-12-03 16:18+0100\n"
-"PO-Revision-Date: 2013-12-03 16:18+0100\n"
+"POT-Creation-Date: 2013-12-03 16:28+0100\n"
+"PO-Revision-Date: 2013-12-03 16:28+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -154,10 +154,6 @@ msgstr "angekommen"
 msgid "Arrived?"
 msgstr "Angekommen?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_faq.php:3
-msgid "Edit FAQs"
-msgstr "FAQs bearbeiten"
-
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:3
 msgid "Free angels"
 msgstr "Freie Engel"
@@ -206,7 +202,7 @@ msgstr "Engelliste"
 msgid "Save"
 msgstr "Speichern"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_user.php:332
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_user.php:331
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_myshifts.php:90
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:62
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:476
@@ -249,10 +245,6 @@ msgstr "Es gibt nicht freigeschaltete Engeltypen!"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_credits.php:3
 msgid "Credits"
 msgstr "Credits"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_faq.php:3
-msgid "FAQ"
-msgstr "FAQ"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:3
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:217
@@ -1024,11 +1016,11 @@ msgstr "Kommentar (nur für Dich):"
 msgid "Please select..."
 msgstr "Bitte auswählen..."
 
-#: /Users/msquare/workspace/projects/engelsystem/public/index.php:182
+#: /Users/msquare/workspace/projects/engelsystem/public/index.php:174
 msgid "No Access"
 msgstr "Kein Zugriff"
 
-#: /Users/msquare/workspace/projects/engelsystem/public/index.php:183
+#: /Users/msquare/workspace/projects/engelsystem/public/index.php:175
 msgid ""
 "You don't have permission to view this page. You probably have to sign in or "
 "register in order to gain access!"
@@ -1036,7 +1028,7 @@ msgstr ""
 "Du hast keinen Zugriff auf diese Seite. Registriere Dich und logge Dich "
 "bitte ein, um Zugriff zu erhalten!"
 
-#: /Users/msquare/workspace/projects/engelsystem/public/index.php:196
+#: /Users/msquare/workspace/projects/engelsystem/public/index.php:188
 msgid ""
 "You are not marked as arrived. Please go to heaven's desk, get your angel "
 "badge and/or tell them that you arrived already."
@@ -1044,15 +1036,21 @@ msgstr ""
 "Du bist nicht als angekommen markiert. Bitte gehe zur Himmelsverwaltung, "
 "hole Dein Badge ab und/oder erkläre ihnen, dass Du bereits angekommen bist."
 
-#: /Users/msquare/workspace/projects/engelsystem/public/index.php:199
+#: /Users/msquare/workspace/projects/engelsystem/public/index.php:191
 msgid "You need to specify a tshirt size in your settings!"
 msgstr ""
 
-#: /Users/msquare/workspace/projects/engelsystem/public/index.php:202
+#: /Users/msquare/workspace/projects/engelsystem/public/index.php:194
 msgid ""
 "You need to specify a DECT phone number in your settings! If you don't have "
 "a DECT phone, just enter \"-\"."
 msgstr ""
+
+#~ msgid "Edit FAQs"
+#~ msgstr "FAQs bearbeiten"
+
+#~ msgid "FAQ"
+#~ msgstr "FAQ"
 
 #~ msgid "asdf"
 #~ msgstr "fdsa"

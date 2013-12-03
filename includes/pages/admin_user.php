@@ -196,7 +196,6 @@ function admin_user() {
       $html .= "</form>";
 
       $html .= "<hr />";
-      //$html .= funktion_db_element_list_2row("Freeloader Shifts", "SELECT `Remove_Time`, `Length`, `Comment` FROM `ShiftFreeloader` WHERE UID=" . $_REQUEST['id']);
     } else {
       switch ($_REQUEST['action']) {
         case 'save_groups' :
