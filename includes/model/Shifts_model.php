@@ -16,9 +16,11 @@ function Shifts() {
     $needed_angeltypes = NeededAngelTypes_by_shift($shift);
     if ($needed_angeltypes === false)
       return false;
-    
+
     $shift['angeltypes'] = $needed_angeltypes;
   }
+  
+  return $shifts_source;
 }
 
 ?>

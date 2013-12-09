@@ -12,6 +12,7 @@ require_once ('includes/sys_template.php');
 
 require_once ('includes/model/LogEntries_model.php');
 require_once ('includes/model/NeededAngelTypes_model.php');
+require_once ('includes/model/ShiftEntry_model.php');
 require_once ('includes/model/Shifts_model.php');
 require_once ('includes/model/User_model.php');
 
@@ -25,7 +26,7 @@ require_once ('includes/helper/message_helper.php');
 require_once ('includes/helper/error_helper.php');
 
 require_once ('config/config.default.php');
-if (file_exists('config/config.php'))
+if (file_exists('../config/config.php'))
   require_once ('config/config.php');
 
 require_once ('includes/pages/admin_active.php');
