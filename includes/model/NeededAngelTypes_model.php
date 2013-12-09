@@ -33,7 +33,7 @@ function NeededAngelTypes_by_shift($shift) {
   
   $needed_angeltypes = array();
   foreach ($needed_angeltypes_source as $angeltype) {
-    $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['id']);
+    $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['angel_type_id']);
     if ($shift_entries === false)
       return false;
     
