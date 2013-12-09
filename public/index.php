@@ -11,6 +11,8 @@ require_once ('includes/sys_page.php');
 require_once ('includes/sys_template.php');
 
 require_once ('includes/model/LogEntries_model.php');
+require_once ('includes/model/NeededAngelTypes_model.php');
+require_once ('includes/model/Shifts_model.php');
 require_once ('includes/model/User_model.php');
 
 require_once ('includes/view/Questions_view.php');
@@ -23,7 +25,7 @@ require_once ('includes/helper/message_helper.php');
 require_once ('includes/helper/error_helper.php');
 
 require_once ('config/config.default.php');
-if(file_exists('config/config.php'))
+if (file_exists('config/config.php'))
   require_once ('config/config.php');
 
 require_once ('includes/pages/admin_active.php');
@@ -58,10 +60,15 @@ load_auth();
 // JSON Authorisierung gewünscht?
 if (isset($_REQUEST['auth']))
   json_auth_service();
-  
-  // Gewünschte Seite/Funktion
+
+$api_pages = array(
+    'stats',
+    'shifts_json_export_all' 
+);
+
+// Gewünschte Seite/Funktion
 $p = isset($user) ? "news" : "login";
-if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && ($_REQUEST['p'] == 'stats' || (sql_num_query("SELECT * FROM `Privileges` WHERE `name`='" . sql_escape($_REQUEST['p']) . "' LIMIT 1") > 0)))
+if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $api_pages) || (sql_num_query("SELECT * FROM `Privileges` WHERE `name`='" . sql_escape($_REQUEST['p']) . "' LIMIT 1") > 0)))
   $p = $_REQUEST['p'];
 
 $title = $p;
@@ -76,6 +83,9 @@ if ($p == "ical") {
 } elseif ($p == "shifts_json_export") {
   require_once ('includes/controller/shifts_controller.php');
   shifts_json_export_controller();
+} elseif ($p == "shifts_json_export_all") {
+  require_once ('includes/controller/shifts_controller.php');
+  shifts_json_export_all_controller();
 } elseif ($p == "stats") {
   require_once ('includes/pages/guest_stats.php');
   guest_stats();
@@ -186,13 +196,13 @@ if (isset($user) && $p != "user_messages")
   // Hinweis für Engel, die noch nicht angekommen sind
 if (isset($user) && $user['Gekommen'] == 0)
   $content = error(_("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already."), true) . $content;
-  
-if(isset($user) && $enable_tshirt_size && $user['Size'] == "")
+
+if (isset($user) && $enable_tshirt_size && $user['Size'] == "")
   $content = error(_("You need to specify a tshirt size in your settings!"), true) . $content;
 
-if(isset($user) && $user['DECT'] == "")
+if (isset($user) && $user['DECT'] == "")
   $content = error(_("You need to specify a DECT phone number in your settings! If you don't have a DECT phone, just enter \"-\"."), true) . $content;
-
+  
   // Erzengel Hinweis für unbeantwortete Fragen
 if (isset($user) && $p != "admin_questions")
   $content = admin_new_questions() . $content;
@@ -208,7 +218,7 @@ echo template_render('../templates/layout.html', array(
     'menu' => make_menu(),
     'content' => $content,
     'header_toolbar' => header_toolbar(),
-    'faq_url' => $faq_url
+    'faq_url' => $faq_url 
 ));
 
 counter();
