@@ -21,4 +21,3 @@ function admin_log() {
   ));
 }
 ?>
-
