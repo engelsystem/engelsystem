@@ -70,7 +70,8 @@ $free_pages = array(
 );
 
 // Gewünschte Seite/Funktion
-$_REQUEST['p'] = isset($user) ? "news" : "login";
+if (! isset($_REQUEST['news']))
+  $_REQUEST['p'] = isset($user) ? "news" : "login";
 if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $free_pages) || in_array($_REQUEST['p'], $privileges))) {
   $p = $_REQUEST['p'];
   
