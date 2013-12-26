@@ -372,7 +372,7 @@ a.button {
 	background: #444;
 }
 
-.button:hover {
+.button:hover, .toolbar .button:hover {
 	color: #000;
 	background: #fff;
 }
