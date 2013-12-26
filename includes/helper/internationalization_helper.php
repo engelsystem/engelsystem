@@ -17,11 +17,23 @@ function gettext_init() {
   elseif (! isset($_SESSION['locale']))
     $_SESSION['locale'] = $default_locale;
   
-  putenv('LC_ALL=' . $_SESSION['locale']);
-  setlocale(LC_ALL, $_SESSION['locale']);
+  gettext_locale();
   bindtextdomain('default', '../locale');
   bind_textdomain_codeset('default', 'UTF-8');
   textdomain('default');
+}
+
+/**
+ * Swich gettext locale.
+ *
+ * @param string $locale          
+ */
+function gettext_locale($locale = null) {
+  if ($locale == null)
+    $locale = $_SESSION['locale'];
+  
+  putenv('LC_ALL=' . $locale);
+  setlocale(LC_ALL, $locale);
 }
 
 /**

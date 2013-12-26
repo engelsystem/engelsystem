@@ -216,6 +216,9 @@ function guest_login() {
           form_password('password', _("Password")),
           form_submit('submit', _("Login")) 
       )),
+      buttons(array(
+          button(page_link_to('user_password_recovery'), _("I forgot my password")) 
+      )),
       info(_("Please note: You have to activate cookies!"), true) 
   ));
 }

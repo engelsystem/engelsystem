@@ -31,9 +31,39 @@ function User_by_api_key($api_key) {
 }
 
 /**
+ * Returns User by email.
+ *
+ * @param string $email          
+ * @return Matching user, null or false on error
+ */
+function User_by_email($email) {
+  $user = sql_select("SELECT * FROM `User` WHERE `email`='" . sql_escape($email) . "' LIMIT 1");
+  if ($user === false)
+    return false;
+  if (count($user) == 0)
+    return null;
+  return $user[0];
+}
+
+/**
+ * Returns User by password token.
+ *
+ * @param string $token          
+ * @return Matching user, null or false on error
+ */
+function User_by_password_recovery_token($token) {
+  $user = sql_select("SELECT * FROM `User` WHERE `password_recovery_token`='" . sql_escape($token) . "' LIMIT 1");
+  if ($user === false)
+    return false;
+  if (count($user) == 0)
+    return null;
+  return $user[0];
+}
+
+/**
  * Generates a new api key for given user.
  *
- * @param User $user
+ * @param User $user          
  */
 function User_reset_api_key(&$user) {
   $user['api_key'] = md5($user['Nick'] . time() . rand());
@@ -41,6 +71,20 @@ function User_reset_api_key(&$user) {
   if ($result === false)
     return false;
   engelsystem_log("API key resetted.");
+}
+
+/**
+ * Generates a new password recovery token for given user.
+ *
+ * @param User $user          
+ */
+function User_generate_password_recovery_token(&$user) {
+  $user['password_recovery_token'] = md5($user['Nick'] . time() . rand());
+  $result = sql_query("UPDATE `User` SET `password_recovery_token`='" . sql_escape($user['password_recovery_token']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
+  if ($result === false)
+    return false;
+  engelsystem_log("Password recovery for " . $user['Nick'] . " started.");
+  return $user['password_recovery_token'];
 }
 
 ?>

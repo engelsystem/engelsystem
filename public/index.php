@@ -24,6 +24,7 @@ require_once ('includes/view/User_view.php');
 require_once ('includes/helper/internationalization_helper.php');
 require_once ('includes/helper/message_helper.php');
 require_once ('includes/helper/error_helper.php');
+require_once ('includes/helper/email_helper.php');
 
 require_once ('config/config.default.php');
 if (file_exists('../config/config.php'))
@@ -62,37 +63,40 @@ load_auth();
 if (isset($_REQUEST['auth']))
   json_auth_service();
 
-$api_pages = array(
+$free_pages = array(
     'stats',
-    'shifts_json_export_all' 
+    'shifts_json_export_all',
+    'user_password_recovery' 
 );
 
 // Gewünschte Seite/Funktion
 $p = isset($user) ? "news" : "login";
-if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $api_pages) || (sql_num_query("SELECT * FROM `Privileges` WHERE `name`='" . sql_escape($_REQUEST['p']) . "' LIMIT 1") > 0)))
+if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $free_pages) || in_array($_REQUEST['p'], $privileges))) {
   $p = $_REQUEST['p'];
-
-$title = $p;
-$content = "";
-
-if ($p == "ical") {
-  require_once ('includes/pages/user_ical.php');
-  user_ical();
-} elseif ($p == "atom") {
-  require_once ('includes/pages/user_atom.php');
-  user_atom();
-} elseif ($p == "shifts_json_export") {
-  require_once ('includes/controller/shifts_controller.php');
-  shifts_json_export_controller();
-} elseif ($p == "shifts_json_export_all") {
-  require_once ('includes/controller/shifts_controller.php');
-  shifts_json_export_all_controller();
-} elseif ($p == "stats") {
-  require_once ('includes/pages/guest_stats.php');
-  guest_stats();
-} // Recht dafür vorhanden?
-elseif (in_array($p, $privileges)) {
-  if ($p == "news") {
+  
+  $title = $p;
+  $content = "";
+  
+  if ($p == "ical") {
+    require_once ('includes/pages/user_ical.php');
+    user_ical();
+  } elseif ($p == "atom") {
+    require_once ('includes/pages/user_atom.php');
+    user_atom();
+  } elseif ($p == "shifts_json_export") {
+    require_once ('includes/controller/shifts_controller.php');
+    shifts_json_export_controller();
+  } elseif ($p == "shifts_json_export_all") {
+    require_once ('includes/controller/shifts_controller.php');
+    shifts_json_export_all_controller();
+  } elseif ($p == "stats") {
+    require_once ('includes/pages/guest_stats.php');
+    guest_stats();
+  } elseif ($p == "user_password_recovery") {
+    require_once ('includes/controller/users_controller.php');
+    $title = user_password_recovery_title();
+    $content = user_password_recovery_controller();
+  } elseif ($p == "news") {
     $title = news_title();
     $content = user_news();
   } elseif ($p == "news_comments") {
@@ -171,14 +175,14 @@ elseif (in_array($p, $privileges)) {
   } elseif ($p == "admin_log") {
     $title = admin_log_title();
     $content = admin_log();
+  } elseif ($p == "credits") {
+    require_once ('includes/pages/guest_credits.php');
+    $title = credits_title();
+    $content = guest_credits();
   } else {
     require_once ('includes/pages/guest_start.php');
     $content = guest_start();
   }
-} elseif ($p == "credits") {
-  require_once ('includes/pages/guest_credits.php');
-  $title = credits_title();
-  $content = guest_credits();
 } else {
   // Wenn schon eingeloggt, keine-Berechtigung-Seite anzeigen
   if (isset($user)) {
@@ -190,27 +194,29 @@ elseif (in_array($p, $privileges)) {
   }
 }
 
-// Hinweis für ungelesene Nachrichten
-if (isset($user) && $p != "user_messages")
-  $content = user_unread_messages() . $content;
+if (isset($user)) {
+  // Hinweis für ungelesene Nachrichten
+  if ($p != "user_messages")
+    $content = user_unread_messages() . $content;
+    
+    // Hinweis für Engel, die noch nicht angekommen sind
+  if ($user['Gekommen'] == 0)
+    $content = error(_("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already."), true) . $content;
   
-  // Hinweis für Engel, die noch nicht angekommen sind
-if (isset($user) && $user['Gekommen'] == 0)
-  $content = error(_("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already."), true) . $content;
-
-if (isset($user) && $enable_tshirt_size && $user['Size'] == "")
-  $content = error(_("You need to specify a tshirt size in your settings!"), true) . $content;
-
-if (isset($user) && $user['DECT'] == "")
-  $content = error(_("You need to specify a DECT phone number in your settings! If you don't have a DECT phone, just enter \"-\"."), true) . $content;
+  if ($enable_tshirt_size && $user['Size'] == "")
+    $content = error(_("You need to specify a tshirt size in your settings!"), true) . $content;
   
-  // Erzengel Hinweis für unbeantwortete Fragen
-if (isset($user) && $p != "admin_questions")
-  $content = admin_new_questions() . $content;
-  
-  // Erzengel Hinweis für freizuschaltende Engeltypen
-if (isset($user) && $p != "admin_user_angeltypes")
-  $content = admin_new_user_angeltypes() . $content;
+  if ($user['DECT'] == "")
+    $content = error(_("You need to specify a DECT phone number in your settings! If you don't have a DECT phone, just enter \"-\"."), true) . $content;
+    
+    // Erzengel Hinweis für unbeantwortete Fragen
+  if ($p != "admin_questions")
+    $content = admin_new_questions() . $content;
+    
+    // Erzengel Hinweis für freizuschaltende Engeltypen
+  if ($p != "admin_user_angeltypes")
+    $content = admin_new_user_angeltypes() . $content;
+}
 
 echo template_render('../templates/layout.html', array(
     'theme' => isset($user) ? $user['color'] : $default_theme,

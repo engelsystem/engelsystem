@@ -1,3 +1,7 @@
+/* password recovery */
+ALTER TABLE `User` ADD `password_recovery_token` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `Passwort` ,
+ADD INDEX ( `password_recovery_token` );
+
 /* Update für #27, iCal-Export */
 ALTER TABLE `User` ADD `ical_key` VARCHAR( 32 ) NOT NULL;
 ALTER TABLE `User` ADD INDEX ( `ical_key` );
