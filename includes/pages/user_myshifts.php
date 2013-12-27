@@ -122,8 +122,8 @@ function user_myshifts() {
     }
     
     $myshift['actions'] = "";
-    if ($id == $user['UID'])
-      $myshift['actions'] .= img_button(page_link_to('user_myshifts') . '&edit=' . $shift['id'], 'pencil', _("edit"));
+    if ($id == $user['UID'] || in_array('user_shifts_admin', $privileges))
+      $myshift['actions'] .= img_button(page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '&id=' . $id, 'pencil', _("edit"));
     if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges))
       $myshift['actions'] .= img_button(page_link_to('user_myshifts') . (($id != $user['UID']) ? '&id=' . $id : '') . '&cancel=' . $shift['id'], 'cross', _("sign off"));
     
