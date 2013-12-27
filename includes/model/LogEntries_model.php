@@ -15,7 +15,7 @@ function LogEntry_create($nick, $message) {
  * Returns log entries of the last 24 hours with maximum count of 1000.
  */
 function LogEntries() {
-  return sql_select("SELECT * FROM `LogEntries` WHERE `timestamp` > " . (time() - 24 * 60 * 60) . " ORDER BY `timestamp` DESC LIMIT 1000");
+  return sql_select("SELECT * FROM `LogEntries` WHERE `timestamp` > " . (time() - 24 * 60 * 60) . " ORDER BY `timestamp` DESC LIMIT 10000");
 }
 
 ?>
