@@ -196,6 +196,10 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
 }
 
 if (isset($user)) {
+  $freeloaded_shifts_count = count(ShiftEntries_freeloaded_by_user($user));
+  if($freeloaded_shifts_count >= $max_freeloadable_shifts)
+    $content = error(sprintf(_("You freeloaded %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again."), $freeloaded_shifts_count), true) . $content;
+  
   // Hinweis für ungelesene Nachrichten
   if ($p != "user_messages")
     $content = user_unread_messages() . $content;

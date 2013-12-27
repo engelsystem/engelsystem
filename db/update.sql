@@ -1,3 +1,7 @@
+/* freeloader */
+ALTER TABLE `ShiftEntry` ADD `freeloaded` BOOLEAN NOT NULL, ADD INDEX ( `freeloaded` );
+ALTER TABLE `ShiftEntry` ADD `freeload_comment` TEXT NULL DEFAULT NULL;
+
 /* password recovery */
 ALTER TABLE `User` ADD `password_recovery_token` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `Passwort` ,
 ADD INDEX ( `password_recovery_token` );

@@ -26,20 +26,45 @@ function user_myshifts() {
     return template_render('../templates/user_myshifts_reset.html', array());
   } elseif (isset($_REQUEST['edit']) && preg_match("/^[0-9]*$/", $_REQUEST['edit'])) {
     $id = $_REQUEST['edit'];
-    $shift = sql_select("SELECT `ShiftEntry`.`Comment`, `ShiftEntry`.`UID`, `Shifts`.*, `Room`.`Name`, `AngelTypes`.`name` as `angel_type` FROM `ShiftEntry` JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`) JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `ShiftEntry`.`id`=" . sql_escape($id) . " AND `UID`=" . sql_escape($shifts_user['UID']) . " LIMIT 1");
+    $shift = sql_select("SELECT 
+        `ShiftEntry`.`freeloaded`, 
+        `ShiftEntry`.`freeload_comment`, 
+        `ShiftEntry`.`Comment`, 
+        `ShiftEntry`.`UID`, 
+        `Shifts`.*, 
+        `Room`.`Name`, 
+        `AngelTypes`.`name` as `angel_type` 
+        FROM `ShiftEntry` 
+        JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`) 
+        JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
+        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
+        WHERE `ShiftEntry`.`id`=" . sql_escape($id) . " 
+        AND `UID`=" . sql_escape($shifts_user['UID']) . " LIMIT 1");
     if (count($shift) > 0) {
       $shift = $shift[0];
       
       if (isset($_REQUEST['submit'])) {
+        $freeloaded = $shift['freeloaded'];
+        $freeload_comment = $shift['freeload_comment'];
+        if (in_array("user_shifts_admin", $privileges)) {
+          $freeloaded = isset($_REQUEST['freeloaded']);
+          $freeload_comment = strip_request_item_nl('freeload_comment');
+        }
+        
         $comment = strip_request_item_nl('comment');
         $user_source = User($shift['UID']);
-        sql_query("UPDATE `ShiftEntry` SET `Comment`='" . sql_escape($comment) . "' WHERE `id`=" . sql_escape($id) . " LIMIT 1");
+        sql_query("UPDATE `ShiftEntry` SET 
+            `Comment`='" . sql_escape($comment) . "',
+            `freeloaded`=" . sql_escape($freeloaded ? 1 : 0) . ",
+            `freeload_comment`='" . sql_escape($freeload_comment) . "'
+            WHERE `id`=" . sql_escape($id) . " 
+            LIMIT 1");
         engelsystem_log("Updated " . User_Nick_render($user_source) . "'s shift " . $shift['name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']) . " with comment " . $comment);
         success(_("Shift saved."));
         redirect(page_link_to('user_myshifts'));
       }
       
-      return ShiftEntry_edit_view(User_Nick_render($shifts_user), date("Y-m-d H:i", $shift['start']) . ', ' . shift_length($shift), $shift['Name'], $shift['name'], $shift['angel_type'], $shift['Comment']);
+      return ShiftEntry_edit_view(User_Nick_render($shifts_user), date("Y-m-d H:i", $shift['start']) . ', ' . shift_length($shift), $shift['Name'], $shift['name'], $shift['angel_type'], $shift['Comment'], $shift['freeloaded'], $shift['freeload_comment'], in_array("user_shifts_admin", $privileges));
     } else
       redirect(page_link_to('user_myshifts'));
   } elseif (isset($_REQUEST['cancel']) && preg_match("/^[0-9]*$/", $_REQUEST['cancel'])) {
@@ -51,7 +76,7 @@ function user_myshifts() {
         sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
         $msg .= success(_("You have been signed off from the shift."), true);
       } else
-        $msg .= error(_("It's too late to sign yourself off the shift. If neccessary, as the dispatcher to do so."), true);
+        $msg .= error(_("It's too late to sign yourself off the shift. If neccessary, ask the dispatcher to do so."), true);
     } else
       redirect(page_link_to('user_myshifts'));
   }
@@ -66,13 +91,17 @@ function user_myshifts() {
     foreach ($needed_angel_types_source as $needed_angel_type) {
       $shift_info .= '<br><b>' . $needed_angel_type['name'] . ':</b> ';
       
-      $users_source = sql_select("SELECT `User`.* FROM `ShiftEntry` JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID` WHERE `ShiftEntry`.`SID`=" . sql_escape($shift['SID']) . " AND `ShiftEntry`.`TID`=" . sql_escape($needed_angel_type['id']));
+      $users_source = sql_select("SELECT `ShiftEntry`.`freeloaded`, `User`.* FROM `ShiftEntry` JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID` WHERE `ShiftEntry`.`SID`=" . sql_escape($shift['SID']) . " AND `ShiftEntry`.`TID`=" . sql_escape($needed_angel_type['id']));
       $shift_entries = array();
       foreach ($users_source as $user_source) {
         if ($user['UID'] == $user_source['UID'])
-          $shift_entries[] = '<b>' . $user_source['Nick'] . '</b>';
+          $member = '<b>' . $user_source['Nick'] . '</b>';
         else
-          $shift_entries[] = User_Nick_render($user_source);
+          $member = User_Nick_render($user_source);
+        if ($user_source['freeloaded'])
+          $member = '<strike>' . $member . '</strike>';
+        
+        $shift_entries[] = $member;
       }
       $shift_info .= join(", ", $shift_entries);
     }
@@ -85,13 +114,23 @@ function user_myshifts() {
         'comment' => $shift['Comment'] 
     );
     
+    if ($shift['freeloaded']) {
+      if (in_array("user_shifts_admin", $privileges))
+        $myshift['comment'] .= '<br /><p class="error">' . _("Freeloaded") . ': ' . $shift['freeload_comment'] . '</p>';
+      else
+        $myshift['comment'] .= '<br /><p class="error">' . _("Freeloaded") . '</p>';
+    }
+    
     $myshift['actions'] = "";
     if ($id == $user['UID'])
       $myshift['actions'] .= img_button(page_link_to('user_myshifts') . '&edit=' . $shift['id'], 'pencil', _("edit"));
     if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges))
       $myshift['actions'] .= img_button(page_link_to('user_myshifts') . (($id != $user['UID']) ? '&id=' . $id : '') . '&cancel=' . $shift['id'], 'cross', _("sign off"));
     
-    $timesum += $shift['end'] - $shift['start'];
+    if ($shift['freeloaded'])
+      $timesum += - 2 * ($shift['end'] - $shift['start']);
+    else
+      $timesum += $shift['end'] - $shift['start'];
     $myshifts_table[] = $myshift;
   }
   if (count($myshifts_table) > 0)

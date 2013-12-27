@@ -39,7 +39,7 @@ function admin_arrive() {
   foreach ($users as $usr) {
     if (count($tokens) > 0) {
       $match = false;
-      $index = join("", $usr);
+      $index = join(" ", $usr);
       foreach ($tokens as $t)
         if (stristr($index, trim($t))) {
           $match = true;

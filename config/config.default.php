@@ -26,6 +26,9 @@ define('MIN_PASSWORD_LENGTH', 8);
 // Wenn Engel beim Registrieren oder in ihrem Profil eine T-Shirt Größe angeben sollen, auf true setzen:
 $enable_tshirt_size = true;
 
+// Number of shifts to freeload until angel is locked for shift signup.
+$max_freeloadable_shifts = 2;
+
 // local timezone
 date_default_timezone_set("Europe/Berlin");
 
@@ -34,13 +37,13 @@ $PentabarfXMLhost = "cccv.pentabarf.org";
 $PentabarfXMLpath = "Xcal/conference/";
 $PentabarfXMLEventID = "31";
 
-// multiply "night shifts" (start or end between 2 and 6 exclusive) by 2
+// multiply "night shifts" and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
 $shift_sum_formula = "SUM(
   (1+(
     (HOUR(FROM_UNIXTIME(`Shifts`.`end`)) > 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) < 6)
     OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) > 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`start`)) < 6)
     OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) <= 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) >= 6)
-  ))*(`Shifts`.`end` - `Shifts`.`start`)
+  ))*(`Shifts`.`end` - `Shifts`.`start`)*(-2 * `ShiftEntry`.`freeloaded`)
 )";
 
 // weigh every shift the same

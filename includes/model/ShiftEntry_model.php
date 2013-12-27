@@ -14,4 +14,14 @@ function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id) {
       ");
 }
 
+/**
+ * Returns all freeloaded shifts for given user.
+ */
+function ShiftEntries_freeloaded_by_user($user) {
+  return sql_select("SELECT * 
+      FROM `ShiftEntry` 
+      WHERE `freeloaded` = 1 
+      AND `UID`=" . sql_escape($user['UID']));
+}
+
 ?>
