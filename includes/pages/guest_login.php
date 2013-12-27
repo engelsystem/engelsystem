@@ -40,8 +40,8 @@ function guest_register() {
   if (isset($_REQUEST['submit'])) {
     $ok = true;
     
-    if (isset($_REQUEST['nick']) && strlen(strip_request_item('nick')) > 1) {
-      $nick = strip_request_item('nick');
+    if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 1) {
+      $nick = User_validate_Nick($_REQUEST['nick']);
       if (sql_num_query("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "' LIMIT 1") > 0) {
         $ok = false;
         $msg .= error(sprintf(_("Your nick &quot;%s&quot; already exists."), $nick), true);
@@ -178,8 +178,8 @@ function guest_login() {
   if (isset($_REQUEST['submit'])) {
     $ok = true;
     
-    if (isset($_REQUEST['nick']) && strlen(strip_request_item('nick')) > 0) {
-      $nick = strip_request_item('nick');
+    if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 0) {
+      $nick = User_validate_Nick($_REQUEST['nick']);
       $login_user = sql_select("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "'");
       if (count($login_user) > 0) {
         $login_user = $login_user[0];

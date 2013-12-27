@@ -1,6 +1,14 @@
 <?php
 
 /**
+ * Strip unwanted characters from a users nick.
+ * @param string $nick
+ */
+function User_validate_Nick($nick) {
+  return preg_replace("/([^a-z0-9üöäß. _+*-]{1,})/ui", '', $nick);
+}
+
+/**
  * Returns user by id.
  *
  * @param $id UID
