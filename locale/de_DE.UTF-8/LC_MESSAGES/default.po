@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2013-12-23 21:57+0100\n"
-"PO-Revision-Date: 2013-12-23 23:16+0100\n"
+"POT-Creation-Date: 2013-12-27 15:09+0100\n"
+"PO-Revision-Date: 2013-12-27 15:09+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -20,6 +20,60 @@ msgstr ""
 #: /Users/msquare/workspace/projects/engelsystem/includes/sys_template.php:169
 msgid "No data found."
 msgstr "Nichts gefunden."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:12
+#, fuzzy
+msgid "Token is not correct."
+msgstr "Die E-Mail Adresse ist nicht in Ordnung."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:22
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:87
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:128
+msgid "Your passwords don't match."
+msgstr "Deine Passwörter stimmen nicht überein."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:26
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:91
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:126
+msgid "Your password is to short (please use at least 6 characters)."
+msgstr "Dein Passwort ist zu kurz (Bitte mindestens 6 Zeichen nutzen)."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:32
+msgid "Password could not be updated."
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:34
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:130
+msgid "Password saved."
+msgstr "Passwort gespeichert."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:52
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:56
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:58
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:55
+msgid "E-mail address is not correct."
+msgstr "Die E-Mail Adresse ist nicht in Ordnung."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:60
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:62
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:59
+msgid "Please enter your e-mail."
+msgstr "Bitte gib Deine E-Mail-Adresse ein."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:67
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:81
+#, fuzzy
+msgid "Password recovery"
+msgstr "Passwort gespeichert."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:67
+#, fuzzy, php-format
+msgid "Please visit %s to recover your password."
+msgstr "Gib bitte ein Passwort ein."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:71
+msgid "We sent an email containing your password recovery link."
+msgstr ""
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/helper/email_helper.php:6
 #, php-format
@@ -39,7 +93,7 @@ msgstr ""
 "werden. Du hast diese E-Mail bekommen, weil Du im Engelsystem registriert "
 "bist."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/helper/internationalization_helper.php:47
+#: /Users/msquare/workspace/projects/engelsystem/includes/helper/internationalization_helper.php:52
 msgid "Language"
 msgstr "Sprache"
 
@@ -217,6 +271,7 @@ msgstr "Engelliste"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_wakeup.php:86
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:32
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:23
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:46
 msgid "Save"
 msgstr "Speichern"
 
@@ -290,16 +345,6 @@ msgstr "Der Nick &quot;%s&quot; existiert schon."
 msgid "Your nick &quot;%s&quot; is too short (min. 2 characters)."
 msgstr "Der Nick &quot;%s&quot; ist zu kurz (Mindestens 2 Zeichen)."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:58
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:55
-msgid "E-mail address is not correct."
-msgstr "Die E-Mail Adresse ist nicht in Ordnung."
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:62
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:59
-msgid "Please enter your e-mail."
-msgstr "Bitte gib Deine E-Mail-Adresse ein."
-
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:71
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:68
 msgid "Please check your jabber account information."
@@ -308,16 +353,6 @@ msgstr "Bitte überprüfe deine Jabber Account Eingabe."
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:80
 msgid "Please select your shirt size."
 msgstr "Bitte wähle Deine T-Shirt Größe."
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:87
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:128
-msgid "Your passwords don't match."
-msgstr "Deine Passwörter stimmen nicht überein."
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:91
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:126
-msgid "Your password is to short (please use at least 6 characters)."
-msgstr "Dein Passwort ist zu kurz (Bitte mindestens 6 Zeichen nutzen)."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:132
 msgid "Angel registration successful!"
@@ -370,6 +405,7 @@ msgstr "Handy"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:150
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:178
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:30
 msgid "E-Mail"
 msgstr "E-Mail"
 
@@ -413,10 +449,12 @@ msgstr ""
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:158
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:216
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:44
 msgid "Password"
 msgstr "Passwort"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:159
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:45
 msgid "Confirm password"
 msgstr "Passwort wiederholen"
 
@@ -452,7 +490,12 @@ msgstr ""
 "Widerstand ist zwecklos! Deine biologischen und physischen Parameter werden "
 "zu unserem Kollektiv hinzugefügt! Assimiliere Engel:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:219
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:220
+#, fuzzy
+msgid "I forgot my password"
+msgstr "Passwort wiederholen"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:222
 msgid "Please note: You have to activate cookies!"
 msgstr "Hinweis: Cookies müssen aktiviert sein!"
 
@@ -707,10 +750,6 @@ msgstr "Einstellungen gespeichert."
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:124
 msgid "-> not OK. Please try again."
 msgstr "-> Nicht OK. Bitte erneut versuchen."
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:130
-msgid "Password saved."
-msgstr "Passwort gespeichert."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:132
 msgid "Failed setting password."
@@ -1034,11 +1073,26 @@ msgstr "Kommentar (nur für Dich):"
 msgid "Please select..."
 msgstr "Bitte auswählen..."
 
-#: /Users/msquare/workspace/projects/engelsystem/public/index.php:188
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:28
+msgid ""
+"We will send you an e-mail with a password recovery link. Please use the "
+"email address you used for registration."
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:31
+msgid "Recover"
+msgstr ""
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:42
+#, fuzzy
+msgid "Please enter a new password."
+msgstr "Gib bitte ein Passwort ein."
+
+#: /Users/msquare/workspace/projects/engelsystem/public/index.php:190
 msgid "No Access"
 msgstr "Kein Zugriff"
 
-#: /Users/msquare/workspace/projects/engelsystem/public/index.php:189
+#: /Users/msquare/workspace/projects/engelsystem/public/index.php:191
 msgid ""
 "You don't have permission to view this page. You probably have to sign in or "
 "register in order to gain access!"
@@ -1046,7 +1100,7 @@ msgstr ""
 "Du hast keinen Zugriff auf diese Seite. Registriere Dich und logge Dich "
 "bitte ein, um Zugriff zu erhalten!"
 
-#: /Users/msquare/workspace/projects/engelsystem/public/index.php:202
+#: /Users/msquare/workspace/projects/engelsystem/public/index.php:205
 msgid ""
 "You are not marked as arrived. Please go to heaven's desk, get your angel "
 "badge and/or tell them that you arrived already."
@@ -1054,11 +1108,11 @@ msgstr ""
 "Du bist nicht als angekommen markiert. Bitte gehe zur Himmelsverwaltung, "
 "hole Dein Badge ab und/oder erkläre ihnen, dass Du bereits angekommen bist."
 
-#: /Users/msquare/workspace/projects/engelsystem/public/index.php:205
+#: /Users/msquare/workspace/projects/engelsystem/public/index.php:208
 msgid "You need to specify a tshirt size in your settings!"
 msgstr ""
 
-#: /Users/msquare/workspace/projects/engelsystem/public/index.php:208
+#: /Users/msquare/workspace/projects/engelsystem/public/index.php:211
 msgid ""
 "You need to specify a DECT phone number in your settings! If you don't have "
 "a DECT phone, just enter \"-\"."
