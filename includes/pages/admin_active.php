@@ -8,7 +8,8 @@ function admin_active() {
   
   $msg = "";
   $search = "";
-  $count = 0;
+  $forced_count = sql_num_query("SELECT * FROM `User` WHERE `force_active`=1");
+  $count = $forced_count;
   $limit = "";
   $set_active = "";
   if (isset($_REQUEST['search']))
@@ -16,9 +17,13 @@ function admin_active() {
   if (isset($_REQUEST['set_active'])) {
     $ok = true;
     
-    if (isset($_REQUEST['count']) && preg_match("/^[0-9]+$/", $_REQUEST['count']))
+    if (isset($_REQUEST['count']) && preg_match("/^[0-9]+$/", $_REQUEST['count'])) {
       $count = strip_request_item('count');
-    else {
+      if ($count < $forced_count) {
+        error(sprintf(_("At least %s angels are forced to be active. The number has to be greater."), $forced_count));
+        redirect(page_link_to('admin_active'));
+      }
+    } else {
       $ok = false;
       $msg .= error(_("Please enter a number of angels to be marked as active."), true);
     }
@@ -27,7 +32,7 @@ function admin_active() {
       $limit = " LIMIT " . $count;
     if (isset($_REQUEST['ack'])) {
       sql_query("UPDATE `User` SET `Aktiv` = 0 WHERE `Tshirt` = 0");
-      $users = sql_select("SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` WHERE `User`.`Gekommen` = 1 GROUP BY `User`.`UID` ORDER BY `shift_length` DESC" . $limit);
+      $users = sql_select("SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` WHERE `User`.`Gekommen` = 1 AND `User`.`force_active`=0 GROUP BY `User`.`UID` ORDER BY `force_active` DESC, `shift_length` DESC" . $limit);
       $user_nicks = array();
       foreach ($users as $usr) {
         sql_query("UPDATE `User` SET `Aktiv` = 1 WHERE `UID`=" . sql_escape($usr['UID']));
@@ -80,7 +85,7 @@ function admin_active() {
       $msg = error(_("Angel not found."), true);
   }
   
-  $users = sql_select("SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` WHERE `User`.`Gekommen` = 1 GROUP BY `User`.`UID` ORDER BY `shift_length` DESC" . $limit);
+  $users = sql_select("SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` WHERE `User`.`Gekommen` = 1 GROUP BY `User`.`UID` ORDER BY `force_active` DESC, `shift_length` DESC" . $limit);
   
   $matched_users = array();
   if ($search == "")
@@ -102,8 +107,9 @@ function admin_active() {
     $usr['nick'] = User_Nick_render($usr);
     $usr['shirt_size'] = $tshirt_sizes[$usr['Size']];
     $usr['work_time'] = round($usr['shift_length'] / 60) . ' min (' . round($usr['shift_length'] / 3600) . ' h)';
-    $usr['active'] = $usr['Aktiv'] == 1 ? _("yes") : "";
-    $usr['tshirt'] = $usr['Tshirt'] == 1 ? _("yes") : "";
+    $usr['active'] = '<img src="pic/icons/' . ($usr['Aktiv'] == 1 ? 'tick' : 'cross') . '.png" alt="' . $usr['Aktiv'] . '">';
+    $usr['force_active'] = '<img src="pic/icons/' . ($usr['force_active'] == 1 ? 'tick' : 'cross') . '.png" alt="' . $usr['force_active'] . '">';
+    $usr['tshirt'] = '<img src="pic/icons/' . ($usr['Tshirt'] == 1 ? 'tick' : 'cross') . '.png" alt="' . $usr['Tshirt'] . '">';
     
     $actions = array();
     if ($usr['Aktiv'] == 0)
@@ -135,6 +141,7 @@ function admin_active() {
           'shift_count' => _("Shifts"),
           'work_time' => _("Length"),
           'active' => _("Active?"),
+          'force_active' => _("Forced"),
           'tshirt' => _("T-shirt?"),
           'actions' => "" 
       ), $matched_users) 

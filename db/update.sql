@@ -1,3 +1,6 @@
+/* force active */
+ALTER TABLE `User` ADD `force_active` BOOLEAN NOT NULL AFTER `Aktiv`, ADD INDEX ( `force_active` );
+
 /* freeloader */
 ALTER TABLE `ShiftEntry` ADD `freeloaded` BOOLEAN NOT NULL, ADD INDEX ( `freeloaded` );
 ALTER TABLE `ShiftEntry` ADD `freeload_comment` TEXT NULL DEFAULT NULL;
