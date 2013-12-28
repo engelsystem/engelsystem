@@ -223,11 +223,28 @@ function admin_user() {
           break;
         
         case 'save':
-          $forced_active = $user['force_active'];
+          $force_active = $user['force_active'];
           if (in_array('admin_active', $privileges))
-            $forced_active = $_REQUEST['force_active'];
-          $SQL = "UPDATE `User` SET ";
-          $SQL .= " `Nick` = '" . sql_escape($_POST["eNick"]) . "', `Name` = '" . sql_escape($_POST["eName"]) . "', " . "`Vorname` = '" . sql_escape($_POST["eVorname"]) . "', " . "`Telefon` = '" . sql_escape($_POST["eTelefon"]) . "', " . "`Handy` = '" . sql_escape($_POST["eHandy"]) . "', " . "`Alter` = '" . sql_escape($_POST["eAlter"]) . "', " . "`DECT` = '" . sql_escape($_POST["eDECT"]) . "', " . "`email` = '" . sql_escape($_POST["eemail"]) . "', " . "`ICQ` = '" . sql_escape($_POST["eICQ"]) . "', " . "`jabber` = '" . sql_escape($_POST["ejabber"]) . "', " . "`Size` = '" . sql_escape($_POST["eSize"]) . "', " . "`Gekommen`= '" . sql_escape($_POST["eGekommen"]) . "', " . "`Aktiv`= '" . sql_escape($_POST["eAktiv"]) . "', " . "`force_active`= " . sql_escape($force_active) . ", " . "`Tshirt` = '" . sql_escape($_POST["eTshirt"]) . "', " . "`Hometown` = '" . sql_escape($_POST["Hometown"]) . "' " . "WHERE `UID` = '" . sql_escape($id) . "' LIMIT 1;";
+            $force_active = $_REQUEST['force_active'];
+          $SQL = "UPDATE `User` SET 
+              `Nick` = '" . sql_escape($_POST["eNick"]) . "', 
+              `Name` = '" . sql_escape($_POST["eName"]) . "', 
+              `Vorname` = '" . sql_escape($_POST["eVorname"]) . "', 
+              `Telefon` = '" . sql_escape($_POST["eTelefon"]) . "', 
+              `Handy` = '" . sql_escape($_POST["eHandy"]) . "', 
+              `Alter` = '" . sql_escape($_POST["eAlter"]) . "', 
+              `DECT` = '" . sql_escape($_POST["eDECT"]) . "', 
+              `email` = '" . sql_escape($_POST["eemail"]) . "', 
+              `ICQ` = '" . sql_escape($_POST["eICQ"]) . "', 
+              `jabber` = '" . sql_escape($_POST["ejabber"]) . "', 
+              `Size` = '" . sql_escape($_POST["eSize"]) . "', 
+              `Gekommen`= '" . sql_escape($_POST["eGekommen"]) . "', 
+              `Aktiv`= '" . sql_escape($_POST["eAktiv"]) . "', 
+              `force_active`= " . sql_escape($force_active) . ", 
+              `Tshirt` = '" . sql_escape($_POST["eTshirt"]) . "', 
+              `Hometown` = '" . sql_escape($_POST["Hometown"]) . "' 
+              WHERE `UID` = '" . sql_escape($id) . "' 
+              LIMIT 1;";
           sql_query($SQL);
           engelsystem_log("Updated user: " . $_POST["eNick"] . ", " . $_POST["eSize"] . ", arrived: " . $_POST["eGekommen"] . ", active: " . $_POST["eAktiv"] . ", tshirt: " . $_POST["eTshirt"]);
           $html .= success("Änderung wurde gespeichert...\n", true);
