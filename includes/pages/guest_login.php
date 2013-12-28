@@ -48,7 +48,7 @@ function guest_register() {
       }
     } else {
       $ok = false;
-      $msg .= error(sprintf(_("Your nick &quot;%s&quot; is too short (min. 2 characters)."), strip_request_item('nick')), true);
+      $msg .= error(sprintf(_("Your nick &quot;%s&quot; is too short (min. 2 characters)."), User_validate_Nick($_REQUEST['nick'])), true);
     }
     
     if (isset($_REQUEST['mail']) && strlen(strip_request_item('mail')) > 0) {

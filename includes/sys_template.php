@@ -113,7 +113,7 @@ function form_submit($name, $label) {
  */
 function form_text($name, $label, $value, $disabled = false) {
   $disabled = $disabled ? ' disabled="disabled"' : '';
-  return form_element($label, '<input id="form_' . $name . '" type="text" name="' . $name . '" value="' . $value . '" ' . $disabled . '/>', 'form_' . $name);
+  return form_element($label, '<input id="form_' . $name . '" type="text" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . $disabled . '/>', 'form_' . $name);
 }
 
 /**
