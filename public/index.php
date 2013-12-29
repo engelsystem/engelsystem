@@ -15,6 +15,9 @@ require_once ('includes/model/NeededAngelTypes_model.php');
 require_once ('includes/model/ShiftEntry_model.php');
 require_once ('includes/model/Shifts_model.php');
 require_once ('includes/model/User_model.php');
+require_once ('includes/model/Room_model.php');
+require_once ('includes/model/Message_model.php');
+require_once ('includes/model/AngelType_model.php');
 
 require_once ('includes/view/Questions_view.php');
 require_once ('includes/view/Shifts_view.php');
@@ -66,7 +69,8 @@ if (isset($_REQUEST['auth']))
 $free_pages = array(
     'stats',
     'shifts_json_export_all',
-    'user_password_recovery' 
+    'user_password_recovery',
+    'api'
 );
 
 // Gewünschte Seite/Funktion
@@ -78,7 +82,10 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   $title = $p;
   $content = "";
   
-  if ($p == "ical") {
+  if ($p == "api") {
+    require_once ('includes/controller/api.php');
+    api_controller();
+  } elseif ($p == "ical") {
     require_once ('includes/pages/user_ical.php');
     user_ical();
   } elseif ($p == "atom") {

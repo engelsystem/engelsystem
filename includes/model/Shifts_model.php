@@ -1,6 +1,64 @@
 <?php
 
 /**
+ * Returns Shift id array
+ */
+function mShiftList() {
+	global $_REQUEST;
+	$filter = "";
+	
+	// filterRoom (Array of integer) - Array of Room IDs (optional, for list request)
+	if (isset($_REQUEST['filterRoom']) && is_array($_REQUEST['filterRoom']) ) {
+		foreach ( $_REQUEST['filterRoom'] as $key => $value ) {
+			$filter .= ", `RID`=" . sql_escape($value) . " ";
+		}
+	}
+	
+	//filterTask (Array of integer) - Array if Task (optional, for list request)
+	if (isset($_REQUEST['filterTask']) && is_array($_REQUEST['filterTask']) ) {
+		foreach ( $_REQUEST['filterTask'] as $key => $value ) {
+// TODO			$filter .= ", `RID`=" . sql_escape($value) . " ";
+		}
+	}
+	
+	// filterOccupancy (integer) - Occupancy state: (optional, for list request)
+	//   1 occupied, 	2 free, 3 occupied and free
+	if (isset($_REQUEST['filterOccupancy']) && is_array($_REQUEST['filterOccupancy']) ) {
+		foreach ( $_REQUEST['filterOccupancy'] as $key => $value ) {
+// TODO			$filter .= ", `RID`=" . sql_escape($value) . " ";
+		}
+	}
+
+	// format filter
+	if( $filter != "" ) {
+		$filter = ' WHERE '. substr($filter, 1); 
+	}
+
+	// real request
+	$shifts_source = sql_select("SELECT `SID` FROM `Shifts`". $filter);
+	if ($shifts_source === false)
+		return false;
+	if (count($shifts_source) > 0) {
+		return $shifts_source;
+	}
+return null;
+}
+
+/**
+ * Returns Shift by id.
+ *
+ * @param $id Shift ID
+ */
+function mShift($id) {
+	$shifts_source = sql_select("SELECT * FROM `Shifts` WHERE `SID`=" . sql_escape($id) . " LIMIT 1");
+	if ($shifts_source === false)
+		return false;
+	if (count($shifts_source) > 0)
+		return $shifts_source[0];
+	return null;
+}
+
+/**
  * Returns all shifts with needed angeltypes and count of subscribed jobs.
  */
 function Shifts() {

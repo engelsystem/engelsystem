@@ -1,6 +1,18 @@
 <?php
 
 /**
+ * Returns User id array
+ */
+function mUserList() {
+  $user_source = sql_select("SELECT `UID` FROM `User`");
+  if ($user_source === false)
+    return false;
+  if (count($user_source) > 0)
+    return $user_source;
+  return null;
+}
+
+/**
  * Strip unwanted characters from a users nick.
  * @param string $nick
  */
@@ -15,6 +27,20 @@ function User_validate_Nick($nick) {
  */
 function User($id) {
   $user_source = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+  if ($user_source === false)
+    return false;
+  if (count($user_source) > 0)
+    return $user_source[0];
+  return null;
+}
+
+/**
+ * Returns user by id (limit informations.
+ *
+ * @param $id UID
+ */
+function mUser_Limit($id) {
+  $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Avatar` FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
   if ($user_source === false)
     return false;
   if (count($user_source) > 0)
