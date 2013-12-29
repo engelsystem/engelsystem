@@ -304,6 +304,7 @@ function admin_user() {
           'Alter' => htmlspecialchars($angel['Alter']),
           'email' => '<a href="mailto:' . htmlspecialchars($angel['email']) . '">' . htmlspecialchars($angel['email']) . '</a>' . $popup,
           'Gekommen' => '<img src="pic/icons/' . ($angel['Gekommen'] == 1 ? 'tick' : 'cross') . '.png" alt="' . $angel['Gekommen'] . '">',
+          'freeloads' => sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1 AND `UID` = " . sql_escape($angel['UID'])),
           'Aktiv' => '<img src="pic/icons/' . ($angel['Aktiv'] == 1 ? 'tick' : 'cross') . '.png" alt="' . $angel['Aktiv'] . '">',
           'force_active' => '<img src="pic/icons/' . ($angel['force_active'] == 1 ? 'tick' : 'cross') . '.png" alt="' . $angel['force_active'] . '">',
           'Tshirt' => '<img src="pic/icons/' . ($angel['Tshirt'] == 1 ? 'tick' : 'cross') . '.png" alt="' . $angel['Tshirt'] . '">',
@@ -315,11 +316,15 @@ function admin_user() {
     $angels = array_map('prepare_angel_table', $angels);
     $Gekommen = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1");
     $Active = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1");
+    $force_active_count = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `force_active` = 1");
+    $freeloads_count = sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1");
     $Tshirt = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1");
     $angels[] = array(
         'Nick' => '<strong>Summe</strong>',
         'Gekommen' => $Gekommen,
         'Aktiv' => $Active,
+        'force_active' => $force_active_count,
+        'freeloads' => $freeloads_count,
         'Tshirt' => $Tshirt 
     );
     $html .= table(array(
@@ -329,6 +334,7 @@ function admin_user() {
         'Alter' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=Alter">Alter</a>',
         'email' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=email">E-Mail</a>',
         'Gekommen' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=Gekommen">Gekommen</a></div>',
+        'freeloads' => '<div class="rotate">' . _("Freeloads") . '</div>',
         'Aktiv' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=Aktiv">Aktiv</a></div>',
         'force_active' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=force_active">' . _("Forced") . '</a></div>',
         'Tshirt' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=Tshirt">T-Shirt</a></div>',
