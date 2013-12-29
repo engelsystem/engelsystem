@@ -280,7 +280,14 @@ function admin_user() {
     function prepare_angel_table($angel) {
       global $privileges;
       $groups = sql_select_single_col("SELECT `Name` FROM `UserGroups` JOIN `Groups` ON (`Groups`.`UID` = `UserGroups`.`group_id`) WHERE `UserGroups`.`uid`=" . sql_escape($angel["UID"]) . " ORDER BY `Groups`.`Name`");
-      $popup = '<div class="hidden">Groups: ' . implode(', ', $groups);
+      $angeltypes = sql_select_single_col("
+          SELECT `AngelTypes`.`name` 
+          FROM `UserAngelTypes` 
+          JOIN `AngelTypes` ON (`UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id`)
+          WHERE `user_id`=" . sql_escape($angel['UID']));
+      $popup = '<div class="hidden">';
+      $popup .= _("Angeltypes") . ': ' . implode(', ', $angeltypes);
+      $popup .= '<br />' . _("Groups") . ': ' . implode(', ', $groups);
       if (strlen($angel["Telefon"]) > 0)
         $popup .= "<br>Tel: " . $angel["Telefon"];
       if (strlen($angel["Handy"]) > 0)
@@ -299,7 +306,7 @@ function admin_user() {
         $popup .= "<br>Jabber: " . $angel["jabber"];
       return array(
           'Nick' => User_Nick_render($angel),
-          'Name' => htmlspecialchars($angel['Vorname'] . ' ' . $angel['Name']),
+          'Name' => htmlspecialchars($angel['Vorname'] . ' ' . $angel['Name']) . $popup,
           'DECT' => htmlspecialchars($angel['DECT']),
           'Gekommen' => '<img src="pic/icons/' . ($angel['Gekommen'] == 1 ? 'tick' : 'cross') . '.png" alt="' . $angel['Gekommen'] . '">',
           'freeloads' => sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1 AND `UID` = " . sql_escape($angel['UID'])),
