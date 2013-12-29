@@ -38,7 +38,8 @@ function user_ical() {
     $html .= "LOCATION:" . $shift['room_name'] . "\r\n";
     $html .= "END:VEVENT\r\n";
   }
-  $html .= "END:VCALENDAR";
+  $html .= "END:VCALENDAR\r\n";
+  $html = trim($html, "\x0A");
   header("Content-Length: " . strlen($html));
   echo $html;
   die();
