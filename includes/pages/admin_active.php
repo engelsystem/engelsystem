@@ -132,6 +132,10 @@ function admin_active() {
       WHERE `Tshirt`=1 
       GROUP BY `Size` 
       ORDER BY `count` DESC");
+  $shirt_statistics[] = array(
+      'Size' => '<b>' . _("Sum") . '</b>',
+      'count' => '<b>' . sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Tshirt`=1") . '</b>' 
+  );
   
   return page(array(
       form(array(
