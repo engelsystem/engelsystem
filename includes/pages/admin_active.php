@@ -125,6 +125,14 @@ function admin_active() {
     
     $matched_users[] = $usr;
   }
+  
+  $shirt_statistics = sql_select("
+      SELECT `Size`, count(`Size`) AS `count` 
+      FROM `User` 
+      WHERE `Tshirt`=1 
+      GROUP BY `Size` 
+      ORDER BY `count` DESC");
+  
   return page(array(
       form(array(
           form_text('search', _("Search angel:"), $search),
@@ -144,7 +152,12 @@ function admin_active() {
           'force_active' => _("Forced"),
           'tshirt' => _("T-shirt?"),
           'actions' => "" 
-      ), $matched_users) 
+      ), $matched_users),
+      '<h2>' . _("Given shirts") . '</h2>',
+      table(array(
+          'Size' => _("Size"),
+          'count' => _("Count") 
+      ), $shirt_statistics) 
   ));
 }
 ?>
