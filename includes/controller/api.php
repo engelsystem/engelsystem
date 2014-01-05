@@ -45,7 +45,7 @@ getRoom
   Parameters:
     id (integer) - Room ID
   Return Example:
-    [{"RID":"1"},{"RID":"2"},{"RID":"3"},{"RID":"4"}]
+    [{"RID":"1"},{"RID":"23"},{"RID":"42"}]
     {"RID":"1","Name":"Room Name","Man":null,"FromPentabarf":"","show":"Y","Number":"0"}
 
 getAngelType
@@ -184,6 +184,10 @@ function api_controller() {
     $DataJson = array (
       'status' => 'failed',
       'error' => 'DataJson === false' );
+  } elseif( $DataJson == null) {
+    $DataJson = array (
+      'status' => 'failed',
+      'error' => 'DataJson == null' );
   }
 
   echo json_encode($DataJson);
