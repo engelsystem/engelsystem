@@ -98,10 +98,7 @@ function user_messages() {
         break;
       
       case "send":
-        $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['text']));
-        $to = preg_replace("/([^0-9]{1,})/ui", '', strip_tags($_REQUEST['to']));
-        if ($text != "" && is_numeric($to) && sql_num_query("SELECT * FROM `User` WHERE `UID`=" . sql_escape($to) . " AND NOT `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0) {
-          sql_query("INSERT INTO `Messages` SET `Datum`=" . sql_escape(time()) . ", `SUID`=" . sql_escape($user['UID']) . ", `RUID`=" . sql_escape($to) . ", `Text`='" . sql_escape($text) . "'");
+        if( mMessage_Send( $_REQUEST['to'], $_REQUEST['text']) === true) {
           redirect(page_link_to("user_messages"));
         } else {
           return error(_("Transmitting was terminated with an Error."), true);

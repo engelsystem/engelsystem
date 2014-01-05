@@ -13,14 +13,16 @@ Every API Request must be contained the Api Key (using JSON parameter 'key') and
 
 Testing API calls (using curl):
 -------------------------------
-$ curl -d '{"key":"<key>","cmd":"getVersion"}' '<Address>/?p=api'
-
+$ curl -d '{"cmd":"getVersion"}' '<Address>/?p=api'
+$ curl -d '{"cmd":"getApiKey","user":"admin","pw":"admin"}' '<Address>/?p=api'
+$ curl -d '{"key":"<key>","cmd":"getRoom"}' '<Address>/?p=api'
+$ curl -d '{"key":"<key>","cmd":"sendmessage","uid":"23","text":"test message"}' '<Address>/?p=api'
 
 Methods without key:
 --------------------
 getVersion
   Description:
-    Returns API version. 
+    Returns API version.
   Parameters:
     nothing
   Return Example:
@@ -28,7 +30,7 @@ getVersion
 
 getApiKey
   Description:
-    Returns API Key version. 
+    Returns API Key version.
   Parameters:
     user (string)
     pw (string)
@@ -39,36 +41,36 @@ Methods with Key:
 -----------------
 getRoom
   Description:
-    Returns a list of all Rooms (no id set) or details of a single Room (requested id) 
+    Returns a list of all Rooms (no id set) or details of a single Room (requested id)
   Parameters:
-    id (integer) - Room ID 
+    id (integer) - Room ID
   Return Example:
     [{"RID":"1"},{"RID":"2"},{"RID":"3"},{"RID":"4"}]
     {"RID":"1","Name":"Room Name","Man":null,"FromPentabarf":"","show":"Y","Number":"0"}
 
 getAngelType
   Description:
-    Returns a list of all Angel Types (no id set) or details of a single Angel Type (requested id) 
+    Returns a list of all Angel Types (no id set) or details of a single Angel Type (requested id)
   Parameters:
-    id (integer) - Type ID 
+    id (integer) - Type ID
   Return Example:
     [{"id":"8"},{"id":"9"}]
     {"id":"9","name":"Angeltypes 2","restricted":"0"}
 
 getUser
   Description:
-    Returns a list of all Users (no id set) or details of a single User (requested id) 
+    Returns a list of all Users (no id set) or details of a single User (requested id)
   Parameters:
-    id (integer) - User ID 
+    id (integer) - User ID
   Return Example:
     [{"UID":"1"},{"UID":"23"},{"UID":"42"}]
     {"UID":"1","Nick":"admin","Name":"Gates","Vorname":"Bill","Telefon":"","DECT":"","Handy":"","email":"","ICQ":"","jabber":"","Avatar":"115"}
 
 getShift
   Description:
-    Returns a list of all Shifte (no id set, filter is optional) or details of a single Shift (requested id) 
+    Returns a list of all Shifte (no id set, filter is optional) or details of a single Shift (requested id)
   Parameters:
-    id (integer) - Shift ID 
+    id (integer) - Shift ID
     filterRoom (Array of integer) - Array of Room IDs (optional, for list request)
     filterTask (Array of integer) - Array if Task (optional, for list request)
     filterOccupancy (integer) - Occupancy state: (optional, for list request)
@@ -83,13 +85,21 @@ getShift
 
 getMessage
   Description:
-    Returns a list of all Messages (no id set) or details of a single Message (requested id) 
+    Returns a list of all Messages (no id set) or details of a single Message (requested id)
   Parameters:
-    id (integer) - Message ID 
+    id (integer) - Message ID
   Return Example:
     [{"id":"1"},{"id":"2"},{"id":"3"}]
     {"id":"3","Datum":"1388247583","SUID":"23","RUID":"42","isRead":"N","Text":"message text"}
 
+sendMessage
+  Description:
+    send a Message to an other angel
+  Parameters:
+    uid (integer) - User ID of the reciever
+    text (string) - Message Text
+  Return Example:
+    {"status":"success"}
 
 ************************************************************************************************/
 
@@ -98,8 +108,8 @@ getMessage
  * General API Controller
  */
 function api_controller() {
-  global $DataJson, $_REQUEST;
- 
+  global $user, $DataJson, $_REQUEST;
+
   header("Content-Type: application/json; charset=utf-8");
 
   // decode JSON request
@@ -160,19 +170,22 @@ function api_controller() {
     case 'getmessage':
       getMessage();
       break;
+    case 'sendmessage':
+      sendMessage();
+      break;
     default:
       $DataJson = array (
           'status' => 'failed',
           'error' => 'Unknown Command "'. $cmd. '"' );
   }
-  
-  // check 
+
+  // check
   if( $DataJson === false) {
     $DataJson = array (
       'status' => 'failed',
       'error' => 'DataJson === false' );
   }
-  
+
   echo json_encode($DataJson);
   die();
 }
@@ -182,8 +195,8 @@ function api_controller() {
  */
 function getVersion(){
   global $DataJson;
-  
-  $DataJson = array( 
+
+  $DataJson = array(
     'status' => 'success',
     'Version' => 1);
 }
@@ -195,7 +208,7 @@ function getVersion(){
 function getApiKey(){
   global $DataJson, $_REQUEST;
 
-  if (!isset($_REQUEST['user']) ) { 
+  if (!isset($_REQUEST['user']) ) {
     $DataJson = array (
       'status' => 'failed',
       'error' => 'Missing parameter "user".' );
@@ -206,12 +219,12 @@ function getApiKey(){
       'error' => 'Missing parameter "pw".' );
   } else {
     $Erg = sql_select( "SELECT `UID`, `Passwort`, `api_key` FROM `User` WHERE `Nick`='" . sql_escape($_REQUEST['user']) . "'");
-    
+
     if (count($Erg) == 1) {
       $Erg = $Erg[0];
       if (verify_password( $_REQUEST['pw'], $Erg["Passwort"], $Erg["UID"])) {
         $key = $Erg["api_key"];
-        $DataJson = array( 
+        $DataJson = array(
           'status' => 'success',
           'Key' => $key);
       } else {
@@ -225,17 +238,17 @@ function getApiKey(){
         'error' => 'User not found.' );
     }
   }
-  
+
   sleep(1);
 }
 
 
 /**
- * Get Room 
+ * Get Room
  */
 function getRoom(){
   global $DataJson, $_REQUEST;
-  
+
   if (isset($_REQUEST['id']) ) {
     $DataJson = mRoom( $_REQUEST['id']);
   } else {
@@ -261,7 +274,7 @@ function getAngelType(){
  */
 function getUser(){
   global $DataJson, $_REQUEST;
-  
+
   if (isset($_REQUEST['id']) ) {
     $DataJson = mUser_Limit( $_REQUEST['id']);
   } else {
@@ -292,6 +305,32 @@ function getMessage(){
     $DataJson = mMessage( $_REQUEST['id']);
   } else {
     $DataJson = mMessageList();
+  }
+}
+
+/**
+ * Send Message
+ */
+function sendMessage(){
+  global $DataJson, $_REQUEST;
+
+  if (!isset($_REQUEST['uid']) ) {
+  	$DataJson = array (
+  			'status' => 'failed',
+  			'error' => 'Missing parameter "uid".' );
+  }
+  elseif (!isset($_REQUEST['text']) ) {
+    $DataJson = array (
+      'status' => 'failed',
+      'error' => 'Missing parameter "text".' );
+  } else {
+    if( mMessage_Send( $_REQUEST['uid'], $_REQUEST['text']) === true) {
+    	$DataJson = array( 'status' => 'success');
+    } else {
+      $DataJson = array(
+        'status' => 'failed',
+        'error' => 'Transmitting was terminated with an Error.');
+    }
   }
 }
 
