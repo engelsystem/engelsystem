@@ -53,7 +53,6 @@ function make_navigation() {
       "admin_user" => admin_user_title(),
       "admin_free" => admin_free_title(),
       "admin_questions" => admin_questions_title(),
-      "admin_user_angeltypes" => admin_user_angeltypes_title(),
       "admin_shifts" => admin_shifts_title(),
       "admin_rooms" => admin_rooms_title(),
       "admin_groups" => admin_groups_title(),

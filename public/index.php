@@ -49,7 +49,6 @@ require_once ('includes/pages/admin_questions.php');
 require_once ('includes/pages/admin_rooms.php');
 require_once ('includes/pages/admin_shifts.php');
 require_once ('includes/pages/admin_user.php');
-require_once ('includes/pages/admin_user_angeltypes.php');
 require_once ('includes/pages/guest_login.php');
 require_once ('includes/pages/user_messages.php');
 require_once ('includes/pages/user_myshifts.php');
@@ -159,9 +158,6 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   } elseif ($p == "admin_user") {
     $title = admin_user_title();
     $content = admin_user();
-  } elseif ($p == "admin_user_angeltypes") {
-    $title = admin_user_angeltypes_title();
-    $content = admin_user_angeltypes();
   } elseif ($p == "admin_arrive") {
     $title = admin_arrive_title();
     $content = admin_arrive();
