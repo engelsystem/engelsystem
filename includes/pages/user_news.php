@@ -54,7 +54,7 @@ function display_news($news) {
 
   $html .= User_Nick_render($user_source);
   if ($p != "news_comments")
-    $html .= ', <a href="' . page_link_to("news_comments") . '&nid=' . $news['ID'] . '">' . _("Comments") . ' (' . sql_num_query("SELECT * FROM `news_comments` WHERE `Refid`='" . sql_escape($news['ID']) . "'") . ') &raquo;</a>';
+    $html .= ', <a href="' . page_link_to("news_comments") . '&nid=' . $news['ID'] . '">' . _("Comments") . ' (' . sql_num_query("SELECT * FROM `NewsComments` WHERE `Refid`='" . sql_escape($news['ID']) . "'") . ') &raquo;</a>';
   $html .= '</details>';
   $html .= '<h3>' . ($news['Treffen'] == 1 ? '[Meeting] ' : '') . ReplaceSmilies($news['Betreff']) . '</h3>';
   $html .= '<p>' . ReplaceSmilies(nl2br($news['Text'])) . '</p>';
@@ -74,7 +74,7 @@ function user_news_comments() {
     list ($news) = sql_select("SELECT * FROM `News` WHERE `ID`=" . sql_escape($nid) . " LIMIT 1");
     if (isset ($_REQUEST["text"])) {
       $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['text']));
-      sql_query("INSERT INTO `news_comments` (`Refid`, `Datum`, `Text`, `UID`) VALUES ('" . sql_escape($nid) . "', '" . date("Y-m-d H:i:s") . "', '" . sql_escape($text) . "', '" . sql_escape($user["UID"]) . "')");
+      sql_query("INSERT INTO `NewsComments` (`Refid`, `Datum`, `Text`, `UID`) VALUES ('" . sql_escape($nid) . "', '" . date("Y-m-d H:i:s") . "', '" . sql_escape($text) . "', '" . sql_escape($user["UID"]) . "')");
       engelsystem_log("Created news_comment: " . $text);
       $html .= success(_("Entry saved."), true);
     }
@@ -84,7 +84,7 @@ function user_news_comments() {
 
     $html .= '<h2>' . _("Comments") . '</h2>';
 
-    $comments = sql_select("SELECT * FROM `news_comments` WHERE `Refid`='" . sql_escape($nid) . "' ORDER BY 'ID'");
+    $comments = sql_select("SELECT * FROM `NewsComments` WHERE `Refid`='" . sql_escape($nid) . "' ORDER BY 'ID'");
     foreach ($comments as $comment) {
       $user_source = User($comment['UID']);
       if($user_source === false)

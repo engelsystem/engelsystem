@@ -1,23 +1,21 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.4
+-- version 4.0.4.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 22. Juni 2013 um 11:05
--- Server Version: 5.1.44
--- PHP-Version: 5.3.1
+-- Erstellungszeit: 05. Jan 2014 um 20:01
+-- Server Version: 5.6.12
+-- PHP-Version: 5.5.3
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+SET FOREIGN_KEY_CHECKS=0;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 --
 -- Datenbank: `engelsystem`
 --
+CREATE DATABASE IF NOT EXISTS `engelsystem` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `engelsystem`;
 
 -- --------------------------------------------------------
 
@@ -32,15 +30,9 @@ CREATE TABLE IF NOT EXISTS `AngelTypes` (
   `restricted` int(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
-
---
--- Daten für Tabelle `AngelTypes`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
-
 
 --
 -- Tabellenstruktur für Tabelle `Counter`
@@ -51,25 +43,71 @@ CREATE TABLE IF NOT EXISTS `Counter` (
   `URL` varchar(255) NOT NULL DEFAULT '',
   `Anz` bigint(20) NOT NULL DEFAULT '0',
   PRIMARY KEY (`URL`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Counter der Seiten';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Counter der Seiten';
+
+-- --------------------------------------------------------
 
 --
--- Daten für Tabelle `Counter`
+-- Tabellenstruktur für Tabelle `GroupPrivileges`
 --
 
-INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('login', 4),
-('news', 3),
-('admin_user', 3),
-('admin_groups', 2),
-('admin_free', 1),
-('admin_angel_types', 2),
-('admin_user_angeltypes', 1),
-('admin_import', 1),
-('user_meetings', 1),
-('user_myshifts', 3),
-('user_questions', 1),
-('user_settings', 6);
+DROP TABLE IF EXISTS `GroupPrivileges`;
+CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL,
+  `privilege_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`,`privilege_id`),
+  KEY `privilege_id` (`privilege_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=257 ;
+
+--
+-- Daten für Tabelle `GroupPrivileges`
+--
+
+INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
+(85, -6, 10),
+(87, -6, 18),
+(86, -6, 21),
+(216, -5, 5),
+(212, -5, 6),
+(207, -5, 7),
+(211, -5, 12),
+(208, -5, 13),
+(210, -5, 14),
+(214, -5, 16),
+(209, -5, 21),
+(213, -5, 28),
+(206, -5, 31),
+(215, -5, 33),
+(219, -4, 14),
+(221, -4, 25),
+(220, -4, 33),
+(241, -3, 5),
+(238, -3, 14),
+(240, -3, 16),
+(237, -3, 19),
+(242, -3, 25),
+(235, -3, 27),
+(239, -3, 28),
+(236, -3, 32),
+(247, -2, 3),
+(246, -2, 4),
+(255, -2, 8),
+(252, -2, 9),
+(254, -2, 11),
+(248, -2, 15),
+(251, -2, 17),
+(256, -2, 24),
+(253, -2, 26),
+(245, -2, 30),
+(244, -2, 34),
+(249, -2, 35),
+(243, -2, 36),
+(250, -2, 37),
+(88, -1, 1),
+(23, -1, 2),
+(24, -1, 5);
 
 -- --------------------------------------------------------
 
@@ -82,19 +120,19 @@ CREATE TABLE IF NOT EXISTS `Groups` (
   `Name` varchar(35) NOT NULL,
   `UID` int(11) NOT NULL,
   PRIMARY KEY (`UID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Daten für Tabelle `Groups`
 --
 
 INSERT INTO `Groups` (`Name`, `UID`) VALUES
-('1-Gast', -1),
-('2-Engel', -2),
-('3-Shift Coordinator', -3),
-('5-Erzengel', -5),
 ('6-Developer', -6),
-('4-Infodesk', -4);
+('5-Erzengel', -5),
+('4-Team Coordinator', -4),
+('3-Shift Coordinator', -3),
+('2-Engel', -2),
+('1-Gast', -1);
 
 -- --------------------------------------------------------
 
@@ -110,14 +148,7 @@ CREATE TABLE IF NOT EXISTS `LogEntries` (
   `message` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `timestamp` (`timestamp`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Daten für Tabelle `LogEntries`
---
-
-INSERT INTO `LogEntries` (`id`, `timestamp`, `nick`, `message`) VALUES
-(1, 1371897881, 'admin', 'Set new password for <a href="?p=user_myshifts&amp;id=1">admin</a>');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -137,12 +168,7 @@ CREATE TABLE IF NOT EXISTS `Messages` (
   KEY `Datum` (`Datum`),
   KEY `SUID` (`SUID`),
   KEY `RUID` (`RUID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Fuers interen Communikationssystem' AUTO_INCREMENT=1 ;
-
---
--- Daten für Tabelle `Messages`
---
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Fuers interen Communikationssystem' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -159,13 +185,9 @@ CREATE TABLE IF NOT EXISTS `NeededAngelTypes` (
   `count` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `room_id` (`room_id`,`angel_type_id`),
-  KEY `shift_id` (`shift_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Daten für Tabelle `NeededAngelTypes`
---
-
+  KEY `shift_id` (`shift_id`),
+  KEY `angel_type_id` (`angel_type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -183,21 +205,16 @@ CREATE TABLE IF NOT EXISTS `News` (
   `Treffen` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   KEY `UID` (`UID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Daten für Tabelle `News`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `news_comments`
+-- Tabellenstruktur für Tabelle `NewsComments`
 --
 
-DROP TABLE IF EXISTS `news_comments`;
-CREATE TABLE IF NOT EXISTS `news_comments` (
+DROP TABLE IF EXISTS `NewsComments`;
+CREATE TABLE IF NOT EXISTS `NewsComments` (
   `ID` bigint(11) NOT NULL AUTO_INCREMENT,
   `Refid` int(11) NOT NULL DEFAULT '0',
   `Datum` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -206,67 +223,7 @@ CREATE TABLE IF NOT EXISTS `news_comments` (
   PRIMARY KEY (`ID`),
   KEY `Refid` (`Refid`),
   KEY `UID` (`UID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Daten für Tabelle `news_comments`
---
-
-
--- --------------------------------------------------------
---
--- Tabellenstruktur für Tabelle `GroupPrivileges`
---
-
-DROP TABLE IF EXISTS `GroupPrivileges`;
-CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL,
-  `privilege_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `group_id` (`group_id`,`privilege_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=203 ;
-
---
--- Daten für Tabelle `GroupPrivileges`
---
-
-INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
-(187, -3, 28),
-(24, -1, 5),
-(200, -2, 11),
-(199, -2, 26),
-(23, -1, 2),
-(142, -5, 16),
-(141, -5, 28),
-(198, -2, 9),
-(197, -2, 17),
-(86, -6, 21),
-(140, -5, 6),
-(139, -5, 12),
-(196, -2, 35),
-(138, -5, 14),
-(136, -5, 7),
-(195, -2, 15),
-(87, -6, 18),
-(194, -2, 3),
-(85, -6, 10),
-(193, -2, 4),
-(88, -1, 1),
-(186, -3, 19),
-(192, -2, 30),
-(109, -4, 27),
-(135, -5, 31),
-(184, -3, 27),
-(143, -5, 5),
-(144, -5, 33),
-(188, -3, 16),
-(185, -3, 32),
-(189, -3, 33),
-(191, -2, 34),
-(190, -3, 25),
-(201, -2, 8),
-(202, -2, 24);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -281,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=38 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -300,6 +257,7 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (10, 'admin_groups', 'Manage usergroups and their rights'),
 (11, 'user_questions', 'Let users ask questions'),
 (12, 'admin_questions', 'Answer user''s questions'),
+(13, 'admin_faq', 'Edit FAQs'),
 (14, 'admin_news', 'Administrate the news section'),
 (15, 'news_comments', 'User can comment news'),
 (16, 'admin_user', 'Administrate the angels'),
@@ -309,6 +267,7 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (20, 'user_wakeup', 'User wakeup-service organization'),
 (21, 'admin_import', 'Import rooms and shifts from pentabarf'),
 (22, 'credits', 'View credits'),
+(23, 'faq', 'View FAQ'),
 (24, 'user_shifts', 'Signup for shifts'),
 (25, 'user_shifts_admin', 'Signup other angels for shifts.'),
 (26, 'user_myshifts', 'Allow angels to view their own shifts and cancel them.'),
@@ -319,8 +278,9 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (32, 'admin_free', 'Show a list of free/unemployed angels.'),
 (33, 'admin_user_angeltypes', 'Confirm restricted angel types'),
 (34, 'atom', ' Atom news export'),
-(35, 'shifts_json_export', 'Export shifts in JSON format');
-
+(35, 'shifts_json_export', 'Export shifts in JSON format'),
+(36, 'angeltypes', 'View angeltypes'),
+(37, 'user_angeltypes', 'Join angeltypes.');
 
 -- --------------------------------------------------------
 
@@ -338,12 +298,7 @@ CREATE TABLE IF NOT EXISTS `Questions` (
   PRIMARY KEY (`QID`),
   KEY `UID` (`UID`),
   KEY `AID` (`AID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Fragen und Antworten' AUTO_INCREMENT=6 ;
-
---
--- Daten für Tabelle `Questions`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Fragen und Antworten' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -361,12 +316,7 @@ CREATE TABLE IF NOT EXISTS `Room` (
   `Number` int(11) DEFAULT NULL,
   PRIMARY KEY (`RID`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Daten für Tabelle `Room`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -381,16 +331,14 @@ CREATE TABLE IF NOT EXISTS `ShiftEntry` (
   `TID` int(11) NOT NULL DEFAULT '0',
   `UID` int(11) NOT NULL DEFAULT '0',
   `Comment` text,
+  `freeload_comment` text,
+  `freeloaded` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `TID` (`TID`),
   KEY `UID` (`UID`),
-  KEY `SID` (`SID`,`TID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Daten für Tabelle `ShiftEntry`
---
-
+  KEY `SID` (`SID`,`TID`),
+  KEY `freeloaded` (`freeloaded`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -410,12 +358,7 @@ CREATE TABLE IF NOT EXISTS `Shifts` (
   PRIMARY KEY (`SID`),
   UNIQUE KEY `PSID` (`PSID`),
   KEY `RID` (`RID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Daten für Tabelle `Shifts`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -438,11 +381,13 @@ CREATE TABLE IF NOT EXISTS `User` (
   `jabber` varchar(200) DEFAULT NULL,
   `Size` varchar(4) DEFAULT NULL,
   `Passwort` varchar(128) DEFAULT NULL,
+  `password_recovery_token` varchar(32) DEFAULT NULL,
   `Gekommen` tinyint(4) NOT NULL DEFAULT '0',
   `Aktiv` tinyint(4) NOT NULL DEFAULT '0',
+  `force_active` tinyint(1) NOT NULL,
   `Tshirt` tinyint(4) DEFAULT '0',
   `color` tinyint(4) DEFAULT '10',
-  `Sprache` char(64) DEFAULT 'EN',
+  `Sprache` char(64) NOT NULL,
   `Avatar` int(11) DEFAULT '0',
   `Menu` char(1) NOT NULL DEFAULT 'L',
   `lastLogIn` int(11) NOT NULL,
@@ -451,17 +396,19 @@ CREATE TABLE IF NOT EXISTS `User` (
   `kommentar` text,
   `Hometown` varchar(255) NOT NULL DEFAULT '',
   `api_key` varchar(32) NOT NULL,
-  PRIMARY KEY (`UID`,`Nick`),
+  PRIMARY KEY (`UID`),
   UNIQUE KEY `Nick` (`Nick`),
-  KEY `api_key` (`api_key`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+  KEY `api_key` (`api_key`),
+  KEY `password_recovery_token` (`password_recovery_token`),
+  KEY `force_active` (`force_active`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `User`
 --
 
-INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `Gekommen`, `Aktiv`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '', '', '', '', '', '', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0, 1, 'DE', 115, 'L', 1371899094, '0000-00-00 00:00:00', '', '', '', '');
+INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `password_recovery_token`, `Gekommen`, `Aktiv`, `force_active`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`) VALUES
+(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', '', '', '', 'XL', '21232f297a57a5a743894a0e4a801fc3', NULL, 1, 0, 1, 0, 1, 'de_DE.UTF-8', 115, 'L', 1388948427, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235');
 
 -- --------------------------------------------------------
 
@@ -476,13 +423,10 @@ CREATE TABLE IF NOT EXISTS `UserAngelTypes` (
   `angeltype_id` int(11) NOT NULL,
   `confirm_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`,`angeltype_id`,`confirm_user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Daten für Tabelle `UserAngelTypes`
---
-
+  KEY `user_id` (`user_id`,`angeltype_id`,`confirm_user_id`),
+  KEY `angeltype_id` (`angeltype_id`),
+  KEY `confirm_user_id` (`confirm_user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -496,45 +440,93 @@ CREATE TABLE IF NOT EXISTS `UserGroups` (
   `uid` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `uid` (`uid`,`group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+  KEY `uid` (`uid`,`group_id`),
+  KEY `group_id` (`group_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
 
 --
 -- Daten für Tabelle `UserGroups`
 --
 
 INSERT INTO `UserGroups` (`id`, `uid`, `group_id`) VALUES
-(1, 1, -2),
-(2, 1, -3),
 (3, 1, -6),
 (4, 1, -5),
 (12, 1, -4),
-(15, 2, -2),
-(16, 2, -3),
-(17, 2, -4),
-(18, 2, -5),
-(19, 2, -6),
-(21, 3, -2),
-(22, 3, -5);
-
--- --------------------------------------------------------
+(2, 1, -3),
+(1, 1, -2);
 
 --
--- Tabellenstruktur für Tabelle `Wecken`
+-- Constraints der exportierten Tabellen
 --
 
-DROP TABLE IF EXISTS `Wecken`;
-CREATE TABLE IF NOT EXISTS `Wecken` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `UID` int(11) NOT NULL DEFAULT '0',
-  `Date` int(11) NOT NULL,
-  `Ort` text NOT NULL,
-  `Bemerkung` text NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `UID` (`UID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+--
+-- Constraints der Tabelle `GroupPrivileges`
+--
+ALTER TABLE `GroupPrivileges`
+  ADD CONSTRAINT `groupprivileges_ibfk_2` FOREIGN KEY (`privilege_id`) REFERENCES `Privileges` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `groupprivileges_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `Groups` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Daten für Tabelle `Wecken`
+-- Constraints der Tabelle `Messages`
 --
+ALTER TABLE `Messages`
+  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`RUID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`SUID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+--
+-- Constraints der Tabelle `NeededAngelTypes`
+--
+ALTER TABLE `NeededAngelTypes`
+  ADD CONSTRAINT `neededangeltypes_ibfk_3` FOREIGN KEY (`angel_type_id`) REFERENCES `AngelTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `neededangeltypes_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `Room` (`RID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `neededangeltypes_ibfk_2` FOREIGN KEY (`shift_id`) REFERENCES `Shifts` (`SID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `News`
+--
+ALTER TABLE `News`
+  ADD CONSTRAINT `news_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `NewsComments`
+--
+ALTER TABLE `NewsComments`
+  ADD CONSTRAINT `newscomments_ibfk_2` FOREIGN KEY (`UID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `newscomments_ibfk_1` FOREIGN KEY (`Refid`) REFERENCES `News` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `Questions`
+--
+ALTER TABLE `Questions`
+  ADD CONSTRAINT `questions_ibfk_2` FOREIGN KEY (`AID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `ShiftEntry`
+--
+ALTER TABLE `ShiftEntry`
+  ADD CONSTRAINT `shiftentry_ibfk_3` FOREIGN KEY (`TID`) REFERENCES `AngelTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `shiftentry_ibfk_1` FOREIGN KEY (`SID`) REFERENCES `Shifts` (`SID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `shiftentry_ibfk_2` FOREIGN KEY (`UID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `Shifts`
+--
+ALTER TABLE `Shifts`
+  ADD CONSTRAINT `shifts_ibfk_1` FOREIGN KEY (`RID`) REFERENCES `Room` (`RID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `UserAngelTypes`
+--
+ALTER TABLE `UserAngelTypes`
+  ADD CONSTRAINT `userangeltypes_ibfk_3` FOREIGN KEY (`confirm_user_id`) REFERENCES `User` (`UID`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `userangeltypes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `userangeltypes_ibfk_2` FOREIGN KEY (`angeltype_id`) REFERENCES `AngelTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `UserGroups`
+--
+ALTER TABLE `UserGroups`
+  ADD CONSTRAINT `usergroups_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `Groups` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `usergroups_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
+SET FOREIGN_KEY_CHECKS=1;
