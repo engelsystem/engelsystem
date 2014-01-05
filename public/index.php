@@ -91,7 +91,7 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     require_once ('includes/controller/api.php');
     error("Api disabled temporily.");
     redirect(page_link_to('login'));
-    // api_controller();
+    api_controller();
   } elseif ($p == "ical") {
     require_once ('includes/pages/user_ical.php');
     user_ical();
