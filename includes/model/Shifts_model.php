@@ -41,7 +41,7 @@ function mShiftList() {
 	if (count($shifts_source) > 0) {
 		return $shifts_source;
 	}
-return null;
+	return null;
 }
 
 /**
@@ -51,10 +51,27 @@ return null;
  */
 function mShift($id) {
 	$shifts_source = sql_select("SELECT * FROM `Shifts` WHERE `SID`=" . sql_escape($id) . " LIMIT 1");
+	$shiftsEntry_source = sql_select("SELECT `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`=" . sql_escape($id) );
+	
 	if ($shifts_source === false)
 		return false;
-	if (count($shifts_source) > 0)
-		return $shifts_source[0];
+	if (count($shifts_source) > 0) {
+		$result = $shifts_source[0];
+
+		$result['ShiftEntry'] = $shiftsEntry_source;
+
+		$temp = NeededAngelTypes_by_shift($id);
+		foreach( $temp as $e)
+		{
+			$result['NeedAngels'][] = array (
+					'TID' => $e['angel_type_id'],
+					'count' => $e['count'],
+					'restricted' => $e['restricted'],
+					'taken' => $e['taken'] );
+		}
+		
+		return $result;
+	}
 	return null;
 }
 
@@ -71,7 +88,7 @@ function Shifts() {
     return false;
   
   foreach ($shifts_source as &$shift) {
-    $needed_angeltypes = NeededAngelTypes_by_shift($shift);
+    $needed_angeltypes = NeededAngelTypes_by_shift($shift['SID']);
     if ($needed_angeltypes === false)
       return false;
 

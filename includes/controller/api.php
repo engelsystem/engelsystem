@@ -16,16 +16,27 @@ Testing API calls (using curl):
 $ curl -d '{"key":"<key>","cmd":"getVersion"}' '<Address>/?p=api'
 
 
-Methods:
---------
+Methods without key:
+--------------------
 getVersion
   Description:
     Returns API version. 
   Parameters:
     nothing
   Return Example:
-    {"version": "1"}
+    {"status":"success","version": "1"}
 
+getApiKey
+  Description:
+    Returns API Key version. 
+  Parameters:
+    user (string)
+    pw (string)
+  Return Example:
+    {"status":"success","Key":"1234567890123456789012"}
+
+Methods with Key:
+-----------------
 getRoom
   Description:
     Returns a list of all Rooms (no id set) or details of a single Room (requested id) 
@@ -66,7 +77,9 @@ getShift
       3 occupied and free
   Return Example:
     [{"SID":"1"},{"SID":"2"},{"SID":"3"}]
-    {"SID":"1","start":"1388185200","end":"1388199600","RID":"1","name":"Shift 1","URL":null,"PSID":null}
+    {"SID":"10","start":"1388264400","end":"1388271600","RID":"1","name":"Shift 1","URL":null,"PSID":null,\
+      "ShiftEntry":[{"TID":"8","UID":"4","freeloaded":"0"}],
+      "NeedAngels":[{"TID":"8","count":"1","restricted":"0","taken":1},{"TID":"9","count":"2","restricted":"0","taken":0}]}
 
 getMessage
   Description:
@@ -87,37 +100,51 @@ getMessage
 function api_controller() {
   global $DataJson, $_REQUEST;
  
+  header("Content-Type: application/json; charset=utf-8");
+
   // decode JSON request
   $input = file_get_contents("php://input");
   $input = json_decode($input, true);
   $_REQUEST = $input;
-
-  // get API KEY
-  if (isset($_REQUEST['key']) && preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key']))
-    $key = $_REQUEST['key'];
-  else
-    die("Missing key.");
-  
-  // check API key
-  $user = User_by_api_key($key);
-  if ($user === false)
-    die("Unable to find user.");
-  if ($user == null)
-    die("Key invalid.");
 
   // get command
   $cmd='';
   if (isset($_REQUEST['cmd']) )
     $cmd = strtolower( $_REQUEST['cmd']);
 
-  // decode command
+  // decode commands, without key
   switch( $cmd) {
-    case 'echo':
-      $DataJson = $input;
-      break;
     case 'getversion':
       getVersion();
+      die( json_encode($DataJson));
       break;
+    case 'getapikey':
+      getApiKey();
+      die( json_encode($DataJson));
+      break;
+  }
+
+  // get API KEY
+  if (isset($_REQUEST['key']) && preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key']))
+    $key = $_REQUEST['key'];
+  else
+  die( json_encode( array (
+          'status' => 'failed',
+          'error' => 'Missing parameter "key".' )));
+
+  // check API key
+  $user = User_by_api_key($key);
+  if ($user === false)
+  	die( json_encode( array (
+          'status' => 'failed',
+          'error' => 'Unable to find user' )));
+  if ($user == null)
+  	die( json_encode( array (
+          'status' => 'failed',
+          'error' => 'Key invalid.' )));
+
+  // decode command
+  switch( $cmd) {
     case 'getroom':
       getRoom();
       break;
@@ -134,11 +161,18 @@ function api_controller() {
       getMessage();
       break;
     default:
-      die("Unknown Command (". $cmd. ")");
+      $DataJson = array (
+          'status' => 'failed',
+          'error' => 'Unknown Command "'. $cmd. '"' );
   }
- 
   
-  header("Content-Type: application/json; charset=utf-8");
+  // check 
+  if( $DataJson === false) {
+    $DataJson = array (
+      'status' => 'failed',
+      'error' => 'DataJson === false' );
+  }
+  
   echo json_encode($DataJson);
   die();
 }
@@ -148,8 +182,53 @@ function api_controller() {
  */
 function getVersion(){
   global $DataJson;
-  $DataJson['Version'] = 1;
+  
+  $DataJson = array( 
+    'status' => 'success',
+    'Version' => 1);
 }
+
+
+/**
+ * Get API Key
+ */
+function getApiKey(){
+  global $DataJson, $_REQUEST;
+
+  if (!isset($_REQUEST['user']) ) { 
+    $DataJson = array (
+      'status' => 'failed',
+      'error' => 'Missing parameter "user".' );
+  }
+  elseif (!isset($_REQUEST['pw']) ) {
+    $DataJson = array (
+      'status' => 'failed',
+      'error' => 'Missing parameter "pw".' );
+  } else {
+    $Erg = sql_select( "SELECT `UID`, `Passwort`, `api_key` FROM `User` WHERE `Nick`='" . sql_escape($_REQUEST['user']) . "'");
+    
+    if (count($Erg) == 1) {
+      $Erg = $Erg[0];
+      if (verify_password( $_REQUEST['pw'], $Erg["Passwort"], $Erg["UID"])) {
+        $key = $Erg["api_key"];
+        $DataJson = array( 
+          'status' => 'success',
+          'Key' => $key);
+      } else {
+        $DataJson = array (
+          'status' => 'failed',
+          'error' => 'PW wrong' );
+      }
+    } else {
+      $DataJson = array (
+        'status' => 'failed',
+        'error' => 'User not found.' );
+    }
+  }
+  
+  sleep(1);
+}
+
 
 /**
  * Get Room 

@@ -3,14 +3,14 @@
 /**
  * Returns all needed angeltypes and already taken needs.
  *
- * @param Shift $shift          
+ * @param shiftID id of shift
  */
-function NeededAngelTypes_by_shift($shift) {
+function NeededAngelTypes_by_shift($shiftId) {
   $needed_angeltypes_source = sql_select("
         SELECT `NeededAngelTypes`.*, `AngelTypes`.`name`, `AngelTypes`.`restricted`
         FROM `NeededAngelTypes`
         JOIN `AngelTypes` ON `AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id`
-        WHERE `shift_id`=" . sql_escape($shift['SID']) . "
+        WHERE `shift_id`=" . sql_escape($shiftId) . "
         AND `count` > 0
         ORDER BY `room_id` DESC
         ");
@@ -23,7 +23,7 @@ function NeededAngelTypes_by_shift($shift) {
         SELECT `NeededAngelTypes`.*, `AngelTypes`.`name`, `AngelTypes`.`restricted`
         FROM `NeededAngelTypes`
         JOIN `AngelTypes` ON `AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id`
-        WHERE `room_id`=" . sql_escape($shift['RID']) . "
+        WHERE `room_id`=" . sql_escape($shiftId) . "
         AND `count` > 0
         ORDER BY `room_id` DESC
         ");
@@ -33,7 +33,7 @@ function NeededAngelTypes_by_shift($shift) {
   
   $needed_angeltypes = array();
   foreach ($needed_angeltypes_source as $angeltype) {
-    $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['angel_type_id']);
+    $shift_entries = ShiftEntries_by_shift_and_angeltype($shiftId, $angeltype['angel_type_id']);
     if ($shift_entries === false)
       return false;
     
