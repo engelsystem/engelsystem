@@ -1,3 +1,6 @@
+/* angeltype view */
+INSERT INTO `engelsystem`.`Privileges` (`id`, `name`, `desc`) VALUES (NULL , 'angeltypes', 'View angeltypes');
+
 /* force active */
 ALTER TABLE `User` ADD `force_active` BOOLEAN NOT NULL AFTER `Aktiv`, ADD INDEX ( `force_active` );
 

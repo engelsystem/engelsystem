@@ -10,19 +10,25 @@ require_once ('includes/sys_menu.php');
 require_once ('includes/sys_page.php');
 require_once ('includes/sys_template.php');
 
+require_once ('includes/model/AngelType_model.php');
 require_once ('includes/model/LogEntries_model.php');
+require_once ('includes/model/Message_model.php');
 require_once ('includes/model/NeededAngelTypes_model.php');
+require_once ('includes/model/Room_model.php');
 require_once ('includes/model/ShiftEntry_model.php');
 require_once ('includes/model/Shifts_model.php');
+require_once ('includes/model/UserAngelTypes_model.php');
 require_once ('includes/model/User_model.php');
-require_once ('includes/model/Room_model.php');
-require_once ('includes/model/Message_model.php');
-require_once ('includes/model/AngelType_model.php');
 
+require_once ('includes/view/AngelTypes_view.php');
 require_once ('includes/view/Questions_view.php');
 require_once ('includes/view/Shifts_view.php');
 require_once ('includes/view/ShiftEntry_view.php');
+require_once ('includes/view/UserAngelTypes_view.php');
 require_once ('includes/view/User_view.php');
+
+require_once ('includes/controller/angeltypes_controller.php');
+require_once ('includes/controller/user_angeltypes_controller.php');
 
 require_once ('includes/helper/internationalization_helper.php');
 require_once ('includes/helper/message_helper.php');
@@ -34,7 +40,6 @@ if (file_exists('../config/config.php'))
   require_once ('config/config.php');
 
 require_once ('includes/pages/admin_active.php');
-require_once ('includes/pages/admin_angel_types.php');
 require_once ('includes/pages/admin_arrive.php');
 require_once ('includes/pages/admin_free.php');
 require_once ('includes/pages/admin_groups.php');
@@ -70,7 +75,8 @@ $free_pages = array(
     'stats',
     'shifts_json_export_all',
     'user_password_recovery',
-    'api'
+    'api',
+    'credits' 
 );
 
 // Gewünschte Seite/Funktion
@@ -86,7 +92,7 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     require_once ('includes/controller/api.php');
     error("Api disabled temporily.");
     redirect(page_link_to('login'));
-    //api_controller();
+    // api_controller();
   } elseif ($p == "ical") {
     require_once ('includes/pages/user_ical.php');
     user_ical();
@@ -106,6 +112,10 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     require_once ('includes/controller/users_controller.php');
     $title = user_password_recovery_title();
     $content = user_password_recovery_controller();
+  } elseif ($p == "angeltypes") {
+    list($title, $content) = angeltypes_controller();
+  } elseif ($p == "user_angeltypes") {
+    list($title, $content) = user_angeltypes_controller();
   } elseif ($p == "news") {
     $title = news_title();
     $content = user_news();
@@ -164,9 +174,6 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   } elseif ($p == "admin_news") {
     require_once ('includes/pages/admin_news.php');
     $content = admin_news();
-  } elseif ($p == "admin_angel_types") {
-    $title = admin_angel_types_title();
-    $content = admin_angel_types();
   } elseif ($p == "admin_rooms") {
     $title = admin_rooms_title();
     $content = admin_rooms();
@@ -206,10 +213,10 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
 
 if (isset($user)) {
   $freeloaded_shifts_count = count(ShiftEntries_freeloaded_by_user($user));
-  if($freeloaded_shifts_count >= $max_freeloadable_shifts)
+  if ($freeloaded_shifts_count >= $max_freeloadable_shifts)
     $content = error(sprintf(_("You freeloaded %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again."), $freeloaded_shifts_count), true) . $content;
-  
-  // Hinweis für ungelesene Nachrichten
+    
+    // Hinweis für ungelesene Nachrichten
   if ($p != "user_messages")
     $content = user_unread_messages() . $content;
     
@@ -226,10 +233,6 @@ if (isset($user)) {
     // Erzengel Hinweis für unbeantwortete Fragen
   if ($p != "admin_questions")
     $content = admin_new_questions() . $content;
-    
-    // Erzengel Hinweis für freizuschaltende Engeltypen
-  if ($p != "admin_user_angeltypes")
-    $content = admin_new_user_angeltypes() . $content;
 }
 
 echo template_render('../templates/layout.html', array(

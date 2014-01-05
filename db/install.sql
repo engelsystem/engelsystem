@@ -41,24 +41,6 @@ CREATE TABLE IF NOT EXISTS `AngelTypes` (
 
 -- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `ChangeLog`
---
-
-DROP TABLE IF EXISTS `ChangeLog`;
-CREATE TABLE IF NOT EXISTS `ChangeLog` (
-  `Time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `UID` int(11) NOT NULL DEFAULT '0',
-  `Commend` text NOT NULL,
-  `SQLCommad` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `ChangeLog`
---
-
-
--- --------------------------------------------------------
 
 --
 -- Tabellenstruktur für Tabelle `Counter`

@@ -97,18 +97,4 @@ function admin_user_angeltypes() {
   ));
 }
 
-/**
- * Anzeige, ob noch Engeltypen bestätigt werden müssen. Damit werden Erzengel auf jeder Seite im Kopfbereich "genervt", wenn zu ihren Aufgaben noch Engel bestätigt werden müssen.
- */
-function admin_new_user_angeltypes() {
-  global $user, $privileges;
-
-  if (in_array("admin_user_angeltypes", $privileges)) {
-    $unconfirmed_angeltypes = sql_num_query("SELECT * FROM `UserAngelTypes` JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id` WHERE `UserAngelTypes`.`angeltype_id` IN (SELECT `angeltype_id` FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user['UID']) . ") AND `AngelTypes`.`restricted`=1 AND `UserAngelTypes`.`confirm_user_id` IS NULL LIMIT 1") > 0;
-
-    if ($unconfirmed_angeltypes)
-      return info('<a href="' . page_link_to('admin_user_angeltypes') . '">' . _("There are unconfirmed angeltypes!") . '</a>', true);
-  }
-  return "";
-}
 ?>

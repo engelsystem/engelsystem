@@ -1,6 +1,19 @@
 <?php
 
 /**
+ * Returns all members of given angeltype.
+ * @param Angeltype $angeltype
+ */
+function Users_by_angeltype($angeltype) {
+  return sql_select("
+      SELECT `User`.*, `UserAngelTypes`.`id` as `user_angeltype_id`, `UserAngelTypes`.`confirm_user_id`
+      FROM `User`
+      JOIN `UserAngelTypes` ON `User`.`UID`=`UserAngelTypes`.`user_id`
+      WHERE `UserAngelTypes`.`angeltype_id`=" . sql_escape($angeltype['id']) . "
+      ORDER BY `Nick`");
+}
+
+/**
  * Returns User id array
  */
 function mUserList() {
@@ -14,7 +27,8 @@ function mUserList() {
 
 /**
  * Strip unwanted characters from a users nick.
- * @param string $nick
+ *
+ * @param string $nick          
  */
 function User_validate_Nick($nick) {
   return preg_replace("/([^a-z0-9üöäß. _+*-]{1,})/ui", '', $nick);
@@ -23,7 +37,7 @@ function User_validate_Nick($nick) {
 /**
  * Returns user by id.
  *
- * @param $id UID
+ * @param $id UID          
  */
 function User($id) {
   $user_source = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
@@ -37,7 +51,7 @@ function User($id) {
 /**
  * Returns user by id (limit informations.
  *
- * @param $id UID
+ * @param $id UID          
  */
 function mUser_Limit($id) {
   $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Avatar` FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");

@@ -357,8 +357,13 @@ tr:hover .hidden {
 	margin: 0 0 10px 0;
 }
 
+.actions a {
+	background: 2px 1px no-repeat;
+	padding-right: 5px;
+}
+
 a.button {
-	background: #f0f0f0;
+	background: #f0f0f0 2px 2px no-repeat;
 	border: 1px solid #888;
 	border-radius: 4px;
 	line-height: 25px;
@@ -374,26 +379,36 @@ a.button {
 
 .button:hover, .toolbar .button:hover {
 	color: #000;
-	background: #fff;
+	background-color: #fff;
 }
 
-.button.add {
-  background: url('../pic/icons/add.png') 2px 2px no-repeat;
+.button.add, .actions .add {
+  background-image: url('../pic/icons/add.png');
   padding-left: 20px;
 }
 
-.button.edit {
-  background: url('../pic/icons/pencil.png') 2px 2px no-repeat;
+.button.edit, .actions .edit {
+  background-image: url('../pic/icons/pencil.png');
   padding-left: 20px;
 }
 
-.button.ok {
-	background: url('../pic/icons/tick.png') 2px 2px no-repeat;
+.button.ok, .actions .ok {
+	background-image: url('../pic/icons/tick.png');
 	padding-left: 20px;
 }
 
-.button.cancel {
-	background: url('../pic/icons/cross.png') 2px 2px no-repeat;
+.button.cancel, .actions .cancel {
+	background-image: url('../pic/icons/cross.png');
+	padding-left: 20px;
+}
+
+.button.delete, .actions .delete {
+	background-image: url('../pic/icons/bin.png');
+	padding-left: 20px;
+}
+
+.button.back, .actions .back {
+	background-image: url('../pic/icons/arrow_left.png');
 	padding-left: 20px;
 }
 
