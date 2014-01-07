@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Text for Angeltype related links.
+ */
 function angeltypes_title() {
   return _("Angeltypes");
 }
@@ -32,6 +35,9 @@ function angeltypes_controller() {
   );
 }
 
+/**
+ * Delete an Angeltype.
+ */
 function angeltype_delete_controller() {
   global $privileges, $user;
   
@@ -60,6 +66,9 @@ function angeltype_delete_controller() {
   );
 }
 
+/**
+ * Change an Angeltype.
+ */
 function angeltype_edit_controller() {
   global $privileges, $user;
   

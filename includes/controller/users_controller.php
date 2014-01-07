@@ -77,6 +77,9 @@ function user_password_recovery_controller() {
   }
 }
 
+/**
+ * Menu title for password recovery.
+ */
 function user_password_recovery_title() {
   return _("Password recovery");
 }

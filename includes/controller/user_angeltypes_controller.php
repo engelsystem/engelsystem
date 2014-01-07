@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Remove all unconfirmed users from a specific angeltype.
+ */
 function user_angeltypes_delete_all_controller() {
   global $user, $privileges;
   
@@ -37,6 +40,9 @@ function user_angeltypes_delete_all_controller() {
   );
 }
 
+/**
+ * Confirm all unconfirmed users for an angeltype.
+ */
 function user_angeltypes_confirm_all_controller() {
   global $user, $privileges;
   
@@ -74,6 +80,9 @@ function user_angeltypes_confirm_all_controller() {
   );
 }
 
+/**
+ * Confirm an user for an angeltype.
+ */
 function user_angeltype_confirm_controller() {
   global $user, $privileges;
   
@@ -127,6 +136,9 @@ function user_angeltype_confirm_controller() {
   );
 }
 
+/**
+ * Remove a user from an Angeltype.
+ */
 function user_angeltype_delete_controller() {
   global $user, $privileges;
   
@@ -182,10 +194,16 @@ function user_angeltype_delete_controller() {
   );
 }
 
+/**
+ * Update an UserAngelType.
+ */
 function user_angeltype_update_controller() {
 
 }
 
+/**
+ * User joining an Angeltype (Or Coordinator doing this for him).
+ */
 function user_angeltype_add_controller() {
   global $user, $privileges;
   
@@ -236,6 +254,9 @@ function user_angeltype_add_controller() {
   );
 }
 
+/**
+ * Route UserAngelType actions.
+ */
 function user_angeltypes_controller() {
   if (! isset($_REQUEST['action']))
     redirect(page_link_to('angeltypes'));
