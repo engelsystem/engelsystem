@@ -1,26 +1,44 @@
 <?php
 
+/**
+ * Delete an Angeltype.
+ * @param Angeltype $angeltype
+ */
 function AngelType_delete($angeltype) {
-  sql_query("DELETE FROM `NeededAngelTypes` WHERE `angel_type_id`=" . sql_escape($angeltype['id']) . " LIMIT 1");
-  sql_query("DELETE FROM `ShiftEntry` WHERE `TID`=" . sql_escape($angeltype['id']) . " LIMIT 1");
-  sql_query("DELETE FROM `UserAngelTypes` WHERE `angeltype_id`=" . sql_escape($angeltype['id']) . " LIMIT 1");
-  return sql_query("DELETE FROM `AngelTypes` WHERE `id`=" . sql_escape($angeltype['id']) . " LIMIT 1");
+  return sql_query("
+      DELETE FROM `AngelTypes` 
+      WHERE `id`=" . sql_escape($angeltype['id']) . " 
+      LIMIT 1");
 }
 
+/**
+ * Update Angeltype.
+ *
+ * @param int $angeltype_id          
+ * @param string $name          
+ * @param boolean $restricted          
+ */
 function AngelType_update($angeltype_id, $name, $restricted) {
   return sql_query("
       UPDATE `AngelTypes` SET 
       `name`='" . sql_escape($name) . "', 
-      `restricted`=" . sql_escape($restricted) . " 
+      `restricted`=" . sql_escape($restricted ? 1 : 0) . " 
       WHERE `id`=" . sql_escape($angeltype_id) . " 
       LIMIT 1");
 }
 
+/**
+ * Create an Angeltype.
+ *
+ * @param string $name          
+ * @param boolean $restricted          
+ * @return New Angeltype id
+ */
 function AngelType_create($name, $restricted) {
   $result = sql_query("
       INSERT INTO `AngelTypes` SET 
       `name`='" . sql_escape($name) . "', 
-      `restricted`=" . sql_escape($restricted));
+      `restricted`=" . sql_escape($restricted ? 1 : 0));
   if ($result === false)
     return false;
   return sql_id();
