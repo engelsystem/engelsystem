@@ -13,7 +13,7 @@ function user_angeltypes_delete_all_controller() {
     redirect(page_link_to('angeltypes'));
   }
   
-  $angeltype = mAngelType($_REQUEST['angeltype_id']);
+  $angeltype = AngelType($_REQUEST['angeltype_id']);
   if ($angeltype === false)
     engelsystem_error("Unable to load angeltype.");
   if ($angeltype == null) {
@@ -50,7 +50,7 @@ function user_angeltypes_confirm_all_controller() {
     redirect(page_link_to('angeltypes'));
   }
   
-  $angeltype = mAngelType($_REQUEST['angeltype_id']);
+  $angeltype = AngelType($_REQUEST['angeltype_id']);
   if ($angeltype === false)
     engelsystem_error("Unable to load angeltype.");
   if ($angeltype == null) {
@@ -95,7 +95,7 @@ function user_angeltype_confirm_controller() {
     redirect(page_link_to('angeltypes'));
   }
   
-  $angeltype = mAngelType($user_angeltype['angeltype_id']);
+  $angeltype = AngelType($user_angeltype['angeltype_id']);
   if ($angeltype === false)
     engelsystem_error("Unable to load angeltype.");
   if ($angeltype == null) {
@@ -143,7 +143,7 @@ function user_angeltype_delete_controller() {
     redirect(page_link_to('angeltypes'));
   }
   
-  $angeltype = mAngelType($user_angeltype['angeltype_id']);
+  $angeltype = AngelType($user_angeltype['angeltype_id']);
   if ($angeltype === false)
     engelsystem_error("Unable to load angeltype.");
   if ($angeltype == null) {
@@ -194,7 +194,7 @@ function user_angeltype_add_controller() {
     redirect(page_link_to('angeltypes'));
   }
   
-  $angeltype = mAngelType($_REQUEST['angeltype_id']);
+  $angeltype = AngelType($_REQUEST['angeltype_id']);
   if ($angeltype === false)
     engelsystem_error("Unable to load angeltype.");
   if ($angeltype == null) {

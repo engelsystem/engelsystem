@@ -16,13 +16,8 @@ function Users_by_angeltype($angeltype) {
 /**
  * Returns User id array
  */
-function mUserList() {
-  $user_source = sql_select("SELECT `UID` FROM `User`");
-  if ($user_source === false)
-    return false;
-  if (count($user_source) > 0)
-    return $user_source;
-  return null;
+function User_ids() {
+  return sql_select("SELECT `UID` FROM `User`");
 }
 
 /**
@@ -49,6 +44,7 @@ function User($id) {
 }
 
 /**
+ * TODO: Merge into normal user function
  * Returns user by id (limit informations.
  *
  * @param $id UID          

@@ -23,7 +23,7 @@ function user_messages() {
     $users = sql_select("SELECT * FROM `User` WHERE NOT `UID`=" . sql_escape($user['UID']) . " ORDER BY `Nick`");
     
     $to_select_data = array(
-        "" => _("Select recipient...")
+        "" => _("Select recipient...") 
     );
     
     foreach ($users as $u)
@@ -98,7 +98,7 @@ function user_messages() {
         break;
       
       case "send":
-        if( mMessage_Send( $_REQUEST['to'], $_REQUEST['text']) === true) {
+        if (Message_send($_REQUEST['to'], $_REQUEST['text']) === true) {
           redirect(page_link_to("user_messages"));
         } else {
           return error(_("Transmitting was terminated with an Error."), true);

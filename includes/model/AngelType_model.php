@@ -80,7 +80,7 @@ function AngelTypes_with_user($user) {
 /**
  * Returns AngelType id array
  */
-function mAngelTypeList() {
+function AngelType_ids() {
   $angelType_source = sql_select("SELECT `id` FROM `AngelTypes`");
   if ($angelType_source === false)
     return false;
@@ -95,7 +95,7 @@ function mAngelTypeList() {
  * @param $id angelType
  *          ID
  */
-function mAngelType($id) {
+function AngelType($id) {
   $angelType_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
   if ($angelType_source === false)
     return false;

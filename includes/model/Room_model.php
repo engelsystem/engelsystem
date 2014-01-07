@@ -3,7 +3,7 @@
 /**
  * Returns room id array
  */
-function mRoomList() {
+function Room_ids() {
   $room_source = sql_select("SELECT `RID` FROM `Room` WHERE `show` = 'Y'");
   if ($room_source === false)
     return false;
@@ -12,13 +12,12 @@ function mRoomList() {
   return null;
 }
 
-
 /**
  * Returns room by id.
  *
- * @param $id RID
+ * @param $id RID          
  */
-function mRoom($id) {
+function Room($id) {
   $room_source = sql_select("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($id) . " AND `show` = 'Y' LIMIT 1");
   if ($room_source === false)
     return false;
@@ -26,6 +25,5 @@ function mRoom($id) {
     return $room_source[0];
   return null;
 }
-
 
 ?>

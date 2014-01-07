@@ -1,9 +1,10 @@
 <?php
 
 /**
+ * TODO: $_REQUEST is not allowed in model!
  * Returns Shift id array
  */
-function mShiftList() {
+function Shifts_filtered() {
 	global $_REQUEST;
 	$filter = "";
 	
@@ -49,7 +50,7 @@ function mShiftList() {
  *
  * @param $id Shift ID
  */
-function mShift($id) {
+function Shift($id) {
 	$shifts_source = sql_select("SELECT * FROM `Shifts` WHERE `SID`=" . sql_escape($id) . " LIMIT 1");
 	$shiftsEntry_source = sql_select("SELECT `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`=" . sql_escape($id) );
 	

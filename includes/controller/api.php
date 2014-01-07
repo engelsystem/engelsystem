@@ -1,6 +1,5 @@
 <?php
 
-
 /************************************************************************************************
  * API Documentation
  ************************************************************************************************
@@ -103,58 +102,60 @@ sendMessage
 
 ************************************************************************************************/
 
-
 /**
  * General API Controller
  */
 function api_controller() {
-  global $user, $DataJson, $_REQUEST;
-
+  global $user, $DataJson;
+  
   header("Content-Type: application/json; charset=utf-8");
-
+  
   // decode JSON request
   $input = file_get_contents("php://input");
   $input = json_decode($input, true);
   $_REQUEST = $input;
-
+  
   // get command
-  $cmd='';
-  if (isset($_REQUEST['cmd']) )
-    $cmd = strtolower( $_REQUEST['cmd']);
-
-  // decode commands, without key
-  switch( $cmd) {
+  $cmd = '';
+  if (isset($_REQUEST['cmd']))
+    $cmd = strtolower($_REQUEST['cmd']);
+    
+    // decode commands, without key
+  switch ($cmd) {
     case 'getversion':
       getVersion();
-      die( json_encode($DataJson));
+      die(json_encode($DataJson));
       break;
     case 'getapikey':
       getApiKey();
-      die( json_encode($DataJson));
+      die(json_encode($DataJson));
       break;
   }
-
+  
   // get API KEY
   if (isset($_REQUEST['key']) && preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key']))
     $key = $_REQUEST['key'];
   else
-  die( json_encode( array (
-          'status' => 'failed',
-          'error' => 'Missing parameter "key".' )));
-
-  // check API key
+    die(json_encode(array(
+        'status' => 'failed',
+        'error' => 'Missing parameter "key".' 
+    )));
+    
+    // check API key
   $user = User_by_api_key($key);
   if ($user === false)
-  	die( json_encode( array (
-          'status' => 'failed',
-          'error' => 'Unable to find user' )));
+    die(json_encode(array(
+        'status' => 'failed',
+        'error' => 'Unable to find user' 
+    )));
   if ($user == null)
-  	die( json_encode( array (
-          'status' => 'failed',
-          'error' => 'Key invalid.' )));
-
-  // decode command
-  switch( $cmd) {
+    die(json_encode(array(
+        'status' => 'failed',
+        'error' => 'Key invalid.' 
+    )));
+    
+    // decode command
+  switch ($cmd) {
     case 'getroom':
       getRoom();
       break;
@@ -162,34 +163,39 @@ function api_controller() {
       getAngelType();
       break;
     case 'getuser':
-      getUser();
+      // TODO Dataleak! Only coordinators are allowed to see so much user informations.
+      //getUser();
       break;
     case 'getshift':
       getShift();
       break;
     case 'getmessage':
-      getMessage();
+      // TODO Dataleak!
+      //getMessage();
       break;
     case 'sendmessage':
       sendMessage();
       break;
     default:
-      $DataJson = array (
+      $DataJson = array(
           'status' => 'failed',
-          'error' => 'Unknown Command "'. $cmd. '"' );
+          'error' => 'Unknown Command "' . $cmd . '"' 
+      );
   }
-
+  
   // check
-  if( $DataJson === false) {
-    $DataJson = array (
-      'status' => 'failed',
-      'error' => 'DataJson === false' );
-  } elseif( $DataJson == null) {
-    $DataJson = array (
-      'status' => 'failed',
-      'error' => 'DataJson == null' );
+  if ($DataJson === false) {
+    $DataJson = array(
+        'status' => 'failed',
+        'error' => 'DataJson === false' 
+    );
+  } elseif ($DataJson == null) {
+    $DataJson = array(
+        'status' => 'failed',
+        'error' => 'DataJson == null' 
+    );
   }
-
+  
   echo json_encode($DataJson);
   die();
 }
@@ -197,143 +203,151 @@ function api_controller() {
 /**
  * Get Version of API
  */
-function getVersion(){
+function getVersion() {
   global $DataJson;
-
+  
   $DataJson = array(
-    'status' => 'success',
-    'Version' => 1);
+      'status' => 'success',
+      'Version' => 1 
+  );
 }
-
 
 /**
  * Get API Key
  */
-function getApiKey(){
-  global $DataJson, $_REQUEST;
-
-  if (!isset($_REQUEST['user']) ) {
-    $DataJson = array (
-      'status' => 'failed',
-      'error' => 'Missing parameter "user".' );
-  }
-  elseif (!isset($_REQUEST['pw']) ) {
-    $DataJson = array (
-      'status' => 'failed',
-      'error' => 'Missing parameter "pw".' );
+function getApiKey() {
+  global $DataJson;
+  
+  if (! isset($_REQUEST['user'])) {
+    $DataJson = array(
+        'status' => 'failed',
+        'error' => 'Missing parameter "user".' 
+    );
+  } elseif (! isset($_REQUEST['pw'])) {
+    $DataJson = array(
+        'status' => 'failed',
+        'error' => 'Missing parameter "pw".' 
+    );
   } else {
-    $Erg = sql_select( "SELECT `UID`, `Passwort`, `api_key` FROM `User` WHERE `Nick`='" . sql_escape($_REQUEST['user']) . "'");
-
+    $Erg = sql_select("SELECT `UID`, `Passwort`, `api_key` FROM `User` WHERE `Nick`='" . sql_escape($_REQUEST['user']) . "'");
+    
     if (count($Erg) == 1) {
       $Erg = $Erg[0];
-      if (verify_password( $_REQUEST['pw'], $Erg["Passwort"], $Erg["UID"])) {
+      if (verify_password($_REQUEST['pw'], $Erg["Passwort"], $Erg["UID"])) {
         $key = $Erg["api_key"];
         $DataJson = array(
-          'status' => 'success',
-          'Key' => $key);
+            'status' => 'success',
+            'Key' => $key 
+        );
       } else {
-        $DataJson = array (
-          'status' => 'failed',
-          'error' => 'PW wrong' );
+        $DataJson = array(
+            'status' => 'failed',
+            'error' => 'PW wrong' 
+        );
       }
     } else {
-      $DataJson = array (
-        'status' => 'failed',
-        'error' => 'User not found.' );
+      $DataJson = array(
+          'status' => 'failed',
+          'error' => 'User not found.' 
+      );
     }
   }
-
+  
   sleep(1);
 }
-
 
 /**
  * Get Room
  */
-function getRoom(){
-  global $DataJson, $_REQUEST;
-
-  if (isset($_REQUEST['id']) ) {
-    $DataJson = mRoom( $_REQUEST['id']);
+function getRoom() {
+  global $DataJson;
+  
+  if (isset($_REQUEST['id'])) {
+    $DataJson = Room($_REQUEST['id']);
   } else {
-    $DataJson = mRoomList();
+    $DataJson = Room_ids();
   }
 }
 
 /**
  * Get AngelType
  */
-function getAngelType(){
-  global $DataJson, $_REQUEST;
-
-  if (isset($_REQUEST['id']) ) {
-    $DataJson = mAngelType( $_REQUEST['id']);
+function getAngelType() {
+  global $DataJson;
+  
+  if (isset($_REQUEST['id'])) {
+    $DataJson = AngelType($_REQUEST['id']);
   } else {
-    $DataJson = mAngelTypeList();
+    $DataJson = AngelType_ids();
   }
 }
 
 /**
  * Get User
  */
-function getUser(){
-  global $DataJson, $_REQUEST;
-
-  if (isset($_REQUEST['id']) ) {
-    $DataJson = mUser_Limit( $_REQUEST['id']);
+function getUser() {
+  global $DataJson;
+  
+  if (isset($_REQUEST['id'])) {
+    $DataJson = mUser_Limit($_REQUEST['id']);
   } else {
-    $DataJson = mUserList();
+    $DataJson = User_ids();
   }
 }
 
 /**
  * Get Shift
  */
-function getShift(){
-  global $DataJson, $_REQUEST;
-
-  if (isset($_REQUEST['id']) ) {
-    $DataJson = mShift( $_REQUEST['id']);
+function getShift() {
+  global $DataJson;
+  
+  if (isset($_REQUEST['id'])) {
+    $DataJson = Shift($_REQUEST['id']);
   } else {
-    $DataJson = mShiftList();
+    $DataJson = Shifts_filtered();
   }
 }
 
 /**
+ * @TODO: Why are ALL messages of ALL users returned? Data leak. It is not checked if this is my message!
  * Get Message
  */
-function getMessage(){
-  global $DataJson, $_REQUEST;
-
-  if (isset($_REQUEST['id']) ) {
-    $DataJson = mMessage( $_REQUEST['id']);
+function getMessage() {
+  global $DataJson;
+  
+  if (isset($_REQUEST['id'])) {
+    $DataJson = Message($_REQUEST['id']);
   } else {
-    $DataJson = mMessageList();
+    $DataJson = Message_ids();
   }
 }
 
 /**
  * Send Message
  */
-function sendMessage(){
-  global $DataJson, $_REQUEST;
-
-  if (!isset($_REQUEST['uid']) ) {
-  	$DataJson = array (
-  			'status' => 'failed',
-  			'error' => 'Missing parameter "uid".' );
-  }
-  elseif (!isset($_REQUEST['text']) ) {
-    $DataJson = array (
-      'status' => 'failed',
-      'error' => 'Missing parameter "text".' );
+function sendMessage() {
+  global $DataJson;
+  
+  if (! isset($_REQUEST['uid'])) {
+    $DataJson = array(
+        'status' => 'failed',
+        'error' => 'Missing parameter "uid".' 
+    );
+  } elseif (! isset($_REQUEST['text'])) {
+    $DataJson = array(
+        'status' => 'failed',
+        'error' => 'Missing parameter "text".' 
+    );
   } else {
-    if( mMessage_Send( $_REQUEST['uid'], $_REQUEST['text']) === true) {
-    	$DataJson = array( 'status' => 'success');
+    if (Message_send($_REQUEST['uid'], $_REQUEST['text']) === true) {
+      $DataJson = array(
+          'status' => 'success' 
+      );
     } else {
       $DataJson = array(
-        'status' => 'failed',
-        'error' => 'Transmitting was terminated with an Error.');
+          'status' => 'failed',
+          'error' => 'Transmitting was terminated with an Error.' 
+      );
     }
   }
 }
