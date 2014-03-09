@@ -292,7 +292,7 @@ function user_shifts() {
 
 function view_user_shifts() {
   global $user, $privileges;
-  global $ical_shifts, $faq_url;
+  global $ical_shifts;
   
   $ical_shifts = array();
   $days = sql_select_single_col("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` FROM `Shifts` ORDER BY `start`");
@@ -641,7 +641,7 @@ function view_user_shifts() {
       $angeltypes = sql_select($query);
       if (count($angeltypes) > 0) {
         $my_shift = sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift['SID']) . " AND `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0;
-
+        
         foreach ($angeltypes as &$angeltype) {
           $entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`=" . sql_escape($shift['SID']) . " AND `TID`=" . sql_escape($angeltype['id']) . " ORDER BY `Nick`");
           $entry_list = array();
@@ -726,7 +726,7 @@ function view_user_shifts() {
       'end_time' => $_SESSION['user_shifts']['end_time'],
       'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", _("Tasks") . '<sup>1</sup>'),
       'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", _("Occupancy")),
-      'task_notice' => '<sup>1</sup>' . _("The tasks shown here are influenced by the preferences you defined in your settings!") . " <a href=\"" . $faq_url . "\">" . _("Description of the jobs.") . "</a>",
+      'task_notice' => '<sup>1</sup>' . _("The tasks shown here are influenced by the preferences you defined in your settings!") . " <a href=\"" . page_link_to('angeltypes') . '&action=about' . "\">" . _("Description of the jobs.") . "</a>",
       'new_style_checkbox' => '<label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style'] ? ' checked' : '') . '> ' . _("Use new style if possible") . '</label>',
       'shifts_table' => $shifts_table,
       'ical_text' => '<h2>' . _("iCal export") . '</h2><p>' . sprintf(_("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."), page_link_to_absolute('ical') . '&key=' . $user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'], page_link_to('user_myshifts') . '&reset') . '</p>',

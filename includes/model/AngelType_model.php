@@ -100,6 +100,16 @@ function AngelTypes_with_user($user) {
 }
 
 /**
+ * Returns all angeltypes.
+ */
+function AngelTypes() {
+  return sql_select("
+      SELECT * 
+      FROM `AngelTypes` 
+      ORDER BY `name`");
+}
+
+/**
  * Returns AngelType id array
  */
 function AngelType_ids() {

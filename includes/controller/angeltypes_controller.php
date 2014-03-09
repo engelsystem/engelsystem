@@ -27,11 +27,30 @@ function angeltypes_controller() {
     case 'delete':
       list($title, $content) = angeltype_delete_controller();
       break;
+    case 'about':
+      list($title, $content) = angeltypes_about_controller();
+      break;
   }
   
   return array(
       $title,
       $content 
+  );
+}
+
+/**
+ * Job description for all angeltypes (public to everyone)
+ */
+function angeltypes_about_controller() {
+  global $privileges, $user;
+  
+  $angeltypes = AngelTypes();
+  if ($angeltypes === false)
+    engelsystem_error("Unable to load angeltypes.");
+  
+  return array(
+      _("Teams/Engeltypes description"),
+      AngelTypes_about_view($angeltypes) 
   );
 }
 
@@ -139,6 +158,9 @@ function angeltype_edit_controller() {
 function angeltype_controller() {
   global $privileges, $user;
   
+  if (! in_array('angeltypes', $privileges))
+    redirect('?');
+  
   if (! isset($_REQUEST['angeltype_id']))
     redirect(page_link_to('angeltypes'));
   
@@ -167,6 +189,9 @@ function angeltype_controller() {
  */
 function angeltypes_list_controller() {
   global $privileges, $user;
+  
+  if (! in_array('angeltypes', $privileges))
+    redirect('?');
   
   $angeltypes = AngelTypes_with_user($user);
   if ($angeltypes === false)

@@ -117,4 +117,19 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes) {
   ));
 }
 
+function AngelTypes_about_view($angeltypes) {
+  $content = array(
+      '<p>' . _("Here is the list of teams and their tasks:") . '</p>' 
+  );
+  $parsedown = new Parsedown();
+  foreach ($angeltypes as $angeltype) {
+    $content[] = '<h2>' . $angeltype['name'] . '</h2>';
+    if ($angeltype['restricted'])
+      $content[] = info(_("This angeltype is restricted by double-opt-in by a team coordinator. Please show up at the according introduction meetings."), true);
+    $content[] = $parsedown->parse($angeltype['description']);
+  }
+  
+  return page($content);
+}
+
 ?>

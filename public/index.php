@@ -77,7 +77,8 @@ $free_pages = array(
     'shifts_json_export_all',
     'user_password_recovery',
     'api',
-    'credits' 
+    'credits',
+    'angeltypes'
 );
 
 // Gewünschte Seite/Funktion

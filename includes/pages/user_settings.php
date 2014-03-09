@@ -4,7 +4,7 @@ function settings_title() {
 }
 
 function user_settings() {
-  global $enable_tshirt_size, $tshirt_sizes, $themes, $locales, $faq_url;
+  global $enable_tshirt_size, $tshirt_sizes, $themes, $locales;
   global $user;
   
   $msg = "";
@@ -102,7 +102,7 @@ function user_settings() {
       // Assign angel-types
       $user_angel_type_info = array();
       $deleted_angel_types = array_diff(array_keys($angel_types), $selected_angel_types);
-      if(count($deleted_angel_types) > 0)
+      if (count($deleted_angel_types) > 0)
         sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`='" . sql_escape($user['UID']) . "' AND `angeltype_id` IN (" . implode(",", $deleted_angel_types) . ")");
       foreach ($angel_types_source as $angel_type)
         if (in_array($angel_type['id'], $selected_angel_types))
@@ -180,7 +180,7 @@ function user_settings() {
           form_text('jabber', _("Jabber"), $jabber),
           form_text('hometown', _("Hometown"), $hometown),
           $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',
-          form_checkboxes('angel_types', _("What do you want to do?") . sprintf("<br>(<a href=\"%s\">%s</a>)", $faq_url, _("Description of job types")), $angel_types, $selected_angel_types),
+          form_checkboxes('angel_types', _("What do you want to do?") . sprintf("<br>(<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
           form_submit('submit', _("Save")) 
       )),
       form(array(
