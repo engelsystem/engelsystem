@@ -10,7 +10,7 @@ function AngelType_delete_view($angeltype) {
   ));
 }
 
-function AngelType_edit_view($name, $restricted) {
+function AngelType_edit_view($name, $restricted, $description) {
   return page(array(
       buttons(array(
           button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
@@ -20,6 +20,8 @@ function AngelType_edit_view($name, $restricted) {
           form_text('name', _("Name"), $name),
           form_checkbox('restricted', _("Restricted"), $restricted),
           form_info("", _("Restricted angel types can only be used by an angel if enabled by an archangel (double opt-in).")),
+          form_textarea('description', _("Description"), $description),
+          form_info("", _("Please use markdown for the description.")),
           form_submit('submit', _("Save")) 
       )) 
   ));
@@ -48,8 +50,11 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
       buttons($buttons) 
   );
   
-  // $page[] = '<h3>' . _("Info") . '</h3>';
-  // Description + Team-Coordinators
+  $page[] = '<h3>' . _("Description") . '</h3>';
+  $parsedown = new Parsedown();
+  $page[] = $parsedown->parse($angeltype['description']);
+  
+  // Team-Coordinators list missing
   
   $page[] = '<h3>' . _("Members") . '</h3>';
   $members_confirmed = array();

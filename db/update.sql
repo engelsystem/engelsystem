@@ -33,3 +33,4 @@ ALTER TABLE `AngelTypes` DROP `Man`;
 ALTER TABLE `AngelTypes` CHANGE `TID` `id` INT( 11 ) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `AngelTypes` CHANGE `Name` `name` VARCHAR( 25 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';
 ALTER TABLE `AngelTypes` ADD `restricted` INT( 1 ) NOT NULL;
+ALTER TABLE `AngelTypes` ADD `description` TEXT NOT NULL;

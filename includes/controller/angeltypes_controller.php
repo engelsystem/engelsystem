@@ -77,6 +77,8 @@ function angeltype_edit_controller() {
   
   $name = "";
   $restricted = false;
+  $description = "";
+  
   if (isset($_REQUEST['angeltype_id'])) {
     $angeltype = AngelType($_REQUEST['angeltype_id']);
     if ($angeltype === false)
@@ -86,6 +88,7 @@ function angeltype_edit_controller() {
     
     $name = $angeltype['name'];
     $restricted = $angeltype['restricted'];
+    $description = $angeltype['description'];
   }
   
   if (isset($_REQUEST['submit'])) {
@@ -101,16 +104,19 @@ function angeltype_edit_controller() {
     
     $restricted = isset($_REQUEST['restricted']);
     
+    if (isset($_REQUEST['description']))
+      $description = strip_request_item_nl('description');
+    
     if ($ok) {
       $restricted = $restricted ? 1 : 0;
       if (isset($angeltype)) {
-        $result = AngelType_update($angeltype['id'], $name, $restricted);
+        $result = AngelType_update($angeltype['id'], $name, $restricted, $description);
         if ($result === false)
           engelsystem_error("Unable to update angeltype.");
         engelsystem_log("Updated angeltype: " . $name . ", restricted: " . $restricted);
         $angeltype_id = $angeltype['id'];
       } else {
-        $angeltype_id = AngelType_create($name, $restricted);
+        $angeltype_id = AngelType_create($name, $restricted, $description);
         if ($angeltype_id === false)
           engelsystem_error("Unable to create angeltype.");
         engelsystem_log("Created angeltype: " . $name . ", restricted: " . $restricted);
@@ -123,7 +129,7 @@ function angeltype_edit_controller() {
   
   return array(
       isset($angeltype) ? sprintf(_("Edit %s"), $name) : _("Add new angeltype"),
-      AngelType_edit_view($name, $restricted) 
+      AngelType_edit_view($name, $restricted, $description) 
   );
 }
 

@@ -17,12 +17,14 @@ function AngelType_delete($angeltype) {
  * @param int $angeltype_id          
  * @param string $name          
  * @param boolean $restricted          
+ * @param string $description          
  */
-function AngelType_update($angeltype_id, $name, $restricted) {
+function AngelType_update($angeltype_id, $name, $restricted, $description) {
   return sql_query("
       UPDATE `AngelTypes` SET 
       `name`='" . sql_escape($name) . "', 
-      `restricted`=" . sql_escape($restricted ? 1 : 0) . " 
+      `restricted`=" . sql_escape($restricted ? 1 : 0) . ",
+      `description`='" . sql_escape($description) . "'
       WHERE `id`=" . sql_escape($angeltype_id) . " 
       LIMIT 1");
 }
@@ -32,13 +34,15 @@ function AngelType_update($angeltype_id, $name, $restricted) {
  *
  * @param string $name          
  * @param boolean $restricted          
+ * @param string $description          
  * @return New Angeltype id
  */
-function AngelType_create($name, $restricted) {
+function AngelType_create($name, $restricted, $description) {
   $result = sql_query("
       INSERT INTO `AngelTypes` SET 
       `name`='" . sql_escape($name) . "', 
-      `restricted`=" . sql_escape($restricted ? 1 : 0));
+      `restricted`=" . sql_escape($restricted ? 1 : 0) . "
+      `description`='" . sql_escape($description) . "'");
   if ($result === false)
     return false;
   return sql_id();
