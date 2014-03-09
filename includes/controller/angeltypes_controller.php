@@ -44,13 +44,16 @@ function angeltypes_controller() {
 function angeltypes_about_controller() {
   global $privileges, $user;
   
-  $angeltypes = AngelTypes();
+  if (isset($user))
+    $angeltypes = AngelTypes_with_user($user);
+  else
+    $angeltypes = AngelTypes();
   if ($angeltypes === false)
     engelsystem_error("Unable to load angeltypes.");
   
   return array(
-      _("Teams/Engeltypes description"),
-      AngelTypes_about_view($angeltypes) 
+      _("Teams/Job description"),
+      AngelTypes_about_view($angeltypes, isset($user)) 
   );
 }
 

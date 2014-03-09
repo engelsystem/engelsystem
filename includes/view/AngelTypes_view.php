@@ -105,9 +105,10 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
 function AngelTypes_list_view($angeltypes, $admin_angeltypes) {
   return page(array(
       msg(),
-      $admin_angeltypes ? buttons(array(
-          button(page_link_to('angeltypes') . '&action=edit', _("New angeltype"), 'add') 
-      )) : '',
+      buttons(array(
+          $admin_angeltypes ? button(page_link_to('angeltypes') . '&action=edit', _("New angeltype"), 'add') : '',
+          button(page_link_to('angeltypes') . '&action=about', _("Teams/Job description")) 
+      )),
       table(array(
           'name' => _("Name"),
           'restricted' => '<img src="pic/icons/lock.png" alt="' . _("Restricted") . '" title="' . _("Restricted") . '" />',
@@ -117,13 +118,30 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes) {
   ));
 }
 
-function AngelTypes_about_view($angeltypes) {
+function AngelTypes_about_view($angeltypes, $user_logged_in) {
+  global $faq_url;
+  
   $content = array(
-      '<p>' . _("Here is the list of teams and their tasks:") . '</p>' 
+      buttons(array(
+          ! $user_logged_in ? button(page_link_to('register'), register_title()) : '',
+          ! $user_logged_in ? button(page_link_to('login'), login_title()) : '',
+          button($faq_url, _("FAQ")) 
+      )),
+      '<p>' . _("Here is the list of teams and their tasks. If you have questions, read the FAQ.") . '</p>' 
   );
   $parsedown = new Parsedown();
   foreach ($angeltypes as $angeltype) {
     $content[] = '<h2>' . $angeltype['name'] . '</h2>';
+    
+    if (isset($angeltype['user_angeltype_id'])) {
+      $buttons = array();
+      if ($angeltype['user_angeltype_id'] != null)
+        $buttons[] = button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $angeltype['user_angeltype_id'], _("leave"), 'cancel');
+      else
+        $buttons[] = button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], _("join"), 'add');
+      $content[] = buttons($buttons);
+    }
+    
     if ($angeltype['restricted'])
       $content[] = info(_("This angeltype is restricted by double-opt-in by a team coordinator. Please show up at the according introduction meetings."), true);
     $content[] = $parsedown->parse($angeltype['description']);

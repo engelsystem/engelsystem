@@ -210,16 +210,25 @@ function guest_login() {
   
   return page(array(
       msg(),
-      _("Resistance is futile! Your biological and physical parameters will be added to our collectiv! Assimilating angel:"),
       form(array(
           form_text('nick', _("Nick"), $nick),
           form_password('password', _("Password")),
-          form_submit('submit', _("Login")) 
+          form_info("", buttons(array(
+              button(page_link_to('user_password_recovery'), _("I forgot my password")) 
+          ))),
+          form_submit('submit', _("Login")),
+          info(_("Please note: You have to activate cookies!"), true) 
       )),
+      '<h2>' . register_title() . '</h2>',
+      '<p>' . _("Please sign up, if you want to help us!") . '</p>',
       buttons(array(
-          button(page_link_to('user_password_recovery'), _("I forgot my password")) 
+          button(page_link_to('register'), register_title() . ' &raquo;') 
       )),
-      info(_("Please note: You have to activate cookies!"), true) 
+      '<h2>' . _("What can I do?") . '</h2>',
+      '<p>' . _("Please read about the jobs you can do to help us.") . '</p>',
+      buttons(array(
+          button(page_link_to('angeltypes') . '&action=about', _("Teams/Job description") . ' &raquo;') 
+      )) 
   ));
 }
 ?>
