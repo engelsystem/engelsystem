@@ -49,15 +49,15 @@ function user_password_recovery_controller() {
             engelsystem_error("Unable to load user.");
           if ($user_source == null) {
             $ok = false;
-            $msg .= error(_("E-mail address is not correct."), true);
+            error(_("E-mail address is not correct."));
           }
         } else {
           $ok = false;
-          $msg .= error(_("E-mail address is not correct."), true);
+          error(_("E-mail address is not correct."));
         }
       } else {
         $ok = false;
-        $msg .= error(_("Please enter your e-mail."), true);
+        error(_("Please enter your e-mail."));
       }
       
       if ($ok) {

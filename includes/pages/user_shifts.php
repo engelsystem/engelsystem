@@ -298,6 +298,11 @@ function view_user_shifts() {
   $days = sql_select_single_col("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` FROM `Shifts` ORDER BY `start`");
   $rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
   
+  if (count($rooms) == 0) {
+    error(_("The administration has not configured any rooms yet."));
+    redirect('?');
+  }
+  
   if (in_array('user_shifts_admin', $privileges))
     $types = sql_select("SELECT `id`, `name` FROM `AngelTypes` ORDER BY `AngelTypes`.`name`");
   else
@@ -314,6 +319,11 @@ function view_user_shifts() {
           'name' => _('free') 
       ) 
   );
+  
+  if (count($types) == 0) {
+    error(_("The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype."));
+    redirect('?');
+  }
   
   if (! isset($_SESSION['user_shifts']))
     $_SESSION['user_shifts'] = array();
