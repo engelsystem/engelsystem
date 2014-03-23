@@ -3,16 +3,8 @@ body {
 	color: #bbb;
 }
 
-header {
-  background-image: url('../pic/header_30c3.png');
-}
-
 details,.news_comment details, .news details {
 	background-color: #333;
-}
-
-#logo {
-	background-image: url('../pic/engelsystem_logo_30c3.png');
 }
 
 a {

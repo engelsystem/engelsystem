@@ -4,8 +4,7 @@
  * Liste der verfügbaren Themes
  */
 $themes = array(
-    "1" => "30C3 light",
-    "2" => "30C3 dark"
+    "1" => "EH14 light"
 );
 
 /**

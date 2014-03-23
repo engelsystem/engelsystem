@@ -63,14 +63,14 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
     $member['Nick'] = User_Nick_render($member);
     if ($angeltype['restricted'] && $member['confirm_user_id'] == null) {
       $member['actions'] = join(" ", array(
-          '<a href="' . page_link_to('user_angeltypes') . '&action=confirm&user_angeltype_id=' . $member['user_angeltype_id'] . '" class="ok">' . ("confirm") . '</a>',
-          '<a href="' . page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'] . '" class="cancel">' . ("deny") . '</a>' 
+          '<a href="' . page_link_to('user_angeltypes') . '&action=confirm&user_angeltype_id=' . $member['user_angeltype_id'] . '" class="ok">' . _("confirm") . '</a>',
+          '<a href="' . page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'] . '" class="cancel">' . _("deny") . '</a>' 
       ));
       $members_unconfirmed[] = $member;
     } else {
       if ($admin_user_angeltypes)
         $member['actions'] = join(" ", array(
-            '<a href="' . page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'] . '" class="cancel">' . ("remove") . '</a>' 
+            '<a href="' . page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'] . '" class="cancel">' . _("remove") . '</a>' 
         ));
       $members_confirmed[] = $member;
     }
