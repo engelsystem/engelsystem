@@ -4,7 +4,7 @@
  * Liste der verfügbaren Themes
  */
 $themes = array(
-    "1" => "EH14 light"
+    "1" => "Engelsystem default"
 );
 
 /**
