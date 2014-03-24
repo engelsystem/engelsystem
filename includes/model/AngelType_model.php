@@ -41,7 +41,7 @@ function AngelType_create($name, $restricted, $description) {
   $result = sql_query("
       INSERT INTO `AngelTypes` SET 
       `name`='" . sql_escape($name) . "', 
-      `restricted`=" . sql_escape($restricted ? 1 : 0) . "
+      `restricted`=" . sql_escape($restricted ? 1 : 0) . ",
       `description`='" . sql_escape($description) . "'");
   if ($result === false)
     return false;
