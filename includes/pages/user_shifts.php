@@ -296,6 +296,12 @@ function view_user_shifts() {
   
   $ical_shifts = array();
   $days = sql_select_single_col("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` FROM `Shifts` ORDER BY `start`");
+  
+  if (count($days) == 0) {
+    error(_("The administration has not configured any shifts yet."));
+    redirect('?');
+  }
+  
   $rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
   
   if (count($rooms) == 0) {
