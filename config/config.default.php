@@ -32,11 +32,6 @@ $max_freeloadable_shifts = 2;
 // local timezone
 date_default_timezone_set("Europe/Berlin");
 
-// Pentabarf ConferenzDI für UpdateDB
-$PentabarfXMLhost = "cccv.pentabarf.org";
-$PentabarfXMLpath = "Xcal/conference/";
-$PentabarfXMLEventID = "31";
-
 // multiply "night shifts" and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
 $shift_sum_formula = "SUM(
   (1+(

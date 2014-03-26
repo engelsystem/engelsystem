@@ -4,13 +4,13 @@
  * Liste der verfügbaren Themes
  */
 $themes = array(
-    "1" => "Engelsystem default"
+    "1" => "Engelsystem default" 
 );
 
 /**
  * Render a toolbar.
  *
- * @param array $items
+ * @param array $items          
  * @return string
  */
 function toolbar($items = array()) {
@@ -19,10 +19,11 @@ function toolbar($items = array()) {
 
 /**
  * Render a link for a toolbar.
- * @param string $href
- * @param string $class
- * @param string $label
- * @param bool $selected
+ *
+ * @param string $href          
+ * @param string $class          
+ * @param string $label          
+ * @param bool $selected          
  * @return string
  */
 function toolbar_item_link($href, $class, $label, $selected = false) {
@@ -116,6 +117,13 @@ function form_text($name, $label, $value, $disabled = false) {
 }
 
 /**
+ * Rendert ein Formular-Dateifeld
+ */
+function form_file($name, $label) {
+  return form_element($label, '<input id="form_' . $name . '" type="file" name="' . $name . '" />', 'form_' . $name);
+}
+
+/**
  * Rendert ein Formular-Passwortfeld
  */
 function form_password($name, $label, $disabled = false) {
@@ -163,7 +171,21 @@ function page($elements) {
 /**
  * Rendert eine Datentabelle
  */
-function table($columns, $rows, $data = true) {
+function table($columns, $rows_raw, $data = true) {
+  // If only one column is given
+  if (! is_array($columns)) {
+    $columns = array(
+        'col' => $columns 
+    );
+    
+    $rows = array();
+    foreach ($rows_raw as $row)
+      $rows[] = array(
+          'col' => $row 
+      );
+  } else
+    $rows = $rows_raw;
+  
   if (count($rows) == 0)
     return info(_("No data found."), true);
   $html = "";
@@ -240,7 +262,7 @@ function html_options($name, $options, $selected = "") {
   $html = "";
   foreach ($options as $value => $label)
     $html .= '<input type="radio"' . ($value == $selected ? ' checked="checked"' : '') . ' name="' . $name . '" value="' . $value . '"> ' . $label;
-
+  
   return $html;
 }
 
@@ -282,7 +304,7 @@ function ReplaceSmilies($neueckig) {
   $neueckig = str_replace(";P", "<img src=\"pic/smiles/icon_mad.gif\">", $neueckig);
   $neueckig = str_replace(";oP", "<img src=\"pic/smiles/icon_mad.gif\">", $neueckig);
   $neueckig = str_replace("?)", "<img src=\"pic/smiles/icon_question.gif\">", $neueckig);
-
+  
   return $neueckig;
 }
 ?>
