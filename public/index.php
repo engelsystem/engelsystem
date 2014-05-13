@@ -78,7 +78,7 @@ $free_pages = array(
     'user_password_recovery',
     'api',
     'credits',
-    'angeltypes'
+    'angeltypes' 
 );
 
 // Gewünschte Seite/Funktion
@@ -232,6 +232,8 @@ if (isset($user)) {
     // Erzengel Hinweis für unbeantwortete Fragen
   if ($p != "admin_questions")
     $content = admin_new_questions() . $content;
+  
+  $content = user_angeltypes_unconfirmed_hint() . $content;
 }
 
 echo template_render('../templates/layout.html', array(

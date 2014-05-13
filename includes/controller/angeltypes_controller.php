@@ -85,9 +85,6 @@ function angeltype_delete_controller() {
 function angeltype_edit_controller() {
   global $privileges, $user;
   
-  if (! in_array('admin_angel_types', $privileges))
-    redirect(page_link_to('angeltypes'));
-  
   $name = "";
   $restricted = false;
   $description = "";
@@ -102,20 +99,31 @@ function angeltype_edit_controller() {
     $name = $angeltype['name'];
     $restricted = $angeltype['restricted'];
     $description = $angeltype['description'];
+    
+    if (! User_is_AngelType_coordinator($user, $angeltype))
+      redirect(page_link_to('angeltypes'));
+  } else {
+    if (! in_array('admin_angel_types', $privileges))
+      redirect(page_link_to('angeltypes'));
   }
+  
+  // In coordinator mode only allow to modify description
+  $coordinator_mode = ! in_array('admin_angel_types', $privileges);
   
   if (isset($_REQUEST['submit'])) {
     $ok = true;
     
-    if (isset($_REQUEST['name'])) {
-      list($valid, $name) = AngelType_validate_name($_REQUEST['name'], $angeltype);
-      if (! $valid) {
-        $ok = false;
-        error(_("Please check the name. Maybe it already exists."));
+    if (! $coordinator_mode) {
+      if (isset($_REQUEST['name'])) {
+        list($valid, $name) = AngelType_validate_name($_REQUEST['name'], $angeltype);
+        if (! $valid) {
+          $ok = false;
+          error(_("Please check the name. Maybe it already exists."));
+        }
       }
+      
+      $restricted = isset($_REQUEST['restricted']);
     }
-    
-    $restricted = isset($_REQUEST['restricted']);
     
     if (isset($_REQUEST['description']))
       $description = strip_request_item_nl('description');
@@ -142,7 +150,7 @@ function angeltype_edit_controller() {
   
   return array(
       isset($angeltype) ? sprintf(_("Edit %s"), $name) : _("Add new angeltype"),
-      AngelType_edit_view($name, $restricted, $description) 
+      AngelType_edit_view($name, $restricted, $description, $coordinator_mode) 
   );
 }
 
@@ -174,7 +182,7 @@ function angeltype_controller() {
   
   return array(
       sprintf(_("Team %s"), $angeltype['name']),
-      AngelType_view($angeltype, $members, $user_angeltype, in_array('admin_user_angeltypes', $privileges) || $user_angeltype['coordinator'], in_array('admin_angel_types', $privileges)) 
+      AngelType_view($angeltype, $members, $user_angeltype, in_array('admin_user_angeltypes', $privileges) || $user_angeltype['coordinator'], in_array('admin_angel_types', $privileges), $user_angeltype['coordinator']) 
   );
 }
 

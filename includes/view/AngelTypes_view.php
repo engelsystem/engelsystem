@@ -40,15 +40,15 @@ function AngelType_delete_view($angeltype) {
   ));
 }
 
-function AngelType_edit_view($name, $restricted, $description) {
+function AngelType_edit_view($name, $restricted, $description, $coordinator_mode) {
   return page(array(
       buttons(array(
           button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
       )),
       msg(),
       form(array(
-          form_text('name', _("Name"), $name),
-          form_checkbox('restricted', _("Restricted"), $restricted),
+          $coordinator_mode ? form_info(_("Name"), $name) : form_text('name', _("Name"), $name),
+          $coordinator_mode ? form_info(_("Restricted"), $restricted ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $restricted),
           form_info("", _("Restricted angel types can only be used by an angel if enabled by an archangel (double opt-in).")),
           form_textarea('description', _("Description"), $description),
           form_info("", _("Please use markdown for the description.")),
@@ -57,7 +57,7 @@ function AngelType_edit_view($name, $restricted, $description) {
   ));
 }
 
-function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angeltypes, $admin_angeltypes) {
+function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angeltypes, $admin_angeltypes, $coordinator) {
   $buttons = array(
       button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
   );
@@ -70,10 +70,10 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
     $buttons[] = button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $user_angeltype['id'], _("leave"), 'cancel');
   }
   
-  if ($admin_angeltypes) {
+  if ($admin_angeltypes || $coordinator)
     $buttons[] = button(page_link_to('angeltypes') . '&action=edit&angeltype_id=' . $angeltype['id'], _("edit"), 'edit');
+  if ($admin_angeltypes)
     $buttons[] = button(page_link_to('angeltypes') . '&action=delete&angeltype_id=' . $angeltype['id'], _("delete"), 'delete');
-  }
   
   $page = array(
       msg(),
@@ -175,7 +175,7 @@ function AngelTypes_about_view($angeltypes, $user_logged_in) {
       buttons(array(
           ! $user_logged_in ? button(page_link_to('register'), register_title()) : '',
           ! $user_logged_in ? button(page_link_to('login'), login_title()) : '',
-          $user_logged_in ? button(page_link_to('angeltypes'), '&laquo; ' . angeltypes_title()) : 'back',
+          $user_logged_in ? button(page_link_to('angeltypes'), angeltypes_title(), 'back') : '',
           button($faq_url, _("FAQ")) 
       )),
       '<p>' . _("Here is the list of teams and their tasks. If you have questions, read the FAQ.") . '</p>' 

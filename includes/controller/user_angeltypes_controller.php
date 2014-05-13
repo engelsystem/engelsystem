@@ -1,6 +1,21 @@
 <?php
 
 /**
+ * Display a hint for team/angeltype coordinators if there are unconfirmed users for his angeltype.
+ */
+function user_angeltypes_unconfirmed_hint() {
+  global $user;
+  $unconfirmed_user_angeltypes = User_unconfirmed_AngelTypes($user);
+  if ($unconfirmed_user_angeltypes === false)
+    engelsystem_error("Unable to load user angeltypes.");
+  if (count($unconfirmed_user_angeltypes) == 0)
+    return '';
+  if ($_REQUEST['p'] == 'angeltypes' && $_REQUEST['action'] == 'view' && $_REQUEST['angeltype_id'] == $unconfirmed_user_angeltypes[0]['angeltype_id'])
+    return '';
+  return error(sprintf(ngettext("There is %d unconfirmed angeltype.", "There are %d unconfirmed angeltypes.", count($unconfirmed_user_angeltypes)), count($unconfirmed_user_angeltypes)) . " " . sprintf(_("The first wants to join %s."), '<a href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $unconfirmed_user_angeltypes[0]['angeltype_id'] . '">' . $unconfirmed_user_angeltypes[0]['name'] . '</a>'), true);
+}
+
+/**
  * Remove all unconfirmed users from a specific angeltype.
  */
 function user_angeltypes_delete_all_controller() {
@@ -263,7 +278,7 @@ function user_angeltype_update_controller() {
   
   return array(
       $coordinator ? _("Add coordinator rights") : _("Remove coordinator rights"),
-      UserAngelType_update_view($user_angeltype, $user, $angeltype, $coordinator) 
+      UserAngelType_update_view($user_angeltype, $user_source, $angeltype, $coordinator) 
   );
 }
 
