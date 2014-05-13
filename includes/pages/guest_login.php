@@ -131,7 +131,7 @@ function guest_register() {
       engelsystem_log("User " . $nick . " signed up as: " . join(", ", $user_angel_types_info));
       success(_("Angel registration successful!"));
       
-      redirect(page_link_to('login'));
+      redirect('?');
     }
   }
   

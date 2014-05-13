@@ -362,7 +362,7 @@ tr:hover .hidden {
 	padding-right: 5px;
 }
 
-a.button {
+a.button, input.button, input[type=submit] {
 	background: #f0f0f0 2px 2px no-repeat;
 	border: 1px solid #888;
 	border-radius: 4px;
@@ -370,6 +370,10 @@ a.button {
 	padding: 2px 5px;
 	text-decoration: none;
 	white-space: nowrap;
+}
+
+input.button {
+	background-position: 2px 4px;
 }
 
 .button.on {

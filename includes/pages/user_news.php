@@ -138,7 +138,7 @@ function user_news() {
         "', '" . sql_escape($_POST["treffen"]) . "');");
     engelsystem_log("Created news: " . $_POST["betreff"] . ", treffen: " . $_POST["treffen"]);
     success(_("Entry saved."));
-    redirect(page_link_to('user_news'));
+    redirect(page_link_to('news'));
   }
 
   if (isset ($_REQUEST['page']) && preg_match("/^[0-9]{1,}$/", $_REQUEST['page']))
