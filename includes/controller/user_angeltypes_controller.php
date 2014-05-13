@@ -263,31 +263,20 @@ function user_angeltypes_controller() {
   
   switch ($_REQUEST['action']) {
     case 'delete_all':
-      list($title, $content) = user_angeltypes_delete_all_controller();
-      break;
+      return user_angeltypes_delete_all_controller();
     case 'confirm_all':
-      list($title, $content) = user_angeltypes_confirm_all_controller();
-      break;
+      return user_angeltypes_confirm_all_controller();
     case 'confirm':
-      list($title, $content) = user_angeltype_confirm_controller();
-      break;
+      return user_angeltype_confirm_controller();
     case 'delete':
-      list($title, $content) = user_angeltype_delete_controller();
-      break;
+      return user_angeltype_delete_controller();
     case 'update':
-      list($title, $content) = user_angeltype_update_controller();
-      break;
+      return user_angeltype_update_controller();
     case 'add':
-      list($title, $content) = user_angeltype_add_controller();
-      break;
+      return user_angeltype_add_controller();
     default:
       redirect(page_link_to('angeltypes'));
   }
-  
-  return array(
-      $title,
-      $content 
-  );
 }
 
 ?>

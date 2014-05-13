@@ -13,29 +13,20 @@ function angeltypes_title() {
 function angeltypes_controller() {
   if (! isset($_REQUEST['action']))
     $_REQUEST['action'] = 'list';
+  
   switch ($_REQUEST['action']) {
     default:
     case 'list':
-      list($title, $content) = angeltypes_list_controller();
-      break;
+      return angeltypes_list_controller();
     case 'view':
-      list($title, $content) = angeltype_controller();
-      break;
+      return angeltype_controller();
     case 'edit':
-      list($title, $content) = angeltype_edit_controller();
-      break;
+      return angeltype_edit_controller();
     case 'delete':
-      list($title, $content) = angeltype_delete_controller();
-      break;
+      return angeltype_delete_controller();
     case 'about':
-      list($title, $content) = angeltypes_about_controller();
-      break;
+      return angeltypes_about_controller();
   }
-  
-  return array(
-      $title,
-      $content 
-  );
 }
 
 /**
