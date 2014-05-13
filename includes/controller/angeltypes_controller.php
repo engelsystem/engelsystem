@@ -174,7 +174,7 @@ function angeltype_controller() {
   
   return array(
       sprintf(_("Team %s"), $angeltype['name']),
-      AngelType_view($angeltype, $members, $user_angeltype, in_array('admin_user_angeltypes', $privileges), in_array('admin_angel_types', $privileges)) 
+      AngelType_view($angeltype, $members, $user_angeltype, in_array('admin_user_angeltypes', $privileges) || $user_angeltype['coordinator'], in_array('admin_angel_types', $privileges)) 
   );
 }
 
@@ -201,18 +201,10 @@ function angeltypes_list_controller() {
       $actions[] = '<a class="delete" href="' . page_link_to('angeltypes') . '&action=delete&angeltype_id=' . $angeltype['id'] . '">' . _("delete") . '</a>';
     }
     
-    $angeltype['membership'] = "";
+    $angeltype['membership'] = AngelType_render_membership($angeltype);
     if ($angeltype['user_angeltype_id'] != null) {
-      if ($angeltype['restricted']) {
-        if ($angeltype['confirm_user_id'] == null)
-          $angeltype['membership'] = '<img src="pic/icons/lock.png" alt="' . _("Unconfirmed") . '" title="' . _("Unconfirmed") . '"> ' . _("Unconfirmed");
-        else
-          $angeltype['membership'] = '<img src="pic/icons/tick.png" alt="' . _("Member") . '" title="' . _("Member") . '"> ' . _("Member");
-      } else
-        $angeltype['membership'] = '<img src="pic/icons/tick.png" alt="' . _("Member") . '" title="' . _("Member") . '"> ' . _("Member");
       $actions[] = '<a class="cancel" href="' . page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $angeltype['user_angeltype_id'] . '">' . _("leave") . '</a>';
     } else {
-      $angeltype['membership'] = '<img src="pic/icons/cross.png" alt="" title="">';
       $actions[] = '<a class="add" href="' . page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'] . '">' . _("join") . '</a>';
     }
     

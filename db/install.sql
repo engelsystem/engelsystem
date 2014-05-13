@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 09. Mrz 2014 um 13:11
+-- Erstellungszeit: 13. Mai 2014 um 15:50
 -- Server Version: 5.6.12
 -- PHP-Version: 5.5.3
 
@@ -14,8 +14,6 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `engelsystem`
 --
-CREATE DATABASE IF NOT EXISTS `engelsystem` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `engelsystem`;
 
 -- --------------------------------------------------------
 
@@ -23,7 +21,6 @@ USE `engelsystem`;
 -- Tabellenstruktur für Tabelle `AngelTypes`
 --
 
-DROP TABLE IF EXISTS `AngelTypes`;
 CREATE TABLE IF NOT EXISTS `AngelTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(25) NOT NULL DEFAULT '',
@@ -31,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `AngelTypes` (
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Daten für Tabelle `AngelTypes`
@@ -46,27 +43,11 @@ INSERT INTO `AngelTypes` (`id`, `name`, `restricted`, `description`) VALUES
 -- Tabellenstruktur für Tabelle `Counter`
 --
 
-DROP TABLE IF EXISTS `Counter`;
 CREATE TABLE IF NOT EXISTS `Counter` (
   `URL` varchar(255) NOT NULL DEFAULT '',
   `Anz` bigint(20) NOT NULL DEFAULT '0',
   PRIMARY KEY (`URL`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Counter der Seiten';
-
---
--- Daten für Tabelle `Counter`
---
-
-INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('admin_user', 2),
-('angeltypes', 33),
-('login', 11),
-('news', 6),
-('register', 1),
-('user_angeltypes', 2),
-('user_meetings', 1),
-('user_myshifts', 2),
-('user_settings', 7);
 
 -- --------------------------------------------------------
 
@@ -74,7 +55,6 @@ INSERT INTO `Counter` (`URL`, `Anz`) VALUES
 -- Tabellenstruktur für Tabelle `GroupPrivileges`
 --
 
-DROP TABLE IF EXISTS `GroupPrivileges`;
 CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
@@ -138,7 +118,6 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 -- Tabellenstruktur für Tabelle `Groups`
 --
 
-DROP TABLE IF EXISTS `Groups`;
 CREATE TABLE IF NOT EXISTS `Groups` (
   `Name` varchar(35) NOT NULL,
   `UID` int(11) NOT NULL,
@@ -163,7 +142,6 @@ INSERT INTO `Groups` (`Name`, `UID`) VALUES
 -- Tabellenstruktur für Tabelle `LogEntries`
 --
 
-DROP TABLE IF EXISTS `LogEntries`;
 CREATE TABLE IF NOT EXISTS `LogEntries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` int(11) NOT NULL,
@@ -171,19 +149,7 @@ CREATE TABLE IF NOT EXISTS `LogEntries` (
   `message` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `timestamp` (`timestamp`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
-
---
--- Daten für Tabelle `LogEntries`
---
-
-INSERT INTO `LogEntries` (`id`, `timestamp`, `nick`, `message`) VALUES
-(1, 1390991375, 'admin', 'Created angeltype: testengel, restricted: 0'),
-(2, 1390991407, 'admin', 'User <a href="?p=user_myshifts&amp;id=1">admin</a> joined testengel.'),
-(3, 1390991407, 'admin', 'User <a href="?p=user_myshifts&amp;id=1">admin</a> confirmed as testengel.'),
-(4, 1394366820, 'admin', 'Updated angeltype: testengel, restricted: 0'),
-(5, 1394366908, 'admin', 'Updated angeltype: testengel, restricted: 0'),
-(6, 1394367023, 'admin', 'Own angel types set to: testengel');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -191,7 +157,6 @@ INSERT INTO `LogEntries` (`id`, `timestamp`, `nick`, `message`) VALUES
 -- Tabellenstruktur für Tabelle `Messages`
 --
 
-DROP TABLE IF EXISTS `Messages`;
 CREATE TABLE IF NOT EXISTS `Messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `Datum` int(11) NOT NULL,
@@ -211,7 +176,6 @@ CREATE TABLE IF NOT EXISTS `Messages` (
 -- Tabellenstruktur für Tabelle `NeededAngelTypes`
 --
 
-DROP TABLE IF EXISTS `NeededAngelTypes`;
 CREATE TABLE IF NOT EXISTS `NeededAngelTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `room_id` int(11) DEFAULT NULL,
@@ -230,7 +194,6 @@ CREATE TABLE IF NOT EXISTS `NeededAngelTypes` (
 -- Tabellenstruktur für Tabelle `News`
 --
 
-DROP TABLE IF EXISTS `News`;
 CREATE TABLE IF NOT EXISTS `News` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Datum` int(11) NOT NULL,
@@ -240,7 +203,7 @@ CREATE TABLE IF NOT EXISTS `News` (
   `Treffen` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   KEY `UID` (`UID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -248,7 +211,6 @@ CREATE TABLE IF NOT EXISTS `News` (
 -- Tabellenstruktur für Tabelle `NewsComments`
 --
 
-DROP TABLE IF EXISTS `NewsComments`;
 CREATE TABLE IF NOT EXISTS `NewsComments` (
   `ID` bigint(11) NOT NULL AUTO_INCREMENT,
   `Refid` int(11) NOT NULL DEFAULT '0',
@@ -266,7 +228,6 @@ CREATE TABLE IF NOT EXISTS `NewsComments` (
 -- Tabellenstruktur für Tabelle `Privileges`
 --
 
-DROP TABLE IF EXISTS `Privileges`;
 CREATE TABLE IF NOT EXISTS `Privileges` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
@@ -323,7 +284,6 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 -- Tabellenstruktur für Tabelle `Questions`
 --
 
-DROP TABLE IF EXISTS `Questions`;
 CREATE TABLE IF NOT EXISTS `Questions` (
   `QID` bigint(20) NOT NULL AUTO_INCREMENT,
   `UID` int(11) NOT NULL DEFAULT '0',
@@ -341,7 +301,6 @@ CREATE TABLE IF NOT EXISTS `Questions` (
 -- Tabellenstruktur für Tabelle `Room`
 --
 
-DROP TABLE IF EXISTS `Room`;
 CREATE TABLE IF NOT EXISTS `Room` (
   `RID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(35) NOT NULL DEFAULT '',
@@ -359,7 +318,6 @@ CREATE TABLE IF NOT EXISTS `Room` (
 -- Tabellenstruktur für Tabelle `ShiftEntry`
 --
 
-DROP TABLE IF EXISTS `ShiftEntry`;
 CREATE TABLE IF NOT EXISTS `ShiftEntry` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `SID` int(11) NOT NULL DEFAULT '0',
@@ -381,7 +339,6 @@ CREATE TABLE IF NOT EXISTS `ShiftEntry` (
 -- Tabellenstruktur für Tabelle `Shifts`
 --
 
-DROP TABLE IF EXISTS `Shifts`;
 CREATE TABLE IF NOT EXISTS `Shifts` (
   `SID` int(11) NOT NULL AUTO_INCREMENT,
   `start` int(11) NOT NULL,
@@ -401,7 +358,6 @@ CREATE TABLE IF NOT EXISTS `Shifts` (
 -- Tabellenstruktur für Tabelle `User`
 --
 
-DROP TABLE IF EXISTS `User`;
 CREATE TABLE IF NOT EXISTS `User` (
   `UID` int(11) NOT NULL AUTO_INCREMENT,
   `Nick` varchar(23) NOT NULL DEFAULT '',
@@ -436,14 +392,14 @@ CREATE TABLE IF NOT EXISTS `User` (
   KEY `api_key` (`api_key`),
   KEY `password_recovery_token` (`password_recovery_token`),
   KEY `force_active` (`force_active`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Daten für Tabelle `User`
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `ICQ`, `jabber`, `Size`, `Passwort`, `password_recovery_token`, `Gekommen`, `Aktiv`, `force_active`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', '', '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 0, 1, 0, 1, 'de_DE.UTF-8', 115, 'L', 1394367023, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235');
+(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', '', '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 0, 1, 0, 1, 'de_DE.UTF-8', 115, 'L', 1399988887, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235');
 
 -- --------------------------------------------------------
 
@@ -451,24 +407,18 @@ INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`
 -- Tabellenstruktur für Tabelle `UserAngelTypes`
 --
 
-DROP TABLE IF EXISTS `UserAngelTypes`;
 CREATE TABLE IF NOT EXISTS `UserAngelTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `angeltype_id` int(11) NOT NULL,
   `confirm_user_id` int(11) DEFAULT NULL,
+  `coordinator` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`,`angeltype_id`,`confirm_user_id`),
   KEY `angeltype_id` (`angeltype_id`),
-  KEY `confirm_user_id` (`confirm_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Daten für Tabelle `UserAngelTypes`
---
-
-INSERT INTO `UserAngelTypes` (`id`, `user_id`, `angeltype_id`, `confirm_user_id`) VALUES
-(1, 1, 1, 1);
+  KEY `confirm_user_id` (`confirm_user_id`),
+  KEY `coordinator` (`coordinator`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 -- --------------------------------------------------------
 
@@ -476,7 +426,6 @@ INSERT INTO `UserAngelTypes` (`id`, `user_id`, `angeltype_id`, `confirm_user_id`
 -- Tabellenstruktur für Tabelle `UserGroups`
 --
 
-DROP TABLE IF EXISTS `UserGroups`;
 CREATE TABLE IF NOT EXISTS `UserGroups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL,
@@ -484,7 +433,7 @@ CREATE TABLE IF NOT EXISTS `UserGroups` (
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`,`group_id`),
   KEY `group_id` (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Daten für Tabelle `UserGroups`

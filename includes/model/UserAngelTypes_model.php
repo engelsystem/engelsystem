@@ -1,9 +1,42 @@
 <?php
+/**
+ * User angeltypes model
+ */
+
+/**
+ * Returns true if user is angeltype coordinator or has privilege admin_user_angeltypes.
+ *
+ * @param User $user          
+ * @param AngelType $angeltype          
+ */
+function User_is_AngelType_coordinator($user, $angeltype) {
+  return (sql_num_query("
+      SELECT `id` 
+      FROM `UserAngelTypes` 
+      WHERE `user_id`=" . sql_escape($user['UID']) . "
+      AND `angeltype_id`=" . sql_escape($angeltype['id']) . "
+      AND `coordinator`=TRUE
+      LIMIT 1") > 0) || in_array('admin_user_angeltypes', privileges_for_user($user['UID']));
+}
+
+/**
+ * Add or remove coordinator rights.
+ *
+ * @param int $user_angeltype_id          
+ * @param bool $coordinator          
+ */
+function UserAngelType_update($user_angeltype_id, $coordinator) {
+  return sql_query("
+      UPDATE `UserAngelTypes`
+      SET `coordinator`=" . ($coordinator ? 'TRUE' : 'FALSE') . "
+      WHERE `id`=" . sql_escape($user_angeltype_id) . "
+      LIMIT 1");
+}
 
 /**
  * Delete all unconfirmed UserAngelTypes for given Angeltype.
- * 
- * @param int $angeltype_id
+ *
+ * @param int $angeltype_id          
  */
 function UserAngelTypes_delete_all($angeltype_id) {
   return sql_query("

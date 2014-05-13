@@ -1,4 +1,34 @@
 <?php
+/**
+ * AngelTypes
+ */
+
+/**
+ * Render angeltype membership state
+ *
+ * @param UserAngelType $user_angeltype
+ *          UserAngelType and AngelType
+ * @return string
+ */
+function AngelType_render_membership($user_angeltype) {
+  $membership = "";
+  if ($user_angeltype['user_angeltype_id'] != null) {
+    if ($user_angeltype['restricted']) {
+      if ($user_angeltype['confirm_user_id'] == null)
+        $membership = '<img src="pic/icons/lock.png" alt="' . _("Unconfirmed") . '" title="' . _("Unconfirmed") . '"> ' . _("Unconfirmed");
+      elseif ($user_angeltype['coordinator'])
+        $membership = '<img src="pic/icons/tick.png" alt="' . _("Coordinator") . '" title="' . _("Coordinator") . '"> ' . _("Coordinator");
+      else
+        $membership = '<img src="pic/icons/tick.png" alt="' . _("Member") . '" title="' . _("Member") . '"> ' . _("Member");
+    } elseif ($user_angeltype['coordinator'])
+      $membership = '<img src="pic/icons/tick.png" alt="' . _("Coordinator") . '" title="' . _("Coordinator") . '"> ' . _("Coordinator");
+    else
+      $membership = '<img src="pic/icons/tick.png" alt="' . _("Member") . '" title="' . _("Member") . '"> ' . _("Member");
+  } else {
+    $membership = '<img src="pic/icons/cross.png" alt="" title="">';
+  }
+  return $membership;
+}
 
 function AngelType_delete_view($angeltype) {
   return page(array(
@@ -56,7 +86,7 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
   
   // Team-Coordinators list missing
   
-  $page[] = '<h3>' . _("Members") . '</h3>';
+  $coordinators = array();
   $members_confirmed = array();
   $members_unconfirmed = array();
   foreach ($members as $member) {
@@ -67,14 +97,34 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
           '<a href="' . page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'] . '" class="cancel">' . _("deny") . '</a>' 
       ));
       $members_unconfirmed[] = $member;
+    } elseif ($member['coordinator']) {
+      if ($admin_angeltypes)
+        $member['actions'] = '<a href="' . page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $member['user_angeltype_id'] . '&coordinator=0" class="cancel">' . _("Remove coordinator rights") . '</a>';
+      else
+        $member['actions'] = '';
+      $coordinators[] = $member;
     } else {
       if ($admin_user_angeltypes)
         $member['actions'] = join(" ", array(
+            $admin_angeltypes ? '<a href="' . page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $member['user_angeltype_id'] . '&coordinator=1" class="add">' . _("Add coordinator rights") . '</a>' : '',
             '<a href="' . page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'] . '" class="cancel">' . _("remove") . '</a>' 
         ));
       $members_confirmed[] = $member;
     }
   }
+  if (count($coordinators) > 0) {
+    $page[] = '<h3>' . _("Coordinators") . '</h3>';
+    $page[] = table(array(
+        'Nick' => _("Nick"),
+        'DECT' => _("DECT"),
+        'actions' => "" 
+    ), $coordinators);
+  }
+  $page[] = '<h3>' . _("Members") . '</h3>';
+  if ($admin_user_angeltypes)
+    $page[] = buttons(array(
+        button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], _("Add"), 'add') 
+    ));
   $page[] = table(array(
       'Nick' => _("Nick"),
       'DECT' => _("DECT"),

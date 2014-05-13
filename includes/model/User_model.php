@@ -1,12 +1,34 @@
 <?php
+/**
+ * User model
+ */
+
+/**
+ * Returns all users that are not member of given angeltype.
+ *
+ * @param Angeltype $angeltype          
+ */
+function Users_by_angeltype_inverted($angeltype) {
+  return sql_select("
+      SELECT `User`.* 
+      FROM `User` 
+      LEFT JOIN `UserAngelTypes` ON (`User`.`UID`=`UserAngelTypes`.`user_id` AND `angeltype_id`=" . sql_escape($angeltype['id']) . ")
+      WHERE `UserAngelTypes`.`id` IS NULL
+      ORDER BY `Nick`");
+}
 
 /**
  * Returns all members of given angeltype.
- * @param Angeltype $angeltype
+ *
+ * @param Angeltype $angeltype          
  */
 function Users_by_angeltype($angeltype) {
   return sql_select("
-      SELECT `User`.*, `UserAngelTypes`.`id` as `user_angeltype_id`, `UserAngelTypes`.`confirm_user_id`
+      SELECT 
+      `User`.*, 
+      `UserAngelTypes`.`id` as `user_angeltype_id`, 
+      `UserAngelTypes`.`confirm_user_id`,
+      `UserAngelTypes`.`coordinator`
       FROM `User`
       JOIN `UserAngelTypes` ON `User`.`UID`=`UserAngelTypes`.`user_id`
       WHERE `UserAngelTypes`.`angeltype_id`=" . sql_escape($angeltype['id']) . "
