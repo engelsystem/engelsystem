@@ -88,7 +88,7 @@ function guest_register() {
       }
     } else {
       $ok = false;
-      $msg .= error(_("Your password is to short (please use at least 6 characters)."), true);
+      $msg .= error(sprintf(_("Your password is too short (please use at least %s characters)."), MIN_PASSWORD_LENGTH), true);
     }
     
     $selected_angel_types = array();
