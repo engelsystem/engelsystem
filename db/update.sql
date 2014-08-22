@@ -1,3 +1,6 @@
+/* fix questions */
+ALTER TABLE `Questions` CHANGE `AID` `AID` INT( 11 ) NULL DEFAULT NULL ;
+
 /* teamcoordinators */
 ALTER TABLE `UserAngelTypes` ADD `coordinator` BOOLEAN NOT NULL;
 ALTER TABLE `UserAngelTypes` ADD INDEX ( `coordinator` );

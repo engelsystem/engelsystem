@@ -1,6 +1,6 @@
 <?php
 function UserAngelType_update_view($user_angeltype, $user, $angeltype, $coordinator) {
-  return page(array(
+  return page_with_title($coordinator ? _("Add coordinator rights") : _("Remove coordinator rights"), array(
       msg(),
       info(sprintf($coordinator ? _("Do you really want to add coordinator rights for %s to %s?") : _("Do you really want to remove coordinator rights for %s from %s?"), $angeltype['name'], User_Nick_render($user)), true),
       buttons(array(
@@ -11,7 +11,7 @@ function UserAngelType_update_view($user_angeltype, $user, $angeltype, $coordina
 }
 
 function UserAngelTypes_delete_all_view($angeltype) {
-  return page(array(
+  return page_with_title(_("Deny all users"), array(
       msg(),
       info(sprintf(_("Do you really want to deny all users for %s?"), $angeltype['name']), true),
       buttons(array(
@@ -22,7 +22,7 @@ function UserAngelTypes_delete_all_view($angeltype) {
 }
 
 function UserAngelTypes_confirm_all_view($angeltype) {
-  return page(array(
+  return page_with_title(_("Confirm all users"), array(
       msg(),
       info(sprintf(_("Do you really want to confirm all users for %s?"), $angeltype['name']), true),
       buttons(array(
@@ -33,7 +33,7 @@ function UserAngelTypes_confirm_all_view($angeltype) {
 }
 
 function UserAngelType_confirm_view($user_angeltype, $user, $angeltype) {
-  return page(array(
+  return page_with_title(_("Confirm angeltype for user"), array(
       msg(),
       info(sprintf(_("Do you really want to confirm %s for %s?"), User_Nick_render($user), $angeltype['name']), true),
       buttons(array(
@@ -44,7 +44,7 @@ function UserAngelType_confirm_view($user_angeltype, $user, $angeltype) {
 }
 
 function UserAngelType_delete_view($user_angeltype, $user, $angeltype) {
-  return page(array(
+  return page_with_title(_("Remove angeltype"), array(
       msg(),
       info(sprintf(_("Do you really want to delete %s from %s?"), User_Nick_render($user), $angeltype['name']), true),
       buttons(array(
@@ -59,7 +59,7 @@ function UserAngelType_add_view($angeltype, $users_source, $user_id) {
   foreach ($users_source as $user_source)
     $users[$user_source['UID']] = User_Nick_render($user_source);
   
-  return page(array(
+  return page_with_title(_("Add user to angeltype"), array(
       msg(),
       buttons(array(
           button(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'], _("back"), 'back') 
@@ -73,7 +73,7 @@ function UserAngelType_add_view($angeltype, $users_source, $user_id) {
 }
 
 function UserAngelType_join_view($user, $angeltype) {
-  return page(array(
+  return page_with_title(sprintf(_("Become a %s"), $angeltype['name']), array(
       msg(),
       info(sprintf(_("Do you really want to add %s to %s?"), User_Nick_render($user), $angeltype['name']), true),
       buttons(array(

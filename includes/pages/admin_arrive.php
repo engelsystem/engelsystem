@@ -15,18 +15,18 @@ function admin_arrive() {
     if ($user_source != null) {
       sql_query("UPDATE `User` SET `Gekommen`=0 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
       engelsystem_log("User set to not arrived: " . User_Nick_render($user_source));
-      $msg = success("Reset done. Angel has not arrived.", true);
+      $msg = success(_("Reset done. Angel has not arrived."), true);
     } else
-      $msg = error("Angel not found.", true);
+      $msg = error(_("Angel not found."), true);
   } elseif (isset($_REQUEST['arrived']) && preg_match("/^[0-9]*$/", $_REQUEST['arrived'])) {
     $id = $_REQUEST['arrived'];
     $user_source = User($id);
     if ($user_source != null) {
       sql_query("UPDATE `User` SET `Gekommen`=1 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
       engelsystem_log("User set has arrived: " . User_Nick_render($user_source));
-      $msg = success("Angel has been marked as arrived.", true);
+      $msg = success(_("Angel has been marked as arrived."), true);
     } else
-      $msg = error("Angel not found.", true);
+      $msg = error(_("Angel not found."), true);
   }
   
   $users = sql_select("SELECT * FROM `User` ORDER BY `Nick`");
@@ -60,7 +60,7 @@ function admin_arrive() {
     $table .= '</tr>';
     $users_matched[] = $usr;
   }
-  return page(array(
+  return page_with_title(admin_arrive_title(), array(
       msg(),
       form(array(
           form_text('search', _("Search"), $search),

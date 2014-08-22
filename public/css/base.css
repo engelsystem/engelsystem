@@ -9,23 +9,6 @@ body {
 	font-size: 14px;
 }
 
-header {
-	background: #f0f0f0;
-	border-bottom: 1px solid #000;
-	display: block;
-	padding: 5px;
-}
-
-header .toolbar {
-	position: absolute;
-	right: 17px;
-	top: 17px;
-}
-
-.toolbar a {
-	padding: 0 10px 0 0;
-}
-
 article,details {
 	clear: none;
 	display: block;
@@ -34,15 +17,6 @@ article,details {
 
 .small {
 	font-size: 12px;
-}
-
-#logo {
-	background: url('../pic/engelsystem_logo.png') top left no-repeat;
-	display: block;
-	float: left;
-	height: 42px;
-	margin: 0;
-	width: 202px;
 }
 
 #menu {

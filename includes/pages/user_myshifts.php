@@ -143,7 +143,7 @@ function user_myshifts() {
         'actions' => "" 
     );
   
-  return page(array(
+  return page_with_title(myshifts_title(), array(
       msg(),
       $id == $user['UID'] ? sprintf(_('These are your shifts.<br/>Please try to appear <b>15 minutes</b> before your shift begins!<br/>You can remove yourself from a shift up to %d hours before it starts.'), $LETZTES_AUSTRAGEN) : '',
       $id != $user['UID'] ? info(sprintf("You are viewing %s's shifts.", $shifts_user['Nick']), true) : '',

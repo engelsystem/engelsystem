@@ -162,7 +162,7 @@ function user_settings() {
     }
   }
   
-  return page(array(
+  return page_with_title(settings_title(), array(
       sprintf(_("Hello %s, here you can change your personal settings i.e. password, color settings etc."), User_Nick_render($user)),
       $msg,
       msg(),
@@ -180,7 +180,7 @@ function user_settings() {
           form_text('jabber', _("Jabber"), $jabber),
           form_text('hometown', _("Hometown"), $hometown),
           $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',
-          form_checkboxes('angel_types', _("What do you want to do?") . sprintf("<br>(<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
+          form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
           form_submit('submit', _("Save")) 
       )),
       form(array(

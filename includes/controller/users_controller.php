@@ -1,7 +1,53 @@
 <?php
 
 /**
- * User password recovery. (By email)
+ * Route user actions.
+ */
+function users_controller() {
+  global $privileges, $user;
+  
+  if (! isset($user))
+    redirect(page_link_to(''));
+  
+  if (! isset($_REQUEST['action']))
+    $_REQUEST['action'] = 'list';
+  
+  switch ($_REQUEST['action']) {
+    default:
+    case 'list':
+      return users_list_controller();
+    case 'view':
+      return user_controller();
+    case 'edit':
+      return user_edit_controller();
+    case 'delete':
+      return user_delete_controller();
+  }
+}
+
+function user_controller() {
+  global $privileges, $user;
+  
+  if (isset($_REQUEST['user_id'])) {
+    $user_source = User($_REQUEST['user_id']);
+  } else
+    $user_source = $user;
+  
+  $admin_user_privilege = in_array('admin_user', $privileges);
+  
+  return array(
+      $user_source['Nick'],
+      User_view($user_source) 
+  );
+}
+
+function users_list_controller() {
+  redirect(page_link_to('admin_user'));
+}
+
+/**
+ * User password recovery.
+ * (By email)
  */
 function user_password_recovery_controller() {
   if (isset($_REQUEST['token'])) {

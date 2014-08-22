@@ -137,7 +137,7 @@ function admin_active() {
       'count' => '<b>' . sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Tshirt`=1") . '</b>' 
   );
   
-  return page(array(
+  return page_with_title(admin_active_title(), array(
       form(array(
           form_text('search', _("Search angel:"), $search),
           form_submit('submit', _("Search")) 

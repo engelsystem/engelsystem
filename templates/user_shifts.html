@@ -1,30 +1,52 @@
 <script type="text/javascript">
-function set_to_now(id) {
-  var now = new Date();
-  document.getElementById(id + '_time').value = now.getHours() + ':' + now.getMinutes();
-  var days = document.getElementById(id + '_day').getElementsByTagName('option');
-  for(var i = 0; i < days.length; i++) {
-    if(days[i].value == (1900 + now.getYear()) + '-' + (1 + now.getMonth()) + '-' + now.getDate())
-      days[i].selected = true;
-  }
-}
+	function set_to_now(id) {
+		var now = new Date();
+		document.getElementById(id + '_time').value = now.getHours() + ':'
+				+ now.getMinutes();
+		var days = document.getElementById(id + '_day').getElementsByTagName(
+				'option');
+		for ( var i = 0; i < days.length; i++) {
+			if (days[i].value == (1900 + now.getYear()) + '-'
+					+ (1 + now.getMonth()) + '-' + now.getDate())
+				days[i].selected = true;
+		}
+	}
 </script>
-<form action="#shifts" method="get">
-<fieldset class="form" id="filter"><legend>%filter%</legend>
-<div>
-%start_select% <input type="time" id="start_time" name="start_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%"> <img src="pic/icons/clock.png" alt="Now" title="Now" style="cursor: pointer;vertical-align: middle;" onclick="set_to_now('start');">
-&#8211; %end_select% <input type="time" id="end_time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%"> <img src="pic/icons/clock.png" alt="Now" title="Now" style="cursor: pointer;vertical-align: middle;" onclick="set_to_now('end');">
-</div>
-<input type="hidden" name="p" value="user_shifts">
-%room_select%
-%type_select%
-%filled_select%
-<div>%task_notice%</div>
-<div>%new_style_checkbox%</div>
-<input class="button" type="submit" style="width: 100%;" value="%filter%">
-</fieldset>
+<form class="form-inline" action="#shifts" method="get">
+  <input type="hidden" name="p" value="user_shifts">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>%title%</h1>
+      <div class="form-group">%start_select%</div>
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control" type="time" id="start_time" name="start_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%">
+          <div class="input-group-btn">
+            <button class="btn btn-default" title="Now" type="button" onclick="set_to_now('start');">
+              <span class="glyphicon glyphicon-time"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+      &#8211;
+      <div class="form-group">%end_select%</div>
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control" type="time" id="end_time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%">
+          <div class="input-group-btn">
+            <button class="btn btn-default" title="Now" type="button" onclick="set_to_now('end');">
+              <span class="glyphicon glyphicon-time"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">%room_select%</div>
+    <div class="col-md-2">%type_select%</div>
+    <div class="col-md-2">%filled_select%</div>
+  </div>
+  <div>%task_notice%</div>
+  <div>%new_style_checkbox%</div>
+  <input class="btn btn-primary" type="submit" style="width: 100%;" value="%filter%">
 </form>
-
-%shifts_table%
-
-%ical_text%
+%shifts_table% %ical_text%

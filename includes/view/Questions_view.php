@@ -12,7 +12,7 @@ function Questions_view($open_questions, $answered_questions, $ask_action) {
     $question['actions'] = '<a href="' . page_link_to("user_questions") . '&action=delete&id=' . $question['QID'] . '">' . _("delete") . '</a>';
   }
   
-  return page(array(
+  return page_with_title(questions_title(), array(
       msg(),
       '<h2>' . _("Open questions") . '</h2>',
       table(array(

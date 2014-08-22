@@ -1,50 +1,29 @@
-%greeting%
-<form action="%link%&action=send" method="post">
-    <table>
-        <thead>
-            <tr>
-                <th>
-                    %new_label%
-                </th>
-                <th>
-                    %date_label%
-                </th>
-                <th>
-                    %from_label%
-                </th>
-                <th>
-                    %to_label%
-                </th>
-                <th>
-                    %text_label%
-                </th>
-                <th>
-                    &nbsp;
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            %messages%
-            <tr>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    %date%
-                </td>
-                <td>
-                    %from%
-                </td>
-                <td>
-                    %to_select%
-                </td>
-                <td>
-                    <textarea name="text"></textarea>
-                </td>
-                <td>
-                    <input type="submit" name="submit" value="%submit_label%" />
-                </td>
-            </tr>
-        </tbody>
+<div class="col-md-10">
+  <h1>%title%</h1>
+  %greeting%
+  <form action="%link%&action=send" method="post">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>%new_label%</th>
+          <th>%date_label%</th>
+          <th>%from_label%</th>
+          <th>%to_label%</th>
+          <th>%text_label%</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        %messages%
+        <tr>
+          <td>&nbsp;</td>
+          <td>%date%</td>
+          <td>%from%</td>
+          <td>%to_select%</td>
+          <td><textarea class="form-control" name="text"></textarea></td>
+          <td><input class="btn btn-primary" type="submit" name="submit" value="%submit_label%" /></td>
+        </tr>
+      </tbody>
     </table>
-</form>
+  </form>
+</div>

@@ -18,7 +18,7 @@ function info($msg, $immediatly = false) {
   if ($immediatly) {
     if ($msg == "")
       return "";
-    return '<p class="info">' . $msg . '</p>';
+    return '<div class="alert alert-info">' . $msg . '</div>';
   } else {
     if (! isset($_SESSION['msg']))
       $_SESSION['msg'] = "";
@@ -33,7 +33,7 @@ function error($msg, $immediatly = false) {
   if ($immediatly) {
     if ($msg == "")
       return "";
-    return '<p class="error">' . $msg . '</p>';
+    return '<div class="alert alert-danger">' . $msg . '</div>';
   } else {
     if (! isset($_SESSION['msg']))
       $_SESSION['msg'] = "";
@@ -48,7 +48,7 @@ function success($msg, $immediatly = false) {
   if ($immediatly) {
     if ($msg == "")
       return "";
-    return '<p class="success">' . $msg . '</p>';
+    return '<div class="alert alert-success">' . $msg . '</div>';
   } else {
     if (! isset($_SESSION['msg']))
       $_SESSION['msg'] = "";

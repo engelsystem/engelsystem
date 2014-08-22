@@ -28,6 +28,7 @@ require_once ('includes/view/UserAngelTypes_view.php');
 require_once ('includes/view/User_view.php');
 
 require_once ('includes/controller/angeltypes_controller.php');
+require_once ('includes/controller/users_controller.php');
 require_once ('includes/controller/user_angeltypes_controller.php');
 
 require_once ('includes/helper/internationalization_helper.php');
@@ -78,7 +79,8 @@ $free_pages = array(
     'user_password_recovery',
     'api',
     'credits',
-    'angeltypes' 
+    'angeltypes',
+    'users' 
 );
 
 // Gewünschte Seite/Funktion
@@ -116,6 +118,8 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     $content = user_password_recovery_controller();
   } elseif ($p == "angeltypes") {
     list($title, $content) = angeltypes_controller();
+  } elseif ($p == "users") {
+    list($title, $content) = users_controller();
   } elseif ($p == "user_angeltypes") {
     list($title, $content) = user_angeltypes_controller();
   } elseif ($p == "news") {
@@ -211,29 +215,30 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
 }
 
 if (isset($user)) {
+  $hints = "";
+  
   $freeloaded_shifts_count = count(ShiftEntries_freeloaded_by_user($user));
   if ($freeloaded_shifts_count >= $max_freeloadable_shifts)
-    $content = error(sprintf(_("You freeloaded %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again."), $freeloaded_shifts_count), true) . $content;
-    
-    // Hinweis für ungelesene Nachrichten
-  if ($p != "user_messages")
-    $content = user_unread_messages() . $content;
+    $hints = error(sprintf(_("You freeloaded %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again."), $freeloaded_shifts_count), true);
     
     // Hinweis für Engel, die noch nicht angekommen sind
   if ($user['Gekommen'] == 0)
-    $content = error(_("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already."), true) . $content;
+    $hints = error(_("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already."), true) . $hints;
   
   if ($enable_tshirt_size && $user['Size'] == "")
-    $content = error(_("You need to specify a tshirt size in your settings!"), true) . $content;
+    $hints = error(_("You need to specify a tshirt size in your settings!"), true) . $hints;
   
   if ($user['DECT'] == "")
-    $content = error(_("You need to specify a DECT phone number in your settings! If you don't have a DECT phone, just enter \"-\"."), true) . $content;
+    $hints = error(_("You need to specify a DECT phone number in your settings! If you don't have a DECT phone, just enter \"-\"."), true) . $hints;
     
     // Erzengel Hinweis für unbeantwortete Fragen
   if ($p != "admin_questions")
-    $content = admin_new_questions() . $content;
+    $hints = admin_new_questions() . $hints;
   
-  $content = user_angeltypes_unconfirmed_hint() . $content;
+  $hints = user_angeltypes_unconfirmed_hint() . $hints;
+  
+  if ($hints != "")
+    $content = '<div class="col-md-10">' . $hints . '</div>' . $content;
 }
 
 echo template_render('../templates/layout.html', array(

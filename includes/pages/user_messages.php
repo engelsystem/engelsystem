@@ -4,16 +4,13 @@ function messages_title() {
 }
 
 function user_unread_messages() {
-  global $user, $privileges;
+  global $user;
   
-  if (in_array("user_messages", $privileges)) {
+  if (isset($user)) {
     $new_messages = sql_num_query("SELECT * FROM `Messages` WHERE isRead='N' AND `RUID`=" . sql_escape($user['UID']));
-    
-    if ($new_messages > 0)
-      return sprintf('<p class="info"><a href="%s">%s</a></p><hr />', page_link_to("user_messages"), sprintf(ngettext("You have %s new message.", "You have %s new messages.", $new_messages), $new_messages));
+    return '<span class="badge">' . $new_messages . '</span>';
   }
-  
-  return "";
+  return '';
 }
 
 function user_messages() {
@@ -54,6 +51,7 @@ function user_messages() {
     }
     
     return template_render('../templates/user_messages.html', array(
+        'title' => messages_title(),
         'link' => page_link_to("user_messages"),
         'greeting' => sprintf(_("Hello %s, here can you leave messages for other angels"), User_Nick_render($user)) . '<br /><br />',
         'messages' => $messages_html,

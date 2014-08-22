@@ -1,0 +1,74 @@
+{
+	"IcoMoonType": "selection",
+	"icons": [
+		{
+			"icon": {
+				"paths": [
+					"M524.315 142.746c-141.014 0-255.328 132.92-255.328 296.886 0 91.993 35.911 174.118 92.405 228.574v68.311l-359.891 105.559v189.127l1021.314 8.797v-189.127l-330.711-118.754h-4.863v-63.913c56.494-54.456 92.405-136.581 92.405-228.574 0-163.965-114.314-296.886-255.328-296.886z",
+					"M524.315 2c-248.453 0-449.864 81.721-449.864 182.53s201.411 182.53 449.864 182.53c248.453 0 449.864-81.721 449.864-182.53s-201.411-182.53-449.864-182.53zM524.315 94.364c205.477 0 372.050 57.106 372.050 127.551s-166.572 127.551-372.050 127.551c-205.477 0-372.050-57.106-372.050-127.551s166.572-127.551 372.050-127.551z"
+				],
+				"attrs": [
+					{},
+					{}
+				],
+				"grid": 0,
+				"tags": [
+					"icon_angel"
+				]
+			},
+			"attrs": [
+				{},
+				{}
+			],
+			"properties": {
+				"order": 4,
+				"id": 0,
+				"prevSize": 32,
+				"code": 58880,
+				"name": "icon_angel",
+				"ligatures": ""
+			},
+			"setIdx": 0,
+			"iconIdx": 0
+		}
+	],
+	"height": 1024,
+	"metadata": {
+		"name": "icomoon"
+	},
+	"preferences": {
+		"fontPref": {
+			"prefix": "icon-",
+			"metadata": {
+				"fontFamily": "icomoon"
+			},
+			"showGlyphs": true,
+			"metrics": {
+				"emSize": 512,
+				"baseline": 6.25,
+				"whitespace": 50
+			},
+			"resetPoint": 58880,
+			"showQuickUse": true,
+			"quickUsageToken": false,
+			"showMetrics": true,
+			"showMetadata": false
+		},
+		"imagePref": {
+			"color": 0,
+			"height": 32,
+			"columns": 16,
+			"margin": 16,
+			"png": false,
+			"sprites": true
+		},
+		"historySize": 100,
+		"showCodes": true,
+		"gridSize": 16,
+		"showLiga": false,
+		"showGrid": true,
+		"showGlyphs": true,
+		"showQuickUse": true,
+		"search": ""
+	}
+}

@@ -31,7 +31,7 @@ function AngelType_render_membership($user_angeltype) {
 }
 
 function AngelType_delete_view($angeltype) {
-  return page(array(
+  return page_with_title(sprintf(_("Delete angeltype %s"), $angeltype['name']), array(
       info(sprintf(_("Do you want to delete angeltype %s?"), $angeltype['name']), true),
       buttons(array(
           button(page_link_to('angeltypes'), _("cancel"), 'cancel'),
@@ -41,7 +41,7 @@ function AngelType_delete_view($angeltype) {
 }
 
 function AngelType_edit_view($name, $restricted, $description, $coordinator_mode) {
-  return page(array(
+  return page_with_title(sprintf(_("Edit %s"), $name), array(
       buttons(array(
           button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
       )),
@@ -82,9 +82,10 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
   
   $page[] = '<h3>' . _("Description") . '</h3>';
   $parsedown = new Parsedown();
-  $page[] = $parsedown->parse($angeltype['description']);
-  
-  // Team-Coordinators list missing
+  if ($angeltype['description'] != "")
+    $page[] = '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';
+    
+    // Team-Coordinators list missing
   
   $coordinators = array();
   $members_confirmed = array();
@@ -144,7 +145,7 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
     ), $members_unconfirmed);
   }
   
-  return page($page);
+  return page_with_title(sprintf(_("Team %s"), $angeltype['name']), $page);
 }
 
 /**
@@ -153,7 +154,7 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
  * @param array $angeltypes          
  */
 function AngelTypes_list_view($angeltypes, $admin_angeltypes) {
-  return page(array(
+  return page_with_title(angeltypes_title(), array(
       msg(),
       buttons(array(
           $admin_angeltypes ? button(page_link_to('angeltypes') . '&action=edit', _("New angeltype"), 'add') : '',
@@ -178,7 +179,8 @@ function AngelTypes_about_view($angeltypes, $user_logged_in) {
           $user_logged_in ? button(page_link_to('angeltypes'), angeltypes_title(), 'back') : '',
           button($faq_url, _("FAQ")) 
       )),
-      '<p>' . _("Here is the list of teams and their tasks. If you have questions, read the FAQ.") . '</p>' 
+      '<p>' . _("Here is the list of teams and their tasks. If you have questions, read the FAQ.") . '</p>',
+      '<hr />' 
   );
   $parsedown = new Parsedown();
   foreach ($angeltypes as $angeltype) {
@@ -195,10 +197,12 @@ function AngelTypes_about_view($angeltypes, $user_logged_in) {
     
     if ($angeltype['restricted'])
       $content[] = info(_("This angeltype is restricted by double-opt-in by a team coordinator. Please show up at the according introduction meetings."), true);
-    $content[] = $parsedown->parse($angeltype['description']);
+    if ($angeltype['description'] != "")
+      $content[] = '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';
+    $content[] = '<hr />';
   }
   
-  return page($content);
+  return page_with_title(_("Teams/Job description"), $content);
 }
 
 ?>

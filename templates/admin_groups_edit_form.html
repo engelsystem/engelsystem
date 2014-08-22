@@ -1,21 +1,14 @@
 <form action="%link%&action=save" method="post">
-    <table>
-        <thead>
-            <tr>
-                <th>
-                    &nbsp;
-                </th>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Description
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            %privileges%
-        </tbody>
-    </table>
-    <input type="hidden" name="id" value="%id%" /><input type="submit" name="submit" value="Save" />
+  <table class="table">
+    <thead>
+      <tr>
+        <th>&nbsp;</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>%privileges%
+    </tbody>
+  </table>
+  <input type="hidden" name="id" value="%id%" /><input class="btn btn-primary" type="submit" name="submit" value="Save" />
 </form>

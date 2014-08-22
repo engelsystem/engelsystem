@@ -135,7 +135,7 @@ function guest_register() {
     }
   }
   
-  return page(array(
+  return page_with_title(register_title(), array(
       _("By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel task sheduler."),
       $msg,
       msg(),
@@ -208,17 +208,20 @@ function guest_login() {
     }
   }
   
-  return page(array(
+  return page_with_title(login_title(), array(
       msg(),
+      '<div class="container"><div class="col-md-6">',
       form(array(
           form_text('nick', _("Nick"), $nick),
           form_password('password', _("Password")),
+          form_submit('submit', _("Login")),
           form_info("", buttons(array(
               button(page_link_to('user_password_recovery'), _("I forgot my password")) 
           ))),
-          form_submit('submit', _("Login")),
           info(_("Please note: You have to activate cookies!"), true) 
       )),
+      '</div>',
+      '<div class="col-md-6">',
       '<h2>' . register_title() . '</h2>',
       '<p>' . _("Please sign up, if you want to help us!") . '</p>',
       buttons(array(
@@ -228,7 +231,8 @@ function guest_login() {
       '<p>' . _("Please read about the jobs you can do to help us.") . '</p>',
       buttons(array(
           button(page_link_to('angeltypes') . '&action=about', _("Teams/Job description") . ' &raquo;') 
-      )) 
+      )),
+      '</div></div>' 
   ));
 }
 ?>

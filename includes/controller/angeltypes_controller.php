@@ -149,7 +149,7 @@ function angeltype_edit_controller() {
   }
   
   return array(
-      isset($angeltype) ? sprintf(_("Edit %s"), $name) : _("Add new angeltype"),
+      sprintf(_("Edit %s"), $name),
       AngelType_edit_view($name, $restricted, $description, $coordinator_mode) 
   );
 }

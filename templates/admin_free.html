@@ -1,26 +1,20 @@
-<form action="%link%" method="post">
+<div class="col-md-10">
+  <h1>%title%</h1>
+  <form action="%link%" method="post">
     <p>
-        Search Angel: <input type="text" name="search" value="%search%" placeholder="Name"> %angeltypes% <label><input type="checkbox" name="confirmed_only" %confirmed_only% value="1"> Nur zugelassene</label> <input type="submit" name="submit" value="Search">
+      Search Angel: <input type="text" name="search" value="%search%" placeholder="Name"> %angeltypes% <label><input type="checkbox" name="confirmed_only" %confirmed_only% value="1"> Nur zugelassene</label> <input type="submit" name="submit" value="Search">
     </p>
-</form>
-<table>
+  </form>
+  <table class="table">
     <thead>
-        <tr>
-            <th>
-                Nickname
-            </th>
-            <th>
-                DECT
-            </th>
-            <th>
-                Jabber
-            </th>
-            <th>
-                Edit
-            </th>
-        </tr>
+      <tr>
+        <th>Nickname</th>
+        <th>DECT</th>
+        <th>Jabber</th>
+        <th>Edit</th>
+      </tr>
     </thead>
-    <tbody>
-        %table%
+    <tbody>%table%
     </tbody>
-</table>
+  </table>
+</div>
