@@ -53,7 +53,7 @@ function user_messages() {
     return template_render('../templates/user_messages.html', array(
         'title' => messages_title(),
         'link' => page_link_to("user_messages"),
-        'greeting' => sprintf(_("Hello %s, here can you leave messages for other angels"), User_Nick_render($user)) . '<br /><br />',
+        'greeting' => msg() . sprintf(_("Hello %s, here can you leave messages for other angels"), User_Nick_render($user)) . '<br /><br />',
         'messages' => $messages_html,
         'new_label' => _("New"),
         'date_label' => _("Date"),

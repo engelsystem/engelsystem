@@ -35,9 +35,22 @@ function user_controller() {
   
   $admin_user_privilege = in_array('admin_user', $privileges);
   
+  $shifts = Shifts_by_user($user_source);
+  foreach ($shifts as &$shift) {
+    $shift['needed_angeltypes'] = sql_select("SELECT DISTINCT `AngelTypes`.* FROM `ShiftEntry` JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id` WHERE `ShiftEntry`.`SID`=" . sql_escape($shift['SID']) . "  ORDER BY `AngelTypes`.`name`");
+    foreach ($shift['needed_angeltypes'] as &$needed_angeltype) {
+      $needed_angeltype['users'] = sql_select("
+          SELECT `ShiftEntry`.`freeloaded`, `User`.* 
+          FROM `ShiftEntry` 
+          JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID` 
+          WHERE `ShiftEntry`.`SID`=" . sql_escape($shift['SID']) . " 
+          AND `ShiftEntry`.`TID`=" . sql_escape($needed_angeltype['id']));
+    }
+  }
+  
   return array(
       $user_source['Nick'],
-      User_view($user_source) 
+      User_view($user_source, $admin_user_privilege, User_is_freeloader($user_source), User_shift_state($user_source), User_angeltypes($user_source), User_groups($user_source), $shifts, $user['UID'] == $user_source['UID']) 
   );
 }
 

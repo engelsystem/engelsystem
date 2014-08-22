@@ -3,6 +3,15 @@
  * User angeltypes model
  */
 
+function User_angeltypes($user) {
+  return sql_select("
+      SELECT `AngelTypes`.*, `UserAngelTypes`.`confirm_user_id`, `UserAngelTypes`.`coordinator`
+      FROM `UserAngelTypes`
+      JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`
+      WHERE `UserAngelTypes`.`user_id`=" . sql_escape($user['UID']) . "
+      ");
+}
+
 /**
  * Gets unconfirmed user angeltypes for angeltypes of which the given user is a coordinator.
  *

@@ -8,6 +8,11 @@ $themes = array(
     "1" => "Engelsystem dark" 
 );
 
+function div($class, $content = array(), $id = "") {
+  $id = $id != '' ? ' id="' . $id . '"' : '';
+  return '<div' . $id . ' class="' . $class . '">' . join("\n", $content) . '</div>';
+}
+
 /**
  * Render a toolbar.
  *
@@ -273,7 +278,7 @@ function button($href, $label, $class = "") {
  * Rendert eine Toolbar mit Knöpfen
  */
 function buttons($buttons = array ()) {
-  return '<div class="form-group">' . join(' ', $buttons) . '</div>';
+  return '<div class="form-group"><div class="btn-group">' . join(' ', $buttons) . '</div></div>';
 }
 
 // Load and render template

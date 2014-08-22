@@ -2,7 +2,8 @@
 
 /**
  * Delete an Angeltype.
- * @param Angeltype $angeltype
+ * 
+ * @param Angeltype $angeltype          
  */
 function AngelType_delete($angeltype) {
   return sql_query("

@@ -22,7 +22,7 @@ function header_toolbar() {
     $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'plus', register_title(), $p == 'register');
   
   if (in_array('user_myshifts', $privileges))
-    $toolbar_items[] = toolbar_item_link(page_link_to('user_myshifts'), ' icon-icon_angel', $user['Nick'], $p == 'user_myshifts');
+    $toolbar_items[] = toolbar_item_link(page_link_to('users') . '&amp;action=view', ' icon-icon_angel', $user['Nick'], $p == 'user_myshifts');
   
   if (in_array('user_settings', $privileges))
     $toolbar_items[] = toolbar_item_link(page_link_to('user_settings'), 'list-alt', settings_title(), $p == 'user_settings');

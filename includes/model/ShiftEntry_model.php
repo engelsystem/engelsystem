@@ -1,9 +1,25 @@
 <?php
 
 /**
+ * Returns next (or current) shifts of given user.
+ * @param User $user
+ */
+function ShiftEntries_upcoming_for_user($user) {
+  return sql_select("
+      SELECT *
+      FROM `ShiftEntry`
+      JOIN `Shifts` ON `Shifts`.`SID`=`ShiftEntry`.`SID`
+      WHERE `ShiftEntry`.`UID`=" . sql_escape($user['UID']) . "
+      AND `Shifts`.`end` > " . sql_escape(time()) . "
+      ORDER BY `Shifts`.`end`
+      ");
+}
+
+/**
  * Returns all shift entries in given shift for given angeltype.
- * @param int $shift_id
- * @param int $angeltype_id
+ *
+ * @param int $shift_id          
+ * @param int $angeltype_id          
  */
 function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id) {
   return sql_select("

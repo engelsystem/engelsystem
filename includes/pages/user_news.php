@@ -14,7 +14,7 @@ function meetings_title() {
 function user_meetings() {
   global $DISPLAY_NEWS, $privileges, $user;
   
-  $html = '<div class="col-md-10"><h1>' . meetings_title() . '</h1>';
+  $html = '<div class="col-md-10"><h1>' . meetings_title() . '</h1>' . msg();
   
   if (isset($_REQUEST['page']) && preg_match("/^[0-9]{1,}$/", $_REQUEST['page']))
     $page = $_REQUEST['page'];

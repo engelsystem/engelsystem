@@ -6,7 +6,7 @@ function shifts_title() {
 function user_shifts() {
   global $user, $privileges, $max_freeloadable_shifts;
   
-  if (count(ShiftEntries_freeloaded_by_user($user)) >= $max_freeloadable_shifts)
+  if (User_is_freeloader($user))
     redirect(page_link_to('user_myshifts'));
     
     // Löschen einzelner Schicht-Einträge (Also Belegung einer Schicht von Engeln) durch Admins
@@ -743,7 +743,7 @@ function view_user_shifts() {
           'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", _("Occupancy")),
           'task_notice' => '<sup>1</sup>' . _("The tasks shown here are influenced by the preferences you defined in your settings!") . " <a href=\"" . page_link_to('angeltypes') . '&action=about' . "\">" . _("Description of the jobs.") . "</a>",
           'new_style_checkbox' => '<label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style'] ? ' checked' : '') . '> ' . _("Use new style if possible") . '</label>',
-          'shifts_table' => $shifts_table,
+          'shifts_table' =>msg(). $shifts_table,
           'ical_text' => '<h2>' . _("iCal export") . '</h2><p>' . sprintf(_("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."), page_link_to_absolute('ical') . '&key=' . $user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'], page_link_to('user_myshifts') . '&reset') . '</p>',
           'filter' => _("Filter") 
       )),
