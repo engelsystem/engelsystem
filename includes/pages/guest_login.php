@@ -140,27 +140,69 @@ function guest_register() {
       $msg,
       msg(),
       form(array(
-          form_text('nick', _("Nick") . "*", $nick),
-          form_text('lastname', _("Last name"), $lastname),
-          form_text('prename', _("First name"), $prename),
-          form_text('age', _("Age"), $age),
-          form_text('tel', _("Phone"), $tel),
-          form_text('dect', _("DECT"), $tel),
-          form_text('mobile', _("Mobile"), $mobile),
-          form_text('mail', _("E-Mail") . "*", $mail),
-          form_text('icq', _("ICQ"), $icq),
-          form_text('jabber', _("Jabber"), $jabber),
-          form_text('hometown', _("Hometown"), $hometown),
-          $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . "*", $tshirt_sizes, $tshirt_size) : '',
+          div('row', array(
+              div('col-md-6', array(
+                  div('row', array(
+                      div('col-md-4', array(
+                          form_text('nick', _("Nick") . ' ' . entry_required(), $nick) 
+                      )),
+                      div('col-md-8', array(
+                          form_text('mail', _("E-Mail") . ' ' . entry_required(), $mail) 
+                      )) 
+                  )),
+                  $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : '',
+                  div('row', array(
+                      div('col-md-6', array(
+                          form_password('password', _("Password") . ' ' . entry_required()) 
+                      )),
+                      div('col-md-6', array(
+                          form_password('password2', _("Confirm password") . ' ' . entry_required()) 
+                      )) 
+                  )),
+                  form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
+                  form_info("", _("Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section.")) 
+              )),
+              div('col-md-6', array(
+                  div('row', array(
+                      div('col-md-4', array(
+                          form_text('dect', _("DECT"), $dect) 
+                      )),
+                      div('col-md-4', array(
+                          form_text('mobile', _("Mobile"), $mobile) 
+                      )),
+                      div('col-md-4', array(
+                          form_text('tel', _("Phone"), $tel) 
+                      )) 
+                  )),
+                  form_text('jabber', _("Jabber"), $jabber),
+                  div('row', array(
+                      div('col-md-6', array(
+                          form_text('prename', _("First name"), $prename) 
+                      )),
+                      div('col-md-6', array(
+                          form_text('lastname', _("Last name"), $lastname) 
+                      )) 
+                  )),
+                  div('row', array(
+                      div('col-md-3', array(
+                          form_text('age', _("Age"), $age) 
+                      )),
+                      div('col-md-9', array(
+                          form_text('hometown', _("Hometown"), $hometown) 
+                      )) 
+                  )),
+                  form_info(entry_required() . ' = ' . _("Entry required!")) 
+              )) 
+          )),
+          // form_text('icq', _("ICQ"), $icq),
           // form_textarea('comment', _("Did you help at former CCC events and which tasks have you performed then?"), $comment),
-          form_checkboxes('angel_types', _("What do you want to do?") . sprintf("<br>(<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
-          form_info("", _("Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section.")),
-          form_password('password', _("Password") . "*"),
-          form_password('password2', _("Confirm password") . "*"),
-          info("*: " . _("Entry required!"), true),
           form_submit('submit', _("Register")) 
       )) 
   ));
+}
+
+function entry_required() {
+  return '<span class="text-info glyphicon glyphicon-warning-sign"></span>';
 }
 
 function guest_logout() {
