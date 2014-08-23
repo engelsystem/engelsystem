@@ -246,7 +246,8 @@ echo template_render('../templates/layout.html', array(
     'menu' => make_menu(),
     'content' => $content,
     'header_toolbar' => header_toolbar(),
-    'faq_url' => $faq_url 
+    'faq_url' => $faq_url,
+    'locale' => $_SESSION['locale'] 
 ));
 
 counter();

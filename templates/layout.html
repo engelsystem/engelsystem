@@ -12,7 +12,8 @@
 <meta name="revisit-after" content="1 days" />
 <script type="text/javascript" src="vendor/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="vendor/bootstrap-3.2.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="css/forms.js"></script>
+<script type="text/javascript" src="js/forms.js"></script>
+<script type="text/javascript" src="js/moment-with-locales.min.js"></script>
 <link rel="stylesheet" type="text/css" href="vendor/bootstrap-3.2.0/css/theme%theme%.css" />
 <link rel="stylesheet" type="text/css" href="vendor/icomoon/style.css" />
 %atom_link%
@@ -36,5 +37,10 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+			$(function() {
+				moment.locale("%locale%");
+			});
+		</script>
 </body>
 </html>
