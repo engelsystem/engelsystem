@@ -1,6 +1,6 @@
 <?php
 function admin_import_title() {
-  return _("Pentabarf import");
+  return _("Frab import");
 }
 
 function admin_import() {

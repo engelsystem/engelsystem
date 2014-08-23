@@ -13,7 +13,10 @@ function admin_rooms() {
         'name' => $room['Name'],
         'from_pentabarf' => $room['FromPentabarf'] == 'Y' ? '&#10003;' : '',
         'public' => $room['show'] == 'Y' ? '&#10003;' : '',
-        'actions' => '<a class="ection edit" href="' . page_link_to('admin_rooms') . '&show=edit&id=' . $room['RID'] . '">edit</a> <a class="action delete" href="' . page_link_to('admin_rooms') . '&show=delete&id=' . $room['RID'] . '">delete</a>' 
+        'actions' => buttons(array(
+            button(page_link_to('admin_rooms') . '&show=edit&id=' . $room['RID'], _("edit"), 'btn-xs'),
+            button(page_link_to('admin_rooms') . '&show=delete&id=' . $room['RID'], _("delete"), 'btn-xs') 
+        )) 
     );
   
   if (isset($_REQUEST['show'])) {
@@ -53,7 +56,7 @@ function admin_rooms() {
           $name = strip_request_item('name');
         else {
           $ok = false;
-          $msg .= error("Please enter a name.", true);
+          $msg .= error(_("Please enter a name."), true);
         }
         
         if (isset($_REQUEST['from_pentabarf']))
@@ -76,7 +79,7 @@ function admin_rooms() {
             $angeltypes_count[$angeltype_id] = $_REQUEST['angeltype_count_' . $angeltype_id];
           else {
             $ok = false;
-            $msg .= error(sprintf("Please enter needed angels for type %s.", $angeltype), true);
+            $msg .= error(sprintf(_("Please enter needed angels for type %s.", $angeltype)), true);
           }
         }
         
@@ -101,27 +104,27 @@ function admin_rooms() {
           }
           
           engelsystem_log("Set needed angeltypes of room " . $name . " to: " . join(", ", $needed_angeltype_info));
-          success("Room saved.");
+          success(_("Room saved."));
           redirect(page_link_to("admin_rooms"));
         }
       }
       $angeltypes_count_form = array();
       foreach ($angeltypes as $angeltype_id => $angeltype)
-        $angeltypes_count_form[] = form_text('angeltype_count_' . $angeltype_id, $angeltype, $angeltypes_count[$angeltype_id]);
+        $angeltypes_count_form[] = form_spinner('angeltype_count_' . $angeltype_id, $angeltype, $angeltypes_count[$angeltype_id]);
       
       return page_with_title(admin_rooms_title(), array(
           buttons(array(
-              button(page_link_to('admin_rooms'), "Back", 'back') 
+              button(page_link_to('admin_rooms'), _("back"), 'back') 
           )),
           $msg,
           form(array(
-              form_text('name', "Name", $name),
-              form_checkbox('from_pentabarf', "Pentabarf-Import", $from_pentabarf),
-              form_checkbox('public', "Public", $public),
-              form_text('number', "Number", $number),
-              form_info("Needed angels:", ""),
+              form_text('name', _("Name"), $name),
+              form_checkbox('from_pentabarf', _("Frab import"), $from_pentabarf),
+              form_checkbox('public', _("Public"), $public),
+              form_text('number', _("Room number"), $number),
+              form_info(_("Needed angels:")),
               join($angeltypes_count_form),
-              form_submit('submit', 'Save') 
+              form_submit('submit', _("Save")) 
           )) 
       ));
     } elseif ($_REQUEST['show'] == 'delete') {
@@ -130,17 +133,17 @@ function admin_rooms() {
         sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($id) . " LIMIT 1");
         
         engelsystem_log("Room deleted: " . $name);
-        success(sprintf("Room %s deleted.", $name));
+        success(sprintf(_("Room %s deleted."), $name));
         redirect(page_link_to('admin_rooms'));
       }
       
       return page_with_title(admin_rooms_title(), array(
           buttons(array(
-              button(page_link_to('admin_rooms'), "Back", 'back') 
+              button(page_link_to('admin_rooms'), _("back"), 'back') 
           )),
-          sprintf("Do you want to delete room %s?", $name),
+          sprintf(_("Do you want to delete room %s?"), $name),
           buttons(array(
-              button(page_link_to('admin_rooms') . '&show=delete&id=' . $id . '&ack', "Delete", 'delete') 
+              button(page_link_to('admin_rooms') . '&show=delete&id=' . $id . '&ack', _("Delete"), 'delete') 
           )) 
       ));
     }
@@ -148,13 +151,13 @@ function admin_rooms() {
   
   return page_with_title(admin_rooms_title(), array(
       buttons(array(
-          button(page_link_to('admin_rooms') . '&show=edit', "Add", 'add') 
+          button(page_link_to('admin_rooms') . '&show=edit', _("add")) 
       )),
       msg(),
       table(array(
-          'name' => "Name",
-          'from_pentabarf' => "Pentabarf-Import",
-          'public' => "Public",
+          'name' => _("Name"),
+          'from_pentabarf' => _("Frab import"),
+          'public' => _("Public"),
           'actions' => "" 
       ), $rooms) 
   ));
