@@ -8,7 +8,8 @@ function user_unread_messages() {
   
   if (isset($user)) {
     $new_messages = sql_num_query("SELECT * FROM `Messages` WHERE isRead='N' AND `RUID`=" . sql_escape($user['UID']));
-    return '<span class="badge">' . $new_messages . '</span>';
+    if ($new_messages > 0)
+      return '<span class="badge">' . $new_messages . '</span>';
   }
   return '';
 }

@@ -20,24 +20,26 @@ function admin_questions() {
   global $user;
   
   if (! isset($_REQUEST['action'])) {
-    $open_questions = "";
+    $unanswered_questions_table = array();
     $questions = sql_select("SELECT * FROM `Questions` WHERE `AID` IS NULL");
     foreach ($questions as $question) {
       $user_source = User($question['UID']);
       if ($user_source === false)
         engelsystem_error("Unable to load user.");
       
-      $open_questions .= template_render('../templates/admin_question_unanswered.html', array(
-          'question_nick' => User_Nick_render($user_source),
-          'question_id' => $question['QID'],
-          'link' => page_link_to("admin_questions"),
-          'question' => str_replace("\n", '<br />', $question['Question']) 
-      ));
+      $unanswered_questions_table[] = array(
+          'from' => User_Nick_render($user_source),
+          'question' => str_replace("\n", "<br />", $question['Question']),
+          'answer' => form(array(
+              form_textarea('answer', _("Answer"), ''),
+              form_submit('submit', _("Save")) 
+          ), page_link_to('admin_questions') . '&action=answer&id=' . $question['QID']),
+          'actions' => button(page_link_to("admin_questions") . '&action=delete&id=' . $question['QID'], _("delete"), 'btn-xs') 
+      );
     }
     
-    $answered_questions = "";
+    $answered_questions_table = array();
     $questions = sql_select("SELECT * FROM `Questions` WHERE NOT `AID` IS NULL");
-    
     foreach ($questions as $question) {
       $user_source = User($question['UID']);
       if ($user_source === false)
@@ -46,21 +48,31 @@ function admin_questions() {
       $answer_user_source = User($question['AID']);
       if ($answer_user_source === false)
         engelsystem_error("Unable to load user.");
-      
-      $answered_questions .= template_render('../templates/admin_question_answered.html', array(
-          'question_id' => $question['QID'],
-          'question_nick' => User_Nick_render($user_source),
+      $answered_questions_table[] = array(
+          'from' => User_Nick_render($user_source),
           'question' => str_replace("\n", "<br />", $question['Question']),
-          'answer_nick' => User_Nick_render($answer_user_source),
+          'answered_by' => User_Nick_render($answer_user_source),
           'answer' => str_replace("\n", "<br />", $question['Answer']),
-          'link' => page_link_to("admin_questions") 
-      ));
+          'actions' => button(page_link_to("admin_questions") . '&action=delete&id=' . $question['QID'], _("delete"), 'btn-xs') 
+      );
     }
     
-    return template_render('../templates/admin_questions.html', array(
-        'link' => page_link_to("admin_questions"),
-        'open_questions' => $open_questions,
-        'answered_questions' => $answered_questions 
+    return page_with_title(admin_questions_title(), array(
+        '<h2>' . _("Unanswered questions") . '</h2>',
+        table(array(
+            'from' => _("From"),
+            'question' => _("Question"),
+            'answer' => _("Answer"),
+            'actions' => '' 
+        ), $unanswered_questions_table),
+        '<h2>' . _("Answered questions") . '</h2>',
+        table(array(
+            'from' => _("From"),
+            'question' => _("Question"),
+            'answered_by' => _("Answered by"),
+            'answer' => _("Answer"),
+            'actions' => '' 
+        ), $answered_questions_table) 
     ));
   } else {
     switch ($_REQUEST['action']) {
