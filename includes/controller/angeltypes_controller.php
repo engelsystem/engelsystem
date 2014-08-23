@@ -201,25 +201,31 @@ function angeltypes_list_controller() {
   
   foreach ($angeltypes as &$angeltype) {
     $actions = array(
-        '<a class="view" href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'] . '">' . _("view") . '</a>' 
+        button(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'],_("view"),"btn-xs")
+        //'<a class="view btn btn-default" href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'] . '">' . _("view") . '</a>' 
     );
     
     if (in_array('admin_angel_types', $privileges)) {
-      $actions[] = '<a class="edit" href="' . page_link_to('angeltypes') . '&action=edit&angeltype_id=' . $angeltype['id'] . '">' . _("edit") . '</a>';
-      $actions[] = '<a class="delete" href="' . page_link_to('angeltypes') . '&action=delete&angeltype_id=' . $angeltype['id'] . '">' . _("delete") . '</a>';
+      $actions[] = button(page_link_to('angeltypes') . '&action=edit&angeltype_id=' . $angeltype['id'], _("edit"), "btn-xs");
+      $actions[] = button(page_link_to('angeltypes') . '&action=delete&angeltype_id=' . $angeltype['id'], _("delete"), "btn-xs");
+
+      //$actions[] = '<a class="edit" href="' . page_link_to('angeltypes') . '&action=edit&angeltype_id=' . $angeltype['id'] . '">' . _("edit") . '</a>';
+      //$actions[] = '<a class="delete" href="' . page_link_to('angeltypes') . '&action=delete&angeltype_id=' . $angeltype['id'] . '">' . _("delete") . '</a>';
     }
     
     $angeltype['membership'] = AngelType_render_membership($angeltype);
     if ($angeltype['user_angeltype_id'] != null) {
-      $actions[] = '<a class="cancel" href="' . page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $angeltype['user_angeltype_id'] . '">' . _("leave") . '</a>';
+      //$actions[] = '<a class="cancel" href="' . page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $angeltype['user_angeltype_id'] . '">' . _("leave") . '</a>';
+      $actions[] = button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $angeltype['user_angeltype_id'], _("leave"), "btn-xs");
     } else {
-      $actions[] = '<a class="add" href="' . page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'] . '">' . _("join") . '</a>';
+      $actions[] = button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], _("join"), "btn-xs");
+      //$actions[] = '<a class="add" href="' . page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'] . '">' . _("join") . '</a>';
     }
     
     $angeltype['restricted'] = $angeltype['restricted'] ? '<img src="pic/icons/lock.png" alt="' . _("Restricted") . '" title="' . _("Restricted") . '">' : '';
     $angeltype['name'] = '<a href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'] . '">' . $angeltype['name'] . '</a>';
     
-    $angeltype['actions'] = join(" ", $actions);
+    $angeltype['actions'] = buttons($actions);
   }
   
   return array(
