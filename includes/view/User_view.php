@@ -23,11 +23,11 @@ function User_shift_mode_render($shift_mode) {
   if ($shift_mode == 0)
     return '<span class="text-success">' . _("Free") . '</span>';
   if ($shift_mode > 8 * 3600)
-    return '<span class="text-success">' . sprintf(_("Next shift in %s min"), floor($shift_mode / 60)) . '</span>';
+    return '<span class="text-success moment-countdown" data-seconds="' . $shift_mode . '">' . _("Next shift in") . '</span>';
   if ($shift_mode > 0)
-    return '<span class="text-warning">' . sprintf(_("Next shift in %s min"), floor($shift_mode / 60)) . '</span>';
+    return '<span class="text-warning moment-countdown" data-seconds="' . $shift_mode . '">' . _("Next shift in") . '</span>';
   if ($shift_mode < 0)
-    return '<span class="text-danger">' . sprintf(_("Current ends in %s min"), floor($shift_mode / 60)) . '</span>';
+    return '<span class="text-danger moment-countdown" data-seconds="' . $shift_mode . '">' . _("Current shift ends in") . '</span>';
 }
 
 function User_view($user_source, $admin_user_privilege, $freeloader, $user_shift_mode, $user_angeltypes, $user_groups, $shifts, $its_me) {
