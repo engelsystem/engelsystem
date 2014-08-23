@@ -1,5 +1,24 @@
 <?php
 
+/**
+ * Available T-Shirt sizes
+ */
+$tshirt_sizes = array(
+    '' => _("Please select..."),
+    'S' => "S",
+    'M' => "M",
+    'L' => "L",
+    'XL' => "XL",
+    '2XL' => "2XL",
+    '3XL' => "3XL",
+    '4XL' => "4XL",
+    '5XL' => "5XL",
+    'S-G' => "S Girl",
+    'M-G' => "M Girl",
+    'L-G' => "L Girl",
+    'XL-G' => "XL Girl" 
+);
+
 function User_shift_mode_render($shift_mode) {
   if ($shift_mode == 0)
     return '<span class="text-success">' . _("Free") . '</span>';
@@ -123,25 +142,6 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_shift
       )) : '' 
   ));
 }
-
-/**
- * Available T-Shirt sizes
- */
-$tshirt_sizes = array(
-    '' => _("Please select..."),
-    'S' => "S",
-    'M' => "M",
-    'L' => "L",
-    'XL' => "XL",
-    '2XL' => "2XL",
-    '3XL' => "3XL",
-    '4XL' => "4XL",
-    '5XL' => "5XL",
-    'S-G' => "S Girl",
-    'M-G' => "M Girl",
-    'L-G' => "L Girl",
-    'XL-G' => "XL Girl" 
-);
 
 /**
  * View for password recovery step 1: E-Mail

@@ -18,7 +18,7 @@ function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment,
         form_textarea('freeload_comment', _("Freeload comment (Only for shift coordination):"), $freeload_comment) 
     );
   } else {
-    $freeload_form = "";
+    $freeload_form = array();
   }
   return page_with_title(_("Edit shift entry"), array(
       form(array(

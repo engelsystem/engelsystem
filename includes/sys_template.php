@@ -256,16 +256,16 @@ function table($columns, $rows_raw, $data = true) {
   $html .= '<table class="table ' . ($data ? ' data' : '') . '">';
   $html .= '<thead><tr>';
   foreach ($columns as $key => $column)
-    $html .= '<th class="' . $key . '">' . $column . '</th>';
+    $html .= '<th class="column_' . $key . '">' . $column . '</th>';
   $html .= '</tr></thead>';
   $html .= '<tbody>';
   foreach ($rows as $row) {
     $html .= '<tr>';
     foreach ($columns as $key => $column)
       if (isset($row[$key]))
-        $html .= '<td class="' . $key . '">' . $row[$key] . '</td>';
+        $html .= '<td class="column_' . $key . '">' . $row[$key] . '</td>';
       else
-        $html .= '<td class="' . $key . '">&nbsp;</td>';
+        $html .= '<td class="column_' . $key . '">&nbsp;</td>';
     $html .= '</tr>';
   }
   $html .= '</tbody>';
