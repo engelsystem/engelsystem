@@ -34,8 +34,11 @@ function guest_register() {
   
   $angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
   $angel_types = array();
-  foreach ($angel_types_source as $angel_type)
+  foreach ($angel_types_source as $angel_type) {
     $angel_types[$angel_type['id']] = $angel_type['name'] . ($angel_type['restricted'] ? " (restricted)" : "");
+    if (! $angel_type['restricted'])
+      $selected_angel_types[] = $angel_type['id'];
+  }
   
   if (isset($_REQUEST['submit'])) {
     $ok = true;
