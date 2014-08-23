@@ -3,3 +3,5 @@
 .settings
 .*.swp
 _vimrc_local.vim
+.sass-cache
+
