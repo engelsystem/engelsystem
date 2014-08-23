@@ -54,7 +54,6 @@ function make_navigation() {
       "angeltypes" => angeltypes_title(),
       "user_messages" => messages_title() . ' ' . user_unread_messages(),
       "user_questions" => questions_title(),
-      "user_wakeup" => wakeup_title(),
       "admin_arrive" => admin_arrive_title(),
       "admin_active" => admin_active_title(),
       "admin_user" => admin_user_title(),

@@ -28,7 +28,6 @@ function user_messages() {
     
     $to_select = html_select_key('to', 'to', $to_select_data, '');
     
-    $messages_html = "";
     $messages = sql_select("SELECT * FROM `Messages` WHERE `SUID`=" . sql_escape($user['UID']) . " OR `RUID`=" . sql_escape($user['UID']) . " ORDER BY `isRead`,`Datum` DESC");
     foreach ($messages as $message) {
       $sender_user_source = User($message['SUID']);
@@ -38,32 +37,43 @@ function user_messages() {
       if ($receiver_user_source === false)
         engelsystem_error(_("Unable to load user."));
       
-      $messages_html .= sprintf('<tr %s> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td><td>%s</td>', ($message['isRead'] == 'N' ? ' class="new_message"' : ''), ($message['isRead'] == 'N' ? '•' : ''), date("Y-m-d H:i", $message['Datum']), User_Nick_render($sender_user_source), User_Nick_render($receiver_user_source), str_replace("\n", '<br />', $message['Text']));
+      $messages_table_entry = array(
+          'new' => $message['isRead'] == 'N' ? '<span class="glyphicon glyphicon-envelope"></span>' : '',
+          'timestamp' => date("Y-m-d H:i", $message['Datum']),
+          'from' => User_Nick_render($sender_user_source),
+          'to' => User_Nick_render($receiver_user_source),
+          'text' => str_replace("\n", '<br />', $message['Text']) 
+      );
       
-      $messages_html .= '<td>';
       if ($message['RUID'] == $user['UID']) {
         if ($message['isRead'] == 'N')
-          $messages_html .= '<a href="' . page_link_to("user_messages") . '&action=read&id=' . $message['id'] . '">' . _("mark as read") . '</a>';
-      } else {
-        $messages_html .= '<a href="' . page_link_to("user_messages") . '&action=delete&id=' . $message['id'] . '">' . _("delete message") . '</a>';
-      }
-      $messages_html .= '</td></tr>';
+          $messages_table_entry['actions'] = button(page_link_to("user_messages") . '&action=read&id=' . $message['id'], _("mark as read"), 'btn-xs');
+      } else
+        $messages_table_entry['actions'] = button(page_link_to("user_messages") . '&action=delete&id=' . $message['id'], _("delete message"), 'btn-xs');
+      $messages_table[] = $messages_table_entry;
     }
-    
-    return template_render('../templates/user_messages.html', array(
-        'title' => messages_title(),
-        'link' => page_link_to("user_messages"),
-        'greeting' => msg() . sprintf(_("Hello %s, here can you leave messages for other angels"), User_Nick_render($user)) . '<br /><br />',
-        'messages' => $messages_html,
-        'new_label' => _("New"),
-        'date_label' => _("Date"),
-        'from_label' => _("Transmitted"),
-        'to_label' => _("Recipient"),
-        'text_label' => _("Message"),
-        'date' => date("Y-m-d H:i"),
+    $messages_table[] = array(
+        'news' => '',
+        'timestamp' => date("Y-m-d H:i"),
         'from' => User_Nick_render($user),
-        'to_select' => $to_select,
-        'submit_label' => _("Save") 
+        'to' => $to_select,
+        'text' => form_textarea('text', _("Message"), ''),
+        'actions' => form_submit('submit', _("Save")) 
+    );
+    
+    return page_with_title(messages_title(), array(
+        msg(),
+        sprintf(_("Hello %s, here can you leave messages for other angels"), User_Nick_render($user)),
+        form(array(
+            table(array(
+                'new' => _("New"),
+                'timestamp' => _("Date"),
+                'from' => _("Transmitted"),
+                'to' => _("Recipient"),
+                'text' => _("Message"),
+                'actions' => '' 
+            ), $messages_table) 
+        ), page_link_to('user_messages') . '&action=send') 
     ));
   } else {
     switch ($_REQUEST['action']) {

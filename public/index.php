@@ -58,7 +58,6 @@ require_once ('includes/pages/user_news.php');
 require_once ('includes/pages/user_questions.php');
 require_once ('includes/pages/user_settings.php');
 require_once ('includes/pages/user_shifts.php');
-require_once ('includes/pages/user_wakeup.php');
 
 require_once ('vendor/parsedown-0.9.0/Parsedown.php');
 
@@ -169,9 +168,6 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   } elseif ($p == "user_questions") {
     $title = questions_title();
     $content = user_questions();
-  } elseif ($p == "user_wakeup") {
-    $title = wakeup_title();
-    $content = user_wakeup();
   } elseif ($p == "user_settings") {
     $title = settings_title();
     $content = user_settings();
