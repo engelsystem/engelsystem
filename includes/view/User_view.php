@@ -57,7 +57,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_shift
     if ($its_me || in_array('user_shifts_admin', $privileges))
       $myshift['actions'] .= img_button(page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '&id=' . $user_source['UID'], 'pencil', _("edit"));
     if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges))
-      $myshift['actions'] .= img_button(page_link_to('user_myshifts') . ((! $its_me) ? '&id=' . $id : '') . '&cancel=' . $shift['id'], 'cross', _("sign off"));
+      $myshift['actions'] .= img_button(page_link_to('user_myshifts') . ((! $its_me) ? '&id=' . $user_source['UID'] : '') . '&cancel=' . $shift['id'], 'cross', _("sign off"));
     
     if ($shift['freeloaded'])
       $timesum += - 2 * ($shift['end'] - $shift['start']);
@@ -102,7 +102,8 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_shift
           )) 
       )),
       $admin_user_privilege ? buttons(array(
-          button(page_link_to('admin_user') . '&id=' . $user_source['UID'], '<span class="glyphicon glyphicon-edit"></span> ' . _("edit")) 
+          button(page_link_to('admin_user') . '&id=' . $user_source['UID'], '<span class="glyphicon glyphicon-edit"></span> ' . _("edit")),
+          ! $user_source['Gekommen'] ? button(page_link_to('admin_arrive') . '&arrived=' . $user_source['UID'], _("arrived")) : '' 
       )) : '',
       ($its_me || $admin_user_privilege) ? '<h2>' . _("Shifts") . '</h2>' : '',
       ($its_me || $admin_user_privilege) ? table(array(
@@ -212,11 +213,7 @@ function User_Avatar_render($user) {
  * @return string
  */
 function User_Nick_render($user_source) {
-  global $user, $privileges;
-  if ($user['UID'] == $user_source['UID'] || in_array('user_shifts_admin', $privileges))
-    return '<a href="' . page_link_to('users') . '&amp;action=view&amp;user_id=' . $user_source['UID'] . '"><span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . '</a>';
-  else
-    return htmlspecialchars($user_source['Nick']);
+  return '<a href="' . page_link_to('users') . '&amp;action=view&amp;user_id=' . $user_source['UID'] . '"><span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . '</a>';
 }
 
 ?>

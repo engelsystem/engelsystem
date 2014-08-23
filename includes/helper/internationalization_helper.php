@@ -45,11 +45,10 @@ function make_langselect() {
   global $locales;
   $URL = $_SERVER["REQUEST_URI"] . (strpos($_SERVER["REQUEST_URI"], "?") > 0 ? '&' : '?') . "set_locale=";
   
-  $html = '<p class="content">';
+  $items = array();
   foreach ($locales as $locale => $name)
-    $html .= '<a class="sprache" href="' . htmlspecialchars($URL) . $locale . '"><img src="pic/flag/' . $locale . '.png" alt="' . $name . '" title="' . $name . '"></a>';
-  $html .= '</p>';
-  return '<nav class="container"><h4>' . _("Language") . '</h4>' . $html . '</nav>';
+    $items[] = toolbar_item_link(htmlspecialchars($URL) . $locale, '', '<img src="pic/flag/' . $locale . '.png" alt="' . $name . '" title="' . $name . '"> ' . $name);
+  return toolbar_dropdown('', '<img src="pic/flag/' . $_SESSION['locale'] . '.png" alt="' . $locales[$_SESSION['locale']] . '" title="' . $locales[$_SESSION['locale']] . '"> ' . $locales[$_SESSION['locale']], $items);
 }
 
 ?>

@@ -16,7 +16,9 @@ function page_link_to_absolute($page) {
 function header_toolbar() {
   global $p, $privileges, $user;
   
-  $toolbar_items = array();
+  $toolbar_items = array(
+      make_langselect() 
+  );
   
   if (in_array('register', $privileges))
     $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'plus', register_title(), $p == 'register');
@@ -83,7 +85,7 @@ function make_navigation_for($name, $pages) {
 }
 
 function make_menu() {
-  return make_navigation() . make_langselect();
+  return make_navigation();
 }
 
 ?>

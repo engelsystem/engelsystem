@@ -36,6 +36,12 @@ function toolbar_item_link($href, $glyphicon, $label, $selected = false) {
   return '<li class="' . ($selected ? 'active' : '') . '"><a href="' . $href . '">' . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '') . $label . '</a></li>';
 }
 
+function toolbar_dropdown($glyphicon, $label, $submenu) {
+  return '<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">' . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '') . $label . ' <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">' . join("\n", $submenu) . '</ul></li>';
+}
+
 /**
  * Rendert ein Zahlenfeld mit Buttons zum verstellen
  */
