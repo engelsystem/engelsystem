@@ -149,7 +149,7 @@ function form_radio($name, $label, $selected, $value) {
 /**
  * Rendert einen Infotext in das Formular
  */
-function form_info($label, $text) {
+function form_info($label, $text = "") {
   if ($label == "")
     return '<span class="help-block">' . $text . '</span>';
   if ($text == "")

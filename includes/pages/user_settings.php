@@ -166,39 +166,45 @@ function user_settings() {
       sprintf(_("Hello %s, here you can change your personal settings i.e. password, color settings etc."), User_Nick_render($user)),
       $msg,
       msg(),
-      form(array(
-          form_info("", _("Here you can change your user details.")),
-          form_text('nick', _("Nick") . "*", $nick),
-          form_text('lastname', _("Last name"), $lastname),
-          form_text('prename', _("First name"), $prename),
-          form_text('age', _("Age"), $age),
-          form_text('tel', _("Phone"), $tel),
-          form_text('dect', _("DECT"), $dect),
-          form_text('mobile', _("Mobile"), $mobile),
-          form_text('mail', _("E-Mail") . "*", $mail),
-          form_text('icq', _("ICQ"), $icq),
-          form_text('jabber', _("Jabber"), $jabber),
-          form_text('hometown', _("Hometown"), $hometown),
-          $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',
-          form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
-          form_submit('submit', _("Save")) 
-      )),
-      form(array(
-          form_info("", _("Here you can change your password.")),
-          form_password('password', _("Old password:")),
-          form_password('new_password', _("New password:")),
-          form_password('new_password2', _("Password confirmation:")),
-          form_submit('submit_password', _("Save")) 
-      )),
-      form(array(
-          form_info("", _("Here you can choose your color settings:")),
-          form_select('theme', _("Color settings:"), $themes, $selected_theme),
-          form_submit('submit_theme', _("Save")) 
-      )),
-      form(array(
-          form_info("", _("Here you can choose your language:")),
-          form_select('language', _("Language:"), $locales, $selected_language),
-          form_submit('submit_language', _("Save")) 
+      div('row', array(
+          div('col-md-6', array(
+              form(array(
+                  form_info(_("Here you can change your user details.")),
+                  form_text('nick', _("Nick") . "*", $nick),
+                  form_text('lastname', _("Last name"), $lastname),
+                  form_text('prename', _("First name"), $prename),
+                  form_text('age', _("Age"), $age),
+                  form_text('tel', _("Phone"), $tel),
+                  form_text('dect', _("DECT"), $dect),
+                  form_text('mobile', _("Mobile"), $mobile),
+                  form_text('mail', _("E-Mail") . "*", $mail),
+                  form_text('icq', _("ICQ"), $icq),
+                  form_text('jabber', _("Jabber"), $jabber),
+                  form_text('hometown', _("Hometown"), $hometown),
+                  $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',
+                  form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
+                  form_submit('submit', _("Save")) 
+              )) 
+          )),
+          div('col-md-6', array(
+              form(array(
+                  form_info(_("Here you can change your password.")),
+                  form_password('password', _("Old password:")),
+                  form_password('new_password', _("New password:")),
+                  form_password('new_password2', _("Password confirmation:")),
+                  form_submit('submit_password', _("Save")) 
+              )),
+              form(array(
+                  form_info(_("Here you can choose your color settings:")),
+                  form_select('theme', _("Color settings:"), $themes, $selected_theme),
+                  form_submit('submit_theme', _("Save")) 
+              )),
+              form(array(
+                  form_info(_("Here you can choose your language:")),
+                  form_select('language', _("Language:"), $locales, $selected_language),
+                  form_submit('submit_language', _("Save")) 
+              )) 
+          )) 
       )) 
   ));
 }
