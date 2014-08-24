@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2014-08-24 16:21+0100\n"
-"PO-Revision-Date: 2014-08-24 16:22+0100\n"
+"POT-Creation-Date: 2014-08-24 16:47+0100\n"
+"PO-Revision-Date: 2014-08-24 16:47+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -555,7 +555,7 @@ msgstr "Jabber"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:81
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:153
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:180
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:167
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:161
 msgid "E-Mail"
 msgstr "E-Mail"
 
@@ -598,7 +598,7 @@ msgstr "Privilegien"
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:55
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:32
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:32
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:183
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:177
 msgid "Save"
 msgstr "Speichern"
 
@@ -938,12 +938,12 @@ msgstr "T-Shirt Größe"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:159
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:261
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:181
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:175
 msgid "Password"
 msgstr "Passwort"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:162
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:182
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:176
 msgid "Confirm password"
 msgstr "Passwort wiederholen"
 
@@ -1433,7 +1433,6 @@ msgid "iCal export"
 msgstr "iCal Export"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:747
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:151
 #, php-format
 msgid ""
 "Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s"
@@ -1643,12 +1642,12 @@ msgstr "Nächste Schicht %c"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:39
 #, php-format
-msgid "Shift start %c"
-msgstr "Schicht start %c"
+msgid "Shift starts %c"
+msgstr "Schicht startet %c"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:41
-#, php-format
-msgid "Shift end %c"
+#, fuzzy, php-format
+msgid "Shift ends %c"
 msgstr "Schicht endet %c"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:90
@@ -1684,13 +1683,11 @@ msgid "Rights"
 msgstr "Rechte"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:137
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:153
 #, fuzzy
 msgid "iCal Export"
 msgstr "iCal Export"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:138
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:154
 msgid "JSON Export"
 msgstr "JSON Export"
 
@@ -1719,11 +1716,7 @@ msgstr ""
 "Gehe zur <a href=\"%s\">Schicht-Tabelle</a>, um Dich für Schichten "
 "einzutragen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:150
-msgid "Exports"
-msgstr "Exporte"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:165
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:159
 msgid ""
 "We will send you an e-mail with a password recovery link. Please use the "
 "email address you used for registration."
@@ -1732,11 +1725,11 @@ msgstr ""
 "zurücksetzen kannst. Bitte benutze die Mailadresse, die du bei der Anmeldung "
 "verwendet hast."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:168
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:162
 msgid "Recover"
 msgstr "Wiederherstellen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:179
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:173
 msgid "Please enter a new password."
 msgstr "Gib bitte ein neues Passwort ein."
 
@@ -1823,6 +1816,9 @@ msgid ""
 msgstr ""
 "Du hast keinen Zugriff auf diese Seite. Registriere Dich und logge Dich "
 "bitte ein, um Zugriff zu erhalten!"
+
+#~ msgid "Exports"
+#~ msgstr "Exporte"
 
 #~ msgid "Current ends in %s min"
 #~ msgstr "Ende in %s min"
