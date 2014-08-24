@@ -20,14 +20,25 @@ $tshirt_sizes = array(
 );
 
 function User_shift_state_render($user) {
-  if ($shift_mode == 0)
+  $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
+  if ($upcoming_shifts === false)
+    return false;
+  
+  if (count($upcoming_shifts) == 0)
     return '<span class="text-success">' . _("Free") . '</span>';
-  if ($shift_mode > 8 * 3600)
-    return '<span class="text-success moment-countdown" data-seconds="' . $shift_mode . '">' . _("Next shift in") . '</span>';
-  if ($shift_mode > 0)
-    return '<span class="text-warning moment-countdown" data-seconds="' . $shift_mode . '">' . _("Next shift in") . '</span>';
-  if ($shift_mode < 0)
-    return '<span class="text-danger moment-countdown" data-seconds="' . $shift_mode . '">' . _("Current shift ends in") . '</span>';
+  
+  if ($upcoming_shifts[0]['start'] > time())
+    if ($upcoming_shifts[0]['start'] - time() > 3600)
+      return '<span class="text-success moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _("Next shift in %c") . '</span>';
+    else
+      return '<span class="text-warning moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _("Next shift in %c") . '</span>';
+  
+  $halfway = ($upcoming_shifts[0]['start'] + $upcoming_shifts[0]['end']) / 2;
+  
+  if (time() < $halfway)
+    return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _("Shift startet %c ago") . '</span>';
+  else
+    return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['end'] . '">' . _("Shift ends in %c") . '</span>';
 }
 
 function User_view($user_source, $admin_user_privilege, $freeloader, $user_angeltypes, $user_groups, $shifts, $its_me) {
