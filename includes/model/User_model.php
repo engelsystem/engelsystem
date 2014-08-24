@@ -4,23 +4,6 @@
  */
 
 /**
- * Returns -seconds until free if user is busy or seconds until next shift.
- * 0 if there is an error or no upcoming shift.
- *
- * @param User $user          
- */
-function User_shift_state($user) {
-  $shifts = ShiftEntries_upcoming_for_user($user);
-  if ($shifts === false)
-    return 0;
-  if (count($shifts) == 0)
-    return 0;
-  if ($shifts[0]['start'] < time())
-    return $shifts[0]['end'] - time();
-  return $shifts[0]['start'] - time();
-}
-
-/**
  * Returns true if user is freeloader
  *
  * @param User $user          

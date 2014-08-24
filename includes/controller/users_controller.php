@@ -50,7 +50,7 @@ function user_controller() {
   
   return array(
       $user_source['Nick'],
-      User_view($user_source, $admin_user_privilege, User_is_freeloader($user_source), User_shift_state($user_source), User_angeltypes($user_source), User_groups($user_source), $shifts, $user['UID'] == $user_source['UID']) 
+      User_view($user_source, $admin_user_privilege, User_is_freeloader($user_source), User_angeltypes($user_source), User_groups($user_source), $shifts, $user['UID'] == $user_source['UID']) 
   );
 }
 

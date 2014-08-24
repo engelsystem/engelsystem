@@ -49,7 +49,7 @@ function admin_free() {
     
     $free_users_table[] = array(
         'name' => User_Nick_render($usr),
-        'shift_state' => User_shift_mode_render(User_shift_state($usr)),
+        'shift_state' => User_shift_state_render($usr),
         'dect' => $usr['DECT'],
         'jabber' => $usr['jabber'],
         'email' => $usr['email'],

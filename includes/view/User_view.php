@@ -19,7 +19,7 @@ $tshirt_sizes = array(
     'XL-G' => "XL Girl" 
 );
 
-function User_shift_mode_render($shift_mode) {
+function User_shift_state_render($user) {
   if ($shift_mode == 0)
     return '<span class="text-success">' . _("Free") . '</span>';
   if ($shift_mode > 8 * 3600)
@@ -30,7 +30,7 @@ function User_shift_mode_render($shift_mode) {
     return '<span class="text-danger moment-countdown" data-seconds="' . $shift_mode . '">' . _("Current shift ends in") . '</span>';
 }
 
-function User_view($user_source, $admin_user_privilege, $freeloader, $user_shift_mode, $user_angeltypes, $user_groups, $shifts, $its_me) {
+function User_view($user_source, $admin_user_privilege, $freeloader, $user_angeltypes, $user_groups, $shifts, $its_me) {
   global $LETZTES_AUSTRAGEN, $privileges;
   
   $user_name = htmlspecialchars($user_source['Vorname']) . " " . htmlspecialchars($user_source['Name']);
@@ -106,7 +106,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_shift
           div('col-md-3', array(
               '<h4>' . _("User state") . '</h4>',
               ($admin_user_privilege && $freeloader) ? '<span class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> ' . _("Freeloader") . '</span><br />' : '',
-              $user_source['Gekommen'] ? User_shift_mode_render($user_shift_mode) . '<br />' : '',
+              $user_source['Gekommen'] ? User_shift_state_render($user_source) . '<br />' : '',
               ($user_source['Gekommen'] ? '<span class="text-success"><span class="glyphicon glyphicon-home"></span> ' . _("Arrived") . '</span>' : '<span class="text-danger">' . _("Not arrived") . '</span>'),
               ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Aktiv']) ? ' <span class="text-success">' . _("Active") . '</span>' : '',
               ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Tshirt']) ? ' <span class="text-success">' . _("T-Shirt") . '</span>' : '' 

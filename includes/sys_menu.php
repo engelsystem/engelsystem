@@ -19,7 +19,7 @@ function header_toolbar() {
   $toolbar_items = array();
   
   if (isset($user))
-    $toolbar_items[] = toolbar_item_link('#', 'time', User_shift_mode_render(User_shift_state($user)));
+    $toolbar_items[] = toolbar_item_link('#', 'time', User_shift_state_render(User_shift_state($user)));
   
   $toolbar_items[] = make_langselect();
   
