@@ -42,6 +42,10 @@ function toolbar_dropdown($glyphicon, $label, $submenu) {
           <ul class="dropdown-menu" role="menu">' . join("\n", $submenu) . '</ul></li>';
 }
 
+function form_hidden($name, $value) {
+  return '<input type="hidden" name="' . $name . '" value="' . $value . '" />';
+}
+
 /**
  * Rendert ein Zahlenfeld mit Buttons zum verstellen
  */

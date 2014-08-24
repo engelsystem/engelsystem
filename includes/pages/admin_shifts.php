@@ -189,15 +189,17 @@ function admin_shifts() {
         } while ($shift_end < $end);
       }
       
-      $shifts_table = "";
+      $shifts_table = array();
       foreach ($shifts as $shift) {
-        $shifts_table .= '<tr><td><span class="glyphicon glyphicon-time"></span> ' . date("Y-m-d H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . '<br /><span class="glyphicon glyphicon-map-marker"></span> ' . $room_array[$shift['RID']] . '</td>';
-        $shifts_table .= '<td>' . $shift['name'];
+        $shifts_table_entry = array(
+            'timeslot' => '<span class="glyphicon glyphicon-time"></span> ' . date("Y-m-d H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . '<br /><span class="glyphicon glyphicon-map-marker"></span> ' . $room_array[$shift['RID']],
+            'entries' => $shift['name'] 
+        );
         foreach ($types as $type) {
           if (isset($needed_angel_types[$type['id']]) && $needed_angel_types[$type['id']] > 0)
-            $shifts_table .= '<br /><span class="icon-icon_angel"></span> <b>' . $type['name'] . ':</b> ' . $needed_angel_types[$type['id']] . ' missing';
+            $shifts_table_entry['entries'] .= '<br /><span class="icon-icon_angel"></span> <b>' . $type['name'] . ':</b> ' . $needed_angel_types[$type['id']] . ' missing';
         }
-        $shifts_table .= '</td></tr>';
+        $shifts_table[] = $shifts_table_entry;
       }
       
       // Fürs Anlegen zwischenspeichern:
@@ -206,18 +208,25 @@ function admin_shifts() {
       
       $hidden_types = "";
       foreach ($needed_angel_types as $type_id => $count)
-        $hidden_types .= '<input type="hidden" name="type_' . $type_id . '" value="' . $count . '" />';
-      return template_render('../templates/admin_shift_preview.html', array(
-          'shifts_table' => $shifts_table,
-          'name' => $name,
-          'rid' => $rid,
-          'start' => date("Y-m-d H:i", $start),
-          'end' => date("Y-m-d H:i", $end),
-          'mode' => $mode,
-          'length' => $length,
-          'change_hours' => implode(', ', $change_hours),
-          'angelmode' => $angelmode,
-          'needed_angel_types' => $hidden_types 
+        $hidden_types .= form_hidden('type_' . $type_id, $count);
+      return page_with_title(_("Preview"), array(
+          form(array(
+              $hidden_types,
+              form_hidden('name', $name),
+              form_hidden('rid', $rid),
+              form_hidden('start', date("Y-m-d H:i", $start)),
+              form_hidden('end', date("Y-m-d H:i", $end)),
+              form_hidden('mode', $mode),
+              form_hidden('length', $length),
+              form_hidden('change_hours', implode(', ', $change_hours)),
+              form_hidden('angelmode', $angelmode),
+              form_submit('back', _("back")),
+              table(array(
+                  'timeslot' => _("Timeslot"),
+                  'entries' => _("Entries") 
+              ), $shifts_table),
+              form_submit('submit', _("Save")) 
+          )) 
       ));
     }
   

@@ -29,7 +29,7 @@ function admin_free() {
   
   $users = sql_select("SELECT `User`.* FROM `User` ${angeltypesearch} LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID` AND `Shifts`.`start` < " . sql_escape(time()) . " AND `Shifts`.`end` > " . sql_escape(time()) . ") WHERE `User`.`Gekommen` = 1 AND `Shifts`.`SID` IS NULL GROUP BY `User`.`UID` ORDER BY `Nick`");
   
-  $table = "";
+  $free_users_table = array();
   if ($search == "")
     $tokens = array();
   else
@@ -46,24 +46,41 @@ function admin_free() {
       if (! $match)
         continue;
     }
-    $table .= '<tr>';
-    $table .= '<td>' . User_Nick_render($usr) . '</td>';
-    $table .= '<td>' . $usr['DECT'] . '</td>';
-    $table .= '<td>' . $usr['jabber'] . '</td>';
-    if (in_array('admin_user', $privileges))
-      $table .= '<td><a href="' . page_link_to('admin_user') . '&amp;id=' . $usr['UID'] . '">edit</a></td>';
-    else
-      $table .= '<td>' . User_Nick_render($usr) . '</td>';
     
-    $table .= '</tr>';
+    $free_users_table[] = array(
+        'name' => User_Nick_render($usr),
+        'shift_state' => User_shift_mode_render(User_shift_state($usr)),
+        'dect' => $usr['DECT'],
+        'jabber' => $usr['jabber'],
+        'email' => $usr['email'],
+        'actions' => in_array('admin_user', $privileges) ? button(page_link_to('admin_user') . '&amp;id=' . $usr['UID'], _("edit"), 'btn-xs') : '' 
+    );
   }
-  return template_render('../templates/admin_free.html', array(
-      'title' => admin_free_title(),
-      'search' => $search,
-      'angeltypes' => html_select_key('angeltype', 'angeltype', $angel_types, $_REQUEST['angeltype']),
-      'confirmed_only' => isset($_REQUEST['confirmed_only']) ? 'checked' : '',
-      'table' => $table,
-      'link' => page_link_to('admin_free') 
+  return page_with_title(admin_free_title(), array(
+      form(array(
+          div('row', array(
+              div('col-md-4', array(
+                  form_text('search', _("Search"), $search) 
+              )),
+              div('col-md-4', array(
+                  form_select('angeltype', _("Angeltype"), $angel_types, $_REQUEST['angeltype']) 
+              )),
+              div('col-md-2', array(
+                  form_checkbox('confirmed_only', _("Only confirmed"), isset($_REQUEST['confirmed_only'])) 
+              )),
+              div('col-md-2', array(
+                  form_submit('submit', _("Search")) 
+              )) 
+          )) 
+      )),
+      table(array(
+          'name' => _("Nick"),
+          'shift_state' => '',
+          'dect' => _("DECT"),
+          'jabber' => _("Jabber"),
+          'email' => _("E-Mail"),
+          'actions' => '' 
+      ), $free_users_table) 
   ));
 }
 ?>

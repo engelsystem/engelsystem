@@ -23,7 +23,10 @@ function user_myshifts() {
       success(_("Key changed."));
       redirect(page_link_to('user_myshifts'));
     }
-    return template_render('../templates/user_myshifts_reset.html', array());
+    return page_with_title(_("Reset API key"), array(
+        error(_("If you reset the key, the url to your iCal- and JSON-export and your atom feed changes! You have to update it in every application using one of these exports."), true),
+        button(page_link_to('myshifts') . '&reset=ack', _("Continue"), 'btn-danger') 
+    ));
   } elseif (isset($_REQUEST['edit']) && preg_match("/^[0-9]*$/", $_REQUEST['edit'])) {
     $id = $_REQUEST['edit'];
     $shift = sql_select("SELECT 
