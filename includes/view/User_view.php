@@ -36,9 +36,9 @@ function User_shift_state_render($user) {
   $halfway = ($upcoming_shifts[0]['start'] + $upcoming_shifts[0]['end']) / 2;
   
   if (time() < $halfway)
-    return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _("Shift start %c") . '</span>';
+    return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _("Shift starts %c") . '</span>';
   else
-    return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['end'] . '">' . _("Shift end %c") . '</span>';
+    return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['end'] . '">' . _("Shift ends %c") . '</span>';
 }
 
 function User_view($user_source, $admin_user_privilege, $freeloader, $user_angeltypes, $user_groups, $shifts, $its_me) {
@@ -134,8 +134,8 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
       buttons(array(
           $admin_user_privilege ? button(page_link_to('admin_user') . '&id=' . $user_source['UID'], '<span class="glyphicon glyphicon-edit"></span> ' . _("edit")) : '',
           ! $user_source['Gekommen'] ? button(page_link_to('admin_arrive') . '&arrived=' . $user_source['UID'], _("arrived")) : '',
-          button(page_link_to_absolute('ical') . '&key=' . $user_source['api_key'], '<span class="glyphicon glyphicon-calendar"></span> ' . _("iCal Export")),
-          button(page_link_to_absolute('shifts_json_export') . '&key=' . $user_source['api_key'], '<span class="glyphicon glyphicon-export"></span> ' . _("JSON Export")) 
+          $its_me ? button(page_link_to_absolute('ical') . '&key=' . $user_source['api_key'], '<span class="glyphicon glyphicon-calendar"></span> ' . _("iCal Export")) : '',
+          $its_me ? button(page_link_to_absolute('shifts_json_export') . '&key=' . $user_source['api_key'], '<span class="glyphicon glyphicon-export"></span> ' . _("JSON Export")) : '' 
       )),
       ($its_me || $admin_user_privilege) ? '<h2>' . _("Shifts") . '</h2>' : '',
       ($its_me || $admin_user_privilege) ? table(array(
@@ -146,13 +146,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
           'comment' => _("Comment"),
           'actions' => _("Action") 
       ), $myshifts_table) : '',
-      $its_me && count($shifts) == 0 ? error(sprintf(_("Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some shifts."), page_link_to('user_shifts')), true) : '',
-      ($its_me || $admin_user_privilege) ? '<h2>' . _("Exports") . '</h2>' : '',
-      $its_me ? (sprintf(_("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."), page_link_to_absolute('ical') . '&key=' . $user_source['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $user_source['api_key'], page_link_to('user_myshifts') . '&reset')) : '',
-      (! $its_me && $admin_user_privilege) ? buttons(array(
-          button(page_link_to_absolute('ical') . '&key=' . $user_source['api_key'], '<span class="glyphicon glyphicon-calendar"></span> ' . _("iCal Export")),
-          button(page_link_to_absolute('shifts_json_export') . '&key=' . $user_source['api_key'], '<span class="glyphicon glyphicon-export"></span> ' . _("JSON Export")) 
-      )) : '' 
+      $its_me && count($shifts) == 0 ? error(sprintf(_("Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some shifts."), page_link_to('user_shifts')), true) : '' 
   ));
 }
 
