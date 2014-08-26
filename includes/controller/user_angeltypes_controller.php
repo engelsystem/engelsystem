@@ -155,7 +155,7 @@ function user_angeltype_confirm_controller() {
   
   return array(
       _("Confirm angeltype for user"),
-      UserAngelType_confirm_view($user_angeltype, $user, $angeltype) 
+      UserAngelType_confirm_view($user_angeltype, $user_source, $angeltype) 
   );
 }
 
