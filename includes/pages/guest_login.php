@@ -255,7 +255,7 @@ function guest_login() {
   
   return page_with_title(login_title(), array(
       msg(),
-      '<div class="container"><div class="col-md-6">',
+      '<div class="row"><div class="col-md-6">',
       form(array(
           form_text('nick', _("Nick"), $nick),
           form_password('password', _("Password")),

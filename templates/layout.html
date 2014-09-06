@@ -18,7 +18,13 @@
 <body>
   <div class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand" href="?"><span class="icon-icon_angel"></span> <strong>ENGELSYSTEM</strong></a> %header_toolbar%
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="?"><span class="icon-icon_angel"></span> <strong>ENGELSYSTEM</strong></a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar-collapse-1">%header_toolbar%</div>
     </div>
   </div>
   <div class="container-fluid">
@@ -40,10 +46,10 @@
   <script type="text/javascript" src="js/forms.js"></script>
   <script type="text/javascript" src="vendor/moment-with-locales.min.js"></script>
   <script type="text/javascript">
-    $(function() {
-      moment.locale("%locale%");
-    });
-  </script>
+			$(function() {
+				moment.locale("%locale%");
+			});
+		</script>
   <script type="text/javascript" src="js/moment-countdown.js"></script>
 </body>
 </html>
