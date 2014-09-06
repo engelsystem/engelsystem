@@ -213,7 +213,7 @@ function user_angeltype_delete_controller() {
   
   return array(
       _("Remove angeltype"),
-      UserAngelType_delete_view($user_angeltype, $user, $angeltype) 
+      UserAngelType_delete_view($user_angeltype, $user_source, $angeltype) 
   );
 }
 
