@@ -1,65 +1,64 @@
 <?php
-require_once ('bootstrap.php');
 
-require_once ('includes/mysql_provider.php');
+require_once realpath(__DIR__ . '/../includes/mysql_provider.php');
 
-require_once ('includes/sys_auth.php');
-require_once ('includes/sys_counter.php');
-require_once ('includes/sys_log.php');
-require_once ('includes/sys_menu.php');
-require_once ('includes/sys_page.php');
-require_once ('includes/sys_template.php');
+require_once realpath(__DIR__ . '/../includes/sys_auth.php');
+require_once realpath(__DIR__ . '/../includes/sys_counter.php');
+require_once realpath(__DIR__ . '/../includes/sys_log.php');
+require_once realpath(__DIR__ . '/../includes/sys_menu.php');
+require_once realpath(__DIR__ . '/../includes/sys_page.php');
+require_once realpath(__DIR__ . '/../includes/sys_template.php');
 
-require_once ('includes/model/AngelType_model.php');
-require_once ('includes/model/LogEntries_model.php');
-require_once ('includes/model/Message_model.php');
-require_once ('includes/model/NeededAngelTypes_model.php');
-require_once ('includes/model/Room_model.php');
-require_once ('includes/model/ShiftEntry_model.php');
-require_once ('includes/model/Shifts_model.php');
-require_once ('includes/model/UserAngelTypes_model.php');
-require_once ('includes/model/UserGroups_model.php');
-require_once ('includes/model/User_model.php');
+require_once realpath(__DIR__ . '/../includes/model/AngelType_model.php');
+require_once realpath(__DIR__ . '/../includes/model/LogEntries_model.php');
+require_once realpath(__DIR__ . '/../includes/model/Message_model.php');
+require_once realpath(__DIR__ . '/../includes/model/NeededAngelTypes_model.php');
+require_once realpath(__DIR__ . '/../includes/model/Room_model.php');
+require_once realpath(__DIR__ . '/../includes/model/ShiftEntry_model.php');
+require_once realpath(__DIR__ . '/../includes/model/Shifts_model.php');
+require_once realpath(__DIR__ . '/../includes/model/UserAngelTypes_model.php');
+require_once realpath(__DIR__ . '/../includes/model/UserGroups_model.php');
+require_once realpath(__DIR__ . '/../includes/model/User_model.php');
 
-require_once ('includes/view/AngelTypes_view.php');
-require_once ('includes/view/Questions_view.php');
-require_once ('includes/view/Shifts_view.php');
-require_once ('includes/view/ShiftEntry_view.php');
-require_once ('includes/view/UserAngelTypes_view.php');
-require_once ('includes/view/User_view.php');
+require_once realpath(__DIR__ . '/../includes/view/AngelTypes_view.php');
+require_once realpath(__DIR__ . '/../includes/view/Questions_view.php');
+require_once realpath(__DIR__ . '/../includes/view/Shifts_view.php');
+require_once realpath(__DIR__ . '/../includes/view/ShiftEntry_view.php');
+require_once realpath(__DIR__ . '/../includes/view/UserAngelTypes_view.php');
+require_once realpath(__DIR__ . '/../includes/view/User_view.php');
 
-require_once ('includes/controller/angeltypes_controller.php');
-require_once ('includes/controller/users_controller.php');
-require_once ('includes/controller/user_angeltypes_controller.php');
+require_once realpath(__DIR__ . '/../includes/controller/angeltypes_controller.php');
+require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
+require_once realpath(__DIR__ . '/../includes/controller/user_angeltypes_controller.php');
 
-require_once ('includes/helper/internationalization_helper.php');
-require_once ('includes/helper/message_helper.php');
-require_once ('includes/helper/error_helper.php');
-require_once ('includes/helper/email_helper.php');
+require_once realpath(__DIR__ . '/../includes/helper/internationalization_helper.php');
+require_once realpath(__DIR__ . '/../includes/helper/message_helper.php');
+require_once realpath(__DIR__ . '/../includes/helper/error_helper.php');
+require_once realpath(__DIR__ . '/../includes/helper/email_helper.php');
 
-require_once ('config/config.default.php');
-if (file_exists('../config/config.php'))
-  require_once ('config/config.php');
+require_once realpath(__DIR__ . '/../config/config.default.php');
+if (file_exists(realpath(__DIR__ . '/../config/config.php'))
+  require_once realpath(__DIR__ . '/../config/config.php');
 
-require_once ('includes/pages/admin_active.php');
-require_once ('includes/pages/admin_arrive.php');
-require_once ('includes/pages/admin_free.php');
-require_once ('includes/pages/admin_groups.php');
-require_once ('includes/pages/admin_import.php');
-require_once ('includes/pages/admin_log.php');
-require_once ('includes/pages/admin_questions.php');
-require_once ('includes/pages/admin_rooms.php');
-require_once ('includes/pages/admin_shifts.php');
-require_once ('includes/pages/admin_user.php');
-require_once ('includes/pages/guest_login.php');
-require_once ('includes/pages/user_messages.php');
-require_once ('includes/pages/user_myshifts.php');
-require_once ('includes/pages/user_news.php');
-require_once ('includes/pages/user_questions.php');
-require_once ('includes/pages/user_settings.php');
-require_once ('includes/pages/user_shifts.php');
+require_once realpath(__DIR__ . '/../includes/pages/admin_active.php');
+require_once realpath(__DIR__ . '/../includes/pages/admin_arrive.php');
+require_once realpath(__DIR__ . '/../includes/pages/admin_free.php');
+require_once realpath(__DIR__ . '/../includes/pages/admin_groups.php');
+require_once realpath(__DIR__ . '/../includes/pages/admin_import.php');
+require_once realpath(__DIR__ . '/../includes/pages/admin_log.php');
+require_once realpath(__DIR__ . '/../includes/pages/admin_questions.php');
+require_once realpath(__DIR__ . '/../includes/pages/admin_rooms.php');
+require_once realpath(__DIR__ . '/../includes/pages/admin_shifts.php');
+require_once realpath(__DIR__ . '/../includes/pages/admin_user.php');
+require_once realpath(__DIR__ . '/../includes/pages/guest_login.php');
+require_once realpath(__DIR__ . '/../includes/pages/user_messages.php');
+require_once realpath(__DIR__ . '/../includes/pages/user_myshifts.php');
+require_once realpath(__DIR__ . '/../includes/pages/user_news.php');
+require_once realpath(__DIR__ . '/../includes/pages/user_questions.php');
+require_once realpath(__DIR__ . '/../includes/pages/user_settings.php');
+require_once realpath(__DIR__ . '/../includes/pages/user_shifts.php');
 
-require_once ('vendor/parsedown-0.9.0/Parsedown.php');
+require_once realpath(__DIR__ . '/../vendor/parsedown/Parsedown.php');
 
 session_start();
 
@@ -117,27 +116,27 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   $content = "";
   
   if ($p == "api") {
-    require_once ('includes/controller/api.php');
+    require_once realpath(__DIR__ . '/../includes/controller/api.php');
     error("Api disabled temporily.");
     redirect(page_link_to('login'));
     api_controller();
   } elseif ($p == "ical") {
-    require_once ('includes/pages/user_ical.php');
+    require_once realpath(__DIR__ . '/../includes/pages/user_ical.php');
     user_ical();
   } elseif ($p == "atom") {
-    require_once ('includes/pages/user_atom.php');
+    require_once realpath(__DIR__ . '/../includes/pages/user_atom.php');
     user_atom();
   } elseif ($p == "shifts_json_export") {
-    require_once ('includes/controller/shifts_controller.php');
+    require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
     shifts_json_export_controller();
   } elseif ($p == "shifts_json_export_all") {
-    require_once ('includes/controller/shifts_controller.php');
+    require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
     shifts_json_export_all_controller();
   } elseif ($p == "stats") {
-    require_once ('includes/pages/guest_stats.php');
+    require_once realpath(__DIR__ . '/../includes/pages/guest_stats.php');
     guest_stats();
   } elseif ($p == "user_password_recovery") {
-    require_once ('includes/controller/users_controller.php');
+    require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
     $title = user_password_recovery_title();
     $content = user_password_recovery_controller();
   } elseif ($p == "angeltypes") {
@@ -150,7 +149,7 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     $title = news_title();
     $content = user_news();
   } elseif ($p == "news_comments") {
-    require_once ('includes/pages/user_news.php');
+    require_once realpath(__DIR__ . '/../includes/pages/user_news.php');
     $title = user_news_comments_title();
     $content = user_news_comments();
   } elseif ($p == "user_meetings") {
@@ -196,7 +195,7 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     $title = admin_free_title();
     $content = admin_free();
   } elseif ($p == "admin_news") {
-    require_once ('includes/pages/admin_news.php');
+    require_once realpath(__DIR__ . '/../includes/pages/admin_news.php');
     $content = admin_news();
   } elseif ($p == "admin_rooms") {
     $title = admin_rooms_title();
@@ -205,7 +204,7 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     $title = admin_groups_title();
     $content = admin_groups();
   } elseif ($p == "admin_language") {
-    require_once ('includes/pages/admin_language.php');
+    require_once realpath(__DIR__ . '/../includes/pages/admin_language.php');
     $content = admin_language();
   } elseif ($p == "admin_import") {
     $title = admin_import_title();
@@ -217,11 +216,11 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     $title = admin_log_title();
     $content = admin_log();
   } elseif ($p == "credits") {
-    require_once ('includes/pages/guest_credits.php');
+    require_once realpath(__DIR__ . '/../includes/pages/guest_credits.php');
     $title = credits_title();
     $content = guest_credits();
   } else {
-    require_once ('includes/pages/guest_start.php');
+    require_once realpath(__DIR__ . '/../includes/pages/guest_start.php');
     $content = guest_start();
   }
 } else {
@@ -247,4 +246,5 @@ echo template_render('../templates/layout.html', array(
 ));
 
 counter();
+
 ?>
