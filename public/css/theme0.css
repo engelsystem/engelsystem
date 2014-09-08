@@ -6304,3 +6304,15 @@ body {
 .footer a {
   color: #777777;
 }
+td.free {
+  background-color: #f2dede;
+}
+atd.free:hover {
+  background-color: #e4b9b9;
+}
+td.occupied {
+  background-color: #dff0d8;
+}
+atd.occupied:hover {
+  background-color: #c1e2b3;
+}

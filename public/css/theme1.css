@@ -6327,6 +6327,18 @@ body {
 .footer a {
   color: #888888;
 }
+td.free {
+  background-color: #d9534f;
+}
+atd.free:hover {
+  background-color: #c9302c;
+}
+td.occupied {
+  background-color: #5cb85c;
+}
+atd.occupied:hover {
+  background-color: #449d44;
+}
 .text-primary,
 .text-primary:hover {
   color: #428bca;
