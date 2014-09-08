@@ -6,7 +6,7 @@ function admin_user_title() {
 function admin_user() {
   global $user, $privileges, $tshirt_sizes, $privileges;
   
-  $html = '<div class="col-md-10">';
+  $html = '<div class="col-md-12">';
   
   if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,}$/", $_REQUEST['id']) && sql_num_query("SELECT * FROM `User` WHERE `UID`=" . sql_escape($_REQUEST['id'])) > 0) {
     $id = $_REQUEST['id'];

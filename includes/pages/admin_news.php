@@ -5,7 +5,7 @@ function admin_news() {
   if (! isset($_GET["action"])) {
     redirect(page_link_to("news"));
   } else {
-    $html = '<div class="col-md-10"><h1>' . _("Edit news entry") . '</h1>';
+    $html = '<div class="col-md-12"><h1>' . _("Edit news entry") . '</h1>';
     if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id']))
       $id = $_REQUEST['id'];
     else

@@ -730,7 +730,7 @@ function view_user_shifts() {
     User_reset_api_key($user);
   
   return page(array(
-      '<div class="col-md-10">',
+      '<div class="col-md-12">',
       msg(),
       template_render('../templates/user_shifts.html', array(
           'title' => shifts_title(),

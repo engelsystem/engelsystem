@@ -23,29 +23,32 @@ function header_toolbar() {
   
   $toolbar_items[] = make_langselect();
   
-  if (in_array('register', $privileges))
+  if (! isset($user) && in_array('register', $privileges))
     $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'plus', register_title(), $p == 'register');
-  
-  if (in_array('user_myshifts', $privileges))
-    $toolbar_items[] = toolbar_item_link(page_link_to('users') . '&amp;action=view', ' icon-icon_angel', $user['Nick'], $p == 'users');
-  
-  if (in_array('user_settings', $privileges))
-    $toolbar_items[] = toolbar_item_link(page_link_to('user_settings'), 'list-alt', settings_title(), $p == 'user_settings');
   
   if (in_array('login', $privileges))
     $toolbar_items[] = toolbar_item_link(page_link_to('login'), 'log-in', login_title(), $p == 'login');
   
-  if (in_array('logout', $privileges))
-    $toolbar_items[] = toolbar_item_link(page_link_to('logout'), 'log-out', logout_title(), $p == 'logout');
+  $user_submenu = array();
+  if (in_array('user_myshifts', $privileges))
+    $toolbar_items[] = toolbar_item_link(page_link_to('users') . '&amp;action=view', ' icon-icon_angel', $user['Nick'], $p == 'users');
   
-  return toolbar($toolbar_items);
+  if (in_array('user_settings', $privileges))
+    $user_submenu[] = toolbar_item_link(page_link_to('user_settings'), 'list-alt', settings_title(), $p == 'user_settings');
+  
+  if (in_array('logout', $privileges))
+    $user_submenu[] = toolbar_item_link(page_link_to('logout'), 'log-out', logout_title(), $p == 'logout');
+  
+  if (count($user_submenu) > 0)
+    $toolbar_items[] = toolbar_dropdown('', '', $user_submenu);
+  
+  return toolbar($toolbar_items, true);
 }
 
 function make_navigation() {
-  global $p;
-  global $privileges;
-  $menu = "";
+  global $p, $privileges;
   
+  $menu = array();
   $pages = array(
       "news" => news_title(),
       "user_meetings" => meetings_title(),
@@ -53,7 +56,15 @@ function make_navigation() {
       "user_shifts" => shifts_title(),
       "angeltypes" => angeltypes_title(),
       "user_messages" => messages_title() . ' ' . user_unread_messages(),
-      "user_questions" => questions_title(),
+      "user_questions" => questions_title() 
+  );
+  
+  foreach ($pages as $page => $title)
+    if (in_array($page, $privileges))
+      $menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $p);
+  
+  $admin_menu = array();
+  $admin_pages = array(
       "admin_arrive" => admin_arrive_title(),
       "admin_active" => admin_active_title(),
       "admin_user" => admin_user_title(),
@@ -66,11 +77,14 @@ function make_navigation() {
       "admin_log" => admin_log_title() 
   );
   
-  foreach ($pages as $page => $title)
+  foreach ($admin_pages as $page => $title)
     if (in_array($page, $privileges))
-      $menu .= '<li class="' . ($page == $p ? 'active' : '') . '"><a href="' . page_link_to($page) . '">' . $title . '</a></li>';
+      $admin_menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $p);
   
-  return '<ul class="nav nav-pills nav-stacked">' . $menu . '</ul>';
+  if (count($admin_menu) > 0)
+    $menu[] = toolbar_dropdown('', _("Admin"), $admin_menu);
+  
+  return toolbar($menu);
 }
 
 function make_navigation_for($name, $pages) {

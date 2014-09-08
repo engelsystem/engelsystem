@@ -19,8 +19,8 @@ function div($class, $content = array(), $id = "") {
  * @param array $items          
  * @return string
  */
-function toolbar($items = array()) {
-  return '<ul class="nav navbar-nav navbar-right">' . join("\n", $items) . '</ul>';
+function toolbar($items = array(), $right = false) {
+  return '<ul class="nav navbar-nav' . ($right ? ' navbar-right' : '') . '">' . join("\n", $items) . '</ul>';
 }
 
 /**
@@ -233,7 +233,7 @@ function page($elements) {
  * Fügt dazu die übergebenen Elemente zusammen.
  */
 function page_with_title($title, $elements) {
-  return '<div class="col-md-10"><h1>' . $title . '</h1>' . join($elements) . '</div>';
+  return '<div class="col-md-12"><h1>' . $title . '</h1>' . join($elements) . '</div>';
 }
 
 /**

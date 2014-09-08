@@ -14,7 +14,7 @@ function meetings_title() {
 function user_meetings() {
   global $DISPLAY_NEWS, $privileges, $user;
   
-  $html = '<div class="col-md-10"><h1>' . meetings_title() . '</h1>' . msg();
+  $html = '<div class="col-md-12"><h1>' . meetings_title() . '</h1>' . msg();
   
   if (isset($_REQUEST['page']) && preg_match("/^[0-9]{1,}$/", $_REQUEST['page']))
     $page = $_REQUEST['page'];
@@ -72,7 +72,7 @@ function display_news($news) {
 function user_news_comments() {
   global $user;
   
-  $html = '<div class="col-md-10"><h1>' . user_news_comments_title() . '</h1>';
+  $html = '<div class="col-md-12"><h1>' . user_news_comments_title() . '</h1>';
   if (isset($_REQUEST["nid"]) && preg_match("/^[0-9]{1,}$/", $_REQUEST['nid']) && sql_num_query("SELECT * FROM `News` WHERE `ID`=" . sql_escape($_REQUEST['nid']) . " LIMIT 1") > 0) {
     $nid = $_REQUEST["nid"];
     list($news) = sql_select("SELECT * FROM `News` WHERE `ID`=" . sql_escape($nid) . " LIMIT 1");
@@ -116,7 +116,7 @@ function user_news_comments() {
 function user_news() {
   global $DISPLAY_NEWS, $privileges, $user;
   
-  $html = '<div class="col-md-10"><h1>' . news_title() . '</h1>' . msg();
+  $html = '<div class="col-md-12"><h1>' . news_title() . '</h1>' . msg();
   
   if (isset($_POST["text"]) && isset($_POST["betreff"]) && in_array("admin_news", $privileges)) {
     if (! isset($_POST["treffen"]) || ! in_array("admin_news", $privileges))
