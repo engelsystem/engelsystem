@@ -19,7 +19,7 @@ function user_ical() {
     die("No privilege for ical.");
 
   if (isset ($_REQUEST['export']) && $_REQUEST['export'] == 'user_shifts') {
-    require_once ('includes/pages/user_shifts.php');
+    require_once realpath(__DIR__ . '/user_shifts.php');
     view_user_shifts();
   } else {
     $ical_shifts = sql_select("SELECT `Shifts`.*, `Room`.`Name` as `room_name` FROM `ShiftEntry` INNER JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) INNER JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `UID`=" . sql_escape($user['UID']) . " ORDER BY `start`");
