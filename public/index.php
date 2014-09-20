@@ -35,6 +35,7 @@ require_once realpath(__DIR__ . '/../includes/helper/internationalization_helper
 require_once realpath(__DIR__ . '/../includes/helper/message_helper.php');
 require_once realpath(__DIR__ . '/../includes/helper/error_helper.php');
 require_once realpath(__DIR__ . '/../includes/helper/email_helper.php');
+require_once realpath(__DIR__ . '/../includes/helper/session_helper.php');
 
 require_once realpath(__DIR__ . '/../config/config.default.php');
 if (file_exists(realpath(__DIR__ . '/../config/config.php')))
@@ -60,6 +61,7 @@ require_once realpath(__DIR__ . '/../includes/pages/user_shifts.php');
 
 require_once realpath(__DIR__ . '/../vendor/parsedown/Parsedown.php');
 
+session_lifetime(24*60, preg_replace("/[^a-z0-9-]/", '', $_SERVER['REQUEST_URI']));
 session_start();
 
 gettext_init();
