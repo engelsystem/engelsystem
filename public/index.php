@@ -61,7 +61,7 @@ require_once realpath(__DIR__ . '/../includes/pages/user_shifts.php');
 
 require_once realpath(__DIR__ . '/../vendor/parsedown/Parsedown.php');
 
-session_lifetime(24*60, preg_replace("/[^a-z0-9-]/", '', $_SERVER['REQUEST_URI']));
+session_lifetime(24*60, preg_replace("/[^a-z0-9-]/", '', md5(__DIR__)));
 session_start();
 
 gettext_init();
