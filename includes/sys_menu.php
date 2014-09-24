@@ -27,6 +27,9 @@ function header_toolbar() {
   if (in_array('login', $privileges))
     $toolbar_items[] = toolbar_item_link(page_link_to('login'), 'log-in', login_title(), $p == 'login');
   
+  if(isset($user) && in_array('user_messages', $privileges))
+    $toolbar_items[] = toolbar_item_link(page_link_to('user_messages'), 'envelope', user_unread_messages());
+  
   $user_submenu = make_langselect();
   $user_submenu[] = toolbar_item_divider();
   if (in_array('user_myshifts', $privileges))
@@ -53,7 +56,6 @@ function make_navigation() {
       "user_meetings" => meetings_title(),
       "user_shifts" => shifts_title(),
       "angeltypes" => angeltypes_title(),
-      "user_messages" => messages_title() . ' ' . user_unread_messages(),
       "user_questions" => questions_title() 
   );
   
