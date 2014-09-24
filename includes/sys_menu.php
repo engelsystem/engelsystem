@@ -21,15 +21,14 @@ function header_toolbar() {
   if (isset($user))
     $toolbar_items[] = toolbar_item_link('#', 'time', User_shift_state_render($user));
   
-  $toolbar_items[] = make_langselect();
-  
   if (! isset($user) && in_array('register', $privileges))
     $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'plus', register_title(), $p == 'register');
   
   if (in_array('login', $privileges))
     $toolbar_items[] = toolbar_item_link(page_link_to('login'), 'log-in', login_title(), $p == 'login');
   
-  $user_submenu = array();
+  $user_submenu = make_langselect();
+  $user_submenu[] = toolbar_item_divider();
   if (in_array('user_myshifts', $privileges))
     $toolbar_items[] = toolbar_item_link(page_link_to('users') . '&amp;action=view', ' icon-icon_angel', $user['Nick'], $p == 'users');
   

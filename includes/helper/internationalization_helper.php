@@ -48,7 +48,7 @@ function make_langselect() {
   $items = array();
   foreach ($locales as $locale => $name)
     $items[] = toolbar_item_link(htmlspecialchars($URL) . $locale, '', '<img src="pic/flag/' . $locale . '.png" alt="' . $name . '" title="' . $name . '"> ' . $name);
-  return toolbar_dropdown('', '<img src="pic/flag/' . $_SESSION['locale'] . '.png" alt="' . $locales[$_SESSION['locale']] . '" title="' . $locales[$_SESSION['locale']] . '">', $items);
+  return $items;
 }
 
 ?>
