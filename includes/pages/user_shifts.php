@@ -1,6 +1,6 @@
 <?php
 function shifts_title() {
-  return _("All Shifts");
+  return _("Shifts");
 }
 
 function user_shifts() {

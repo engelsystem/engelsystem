@@ -52,7 +52,6 @@ function make_navigation() {
   $pages = array(
       "news" => news_title(),
       "user_meetings" => meetings_title(),
-      "user_myshifts" => myshifts_title(),
       "user_shifts" => shifts_title(),
       "angeltypes" => angeltypes_title(),
       "user_messages" => messages_title() . ' ' . user_unread_messages(),
