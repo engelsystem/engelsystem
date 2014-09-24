@@ -1,4 +1,5 @@
 <?php
+
 function admin_user_title() {
   return _("All Angels");
 }
@@ -6,11 +7,12 @@ function admin_user_title() {
 function admin_user() {
   global $user, $privileges, $tshirt_sizes, $privileges;
   
-  $html = '<div class="col-md-12">';
+  $html = '';
   
   if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,}$/", $_REQUEST['id']) && sql_num_query("SELECT * FROM `User` WHERE `UID`=" . sql_escape($_REQUEST['id'])) > 0) {
     $id = $_REQUEST['id'];
     if (! isset($_REQUEST['action'])) {
+      $html .= '<h1>' . _('Edit user') . '</h1>';
       $html .= "Hallo,<br />" . "hier kannst du den Eintrag &auml;ndern. Unter dem Punkt 'Gekommen' " . "wird der Engel als anwesend markiert, ein Ja bei Aktiv bedeutet, " . "dass der Engel aktiv war und damit ein Anspruch auf ein T-Shirt hat. " . "Wenn T-Shirt ein 'Ja' enth&auml;lt, bedeutet dies, dass der Engel " . "bereits sein T-Shirt erhalten hat.<br /><br />\n";
       
       $html .= "<form action=\"" . page_link_to("admin_user") . "&action=save&id=$id\" method=\"post\">\n";
@@ -264,6 +266,7 @@ function admin_user() {
     }
   } else {
     // Userliste, keine UID uebergeben...
+    $html .= '<h1>' . _('All users') . '</h1>';
     
     $html .= "<a href=\"" . page_link_to("register") . "\">Neuen Engel eintragen &raquo;</a><br /><br />\n";
     
@@ -271,11 +274,6 @@ function admin_user() {
       $_GET["OrderBy"] = "Nick";
     $SQL = "SELECT * FROM `User` ORDER BY `" . sql_escape($_GET["OrderBy"]) . "` ASC";
     $angels = sql_select($SQL);
-    
-    // anzahl zeilen
-    $Zeilen = count($angels);
-    
-    $html .= "Anzahl Engel: $Zeilen<br /><br />\n";
     
     function prepare_angel_table($angel) {
       global $privileges;
@@ -330,7 +328,8 @@ function admin_user() {
         'Aktiv' => $Active,
         'force_active' => $force_active_count,
         'freeloads' => $freeloads_count,
-        'Tshirt' => $Tshirt 
+        'Tshirt' => $Tshirt ,
+        'edit' => '<strong>' . count($angels) . '</strong>'
     );
     $html .= table(array(
         'Nick' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=Nick">Nick</a>',
@@ -346,6 +345,10 @@ function admin_user() {
         'edit' => '' 
     ), $angels);
   }
-  return $html . '</div>';
+  return page(array(
+      '<div class="col-md-12">',
+      $html,
+      '</div>' 
+  ));
 }
 ?>
