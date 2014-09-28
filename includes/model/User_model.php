@@ -5,8 +5,47 @@
  */
 
 /**
+ * Counts all forced active users.
+ */
+function User_force_active_count() {
+  return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `force_active` = 1");
+}
+
+function User_active_count() {
+  return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1");
+}
+
+function User_arrived_count() {
+  return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1");
+}
+
+function User_tshirts_count() {
+  return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1");
+}
+
+/**
+ * Returns all column names for sorting in an array.
+ */
+function User_sortable_columns() {
+  return array(
+      'Nick',
+      'Name',
+      'Vorname',
+      'Alter',
+      'DECT',
+      'email',
+      'Size',
+      'Gekommen',
+      'Aktiv',
+      'force_active',
+      'Tshirt',
+      'lastLogIn' 
+  );
+}
+
+/**
  * Get all users, ordered by Nick by default or by given param.
- * 
+ *
  * @param string $order_by          
  */
 function Users($order_by = 'Nick') {

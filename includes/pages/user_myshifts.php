@@ -1,4 +1,5 @@
 <?php
+
 function myshifts_title() {
   return _("My shifts");
 }
@@ -64,7 +65,7 @@ function user_myshifts() {
             LIMIT 1");
         engelsystem_log("Updated " . User_Nick_render($user_source) . "'s shift " . $shift['name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']) . " with comment " . $comment);
         success(_("Shift saved."));
-        redirect(page_link_to('user_myshifts'));
+        redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
       }
       
       return ShiftEntry_edit_view(User_Nick_render($shifts_user), date("Y-m-d H:i", $shift['start']) . ', ' . shift_length($shift), $shift['Name'], $shift['name'], $shift['angel_type'], $shift['Comment'], $shift['freeloaded'], $shift['freeload_comment'], in_array("user_shifts_admin", $privileges));

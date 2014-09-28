@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * Counts all freeloaded shifts.
+ */
+function ShiftEntries_freeleaded_count() {
+  return sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1");
+}
+
+/**
  * Returns next (or current) shifts of given user.
  * @param User $user
  */

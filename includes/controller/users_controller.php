@@ -54,6 +54,9 @@ function user_controller() {
   );
 }
 
+/**
+ * List all users.
+ */
 function users_list_controller() {
   global $privileges;
   
@@ -61,39 +64,19 @@ function users_list_controller() {
     redirect(page_link_to(''));
   
   $order_by = 'Nick';
-  if (isset($_REQUEST['OrderBy']) && in_array($_REQUEST['OrderBy'], array(
-      'Nick',
-      'Name',
-      'Vorname',
-      'Alter',
-      'DECT',
-      'email',
-      'Size',
-      'Gekommen',
-      'Aktiv',
-      'force_active',
-      'Tshirt',
-      'lastLogIn' 
-  )))
+  if (isset($_REQUEST['OrderBy']) && in_array($_REQUEST['OrderBy'], User_sortable_columns()))
     $order_by = $_REQUEST['OrderBy'];
   
   $users = Users($order_by);
   if ($users === false)
     engelsystem_error('Unable to load users.');
   
-  foreach ($users as &$user) {
-    $user['freeloads'] = sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1 AND `UID` = " . sql_escape($user['UID']));
-  }
-  
-  $arrived_count = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1");
-  $active_count = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1");
-  $force_active_count = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `force_active` = 1");
-  $freeloads_count = sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1");
-  $tshirts_count = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1");
+  foreach ($users as &$user)
+    $user['freeloads'] = count(ShiftEntries_freeloaded_by_user($user));
   
   return array(
       _('All users'),
-      Users_view($users, $order_by, $arrived_count, $active_count, $force_active_count, $freeloads_count, $tshirts_count) 
+      Users_view($users, $order_by, User_arrived_count(), User_active_count(), User_force_active_count(), ShiftEntries_freeleaded_count(), User_tshirts_count()) 
   );
 }
 
