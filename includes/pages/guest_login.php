@@ -215,7 +215,7 @@ function guest_logout() {
 }
 
 function guest_login() {
-  global $user;
+  global $user, $privileges;
   
   $nick = "";
   
