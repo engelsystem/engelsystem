@@ -19,6 +19,53 @@ $tshirt_sizes = array(
     'XL-G' => "XL Girl" 
 );
 
+function Users_view($users, $order_by, $arrived_count, $active_count, $force_active_count, $freeloads_count, $tshirts_count) {
+  foreach ($users as &$user) {
+    $user['Gekommen'] = glyph_bool($user['Gekommen']);
+    $user['Aktiv'] = glyph_bool($user['Aktiv']);
+    $user['force_active'] = glyph_bool($user['force_active']);
+    $user['Tshirt'] = glyph_bool($user['Tshirt']);
+    $user['lastLogIn'] = date(_('m/d/Y h:i a'), $user['lastLogIn']);
+    $user['actions'] = table_buttons(array(
+        button(page_link_to('admin_user') . '&id=' . $user['UID'], _('edit'), 'btn-xs') 
+    ));
+  }
+  $users[] = array(
+      'Nick' => '<strong>' . _('Sum') . '</strong>',
+      'Gekommen' => $arrived_count,
+      'Aktiv' => $active_count,
+      'force_active' => $force_active_count,
+      'freeloads' => $freeloads_count,
+      'Tshirt' => $tshirts_count,
+      'actions' => '<strong>' . count($users) . '</strong>' 
+  );
+  
+  return page_with_title(_('All users'), array(
+      msg(),
+      buttons(array(
+          button(page_link_to('register'), glyph('plus') . _('New user')) 
+      )),
+      table(array(
+          'Nick' => Users_table_header_link('Nick', _('Nick'), $order_by),
+          'Vorname' => Users_table_header_link('Vorname', _('Prename'), $order_by),
+          'Name' => Users_table_header_link('Name', _('Name'), $order_by),
+          'DECT' => Users_table_header_link('DECT', _('DECT'), $order_by),
+          'Gekommen' => Users_table_header_link('Gekommen', _('Arrived'), $order_by),
+          'freeloads' => _('Freeloads'),
+          'Aktiv' => Users_table_header_link('Aktiv', _('Active'), $order_by),
+          'force_active' => Users_table_header_link('force_active', _('Forced'), $order_by),
+          'Tshirt' => Users_table_header_link('Tshirt', _('T-Shirt'), $order_by),
+          'Size' => Users_table_header_link('Size', _('Size'), $order_by),
+          'lastLogIn' => Users_table_header_link('lastLogIn', _('Last login'), $order_by),
+          'actions' => '' 
+      ), $users) 
+  ));
+}
+
+function Users_table_header_link($column, $label, $order_by) {
+  return '<a href="' . page_link_to('users') . '&OrderBy=' . $column . '">' . $label . ($order_by == $column ? ' <span class="caret"></span>' : '') . '</a>';
+}
+
 function User_shift_state_render($user) {
   $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
   if ($upcoming_shifts === false)

@@ -12,7 +12,6 @@ function admin_user() {
   if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,}$/", $_REQUEST['id']) && sql_num_query("SELECT * FROM `User` WHERE `UID`=" . sql_escape($_REQUEST['id'])) > 0) {
     $id = $_REQUEST['id'];
     if (! isset($_REQUEST['action'])) {
-      $html .= '<h1>' . _('Edit user') . '</h1>';
       $html .= "Hallo,<br />" . "hier kannst du den Eintrag &auml;ndern. Unter dem Punkt 'Gekommen' " . "wird der Engel als anwesend markiert, ein Ja bei Aktiv bedeutet, " . "dass der Engel aktiv war und damit ein Anspruch auf ein T-Shirt hat. " . "Wenn T-Shirt ein 'Ja' enth&auml;lt, bedeutet dies, dass der Engel " . "bereits sein T-Shirt erhalten hat.<br /><br />\n";
       
       $html .= "<form action=\"" . page_link_to("admin_user") . "&action=save&id=$id\" method=\"post\">\n";
@@ -265,90 +264,11 @@ function admin_user() {
       }
     }
   } else {
-    // Userliste, keine UID uebergeben...
-    $html .= '<h1>' . _('All users') . '</h1>';
-    
-    $html .= "<a href=\"" . page_link_to("register") . "\">Neuen Engel eintragen &raquo;</a><br /><br />\n";
-    
-    if (! isset($_GET["OrderBy"]))
-      $_GET["OrderBy"] = "Nick";
-    $SQL = "SELECT * FROM `User` ORDER BY `" . sql_escape($_GET["OrderBy"]) . "` ASC";
-    $angels = sql_select($SQL);
-    
-    function prepare_angel_table($angel) {
-      global $privileges;
-      $groups = sql_select_single_col("SELECT `Name` FROM `UserGroups` JOIN `Groups` ON (`Groups`.`UID` = `UserGroups`.`group_id`) WHERE `UserGroups`.`uid`=" . sql_escape($angel["UID"]) . " ORDER BY `Groups`.`Name`");
-      $angeltypes = sql_select_single_col("
-          SELECT `AngelTypes`.`name` 
-          FROM `UserAngelTypes` 
-          JOIN `AngelTypes` ON (`UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id`)
-          WHERE `user_id`=" . sql_escape($angel['UID']));
-      $popup = '<div class="hidden">';
-      $popup .= _("Angeltypes") . ': ' . implode(', ', $angeltypes);
-      $popup .= '<br />' . _("Groups") . ': ' . implode(', ', $groups);
-      if (strlen($angel["Telefon"]) > 0)
-        $popup .= "<br>Tel: " . $angel["Telefon"];
-      if (strlen($angel["Handy"]) > 0)
-        $popup .= "<br>Handy: " . $angel["Handy"];
-      if (strlen($angel["DECT"]) > 0)
-        $popup .= "<br>DECT: " . $angel["DECT"];
-      if (strlen($angel["Hometown"]) > 0)
-        $popup .= "<br>Hometown: " . $angel["Hometown"];
-      if (strlen($angel["CreateDate"]) > 0)
-        $popup .= "<br>Registered: " . $angel["CreateDate"];
-      if (strlen($angel["Art"]) > 0)
-        $popup .= "<br>Type: " . $angel["Art"];
-      if (strlen($angel["ICQ"]) > 0)
-        $popup .= "<br>ICQ: " . $angel["ICQ"];
-      if (strlen($angel["jabber"]) > 0)
-        $popup .= "<br>Jabber: " . $angel["jabber"];
-      return array(
-          'Nick' => User_Nick_render($angel),
-          'Name' => htmlspecialchars($angel['Vorname'] . ' ' . $angel['Name']) . $popup,
-          'DECT' => htmlspecialchars($angel['DECT']),
-          'Gekommen' => '<img src="pic/icons/' . ($angel['Gekommen'] == 1 ? 'tick' : 'cross') . '.png" alt="' . $angel['Gekommen'] . '">',
-          'freeloads' => sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1 AND `UID` = " . sql_escape($angel['UID'])),
-          'Aktiv' => '<img src="pic/icons/' . ($angel['Aktiv'] == 1 ? 'tick' : 'cross') . '.png" alt="' . $angel['Aktiv'] . '">',
-          'force_active' => '<img src="pic/icons/' . ($angel['force_active'] == 1 ? 'tick' : 'cross') . '.png" alt="' . $angel['force_active'] . '">',
-          'Tshirt' => '<img src="pic/icons/' . ($angel['Tshirt'] == 1 ? 'tick' : 'cross') . '.png" alt="' . $angel['Tshirt'] . '">',
-          'Size' => $angel['Size'],
-          'lastLogIn' => date('d.m.&\n\b\s\p;H:i', $angel['lastLogIn']),
-          'edit' => img_button(page_link_to('admin_user') . '&id=' . $angel['UID'], 'pencil', _("edit")) 
-      );
-    }
-    $angels = array_map('prepare_angel_table', $angels);
-    $Gekommen = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1");
-    $Active = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1");
-    $force_active_count = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `force_active` = 1");
-    $freeloads_count = sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1");
-    $Tshirt = sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1");
-    $angels[] = array(
-        'Nick' => '<strong>Summe</strong>',
-        'Gekommen' => $Gekommen,
-        'Aktiv' => $Active,
-        'force_active' => $force_active_count,
-        'freeloads' => $freeloads_count,
-        'Tshirt' => $Tshirt ,
-        'edit' => '<strong>' . count($angels) . '</strong>'
-    );
-    $html .= table(array(
-        'Nick' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=Nick">Nick</a>',
-        'Name' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=Vorname">Vorname</a> <a href="' . page_link_to("admin_user") . '&amp;OrderBy=Name">Name</a>',
-        'DECT' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=DECT">DECT</a>',
-        'Gekommen' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=Gekommen">Gekommen</a></div>',
-        'freeloads' => '<div class="rotate">' . _("Freeloads") . '</div>',
-        'Aktiv' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=Aktiv">Aktiv</a></div>',
-        'force_active' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=force_active">' . _("Forced") . '</a></div>',
-        'Tshirt' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=Tshirt">T-Shirt</a></div>',
-        'Size' => '<div class="rotate"><a href="' . page_link_to("admin_user") . '&amp;OrderBy=Size">Gr&ouml;&szlig;e</a></div>',
-        'lastLogIn' => '<a href="' . page_link_to("admin_user") . '&amp;OrderBy=lastLogIn">Last login</a>',
-        'edit' => '' 
-    ), $angels);
+    redirect(page_link_to('users'));
   }
-  return page(array(
-      '<div class="col-md-12">',
-      $html,
-      '</div>' 
+  
+  return page_with_title(_('Edit user'), array(
+      $html 
   ));
 }
 ?>

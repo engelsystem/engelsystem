@@ -8,6 +8,24 @@ $themes = array(
     "1" => "Engelsystem dark" 
 );
 
+/**
+ * Render glyphicon
+ *
+ * @param string $glyph_name          
+ */
+function glyph($glyph_name) {
+  return ' <span class="glyphicon glyphicon-' . $glyph_name . '"></span> ';
+}
+
+/**
+ * Renders a tick or a cross by given boolean
+ *
+ * @param boolean $boolean          
+ */
+function glyph_bool($boolean) {
+  return '<span class="text-' . ($boolean ? 'success' : 'danger') . '">' . glyph($boolean ? 'ok' : 'remove') . '</span>';
+}
+
 function div($class, $content = array(), $id = "") {
   $id = $id != '' ? ' id="' . $id . '"' : '';
   return '<div' . $id . ' class="' . $class . '">' . join("\n", $content) . '</div>';
@@ -292,7 +310,11 @@ function button($href, $label, $class = "") {
  * Rendert eine Toolbar mit Knöpfen
  */
 function buttons($buttons = array ()) {
-  return '<div class="form-group"><div class="btn-group">' . join(' ', $buttons) . '</div></div>';
+  return '<div class="form-group">' . table_buttons($buttons) . '</div>';
+}
+
+function table_buttons($buttons = array()) {
+  return '<div class="btn-group">' . join(' ', $buttons) . '</div>';
 }
 
 // Load and render template

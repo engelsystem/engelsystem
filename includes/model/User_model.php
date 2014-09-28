@@ -1,7 +1,17 @@
 <?php
+
 /**
  * User model
  */
+
+/**
+ * Get all users, ordered by Nick by default or by given param.
+ * 
+ * @param string $order_by          
+ */
+function Users($order_by = 'Nick') {
+  return sql_select("SELECT * FROM `User` ORDER BY `" . sql_escape($order_by) . "` ASC");
+}
 
 /**
  * Returns true if user is freeloader

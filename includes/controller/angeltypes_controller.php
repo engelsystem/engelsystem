@@ -225,7 +225,7 @@ function angeltypes_list_controller() {
     $angeltype['restricted'] = $angeltype['restricted'] ? '<img src="pic/icons/lock.png" alt="' . _("Restricted") . '" title="' . _("Restricted") . '">' : '';
     $angeltype['name'] = '<a href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'] . '">' . $angeltype['name'] . '</a>';
     
-    $angeltype['actions'] = buttons($actions);
+    $angeltype['actions'] = table_buttons($actions);
   }
   
   return array(
