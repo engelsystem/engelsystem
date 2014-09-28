@@ -1,4 +1,5 @@
 <?php
+
 function login_title() {
   return _("Login");
 }
@@ -253,6 +254,19 @@ function guest_login() {
     }
   }
   
+  if (in_array('register', $privileges)) {
+    $register_hint = join('', array(
+        '<p>' . _("Please sign up, if you want to help us!") . '</p>',
+        buttons(array(
+            button(page_link_to('register'), register_title() . ' &raquo;') 
+        )) 
+    ));
+  } else {
+    $register_hint = join('', array(
+        error(_('Registration is disabled.'), true) 
+    ));
+  }
+  
   return page_with_title(login_title(), array(
       msg(),
       '<div class="row"><div class="col-md-6">',
@@ -268,10 +282,7 @@ function guest_login() {
       '</div>',
       '<div class="col-md-6">',
       '<h2>' . register_title() . '</h2>',
-      '<p>' . _("Please sign up, if you want to help us!") . '</p>',
-      buttons(array(
-          button(page_link_to('register'), register_title() . ' &raquo;') 
-      )),
+      $register_hint,
       '<h2>' . _("What can I do?") . '</h2>',
       '<p>' . _("Please read about the jobs you can do to help us.") . '</p>',
       buttons(array(
