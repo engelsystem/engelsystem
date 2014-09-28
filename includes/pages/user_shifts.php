@@ -1,4 +1,5 @@
 <?php
+
 function shifts_title() {
   return _("Shifts");
 }
@@ -501,7 +502,10 @@ function view_user_shifts() {
               $is_free = false;
               $shifts_row = $shift['name'];
               if (in_array('admin_shifts', $privileges))
-                $shifts_row .= ' ' . img_button('?p=user_shifts&edit_shift=' . $shift['SID'], 'pencil', _("edit")) . img_button('?p=user_shifts&delete_shift=' . $shift['SID'], 'bin', _("delete"));
+                $shifts_row .= ' ' . table_buttons(array(
+                    button(page_link_to('user_shift') . '&edit_shift=' . $shift['SID'], glyph('edit'), 'btn-xs'),
+                    button(page_link_to('user_shift') . '&delete_shift=' . $shift['SID'], glyph('trash'), 'btn-xs') 
+                ));
               $shifts_row .= '<br />';
               $query = "SELECT `NeededAngelTypes`.`count`, `AngelTypes`.`id`, `AngelTypes`.`restricted`, `UserAngelTypes`.`confirm_user_id`, `AngelTypes`.`name`, `UserAngelTypes`.`user_id`
             FROM `NeededAngelTypes`
@@ -534,7 +538,9 @@ function view_user_shifts() {
                       $style .= " text-decoration: line-through;";
                     }
                     if (in_array('user_shifts_admin', $privileges))
-                      $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) . ' ' . img_button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], 'bin', _("delete")) . '</span>';
+                      $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) . ' ' . table_buttons(array(
+                          button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], glyph('trash'), 'btn-xs') 
+                      )) . '</span>';
                     else
                       $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) . "</span>";
                   }
@@ -632,7 +638,10 @@ function view_user_shifts() {
       );
       
       if (in_array('admin_shifts', $privileges))
-        $shift_row['info'] .= ' ' . img_button('?p=user_shifts&edit_shift=' . $shift['SID'], 'pencil', 'edit') . img_button('?p=user_shifts&delete_shift=' . $shift['SID'], 'bin', _("delete"));
+        $shift_row['info'] .= ' ' . table_buttons(array(
+            button(page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'], glyph('edit'), 'btn-xs'),
+            button(page_link_to('user_shifts') . '&delete_shift=' . $shift['SID'], glyph('trash'), 'btn-xs') 
+        ));
       $shift_row['entries'] .= '<br />';
       $is_free = false;
       $shift_has_special_needs = 0 < sql_num_query("SELECT `id` FROM `NeededAngelTypes` WHERE `shift_id` = " . $shift['SID']);
@@ -659,7 +668,9 @@ function view_user_shifts() {
           $freeloader = 0;
           foreach ($entries as $entry) {
             if (in_array('user_shifts_admin', $privileges))
-              $member = User_Nick_render($entry) . ' ' . img_button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], 'bin', _("delete"));
+              $member = User_Nick_render($entry) . ' ' . table_buttons(array(
+                  button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], glyph('trash'), 'btn-xs') 
+              ));
             else
               $member = User_Nick_render($entry);
             if ($entry['freeloaded']) {
@@ -743,7 +754,7 @@ function view_user_shifts() {
           'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", _("Occupancy")),
           'task_notice' => '<sup>1</sup>' . _("The tasks shown here are influenced by the preferences you defined in your settings!") . " <a href=\"" . page_link_to('angeltypes') . '&action=about' . "\">" . _("Description of the jobs.") . "</a>",
           'new_style_checkbox' => '<label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style'] ? ' checked' : '') . '> ' . _("Use new style if possible") . '</label>',
-          'shifts_table' =>msg(). $shifts_table,
+          'shifts_table' => msg() . $shifts_table,
           'ical_text' => '<h2>' . _("iCal export") . '</h2><p>' . sprintf(_("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."), page_link_to_absolute('ical') . '&key=' . $user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'], page_link_to('user_myshifts') . '&reset') . '</p>',
           'filter' => _("Filter") 
       )),

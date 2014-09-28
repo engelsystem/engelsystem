@@ -373,10 +373,6 @@ function html_select_key($id, $name, $rows, $selected) {
   return $html;
 }
 
-function img_button($link, $icon, $text, $extra_text = '') {
-  return '<a href="' . htmlspecialchars($link) . '"><img src="pic/icons/' . htmlspecialchars($icon) . '.png" alt="' . $text . '" ' . (empty($text) ? '' : 'title="' . $text . '"') . '>' . (empty($extra_text) ? '' : ' ' . $extra_text) . '</a>';
-}
-
 function ReplaceSmilies($neueckig) {
   $neueckig = str_replace(";o))", "<img src=\"pic/smiles/icon_redface.gif\">", $neueckig);
   $neueckig = str_replace(":-))", "<img src=\"pic/smiles/icon_redface.gif\">", $neueckig);

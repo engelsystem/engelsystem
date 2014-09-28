@@ -48,6 +48,9 @@ function user_controller() {
     }
   }
   
+  if ($user_source['api_key'] == "")
+    User_reset_api_key($user_source);
+  
   return array(
       $user_source['Nick'],
       User_view($user_source, $admin_user_privilege, User_is_freeloader($user_source), User_angeltypes($user_source), User_groups($user_source), $shifts, $user['UID'] == $user_source['UID']) 

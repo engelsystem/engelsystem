@@ -131,11 +131,12 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
         $myshift['comment'] .= '<br /><p class="error">' . _("Freeloaded") . '</p>';
     }
     
-    $myshift['actions'] = "";
+    $myshift['actions'] = array();
     if ($its_me || in_array('user_shifts_admin', $privileges))
-      $myshift['actions'] .= img_button(page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '&id=' . $user_source['UID'], 'pencil', _("edit"));
+      $myshift['actions'][] = button(page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '&id=' . $user_source['UID'], glyph('edit') . _('edit'), 'btn-xs');
     if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges))
-      $myshift['actions'] .= img_button(page_link_to('user_myshifts') . ((! $its_me) ? '&id=' . $user_source['UID'] : '') . '&cancel=' . $shift['id'], 'cross', _("sign off"));
+      $myshift['actions'][] = button(page_link_to('user_myshifts') . ((! $its_me) ? '&id=' . $user_source['UID'] : '') . '&cancel=' . $shift['id'], glyph('trash') . _('sign off'), 'btn-xs');
+    $myshift['actions'] = table_buttons($myshift['actions']);
     
     if ($shift['freeloaded'])
       $timesum += - 2 * ($shift['end'] - $shift['start']);
@@ -182,8 +183,9 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
       buttons(array(
           $admin_user_privilege ? button(page_link_to('admin_user') . '&id=' . $user_source['UID'], '<span class="glyphicon glyphicon-edit"></span> ' . _("edit")) : '',
           ! $user_source['Gekommen'] ? button(page_link_to('admin_arrive') . '&arrived=' . $user_source['UID'], _("arrived")) : '',
-          $its_me ? button(page_link_to_absolute('ical') . '&key=' . $user_source['api_key'], '<span class="glyphicon glyphicon-calendar"></span> ' . _("iCal Export")) : '',
-          $its_me ? button(page_link_to_absolute('shifts_json_export') . '&key=' . $user_source['api_key'], '<span class="glyphicon glyphicon-export"></span> ' . _("JSON Export")) : '' 
+          $its_me ? button(page_link_to_absolute('ical') . '&key=' . $user_source['api_key'], glyph('calendar') . _("iCal Export")) : '',
+          $its_me ? button(page_link_to_absolute('shifts_json_export') . '&key=' . $user_source['api_key'], glyph('export') . _("JSON Export")) : '',
+          $its_me ? button(page_link_to_absolute('user_myshifts') . '&reset', glyph('repeat') . _('Reset API key')) : '' 
       )),
       ($its_me || $admin_user_privilege) ? '<h2>' . _("Shifts") . '</h2>' : '',
       ($its_me || $admin_user_privilege) ? table(array(
