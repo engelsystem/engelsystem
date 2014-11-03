@@ -503,8 +503,8 @@ function view_user_shifts() {
               $shifts_row = $shift['name'];
               if (in_array('admin_shifts', $privileges))
                 $shifts_row .= ' ' . table_buttons(array(
-                    button(page_link_to('user_shift') . '&edit_shift=' . $shift['SID'], glyph('edit'), 'btn-xs'),
-                    button(page_link_to('user_shift') . '&delete_shift=' . $shift['SID'], glyph('trash'), 'btn-xs') 
+                    button(page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'], glyph('edit'), 'btn-xs'),
+                    button(page_link_to('user_shifts') . '&delete_shift=' . $shift['SID'], glyph('trash'), 'btn-xs') 
                 ));
               $shifts_row .= '<br />';
               $query = "SELECT `NeededAngelTypes`.`count`, `AngelTypes`.`id`, `AngelTypes`.`restricted`, `UserAngelTypes`.`confirm_user_id`, `AngelTypes`.`name`, `UserAngelTypes`.`user_id`
