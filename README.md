@@ -1,11 +1,11 @@
-= Installation eines frischen Engelsystems =
+# Installation eines frischen Engelsystems
 
-Mindestvorrausetzungen (bzw. getestet unter):
+## Mindestvorrausetzungen (bzw. getestet unter):
  * PHP 5.4.x with Suhosin-Patch (cgi-fcgi)
  * mysqld  Ver 5.1.49-3 for debian-linux-gnu on x86_64 ((Debian))
  * Webserver mit PHP-Anbindung, z.B. lighttpd, nginx oder Apache
 
-Vorgehen:
+## Vorgehen:
  * Auschecken der Dateien vom master unter https://vcs.wybt.net/engelsystem/git/
  * Der Webserver muss Schreibrechte auf das Verzeichnis import bekommen, für alle anderen Dateien reichen Leserechte.
  * Der Webserver muss auf public als http-root zeigen.
@@ -17,6 +17,5 @@ Vorgehen:
 
 Das Engelsystem ist jetzt einsatzbereit.
 
-Fehler bitte an bugs@engelsystem.de melden.
-
-Bugtracker: https://vcs.wybt.net/engelsystem/trac/
+Fehler bitte im auf Github melden:
+https://github.com/engelsystem/engelsystem
