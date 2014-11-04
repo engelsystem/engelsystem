@@ -1,7 +1,7 @@
 # Installation eines frischen Engelsystems
 
 ## Mindestvorrausetzungen (bzw. getestet unter):
- * PHP 5.4.x with Suhosin-Patch (cgi-fcgi)
+ * PHP 5.4.x mit Suhosin-Patch (cgi-fcgi), mysqli und gettext
  * mysqld  Ver 5.1.49-3 for debian-linux-gnu on x86_64 ((Debian))
  * Webserver mit PHP-Anbindung, z.B. lighttpd, nginx oder Apache
 
