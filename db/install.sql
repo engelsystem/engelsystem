@@ -288,8 +288,8 @@ CREATE TABLE IF NOT EXISTS `Questions` (
   `QID` bigint(20) NOT NULL AUTO_INCREMENT,
   `UID` int(11) NOT NULL DEFAULT '0',
   `Question` text NOT NULL,
-  `AID` int(11) NOT NULL DEFAULT '0',
-  `Answer` text NOT NULL,
+  `AID` int(11) DEFAULT NULL,
+  `Answer` text,
   PRIMARY KEY (`QID`),
   KEY `UID` (`UID`),
   KEY `AID` (`AID`)
