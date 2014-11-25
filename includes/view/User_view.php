@@ -103,12 +103,12 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
       $shift_info .= '<br><b>' . $needed_angel_type['name'] . ':</b> ';
       
       $shift_entries = array();
-      foreach ($needed_angel_type['users'] as $user_source) {
+      foreach ($needed_angel_type['users'] as $user_shift) {
         if ($its_me)
-          $member = '<strong>' . User_Nick_render($user_source) . '</strong>';
+          $member = '<strong>' . User_Nick_render($user_shift) . '</strong>';
         else
-          $member = User_Nick_render($user_source);
-        if ($user_source['freeloaded'])
+          $member = User_Nick_render($user_shift);
+        if ($user_shift['freeloaded'])
           $member = '<strike>' . $member . '</strike>';
         
         $shift_entries[] = $member;
