@@ -1,6 +1,6 @@
 # Installation eines frischen Engelsystems
 
-Mindestvorrausetzungen (bzw. getestet unter):
+## Mindestvorrausetzungen (bzw. getestet unter):
  * PHP 5.4.x (cgi-fcgi)
  * MySQL-Server 5.5.x
  * Webserver mit PHP-Anbindung, z.B. lighttpd, nginx oder Apache
