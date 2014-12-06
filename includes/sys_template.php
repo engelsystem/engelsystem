@@ -307,6 +307,13 @@ function button($href, $label, $class = "") {
 }
 
 /**
+ * Rendert einen Knopf mit Glyph
+ */
+ function button_glyph($href, $glyph, $class= "") {
+   return button($href, glyph($glyph), $class);
+ }
+
+/**
  * Rendert eine Toolbar mit Knöpfen
  */
 function buttons($buttons = array ()) {
