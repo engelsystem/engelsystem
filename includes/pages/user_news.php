@@ -53,7 +53,7 @@ function display_news($news) {
 
   $html .= '<div class="panel-footer text-muted">';
   if (in_array("admin_news", $privileges))
-    $html .= '<div class="pull-right">' . button_glyph(page_link_to("admin_news") . '&action=edit&id=' . $news['ID'], 'edit', 'btn-sm') . '</div>';
+    $html .= '<div class="pull-right">' . button_glyph(page_link_to("admin_news") . '&action=edit&id=' . $news['ID'], 'edit', 'btn-xs') . '</div>';
 
   $html .= '<span class="glyphicon glyphicon-time"></span> ' . date("Y-m-d H:i", $news['Datum']) . '&emsp;';
 
