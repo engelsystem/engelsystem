@@ -264,6 +264,7 @@ function admin_user() {
       }
     }
   } else {
+    msg();
     redirect(page_link_to('users'));
   }
   
