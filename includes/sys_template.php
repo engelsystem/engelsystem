@@ -5,13 +5,13 @@
  */
 $themes = array(
     "0" => "Engelsystem light",
-    "1" => "Engelsystem dark" 
+    "1" => "Engelsystem dark"
 );
 
 /**
  * Render glyphicon
  *
- * @param string $glyph_name          
+ * @param string $glyph_name
  */
 function glyph($glyph_name) {
   return ' <span class="glyphicon glyphicon-' . $glyph_name . '"></span> ';
@@ -20,7 +20,7 @@ function glyph($glyph_name) {
 /**
  * Renders a tick or a cross by given boolean
  *
- * @param boolean $boolean          
+ * @param boolean $boolean
  */
 function glyph_bool($boolean) {
   return '<span class="text-' . ($boolean ? 'success' : 'danger') . '">' . glyph($boolean ? 'ok' : 'remove') . '</span>';
@@ -34,7 +34,7 @@ function div($class, $content = array(), $id = "") {
 /**
  * Render a toolbar.
  *
- * @param array $items          
+ * @param array $items
  * @return string
  */
 function toolbar($items = array(), $right = false) {
@@ -44,10 +44,10 @@ function toolbar($items = array(), $right = false) {
 /**
  * Render a link for a toolbar.
  *
- * @param string $href          
- * @param string $glyphicon          
- * @param string $label          
- * @param bool $selected          
+ * @param string $href
+ * @param string $glyphicon
+ * @param string $label
+ * @param bool $selected
  * @return string
  */
 function toolbar_item_link($href, $glyphicon, $label, $selected = false) {
@@ -111,9 +111,9 @@ function form_checkboxes($name, $label, $items, $selected) {
   $html = form_element($label, '');
   foreach ($items as $key => $item)
     $html .= form_checkbox($name . '_' . $key, $item, array_search($key, $selected) !== false);
-  
+
   return $html;
-  
+
   $html = "<ul>";
   foreach ($items as $key => $item) {
     $id = $name . '_' . $key;
@@ -265,21 +265,21 @@ function table($columns, $rows_raw, $data = true) {
   // If only one column is given
   if (! is_array($columns)) {
     $columns = array(
-        'col' => $columns 
+        'col' => $columns
     );
-    
+
     $rows = array();
     foreach ($rows_raw as $row)
       $rows[] = array(
-          'col' => $row 
+          'col' => $row
       );
   } else
     $rows = $rows_raw;
-  
+
   if (count($rows) == 0)
     return info(_("No data found."), true);
   $html = "";
-  $html .= '<table class="table ' . ($data ? ' data' : '') . '">';
+  $html .= '<table class="table table-striped' . ($data ? ' data' : '') . '">';
   $html .= '<thead><tr>';
   foreach ($columns as $key => $column)
     $html .= '<th class="column_' . $key . '">' . $column . '</th>';
@@ -356,7 +356,7 @@ function html_options($name, $options, $selected = "") {
   $html = "";
   foreach ($options as $value => $label)
     $html .= '<input type="radio"' . ($value == $selected ? ' checked="checked"' : '') . ' name="' . $name . '" value="' . $value . '"> ' . $label;
-  
+
   return $html;
 }
 
@@ -394,7 +394,7 @@ function ReplaceSmilies($neueckig) {
   $neueckig = str_replace(";P", "<img src=\"pic/smiles/icon_mad.gif\">", $neueckig);
   $neueckig = str_replace(";oP", "<img src=\"pic/smiles/icon_mad.gif\">", $neueckig);
   $neueckig = str_replace("?)", "<img src=\"pic/smiles/icon_question.gif\">", $neueckig);
-  
+
   return $neueckig;
 }
 ?>
