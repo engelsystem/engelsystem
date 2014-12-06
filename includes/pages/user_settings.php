@@ -1,4 +1,5 @@
 <?php
+
 function settings_title() {
   return _("Settings");
 }
@@ -16,7 +17,7 @@ function user_settings() {
   $dect = $user['DECT'];
   $mobile = $user['Handy'];
   $mail = $user['email'];
-  $icq = $user['ICQ'];
+  $email_shiftinfo = $user['email_shiftinfo'];
   $jabber = $user['jabber'];
   $hometown = $user['Hometown'];
   $tshirt_size = $user['Size'];
@@ -59,8 +60,8 @@ function user_settings() {
       $msg .= error(_("Please enter your e-mail."), true);
     }
     
-    if (isset($_REQUEST['icq']))
-      $icq = strip_request_item('icq');
+    $email_shiftinfo = isset($_REQUEST['email_shiftinfo']);
+    
     if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
       $jabber = strip_request_item('jabber');
       if (! check_email($jabber)) {
@@ -97,7 +98,21 @@ function user_settings() {
       $hometown = strip_request_item('hometown');
     
     if ($ok) {
-      sql_query("UPDATE `User` SET `Nick`='" . sql_escape($nick) . "', `Vorname`='" . sql_escape($prename) . "', `Name`='" . sql_escape($lastname) . "', `Alter`='" . sql_escape($age) . "', `Telefon`='" . sql_escape($tel) . "', `DECT`='" . sql_escape($dect) . "', `Handy`='" . sql_escape($mobile) . "', `email`='" . sql_escape($mail) . "', `ICQ`='" . sql_escape($icq) . "', `jabber`='" . sql_escape($jabber) . "', `Size`='" . sql_escape($tshirt_size) . "', `Hometown`='" . sql_escape($hometown) . "' WHERE `UID`=" . sql_escape($user['UID']));
+      sql_query("
+          UPDATE `User` SET 
+          `Nick`='" . sql_escape($nick) . "', 
+          `Vorname`='" . sql_escape($prename) . "', 
+          `Name`='" . sql_escape($lastname) . "', 
+          `Alter`='" . sql_escape($age) . "', 
+          `Telefon`='" . sql_escape($tel) . "', 
+          `DECT`='" . sql_escape($dect) . "', 
+          `Handy`='" . sql_escape($mobile) . "', 
+          `email`='" . sql_escape($mail) . "', 
+          `email_shiftinfo`=" . sql_escape($email_shiftinfo ? 'TRUE' : 'FALSE') . ",
+          `jabber`='" . sql_escape($jabber) . "', 
+          `Size`='" . sql_escape($tshirt_size) . "', 
+          `Hometown`='" . sql_escape($hometown) . "' 
+          WHERE `UID`=" . sql_escape($user['UID']));
       
       // Assign angel-types
       $user_angel_type_info = array();
@@ -178,7 +193,7 @@ function user_settings() {
                   form_text('dect', _("DECT"), $dect),
                   form_text('mobile', _("Mobile"), $mobile),
                   form_text('mail', _("E-Mail") . "*", $mail),
-                  form_text('icq', _("ICQ"), $icq),
+                  form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $email_shiftinfo),
                   form_text('jabber', _("Jabber"), $jabber),
                   form_text('hometown', _("Hometown"), $hometown),
                   $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',

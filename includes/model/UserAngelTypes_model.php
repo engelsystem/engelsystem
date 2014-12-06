@@ -23,6 +23,7 @@ function User_unconfirmed_AngelTypes($user) {
     JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id`
     JOIN `UserAngelTypes` as `UnconfirmedMembers` ON `UserAngelTypes`.`angeltype_id`=`UnconfirmedMembers`.`angeltype_id`
     WHERE `UserAngelTypes`.`user_id`=" . sql_escape($user['UID']) . "
+    AND `UserAngelTypes`.`coordinator`=TRUE
     AND `AngelTypes`.`restricted`=TRUE
     AND `UnconfirmedMembers`.`confirm_user_id` IS NULL");
 }

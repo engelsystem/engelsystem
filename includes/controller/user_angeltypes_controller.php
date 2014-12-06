@@ -5,14 +5,18 @@
  */
 function user_angeltypes_unconfirmed_hint() {
   global $user;
+  
   $unconfirmed_user_angeltypes = User_unconfirmed_AngelTypes($user);
   if ($unconfirmed_user_angeltypes === false)
     engelsystem_error("Unable to load user angeltypes.");
   if (count($unconfirmed_user_angeltypes) == 0)
     return '';
-  if ($_REQUEST['p'] == 'angeltypes' && $_REQUEST['action'] == 'view' && $_REQUEST['angeltype_id'] == $unconfirmed_user_angeltypes[0]['angeltype_id'])
-    return '';
-  return error(sprintf(ngettext("There is %d unconfirmed angeltype.", "There are %d unconfirmed angeltypes.", count($unconfirmed_user_angeltypes)), count($unconfirmed_user_angeltypes)) . " " . sprintf(_("The first wants to join %s."), '<a href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $unconfirmed_user_angeltypes[0]['angeltype_id'] . '">' . $unconfirmed_user_angeltypes[0]['name'] . '</a>'));
+  
+  $unconfirmed_links = [];
+  foreach ($unconfirmed_user_angeltypes as $user_angeltype)
+    $unconfirmed_links[] = '<a href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $user_angeltype['angeltype_id'] . '">' . $user_angeltype['name'] . '</a>';
+  
+  return error(sprintf(ngettext("There is %d unconfirmed angeltype.", "There are %d unconfirmed angeltypes.", count($unconfirmed_user_angeltypes)), count($unconfirmed_user_angeltypes)) . " " . _('Angel types which need approvals:') . ' ' . join(', ', $unconfirmed_links));
 }
 
 /**

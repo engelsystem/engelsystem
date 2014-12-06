@@ -1,3 +1,9 @@
+/* cleanup */
+ALTER TABLE `User` DROP `ICQ` ;
+
+/* opt-in field for user shiftinfo mails */
+ALTER TABLE `User` ADD `email_shiftinfo` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'User wants to be informed by mail about changes in his shifts' AFTER `email` ;
+
 /* fix questions */
 ALTER TABLE `Questions` CHANGE `AID` `AID` INT( 11 ) NULL DEFAULT NULL ;
 
