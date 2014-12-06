@@ -453,7 +453,7 @@ function view_user_shifts() {
       $shifts[$k]['own'] = in_array($shift['SID'], array_keys($ownshifts));
     }
 
-    $shifts_table = '<table id="shifts" class="table table-striped scrollable"><thead><tr><th>-</th>';
+    $shifts_table = '<table id="shifts" class="table scrollable"><thead><tr><th>-</th>';
     foreach ($myrooms as $key => $room) {
       $rid = $room["id"];
       if (array_sum($block[$rid]) == 0) {
