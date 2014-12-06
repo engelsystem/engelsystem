@@ -25,6 +25,7 @@ function guest_register() {
   $dect = "";
   $mobile = "";
   $mail = "";
+  $email_shiftinfo = false;
   $jabber = "";
   $hometown = "";
   $comment = "";
@@ -64,6 +65,9 @@ function guest_register() {
       $ok = false;
       $msg .= error(_("Please enter your e-mail."), true);
     }
+    
+    if (isset($_REQUEST['email_shiftinfo']))
+      $email_shiftinfo = true;
     
     if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
       $jabber = strip_request_item('jabber');
@@ -116,7 +120,25 @@ function guest_register() {
       $comment = strip_request_item_nl('comment');
     
     if ($ok) {
-      sql_query("INSERT INTO `User` SET `color`=" . sql_escape($default_theme) . ", `Nick`='" . sql_escape($nick) . "', `Vorname`='" . sql_escape($prename) . "', `Name`='" . sql_escape($lastname) . "', `Alter`='" . sql_escape($age) . "', `Telefon`='" . sql_escape($tel) . "', `DECT`='" . sql_escape($dect) . "', `Handy`='" . sql_escape($mobile) . "', `email`='" . sql_escape($mail) . "', `jabber`='" . sql_escape($jabber) . "', `Size`='" . sql_escape($tshirt_size) . "', `Passwort`='" . sql_escape($password_hash) . "', `kommentar`='" . sql_escape($comment) . "', `Hometown`='" . sql_escape($hometown) . "', `CreateDate`=NOW(), `Sprache`='" . sql_escape($_SESSION["locale"]) . "'");
+      sql_query("
+          INSERT INTO `User` SET 
+          `color`=" . sql_escape($default_theme) . ", 
+          `Nick`='" . sql_escape($nick) . "', 
+          `Vorname`='" . sql_escape($prename) . "', 
+          `Name`='" . sql_escape($lastname) . "', 
+          `Alter`='" . sql_escape($age) . "', 
+          `Telefon`='" . sql_escape($tel) . "', 
+          `DECT`='" . sql_escape($dect) . "', 
+          `Handy`='" . sql_escape($mobile) . "', 
+          `email`='" . sql_escape($mail) . "', 
+          `email_shiftinfo`=" . sql_escape($email_shiftinfo ? 'TRUE' : 'FALSE') . ", 
+          `jabber`='" . sql_escape($jabber) . "',
+          `Size`='" . sql_escape($tshirt_size) . "', 
+          `Passwort`='" . sql_escape($password_hash) . "', 
+          `kommentar`='" . sql_escape($comment) . "', 
+          `Hometown`='" . sql_escape($hometown) . "', 
+          `CreateDate`=NOW(), 
+          `Sprache`='" . sql_escape($_SESSION["locale"]) . "'");
       
       // Assign user-group and set password
       $user_id = sql_id();
@@ -144,19 +166,20 @@ function guest_register() {
           div('row', array(
               div('col-md-6', array(
                   div('row', array(
-                      div('col-md-4', array(
+                      div('col-sm-4', array(
                           form_text('nick', _("Nick") . ' ' . entry_required(), $nick) 
                       )),
-                      div('col-md-8', array(
-                          form_text('mail', _("E-Mail") . ' ' . entry_required(), $mail) 
+                      div('col-sm-8', array(
+                          form_text('mail', _("E-Mail") . ' ' . entry_required(), $mail),
+                          form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $email_shiftinfo) 
                       )) 
                   )),
                   $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : '',
                   div('row', array(
-                      div('col-md-6', array(
+                      div('col-sm-6', array(
                           form_password('password', _("Password") . ' ' . entry_required()) 
                       )),
-                      div('col-md-6', array(
+                      div('col-sm-6', array(
                           form_password('password2', _("Confirm password") . ' ' . entry_required()) 
                       )) 
                   )),
@@ -165,30 +188,30 @@ function guest_register() {
               )),
               div('col-md-6', array(
                   div('row', array(
-                      div('col-md-4', array(
+                      div('col-sm-4', array(
                           form_text('dect', _("DECT"), $dect) 
                       )),
-                      div('col-md-4', array(
+                      div('col-sm-4', array(
                           form_text('mobile', _("Mobile"), $mobile) 
                       )),
-                      div('col-md-4', array(
+                      div('col-sm-4', array(
                           form_text('tel', _("Phone"), $tel) 
                       )) 
                   )),
                   form_text('jabber', _("Jabber"), $jabber),
                   div('row', array(
-                      div('col-md-6', array(
+                      div('col-sm-6', array(
                           form_text('prename', _("First name"), $prename) 
                       )),
-                      div('col-md-6', array(
+                      div('col-sm-6', array(
                           form_text('lastname', _("Last name"), $lastname) 
                       )) 
                   )),
                   div('row', array(
-                      div('col-md-3', array(
+                      div('col-sm-3', array(
                           form_text('age', _("Age"), $age) 
                       )),
-                      div('col-md-9', array(
+                      div('col-sm-9', array(
                           form_text('hometown', _("Hometown"), $hometown) 
                       )) 
                   )),
