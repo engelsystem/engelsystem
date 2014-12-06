@@ -25,7 +25,6 @@ function guest_register() {
   $dect = "";
   $mobile = "";
   $mail = "";
-  $icq = "";
   $jabber = "";
   $hometown = "";
   $comment = "";
@@ -66,8 +65,6 @@ function guest_register() {
       $msg .= error(_("Please enter your e-mail."), true);
     }
     
-    if (isset($_REQUEST['icq']))
-      $icq = strip_request_item('icq');
     if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
       $jabber = strip_request_item('jabber');
       if (! check_email($jabber)) {
@@ -119,7 +116,7 @@ function guest_register() {
       $comment = strip_request_item_nl('comment');
     
     if ($ok) {
-      sql_query("INSERT INTO `User` SET `color`=" . sql_escape($default_theme) . ", `Nick`='" . sql_escape($nick) . "', `Vorname`='" . sql_escape($prename) . "', `Name`='" . sql_escape($lastname) . "', `Alter`='" . sql_escape($age) . "', `Telefon`='" . sql_escape($tel) . "', `DECT`='" . sql_escape($dect) . "', `Handy`='" . sql_escape($mobile) . "', `email`='" . sql_escape($mail) . "', `ICQ`='" . sql_escape($icq) . "', `jabber`='" . sql_escape($jabber) . "', `Size`='" . sql_escape($tshirt_size) . "', `Passwort`='" . sql_escape($password_hash) . "', `kommentar`='" . sql_escape($comment) . "', `Hometown`='" . sql_escape($hometown) . "', `CreateDate`=NOW(), `Sprache`='" . sql_escape($_SESSION["locale"]) . "'");
+      sql_query("INSERT INTO `User` SET `color`=" . sql_escape($default_theme) . ", `Nick`='" . sql_escape($nick) . "', `Vorname`='" . sql_escape($prename) . "', `Name`='" . sql_escape($lastname) . "', `Alter`='" . sql_escape($age) . "', `Telefon`='" . sql_escape($tel) . "', `DECT`='" . sql_escape($dect) . "', `Handy`='" . sql_escape($mobile) . "', `email`='" . sql_escape($mail) . "', `jabber`='" . sql_escape($jabber) . "', `Size`='" . sql_escape($tshirt_size) . "', `Passwort`='" . sql_escape($password_hash) . "', `kommentar`='" . sql_escape($comment) . "', `Hometown`='" . sql_escape($hometown) . "', `CreateDate`=NOW(), `Sprache`='" . sql_escape($_SESSION["locale"]) . "'");
       
       // Assign user-group and set password
       $user_id = sql_id();
@@ -198,7 +195,6 @@ function guest_register() {
                   form_info(entry_required() . ' = ' . _("Entry required!")) 
               )) 
           )),
-          // form_text('icq', _("ICQ"), $icq),
           // form_textarea('comment', _("Did you help at former CCC events and which tasks have you performed then?"), $comment),
           form_submit('submit', _("Register")) 
       )) 

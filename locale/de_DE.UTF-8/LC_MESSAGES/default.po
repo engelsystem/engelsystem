@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2014-09-28 14:25+0100\n"
-"PO-Revision-Date: 2014-09-28 14:26+0100\n"
+"PO-Revision-Date: 2014-12-06 17:58+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1713,7 +1713,7 @@ msgstr "Summe:"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:152
 msgid "User state"
-msgstr "Engel Zustand"
+msgstr "Engelzustand"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:155
 msgid "Not arrived"

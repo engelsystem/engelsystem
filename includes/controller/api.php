@@ -63,7 +63,7 @@ getUser
     id (integer) - User ID
   Return Example:
     [{"UID":"1"},{"UID":"23"},{"UID":"42"}]
-    {"UID":"1","Nick":"admin","Name":"Gates","Vorname":"Bill","Telefon":"","DECT":"","Handy":"","email":"","ICQ":"","jabber":"","Avatar":"115"}
+    {"UID":"1","Nick":"admin","Name":"Gates","Vorname":"Bill","Telefon":"","DECT":"","Handy":"","email":"","jabber":"","Avatar":"115"}
 
 getShift
   Description:

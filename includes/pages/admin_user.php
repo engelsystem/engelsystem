@@ -33,7 +33,6 @@ function admin_user() {
       $html .= "  <tr><td>Handy</td><td>" . "<input type=\"text\" size=\"40\" name=\"eHandy\" value=\"" . $user_source['Handy'] . "\"></td></tr>\n";
       $html .= "  <tr><td>DECT</td><td>" . "<input type=\"text\" size=\"4\" name=\"eDECT\" value=\"" . $user_source['DECT'] . "\"></td></tr>\n";
       $html .= "  <tr><td>email</td><td>" . "<input type=\"text\" size=\"40\" name=\"eemail\" value=\"" . $user_source['email'] . "\"></td></tr>\n";
-      $html .= "  <tr><td>ICQ</td><td>" . "<input type=\"text\" size=\"40\" name=\"eICQ\" value=\"" . $user_source['ICQ'] . "\"></td></tr>\n";
       $html .= "  <tr><td>jabber</td><td>" . "<input type=\"text\" size=\"40\" name=\"ejabber\" value=\"" . $user_source['jabber'] . "\"></td></tr>\n";
       $html .= "  <tr><td>Size</td><td>" . html_select_key('size', 'eSize', $tshirt_sizes, $user_source['Size']) . "</td></tr>\n";
       
@@ -236,7 +235,6 @@ function admin_user() {
               `Alter` = '" . sql_escape($_POST["eAlter"]) . "', 
               `DECT` = '" . sql_escape($_POST["eDECT"]) . "', 
               `email` = '" . sql_escape($_POST["eemail"]) . "', 
-              `ICQ` = '" . sql_escape($_POST["eICQ"]) . "', 
               `jabber` = '" . sql_escape($_POST["ejabber"]) . "', 
               `Size` = '" . sql_escape($_POST["eSize"]) . "', 
               `Gekommen`= '" . sql_escape($_POST["eGekommen"]) . "', 
