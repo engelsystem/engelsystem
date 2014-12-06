@@ -6331,3 +6331,9 @@ a#shifts td.collides:hover {
 .space-top {
   margin-top: 15px;
 }
+.messages:focus {
+  outline: none;
+}
+.messages a:focus {
+  outline: none;
+}
