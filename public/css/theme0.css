@@ -6316,3 +6316,6 @@ td.occupied {
 atd.occupied:hover {
   background-color: #c1e2b3;
 }
+.space-top {
+  margin-top: 15px;
+}

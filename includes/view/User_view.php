@@ -28,7 +28,7 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
     $user['Tshirt'] = glyph_bool($user['Tshirt']);
     $user['lastLogIn'] = date(_('m/d/Y h:i a'), $user['lastLogIn']);
     $user['actions'] = table_buttons(array(
-        button_glyph(page_link_to('admin_user') . '&id=' . $user['UID'], 'edit', 'btn-sm') 
+        button_glyph(page_link_to('admin_user') . '&id=' . $user['UID'], 'edit', 'btn-sm')
     ));
   }
   $users[] = array(
@@ -180,12 +180,16 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
               User_groups_render($user_groups)
           ))
       )),
-      buttons(array(
-          $admin_user_privilege ? button(page_link_to('admin_user') . '&id=' . $user_source['UID'], '<span class="glyphicon glyphicon-edit"></span> ' . _("edit")) : '',
-          ! $user_source['Gekommen'] ? button(page_link_to('admin_arrive') . '&arrived=' . $user_source['UID'], _("arrived")) : '',
-          $its_me ? button(page_link_to_absolute('ical') . '&key=' . $user_source['api_key'], glyph('calendar') . _("iCal Export")) : '',
-          $its_me ? button(page_link_to_absolute('shifts_json_export') . '&key=' . $user_source['api_key'], glyph('export') . _("JSON Export")) : '',
-          $its_me ? button(page_link_to_absolute('user_myshifts') . '&reset', glyph('repeat') . _('Reset API key')) : ''
+      div('row space-top', array(
+          div('col-md-12', array(
+              buttons(array(
+                  $admin_user_privilege ? button(page_link_to('admin_user') . '&id=' . $user_source['UID'], glyph("edit") . _("edit")) : '',
+                  ! $user_source['Gekommen'] ? button(page_link_to('admin_arrive') . '&arrived=' . $user_source['UID'], _("arrived")) : '',
+                  $its_me ? button(page_link_to_absolute('ical') . '&key=' . $user_source['api_key'], glyph('calendar') . _("iCal Export")) : '',
+                  $its_me ? button(page_link_to_absolute('shifts_json_export') . '&key=' . $user_source['api_key'], glyph('export') . _("JSON Export")) : '',
+                  $its_me ? button(page_link_to_absolute('user_myshifts') . '&reset', glyph('repeat') . _('Reset API key')) : ''
+              ))
+          ))
       )),
       ($its_me || $admin_user_privilege) ? '<h2>' . _("Shifts") . '</h2>' : '',
       ($its_me || $admin_user_privilege) ? table(array(
