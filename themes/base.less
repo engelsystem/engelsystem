@@ -10,12 +10,24 @@ body {
   color: @text-muted;
 }
 
-td.free {
-	.bg-danger();
-}
-
-td.occupied {
-	.bg-success();
+#shifts {
+  td {
+    &.free {
+      border: 1px solid @gray-light;
+      .bg-danger();
+    }
+    &.occupied {
+      border: 1px solid @gray-light;
+      .bg-success();
+    }
+    &.collides {
+      border: 1px solid @gray-light;
+      .bg-warning();
+    }
+    &.own {
+      border: 1px solid @gray-light;
+    }
+  }
 }
 
 .space-top {
