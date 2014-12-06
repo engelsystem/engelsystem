@@ -232,7 +232,11 @@ function form_select($name, $label, $values, $selected) {
  * Rendert ein Formular-Element
  */
 function form_element($label, $input, $for = "") {
-  return '<div class="form-group">' . '<label for="' . $for . '">' . $label . '</label>' . $input . '</div>';
+  if ($label == '') {
+    return '<div class="form-group">' . $input . '</div>';
+  }else {
+    return '<div class="form-group">' . '<label for="' . $for . '">' . $label . '</label>' . $input . '</div>';
+  }
 }
 
 /**
