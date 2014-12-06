@@ -93,27 +93,6 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   $title = $p;
   $content = "";
   
-  if (isset($user)) {
-    if (User_is_freeloader($user))
-      error(sprintf(_("You freeloaded at least %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again."), $max_freeloadable_shifts));
-  
-    // Hinweis für Engel, die noch nicht angekommen sind
-    if ($user['Gekommen'] == 0)
-      error(_("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already."));
-  
-    if ($enable_tshirt_size && $user['Size'] == "")
-      error(_("You need to specify a tshirt size in your settings!"));
-  
-    if ($user['DECT'] == "")
-      error(_("You need to specify a DECT phone number in your settings! If you don't have a DECT phone, just enter \"-\"."));
-  
-    // Erzengel Hinweis für unbeantwortete Fragen
-    if ($p != "admin_questions")
-      admin_new_questions();
-  
-    user_angeltypes_unconfirmed_hint();
-  }
-  
   if ($p == "api") {
     require_once realpath(__DIR__ . '/../includes/controller/api.php');
     error("Api disabled temporily.");
