@@ -129,8 +129,11 @@ function admin_import() {
           engelsystem_error('Unable to update shift.');
       }
       
-      foreach ($events_deleted as $event)
-        sql_query("DELETE FROM `Shifts` WHERE `PSID`=" . sql_escape($event['PSID']) . " LIMIT 1");
+      foreach ($events_deleted as $event) {
+        $result = Shift_delete_by_psid($event['PSID']);
+        if ($result === false)
+          engelsystem_error('Unable to delete shift.');
+      }
       
       engelsystem_log("Pentabarf import done");
       

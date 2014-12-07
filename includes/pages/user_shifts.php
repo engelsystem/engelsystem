@@ -178,8 +178,9 @@ function user_shifts() {
     
     // Schicht löschen bestätigt
     if (isset($_REQUEST['delete'])) {
-      sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`=" . sql_escape($shift_id));
-      sql_query("DELETE FROM `Shifts` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+      $result = Shift_delete($shift_id);
+      if ($result === false)
+        engelsystem_error('Unable to delete shift.');
       
       engelsystem_log("Deleted shift " . $shift['name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']));
       success(_("Shift deleted."));

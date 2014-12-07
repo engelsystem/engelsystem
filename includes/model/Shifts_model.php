@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Delete a shift by its external id.
+ */
+function Shift_delete_by_psid($shift_psid) {
+  return sql_query("DELETE FROM `Shifts` WHERE `PSID`=" . sql_escape($shift_psid));
+}
+
+/**
+ * Delete a shift.
+ */
+function Shift_delete($shift_id) {
+  return sql_query("DELETE FROM `Shifts` WHERE `SID`=" . sql_escape($shift_id));
+}
+
+/**
  * Update a shift.
  */
 function Shift_update($shift) {
