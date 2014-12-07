@@ -35,6 +35,17 @@ function ShiftEntry_create($shift_entry) {
 }
 
 /**
+ * Update a shift entry.
+ */
+function ShiftEntry_update($shift_entry) {
+  return sql_query("UPDATE `ShiftEntry` SET
+      `Comment`='" . sql_escape($shift_entry['Comment']) . "',
+      `freeload_comment`='" . sql_escape($shift_entry['freeload_comment']) . "',
+      `freeloaded`=" . sql_escape($shift_entry['freeloaded'] ? 'TRUE' : 'FALSE') . "
+      WHERE `id`=" . sql_escape($shift_entry['id']));
+}
+
+/**
  * Delete a shift entry.
  */
 function ShiftEntry_delete($shift_entry_id) {

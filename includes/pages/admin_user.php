@@ -215,7 +215,6 @@ function admin_user() {
             $user_source = sql_select("SELECT `Nick`, `UID` FROM `User` WHERE `UID` = '" . sql_escape($id) . "' LIMIT 1");
             sql_query("DELETE FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
             sql_query("DELETE FROM `UserGroups` WHERE `uid`=" . sql_escape($id));
-            sql_query("UPDATE `ShiftEntry` SET `UID`=0, `Comment`=NULL WHERE `UID`=" . sql_escape($id));
             engelsystem_log("Deleted user " . User_Nick_render($user_source));
             $html .= success("Benutzer gelöscht!", true);
           } else {
