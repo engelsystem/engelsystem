@@ -1,5 +1,25 @@
 <?php
 
+/**
+ * Create a new shift.
+ * @return new shift id or false
+ */
+function Shift_create($shift) {
+  $result = sql_query("INSERT INTO `Shifts` SET
+      `start`=" . sql_escape($shift['start']) . ",
+      `end`=" . sql_escape($shift['end']) . ",
+      `RID`=" . sql_escape($shift['RID']) . ",
+      `name`=" . sql_null($shift['name']) . ",
+      `URL`=" . sql_null($shift['URL']) . ",
+      `PSID`=" . sql_null($shift['PSID']));
+  if ($result === false)
+    return false;
+  return sql_id();
+}
+
+/**
+ * Return users shifts.
+ */
 function Shifts_by_user($user) {
   return sql_select("
       SELECT * 
