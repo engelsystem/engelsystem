@@ -185,9 +185,10 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
               buttons(array(
                   $admin_user_privilege ? button(page_link_to('admin_user') . '&id=' . $user_source['UID'], glyph("edit") . _("edit")) : '',
                   ! $user_source['Gekommen'] ? button(page_link_to('admin_arrive') . '&arrived=' . $user_source['UID'], _("arrived")) : '',
-                  $its_me ? button(page_link_to_absolute('ical') . '&key=' . $user_source['api_key'], glyph('calendar') . _("iCal Export")) : '',
-                  $its_me ? button(page_link_to_absolute('shifts_json_export') . '&key=' . $user_source['api_key'], glyph('export') . _("JSON Export")) : '',
-                  $its_me ? button(page_link_to_absolute('user_myshifts') . '&reset', glyph('repeat') . _('Reset API key')) : ''
+                  $its_me ? button(page_link_to('user_settings'), glyph('list-alt') . _("Settings")) : '',
+                  $its_me ? button(page_link_to('ical') . '&key=' . $user_source['api_key'], glyph('calendar') . _("iCal Export")) : '',
+                  $its_me ? button(page_link_to('shifts_json_export') . '&key=' . $user_source['api_key'], glyph('export') . _("JSON Export")) : '',
+                  $its_me ? button(page_link_to('user_myshifts') . '&reset', glyph('repeat') . _('Reset API key')) : ''
               ))
           ))
       )),
