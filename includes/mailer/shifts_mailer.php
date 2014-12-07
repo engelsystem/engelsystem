@@ -72,7 +72,7 @@ function mail_shift_assign($user, $shift) {
   if ($user["email_shiftinfo"]) {
     $room = Room($shift["RID"]);
 
-    $message = _("You have been assigned to a Shift:") . "\n"
+    $message = _("You have been assigned to a Shift:") . "\n";
     $message .= $shift["name"] . "\n";
     $message .= date("y-m-d H:i", $shift["start"]) . " - " . date("H:i", $shift["end"]) . "\n";
     $message .= $room["Name"] . "\n";
@@ -85,7 +85,7 @@ function mail_shift_removed($user, $shift) {
   if ($user["email_shiftinfo"]) {
     $room = Room($shift["RID"]);
 
-    $message = _("You have been removed from a Shift:") . "\n"
+    $message = _("You have been removed from a Shift:") . "\n";
     $message .= $shift["name"] . "\n";
     $message .= date("y-m-d H:i", $shift["start"]) . " - " . date("H:i", $shift["end"]) . "\n";
     $message .= $room["Name"] . "\n";
