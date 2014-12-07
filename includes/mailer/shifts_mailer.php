@@ -44,7 +44,7 @@ function mail_shift_change($old_shift, $new_shift) {
   
   foreach ($users as $user)
     if ($user["email_shiftinfo"])
-      engelsystem_email_to_user($user, '[engelsystem] ' . _("Your Shift has changed"), $message);
+      engelsystem_email_to_user($user, '[engelsystem] ' . _("Your Shift has changed"), $message, true);
 }
 
 function mail_shift_delete($shift) {
@@ -59,7 +59,7 @@ function mail_shift_delete($shift) {
   
   foreach ($users as $user)
     if ($user["email_shiftinfo"])
-      engelsystem_email_to_user($user, '[engelsystem] ' . _("Your Shift was deleted"), $message);
+      engelsystem_email_to_user($user, '[engelsystem] ' . _("Your Shift was deleted"), $message, true);
 }
 
 function mail_shift_assign($user, $shift) {
@@ -71,7 +71,7 @@ function mail_shift_assign($user, $shift) {
     $message .= date("y-m-d H:i", $shift["start"]) . " - " . date("H:i", $shift["end"]) . "\n";
     $message .= $room["Name"] . "\n";
     
-    engelsystem_email_to_user($user, '[engelsystem] ' . _("Assigned to Shift"), $message);
+    engelsystem_email_to_user($user, '[engelsystem] ' . _("Assigned to Shift"), $message, true);
   }
 }
 
@@ -84,7 +84,7 @@ function mail_shift_removed($user, $shift) {
     $message .= date("y-m-d H:i", $shift["start"]) . " - " . date("H:i", $shift["end"]) . "\n";
     $message .= $room["Name"] . "\n";
     
-    engelsystem_email_to_user($user, '[engelsystem] ' . _("Removed from Shift"), $message);
+    engelsystem_email_to_user($user, '[engelsystem] ' . _("Removed from Shift"), $message, true);
   }
 }
 
