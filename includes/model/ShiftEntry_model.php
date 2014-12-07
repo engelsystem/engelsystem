@@ -8,8 +8,24 @@ function ShiftEntries_freeleaded_count() {
 }
 
 /**
+ * Create a new shift entry.
+ * 
+ * @param ShiftEntry $shift_entry          
+ */
+function ShiftEntry_create($shift_entry) {
+  return sql_query("INSERT INTO `ShiftEntry` SET
+      `SID`=" . sql_escape($shift_entry['SID']) . ",
+      `TID`=" . sql_escape($shift_entry['TID']) . ",
+      `UID`=" . sql_escape($shift_entry['UID']) . ",
+      `Comment`='" . sql_escape($shift_entry['Comment']) . "',
+      `freeload_comment`='" . sql_escape($shift_entry['freeload_comment']) . "',
+      `freeloaded`=" . sql_escape($shift_entry['freeloaded'] ? 'TRUE' : 'FALSE'));
+}
+
+/**
  * Returns next (or current) shifts of given user.
- * @param User $user
+ *
+ * @param User $user          
  */
 function ShiftEntries_upcoming_for_user($user) {
   return sql_select("
