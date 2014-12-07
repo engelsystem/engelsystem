@@ -5,7 +5,8 @@
  */
 $themes = array(
     "0" => "Engelsystem light",
-    "1" => "Engelsystem dark"
+    "1" => "Engelsystem dark",
+    "2" => "Engelsystem 31c3"
 );
 
 /**

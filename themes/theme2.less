@@ -1,0 +1,25 @@
+@import "../vendor/bootstrap/less/variables";
+
+@brand-primary:         #41145A;
+@brand-success:         #46FFA1;
+@brand-info:            #6E50B4;
+@brand-warning:         #FF8232;
+@brand-danger:          #FF5A46;
+
+@state-success-text:             darken(@brand-success,40%);
+@state-success-bg:               @brand-success;
+@state-success-border:           darken(spin(@state-success-bg, -10), 5%);
+
+@state-info-text:                #fff;
+@state-info-bg:                  @brand-info;//#d9edf7;
+@state-info-border:              darken(spin(@state-info-bg, -10), 7%);
+
+@state-warning-text:             #8a6d3b;
+@state-warning-bg:               @brand-warning;//#fcf8e3;
+@state-warning-border:           darken(spin(@state-warning-bg, -10), 5%);
+
+@state-danger-text:              @brand-danger;
+@state-danger-bg:                lighten(@brand-danger,30%);//#f2dede;
+@state-danger-border:            darken(spin(@state-danger-bg, -10), 5%);
+
+@import "base.less";
