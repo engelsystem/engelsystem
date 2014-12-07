@@ -7,9 +7,18 @@ function ShiftEntries_freeleaded_count() {
   return sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1");
 }
 
+function ShiftEntries_by_shift($shift_id) {
+  return sql_select("
+      SELECT `User`.`email`, `User`.`email_shiftinfo`, `User`.`Sprache`, `ShiftEntry`.`UID`, `ShiftEntry`.`TID`, `ShiftEntry`.`SID`, `AngelTypes`.`name` as `angel_type_name`, `ShiftEntry`.`Comment`, `ShiftEntry`.`freeloaded`
+      FROM `ShiftEntry`
+      JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
+      JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
+      WHERE `ShiftEntry`.`SID`=" . sql_escape($shift_id));
+}
+
 /**
  * Create a new shift entry.
- * 
+ *
  * @param ShiftEntry $shift_entry          
  */
 function ShiftEntry_create($shift_entry) {
