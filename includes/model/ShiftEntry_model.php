@@ -22,9 +22,10 @@ function ShiftEntries_by_shift($shift_id) {
 /**
  * Create a new shift entry.
  *
- * @param ShiftEntry $shift_entry
+ * @param ShiftEntry $shift_entry          
  */
 function ShiftEntry_create($shift_entry) {
+  mail_shift_assign(User($shift_entry['UID']), Shift($shift_entry['SID']));
   return sql_query("INSERT INTO `ShiftEntry` SET
       `SID`=" . sql_escape($shift_entry['SID']) . ",
       `TID`=" . sql_escape($shift_entry['TID']) . ",
@@ -46,16 +47,30 @@ function ShiftEntry_update($shift_entry) {
 }
 
 /**
+ * Get a shift entry.
+ */
+function ShiftEntry($shift_entry_id) {
+  $shift_entry = sql_select("SELECT * FROM `ShiftEntry` WHERE `id`=" . sql_escape($shift_entry_id));
+  if ($shift_entry === false)
+    return false;
+  if (count($shift_entry) == 0)
+    return null;
+  return $shift_entry[0];
+}
+
+/**
  * Delete a shift entry.
  */
 function ShiftEntry_delete($shift_entry_id) {
+  $shift_entry = ShiftEntry($shift_entry_id);
+  mail_shift_removed(User($shift_entry['UID']), Shift($shift_entry['SID']));
   return sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($shift_entry_id));
 }
 
 /**
  * Returns next (or current) shifts of given user.
  *
- * @param User $user
+ * @param User $user          
  */
 function ShiftEntries_upcoming_for_user($user) {
   return sql_select("
@@ -71,8 +86,8 @@ function ShiftEntries_upcoming_for_user($user) {
 /**
  * Returns all shift entries in given shift for given angeltype.
  *
- * @param int $shift_id
- * @param int $angeltype_id
+ * @param int $shift_id          
+ * @param int $angeltype_id          
  */
 function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id) {
   return sql_select("
