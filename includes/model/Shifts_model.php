@@ -11,6 +11,9 @@ function Shift_delete_by_psid($shift_psid) {
  * Delete a shift.
  */
 function Shift_delete($shift_id) {
+
+  mail_shift_delete(Shift($shift_id));
+
   return sql_query("DELETE FROM `Shifts` WHERE `SID`=" . sql_escape($shift_id));
 }
 
@@ -18,6 +21,10 @@ function Shift_delete($shift_id) {
  * Update a shift.
  */
 function Shift_update($shift) {
+
+  $old_shift = Shift($shift['SID']);
+  mail_shift_change(Shift($shift['SID']), $shift);
+
   return sql_query("UPDATE `Shifts` SET
       `start`=" . sql_escape($shift['start']) . ",
       `end`=" . sql_escape($shift['end']) . ",
