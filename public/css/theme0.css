@@ -6337,3 +6337,77 @@ a#shifts td.collides:hover {
 .messages a:focus {
   outline: none;
 }
+.messages span.text-danger {
+  animation: pulse 1s infinite;
+  -webkit-animation: pulse 1s infinite;
+  -moz-animation: pulse 1s infinite;
+}
+@keyframes pulse {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(5deg) translateY(-2px);
+  }
+  20% {
+    transform: rotate(-5deg);
+  }
+  30% {
+    transform: rotate(5deg) translateY(-2px);
+  }
+  40% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(0deg) translateY(-2px);
+  }
+  75% {
+    transform: rotate(0deg) translateY(0px);
+  }
+}
+@-webkit-keyframes pulse {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(5deg) translateY(-2px);
+  }
+  20% {
+    transform: rotate(-5deg);
+  }
+  30% {
+    transform: rotate(5deg) translateY(-2px);
+  }
+  40% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(0deg) translateY(-2px);
+  }
+  75% {
+    transform: rotate(0deg) translateY(0px);
+  }
+}
+@-moz-keyframes pulse {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(5deg) translateY(-2px);
+  }
+  20% {
+    transform: rotate(-5deg);
+  }
+  30% {
+    transform: rotate(5deg) translateY(-2px);
+  }
+  40% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(0deg) translateY(-2px);
+  }
+  75% {
+    transform: rotate(0deg) translateY(0px);
+  }
+}
