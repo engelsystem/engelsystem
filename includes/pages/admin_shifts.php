@@ -1,4 +1,5 @@
 <?php
+
 function admin_shifts_title() {
   return _("Create shifts");
 }
@@ -229,14 +230,17 @@ function admin_shifts() {
           )) 
       ));
     }
-  
   } elseif (isset($_REQUEST['submit'])) {
     if (! is_array($_SESSION['admin_shifts_shifts']) || ! is_array($_SESSION['admin_shifts_types']))
       redirect(page_link_to('admin_shifts'));
     
     foreach ($_SESSION['admin_shifts_shifts'] as $shift) {
-      sql_query("INSERT INTO `Shifts` SET `start`=" . sql_escape($shift['start']) . ",  `end`=" . sql_escape($shift['end']) . ", `RID`=" . sql_escape($shift['RID']) . ", `name`='" . sql_escape($shift['name']) . "'");
-      $shift_id = sql_id();
+      $shift['URL'] = null;
+      $shift['PSID'] = null;
+      $shift_id = Shift_create($shift);
+      if ($shift_id === false)
+        engelsystem_error('Unable to create shift.');
+      
       engelsystem_log("Shift created: " . $shift['name'] . " from " . date("Y-m-d H:i", $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']));
       $needed_angel_types_info = array();
       foreach ($_SESSION['admin_shifts_types'] as $type_id => $count) {

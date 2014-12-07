@@ -1,4 +1,5 @@
 <?php
+
 function admin_import_title() {
   return _("Frab import");
 }
@@ -116,14 +117,23 @@ function admin_import() {
         sql_query("DELETE FROM `Room` WHERE `Name`='" . sql_escape($room) . "' LIMIT 1");
       
       list($events_new, $events_updated, $events_deleted) = prepare_events($import_file);
-      foreach ($events_new as $event)
-        sql_query("INSERT INTO `Shifts` SET `name`='" . sql_escape($event['name']) . "', `start`=" . sql_escape($event['start']) . ", `end`=" . sql_escape($event['end']) . ", `RID`=" . sql_escape($event['RID']) . ", `PSID`=" . sql_escape($event['PSID']) . ", `URL`='" . sql_escape($event['URL']) . "'");
+      foreach ($events_new as $event) {
+        $result = Shift_create($event);
+        if ($result === false)
+          engelsystem_error('Unable to create shift.');
+      }
       
-      foreach ($events_updated as $event)
-        sql_query("UPDATE `Shifts` SET `name`='" . sql_escape($event['name']) . "', `start`=" . sql_escape($event['start']) . ", `end`=" . sql_escape($event['end']) . ", `RID`=" . sql_escape($event['RID']) . ", `PSID`=" . sql_escape($event['PSID']) . ", `URL`='" . sql_escape($event['URL']) . "' WHERE `PSID`=" . sql_escape($event['PSID']) . " LIMIT 1");
+      foreach ($events_updated as $event) {
+        $result = Shift_update_by_psid($event);
+        if ($result === false)
+          engelsystem_error('Unable to update shift.');
+      }
       
-      foreach ($events_deleted as $event)
-        sql_query("DELETE FROM `Shifts` WHERE `PSID`=" . sql_escape($event['PSID']) . " LIMIT 1");
+      foreach ($events_deleted as $event) {
+        $result = Shift_delete_by_psid($event['PSID']);
+        if ($result === false)
+          engelsystem_error('Unable to delete shift.');
+      }
       
       engelsystem_log("Pentabarf import done");
       
@@ -165,7 +175,7 @@ function prepare_rooms($file) {
   
   return array(
       $rooms_new,
-      $rooms_deleted
+      $rooms_deleted 
   );
 }
 

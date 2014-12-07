@@ -20,7 +20,10 @@ function user_shifts() {
     $shift_entry_source = sql_select("SELECT `User`.`Nick`, `ShiftEntry`.`Comment`, `ShiftEntry`.`UID`, `Shifts`.*, `Room`.`Name`, `AngelTypes`.`name` as `angel_type` FROM `ShiftEntry` JOIN `User` ON (`User`.`UID`=`ShiftEntry`.`UID`) JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`) JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `ShiftEntry`.`id`=" . sql_escape($entry_id) . " LIMIT 1");
     if (count($shift_entry_source) > 0) {
       $shift_entry_source = $shift_entry_source[0];
-      sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($entry_id) . " LIMIT 1");
+      
+      $result = ShiftEntry_delete($entry_id);
+      if ($result === false)
+        engelsystem_error('Unable to delete shift entry.');
       
       engelsystem_log("Deleted " . User_Nick_render($shift_entry_source) . "'s shift: " . $shift_entry_source['name'] . " at " . $shift_entry_source['Name'] . " from " . date("y-m-d H:i", $shift_entry_source['start']) . " to " . date("y-m-d H:i", $shift_entry_source['end']) . " as " . $shift_entry_source['angel_type']);
       success(_("Shift entry deleted."));
@@ -122,7 +125,13 @@ function user_shifts() {
       }
       
       if ($ok) {
-        sql_query("UPDATE `Shifts` SET `start`=" . sql_escape($start) . ", `end`=" . sql_escape($end) . ", `RID`=" . sql_escape($rid) . ", `name`='" . sql_escape($name) . "' WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+        $shift['name'] = $name;
+        $shift['RID'] = $rid;
+        $shift['start'] = $start;
+        $shift['end'] = $end;
+        $result = Shift_update($shift);
+        if ($result === false)
+          engelsystem_error('Unable to update shift.');
         sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`=" . sql_escape($shift_id));
         $needed_angel_types_info = array();
         foreach ($needed_angel_types as $type_id => $count) {
@@ -169,9 +178,9 @@ function user_shifts() {
     
     // Schicht löschen bestätigt
     if (isset($_REQUEST['delete'])) {
-      sql_query("DELETE FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift_id));
-      sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`=" . sql_escape($shift_id));
-      sql_query("DELETE FROM `Shifts` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+      $result = Shift_delete($shift_id);
+      if ($result === false)
+        engelsystem_error('Unable to delete shift.');
       
       engelsystem_log("Deleted shift " . $shift['name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']));
       success(_("Shift deleted."));
