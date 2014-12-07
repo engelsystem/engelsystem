@@ -1,7 +1,35 @@
 <?php
 
 /**
+ * Update a shift.
+ */
+function Shift_update($shift) {
+  return sql_query("UPDATE `Shifts` SET
+      `start`=" . sql_escape($shift['start']) . ",
+      `end`=" . sql_escape($shift['end']) . ",
+      `RID`=" . sql_escape($shift['RID']) . ",
+      `name`=" . sql_null($shift['name']) . ",
+      `URL`=" . sql_null($shift['URL']) . ",
+      `PSID`=" . sql_null($shift['PSID']) . "
+      WHERE `SID`=" . sql_escape($shift['SID']));
+}
+
+/**
+ * Update a shift by its external id.
+ */
+function Shift_update_by_psid($shift) {
+  return sql_query("UPDATE `Shifts` SET
+      `start`=" . sql_escape($shift['start']) . ",
+      `end`=" . sql_escape($shift['end']) . ",
+      `RID`=" . sql_escape($shift['RID']) . ",
+      `name`=" . sql_null($shift['name']) . ",
+      `URL`=" . sql_null($shift['URL']) . "
+      WHERE `PSID`=" . sql_escape($shift['PSID']));
+}
+
+/**
  * Create a new shift.
+ *
  * @return new shift id or false
  */
 function Shift_create($shift) {

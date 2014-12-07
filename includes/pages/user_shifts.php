@@ -125,7 +125,13 @@ function user_shifts() {
       }
       
       if ($ok) {
-        sql_query("UPDATE `Shifts` SET `start`=" . sql_escape($start) . ", `end`=" . sql_escape($end) . ", `RID`=" . sql_escape($rid) . ", `name`='" . sql_escape($name) . "' WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+        $shift['name'] = $name;
+        $shift['RID'] = $rid;
+        $shift['start'] = $start;
+        $shift['end'] = $end;
+        $result = Shift_update($shift);
+        if ($result === false)
+          engelsystem_error('Unable to update shift.');
         sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`=" . sql_escape($shift_id));
         $needed_angel_types_info = array();
         foreach ($needed_angel_types as $type_id => $count) {
