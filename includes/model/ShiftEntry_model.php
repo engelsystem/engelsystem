@@ -9,7 +9,7 @@ function ShiftEntries_freeleaded_count() {
 
 function ShiftEntries_by_shift($shift_id) {
   return sql_select("
-      SELECT `User`.`email`, `User`.`email_shiftinfo`, `User`.`Sprache`, `ShiftEntry`.`UID`, `ShiftEntry`.`TID`, `ShiftEntry`.`SID`, `AngelTypes`.`name` as `angel_type_name`, `ShiftEntry`.`Comment`, `ShiftEntry`.`freeloaded`
+      SELECT `User`.`email`, `User`.`email_shiftinfo`, `User`.`Nick`, `User`.`Sprache`, `ShiftEntry`.`UID`, `ShiftEntry`.`TID`, `ShiftEntry`.`SID`, `AngelTypes`.`name` as `angel_type_name`, `ShiftEntry`.`Comment`, `ShiftEntry`.`freeloaded`
       FROM `ShiftEntry`
       JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
       JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
@@ -19,7 +19,7 @@ function ShiftEntries_by_shift($shift_id) {
 /**
  * Create a new shift entry.
  *
- * @param ShiftEntry $shift_entry          
+ * @param ShiftEntry $shift_entry
  */
 function ShiftEntry_create($shift_entry) {
   return sql_query("INSERT INTO `ShiftEntry` SET
@@ -34,7 +34,7 @@ function ShiftEntry_create($shift_entry) {
 /**
  * Returns next (or current) shifts of given user.
  *
- * @param User $user          
+ * @param User $user
  */
 function ShiftEntries_upcoming_for_user($user) {
   return sql_select("
@@ -50,12 +50,12 @@ function ShiftEntries_upcoming_for_user($user) {
 /**
  * Returns all shift entries in given shift for given angeltype.
  *
- * @param int $shift_id          
- * @param int $angeltype_id          
+ * @param int $shift_id
+ * @param int $angeltype_id
  */
 function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id) {
   return sql_select("
-      SELECT * 
+      SELECT *
       FROM `ShiftEntry`
       WHERE `SID`=" . sql_escape($shift_id) . "
       AND `TID`=" . sql_escape($angeltype_id) . "
@@ -66,9 +66,9 @@ function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id) {
  * Returns all freeloaded shifts for given user.
  */
 function ShiftEntries_freeloaded_by_user($user) {
-  return sql_select("SELECT * 
-      FROM `ShiftEntry` 
-      WHERE `freeloaded` = 1 
+  return sql_select("SELECT *
+      FROM `ShiftEntry`
+      WHERE `freeloaded` = 1
       AND `UID`=" . sql_escape($user['UID']));
 }
 
