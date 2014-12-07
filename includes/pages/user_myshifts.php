@@ -77,15 +77,16 @@ function user_myshifts() {
     if (count($shift) > 0) {
       $shift = $shift[0];
       if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges)) {
-        sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
-        $msg .= success(_("You have been signed off from the shift."), true);
+        $result = ShiftEntry_delete($id);
+        if ($result === false)
+          engelsystem_error('Unable to delete shift entry.');
+        success(_("You have been signed off from the shift."));
       } else
-        $msg .= error(_("It's too late to sign yourself off the shift. If neccessary, ask the dispatcher to do so."), true);
+        error(_("It's too late to sign yourself off the shift. If neccessary, ask the dispatcher to do so."));
     } else
       redirect(page_link_to('user_myshifts'));
   }
   
-  msg();
   redirect(page_link_to('users') . '&action=view');
 }
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 function Shifts_by_user($user) {
   return sql_select("
       SELECT * 

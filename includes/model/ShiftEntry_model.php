@@ -7,9 +7,12 @@ function ShiftEntries_freeleaded_count() {
   return sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1");
 }
 
+/**
+ * List users subsribed to a given shift.
+ */
 function ShiftEntries_by_shift($shift_id) {
   return sql_select("
-      SELECT `User`.`email`, `User`.`email_shiftinfo`, `User`.`Sprache`, `ShiftEntry`.`UID`, `ShiftEntry`.`TID`, `ShiftEntry`.`SID`, `AngelTypes`.`name` as `angel_type_name`, `ShiftEntry`.`Comment`, `ShiftEntry`.`freeloaded`
+      SELECT `User`.`Nick`, `User`.`email`, `User`.`email_shiftinfo`, `User`.`Sprache`, `ShiftEntry`.`UID`, `ShiftEntry`.`TID`, `ShiftEntry`.`SID`, `AngelTypes`.`name` as `angel_type_name`, `ShiftEntry`.`Comment`, `ShiftEntry`.`freeloaded`
       FROM `ShiftEntry`
       JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
       JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
@@ -29,6 +32,13 @@ function ShiftEntry_create($shift_entry) {
       `Comment`='" . sql_escape($shift_entry['Comment']) . "',
       `freeload_comment`='" . sql_escape($shift_entry['freeload_comment']) . "',
       `freeloaded`=" . sql_escape($shift_entry['freeloaded'] ? 'TRUE' : 'FALSE'));
+}
+
+/**
+ * Delete a shift entry.
+ */
+function ShiftEntry_delete($shift_entry_id) {
+  return sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($shift_entry_id));
 }
 
 /**
