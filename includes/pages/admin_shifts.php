@@ -8,32 +8,32 @@ function admin_shifts_title() {
 function admin_shifts() {
   $msg = "";
   $ok = true;
-  
+
   $rid = 0;
   $start = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d") . " 00:00")->getTimestamp();
   $end = $start + 24 * 60 * 60;
   $mode = 'single';
-  $angelmode = 'location';
+  $angelmode = 'manually';
   $length = '';
   $change_hours = array();
   $name = "";
-  
+
   // Locations laden (auch unsichtbare - fuer Erzengel ist das ok)
   $rooms = sql_select("SELECT * FROM `Room` ORDER BY `Name`");
   $room_array = array();
   foreach ($rooms as $room)
     $room_array[$room['RID']] = $room['Name'];
-    
+
     // Engeltypen laden
   $types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
   $needed_angel_types = array();
   foreach ($types as $type)
     $needed_angel_types[$type['id']] = 0;
-  
+
   if (isset($_REQUEST['preview']) || isset($_REQUEST['back'])) {
     // Name/Bezeichnung der Schicht, darf leer sein
     $name = strip_request_item('name');
-    
+
     // Auswahl der sichtbaren Locations für die Schichten
     if (isset($_REQUEST['rid']) && preg_match("/^[0-9]+$/", $_REQUEST['rid']) && isset($room_array[$_REQUEST['rid']]))
       $rid = $_REQUEST['rid'];
@@ -42,26 +42,26 @@ function admin_shifts() {
       $rid = $rooms[0]['RID'];
       $msg .= error("Wähle bitte einen Raum aus.", true);
     }
-    
+
     if (isset($_REQUEST['start']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['start'])))
       $start = $tmp->getTimestamp();
     else {
       $ok = false;
       $msg .= error("Bitte gib einen Startzeitpunkt für die Schichten an.", true);
     }
-    
+
     if (isset($_REQUEST['end']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['end'])))
       $end = $tmp->getTimestamp();
     else {
       $ok = false;
       $msg .= error("Bitte gib einen Endzeitpunkt für die Schichten an.", true);
     }
-    
+
     if ($start >= $end) {
       $ok = false;
       $msg .= error("Das Ende muss nach dem Startzeitpunkt liegen!", true);
     }
-    
+
     if (isset($_REQUEST['mode'])) {
       if ($_REQUEST['mode'] == 'single') {
         $mode = 'single';
@@ -86,7 +86,7 @@ function admin_shifts() {
       $ok = false;
       $msg .= error("Bitte wähle einen Modus.", true);
     }
-    
+
     if (isset($_REQUEST['angelmode'])) {
       if ($_REQUEST['angelmode'] == 'location') {
         $angelmode = 'location';
@@ -112,11 +112,11 @@ function admin_shifts() {
       $ok = false;
       $msg .= error("Bitte wähle benötigte Engel.", true);
     }
-    
+
     // Beim Zurück-Knopf das Formular zeigen
     if (isset($_REQUEST['back']))
       $ok = false;
-      
+
       // Alle Eingaben in Ordnung
     if ($ok) {
       if ($angelmode == 'location') {
@@ -131,25 +131,25 @@ function admin_shifts() {
             'start' => $start,
             'end' => $end,
             'RID' => $rid,
-            'name' => $name 
+            'name' => $name
         );
       } elseif ($mode == 'multi') {
         $shift_start = $start;
         do {
           $shift_end = $shift_start + $length * 60;
-          
+
           if ($shift_end > $end)
             $shift_end = $end;
           if ($shift_start >= $shift_end)
             break;
-          
+
           $shifts[] = array(
               'start' => $shift_start,
               'end' => $shift_end,
               'RID' => $rid,
-              'name' => $name 
+              'name' => $name
           );
-          
+
           $shift_start = $shift_end;
         } while ($shift_end < $end);
       } elseif ($mode == 'variable') {
@@ -167,34 +167,34 @@ function admin_shifts() {
           } else
             break;
         }
-        
+
         $shift_start = $start;
         do {
           $day = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d", $shift_start) . " 00:00")->getTimestamp();
           $shift_end = $day + $change_hours[$change_index] * 60 * 60;
-          
+
           if ($shift_end > $end)
             $shift_end = $end;
           if ($shift_start >= $shift_end)
             $shift_end += 24 * 60 * 60;
-          
+
           $shifts[] = array(
               'start' => $shift_start,
               'end' => $shift_end,
               'RID' => $rid,
-              'name' => $name 
+              'name' => $name
           );
-          
+
           $shift_start = $shift_end;
           $change_index = ($change_index + count($change_hours) - 1) % count($change_hours);
         } while ($shift_end < $end);
       }
-      
+
       $shifts_table = array();
       foreach ($shifts as $shift) {
         $shifts_table_entry = array(
             'timeslot' => '<span class="glyphicon glyphicon-time"></span> ' . date("Y-m-d H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']) . '<br /><span class="glyphicon glyphicon-map-marker"></span> ' . $room_array[$shift['RID']],
-            'entries' => $shift['name'] 
+            'entries' => $shift['name']
         );
         foreach ($types as $type) {
           if (isset($needed_angel_types[$type['id']]) && $needed_angel_types[$type['id']] > 0)
@@ -202,11 +202,11 @@ function admin_shifts() {
         }
         $shifts_table[] = $shifts_table_entry;
       }
-      
+
       // Fürs Anlegen zwischenspeichern:
       $_SESSION['admin_shifts_shifts'] = $shifts;
       $_SESSION['admin_shifts_types'] = $needed_angel_types;
-      
+
       $hidden_types = "";
       foreach ($needed_angel_types as $type_id => $count)
         $hidden_types .= form_hidden('type_' . $type_id, $count);
@@ -224,23 +224,23 @@ function admin_shifts() {
               form_submit('back', _("back")),
               table(array(
                   'timeslot' => _("Timeslot"),
-                  'entries' => _("Entries") 
+                  'entries' => _("Entries")
               ), $shifts_table),
-              form_submit('submit', _("Save")) 
-          )) 
+              form_submit('submit', _("Save"))
+          ))
       ));
     }
   } elseif (isset($_REQUEST['submit'])) {
     if (! is_array($_SESSION['admin_shifts_shifts']) || ! is_array($_SESSION['admin_shifts_types']))
       redirect(page_link_to('admin_shifts'));
-    
+
     foreach ($_SESSION['admin_shifts_shifts'] as $shift) {
       $shift['URL'] = null;
       $shift['PSID'] = null;
       $shift_id = Shift_create($shift);
       if ($shift_id === false)
         engelsystem_error('Unable to create shift.');
-      
+
       engelsystem_log("Shift created: " . $shift['name'] . " from " . date("Y-m-d H:i", $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']));
       $needed_angel_types_info = array();
       foreach ($_SESSION['admin_shifts_types'] as $type_id => $count) {
@@ -251,21 +251,21 @@ function admin_shifts() {
         }
       }
     }
-    
+
     engelsystem_log("Shift needs following angel types: " . join(", ", $needed_angel_types_info));
     $msg = success("Schichten angelegt.", true);
   } else {
     unset($_SESSION['admin_shifts_shifts']);
     unset($_SESSION['admin_shifts_types']);
   }
-  
+
   if (! isset($_REQUEST['rid']))
     $_REQUEST['rid'] = null;
   $room_select = html_select_key('rid', 'rid', $room_array, $_REQUEST['rid']);
   $angel_types = "";
   foreach ($types as $type)
     $angel_types .= form_spinner('type_' . $type['id'], $type['name'], $needed_angel_types[$type['id']]);
-  
+
   return page_with_title(admin_shifts_title(), array(
       msg(),
       $msg,
@@ -291,8 +291,8 @@ function admin_shifts() {
           $angel_types,
           '</div>',
           '</div>',
-          form_submit('preview', _("Preview")) 
-      )) 
+          form_submit('preview', _("Preview"))
+      ))
   ));
 }
 ?>
