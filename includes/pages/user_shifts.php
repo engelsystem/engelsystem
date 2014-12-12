@@ -494,7 +494,6 @@ function view_user_shifts() {
       $shifts_table .= "</th>";
       foreach ($myrooms as $room) {
         $rid = $room["id"];
-        $empty_collides = false;
         foreach ($shifts as $shift) {
           if ($shift["RID"] == $rid) {
             if (floor($shift["start"] / (15 * 60)) == $thistime / (15 * 60)) {
@@ -505,7 +504,10 @@ function view_user_shifts() {
               $collides = in_array($shift['SID'], array_keys($ownshifts));
               if (! $collides)
                 foreach ($ownshifts as $ownshift) {
-                  if ($ownshift['start'] < $shift['end'] && $ownshift['end'] > $shift['start']) {
+                  if ($ownshift['start'] >= $shift['start'] && $ownshift['start'] < $shift['end'] ||
+                        $ownshift['end'] > $shift['start'] && $ownshift['end'] <= $shift['end'] ||
+                        $ownshift['start'] < $shift['start'] && $ownshift['end'] > $shift['end'])
+                  {
                     $collides = true;
                     break;
                   }
@@ -620,16 +622,10 @@ function view_user_shifts() {
               }
             }
           }
-          if ($shift['own'] && ! in_array('user_shifts_admin', $privileges)) {
-            $blocks = ($shift["end"] - $shift["start"]) / (15 * 60);
-            $firstblock = floor(($shift["start"] - $first) / (15 * 60));
-            if ($i >= $firstblock && $i < $firstblock + $blocks)
-              $empty_collides = true;
-          }
         }
         // fill up row with empty <td>
         while ($todo[$rid][$i] -- > 0)
-          $shifts_table .= '<td class="' . ($empty_collides ? 'collides ' : '') . 'empty"></td>';
+          $shifts_table .= '<td class="empty"></td>';
       }
       $shifts_table .= "</tr>\n";
     }
