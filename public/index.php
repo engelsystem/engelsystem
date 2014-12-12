@@ -82,7 +82,9 @@ $free_pages = array(
     'api',
     'credits',
     'angeltypes',
-    'users' 
+    'users',
+    'ical',
+    'shifts_json_export'
 );
 
 // Gewünschte Seite/Funktion
@@ -91,10 +93,10 @@ if (! isset($_REQUEST['p']))
   $_REQUEST['p'] = isset($user) ? "news" : "login";
 if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $free_pages) || in_array($_REQUEST['p'], $privileges))) {
   $p = $_REQUEST['p'];
-  
+
   $title = $p;
   $content = "";
-  
+
   if ($p == "api") {
     require_once realpath(__DIR__ . '/../includes/controller/api.php');
     error("Api disabled temporily.");
@@ -222,7 +224,7 @@ echo template_render('../templates/layout.html', array(
     'content' => msg() . $content,
     'header_toolbar' => header_toolbar(),
     'faq_url' => $faq_url,
-    'locale' => $_SESSION['locale'] 
+    'locale' => $_SESSION['locale']
 ));
 
 counter();
