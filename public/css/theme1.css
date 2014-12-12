@@ -6434,6 +6434,15 @@ a#shifts td.collides:hover {
     transform: rotate(0deg) translateY(0px);
   }
 }
+.messages .text-danger {
+  color: #fff;
+}
+.messages .text-info {
+  color: #fff;
+}
+.messages .caret {
+  color: #fff;
+}
 .text-primary,
 .text-primary:hover {
   color: #428bca;
