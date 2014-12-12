@@ -84,7 +84,8 @@ $free_pages = array(
     'angeltypes',
     'users',
     'ical',
-    'shifts_json_export'
+    'shifts_json_export',
+    'atom'
 );
 
 // Gewünschte Seite/Funktion
