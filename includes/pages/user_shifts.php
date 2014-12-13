@@ -417,13 +417,14 @@ function view_user_shifts() {
   LEFT JOIN (SELECT se.`SID`, se.`TID`, COUNT(*) as count FROM `ShiftEntry` AS se GROUP BY se.`SID`, se.`TID`) AS entries ON entries.`SID` = `Shifts`.`SID` AND entries.`TID` = nat.`angel_type_id`
   WHERE `Shifts`.`RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
   AND `start` BETWEEN " . $starttime . " AND " . $endtime;
+
   if (count($_SESSION['user_shifts']['filled']) == 1) {
     if ($_SESSION['user_shifts']['filled'][0] == 0)
       $SQL .= "
-      AND (nat.`count` > entries.`count` OR entries.`count` IS NULL) ";
+      AND (nat.`count` > entries.`count` OR entries.`count` IS NULL OR EXISTS (SELECT `SID` FROM `ShiftEntry` WHERE `UID` = " .sql_escape($user['UID']) . " AND `ShiftEntry`.`SID` = `Shifts`.`SID`))";
     elseif ($_SESSION['user_shifts']['filled'][0] == 1)
       $SQL .= "
-    AND (nat.`count` <= entries.`count`) ";
+    AND (nat.`count` <= entries.`count`  OR EXISTS (SELECT `SID` FROM `ShiftEntry` WHERE `UID` = " .sql_escape($user['UID']) . " AND `ShiftEntry`.`SID` = `Shifts`.`SID`))";
   }
   $SQL .= "
   ORDER BY `start`";
@@ -613,9 +614,7 @@ function view_user_shifts() {
               else
                 $class = 'occupied';
               $shifts_table .= '<td rowspan="' . $blocks . '" class="' . $class . '">';
-              if (($is_free && in_array(0, $_SESSION['user_shifts']['filled'])) || (! $is_free && in_array(1, $_SESSION['user_shifts']['filled']))) {
-                $shifts_table .= $shifts_row;
-              }
+              $shifts_table .= $shifts_row;
               $shifts_table .= "</td>";
               for ($j = 0; $j < $blocks && $i + $j < $maxshow; $j ++) {
                 $todo[$rid][$i + $j] --;
@@ -733,11 +732,9 @@ function view_user_shifts() {
         if (in_array('user_shifts_admin', $privileges)) {
           $shift_row['entries'] .= '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">Weitere Helfer eintragen &raquo;</a>';
         }
-        if (($is_free && in_array(0, $_SESSION['user_shifts']['filled'])) || (! $is_free && in_array(1, $_SESSION['user_shifts']['filled']))) {
-          $shifts_table[] = $shift_row;
-          $shift['angeltypes'] = $angeltypes;
-          $ical_shifts[] = $shift;
-        }
+        $shifts_table[] = $shift_row;
+        $shift['angeltypes'] = $angeltypes;
+        $ical_shifts[] = $shift;
       }
     }
     $shifts_table = table(array(
