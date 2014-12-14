@@ -6,7 +6,7 @@
  * Webserver mit PHP-Anbindung, z.B. lighttpd, nginx oder Apache
 
 ## Vorgehen:
- * Auschecken der Dateien vom `master` unter https://github.com/engelsystem/engelsystem.git
+ * Klonen des `master` inkl. submodules in lokales Verzeichnis: `git clone --recursive https://github.com/engelsystem/engelsystem.git`
  * Der Webserver muss Schreibrechte auf das Verzeichnis `import` bekommen, für alle anderen Dateien reichen Leserechte.
  * Der Webserver muss auf `public` als http-root zeigen.
  * Empfehlung: Dirlisting sollte deaktiviert sein.
