@@ -6351,6 +6351,15 @@ a#shifts td.collides:hover {
 #shifts td.own {
   border: 1px solid #888888;
 }
+.shifts-table {
+  overflow-x: scroll;
+}
+.row-day {
+  border-top: 2px solid #888888;
+}
+.row-header {
+  min-width: 90px;
+}
 .space-top {
   margin-top: 15px;
 }
