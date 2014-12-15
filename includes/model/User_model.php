@@ -191,12 +191,13 @@ function User_by_password_recovery_token($token) {
  *
  * @param User $user
  */
-function User_reset_api_key(&$user) {
+function User_reset_api_key(&$user, $log = true) {
   $user['api_key'] = md5($user['Nick'] . time() . rand());
   $result = sql_query("UPDATE `User` SET `api_key`='" . sql_escape($user['api_key']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
   if ($result === false)
     return false;
-  engelsystem_log(sprintf("API key resetted (%s).",User_Nick_render($user)));
+  if ($log)
+    engelsystem_log(sprintf("API key resetted (%s).",User_Nick_render($user)));
 }
 
 /**

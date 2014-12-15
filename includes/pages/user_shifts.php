@@ -749,7 +749,7 @@ function view_user_shifts() {
   }
 
   if ($user['api_key'] == "")
-    User_reset_api_key($user);
+    User_reset_api_key($user, false);
 
   return page(array(
       '<div class="col-md-12">',
