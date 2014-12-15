@@ -7,7 +7,7 @@ function admin_log() {
   $log_entries_source = LogEntries();
   $log_entries = array();
   foreach ($log_entries_source as $log_entry) {
-    $log_entry['date'] = date("H:i", $log_entry['timestamp']);
+    $log_entry['date'] = date("d.m.Y H:i", $log_entry['timestamp']);
     $log_entries[] = $log_entry;
   }
   
