@@ -1146,10 +1146,10 @@ a.text-success:hover {
   color: #28a11c;
 }
 .text-info {
-  color: #ffffff;
+  color: #6e50b4;
 }
 a.text-info:hover {
-  color: #e6e6e6;
+  color: #583f92;
 }
 .text-warning {
   color: #8a6d3b;
@@ -1177,10 +1177,10 @@ a.bg-success:hover {
   background-color: #a3ed9c;
 }
 .bg-info {
-  background-color: #6e50b4;
+  background-color: #e4dff1;
 }
 a.bg-info:hover {
-  background-color: #583f92;
+  background-color: #c7bbe2;
 }
 .bg-warning {
   background-color: #ff8232;
@@ -2177,14 +2177,14 @@ table th[class*="col-"] {
 .table > thead > tr.info > th,
 .table > tbody > tr.info > th,
 .table > tfoot > tr.info > th {
-  background-color: #6e50b4;
+  background-color: #e4dff1;
 }
 .table-hover > tbody > tr > td.info:hover,
 .table-hover > tbody > tr > th.info:hover,
 .table-hover > tbody > tr.info:hover > td,
 .table-hover > tbody > tr:hover > .info,
 .table-hover > tbody > tr.info:hover > th {
-  background-color: #6246a4;
+  background-color: #d6cdea;
 }
 .table > thead > tr > td.warning,
 .table > tbody > tr > td.warning,
@@ -4720,15 +4720,15 @@ a.thumbnail.active {
   color: #28a11c;
 }
 .alert-info {
-  background-color: #6e50b4;
-  border-color: #4f439d;
-  color: #ffffff;
+  background-color: #e4dff1;
+  border-color: #cac6e6;
+  color: #6e50b4;
 }
 .alert-info hr {
-  border-top-color: #463c8b;
+  border-top-color: #bab4df;
 }
 .alert-info .alert-link {
-  color: #e6e6e6;
+  color: #583f92;
 }
 .alert-warning {
   background-color: #ff8232;
@@ -4975,26 +4975,26 @@ a.list-group-item-success.active:focus {
   border-color: #33cc24;
 }
 .list-group-item-info {
-  color: #ffffff;
-  background-color: #6e50b4;
+  color: #6e50b4;
+  background-color: #e4dff1;
 }
 a.list-group-item-info {
-  color: #ffffff;
+  color: #6e50b4;
 }
 a.list-group-item-info .list-group-item-heading {
   color: inherit;
 }
 a.list-group-item-info:hover,
 a.list-group-item-info:focus {
-  color: #ffffff;
-  background-color: #6246a4;
+  color: #6e50b4;
+  background-color: #d6cdea;
 }
 a.list-group-item-info.active,
 a.list-group-item-info.active:hover,
 a.list-group-item-info.active:focus {
   color: #fff;
-  background-color: #ffffff;
-  border-color: #ffffff;
+  background-color: #6e50b4;
+  border-color: #6e50b4;
 }
 .list-group-item-warning {
   color: #8a6d3b;
@@ -5329,22 +5329,22 @@ a.list-group-item-danger.active:focus {
   border-bottom-color: #c2f1b1;
 }
 .panel-info {
-  border-color: #4f439d;
+  border-color: #cac6e6;
 }
 .panel-info > .panel-heading {
-  color: #ffffff;
-  background-color: #6e50b4;
-  border-color: #4f439d;
+  color: #6e50b4;
+  background-color: #e4dff1;
+  border-color: #cac6e6;
 }
 .panel-info > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #4f439d;
+  border-top-color: #cac6e6;
 }
 .panel-info > .panel-heading .badge {
-  color: #6e50b4;
-  background-color: #ffffff;
+  color: #e4dff1;
+  background-color: #6e50b4;
 }
 .panel-info > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #4f439d;
+  border-bottom-color: #cac6e6;
 }
 .panel-warning {
   border-color: #ff4c18;
