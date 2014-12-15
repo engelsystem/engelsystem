@@ -177,7 +177,7 @@ function AngelTypes_about_view($angeltypes, $user_logged_in) {
           ! $user_logged_in ? button(page_link_to('register'), register_title()) : '',
           ! $user_logged_in ? button(page_link_to('login'), login_title()) : '',
           $user_logged_in ? button(page_link_to('angeltypes'), angeltypes_title(), 'back') : '',
-          button($faq_url, _("FAQ"))
+          button($faq_url, _("FAQ"), "btn-primary")
       )),
       '<p>' . _("Here is the list of teams and their tasks. If you have questions, read the FAQ.") . '</p>',
       '<hr />'
