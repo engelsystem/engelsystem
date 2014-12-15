@@ -7,7 +7,7 @@ function settings_title() {
 function user_settings() {
   global $enable_tshirt_size, $tshirt_sizes, $themes, $locales;
   global $user;
-  
+
   $msg = "";
   $nick = $user['Nick'];
   $lastname = $user['Name'];
@@ -24,20 +24,23 @@ function user_settings() {
   $password_hash = "";
   $selected_theme = $user['color'];
   $selected_language = $user['Sprache'];
-  
+
   $selected_angel_types_source = sql_select("SELECT * FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user['UID']));
+  $selected_angel_types_source_ids = array();
   $selected_angel_types = array();
-  foreach ($selected_angel_types_source as $selected_angel_type)
+  foreach ($selected_angel_types_source as $selected_angel_type) {
     $selected_angel_types[] = $selected_angel_type['angeltype_id'];
-  
+    $selected_angel_types_source_ids[] = $selected_angel_type['angeltype_id'];
+  }
+
   $angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
   $angel_types = array();
   foreach ($angel_types_source as $angel_type)
     $angel_types[$angel_type['id']] = $angel_type['name'] . ($angel_type['restricted'] ? " (restricted)" : "");
-  
+
   if (isset($_REQUEST['submit'])) {
     $ok = true;
-    
+
     if (isset($_REQUEST['nick']) && strlen(strip_request_item('nick')) > 1) {
       $nick = strip_request_item('nick');
       if (sql_num_query("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "' AND NOT `UID`=" . sql_escape($user['UID']) . " LIMIT 1") > 0) {
@@ -48,7 +51,7 @@ function user_settings() {
       $ok = false;
       $msg .= error(sprintf(_("Your nick &quot;%s&quot; is too short (min. 2 characters)."), strip_request_item('nick')), true);
     }
-    
+
     if (isset($_REQUEST['mail']) && strlen(strip_request_item('mail')) > 0) {
       $mail = strip_request_item('mail');
       if (! check_email($mail)) {
@@ -59,9 +62,9 @@ function user_settings() {
       $ok = false;
       $msg .= error(_("Please enter your e-mail."), true);
     }
-    
+
     $email_shiftinfo = isset($_REQUEST['email_shiftinfo']);
-    
+
     if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
       $jabber = strip_request_item('jabber');
       if (! check_email($jabber)) {
@@ -69,18 +72,18 @@ function user_settings() {
         $msg .= error(_("Please check your jabber account information."), true);
       }
     }
-    
+
     if (isset($_REQUEST['tshirt_size']) && isset($tshirt_sizes[$_REQUEST['tshirt_size']]))
       $tshirt_size = $_REQUEST['tshirt_size'];
     elseif ($enable_tshirt_size) {
       $ok = false;
     }
-    
+
     $selected_angel_types = array();
     foreach ($angel_types as $angel_type_id => $angel_type_name)
       if (isset($_REQUEST['angel_types_' . $angel_type_id]))
         $selected_angel_types[] = $angel_type_id;
-      
+
       // Trivia
     if (isset($_REQUEST['lastname']))
       $lastname = strip_request_item('lastname');
@@ -96,45 +99,60 @@ function user_settings() {
       $mobile = strip_request_item('mobile');
     if (isset($_REQUEST['hometown']))
       $hometown = strip_request_item('hometown');
-    
+
     if ($ok) {
       sql_query("
-          UPDATE `User` SET 
-          `Nick`='" . sql_escape($nick) . "', 
-          `Vorname`='" . sql_escape($prename) . "', 
-          `Name`='" . sql_escape($lastname) . "', 
-          `Alter`='" . sql_escape($age) . "', 
-          `Telefon`='" . sql_escape($tel) . "', 
-          `DECT`='" . sql_escape($dect) . "', 
-          `Handy`='" . sql_escape($mobile) . "', 
-          `email`='" . sql_escape($mail) . "', 
+          UPDATE `User` SET
+          `Nick`='" . sql_escape($nick) . "',
+          `Vorname`='" . sql_escape($prename) . "',
+          `Name`='" . sql_escape($lastname) . "',
+          `Alter`='" . sql_escape($age) . "',
+          `Telefon`='" . sql_escape($tel) . "',
+          `DECT`='" . sql_escape($dect) . "',
+          `Handy`='" . sql_escape($mobile) . "',
+          `email`='" . sql_escape($mail) . "',
           `email_shiftinfo`=" . sql_escape($email_shiftinfo ? 'TRUE' : 'FALSE') . ",
-          `jabber`='" . sql_escape($jabber) . "', 
-          `Size`='" . sql_escape($tshirt_size) . "', 
-          `Hometown`='" . sql_escape($hometown) . "' 
+          `jabber`='" . sql_escape($jabber) . "',
+          `Size`='" . sql_escape($tshirt_size) . "',
+          `Hometown`='" . sql_escape($hometown) . "'
           WHERE `UID`=" . sql_escape($user['UID']));
-      
+
       // Assign angel-types
-      $user_angel_type_info = array();
-      $deleted_angel_types = array_diff(array_keys($angel_types), $selected_angel_types);
-      if (count($deleted_angel_types) > 0)
-        sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`='" . sql_escape($user['UID']) . "' AND `angeltype_id` IN (" . implode(",", $deleted_angel_types) . ")");
-      foreach ($angel_types_source as $angel_type)
-        if (in_array($angel_type['id'], $selected_angel_types))
-          $user_angel_type_info[] = $angel_type['name'];
-      
-      foreach ($selected_angel_types as $selected_angel_type_id) {
-        if (sql_num_query("SELECT * FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user['UID']) . " AND `angeltype_id`=" . sql_escape($selected_angel_type_id) . " LIMIT 1") == 0)
-          sql_query("INSERT INTO `UserAngelTypes` SET `user_id`=" . sql_escape($user['UID']) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
+
+      $deleted_angel_type_names = array();
+      $added_angel_type_names = array();
+
+      foreach($selected_angel_types_source as $source_angel_type) {
+        if (!in_array($source_angel_type["angeltype_id"], $selected_angel_types)) {
+          $deleted_angel_type_names[] =  $angel_types[$source_angel_type["angeltype_id"]];
+          sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`='" . sql_escape($user['UID']) . "' AND `angeltype_id` = ". sql_escape($source_angel_type["angeltype_id"]));
+        }
       }
-      
-      engelsystem_log("Own angel types set to: " . join(", ", $user_angel_type_info));
+
+      foreach($selected_angel_types as $selected_angel_type) {
+        if (!in_array($selected_angel_type, $selected_angel_types_source_ids)) {
+          $added_angel_type_names[] = $angel_types[$selected_angel_type];
+          sql_query("INSERT INTO `UserAngelTypes` SET `user_id`=" . sql_escape($user['UID']) . ", `angeltype_id`=" . sql_escape($selected_angel_type));
+        }
+      }
+
+      if(count($deleted_angel_type_names) > 0 || count($added_angel_type_names) > 0) {
+        $log_message = "User changed his own Angel Types. ";
+        if(count($deleted_angel_type_names) > 0) {
+          $log_message .= "Removed: " . implode(", ", $deleted_angel_type_names) . " ";
+        }
+        if(count($added_angel_type_names) > 0) {
+          $log_message .= "Added: " . implode(", ", $added_angel_type_names);
+        }
+        engelsystem_log($log_message);
+      }
+
       success(_("Settings saved."));
       redirect(page_link_to('user_settings'));
     }
   } elseif (isset($_REQUEST['submit_password'])) {
     $ok = true;
-    
+
     if (! isset($_REQUEST['password']) || ! verify_password($_REQUEST['password'], $user['Passwort'], $user['UID']))
       $msg .= error(_("-> not OK. Please try again."), true);
     elseif (strlen($_REQUEST['new_password']) < MIN_PASSWORD_LENGTH)
@@ -148,35 +166,35 @@ function user_settings() {
     redirect(page_link_to('user_settings'));
   } elseif (isset($_REQUEST['submit_theme'])) {
     $ok = true;
-    
+
     if (isset($_REQUEST['theme']) && isset($themes[$_REQUEST['theme']]))
       $selected_theme = $_REQUEST['theme'];
     else
       $ok = false;
-    
+
     if ($ok) {
       sql_query("UPDATE `User` SET `color`='" . sql_escape($selected_theme) . "' WHERE `UID`=" . sql_escape($user['UID']));
-      
+
       success(_("Theme changed."));
       redirect(page_link_to('user_settings'));
     }
   } elseif (isset($_REQUEST['submit_language'])) {
     $ok = true;
-    
+
     if (isset($_REQUEST['language']) && isset($locales[$_REQUEST['language']]))
       $selected_language = $_REQUEST['language'];
     else
       $ok = false;
-    
+
     if ($ok) {
       sql_query("UPDATE `User` SET `Sprache`='" . sql_escape($selected_language) . "' WHERE `UID`=" . sql_escape($user['UID']));
       $_SESSION['locale'] = $selected_language;
-      
+
       success("Language changed.");
       redirect(page_link_to('user_settings'));
     }
   }
-  
+
   return page_with_title(settings_title(), array(
       sprintf(_("Hello %s, here you can change your personal settings i.e. password, color settings etc."), User_Nick_render($user)),
       $msg,
@@ -198,8 +216,8 @@ function user_settings() {
                   form_text('hometown', _("Hometown"), $hometown),
                   $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',
                   form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
-                  form_submit('submit', _("Save")) 
-              )) 
+                  form_submit('submit', _("Save"))
+              ))
           )),
           div('col-md-6', array(
               form(array(
@@ -207,20 +225,20 @@ function user_settings() {
                   form_password('password', _("Old password:")),
                   form_password('new_password', _("New password:")),
                   form_password('new_password2', _("Password confirmation:")),
-                  form_submit('submit_password', _("Save")) 
+                  form_submit('submit_password', _("Save"))
               )),
               form(array(
                   form_info(_("Here you can choose your color settings:")),
                   form_select('theme', _("Color settings:"), $themes, $selected_theme),
-                  form_submit('submit_theme', _("Save")) 
+                  form_submit('submit_theme', _("Save"))
               )),
               form(array(
                   form_info(_("Here you can choose your language:")),
                   form_select('language', _("Language:"), $locales, $selected_language),
-                  form_submit('submit_language', _("Save")) 
-              )) 
-          )) 
-      )) 
+                  form_submit('submit_language', _("Save"))
+              ))
+          ))
+      ))
   ));
 }
 ?>
