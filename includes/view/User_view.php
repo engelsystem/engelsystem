@@ -28,7 +28,7 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
     $user['Tshirt'] = glyph_bool($user['Tshirt']);
     $user['lastLogIn'] = date(_('m/d/Y h:i a'), $user['lastLogIn']);
     $user['actions'] = table_buttons(array(
-        button_glyph(page_link_to('admin_user') . '&id=' . $user['UID'], 'edit', 'btn-sm')
+        button_glyph(page_link_to('admin_user') . '&id=' . $user['UID'], 'edit', 'btn-xs')
     ));
   }
   $users[] = array(
