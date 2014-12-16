@@ -24,10 +24,12 @@ require_once realpath(__DIR__ . '/../includes/view/AngelTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/Questions_view.php');
 require_once realpath(__DIR__ . '/../includes/view/Shifts_view.php');
 require_once realpath(__DIR__ . '/../includes/view/ShiftEntry_view.php');
+require_once realpath(__DIR__ . '/../includes/view/ShiftTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/UserAngelTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/User_view.php');
 
 require_once realpath(__DIR__ . '/../includes/controller/angeltypes_controller.php');
+require_once realpath(__DIR__ . '/../includes/controller/shifttypes_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/user_angeltypes_controller.php');
 
@@ -86,7 +88,7 @@ $free_pages = array(
     'users',
     'ical',
     'shifts_json_export',
-    'atom'
+    'atom' 
 );
 
 // Gewünschte Seite/Funktion
@@ -95,10 +97,10 @@ if (! isset($_REQUEST['p']))
   $_REQUEST['p'] = isset($user) ? "news" : "login";
 if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $free_pages) || in_array($_REQUEST['p'], $privileges))) {
   $p = $_REQUEST['p'];
-
+  
   $title = $p;
   $content = "";
-
+  
   if ($p == "api") {
     require_once realpath(__DIR__ . '/../includes/controller/api.php');
     error("Api disabled temporily.");
@@ -226,7 +228,7 @@ echo template_render('../templates/layout.html', array(
     'content' => msg() . $content,
     'header_toolbar' => header_toolbar(),
     'faq_url' => $faq_url,
-    'locale' => $_SESSION['locale']
+    'locale' => $_SESSION['locale'] 
 ));
 
 counter();
