@@ -1,6 +1,31 @@
 <?php
 
+/**
+ * Delete a shifttype.
+ */
 function shifttype_delete_controller() {
+  if (! isset($_REQUEST['shifttype_id']))
+    redirect(page_link_to('shifttypes'));
+  $shifttype = ShiftType($_REQUEST['shifttype_id']);
+  if ($shifttype === false)
+    engelsystem_error('Unable to load shifttype.');
+  if ($shifttype == null)
+    redirect(page_link_to('shifttypes'));
+  
+  if (isset($_REQUEST['confirmed'])) {
+    $result = ShiftType_delete($shifttype['id']);
+    if ($result === false)
+      engelsystem_error('Unable to delete shifttype.');
+    
+    engelsystem_log('Deleted shifttype ' . $shifttype['name']);
+    success(sprintf(_('Shifttype %s deleted.'), $shifttype['name']));
+    redirect(page_link_to('shifttypes'));
+  }
+  
+  return array(
+      sprintf(_("Delete shifttype %s"), $shifttype['name']),
+      ShiftType_delete_view($shifttype) 
+  );
 }
 
 /**
@@ -15,6 +40,20 @@ function shifttype_edit_controller() {
   $angeltypes = AngelTypes();
   if ($angeltypes === false)
     engelsystem_error("Unable to load angel types.");
+  
+  if (isset($_REQUEST['shifttype_id'])) {
+    $shifttype = ShiftType($_REQUEST['shifttype_id']);
+    if ($shifttype === false)
+      engelsystem_error('Unable to load shifttype.');
+    if ($shifttype == null) {
+      error(_('Shifttype not found.'));
+      redirect(page_link_to('shifttypes'));
+    }
+    $shifttype_id = $shifttype['id'];
+    $name = $shifttype['name'];
+    $angeltype_id = $shifttype['angeltype_id'];
+    $description = $shifttype['description'];
+  }
   
   if (isset($_REQUEST['submit'])) {
     $ok = true;
@@ -35,10 +74,16 @@ function shifttype_edit_controller() {
       $description = strip_request_item_nl('description');
     
     if ($ok) {
-      if ($shifttype_id) {} else {
+      if ($shifttype_id) {
+        $result = ShiftType_update($shifttype_id, $name, $angeltype_id, $description);
+        if ($result === false)
+          engelsystem_error('Unable to update shifttype.');
+        engelsystem_log('Updated shifttype ' . $name);
+        success(_('Updated shifttype.'));
+      } else {
         $shifttype_id = ShiftType_create($name, $angeltype_id, $description);
         if ($shifttype_id === false)
-          engelsystem_error('Unable to create shift type.');
+          engelsystem_error('Unable to create shifttype.');
         engelsystem_log('Created shifttype ' . $name);
         success(_('Created shifttype.'));
       }
@@ -53,6 +98,25 @@ function shifttype_edit_controller() {
 }
 
 function shifttype_controller() {
+  if (! isset($_REQUEST['shifttype_id']))
+    redirect(page_link_to('shifttypes'));
+  $shifttype = ShiftType($_REQUEST['shifttype_id']);
+  if ($shifttype === false)
+    engelsystem_error('Unable to load shifttype.');
+  if ($shifttype == null)
+    redirect(page_link_to('shifttypes'));
+  
+  $angeltype = null;
+  if ($shifttype['angeltype_id'] != null) {
+    $angeltype = AngelType($shifttype['angeltype_id']);
+    if ($angeltype === false)
+      engelsystem_error('Unable to load angeltype.');
+  }
+  
+  return [
+      $shifttype['name'],
+      ShiftType_view($shifttype, $angeltype) 
+  ];
 }
 
 /**

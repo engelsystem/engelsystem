@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS `ShiftTypes` (
   `description` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `ShiftTypes` ADD INDEX ( `angeltype_id` );
+ALTER TABLE `ShiftTypes` ADD FOREIGN KEY ( `angeltype_id` ) REFERENCES `engelsystem`.`AngelTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 INSERT INTO `engelsystem`.`Privileges` (`id`, `name`, `desc`) VALUES (NULL , 'shifttypes', 'Administrate shift types');
 INSERT INTO `GroupPrivileges` SET `group_id`=-5, `privilege_id`=(SELECT `id` FROM `Privileges` WHERE `name`='shifttypes');
 
