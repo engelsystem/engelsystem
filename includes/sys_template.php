@@ -32,6 +32,10 @@ function div($class, $content = array(), $id = "") {
   return '<div' . $id . ' class="' . $class . '">' . join("\n", $content) . '</div>';
 }
 
+function heading($content, $number = 1) {
+  return "<h" . $number . ">" . $content . "</h" . $number . ">";
+}
+
 /**
  * Render a toolbar.
  *
