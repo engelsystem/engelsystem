@@ -5,7 +5,9 @@ CREATE TABLE IF NOT EXISTS `ShiftTypes` (
   `angeltype_id` int(11) DEFAULT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+INSERT INTO `engelsystem`.`Privileges` (`id`, `name`, `desc`) VALUES (NULL , 'shifttypes', 'Administrate shift types');
+INSERT INTO `GroupPrivileges` SET `group_id`=-5, `privilege_id`=(SELECT `id` FROM `Privileges` WHERE `name`='shifttypes');
 
 /* cleanup */
 ALTER TABLE `User` DROP `ICQ` ;

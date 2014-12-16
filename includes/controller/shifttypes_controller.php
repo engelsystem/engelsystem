@@ -10,6 +10,19 @@ function shifttype_controller() {
 }
 
 function shifttypes_list_controller() {
+  global $privileges, $user;
+  
+  if (! in_array('shifttypes', $privileges))
+    redirect('?');
+  
+  $shifttypes = ShiftTypes();
+  if ($shifttypes === false)
+    engelsystem_error("Unable to load shifttypes.");
+  
+  return array(
+      shifttypes_title(),
+      ShiftTypes_list_view($shifttypes) 
+  );
 }
 
 /**

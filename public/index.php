@@ -131,6 +131,8 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     list($title, $content) = users_controller();
   } elseif ($p == "user_angeltypes") {
     list($title, $content) = user_angeltypes_controller();
+  } elseif ($p == "shifttypes") {
+    list($title, $content) = shifttypes_controller();
   } elseif ($p == "news") {
     $title = news_title();
     $content = user_news();
