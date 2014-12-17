@@ -12,7 +12,7 @@ function Shift_delete_by_psid($shift_psid) {
  */
 function Shift_delete($shift_id) {
   mail_shift_delete(Shift($shift_id));
-
+  
   return sql_query("DELETE FROM `Shifts` WHERE `SID`=" . sql_escape($shift_id));
 }
 
@@ -22,12 +22,13 @@ function Shift_delete($shift_id) {
 function Shift_update($shift) {
   $old_shift = Shift($shift['SID']);
   mail_shift_change(Shift($shift['SID']), $shift);
-
+  
   return sql_query("UPDATE `Shifts` SET
+      `shifttype_id`=" . sql_escape($shift['shifttype_id']) . ",
       `start`=" . sql_escape($shift['start']) . ",
       `end`=" . sql_escape($shift['end']) . ",
       `RID`=" . sql_escape($shift['RID']) . ",
-      `name`=" . sql_null($shift['name']) . ",
+      `title`=" . sql_null($shift['title']) . ",
       `URL`=" . sql_null($shift['URL']) . ",
       `PSID`=" . sql_null($shift['PSID']) . "
       WHERE `SID`=" . sql_escape($shift['SID']));
@@ -53,10 +54,11 @@ function Shift_update_by_psid($shift) {
  */
 function Shift_create($shift) {
   $result = sql_query("INSERT INTO `Shifts` SET
+      `shifttype_id`=" . sql_escape($shift['shifttype_id']) . ",
       `start`=" . sql_escape($shift['start']) . ",
       `end`=" . sql_escape($shift['end']) . ",
       `RID`=" . sql_escape($shift['RID']) . ",
-      `name`=" . sql_null($shift['name']) . ",
+      `title`=" . sql_null($shift['title']) . ",
       `URL`=" . sql_null($shift['URL']) . ",
       `PSID`=" . sql_null($shift['PSID']));
   if ($result === false)
@@ -72,6 +74,7 @@ function Shifts_by_user($user) {
       SELECT * 
       FROM `ShiftEntry` 
       JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
+      JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
       JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
       WHERE `UID`=" . sql_escape($user['UID']) . " 
       ORDER BY `start`
@@ -130,7 +133,11 @@ function Shifts_filtered() {
  *          ID
  */
 function Shift($id) {
-  $shifts_source = sql_select("SELECT * FROM `Shifts` WHERE `SID`=" . sql_escape($id) . " LIMIT 1");
+  $shifts_source = sql_select("
+      SELECT `Shifts`.*, `ShiftTypes`.`name`
+      FROM `Shifts` 
+      JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+      WHERE `SID`=" . sql_escape($id));
   $shiftsEntry_source = sql_select("SELECT `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`=" . sql_escape($id));
   
   if ($shifts_source === false)
@@ -160,8 +167,9 @@ function Shift($id) {
  */
 function Shifts() {
   $shifts_source = sql_select("
-    SELECT `Shifts`.*, `Room`.`RID`, `Room`.`Name` as `room_name` 
+    SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`RID`, `Room`.`Name` as `room_name` 
     FROM `Shifts`
+    JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
     JOIN `Room` ON `Room`.`RID` = `Shifts`.`RID`
     ");
   if ($shifts_source === false)

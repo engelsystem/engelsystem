@@ -17,7 +17,15 @@ function user_shifts() {
     else
       redirect(page_link_to('user_shifts'));
 
-    $shift_entry_source = sql_select("SELECT `User`.`Nick`, `ShiftEntry`.`Comment`, `ShiftEntry`.`UID`, `Shifts`.*, `Room`.`Name`, `AngelTypes`.`name` as `angel_type` FROM `ShiftEntry` JOIN `User` ON (`User`.`UID`=`ShiftEntry`.`UID`) JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`) JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `ShiftEntry`.`id`=" . sql_escape($entry_id) . " LIMIT 1");
+    $shift_entry_source = sql_select("
+        SELECT `User`.`Nick`, `ShiftEntry`.`Comment`, `ShiftEntry`.`UID`, `ShiftTypes`.`name`, `Shifts`.*, `Room`.`Name`, `AngelTypes`.`name` as `angel_type` 
+        FROM `ShiftEntry` 
+        JOIN `User` ON (`User`.`UID`=`ShiftEntry`.`UID`) 
+        JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`) 
+        JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
+        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
+        WHERE `ShiftEntry`.`id`=" . sql_escape($entry_id));
     if (count($shift_entry_source) > 0) {
       $shift_entry_source = $shift_entry_source[0];
 
@@ -44,7 +52,11 @@ function user_shifts() {
      * if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1") > 0) { error("Du kannst nur Schichten bearbeiten, bei denen niemand eingetragen ist."); redirect(page_link_to('user_shift')); }
      */
 
-    $shift = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+    $shift = sql_select("
+        SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.* FROM `Shifts` 
+        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
+        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+        WHERE `SID`=" . sql_escape($shift_id));
     if (count($shift) == 0)
       redirect(page_link_to('user_shifts'));
     $shift = $shift[0];
@@ -171,7 +183,12 @@ function user_shifts() {
     else
       redirect(page_link_to('user_shifts'));
 
-    $shift = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+    $shift = sql_select("
+        SELECT `Shifts`.*, `ShiftTypes`.`name`, `Room`.* 
+        FROM `Shifts` 
+        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
+        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+        WHERE `SID`=" . sql_escape($shift_id));
     if (count($shift) == 0)
       redirect(page_link_to('user_shifts'));
     $shift = $shift[0];
@@ -197,7 +214,12 @@ function user_shifts() {
     else
       redirect(page_link_to('user_shifts'));
 
-    $shift = sql_select("SELECT * FROM `Shifts` JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `SID`=" . sql_escape($shift_id) . " LIMIT 1");
+    $shift = sql_select("
+        SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.* 
+        FROM `Shifts` 
+        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
+        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+        WHERE `SID`=" . sql_escape($shift_id));
     if (count($shift) == 0)
       redirect(page_link_to('user_shifts'));
     $shift = $shift[0];
@@ -214,7 +236,11 @@ function user_shifts() {
     }
 
     // Another shift the user is signed up for collides with this one
-    if (! in_array('user_shifts_admin', $privileges) && sql_num_query("SELECT `Shifts`.`SID` FROM `Shifts` INNER JOIN `ShiftEntry` ON (`Shifts`.`SID` = `ShiftEntry`.`SID` AND `ShiftEntry`.`UID` = " . sql_escape($user['UID']) . ") WHERE `start` < '" . sql_escape($shift['end']) . "' AND `end` > '" . sql_escape($shift['start']) . "'") > 0) {
+    if (! in_array('user_shifts_admin', $privileges) && sql_num_query("
+        SELECT `Shifts`.`SID` 
+        FROM `Shifts` 
+        INNER JOIN `ShiftEntry` ON (`Shifts`.`SID` = `ShiftEntry`.`SID` AND `ShiftEntry`.`UID` = " . sql_escape($user['UID']) . ") 
+        WHERE `start` < '" . sql_escape($shift['end']) . "' AND `end` > '" . sql_escape($shift['start']) . "'") > 0) {
       error(_("You already subscribed to shift in the same timeslot. Please contact a dispatcher to join the shift."));
       redirect(page_link_to('user_shifts'));
     }
@@ -304,7 +330,10 @@ function view_user_shifts() {
   global $ical_shifts;
 
   $ical_shifts = array();
-  $days = sql_select_single_col("SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` FROM `Shifts` ORDER BY `start`");
+  $days = sql_select_single_col("
+      SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name` 
+      FROM `Shifts` 
+      ORDER BY `start`");
 
   if (count($days) == 0) {
     error(_("The administration has not configured any shifts yet."));
@@ -409,9 +438,10 @@ function view_user_shifts() {
         0
     );
 
-  $SQL = "SELECT DISTINCT `Shifts`.*, `Room`.`Name` as `room_name`, nat2.`special_needs` > 0 AS 'has_special_needs'
+  $SQL = "SELECT DISTINCT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`Name` as `room_name`, nat2.`special_needs` > 0 AS 'has_special_needs'
   FROM `Shifts`
   INNER JOIN `Room` USING (`RID`)
+  INNER JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
   LEFT JOIN (SELECT COUNT(*) AS special_needs , nat3.`shift_id` FROM `NeededAngelTypes` AS nat3 WHERE `shift_id` IS NOT NULL GROUP BY nat3.`shift_id`) AS nat2 ON nat2.`shift_id` = `Shifts`.`SID`
   INNER JOIN `NeededAngelTypes` AS nat ON nat.`count` != 0 AND nat.`angel_type_id` IN (" . implode(',', $_SESSION['user_shifts']['types']) . ") AND ((nat2.`special_needs` > 0 AND nat.`shift_id` = `Shifts`.`SID`) OR ((nat2.`special_needs` = 0 OR nat2.`special_needs` IS NULL) AND nat.`room_id` = `RID`))
   LEFT JOIN (SELECT se.`SID`, se.`TID`, COUNT(*) as count FROM `ShiftEntry` AS se GROUP BY se.`SID`, se.`TID`) AS entries ON entries.`SID` = `Shifts`.`SID` AND entries.`TID` = nat.`angel_type_id`
@@ -429,7 +459,11 @@ function view_user_shifts() {
   $SQL .= "
   ORDER BY `start`";
   $shifts = sql_select($SQL);
-  $ownshifts_source = sql_select("SELECT `Shifts`.* FROM `Shifts` INNER JOIN `ShiftEntry` ON (`Shifts`.`SID` = `ShiftEntry`.`SID` AND `ShiftEntry`.`UID` = '" . sql_escape($user['UID']) . "')
+  $ownshifts_source = sql_select("
+      SELECT `ShiftTypes`.`name`, `Shifts`.* 
+      FROM `Shifts` 
+      INNER JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+      INNER JOIN `ShiftEntry` ON (`Shifts`.`SID` = `ShiftEntry`.`SID` AND `ShiftEntry`.`UID` = '" . sql_escape($user['UID']) . "')
       WHERE `Shifts`.`RID` IN (" . implode(',', $_SESSION['user_shifts']['rooms']) . ")
       AND `start` BETWEEN " . $starttime . " AND " . $endtime);
   $ownshifts = array();

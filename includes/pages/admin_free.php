@@ -27,7 +27,15 @@ function admin_free() {
   foreach ($angel_types_source as $angel_type)
     $angel_types[$angel_type['id']] = $angel_type['name'];
   
-  $users = sql_select("SELECT `User`.* FROM `User` ${angeltypesearch} LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID` AND `Shifts`.`start` < " . sql_escape(time()) . " AND `Shifts`.`end` > " . sql_escape(time()) . ") WHERE `User`.`Gekommen` = 1 AND `Shifts`.`SID` IS NULL GROUP BY `User`.`UID` ORDER BY `Nick`");
+  $users = sql_select("
+      SELECT `User`.* 
+      FROM `User` 
+      ${angeltypesearch} 
+      LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
+      LEFT JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID` AND `Shifts`.`start` < " . sql_escape(time()) . " AND `Shifts`.`end` > " . sql_escape(time()) . ") 
+      WHERE `User`.`Gekommen` = 1 AND `Shifts`.`SID` IS NULL 
+      GROUP BY `User`.`UID` 
+      ORDER BY `Nick`");
   
   $free_users_table = array();
   if ($search == "")

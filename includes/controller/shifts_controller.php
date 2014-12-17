@@ -48,7 +48,14 @@ function shifts_json_export_controller() {
     require_once realpath(__DIR__ . '/../pages/user_shifts.php');
     view_user_shifts();
   } else {
-    $ical_shifts = sql_select("SELECT `Shifts`.*, `Room`.`Name` as `room_name` FROM `ShiftEntry` INNER JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) INNER JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) WHERE `UID`=" . sql_escape($user['UID']) . " ORDER BY `start`");
+    $ical_shifts = sql_select("
+        SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`Name` as `room_name` 
+        FROM `ShiftEntry` 
+        INNER JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
+        INNER JOIN `ShiftTypes` ON (`Shifts`.`shifttype_id`=`ShiftTypes`.`id`)
+        INNER JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
+        WHERE `UID`=" . sql_escape($user['UID']) . " 
+        ORDER BY `start`");
   }
   
   header("Content-Type: application/json; charset=utf-8");
