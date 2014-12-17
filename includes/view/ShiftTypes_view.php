@@ -42,8 +42,8 @@ function ShiftType_view($shifttype, $angeltype) {
       buttons([
           button(page_link_to('shifttypes'), shifttypes_title(), 'back'),
           $angeltype ? button(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'], $angeltype['name']) : '',
-          button(page_link_to('shifttypes'), _('edit'), 'edit'),
-          button(page_link_to('shifttypes'), _('delete'), 'delete') 
+          button(page_link_to('shifttypes') . '&action=edit&shifttype_id=' . $shifttype['id'], _('edit'), 'edit'),
+          button(page_link_to('shifttypes') . '&action=delete&shifttype_id=' . $shifttype['id'], _('delete'), 'delete') 
       ]),
       $parsedown->parse($shifttype['description']) 
   ]);
@@ -51,6 +51,7 @@ function ShiftType_view($shifttype, $angeltype) {
 
 function ShiftTypes_list_view($shifttypes) {
   foreach ($shifttypes as &$shifttype) {
+    $shifttype['name'] = '<a href="' . page_link_to('shifttypes') . '&action=view&shifttype_id=' . $shifttype['id'] . '">' . $shifttype['name'] . '</a>';
     $shifttype['actions'] = table_buttons([
         button(page_link_to('shifttypes') . '&action=edit&shifttype_id=' . $shifttype['id'], _('edit'), 'btn-xs'),
         button(page_link_to('shifttypes') . '&action=delete&shifttype_id=' . $shifttype['id'], _('delete'), 'btn-xs') 
