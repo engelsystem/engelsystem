@@ -547,7 +547,14 @@ function view_user_shifts() {
                 
                 // qqqqqq
               $is_free = false;
-              $shifts_row = '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';
+              $shifts_row = date('d.m. H:i', $shift['start']);
+              $shifts_row .= " &ndash; ";
+              $shifts_row .= date('H:i', $shift['end']);
+              $shifts_row .= "<br /><b>";
+              $shifts_row .= $shift['name'];
+              $shifts_row .= "</b><br />";
+              $shifts_row .= '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';
+              $shifts_row .= "<br />";
               if (in_array('admin_shifts', $privileges))
                 $shifts_row .= ' ' . table_buttons(array(
                     button(page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'], glyph('edit'), 'btn-xs'),
