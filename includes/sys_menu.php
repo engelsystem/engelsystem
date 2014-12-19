@@ -19,7 +19,7 @@ function header_toolbar() {
   $toolbar_items = array();
   
   if (isset($user))
-    $toolbar_items[] = toolbar_item_link(page_link_to('users') . '&amp;action=view', 'time', User_shift_state_render($user));
+    $toolbar_items[] = toolbar_item_link(page_link_to('shifts') . '&amp;action=next', 'time', User_shift_state_render($user));
   
   if (! isset($user) && in_array('register', $privileges))
     $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'plus', register_title(), $p == 'register');

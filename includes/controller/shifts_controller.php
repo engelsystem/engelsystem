@@ -16,7 +16,7 @@ function shift_controller() {
   global $user, $privileges;
   
   if (! in_array('user_shifts', $privileges))
-    redirect(page_link_to('user_shifts'));
+    redirect(page_link_to('?'));
   
   if (! isset($_REQUEST['shift_id']))
     redirect(page_link_to('user_shifts'));
@@ -58,7 +58,28 @@ function shifts_controller() {
       redirect(page_link_to('?'));
     case 'view':
       return shift_controller();
+    case 'next':
+      return shift_next_controller();
   }
+}
+
+/**
+ * Redirects the user to his next shift.
+ */
+function shift_next_controller() {
+  global $user, $privileges;
+  
+  if (! in_array('user_shifts', $privileges))
+    redirect(page_link_to('?'));
+  
+  $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
+  if ($upcoming_shifts === false)
+    return false;
+  
+  if (count($upcoming_shifts) > 0)
+    redirect(shift_link($upcoming_shifts[0]));
+  
+  redirect(page_link_to('user_shifts'));
 }
 
 /**

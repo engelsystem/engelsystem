@@ -16,7 +16,7 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
       $class = 'progress-bar-success';
     $needed_angels .= '<div class="list-group-item">';
     $needed_angels .= '<div class="pull-right">' . button(page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $needed_angeltype['TID'], _('Sign up')) . '</div>';
-    $needed_angels .= '<h3>' . $angeltypes[$needed_angeltype['TID']]['name'] . '</h3>';
+    $needed_angels .= '<h3>' . AngelType_name_render($angeltypes[$needed_angeltype['TID']]) . '</h3>';
     $needed_angels .= progress_bar(0, $needed_angeltype['count'], $needed_angeltype['taken'], $class, $needed_angeltype['taken'] . ' / ' . $needed_angeltype['count']);
     
     $angels = [];
@@ -47,7 +47,7 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
           button(shift_delete_link($shift), glyph('trash') . _('delete')) 
       ]) : '',
       div('row', [
-          div('col-sm-3', [
+          div('col-sm-3 col-xs-6', [
               '<h4>' . _('Start') . '</h4>',
               '<p class="lead">',
               date('y-m-d', $shift['start']),
@@ -55,7 +55,7 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
               date('H:i', $shift['start']),
               '</p>' 
           ]),
-          div('col-sm-3', [
+          div('col-sm-3 col-xs-6', [
               '<h4>' . _('End') . '</h4>',
               '<p class="lead">',
               date('y-m-d', $shift['end']),
@@ -63,11 +63,11 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
               date('H:i', $shift['end']),
               '</p>' 
           ]),
-          div('col-sm-3', [
+          div('col-sm-3 col-xs-6', [
               '<h4>' . _('Location') . '</h4>',
               '<p class="lead">' . $room['Name'] . '</p>' 
           ]),
-          div('col-sm-3', [
+          div('col-sm-3 col-xs-6', [
               '<h4>' . _('More info') . '</h4>',
               $shift['URL'] != '' ? '<a href="' . $shift['URL'] . '">' . $shift['URL'] . '</a>' : '' 
           ]) 
