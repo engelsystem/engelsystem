@@ -551,7 +551,7 @@ function view_user_shifts() {
               $shifts_row .= " &ndash; ";
               $shifts_row .= date('H:i', $shift['end']);
               $shifts_row .= "<br /><b>";
-              $shifts_row .= $shift['name'];
+              $shifts_row .= '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';
               $shifts_row .= "</b><br />";
               $shifts_row .= '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';
               $shifts_row .= "<br />";
