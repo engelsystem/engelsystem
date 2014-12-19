@@ -1,5 +1,66 @@
 <?php
 
+function shift_link($shift) {
+  return page_link_to('shifts') . '&action=view&shift_id=' . $shift['SID'];
+}
+
+function shift_delete_link($shift) {
+  return page_link_to('user_shifts') . '&delete_shift=' . $shift['SID'];
+}
+
+function shift_edit_link($shift) {
+  return page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'];
+}
+
+function shift_controller() {
+  global $user, $privileges;
+  
+  if (! in_array('user_shifts', $privileges))
+    redirect(page_link_to('user_shifts'));
+  
+  if (! isset($_REQUEST['shift_id']))
+    redirect(page_link_to('user_shifts'));
+  
+  $shift = Shift($_REQUEST['shift_id']);
+  if ($shift === false)
+    engelsystem_error('Unable to load shift.');
+  if ($shift == null) {
+    error(_('Shift could not be found.'));
+    redirect(page_link_to('user_shifts'));
+  }
+  
+  $shifttype = ShiftType($shift['shifttype_id']);
+  if ($shifttype === false || $shifttype == null)
+    engelsystem_error('Unable to load shift type.');
+  
+  $room = Room($shift['RID']);
+  if ($room === false || $room == null)
+    engelsystem_error('Unable to load room.');
+  
+  $angeltypes = AngelTypes();
+  if ($angeltypes === false)
+    engelsystem_error('Unable to load angeltypes.');
+  
+  User_angeltypes($user);
+  
+  return [
+      $shift['name'],
+      Shift_view($shift, $shifttype, $room, in_array('admin_shifts', $privileges), $angeltypes, in_array('user_shifts_admin', $privileges)) 
+  ];
+}
+
+function shifts_controller() {
+  if (! isset($_REQUEST['action']))
+    redirect(page_link_to('user_shifts'));
+  
+  switch ($_REQUEST['action']) {
+    default:
+      redirect(page_link_to('?'));
+    case 'view':
+      return shift_controller();
+  }
+}
+
 /**
  * Export all shifts using api-key.
  */

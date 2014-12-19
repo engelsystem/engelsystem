@@ -29,6 +29,7 @@ require_once realpath(__DIR__ . '/../includes/view/UserAngelTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/User_view.php');
 
 require_once realpath(__DIR__ . '/../includes/controller/angeltypes_controller.php');
+require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/shifttypes_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/user_angeltypes_controller.php');
@@ -88,6 +89,7 @@ $free_pages = array(
     'users',
     'ical',
     'shifts_json_export',
+    'shifts',
     'atom' 
 );
 
@@ -127,6 +129,8 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     $content = user_password_recovery_controller();
   } elseif ($p == "angeltypes") {
     list($title, $content) = angeltypes_controller();
+  } elseif ($p == "shifts") {
+    list($title, $content) = shifts_controller();
   } elseif ($p == "users") {
     list($title, $content) = users_controller();
   } elseif ($p == "user_angeltypes") {

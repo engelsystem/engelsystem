@@ -71,7 +71,7 @@ function Shift_create($shift) {
  */
 function Shifts_by_user($user) {
   return sql_select("
-      SELECT * 
+      SELECT `ShiftTypes`.`id` as `shifttype_id`, `ShiftTypes`.`name`, `ShiftEntry`.*, `Shifts`.*, `Room`.* 
       FROM `ShiftEntry` 
       JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
       JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
@@ -138,7 +138,7 @@ function Shift($id) {
       FROM `Shifts` 
       JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
       WHERE `SID`=" . sql_escape($id));
-  $shiftsEntry_source = sql_select("SELECT `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`=" . sql_escape($id));
+  $shiftsEntry_source = sql_select("SELECT `id`, `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`=" . sql_escape($id));
   
   if ($shifts_source === false)
     return false;
