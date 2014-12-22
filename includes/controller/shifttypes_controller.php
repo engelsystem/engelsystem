@@ -1,5 +1,9 @@
 <?php
 
+function shifttype_link($shifttype) {
+  return page_link_to('shifttypes') . '&action=view&shifttype_id=' . $shifttype['id'];
+}
+
 /**
  * Delete a shifttype.
  */

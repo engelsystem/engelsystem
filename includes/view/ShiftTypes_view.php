@@ -1,5 +1,12 @@
 <?php
 
+function ShiftType_name_render($shifttype) {
+  global $privileges;
+  if (in_array('shifttypes', $privileges))
+    return '<a href="' . shifttype_link($shifttype) . '">' . $shifttype['name'] . '</a>';
+  return $shifttype['name'];
+}
+
 function ShiftType_delete_view($shifttype) {
   return page_with_title(sprintf(_("Delete shifttype %s"), $shifttype['name']), array(
       info(sprintf(_("Do you want to delete shifttype %s?"), $shifttype['name']), true),

@@ -22,6 +22,7 @@ require_once realpath(__DIR__ . '/../includes/model/User_model.php');
 
 require_once realpath(__DIR__ . '/../includes/view/AngelTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/Questions_view.php');
+require_once realpath(__DIR__ . '/../includes/view/Rooms_view.php');
 require_once realpath(__DIR__ . '/../includes/view/Shifts_view.php');
 require_once realpath(__DIR__ . '/../includes/view/ShiftEntry_view.php');
 require_once realpath(__DIR__ . '/../includes/view/ShiftTypes_view.php');
@@ -29,6 +30,7 @@ require_once realpath(__DIR__ . '/../includes/view/UserAngelTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/User_view.php');
 
 require_once realpath(__DIR__ . '/../includes/controller/angeltypes_controller.php');
+require_once realpath(__DIR__ . '/../includes/controller/rooms_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/shifttypes_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
