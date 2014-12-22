@@ -1,6 +1,6 @@
 <?php
 
-function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source, $user_shift_admin) {
+function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source, $user_shift_admin, $admin_rooms, $admin_shifttypes) {
   $parsedown = new Parsedown();
   
   $angeltypes = [];
@@ -42,9 +42,11 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
   
   return page_with_title($shift['name'] . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>', [
       msg(),
-      $shift_admin ? buttons([
-          button(shift_edit_link($shift), glyph('pencil') . _('edit')),
-          button(shift_delete_link($shift), glyph('trash') . _('delete')) 
+      ($shift_admin || $admin_shifttypes || $admin_rooms) ? buttons([
+          $shift_admin ? button(shift_edit_link($shift), glyph('pencil') . _('edit')) : '',
+          $shift_admin ? button(shift_delete_link($shift), glyph('trash') . _('delete')) : '',
+          $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype['name']) : '',
+          $admin_rooms ? button(room_link($room), glyph('map-marker') . $room['Name']) : '' 
       ]) : '',
       div('row', [
           div('col-sm-3 col-xs-6', [
@@ -54,22 +56,22 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
           div('col-sm-3 col-xs-6', [
               '<h4>' . _('Start') . '</h4>',
               '<p class="lead">',
-              date('y-m-d', $shift['start']),
+              glyph('calendar') . date('y-m-d', $shift['start']),
               '<br />',
-              date('H:i', $shift['start']),
+              glyph('time') . date('H:i', $shift['start']),
               '</p>' 
           ]),
           div('col-sm-3 col-xs-6', [
               '<h4>' . _('End') . '</h4>',
               '<p class="lead">',
-              date('y-m-d', $shift['end']),
+              glyph('calendar') . date('y-m-d', $shift['end']),
               '<br />',
-              date('H:i', $shift['end']),
+              glyph('time') . date('H:i', $shift['end']),
               '</p>' 
           ]),
           div('col-sm-3 col-xs-6', [
               '<h4>' . _('Location') . '</h4>',
-              '<p class="lead">' . $room['Name'] . '</p>' 
+              '<p class="lead">' . glyph('map-marker') . $room['Name'] . '</p>' 
           ]) 
       ]),
       div('row', [

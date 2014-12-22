@@ -676,11 +676,14 @@ function view_user_shifts() {
         $info[] = date("Y-m-d", $shift['start']);
       $info[] = date("H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']);
       if (count($_SESSION['user_shifts']['rooms']) > 1)
-        $info[] = $shift['room_name'];
+        $info[] = Room_name_render([
+            'Name' => $shift['room_name'],
+            'RID' => $shift['RID'] 
+        ]);
       
       $shift_row = array(
           'info' => join('<br />', $info),
-          'entries' => $shift['name'] 
+          'entries' => '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>' . ($shift['title'] ? '<br />' . $shift['title'] : '') 
       );
       
       if (in_array('admin_shifts', $privileges))

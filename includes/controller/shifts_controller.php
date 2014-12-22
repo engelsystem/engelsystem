@@ -45,7 +45,7 @@ function shift_controller() {
   
   return [
       $shift['name'],
-      Shift_view($shift, $shifttype, $room, in_array('admin_shifts', $privileges), $angeltypes, in_array('user_shifts_admin', $privileges)) 
+      Shift_view($shift, $shifttype, $room, in_array('admin_shifts', $privileges), $angeltypes, in_array('user_shifts_admin', $privileges), in_array('admin_rooms', $privileges), in_array('shifttypes', $privileges)) 
   ];
 }
 
