@@ -87,7 +87,7 @@ function toolbar_popover($glyphicon, $label, $content, $class = '') {
   return '<li class="dropdown messages ' . $class . '">
           <a id="' . $id . '" href="#" tabindex="0">' . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '') . $label . ' <span class="caret"></span></a>
           <script type="text/javascript">
-          $(document).ready(function(){$("#' . $id . '").popover({trigger: "focus", html: true, content: "' . addslashes(join('', $content)) . '", placement: "bottom", container: "body"})});
+          $(document).ready(function(){$("#' . $id . '").popover({trigger: "click focus", html: true, content: "' . addslashes(join('', $content)) . '", placement: "bottom", container: "#navbar-collapse-1"})});
           </script></li>';
 }
 

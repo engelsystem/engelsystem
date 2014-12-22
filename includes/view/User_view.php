@@ -99,6 +99,8 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
   $timesum = 0;
   foreach ($shifts as $shift) {
     $shift_info = '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';
+    if ($shift['title'])
+      $shift_info .= '<br /><a href="' . shift_link($shift) . '">' . $shift['title'] . '</a>';
     foreach ($shift['needed_angeltypes'] as $needed_angel_type) {
       $shift_info .= '<br><b>' . $needed_angel_type['name'] . ':</b> ';
       
