@@ -9,6 +9,12 @@ function user_shifts() {
   
   if (User_is_freeloader($user))
     redirect(page_link_to('user_myshifts'));
+
+  // Locations laden
+  $rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
+  $room_array = array();
+  foreach ($rooms as $room)
+    $room_array[$room['RID']] = $room['Name'];
     
     // Löschen einzelner Schicht-Einträge (Also Belegung einer Schicht von Engeln) durch Admins
   if (isset($_REQUEST['entry_id']) && in_array('user_shifts_admin', $privileges)) {
@@ -56,12 +62,6 @@ function user_shifts() {
     if (count($shift) == 0)
       redirect(page_link_to('user_shifts'));
     $shift = $shift[0];
-    
-    // Locations laden
-    $rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
-    $room_array = array();
-    foreach ($rooms as $room)
-      $room_array[$room['RID']] = $room['Name'];
       
       // Engeltypen laden
     $types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
@@ -179,17 +179,13 @@ function user_shifts() {
     else
       redirect(page_link_to('user_shifts'));
     
-    $shift = sql_select("
-        SELECT `Shifts`.*, `ShiftTypes`.`name`, `Room`.* 
-        FROM `Shifts` 
-        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
-        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-        WHERE `SID`=" . sql_escape($shift_id));
-    if (count($shift) == 0)
+    $shift = Shift($shift_id);
+    if ($shift === false)
+      engelsystem_error('Unable to load shift.');
+    if ($shift == null)
       redirect(page_link_to('user_shifts'));
-    $shift = $shift[0];
-    
-    // Schicht löschen bestätigt
+      
+      // Schicht löschen bestätigt
     if (isset($_REQUEST['delete'])) {
       $result = Shift_delete($shift_id);
       if ($result === false)
@@ -210,15 +206,13 @@ function user_shifts() {
     else
       redirect(page_link_to('user_shifts'));
     
-    $shift = sql_select("
-        SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.* 
-        FROM `Shifts` 
-        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
-        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-        WHERE `SID`=" . sql_escape($shift_id));
-    if (count($shift) == 0)
+    $shift = Shift($shift_id);
+    $room;
+    $shift['Name'] = $room_array[$shift['RID']];
+    if ($shift === false)
+      engelsystem_error('Unable to load shift.');
+    if ($shift == null)
       redirect(page_link_to('user_shifts'));
-    $shift = $shift[0];
     
     if (isset($_REQUEST['type_id']) && preg_match("/^[0-9]*$/", $_REQUEST['type_id']))
       $type_id = $_REQUEST['type_id'];
@@ -434,7 +428,7 @@ function view_user_shifts() {
         0 
     );
   
-  $SQL = "SELECT DISTINCT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`Name` as `room_name`, nat2.`special_needs` > 0 AS 'has_special_needs'
+  $SQL = "SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`, nat2.`special_needs` > 0 AS 'has_special_needs'
   FROM `Shifts`
   INNER JOIN `Room` USING (`RID`)
   INNER JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
@@ -454,7 +448,9 @@ function view_user_shifts() {
   }
   $SQL .= "
   ORDER BY `start`";
+  
   $shifts = sql_select($SQL);
+  
   $ownshifts_source = sql_select("
       SELECT `ShiftTypes`.`name`, `Shifts`.* 
       FROM `Shifts` 

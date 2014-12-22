@@ -20,7 +20,7 @@ function Shift_delete($shift_id) {
  * Update a shift.
  */
 function Shift_update($shift) {
-  $old_shift = Shift($shift['SID']);
+  $shift['name'] = ShiftType($shift['shifttype_id'])['name'];
   mail_shift_change(Shift($shift['SID']), $shift);
   
   return sql_query("UPDATE `Shifts` SET
@@ -43,7 +43,7 @@ function Shift_update_by_psid($shift) {
     return false;
   if (count($shift_source) == 0)
     return null;
-  $shift['SID'] = $shift_source['SID'];
+  $shift['SID'] = $shift_source[0]['SID'];
   return Shift_update($shift);
 }
 
@@ -146,6 +146,7 @@ function Shift($id) {
     $result = $shifts_source[0];
     
     $result['ShiftEntry'] = $shiftsEntry_source;
+    $result['NeedAngels'] = [];
     
     $temp = NeededAngelTypes_by_shift($id);
     foreach ($temp as $e) {

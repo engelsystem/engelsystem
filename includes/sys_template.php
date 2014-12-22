@@ -9,6 +9,15 @@ $themes = array(
     "2" => "Engelsystem 31c3" 
 );
 
+/**
+ * Display muted (grey) text.
+ *
+ * @param string $text          
+ */
+function mute($text) {
+  return '<span class="text-muted">' . $text . '</span>';
+}
+
 function progress_bar($valuemin, $valuemax, $valuenow, $class = '', $content = '') {
   return '<div class="progress"><div class="progress-bar ' . $class . '" role="progressbar" aria-valuenow="' . $valuenow . '" aria-valuemin="' . $valuemin . '" aria-valuemax="' . $valuemax . '" style="width: ' . (($valuenow - $valuemin) * 100 / ($valuemax - $valuemin)) . '%">' . $content . '</div></div>';
 }
@@ -195,7 +204,7 @@ function form_radio($name, $label, $selected, $value) {
  */
 function form_info($label, $text = "") {
   if ($label == "")
-    return '<span class="help-block">' . $text . '</span>';
+    return '<span class="help-block">' . glyph('info-sign') . $text . '</span>';
   if ($text == "")
     return '<h4>' . $label . '</h4>';
   return form_element($label, '<p class="form-control-static">' . $text . '</p>', '');
