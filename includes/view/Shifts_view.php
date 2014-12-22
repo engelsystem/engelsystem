@@ -48,6 +48,10 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
       ]) : '',
       div('row', [
           div('col-sm-3 col-xs-6', [
+              '<h4>' . _('Title') . '</h4>',
+              '<p class="lead">' . ($shift['URL'] != '' ? '<a href="' . $shift['URL'] . '">' . $shift['title'] . '</a>' : $shift['title']) . '</p>' 
+          ]),
+          div('col-sm-3 col-xs-6', [
               '<h4>' . _('Start') . '</h4>',
               '<p class="lead">',
               date('y-m-d', $shift['start']),
@@ -66,10 +70,6 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
           div('col-sm-3 col-xs-6', [
               '<h4>' . _('Location') . '</h4>',
               '<p class="lead">' . $room['Name'] . '</p>' 
-          ]),
-          div('col-sm-3 col-xs-6', [
-              '<h4>' . _('More info') . '</h4>',
-              $shift['URL'] != '' ? '<a href="' . $shift['URL'] . '">' . $shift['URL'] . '</a>' : '' 
           ]) 
       ]),
       div('row', [
