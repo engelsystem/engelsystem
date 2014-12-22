@@ -100,7 +100,9 @@ function admin_import() {
       list($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
       list($events_new, $events_updated, $events_deleted) = prepare_events($import_file, $shifttype_id);
       
-      $html .= form([
+      $html .= div('well well-sm text-center', [
+          '<span class="text-success">' . _('File Upload') . glyph('ok-circle') . '</span>' . mute(glyph('arrow-right')) . _('Validation') . mute(glyph('arrow-right')) . mute(_('Import')) 
+      ]) . form([
           div('row', [
               div('col-sm-6', [
                   '<h3>' . _("Rooms to create") . '</h3>',
@@ -189,7 +191,9 @@ function admin_import() {
       
       unlink($import_file);
       
-      $html .= success(_("It's done!"), true);
+      $html .= div('well well-sm text-center', [
+          '<span class="text-success">' . _('File Upload') . glyph('ok-circle') . '</span>' . mute(glyph('arrow-right')) . '<span class="text-success">' . _('Validation') . glyph('ok-circle') . '</span>' . mute(glyph('arrow-right')) . '<span class="text-success">' . _('Import') . glyph('ok-circle') . '</span>' 
+      ]) . success(_("It's done!"), true);
       break;
     default:
       redirect(page_link_to('admin_import'));
