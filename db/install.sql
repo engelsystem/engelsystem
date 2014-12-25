@@ -3,13 +3,19 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 07. Dez 2014 um 20:31
+-- Erstellungszeit: 25. Dez 2014 um 22:28
 -- Server Version: 5.6.12
 -- PHP-Version: 5.5.3
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+--
+-- Datenbank: `engelsystem`
+--
+CREATE DATABASE IF NOT EXISTS `engelsystem` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `engelsystem`;
 
 -- --------------------------------------------------------
 
@@ -47,6 +53,14 @@ CREATE TABLE IF NOT EXISTS `Counter` (
   PRIMARY KEY (`URL`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Counter der Seiten';
 
+--
+-- Daten für Tabelle `Counter`
+--
+
+INSERT INTO `Counter` (`URL`, `Anz`) VALUES
+('login', 2),
+('news', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -61,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`),
   KEY `privilege_id` (`privilege_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=257 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=258 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
@@ -82,6 +96,7 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (213, -5, 28),
 (206, -5, 31),
 (215, -5, 33),
+(257, -5, 38),
 (219, -4, 14),
 (221, -4, 25),
 (220, -4, 33),
@@ -240,7 +255,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   `desc` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=39 ;
 
 --
 -- Daten für Tabelle `Privileges`
@@ -282,7 +297,8 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (34, 'atom', ' Atom news export'),
 (35, 'shifts_json_export', 'Export shifts in JSON format'),
 (36, 'angeltypes', 'View angeltypes'),
-(37, 'user_angeltypes', 'Join angeltypes.');
+(37, 'user_angeltypes', 'Join angeltypes.'),
+(38, 'shifttypes', 'Administrate shift types');
 
 -- --------------------------------------------------------
 
@@ -351,16 +367,34 @@ CREATE TABLE IF NOT EXISTS `ShiftEntry` (
 DROP TABLE IF EXISTS `Shifts`;
 CREATE TABLE IF NOT EXISTS `Shifts` (
   `SID` int(11) NOT NULL AUTO_INCREMENT,
+  `title` text,
+  `shifttype_id` int(11) NOT NULL,
   `start` int(11) NOT NULL,
   `end` int(11) NOT NULL,
   `RID` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(1024) DEFAULT NULL,
   `URL` text,
   `PSID` int(11) DEFAULT NULL,
   PRIMARY KEY (`SID`),
   UNIQUE KEY `PSID` (`PSID`),
-  KEY `RID` (`RID`)
+  KEY `RID` (`RID`),
+  KEY `shifttype_id` (`shifttype_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=191 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `ShiftTypes`
+--
+
+DROP TABLE IF EXISTS `ShiftTypes`;
+CREATE TABLE IF NOT EXISTS `ShiftTypes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `angeltype_id` int(11) DEFAULT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `angeltype_id` (`angeltype_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -410,7 +444,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 --
 
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `email_shiftinfo`, `jabber`, `Size`, `Passwort`, `password_recovery_token`, `Gekommen`, `Aktiv`, `force_active`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', 0, '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 0, 1, 0, 2, 'de_DE.UTF-8', 115, 'L', 1417980341, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235');
+(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', 0, '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 0, 1, 0, 2, 'de_DE.UTF-8', 115, 'L', 1419542882, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235');
 
 -- --------------------------------------------------------
 
@@ -524,7 +558,14 @@ ALTER TABLE `ShiftEntry`
 -- Constraints der Tabelle `Shifts`
 --
 ALTER TABLE `Shifts`
-  ADD CONSTRAINT `shifts_ibfk_1` FOREIGN KEY (`RID`) REFERENCES `Room` (`RID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `shifts_ibfk_1` FOREIGN KEY (`RID`) REFERENCES `Room` (`RID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `shifts_ibfk_2` FOREIGN KEY (`shifttype_id`) REFERENCES `ShiftTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `ShiftTypes`
+--
+ALTER TABLE `ShiftTypes`
+  ADD CONSTRAINT `shifttypes_ibfk_1` FOREIGN KEY (`angeltype_id`) REFERENCES `AngelTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints der Tabelle `UserAngelTypes`
