@@ -41,11 +41,20 @@ function shift_controller() {
   if ($angeltypes === false)
     engelsystem_error('Unable to load angeltypes.');
   
-  User_angeltypes($user);
+  $user_shifts = Shifts_by_user($user);
+  if ($user_shifts === false)
+    engelsystem_error('Unable to load users shifts.');
+  
+  $signed_up = false;
+  foreach ($user_shifts as $user_shift)
+    if ($user_shift['SID'] == $shift['SID']) {
+      $signed_up = true;
+      break;
+    }
   
   return [
       $shift['name'],
-      Shift_view($shift, $shifttype, $room, in_array('admin_shifts', $privileges), $angeltypes, in_array('user_shifts_admin', $privileges), in_array('admin_rooms', $privileges), in_array('shifttypes', $privileges)) 
+      Shift_view($shift, $shifttype, $room, in_array('admin_shifts', $privileges), $angeltypes, in_array('user_shifts_admin', $privileges), in_array('admin_rooms', $privileges), in_array('shifttypes', $privileges), $user_shifts, $signed_up) 
   ];
 }
 

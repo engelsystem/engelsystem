@@ -1,6 +1,75 @@
 <?php
 
 /**
+ * Check if a shift collides with other shifts (in time).
+ * @param Shift $shift
+ * @param array<Shift> $shifts
+ */
+function Shift_collides($shift, $shifts) {
+  foreach ($shifts as $other_shift)
+    if ($shift['SID'] != $other_shift['SID'])
+      if (! ($shift['start'] >= $other_shift['end'] || $shift['end'] <= $other_shift['start']))
+        return true;
+  return false;
+}
+
+/**
+ * Check if an angel can sign up for given shift.
+ *
+ * @param Shift $shift          
+ * @param AngelType $angeltype          
+ * @param array<Shift> $user_shifts          
+ */
+function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_shifts = null) {
+  global $user, $privileges;
+  
+  if ($user_shifts == null) {
+    $user_shifts = Shifts_by_user($user);
+    if ($user_shifts === false)
+      engelsystem_error('Unable to load users shifts.');
+  }
+  
+  $collides = Shift_collides($shift, $user_shifts);
+  
+  if ($user_angeltype == null) {
+    $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
+    if ($user_angeltype === false)
+      engelsystem_error('Unable to load user angeltype.');
+  }
+  
+  $signed_up = false;
+  foreach ($user_shifts as $user_shift)
+    if ($user_shift['SID'] == $shift['SID']) {
+      $signed_up = true;
+      break;
+    }
+    
+    // is the shift still running or alternatively is the user shift admin?
+  $user_may_join_shift = true;
+  
+  // you cannot join if user alread joined a parallel or this shift
+  $user_may_join_shift &= ! $collides;
+  
+  // you cannot join if you already singed up for this shift
+  $user_may_join_shift &= ! $signed_up;
+  
+  // you cannot join if user is not of this angel type
+  $user_may_join_shift &= $user_angeltype != null;
+  
+  // you cannot join if you are not confirmed
+  if ($angeltype['restricted'] == 1 && $user_angeltype != null)
+    $user_may_join_shift &= isset($user_angeltype['confirm_user_id']);
+    
+    // you can only join if the shift is in future
+  $user_may_join_shift &= time() < $shift['start'];
+  
+  // User shift admins may join anybody in every shift
+  $user_may_join_shift |= in_array('user_shifts_admin', $privileges);
+  
+  return $user_may_join_shift;
+}
+
+/**
  * Delete a shift by its external id.
  */
 function Shift_delete_by_psid($shift_psid) {

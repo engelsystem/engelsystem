@@ -9,8 +9,8 @@ function user_shifts() {
   
   if (User_is_freeloader($user))
     redirect(page_link_to('user_myshifts'));
-
-  // Locations laden
+    
+    // Locations laden
   $rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
   $room_array = array();
   foreach ($rooms as $room)
@@ -62,8 +62,8 @@ function user_shifts() {
     if (count($shift) == 0)
       redirect(page_link_to('user_shifts'));
     $shift = $shift[0];
-      
-      // Engeltypen laden
+    
+    // Engeltypen laden
     $types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
     $angel_types = array();
     $needed_angel_types = array();
@@ -543,14 +543,16 @@ function view_user_shifts() {
                 
                 // qqqqqq
               $is_free = false;
-              $shifts_row = date('d.m. H:i', $shift['start']);
+              $shifts_row = '<a href="' . shift_link($shift) . '">' . date('d.m. H:i', $shift['start']);
               $shifts_row .= " &ndash; ";
               $shifts_row .= date('H:i', $shift['end']);
               $shifts_row .= "<br /><b>";
-              $shifts_row .= '<a href="' . shift_link($shift) . '">' . ShiftType($shift['shifttype_id'])['name'] . '</a>';
+              $shifts_row .= ShiftType($shift['shifttype_id'])['name'];
               $shifts_row .= "</b><br />";
-              $shifts_row .= '<a href="' . shift_link($shift) . '">' . $shift['title'] . '</a>';
-              $shifts_row .= "<br />";
+              if ($shift['title'] != '') {
+                $shifts_row .= $shift['title'];
+                $shifts_row .= "<br />";
+              }
               if (in_array('admin_shifts', $privileges))
                 $shifts_row .= ' ' . table_buttons(array(
                     button(page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'], glyph('edit'), 'btn-xs'),
