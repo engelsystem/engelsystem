@@ -12,11 +12,12 @@ INSERT INTO `engelsystem`.`Privileges` (`id`, `name`, `desc`) VALUES (NULL , 'sh
 INSERT INTO `GroupPrivileges` SET `group_id`=-5, `privilege_id`=(SELECT `id` FROM `Privileges` WHERE `name`='shifttypes');
 
 ALTER TABLE `Shifts` ADD `shifttype_id` INT NOT NULL AFTER `SID`, ADD INDEX ( `shifttype_id` );
+UPDATE `Shifts` SET `name`='' WHERE `name` IS NULL;
 INSERT INTO `ShiftTypes` SELECT DISTINCT NULL , `name` , NULL , '' FROM `Shifts`;
 UPDATE `Shifts` SET `shifttype_id`=(SELECT `id` FROM `ShiftTypes` WHERE `ShiftTypes`.`name`=`Shifts`.`name`);
-ALTER TABLE `Shifts` DROP `name`;
-ALTER TABLE `Shifts` ADD FOREIGN KEY ( `shifttype_id` ) REFERENCES `engelsystem`.`ShiftTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `Shifts` ADD `title` TEXT NULL AFTER `SID`;
+ALTER TABLE `Shifts` ADD FOREIGN KEY ( `shifttype_id` ) REFERENCES `engelsystem`.`ShiftTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Shifts` DROP `name`;
 
 /* cleanup */
 ALTER TABLE `User` DROP `ICQ` ;
