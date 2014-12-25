@@ -32,7 +32,14 @@ function admin_active() {
       $limit = " LIMIT " . $count;
     if (isset($_REQUEST['ack'])) {
       sql_query("UPDATE `User` SET `Aktiv` = 0 WHERE `Tshirt` = 0");
-      $users = sql_select("SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` WHERE `User`.`Gekommen` = 1 AND `User`.`force_active`=0 GROUP BY `User`.`UID` ORDER BY `force_active` DESC, `shift_length` DESC" . $limit);
+      $users = sql_select("
+          SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` 
+          FROM `User` 
+          LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
+          LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` 
+          WHERE `User`.`Gekommen` = 1 AND `User`.`force_active`=0 
+          GROUP BY `User`.`UID` 
+          ORDER BY `force_active` DESC, `shift_length` DESC" . $limit);
       $user_nicks = array();
       foreach ($users as $usr) {
         sql_query("UPDATE `User` SET `Aktiv` = 1 WHERE `UID`=" . sql_escape($usr['UID']));
@@ -85,7 +92,13 @@ function admin_active() {
       $msg = error(_("Angel not found."), true);
   }
 
-  $users = sql_select("SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` WHERE `User`.`Gekommen` = 1 GROUP BY `User`.`UID` ORDER BY `force_active` DESC, `shift_length` DESC" . $limit);
+  $users = sql_select("
+      SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` 
+      FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
+      LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` 
+      WHERE `User`.`Gekommen` = 1 
+      GROUP BY `User`.`UID` 
+      ORDER BY `force_active` DESC, `shift_length` DESC" . $limit);
 
   $matched_users = array();
   if ($search == "")

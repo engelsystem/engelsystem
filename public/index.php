@@ -15,18 +15,24 @@ require_once realpath(__DIR__ . '/../includes/model/NeededAngelTypes_model.php')
 require_once realpath(__DIR__ . '/../includes/model/Room_model.php');
 require_once realpath(__DIR__ . '/../includes/model/ShiftEntry_model.php');
 require_once realpath(__DIR__ . '/../includes/model/Shifts_model.php');
+require_once realpath(__DIR__ . '/../includes/model/ShiftTypes_model.php');
 require_once realpath(__DIR__ . '/../includes/model/UserAngelTypes_model.php');
 require_once realpath(__DIR__ . '/../includes/model/UserGroups_model.php');
 require_once realpath(__DIR__ . '/../includes/model/User_model.php');
 
 require_once realpath(__DIR__ . '/../includes/view/AngelTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/Questions_view.php');
+require_once realpath(__DIR__ . '/../includes/view/Rooms_view.php');
 require_once realpath(__DIR__ . '/../includes/view/Shifts_view.php');
 require_once realpath(__DIR__ . '/../includes/view/ShiftEntry_view.php');
+require_once realpath(__DIR__ . '/../includes/view/ShiftTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/UserAngelTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/User_view.php');
 
 require_once realpath(__DIR__ . '/../includes/controller/angeltypes_controller.php');
+require_once realpath(__DIR__ . '/../includes/controller/rooms_controller.php');
+require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
+require_once realpath(__DIR__ . '/../includes/controller/shifttypes_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/user_angeltypes_controller.php');
 
@@ -85,7 +91,8 @@ $free_pages = array(
     'users',
     'ical',
     'shifts_json_export',
-    'atom'
+    'shifts',
+    'atom' 
 );
 
 // Gewünschte Seite/Funktion
@@ -94,10 +101,10 @@ if (! isset($_REQUEST['p']))
   $_REQUEST['p'] = isset($user) ? "news" : "login";
 if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $free_pages) || in_array($_REQUEST['p'], $privileges))) {
   $p = $_REQUEST['p'];
-
+  
   $title = $p;
   $content = "";
-
+  
   if ($p == "api") {
     require_once realpath(__DIR__ . '/../includes/controller/api.php');
     error("Api disabled temporily.");
@@ -124,10 +131,14 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     $content = user_password_recovery_controller();
   } elseif ($p == "angeltypes") {
     list($title, $content) = angeltypes_controller();
+  } elseif ($p == "shifts") {
+    list($title, $content) = shifts_controller();
   } elseif ($p == "users") {
     list($title, $content) = users_controller();
   } elseif ($p == "user_angeltypes") {
     list($title, $content) = user_angeltypes_controller();
+  } elseif ($p == "shifttypes") {
+    list($title, $content) = shifttypes_controller();
   } elseif ($p == "news") {
     $title = news_title();
     $content = user_news();
@@ -225,7 +236,7 @@ echo template_render('../templates/layout.html', array(
     'content' => msg() . $content,
     'header_toolbar' => header_toolbar(),
     'faq_url' => $faq_url,
-    'locale' => $_SESSION['locale']
+    'locale' => $_SESSION['locale'] 
 ));
 
 counter();

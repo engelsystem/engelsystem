@@ -22,8 +22,8 @@ function admin_log() {
   return page_with_title(admin_log_title(), array(
       msg(),
       form(array(
-        form_text('keyword', _("Suche"), $filter),
-        form_submit(_("Suche"), "Go")
+        form_text('keyword', _("Search"), $filter),
+        form_submit(_("Search"), "Go")
       )),
       table(array(
           'date' => "Time",

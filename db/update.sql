@@ -1,3 +1,24 @@
+/* introduce shift types */
+CREATE TABLE IF NOT EXISTS `ShiftTypes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `angeltype_id` int(11) DEFAULT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `ShiftTypes` ADD INDEX ( `angeltype_id` );
+ALTER TABLE `ShiftTypes` ADD FOREIGN KEY ( `angeltype_id` ) REFERENCES `engelsystem`.`AngelTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+INSERT INTO `engelsystem`.`Privileges` (`id`, `name`, `desc`) VALUES (NULL , 'shifttypes', 'Administrate shift types');
+INSERT INTO `GroupPrivileges` SET `group_id`=-5, `privilege_id`=(SELECT `id` FROM `Privileges` WHERE `name`='shifttypes');
+
+ALTER TABLE `Shifts` ADD `shifttype_id` INT NOT NULL AFTER `SID`, ADD INDEX ( `shifttype_id` );
+UPDATE `Shifts` SET `name`='' WHERE `name` IS NULL;
+INSERT INTO `ShiftTypes` SELECT DISTINCT NULL , `name` , NULL , '' FROM `Shifts`;
+UPDATE `Shifts` SET `shifttype_id`=(SELECT `id` FROM `ShiftTypes` WHERE `ShiftTypes`.`name`=`Shifts`.`name`);
+ALTER TABLE `Shifts` ADD `title` TEXT NULL AFTER `SID`;
+ALTER TABLE `Shifts` ADD FOREIGN KEY ( `shifttype_id` ) REFERENCES `engelsystem`.`ShiftTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Shifts` DROP `name`;
+
 /* cleanup */
 ALTER TABLE `User` DROP `ICQ` ;
 

@@ -76,7 +76,8 @@ function ShiftEntries_upcoming_for_user($user) {
   return sql_select("
       SELECT *
       FROM `ShiftEntry`
-      JOIN `Shifts` ON `Shifts`.`SID`=`ShiftEntry`.`SID`
+      JOIN `Shifts` ON (`Shifts`.`SID` = `ShiftEntry`.`SID`)
+      JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
       WHERE `ShiftEntry`.`UID`=" . sql_escape($user['UID']) . "
       AND `Shifts`.`end` > " . sql_escape(time()) . "
       ORDER BY `Shifts`.`end`
