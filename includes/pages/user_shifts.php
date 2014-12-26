@@ -72,7 +72,12 @@ function user_shifts() {
       $needed_angel_types[$type['id']] = 0;
     }
     
-    // Benötigte Engeltypen vom Raum
+    $shifttypes_source = ShiftTypes();
+    $shifttypes = [];
+    foreach ($shifttypes_source as $shifttype)
+      $shifttypes[$shifttype['id']] = $shifttype['name'];
+      
+      // Benötigte Engeltypen vom Raum
     $needed_angel_types_source = sql_select("SELECT `AngelTypes`.*, `NeededAngelTypes`.`count` FROM `AngelTypes` LEFT JOIN `NeededAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id` AND `NeededAngelTypes`.`room_id`=" . sql_escape($shift['RID']) . ") ORDER BY `AngelTypes`.`name`");
     foreach ($needed_angel_types_source as $type) {
       if ($type['count'] != "")
@@ -86,14 +91,15 @@ function user_shifts() {
         $needed_angel_types[$type['id']] = $type['count'];
     }
     
-    $name = $shift['name'];
+    $shifttype_id = $shift['shifttype_id'];
+    $title = $shift['title'];
     $rid = $shift['RID'];
     $start = $shift['start'];
     $end = $shift['end'];
     
     if (isset($_REQUEST['submit'])) {
       // Name/Bezeichnung der Schicht, darf leer sein
-      $name = strip_request_item('name');
+      $title = strip_request_item('title');
       
       // Auswahl der sichtbaren Locations für die Schichten
       if (isset($_REQUEST['rid']) && preg_match("/^[0-9]+$/", $_REQUEST['rid']) && isset($room_array[$_REQUEST['rid']]))
@@ -102,6 +108,13 @@ function user_shifts() {
         $ok = false;
         $rid = $rooms[0]['RID'];
         $msg .= error(_("Please select a room."), true);
+      }
+      
+      if (isset($_REQUEST['shifttype_id']) && isset($shifttypes[$_REQUEST['shifttype_id']]))
+        $shifttype_id = $_REQUEST['shifttype_id'];
+      else {
+        $ok = false;
+        $msg .= error(_('Please select a shifttype.'), true);
       }
       
       if (isset($_REQUEST['start']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['start'])))
@@ -133,7 +146,8 @@ function user_shifts() {
       }
       
       if ($ok) {
-        $shift['name'] = $name;
+        $shift['shifttype_id'] = $shifttype_id;
+        $shift['title'] = $title;
         $shift['RID'] = $rid;
         $shift['start'] = $start;
         $shift['end'] = $end;
@@ -166,7 +180,8 @@ function user_shifts() {
         msg(),
         '<noscript>' . info(_("This page is much more comfortable with javascript."), true) . '</noscript>',
         form(array(
-            form_text('name', _("Name/Description:"), $name),
+            form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
+            form_text('title', _("Title"), $title),
             form_select('rid', _("Room:"), $room_array, $rid),
             form_text('start', _("Start:"), date("Y-m-d H:i", $start)),
             form_text('end', _("End:"), date("Y-m-d H:i", $end)),
