@@ -22,7 +22,41 @@ function users_controller() {
       return user_edit_controller();
     case 'delete':
       return user_delete_controller();
+    case 'got_voucher':
+      return user_got_voucher_controller();
   }
+}
+
+function user_link($user) {
+  return page_link_to('users') . '&action=view&user_id=' . $user['UID'];
+}
+
+function user_got_voucher_controller() {
+  global $privileges, $user;
+  
+  if (isset($_REQUEST['user_id'])) {
+    $user_source = User($_REQUEST['user_id']);
+  } else
+    $user_source = $user;
+  
+  $admin_user_privilege = in_array('admin_user', $privileges);
+  
+  if (! in_array('admin_user', $privileges))
+    redirect(page_link_to(''));
+  
+  if (! isset($_REQUEST['got_voucher']))
+    redirect(page_link_to(''));
+  
+  $user_source['got_voucher'] = $_REQUEST['got_voucher'] == 'true';
+  
+  $result = User_update($user_source);
+  if ($result === false)
+    engelsystem_error('Unable to update user.');
+  
+  success($user_source['got_voucher'] ? _('User got vouchers.') : _('User didnt got vouchers.'));
+  engelsystem_log(User_Nick_render($user_source) . ($user_source['got_voucher'] ? ' got vouchers' : ' didnt got vouchers'));
+  
+  redirect(user_link($user_source));
 }
 
 function user_controller() {
@@ -32,8 +66,6 @@ function user_controller() {
     $user_source = User($_REQUEST['user_id']);
   } else
     $user_source = $user;
-  
-  $admin_user_privilege = in_array('admin_user', $privileges);
   
   $shifts = Shifts_by_user($user_source);
   foreach ($shifts as &$shift) {
@@ -54,7 +86,7 @@ function user_controller() {
   
   return array(
       $user_source['Nick'],
-      User_view($user_source, $admin_user_privilege, User_is_freeloader($user_source), User_angeltypes($user_source), User_groups($user_source), $shifts, $user['UID'] == $user_source['UID']) 
+      User_view($user_source, in_array('admin_user', $privileges), User_is_freeloader($user_source), User_angeltypes($user_source), User_groups($user_source), $shifts, $user['UID'] == $user_source['UID']) 
   );
 }
 
@@ -80,7 +112,7 @@ function users_list_controller() {
   
   return array(
       _('All users'),
-      Users_view($users, $order_by, User_arrived_count(), User_active_count(), User_force_active_count(), ShiftEntries_freeleaded_count(), User_tshirts_count()) 
+      Users_view($users, $order_by, User_arrived_count(), User_active_count(), User_force_active_count(), ShiftEntries_freeleaded_count(), User_tshirts_count(), User_got_voucher_count()) 
   );
 }
 

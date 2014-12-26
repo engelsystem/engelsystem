@@ -149,7 +149,10 @@ function user_shifts() {
         
         engelsystem_log("Updated shift '" . $name . "' from " . date("y-m-d H:i", $start) . " to " . date("y-m-d H:i", $end) . " with angel types " . join(", ", $needed_angel_types_info));
         success(_("Shift updated."));
-        redirect(shift_link($shift_id));
+        
+        redirect(shift_link([
+            'SID' => $shift_id 
+        ]));
       }
     }
     
