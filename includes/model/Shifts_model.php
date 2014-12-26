@@ -43,11 +43,23 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
       $signed_up = true;
       break;
     }
+  
+  $needed_angeltypes = NeededAngelTypes_by_shift($shift['SID']);
+  if ($needed_angeltypes === false)
+    engelsystem_error('Unable to load needed angel types.');
     
     // is the shift still running or alternatively is the user shift admin?
   $user_may_join_shift = true;
   
-  // you cannot join if user alread joined a parallel or this shift
+  // you canot join if shift is full
+  foreach ($needed_angeltypes as $needed_angeltype)
+    if ($needed_angeltype['angel_type_id'] == $angeltype['id']) {
+      if ($needed_angeltype['taken'] >= $needed_angeltype['count'])
+        $user_may_join_shift = false;
+      break;
+    }
+    
+    // you cannot join if user alread joined a parallel or this shift
   $user_may_join_shift &= ! $collides;
   
   // you cannot join if you already singed up for this shift
