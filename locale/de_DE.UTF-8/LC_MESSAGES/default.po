@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2014-12-26 18:50+0100\n"
-"PO-Revision-Date: 2014-12-26 18:50+0100\n"
+"POT-Creation-Date: 2014-12-26 23:51+0100\n"
+"PO-Revision-Date: 2014-12-26 23:51+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -879,7 +879,7 @@ msgstr "Titel"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:132
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:141
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:303
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:806
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:815
 msgid "Room"
 msgstr "Raum"
 
@@ -984,7 +984,7 @@ msgid "Answered by"
 msgstr "Antwort von"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:3
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:819
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:828
 msgid "Rooms"
 msgstr "Räume"
 
@@ -1364,7 +1364,7 @@ msgid "Wrong action."
 msgstr "Falsche Aktion."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_myshifts.php:4
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:308
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:320
 msgid "My shifts"
 msgstr "Meine Schichten"
 
@@ -1609,32 +1609,36 @@ msgstr ""
 "Du hast bereits eine Schicht im gleichen Zeitrahmen. Bitte einen Dispatcher "
 "Dich nachzutragen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:308
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:264
+msgid "The shift is already full."
+msgstr "Diese Schicht ist bereits voll belegt."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:320
 msgid "You are subscribed. Thank you!"
 msgstr "Du bist eingetragen. Danke!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:317
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:329
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:175
 msgid "Freeloader"
 msgstr "Schwänzer"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:347
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:359
 msgid "The administration has not configured any shifts yet."
 msgstr "Die Administratoren haben noch keine Schichten angelegt."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:354
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:366
 msgid "The administration has not configured any rooms yet."
 msgstr "Die Administratoren habe noch keine Räume eingerichtet."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:367
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:379
 msgid "occupied"
 msgstr "belegt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:371
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:383
 msgid "free"
 msgstr "frei"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:376
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:388
 msgid ""
 "The administration has not configured any angeltypes yet - or you are not "
 "subscribed to any angeltype."
@@ -1642,36 +1646,36 @@ msgstr ""
 "Die Administratoren haben noch keine Engeltypen konfiguriert - oder Du hast "
 "noch keine Engeltypen ausgewählt."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:626
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:758
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:635
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:767
 #, php-format
 msgid "%d helper needed"
 msgid_plural "%d helpers needed"
 msgstr[0] "%d Helfer benötigt"
 msgstr[1] "%d Helfer benötigt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:667
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:676
 msgid "Add more angels"
 msgstr "Neue Engel hinzufügen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:806
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:815
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:208
 msgid "Time"
 msgstr "Zeit"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:807
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:816
 msgid "Entries"
 msgstr "Einträge"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:824
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:833
 msgid "Tasks"
 msgstr "Aufgaben"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:825
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:834
 msgid "Occupancy"
 msgstr "Belegung"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:826
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:835
 msgid ""
 "The tasks shown here are influenced by the preferences you defined in your "
 "settings!"
@@ -1679,19 +1683,19 @@ msgstr ""
 "Die Schichten, die hier angezeigt werden, sind von Deinen Einstellungen "
 "(Engeltypen/Aufgaben) abhängig!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:826
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:835
 msgid "Description of the jobs."
 msgstr "Beschreibung der Aufgaben."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:827
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:836
 msgid "Use new style if possible"
 msgstr "Wenn möglich neuen Stil verwenden"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:829
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:838
 msgid "iCal export"
 msgstr "iCal Export"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:829
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:838
 #, php-format
 msgid ""
 "Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s"
@@ -1702,16 +1706,16 @@ msgstr ""
 "\">JSON Format</a> verfügbar (Link bitte geheimhalten, sonst <a href=\"%s"
 "\">API-Key zurücksetzen</a>)."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:830
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:839
 msgid "Filter"
 msgstr "Filter"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:864
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:873
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:22
 msgid "All"
 msgstr "Alle"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:865
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:874
 msgid "None"
 msgstr "Keine"
 
