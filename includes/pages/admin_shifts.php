@@ -206,7 +206,7 @@ function admin_shifts() {
               'start' => $shift_start,
               'end' => $shift_end,
               'RID' => $rid,
-              'name' => $title,
+              'title' => $title,
               'shifttype_id' => $shifttype_id 
           );
           
@@ -269,7 +269,7 @@ function admin_shifts() {
       if ($shift_id === false)
         engelsystem_error('Unable to create shift.');
       
-      engelsystem_log("Shift created: " . $shift['name'] . " from " . date("Y-m-d H:i", $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']));
+      engelsystem_log("Shift created: " . $shifttypes[$shift['shifttype_id']] . " with title " . $shift['title'] . " from " . date("Y-m-d H:i", $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']));
       $needed_angel_types_info = array();
       foreach ($_SESSION['admin_shifts_types'] as $type_id => $count) {
         $angel_type_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`=" . sql_escape($type_id) . " LIMIT 1");
