@@ -12,7 +12,7 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null, 
   if (Shift_signup_allowed($shift, $angeltype, $user_angeltype, $user_shifts))
     return button(page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'], _('Sign up'));
   elseif ($user_angeltype == null)
-    return button(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'], sprintf('Become %s', $angeltype['name']));
+    return button(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'], sprintf(_('Become %s'), $angeltype['name']));
   else
     return '';
 }
