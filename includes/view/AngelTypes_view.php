@@ -131,6 +131,21 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
         'actions' => "" 
     ), $coordinators);
   }
+  
+  if (count($members_confirmed) > 0)
+    $members_confirmed[] = [
+        'Nick' => _('Sum'),
+        'DECT' => count($members_confirmed),
+        'actions' => '' 
+    ];
+  
+  if (count($members_unconfirmed) > 0)
+    $members_unconfirmed[] = [
+        'Nick' => _('Sum'),
+        'DECT' => count($members_unconfirmed),
+        'actions' => '' 
+    ];
+  
   $page[] = '<h3>' . _("Members") . '</h3>';
   if ($admin_user_angeltypes)
     $page[] = buttons(array(
