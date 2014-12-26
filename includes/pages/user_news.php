@@ -21,7 +21,7 @@ function user_meetings() {
   else
     $page = 0;
 
-  $news = sql_select("SELECT * FROM `News` WHERE `Treffen`=1 ORDER BY `ID` DESC LIMIT " . sql_escape($page * $DISPLAY_NEWS) . ", " . sql_escape($DISPLAY_NEWS));
+  $news = sql_select("SELECT * FROM `News` WHERE `Treffen`=1 ORDER BY `Datum` DESC LIMIT " . sql_escape($page * $DISPLAY_NEWS) . ", " . sql_escape($DISPLAY_NEWS));
   foreach ($news as $entry)
     $html .= display_news($entry);
 
