@@ -38,7 +38,13 @@ function admin_news() {
         case 'save':
           list($news) = $news;
           
-          sql_query("UPDATE `News` SET `Datum`='" . sql_escape(time()) . "', `Betreff`='" . sql_escape($_POST["eBetreff"]) . "', `Text`='" . sql_escape($_POST["eText"]) . "', `UID`='" . sql_escape($user['UID']) . "', `Treffen`='" . sql_escape($_POST["eTreffen"]) . "' WHERE `ID`=" . sql_escape($id) . " LIMIT 1");
+          sql_query("UPDATE `News` SET 
+              `Datum`='" . sql_escape(time()) . "', 
+              `Betreff`='" . sql_escape($_POST["eBetreff"]) . "', 
+              `Text`='" . sql_escape($_POST["eText"]) . "', 
+              `UID`='" . sql_escape($user['UID']) . "', 
+              `Treffen`='" . sql_escape($_POST["eTreffen"]) . "' 
+              WHERE `ID`=" . sql_escape($id));
           engelsystem_log("News updated: " . $_POST["eBetreff"]);
           success(_("News entry updated."));
           redirect(page_link_to("news"));

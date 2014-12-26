@@ -132,7 +132,7 @@ function user_news() {
   else
     $page = 0;
 
-  $news = sql_select("SELECT * FROM `News` ORDER BY `ID` DESC LIMIT " . sql_escape($page * $DISPLAY_NEWS) . ", " . sql_escape($DISPLAY_NEWS));
+  $news = sql_select("SELECT * FROM `News` ORDER BY `Datum` DESC LIMIT " . sql_escape($page * $DISPLAY_NEWS) . ", " . sql_escape($DISPLAY_NEWS));
   foreach ($news as $entry)
     $html .= display_news($entry);
 
