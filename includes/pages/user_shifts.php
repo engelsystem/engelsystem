@@ -607,13 +607,10 @@ function view_user_shifts() {
                   $entry_list = array();
                   $freeloader = 0;
                   foreach ($entries as $entry) {
-                    if ($entry['Gekommen'] == 1)
-                      $style = "font-weight:bold;";
-                    else
-                      $style = "font-weight:normal;";
+                    $style = '';
                     if ($entry['freeloaded']) {
                       $freeloader ++;
-                      $style .= " text-decoration: line-through;";
+                      $style = " text-decoration: line-through;";
                     }
                     if (in_array('user_shifts_admin', $privileges))
                       $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) . ' ' . table_buttons(array(
