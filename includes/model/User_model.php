@@ -6,7 +6,7 @@
 
 /**
  * Update user.
- * 
+ *
  * @param User $user          
  */
 function User_update($user) {
@@ -243,7 +243,7 @@ function User_generate_password_recovery_token(&$user) {
   $result = sql_query("UPDATE `User` SET `password_recovery_token`='" . sql_escape($user['password_recovery_token']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
   if ($result === false)
     return false;
-  engelsystem_log("Password recovery for " . $user['Nick'] . " started.");
+  engelsystem_log("Password recovery for " . User_Nick_render($user) . " started.");
   return $user['password_recovery_token'];
 }
 
