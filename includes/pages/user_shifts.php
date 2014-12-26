@@ -524,7 +524,10 @@ function view_user_shifts() {
       if ($colspan == 0)
         $colspan = 1;
       $todo[$rid] = array_fill(0, $maxshow, $colspan);
-      $shifts_table .= "<th" . (($colspan > 1) ? ' colspan="' . $colspan . '"' : '') . ">${room['name']}</th>\n";
+      $shifts_table .= "<th" . (($colspan > 1) ? ' colspan="' . $colspan . '"' : '') . ">" . Room_name_render([
+          'RID' => $room['id'],
+          'Name' => $room['name'] 
+      ]) . "</th>\n";
     }
     unset($block, $blocks, $firstblock, $colspan, $key, $room);
     
@@ -561,7 +564,12 @@ function view_user_shifts() {
                 
                 // qqqqqq
               $is_free = false;
-              $shifts_row = '<a href="' . shift_link($shift) . '">' . date('d.m. H:i', $shift['start']);
+              
+              $shifts_row = Room_name_render([
+                  'RID' => $room['id'],
+                  'Name' => $room['name'] 
+              ]) . '<br />';
+              $shifts_row .= '<a href="' . shift_link($shift) . '">' . date('d.m. H:i', $shift['start']);
               $shifts_row .= " &ndash; ";
               $shifts_row .= date('H:i', $shift['end']);
               $shifts_row .= "<br /><b>";
