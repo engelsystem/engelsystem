@@ -19,10 +19,11 @@ $tshirt_sizes = array(
     'XL-G' => "XL Girl" 
 );
 
-function Users_view($users, $order_by, $arrived_count, $active_count, $force_active_count, $freeloads_count, $tshirts_count) {
+function Users_view($users, $order_by, $arrived_count, $active_count, $force_active_count, $freeloads_count, $tshirts_count, $voucher_count) {
   foreach ($users as &$user) {
     $user['Nick'] = User_Nick_render($user);
     $user['Gekommen'] = glyph_bool($user['Gekommen']);
+    $user['got_voucher'] = glyph_bool($user['got_voucher']);
     $user['Aktiv'] = glyph_bool($user['Aktiv']);
     $user['force_active'] = glyph_bool($user['force_active']);
     $user['Tshirt'] = glyph_bool($user['Tshirt']);
@@ -34,6 +35,7 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
   $users[] = array(
       'Nick' => '<strong>' . _('Sum') . '</strong>',
       'Gekommen' => $arrived_count,
+      'got_voucher' => $voucher_count,
       'Aktiv' => $active_count,
       'force_active' => $force_active_count,
       'freeloads' => $freeloads_count,
@@ -52,6 +54,7 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
           'Name' => Users_table_header_link('Name', _('Name'), $order_by),
           'DECT' => Users_table_header_link('DECT', _('DECT'), $order_by),
           'Gekommen' => Users_table_header_link('Gekommen', _('Arrived'), $order_by),
+          'got_voucher' => Users_table_header_link('got_voucher', _('Voucher'), $order_by),
           'freeloads' => _('Freeloads'),
           'Aktiv' => Users_table_header_link('Aktiv', _('Active'), $order_by),
           'force_active' => Users_table_header_link('force_active', _('Forced'), $order_by),
@@ -189,6 +192,8 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
               buttons(array(
                   $admin_user_privilege ? button(page_link_to('admin_user') . '&id=' . $user_source['UID'], glyph("edit") . _("edit")) : '',
                   ($admin_user_privilege && ! $user_source['Gekommen']) ? button(page_link_to('admin_arrive') . '&arrived=' . $user_source['UID'], _("arrived")) : '',
+                  ($admin_user_privilege && ! $user_source['got_voucher']) ? button(page_link_to('users') . '&action=got_voucher&user_id=' . $user_source['UID'] . '&got_voucher=true', _('Got vouchers')) : '',
+                  ($admin_user_privilege && $user_source['got_voucher']) ? button(page_link_to('users') . '&action=got_voucher&user_id=' . $user_source['UID'] . '&got_voucher=', _('Remove vouchers')) : '',
                   $its_me ? button(page_link_to('user_settings'), glyph('list-alt') . _("Settings")) : '',
                   $its_me ? button(page_link_to('ical') . '&key=' . $user_source['api_key'], glyph('calendar') . _("iCal Export")) : '',
                   $its_me ? button(page_link_to('shifts_json_export') . '&key=' . $user_source['api_key'], glyph('export') . _("JSON Export")) : '',

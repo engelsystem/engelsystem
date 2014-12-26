@@ -5,6 +5,35 @@
  */
 
 /**
+ * Update user.
+ * 
+ * @param User $user          
+ */
+function User_update($user) {
+  return sql_query("UPDATE `User` SET
+      `Nick`='" . sql_escape($user['Nick']) . "',
+      `Name`='" . sql_escape($user['Name']) . "',
+      `Vorname`='" . sql_escape($user['Vorname']) . "',
+      `Alter`=" . sql_escape($user['Alter']) . ",
+      `Telefon`='" . sql_escape($user['Telefon']) . "',
+      `DECT`='" . sql_escape($user['DECT']) . "',
+      `Handy`='" . sql_escape($user['Handy']) . "',
+      `email`='" . sql_escape($user['email']) . "',
+      `email_shiftinfo`=" . sql_escape($user['email_shiftinfo'] ? 'TRUE' : 'FALSE') . ",
+      `jabber`='" . sql_escape($user['jabber']) . "',
+      `Size`='" . sql_escape($user['Size']) . "',
+      `Gekommen`=" . sql_escape($user['Gekommen']) . ",
+      `Aktiv`=" . sql_escape($user['Aktiv']) . ",
+      `force_active`=" . sql_escape($user['force_active'] ? 'TRUE' : 'FALSE') . ",
+      `Tshirt`=" . sql_escape($user['Tshirt']) . ",
+      `color`=" . sql_escape($user['color']) . ",
+      `Sprache`='" . sql_escape($user['Sprache']) . "',
+      `Hometown`='" . sql_escape($user['Hometown']) . "',
+      `got_voucher`=" . sql_escape($user['got_voucher'] ? 'TRUE' : 'FALSE') . "
+      WHERE `UID`=" . sql_escape($user['UID']));
+}
+
+/**
  * Counts all forced active users.
  */
 function User_force_active_count() {
@@ -13,6 +42,10 @@ function User_force_active_count() {
 
 function User_active_count() {
   return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1");
+}
+
+function User_got_voucher_count() {
+  return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `got_voucher` = TRUE");
 }
 
 function User_arrived_count() {
@@ -39,14 +72,14 @@ function User_sortable_columns() {
       'Aktiv',
       'force_active',
       'Tshirt',
-      'lastLogIn'
+      'lastLogIn' 
   );
 }
 
 /**
  * Get all users, ordered by Nick by default or by given param.
  *
- * @param string $order_by
+ * @param string $order_by          
  */
 function Users($order_by = 'Nick') {
   return sql_select("SELECT * FROM `User` ORDER BY `" . sql_escape($order_by) . "` ASC");
@@ -55,18 +88,18 @@ function Users($order_by = 'Nick') {
 /**
  * Returns true if user is freeloader
  *
- * @param User $user
+ * @param User $user          
  */
 function User_is_freeloader($user) {
   global $max_freeloadable_shifts, $user;
-
+  
   return count(ShiftEntries_freeloaded_by_user($user)) >= $max_freeloadable_shifts;
 }
 
 /**
  * Returns all users that are not member of given angeltype.
  *
- * @param Angeltype $angeltype
+ * @param Angeltype $angeltype          
  */
 function Users_by_angeltype_inverted($angeltype) {
   return sql_select("
@@ -80,7 +113,7 @@ function Users_by_angeltype_inverted($angeltype) {
 /**
  * Returns all members of given angeltype.
  *
- * @param Angeltype $angeltype
+ * @param Angeltype $angeltype          
  */
 function Users_by_angeltype($angeltype) {
   return sql_select("
@@ -105,7 +138,7 @@ function User_ids() {
 /**
  * Strip unwanted characters from a users nick.
  *
- * @param string $nick
+ * @param string $nick          
  */
 function User_validate_Nick($nick) {
   return preg_replace("/([^a-z0-9üöäß. _+*-]{1,})/ui", '', $nick);
@@ -114,7 +147,7 @@ function User_validate_Nick($nick) {
 /**
  * Returns user by id.
  *
- * @param $id UID
+ * @param $id UID          
  */
 function User($id) {
   $user_source = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
@@ -129,7 +162,7 @@ function User($id) {
  * TODO: Merge into normal user function
  * Returns user by id (limit informations.
  *
- * @param $id UID
+ * @param $id UID          
  */
 function mUser_Limit($id) {
   $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `jabber`, `Avatar` FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
@@ -159,7 +192,7 @@ function User_by_api_key($api_key) {
 /**
  * Returns User by email.
  *
- * @param string $email
+ * @param string $email          
  * @return Matching user, null or false on error
  */
 function User_by_email($email) {
@@ -174,7 +207,7 @@ function User_by_email($email) {
 /**
  * Returns User by password token.
  *
- * @param string $token
+ * @param string $token          
  * @return Matching user, null or false on error
  */
 function User_by_password_recovery_token($token) {
@@ -189,7 +222,7 @@ function User_by_password_recovery_token($token) {
 /**
  * Generates a new api key for given user.
  *
- * @param User $user
+ * @param User $user          
  */
 function User_reset_api_key(&$user, $log = true) {
   $user['api_key'] = md5($user['Nick'] . time() . rand());
@@ -197,13 +230,13 @@ function User_reset_api_key(&$user, $log = true) {
   if ($result === false)
     return false;
   if ($log)
-    engelsystem_log(sprintf("API key resetted (%s).",User_Nick_render($user)));
+    engelsystem_log(sprintf("API key resetted (%s).", User_Nick_render($user)));
 }
 
 /**
  * Generates a new password recovery token for given user.
  *
- * @param User $user
+ * @param User $user          
  */
 function User_generate_password_recovery_token(&$user) {
   $user['password_recovery_token'] = md5($user['Nick'] . time() . rand());
