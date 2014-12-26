@@ -175,6 +175,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
               ($admin_user_privilege && $freeloader) ? '<span class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> ' . _("Freeloader") . '</span><br />' : '',
               $user_source['Gekommen'] ? User_shift_state_render($user_source) . '<br />' : '',
               ($user_source['Gekommen'] ? '<span class="text-success"><span class="glyphicon glyphicon-home"></span> ' . _("Arrived") . '</span>' : '<span class="text-danger">' . _("Not arrived") . '</span>'),
+              ($user_source['got_voucher'] && $admin_user_privilege) ? '<br /><span class="text-success">' . glyph('cutlery') . _("Got vouchers") . '</span>' : '<br /><span class="text-danger">' . _("Got no vouchers") . '</span>',
               ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Aktiv']) ? ' <span class="text-success">' . _("Active") . '</span>' : '',
               ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Tshirt']) ? ' <span class="text-success">' . _("T-Shirt") . '</span>' : '' 
           )),
