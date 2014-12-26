@@ -1,3 +1,6 @@
+/* fix log */
+ALTER TABLE `LogEntries` CHANGE `nick` `nick` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
+
 /* introduce got-voucher flag */
 ALTER TABLE `User` ADD `got_voucher` BOOLEAN NOT NULL;
 

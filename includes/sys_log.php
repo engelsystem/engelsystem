@@ -15,7 +15,6 @@ function engelsystem_log($message) {
   } else {
     $nick = "Guest";
   }
-  
   LogEntry_create($nick, $message);
 }
 
