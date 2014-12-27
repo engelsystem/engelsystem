@@ -33,7 +33,7 @@ function admin_user() {
       $html .= "  <tr><td>Handy</td><td>" . "<input type=\"text\" size=\"40\" name=\"eHandy\" value=\"" . $user_source['Handy'] . "\"></td></tr>\n";
       $html .= "  <tr><td>DECT</td><td>" . "<input type=\"text\" size=\"4\" name=\"eDECT\" value=\"" . $user_source['DECT'] . "\"></td></tr>\n";
       $html .= "  <tr><td>email</td><td>" . "<input type=\"text\" size=\"40\" name=\"eemail\" value=\"" . $user_source['email'] . "\"></td></tr>\n";
-      $html .= "<tr><td>".form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $user_source['email_shiftinfo']) . "</td></tr>\n";
+      $html .= "<tr><td>" . form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $user_source['email_shiftinfo']) . "</td></tr>\n";
       $html .= "  <tr><td>jabber</td><td>" . "<input type=\"text\" size=\"40\" name=\"ejabber\" value=\"" . $user_source['jabber'] . "\"></td></tr>\n";
       $html .= "  <tr><td>Size</td><td>" . html_select_key('size', 'eSize', $tshirt_sizes, $user_source['Size']) . "</td></tr>\n";
       
@@ -71,66 +71,7 @@ function admin_user() {
       
       $html .= "<hr />";
       
-      // UserAngelType subform
-      list($user_source) = sql_select($SQL);
-      
-      $selected_angel_types = sql_select_single_col("SELECT `angeltype_id` FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']));
-      $accepted_angel_types = sql_select_single_col("SELECT `angeltype_id` FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']) . " AND `confirm_user_id` IS NOT NULL");
-      $nonrestricted_angel_types = sql_select_single_col("SELECT `id` FROM `AngelTypes` WHERE `restricted` = 0");
-      
-      $angel_types_source = sql_select("SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`");
-      $angel_types = array();
-      foreach ($angel_types_source as $angel_type)
-        $angel_types[$angel_type['id']] = $angel_type['name'];
-      
-      if (isset($_REQUEST['submit_user_angeltypes'])) {
-        $selected_angel_types = isset($_REQUEST['selected_angel_types']) && is_array($_REQUEST['selected_angel_types']) ? array_intersect($_REQUEST['selected_angel_types'], array_keys($angel_types)) : array();
-        $accepted_angel_types = isset($_REQUEST['accepted_angel_types']) && is_array($_REQUEST['accepted_angel_types']) ? array_unique(array_diff(array_intersect($_REQUEST['accepted_angel_types'], array_keys($angel_types)), $nonrestricted_angel_types)) : array();
-        if (in_array("admin_user_angeltypes", $privileges))
-          $selected_angel_types = array_merge((array) $selected_angel_types, $accepted_angel_types);
-        $selected_angel_types = array_unique($selected_angel_types);
-        
-        // Assign angel-types
-        sql_transaction_start();
-        sql_query("DELETE FROM `UserAngelTypes` WHERE `user_id`=" . sql_escape($user_source['UID']));
-        $user_angel_type_info = array();
-        if (! empty($selected_angel_types)) {
-          $SQL = "INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`) VALUES ";
-          foreach ($selected_angel_types as $selected_angel_type_id) {
-            $SQL .= "(" . $user_source['UID'] . ", " . $selected_angel_type_id . "),";
-            $user_angel_type_info[] = $angel_types[$selected_angel_type_id] . (in_array($selected_angel_type_id, $accepted_angel_types) ? ' (confirmed)' : '');
-          }
-          // remove superfluous comma
-          $SQL = substr($SQL, 0, - 1);
-          sql_query($SQL);
-        }
-        if (in_array("admin_user_angeltypes", $privileges)) {
-          sql_query("UPDATE `UserAngelTypes` SET `confirm_user_id` = NULL WHERE `user_id` = " . sql_escape($user_source['UID']));
-          if (! empty($accepted_angel_types))
-            sql_query("UPDATE `UserAngelTypes` SET `confirm_user_id` = '" . sql_escape($user['UID']) . "' WHERE `user_id` = '" . sql_escape($user_source['UID']) . "' AND `angeltype_id` IN (" . implode(',', $accepted_angel_types) . ")");
-        }
-        sql_transaction_commit();
-        
-        engelsystem_log("Set angeltypes of " . User_Nick_render($user_source) . " to: " . join(", ", $user_angel_type_info));
-        success("Angeltypes saved.");
-        redirect(page_link_to('admin_user') . '&id=' . $user_source['UID']);
-      }
-      
-      $html .= form(array(
-          msg(),
-          form_multi_checkboxes(array(
-              'selected_angel_types' => 'gewünscht',
-              'accepted_angel_types' => 'akzeptiert' 
-          ), "Angeltypes", $angel_types, array(
-              'selected_angel_types' => $selected_angel_types,
-              'accepted_angel_types' => array_merge($accepted_angel_types, $nonrestricted_angel_types) 
-          ), array(
-              'accepted_angel_types' => $nonrestricted_angel_types 
-          )),
-          form_submit('submit_user_angeltypes', _("Save")) 
-      ));
-      
-      $html .= "<hr />";
+      $html .= form_info('', _('Please visit the angeltypes page or the users profile to manage users angeltypes.'));
       
       $html .= "Hier kannst Du das Passwort dieses Engels neu setzen:<form action=\"" . page_link_to("admin_user") . "&action=change_pw&id=$id\" method=\"post\">\n";
       $html .= "<table>\n";
