@@ -109,10 +109,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
       
       $shift_entries = array();
       foreach ($needed_angel_type['users'] as $user_shift) {
-        if ($its_me)
-          $member = '<strong>' . User_Nick_render($user_shift) . '</strong>';
-        else
-          $member = User_Nick_render($user_shift);
+        $member = User_Nick_render($user_shift);
         if ($user_shift['freeloaded'])
           $member = '<strike>' . $member . '</strike>';
         
