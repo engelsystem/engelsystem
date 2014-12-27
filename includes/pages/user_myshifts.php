@@ -9,15 +9,15 @@ function user_myshifts() {
   global $LETZTES_AUSTRAGEN;
   global $user, $privileges;
   $msg = "";
-
+  
   if (isset($_REQUEST['id']) && in_array("user_shifts_admin", $privileges) && preg_match("/^[0-9]{1,}$/", $_REQUEST['id']) && sql_num_query("SELECT * FROM `User` WHERE `UID`=" . sql_escape($_REQUEST['id'])) > 0) {
     $id = $_REQUEST['id'];
   } else {
     $id = $user['UID'];
   }
-
+  
   list($shifts_user) = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-
+  
   if (isset($_REQUEST['reset'])) {
     if ($_REQUEST['reset'] == "ack") {
       User_reset_api_key($user);
@@ -26,7 +26,7 @@ function user_myshifts() {
     }
     return page_with_title(_("Reset API key"), array(
         error(_("If you reset the key, the url to your iCal- and JSON-export and your atom feed changes! You have to update it in every application using one of these exports."), true),
-        button(page_link_to('user_myshifts') . '&reset=ack', _("Continue"), 'btn-danger')
+        button(page_link_to('user_myshifts') . '&reset=ack', _("Continue"), 'btn-danger') 
     ));
   } elseif (isset($_REQUEST['edit']) && preg_match("/^[0-9]*$/", $_REQUEST['edit'])) {
     $id = $_REQUEST['edit'];
@@ -48,7 +48,7 @@ function user_myshifts() {
         AND `UID`=" . sql_escape($shifts_user['UID']) . " LIMIT 1");
     if (count($shift) > 0) {
       $shift = $shift[0];
-
+      
       if (isset($_REQUEST['submit'])) {
         $freeloaded = $shift['freeloaded'];
         $freeload_comment = $shift['freeload_comment'];
@@ -56,23 +56,23 @@ function user_myshifts() {
           $freeloaded = isset($_REQUEST['freeloaded']);
           $freeload_comment = strip_request_item_nl('freeload_comment');
         }
-
+        
         $comment = strip_request_item_nl('comment');
         $user_source = User($shift['UID']);
         $result = ShiftEntry_update(array(
             'id' => $id,
             'Comment' => $comment,
             'freeloaded' => $freeloaded,
-            'freeload_comment' => $freeload_comment
+            'freeload_comment' => $freeload_comment 
         ));
         if ($result === false)
           engelsystem_error('Unable to update shift entr.');
-
+        
         engelsystem_log("Updated " . User_Nick_render($user_source) . "'s shift " . $shift['name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']) . " with comment " . $comment . ". Freeloaded: " . ($freeloaded ? "YES Comment: " . $freeload_comment : "NO"));
         success(_("Shift saved."));
         redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
       }
-
+      
       return ShiftEntry_edit_view(User_Nick_render($shifts_user), date("Y-m-d H:i", $shift['start']) . ', ' . shift_length($shift), $shift['Name'], $shift['name'], $shift['angel_type'], $shift['Comment'], $shift['freeloaded'], $shift['freeload_comment'], in_array("user_shifts_admin", $privileges));
     } else
       redirect(page_link_to('user_myshifts'));
@@ -93,9 +93,9 @@ function user_myshifts() {
       } else
         error(_("It's too late to sign yourself off the shift. If neccessary, ask the dispatcher to do so."));
     } else
-      redirect(page_link_to('user_myshifts'));
+      redirect(user_link($shifts_user));
   }
-
+  
   redirect(page_link_to('users') . '&action=view');
 }
 ?>
