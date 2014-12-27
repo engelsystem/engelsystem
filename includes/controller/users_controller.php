@@ -27,6 +27,10 @@ function users_controller() {
   }
 }
 
+function users_link() {
+  return page_link_to('users');
+}
+
 function user_link($user) {
   return page_link_to('users') . '&action=view&user_id=' . $user['UID'];
 }
