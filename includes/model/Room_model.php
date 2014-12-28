@@ -19,6 +19,7 @@ function Room_ids() {
  */
 function Room($id) {
   $room_source = sql_select("SELECT * FROM `Room` WHERE `RID`='" . sql_escape($id) . "' AND `show` = 'Y' LIMIT 1");
+  
   if ($room_source === false)
     return false;
   if (count($room_source) > 0)

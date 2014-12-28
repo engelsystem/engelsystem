@@ -16,7 +16,7 @@ function ShiftEntries_by_shift($shift_id) {
       FROM `ShiftEntry`
       JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
       JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
-      WHERE `ShiftEntry`.`SID`='" . sql_escape($shift_id)) . "'";
+      WHERE `ShiftEntry`.`SID`='" . sql_escape($shift_id) . "'");
 }
 
 /**

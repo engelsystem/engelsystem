@@ -85,7 +85,7 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
  * Delete a shift by its external id.
  */
 function Shift_delete_by_psid($shift_psid) {
-  return sql_query("DELETE FROM `Shifts` WHERE `PSID`='" . sql_escape($shift_psid)."'");
+  return sql_query("DELETE FROM `Shifts` WHERE `PSID`='" . sql_escape($shift_psid) . "'");
 }
 
 /**

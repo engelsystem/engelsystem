@@ -151,6 +151,7 @@ function user_shifts() {
         $shift['RID'] = $rid;
         $shift['start'] = $start;
         $shift['end'] = $end;
+        
         $result = Shift_update($shift);
         if ($result === false)
           engelsystem_error('Unable to update shift.');
