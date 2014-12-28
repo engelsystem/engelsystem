@@ -140,7 +140,7 @@ function Shift_create($shift) {
       `end`='" . sql_escape($shift['end']) . "',
       `RID`='" . sql_escape($shift['RID']) . "',
       `title`=" . sql_null($shift['title']) . ",
-      `URL`=" . sql_null($shift['URL']) . "',
+      `URL`=" . sql_null($shift['URL']) . ",
       `PSID`=" . sql_null($shift['PSID']));
   if ($result === false)
     return false;
