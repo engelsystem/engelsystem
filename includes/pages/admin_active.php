@@ -42,7 +42,7 @@ function admin_active() {
           ORDER BY `force_active` DESC, `shift_length` DESC" . $limit);
       $user_nicks = array();
       foreach ($users as $usr) {
-        sql_query("UPDATE `User` SET `Aktiv` = 1 WHERE `UID`=" . sql_escape($usr['UID']));
+        sql_query("UPDATE `User` SET `Aktiv` = 1 WHERE `UID`='" . sql_escape($usr['UID']) . "'");
         $user_nicks[] = User_Nick_render($usr);
       }
       engelsystem_log("These angels are active now: " . join(", ", $user_nicks));
@@ -58,7 +58,7 @@ function admin_active() {
     $id = $_REQUEST['active'];
     $user_source = User($id);
     if ($user_source != null) {
-      sql_query("UPDATE `User` SET `Aktiv`=1 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+      sql_query("UPDATE `User` SET `Aktiv`=1 WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
       engelsystem_log("User " . User_Nick_render($user_source) . " is active now.");
       $msg = success(_("Angel has been marked as active."), true);
     } else
@@ -67,7 +67,7 @@ function admin_active() {
     $id = $_REQUEST['not_active'];
     $user_source = User($id);
     if ($user_source != null) {
-      sql_query("UPDATE `User` SET `Aktiv`=0 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+      sql_query("UPDATE `User` SET `Aktiv`=0 WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
       engelsystem_log("User " . User_Nick_render($user_source) . " is NOT active now.");
       $msg = success(_("Angel has been marked as not active."), true);
     } else
@@ -76,7 +76,7 @@ function admin_active() {
     $id = $_REQUEST['tshirt'];
     $user_source = User($id);
     if ($user_source != null) {
-      sql_query("UPDATE `User` SET `Tshirt`=1 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+      sql_query("UPDATE `User` SET `Tshirt`=1 WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
       engelsystem_log("User " . User_Nick_render($user_source) . " has tshirt now.");
       $msg = success(_("Angel has got a t-shirt."), true);
     } else
@@ -85,7 +85,7 @@ function admin_active() {
     $id = $_REQUEST['not_tshirt'];
     $user_source = User($id);
     if ($user_source != null) {
-      sql_query("UPDATE `User` SET `Tshirt`=0 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+      sql_query("UPDATE `User` SET `Tshirt`=0 WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
       engelsystem_log("User " . User_Nick_render($user_source) . " has NO tshirt.");
       $msg = success(_("Angel has got no t-shirt."), true);
     } else

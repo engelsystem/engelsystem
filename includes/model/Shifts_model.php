@@ -85,7 +85,7 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
  * Delete a shift by its external id.
  */
 function Shift_delete_by_psid($shift_psid) {
-  return sql_query("DELETE FROM `Shifts` WHERE `PSID`=" . sql_escape($shift_psid));
+  return sql_query("DELETE FROM `Shifts` WHERE `PSID`='" . sql_escape($shift_psid)."'");
 }
 
 /**
@@ -94,7 +94,7 @@ function Shift_delete_by_psid($shift_psid) {
 function Shift_delete($shift_id) {
   mail_shift_delete(Shift($shift_id));
   
-  return sql_query("DELETE FROM `Shifts` WHERE `SID`=" . sql_escape($shift_id));
+  return sql_query("DELETE FROM `Shifts` WHERE `SID`='" . sql_escape($shift_id) . "'");
 }
 
 /**
@@ -105,14 +105,14 @@ function Shift_update($shift) {
   mail_shift_change(Shift($shift['SID']), $shift);
   
   return sql_query("UPDATE `Shifts` SET
-      `shifttype_id`=" . sql_escape($shift['shifttype_id']) . ",
-      `start`=" . sql_escape($shift['start']) . ",
-      `end`=" . sql_escape($shift['end']) . ",
-      `RID`=" . sql_escape($shift['RID']) . ",
+      `shifttype_id`='" . sql_escape($shift['shifttype_id']) . "',
+      `start`='" . sql_escape($shift['start']) . "',
+      `end`='" . sql_escape($shift['end']) . "',
+      `RID`='" . sql_escape($shift['RID']) . "',
       `title`=" . sql_null($shift['title']) . ",
       `URL`=" . sql_null($shift['URL']) . ",
       `PSID`=" . sql_null($shift['PSID']) . "
-      WHERE `SID`=" . sql_escape($shift['SID']));
+      WHERE `SID`='" . sql_escape($shift['SID']) . "'");
 }
 
 /**
@@ -135,12 +135,12 @@ function Shift_update_by_psid($shift) {
  */
 function Shift_create($shift) {
   $result = sql_query("INSERT INTO `Shifts` SET
-      `shifttype_id`=" . sql_escape($shift['shifttype_id']) . ",
-      `start`=" . sql_escape($shift['start']) . ",
-      `end`=" . sql_escape($shift['end']) . ",
-      `RID`=" . sql_escape($shift['RID']) . ",
+      `shifttype_id`='" . sql_escape($shift['shifttype_id']) . "',
+      `start`='" . sql_escape($shift['start']) . "',
+      `end`='" . sql_escape($shift['end']) . "',
+      `RID`='" . sql_escape($shift['RID']) . "',
       `title`=" . sql_null($shift['title']) . ",
-      `URL`=" . sql_null($shift['URL']) . ",
+      `URL`=" . sql_null($shift['URL']) . "',
       `PSID`=" . sql_null($shift['PSID']));
   if ($result === false)
     return false;
@@ -157,7 +157,7 @@ function Shifts_by_user($user) {
       JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
       JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
       JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
-      WHERE `UID`=" . sql_escape($user['UID']) . " 
+      WHERE `UID`='" . sql_escape($user['UID']) . "' 
       ORDER BY `start`
       ");
 }
@@ -173,7 +173,7 @@ function Shifts_filtered() {
   // filterRoom (Array of integer) - Array of Room IDs (optional, for list request)
   if (isset($_REQUEST['filterRoom']) && is_array($_REQUEST['filterRoom'])) {
     foreach ($_REQUEST['filterRoom'] as $key => $value) {
-      $filter .= ", `RID`=" . sql_escape($value) . " ";
+      $filter .= ", `RID`='" . sql_escape($value) . "' ";
     }
   }
   
@@ -218,8 +218,8 @@ function Shift($id) {
       SELECT `Shifts`.*, `ShiftTypes`.`name`
       FROM `Shifts` 
       JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-      WHERE `SID`=" . sql_escape($id));
-  $shiftsEntry_source = sql_select("SELECT `id`, `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`=" . sql_escape($id));
+      WHERE `SID`='" . sql_escape($id) . "'");
+  $shiftsEntry_source = sql_select("SELECT `id`, `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`='" . sql_escape($id) . "'");
   
   if ($shifts_source === false)
     return false;

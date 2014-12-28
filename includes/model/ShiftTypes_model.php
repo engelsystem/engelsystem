@@ -5,7 +5,7 @@
  * @param int $shifttype_id
  */
 function ShiftType_delete($shifttype_id) {
-  return sql_query("DELETE FROM `ShiftTypes` WHERE `id`=" . sql_escape($shifttype_id));
+  return sql_query("DELETE FROM `ShiftTypes` WHERE `id`='" . sql_escape($shifttype_id) . "'");
 }
 
 /**
@@ -21,7 +21,7 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description) {
       `name`='" . sql_escape($name) . "', 
       `angeltype_id`=" . sql_null($angeltype_id) . ",
       `description`='" . sql_escape($description) . "'
-      WHERE `id`=" . sql_escape($shifttype_id));
+      WHERE `id`='" . sql_escape($shifttype_id) . "'");
 }
 
 /**
@@ -35,7 +35,7 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description) {
 function ShiftType_create($name, $angeltype_id, $description) {
   $result = sql_query("INSERT INTO `ShiftTypes` SET
       `name`='" . sql_escape($name) . "', 
-      `angeltype_id`=" . sql_null($angeltype_id) . ",
+      `angeltype_id`='" . sql_null($angeltype_id) . "',
       `description`='" . sql_escape($description) . "'");
   if ($result === false)
     return false;
@@ -48,7 +48,7 @@ function ShiftType_create($name, $angeltype_id, $description) {
  * @param int $shifttype_id          
  */
 function ShiftType($shifttype_id) {
-  $shifttype = sql_select("SELECT * FROM `ShiftTypes` WHERE `id`=" . sql_escape($shifttype_id));
+  $shifttype = sql_select("SELECT * FROM `ShiftTypes` WHERE `id`='" . sql_escape($shifttype_id) . "'");
   if ($shifttype === false)
     return false;
   if ($shifttype == null)

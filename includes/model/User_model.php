@@ -14,23 +14,23 @@ function User_update($user) {
       `Nick`='" . sql_escape($user['Nick']) . "',
       `Name`='" . sql_escape($user['Name']) . "',
       `Vorname`='" . sql_escape($user['Vorname']) . "',
-      `Alter`=" . sql_escape($user['Alter']) . ",
+      `Alter`='" . sql_escape($user['Alter']) . "',
       `Telefon`='" . sql_escape($user['Telefon']) . "',
       `DECT`='" . sql_escape($user['DECT']) . "',
       `Handy`='" . sql_escape($user['Handy']) . "',
       `email`='" . sql_escape($user['email']) . "',
-      `email_shiftinfo`=" . sql_escape($user['email_shiftinfo'] ? 'TRUE' : 'FALSE') . ",
+      `email_shiftinfo`=" . sql_bool($user['email_shiftinfo']) . ",
       `jabber`='" . sql_escape($user['jabber']) . "',
       `Size`='" . sql_escape($user['Size']) . "',
-      `Gekommen`=" . sql_escape($user['Gekommen']) . ",
-      `Aktiv`=" . sql_escape($user['Aktiv']) . ",
-      `force_active`=" . sql_escape($user['force_active'] ? 'TRUE' : 'FALSE') . ",
-      `Tshirt`=" . sql_escape($user['Tshirt']) . ",
-      `color`=" . sql_escape($user['color']) . ",
+      `Gekommen`='" . sql_escape($user['Gekommen']) . "',
+      `Aktiv`='" . sql_escape($user['Aktiv']) . "',
+      `force_active`=" . sql_bool($user['force_active']) . ",
+      `Tshirt`='" . sql_escape($user['Tshirt']) . "',
+      `color`='" . sql_escape($user['color']) . "',
       `Sprache`='" . sql_escape($user['Sprache']) . "',
       `Hometown`='" . sql_escape($user['Hometown']) . "',
-      `got_voucher`=" . sql_escape($user['got_voucher'] ? 'TRUE' : 'FALSE') . "
-      WHERE `UID`=" . sql_escape($user['UID']));
+      `got_voucher`=" . sql_bool($user['got_voucher']) . "
+      WHERE `UID`='" . sql_escape($user['UID']). "'");
 }
 
 /**
@@ -105,7 +105,7 @@ function Users_by_angeltype_inverted($angeltype) {
   return sql_select("
       SELECT `User`.*
       FROM `User`
-      LEFT JOIN `UserAngelTypes` ON (`User`.`UID`=`UserAngelTypes`.`user_id` AND `angeltype_id`=" . sql_escape($angeltype['id']) . ")
+      LEFT JOIN `UserAngelTypes` ON (`User`.`UID`=`UserAngelTypes`.`user_id` AND `angeltype_id`='" . sql_escape($angeltype['id']) . "')
       WHERE `UserAngelTypes`.`id` IS NULL
       ORDER BY `Nick`");
 }
@@ -124,7 +124,7 @@ function Users_by_angeltype($angeltype) {
       `UserAngelTypes`.`coordinator`
       FROM `User`
       JOIN `UserAngelTypes` ON `User`.`UID`=`UserAngelTypes`.`user_id`
-      WHERE `UserAngelTypes`.`angeltype_id`=" . sql_escape($angeltype['id']) . "
+      WHERE `UserAngelTypes`.`angeltype_id`='" . sql_escape($angeltype['id']) . "'
       ORDER BY `Nick`");
 }
 
@@ -150,7 +150,7 @@ function User_validate_Nick($nick) {
  * @param $id UID          
  */
 function User($id) {
-  $user_source = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+  $user_source = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
   if ($user_source === false)
     return false;
   if (count($user_source) > 0)
@@ -165,7 +165,7 @@ function User($id) {
  * @param $id UID          
  */
 function mUser_Limit($id) {
-  $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `jabber`, `Avatar` FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+  $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `jabber`, `Avatar` FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
   if ($user_source === false)
     return false;
   if (count($user_source) > 0)

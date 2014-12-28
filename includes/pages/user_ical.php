@@ -28,7 +28,7 @@ function user_ical() {
         INNER JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
         JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
         INNER JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
-        WHERE `UID`=" . sql_escape($user['UID']) . " 
+        WHERE `UID`='" . sql_escape($user['UID']) . "' 
         ORDER BY `start`");
   }
 

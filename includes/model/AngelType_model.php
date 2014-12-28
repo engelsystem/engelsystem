@@ -8,7 +8,7 @@
 function AngelType_delete($angeltype) {
   return sql_query("
       DELETE FROM `AngelTypes` 
-      WHERE `id`=" . sql_escape($angeltype['id']) . " 
+      WHERE `id`='" . sql_escape($angeltype['id']) . "' 
       LIMIT 1");
 }
 
@@ -24,9 +24,9 @@ function AngelType_update($angeltype_id, $name, $restricted, $description) {
   return sql_query("
       UPDATE `AngelTypes` SET 
       `name`='" . sql_escape($name) . "', 
-      `restricted`=" . sql_escape($restricted ? 1 : 0) . ",
+      `restricted`='" . sql_escape($restricted ? 1 : 0) . "',
       `description`='" . sql_escape($description) . "'
-      WHERE `id`=" . sql_escape($angeltype_id) . " 
+      WHERE `id`='" . sql_escape($angeltype_id) . "' 
       LIMIT 1");
 }
 
@@ -42,7 +42,7 @@ function AngelType_create($name, $restricted, $description) {
   $result = sql_query("
       INSERT INTO `AngelTypes` SET 
       `name`='" . sql_escape($name) . "', 
-      `restricted`=" . sql_escape($restricted ? 1 : 0) . ",
+      `restricted`='" . sql_escape($restricted ? 1 : 0) . "',
       `description`='" . sql_escape($description) . "'");
   if ($result === false)
     return false;
@@ -69,7 +69,7 @@ function AngelType_validate_name($name, $angeltype) {
         SELECT * 
         FROM `AngelTypes` 
         WHERE `name`='" . sql_escape($name) . "' 
-        AND NOT `id`=" . sql_escape($angeltype['id']) . "
+        AND NOT `id`='" . sql_escape($angeltype['id']) . "'
         LIMIT 1") == 0,
         $name 
     );
@@ -130,7 +130,7 @@ function AngelType_ids() {
  *          ID
  */
 function AngelType($id) {
-  $angelType_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`=" . sql_escape($id) . " LIMIT 1");
+  $angelType_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($id) . "' LIMIT 1");
   if ($angelType_source === false)
     return false;
   if (count($angelType_source) > 0)

@@ -13,7 +13,7 @@ function admin_arrive() {
     $id = $_REQUEST['reset'];
     $user_source = User($id);
     if ($user_source != null) {
-      sql_query("UPDATE `User` SET `Gekommen`=0 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+      sql_query("UPDATE `User` SET `Gekommen`=0 WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
       engelsystem_log("User set to not arrived: " . User_Nick_render($user_source));
       $msg = success(_("Reset done. Angel has not arrived."), true);
     } else
@@ -22,7 +22,7 @@ function admin_arrive() {
     $id = $_REQUEST['arrived'];
     $user_source = User($id);
     if ($user_source != null) {
-      sql_query("UPDATE `User` SET `Gekommen`=1 WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+      sql_query("UPDATE `User` SET `Gekommen`=1 WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
       engelsystem_log("User set has arrived: " . User_Nick_render($user_source));
       $msg = success(_("Angel has been marked as arrived."), true);
     } else

@@ -11,7 +11,7 @@ function admin_news() {
     else
       return error("Incomplete call, missing News ID.", true);
     
-    $news = sql_select("SELECT * FROM `News` WHERE `ID`=" . sql_escape($id) . " LIMIT 1");
+    $news = sql_select("SELECT * FROM `News` WHERE `ID`='" . sql_escape($id) . "' LIMIT 1");
     if (count($news) > 0) {
       switch ($_REQUEST["action"]) {
         default:
@@ -44,7 +44,7 @@ function admin_news() {
               `Text`='" . sql_escape($_POST["eText"]) . "', 
               `UID`='" . sql_escape($user['UID']) . "', 
               `Treffen`='" . sql_escape($_POST["eTreffen"]) . "' 
-              WHERE `ID`=" . sql_escape($id));
+              WHERE `ID`='" . sql_escape($id) . "'");
           engelsystem_log("News updated: " . $_POST["eBetreff"]);
           success(_("News entry updated."));
           redirect(page_link_to("news"));
@@ -53,7 +53,7 @@ function admin_news() {
         case 'delete':
           list($news) = $news;
           
-          sql_query("DELETE FROM `News` WHERE `ID`=" . sql_escape($id) . " LIMIT 1");
+          sql_query("DELETE FROM `News` WHERE `ID`='" . sql_escape($id) . "' LIMIT 1");
           engelsystem_log("News deleted: " . $news['Betreff']);
           success(_("News entry deleted."));
           redirect(page_link_to("news"));

@@ -122,7 +122,7 @@ function guest_register() {
     if ($ok) {
       sql_query("
           INSERT INTO `User` SET 
-          `color`=" . sql_escape($default_theme) . ", 
+          `color`='" . sql_escape($default_theme) . "', 
           `Nick`='" . sql_escape($nick) . "', 
           `Vorname`='" . sql_escape($prename) . "', 
           `Name`='" . sql_escape($lastname) . "', 
@@ -131,7 +131,7 @@ function guest_register() {
           `DECT`='" . sql_escape($dect) . "', 
           `Handy`='" . sql_escape($mobile) . "', 
           `email`='" . sql_escape($mail) . "', 
-          `email_shiftinfo`=" . sql_escape($email_shiftinfo ? 'TRUE' : 'FALSE') . ", 
+          `email_shiftinfo`='" . sql_escape($email_shiftinfo ? 'TRUE' : 'FALSE') . "', 
           `jabber`='" . sql_escape($jabber) . "',
           `Size`='" . sql_escape($tshirt_size) . "', 
           `Passwort`='" . sql_escape($password_hash) . "', 
@@ -142,13 +142,13 @@ function guest_register() {
       
       // Assign user-group and set password
       $user_id = sql_id();
-      sql_query("INSERT INTO `UserGroups` SET `uid`=" . sql_escape($user_id) . ", `group_id`=-2");
+      sql_query("INSERT INTO `UserGroups` SET `uid`='" . sql_escape($user_id) . "', `group_id`=-2");
       set_password($user_id, $_REQUEST['password']);
       
       // Assign angel-types
       $user_angel_types_info = array();
       foreach ($selected_angel_types as $selected_angel_type_id) {
-        sql_query("INSERT INTO `UserAngelTypes` SET `user_id`=" . sql_escape($user_id) . ", `angeltype_id`=" . sql_escape($selected_angel_type_id));
+        sql_query("INSERT INTO `UserAngelTypes` SET `user_id`='" . sql_escape($user_id) . "', `angeltype_id`='" . sql_escape($selected_angel_type_id) . "'");
         $user_angel_types_info[] = $angel_types[$selected_angel_type_id];
       }
       engelsystem_log("User " . $nick . " signed up as: " . join(", ", $user_angel_types_info));

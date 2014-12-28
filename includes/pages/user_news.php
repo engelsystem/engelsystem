@@ -73,9 +73,9 @@ function user_news_comments() {
   global $user;
 
   $html = '<div class="col-md-12"><h1>' . user_news_comments_title() . '</h1>';
-  if (isset($_REQUEST["nid"]) && preg_match("/^[0-9]{1,}$/", $_REQUEST['nid']) && sql_num_query("SELECT * FROM `News` WHERE `ID`=" . sql_escape($_REQUEST['nid']) . " LIMIT 1") > 0) {
+  if (isset($_REQUEST["nid"]) && preg_match("/^[0-9]{1,}$/", $_REQUEST['nid']) && sql_num_query("SELECT * FROM `News` WHERE `ID`='" . sql_escape($_REQUEST['nid']) . "' LIMIT 1") > 0) {
     $nid = $_REQUEST["nid"];
-    list($news) = sql_select("SELECT * FROM `News` WHERE `ID`=" . sql_escape($nid) . " LIMIT 1");
+    list($news) = sql_select("SELECT * FROM `News` WHERE `ID`='" . sql_escape($nid) . "' LIMIT 1");
     if (isset($_REQUEST["text"])) {
       $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['text']));
       sql_query("INSERT INTO `NewsComments` (`Refid`, `Datum`, `Text`, `UID`) VALUES ('" . sql_escape($nid) . "', '" . date("Y-m-d H:i:s") . "', '" . sql_escape($text) . "', '" . sql_escape($user["UID"]) . "')");

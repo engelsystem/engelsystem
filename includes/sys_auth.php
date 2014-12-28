@@ -6,7 +6,7 @@ function load_auth() {
 
   $user = null;
   if (isset($_SESSION['uid'])) {
-    $user = sql_select("SELECT * FROM `User` WHERE `UID`=" . sql_escape($_SESSION['uid']) . " LIMIT 1");
+    $user = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($_SESSION['uid']) . "' LIMIT 1");
     if (count($user) > 0) {
       // User ist eingeloggt, Datensatz zur Verfügung stellen und Timestamp updaten
       list ($user) = $user;
@@ -70,7 +70,7 @@ function json_auth_service() {
     if (count($Erg) == 1) {
       $Erg = $Erg[0];
       if (verify_password($Pass, $Erg["Passwort"], $Erg["UID"])) {
-        $user_privs = sql_select("SELECT `Privileges`.`name` FROM `User` JOIN `UserGroups` ON (`User`.`UID` = `UserGroups`.`uid`) JOIN `GroupPrivileges` ON (`UserGroups`.`group_id` = `GroupPrivileges`.`group_id`) JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `User`.`UID`=" . sql_escape($UID) . ";");
+        $user_privs = sql_select("SELECT `Privileges`.`name` FROM `User` JOIN `UserGroups` ON (`User`.`UID` = `UserGroups`.`uid`) JOIN `GroupPrivileges` ON (`UserGroups`.`group_id` = `GroupPrivileges`.`group_id`) JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `User`.`UID`='" . sql_escape($UID) . "'");
         foreach ($user_privs as $user_priv)
           $privileges[] = $user_priv['name'];
 
@@ -93,7 +93,7 @@ function json_auth_service() {
 
 function privileges_for_user($user_id) {
   $privileges = array ();
-  $user_privs = sql_select("SELECT `Privileges`.`name` FROM `User` JOIN `UserGroups` ON (`User`.`UID` = `UserGroups`.`uid`) JOIN `GroupPrivileges` ON (`UserGroups`.`group_id` = `GroupPrivileges`.`group_id`) JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `User`.`UID`=" . sql_escape($user_id) . ";");
+  $user_privs = sql_select("SELECT `Privileges`.`name` FROM `User` JOIN `UserGroups` ON (`User`.`UID` = `UserGroups`.`uid`) JOIN `GroupPrivileges` ON (`UserGroups`.`group_id` = `GroupPrivileges`.`group_id`) JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `User`.`UID`='" . sql_escape($user_id) . "'");
   foreach ($user_privs as $user_priv)
     $privileges[] = $user_priv['name'];
   return $privileges;
@@ -101,7 +101,7 @@ function privileges_for_user($user_id) {
 
 function privileges_for_group($group_id) {
   $privileges = array ();
-  $groups_privs = sql_select("SELECT * FROM `GroupPrivileges` JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `group_id`=" . sql_escape($group_id));
+  $groups_privs = sql_select("SELECT * FROM `GroupPrivileges` JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `group_id`='" . sql_escape($group_id) . "'");
   foreach ($groups_privs as $guest_priv)
     $privileges[] = $guest_priv['name'];
   return $privileges;

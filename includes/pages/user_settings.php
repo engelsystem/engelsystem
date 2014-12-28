@@ -82,11 +82,11 @@ function user_settings() {
           `DECT`='" . sql_escape($dect) . "',
           `Handy`='" . sql_escape($mobile) . "',
           `email`='" . sql_escape($mail) . "',
-          `email_shiftinfo`=" . sql_escape($email_shiftinfo ? 'TRUE' : 'FALSE') . ",
+          `email_shiftinfo`='" . sql_escape($email_shiftinfo ? 'TRUE' : 'FALSE') . "',
           `jabber`='" . sql_escape($jabber) . "',
           `Size`='" . sql_escape($tshirt_size) . "',
           `Hometown`='" . sql_escape($hometown) . "'
-          WHERE `UID`=" . sql_escape($user['UID']));
+          WHERE `UID`='" . sql_escape($user['UID']) . "'");
       
       success(_("Settings saved."));
       redirect(page_link_to('user_settings'));
@@ -114,7 +114,7 @@ function user_settings() {
       $ok = false;
     
     if ($ok) {
-      sql_query("UPDATE `User` SET `color`='" . sql_escape($selected_theme) . "' WHERE `UID`=" . sql_escape($user['UID']));
+      sql_query("UPDATE `User` SET `color`='" . sql_escape($selected_theme) . "' WHERE `UID`='" . sql_escape($user['UID']) . "'");
       
       success(_("Theme changed."));
       redirect(page_link_to('user_settings'));
@@ -128,7 +128,7 @@ function user_settings() {
       $ok = false;
     
     if ($ok) {
-      sql_query("UPDATE `User` SET `Sprache`='" . sql_escape($selected_language) . "' WHERE `UID`=" . sql_escape($user['UID']));
+      sql_query("UPDATE `User` SET `Sprache`='" . sql_escape($selected_language) . "' WHERE `UID`='" . sql_escape($user['UID']) . "'");
       $_SESSION['locale'] = $selected_language;
       
       success("Language changed.");

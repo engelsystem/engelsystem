@@ -35,13 +35,13 @@ function admin_rooms() {
     }
 
     if (test_request_int('id')) {
-      $room = sql_select("SELECT * FROM `Room` WHERE `RID`=" . sql_escape($_REQUEST['id']));
+      $room = sql_select("SELECT * FROM `Room` WHERE `RID`='" . sql_escape($_REQUEST['id']) . "'");
       if (count($room) > 0) {
         $id = $_REQUEST['id'];
         $name = $room[0]['Name'];
         $from_pentabarf = $room[0]['FromPentabarf'];
         $public = $room[0]['show'];
-        $needed_angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($id));
+        $needed_angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($id) . "'");
         foreach ($needed_angeltypes as $needed_angeltype)
           $angeltypes_count[$needed_angeltype['angel_type_id']] = $needed_angeltype['count'];
       } else
@@ -85,7 +85,7 @@ function admin_rooms() {
 
         if ($ok) {
           if (isset($id)) {
-            sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "' WHERE `RID`=" . sql_escape($id) . " LIMIT 1");
+            sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "' WHERE `RID`='" . sql_escape($id) . "' LIMIT 1");
             engelsystem_log("Room updated: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);
           } else {
             sql_query("INSERT INTO `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "'");
@@ -93,12 +93,12 @@ function admin_rooms() {
             engelsystem_log("Room created: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);
           }
 
-          sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($id));
+          sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($id) . "'");
           $needed_angeltype_info = array();
           foreach ($angeltypes_count as $angeltype_id => $angeltype_count) {
-            $angeltype_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`=" . sql_escape($angeltype_id) . " LIMIT 1");
+            $angeltype_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($angeltype_id) . "' LIMIT 1");
             if (count($angeltype_source) > 0) {
-              sql_query("INSERT INTO `NeededAngelTypes` SET `room_id`=" . sql_escape($id) . ", `angel_type_id`=" . sql_escape($angeltype_id) . ", `count`=" . sql_escape($angeltype_count));
+              sql_query("INSERT INTO `NeededAngelTypes` SET `room_id`='" . sql_escape($id) . "', `angel_type_id`='" . sql_escape($angeltype_id) . "', `count`='" . sql_escape($angeltype_count) . "'");
               $needed_angeltype_info[] = $angeltypes_source[0]['name'] . ": " . $angeltype_count;
             }
           }
@@ -139,8 +139,8 @@ function admin_rooms() {
       ));
     } elseif ($_REQUEST['show'] == 'delete') {
       if (isset($_REQUEST['ack'])) {
-        sql_query("DELETE FROM `Room` WHERE `RID`=" . sql_escape($id) . " LIMIT 1");
-        sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`=" . sql_escape($id) . " LIMIT 1");
+        sql_query("DELETE FROM `Room` WHERE `RID`='" . sql_escape($id) . "' LIMIT 1");
+        sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($id) . "' LIMIT 1");
 
         engelsystem_log("Room deleted: " . $name);
         success(sprintf(_("Room %s deleted."), $name));

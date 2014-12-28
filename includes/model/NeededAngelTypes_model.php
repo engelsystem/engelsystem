@@ -10,7 +10,7 @@ function NeededAngelTypes_by_shift($shiftId) {
         SELECT `NeededAngelTypes`.*, `AngelTypes`.`name`, `AngelTypes`.`restricted`
         FROM `NeededAngelTypes`
         JOIN `AngelTypes` ON `AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id`
-        WHERE `shift_id`=" . sql_escape($shiftId) . "
+        WHERE `shift_id`='" . sql_escape($shiftId) . "'
         AND `count` > 0
         ORDER BY `room_id` DESC
         ");
@@ -24,7 +24,7 @@ function NeededAngelTypes_by_shift($shiftId) {
         FROM `NeededAngelTypes`
         JOIN `AngelTypes` ON `AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id`
         JOIN `Shifts` ON `Shifts`.`RID` = `NeededAngelTypes`.`room_id`
-        WHERE `Shifts`.`SID`=" . sql_escape($shiftId) . "
+        WHERE `Shifts`.`SID`='" . sql_escape($shiftId) . "'
         AND `count` > 0
         ORDER BY `room_id` DESC
         ");

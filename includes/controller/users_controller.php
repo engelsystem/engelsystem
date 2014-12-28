@@ -74,14 +74,14 @@ function user_controller() {
   $shifts = Shifts_by_user($user_source);
   foreach ($shifts as &$shift) {
     // TODO: Move queries to model
-    $shift['needed_angeltypes'] = sql_select("SELECT DISTINCT `AngelTypes`.* FROM `ShiftEntry` JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id` WHERE `ShiftEntry`.`SID`=" . sql_escape($shift['SID']) . "  ORDER BY `AngelTypes`.`name`");
+    $shift['needed_angeltypes'] = sql_select("SELECT DISTINCT `AngelTypes`.* FROM `ShiftEntry` JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id` WHERE `ShiftEntry`.`SID`='" . sql_escape($shift['SID']) . "'  ORDER BY `AngelTypes`.`name`");
     foreach ($shift['needed_angeltypes'] as &$needed_angeltype) {
       $needed_angeltype['users'] = sql_select("
           SELECT `ShiftEntry`.`freeloaded`, `User`.*
           FROM `ShiftEntry`
           JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
-          WHERE `ShiftEntry`.`SID`=" . sql_escape($shift['SID']) . "
-          AND `ShiftEntry`.`TID`=" . sql_escape($needed_angeltype['id']));
+          WHERE `ShiftEntry`.`SID`='" . sql_escape($shift['SID']) . "'
+          AND `ShiftEntry`.`TID`='" . sql_escape($needed_angeltype['id']) . "'");
     }
   }
   

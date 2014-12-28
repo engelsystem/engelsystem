@@ -8,7 +8,7 @@ function User_angeltypes($user) {
       SELECT `AngelTypes`.*, `UserAngelTypes`.`confirm_user_id`, `UserAngelTypes`.`coordinator`
       FROM `UserAngelTypes`
       JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`
-      WHERE `UserAngelTypes`.`user_id`=" . sql_escape($user['UID']) . "
+      WHERE `UserAngelTypes`.`user_id`='" . sql_escape($user['UID']) . "'
       ");
 }
 
@@ -22,7 +22,7 @@ function User_unconfirmed_AngelTypes($user) {
     SELECT `UnconfirmedMembers`.*, `AngelTypes`.`name` FROM `UserAngelTypes`
     JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id`
     JOIN `UserAngelTypes` as `UnconfirmedMembers` ON `UserAngelTypes`.`angeltype_id`=`UnconfirmedMembers`.`angeltype_id`
-    WHERE `UserAngelTypes`.`user_id`=" . sql_escape($user['UID']) . "
+    WHERE `UserAngelTypes`.`user_id`='" . sql_escape($user['UID']) . "'
     AND `UserAngelTypes`.`coordinator`=TRUE
     AND `AngelTypes`.`restricted`=TRUE
     AND `UnconfirmedMembers`.`confirm_user_id` IS NULL");
@@ -38,8 +38,8 @@ function User_is_AngelType_coordinator($user, $angeltype) {
   return (sql_num_query("
       SELECT `id` 
       FROM `UserAngelTypes` 
-      WHERE `user_id`=" . sql_escape($user['UID']) . "
-      AND `angeltype_id`=" . sql_escape($angeltype['id']) . "
+      WHERE `user_id`='" . sql_escape($user['UID']) . "'
+      AND `angeltype_id`='" . sql_escape($angeltype['id']) . "'
       AND `coordinator`=TRUE
       LIMIT 1") > 0) || in_array('admin_user_angeltypes', privileges_for_user($user['UID']));
 }
@@ -53,8 +53,8 @@ function User_is_AngelType_coordinator($user, $angeltype) {
 function UserAngelType_update($user_angeltype_id, $coordinator) {
   return sql_query("
       UPDATE `UserAngelTypes`
-      SET `coordinator`=" . ($coordinator ? 'TRUE' : 'FALSE') . "
-      WHERE `id`=" . sql_escape($user_angeltype_id) . "
+      SET `coordinator`=" . sql_bool($coordinator) . "
+      WHERE `id`='" . sql_escape($user_angeltype_id) . "'
       LIMIT 1");
 }
 
@@ -66,7 +66,7 @@ function UserAngelType_update($user_angeltype_id, $coordinator) {
 function UserAngelTypes_delete_all($angeltype_id) {
   return sql_query("
       DELETE FROM `UserAngelTypes`
-      WHERE `angeltype_id`=" . sql_escape($angeltype_id) . "
+      WHERE `angeltype_id`='" . sql_escape($angeltype_id) . "'
       AND `confirm_user_id` IS NULL");
 }
 
@@ -79,8 +79,8 @@ function UserAngelTypes_delete_all($angeltype_id) {
 function UserAngelTypes_confirm_all($angeltype_id, $confirm_user) {
   return sql_query("
       UPDATE `UserAngelTypes`
-      SET `confirm_user_id`=" . sql_escape($confirm_user['UID']) . "
-      WHERE `angeltype_id`=" . sql_escape($angeltype_id) . "
+      SET `confirm_user_id`='" . sql_escape($confirm_user['UID']) . "'
+      WHERE `angeltype_id`='" . sql_escape($angeltype_id) . "'
       AND `confirm_user_id` IS NULL");
 }
 
@@ -93,8 +93,8 @@ function UserAngelTypes_confirm_all($angeltype_id, $confirm_user) {
 function UserAngelType_confirm($user_angeltype_id, $confirm_user) {
   return sql_query("
       UPDATE `UserAngelTypes`
-      SET `confirm_user_id`=" . sql_escape($confirm_user['UID']) . "
-      WHERE `id`=" . sql_escape($user_angeltype_id) . "
+      SET `confirm_user_id`='" . sql_escape($confirm_user['UID']) . "'
+      WHERE `id`='" . sql_escape($user_angeltype_id) . "'
       LIMIT 1");
 }
 
@@ -106,7 +106,7 @@ function UserAngelType_confirm($user_angeltype_id, $confirm_user) {
 function UserAngelType_delete($user_angeltype) {
   return sql_query("
       DELETE FROM `UserAngelTypes` 
-      WHERE `id`=" . sql_escape($user_angeltype['id']) . " 
+      WHERE `id`='" . sql_escape($user_angeltype['id']) . "' 
       LIMIT 1");
 }
 
@@ -119,8 +119,8 @@ function UserAngelType_delete($user_angeltype) {
 function UserAngelType_create($user, $angeltype) {
   $result = sql_query("
     INSERT INTO `UserAngelTypes` SET
-    `user_id`=" . sql_escape($user['UID']) . ",
-    `angeltype_id`=" . sql_escape($angeltype['id']));
+    `user_id`='" . sql_escape($user['UID']) . "',
+    `angeltype_id`='" . sql_escape($angeltype['id']) . "'");
   if ($result === false)
     return false;
   return sql_id();
@@ -135,7 +135,7 @@ function UserAngelType($user_angeltype_id) {
   $angeltype = sql_select("
       SELECT *
       FROM `UserAngelTypes`
-      WHERE `id`=" . sql_escape($user_angeltype_id) . "
+      WHERE `id`='" . sql_escape($user_angeltype_id) . "'
       LIMIT 1");
   if ($angeltype === false)
     return false;
@@ -154,8 +154,8 @@ function UserAngelType_by_User_and_AngelType($user, $angeltype) {
   $angeltype = sql_select("
       SELECT * 
       FROM `UserAngelTypes` 
-      WHERE `user_id`=" . sql_escape($user['UID']) . " 
-      AND `angeltype_id`=" . sql_escape($angeltype['id']) . "
+      WHERE `user_id`='" . sql_escape($user['UID']) . "'
+      AND `angeltype_id`='" . sql_escape($angeltype['id']) . "'
       LIMIT 1");
   if ($angeltype === false)
     return false;

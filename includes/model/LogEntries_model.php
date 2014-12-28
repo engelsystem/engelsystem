@@ -8,7 +8,7 @@
  *          Message
  */
 function LogEntry_create($nick, $message) {
-  return sql_query("INSERT INTO `LogEntries` SET `timestamp`=" . sql_escape(time()) . ", `nick`='" . sql_escape($nick) . "', `message`='" . sql_escape($message) . "'");
+  return sql_query("INSERT INTO `LogEntries` SET `timestamp`='" . sql_escape(time()) . "', `nick`='" . sql_escape($nick) . "', `message`='" . sql_escape($message) . "'");
 }
 
 /**

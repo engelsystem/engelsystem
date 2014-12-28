@@ -16,7 +16,7 @@ function ShiftEntries_by_shift($shift_id) {
       FROM `ShiftEntry`
       JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
       JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
-      WHERE `ShiftEntry`.`SID`=" . sql_escape($shift_id));
+      WHERE `ShiftEntry`.`SID`='" . sql_escape($shift_id)) . "'";
 }
 
 /**
@@ -27,12 +27,12 @@ function ShiftEntries_by_shift($shift_id) {
 function ShiftEntry_create($shift_entry) {
   mail_shift_assign(User($shift_entry['UID']), Shift($shift_entry['SID']));
   return sql_query("INSERT INTO `ShiftEntry` SET
-      `SID`=" . sql_escape($shift_entry['SID']) . ",
-      `TID`=" . sql_escape($shift_entry['TID']) . ",
-      `UID`=" . sql_escape($shift_entry['UID']) . ",
+      `SID`='" . sql_escape($shift_entry['SID']) . "',
+      `TID`='" . sql_escape($shift_entry['TID']) . "',
+      `UID`='" . sql_escape($shift_entry['UID']) . "',
       `Comment`='" . sql_escape($shift_entry['Comment']) . "',
       `freeload_comment`='" . sql_escape($shift_entry['freeload_comment']) . "',
-      `freeloaded`=" . sql_escape($shift_entry['freeloaded'] ? 'TRUE' : 'FALSE'));
+      `freeloaded`=" . sql_bool($shift_entry['freeloaded']));
 }
 
 /**
@@ -42,15 +42,15 @@ function ShiftEntry_update($shift_entry) {
   return sql_query("UPDATE `ShiftEntry` SET
       `Comment`='" . sql_escape($shift_entry['Comment']) . "',
       `freeload_comment`='" . sql_escape($shift_entry['freeload_comment']) . "',
-      `freeloaded`=" . sql_escape($shift_entry['freeloaded'] ? 'TRUE' : 'FALSE') . "
-      WHERE `id`=" . sql_escape($shift_entry['id']));
+      `freeloaded`=" . sql_bool($shift_entry['freeloaded']) . "
+      WHERE `id`='" . sql_escape($shift_entry['id']) . "'");
 }
 
 /**
  * Get a shift entry.
  */
 function ShiftEntry($shift_entry_id) {
-  $shift_entry = sql_select("SELECT * FROM `ShiftEntry` WHERE `id`=" . sql_escape($shift_entry_id));
+  $shift_entry = sql_select("SELECT * FROM `ShiftEntry` WHERE `id`='" . sql_escape($shift_entry_id) . "'");
   if ($shift_entry === false)
     return false;
   if (count($shift_entry) == 0)
@@ -64,7 +64,7 @@ function ShiftEntry($shift_entry_id) {
 function ShiftEntry_delete($shift_entry_id) {
   $shift_entry = ShiftEntry($shift_entry_id);
   mail_shift_removed(User($shift_entry['UID']), Shift($shift_entry['SID']));
-  return sql_query("DELETE FROM `ShiftEntry` WHERE `id`=" . sql_escape($shift_entry_id));
+  return sql_query("DELETE FROM `ShiftEntry` WHERE `id`='" . sql_escape($shift_entry_id) . "'");
 }
 
 /**

@@ -145,7 +145,7 @@ function shifts_json_export_controller() {
         INNER JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
         INNER JOIN `ShiftTypes` ON (`Shifts`.`shifttype_id`=`ShiftTypes`.`id`)
         INNER JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
-        WHERE `UID`=" . sql_escape($user['UID']) . " 
+        WHERE `UID`='" . sql_escape($user['UID']) . "' 
         ORDER BY `start`");
   }
   

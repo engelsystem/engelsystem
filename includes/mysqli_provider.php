@@ -171,6 +171,16 @@ function sql_escape($query) {
 }
 
 /**
+ * Convert a boolean for mysql-queries.
+ * 
+ * @param boolean $boolean          
+ * @return string
+ */
+function sql_bool($boolean) {
+  return $boolean === true ? 'TRUE' : 'FALSE';
+}
+
+/**
  * Count query result lines.
  *
  * @param string $query          

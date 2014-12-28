@@ -11,7 +11,7 @@ function admin_groups() {
   if (! isset($_REQUEST["action"])) {
     $groups_table = array();
     foreach ($groups as $group) {
-      $privileges = sql_select("SELECT * FROM `GroupPrivileges` JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `group_id`=" . sql_escape($group['UID']));
+      $privileges = sql_select("SELECT * FROM `GroupPrivileges` JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `group_id`='" . sql_escape($group['UID']) . "'");
       $privileges_html = array();
       
       foreach ($privileges as $priv)
@@ -39,10 +39,10 @@ function admin_groups() {
         else
           return error("Incomplete call, missing Groups ID.", true);
         
-        $room = sql_select("SELECT * FROM `Groups` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+        $room = sql_select("SELECT * FROM `Groups` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
         if (count($room) > 0) {
           list($room) = $room;
-          $privileges = sql_select("SELECT `Privileges`.*, `GroupPrivileges`.`group_id` FROM `Privileges` LEFT OUTER JOIN `GroupPrivileges` ON (`Privileges`.`id` = `GroupPrivileges`.`privilege_id` AND `GroupPrivileges`.`group_id`=" . sql_escape($id) . ") ORDER BY `Privileges`.`name`");
+          $privileges = sql_select("SELECT `Privileges`.*, `GroupPrivileges`.`group_id` FROM `Privileges` LEFT OUTER JOIN `GroupPrivileges` ON (`Privileges`.`id` = `GroupPrivileges`.`privilege_id` AND `GroupPrivileges`.`group_id`='" . sql_escape($id) . "') ORDER BY `Privileges`.`name`");
           $privileges_html = "";
           $privileges_form = array();
           foreach ($privileges as $priv) {
@@ -64,18 +64,18 @@ function admin_groups() {
         else
           return error("Incomplete call, missing Groups ID.", true);
         
-        $room = sql_select("SELECT * FROM `Groups` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
+        $room = sql_select("SELECT * FROM `Groups` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
         if (! is_array($_REQUEST['privileges']))
           $_REQUEST['privileges'] = array();
         if (count($room) > 0) {
           list($room) = $room;
-          sql_query("DELETE FROM `GroupPrivileges` WHERE `group_id`=" . sql_escape($id));
+          sql_query("DELETE FROM `GroupPrivileges` WHERE `group_id`='" . sql_escape($id) . "'");
           $privilege_names = array();
           foreach ($_REQUEST['privileges'] as $priv) {
             if (preg_match("/^[0-9]{1,}$/", $priv)) {
-              $group_privileges_source = sql_select("SELECT * FROM `Privileges` WHERE `id`=" . sql_escape($priv) . " LIMIT 1");
+              $group_privileges_source = sql_select("SELECT * FROM `Privileges` WHERE `id`='" . sql_escape($priv) . "' LIMIT 1");
               if (count($group_privileges_source) > 0) {
-                sql_query("INSERT INTO `GroupPrivileges` SET `group_id`=" . sql_escape($id) . ", `privilege_id`=" . sql_escape($priv));
+                sql_query("INSERT INTO `GroupPrivileges` SET `group_id`='" . sql_escape($id) . "', `privilege_id`='" . sql_escape($priv) . "'");
                 $privilege_names[] = $group_privileges_source[0]['name'];
               }
             }

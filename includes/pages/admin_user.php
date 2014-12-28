@@ -93,11 +93,11 @@ function admin_user() {
     
     $html .= "<hr />";
     
-    $my_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($user['UID']) . " ORDER BY `uid` LIMIT 1");
+    $my_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($user['UID']) . "' ORDER BY `uid` LIMIT 1");
     if (count($my_highest_group) > 0)
       $my_highest_group = $my_highest_group[0]['group_id'];
     
-    $his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($id) . " ORDER BY `uid` LIMIT 1");
+    $his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($id) . "' ORDER BY `uid` LIMIT 1");
     if (count($his_highest_group) > 0)
       $his_highest_group = $his_highest_group[0]['group_id'];
     
@@ -105,7 +105,7 @@ function admin_user() {
       $html .= "Hier kannst Du die Benutzergruppen des Engels festlegen:<form action=\"" . page_link_to("admin_user") . "&action=save_groups&id=" . $id . "\" method=\"post\">\n";
       $html .= '<table>';
       
-      $groups = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = " . sql_escape($id) . ") WHERE `Groups`.`UID` >= " . sql_escape($my_highest_group) . " ORDER BY `Groups`.`Name`");
+      $groups = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = '" . sql_escape($id) . "') WHERE `Groups`.`UID` >= '" . sql_escape($my_highest_group) . "' ORDER BY `Groups`.`Name`");
       foreach ($groups as $group)
         $html .= '<tr><td><input type="checkbox" name="groups[]" value="' . $group['UID'] . '"' . ($group['group_id'] != "" ? ' checked="checked"' : '') . ' /></td><td>' . $group['Name'] . '</td></tr>';
       
@@ -126,11 +126,11 @@ function admin_user() {
     switch ($_REQUEST['action']) {
       case 'save_groups':
         if ($id != $user['UID']) {
-          $my_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($user['UID']) . " ORDER BY `group_id`");
-          $his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`=" . sql_escape($id) . " ORDER BY `group_id`");
+          $my_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($user['UID']) . "' ORDER BY `group_id`");
+          $his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($id) . "' ORDER BY `group_id`");
           
           if (count($my_highest_group) > 0 && (count($his_highest_group) == 0 || ($my_highest_group[0]['group_id'] <= $his_highest_group[0]['group_id']))) {
-            $groups_source = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = " . sql_escape($id) . ") WHERE `Groups`.`UID` >= " . sql_escape($my_highest_group[0]['group_id']) . " ORDER BY `Groups`.`Name`");
+            $groups_source = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = '" . sql_escape($id) . "') WHERE `Groups`.`UID` >= '" . sql_escape($my_highest_group[0]['group_id']) . "' ORDER BY `Groups`.`Name`");
             $groups = array();
             $grouplist = array();
             foreach ($groups_source as $group) {
@@ -141,11 +141,11 @@ function admin_user() {
             if (! is_array($_REQUEST['groups']))
               $_REQUEST['groups'] = array();
             
-            sql_query("DELETE FROM `UserGroups` WHERE `uid`=" . sql_escape($id));
+            sql_query("DELETE FROM `UserGroups` WHERE `uid`='" . sql_escape($id) . "'");
             $user_groups_info = array();
             foreach ($_REQUEST['groups'] as $group) {
               if (in_array($group, $grouplist)) {
-                sql_query("INSERT INTO `UserGroups` SET `uid`=" . sql_escape($id) . ", `group_id`=" . sql_escape($group));
+                sql_query("INSERT INTO `UserGroups` SET `uid`='" . sql_escape($id) . "', `group_id`='" . sql_escape($group) . "'");
                 $user_groups_info[] = $groups[$group]['Name'];
               }
             }
@@ -163,8 +163,8 @@ function admin_user() {
       case 'delete':
         if ($user['UID'] != $id) {
           $user_source = sql_select("SELECT `Nick`, `UID` FROM `User` WHERE `UID` = '" . sql_escape($id) . "' LIMIT 1");
-          sql_query("DELETE FROM `User` WHERE `UID`=" . sql_escape($id) . " LIMIT 1");
-          sql_query("DELETE FROM `UserGroups` WHERE `uid`=" . sql_escape($id));
+          sql_query("DELETE FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
+          sql_query("DELETE FROM `UserGroups` WHERE `uid`='" . sql_escape($id) . "'");
           engelsystem_log("Deleted user " . User_Nick_render($user_source));
           $html .= success("Benutzer gelöscht!", true);
         } else {
@@ -185,7 +185,7 @@ function admin_user() {
               `Alter` = '" . sql_escape($_POST["eAlter"]) . "', 
               `DECT` = '" . sql_escape($_POST["eDECT"]) . "', 
               `email` = '" . sql_escape($_POST["eemail"]) . "', 
-              `email_shiftinfo` = " . sql_escape(isset($_REQUEST['email_shiftinfo']) ? 'TRUE' : 'FALSE') . ", 
+              `email_shiftinfo` = " . sql_bool(isset($_REQUEST['email_shiftinfo'])) . ", 
               `jabber` = '" . sql_escape($_POST["ejabber"]) . "', 
               `Size` = '" . sql_escape($_POST["eSize"]) . "', 
               `Gekommen`= '" . sql_escape($_POST["eGekommen"]) . "', 
@@ -194,7 +194,7 @@ function admin_user() {
               `Tshirt` = '" . sql_escape($_POST["eTshirt"]) . "', 
               `Hometown` = '" . sql_escape($_POST["Hometown"]) . "' 
               WHERE `UID` = '" . sql_escape($id) . "' 
-              LIMIT 1;";
+              LIMIT 1";
         sql_query($SQL);
         engelsystem_log("Updated user: " . $_POST["eNick"] . ", " . $_POST["eSize"] . ", arrived: " . $_POST["eGekommen"] . ", active: " . $_POST["eAktiv"] . ", tshirt: " . $_POST["eTshirt"]);
         $html .= success("Änderung wurde gespeichert...\n", true);
