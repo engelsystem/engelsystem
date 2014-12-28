@@ -236,34 +236,6 @@ function user_shifts() {
       $type_id = $_REQUEST['type_id'];
     else
       redirect(page_link_to('user_shifts'));
-      
-      // Schicht läuft schon, Eintragen für Engel nicht mehr möglich
-    if (! in_array('user_shifts_admin', $privileges) && time() > $shift['start']) {
-      error(_("This shift is running now or ended already. Please contact a dispatcher to join the shift."));
-      redirect(shift_link($shift));
-    }
-    
-    // Another shift the user is signed up for collides with this one
-    if (! in_array('user_shifts_admin', $privileges) && sql_num_query("
-        SELECT `Shifts`.`SID` 
-        FROM `Shifts` 
-        INNER JOIN `ShiftEntry` ON (`Shifts`.`SID` = `ShiftEntry`.`SID` AND `ShiftEntry`.`UID` = '" . sql_escape($user['UID']) . "') 
-        WHERE `start` < '" . sql_escape($shift['end']) . "' AND `end` > '" . sql_escape($shift['start']) . "'") > 0) {
-      error(_("You already subscribed to shift in the same timeslot. Please contact a dispatcher to join the shift."));
-      redirect(shift_link($shift));
-      
-      $needed_angeltypes = NeededAngelTypes_by_shift($shift['SID']);
-      if ($needed_angeltypes === false)
-        engelsystem_error('Unable to load needed angel types.');
-        
-        // you canot join if shift is full
-      foreach ($needed_angeltypes as $needed_angeltype)
-        if ($needed_angeltype['angel_type_id'] == $type_id)
-          if ($needed_angeltype['taken'] >= $needed_angeltype['count']) {
-            error(_("The shift is already full."));
-            redirect(shift_link($shift));
-          }
-    }
     
     if (in_array('user_shifts_admin', $privileges))
       $type = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($type_id) . "' LIMIT 1");
@@ -273,6 +245,11 @@ function user_shifts() {
     if (count($type) == 0)
       redirect(page_link_to('user_shifts'));
     $type = $type[0];
+    
+    if (! Shift_signup_allowed($shift, $type)) {
+      error(_('You are not allowed to sign up for this shift. Maybe shift is full or already running.'));
+      redirect(shift_link($shift));
+    }
     
     if (isset($_REQUEST['submit'])) {
       $selected_type_id = $type_id;
