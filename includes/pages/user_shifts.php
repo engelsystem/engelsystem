@@ -591,6 +591,7 @@ function view_user_shifts() {
                 $shifts_row .= $shift['title'];
                 $shifts_row .= "<br />";
               }
+              $shifts_row .= '</a>';
               if (in_array('admin_shifts', $privileges))
                 $shifts_row .= ' ' . table_buttons(array(
                     button(page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'], glyph('edit'), 'btn-xs'),
@@ -652,29 +653,30 @@ function view_user_shifts() {
                     // User shift admins may join anybody in every shift
                     $user_may_join_shift |= in_array('user_shifts_admin', $privileges);
                     if ($user_may_join_shift)
-                      $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . $inner_text . '&nbsp;&raquo;</a>';
+                      $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . $inner_text . '</a> ' . button(page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'], _('Sign up'), 'btn-xs');
                     else {
                       if (time() > $shift['start'])
-                        $entry_list[] = $inner_text . ' (vorbei)';
+                        $entry_list[] = $inner_text . ' (' . _('ended') . ')';
                       elseif ($angeltype['restricted'] == 1 && isset($angeltype['user_id']) && ! isset($angeltype['confirm_user_id']))
                         $entry_list[] = $inner_text . glyph('lock');
+                      elseif ($angeltype['restricted'] == 1)
+                        $entry_list[] = $inner_text;
                       elseif ($collides)
                         $entry_list[] = $inner_text;
                       else
-                        $entry_list[] = $inner_text . ' <a href="' . page_link_to('user_settings') . '#angel_types_anchor">(Werde ' . $angeltype['name'] . ')</a>';
+                        $entry_list[] = $inner_text . '<br />' . button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], sprintf(_('Become %s'), $angeltype['name']), 'btn-xs');
                     }
                     
                     unset($inner_text);
                     $is_free = true;
                   }
                   
-                  $shifts_row .= '<b>' . $angeltype['name'] . ':</b> ';
+                  $shifts_row .= '<strong>'.AngelType_name_render($angeltype) . ':</strong> ';
                   $shifts_row .= join(", ", $entry_list);
                   $shifts_row .= '<br />';
                 }
-                if (in_array('user_shifts_admin', $privileges)) {
-                  $shifts_row .= '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . _("Add more angels") . '&nbsp;&raquo;</a>';
-                }
+                if (in_array('user_shifts_admin', $privileges))
+                  $shifts_row .= ' ' . button(page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'], _("Add more angels"), 'btn-xs');
               }
               if ($shift['own'] && ! in_array('user_shifts_admin', $privileges))
                 $class = 'own';
@@ -791,7 +793,7 @@ function view_user_shifts() {
               } elseif ($angeltype['restricted'] == 1 && isset($angeltype['user_id']) && ! isset($angeltype['confirm_user_id'])) {
                 $entry_list[] = $inner_text . glyph("lock");
               } else {
-                $entry_list[] = $inner_text . ' <a href="' . page_link_to('user_settings') . '#angel_types_anchor">(Werde ' . $angeltype['name'] . ')</a>';
+                $entry_list[] = $inner_text . ' <a href="' . page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'] . '">' . sprintf(_('Become %s'), $angeltype['name']) . '</a>';
               }
             }
             
@@ -804,7 +806,7 @@ function view_user_shifts() {
           $shift_row['entries'] .= '<br />';
         }
         if (in_array('user_shifts_admin', $privileges)) {
-          $shift_row['entries'] .= '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">Weitere Helfer eintragen &raquo;</a>';
+          $shift_row['entries'] .= '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . _('Add more angels') . ' &raquo;</a>';
         }
         $shifts_table[] = $shift_row;
         $shift['angeltypes'] = $angeltypes;
