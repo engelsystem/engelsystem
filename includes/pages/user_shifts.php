@@ -576,8 +576,13 @@ function view_user_shifts() {
                 
                 // qqqqqq
               $is_free = false;
-              
-              $shifts_row = Room_name_render([
+              $shifts_row = '';
+              if (in_array('admin_shifts', $privileges))
+                $shifts_row .= '<div class="pull-right">' . table_buttons(array(
+                    button(page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'], glyph('edit'), 'btn-xs'),
+                    button(page_link_to('user_shifts') . '&delete_shift=' . $shift['SID'], glyph('trash'), 'btn-xs') 
+                )) . '</div>';
+              $shifts_row .= Room_name_render([
                   'RID' => $room['id'],
                   'Name' => $room['name'] 
               ]) . '<br />';
@@ -592,11 +597,6 @@ function view_user_shifts() {
                 $shifts_row .= "<br />";
               }
               $shifts_row .= '</a>';
-              if (in_array('admin_shifts', $privileges))
-                $shifts_row .= ' ' . table_buttons(array(
-                    button(page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'], glyph('edit'), 'btn-xs'),
-                    button(page_link_to('user_shifts') . '&delete_shift=' . $shift['SID'], glyph('trash'), 'btn-xs') 
-                ));
               $shifts_row .= '<br />';
               $query = "SELECT `NeededAngelTypes`.`count`, `AngelTypes`.`id`, `AngelTypes`.`restricted`, `UserAngelTypes`.`confirm_user_id`, `AngelTypes`.`name`, `UserAngelTypes`.`user_id`
             FROM `NeededAngelTypes`
@@ -671,7 +671,7 @@ function view_user_shifts() {
                     $is_free = true;
                   }
                   
-                  $shifts_row .= '<strong>'.AngelType_name_render($angeltype) . ':</strong> ';
+                  $shifts_row .= '<strong>' . AngelType_name_render($angeltype) . ':</strong> ';
                   $shifts_row .= join(", ", $entry_list);
                   $shifts_row .= '<br />';
                 }
