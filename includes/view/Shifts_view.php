@@ -36,7 +36,7 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
     $needed_angels .= '<div class="pull-right">' . Shift_signup_button_render($shift, $angeltypes[$needed_angeltype['TID']]) . '</div>';
     
     $needed_angels .= '<h3>' . AngelType_name_render($angeltypes[$needed_angeltype['TID']]) . '</h3>';
-    $needed_angels .= progress_bar(0, $needed_angeltype['count'], $needed_angeltype['taken'], $class, $needed_angeltype['taken'] . ' / ' . $needed_angeltype['count']);
+    $needed_angels .= progress_bar(0, $needed_angeltype['count'], min($needed_angeltype['taken'], $needed_angeltype['count']), $class, $needed_angeltype['taken'] . ' / ' . $needed_angeltype['count']);
     
     $angels = [];
     foreach ($shift['ShiftEntry'] as $shift_entry) {
