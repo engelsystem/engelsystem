@@ -727,6 +727,7 @@ function view_user_shifts() {
         foreach ($angeltypes as &$angeltype) {
           $entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`='" . sql_escape($shift['SID']) . "' AND `TID`='" . sql_escape($angeltype['id']) . "' ORDER BY `Nick`");
           $entry_list = array();
+          $entry_nicks = [];
           $freeloader = 0;
           foreach ($entries as $entry) {
             if (in_array('user_shifts_admin', $privileges))
@@ -740,8 +741,11 @@ function view_user_shifts() {
               $freeloader ++;
             }
             $entry_list[] = $member;
+            $entry_nicks[] = $entry['Nick'];
           }
           $angeltype['taken'] = count($entries) - $freeloader;
+          $angeltype['angels'] = $entry_nicks;
+          
           // do we need more angles of this type?
           if ($angeltype['count'] - count($entries) + $freeloader > 0) {
             $inner_text = sprintf(ngettext("%d helper needed", "%d helpers needed", $angeltype['count'] - count($entries) + $freeloader), $angeltype['count'] - count($entries) + $freeloader);
