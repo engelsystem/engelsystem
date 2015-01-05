@@ -45,6 +45,7 @@ function admin_active() {
         sql_query("UPDATE `User` SET `Aktiv` = 1 WHERE `UID`='" . sql_escape($usr['UID']) . "'");
         $user_nicks[] = User_Nick_render($usr);
       }
+      sql_query("UPDATE `User` SET `Aktiv`=1 WHERE `force_active`=TRUE");
       engelsystem_log("These angels are active now: " . join(", ", $user_nicks));
 
       $limit = "";
