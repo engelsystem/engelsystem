@@ -35,7 +35,7 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description) {
 function ShiftType_create($name, $angeltype_id, $description) {
   $result = sql_query("INSERT INTO `ShiftTypes` SET
       `name`='" . sql_escape($name) . "', 
-      `angeltype_id`='" . sql_null($angeltype_id) . "',
+      `angeltype_id`=" . sql_null($angeltype_id) . ",
       `description`='" . sql_escape($description) . "'");
   if ($result === false)
     return false;
