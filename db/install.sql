@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 14. Mai 2015 um 16:25
+-- Erstellungszeit: 14. Mai 2015 um 16:36
 -- Server Version: 5.6.12
 -- PHP-Version: 5.5.3
 
@@ -153,7 +153,7 @@ DROP TABLE IF EXISTS `LogEntries`;
 CREATE TABLE IF NOT EXISTS `LogEntries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` int(11) NOT NULL,
-  `nick` varchar(23) NOT NULL,
+  `nick` text NOT NULL,
   `message` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `timestamp` (`timestamp`)
