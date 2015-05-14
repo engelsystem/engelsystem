@@ -3,13 +3,19 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 25. Dez 2014 um 22:28
+-- Erstellungszeit: 14. Mai 2015 um 16:25
 -- Server Version: 5.6.12
 -- PHP-Version: 5.5.3
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+--
+-- Datenbank: `engelsystem`
+--
+CREATE DATABASE IF NOT EXISTS `engelsystem` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `engelsystem`;
 
 -- --------------------------------------------------------
 
@@ -25,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `AngelTypes` (
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `AngelTypes`
@@ -46,14 +52,6 @@ CREATE TABLE IF NOT EXISTS `Counter` (
   `Anz` bigint(20) NOT NULL DEFAULT '0',
   PRIMARY KEY (`URL`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Counter der Seiten';
-
---
--- Daten für Tabelle `Counter`
---
-
-INSERT INTO `Counter` (`URL`, `Anz`) VALUES
-('login', 2),
-('news', 1);
 
 -- --------------------------------------------------------
 
@@ -198,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `NeededAngelTypes` (
   KEY `room_id` (`room_id`,`angel_type_id`),
   KEY `shift_id` (`shift_id`),
   KEY `angel_type_id` (`angel_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=107 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -216,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `News` (
   `Treffen` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   KEY `UID` (`UID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -310,7 +308,7 @@ CREATE TABLE IF NOT EXISTS `Questions` (
   PRIMARY KEY (`QID`),
   KEY `UID` (`UID`),
   KEY `AID` (`AID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Fragen und Antworten' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Fragen und Antworten' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -328,7 +326,7 @@ CREATE TABLE IF NOT EXISTS `Room` (
   `Number` int(11) DEFAULT NULL,
   PRIMARY KEY (`RID`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -350,7 +348,7 @@ CREATE TABLE IF NOT EXISTS `ShiftEntry` (
   KEY `UID` (`UID`),
   KEY `SID` (`SID`,`TID`),
   KEY `freeloaded` (`freeloaded`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -372,7 +370,7 @@ CREATE TABLE IF NOT EXISTS `Shifts` (
   UNIQUE KEY `PSID` (`PSID`),
   KEY `RID` (`RID`),
   KEY `shifttype_id` (`shifttype_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=191 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -388,7 +386,14 @@ CREATE TABLE IF NOT EXISTS `ShiftTypes` (
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `angeltype_id` (`angeltype_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Daten für Tabelle `ShiftTypes`
+--
+
+INSERT INTO `ShiftTypes` (`id`, `name`, `angeltype_id`, `description`) VALUES
+(4, 'asdf', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -426,19 +431,20 @@ CREATE TABLE IF NOT EXISTS `User` (
   `kommentar` text,
   `Hometown` varchar(255) NOT NULL DEFAULT '',
   `api_key` varchar(32) NOT NULL,
+  `got_voucher` tinyint(1) NOT NULL,
   PRIMARY KEY (`UID`),
   UNIQUE KEY `Nick` (`Nick`),
   KEY `api_key` (`api_key`),
   KEY `password_recovery_token` (`password_recovery_token`),
   KEY `force_active` (`force_active`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `User`
 --
 
-INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `email_shiftinfo`, `jabber`, `Size`, `Passwort`, `password_recovery_token`, `Gekommen`, `Aktiv`, `force_active`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', 0, '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 0, 1, 0, 2, 'de_DE.UTF-8', 115, 'L', 1419542882, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235');
+INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `email_shiftinfo`, `jabber`, `Size`, `Passwort`, `password_recovery_token`, `Gekommen`, `Aktiv`, `force_active`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`, `got_voucher`) VALUES
+(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', 0, '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 0, 0, 0, 2, 'de_DE.UTF-8', 115, 'L', 1431613486, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235', 0);
 
 -- --------------------------------------------------------
 
@@ -458,7 +464,7 @@ CREATE TABLE IF NOT EXISTS `UserAngelTypes` (
   KEY `angeltype_id` (`angeltype_id`),
   KEY `confirm_user_id` (`confirm_user_id`),
   KEY `coordinator` (`coordinator`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
 
 --
 -- Daten für Tabelle `UserAngelTypes`
@@ -481,7 +487,7 @@ CREATE TABLE IF NOT EXISTS `UserGroups` (
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`,`group_id`),
   KEY `group_id` (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Daten für Tabelle `UserGroups`
