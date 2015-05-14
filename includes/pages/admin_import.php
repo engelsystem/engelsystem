@@ -162,7 +162,9 @@ function admin_import() {
       
       list($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
       foreach ($rooms_new as $room) {
-        sql_query("INSERT INTO `Room` SET `Name`='" . sql_escape($room) . "', `FromPentabarf`='Y', `Show`='Y'");
+        $result = Room_create($name, true, true);
+        if ($result === false)
+          engelsystem_error('Unable to create room.');
         $rooms_import[trim($room)] = sql_id();
       }
       foreach ($rooms_deleted as $room)
