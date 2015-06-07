@@ -269,6 +269,7 @@ function guest_login() {
     if ($ok) {
       $_SESSION['uid'] = $login_user['UID'];
       $_SESSION['locale'] = $login_user['Sprache'];
+      
       redirect(page_link_to('news'));
     }
   }
