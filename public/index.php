@@ -163,6 +163,4 @@ echo template_render('../templates/layout.html', array(
     'locale' => $_SESSION['locale'] 
 ));
 
-counter();
-
 ?>

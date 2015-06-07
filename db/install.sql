@@ -43,19 +43,6 @@ INSERT INTO `AngelTypes` (`id`, `name`, `restricted`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `Counter`
---
-
-DROP TABLE IF EXISTS `Counter`;
-CREATE TABLE IF NOT EXISTS `Counter` (
-  `URL` varchar(255) NOT NULL DEFAULT '',
-  `Anz` bigint(20) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`URL`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Counter der Seiten';
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `GroupPrivileges`
 --
 

@@ -5,7 +5,6 @@
 require_once realpath(__DIR__ . '/../includes/mysqli_provider.php');
 
 require_once realpath(__DIR__ . '/../includes/sys_auth.php');
-require_once realpath(__DIR__ . '/../includes/sys_counter.php');
 require_once realpath(__DIR__ . '/../includes/sys_log.php');
 require_once realpath(__DIR__ . '/../includes/sys_menu.php');
 require_once realpath(__DIR__ . '/../includes/sys_page.php');
