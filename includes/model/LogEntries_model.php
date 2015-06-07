@@ -25,4 +25,11 @@ function LogEntries_filter($keyword) {
   return sql_select("SELECT * FROM `LogEntries` WHERE `nick` LIKE '%" . sql_escape($keyword) . "%' OR `message` LIKE '%" . sql_escape($keyword) . "%' ORDER BY `timestamp` DESC");
 }
 
+/**
+ * Delete all log entries.
+ */
+function LogEntries_clear_all() {
+  return sql_query("TRUNCATE `LogEntries`");
+}
+
 ?>
