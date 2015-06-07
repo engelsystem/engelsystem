@@ -18,6 +18,4 @@
 
 Das Engelsystem ist jetzt einsatzbereit.
 
-Fehler bitte an bugs@engelsystem.de melden.
-
-Bugtracker: https://vcs.wybt.net/engelsystem/trac/
+Fehler bitte auf Github melden: https://github.com/engelsystem/engelsystem/issues
