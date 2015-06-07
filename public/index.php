@@ -1,10 +1,6 @@
 <?php
 require_once realpath(__DIR__ . '/../includes/engelsystem_provider.php');
 
-// JSON Authorisierung gewünscht?
-if (isset($_REQUEST['auth']))
-  json_auth_service();
-
 $free_pages = array(
     'stats',
     'shifts_json_export_all',

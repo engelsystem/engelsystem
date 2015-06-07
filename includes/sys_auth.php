@@ -53,44 +53,6 @@ function verify_password($password, $salt, $uid = false) {
   return $correct;
 }
 
-// JSON Authorisierungs-Schnittstelle
-function json_auth_service() {
-  global $api_key;
-
-  header("Content-Type: application/json");
-
-  $User = $_REQUEST['user'];
-  $Pass = $_REQUEST['pw'];
-  $SourceOuth = $_REQUEST['so'];
-
-  if (isset($api_key) && $SourceOuth == $api_key) {
-    $sql = "SELECT `UID`, `Passwort` FROM `User` WHERE `Nick`='" . sql_escape($User) . "'";
-    $Erg = sql_select($sql);
-
-    if (count($Erg) == 1) {
-      $Erg = $Erg[0];
-      if (verify_password($Pass, $Erg["Passwort"], $Erg["UID"])) {
-        $user_privs = sql_select("SELECT `Privileges`.`name` FROM `User` JOIN `UserGroups` ON (`User`.`UID` = `UserGroups`.`uid`) JOIN `GroupPrivileges` ON (`UserGroups`.`group_id` = `GroupPrivileges`.`group_id`) JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `User`.`UID`='" . sql_escape($UID) . "'");
-        foreach ($user_privs as $user_priv)
-          $privileges[] = $user_priv['name'];
-
-        $msg = array (
-            'status' => 'success',
-            'rights' => $privileges
-        );
-        echo json_encode($msg);
-        die();
-      }
-    }
-  }
-
-  echo json_encode(array (
-      'status' => 'failed',
-      'error' => "JSON Service GET syntax: https://engelsystem.de/?auth&user=<user>&pw=<password>&so=<key>, POST is possible too"
-  ));
-  die();
-}
-
 function privileges_for_user($user_id) {
   $privileges = array ();
   $user_privs = sql_select("SELECT `Privileges`.`name` FROM `User` JOIN `UserGroups` ON (`User`.`UID` = `UserGroups`.`uid`) JOIN `GroupPrivileges` ON (`UserGroups`.`group_id` = `GroupPrivileges`.`group_id`) JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `User`.`UID`='" . sql_escape($user_id) . "'");
