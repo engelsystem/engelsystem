@@ -71,7 +71,9 @@ require_once realpath(__DIR__ . '/../includes/pages/user_shifts.php');
 
 require_once realpath(__DIR__ . '/../vendor/parsedown/Parsedown.php');
 
-session_lifetime(24 * 60, preg_replace("/[^a-z0-9-]/", '', md5(__DIR__)));
+if (! defined('PHPUNIT_TESTSUITE')) {
+  session_lifetime(24 * 60, preg_replace("/[^a-z0-9-]/", '', md5(__DIR__)));
+}
 session_start();
 
 gettext_init();
