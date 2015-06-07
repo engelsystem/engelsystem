@@ -9,7 +9,7 @@
  */
 function session_lifetime($lifetime, $application_name) {
   // Set session save path and name
-  $session_save_path = rtrim(session_save_path(), '/') . '/' . $application_name;
+  $session_save_path = '/tmp/' . $application_name;
   if (! file_exists($session_save_path))
     mkdir($session_save_path);
   if (file_exists($session_save_path))
