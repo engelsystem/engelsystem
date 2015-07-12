@@ -32,6 +32,7 @@ function guest_register() {
   $tshirt_size = '';
   $password_hash = "";
   $selected_angel_types = array();
+  $planned_arrival_date = null;
   
   $angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
   $angel_types = array();
@@ -96,6 +97,13 @@ function guest_register() {
       $msg .= error(sprintf(_("Your password is too short (please use at least %s characters)."), MIN_PASSWORD_LENGTH), true);
     }
     
+    if (isset($_REQUEST['planned_arrival_date']) && DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))) {
+      $planned_arrival_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))->getTimestamp();
+    } else {
+      $ok = false;
+      $msg .= error(_("Please enter your planned date of arrival."), true);
+    }
+    
     $selected_angel_types = array();
     foreach ($angel_types as $angel_type_id => $angel_type_name)
       if (isset($_REQUEST['angel_types_' . $angel_type_id]))
@@ -138,7 +146,9 @@ function guest_register() {
           `kommentar`='" . sql_escape($comment) . "', 
           `Hometown`='" . sql_escape($hometown) . "', 
           `CreateDate`=NOW(), 
-          `Sprache`='" . sql_escape($_SESSION["locale"]) . "'");
+          `Sprache`='" . sql_escape($_SESSION["locale"]) . "',
+          `arrival_date`=NULL,
+          `planned_arrival_date`='" . sql_escape($planned_arrival_date) . "'");
       
       // Assign user-group and set password
       $user_id = sql_id();
@@ -174,7 +184,14 @@ function guest_register() {
                           form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $email_shiftinfo) 
                       )) 
                   )),
-                  $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : '',
+                  div('row', array(
+                      div('col-sm-6', array(
+                          form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, time()) 
+                      )),
+                      div('col-sm-6', array(
+                          $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : '' 
+                      )) 
+                  )),
                   div('row', array(
                       div('col-sm-6', array(
                           form_password('password', _("Password") . ' ' . entry_required()) 

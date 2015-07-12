@@ -131,20 +131,25 @@ function form_spinner($name, $label, $value) {
  *          Label
  * @param int $value
  *          Unix Timestamp
+ * @param int $min_date
+ *          Earliest possible date
  * @return HTML
  */
-function form_date($name, $label, $value) {
+function form_date($name, $label, $value, $start_date = '') {
   $id = $name . '-date';
   $value = is_numeric($value) ? date('Y-m-d', $value) : '';
+  $start_date = is_numeric($start_date) ? date('Y-m-d', $start_date) : '';
   return form_element($label, '
     <div class="input-group date" id="' . $id . '">
-      <input type="text" class="form-control" value="' . $value . '"><span class="input-group-addon">' . glyph('th') . '</span>
+      <input type="text" name="' . $name . '" class="form-control" value="' . $value . '"><span class="input-group-addon">' . glyph('th') . '</span>
     </div>
     <script type="text/javascript">
 			$(function(){
         $("#' . $id . '").datepicker({
 				  language: "' . locale_short() . '",
-          format: "yyyy-mm-dd"
+          todayBtn: "linked",
+          format: "yyyy-mm-dd",
+          startDate: "' . $start_date . '"
 			  });
       });  
     </script>

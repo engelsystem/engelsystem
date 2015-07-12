@@ -29,8 +29,10 @@ function User_update($user) {
       `color`='" . sql_escape($user['color']) . "',
       `Sprache`='" . sql_escape($user['Sprache']) . "',
       `Hometown`='" . sql_escape($user['Hometown']) . "',
-      `got_voucher`=" . sql_bool($user['got_voucher']) . "
-      WHERE `UID`='" . sql_escape($user['UID']). "'");
+      `got_voucher`=" . sql_bool($user['got_voucher']) . ",
+      `arrival_date`='" . sql_escape($user['arrival_date']) . "'
+      `planned_arrival_date`='" . sql_escape($user['planned_arrival_date']) . "'
+      WHERE `UID`='" . sql_escape($user['UID']) . "'");
 }
 
 /**

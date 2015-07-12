@@ -1,3 +1,9 @@
+
+/* introduce user arrival date */
+ALTER TABLE `User` ADD `arrival_date` INT NULL ,
+ADD `planned_arrival_date` INT NOT NULL ,
+ADD INDEX ( `arrival_date` , `planned_arrival_date` ) ;
+
 /* fix log */
 ALTER TABLE `LogEntries` CHANGE `nick` `nick` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
 

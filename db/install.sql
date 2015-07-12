@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 14. Mai 2015 um 16:36
+-- Erstellungszeit: 12. Jul 2015 um 14:45
 -- Server Version: 5.6.12
 -- PHP-Version: 5.5.3
 
@@ -418,19 +418,22 @@ CREATE TABLE IF NOT EXISTS `User` (
   `Hometown` varchar(255) NOT NULL DEFAULT '',
   `api_key` varchar(32) NOT NULL,
   `got_voucher` tinyint(1) NOT NULL,
+  `arrival_date` int(11) DEFAULT NULL,
+  `planned_arrival_date` int(11) NOT NULL,
   PRIMARY KEY (`UID`),
   UNIQUE KEY `Nick` (`Nick`),
   KEY `api_key` (`api_key`),
   KEY `password_recovery_token` (`password_recovery_token`),
-  KEY `force_active` (`force_active`)
+  KEY `force_active` (`force_active`),
+  KEY `arrival_date` (`arrival_date`,`planned_arrival_date`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `User`
 --
 
-INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `email_shiftinfo`, `jabber`, `Size`, `Passwort`, `password_recovery_token`, `Gekommen`, `Aktiv`, `force_active`, `Tshirt`, `color`, `Sprache`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`, `got_voucher`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', 0, '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 0, 0, 0, 2, 'de_DE.UTF-8', 'L', 1431613486, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235', 0);
+INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `email_shiftinfo`, `jabber`, `Size`, `Passwort`, `password_recovery_token`, `Gekommen`, `Aktiv`, `force_active`, `Tshirt`, `color`, `Sprache`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`, `got_voucher`, `arrival_date`, `planned_arrival_date`) VALUES
+(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', 0, '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 0, 0, 0, 2, 'de_DE.UTF-8', 'L', 1436705059, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235', 0, NULL, 0);
 
 -- --------------------------------------------------------
 
