@@ -6328,21 +6328,21 @@ body {
   color: #888888;
 }
 #shifts td.free {
-  border: 1px solid #888888;
+  border: 1px solid #d9534f;
   background-color: #d9534f;
 }
 a#shifts td.free:hover {
   background-color: #c9302c;
 }
 #shifts td.occupied {
-  border: 1px solid #888888;
+  border: 1px solid #5cb85c;
   background-color: #5cb85c;
 }
 a#shifts td.occupied:hover {
   background-color: #449d44;
 }
 #shifts td.collides {
-  border: 1px solid #888888;
+  border: 1px solid #f0ad4e;
   background-color: #f0ad4e;
 }
 a#shifts td.collides:hover {
