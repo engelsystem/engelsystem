@@ -156,7 +156,7 @@ echo template_render('../templates/layout.html', array(
     'content' => msg() . $content,
     'header_toolbar' => header_toolbar(),
     'faq_url' => $faq_url,
-    'locale' => $_SESSION['locale'] 
+    'locale' => locale() 
 ));
 
 ?>

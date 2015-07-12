@@ -123,6 +123,35 @@ function form_spinner($name, $label, $value) {
 }
 
 /**
+ * Render a bootstrap datepicker
+ *
+ * @param string $name
+ *          Name of the parameter
+ * @param string $label
+ *          Label
+ * @param int $value
+ *          Unix Timestamp
+ * @return HTML
+ */
+function form_date($name, $label, $value) {
+  $id = $name . '-date';
+  $value = is_numeric($value) ? date('Y-m-d', $value) : '';
+  return form_element($label, '
+    <div class="input-group date" id="' . $id . '">
+      <input type="text" class="form-control" value="' . $value . '"><span class="input-group-addon">' . glyph('th') . '</span>
+    </div>
+    <script type="text/javascript">
+			$(function(){
+        $("#' . $id . '").datepicker({
+				  language: "' . locale_short() . '",
+          format: "yyyy-mm-dd"
+			  });
+      });  
+    </script>
+    ', $id);
+}
+
+/**
  * Rendert eine Liste von Checkboxen für ein Formular
  *
  * @param

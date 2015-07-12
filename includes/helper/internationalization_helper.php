@@ -7,6 +7,20 @@ $locales = array(
 $default_locale = 'en_US.UTF-8';
 
 /**
+ * Return currently active locale
+ */
+function locale() {
+  return $_SESSION['locale'];
+}
+
+/**
+ * Returns two letter language code from currently active locale
+ */
+function locale_short() {
+  return substr(locale(), 0, 2);
+}
+
+/**
  * Initializes gettext for internationalization and updates the sessions locale to use for translation.
  */
 function gettext_init() {
