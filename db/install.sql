@@ -11,12 +11,6 @@ SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
---
--- Datenbank: `engelsystem`
---
-CREATE DATABASE IF NOT EXISTS `engelsystem` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `engelsystem`;
-
 -- --------------------------------------------------------
 
 --
