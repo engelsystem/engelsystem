@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2015-07-12 15:00+0100\n"
-"PO-Revision-Date: 2015-07-12 15:01+0100\n"
+"PO-Revision-Date: 2015-07-12 15:07+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1048,7 +1048,6 @@ msgid "Please select an end time."
 msgstr "Bitte eine Endzeit auswählen."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:84
-#, fuzzy
 msgid "The shifts end has to be after its start."
 msgstr "Die Endzeit muss nach der Startzeit liegen."
 
@@ -1129,7 +1128,6 @@ msgid "All Angels"
 msgstr "Engelliste"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_user.php:21
-#, fuzzy
 msgid "This user does not exist."
 msgstr "Benutzer existiert nicht."
 
@@ -1197,9 +1195,8 @@ msgid "Your password is too short (please use at least %s characters)."
 msgstr "Dein Passwort ist zu kurz (Bitte mindestens %s Zeichen nutzen)."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:104
-#, fuzzy
 msgid "Please enter your planned date of arrival."
-msgstr "Bitte gib Deine E-Mail-Adresse ein."
+msgstr "Bitte gib Dein geplantes Ankunftsdatum an."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:165
 msgid "Angel registration successful!"
@@ -1563,7 +1560,6 @@ msgid "Please select a room."
 msgstr "Bitte einen Raum auswählen."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:117
-#, fuzzy
 msgid "Please select a shifttype."
 msgstr "Bitte einen Schichttyp wählen."
 
@@ -1674,7 +1670,7 @@ msgstr "vorbei"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:645
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:778
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:15
-#, fuzzy, php-format
+#, php-format
 msgid "Become %s"
 msgstr "Werde ein %s"
 
@@ -2018,7 +2014,7 @@ msgid "Shift starts %c"
 msgstr "Schicht startet %c"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:92
-#, fuzzy, php-format
+#, php-format
 msgid "Shift ends %c"
 msgstr "Schicht endet %c"
 
@@ -2035,14 +2031,14 @@ msgid "User state"
 msgstr "Engelzustand"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:175
-#, fuzzy, php-format
+#, php-format
 msgid "Arrived at %s"
-msgstr "Angekommene Engel"
+msgstr "Angekommen am %s"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:175
-#, fuzzy, php-format
+#, php-format
 msgid "Not arrived (Planned: %s)"
-msgstr "Nicht angekommen"
+msgstr "Nicht angekommen (Geplant: %s)"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:176
 msgid "Not arrived"
@@ -2066,7 +2062,6 @@ msgid "Remove vouchers"
 msgstr "Voucher entfernen"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:198
-#, fuzzy
 msgid "iCal Export"
 msgstr "iCal Export"
 
