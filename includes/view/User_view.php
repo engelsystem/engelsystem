@@ -266,16 +266,6 @@ function User_groups_render($user_groups) {
 }
 
 /**
- * Render a users avatar.
- *
- * @param User $user          
- * @return string
- */
-function User_Avatar_render($user) {
-  return '<div class="avatar">&nbsp;<img src="pic/avatar/avatar' . $user['Avatar'] . '.gif"></div>';
-}
-
-/**
  * Render a user nickname.
  *
  * @param User $user_source          

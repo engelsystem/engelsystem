@@ -71,7 +71,7 @@ function admin_user() {
     
     $html .= "  <tr><td>Hometown</td><td>" . "<input type=\"text\" size=\"40\" name=\"Hometown\" value=\"" . $user_source['Hometown'] . "\"></td></tr>\n";
     
-    $html .= "</table>\n</td><td valign=\"top\">" . User_Avatar_render($user_source) . "</td></tr>";
+    $html .= "</table>\n</td><td valign=\"top\"></td></tr>";
     
     $html .= "</td></tr>\n";
     $html .= "</table>\n<br />\n";

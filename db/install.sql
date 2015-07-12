@@ -410,7 +410,6 @@ CREATE TABLE IF NOT EXISTS `User` (
   `Tshirt` tinyint(4) DEFAULT '0',
   `color` tinyint(4) DEFAULT '10',
   `Sprache` char(64) NOT NULL,
-  `Avatar` int(11) DEFAULT '0',
   `Menu` char(1) NOT NULL DEFAULT 'L',
   `lastLogIn` int(11) NOT NULL,
   `CreateDate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -430,8 +429,8 @@ CREATE TABLE IF NOT EXISTS `User` (
 -- Daten für Tabelle `User`
 --
 
-INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `email_shiftinfo`, `jabber`, `Size`, `Passwort`, `password_recovery_token`, `Gekommen`, `Aktiv`, `force_active`, `Tshirt`, `color`, `Sprache`, `Avatar`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`, `got_voucher`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', 0, '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 0, 0, 0, 2, 'de_DE.UTF-8', 115, 'L', 1431613486, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235', 0);
+INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `email_shiftinfo`, `jabber`, `Size`, `Passwort`, `password_recovery_token`, `Gekommen`, `Aktiv`, `force_active`, `Tshirt`, `color`, `Sprache`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`, `got_voucher`) VALUES
+(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', 0, '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 0, 0, 0, 2, 'de_DE.UTF-8', 'L', 1431613486, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235', 0);
 
 -- --------------------------------------------------------
 

@@ -165,7 +165,7 @@ function User($id) {
  * @param $id UID          
  */
 function mUser_Limit($id) {
-  $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `jabber`, `Avatar` FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
+  $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `jabber` FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
   if ($user_source === false)
     return false;
   if (count($user_source) > 0)
