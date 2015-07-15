@@ -24,6 +24,7 @@ function user_settings() {
   $password_hash = "";
   $selected_theme = $user['color'];
   $selected_language = $user['Sprache'];
+  $planned_arrival_date = $user['planned_arrival_date'];
   
   if (isset($_REQUEST['submit'])) {
     $ok = true;
@@ -54,8 +55,15 @@ function user_settings() {
     elseif ($enable_tshirt_size) {
       $ok = false;
     }
-      
-      // Trivia
+    
+    if (isset($_REQUEST['planned_arrival_date']) && DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))) {
+      $planned_arrival_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))->getTimestamp();
+    } else {
+      $ok = false;
+      $msg .= error(_("Please enter your planned date of arrival."), true);
+    }
+    
+    // Trivia
     if (isset($_REQUEST['lastname']))
       $lastname = strip_request_item('lastname');
     if (isset($_REQUEST['prename']))
@@ -85,7 +93,8 @@ function user_settings() {
           `email_shiftinfo`='" . sql_escape($email_shiftinfo ? 'TRUE' : 'FALSE') . "',
           `jabber`='" . sql_escape($jabber) . "',
           `Size`='" . sql_escape($tshirt_size) . "',
-          `Hometown`='" . sql_escape($hometown) . "'
+          `Hometown`='" . sql_escape($hometown) . "',
+          `planned_arrival_date`='" . sql_escape($planned_arrival_date) . "'
           WHERE `UID`='" . sql_escape($user['UID']) . "'");
       
       success(_("Settings saved."));
@@ -144,9 +153,10 @@ function user_settings() {
               form(array(
                   form_info('', _("Here you can change your user details.")),
                   form_info(entry_required() . ' = ' . _("Entry required!")),
-                  form_text('nick', _("Nick") . ' ' . entry_required(), $nick, true),
+                  form_text('nick', _("Nick"), $nick, true),
                   form_text('lastname', _("Last name"), $lastname),
                   form_text('prename', _("First name"), $prename),
+                  form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, time()),
                   form_text('age', _("Age"), $age),
                   form_text('tel', _("Phone"), $tel),
                   form_text('dect', _("DECT"), $dect),
