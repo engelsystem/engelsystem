@@ -103,7 +103,7 @@ function admin_arrive() {
       <script type="text/javascript">
       $(function(){
         var ctx = $("#daily_arrives").get(0).getContext("2d");
-        new Chart(ctx).Bar(' . json_encode(array(
+        var chart = new Chart(ctx).Bar(' . json_encode(array(
           'labels' => array_keys($arrival_count_at_day),
           'datasets' => array(
               array(
@@ -117,7 +117,7 @@ function admin_arrive() {
                   'data' => array_values($arrival_sums) 
               ) 
           ) 
-      )) . ');
+      )) . ', {"responsive": true});
       });
       </script>' 
   ));
