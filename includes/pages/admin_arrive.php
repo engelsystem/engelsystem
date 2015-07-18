@@ -94,11 +94,6 @@ function admin_arrive() {
           'actions' => "" 
       ), $users_matched),
       heading(_("Arrival statistics"), 2),
-      table(array(
-          'day' => _("Date"),
-          'count' => _("arrived"),
-          'sum' => _("arrived sum") 
-      ), $arrival_count),
       '<canvas id="daily_arrives" style="width: 100%; height: 300px;"></canvas>
       <script type="text/javascript">
       $(function(){
@@ -119,7 +114,12 @@ function admin_arrive() {
           ) 
       )) . ', {"responsive": true});
       });
-      </script>' 
+      </script>',
+      table(array(
+          'day' => _("Date"),
+          'count' => _("arrived"),
+          'sum' => _("arrived sum") 
+      ), $arrival_count) 
   ));
 }
 ?>
