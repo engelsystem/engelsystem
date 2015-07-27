@@ -112,7 +112,7 @@ function admin_arrive() {
                   'data' => array_values($arrival_sums) 
               ) 
           ) 
-      )) . ', {"responsive": true});
+      )) . ');
       });
       </script>',
       table(array(
