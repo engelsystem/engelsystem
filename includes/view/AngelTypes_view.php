@@ -103,23 +103,25 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
   foreach ($members as $member) {
     $member['Nick'] = User_Nick_render($member);
     if ($angeltype['restricted'] && $member['confirm_user_id'] == null) {
-      $member['actions'] = join(" ", array(
-          '<a href="' . page_link_to('user_angeltypes') . '&action=confirm&user_angeltype_id=' . $member['user_angeltype_id'] . '" class="ok">' . _("confirm") . '</a>',
-          '<a href="' . page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'] . '" class="cancel">' . _("deny") . '</a>' 
-      ));
+      $member['actions'] = table_buttons([
+          button(page_link_to('user_angeltypes') . '&action=confirm&user_angeltype_id=' . $member['user_angeltype_id'], _("confirm"), 'btn-xs'),
+          button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'], _("deny"), 'btn-xs') 
+      ]);
       $members_unconfirmed[] = $member;
     } elseif ($member['coordinator']) {
       if ($admin_angeltypes)
-        $member['actions'] = '<a href="' . page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $member['user_angeltype_id'] . '&coordinator=0" class="cancel">' . _("Remove coordinator rights") . '</a>';
+        $member['actions'] = table_buttons([
+            button(page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $member['user_angeltype_id'] . '&coordinator=0', _("Remove coordinator rights"), 'btn-xs') 
+        ]);
       else
         $member['actions'] = '';
       $coordinators[] = $member;
     } else {
       if ($admin_user_angeltypes)
-        $member['actions'] = join(" ", array(
-            $admin_angeltypes ? '<a href="' . page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $member['user_angeltype_id'] . '&coordinator=1" class="add">' . _("Add coordinator rights") . '</a>' : '',
-            '<a href="' . page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'] . '" class="cancel">' . _("remove") . '</a>' 
-        ));
+        $member['actions'] = table_buttons([
+            $admin_angeltypes ? button(page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $member['user_angeltype_id'] . '&coordinator=1', _("Add coordinator rights"), 'btn-xs') : '',
+            button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'], _("remove"), 'btn-xs') 
+        ]);
       $members_confirmed[] = $member;
     }
   }
