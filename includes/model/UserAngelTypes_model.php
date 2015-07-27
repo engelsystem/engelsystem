@@ -19,14 +19,18 @@ function User_angeltypes($user) {
  */
 function User_unconfirmed_AngelTypes($user) {
   return sql_select("
-    SELECT `UserAngelTypes`.*, `AngelTypes`.`name` FROM `UserAngelTypes`
+    SELECT 
+      `UserAngelTypes`.*, 
+      `AngelTypes`.`name`, 
+      count(`UnconfirmedMembers`.`user_id`) as `count` 
+    FROM `UserAngelTypes`
     JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id`
     JOIN `UserAngelTypes` as `UnconfirmedMembers` ON `UserAngelTypes`.`angeltype_id`=`UnconfirmedMembers`.`angeltype_id`
     WHERE `UserAngelTypes`.`user_id`='" . sql_escape($user['UID']) . "'
-    AND `UserAngelTypes`.`coordinator`=TRUE
-    AND `AngelTypes`.`restricted`=TRUE
-    AND `UnconfirmedMembers`.`confirm_user_id` IS NULL
-    GROUP BY `UserAngelTypes`.`user_id`
+      AND `UserAngelTypes`.`coordinator`=TRUE
+      AND `AngelTypes`.`restricted`=TRUE
+      AND `UnconfirmedMembers`.`confirm_user_id` IS NULL
+    GROUP BY `UserAngelTypes`.`angeltype_id`
     ORDER BY `AngelTypes`.`name`");
 }
 
