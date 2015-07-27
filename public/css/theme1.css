@@ -6327,9 +6327,6 @@ body {
 .footer a {
   color: #888888;
 }
-.popover {
-  max-width: 600px;
-}
 #shifts td.free {
   border: 1px solid #d9534f;
   background-color: #d9534f;
