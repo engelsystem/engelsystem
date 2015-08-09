@@ -1,5 +1,8 @@
 <?php
 
+// Enable maintenance mode (showin a static page)
+$maintenance_mode = false;
+
 // URL to the angel faq and job description
 $faq_url = "https://events.ccc.de/congress/2013/wiki/Static:Volunteers";
 

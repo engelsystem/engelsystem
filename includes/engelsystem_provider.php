@@ -50,6 +50,11 @@ require_once realpath(__DIR__ . '/../config/config.default.php');
 if (file_exists(realpath(__DIR__ . '/../config/config.php')))
   require_once realpath(__DIR__ . '/../config/config.php');
 
+if ($maintenance_mode) {
+  echo file_get_contents(__DIR__ . '/../public/maintenance.html');
+  die();
+}
+
 require_once realpath(__DIR__ . '/../includes/pages/admin_active.php');
 require_once realpath(__DIR__ . '/../includes/pages/admin_arrive.php');
 require_once realpath(__DIR__ . '/../includes/pages/admin_free.php');
