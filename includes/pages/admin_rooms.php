@@ -98,10 +98,12 @@ function admin_rooms() {
           sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($id) . "'");
           $needed_angeltype_info = array();
           foreach ($angeltypes_count as $angeltype_id => $angeltype_count) {
-            $angeltype_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($angeltype_id) . "' LIMIT 1");
-            if (count($angeltype_source) > 0) {
+            $angeltype = AngelType($angeltype_id);
+            if ($angeltype === false)
+              engelsystem_error("Unable to load angeltype.");
+            if ($angeltype != null) {
               sql_query("INSERT INTO `NeededAngelTypes` SET `room_id`='" . sql_escape($id) . "', `angel_type_id`='" . sql_escape($angeltype_id) . "', `count`='" . sql_escape($angeltype_count) . "'");
-              $needed_angeltype_info[] = $angeltypes_source[0]['name'] . ": " . $angeltype_count;
+              $needed_angeltype_info[] = $angeltype['name'] . ": " . $angeltype_count;
             }
           }
           
