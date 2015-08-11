@@ -30,7 +30,7 @@ function User_update($user) {
       `Sprache`='" . sql_escape($user['Sprache']) . "',
       `Hometown`='" . sql_escape($user['Hometown']) . "',
       `got_voucher`=" . sql_bool($user['got_voucher']) . ",
-      `arrival_date`='" . sql_escape($user['arrival_date']) . "'
+      `arrival_date`='" . sql_escape($user['arrival_date']) . "',
       `planned_arrival_date`='" . sql_escape($user['planned_arrival_date']) . "'
       WHERE `UID`='" . sql_escape($user['UID']) . "'");
 }
