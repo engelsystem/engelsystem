@@ -22,8 +22,8 @@ function users_controller() {
       return user_edit_controller();
     case 'delete':
       return user_delete_controller();
-    case 'got_voucher':
-      return user_got_voucher_controller();
+    case 'edit_vouchers':
+      return user_edit_vouchers_controller();
   }
 }
 
@@ -35,7 +35,7 @@ function user_link($user) {
   return page_link_to('users') . '&action=view&user_id=' . $user['UID'];
 }
 
-function user_got_voucher_controller() {
+function user_edit_vouchers_controller() {
   global $privileges, $user;
   
   if (isset($_REQUEST['user_id'])) {
@@ -43,24 +43,37 @@ function user_got_voucher_controller() {
   } else
     $user_source = $user;
   
-  $admin_user_privilege = in_array('admin_user', $privileges);
-  
   if (! in_array('admin_user', $privileges))
     redirect(page_link_to(''));
   
-  if (! isset($_REQUEST['got_voucher']))
-    redirect(page_link_to(''));
+  if (isset($_REQUEST['submit'])) {
+    $ok = true;
+    
+    if (isset($_REQUEST['vouchers']) && test_request_int('vouchers') && trim($_REQUEST['vouchers']) >= 0)
+      $vouchers = trim($_REQUEST['vouchers']);
+    else {
+      $ok = false;
+      error(_("Please enter a valid number of vouchers."));
+    }
+    
+    if ($ok) {
+      $user_source['got_voucher'] = $vouchers;
+      
+      $result = User_update($user_source);
+      if ($result === false)
+        engelsystem_error('Unable to update user.');
+      
+      success(_("Saved the number of vouchers."));
+      engelsystem_log(User_Nick_render($user_source) . ': ' . sprintf("Got %s vouchers", $user_source['got_voucher']));
+      
+      redirect(user_link($user_source));
+    }
+  }
   
-  $user_source['got_voucher'] = $_REQUEST['got_voucher'] == 'true';
-  
-  $result = User_update($user_source);
-  if ($result === false)
-    engelsystem_error('Unable to update user.');
-  
-  success($user_source['got_voucher'] ? _('User got vouchers.') : _('User didnt got vouchers.'));
-  engelsystem_log(User_Nick_render($user_source) . ($user_source['got_voucher'] ? ' got vouchers' : ' didnt got vouchers'));
-  
-  redirect(user_link($user_source));
+  return array(
+      sprintf(_("%s's vouchers"), $user_source['Nick']),
+      User_edit_vouchers_view($user_source) 
+  );
 }
 
 function user_controller() {

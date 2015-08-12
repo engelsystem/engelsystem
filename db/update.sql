@@ -1,3 +1,5 @@
+/* Enable multiple vouchers */
+ALTER TABLE `User` CHANGE `got_voucher` `got_voucher` INT NOT NULL;
 
 /* introduce user arrival date */
 ALTER TABLE `User` ADD `arrival_date` INT NULL ,

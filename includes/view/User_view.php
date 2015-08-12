@@ -19,6 +19,22 @@ $tshirt_sizes = array(
     'XL-G' => "XL Girl" 
 );
 
+/**
+ * View for editing the number of given vouchers
+ */
+function User_edit_vouchers_view($user) {
+  return page_with_title(sprintf(_("%s's vouchers"), User_Nick_render($user)), [
+      msg(),
+      buttons([
+          button(user_link($user), glyph('chevron-left') . _("back")) 
+      ]),
+      form([
+          form_spinner('vouchers', _("Number of vouchers"), $user['got_voucher']),
+          form_submit('submit', _("Save")) 
+      ], page_link_to('users') . '&action=edit_vouchers&user_id=' . $user['UID']) 
+  ]);
+}
+
 function Users_view($users, $order_by, $arrived_count, $active_count, $force_active_count, $freeloads_count, $tshirts_count, $voucher_count) {
   foreach ($users as &$user) {
     $user['Nick'] = User_Nick_render($user);
@@ -171,10 +187,8 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
               '<h4>' . _("User state") . '</h4>',
               ($admin_user_privilege && $freeloader) ? '<span class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> ' . _("Freeloader") . '</span><br />' : '',
               $user_source['Gekommen'] ? User_shift_state_render($user_source) . '<br />' : '',
-              $admin_user_privilege || $its_me 
-                ? ($user_source['Gekommen'] ? '<span class="text-success"><span class="glyphicon glyphicon-home"></span> ' . sprintf(_("Arrived at %s"), date('Y-m-d', $user_source['arrival_date'])) . '</span>' : '<span class="text-danger">' . sprintf(_("Not arrived (Planned: %s)"), date('Y-m-d', $user_source['planned_arrival_date'])) . '</span>')
-                : ($user_source['Gekommen'] ? '<span class="text-success"><span class="glyphicon glyphicon-home"></span> ' . _("Arrived") . '</span>' : '<span class="text-danger">' . _("Not arrived") . '</span>'),
-              $admin_user_privilege ? ($user_source['got_voucher'] ? '<br /><span class="text-success">' . glyph('cutlery') . _("Got vouchers") . '</span>' : '<br /><span class="text-danger">' . _("Got no vouchers") . '</span>') : '',
+              $admin_user_privilege || $its_me ? ($user_source['Gekommen'] ? '<span class="text-success"><span class="glyphicon glyphicon-home"></span> ' . sprintf(_("Arrived at %s"), date('Y-m-d', $user_source['arrival_date'])) . '</span>' : '<span class="text-danger">' . sprintf(_("Not arrived (Planned: %s)"), date('Y-m-d', $user_source['planned_arrival_date'])) . '</span>') : ($user_source['Gekommen'] ? '<span class="text-success"><span class="glyphicon glyphicon-home"></span> ' . _("Arrived") . '</span>' : '<span class="text-danger">' . _("Not arrived") . '</span>'),
+              $admin_user_privilege ? ($user_source['got_voucher'] > 0 ? '<br /><span class="text-success">' . glyph('cutlery') . sprintf(ngettext("Got %s voucher", "Got %s vouchers", $user_source['got_voucher']), $user_source['got_voucher']) . '</span>' : '<br /><span class="text-danger">' . _("Got no vouchers") . '</span>') : '',
               ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Aktiv']) ? ' <span class="text-success">' . _("Active") . '</span>' : '',
               ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Tshirt']) ? ' <span class="text-success">' . _("T-Shirt") . '</span>' : '' 
           )),
@@ -192,8 +206,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
               buttons(array(
                   $admin_user_privilege ? button(page_link_to('admin_user') . '&id=' . $user_source['UID'], glyph("edit") . _("edit")) : '',
                   ($admin_user_privilege && ! $user_source['Gekommen']) ? button(page_link_to('admin_arrive') . '&arrived=' . $user_source['UID'], _("arrived")) : '',
-                  ($admin_user_privilege && ! $user_source['got_voucher']) ? button(page_link_to('users') . '&action=got_voucher&user_id=' . $user_source['UID'] . '&got_voucher=true', _('Got vouchers')) : '',
-                  ($admin_user_privilege && $user_source['got_voucher']) ? button(page_link_to('users') . '&action=got_voucher&user_id=' . $user_source['UID'] . '&got_voucher=', _('Remove vouchers')) : '',
+                  $admin_user_privilege ? button(page_link_to('users') . '&action=edit_vouchers&user_id=' . $user_source['UID'], glyph('cutlery') . _('Edit vouchers')) : '',
                   $its_me ? button(page_link_to('user_settings'), glyph('list-alt') . _("Settings")) : '',
                   $its_me ? button(page_link_to('ical') . '&key=' . $user_source['api_key'], glyph('calendar') . _("iCal Export")) : '',
                   $its_me ? button(page_link_to('shifts_json_export') . '&key=' . $user_source['api_key'], glyph('export') . _("JSON Export")) : '',

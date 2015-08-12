@@ -29,7 +29,7 @@ function User_update($user) {
       `color`='" . sql_escape($user['color']) . "',
       `Sprache`='" . sql_escape($user['Sprache']) . "',
       `Hometown`='" . sql_escape($user['Hometown']) . "',
-      `got_voucher`=" . sql_bool($user['got_voucher']) . ",
+      `got_voucher`='" . sql_escape($user['got_voucher']) . "',
       `arrival_date`='" . sql_escape($user['arrival_date']) . "',
       `planned_arrival_date`='" . sql_escape($user['planned_arrival_date']) . "'
       WHERE `UID`='" . sql_escape($user['UID']) . "'");
@@ -47,7 +47,7 @@ function User_active_count() {
 }
 
 function User_got_voucher_count() {
-  return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `got_voucher` = TRUE");
+  return sql_select_single_cell("SELECT SUM(`got_voucher`) FROM `User`");
 }
 
 function User_arrived_count() {
