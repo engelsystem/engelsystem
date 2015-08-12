@@ -39,7 +39,7 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
   foreach ($users as &$user) {
     $user['Nick'] = User_Nick_render($user);
     $user['Gekommen'] = glyph_bool($user['Gekommen']);
-    $user['got_voucher'] = glyph_bool($user['got_voucher']);
+    $user['got_voucher'] = $user['got_voucher'];
     $user['Aktiv'] = glyph_bool($user['Aktiv']);
     $user['force_active'] = glyph_bool($user['force_active']);
     $user['Tshirt'] = glyph_bool($user['Tshirt']);
