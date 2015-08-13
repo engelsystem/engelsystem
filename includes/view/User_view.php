@@ -159,15 +159,15 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
     $myshift['actions'] = table_buttons($myshift['actions']);
     
     if ($shift['freeloaded'])
-      $timesum += - 2 * ($shift['end'] - $shift['start']);
+      $timesum += (- 2 * ($shift['end'] - $shift['start']));
     else
-      $timesum += $shift['end'] - $shift['start'];
+      $timesum += ($shift['end'] - $shift['start']);
     $myshifts_table[] = $myshift;
   }
   if (count($myshifts_table) > 0)
     $myshifts_table[] = array(
         'date' => '<b>' . _("Sum:") . '</b>',
-        'time' => "<b>" . round($timesum / (60 * 60), 1) . " h</b>",
+        'time' => "<b>" . round($timesum / 3600, 1) . " h</b>",
         'room' => "",
         'shift_info' => "",
         'comment' => "",

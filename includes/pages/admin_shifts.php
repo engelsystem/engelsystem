@@ -10,7 +10,7 @@ function admin_shifts() {
   
   $rid = 0;
   $start = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d") . " 00:00")->getTimestamp();
-  $end = $start + 24 * 60 * 60;
+  $end = $start;
   $mode = 'single';
   $angelmode = 'manually';
   $length = '';
