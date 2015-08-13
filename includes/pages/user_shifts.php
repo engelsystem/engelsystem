@@ -371,9 +371,13 @@ function view_user_shifts() {
     $_SESSION['user_shifts'] = array();
   
   if (! isset($_SESSION['user_shifts']['filled'])) {
-    $_SESSION['user_shifts']['filled'] = array(
+    // User shift admins see free and occupied shifts by default
+    $_SESSION['user_shifts']['filled'] = in_array('user_shifts_admin', $privileges) ? [
+        0,
+        1 
+    ] : [
         0 
-    );
+    ];
   }
   
   foreach (array(
