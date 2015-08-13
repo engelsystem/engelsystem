@@ -93,11 +93,11 @@ function admin_user() {
     
     $html .= "<hr />";
     
-    $my_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($user['UID']) . "' ORDER BY `uid` LIMIT 1");
+    $my_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($user['UID']) . "' ORDER BY `group_id` LIMIT 1");
     if (count($my_highest_group) > 0)
       $my_highest_group = $my_highest_group[0]['group_id'];
     
-    $his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($id) . "' ORDER BY `uid` LIMIT 1");
+    $his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($id) . "' ORDER BY `group_id` LIMIT 1");
     if (count($his_highest_group) > 0)
       $his_highest_group = $his_highest_group[0]['group_id'];
     
