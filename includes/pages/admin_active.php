@@ -103,7 +103,7 @@ function admin_active() {
       FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
       LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` 
       WHERE `User`.`Gekommen` = 1
-      " . ($show_all_shifts ? "" : "AND `Shifts`.`end` < " . time()) . "
+      " . ($show_all_shifts ? "" : "AND (`Shifts`.`end` < " . time() . " OR `Shifts`.`end` IS NULL)") . "
       GROUP BY `User`.`UID` 
       ORDER BY `force_active` DESC, `shift_length` DESC" . $limit);
   
