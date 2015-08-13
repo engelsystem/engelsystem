@@ -46,7 +46,7 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
           $entry = '<strike>' . $entry . '</strike>';
         if ($user_shift_admin) {
           $entry .= ' <div class="btn-group">';
-          $entry .= button_glyph(page_link_to('user_myshifts') . '&edit=' . $shift['SID'] . '&id=' . $shift_entry['UID'], 'pencil', 'btn-xs');
+          $entry .= button_glyph(page_link_to('user_myshifts') . '&edit=' . $shift_entry['id'] . '&id=' . $shift_entry['UID'], 'pencil', 'btn-xs');
           $entry .= button_glyph(page_link_to('user_shifts') . '&entry_id=' . $shift_entry['id'], 'trash', 'btn-xs');
           $entry .= '</div>';
         }
