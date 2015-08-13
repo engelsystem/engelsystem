@@ -133,13 +133,13 @@ function admin_active() {
     
     $actions = array();
     if ($usr['Aktiv'] == 0)
-      $actions[] = '<a href="' . page_link_to('admin_active') . '&amp;active=' . $usr['UID'] . '&amp;search=' . $search . '">' . _("set active") . '</a>';
+      $actions[] = '<a href="' . page_link_to('admin_active') . '&amp;active=' . $usr['UID'] . ($show_all_shifts ? '&amp;show_all_shifts=' : '') . '&amp;search=' . $search . '">' . _("set active") . '</a>';
     if ($usr['Aktiv'] == 1 && $usr['Tshirt'] == 0) {
-      $actions[] = '<a href="' . page_link_to('admin_active') . '&amp;not_active=' . $usr['UID'] . '&amp;search=' . $search . '">' . _("remove active") . '</a>';
-      $actions[] = '<a href="' . page_link_to('admin_active') . '&amp;tshirt=' . $usr['UID'] . '&amp;search=' . $search . '">' . _("got t-shirt") . '</a>';
+      $actions[] = '<a href="' . page_link_to('admin_active') . '&amp;not_active=' . $usr['UID'] . ($show_all_shifts ? '&amp;show_all_shifts=' : '') . '&amp;search=' . $search . '">' . _("remove active") . '</a>';
+      $actions[] = '<a href="' . page_link_to('admin_active') . '&amp;tshirt=' . $usr['UID'] . ($show_all_shifts ? '&amp;show_all_shifts=' : '') . '&amp;search=' . $search . '">' . _("got t-shirt") . '</a>';
     }
     if ($usr['Tshirt'] == 1)
-      $actions[] = '<a href="' . page_link_to('admin_active') . '&amp;not_tshirt=' . $usr['UID'] . '&amp;search=' . $search . '">' . _("remove t-shirt") . '</a>';
+      $actions[] = '<a href="' . page_link_to('admin_active') . '&amp;not_tshirt=' . $usr['UID'] . ($show_all_shifts ? '&amp;show_all_shifts=' : '') . '&amp;search=' . $search . '">' . _("remove t-shirt") . '</a>';
     
     $usr['actions'] = join(' ', $actions);
     
@@ -162,7 +162,7 @@ function admin_active() {
           form_text('search', _("Search angel:"), $search),
           form_checkbox('show_all_shifts', _("Show all shifts"), $show_all_shifts),
           form_submit('submit', _("Search")) 
-      )),
+      ), page_link_to('admin_active')),
       $set_active == "" ? form(array(
           form_text('count', _("How much angels should be active?"), $count),
           form_submit('set_active', _("Preview")) 
