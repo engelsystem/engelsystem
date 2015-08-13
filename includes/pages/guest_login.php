@@ -139,7 +139,7 @@ function guest_register() {
           `DECT`='" . sql_escape($dect) . "', 
           `Handy`='" . sql_escape($mobile) . "', 
           `email`='" . sql_escape($mail) . "', 
-          `email_shiftinfo`='" . sql_escape($email_shiftinfo ? 'TRUE' : 'FALSE') . "', 
+          `email_shiftinfo`=" . sql_bool($email_shiftinfo) . ", 
           `jabber`='" . sql_escape($jabber) . "',
           `Size`='" . sql_escape($tshirt_size) . "', 
           `Passwort`='" . sql_escape($password_hash) . "', 
