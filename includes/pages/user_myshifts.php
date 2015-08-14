@@ -79,7 +79,7 @@ function user_myshifts() {
   } elseif (isset($_REQUEST['cancel']) && preg_match("/^[0-9]*$/", $_REQUEST['cancel'])) {
     $id = $_REQUEST['cancel'];
     $shift = sql_select("
-        SELECT `Shifts`.`start` 
+        SELECT *
         FROM `Shifts` 
         INNER JOIN `ShiftEntry` USING (`SID`) 
         WHERE `ShiftEntry`.`id`='" . sql_escape($id) . "' AND `UID`='" . sql_escape($shifts_user['UID']) . "'");
@@ -89,6 +89,11 @@ function user_myshifts() {
         $result = ShiftEntry_delete($id);
         if ($result === false)
           engelsystem_error('Unable to delete shift entry.');
+        $room = Room($shift['RID']);
+        $angeltype = AngelType($shift['TID']);
+        $shifttype = ShiftType($shift['shifttype_id']);
+        
+        engelsystem_log("Deleted own shift: " . $shifttype['name'] . " at " . $room['Name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']) . " as " . $angeltype['name']);
         success(_("You have been signed off from the shift."));
       } else
         error(_("It's too late to sign yourself off the shift. If neccessary, ask the dispatcher to do so."));
