@@ -223,6 +223,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
           'comment' => _("Comment"),
           'actions' => _("Action") 
       ), $myshifts_table) : '',
+      $its_me ? info(glyph('info-sign') . _("Your night shifts between 2 and 8 am count twice."), true) : '',
       $its_me && count($shifts) == 0 ? error(sprintf(_("Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some shifts."), page_link_to('user_shifts')), true) : '' 
   ));
 }
