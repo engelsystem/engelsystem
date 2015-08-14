@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2015-08-14 14:06+0100\n"
-"PO-Revision-Date: 2015-08-14 14:06+0100\n"
+"POT-Creation-Date: 2015-08-14 14:16+0100\n"
+"PO-Revision-Date: 2015-08-14 14:16+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -556,23 +556,22 @@ msgstr "hat t-shirt"
 msgid "remove t-shirt"
 msgstr "entferne t-shirt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:156
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:165
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:160
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:139
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:146
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:52
 msgid "Sum"
 msgstr "Summe"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:171
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:167
 msgid "Search angel:"
 msgstr "Suche Engel:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:172
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:168
 msgid "Show all shifts"
 msgstr "Alle Schichten anzeigen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:173
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:169
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:86
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:87
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:71
@@ -582,62 +581,60 @@ msgstr "Alle Schichten anzeigen"
 msgid "Search"
 msgstr "Suche"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:176
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:172
 msgid "How much angels should be active?"
 msgstr "Wie viele Engel sollten aktiv sein?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:177
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:173
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:239
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:322
 msgid "Preview"
 msgstr "Vorschau"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:181
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:177
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:90
 msgid "Nickname"
 msgstr "Nick"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:182
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:194
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:201
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:178
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:188
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:78
 msgid "Size"
 msgstr "Größe"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:183
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:179
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:4
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:217
 msgid "Shifts"
 msgstr "Schichten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:184
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:180
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:311
 msgid "Length"
 msgstr "Länge"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:185
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:181
 msgid "Active?"
 msgstr "Aktiv?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:186
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:182
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:76
 msgid "Forced"
 msgstr "Gezwungen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:187
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:183
 msgid "T-shirt?"
 msgstr "T-Shirt?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:192
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:186
+msgid "Shirt statistics"
+msgstr "T-Shirt Statistik"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:189
 msgid "Needed shirts"
 msgstr "Benötigte T-Shirts"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:195
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:202
-msgid "Count"
-msgstr "Anzahl"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:199
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:190
 msgid "Given shirts"
 msgstr "Ausgegebene T-Shirts"
 
@@ -2203,6 +2200,9 @@ msgid ""
 msgstr ""
 "Du hast keinen Zugriff auf diese Seite. Registriere Dich und logge Dich "
 "bitte ein, um Zugriff zu erhalten!"
+
+#~ msgid "Count"
+#~ msgstr "Anzahl"
 
 #~ msgid "User didnt got vouchers."
 #~ msgstr "Engel hat keine Voucher mehr."
