@@ -145,26 +145,22 @@ function admin_active() {
     
     $matched_users[] = $usr;
   }
-
-  $given_shirt_statistics = sql_select("
-      SELECT `Size`, count(`Size`) AS `count`
-      FROM `User`
-      WHERE `Tshirt`=1
-      GROUP BY `Size`
-      ORDER BY `Size` DESC");
-  $given_shirt_statistics[] = array(
-      'Size' => '<b>' . _("Sum") . '</b>',
-      'count' => '<b>' . sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Tshirt`=1") . '</b>'
-  );
-  $needed_shirt_statistics = sql_select("
-      SELECT `Size`, count(`Size`) AS `count`
-      FROM `User`
-      GROUP BY `Size`
-      ORDER BY `Size` DESC");
-  $needed_shirt_statistics[] = array(
-      'Size' => '<b>' . _("Sum") . '</b>',
-      'count' => '<b>' . sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Tshirt`=1") . '</b>' 
-  );
+  
+  $shirt_statistics = [];
+  foreach ($tshirt_sizes as $size => $_) {
+    if ($size != '') {
+      $shirt_statistics[] = [
+          'size' => $size,
+          'needed' => sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Size`='" . sql_escape($size) . "' AND `Gekommen`=1"),
+          'given' => sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Size`='" . sql_escape($size) . "' AND `Tshirt`=1") 
+      ];
+    }
+  }
+  $shirt_statistics[] = [
+      'size' => '<b>' . _("Sum") . '</b>',
+      'needed' => '<b>' . User_arrived_count() . '</b>',
+      'given' => '<b>' . sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Tshirt`=1") . '</b>' 
+  ];
   
   return page_with_title(admin_active_title(), array(
       form(array(
@@ -187,22 +183,12 @@ function admin_active() {
           'tshirt' => _("T-shirt?"),
           'actions' => "" 
       ), $matched_users),
-      div('row', [
-          div('col-md-6', [
-              '<h2>' . _("Needed shirts") . '</h2>' ,
-              table(array(
-                  'Size' => _("Size"),
-                  'count' => _("Count") 
-              ), $needed_shirt_statistics) 
-          ]),
-          div('col-md-6', [
-              '<h2>' . _("Given shirts") . '</h2>',
-              table(array(
-                  'Size' => _("Size"),
-                  'count' => _("Count") 
-              ), $given_shirt_statistics) 
-          ]) 
-      ]) 
+      '<h2>' . _("Shirt statistics") . '</h2>',
+      table(array(
+          'size' => _("Size"),
+          'needed' => _("Needed shirts"),
+          'given' => _("Given shirts") 
+      ), $shirt_statistics) 
   ));
 }
 ?>
