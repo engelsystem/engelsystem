@@ -293,7 +293,7 @@ function admin_shifts() {
   $room_select = html_select_key('rid', 'rid', $room_array, $_REQUEST['rid']);
   $angel_types = "";
   foreach ($types as $type)
-    $angel_types .= form_spinner('type_' . $type['id'], $type['name'], $needed_angel_types[$type['id']]);
+    $angel_types .= '<div class="col-md-4">' . form_spinner('type_' . $type['id'], $type['name'], $needed_angel_types[$type['id']]) . '</div>';
   
   return page_with_title(admin_shifts_title(), array(
       msg(),
@@ -316,7 +316,7 @@ function admin_shifts() {
           form_info(_("Needed angels"), ''),
           form_radio('angelmode', _("Take needed angels from room settings"), $angelmode == 'location', 'location'),
           form_radio('angelmode', _("The following angels are needed"), $angelmode == 'manually', 'manually'),
-          $angel_types,
+          '<div class="row">'.$angel_types.'</div>',
           '</div>',
           '</div>',
           form_submit('preview', _("Preview")) 
