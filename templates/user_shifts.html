@@ -1,13 +1,10 @@
 <script type="text/javascript">
 	function set_to_now(id) {
-		var now = new Date();
-		document.getElementById(id + '_time').value = now.getHours() + ':'
-				+ now.getMinutes();
+		document.getElementById(id + '_time').value = moment().format('HH:mm');
 		var days = document.getElementById(id + '_day').getElementsByTagName(
 				'option');
 		for ( var i = 0; i < days.length; i++) {
-			if (days[i].value == (1900 + now.getYear()) + '-'
-					+ (1 + now.getMonth()) + '-' + now.getDate())
+			if (days[i].value == moment().format('YYYY-MM-DD'))
 				days[i].selected = true;
 		}
 	}
