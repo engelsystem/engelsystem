@@ -145,14 +145,23 @@ function admin_active() {
     
     $matched_users[] = $usr;
   }
-  
-  $shirt_statistics = sql_select("
+
+  $given_shirt_statistics = sql_select("
       SELECT `Size`, count(`Size`) AS `count`
       FROM `User`
       WHERE `Tshirt`=1
       GROUP BY `Size`
-      ORDER BY `count` DESC");
-  $shirt_statistics[] = array(
+      ORDER BY `Size` DESC");
+  $given_shirt_statistics[] = array(
+      'Size' => '<b>' . _("Sum") . '</b>',
+      'count' => '<b>' . sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Tshirt`=1") . '</b>'
+  );
+  $needed_shirt_statistics = sql_select("
+      SELECT `Size`, count(`Size`) AS `count`
+      FROM `User`
+      GROUP BY `Size`
+      ORDER BY `Size` DESC");
+  $needed_shirt_statistics[] = array(
       'Size' => '<b>' . _("Sum") . '</b>',
       'count' => '<b>' . sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Tshirt`=1") . '</b>' 
   );
@@ -178,11 +187,22 @@ function admin_active() {
           'tshirt' => _("T-shirt?"),
           'actions' => "" 
       ), $matched_users),
-      '<h2>' . _("Given shirts") . '</h2>',
-      table(array(
-          'Size' => _("Size"),
-          'count' => _("Count") 
-      ), $shirt_statistics) 
+      div('row', [
+          div('col-md-6', [
+              '<h2>' . _("Needed shirts") . '</h2>' ,
+              table(array(
+                  'Size' => _("Size"),
+                  'count' => _("Count") 
+              ), $needed_shirt_statistics) 
+          ]),
+          div('col-md-6', [
+              '<h2>' . _("Given shirts") . '</h2>',
+              table(array(
+                  'Size' => _("Size"),
+                  'count' => _("Count") 
+              ), $given_shirt_statistics) 
+          ]) 
+      ]) 
   ));
 }
 ?>

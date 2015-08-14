@@ -268,7 +268,7 @@ function User_angeltypes_render($user_angeltypes) {
         $class = 'text-warning';
     else
       $class = 'text-success';
-    $output[] = '<span class="' . $class . '">' . ($angeltype['coordinator'] ? '<span class="glyphicon glyphicon-certificate"></span> ' : '') . $angeltype['name'] . '</span>';
+    $output[] = '<span class="' . $class . '">' . ($angeltype['coordinator'] ? glyph('education') : '') . $angeltype['name'] . '</span>';
   }
   return join('<br />', $output);
 }
