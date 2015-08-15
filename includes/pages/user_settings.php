@@ -25,6 +25,7 @@ function user_settings() {
   $selected_theme = $user['color'];
   $selected_language = $user['Sprache'];
   $planned_arrival_date = $user['planned_arrival_date'];
+  $planned_departure_date = $user['planned_departure_date'];
   
   if (isset($_REQUEST['submit'])) {
     $ok = true;
@@ -63,7 +64,17 @@ function user_settings() {
       $msg .= error(_("Please enter your planned date of arrival."), true);
     }
     
-    // Trivia
+    if (isset($_REQUEST['planned_departure_date']) && $_REQUEST['planned_departure_date'] != '') {
+      if (DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_departure_date']))) {
+        $planned_departure_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_departure_date']))->getTimestamp();
+      } else {
+        $ok = false;
+        $msg .= error(_("Please enter your planned date of departure."), true);
+      }
+    } else
+      $planned_departure_date = null;
+      
+      // Trivia
     if (isset($_REQUEST['lastname']))
       $lastname = strip_request_item('lastname');
     if (isset($_REQUEST['prename']))
@@ -94,7 +105,8 @@ function user_settings() {
           `jabber`='" . sql_escape($jabber) . "',
           `Size`='" . sql_escape($tshirt_size) . "',
           `Hometown`='" . sql_escape($hometown) . "',
-          `planned_arrival_date`='" . sql_escape($planned_arrival_date) . "'
+          `planned_arrival_date`='" . sql_escape($planned_arrival_date) . "',
+          `planned_departure_date`=" . sql_null($planned_departure_date) . "
           WHERE `UID`='" . sql_escape($user['UID']) . "'");
       
       success(_("Settings saved."));
@@ -157,6 +169,7 @@ function user_settings() {
                   form_text('lastname', _("Last name"), $lastname),
                   form_text('prename', _("First name"), $prename),
                   form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, time()),
+                  form_date('planned_departure_date', _("Planned date of departure"), $planned_departure_date, time()),
                   form_text('age', _("Age"), $age),
                   form_text('tel', _("Phone"), $tel),
                   form_text('dect', _("DECT"), $dect),

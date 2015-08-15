@@ -31,11 +31,12 @@ function admin_arrive() {
   }
   
   $users = sql_select("SELECT * FROM `User` ORDER BY `Nick`");
-  $arrival_count_at_day = array();
+  $arrival_count_at_day = [];
+  $departure_count_at_day = [];
   $table = "";
-  $users_matched = array();
+  $users_matched = [];
   if ($search == "")
-    $tokens = array();
+    $tokens = [];
   else
     $tokens = explode(" ", $search);
   foreach ($users as $usr) {
@@ -52,6 +53,10 @@ function admin_arrive() {
     }
     
     $usr['nick'] = User_Nick_render($usr);
+    if ($usr['planned_departure_date'] != null)
+      $usr['rendered_planned_departure_date'] = date('Y-m-d', $usr['planned_departure_date']);
+    else
+      $usr['rendered_planned_departure_date'] = '-';
     $usr['rendered_planned_arrival_date'] = date('Y-m-d', $usr['planned_arrival_date']);
     $usr['rendered_arrival_date'] = $usr['arrival_date'] > 0 ? date('Y-m-d', $usr['arrival_date']) : "-";
     $usr['arrived'] = $usr['Gekommen'] == 1 ? _("yes") : "";
@@ -60,24 +65,37 @@ function admin_arrive() {
     $day = $usr['arrival_date'] > 0 ? date('Y-m-d', $usr['arrival_date']) : date('Y-m-d', $usr['planned_arrival_date']);
     if (! isset($arrival_count_at_day[$day]))
       $arrival_count_at_day[$day] = 0;
+    if (! isset($departure_count_at_day[$day]))
+      $departure_count_at_day[$day] = 0;
     $arrival_count_at_day[$day] ++;
+    
+    if ($usr['planned_departure_date'] != null) {
+      $day = date('Y-m-d', $usr['planned_departure_date']);
+      if (! isset($arrival_count_at_day[$day]))
+        $arrival_count_at_day[$day] = 0;
+      if (! isset($departure_count_at_day[$day]))
+        $departure_count_at_day[$day] = 0;
+      $departure_count_at_day[$day] ++;
+    }
     
     $users_matched[] = $usr;
   }
-  
+
   ksort($arrival_count_at_day);
+  ksort($departure_count_at_day);
   
-  $arrival_count = array();
-  $arrival_sums = array();
+  $arrival_count = [];
+  $arrival_sums = [];
   $arrival_sum = 0;
   foreach ($arrival_count_at_day as $day => $count) {
-    $arrival_sum += $count;
+    $arrival_sum += $count - $departure_count_at_day[$day];
     $arrival_sums[$day] = $arrival_sum;
-    $arrival_count[] = array(
+    $arrival_count[] = [
         'day' => $day,
         'count' => $count,
-        'sum' => $arrival_sum 
-    );
+        'sum' => $arrival_sum,
+        'departure' => isset($departure_count_at_day[$day]) ? $departure_count_at_day[$day] : 0 
+    ];
   }
   
   return page_with_title(admin_arrive_title(), array(
@@ -88,9 +106,10 @@ function admin_arrive() {
       )),
       table(array(
           'nick' => _("Nickname"),
-          'rendered_planned_arrival_date' => _("Planned date"),
+          'rendered_planned_arrival_date' => _("Planned arrival"),
           'arrived' => _("Arrived?"),
           'rendered_arrival_date' => _("Arrival date"),
+          'rendered_planned_departure_date' => _("Planned departure"),
           'actions' => "" 
       ), $users_matched),
       heading(_("Arrival statistics"), 2),
@@ -103,13 +122,18 @@ function admin_arrive() {
           'datasets' => array(
               array(
                   'label' => _("arrived"),
-                  'fillColor' => "#444",
+                  'fillColor' => "#090",
                   'data' => array_values($arrival_count_at_day) 
               ),
               array(
                   'label' => _("arrived sum"),
                   'fillColor' => "#888",
                   'data' => array_values($arrival_sums) 
+              ),
+              array(
+                  'label' => _("planned departure"),
+                  'fillColor' => "#900",
+                  'data' => array_values($departure_count_at_day) 
               ) 
           ) 
       )) . ');
@@ -118,7 +142,8 @@ function admin_arrive() {
       table(array(
           'day' => _("Date"),
           'count' => _("arrived"),
-          'sum' => _("arrived sum") 
+          'sum' => _("arrived sum"),
+          'departure' => _("planned departure") 
       ), $arrival_count) 
   ));
 }

@@ -1,3 +1,6 @@
+/* Introduce planned departure date */
+ALTER TABLE `User` ADD `planned_departure_date` INT NULL, ADD INDEX ( `planned_departure_date` );
+
 /* Allow longer angeltype names */
 ALTER TABLE `AngelTypes` CHANGE `name` `name` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';
 
