@@ -101,6 +101,7 @@ function Shift_delete($shift_id) {
  * Update a shift.
  */
 function Shift_update($shift) {
+  global $user;
   $shift['name'] = ShiftType($shift['shifttype_id'])['name'];
   mail_shift_change(Shift($shift['SID']), $shift);
   
@@ -111,7 +112,9 @@ function Shift_update($shift) {
       `RID`='" . sql_escape($shift['RID']) . "',
       `title`=" . sql_null($shift['title']) . ",
       `URL`=" . sql_null($shift['URL']) . ",
-      `PSID`=" . sql_null($shift['PSID']) . "
+      `PSID`=" . sql_null($shift['PSID']) . ",
+      `edited_by_user_id`='" . sql_escape($user['UID']) . "',
+      `edited_at_timestamp`=" . time() . "
       WHERE `SID`='" . sql_escape($shift['SID']) . "'");
 }
 
@@ -134,6 +137,7 @@ function Shift_update_by_psid($shift) {
  * @return new shift id or false
  */
 function Shift_create($shift) {
+  global $user;
   $result = sql_query("INSERT INTO `Shifts` SET
       `shifttype_id`='" . sql_escape($shift['shifttype_id']) . "',
       `start`='" . sql_escape($shift['start']) . "',
@@ -141,7 +145,9 @@ function Shift_create($shift) {
       `RID`='" . sql_escape($shift['RID']) . "',
       `title`=" . sql_null($shift['title']) . ",
       `URL`=" . sql_null($shift['URL']) . ",
-      `PSID`=" . sql_null($shift['PSID']));
+      `PSID`=" . sql_null($shift['PSID']) . ",
+      `created_by_user_id`='" . sql_escape($user['UID']) . "',
+      `created_at_timestamp`=" . time());
   if ($result === false)
     return false;
   return sql_id();

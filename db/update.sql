@@ -1,3 +1,16 @@
+/* more shift infos */
+ALTER TABLE `Shifts` ADD `created_by_user_id` INT NOT NULL ,
+ADD `created_at_timestamp` INT NOT NULL ,
+ADD `edited_by_user_id` INT NOT NULL ,
+ADD `edited_at_timestamp` INT NOT NULL;
+ALTER TABLE `Shifts` ADD INDEX ( `created_by_user_id` );
+ALTER TABLE `Shifts` ADD INDEX ( `edited_by_user_id` );
+ALTER TABLE `Shifts` CHANGE `created_by_user_id` `created_by_user_id` INT( 11 ) NULL ;
+ALTER TABLE `Shifts` CHANGE `edited_by_user_id` `edited_by_user_id` INT( 11 ) NULL ;
+update Shifts set created_by_user_id=null, edited_by_user_id=null;
+ALTER TABLE `Shifts` ADD FOREIGN KEY ( `created_by_user_id` ) REFERENCES `engelsystem`.`User` (`UID`) ON DELETE SET NULL ON UPDATE CASCADE ;
+ALTER TABLE `Shifts` ADD FOREIGN KEY ( `edited_by_user_id` ) REFERENCES `engelsystem`.`User` (`UID`) ON DELETE SET NULL ON UPDATE CASCADE ;
+
 /* Introduce planned departure date */
 ALTER TABLE `User` ADD `planned_departure_date` INT NULL, ADD INDEX ( `planned_departure_date` );
 

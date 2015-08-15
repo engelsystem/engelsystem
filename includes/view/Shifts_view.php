@@ -1,5 +1,14 @@
 <?php
 
+function Shift_editor_info_render($shift) {
+  $info = [];
+  if ($shift['created_by_user_id'] != null)
+    $info[] = sprintf(glyph('plus') . _("created at %s by %s"), date('Y-m-d H:i', $shift['created_at_timestamp']), User_Nick_render(User($shift['created_by_user_id'])));
+  if ($shift['edited_by_user_id'] != null)
+    $info[] = sprintf(glyph('pencil') . _("edited at %s by %s"), date('Y-m-d H:i', $shift['edited_at_timestamp']), User_Nick_render(User($shift['edited_by_user_id'])));
+  return join('<br />', $info);
+}
+
 function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null, $user_shifts = null) {
   global $user;
   
@@ -60,6 +69,7 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
   }
   
   return page_with_title($shift['name'] . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>', [
+      
       msg(),
       Shift_collides($shift, $user_shifts) ? info(_('This shift collides with one of your shifts.'), true) : '',
       $signed_up ? info(_('You are signed up for this shift.'), true) : '',
@@ -104,7 +114,8 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
               '<h2>' . _('Description') . '</h2>',
               $parsedown->parse($shifttype['description']) 
           ]) 
-      ]) 
+      ]),
+      $shift_admin ? Shift_editor_info_render($shift) : '' 
   ]);
 }
 

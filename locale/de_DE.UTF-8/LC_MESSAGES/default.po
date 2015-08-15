@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2015-08-15 14:53+0100\n"
-"PO-Revision-Date: 2015-08-15 14:54+0100\n"
+"POT-Creation-Date: 2015-08-15 23:36+0100\n"
+"PO-Revision-Date: 2015-08-15 23:36+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -114,7 +114,7 @@ msgstr "ansehen"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_groups.php:23
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:18
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:84
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:67
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:77
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:52
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:63
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:156
@@ -131,7 +131,7 @@ msgstr "bearbeiten"
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:86
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:5
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:12
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:68
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:78
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:15
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:53
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:64
@@ -680,7 +680,6 @@ msgid "arrived"
 msgstr "angekommen"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:109
-#, fuzzy
 msgid "Planned arrival"
 msgstr "Geplanter Ankunftstag"
 
@@ -907,7 +906,7 @@ msgstr "Tag"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:128
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:137
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:306
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:78
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:88
 msgid "Start"
 msgstr "Beginn"
 
@@ -915,7 +914,7 @@ msgstr "Beginn"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:129
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:138
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:307
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:86
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:96
 msgid "End"
 msgstr "Ende"
 
@@ -930,7 +929,7 @@ msgstr "Schichttyp"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:140
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:302
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:185
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:74
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:84
 msgid "Title"
 msgstr "Titel"
 
@@ -1137,7 +1136,7 @@ msgstr "Typ und Titel"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:255
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:316
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:189
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:100
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:110
 msgid "Needed angels"
 msgstr "Benötigte Engel"
 
@@ -1715,7 +1714,7 @@ msgstr[0] "%d Helfer benötigt"
 msgstr[1] "%d Helfer benötigt"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:638
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:13
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:22
 msgid "Sign up"
 msgstr "Eintragen"
 
@@ -1725,7 +1724,7 @@ msgstr "vorbei"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:649
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:782
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:15
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:24
 #, php-format
 msgid "Become %s"
 msgstr "Werde ein %s"
@@ -1846,7 +1845,7 @@ msgstr ""
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:63
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:93
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:104
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:114
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:35
 msgid "Description"
 msgstr "Beschreibung"
@@ -1972,15 +1971,25 @@ msgstr "Typ:"
 msgid "Comment (for your eyes only):"
 msgstr "Kommentar (nur für Dich):"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:64
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:6
+#, php-format
+msgid "created at %s by %s"
+msgstr "erstellt am %s von %s"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:8
+#, php-format
+msgid "edited at %s by %s"
+msgstr "bearbeitet am %s von %s"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:74
 msgid "This shift collides with one of your shifts."
 msgstr "Diese Schicht kollidiert mit deinen Schichten."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:65
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:75
 msgid "You are signed up for this shift."
 msgstr "Du bist für diese Schicht eingetragen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:94
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:104
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:221
 msgid "Location"
 msgstr "Ort"
