@@ -104,7 +104,7 @@ function admin_arrive() {
   
   $planned_arrival_sum_at_day = [];
   $planned_arrival_sum = 0;
-  foreach ($arrival_count_at_day as $day => $count) {
+  foreach ($planned_arrival_count_at_day as $day => $count) {
     $planned_arrival_sum += $count;
     $planned_arrival_at_day[$day] = [
         'day' => $day,
