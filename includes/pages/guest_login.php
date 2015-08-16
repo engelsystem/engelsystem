@@ -180,7 +180,7 @@ function guest_register() {
                           form_text('nick', _("Nick") . ' ' . entry_required(), $nick) 
                       )),
                       div('col-sm-8', array(
-                          form_text('mail', _("E-Mail") . ' ' . entry_required(), $mail),
+                          form_email('mail', _("E-Mail") . ' ' . entry_required(), $mail),
                           form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $email_shiftinfo) 
                       )) 
                   )),
