@@ -269,6 +269,14 @@ function form_text($name, $label, $value, $disabled = false) {
 }
 
 /**
+ * Rendert ein Formular-Emailfeld
+ */
+function form_email($name, $label, $value, $disabled = false) {
+  $disabled = $disabled ? ' disabled="disabled"' : '';
+  return form_element($label, '<input class="form-control" id="form_' . $name . '" type="email" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . $disabled . '/>', 'form_' . $name);
+}
+
+/**
  * Rendert ein Formular-Dateifeld
  */
 function form_file($name, $label) {
