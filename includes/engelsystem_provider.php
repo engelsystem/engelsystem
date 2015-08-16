@@ -38,6 +38,7 @@ require_once realpath(__DIR__ . '/../includes/controller/shifttypes_controller.p
 require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/user_angeltypes_controller.php');
 
+require_once realpath(__DIR__ . '/../includes/helper/graph_helper.php');
 require_once realpath(__DIR__ . '/../includes/helper/internationalization_helper.php');
 require_once realpath(__DIR__ . '/../includes/helper/message_helper.php');
 require_once realpath(__DIR__ . '/../includes/helper/error_helper.php');

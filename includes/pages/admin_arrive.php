@@ -32,7 +32,8 @@ function admin_arrive() {
   
   $users = sql_select("SELECT * FROM `User` ORDER BY `Nick`");
   $arrival_count_at_day = [];
-  $departure_count_at_day = [];
+  $planned_arrival_count_at_day = [];
+  $planned_departure_count_at_day = [];
   $table = "";
   $users_matched = [];
   if ($search == "")
@@ -62,39 +63,64 @@ function admin_arrive() {
     $usr['arrived'] = $usr['Gekommen'] == 1 ? _("yes") : "";
     $usr['actions'] = $usr['Gekommen'] == 1 ? '<a href="' . page_link_to('admin_arrive') . '&reset=' . $usr['UID'] . '&search=' . $search . '">' . _("reset") . '</a>' : '<a href="' . page_link_to('admin_arrive') . '&arrived=' . $usr['UID'] . '&search=' . $search . '">' . _("arrived") . '</a>';
     
-    $day = $usr['arrival_date'] > 0 ? date('Y-m-d', $usr['arrival_date']) : date('Y-m-d', $usr['planned_arrival_date']);
-    if (! isset($arrival_count_at_day[$day]))
-      $arrival_count_at_day[$day] = 0;
-    if (! isset($departure_count_at_day[$day]))
-      $departure_count_at_day[$day] = 0;
-    $arrival_count_at_day[$day] ++;
-    
-    if ($usr['planned_departure_date'] != null) {
-      $day = date('Y-m-d', $usr['planned_departure_date']);
+    if ($usr['arrival_date'] > 0) {
+      $day = date('Y-m-d', $usr['arrival_date']);
       if (! isset($arrival_count_at_day[$day]))
         $arrival_count_at_day[$day] = 0;
-      if (! isset($departure_count_at_day[$day]))
-        $departure_count_at_day[$day] = 0;
-      $departure_count_at_day[$day] ++;
+      $arrival_count_at_day[$day] ++;
+    }
+    
+    if ($usr['planned_arrival_date'] != null) {
+      $day = date('Y-m-d', $usr['planned_arrival_date']);
+      if (! isset($planned_arrival_count_at_day[$day]))
+        $planned_arrival_count_at_day[$day] = 0;
+      $planned_arrival_count_at_day[$day] ++;
+    }
+    
+    if ($usr['planned_departure_date'] != null && $usr['Gekommen'] == 1) {
+      $day = date('Y-m-d', $usr['planned_departure_date']);
+      if (! isset($planned_departure_count_at_day[$day]))
+        $planned_departure_count_at_day[$day] = 0;
+      $planned_departure_count_at_day[$day] ++;
     }
     
     $users_matched[] = $usr;
   }
-
-  ksort($arrival_count_at_day);
-  ksort($departure_count_at_day);
   
-  $arrival_count = [];
-  $arrival_sums = [];
+  ksort($arrival_count_at_day);
+  ksort($planned_arrival_count_at_day);
+  ksort($planned_departure_count_at_day);
+  
+  $arrival_at_day = [];
   $arrival_sum = 0;
   foreach ($arrival_count_at_day as $day => $count) {
-    $arrival_sum += $count - $departure_count_at_day[$day];
-    $arrival_sums[$day] = $arrival_sum;
-    $arrival_count[] = [
+    $arrival_sum += $count;
+    $arrival_at_day[$day] = [
         'day' => $day,
         'count' => $count,
-        'sum' => $arrival_sum,
-        'departure' => isset($departure_count_at_day[$day]) ? $departure_count_at_day[$day] : 0 
+        'sum' => $arrival_sum 
+    ];
+  }
+  
+  $planned_arrival_sum_at_day = [];
+  $planned_arrival_sum = 0;
+  foreach ($arrival_count_at_day as $day => $count) {
+    $planned_arrival_sum += $count;
+    $planned_arrival_at_day[$day] = [
+        'day' => $day,
+        'count' => $count,
+        'sum' => $planned_arrival_sum 
+    ];
+  }
+  
+  $planned_departure_at_day = [];
+  $planned_departure_sum = 0;
+  foreach ($planned_departure_count_at_day as $day => $count) {
+    $planned_departure_sum += $count;
+    $planned_departure_at_day[$day] = [
+        'day' => $day,
+        'count' => $count,
+        'sum' => $planned_departure_sum 
     ];
   }
   
@@ -112,39 +138,53 @@ function admin_arrive() {
           'rendered_planned_departure_date' => _("Planned departure"),
           'actions' => "" 
       ), $users_matched),
-      heading(_("Arrival statistics"), 2),
-      '<canvas id="daily_arrives" style="width: 100%; height: 300px;"></canvas>
-      <script type="text/javascript">
-      $(function(){
-        var ctx = $("#daily_arrives").get(0).getContext("2d");
-        var chart = new Chart(ctx).Bar(' . json_encode(array(
-          'labels' => array_keys($arrival_count_at_day),
-          'datasets' => array(
-              array(
-                  'label' => _("arrived"),
-                  'fillColor' => "#090",
-                  'data' => array_values($arrival_count_at_day) 
-              ),
-              array(
-                  'label' => _("arrived sum"),
-                  'fillColor' => "#888",
-                  'data' => array_values($arrival_sums) 
-              ),
-              array(
-                  'label' => _("planned departure"),
-                  'fillColor' => "#900",
-                  'data' => array_values($departure_count_at_day) 
-              ) 
-          ) 
-      )) . ');
-      });
-      </script>',
-      table(array(
-          'day' => _("Date"),
-          'count' => _("arrived"),
-          'sum' => _("arrived sum"),
-          'departure' => _("planned departure") 
-      ), $arrival_count) 
+      div('row', [
+          div('col-md-4', [
+              heading(_("Planned arrival statistics"), 2),
+              bargraph('planned_arrives', 'day', [
+                  'count' => _("arrived"),
+                  'sum' => _("arrived sum") 
+              ], [
+                  'count' => '#090',
+                  'sum' => '#888' 
+              ], $planned_arrival_at_day),
+              table([
+                  'day' => _("Date"),
+                  'count' => _("Count"),
+                  'sum' => _("Sum") 
+              ], $planned_arrival_at_day) 
+          ]),
+          div('col-md-4', [
+              heading(_("Arrival statistics"), 2),
+              bargraph('arrives', 'day', [
+                  'count' => _("arrived"),
+                  'sum' => _("arrived sum") 
+              ], [
+                  'count' => '#090',
+                  'sum' => '#888' 
+              ], $arrival_at_day),
+              table([
+                  'day' => _("Date"),
+                  'count' => _("Count"),
+                  'sum' => _("Sum") 
+              ], $arrival_at_day) 
+          ]),
+          div('col-md-4', [
+              heading(_("Planned departure statistics"), 2),
+              bargraph('planned_departures', 'day', [
+                  'count' => _("arrived"),
+                  'sum' => _("arrived sum") 
+              ], [
+                  'count' => '#090',
+                  'sum' => '#888' 
+              ], $planned_departure_at_day),
+              table([
+                  'day' => _("Date"),
+                  'count' => _("Count"),
+                  'sum' => _("Sum") 
+              ], $planned_departure_at_day) 
+          ]) 
+      ]) 
   ));
 }
 ?>
