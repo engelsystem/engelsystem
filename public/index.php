@@ -12,7 +12,8 @@ $free_pages = array(
     'ical',
     'shifts_json_export',
     'shifts',
-    'atom' 
+    'atom',
+    'login'
 );
 
 // Gewünschte Seite/Funktion
