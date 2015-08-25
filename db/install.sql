@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 12. Jul 2015 um 14:45
+-- Erstellungszeit: 25. Aug 2015 um 15:29
 -- Server Version: 5.6.12
 -- PHP-Version: 5.5.3
 
@@ -20,19 +20,12 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `AngelTypes`;
 CREATE TABLE IF NOT EXISTS `AngelTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(25) NOT NULL DEFAULT '',
+  `name` varchar(50) NOT NULL DEFAULT '',
   `restricted` int(1) NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Daten für Tabelle `AngelTypes`
---
-
-INSERT INTO `AngelTypes` (`id`, `name`, `restricted`, `description`) VALUES
-(1, 'testengel', 1, '# Überschrift in Ebene 1\n\n#### Überschrift in Ebene 4\n\n[Beschriftung des Hyperlinks](http://de.wikipedia.org/ "Titel, der beim Überfahren mit der Maus angezeigt wird")');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -48,39 +41,40 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`,`privilege_id`),
   KEY `privilege_id` (`privilege_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=258 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=259 ;
 
 --
 -- Daten für Tabelle `GroupPrivileges`
 --
 
 INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
-(85, -6, 10),
-(87, -6, 18),
-(86, -6, 21),
-(216, -5, 5),
-(212, -5, 6),
-(207, -5, 7),
-(211, -5, 12),
-(208, -5, 13),
-(210, -5, 14),
-(214, -5, 16),
-(209, -5, 21),
-(213, -5, 28),
-(206, -5, 31),
-(215, -5, 33),
-(257, -5, 38),
-(219, -4, 14),
-(221, -4, 25),
-(220, -4, 33),
-(241, -3, 5),
-(238, -3, 14),
-(240, -3, 16),
-(237, -3, 19),
-(242, -3, 25),
-(235, -3, 27),
-(239, -3, 28),
-(236, -3, 32),
+(85, -7, 10),
+(87, -7, 18),
+(86, -7, 21),
+(216, -6, 5),
+(212, -6, 6),
+(207, -6, 7),
+(211, -6, 12),
+(208, -6, 13),
+(210, -6, 14),
+(214, -6, 16),
+(209, -6, 21),
+(213, -6, 28),
+(206, -6, 31),
+(215, -6, 33),
+(257, -6, 38),
+(219, -5, 14),
+(221, -5, 25),
+(220, -5, 33),
+(241, -4, 5),
+(238, -4, 14),
+(240, -4, 16),
+(237, -4, 19),
+(242, -4, 25),
+(235, -4, 27),
+(239, -4, 28),
+(236, -4, 32),
+(258, -3, 31),
 (247, -2, 3),
 (246, -2, 4),
 (255, -2, 8),
@@ -117,10 +111,11 @@ CREATE TABLE IF NOT EXISTS `Groups` (
 --
 
 INSERT INTO `Groups` (`Name`, `UID`) VALUES
-('6-Developer', -6),
-('5-Erzengel', -5),
-('4-Team Coordinator', -4),
-('3-Shift Coordinator', -3),
+('6-Developer', -7),
+('5-Erzengel', -6),
+('4-Team Coordinator', -5),
+('3-Shift Coordinator', -4),
+('Shirt-Manager', -3),
 ('2-Engel', -2),
 ('1-Gast', -1);
 
@@ -307,7 +302,7 @@ CREATE TABLE IF NOT EXISTS `Room` (
   `Number` int(11) DEFAULT NULL,
   PRIMARY KEY (`RID`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -347,11 +342,17 @@ CREATE TABLE IF NOT EXISTS `Shifts` (
   `RID` int(11) NOT NULL DEFAULT '0',
   `URL` text,
   `PSID` int(11) DEFAULT NULL,
+  `created_by_user_id` int(11) DEFAULT NULL,
+  `created_at_timestamp` int(11) NOT NULL,
+  `edited_by_user_id` int(11) DEFAULT NULL,
+  `edited_at_timestamp` int(11) NOT NULL,
   PRIMARY KEY (`SID`),
   UNIQUE KEY `PSID` (`PSID`),
   KEY `RID` (`RID`),
-  KEY `shifttype_id` (`shifttype_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `shifttype_id` (`shifttype_id`),
+  KEY `created_by_user_id` (`created_by_user_id`),
+  KEY `edited_by_user_id` (`edited_by_user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=133 ;
 
 -- --------------------------------------------------------
 
@@ -374,7 +375,7 @@ CREATE TABLE IF NOT EXISTS `ShiftTypes` (
 --
 
 INSERT INTO `ShiftTypes` (`id`, `name`, `angeltype_id`, `description`) VALUES
-(4, 'asdf', NULL, '');
+(4, 'Schichttyp1', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -411,23 +412,25 @@ CREATE TABLE IF NOT EXISTS `User` (
   `kommentar` text,
   `Hometown` varchar(255) NOT NULL DEFAULT '',
   `api_key` varchar(32) NOT NULL,
-  `got_voucher` tinyint(1) NOT NULL,
+  `got_voucher` int(11) NOT NULL,
   `arrival_date` int(11) DEFAULT NULL,
   `planned_arrival_date` int(11) NOT NULL,
+  `planned_departure_date` int(11) DEFAULT NULL,
   PRIMARY KEY (`UID`),
   UNIQUE KEY `Nick` (`Nick`),
   KEY `api_key` (`api_key`),
   KEY `password_recovery_token` (`password_recovery_token`),
   KEY `force_active` (`force_active`),
-  KEY `arrival_date` (`arrival_date`,`planned_arrival_date`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+  KEY `arrival_date` (`arrival_date`,`planned_arrival_date`),
+  KEY `planned_departure_date` (`planned_departure_date`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Daten für Tabelle `User`
 --
 
-INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `email_shiftinfo`, `jabber`, `Size`, `Passwort`, `password_recovery_token`, `Gekommen`, `Aktiv`, `force_active`, `Tshirt`, `color`, `Sprache`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`, `got_voucher`, `arrival_date`, `planned_arrival_date`) VALUES
-(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', 0, '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 0, 0, 0, 2, 'de_DE.UTF-8', 'L', 1436705059, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235', 0, NULL, 0);
+INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `email_shiftinfo`, `jabber`, `Size`, `Passwort`, `password_recovery_token`, `Gekommen`, `Aktiv`, `force_active`, `Tshirt`, `color`, `Sprache`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`, `got_voucher`, `arrival_date`, `planned_arrival_date`, `planned_departure_date`) VALUES
+(1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', 1, '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 1, 0, 1, 2, 'de_DE.UTF-8', 'L', 1439759300, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235', 3, 1439490478, 1436964455, 1440161255);
 
 -- --------------------------------------------------------
 
@@ -447,14 +450,7 @@ CREATE TABLE IF NOT EXISTS `UserAngelTypes` (
   KEY `angeltype_id` (`angeltype_id`),
   KEY `confirm_user_id` (`confirm_user_id`),
   KEY `coordinator` (`coordinator`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
-
---
--- Daten für Tabelle `UserAngelTypes`
---
-
-INSERT INTO `UserAngelTypes` (`id`, `user_id`, `angeltype_id`, `confirm_user_id`, `coordinator`) VALUES
-(15, 1, 1, 1, 1);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 -- --------------------------------------------------------
 
@@ -470,17 +466,17 @@ CREATE TABLE IF NOT EXISTS `UserGroups` (
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`,`group_id`),
   KEY `group_id` (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Daten für Tabelle `UserGroups`
 --
 
 INSERT INTO `UserGroups` (`id`, `uid`, `group_id`) VALUES
-(3, 1, -6),
-(4, 1, -5),
-(12, 1, -4),
-(2, 1, -3),
+(3, 1, -7),
+(4, 1, -6),
+(12, 1, -5),
+(2, 1, -4),
 (1, 1, -2);
 
 --
@@ -542,7 +538,9 @@ ALTER TABLE `ShiftEntry`
 --
 ALTER TABLE `Shifts`
   ADD CONSTRAINT `shifts_ibfk_1` FOREIGN KEY (`RID`) REFERENCES `Room` (`RID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `shifts_ibfk_2` FOREIGN KEY (`shifttype_id`) REFERENCES `ShiftTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `shifts_ibfk_2` FOREIGN KEY (`shifttype_id`) REFERENCES `ShiftTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `shifts_ibfk_3` FOREIGN KEY (`created_by_user_id`) REFERENCES `User` (`UID`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `shifts_ibfk_4` FOREIGN KEY (`edited_by_user_id`) REFERENCES `User` (`UID`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints der Tabelle `ShiftTypes`
