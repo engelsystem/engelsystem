@@ -18,4 +18,8 @@
 
 Das Engelsystem ist jetzt einsatzbereit.
 
+## Session Einstellungen:
+ * Einstellungen für Cookies und Sessions bitte in der PHP Config des Servers vornehmen.
+ * Sowohl Apache als auch nginx bieten Möglichkeiten für verschiedene Konfigurationen pro VirtualHost an
+
 Fehler bitte auf Github melden: https://github.com/engelsystem/engelsystem/issues
