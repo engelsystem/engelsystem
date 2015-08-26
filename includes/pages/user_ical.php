@@ -23,12 +23,12 @@ function user_ical() {
     view_user_shifts();
   } else {
     $ical_shifts = sql_select("
-        SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`Name` as `room_name` 
-        FROM `ShiftEntry` 
-        INNER JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
+        SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`Name` as `room_name`
+        FROM `ShiftEntry`
+        INNER JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
         JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-        INNER JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
-        WHERE `UID`='" . sql_escape($user['UID']) . "' 
+        INNER JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`)
+        WHERE `UID`='" . sql_escape($user['UID']) . "'
         ORDER BY `start`");
   }
 
@@ -37,7 +37,7 @@ function user_ical() {
   foreach ($ical_shifts as $shift) {
     $html .= "BEGIN:VEVENT\r\n";
     $html .= "UID:" . md5($shift['start'] . $shift['end'] . $shift['name']) . "\r\n";
-    $html .= "SUMMARY:" . str_replace("\n", "\\n", $shift['name']) . "\r\n";
+    $html .= "SUMMARY:" . str_replace("\n", "\\n", $shift['name']) . " (" . str_replace("\n", "\\n", $shift['title']) . ")\r\n";
     if(isset($shift['Comment']))
       $html .= "DESCRIPTION:" . str_replace("\n", "\\n", $shift['Comment']) . "\r\n";
     $html .= "DTSTART;TZID=Europe/Berlin:" . date("Ymd\THis", $shift['start']) . "\r\n";
