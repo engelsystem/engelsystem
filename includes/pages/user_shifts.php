@@ -6,40 +6,40 @@ function shifts_title() {
 
 function user_shifts() {
   global $user, $privileges, $max_freeloadable_shifts;
-  
+
   if (User_is_freeloader($user))
     redirect(page_link_to('user_myshifts'));
-    
+
     // Locations laden
   $rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
   $room_array = array();
   foreach ($rooms as $room)
     $room_array[$room['RID']] = $room['Name'];
-    
+
     // Löschen einzelner Schicht-Einträge (Also Belegung einer Schicht von Engeln) durch Admins
   if (isset($_REQUEST['entry_id']) && in_array('user_shifts_admin', $privileges)) {
     if (isset($_REQUEST['entry_id']) && test_request_int('entry_id'))
       $entry_id = $_REQUEST['entry_id'];
     else
       redirect(page_link_to('user_shifts'));
-    
+
     $shift_entry_source = sql_select("
-        SELECT `User`.`Nick`, `ShiftEntry`.`Comment`, `ShiftEntry`.`UID`, `ShiftTypes`.`name`, `Shifts`.*, `Room`.`Name`, `AngelTypes`.`name` as `angel_type` 
-        FROM `ShiftEntry` 
-        JOIN `User` ON (`User`.`UID`=`ShiftEntry`.`UID`) 
-        JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`) 
-        JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
+        SELECT `User`.`Nick`, `ShiftEntry`.`Comment`, `ShiftEntry`.`UID`, `ShiftTypes`.`name`, `Shifts`.*, `Room`.`Name`, `AngelTypes`.`name` as `angel_type`
+        FROM `ShiftEntry`
+        JOIN `User` ON (`User`.`UID`=`ShiftEntry`.`UID`)
+        JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`)
+        JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
         JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
+        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`)
         WHERE `ShiftEntry`.`id`='" . sql_escape($entry_id) . "'");
     if (count($shift_entry_source) > 0) {
       $shift_entry_source = $shift_entry_source[0];
-      
+
       $result = ShiftEntry_delete($entry_id);
       if ($result === false)
         engelsystem_error('Unable to delete shift entry.');
-      
-      engelsystem_log("Deleted " . User_Nick_render($shift_entry_source) . "'s shift: " . $shift_entry_source['name'] . " at " . $shift_entry_source['Name'] . " from " . date("y-m-d H:i", $shift_entry_source['start']) . " to " . date("y-m-d H:i", $shift_entry_source['end']) . " as " . $shift_entry_source['angel_type']);
+
+      engelsystem_log("Deleted " . User_Nick_render($shift_entry_source) . "'s shift: " . $shift_entry_source['name'] . " at " . $shift_entry_source['Name'] . " from " . date("Y-m-d H:i", $shift_entry_source['start']) . " to " . date("Y-m-d H:i", $shift_entry_source['end']) . " as " . $shift_entry_source['angel_type']);
       success(_("Shift entry deleted."));
     } else
       error(_("Entry not found."));
@@ -161,8 +161,8 @@ function user_shifts() {
           sql_query("INSERT INTO `NeededAngelTypes` SET `shift_id`='" . sql_escape($shift_id) . "', `angel_type_id`='" . sql_escape($type_id) . "', `count`='" . sql_escape($count) . "'");
           $needed_angel_types_info[] = $angel_types[$type_id]['name'] . ": " . $count;
         }
-        
-        engelsystem_log("Updated shift '" . $name . "' from " . date("y-m-d H:i", $start) . " to " . date("y-m-d H:i", $end) . " with angel types " . join(", ", $needed_angel_types_info));
+
+        engelsystem_log("Updated shift '" . $name . "' from " . date("Y-m-d H:i", $start) . " to " . date("Y-m-d H:i", $end) . " with angel types " . join(", ", $needed_angel_types_info));
         success(_("Shift updated."));
         
         redirect(shift_link([
@@ -294,7 +294,7 @@ function user_shifts() {
         sql_query("INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`) VALUES ('" . sql_escape($user_id) . "', '" . sql_escape($selected_type_id) . "')");
       
       $user_source = User($user_id);
-      engelsystem_log("User " . User_Nick_render($user_source) . " signed up for shift " . $shift['name'] . " from " . date("y-m-d H:i", $shift['start']) . " to " . date("y-m-d H:i", $shift['end']));
+      engelsystem_log("User " . User_Nick_render($user_source) . " signed up for shift " . $shift['name'] . " from " . date("Y-m-d H:i", $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']));
       success(_("You are subscribed. Thank you!") . ' <a href="' . page_link_to('user_myshifts') . '">' . _("My shifts") . ' &raquo;</a>');
       redirect(shift_link($shift));
     }
@@ -530,7 +530,7 @@ function view_user_shifts() {
       $thistime = $first + ($i * 15 * 60);
       if ($thistime % (24 * 60 * 60) == 23 * 60 * 60 && $endtime - $starttime > 24 * 60 * 60) {
         $shifts_table .= "<tr class=\"row-day\"><th class=\"row-header\">";
-        $shifts_table .= date('y-m-d<b\r />H:i', $thistime);
+        $shifts_table .= date('Y-m-d<b\r />H:i', $thistime);
       } elseif ($thistime % (60 * 60) == 0) {
         $shifts_table .= "<tr class=\"row-hour\"><th>";
         $shifts_table .= date("H:i", $thistime);
