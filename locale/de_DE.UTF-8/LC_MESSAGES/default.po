@@ -36,11 +36,10 @@ msgstr ""
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/sys_menu.php:59
 msgid ""
-"You are not marked as arrived. Please go to heaven's desk, get your angel "
-"badge and/or tell them that you arrived already."
+"You are not marked as available. Please contact the Infobus and confirm your availability."
 msgstr ""
-"Du bist nicht als angekommen markiert. Bitte gehe zur Himmelsverwaltung, "
-"hole Dein Badge ab und/oder erkläre ihnen, dass Du bereits angekommen bist."
+"Du bist nicht als verfügbar markiert. Bitte melde Dich beim Infobus, "
+"und bestätige Deine Verfügbarkeit."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/sys_menu.php:65
 msgid "You need to specify a tshirt size in your settings!"
@@ -648,16 +647,16 @@ msgid "Given shirts"
 msgstr "Ausgegebene T-Shirts"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:4
-msgid "Arrived angels"
-msgstr "Angekommene Engel"
+msgid "Available angels"
+msgstr "Verfügbare Engel"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:19
-msgid "Reset done. Angel has not arrived."
-msgstr "Zurückgesetzt. Engel ist nicht angekommen."
+msgid "Reset done. Angel is not available."
+msgstr "Zurückgesetzt. Engel ist nicht verfügbar."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:28
-msgid "Angel has been marked as arrived."
-msgstr "Engel wurde als angekommen markiert."
+msgid "Angel has been marked as available."
+msgstr "Engel wurde als verfügbar markiert."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:62
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:8
@@ -676,38 +675,38 @@ msgstr "zurücksetzen"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:124
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:144
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:208
-msgid "arrived"
-msgstr "angekommen"
+msgid "available"
+msgstr "verfügbar"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:109
-msgid "Planned arrival"
-msgstr "Geplanter Ankunftstag"
+msgid "Planned start of availability"
+msgstr "Geplanter Beginn der Verfügbarkeit"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:110
-msgid "Arrived?"
-msgstr "Angekommen?"
+msgid "Available?"
+msgstr "Verfügbar?"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:111
-msgid "Arrival date"
-msgstr "Ankunftsdatum"
+msgid "Start of availability"
+msgstr "Beginn der Verfügbarkeit"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:112
-msgid "Planned departure"
-msgstr "Geplante Abreise"
+msgid "Planned end of availability"
+msgstr "Geplantes Ende der Verfügbarkeit"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:115
-msgid "Arrival statistics"
-msgstr "Ankunfts-Statistik"
+msgid "Availability statistics"
+msgstr "Verfügbarkeits-Statistik"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:129
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:145
-msgid "arrived sum"
-msgstr "Summe angekommen"
+msgid "available sum"
+msgstr "Summe verfügbar"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:134
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:146
-msgid "planned departure"
-msgstr "Geplante Abreise"
+msgid "planned end of availability"
+msgstr "Geplantes Ende der Verfügbarkeit"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:143
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:27
@@ -1241,8 +1240,8 @@ msgstr "Dein Passwort ist zu kurz (Bitte mindestens %s Zeichen nutzen)."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:104
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:64
-msgid "Please enter your planned date of arrival."
-msgstr "Bitte gib Dein geplantes Ankunftsdatum an."
+msgid "Please enter your planned begin of availability."
+msgstr "Bitte gib Deinen geplanten Start der Verfügbarkeit an."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:165
 msgid "Angel registration successful!"
@@ -1258,8 +1257,8 @@ msgstr ""
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:189
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:171
-msgid "Planned date of arrival"
-msgstr "Geplanter Ankunftstag"
+msgid "Planned begin of availability"
+msgstr "Geplanter Beginn der Verfügbarkeit"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:192
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:181
@@ -1539,8 +1538,8 @@ msgid "Settings"
 msgstr "Einstellungen"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:72
-msgid "Please enter your planned date of departure."
-msgstr "Bitte gib Dein geplantes Abreisedatum an."
+msgid "Please enter your end of availability"
+msgstr "Bitte gib Dein Ende der Verfügbarkeit an."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:112
 msgid "Settings saved."
@@ -1563,8 +1562,8 @@ msgid "Here you can change your user details."
 msgstr "Hier kannst Du Deine Details ändern."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:172
-msgid "Planned date of departure"
-msgstr "Geplanter Abreisetag"
+msgid "Planned end of availability"
+msgstr "Geplantes Ende der Verfügbarkeit"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:182
 msgid "Please visit the angeltypes page to manage your angeltypes."
@@ -2038,8 +2037,8 @@ msgstr "Vorname"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:72
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:190
-msgid "Arrived"
-msgstr "Angekommen"
+msgid "Available"
+msgstr "Verfügbar"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:73
 msgid "Voucher"
@@ -2097,17 +2096,17 @@ msgstr "Engelzustand"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:190
 #, php-format
-msgid "Arrived at %s"
-msgstr "Angekommen am %s"
+msgid "Available from %s"
+msgstr "Verfügbar seit %s"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:190
 #, php-format
-msgid "Not arrived (Planned: %s)"
-msgstr "Nicht angekommen (Geplant: %s)"
+msgid "Not available (Planned: %s)"
+msgstr "Nicht verfügbar (Geplant: %s)"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:190
-msgid "Not arrived"
-msgstr "Nicht angekommen"
+msgid "Not available"
+msgstr "Nicht verfügbar"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:191
 #, php-format

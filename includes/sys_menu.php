@@ -46,7 +46,7 @@ function header_toolbar() {
       $hints[] = $unconfirmed_hint;
     
     if (! isset($user['planned_departure_date']) || $user['planned_departure_date'] == null)
-      $hints[] = info(_("Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities."), true);
+      $hints[] = info(_("Please enter your planned end of availability on your settings page to give us a feeling for capacities."), true);
     
     if (User_is_freeloader($user)) {
       $hints[] = error(sprintf(_("You freeloaded at least %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again."), $max_freeloadable_shifts), true);
@@ -56,7 +56,7 @@ function header_toolbar() {
     
     // Hinweis für Engel, die noch nicht angekommen sind
     if ($user['Gekommen'] == 0) {
-      $hints[] = error(_("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already."), true);
+      $hints[] = error(_("You are not marked as available. Please contact the Infobus and confirm your availability."), true);
       $hint_class = 'danger';
       $glyphicon = 'warning-sign';
     }
