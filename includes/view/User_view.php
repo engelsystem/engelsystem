@@ -19,6 +19,12 @@ $tshirt_sizes = array(
     'XL-G' => "XL Girl" 
 );
 
+$genders = array(
+    'male' => 'male',
+    'female' => 'female',
+    'none' => 'none'
+);
+
 /**
  * View for editing the number of given vouchers
  */
@@ -68,6 +74,7 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
           'Nick' => Users_table_header_link('Nick', _('Nick'), $order_by),
           'Vorname' => Users_table_header_link('Vorname', _('Prename'), $order_by),
           'Name' => Users_table_header_link('Name', _('Name'), $order_by),
+          'gender' => Users_table_header_link('gender', _('Gender'), $order_by),
           'DECT' => Users_table_header_link('DECT', _('DECT'), $order_by),
           'Gekommen' => Users_table_header_link('Gekommen', _('Available'), $order_by),
           'got_voucher' => Users_table_header_link('got_voucher', _('Voucher'), $order_by),

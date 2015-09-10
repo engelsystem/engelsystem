@@ -390,6 +390,7 @@ CREATE TABLE IF NOT EXISTS `User` (
   `Name` varchar(23) DEFAULT NULL,
   `Vorname` varchar(23) DEFAULT NULL,
   `Alter` int(4) DEFAULT NULL,
+  `gender` ENUM( 'male', 'female', 'none' ) DEFAULT 'none',
   `Telefon` varchar(40) DEFAULT NULL,
   `DECT` varchar(5) DEFAULT NULL,
   `Handy` varchar(40) DEFAULT NULL,

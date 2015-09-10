@@ -14,7 +14,7 @@ function logout_title() {
 
 // Engel registrieren
 function guest_register() {
-  global $tshirt_sizes, $enable_tshirt_size, $enable_dect, $default_theme;
+  global $tshirt_sizes, $enable_tshirt_size, $enable_dect, $default_theme, $genders;
   
   $msg = "";
   $nick = "";
@@ -33,7 +33,8 @@ function guest_register() {
   $password_hash = "";
   $selected_angel_types = array();
   $planned_arrival_date = null;
-  
+  $gender = "none";
+
   $angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
   $angel_types = array();
   foreach ($angel_types_source as $angel_type) {
@@ -126,7 +127,11 @@ function guest_register() {
       $hometown = strip_request_item('hometown');
     if (isset($_REQUEST['comment']))
       $comment = strip_request_item_nl('comment');
-    
+    if (isset($_REQUEST['gender'])
+        && isset($genders[$_REQUEST['gender']])) {
+        $gender = $_REQUEST['gender'];
+    }
+
     if ($ok) {
       sql_query("
           INSERT INTO `User` SET 
@@ -135,6 +140,7 @@ function guest_register() {
           `Vorname`='" . sql_escape($prename) . "', 
           `Name`='" . sql_escape($lastname) . "', 
           `Alter`='" . sql_escape($age) . "', 
+          `gender`='" . sql_escape($gender) . "',
           `Telefon`='" . sql_escape($tel) . "', 
           `DECT`='" . sql_escape($dect) . "', 
           `Handy`='" . sql_escape($mobile) . "', 
@@ -228,7 +234,10 @@ function guest_register() {
                       div('col-sm-3', array(
                           form_text('age', _("Age"), $age) 
                       )),
-                      div('col-sm-9', array(
+                      div('col-sm-3', array(
+                          form_select('gender', _("Gender"), $genders, $gender)
+                      )),
+                      div('col-sm-6', array(
                           form_text('hometown', _("Hometown"), $hometown) 
                       )) 
                   )),
