@@ -14,7 +14,7 @@ function logout_title() {
 
 // Engel registrieren
 function guest_register() {
-  global $tshirt_sizes, $enable_tshirt_size, $default_theme;
+  global $tshirt_sizes, $enable_tshirt_size, $enable_dect, $default_theme;
   
   $msg = "";
   $nick = "";
@@ -206,13 +206,13 @@ function guest_register() {
               div('col-md-6', array(
                   div('row', array(
                       div('col-sm-4', array(
-                          form_text('dect', _("DECT"), $dect) 
-                      )),
-                      div('col-sm-4', array(
-                          form_text('mobile', _("Mobile"), $mobile) 
+                          form_text('mobile', _("Mobile"), $mobile)                          
                       )),
                       div('col-sm-4', array(
                           form_text('tel', _("Phone"), $tel) 
+                      )),
+                      div('col-sm-4', array(
+                          $enable_dect ? form_text('dect', _("DECT"), $dect) : ''
                       )) 
                   )),
                   form_text('jabber', _("Jabber"), $jabber),
