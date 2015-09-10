@@ -61,7 +61,7 @@ function user_settings() {
       $planned_arrival_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))->getTimestamp();
     } else {
       $ok = false;
-      $msg .= error(_("Please enter your planned date of arrival."), true);
+      $msg .= error(_("Please enter your planned begin of availability."), true);
     }
     
     if (isset($_REQUEST['planned_departure_date']) && $_REQUEST['planned_departure_date'] != '') {
@@ -69,7 +69,7 @@ function user_settings() {
         $planned_departure_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_departure_date']))->getTimestamp();
       } else {
         $ok = false;
-        $msg .= error(_("Please enter your planned date of departure."), true);
+        $msg .= error(_("Please enter your end of availability."), true);
       }
     } else
       $planned_departure_date = null;
@@ -168,8 +168,8 @@ function user_settings() {
                   form_text('nick', _("Nick"), $nick, true),
                   form_text('lastname', _("Last name"), $lastname),
                   form_text('prename', _("First name"), $prename),
-                  form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, time()),
-                  form_date('planned_departure_date', _("Planned date of departure"), $planned_departure_date, time()),
+                  form_date('planned_arrival_date', _("Planned begin of availability") . ' ' . entry_required(), $planned_arrival_date, time()),
+                  form_date('planned_departure_date', _("Planned end of availability"), $planned_departure_date, time()),
                   form_text('age', _("Age"), $age),
                   form_text('tel', _("Phone"), $tel),
                   $enable_dect ? form_text('dect', _("DECT"), $dect) : '',

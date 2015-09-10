@@ -101,7 +101,7 @@ function guest_register() {
       $planned_arrival_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))->getTimestamp();
     } else {
       $ok = false;
-      $msg .= error(_("Please enter your planned date of arrival."), true);
+      $msg .= error(_("Please enter your planned begin of availability."), true);
     }
     
     $selected_angel_types = array();
@@ -186,7 +186,7 @@ function guest_register() {
                   )),
                   div('row', array(
                       div('col-sm-6', array(
-                          form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, time()) 
+                          form_date('planned_arrival_date', _("Planned begin of availability") . ' ' . entry_required(), $planned_arrival_date, time()) 
                       )),
                       div('col-sm-6', array(
                           $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : '' 

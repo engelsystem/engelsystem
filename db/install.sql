@@ -256,7 +256,7 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (24, 'user_shifts', 'Signup for shifts'),
 (25, 'user_shifts_admin', 'Signup other angels for shifts.'),
 (26, 'user_myshifts', 'Allow angels to view their own shifts and cancel them.'),
-(27, 'admin_arrive', 'Mark angels when they arrive.'),
+(27, 'admin_arrive', 'Mark angels when they are available.'),
 (28, 'admin_shifts', 'Create shifts'),
 (30, 'ical', 'iCal shift export'),
 (31, 'admin_active', 'Mark angels as active and if they got a t-shirt.'),

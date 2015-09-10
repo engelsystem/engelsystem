@@ -196,7 +196,7 @@ function admin_user() {
               WHERE `UID` = '" . sql_escape($id) . "' 
               LIMIT 1";
         sql_query($SQL);
-        engelsystem_log("Updated user: " . $_POST["eNick"] . ", " . $_POST["eSize"] . ", arrived: " . $_POST["eGekommen"] . ", active: " . $_POST["eAktiv"] . ", tshirt: " . $_POST["eTshirt"]);
+        engelsystem_log("Updated user: " . $_POST["eNick"] . ", " . $_POST["eSize"] . ", available: " . $_POST["eGekommen"] . ", active: " . $_POST["eAktiv"] . ", tshirt: " . $_POST["eTshirt"]);
         $html .= success("Änderung wurde gespeichert...\n", true);
         break;
       
