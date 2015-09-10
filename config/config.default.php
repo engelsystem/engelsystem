@@ -29,6 +29,9 @@ define('MIN_PASSWORD_LENGTH', 8);
 // Wenn Engel beim Registrieren oder in ihrem Profil eine T-Shirt Größe angeben sollen, auf true setzen:
 $enable_tshirt_size = true;
 
+// (De)aktivieren der DECT Nummer fuer nicht-Chaos Events
+$enable_dect = false;
+
 // Number of shifts to freeload until angel is locked for shift signup.
 $max_freeloadable_shifts = 2;
 

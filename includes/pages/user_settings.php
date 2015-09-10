@@ -172,7 +172,7 @@ function user_settings() {
                   form_date('planned_departure_date', _("Planned date of departure"), $planned_departure_date, time()),
                   form_text('age', _("Age"), $age),
                   form_text('tel', _("Phone"), $tel),
-                  form_text('dect', _("DECT"), $dect),
+                  $enable_dect ? form_text('dect', _("DECT"), $dect) : '',
                   form_text('mobile', _("Mobile"), $mobile),
                   form_text('mail', _("E-Mail") . ' ' . entry_required(), $mail),
                   form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $email_shiftinfo),

@@ -14,7 +14,7 @@ function page_link_to_absolute($page) {
  * Renders the header toolbar containing search, login/logout, user and settings links.
  */
 function header_toolbar() {
-  global $p, $privileges, $user, $enable_tshirt_size, $max_freeloadable_shifts;
+  global $p, $privileges, $user, $enable_tshirt_size, $enable_dect, $max_freeloadable_shifts;
   
   $toolbar_items = array();
   
@@ -67,7 +67,7 @@ function header_toolbar() {
       $glyphicon = 'warning-sign';
     }
     
-    if ($user['DECT'] == "") {
+    if ($enable_dect && $user['DECT'] == "") {
       $hints[] = error(_("You need to specify a DECT phone number in your settings! If you don't have a DECT phone, just enter \"-\"."), true);
       $hint_class = 'danger';
       $glyphicon = 'warning-sign';
