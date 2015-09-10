@@ -1294,11 +1294,15 @@ msgstr ""
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:212
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:176
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:87
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:71
 msgid "Mobile"
 msgstr "Handy"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:215
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:174
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:88
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:72
 msgid "Phone"
 msgstr "Telefon"
 
