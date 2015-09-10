@@ -4,7 +4,7 @@
 $maintenance_mode = false;
 
 // URL to the angel faq and job description
-$faq_url = "https://events.ccc.de/congress/2013/wiki/Static:Volunteers";
+$faq_url = "https://ffmuc.net/wiki/Engel-muenchen";
 
 // Default-Theme auf der Startseite, 1=style1.css usw.
 $default_theme = 1;
