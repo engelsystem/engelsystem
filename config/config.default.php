@@ -7,7 +7,10 @@ $maintenance_mode = false;
 $faq_url = "https://ffmuc.net/wiki/p/Engel-muenchen";
 
 // Default-Theme auf der Startseite, 1=style1.css usw.
-$default_theme = 1;
+$default_theme = 2;
+
+// Default Anzeige ist in
+$default_locale = 'de_DE.UTF-8';
 
 // Anzahl der News, die auf einer Seite ausgeben werden koennen...
 $DISPLAY_NEWS = 6;
@@ -27,7 +30,7 @@ define('CRYPT_ALG', '$6$rounds=5000'); // SHA-512
 define('MIN_PASSWORD_LENGTH', 8);
 
 // Wenn Engel beim Registrieren oder in ihrem Profil eine T-Shirt Größe angeben sollen, auf true setzen:
-$enable_tshirt_size = true;
+$enable_tshirt_size = false;
 
 // (De)aktivieren der DECT Nummer fuer nicht-Chaos Events
 $enable_dect = false;
