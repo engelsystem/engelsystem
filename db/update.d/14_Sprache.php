@@ -345,7 +345,7 @@ $res = mysql_query("INSERT IGNORE INTO `Sprache` (`TextID`, `Sprache`, `Text`) V
 ('register', 'DE', 'Engel werden'),
 ('register', 'EN', 'Become an angel'),
 ('makeuser_text1', 'DE', 'Mit dieser Maske meldet ihr euch im Engelsystem an. Durch das Engelsystem findet auf der Veranstaltung die Aufgabenverteilung der Engel statt.\\r\\n\\r\\n'),
-('makeuser_text1', 'EN', 'By completing this form you&#039;re registering as a Chaos-Drone. This script will create you an account in the drone task sheduler.\\r\\n\\r\\n'),
+('makeuser_text1', 'EN', 'By completing this form you&#039;re registering as an Angel. This script will create you an account in the Angel task sheduler.\\r\\n\\r\\n'),
 ('makeuser_Nickname', 'DE', 'Nickname'),
 ('makeuser_Nickname', 'EN', 'nick'),
 ('makeuser_text2', 'DE', 'Habt ihr schon einmal bei einer<br />\\r\\nCCC-Veranstaltung mitgeholfen? <br />\\r\\nWenn ja, in welchem <br />\\r\\nwelchen Aufgabengebiet(en)?'),
