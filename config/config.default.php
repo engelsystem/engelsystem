@@ -41,6 +41,9 @@ $max_freeloadable_shifts = 2;
 // local timezone
 date_default_timezone_set("Europe/Berlin");
 
+// Night shifts count double
+$nightshift_bonus = false;
+$nightshift_bonus ?
 // multiply "night shifts" and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
 $shift_sum_formula = "SUM(
   (1+(
@@ -48,10 +51,9 @@ $shift_sum_formula = "SUM(
     OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) > 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`start`)) < 6)
     OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) <= 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) >= 6)
   ))*(`Shifts`.`end` - `Shifts`.`start`)*(1 - 3 * `ShiftEntry`.`freeloaded`)
-)";
-
+)" :
 // weigh every shift the same
-// $shift_sum_formula = "SUM(`end` - `start`)";
+$shift_sum_formula = "SUM(`end` - `start`)";
 
 // For accessing stats
 $api_key = "";
