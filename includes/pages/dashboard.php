@@ -111,12 +111,16 @@ function getCurrentShifts($shifts)
  */
 function buildList($shifts)
 {
+    if (0 === count($shifts)) {
+        return '';
+    }
+
     $list = '<ul class="list-group">';
     foreach ($shifts as $shift) {
         $list .= sprintf("<li class='list-group-item'>%s</li>\n", $shift['title']);
     }
 
-    return $list.'</ul>';
+    return $list . '</ul>';
 }
 
 /**
@@ -138,12 +142,16 @@ function getAllNewsList()
 {
     $news = sql_select("SELECT * FROM `News` ORDER BY `Datum`");
 
+    if (0 === count($news)) {
+        return '';
+    }
+
     $list = '<ul class="list-group">';
     foreach ($news as $article) {
         $list .= sprintf("<li class='list-group-item'>%s</li> \n", $article['Betreff']);
     }
 
-    return $list.'</ul>';
+    return $list . '</ul>';
 }
 
 /**
