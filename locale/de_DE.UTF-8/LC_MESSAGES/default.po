@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2015-09-11 13:38+0200\n"
-"PO-Revision-Date: 2015-09-11 13:40+0200\n"
+"POT-Creation-Date: 2015-09-11 15:49+0200\n"
+"PO-Revision-Date: 2015-09-11 15:51+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -62,7 +62,7 @@ msgstr "ansehen"
 
 #: includes/controller/angeltypes_controller.php:209
 #: includes/pages/admin_free.php:64 includes/pages/admin_groups.php:23
-#: includes/pages/admin_rooms.php:18 includes/view/AngelTypes_view.php:84
+#: includes/pages/admin_rooms.php:19 includes/view/AngelTypes_view.php:84
 #: includes/view/ShiftTypes_view.php:52 includes/view/ShiftTypes_view.php:63
 #: includes/view/Shifts_view.php:77 includes/view/User_view.php:157
 #: includes/view/User_view.php:208
@@ -71,7 +71,7 @@ msgstr "bearbeiten"
 
 #: includes/controller/angeltypes_controller.php:210
 #: includes/pages/admin_questions.php:37 includes/pages/admin_questions.php:56
-#: includes/pages/admin_rooms.php:19 includes/pages/user_shifts.php:220
+#: includes/pages/admin_rooms.php:20 includes/pages/user_shifts.php:220
 #: includes/view/AngelTypes_view.php:48 includes/view/AngelTypes_view.php:86
 #: includes/view/Questions_view.php:5 includes/view/Questions_view.php:12
 #: includes/view/ShiftTypes_view.php:15 includes/view/ShiftTypes_view.php:53
@@ -109,7 +109,7 @@ msgid "Shifttype not found."
 msgstr "Schichttyp nicht gefunden."
 
 #: includes/controller/shifttypes_controller.php:69
-#: includes/pages/admin_rooms.php:60
+#: includes/pages/admin_rooms.php:61
 msgid "Please enter a name."
 msgstr "Gib bitte einen Namen an."
 
@@ -446,8 +446,8 @@ msgstr ""
 msgid "Marked angels."
 msgstr "Engel wurden markiert."
 
-#: includes/pages/admin_active.php:59 includes/pages/admin_rooms.php:123
-#: includes/pages/admin_rooms.php:158 includes/pages/admin_shifts.php:251
+#: includes/pages/admin_active.php:59 includes/pages/admin_rooms.php:133
+#: includes/pages/admin_rooms.php:163 includes/pages/admin_shifts.php:251
 #: includes/view/UserAngelTypes_view.php:65 includes/view/User_view.php:29
 msgid "back"
 msgstr "zurück"
@@ -680,9 +680,9 @@ msgstr "E-Mail"
 msgid "Grouprights"
 msgstr "Gruppenrechte"
 
-#: includes/pages/admin_groups.php:29 includes/pages/admin_import.php:109
-#: includes/pages/admin_import.php:113 includes/pages/admin_rooms.php:129
-#: includes/pages/admin_rooms.php:174 includes/view/AngelTypes_view.php:60
+#: includes/pages/admin_groups.php:29 includes/pages/admin_import.php:118
+#: includes/pages/admin_import.php:122 includes/pages/admin_rooms.php:124
+#: includes/pages/admin_rooms.php:175 includes/view/AngelTypes_view.php:60
 #: includes/view/AngelTypes_view.php:191 includes/view/ShiftTypes_view.php:33
 #: includes/view/ShiftTypes_view.php:74 includes/view/User_view.php:70
 msgid "Name"
@@ -693,7 +693,7 @@ msgid "Privileges"
 msgstr "Privilegien"
 
 #: includes/pages/admin_groups.php:53 includes/pages/admin_news.php:32
-#: includes/pages/admin_questions.php:35 includes/pages/admin_rooms.php:143
+#: includes/pages/admin_questions.php:35 includes/pages/admin_rooms.php:148
 #: includes/pages/admin_shifts.php:257 includes/pages/user_messages.php:62
 #: includes/pages/user_news.php:106 includes/pages/user_news.php:160
 #: includes/pages/user_settings.php:183 includes/pages/user_settings.php:192
@@ -709,124 +709,128 @@ msgstr "Speichern"
 msgid "Edit group"
 msgstr "Gruppe bearbeiten"
 
-#: includes/pages/admin_import.php:4 includes/pages/admin_rooms.php:130
-#: includes/pages/admin_rooms.php:175
+#: includes/pages/admin_import.php:4 includes/pages/admin_rooms.php:126
+#: includes/pages/admin_rooms.php:176
 msgid "Frab import"
 msgstr "Frab Import"
 
-#: includes/pages/admin_import.php:24
+#: includes/pages/admin_import.php:15
+msgid "Frab import is not enabled"
+msgstr ""
+
+#: includes/pages/admin_import.php:33
 msgid "Webserver has no write-permission on import directory."
 msgstr "Der Webserver hat keine Schreibrechte für das Verzeichnis import."
 
-#: includes/pages/admin_import.php:48 includes/pages/admin_import.php:96
-#: includes/pages/admin_import.php:159 includes/pages/admin_shifts.php:48
+#: includes/pages/admin_import.php:57 includes/pages/admin_import.php:105
+#: includes/pages/admin_import.php:168 includes/pages/admin_shifts.php:48
 #: includes/pages/admin_shifts.php:53
 msgid "Please select a shift type."
 msgstr "Bitte einen Schichttyp wählen."
 
-#: includes/pages/admin_import.php:56
+#: includes/pages/admin_import.php:65
 msgid "No valid xml/xcal file provided."
 msgstr "Keine valide xml/xcal Datei hochgeladen."
 
-#: includes/pages/admin_import.php:61
+#: includes/pages/admin_import.php:70
 msgid "File upload went wrong."
 msgstr "Das Hochladen der Datei ist schiefgegangen."
 
-#: includes/pages/admin_import.php:65
+#: includes/pages/admin_import.php:74
 msgid "Please provide some data."
 msgstr "Bitte lade eine Datei hoch."
 
-#: includes/pages/admin_import.php:73 includes/pages/admin_import.php:104
-#: includes/pages/admin_import.php:197
+#: includes/pages/admin_import.php:82 includes/pages/admin_import.php:113
+#: includes/pages/admin_import.php:206
 msgid "File Upload"
 msgstr "Datei hochladen"
 
-#: includes/pages/admin_import.php:73 includes/pages/admin_import.php:104
-#: includes/pages/admin_import.php:197
+#: includes/pages/admin_import.php:82 includes/pages/admin_import.php:113
+#: includes/pages/admin_import.php:206
 msgid "Validation"
 msgstr "Überprüfen"
 
-#: includes/pages/admin_import.php:73 includes/pages/admin_import.php:80
-#: includes/pages/admin_import.php:104 includes/pages/admin_import.php:143
-#: includes/pages/admin_import.php:197
+#: includes/pages/admin_import.php:82 includes/pages/admin_import.php:89
+#: includes/pages/admin_import.php:113 includes/pages/admin_import.php:152
+#: includes/pages/admin_import.php:206
 msgid "Import"
 msgstr "Importieren"
 
-#: includes/pages/admin_import.php:77
+#: includes/pages/admin_import.php:86
 msgid ""
 "This import will create/update/delete rooms and shifts by given FRAB-export "
 "file. The needed file format is xcal."
 msgstr ""
 
-#: includes/pages/admin_import.php:78 includes/pages/admin_shifts.php:301
+#: includes/pages/admin_import.php:87 includes/pages/admin_shifts.php:301
 #: includes/pages/user_shifts.php:184
 msgid "Shifttype"
 msgstr "Schichttyp"
 
-#: includes/pages/admin_import.php:79
+#: includes/pages/admin_import.php:88
 msgid "xcal-File (.xcal)"
 msgstr "xcal-Datei (.xcal)"
 
-#: includes/pages/admin_import.php:89 includes/pages/admin_import.php:149
+#: includes/pages/admin_import.php:98 includes/pages/admin_import.php:158
 msgid "Missing import file."
 msgstr "Import-Datei nicht vorhanden."
 
-#: includes/pages/admin_import.php:108
+#: includes/pages/admin_import.php:117
 msgid "Locations to create"
 msgstr "Anzulegende Orte"
 
-#: includes/pages/admin_import.php:112
+#: includes/pages/admin_import.php:121
 msgid "Locations to delete"
 msgstr "Zu löschende Orte"
 
-#: includes/pages/admin_import.php:116
+#: includes/pages/admin_import.php:125
 msgid "Shifts to create"
 msgstr "Anzulegende Schichten"
 
-#: includes/pages/admin_import.php:118 includes/pages/admin_import.php:127
-#: includes/pages/admin_import.php:136 includes/view/User_view.php:220
+#: includes/pages/admin_import.php:127 includes/pages/admin_import.php:136
+#: includes/pages/admin_import.php:145 includes/view/User_view.php:220
 msgid "Day"
 msgstr "Tag"
 
-#: includes/pages/admin_import.php:119 includes/pages/admin_import.php:128
-#: includes/pages/admin_import.php:137 includes/pages/admin_shifts.php:306
+#: includes/pages/admin_import.php:128 includes/pages/admin_import.php:137
+#: includes/pages/admin_import.php:146 includes/pages/admin_shifts.php:306
 #: includes/view/Shifts_view.php:88
 msgid "Start"
 msgstr "Beginn"
 
-#: includes/pages/admin_import.php:120 includes/pages/admin_import.php:129
-#: includes/pages/admin_import.php:138 includes/pages/admin_shifts.php:307
+#: includes/pages/admin_import.php:129 includes/pages/admin_import.php:138
+#: includes/pages/admin_import.php:147 includes/pages/admin_shifts.php:307
 #: includes/view/Shifts_view.php:96
 msgid "End"
 msgstr "Ende"
 
-#: includes/pages/admin_import.php:121 includes/pages/admin_import.php:130
-#: includes/pages/admin_import.php:139
+#: includes/pages/admin_import.php:130 includes/pages/admin_import.php:139
+#: includes/pages/admin_import.php:148
 msgid "Shift type"
 msgstr "Schichttyp"
 
-#: includes/pages/admin_import.php:122 includes/pages/admin_import.php:131
-#: includes/pages/admin_import.php:140 includes/pages/admin_shifts.php:302
+#: includes/pages/admin_import.php:131 includes/pages/admin_import.php:140
+#: includes/pages/admin_import.php:149 includes/pages/admin_shifts.php:302
 #: includes/pages/user_shifts.php:185 includes/view/Shifts_view.php:84
 msgid "Title"
 msgstr "Titel"
 
-#: includes/pages/admin_import.php:123 includes/pages/admin_import.php:132
-#: includes/pages/admin_import.php:141 includes/pages/admin_shifts.php:303
+#: includes/pages/admin_import.php:132 includes/pages/admin_import.php:141
+#: includes/pages/admin_import.php:150 includes/pages/admin_shifts.php:303
 #: includes/pages/user_shifts.php:803 includes/pages/user_shifts.php:816
 #: includes/view/Shifts_view.php:104 includes/view/User_view.php:222
 msgid "Location"
 msgstr "Ort"
 
-#: includes/pages/admin_import.php:125
+#: includes/pages/admin_import.php:134
 msgid "Shifts to update"
 msgstr "Zu aktualisierende Schichten"
 
-#: includes/pages/admin_import.php:134
+#: includes/pages/admin_import.php:143
 msgid "Shifts to delete"
 msgstr "Zu löschende Schichten"
 
-#: includes/pages/admin_import.php:198
+#: includes/pages/admin_import.php:207
 msgid "It's done!"
 msgstr "Erledigt!"
 
@@ -855,7 +859,7 @@ msgstr "Nachricht"
 msgid "Meeting"
 msgstr "Treffen"
 
-#: includes/pages/admin_news.php:35 includes/pages/admin_rooms.php:162
+#: includes/pages/admin_news.php:35 includes/pages/admin_rooms.php:167
 msgid "Delete"
 msgstr "löschen"
 
@@ -905,38 +909,38 @@ msgstr "Antwort von"
 msgid "Locations"
 msgstr "Orte"
 
-#: includes/pages/admin_rooms.php:83
+#: includes/pages/admin_rooms.php:84
 #, php-format
 msgid "Please enter needed angels for type %s."
 msgstr "Bitte gib die Anzahl der benötigten Engel vom Typ %s an."
 
-#: includes/pages/admin_rooms.php:111
+#: includes/pages/admin_rooms.php:112
 msgid "Location saved."
 msgstr "Ort gespeichert."
 
-#: includes/pages/admin_rooms.php:131 includes/pages/admin_rooms.php:176
+#: includes/pages/admin_rooms.php:128 includes/pages/admin_rooms.php:177
 msgid "Public"
 msgstr "Öffentlich"
 
-#: includes/pages/admin_rooms.php:132
+#: includes/pages/admin_rooms.php:129
 msgid "Room number"
 msgstr "Raumnummer"
 
-#: includes/pages/admin_rooms.php:137
+#: includes/pages/admin_rooms.php:142
 msgid "Needed angels:"
 msgstr "Benötigte Engel:"
 
-#: includes/pages/admin_rooms.php:152
+#: includes/pages/admin_rooms.php:157
 #, php-format
 msgid "Location %s deleted."
 msgstr "Ort %s gelöscht."
 
-#: includes/pages/admin_rooms.php:160
+#: includes/pages/admin_rooms.php:165
 #, php-format
 msgid "Do you want to delete location %s?"
 msgstr "Möchest Du den Ort %s wirklich löschen?"
 
-#: includes/pages/admin_rooms.php:170
+#: includes/pages/admin_rooms.php:186
 msgid "add"
 msgstr "Neu"
 
@@ -1057,6 +1061,42 @@ msgstr ""
 #: includes/pages/admin_user.php:216
 msgid "Edit user"
 msgstr "User bearbeiten"
+
+#: includes/pages/dashboard.php:5
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: includes/pages/dashboard.php:26
+msgid "Within the next 3 hours"
+msgstr "Innerhalb der nächsten 3 Stunden"
+
+#: includes/pages/dashboard.php:27
+msgid "Within the next hour"
+msgstr "In der Nächsten Stunde"
+
+#: includes/pages/dashboard.php:28
+msgid "Currently running"
+msgstr "Aktive Schichten"
+
+#: includes/pages/dashboard.php:29
+msgid "Hours to be worked"
+msgstr "Stunden zu arbeiten"
+
+#: includes/pages/dashboard.php:30
+msgid "Angels currently working"
+msgstr "Engel die gerade arbeiten"
+
+#: includes/pages/dashboard.php:31
+msgid "Angels needed for night shifts"
+msgstr "Engel die noch für die Nachtschicht gebraucht werden"
+
+#: includes/pages/dashboard.php:32
+msgid "Angels needed in the next 3 hrs"
+msgstr "Engel die in den nächsten 3 Stunden gebraucht werden"
+
+#: includes/pages/dashboard.php:33 includes/pages/user_news.php:7
+msgid "News"
+msgstr "News"
 
 #: includes/pages/guest_credits.php:3
 msgid "Credits"
@@ -1320,10 +1360,6 @@ msgstr ""
 #: includes/pages/user_news.php:3
 msgid "News comments"
 msgstr "News Kommentare"
-
-#: includes/pages/user_news.php:7
-msgid "News"
-msgstr "News"
 
 #: includes/pages/user_news.php:11
 msgid "Meetings"
@@ -1656,7 +1692,7 @@ msgstr ""
 "Bitte eine DECT-Telefonnummer in den Einstellungen eingeben. Wenn du noch "
 "keine Nummer hast, bitte einfach \"-\" angeben."
 
-#: includes/sys_menu.php:132
+#: includes/sys_menu.php:137
 msgid "Admin"
 msgstr "Admin"
 
@@ -2072,11 +2108,11 @@ msgstr "Wiederherstellen"
 msgid "Please enter a new password."
 msgstr "Gib bitte ein neues Passwort ein."
 
-#: public/index.php:144
+#: public/index.php:149
 msgid "No Access"
 msgstr "Kein Zugriff"
 
-#: public/index.php:145
+#: public/index.php:150
 msgid ""
 "You don't have permission to view this page. You probably have to sign in or "
 "register in order to gain access!"
