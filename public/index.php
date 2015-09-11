@@ -164,5 +164,3 @@ echo template_render('../templates/layout.html', array(
     'faq_url' => $faq_url,
     'locale' => locale()
 ));
-
-?>
