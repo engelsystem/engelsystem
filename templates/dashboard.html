@@ -1,52 +1,29 @@
-<div class="forecast">
+<div class="row forecast">
     <div class="upcoming-shifts">
-        <div class="number">
-            %number_upcoming_shifts%
-        </div>
-        <div class="description">%text_angels_needed_next_3_hours%</div>
+        %number_upcoming_shifts%
     </div>
     <div class="upcoming-night-shifts">
-        <div class="number">
-            %number_upcoming_night_shifts%
-        </div>
-        <div class="description">%text_angels_needed_for_night_shifts%</div>
+        %number_upcoming_night_shifts%
     </div>
     <div class="currently-working">
-        <div class="number">
-            %number_currently_working%
-        </div>
-        <div class="description">%text_currently_working%</div>
+        %number_currently_working%
     </div>
     <div class="hours-worked">
-        <div class="number info">
-            %number_hours_worked%
-        </div>
-        <div class="description">%text_hours_to_be_worked%</div>
+        %number_hours_worked%
     </div>
 </div>
 
-<div class="row">
+<div class="row blocks">
     <section class="job-list">
-        <h1 class="header-jobs-running">%text_currently_running%</h1>
-        <div class="jobs-running">
-            %jobs_currently_running%
-        </div>
+        %jobs_currently_running%
     </section>
 
     <section class="job-list">
-        <h1 class="header-jobs-now">%text_within_next_hour%</h1>
-        <div class="jobs-now">
-            %jobs_now%
-        </div>
-
-        <h1 class="header-jobs-soon">%text_within_next_3_hours%</h1>
-        <div class="jobs-soon">
-            %jobs_soon%
-        </div>
+        %jobs_now%
+        %jobs_soon%
     </section>
     <section class="news">
         <div class="clock well" id="clockDisplay">??:??:??</div>
-        <h1>%text_news%</h1>
         %news%
     </section>
 </div>

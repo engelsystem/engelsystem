@@ -31,6 +31,7 @@ require_once realpath(__DIR__ . '/../includes/view/ShiftTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/UserAngelTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/User_view.php');
 require_once realpath(__DIR__ . '/../includes/view/Dashboard_view.php');
+require_once realpath(__DIR__ . '/../includes/view/Block_view.php');
 
 require_once realpath(__DIR__ . '/../includes/controller/angeltypes_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/rooms_controller.php');

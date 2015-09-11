@@ -15,22 +15,14 @@ function get_dashboard()
     $shifts = getAllShifts();
 
     $viewData = array(
-        'number_upcoming_shifts' => getNumberUpcomingShifts($shifts, 3*60*60),
-        'number_upcoming_night_shifts' => getNumberUpcomingNightShifts(),
-        'number_currently_working' => getCurrentlyWorkingAngels(),
-        'number_hours_worked' => countHoursToBeWorked($shifts),
-        'jobs_currently_running' => getListCurrentShifts($shifts),
-        'jobs_now' => getListUpcomingShifts($shifts, 60*60),
-        'jobs_soon' => getListUpcomingShifts($shifts, 3*60*60),
-        'news' => getAllNewsList(),
-        'text_within_next_3_hours' => _("Within the next 3 hours"),
-        'text_within_next_hour' => _("Within the next hour"),
-        'text_currently_running' => _("Currently running"),
-        'text_hours_to_be_worked' => _("Hours to be worked"),
-        'text_currently_working' => _("Angels currently working"),
-        'text_angels_needed_for_night_shifts' => _("Angels needed for night shifts"),
-        'text_angels_needed_next_3_hours' => _("Angels needed in the next 3 hrs"),
-        'text_news' => _("News"),
+        'number_upcoming_shifts' => block(array('description' => _("Angels needed in the next 3 hrs"), 'number' => getNumberUpcomingShifts($shifts, 3*60*60)), BLOCK_TYPE_COUNTER),
+        'number_upcoming_night_shifts' => block(array('description' => _("Angels needed for night shifts"), 'number' => getNumberUpcomingNightShifts()), BLOCK_TYPE_COUNTER),
+        'number_currently_working' => block(array('description' => _("Angels currently working"), 'number' => getCurrentlyWorkingAngels()), BLOCK_TYPE_COUNTER),
+        'number_hours_worked' => block(array('description' => _("Hours to be worked"), 'number' => countHoursToBeWorked($shifts)), BLOCK_TYPE_COUNTER),
+        'jobs_currently_running' => block(array('title' => _("Currently running"), 'body' => getListCurrentShifts($shifts)), BLOCK_TYPE_PANEL),
+        'jobs_now' => block(array('title' => _("Within the next hour"), 'body' => getListUpcomingShifts($shifts, 60*60)), BLOCK_TYPE_PANEL),
+        'jobs_soon' => block(array('title' => _("Within the next 3 hours"), 'body' => getListUpcomingShifts($shifts, 3*60*60)), BLOCK_TYPE_PANEL),
+        'news' => block(array('title' => _("News"), 'body' => getAllNewsList()), BLOCK_TYPE_PANEL),
     );
 
     return  dashboardView($viewData);
@@ -117,7 +109,7 @@ function buildList($shifts)
 
     $list = '<ul class="list-group">';
     foreach ($shifts as $shift) {
-        $list .= sprintf("<li class='list-group-item'>%s</li>\n", $shift['title']);
+        $list .= sprintf("<li class=\"list-group-item\"><span class=\"badge\">%s</span>%s</li>\n", date('H:i:s', $shift['start']), $shift['title']);
     }
 
     return $list . '</ul>';

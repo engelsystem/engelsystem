@@ -6912,6 +6912,9 @@ a#shifts td.collides:focus {
 .forecast {
   margin-bottom: 30px;
 }
+.blocks {
+  margin-bottom: 30px;
+}
 .job-list,
 .news {
   position: relative;
@@ -7028,24 +7031,6 @@ a#shifts td.collides:focus {
 .job .job-description {
   font-size: 18px;
   font-weight: 100;
-}
-.talks {
-  font-size: 20px;
-  font-weight: 100;
-}
-.talks ul {
-  list-style: none;
-  padding: 0;
-}
-.talks ul li {
-  padding: 5px 5px 0 5px;
-  margin-bottom: 5px;
-}
-.talks ul li .title {
-  margin-left: 10px;
-}
-.talks ul li .location {
-  margin-left: 10px;
 }
 .clock {
   font-size: 70px;
