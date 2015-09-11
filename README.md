@@ -10,7 +10,7 @@ Aus einer Mail von Lukas:
 > Mir is da sofort das Engelsystem vom Camp eingefallen. Ich war mal so
 > frei und hab eins aufgesetzt: https://www.engel-muc.de/
 
-Dieses Github-Projekt diehnt zur Organisation der noch offenen TODOs, sowie der Veröffentlichung unserer Anpassungen des Quellcodes der Software.
+Dieses Github-Projekt dient zur Organisation der noch offenen TODOs, sowie der Veröffentlichung unserer Anpassungen des Quellcodes der Software.
 
 Fehler bitte hier melden: https://github.com/muccc/engelsystem/issues
 
