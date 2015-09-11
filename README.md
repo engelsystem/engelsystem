@@ -6,6 +6,7 @@
  * optionale Vagrant Plugins:
    * für LXC Support: `vagrant plugin install vagrant-lxc`
    * um per Hostname auf die VM zuzugreifen: `vagrant plugin install vagrant-hostmanager`
+ * Submodules: `git submodules update -i`
  * VM starten: `vagrant up`
 
 ## Installation eines frischen Engelsystems
