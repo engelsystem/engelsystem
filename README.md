@@ -1,11 +1,21 @@
-# Installation eines frischen Engelsystems
+# Engelsystem
 
-## Mindestvorrausetzungen (bzw. getestet unter):
+## Aufsetzen des Development Environments
+
+ * Vagrant installieren
+ * optionale Vagrant Plugins:
+   * für LXC Support: `vagrant plugin install vagrant-lxc`
+   * um per Hostname auf die VM zuzugreifen: `vagrant plugin install vagrant-hostmanager`
+ * VM starten: `vagrant up`
+
+## Installation eines frischen Engelsystems
+
+### Mindestvorrausetzungen (bzw. getestet unter):
  * PHP 5.4.x (cgi-fcgi)
  * MySQL-Server 5.5.x
  * Webserver mit PHP-Anbindung, z.B. lighttpd, nginx oder Apache
 
-## Vorgehen:
+### Vorgehen:
  * Klonen des `master` inkl. submodules in lokales Verzeichnis: `git clone --recursive https://github.com/engelsystem/engelsystem.git`
  * Der Webserver muss Schreibrechte auf das Verzeichnis `import` bekommen, für alle anderen Dateien reichen Leserechte.
  * Der Webserver muss auf `public` als http-root zeigen.
