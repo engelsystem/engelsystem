@@ -18,6 +18,14 @@ function get_dashboard()
         'jobs_now' => getListUpcomingShifts($shifts, 60*60),
         'jobs_soon' => getListUpcomingShifts($shifts, 3*60*60),
         'news' => getAllNewsList(),
+        'text_within_next_3_hours' => _("Within the next 3 hours"),
+        'text_within_next_hour' => _("Within the next hour"),
+        'text_currently_running' => _("Currently running"),
+        'text_hours_to_be_worked' => _("Hours to be worked"),
+        'text_currently_working' => _("Angels currently working"),
+        'text_angels_needed_for_night_shifts' => _("Angels needed for night shifts"),
+        'text_angels_needed_next_3_hours' => _("Angels needed in the next 3 hrs"),
+        'text_news' => _("News"),
     );
 
     return  dashboardView($viewData);
