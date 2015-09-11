@@ -277,8 +277,8 @@ th {
 }
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url('../vendor/bootstrap/fonts/glyphicons-halflings-regular.eot');
-  src: url('../vendor/bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../vendor/bootstrap/fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../vendor/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'), url('../vendor/bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../vendor/bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 .glyphicon {
   position: relative;
@@ -6908,6 +6908,148 @@ a#shifts td.collides:focus {
   75% {
     transform: rotate(0deg) translateY(0px);
   }
+}
+.forecast {
+  margin-bottom: 30px;
+}
+.job-list,
+.news {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .job-list,
+  .news {
+    float: left;
+    width: 100%;
+  }
+}
+@media (min-width: 992px) {
+  .job-list,
+  .news {
+    float: left;
+    width: 33.33333333%;
+  }
+}
+@media (min-width: 1200px) {
+  .job-list,
+  .news {
+    float: left;
+    width: 33.33333333%;
+  }
+}
+.talks {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .talks {
+    float: left;
+    width: 100%;
+  }
+}
+@media (min-width: 992px) {
+  .talks {
+    float: left;
+    width: 33.33333333%;
+  }
+}
+@media (min-width: 1200px) {
+  .talks {
+    float: left;
+    width: 33.33333333%;
+  }
+}
+.upcoming-shifts,
+.upcoming-night-shifts,
+.currently-working,
+.hours-worked {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: center;
+  font-weight: 100;
+}
+@media (min-width: 768px) {
+  .upcoming-shifts,
+  .upcoming-night-shifts,
+  .currently-working,
+  .hours-worked {
+    float: left;
+    width: 50%;
+  }
+}
+@media (min-width: 992px) {
+  .upcoming-shifts,
+  .upcoming-night-shifts,
+  .currently-working,
+  .hours-worked {
+    float: left;
+    width: 25%;
+  }
+}
+@media (min-width: 1200px) {
+  .upcoming-shifts,
+  .upcoming-night-shifts,
+  .currently-working,
+  .hours-worked {
+    float: left;
+    width: 25%;
+  }
+}
+.upcoming-shifts .number,
+.upcoming-night-shifts .number,
+.currently-working .number,
+.hours-worked .number {
+  font-size: 80px;
+  font-weight: 200;
+}
+.upcoming-shifts .description,
+.upcoming-night-shifts .description,
+.currently-working .description,
+.hours-worked .description {
+  font-size: 16px;
+  font-weight: bold;
+}
+.job {
+  overflow: hidden;
+}
+.job header {
+  font-size: 20px;
+}
+.job header .location {
+  margin-left: 10px;
+}
+.job .job-description {
+  font-size: 18px;
+  font-weight: 100;
+}
+.talks {
+  font-size: 20px;
+  font-weight: 100;
+}
+.talks ul {
+  list-style: none;
+  padding: 0;
+}
+.talks ul li {
+  padding: 5px 5px 0 5px;
+  margin-bottom: 5px;
+}
+.talks ul li .title {
+  margin-left: 10px;
+}
+.talks ul li .location {
+  margin-left: 10px;
+}
+.clock {
+  font-size: 70px;
+  text-align: center;
 }
 .messages .text-danger {
   color: #fff;
