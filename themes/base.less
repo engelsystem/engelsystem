@@ -143,3 +143,34 @@ form.admin-user-form input[type="radio"] {
     margin-left: 0;
   }
 }
+
+/* Shift filters */
+.selection.user-shift-filter {
+  .checkbox {
+    clear: both;
+  }
+}
+
+.shift-selected-filter-list {
+  margin: 0;
+  padding: 0 0 5px 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    padding: 0 0 0 11px;
+  }
+
+  li:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: '- ';
+  }
+}
+
+@media all and (max-width: @screen-sm) {
+  .selection.user-shift-filter {
+    margin-top: 25px;
+  }
+}

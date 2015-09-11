@@ -813,15 +813,15 @@ function view_user_shifts() {
       msg(),
       template_render('../templates/user_shifts.html', array(
           'title' => shifts_title(),
-          'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", _("Rooms")),
+          'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", _("Room Filter")),
           'start_select' => html_select_key("start_day", "start_day", array_combine($days, $days), $_SESSION['user_shifts']['start_day']),
           'start_time' => $_SESSION['user_shifts']['start_time'],
           'end_select' => html_select_key("end_day", "end_day", array_combine($days, $days), $_SESSION['user_shifts']['end_day']),
           'end_time' => $_SESSION['user_shifts']['end_time'],
-          'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", _("Angeltypes") . '<sup>1</sup>'),
+          'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", _("Angeltype Filter") . '<sup>1</sup>'),
           'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", _("Occupancy")),
           'task_notice' => '<sup>1</sup>' . _("The tasks shown here are influenced by the preferences you defined in your settings!") . " <a href=\"" . page_link_to('angeltypes') . '&action=about' . "\">" . _("Description of the jobs.") . "</a>",
-          'new_style_checkbox' => '<label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style'] ? ' checked' : '') . '> ' . _("Use new style if possible") . '</label>',
+          'new_style_checkbox' => '<br /><label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style'] ? ' checked' : '') . '> ' . _("Use new style if possible") . '</label>',
           'shifts_table' => msg() . $shifts_table,
           'ical_text' => '<h2>' . _("iCal export") . '</h2><p>' . sprintf(_("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."), page_link_to_absolute('ical') . '&key=' . $user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'], page_link_to('user_myshifts') . '&reset') . '</p>',
           'filter' => _("Filter")
@@ -848,20 +848,72 @@ function get_ids_from_array($array) {
   return $array["id"];
 }
 
-function make_select($items, $selected, $name, $title = null) {
-  $html_items = array();
-  if (isset($title))
-    $html_items[] = '<h4>' . $title . '</h4>' . "\n";
 
-  foreach ($items as $i)
-    $html_items[] = '<div class="checkbox"><label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '"' . (in_array($i['id'], $selected) ? ' checked="checked"' : '') . '> ' . $i['name'] . '</label>' . (! isset($i['enabled']) || $i['enabled'] ? '' : glyph("lock")) . '</div><br />';
-  $html = '<div id="selection_' . $name . '" class="selection ' . $name . '">' . "\n";
-  $html .= implode("\n", $html_items);
-  $html .= buttons(array(
-      button("javascript: check_all('selection_" . $name . "')", _("All"), ""),
-      button("javascript: uncheck_all('selection_" . $name . "')", _("None"), "")
-  ));
+function make_select($items, $selected, $name, $title = null) {
+  $html_items     = array();
+  $checkbox_items = array();
+
+  $itemsCounter = 1;
+  foreach ($items as $i) {
+
+    $styleDisplay = 'block';
+    if (!in_array($i['id'], $selected)) {
+      $styleDisplay = 'none';
+    }
+
+    array_push(
+        $checkbox_items,
+        '<div class="checkbox"><label>
+                <input type="checkbox" data-filter-selector-checkbox="' . $name . $i['id'] . '" name="' . $name . '[]" value="' . $i['id'] . '"' . (in_array($i['id'], $selected) ? ' checked="checked"' : '') . ' /> ' . $i['name'] . '
+        </label>' . (! isset($i['enabled']) || $i['enabled'] ? '' : glyph("lock")) . '</div>'
+    );
+
+    $itemHTML = '';
+    $itemHTML .= '<li data-filter-selector-li="' . $name . $i['id'] . '" style="display:' . $styleDisplay . '">';
+    $itemHTML .= '<input style="display: none;" data-filter-selector-checkbox="' . $name . $i['id'] . '" type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '"' . (in_array($i['id'], $selected) ? ' checked="checked"' : '') . ' />';
+    $itemHTML .= '<span>' . $i['name'] .'</span>';
+    $itemHTML .= '</li>';
+    array_push(
+        $html_items,
+        $itemHTML
+    );
+
+    $itemsCounter++;
+  }
+
+  $html = '<div id="selection_' . $name . '" class="selection ' . $name . ' user-shift-filter">' . "\n";
+
+  if (isset($title)) {
+    $html .= '<h4>' . $title . '</h4>' . "\n";
+  }
+
+  if(count($html_items)) {
+    $html .= '<ul class="shift-selected-filter-list">';
+    $html .= implode("\n", $html_items);
+    $html .= '</ul>';
+  }
+
+  $html .= '<div class="btn-group"><a href="" class="btn btn-default btn-xs" data-toggle="modal" data-target="#filterModal-' . $name . '">edit filter</a></div>' . "\n";
   $html .= '</div>' . "\n";
+
+  $html .= '<div class="modal fade" id="filterModal-' . $name . '" tabindex="-1" role="dialog" aria-labelledby="' . $title . '">';
+    $html .= '<div class="modal-dialog" role="document">';
+    $html .= '<div class="modal-content">';
+      $html .= '<div class="modal-header">';
+        $html .= '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+          $html .= '<h4 class="modal-title" id="myModalLabel">' . $title . '</h4>';
+        $html .= '</div>';
+        $html .= '<div class="modal-body">';
+          $html .= implode($checkbox_items, "\n");
+        $html .= '</div>';
+        $html .= '<div class="modal-footer">';
+          $html .= '<button type="button" class="btn btn-default" data-dismiss="modal">close</button>';
+          $html .= '<button type="button" class="btn btn-primary" onclick="updateFilters(\'' . $name .'\', \'#filterModal-\')">set filter</button>';
+        $html .= '</div>';
+      $html .= '</div>';
+    $html .= '</div>';
+  $html .= '</div>';
+
   return $html;
 }
 ?>
