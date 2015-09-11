@@ -157,7 +157,12 @@ echo template_render('../templates/layout.html', array(
     'content' => msg() . $content,
     'header_toolbar' => header_toolbar(),
     'faq_url' => $faq_url,
-    'locale' => locale() 
+    'locale' => locale(),
+    'selectAllText' => _('Select all'),
+    'filterPlaceholder' => _("Search"),
+    'allSelectedText' => _("All selected"),
+    'nSelectedText' => _("selected"),
+    'nonSelectedText' => _("None selected")
 ));
 
 ?>

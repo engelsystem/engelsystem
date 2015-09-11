@@ -4,3 +4,6 @@
 [submodule "vendor/bootstrap"]
 	path = vendor/bootstrap
 	url = https://github.com/twbs/bootstrap.git
+[submodule "vendor/bootstrap-multiselect"]
+	path = vendor/bootstrap-multiselect
+	url = https://github.com/davidstutz/bootstrap-multiselect.git

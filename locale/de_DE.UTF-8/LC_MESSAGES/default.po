@@ -2236,6 +2236,21 @@ msgstr ""
 "Du hast keinen Zugriff auf diese Seite. Registriere Dich und logge Dich "
 "bitte ein, um Zugriff zu erhalten!"
 
+msgid "None selected"
+msgstr "keine"
+
+msgid "Select all"
+msgstr "Alle auswählen"
+
+msgid "selected"
+msgstr "ausgewählt"
+
+msgid "All selected"
+msgstr "Alle"
+
+msgid "Search"
+msgstr "Suche"
+
 #~ msgid "Tasks"
 #~ msgstr "Aufgaben"
 

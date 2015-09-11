@@ -818,9 +818,9 @@ function view_user_shifts() {
           'start_time' => $_SESSION['user_shifts']['start_time'],
           'end_select' => html_select_key("end_day", "end_day", array_combine($days, $days), $_SESSION['user_shifts']['end_day']),
           'end_time' => $_SESSION['user_shifts']['end_time'],
-          'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", _("Angeltypes") . '<sup>1</sup>'),
+          'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", _("Angeltypes")),
           'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", _("Occupancy")),
-          'task_notice' => '<sup>1</sup>' . _("The tasks shown here are influenced by the preferences you defined in your settings!") . " <a href=\"" . page_link_to('angeltypes') . '&action=about' . "\">" . _("Description of the jobs.") . "</a>",
+          'task_notice' => '',
           'new_style_checkbox' => '<label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style'] ? ' checked' : '') . '> ' . _("Use new style if possible") . '</label>',
           'shifts_table' => msg() . $shifts_table,
           'ical_text' => '<h2>' . _("iCal export") . '</h2><p>' . sprintf(_("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."), page_link_to_absolute('ical') . '&key=' . $user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'], page_link_to('user_myshifts') . '&reset') . '</p>',
@@ -849,19 +849,40 @@ function get_ids_from_array($array) {
 }
 
 function make_select($items, $selected, $name, $title = null) {
-  $html_items = array();
-  if (isset($title))
-    $html_items[] = '<h4>' . $title . '</h4>' . "\n";
 
-  foreach ($items as $i)
-    $html_items[] = '<div class="checkbox"><label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '"' . (in_array($i['id'], $selected) ? ' checked="checked"' : '') . '> ' . $i['name'] . '</label>' . (! isset($i['enabled']) || $i['enabled'] ? '' : glyph("lock")) . '</div><br />';
-  $html = '<div id="selection_' . $name . '" class="selection ' . $name . '">' . "\n";
-  $html .= implode("\n", $html_items);
-  $html .= buttons(array(
-      button("javascript: check_all('selection_" . $name . "')", _("All"), ""),
-      button("javascript: uncheck_all('selection_" . $name . "')", _("None"), "")
-  ));
-  $html .= '</div>' . "\n";
-  return $html;
+    $html = "";
+    if (isset($title)) {
+        $html .= '<h4 style="margin-top: 41px;">';
+        $html .= $title;
+        if ($name == 'types') {
+            $html .= ' <small><span class="" data-trigger="hover focus" data-toggle="popover" data-placement="bottom" data-html="true" data-content=\'';
+            $html .= _("The tasks shown here are influenced by the preferences you defined in your settings!") . " <a href=\"" . page_link_to('angeltypes') . '&action=about' . "\">" . _("Description of the jobs.") . "</a>";
+            $html .= '\'>';
+            $html .= glyph('info-sign');
+            $html .= '</span></small>';
+        }
+        $html .= '</h4>';
+    }
+    $html .= sprintf(
+        '<select id="%s" class="%s" name="%s[]" multiple="multiple">',
+        uniqid(),
+        'filterselect',
+        $name
+    );
+
+    foreach ($items as $item) {
+        $html .= sprintf(
+            '<option value="%s"%s>%s%s</option>',
+            $item['id'],
+            (in_array($item['id'], $selected) ? ' selected="selected"' : ''),
+            $item['name'],
+            (! isset($item['enabled']) || $item['enabled'] ? '' : " " . htmlentities(glyph("lock")))
+        );
+    }
+
+    $html .= "</select>";
+
+    return $html;
 }
+
 ?>
