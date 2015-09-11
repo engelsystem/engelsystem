@@ -169,7 +169,7 @@ function guest_register() {
   }
   
   return page_with_title(register_title(), array(
-      _("By completing this form you're registering as an Angel. This script will create you an account in the angel task sheduler."),
+      _("By completing this form you're registering as an angel. This script will create you an account in the angel task sheduler."),
       $msg,
       msg(),
       form(array(
