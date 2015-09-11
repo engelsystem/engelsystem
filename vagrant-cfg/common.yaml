@@ -69,9 +69,9 @@ profile::queue::rabbitmq: false
 ## mysql
 mysql::server::root_password: root
 component::mysql::databases:
-  engel:
-    user: 'dev'
-    password: 'dev'
+  engelsystem:
+    user: 'engelsystem'
+    password: 'engelsystem'
     host: 'localhost'
     grant: ['ALL']
     sql: /vagrant/db/install.sql
