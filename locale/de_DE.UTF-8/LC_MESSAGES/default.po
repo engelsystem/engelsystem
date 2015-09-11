@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2015-08-15 23:36+0100\n"
-"PO-Revision-Date: 2015-08-15 23:36+0100\n"
+"PO-Revision-Date: 2015-09-11 11:24+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -36,10 +36,11 @@ msgstr ""
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/sys_menu.php:59
 msgid ""
-"You are not marked as available. Please contact the Infobus and confirm your availability."
+"You are not marked as available. Please contact the Infobus and confirm your "
+"availability."
 msgstr ""
-"Du bist nicht als verfügbar markiert. Bitte melde Dich beim Infobus, "
-"und bestätige Deine Verfügbarkeit."
+"Du bist nicht als verfügbar markiert. Bitte melde Dich beim Infobus, und "
+"bestätige Deine Verfügbarkeit."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/sys_menu.php:65
 msgid "You need to specify a tshirt size in your settings!"
@@ -691,6 +692,7 @@ msgid "Start of availability"
 msgstr "Beginn der Verfügbarkeit"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:112
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:172
 msgid "Planned end of availability"
 msgstr "Geplantes Ende der Verfügbarkeit"
 
@@ -861,8 +863,8 @@ msgstr "Importieren"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:77
 msgid ""
-"This import will create/update/delete locations and shifts by given FRAB-export "
-"file. The needed file format is xcal."
+"This import will create/update/delete locations and shifts by given FRAB-"
+"export file. The needed file format is xcal."
 msgstr ""
 "Dieser Import erzeugt, ändert und löscht Orte und Schichten anhand einer "
 "FRAB-Export Datei. Das benötigte Format ist xcal."
@@ -937,6 +939,8 @@ msgstr "Titel"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:141
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:303
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:803
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:104
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:221
 msgid "Location"
 msgstr "Ort"
 
@@ -1080,6 +1084,7 @@ msgid "Create shifts"
 msgstr "Schichten erstellen"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:65
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:110
 msgid "Please select a location."
 msgstr "Bitte einen Ort auswählen."
 
@@ -1565,10 +1570,6 @@ msgstr "Aussehen geändert."
 msgid "Here you can change your user details."
 msgstr "Hier kannst Du Deine Details ändern."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:172
-msgid "Planned end of availability"
-msgstr "Geplantes Ende der Verfügbarkeit"
-
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:182
 msgid "Please visit the angeltypes page to manage your angeltypes."
 msgstr "Bitte benutze die Engeltypen-Seite um deine Engeltypen zu verwalten."
@@ -1613,10 +1614,6 @@ msgstr "Schicht-Eintrag gelöscht."
 msgid "Entry not found."
 msgstr "Eintrag nicht gefunden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:110
-msgid "Please select a location."
-msgstr "Bitte einen Ort auswählen."
-
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:117
 msgid "Please select a shifttype."
 msgstr "Bitte einen Schichttyp wählen."
@@ -1647,6 +1644,7 @@ msgid "This page is much more comfortable with javascript."
 msgstr "Diese Seite ist mit JavaScript viel komfortabler."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:186
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:27
 msgid "Location:"
 msgstr "Ort:"
 
@@ -1958,10 +1956,6 @@ msgstr "Engel:"
 msgid "Date, Duration:"
 msgstr "Termin, Dauer:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:27
-msgid "Location:"
-msgstr "Ort:"
-
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:28
 msgid "Title:"
 msgstr "Titel:"
@@ -1991,11 +1985,6 @@ msgstr "Diese Schicht kollidiert mit deinen Schichten."
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:75
 msgid "You are signed up for this shift."
 msgstr "Du bist für diese Schicht eingetragen."
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:104
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:221
-msgid "Location"
-msgstr "Ort"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:12
 #, php-format
