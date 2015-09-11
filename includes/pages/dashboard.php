@@ -5,6 +5,11 @@ function getDashboardTitle()
     return _('Dashboard');
 }
 
+/**
+ * Main function to create the parameters passed to the view.
+ *
+ * @return array
+ */
 function get_dashboard()
 {
     $shifts = getAllShifts();
@@ -70,6 +75,12 @@ function getUpcomingShifts($shifts, $withinSeconds)
     });
 }
 
+/**
+ * Creates a list of currently running shifts with its subjects as label.
+ *
+ * @param $shifts
+ * @return string
+ */
 function getListCurrentShifts($shifts)
 {
     $currentlyRunning = getCurrentShifts($shifts);
@@ -118,6 +129,11 @@ function getAllShifts()
     return sql_select("SELECT * FROM `Shifts` ORDER BY `start`");
 }
 
+/**
+ * Creates an ul list of news items with its subjects as label.
+ *
+ * @return string
+ */
 function getAllNewsList()
 {
     $news = sql_select("SELECT * FROM `News` ORDER BY `Datum`");
