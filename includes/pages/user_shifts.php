@@ -183,7 +183,7 @@ function user_shifts() {
         form(array(
             form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
             form_text('title', _("Title"), $title),
-            form_select('rid', _("Room:"), $room_array, $rid),
+            form_select('rid', _("Location:"), $room_array, $rid),
             form_text('start', _("Start:"), date("Y-m-d H:i", $start)),
             form_text('end', _("End:"), date("Y-m-d H:i", $end)),
             '<h2>' . _("Needed angels") . '</h2>',
@@ -341,7 +341,7 @@ function view_user_shifts() {
   $rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
 
   if (count($rooms) == 0) {
-    error(_("The administration has not configured any rooms yet."));
+    error(_("The administration has not configured any locations yet."));
     redirect('?');
   }
 
@@ -800,7 +800,7 @@ function view_user_shifts() {
       }
     }
     $shifts_table = table(array(
-        'info' => _("Time") . "/" . _("Room"),
+        'info' => _("Time") . "/" . _("Location"),
         'entries' => _("Entries")
     ), $shifts_table);
   }
@@ -813,7 +813,7 @@ function view_user_shifts() {
       msg(),
       template_render('../templates/user_shifts.html', array(
           'title' => shifts_title(),
-          'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", _("Rooms")),
+          'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", _("Location")),
           'start_select' => html_select_key("start_day", "start_day", array_combine($days, $days), $_SESSION['user_shifts']['start_day']),
           'start_time' => $_SESSION['user_shifts']['start_time'],
           'end_select' => html_select_key("end_day", "end_day", array_combine($days, $days), $_SESSION['user_shifts']['end_day']),
