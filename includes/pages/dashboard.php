@@ -12,7 +12,7 @@ function get_dashboard()
     $viewData = array(
         'number_upcoming_shifts' => getNumberUpcomingShifts($shifts, 3*60*60),
         'number_upcoming_night_shifts' => 11,
-        'number_currently_working' => 12,
+        'number_currently_working' => getCurrentlyWorkingAngels(),
         'number_hours_worked' => 13,
         'jobs_currently_running' => getListCurrentShifts($shifts),
         'jobs_now' => getListUpcomingShifts($shifts, 60*60),
@@ -128,4 +128,14 @@ function getAllNewsList()
     }
 
     return $list.'</ul>';
+}
+
+/**
+ * @return int
+ */
+function getCurrentlyWorkingAngels()
+{
+    $count = count(sql_select("SELECT id FROM `ShiftEntry`;"));
+
+    return $count;
 }
