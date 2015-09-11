@@ -11,7 +11,7 @@ function get_dashboard()
 
     $viewData = array(
         'number_upcoming_shifts' => getNumberUpcomingShifts($shifts, 3*60*60),
-        'number_upcoming_night_shifts' => 11,
+        'number_upcoming_night_shifts' => getNumberUpcomingNightShifts(),
         'number_currently_working' => getCurrentlyWorkingAngels(),
         'number_hours_worked' => countHoursToBeWorked($shifts),
         'jobs_currently_running' => getListCurrentShifts($shifts),
@@ -162,4 +162,29 @@ function countHoursToBeWorked($shifts)
     }
 
     return round($seconds/60/60, 0);
+}
+
+/**
+ * counts the night shifts which are upcoming.
+ *
+ * @return int
+ */
+function getNumberUpcomingNightShifts()
+{
+    $nightShifts = getNightShifts();
+    $upcomingNightShifts = array_filter($nightShifts, function ($shift) {
+        $currentTime = time();
+
+        return $shift['start'] >= $currentTime || $shift['end'] >= $currentTime;
+    });
+
+    return count($upcomingNightShifts);
+}
+
+/**
+ * @return array
+ */
+function getNightShifts()
+{
+    return sql_select("SELECT * FROM Shifts WHERE FROM_UNIXTIME(start, '%H') > 18 OR FROM_UNIXTIME(end, '%H') < 6;");
 }
