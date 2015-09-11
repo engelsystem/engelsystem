@@ -22,9 +22,5 @@ function session_lifetime($lifetime, $application_name) {
   ini_set('session.gc_divisor', 100);
   
   // Cookie settings (lifetime)
-  ini_set('session.cookie_secure', ! (isset($_SERVER['HTTP_HOST']) && preg_match("/^localhost/", $_SERVER["HTTP_HOST"]) || isset($_GET['debug'])));
-  ini_set('session.use_only_cookies', true);
   ini_set('session.cookie_lifetime', $lifetime * 60);
 }
-
-?>

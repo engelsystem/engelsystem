@@ -194,6 +194,5 @@ php::extensions:
 #  Date/date.timezone: Europe/Berlin
 
 ## only fpm php.ini settings
-php::fpm::settings:
-  Session/session.auto_start: 1
+# php::fpm::settings:
 #   PHP/short_open_tag: 'On'
