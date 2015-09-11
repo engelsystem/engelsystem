@@ -128,3 +128,18 @@ body {
     transform: rotate(0deg) translateY(0px);
   }
 }
+
+/* makes table elements in User-Edit-Form behave like bootstrap elements
+   (quick-fix! html should get refactored) */
+form.admin-user-form td {
+  clear: both;
+  padding: 0 0 15px 0;
+}
+
+form.admin-user-form input[type="radio"] {
+  margin-left: 15px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
