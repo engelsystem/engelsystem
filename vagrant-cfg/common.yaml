@@ -173,6 +173,12 @@ hhvm::config::port: 9090  # make sure that hhvm and php5-fpm ports don't collide
 ## php
 php::extensions:
   mysql: {}
+  xdebug:
+    settings:
+      xdebug.max_nesting_level: 1000
+      xdebug.remote_enable: 'On'
+      xdebug.default_enable: 'On'
+      xdebug.remote_connect_back: 'On'
 #  curl: {}
 #  json: {}
 #  intl: {}
@@ -181,17 +187,12 @@ php::extensions:
 #    settings:
 #      apc.stat: 1
 #      apc.stat_ctime: 1
-#  xdebug:
-#    settings:
-#      xdebug.max_nesting_level: 1000
-#      xdebug.remote_enable: 'On'
-#      xdebug.default_enable: 'On'
-#      xdebug.remote_connect_back: 'On'
 
 ## cli and fpm php.ini settings
 # php::settings:
 #  Date/date.timezone: Europe/Berlin
 
 ## only fpm php.ini settings
-# php::fpm::settings:
+php::fpm::settings:
+  Session/session.auto_start: 1
 #   PHP/short_open_tag: 'On'
