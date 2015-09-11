@@ -7,7 +7,6 @@ node default {
   if $::bootstrapped == undef {
     exec { 'apt-update':
       command => 'apt-get update',
-      unless  => 'which git',
       before => Package['ruby', 'git', 'r10k']
     } ->
     file { ['/etc/facter', '/etc/facter/facts.d/']:
