@@ -15,14 +15,59 @@ function get_dashboard()
     $shifts = getAllShifts();
 
     $viewData = array(
-        'number_upcoming_shifts' => block(array('description' => _("Angels needed in the next 3 hrs"), 'number' => getNumberUpcomingShifts($shifts, 3*60*60)), BLOCK_TYPE_COUNTER),
-        'number_upcoming_night_shifts' => block(array('description' => _("Angels needed for night shifts"), 'number' => getNumberUpcomingNightShifts()), BLOCK_TYPE_COUNTER),
-        'number_currently_working' => block(array('description' => _("Angels currently working"), 'number' => getCurrentlyWorkingAngels()), BLOCK_TYPE_COUNTER),
-        'number_hours_worked' => block(array('description' => _("Hours to be worked"), 'number' => countHoursToBeWorked($shifts)), BLOCK_TYPE_COUNTER),
-        'jobs_currently_running' => block(array('title' => _("Currently running"), 'body' => getListCurrentShifts($shifts)), BLOCK_TYPE_PANEL),
-        'jobs_now' => block(array('title' => _("Within the next hour"), 'body' => getListUpcomingShifts($shifts, 60*60)), BLOCK_TYPE_PANEL),
-        'jobs_soon' => block(array('title' => _("Within the next 3 hours"), 'body' => getListUpcomingShifts($shifts, 3*60*60)), BLOCK_TYPE_PANEL),
-        'news' => block(array('title' => _("News"), 'body' => getAllNewsList()), BLOCK_TYPE_PANEL),
+        'number_upcoming_shifts' => block(
+            array(
+                'description' => _("Angels needed in the next 3 hrs"),
+                'number' => getNumberUpcomingShifts($shifts, 3*60*60)),
+            BLOCK_TYPE_COUNTER
+        ),
+        'number_upcoming_night_shifts' => block(
+            array(
+                'description' => _("Angels needed for night shifts"),
+                'number' => getNumberUpcomingNightShifts()
+            ),
+            BLOCK_TYPE_COUNTER
+        ),
+        'number_currently_working' => block(
+            array(
+                'description' => _("Angels currently working"),
+                'number' => getCurrentlyWorkingAngels()
+            ),
+            BLOCK_TYPE_COUNTER
+        ),
+        'number_hours_worked' => block(
+            array(
+                'description' => _("Hours to be worked"),
+                'number' => countHoursToBeWorked($shifts)
+            ),
+            BLOCK_TYPE_COUNTER
+        ),
+        'jobs_currently_running' => block(
+            array(
+                'title' => _("Currently running"),
+                'body' => getListCurrentShifts($shifts)
+            ),
+            BLOCK_TYPE_PANEL
+        ),
+        'jobs_now' => block(
+            array(
+                'title' => _("Within the next hour"),
+                'body' => getListUpcomingShifts($shifts, 60*60)
+            ),
+            BLOCK_TYPE_PANEL
+        ),
+        'jobs_soon' => block(
+            array(
+                'title' => _("Within the next 3 hours"),
+                'body' => getListUpcomingShifts($shifts, 3*60*60)
+            ),
+            BLOCK_TYPE_PANEL
+        ),
+        'news' => block(
+            array(
+                'title' => _("News"), 'body' => getAllNewsList()),
+            BLOCK_TYPE_PANEL
+        ),
     );
 
     return  dashboardView($viewData);
