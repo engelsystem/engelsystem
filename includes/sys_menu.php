@@ -96,6 +96,7 @@ function header_toolbar() {
 function make_navigation() {
   global $p, $privileges;
   
+  global $p, $privileges, $enable_frab_import;
   $menu = array();
   $pages = array(
       "news" => news_title(),
@@ -124,6 +125,10 @@ function make_navigation() {
       "admin_log" => admin_log_title() 
   );
   
+  if (!$enable_frab_import) {
+    unset($admin_pages["admin_import"]);
+  }
+
   foreach ($admin_pages as $page => $title)
     if (in_array($page, $privileges))
       $admin_menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $p);
