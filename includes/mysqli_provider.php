@@ -199,7 +199,11 @@ function sql_select_single_col($query) {
 }
 
 function sql_select_single_cell($query) {
-  return array_shift(array_shift(sql_select($query)));
+  $result = sql_select($query);
+
+  $firstCell = array_shift($result);
+
+  return array_shift($firstCell);
 }
 
 ?>
