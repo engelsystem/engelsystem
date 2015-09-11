@@ -1,0 +1,14 @@
+---
+env: dev
+
+# fixes permission errors
+php::fpm::config::user: vagrant
+php::fpm::config::group: users
+hhvm::config::user: vagrant
+hhvm::config::group: users
+
+# fixes bugs with vboxfs
+nginx::config::sendfile: 'off'
+nginx::config::vhost_purge: true
+
+apache::sendfile: 'Off'

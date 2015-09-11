@@ -61,8 +61,8 @@ $api_key = "";
 // MySQL-Connection Settings
 $config = array(
     'host' => "localhost",
-    'user' => "root",
-    'pw' => "",
-    'db' => "engelsystem" 
+    'user' => "engelsystem",
+    'pw' => "engelsystem",
+    'db' => "engelsystem"
 );
 ?>
