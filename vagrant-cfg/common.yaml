@@ -24,6 +24,7 @@ profile::packages::names:
   - bash-completion
   - wget
   - curl
+  - gettext
 
 profile::database::mysql: true
 profile::database::postgresql: false
