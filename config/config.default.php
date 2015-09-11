@@ -65,4 +65,6 @@ $config = array(
     'pw' => "engelsystem",
     'db' => "engelsystem"
 );
+
+$enable_frab_import = false;
 ?>

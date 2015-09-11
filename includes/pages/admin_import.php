@@ -5,10 +5,19 @@ function admin_import_title() {
 }
 
 function admin_import() {
+  global $enable_frab_import;
   global $rooms_import;
   global $user;
   $html = "";
   
+
+  if (!$enable_frab_import) {
+    error(_('Frab import is not enabled'));
+    return page_with_title('', [
+      msg()
+    ]);
+  }
+
   $step = "input";
   if (isset($_REQUEST['step']) && in_array($step, [
       'input',
