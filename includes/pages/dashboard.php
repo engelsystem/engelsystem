@@ -13,7 +13,7 @@ function get_dashboard()
         'number_upcoming_shifts' => getNumberUpcomingShifts($shifts, 3*60*60),
         'number_upcoming_night_shifts' => 11,
         'number_currently_working' => getCurrentlyWorkingAngels(),
-        'number_hours_worked' => 13,
+        'number_hours_worked' => countHoursToBeWorked($shifts),
         'jobs_currently_running' => getListCurrentShifts($shifts),
         'jobs_now' => getListUpcomingShifts($shifts, 60*60),
         'jobs_soon' => getListUpcomingShifts($shifts, 3*60*60),
@@ -138,4 +138,28 @@ function getCurrentlyWorkingAngels()
     $count = count(sql_select("SELECT id FROM `ShiftEntry`;"));
 
     return $count;
+}
+
+/**
+ * @param array $shifts
+ *
+ * @return int
+ */
+function countHoursToBeWorked($shifts)
+{
+    $seconds = 0;
+    $currentTime = time();
+
+    foreach ($shifts as $shift) {
+        if ($shift['start'] >= $currentTime) {
+            // has not started yet
+            $diff = $shift['end'] - $shift['start'];
+            $seconds += $diff > 0 ? $diff : 0;
+        } elseif ($shift['end'] >= $currentTime && $shift['start'] <= $currentTime) {
+            // shift has started, so just use the time until the end
+            $seconds += $shift['end'] - $currentTime;
+        }
+    }
+
+    return round($seconds/60/60, 0);
 }
