@@ -82,10 +82,10 @@ function admin_user() {
     
     $html .= form_info('', _('Please visit the angeltypes page or the users profile to manage users angeltypes.'));
     
-    $html .= "Hier kannst Du das Passwort dieses Engels neu setzen:<form action=\"" . page_link_to("admin_user") . "&action=change_pw&id=$id\" method=\"post\">\n";
-    $html .= "<table>\n";
-    $html .= "  <tr><td>Passwort</td><td>" . "<input class=\"form-control\" type=\"password\" size=\"40\" name=\"new_pw\" value=\"\"></td></tr>\n";
-    $html .= "  <tr><td>Wiederholung</td><td>" . "<input class=\"form-control\" type=\"password\" size=\"40\" name=\"new_pw2\" value=\"\"></td></tr>\n";
+    $html .= "Hier kannst Du das Passwort dieses Engels neu setzen:<form class=\"admin-user-form\" action=\"" . page_link_to("admin_user") . "&action=change_pw&id=$id\" method=\"post\">\n";
+    $html .= "<br /><table>\n";
+    $html .= "  <tr><td width=\"30%\">Passwort </td><td>" . "<input class=\"form-control\" type=\"password\" size=\"40\" name=\"new_pw\" value=\"\"></td></tr>\n";
+    $html .= "  <tr><td width=\"30%\">Wiederholung </td><td>" . "<input class=\"form-control\" type=\"password\" size=\"40\" name=\"new_pw2\" value=\"\"></td></tr>\n";
     
     $html .= "</table>";
     $html .= "<div class=\"form-group\"><input class=\"btn btn-primary\" type=\"submit\" value=\"Speichern\"></div>\n";
@@ -102,7 +102,7 @@ function admin_user() {
       $his_highest_group = $his_highest_group[0]['group_id'];
     
     if ($id != $user['UID'] && $my_highest_group <= $his_highest_group) {
-      $html .= "Hier kannst Du die Benutzergruppen des Engels festlegen:<form action=\"" . page_link_to("admin_user") . "&action=save_groups&id=" . $id . "\" method=\"post\">\n";
+      $html .= "Hier kannst Du die Benutzergruppen des Engels festlegen:<form class=\"admin-user-form\" action=\"" . page_link_to("admin_user") . "&action=save_groups&id=" . $id . "\" method=\"post\">\n";
       $html .= '<table>';
       
       $groups = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = '" . sql_escape($id) . "') WHERE `Groups`.`UID` >= '" . sql_escape($my_highest_group) . "' ORDER BY `Groups`.`Name`");
@@ -117,8 +117,8 @@ function admin_user() {
       $html .= "<hr />";
     }
     
-    $html .= "<form action=\"" . page_link_to("admin_user") . "&action=delete&id=" . $id . "\" method=\"post\">\n";
-    $html .= "<input class=\"btn btn-primary\" type=\"submit\" value=\"Löschen\">\n";
+    $html .= "<form class=\"admin-user-form\" action=\"" . page_link_to("admin_user") . "&action=delete&id=" . $id . "\" method=\"post\">\n";
+    $html .= "<tr><td><input class=\"btn btn-primary\" type=\"submit\" value=\"Löschen\"></td></tr>\n";
     $html .= "</form>";
     
     $html .= "<hr />";
