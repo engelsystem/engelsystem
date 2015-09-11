@@ -137,7 +137,7 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     $content = guest_credits();
   } elseif ($p === "dashboard") {
     require_once realpath(__DIR__ . '/../includes/pages/dashboard.php');
-    $title = getTitle();
+    $title = getDashboardTitle();
     $content = get_dashboard();
   } else {
     require_once realpath(__DIR__ . '/../includes/pages/guest_start.php');

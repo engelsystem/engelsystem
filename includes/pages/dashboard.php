@@ -1,8 +1,8 @@
 <?php
 
-function getTitle()
+function getDashboardTitle()
 {
-    return 'Dashboard';
+    return _('Dashboard');
 }
 
 function get_dashboard()
