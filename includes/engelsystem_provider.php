@@ -87,4 +87,3 @@ gettext_init();
 sql_connect($config['host'], $config['user'], $config['pw'], $config['db']);
 
 load_auth();
-
