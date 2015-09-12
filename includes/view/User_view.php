@@ -20,9 +20,9 @@ $tshirt_sizes = array(
 );
 
 $genders = array(
-    'male' => 'male',
-    'female' => 'female',
-    'none' => 'none'
+    'male' => _('male'),
+    'female' => _('female'),
+    'none' => _('neutral')
 );
 
 /**

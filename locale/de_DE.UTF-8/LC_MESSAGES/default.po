@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2015-09-12 10:14+0200\n"
-"PO-Revision-Date: 2015-09-12 10:14+0200\n"
+"POT-Creation-Date: 2015-09-12 11:26+0200\n"
+"PO-Revision-Date: 2015-09-12 11:27+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1959,6 +1959,18 @@ msgstr "Speichern"
 #: includes/view/User_view.php:7
 msgid "Please select..."
 msgstr "Bitte auswählen..."
+
+#: includes/view/User_view.php:23
+msgid "male"
+msgstr "männlich"
+
+#: includes/view/User_view.php:24
+msgid "female"
+msgstr "weiblich"
+
+#: includes/view/User_view.php:25
+msgid "neutral"
+msgstr "neutral"
 
 #: includes/view/User_view.php:38
 msgid "Number of vouchers"
