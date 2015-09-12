@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="css/theme%theme%.css" />
 <link rel="stylesheet" type="text/css" href="vendor/icomoon/style.css" />
 <link rel="stylesheet" type="text/css" href="vendor/bootstrap-datepicker-1.4.0/css/bootstrap-datepicker3.min.css" />
+<link rel="stylesheet" type="text/css" href="vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" />
 <script type="text/javascript" src="vendor/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="vendor/jquery-ui.min.js"></script>
 %atom_link%
@@ -41,11 +42,27 @@
   <script type="text/javascript" src="vendor/Chart.min.js"></script>
   <script type="text/javascript" src="js/forms.js"></script>
   <script type="text/javascript" src="vendor/moment-with-locales.min.js"></script>
+  <script type="text/javascript" src="vendor/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
   <script type="text/javascript">
-			$(function() {
-				moment.locale("%locale%");
-			});
-		</script>
+            $(function() {
+                moment.locale("%locale%");
+                $('.filterselect').multiselect({
+                    enableHTML: true,
+                    includeSelectAllOption: true,
+                    enableFiltering: true,
+                    enableCaseInsensitiveFiltering: true,
+                    numberDisplayed: 0,
+                    selectAllText: '%selectAllText%',
+                    filterPlaceholder: '%filterPlaceholder%',
+                    allSelectedText: '%allSelectedText%',
+                    nSelectedText: '%nSelectedText%',
+                    nonSelectedText: '%nonSelectedText%'
+                });
+                $(function () {
+                    $('[data-toggle="popover"]').popover()
+                });
+            });
+        </script>
   <script type="text/javascript" src="js/moment-countdown.js"></script>
 </body>
 </html>

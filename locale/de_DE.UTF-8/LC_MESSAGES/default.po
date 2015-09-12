@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2015-09-12 11:26+0200\n"
-"PO-Revision-Date: 2015-09-12 11:27+0200\n"
+"POT-Creation-Date: 2015-09-12 12:46+0200\n"
+"PO-Revision-Date: 2015-09-12 12:47+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -16,10 +16,14 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: vendor/bootstrap/grunt/bs-lessdoc-parser.js\n"
+"X-Poedit-SearchPathExcluded-1: public/vendor/bootstrap-multiselect/docs/js/"
+"prettify.js\n"
+"X-Poedit-SearchPathExcluded-2: vendor/bootstrap-multiselect/docs/js/prettify."
+"js\n"
 
 #: includes/controller/angeltypes_controller.php:7
-#: includes/view/AngelTypes_view.php:56 includes/view/AngelTypes_view.php:72
-#: includes/view/User_view.php:204
+#: includes/pages/user_shifts.php:821 includes/view/AngelTypes_view.php:56
+#: includes/view/AngelTypes_view.php:72 includes/view/User_view.php:204
 msgid "Angeltypes"
 msgstr "Engeltypen"
 
@@ -513,7 +517,7 @@ msgstr "Alle Schichten anzeigen"
 #: includes/pages/admin_active.php:169 includes/pages/admin_arrive.php:130
 #: includes/pages/admin_arrive.php:131 includes/pages/admin_free.php:71
 #: includes/pages/admin_free.php:80 includes/pages/admin_log.php:25
-#: includes/pages/admin_log.php:26
+#: includes/pages/admin_log.php:26 public/index.php:167
 msgid "Search"
 msgstr "Suche"
 
@@ -1614,25 +1618,9 @@ msgstr "Zeit"
 msgid "Entries"
 msgstr "Einträge"
 
-#: includes/pages/user_shifts.php:821
-msgid "Angeltype Filter"
-msgstr "Engeltypen Filter"
-
 #: includes/pages/user_shifts.php:822
 msgid "Occupancy"
 msgstr "Belegung"
-
-#: includes/pages/user_shifts.php:823
-msgid ""
-"The tasks shown here are influenced by the preferences you defined in your "
-"settings!"
-msgstr ""
-"Die Schichten, die hier angezeigt werden, sind von Deinen Einstellungen "
-"(Engeltypen/Aufgaben) abhängig!"
-
-#: includes/pages/user_shifts.php:823
-msgid "Description of the jobs."
-msgstr "Beschreibung der Aufgaben."
 
 #: includes/pages/user_shifts.php:824
 msgid "Use new style if possible"
@@ -1656,6 +1644,18 @@ msgstr ""
 #: includes/pages/user_shifts.php:827
 msgid "Filter"
 msgstr "Filter"
+
+#: includes/pages/user_shifts.php:860
+msgid ""
+"The tasks shown here are influenced by the preferences you defined in your "
+"settings!"
+msgstr ""
+"Die Schichten, die hier angezeigt werden, sind von Deinen Einstellungen "
+"(Engeltypen/Aufgaben) abhängig!"
+
+#: includes/pages/user_shifts.php:860
+msgid "Description of the jobs."
+msgstr "Beschreibung der Aufgaben."
 
 #: includes/sys_menu.php:49
 msgid ""
@@ -2137,6 +2137,25 @@ msgid ""
 msgstr ""
 "Du hast keinen Zugriff auf diese Seite. Registriere Dich und logge Dich "
 "bitte ein, um Zugriff zu erhalten!"
+
+#: public/index.php:166
+msgid "Select all"
+msgstr "Alle auswählen"
+
+#: public/index.php:168
+msgid "All selected"
+msgstr "Alle"
+
+#: public/index.php:169
+msgid "selected"
+msgstr "ausgewählt"
+
+#: public/index.php:170
+msgid "None selected"
+msgstr "keine"
+
+#~ msgid "Angeltype Filter"
+#~ msgstr "Engeltypen Filter"
 
 #~ msgid "None"
 #~ msgstr "Keine"
