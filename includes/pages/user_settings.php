@@ -91,7 +91,7 @@ function user_settings() {
     if (isset($_REQUEST['hometown']))
       $hometown = strip_request_item('hometown');
     if (isset($_REQUEST['gender'])
-        && isset($genders[$_REQUEST['gender']])) {
+        && array_key_exists($_REQUEST['gender'], $genders)) {
         $gender = $_REQUEST['gender'];
     }
 

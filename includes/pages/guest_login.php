@@ -128,7 +128,7 @@ function guest_register() {
     if (isset($_REQUEST['comment']))
       $comment = strip_request_item_nl('comment');
     if (isset($_REQUEST['gender'])
-        && isset($genders[$_REQUEST['gender']])) {
+        && array_key_exists($_REQUEST['gender'], $genders)) {
         $gender = $_REQUEST['gender'];
     }
 
