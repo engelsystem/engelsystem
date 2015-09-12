@@ -128,3 +128,61 @@ body {
     transform: rotate(0deg) translateY(0px);
   }
 }
+
+
+// Dashboard layout
+.forecast {
+  margin-bottom: 30px;
+}
+
+.blocks {
+  margin-bottom: 30px;
+}
+
+.job-list, .news {
+  .make-sm-column(12);
+  .make-md-column(4);
+  .make-lg-column(4);
+}
+
+.talks, {
+  .make-sm-column(12);
+  .make-md-column(4);
+  .make-lg-column(4);
+}
+
+.upcoming-shifts, .upcoming-night-shifts, .currently-working, .hours-worked {
+  .make-sm-column(6);
+  .make-md-column(3);
+  .make-lg-column(3);
+  .number {
+    font-size: 80px;
+    font-weight: 200;
+  }
+  .description {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  text-align: center;
+  font-weight: 100;
+}
+
+
+.job {
+  header {
+    font-size: 20px;
+    .location {
+      margin-left: 10px;
+    }
+  }
+  .job-description {
+    font-size: 18px;
+    font-weight: 100;
+  }
+  overflow: hidden;
+}
+
+.clock {
+  font-size: 70px;
+  text-align: center;
+}

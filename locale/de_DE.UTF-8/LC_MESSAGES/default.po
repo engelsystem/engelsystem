@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2015-09-12 09:13+0200\n"
-"PO-Revision-Date: 2015-09-12 09:17+0200\n"
+"POT-Creation-Date: 2015-09-12 09:31+0200\n"
+"PO-Revision-Date: 2015-09-12 09:34+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1063,6 +1063,42 @@ msgstr ""
 msgid "Edit user"
 msgstr "User bearbeiten"
 
+#: includes/pages/dashboard.php:5
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: includes/pages/dashboard.php:20
+msgid "Angels needed in the next 3 hrs"
+msgstr "Engel die in den nächsten 3 Stunden gebraucht werden"
+
+#: includes/pages/dashboard.php:26
+msgid "Angels needed for night shifts"
+msgstr "Engel, die noch für die Nachtschicht gebraucht werden"
+
+#: includes/pages/dashboard.php:33
+msgid "Angels currently working"
+msgstr "Engel die gerade arbeiten"
+
+#: includes/pages/dashboard.php:40
+msgid "Hours to be worked"
+msgstr "Stunden zu arbeiten"
+
+#: includes/pages/dashboard.php:47
+msgid "Currently running"
+msgstr "Aktive Schichten"
+
+#: includes/pages/dashboard.php:54
+msgid "Within the next hour"
+msgstr "In der Nächsten Stunde"
+
+#: includes/pages/dashboard.php:61
+msgid "Within the next 3 hours"
+msgstr "Innerhalb der nächsten 3 Stunden"
+
+#: includes/pages/dashboard.php:68 includes/pages/user_news.php:7
+msgid "News"
+msgstr "News"
+
 #: includes/pages/guest_credits.php:3
 msgid "Credits"
 msgstr "Credits"
@@ -1330,10 +1366,6 @@ msgstr ""
 #: includes/pages/user_news.php:3
 msgid "News comments"
 msgstr "News Kommentare"
-
-#: includes/pages/user_news.php:7
-msgid "News"
-msgstr "News"
 
 #: includes/pages/user_news.php:11
 msgid "Meetings"
@@ -2082,11 +2114,11 @@ msgstr "Wiederherstellen"
 msgid "Please enter a new password."
 msgstr "Gib bitte ein neues Passwort ein."
 
-#: public/index.php:144
+#: public/index.php:149
 msgid "No Access"
 msgstr "Kein Zugriff"
 
-#: public/index.php:145
+#: public/index.php:150
 msgid ""
 "You don't have permission to view this page. You probably have to sign in or "
 "register in order to gain access!"
