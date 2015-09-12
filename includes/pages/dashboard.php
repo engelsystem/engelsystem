@@ -154,7 +154,8 @@ function buildList($shifts)
 
     $list = '<ul class="list-group">';
     foreach ($shifts as $shift) {
-        $list .= sprintf("<li class=\"list-group-item\"><span class=\"badge\">%s</span>%s</li>\n", date('H:i:s', $shift['start']), $shift['title']);
+        $title = $shift['title'] ?: sprintf("%s</br>(%s)", $shift['type'], $shift['location']);
+        $list .= sprintf("<li class=\"list-group-item\"><span class=\"badge\">%s</span>%s</li>\n", date('H:i:s', $shift['start']), $title);
     }
 
     return $list . '</ul>';
@@ -167,7 +168,7 @@ function buildList($shifts)
  */
 function getAllShifts()
 {
-    return sql_select("SELECT * FROM `Shifts` ORDER BY `start`");
+    return sql_select("SELECT s.*, r.Name as location, t.name as type FROM `Shifts` s, `Room` r, `ShiftTypes` t ORDER BY s.`start`");
 }
 
 /**
