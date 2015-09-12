@@ -1,427 +1,362 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2015-08-15 23:36+0100\n"
-"PO-Revision-Date: 2015-08-15 23:36+0100\n"
+"POT-Creation-Date: 2015-09-12 11:26+0200\n"
+"PO-Revision-Date: 2015-09-12 11:27+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
-"X-Poedit-Basepath: .\n"
+"X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: /Users/msquare/workspace/projects/engelsystem\n"
-"X-Poedit-SearchPath-1: .\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: vendor/bootstrap/grunt/bs-lessdoc-parser.js\n"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/sys_menu.php:49
-msgid ""
-"Please enter your planned date of departure on your settings page to give us "
-"a feeling for teardown capacities."
-msgstr ""
-"Bitte gib Dein geplantes Abreisedatum an, damit wir ein Gefühl für die Abbau-"
-"Planung bekommen."
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/sys_menu.php:52
-#, php-format
-msgid ""
-"You freeloaded at least %s shifts. Shift signup is locked. Please go to "
-"heavens desk to be unlocked again."
-msgstr ""
-"Du hast mindestens %s Schichten geschwänzt. Schicht-Registrierung ist "
-"gesperrt. Bitte gehe zum Himmelsschreibtisch um wieder entsperrt zu werden."
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/sys_menu.php:59
-msgid ""
-"You are not marked as arrived. Please go to heaven's desk, get your angel "
-"badge and/or tell them that you arrived already."
-msgstr ""
-"Du bist nicht als angekommen markiert. Bitte gehe zur Himmelsverwaltung, "
-"hole Dein Badge ab und/oder erkläre ihnen, dass Du bereits angekommen bist."
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/sys_menu.php:65
-msgid "You need to specify a tshirt size in your settings!"
-msgstr "Bitte eine T-Shirt-Größe auswählen"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/sys_menu.php:71
-msgid ""
-"You need to specify a DECT phone number in your settings! If you don't have "
-"a DECT phone, just enter \"-\"."
-msgstr ""
-"Bitte eine DECT-Telefonnummer in den Einstellungen eingeben. Wenn du noch "
-"keine Nummer hast, bitte einfach \"-\" angeben."
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/sys_menu.php:132
-msgid "Admin"
-msgstr "Admin"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/sys_template.php:354
-msgid "No data found."
-msgstr "Nichts gefunden."
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:7
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:821
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:56
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:72
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:196
+#: includes/controller/angeltypes_controller.php:7
+#: includes/view/AngelTypes_view.php:56 includes/view/AngelTypes_view.php:72
+#: includes/view/User_view.php:204
 msgid "Angeltypes"
 msgstr "Engeltypen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:46
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:326
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:188
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:232
+#: includes/controller/angeltypes_controller.php:46
+#: includes/pages/guest_login.php:335 includes/view/AngelTypes_view.php:188
+#: includes/view/AngelTypes_view.php:232
 msgid "Teams/Job description"
 msgstr "Team-/Aufgabenbeschreibung"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:72
+#: includes/controller/angeltypes_controller.php:72
 #, php-format
 msgid "Angeltype %s deleted."
 msgstr "Engeltyp %s gelöscht."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:77
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:44
+#: includes/controller/angeltypes_controller.php:77
+#: includes/view/AngelTypes_view.php:44
 #, php-format
 msgid "Delete angeltype %s"
 msgstr "Lösche Engeltyp %s"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:121
+#: includes/controller/angeltypes_controller.php:121
 msgid "Please check the name. Maybe it already exists."
 msgstr "Bitte überprüfe den Namen. Vielleicht ist er bereits vergeben."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:152
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:54
+#: includes/controller/angeltypes_controller.php:152
+#: includes/view/AngelTypes_view.php:54
 #, php-format
 msgid "Edit %s"
 msgstr "%s bearbeiten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:184
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:175
+#: includes/controller/angeltypes_controller.php:184
+#: includes/view/AngelTypes_view.php:175
 #, php-format
 msgid "Team %s"
 msgstr "Team %s"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:204
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:153
+#: includes/controller/angeltypes_controller.php:204
+#: includes/view/User_view.php:161
 msgid "view"
 msgstr "ansehen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:209
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:64
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_groups.php:23
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:18
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:84
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:77
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:52
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:63
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:156
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:207
+#: includes/controller/angeltypes_controller.php:209
+#: includes/pages/admin_free.php:64 includes/pages/admin_groups.php:23
+#: includes/pages/admin_rooms.php:19 includes/view/AngelTypes_view.php:84
+#: includes/view/ShiftTypes_view.php:52 includes/view/ShiftTypes_view.php:63
+#: includes/view/Shifts_view.php:77 includes/view/User_view.php:164
+#: includes/view/User_view.php:215
 msgid "edit"
 msgstr "bearbeiten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:210
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:37
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:56
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:19
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:220
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:48
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:86
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:5
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:12
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:78
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:15
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:53
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:64
+#: includes/controller/angeltypes_controller.php:210
+#: includes/pages/admin_questions.php:37 includes/pages/admin_questions.php:56
+#: includes/pages/admin_rooms.php:20 includes/pages/user_shifts.php:220
+#: includes/view/AngelTypes_view.php:48 includes/view/AngelTypes_view.php:86
+#: includes/view/Questions_view.php:5 includes/view/Questions_view.php:12
+#: includes/view/ShiftTypes_view.php:15 includes/view/ShiftTypes_view.php:53
+#: includes/view/ShiftTypes_view.php:64 includes/view/Shifts_view.php:78
 msgid "delete"
 msgstr "löschen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:219
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:80
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:219
+#: includes/controller/angeltypes_controller.php:219
+#: includes/view/AngelTypes_view.php:80 includes/view/AngelTypes_view.php:219
 msgid "leave"
 msgstr "verlassen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:221
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:76
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:221
+#: includes/controller/angeltypes_controller.php:221
+#: includes/view/AngelTypes_view.php:76 includes/view/AngelTypes_view.php:221
 msgid "join"
 msgstr "mitmachen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shifts_controller.php:28
+#: includes/controller/shifts_controller.php:28
 msgid "Shift could not be found."
 msgstr "Schicht konnte nicht gefunden werden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:25
+#: includes/controller/shifttypes_controller.php:25
 #, php-format
 msgid "Shifttype %s deleted."
 msgstr "Schichttyp %s gelöscht."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:30
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:11
+#: includes/controller/shifttypes_controller.php:30
+#: includes/view/ShiftTypes_view.php:11
 #, php-format
 msgid "Delete shifttype %s"
 msgstr "Lösche Schichttyp %s"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:53
+#: includes/controller/shifttypes_controller.php:53
 msgid "Shifttype not found."
 msgstr "Schichttyp nicht gefunden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:69
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:60
+#: includes/controller/shifttypes_controller.php:69
+#: includes/pages/admin_rooms.php:61
 msgid "Please enter a name."
 msgstr "Gib bitte einen Namen an."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:86
+#: includes/controller/shifttypes_controller.php:86
 msgid "Updated shifttype."
 msgstr "Schichttyp geändert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:92
+#: includes/controller/shifttypes_controller.php:92
 msgid "Created shifttype."
 msgstr "Schichttyp erstellt."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:144
+#: includes/controller/shifttypes_controller.php:144
 msgid "Shifttypes"
 msgstr "Schichttypen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:19
+#: includes/controller/user_angeltypes_controller.php:19
 #, php-format
 msgid "There is %d unconfirmed angeltype."
 msgid_plural "There are %d unconfirmed angeltypes."
 msgstr[0] "Es gibt %d nicht freigeschalteten Engeltypen!"
 msgstr[1] "Es gibt %d nicht freigeschaltete Engeltypen!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:19
+#: includes/controller/user_angeltypes_controller.php:19
 msgid "Angel types which need approvals:"
 msgstr "Engeltypen die bestätigt werden müssen:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:29
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:37
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:69
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:77
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:133
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:189
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:259
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:296
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:304
+#: includes/controller/user_angeltypes_controller.php:29
+#: includes/controller/user_angeltypes_controller.php:37
+#: includes/controller/user_angeltypes_controller.php:69
+#: includes/controller/user_angeltypes_controller.php:77
+#: includes/controller/user_angeltypes_controller.php:133
+#: includes/controller/user_angeltypes_controller.php:189
+#: includes/controller/user_angeltypes_controller.php:259
+#: includes/controller/user_angeltypes_controller.php:296
+#: includes/controller/user_angeltypes_controller.php:304
 msgid "Angeltype doesn't exist."
 msgstr "Engeltyp existiert nicht."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:42
+#: includes/controller/user_angeltypes_controller.php:42
 msgid "You are not allowed to delete all users for this angeltype."
 msgstr "Du darfst nicht alle Benutzer von diesem Engeltyp entfernen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:52
+#: includes/controller/user_angeltypes_controller.php:52
 #, php-format
 msgid "Denied all users for angeltype %s."
 msgstr "Alle Benutzer mit Engeltyp %s abgelehnt."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:57
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:14
+#: includes/controller/user_angeltypes_controller.php:57
+#: includes/view/UserAngelTypes_view.php:14
 msgid "Deny all users"
 msgstr "Alle Benutzer ablehnen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:85
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:117
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:125
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:173
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:181
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:236
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:251
+#: includes/controller/user_angeltypes_controller.php:85
+#: includes/controller/user_angeltypes_controller.php:117
+#: includes/controller/user_angeltypes_controller.php:125
+#: includes/controller/user_angeltypes_controller.php:173
+#: includes/controller/user_angeltypes_controller.php:181
+#: includes/controller/user_angeltypes_controller.php:236
+#: includes/controller/user_angeltypes_controller.php:251
 msgid "User angeltype doesn't exist."
 msgstr "Benutzer-Engeltype existiert nicht."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:90
+#: includes/controller/user_angeltypes_controller.php:90
 msgid "You are not allowed to confirm all users for this angeltype."
 msgstr "Du darfst nicht alle Benutzer für diesen Engeltyp freischalten."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:100
+#: includes/controller/user_angeltypes_controller.php:100
 #, php-format
 msgid "Confirmed all users for angeltype %s."
 msgstr "Alle Benutzer für Engeltyp %s freigeschaltet."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:105
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:25
+#: includes/controller/user_angeltypes_controller.php:105
+#: includes/view/UserAngelTypes_view.php:25
 msgid "Confirm all users"
 msgstr "Alle Benutzer bestätigen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:138
+#: includes/controller/user_angeltypes_controller.php:138
 msgid "You are not allowed to confirm this users angeltype."
 msgstr "Du darfst diesen Benutzer nicht für diesen Engeltyp freischalten."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:146
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:197
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:267
+#: includes/controller/user_angeltypes_controller.php:146
+#: includes/controller/user_angeltypes_controller.php:197
+#: includes/controller/user_angeltypes_controller.php:267
 msgid "User doesn't exist."
 msgstr "Benutzer existiert nicht."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:156
+#: includes/controller/user_angeltypes_controller.php:156
 #, php-format
 msgid "%s confirmed for angeltype %s."
 msgstr "%s für Engeltyp %s freigeschaltet."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:161
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:36
+#: includes/controller/user_angeltypes_controller.php:161
+#: includes/view/UserAngelTypes_view.php:36
 msgid "Confirm angeltype for user"
 msgstr "Engeltyp für Benutzer bestätigen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:202
+#: includes/controller/user_angeltypes_controller.php:202
 msgid "You are not allowed to delete this users angeltype."
 msgstr "Du darfst diesen Benutzer nicht von diesem Engeltyp entfernen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:211
+#: includes/controller/user_angeltypes_controller.php:211
 #, php-format
 msgid "User %s removed from %s."
 msgstr "Benutzer %s von %s entfernt."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:219
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:47
+#: includes/controller/user_angeltypes_controller.php:219
+#: includes/view/UserAngelTypes_view.php:47
 msgid "Remove angeltype"
 msgstr "Engeltyp löschen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:231
+#: includes/controller/user_angeltypes_controller.php:231
 msgid "You are not allowed to set coordinator rights."
 msgstr "Du darfst keine Koordinatorrechte bearbeiten."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:243
+#: includes/controller/user_angeltypes_controller.php:243
 msgid "No coordinator update given."
 msgstr "Kein Update für Koordinationsrechte gegeben."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:276
+#: includes/controller/user_angeltypes_controller.php:276
 #, php-format
 msgid "Added coordinator rights for %s to %s."
 msgstr "%s hat %s als Koordinator bekommen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:276
+#: includes/controller/user_angeltypes_controller.php:276
 #, php-format
 msgid "Removed coordinator rights for %s from %s."
 msgstr "%s hat jetzt nicht mehr %s als Koordinator."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:284
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:122
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:3
+#: includes/controller/user_angeltypes_controller.php:284
+#: includes/view/AngelTypes_view.php:122
+#: includes/view/UserAngelTypes_view.php:3
 msgid "Add coordinator rights"
 msgstr "Koordinatorrechte geben"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:284
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:114
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:3
+#: includes/controller/user_angeltypes_controller.php:284
+#: includes/view/AngelTypes_view.php:114
+#: includes/view/UserAngelTypes_view.php:3
 msgid "Remove coordinator rights"
 msgstr "Koordinatorrechte entfernen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:325
+#: includes/controller/user_angeltypes_controller.php:325
 msgid "Please select a user."
 msgstr "Bitte einen Benutzer auswählen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:336
+#: includes/controller/user_angeltypes_controller.php:336
 #, php-format
 msgid "User %s added to %s."
 msgstr "Benutzer %s zu %s hinzugefügt."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:349
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:62
+#: includes/controller/user_angeltypes_controller.php:349
+#: includes/view/UserAngelTypes_view.php:62
 msgid "Add user to angeltype"
 msgstr "Benutzer zu Engeltyp hinzufügen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:358
+#: includes/controller/user_angeltypes_controller.php:358
 #, php-format
 msgid "You are already a %s."
 msgstr "Du bist bereits %s."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:367
+#: includes/controller/user_angeltypes_controller.php:367
 #, php-format
 msgid "You joined %s."
 msgstr "Du bist %s beigetreten."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:382
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:76
+#: includes/controller/user_angeltypes_controller.php:382
+#: includes/view/UserAngelTypes_view.php:76
 #, php-format
 msgid "Become a %s"
 msgstr "Werde ein %s"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:56
+#: includes/controller/users_controller.php:56
 msgid "Please enter a valid number of vouchers."
 msgstr "Bitte gib eine korrekte Anzahl von Vouchern ein."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:66
+#: includes/controller/users_controller.php:66
 msgid "Saved the number of vouchers."
 msgstr "Anzahl der Voucher gespeichert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:74
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:26
+#: includes/controller/users_controller.php:74 includes/view/User_view.php:32
 #, php-format
 msgid "%s's vouchers"
 msgstr "Voucher von %s"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:131
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:62
+#: includes/controller/users_controller.php:131 includes/view/User_view.php:68
 msgid "All users"
 msgstr "Alle Benutzer"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:146
+#: includes/controller/users_controller.php:146
 msgid "Token is not correct."
 msgstr "Der Token ist nicht in Ordnung."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:156
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:93
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:123
+#: includes/controller/users_controller.php:156
+#: includes/pages/guest_login.php:94 includes/pages/user_settings.php:129
 msgid "Your passwords don't match."
 msgstr "Deine Passwörter stimmen nicht überein."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:160
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:121
+#: includes/controller/users_controller.php:160
+#: includes/pages/user_settings.php:127
 msgid "Your password is to short (please use at least 6 characters)."
 msgstr "Dein Passwort ist zu kurz (Bitte mindestens 6 Zeichen nutzen)."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:166
+#: includes/controller/users_controller.php:166
 msgid "Password could not be updated."
 msgstr "Passwort kann nicht neu gesetzt werden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:168
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:125
+#: includes/controller/users_controller.php:168
+#: includes/pages/user_settings.php:131
 msgid "Password saved."
 msgstr "Passwort gespeichert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:186
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:190
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:63
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:37
+#: includes/controller/users_controller.php:186
+#: includes/controller/users_controller.php:190
+#: includes/pages/guest_login.php:64 includes/pages/user_settings.php:38
 msgid "E-mail address is not correct."
 msgstr "Die E-Mail Adresse ist nicht in Ordnung."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:194
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:67
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:41
+#: includes/controller/users_controller.php:194
+#: includes/pages/guest_login.php:68 includes/pages/user_settings.php:42
 msgid "Please enter your e-mail."
 msgstr "Bitte gib Deine E-Mail-Adresse ein."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:201
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:218
+#: includes/controller/users_controller.php:201
+#: includes/controller/users_controller.php:218
 msgid "Password recovery"
 msgstr "Passwort wiederherstellen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:201
+#: includes/controller/users_controller.php:201
 #, php-format
 msgid "Please visit %s to recover your password."
 msgstr "Bitte besuche %s, um Dein Passwort zurückzusetzen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:205
+#: includes/controller/users_controller.php:205
 msgid "We sent an email containing your password recovery link."
 msgstr ""
 "Wir haben eine eMail mit einem Link zum Passwort-zurücksetzen geschickt."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/helper/email_helper.php:11
+#: includes/helper/email_helper.php:11
 #, php-format
 msgid "Hi %s,"
 msgstr "Hallo %s,"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/helper/email_helper.php:11
+#: includes/helper/email_helper.php:11
 msgid "here is a message for you from the engelsystem:"
 msgstr "hier ist eine Nachricht aus dem Engelsystem für Dich:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/helper/email_helper.php:11
+#: includes/helper/email_helper.php:11
 msgid ""
 "This email is autogenerated and has not to be signed. You got this email "
 "because you are registered in the engelsystem."
@@ -430,72 +365,72 @@ msgstr ""
 "werden. Du hast diese E-Mail bekommen, weil Du im Engelsystem registriert "
 "bist."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:10
+#: includes/mailer/shifts_mailer.php:10
 msgid "A Shift you are registered on has changed:"
 msgstr "Eine deiner Schichten hat sich geändert:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:14
+#: includes/mailer/shifts_mailer.php:14
 #, php-format
 msgid "* Shift type changed from %s to %s"
 msgstr "* Schichttyp von %s in %s geändert"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:19
+#: includes/mailer/shifts_mailer.php:19
 #, php-format
 msgid "* Shift title changed from %s to %s"
 msgstr "* Schicht Titel von %s nach %s geändert"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:24
+#: includes/mailer/shifts_mailer.php:24
 #, php-format
 msgid "* Shift Start changed from %s to %s"
 msgstr "* Schicht Beginn von %s nach %s geändert"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:29
+#: includes/mailer/shifts_mailer.php:29
 #, php-format
 msgid "* Shift End changed from %s to %s"
 msgstr "* Schicht Ende von %s nach %s geändert"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:34
+#: includes/mailer/shifts_mailer.php:34
 #, php-format
 msgid "* Shift Location changed from %s to %s"
 msgstr "* Schicht Ort von %s to %s geändert"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:44
+#: includes/mailer/shifts_mailer.php:44
 msgid "The updated Shift:"
 msgstr "Die aktualisierte Schicht:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:53
+#: includes/mailer/shifts_mailer.php:53
 msgid "Your Shift has changed"
 msgstr "Deine Schicht hat sich geändert"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:60
+#: includes/mailer/shifts_mailer.php:60
 msgid "A Shift you are registered on was deleted:"
 msgstr "Eine deiner Schichten wurde gelöscht:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:69
+#: includes/mailer/shifts_mailer.php:69
 msgid "Your Shift was deleted"
 msgstr "Deine Schicht wurde gelöscht"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:76
+#: includes/mailer/shifts_mailer.php:76
 msgid "You have been assigned to a Shift:"
 msgstr "Du wurdest in eine Schicht eingetragen:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:82
+#: includes/mailer/shifts_mailer.php:82
 msgid "Assigned to Shift"
 msgstr "In Schicht eingetragen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:90
+#: includes/mailer/shifts_mailer.php:90
 msgid "You have been removed from a Shift:"
 msgstr "Du wurdest aus einer Schicht ausgetragen:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:96
+#: includes/mailer/shifts_mailer.php:96
 msgid "Removed from Shift"
 msgstr "Von Schicht ausgetragen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:4
+#: includes/pages/admin_active.php:4
 msgid "Active angels"
 msgstr "Aktive Engel"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:28
+#: includes/pages/admin_active.php:28
 #, php-format
 msgid ""
 "At least %s angels are forced to be active. The number has to be greater."
@@ -503,789 +438,748 @@ msgstr ""
 "Mindestens %s engel werden als aktiv gekennzeichnet. Die Nummer muss größer "
 "sein."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:33
+#: includes/pages/admin_active.php:33
 msgid "Please enter a number of angels to be marked as active."
 msgstr ""
 "Bitte gib eine Anzahl an Engeln ein, die als Aktiv markiert werden sollen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:57
+#: includes/pages/admin_active.php:57
 msgid "Marked angels."
 msgstr "Engel wurden markiert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:59
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:123
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:158
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:251
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:29
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:65
+#: includes/pages/admin_active.php:59 includes/pages/admin_rooms.php:133
+#: includes/pages/admin_rooms.php:163 includes/pages/admin_shifts.php:251
+#: includes/view/UserAngelTypes_view.php:65 includes/view/User_view.php:35
 msgid "back"
 msgstr "zurück"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:59
+#: includes/pages/admin_active.php:59
 msgid "apply"
 msgstr "anwenden"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:69
+#: includes/pages/admin_active.php:69
 msgid "Angel has been marked as active."
 msgstr "Engel wurde als aktiv markiert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:71
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:80
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:98
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:21
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:30
+#: includes/pages/admin_active.php:71 includes/pages/admin_active.php:80
+#: includes/pages/admin_active.php:98 includes/pages/admin_arrive.php:21
+#: includes/pages/admin_arrive.php:30
 msgid "Angel not found."
 msgstr "Engel nicht gefunden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:78
+#: includes/pages/admin_active.php:78
 msgid "Angel has been marked as not active."
 msgstr "Engel wurde als nicht aktiv markiert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:87
+#: includes/pages/admin_active.php:87
 msgid "Angel has got a t-shirt."
 msgstr "Engel hat ein T-Shirt bekommen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:96
+#: includes/pages/admin_active.php:96
 msgid "Angel has got no t-shirt."
 msgstr "Engel hat kein T-Shirt bekommen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:136
+#: includes/pages/admin_active.php:136
 msgid "set active"
 msgstr "setze aktiv"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:138
+#: includes/pages/admin_active.php:138
 msgid "remove active"
 msgstr "entferne aktiv"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:139
+#: includes/pages/admin_active.php:139
 msgid "got t-shirt"
 msgstr "hat t-shirt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:142
+#: includes/pages/admin_active.php:142
 msgid "remove t-shirt"
 msgstr "entferne t-shirt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:160
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:139
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:146
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:52
+#: includes/pages/admin_active.php:160 includes/pages/admin_arrive.php:154
+#: includes/pages/admin_arrive.php:169 includes/pages/admin_arrive.php:184
+#: includes/view/AngelTypes_view.php:139 includes/view/AngelTypes_view.php:146
+#: includes/view/User_view.php:58
 msgid "Sum"
 msgstr "Summe"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:167
+#: includes/pages/admin_active.php:167
 msgid "Search angel:"
 msgstr "Suche Engel:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:168
+#: includes/pages/admin_active.php:168
 msgid "Show all shifts"
 msgstr "Alle Schichten anzeigen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:169
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:104
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:105
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:71
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:80
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_log.php:25
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_log.php:26
+#: includes/pages/admin_active.php:169 includes/pages/admin_arrive.php:130
+#: includes/pages/admin_arrive.php:131 includes/pages/admin_free.php:71
+#: includes/pages/admin_free.php:80 includes/pages/admin_log.php:25
+#: includes/pages/admin_log.php:26
 msgid "Search"
 msgstr "Suche"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:172
+#: includes/pages/admin_active.php:172
 msgid "How much angels should be active?"
 msgstr "Wie viele Engel sollten aktiv sein?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:173
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:239
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:322
+#: includes/pages/admin_active.php:173 includes/pages/admin_shifts.php:239
+#: includes/pages/admin_shifts.php:322
 msgid "Preview"
 msgstr "Vorschau"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:177
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:108
+#: includes/pages/admin_active.php:177 includes/pages/admin_arrive.php:134
 msgid "Nickname"
 msgstr "Nick"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:178
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:188
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:78
+#: includes/pages/admin_active.php:178 includes/pages/admin_active.php:188
+#: includes/view/User_view.php:86
 msgid "Size"
 msgstr "Größe"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:179
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:4
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:217
+#: includes/pages/admin_active.php:179 includes/pages/user_shifts.php:4
+#: includes/view/User_view.php:225
 msgid "Shifts"
 msgstr "Schichten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:180
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:311
+#: includes/pages/admin_active.php:180 includes/pages/admin_shifts.php:311
 msgid "Length"
 msgstr "Länge"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:181
+#: includes/pages/admin_active.php:181
 msgid "Active?"
 msgstr "Aktiv?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:182
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:76
+#: includes/pages/admin_active.php:182 includes/view/User_view.php:84
 msgid "Forced"
 msgstr "Gezwungen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:183
+#: includes/pages/admin_active.php:183
 msgid "T-shirt?"
 msgstr "T-Shirt?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:186
+#: includes/pages/admin_active.php:186
 msgid "Shirt statistics"
 msgstr "T-Shirt Statistik"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:189
+#: includes/pages/admin_active.php:189
 msgid "Needed shirts"
 msgstr "Benötigte T-Shirts"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:190
+#: includes/pages/admin_active.php:190
 msgid "Given shirts"
 msgstr "Ausgegebene T-Shirts"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:4
-msgid "Arrived angels"
-msgstr "Angekommene Engel"
+#: includes/pages/admin_arrive.php:4
+msgid "Available angels"
+msgstr "Verfügbare Engel"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:19
-msgid "Reset done. Angel has not arrived."
-msgstr "Zurückgesetzt. Engel ist nicht angekommen."
+#: includes/pages/admin_arrive.php:19
+msgid "Reset done. Angel is not available."
+msgstr "Zurückgesetzt. Engel ist nicht verfügbar."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:28
-msgid "Angel has been marked as arrived."
-msgstr "Engel wurde als angekommen markiert."
+#: includes/pages/admin_arrive.php:28
+msgid "Angel has been marked as available."
+msgstr "Engel wurde als verfügbar markiert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:62
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:8
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:19
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:30
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:41
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:52
+#: includes/pages/admin_arrive.php:63 includes/view/UserAngelTypes_view.php:8
+#: includes/view/UserAngelTypes_view.php:19
+#: includes/view/UserAngelTypes_view.php:30
+#: includes/view/UserAngelTypes_view.php:41
+#: includes/view/UserAngelTypes_view.php:52
 msgid "yes"
 msgstr "Ja"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:63
+#: includes/pages/admin_arrive.php:64
 msgid "reset"
 msgstr "zurücksetzen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:63
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:124
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:144
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:208
-msgid "arrived"
-msgstr "angekommen"
+#: includes/pages/admin_arrive.php:64 includes/pages/admin_arrive.php:145
+#: includes/pages/admin_arrive.php:160 includes/pages/admin_arrive.php:175
+#: includes/view/User_view.php:216
+msgid "available"
+msgstr "verfügbar"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:109
-msgid "Planned arrival"
-msgstr "Geplanter Ankunftstag"
+#: includes/pages/admin_arrive.php:135
+msgid "Planned start of availability"
+msgstr "Geplanter Beginn der Verfügbarkeit"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:110
-msgid "Arrived?"
-msgstr "Angekommen?"
+#: includes/pages/admin_arrive.php:136
+msgid "Available?"
+msgstr "Verfügbar?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:111
-msgid "Arrival date"
-msgstr "Ankunftsdatum"
+#: includes/pages/admin_arrive.php:137
+msgid "Start of availability"
+msgstr "Beginn der Verfügbarkeit"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:112
-msgid "Planned departure"
-msgstr "Geplante Abreise"
+#: includes/pages/admin_arrive.php:138 includes/pages/user_settings.php:178
+msgid "Planned end of availability"
+msgstr "Geplantes Ende der Verfügbarkeit"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:115
-msgid "Arrival statistics"
-msgstr "Ankunfts-Statistik"
+#: includes/pages/admin_arrive.php:143
+msgid "Planned start of availability statistics"
+msgstr ""
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:129
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:145
-msgid "arrived sum"
-msgstr "Summe angekommen"
+#: includes/pages/admin_arrive.php:146 includes/pages/admin_arrive.php:161
+#: includes/pages/admin_arrive.php:176
+msgid "available sum"
+msgstr "Summe verfügbar"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:134
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:146
-msgid "planned departure"
-msgstr "Geplante Abreise"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:143
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:27
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:71
+#: includes/pages/admin_arrive.php:152 includes/pages/admin_arrive.php:167
+#: includes/pages/admin_arrive.php:182 includes/pages/admin_news.php:27
+#: includes/pages/user_messages.php:71
 msgid "Date"
 msgstr "Datum"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:3
+#: includes/pages/admin_arrive.php:153 includes/pages/admin_arrive.php:168
+#: includes/pages/admin_arrive.php:183
+msgid "Count"
+msgstr "Anzahl"
+
+#: includes/pages/admin_arrive.php:158
+msgid "Availability statistics"
+msgstr "Verfügbarkeits-Statistik"
+
+#: includes/pages/admin_arrive.php:173
+msgid "Planned end of availability statistics"
+msgstr ""
+
+#: includes/pages/admin_free.php:3
 msgid "Free angels"
 msgstr "Freie Engel"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:74
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:34
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:68
+#: includes/pages/admin_free.php:74 includes/view/ShiftTypes_view.php:34
+#: includes/view/UserAngelTypes_view.php:68
 msgid "Angeltype"
 msgstr "Engeltyp"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:77
+#: includes/pages/admin_free.php:77
 msgid "Only confirmed"
 msgstr "Nur bestätigte"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:85
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:180
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:311
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:168
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:131
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:157
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:169
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:68
+#: includes/pages/admin_free.php:85 includes/pages/guest_login.php:186
+#: includes/pages/guest_login.php:320 includes/pages/user_settings.php:174
+#: includes/view/AngelTypes_view.php:131 includes/view/AngelTypes_view.php:157
+#: includes/view/AngelTypes_view.php:169 includes/view/User_view.php:74
 msgid "Nick"
 msgstr "Nick"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:87
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:209
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:175
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:132
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:158
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:170
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:71
-msgid "DECT"
-msgstr "DECT"
+#: includes/pages/admin_free.php:87 includes/pages/guest_login.php:215
+#: includes/pages/user_settings.php:183 includes/view/User_view.php:78
+msgid "Mobile"
+msgstr "Handy"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:88
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:218
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:179
-msgid "Jabber"
-msgstr "Jabber"
+#: includes/pages/admin_free.php:88 includes/pages/guest_login.php:218
+#: includes/pages/user_settings.php:181 includes/view/User_view.php:79
+msgid "Phone"
+msgstr "Telefon"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_free.php:89
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:183
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:177
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:239
+#: includes/pages/admin_free.php:89 includes/pages/guest_login.php:189
+#: includes/pages/user_settings.php:184 includes/view/User_view.php:247
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_groups.php:3
+#: includes/pages/admin_groups.php:3
 msgid "Grouprights"
 msgstr "Gruppenrechte"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_groups.php:29
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:109
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:113
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:129
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:174
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:60
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:191
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:33
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:74
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:70
+#: includes/pages/admin_groups.php:29 includes/pages/admin_import.php:118
+#: includes/pages/admin_import.php:122 includes/pages/admin_rooms.php:124
+#: includes/pages/admin_rooms.php:175 includes/view/AngelTypes_view.php:60
+#: includes/view/AngelTypes_view.php:191 includes/view/ShiftTypes_view.php:33
+#: includes/view/ShiftTypes_view.php:74 includes/view/User_view.php:76
 msgid "Name"
 msgstr "Name"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_groups.php:30
+#: includes/pages/admin_groups.php:30
 msgid "Privileges"
 msgstr "Privilegien"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_groups.php:53
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:32
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:35
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:143
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:257
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:62
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:106
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:160
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:183
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:192
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:197
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:202
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:191
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:65
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:32
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:32
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:37
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:33
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:255
+#: includes/pages/admin_groups.php:53 includes/pages/admin_news.php:32
+#: includes/pages/admin_questions.php:35 includes/pages/admin_rooms.php:148
+#: includes/pages/admin_shifts.php:257 includes/pages/user_messages.php:62
+#: includes/pages/user_news.php:106 includes/pages/user_news.php:160
+#: includes/pages/user_settings.php:190 includes/pages/user_settings.php:199
+#: includes/pages/user_settings.php:204 includes/pages/user_settings.php:209
+#: includes/pages/user_shifts.php:191 includes/view/AngelTypes_view.php:65
+#: includes/view/Questions_view.php:32 includes/view/ShiftEntry_view.php:32
+#: includes/view/ShiftTypes_view.php:37 includes/view/User_view.php:39
+#: includes/view/User_view.php:263
 msgid "Save"
 msgstr "Speichern"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_groups.php:54
+#: includes/pages/admin_groups.php:54
 msgid "Edit group"
 msgstr "Gruppe bearbeiten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:4
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:130
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:175
+#: includes/pages/admin_import.php:4 includes/pages/admin_rooms.php:126
+#: includes/pages/admin_rooms.php:176
 msgid "Frab import"
 msgstr "Frab Import"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:24
+#: includes/pages/admin_import.php:15
+msgid "Frab import is not enabled"
+msgstr ""
+
+#: includes/pages/admin_import.php:33
 msgid "Webserver has no write-permission on import directory."
 msgstr "Der Webserver hat keine Schreibrechte für das Verzeichnis import."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:48
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:96
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:159
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:48
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:53
+#: includes/pages/admin_import.php:57 includes/pages/admin_import.php:105
+#: includes/pages/admin_import.php:168 includes/pages/admin_shifts.php:48
+#: includes/pages/admin_shifts.php:53
 msgid "Please select a shift type."
 msgstr "Bitte einen Schichttyp wählen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:56
+#: includes/pages/admin_import.php:65
 msgid "No valid xml/xcal file provided."
 msgstr "Keine valide xml/xcal Datei hochgeladen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:61
+#: includes/pages/admin_import.php:70
 msgid "File upload went wrong."
 msgstr "Das Hochladen der Datei ist schiefgegangen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:65
+#: includes/pages/admin_import.php:74
 msgid "Please provide some data."
 msgstr "Bitte lade eine Datei hoch."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:73
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:104
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:197
+#: includes/pages/admin_import.php:82 includes/pages/admin_import.php:113
+#: includes/pages/admin_import.php:206
 msgid "File Upload"
 msgstr "Datei hochladen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:73
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:104
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:197
+#: includes/pages/admin_import.php:82 includes/pages/admin_import.php:113
+#: includes/pages/admin_import.php:206
 msgid "Validation"
 msgstr "Überprüfen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:73
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:80
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:104
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:143
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:197
+#: includes/pages/admin_import.php:82 includes/pages/admin_import.php:89
+#: includes/pages/admin_import.php:113 includes/pages/admin_import.php:152
+#: includes/pages/admin_import.php:206
 msgid "Import"
 msgstr "Importieren"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:77
+#: includes/pages/admin_import.php:86
 msgid ""
 "This import will create/update/delete rooms and shifts by given FRAB-export "
 "file. The needed file format is xcal."
 msgstr ""
-"Dieser Import erzeugt, ändert und löscht Räume und Schichten anhand einer "
-"FRAB-Export Datei. Das benötigte Format ist xcal."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:78
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:301
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:184
+#: includes/pages/admin_import.php:87 includes/pages/admin_shifts.php:301
+#: includes/pages/user_shifts.php:184
 msgid "Shifttype"
 msgstr "Schichttyp"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:79
+#: includes/pages/admin_import.php:88
 msgid "xcal-File (.xcal)"
 msgstr "xcal-Datei (.xcal)"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:89
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:149
+#: includes/pages/admin_import.php:98 includes/pages/admin_import.php:158
 msgid "Missing import file."
 msgstr "Import-Datei nicht vorhanden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:108
-msgid "Rooms to create"
-msgstr "Anzulegende Räume"
+#: includes/pages/admin_import.php:117
+msgid "Locations to create"
+msgstr "Anzulegende Orte"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:112
-msgid "Rooms to delete"
-msgstr "Zu löschende Räume"
+#: includes/pages/admin_import.php:121
+msgid "Locations to delete"
+msgstr "Zu löschende Orte"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:116
+#: includes/pages/admin_import.php:125
 msgid "Shifts to create"
 msgstr "Anzulegende Schichten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:118
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:127
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:136
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:219
+#: includes/pages/admin_import.php:127 includes/pages/admin_import.php:136
+#: includes/pages/admin_import.php:145 includes/view/User_view.php:227
 msgid "Day"
 msgstr "Tag"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:119
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:128
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:137
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:306
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:88
+#: includes/pages/admin_import.php:128 includes/pages/admin_import.php:137
+#: includes/pages/admin_import.php:146 includes/pages/admin_shifts.php:306
+#: includes/view/Shifts_view.php:88
 msgid "Start"
 msgstr "Beginn"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:120
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:129
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:138
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:307
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:96
+#: includes/pages/admin_import.php:129 includes/pages/admin_import.php:138
+#: includes/pages/admin_import.php:147 includes/pages/admin_shifts.php:307
+#: includes/view/Shifts_view.php:96
 msgid "End"
 msgstr "Ende"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:121
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:130
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:139
+#: includes/pages/admin_import.php:130 includes/pages/admin_import.php:139
+#: includes/pages/admin_import.php:148
 msgid "Shift type"
 msgstr "Schichttyp"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:122
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:131
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:140
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:302
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:185
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:84
+#: includes/pages/admin_import.php:131 includes/pages/admin_import.php:140
+#: includes/pages/admin_import.php:149 includes/pages/admin_shifts.php:302
+#: includes/pages/user_shifts.php:185 includes/view/Shifts_view.php:84
 msgid "Title"
 msgstr "Titel"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:123
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:132
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:141
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:303
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:803
-msgid "Room"
-msgstr "Raum"
+#: includes/pages/admin_import.php:132 includes/pages/admin_import.php:141
+#: includes/pages/admin_import.php:150 includes/pages/admin_shifts.php:303
+#: includes/pages/user_shifts.php:803 includes/pages/user_shifts.php:816
+#: includes/view/Shifts_view.php:104 includes/view/User_view.php:229
+msgid "Location"
+msgstr "Ort"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:125
+#: includes/pages/admin_import.php:134
 msgid "Shifts to update"
 msgstr "Zu aktualisierende Schichten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:134
+#: includes/pages/admin_import.php:143
 msgid "Shifts to delete"
 msgstr "Zu löschende Schichten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:198
+#: includes/pages/admin_import.php:207
 msgid "It's done!"
 msgstr "Erledigt!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_log.php:3
+#: includes/pages/admin_log.php:3
 msgid "Log"
 msgstr "Log"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:8
+#: includes/pages/admin_news.php:8
 msgid "Edit news entry"
 msgstr "News-Eintrag bearbeiten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:28
+#: includes/pages/admin_news.php:28
 msgid "Author"
 msgstr "Autor"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:29
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:157
+#: includes/pages/admin_news.php:29 includes/pages/user_news.php:157
 msgid "Subject"
 msgstr "Betreff"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:30
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:74
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:105
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:158
+#: includes/pages/admin_news.php:30 includes/pages/user_messages.php:74
+#: includes/pages/user_news.php:105 includes/pages/user_news.php:158
 msgid "Message"
 msgstr "Nachricht"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:31
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:159
+#: includes/pages/admin_news.php:31 includes/pages/user_news.php:159
 msgid "Meeting"
 msgstr "Treffen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:35
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:162
+#: includes/pages/admin_news.php:35 includes/pages/admin_rooms.php:167
 msgid "Delete"
 msgstr "löschen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:49
+#: includes/pages/admin_news.php:49
 msgid "News entry updated."
 msgstr "News-Eintrag gespeichert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:58
+#: includes/pages/admin_news.php:58
 msgid "News entry deleted."
 msgstr "News-Eintrag gelöscht."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:3
+#: includes/pages/admin_questions.php:3
 msgid "Answer questions"
 msgstr "Fragen beantworten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:13
+#: includes/pages/admin_questions.php:13
 msgid "There are unanswered questions!"
 msgstr "Es gibt unbeantwortete Fragen!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:61
+#: includes/pages/admin_questions.php:61
 msgid "Unanswered questions"
 msgstr "Unbeantwortete Fragen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:63
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:70
+#: includes/pages/admin_questions.php:63 includes/pages/admin_questions.php:70
 msgid "From"
 msgstr "Von"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:64
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:71
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:19
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:24
+#: includes/pages/admin_questions.php:64 includes/pages/admin_questions.php:71
+#: includes/view/Questions_view.php:19 includes/view/Questions_view.php:24
 msgid "Question"
 msgstr "Frage"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:65
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:73
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:26
+#: includes/pages/admin_questions.php:65 includes/pages/admin_questions.php:73
+#: includes/view/Questions_view.php:26
 msgid "Answer"
 msgstr "Antwort"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:68
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:22
+#: includes/pages/admin_questions.php:68 includes/view/Questions_view.php:22
 msgid "Answered questions"
 msgstr "Beantwortete Fragen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_questions.php:72
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:25
+#: includes/pages/admin_questions.php:72 includes/view/Questions_view.php:25
 msgid "Answered by"
 msgstr "Antwort von"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:4
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:816
-msgid "Rooms"
-msgstr "Räume"
+#: includes/pages/admin_rooms.php:4
+msgid "Locations"
+msgstr "Orte"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:83
+#: includes/pages/admin_rooms.php:84
 #, php-format
 msgid "Please enter needed angels for type %s."
 msgstr "Bitte gib die Anzahl der benötigten Engel vom Typ %s an."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:111
-msgid "Room saved."
-msgstr "Raum gespeichert."
+#: includes/pages/admin_rooms.php:112
+msgid "Location saved."
+msgstr "Ort gespeichert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:131
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:176
+#: includes/pages/admin_rooms.php:128 includes/pages/admin_rooms.php:177
 msgid "Public"
 msgstr "Öffentlich"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:132
+#: includes/pages/admin_rooms.php:129
 msgid "Room number"
 msgstr "Raumnummer"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:137
+#: includes/pages/admin_rooms.php:142
 msgid "Needed angels:"
 msgstr "Benötigte Engel:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:152
+#: includes/pages/admin_rooms.php:157
 #, php-format
-msgid "Room %s deleted."
-msgstr "Raum %s gelöscht."
+msgid "Location %s deleted."
+msgstr "Ort %s gelöscht."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:160
+#: includes/pages/admin_rooms.php:165
 #, php-format
-msgid "Do you want to delete room %s?"
-msgstr "Möchest Du den Raum %s wirklich löschen?"
+msgid "Do you want to delete location %s?"
+msgstr "Möchest Du den Ort %s wirklich löschen?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:170
+#: includes/pages/admin_rooms.php:186
 msgid "add"
 msgstr "Neu"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:4
+#: includes/pages/admin_shifts.php:4
 msgid "Create shifts"
 msgstr "Schichten erstellen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:65
+#: includes/pages/admin_shifts.php:65
 msgid "Please select a location."
 msgstr "Bitte einen Ort auswählen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:72
+#: includes/pages/admin_shifts.php:72
 msgid "Please select a start time."
 msgstr "Bitte eine Startzeit auswählen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:79
+#: includes/pages/admin_shifts.php:79
 msgid "Please select an end time."
 msgstr "Bitte eine Endzeit auswählen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:84
+#: includes/pages/admin_shifts.php:84
 msgid "The shifts end has to be after its start."
 msgstr "Die Endzeit muss nach der Startzeit liegen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:96
+#: includes/pages/admin_shifts.php:96
 msgid "Please enter a shift duration in minutes."
 msgstr "Gib bitte eine Schichtlänge in Minuten ein."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:104
+#: includes/pages/admin_shifts.php:104
 msgid "Please split the shift-change hours by colons."
 msgstr "Trenne die Schichtwechselstunden mit einem Komma."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:109
+#: includes/pages/admin_shifts.php:109
 msgid "Please select a mode."
 msgstr "Bitte einen Modus auswählen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:122
+#: includes/pages/admin_shifts.php:122
 #, php-format
 msgid "Please check the needed angels for team %s."
 msgstr "Bitte gib die Anzahl der benötigten Engel vom Team %s an."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:127
+#: includes/pages/admin_shifts.php:127
 msgid "There are 0 angels needed. Please enter the amounts of needed angels."
 msgstr "Es werden 0 Engel benötigt. Bitte ändere das."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:131
+#: includes/pages/admin_shifts.php:131
 msgid "Please select a mode for needed angels."
 msgstr "Bitte wähle einen Modus für benötigte Engel."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:135
+#: includes/pages/admin_shifts.php:135
 msgid "Please select needed angels."
 msgstr "Bitte wähle benötigte Engel."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:253
+#: includes/pages/admin_shifts.php:253
 msgid "Time and location"
 msgstr "Zeit und Ort"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:254
+#: includes/pages/admin_shifts.php:254
 msgid "Type and title"
 msgstr "Typ und Titel"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:255
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:316
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:189
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:110
+#: includes/pages/admin_shifts.php:255 includes/pages/admin_shifts.php:316
+#: includes/pages/user_shifts.php:189 includes/view/Shifts_view.php:110
 msgid "Needed angels"
 msgstr "Benötigte Engel"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:308
+#: includes/pages/admin_shifts.php:308
 msgid "Mode"
 msgstr "Modus"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:309
+#: includes/pages/admin_shifts.php:309
 msgid "Create one shift"
 msgstr "Eine Schicht erstellen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:310
+#: includes/pages/admin_shifts.php:310
 msgid "Create multiple shifts"
 msgstr "Mehrere Schichten erstellen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:312
+#: includes/pages/admin_shifts.php:312
 msgid "Create multiple shifts with variable length"
 msgstr "Erstelle mehrere Schichten mit unterschiedlicher Länge"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:313
+#: includes/pages/admin_shifts.php:313
 msgid "Shift change hours"
 msgstr "Schichtwechsel-Stunden"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:317
-msgid "Take needed angels from room settings"
-msgstr "Übernehme benötigte Engel von den Raum-Einstellungen"
+#: includes/pages/admin_shifts.php:317
+msgid "Take needed angels from location settings"
+msgstr "Übernehme benötigte Engel von den Ort-Einstellungen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:318
+#: includes/pages/admin_shifts.php:318
 msgid "The following angels are needed"
 msgstr "Die folgenden Engel werden benötigt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_user.php:4
+#: includes/pages/admin_user.php:4
 msgid "All Angels"
 msgstr "Engelliste"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_user.php:21
+#: includes/pages/admin_user.php:21
 msgid "This user does not exist."
 msgstr "Benutzer existiert nicht."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_user.php:45
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:184
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:178
+#: includes/pages/admin_user.php:45 includes/pages/guest_login.php:190
+#: includes/pages/user_settings.php:185
 msgid "Please send me an email if my shifts change"
 msgstr "Informiere mich per E-Mail über Änderungen an meinen Schichten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_user.php:64
+#: includes/pages/admin_user.php:64
 msgid "Force active"
 msgstr "Aktiv erzwingen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_user.php:83
+#: includes/pages/admin_user.php:83
 msgid ""
 "Please visit the angeltypes page or the users profile to manage users "
 "angeltypes."
 msgstr ""
 "Bitte benutze die Engeltypen-Seite um die Engeltypen des Users zu verwalten."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_user.php:216
+#: includes/pages/admin_user.php:216
 msgid "Edit user"
 msgstr "User bearbeiten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_credits.php:3
+#: includes/pages/dashboard.php:5
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: includes/pages/dashboard.php:20
+msgid "Angels needed in the next 3 hrs"
+msgstr "Engel die in den nächsten 3 Stunden gebraucht werden"
+
+#: includes/pages/dashboard.php:26
+msgid "Angels needed for night shifts"
+msgstr "Engel, die noch für die Nachtschicht gebraucht werden"
+
+#: includes/pages/dashboard.php:33
+msgid "Angels currently working"
+msgstr "Engel die gerade arbeiten"
+
+#: includes/pages/dashboard.php:40
+msgid "Hours to be worked"
+msgstr "Stunden zu arbeiten"
+
+#: includes/pages/dashboard.php:47
+msgid "Currently running"
+msgstr "Aktive Schichten"
+
+#: includes/pages/dashboard.php:54
+msgid "Within the next hour"
+msgstr "In der Nächsten Stunde"
+
+#: includes/pages/dashboard.php:61
+msgid "Within the next 3 hours"
+msgstr "Innerhalb der nächsten 3 Stunden"
+
+#: includes/pages/dashboard.php:68 includes/pages/user_news.php:7
+msgid "News"
+msgstr "News"
+
+#: includes/pages/guest_credits.php:3
 msgid "Credits"
 msgstr "Credits"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:4
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:313
+#: includes/pages/guest_login.php:4 includes/pages/guest_login.php:322
 msgid "Login"
 msgstr "Login"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:8
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:239
+#: includes/pages/guest_login.php:8 includes/pages/guest_login.php:248
 msgid "Register"
 msgstr "Registrieren"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:12
+#: includes/pages/guest_login.php:12
 msgid "Logout"
 msgstr "Logout"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:52
+#: includes/pages/guest_login.php:53
 #, php-format
 msgid "Your nick &quot;%s&quot; already exists."
 msgstr "Der Nick &quot;%s&quot; existiert schon."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:56
+#: includes/pages/guest_login.php:57
 #, php-format
 msgid "Your nick &quot;%s&quot; is too short (min. 2 characters)."
 msgstr "Der Nick &quot;%s&quot; ist zu kurz (Mindestens 2 Zeichen)."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:77
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:50
+#: includes/pages/guest_login.php:78 includes/pages/user_settings.php:51
 msgid "Please check your jabber account information."
 msgstr "Bitte überprüfe deine Jabber Account Eingabe."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:86
+#: includes/pages/guest_login.php:87
 msgid "Please select your shirt size."
 msgstr "Bitte wähle Deine T-Shirt Größe."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:97
+#: includes/pages/guest_login.php:98
 #, php-format
 msgid "Your password is too short (please use at least %s characters)."
 msgstr "Dein Passwort ist zu kurz (Bitte mindestens %s Zeichen nutzen)."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:104
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:64
-msgid "Please enter your planned date of arrival."
-msgstr "Bitte gib Dein geplantes Ankunftsdatum an."
+#: includes/pages/guest_login.php:105 includes/pages/user_settings.php:65
+msgid "Please enter your planned begin of availability."
+msgstr "Bitte gib Deinen geplanten Start der Verfügbarkeit an."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:165
+#: includes/pages/guest_login.php:171
 msgid "Angel registration successful!"
 msgstr "Engel-Registrierung erfolgreich!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:172
+#: includes/pages/guest_login.php:178
 msgid ""
-"By completing this form you're registering as a Chaos-Angel. This script "
-"will create you an account in the angel task sheduler."
+"By completing this form you're registering as an angel. This script will "
+"create you an account in the angel task sheduler."
 msgstr ""
 "Mit diesem Formular registrierst Du Dich als Engel. Du bekommst ein Konto in "
 "der Engel-Aufgabenverwaltung."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:189
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:171
-msgid "Planned date of arrival"
-msgstr "Geplanter Ankunftstag"
+#: includes/pages/guest_login.php:195 includes/pages/user_settings.php:177
+msgid "Planned begin of availability"
+msgstr "Geplanter Beginn der Verfügbarkeit"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:192
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:181
+#: includes/pages/guest_login.php:198 includes/pages/user_settings.php:188
 msgid "Shirt size"
 msgstr "T-Shirt Größe"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:197
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:312
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:253
+#: includes/pages/guest_login.php:203 includes/pages/guest_login.php:321
+#: includes/view/User_view.php:261
 msgid "Password"
 msgstr "Passwort"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:200
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:254
+#: includes/pages/guest_login.php:206 includes/view/User_view.php:262
 msgid "Confirm password"
 msgstr "Passwort wiederholen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:203
+#: includes/pages/guest_login.php:209
 msgid "What do you want to do?"
 msgstr "Was möchtest Du machen?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:203
+#: includes/pages/guest_login.php:209
 msgid "Description of job types"
 msgstr "Beschreibung der Aufgaben"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:204
+#: includes/pages/guest_login.php:210
 msgid ""
 "Restricted angel types need will be confirmed later by an archangel. You can "
 "change your selection in the options section."
@@ -1293,50 +1187,50 @@ msgstr ""
 "Beschränkte Engeltypen müssen später von einem Erzengel freigeschaltet "
 "werden. Du kannst Deine Auswahl später in den Einstellungen ändern."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:212
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:176
-msgid "Mobile"
-msgstr "Handy"
+#: includes/pages/guest_login.php:221 includes/pages/user_settings.php:182
+#: includes/view/AngelTypes_view.php:132 includes/view/AngelTypes_view.php:158
+#: includes/view/AngelTypes_view.php:170
+msgid "DECT"
+msgstr "DECT"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:215
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:174
-msgid "Phone"
-msgstr "Telefon"
+#: includes/pages/guest_login.php:224 includes/pages/user_settings.php:186
+msgid "Jabber"
+msgstr "Jabber"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:221
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:170
+#: includes/pages/guest_login.php:227 includes/pages/user_settings.php:176
 msgid "First name"
 msgstr "Vorname"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:224
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:169
+#: includes/pages/guest_login.php:230 includes/pages/user_settings.php:175
 msgid "Last name"
 msgstr "Nachname"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:229
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:173
+#: includes/pages/guest_login.php:235 includes/pages/user_settings.php:179
 msgid "Age"
 msgstr "Alter"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:232
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:180
+#: includes/pages/guest_login.php:238 includes/pages/user_settings.php:180
+#: includes/view/User_view.php:77
+msgid "Gender"
+msgstr "Geschlecht"
+
+#: includes/pages/guest_login.php:241 includes/pages/user_settings.php:187
 msgid "Hometown"
 msgstr "Wohnort"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:235
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:167
+#: includes/pages/guest_login.php:244 includes/pages/user_settings.php:173
 msgid "Entry required!"
 msgstr "Pflichtfeld!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:271
+#: includes/pages/guest_login.php:280
 msgid "Your password is incorrect.  Please try it again."
 msgstr "Dein Passwort stimmt nicht. Bitte probiere es nochmal."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:275
+#: includes/pages/guest_login.php:284
 msgid "Please enter a password."
 msgstr "Gib bitte ein Passwort ein."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:279
+#: includes/pages/guest_login.php:288
 msgid ""
 "No user was found with that Nickname. Please try again. If you are still "
 "having problems, ask an Dispatcher."
@@ -1344,109 +1238,103 @@ msgstr ""
 "Es wurde kein Engel mit diesem Namen gefunden. Probiere es bitte noch "
 "einmal. Wenn das Problem weiterhin besteht, frage einen Dispatcher."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:283
+#: includes/pages/guest_login.php:292
 msgid "Please enter a nickname."
 msgstr "Gib bitte einen Nick an."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:296
+#: includes/pages/guest_login.php:305
 msgid "Please sign up, if you want to help us!"
 msgstr "Bitte registriere Dich, wenn Du helfen möchtest!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:303
+#: includes/pages/guest_login.php:312
 msgid "Registration is disabled."
 msgstr "Registrierung ist abgeschaltet."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:315
+#: includes/pages/guest_login.php:324
 msgid "I forgot my password"
 msgstr "Passwort vergessen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:317
+#: includes/pages/guest_login.php:326
 msgid "Please note: You have to activate cookies!"
 msgstr "Hinweis: Cookies müssen aktiviert sein!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:323
+#: includes/pages/guest_login.php:332
 msgid "What can I do?"
 msgstr "Was kann ich machen?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:324
+#: includes/pages/guest_login.php:333
 msgid "Please read about the jobs you can do to help us."
 msgstr ""
 "Bitte informiere Dich über die Tätigkeiten bei denen Du uns helfen kannst."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:3
+#: includes/pages/user_messages.php:3
 msgid "Messages"
 msgstr "Nachrichten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:24
+#: includes/pages/user_messages.php:24
 msgid "Select recipient..."
 msgstr "Empfänger auswählen..."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:36
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:39
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:62
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:92
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_questions.php:16
+#: includes/pages/user_messages.php:36 includes/pages/user_messages.php:39
+#: includes/pages/user_news.php:62 includes/pages/user_news.php:92
+#: includes/pages/user_questions.php:16
 msgid "Unable to load user."
 msgstr "Konnte Benutzer nicht laden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:51
+#: includes/pages/user_messages.php:51
 msgid "mark as read"
 msgstr "als gelesen markieren"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:53
+#: includes/pages/user_messages.php:53
 msgid "delete message"
 msgstr "Nachricht löschen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:67
+#: includes/pages/user_messages.php:67
 #, php-format
 msgid "Hello %s, here can you leave messages for other angels"
 msgstr "Hallo %s, hier kannst Du anderen Engeln Nachrichten schreiben."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:70
+#: includes/pages/user_messages.php:70
 msgid "New"
 msgstr "Neu"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:72
+#: includes/pages/user_messages.php:72
 msgid "Transmitted"
 msgstr "Gesendet"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:73
+#: includes/pages/user_messages.php:73
 msgid "Recipient"
 msgstr "Empfänger"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:85
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:99
+#: includes/pages/user_messages.php:85 includes/pages/user_messages.php:99
 msgid "Incomplete call, missing Message ID."
 msgstr "Unvollständiger Aufruf, fehlende Nachrichten ID."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:92
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:106
+#: includes/pages/user_messages.php:92 includes/pages/user_messages.php:106
 msgid "No Message found."
 msgstr "Keine Nachricht gefunden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:113
+#: includes/pages/user_messages.php:113
 msgid "Transmitting was terminated with an Error."
 msgstr "Übertragung wurde mit einem Fehler abgebrochen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_messages.php:118
+#: includes/pages/user_messages.php:118
 msgid "Wrong action."
 msgstr "Falsche Aktion."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_myshifts.php:4
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:298
+#: includes/pages/user_myshifts.php:4 includes/pages/user_shifts.php:298
 msgid "My shifts"
 msgstr "Meine Schichten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_myshifts.php:24
+#: includes/pages/user_myshifts.php:24
 msgid "Key changed."
 msgstr "Key geändert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_myshifts.php:27
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:213
+#: includes/pages/user_myshifts.php:27 includes/view/User_view.php:221
 msgid "Reset API key"
 msgstr "API-Key zurücksetzen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_myshifts.php:28
+#: includes/pages/user_myshifts.php:28
 msgid ""
 "If you reset the key, the url to your iCal- and JSON-export and your atom "
 "feed changes! You have to update it in every application using one of these "
@@ -1455,19 +1343,19 @@ msgstr ""
 "Wenn du den API-Key zurücksetzt, ändert sich die URL zu deinem iCal-, JSON-"
 "Export und Atom Feed! Du musst diesen überall ändern, wo er in Benutzung ist."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_myshifts.php:29
+#: includes/pages/user_myshifts.php:29
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_myshifts.php:72
+#: includes/pages/user_myshifts.php:72
 msgid "Shift saved."
 msgstr "Schicht gespeichert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_myshifts.php:97
+#: includes/pages/user_myshifts.php:97
 msgid "You have been signed off from the shift."
 msgstr "Du wurdest aus der Schicht ausgetragen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_myshifts.php:99
+#: includes/pages/user_myshifts.php:99
 msgid ""
 "It's too late to sign yourself off the shift. If neccessary, ask the "
 "dispatcher to do so."
@@ -1475,196 +1363,185 @@ msgstr ""
 "Es ist zu spät um Dich aus der Schicht auszutragen. Wenn notwendig, frage "
 "einen Dispatcher dafür."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:3
+#: includes/pages/user_news.php:3
 msgid "News comments"
 msgstr "News Kommentare"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:7
-msgid "News"
-msgstr "News"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:11
+#: includes/pages/user_news.php:11
 msgid "Meetings"
 msgstr "Treffen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:66
+#: includes/pages/user_news.php:66
 msgid "Comments"
 msgstr "Kommentare"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:83
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:126
+#: includes/pages/user_news.php:83 includes/pages/user_news.php:126
 msgid "Entry saved."
 msgstr "Eintrag gespeichert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:103
+#: includes/pages/user_news.php:103
 msgid "New Comment:"
 msgstr "Neuer Kommentar:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:110
+#: includes/pages/user_news.php:110
 msgid "Invalid request."
 msgstr "Ungültige Abfrage."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_news.php:154
+#: includes/pages/user_news.php:154
 msgid "Create news:"
 msgstr "News anlegen:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_questions.php:3
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:29
+#: includes/pages/user_questions.php:3 includes/view/Questions_view.php:29
 msgid "Ask an archangel"
 msgstr "Frage einen Erzengel"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_questions.php:28
+#: includes/pages/user_questions.php:28
 msgid "Unable to save question."
 msgstr "Konnte Frage nicht speichern."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_questions.php:29
+#: includes/pages/user_questions.php:29
 msgid "You question was saved."
 msgstr "Frage gespeichert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_questions.php:33
+#: includes/pages/user_questions.php:33
 msgid "Please enter a question!"
 msgstr "Gib eine Frage ein!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_questions.php:40
+#: includes/pages/user_questions.php:40
 msgid "Incomplete call, missing Question ID."
 msgstr "Unvollständiger Aufruf, fehlende Fragen ID."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_questions.php:48
+#: includes/pages/user_questions.php:48
 msgid "No question found."
 msgstr "Keine Frage gefunden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:4
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:210
+#: includes/pages/user_settings.php:4 includes/view/User_view.php:218
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:72
-msgid "Please enter your planned date of departure."
-msgstr "Bitte gib Dein geplantes Abreisedatum an."
+#: includes/pages/user_settings.php:73
+msgid "Please enter your end of availability."
+msgstr "Bitte gib Dein Ende der Verfügbarkeit an."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:112
+#: includes/pages/user_settings.php:118
 msgid "Settings saved."
 msgstr "Einstellungen gespeichert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:119
+#: includes/pages/user_settings.php:125
 msgid "-> not OK. Please try again."
 msgstr "-> Nicht OK. Bitte erneut versuchen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:127
+#: includes/pages/user_settings.php:133
 msgid "Failed setting password."
 msgstr "Konnte Passwort nicht speichern."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:140
+#: includes/pages/user_settings.php:146
 msgid "Theme changed."
 msgstr "Aussehen geändert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:166
+#: includes/pages/user_settings.php:172
 msgid "Here you can change your user details."
 msgstr "Hier kannst Du Deine Details ändern."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:172
-msgid "Planned date of departure"
-msgstr "Geplanter Abreisetag"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:182
+#: includes/pages/user_settings.php:189
 msgid "Please visit the angeltypes page to manage your angeltypes."
 msgstr "Bitte benutze die Engeltypen-Seite um deine Engeltypen zu verwalten."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:188
+#: includes/pages/user_settings.php:195
 msgid "Here you can change your password."
 msgstr "Hier kannst Du Dein Passwort ändern."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:189
+#: includes/pages/user_settings.php:196
 msgid "Old password:"
 msgstr "Altes Passwort:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:190
+#: includes/pages/user_settings.php:197
 msgid "New password:"
 msgstr "Neues Passwort:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:191
+#: includes/pages/user_settings.php:198
 msgid "Password confirmation:"
 msgstr "Passwort wiederholen:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:195
+#: includes/pages/user_settings.php:202
 msgid "Here you can choose your color settings:"
 msgstr "Hier kannst Du das Aussehen auswählen:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:196
+#: includes/pages/user_settings.php:203
 msgid "Color settings:"
 msgstr "Aussehen:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:200
+#: includes/pages/user_settings.php:207
 msgid "Here you can choose your language:"
 msgstr "Hier kannst Du Deine Sprache auswählen:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:201
+#: includes/pages/user_settings.php:208
 msgid "Language:"
 msgstr "Sprache:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:43
+#: includes/pages/user_shifts.php:43
 msgid "Shift entry deleted."
 msgstr "Schicht-Eintrag gelöscht."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:45
+#: includes/pages/user_shifts.php:45
 msgid "Entry not found."
 msgstr "Eintrag nicht gefunden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:110
+#: includes/pages/user_shifts.php:110
 msgid "Please select a room."
-msgstr "Bitte einen Raum auswählen."
+msgstr "Bitte einen Raum wählen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:117
+#: includes/pages/user_shifts.php:117
 msgid "Please select a shifttype."
 msgstr "Bitte einen Schichttyp wählen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:124
+#: includes/pages/user_shifts.php:124
 msgid "Please enter a valid starting time for the shifts."
 msgstr "Bitte gib eine korrekte Startzeit für die Schichten ein."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:131
+#: includes/pages/user_shifts.php:131
 msgid "Please enter a valid ending time for the shifts."
 msgstr "Bitte gib eine korrekte Endzeit für die Schichten ein."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:136
+#: includes/pages/user_shifts.php:136
 msgid "The ending time has to be after the starting time."
 msgstr "Die Endzeit muss nach der Startzeit liegen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:144
+#: includes/pages/user_shifts.php:144
 #, php-format
 msgid "Please check your input for needed angels of type %s."
 msgstr "Bitte prüfe deine Eingabe für benötigte Engel des Typs %s."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:166
+#: includes/pages/user_shifts.php:166
 msgid "Shift updated."
 msgstr "Schicht aktualisiert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:182
+#: includes/pages/user_shifts.php:182
 msgid "This page is much more comfortable with javascript."
 msgstr "Diese Seite ist mit JavaScript viel komfortabler."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:186
-msgid "Room:"
-msgstr "Raum:"
+#: includes/pages/user_shifts.php:186 includes/view/ShiftEntry_view.php:27
+msgid "Location:"
+msgstr "Ort:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:187
+#: includes/pages/user_shifts.php:187
 msgid "Start:"
 msgstr "Start:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:188
+#: includes/pages/user_shifts.php:188
 msgid "End:"
 msgstr "Ende:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:214
+#: includes/pages/user_shifts.php:214
 msgid "Shift deleted."
 msgstr "Schicht gelöscht."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:219
+#: includes/pages/user_shifts.php:219
 #, php-format
 msgid "Do you want to delete the shift %s from %s to %s?"
 msgstr "Möchtest Du die Schicht %s von %s bis %s löschen?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:251
+#: includes/pages/user_shifts.php:251
 msgid ""
 "You are not allowed to sign up for this shift. Maybe shift is full or "
 "already running."
@@ -1672,32 +1549,31 @@ msgstr ""
 "Du darfst Dich nicht für diese Schicht eintragen. Vielleicht ist die Schicht "
 "voll oder sie läuft bereits."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:298
+#: includes/pages/user_shifts.php:298
 msgid "You are subscribed. Thank you!"
 msgstr "Du bist eingetragen. Danke!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:307
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:188
+#: includes/pages/user_shifts.php:307 includes/view/User_view.php:196
 msgid "Freeloader"
 msgstr "Schwänzer"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:337
+#: includes/pages/user_shifts.php:337
 msgid "The administration has not configured any shifts yet."
 msgstr "Die Administratoren haben noch keine Schichten angelegt."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:344
-msgid "The administration has not configured any rooms yet."
-msgstr "Die Administratoren habe noch keine Räume eingerichtet."
+#: includes/pages/user_shifts.php:344
+msgid "The administration has not configured any locations yet."
+msgstr "Die Administratoren habe noch keine Orte eingerichtet."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:357
+#: includes/pages/user_shifts.php:357
 msgid "occupied"
 msgstr "belegt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:361
+#: includes/pages/user_shifts.php:361
 msgid "free"
 msgstr "frei"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:366
+#: includes/pages/user_shifts.php:366
 msgid ""
 "The administration has not configured any angeltypes yet - or you are not "
 "subscribed to any angeltype."
@@ -1705,49 +1581,48 @@ msgstr ""
 "Die Administratoren haben noch keine Engeltypen konfiguriert - oder Du hast "
 "noch keine Engeltypen ausgewählt."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:618
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:755
+#: includes/pages/user_shifts.php:618 includes/pages/user_shifts.php:755
 #, php-format
 msgid "%d helper needed"
 msgid_plural "%d helpers needed"
 msgstr[0] "%d Helfer benötigt"
 msgstr[1] "%d Helfer benötigt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:638
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:22
+#: includes/pages/user_shifts.php:638 includes/view/Shifts_view.php:22
 msgid "Sign up"
 msgstr "Eintragen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:641
+#: includes/pages/user_shifts.php:641
 msgid "ended"
 msgstr "vorbei"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:649
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:782
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:24
+#: includes/pages/user_shifts.php:649 includes/pages/user_shifts.php:782
+#: includes/view/Shifts_view.php:24
 #, php-format
 msgid "Become %s"
 msgstr "Werde ein %s"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:661
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:795
+#: includes/pages/user_shifts.php:661 includes/pages/user_shifts.php:795
 msgid "Add more angels"
 msgstr "Neue Engel hinzufügen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:803
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:220
+#: includes/pages/user_shifts.php:803 includes/view/User_view.php:228
 msgid "Time"
 msgstr "Zeit"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:804
+#: includes/pages/user_shifts.php:804
 msgid "Entries"
 msgstr "Einträge"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:822
+#: includes/pages/user_shifts.php:821
+msgid "Angeltype Filter"
+msgstr "Engeltypen Filter"
+
+#: includes/pages/user_shifts.php:822
 msgid "Occupancy"
 msgstr "Belegung"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:823
+#: includes/pages/user_shifts.php:823
 msgid ""
 "The tasks shown here are influenced by the preferences you defined in your "
 "settings!"
@@ -1755,19 +1630,19 @@ msgstr ""
 "Die Schichten, die hier angezeigt werden, sind von Deinen Einstellungen "
 "(Engeltypen/Aufgaben) abhängig!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:823
+#: includes/pages/user_shifts.php:823
 msgid "Description of the jobs."
 msgstr "Beschreibung der Aufgaben."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:824
+#: includes/pages/user_shifts.php:824
 msgid "Use new style if possible"
 msgstr "Wenn möglich neuen Stil verwenden"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:826
+#: includes/pages/user_shifts.php:826
 msgid "iCal export"
 msgstr "iCal Export"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:826
+#: includes/pages/user_shifts.php:826
 #, php-format
 msgid ""
 "Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s"
@@ -1778,64 +1653,95 @@ msgstr ""
 "\">JSON Format</a> verfügbar (Link bitte geheimhalten, sonst <a href=\"%s"
 "\">API-Key zurücksetzen</a>)."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:827
+#: includes/pages/user_shifts.php:827
 msgid "Filter"
 msgstr "Filter"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:861
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:22
-msgid "All"
-msgstr "Alle"
+#: includes/sys_menu.php:49
+msgid ""
+"Please enter your planned date of departure on your settings page to give us "
+"a feeling for teardown capacities."
+msgstr ""
+"Bitte gib Dein geplantes Abreisedatum an, damit wir ein Gefühl für die Abbau-"
+"Planung bekommen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:862
-msgid "None"
-msgstr "Keine"
+#: includes/sys_menu.php:52
+#, php-format
+msgid ""
+"You freeloaded at least %s shifts. Shift signup is locked. Please go to "
+"heavens desk to be unlocked again."
+msgstr ""
+"Du hast mindestens %s Schichten geschwänzt. Schicht-Registrierung ist "
+"gesperrt. Bitte gehe zum Himmelsschreibtisch um wieder entsperrt zu werden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:28
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:163
+#: includes/sys_menu.php:59
+msgid ""
+"You are not marked as available. Please contact the Infobus and confirm your "
+"availability."
+msgstr ""
+"Du bist nicht als verfügbar markiert. Bitte melde Dich beim Infobus, und "
+"bestätige Deine Verfügbarkeit."
+
+#: includes/sys_menu.php:65
+msgid "You need to specify a tshirt size in your settings!"
+msgstr "Bitte eine T-Shirt-Größe auswählen"
+
+#: includes/sys_menu.php:71
+msgid ""
+"You need to specify a DECT phone number in your settings! If you don't have "
+"a DECT phone, just enter \"-\"."
+msgstr ""
+"Bitte eine DECT-Telefonnummer in den Einstellungen eingeben. Wenn du noch "
+"keine Nummer hast, bitte einfach \"-\" angeben."
+
+#: includes/sys_menu.php:137
+msgid "Admin"
+msgstr "Admin"
+
+#: includes/sys_template.php:362
+msgid "No data found."
+msgstr "Nichts gefunden."
+
+#: includes/view/AngelTypes_view.php:28 includes/view/AngelTypes_view.php:163
 msgid "Unconfirmed"
 msgstr "Unbestätigt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:30
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:34
+#: includes/view/AngelTypes_view.php:30 includes/view/AngelTypes_view.php:34
 msgid "Coordinator"
 msgstr "Koordinator"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:32
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:36
+#: includes/view/AngelTypes_view.php:32 includes/view/AngelTypes_view.php:36
 msgid "Member"
 msgstr "Mitglied"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:45
+#: includes/view/AngelTypes_view.php:45
 #, php-format
 msgid "Do you want to delete angeltype %s?"
 msgstr "Möchtest Du den Engeltypen %s löschen?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:47
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:14
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:7
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:18
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:29
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:40
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:51
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:80
+#: includes/view/AngelTypes_view.php:47 includes/view/ShiftTypes_view.php:14
+#: includes/view/UserAngelTypes_view.php:7
+#: includes/view/UserAngelTypes_view.php:18
+#: includes/view/UserAngelTypes_view.php:29
+#: includes/view/UserAngelTypes_view.php:40
+#: includes/view/UserAngelTypes_view.php:51
+#: includes/view/UserAngelTypes_view.php:80
 msgid "cancel"
 msgstr "abbrechen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:61
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:192
+#: includes/view/AngelTypes_view.php:61 includes/view/AngelTypes_view.php:192
 msgid "Restricted"
 msgstr "Beschränkt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:61
+#: includes/view/AngelTypes_view.php:61
 msgid "Yes"
 msgstr "Ja"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:61
+#: includes/view/AngelTypes_view.php:61
 msgid "No"
 msgstr "Nein"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:62
+#: includes/view/AngelTypes_view.php:62
 msgid ""
 "Restricted angel types can only be used by an angel if enabled by an "
 "archangel (double opt-in)."
@@ -1843,19 +1749,16 @@ msgstr ""
 "Beschränkte Engeltypen müssen von einem Erzengel oder Team-Koordinator "
 "freigeschaltet werden (double-opt-in)."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:63
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:93
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:114
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:35
+#: includes/view/AngelTypes_view.php:63 includes/view/AngelTypes_view.php:93
+#: includes/view/ShiftTypes_view.php:35 includes/view/Shifts_view.php:114
 msgid "Description"
 msgstr "Beschreibung"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:64
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:36
+#: includes/view/AngelTypes_view.php:64 includes/view/ShiftTypes_view.php:36
 msgid "Please use markdown for the description."
 msgstr "Bitte benutze Markdown für die Beschreibung."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:79
+#: includes/view/AngelTypes_view.php:79
 #, php-format
 msgid ""
 "You are unconfirmed for this angeltype. Please go to the introduction for %s "
@@ -1864,52 +1767,52 @@ msgstr ""
 "Du bist noch nicht für diesen Engeltyp bestätigt. Bitte gehe zur Einführung "
 "für %s um bestätigt zu werden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:107
+#: includes/view/AngelTypes_view.php:107
 msgid "confirm"
 msgstr "bestätigen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:108
+#: includes/view/AngelTypes_view.php:108
 msgid "deny"
 msgstr "ablehnen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:123
+#: includes/view/AngelTypes_view.php:123
 msgid "remove"
 msgstr "entfernen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:129
+#: includes/view/AngelTypes_view.php:129
 msgid "Coordinators"
 msgstr "Koordinatoren"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:151
+#: includes/view/AngelTypes_view.php:151
 msgid "Members"
 msgstr "Mitglieder"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:154
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:70
+#: includes/view/AngelTypes_view.php:154
+#: includes/view/UserAngelTypes_view.php:70
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:165
+#: includes/view/AngelTypes_view.php:165
 msgid "confirm all"
 msgstr "Alle bestätigen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:166
+#: includes/view/AngelTypes_view.php:166
 msgid "deny all"
 msgstr "Alle ablehnen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:187
+#: includes/view/AngelTypes_view.php:187
 msgid "New angeltype"
 msgstr "Neuer Engeltyp"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:193
+#: includes/view/AngelTypes_view.php:193
 msgid "Membership"
 msgstr "Mitgliedschaft"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:207
+#: includes/view/AngelTypes_view.php:207
 msgid "FAQ"
 msgstr "FAQ"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:209
+#: includes/view/AngelTypes_view.php:209
 msgid ""
 "Here is the list of teams and their tasks. If you have questions, read the "
 "FAQ."
@@ -1917,7 +1820,7 @@ msgstr ""
 "Hier ist die Liste der Teams und ihrer Aufgaben. Wenn Du Fragen hast, schaue "
 "im FAQ nach."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:226
+#: includes/view/AngelTypes_view.php:226
 msgid ""
 "This angeltype is restricted by double-opt-in by a team coordinator. Please "
 "show up at the according introduction meetings."
@@ -1925,234 +1828,279 @@ msgstr ""
 "Dieser Engeltyp muss zusätzlich von einem Team-Koordinator freigeschaltet "
 "werden. Bitte komme zu den entsprechenden Einführungstreffen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:17
+#: includes/view/Questions_view.php:17
 msgid "Open questions"
 msgstr "Offene Fragen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:31
+#: includes/view/Questions_view.php:31
 msgid "Your Question:"
 msgstr "Deine Frage:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:17
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:147
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:149
+#: includes/view/ShiftEntry_view.php:17 includes/view/User_view.php:155
+#: includes/view/User_view.php:157
 msgid "Freeloaded"
 msgstr "Geschwänzt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:18
+#: includes/view/ShiftEntry_view.php:18
 msgid "Freeload comment (Only for shift coordination):"
 msgstr "Schwänzer Kommentar (Nur für die Schicht-Koordination):"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:23
+#: includes/view/ShiftEntry_view.php:23
 msgid "Edit shift entry"
 msgstr "Schichteintrag bearbeiten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:25
+#: includes/view/ShiftEntry_view.php:25
 msgid "Angel:"
 msgstr "Engel:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:26
+#: includes/view/ShiftEntry_view.php:26
 msgid "Date, Duration:"
 msgstr "Termin, Dauer:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:27
-msgid "Location:"
-msgstr "Ort:"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:28
+#: includes/view/ShiftEntry_view.php:28
 msgid "Title:"
 msgstr "Titel:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:29
+#: includes/view/ShiftEntry_view.php:29
 msgid "Type:"
 msgstr "Typ:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:30
+#: includes/view/ShiftEntry_view.php:30
 msgid "Comment (for your eyes only):"
 msgstr "Kommentar (nur für Dich):"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:6
-#, php-format
-msgid "created at %s by %s"
-msgstr "erstellt am %s von %s"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:8
-#, php-format
-msgid "edited at %s by %s"
-msgstr "bearbeitet am %s von %s"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:74
-msgid "This shift collides with one of your shifts."
-msgstr "Diese Schicht kollidiert mit deinen Schichten."
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:75
-msgid "You are signed up for this shift."
-msgstr "Du bist für diese Schicht eingetragen."
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:104
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:221
-msgid "Location"
-msgstr "Ort"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:12
+#: includes/view/ShiftTypes_view.php:12
 #, php-format
 msgid "Do you want to delete shifttype %s?"
 msgstr "Möchtest Du den Schichttypen %s löschen?"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:27
+#: includes/view/ShiftTypes_view.php:22
+msgid "All"
+msgstr "Alle"
+
+#: includes/view/ShiftTypes_view.php:27
 msgid "Edit shifttype"
 msgstr "Schichttyp bearbeiten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:27
+#: includes/view/ShiftTypes_view.php:27
 msgid "Create shifttype"
 msgstr "Schichttyp erstellen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:46
+#: includes/view/ShiftTypes_view.php:46
 #, php-format
 msgid "for team %s"
 msgstr "für Team %s"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:71
+#: includes/view/ShiftTypes_view.php:71
 msgid "New shifttype"
 msgstr "Neuer Schichttyp"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:7
+#: includes/view/Shifts_view.php:6
+#, php-format
+msgid "created at %s by %s"
+msgstr "erstellt am %s von %s"
+
+#: includes/view/Shifts_view.php:8
+#, php-format
+msgid "edited at %s by %s"
+msgstr "bearbeitet am %s von %s"
+
+#: includes/view/Shifts_view.php:74
+msgid "This shift collides with one of your shifts."
+msgstr "Diese Schicht kollidiert mit deinen Schichten."
+
+#: includes/view/Shifts_view.php:75
+msgid "You are signed up for this shift."
+msgstr "Du bist für diese Schicht eingetragen."
+
+#: includes/view/UserAngelTypes_view.php:5
+#, php-format
+msgid "Do you really want to add coordinator rights for %s to %s?"
+msgstr "Sollen %s %s als neuen Koordinator bekommen?"
+
+#: includes/view/UserAngelTypes_view.php:5
+#, php-format
+msgid "Do you really want to remove coordinator rights for %s from %s?"
+msgstr "Möchtest Du wirklich %s von %s als Koordinator befreien?"
+
+#: includes/view/UserAngelTypes_view.php:16
+#, php-format
+msgid "Do you really want to deny all users for %s?"
+msgstr "Möchtest Du wirklich alle Benutzer als %s ablehnen?"
+
+#: includes/view/UserAngelTypes_view.php:27
+#, php-format
+msgid "Do you really want to confirm all users for %s?"
+msgstr "Möchtest Du wirklich alle Benutzer als %s bestätigen?"
+
+#: includes/view/UserAngelTypes_view.php:38
+#, php-format
+msgid "Do you really want to confirm %s for %s?"
+msgstr "Möchtest Du wirklich %s für %s bestätigen?"
+
+#: includes/view/UserAngelTypes_view.php:49
+#, php-format
+msgid "Do you really want to delete %s from %s?"
+msgstr "Möchtest Du wirklich %s von %s entfernen?"
+
+#: includes/view/UserAngelTypes_view.php:69
+msgid "User"
+msgstr "Benutzer"
+
+#: includes/view/UserAngelTypes_view.php:78
+#, php-format
+msgid "Do you really want to add %s to %s?"
+msgstr "Möchtest Du wirklich %s zu %s hinzufügen?"
+
+#: includes/view/UserAngelTypes_view.php:81
+msgid "save"
+msgstr "Speichern"
+
+#: includes/view/User_view.php:7
 msgid "Please select..."
 msgstr "Bitte auswählen..."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:32
+#: includes/view/User_view.php:23
+msgid "male"
+msgstr "männlich"
+
+#: includes/view/User_view.php:24
+msgid "female"
+msgstr "weiblich"
+
+#: includes/view/User_view.php:25
+msgid "neutral"
+msgstr "neutral"
+
+#: includes/view/User_view.php:38
 msgid "Number of vouchers"
 msgstr "Anzahl Voucher"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:46
+#: includes/view/User_view.php:52
 msgid "m/d/Y h:i a"
 msgstr "d.m.Y H:i"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:65
+#: includes/view/User_view.php:71
 msgid "New user"
 msgstr "Neuer User"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:69
+#: includes/view/User_view.php:75
 msgid "Prename"
 msgstr "Vorname"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:72
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:190
-msgid "Arrived"
-msgstr "Angekommen"
+#: includes/view/User_view.php:80 includes/view/User_view.php:198
+msgid "Available"
+msgstr "Verfügbar"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:73
+#: includes/view/User_view.php:81
 msgid "Voucher"
 msgstr "Voucher"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:74
+#: includes/view/User_view.php:82
 msgid "Freeloads"
 msgstr "Schwänzereien"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:75
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:192
+#: includes/view/User_view.php:83 includes/view/User_view.php:200
 msgid "Active"
 msgstr "Aktiv"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:77
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:193
+#: includes/view/User_view.php:85 includes/view/User_view.php:201
 msgid "T-Shirt"
 msgstr "T-Shirt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:79
+#: includes/view/User_view.php:87
 msgid "Last login"
 msgstr "Letzter Login"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:95
+#: includes/view/User_view.php:103
 msgid "Free"
 msgstr "Frei"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:99
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:101
+#: includes/view/User_view.php:107 includes/view/User_view.php:109
 #, php-format
 msgid "Next shift %c"
 msgstr "Nächste Schicht %c"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:106
+#: includes/view/User_view.php:114
 #, php-format
 msgid "Shift starts %c"
 msgstr "Schicht startet %c"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:108
+#: includes/view/User_view.php:116
 #, php-format
 msgid "Shift ends %c"
 msgstr "Schicht endet %c"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:158
+#: includes/view/User_view.php:166
 msgid "sign off"
 msgstr "abmelden"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:169
+#: includes/view/User_view.php:177
 msgid "Sum:"
 msgstr "Summe:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:187
+#: includes/view/User_view.php:195
 msgid "User state"
 msgstr "Engelzustand"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:190
+#: includes/view/User_view.php:198
 #, php-format
-msgid "Arrived at %s"
-msgstr "Angekommen am %s"
+msgid "Available from %s"
+msgstr "Verfügbar seit %s"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:190
+#: includes/view/User_view.php:198
 #, php-format
-msgid "Not arrived (Planned: %s)"
-msgstr "Nicht angekommen (Geplant: %s)"
+msgid "Not available (Planned: %s)"
+msgstr "Nicht verfügbar (Geplant: %s)"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:190
-msgid "Not arrived"
-msgstr "Nicht angekommen"
+#: includes/view/User_view.php:198
+msgid "Not available"
+msgstr "Nicht verfügbar"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:191
+#: includes/view/User_view.php:199
 #, php-format
 msgid "Got %s voucher"
 msgid_plural "Got %s vouchers"
 msgstr[0] "Einen Voucher bekommen"
 msgstr[1] "%s Voucher bekommen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:191
+#: includes/view/User_view.php:199
 msgid "Got no vouchers"
 msgstr "Voucher nicht bekommen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:200
+#: includes/view/User_view.php:208
 msgid "Rights"
 msgstr "Rechte"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:209
+#: includes/view/User_view.php:217
 msgid "Edit vouchers"
 msgstr "Voucher bearbeiten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:211
+#: includes/view/User_view.php:219
 msgid "iCal Export"
 msgstr "iCal Export"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:212
+#: includes/view/User_view.php:220
 msgid "JSON Export"
 msgstr "JSON Export"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:222
+#: includes/view/User_view.php:230
 msgid "Name &amp; workmates"
 msgstr "Name &amp; Kollegen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:223
+#: includes/view/User_view.php:231
 msgid "Comment"
 msgstr "Kommentar"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:224
+#: includes/view/User_view.php:232
 msgid "Action"
 msgstr "Aktion"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:226
+#: includes/view/User_view.php:234
 msgid "Your night shifts between 2 and 8 am count twice."
 msgstr "Deine Nachtschichten zwischen 2 und 8 Uhr zählen doppelt."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:227
+#: includes/view/User_view.php:235
 #, php-format
 msgid ""
 "Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some "
@@ -2161,7 +2109,7 @@ msgstr ""
 "Gehe zur <a href=\"%s\">Schicht-Tabelle</a>, um Dich für Schichten "
 "einzutragen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:237
+#: includes/view/User_view.php:245
 msgid ""
 "We will send you an e-mail with a password recovery link. Please use the "
 "email address you used for registration."
@@ -2170,62 +2118,19 @@ msgstr ""
 "zurücksetzen kannst. Bitte benutze die Mailadresse, die du bei der Anmeldung "
 "verwendet hast."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:240
+#: includes/view/User_view.php:248
 msgid "Recover"
 msgstr "Wiederherstellen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:251
+#: includes/view/User_view.php:259
 msgid "Please enter a new password."
 msgstr "Gib bitte ein neues Passwort ein."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:5
-#, php-format
-msgid "Do you really want to add coordinator rights for %s to %s?"
-msgstr "Sollen %s %s als neuen Koordinator bekommen?"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:5
-#, php-format
-msgid "Do you really want to remove coordinator rights for %s from %s?"
-msgstr "Möchtest Du wirklich %s von %s als Koordinator befreien?"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:16
-#, php-format
-msgid "Do you really want to deny all users for %s?"
-msgstr "Möchtest Du wirklich alle Benutzer als %s ablehnen?"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:27
-#, php-format
-msgid "Do you really want to confirm all users for %s?"
-msgstr "Möchtest Du wirklich alle Benutzer als %s bestätigen?"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:38
-#, php-format
-msgid "Do you really want to confirm %s for %s?"
-msgstr "Möchtest Du wirklich %s für %s bestätigen?"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:49
-#, php-format
-msgid "Do you really want to delete %s from %s?"
-msgstr "Möchtest Du wirklich %s von %s entfernen?"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:69
-msgid "User"
-msgstr "Benutzer"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:78
-#, php-format
-msgid "Do you really want to add %s to %s?"
-msgstr "Möchtest Du wirklich %s zu %s hinzufügen?"
-
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:81
-msgid "save"
-msgstr "Speichern"
-
-#: /Users/msquare/workspace/projects/engelsystem/public/index.php:143
+#: public/index.php:149
 msgid "No Access"
 msgstr "Kein Zugriff"
 
-#: /Users/msquare/workspace/projects/engelsystem/public/index.php:144
+#: public/index.php:150
 msgid ""
 "You don't have permission to view this page. You probably have to sign in or "
 "register in order to gain access!"
@@ -2233,11 +2138,31 @@ msgstr ""
 "Du hast keinen Zugriff auf diese Seite. Registriere Dich und logge Dich "
 "bitte ein, um Zugriff zu erhalten!"
 
+#~ msgid "None"
+#~ msgstr "Keine"
+
+#~ msgid "planned end of availability"
+#~ msgstr "Geplantes Ende der Verfügbarkeit"
+
+#~ msgid ""
+#~ "This import will create/update/delete locations and shifts by given FRAB-"
+#~ "export file. The needed file format is xcal."
+#~ msgstr ""
+#~ "Dieser Import erzeugt, ändert und löscht Orte und Schichten anhand einer "
+#~ "FRAB-Export Datei. Das benötigte Format ist xcal."
+
+#~ msgid ""
+#~ "By completing this form you're registering as a Chaos-Angel. This script "
+#~ "will create you an account in the angel task sheduler."
+#~ msgstr ""
+#~ "Mit diesem Formular registrierst Du Dich als Engel. Du bekommst ein Konto "
+#~ "in der Engel-Aufgabenverwaltung."
+
+#~ msgid "Please enter your end of availability"
+#~ msgstr "Bitte gib Dein Ende der Verfügbarkeit an."
+
 #~ msgid "Tasks"
 #~ msgstr "Aufgaben"
-
-#~ msgid "Count"
-#~ msgstr "Anzahl"
 
 #~ msgid "User didnt got vouchers."
 #~ msgstr "Engel hat keine Voucher mehr."

@@ -4,10 +4,13 @@
 $maintenance_mode = false;
 
 // URL to the angel faq and job description
-$faq_url = "https://events.ccc.de/congress/2013/wiki/Static:Volunteers";
+$faq_url = "https://ffmuc.net/wiki/p/Engel-muenchen";
 
 // Default-Theme auf der Startseite, 1=style1.css usw.
-$default_theme = 1;
+$default_theme = 2;
+
+// Default Anzeige ist in
+$default_locale = 'de_DE.UTF-8';
 
 // Anzahl der News, die auf einer Seite ausgeben werden koennen...
 $DISPLAY_NEWS = 6;
@@ -27,7 +30,10 @@ define('CRYPT_ALG', '$6$rounds=5000'); // SHA-512
 define('MIN_PASSWORD_LENGTH', 8);
 
 // Wenn Engel beim Registrieren oder in ihrem Profil eine T-Shirt Größe angeben sollen, auf true setzen:
-$enable_tshirt_size = true;
+$enable_tshirt_size = false;
+
+// (De)aktivieren der DECT Nummer fuer nicht-Chaos Events
+$enable_dect = false;
 
 // Number of shifts to freeload until angel is locked for shift signup.
 $max_freeloadable_shifts = 2;
@@ -35,6 +41,9 @@ $max_freeloadable_shifts = 2;
 // local timezone
 date_default_timezone_set("Europe/Berlin");
 
+// Night shifts count double
+$nightshift_bonus = false;
+$nightshift_bonus ?
 // multiply "night shifts" and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
 $shift_sum_formula = "SUM(
   (1+(
@@ -42,10 +51,9 @@ $shift_sum_formula = "SUM(
     OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) > 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`start`)) < 6)
     OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) <= 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) >= 6)
   ))*(`Shifts`.`end` - `Shifts`.`start`)*(1 - 3 * `ShiftEntry`.`freeloaded`)
-)";
-
+)" :
 // weigh every shift the same
-// $shift_sum_formula = "SUM(`end` - `start`)";
+$shift_sum_formula = "SUM(`end` - `start`)";
 
 // For accessing stats
 $api_key = "";
@@ -53,8 +61,10 @@ $api_key = "";
 // MySQL-Connection Settings
 $config = array(
     'host' => "localhost",
-    'user' => "root",
-    'pw' => "",
-    'db' => "engelsystem" 
+    'user' => "engelsystem",
+    'pw' => "engelsystem",
+    'db' => "engelsystem"
 );
+
+$enable_frab_import = false;
 ?>
