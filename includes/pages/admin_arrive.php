@@ -1,7 +1,7 @@
 <?php
 
 function admin_arrive_title() {
-  return _("Arrived angels");
+  return _("Available angels");
 }
 
 function admin_arrive() {
@@ -15,8 +15,8 @@ function admin_arrive() {
     $user_source = User($id);
     if ($user_source != null) {
       sql_query("UPDATE `User` SET `Gekommen`=0, `arrival_date` = NULL WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
-      engelsystem_log("User set to not arrived: " . User_Nick_render($user_source));
-      $msg = success(_("Reset done. Angel has not arrived."), true);
+      engelsystem_log("User set to not available: " . User_Nick_render($user_source));
+      $msg = success(_("Reset done. Angel is not available."), true);
     } else
       $msg = error(_("Angel not found."), true);
   } elseif (isset($_REQUEST['arrived']) && preg_match("/^[0-9]*$/", $_REQUEST['arrived'])) {
@@ -24,8 +24,8 @@ function admin_arrive() {
     $user_source = User($id);
     if ($user_source != null) {
       sql_query("UPDATE `User` SET `Gekommen`=1, `arrival_date`='" . time() . "' WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
-      engelsystem_log("User set has arrived: " . User_Nick_render($user_source));
-      $msg = success(_("Angel has been marked as arrived."), true);
+      engelsystem_log("User is available: " . User_Nick_render($user_source));
+      $msg = success(_("Angel has been marked as available."), true);
     } else
       $msg = error(_("Angel not found."), true);
   }
@@ -61,7 +61,7 @@ function admin_arrive() {
     $usr['rendered_planned_arrival_date'] = date('Y-m-d', $usr['planned_arrival_date']);
     $usr['rendered_arrival_date'] = $usr['arrival_date'] > 0 ? date('Y-m-d', $usr['arrival_date']) : "-";
     $usr['arrived'] = $usr['Gekommen'] == 1 ? _("yes") : "";
-    $usr['actions'] = $usr['Gekommen'] == 1 ? '<a href="' . page_link_to('admin_arrive') . '&reset=' . $usr['UID'] . '&search=' . $search . '">' . _("reset") . '</a>' : '<a href="' . page_link_to('admin_arrive') . '&arrived=' . $usr['UID'] . '&search=' . $search . '">' . _("arrived") . '</a>';
+    $usr['actions'] = $usr['Gekommen'] == 1 ? '<a href="' . page_link_to('admin_arrive') . '&reset=' . $usr['UID'] . '&search=' . $search . '">' . _("reset") . '</a>' : '<a href="' . page_link_to('admin_arrive') . '&arrived=' . $usr['UID'] . '&search=' . $search . '">' . _("available") . '</a>';
     
     if ($usr['arrival_date'] > 0) {
       $day = date('Y-m-d', $usr['arrival_date']);
@@ -132,18 +132,18 @@ function admin_arrive() {
       )),
       table(array(
           'nick' => _("Nickname"),
-          'rendered_planned_arrival_date' => _("Planned arrival"),
-          'arrived' => _("Arrived?"),
-          'rendered_arrival_date' => _("Arrival date"),
-          'rendered_planned_departure_date' => _("Planned departure"),
+          'rendered_planned_arrival_date' => _("Planned start of availability"),
+          'arrived' => _("Available?"),
+          'rendered_arrival_date' => _("Start of availability"),
+          'rendered_planned_departure_date' => _("Planned end of availability"),
           'actions' => "" 
       ), $users_matched),
       div('row', [
           div('col-md-4', [
-              heading(_("Planned arrival statistics"), 2),
+              heading(_("Planned start of availability statistics"), 2),
               bargraph('planned_arrives', 'day', [
-                  'count' => _("arrived"),
-                  'sum' => _("arrived sum") 
+                  'count' => _("available"),
+                  'sum' => _("available sum") 
               ], [
                   'count' => '#090',
                   'sum' => '#888' 
@@ -155,10 +155,10 @@ function admin_arrive() {
               ], $planned_arrival_at_day) 
           ]),
           div('col-md-4', [
-              heading(_("Arrival statistics"), 2),
+              heading(_("Availability statistics"), 2),
               bargraph('arrives', 'day', [
-                  'count' => _("arrived"),
-                  'sum' => _("arrived sum") 
+                  'count' => _("available"),
+                  'sum' => _("available sum") 
               ], [
                   'count' => '#090',
                   'sum' => '#888' 
@@ -170,10 +170,10 @@ function admin_arrive() {
               ], $arrival_at_day) 
           ]),
           div('col-md-4', [
-              heading(_("Planned departure statistics"), 2),
+              heading(_("Planned end of availability statistics"), 2),
               bargraph('planned_departures', 'day', [
-                  'count' => _("arrived"),
-                  'sum' => _("arrived sum") 
+                  'count' => _("available"),
+                  'sum' => _("available sum") 
               ], [
                   'count' => '#090',
                   'sum' => '#888' 

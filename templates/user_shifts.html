@@ -8,6 +8,25 @@
 				days[i].selected = true;
 		}
 	}
+
+  // handle filter-setting via modal
+  function updateFilters(filterName, modalSelectorPrefix) {
+    var selectedFilters = $(modalSelectorPrefix + filterName).find('input[type="checkbox"]:checked');
+
+    $('#selection_' + filterName).find('li').hide();
+    $('#selection_' + filterName).find('input[type="checkbox"]').prop('checked', false).removeAttr('checked');
+
+    for(var i=0; i<selectedFilters.length; i++) {
+      var checkedFilter = selectedFilters[i];
+      var filterIdentifier = $(checkedFilter).attr('data-filter-selector-checkbox');
+
+      $('*[data-filter-selector-li=' + filterIdentifier + ']').show();
+      $('*[data-filter-selector-checkbox=' + filterIdentifier + ']').prop('checked', true).attr('checked', true);
+    }
+
+    $(modalSelectorPrefix + filterName).modal('hide');
+  }
+
 </script>
 <form class="form-inline" action="" method="get">
   <input type="hidden" name="p" value="user_shifts">
@@ -46,7 +65,7 @@
 		<div class="col-md-6">
   		<div>%task_notice%</div>
   		<div>%new_style_checkbox%</div>
-  		<input class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="%filter%">
+		<input class="btn btn-primary" type="submit" style="margin-bottom: 20px" value="%filter%">
 		</div>
 	</div>
 </form>

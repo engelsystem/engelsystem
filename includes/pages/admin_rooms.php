@@ -1,12 +1,13 @@
 <?php
 
 function admin_rooms_title() {
-  return _("Rooms");
+  return _("Locations");
 }
 
 function admin_rooms() {
   global $user;
   
+  global $user, $enable_frab_import;
   $rooms_source = sql_select("SELECT * FROM `Room` ORDER BY `Name`");
   $rooms = array();
   foreach ($rooms_source as $room)
@@ -87,12 +88,12 @@ function admin_rooms() {
         if ($ok) {
           if (isset($id)) {
             sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "' WHERE `RID`='" . sql_escape($id) . "' LIMIT 1");
-            engelsystem_log("Room updated: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);
+            engelsystem_log("Location updated: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);
           } else {
             $id = Room_create($name, $from_pentabarf, $public, $number);
             if ($id === false)
-              engelsystem_error("Unable to create room.");
-            engelsystem_log("Room created: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);
+              engelsystem_error("Unable to create location.");
+            engelsystem_log("Location created: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);
           }
           
           sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($id) . "'");
@@ -107,8 +108,8 @@ function admin_rooms() {
             }
           }
           
-          engelsystem_log("Set needed angeltypes of room " . $name . " to: " . join(", ", $needed_angeltype_info));
-          success(_("Room saved."));
+          engelsystem_log("Set needed angeltypes of location " . $name . " to: " . join(", ", $needed_angeltype_info));
+          success(_("Location saved."));
           redirect(page_link_to("admin_rooms"));
         }
       }
@@ -118,6 +119,15 @@ function admin_rooms() {
             form_spinner('angeltype_count_' . $angeltype_id, $angeltype, $angeltypes_count[$angeltype_id]) 
         ));
       
+
+      $form_elements = [];
+      $form_elements[] = form_text('name', _("Name"), $name);
+      if ($enable_frab_import) {
+        $form_elements[] = form_checkbox('from_pentabarf', _("Frab import"), $from_pentabarf);
+      }
+      $form_elements[] = form_checkbox('public', _("Public"), $public);
+      $form_elements[] = form_text('number', _("Room number"), $number);
+
       return page_with_title(admin_rooms_title(), array(
           buttons(array(
               button(page_link_to('admin_rooms'), _("back"), 'back') 
@@ -125,12 +135,7 @@ function admin_rooms() {
           $msg,
           form(array(
               div('row', array(
-                  div('col-md-6', array(
-                      form_text('name', _("Name"), $name),
-                      form_checkbox('from_pentabarf', _("Frab import"), $from_pentabarf),
-                      form_checkbox('public', _("Public"), $public),
-                      form_text('number', _("Room number"), $number) 
-                  )),
+                  div('col-md-6', $form_elements),
                   div('col-md-6', array(
                       div('row', array(
                           div('col-md-12', array(
@@ -148,8 +153,8 @@ function admin_rooms() {
         sql_query("DELETE FROM `Room` WHERE `RID`='" . sql_escape($id) . "' LIMIT 1");
         sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($id) . "' LIMIT 1");
         
-        engelsystem_log("Room deleted: " . $name);
-        success(sprintf(_("Room %s deleted."), $name));
+        engelsystem_log("Location deleted: " . $name);
+        success(sprintf(_("Location %s deleted."), $name));
         redirect(page_link_to('admin_rooms'));
       }
       
@@ -157,7 +162,7 @@ function admin_rooms() {
           buttons(array(
               button(page_link_to('admin_rooms'), _("back"), 'back') 
           )),
-          sprintf(_("Do you want to delete room %s?"), $name),
+          sprintf(_("Do you want to delete location %s?"), $name),
           buttons(array(
               button(page_link_to('admin_rooms') . '&show=delete&id=' . $id . '&ack', _("Delete"), 'delete') 
           )) 
@@ -165,17 +170,23 @@ function admin_rooms() {
     }
   }
   
+
+  $table_columns = array(
+    'name' => _("Name"),
+    'from_pentabarf' => _("Frab import"),
+    'public' => _("Public"),
+    'actions' => ""
+  );
+  if (!$enable_frab_import) {
+    unset($table_columns['from_pentabarf']);
+  }
+
   return page_with_title(admin_rooms_title(), array(
       buttons(array(
           button(page_link_to('admin_rooms') . '&show=edit', _("add")) 
       )),
       msg(),
-      table(array(
-          'name' => _("Name"),
-          'from_pentabarf' => _("Frab import"),
-          'public' => _("Public"),
-          'actions' => "" 
-      ), $rooms) 
+      table($table_columns, $rooms)
   ));
 }
 ?>

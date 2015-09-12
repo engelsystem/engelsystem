@@ -7,14 +7,14 @@ function page_link_to($page) {
 }
 
 function page_link_to_absolute($page) {
-  return (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . preg_replace("/\?.*$/", '', $_SERVER['REQUEST_URI']) . page_link_to($page);
+  return (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . preg_replace("/\\?.*$/", '', $_SERVER['REQUEST_URI']) . page_link_to($page);
 }
 
 /**
  * Renders the header toolbar containing search, login/logout, user and settings links.
  */
 function header_toolbar() {
-  global $p, $privileges, $user, $enable_tshirt_size, $max_freeloadable_shifts;
+  global $p, $privileges, $user, $enable_tshirt_size, $enable_dect, $max_freeloadable_shifts;
   
   $toolbar_items = array();
   
@@ -56,7 +56,7 @@ function header_toolbar() {
     
     // Hinweis für Engel, die noch nicht angekommen sind
     if ($user['Gekommen'] == 0) {
-      $hints[] = error(_("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already."), true);
+      $hints[] = error(_("You are not marked as available. Please contact the Infobus and confirm your availability."), true);
       $hint_class = 'danger';
       $glyphicon = 'warning-sign';
     }
@@ -67,7 +67,7 @@ function header_toolbar() {
       $glyphicon = 'warning-sign';
     }
     
-    if ($user['DECT'] == "") {
+    if ($enable_dect && $user['DECT'] == "") {
       $hints[] = error(_("You need to specify a DECT phone number in your settings! If you don't have a DECT phone, just enter \"-\"."), true);
       $hint_class = 'danger';
       $glyphicon = 'warning-sign';
@@ -96,6 +96,7 @@ function header_toolbar() {
 function make_navigation() {
   global $p, $privileges;
   
+  global $p, $privileges, $enable_frab_import;
   $menu = array();
   $pages = array(
       "news" => news_title(),
@@ -124,6 +125,10 @@ function make_navigation() {
       "admin_log" => admin_log_title() 
   );
   
+  if (!$enable_frab_import) {
+    unset($admin_pages["admin_import"]);
+  }
+
   foreach ($admin_pages as $page => $title)
     if (in_array($page, $privileges))
       $admin_menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $p);

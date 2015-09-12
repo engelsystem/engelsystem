@@ -5,10 +5,19 @@ function admin_import_title() {
 }
 
 function admin_import() {
+  global $enable_frab_import;
   global $rooms_import;
   global $user;
   $html = "";
   
+
+  if (!$enable_frab_import) {
+    error(_('Frab import is not enabled'));
+    return page_with_title('', [
+      msg()
+    ]);
+  }
+
   $step = "input";
   if (isset($_REQUEST['step']) && in_array($step, [
       'input',
@@ -105,11 +114,11 @@ function admin_import() {
       ]) . form([
           div('row', [
               div('col-sm-6', [
-                  '<h3>' . _("Rooms to create") . '</h3>',
+                  '<h3>' . _("Locations to create") . '</h3>',
                   table(_("Name"), $rooms_new) 
               ]),
               div('col-sm-6', [
-                  '<h3>' . _("Rooms to delete") . '</h3>',
+                  '<h3>' . _("Locations to delete") . '</h3>',
                   table(_("Name"), $rooms_deleted) 
               ]) 
           ]),
@@ -120,7 +129,7 @@ function admin_import() {
               'end' => _("End"),
               'shifttype' => _('Shift type'),
               'title' => _("Title"),
-              'room' => _("Room") 
+              'room' => _("Location")
           ), shifts_printable($events_new, $shifttypes)),
           '<h3>' . _("Shifts to update") . '</h3>',
           table(array(
@@ -129,7 +138,7 @@ function admin_import() {
               'end' => _("End"),
               'shifttype' => _('Shift type'),
               'title' => _("Title"),
-              'room' => _("Room") 
+              'room' => _("Location")
           ), shifts_printable($events_updated, $shifttypes)),
           '<h3>' . _("Shifts to delete") . '</h3>',
           table(array(
@@ -138,7 +147,7 @@ function admin_import() {
               'end' => _("End"),
               'shifttype' => _('Shift type'),
               'title' => _("Title"),
-              'room' => _("Room") 
+              'room' => _("Location")
           ), shifts_printable($events_deleted, $shifttypes)),
           form_submit('submit', _("Import")) 
       ], page_link_to('admin_import') . '&step=import&shifttype_id=' . $shifttype_id);

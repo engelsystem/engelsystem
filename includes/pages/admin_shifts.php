@@ -300,7 +300,7 @@ function admin_shifts() {
       form(array(
           form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
           form_text('title', _("Title"), $title),
-          form_select('rid', _("Room"), $room_array, $_REQUEST['rid']),
+          form_select('rid', _("Location"), $room_array, $_REQUEST['rid']),
           '<div class="row">',
           '<div class="col-md-6">',
           form_text('start', _("Start"), date("Y-m-d H:i", $start)),
@@ -314,7 +314,7 @@ function admin_shifts() {
           '</div>',
           '<div class="col-md-6">',
           form_info(_("Needed angels"), ''),
-          form_radio('angelmode', _("Take needed angels from room settings"), $angelmode == 'location', 'location'),
+          form_radio('angelmode', _("Take needed angels from location settings"), $angelmode == 'location', 'location'),
           form_radio('angelmode', _("The following angels are needed"), $angelmode == 'manually', 'manually'),
           '<div class="row">'.$angel_types.'</div>',
           '</div>',
