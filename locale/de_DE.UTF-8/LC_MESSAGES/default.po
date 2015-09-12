@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2015-09-12 09:31+0200\n"
-"PO-Revision-Date: 2015-09-12 09:34+0200\n"
+"POT-Creation-Date: 2015-09-12 10:14+0200\n"
+"PO-Revision-Date: 2015-09-12 10:14+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -18,8 +18,8 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: vendor/bootstrap/grunt/bs-lessdoc-parser.js\n"
 
 #: includes/controller/angeltypes_controller.php:7
-#: includes/pages/user_shifts.php:821 includes/view/AngelTypes_view.php:56
-#: includes/view/AngelTypes_view.php:72 includes/view/User_view.php:204
+#: includes/view/AngelTypes_view.php:56 includes/view/AngelTypes_view.php:72
+#: includes/view/User_view.php:204
 msgid "Angeltypes"
 msgstr "Engeltypen"
 
@@ -1614,6 +1614,10 @@ msgstr "Zeit"
 msgid "Entries"
 msgstr "Einträge"
 
+#: includes/pages/user_shifts.php:821
+msgid "Angeltype Filter"
+msgstr "Engeltypen Filter"
+
 #: includes/pages/user_shifts.php:822
 msgid "Occupancy"
 msgstr "Belegung"
@@ -1652,14 +1656,6 @@ msgstr ""
 #: includes/pages/user_shifts.php:827
 msgid "Filter"
 msgstr "Filter"
-
-#: includes/pages/user_shifts.php:861 includes/view/ShiftTypes_view.php:22
-msgid "All"
-msgstr "Alle"
-
-#: includes/pages/user_shifts.php:862
-msgid "None"
-msgstr "Keine"
 
 #: includes/sys_menu.php:49
 msgid ""
@@ -1877,6 +1873,10 @@ msgstr "Kommentar (nur für Dich):"
 #, php-format
 msgid "Do you want to delete shifttype %s?"
 msgstr "Möchtest Du den Schichttypen %s löschen?"
+
+#: includes/view/ShiftTypes_view.php:22
+msgid "All"
+msgstr "Alle"
 
 #: includes/view/ShiftTypes_view.php:27
 msgid "Edit shifttype"
@@ -2125,6 +2125,9 @@ msgid ""
 msgstr ""
 "Du hast keinen Zugriff auf diese Seite. Registriere Dich und logge Dich "
 "bitte ein, um Zugriff zu erhalten!"
+
+#~ msgid "None"
+#~ msgstr "Keine"
 
 #~ msgid "planned end of availability"
 #~ msgstr "Geplantes Ende der Verfügbarkeit"
