@@ -5,7 +5,7 @@ function settings_title() {
 }
 
 function user_settings() {
-  global $enable_tshirt_size, $tshirt_sizes, $themes, $locales;
+  global $enable_tshirt_size, $tshirt_sizes, $themes, $locales, $genders;
   global $user;
   
   $msg = "";
@@ -26,7 +26,8 @@ function user_settings() {
   $selected_language = $user['Sprache'];
   $planned_arrival_date = $user['planned_arrival_date'];
   $planned_departure_date = $user['planned_departure_date'];
-  
+  $gender = $user['gender'];
+
   if (isset($_REQUEST['submit'])) {
     $ok = true;
     
@@ -89,7 +90,11 @@ function user_settings() {
       $mobile = strip_request_item('mobile');
     if (isset($_REQUEST['hometown']))
       $hometown = strip_request_item('hometown');
-    
+    if (isset($_REQUEST['gender'])
+        && isset($genders[$_REQUEST['gender']])) {
+        $gender = $_REQUEST['gender'];
+    }
+
     if ($ok) {
       sql_query("
           UPDATE `User` SET
@@ -97,6 +102,7 @@ function user_settings() {
           `Vorname`='" . sql_escape($prename) . "',
           `Name`='" . sql_escape($lastname) . "',
           `Alter`='" . sql_escape($age) . "',
+          `gender`='" . sql_escape($gender) . "',
           `Telefon`='" . sql_escape($tel) . "',
           `DECT`='" . sql_escape($dect) . "',
           `Handy`='" . sql_escape($mobile) . "',
@@ -171,6 +177,7 @@ function user_settings() {
                   form_date('planned_arrival_date', _("Planned begin of availability") . ' ' . entry_required(), $planned_arrival_date, time()),
                   form_date('planned_departure_date', _("Planned end of availability"), $planned_departure_date, time()),
                   form_text('age', _("Age"), $age),
+                  form_select('gender', _("Gender"), $genders, $gender),
                   form_text('tel', _("Phone"), $tel),
                   $enable_dect ? form_text('dect', _("DECT"), $dect) : '',
                   form_text('mobile', _("Mobile"), $mobile),
