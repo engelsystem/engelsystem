@@ -157,6 +157,7 @@ echo template_render('../templates/layout.html', array(
     'content' => msg() . $content,
     'header_toolbar' => header_toolbar(),
     'faq_url' => $faq_url,
+    'contact_email' => $contact_email,
     'locale' => locale() 
 ));
 
