@@ -27,10 +27,6 @@ function admin_user() {
     $html .= "<form action=\"" . page_link_to("admin_user") . "&action=save&id=$id\" method=\"post\">\n";
     $html .= "<table border=\"0\">\n";
     $html .= "<input type=\"hidden\" name=\"Type\" value=\"Normal\">\n";
-    
-    $SQL = "SELECT * FROM `User` WHERE `UID`='" . sql_escape($id) . "'";
-    list($user_source) = sql_select($SQL);
-    
     $html .= "<tr><td>\n";
     $html .= "<table>\n";
     $html .= "  <tr><td>Nick</td><td>" . "<input type=\"text\" size=\"40\" name=\"eNick\" value=\"" . $user_source['Nick'] . "\"></td></tr>\n";
@@ -162,7 +158,14 @@ function admin_user() {
       
       case 'delete':
         if ($user['UID'] != $id) {
-          $user_source = sql_select("SELECT `Nick`, `UID` FROM `User` WHERE `UID` = '" . sql_escape($id) . "' LIMIT 1");
+          $user_source = User($id);
+          if ($user_source === false)
+            engelsystem_error("Unable to load user.");
+          if ($user_source == null) {
+            error(_('This user does not exist.'));
+            redirect(users_link());
+          }
+          
           sql_query("DELETE FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
           sql_query("DELETE FROM `UserGroups` WHERE `uid`='" . sql_escape($id) . "'");
           engelsystem_log("Deleted user " . User_Nick_render($user_source));

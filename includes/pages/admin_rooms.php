@@ -146,8 +146,8 @@ function admin_rooms() {
       ));
     } elseif ($_REQUEST['show'] == 'delete') {
       if (isset($_REQUEST['ack'])) {
-        sql_query("DELETE FROM `Room` WHERE `RID`='" . sql_escape($id) . "' LIMIT 1");
-        sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($id) . "' LIMIT 1");
+        if (! Room_delete($id))
+          engelsystem_error("Unable to delete room.");
         
         engelsystem_log("Room deleted: " . $name);
         success(sprintf(_("Room %s deleted."), $name));
