@@ -42,6 +42,7 @@ function admin_rooms() {
         $name = $room[0]['Name'];
         $from_pentabarf = $room[0]['FromPentabarf'];
         $public = $room[0]['show'];
+        $number = $room[0]['Number'];
         $needed_angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($id) . "'");
         foreach ($needed_angeltypes as $needed_angeltype)
           $angeltypes_count[$needed_angeltype['angel_type_id']] = $needed_angeltype['count'];
