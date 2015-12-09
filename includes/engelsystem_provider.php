@@ -43,7 +43,6 @@ require_once realpath(__DIR__ . '/../includes/helper/internationalization_helper
 require_once realpath(__DIR__ . '/../includes/helper/message_helper.php');
 require_once realpath(__DIR__ . '/../includes/helper/error_helper.php');
 require_once realpath(__DIR__ . '/../includes/helper/email_helper.php');
-require_once realpath(__DIR__ . '/../includes/helper/session_helper.php');
 
 require_once realpath(__DIR__ . '/../includes/mailer/shifts_mailer.php');
 
