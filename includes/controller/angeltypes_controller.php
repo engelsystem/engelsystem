@@ -68,8 +68,8 @@ function angeltype_delete_controller() {
     if ($result === false)
       engelsystem_error("Unable to delete angeltype.");
 
-    engelsystem_log("Deleted angeltype: " . $name);
-    success(sprintf(_("Angeltype %s deleted."), $name));
+    engelsystem_log("Deleted angeltype: " . $angeltype['name']);
+    success(sprintf(_("Angeltype %s deleted."), $angeltype['name']));
     redirect(page_link_to('angeltypes'));
   }
 
