@@ -85,7 +85,7 @@ function toolbar_dropdown($glyphicon, $label, $submenu, $class = '') {
 function toolbar_popover($glyphicon, $label, $content, $class = '') {
   $id = md5(microtime() . $glyphicon . $label);
   return '<li class="dropdown messages ' . $class . '">
-          <a id="' . $id . '" href="#">' . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '') 
+          <a id="' . $id . '" href="#" tabindex="0">' . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '') 
           . $label . ' <span class="caret"></span></a>
           <script type="text/javascript">
           $(function(){
