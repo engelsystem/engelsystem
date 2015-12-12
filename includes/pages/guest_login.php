@@ -161,7 +161,8 @@ function guest_register() {
         sql_query("INSERT INTO `UserAngelTypes` SET `user_id`='" . sql_escape($user_id) . "', `angeltype_id`='" . sql_escape($selected_angel_type_id) . "'");
         $user_angel_types_info[] = $angel_types[$selected_angel_type_id];
       }
-      engelsystem_log("User " . $nick . " signed up as: " . join(", ", $user_angel_types_info));
+      
+      engelsystem_log("User " . User_Nick_render(User($user_id)) . " signed up as: " . join(", ", $user_angel_types_info));
       success(_("Angel registration successful!"));
       
       redirect('?');
