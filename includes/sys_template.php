@@ -4,9 +4,10 @@
  * Liste der verfügbaren Themes
  */
 $themes = array(
+    '3' => "Engelsystem 32c3",
+    "2" => "Engelsystem cccamp15",
     "0" => "Engelsystem light",
-    "1" => "Engelsystem dark",
-    "2" => "Engelsystem cccamp15" 
+    "1" => "Engelsystem dark"
 );
 
 /**
