@@ -19,6 +19,7 @@ require_once realpath(__DIR__ . '/../includes/model/ShiftEntry_model.php');
 require_once realpath(__DIR__ . '/../includes/model/Shifts_model.php');
 require_once realpath(__DIR__ . '/../includes/model/ShiftTypes_model.php');
 require_once realpath(__DIR__ . '/../includes/model/UserAngelTypes_model.php');
+require_once realpath(__DIR__ . '/../includes/model/UserDriverLicenses_model.php');
 require_once realpath(__DIR__ . '/../includes/model/UserGroups_model.php');
 require_once realpath(__DIR__ . '/../includes/model/User_model.php');
 
@@ -29,6 +30,7 @@ require_once realpath(__DIR__ . '/../includes/view/Shifts_view.php');
 require_once realpath(__DIR__ . '/../includes/view/ShiftEntry_view.php');
 require_once realpath(__DIR__ . '/../includes/view/ShiftTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/UserAngelTypes_view.php');
+require_once realpath(__DIR__ . '/../includes/view/UserDriverLicenses_view.php');
 require_once realpath(__DIR__ . '/../includes/view/User_view.php');
 
 require_once realpath(__DIR__ . '/../includes/controller/angeltypes_controller.php');
@@ -37,6 +39,7 @@ require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php')
 require_once realpath(__DIR__ . '/../includes/controller/shifttypes_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/user_angeltypes_controller.php');
+require_once realpath(__DIR__ . '/../includes/controller/user_driver_licenses_controller.php');
 
 require_once realpath(__DIR__ . '/../includes/helper/graph_helper.php');
 require_once realpath(__DIR__ . '/../includes/helper/internationalization_helper.php');

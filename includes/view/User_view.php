@@ -205,6 +205,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
           div('col-md-12', array(
               buttons(array(
                   $admin_user_privilege ? button(page_link_to('admin_user') . '&id=' . $user_source['UID'], glyph("edit") . _("edit")) : '',
+                  $admin_user_privilege ? button(user_driver_license_edit_link($user_source), glyph("road") . _("driving license")) : '',
                   ($admin_user_privilege && ! $user_source['Gekommen']) ? button(page_link_to('admin_arrive') . '&arrived=' . $user_source['UID'], _("arrived")) : '',
                   $admin_user_privilege ? button(page_link_to('users') . '&action=edit_vouchers&user_id=' . $user_source['UID'], glyph('cutlery') . _('Edit vouchers')) : '',
                   $its_me ? button(page_link_to('user_settings'), glyph('list-alt') . _("Settings")) : '',

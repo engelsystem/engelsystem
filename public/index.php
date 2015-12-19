@@ -9,6 +9,7 @@ $free_pages = array(
     'credits',
     'angeltypes',
     'users',
+    'user_driver_licenses',
     'ical',
     'shifts_json_export',
     'shifts',
@@ -58,6 +59,8 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     list($title, $content) = users_controller();
   } elseif ($p == "user_angeltypes") {
     list($title, $content) = user_angeltypes_controller();
+  } elseif ($p == "user_driver_licenses") {
+    list($title, $content) = user_driver_licenses_controller();
   } elseif ($p == "shifttypes") {
     list($title, $content) = shifttypes_controller();
   } elseif ($p == "news") {
