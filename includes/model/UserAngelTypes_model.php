@@ -1,8 +1,14 @@
 <?php
+
 /**
  * User angeltypes model
  */
 
+/**
+ * List users angeltypes.
+ *
+ * @param User $user          
+ */
 function User_angeltypes($user) {
   return sql_select("
       SELECT `AngelTypes`.*, `UserAngelTypes`.`confirm_user_id`, `UserAngelTypes`.`coordinator`

@@ -97,6 +97,7 @@ function angeltype_edit_controller() {
   $name = "";
   $restricted = false;
   $description = "";
+  $requires_driver_license = false;
   
   if (isset($_REQUEST['angeltype_id'])) {
     $angeltype = AngelType($_REQUEST['angeltype_id']);
@@ -108,6 +109,7 @@ function angeltype_edit_controller() {
     $name = $angeltype['name'];
     $restricted = $angeltype['restricted'];
     $description = $angeltype['description'];
+    $requires_driver_license = $angeltype['requires_driver_license'];
     
     if (! User_is_AngelType_coordinator($user, $angeltype))
       redirect(page_link_to('angeltypes'));
@@ -132,6 +134,7 @@ function angeltype_edit_controller() {
       }
       
       $restricted = isset($_REQUEST['restricted']);
+      $requires_driver_license = isset($_REQUEST['requires_driver_license']);
     }
     
     if (isset($_REQUEST['description']))
@@ -140,26 +143,26 @@ function angeltype_edit_controller() {
     if ($ok) {
       $restricted = $restricted ? 1 : 0;
       if (isset($angeltype)) {
-        $result = AngelType_update($angeltype['id'], $name, $restricted, $description);
+        $result = AngelType_update($angeltype['id'], $name, $restricted, $description, $requires_driver_license);
         if ($result === false)
           engelsystem_error("Unable to update angeltype.");
-        engelsystem_log("Updated angeltype: " . $name . ", restricted: " . $restricted);
+        engelsystem_log("Updated angeltype: " . $name . ($restricted ? ", restricted" : "") . ($requires_driver_license ? ", requires driver license" : ""));
         $angeltype_id = $angeltype['id'];
       } else {
-        $angeltype_id = AngelType_create($name, $restricted, $description);
+        $angeltype_id = AngelType_create($name, $restricted, $description, $requires_driver_license);
         if ($angeltype_id === false)
           engelsystem_error("Unable to create angeltype.");
-        engelsystem_log("Created angeltype: " . $name . ", restricted: " . $restricted);
+        engelsystem_log("Created angeltype: " . $name . ($restricted ? ", restricted" : "") . ($requires_driver_license ? ", requires driver license" : ""));
       }
       
       success("Angel type saved.");
-      redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype_id);
+      redirect(angeltype_link($angeltype_id));
     }
   }
   
   return array(
       sprintf(_("Edit %s"), $name),
-      AngelType_edit_view($name, $restricted, $description, $coordinator_mode) 
+      AngelType_edit_view($name, $restricted, $description, $coordinator_mode, $requires_driver_license) 
   );
 }
 
@@ -185,13 +188,17 @@ function angeltype_controller() {
   if ($user_angeltype === false)
     engelsystem_error("Unable to load user angeltype.");
   
+  $user_driver_license = UserDriverLicense($user['UID']);
+  if ($user_driver_license === false)
+    engelsystem_error("Unable to load user driver license.");
+  
   $members = Users_by_angeltype($angeltype);
   if ($members === false)
     engelsystem_error("Unable to load members.");
   
   return array(
       sprintf(_("Team %s"), $angeltype['name']),
-      AngelType_view($angeltype, $members, $user_angeltype, in_array('admin_user_angeltypes', $privileges) || $user_angeltype['coordinator'], in_array('admin_angel_types', $privileges), $user_angeltype['coordinator']) 
+      AngelType_view($angeltype, $members, $user_angeltype, in_array('admin_user_angeltypes', $privileges) || $user_angeltype['coordinator'], in_array('admin_angel_types', $privileges), $user_angeltype['coordinator'], $user_driver_license, $user) 
   );
 }
 

@@ -123,9 +123,11 @@ function Users_by_angeltype($angeltype) {
       `User`.*,
       `UserAngelTypes`.`id` as `user_angeltype_id`,
       `UserAngelTypes`.`confirm_user_id`,
-      `UserAngelTypes`.`coordinator`
+      `UserAngelTypes`.`coordinator`,
+      `UserDriverLicenses`.*
       FROM `User`
       JOIN `UserAngelTypes` ON `User`.`UID`=`UserAngelTypes`.`user_id`
+      LEFT JOIN `UserDriverLicenses` ON `User`.`UID`=`UserDriverLicenses`.`user_id`
       WHERE `UserAngelTypes`.`angeltype_id`='" . sql_escape($angeltype['id']) . "'
       ORDER BY `Nick`");
 }

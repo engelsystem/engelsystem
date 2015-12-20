@@ -1,6 +1,32 @@
 <?php
 
 /**
+ * Generates a hint, if user joined angeltypes that require a driving license and the user has no driver license information provided.
+ */
+function user_driver_license_required_hint() {
+  global $user;
+  
+  $angeltypes = User_angeltypes($user);
+  if ($angeltypes === false)
+    engelsystem_error("Unable to load user angeltypes.");
+  $user_driver_license = UserDriverLicense($user['UID']);
+  if ($user_driver_license === false)
+    engelsystem_error("Unable to load user driver license.");
+  
+  $driving_license_information_required = false;
+  foreach ($angeltypes as $angeltype)
+    if ($angeltype['requires_driver_license']) {
+      $driving_license_information_required = true;
+      break;
+    }
+  
+  if ($driving_license_information_required && $user_driver_license == null)
+    return info(sprintf(_("You joined an angeltype which requires a driving license. Please edit your driving license information here: %s."), '<a href="' . user_driver_license_edit_link() . '">' . _("driving license information") . '</a>'), true);
+  
+  return '';
+}
+
+/**
  * Route user driver licenses actions.
  */
 function user_driver_licenses_controller() {

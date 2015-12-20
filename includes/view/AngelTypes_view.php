@@ -50,7 +50,7 @@ function AngelType_delete_view($angeltype) {
   ));
 }
 
-function AngelType_edit_view($name, $restricted, $description, $coordinator_mode) {
+function AngelType_edit_view($name, $restricted, $description, $coordinator_mode, $requires_driver_license) {
   return page_with_title(sprintf(_("Edit %s"), $name), array(
       buttons(array(
           button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
@@ -59,6 +59,7 @@ function AngelType_edit_view($name, $restricted, $description, $coordinator_mode
       form(array(
           $coordinator_mode ? form_info(_("Name"), $name) : form_text('name', _("Name"), $name),
           $coordinator_mode ? form_info(_("Restricted"), $restricted ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $restricted),
+          $coordinator_mode ? form_info(_("Requires driver license"), $requires_driver_license ? _("Yes") : _("No")) : form_checkbox('requires_driver_license', _("Requires driver license"), $requires_driver_license),
           form_info("", _("Restricted angel types can only be used by an angel if enabled by an archangel (double opt-in).")),
           form_textarea('description', _("Description"), $description),
           form_info("", _("Please use markdown for the description.")),
@@ -67,14 +68,20 @@ function AngelType_edit_view($name, $restricted, $description, $coordinator_mode
   ));
 }
 
-function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angeltypes, $admin_angeltypes, $coordinator) {
-  $buttons = array(
+function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angeltypes, $admin_angeltypes, $coordinator, $user_driver_license, $user) {
+  $buttons = [
       button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
-  );
+  ];
+  
+  if ($angeltype['requires_driver_license'])
+    $buttons[] = button(user_driver_license_edit_link($user), glyph("road") . _("my driving license"));
   
   if ($user_angeltype == null)
     $buttons[] = button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], _("join"), 'add');
   else {
+    if ($angeltype['requires_driver_license'] && $user_driver_license == null)
+      error(_("This angeltype requires a driver license. Please enter your driver license information!"));
+    
     if ($angeltype['restricted'] && $user_angeltype['confirm_user_id'] == null)
       error(sprintf(_("You are unconfirmed for this angeltype. Please go to the introduction for %s to get confirmed."), $angeltype['name']));
     $buttons[] = button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $user_angeltype['id'], _("leave"), 'cancel');
@@ -94,14 +101,23 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
   $parsedown = new Parsedown();
   if ($angeltype['description'] != "")
     $page[] = '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';
-    
-    // Team-Coordinators list missing
   
   $coordinators = array();
   $members_confirmed = array();
   $members_unconfirmed = array();
   foreach ($members as $member) {
     $member['Nick'] = User_Nick_render($member);
+    
+    if ($angeltype['requires_driver_license']) {
+      $member['wants_to_drive'] = glyph_bool($member['user_id']);
+      $member['has_car'] = glyph_bool($member['has_car']);
+      $member['has_license_car'] = glyph_bool($member['has_license_car']);
+      $member['has_license_3_5t_transporter'] = glyph_bool($member['has_license_3_5t_transporter']);
+      $member['has_license_7_5t_truck'] = glyph_bool($member['has_license_7_5t_truck']);
+      $member['has_license_12_5t_truck'] = glyph_bool($member['has_license_12_5t_truck']);
+      $member['has_license_forklift'] = glyph_bool($member['has_license_forklift']);
+    }
+    
     if ($angeltype['restricted'] && $member['confirm_user_id'] == null) {
       $member['actions'] = table_buttons([
           button(page_link_to('user_angeltypes') . '&action=confirm&user_angeltype_id=' . $member['user_angeltype_id'], _("confirm"), 'btn-xs'),
@@ -125,13 +141,30 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
       $members_confirmed[] = $member;
     }
   }
-  if (count($coordinators) > 0) {
-    $page[] = '<h3>' . _("Coordinators") . '</h3>';
-    $page[] = table(array(
+  
+  $table_headers = [
+      'Nick' => _("Nick"),
+      'DECT' => _("DECT"),
+      'actions' => '' 
+  ];
+  
+  if ($angeltype['requires_driver_license'] && ($coordinator || $admin_angeltypes))
+    $table_headers = [
         'Nick' => _("Nick"),
         'DECT' => _("DECT"),
-        'actions' => "" 
-    ), $coordinators);
+        'wants_to_drive' => _("Driver"),
+        'has_car' => _("Has car"),
+        'has_license_car' => _("Car"),
+        'has_license_3_5t_transporter' => _("3,5t Transporter"),
+        'has_license_7_5t_truck' => _("7,5t Truck"),
+        'has_license_12_5t_truck' => _("12,5t Truck"),
+        'has_license_forklift' => _("Forklift"),
+        'actions' => '' 
+    ];
+  
+  if (count($coordinators) > 0) {
+    $page[] = '<h3>' . _("Coordinators") . '</h3>';
+    $page[] = table($table_headers, $coordinators);
   }
   
   if (count($members_confirmed) > 0)
@@ -150,26 +183,18 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
   
   $page[] = '<h3>' . _("Members") . '</h3>';
   if ($admin_user_angeltypes)
-    $page[] = buttons(array(
+    $page[] = buttons([
         button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], _("Add"), 'add') 
-    ));
-  $page[] = table(array(
-      'Nick' => _("Nick"),
-      'DECT' => _("DECT"),
-      'actions' => "" 
-  ), $members_confirmed);
+    ]);
+  $page[] = table($table_headers, $members_confirmed);
   
   if ($admin_user_angeltypes && $angeltype['restricted'] && count($members_unconfirmed) > 0) {
     $page[] = '<h3>' . _("Unconfirmed") . '</h3>';
-    $page[] = buttons(array(
+    $page[] = buttons([
         button(page_link_to('user_angeltypes') . '&action=confirm_all&angeltype_id=' . $angeltype['id'], _("confirm all"), 'ok'),
         button(page_link_to('user_angeltypes') . '&action=delete_all&angeltype_id=' . $angeltype['id'], _("deny all"), 'cancel') 
-    ));
-    $page[] = table(array(
-        'Nick' => _("Nick"),
-        'DECT' => _("DECT"),
-        'actions' => "" 
-    ), $members_unconfirmed);
+    ]);
+    $page[] = table($table_headers, $members_unconfirmed);
   }
   
   return page_with_title(sprintf(_("Team %s"), $angeltype['name']), $page);

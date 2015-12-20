@@ -11,3 +11,5 @@ CREATE TABLE IF NOT EXISTS `UserDriverLicenses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ALTER TABLE `UserDriverLicenses`
   ADD CONSTRAINT `userdriverlicenses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `AngelTypes` ADD `requires_driver_license` BOOLEAN NOT NULL;

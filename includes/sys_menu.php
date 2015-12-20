@@ -48,6 +48,10 @@ function header_toolbar() {
     if (! isset($user['planned_departure_date']) || $user['planned_departure_date'] == null)
       $hints[] = info(_("Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities."), true);
     
+    $driver_license_required = user_driver_license_required_hint();
+    if ($driver_license_required != '')
+      $hints[] = $driver_license_required;
+    
     if (User_is_freeloader($user)) {
       $hints[] = error(sprintf(_("You freeloaded at least %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again."), $max_freeloadable_shifts), true);
       $hint_class = 'danger';

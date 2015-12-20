@@ -17,15 +17,17 @@ function AngelType_delete($angeltype) {
  *
  * @param int $angeltype_id          
  * @param string $name          
- * @param boolean $restricted          
+ * @param bool $restricted          
  * @param string $description          
+ * @param bool $requires_driver_license          
  */
-function AngelType_update($angeltype_id, $name, $restricted, $description) {
+function AngelType_update($angeltype_id, $name, $restricted, $description, $requires_driver_license) {
   return sql_query("
       UPDATE `AngelTypes` SET 
       `name`='" . sql_escape($name) . "', 
-      `restricted`='" . sql_escape($restricted ? 1 : 0) . "',
-      `description`='" . sql_escape($description) . "'
+      `restricted`=" . sql_bool($restricted) . ",
+      `description`='" . sql_escape($description) . "',
+      `requires_driver_license`=" . sql_bool($requires_driver_license) . "
       WHERE `id`='" . sql_escape($angeltype_id) . "' 
       LIMIT 1");
 }
@@ -38,12 +40,13 @@ function AngelType_update($angeltype_id, $name, $restricted, $description) {
  * @param string $description          
  * @return New Angeltype id
  */
-function AngelType_create($name, $restricted, $description) {
+function AngelType_create($name, $restricted, $description, $requires_driver_license) {
   $result = sql_query("
       INSERT INTO `AngelTypes` SET 
       `name`='" . sql_escape($name) . "', 
-      `restricted`='" . sql_escape($restricted ? 1 : 0) . "',
-      `description`='" . sql_escape($description) . "'");
+      `restricted`=" . sql_bool($restricted) . ",
+      `description`='" . sql_escape($description) . "',
+      `requires_driver_license`=" . sql_bool($requires_driver_license));
   if ($result === false)
     return false;
   return sql_id();
