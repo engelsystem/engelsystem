@@ -10,7 +10,7 @@
  * @param AngelType $angeltype          
  */
 function AngelType_name_render($angeltype) {
-  return '<a href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'] . '">' . ($angeltype['restricted'] ? glyph('lock') : '') . $angeltype['name'] . '</a>';
+  return '<a href="' . angeltype_link($angeltype['id']) . '">' . ($angeltype['restricted'] ? glyph('lock') : '') . $angeltype['name'] . '</a>';
 }
 
 /**

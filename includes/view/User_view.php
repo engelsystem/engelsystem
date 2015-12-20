@@ -269,7 +269,7 @@ function User_angeltypes_render($user_angeltypes) {
         $class = 'text-warning';
     else
       $class = 'text-success';
-    $output[] = '<span class="' . $class . '">' . ($angeltype['coordinator'] ? glyph('education') : '') . $angeltype['name'] . '</span>';
+    $output[] = '<a href="' . angeltype_link($angeltype['id']) . '" class="' . $class . '">' . ($angeltype['coordinator'] ? glyph('education') : '') . $angeltype['name'] . '</a>';
   }
   return join('<br />', $output);
 }

@@ -48,8 +48,8 @@ function user_angeltypes_delete_all_controller() {
     if ($result === false)
       engelsystem_error("Unable to confirm all users.");
     
-    engelsystem_log(sprintf("Denied all users for angeltype %s", $angeltype['name']));
-    success(sprintf(_("Denied all users for angeltype %s."), $angeltype['name']));
+    engelsystem_log(sprintf("Denied all users for angeltype %s", AngelType_name_render($angeltype)));
+    success(sprintf(_("Denied all users for angeltype %s."), AngelType_name_render($angeltype)));
     redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id']);
   }
   
@@ -96,8 +96,8 @@ function user_angeltypes_confirm_all_controller() {
     if ($result === false)
       engelsystem_error("Unable to confirm all users.");
     
-    engelsystem_log(sprintf("Confirmed all users for angeltype %s", $angeltype['name']));
-    success(sprintf(_("Confirmed all users for angeltype %s."), $angeltype['name']));
+    engelsystem_log(sprintf("Confirmed all users for angeltype %s", AngelType_name_render($angeltype)));
+    success(sprintf(_("Confirmed all users for angeltype %s."), AngelType_name_render($angeltype)));
     redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id']);
   }
   
@@ -152,8 +152,8 @@ function user_angeltype_confirm_controller() {
     if ($result === false)
       engelsystem_error("Unable to confirm user angeltype.");
     
-    engelsystem_log(sprintf("%s confirmed for angeltype %s", User_Nick_render($user_source), $angeltype['name']));
-    success(sprintf(_("%s confirmed for angeltype %s."), User_Nick_render($user_source), $angeltype['name']));
+    engelsystem_log(sprintf("%s confirmed for angeltype %s", User_Nick_render($user_source), AngelType_name_render($angeltype)));
+    success(sprintf(_("%s confirmed for angeltype %s."), User_Nick_render($user_source), AngelType_name_render($angeltype)));
     redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id']);
   }
   
@@ -273,7 +273,7 @@ function user_angeltype_update_controller() {
     if ($result === false)
       engelsystem_error("Unable to update coordinator rights.");
     
-    $success_message = sprintf($coordinator ? _("Added coordinator rights for %s to %s.") : _("Removed coordinator rights for %s from %s."), $angeltype['name'], User_Nick_render($user_source));
+    $success_message = sprintf($coordinator ? _("Added coordinator rights for %s to %s.") : _("Removed coordinator rights for %s from %s."), AngelType_name_render($angeltype), User_Nick_render($user_source));
     engelsystem_log($success_message);
     success($success_message);
     
@@ -332,13 +332,13 @@ function user_angeltype_add_controller() {
             if ($user_angeltype_id === false)
               engelsystem_error("Unable to create user angeltype.");
             
-            engelsystem_log(sprintf("User %s added to %s.", User_Nick_render($user_source), $angeltype['name']));
-            success(sprintf(_("User %s added to %s."), User_Nick_render($user_source), $angeltype['name']));
+            engelsystem_log(sprintf("User %s added to %s.", User_Nick_render($user_source), AngelType_name_render($angeltype)));
+            success(sprintf(_("User %s added to %s."), User_Nick_render($user_source), AngelType_name_render($angeltype)));
             
             $result = UserAngelType_confirm($user_angeltype_id, $user_source);
             if ($result === false)
               engelsystem_error("Unable to confirm user angeltype.");
-            engelsystem_log(sprintf("User %s confirmed as %s.", User_Nick_render($user), $angeltype['name']));
+            engelsystem_log(sprintf("User %s confirmed as %s.", User_Nick_render($user), AngelType_name_render($angeltype)));
             
             redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id']);
           }
@@ -365,14 +365,14 @@ function user_angeltype_add_controller() {
         engelsystem_error("Unable to create user angeltype.");
       
       $success_message = sprintf(_("You joined %s."), $angeltype['name']);
-      engelsystem_log(sprintf("User %s joined %s.", User_Nick_render($user), $angeltype['name']));
+      engelsystem_log(sprintf("User %s joined %s.", User_Nick_render($user), AngelType_name_render($angeltype)));
       success($success_message);
       
       if (in_array('admin_user_angeltypes', $privileges)) {
         $result = UserAngelType_confirm($user_angeltype_id, $user);
         if ($result === false)
           engelsystem_error("Unable to confirm user angeltype.");
-        engelsystem_log(sprintf("User %s confirmed as %s.", User_Nick_render($user), $angeltype['name']));
+        engelsystem_log(sprintf("User %s confirmed as %s.", User_Nick_render($user), AngelType_name_render($angeltype)));
       }
       
       redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id']);
