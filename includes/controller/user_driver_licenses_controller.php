@@ -116,7 +116,8 @@ function user_driver_license_edit_controller() {
       if (! $wants_to_drive && $user_driver_license != null) {
         $result = UserDriverLicenses_delete($user_source['UID']);
         if ($result === false)
-          engelsystem_error('Unable to remove user driver license information');
+          engelsystem_error("Unable to remove user driver license information");
+        engelsystem_log("Driver license information removed.");
         success(_("Your driver license information has been removed."));
       } else {
         if ($wants_to_drive) {
@@ -126,7 +127,8 @@ function user_driver_license_edit_controller() {
             $result = UserDriverLicenses_update($user_source['UID'], $has_car, $has_license_car, $has_license_3_5t_transporter, $has_license_7_5t_truck, $has_license_12_5t_truck, $has_license_forklift);
           
           if ($result === false)
-            engelsystem_error('Unable to save user driver license information.');
+            engelsystem_error("Unable to save user driver license information.");
+          engelsystem_log("Driver license information updated.");
         }
         success(_("Your driver license information has been saved."));
       }
