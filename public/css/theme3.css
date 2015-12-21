@@ -4,6 +4,9 @@
 .navbar .bg-danger {
   background-color: #4f0815;
 }
+#shifts td a {
+  color: #000;
+}
 /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
