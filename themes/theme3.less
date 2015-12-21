@@ -1,25 +1,25 @@
 @import "../vendor/bootstrap/less/variables";
 
 @brand-primary:         #f19224;
-@brand-success:         #7b9c41;
-@brand-info:            darken(#428bca, 6.5%);
-@brand-warning:         #d9534f;
-@brand-danger:          #7f528b;
+@brand-success:         #39AB50;
+@brand-info:            #6618F9;
+@brand-warning:         #DAD216;
+@brand-danger:          #DA1639;
 
-@state-success-text:             #638232;
-@state-success-bg:               lighten(@brand-success,50%);
+@state-success-text:             @brand-success;
+@state-success-bg:               lighten(@brand-success,40%);
 @state-success-border:           @brand-success;
 
 @state-info-text:                @brand-info;
-@state-info-bg:                  lighten(@brand-info,50%);
+@state-info-bg:                  lighten(@brand-info,40%);
 @state-info-border:              @brand-info;
 
 @state-warning-text:             @brand-warning;
-@state-warning-bg:               lighten(@brand-warning,50%);
+@state-warning-bg:               lighten(@brand-warning,40%);
 @state-warning-border:           @brand-warning;
 
-@state-danger-text:              #694374;
-@state-danger-bg:                lighten(@brand-danger,50%);
+@state-danger-text:              @brand-danger;
+@state-danger-bg:                lighten(@brand-danger,40%);
 @state-danger-border:            @brand-danger;
 
 @navbar-default-color:  #fff;
@@ -41,10 +41,10 @@
 
 .navbar {
 	.bg-info {
-   background-color: darken(@brand-info, 30%);
+    background-color: darken(@brand-info, 30%);
 	}
   .bg-danger {
-	 background-color: darken(@brand-danger, 30%);
+	  background-color: darken(@brand-danger, 30%);
   }
 }
 
