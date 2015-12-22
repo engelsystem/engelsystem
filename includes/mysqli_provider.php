@@ -179,7 +179,7 @@ function sql_escape($query) {
  * @return string
  */
 function sql_bool($boolean) {
-  return $boolean === true ? 'TRUE' : 'FALSE';
+  return $boolean == true ? 'TRUE' : 'FALSE';
 }
 
 /**
