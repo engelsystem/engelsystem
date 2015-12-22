@@ -141,7 +141,6 @@ function angeltype_edit_controller() {
       $description = strip_request_item_nl('description');
     
     if ($ok) {
-      $restricted = $restricted ? 1 : 0;
       if (isset($angeltype)) {
         $result = AngelType_update($angeltype['id'], $name, $restricted, $description, $requires_driver_license);
         if ($result === false)
