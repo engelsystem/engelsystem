@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `Groups` (
 
 INSERT INTO `Groups` (`Name`, `UID`) VALUES
 ('6-Developer', -7),
-('5-Erzengel', -6),
+('5-Bürokrat', -6),
 ('4-Team Coordinator', -5),
 ('3-Shift Coordinator', -4),
 ('Shirt-Manager', -3),
