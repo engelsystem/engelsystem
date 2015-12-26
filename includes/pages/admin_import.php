@@ -26,6 +26,8 @@ function admin_import() {
   
   $import_file = '../import/import_' . $user['UID'] . '.xml';
   $shifttype_id = null;
+  $add_minutes_start = 15;
+  $add_minutes_end = 15;
   
   $shifttypes_source = ShiftTypes();
   if ($shifttypes_source === false)
@@ -48,6 +50,20 @@ function admin_import() {
           error(_('Please select a shift type.'));
         }
         
+        if (isset($_REQUEST['add_minutes_start']) && is_numeric(trim($_REQUEST['add_minutes_start'])))
+          $add_minutes_start = trim($_REQUEST['add_minutes_start']);
+        else {
+          $ok = false;
+          error(_("Please enter an amount of minutes to add to a talk's begin."));
+        }
+        
+        if (isset($_REQUEST['add_minutes_end']) && is_numeric(trim($_REQUEST['add_minutes_end'])))
+          $add_minutes_end = trim($_REQUEST['add_minutes_end']);
+        else {
+          $ok = false;
+          error(_("Please enter an amount of minutes to add to a talk's end."));
+        }
+        
         if (isset($_FILES['xcal_file']) && ($_FILES['xcal_file']['error'] == 0)) {
           if (move_uploaded_file($_FILES['xcal_file']['tmp_name'], $import_file)) {
             libxml_use_internal_errors(true);
@@ -67,7 +83,7 @@ function admin_import() {
       }
       
       if ($ok) {
-        redirect(page_link_to('admin_import') . "&step=check&shifttype_id=" . $shifttype_id);
+        redirect(page_link_to('admin_import') . "&step=check&shifttype_id=" . $shifttype_id . "&add_minutes_end=" . $add_minutes_end . "&add_minutes_start=" . $add_minutes_start);
       } else {
         $html .= div('well well-sm text-center', [
             _('File Upload') . mute(glyph('arrow-right')) . mute(_('Validation')) . mute(glyph('arrow-right')) . mute(_('Import')) 
@@ -76,6 +92,8 @@ function admin_import() {
                 form(array(
                     form_info('', _("This import will create/update/delete rooms and shifts by given FRAB-export file. The needed file format is xcal.")),
                     form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
+                    form_spinner('add_minutes_start', _("Add minutes to start"), $add_minutes_start),
+                    form_spinner('add_minutes_end', _("Add minutes to end"), $add_minutes_end),
                     form_file('xcal_file', _("xcal-File (.xcal)")),
                     form_submit('submit', _("Import")) 
                 )) 
@@ -97,8 +115,22 @@ function admin_import() {
         redirect(page_link_to('admin_import'));
       }
       
+      if (isset($_REQUEST['add_minutes_start']) && is_numeric(trim($_REQUEST['add_minutes_start'])))
+        $add_minutes_start = trim($_REQUEST['add_minutes_start']);
+      else {
+        error(_("Please enter an amount of minutes to add to a talk's begin."));
+        redirect(page_link_to('admin_import'));
+      }
+      
+      if (isset($_REQUEST['add_minutes_end']) && is_numeric(trim($_REQUEST['add_minutes_end'])))
+        $add_minutes_end = trim($_REQUEST['add_minutes_end']);
+      else {
+        error(_("Please enter an amount of minutes to add to a talk's end."));
+        redirect(page_link_to('admin_import'));
+      }
+      
       list($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
-      list($events_new, $events_updated, $events_deleted) = prepare_events($import_file, $shifttype_id);
+      list($events_new, $events_updated, $events_deleted) = prepare_events($import_file, $shifttype_id, $add_minutes_start, $add_minutes_end);
       
       $html .= div('well well-sm text-center', [
           '<span class="text-success">' . _('File Upload') . glyph('ok-circle') . '</span>' . mute(glyph('arrow-right')) . _('Validation') . mute(glyph('arrow-right')) . mute(_('Import')) 
@@ -141,7 +173,7 @@ function admin_import() {
               'room' => _("Room") 
           ), shifts_printable($events_deleted, $shifttypes)),
           form_submit('submit', _("Import")) 
-      ], page_link_to('admin_import') . '&step=import&shifttype_id=' . $shifttype_id);
+      ], page_link_to('admin_import') . '&step=import&shifttype_id=' . $shifttype_id . "&add_minutes_end=" . $add_minutes_end . "&add_minutes_start=" . $add_minutes_start);
       break;
     
     case 'import':
@@ -160,6 +192,20 @@ function admin_import() {
         redirect(page_link_to('admin_import'));
       }
       
+      if (isset($_REQUEST['add_minutes_start']) && is_numeric(trim($_REQUEST['add_minutes_start'])))
+        $add_minutes_start = trim($_REQUEST['add_minutes_start']);
+      else {
+        error(_("Please enter an amount of minutes to add to a talk's begin."));
+        redirect(page_link_to('admin_import'));
+      }
+      
+      if (isset($_REQUEST['add_minutes_end']) && is_numeric(trim($_REQUEST['add_minutes_end'])))
+        $add_minutes_end = trim($_REQUEST['add_minutes_end']);
+      else {
+        error(_("Please enter an amount of minutes to add to a talk's end."));
+        redirect(page_link_to('admin_import'));
+      }
+      
       list($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
       foreach ($rooms_new as $room) {
         $result = Room_create($room, true, true);
@@ -170,7 +216,7 @@ function admin_import() {
       foreach ($rooms_deleted as $room)
         sql_query("DELETE FROM `Room` WHERE `Name`='" . sql_escape($room) . "' LIMIT 1");
       
-      list($events_new, $events_updated, $events_deleted) = prepare_events($import_file, $shifttype_id);
+      list($events_new, $events_updated, $events_deleted) = prepare_events($import_file, $shifttype_id, $add_minutes_start, $add_minutes_end);
       foreach ($events_new as $event) {
         $result = Shift_create($event);
         if ($result === false)
@@ -238,7 +284,7 @@ function prepare_rooms($file) {
   );
 }
 
-function prepare_events($file, $shifttype_id) {
+function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_end) {
   global $rooms_import;
   $data = read_xml($file);
   
@@ -255,8 +301,8 @@ function prepare_events($file, $shifttype_id) {
       'event-id' });
     $shifts_pb[$event_id] = array(
         'shifttype_id' => $shifttype_id,
-        'start' => DateTime::createFromFormat("Ymd\THis", $event->dtstart)->getTimestamp(),
-        'end' => DateTime::createFromFormat("Ymd\THis", $event->dtend)->getTimestamp(),
+        'start' => DateTime::createFromFormat("Ymd\THis", $event->dtstart)->getTimestamp() - $add_minutes_start * 60,
+        'end' => DateTime::createFromFormat("Ymd\THis", $event->dtend)->getTimestamp() + $add_minutes_end * 60,
         'RID' => $rooms_import[trim($event->location)],
         'title' => trim($event->summary),
         'URL' => trim($event->url),
