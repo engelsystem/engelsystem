@@ -101,6 +101,6 @@ function user_myshifts() {
       redirect(user_link($shifts_user));
   }
   
-  redirect(page_link_to('users') . '&action=view');
+  redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
 }
 ?>
