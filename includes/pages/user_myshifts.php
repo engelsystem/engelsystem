@@ -22,7 +22,7 @@ function user_myshifts() {
     if ($_REQUEST['reset'] == "ack") {
       User_reset_api_key($user);
       success(_("Key changed."));
-      redirect(page_link_to('user_myshifts'));
+      redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
     }
     return page_with_title(_("Reset API key"), array(
         error(_("If you reset the key, the url to your iCal- and JSON-export and your atom feed changes! You have to update it in every application using one of these exports."), true),
@@ -94,7 +94,7 @@ function user_myshifts() {
         $shifttype = ShiftType($shift['shifttype_id']);
         
         engelsystem_log("Deleted own shift: " . $shifttype['name'] . " at " . $room['Name'] . " from " . date("Y-m-d H:i", $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']) . " as " . $angeltype['name']);
-        success(_("You have been signed off from the shift."));
+        success(_("Shift canceled."));
       } else
         error(_("It's too late to sign yourself off the shift. If neccessary, ask the dispatcher to do so."));
     } else
