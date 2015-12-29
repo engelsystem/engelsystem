@@ -54,9 +54,13 @@ function admin_rooms() {
       if (isset($_REQUEST['submit'])) {
         $ok = true;
         
-        if (isset($_REQUEST['name']) && strlen(strip_request_item('name')) > 0)
+        if (isset($_REQUEST['name']) && strlen(strip_request_item('name')) > 0) {
           $name = strip_request_item('name');
-        else {
+          if (isset($room) && sql_num_query("SELECT * FROM `Room` WHERE `Name`='" . sql_escape($name) . "'") > 0) {
+            $ok = false;
+            $msg .= error(_("This name is already in use."), true);
+          }
+        } else {
           $ok = false;
           $msg .= error(_("Please enter a name."), true);
         }
