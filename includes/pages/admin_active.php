@@ -115,9 +115,8 @@ function admin_active() {
   foreach ($users as &$usr) {
     if (count($tokens) > 0) {
       $match = false;
-      $index = join("", $usr);
       foreach ($tokens as $t)
-        if (stristr($index, trim($t))) {
+        if (stristr($usr['Nick'], trim($t))) {
           $match = true;
           break;
         }
