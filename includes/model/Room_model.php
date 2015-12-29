@@ -22,8 +22,8 @@ function Room_create($name, $from_frab, $public) {
   $result = sql_query("
       INSERT INTO `Room` SET 
       `Name`='" . sql_escape($name) . "', 
-      `FromPentabarf`='" . sql_escape($from_frab ? 'Y' : 'N') . "', 
-      `show`='" . sql_escape($public ? 'Y' : 'N') . "', 
+      `FromPentabarf`='" . sql_escape($from_frab ? 'Y' : '') . "', 
+      `show`='" . sql_escape($public ? 'Y' : '') . "', 
       `Number`=0");
   if ($result === false)
     return false;

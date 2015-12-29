@@ -21,6 +21,7 @@ function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment,
     $freeload_form = array();
   }
   return page_with_title(_("Edit shift entry"), array(
+      msg(),
       form(array(
           form_info(_("Angel:"), $angel),
           form_info(_("Date, Duration:"), $date),

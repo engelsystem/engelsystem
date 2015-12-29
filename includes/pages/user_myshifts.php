@@ -48,29 +48,37 @@ function user_myshifts() {
         AND `UID`='" . sql_escape($shifts_user['UID']) . "' LIMIT 1");
     if (count($shift) > 0) {
       $shift = $shift[0];
+      $freeloaded = $shift['freeloaded'];
+      $freeload_comment = $shift['freeload_comment'];
       
       if (isset($_REQUEST['submit'])) {
-        $freeloaded = $shift['freeloaded'];
-        $freeload_comment = $shift['freeload_comment'];
+        $ok = true;
         if (in_array("user_shifts_admin", $privileges)) {
           $freeloaded = isset($_REQUEST['freeloaded']);
           $freeload_comment = strip_request_item_nl('freeload_comment');
+          if ($freeloaded && $freeload_comment == '') {
+            $ok = false;
+            error(_("Please enter a freeload comment!"));
+          }
         }
         
         $comment = strip_request_item_nl('comment');
         $user_source = User($shift['UID']);
-        $result = ShiftEntry_update(array(
-            'id' => $id,
-            'Comment' => $comment,
-            'freeloaded' => $freeloaded,
-            'freeload_comment' => $freeload_comment 
-        ));
-        if ($result === false)
-          engelsystem_error('Unable to update shift entr.');
         
-        engelsystem_log("Updated " . User_Nick_render($user_source) . "'s shift " . $shift['name'] . " from " . date("Y-m-d H:i", $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']) . " with comment " . $comment . ". Freeloaded: " . ($freeloaded ? "YES Comment: " . $freeload_comment : "NO"));
-        success(_("Shift saved."));
-        redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
+        if ($ok) {
+          $result = ShiftEntry_update(array(
+              'id' => $id,
+              'Comment' => $comment,
+              'freeloaded' => $freeloaded,
+              'freeload_comment' => $freeload_comment 
+          ));
+          if ($result === false)
+            engelsystem_error('Unable to update shift entry.');
+          
+          engelsystem_log("Updated " . User_Nick_render($user_source) . "'s shift " . $shift['name'] . " from " . date("Y-m-d H:i", $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']) . " with comment " . $comment . ". Freeloaded: " . ($freeloaded ? "YES Comment: " . $freeload_comment : "NO"));
+          success(_("Shift saved."));
+          redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
+        }
       }
       
       return ShiftEntry_edit_view(User_Nick_render($shifts_user), date("Y-m-d H:i", $shift['start']) . ', ' . shift_length($shift), $shift['Name'], $shift['name'], $shift['angel_type'], $shift['Comment'], $shift['freeloaded'], $shift['freeload_comment'], in_array("user_shifts_admin", $privileges));
