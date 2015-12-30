@@ -27,8 +27,63 @@ function users_controller() {
   }
 }
 
+/**
+ * Delete a user, requires to enter own password for reasons.
+ */
+function user_delete_controller() {
+  global $privileges, $user;
+  
+  if (isset($_REQUEST['user_id'])) {
+    $user_source = User($_REQUEST['user_id']);
+  } else
+    $user_source = $user;
+  
+  if (! in_array('admin_user', $privileges))
+    redirect(page_link_to(''));
+    
+    // You cannot delete yourself
+  if ($user['UID'] == $user_source['UID']) {
+    error(_("You cannot delete yourself."));
+    redirect(user_link($user));
+  }
+  
+  if (isset($_REQUEST['submit'])) {
+    $ok = true;
+    
+    if (! (isset($_REQUEST['password']) && verify_password($_REQUEST['password'], $user['Passwort'], $user['UID']))) {
+      $ok = false;
+      error(_("Your password is incorrect.  Please try it again."));
+    }
+    
+    if ($ok) {
+      $result = User_delete($user_source['UID']);
+      if ($result === false)
+        engelsystem_error('Unable to delete user.');
+      
+      mail_user_delete($user_source);
+      success(_("User deleted."));
+      engelsystem_log(sprintf("Deleted %s", User_Nick_render($user_source)));
+      
+      redirect(users_link());
+    }
+  }
+  
+  return array(
+      sprintf(_("Delete %s"), $user_source['Nick']),
+      User_delete_view($user_source) 
+  );
+}
+
 function users_link() {
   return page_link_to('users');
+}
+
+function user_edit_link($user) {
+  return page_link_to('admin_user') . '&user_id=' . $user['UID'];
+}
+
+function user_delete_link($user) {
+  return page_link_to('users') . '&action=delete&user_id=' . $user['UID'];
 }
 
 function user_link($user) {

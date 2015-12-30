@@ -5,6 +5,15 @@
  */
 
 /**
+ * Delete a user
+ * 
+ * @param int $user_id          
+ */
+function User_delete($user_id) {
+  return sql_query("DELETE FROM `User` WHERE `UID`='" . sql_escape($user_id) . "'");
+}
+
+/**
  * Update user.
  *
  * @param User $user          

@@ -113,9 +113,9 @@ function admin_user() {
       $html .= "<hr />";
     }
     
-    $html .= "<form action=\"" . page_link_to("admin_user") . "&action=delete&id=" . $id . "\" method=\"post\">\n";
-    $html .= "<input type=\"submit\" value=\"Löschen\">\n";
-    $html .= "</form>";
+    $html .= buttons([
+        button(user_delete_link($user_source), glyph('lock') . _("delete"), 'btn-danger') 
+    ]);
     
     $html .= "<hr />";
   } else {
@@ -153,25 +153,6 @@ function admin_user() {
           }
         } else {
           $html .= error("Du kannst Deine eigenen Rechte nicht bearbeiten.", true);
-        }
-        break;
-      
-      case 'delete':
-        if ($user['UID'] != $id) {
-          $user_source = User($id);
-          if ($user_source === false)
-            engelsystem_error("Unable to load user.");
-          if ($user_source == null) {
-            error(_('This user does not exist.'));
-            redirect(users_link());
-          }
-          
-          sql_query("DELETE FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
-          sql_query("DELETE FROM `UserGroups` WHERE `uid`='" . sql_escape($id) . "'");
-          engelsystem_log("Deleted user " . User_Nick_render($user_source));
-          $html .= success("Benutzer gelöscht!", true);
-        } else {
-          $html .= error("Du kannst Dich nicht selber löschen!", true);
         }
         break;
       

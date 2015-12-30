@@ -20,6 +20,23 @@ $tshirt_sizes = array(
 );
 
 /**
+ * Gui for deleting user with password field.
+ */
+function User_delete_view($user) {
+  return page_with_title(sprintf(_("Delete %s"), User_Nick_render($user)), [
+      msg(),
+      buttons([
+          button(user_edit_link($user), glyph('chevron-left') . _("back")) 
+      ]),
+      error(_("Do you really want to delete the user including all his shifts and every other piece of his data?"), true),
+      form([
+          form_password('password', _("Your password")),
+          form_submit('submit', _("Delete")) 
+      ]) 
+  ]);
+}
+
+/**
  * View for editing the number of given vouchers
  */
 function User_edit_vouchers_view($user) {
