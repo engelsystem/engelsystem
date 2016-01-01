@@ -12,7 +12,7 @@
 
  * Empfehlung: Dirlisting sollte deaktiviert sein.
  * Es muss eine MySQL-Datenbank angelegt werden und ein User existieren, der alle Rechte auf dieser Datenbank besitzt.
- * Es muss die db/install.sql importiert/ausgeführt werden.
+ * Es muss die db/install.sql und die db/update.sql importiert/ausgeführt werden.
  * Erstelle bei Bedarf eine config/config.php, die die Werte (z.B. DB-Zugang) aus der config/config.default.php überschreibt.
  * Engelsystem im Browser aufrufen, Anmeldung mit admin:asdfasdf vornehmen und Admin-Passwort ändern.
 
