@@ -56,7 +56,7 @@ function admin_rooms() {
         
         if (isset($_REQUEST['name']) && strlen(strip_request_item('name')) > 0) {
           $name = strip_request_item('name');
-          if (isset($room) && sql_num_query("SELECT * FROM `Room` WHERE `Name`='" . sql_escape($name) . "'") > 0) {
+          if (isset($room) && sql_num_query("SELECT * FROM `Room` WHERE `Name`='" . sql_escape($name) . "' AND NOT `RID`=" . sql_escape($id)) > 0) {
             $ok = false;
             $msg .= error(_("This name is already in use."), true);
           }
