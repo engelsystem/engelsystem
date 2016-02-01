@@ -19,6 +19,7 @@ function admin_rooms() {
             button(page_link_to('admin_rooms') . '&show=delete&id=' . $room['RID'], _("delete"), 'btn-xs') 
         )) 
     );
+  $room = null;
   
   if (isset($_REQUEST['show'])) {
     $msg = "";
