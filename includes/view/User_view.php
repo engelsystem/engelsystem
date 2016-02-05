@@ -45,8 +45,10 @@ function User_edit_vouchers_view($user) {
       buttons([
           button(user_link($user), glyph('chevron-left') . _("back")) 
       ]),
+      heading(sprintf(_("angel should receive at least  %d vouchers."), User_get_eligable_voucher_count($user)), 3),
+      heading(_("This is a automatically calculated MINIMUM value, you can of course give out more if appropriate!"), 4),
       form([
-          form_spinner('vouchers', _("Number of vouchers"), $user['got_voucher']),
+          form_spinner('vouchers', _("Number of vouchers given out"), $user['got_voucher']),
           form_submit('submit', _("Save")) 
       ], page_link_to('users') . '&action=edit_vouchers&user_id=' . $user['UID']) 
   ]);

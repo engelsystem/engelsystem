@@ -47,6 +47,12 @@ $shift_sum_formula = "SUM(
   ))*(`Shifts`.`end` - `Shifts`.`start`)*(1 - 3 * `ShiftEntry`.`freeloaded`)
 )";
 
+// voucher calculation 
+$voucher_settings = array(
+	"initial_vouchers" => 2,
+	"shifts_per_voucher" => 1
+);
+
 // weigh every shift the same
 // $shift_sum_formula = "SUM(`end` - `start`)";
 
