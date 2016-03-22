@@ -260,4 +260,19 @@ function User_generate_password_recovery_token(&$user) {
   return $user['password_recovery_token'];
 }
 
+
+function User_get_eligable_voucher_count(&$user) {
+  global $voucher_settings;
+  
+	$shifts_done = count(ShiftEntries_finished_by_user($user));
+	
+	$earned_vouchers = $user['got_voucher'] - $voucher_settings['initial_vouchers'];
+	$elegible_vouchers = $shifts_done / $voucher_settings['shifts_per_voucher'] - $earned_vouchers;
+	if ( $elegible_vouchers < 0) {
+		return 0;
+	}
+	
+	return $elegible_vouchers;
+}
+
 ?>
