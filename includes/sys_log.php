@@ -32,7 +32,7 @@ function debug_string_backtrace() {
   $trace = preg_replace('/^#0\s+' . __FUNCTION__ . "[^\n]*\n/", '', $trace, 1);
   
   // Renumber backtrace items.
-  $trace = preg_replace('/^#(\d+)/me', '\'#\' . ($1 - 1)', $trace);
+  // $trace = preg_replace('/^#(\d+)/me', '\'#\' . ($1 - 1)', $trace);
   
   return $trace;
 }
