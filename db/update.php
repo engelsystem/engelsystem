@@ -1,6 +1,6 @@
 <?php
 
-require_once realpath(__DIR__ . '/../includes/mysql_provider.php');
+require_once realpath(__DIR__ . '/../includes/mysqli_provider.php');
 require_once realpath(__DIR__ . '/../config/config.default.php');
 if(file_exists(realpath(__DIR__ . '/../config/config.php')))
   require_once realpath(__DIR__ . '/../config/config.php');
