@@ -6855,3 +6855,121 @@ a#shifts td.collides:focus {
     transform: rotate(0deg) translateY(0px);
   }
 }
+.messages .text-danger {
+  color: #fff;
+}
+.messages .text-info {
+  color: #fff;
+}
+.messages .caret {
+  color: #fff;
+}
+.text-primary,
+.text-primary:hover {
+  color: #428bca;
+}
+.text-success,
+.text-success:hover {
+  color: #5cb85c;
+}
+.text-danger,
+.text-danger:hover {
+  color: #d9534f;
+}
+.text-warning,
+.text-warning:hover {
+  color: #f0ad4e;
+}
+.text-info,
+.text-info:hover {
+  color: #5bc0de;
+}
+table,
+.table {
+  color: #fff;
+}
+table a:not(.btn),
+.table a:not(.btn) {
+  color: #fff;
+  text-decoration: underline;
+}
+table .text-muted,
+.table .text-muted {
+  color: #888888;
+}
+.table-responsive > .table {
+  background-color: #181818;
+}
+.has-warning .help-block,
+.has-warning .control-label,
+.has-warning .form-control-feedback {
+  color: #f0ad4e;
+}
+.has-warning .form-control,
+.has-warning .form-control:focus,
+.has-warning .input-group-addon {
+  border-color: #f0ad4e;
+}
+.has-error .help-block,
+.has-error .control-label,
+.has-error .form-control-feedback {
+  color: #d9534f;
+}
+.has-error .form-control,
+.has-error .form-control:focus,
+.has-error .input-group-addon {
+  border-color: #d9534f;
+}
+.has-success .help-block,
+.has-success .control-label,
+.has-success .form-control-feedback {
+  color: #5cb85c;
+}
+.has-success .form-control,
+.has-success .form-control:focus,
+.has-success .input-group-addon {
+  border-color: #5cb85c;
+}
+legend {
+  color: #fff;
+}
+.input-group-addon {
+  background-color: #424242;
+}
+.nav-tabs a,
+.nav-pills a,
+.breadcrumb a,
+.pager a {
+  color: #fff;
+}
+.alert .alert-link,
+.alert a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+.alert .close {
+  text-decoration: none;
+}
+.close {
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.4;
+}
+.close:hover,
+.close:focus {
+  color: #fff;
+  opacity: 1;
+}
+a.thumbnail:hover,
+a.thumbnail:focus,
+a.thumbnail.active {
+  border-color: #282828;
+}
+.jumbotron h1,
+.jumbotron h2,
+.jumbotron h3,
+.jumbotron h4,
+.jumbotron h5,
+.jumbotron h6 {
+  color: #fff;
+}
