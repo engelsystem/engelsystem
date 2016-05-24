@@ -52,7 +52,7 @@
 
 > **service apache2 restart**
 
-##Session Settings:
+###Session Settings:
 
 -   Make sure the config allows for sessions.
 
