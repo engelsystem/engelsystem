@@ -387,8 +387,8 @@ DROP TABLE IF EXISTS `User`;
 CREATE TABLE IF NOT EXISTS `User` (
   `UID` int(11) NOT NULL AUTO_INCREMENT,
   `Nick` varchar(23) NOT NULL DEFAULT '',
-  `Name` varchar(23) DEFAULT NULL,
-  `Vorname` varchar(23) DEFAULT NULL,
+  `Name` varchar(23) NOT NULL DEFAULT '',
+  `Vorname` varchar(23) NOT NULL DEFAULT '',
   `Alter` int(4) DEFAULT NULL,
   `Telefon` varchar(40) DEFAULT NULL,
   `DECT` varchar(5) DEFAULT NULL,
