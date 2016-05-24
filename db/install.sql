@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `AngelTypes` (
   UNIQUE KEY `Name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
+
 -- --------------------------------------------------------
 
 --
