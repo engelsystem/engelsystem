@@ -17,6 +17,7 @@ SET time_zone = "+00:00";
 -- Tabellenstruktur für Tabelle `AngelTypes`
 --
 
+
 DROP TABLE IF EXISTS `AngelTypes`;
 CREATE TABLE IF NOT EXISTS `AngelTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
