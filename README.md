@@ -1,4 +1,5 @@
 # Installation eines frischen Engelsystems
+[![Build Status](https://travis-ci.org/fossasia/engelsystem.svg?branch=Travis_config)](https://travis-ci.org/fossasia/engelsystem)
 
 ## Mindestvorrausetzungen (bzw. getestet unter):
  * PHP 5.4.x (cgi-fcgi)
