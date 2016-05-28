@@ -17,7 +17,6 @@ SET time_zone = "+00:00";
 -- Tabellenstruktur für Tabelle `AngelTypes`
 --
 
-
 DROP TABLE IF EXISTS `AngelTypes`;
 CREATE TABLE IF NOT EXISTS `AngelTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -412,11 +411,17 @@ CREATE TABLE IF NOT EXISTS `User` (
   `Art` varchar(30) DEFAULT NULL,
   `kommentar` text,
   `Hometown` varchar(255) NOT NULL DEFAULT '',
+  `current_city` varchar(255) DEFAULT NULL,
   `api_key` varchar(32) NOT NULL,
   `got_voucher` int(11) NOT NULL,
   `arrival_date` int(11) DEFAULT NULL,
   `planned_arrival_date` int(11) NOT NULL,
   `planned_departure_date` int(11) DEFAULT NULL,
+  `twitter` varchar(255) DEFAULT NULL,
+  `facebook` varchar(255) DEFAULT NULL,
+  `github` varchar(255) DEFAULT NULL,
+  `organization` varchar(255) DEFAULT NULL,
+  `organization_web` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`UID`),
   UNIQUE KEY `Nick` (`Nick`),
   KEY `api_key` (`api_key`),
