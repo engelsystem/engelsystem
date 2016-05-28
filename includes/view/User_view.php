@@ -1,4 +1,5 @@
-    <?php
+
+<?php
 
 /**
  * Available T-Shirt sizes
