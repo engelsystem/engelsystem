@@ -11,6 +11,8 @@ function admin_shifts() {
   $rid = 0;
   $start = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d") . " 00:00")->getTimestamp();
   $end = $start;
+  $start_time='';
+  $end_time='';
   $mode = 'single';
   $angelmode = 'manually';
   $length = '';
@@ -303,8 +305,11 @@ function admin_shifts() {
           form_select('rid', _("Room"), $room_array, $_REQUEST['rid']),
           '<div class="row">',
           '<div class="col-md-6">',
-          form_text('start', _("Start"), date("Y-m-d H:i", $start)),
-          form_text('end', _("End"), date("Y-m-d H:i", $end)),
+          form_date('start', _("Start Date"), date("Y-m-d ", $start)),
+          form_text('start_time', _("Start Time"), date(" H:i", $start)),
+          form_date('end', _("End Date"), date("Y-m-d ", $end)),
+          form_text('end_time', _("End Time"), date(" H:i", $start)),
+          
           form_info(_("Mode"), ''),
           form_radio('mode', _("Create one shift"), $mode == 'single', 'single'),
           form_radio('mode', _("Create multiple shifts"), $mode == 'multi', 'multi'),
