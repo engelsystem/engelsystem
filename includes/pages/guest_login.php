@@ -29,6 +29,12 @@ function guest_register() {
   $jabber = "";
   $hometown = "";
   $comment = "";
+  $twitter = "";
+  $facebook = "";
+  $github = "";
+  $organization = "";
+  $current_city = "";
+  $organization_web = "";
   $tshirt_size = '';
   $password_hash = "";
   $selected_angel_types = array();
@@ -125,6 +131,13 @@ function guest_register() {
       $ok = false;
       $msg .= error(_("Please enter your First Name."), true);
     }
+    if (isset($_REQUEST['current_city']) && strlen(strip_request_item('current_city')) > 0){
+      $prename = strip_request_item('current_city');
+      }
+    else {
+      $ok = false;
+      $msg .= error(_("Please enter your Current City."), true);
+    }
     if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age']))
       $age = strip_request_item('age');
     if (isset($_REQUEST['tel']))
@@ -137,6 +150,16 @@ function guest_register() {
       $hometown = strip_request_item('hometown');
     if (isset($_REQUEST['comment']))
       $comment = strip_request_item_nl('comment');
+    if (isset($_REQUEST['twitter']))
+      $dect = strip_request_item('twitter');
+    if (isset($_REQUEST['facebook']))
+      $dect = strip_request_item('facebook');
+    if (isset($_REQUEST['github']))
+      $dect = strip_request_item('github');
+    if (isset($_REQUEST['organization']))
+      $dect = strip_request_item('oragnization');
+    if (isset($_REQUEST['organization_web']))
+      $dect = strip_request_item('organization_web');
 
     if ($ok) {
       sql_query("
@@ -159,6 +182,12 @@ function guest_register() {
           `CreateDate`=NOW(),
           `Sprache`='" . sql_escape($_SESSION["locale"]) . "',
           `arrival_date`=NULL,
+          `twitter`='" . sql_escape($twitter) . "',
+          `facebook`='" . sql_escape($facebook) . "',
+          `github`='" . sql_escape($github) . "',
+          `organization`='" . sql_escape($organisation) . "',
+          `current_city`='" . sql_escape($current_city) . "',
+          `organization_web`='" . sql_escape($organization_web) . "',
           `planned_arrival_date`='" . sql_escape($planned_arrival_date) . "'");
 
       // Assign user-group and set password
@@ -204,6 +233,19 @@ function guest_register() {
                           $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : ''
                       ))
                   )),
+                  
+                  div('row', array(
+                      div('col-sm-4', array(
+                          form_text('twitter', _("Twitter"), $twitter )
+                      )),
+                      div('col-sm-4', array(
+                          form_text('facebook', _("Facebook"), $facebook )
+                      )),
+                      div('col-sm-4', array(
+                          form_text('github', _("Github"), $github )
+                      ))
+                  )),
+                  
                   div('row', array(
                       div('col-sm-6', array(
                           form_password('password', _("Password") . ' ' . entry_required())
@@ -212,6 +254,9 @@ function guest_register() {
                           form_password('password2', _("Confirm password") . ' ' . entry_required())
                       ))
                   )),
+                  
+                  
+                  
                   form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
                   form_info("", _("Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section."))
               )),
@@ -240,10 +285,25 @@ function guest_register() {
                       div('col-sm-3', array(
                           form_text('age', _("Age"), $age)
                       )),
-                      div('col-sm-9', array(
+                      div('col-sm-4', array(
                           form_text('hometown', _("Hometown"), $hometown)
+                      )),
+                      div('col-sm-5', array(
+                          form_text('current_city', _("Current City"). ' ' . entry_required(), $current_city)
                       ))
+                      
                   )),
+                  div('row', array(
+                      div('col-sm-12', array(
+                          form_text('organization', _("Organisation Name (University or Company Name)"), $organization)
+                      )),
+                  )),
+                  div('row', array(
+                      div('col-sm-12', array(
+                          form_text('organization_web', _("Organization Website"), $organization_web)
+                      )),
+                  )),
+                  
                   form_info(entry_required() . ' = ' . _("Entry required!"))
               ))
           )),
