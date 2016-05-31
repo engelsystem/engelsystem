@@ -87,12 +87,16 @@ function admin_shifts() {
       $ok = false;
       error(_('Please select an end time.'));
     }
-    
-    if ($start >= $end) {
+     if (strtotime($_REQUEST['start']) > strtotime($_REQUEST['end'])) {
       $ok = false;
       error(_('The shifts end has to be after its start.'));
     }
-    
+   if (strtotime($_REQUEST['start']) == strtotime($_REQUEST['end'])) {
+    if (strtotime($start_time) > strtotime($end_time)) {
+      $ok = false;
+      error(_('The shifts end time  has to be after its start time.'));
+    }
+  }
     if (isset($_REQUEST['mode'])) {
       if ($_REQUEST['mode'] == 'single') {
         $mode = 'single';
