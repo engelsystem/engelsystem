@@ -68,6 +68,10 @@ function guest_register() {
         $ok = false;
         $msg .= error(_("E-mail address is not correct."), true);
       }
+      if (sql_num_query("SELECT * FROM `User` WHERE `email`='" . sql_escape($mail) . "' LIMIT 1") > 0) {
+        $ok = false;
+        $msg .= error(sprintf(_("Your E-mail &quot;%s&quot; already exists."), $mail), true);
+      }
     } else {
       $ok = false;
       $msg .= error(_("Please enter your e-mail."), true);
