@@ -156,6 +156,7 @@ function form_date($name, $label, $value, $start_date = '') {
     <script type="text/javascript">
 			$(function(){
         $("#' . $id . '").datepicker({
+        	language: "' . locale_short() . '",
           todayBtn: "linked",
           format: "yyyy-mm-dd",
           startDate: "' . $start_date . '"
