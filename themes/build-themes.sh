@@ -5,3 +5,4 @@ lessc theme1.less > ../public/css/theme1.css
 lessc theme2.less > ../public/css/theme2.css
 lessc theme3.less > ../public/css/theme3.css
 lessc theme4.less > ../public/css/theme4.css
+lessc theme5.less > ../public/css/theme5.css
