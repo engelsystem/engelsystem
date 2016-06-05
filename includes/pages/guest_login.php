@@ -191,7 +191,7 @@ function guest_register() {
           `twitter`='" . sql_escape($twitter) . "',
           `facebook`='" . sql_escape($facebook) . "',
           `github`='" . sql_escape($github) . "',
-          `organization`='" . sql_escape($organisation) . "',
+          `organization`='" . sql_escape($organization) . "',
           `current_city`='" . sql_escape($current_city) . "',
           `organization_web`='" . sql_escape($organization_web) . "',
           `planned_arrival_date`='" . sql_escape($planned_arrival_date) . "'");
