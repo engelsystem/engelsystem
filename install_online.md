@@ -2,7 +2,7 @@
 
 ##Steps:
 
-*  clone the repository (the recursive parameter allows us to clone the submodules):                           git clone --recursive [*https://github.com/engelsystem/engelsystem.git*](https://github.com/engelsystem/engelsystem.git)
+*  clone the repository (the recursive parameter allows us to clone the submodules):                           git clone --recursive [*https://github.com/fossasia/engelsystem.git*](https://github.com/fossasia/engelsystem.git)
 
 *  Compress the downloaded repository in .zip format
 
