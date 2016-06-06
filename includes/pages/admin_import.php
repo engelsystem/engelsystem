@@ -81,6 +81,9 @@ function admin_import() {
           error(_('Please provide some data.'));
         }
       }
+      if(isset($_REQUEST['download'])){
+        export_xls();
+      }
       
       if ($ok) {
         redirect(page_link_to('admin_import') . "&step=check&shifttype_id=" . $shifttype_id . "&add_minutes_end=" . $add_minutes_end . "&add_minutes_start=" . $add_minutes_start);
@@ -102,12 +105,12 @@ function admin_import() {
             ])
 
         ]).div('well well-sm text-center', [
-            _('Frab export')  
+            _('Export User Database')  
         ]).div('row', [
             div('col-md-6', [
                 form(array(
                     form_info('', _("This will export user data.Press export button to download the user data ")),
-                    form_submit('submit', _("export")) 
+                    form_submit('download', _("export")) 
                 )) 
             ])
 
@@ -384,88 +387,57 @@ function shift_sort($a, $b) {
   return ($a['start'] < $b['start']) ? - 1 : 1;
 }
 
-function export_xml(){
- $html.= '<table border="1">'  
-  .'<tr>'
-  .'<th>'. _("UID") . '</th>'
-  .'.<th>' . _("Nick") .'</th>'
-  .'<th>'. _("Name") . '</th>'
-  .'<th>' . _("Vorname") . '</th>'
-  .'<th>' . _("Alter").'</th>'
-  .'<th>'. _("Telefon") . '</th>'
-  .'<th>'. _("DECT").'</th>'
-  .'<th>'. _("Handy").'</th>'
-  .'<th>'. _("email").'</th>'
-  .'<th>'. _("email_shiftinfo").'</th>'
-  .'<th>'. _("jabber").'</th>'
-  .'<th>'. _("Size").'</th>'
-  .'<th>'. _("Gekommen").'</th>'
-  .'<th>'. _("Aktiv").'</th>'
-  .'<th>'. _("force_active").'</th>' 
-  .'<th>'. _("Tshirt").'</th>'
-  .'<th>'._("color").'</th>'
-  .'<th>'. _("Sprache").'</th>'
-  .'<th>'. _("Menu").'</th>'
-  .'<th>'. _("lastLogIn").'</th>'
-  .'<th>'. _("CreateDate").'</th>'
-  .'<th>'. _("Art").'</th>'
-  .'<th>'. _("kommentar").'</th>'
-  .'<th>'._("Hometown").'</th>'
-  .'<th>'. _("current_city").'</th>' 
-  .'<th>'. _("api_key").'</th>'
-  .'<th>'. _("got_voucher").'</th>'
-  .'<th>'. _("arrival_date").'</th>'
-  .'<th>'. _("planned_arrival_date").'</th>'
-  .'<th>'. _("planned_departure_date").'</th>'
-  .'<th>'. _("twitter").'</th>'
-  .'<th>'._("facebook").'</th>'
-  .'<th>'. _("github").'</th>'
-  .'<th>'._("organization").'</th>'
-  .'<th>'. _("organization_web").'</th>'
-  .'</tr>'
-  .</table>
-  //query get data
- $users = mysql_query("SELECT * FROM User");
-  while($data = mysql_fetch_assoc($users)){
-    echo '
-    <tr>
-      <td>'.$no.'</td>
-      <td>'.$data['Nick'].'</td>
-      <td>'.$data['Vorname'].'</td>
-      <td>'.$data['Alter'].'</td>
-      <td>'.$data['Telefon'].'</td>
-      <td>'.$data['DECT'].'</td>
-      <td>'.$data['Handy'].'</td>
-      <td>'.$data['email'].'</td>
-      <td>'.$data['email_shiftinfo'].'</td>
-      <td>'.$data['jabber'].'</td>
-      <td>'.$data['Size'].'</td>
-      <td>'.$data['Gekommen'].'</td>
-      <td>'.$data['force_active'].'</td>
-      <td>'.$data['Tshirt'].'</td>
-      <td>'.$data['color'].'</td>
-      <td>'.$data['Sprache'].'</td>
-      <td>'.$data['Menu'].'</td>
-      <td>'.$data['lastLogIn'].'</td>
-      <td>'.$data['CreateDate'].'</td>
-      <td>'.$data['Art'].'</td>
-      <td>'.$data['kommentar'].'</td>
-      <td>'.$data['Hometown'].'</td>
-      <td>'.$data['current_city'].'</td>
-      <td>'.$data['api_key'].'</td>
-      <td>'.$data['got_vochers'].'</td>
-      <td>'.$data['arrival_date'].'</td>
-      <td>'.$data['planned_arrival_date'].'</td>
-      <td>'.$data['planned_departure_date'].'</td>
-      <td>'.$data['twitter'].'</td>
-      <td>'.$data['facebook'].'</td>
-      <td>'.$data['organization'].'</td>
-      <td>'.$data['organization_web'].'</td>  
-    </tr>
-    ';
-    $no++;
-  }
+function export_xls(){ 
+global $user;
+// filename 
+$xls_filename = 'export_'.date('Y-m-d').'.xls'; // Define Excel (.xls) file name
+// selecting the table user 
+$sql = "SELECT * FROM `User`"; 
+//enter your mysql root password here
+$Connect = @mysql_connect("localhost", "root", "") or die("Failed to connect to MySQL.You need to enter the password:<br />" . mysql_error() . "<br />" . mysql_errno());
+// Select database
+$Db = @mysql_select_db(engelsystem, $Connect) or die("Failed to select database:<br />" . mysql_error(). "<br />" . mysql_errno());
+// Execute query
+$result = @mysql_query($sql,$Connect) or die("Failed to execute query:<br />" . mysql_error(). "<br />" . mysql_errno());
 
+// Header info settings
+header("Content-Type: application/xls");
+header("Content-Disposition: attachment; filename=$xls_filename");
+header("Pragma: no-cache");
+header("Expires: 0");
+ 
+// Define separator (defines columns in excel &amp; tabs in word)
+$separator = "\t";
+ 
+// Start of printing column names as names of MySQL fields
+for ($i = 0 ; $i < mysql_num_fields($result) ; $i++) {
+  echo mysql_field_name($result, $i) . "\t";
+}
+print("\n");
+ 
+// Start while loop to get data
+while($row = mysql_fetch_row($result))
+{
+  $schema= "";
+  for( $j=0 ; $j < mysql_num_fields($result) ; $j++)
+  {
+    
+    if(!isset($row[$j])) {
+      $schema .= "NULL".$separator;
+    }
+    elseif ($row[$j] != "") {
+      $schema .= "$row[$j]".$separator;
+    }
+    else {
+      $schema .= "".$separator;
+    }
+  }
+  $schema = str_replace($seperator."$", "", $schema);
+  $schema = preg_replace("/\r\n|\n\r|\n|\r/", " ", $schema);
+  $schema.= "\t";
+  print(trim($schema));
+  print "\n";
+}
 }
 
 ?>
