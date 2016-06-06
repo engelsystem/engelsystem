@@ -6,7 +6,7 @@
  * Webserver mit PHP-Anbindung, z.B. lighttpd, nginx oder Apache
 
 ## Vorgehen:
- * Klonen des `master` inkl. submodules in lokales Verzeichnis: `git clone --recursive https://github.com/engelsystem/engelsystem.git`
+ * Klonen des `master` inkl. submodules in lokales Verzeichnis: `git clone --recursive https://github.com/fossasia/engelsystem.git`
  * Der Webserver muss Schreibrechte auf das Verzeichnis `import` bekommen, für alle anderen Dateien reichen Leserechte.
  * Der Webserver muss auf `public` als http-root zeigen.
 
@@ -22,4 +22,4 @@ Das Engelsystem ist jetzt einsatzbereit.
  * Einstellungen für Cookies und Sessions bitte in der PHP Config des Servers vornehmen.
  * Sowohl Apache als auch nginx bieten Möglichkeiten für verschiedene Konfigurationen pro VirtualHost an
 
-Fehler bitte auf Github melden: https://github.com/engelsystem/engelsystem/issues
+Fehler bitte auf Github melden: https://github.com/fossasia/engelsystem/issues
