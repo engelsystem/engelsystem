@@ -1,7 +1,7 @@
 <?php
 
 function admin_import_title() {
-  return _("Frab import");
+  return _("Frab import and export");
 }
 
 function admin_import() {
@@ -86,9 +86,11 @@ function admin_import() {
         redirect(page_link_to('admin_import') . "&step=check&shifttype_id=" . $shifttype_id . "&add_minutes_end=" . $add_minutes_end . "&add_minutes_start=" . $add_minutes_start);
       } else {
         $html .= div('well well-sm text-center', [
+            _('Frab import')  
+        ]) . div('well well-sm text-left', [
             _('File Upload') . mute(glyph('arrow-right')) . mute(_('Validation')) . mute(glyph('arrow-right')) . mute(_('Import')) 
         ]) . div('row', [
-            div('col-md-offset-3 col-md-6', [
+            div(' col-md-6', [
                 form(array(
                     form_info('', _("This import will create/update/delete rooms and shifts by given FRAB-export file. The needed file format is xcal.")),
                     form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
@@ -97,7 +99,18 @@ function admin_import() {
                     form_file('xcal_file', _("xcal-File (.xcal)")),
                     form_submit('submit', _("Import")) 
                 )) 
-            ]) 
+            ])
+
+        ]).div('well well-sm text-center', [
+            _('Frab export')  
+        ]).div('row', [
+            div('col-md-6', [
+                form(array(
+                    form_info('', _("This will export user data.Press export button to download the user data ")),
+                    form_submit('submit', _("export")) 
+                )) 
+            ])
+
         ]);
       }
       break;
@@ -370,4 +383,89 @@ function shifts_printable($shifts, $shifttypes) {
 function shift_sort($a, $b) {
   return ($a['start'] < $b['start']) ? - 1 : 1;
 }
+
+function export_xml(){
+ $html.= '<table border="1">'  
+  .'<tr>'
+  .'<th>'. _("UID") . '</th>'
+  .'.<th>' . _("Nick") .'</th>'
+  .'<th>'. _("Name") . '</th>'
+  .'<th>' . _("Vorname") . '</th>'
+  .'<th>' . _("Alter").'</th>'
+  .'<th>'. _("Telefon") . '</th>'
+  .'<th>'. _("DECT").'</th>'
+  .'<th>'. _("Handy").'</th>'
+  .'<th>'. _("email").'</th>'
+  .'<th>'. _("email_shiftinfo").'</th>'
+  .'<th>'. _("jabber").'</th>'
+  .'<th>'. _("Size").'</th>'
+  .'<th>'. _("Gekommen").'</th>'
+  .'<th>'. _("Aktiv").'</th>'
+  .'<th>'. _("force_active").'</th>' 
+  .'<th>'. _("Tshirt").'</th>'
+  .'<th>'._("color").'</th>'
+  .'<th>'. _("Sprache").'</th>'
+  .'<th>'. _("Menu").'</th>'
+  .'<th>'. _("lastLogIn").'</th>'
+  .'<th>'. _("CreateDate").'</th>'
+  .'<th>'. _("Art").'</th>'
+  .'<th>'. _("kommentar").'</th>'
+  .'<th>'._("Hometown").'</th>'
+  .'<th>'. _("current_city").'</th>' 
+  .'<th>'. _("api_key").'</th>'
+  .'<th>'. _("got_voucher").'</th>'
+  .'<th>'. _("arrival_date").'</th>'
+  .'<th>'. _("planned_arrival_date").'</th>'
+  .'<th>'. _("planned_departure_date").'</th>'
+  .'<th>'. _("twitter").'</th>'
+  .'<th>'._("facebook").'</th>'
+  .'<th>'. _("github").'</th>'
+  .'<th>'._("organization").'</th>'
+  .'<th>'. _("organization_web").'</th>'
+  .'</tr>'
+  .</table>
+  //query get data
+ $users = mysql_query("SELECT * FROM User");
+  while($data = mysql_fetch_assoc($users)){
+    echo '
+    <tr>
+      <td>'.$no.'</td>
+      <td>'.$data['Nick'].'</td>
+      <td>'.$data['Vorname'].'</td>
+      <td>'.$data['Alter'].'</td>
+      <td>'.$data['Telefon'].'</td>
+      <td>'.$data['DECT'].'</td>
+      <td>'.$data['Handy'].'</td>
+      <td>'.$data['email'].'</td>
+      <td>'.$data['email_shiftinfo'].'</td>
+      <td>'.$data['jabber'].'</td>
+      <td>'.$data['Size'].'</td>
+      <td>'.$data['Gekommen'].'</td>
+      <td>'.$data['force_active'].'</td>
+      <td>'.$data['Tshirt'].'</td>
+      <td>'.$data['color'].'</td>
+      <td>'.$data['Sprache'].'</td>
+      <td>'.$data['Menu'].'</td>
+      <td>'.$data['lastLogIn'].'</td>
+      <td>'.$data['CreateDate'].'</td>
+      <td>'.$data['Art'].'</td>
+      <td>'.$data['kommentar'].'</td>
+      <td>'.$data['Hometown'].'</td>
+      <td>'.$data['current_city'].'</td>
+      <td>'.$data['api_key'].'</td>
+      <td>'.$data['got_vochers'].'</td>
+      <td>'.$data['arrival_date'].'</td>
+      <td>'.$data['planned_arrival_date'].'</td>
+      <td>'.$data['planned_departure_date'].'</td>
+      <td>'.$data['twitter'].'</td>
+      <td>'.$data['facebook'].'</td>
+      <td>'.$data['organization'].'</td>
+      <td>'.$data['organization_web'].'</td>  
+    </tr>
+    ';
+    $no++;
+  }
+
+}
+
 ?>
