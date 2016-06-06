@@ -1,5 +1,8 @@
 # Installation eines frischen Engelsystems
 
+[![Code Climate](https://codeclimate.com/github/fossasia/engelsystem/badges/gpa.svg)](https://codeclimate.com/github/fossasia/engelsystem)
+[![Build Status](https://travis-ci.org/fossasia/engelsystem.svg?branch=documentation)](https://travis-ci.org/fossasia/engelsystem)
+
 ## Mindestvorrausetzungen (bzw. getestet unter):
  * PHP 5.4.x (cgi-fcgi)
  * MySQL-Server 5.5.x
