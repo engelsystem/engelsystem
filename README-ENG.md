@@ -7,7 +7,7 @@
  * Webserver, i.e. lighttpd, nginx, or Apache
 
 ## Directions:
- * Clone the master branch with the submodules: `git clone --recursive https://github.com/engelsystem/engelsystem.git`
+ * Clone the master branch with the submodules: `git clone --recursive https://github.com/fossasia/engelsystem.git`
  * Webserver must have write access to the 'import' directory and read access for all other directories
  * Webserver must be public.
 
@@ -23,4 +23,4 @@ Engelsystem can now be used.
  * Make sure the config allows for sessions.
  * Both Apache and Nginx allow for different VirtualHost configurations.
 
-Report Bugs: https://github.com/engelsystem/engelsystem/issues
+Report Bugs: https://github.com/fossasia/engelsystem/issues
