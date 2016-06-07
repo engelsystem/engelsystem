@@ -1,13 +1,16 @@
 # Installation eines frischen Engelsystems
 [![Build Status](https://travis-ci.org/fossasia/engelsystem.svg?branch=Travis_config)](https://travis-ci.org/fossasia/engelsystem)
 
+[![Code Climate](https://codeclimate.com/github/fossasia/engelsystem/badges/gpa.svg)](https://codeclimate.com/github/fossasia/engelsystem)
+[![Build Status](https://travis-ci.org/fossasia/engelsystem.svg?branch=documentation)](https://travis-ci.org/fossasia/engelsystem)
+
 ## Mindestvorrausetzungen (bzw. getestet unter):
  * PHP 5.4.x (cgi-fcgi)
  * MySQL-Server 5.5.x
  * Webserver mit PHP-Anbindung, z.B. lighttpd, nginx oder Apache
 
 ## Vorgehen:
- * Klonen des `master` inkl. submodules in lokales Verzeichnis: `git clone --recursive https://github.com/engelsystem/engelsystem.git`
+ * Klonen des `master` inkl. submodules in lokales Verzeichnis: `git clone --recursive https://github.com/fossasia/engelsystem.git`
  * Der Webserver muss Schreibrechte auf das Verzeichnis `import` bekommen, für alle anderen Dateien reichen Leserechte.
  * Der Webserver muss auf `public` als http-root zeigen.
 
@@ -23,4 +26,4 @@ Das Engelsystem ist jetzt einsatzbereit.
  * Einstellungen für Cookies und Sessions bitte in der PHP Config des Servers vornehmen.
  * Sowohl Apache als auch nginx bieten Möglichkeiten für verschiedene Konfigurationen pro VirtualHost an
 
-Fehler bitte auf Github melden: https://github.com/engelsystem/engelsystem/issues
+Fehler bitte auf Github melden: https://github.com/fossasia/engelsystem/issues
