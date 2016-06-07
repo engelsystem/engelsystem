@@ -10,7 +10,7 @@ $faq_url = "https://events.ccc.de/congress/2013/wiki/Static:Volunteers";
 $contact_email = "mailto:erzengel@lists.ccc.de";
 
 // Default-Theme auf der Startseite, 1=style1.css usw.
-$default_theme = 1;
+$default_theme = 0;
 
 // Anzahl der News, die auf einer Seite ausgeben werden koennen...
 $DISPLAY_NEWS = 6;
