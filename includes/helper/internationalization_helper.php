@@ -7,7 +7,9 @@ $locales = array(
     'bg_BG.UTF-8' => "Bulgarian",
     'en_GB.UTF-8' => "English-UK",
     'pa_IN.UTF-8' => "Punjabi-IN",
-    'fr_FR.UTF-8' => "French"
+    'fr_FR.UTF-8' => "French",
+    'ta_IN.UTF-8' => "Tamil-IN",
+    'zn_CH.UTF-8' => "Chinese"
 );
 
 $default_locale = 'en_US.UTF-8';
