@@ -1,0 +1,2580 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Engelsystem 2.0\n"
+"POT-Creation-Date: 2016-03-22 14:48+0100\n"
+"PO-Revision-Date: 2016-06-12 22:53+0530\n"
+"Last-Translator: Arunima Sharma <arunimaprakash@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.2\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Language: ne_IN\n"
+"X-Poedit-SearchPath-0: /Users/arunimas/workspace/projects/engelsystem\n"
+"X-Poedit-SearchPath-1: .\n"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_menu.php:49
+msgid ""
+"Please enter your planned date of departure on your settings page to give us "
+"a feeling for teardown capacities."
+msgstr ""
+"कृपया teardown क्षमता लागि हामीलाई एक भावना दिन आफ्नो सेटिङहरू पृष्ठमा प्रस्थान आफ्नो "
+"योजना मिति प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_menu.php:56
+#, php-format
+msgid ""
+"You freeloaded at least %s shifts. Shift signup is locked. Please go to "
+"heavens desk to be unlocked again."
+msgstr ""
+"तपाईँले कम्तिमा% s को फेरबदल freeloaded। सिफ्ट साइनअप बन्द छ। कृपया फेरि अनलक हुन आकाश "
+"डेस्क जानुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_menu.php:63
+msgid ""
+"You are not marked as arrived. Please go to heaven's desk, get your angel "
+"badge and/or tell them that you arrived already."
+msgstr ""
+"आइपुगे रूपमा चिन्ह लगाइएको छैन। कृपया स्वर्गमा गरेको डेस्क जाने, आफ्नो स्वर्गदूत ब्याज प्राप्त "
+"र / वा तपाईं पहिले नै आइपुगे भनेर तिनीहरूलाई भन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_menu.php:69
+msgid "You need to specify a tshirt size in your settings!"
+msgstr "तपाईं आफ्नो सेटिङहरूमा tshirt आकार निर्दिष्ट गर्न आवश्यक!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_menu.php:75
+msgid ""
+"You need to specify a DECT phone number in your settings! If you don't have "
+"a DECT phone, just enter \"-\"."
+msgstr ""
+"तपाईं आफ्नो सेटिङहरूमा DECT फोन नम्बर निर्दिष्ट गर्न आवश्यक! तपाईं एक DECT फोन छैन भने, "
+"केवल प्रवेश \"-\"।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_menu.php:136
+msgid "Admin"
+msgstr "व्यवस्थापक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_template.php:363
+msgid "No data found."
+msgstr "कुनै डाटा भेटिएन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:7
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:821
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:56
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:73
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:214
+msgid "Angeltypes"
+msgstr "Angeltypes"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:55
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:327
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:213
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:257
+msgid "Teams/Job description"
+msgstr "टोली / अय्यूब विवरण"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:81
+#, php-format
+msgid "Angeltype %s deleted."
+msgstr "Angeltype%s मेटियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:86
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:44
+#, php-format
+msgid "Delete angeltype %s"
+msgstr "मेटाउन angeltype%s को"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:132
+msgid "Please check the name. Maybe it already exists."
+msgstr "कृपया नाम जाँच गर्नुहोस्। शायद यो पहिले नै अवस्थित छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:163
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:54
+#, php-format
+msgid "Edit %s"
+msgstr "%s सम्पादन गर्नुहोस्"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:199
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:200
+#, php-format
+msgid "Team %s"
+msgstr "टोली%s को"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:219
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:171
+msgid "view"
+msgstr "दृश्य"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:223
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:64
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_groups.php:23
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:18
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:91
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:77
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:52
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:63
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:174
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:225
+msgid "edit"
+msgstr "सम्पादन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:224
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:37
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:56
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:19
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:117
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:220
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:48
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:93
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:5
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:12
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:78
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:15
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:53
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:64
+msgid "delete"
+msgstr "मेटाउन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:229
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:87
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:244
+msgid "leave"
+msgstr "छोड"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:231
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:80
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:246
+msgid "join"
+msgstr "सामेल"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifts_controller.php:28
+msgid "Shift could not be found."
+msgstr "सिफ्ट भेट्टाउन सकिएन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:25
+#, php-format
+msgid "Shifttype %s deleted."
+msgstr "Shifttype%s मेटियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:30
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:11
+#, php-format
+msgid "Delete shifttype %s"
+msgstr "मेटाउन shifttype%s को"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:53
+msgid "Shifttype not found."
+msgstr "Shifttype फेला परेन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:69
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:66
+msgid "Please enter a name."
+msgstr "कृपया नाम प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:86
+msgid "Updated shifttype."
+msgstr "अद्यावधिक shifttype।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:92
+msgid "Created shifttype."
+msgstr "सिर्जना shifttype।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:144
+msgid "Shifttypes"
+msgstr "Shifttypes"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:19
+#, php-format
+msgid "There is %d unconfirmed angeltype."
+msgid_plural "There are %d unconfirmed angeltypes."
+msgstr[0] "त्यहाँ % d अपुष्ट कोण प्रकार छ।"
+msgstr[1] "त्यहाँ %d Engel प्रकार सक्रिय छैन!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:19
+msgid "Angel types which need approvals:"
+msgstr "स्वर्गदूतले प्रकार जो अनुमोदन आवश्यक:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:29
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:37
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:69
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:77
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:133
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:189
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:259
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:296
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:304
+msgid "Angeltype doesn't exist."
+msgstr "Angeltype अवस्थित छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:42
+msgid "You are not allowed to delete all users for this angeltype."
+msgstr "तपाईंले यो angeltype लागि सबै प्रयोगकर्ताहरू मेट्न अनुमति छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:52
+#, php-format
+msgid "Denied all users for angeltype %s."
+msgstr "angeltype%s को लागि सबै प्रयोगकर्ताहरू अस्वीकृत गरियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:57
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:14
+msgid "Deny all users"
+msgstr "सबै प्रयोगकर्ता अस्वीकार"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:85
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:117
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:125
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:173
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:181
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:236
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:251
+msgid "User angeltype doesn't exist."
+msgstr "प्रयोगकर्ता angeltype अवस्थित छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:90
+msgid "You are not allowed to confirm all users for this angeltype."
+msgstr "तपाईंले यो angeltype लागि सबै प्रयोगकर्ताहरू पुष्टि गर्न अनुमति छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:100
+#, php-format
+msgid "Confirmed all users for angeltype %s."
+msgstr "angeltype%s को लागि सबै प्रयोगकर्ताहरू पुष्टि गर्यो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:105
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:25
+msgid "Confirm all users"
+msgstr "सबै प्रयोगकर्ता पुष्टि"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:138
+msgid "You are not allowed to confirm this users angeltype."
+msgstr "तपाईंले यो प्रयोगकर्ता angeltype पुष्टि गर्न अनुमति छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:146
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:197
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:267
+msgid "User doesn't exist."
+msgstr "प्रयोगकर्ता अवस्थित छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:156
+#, php-format
+msgid "%s confirmed for angeltype %s."
+msgstr "%s को angeltype%s को पुष्टि।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:161
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:36
+msgid "Confirm angeltype for user"
+msgstr "प्रयोगकर्ताको लागि angeltype पुष्टि"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:202
+msgid "You are not allowed to delete this users angeltype."
+msgstr "तपाईंले यो प्रयोगकर्ता angeltype मेटाउन अनुमति छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:211
+#, php-format
+msgid "User %s removed from %s."
+msgstr "प्रयोगकर्ता%s को%s बाट हटाइयो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:219
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:47
+msgid "Remove angeltype"
+msgstr "angeltype हटाउन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:231
+msgid "You are not allowed to set coordinator rights."
+msgstr "तपाईं संयोजक अधिकार सेट गर्न अनुमति छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:243
+msgid "No coordinator update given."
+msgstr "कुनै संयोजक अद्यावधिक दिइएको।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:276
+#, php-format
+msgid "Added coordinator rights for %s to %s."
+msgstr "%s%s को लागि संयोजक अधिकार थपियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:276
+#, php-format
+msgid "Removed coordinator rights for %s from %s."
+msgstr "%s को लागि संयोजक अधिकार हटाइयो%s बाट।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:284
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:138
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:3
+msgid "Add coordinator rights"
+msgstr "संयोजक अधिकार थप्न"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:284
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:130
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:3
+msgid "Remove coordinator rights"
+msgstr "संयोजक अधिकार हटाउने"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:325
+msgid "Please select a user."
+msgstr "कृपया प्रयोगकर्ता चयन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:336
+#, php-format
+msgid "User %s added to %s."
+msgstr "प्रयोगकर्ता%s को%s को थपियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:349
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:62
+msgid "Add user to angeltype"
+msgstr "angeltype प्रयोगकर्ता थप्न"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:358
+#, php-format
+msgid "You are already a %s."
+msgstr "तपाईं पहिले नै%s को हो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:367
+#, php-format
+msgid "You joined %s."
+msgstr "तपाईँले%s को साथ दिए।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:382
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:76
+#, php-format
+msgid "Become a %s"
+msgstr "एक%s को बन्न"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_driver_licenses_controller.php:24
+#, php-format
+msgid ""
+"You joined an angeltype which requires a driving license. Please edit your "
+"driving license information here: %s."
+msgstr ""
+"तपाईं जो एक ड्राइभिङ लाइसेन्स आवश्यक एक angeltype साथ दिए। %s: यहाँ आफ्नो ड्राइभिङ "
+"लाइसेन्स जानकारी सम्पादन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_driver_licenses_controller.php:24
+msgid "driving license information"
+msgstr "ड्राइभिङ लाइसेन्स जानकारी"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_driver_licenses_controller.php:112
+msgid "Please select at least one driving license."
+msgstr "कृपया कम्तिमा एक ड्राइभिङ लाइसेन्स चयन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_driver_licenses_controller.php:121
+msgid "Your driver license information has been removed."
+msgstr "आफ्नो चालक लाइसेन्स जानकारी हटाइएको छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_driver_licenses_controller.php:133
+msgid "Your driver license information has been saved."
+msgstr "आफ्नो चालक लाइसेन्स जानकारी सुरक्षित गरिएको छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_driver_licenses_controller.php:141
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:15
+#, php-format
+msgid "Edit %s driving license information"
+msgstr "सम्पादन गर्नुहोस्%s को लाइसेन्स जानकारी"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:46
+msgid "You cannot delete yourself."
+msgstr "तपाईं आफैलाई मेटाउन सक्दैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:55
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:272
+msgid "Your password is incorrect.  Please try it again."
+msgstr "आफ्नो पासवर्ड गलत छ। कृपया फेरि प्रयास गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:64
+msgid "User deleted."
+msgstr "प्रयोगकर्ता हटाइयो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:72
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:26
+#, php-format
+msgid "Delete %s"
+msgstr "मेटाउन%s को"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:111
+msgid "Please enter a valid number of vouchers."
+msgstr "वाउचर को वैध नम्बर प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:121
+msgid "Saved the number of vouchers."
+msgstr "वाउचर को संख्या बचत गरियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:129
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:43
+#, php-format
+msgid "%s's vouchers"
+msgstr "%s को वाउचर"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:142
+msgid "User not found."
+msgstr "प्रयोगकर्ता फेला परेन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:192
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:80
+msgid "All users"
+msgstr "सबै प्रयोगकर्ता"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:207
+msgid "Token is not correct."
+msgstr "टोकन सही छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:217
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:93
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:123
+msgid "Your passwords don't match."
+msgstr "तपाईंको पासवर्ड मेल खाँदैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:221
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:121
+msgid "Your password is to short (please use at least 6 characters)."
+msgstr "आफ्नो पासवर्ड छोटो छ (कम्तिमा 6 अक्षर प्रयोग गर्नुहोस्)।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:227
+msgid "Password could not be updated."
+msgstr "पासवर्ड अध्यावधिक गर्न सकिएन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:229
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:125
+msgid "Password saved."
+msgstr "पासवर्ड सुरक्षित गरियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:247
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:251
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:63
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:37
+msgid "E-mail address is not correct."
+msgstr "ई-मेल ठेगाना सही छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:255
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:67
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:41
+msgid "Please enter your e-mail."
+msgstr "कृपया आफ्नो ई-मेल प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:262
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:279
+msgid "Password recovery"
+msgstr "पासवर्ड रिकभरी"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:262
+#, php-format
+msgid "Please visit %s to recover your password."
+msgstr "कृपया आफ्नो पासवर्ड रिकभर गर्न%s को भ्रमण गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:266
+msgid "We sent an email containing your password recovery link."
+msgstr "हामी आफ्नो पासवर्ड रिकभरी लिंक सहितको एउटा इमेल पठाए।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/helper/email_helper.php:11
+#, php-format
+msgid "Hi %s,"
+msgstr "नमस्ते%s को,"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/helper/email_helper.php:11
+msgid "here is a message for you from the engelsystem:"
+msgstr "को engelsystem तपाईं लागि एउटा सन्देश यहाँ छ:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/helper/email_helper.php:11
+msgid ""
+"This email is autogenerated and has not to be signed. You got this email "
+"because you are registered in the engelsystem."
+msgstr ""
+"यो इमेल स्वत: उत्पन्न भएको छ र हस्ताक्षर छैन गर्न सकिन्छ। तपाईं engelsystem दर्ता गरिन्छ "
+"किनभने तपाईंले यो इमेल मिल्यो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:10
+msgid "A Shift you are registered on has changed:"
+msgstr "तपाईं मा दर्ता छन् सिफ्ट परिवर्तन भएको छ:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:14
+#, php-format
+msgid "* Shift type changed from %s to %s"
+msgstr "* सिफ्ट%s%s बाट परिवर्तन प्रकार"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:19
+#, php-format
+msgid "* Shift title changed from %s to %s"
+msgstr "* सिफ्ट शीर्षक%s%s बाट परिवर्तन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:24
+#, php-format
+msgid "* Shift Start changed from %s to %s"
+msgstr "* सिफ्ट सुरु%s मा%s बाट परिवर्तन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:29
+#, php-format
+msgid "* Shift End changed from %s to %s"
+msgstr "* सिफ्ट अन्त्य%s मा%s बाट परिवर्तन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:34
+#, php-format
+msgid "* Shift Location changed from %s to %s"
+msgstr "* सिफ्ट स्थान%s%s बाट परिवर्तन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:44
+msgid "The updated Shift:"
+msgstr "अद्यावधिक सिफ्ट:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:53
+msgid "Your Shift has changed"
+msgstr "तपाईंको सिफ्ट परिवर्तन भएको छ"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:60
+msgid "A Shift you are registered on was deleted:"
+msgstr "तपाईं मेटिएको थियो मा दर्ता छन् सिफ्ट:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:69
+msgid "Your Shift was deleted"
+msgstr "तपाईंको सिफ्ट हटाइएको थियो"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:76
+msgid "You have been assigned to a Shift:"
+msgstr "तपाईं एक सिफ्ट खटाइएका छन्:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:82
+msgid "Assigned to Shift"
+msgstr "सिफ्ट गर्न तोकिएको"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:90
+msgid "You have been removed from a Shift:"
+msgstr "तपाईं एक सिफ्ट हटाइएको छ:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:96
+msgid "Removed from Shift"
+msgstr "सिफ्ट हटाइयो"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/users_mailer.php:7
+msgid "Your account has been deleted"
+msgstr "तपाईंको खाता नष्ट गरिएको छ"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/users_mailer.php:7
+msgid ""
+"Your angelsystem account has been deleted. If you have any questions "
+"regarding your account deletion, please contact heaven."
+msgstr ""
+"तपाईंको angelsystem खाता नष्ट गरिएको छ। तपाईं आफ्नो खाता मेटाउने सन्दर्भमा कुनै प्रश्न छ "
+"भने, कृपया स्वर्गमा सम्पर्क गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:4
+msgid "Active angels"
+msgstr "सक्रिय स्वर्गदूतहरू"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:28
+#, php-format
+msgid ""
+"At least %s angels are forced to be active. The number has to be greater."
+msgstr "कम से कम%s को स्वर्गदूतहरू सक्रिय हुन बाध्य छन्। संख्या ठूलो छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:33
+msgid "Please enter a number of angels to be marked as active."
+msgstr "प्रविष्ट गर्नुहोस् स्वर्गदूतहरू एक नम्बर सक्रिय रूपमा चिन्ह लगाइएको हुनेछन् गर्न।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:57
+msgid "Marked angels."
+msgstr "चिह्नित स्वर्गदूतहरू।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:59
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:129
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:164
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:251
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:29
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:46
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:65
+msgid "back"
+msgstr "फिर्ता"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:59
+msgid "apply"
+msgstr "लागू"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:69
+msgid "Angel has been marked as active."
+msgstr "स्वर्गदूतले सक्रिय रूपमा चिन्ह लगाइएको छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:71
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:80
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:98
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:22
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:32
+msgid "Angel not found."
+msgstr "स्वर्गदूतले फेला परेन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:78
+msgid "Angel has been marked as not active."
+msgstr "स्वर्गदूतले सक्रिय छैन रूपमा चिन्ह लगाइएको छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:87
+msgid "Angel has got a t-shirt."
+msgstr "स्वर्गदूतले एक टी-शर्ट पायो छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:96
+msgid "Angel has got no t-shirt."
+msgstr "स्वर्गदूतले कुनै टी-शर्ट पायो छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:135
+msgid "set active"
+msgstr "सक्रिय सेट"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:137
+msgid "remove active"
+msgstr "सक्रिय हटाउन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:138
+msgid "got t-shirt"
+msgstr "पायो टी-शर्ट"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:141
+msgid "remove t-shirt"
+msgstr "टी-शर्ट हटाउन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:159
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:156
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:171
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:186
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:172
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:179
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:70
+msgid "Sum"
+msgstr "योगफल"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:166
+msgid "Search angel:"
+msgstr "खोज स्वर्गदूतले:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:167
+msgid "Show all shifts"
+msgstr "सबै फेरबदल देखाउन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:168
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:132
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:133
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:71
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:80
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_log.php:25
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_log.php:26
+msgid "Search"
+msgstr "खोज"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:171
+msgid "How much angels should be active?"
+msgstr "कति स्वर्गदूतहरू सक्रिय हुनुपर्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:172
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:239
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:322
+msgid "Preview"
+msgstr "पूर्वावलोकन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:176
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:136
+msgid "Nickname"
+msgstr "उपनाम"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:177
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:187
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:96
+msgid "Size"
+msgstr "आकार"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:178
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:4
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:236
+msgid "Shifts"
+msgstr "फेरबदल"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:179
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:311
+msgid "Length"
+msgstr "लम्बाइ"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:180
+msgid "Active?"
+msgstr "सक्रिय?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:181
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:94
+msgid "Forced"
+msgstr "बाध्य"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:182
+msgid "T-shirt?"
+msgstr "टी-शर्ट?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:185
+msgid "Shirt statistics"
+msgstr "शर्ट तथ्याङ्क"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:188
+msgid "Needed shirts"
+msgstr "आवश्यक शर्ट"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:189
+msgid "Given shirts"
+msgstr "दिइएको शर्ट"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:4
+msgid "Arrived angels"
+msgstr "आइपुग्यो स्वर्गदूतहरू"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:19
+msgid "Reset done. Angel has not arrived."
+msgstr "गरेका रिसेट। स्वर्गदूतले आइपुगेको छ छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:29
+msgid "Angel has been marked as arrived."
+msgstr "आइपुगे रूपमा स्वर्गदूतले चिन्ह लगाइएको छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:65
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:8
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:19
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:30
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:41
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:52
+msgid "yes"
+msgstr "aaja"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:66
+msgid "reset"
+msgstr "रिसेट"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:66
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:147
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:162
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:177
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:227
+msgid "arrived"
+msgstr "आइपुगे"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:137
+msgid "Planned arrival"
+msgstr "योजनाबद्ध आगमन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:138
+msgid "Arrived?"
+msgstr "आइपुग्यो?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:139
+msgid "Arrival date"
+msgstr "आगमन मिति"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:140
+msgid "Planned departure"
+msgstr "योजनाबद्ध प्रस्थान"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:145
+msgid "Planned arrival statistics"
+msgstr "योजनाबद्ध आगमन तथ्याङ्क"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:148
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:163
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:178
+msgid "arrived sum"
+msgstr "आइपुगे योगफल"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:154
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:169
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:184
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:27
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:76
+msgid "Date"
+msgstr "मिति"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:155
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:170
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:185
+msgid "Count"
+msgstr "गणना"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:160
+msgid "Arrival statistics"
+msgstr "आगमन तथ्याङ्क"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:175
+msgid "Planned departure statistics"
+msgstr "योजनाबद्ध प्रस्थान तथ्याङ्क"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:3
+msgid "Free angels"
+msgstr "फ्री स्वर्गदूतहरू"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:74
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:34
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:68
+msgid "Angeltype"
+msgstr "Angeltype"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:77
+msgid "Only confirmed"
+msgstr "केवल पुष्टि"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:85
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:181
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:312
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:168
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:146
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:153
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:86
+msgid "Nick"
+msgstr "निक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:87
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:210
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:175
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:147
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:154
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:89
+msgid "DECT"
+msgstr "DECT"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:88
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:219
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:179
+msgid "Jabber"
+msgstr "अस्पष्ट"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:89
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:184
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:177
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:258
+msgid "E-Mail"
+msgstr "ई-मेल"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_groups.php:3
+msgid "Grouprights"
+msgstr "Grouprights"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_groups.php:29
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:141
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:145
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:135
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:180
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:60
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:216
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:33
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:74
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:88
+msgid "Name"
+msgstr "नाम"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_groups.php:30
+msgid "Privileges"
+msgstr "विशेषाधिकार"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_groups.php:53
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:32
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:35
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:149
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:257
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:42
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:106
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:160
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:183
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:192
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:197
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:202
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:191
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:66
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:32
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:33
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:37
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:51
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:274
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:34
+msgid "Save"
+msgstr "बचत"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_groups.php:54
+msgid "समूह सम्पादन गर्नुहोस्"
+msgstr ""
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:4
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:136
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:181
+msgid "Frab import"
+msgstr "Frab आयात"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:24
+msgid "Webserver has no write-permission on import directory."
+msgstr "वेबसर्वर आयात निर्देशिका कुनै लेख्ने-अनुमति छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:50
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:114
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:191
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:48
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:53
+msgid "Please select a shift type."
+msgstr "कृपया पारी प्रकार चयन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:57
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:121
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:198
+msgid "Please enter an amount of minutes to add to a talk's begin."
+msgstr "कृपया सुरु भाषण थप्न मिनेट को राशि प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:64
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:128
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:205
+msgid "Please enter an amount of minutes to add to a talk's end."
+msgstr "कृपया भाषण अन्त थप्न मिनेट को राशि प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:72
+msgid "No valid xml/xcal file provided."
+msgstr "कुनै मान्य XML / xcal फाइल प्रदान।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:77
+msgid "File upload went wrong."
+msgstr "फाइल अपलोड गलत भयो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:81
+msgid "Please provide some data."
+msgstr "कृपया केही डेटा प्रदान।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:89
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:136
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:243
+msgid "File Upload"
+msgstr "फाइल अपलोड"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:89
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:136
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:243
+msgid "Validation"
+msgstr "प्रमाणीकरण"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:89
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:98
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:136
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:175
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:243
+msgid "Import"
+msgstr "आयात"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:93
+msgid ""
+"This import will create/update/delete rooms and shifts by given FRAB-export "
+"file. The needed file format is xcal."
+msgstr ""
+"यो आयात / सिर्जना गर्नेछ / अद्यावधिक दिइएको FRAB-निर्यात फाइल द्वारा कोठा र फेरबदल "
+"मेटाउन। आवश्यक फाइल ढाँचा xcal छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:94
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:301
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:184
+msgid "Shifttype"
+msgstr "Shifttype"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:95
+msgid "Add minutes to start"
+msgstr "सुरु गर्न मिनेट थप्न"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:96
+msgid "Add minutes to end"
+msgstr "अन्त मिनेट थप्न"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:97
+msgid "xcal-File (.xcal)"
+msgstr "xcal-फाइल (.xcal)"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:107
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:181
+msgid "Missing import file."
+msgstr "आयात फाइल छुटेको छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:140
+msgid "Rooms to create"
+msgstr "सिर्जना गर्न कोठा"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:144
+msgid "Rooms to delete"
+msgstr "मेटाउन कोठा"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:148
+msgid "Shifts to create"
+msgstr "सिर्जना गर्न फेरबदल"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:150
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:159
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:168
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:238
+msgid "Day"
+msgstr "दिन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:151
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:160
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:169
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:306
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:88
+msgid "Start"
+msgstr "सुरु"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:152
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:161
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:170
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:307
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:96
+msgid "End"
+msgstr "अन्त"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:153
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:162
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:171
+msgid "Shift type"
+msgstr "सिफ्ट प्रकार"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:154
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:163
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:172
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:302
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:185
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:84
+msgid "Title"
+msgstr "शीर्षक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:155
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:164
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:173
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:303
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:803
+msgid "Room"
+msgstr "कोठा"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:157
+msgid "Shifts to update"
+msgstr "अद्यावधिक गर्न फेरबदल"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:166
+msgid "Shifts to delete"
+msgstr "मेटाउन फेरबदल"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:244
+msgid "It's done!"
+msgstr "यो पूरा!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_log.php:3
+msgid "Log"
+msgstr "लग"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:8
+msgid "Edit news entry"
+msgstr "समाचार प्रविष्टि सम्पादन गर्नुहोस्"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:28
+msgid "Author"
+msgstr "लेखक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:29
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:157
+msgid "Subject"
+msgstr "विषय"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:30
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:79
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:105
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:158
+msgid "Message"
+msgstr "सन्देश"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:31
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:159
+msgid "Meeting"
+msgstr "बैठक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:35
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:168
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:34
+msgid "Delete"
+msgstr "मेटाउन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:49
+msgid "News entry updated."
+msgstr "समाचार प्रविष्टि अपडेट गरियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:58
+msgid "News entry deleted."
+msgstr "समाचार प्रवेश हटाइयो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:3
+msgid "Answer questions"
+msgstr "उत्तर प्रश्नहरू"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:13
+msgid "There are unanswered questions!"
+msgstr "त्यहाँ अनुत्तरित प्रश्नहरू छन्!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:61
+msgid "Unanswered questions"
+msgstr "अनुत्तरित प्रश्न"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:63
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:70
+msgid "From"
+msgstr "बाट"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:64
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:71
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:19
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:24
+msgid "Question"
+msgstr "प्रश्न"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:65
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:73
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:26
+msgid "Answer"
+msgstr "उत्तर"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:68
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:22
+msgid "Answered questions"
+msgstr "जवाफ प्रश्नहरू"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:72
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:25
+msgid "Answered by"
+msgstr "उत्तर दिए"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:4
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:816
+msgid "Rooms"
+msgstr "कोठा"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:62
+msgid "This name is already in use."
+msgstr "यो नाम पहिले नै प्रयोगमा छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:89
+#, php-format
+msgid "Please enter needed angels for type %s."
+msgstr "प्रकार%s को लागि आवश्यक स्वर्गदूतहरू प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:117
+msgid "Room saved."
+msgstr "कोठा सुरक्षित गरियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:137
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:182
+msgid "Public"
+msgstr "सार्वजनिक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:138
+msgid "Room number"
+msgstr "कोठा नम्बर"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:143
+msgid "Needed angels:"
+msgstr "आवश्यक स्वर्गदूतहरू:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:158
+#, php-format
+msgid "Room %s deleted."
+msgstr "कोठा%s मेटियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:166
+#, php-format
+msgid "Do you want to delete room %s?"
+msgstr "तपाईं कोठा%s मेटाउन गर्न चाहनुहुन्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:176
+msgid "add"
+msgstr "थप"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:4
+msgid "Create shifts"
+msgstr "फेरबदल सिर्जना"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:65
+msgid "Please select a location."
+msgstr "कृपया स्थान चयन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:72
+msgid "Please select a start time."
+msgstr "कृपया सुरू समय चयन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:79
+msgid "Please select an end time."
+msgstr "कृपया अन्त समय चयन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:84
+msgid "The shifts end has to be after its start."
+msgstr "यो फेरबदल अन्त सुरु गरेपछि हुन छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:96
+msgid "Please enter a shift duration in minutes."
+msgstr "कृपया मिनेटमा एक पारी अवधि प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:104
+msgid "Please split the shift-change hours by colons."
+msgstr "कृपया कलन गरेर पारी-परिवर्तन घण्टा विभाजित।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:109
+msgid "Please select a mode."
+msgstr "कृपया मोड चयन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:122
+#, php-format
+msgid "Please check the needed angels for team %s."
+msgstr "टोली%s को लागि आवश्यक स्वर्गदूतहरू जाँच गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:127
+msgid "There are 0 angels needed. Please enter the amounts of needed angels."
+msgstr "त्यहाँ 0 स्वर्गदूतहरू आवश्यक छन्। आवश्यक स्वर्गदूतहरूको रकम प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:131
+msgid "Please select a mode for needed angels."
+msgstr "कृपया आवश्यक स्वर्गदूतहरू लागि एक मोड चयन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:135
+msgid "Please select needed angels."
+msgstr "कृपया आवश्यक स्वर्गदूतहरू चयन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:253
+msgid "Time and location"
+msgstr "समय र स्थान"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:254
+msgid "Type and title"
+msgstr "प्रकार र शीर्षक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:255
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:316
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:189
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:110
+msgid "Needed angels"
+msgstr "आवश्यक स्वर्गदूतहरू"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:308
+msgid "Mode"
+msgstr "मोड"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:309
+msgid "Create one shift"
+msgstr "एक पारी सिर्जना"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:310
+msgid "Create multiple shifts"
+msgstr "धेरै फेरबदल सिर्जना"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:312
+msgid "Create multiple shifts with variable length"
+msgstr "चर लम्बाइ धेरै फेरबदल सिर्जना"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:313
+msgid "Shift change hours"
+msgstr "सिफ्ट परिवर्तन घण्टा"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:317
+msgid "Take needed angels from room settings"
+msgstr "कोठा सेटिङहरूबाट आवश्यक स्वर्गदूतहरू लिन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:318
+msgid "The following angels are needed"
+msgstr "निम्न स्वर्गदूतहरू आवश्यक छ"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:4
+msgid "All Angels"
+msgstr "सबै स्वर्गदूतहरू"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:21
+msgid "This user does not exist."
+msgstr "यो प्रयोगकर्ता अवस्थित छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:41
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:185
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:178
+msgid "Please send me an email if my shifts change"
+msgstr "मेरो फेरबदल परिवर्तन भने कृपया मलाई एक इमेल पठाउने"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:60
+msgid "Force active"
+msgstr "शक्ति सक्रिय"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:79
+msgid ""
+"Please visit the angeltypes page or the users profile to manage users "
+"angeltypes."
+msgstr ""
+"कृपया angeltypes पृष्ठमा जानुहोस् वा प्रयोगकर्ता प्रयोगकर्ता angeltypes व्यवस्थापन गर्न "
+"प्रोफाइल।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:200
+msgid "Edit user"
+msgstr "प्रयोगकर्ता सम्पादन गर्नुहोस्"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_credits.php:3
+msgid "Credits"
+msgstr "क्रेडिट"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:4
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:314
+msgid "Login"
+msgstr "लग - इन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:8
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:240
+msgid "Register"
+msgstr "पंजीकरण"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:12
+msgid "Logout"
+msgstr "बाहिर निस्कनु"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:52
+#, php-format
+msgid "Your nick &quot;%s&quot; already exists."
+msgstr "तपाईंको निक \"%s\" पहिले नै अवस्थित छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:56
+#, php-format
+msgid "Your nick &quot;%s&quot; is too short (min. 2 characters)."
+msgstr "तपाईंको निक \"%s\" को पनि छोटो छ (मि। 2 वर्ण)।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:77
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:50
+msgid "Please check your jabber account information."
+msgstr "आफ्नो जल्पना खाता जानकारी जाँच गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:86
+msgid "Please select your shirt size."
+msgstr "कृपया आफ्नो शर्ट साइज चयन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:97
+#, php-format
+msgid "Your password is too short (please use at least %s characters)."
+msgstr "आफ्नो पासवर्ड पनि छोटो छ (कम्तिमा%s को वर्ण प्रयोग कृपया)।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:104
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:64
+msgid "Please enter your planned date of arrival."
+msgstr "कृपया आगमन को आफ्नो योजना मिति प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:166
+msgid "Angel registration successful!"
+msgstr "स्वर्गदूतले दर्ता सफल!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:173
+msgid ""
+"By completing this form you're registering as a Chaos-Angel. This script "
+"will create you an account in the angel task sheduler."
+msgstr ""
+"यो फाराम पूरा गरेर तपाईंले एक अस्तव्यस्त-दूतको दर्ता गर्दै हुनुहुन्छ। यो लिपि तपाईं दूत कार्य "
+"sheduler मा खाता सिर्जना गर्नेछ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:190
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:171
+msgid "Planned date of arrival"
+msgstr "आगमन योजनाबद्ध मिति"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:193
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:181
+msgid "Shirt size"
+msgstr "शर्ट आकार"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:198
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:313
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:272
+msgid "Password"
+msgstr "पासवर्ड"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:201
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:273
+msgid "Confirm password"
+msgstr "पासवर्ड सुनिश्चित गर्नुहोस"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:204
+msgid "What do you want to do?"
+msgstr "त के गर्न चाहन्छ्स?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:204
+msgid "Description of job types"
+msgstr "काम प्रकार को विवरण"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:205
+msgid ""
+"Restricted angel types need will be confirmed later by an archangel. You can "
+"change your selection in the options section."
+msgstr ""
+"प्रतिबन्धित स्वर्गदूतले प्रकार एक प्रधान दूत पछि पुष्टि हुनेछ आवश्यक छ। तपाईं विकल्प खण्डमा "
+"तपाईँको चयन परिवर्तन गर्न सक्नुहुन्छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:213
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:176
+msgid "Mobile"
+msgstr "मोबाइल"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:216
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:174
+msgid "Phone"
+msgstr "फोन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:222
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:170
+msgid "First name"
+msgstr "पहिलो नाम"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:225
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:169
+msgid "Last name"
+msgstr "थर"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:230
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:173
+msgid "Age"
+msgstr "उमेर"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:233
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:180
+msgid "Hometown"
+msgstr "गृहनगर"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:236
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:167
+msgid "प्रवेश आवश्यक!"
+msgstr ""
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:276
+msgid "Please enter a password."
+msgstr "कृपया पासवर्ड प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:280
+msgid ""
+"No user was found with that Nickname. Please try again. If you are still "
+"having problems, ask an Dispatcher."
+msgstr ""
+"कुनै प्रयोगकर्ता भनेर उपनाम संग फेला परेन। फेरि प्रयास गर्नुहोस। तपाईं अझै पनि समस्या "
+"भइरहेको छ भने, एक Dispatcher सोध्न।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:284
+msgid "Please enter a nickname."
+msgstr "कृपया उपनाम प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:297
+msgid "Please sign up, if you want to help us!"
+msgstr "तपाईँ हामीलाई मद्दत गर्न चाहनुहुन्छ भने, साइन अप गर्नुहोस्!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:304
+msgid "Registration is disabled."
+msgstr "दर्ता अक्षम छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:316
+msgid "I forgot my password"
+msgstr "म मेरो पासवर्ड भूल"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:318
+msgid "Please note: You have to activate cookies!"
+msgstr "कृपया ध्यान दिनुहोस्: तपाईं कुकीहरू सक्रिय छ!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:324
+msgid "What can I do?"
+msgstr "म के गर्न सक्छु?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:325
+msgid "Please read about the jobs you can do to help us."
+msgstr "कृपया तपाईँ हामीलाई मद्दत गर्न गर्नसक्ने जब पढ्न।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:4
+msgid "Messages"
+msgstr "सन्देशहरू"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:25
+msgid "Select recipient..."
+msgstr "प्राप्तकर्ता चयन गर्नुहोस् ..."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:49
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:52
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:62
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:92
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:16
+msgid "Unable to load user."
+msgstr "प्रयोगकर्ता लोड गर्न असमर्थ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:64
+msgid "mark as read"
+msgstr "मार्क पढ्न रूपमा"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:66
+msgid "delete message"
+msgstr "सन्देश मेटाउन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:72
+#, php-format
+msgid "Hello %s, here can you leave messages for other angels"
+msgstr "नमस्ते%s को, यहाँ तपाईं अन्य स्वर्गदूतहरू लागि सन्देशहरू पार्नसक्छन्"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:75
+msgid "New"
+msgstr "नयाँ"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:77
+msgid "Transmitted"
+msgstr "प्रसारित"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:78
+msgid "Recipient"
+msgstr "प्राप्तकर्ता"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:90
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:104
+msgid "Incomplete call, missing Message ID."
+msgstr "अपूर्ण कल, हराएको सन्देश आईडी।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:97
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:111
+msgid "No Message found."
+msgstr "कुनै सन्देश फेला परेन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:118
+msgid "Transmitting was terminated with an Error."
+msgstr "दिइरहनुभएको त्रुटि संग समाप्त भएको थियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:123
+msgid "Wrong action."
+msgstr "कार्य गलत।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:4
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:298
+msgid "My shifts"
+msgstr "मेरो फेरबदल"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:24
+msgid "Key changed."
+msgstr "प्रमुख परिवर्तन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:27
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:232
+msgid "Reset API key"
+msgstr "रिसेट एपीआई प्रमुख"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:28
+msgid ""
+"If you reset the key, the url to your iCal- and JSON-export and your atom "
+"feed changes! You have to update it in every application using one of these "
+"exports."
+msgstr ""
+"तपाईं आफ्नो iCal- र जेसोन-निर्यात र आफ्नो एटम फिड परिवर्तन गर्न प्रमुख, URL रिसेट भने! "
+"तपाईं यी निर्यात को एक प्रयोग हरेक आवेदनमा यसलाई अपडेट गर्न छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:29
+msgid "Continue"
+msgstr "जारी राख्न"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:61
+msgid "Please enter a freeload comment!"
+msgstr "कृपया freeload टिप्पणी प्रविष्टि!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:79
+msgid "Shift saved."
+msgstr "सिफ्ट सुरक्षित गरियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:105
+msgid "Shift canceled."
+msgstr "सिफ्ट रद्द गरियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:107
+msgid ""
+"It's too late to sign yourself off the shift. If neccessary, ask the "
+"dispatcher to do so."
+msgstr ""
+"यो पारी आफैलाई बन्द साइन इन गर्न ढिलो। neccessary भने, त्यसो गर्न dispatcher सोध्न।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:3
+msgid "News comments"
+msgstr "समाचार टिप्पणी"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:7
+msgid "News"
+msgstr "समाचार"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:11
+msgid "Meetings"
+msgstr "बैठक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:66
+msgid "Comments"
+msgstr "टिप्पणी"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:83
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:126
+msgid "Entry saved."
+msgstr "प्रवेश सुरक्षित गरियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:103
+msgid "New Comment:"
+msgstr "नयाँ टिप्पणी:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:110
+msgid "Invalid request."
+msgstr "अवैध अनुरोध।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:154
+msgid "Create news:"
+msgstr "समाचार सिर्जना गर्नुहोस्:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:3
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:29
+msgid "Ask an archangel"
+msgstr "एक प्रधान दूत सोध्न"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:28
+msgid "Unable to save question."
+msgstr "प्रश्न बचत गर्न असमर्थ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:29
+msgid "You question was saved."
+msgstr "सङ्ग्रहित पृष्ठहरू"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:33
+msgid "Please enter a question!"
+msgstr "अनुमति बिना कुनै प्रविष्टि"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:40
+msgid "Incomplete call, missing Question ID."
+msgstr "अपूर्ण कल, हराएको प्रश्न आईडी।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:48
+msgid "No question found."
+msgstr "कुनै प्रश्न फेला परेन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:4
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:229
+msgid "Settings"
+msgstr "उन्नत सेटिङहरू सक्षम गर्नुहोस्"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:72
+msgid "Please enter your planned date of departure."
+msgstr "कृपया प्रस्थान आफ्नो योजना मिति प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:112
+msgid "Settings saved."
+msgstr "सेटिङ सुरक्षित गरियो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:119
+msgid "-> not OK. Please try again."
+msgstr "-> ठीक छैन। फेरि प्रयास गर्नुहोस।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:127
+msgid "Failed setting password."
+msgstr "पासवर्ड सेट गर्न असफल भयो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:140
+msgid "Theme changed."
+msgstr "विषय परिवर्तन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:166
+msgid "Here you can change your user details."
+msgstr "यहाँ तपाईँले तपाईँको प्रयोगकर्ता विवरण परिवर्तन गर्न सक्नुहुन्छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:172
+msgid "Planned date of departure"
+msgstr "प्रस्थान योजनाबद्ध मिति"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:182
+msgid "Please visit the angeltypes page to manage your angeltypes."
+msgstr "कृपया आफ्नो angeltypes व्यवस्थापन गर्न angeltypes पृष्ठमा जानुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:188
+msgid "Here you can change your password."
+msgstr "यहाँ तपाईं आफ्नो पासवर्ड परिवर्तन गर्न सक्नुहुन्छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:189
+msgid "Old password:"
+msgstr "पुरानो पासवर्ड:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:190
+msgid "New password:"
+msgstr "नया पासवर्ड:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:191
+msgid "Password confirmation:"
+msgstr "पासवर्ड पुष्टि:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:195
+msgid "Here you can choose your color settings:"
+msgstr "यहाँ तपाईं आफ्नो रंग सेटिङ चयन गर्न सक्नुहुन्छ:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:196
+msgid "Color settings:"
+msgstr "रंग सेटिङहरू:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:200
+msgid "Here you can choose your language:"
+msgstr "यहाँ तपाईँले आफ्नो भाषा चयन गर्न सक्नुहुन्छ:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:201
+msgid "Language:"
+msgstr "भाषा:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:43
+msgid "Shift entry deleted."
+msgstr "सिफ्ट प्रवेश हटाइयो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:45
+msgid "Entry not found."
+msgstr "प्रवेश फेला परेन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:110
+msgid "Please select a room."
+msgstr "कृपया एक कोठा चयन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:117
+msgid "Please select a shifttype."
+msgstr "कृपया shifttype चयन गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:124
+msgid "Please enter a valid starting time for the shifts."
+msgstr "कृपया फेरबदल लागि मान्य सुरूवात समय प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:131
+msgid "Please enter a valid ending time for the shifts."
+msgstr "कृपया फेरबदल लागि मान्य अन्त्य समय प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:136
+msgid "The ending time has to be after the starting time."
+msgstr "यो समाप्त समय सुरु समय पछि छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:144
+#, php-format
+msgid "Please check your input for needed angels of type %s."
+msgstr "प्रकार%s को आवश्यक स्वर्गदूतहरू लागि आफ्नो जाँच गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:166
+msgid "Shift updated."
+msgstr "सिफ्ट अद्यावधिक।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:182
+msgid "This page is much more comfortable with javascript."
+msgstr "यो पृष्ठ जाभास्क्रिप्ट धेरै अधिक आरामदायक छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:186
+msgid "Room:"
+msgstr "कोठा:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:187
+msgid "Start:"
+msgstr "सुरु:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:188
+msgid "End:"
+msgstr "अन्त:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:214
+msgid "Shift deleted."
+msgstr "सिफ्ट हटाइयो।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:219
+#, php-format
+msgid "Do you want to delete the shift %s from %s to %s?"
+msgstr "तपाईं पारी%s को%s बाट%s मेटाउन चाहनुहुन्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:251
+msgid ""
+"You are not allowed to sign up for this shift. Maybe shift is full or "
+"already running."
+msgstr ""
+"तपाईंले यो पारी लागि साइन अप गर्न अनुमति छैन। शायद पारी पूर्ण वा पहिले नै चलिरहेको छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:298
+msgid "You are subscribed. Thank you!"
+msgstr "तपाईं सदस्य हुनुहुन्छ। धन्यवाद!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:307
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:206
+msgid "Freeloader"
+msgstr "Freeloader"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:337
+msgid "The administration has not configured any shifts yet."
+msgstr "प्रशासन अहिलेसम्म कुनै फेरबदल कन्फिगर गरिएको छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:344
+msgid "The administration has not configured any rooms yet."
+msgstr "प्रशासन अहिले सम्म कुनै पनि कोठा कन्फिगर गरिएको छैन।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:357
+msgid "occupied"
+msgstr "कब्जा"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:361
+msgid "free"
+msgstr "मुक्त"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:366
+msgid ""
+"The administration has not configured any angeltypes yet - or you are not "
+"subscribed to any angeltype."
+msgstr ""
+"प्रशासन अहिले सम्म कुनै पनि angeltypes कन्फिगर गरिएको छैन - वा तपाईं कुनै पनि "
+"angeltype सदस्य छन्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:618
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:755
+#, php-format
+msgid "%d helper needed"
+msgid_plural "%d helpers needed"
+msgstr[0] "%d सहायक आवश्यक"
+msgstr[1] "%d  राम्रो सहयोगीहरूले आवश्यक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:638
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:22
+msgid "Sign up"
+msgstr "साइन अप"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:641
+msgid "ended"
+msgstr "समाप्त"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:649
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:782
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:24
+#, php-format
+msgid "Become %s"
+msgstr "% को बन्न"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:661
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:795
+msgid "Add more angels"
+msgstr "थप स्वर्गदूतहरू थप्न"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:803
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:239
+msgid "Time"
+msgstr "समय"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:804
+msgid "Entries"
+msgstr "प्रविष्टि"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:822
+msgid "Occupancy"
+msgstr "कब्जा"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:823
+msgid ""
+"The tasks shown here are influenced by the preferences you defined in your "
+"settings!"
+msgstr ""
+"यहाँ देखाइएको कार्यहरू तपाईं आफ्नो सेटिङहरू मा परिभाषित प्राथमिकताहरू प्रभावित छन्!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:823
+msgid "Description of the jobs."
+msgstr "यस जब को विवरण।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:824
+msgid "Use new style if possible"
+msgstr "नयाँ शैली भने सम्भव प्रयोग"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:826
+msgid "iCal export"
+msgstr "iCal निर्यात"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:826
+#, php-format
+msgid ""
+"Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s"
+"\">JSON format</a> available (please keep secret, otherwise <a href=\"%s"
+"\">reset the api key</a>)."
+msgstr ""
+"देखाइएको फेरबदल। को निर्यात <a href=\"%s\">iCal ढाँचा</a> वा <a href=\"%s\">JSON "
+"ढाँचामा</a> उपलब्ध (कृपया अन्यथा राख्न गोप्य, <a href=\"%s\">API कि रिसेट</a> )।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:827
+msgid "Filter"
+msgstr "फिल्टर"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:861
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:22
+msgid "All"
+msgstr "सबै"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:862
+msgid "None"
+msgstr "कुनै पनि"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:28
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:192
+msgid "Unconfirmed"
+msgstr "अपुष्ट"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:30
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:34
+msgid "Coordinator"
+msgstr "संयोजक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:32
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:36
+msgid "Member"
+msgstr "सदस्य"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:45
+#, php-format
+msgid "Do you want to delete angeltype %s?"
+msgstr "तपाईं angeltype%s मेटाउन चाहनुहुन्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:47
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:14
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:7
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:18
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:29
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:40
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:51
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:80
+msgid "cancel"
+msgstr "रद्द"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:61
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:217
+msgid "Restricted"
+msgstr "प्रतिबन्धित"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:61
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:62
+msgid "Yes"
+msgstr "हो"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:61
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:62
+msgid "No"
+msgstr "होइन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:62
+msgid "Requires driver license"
+msgstr "चालक लाइसेन्स आवश्यक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:63
+msgid ""
+"Restricted angel types can only be used by an angel if enabled by an "
+"archangel (double opt-in)."
+msgstr ""
+"प्रतिबन्धित स्वर्गदूतले प्रकार मात्र एउटा दूत द्वारा प्रयोग गर्न सकिन्छ एउटा प्रधान दूत "
+"(डबल अप्ट-मा) द्वारा सक्षम भने।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:64
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:100
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:114
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:35
+msgid "Description"
+msgstr "विवरण"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:65
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:36
+msgid "Please use markdown for the description."
+msgstr "विवरण लागि छुट प्रयोग गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:77
+msgid "my driving license"
+msgstr "मेरो ड्राइभिङ लाइसेन्स"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:83
+msgid ""
+"This angeltype requires a driver license. Please enter your driver license "
+"information!"
+msgstr ""
+"यो angeltype चालक लाइसेन्स आवश्यक छ। कृपया आफ्नो चालक लाइसेन्स जानकारी प्रविष्ट!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:86
+#, php-format
+msgid ""
+"You are unconfirmed for this angeltype. Please go to the introduction for %s "
+"to get confirmed."
+msgstr "तपाईंले यो angeltype लागि अपुष्ट छन्। कृपया परिचय जाने%s को पुष्टि गर्न को लागि।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:123
+msgid "confirm"
+msgstr "पुष्टि"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:124
+msgid "deny"
+msgstr "अस्वीकार"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:139
+msgid "remove"
+msgstr "हटाउन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:155
+msgid "Driver"
+msgstr "चालक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:156
+msgid "Has car"
+msgstr "कार छ"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:157
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:27
+msgid "Car"
+msgstr "कार"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:158
+msgid "3,5t Transporter"
+msgstr "3,5t ट्रान्स्पोर्टर"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:159
+msgid "7,5t Truck"
+msgstr "7,5t ट्रक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:160
+msgid "12,5t Truck"
+msgstr "12,5t ट्रक"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:161
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:31
+msgid "Forklift"
+msgstr "फोर्कलिफ्ट"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:166
+msgid "Coordinators"
+msgstr "समन्वयन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:184
+msgid "Members"
+msgstr "सदस्य"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:187
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:70
+msgid "Add"
+msgstr "थप"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:194
+msgid "confirm all"
+msgstr "सबै पुष्टि"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:195
+msgid "deny all"
+msgstr "सबै अस्वीकार"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:212
+msgid "New angeltype"
+msgstr "नयाँ angeltype"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:218
+msgid "Membership"
+msgstr "सदस्यता"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:232
+msgid "FAQ"
+msgstr "सोधिने प्रश्न"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:234
+msgid ""
+"Here is the list of teams and their tasks. If you have questions, read the "
+"FAQ."
+msgstr "यहाँ टोली र तिनीहरूको कार्यहरू सूची छ। तपाईं प्रश्न छ भने, FAQ पढें।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:251
+msgid ""
+"This angeltype is restricted by double-opt-in by a team coordinator. Please "
+"show up at the according introduction meetings."
+msgstr ""
+"यो angeltype एक टोली संयोजक द्वारा डबल-अप्ट-मा प्रतिबन्धित छ। यस अनुसार परिचय "
+"सभाहरूमा देखाउनका गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:17
+msgid "Open questions"
+msgstr "प्रश्न खुला"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:31
+msgid "Your Question:"
+msgstr "तपाईंको प्रश्न:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:17
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:165
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:167
+msgid "Freeloaded"
+msgstr "Freeloaded"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:18
+msgid "Freeload comment (Only for shift coordination):"
+msgstr "टिप्पणी (पारी समन्वय लागि मात्र) Freeload:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:23
+msgid "Edit shift entry"
+msgstr "पारी सम्पादन प्रवेश"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:26
+msgid "Angel:"
+msgstr "स्वर्गदूतले:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:27
+msgid "Date, Duration:"
+msgstr "मिति, अवधि:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:28
+msgid "Location:"
+msgstr "स्थान:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:29
+msgid "Title:"
+msgstr "शीर्षक:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:30
+msgid "Type:"
+msgstr "प्रकार:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:31
+msgid "Comment (for your eyes only):"
+msgstr "टिप्पणी (आफ्नो आँखा लागि मात्र):"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:6
+#, php-format
+msgid "created at %s by %s"
+msgstr "%s मा%s द्वारा सिर्जना"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:8
+#, php-format
+msgid "edited at %s by %s"
+msgstr "%s द्वारा%s मा सम्पादन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:74
+msgid "This shift collides with one of your shifts."
+msgstr "यो पारी आफ्नो फेरबदल को एक साथ collides।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:75
+msgid "You are signed up for this shift."
+msgstr "तपाईंले यो पारी लागि साइन अप छन्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:104
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:240
+msgid "Location"
+msgstr "स्थान"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:12
+#, php-format
+msgid "Do you want to delete shifttype %s?"
+msgstr "तपाईं shifttype%s मेटाउन गर्न चाहनुहुन्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:27
+msgid "Edit shifttype"
+msgstr "shifttype सम्पादन गर्नुहोस्"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:27
+msgid "Create shifttype"
+msgstr "shifttype सिर्जना"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:46
+#, php-format
+msgid "for team %s"
+msgstr "टोली%s को लागि"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:71
+msgid "New shifttype"
+msgstr "नयाँ shifttype"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:7
+msgid "Please select..."
+msgstr "कृपया छान्नुहोस..."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:31
+msgid ""
+"Do you really want to delete the user including all his shifts and every "
+"other piece of his data?"
+msgstr ""
+"तपाईं साँच्चै आफ्नो सबै फेरबदल र आफ्नो डाटा हरेक अन्य टुक्रा सहित प्रयोगकर्ता मेटाउन "
+"चाहनुहुन्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:33
+msgid "Your password"
+msgstr "आफ्नो पासवर्ड"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:48
+#, php-format
+msgid "Angel should receive at least  %d vouchers."
+msgstr "स्वर्गदूतले कम्तिमा% d वाउचर प्राप्त गर्नु पर्छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:50
+msgid "Number of vouchers given out"
+msgstr "बाहिर दिइएको वाउचर संख्या"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:64
+msgid "m/d/Y h:i a"
+msgstr "पु / घ / वाई घन्टा: IA"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:83
+msgid "New user"
+msgstr "नयाँ प्रयोगकर्ता"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:87
+msgid "Prename"
+msgstr "Prename"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:90
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:208
+msgid "Arrived"
+msgstr "आइपुग्यो"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:91
+msgid "Voucher"
+msgstr "भौचर"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:92
+msgid "Freeloads"
+msgstr "Freeloads"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:93
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:210
+msgid "Active"
+msgstr "सक्रिय"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:95
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:211
+msgid "T-Shirt"
+msgstr "टी-शर्ट"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:97
+msgid "Last login"
+msgstr "अन्तिम लग इन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:113
+msgid "Free"
+msgstr "फ्री"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:117
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:119
+#, php-format
+msgid "Next shift %c"
+msgstr "अर्को पारी%c ग"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:124
+#, php-format
+msgid "Shift starts %c"
+msgstr "सिफ्ट%c ग सुरु"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:126
+#, php-format
+msgid "Shift ends %c"
+msgstr "सिफ्ट%c ग समाप्त"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:176
+msgid "sign off"
+msgstr "बाहिर निस्कौं"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:187
+msgid "Sum:"
+msgstr "योगफल:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:205
+msgid "User state"
+msgstr "प्रयोगकर्ता स्थिति"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:208
+#, php-format
+msgid "Arrived at %s"
+msgstr "%s मा आइपुग्यो"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:208
+#, php-format
+msgid "Not arrived (Planned: %s)"
+msgstr "आइपुगे छैन (योजना:%s)"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:208
+msgid "Not arrived"
+msgstr "आइपुगे छैन"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:209
+#, php-format
+msgid "Got %s voucher"
+msgid_plural "Got %s vouchers"
+msgstr[0] "%s को भौचर प्राप्त भयो"
+msgstr[1] "%s वाउचर प्राप्त"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:209
+msgid "Got no vouchers"
+msgstr "कुनै वाउचर पायो"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:218
+msgid "Rights"
+msgstr "अधिकार"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:226
+msgid "driving license"
+msgstr "सवारीचालक अनुमतिपत्र"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:228
+msgid "Edit vouchers"
+msgstr "वाउचर सम्पादन गर्नुहोस्"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:230
+msgid "iCal Export"
+msgstr "iCal निर्यात"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:231
+msgid "JSON Export"
+msgstr "जेसोन निर्यात"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:241
+msgid "Name &amp; workmates"
+msgstr "नाम र सहकर्मी"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:242
+msgid "Comment"
+msgstr "टिप्पणी"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:243
+msgid "Action"
+msgstr "कार्य"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:245
+msgid "Your night shifts between 2 and 8 am count twice."
+msgstr "बीच 2 र 8 AM आफ्नो रात फेरबदल दुई पटक गणना।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:246
+#, php-format
+msgid ""
+"Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some "
+"shifts."
+msgstr ""
+"को जाने <a href=\"%s\">फेरबदल तालिका</a> केही फेरबदल लागि आफैलाई साइन अप गर्न।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:256
+msgid ""
+"We will send you an e-mail with a password recovery link. Please use the "
+"email address you used for registration."
+msgstr ""
+"हामी तपाईंलाई पासवर्ड रिकभरी लिंक संग एक ई-मेल पठाउन हुनेछ। कृपया इमेल ठेगाना दर्ता "
+"लागि प्रयोग प्रयोग गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:259
+msgid "Recover"
+msgstr "पुन: प्राप्त"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:270
+msgid "Please enter a new password."
+msgstr "कृपया नयाँ पासवर्ड प्रविष्ट गर्नुहोस्।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:5
+#, php-format
+msgid "Do you really want to add coordinator rights for %s to %s?"
+msgstr "तपाईं साँच्चै%s %s को लागि संयोजक अधिकार थप्न चाहनुहुन्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:5
+#, php-format
+msgid "Do you really want to remove coordinator rights for %s from %s?"
+msgstr "तपाईं साँच्चै%s बाट%s को लागि संयोजक अधिकार हटाउन चाहनुहुन्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:16
+#, php-format
+msgid "Do you really want to deny all users for %s?"
+msgstr "तपाईं साँच्चै%s को लागि सबै प्रयोगकर्ताहरू अस्वीकार गर्न चाहनुहुन्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:27
+#, php-format
+msgid "Do you really want to confirm all users for %s?"
+msgstr "तपाईं साँच्चै%s को लागि सबै प्रयोगकर्ताहरू पुष्टि गर्न चाहनुहुन्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:38
+#, php-format
+msgid "Do you really want to confirm %s for %s?"
+msgstr "तपाईं साँच्चै%s को लागि%s पुष्टि गर्न चाहनुहुन्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:49
+#, php-format
+msgid "Do you really want to delete %s from %s?"
+msgstr "तपाईं साँच्चै%s बाट%s मेटाउन गर्न चाहनुहुन्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:69
+msgid "User"
+msgstr "प्रयोगकर्ता"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:78
+#, php-format
+msgid "Do you really want to add %s to %s?"
+msgstr "तपाईं साँच्चै%s मा%s को थप्न चाहनुहुन्छ?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:81
+msgid "save"
+msgstr "सुरक्षित"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:17
+msgid "Back to profile"
+msgstr "प्रोफाइलमा फिर्ता"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:21
+msgid "Privacy"
+msgstr "गोपनीयता"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:21
+msgid ""
+"Your driving license information is only visible for coordinators and admins."
+msgstr "आफ्नो ड्राइभिङ लाइसेन्स जानकारी समन्वयन र एडमिन लागि मात्र देख्न सकिने छ।"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:22
+msgid "I am willing to operate cars for the PL"
+msgstr "म PL लागि कार सञ्चालन गर्न इच्छुक छु"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:25
+msgid ""
+"I have my own car with me and am willing to use it for the PL (You'll get "
+"reimbursed for fuel)"
+msgstr ""
+"मलाई मेरो आफ्नै गाडी र (तपाईं इन्धन लागि reimbursed प्राप्त) को PL लागि प्रयोग गर्न "
+"इच्छुक छु"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:26
+msgid "Driver license"
+msgstr "चालक लाइसेन्स"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:28
+msgid "Transporter 3,5t"
+msgstr "ट्रान्स्पोर्टर 3,5t"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:29
+msgid "Truck 7,5t"
+msgstr "ट्रक 7,5t"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:30
+msgid "Truck 12,5t"
+msgstr "ट्रक 12,5t"
+
+#: /Users/arunimas/workspace/projects/engelsystem/public/index.php:147
+msgid "No Access"
+msgstr "कुनै पहुँच"
+
+#: /Users/arunimas/workspace/projects/engelsystem/public/index.php:148
+msgid ""
+"You don't have permission to view this page. You probably have to sign in or "
+"register in order to gain access!"
+msgstr ""
+"तपाईंलाई यो पृष्ठ हेर्ने अनुमति छैन। तपाईं शायद साइन इन वा पहुँच बढाउनका दर्ता गर्न छ!"
+
+msgid " vouchers."
+msgstr "वाउचर।"
+
+msgid ""
+"This is a automatically calculated MINIMUM value, you can of course give out "
+"more if appropriate!"
+msgstr ""
+"यो एक स्वचालित रूपमा गणना न्यूनतम मान छ, तपाईं उपयुक्त यदि बढी दिन बाहिर को पाठ्यक्रम "
+"गर्न सक्नुहुन्छ!"
+
+msgid "You have been signed off from the shift."
+msgstr "तपाईं पारी बाट बन्द हस्ताक्षर गरिएको छ।"
+
+msgid "planned departure"
+msgstr "योजना प्रस्थान"
+
+msgid "Tasks"
+msgstr "कार्य"
+
+msgid "User didnt got vouchers."
+msgstr "प्रयोगकर्ता didnt वाउचर पायो।"
+
+msgid "Remove vouchers"
+msgstr "वाउचर हटाउन"
+
+msgid ""
+"This shift is running now or ended already. Please contact a dispatcher to "
+"join the shift."
+msgstr ""
+"यो पारी अहिले चलिरहेको वा पहिले नै समाप्त भएको छ। कृपया पारी सामेल एक dispatcher "
+"सम्पर्क गर्नुहोस्।"
+
+msgid ""
+"You already subscribed to shift in the same timeslot. Please contact a "
+"dispatcher to join the shift."
+msgstr ""
+"तपाईंले पहिले नै एउटै timeslot मा बदलाव सदस्यता लिनुभयो। कृपया पारी सामेल एक "
+"dispatcher सम्पर्क गर्नुहोस्।"
+
+msgid ""
+"Hello %s, here you can change your personal settings i.e. password, color "
+"settings etc."
+msgstr ""
+"नमस्ते%s को, यहाँ तपाईं परिवर्तन गर्न सक्नुहुन्छ आफ्नो व्यक्तिगत सेटिङ अर्थात् पासवर्ड, रंग "
+"सेटिङहरू आदि"
+
+msgid "Name/Description:"
+msgstr "नाम / विवरण:"
+
+msgid "Timeslot"
+msgstr "Timeslot"
+
+msgid "The first wants to join %s."
+msgstr "पहिलो%s को सामेल गर्न चाहन्छ।"
+
+msgid "Groups"
+msgstr "समूह"
+
+msgid "ICQ"
+msgstr "ICQ"
+
+msgid "You are not confirmed for this angel type."
+msgstr "तपाईंले यो दूत प्रकार पुष्टि छैन।"
+
+msgid "Exports"
+msgstr "निर्यात"
+
+msgid "Current ends in %s min"
+msgstr "%s मिनेट मा वर्तमान समाप्त"
+
+msgid "Add new angeltype"
+msgstr "नयाँ angeltype थप्न"
+
+msgid "Language"
+msgstr "भाषा"
+
+msgid "You have %s new message."
+msgid_plural "You have %s new messages."
+msgstr[0] "तपाईँले%s को नयाँ सन्देश छ।"
+msgstr[1] "तपाईँले%s को नयाँ सन्देश छ ।"
+
+msgid ""
+"These are your shifts.<br/>Please try to appear <b>15 minutes</b> before "
+"your shift begins!<br/>You can remove yourself from a shift up to %d hours "
+"before it starts."
+msgstr ""
+"यी आफ्नो फेरबदल छन्। <br/> कृपया प्रयास आफ्नो पारी सुरु हुनुअघि <b>15 मिनेट</b> देखा "
+"पर्न! <br/> तपाईंले यसलाई सुरु हुनुभन्दा% d घण्टा एक पारी अप आफूलाई हटाउन सक्नुहुन्छ।"
+
+msgid "Page:"
+msgstr "पृष्ठ:"
+
+msgid "Message:"
+msgstr "सन्देश:"
+
+msgid "Wakeup"
+msgstr "उठ्नुहोस्"
+
+msgid "Broken date!"
+msgstr "भाँचिएको मिति!"
+
+msgid "Incomplete call, missing wake-up ID."
+msgstr "अपूर्ण कल, हराएको जागा-अप आईडी।"
+
+msgid "Wake-up call deleted."
+msgstr "जागा-अप कल हटाइयो।"
+
+msgid "No wake-up found."
+msgstr "कुनै जागा-अप फेला परेन।"
+
+msgid ""
+"Hello %s, here you can register for a wake-up call. Simply say when and "
+"where the angel should come to wake you."
+msgstr ""
+"नमस्ते%s को, यहाँ तपाईं एक जागा-अप कल लागि दर्ता गर्न सक्नुहुन्छ। स्वर्गदूतले तपाईं उठाउनका "
+"लागि आउनु पर्छ जहाँ बस भन्नुहोस् र।"
+
+msgid "All ordered wake-up calls, next first."
+msgstr "सबै आदेश जागा-अप कल, अर्को पहिलो।"
+
+msgid "Place"
+msgstr "ठाउँ"
+
+msgid "Notes"
+msgstr "टिप्पणीहरू"
+
+msgid "Schedule a new wake-up here:"
+msgstr "यहाँ एउटा नयाँ जागा-अप तालिका:"
+
+msgid "User %s confirmed as %s."
+msgstr "प्रयोगकर्ता%s को%s को रूपमा पुष्टि।"
+
+msgid ""
+"Resistance is futile! Your biological and physical parameters will be added "
+"to our collectiv! Assimilating angel:"
+msgstr ""
+"प्रतिरोध निरर्थक छ! आफ्नो जैविक र शारीरिक मापदण्डहरु हाम्रो collectiv थपिनेछ! "
+"Assimilating स्वर्गदूतले:"
+
+msgid "Confirmed all."
+msgstr "सबै पुष्टि गर्यो।"
+
+msgid "asdf"
+msgstr "asdf"
