@@ -27,7 +27,6 @@ function user_settings() {
   $planned_arrival_date = $user['planned_arrival_date'];
   $planned_departure_date = $user['planned_departure_date'];
 
-
   if (isset($_REQUEST['submit'])) {
     $ok = true;
     
@@ -74,7 +73,6 @@ function user_settings() {
       }
     } else
       $planned_departure_date = null;
-      
       // Trivia
     if (isset($_REQUEST['lastname']))
       $lastname = strip_request_item('lastname');
@@ -161,9 +159,9 @@ function user_settings() {
   if ($ok) {
       $_SESSION['uid'] = $login_user['UID'];
       $_SESSION['locale'] = $login_user['Sprache'];
-
-      
-    }
+  }
+ 
+ // Admin settings page   
 if( $_SESSION['uid'] == 1){  
   return page_with_title("Admin Settings", array(
       $msg,
@@ -191,7 +189,6 @@ if( $_SESSION['uid'] == 1){
                   form_submit('submit', _("Save")) 
               )) 
           )),
-        
           div('col-md-6', array(
               form(array(
                   form_info(_("Here you can change your password.")),
@@ -210,13 +207,12 @@ if( $_SESSION['uid'] == 1){
                   form_select('language', _("Language:"), $locales, $selected_language),
                   form_submit('submit_language', _("Save")) 
               ))
-            
           ))
-          
       )) 
   ));
 }
 
+// User settings page
 if( $_SESSION['uid'] > 1){  
   return page_with_title("User Settings", array(
       $msg,
@@ -244,7 +240,6 @@ if( $_SESSION['uid'] > 1){
                   form_submit('submit', _("Save")) 
               )) 
           )),
-        
           div('col-md-6', array(
               form(array(
                   form_info(_("Here you can change your password.")),
@@ -263,9 +258,7 @@ if( $_SESSION['uid'] > 1){
                   form_select('language', _("Language:"), $locales, $selected_language),
                   form_submit('submit_language', _("Save")) 
               ))
-             
           ))
-          
       )) 
   ));
 }
