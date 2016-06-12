@@ -10,7 +10,8 @@ $locales = array(
     'fr_FR.UTF-8' => "French",
     'ta_IN.UTF-8' => "Tamil-IN",
     'zn_CH.UTF-8' => "Chinese",
-    'hu_HU.UTF-8' => "Hungarian"
+    'hu_HU.UTF-8' => "Hungarian",
+    'fi_FI.UTF-8' => "Finnish"
 );
 
 $default_locale = 'en_US.UTF-8';
