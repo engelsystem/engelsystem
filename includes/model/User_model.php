@@ -40,7 +40,13 @@ function User_update($user) {
       `Hometown`='" . sql_escape($user['Hometown']) . "',
       `got_voucher`='" . sql_escape($user['got_voucher']) . "',
       `arrival_date`='" . sql_escape($user['arrival_date']) . "',
-      `planned_arrival_date`='" . sql_escape($user['planned_arrival_date']) . "'
+      `planned_arrival_date`='" . sql_escape($user['planned_arrival_date']) . "',
+      `current_city`='" . sql_escape($user['current_city']) . "',
+      `twitter`='" . sql_escape($user['twitter']) . "',
+      `facebook`='" . sql_escape($user['facebook']) . "',
+      `github`='" . sql_escape($user['github']) . "',
+      `organization`='" . sql_escape($user['organization']) . "',
+      `organization_web`='" . sql_escape($user['organization_web']) . "'
       WHERE `UID`='" . sql_escape($user['UID']) . "'");
 }
 
