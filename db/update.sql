@@ -24,7 +24,7 @@ ALTER TABLE `User`
   ADD `facebook` varchar(255) DEFAULT NULL,
   ADD `github` varchar(255) DEFAULT NULL,
   ADD `organization` varchar(255) DEFAULT NULL,
-  ADD `organization_web` varchar(255) DEFAULT NULL;
+  ADD `organization_web` varchar(255) DEFAULT NULL,
   ADD `display_msg` varchar(255) DEFAULT "By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel task sheduler.";
 
 -- -----------------------------------------------------------------------------  
