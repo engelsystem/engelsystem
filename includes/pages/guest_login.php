@@ -14,7 +14,7 @@ function logout_title() {
 
 // Engel registrieren
 function guest_register() {
-  global $tshirt_sizes, $enable_tshirt_size, $default_theme, $display_msg;
+  global $tshirt_sizes, $enable_tshirt_size, $default_theme;
 
   $msg = "";
   $nick = "";
@@ -39,9 +39,9 @@ function guest_register() {
   $password_hash = "";
   $selected_angel_types = array();
   $planned_arrival_date = null;
-  $admin_source = sql_select("SELECT `display_msg` FROM  WHERE `UID`='" . sql_escape(1) . "' LIMIT 1");
+  
+  $admin_source = sql_select("SELECT `display_msg` FROM `User` WHERE `UID`='" . sql_escape(1) . "' LIMIT 1");
   $display_message = $admin_source[0]['display_msg'];
-
   $angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
   $angel_types = array();
   foreach ($angel_types_source as $angel_type) {
