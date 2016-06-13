@@ -223,20 +223,34 @@ function guest_register() {
           div('row', array(
               div('col-md-6', array(
                   div('row', array(
-                      div('col-sm-4', array(
+                      div('col-sm-8', array(
                           form_text('nick', _("Nick") . ' ' . entry_required(), $nick)
                       )),
+                  )) ,
+                  div('row', array(
                       div('col-sm-8', array(
                           form_email('mail', _("E-Mail") . ' ' . entry_required(), $mail),
                           form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $email_shiftinfo)
                       ))
                   )),
                   div('row', array(
-                      div('col-sm-6', array(
+                      div('col-sm-8', array(
                           form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, time())
                       )),
-                      div('col-sm-6', array(
+                  )),
+                    div('row', array(
+                      div('col-sm-8', array(
                           $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : ''
+                      ))
+                  )),
+                    div('row', array(
+                      div('col-sm-8', array(
+                          form_password('password', _("Password") . ' ' . entry_required())
+                      )),
+                  )),      
+                  div('row', array(
+                      div('col-sm-8', array(
+                          form_password('password2', _("Confirm password") . ' ' . entry_required())
                       ))
                   )),
                   
@@ -247,30 +261,40 @@ function guest_register() {
                       div('col-sm-4', array(
                           form_text('facebook', _("Facebook"), $facebook )
                       )),
-                      div('col-sm-4', array(
+                  )),
+                      
+                  div('row', array(
+                      div('col-sm-8', array(
                           form_text('github', _("Github"), $github )
                       ))
                   )),
-                  
-                  div('row', array(
-                      div('col-sm-6', array(
-                          form_password('password', _("Password") . ' ' . entry_required())
-                      )),
-                      div('col-sm-6', array(
-                          form_password('password2', _("Confirm password") . ' ' . entry_required())
-                      ))
-                  )),
-                  
                   
                   
                   form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
                   form_info("", _("Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section."))
               )),
               div('col-md-6', array(
+                div('row', array(
+                      div('col-sm-8', array(
+                          form_text('prename', _("First name") . ' ' . entry_required(), $prename)
+                      )),
+                  )),
                   div('row', array(
-                      div('col-sm-4', array(
+                      div('col-sm-8', array(
+                          form_text('lastname', _("Last name") . ' ' . entry_required(), $lastname) 
+                      ))
+                  )),
+                  div('row', array(
+                  div('col-sm-8', array(
+                          form_text('current_city', _("Current City"). ' ' . entry_required(), $current_city)
+                      )),
+                  )),
+                  div('row', array(
+                      div('col-sm-8', array(
                           form_text('dect', _("DECT"), $dect)
                       )),
+                      )),
+                      div('row', array(
                       div('col-sm-4', array(
                           form_text('mobile', _("Mobile"), $mobile)
                       )),
@@ -278,38 +302,30 @@ function guest_register() {
                           form_text('tel', _("Phone"), $tel)
                       ))
                   )),
+                  div('row', array(
+                  div('col-sm-8', array(    
                   form_text('jabber', _("Jabber"), $jabber),
-                  div('row', array(
-                      div('col-sm-6', array(
-                          form_text('prename', _("First name") . ' ' . entry_required(), $prename)
-                      )),
-                      div('col-sm-6', array(
-                          form_text('lastname', _("Last name") . ' ' . entry_required(), $lastname) 
-                      ))
                   )),
+                  )),
+                  
                   div('row', array(
-                      div('col-sm-3', array(
+                      div('col-sm-4', array(
                           form_text('age', _("Age"), $age)
                       )),
                       div('col-sm-4', array(
                           form_text('hometown', _("Hometown"), $hometown)
                       )),
-                      div('col-sm-5', array(
-                          form_text('current_city', _("Current City"). ' ' . entry_required(), $current_city)
-                      ))
-                      
                   )),
                   div('row', array(
-                      div('col-sm-12', array(
+                      div('col-sm-8', array(
                           form_text('organization', _("Organisation Name (University or Company Name)"), $organization)
                       )),
                   )),
                   div('row', array(
-                      div('col-sm-12', array(
+                      div('col-sm-8', array(
                           form_text('organization_web', _("Organization Website"), $organization_web)
                       )),
                   )),
-                  
                   form_info(entry_required() . ' = ' . _("Entry required!"))
               ))
           )),
