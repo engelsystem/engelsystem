@@ -1,6 +1,6 @@
 -- drivers license information
 CREATE TABLE IF NOT EXISTS `UserDriverLicenses` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
   `has_car` tinyint(1) NOT NULL,
   `has_license_car` tinyint(1) NOT NULL,
   `has_license_3_5t_transporter` tinyint(1) NOT NULL,
