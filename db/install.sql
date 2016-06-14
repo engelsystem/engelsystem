@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 25. Aug 2015 um 15:29
+-- Creation Time: 25. Aug 2015 around 15:29
 -- Server Version: 5.6.12
 -- PHP-Version: 5.5.3
 
@@ -12,11 +12,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `AngelTypes`
---
-
+-- Table structure for table ` AngelTypes`
 DROP TABLE IF EXISTS `AngelTypes`;
 CREATE TABLE IF NOT EXISTS `AngelTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -27,13 +23,8 @@ CREATE TABLE IF NOT EXISTS `AngelTypes` (
   UNIQUE KEY `Name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
-
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `GroupPrivileges`
---
-
+-- Table structure for table `GroupPrivileges`
 DROP TABLE IF EXISTS `GroupPrivileges`;
 CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -44,10 +35,7 @@ CREATE TABLE IF NOT EXISTS `GroupPrivileges` (
   KEY `privilege_id` (`privilege_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=259 ;
 
---
--- Daten für Tabelle `GroupPrivileges`
---
-
+-- Data for table `GroupPrivileges`
 INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (85, -7, 10),
 (87, -7, 18),
@@ -95,11 +83,7 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES
 (24, -1, 5);
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `Groups`
---
-
+-- Table structure for table `Groups`
 DROP TABLE IF EXISTS `Groups`;
 CREATE TABLE IF NOT EXISTS `Groups` (
   `Name` varchar(35) NOT NULL,
@@ -107,10 +91,7 @@ CREATE TABLE IF NOT EXISTS `Groups` (
   PRIMARY KEY (`UID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Daten für Tabelle `Groups`
---
-
+-- Data for table`Groups`
 INSERT INTO `Groups` (`Name`, `UID`) VALUES
 ('6-Developer', -7),
 ('5-Bürokrat', -6),
@@ -121,11 +102,7 @@ INSERT INTO `Groups` (`Name`, `UID`) VALUES
 ('1-Gast', -1);
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `LogEntries`
---
-
+-- Table structure for table `LogEntries`
 DROP TABLE IF EXISTS `LogEntries`;
 CREATE TABLE IF NOT EXISTS `LogEntries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -137,11 +114,7 @@ CREATE TABLE IF NOT EXISTS `LogEntries` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `Messages`
---
-
+-- Table structure for table `Messages`
 DROP TABLE IF EXISTS `Messages`;
 CREATE TABLE IF NOT EXISTS `Messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -157,11 +130,7 @@ CREATE TABLE IF NOT EXISTS `Messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Fuers interen Communikationssystem' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `NeededAngelTypes`
---
-
+-- Table structure for table `NeededAngelTypes`
 DROP TABLE IF EXISTS `NeededAngelTypes`;
 CREATE TABLE IF NOT EXISTS `NeededAngelTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -176,11 +145,7 @@ CREATE TABLE IF NOT EXISTS `NeededAngelTypes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `News`
---
-
+-- Table structure for table `News`
 DROP TABLE IF EXISTS `News`;
 CREATE TABLE IF NOT EXISTS `News` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -194,11 +159,7 @@ CREATE TABLE IF NOT EXISTS `News` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `NewsComments`
---
-
+-- Table structure for table `NewsComments`
 DROP TABLE IF EXISTS `NewsComments`;
 CREATE TABLE IF NOT EXISTS `NewsComments` (
   `ID` bigint(11) NOT NULL AUTO_INCREMENT,
@@ -212,11 +173,7 @@ CREATE TABLE IF NOT EXISTS `NewsComments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `Privileges`
---
-
+-- Table structure for table `Privileges`
 DROP TABLE IF EXISTS `Privileges`;
 CREATE TABLE IF NOT EXISTS `Privileges` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -226,10 +183,7 @@ CREATE TABLE IF NOT EXISTS `Privileges` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=39 ;
 
---
--- Daten für Tabelle `Privileges`
---
-
+-- Data for table`Privileges`
 INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (1, 'start', 'Startseite für Gäste/Nicht eingeloggte User'),
 (2, 'login', 'Logindialog'),
@@ -270,11 +224,7 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES
 (38, 'shifttypes', 'Administrate shift types');
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `Questions`
---
-
+-- Table structure for table `Questions`
 DROP TABLE IF EXISTS `Questions`;
 CREATE TABLE IF NOT EXISTS `Questions` (
   `QID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -288,11 +238,7 @@ CREATE TABLE IF NOT EXISTS `Questions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Fragen und Antworten' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `Room`
---
-
+-- Table structure for table `Room`
 DROP TABLE IF EXISTS `Room`;
 CREATE TABLE IF NOT EXISTS `Room` (
   `RID` int(11) NOT NULL AUTO_INCREMENT,
@@ -306,11 +252,7 @@ CREATE TABLE IF NOT EXISTS `Room` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `ShiftEntry`
---
-
+-- Table structure for table `ShiftEntry`
 DROP TABLE IF EXISTS `ShiftEntry`;
 CREATE TABLE IF NOT EXISTS `ShiftEntry` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -328,11 +270,7 @@ CREATE TABLE IF NOT EXISTS `ShiftEntry` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `Shifts`
---
-
+-- Table structure for table `Shifts`
 DROP TABLE IF EXISTS `Shifts`;
 CREATE TABLE IF NOT EXISTS `Shifts` (
   `SID` int(11) NOT NULL AUTO_INCREMENT,
@@ -356,11 +294,7 @@ CREATE TABLE IF NOT EXISTS `Shifts` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=133 ;
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `ShiftTypes`
---
-
+-- Table structure for table `ShiftTypes`
 DROP TABLE IF EXISTS `ShiftTypes`;
 CREATE TABLE IF NOT EXISTS `ShiftTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -371,19 +305,12 @@ CREATE TABLE IF NOT EXISTS `ShiftTypes` (
   KEY `angeltype_id` (`angeltype_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
---
--- Daten für Tabelle `ShiftTypes`
---
-
+-- Data for table `ShiftTypes`
 INSERT INTO `ShiftTypes` (`id`, `name`, `angeltype_id`, `description`) VALUES
 (4, 'Schichttyp1', NULL, '');
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `User`
---
-
+-- Table structure for table `User`
 DROP TABLE IF EXISTS `User`;
 CREATE TABLE IF NOT EXISTS `User` (
   `UID` int(11) NOT NULL AUTO_INCREMENT,
@@ -417,7 +344,6 @@ CREATE TABLE IF NOT EXISTS `User` (
   `arrival_date` int(11) DEFAULT NULL,
   `planned_arrival_date` int(11) NOT NULL,
   `planned_departure_date` int(11) DEFAULT NULL,
-  
   PRIMARY KEY (`UID`),
   UNIQUE KEY `Nick` (`Nick`),
   KEY `api_key` (`api_key`),
@@ -427,19 +353,12 @@ CREATE TABLE IF NOT EXISTS `User` (
   KEY `planned_departure_date` (`planned_departure_date`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
---
--- Daten für Tabelle `User`
---
-
+-- Data for table `User`
 INSERT INTO `User` (`UID`, `Nick`, `Name`, `Vorname`, `Alter`, `Telefon`, `DECT`, `Handy`, `email`, `email_shiftinfo`, `jabber`, `Size`, `Passwort`, `password_recovery_token`, `Gekommen`, `Aktiv`, `force_active`, `Tshirt`, `color`, `Sprache`, `Menu`, `lastLogIn`, `CreateDate`, `Art`, `kommentar`, `Hometown`, `api_key`, `got_voucher`, `arrival_date`, `planned_arrival_date`, `planned_departure_date`) VALUES
 (1, 'admin', 'Gates', 'Bill', 42, '', '-', '', 'admin@example.com', 1, '', 'XL', '$6$rounds=5000$hjXbIhoRTH3vKiRa$Wl2P2iI5T9iRR.HHu/YFHswBW0WVn0yxCfCiX0Keco9OdIoDK6bIAADswP6KvMCJSwTGdV8PgA8g8Xfw5l8BD1', NULL, 1, 1, 0, 1, 2, 'de_DE.UTF-8', 'L', 1439759300, '0000-00-00 00:00:00', '', '', '', '038850abdd1feb264406be3ffa746235', 3, 1439490478, 1436964455, 1440161255);
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `UserAngelTypes`
---
-
+-- Table structure for table `UserAngelTypes`
 DROP TABLE IF EXISTS `UserAngelTypes`;
 CREATE TABLE IF NOT EXISTS `UserAngelTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -455,11 +374,7 @@ CREATE TABLE IF NOT EXISTS `UserAngelTypes` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `UserGroups`
---
-
+-- Table structure for table `UserGroups`
 DROP TABLE IF EXISTS `UserGroups`;
 CREATE TABLE IF NOT EXISTS `UserGroups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -470,10 +385,7 @@ CREATE TABLE IF NOT EXISTS `UserGroups` (
   KEY `group_id` (`group_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
---
--- Daten für Tabelle `UserGroups`
---
-
+-- Data for table `UserGroups`
 INSERT INTO `UserGroups` (`id`, `uid`, `group_id`) VALUES
 (3, 1, -7),
 (4, 1, -6),
@@ -481,86 +393,64 @@ INSERT INTO `UserGroups` (`id`, `uid`, `group_id`) VALUES
 (2, 1, -4),
 (1, 1, -2);
 
---
--- Constraints der exportierten Tabellen
---
+-- -----------------------------------------------------------------------------
+-- Constraints of the exported Table
 
---
--- Constraints der Tabelle `GroupPrivileges`
---
+-- Constraints of the Table `GroupPrivileges`
 ALTER TABLE `GroupPrivileges`
   ADD CONSTRAINT `groupprivileges_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `Groups` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `groupprivileges_ibfk_2` FOREIGN KEY (`privilege_id`) REFERENCES `Privileges` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints der Tabelle `Messages`
---
+-- Constraints of the Table `Messages`
 ALTER TABLE `Messages`
   ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`SUID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`RUID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints der Tabelle `NeededAngelTypes`
---
+-- Constraints of the Table `NeededAngelTypes`
 ALTER TABLE `NeededAngelTypes`
   ADD CONSTRAINT `neededangeltypes_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `Room` (`RID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `neededangeltypes_ibfk_2` FOREIGN KEY (`shift_id`) REFERENCES `Shifts` (`SID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `neededangeltypes_ibfk_3` FOREIGN KEY (`angel_type_id`) REFERENCES `AngelTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints der Tabelle `News`
---
+-- Constraints of the Table `News`
 ALTER TABLE `News`
   ADD CONSTRAINT `news_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints der Tabelle `NewsComments`
---
+-- Constraints of the Table `NewsComments`
 ALTER TABLE `NewsComments`
   ADD CONSTRAINT `newscomments_ibfk_1` FOREIGN KEY (`Refid`) REFERENCES `News` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `newscomments_ibfk_2` FOREIGN KEY (`UID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints der Tabelle `Questions`
---
+-- Constraints of the Table `Questions`
 ALTER TABLE `Questions`
   ADD CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `questions_ibfk_2` FOREIGN KEY (`AID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints der Tabelle `ShiftEntry`
+-- Constraints of the Table `ShiftEntry`
 --
 ALTER TABLE `ShiftEntry`
   ADD CONSTRAINT `shiftentry_ibfk_1` FOREIGN KEY (`SID`) REFERENCES `Shifts` (`SID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `shiftentry_ibfk_2` FOREIGN KEY (`UID`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `shiftentry_ibfk_3` FOREIGN KEY (`TID`) REFERENCES `AngelTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints der Tabelle `Shifts`
---
+-- Constraints of the Table `Shifts`
 ALTER TABLE `Shifts`
   ADD CONSTRAINT `shifts_ibfk_1` FOREIGN KEY (`RID`) REFERENCES `Room` (`RID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `shifts_ibfk_2` FOREIGN KEY (`shifttype_id`) REFERENCES `ShiftTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `shifts_ibfk_3` FOREIGN KEY (`created_by_user_id`) REFERENCES `User` (`UID`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `shifts_ibfk_4` FOREIGN KEY (`edited_by_user_id`) REFERENCES `User` (`UID`) ON DELETE SET NULL ON UPDATE CASCADE;
 
---
--- Constraints der Tabelle `ShiftTypes`
---
+-- Constraints of the Table `ShiftTypes`
 ALTER TABLE `ShiftTypes`
   ADD CONSTRAINT `shifttypes_ibfk_1` FOREIGN KEY (`angeltype_id`) REFERENCES `AngelTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints der Tabelle `UserAngelTypes`
---
+-- Constraints of the Table `UserAngelTypes`
 ALTER TABLE `UserAngelTypes`
   ADD CONSTRAINT `userangeltypes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `userangeltypes_ibfk_2` FOREIGN KEY (`angeltype_id`) REFERENCES `AngelTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `userangeltypes_ibfk_3` FOREIGN KEY (`confirm_user_id`) REFERENCES `User` (`UID`) ON DELETE SET NULL ON UPDATE CASCADE;
 
---
--- Constraints der Tabelle `UserGroups`
---
+-- Constraints of the Table `UserGroups`
 ALTER TABLE `UserGroups`
   ADD CONSTRAINT `usergroups_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `Groups` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `usergroups_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
