@@ -1,16 +1,16 @@
 -- drivers license information
 CREATE TABLE IF NOT EXISTS `UserDriverLicenses` (
-	  `user_id` int(11) NOT NULL,
-	  `has_car` tinyint(1) NOT NULL,
-	  `has_license_car` tinyint(1) NOT NULL,
-	  `has_license_3_5t_transporter` tinyint(1) NOT NULL,
-	  `has_license_7_5t_truck` tinyint(1) NOT NULL,
-	  `has_license_12_5t_truck` tinyint(1) NOT NULL,
-	  `has_license_forklift` tinyint(1) NOT NULL,
-	  PRIMARY KEY (`user_id`)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-	ALTER TABLE `UserDriverLicenses`
-	  ADD CONSTRAINT `userdriverlicenses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  `user_id` int(11) NOT NULL,
+  `has_car` tinyint(1) NOT NULL,
+  `has_license_car` tinyint(1) NOT NULL,
+  `has_license_3_5t_transporter` tinyint(1) NOT NULL,
+  `has_license_7_5t_truck` tinyint(1) NOT NULL,
+  `has_license_12_5t_truck` tinyint(1) NOT NULL,
+  `has_license_forklift` tinyint(1) NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE `UserDriverLicenses`
+  ADD CONSTRAINT `userdriverlicenses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- -----------------------------------------------------------------------------
 -- Update table 'Angeltypes'
@@ -30,16 +30,16 @@ ALTER TABLE `User`
 -- -----------------------------------------------------------------------------  
 -- Events information table
 CREATE TABLE IF NOT EXISTS `Events` (
-	  `event_id` int(11) NOT NULL AUTO_INCREMENT,
-	  `name` varchar(255) NOT NULL,
-	  `description` text NOT NULL,
-	  `organizer` varchar(255) NOT NULL,
-	  `start_date` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
-	  `end_date` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
-	  `venue` varchar(255) NOT NULL,
-	  PRIMARY KEY (`event_id`),
-	  UNIQUE KEY `Name` (`name`)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `event_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `organizer` varchar(255) NOT NULL,
+  `start_date` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
+  `end_date` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
+  `venue` varchar(255) NOT NULL,
+  PRIMARY KEY (`event_id`),
+  UNIQUE KEY `Name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- -----------------------------------------------------------------------------
 -- Update 'shifts' table
@@ -48,4 +48,3 @@ ALTER TABLE `Shifts`
   ADD `end_time` datetime NOT NULL;
 
 -- -----------------------------------------------------------------------------
-
