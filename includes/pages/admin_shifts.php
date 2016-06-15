@@ -11,7 +11,7 @@ function admin_shifts() {
   $start = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d") . " 00:00")->getTimestamp();
   $end = $start;
   $start_time = DateTime::createFromFormat("H:i", date("H:i") )->getTimestamp();
-  $end_time = $start_time;  
+  $end_time = $start_time;
   $mode = 'single';
   $angelmode = 'manually';
   $length = '';
@@ -110,7 +110,7 @@ function admin_shifts() {
         error(_('The shifts start and end at same time.'));
       }
     }
-    
+
     if (isset($_REQUEST['mode'])) {
       if ($_REQUEST['mode'] == 'single') {
         $mode = 'single';
@@ -314,7 +314,7 @@ function admin_shifts() {
     }
     
     engelsystem_log("Shift needs following angel types: " . join(", ", $needed_angel_types_info));
-    success("Schichten angelegt.");
+    success("Shift created successfully.");
     redirect(page_link_to('admin_shifts'));
   } else {
     unset($_SESSION['admin_shifts_shifts']);
