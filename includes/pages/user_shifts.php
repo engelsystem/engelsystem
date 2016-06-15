@@ -95,8 +95,8 @@ function user_shifts() {
     $title = $shift['title'];
     $rid = $shift['RID'];
     $start = $shift['start'];
-    $start_time = DateTime::createFromFormat("H:i",date("H:i",$shift['start']))->getTimestamp();
-    $start_time = DateTime::createFromFormat("H:i",date("H:i",$shift['end']))->getTimestamp();
+    $start_time = DateTime::createFromFormat("H:i", date("H:i", $shift['start']))->getTimestamp();
+    $start_time = DateTime::createFromFormat("H:i", date("H:i", $shift['end']))->getTimestamp();
     $end = $shift['end'];
 
     if (isset($_REQUEST['submit'])) {
@@ -172,9 +172,9 @@ function user_shifts() {
           $msg .= error(sprintf(_("Please check your input for needed angels of type %s."), $type['name']), true);
         }
       }
-      $start = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d",$start) . date("H:i",$start_time));
+      $start = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d", $start) . date("H:i", $start_time));
       $start = $start->getTimestamp();
-      $end = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d",$end) . date("H:i",$end_time));
+      $end = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d", $end) . date("H:i", $end_time));
       $end = $end->getTimestamp();  
 
       if ($ok) {
