@@ -96,7 +96,7 @@ function user_shifts() {
     $rid = $shift['RID'];
     $start = $shift['start'];
     $start_time = DateTime::createFromFormat("H:i", date("H:i", $shift['start']))->getTimestamp();
-    $start_time = DateTime::createFromFormat("H:i", date("H:i", $shift['end']))->getTimestamp();
+    $end_time = DateTime::createFromFormat("H:i", date("H:i", $shift['end']))->getTimestamp();    
     $end = $shift['end'];
 
     if (isset($_REQUEST['submit'])) {
