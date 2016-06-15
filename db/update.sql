@@ -12,11 +12,12 @@ CREATE TABLE IF NOT EXISTS `UserDriverLicenses` (
 ALTER TABLE `UserDriverLicenses`
   ADD CONSTRAINT `userdriverlicenses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- -----------------------------------------------------------------------------
+-- Update table 'Angeltypes'
 ALTER TABLE `AngelTypes` ADD `requires_driver_license` BOOLEAN NOT NULL;
 
 -- -----------------------------------------------------------------------------
-
-
+-- Update 'User' Table
 ALTER TABLE `User`
   ADD UNIQUE (email),
   ADD `current_city` varchar(255) DEFAULT NULL,
@@ -27,3 +28,15 @@ ALTER TABLE `User`
   ADD `organization_web` varchar(255) DEFAULT NULL;
 
 -- -----------------------------------------------------------------------------  
+-- Events information table
+CREATE TABLE IF NOT EXISTS `Events` (
+  `event_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `organizer` varchar(255) NOT NULL,
+  `start_date` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
+  `end_date` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
+  `venue` varchar(255) NOT NULL,
+  PRIMARY KEY (`event_id`),
+  UNIQUE KEY `Name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
