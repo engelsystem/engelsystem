@@ -108,6 +108,8 @@ function Shift_update($shift) {
   return sql_query("UPDATE `Shifts` SET
       `shifttype_id`='" . sql_escape($shift['shifttype_id']) . "',
       `start`='" . sql_escape($shift['start']) . "',
+      `start_time`='" . sql_escape($shift['start_time']) . "',
+      `end_time`='" . sql_escape($shift['end_time']) . "',      
       `end`='" . sql_escape($shift['end']) . "',
       `RID`='" . sql_escape($shift['RID']) . "',
       `title`=" . sql_null($shift['title']) . ",
@@ -141,6 +143,8 @@ function Shift_create($shift) {
   $result = sql_query("INSERT INTO `Shifts` SET
       `shifttype_id`='" . sql_escape($shift['shifttype_id']) . "',
       `start`='" . sql_escape($shift['start']) . "',
+      `start_time`='" . sql_escape($shift['start_time']) . "',
+      `end_time`='" . sql_escape($shift['end_time']) . "',      
       `end`='" . sql_escape($shift['end']) . "',
       `RID`='" . sql_escape($shift['RID']) . "',
       `title`=" . sql_null($shift['title']) . ",
