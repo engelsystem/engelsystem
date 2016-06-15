@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS `Events` (
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `organizer` varchar(255) NOT NULL,
-  `start_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `end_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `start_date` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
+  `end_date` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
   `venue` varchar(255) NOT NULL,
   PRIMARY KEY (`event_id`),
   UNIQUE KEY `Name` (`name`)
