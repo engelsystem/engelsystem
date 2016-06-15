@@ -154,7 +154,7 @@ function admin_shifts() {
       } else {
         $ok = false;
         error(_('Please select a mode for needed angels.'));
-        }
+      }
     } else {
       $ok = false;
       error(_('Please select needed angels.'));
