@@ -40,11 +40,3 @@ CREATE TABLE IF NOT EXISTS `Events` (
   PRIMARY KEY (`event_id`),
   UNIQUE KEY `Name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- -----------------------------------------------------------------------------
--- Update 'shifts' table
-ALTER TABLE `Shifts` 
-  ADD `start_time` datetime NOT NULL,
-  ADD `end_time` datetime NOT NULL;
-
--- -----------------------------------------------------------------------------
