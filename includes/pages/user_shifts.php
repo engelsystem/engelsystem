@@ -125,7 +125,7 @@ function user_shifts() {
         $ok = false;
         error(_('Please select a start date.'));
       }
-    
+
       if (isset($_REQUEST['end']) && $tmp = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['end'])))
         $end = $tmp->getTimestamp();
       else {
@@ -146,7 +146,7 @@ function user_shifts() {
         $ok = false;
         error(_('Please select an end time.'));
       }
-    
+
       if (strtotime($_REQUEST['start']) > strtotime($_REQUEST['end'])) {
         $ok = false;
         error(_('The shifts end has to be after its start.'));
