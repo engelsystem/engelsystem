@@ -388,48 +388,20 @@ function shift_sort($a, $b) {
 }
 
 function export_xls(){
-global $user;
-// filename
-$xls_filename = 'export_'.date('Y-m-d').'.xls'; // Define Excel (.xls) file name
-// Execute query
-$result = sql_select("SELECT * FROM `User`",$sql_connection) or die("Failed to execute query:<br />" . sql_error(). "<br />" . mysqli_errno()); //sql_connection is global variable in mysqli_provider.php
-
-// Header info settings
-header("Content-Type: application/xls");
-header("Content-Disposition: attachment; filename=$xls_filename");
-header("Pragma: no-cache");
-header("Expires: 0");
-
-// Define separator (defines columns in excel &amp; tabs in word)
-$separator = "\t";
-
-// Start of printing column names as names of MySQL fields
-for ($i = 0 ; $i < sql_num_query($result) ; $i++) {
-  echo sql_select_single_cell($result) . "\t";
-}
-print("\n");
-
-// Start while loop to get data
-while($row = mysqli_fetch_row($result))
-{
-  $schema= "";
-  for( $j=0 ; $j < sql_num_query($result) ; $j++)
-  {
-    if(!isset($row[$j])) {
-      $schema .= "NULL".$separator;
+$filename = "Webinfopen.csv"; // File Name
+// Download file
+header("Content-Disposition: attachment; filename=\"$filename\"");
+header("Content-Type: application/csv");
+$user_query = sql_query("Select * from `User`");
+// Write data to file
+$flag = false;
+while ($row = mysqli_fetch_assoc($user_query)) {
+    if (!$flag) {
+        // display field/column names as first row
+        echo implode("\t", array_keys($row)) . "\r\n";
+        $flag = true;
     }
-    elseif ($row[$j] != "") {
-      $schema .= "$row[$j]".$separator;
-    }
-    else {
-      $schema .= "".$separator;
-    }
-  }
-  $schema = str_replace($seperator."$", "", $schema);
-  $schema = preg_replace("/\r\n|\n\r|\n|\r/", " ", $schema);
-  $schema.= "\t";
-  print(trim($schema));
-  print "\n";
+    echo implode("\t", array_values($row)) . "\r\n";
 }
 }
 ?>
