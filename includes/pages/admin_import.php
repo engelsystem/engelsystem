@@ -387,41 +387,40 @@ function shift_sort($a, $b) {
   return ($a['start'] < $b['start']) ? - 1 : 1;
 }
 
-function export_xls(){ 
+function export_xls(){
 global $user;
-// filename 
+// filename
 $xls_filename = 'export_'.date('Y-m-d').'.xls'; // Define Excel (.xls) file name
-// selecting the table user 
-$sql = "SELECT * FROM `User`"; 
+// selecting the table user
+$sql = "SELECT * FROM `User`";
 //enter your mysql root password here
-$Connect = @mysql_connect("localhost", "root", "") or die("Failed to connect to MySQL.You need to enter the password:<br />" . mysql_error() . "<br />" . mysql_errno());
+$Connect = sql_connect("localhost", "root", "","engelsystem") or die("Failed to connect to MySQL.You need to enter the password:<br />" . sql_error() . "<br />" . mysqli_errno());
 // Select database
-$Db = @mysql_select_db(engelsystem, $Connect) or die("Failed to select database:<br />" . mysql_error(). "<br />" . mysql_errno());
+$Db = sql_select_db(engelsystem) or die("Failed to select database:<br />" . sql_error(). "<br />" . mysqli_errno());
 // Execute query
-$result = @mysql_query($sql,$Connect) or die("Failed to execute query:<br />" . mysql_error(). "<br />" . mysql_errno());
+$result = sql_select($sql) or die("Failed to execute query:<br />" . sql_error(). "<br />" . mysqli_errno());
 
 // Header info settings
 header("Content-Type: application/xls");
 header("Content-Disposition: attachment; filename=$xls_filename");
 header("Pragma: no-cache");
 header("Expires: 0");
- 
+
 // Define separator (defines columns in excel &amp; tabs in word)
 $separator = "\t";
- 
+
 // Start of printing column names as names of MySQL fields
-for ($i = 0 ; $i < mysql_num_fields($result) ; $i++) {
-  echo mysql_field_name($result, $i) . "\t";
+for ($i = 0 ; $i < sql_num_query($result) ; $i++) {
+  echo sql_select_single_cell($result) . "\t";
 }
 print("\n");
- 
+
 // Start while loop to get data
-while($row = mysql_fetch_row($result))
+while($row = mysqli_fetch_row($result))
 {
   $schema= "";
-  for( $j=0 ; $j < mysql_num_fields($result) ; $j++)
+  for( $j=0 ; $j < sql_num_query($result) ; $j++)
   {
-    
     if(!isset($row[$j])) {
       $schema .= "NULL".$separator;
     }
@@ -439,5 +438,4 @@ while($row = mysql_fetch_row($result))
   print "\n";
 }
 }
-
 ?>
