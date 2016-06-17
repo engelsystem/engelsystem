@@ -393,10 +393,6 @@ global $user;
 $xls_filename = 'export_'.date('Y-m-d').'.xls'; // Define Excel (.xls) file name
 // selecting the table user
 $sql = "SELECT * FROM `User`";
-//enter your mysql root password here
-$Connect = sql_connect("localhost", "root", "","engelsystem") or die("Failed to connect to MySQL.You need to enter the password:<br />" . sql_error() . "<br />" . mysqli_errno());
-// Select database
-$Db = sql_select_db(engelsystem) or die("Failed to select database:<br />" . sql_error(). "<br />" . mysqli_errno());
 // Execute query
 $result = sql_select($sql) or die("Failed to execute query:<br />" . sql_error(). "<br />" . mysqli_errno());
 
