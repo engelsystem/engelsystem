@@ -391,10 +391,8 @@ function export_xls(){
 global $user;
 // filename
 $xls_filename = 'export_'.date('Y-m-d').'.xls'; // Define Excel (.xls) file name
-// selecting the table user
-$sql = "SELECT * FROM `User`";
 // Execute query
-$result = sql_select($sql,$sql_connection) or die("Failed to execute query:<br />" . sql_error(). "<br />" . mysqli_errno()); //sql_connection is global variable in mysqli_provider.php
+$result = sql_select("SELECT * FROM `User`",$sql_connection) or die("Failed to execute query:<br />" . sql_error(). "<br />" . mysqli_errno()); //sql_connection is global variable in mysqli_provider.php
 
 // Header info settings
 header("Content-Type: application/xls");
