@@ -380,8 +380,9 @@ function shifts_printable($shifts, $shifttypes) {
 function shift_sort($a, $b) {
   return ($a['start'] < $b['start']) ? - 1 : 1;
 }
-function export_xls(){
-	$filename = "export_data.csv"; // File Name
+
+function export_xls() {
+	$filename = "export_users_data.csv"; // File Name
 	// Download file
 	$headings = sql_select("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'User' ");
 	$head = "";
@@ -399,20 +400,18 @@ function export_xls(){
 	fclose($fp);
 
 	$fp = @fopen($filename, 'rb');
-  if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE"))
-	{
+  if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
 		header('Content-Type: "application/xls"');
-		header('Content-Disposition: attachment; filename="export_data.xls"');
+		header('Content-Disposition: attachment; filename="export_users_data.xls"');
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header("Content-Transfer-Encoding: binary");
 		header('Pragma: public');
 		header("Content-Length: ".filesize($filename));
 	}
-	else
-	{
+	else {
 		header('Content-Type: "application/xls"');
-		header('Content-Disposition: attachment; filename="export_data.xls"');
+		header('Content-Disposition: attachment; filename="export_users_data.xls"');
 		header("Content-Transfer-Encoding: binary");
 		header('Expires: 0');
 		header('Pragma: no-cache');
