@@ -5,7 +5,7 @@ function settings_title() {
 }
 
 function user_settings() {
-  global $enable_tshirt_size, $tshirt_sizes, $themes, $locales ;
+  global $enable_tshirt_size, $tshirt_sizes, $themes, $locales, $display_msg;
   global $user;
   
   $msg = "";
@@ -26,6 +26,7 @@ function user_settings() {
   $selected_language = $user['Sprache'];
   $planned_arrival_date = $user['planned_arrival_date'];
   $planned_departure_date = $user['planned_departure_date'];
+  $display_message = $user['display_msg'];
 
   if (isset($_REQUEST['submit'])) {
     $ok = true;
@@ -154,6 +155,20 @@ function user_settings() {
       success("Language changed.");
       redirect(page_link_to('user_settings'));
     }
+  }elseif (isset($_REQUEST['submit_message'])){
+      $ok=true;
+
+      if(isset($_REQUEST['display_message']))
+        $display_message=strip_request_item('display_message');
+      else
+        $ok = false;
+      
+      if($ok){
+        sql_query("UPDATE `User` SET `display_msg`='" . sql_escape($display_message) . "' WHERE  `UID`='" . sql_escape($user['UID']) . "'");
+        
+        success("Message Changed");
+        redirect(page_link_to('user_settings'));
+      }
   }
  
   if ($ok) {
@@ -206,7 +221,12 @@ if( $_SESSION['uid'] == 1){
                   form_info(_("Here you can choose your language:")),
                   form_select('language', _("Language:"), $locales, $selected_language),
                   form_submit('submit_language', _("Save")) 
-              ))
+              )),
+              form(array(
+                  form_info(_("Here you can write your display message for registration:")),
+                  form_text('display_message', _("Message"), $display_message),
+                  form_submit('submit_message', _("Save"))
+              )) 
           ))
       )) 
   ));

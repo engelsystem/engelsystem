@@ -39,7 +39,9 @@ function guest_register() {
   $password_hash = "";
   $selected_angel_types = array();
   $planned_arrival_date = null;
-
+  
+  $admin_source = sql_select("SELECT `display_msg` FROM `User` WHERE `UID`='" . sql_escape(1) . "' LIMIT 1");
+  $display_message = $admin_source[0]['display_msg'];
   $angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
   $angel_types = array();
   foreach ($angel_types_source as $angel_type) {
@@ -216,7 +218,7 @@ function guest_register() {
   }
 
   return page_with_title(register_title(), array(
-      _("By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel task sheduler."),
+      _($display_message),
       $msg,
       msg(),
       form(array(
