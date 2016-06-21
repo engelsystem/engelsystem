@@ -382,7 +382,7 @@ function shift_sort($a, $b) {
 }
 
 function export_xls() {
-	$filename = $fn = tempnam ('/tmp', '.csv'); //  Temporary File Name
+	$filename = tempnam('/tmp', '.csv');//  Temporary File Name
 	$headings = sql_select("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'User' ");
 	$head = "";
 	foreach($headings as $heading) {
