@@ -1,7 +1,7 @@
 <?php
 
 function admin_import_title() {
-  return _("Frab import");
+  return _("Frab import and export");
 }
 
 function admin_import() {
@@ -81,14 +81,19 @@ function admin_import() {
           error(_('Please provide some data.'));
         }
       }
+      if(isset($_REQUEST['download'])){
+        export_xls();
+      }
 
       if ($ok) {
         redirect(page_link_to('admin_import') . "&step=check&shifttype_id=" . $shifttype_id . "&add_minutes_end=" . $add_minutes_end . "&add_minutes_start=" . $add_minutes_start);
       } else {
         $html .= div('well well-sm text-center', [
+            _('Frab import')
+        ]) . div('well well-sm text-left', [
             _('File Upload') . mute(glyph('arrow-right')) . mute(_('Validation')) . mute(glyph('arrow-right')) . mute(_('Import'))
         ]) . div('row', [
-            div('col-md-offset-3 col-md-6', [
+            div(' col-md-6', [
                 form(array(
                     form_info('', _("This import will create/update/delete rooms and shifts by given FRAB-export file. The needed file format is xcal.")),
                     form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
@@ -96,6 +101,15 @@ function admin_import() {
                     form_spinner('add_minutes_end', _("Add minutes to end"), $add_minutes_end),
                     form_file('xcal_file', _("xcal-File (.xcal)")),
                     form_submit('submit', _("Import"))
+                ))
+            ])
+        ]).div('well well-sm text-center', [
+            _('Export User Database')
+        ]).div('row', [
+            div('col-md-6', [
+                form(array(
+                    form_info('', _("This will export user data.Press export button to download the user data ")),
+                    form_submit('download', _("export"))
                 ))
             ])
         ]);
@@ -252,7 +266,6 @@ function admin_import() {
       $html
   ]);
 }
-
 function prepare_rooms($file) {
   global $rooms_import;
   $data = read_xml($file);
@@ -283,7 +296,6 @@ function prepare_rooms($file) {
       $rooms_deleted
   );
 }
-
 function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_end) {
   global $rooms_import;
   $data = read_xml($file);
@@ -337,14 +349,12 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
       $shifts_deleted
   );
 }
-
 function read_xml($file) {
   global $xml_import;
   if (! isset($xml_import))
     $xml_import = simplexml_load_file($file);
   return $xml_import;
 }
-
 function shifts_printable($shifts, $shifttypes) {
   global $rooms_import;
   $rooms = array_flip($rooms_import);
@@ -369,5 +379,41 @@ function shifts_printable($shifts, $shifttypes) {
 
 function shift_sort($a, $b) {
   return ($a['start'] < $b['start']) ? - 1 : 1;
+}
+
+function export_xls() {
+	$filename = tempnam('/tmp', '.csv');//  Temporary File Name
+	$headings = sql_select("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'User' ");
+	$head = "";
+	foreach($headings as $heading) {
+		$head .= $heading["COLUMN_NAME"] . " ";
+	}
+	$final = explode(" ", $head);
+	$results = sql_select("SELECT * FROM `User`");
+	$fp = fopen("$filename", "w+") or die("Error Occurred");
+	fputcsv($fp, $final, "\t");
+	foreach($results as $result) {
+		fputcsv($fp, $result, "\t");
+	}
+	$fp = @fopen($filename, 'rb+');
+  if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
+		header('Content-Type: application/csv');
+		header('Content-Disposition: attachment; filename=export_users_data.csv');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header("Content-Transfer-Encoding: binary");
+		header('Pragma: public');
+		header("Content-Length: ".filesize($filename));
+	}
+	else {
+		header('Content-Type: application/csv');
+		header('Content-Disposition: attachment; filename=export_users_data.csv');
+		header("Content-Transfer-Encoding: binary");
+		header('Expires: 0');
+		header('Pragma: no-cache');
+		header("Content-Length: ".filesize($filename));
+	}
+	fpassthru($fp);
+	fclose($fp);
 }
 ?>
