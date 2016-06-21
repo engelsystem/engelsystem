@@ -271,7 +271,7 @@ function prepare_rooms($file) {
   $data = read_xml($file);
 
   // Load rooms from db for compare with input
-  $rooms = sql_select("SELECT * FROM `Room` WHERE `FromPentabarf`='Y'");
+  $rooms = sql_select("SELECT * FROM `Room` WHERE `FromPentabarf`='1'");
   $rooms_db = array();
   $rooms_import = array();
   foreach ($rooms as $room) {

@@ -41,3 +41,8 @@ CREATE TABLE IF NOT EXISTS `Events` (
   PRIMARY KEY (`event_id`),
   UNIQUE KEY `Name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+-- -----------------------------------------------------------------------------  
+-- Alter table sturcture for Rooms, converting char(1) type to boolean
+ALTER TABLE `Room`
+    ALTER COLUMN `FromPentabarf` bit NOT NULL DEFAULT 0,
+    ALTER COLUMN `show` bit NOT NULL DEFAULT 1;
