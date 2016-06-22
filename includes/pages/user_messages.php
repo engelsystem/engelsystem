@@ -79,7 +79,7 @@ function user_messages() {
     
     return page_with_title(messages_title(), array(
         msg(),
-        sprintf(_("Hello %s, here can you leave messages for other angels"), User_Nick_render($user)),
+        sprintf(_("Hello %s, here you can leave messages for other angels or all the members of groups/angeltypes"), User_Nick_render($user)),
         form(array(
             table(array(
                 'new' => _("New"),
@@ -122,13 +122,48 @@ function user_messages() {
         break;
       
       case "send":
-        if (Message_send($_REQUEST['to'], $_REQUEST['text']) === true) {
+        $no_users = sql_num_query("SELECT * FROM `User`");
+        $temp = 0;
+        if ($_REQUEST['to'] < 0) {
+          $group_users = sql_select("SELECT * FROM `UserGroups` WHERE `group_id`='" . sql_escape($_REQUEST['to']) . "'");
+
+          foreach ($group_users as $u_id) {
+            Message_send($u_id[uid],  $_REQUEST['text']);
+            $temp++;
+          }
+
+          if (count($group_users) == 0) {
+            success(_("There are no members in the selected group"));
+            redirect(page_link_to("user_messages"));
+          } elseif (count($group_users) == $temp) {
+            redirect(page_link_to("user_messages"));
+          } else {
+          return error(_("Transmitting was terminated with an Error."), true);
+          }
+        } elseif ($_REQUEST['to'] > $no_users) {
+          $id = $_REQUEST['to'] - $no_users;
+          $users_source = sql_select("SELECT * FROM `UserAngelTypes` WHERE `angeltype_id`='" . sql_escape($id) . "'");
+
+          foreach ($users_source as $userid) {
+            Message_send($userid['user_id'],  $_REQUEST['text']);
+            $temp++;
+          }
+
+          if (count($users_source) == 0) {
+            success(_("There are no members in the selected Angeltype"));
+            redirect(page_link_to("user_messages"));
+          } elseif (count($users_source) == $temp) {
+            redirect(page_link_to("user_messages"));
+          } else {
+            return error(_("Transmitting was terminated with an Error."), true);
+          }
+        } elseif (Message_send($_REQUEST['to'], $_REQUEST['text']) === true) {
           redirect(page_link_to("user_messages"));
         } else {
           return error(_("Transmitting was terminated with an Error."), true);
         }
         break;
-      
+
       default:
         return error(_("Wrong action."), true);
     }
