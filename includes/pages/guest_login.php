@@ -140,7 +140,7 @@ function guest_register() {
       $msg .= error(_("Please enter your First Name."), true);
     }
     if (isset($_REQUEST['current_city']) && strlen(strip_request_item('current_city')) > 0){
-      $prename = strip_request_item('current_city');
+      $current_city = strip_request_item('current_city');
       }
     else {
       $ok = false;
