@@ -55,20 +55,42 @@ function User_edit_vouchers_view($user) {
 }
 
 function Users_view($users, $order_by, $arrived_count, $active_count, $force_active_count, $freeloads_count, $tshirts_count, $voucher_count) {
-  foreach ($users as &$user) {
-    $user['Nick'] = User_Nick_render($user);
-    $user['email'] = $user['email'];
-    $user['Gekommen'] = glyph_bool($user['Gekommen']);
-    $user['got_voucher'] = $user['got_voucher'];
-    $user['Aktiv'] = glyph_bool($user['Aktiv']);
-    $user['force_active'] = glyph_bool($user['force_active']);
-    $user['Tshirt'] = glyph_bool($user['Tshirt']);
-    $user['lastLogIn'] = date(_('m/d/Y h:i a'), $user['lastLogIn']);
-    $user['actions'] = table_buttons(array(
-        button_glyph(page_link_to('admin_user') . '&id=' . $user['UID'], 'edit', 'btn-xs') 
+  $search = "";
+  $table = "";
+  $users_matched = [];
+  if (isset($_REQUEST['search']))
+    $search = strip_request_item('search');
+  if ($search == "")
+    $tokens = [];
+  else
+    $tokens = explode(" ", $search);
+  foreach ($users as $usr) {
+    if (count($tokens) > 0) {
+      $match = false;
+      $index = join(" ", $usr);
+      foreach ($tokens as $t)
+        if (stristr($index, trim($t))) {
+          $match = true;
+          break;
+        }
+      if (! $match)
+        continue;
+    }
+
+    $usr['nick'] = User_Nick_render($usr);
+    $usr['Gekommen'] = glyph_bool($usr['Gekommen']);
+    $usr['got_voucher'] = $usr['got_voucher'];
+    $usr['Aktiv'] = glyph_bool($usr['Aktiv']);
+    $usr['force_active'] = glyph_bool($usr['force_active']);
+    $usr['Tshirt'] = glyph_bool($usr['Tshirt']);
+    $usr['lastLogIn'] = date(_('m/d/Y h:i a'), $usr['lastLogIn']);
+    $usr['actions'] = table_buttons(array(
+        button_glyph(page_link_to('admin_user') . '&id=' . $usr['UID'], 'edit', 'btn-xs') 
     ));
+    $users_matched[] = $usr;
   }
-  $users[] = array(
+
+  $users_matched[] = array(
       'Nick' => '<strong>' . _('Sum') . '</strong>',
       'Gekommen' => $arrived_count,
       'got_voucher' => $voucher_count,
@@ -81,6 +103,10 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
   
   return page_with_title(_('All users'), array(
       msg(),
+      form(array(
+          form_text('search', _("Search"), $search), 
+          form_submit('submit', _("Search"))
+      )),
       buttons(array(
           button(page_link_to('register'), glyph('plus') . _('New user')) 
       )),
@@ -100,7 +126,7 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
           'Size' => Users_table_header_link('Size', _('Size'), $order_by),
           'lastLogIn' => Users_table_header_link('lastLogIn', _('Last login'), $order_by),
           'actions' => '' 
-      ), $users) 
+      ), $users_matched) 
   ));
 }
 
