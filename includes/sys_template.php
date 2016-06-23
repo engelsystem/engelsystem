@@ -489,4 +489,10 @@ function ReplaceSmilies($neueckig) {
   
   return $neueckig;
 }
+/**
+ * Rendert Google reCaptcha
+ */
+function reCaptcha() {
+  return '<div class="g-recaptcha" data-sitekey="6LeGiyITAAAAAGG2-A9yM47fnB0IRwET_cOunvgf"></div>';
+}
 ?>
