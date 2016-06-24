@@ -5,6 +5,7 @@
 ##### News
 -   Under this user can view the news.
 -   admin can create new news.
+
 ##### Meetings
 -   Under this page admin/user can view the meetings and time and information regarding the meetings.
 
