@@ -71,10 +71,8 @@ function guest_register() {
         $msg .= error(_("E-mail address is not correct."), true);
       }
       if (sql_num_query("SELECT * FROM `User` WHERE `email`='" . sql_escape($mail) . "' LIMIT 1")  > 0) {
-       
-
         $ok = false;
-        $msg .= error(sprintf(_("Your E-mail &quot;%s&quot; already exists."), $mail), true);
+        $msg .= error(sprintf(_("Your E-mail &quot;%s&quot; already exists.<a href=%s>Forgot password?</a>"), $mail,page_link_to_absolute('user_password_recovery')), true);
       }
     } else {
       $ok = false;
