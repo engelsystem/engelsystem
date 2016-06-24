@@ -12,7 +12,7 @@ function logout_title() {
   return _("Logout");
 }
 
-// Engel registrieren
+// Angel registration
 function guest_register() {
   global $tshirt_sizes, $enable_tshirt_size, $default_theme;
 
@@ -143,6 +143,28 @@ function guest_register() {
     else {
       $ok = false;
       $msg .= error(_("Please enter your Current City."), true);
+    }
+    /**
+     * Google reCaptcha Server-Side Handling
+     */
+    if (isset($_REQUEST['g-recaptcha-response']) && !empty($_REQUEST['g-recaptcha-response'])) {
+      $curl = curl_init();
+      curl_setopt_array($curl, [
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_URL => 'hppts://www.google.com/recaptcha/api/siteverify',
+        CURLOPT_POST => 1,
+        CURLOPT_POSTFIELDS => [
+          'secret' => '6LeGiyITAAAAAMd--Qw4C3iBPrEM-qZDhQQ4LWMt',
+          'response' => $_REQUEST['g-recaptcha-response'],
+        ]
+      ]);
+      
+      $response = json_decode(curl_exec($curl));
+      $msg .= error(sprintf(_(print_r($response)), $nick), true);
+    }
+    else {
+      $ok = false;
+      $msg .= error(_("You are a Robot."), true);
     }
     if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age']))
       $age = strip_request_item('age');
@@ -324,6 +346,11 @@ function guest_register() {
                   div('row', array(
                       div('col-sm-8', array(
                           form_text('organization_web', _("Organization Website"), $organization_web)
+                      )),
+                  )),
+                  div('row', array(
+                      div('col-sm-8', array(
+                          reCaptcha()
                       )),
                   )),
                   form_info(entry_required() . ' = ' . _("Entry required!"))
