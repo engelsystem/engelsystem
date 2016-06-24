@@ -25,7 +25,11 @@
     -   Once admin selects the edit option admin can also create new shifts from exisiting shift data by selecting create new shift option
 -   Delete shifts
     -   There is an image of bin . Where admin can delete the shifts . On pressing the button admin will be redirected to delete shifts page where we need ot confirm before deleting
-    
+
+##### Sending message
+-    User/admin can send messages to other angels or group members or to only members of angeltypes
+by clicking th message icon     
+
 #### Admin Pages
 -   Arrived Angels
     -   Under this page admin can view all the angels who have arrived .
