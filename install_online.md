@@ -41,6 +41,14 @@
     \# service httpd restart
     The changes will be permanently updated. Check your site for reflecting changes. For more help on changing the documentroot in CPanel, please visit [here](http://tecadmin.net/how-to-change-document-root-of-primary-domain-in-cpanel/) .
 
+## Setting up Captcha  
+*  For setting up captcha for the online server, we need to signup for reCaptcha API keys. The keys are unique to the domain or domains you specify, and their respective sub-domains. Specifying more than one domain could come in handy in the case that you serve your website from multiple top level domains (for example: yoursite.com, yoursite.net).
+*  Visit the link,http://www.google.com/recaptcha/admin#whyrecaptcha , and sign up for the reCaptcha API keys.
+*  After we sign-up for the reCaptcha for the domain, we'll be provided with 2 keys, Public Key(DataSite Key) and a Private Key (Secret key).
+*  We must change the existing keys, Do this by modifying the file `sys_template.php` (for Public key) and the files `guest_login.php` and `ShiftEntry_view.php` (for Private key). 
+*  After opening the file `sys_template.php`, search for *data-sitekey* and replace the key mentioned with your Public key and save.
+*  After opening the files `guest_login.php` and `ShiftEntry_view.php`, search for *secret* and replace the key mentioned there with your Private key in both the files and save.
+
 If you made it this far without any issues, **congratulations!** You have successfully set up Engelsystem on your domain and can use it to manage your event.
 
 ##Session Settings:
