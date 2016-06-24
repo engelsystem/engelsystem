@@ -20,6 +20,26 @@ function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment,
   } else {
     $freeload_form = array();
   }
+  /**
+   * Google reCaptcha Server-Side Handling
+   */
+  if (isset($_REQUEST['g-recaptcha-response']) && !empty($_REQUEST['g-recaptcha-response'])) {
+    $curl = curl_init();
+    curl_setopt_array($curl, [
+      CURLOPT_RETURNTRANSFER => 1,
+      CURLOPT_URL => 'hppts://www.google.com/recaptcha/api/siteverify',
+      CURLOPT_POST => 1,
+      CURLOPT_POSTFIELDS => [
+        'secret' => '6LeGiyITAAAAAMd--Qw4C3iBPrEM-qZDhQQ4LWMt',
+        'response' => $_REQUEST['g-recaptcha-response'],
+      ]
+    ]);
+    $response = json_decode(curl_exec($curl));
+  }
+  else {
+    $ok = false;
+    $msg .= error(_("You are a Robot."), true);
+  }
   return page_with_title(_("Edit shift entry"), array(
       msg(),
       form(array(
@@ -30,9 +50,13 @@ function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment,
           form_info(_("Type:"), $type),
           form_textarea('comment', _("Comment (for your eyes only):"), $comment),
           join("", $freeload_form),
+          div('row', array(
+                      div('col-sm-8', array(
+                          reCaptcha()
+                      ))
+          )),
           form_submit('submit', _("Save")) 
       )) 
   ));
 }
-
 ?>
