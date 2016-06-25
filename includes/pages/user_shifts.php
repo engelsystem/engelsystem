@@ -6,6 +6,9 @@ function shifts_title() {
 
 function user_shifts() {
   global $user, $privileges, $max_freeloadable_shifts;
+  $timezone_identifiers = DateTimeZone::listIdentifiers();
+  $timezone = $user['timezone'];
+  date_default_timezone_set ("$timezone_identifiers[$timezone]");
 
   if (User_is_freeloader($user))
     redirect(page_link_to('user_myshifts'));

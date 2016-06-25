@@ -39,6 +39,8 @@ function guest_register() {
   $password_hash = "";
   $selected_angel_types = array();
   $planned_arrival_date = null;
+  $timezone = "";
+  $timezone_identifiers = DateTimeZone::listIdentifiers();
   
   $admin_source = sql_select("SELECT `display_msg` FROM `User` WHERE `UID`='" . sql_escape(1) . "' LIMIT 1");
   $display_message = $admin_source[0]['display_msg'];
@@ -165,6 +167,12 @@ function guest_register() {
     else {
       $ok = false;
       $msg .= error(_("You are a Robot."), true);
+    } 
+    if (isset($_REQUEST['timezone'])) {
+      $timezone = strip_request_item('timezone');
+    } else {
+      $ok = false;
+      $msg .= error(_("Please select a timezone"), true);
     }
     if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age']))
       $age = strip_request_item('age');
@@ -216,6 +224,7 @@ function guest_register() {
           `organization`='" . sql_escape($organization) . "',
           `current_city`='" . sql_escape($current_city) . "',
           `organization_web`='" . sql_escape($organization_web) . "',
+          `timezone`='" . sql_escape($timezone) . "',
           `planned_arrival_date`='" . sql_escape($planned_arrival_date) . "'");
 
       // Assign user-group and set password
@@ -275,7 +284,11 @@ function guest_register() {
                           form_password('password2', _("Confirm password") . ' ' . entry_required())
                       ))
                   )),
-                  
+                 div('row', array(                      
+                      div('col-sm-8', array(
+                          form_text('dect', _("DECT"), $dect)
+                      ))
+                  )),                
                   div('row', array(
                       div('col-sm-4', array(
                           form_text('twitter', _("Twitter"), $twitter )
@@ -312,11 +325,11 @@ function guest_register() {
                       )),
                   )),
                   div('row', array(
-                      div('col-sm-8', array(
-                          form_text('dect', _("DECT"), $dect)
-                      )),
-                      )),
-                      div('row', array(
+                    div('col-sm-8', array(
+                          form_select('timezone', _("Timezone") . ' ' . entry_required(), $time_zone , $timezone)
+                      ))
+                  )),
+                  div('row', array(
                       div('col-sm-4', array(
                           form_text('mobile', _("Mobile"), $mobile)
                       )),

@@ -27,7 +27,9 @@ function user_settings() {
   $planned_arrival_date = $user['planned_arrival_date'];
   $planned_departure_date = $user['planned_departure_date'];
   $display_message = $user['display_msg'];
-
+  $timezone = $user['timezone'];
+  $timezone_identifiers = DateTimeZone::listIdentifiers();
+  
   if (isset($_REQUEST['submit'])) {
     $ok = true;
     
@@ -89,7 +91,9 @@ function user_settings() {
       $mobile = strip_request_item('mobile');
     if (isset($_REQUEST['hometown']))
       $hometown = strip_request_item('hometown');
-    
+    if (isset($_REQUEST['timezone']))
+      $timezone = strip_request_item('timezone');
+      
     if ($ok) {
       sql_query("
           UPDATE `User` SET
@@ -107,6 +111,7 @@ function user_settings() {
           `Hometown`='" . sql_escape($hometown) . "',
           `planned_arrival_date`='" . sql_escape($planned_arrival_date) . "',
           `planned_departure_date`=" . sql_null($planned_departure_date) . "
+          `timezone`='" . sql_escape($timezone) . "',
           WHERE `UID`='" . sql_escape($user['UID']) . "'");
       
       success(_("Settings saved."));
@@ -200,6 +205,7 @@ if( $_SESSION['uid'] == 1){
                   form_text('jabber', _("Jabber"), $jabber),
                   form_text('hometown', _("Hometown"), $hometown),
                   $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',
+                  form_select('timezone', _("Timezone") . ' ' . entry_required(), $timezone_identifiers , $timezone),          
                   form_info('', _('Please visit the angeltypes page to manage your angeltypes.')),
                   form_submit('submit', _("Save")) 
               )) 
@@ -256,6 +262,7 @@ if( $_SESSION['uid'] > 1){
                   form_text('jabber', _("Jabber"), $jabber),
                   form_text('hometown', _("Hometown"), $hometown),
                   $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',
+                  form_select('timezone', _("Timezone") . ' ' . entry_required(), $timezone_identifiers , $timezone),                  
                   form_info('', _('Please visit the angeltypes page to manage your angeltypes.')),
                   form_submit('submit', _("Save")) 
               )) 
