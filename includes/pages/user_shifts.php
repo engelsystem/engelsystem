@@ -1021,9 +1021,9 @@ function view_user_shifts() {
       template_render('../templates/user_shifts.html', array(
           'title' => shifts_title(),
           'room_select' => make_select($rooms, $_SESSION['user_shifts']['rooms'], "rooms", _("Rooms")),
-          'start_select' => html_select_key("start_day", "start_day", array_combine($days, $days), $_SESSION['user_shifts']['start_day']),
+          'start_select' => calender('start_day', date("Y/m/d"), 'start_day'),
           'start_time' => $_SESSION['user_shifts']['start_time'],
-          'end_select' => html_select_key("end_day", "end_day", array_combine($days, $days), $_SESSION['user_shifts']['end_day']),
+          'end_select' => calender('end_day', date("Y/m/d"), 'end_day'),
           'end_time' => $_SESSION['user_shifts']['end_time'],
           'type_select' => make_select($types, $_SESSION['user_shifts']['types'], "types", _("Angeltypes") . '<sup>1</sup>'),
           'filled_select' => make_select($filled, $_SESSION['user_shifts']['filled'], "filled", _("Occupancy")),
@@ -1031,7 +1031,8 @@ function view_user_shifts() {
           'new_style_checkbox' => '<label><input type="checkbox" name="new_style" value="1" ' . ($_SESSION['user_shifts']['new_style'] ? ' checked' : '') . '> ' . _("Use new style if possible") . '</label>',
           'shifts_table' => msg() . $shifts_table,
           'ical_text' => '<h2>' . _("iCal export") . '</h2><p>' . sprintf(_("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."), page_link_to_absolute('ical') . '&key=' . $user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'], page_link_to('user_myshifts') . '&reset') . '</p>',
-          'filter' => _("Filter")
+          'filter' => _("Filter"),
+          'delete_shifts' => ("DELETE")
       )),
       '</div>'
   ));
