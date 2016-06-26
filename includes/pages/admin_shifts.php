@@ -6,6 +6,11 @@ function admin_shifts_title() {
 
 // Assistent zum Anlegen mehrerer neuer Schichten
 function admin_shifts() {
+  global $user;
+  $timezone_identifiers = DateTimeZone::listIdentifiers();
+  $timezone = $user['timezone'];
+  date_default_timezone_set ("$timezone_identifiers[$timezone]");
+
   $ok = true;
   $rid = 0;
   $start = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d") . " 00:00")->getTimestamp();

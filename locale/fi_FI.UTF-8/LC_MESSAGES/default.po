@@ -1,0 +1,2587 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Engelsystem 2.0\n"
+"POT-Creation-Date: 2016-03-22 14:48+0100\n"
+"PO-Revision-Date: 2016-06-12 14:54+0530\n"
+"Last-Translator: Arunima Sharma <arunimaprakash@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.2\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Language: fi_FI\n"
+"X-Poedit-SearchPath-0: /Users/arunimas/workspace/projects/engelsystem\n"
+"X-Poedit-SearchPath-1: .\n"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_menu.php:49
+msgid ""
+"Please enter your planned date of departure on your settings page to give us "
+"a feeling for teardown capacities."
+msgstr ""
+"Anna suunniteltua lähtö hakuasetussivuasi antaa meille tunne teardown "
+"kapasiteettia."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_menu.php:56
+#, php-format
+msgid ""
+"You freeloaded at least %s shifts. Shift signup is locked. Please go to "
+"heavens desk to be unlocked again."
+msgstr ""
+"Sinä freeloaded vähintään%s vuorossa. Shift kirjautumisen on lukittu. Mene "
+"taivaan desk olla auki uudelleen."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_menu.php:63
+msgid ""
+"You are not marked as arrived. Please go to heaven's desk, get your angel "
+"badge and/or tell them that you arrived already."
+msgstr ""
+"Et ole merkitty saapunut. Mene taivaan kirjoituspöytä, saat enkeli "
+"rintanappi ja / tai kertoa heille, että olet jo saapunut."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_menu.php:69
+msgid "You need to specify a tshirt size in your settings!"
+msgstr "Sinun täytyy määrittää tshirt koon asetukset!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_menu.php:75
+msgid ""
+"You need to specify a DECT phone number in your settings! If you don't have "
+"a DECT phone, just enter \"-\"."
+msgstr ""
+"Sinun täytyy määrittää DECT puhelinnumerosi asetuksista! Jos ei ole DECT-"
+"puhelin, anna vain \"-\"."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_menu.php:136
+msgid "Admin"
+msgstr "admin"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/sys_template.php:363
+msgid "No data found."
+msgstr "Dataa ei löytynyt."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:7
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:821
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:56
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:73
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:214
+msgid "Angeltypes"
+msgstr "Angeltypes"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:55
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:327
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:213
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:257
+msgid "Teams/Job description"
+msgstr "Joukkueet / Toimenkuva"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:81
+#, php-format
+msgid "Angeltype %s deleted."
+msgstr "Angeltype%s poistettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:86
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:44
+#, php-format
+msgid "Delete angeltype %s"
+msgstr "Poista angeltype%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:132
+msgid "Please check the name. Maybe it already exists."
+msgstr "Tarkista nimi. Ehkä se on jo olemassa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:163
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:54
+#, php-format
+msgid "Edit %s"
+msgstr "Muokkaa%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:199
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:200
+#, php-format
+msgid "Team %s"
+msgstr "Team%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:219
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:171
+msgid "view"
+msgstr "katso"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:223
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:64
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_groups.php:23
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:18
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:91
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:77
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:52
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:63
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:174
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:225
+msgid "edit"
+msgstr "muokkaa"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:224
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:37
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:56
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:19
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:117
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:220
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:48
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:93
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:5
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:12
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:78
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:15
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:53
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:64
+msgid "delete"
+msgstr "poistaa"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:229
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:87
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:244
+msgid "leave"
+msgstr "loma"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:231
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:80
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:246
+msgid "join"
+msgstr "liitos"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifts_controller.php:28
+msgid "Shift could not be found."
+msgstr "Shift ei löytynyt."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:25
+#, php-format
+msgid "Shifttype %s deleted."
+msgstr "Shifttype%s poistettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:30
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:11
+#, php-format
+msgid "Delete shifttype %s"
+msgstr "Poista shifttype%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:53
+msgid "Shifttype not found."
+msgstr "Shifttype ei löytynyt."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:69
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:66
+msgid "Please enter a name."
+msgstr "Anna nimi."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:86
+msgid "Updated shifttype."
+msgstr "Päivitetty shifttype."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:92
+msgid "Created shifttype."
+msgstr "Luotu shifttype."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/shifttypes_controller.php:144
+msgid "Shifttypes"
+msgstr "Shifttypes"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:19
+#, php-format
+msgid "There is %d unconfirmed angeltype."
+msgid_plural "There are %d unconfirmed angeltypes."
+msgstr[0] "On%d vahvistamaton angeltype."
+msgstr[1] "Es gibt %d nicht freigeschaltete Engeltypen!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:19
+msgid "Angel types which need approvals:"
+msgstr "Angel tyypit jotka tarvitsevat hyväksynnät:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:29
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:37
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:69
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:77
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:133
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:189
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:259
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:296
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:304
+msgid "Angeltype doesn't exist."
+msgstr "Angeltype ei ole olemassa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:42
+msgid "You are not allowed to delete all users for this angeltype."
+msgstr "Et voi poistaa kaikki käyttäjät tästä angeltype."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:52
+#, php-format
+msgid "Denied all users for angeltype %s."
+msgstr "Kiistänyt kaikki käyttäjät angeltype%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:57
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:14
+msgid "Deny all users"
+msgstr "Kieltää kaikkien käyttäjien"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:85
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:117
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:125
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:173
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:181
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:236
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:251
+msgid "User angeltype doesn't exist."
+msgstr "Käyttäjä angeltype ei ole olemassa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:90
+msgid "You are not allowed to confirm all users for this angeltype."
+msgstr "Et saa vahvistaa kaikki käyttäjät tästä angeltype."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:100
+#, php-format
+msgid "Confirmed all users for angeltype %s."
+msgstr "Vahvistettu kaikki käyttäjät angeltype%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:105
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:25
+msgid "Confirm all users"
+msgstr "Vahvista kaikki käyttäjät"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:138
+msgid "You are not allowed to confirm this users angeltype."
+msgstr "Et saa vahvistaa tätä käyttäjille angeltype."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:146
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:197
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:267
+msgid "User doesn't exist."
+msgstr "Käyttäjä ei ole olemassa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:156
+#, php-format
+msgid "%s confirmed for angeltype %s."
+msgstr "%s vahvistettu angeltype%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:161
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:36
+msgid "Confirm angeltype for user"
+msgstr "Vahvista angeltype käyttäjälle"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:202
+msgid "You are not allowed to delete this users angeltype."
+msgstr "Et voi poistaa tämän käyttäjille angeltype."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:211
+#, php-format
+msgid "User %s removed from %s."
+msgstr "Käyttäjä%s poistettu%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:219
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:47
+msgid "Remove angeltype"
+msgstr "Poista angeltype"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:231
+msgid "You are not allowed to set coordinator rights."
+msgstr "Et saa asettaa koordinaattori oikeuksia."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:243
+msgid "No coordinator update given."
+msgstr "Ei koordinaattori päivitys annetaan."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:276
+#, php-format
+msgid "Added coordinator rights for %s to %s."
+msgstr "Lisätty koordinaattori oikeudet%s%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:276
+#, php-format
+msgid "Removed coordinator rights for %s from %s."
+msgstr "Poistettu koordinaattori oikeudet%s%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:284
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:138
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:3
+msgid "Add coordinator rights"
+msgstr "Lisää koordinaattori oikeudet"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:284
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:130
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:3
+msgid "Remove coordinator rights"
+msgstr "Poista koordinaattori oikeudet"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:325
+msgid "Please select a user."
+msgstr "Valitse käyttäjä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:336
+#, php-format
+msgid "User %s added to %s."
+msgstr "Käyttäjä%s lisätään%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:349
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:62
+msgid "Add user to angeltype"
+msgstr "Lisää käyttäjä angeltype"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:358
+#, php-format
+msgid "You are already a %s."
+msgstr "Olet jo%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:367
+#, php-format
+msgid "You joined %s."
+msgstr "Sinä liittynyt%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:382
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:76
+#, php-format
+msgid "Become a %s"
+msgstr "Ryhdy%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_driver_licenses_controller.php:24
+#, php-format
+msgid ""
+"You joined an angeltype which requires a driving license. Please edit your "
+"driving license information here: %s."
+msgstr ""
+"Sinä liittyi angeltype joka edellyttää ajokortti. Muokkaa ajokortin tiedot "
+"tässä:%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_driver_licenses_controller.php:24
+msgid "driving license information"
+msgstr "ajokortti tiedot"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_driver_licenses_controller.php:112
+msgid "Please select at least one driving license."
+msgstr "Valitse vähintään yksi ajokortti."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_driver_licenses_controller.php:121
+msgid "Your driver license information has been removed."
+msgstr "Ajokorttisi tiedot on poistettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_driver_licenses_controller.php:133
+msgid "Your driver license information has been saved."
+msgstr "Ajokorttisi tiedot on tallennettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/user_driver_licenses_controller.php:141
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:15
+#, php-format
+msgid "Edit %s driving license information"
+msgstr "Edit%s ajokortti tiedot"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:46
+msgid "You cannot delete yourself."
+msgstr "Et voi poistaa itse."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:55
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:272
+msgid "Your password is incorrect.  Please try it again."
+msgstr "Salasana on virheellinen. Ole hyvä ja yritä uudelleen."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:64
+msgid "User deleted."
+msgstr "Käyttäjä poistettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:72
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:26
+#, php-format
+msgid "Delete %s"
+msgstr "﻿Poista %s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:111
+msgid "Please enter a valid number of vouchers."
+msgstr "Anna kelvollinen määrää seteleitä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:121
+msgid "Saved the number of vouchers."
+msgstr "Tallennetut määrä seteleitä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:129
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:43
+#, php-format
+msgid "%s's vouchers"
+msgstr "%s: n tositteet"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:142
+msgid "User not found."
+msgstr "Käyttäjää ei löydy."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:192
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:80
+msgid "All users"
+msgstr "Kaikki käyttäjät"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:207
+msgid "Token is not correct."
+msgstr "Token ei ole oikein."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:217
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:93
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:123
+msgid "Your passwords don't match."
+msgstr "Salasanat eivät täsmää."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:221
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:121
+msgid "Your password is to short (please use at least 6 characters)."
+msgstr "Salasanasi on lyhyt (käytä vähintään 6 merkkiä)."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:227
+msgid "Password could not be updated."
+msgstr "Salasana ei voitu päivittää."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:229
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:125
+msgid "Password saved."
+msgstr "Salasana tallennetaan."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:247
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:251
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:63
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:37
+msgid "E-mail address is not correct."
+msgstr "Sähköpostiosoite ei ole oikea."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:255
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:67
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:41
+msgid "Please enter your e-mail."
+msgstr "Anna sähköpostiosoitteesi."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:262
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:279
+msgid "Password recovery"
+msgstr "Salasanan palautus"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:262
+#, php-format
+msgid "Please visit %s to recover your password."
+msgstr "Käy%s salasanasi palauttamiseen."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/controller/users_controller.php:266
+msgid "We sent an email containing your password recovery link."
+msgstr "Lähetimme sähköpostin, jossa salasananpalautuslinkkiä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/helper/email_helper.php:11
+#, php-format
+msgid "Hi %s,"
+msgstr "Hei%s,"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/helper/email_helper.php:11
+msgid "here is a message for you from the engelsystem:"
+msgstr "tässä viesti teille engelsystem:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/helper/email_helper.php:11
+msgid ""
+"This email is autogenerated and has not to be signed. You got this email "
+"because you are registered in the engelsystem."
+msgstr ""
+"Tämä sähköpostiosoite on automaattisesti muodostettua eikä ole tarkoitus "
+"allekirjoittaa. Sait tämän viestin, koska olet rekisteröity engelsystem."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:10
+msgid "A Shift you are registered on has changed:"
+msgstr "Siirtyminen olet rekisteröitynyt on muuttunut:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:14
+#, php-format
+msgid "* Shift type changed from %s to %s"
+msgstr "* Shift tyyppi muutettu%s%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:19
+#, php-format
+msgid "* Shift title changed from %s to %s"
+msgstr "* Shift otsikko muuttui%s%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:24
+#, php-format
+msgid "* Shift Start changed from %s to %s"
+msgstr "* Shift Start muuttui%s%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:29
+#, php-format
+msgid "* Shift End changed from %s to %s"
+msgstr "* Shift End muuttui%s%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:34
+#, php-format
+msgid "* Shift Location changed from %s to %s"
+msgstr "* Shift Sijainti muuttui%s%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:44
+msgid "The updated Shift:"
+msgstr "Päivitetyt Shift:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:53
+msgid "Your Shift has changed"
+msgstr "Your Shift on muuttunut"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:60
+msgid "A Shift you are registered on was deleted:"
+msgstr "Siirtyminen olet rekisteröitynyt poistettiin:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:69
+msgid "Your Shift was deleted"
+msgstr "Your Shift poistettiin"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:76
+msgid "You have been assigned to a Shift:"
+msgstr "Sinut on valittu Shift:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:82
+msgid "Assigned to Shift"
+msgstr "Sidotut Shift"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:90
+msgid "You have been removed from a Shift:"
+msgstr "Sinut on irrotettu Shift:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:96
+msgid "Removed from Shift"
+msgstr "Poistettu Shift"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/users_mailer.php:7
+msgid "Your account has been deleted"
+msgstr "Tilisi on poistettu"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/mailer/users_mailer.php:7
+msgid ""
+"Your angelsystem account has been deleted. If you have any questions "
+"regarding your account deletion, please contact heaven."
+msgstr ""
+"Your angelsystem tili on poistettu. Jos sinulla on kysyttävää tilin poisto, "
+"ota yhteyttä taivas."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:4
+msgid "Active angels"
+msgstr "aktiivinen enkelit"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:28
+#, php-format
+msgid ""
+"At least %s angels are forced to be active. The number has to be greater."
+msgstr ""
+"Vähintään%s enkelit on pakko olla aktiivinen. Numero on oltava suurempi."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:33
+msgid "Please enter a number of angels to be marked as active."
+msgstr "Anna useita enkeleitä merkitään aktiivisena."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:57
+msgid "Marked angels."
+msgstr "Merkitty enkelit."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:59
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:129
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:164
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:251
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:29
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:46
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:65
+msgid "back"
+msgstr "takaisin"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:59
+msgid "apply"
+msgstr "ota käyttöön"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:69
+msgid "Angel has been marked as active."
+msgstr "Angel on merkitty aktiiviseksi."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:71
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:80
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:98
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:22
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:32
+msgid "Angel not found."
+msgstr "Angel ei löytynyt."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:78
+msgid "Angel has been marked as not active."
+msgstr "Angel on merkitty ei-aktiiviseksi."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:87
+msgid "Angel has got a t-shirt."
+msgstr "Angel on saanut t-paita."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:96
+msgid "Angel has got no t-shirt."
+msgstr "Angel on saanut mitään t-paita."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:135
+msgid "set active"
+msgstr "aktiivisen"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:137
+msgid "remove active"
+msgstr "poista aktiivinen"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:138
+msgid "got t-shirt"
+msgstr "sai paidan"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:141
+msgid "remove t-shirt"
+msgstr "Poista t-paita"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:159
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:156
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:171
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:186
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:172
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:179
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:70
+msgid "Sum"
+msgstr "Summa"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:166
+msgid "Search angel:"
+msgstr "Haku angel:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:167
+msgid "Show all shifts"
+msgstr "Näytä kaikki siirtymät"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:168
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:132
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:133
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:71
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:80
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_log.php:25
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_log.php:26
+msgid "Search"
+msgstr "Hae"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:171
+msgid "How much angels should be active?"
+msgstr "Kuinka paljon enkeleitä pitäisi olla aktiivinen?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:172
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:239
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:322
+msgid "Preview"
+msgstr "Esikatselu"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:176
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:136
+msgid "Nickname"
+msgstr "Lempinimi:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:177
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:187
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:96
+msgid "Size"
+msgstr "Koko"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:178
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:4
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:236
+msgid "Shifts"
+msgstr "Vuorot"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:179
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:311
+msgid "Length"
+msgstr "Pituus"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:180
+msgid "Active?"
+msgstr "Aktiivinen?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:181
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:94
+msgid "Forced"
+msgstr "Voima"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:182
+msgid "T-shirt?"
+msgstr "T-paita?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:185
+msgid "Shirt statistics"
+msgstr "paita tilastot"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:188
+msgid "Needed shirts"
+msgstr "tarvittavat paidat"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_active.php:189
+msgid "Given shirts"
+msgstr "Koska paidat"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:4
+msgid "Arrived angels"
+msgstr "saapui enkelit"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:19
+msgid "Reset done. Angel has not arrived."
+msgstr "Nollaa tehty. Angel ei ole saapunut."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:29
+msgid "Angel has been marked as arrived."
+msgstr "Angel on merkitty saapui."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:65
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:8
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:19
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:30
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:41
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:52
+msgid "yes"
+msgstr "kyllä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:66
+msgid "reset"
+msgstr "tyhjennä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:66
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:147
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:162
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:177
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:227
+msgid "arrived"
+msgstr "saapui"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:137
+msgid "Planned arrival"
+msgstr "suunniteltua saapumista"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:138
+msgid "Arrived?"
+msgstr "Saapui?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:139
+msgid "Arrival date"
+msgstr "Tulopäivä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:140
+msgid "Planned departure"
+msgstr "suunnitellut lähtöä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:145
+msgid "Planned arrival statistics"
+msgstr "Suunniteltua saapumista tilastot"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:148
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:163
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:178
+msgid "arrived sum"
+msgstr "saapui summa"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:154
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:169
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:184
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:27
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:76
+msgid "Date"
+msgstr "Päiväys"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:155
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:170
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:185
+msgid "Count"
+msgstr "Määrä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:160
+msgid "Arrival statistics"
+msgstr "Arrival tilastot"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_arrive.php:175
+msgid "Planned departure statistics"
+msgstr "Suunnitellut lähtö tilastot"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:3
+msgid "Free angels"
+msgstr "free enkelit"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:74
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:34
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:68
+msgid "Angeltype"
+msgstr "Angeltype"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:77
+msgid "Only confirmed"
+msgstr "vain vahvistettu"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:85
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:181
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:312
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:168
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:146
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:153
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:86
+msgid "Nick"
+msgstr "Alias"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:87
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:210
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:175
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:147
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:154
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:89
+msgid "DECT"
+msgstr "DECT"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:88
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:219
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:179
+msgid "Jabber"
+msgstr "Extensible Messaging and Presence Protocol"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_free.php:89
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:184
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:177
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:258
+msgid "E-Mail"
+msgstr "Sähköpostiosoite"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_groups.php:3
+msgid "Grouprights"
+msgstr "Grouprights"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_groups.php:29
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:141
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:145
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:135
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:180
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:60
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:216
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:33
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:74
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:88
+msgid "Name"
+msgstr "Nimi"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_groups.php:30
+msgid "Privileges"
+msgstr "etuoikeudet"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_groups.php:53
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:32
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:35
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:149
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:257
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:42
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:106
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:160
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:183
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:192
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:197
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:202
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:191
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:66
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:32
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:33
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:37
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:51
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:274
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:34
+msgid "Save"
+msgstr "Tallenna"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_groups.php:54
+msgid "Edit group"
+msgstr "Muokkaa ryhmää..."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:4
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:136
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:181
+msgid "Frab import"
+msgstr "Frab tuonti"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:24
+msgid "Webserver has no write-permission on import directory."
+msgstr "Webserver ei write-lupaa tuonnin hakemistoon."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:50
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:114
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:191
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:48
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:53
+msgid "Please select a shift type."
+msgstr "Valitse shift tyyppi."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:57
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:121
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:198
+msgid "Please enter an amount of minutes to add to a talk's begin."
+msgstr "Anna määrä minuutin lisätä puhetta Aloitetaan."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:64
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:128
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:205
+msgid "Please enter an amount of minutes to add to a talk's end."
+msgstr "Anna määrä minuutin lisätä puhetta lopussa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:72
+msgid "No valid xml/xcal file provided."
+msgstr "Ei voimassa xml / xcal-tiedostosta."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:77
+msgid "File upload went wrong."
+msgstr "Tiedostojen siirto meni pieleen."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:81
+msgid "Please provide some data."
+msgstr "Antakaa joitakin tietoja."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:89
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:136
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:243
+msgid "File Upload"
+msgstr "Tiedoston lataaminen"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:89
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:136
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:243
+msgid "Validation"
+msgstr "Validointi"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:89
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:98
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:136
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:175
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:243
+msgid "Import"
+msgstr "Tuonti"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:93
+msgid ""
+"This import will create/update/delete rooms and shifts by given FRAB-export "
+"file. The needed file format is xcal."
+msgstr ""
+"Tämä tuonti luo / päivittää / poistaa huonetta ja siirtymät jonka annetaan "
+"FRAB vienti tiedosto. Tarvittava tiedostomuoto on xcal."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:94
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:301
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:184
+msgid "Shifttype"
+msgstr "Shifttype"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:95
+msgid "Add minutes to start"
+msgstr "Lisää minuutin aloittaa"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:96
+msgid "Add minutes to end"
+msgstr "Lisää minuuttia loppuun"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:97
+msgid "xcal-File (.xcal)"
+msgstr "xcal-tiedosto (.xcal)"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:107
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:181
+msgid "Missing import file."
+msgstr "Puuttuva tuontitiedosto."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:140
+msgid "Rooms to create"
+msgstr "Rooms luoda"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:144
+msgid "Rooms to delete"
+msgstr "Rooms poistaa"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:148
+msgid "Shifts to create"
+msgstr "Siirtyy luoda"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:150
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:159
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:168
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:238
+msgid "Day"
+msgstr "Päivä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:151
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:160
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:169
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:306
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:88
+msgid "Start"
+msgstr "Aloita"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:152
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:161
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:170
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:307
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:96
+msgid "End"
+msgstr "Loppu"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:153
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:162
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:171
+msgid "Shift type"
+msgstr "shift tyyppi"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:154
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:163
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:172
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:302
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:185
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:84
+msgid "Title"
+msgstr "Otsikko"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:155
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:164
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:173
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:303
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:803
+msgid "Room"
+msgstr "Huone"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:157
+msgid "Shifts to update"
+msgstr "Siirtyy päivittää"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:166
+msgid "Shifts to delete"
+msgstr "Siirtyy poistaa"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_import.php:244
+msgid "It's done!"
+msgstr "Se on tehty!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_log.php:3
+msgid "Log"
+msgstr "Loki"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:8
+msgid "Edit news entry"
+msgstr "Edit uutiset merkintä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:28
+msgid "Author"
+msgstr "Tekijä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:29
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:157
+msgid "Subject"
+msgstr "Aihe"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:30
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:79
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:105
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:158
+msgid "Message"
+msgstr "Viesti"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:31
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:159
+msgid "Meeting"
+msgstr "Tapaaminen"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:35
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:168
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:34
+msgid "Delete"
+msgstr "Poistaa"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:49
+msgid "News entry updated."
+msgstr "News merkintä päivitetään."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_news.php:58
+msgid "News entry deleted."
+msgstr "News merkintä poistetaan."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:3
+msgid "Answer questions"
+msgstr "Vastaa kysymyksiin"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:13
+msgid "There are unanswered questions!"
+msgstr "On avoimia kysymyksiä!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:61
+msgid "Unanswered questions"
+msgstr "jätetyt kysymykset"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:63
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:70
+msgid "From"
+msgstr "Alkaen"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:64
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:71
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:19
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:24
+msgid "Question"
+msgstr "Kysymys"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:65
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:73
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:26
+msgid "Answer"
+msgstr "Vastaus"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:68
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:22
+msgid "Answered questions"
+msgstr "Vastatut kysymykset"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_questions.php:72
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:25
+msgid "Answered by"
+msgstr "vastasi"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:4
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:816
+msgid "Rooms"
+msgstr "Huoneet"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:62
+msgid "This name is already in use."
+msgstr "Tämä nimi on jo käytössä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:89
+#, php-format
+msgid "Please enter needed angels for type %s."
+msgstr "Anna tarvittavat enkeleitä tyyppi%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:117
+msgid "Room saved."
+msgstr "Huoneen tallennettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:137
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:182
+msgid "Public"
+msgstr "Julkinen"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:138
+msgid "Room number"
+msgstr "Huoneen numero"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:143
+msgid "Needed angels:"
+msgstr "Tarvittavat enkelit:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:158
+#, php-format
+msgid "Room %s deleted."
+msgstr "Huoneen%s poistettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:166
+#, php-format
+msgid "Do you want to delete room %s?"
+msgstr "Haluatko poistaa huoneen%s?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_rooms.php:176
+msgid "add"
+msgstr "Lisää"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:4
+msgid "Create shifts"
+msgstr "Luo vuorossa"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:65
+msgid "Please select a location."
+msgstr "Valitse sijainti."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:72
+msgid "Please select a start time."
+msgstr "Valitse aloitusaika."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:79
+msgid "Please select an end time."
+msgstr "Valitse päättymisaika."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:84
+msgid "The shifts end has to be after its start."
+msgstr "Vuorot pää on oltava kuluttua sen aloittamisesta."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:96
+msgid "Please enter a shift duration in minutes."
+msgstr "Anna siirtyminen kesto minuuteissa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:104
+msgid "Please split the shift-change hours by colons."
+msgstr "Ole hyvä ja jakaa shift-muutos tuntia kaksoispisteillä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:109
+msgid "Please select a mode."
+msgstr "Valitse tila."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:122
+#, php-format
+msgid "Please check the needed angels for team %s."
+msgstr "Tarkista tarvittavat enkelit taktiikka%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:127
+msgid "There are 0 angels needed. Please enter the amounts of needed angels."
+msgstr "On 0 enkeleitä tarvitaan. Anna määriä tarvitaan enkeleitä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:131
+msgid "Please select a mode for needed angels."
+msgstr "Valitse tila tarvitaan enkeleitä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:135
+msgid "Please select needed angels."
+msgstr "Valitse tarvitaan enkeleitä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:253
+msgid "Time and location"
+msgstr "Aika ja paikka"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:254
+msgid "Type and title"
+msgstr "Tyyppi ja otsikko"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:255
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:316
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:189
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:110
+msgid "Needed angels"
+msgstr "tarvittavat enkelit"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:308
+msgid "Mode"
+msgstr "Toimintatila"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:309
+msgid "Create one shift"
+msgstr "Luo yhden työvuoron"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:310
+msgid "Create multiple shifts"
+msgstr "Luo useita muutoksia"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:312
+msgid "Create multiple shifts with variable length"
+msgstr "Luo useita siirtymiä muuttuvamittaisilla"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:313
+msgid "Shift change hours"
+msgstr "Shift muutos tuntia"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:317
+msgid "Take needed angels from room settings"
+msgstr "Ota tarvitaan enkeleitä huoneen asetuksista"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_shifts.php:318
+msgid "The following angels are needed"
+msgstr "Seuraavat enkelit tarvitaan"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:4
+msgid "All Angels"
+msgstr "kaikki Angels"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:21
+msgid "This user does not exist."
+msgstr "Käyttäjällä ei ole olemassa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:41
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:185
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:178
+msgid "Please send me an email if my shifts change"
+msgstr "Lähetä minulle sähköpostia jos vuorossa muuttua"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:60
+msgid "Force active"
+msgstr "Force aktiivinen"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:79
+msgid ""
+"Please visit the angeltypes page or the users profile to manage users "
+"angeltypes."
+msgstr ""
+"Käy angeltypes sivun tai käyttäjän tiedot hallita käyttäjiä angeltypes."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/admin_user.php:200
+msgid "Edit user"
+msgstr "Edit user"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_credits.php:3
+msgid "Credits"
+msgstr "Kunniamaininnat"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:4
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:314
+msgid "Login"
+msgstr "Kirjaudu"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:8
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:240
+msgid "Register"
+msgstr "Rekisteröidy"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:12
+msgid "Logout"
+msgstr "Kirjaudu ulos"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:52
+#, php-format
+msgid "Your nick &quot;%s&quot; already exists."
+msgstr "Nimimerkkisi \"%s\" on jo olemassa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:56
+#, php-format
+msgid "Your nick &quot;%s&quot; is too short (min. 2 characters)."
+msgstr "Nimimerkkisi \"%s\" on liian lyhyt (min. 2 merkkiä)."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:77
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:50
+msgid "Please check your jabber account information."
+msgstr "Tarkista jabber tilitietoja."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:86
+msgid "Please select your shirt size."
+msgstr "Valitse paidan koko."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:97
+#, php-format
+msgid "Your password is too short (please use at least %s characters)."
+msgstr "Salasana on liian lyhyt (käytä vähintään%s merkkiä)."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:104
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:64
+msgid "Please enter your planned date of arrival."
+msgstr "Anna suunniteltua saapumista."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:166
+msgid "Angel registration successful!"
+msgstr "Angel rekisteröinti onnistunut!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:173
+msgid ""
+"By completing this form you're registering as a Chaos-Angel. This script "
+"will create you an account in the angel task sheduler."
+msgstr ""
+"Täyttämällä tämän lomakkeen olet rekisteröitymällä Chaos-Angel. Tämä skripti "
+"luo sinulle tilin enkeli tehtävään sheduler."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:190
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:171
+msgid "Planned date of arrival"
+msgstr "Suunniteltua saapumista"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:193
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:181
+msgid "Shirt size"
+msgstr "paita koko"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:198
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:313
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:272
+msgid "Password"
+msgstr "Anna salasana"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:201
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:273
+msgid "Confirm password"
+msgstr "Vahvista salasana"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:204
+msgid "What do you want to do?"
+msgstr "Mitä haluat tehdä?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:204
+msgid "Description of job types"
+msgstr "Kuvaus työn tyypit"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:205
+msgid ""
+"Restricted angel types need will be confirmed later by an archangel. You can "
+"change your selection in the options section."
+msgstr ""
+"Rajoitettu enkeli tyyppejä tarvitse vahvistetaan myöhemmin arkkienkeli. Voit "
+"muuttaa valinnan vaihtoehtoja osiossa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:213
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:176
+msgid "Mobile"
+msgstr "mobile"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:216
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:174
+msgid "Phone"
+msgstr "Puhelin"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:222
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:170
+msgid "First name"
+msgstr "Etunimi"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:225
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:169
+msgid "Last name"
+msgstr "Sukunimi"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:230
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:173
+msgid "Age"
+msgstr "Ikä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:233
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:180
+msgid "Hometown"
+msgstr "Kotikaupunki"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:236
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:167
+msgid "Entry required!"
+msgstr "Entry tarvita!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:276
+msgid "Please enter a password."
+msgstr "Anna salasana uudelleen."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:280
+msgid ""
+"No user was found with that Nickname. Please try again. If you are still "
+"having problems, ask an Dispatcher."
+msgstr ""
+"Ei käyttäjä löydettiin että Lempinimi. Yritä uudelleen. Jos ongelmat "
+"jatkuvat, pyydä lähettäjä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:284
+msgid "Please enter a nickname."
+msgstr "Anna lempinimi."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:297
+msgid "Please sign up, if you want to help us!"
+msgstr "Ilmoittautumiset, jos haluat auttaa meitä!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:304
+msgid "Registration is disabled."
+msgstr "Rekisteröityminen on poistettu käytöstä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:316
+msgid "I forgot my password"
+msgstr "unohdin salasanani"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:318
+msgid "Please note: You have to activate cookies!"
+msgstr "Huomaa: sinun täytyy aktivoida evästeet!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:324
+msgid "What can I do?"
+msgstr "Mitä minä voin tehdä?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/guest_login.php:325
+msgid "Please read about the jobs you can do to help us."
+msgstr "Katso tarkemmat työpaikkoja voit tehdä auttaa meitä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:4
+msgid "Messages"
+msgstr "viestit"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:25
+msgid "Select recipient..."
+msgstr "Valitse vastaanottaja ..."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:49
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:52
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:62
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:92
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:16
+msgid "Unable to load user."
+msgstr "Lataaminen ei onnistu käyttäjälle."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:64
+msgid "mark as read"
+msgstr "Merkitse luetuksi"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:66
+msgid "delete message"
+msgstr "Poistetaanko viesti?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:72
+#, php-format
+msgid "Hello %s, here can you leave messages for other angels"
+msgstr "Hei%s, täällä voit jättää viestejä muille enkelien"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:75
+msgid "New"
+msgstr "Uusi"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:77
+msgid "Transmitted"
+msgstr "lähetetään"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:78
+msgid "Recipient"
+msgstr "Vastaanottaja"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:90
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:104
+msgid "Incomplete call, missing Message ID."
+msgstr "Puutteellinen puhelu, puuttuvat Message ID."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:97
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:111
+msgid "No Message found."
+msgstr "Ei Message löytynyt."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:118
+msgid "Transmitting was terminated with an Error."
+msgstr "Lähettävät lopetettiin virhe."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_messages.php:123
+msgid "Wrong action."
+msgstr "Väärä toiminta."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:4
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:298
+msgid "My shifts"
+msgstr "Omat vuorossa"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:24
+msgid "Key changed."
+msgstr "Key muuttunut."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:27
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:232
+msgid "Reset API key"
+msgstr "Reset sovellusliittymäavain"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:28
+msgid ""
+"If you reset the key, the url to your iCal- and JSON-export and your atom "
+"feed changes! You have to update it in every application using one of these "
+"exports."
+msgstr ""
+"Jos nollata avaimen, URL-osoite iCal- ja JSON vienti ja atomi syötteen "
+"muutokset! Sinun täytyy päivittää kaikissa sovelluksissa jollakin tämän "
+"viennin."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:29
+msgid "Continue"
+msgstr "Jatkaa"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:61
+msgid "Please enter a freeload comment!"
+msgstr "Anna Freeload kommentti!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:79
+msgid "Shift saved."
+msgstr "Shift tallennettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:105
+msgid "Shift canceled."
+msgstr "Shift peruutettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_myshifts.php:107
+msgid ""
+"It's too late to sign yourself off the shift. If neccessary, ask the "
+"dispatcher to do so."
+msgstr ""
+"On liian myöhäistä allekirjoittaa itse pois siirtymistä. Jos neccessary, "
+"pyydä lähettäjää tekemään niin."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:3
+msgid "News comments"
+msgstr "uutisista"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:7
+msgid "News"
+msgstr "Uutiset"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:11
+msgid "Meetings"
+msgstr "Kokoukset"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:66
+msgid "Comments"
+msgstr "Kommentit"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:83
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:126
+msgid "Entry saved."
+msgstr "Entry tallennettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:103
+msgid "New Comment:"
+msgstr "Uusi kommentti:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:110
+msgid "Invalid request."
+msgstr "Virheellinen pyyntö."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_news.php:154
+msgid "Create news:"
+msgstr "Luo uutinen:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:3
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:29
+msgid "Ask an archangel"
+msgstr "Pyydä arkkienkeli"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:28
+msgid "Unable to save question."
+msgstr "Ei voitu tallentaa kysymykseen."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:29
+msgid "You question was saved."
+msgstr "Kyseenalaistat tallennettiin."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:33
+msgid "Please enter a question!"
+msgstr "Kirjoita kysymys!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:40
+msgid "Incomplete call, missing Question ID."
+msgstr "Puutteellinen puhelu, puuttuva kysymys ID."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_questions.php:48
+msgid "No question found."
+msgstr "Ei kysymys löytynyt."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:4
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:229
+msgid "Settings"
+msgstr "Asetukset"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:72
+msgid "Please enter your planned date of departure."
+msgstr "Anna suunniteltua lähtöpäivää."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:112
+msgid "Settings saved."
+msgstr "Asetukset tallennettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:119
+msgid "-> not OK. Please try again."
+msgstr "-> Ei OK. Yritä uudelleen."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:127
+msgid "Failed setting password."
+msgstr "Epäonnistui asetus salasana."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:140
+msgid "Theme changed."
+msgstr "Teema muuttunut."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:166
+msgid "Here you can change your user details."
+msgstr "Tässä voit muuttaa käyttäjän tietoja."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:172
+msgid "Planned date of departure"
+msgstr "Suunnitellut lähtöpäivä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:182
+msgid "Please visit the angeltypes page to manage your angeltypes."
+msgstr "Käy angeltypes sivu hallita angeltypes."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:188
+msgid "Here you can change your password."
+msgstr "Tässä voit muuttaa salasanan."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:189
+msgid "Old password:"
+msgstr "Vanha salasana:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:190
+msgid "New password:"
+msgstr "Uusi salasana:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:191
+msgid "Password confirmation:"
+msgstr "Salasanan vahvistus:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:195
+msgid "Here you can choose your color settings:"
+msgstr "Täällä voit valita väriasetukset:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:196
+msgid "Color settings:"
+msgstr "Väri asetukset:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:200
+msgid "Here you can choose your language:"
+msgstr "Tässä voit valita kielen:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_settings.php:201
+msgid "Language:"
+msgstr "Kieli:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:43
+msgid "Shift entry deleted."
+msgstr "Shift merkintä poistetaan."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:45
+msgid "Entry not found."
+msgstr "Entry ei löytynyt."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:110
+msgid "Please select a room."
+msgstr "Valitse huone."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:117
+msgid "Please select a shifttype."
+msgstr "Valitse shifttype."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:124
+msgid "Please enter a valid starting time for the shifts."
+msgstr "Anna kelvollinen lähtö- aikaa vuorossa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:131
+msgid "Please enter a valid ending time for the shifts."
+msgstr "Anna kelvollinen päättymisaika varten vuorossa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:136
+msgid "The ending time has to be after the starting time."
+msgstr "Lopetusaika on oltava jälkeen aloitusaika."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:144
+#, php-format
+msgid "Please check your input for needed angels of type %s."
+msgstr "Tarkista tulo tarvitaan enkelien tyyppiä%s."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:166
+msgid "Shift updated."
+msgstr "Shift päivitetty."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:182
+msgid "This page is much more comfortable with javascript."
+msgstr "Tämä sivu on paljon mukavampaa javascript."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:186
+msgid "Room:"
+msgstr "huone"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:187
+msgid "Start:"
+msgstr "Alkaa:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:188
+msgid "End:"
+msgstr "end:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:214
+msgid "Shift deleted."
+msgstr "Shift poistettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:219
+#, php-format
+msgid "Do you want to delete the shift %s from %s to %s?"
+msgstr "Haluatko poistaa siirtymistä%s%s%s?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:251
+msgid ""
+"You are not allowed to sign up for this shift. Maybe shift is full or "
+"already running."
+msgstr ""
+"Et saa kirjautua tähän muutokseen. Ehkä muutos on täynnä tai jo käynnissä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:298
+msgid "You are subscribed. Thank you!"
+msgstr "Olet tilannut. Kiitos!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:307
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:206
+msgid "Freeloader"
+msgstr "siivelläeläjä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:337
+msgid "The administration has not configured any shifts yet."
+msgstr "Hallinto ei ole määritetty mitään muutoksia vielä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:344
+msgid "The administration has not configured any rooms yet."
+msgstr "Hallinto ei ole määritetty mitään huonetta vielä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:357
+msgid "occupied"
+msgstr "varattu"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:361
+msgid "free"
+msgstr "ilmainen"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:366
+msgid ""
+"The administration has not configured any angeltypes yet - or you are not "
+"subscribed to any angeltype."
+msgstr ""
+"Hallinto ei ole määritetty mitään angeltypes vielä - tai et ole tilannut "
+"mitään angeltype."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:618
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:755
+#, php-format
+msgid "%d helper needed"
+msgid_plural "%d helpers needed"
+msgstr[0] "%d auttaja tarvitaan"
+msgstr[1] "%d auttajia tarvitaan "
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:638
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:22
+msgid "Sign up"
+msgstr "Rekisteröidy"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:641
+msgid "ended"
+msgstr "päättynyt"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:649
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:782
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:24
+#, php-format
+msgid "Become %s"
+msgstr "Tule%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:661
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:795
+msgid "Add more angels"
+msgstr "Lisää enkeleitä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:803
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:239
+msgid "Time"
+msgstr "Aika"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:804
+msgid "Entries"
+msgstr "merkinnät"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:822
+msgid "Occupancy"
+msgstr "Varaustilanne"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:823
+msgid ""
+"The tasks shown here are influenced by the preferences you defined in your "
+"settings!"
+msgstr "Tehtävät kuvassa vaikuttavat mieltymykset olet määritellyt asetukset!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:823
+msgid "Description of the jobs."
+msgstr "Kuvaus työpaikkoja."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:824
+msgid "Use new style if possible"
+msgstr "Käytä uutta tyyliä mahdollisuuksien"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:826
+msgid "iCal export"
+msgstr "iCal vienti"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:826
+#, php-format
+msgid ""
+"Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s"
+"\">JSON format</a> available (please keep secret, otherwise <a href=\"%s"
+"\">reset the api key</a>)."
+msgstr ""
+"Vienti esitetty vuorossa. <a href=\"%s\">ICal-muodossa</a> tai <a href=\"%s"
+"\">JSON-muodossa</a> saatavilla (ota pitämään salassa, muuten <a href=\"%s"
+"\">nollaa API avain</a> )."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:827
+msgid "Filter"
+msgstr "Suodatin"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:861
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:22
+msgid "All"
+msgstr "Kaikki"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/pages/user_shifts.php:862
+msgid "None"
+msgstr "Ei mitään"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:28
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:192
+msgid "Unconfirmed"
+msgstr "Vahvistamaton"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:30
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:34
+msgid "Coordinator"
+msgstr "koordinaattori"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:32
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:36
+msgid "Member"
+msgstr "Käyttäjä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:45
+#, php-format
+msgid "Do you want to delete angeltype %s?"
+msgstr "Haluatko poistaa angeltype%s?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:47
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:14
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:7
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:18
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:29
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:40
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:51
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:80
+msgid "cancel"
+msgstr "peru"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:61
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:217
+msgid "Restricted"
+msgstr "rajoitettu"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:61
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:62
+msgid "Yes"
+msgstr "Kyllä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:61
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:62
+msgid "No"
+msgstr "Ei"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:62
+msgid "Requires driver license"
+msgstr "Vaatii ajokortti"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:63
+msgid ""
+"Restricted angel types can only be used by an angel if enabled by an "
+"archangel (double opt-in)."
+msgstr ""
+"Rajoitettu enkeli tyyppejä voidaan käyttää vain enkeli jos käytössä "
+"arkkienkeli (double opt-in)."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:64
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:100
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:114
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:35
+msgid "Description"
+msgstr "Kuvaus"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:65
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:36
+msgid "Please use markdown for the description."
+msgstr "Käytä markdown kuvauksen."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:77
+msgid "my driving license"
+msgstr "ajokorttini"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:83
+msgid ""
+"This angeltype requires a driver license. Please enter your driver license "
+"information!"
+msgstr "Tämä angeltype vaatii ajokortin. Anna ajokortti tiedot!"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:86
+#, php-format
+msgid ""
+"You are unconfirmed for this angeltype. Please go to the introduction for %s "
+"to get confirmed."
+msgstr ""
+"Olet vahvistamaton tähän angeltype. Mene käyttöönotto%s saada vahvistettu."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:123
+msgid "confirm"
+msgstr "vahvistus"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:124
+msgid "deny"
+msgstr "kieltää"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:139
+msgid "remove"
+msgstr "poista"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:155
+msgid "Driver"
+msgstr "Kuljettaja"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:156
+msgid "Has car"
+msgstr "on auto"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:157
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:27
+msgid "Car"
+msgstr "Auto"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:158
+msgid "3,5t Transporter"
+msgstr "3,5t Transporter"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:159
+msgid "7,5t Truck"
+msgstr "7,5t Truck"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:160
+msgid "12,5t Truck"
+msgstr "12,5t Truck"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:161
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:31
+msgid "Forklift"
+msgstr "Forklift"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:166
+msgid "Coordinators"
+msgstr "koordinaattorit"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:184
+msgid "Members"
+msgstr "Jäsenet"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:187
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:70
+msgid "Add"
+msgstr "Lisää"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:194
+msgid "confirm all"
+msgstr "vahvistaa kaikki"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:195
+msgid "deny all"
+msgstr "kieltää kaikki"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:212
+msgid "New angeltype"
+msgstr "New angeltype"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:218
+msgid "Membership"
+msgstr "Tilaus"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:232
+msgid "FAQ"
+msgstr "FAQ"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:234
+msgid ""
+"Here is the list of teams and their tasks. If you have questions, read the "
+"FAQ."
+msgstr ""
+"Tässä on luettelo joukkueiden ja niiden tehtävät. Jos sinulla on kysymyksiä, "
+"lue FAQ."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:251
+msgid ""
+"This angeltype is restricted by double-opt-in by a team coordinator. Please "
+"show up at the according introduction meetings."
+msgstr ""
+"Tämä angeltype rajoittaa kaksinkertainen opt-in, jonka koordinaattori. Ota "
+"ilmaantuvat mukaan johdanto kokouksissa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:17
+msgid "Open questions"
+msgstr "Avoimet kysymykset"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Questions_view.php:31
+msgid "Your Question:"
+msgstr "Kysymyksesi:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:17
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:165
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:167
+msgid "Freeloaded"
+msgstr "Freeloaded"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:18
+msgid "Freeload comment (Only for shift coordination):"
+msgstr "Freeload kommentti (vain shift koordinointi):"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:23
+msgid "Edit shift entry"
+msgstr "Edit shift merkintä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:26
+msgid "Angel:"
+msgstr "enkeli"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:27
+msgid "Date, Duration:"
+msgstr "Date, Kesto:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:28
+msgid "Location:"
+msgstr "Sijainti:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:29
+msgid "Title:"
+msgstr "Otsikko:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:30
+msgid "Type:"
+msgstr "Tyyppi"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:31
+msgid "Comment (for your eyes only):"
+msgstr "Kommentti (vain sinun):"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:6
+#, php-format
+msgid "created at %s by %s"
+msgstr "luotu%s%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:8
+#, php-format
+msgid "edited at %s by %s"
+msgstr "muokkasi%s%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:74
+msgid "This shift collides with one of your shifts."
+msgstr "Tämä muutos törmää joku vuorossa."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:75
+msgid "You are signed up for this shift."
+msgstr "Olet liittynyt tähän muutokseen."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/Shifts_view.php:104
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:240
+msgid "Location"
+msgstr "Sijainti"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:12
+#, php-format
+msgid "Do you want to delete shifttype %s?"
+msgstr "Haluatko poistaa shifttype%s?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:27
+msgid "Edit shifttype"
+msgstr "Edit shifttype"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:27
+msgid "Create shifttype"
+msgstr "Luo shifttype"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:46
+#, php-format
+msgid "for team %s"
+msgstr "taktiikka%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:71
+msgid "New shifttype"
+msgstr "New shifttype"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:7
+msgid "Please select..."
+msgstr "Valitse"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:31
+msgid ""
+"Do you really want to delete the user including all his shifts and every "
+"other piece of his data?"
+msgstr ""
+"Haluatko todella tuhota käyttäjän lukien kaikki hänen vuorossa ja joka "
+"toinen osa hänen tietoja?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:33
+msgid "Your password"
+msgstr "Salasanan"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:48
+#, php-format
+msgid "Angel should receive at least  %d vouchers."
+msgstr "Angel pitäisi saada vähintään %d tositteita."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:50
+msgid "Number of vouchers given out"
+msgstr "Matkasetelimäärän anneta"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:64
+msgid "m/d/Y h:i a"
+msgstr "m / d / Y h: ia"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:83
+msgid "New user"
+msgstr "Uusi käyttäjä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:87
+msgid "Prename"
+msgstr "Prename"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:90
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:208
+msgid "Arrived"
+msgstr "saapui"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:91
+msgid "Voucher"
+msgstr "Lahjakortti"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:92
+msgid "Freeloads"
+msgstr "Freeloads"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:93
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:210
+msgid "Active"
+msgstr "aktiivinen"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:95
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:211
+msgid "T-Shirt"
+msgstr "T-paita"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:97
+msgid "Last login"
+msgstr "Viimeisin kirjautuminen"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:113
+msgid "Free"
+msgstr "Vapaa"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:117
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:119
+#, php-format
+msgid "Next shift %c"
+msgstr "Seuraava muutos%c"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:124
+#, php-format
+msgid "Shift starts %c"
+msgstr "Vuoronsa alkaa%c"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:126
+#, php-format
+msgid "Shift ends %c"
+msgstr "Shift päättyy%c"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:176
+msgid "sign off"
+msgstr "Kirjaudu ulos"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:187
+msgid "Sum:"
+msgstr "Summa:"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:205
+msgid "User state"
+msgstr "Käyttäjän tila"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:208
+#, php-format
+msgid "Arrived at %s"
+msgstr "Saapui%s"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:208
+#, php-format
+msgid "Not arrived (Planned: %s)"
+msgstr "Ole saapunut (Planned:%s)"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:208
+msgid "Not arrived"
+msgstr "ole saapunut"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:209
+#, php-format
+msgid "Got %s voucher"
+msgid_plural "Got %s vouchers"
+msgstr[0] "Sai%s tosite"
+msgstr[1] "Sai %s tositteita"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:209
+msgid "Got no vouchers"
+msgstr "Saanut mitään tositteita"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:218
+msgid "Rights"
+msgstr "oikeudet"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:226
+msgid "driving license"
+msgstr "ajokortti"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:228
+msgid "Edit vouchers"
+msgstr "Edit tositteita"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:230
+msgid "iCal Export"
+msgstr "iCal Export"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:231
+msgid "JSON Export"
+msgstr "JSON Export"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:241
+msgid "Name &amp; workmates"
+msgstr "Nimi &amp; workmates"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:242
+msgid "Comment"
+msgstr "Kommentti"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:243
+msgid "Action"
+msgstr "Toiminto"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:245
+msgid "Your night shifts between 2 and 8 am count twice."
+msgstr "Your yövuorossa välillä 2 ja 8 am laskea kahdesti."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:246
+#, php-format
+msgid ""
+"Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some "
+"shifts."
+msgstr ""
+"Siirry <a href=\"%s\">siirtyy pöydän</a> allekirjoittaa itse jopa joitakin "
+"muutoksia."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:256
+msgid ""
+"We will send you an e-mail with a password recovery link. Please use the "
+"email address you used for registration."
+msgstr ""
+"Lähetämme sähköpostiviestin, jossa on salasananpalautuslinkkiä. Käytä "
+"sähköpostiosoitetta käytit rekisteröintiä."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:259
+msgid "Recover"
+msgstr "Recover"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/User_view.php:270
+msgid "Please enter a new password."
+msgstr "Anna uusi salasana."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:5
+#, php-format
+msgid "Do you really want to add coordinator rights for %s to %s?"
+msgstr "Haluatko todella lisätä koordinaattori oikeudet%s%s?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:5
+#, php-format
+msgid "Do you really want to remove coordinator rights for %s from %s?"
+msgstr "Haluatko todella poistaa koordinaattori oikeudet%s%s?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:16
+#, php-format
+msgid "Do you really want to deny all users for %s?"
+msgstr "Haluatko todella kieltää kaikille käyttäjille%s?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:27
+#, php-format
+msgid "Do you really want to confirm all users for %s?"
+msgstr "Haluatko todella vahvistaa kaikille käyttäjille%s?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:38
+#, php-format
+msgid "Do you really want to confirm %s for %s?"
+msgstr "Haluatko todella vahvistaa%s%s?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:49
+#, php-format
+msgid "Do you really want to delete %s from %s?"
+msgstr "Haluatko todella poistaa%s%s?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:69
+msgid "User"
+msgstr "Käyttäjä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:78
+#, php-format
+msgid "Do you really want to add %s to %s?"
+msgstr "Haluatko todella lisätä%s%s?"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:81
+msgid "save"
+msgstr "tallenna"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:17
+msgid "Back to profile"
+msgstr "Takaisin profiiliin"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:21
+msgid "Privacy"
+msgstr "yksityisyys"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:21
+msgid ""
+"Your driving license information is only visible for coordinators and admins."
+msgstr "Ajokortti tieto näkyy vain koordinaattorit ja ylläpitäjät."
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:22
+msgid "I am willing to operate cars for the PL"
+msgstr "Olen valmis toimimaan autoja varten PL"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:25
+msgid ""
+"I have my own car with me and am willing to use it for the PL (You'll get "
+"reimbursed for fuel)"
+msgstr ""
+"Minulla on oma auto minulle ja olen valmis käyttämään sitä varten PL (saat "
+"takaisin polttoaineen)"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:26
+msgid "Driver license"
+msgstr "Ajokortti"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:28
+msgid "Transporter 3,5t"
+msgstr "Transporter 3,5t"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:29
+msgid "Truck 7,5t"
+msgstr "Truck 7,5t"
+
+#: /Users/arunimas/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:30
+msgid "Truck 12,5t"
+msgstr "Truck 12,5t"
+
+#: /Users/arunimas/workspace/projects/engelsystem/public/index.php:147
+msgid "No Access"
+msgstr "Ei pääsyä"
+
+#: /Users/arunimas/workspace/projects/engelsystem/public/index.php:148
+msgid ""
+"You don't have permission to view this page. You probably have to sign in or "
+"register in order to gain access!"
+msgstr ""
+"Sinulla ei ole lupaa katsella tätä sivua. Luultavasti täytyy kirjautua "
+"sisään tai rekisteröityä päästäkseen!"
+
+msgid " vouchers."
+msgstr "tositteita."
+
+msgid ""
+"This is a automatically calculated MINIMUM value, you can of course give out "
+"more if appropriate!"
+msgstr ""
+"Tämä on automaattisesti laskettu minimiarvo, voit tietysti antaa lisää "
+"tarvittaessa!"
+
+msgid "You have been signed off from the shift."
+msgstr "Olet kirjautunut pois siirtymistä."
+
+msgid "planned departure"
+msgstr "suunniteltua lähtöä"
+
+msgid "Tasks"
+msgstr "Tehtävät"
+
+msgid "User didnt got vouchers."
+msgstr "Käyttäjän pallo menee hieman ohi sai tositteita."
+
+msgid "Remove vouchers"
+msgstr "Poista tositteita"
+
+msgid ""
+"This shift is running now or ended already. Please contact a dispatcher to "
+"join the shift."
+msgstr ""
+"Tämä muutos on nyt käynnissä tai päättynyt jo. Ota yhteyttä lähettäjä "
+"liittyä muutos."
+
+msgid ""
+"You already subscribed to shift in the same timeslot. Please contact a "
+"dispatcher to join the shift."
+msgstr ""
+"Sinä jo tilannut siirtää samassa aikavälissä. Ota yhteyttä lähettäjä liittyä "
+"muutos."
+
+msgid ""
+"Hello %s, here you can change your personal settings i.e. password, color "
+"settings etc."
+msgstr ""
+"Hei%s, täällä voit muuttaa henkilökohtaisia ​​asetuksia eli salasana, "
+"väriasetukset jne"
+
+msgid "Name/Description:"
+msgstr "Nimi / Kuvaus:"
+
+msgid "Timeslot"
+msgstr "timeslot"
+
+msgid "The first wants to join %s."
+msgstr "Ensimmäinen haluaa liittyä%s."
+
+msgid "Groups"
+msgstr "Ryhmät"
+
+msgid "ICQ"
+msgstr "ICQ"
+
+msgid "You are not confirmed for this angel type."
+msgstr "Et ole vahvistanut tätä enkeli tyyppiä."
+
+msgid "Exports"
+msgstr "Vienti"
+
+msgid "Current ends in %s min"
+msgstr "Nykyinen päättyy%s min"
+
+msgid "Add new angeltype"
+msgstr "Lisää angeltype"
+
+msgid "Language"
+msgstr "Kieli"
+
+msgid "You have %s new message."
+msgid_plural "You have %s new messages."
+msgstr[0] "Sinulla on%s uutta viestiä."
+msgstr[1] " Sinulla on%s uutta viestiä ."
+
+msgid ""
+"These are your shifts.<br/>Please try to appear <b>15 minutes</b> before "
+"your shift begins!<br/>You can remove yourself from a shift up to %d hours "
+"before it starts."
+msgstr ""
+"Nämä ovat vuorossa. <br/> Yritä esiintyä <b>15 minuuttia</b> ennen "
+"siirtymistä alkaa! <br/> Voit poistaa itsesi siirtymistä korkeintaan%d "
+"tuntia ennen sen alkamista."
+
+msgid "Page:"
+msgstr "Sivu:"
+
+msgid "Message:"
+msgstr "Viesti:"
+
+msgid "Wakeup"
+msgstr "Herää"
+
+msgid "Broken date!"
+msgstr "Broken tasalla!"
+
+msgid "Incomplete call, missing wake-up ID."
+msgstr "Puutteellinen puhelu, puuttuvat herätys tunnus."
+
+msgid "Wake-up call deleted."
+msgstr "Herätys poistetaan."
+
+msgid "No wake-up found."
+msgstr "Ei herätys löydetty."
+
+msgid ""
+"Hello %s, here you can register for a wake-up call. Simply say when and "
+"where the angel should come to wake you."
+msgstr ""
+"Hei%s, täällä voit rekisteröityä herätys. Yksinkertaisesti sanoa, milloin ja "
+"missä enkeli pitäisi tulla herättämään sinut."
+
+msgid "All ordered wake-up calls, next first."
+msgstr "Kaikki tilatut herätyssoitto, seuraavaksi ensin."
+
+msgid "Place"
+msgstr "Paikallinen"
+
+msgid "Notes"
+msgstr "Lisätiedot"
+
+msgid "Schedule a new wake-up here:"
+msgstr "Aikataulu uusi herätys tässä:"
+
+msgid "User %s confirmed as %s."
+msgstr "Käyttäjä%s vahvistettiin%s."
+
+msgid ""
+"Resistance is futile! Your biological and physical parameters will be added "
+"to our collectiv! Assimilating angel:"
+msgstr ""
+"Vastarinta on turhaa! Your biologiset ja fysikaaliset parametrit lisätty "
+"collectiv! Rinnastamalla angel:"
+
+msgid "Confirmed all."
+msgstr "Vahvistettu kaikki."
+
+msgid "asdf"
+msgstr "asdf"

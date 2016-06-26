@@ -44,10 +44,21 @@
   </div>
 	<div class="row">
 		<div class="col-md-6">
-  		<div>%task_notice%</div>
-  		<div>%new_style_checkbox%</div>
-  		<input class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="%filter%">
+  			<div>%task_notice%</div>
+  			<div>%new_style_checkbox%</div>
+		</div>
+		<div class="col-md-12">
+			<div class = "col-md-6">
+	  			<input class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="%filter%">
+	  		</div>
 		</div>
 	</div>
 </form>
+
+<!-- Created a separate form for deleting one or more than one shifts -->
+<form class="form-inline" action="" method="post">
+<div class = "col-xs-2 pull-right">
+	<input class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="%delete_shifts%">
+</div>
 %shifts_table% %ical_text%
+</form>

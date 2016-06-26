@@ -4,6 +4,10 @@ function admin_log_title() {
 }
 
 function admin_log() {
+  global $user;
+  $timezone_identifiers = DateTimeZone::listIdentifiers();
+  $timezone = $user['timezone'];
+  date_default_timezone_set ("$timezone_identifiers[$timezone]");
 
   if (isset($_POST['keyword'])) {
     $filter = $_POST['keyword'];

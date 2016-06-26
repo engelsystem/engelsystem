@@ -12,7 +12,7 @@ function logout_title() {
   return _("Logout");
 }
 
-// Engel registrieren
+// Angel registration
 function guest_register() {
   global $tshirt_sizes, $enable_tshirt_size, $default_theme;
 
@@ -39,6 +39,8 @@ function guest_register() {
   $password_hash = "";
   $selected_angel_types = array();
   $planned_arrival_date = null;
+  $timezone = "";
+  $timezone_identifiers = DateTimeZone::listIdentifiers();
   
   $admin_source = sql_select("SELECT `display_msg` FROM `User` WHERE `UID`='" . sql_escape(1) . "' LIMIT 1");
   $display_message = $admin_source[0]['display_msg'];
@@ -144,6 +146,34 @@ function guest_register() {
       $ok = false;
       $msg .= error(_("Please enter your Current City."), true);
     }
+    /**
+     * Google reCaptcha Server-Side Handling
+     */
+    if (isset($_REQUEST['g-recaptcha-response']) && !empty($_REQUEST['g-recaptcha-response'])) {
+      $curl = curl_init();
+      curl_setopt_array($curl, [
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_URL => 'hppts://www.google.com/recaptcha/api/siteverify',
+        CURLOPT_POST => 1,
+        CURLOPT_POSTFIELDS => [
+          'secret' => '6LeGiyITAAAAAMd--Qw4C3iBPrEM-qZDhQQ4LWMt',
+          'response' => $_REQUEST['g-recaptcha-response'],
+        ]
+      ]);
+      
+      $response = json_decode(curl_exec($curl));
+      $msg .= error(sprintf(_(print_r($response)), $nick), true);
+    }
+    else {
+      $ok = false;
+      $msg .= error(_("You are a Robot."), true);
+    } 
+    if (isset($_REQUEST['timezone'])) {
+      $timezone = strip_request_item('timezone');
+    } else {
+      $ok = false;
+      $msg .= error(_("Please select a timezone"), true);
+    }
     if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age']))
       $age = strip_request_item('age');
     if (isset($_REQUEST['tel']))
@@ -194,6 +224,7 @@ function guest_register() {
           `organization`='" . sql_escape($organization) . "',
           `current_city`='" . sql_escape($current_city) . "',
           `organization_web`='" . sql_escape($organization_web) . "',
+          `timezone`='" . sql_escape($timezone) . "',
           `planned_arrival_date`='" . sql_escape($planned_arrival_date) . "'");
 
       // Assign user-group and set password
@@ -253,7 +284,11 @@ function guest_register() {
                           form_password('password2', _("Confirm password") . ' ' . entry_required())
                       ))
                   )),
-                  
+                 div('row', array(                      
+                      div('col-sm-8', array(
+                          form_text('dect', _("DECT"), $dect)
+                      ))
+                  )),                
                   div('row', array(
                       div('col-sm-4', array(
                           form_text('twitter', _("Twitter"), $twitter )
@@ -290,11 +325,11 @@ function guest_register() {
                       )),
                   )),
                   div('row', array(
-                      div('col-sm-8', array(
-                          form_text('dect', _("DECT"), $dect)
-                      )),
-                      )),
-                      div('row', array(
+                    div('col-sm-8', array(
+                          form_select('timezone', _("Timezone") . ' ' . entry_required(), $time_zone , $timezone)
+                      ))
+                  )),
+                  div('row', array(
                       div('col-sm-4', array(
                           form_text('mobile', _("Mobile"), $mobile)
                       )),
@@ -324,6 +359,11 @@ function guest_register() {
                   div('row', array(
                       div('col-sm-8', array(
                           form_text('organization_web', _("Organization Website"), $organization_web)
+                      )),
+                  )),
+                  div('row', array(
+                      div('col-sm-8', array(
+                          reCaptcha()
                       )),
                   )),
                   form_info(entry_required() . ' = ' . _("Entry required!"))

@@ -46,7 +46,8 @@ function User_update($user) {
       `facebook`='" . sql_escape($user['facebook']) . "',
       `github`='" . sql_escape($user['github']) . "',
       `organization`='" . sql_escape($user['organization']) . "',
-      `organization_web`='" . sql_escape($user['organization_web']) . "'
+      `organization_web`='" . sql_escape($user['organization_web']) . "',
+      `timezone`='" . sql_escape($user['timezone']) . "'
       WHERE `UID`='" . sql_escape($user['UID']) . "'");
 }
 
