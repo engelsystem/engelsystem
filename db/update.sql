@@ -45,5 +45,5 @@ CREATE TABLE IF NOT EXISTS `Events` (
 -- -----------------------------------------------------------------------------  
 -- Alter table sturcture for Rooms, converting char(1) type to boolean
 ALTER TABLE `Room`
-    ALTER COLUMN `FromPentabarf` bit NOT NULL DEFAULT 0,
-    ALTER COLUMN `show` bit NOT NULL DEFAULT 1;
+    MODIFY COLUMN `FromPentabarf` bit(1) NOT NULL DEFAULT b'0',
+    MODIFY COLUMN `show` bit(1) NOT NULL DEFAULT b'1';
