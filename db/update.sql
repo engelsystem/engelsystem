@@ -26,7 +26,6 @@ ALTER TABLE `User`
   ADD `github` varchar(255) DEFAULT NULL,
   ADD `organization` varchar(255) DEFAULT NULL,
   ADD `organization_web` varchar(255) DEFAULT NULL,
-  ADD `display_msg` varchar(255) DEFAULT "By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel task sheduler.",
   ADD `timezone` varchar(255) DEFAULT NULL;
 
 -- -----------------------------------------------------------------------------  
@@ -47,3 +46,11 @@ CREATE TABLE IF NOT EXISTS `Events` (
 ALTER TABLE `Room`
     MODIFY COLUMN `FromPentabarf` bit(1) NOT NULL DEFAULT b'0',
     MODIFY COLUMN `show` bit(1) NOT NULL DEFAULT b'1';
+-- -----------------------------------------------------------------------------  
+-- Welcome Message table
+DROP TABLE IF EXISTS `Welcome_Message`;
+CREATE TABLE IF NOT EXISTS `Welcome_Message` (
+  `display_msg` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `Welcome_Message` (`display_msg`) VALUES ("By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel task sheduler.");
