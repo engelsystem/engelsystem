@@ -6,6 +6,12 @@
        "source": "https://github.com/fossasia/engelsystem"
    },
    "require": {
-        "ext-mysql": "*"
-    }
+    "ext-mysql": "*"
+  },
+   "require": {
+      "ext-gettext": "*"
+    },
+   "require-dev": {
+      "heroku/heroku-buildpack-php": "*"
+   }
 } 
