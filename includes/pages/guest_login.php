@@ -462,4 +462,17 @@ function guest_login() {
       '</div></div>'
   ));
 }
+/**
+ * Generates a list of Languages with their ISO Codes
+ */
+function languages() {	  
+  $xml = simplexml_load_file("https://www.facebook.com/translations/FacebookLocales.xml");
+  foreach($xml->xpath("/locales/locale") as $item)
+  {
+    $representation = $item->codes->code->standard->representation;
+    if ($representation != "en_PI" || $representation != "en_UD")
+      $locale["$representation"] = $item->englishName;;
+  }	
+  return $locale;
+}
 ?>
