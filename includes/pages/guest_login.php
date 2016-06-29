@@ -42,8 +42,8 @@ function guest_register() {
   $timezone = "";
   $timezone_identifiers = DateTimeZone::listIdentifiers();
   
-  $admin_source = sql_select("SELECT `display_msg` FROM `User` WHERE `UID`='" . sql_escape(1) . "' LIMIT 1");
-  $display_message = $admin_source[0]['display_msg'];
+  $welcome_message = sql_select("SELECT * FROM `Welcome_Message`");
+  $display_message = $welcome_message[0]['display_msg'];
   $angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
   $angel_types = array();
   foreach ($angel_types_source as $angel_type) {
