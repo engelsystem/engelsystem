@@ -27,7 +27,7 @@ ALTER TABLE `User`
   ADD `organization` varchar(255) DEFAULT NULL,
   ADD `organization_web` varchar(255) DEFAULT NULL,
   ADD `timezone` varchar(255) DEFAULT NULL,
-  ADD 'native_lang` varchar(5) DEFAULT NULL,
+  ADD `native_lang` varchar(5) DEFAULT NULL,
   ADD `other_langs` varchar(150) DEFAULT NULL;
 
 -- -----------------------------------------------------------------------------  
