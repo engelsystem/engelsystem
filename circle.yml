@@ -16,3 +16,4 @@ dependencies:
 test:
   post:
     - php test/
+    - bash <(curl -s https://codecov.io/bash)
