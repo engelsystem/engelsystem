@@ -56,3 +56,20 @@ CREATE TABLE IF NOT EXISTS `Welcome_Message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `Welcome_Message` (`display_msg`) VALUES ("By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel task sheduler.");
+
+-- ---------------------------------------------------------------------------------
+-- Settings table
+DROP TABLE IF EXISTS `Settings`;
+CREATE TABLE IF NOT EXISTS `Settings` (
+  `event_name` varchar(255) DEFAULT NULL,
+  `buildup_start_date` int(11) DEFAULT NULL, 
+  `event_start_date` int(11) DEFAULT NULL,
+  `event_end_date` int(11) DEFAULT NULL,
+  `teardown_end_date` int(11) DEFAULT NULL,
+  `event_welcome_msg` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+-- Added privilege for Admin Settings
+INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES (39, 'admin_settings', 'Admin Settings');
+
+INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES (218, -4, 39);
