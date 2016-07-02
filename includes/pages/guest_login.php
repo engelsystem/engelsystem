@@ -180,6 +180,15 @@ function guest_register() {
       $tel = strip_request_item('tel');
     if (isset($_REQUEST['dect']))
       $dect = strip_request_item('dect');
+    if (isset($_REQUEST['native_lang']))
+      $native_lang = strip_request_item('native_lang');
+    if (isset($_REQUEST['other_lang'])) {
+      $other_langs = "";
+      $langs = $_REQUEST['other_lang'];
+      foreach($langs as $lang) {
+        $other_langs .= $lang . ',';
+      }
+    }
     if (isset($_REQUEST['mobile']))
       $mobile = strip_request_item('mobile');
     if (isset($_REQUEST['hometown']))
@@ -207,6 +216,8 @@ function guest_register() {
           `Alter`='" . sql_escape($age) . "',
           `Telefon`='" . sql_escape($tel) . "',
           `DECT`='" . sql_escape($dect) . "',
+          `native_lang`='" . sql_escape($native_lang) . "',
+          `other_langs`='" . sql_escape($other_langs) . "',
           `Handy`='" . sql_escape($mobile) . "',
           `email`='" . sql_escape($mail) . "',
           `email_shiftinfo`=" . sql_bool($email_shiftinfo) . ",
@@ -323,6 +334,16 @@ function guest_register() {
                   div('col-sm-8', array(
                           form_text('current_city', _("Current City"). ' ' . entry_required(), $current_city)
                       )),
+                  )),
+                  div('row', array(
+                  div('col-sm-8', array(
+                  	form_select('native_lang', _("Native Language").' '. entry_required(), languages(), $native_lang, 'English')
+                      ))
+                  )),
+		              div('row', array(
+                  div('col-sm-8', array(
+                          form_multiselect('other_langs', _("Other Languages"), languages(), $other_langs, 'English')
+                      ))
                   )),
                   div('row', array(
                     div('col-sm-8', array(
