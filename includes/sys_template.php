@@ -474,4 +474,16 @@ function calender($name, $value = '', $id) {
 			});  
 		  </script>';
 }
+/**
+ * Renders a form multi-select box
+ */
+function form_multiselect($name, $label, $values, $tag = "") {
+  $list = '<div class="form-group"><label>' . $label . '</label>';
+  $list .= '<select class="form-control selectpicker" multiple title="' . $tag . '" name="' . $name .'[]"> ';
+  foreach($values as $key => $value) {
+    $list .= '<option value="' . $key . '">' . $value . '</option>';
+  }  
+  $list .= '</select></div>';
+  return $list;
+}
 ?>
