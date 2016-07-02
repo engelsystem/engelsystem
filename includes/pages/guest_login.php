@@ -146,6 +146,13 @@ function guest_register() {
       $ok = false;
       $msg .= error(_("Please enter your Current City."), true);
     }
+    if (isset($_REQUEST['native_lang']) && strlen(strip_request_item('native_lang')) > 0){
+      $native_lang = strip_request_item('native_lang');
+      }
+    else {
+      $ok = false;
+      $msg .= error(_("Please enter your Native Language."), true);
+    }
     /**
      * Google reCaptcha Server-Side Handling
      */
