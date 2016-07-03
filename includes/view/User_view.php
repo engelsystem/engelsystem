@@ -249,6 +249,16 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
               User_groups_render($user_groups) 
           )) 
       )),
+      div('row', array(
+          div('col-md-6', array(
+              '<h4>' . _("Native Language") . '</h4>',
+              Native_language_render($user_source)
+          )),
+          div('col-md-6', array(
+              '<h4>' . _("Other Languages") . '</h4>',
+              Other_languages_render($user_source)
+          ))
+      )),
       div('row space-top', array(
           div('col-md-12', array(
               buttons(array(
