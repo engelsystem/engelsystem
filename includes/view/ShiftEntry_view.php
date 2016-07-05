@@ -30,7 +30,7 @@ function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment,
       CURLOPT_URL => 'hppts://www.google.com/recaptcha/api/siteverify',
       CURLOPT_POST => 1,
       CURLOPT_POSTFIELDS => [
-        'secret' => '6LeGiyITAAAAAMd--Qw4C3iBPrEM-qZDhQQ4LWMt',
+        'secret' => CAPTCHA_KEY_PRIVATE,
         'response' => $_REQUEST['g-recaptcha-response'],
       ]
     ]);
