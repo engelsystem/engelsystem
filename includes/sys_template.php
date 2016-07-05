@@ -453,7 +453,7 @@ function ReplaceSmilies($neueckig) {
  * Rendert Google reCaptcha
  */
 function reCaptcha() {
-  return '<div class="g-recaptcha" data-sitekey="6LeGiyITAAAAAGG2-A9yM47fnB0IRwET_cOunvgf"></div>';
+  return '<div class="g-recaptcha" data-sitekey="' . CAPTCHA_KEY_PUBLIC . '"></div>';
 }
 /**
  * Function to add Date-picker
