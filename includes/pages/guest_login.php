@@ -163,11 +163,10 @@ function guest_register() {
         CURLOPT_URL => 'hppts://www.google.com/recaptcha/api/siteverify',
         CURLOPT_POST => 1,
         CURLOPT_POSTFIELDS => [
-          'secret' => '6LeGiyITAAAAAMd--Qw4C3iBPrEM-qZDhQQ4LWMt',
+          'secret' => CAPTCHA_KEY_PRIVATE,
           'response' => $_REQUEST['g-recaptcha-response'],
         ]
       ]);
-
       $response = json_decode(curl_exec($curl));
       $msg .= error(sprintf(_(print_r($response)), $nick), true);
     }
