@@ -8,17 +8,17 @@ function admin_settings() {
   $settings_source = sql_select("SELECT * FROM `Settings`");
   if (count($settings_source) == 1) {
     $event_name = $settings_source[0]['event_name'];
-    $buildup_start_date = $settings_source[0]['buildup_start_date']; 
+    $buildup_start_date = $settings_source[0]['buildup_start_date'];
     $event_start_date = $settings_source[0]['event_start_date'];
     $event_end_date = $settings_source[0]['event_end_date'];
-    $teardown_end_date = $settings_source[0]['teardown_end_date']; 
+    $teardown_end_date = $settings_source[0]['teardown_end_date'];
     $event_welcome_msg = $settings_source[0]['event_welcome_msg'];
   }
   if (isset($_REQUEST['submit'])) {
     $ok = true;
 
   if (isset($_REQUEST['event_name']))
-    $event_name = strip_request_item('event_name');  
+    $event_name = strip_request_item('event_name');
 
   if (isset($_REQUEST['buildup_start_date']) && $_REQUEST['buildup_start_date'] != '') {
     if (DateTime::createFromFormat("Y-m-d", trim($_REQUEST['buildup_start_date']))) {
@@ -27,8 +27,7 @@ function admin_settings() {
         $ok = false;
         $msg .= error(_("Please enter buildup start date."), true);
       }
-  } else
-    $buildup_start_date = null;
+  }
 
   if (isset($_REQUEST['event_start_date']) && $_REQUEST['event_start_date'] != '') {
     if (DateTime::createFromFormat("Y-m-d", trim($_REQUEST['event_start_date']))) {
@@ -37,8 +36,7 @@ function admin_settings() {
       $ok = false;
       $msg .= error(_("Please enter event start date."), true);
       }
-  } else
-    $event_start_date = null;
+  }
 
   if (isset($_REQUEST['event_end_date']) && $_REQUEST['event_end_date'] != '') {
     if (DateTime::createFromFormat("Y-m-d", trim($_REQUEST['event_end_date']))) {
@@ -47,8 +45,7 @@ function admin_settings() {
         $ok = false;
         $msg .= error(_("Please enter event end date."), true);
       }
-  } else
-    $event_end_date = null;
+  }
 
   if (isset($_REQUEST['teardown_end_date']) && $_REQUEST['teardown_end_date'] != '') {
     if (DateTime::createFromFormat("Y-m-d", trim($_REQUEST['teardown_end_date']))) {
@@ -57,8 +54,7 @@ function admin_settings() {
       $ok = false;
       $msg .= error(_("Please enter teardown end date."), true);
     }
-  } else
-      $teardown_end_date = null;
+  }
 
   if (isset($_REQUEST['event_welcome_msg']))
     $event_welcome_msg = strip_request_item('event_welcome_msg');
@@ -68,7 +64,7 @@ if ($ok) {
     Settings_update($event_name, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date, $event_welcome_msg);
   else
     Settings_create($event_name, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date, $event_welcome_msg);
-  
+
   success(_("Settings saved."));
   redirect(page_link_to('admin_settings'));
 }
@@ -93,4 +89,3 @@ if ($ok) {
   ));
 }
 ?>
-
