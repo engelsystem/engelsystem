@@ -70,6 +70,7 @@ $config = array(
 /** reCaptcha Settings 
  * Visit http://www.google.com/recaptcha/admin#whyrecaptcha for generating reCaptcha keys for your website.
 */
+define('capflg', '');  // Set reCaptch enalble or disable. true = enable , false = disable.
 define('CAPTCHA_KEY_PUBLIC', '');  // Public/Data-site key
 define('CAPTCHA_KEY_PRIVATE', '');  // Private/Secret Key
 ?>
