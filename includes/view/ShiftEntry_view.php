@@ -52,7 +52,7 @@ function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment,
           join("", $freeload_form),
           div('row', array(
                       div('col-sm-8', array(
-                          reCaptcha()
+                          reCaptcha(capflg)
                       ))
           )),
           form_submit('submit', _("Save")) 
