@@ -10,6 +10,7 @@
       "ext-gettext": "*"
     },
    "require-dev": {
-      "heroku/heroku-buildpack-php": "*"
+      "heroku/heroku-buildpack-php": "*",
+      "codeclimate/php-test-reporter": "dev-master"
    }
 } 
