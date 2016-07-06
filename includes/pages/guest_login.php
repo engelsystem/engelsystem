@@ -156,23 +156,25 @@ function guest_register() {
     /**
      * Google reCaptcha Server-Side Handling
      */
-    if (isset($_REQUEST['g-recaptcha-response']) && !empty($_REQUEST['g-recaptcha-response'])) {
-      $curl = curl_init();
-      curl_setopt_array($curl, [
-        CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_URL => 'hppts://www.google.com/recaptcha/api/siteverify',
-        CURLOPT_POST => 1,
-        CURLOPT_POSTFIELDS => [
-          'secret' => CAPTCHA_KEY_PRIVATE,
-          'response' => $_REQUEST['g-recaptcha-response'],
-        ]
-      ]);
-      $response = json_decode(curl_exec($curl));
-      $msg .= error(sprintf(_(print_r($response)), $nick), true);
-    }
-    else {
-      $ok = false;
-      $msg .= error(_("You are a Robot."), true);
+    if (capflg) {
+      if (isset($_REQUEST['g-recaptcha-response']) && !empty($_REQUEST['g-recaptcha-response'])) {
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+          CURLOPT_RETURNTRANSFER => 1,
+          CURLOPT_URL => 'hppts://www.google.com/recaptcha/api/siteverify',
+          CURLOPT_POST => 1,
+          CURLOPT_POSTFIELDS => [
+            'secret' => CAPTCHA_KEY_PRIVATE,
+            'response' => $_REQUEST['g-recaptcha-response'],
+          ]
+        ]);
+        $response = json_decode(curl_exec($curl));
+        $msg .= error(sprintf(_(print_r($response)), $nick), true);
+      }
+      else {
+        $ok = false;
+        $msg .= error(_("You are a Robot."), true);
+      }
     }
     if (isset($_REQUEST['timezone'])) {
       $timezone = strip_request_item('timezone');
