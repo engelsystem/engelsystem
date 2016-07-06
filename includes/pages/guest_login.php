@@ -390,7 +390,7 @@ function guest_register() {
                   )),
                   div('row', array(
                       div('col-sm-8', array(
-                          reCaptcha()
+                          reCaptcha(capflg)
                       )),
                   )),
                   form_info(entry_required() . ' = ' . _("Entry required!"))
