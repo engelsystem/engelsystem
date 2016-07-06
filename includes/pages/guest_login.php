@@ -353,7 +353,7 @@ function guest_register() {
                   )),
                   div('row', array(
                     div('col-sm-8', array(
-                          form_select('timezone', _("Timezone") . ' ' . entry_required(), $time_zone , $timezone)
+                          form_select('timezone', _("Timezone") . ' ' . entry_required(), $timezone_identifiers, $timezone)
                       ))
                   )),
                   div('row', array(
