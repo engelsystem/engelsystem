@@ -5,3 +5,7 @@ php:
   - '5.6'
   - '7.0'
 script: cd test && phpunit
+
+addons:
+    code_climate:
+        repo_token: f18d878e6000ffe79bf07df5fc8a7655185edb13a8103d05e0de9fa9d80941f0
