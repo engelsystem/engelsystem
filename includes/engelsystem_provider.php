@@ -62,6 +62,7 @@ if ($maintenance_mode) {
 
 require_once realpath(__DIR__ . '/../includes/pages/admin_active.php');
 require_once realpath(__DIR__ . '/../includes/pages/admin_arrive.php');
+require_once realpath(__DIR__ . '/../includes/pages/admin_export.php');
 require_once realpath(__DIR__ . '/../includes/pages/admin_free.php');
 require_once realpath(__DIR__ . '/../includes/pages/admin_groups.php');
 require_once realpath(__DIR__ . '/../includes/pages/admin_import.php');
