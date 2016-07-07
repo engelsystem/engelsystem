@@ -44,19 +44,16 @@ function admin_export() {
 	  fclose($fp);
  }
 
-  if(isset($_REQUEST['upload']))
-    {
-      $ok = true;
-      $file = $_FILES['csv_file']['tmp_name'];
-      $handle = fopen($file, "r");
-      $c = 0;
-      if($file == NULL)
-      {
-        error(_('Please select a file to import'));
-        redirect(page_link_to('admin_user'));
-      }
-      else{
-        while(($filesop = fgetcsv($handle, 1000, ",")) !== false)
+  if (isset($_REQUEST['upload'])) {
+    $ok = true;
+    $file = $_FILES['csv_file']['tmp_name'];
+    $handle = fopen($file, "r");
+    if ($file == NULL) {
+      error(_('Please select a file to import'));
+      redirect(page_link_to('admin_export'));
+    }
+    else{
+      while(($filesop = fgetcsv($handle, 1000, ",")) !== false)
         {
           $nick = $filesop[0];
           $prename = $filesop[1];
@@ -82,40 +79,40 @@ function admin_export() {
           $selected_angel_types = array();
           $password_hash = "";
 
-          if (strlen(User_validate_Nick($nick)) > 1) {
-            $nick = User_validate_Nick($nick);
-            if (sql_num_query("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "' LIMIT 1") > 0) {
-              $ok = false;
-              $msg .= error(sprintf(_("Your nick &quot;%s&quot; already exists."), $nick), true);
-            }
-          } else {
+        if (strlen(User_validate_Nick($nick)) > 1) {
+          $nick = User_validate_Nick($nick);
+          if (sql_num_query("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "' LIMIT 1") > 0) {
             $ok = false;
-            $msg .= error(sprintf(_("Your nick &quot;%s&quot; is too short (min. 2 characters)."),User_validate_Nick($_REQUEST['nick'])), true);
+            $msg .= error(sprintf(_("Your nick &quot;%s&quot; already exists."), $nick), true);
           }
+        } else {
+          $ok = false;
+          $msg .= error(sprintf(_("Your nick &quot;%s&quot; is too short (min. 2 characters)."),User_validate_Nick($_REQUEST['nick'])), true);
+        }
           
-          if ( strlen($mail) && preg_match("/^[a-z0-9._+-]{1,64}@(?:[a-z0-9-]{1,63}\.){1,125}[a-z]{2,63}$/", $mail) > 0) {
-            if (! check_email($mail)) {
-              $ok = false;
-              $msg .= error(_("E-mail address is not correct."), true);
-            }
+        if ( strlen($mail) && preg_match("/^[a-z0-9._+-]{1,64}@(?:[a-z0-9-]{1,63}\.){1,125}[a-z]{2,63}$/", $mail) > 0) {
+          if (! check_email($mail)) {
+            $ok = false;
+            $msg .= error(_("E-mail address is not correct."), true);
           }
-          
-          if (sql_num_query("SELECT * FROM `User` WHERE `email`='" . sql_escape($mail) . "' LIMIT 1")  > 0) {
-            $ok = false;
-            $msg .= error(sprintf(_("Your E-mail &quot;%s&quot; already exists.<a href=%s>Forgot password?</a>"), $mail,page_link_to_absolute('user_password_recovery')), true);
-          } else {
-            $ok = false;
-            $msg .= error(_("Please enter your correct e-mail (in lowercase)."), true);
-            }
+        }
 
-          if (strlen($password) >= MIN_PASSWORD_LENGTH) {
+        if (sql_num_query("SELECT * FROM `User` WHERE `email`='" . sql_escape($mail) . "' LIMIT 1")  > 0) {
+          $ok = false;
+          $msg .= error(sprintf(_("Your E-mail &quot;%s&quot; already exists.<a href=%s>Forgot password?</a>"), $mail,page_link_to_absolute('user_password_recovery')), true);
+        } else {
+          $ok = false;
+          $msg .= error(_("Please enter your correct e-mail (in lowercase)."), true);
+        }
+
+        if (strlen($password) >= MIN_PASSWORD_LENGTH) {
             $ok = true;
           } else {
             $ok = false;
             $msg .= error(sprintf(_("Your password is too short (please use at least %s characters)."), MIN_PASSWORD_LENGTH), true);
-          }
-          if ($ok) {
-            $sql = sql_query("
+        }
+        if ($ok) {
+          $sql = sql_query("
             INSERT INTO `User` SET
             `Nick`='" . sql_escape($nick) . "',
             `Vorname`='" . sql_escape($prename) . "',
@@ -131,9 +128,9 @@ function admin_export() {
             `Passwort`='" . sql_escape($password_hash) . "',
             `kommentar`='" . sql_escape($comment) . "',
             `Hometown`='" . sql_escape($hometown) . "',
-            `CreateDate`=NOW(),
+            `CreateDate`= NOW(),
             `Sprache`='" . sql_escape($_SESSION["locale"]) . "',
-            `arrival_date`=NULL,
+            `arrival_date`= NULL,
             `twitter`='" . sql_escape($twitter) . "',
             `facebook`='" . sql_escape($facebook) . "',
             `github`='" . sql_escape($github) . "',
@@ -149,15 +146,15 @@ function admin_export() {
           engelsystem_log("User " . User_Nick_render(User($user_id)) . " signed up as: " . join(", ", $user_angel_types_info));
         }
       }
+
       if ($sql) {
         success(_("You database has imported successfully!"));
-        redirect(page_link_to('admin_user'));
+        redirect(page_link_to('admin_export'));
       } else {
         error(_('Sorry! There is some problem in the import file.'));
-        redirect(page_link_to('admin_user'));
+        redirect(page_link_to('admin_export'));
         }
     }
-  }
 
  return page_with_title(admin_export_title(), array(
    $msg,
@@ -177,6 +174,7 @@ function admin_export() {
           div('col-md-12', array(
               form(array(
                 form_info('', _("This will import user data.Press Import button to upload the user data.")),
+                form_file('csv_file', _("Import user data from a csv file")),
                 form_submit('upload', _("Import"))
               ))
           ))
