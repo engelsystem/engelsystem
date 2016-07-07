@@ -155,6 +155,7 @@ function admin_export() {
         redirect(page_link_to('admin_export'));
         }
     }
+  }
 
  return page_with_title(admin_export_title(), array(
    $msg,
