@@ -6,23 +6,19 @@ function admin_export_title() {
 function admin_export() {
   if(isset($_REQUEST['download'])){
     $filename = tempnam('/tmp', '.csv'); //  Temporary File Name
-    $temp = sql_query("CREATE TEMPORARY TABLE `temp_tb` SELECT * FROM `User`");
-	  $drop = sql_query("ALTER TABLE `temp_tb` DROP `Passwort`");
-	  $drop2 = ("ALTER TABLE `temp_tb` DROP `password_recovery_token`");
 	  $headings = sql_select("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'User' ");
 	  $head = "";
 	  foreach($headings as $heading) {
-	    if ((strcmp($heading["COLUMN_NAME"],'Passwort') && strcmp($heading["COLUMN_NAME"],'password_recovery_token')) !=0)
 	      $head .= $heading["COLUMN_NAME"] . " ";
 	  }
   	$final = explode(" ", $head);
-  	$results = sql_select("SELECT * FROM `temp_tb`");
-	  $fp = fopen("$filename", "w+") or die("Error Occurred");
-	  fputcsv($fp, $final, "\t");
+  	$results = sql_select("SELECT * FROM `User`");
+	  $filep = fopen("$filename", "w+");
+	  fputcsv($filep, $final, "\t");
 	  foreach($results as $result) {
-		  fputcsv($fp, $result, "\t");
+		  fputcsv($filep, $result, "\t");
 	  }
-	  $fp = @fopen($filename, 'rb+');
+	  $filep = @fopen($filename, 'rb+');
     if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
       header('Content-Type: application/csv');
       header('Content-Disposition: attachment; filename=export_users_data.csv');
@@ -40,8 +36,8 @@ function admin_export() {
 		  header('Pragma: no-cache');
 		  header("Content-Length: ".filesize($filename));
 	  }
-	  fpassthru($fp);
-	  fclose($fp);
+	  fpassthru($filep);
+	  fclose($filep);
  }
 
   if (isset($_REQUEST['upload'])) {
@@ -89,7 +85,7 @@ function admin_export() {
           $ok = false;
           $msg .= error(sprintf(_("Your nick &quot;%s&quot; is too short (min. 2 characters)."),User_validate_Nick($_REQUEST['nick'])), true);
         }
-          
+
         if ( strlen($mail) && preg_match("/^[a-z0-9._+-]{1,64}@(?:[a-z0-9-]{1,63}\.){1,125}[a-z]{2,63}$/", $mail) > 0) {
           if (! check_email($mail)) {
             $ok = false;
@@ -158,7 +154,6 @@ function admin_export() {
   }
 
  return page_with_title(admin_export_title(), array(
-   $msg,
    msg(),
    div('well well-sm text-center', [
      _('Export User Database')
