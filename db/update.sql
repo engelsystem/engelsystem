@@ -71,5 +71,9 @@ CREATE TABLE IF NOT EXISTS `Settings` (
 
 -- Added privilege for Admin Settings
 INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES (39, 'admin_settings', 'Admin Settings');
-
 INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES (218, -4, 39);
+
+-- -----------------------------------------------------------------------------------
+-- Added privilege for the Import/Export User data
+INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES (40, 'admin_export', 'Import and Export user data');
+INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES (337, -4, 40);
