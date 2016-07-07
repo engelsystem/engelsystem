@@ -125,7 +125,9 @@ function make_navigation() {
       "admin_rooms" => admin_rooms_title(),
       "admin_groups" => admin_groups_title(),
       "admin_import" => admin_import_title(),
-      "admin_log" => admin_log_title() 
+      "admin_log" => admin_log_title(),
+      "admin_export" => admin_export_title(),
+      "admin_settings" => admin_settings_title()
   );
   
   foreach ($admin_pages as $page => $title)
