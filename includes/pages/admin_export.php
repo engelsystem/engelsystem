@@ -6,13 +6,17 @@ function admin_export_title() {
 function admin_export() {
   if(isset($_REQUEST['download'])){
     $filename = tempnam('/tmp', '.csv'); //  Temporary File Name
+    sql_query("CREATE TEMPORARY TABLE `temp_tb` SELECT * FROM `User`");
+	  sql_query("ALTER TABLE `temp_tb` DROP `Passwort`");
+	  sql_query("ALTER TABLE `temp_tb` DROP `password_recovery_token`");
 	  $headings = sql_select("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'User' ");
 	  $head = "";
 	  foreach($headings as $heading) {
+	    if ((strcmp($heading["COLUMN_NAME"],'Passwort') && strcmp($heading["COLUMN_NAME"],'password_recovery_token')) !=0 )
 	      $head .= $heading["COLUMN_NAME"] . " ";
 	  }
   	$final = explode(" ", $head);
-  	$results = sql_select("SELECT * FROM `User`");
+  	$results = sql_select("SELECT * FROM `temp_tb`");
 	  $filep = fopen("$filename", "w+");
 	  fputcsv($filep, $final, "\t");
 	  foreach($results as $result) {
