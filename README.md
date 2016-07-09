@@ -5,6 +5,7 @@
 [![CircleCI](https://circleci.com/gh/fossasia/engelsystem/tree/development.svg?style=svg)](https://circleci.com/gh/fossasia/engelsystem/tree/development)
 [![Dependency Status](https://www.versioneye.com/user/projects/577c9495b50608003eee0161/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/577c9495b50608003eee0161)
 [![Dependency Status](https://gemnasium.com/badges/github.com/fossasia/engelsystem.svg)](https://gemnasium.com/github.com/fossasia/engelsystem)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fossasia/engelsystem/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fossasia/engelsystem/?branch=master)
 ## Mindestvorrausetzungen (bzw. getestet unter):
  * PHP 5.4.x (cgi-fcgi)
  * MySQL-Server 5.5.x
@@ -38,6 +39,7 @@ Fehler bitte auf Github melden: https://github.com/fossasia/engelsystem/issues
 [![CircleCI](https://circleci.com/gh/fossasia/engelsystem/tree/development.svg?style=svg)](https://circleci.com/gh/fossasia/engelsystem/tree/development)
 [![Dependency Status](https://www.versioneye.com/user/projects/577c9495b50608003eee0161/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/577c9495b50608003eee0161)
 [![Dependency Status](https://gemnasium.com/badges/github.com/fossasia/engelsystem.svg)](https://gemnasium.com/github.com/fossasia/engelsystem)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fossasia/engelsystem/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fossasia/engelsystem/?branch=master)
 ## Requirements:
  * PHP 5.4.x (cgi-fcgi)
  * MySQL-Server 5.5.x
