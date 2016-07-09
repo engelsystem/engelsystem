@@ -1,5 +1,6 @@
 codecov:
   branch: development
+  token: ab8e0fae-2c7c-4792-9696-84ec3c8488d1
   bot: null
   ci: null
   strict_yaml_branch: null
