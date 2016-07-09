@@ -27,7 +27,7 @@
 -   Delete shifts
     -   There is an image of bin . Where admin can delete the shifts . On pressing the button admin will be redirected to delete shifts page where we need ot confirm before deleting
 
-##### Sending message
+##### Sending Message
 -    User/admin can send messages to other angels or group members or to only members of angeltypes
 by clicking th message icon     
 
@@ -54,11 +54,16 @@ by clicking th message icon
 -   Rooms
     -   Here admin can add new rooms , edit and delete already created rooms.
 -   Group Rights
-    -   Here admin can view the description of the rights and edit the groups
-
--   Frab import and export
+    -   Here admin can view the description of the rights and edit the groups.
+-   Frab import
     -   Here admin can import shifts and shifts . Admin needs to enter the add minutes to start and add minutes to end and import a xcal file
     -   Admin can also export user data by clicking the export button .
 -   Log
     -   Under this page , admin can view all the activities and their created and modified time and who has made the changes
     -   Admin can even search for the entries
+-  Settings
+    -   Under this page, admin can add information regarding the Event name, BuildUp date, Event Start data, Event end data, Teardown end data, Event Welcome message.
+- Import and Export User Data
+    -   Here admin can export all the user database.
+    -   Import User data from a excel file.
+ 
