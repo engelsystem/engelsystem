@@ -7,9 +7,10 @@
    },
    "require": {
       "ext-mysql": "*",
-      "ext-gettext": "*"
+      "ext-gettext": "*",
+      "robmorgan/phinx": "^0.6.2"
     },
    "require-dev": {
       "heroku/heroku-buildpack-php": "*"
    }
-} 
+}
