@@ -1,7 +1,5 @@
 <?php
-
-
-// Öffentlich zugängliche Funktion zum Abrufen von iCal-Exports der eigenen Schichten
+// Publicly available function to retrieve iCal export their own layers
 function user_ical() {
   global $ical_shifts, $user;
 
