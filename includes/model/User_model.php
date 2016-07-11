@@ -6,8 +6,8 @@
 
 /**
  * Delete a user
- * 
- * @param int $user_id          
+ *
+ * @param int $user_id
  */
 function User_delete($user_id) {
   return sql_query("DELETE FROM `User` WHERE `UID`='" . sql_escape($user_id) . "'");
@@ -16,7 +16,7 @@ function User_delete($user_id) {
 /**
  * Update user.
  *
- * @param User $user          
+ * @param User $user
  */
 function User_update($user) {
   return sql_query("UPDATE `User` SET
@@ -90,14 +90,14 @@ function User_sortable_columns() {
       'Aktiv',
       'force_active',
       'Tshirt',
-      'lastLogIn' 
+      'lastLogIn'
   );
 }
 
 /**
  * Get all users, ordered by Nick by default or by given param.
  *
- * @param string $order_by          
+ * @param string $order_by
  */
 function Users($order_by = 'Nick') {
   return sql_select("SELECT * FROM `User` ORDER BY `" . sql_escape($order_by) . "` ASC");
@@ -106,18 +106,18 @@ function Users($order_by = 'Nick') {
 /**
  * Returns true if user is freeloader
  *
- * @param User $user          
+ * @param User $user
  */
 function User_is_freeloader($user) {
   global $max_freeloadable_shifts, $user;
-  
+
   return count(ShiftEntries_freeloaded_by_user($user)) >= $max_freeloadable_shifts;
 }
 
 /**
  * Returns all users that are not member of given angeltype.
  *
- * @param Angeltype $angeltype          
+ * @param Angeltype $angeltype
  */
 function Users_by_angeltype_inverted($angeltype) {
   return sql_select("
@@ -131,7 +131,7 @@ function Users_by_angeltype_inverted($angeltype) {
 /**
  * Returns all members of given angeltype.
  *
- * @param Angeltype $angeltype          
+ * @param Angeltype $angeltype
  */
 function Users_by_angeltype($angeltype) {
   return sql_select("
@@ -158,7 +158,7 @@ function User_ids() {
 /**
  * Strip unwanted characters from a users nick.
  *
- * @param string $nick          
+ * @param string $nick
  */
 function User_validate_Nick($nick) {
   return preg_replace("/([^a-z0-9üöäß. _+*-]{1,})/ui", '', $nick);
@@ -167,7 +167,7 @@ function User_validate_Nick($nick) {
 /**
  * Returns user by id.
  *
- * @param $id UID          
+ * @param $id UID
  */
 function User($id) {
   $user_source = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
@@ -182,7 +182,7 @@ function User($id) {
  * TODO: Merge into normal user function
  * Returns user by id (limit informations.
  *
- * @param $id UID          
+ * @param $id UID
  */
 function mUser_Limit($id) {
   $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `jabber` FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
@@ -212,7 +212,7 @@ function User_by_api_key($api_key) {
 /**
  * Returns User by email.
  *
- * @param string $email          
+ * @param string $email
  * @return Matching user, null or false on error
  */
 function User_by_email($email) {
@@ -227,7 +227,7 @@ function User_by_email($email) {
 /**
  * Returns User by password token.
  *
- * @param string $token          
+ * @param string $token
  * @return Matching user, null or false on error
  */
 function User_by_password_recovery_token($token) {
@@ -242,7 +242,7 @@ function User_by_password_recovery_token($token) {
 /**
  * Generates a new api key for given user.
  *
- * @param User $user          
+ * @param User $user
  */
 function User_reset_api_key(&$user, $log = true) {
   $user['api_key'] = md5($user['Nick'] . time() . rand());
@@ -256,7 +256,7 @@ function User_reset_api_key(&$user, $log = true) {
 /**
  * Generates a new password recovery token for given user.
  *
- * @param User $user          
+ * @param User $user
  */
 function User_generate_password_recovery_token(&$user) {
   $user['password_recovery_token'] = md5($user['Nick'] . time() . rand());
@@ -270,15 +270,15 @@ function User_generate_password_recovery_token(&$user) {
 
 function User_get_eligable_voucher_count(&$user) {
   global $voucher_settings;
-  
+
 	$shifts_done = count(ShiftEntries_finished_by_user($user));
-	
+
 	$earned_vouchers = $user['got_voucher'] - $voucher_settings['initial_vouchers'];
 	$elegible_vouchers = $shifts_done / $voucher_settings['shifts_per_voucher'] - $earned_vouchers;
 	if ( $elegible_vouchers < 0) {
 		return 0;
 	}
-	
+
 	return $elegible_vouchers;
 }
 

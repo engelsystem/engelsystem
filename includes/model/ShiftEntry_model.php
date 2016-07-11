@@ -22,7 +22,7 @@ function ShiftEntries_by_shift($shift_id) {
 /**
  * Create a new shift entry.
  *
- * @param ShiftEntry $shift_entry          
+ * @param ShiftEntry $shift_entry
  */
 function ShiftEntry_create($shift_entry) {
   mail_shift_assign(User($shift_entry['UID']), Shift($shift_entry['SID']));
@@ -70,7 +70,7 @@ function ShiftEntry_delete($shift_entry_id) {
 /**
  * Returns next (or current) shifts of given user.
  *
- * @param User $user          
+ * @param User $user
  */
 function ShiftEntries_upcoming_for_user($user) {
   return sql_select("
@@ -87,7 +87,7 @@ function ShiftEntries_upcoming_for_user($user) {
 /**
  * Returns shifts completed by the given user.
  *
- * @param User $user          
+ * @param User $user
  */
 function ShiftEntries_finished_by_user($user){
 	  return sql_select("
@@ -104,8 +104,8 @@ function ShiftEntries_finished_by_user($user){
 /**
  * Returns all shift entries in given shift for given angeltype.
  *
- * @param int $shift_id          
- * @param int $angeltype_id          
+ * @param int $shift_id
+ * @param int $angeltype_id
  */
 function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id) {
   return sql_select("

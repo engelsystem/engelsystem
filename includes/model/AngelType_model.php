@@ -2,48 +2,48 @@
 
 /**
  * Delete an Angeltype.
- * 
- * @param Angeltype $angeltype          
+ *
+ * @param Angeltype $angeltype
  */
 function AngelType_delete($angeltype) {
   return sql_query("
-      DELETE FROM `AngelTypes` 
-      WHERE `id`='" . sql_escape($angeltype['id']) . "' 
+      DELETE FROM `AngelTypes`
+      WHERE `id`='" . sql_escape($angeltype['id']) . "'
       LIMIT 1");
 }
 
 /**
  * Update Angeltype.
  *
- * @param int $angeltype_id          
- * @param string $name          
- * @param bool $restricted          
- * @param string $description          
- * @param bool $requires_driver_license          
+ * @param int $angeltype_id
+ * @param string $name
+ * @param bool $restricted
+ * @param string $description
+ * @param bool $requires_driver_license
  */
 function AngelType_update($angeltype_id, $name, $restricted, $description, $requires_driver_license) {
   return sql_query("
-      UPDATE `AngelTypes` SET 
-      `name`='" . sql_escape($name) . "', 
+      UPDATE `AngelTypes` SET
+      `name`='" . sql_escape($name) . "',
       `restricted`=" . sql_bool($restricted) . ",
       `description`='" . sql_escape($description) . "',
       `requires_driver_license`=" . sql_bool($requires_driver_license) . "
-      WHERE `id`='" . sql_escape($angeltype_id) . "' 
+      WHERE `id`='" . sql_escape($angeltype_id) . "'
       LIMIT 1");
 }
 
 /**
  * Create an Angeltype.
  *
- * @param string $name          
- * @param boolean $restricted          
- * @param string $description          
+ * @param string $name
+ * @param boolean $restricted
+ * @param string $description
  * @return New Angeltype id
  */
 function AngelType_create($name, $restricted, $description, $requires_driver_license) {
   $result = sql_query("
-      INSERT INTO `AngelTypes` SET 
-      `name`='" . sql_escape($name) . "', 
+      INSERT INTO `AngelTypes` SET
+      `name`='" . sql_escape($name) . "',
       `restricted`=" . sql_bool($restricted) . ",
       `description`='" . sql_escape($description) . "',
       `requires_driver_license`=" . sql_bool($requires_driver_license));
@@ -56,50 +56,50 @@ function AngelType_create($name, $restricted, $description, $requires_driver_lic
  * Validates a name for angeltypes.
  * Returns array containing validation success and validated name.
  *
- * @param string $name          
- * @param AngelType $angeltype          
+ * @param string $name
+ * @param AngelType $angeltype
  */
 function AngelType_validate_name($name, $angeltype) {
   $name = strip_item($name);
   if ($name == "")
     return array(
         false,
-        $name 
+        $name
     );
   if (isset($angeltype) && isset($angeltype['id']))
     return array(
         sql_num_query("
-        SELECT * 
-        FROM `AngelTypes` 
-        WHERE `name`='" . sql_escape($name) . "' 
+        SELECT *
+        FROM `AngelTypes`
+        WHERE `name`='" . sql_escape($name) . "'
         AND NOT `id`='" . sql_escape($angeltype['id']) . "'
         LIMIT 1") == 0,
-        $name 
+        $name
     );
   else
     return array(
         sql_num_query("
-        SELECT `id` 
-        FROM `AngelTypes` 
-        WHERE `name`='" . sql_escape($name) . "' 
+        SELECT `id`
+        FROM `AngelTypes`
+        WHERE `name`='" . sql_escape($name) . "'
         LIMIT 1") == 0,
-        $name 
+        $name
     );
 }
 
 /**
  * Returns all angeltypes and subscription state to each of them for given user.
  *
- * @param User $user          
+ * @param User $user
  */
 function AngelTypes_with_user($user) {
   return sql_select("
-      SELECT `AngelTypes`.*, 
+      SELECT `AngelTypes`.*,
       `UserAngelTypes`.`id` as `user_angeltype_id`,
       `UserAngelTypes`.`confirm_user_id`,
       `UserAngelTypes`.`coordinator`
-      FROM `AngelTypes` 
-      LEFT JOIN `UserAngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id` 
+      FROM `AngelTypes`
+      LEFT JOIN `UserAngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id`
       AND `UserAngelTypes`.`user_id`=" . $user['UID'] . "
       ORDER BY `name`");
 }
@@ -109,8 +109,8 @@ function AngelTypes_with_user($user) {
  */
 function AngelTypes() {
   return sql_select("
-      SELECT * 
-      FROM `AngelTypes` 
+      SELECT *
+      FROM `AngelTypes`
       ORDER BY `name`");
 }
 

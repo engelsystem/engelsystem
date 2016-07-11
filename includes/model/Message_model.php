@@ -34,10 +34,10 @@ function Message($id) {
  */
 function Message_send($id, $text) {
   global $user;
-  
+
   $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($text));
   $to = preg_replace("/([^0-9]{1,})/ui", '', strip_tags($id));
-  
+
   if (($text != "" && is_numeric($to)) && (sql_num_query("SELECT * FROM `User` WHERE `UID`='" . sql_escape($to) . "' AND NOT `UID`='" . sql_escape($user['UID']) . "' LIMIT 1") > 0)) {
     sql_query("INSERT INTO `Messages` SET `Datum`='" . sql_escape(time()) . "', `SUID`='" . sql_escape($user['UID']) . "', `RUID`='" . sql_escape($to) . "', `Text`='" . sql_escape($text) . "'");
     return true;
