@@ -1094,7 +1094,7 @@ function make_select($items, $selected, $name, $title = null) {
   return $html;
 }
 
-function multiple_select($items, $selected, $name, $title = null){ 
+function multiple_select($items, $selected, $name, $title = null){
 $html_items = array();
 if (isset($title))
     $html .= '<h4>' . $title . '</h4>' . "\n";
