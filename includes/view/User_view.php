@@ -1,4 +1,3 @@
-
 <?php
 
 /**
@@ -17,7 +16,7 @@ $tshirt_sizes = array(
     'S-G' => "S Girl",
     'M-G' => "M Girl",
     'L-G' => "L Girl",
-    'XL-G' => "XL Girl" 
+    'XL-G' => "XL Girl"
 );
 
 /**
@@ -27,13 +26,13 @@ function User_delete_view($user) {
   return page_with_title(sprintf(_("Delete %s"), User_Nick_render($user)), [
       msg(),
       buttons([
-          button(user_edit_link($user), glyph('chevron-left') . _("back")) 
+          button(user_edit_link($user), glyph('chevron-left') . _("back"))
       ]),
       error(_("Do you really want to delete the user including all his shifts and every other piece of his data?"), true),
       form([
           form_password('password', _("Your password")),
-          form_submit('submit', _("Delete")) 
-      ]) 
+          form_submit('submit', _("Delete"))
+      ])
   ]);
 }
 
@@ -44,19 +43,18 @@ function User_edit_vouchers_view($user) {
   return page_with_title(sprintf(_("%s's vouchers"), User_Nick_render($user)), [
       msg(),
       buttons([
-          button(user_link($user), glyph('chevron-left') . _("back")) 
+          button(user_link($user), glyph('chevron-left') . _("back"))
       ]),
       info(sprintf(_("Angel should receive at least  %d vouchers."), User_get_eligable_voucher_count($user)), true),
       form([
           form_spinner('vouchers', _("Number of vouchers given out"), $user['got_voucher']),
-          form_submit('submit', _("Save")) 
-      ], page_link_to('users') . '&action=edit_vouchers&user_id=' . $user['UID']) 
+          form_submit('submit', _("Save"))
+      ], page_link_to('users') . '&action=edit_vouchers&user_id=' . $user['UID'])
   ]);
 }
 
 function Users_view($users, $order_by, $arrived_count, $active_count, $force_active_count, $freeloads_count, $tshirts_count, $voucher_count) {
   $search = "";
-  $table = "";
   $users_matched = [];
   if (isset($_REQUEST['search']))
     $search = strip_request_item('search');
@@ -85,7 +83,7 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
     $usr['Tshirt'] = glyph_bool($usr['Tshirt']);
     $usr['lastLogIn'] = date(_('m/d/Y h:i a'), $usr['lastLogIn']);
     $usr['actions'] = table_buttons(array(
-        button_glyph(page_link_to('admin_user') . '&id=' . $usr['UID'], 'edit', 'btn-xs') 
+        button_glyph(page_link_to('admin_user') . '&id=' . $usr['UID'], 'edit', 'btn-xs')
     ));
     $users_matched[] = $usr;
   }
@@ -98,24 +96,24 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
       'force_active' => $force_active_count,
       'freeloads' => $freeloads_count,
       'Tshirt' => $tshirts_count,
-      'actions' => '<strong>' . count($users) . '</strong>' 
+      'actions' => '<strong>' . count($users) . '</strong>'
   );
-  
+
   return page_with_title(_('All users'), array(
       msg(),
       form(array(
-          form_text('search', _("Search"), $search), 
+          form_text('search', _("Search"), $search),
           form_submit('submit', _("Search"))
       )),
       buttons(array(
-          button(page_link_to('register'), glyph('plus') . _('New user')) 
+          button(page_link_to('register'), glyph('plus') . _('New user'))
       )),
       table(array(
           'Nick' => Users_table_header_link('Nick', _('Nick'), $order_by),
           'Vorname' => Users_table_header_link('Vorname', _('Prename'), $order_by),
           'Name' => Users_table_header_link('Name', _('Name'), $order_by),
           'email' => Users_table_header_link('email', _('Email'), $order_by),
-          'Handy' => Users_table_header_link('Handy', _('Mobile'), $order_by),          
+          'Handy' => Users_table_header_link('Handy', _('Mobile'), $order_by),
           'DECT' => Users_table_header_link('DECT', _('DECT'), $order_by),
           'Gekommen' => Users_table_header_link('Gekommen', _('Arrived'), $order_by),
           'got_voucher' => Users_table_header_link('got_voucher', _('Voucher'), $order_by),
@@ -129,8 +127,8 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
           'twitter' => Users_table_header_link('twitter', _('Twitter'), $order_by),
           'organization' => Users_table_header_link('organization', _('Organization'), $order_by),
           'lastLogIn' => Users_table_header_link('lastLogIn', _('Last login'), $order_by),
-          'actions' => '' 
-      ), $users_matched) 
+          'actions' => ''
+      ), $users_matched)
   ));
 }
 
@@ -166,7 +164,6 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
   $user_name = htmlspecialchars($user_source['Vorname']) . " " . htmlspecialchars($user_source['Name']);
   
   $myshifts_table = array();
-  $html = "";
   $timesum = 0;
   foreach ($shifts as $shift) {
     $shift_info = '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';
@@ -191,7 +188,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
         'time' => date("H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']),
         'room' => $shift['Name'],
         'shift_info' => $shift_info,
-        'comment' => $shift['Comment'] 
+        'comment' => $shift['Comment']
     );
     
     if ($shift['freeloaded']) {
@@ -202,7 +199,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
     }
     
     $myshift['actions'] = [
-        button(shift_link($shift), glyph('eye-open') . _('view'), 'btn-xs') 
+        button(shift_link($shift), glyph('eye-open') . _('view'), 'btn-xs')
     ];
     if ($its_me || in_array('user_shifts_admin', $privileges))
       $myshift['actions'][] = button(page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '&id=' . $user_source['UID'], glyph('edit') . _('edit'), 'btn-xs');
@@ -223,7 +220,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
         'room' => "",
         'shift_info' => "",
         'comment' => "",
-        'actions' => "" 
+        'actions' => ""
     );
   
   return page_with_title('<span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . ' <small>' . $user_name . '</small>', array(
@@ -233,7 +230,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
               '<h1>',
               '<span class="glyphicon glyphicon-phone"></span>',
               $user_source['DECT'],
-              '</h1>' 
+              '</h1>'
           )),
           div('col-md-3', array(
               '<h4>' . _("User state") . '</h4>',
@@ -242,16 +239,16 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
               $admin_user_privilege || $its_me ? ($user_source['Gekommen'] ? '<span class="text-success"><span class="glyphicon glyphicon-home"></span> ' . sprintf(_("Arrived at %s"), date('Y-m-d', $user_source['arrival_date'])) . '</span>' : '<span class="text-danger">' . sprintf(_("Not arrived (Planned: %s)"), date('Y-m-d', $user_source['planned_arrival_date'])) . '</span>') : ($user_source['Gekommen'] ? '<span class="text-success"><span class="glyphicon glyphicon-home"></span> ' . _("Arrived") . '</span>' : '<span class="text-danger">' . _("Not arrived") . '</span>'),
               $admin_user_privilege ? ($user_source['got_voucher'] > 0 ? '<br /><span class="text-success">' . glyph('cutlery') . sprintf(ngettext("Got %s voucher", "Got %s vouchers", $user_source['got_voucher']), $user_source['got_voucher']) . '</span><br />' : '<br /><span class="text-danger">' . _("Got no vouchers") . '</span><br />') : '',
               ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Aktiv']) ? ' <span class="text-success">' . _("Active") . '</span>' : '',
-              ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Tshirt']) ? ' <span class="text-success">' . _("T-Shirt") . '</span>' : '' 
+              ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Tshirt']) ? ' <span class="text-success">' . _("T-Shirt") . '</span>' : ''
           )),
           div('col-md-3', array(
               '<h4>' . _("Angeltypes") . '</h4>',
-              User_angeltypes_render($user_angeltypes) 
+              User_angeltypes_render($user_angeltypes)
           )),
           div('col-md-3', array(
               '<h4>' . _("Rights") . '</h4>',
-              User_groups_render($user_groups) 
-          )) 
+              User_groups_render($user_groups)
+          ))
       )),
       div('row', array(
           div('col-md-6', array(
@@ -284,10 +281,10 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
           'room' => _("Location"),
           'shift_info' => _("Name &amp; workmates"),
           'comment' => _("Comment"),
-          'actions' => _("Action") 
+          'actions' => _("Action")
       ), $myshifts_table) : '',
       $its_me ? info(glyph('info-sign') . _("Your night shifts between 2 and 8 am count twice."), true) : '',
-      $its_me && count($shifts) == 0 ? error(sprintf(_("Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some shifts."), page_link_to('user_shifts')), true) : '' 
+      $its_me && count($shifts) == 0 ? error(sprintf(_("Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some shifts."), page_link_to('user_shifts')), true) : ''
   ));
 }
 
@@ -300,7 +297,7 @@ function User_password_recovery_view() {
       _("We will send you an e-mail with a password recovery link. Please use the email address you used for registration."),
       form(array(
           form_text('email', _("E-Mail"), ""),
-          form_submit('submit', _("Recover")) 
+          form_submit('submit', _("Recover"))
       )) 
   ));
 }
@@ -347,7 +344,7 @@ function User_groups_render($user_groups) {
 /**
  * Render a user nickname.
  *
- * @param User $user_source          
+ * @param User $user_source
  * @return string
  */
 function User_Nick_render($user_source) {
@@ -363,8 +360,8 @@ function Native_language_render($user_source) {
     $representation = $item->codes->code->standard->representation;
     if ($representation == $user_source['native_language']) {
       return htmlspecialchars($item->englishName);
-    } 
-  }	
+    }
+  } 
 }
 /**
  * Render Other Languages
@@ -386,7 +383,7 @@ function Other_languages_render($user_source) {
   if($pos !== false){
     $list = substr_replace($list, '', $pos, strlen(','));
   }
-  return htmlspecialchars($list); 	
+  return htmlspecialchars($list);
 }
 
 ?>
