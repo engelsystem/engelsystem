@@ -472,7 +472,7 @@ function calender($name, $value = '', $id) {
 				format: "yyyy-mm-dd",
 				startDate: ""
 			  });
-			});  
+			});
 		  </script>';
 }
 /**
@@ -483,7 +483,7 @@ function form_multiselect($name, $label, $values, $tag = "") {
   $list .= '<select class="form-control selectpicker" multiple title="' . $tag . '" name="' . $name .'[]"> ';
   foreach($values as $key => $value) {
     $list .= '<option value="' . $key . '">' . $value . '</option>';
-  }  
+  }
   $list .= '</select></div>';
   return $list;
 }
