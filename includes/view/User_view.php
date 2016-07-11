@@ -124,6 +124,10 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
           'force_active' => Users_table_header_link('force_active', _('Forced'), $order_by),
           'Tshirt' => Users_table_header_link('Tshirt', _('T-Shirt'), $order_by),
           'Size' => Users_table_header_link('Size', _('Size'), $order_by),
+          'facebook' => Users_table_header_link('facebook', _('Facebook'), $order_by),
+          'github' => Users_table_header_link('github', _('Github'), $order_by),
+          'twitter' => Users_table_header_link('twitter', _('Twitter'), $order_by),
+          'organization' => Users_table_header_link('organization', _('Organization'), $order_by),
           'lastLogIn' => Users_table_header_link('lastLogIn', _('Last login'), $order_by),
           'actions' => '' 
       ), $users_matched) 
