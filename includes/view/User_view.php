@@ -140,18 +140,18 @@ function User_shift_state_render($user) {
   $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
   if ($upcoming_shifts === false)
     return false;
-  
+
   if (count($upcoming_shifts) == 0)
     return '<span class="text-success">' . _("Free") . '</span>';
-  
+
   if ($upcoming_shifts[0]['start'] > time())
     if ($upcoming_shifts[0]['start'] - time() > 3600)
       return '<span class="text-success moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _("Next shift %c") . '</span>';
     else
       return '<span class="text-warning moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _("Next shift %c") . '</span>';
-  
+
   $halfway = ($upcoming_shifts[0]['start'] + $upcoming_shifts[0]['end']) / 2;
-  
+
   if (time() < $halfway)
     return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _("Shift starts %c") . '</span>';
   else
@@ -160,9 +160,7 @@ function User_shift_state_render($user) {
 
 function User_view($user_source, $admin_user_privilege, $freeloader, $user_angeltypes, $user_groups, $shifts, $its_me) {
   global $LETZTES_AUSTRAGEN, $privileges;
-  
   $user_name = htmlspecialchars($user_source['Vorname']) . " " . htmlspecialchars($user_source['Name']);
-  
   $myshifts_table = array();
   $timesum = 0;
   foreach ($shifts as $shift) {
@@ -270,7 +268,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
                   $its_me ? button(page_link_to('user_settings'), glyph('list-alt') . _("Settings")) : '',
                   $its_me ? button(page_link_to('ical') . '&key=' . $user_source['api_key'], glyph('calendar') . _("iCal Export")) : '',
                   $its_me ? button(page_link_to('shifts_json_export') . '&key=' . $user_source['api_key'], glyph('export') . _("JSON Export")) : '',
-                  $its_me ? button(page_link_to('user_myshifts') . '&reset', glyph('repeat') . _('Reset API key')) : '' 
+                  $its_me ? button(page_link_to('user_myshifts') . '&reset', glyph('repeat') . _('Reset API key')) : ''
               )) 
           )) 
       )),
@@ -312,7 +310,7 @@ function User_password_set_view() {
       form(array(
           form_password('password', _("Password")),
           form_password('password2', _("Confirm password")),
-          form_submit('submit', _("Save")) 
+          form_submit('submit', _("Save"))
       )) 
   ));
 }
@@ -361,7 +359,7 @@ function Native_language_render($user_source) {
     if ($representation == $user_source['native_language']) {
       return htmlspecialchars($item->englishName);
     }
-  } 
+  }
 }
 /**
  * Render Other Languages
