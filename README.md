@@ -20,9 +20,17 @@ Please check out [the documentation here](/docs/INSTALLATION_SERVER.md).
 
 Please check out [the documentation here](/docs/INSTALLATION_LOCAL.md).
 
+## How do I install Engelsystem on Docker
+
+To install loklak with Docker please refer to the loklak [Docker installation readme](/docs/INSTALLATION_DOCKER.md).
+
+## How do I deploy loklak with Heroku?
+
+Please read how to deploy to [Heroku here](/docs/HEROKU.md)
+
 ## Report Bugs
 
-https://github.com/fossasia/engelsystem/issues
+Please report bugs and feature requests here https://github.com/fossasia/engelsystem/issues
 
 # Features of Engelsystem
 
