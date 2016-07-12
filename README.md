@@ -1,44 +1,28 @@
-# What is Engelsystem
 
-Engelsystem is a volunteer management system for events.
-
-# Installation of Engelsystem
 [![Code Climate](https://codeclimate.com/github/fossasia/engelsystem/badges/gpa.svg)](https://codeclimate.com/github/fossasia/engelsystem)
 [![Build Status](https://travis-ci.org/fossasia/engelsystem.svg?branch=documentation)](https://travis-ci.org/fossasia/engelsystem)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d56c5bb224f24946965770230e7253c2)](https://www.codacy.com/app/dishant-khanna1807/engelsystem_2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/engelsystem&amp;utm_campaign=Badge_Grade)
 [![CircleCI](https://circleci.com/gh/fossasia/engelsystem/tree/development.svg?style=svg)](https://circleci.com/gh/fossasia/engelsystem/tree/development)
 [![Dependency Status](https://www.versioneye.com/user/projects/577c9495b50608003eee0161/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/577c9495b50608003eee0161)
 [![Dependency Status](https://gemnasium.com/badges/github.com/fossasia/engelsystem.svg)](https://gemnasium.com/github.com/fossasia/engelsystem)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fossasia/engelsystem/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fossasia/engelsystem/?branch=master)
-[![Issue Count](https://codeclimate.com/github/fossasia/engelsystem/badges/issue_count.svg)](https://codeclimate.com/github/fossasia/engelsystem)
-## Requirements:
- * PHP 5.4.x (cgi-fcgi)
- * MySQL-Server 5.5.x
- * Webserver, i.e. lighttpd, nginx, or Apache
 
-## Directions:
- * Clone the master branch with the submodules: `git clone --recursive https://github.com/fossasia/engelsystem.git`
- * Webserver must have write access to the 'import' directory and read access for all other directories
- * Webserver must be public.
+# Installation of Engelsystem
 
- * Recommended: Directory Listing should be disabled.
- * There must a be MySQL database created with a user who has full rights to that database.
- * It must be created by the db/install.sql and db/update.sql files.
- * If necessary, create a config/config.php to override values from config/config.default.php.
- * In the browser, login with credentials admin:asdfasdf and change the password.
+## How do I install Engelsystem on a Server
 
-Engelsystem can now be used.
+Please check out [the documentation here](/docs/INSTALLATION_SERVER.md).
 
-## Session Settings:
- * Make sure the config allows for sessions.
- * Both Apache and Nginx allow for different VirtualHost configurations.
+## How do I install Engelsystem on my local machine
 
-## Report Bugs
+INSTALLATION_LOCAL.md
+
+Please check out [the documentation here](/docs/INSTALLATION_LOCAL.md).
+
+# Report Bugs
 
 https://github.com/fossasia/engelsystem/issues
 
-
-# Features
+# Features of Engelsystem
 
 ### Admin Features
 
@@ -67,7 +51,7 @@ https://github.com/fossasia/engelsystem/issues
 -   Delete shifts
     -   There is an image of bin . Where admin can delete the shifts . On pressing the button admin will be redirected to delete shifts page where we need ot confirm before deleting
 
-##### Sending Message
+##### Sending message
 -    User/admin can send messages to other angels or group members or to only members of angeltypes
 by clicking th message icon     
 
@@ -94,15 +78,11 @@ by clicking th message icon
 -   Rooms
     -   Here admin can add new rooms , edit and delete already created rooms.
 -   Group Rights
-    -   Here admin can view the description of the rights and edit the groups.
--   Frab import
+    -   Here admin can view the description of the rights and edit the groups
+
+-   Frab import and export
     -   Here admin can import shifts and shifts . Admin needs to enter the add minutes to start and add minutes to end and import a xcal file
     -   Admin can also export user data by clicking the export button .
 -   Log
     -   Under this page , admin can view all the activities and their created and modified time and who has made the changes
     -   Admin can even search for the entries
--  Settings
-    -   Under this page, admin can add information regarding the Event name, BuildUp date, Event Start data, Event end data, Teardown end data, Event Welcome message.
-- Import and Export User Data
-    -   Here admin can export all the user database.
-    -   Import User data from a excel file.
