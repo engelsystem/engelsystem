@@ -24,7 +24,7 @@ Please check out [the documentation here](/docs/INSTALLATION_LOCAL.md).
 
 To install loklak with Docker please refer to the loklak [Docker installation readme](/docs/INSTALLATION_DOCKER.md).
 
-## How do I deploy engelsystem with Heroku?
+## How do I deploy Engelsystem with Heroku?
 
 Please read how to deploy to [Heroku here](/docs/HEROKU.md)
 
