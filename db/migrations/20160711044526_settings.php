@@ -15,8 +15,8 @@ class Settings extends AbstractMigration
                 ->addColumn('event_start_date', 'integer', array('limit' => 11))
                 ->addColumn('event_end_date', 'integer', array('limit' => 11))
                 ->addColumn('teardown_end_date', 'integer', array( 'limit' => 11))
-              ->addColumn('event_welcome_msg', 'string', array('limit' => 255))  
-              ->save();
+                ->addColumn('event_welcome_msg', 'string', array('limit' => 255))
+                ->save();
     }
 
     /**

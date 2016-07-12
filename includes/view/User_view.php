@@ -168,7 +168,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
     if ($shift['title'])
       $shift_info .= '<br /><a href="' . shift_link($shift) . '">' . $shift['title'] . '</a>';
     foreach ($shift['needed_angeltypes'] as $needed_angel_type) {
-      $shift_info .= '<br><b>' . $needed_angel_type['name'] . ':</b> ';
+      $shift_info .= '<br><b>' . $needed_angel_type['name'] . ':</b>';
       
       $shift_entries = array();
       foreach ($needed_angel_type['users'] as $user_shift) {
@@ -269,8 +269,8 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
                   $its_me ? button(page_link_to('ical') . '&key=' . $user_source['api_key'], glyph('calendar') . _("iCal Export")) : '',
                   $its_me ? button(page_link_to('shifts_json_export') . '&key=' . $user_source['api_key'], glyph('export') . _("JSON Export")) : '',
                   $its_me ? button(page_link_to('user_myshifts') . '&reset', glyph('repeat') . _('Reset API key')) : ''
-              )) 
-          )) 
+              ))
+          ))
       )),
       ($its_me || $admin_user_privilege) ? '<h2>' . _("Shifts") . '</h2>' : '',
       ($its_me || $admin_user_privilege) ? table(array(

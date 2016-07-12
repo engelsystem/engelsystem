@@ -23,7 +23,7 @@ if (! isset($_REQUEST['p']))
   $_REQUEST['p'] = isset($user) ? "news" : "login";
 if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $free_pages) || in_array($_REQUEST['p'], $privileges))) {
   $p = $_REQUEST['p'];
-  
+
   $title = $p;
   $content = "";
   
@@ -167,7 +167,7 @@ echo template_render('../templates/layout.html', array(
     'header_toolbar' => header_toolbar(),
     'faq_url' => $faq_url,
     'contact_email' => $contact_email,
-    'locale' => locale() 
+    'locale' => locale()
 ));
 
 ?>

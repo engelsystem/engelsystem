@@ -5,7 +5,7 @@ function settings_title() {
 }
 
 function user_settings() {
-  global $enable_tshirt_size, $tshirt_sizes, $themes, $locales, $display_msg;
+  global $enable_tshirt_size, $tshirt_sizes, $themes, $locales;
   global $user;
 
   $msg = "";

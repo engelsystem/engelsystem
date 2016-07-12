@@ -47,7 +47,7 @@ $shift_sum_formula = "SUM(
   ))*(`Shifts`.`end` - `Shifts`.`start`)*(1 - 3 * `ShiftEntry`.`freeloaded`)
 )";
 
-// voucher calculation 
+// voucher calculation
 $voucher_settings = array(
 	"initial_vouchers" => 2,
 	"shifts_per_voucher" => 1
@@ -64,10 +64,10 @@ $config = array(
     'host' => "localhost",
     'user' => "root",
     'pw' => "",
-    'db' => "engelsystem" 
+    'db' => "engelsystem"
 );
 
-/** reCaptcha Settings 
+/** reCaptcha Settings
  * Visit http://www.google.com/recaptcha/admin#whyrecaptcha for generating reCaptcha keys for your website.
 */
 define('capflg', '');  // Set reCaptch enalble or disable. true = enable , false = disable.

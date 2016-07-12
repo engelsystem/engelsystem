@@ -49,6 +49,6 @@ class Privileges extends AbstractMigration
      */
     public function down()
     {
-        
+   
     }
 }
