@@ -17,7 +17,7 @@ $free_pages = array(
     'login'
 );
 
-// Gewünschte Seite/Funktion
+// Desired page/function
 $p = "";
 if (! isset($_REQUEST['p']))
   $_REQUEST['p'] = isset($user) ? "news" : "login";
@@ -26,7 +26,7 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
 
   $title = $p;
   $content = "";
-  
+
   if ($p == "api") {
     require_once realpath(__DIR__ . '/../includes/controller/api.php');
     error("Api disabled temporily.");
@@ -148,12 +148,12 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     $content = guest_start();
   }
 } else {
-  // Wenn schon eingeloggt, keine-Berechtigung-Seite anzeigen
+  // If already logged in , show - authorization page
   if (isset($user)) {
     $title = _("No Access");
     $content = _("You don't have permission to view this page. You probably have to sign in or register in order to gain access!");
   } else {
-    // Sonst zur Loginseite leiten
+    // Otherwise lead to the login page
     redirect(page_link_to("login"));
   }
 }
