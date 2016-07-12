@@ -54,11 +54,11 @@ Please report bugs and feature requests here https://github.com/fossasia/engelsy
 -   Views
     -   *Map view* - In the shifts page user/admin can view the shifts in map view where rooms and  shifts according to their timings.
     -   *Normal view*  - when user/admin undo the new style if possible checkbox.
--   Edit shifts 
+-   Edit shifts(Admin) 
     -   There is a edit image or pencil image on the shifts when we press it admin will be redirected to Edit shifts page where admin can update the information by selecting update shifts option
--   Create new shifts from exisitng shifts
-    -   Once admin selects the edit option admin can also create new shifts from exisiting shift data by selecting create new shift option
--   Delete shifts
+-   Create new shifts from exisitng shifts(Admin)
+    -   Once admin selects the edit option admin can also create new shifts from existing shift data by selecting create new shift option
+-   Delete shifts(Admin)
     -   There is an image of bin . Where admin can delete the shifts . On pressing the button admin will be redirected to delete shifts page where we need ot confirm before deleting
 
 ##### Sending message
@@ -74,25 +74,28 @@ by clicking th message icon
     -   Under this page admin can view the active angels
     -   Shirt statistics where admin can be know about the number of shirts needed of each size.
 -   All Angels
-    -   Under this page admin all the users registered their email, phone number, arrived , DECT etc information
+    -   Under this page admin all the users registered their email, phone number, arrived, DECT etc information
     -   Admin can also search for particular user information in the search box
 -   Free Angels
     -   Under this page admin can select angeltype and search for angels under the angeltype
 -   Create Shifts
     -   Here admin can create new shifts.
-    -   Admin can select number of angeltype needed , rooms for shifts and start date and end date for shifts
+    -   Admin can select number of angeltype needed, rooms for shifts and start date and end date for shifts
 -   Answerer question
-    -   Here admin can answer all the questions asked by all the angels.
+    -   Here admin can answer all the questions asked by all the angels .
 -   Shifttypes
-    -   Here admin can create new shift types , edit old shift types and delete existing shifts.
+    -   Here admin can create new shift types, edit old shift types and delete existing shifts .
 -   Rooms
-    -   Here admin can add new rooms , edit and delete already created rooms.
+    -   Here admin can add new rooms, edit and delete already created rooms .
 -   Group Rights
     -   Here admin can view the description of the rights and edit the groups
-
--   Frab import and export
-    -   Here admin can import shifts and shifts . Admin needs to enter the add minutes to start and add minutes to end and import a xcal file
+-   Frab import
+    -   Here admin can import shifts and shifts. Admin needs to enter the add minutes to start and add minutes to end and import a xcal file
     -   Admin can also export user data by clicking the export button .
 -   Log
-    -   Under this page , admin can view all the activities and their created and modified time and who has made the changes
+    -   Under this page, admin can view all the activities and their created and modified time and who has made the changes
     -   Admin can even search for the entries
+-   Import and export User data
+    -   Under this page, admin can import user database(xls/csv format) and export user database to a `.csv` file
+-   Admin Settings
+    -   Under this page, admin can change specific settings for the admin .
