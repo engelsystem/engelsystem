@@ -18,11 +18,9 @@ Please check out [the documentation here](/docs/INSTALLATION_SERVER.md).
 
 ## How do I install Engelsystem on my local machine
 
-INSTALLATION_LOCAL.md
-
 Please check out [the documentation here](/docs/INSTALLATION_LOCAL.md).
 
-# Report Bugs
+## Report Bugs
 
 https://github.com/fossasia/engelsystem/issues
 
