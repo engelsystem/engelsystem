@@ -6,6 +6,10 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/577c9495b50608003eee0161/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/577c9495b50608003eee0161)
 [![Dependency Status](https://gemnasium.com/badges/github.com/fossasia/engelsystem.svg)](https://gemnasium.com/github.com/fossasia/engelsystem)
 
+# What is Engelsystem
+
+Engelsystem is a volunteer management application for events written in PHP.
+
 # Installation of Engelsystem
 
 ## How do I install Engelsystem on a Server
