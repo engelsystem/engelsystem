@@ -189,7 +189,6 @@ function sql_bool($boolean) {
  * @return int Count of result lines
  */
 function sql_num_query($query) {
-  global $sql_connection;
   return sql_query($query)->num_rows;
 }
 

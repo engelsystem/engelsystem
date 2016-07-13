@@ -9,7 +9,7 @@ class LogEntries_model_test extends PHPUnit_Framework_TestCase {
   public function test_LogEntry_create() {
     $count = count(LogEntries());
     $this->assertNotFalse(LogEntry_create('test', 'test_LogEntry_create'));
-    
+
     // There should be one more log entry now
     $this->assertEquals(count(LogEntries()), $count + 1);
   }

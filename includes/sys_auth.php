@@ -1,6 +1,5 @@
 <?php
-
-// Testet ob ein User eingeloggt ist und lädt die entsprechenden Privilegien
+// Tests if a user is logged in and loads the appropriate privileges
 function load_auth() {
   global $user, $privileges;
 
@@ -8,7 +7,7 @@ function load_auth() {
   if (isset($_SESSION['uid'])) {
     $user = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($_SESSION['uid']) . "' LIMIT 1");
     if (count($user) > 0) {
-      // User ist eingeloggt, Datensatz zur Verfügung stellen und Timestamp updaten
+      // User is logged in , make data available and update timestamp
       list ($user) = $user;
       sql_query("UPDATE `User` SET " . "`lastLogIn` = '" . time() . "'" . " WHERE `UID` = '" . sql_escape($_SESSION['uid']) . "' LIMIT 1;");
     } else

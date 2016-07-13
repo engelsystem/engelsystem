@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Leitet den Browser an die übergebene URL weiter und hält das Script an.
+ * Redirects to the URL passed on and stops the script .
  */
 function redirect($to) {
   header("Location: " . $to, true, 302);
@@ -9,15 +9,15 @@ function redirect($to) {
 }
 
 /**
- * Gibt den gefilterten REQUEST Wert ohne Zeilenumbrüche zurück
+ * Returns the filtered REQUEST value returned without line breaks
  */
 function strip_request_item($name) {
   return strip_item($_REQUEST[$name]);
 }
 
 /**
- * Testet, ob der angegebene REQUEST Wert ein Integer ist, bzw.
- * eine ID sein könnte.
+ * Tests if the specified REQUEST value is an integer , or
+ * an ID could be .
  */
 function test_request_int($name) {
   if (isset($_REQUEST[$name]))
@@ -26,21 +26,21 @@ function test_request_int($name) {
 }
 
 /**
- * Gibt den gefilterten REQUEST Wert mit Zeilenumbrüchen zurück
+ * Returns the filtered value REQUEST back with line breaks
  */
 function strip_request_item_nl($name) {
   return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]{1,})/ui", '', strip_tags($_REQUEST[$name]));
 }
 
 /**
- * Entfernt unerwünschte Zeichen
+ * Removes unwanted characters
  */
 function strip_item($item) {
   return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+]{1,})/ui", '', strip_tags($item));
 }
 
 /**
- * Überprüft eine E-Mail-Adresse.
+ * Checks e- mail address .
  */
 function check_email($email) {
   return (bool) filter_var($email, FILTER_VALIDATE_EMAIL);

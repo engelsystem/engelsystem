@@ -7,7 +7,7 @@
 /**
  * List users angeltypes.
  *
- * @param User $user          
+ * @param User $user
  */
 function User_angeltypes($user) {
   return sql_select("
@@ -21,14 +21,14 @@ function User_angeltypes($user) {
 /**
  * Gets unconfirmed user angeltypes for angeltypes of which the given user is a coordinator.
  *
- * @param User $user          
+ * @param User $user
  */
 function User_unconfirmed_AngelTypes($user) {
   return sql_select("
-    SELECT 
-      `UserAngelTypes`.*, 
-      `AngelTypes`.`name`, 
-      count(`UnconfirmedMembers`.`user_id`) as `count` 
+    SELECT
+      `UserAngelTypes`.*,
+      `AngelTypes`.`name`,
+      count(`UnconfirmedMembers`.`user_id`) as `count`
     FROM `UserAngelTypes`
     JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id`
     JOIN `UserAngelTypes` as `UnconfirmedMembers` ON `UserAngelTypes`.`angeltype_id`=`UnconfirmedMembers`.`angeltype_id`
@@ -43,13 +43,13 @@ function User_unconfirmed_AngelTypes($user) {
 /**
  * Returns true if user is angeltype coordinator or has privilege admin_user_angeltypes.
  *
- * @param User $user          
- * @param AngelType $angeltype          
+ * @param User $user
+ * @param AngelType $angeltype
  */
 function User_is_AngelType_coordinator($user, $angeltype) {
   return (sql_num_query("
-      SELECT `id` 
-      FROM `UserAngelTypes` 
+      SELECT `id`
+      FROM `UserAngelTypes`
       WHERE `user_id`='" . sql_escape($user['UID']) . "'
       AND `angeltype_id`='" . sql_escape($angeltype['id']) . "'
       AND `coordinator`=TRUE
@@ -59,8 +59,8 @@ function User_is_AngelType_coordinator($user, $angeltype) {
 /**
  * Add or remove coordinator rights.
  *
- * @param int $user_angeltype_id          
- * @param bool $coordinator          
+ * @param int $user_angeltype_id
+ * @param bool $coordinator
  */
 function UserAngelType_update($user_angeltype_id, $coordinator) {
   return sql_query("
@@ -73,7 +73,7 @@ function UserAngelType_update($user_angeltype_id, $coordinator) {
 /**
  * Delete all unconfirmed UserAngelTypes for given Angeltype.
  *
- * @param int $angeltype_id          
+ * @param int $angeltype_id
  */
 function UserAngelTypes_delete_all($angeltype_id) {
   return sql_query("
@@ -85,8 +85,8 @@ function UserAngelTypes_delete_all($angeltype_id) {
 /**
  * Confirm all unconfirmed UserAngelTypes for given Angeltype.
  *
- * @param int $angeltype_id          
- * @param User $confirm_user          
+ * @param int $angeltype_id
+ * @param User $confirm_user
  */
 function UserAngelTypes_confirm_all($angeltype_id, $confirm_user) {
   return sql_query("
@@ -99,8 +99,8 @@ function UserAngelTypes_confirm_all($angeltype_id, $confirm_user) {
 /**
  * Confirm an UserAngelType with confirming user.
  *
- * @param int $user_angeltype_id          
- * @param User $confirm_user          
+ * @param int $user_angeltype_id
+ * @param User $confirm_user
  */
 function UserAngelType_confirm($user_angeltype_id, $confirm_user) {
   return sql_query("
@@ -113,20 +113,20 @@ function UserAngelType_confirm($user_angeltype_id, $confirm_user) {
 /**
  * Delete an UserAngelType.
  *
- * @param UserAngelType $user_angeltype          
+ * @param UserAngelType $user_angeltype
  */
 function UserAngelType_delete($user_angeltype) {
   return sql_query("
-      DELETE FROM `UserAngelTypes` 
-      WHERE `id`='" . sql_escape($user_angeltype['id']) . "' 
+      DELETE FROM `UserAngelTypes`
+      WHERE `id`='" . sql_escape($user_angeltype['id']) . "'
       LIMIT 1");
 }
 
 /**
  * Create an UserAngelType.
  *
- * @param User $user          
- * @param Angeltype $angeltype          
+ * @param User $user
+ * @param Angeltype $angeltype
  */
 function UserAngelType_create($user, $angeltype) {
   $result = sql_query("
@@ -141,7 +141,7 @@ function UserAngelType_create($user, $angeltype) {
 /**
  * Get an UserAngelType by its id.
  *
- * @param int $user_angeltype_id          
+ * @param int $user_angeltype_id
  */
 function UserAngelType($user_angeltype_id) {
   $angeltype = sql_select("
@@ -159,13 +159,13 @@ function UserAngelType($user_angeltype_id) {
 /**
  * Get an UserAngelType by user and angeltype.
  *
- * @param User $user          
- * @param Angeltype $angeltype          
+ * @param User $user
+ * @param Angeltype $angeltype
  */
 function UserAngelType_by_User_and_AngelType($user, $angeltype) {
   $angeltype = sql_select("
-      SELECT * 
-      FROM `UserAngelTypes` 
+      SELECT *
+      FROM `UserAngelTypes`
       WHERE `user_id`='" . sql_escape($user['UID']) . "'
       AND `angeltype_id`='" . sql_escape($angeltype['id']) . "'
       LIMIT 1");
