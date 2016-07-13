@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Gibt zwischengespeicherte Fehlermeldungen zurück und löscht den Zwischenspeicher
+ * Are cached error messages and clears the latch
  */
 function msg() {
   if (! isset($_SESSION['msg']))
@@ -12,7 +12,7 @@ function msg() {
 }
 
 /**
- * Rendert eine Information
+ * Renders information
  */
 function info($msg, $immediatly = false) {
   if ($immediatly) {
@@ -27,7 +27,7 @@ function info($msg, $immediatly = false) {
 }
 
 /**
- * Rendert eine Fehlermeldung
+ * Renders an error message
  */
 function error($msg, $immediatly = false) {
   if ($immediatly) {
@@ -42,7 +42,7 @@ function error($msg, $immediatly = false) {
 }
 
 /**
- * Rendert eine Erfolgsmeldung
+ * Renders a success message
  */
 function success($msg, $immediatly = false) {
   if ($immediatly) {

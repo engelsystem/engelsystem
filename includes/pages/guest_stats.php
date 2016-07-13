@@ -23,8 +23,5 @@ function guest_stats() {
       die(json_encode($stats));
     } else die(json_encode(array('error' => "Wrong api_key.")));
   } else die(json_encode(array('error' => "Missing parameter api_key.")));
-
 }
-
-
 ?>

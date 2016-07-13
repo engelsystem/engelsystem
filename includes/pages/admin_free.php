@@ -5,11 +5,11 @@ function admin_free_title() {
 
 function admin_free() {
   global $privileges;
-  
+
   $search = "";
   if (isset($_REQUEST['search']))
     $search = strip_request_item('search');
-  
+
   $angeltypesearch = "";
   if (empty($_REQUEST['angeltype']))
     $_REQUEST['angeltype'] = '';
@@ -19,24 +19,24 @@ function admin_free() {
       $angeltypesearch .= " AND `UserAngelTypes`.`confirm_user_id`";
     $angeltypesearch .= ") ";
   }
-  
+
   $angel_types_source = sql_select("SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`");
   $angel_types = array(
-      '' => 'alle Typen' 
+      '' => 'alle Typen'
   );
   foreach ($angel_types_source as $angel_type)
     $angel_types[$angel_type['id']] = $angel_type['name'];
-  
+
   $users = sql_select("
-      SELECT `User`.* 
-      FROM `User` 
-      ${angeltypesearch} 
-      LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
-      LEFT JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID` AND `Shifts`.`start` < '" . sql_escape(time()) . "' AND `Shifts`.`end` > '" . sql_escape(time()) . "') 
-      WHERE `User`.`Gekommen` = 1 AND `Shifts`.`SID` IS NULL 
-      GROUP BY `User`.`UID` 
+      SELECT `User`.*
+      FROM `User`
+      ${angeltypesearch}
+      LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
+      LEFT JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID` AND `Shifts`.`start` < '" . sql_escape(time()) . "' AND `Shifts`.`end` > '" . sql_escape(time()) . "')
+      WHERE `User`.`Gekommen` = 1 AND `Shifts`.`SID` IS NULL
+      GROUP BY `User`.`UID`
       ORDER BY `Nick`");
-  
+
   $free_users_table = array();
   if ($search == "")
     $tokens = array();
@@ -54,32 +54,32 @@ function admin_free() {
       if (! $match)
         continue;
     }
-    
+
     $free_users_table[] = array(
         'name' => User_Nick_render($usr),
         'shift_state' => User_shift_state_render($usr),
         'dect' => $usr['DECT'],
         'jabber' => $usr['jabber'],
         'email' => $usr['email'],
-        'actions' => in_array('admin_user', $privileges) ? button(page_link_to('admin_user') . '&amp;id=' . $usr['UID'], _("edit"), 'btn-xs') : '' 
+        'actions' => in_array('admin_user', $privileges) ? button(page_link_to('admin_user') . '&amp;id=' . $usr['UID'], _("edit"), 'btn-xs') : ''
     );
   }
   return page_with_title(admin_free_title(), array(
       form(array(
           div('row', array(
               div('col-md-4', array(
-                  form_text('search', _("Search"), $search) 
+                  form_text('search', _("Search"), $search)
               )),
               div('col-md-4', array(
-                  form_select('angeltype', _("Angeltype"), $angel_types, $_REQUEST['angeltype']) 
+                  form_select('angeltype', _("Angeltype"), $angel_types, $_REQUEST['angeltype'])
               )),
               div('col-md-2', array(
-                  form_checkbox('confirmed_only', _("Only confirmed"), isset($_REQUEST['confirmed_only'])) 
+                  form_checkbox('confirmed_only', _("Only confirmed"), isset($_REQUEST['confirmed_only']))
               )),
               div('col-md-2', array(
-                  form_submit('submit', _("Search")) 
-              )) 
-          )) 
+                  form_submit('submit', _("Search"))
+              ))
+          ))
       )),
       table(array(
           'name' => _("Nick"),
@@ -87,8 +87,8 @@ function admin_free() {
           'dect' => _("DECT"),
           'jabber' => _("Jabber"),
           'email' => _("E-Mail"),
-          'actions' => '' 
-      ), $free_users_table) 
+          'actions' => ''
+      ), $free_users_table)
   ));
 }
 ?>

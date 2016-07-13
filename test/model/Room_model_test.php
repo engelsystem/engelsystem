@@ -10,13 +10,10 @@ class Room_model_test extends PHPUnit_Framework_TestCase {
 
   public function test_Room() {
     $this->create_Room();
-    
     $room = Room($this->room_id);
-    
     $this->assertNotFalse($room);
     $this->assertNotNull($room);
     $this->assertEquals($room['Name'], 'test');
-    
     $this->assertNull(Room(- 1));
   }
 
@@ -28,5 +25,4 @@ class Room_model_test extends PHPUnit_Framework_TestCase {
       Room_delete($this->room_id);
   }
 }
-
 ?>

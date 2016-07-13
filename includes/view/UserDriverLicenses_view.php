@@ -14,7 +14,7 @@
 function UserDriverLicense_edit_view($user_source, $wants_to_drive, $has_car, $has_license_car, $has_license_3_5t_transporter, $has_license_7_5t_truck, $has_license_12_5t_truck, $has_license_forklift) {
   return page_with_title(sprintf(_("Edit %s driving license information"), User_Nick_render($user_source)), [
       buttons([
-          button(user_link($user_source), _("Back to profile"), 'back') 
+          button(user_link($user_source), _("Back to profile"), 'back')
       ]),
       msg(),
       form([
@@ -28,10 +28,10 @@ function UserDriverLicense_edit_view($user_source, $wants_to_drive, $has_car, $h
                   form_checkbox('has_license_3_5t_transporter', _("Transporter 3,5t"), $has_license_3_5t_transporter),
                   form_checkbox('has_license_7_5t_truck', _("Truck 7,5t"), $has_license_7_5t_truck),
                   form_checkbox('has_license_12_5t_truck', _("Truck 12,5t"), $has_license_12_5t_truck),
-                  form_checkbox('has_license_forklift', _("Forklift"), $has_license_forklift) 
-              ]) 
+                  form_checkbox('has_license_forklift', _("Forklift"), $has_license_forklift)
+              ])
           ], 'driving_license'),
-          form_submit('submit', _("Save")) 
+          form_submit('submit', _("Save"))
       ]) ,
       '<script type="text/javascript">
         $(function() {
@@ -39,7 +39,7 @@ function UserDriverLicense_edit_view($user_source, $wants_to_drive, $has_car, $h
             $("#driving_license").show();
           else
             $("#driving_license").hide();
-        
+
           $("#wants_to_drive").click(
             function(e) {
               if($("#wants_to_drive").is(":checked"))

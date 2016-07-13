@@ -38,7 +38,6 @@ function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment,
       $response = json_decode(curl_exec($curl));
     }
     else {
-      $ok = false;
       $msg .= error(_("You are a Robot."), true);
     }
   }
