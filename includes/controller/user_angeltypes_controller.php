@@ -23,7 +23,7 @@ function user_angeltypes_unconfirmed_hint() {
  * Remove all unconfirmed users from a specific angeltype.
  */
 function user_angeltypes_delete_all_controller() {
-  global $user, $privileges;
+  global $user;
   
   if (! isset($_REQUEST['angeltype_id'])) {
     error(_("Angeltype doesn't exist."));

@@ -8,7 +8,6 @@ function myshifts_title() {
 function user_myshifts() {
   global $LETZTES_AUSTRAGEN;
   global $user, $privileges;
-  $msg = "";
   
   if (isset($_REQUEST['id']) && in_array("user_shifts_admin", $privileges) && preg_match("/^[0-9]{1,}$/", $_REQUEST['id']) && sql_num_query("SELECT * FROM `User` WHERE `UID`='" . sql_escape($_REQUEST['id']) . "'") > 0) {
     $id = $_REQUEST['id'];

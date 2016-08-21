@@ -4,7 +4,7 @@
  * Route user actions.
  */
 function users_controller() {
-  global $privileges, $user;
+  global $user;
   
   if (! isset($user))
     redirect(page_link_to(''));

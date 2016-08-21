@@ -21,7 +21,6 @@ function user_settings() {
   $jabber = $user['jabber'];
   $hometown = $user['Hometown'];
   $tshirt_size = $user['Size'];
-  $password_hash = "";
   $selected_theme = $user['color'];
   $selected_language = $user['Sprache'];
   $planned_arrival_date = $user['planned_arrival_date'];

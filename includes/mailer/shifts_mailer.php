@@ -60,7 +60,7 @@ function mail_shift_delete($shift) {
   $message = _("A Shift you are registered on was deleted:") . "\n";
   
   $message .= $shift["name"] . "\n";
-  $message .= $new_shift["title"] . "\n";
+  $message .= $shift["title"] . "\n";
   $message .= date("Y-m-d H:i", $shift["start"]) . " - " . date("H:i", $shift["end"]) . "\n";
   $message .= $room["Name"] . "\n";
   

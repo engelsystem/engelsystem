@@ -4,8 +4,6 @@ function admin_groups_title() {
 }
 
 function admin_groups() {
-  global $user;
-  
   $html = "";
   $groups = sql_select("SELECT * FROM `Groups` ORDER BY `Name`");
   if (! isset($_REQUEST["action"])) {

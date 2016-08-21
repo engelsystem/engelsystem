@@ -5,8 +5,6 @@ function admin_rooms_title() {
 }
 
 function admin_rooms() {
-  global $user;
-  
   $rooms_source = sql_select("SELECT * FROM `Room` ORDER BY `Name`");
   $rooms = array();
   foreach ($rooms_source as $room)

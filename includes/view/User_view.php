@@ -132,7 +132,6 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
   $user_name = htmlspecialchars($user_source['Vorname']) . " " . htmlspecialchars($user_source['Name']);
   
   $myshifts_table = array();
-  $html = "";
   $timesum = 0;
   foreach ($shifts as $shift) {
     $shift_info = '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';

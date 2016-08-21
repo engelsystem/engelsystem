@@ -105,7 +105,7 @@ function guest_register() {
     }
     
     $selected_angel_types = array();
-    foreach ($angel_types as $angel_type_id => $angel_type_name)
+    foreach (array_keys($angel_types) as $angel_type_id)
       if (isset($_REQUEST['angel_types_' . $angel_type_id]))
         $selected_angel_types[] = $angel_type_id;
       
@@ -252,7 +252,7 @@ function guest_logout() {
 }
 
 function guest_login() {
-  global $user, $privileges;
+  global $privileges;
   
   $nick = "";
   

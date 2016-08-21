@@ -4,7 +4,7 @@ function admin_questions_title() {
 }
 
 function admin_new_questions() {
-  global $user, $privileges;
+  global $privileges;
 
   if (in_array("admin_questions", $privileges)) {
     $new_messages = sql_num_query("SELECT * FROM `Questions` WHERE `AID` IS NULL");

@@ -42,7 +42,7 @@ function angeltype_link($angeltype_id) {
  * Job description for all angeltypes (public to everyone)
  */
 function angeltypes_about_controller() {
-  global $privileges, $user;
+  global $user;
   
   if (isset($user))
     $angeltypes = AngelTypes_with_user($user);

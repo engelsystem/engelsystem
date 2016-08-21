@@ -290,7 +290,6 @@ function admin_shifts() {
   
   if (! isset($_REQUEST['rid']))
     $_REQUEST['rid'] = null;
-  $room_select = html_select_key('rid', 'rid', $room_array, $_REQUEST['rid']);
   $angel_types = "";
   foreach ($types as $type)
     $angel_types .= '<div class="col-md-4">' . form_spinner('type_' . $type['id'], $type['name'], $needed_angel_types[$type['id']]) . '</div>';

@@ -139,19 +139,6 @@ function make_navigation() {
   return toolbar($menu);
 }
 
-function make_navigation_for($name, $pages) {
-  global $privileges, $p;
-  
-  $menu = "";
-  foreach ($pages as $page)
-    if (in_array($page, $privileges))
-      $menu .= '<li' . ($page == $p ? ' class="selected"' : '') . '><a href="' . page_link_to($page) . '">' . $title . '</a></li>';
-  
-  if ($menu != "")
-    $menu = '<nav class="container"><h4>' . $name . '</h4><ul class="content">' . $menu . '</ul></nav>';
-  return $menu;
-}
-
 function make_menu() {
   return make_navigation();
 }

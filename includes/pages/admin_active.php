@@ -5,7 +5,7 @@ function admin_active_title() {
 }
 
 function admin_active() {
-  global $tshirt_sizes, $shift_sum_formula;
+  global $tshirt_sizes;
   
   $msg = "";
   $search = "";
@@ -146,7 +146,7 @@ function admin_active() {
   }
   
   $shirt_statistics = [];
-  foreach ($tshirt_sizes as $size => $_) {
+  foreach (array_keys($tshirt_sizes) as $size) {
     if ($size != '') {
       $shirt_statistics[] = [
           'size' => $size,

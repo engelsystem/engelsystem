@@ -30,7 +30,7 @@ function user_driver_license_required_hint() {
  * Route user driver licenses actions.
  */
 function user_driver_licenses_controller() {
-  global $privileges, $user;
+  global $user;
   
   if (! isset($user))
     redirect(page_link_to(''));

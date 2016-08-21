@@ -5,7 +5,7 @@ function shifts_title() {
 }
 
 function user_shifts() {
-  global $user, $privileges, $max_freeloadable_shifts;
+  global $user, $privileges;
 
   if (User_is_freeloader($user))
     redirect(page_link_to('user_myshifts'));
@@ -162,7 +162,7 @@ function user_shifts() {
           $needed_angel_types_info[] = $angel_types[$type_id]['name'] . ": " . $count;
         }
 
-        engelsystem_log("Updated shift '" . $name . "' from " . date("Y-m-d H:i", $start) . " to " . date("Y-m-d H:i", $end) . " with angel types " . join(", ", $needed_angel_types_info));
+        engelsystem_log("Updated shift '" . $shifttypes[$shifttype_id] . ", " . $title . "' from " . date("Y-m-d H:i", $start) . " to " . date("Y-m-d H:i", $end) . " with angel types " . join(", ", $needed_angel_types_info));
         success(_("Shift updated."));
 
         redirect(shift_link([
@@ -170,8 +170,6 @@ function user_shifts() {
         ]));
       }
     }
-
-    $room_select = html_select_key('rid', 'rid', $room_array, $rid);
 
     $angel_types = "";
     foreach ($types as $type)

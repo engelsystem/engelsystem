@@ -2,7 +2,7 @@
 
 // publically available page to feed the news to feedreaders
 function user_atom() {
-  global $ical_shifts, $user, $DISPLAY_NEWS;
+  global $user, $DISPLAY_NEWS;
 
   if (isset ($_REQUEST['key']) && preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key']))
     $key = $_REQUEST['key'];

@@ -12,7 +12,7 @@ function meetings_title() {
 }
 
 function user_meetings() {
-  global $DISPLAY_NEWS, $privileges, $user;
+  global $DISPLAY_NEWS, $user;
 
   $html = '<div class="col-md-12"><h1>' . meetings_title() . '</h1>' . msg();
 
