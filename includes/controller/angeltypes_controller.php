@@ -61,7 +61,7 @@ function angeltypes_about_controller() {
  * Delete an Angeltype.
  */
 function angeltype_delete_controller() {
-  global $privileges, $user;
+  global $privileges;
   
   if (! in_array('admin_angel_types', $privileges))
     redirect(page_link_to('angeltypes'));

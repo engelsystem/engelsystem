@@ -111,7 +111,7 @@ function user_angeltypes_confirm_all_controller() {
  * Confirm an user for an angeltype.
  */
 function user_angeltype_confirm_controller() {
-  global $user, $privileges;
+  global $user;
   
   if (! isset($_REQUEST['user_angeltype_id'])) {
     error(_("User angeltype doesn't exist."));
