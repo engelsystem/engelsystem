@@ -12,7 +12,7 @@ function checkAll(id, checked) {
 	var boxes = obj.getElementsByTagName("input");
 	for (var i = 0; i < boxes.length; i++) {
 		if (boxes[i].type === "checkbox" && !boxes[i].disabled) {
-			boxes[i].checked = true;
+			boxes[i].checked = checked;
 		}
 	}
 }
