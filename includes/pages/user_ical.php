@@ -52,7 +52,7 @@ function load_ical_shifts() {
 function send_ical_from_shifts($shifts) {
   header("Content-Type: text/calendar; charset=utf-8");
   $output = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//-//Engelsystem//DE\r\nCALSCALE:GREGORIAN\r\n";
-  foreach ($ical_shifts as $shift) {
+  foreach ($shifts as $shift) {
     $output .= make_ical_entry_from_shift($shift);
   }
   $output .= "END:VCALENDAR\r\n";
