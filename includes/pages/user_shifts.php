@@ -856,8 +856,8 @@ function make_select($items, $selected, $name, $title = null) {
   $html = '<div id="selection_' . $name . '" class="selection ' . $name . '">' . "\n";
   $html .= implode("\n", $html_items);
   $html .= buttons(array(
-      button("javascript: check_all('selection_" . $name . "')", _("All"), ""),
-      button("javascript: uncheck_all('selection_" . $name . "')", _("None"), "")
+      button("javascript: checkAll('selection_" . $name . "', true)", _("All"), ""),
+      button("javascript: checkAll('selection_" . $name . "', false)", _("None"), "")
   ));
   $html .= '</div>' . "\n";
   return $html;
