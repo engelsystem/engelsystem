@@ -9,6 +9,16 @@ function redirect($to) {
 }
 
 /**
+ * Echoes given output and dies.
+ * 
+ * @param String $output          
+ */
+function raw_output($output) {
+  echo $output;
+  die();
+}
+
+/**
  * Gibt den gefilterten REQUEST Wert ohne Zeilenumbrüche zurück
  */
 function strip_request_item($name) {

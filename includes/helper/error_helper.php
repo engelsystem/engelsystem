@@ -6,7 +6,7 @@
  * @param string $message
  */
 function engelsystem_error($message) {
-  die($message);
+  raw_output($message);
 }
 
 ?>
