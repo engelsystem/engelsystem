@@ -225,7 +225,7 @@ function user_angeltype_delete_controller() {
  * Update an UserAngelType.
  */
 function user_angeltype_update_controller() {
-  global $user, $privileges;
+  global $privileges;
   
   if (! in_array('admin_angel_types', $privileges)) {
     error(_("You are not allowed to set coordinator rights."));

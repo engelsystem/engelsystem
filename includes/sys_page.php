@@ -10,7 +10,7 @@ function redirect($to) {
 
 /**
  * Echoes given output and dies.
- * 
+ *
  * @param String $output          
  */
 function raw_output($output) {
@@ -30,8 +30,9 @@ function strip_request_item($name) {
  * eine ID sein könnte.
  */
 function test_request_int($name) {
-  if (isset($_REQUEST[$name]))
+  if (isset($_REQUEST[$name])) {
     return preg_match("/^[0-9]*$/", $_REQUEST[$name]);
+  }
   return false;
 }
 
