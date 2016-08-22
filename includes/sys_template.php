@@ -7,7 +7,7 @@ $themes = array(
     '3' => "Engelsystem 32c3",
     "2" => "Engelsystem cccamp15",
     "0" => "Engelsystem light",
-    "1" => "Engelsystem dark"
+    "1" => "Engelsystem dark" 
 );
 
 /**
@@ -86,8 +86,7 @@ function toolbar_dropdown($glyphicon, $label, $submenu, $class = '') {
 function toolbar_popover($glyphicon, $label, $content, $class = '') {
   $id = md5(microtime() . $glyphicon . $label);
   return '<li class="dropdown messages ' . $class . '">
-          <a id="' . $id . '" href="#" tabindex="0">' . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '') 
-          . $label . ' <span class="caret"></span></a>
+          <a id="' . $id . '" href="#" tabindex="0">' . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '') . $label . ' <span class="caret"></span></a>
           <script type="text/javascript">
           $(function(){
               $("#' . $id . '").popover({
@@ -416,9 +415,8 @@ function template_render($file, $data) {
         $template = str_replace("%" . $name . "%", $content, $template);
       }
     return $template;
-  } else {
-    die('Cannot find template file &laquo;' . $file . '&raquo;.');
   }
+  engelsystem_error("Cannot find template file &laquo;" . $file . "&raquo;.");
 }
 
 function shorten($str) {

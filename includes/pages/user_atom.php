@@ -34,7 +34,7 @@ function make_atom_entries_from_news($news_entries) {
   <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Engelsystem</title>
   <id>' . $_SERVER['HTTP_HOST'] . htmlspecialchars(preg_replace('#[&?]key=[a-f0-9]{32}#', '', $_SERVER['REQUEST_URI'])) . '</id>
-  <updated>' . date('Y-m-d\TH:i:sP', $news[0]['Datum']) . "</updated>\n";
+  <updated>' . date('Y-m-d\TH:i:sP', $news_entries[0]['Datum']) . "</updated>\n";
   foreach ($news_entries as $news_entry) {
     $html .= make_atom_entry_from_news($news_entry);
   }

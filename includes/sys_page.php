@@ -5,7 +5,7 @@
  */
 function redirect($to) {
   header("Location: " . $to, true, 302);
-  die();
+  raw_output("");
 }
 
 /**

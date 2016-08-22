@@ -167,7 +167,7 @@ function user_angeltype_confirm_controller() {
  * Remove a user from an Angeltype.
  */
 function user_angeltype_delete_controller() {
-  global $user, $privileges;
+  global $user;
   
   if (! isset($_REQUEST['user_angeltype_id'])) {
     error(_("User angeltype doesn't exist."));
