@@ -28,23 +28,6 @@ function user_ical() {
 }
 
 /**
- * Returns shifts to export.
- * Users shifts or user_shifts filter based shifts if export=user_shifts is given as param.
- */
-function load_ical_shifts() {
-  global $user, $ical_shifts;
-  
-  if (isset($_REQUEST['export']) && $_REQUEST['export'] == 'user_shifts') {
-    require_once realpath(__DIR__ . '/user_shifts.php');
-    view_user_shifts();
-    
-    return $ical_shifts;
-  }
-  
-  return Shifts_by_user($user);
-}
-
-/**
  * Renders an ical calender from given shifts array.
  *
  * @param array<Shift> $shifts          
