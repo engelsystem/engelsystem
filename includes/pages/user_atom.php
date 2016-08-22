@@ -4,11 +4,10 @@
 function user_atom() {
   global $user, $DISPLAY_NEWS;
   
-  if (isset($_REQUEST['key']) && preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key'])) {
-    $key = $_REQUEST['key'];
-  } else {
+  if (! isset($_REQUEST['key']) || ! preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key'])) {
     engelsystem_error("Missing key.");
   }
+  $key = $_REQUEST['key'];
   
   $user = User_by_api_key($key);
   if ($user === false) {
@@ -27,7 +26,7 @@ function user_atom() {
   
   header('Content-Type: application/atom+xml; charset=utf-8');
   header("Content-Length: " . strlen($output));
-  raw_output($html);
+  raw_output($output);
 }
 
 function make_atom_entries_from_news($news_entries) {
