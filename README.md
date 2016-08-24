@@ -1,5 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/20b3b0b4e93344a29da6bec77f329e7a)](https://www.codacy.com/app/engelsystem/engelsystem)
-[![GPL](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
+[![GPL](https://img.shields.io/github/license/engelsystem/engelsystem.svg?maxAge=2592000)]()
 
 # Installation eines frischen Engelsystems
 
