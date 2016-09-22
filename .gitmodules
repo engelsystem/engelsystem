@@ -4,3 +4,6 @@
 [submodule "vendor/bootstrap"]
 	path = vendor/bootstrap
 	url = https://github.com/twbs/bootstrap.git
+[submodule "vendor/phpmailer"]
+	path = vendor/phpmailer
+	url = https://github.com/PHPMailer/PHPMailer.git
