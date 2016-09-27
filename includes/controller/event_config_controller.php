@@ -73,11 +73,6 @@ function event_config_edit_controller() {
       error(_("The event end date has to be before the teardown end date."));
     }
     
-    if ($event_start_date != null && $event_end_date != null && $event_start_date > $event_end_date) {
-      $ok = false;
-      error(_("The event start date has to be before the event end date."));
-    }
-    
     if ($buildup_start_date != null && $teardown_end_date != null && $buildup_start_date > $teardown_end_date) {
       $ok = false;
       error(_("The buildup start date has to be before the teardown end date."));

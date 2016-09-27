@@ -20,11 +20,11 @@ function EventConfig_edit_view($event_name, $event_welcome_msg, $buildup_start_d
                   form_textarea('event_welcome_msg', _("Event Welcome Message"), $event_welcome_msg),
                   form_info('', _("Welcome message is shown after successful registration. You can use markdown.")) 
               ]),
-              div('col-md-3', [
+              div('col-md-3 col-xs-6', [
                   form_date('buildup_start_date', _("Buildup date"), $buildup_start_date),
                   form_date('event_start_date', _("Event start date"), $event_start_date) 
               ]),
-              div('col-md-3', [
+              div('col-md-3 col-xs-6', [
                   form_date('teardown_end_date', _("Teardown end date"), $teardown_end_date),
                   form_date('event_end_date', _("Event end date"), $event_end_date) 
               ]) 
