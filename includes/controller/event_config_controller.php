@@ -1,10 +1,15 @@
 <?php
 
-function admin_settings_title() {
-  return _("Settings");
+function event_config_title() {
+  return _("Event config");
 }
 
-function admin_settings() {
+function event_config_edit_controller() {
+  global $privileges;
+  
+  if (! in_array('admin_event_config', $privileges))
+    redirect('?');
+  
   $event_name = null;
   $event_welcome_msg = null;
   $buildup_start_date = null;
@@ -12,9 +17,9 @@ function admin_settings() {
   $event_end_date = null;
   $teardown_end_date = null;
   
-  $settings_source = Settings();
+  $settings_source = EventConfig();
   if ($settings_source === false)
-    engelsystem_error('Unable to load settings.');
+    engelsystem_error('Unable to load event config.');
   if ($settings_source != null) {
     $event_name = $settings_source['event_name'];
     $buildup_start_date = $settings_source['buildup_start_date'];
@@ -54,41 +59,21 @@ function admin_settings() {
     $ok &= $result->isOk();
     
     if ($ok) {
-      $result = Settings_update($event_name, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date, $event_welcome_msg);
+      $result = EventConfig_update($event_name, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date, $event_welcome_msg);
       
       if ($result === false)
-        engelsystem_error("Unable to update settings.");
+        engelsystem_error("Unable to update event config.");
       
+      engelsystem_log("Changed event config: $event_name, $event_welcome_msg, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date");
       success(_("Settings saved."));
       redirect(page_link_to('admin_settings'));
     }
   }
   
-  return page_with_title(admin_settings_title(), [
-      msg(),
-      form([
-          div('row', [
-              div('col-md-6', [
-                  form_text('event_name', _("Event Name"), $event_name),
-                  form_info('', _("Event Name is shown on the start page.")),
-                  form_textarea('event_welcome_msg', _("Event Welcome Message"), $event_welcome_msg),
-                  form_info('', _("Welcome message is shown after successful registration. You can use markdown.")) 
-              ]),
-              div('col-md-3', [
-                  form_date('buildup_start_date', _("Buildup date"), $buildup_start_date),
-                  form_date('event_start_date', _("Event start date"), $event_start_date) 
-              ]),
-              div('col-md-3', [
-                  form_date('teardown_end_date', _("Teardown end date"), $teardown_end_date),
-                  form_date('event_end_date', _("Event end date"), $event_end_date) 
-              ]) 
-          ]),
-          div('row', [
-              div('col-md-6', [
-                  form_submit('submit', _("Save")) 
-              ]) 
-          ]) 
-      ]) 
-  ]);
+  return [
+      event_config_title(),
+      EventConfig_edit_view($event_name, $event_welcome_msg, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date) 
+  ];
 }
+
 ?>

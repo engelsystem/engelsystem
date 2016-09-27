@@ -2,19 +2,20 @@
 require_once realpath(__DIR__ . '/../includes/engelsystem_provider.php');
 
 $free_pages = array(
-    'stats',
-    'shifts_json_export_all',
-    'user_password_recovery',
-    'api',
-    'credits',
+    'admin_event_config',
     'angeltypes',
+    'api',
+    'atom',
+    'credits',
+    'ical',
+    'login',
+    'shifts',
+    'shifts_json_export',
+    'shifts_json_export_all',
+    'stats',
     'users',
     'user_driver_licenses',
-    'ical',
-    'shifts_json_export',
-    'shifts',
-    'atom',
-    'login'
+    'user_password_recovery' 
 );
 
 // Gewünschte Seite/Funktion
@@ -63,6 +64,8 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     list($title, $content) = user_driver_licenses_controller();
   } elseif ($p == "shifttypes") {
     list($title, $content) = shifttypes_controller();
+  } elseif ($p == "admin_event_config") {
+    list($title, $content) = event_config_edit_controller();
   } elseif ($p == "news") {
     $title = news_title();
     $content = user_news();
@@ -133,9 +136,6 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   } elseif ($p == "admin_log") {
     $title = admin_log_title();
     $content = admin_log();
-  } elseif ($p == "admin_settings") {
-    $title = admin_settings_title();
-    $content = admin_settings();
   } elseif ($p == "credits") {
     require_once realpath(__DIR__ . '/../includes/pages/guest_credits.php');
     $title = credits_title();

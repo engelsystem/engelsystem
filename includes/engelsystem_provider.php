@@ -11,6 +11,7 @@ require_once realpath(__DIR__ . '/../includes/sys_page.php');
 require_once realpath(__DIR__ . '/../includes/sys_template.php');
 
 require_once realpath(__DIR__ . '/../includes/model/AngelType_model.php');
+require_once realpath(__DIR__ . '/../includes/model/EventConfig_model.php');
 require_once realpath(__DIR__ . '/../includes/model/LogEntries_model.php');
 require_once realpath(__DIR__ . '/../includes/model/Message_model.php');
 require_once realpath(__DIR__ . '/../includes/model/NeededAngelTypes_model.php');
@@ -22,9 +23,9 @@ require_once realpath(__DIR__ . '/../includes/model/UserAngelTypes_model.php');
 require_once realpath(__DIR__ . '/../includes/model/UserDriverLicenses_model.php');
 require_once realpath(__DIR__ . '/../includes/model/UserGroups_model.php');
 require_once realpath(__DIR__ . '/../includes/model/User_model.php');
-require_once realpath(__DIR__ . '/../includes/model/Settings_model.php');
 
 require_once realpath(__DIR__ . '/../includes/view/AngelTypes_view.php');
+require_once realpath(__DIR__ . '/../includes/view/EventConfig_view.php');
 require_once realpath(__DIR__ . '/../includes/view/Questions_view.php');
 require_once realpath(__DIR__ . '/../includes/view/Rooms_view.php');
 require_once realpath(__DIR__ . '/../includes/view/Shifts_view.php');
@@ -35,6 +36,7 @@ require_once realpath(__DIR__ . '/../includes/view/UserDriverLicenses_view.php')
 require_once realpath(__DIR__ . '/../includes/view/User_view.php');
 
 require_once realpath(__DIR__ . '/../includes/controller/angeltypes_controller.php');
+require_once realpath(__DIR__ . '/../includes/controller/event_config_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/rooms_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
 require_once realpath(__DIR__ . '/../includes/controller/shifttypes_controller.php');
