@@ -1,0 +1,21 @@
+{
+  "name": "MozFest 2016 Engelsystem",
+  "description": "Volunteer management system for Mozilla Festival 2016",
+  "participate": {
+    "home": "https://mozillafestival.org/",
+    "mailing-list": "festival@mozilla.org",
+    "irc": "irc://irc.mozilla.org/#mozfestvols",
+    "irc-contacts": [
+      "yalam96",
+      "SpikeUK"
+    ]
+  },
+  "bugs": {
+    "list": "https://bugzilla.mozilla.org/buglist.cgi?product=Participation%20Infrastructure&component=Community%20Ops&resolution=---&list_id=13145730",
+    "report": "https://bugzilla.mozilla.org/enter_bug.cgi?product=Participation%20Infrastructure&component=Community%20Ops"
+  },
+  "urls": {
+    "prod": "https://engelsystem.mozilla.community",
+    "stage": "https://engelsystem.staging.paas.mozilla.community"
+  }
+}
