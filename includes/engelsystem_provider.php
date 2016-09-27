@@ -80,6 +80,7 @@ require_once realpath(__DIR__ . '/../includes/pages/user_shifts.php');
 require_once realpath(__DIR__ . '/../includes/pages/admin_settings.php');
 
 require_once realpath(__DIR__ . '/../vendor/parsedown/Parsedown.php');
+require_once realpath(__DIR__ . '/../vendor/phpmailer/PHPMailerAutoload.php');
 
 session_start();
 
