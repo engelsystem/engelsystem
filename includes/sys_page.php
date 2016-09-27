@@ -50,7 +50,7 @@ function check_request_date($name, $error_message = null, $null_allowed = false)
  */
 function check_date($input, $error_message = null, $null_allowed = false) {
   if (DateTime::createFromFormat("Y-m-d", trim($input)))
-    return new ValidationResult(true, DateTime::createFromFormat("Y-m-d", trim($input)));
+    return new ValidationResult(true, DateTime::createFromFormat("Y-m-d", trim($input))->getTimestamp());
   if ($null_allowed)
     return new ValidationResult(true, null);
   

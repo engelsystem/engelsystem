@@ -17,16 +17,16 @@ function event_config_edit_controller() {
   $event_end_date = null;
   $teardown_end_date = null;
   
-  $settings_source = EventConfig();
-  if ($settings_source === false)
+  $event_config = EventConfig();
+  if ($event_config === false)
     engelsystem_error('Unable to load event config.');
-  if ($settings_source != null) {
-    $event_name = $settings_source['event_name'];
-    $buildup_start_date = $settings_source['buildup_start_date'];
-    $event_start_date = $settings_source['event_start_date'];
-    $event_end_date = $settings_source['event_end_date'];
-    $teardown_end_date = $settings_source['teardown_end_date'];
-    $event_welcome_msg = $settings_source['event_welcome_msg'];
+  if ($event_config != null) {
+    $event_name = $event_config['event_name'];
+    $buildup_start_date = $event_config['buildup_start_date'];
+    $event_start_date = $event_config['event_start_date'];
+    $event_end_date = $event_config['event_end_date'];
+    $teardown_end_date = $event_config['teardown_end_date'];
+    $event_welcome_msg = $event_config['event_welcome_msg'];
   }
   
   if (isset($_REQUEST['submit'])) {
@@ -58,6 +58,31 @@ function event_config_edit_controller() {
     $teardown_end_date = $result->getValue();
     $ok &= $result->isOk();
     
+    if ($buildup_start_date != null && $event_start_date != null && $buildup_start_date > $event_start_date) {
+      $ok = false;
+      error(_("The buildup start date has to be before the event start date."));
+    }
+    
+    if ($event_start_date != null && $event_end_date != null && $event_start_date > $event_end_date) {
+      $ok = false;
+      error(_("The event start date has to be before the event end date."));
+    }
+    
+    if ($event_end_date != null && $teardown_end_date != null && $event_end_date > $teardown_end_date) {
+      $ok = false;
+      error(_("The event end date has to be before the teardown end date."));
+    }
+    
+    if ($event_start_date != null && $event_end_date != null && $event_start_date > $event_end_date) {
+      $ok = false;
+      error(_("The event start date has to be before the event end date."));
+    }
+    
+    if ($buildup_start_date != null && $teardown_end_date != null && $buildup_start_date > $teardown_end_date) {
+      $ok = false;
+      error(_("The buildup start date has to be before the teardown end date."));
+    }
+    
     if ($ok) {
       $result = EventConfig_update($event_name, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date, $event_welcome_msg);
       
@@ -66,7 +91,7 @@ function event_config_edit_controller() {
       
       engelsystem_log("Changed event config: $event_name, $event_welcome_msg, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date");
       success(_("Settings saved."));
-      redirect(page_link_to('admin_settings'));
+      redirect(page_link_to('admin_event_config'));
     }
   }
   

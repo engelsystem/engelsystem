@@ -10,7 +10,7 @@
  * @param date $teardown_end_date
  */
 function EventConfig_edit_view($event_name, $event_welcome_msg, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date) {
-  return page_with_title(admin_settings_title(), [
+  return page_with_title(event_config_title(), [
       msg(),
       form([
           div('row', [
