@@ -82,6 +82,8 @@ require_once realpath(__DIR__ . '/../includes/pages/admin_settings.php');
 require_once realpath(__DIR__ . '/../vendor/parsedown/Parsedown.php');
 require_once realpath(__DIR__ . '/../vendor/phpmailer/PHPMailerAutoload.php');
 
+ini_set( 'session.cookie_httponly', 1 );
+ini_set( 'session.cookie_secure', 1 );
 session_start();
 
 gettext_init();
