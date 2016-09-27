@@ -1,87 +1,94 @@
 <?php
+
 function admin_settings_title() {
   return _("Settings");
 }
+
 function admin_settings() {
-  $settings_source = sql_select("SELECT * FROM `Settings`");
-  if (count($settings_source) == 1) {
-    $event_name = $settings_source[0]['event_name'];
-    $buildup_start_date = $settings_source[0]['buildup_start_date']; 
-    $event_start_date = $settings_source[0]['event_start_date'];
-    $event_end_date = $settings_source[0]['event_end_date'];
-    $teardown_end_date = $settings_source[0]['teardown_end_date']; 
-    $event_welcome_msg = $settings_source[0]['event_welcome_msg'];
+  $event_name = null;
+  $event_welcome_msg = null;
+  $buildup_start_date = null;
+  $event_start_date = null;
+  $event_end_date = null;
+  $teardown_end_date = null;
+  
+  $settings_source = Settings();
+  if ($settings_source === false)
+    engelsystem_error('Unable to load settings.');
+  if ($settings_source != null) {
+    $event_name = $settings_source['event_name'];
+    $buildup_start_date = $settings_source['buildup_start_date'];
+    $event_start_date = $settings_source['event_start_date'];
+    $event_end_date = $settings_source['event_end_date'];
+    $teardown_end_date = $settings_source['teardown_end_date'];
+    $event_welcome_msg = $settings_source['event_welcome_msg'];
   }
+  
   if (isset($_REQUEST['submit'])) {
     $ok = true;
-  if (isset($_REQUEST['event_name']))
-    $event_name = strip_request_item('event_name');  
-  if (isset($_REQUEST['buildup_start_date']) && $_REQUEST['buildup_start_date'] != '') {
-    if (DateTime::createFromFormat("Y-m-d", trim($_REQUEST['buildup_start_date']))) {
-      $buildup_start_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['buildup_start_date']))->getTimestamp();
-    } else {
-        $ok = false;
-        $msg .= error(_("Please enter buildup start date."), true);
-      }
-  } else
-    $buildup_start_date = null;
-  if (isset($_REQUEST['event_start_date']) && $_REQUEST['event_start_date'] != '') {
-    if (DateTime::createFromFormat("Y-m-d", trim($_REQUEST['event_start_date']))) {
-      $event_start_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['event_start_date']))->getTimestamp();
-    } else {
-      $ok = false;
-      $msg .= error(_("Please enter event start date."), true);
-      }
-  } else
-    $event_start_date = null;
-  if (isset($_REQUEST['event_end_date']) && $_REQUEST['event_end_date'] != '') {
-    if (DateTime::createFromFormat("Y-m-d", trim($_REQUEST['event_end_date']))) {
-      $event_end_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['event_end_date']))->getTimestamp();
-    } else {
-        $ok = false;
-        $msg .= error(_("Please enter event end date."), true);
-      }
-  } else
-    $event_end_date = null;
-  if (isset($_REQUEST['teardown_end_date']) && $_REQUEST['teardown_end_date'] != '') {
-    if (DateTime::createFromFormat("Y-m-d", trim($_REQUEST['teardown_end_date']))) {
-      $teardown_end_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['teardown_end_date']))->getTimestamp();
-    } else {
-      $ok = false;
-      $msg .= error(_("Please enter teardown end date."), true);
+    
+    if (isset($_REQUEST['event_name']))
+      $event_name = strip_request_item('event_name');
+    if ($event_name == '')
+      $event_name = null;
+    
+    if (isset($_REQUEST['event_welcome_msg']))
+      $event_welcome_msg = strip_request_item_nl('event_welcome_msg');
+    if ($event_welcome_msg == '')
+      $event_welcome_msg = null;
+    
+    $result = check_request_date('buildup_start_date', _("Please enter buildup start date."), true);
+    $buildup_start_date = $result->getValue();
+    $ok &= $result->isOk();
+    
+    $result = check_request_date('event_start_date', _("Please enter event start date."), true);
+    $event_start_date = $result->getValue();
+    $ok &= $result->isOk();
+    
+    $result = check_request_date('event_end_date', _("Please enter event end date."), true);
+    $event_end_date = $result->getValue();
+    $ok &= $result->isOk();
+    
+    $result = check_request_date('teardown_end_date', _("Please enter teardown end date."), true);
+    $teardown_end_date = $result->getValue();
+    $ok &= $result->isOk();
+    
+    if ($ok) {
+      $result = Settings_update($event_name, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date, $event_welcome_msg);
+      
+      if ($result === false)
+        engelsystem_error("Unable to update settings.");
+      
+      success(_("Settings saved."));
+      redirect(page_link_to('admin_settings'));
     }
-  } else
-      $teardown_end_date = null;
-  if (isset($_REQUEST['event_welcome_msg']))
-    $event_welcome_msg = strip_request_item('event_welcome_msg');
-}
-if ($ok) {
-  if (count($settings_source) == 1)
-    Settings_update($event_name, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date, $event_welcome_msg);
-  else
-    Settings_create($event_name, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date, $event_welcome_msg);
+  }
   
-  success(_("Settings saved."));
-  redirect(page_link_to('admin_settings'));
-}
-  return page_with_title(admin_settings_title(), array(
-      $msg,
+  return page_with_title(admin_settings_title(), [
       msg(),
-      div('row', array(
-          div('col-md-12', array(
-              form(array(
-                form_info('', _("Here you can change event information.")),
-                form_text('event_name', _("Event Name"), $event_name),
-                form_date('buildup_start_date', _("Buildup date"), $buildup_start_date, time()),
-                form_date('event_start_date', _("Event start date"), $event_start_date, time()),
-                form_date('event_end_date', _("Event end date"), $event_end_date, time()),
-                form_date('teardown_end_date', _("Teardown end date"), $teardown_end_date, time()),
-                form_info('', _("Here you can write your display message for registration:")),
-                form_text('event_welcome_msg', _("Event Welcome Message"), $event_welcome_msg),
-                form_submit('submit', _("Save")) 
-              )) 
-          ))
-      )) 
-  ));
+      form([
+          div('row', [
+              div('col-md-6', [
+                  form_text('event_name', _("Event Name"), $event_name),
+                  form_info('', _("Event Name is shown on the start page.")),
+                  form_textarea('event_welcome_msg', _("Event Welcome Message"), $event_welcome_msg),
+                  form_info('', _("Welcome message is shown after successful registration. You can use markdown.")) 
+              ]),
+              div('col-md-3', [
+                  form_date('buildup_start_date', _("Buildup date"), $buildup_start_date),
+                  form_date('event_start_date', _("Event start date"), $event_start_date) 
+              ]),
+              div('col-md-3', [
+                  form_date('teardown_end_date', _("Teardown end date"), $teardown_end_date),
+                  form_date('event_end_date', _("Event end date"), $event_end_date) 
+              ]) 
+          ]),
+          div('row', [
+              div('col-md-6', [
+                  form_submit('submit', _("Save")) 
+              ]) 
+          ]) 
+      ]) 
+  ]);
 }
 ?>
