@@ -16,6 +16,9 @@ function logout_title() {
 function guest_register() {
   global $tshirt_sizes, $enable_tshirt_size, $default_theme;
   
+  $event_config = EventConfig();
+  return User_registration_success_view($event_config['event_welcome_msg']);
+  
   $msg = "";
   $nick = "";
   $lastname = "";

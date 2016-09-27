@@ -20,6 +20,17 @@ $tshirt_sizes = array(
 );
 
 /**
+ * Displays the welcome message to the user and shows a login form.
+ */
+function User_registration_success_view($event_welcome_message) {
+  $parsedown = new Parsedown();
+  $event_welcome_message = $parsedown->text($event_welcome_message);
+  return page_with_title(_("Welcome to the engelsystem!"), [
+      $event_welcome_message 
+  ]);
+}
+
+/**
  * Gui for deleting user with password field.
  */
 function User_delete_view($user) {
