@@ -164,7 +164,8 @@ echo template_render('../templates/layout.html', array(
     'header_toolbar' => header_toolbar(),
     'faq_url' => $faq_url,
     'contact_email' => $contact_email,
-    'locale' => locale() 
+    'locale' => locale(),
+    'event_info' => EventConfig_info() . '<br />'
 ));
 
 ?>

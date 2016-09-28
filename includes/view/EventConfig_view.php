@@ -1,13 +1,48 @@
 <?php
 
 /**
+ * Converts event name and start+end date into a line of text.
+ */
+function EventConfig_info() {
+  $event_config = EventConfig();
+  if ($event_config === false) {
+    engelsystem_error("Unable to load event config.");
+  }
+  
+  // Event name, start+end date are set
+  if ($event_config['event_name'] != null && $event_config['event_start_date'] != null && $event_config['event_end_date'] != null) {
+    return sprintf(_("%s, from %s to %s"), $event_config['event_name'], date("Y-m-d", $event_config['event_start_date']), date("Y-m-d", $event_config['event_end_date']));
+  }
+  
+  // Event name, start date are set
+  if ($event_config['event_name'] != null && $event_config['event_start_date'] != null) {
+    return sprintf(_("%s, starting %s"), $event_config['event_name'], date("Y-m-d", $event_config['event_start_date']));
+  }
+  
+  // Event start+end date are set
+  if ($event_config['event_start_date'] != null && $event_config['event_end_date'] != null) {
+    return sprintf(_("Event from %s to %s"), date("Y-m-d", $event_config['event_start_date']), date("Y-m-d", $event_config['event_end_date']));
+  }
+  
+  // Only event name is set
+  if ($event_config['event_name'] != null) {
+    return sprintf($event_config['event_name']);
+  }
+  
+  return "";
+}
+
+/**
  * Render edit page for event config.
- * @param string $event_name The event name
- * @param string $event_welcome_msg The welcome message
- * @param date $buildup_start_date
- * @param date $event_start_date
- * @param date $event_end_date
- * @param date $teardown_end_date
+ *
+ * @param string $event_name
+ *          The event name
+ * @param string $event_welcome_msg
+ *          The welcome message
+ * @param date $buildup_start_date          
+ * @param date $event_start_date          
+ * @param date $event_end_date          
+ * @param date $teardown_end_date          
  */
 function EventConfig_edit_view($event_name, $event_welcome_msg, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date) {
   return page_with_title(event_config_title(), [
