@@ -14,10 +14,11 @@ function logout_title() {
 
 // Engel registrieren
 function guest_register() {
-  global $tshirt_sizes, $enable_tshirt_size, $default_theme;
+  global $tshirt_sizes, $enable_tshirt_size, $default_theme, $user;
   
   $event_config = EventConfig();
-  return User_registration_success_view($event_config['event_welcome_msg']);
+  if ($event_config === false)
+    engelsystem_error("Unable to load event config.");
   
   $msg = "";
   $nick = "";
@@ -168,6 +169,16 @@ function guest_register() {
       engelsystem_log("User " . User_Nick_render(User($user_id)) . " signed up as: " . join(", ", $user_angel_types_info));
       success(_("Angel registration successful!"));
       
+      // User is already logged in - that means a coordinator has registered an angel. Return to register page.
+      if (isset($user)) {
+        redirect(page_link_to('register'));
+      }
+      
+      // If a welcome message is present, display registration success page.
+      if ($event_config != null && $event_config['event_welcome_msg'] != null) {
+        return User_registration_success_view($event_config['event_welcome_msg']);
+      }
+      
       redirect('?');
     }
   }
@@ -295,41 +306,45 @@ function guest_login() {
     }
   }
   
+  return page_with_title(login_title(), [
+      msg(),
+      div('row', [
+          div('col-md-6', [
+              form([
+                  form_text('nick', _("Nick"), $nick),
+                  form_password('password', _("Password")),
+                  form_submit('submit', _("Login")),
+                  buttons([
+                      button(page_link_to('user_password_recovery'), _("I forgot my password")) 
+                  ]),
+                  info(_("Please note: You have to activate cookies!"), true) 
+              ]) 
+          ]),
+          div('col-md-6', [
+              '<h2>' . register_title() . '</h2>',
+              get_register_hint(),
+              '<h2>' . _("What can I do?") . '</h2>',
+              '<p>' . _("Please read about the jobs you can do to help us.") . '</p>',
+              buttons([
+                  button(page_link_to('angeltypes') . '&action=about', _("Teams/Job description") . ' &raquo;') 
+              ]) 
+          ]) 
+      ]) 
+  ]);
+}
+
+function get_register_hint() {
+  global $privileges;
+  
   if (in_array('register', $privileges)) {
-    $register_hint = join('', array(
+    return join('', [
         '<p>' . _("Please sign up, if you want to help us!") . '</p>',
-        buttons(array(
+        buttons([
             button(page_link_to('register'), register_title() . ' &raquo;') 
-        )) 
-    ));
-  } else {
-    $register_hint = join('', array(
-        error(_('Registration is disabled.'), true) 
-    ));
+        ]) 
+    ]);
   }
   
-  return page_with_title(login_title(), array(
-      msg(),
-      '<div class="row"><div class="col-md-6">',
-      form(array(
-          form_text('nick', _("Nick"), $nick),
-          form_password('password', _("Password")),
-          form_submit('submit', _("Login")),
-          buttons(array(
-              button(page_link_to('user_password_recovery'), _("I forgot my password")) 
-          )),
-          info(_("Please note: You have to activate cookies!"), true) 
-      )),
-      '</div>',
-      '<div class="col-md-6">',
-      '<h2>' . register_title() . '</h2>',
-      $register_hint,
-      '<h2>' . _("What can I do?") . '</h2>',
-      '<p>' . _("Please read about the jobs you can do to help us.") . '</p>',
-      buttons(array(
-          button(page_link_to('angeltypes') . '&action=about', _("Teams/Job description") . ' &raquo;') 
-      )),
-      '</div></div>' 
-  ));
+  return error(_("Registration is disabled."), true);
 }
 ?>

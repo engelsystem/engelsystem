@@ -25,8 +25,32 @@ $tshirt_sizes = array(
 function User_registration_success_view($event_welcome_message) {
   $parsedown = new Parsedown();
   $event_welcome_message = $parsedown->text($event_welcome_message);
-  return page_with_title(_("Welcome to the engelsystem!"), [
-      $event_welcome_message 
+  return page_with_title(_("Registration successful"), [
+      msg(),
+      div('row', [
+          div('col-md-4', [
+              $event_welcome_message 
+          ]),
+          div('col-md-4', [
+              '<h2>' . _("Login") . '</h2>',
+              form([
+                  form_text('nick', _("Nick"), ""),
+                  form_password('password', _("Password")),
+                  form_submit('submit', _("Login")),
+                  buttons([
+                      button(page_link_to('user_password_recovery'), _("I forgot my password")) 
+                  ]),
+                  info(_("Please note: You have to activate cookies!"), true) 
+              ], page_link_to('login')) 
+          ]),
+          div('col-md-4', [
+              '<h2>' . _("What can I do?") . '</h2>',
+              '<p>' . _("Please read about the jobs you can do to help us.") . '</p>',
+              buttons([
+                  button(page_link_to('angeltypes') . '&action=about', _("Teams/Job description") . ' &raquo;') 
+              ]) 
+          ]) 
+      ]) 
   ]);
 }
 
