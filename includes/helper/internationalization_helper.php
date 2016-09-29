@@ -26,10 +26,11 @@ function locale_short() {
 function gettext_init() {
   global $locales, $default_locale;
   
-  if (isset($_REQUEST['set_locale']) && in_array($_REQUEST['set_locale'], array_keys($locales)))
+  if (isset($_REQUEST['set_locale']) && in_array($_REQUEST['set_locale'], array_keys($locales))) {
     $_SESSION['locale'] = $_REQUEST['set_locale'];
-  elseif (! isset($_SESSION['locale']))
+  } elseif (! isset($_SESSION['locale'])) {
     $_SESSION['locale'] = $default_locale;
+  }
   
   gettext_locale();
   bindtextdomain('default', '../locale');
@@ -43,8 +44,9 @@ function gettext_init() {
  * @param string $locale          
  */
 function gettext_locale($locale = null) {
-  if ($locale == null)
+  if ($locale == null) {
     $locale = $_SESSION['locale'];
+  }
   
   putenv('LC_ALL=' . $locale);
   setlocale(LC_ALL, $locale);
@@ -60,8 +62,9 @@ function make_langselect() {
   $URL = $_SERVER["REQUEST_URI"] . (strpos($_SERVER["REQUEST_URI"], "?") > 0 ? '&' : '?') . "set_locale=";
   
   $items = array();
-  foreach ($locales as $locale => $name)
+  foreach ($locales as $locale => $name) {
     $items[] = toolbar_item_link(htmlspecialchars($URL) . $locale, '', '<img src="pic/flag/' . $locale . '.png" alt="' . $name . '" title="' . $name . '"> ' . $name);
+  }
   return $items;
 }
 

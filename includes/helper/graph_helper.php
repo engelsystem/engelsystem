@@ -9,14 +9,16 @@
  */
 function bargraph($id, $key, $row_names, $colors, $data) {
   $labels = [];
-  foreach ($data as $dataset)
+  foreach ($data as $dataset) {
     $labels[] = $dataset[$key];
+  }
   
   $datasets = [];
   foreach ($row_names as $row_key => $name) {
     $values = [];
-    foreach ($data as $dataset)
+    foreach ($data as $dataset) {
       $values[] = $dataset[$row_key];
+    }
     $datasets[] = [
         'label' => $name,
         'fillColor' => $colors[$row_key],

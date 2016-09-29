@@ -3,8 +3,9 @@
 function engelsystem_email_to_user($recipient_user, $title, $message, $not_if_its_me = false) {
   global $user;
   
-  if ($not_if_its_me && $user['UID'] == $recipient_user['UID'])
+  if ($not_if_its_me && $user['UID'] == $recipient_user['UID']) {
     return true;
+  }
   
   gettext_locale($recipient_user['Sprache']);
   

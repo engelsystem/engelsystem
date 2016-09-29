@@ -313,13 +313,13 @@ function guest_login() {
   
   return page([
       div('col-md-12', [
-          msg(),
           div('row', [
               div('col-md-4', [
                   EventConfig_countdown_page($event_config) 
               ]),
               div('col-md-4', [
                   heading(login_title(), 2),
+                  msg(),
                   form([
                       form_text('nick', _("Nick"), $nick),
                       form_password('password', _("Password")),
