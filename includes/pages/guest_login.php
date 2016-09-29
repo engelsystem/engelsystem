@@ -279,8 +279,6 @@ function guest_logout() {
 }
 
 function guest_login() {
-  global $privileges;
-  
   $nick = "";
   
   unset($_SESSION['uid']);
