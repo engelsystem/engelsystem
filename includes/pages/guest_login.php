@@ -306,27 +306,38 @@ function guest_login() {
     }
   }
   
-  return page_with_title(login_title(), [
-      msg(),
-      div('row', [
-          div('col-md-6', [
-              form([
-                  form_text('nick', _("Nick"), $nick),
-                  form_password('password', _("Password")),
-                  form_submit('submit', _("Login")),
+  $event_config = EventConfig();
+  if ($event_config === false) {
+    engelsystem_error("Unable to load event config.");
+  }
+  
+  return page([
+      div('col-md-12', [
+          msg(),
+          div('row', [
+              div('col-md-4', [
+                  EventConfig_countdown_page($event_config) 
+              ]),
+              div('col-md-4', [
+                  heading(login_title(), 2),
+                  form([
+                      form_text('nick', _("Nick"), $nick),
+                      form_password('password', _("Password")),
+                      form_submit('submit', _("Login")),
+                      buttons([
+                          button(page_link_to('user_password_recovery'), _("I forgot my password")) 
+                      ]),
+                      info(_("Please note: You have to activate cookies!"), true) 
+                  ]) 
+              ]),
+              div('col-md-4', [
+                  heading(register_title(), 2),
+                  get_register_hint(),
+                  heading(_("What can I do?"), 2),
+                  '<p>' . _("Please read about the jobs you can do to help us.") . '</p>',
                   buttons([
-                      button(page_link_to('user_password_recovery'), _("I forgot my password")) 
-                  ]),
-                  info(_("Please note: You have to activate cookies!"), true) 
-              ]) 
-          ]),
-          div('col-md-6', [
-              '<h2>' . register_title() . '</h2>',
-              get_register_hint(),
-              '<h2>' . _("What can I do?") . '</h2>',
-              '<p>' . _("Please read about the jobs you can do to help us.") . '</p>',
-              buttons([
-                  button(page_link_to('angeltypes') . '&action=about', _("Teams/Job description") . ' &raquo;') 
+                      button(page_link_to('angeltypes') . '&action=about', _("Teams/Job description") . ' &raquo;') 
+                  ]) 
               ]) 
           ]) 
       ]) 

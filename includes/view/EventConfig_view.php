@@ -1,12 +1,49 @@
 <?php
 
 /**
+ * Shows basic event infos and countdowns.
+ * @param EventConfig $event_config The event configuration
+ */
+function EventConfig_countdown_page($event_config) {
+  if ($event_config == null) {
+    return info(_("We got no information about the event right now."), true);
+  }
+  
+  $elements = [];
+  
+  if ($event_config['event_name'] != null) {
+    $elements[] = heading($event_config['event_name'], 2);
+  }
+  
+  if ($event_config['event_start_date'] != null && $event_config['event_end_date'] != null) {
+    $elements[] = sprintf(_("from %s to %s"), date("Y-m-d", $event_config['event_start_date']), date("Y-m-d", $event_config['event_end_date']));
+  }
+  
+  if ($event_config['buildup_start_date'] != null && time() < $event_config['buildup_start_date']) {
+    $elements[] = '<h2 class="moment-countdown" data-timestamp="' . $event_config['buildup_start_date'] . '">' . _("Buildup starts in %c") . '</h2>';
+  }
+  
+  if ($event_config['event_start_date'] != null && time() < $event_config['event_start_date']) {
+    $elements[] = '<h2 class="moment-countdown" data-timestamp="' . $event_config['event_start_date'] . '">' . _("Event starts in %c") . '</h2>';
+  }
+  
+  if ($event_config['event_end_date'] != null && time() < $event_config['event_end_date'] && ($event_config['event_start_date'] == null || time() > $event_config['event_start_date'])) {
+    $elements[] = '<h2 class="moment-countdown" data-timestamp="' . $event_config['event_end_date'] . '">' . _("Event ends in %c") . '</h2>';
+  }
+  
+  if ($event_config['teardown_end_date'] != null && time() < $event_config['teardown_end_date'] && ($event_config['event_start_date'] == null || time() > $event_config['event_start_date'])) {
+    $elements[] = '<h2 class="moment-countdown" data-timestamp="' . $event_config['teardown_end_date'] . '">' . _("Teardown ends in %c") . '</h2>';
+  }
+  
+  return join("", $elements);
+}
+
+/**
  * Converts event name and start+end date into a line of text.
  */
-function EventConfig_info() {
-  $event_config = EventConfig();
-  if ($event_config === false) {
-    engelsystem_error("Unable to load event config.");
+function EventConfig_info($event_config) {
+  if ($event_config == null) {
+    return "";
   }
   
   // Event name, start+end date are set

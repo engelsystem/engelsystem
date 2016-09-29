@@ -155,6 +155,11 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   }
 }
 
+$event_config = EventConfig();
+if ($event_config === false) {
+  engelsystem_error("Unable to load event config.");
+}
+
 echo template_render('../templates/layout.html', array(
     'theme' => isset($user) ? $user['color'] : $default_theme,
     'title' => $title,
@@ -165,7 +170,7 @@ echo template_render('../templates/layout.html', array(
     'faq_url' => $faq_url,
     'contact_email' => $contact_email,
     'locale' => locale(),
-    'event_info' => EventConfig_info() . '<br />'
+    'event_info' => EventConfig_info($event_config) . '<br />' 
 ));
 
 ?>
