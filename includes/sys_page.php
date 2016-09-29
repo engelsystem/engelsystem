@@ -31,8 +31,9 @@ function raw_output($output) {
  * @return ValidationResult containing the parsed date
  */
 function check_request_date($name, $error_message = null, $null_allowed = false) {
-  if (! isset($_REQUEST[$name]))
+  if (! isset($_REQUEST[$name])) {
     return new ValidationResult($null_allowed, null);
+  }
   return check_date($_REQUEST[$name], $error_message, $null_allowed);
 }
 
@@ -49,10 +50,12 @@ function check_request_date($name, $error_message = null, $null_allowed = false)
  * @return ValidationResult containing the parsed date
  */
 function check_date($input, $error_message = null, $null_allowed = false) {
-  if (DateTime::createFromFormat("Y-m-d", trim($input)))
+  if (DateTime::createFromFormat("Y-m-d", trim($input))) {
     return new ValidationResult(true, DateTime::createFromFormat("Y-m-d", trim($input))->getTimestamp());
-  if ($null_allowed)
+  }
+  if ($null_allowed) {
     return new ValidationResult(true, null);
+  }
   
   error($error_message);
   return new ValidationResult(false, null);

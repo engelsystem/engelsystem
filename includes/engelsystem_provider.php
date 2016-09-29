@@ -54,8 +54,9 @@ require_once realpath(__DIR__ . '/../includes/mailer/shifts_mailer.php');
 require_once realpath(__DIR__ . '/../includes/mailer/users_mailer.php');
 
 require_once realpath(__DIR__ . '/../config/config.default.php');
-if (file_exists(realpath(__DIR__ . '/../config/config.php')))
+if (file_exists(realpath(__DIR__ . '/../config/config.php'))) {
   require_once realpath(__DIR__ . '/../config/config.php');
+}
 
 if ($maintenance_mode) {
   echo file_get_contents(__DIR__ . '/../public/maintenance.html');

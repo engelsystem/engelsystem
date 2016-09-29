@@ -1,7 +1,7 @@
 <?php
 require_once realpath(__DIR__ . '/../includes/engelsystem_provider.php');
 
-$free_pages = array(
+$free_pages = [
     'admin_event_config',
     'angeltypes',
     'api',
@@ -16,12 +16,14 @@ $free_pages = array(
     'users',
     'user_driver_licenses',
     'user_password_recovery' 
-);
+];
 
 // Gewünschte Seite/Funktion
 $p = "";
-if (! isset($_REQUEST['p']))
+if (! isset($_REQUEST['p'])) {
   $_REQUEST['p'] = isset($user) ? "news" : "login";
+}
+
 if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $free_pages) || in_array($_REQUEST['p'], $privileges))) {
   $p = $_REQUEST['p'];
   
@@ -160,7 +162,7 @@ if ($event_config === false) {
   engelsystem_error("Unable to load event config.");
 }
 
-echo template_render('../templates/layout.html', array(
+echo template_render('../templates/layout.html', [
     'theme' => isset($user) ? $user['color'] : $default_theme,
     'title' => $title,
     'atom_link' => ($p == 'news' || $p == 'user_meetings') ? '<link href="' . page_link_to('atom') . (($p == 'user_meetings') ? '&amp;meetings=1' : '') . '&amp;key=' . $user['api_key'] . '" type="application/atom+xml" rel="alternate" title="Atom Feed">' : '',
@@ -171,6 +173,6 @@ echo template_render('../templates/layout.html', array(
     'contact_email' => $contact_email,
     'locale' => locale(),
     'event_info' => EventConfig_info($event_config) . '<br />' 
-));
+]);
 
 ?>

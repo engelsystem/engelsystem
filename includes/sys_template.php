@@ -179,19 +179,10 @@ function form_date($name, $label, $value, $start_date = '') {
  */
 function form_checkboxes($name, $label, $items, $selected) {
   $html = form_element($label, '');
-  foreach ($items as $key => $item)
-    $html .= form_checkbox($name . '_' . $key, $item, array_search($key, $selected) !== false);
-  
-  return $html;
-  
-  $html = "<ul>";
   foreach ($items as $key => $item) {
-    $id = $name . '_' . $key;
-    $sel = array_search($key, $selected) !== false ? ' checked="checked"' : "";
-    $html .= '<li><input type="checkbox" id="' . $id . '" name="' . $id . '" value="checked"' . $sel . ' /><label for="' . $id . '">' . $item . '</label></li>';
+    $html .= form_checkbox($name . '_' . $key, $item, array_search($key, $selected) !== false);
   }
-  $html .= "</ul>";
-  return form_element($label, $html);
+  return $html;
 }
 
 /**
@@ -210,16 +201,18 @@ function form_checkboxes($name, $label, $items, $selected) {
  */
 function form_multi_checkboxes($names, $label, $items, $selected, $disabled = array()) {
   $html = "<table><thead><tr>";
-  foreach ($names as $title)
+  foreach ($names as $title) {
     $html .= "<th>$title</th>";
+  }
   $html .= "</tr></thead><tbody>";
   foreach ($items as $key => $item) {
     $html .= "<tr>";
     foreach ($names as $name => $title) {
       $id = $name . '_' . $key;
       $sel = array_search($key, $selected[$name]) !== false ? ' checked="checked"' : "";
-      if (! empty($disabled) && ! empty($disabled[$name]) && array_search($key, $disabled[$name]) !== false)
+      if (! empty($disabled) && ! empty($disabled[$name]) && array_search($key, $disabled[$name]) !== false) {
         $sel .= ' disabled="disabled"';
+      }
       $html .= '<td style="text-align: center;"><input type="checkbox" id="' . $id . '" name="' . $name . '[]" value="' . $key . '"' . $sel . ' /></td>';
     }
     $html .= '<td><label for="' . $id . '">' . $item . '</label></td></tr>';
@@ -246,10 +239,12 @@ function form_radio($name, $label, $selected, $value) {
  * Rendert einen Infotext in das Formular
  */
 function form_info($label, $text = "") {
-  if ($label == "")
+  if ($label == "") {
     return '<span class="help-block">' . glyph('info-sign') . $text . '</span>';
-  if ($text == "")
+  }
+  if ($text == "") {
     return '<h4>' . $label . '</h4>';
+  }
   return form_element($label, '<p class="form-control-static">' . $text . '</p>', '');
 }
 
@@ -312,9 +307,9 @@ function form_select($name, $label, $values, $selected) {
 function form_element($label, $input, $for = "") {
   if ($label == '') {
     return '<div class="form-group">' . $input . '</div>';
-  } else {
-    return '<div class="form-group">' . '<label for="' . $for . '">' . $label . '</label>' . $input . '</div>';
   }
+  
+  return '<div class="form-group">' . '<label for="' . $for . '">' . $label . '</label>' . $input . '</div>';
 }
 
 /**
@@ -346,34 +341,40 @@ function page_with_title($title, $elements) {
 function table($columns, $rows_raw, $data = true) {
   // If only one column is given
   if (! is_array($columns)) {
-    $columns = array(
+    $columns = [
         'col' => $columns 
-    );
+    ];
     
-    $rows = array();
+    $rows = [];
     foreach ($rows_raw as $row)
-      $rows[] = array(
+      $rows[] = [
           'col' => $row 
-      );
-  } else
+      ];
+  } else {
     $rows = $rows_raw;
+  }
   
-  if (count($rows) == 0)
+  if (count($rows) == 0) {
     return info(_("No data found."), true);
+  }
+  
   $html = "";
   $html .= '<table class="table table-striped' . ($data ? ' data' : '') . '">';
   $html .= '<thead><tr>';
-  foreach ($columns as $key => $column)
+  foreach ($columns as $key => $column) {
     $html .= '<th class="column_' . $key . '">' . $column . '</th>';
+  }
   $html .= '</tr></thead>';
   $html .= '<tbody>';
   foreach ($rows as $row) {
     $html .= '<tr>';
-    foreach ($columns as $key => $column)
-      if (isset($row[$key]))
+    foreach ($columns as $key => $column) {
+      if (isset($row[$key])) {
         $html .= '<td class="column_' . $key . '">' . $row[$key] . '</td>';
-      else
+      } else {
         $html .= '<td class="column_' . $key . '">&nbsp;</td>';
+      }
+    }
     $html .= '</tr>';
   }
   $html .= '</tbody>';
@@ -410,10 +411,11 @@ function table_buttons($buttons = array()) {
 function template_render($file, $data) {
   if (file_exists($file)) {
     $template = file_get_contents($file);
-    if (is_array($data))
+    if (is_array($data)) {
       foreach ($data as $name => $content) {
         $template = str_replace("%" . $name . "%", $content, $template);
       }
+    }
     return $template;
   }
   engelsystem_error("Cannot find template file &laquo;" . $file . "&raquo;.");
@@ -430,8 +432,9 @@ function table_body($array) {
   foreach ($array as $line) {
     $html .= "<tr>";
     if (is_array($line)) {
-      foreach ($line as $td)
+      foreach ($line as $td) {
         $html .= "<td>" . $td . "</td>";
+      }
     } else {
       $html .= "<td>" . $line . "</td>";
     }
@@ -442,8 +445,9 @@ function table_body($array) {
 
 function html_options($name, $options, $selected = "") {
   $html = "";
-  foreach ($options as $value => $label)
+  foreach ($options as $value => $label) {
     $html .= '<input type="radio"' . ($value == $selected ? ' checked="checked"' : '') . ' name="' . $name . '" value="' . $value . '"> ' . $label;
+  }
   
   return $html;
 }
