@@ -55,38 +55,34 @@ function AngelType_create($name, $restricted, $description, $requires_driver_lic
 
 /**
  * Validates a name for angeltypes.
- * Returns array containing validation success and validated name.
+ * Returns ValidationResult containing validation success and validated name.
  *
- * @param string $name          
- * @param AngelType $angeltype          
+ * @param string $name
+ *          Wanted name for the angeltype
+ * @param AngelType $angeltype
+ *          The angeltype the name is for
+ * @return ValidationResult result and validated name
  */
 function AngelType_validate_name($name, $angeltype) {
   $name = strip_item($name);
   if ($name == "") {
-    return [
-        false,
-        $name 
-    ];
+    return new ValidationResult(false, "");
   }
-  if (isset($angeltype) && isset($angeltype['id'])) {
-    return [
-        sql_num_query("
+  if ($angeltype != null && isset($angeltype['id'])) {
+    $valid = sql_num_query("
         SELECT * 
         FROM `AngelTypes` 
         WHERE `name`='" . sql_escape($name) . "' 
         AND NOT `id`='" . sql_escape($angeltype['id']) . "'
-        LIMIT 1") == 0,
-        $name 
-    ];
+        LIMIT 1") == 0;
+    return new ValidationResult($valid, $name);
   }
-  return [
-      sql_num_query("
+  $valid = sql_num_query("
         SELECT `id` 
         FROM `AngelTypes` 
         WHERE `name`='" . sql_escape($name) . "' 
-        LIMIT 1") == 0,
-      $name 
-  ];
+        LIMIT 1") == 0;
+  return new ValidationResult($valid, $name);
 }
 
 /**

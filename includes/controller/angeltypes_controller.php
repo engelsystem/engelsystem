@@ -137,8 +137,9 @@ function angeltype_edit_controller() {
     
     if (! $coordinator_mode) {
       if (isset($_REQUEST['name'])) {
-        list($valid, $name) = AngelType_validate_name($_REQUEST['name'], $angeltype);
-        if (! $valid) {
+        $result = AngelType_validate_name($_REQUEST['name'], $angeltype);
+        $name = $result->getValue();
+        if (! $result->isValid()) {
           $valid = false;
           error(_("Please check the name. Maybe it already exists."));
         }
