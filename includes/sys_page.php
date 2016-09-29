@@ -122,8 +122,8 @@ class ValidationResult {
   /**
    * Is the value valid?
    */
-  public function isOk() {
-    return $this->ok;
+  public function isValid() {
+    return $this->valid;
   }
 
   /**

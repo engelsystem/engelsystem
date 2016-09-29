@@ -50,19 +50,19 @@ function event_config_edit_controller() {
     
     $result = check_request_date('buildup_start_date', _("Please enter buildup start date."), true);
     $buildup_start_date = $result->getValue();
-    $valid &= $result->isOk();
+    $valid &= $result->isValid();
     
     $result = check_request_date('event_start_date', _("Please enter event start date."), true);
     $event_start_date = $result->getValue();
-    $valid &= $result->isOk();
+    $valid &= $result->isValid();
     
     $result = check_request_date('event_end_date', _("Please enter event end date."), true);
     $event_end_date = $result->getValue();
-    $valid &= $result->isOk();
+    $valid &= $result->isValid();
     
     $result = check_request_date('teardown_end_date', _("Please enter teardown end date."), true);
     $teardown_end_date = $result->getValue();
-    $valid &= $result->isOk();
+    $valid &= $result->isValid();
     
     if ($buildup_start_date != null && $event_start_date != null && $buildup_start_date > $event_start_date) {
       $valid = false;
