@@ -46,7 +46,7 @@ function user_meetings() {
 }
 
 function display_news($news) {
-  global $privileges, $p;
+  global $privileges, $page;
   
   $html = '';
   $html .= '<div class="panel' . ($news['Treffen'] == 1 ? ' panel-info' : ' panel-default') . '">';
@@ -67,7 +67,7 @@ function display_news($news) {
   }
   
   $html .= User_Nick_render($user_source);
-  if ($p != "news_comments") {
+  if ($page != "news_comments") {
     $html .= '&emsp;<a href="' . page_link_to("news_comments") . '&nid=' . $news['ID'] . '"><span class="glyphicon glyphicon-comment"></span> ' . _("Comments") . ' &raquo;</a> <span class="badge">' . sql_num_query("SELECT * FROM `NewsComments` WHERE `Refid`='" . sql_escape($news['ID']) . "'") . '</span>';
   }
   $html .= '</div>';

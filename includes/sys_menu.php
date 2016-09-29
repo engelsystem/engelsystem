@@ -15,7 +15,7 @@ function page_link_to_absolute($page) {
  * Renders the header toolbar containing search, login/logout, user and settings links.
  */
 function header_toolbar() {
-  global $p, $privileges, $user, $enable_tshirt_size, $max_freeloadable_shifts;
+  global $page, $privileges, $user, $enable_tshirt_size, $max_freeloadable_shifts;
   
   $toolbar_items = array();
   
@@ -24,11 +24,11 @@ function header_toolbar() {
   }
   
   if (! isset($user) && in_array('register', $privileges)) {
-    $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'plus', register_title(), $p == 'register');
+    $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'plus', register_title(), $page == 'register');
   }
   
   if (in_array('login', $privileges)) {
-    $toolbar_items[] = toolbar_item_link(page_link_to('login'), 'log-in', login_title(), $p == 'login');
+    $toolbar_items[] = toolbar_item_link(page_link_to('login'), 'log-in', login_title(), $page == 'login');
   }
   
   if (isset($user) && in_array('user_messages', $privileges)) {
@@ -40,7 +40,7 @@ function header_toolbar() {
     $hint_class = 'info';
     $glyphicon = 'info-sign';
     // Erzengel Hinweis für unbeantwortete Fragen
-    if ($p != "admin_questions") {
+    if ($page != "admin_questions") {
       $new_questions = admin_new_questions();
       if ($new_questions != "") {
         $hints[] = $new_questions;
@@ -93,15 +93,15 @@ function header_toolbar() {
   $user_submenu = make_langselect();
   $user_submenu[] = toolbar_item_divider();
   if (in_array('user_myshifts', $privileges)) {
-    $toolbar_items[] = toolbar_item_link(page_link_to('users') . '&amp;action=view', ' icon-icon_angel', $user['Nick'], $p == 'users');
+    $toolbar_items[] = toolbar_item_link(page_link_to('users') . '&amp;action=view', ' icon-icon_angel', $user['Nick'], $page == 'users');
   }
   
   if (in_array('user_settings', $privileges)) {
-    $user_submenu[] = toolbar_item_link(page_link_to('user_settings'), 'list-alt', settings_title(), $p == 'user_settings');
+    $user_submenu[] = toolbar_item_link(page_link_to('user_settings'), 'list-alt', settings_title(), $page == 'user_settings');
   }
   
   if (in_array('logout', $privileges)) {
-    $user_submenu[] = toolbar_item_link(page_link_to('logout'), 'log-out', logout_title(), $p == 'logout');
+    $user_submenu[] = toolbar_item_link(page_link_to('logout'), 'log-out', logout_title(), $page == 'logout');
   }
   
   if (count($user_submenu) > 0) {
@@ -112,7 +112,7 @@ function header_toolbar() {
 }
 
 function make_navigation() {
-  global $p, $privileges;
+  global $page, $privileges;
   
   $menu = [];
   $pages = [
@@ -125,7 +125,7 @@ function make_navigation() {
   
   foreach ($pages as $page => $title) {
     if (in_array($page, $privileges)) {
-      $menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $p);
+      $menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $page);
     }
   }
   
@@ -147,7 +147,7 @@ function make_navigation() {
   
   foreach ($admin_pages as $page => $title) {
     if (in_array($page, $privileges)) {
-      $admin_menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $p);
+      $admin_menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $page);
     }
   }
   
