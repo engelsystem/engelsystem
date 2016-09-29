@@ -9,14 +9,16 @@ function admin_user() {
   
   $html = '';
   
-  if (! isset($_REQUEST['id']))
+  if (! isset($_REQUEST['id'])) {
     redirect(users_link());
+  }
   
   $id = $_REQUEST['id'];
   if (! isset($_REQUEST['action'])) {
     $user_source = User($id);
-    if ($user_source === false)
+    if ($user_source === false) {
       engelsystem_error('Unable to load user.');
+    }
     if ($user_source == null) {
       error(_('This user does not exist.'));
       redirect(users_link());
@@ -42,10 +44,10 @@ function admin_user() {
     $html .= "  <tr><td>jabber</td><td>" . "<input type=\"text\" size=\"40\" name=\"ejabber\" value=\"" . $user_source['jabber'] . "\"></td></tr>\n";
     $html .= "  <tr><td>Size</td><td>" . html_select_key('size', 'eSize', $tshirt_sizes, $user_source['Size']) . "</td></tr>\n";
     
-    $options = array(
-        '1' => "Yes",
-        '0' => "No" 
-    );
+    $options = [
+        '1' => _("Yes"),
+        '0' => _("No") 
+    ];
     
     // Gekommen?
     $html .= "  <tr><td>Gekommen</td><td>\n";
@@ -90,20 +92,23 @@ function admin_user() {
     $html .= "<hr />";
     
     $my_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($user['UID']) . "' ORDER BY `group_id` LIMIT 1");
-    if (count($my_highest_group) > 0)
+    if (count($my_highest_group) > 0) {
       $my_highest_group = $my_highest_group[0]['group_id'];
+    }
     
     $his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($id) . "' ORDER BY `group_id` LIMIT 1");
-    if (count($his_highest_group) > 0)
+    if (count($his_highest_group) > 0) {
       $his_highest_group = $his_highest_group[0]['group_id'];
+    }
     
     if ($id != $user['UID'] && $my_highest_group <= $his_highest_group) {
       $html .= "Hier kannst Du die Benutzergruppen des Engels festlegen:<form action=\"" . page_link_to("admin_user") . "&action=save_groups&id=" . $id . "\" method=\"post\">\n";
       $html .= '<table>';
       
       $groups = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = '" . sql_escape($id) . "') WHERE `Groups`.`UID` >= '" . sql_escape($my_highest_group) . "' ORDER BY `Groups`.`Name`");
-      foreach ($groups as $group)
+      foreach ($groups as $group) {
         $html .= '<tr><td><input type="checkbox" name="groups[]" value="' . $group['UID'] . '"' . ($group['group_id'] != "" ? ' checked="checked"' : '') . ' /></td><td>' . $group['Name'] . '</td></tr>';
+      }
       
       $html .= '</table>';
       
@@ -127,18 +132,19 @@ function admin_user() {
           
           if (count($my_highest_group) > 0 && (count($his_highest_group) == 0 || ($my_highest_group[0]['group_id'] <= $his_highest_group[0]['group_id']))) {
             $groups_source = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = '" . sql_escape($id) . "') WHERE `Groups`.`UID` >= '" . sql_escape($my_highest_group[0]['group_id']) . "' ORDER BY `Groups`.`Name`");
-            $groups = array();
-            $grouplist = array();
+            $groups = [];
+            $grouplist = [];
             foreach ($groups_source as $group) {
               $groups[$group['UID']] = $group;
               $grouplist[] = $group['UID'];
             }
             
-            if (! is_array($_REQUEST['groups']))
-              $_REQUEST['groups'] = array();
+            if (! is_array($_REQUEST['groups'])) {
+              $_REQUEST['groups'] = [];
+            }
             
             sql_query("DELETE FROM `UserGroups` WHERE `uid`='" . sql_escape($id) . "'");
-            $user_groups_info = array();
+            $user_groups_info = [];
             foreach ($_REQUEST['groups'] as $group) {
               if (in_array($group, $grouplist)) {
                 sql_query("INSERT INTO `UserGroups` SET `uid`='" . sql_escape($id) . "', `group_id`='" . sql_escape($group) . "'");
@@ -158,8 +164,9 @@ function admin_user() {
       
       case 'save':
         $force_active = $user['force_active'];
-        if (in_array('admin_active', $privileges))
+        if (in_array('admin_active', $privileges)) {
           $force_active = $_REQUEST['force_active'];
+        }
         $SQL = "UPDATE `User` SET 
               `Nick` = '" . sql_escape($_POST["eNick"]) . "', 
               `Name` = '" . sql_escape($_POST["eName"]) . "', 
@@ -197,8 +204,8 @@ function admin_user() {
     }
   }
   
-  return page_with_title(_('Edit user'), array(
+  return page_with_title(_("Edit user"), [
       $html 
-  ));
+  ]);
 }
 ?>

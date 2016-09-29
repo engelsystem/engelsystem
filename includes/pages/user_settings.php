@@ -50,9 +50,9 @@ function user_settings() {
       }
     }
     
-    if (isset($_REQUEST['tshirt_size']) && isset($tshirt_sizes[$_REQUEST['tshirt_size']]))
+    if (isset($_REQUEST['tshirt_size']) && isset($tshirt_sizes[$_REQUEST['tshirt_size']])) {
       $tshirt_size = $_REQUEST['tshirt_size'];
-    elseif ($enable_tshirt_size) {
+    } elseif ($enable_tshirt_size) {
       $ok = false;
     }
     
@@ -70,24 +70,32 @@ function user_settings() {
         $ok = false;
         $msg .= error(_("Please enter your planned date of departure."), true);
       }
-    } else
+    } else {
       $planned_departure_date = null;
-      
-      // Trivia
-    if (isset($_REQUEST['lastname']))
+    }
+    
+    // Trivia
+    if (isset($_REQUEST['lastname'])) {
       $lastname = strip_request_item('lastname');
-    if (isset($_REQUEST['prename']))
+    }
+    if (isset($_REQUEST['prename'])) {
       $prename = strip_request_item('prename');
-    if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age']))
+    }
+    if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age'])) {
       $age = strip_request_item('age');
-    if (isset($_REQUEST['tel']))
+    }
+    if (isset($_REQUEST['tel'])) {
       $tel = strip_request_item('tel');
-    if (isset($_REQUEST['dect']))
+    }
+    if (isset($_REQUEST['dect'])) {
       $dect = strip_request_item('dect');
-    if (isset($_REQUEST['mobile']))
+    }
+    if (isset($_REQUEST['mobile'])) {
       $mobile = strip_request_item('mobile');
-    if (isset($_REQUEST['hometown']))
+    }
+    if (isset($_REQUEST['hometown'])) {
       $hometown = strip_request_item('hometown');
+    }
     
     if ($ok) {
       sql_query("
@@ -114,24 +122,26 @@ function user_settings() {
   } elseif (isset($_REQUEST['submit_password'])) {
     $ok = true;
     
-    if (! isset($_REQUEST['password']) || ! verify_password($_REQUEST['password'], $user['Passwort'], $user['UID']))
+    if (! isset($_REQUEST['password']) || ! verify_password($_REQUEST['password'], $user['Passwort'], $user['UID'])) {
       $msg .= error(_("-> not OK. Please try again."), true);
-    elseif (strlen($_REQUEST['new_password']) < MIN_PASSWORD_LENGTH)
+    } elseif (strlen($_REQUEST['new_password']) < MIN_PASSWORD_LENGTH) {
       $msg .= error(_("Your password is to short (please use at least 6 characters)."), true);
-    elseif ($_REQUEST['new_password'] != $_REQUEST['new_password2'])
+    } elseif ($_REQUEST['new_password'] != $_REQUEST['new_password2']) {
       $msg .= error(_("Your passwords don't match."), true);
-    elseif (set_password($user['UID'], $_REQUEST['new_password']))
+    } elseif (set_password($user['UID'], $_REQUEST['new_password'])) {
       success(_("Password saved."));
-    else
+    } else {
       error(_("Failed setting password."));
+    }
     redirect(page_link_to('user_settings'));
   } elseif (isset($_REQUEST['submit_theme'])) {
     $ok = true;
     
-    if (isset($_REQUEST['theme']) && isset($themes[$_REQUEST['theme']]))
+    if (isset($_REQUEST['theme']) && isset($themes[$_REQUEST['theme']])) {
       $selected_theme = $_REQUEST['theme'];
-    else
+    } else {
       $ok = false;
+    }
     
     if ($ok) {
       sql_query("UPDATE `User` SET `color`='" . sql_escape($selected_theme) . "' WHERE `UID`='" . sql_escape($user['UID']) . "'");
@@ -142,10 +152,11 @@ function user_settings() {
   } elseif (isset($_REQUEST['submit_language'])) {
     $ok = true;
     
-    if (isset($_REQUEST['language']) && isset($locales[$_REQUEST['language']]))
+    if (isset($_REQUEST['language']) && isset($locales[$_REQUEST['language']])) {
       $selected_language = $_REQUEST['language'];
-    else
+    } else {
       $ok = false;
+    }
     
     if ($ok) {
       sql_query("UPDATE `User` SET `Sprache`='" . sql_escape($selected_language) . "' WHERE `UID`='" . sql_escape($user['UID']) . "'");
@@ -156,12 +167,12 @@ function user_settings() {
     }
   }
   
-  return page_with_title(settings_title(), array(
+  return page_with_title(settings_title(), [
       $msg,
       msg(),
-      div('row', array(
-          div('col-md-6', array(
-              form(array(
+      div('row', [
+          div('col-md-6', [
+              form([
                   form_info('', _("Here you can change your user details.")),
                   form_info(entry_required() . ' = ' . _("Entry required!")),
                   form_text('nick', _("Nick"), $nick, true),
@@ -180,28 +191,28 @@ function user_settings() {
                   $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',
                   form_info('', _('Please visit the angeltypes page to manage your angeltypes.')),
                   form_submit('submit', _("Save")) 
-              )) 
-          )),
-          div('col-md-6', array(
-              form(array(
+              ]) 
+          ]),
+          div('col-md-6', [
+              form([
                   form_info(_("Here you can change your password.")),
                   form_password('password', _("Old password:")),
                   form_password('new_password', _("New password:")),
                   form_password('new_password2', _("Password confirmation:")),
                   form_submit('submit_password', _("Save")) 
-              )),
-              form(array(
+              ]),
+              form([
                   form_info(_("Here you can choose your color settings:")),
                   form_select('theme', _("Color settings:"), $themes, $selected_theme),
                   form_submit('submit_theme', _("Save")) 
-              )),
-              form(array(
+              ]),
+              form([
                   form_info(_("Here you can choose your language:")),
                   form_select('language', _("Language:"), $locales, $selected_language),
                   form_submit('submit_language', _("Save")) 
-              )) 
-          )) 
-      )) 
-  ));
+              ]) 
+          ]) 
+      ]) 
+  ]);
 }
 ?>

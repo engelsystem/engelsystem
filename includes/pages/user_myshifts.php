@@ -23,10 +23,10 @@ function user_myshifts() {
       success(_("Key changed."));
       redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
     }
-    return page_with_title(_("Reset API key"), array(
+    return page_with_title(_("Reset API key"), [
         error(_("If you reset the key, the url to your iCal- and JSON-export and your atom feed changes! You have to update it in every application using one of these exports."), true),
         button(page_link_to('user_myshifts') . '&reset=ack', _("Continue"), 'btn-danger') 
-    ));
+    ]);
   } elseif (isset($_REQUEST['edit']) && preg_match("/^[0-9]*$/", $_REQUEST['edit'])) {
     $id = $_REQUEST['edit'];
     $shift = sql_select("SELECT
@@ -65,14 +65,15 @@ function user_myshifts() {
         $user_source = User($shift['UID']);
         
         if ($ok) {
-          $result = ShiftEntry_update(array(
+          $result = ShiftEntry_update([
               'id' => $id,
               'Comment' => $comment,
               'freeloaded' => $freeloaded,
               'freeload_comment' => $freeload_comment 
-          ));
-          if ($result === false)
+          ]);
+          if ($result === false) {
             engelsystem_error('Unable to update shift entry.');
+          }
           
           engelsystem_log("Updated " . User_Nick_render($user_source) . "'s shift " . $shift['name'] . " from " . date("Y-m-d H:i", $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']) . " with comment " . $comment . ". Freeloaded: " . ($freeloaded ? "YES Comment: " . $freeload_comment : "NO"));
           success(_("Shift saved."));
@@ -94,18 +95,21 @@ function user_myshifts() {
       $shift = $shift[0];
       if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges)) {
         $result = ShiftEntry_delete($id);
-        if ($result === false)
+        if ($result === false) {
           engelsystem_error('Unable to delete shift entry.');
+        }
         $room = Room($shift['RID']);
         $angeltype = AngelType($shift['TID']);
         $shifttype = ShiftType($shift['shifttype_id']);
         
         engelsystem_log("Deleted own shift: " . $shifttype['name'] . " at " . $room['Name'] . " from " . date("Y-m-d H:i", $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']) . " as " . $angeltype['name']);
         success(_("Shift canceled."));
-      } else
+      } else {
         error(_("It's too late to sign yourself off the shift. If neccessary, ask the dispatcher to do so."));
-    } else
+      }
+    } else {
       redirect(user_link($shifts_user));
+    }
   }
   
   redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);

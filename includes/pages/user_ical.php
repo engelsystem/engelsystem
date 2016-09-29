@@ -19,8 +19,9 @@ function user_ical() {
     engelsystem_error("Key invalid.");
   }
   
-  if (! in_array('ical', privileges_for_user($user['UID'])))
+  if (! in_array('ical', privileges_for_user($user['UID']))) {
     engelsystem_error("No privilege for ical.");
+  }
   
   $ical_shifts = load_ical_shifts();
   

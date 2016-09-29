@@ -17,8 +17,9 @@ function guest_register() {
   global $tshirt_sizes, $enable_tshirt_size, $default_theme, $user;
   
   $event_config = EventConfig();
-  if ($event_config === false)
+  if ($event_config === false) {
     engelsystem_error("Unable to load event config.");
+  }
   
   $msg = "";
   $nick = "";
@@ -35,15 +36,16 @@ function guest_register() {
   $comment = "";
   $tshirt_size = '';
   $password_hash = "";
-  $selected_angel_types = array();
+  $selected_angel_types = [];
   $planned_arrival_date = null;
   
   $angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
-  $angel_types = array();
+  $angel_types = [];
   foreach ($angel_types_source as $angel_type) {
     $angel_types[$angel_type['id']] = $angel_type['name'] . ($angel_type['restricted'] ? " (restricted)" : "");
-    if (! $angel_type['restricted'])
+    if (! $angel_type['restricted']) {
       $selected_angel_types[] = $angel_type['id'];
+    }
   }
   
   if (isset($_REQUEST['submit'])) {
@@ -71,8 +73,9 @@ function guest_register() {
       $msg .= error(_("Please enter your e-mail."), true);
     }
     
-    if (isset($_REQUEST['email_shiftinfo']))
+    if (isset($_REQUEST['email_shiftinfo'])) {
       $email_shiftinfo = true;
+    }
     
     if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
       $jabber = strip_request_item('jabber');
@@ -83,9 +86,9 @@ function guest_register() {
     }
     
     if ($enable_tshirt_size) {
-      if (isset($_REQUEST['tshirt_size']) && isset($tshirt_sizes[$_REQUEST['tshirt_size']]) && $_REQUEST['tshirt_size'] != '')
+      if (isset($_REQUEST['tshirt_size']) && isset($tshirt_sizes[$_REQUEST['tshirt_size']]) && $_REQUEST['tshirt_size'] != '') {
         $tshirt_size = $_REQUEST['tshirt_size'];
-      else {
+      } else {
         $ok = false;
         $msg .= error(_("Please select your shirt size."), true);
       }
@@ -108,28 +111,38 @@ function guest_register() {
       $msg .= error(_("Please enter your planned date of arrival."), true);
     }
     
-    $selected_angel_types = array();
-    foreach (array_keys($angel_types) as $angel_type_id)
-      if (isset($_REQUEST['angel_types_' . $angel_type_id]))
+    $selected_angel_types = [];
+    foreach (array_keys($angel_types) as $angel_type_id) {
+      if (isset($_REQUEST['angel_types_' . $angel_type_id])) {
         $selected_angel_types[] = $angel_type_id;
-      
-      // Trivia
-    if (isset($_REQUEST['lastname']))
+      }
+    }
+    
+    // Trivia
+    if (isset($_REQUEST['lastname'])) {
       $lastname = strip_request_item('lastname');
-    if (isset($_REQUEST['prename']))
+    }
+    if (isset($_REQUEST['prename'])) {
       $prename = strip_request_item('prename');
-    if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age']))
+    }
+    if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age'])) {
       $age = strip_request_item('age');
-    if (isset($_REQUEST['tel']))
+    }
+    if (isset($_REQUEST['tel'])) {
       $tel = strip_request_item('tel');
-    if (isset($_REQUEST['dect']))
+    }
+    if (isset($_REQUEST['dect'])) {
       $dect = strip_request_item('dect');
-    if (isset($_REQUEST['mobile']))
+    }
+    if (isset($_REQUEST['mobile'])) {
       $mobile = strip_request_item('mobile');
-    if (isset($_REQUEST['hometown']))
+    }
+    if (isset($_REQUEST['hometown'])) {
       $hometown = strip_request_item('hometown');
-    if (isset($_REQUEST['comment']))
+    }
+    if (isset($_REQUEST['comment'])) {
       $comment = strip_request_item_nl('comment');
+    }
     
     if ($ok) {
       sql_query("
@@ -160,7 +173,7 @@ function guest_register() {
       set_password($user_id, $_REQUEST['password']);
       
       // Assign angel-types
-      $user_angel_types_info = array();
+      $user_angel_types_info = [];
       foreach ($selected_angel_types as $selected_angel_type_id) {
         sql_query("INSERT INTO `UserAngelTypes` SET `user_id`='" . sql_escape($user_id) . "', `angeltype_id`='" . sql_escape($selected_angel_type_id) . "'");
         $user_angel_types_info[] = $angel_types[$selected_angel_type_id];
@@ -183,77 +196,77 @@ function guest_register() {
     }
   }
   
-  return page_with_title(register_title(), array(
+  return page_with_title(register_title(), [
       _("By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel task sheduler."),
       $msg,
       msg(),
-      form(array(
-          div('row', array(
-              div('col-md-6', array(
-                  div('row', array(
-                      div('col-sm-4', array(
+      form([
+          div('row', [
+              div('col-md-6', [
+                  div('row', [
+                      div('col-sm-4', [
                           form_text('nick', _("Nick") . ' ' . entry_required(), $nick) 
-                      )),
-                      div('col-sm-8', array(
+                      ]),
+                      div('col-sm-8', [
                           form_email('mail', _("E-Mail") . ' ' . entry_required(), $mail),
                           form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $email_shiftinfo) 
-                      )) 
-                  )),
-                  div('row', array(
-                      div('col-sm-6', array(
+                      ]) 
+                  ]),
+                  div('row', [
+                      div('col-sm-6', [
                           form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, time()) 
-                      )),
-                      div('col-sm-6', array(
+                      ]),
+                      div('col-sm-6', [
                           $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : '' 
-                      )) 
-                  )),
-                  div('row', array(
-                      div('col-sm-6', array(
+                      ]) 
+                  ]),
+                  div('row', [
+                      div('col-sm-6', [
                           form_password('password', _("Password") . ' ' . entry_required()) 
-                      )),
-                      div('col-sm-6', array(
+                      ]),
+                      div('col-sm-6', [
                           form_password('password2', _("Confirm password") . ' ' . entry_required()) 
-                      )) 
-                  )),
+                      ]) 
+                  ]),
                   form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
                   form_info("", _("Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section.")) 
-              )),
-              div('col-md-6', array(
-                  div('row', array(
-                      div('col-sm-4', array(
+              ]),
+              div('col-md-6', [
+                  div('row', [
+                      div('col-sm-4', [
                           form_text('dect', _("DECT"), $dect) 
-                      )),
-                      div('col-sm-4', array(
+                      ]),
+                      div('col-sm-4', [
                           form_text('mobile', _("Mobile"), $mobile) 
-                      )),
-                      div('col-sm-4', array(
+                      ]),
+                      div('col-sm-4', [
                           form_text('tel', _("Phone"), $tel) 
-                      )) 
-                  )),
+                      ]) 
+                  ]),
                   form_text('jabber', _("Jabber"), $jabber),
-                  div('row', array(
-                      div('col-sm-6', array(
+                  div('row', [
+                      div('col-sm-6', [
                           form_text('prename', _("First name"), $prename) 
-                      )),
-                      div('col-sm-6', array(
+                      ]),
+                      div('col-sm-6', [
                           form_text('lastname', _("Last name"), $lastname) 
-                      )) 
-                  )),
-                  div('row', array(
-                      div('col-sm-3', array(
+                      ]) 
+                  ]),
+                  div('row', [
+                      div('col-sm-3', [
                           form_text('age', _("Age"), $age) 
-                      )),
-                      div('col-sm-9', array(
+                      ]),
+                      div('col-sm-9', [
                           form_text('hometown', _("Hometown"), $hometown) 
-                      )) 
-                  )),
+                      ]) 
+                  ]),
                   form_info(entry_required() . ' = ' . _("Entry required!")) 
-              )) 
-          )),
+              ]) 
+          ]),
           // form_textarea('comment', _("Did you help at former CCC events and which tasks have you performed then?"), $comment),
           form_submit('submit', _("Register")) 
-      )) 
-  ));
+      ]) 
+  ]);
 }
 
 function entry_required() {
