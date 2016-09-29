@@ -6,11 +6,13 @@
 function users_controller() {
   global $user;
   
-  if (! isset($user))
+  if (! isset($user)) {
     redirect(page_link_to(''));
+  }
   
-  if (! isset($_REQUEST['action']))
+  if (! isset($_REQUEST['action'])) {
     $_REQUEST['action'] = 'list';
+  }
   
   switch ($_REQUEST['action']) {
     default:
@@ -35,13 +37,15 @@ function user_delete_controller() {
   
   if (isset($_REQUEST['user_id'])) {
     $user_source = User($_REQUEST['user_id']);
-  } else
+  } else {
     $user_source = $user;
+  }
   
-  if (! in_array('admin_user', $privileges))
+  if (! in_array('admin_user', $privileges)) {
     redirect(page_link_to(''));
-    
-    // You cannot delete yourself
+  }
+  
+  // You cannot delete yourself
   if ($user['UID'] == $user_source['UID']) {
     error(_("You cannot delete yourself."));
     redirect(user_link($user));
@@ -57,8 +61,9 @@ function user_delete_controller() {
     
     if ($ok) {
       $result = User_delete($user_source['UID']);
-      if ($result === false)
+      if ($result === false) {
         engelsystem_error('Unable to delete user.');
+      }
       
       mail_user_delete($user_source);
       success(_("User deleted."));
@@ -68,10 +73,10 @@ function user_delete_controller() {
     }
   }
   
-  return array(
+  return [
       sprintf(_("Delete %s"), $user_source['Nick']),
       User_delete_view($user_source) 
-  );
+  ];
 }
 
 function users_link() {
@@ -95,18 +100,20 @@ function user_edit_vouchers_controller() {
   
   if (isset($_REQUEST['user_id'])) {
     $user_source = User($_REQUEST['user_id']);
-  } else
+  } else {
     $user_source = $user;
+  }
   
-  if (! in_array('admin_user', $privileges))
+  if (! in_array('admin_user', $privileges)) {
     redirect(page_link_to(''));
+  }
   
   if (isset($_REQUEST['submit'])) {
     $ok = true;
     
-    if (isset($_REQUEST['vouchers']) && test_request_int('vouchers') && trim($_REQUEST['vouchers']) >= 0)
+    if (isset($_REQUEST['vouchers']) && test_request_int('vouchers') && trim($_REQUEST['vouchers']) >= 0) {
       $vouchers = trim($_REQUEST['vouchers']);
-    else {
+    } else {
       $ok = false;
       error(_("Please enter a valid number of vouchers."));
     }
@@ -115,8 +122,9 @@ function user_edit_vouchers_controller() {
       $user_source['got_voucher'] = $vouchers;
       
       $result = User_update($user_source);
-      if ($result === false)
+      if ($result === false) {
         engelsystem_error('Unable to update user.');
+      }
       
       success(_("Saved the number of vouchers."));
       engelsystem_log(User_Nick_render($user_source) . ': ' . sprintf("Got %s vouchers", $user_source['got_voucher']));
@@ -125,10 +133,10 @@ function user_edit_vouchers_controller() {
     }
   }
   
-  return array(
+  return [
       sprintf(_("%s's vouchers"), $user_source['Nick']),
       User_edit_vouchers_view($user_source) 
-  );
+  ];
 }
 
 function user_controller() {
@@ -136,14 +144,16 @@ function user_controller() {
   
   if (isset($_REQUEST['user_id'])) {
     $user_source = User($_REQUEST['user_id']);
-    if ($user_source === false)
+    if ($user_source === false) {
       engelsystem_error("Unable to load user.");
+    }
     if ($user_source == null) {
       error(_("User not found."));
       redirect('?');
     }
-  } else
+  } else {
     $user_source = $user;
+  }
   
   $shifts = Shifts_by_user($user_source);
   foreach ($shifts as &$shift) {
@@ -159,13 +169,14 @@ function user_controller() {
     }
   }
   
-  if ($user_source['api_key'] == "")
+  if ($user_source['api_key'] == "") {
     User_reset_api_key($user_source, false);
+  }
   
-  return array(
+  return [
       $user_source['Nick'],
       User_view($user_source, in_array('admin_user', $privileges), User_is_freeloader($user_source), User_angeltypes($user_source), User_groups($user_source), $shifts, $user['UID'] == $user_source['UID']) 
-  );
+  ];
 }
 
 /**
@@ -174,24 +185,28 @@ function user_controller() {
 function users_list_controller() {
   global $privileges;
   
-  if (! in_array('admin_user', $privileges))
+  if (! in_array('admin_user', $privileges)) {
     redirect(page_link_to(''));
+  }
   
   $order_by = 'Nick';
-  if (isset($_REQUEST['OrderBy']) && in_array($_REQUEST['OrderBy'], User_sortable_columns()))
+  if (isset($_REQUEST['OrderBy']) && in_array($_REQUEST['OrderBy'], User_sortable_columns())) {
     $order_by = $_REQUEST['OrderBy'];
+  }
   
   $users = Users($order_by);
-  if ($users === false)
+  if ($users === false) {
     engelsystem_error('Unable to load users.');
+  }
   
-  foreach ($users as &$user)
+  foreach ($users as &$user) {
     $user['freeloads'] = count(ShiftEntries_freeloaded_by_user($user));
+  }
   
-  return array(
+  return [
       _('All users'),
       Users_view($users, $order_by, User_arrived_count(), User_active_count(), User_force_active_count(), ShiftEntries_freeleaded_count(), User_tshirts_count(), User_got_voucher_count()) 
-  );
+  ];
 }
 
 /**
@@ -201,8 +216,9 @@ function users_list_controller() {
 function user_password_recovery_controller() {
   if (isset($_REQUEST['token'])) {
     $user_source = User_by_password_recovery_token($_REQUEST['token']);
-    if ($user_source === false)
+    if ($user_source === false) {
       engelsystem_error("Unable to load user.");
+    }
     if ($user_source == null) {
       error(_("Token is not correct."));
       redirect(page_link_to('login'));
@@ -223,8 +239,9 @@ function user_password_recovery_controller() {
       
       if ($ok) {
         $result = set_password($user_source['UID'], $_REQUEST['password']);
-        if ($result === false)
+        if ($result === false) {
           engelsystem_error(_("Password could not be updated."));
+        }
         
         success(_("Password saved."));
         redirect(page_link_to('login'));
@@ -240,8 +257,9 @@ function user_password_recovery_controller() {
         $email = strip_request_item('email');
         if (check_email($email)) {
           $user_source = User_by_email($email);
-          if ($user_source === false)
+          if ($user_source === false) {
             engelsystem_error("Unable to load user.");
+          }
           if ($user_source == null) {
             $ok = false;
             error(_("E-mail address is not correct."));
@@ -257,11 +275,13 @@ function user_password_recovery_controller() {
       
       if ($ok) {
         $token = User_generate_password_recovery_token($user_source);
-        if ($token === false)
+        if ($token === false) {
           engelsystem_error("Unable to generate password recovery token.");
+        }
         $result = engelsystem_email_to_user($user_source, _("Password recovery"), sprintf(_("Please visit %s to recover your password."), page_link_to_absolute('user_password_recovery') . '&token=' . $token));
-        if ($result === false)
+        if ($result === false) {
           engelsystem_error("Unable to send password recovery email.");
+        }
         
         success(_("We sent an email containing your password recovery link."));
         redirect(page_link_to('login'));

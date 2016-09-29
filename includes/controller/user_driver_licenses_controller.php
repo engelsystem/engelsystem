@@ -7,21 +7,25 @@ function user_driver_license_required_hint() {
   global $user;
   
   $angeltypes = User_angeltypes($user);
-  if ($angeltypes === false)
+  if ($angeltypes === false) {
     engelsystem_error("Unable to load user angeltypes.");
+  }
   $user_driver_license = UserDriverLicense($user['UID']);
-  if ($user_driver_license === false)
+  if ($user_driver_license === false) {
     engelsystem_error("Unable to load user driver license.");
+  }
   
   $driving_license_information_required = false;
-  foreach ($angeltypes as $angeltype)
+  foreach ($angeltypes as $angeltype) {
     if ($angeltype['requires_driver_license']) {
       $driving_license_information_required = true;
       break;
     }
+  }
   
-  if ($driving_license_information_required && $user_driver_license == null)
+  if ($driving_license_information_required && $user_driver_license == null) {
     return info(sprintf(_("You joined an angeltype which requires a driving license. Please edit your driving license information here: %s."), '<a href="' . user_driver_license_edit_link() . '">' . _("driving license information") . '</a>'), true);
+  }
   
   return '';
 }
@@ -32,11 +36,13 @@ function user_driver_license_required_hint() {
 function user_driver_licenses_controller() {
   global $user;
   
-  if (! isset($user))
+  if (! isset($user)) {
     redirect(page_link_to(''));
+  }
   
-  if (! isset($_REQUEST['action']))
+  if (! isset($_REQUEST['action'])) {
     $_REQUEST['action'] = 'edit';
+  }
   
   switch ($_REQUEST['action']) {
     default:
@@ -51,8 +57,9 @@ function user_driver_licenses_controller() {
  * @param User $user          
  */
 function user_driver_license_edit_link($user = null) {
-  if ($user == null)
+  if ($user == null) {
     return page_link_to('user_driver_licenses');
+  }
   return page_link_to('user_driver_licenses') . '&user_id=' . $user['UID'];
 }
 
@@ -64,14 +71,17 @@ function user_driver_license_edit_controller() {
   
   if (isset($_REQUEST['user_id'])) {
     $user_source = User($_REQUEST['user_id']);
-    if ($user_source === false)
+    if ($user_source === false) {
       engelsystem_error('Unable to load angeltype.');
-    if ($user_source == null)
+    }
+    if ($user_source == null) {
       redirect(user_driver_license_edit_link());
-      
-      // only privilege admin_user can edit other users driver license information
-    if ($user['UID'] != $user_source['UID'] && ! in_array('admin_user', $privileges))
+    }
+    
+    // only privilege admin_user can edit other users driver license information
+    if ($user['UID'] != $user_source['UID'] && ! in_array('admin_user', $privileges)) {
       redirect(user_driver_license_edit_link());
+    }
   } else {
     $user_source = $user;
   }
@@ -85,8 +95,9 @@ function user_driver_license_edit_controller() {
   $has_license_forklift = false;
   
   $user_driver_license = UserDriverLicense($user_source['UID']);
-  if ($user_driver_license === false)
+  if ($user_driver_license === false) {
     engelsystem_error('Unable to load user driver license.');
+  }
   if ($user_driver_license != null) {
     $wants_to_drive = true;
     $has_car = $user_driver_license['has_car'];
@@ -115,19 +126,22 @@ function user_driver_license_edit_controller() {
     if ($ok) {
       if (! $wants_to_drive && $user_driver_license != null) {
         $result = UserDriverLicenses_delete($user_source['UID']);
-        if ($result === false)
+        if ($result === false) {
           engelsystem_error("Unable to remove user driver license information");
+        }
         engelsystem_log("Driver license information removed.");
         success(_("Your driver license information has been removed."));
       } else {
         if ($wants_to_drive) {
-          if ($user_driver_license == null)
+          if ($user_driver_license == null) {
             $result = UserDriverLicenses_create($user_source['UID'], $has_car, $has_license_car, $has_license_3_5t_transporter, $has_license_7_5t_truck, $has_license_12_5t_truck, $has_license_forklift);
-          else
+          } else {
             $result = UserDriverLicenses_update($user_source['UID'], $has_car, $has_license_car, $has_license_3_5t_transporter, $has_license_7_5t_truck, $has_license_12_5t_truck, $has_license_forklift);
+          }
           
-          if ($result === false)
+          if ($result === false) {
             engelsystem_error("Unable to save user driver license information.");
+          }
           engelsystem_log("Driver license information updated.");
         }
         success(_("Your driver license information has been saved."));
