@@ -41,9 +41,9 @@ function glyph_bool($boolean) {
   return '<span class="text-' . ($boolean ? 'success' : 'danger') . '">' . glyph($boolean ? 'ok' : 'remove') . '</span>';
 }
 
-function div($class, $content = array(), $id = "") {
-  $id = $id != '' ? ' id="' . $id . '"' : '';
-  return '<div' . $id . ' class="' . $class . '">' . join("\n", $content) . '</div>';
+function div($class, $content = array(), $dom_id = "") {
+  $dom_id = $dom_id != '' ? ' id="' . $dom_id . '"' : '';
+  return '<div' . $dom_id . ' class="' . $class . '">' . join("\n", $content) . '</div>';
 }
 
 function heading($content, $number = 1) {
@@ -84,12 +84,12 @@ function toolbar_dropdown($glyphicon, $label, $submenu, $class = '') {
 }
 
 function toolbar_popover($glyphicon, $label, $content, $class = '') {
-  $id = md5(microtime() . $glyphicon . $label);
+  $dom_id = md5(microtime() . $glyphicon . $label);
   return '<li class="dropdown messages ' . $class . '">
-          <a id="' . $id . '" href="#" tabindex="0">' . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '') . $label . ' <span class="caret"></span></a>
+          <a id="' . $dom_id . '" href="#" tabindex="0">' . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '') . $label . ' <span class="caret"></span></a>
           <script type="text/javascript">
           $(function(){
-              $("#' . $id . '").popover({
+              $("#' . $dom_id . '").popover({
                   trigger: "focus", 
                   html: true, 
                   content: "' . addslashes(join('', $content)) . '", 
@@ -145,16 +145,16 @@ function form_spinner($name, $label, $value) {
  * @return HTML
  */
 function form_date($name, $label, $value, $start_date = '') {
-  $id = $name . '-date';
+  $dom_id = $name . '-date';
   $value = is_numeric($value) ? date('Y-m-d', $value) : '';
   $start_date = is_numeric($start_date) ? date('Y-m-d', $start_date) : '';
   return form_element($label, '
-    <div class="input-group date" id="' . $id . '">
+    <div class="input-group date" id="' . $dom_id . '">
       <input type="text" name="' . $name . '" class="form-control" value="' . $value . '"><span class="input-group-addon">' . glyph('th') . '</span>
     </div>
     <script type="text/javascript">
 			$(function(){
-        $("#' . $id . '").datepicker({
+        $("#' . $dom_id . '").datepicker({
 				  language: "' . locale_short() . '",
           todayBtn: "linked",
           format: "yyyy-mm-dd",
@@ -162,7 +162,7 @@ function form_date($name, $label, $value, $start_date = '') {
 			  });
       });  
     </script>
-    ', $id);
+    ', $dom_id);
 }
 
 /**
@@ -208,14 +208,14 @@ function form_multi_checkboxes($names, $label, $items, $selected, $disabled = ar
   foreach ($items as $key => $item) {
     $html .= "<tr>";
     foreach ($names as $name => $title) {
-      $id = $name . '_' . $key;
+      $dom_id = $name . '_' . $key;
       $sel = array_search($key, $selected[$name]) !== false ? ' checked="checked"' : "";
       if (! empty($disabled) && ! empty($disabled[$name]) && array_search($key, $disabled[$name]) !== false) {
         $sel .= ' disabled="disabled"';
       }
-      $html .= '<td style="text-align: center;"><input type="checkbox" id="' . $id . '" name="' . $name . '[]" value="' . $key . '"' . $sel . ' /></td>';
+      $html .= '<td style="text-align: center;"><input type="checkbox" id="' . $dom_id . '" name="' . $name . '[]" value="' . $key . '"' . $sel . ' /></td>';
     }
-    $html .= '<td><label for="' . $id . '">' . $item . '</label></td></tr>';
+    $html .= '<td><label for="' . $dom_id . '">' . $item . '</label></td></tr>';
   }
   $html .= "</tbody></table>";
   return form_element($label, $html);
@@ -452,8 +452,8 @@ function html_options($name, $options, $selected = "") {
   return $html;
 }
 
-function html_select_key($id, $name, $rows, $selected) {
-  $html = '<select class="form-control" id="' . $id . '" name="' . $name . '">';
+function html_select_key($dom_id, $name, $rows, $selected) {
+  $html = '<select class="form-control" id="' . $dom_id . '" name="' . $name . '">';
   foreach ($rows as $key => $row) {
     if (($key == $selected) || ($row == $selected)) {
       $html .= '<option value="' . $key . '" selected="selected">' . $row . '</option>';

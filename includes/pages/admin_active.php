@@ -63,40 +63,40 @@ function admin_active() {
   }
   
   if (isset($_REQUEST['active']) && preg_match("/^[0-9]+$/", $_REQUEST['active'])) {
-    $id = $_REQUEST['active'];
-    $user_source = User($id);
+    $user_id = $_REQUEST['active'];
+    $user_source = User($user_id);
     if ($user_source != null) {
-      sql_query("UPDATE `User` SET `Aktiv`=1 WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
+      sql_query("UPDATE `User` SET `Aktiv`=1 WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
       engelsystem_log("User " . User_Nick_render($user_source) . " is active now.");
       $msg = success(_("Angel has been marked as active."), true);
     } else {
       $msg = error(_("Angel not found."), true);
     }
   } elseif (isset($_REQUEST['not_active']) && preg_match("/^[0-9]+$/", $_REQUEST['not_active'])) {
-    $id = $_REQUEST['not_active'];
-    $user_source = User($id);
+    $user_id = $_REQUEST['not_active'];
+    $user_source = User($user_id);
     if ($user_source != null) {
-      sql_query("UPDATE `User` SET `Aktiv`=0 WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
+      sql_query("UPDATE `User` SET `Aktiv`=0 WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
       engelsystem_log("User " . User_Nick_render($user_source) . " is NOT active now.");
       $msg = success(_("Angel has been marked as not active."), true);
     } else {
       $msg = error(_("Angel not found."), true);
     }
   } elseif (isset($_REQUEST['tshirt']) && preg_match("/^[0-9]+$/", $_REQUEST['tshirt'])) {
-    $id = $_REQUEST['tshirt'];
-    $user_source = User($id);
+    $user_id = $_REQUEST['tshirt'];
+    $user_source = User($user_id);
     if ($user_source != null) {
-      sql_query("UPDATE `User` SET `Tshirt`=1 WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
+      sql_query("UPDATE `User` SET `Tshirt`=1 WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
       engelsystem_log("User " . User_Nick_render($user_source) . " has tshirt now.");
       $msg = success(_("Angel has got a t-shirt."), true);
     } else {
       $msg = error("Angel not found.", true);
     }
   } elseif (isset($_REQUEST['not_tshirt']) && preg_match("/^[0-9]+$/", $_REQUEST['not_tshirt'])) {
-    $id = $_REQUEST['not_tshirt'];
-    $user_source = User($id);
+    $user_id = $_REQUEST['not_tshirt'];
+    $user_source = User($user_id);
     if ($user_source != null) {
-      sql_query("UPDATE `User` SET `Tshirt`=0 WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
+      sql_query("UPDATE `User` SET `Tshirt`=0 WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
       engelsystem_log("User " . User_Nick_render($user_source) . " has NO tshirt.");
       $msg = success(_("Angel has got no t-shirt."), true);
     } else {

@@ -83,17 +83,17 @@ function admin_questions() {
     switch ($_REQUEST['action']) {
       case 'answer':
         if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id'])) {
-          $id = $_REQUEST['id'];
+          $question_id = $_REQUEST['id'];
         } else {
           return error("Incomplete call, missing Question ID.", true);
         }
         
-        $question = sql_select("SELECT * FROM `Questions` WHERE `QID`='" . sql_escape($id) . "' LIMIT 1");
+        $question = sql_select("SELECT * FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
         if (count($question) > 0 && $question[0]['AID'] == null) {
           $answer = trim(preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['answer'])));
           
           if ($answer != "") {
-            sql_query("UPDATE `Questions` SET `AID`='" . sql_escape($user['UID']) . "', `Answer`='" . sql_escape($answer) . "' WHERE `QID`='" . sql_escape($id) . "' LIMIT 1");
+            sql_query("UPDATE `Questions` SET `AID`='" . sql_escape($user['UID']) . "', `Answer`='" . sql_escape($answer) . "' WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
             engelsystem_log("Question " . $question[0]['Question'] . " answered: " . $answer);
             redirect(page_link_to("admin_questions"));
           } else {
@@ -105,14 +105,14 @@ function admin_questions() {
         break;
       case 'delete':
         if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id'])) {
-          $id = $_REQUEST['id'];
+          $question_id = $_REQUEST['id'];
         } else {
           return error("Incomplete call, missing Question ID.", true);
         }
         
-        $question = sql_select("SELECT * FROM `Questions` WHERE `QID`='" . sql_escape($id) . "' LIMIT 1");
+        $question = sql_select("SELECT * FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
         if (count($question) > 0) {
-          sql_query("DELETE FROM `Questions` WHERE `QID`='" . sql_escape($id) . "' LIMIT 1");
+          sql_query("DELETE FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
           engelsystem_log("Question deleted: " . $question[0]['Question']);
           redirect(page_link_to("admin_questions"));
         } else {

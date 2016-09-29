@@ -91,14 +91,14 @@ function user_messages() {
     switch ($_REQUEST['action']) {
       case "read":
         if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id'])) {
-          $id = $_REQUEST['id'];
+          $message_id = $_REQUEST['id'];
         } else {
           return error(_("Incomplete call, missing Message ID."), true);
         }
         
-        $message = sql_select("SELECT * FROM `Messages` WHERE `id`='" . sql_escape($id) . "' LIMIT 1");
+        $message = sql_select("SELECT * FROM `Messages` WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
         if (count($message) > 0 && $message[0]['RUID'] == $user['UID']) {
-          sql_query("UPDATE `Messages` SET `isRead`='Y' WHERE `id`='" . sql_escape($id) . "' LIMIT 1");
+          sql_query("UPDATE `Messages` SET `isRead`='Y' WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
           redirect(page_link_to("user_messages"));
         } else {
           return error(_("No Message found."), true);
@@ -107,14 +107,14 @@ function user_messages() {
       
       case "delete":
         if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id'])) {
-          $id = $_REQUEST['id'];
+          $message_id = $_REQUEST['id'];
         } else {
           return error(_("Incomplete call, missing Message ID."), true);
         }
         
-        $message = sql_select("SELECT * FROM `Messages` WHERE `id`='" . sql_escape($id) . "' LIMIT 1");
+        $message = sql_select("SELECT * FROM `Messages` WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
         if (count($message) > 0 && $message[0]['SUID'] == $user['UID']) {
-          sql_query("DELETE FROM `Messages` WHERE `id`='" . sql_escape($id) . "' LIMIT 1");
+          sql_query("DELETE FROM `Messages` WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
           redirect(page_link_to("user_messages"));
         } else {
           return error(_("No Message found."), true);

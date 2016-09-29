@@ -19,126 +19,126 @@ $free_pages = [
 ];
 
 // Gewünschte Seite/Funktion
-$p = "";
+$page = "";
 if (! isset($_REQUEST['p'])) {
   $_REQUEST['p'] = isset($user) ? "news" : "login";
 }
 
 if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $free_pages) || in_array($_REQUEST['p'], $privileges))) {
-  $p = $_REQUEST['p'];
+  $page = $_REQUEST['p'];
   
-  $title = $p;
+  $title = $page;
   $content = "";
   
-  if ($p == "api") {
+  if ($page == "api") {
     require_once realpath(__DIR__ . '/../includes/controller/api.php');
     error("Api disabled temporily.");
     redirect(page_link_to('login'));
     api_controller();
-  } elseif ($p == "ical") {
+  } elseif ($page == "ical") {
     require_once realpath(__DIR__ . '/../includes/pages/user_ical.php');
     user_ical();
-  } elseif ($p == "atom") {
+  } elseif ($page == "atom") {
     require_once realpath(__DIR__ . '/../includes/pages/user_atom.php');
     user_atom();
-  } elseif ($p == "shifts_json_export") {
+  } elseif ($page == "shifts_json_export") {
     require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
     shifts_json_export_controller();
-  } elseif ($p == "shifts_json_export_all") {
+  } elseif ($page == "shifts_json_export_all") {
     require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
     shifts_json_export_all_controller();
-  } elseif ($p == "stats") {
+  } elseif ($page == "stats") {
     require_once realpath(__DIR__ . '/../includes/pages/guest_stats.php');
     guest_stats();
-  } elseif ($p == "user_password_recovery") {
+  } elseif ($page == "user_password_recovery") {
     require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
     $title = user_password_recovery_title();
     $content = user_password_recovery_controller();
-  } elseif ($p == "angeltypes") {
+  } elseif ($page == "angeltypes") {
     list($title, $content) = angeltypes_controller();
-  } elseif ($p == "shifts") {
+  } elseif ($page == "shifts") {
     list($title, $content) = shifts_controller();
-  } elseif ($p == "users") {
+  } elseif ($page == "users") {
     list($title, $content) = users_controller();
-  } elseif ($p == "user_angeltypes") {
+  } elseif ($page == "user_angeltypes") {
     list($title, $content) = user_angeltypes_controller();
-  } elseif ($p == "user_driver_licenses") {
+  } elseif ($page == "user_driver_licenses") {
     list($title, $content) = user_driver_licenses_controller();
-  } elseif ($p == "shifttypes") {
+  } elseif ($page == "shifttypes") {
     list($title, $content) = shifttypes_controller();
-  } elseif ($p == "admin_event_config") {
+  } elseif ($page == "admin_event_config") {
     list($title, $content) = event_config_edit_controller();
-  } elseif ($p == "news") {
+  } elseif ($page == "news") {
     $title = news_title();
     $content = user_news();
-  } elseif ($p == "news_comments") {
+  } elseif ($page == "news_comments") {
     require_once realpath(__DIR__ . '/../includes/pages/user_news.php');
     $title = user_news_comments_title();
     $content = user_news_comments();
-  } elseif ($p == "user_meetings") {
+  } elseif ($page == "user_meetings") {
     $title = meetings_title();
     $content = user_meetings();
-  } elseif ($p == "user_myshifts") {
+  } elseif ($page == "user_myshifts") {
     $title = myshifts_title();
     $content = user_myshifts();
-  } elseif ($p == "user_shifts") {
+  } elseif ($page == "user_shifts") {
     $title = shifts_title();
     $content = user_shifts();
-  } elseif ($p == "user_messages") {
+  } elseif ($page == "user_messages") {
     $title = messages_title();
     $content = user_messages();
-  } elseif ($p == "user_questions") {
+  } elseif ($page == "user_questions") {
     $title = questions_title();
     $content = user_questions();
-  } elseif ($p == "user_settings") {
+  } elseif ($page == "user_settings") {
     $title = settings_title();
     $content = user_settings();
-  } elseif ($p == "login") {
+  } elseif ($page == "login") {
     $title = login_title();
     $content = guest_login();
-  } elseif ($p == "register") {
+  } elseif ($page == "register") {
     $title = register_title();
     $content = guest_register();
-  } elseif ($p == "logout") {
+  } elseif ($page == "logout") {
     $title = logout_title();
     $content = guest_logout();
-  } elseif ($p == "admin_questions") {
+  } elseif ($page == "admin_questions") {
     $title = admin_questions_title();
     $content = admin_questions();
-  } elseif ($p == "admin_user") {
+  } elseif ($page == "admin_user") {
     $title = admin_user_title();
     $content = admin_user();
-  } elseif ($p == "admin_arrive") {
+  } elseif ($page == "admin_arrive") {
     $title = admin_arrive_title();
     $content = admin_arrive();
-  } elseif ($p == "admin_active") {
+  } elseif ($page == "admin_active") {
     $title = admin_active_title();
     $content = admin_active();
-  } elseif ($p == "admin_free") {
+  } elseif ($page == "admin_free") {
     $title = admin_free_title();
     $content = admin_free();
-  } elseif ($p == "admin_news") {
+  } elseif ($page == "admin_news") {
     require_once realpath(__DIR__ . '/../includes/pages/admin_news.php');
     $content = admin_news();
-  } elseif ($p == "admin_rooms") {
+  } elseif ($page == "admin_rooms") {
     $title = admin_rooms_title();
     $content = admin_rooms();
-  } elseif ($p == "admin_groups") {
+  } elseif ($page == "admin_groups") {
     $title = admin_groups_title();
     $content = admin_groups();
-  } elseif ($p == "admin_language") {
+  } elseif ($page == "admin_language") {
     require_once realpath(__DIR__ . '/../includes/pages/admin_language.php');
     $content = admin_language();
-  } elseif ($p == "admin_import") {
+  } elseif ($page == "admin_import") {
     $title = admin_import_title();
     $content = admin_import();
-  } elseif ($p == "admin_shifts") {
+  } elseif ($page == "admin_shifts") {
     $title = admin_shifts_title();
     $content = admin_shifts();
-  } elseif ($p == "admin_log") {
+  } elseif ($page == "admin_log") {
     $title = admin_log_title();
     $content = admin_log();
-  } elseif ($p == "credits") {
+  } elseif ($page == "credits") {
     require_once realpath(__DIR__ . '/../includes/pages/guest_credits.php');
     $title = credits_title();
     $content = guest_credits();
@@ -165,7 +165,7 @@ if ($event_config === false) {
 echo template_render('../templates/layout.html', [
     'theme' => isset($user) ? $user['color'] : $default_theme,
     'title' => $title,
-    'atom_link' => ($p == 'news' || $p == 'user_meetings') ? '<link href="' . page_link_to('atom') . (($p == 'user_meetings') ? '&amp;meetings=1' : '') . '&amp;key=' . $user['api_key'] . '" type="application/atom+xml" rel="alternate" title="Atom Feed">' : '',
+    'atom_link' => ($page == 'news' || $page == 'user_meetings') ? '<link href="' . page_link_to('atom') . (($page == 'user_meetings') ? '&amp;meetings=1' : '') . '&amp;key=' . $user['api_key'] . '" type="application/atom+xml" rel="alternate" title="Atom Feed">' : '',
     'menu' => make_menu(),
     'content' => msg() . $content,
     'header_toolbar' => header_toolbar(),

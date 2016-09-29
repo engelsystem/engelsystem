@@ -10,12 +10,12 @@ function user_myshifts() {
   global $user, $privileges;
   
   if (isset($_REQUEST['id']) && in_array("user_shifts_admin", $privileges) && preg_match("/^[0-9]{1,}$/", $_REQUEST['id']) && sql_num_query("SELECT * FROM `User` WHERE `UID`='" . sql_escape($_REQUEST['id']) . "'") > 0) {
-    $id = $_REQUEST['id'];
+    $user_id = $_REQUEST['id'];
   } else {
-    $id = $user['UID'];
+    $user_id = $user['UID'];
   }
   
-  list($shifts_user) = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
+  list($shifts_user) = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
   
   if (isset($_REQUEST['reset'])) {
     if ($_REQUEST['reset'] == "ack") {
@@ -28,7 +28,7 @@ function user_myshifts() {
         button(page_link_to('user_myshifts') . '&reset=ack', _("Continue"), 'btn-danger') 
     ]);
   } elseif (isset($_REQUEST['edit']) && preg_match("/^[0-9]*$/", $_REQUEST['edit'])) {
-    $id = $_REQUEST['edit'];
+    $user_id = $_REQUEST['edit'];
     $shift = sql_select("SELECT
         `ShiftEntry`.`freeloaded`,
         `ShiftEntry`.`freeload_comment`,
@@ -43,7 +43,7 @@ function user_myshifts() {
         JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
         JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
         JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`)
-        WHERE `ShiftEntry`.`id`='" . sql_escape($id) . "'
+        WHERE `ShiftEntry`.`id`='" . sql_escape($user_id) . "'
         AND `UID`='" . sql_escape($shifts_user['UID']) . "' LIMIT 1");
     if (count($shift) > 0) {
       $shift = $shift[0];
@@ -66,7 +66,7 @@ function user_myshifts() {
         
         if ($valid) {
           $result = ShiftEntry_update([
-              'id' => $id,
+              'id' => $user_id,
               'Comment' => $comment,
               'freeloaded' => $freeloaded,
               'freeload_comment' => $freeload_comment 
@@ -85,16 +85,16 @@ function user_myshifts() {
     } else
       redirect(page_link_to('user_myshifts'));
   } elseif (isset($_REQUEST['cancel']) && preg_match("/^[0-9]*$/", $_REQUEST['cancel'])) {
-    $id = $_REQUEST['cancel'];
+    $user_id = $_REQUEST['cancel'];
     $shift = sql_select("
         SELECT *
         FROM `Shifts` 
         INNER JOIN `ShiftEntry` USING (`SID`) 
-        WHERE `ShiftEntry`.`id`='" . sql_escape($id) . "' AND `UID`='" . sql_escape($shifts_user['UID']) . "'");
+        WHERE `ShiftEntry`.`id`='" . sql_escape($user_id) . "' AND `UID`='" . sql_escape($shifts_user['UID']) . "'");
     if (count($shift) > 0) {
       $shift = $shift[0];
       if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges)) {
-        $result = ShiftEntry_delete($id);
+        $result = ShiftEntry_delete($user_id);
         if ($result === false) {
           engelsystem_error('Unable to delete shift entry.');
         }

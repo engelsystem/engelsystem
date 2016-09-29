@@ -133,11 +133,11 @@ function AngelType_ids() {
 /**
  * Returns angelType by id.
  *
- * @param $id angelType
+ * @param $angeltype_id angelType
  *          ID
  */
-function AngelType($id) {
-  $angelType_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($id) . "' LIMIT 1");
+function AngelType($angeltype_id) {
+  $angelType_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($angeltype_id) . "' LIMIT 1");
   if ($angelType_source === false) {
     return false;
   }

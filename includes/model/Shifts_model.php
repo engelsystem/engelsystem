@@ -229,16 +229,16 @@ function Shifts_filtered() {
 /**
  * Returns Shift by id.
  *
- * @param $id Shift
+ * @param $shift_id Shift
  *          ID
  */
-function Shift($id) {
+function Shift($shift_id) {
   $shifts_source = sql_select("
       SELECT `Shifts`.*, `ShiftTypes`.`name`
       FROM `Shifts` 
       JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-      WHERE `SID`='" . sql_escape($id) . "'");
-  $shiftsEntry_source = sql_select("SELECT `id`, `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`='" . sql_escape($id) . "'");
+      WHERE `SID`='" . sql_escape($shift_id) . "'");
+  $shiftsEntry_source = sql_select("SELECT `id`, `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`='" . sql_escape($shift_id) . "'");
   
   if ($shifts_source === false) {
     return false;
@@ -249,14 +249,14 @@ function Shift($id) {
     $result['ShiftEntry'] = $shiftsEntry_source;
     $result['NeedAngels'] = [];
     
-    $temp = NeededAngelTypes_by_shift($id);
+    $temp = NeededAngelTypes_by_shift($shift_id);
     foreach ($temp as $e) {
-      $result['NeedAngels'][] = array(
+      $result['NeedAngels'][] = [
           'TID' => $e['angel_type_id'],
           'count' => $e['count'],
           'restricted' => $e['restricted'],
           'taken' => $e['taken'] 
-      );
+      ];
     }
     
     return $result;

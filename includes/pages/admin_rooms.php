@@ -38,12 +38,12 @@ function admin_rooms() {
     if (test_request_int('id')) {
       $room = sql_select("SELECT * FROM `Room` WHERE `RID`='" . sql_escape($_REQUEST['id']) . "'");
       if (count($room) > 0) {
-        $id = $_REQUEST['id'];
+        $room_id = $_REQUEST['id'];
         $name = $room[0]['Name'];
         $from_pentabarf = $room[0]['FromPentabarf'];
         $public = $room[0]['show'];
         $number = $room[0]['Number'];
-        $needed_angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($id) . "'");
+        $needed_angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($room_id) . "'");
         foreach ($needed_angeltypes as $needed_angeltype) {
           $angeltypes_count[$needed_angeltype['angel_type_id']] = $needed_angeltype['count'];
         }
@@ -58,7 +58,7 @@ function admin_rooms() {
         
         if (isset($_REQUEST['name']) && strlen(strip_request_item('name')) > 0) {
           $name = strip_request_item('name');
-          if (isset($room) && sql_num_query("SELECT * FROM `Room` WHERE `Name`='" . sql_escape($name) . "' AND NOT `RID`=" . sql_escape($id)) > 0) {
+          if (isset($room) && sql_num_query("SELECT * FROM `Room` WHERE `Name`='" . sql_escape($name) . "' AND NOT `RID`=" . sql_escape($room_id)) > 0) {
             $valid = false;
             $msg .= error(_("This name is already in use."), true);
           }
@@ -95,18 +95,18 @@ function admin_rooms() {
         }
         
         if ($valid) {
-          if (isset($id)) {
-            sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "' WHERE `RID`='" . sql_escape($id) . "' LIMIT 1");
+          if (isset($room_id)) {
+            sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "' WHERE `RID`='" . sql_escape($room_id) . "' LIMIT 1");
             engelsystem_log("Room updated: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);
           } else {
-            $id = Room_create($name, $from_pentabarf, $public, $number);
-            if ($id === false) {
+            $room_id = Room_create($name, $from_pentabarf, $public, $number);
+            if ($room_id === false) {
               engelsystem_error("Unable to create room.");
             }
             engelsystem_log("Room created: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);
           }
           
-          sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($id) . "'");
+          sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($room_id) . "'");
           $needed_angeltype_info = array();
           foreach ($angeltypes_count as $angeltype_id => $angeltype_count) {
             $angeltype = AngelType($angeltype_id);
@@ -114,7 +114,7 @@ function admin_rooms() {
               engelsystem_error("Unable to load angeltype.");
             }
             if ($angeltype != null) {
-              sql_query("INSERT INTO `NeededAngelTypes` SET `room_id`='" . sql_escape($id) . "', `angel_type_id`='" . sql_escape($angeltype_id) . "', `count`='" . sql_escape($angeltype_count) . "'");
+              sql_query("INSERT INTO `NeededAngelTypes` SET `room_id`='" . sql_escape($room_id) . "', `angel_type_id`='" . sql_escape($angeltype_id) . "', `count`='" . sql_escape($angeltype_count) . "'");
               $needed_angeltype_info[] = $angeltype['name'] . ": " . $angeltype_count;
             }
           }
@@ -158,7 +158,7 @@ function admin_rooms() {
       ]);
     } elseif ($_REQUEST['show'] == 'delete') {
       if (isset($_REQUEST['ack'])) {
-        if (! Room_delete($id)) {
+        if (! Room_delete($room_id)) {
           engelsystem_error("Unable to delete room.");
         }
         
@@ -173,7 +173,7 @@ function admin_rooms() {
           ]),
           sprintf(_("Do you want to delete room %s?"), $name),
           buttons([
-              button(page_link_to('admin_rooms') . '&show=delete&id=' . $id . '&ack', _("Delete"), 'delete') 
+              button(page_link_to('admin_rooms') . '&show=delete&id=' . $room_id . '&ack', _("Delete"), 'delete') 
           ]) 
       ]);
     }

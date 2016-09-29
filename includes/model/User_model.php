@@ -160,10 +160,10 @@ function User_validate_Nick($nick) {
 /**
  * Returns user by id.
  *
- * @param $id UID          
+ * @param $user_id UID          
  */
-function User($id) {
-  $user_source = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
+function User($user_id) {
+  $user_source = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
   if ($user_source === false) {
     return false;
   }
@@ -177,10 +177,10 @@ function User($id) {
  * TODO: Merge into normal user function
  * Returns user by id (limit informations.
  *
- * @param $id UID          
+ * @param $user_id UID          
  */
-function mUser_Limit($id) {
-  $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `jabber` FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
+function mUser_Limit($user_id) {
+  $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `jabber` FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
   if ($user_source === false) {
     return false;
   }

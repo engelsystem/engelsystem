@@ -39,14 +39,14 @@ function user_questions() {
         break;
       case 'delete':
         if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id'])) {
-          $id = $_REQUEST['id'];
+          $question_id = $_REQUEST['id'];
         } else {
           return error(_("Incomplete call, missing Question ID."), true);
         }
         
-        $question = sql_select("SELECT * FROM `Questions` WHERE `QID`='" . sql_escape($id) . "' LIMIT 1");
+        $question = sql_select("SELECT * FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
         if (count($question) > 0 && $question[0]['UID'] == $user['UID']) {
-          sql_query("DELETE FROM `Questions` WHERE `QID`='" . sql_escape($id) . "' LIMIT 1");
+          sql_query("DELETE FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
           redirect(page_link_to("user_questions"));
         } else {
           return page_with_title(questions_title(), [
