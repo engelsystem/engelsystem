@@ -47,8 +47,9 @@ function AngelType_create($name, $restricted, $description, $requires_driver_lic
       `restricted`=" . sql_bool($restricted) . ",
       `description`='" . sql_escape($description) . "',
       `requires_driver_license`=" . sql_bool($requires_driver_license));
-  if ($result === false)
+  if ($result === false) {
     return false;
+  }
   return sql_id();
 }
 
@@ -61,13 +62,14 @@ function AngelType_create($name, $restricted, $description, $requires_driver_lic
  */
 function AngelType_validate_name($name, $angeltype) {
   $name = strip_item($name);
-  if ($name == "")
-    return array(
+  if ($name == "") {
+    return [
         false,
         $name 
-    );
-  if (isset($angeltype) && isset($angeltype['id']))
-    return array(
+    ];
+  }
+  if (isset($angeltype) && isset($angeltype['id'])) {
+    return [
         sql_num_query("
         SELECT * 
         FROM `AngelTypes` 
@@ -75,16 +77,16 @@ function AngelType_validate_name($name, $angeltype) {
         AND NOT `id`='" . sql_escape($angeltype['id']) . "'
         LIMIT 1") == 0,
         $name 
-    );
-  else
-    return array(
-        sql_num_query("
+    ];
+  }
+  return [
+      sql_num_query("
         SELECT `id` 
         FROM `AngelTypes` 
         WHERE `name`='" . sql_escape($name) . "' 
         LIMIT 1") == 0,
-        $name 
-    );
+      $name 
+  ];
 }
 
 /**
@@ -119,10 +121,12 @@ function AngelTypes() {
  */
 function AngelType_ids() {
   $angelType_source = sql_select("SELECT `id` FROM `AngelTypes`");
-  if ($angelType_source === false)
+  if ($angelType_source === false) {
     return false;
-  if (count($angelType_source) > 0)
+  }
+  if (count($angelType_source) > 0) {
     return $angelType_source;
+  }
   return null;
 }
 
@@ -134,10 +138,12 @@ function AngelType_ids() {
  */
 function AngelType($id) {
   $angelType_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($id) . "' LIMIT 1");
-  if ($angelType_source === false)
+  if ($angelType_source === false) {
     return false;
-  if (count($angelType_source) > 0)
+  }
+  if (count($angelType_source) > 0) {
     return $angelType_source[0];
+  }
   return null;
 }
 

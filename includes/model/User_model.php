@@ -6,7 +6,7 @@
 
 /**
  * Delete a user
- * 
+ *
  * @param int $user_id          
  */
 function User_delete($user_id) {
@@ -164,10 +164,12 @@ function User_validate_Nick($nick) {
  */
 function User($id) {
   $user_source = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
-  if ($user_source === false)
+  if ($user_source === false) {
     return false;
-  if (count($user_source) > 0)
+  }
+  if (count($user_source) > 0) {
     return $user_source[0];
+  }
   return null;
 }
 
@@ -179,10 +181,12 @@ function User($id) {
  */
 function mUser_Limit($id) {
   $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `jabber` FROM `User` WHERE `UID`='" . sql_escape($id) . "' LIMIT 1");
-  if ($user_source === false)
+  if ($user_source === false) {
     return false;
-  if (count($user_source) > 0)
+  }
+  if (count($user_source) > 0) {
     return $user_source[0];
+  }
   return null;
 }
 
@@ -195,10 +199,12 @@ function mUser_Limit($id) {
  */
 function User_by_api_key($api_key) {
   $user = sql_select("SELECT * FROM `User` WHERE `api_key`='" . sql_escape($api_key) . "' LIMIT 1");
-  if ($user === false)
+  if ($user === false) {
     return false;
-  if (count($user) == 0)
+  }
+  if (count($user) == 0) {
     return null;
+  }
   return $user[0];
 }
 
@@ -210,10 +216,12 @@ function User_by_api_key($api_key) {
  */
 function User_by_email($email) {
   $user = sql_select("SELECT * FROM `User` WHERE `email`='" . sql_escape($email) . "' LIMIT 1");
-  if ($user === false)
+  if ($user === false) {
     return false;
-  if (count($user) == 0)
+  }
+  if (count($user) == 0) {
     return null;
+  }
   return $user[0];
 }
 
@@ -225,10 +233,12 @@ function User_by_email($email) {
  */
 function User_by_password_recovery_token($token) {
   $user = sql_select("SELECT * FROM `User` WHERE `password_recovery_token`='" . sql_escape($token) . "' LIMIT 1");
-  if ($user === false)
+  if ($user === false) {
     return false;
-  if (count($user) == 0)
+  }
+  if (count($user) == 0) {
     return null;
+  }
   return $user[0];
 }
 
@@ -240,10 +250,12 @@ function User_by_password_recovery_token($token) {
 function User_reset_api_key(&$user, $log = true) {
   $user['api_key'] = md5($user['Nick'] . time() . rand());
   $result = sql_query("UPDATE `User` SET `api_key`='" . sql_escape($user['api_key']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
-  if ($result === false)
+  if ($result === false) {
     return false;
-  if ($log)
+  }
+  if ($log) {
     engelsystem_log(sprintf("API key resetted (%s).", User_Nick_render($user)));
+  }
 }
 
 /**
@@ -254,25 +266,25 @@ function User_reset_api_key(&$user, $log = true) {
 function User_generate_password_recovery_token(&$user) {
   $user['password_recovery_token'] = md5($user['Nick'] . time() . rand());
   $result = sql_query("UPDATE `User` SET `password_recovery_token`='" . sql_escape($user['password_recovery_token']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
-  if ($result === false)
+  if ($result === false) {
     return false;
+  }
   engelsystem_log("Password recovery for " . User_Nick_render($user) . " started.");
   return $user['password_recovery_token'];
 }
 
-
 function User_get_eligable_voucher_count(&$user) {
   global $voucher_settings;
   
-	$shifts_done = count(ShiftEntries_finished_by_user($user));
-	
-	$earned_vouchers = $user['got_voucher'] - $voucher_settings['initial_vouchers'];
-	$elegible_vouchers = $shifts_done / $voucher_settings['shifts_per_voucher'] - $earned_vouchers;
-	if ( $elegible_vouchers < 0) {
-		return 0;
-	}
-	
-	return $elegible_vouchers;
+  $shifts_done = count(ShiftEntries_finished_by_user($user));
+  
+  $earned_vouchers = $user['got_voucher'] - $voucher_settings['initial_vouchers'];
+  $elegible_vouchers = $shifts_done / $voucher_settings['shifts_per_voucher'] - $earned_vouchers;
+  if ($elegible_vouchers < 0) {
+    return 0;
+  }
+  
+  return $elegible_vouchers;
 }
 
 ?>

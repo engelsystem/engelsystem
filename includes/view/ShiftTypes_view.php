@@ -2,27 +2,29 @@
 
 function ShiftType_name_render($shifttype) {
   global $privileges;
-  if (in_array('shifttypes', $privileges))
+  if (in_array('shifttypes', $privileges)) {
     return '<a href="' . shifttype_link($shifttype) . '">' . $shifttype['name'] . '</a>';
+  }
   return $shifttype['name'];
 }
 
 function ShiftType_delete_view($shifttype) {
-  return page_with_title(sprintf(_("Delete shifttype %s"), $shifttype['name']), array(
+  return page_with_title(sprintf(_("Delete shifttype %s"), $shifttype['name']), [
       info(sprintf(_("Do you want to delete shifttype %s?"), $shifttype['name']), true),
-      buttons(array(
+      buttons([
           button(page_link_to('shifttypes'), _("cancel"), 'cancel'),
           button(page_link_to('shifttypes') . '&action=delete&shifttype_id=' . $shifttype['id'] . '&confirmed', _("delete"), 'ok') 
-      )) 
-  ));
+      ]) 
+  ]);
 }
 
 function ShiftType_edit_view($name, $angeltype_id, $angeltypes, $description, $shifttype_id) {
   $angeltypes_select = [
       '' => _('All') 
   ];
-  foreach ($angeltypes as $angeltype)
+  foreach ($angeltypes as $angeltype) {
     $angeltypes_select[$angeltype['id']] = $angeltype['name'];
+  }
   
   return page_with_title($shifttype_id ? _('Edit shifttype') : _('Create shifttype'), [
       msg(),
@@ -42,8 +44,9 @@ function ShiftType_edit_view($name, $angeltype_id, $angeltypes, $description, $s
 function ShiftType_view($shifttype, $angeltype) {
   $parsedown = new Parsedown();
   $title = $shifttype['name'];
-  if ($angeltype)
+  if ($angeltype) {
     $title .= ' <small>' . sprintf(_('for team %s'), $angeltype['name']) . '</small>';
+  }
   return page_with_title($title, [
       msg(),
       buttons([

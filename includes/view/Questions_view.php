@@ -12,26 +12,26 @@ function Questions_view($open_questions, $answered_questions, $ask_action) {
     $question['actions'] = '<a href="' . page_link_to("user_questions") . '&action=delete&id=' . $question['QID'] . '">' . _("delete") . '</a>';
   }
   
-  return page_with_title(questions_title(), array(
+  return page_with_title(questions_title(), [
       msg(),
-      '<h2>' . _("Open questions") . '</h2>',
-      table(array(
+      heading(_("Open questions"), 2),
+      table([
           'Question' => _("Question"),
           'actions' => "" 
-      ), $open_questions),
-      '<h2>' . _("Answered questions") . '</h2>',
-      table(array(
+      ], $open_questions),
+      heading(_("Answered questions"), 2),
+      table([
           'Question' => _("Question"),
           'answer_user' => _("Answered by"),
           'Answer' => _("Answer"),
           'actions' => "" 
-      ), $answered_questions),
-      '<h2>' . _("Ask an archangel") . '</h2>',
-      form(array(
+      ], $answered_questions),
+      heading(_("Ask an archangel"), 2),
+      form([
           form_textarea('question', _("Your Question:"), ""),
           form_submit('submit', _("Save")) 
-      ), $ask_action) 
-  ));
+      ], $ask_action) 
+  ]);
 }
 
 ?>

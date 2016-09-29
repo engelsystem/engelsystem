@@ -2,10 +2,12 @@
 
 function Shift_editor_info_render($shift) {
   $info = [];
-  if ($shift['created_by_user_id'] != null)
+  if ($shift['created_by_user_id'] != null) {
     $info[] = sprintf(glyph('plus') . _("created at %s by %s"), date('Y-m-d H:i', $shift['created_at_timestamp']), User_Nick_render(User($shift['created_by_user_id'])));
-  if ($shift['edited_by_user_id'] != null)
+  }
+  if ($shift['edited_by_user_id'] != null) {
     $info[] = sprintf(glyph('pencil') . _("edited at %s by %s"), date('Y-m-d H:i', $shift['edited_at_timestamp']), User_Nick_render(User($shift['edited_by_user_id'])));
+  }
   return join('<br />', $info);
 }
 
@@ -14,32 +16,36 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null, 
   
   if ($user_angeltype == null) {
     $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
-    if ($user_angeltype === false)
+    if ($user_angeltype === false) {
       engelsystem_error('Unable to load user angeltype.');
+    }
   }
   
-  if (Shift_signup_allowed($shift, $angeltype, $user_angeltype, $user_shifts))
+  if (Shift_signup_allowed($shift, $angeltype, $user_angeltype, $user_shifts)) {
     return button(page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'], _('Sign up'));
-  elseif ($user_angeltype == null)
+  } elseif ($user_angeltype == null) {
     return button(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'], sprintf(_('Become %s'), $angeltype['name']));
-  else
-    return '';
+  }
+  return '';
 }
 
 function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source, $user_shift_admin, $admin_rooms, $admin_shifttypes, $user_shifts, $signed_up) {
   $parsedown = new Parsedown();
   
   $angeltypes = [];
-  foreach ($angeltypes_source as $angeltype)
+  foreach ($angeltypes_source as $angeltype) {
     $angeltypes[$angeltype['id']] = $angeltype;
+  }
   
   $needed_angels = '';
   foreach ($shift['NeedAngels'] as $needed_angeltype) {
     $class = 'progress-bar-warning';
-    if ($needed_angeltype['taken'] == 0)
+    if ($needed_angeltype['taken'] == 0) {
       $class = 'progress-bar-danger';
-    if ($needed_angeltype['taken'] >= $needed_angeltype['count'])
+    }
+    if ($needed_angeltype['taken'] >= $needed_angeltype['count']) {
       $class = 'progress-bar-success';
+    }
     $needed_angels .= '<div class="list-group-item">';
     
     $needed_angels .= '<div class="pull-right">' . Shift_signup_button_render($shift, $angeltypes[$needed_angeltype['TID']]) . '</div>';
@@ -51,8 +57,9 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
     foreach ($shift['ShiftEntry'] as $shift_entry) {
       if ($shift_entry['TID'] == $needed_angeltype['TID']) {
         $entry = User_Nick_render(User($shift_entry['UID']));
-        if ($shift_entry['freeloaded'])
+        if ($shift_entry['freeloaded']) {
           $entry = '<strike>' . $entry . '</strike>';
+        }
         if ($user_shift_admin) {
           $entry .= ' <div class="btn-group">';
           $entry .= button_glyph(page_link_to('user_myshifts') . '&edit=' . $shift_entry['id'] . '&id=' . $shift_entry['UID'], 'pencil', 'btn-xs');
@@ -69,7 +76,6 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
   }
   
   return page_with_title($shift['name'] . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>', [
-      
       msg(),
       Shift_collides($shift, $user_shifts) ? info(_('This shift collides with one of your shifts.'), true) : '',
       $signed_up ? info(_('You are signed up for this shift.'), true) : '',

@@ -25,8 +25,9 @@ function Room_create($name, $from_frab, $public) {
       `FromPentabarf`='" . sql_escape($from_frab ? 'Y' : '') . "', 
       `show`='" . sql_escape($public ? 'Y' : '') . "', 
       `Number`=0");
-  if ($result === false)
+  if ($result === false) {
     return false;
+  }
   return sql_id();
 }
 
@@ -38,10 +39,12 @@ function Room_create($name, $from_frab, $public) {
 function Room($id) {
   $room_source = sql_select("SELECT * FROM `Room` WHERE `RID`='" . sql_escape($id) . "' AND `show` = 'Y'");
   
-  if ($room_source === false)
+  if ($room_source === false) {
     return false;
-  if (count($room_source) > 0)
+  }
+  if (count($room_source) > 0) {
     return $room_source[0];
+  }
   return null;
 }
 

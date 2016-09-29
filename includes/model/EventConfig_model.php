@@ -5,10 +5,12 @@
  */
 function EventConfig() {
   $event_config = sql_select("SELECT * FROM `EventConfig` LIMIT 1");
-  if ($event_config === false)
+  if ($event_config === false) {
     return false;
-  if (count($event_config) > 0)
+  }
+  if (count($event_config) > 0) {
     return $event_config[0];
+  }
   return null;
 }
 

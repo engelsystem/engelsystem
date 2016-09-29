@@ -6,10 +6,13 @@
  * @param array<Shift> $shifts
  */
 function Shift_collides($shift, $shifts) {
-  foreach ($shifts as $other_shift)
-    if ($shift['SID'] != $other_shift['SID'])
-      if (! ($shift['start'] >= $other_shift['end'] || $shift['end'] <= $other_shift['start']))
+  foreach ($shifts as $other_shift) {
+    if ($shift['SID'] != $other_shift['SID']) {
+      if (! ($shift['start'] >= $other_shift['end'] || $shift['end'] <= $other_shift['start'])) {
         return true;
+      }
+    }
+  }
   return false;
 }
 
@@ -25,41 +28,46 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
   
   if ($user_shifts == null) {
     $user_shifts = Shifts_by_user($user);
-    if ($user_shifts === false)
+    if ($user_shifts === false) {
       engelsystem_error('Unable to load users shifts.');
+    }
   }
   
   $collides = Shift_collides($shift, $user_shifts);
   
   if ($user_angeltype == null) {
     $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
-    if ($user_angeltype === false)
+    if ($user_angeltype === false) {
       engelsystem_error('Unable to load user angeltype.');
+    }
   }
   
   $signed_up = false;
-  foreach ($user_shifts as $user_shift)
+  foreach ($user_shifts as $user_shift) {
     if ($user_shift['SID'] == $shift['SID']) {
       $signed_up = true;
       break;
     }
+  }
   
   $needed_angeltypes = NeededAngelTypes_by_shift($shift['SID']);
-  if ($needed_angeltypes === false)
+  if ($needed_angeltypes === false) {
     engelsystem_error('Unable to load needed angel types.');
-    
-    // is the shift still running or alternatively is the user shift admin?
+  }
+  
+  // is the shift still running or alternatively is the user shift admin?
   $user_may_join_shift = true;
   
   // you canot join if shift is full
-  foreach ($needed_angeltypes as $needed_angeltype)
+  foreach ($needed_angeltypes as $needed_angeltype) {
     if ($needed_angeltype['angel_type_id'] == $angeltype['id']) {
       if ($needed_angeltype['taken'] >= $needed_angeltype['count'])
         $user_may_join_shift = false;
       break;
     }
-    
-    // you cannot join if user alread joined a parallel or this shift
+  }
+  
+  // you cannot join if user alread joined a parallel or this shift
   $user_may_join_shift &= ! $collides;
   
   // you cannot join if you already singed up for this shift
@@ -69,10 +77,11 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
   $user_may_join_shift &= $user_angeltype != null;
   
   // you cannot join if you are not confirmed
-  if ($angeltype['restricted'] == 1 && $user_angeltype != null)
+  if ($angeltype['restricted'] == 1 && $user_angeltype != null) {
     $user_may_join_shift &= isset($user_angeltype['confirm_user_id']);
-    
-    // you can only join if the shift is in future
+  }
+  
+  // you can only join if the shift is in future
   $user_may_join_shift &= time() < $shift['start'];
   
   // User shift admins may join anybody in every shift
@@ -123,10 +132,12 @@ function Shift_update($shift) {
  */
 function Shift_update_by_psid($shift) {
   $shift_source = sql_select("SELECT `SID` FROM `Shifts` WHERE `PSID`=" . $shift['PSID']);
-  if ($shift_source === false)
+  if ($shift_source === false) {
     return false;
-  if (count($shift_source) == 0)
+  }
+  if (count($shift_source) == 0) {
     return null;
+  }
   $shift['SID'] = $shift_source[0]['SID'];
   return Shift_update($shift);
 }
@@ -148,8 +159,9 @@ function Shift_create($shift) {
       `PSID`=" . sql_null($shift['PSID']) . ",
       `created_by_user_id`='" . sql_escape($user['UID']) . "',
       `created_at_timestamp`=" . time());
-  if ($result === false)
+  if ($result === false) {
     return false;
+  }
   return sql_id();
 }
 
@@ -205,8 +217,9 @@ function Shifts_filtered() {
   
   // real request
   $shifts_source = sql_select("SELECT `SID` FROM `Shifts`" . $filter);
-  if ($shifts_source === false)
+  if ($shifts_source === false) {
     return false;
+  }
   if (count($shifts_source) > 0) {
     return $shifts_source;
   }
@@ -227,8 +240,9 @@ function Shift($id) {
       WHERE `SID`='" . sql_escape($id) . "'");
   $shiftsEntry_source = sql_select("SELECT `id`, `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`='" . sql_escape($id) . "'");
   
-  if ($shifts_source === false)
+  if ($shifts_source === false) {
     return false;
+  }
   if (count($shifts_source) > 0) {
     $result = $shifts_source[0];
     
@@ -260,13 +274,15 @@ function Shifts() {
     JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
     JOIN `Room` ON `Room`.`RID` = `Shifts`.`RID`
     ");
-  if ($shifts_source === false)
+  if ($shifts_source === false) {
     return false;
+  }
   
   foreach ($shifts_source as &$shift) {
     $needed_angeltypes = NeededAngelTypes_by_shift($shift['SID']);
-    if ($needed_angeltypes === false)
+    if ($needed_angeltypes === false) {
       return false;
+    }
     
     $shift['angeltypes'] = $needed_angeltypes;
   }

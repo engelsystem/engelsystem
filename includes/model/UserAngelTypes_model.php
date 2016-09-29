@@ -133,8 +133,9 @@ function UserAngelType_create($user, $angeltype) {
     INSERT INTO `UserAngelTypes` SET
     `user_id`='" . sql_escape($user['UID']) . "',
     `angeltype_id`='" . sql_escape($angeltype['id']) . "'");
-  if ($result === false)
+  if ($result === false) {
     return false;
+  }
   return sql_id();
 }
 
@@ -149,10 +150,12 @@ function UserAngelType($user_angeltype_id) {
       FROM `UserAngelTypes`
       WHERE `id`='" . sql_escape($user_angeltype_id) . "'
       LIMIT 1");
-  if ($angeltype === false)
+  if ($angeltype === false) {
     return false;
-  if (count($angeltype) == 0)
+  }
+  if (count($angeltype) == 0) {
     return null;
+  }
   return $angeltype[0];
 }
 
@@ -169,10 +172,12 @@ function UserAngelType_by_User_and_AngelType($user, $angeltype) {
       WHERE `user_id`='" . sql_escape($user['UID']) . "'
       AND `angeltype_id`='" . sql_escape($angeltype['id']) . "'
       LIMIT 1");
-  if ($angeltype === false)
+  if ($angeltype === false) {
     return false;
-  if (count($angeltype) == 0)
+  }
+  if (count($angeltype) == 0) {
     return null;
+  }
   return $angeltype[0];
 }
 ?>

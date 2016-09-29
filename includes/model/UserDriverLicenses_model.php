@@ -6,10 +6,12 @@
  */
 function UserDriverLicense($user_id) {
   $user_driver_license = sql_select("SELECT * FROM `UserDriverLicenses` WHERE `user_id`='" . sql_escape($user_id) . "'");
-  if ($user_driver_license === false)
+  if ($user_driver_license === false) {
     return false;
-  if (count($user_driver_license) > 0)
+  }
+  if (count($user_driver_license) > 0) {
     return $user_driver_license[0];
+  }
   return null;
 }
 

@@ -15,10 +15,12 @@ function Message_ids() {
  */
 function Message($id) {
   $message_source = sql_select("SELECT * FROM `Messages` WHERE `id`='" . sql_escape($id) . "' LIMIT 1");
-  if ($message_source === false)
+  if ($message_source === false) {
     return false;
-  if (count($message_source) > 0)
+  }
+  if (count($message_source) > 0) {
     return $message_source[0];
+  }
   return null;
 }
 

@@ -13,16 +13,16 @@
  */
 function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment, $freeloaded, $freeload_comment, $user_admin_shifts = false) {
   if ($user_admin_shifts) {
-    $freeload_form = array(
+    $freeload_form = [
         form_checkbox('freeloaded', _("Freeloaded"), $freeloaded),
         form_textarea('freeload_comment', _("Freeload comment (Only for shift coordination):"), $freeload_comment) 
-    );
+    ];
   } else {
-    $freeload_form = array();
+    $freeload_form = [];
   }
-  return page_with_title(_("Edit shift entry"), array(
+  return page_with_title(_("Edit shift entry"), [
       msg(),
-      form(array(
+      form([
           form_info(_("Angel:"), $angel),
           form_info(_("Date, Duration:"), $date),
           form_info(_("Location:"), $location),
@@ -31,8 +31,8 @@ function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment,
           form_textarea('comment', _("Comment (for your eyes only):"), $comment),
           join("", $freeload_form),
           form_submit('submit', _("Save")) 
-      )) 
-  ));
+      ]) 
+  ]);
 }
 
 ?>

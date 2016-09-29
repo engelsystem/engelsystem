@@ -37,8 +37,9 @@ function ShiftType_create($name, $angeltype_id, $description) {
       `name`='" . sql_escape($name) . "', 
       `angeltype_id`=" . sql_null($angeltype_id) . ",
       `description`='" . sql_escape($description) . "'");
-  if ($result === false)
+  if ($result === false) {
     return false;
+  }
   return sql_id();
 }
 
@@ -49,10 +50,12 @@ function ShiftType_create($name, $angeltype_id, $description) {
  */
 function ShiftType($shifttype_id) {
   $shifttype = sql_select("SELECT * FROM `ShiftTypes` WHERE `id`='" . sql_escape($shifttype_id) . "'");
-  if ($shifttype === false)
+  if ($shifttype === false) {
     return false;
-  if ($shifttype == null)
+  }
+  if ($shifttype == null) {
     return null;
+  }
   return $shifttype[0];
 }
 

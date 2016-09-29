@@ -51,10 +51,12 @@ function ShiftEntry_update($shift_entry) {
  */
 function ShiftEntry($shift_entry_id) {
   $shift_entry = sql_select("SELECT * FROM `ShiftEntry` WHERE `id`='" . sql_escape($shift_entry_id) . "'");
-  if ($shift_entry === false)
+  if ($shift_entry === false) {
     return false;
-  if (count($shift_entry) == 0)
+  }
+  if (count($shift_entry) == 0) {
     return null;
+  }
   return $shift_entry[0];
 }
 
@@ -89,8 +91,8 @@ function ShiftEntries_upcoming_for_user($user) {
  *
  * @param User $user          
  */
-function ShiftEntries_finished_by_user($user){
-	  return sql_select("
+function ShiftEntries_finished_by_user($user) {
+  return sql_select("
       SELECT *
       FROM `ShiftEntry`
       JOIN `Shifts` ON (`Shifts`.`SID` = `ShiftEntry`.`SID`)
