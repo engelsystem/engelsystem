@@ -102,20 +102,20 @@ function check_email($email) {
 
 class ValidationResult {
 
-  private $ok;
+  private $valid;
 
   private $value;
 
   /**
    * Constructor.
    *
-   * @param boolean $ok
+   * @param boolean $valid
    *          Is the value valid?
    * @param * $value
    *          The validated value
    */
-  public function ValidationResult($ok, $value) {
-    $this->ok = $ok;
+  public function ValidationResult($valid, $value) {
+    $this->ok = $valid;
     $this->value = $value;
   }
 

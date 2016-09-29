@@ -27,16 +27,16 @@ function user_settings() {
   $planned_departure_date = $user['planned_departure_date'];
   
   if (isset($_REQUEST['submit'])) {
-    $ok = true;
+    $valid = true;
     
     if (isset($_REQUEST['mail']) && strlen(strip_request_item('mail')) > 0) {
       $mail = strip_request_item('mail');
       if (! check_email($mail)) {
-        $ok = false;
+        $valid = false;
         $msg .= error(_("E-mail address is not correct."), true);
       }
     } else {
-      $ok = false;
+      $valid = false;
       $msg .= error(_("Please enter your e-mail."), true);
     }
     
@@ -45,7 +45,7 @@ function user_settings() {
     if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
       $jabber = strip_request_item('jabber');
       if (! check_email($jabber)) {
-        $ok = false;
+        $valid = false;
         $msg .= error(_("Please check your jabber account information."), true);
       }
     }
@@ -53,13 +53,13 @@ function user_settings() {
     if (isset($_REQUEST['tshirt_size']) && isset($tshirt_sizes[$_REQUEST['tshirt_size']])) {
       $tshirt_size = $_REQUEST['tshirt_size'];
     } elseif ($enable_tshirt_size) {
-      $ok = false;
+      $valid = false;
     }
     
     if (isset($_REQUEST['planned_arrival_date']) && DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))) {
       $planned_arrival_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))->getTimestamp();
     } else {
-      $ok = false;
+      $valid = false;
       $msg .= error(_("Please enter your planned date of arrival."), true);
     }
     
@@ -67,7 +67,7 @@ function user_settings() {
       if (DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_departure_date']))) {
         $planned_departure_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_departure_date']))->getTimestamp();
       } else {
-        $ok = false;
+        $valid = false;
         $msg .= error(_("Please enter your planned date of departure."), true);
       }
     } else {
@@ -97,7 +97,7 @@ function user_settings() {
       $hometown = strip_request_item('hometown');
     }
     
-    if ($ok) {
+    if ($valid) {
       sql_query("
           UPDATE `User` SET
           `Nick`='" . sql_escape($nick) . "',
@@ -120,7 +120,7 @@ function user_settings() {
       redirect(page_link_to('user_settings'));
     }
   } elseif (isset($_REQUEST['submit_password'])) {
-    $ok = true;
+    $valid = true;
     
     if (! isset($_REQUEST['password']) || ! verify_password($_REQUEST['password'], $user['Passwort'], $user['UID'])) {
       $msg .= error(_("-> not OK. Please try again."), true);
@@ -135,30 +135,30 @@ function user_settings() {
     }
     redirect(page_link_to('user_settings'));
   } elseif (isset($_REQUEST['submit_theme'])) {
-    $ok = true;
+    $valid = true;
     
     if (isset($_REQUEST['theme']) && isset($themes[$_REQUEST['theme']])) {
       $selected_theme = $_REQUEST['theme'];
     } else {
-      $ok = false;
+      $valid = false;
     }
     
-    if ($ok) {
+    if ($valid) {
       sql_query("UPDATE `User` SET `color`='" . sql_escape($selected_theme) . "' WHERE `UID`='" . sql_escape($user['UID']) . "'");
       
       success(_("Theme changed."));
       redirect(page_link_to('user_settings'));
     }
   } elseif (isset($_REQUEST['submit_language'])) {
-    $ok = true;
+    $valid = true;
     
     if (isset($_REQUEST['language']) && isset($locales[$_REQUEST['language']])) {
       $selected_language = $_REQUEST['language'];
     } else {
-      $ok = false;
+      $valid = false;
     }
     
-    if ($ok) {
+    if ($valid) {
       sql_query("UPDATE `User` SET `Sprache`='" . sql_escape($selected_language) . "' WHERE `UID`='" . sql_escape($user['UID']) . "'");
       $_SESSION['locale'] = $selected_language;
       

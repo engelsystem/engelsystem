@@ -6,7 +6,7 @@ function admin_shifts_title() {
 
 // Assistent zum Anlegen mehrerer neuer Schichten
 function admin_shifts() {
-  $ok = true;
+  $valid = true;
   
   $rid = 0;
   $start = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d") . " 00:00")->getTimestamp();
@@ -49,13 +49,13 @@ function admin_shifts() {
         engelsystem_error('Unable to load shift type.');
       }
       if ($shifttype == null) {
-        $ok = false;
+        $valid = false;
         error(_('Please select a shift type.'));
       } else {
         $shifttype_id = $_REQUEST['shifttype_id'];
       }
     } else {
-      $ok = false;
+      $valid = false;
       error(_('Please select a shift type.'));
     }
     
@@ -66,7 +66,7 @@ function admin_shifts() {
     if (isset($_REQUEST['rid']) && preg_match("/^[0-9]+$/", $_REQUEST['rid']) && isset($room_array[$_REQUEST['rid']])) {
       $rid = $_REQUEST['rid'];
     } else {
-      $ok = false;
+      $valid = false;
       $rid = $rooms[0]['RID'];
       error(_('Please select a location.'));
     }
@@ -74,19 +74,19 @@ function admin_shifts() {
     if (isset($_REQUEST['start']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['start']))) {
       $start = $tmp->getTimestamp();
     } else {
-      $ok = false;
+      $valid = false;
       error(_('Please select a start time.'));
     }
     
     if (isset($_REQUEST['end']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['end']))) {
       $end = $tmp->getTimestamp();
     } else {
-      $ok = false;
+      $valid = false;
       error(_('Please select an end time.'));
     }
     
     if ($start >= $end) {
-      $ok = false;
+      $valid = false;
       error(_('The shifts end has to be after its start.'));
     }
     
@@ -98,7 +98,7 @@ function admin_shifts() {
           $mode = 'multi';
           $length = trim($_REQUEST['length']);
         } else {
-          $ok = false;
+          $valid = false;
           error(_('Please enter a shift duration in minutes.'));
         }
       } elseif ($_REQUEST['mode'] == 'variable') {
@@ -106,12 +106,12 @@ function admin_shifts() {
           $mode = 'variable';
           $change_hours = array_map('trim', explode(",", $_REQUEST['change_hours']));
         } else {
-          $ok = false;
+          $valid = false;
           error(_('Please split the shift-change hours by colons.'));
         }
       }
     } else {
-      $ok = false;
+      $valid = false;
       error(_('Please select a mode.'));
     }
     
@@ -124,30 +124,30 @@ function admin_shifts() {
           if (isset($_REQUEST['type_' . $type['id']]) && preg_match("/^[0-9]+$/", trim($_REQUEST['type_' . $type['id']]))) {
             $needed_angel_types[$type['id']] = trim($_REQUEST['type_' . $type['id']]);
           } else {
-            $ok = false;
+            $valid = false;
             error(sprintf(_('Please check the needed angels for team %s.'), $type['name']));
           }
         }
         if (array_sum($needed_angel_types) == 0) {
-          $ok = false;
+          $valid = false;
           error(_('There are 0 angels needed. Please enter the amounts of needed angels.'));
         }
       } else {
-        $ok = false;
+        $valid = false;
         error(_('Please select a mode for needed angels.'));
       }
     } else {
-      $ok = false;
+      $valid = false;
       error(_('Please select needed angels.'));
     }
     
     // Beim Zurück-Knopf das Formular zeigen
     if (isset($_REQUEST['back'])) {
-      $ok = false;
+      $valid = false;
     }
     
     // Alle Eingaben in Ordnung
-    if ($ok) {
+    if ($valid) {
       if ($angelmode == 'location') {
         $needed_angel_types = [];
         $needed_angel_types_location = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($rid) . "'");

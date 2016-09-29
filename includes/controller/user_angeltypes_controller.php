@@ -336,18 +336,18 @@ function user_angeltype_add_controller() {
     }
     
     if (isset($_REQUEST['submit'])) {
-      $ok = true;
+      $valid = true;
       
       if (isset($_REQUEST['user_id']) && in_array($_REQUEST['user_id'], array_map(function ($user) {
         return $user['UID'];
       }, $users_source))) {
         $user_id = $_REQUEST['user_id'];
       } else {
-        $ok = false;
+        $valid = false;
         error(_("Please select a user."));
       }
       
-      if ($ok) {
+      if ($valid) {
         foreach ($users_source as $user_source) {
           if ($user_source['UID'] == $user_id) {
             $user_angeltype_id = UserAngelType_create($user_source, $angeltype);

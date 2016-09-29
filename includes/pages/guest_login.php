@@ -49,27 +49,27 @@ function guest_register() {
   }
   
   if (isset($_REQUEST['submit'])) {
-    $ok = true;
+    $valid = true;
     
     if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 1) {
       $nick = User_validate_Nick($_REQUEST['nick']);
       if (sql_num_query("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "' LIMIT 1") > 0) {
-        $ok = false;
+        $valid = false;
         $msg .= error(sprintf(_("Your nick &quot;%s&quot; already exists."), $nick), true);
       }
     } else {
-      $ok = false;
+      $valid = false;
       $msg .= error(sprintf(_("Your nick &quot;%s&quot; is too short (min. 2 characters)."), User_validate_Nick($_REQUEST['nick'])), true);
     }
     
     if (isset($_REQUEST['mail']) && strlen(strip_request_item('mail')) > 0) {
       $mail = strip_request_item('mail');
       if (! check_email($mail)) {
-        $ok = false;
+        $valid = false;
         $msg .= error(_("E-mail address is not correct."), true);
       }
     } else {
-      $ok = false;
+      $valid = false;
       $msg .= error(_("Please enter your e-mail."), true);
     }
     
@@ -80,7 +80,7 @@ function guest_register() {
     if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
       $jabber = strip_request_item('jabber');
       if (! check_email($jabber)) {
-        $ok = false;
+        $valid = false;
         $msg .= error(_("Please check your jabber account information."), true);
       }
     }
@@ -89,25 +89,25 @@ function guest_register() {
       if (isset($_REQUEST['tshirt_size']) && isset($tshirt_sizes[$_REQUEST['tshirt_size']]) && $_REQUEST['tshirt_size'] != '') {
         $tshirt_size = $_REQUEST['tshirt_size'];
       } else {
-        $ok = false;
+        $valid = false;
         $msg .= error(_("Please select your shirt size."), true);
       }
     }
     
     if (isset($_REQUEST['password']) && strlen($_REQUEST['password']) >= MIN_PASSWORD_LENGTH) {
       if ($_REQUEST['password'] != $_REQUEST['password2']) {
-        $ok = false;
+        $valid = false;
         $msg .= error(_("Your passwords don't match."), true);
       }
     } else {
-      $ok = false;
+      $valid = false;
       $msg .= error(sprintf(_("Your password is too short (please use at least %s characters)."), MIN_PASSWORD_LENGTH), true);
     }
     
     if (isset($_REQUEST['planned_arrival_date']) && DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))) {
       $planned_arrival_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))->getTimestamp();
     } else {
-      $ok = false;
+      $valid = false;
       $msg .= error(_("Please enter your planned date of arrival."), true);
     }
     
@@ -144,7 +144,7 @@ function guest_register() {
       $comment = strip_request_item_nl('comment');
     }
     
-    if ($ok) {
+    if ($valid) {
       sql_query("
           INSERT INTO `User` SET 
           `color`='" . sql_escape($default_theme) . "', 
@@ -284,7 +284,7 @@ function guest_login() {
   unset($_SESSION['uid']);
   
   if (isset($_REQUEST['submit'])) {
-    $ok = true;
+    $valid = true;
     
     if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 0) {
       $nick = User_validate_Nick($_REQUEST['nick']);
@@ -293,23 +293,23 @@ function guest_login() {
         $login_user = $login_user[0];
         if (isset($_REQUEST['password'])) {
           if (! verify_password($_REQUEST['password'], $login_user['Passwort'], $login_user['UID'])) {
-            $ok = false;
+            $valid = false;
             error(_("Your password is incorrect.  Please try it again."));
           }
         } else {
-          $ok = false;
+          $valid = false;
           error(_("Please enter a password."));
         }
       } else {
-        $ok = false;
+        $valid = false;
         error(_("No user was found with that Nickname. Please try again. If you are still having problems, ask an Dispatcher."));
       }
     } else {
-      $ok = false;
+      $valid = false;
       error(_("Please enter a nickname."));
     }
     
-    if ($ok) {
+    if ($valid) {
       $_SESSION['uid'] = $login_user['UID'];
       $_SESSION['locale'] = $login_user['Sprache'];
       

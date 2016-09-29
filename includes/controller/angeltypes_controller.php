@@ -133,13 +133,13 @@ function angeltype_edit_controller() {
   $coordinator_mode = ! in_array('admin_angel_types', $privileges);
   
   if (isset($_REQUEST['submit'])) {
-    $ok = true;
+    $valid = true;
     
     if (! $coordinator_mode) {
       if (isset($_REQUEST['name'])) {
         list($valid, $name) = AngelType_validate_name($_REQUEST['name'], $angeltype);
         if (! $valid) {
-          $ok = false;
+          $valid = false;
           error(_("Please check the name. Maybe it already exists."));
         }
       }
@@ -152,7 +152,7 @@ function angeltype_edit_controller() {
       $description = strip_request_item_nl('description');
     }
     
-    if ($ok) {
+    if ($valid) {
       if (isset($angeltype)) {
         $result = AngelType_update($angeltype['id'], $name, $restricted, $description, $requires_driver_license);
         if ($result === false) {

@@ -52,7 +52,7 @@ function user_shifts() {
   } elseif (isset($_REQUEST['edit_shift']) && in_array('admin_shifts', $privileges)) {
     // Schicht bearbeiten
     $msg = "";
-    $ok = true;
+    $valid = true;
     
     if (isset($_REQUEST['edit_shift']) && test_request_int('edit_shift')) {
       $shift_id = $_REQUEST['edit_shift'];
@@ -115,7 +115,7 @@ function user_shifts() {
       if (isset($_REQUEST['rid']) && preg_match("/^[0-9]+$/", $_REQUEST['rid']) && isset($room_array[$_REQUEST['rid']])) {
         $rid = $_REQUEST['rid'];
       } else {
-        $ok = false;
+        $valid = false;
         $rid = $rooms[0]['RID'];
         $msg .= error(_("Please select a room."), true);
       }
@@ -123,26 +123,26 @@ function user_shifts() {
       if (isset($_REQUEST['shifttype_id']) && isset($shifttypes[$_REQUEST['shifttype_id']])) {
         $shifttype_id = $_REQUEST['shifttype_id'];
       } else {
-        $ok = false;
+        $valid = false;
         $msg .= error(_('Please select a shifttype.'), true);
       }
       
       if (isset($_REQUEST['start']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['start']))) {
         $start = $tmp->getTimestamp();
       } else {
-        $ok = false;
+        $valid = false;
         $msg .= error(_("Please enter a valid starting time for the shifts."), true);
       }
       
       if (isset($_REQUEST['end']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['end']))) {
         $end = $tmp->getTimestamp();
       } else {
-        $ok = false;
+        $valid = false;
         $msg .= error(_("Please enter a valid ending time for the shifts."), true);
       }
       
       if ($start >= $end) {
-        $ok = false;
+        $valid = false;
         $msg .= error(_("The ending time has to be after the starting time."), true);
       }
       
@@ -150,12 +150,12 @@ function user_shifts() {
         if (isset($_REQUEST['type_' . $type['id']]) && preg_match("/^[0-9]+$/", trim($_REQUEST['type_' . $type['id']]))) {
           $needed_angel_types[$type['id']] = trim($_REQUEST['type_' . $type['id']]);
         } else {
-          $ok = false;
+          $valid = false;
           $msg .= error(sprintf(_("Please check your input for needed angels of type %s."), $type['name']), true);
         }
       }
       
-      if ($ok) {
+      if ($valid) {
         $shift['shifttype_id'] = $shifttype_id;
         $shift['title'] = $title;
         $shift['RID'] = $rid;

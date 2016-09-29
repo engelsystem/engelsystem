@@ -52,14 +52,14 @@ function user_delete_controller() {
   }
   
   if (isset($_REQUEST['submit'])) {
-    $ok = true;
+    $valid = true;
     
     if (! (isset($_REQUEST['password']) && verify_password($_REQUEST['password'], $user['Passwort'], $user['UID']))) {
-      $ok = false;
+      $valid = false;
       error(_("Your password is incorrect.  Please try it again."));
     }
     
-    if ($ok) {
+    if ($valid) {
       $result = User_delete($user_source['UID']);
       if ($result === false) {
         engelsystem_error('Unable to delete user.');
@@ -109,16 +109,16 @@ function user_edit_vouchers_controller() {
   }
   
   if (isset($_REQUEST['submit'])) {
-    $ok = true;
+    $valid = true;
     
     if (isset($_REQUEST['vouchers']) && test_request_int('vouchers') && trim($_REQUEST['vouchers']) >= 0) {
       $vouchers = trim($_REQUEST['vouchers']);
     } else {
-      $ok = false;
+      $valid = false;
       error(_("Please enter a valid number of vouchers."));
     }
     
-    if ($ok) {
+    if ($valid) {
       $user_source['got_voucher'] = $vouchers;
       
       $result = User_update($user_source);
@@ -225,19 +225,19 @@ function user_password_recovery_controller() {
     }
     
     if (isset($_REQUEST['submit'])) {
-      $ok = true;
+      $valid = true;
       
       if (isset($_REQUEST['password']) && strlen($_REQUEST['password']) >= MIN_PASSWORD_LENGTH) {
         if ($_REQUEST['password'] != $_REQUEST['password2']) {
-          $ok = false;
+          $valid = false;
           error(_("Your passwords don't match."));
         }
       } else {
-        $ok = false;
+        $valid = false;
         error(_("Your password is to short (please use at least 6 characters)."));
       }
       
-      if ($ok) {
+      if ($valid) {
         $result = set_password($user_source['UID'], $_REQUEST['password']);
         if ($result === false) {
           engelsystem_error(_("Password could not be updated."));
@@ -251,7 +251,7 @@ function user_password_recovery_controller() {
     return User_password_set_view();
   } else {
     if (isset($_REQUEST['submit'])) {
-      $ok = true;
+      $valid = true;
       
       if (isset($_REQUEST['email']) && strlen(strip_request_item('email')) > 0) {
         $email = strip_request_item('email');
@@ -261,19 +261,19 @@ function user_password_recovery_controller() {
             engelsystem_error("Unable to load user.");
           }
           if ($user_source == null) {
-            $ok = false;
+            $valid = false;
             error(_("E-mail address is not correct."));
           }
         } else {
-          $ok = false;
+          $valid = false;
           error(_("E-mail address is not correct."));
         }
       } else {
-        $ok = false;
+        $valid = false;
         error(_("Please enter your e-mail."));
       }
       
-      if ($ok) {
+      if ($valid) {
         $token = User_generate_password_recovery_token($user_source);
         if ($token === false) {
           engelsystem_error("Unable to generate password recovery token.");

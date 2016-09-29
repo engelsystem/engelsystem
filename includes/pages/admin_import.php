@@ -41,29 +41,29 @@ function admin_import() {
   
   switch ($step) {
     case 'input':
-      $ok = false;
+      $valid = false;
       
       if (isset($_REQUEST['submit'])) {
-        $ok = true;
+        $valid = true;
         
         if (isset($_REQUEST['shifttype_id']) && isset($shifttypes[$_REQUEST['shifttype_id']])) {
           $shifttype_id = $_REQUEST['shifttype_id'];
         } else {
-          $ok = false;
+          $valid = false;
           error(_('Please select a shift type.'));
         }
         
         if (isset($_REQUEST['add_minutes_start']) && is_numeric(trim($_REQUEST['add_minutes_start']))) {
           $add_minutes_start = trim($_REQUEST['add_minutes_start']);
         } else {
-          $ok = false;
+          $valid = false;
           error(_("Please enter an amount of minutes to add to a talk's begin."));
         }
         
         if (isset($_REQUEST['add_minutes_end']) && is_numeric(trim($_REQUEST['add_minutes_end']))) {
           $add_minutes_end = trim($_REQUEST['add_minutes_end']);
         } else {
-          $ok = false;
+          $valid = false;
           error(_("Please enter an amount of minutes to add to a talk's end."));
         }
         
@@ -71,21 +71,21 @@ function admin_import() {
           if (move_uploaded_file($_FILES['xcal_file']['tmp_name'], $import_file)) {
             libxml_use_internal_errors(true);
             if (simplexml_load_file($import_file) === false) {
-              $ok = false;
+              $valid = false;
               error(_('No valid xml/xcal file provided.'));
               unlink($import_file);
             }
           } else {
-            $ok = false;
+            $valid = false;
             error(_('File upload went wrong.'));
           }
         } else {
-          $ok = false;
+          $valid = false;
           error(_('Please provide some data.'));
         }
       }
       
-      if ($ok) {
+      if ($valid) {
         redirect(page_link_to('admin_import') . "&step=check&shifttype_id=" . $shifttype_id . "&add_minutes_end=" . $add_minutes_end . "&add_minutes_start=" . $add_minutes_start);
       } else {
         $html .= div('well well-sm text-center', [

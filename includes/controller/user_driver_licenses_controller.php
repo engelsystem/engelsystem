@@ -109,7 +109,7 @@ function user_driver_license_edit_controller() {
   }
   
   if (isset($_REQUEST['submit'])) {
-    $ok = true;
+    $valid = true;
     $wants_to_drive = isset($_REQUEST['wants_to_drive']);
     $has_car = isset($_REQUEST['has_car']);
     $has_license_car = isset($_REQUEST['has_license_car']);
@@ -119,11 +119,11 @@ function user_driver_license_edit_controller() {
     $has_license_forklift = isset($_REQUEST['has_license_forklift']);
     
     if ($wants_to_drive && ! $has_license_car && ! $has_license_3_5t_transporter && ! $has_license_7_5t_truck && ! $has_license_12_5t_truck && ! $has_license_forklift) {
-      $ok = false;
+      $valid = false;
       error(_("Please select at least one driving license."));
     }
     
-    if ($ok) {
+    if ($valid) {
       if (! $wants_to_drive && $user_driver_license != null) {
         $result = UserDriverLicenses_delete($user_source['UID']);
         if ($result === false) {

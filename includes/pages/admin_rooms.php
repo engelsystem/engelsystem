@@ -54,16 +54,16 @@ function admin_rooms() {
     
     if ($_REQUEST['show'] == 'edit') {
       if (isset($_REQUEST['submit'])) {
-        $ok = true;
+        $valid = true;
         
         if (isset($_REQUEST['name']) && strlen(strip_request_item('name')) > 0) {
           $name = strip_request_item('name');
           if (isset($room) && sql_num_query("SELECT * FROM `Room` WHERE `Name`='" . sql_escape($name) . "' AND NOT `RID`=" . sql_escape($id)) > 0) {
-            $ok = false;
+            $valid = false;
             $msg .= error(_("This name is already in use."), true);
           }
         } else {
-          $ok = false;
+          $valid = false;
           $msg .= error(_("Please enter a name."), true);
         }
         
@@ -82,19 +82,19 @@ function admin_rooms() {
         if (isset($_REQUEST['number'])) {
           $number = strip_request_item('number');
         } else {
-          $ok = false;
+          $valid = false;
         }
         
         foreach ($angeltypes as $angeltype_id => $angeltype) {
           if (isset($_REQUEST['angeltype_count_' . $angeltype_id]) && preg_match("/^[0-9]{1,4}$/", $_REQUEST['angeltype_count_' . $angeltype_id])) {
             $angeltypes_count[$angeltype_id] = $_REQUEST['angeltype_count_' . $angeltype_id];
           } else {
-            $ok = false;
+            $valid = false;
             $msg .= error(sprintf(_("Please enter needed angels for type %s.", $angeltype)), true);
           }
         }
         
-        if ($ok) {
+        if ($valid) {
           if (isset($id)) {
             sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "' WHERE `RID`='" . sql_escape($id) . "' LIMIT 1");
             engelsystem_log("Room updated: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);

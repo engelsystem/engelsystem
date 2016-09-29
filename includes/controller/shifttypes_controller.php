@@ -68,12 +68,12 @@ function shifttype_edit_controller() {
   }
   
   if (isset($_REQUEST['submit'])) {
-    $ok = true;
+    $valid = true;
     
     if (isset($_REQUEST['name']) && $_REQUEST['name'] != '') {
       $name = strip_request_item('name');
     } else {
-      $ok = false;
+      $valid = false;
       error(_('Please enter a name.'));
     }
     
@@ -87,7 +87,7 @@ function shifttype_edit_controller() {
       $description = strip_request_item_nl('description');
     }
     
-    if ($ok) {
+    if ($valid) {
       if ($shifttype_id) {
         $result = ShiftType_update($shifttype_id, $name, $angeltype_id, $description);
         if ($result === false) {

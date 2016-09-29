@@ -32,7 +32,7 @@ function event_config_edit_controller() {
   }
   
   if (isset($_REQUEST['submit'])) {
-    $ok = true;
+    $valid = true;
     
     if (isset($_REQUEST['event_name'])) {
       $event_name = strip_request_item('event_name');
@@ -50,41 +50,41 @@ function event_config_edit_controller() {
     
     $result = check_request_date('buildup_start_date', _("Please enter buildup start date."), true);
     $buildup_start_date = $result->getValue();
-    $ok &= $result->isOk();
+    $valid &= $result->isOk();
     
     $result = check_request_date('event_start_date', _("Please enter event start date."), true);
     $event_start_date = $result->getValue();
-    $ok &= $result->isOk();
+    $valid &= $result->isOk();
     
     $result = check_request_date('event_end_date', _("Please enter event end date."), true);
     $event_end_date = $result->getValue();
-    $ok &= $result->isOk();
+    $valid &= $result->isOk();
     
     $result = check_request_date('teardown_end_date', _("Please enter teardown end date."), true);
     $teardown_end_date = $result->getValue();
-    $ok &= $result->isOk();
+    $valid &= $result->isOk();
     
     if ($buildup_start_date != null && $event_start_date != null && $buildup_start_date > $event_start_date) {
-      $ok = false;
+      $valid = false;
       error(_("The buildup start date has to be before the event start date."));
     }
     
     if ($event_start_date != null && $event_end_date != null && $event_start_date > $event_end_date) {
-      $ok = false;
+      $valid = false;
       error(_("The event start date has to be before the event end date."));
     }
     
     if ($event_end_date != null && $teardown_end_date != null && $event_end_date > $teardown_end_date) {
-      $ok = false;
+      $valid = false;
       error(_("The event end date has to be before the teardown end date."));
     }
     
     if ($buildup_start_date != null && $teardown_end_date != null && $buildup_start_date > $teardown_end_date) {
-      $ok = false;
+      $valid = false;
       error(_("The buildup start date has to be before the teardown end date."));
     }
     
-    if ($ok) {
+    if ($valid) {
       $result = EventConfig_update($event_name, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date, $event_welcome_msg);
       
       if ($result === false) {

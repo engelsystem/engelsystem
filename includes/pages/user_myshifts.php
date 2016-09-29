@@ -51,12 +51,12 @@ function user_myshifts() {
       $freeload_comment = $shift['freeload_comment'];
       
       if (isset($_REQUEST['submit'])) {
-        $ok = true;
+        $valid = true;
         if (in_array("user_shifts_admin", $privileges)) {
           $freeloaded = isset($_REQUEST['freeloaded']);
           $freeload_comment = strip_request_item_nl('freeload_comment');
           if ($freeloaded && $freeload_comment == '') {
-            $ok = false;
+            $valid = false;
             error(_("Please enter a freeload comment!"));
           }
         }
@@ -64,7 +64,7 @@ function user_myshifts() {
         $comment = strip_request_item_nl('comment');
         $user_source = User($shift['UID']);
         
-        if ($ok) {
+        if ($valid) {
           $result = ShiftEntry_update([
               'id' => $id,
               'Comment' => $comment,

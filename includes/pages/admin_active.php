@@ -21,7 +21,7 @@ function admin_active() {
   $show_all_shifts = isset($_REQUEST['show_all_shifts']);
   
   if (isset($_REQUEST['set_active'])) {
-    $ok = true;
+    $valid = true;
     
     if (isset($_REQUEST['count']) && preg_match("/^[0-9]+$/", $_REQUEST['count'])) {
       $count = strip_request_item('count');
@@ -30,11 +30,11 @@ function admin_active() {
         redirect(page_link_to('admin_active'));
       }
     } else {
-      $ok = false;
+      $valid = false;
       $msg .= error(_("Please enter a number of angels to be marked as active."), true);
     }
     
-    if ($ok) {
+    if ($valid) {
       $limit = " LIMIT " . $count;
     }
     if (isset($_REQUEST['ack'])) {
