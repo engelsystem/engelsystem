@@ -341,25 +341,30 @@ function page_with_title($title, $elements) {
 function table($columns, $rows_raw, $data = true) {
   // If only one column is given
   if (! is_array($columns)) {
-    $columns = [
-        'col' => $columns 
-    ];
-    
     $rows = [];
-    foreach ($rows_raw as $row)
+    foreach ($rows_raw as $row) {
       $rows[] = [
           'col' => $row 
       ];
-  } else {
-    $rows = $rows_raw;
+    }
+    return render_table([
+        'col' => $columns 
+    ], $rows, $data);
   }
   
+  return render_table($columns, $rows_raw, $data);
+}
+
+/**
+ * Helper for rendering a html-table.
+ * use table()
+ */
+function render_table($columns, $rows, $data = true) {
   if (count($rows) == 0) {
     return info(_("No data found."), true);
   }
   
-  $html = "";
-  $html .= '<table class="table table-striped' . ($data ? ' data' : '') . '">';
+  $html = '<table class="table table-striped' . ($data ? ' data' : '') . '">';
   $html .= '<thead><tr>';
   foreach ($columns as $key => $column) {
     $html .= '<th class="column_' . $key . '">' . $column . '</th>';
@@ -421,10 +426,11 @@ function template_render($file, $data) {
   engelsystem_error("Cannot find template file &laquo;" . $file . "&raquo;.");
 }
 
-function shorten($str) {
-  if (strlen($str) < 50)
+function shorten($str, $length = 50) {
+  if (strlen($str) < $length) {
     return $str;
-  return '<span title="' . htmlentities($str, ENT_COMPAT, 'UTF-8') . '">' . substr($str, 0, 47) . '...</span>';
+  }
+  return '<span title="' . htmlentities($str, ENT_COMPAT, 'UTF-8') . '">' . substr($str, 0, $length - 3) . '...</span>';
 }
 
 function table_body($array) {
