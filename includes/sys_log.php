@@ -10,10 +10,9 @@
 function engelsystem_log($message) {
   global $user;
   
+  $nick = "Guest";
   if (isset($user)) {
     $nick = User_Nick_render($user);
-  } else {
-    $nick = "Guest";
   }
   LogEntry_create($nick, $message);
 }

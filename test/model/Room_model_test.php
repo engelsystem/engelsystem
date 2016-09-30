@@ -24,8 +24,9 @@ class Room_model_test extends PHPUnit_Framework_TestCase {
    * @after
    */
   public function teardown() {
-    if ($this->room_id != null)
+    if ($this->room_id != null) {
       Room_delete($this->room_id);
+    }
   }
 }
 

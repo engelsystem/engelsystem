@@ -13,12 +13,14 @@ function load_auth() {
       // User ist eingeloggt, Datensatz zur Verfügung stellen und Timestamp updaten
       list($user) = $user;
       sql_query("UPDATE `User` SET " . "`lastLogIn` = '" . time() . "'" . " WHERE `UID` = '" . sql_escape($_SESSION['uid']) . "' LIMIT 1;");
-    } else {
-      unset($_SESSION['uid']);
+      $privileges = privileges_for_user($user['UID']);
+      return;
     }
+    unset($_SESSION['uid']);
   }
   
-  $privileges = isset($user) ? privileges_for_user($user['UID']) : privileges_for_group(- 1);
+  // guest privileges
+  $privileges = privileges_for_group(- 1);
 }
 
 /**

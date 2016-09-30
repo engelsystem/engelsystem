@@ -5,13 +5,11 @@ function admin_log_title() {
 }
 
 function admin_log() {
-  if (isset($_POST['keyword'])) {
-    $filter = $_POST['keyword'];
-    $log_entries_source = LogEntries_filter($_POST['keyword']);
-  } else {
-    $filter = "";
-    $log_entries_source = LogEntries();
+  $filter = "";
+  if (isset($_REQUEST['keyword'])) {
+    $filter = strip_request_item('keyword');
   }
+  $log_entries_source = LogEntries_filter($_POST['keyword']);
   
   $log_entries = [];
   foreach ($log_entries_source as $log_entry) {

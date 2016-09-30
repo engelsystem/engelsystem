@@ -12,13 +12,12 @@
  * @return string
  */
 function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment, $freeloaded, $freeload_comment, $user_admin_shifts = false) {
+  $freeload_form = [];
   if ($user_admin_shifts) {
     $freeload_form = [
         form_checkbox('freeloaded', _("Freeloaded"), $freeloaded),
         form_textarea('freeload_comment', _("Freeload comment (Only for shift coordination):"), $freeload_comment) 
     ];
-  } else {
-    $freeload_form = [];
   }
   return page_with_title(_("Edit shift entry"), [
       msg(),

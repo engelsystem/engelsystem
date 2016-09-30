@@ -22,6 +22,9 @@ function LogEntries() {
  * Returns log entries filtered by a keyword
  */
 function LogEntries_filter($keyword) {
+  if ($keyword == "") {
+    return LogEntries();
+  }
   return sql_select("SELECT * FROM `LogEntries` WHERE `nick` LIKE '%" . sql_escape($keyword) . "%' OR `message` LIKE '%" . sql_escape($keyword) . "%' ORDER BY `timestamp` DESC");
 }
 

@@ -43,9 +43,9 @@ function Message_send($receiver_user_id, $text) {
   if (($text != "" && is_numeric($receiver_user_id)) && (sql_num_query("SELECT * FROM `User` WHERE `UID`='" . sql_escape($receiver_user_id) . "' AND NOT `UID`='" . sql_escape($user['UID']) . "' LIMIT 1") > 0)) {
     sql_query("INSERT INTO `Messages` SET `Datum`='" . sql_escape(time()) . "', `SUID`='" . sql_escape($user['UID']) . "', `RUID`='" . sql_escape($receiver_user_id) . "', `Text`='" . sql_escape($text) . "'");
     return true;
-  } else {
-    return false;
   }
+  
+  return false;
 }
 
 ?>
