@@ -22,7 +22,7 @@ function admin_questions() {
   global $user;
   
   if (! isset($_REQUEST['action'])) {
-    $unanswered_questions_table = array();
+    $unanswered_questions_table = [];
     $questions = sql_select("SELECT * FROM `Questions` WHERE `AID` IS NULL");
     foreach ($questions as $question) {
       $user_source = User($question['UID']);

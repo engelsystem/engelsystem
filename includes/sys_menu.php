@@ -17,7 +17,7 @@ function page_link_to_absolute($page) {
 function header_toolbar() {
   global $page, $privileges, $user, $enable_tshirt_size, $max_freeloadable_shifts;
   
-  $toolbar_items = array();
+  $toolbar_items = [];
   
   if (isset($user)) {
     $toolbar_items[] = toolbar_item_link(page_link_to('shifts') . '&amp;action=next', 'time', User_shift_state_render($user));

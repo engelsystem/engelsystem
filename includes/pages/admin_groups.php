@@ -8,10 +8,10 @@ function admin_groups() {
   $html = "";
   $groups = sql_select("SELECT * FROM `Groups` ORDER BY `Name`");
   if (! isset($_REQUEST["action"])) {
-    $groups_table = array();
+    $groups_table = [];
     foreach ($groups as $group) {
       $privileges = sql_select("SELECT * FROM `GroupPrivileges` JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`) WHERE `group_id`='" . sql_escape($group['UID']) . "'");
-      $privileges_html = array();
+      $privileges_html = [];
       
       foreach ($privileges as $priv) {
         $privileges_html[] = $priv['name'];

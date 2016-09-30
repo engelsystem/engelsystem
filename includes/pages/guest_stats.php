@@ -5,7 +5,7 @@ function guest_stats() {
   
   if (isset($_REQUEST['api_key'])) {
     if ($_REQUEST['api_key'] == $api_key) {
-      $stats = array();
+      $stats = [];
       
       list($user_count) = sql_select("SELECT count(*) as `user_count` FROM `User`");
       $stats['user_count'] = $user_count['user_count'];

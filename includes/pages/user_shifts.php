@@ -660,9 +660,9 @@ function view_user_shifts() {
                       $style = " text-decoration: line-through;";
                     }
                     if (in_array('user_shifts_admin', $privileges)) {
-                      $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) . ' ' . table_buttons(array(
+                      $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) . ' ' . table_buttons([
                           button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], glyph('trash'), 'btn-xs') 
-                      )) . '</span>';
+                      ]) . '</span>';
                     } else {
                       $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) . "</span>";
                     }
@@ -796,9 +796,9 @@ function view_user_shifts() {
           $freeloader = 0;
           foreach ($entries as $entry) {
             if (in_array('user_shifts_admin', $privileges)) {
-              $member = User_Nick_render($entry) . ' ' . table_buttons(array(
+              $member = User_Nick_render($entry) . ' ' . table_buttons([
                   button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], glyph('trash'), 'btn-xs') 
-              ));
+              ]);
             } else {
               $member = User_Nick_render($entry);
             }

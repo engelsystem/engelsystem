@@ -71,7 +71,7 @@ function User_tshirts_count() {
  * Returns all column names for sorting in an array.
  */
 function User_sortable_columns() {
-  return array(
+  return [
       'Nick',
       'Name',
       'Vorname',
@@ -84,7 +84,7 @@ function User_sortable_columns() {
       'force_active',
       'Tshirt',
       'lastLogIn' 
-  );
+  ];
 }
 
 /**

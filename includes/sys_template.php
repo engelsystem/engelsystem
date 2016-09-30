@@ -3,12 +3,12 @@
 /**
  * Liste der verfügbaren Themes
  */
-$themes = array(
+$themes = [
     '3' => "Engelsystem 32c3",
     "2" => "Engelsystem cccamp15",
     "0" => "Engelsystem light",
     "1" => "Engelsystem dark" 
-);
+];
 
 /**
  * Display muted (grey) text.
@@ -56,7 +56,7 @@ function heading($content, $number = 1) {
  * @param array $items          
  * @return string
  */
-function toolbar($items = array(), $right = false) {
+function toolbar($items = [], $right = false) {
   return '<ul class="nav navbar-nav' . ($right ? ' navbar-right' : '') . '">' . join("\n", $items) . '</ul>';
 }
 
@@ -199,7 +199,7 @@ function form_checkboxes($name, $label, $items, $selected) {
  * @param
  *          disabled Wie selected, nur dass die entsprechenden Checkboxen deaktiviert statt markiert sind
  */
-function form_multi_checkboxes($names, $label, $items, $selected, $disabled = array()) {
+function form_multi_checkboxes($names, $label, $items, $selected, $disabled = []) {
   $html = "<table><thead><tr>";
   foreach ($names as $title) {
     $html .= "<th>$title</th>";
@@ -399,11 +399,11 @@ function button_glyph($href, $glyph, $class = "") {
 /**
  * Rendert eine Toolbar mit Knöpfen
  */
-function buttons($buttons = array ()) {
+function buttons($buttons = []) {
   return '<div class="form-group">' . table_buttons($buttons) . '</div>';
 }
 
-function table_buttons($buttons = array()) {
+function table_buttons($buttons = []) {
   return '<div class="btn-group">' . join(' ', $buttons) . '</div>';
 }
 

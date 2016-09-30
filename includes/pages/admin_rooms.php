@@ -107,7 +107,7 @@ function admin_rooms() {
           }
           
           sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($room_id) . "'");
-          $needed_angeltype_info = array();
+          $needed_angeltype_info = [];
           foreach ($angeltypes_count as $angeltype_id => $angeltype_count) {
             $angeltype = AngelType($angeltype_id);
             if ($angeltype === false) {

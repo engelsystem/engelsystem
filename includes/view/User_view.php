@@ -97,11 +97,11 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
     $user['force_active'] = glyph_bool($user['force_active']);
     $user['Tshirt'] = glyph_bool($user['Tshirt']);
     $user['lastLogIn'] = date(_('m/d/Y h:i a'), $user['lastLogIn']);
-    $user['actions'] = table_buttons(array(
+    $user['actions'] = table_buttons([
         button_glyph(page_link_to('admin_user') . '&id=' . $user['UID'], 'edit', 'btn-xs') 
-    ));
+    ]);
   }
-  $users[] = array(
+  $users[] = [
       'Nick' => '<strong>' . _('Sum') . '</strong>',
       'Gekommen' => $arrived_count,
       'got_voucher' => $voucher_count,
@@ -110,7 +110,7 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
       'freeloads' => $freeloads_count,
       'Tshirt' => $tshirts_count,
       'actions' => '<strong>' . count($users) . '</strong>' 
-  );
+  ];
   
   return page_with_title(_('All users'), [
       msg(),

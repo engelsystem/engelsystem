@@ -47,7 +47,7 @@ function admin_active() {
           WHERE `User`.`Gekommen` = 1 AND `User`.`force_active`=0 
           GROUP BY `User`.`UID` 
           ORDER BY `force_active` DESC, `shift_length` DESC" . $limit);
-      $user_nicks = array();
+      $user_nicks = [];
       foreach ($users as $usr) {
         sql_query("UPDATE `User` SET `Aktiv` = 1 WHERE `UID`='" . sql_escape($usr['UID']) . "'");
         $user_nicks[] = User_Nick_render($usr);
@@ -139,7 +139,7 @@ function admin_active() {
     $usr['force_active'] = glyph_bool($usr['force_active'] == 1);
     $usr['tshirt'] = glyph_bool($usr['Tshirt'] == 1);
     
-    $actions = array();
+    $actions = [];
     if ($usr['Aktiv'] == 0) {
       $actions[] = '<a href="' . page_link_to('admin_active') . '&amp;active=' . $usr['UID'] . ($show_all_shifts ? '&amp;show_all_shifts=' : '') . '&amp;search=' . $search . '">' . _("set active") . '</a>';
     }

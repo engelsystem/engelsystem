@@ -38,17 +38,17 @@ function AngelType_render_membership($user_angeltype) {
 }
 
 function AngelType_delete_view($angeltype) {
-  return page_with_title(sprintf(_("Delete angeltype %s"), $angeltype['name']), array(
+  return page_with_title(sprintf(_("Delete angeltype %s"), $angeltype['name']), [
       info(sprintf(_("Do you want to delete angeltype %s?"), $angeltype['name']), true),
       buttons([
           button(page_link_to('angeltypes'), _("cancel"), 'cancel'),
           button(page_link_to('angeltypes') . '&action=delete&angeltype_id=' . $angeltype['id'] . '&confirmed', _("delete"), 'ok') 
       ]) 
-  ));
+  ]);
 }
 
 function AngelType_edit_view($name, $restricted, $description, $coordinator_mode, $requires_driver_license) {
-  return page_with_title(sprintf(_("Edit %s"), $name), array(
+  return page_with_title(sprintf(_("Edit %s"), $name), [
       buttons([
           button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
       ]),
@@ -62,7 +62,7 @@ function AngelType_edit_view($name, $restricted, $description, $coordinator_mode
           form_info("", _("Please use markdown for the description.")),
           form_submit('submit', _("Save")) 
       ]) 
-  ));
+  ]);
 }
 
 function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angeltypes, $admin_angeltypes, $coordinator, $user_driver_license, $user) {

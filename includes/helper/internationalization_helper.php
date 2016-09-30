@@ -1,8 +1,8 @@
 <?php
-$locales = array(
+$locales = [
     'de_DE.UTF-8' => "Deutsch",
     'en_US.UTF-8' => "English" 
-);
+];
 
 $default_locale = 'en_US.UTF-8';
 
@@ -61,7 +61,7 @@ function make_langselect() {
   global $locales;
   $URL = $_SERVER["REQUEST_URI"] . (strpos($_SERVER["REQUEST_URI"], "?") > 0 ? '&' : '?') . "set_locale=";
   
-  $items = array();
+  $items = [];
   foreach ($locales as $locale => $name) {
     $items[] = toolbar_item_link(htmlspecialchars($URL) . $locale, '', '<img src="pic/flag/' . $locale . '.png" alt="' . $name . '" title="' . $name . '"> ' . $name);
   }
