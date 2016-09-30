@@ -1,6 +1,6 @@
 <?php
 
-function page_link_to($page) {
+function page_link_to($page = "") {
   if ($page == "") {
     return '?';
   }
@@ -123,9 +123,9 @@ function make_navigation() {
       "user_questions" => questions_title() 
   ];
   
-  foreach ($pages as $page => $title) {
-    if (in_array($page, $privileges)) {
-      $menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $page);
+  foreach ($pages as $menu_page => $title) {
+    if (in_array($menu_page, $privileges)) {
+      $menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
     }
   }
   
@@ -145,9 +145,9 @@ function make_navigation() {
       "admin_event_config" => event_config_title() 
   ];
   
-  foreach ($admin_pages as $page => $title) {
-    if (in_array($page, $privileges)) {
-      $admin_menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $page);
+  foreach ($admin_pages as $menu_page => $title) {
+    if (in_array($menu_page, $privileges)) {
+      $admin_menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
     }
   }
   

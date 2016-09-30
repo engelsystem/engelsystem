@@ -115,7 +115,7 @@ class ValidationResult {
    *          The validated value
    */
   public function ValidationResult($valid, $value) {
-    $this->ok = $valid;
+    $this->valid = $valid;
     $this->value = $value;
   }
 
