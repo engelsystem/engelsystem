@@ -5,6 +5,24 @@
  */
 
 /**
+ * Checks if a user joined an angeltype.
+ *
+ * @param User $user
+ *          The user to be checked
+ * @param Angeltype $angeltype
+ *          The angeltype to be checked
+ * @return boolean
+ */
+function UserAngelType_exists($user, $angeltype) {
+  return sql_num_query("
+      SELECT `id` 
+      FROM `UserAngelTypes`
+      WHERE `UserAngelTypes`.`user_id`='" . sql_escape($user['UID']) . "'
+      AND `angeltype_id`='" . sql_escape($angeltype['id']) . "'
+      ") > 0;
+}
+
+/**
  * List users angeltypes.
  *
  * @param User $user          

@@ -299,4 +299,25 @@ function user_password_recovery_title() {
   return _("Password recovery");
 }
 
+/**
+ * Loads a user from param user_id.
+ */
+function load_user() {
+  if (! isset($_REQUEST['user_id'])) {
+    redirect(page_link_to());
+  }
+  
+  $user = User($_REQUEST['user_id']);
+  if ($user === false) {
+    engelsystem_error("Unable to load user.");
+  }
+  
+  if ($user == null) {
+    error(_("User doesn't exist."));
+    redirect(page_link_to());
+  }
+  
+  return $user;
+}
+
 ?>

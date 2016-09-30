@@ -101,6 +101,7 @@ function angeltype_delete_controller() {
 function angeltype_edit_controller() {
   global $privileges, $user;
   
+  $angeltype = null;
   $name = "";
   $restricted = false;
   $description = "";
@@ -265,5 +266,25 @@ function angeltypes_list_controller() {
       angeltypes_title(),
       AngelTypes_list_view($angeltypes, in_array('admin_angel_types', $privileges)) 
   ];
+}
+
+/**
+ * Loads an angeltype from given angeltype_id request param.
+ */
+function load_angeltype() {
+  if (! isset($_REQUEST['angeltype_id'])) {
+    redirect(page_link_to('angeltypes'));
+  }
+  
+  $angeltype = AngelType($_REQUEST['angeltype_id']);
+  if ($angeltype === false) {
+    engelsystem_error("Unable to load angeltype.");
+  }
+  if ($angeltype == null) {
+    error(_("Angeltype doesn't exist."));
+    redirect(page_link_to('angeltypes'));
+  }
+  
+  return $angeltype;
 }
 ?>
