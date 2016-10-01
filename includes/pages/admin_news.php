@@ -62,8 +62,9 @@ function admin_news() {
           redirect(page_link_to("news"));
           break;
       }
-    } else
+    } else {
       return error("No News found.", true);
+    }
   }
   return $html . '</div>';
 }

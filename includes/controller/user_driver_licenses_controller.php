@@ -69,6 +69,8 @@ function user_driver_license_edit_link($user = null) {
 function user_driver_license_edit_controller() {
   global $privileges, $user;
   
+  $user_source = $user;
+  
   if (isset($_REQUEST['user_id'])) {
     $user_source = User($_REQUEST['user_id']);
     if ($user_source === false) {
@@ -82,8 +84,6 @@ function user_driver_license_edit_controller() {
     if ($user['UID'] != $user_source['UID'] && ! in_array('admin_user', $privileges)) {
       redirect(user_driver_license_edit_link());
     }
-  } else {
-    $user_source = $user;
   }
   
   $wants_to_drive = false;

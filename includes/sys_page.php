@@ -3,8 +3,8 @@
 /**
  * Leitet den Browser an die übergebene URL weiter und hält das Script an.
  */
-function redirect($to) {
-  header("Location: " . $to, true, 302);
+function redirect($url) {
+  header("Location: " . $url, true, 302);
   raw_output("");
 }
 

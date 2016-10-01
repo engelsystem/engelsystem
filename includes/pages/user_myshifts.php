@@ -82,8 +82,9 @@ function user_myshifts() {
       }
       
       return ShiftEntry_edit_view(User_Nick_render($shifts_user), date("Y-m-d H:i", $shift['start']) . ', ' . shift_length($shift), $shift['Name'], $shift['name'], $shift['angel_type'], $shift['Comment'], $shift['freeloaded'], $shift['freeload_comment'], in_array("user_shifts_admin", $privileges));
-    } else
+    } else {
       redirect(page_link_to('user_myshifts'));
+    }
   } elseif (isset($_REQUEST['cancel']) && preg_match("/^[0-9]*$/", $_REQUEST['cancel'])) {
     $user_id = $_REQUEST['cancel'];
     $shift = sql_select("

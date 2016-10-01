@@ -50,9 +50,9 @@ function sql_transaction_rollback() {
   
   if (-- $sql_nested_transaction_level == 0) {
     return sql_query("ROLLBACK");
-  } else {
-    return true;
   }
+  
+  return true;
 }
 
 /**
@@ -81,14 +81,14 @@ function sql_error($message) {
  *          Username
  * @param string $pass
  *          Password
- * @param string $db
+ * @param string $db_name
  *          DB to select
  * @return mysqli The connection handler
  */
-function sql_connect($host, $user, $pass, $db) {
+function sql_connect($host, $user, $pass, $db_name) {
   global $sql_connection;
   
-  $sql_connection = new mysqli($host, $user, $pass, $db);
+  $sql_connection = new mysqli($host, $user, $pass, $db_name);
   if ($sql_connection->connect_errno) {
     error("Unable to connect to MySQL: " . $sql_connection->connect_error);
     return sql_error("Unable to connect to MySQL: " . $sql_connection->connect_error);

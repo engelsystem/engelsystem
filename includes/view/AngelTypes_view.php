@@ -153,7 +153,7 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
       'actions' => '' 
   ];
   
-  if ($angeltype['requires_driver_license'] && ($coordinator || $admin_angeltypes))
+  if ($angeltype['requires_driver_license'] && ($coordinator || $admin_angeltypes)) {
     $table_headers = [
         'Nick' => _("Nick"),
         'DECT' => _("DECT"),
@@ -166,6 +166,7 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
         'has_license_forklift' => _("Forklift"),
         'actions' => '' 
     ];
+  }
   
   if (count($coordinators) > 0) {
     $page[] = '<h3>' . _("Coordinators") . '</h3>';

@@ -61,8 +61,9 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
   // you canot join if shift is full
   foreach ($needed_angeltypes as $needed_angeltype) {
     if ($needed_angeltype['angel_type_id'] == $angeltype['id']) {
-      if ($needed_angeltype['taken'] >= $needed_angeltype['count'])
+      if ($needed_angeltype['taken'] >= $needed_angeltype['count']) {
         $user_may_join_shift = false;
+      }
       break;
     }
   }

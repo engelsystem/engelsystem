@@ -385,7 +385,7 @@ function shifts_printable($shifts, $shifttypes) {
   return $shifts_printable;
 }
 
-function shift_sort($a, $b) {
-  return ($a['start'] < $b['start']) ? - 1 : 1;
+function shift_sort($shift_a, $shift_b) {
+  return ($shift_a['start'] < $shift_b['start']) ? - 1 : 1;
 }
 ?>

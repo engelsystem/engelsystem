@@ -152,17 +152,15 @@ function User_shift_state_render($user) {
   if ($upcoming_shifts[0]['start'] > time()) {
     if ($upcoming_shifts[0]['start'] - time() > 3600) {
       return '<span class="text-success moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _("Next shift %c") . '</span>';
-    } else {
-      return '<span class="text-warning moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _("Next shift %c") . '</span>';
     }
+    return '<span class="text-warning moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _("Next shift %c") . '</span>';
   }
   $halfway = ($upcoming_shifts[0]['start'] + $upcoming_shifts[0]['end']) / 2;
   
   if (time() < $halfway) {
     return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _("Shift starts %c") . '</span>';
-  } else {
-    return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['end'] . '">' . _("Shift ends %c") . '</span>';
   }
+  return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['end'] . '">' . _("Shift ends %c") . '</span>';
 }
 
 function User_view($user_source, $admin_user_privilege, $freeloader, $user_angeltypes, $user_groups, $shifts, $its_me) {
@@ -340,7 +338,7 @@ function User_angeltypes_render($user_angeltypes) {
 }
 
 function User_groups_render($user_groups) {
-  $output = array();
+  $output = [];
   foreach ($user_groups as $group) {
     $output[] = substr($group['Name'], 2);
   }

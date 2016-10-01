@@ -48,10 +48,10 @@ $shift_sum_formula = "SUM(
 )";
 
 // voucher calculation 
-$voucher_settings = array(
+$voucher_settings = [
 	"initial_vouchers" => 2,
 	"shifts_per_voucher" => 1
-);
+];
 
 // weigh every shift the same
 // $shift_sum_formula = "SUM(`end` - `start`)";
@@ -60,10 +60,10 @@ $voucher_settings = array(
 $api_key = "";
 
 // MySQL-Connection Settings
-$config = array(
+$config = [
     'host' => "localhost",
     'user' => "root",
     'pw' => "",
     'db' => "engelsystem" 
-);
+];
 ?>

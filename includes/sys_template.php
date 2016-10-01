@@ -41,7 +41,7 @@ function glyph_bool($boolean) {
   return '<span class="text-' . ($boolean ? 'success' : 'danger') . '">' . glyph($boolean ? 'ok' : 'remove') . '</span>';
 }
 
-function div($class, $content = array(), $dom_id = "") {
+function div($class, $content = [], $dom_id = "") {
   $dom_id = $dom_id != '' ? ' id="' . $dom_id . '"' : '';
   return '<div' . $dom_id . ' class="' . $class . '">' . join("\n", $content) . '</div>';
 }

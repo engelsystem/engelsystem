@@ -679,10 +679,11 @@ function view_user_shifts() {
                     $user_may_join_shift &= isset($angeltype['user_id']);
                     
                     // you cannot join if you are not confirmed
-                    if ($angeltype['restricted'] == 1 && isset($angeltype['user_id']))
+                    if ($angeltype['restricted'] == 1 && isset($angeltype['user_id'])) {
                       $user_may_join_shift &= isset($angeltype['confirm_user_id']);
-                      
-                      // you can only join if the shift is in future or running
+                    }
+                    
+                    // you can only join if the shift is in future or running
                     $user_may_join_shift &= time() < $shift['start'];
                     
                     // User shift admins may join anybody in every shift
