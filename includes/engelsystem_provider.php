@@ -18,6 +18,7 @@ require_once realpath(__DIR__ . '/../includes/model/NeededAngelTypes_model.php')
 require_once realpath(__DIR__ . '/../includes/model/Room_model.php');
 require_once realpath(__DIR__ . '/../includes/model/ShiftEntry_model.php');
 require_once realpath(__DIR__ . '/../includes/model/Shifts_model.php');
+require_once realpath(__DIR__ . '/../includes/model/ShiftsFilter.php');
 require_once realpath(__DIR__ . '/../includes/model/ShiftTypes_model.php');
 require_once realpath(__DIR__ . '/../includes/model/UserAngelTypes_model.php');
 require_once realpath(__DIR__ . '/../includes/model/UserDriverLicenses_model.php');

@@ -19,6 +19,19 @@ function raw_output($output) {
 }
 
 /**
+ * Returns an int[] from given request param name.
+ *
+ * @param String $name
+ *          Name of the request param
+ */
+function check_request_int_array($name) {
+  if (isset($_REQUEST[$name]) && is_array($_REQUEST[$name])) {
+    return array_filter($_REQUEST[$name], 'is_numeric');
+  }
+  return [];
+}
+
+/**
  * Checks if given request item (name) can be parsed to a date.
  * If not parsable, given error message is put into msg() and null is returned.
  *
