@@ -34,47 +34,53 @@ function user_shifts() {
  * @return the updated ShiftsFilter
  */
 function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $days) {
-  global $privileges;
-  
   $shiftsFilter->setUserShiftsAdmin($user_shifts_admin);
-  $shiftsFilter->setFilled(check_request_int_array('filled'));
-  $shiftsFilter->setRooms(check_request_int_array('rooms'));
-  $shiftsFilter->setTypes(check_request_int_array('types'));
-  
-  $day = date('Y-m-d', time());
-  $start_day = in_array($day, $days) ? $day : min($days);
-  if (isset($_REQUEST['start_day']) && in_array($_REQUEST['start_day'], $days)) {
-    $start_day = $_REQUEST['start_day'];
+  if (isset($_REQUEST['filled'])) {
+    $shiftsFilter->setFilled(check_request_int_array('filled'));
   }
-  
-  $start_time = date("H:i");
-  if (isset($_REQUEST['start_time']) && preg_match('#^\d{1,2}:\d\d$#', $_REQUEST['start_time'])) {
-    $start_time = $_REQUEST['start_time'];
+  if (isset($_REQUEST['rooms'])) {
+    $shiftsFilter->setRooms(check_request_int_array('rooms'));
   }
-  
-  $day = date('Y-m-d', time() + 24 * 60 * 60);
-  $end_day = in_array($day, $days) ? $day : max($days);
-  if (isset($_REQUEST['end_day']) && in_array($_REQUEST['end_day'], $days)) {
-    $end_day = $_REQUEST['end_day'];
+  if (isset($_REQUEST['types'])) {
+    $shiftsFilter->setTypes(check_request_int_array('types'));
   }
-  
-  $end_time = date("H:i");
-  if (isset($_REQUEST['end_time']) && preg_match('#^\d{1,2}:\d\d$#', $_REQUEST['end_time'])) {
-    $end_time = $_REQUEST['end_time'];
+
+  if ((isset($_REQUEST['start_time']) && isset($_REQUEST['start_day']) && isset($_REQUEST['end_time']) && isset($_REQUEST['end_day'])) || $shiftsFilter->getStartTime() == null || $shiftsFilter->getEndTime() == null) {
+    $day = date('Y-m-d', time());
+    $start_day = in_array($day, $days) ? $day : min($days);
+    if (isset($_REQUEST['start_day']) && in_array($_REQUEST['start_day'], $days)) {
+      $start_day = $_REQUEST['start_day'];
+    }
+    
+    $start_time = date("H:i");
+    if (isset($_REQUEST['start_time']) && preg_match('#^\d{1,2}:\d\d$#', $_REQUEST['start_time'])) {
+      $start_time = $_REQUEST['start_time'];
+    }
+    
+    $day = date('Y-m-d', time() + 24 * 60 * 60);
+    $end_day = in_array($day, $days) ? $day : max($days);
+    if (isset($_REQUEST['end_day']) && in_array($_REQUEST['end_day'], $days)) {
+      $end_day = $_REQUEST['end_day'];
+    }
+    
+    $end_time = date("H:i");
+    if (isset($_REQUEST['end_time']) && preg_match('#^\d{1,2}:\d\d$#', $_REQUEST['end_time'])) {
+      $end_time = $_REQUEST['end_time'];
+    }
+    
+    if ($start_day > $end_day) {
+      $end_day = $start_day;
+    }
+    if ($start_day == $end_day && $start_time >= $end_time) {
+      $end_time = "23:59";
+    }
+    
+    $startdatetime = DateTime::createFromFormat("Y-m-d H:i", $start_day . " " . $start_time);
+    $shiftsFilter->setStartTime($startdatetime->getTimestamp());
+    
+    $enddatetime = DateTime::createFromFormat("Y-m-d H:i", $end_day . " " . $end_time);
+    $shiftsFilter->setEndTime($enddatetime->getTimestamp());
   }
-  
-  if ($start_day > $end_day) {
-    $end_day = $start_day;
-  }
-  if ($start_day == $end_day && $start_time >= $end_time) {
-    $end_time = "23:59";
-  }
-  
-  $startdatetime = DateTime::createFromFormat("Y-m-d H:i", $start_day . " " . $start_time);
-  $shiftsFilter->setStartTime($startdatetime->getTimestamp());
-  
-  $enddatetime = DateTime::createFromFormat("Y-m-d H:i", $end_day . " " . $end_time);
-  $shiftsFilter->setEndTime($enddatetime->getTimestamp());
   
   return $shiftsFilter;
 }
@@ -119,7 +125,7 @@ function view_user_shifts() {
     $type_ids = array_map('get_ids_from_array', $types);
     $_SESSION['ShiftsFilter'] = new ShiftsFilter(in_array('user_shifts_admin', $privileges), $room_ids, $type_ids);
   }
-  $_SESSION['ShiftsFilter'] = update_ShiftsFilter($_SESSION['ShiftsFilter'], in_array('user_shifts_admin', $privileges), $days);
+  update_ShiftsFilter($_SESSION['ShiftsFilter'], in_array('user_shifts_admin', $privileges), $days);
   $shiftsFilter = $_SESSION['ShiftsFilter'];
   
   $shifts = Shifts_by_ShiftsFilter($shiftsFilter, $user);
