@@ -4,10 +4,19 @@
  * Sign up for a shift.
  */
 function shift_entry_add_controller() {
+  global $privileges, $user;
+  
   if (isset($_REQUEST['shift_id']) && preg_match("/^[0-9]*$/", $_REQUEST['shift_id'])) {
     $shift_id = $_REQUEST['shift_id'];
   } else {
     redirect(page_link_to('user_shifts'));
+  }
+  
+  // Locations laden
+  $rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
+  $room_array = [];
+  foreach ($rooms as $room) {
+    $room_array[$room['RID']] = $room['Name'];
   }
   
   $shift = Shift($shift_id);
