@@ -31,51 +31,16 @@ function shift_edit_controller() {
   }
   $shift_id = $_REQUEST['edit_shift'];
   
-  // Locations laden
-  $rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
-  $room_array = [];
-  foreach ($rooms as $room) {
-    $room_array[$room['RID']] = $room['Name'];
-  }
+  $shift = Shift($shift_id);
   
-  $shift = sql_select("
-        SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.* FROM `Shifts`
-        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`)
-        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-        WHERE `SID`='" . sql_escape($shift_id) . "'");
-  if (count($shift) == 0) {
-    redirect(page_link_to('user_shifts'));
-  }
-  $shift = $shift[0];
+  $room = select_array(Rooms(), 'RID', 'Name');
+  $angeltypes = select_array(AngelTypes(), 'id', 'name');
+  $shifttypes = select_array(ShiftTypes(), 'id', 'name');
   
-  // Engeltypen laden
-  $types = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
-  $angel_types = [];
-  $needed_angel_types = [];
-  foreach ($types as $type) {
-    $angel_types[$type['id']] = $type;
-    $needed_angel_types[$type['id']] = 0;
-  }
-  
-  $shifttypes_source = ShiftTypes();
-  $shifttypes = [];
-  foreach ($shifttypes_source as $shifttype) {
-    $shifttypes[$shifttype['id']] = $shifttype['name'];
-  }
-  
-  // Benötigte Engeltypen vom Raum
-  $needed_angel_types_source = sql_select("SELECT `AngelTypes`.*, `NeededAngelTypes`.`count` FROM `AngelTypes` LEFT JOIN `NeededAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id` AND `NeededAngelTypes`.`room_id`='" . sql_escape($shift['RID']) . "') ORDER BY `AngelTypes`.`name`");
-  foreach ($needed_angel_types_source as $type) {
-    if ($type['count'] != "") {
-      $needed_angel_types[$type['id']] = $type['count'];
-    }
-  }
-  
-  // Benötigte Engeltypen von der Schicht
-  $needed_angel_types_source = sql_select("SELECT `AngelTypes`.*, `NeededAngelTypes`.`count` FROM `AngelTypes` LEFT JOIN `NeededAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id` AND `NeededAngelTypes`.`shift_id`='" . sql_escape($shift_id) . "') ORDER BY `AngelTypes`.`name`");
-  foreach ($needed_angel_types_source as $type) {
-    if ($type['count'] != "") {
-      $needed_angel_types[$type['id']] = $type['count'];
+  $needed_angel_types = select_array(NeededAngelTypes_by_shift($shift_id), 'id', 'count');
+  foreach (array_keys($angeltypes) as $angeltype_id) {
+    if (! isset($needed_angel_types[$angeltype_id])) {
+      $needed_angel_types[$angeltype_id] = 0;
     }
   }
   
@@ -90,11 +55,10 @@ function shift_edit_controller() {
     $title = strip_request_item('title');
     
     // Auswahl der sichtbaren Locations für die Schichten
-    if (isset($_REQUEST['rid']) && preg_match("/^[0-9]+$/", $_REQUEST['rid']) && isset($room_array[$_REQUEST['rid']])) {
+    if (isset($_REQUEST['rid']) && preg_match("/^[0-9]+$/", $_REQUEST['rid']) && isset($room[$_REQUEST['rid']])) {
       $rid = $_REQUEST['rid'];
     } else {
       $valid = false;
-      $rid = $rooms[0]['RID'];
       $msg .= error(_("Please select a room."), true);
     }
     
@@ -144,11 +108,11 @@ function shift_edit_controller() {
       if ($result === false) {
         engelsystem_error('Unable to update shift.');
       }
-      sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`='" . sql_escape($shift_id) . "'");
+      NeededAngelTypes_delete_by_shift($shift_id);
       $needed_angel_types_info = [];
       foreach ($needed_angel_types as $type_id => $count) {
-        sql_query("INSERT INTO `NeededAngelTypes` SET `shift_id`='" . sql_escape($shift_id) . "', `angel_type_id`='" . sql_escape($type_id) . "', `count`='" . sql_escape($count) . "'");
-        $needed_angel_types_info[] = $angel_types[$type_id]['name'] . ": " . $count;
+        NeededAngelType_add($shift_id, $type_id, null, $count);
+        $needed_angel_types_info[] = $angeltypes[$type_id] . ": " . $count;
       }
       
       engelsystem_log("Updated shift '" . $shifttypes[$shifttype_id] . ", " . $title . "' from " . date("Y-m-d H:i", $start) . " to " . date("Y-m-d H:i", $end) . " with angel types " . join(", ", $needed_angel_types_info));
@@ -160,9 +124,9 @@ function shift_edit_controller() {
     }
   }
   
-  $angel_types = "";
-  foreach ($types as $type) {
-    $angel_types .= form_spinner('type_' . $type['id'], $type['name'], $needed_angel_types[$type['id']]);
+  $angel_types_spinner = "";
+  foreach ($angeltypes as $angeltype_id => $angeltype_name) {
+    $angel_types_spinner .= form_spinner('type_' . $angeltype_id, $angeltype_name, $needed_angel_types[$angeltype_id]);
   }
   
   return page_with_title(shifts_title(), [
@@ -171,11 +135,11 @@ function shift_edit_controller() {
       form([
           form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
           form_text('title', _("Title"), $title),
-          form_select('rid', _("Room:"), $room_array, $rid),
+          form_select('rid', _("Room:"), $room, $rid),
           form_text('start', _("Start:"), date("Y-m-d H:i", $start)),
           form_text('end', _("End:"), date("Y-m-d H:i", $end)),
           '<h2>' . _("Needed angels") . '</h2>',
-          $angel_types,
+          $angel_types_spinner,
           form_submit('submit', _("Save")) 
       ]) 
   ]);

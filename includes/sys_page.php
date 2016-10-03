@@ -19,6 +19,24 @@ function raw_output($output) {
 }
 
 /**
+ * Helper function for transforming list of entities into array for select boxes.
+ * 
+ * @param array $data
+ *          The data array
+ * @param string $key_name
+ *          name of the column to use as id/key
+ * @param string $value_name
+ *          name of the column to use as displayed value
+ */
+function select_array($data, $key_name, $value_name) {
+  $ret = [];
+  foreach ($data as $value) {
+    $ret[$value[$key_name]] = $value[$value_name];
+  }
+  return $ret;
+}
+
+/**
  * Returns an int[] from given request param name.
  *
  * @param String $name

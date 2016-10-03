@@ -36,19 +36,23 @@ function admin_rooms() {
     }
     
     if (test_request_int('id')) {
-      $room = sql_select("SELECT * FROM `Room` WHERE `RID`='" . sql_escape($_REQUEST['id']) . "'");
-      if (count($room) > 0) {
-        $room_id = $_REQUEST['id'];
-        $name = $room[0]['Name'];
-        $from_pentabarf = $room[0]['FromPentabarf'];
-        $public = $room[0]['show'];
-        $number = $room[0]['Number'];
-        $needed_angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($room_id) . "'");
-        foreach ($needed_angeltypes as $needed_angeltype) {
-          $angeltypes_count[$needed_angeltype['angel_type_id']] = $needed_angeltype['count'];
-        }
-      } else {
+      $room = Room($_REQUEST['id']);
+      if ($room === false) {
+        engelsystem_error("Unable to load room.");
+      }
+      if ($room == null) {
         redirect(page_link_to('admin_rooms'));
+      }
+      
+      $room_id = $_REQUEST['id'];
+      $name = $room['Name'];
+      $from_pentabarf = $room['FromPentabarf'];
+      $public = $room['show'];
+      $number = $room['Number'];
+      
+      $needed_angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($room_id) . "'");
+      foreach ($needed_angeltypes as $needed_angeltype) {
+        $angeltypes_count[$needed_angeltype['angel_type_id']] = $needed_angeltype['count'];
       }
     }
     
@@ -106,7 +110,7 @@ function admin_rooms() {
             engelsystem_log("Room created: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);
           }
           
-          sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($room_id) . "'");
+          NeededAngelTypes_delete_by_room($room_id);
           $needed_angeltype_info = [];
           foreach ($angeltypes_count as $angeltype_id => $angeltype_count) {
             $angeltype = AngelType($angeltype_id);
@@ -114,7 +118,7 @@ function admin_rooms() {
               engelsystem_error("Unable to load angeltype.");
             }
             if ($angeltype != null) {
-              sql_query("INSERT INTO `NeededAngelTypes` SET `room_id`='" . sql_escape($room_id) . "', `angel_type_id`='" . sql_escape($angeltype_id) . "', `count`='" . sql_escape($angeltype_count) . "'");
+              NeededAngelType_add(null, $angeltype_id, $room_id, $count);
               $needed_angeltype_info[] = $angeltype['name'] . ": " . $angeltype_count;
             }
           }
