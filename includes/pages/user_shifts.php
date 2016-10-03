@@ -44,7 +44,7 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
   if (isset($_REQUEST['types'])) {
     $shiftsFilter->setTypes(check_request_int_array('types'));
   }
-
+  
   if ((isset($_REQUEST['start_time']) && isset($_REQUEST['start_day']) && isset($_REQUEST['end_time']) && isset($_REQUEST['end_day'])) || $shiftsFilter->getStartTime() == null || $shiftsFilter->getEndTime() == null) {
     $day = date('Y-m-d', time());
     $start_day = in_array($day, $days) ? $day : min($days);
@@ -352,6 +352,8 @@ function view_user_shifts() {
             $shifts_table .= '<td rowspan="' . $blocks . '" class="' . $class . '">';
             $shifts_table .= $shifts_row;
             $shifts_table .= "</td>";
+            // also output that shift on ical export
+            $ical_shifts[] = $shift;
             for ($j = 0; $j < $blocks && $i + $j < $maxshow; $j ++) {
               $todo[$rid][$i + $j] --;
             }
