@@ -9,7 +9,7 @@ function admin_shifts() {
   $valid = true;
   
   $rid = 0;
-  $start = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d") . " 00:00")->getTimestamp();
+  $start = parse_date("Y-m-d H:i", date("Y-m-d") . " 00:00");
   $end = $start;
   $mode = 'single';
   $angelmode = 'manually';
@@ -71,15 +71,15 @@ function admin_shifts() {
       error(_('Please select a location.'));
     }
     
-    if (isset($_REQUEST['start']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['start']))) {
-      $start = $tmp->getTimestamp();
+    if (isset($_REQUEST['start']) && $tmp = parse_date("Y-m-d H:i", $_REQUEST['start'])) {
+      $start = $tmp;
     } else {
       $valid = false;
       error(_('Please select a start time.'));
     }
     
-    if (isset($_REQUEST['end']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['end']))) {
-      $end = $tmp->getTimestamp();
+    if (isset($_REQUEST['end']) && $tmp = parse_date("Y-m-d H:i", $_REQUEST['end'])) {
+      $end = $tmp;
     } else {
       $valid = false;
       error(_('Please select an end time.'));
@@ -188,7 +188,7 @@ function admin_shifts() {
         } while ($shift_end < $end);
       } elseif ($mode == 'variable') {
         rsort($change_hours);
-        $day = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d", $start) . " 00:00")->getTimestamp();
+        $day = parse_date("Y-m-d H:i", date("Y-m-d", $start) . " 00:00");
         $change_index = 0;
         // Ersten/nächsten passenden Schichtwechsel suchen
         foreach ($change_hours as $i => $change_hour) {
@@ -205,7 +205,7 @@ function admin_shifts() {
         
         $shift_start = $start;
         do {
-          $day = DateTime::createFromFormat("Y-m-d H:i", date("Y-m-d", $shift_start) . " 00:00")->getTimestamp();
+          $day = parse_date("Y-m-d H:i", date("Y-m-d", $shift_start) . " 00:00");
           $shift_end = $day + $change_hours[$change_index] * 60 * 60;
           
           if ($shift_end > $end) {

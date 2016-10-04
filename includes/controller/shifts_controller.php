@@ -69,15 +69,15 @@ function shift_edit_controller() {
       $msg .= error(_('Please select a shifttype.'), true);
     }
     
-    if (isset($_REQUEST['start']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['start']))) {
-      $start = $tmp->getTimestamp();
+    if (isset($_REQUEST['start']) && $tmp = parse_date("Y-m-d H:i", $_REQUEST['start'])) {
+      $start = $tmp;
     } else {
       $valid = false;
       $msg .= error(_("Please enter a valid starting time for the shifts."), true);
     }
     
-    if (isset($_REQUEST['end']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['end']))) {
-      $end = $tmp->getTimestamp();
+    if (isset($_REQUEST['end']) && $tmp = parse_date("Y-m-d H:i", $_REQUEST['end'])) {
+      $end = $tmp;
     } else {
       $valid = false;
       $msg .= error(_("Please enter a valid ending time for the shifts."), true);

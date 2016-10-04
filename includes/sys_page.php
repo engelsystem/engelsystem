@@ -1,6 +1,27 @@
 <?php
 
 /**
+ * Provide page/request helper functions
+ */
+
+/**
+ * Parse a date into unix timestamp
+ *
+ * @param string $pattern
+ *          The date pattern (i.e. Y-m-d H:i)
+ * @param string $value
+ *          The string to parse
+ * @return The parsed unix timestamp
+ */
+function parse_date($pattern, $value) {
+  $datetime = DateTime::createFromFormat($pattern, trim($value));
+  if ($datetime == null) {
+    return null;
+  }
+  return $datetime->getTimestamp();
+}
+
+/**
  * Leitet den Browser an die übergebene URL weiter und hält das Script an.
  */
 function redirect($url) {
@@ -11,7 +32,8 @@ function redirect($url) {
 /**
  * Echoes given output and dies.
  *
- * @param String $output          
+ * @param String $output
+ *          String to display
  */
 function raw_output($output) {
   echo $output;
@@ -20,7 +42,7 @@ function raw_output($output) {
 
 /**
  * Helper function for transforming list of entities into array for select boxes.
- * 
+ *
  * @param array $data
  *          The data array
  * @param string $key_name
@@ -81,8 +103,8 @@ function check_request_date($name, $error_message = null, $null_allowed = false)
  * @return ValidationResult containing the parsed date
  */
 function check_date($input, $error_message = null, $null_allowed = false) {
-  if (DateTime::createFromFormat("Y-m-d", trim($input))) {
-    return new ValidationResult(true, DateTime::createFromFormat("Y-m-d", trim($input))->getTimestamp());
+  if ($tmp = parse_date("Y-m-d", trim($input))) {
+    return new ValidationResult(true, $tmp);
   }
   if ($null_allowed) {
     return new ValidationResult(true, null);

@@ -75,11 +75,8 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
       $end_time = "23:59";
     }
     
-    $startdatetime = DateTime::createFromFormat("Y-m-d H:i", $start_day . " " . $start_time);
-    $shiftsFilter->setStartTime($startdatetime->getTimestamp());
-    
-    $enddatetime = DateTime::createFromFormat("Y-m-d H:i", $end_day . " " . $end_time);
-    $shiftsFilter->setEndTime($enddatetime->getTimestamp());
+    $shiftsFilter->setStartTime(parse_date("Y-m-d H:i", $start_day . " " . $start_time));
+    $shiftsFilter->setEndTime(parse_date("Y-m-d H:i", $end_day . " " . $end_time));
   }
   
   return $shiftsFilter;
