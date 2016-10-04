@@ -16,9 +16,6 @@ function admin_user() {
   $user_id = $_REQUEST['id'];
   if (! isset($_REQUEST['action'])) {
     $user_source = User($user_id);
-    if ($user_source === false) {
-      engelsystem_error('Unable to load user.');
-    }
     if ($user_source == null) {
       error(_('This user does not exist.'));
       redirect(users_link());

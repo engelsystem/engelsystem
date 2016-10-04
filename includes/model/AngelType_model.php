@@ -135,7 +135,7 @@ function AngelType_ids() {
 function AngelType($angeltype_id) {
   $angelType_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($angeltype_id) . "' LIMIT 1");
   if ($angelType_source === false) {
-    return false;
+    engelsystem_error("Unable to load angeltype.");
   }
   if (count($angelType_source) > 0) {
     return $angelType_source[0];

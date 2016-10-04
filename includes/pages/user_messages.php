@@ -47,13 +47,7 @@ function user_messages() {
     
     foreach ($messages as $message) {
       $sender_user_source = User($message['SUID']);
-      if ($sender_user_source === false) {
-        engelsystem_error(_("Unable to load user."));
-      }
       $receiver_user_source = User($message['RUID']);
-      if ($receiver_user_source === false) {
-        engelsystem_error(_("Unable to load user."));
-      }
       
       $messages_table_entry = [
           'new' => $message['isRead'] == 'N' ? '<span class="glyphicon glyphicon-envelope"></span>' : '',

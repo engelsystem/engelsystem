@@ -22,9 +22,6 @@ function admin_news() {
           list($news) = $news;
           
           $user_source = User($news['UID']);
-          if ($user_source === false) {
-            engelsystem_error("Unable to load user.");
-          }
           
           $html .= form([
               form_info(_("Date"), date("Y-m-d H:i", $news['Datum'])),

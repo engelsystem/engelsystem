@@ -98,9 +98,6 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
   
   if ($user_angeltype == null) {
     $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
-    if ($user_angeltype === false) {
-      engelsystem_error('Unable to load user angeltype.');
-    }
   }
   
   $signed_up = false;

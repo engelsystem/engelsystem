@@ -71,9 +71,6 @@ function angeltype_delete_controller() {
   }
   
   $angeltype = AngelType($_REQUEST['angeltype_id']);
-  if ($angeltype === false) {
-    engelsystem_error("Unable to load angeltype.");
-  }
   if ($angeltype == null) {
     redirect(page_link_to('angeltypes'));
   }
@@ -109,9 +106,6 @@ function angeltype_edit_controller() {
   
   if (isset($_REQUEST['angeltype_id'])) {
     $angeltype = AngelType($_REQUEST['angeltype_id']);
-    if ($angeltype === false) {
-      engelsystem_error("Unable to load angeltype.");
-    }
     if ($angeltype == null) {
       redirect(page_link_to('angeltypes'));
     }
@@ -196,17 +190,11 @@ function angeltype_controller() {
   }
   
   $angeltype = AngelType($_REQUEST['angeltype_id']);
-  if ($angeltype === false) {
-    engelsystem_error("Unable to load angeltype.");
-  }
   if ($angeltype == null) {
     redirect(page_link_to('angeltypes'));
   }
   
   $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
-  if ($user_angeltype === false) {
-    engelsystem_error("Unable to load user angeltype.");
-  }
   
   $user_driver_license = UserDriverLicense($user['UID']);
   if ($user_driver_license === false) {
@@ -277,9 +265,6 @@ function load_angeltype() {
   }
   
   $angeltype = AngelType($_REQUEST['angeltype_id']);
-  if ($angeltype === false) {
-    engelsystem_error("Unable to load angeltype.");
-  }
   if ($angeltype == null) {
     error(_("Angeltype doesn't exist."));
     redirect(page_link_to('angeltypes'));

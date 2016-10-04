@@ -114,9 +114,6 @@ function admin_rooms() {
           $needed_angeltype_info = [];
           foreach ($angeltypes_count as $angeltype_id => $angeltype_count) {
             $angeltype = AngelType($angeltype_id);
-            if ($angeltype === false) {
-              engelsystem_error("Unable to load angeltype.");
-            }
             if ($angeltype != null) {
               NeededAngelType_add(null, $angeltype_id, $room_id, $angeltype_count);
               $needed_angeltype_info[] = $angeltype['name'] . ": " . $angeltype_count;

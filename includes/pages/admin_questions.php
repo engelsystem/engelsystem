@@ -26,9 +26,6 @@ function admin_questions() {
     $questions = sql_select("SELECT * FROM `Questions` WHERE `AID` IS NULL");
     foreach ($questions as $question) {
       $user_source = User($question['UID']);
-      if ($user_source === false) {
-        engelsystem_error("Unable to load user.");
-      }
       
       $unanswered_questions_table[] = [
           'from' => User_Nick_render($user_source),
@@ -45,14 +42,7 @@ function admin_questions() {
     $questions = sql_select("SELECT * FROM `Questions` WHERE NOT `AID` IS NULL");
     foreach ($questions as $question) {
       $user_source = User($question['UID']);
-      if ($user_source === false) {
-        engelsystem_error("Unable to load user.");
-      }
-      
       $answer_user_source = User($question['AID']);
-      if ($answer_user_source === false) {
-        engelsystem_error("Unable to load user.");
-      }
       $answered_questions_table[] = [
           'from' => User_Nick_render($user_source),
           'question' => str_replace("\n", "<br />", $question['Question']),

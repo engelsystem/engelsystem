@@ -113,12 +113,16 @@ function User_is_freeloader($user) {
  * @param Angeltype $angeltype          
  */
 function Users_by_angeltype_inverted($angeltype) {
-  return sql_select("
+  $result = sql_select("
       SELECT `User`.*
       FROM `User`
       LEFT JOIN `UserAngelTypes` ON (`User`.`UID`=`UserAngelTypes`.`user_id` AND `angeltype_id`='" . sql_escape($angeltype['id']) . "')
       WHERE `UserAngelTypes`.`id` IS NULL
       ORDER BY `Nick`");
+  if ($result === false) {
+    engelsystem_error("Unable to load users.");
+  }
+  return $result;
 }
 
 /**
@@ -165,7 +169,7 @@ function User_validate_Nick($nick) {
 function User($user_id) {
   $user_source = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
   if ($user_source === false) {
-    return false;
+    engelsystem_error("Unable to load user.");
   }
   if (count($user_source) > 0) {
     return $user_source[0];
