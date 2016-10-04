@@ -159,19 +159,13 @@ function shift_delete_controller() {
   $shift_id = $_REQUEST['delete_shift'];
   
   $shift = Shift($shift_id);
-  if ($shift === false) {
-    engelsystem_error('Unable to load shift.');
-  }
   if ($shift == null) {
     redirect(page_link_to('user_shifts'));
   }
   
   // Schicht löschen bestätigt
   if (isset($_REQUEST['delete'])) {
-    $result = Shift_delete($shift_id);
-    if ($result === false) {
-      engelsystem_error('Unable to delete shift.');
-    }
+    Shift_delete($shift_id);
     
     engelsystem_log("Deleted shift " . $shift['name'] . " from " . date("Y-m-d H:i", $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']));
     success(_("Shift deleted."));
@@ -196,33 +190,15 @@ function shift_controller() {
   }
   
   $shift = Shift($_REQUEST['shift_id']);
-  if ($shift === false) {
-    engelsystem_error('Unable to load shift.');
-  }
   if ($shift == null) {
-    error(_('Shift could not be found.'));
+    error(_("Shift could not be found."));
     redirect(page_link_to('user_shifts'));
   }
   
   $shifttype = ShiftType($shift['shifttype_id']);
-  if ($shifttype === false || $shifttype == null) {
-    engelsystem_error('Unable to load shift type.');
-  }
-  
   $room = Room($shift['RID']);
-  if ($room === false || $room == null) {
-    engelsystem_error('Unable to load room.');
-  }
-  
   $angeltypes = AngelTypes();
-  if ($angeltypes === false) {
-    engelsystem_error('Unable to load angeltypes.');
-  }
-  
   $user_shifts = Shifts_by_user($user);
-  if ($user_shifts === false) {
-    engelsystem_error('Unable to load users shifts.');
-  }
   
   $signed_up = false;
   foreach ($user_shifts as $user_shift) {

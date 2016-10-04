@@ -91,7 +91,7 @@ function AngelType_validate_name($name, $angeltype) {
  * @param User $user          
  */
 function AngelTypes_with_user($user) {
-  return sql_select("
+  $result = sql_select("
       SELECT `AngelTypes`.*, 
       `UserAngelTypes`.`id` as `user_angeltype_id`,
       `UserAngelTypes`.`confirm_user_id`,
@@ -100,16 +100,24 @@ function AngelTypes_with_user($user) {
       LEFT JOIN `UserAngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id` 
       AND `UserAngelTypes`.`user_id`=" . $user['UID'] . "
       ORDER BY `name`");
+  if ($result === false) {
+    engelsystem_error("Unable to load angeltypes.");
+  }
+  return $result;
 }
 
 /**
  * Returns all angeltypes.
  */
 function AngelTypes() {
-  return sql_select("
+  $result = sql_select("
       SELECT * 
       FROM `AngelTypes` 
       ORDER BY `name`");
+  if ($result === false) {
+    engelsystem_error("Unable to load angeltypes.");
+  }
+  return $result;
 }
 
 /**

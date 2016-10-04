@@ -21,9 +21,6 @@ function shift_entry_add_controller() {
   
   $shift = Shift($shift_id);
   $shift['Name'] = $room_array[$shift['RID']];
-  if ($shift === false) {
-    engelsystem_error('Unable to load shift.');
-  }
   if ($shift == null) {
     redirect(page_link_to('user_shifts'));
   }

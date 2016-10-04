@@ -50,9 +50,6 @@ function angeltypes_about_controller() {
   } else {
     $angeltypes = AngelTypes();
   }
-  if ($angeltypes === false) {
-    engelsystem_error("Unable to load angeltypes.");
-  }
   
   return [
       _("Teams/Job description"),
@@ -223,9 +220,6 @@ function angeltypes_list_controller() {
   }
   
   $angeltypes = AngelTypes_with_user($user);
-  if ($angeltypes === false) {
-    engelsystem_error("Unable to load angeltypes.");
-  }
   
   foreach ($angeltypes as &$angeltype) {
     $actions = [

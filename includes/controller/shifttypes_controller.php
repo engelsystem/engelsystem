@@ -48,9 +48,6 @@ function shifttype_edit_controller() {
   $description = "";
   
   $angeltypes = AngelTypes();
-  if ($angeltypes === false) {
-    engelsystem_error("Unable to load angel types.");
-  }
   
   if (isset($_REQUEST['shifttype_id'])) {
     $shifttype = ShiftType($_REQUEST['shifttype_id']);

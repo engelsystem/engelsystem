@@ -93,9 +93,6 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
   
   if ($user_shifts == null) {
     $user_shifts = Shifts_by_user($user);
-    if ($user_shifts === false) {
-      engelsystem_error('Unable to load users shifts.');
-    }
   }
   
   $collides = Shift_collides($shift, $user_shifts);
@@ -166,7 +163,11 @@ function Shift_delete_by_psid($shift_psid) {
 function Shift_delete($shift_id) {
   mail_shift_delete(Shift($shift_id));
   
-  return sql_query("DELETE FROM `Shifts` WHERE `SID`='" . sql_escape($shift_id) . "'");
+  $result = sql_query("DELETE FROM `Shifts` WHERE `SID`='" . sql_escape($shift_id) . "'");
+  if ($result === false) {
+    engelsystem_error('Unable to delete shift.');
+  }
+  return $result;
 }
 
 /**
@@ -232,7 +233,7 @@ function Shift_create($shift) {
  * Return users shifts.
  */
 function Shifts_by_user($user) {
-  return sql_select("
+  $result = sql_select("
       SELECT `ShiftTypes`.`id` as `shifttype_id`, `ShiftTypes`.`name`, `ShiftEntry`.*, `Shifts`.*, `Room`.* 
       FROM `ShiftEntry` 
       JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
@@ -241,6 +242,10 @@ function Shifts_by_user($user) {
       WHERE `UID`='" . sql_escape($user['UID']) . "' 
       ORDER BY `start`
       ");
+  if ($result === false) {
+    engelsystem_error('Unable to load users shifts.');
+  }
+  return $result;
 }
 
 /**
@@ -304,27 +309,29 @@ function Shift($shift_id) {
   $shiftsEntry_source = sql_select("SELECT `id`, `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`='" . sql_escape($shift_id) . "'");
   
   if ($shifts_source === false) {
-    return false;
+    engelsystem_error('Unable to load shift.');
   }
-  if (count($shifts_source) > 0) {
-    $result = $shifts_source[0];
-    
-    $result['ShiftEntry'] = $shiftsEntry_source;
-    $result['NeedAngels'] = [];
-    
-    $temp = NeededAngelTypes_by_shift($shift_id);
-    foreach ($temp as $e) {
-      $result['NeedAngels'][] = [
-          'TID' => $e['angel_type_id'],
-          'count' => $e['count'],
-          'restricted' => $e['restricted'],
-          'taken' => $e['taken'] 
-      ];
-    }
-    
-    return $result;
+  
+  if (empty($shifts_source)) {
+    return null;
   }
-  return null;
+  
+  $result = $shifts_source[0];
+  
+  $result['ShiftEntry'] = $shiftsEntry_source;
+  $result['NeedAngels'] = [];
+  
+  $temp = NeededAngelTypes_by_shift($shift_id);
+  foreach ($temp as $e) {
+    $result['NeedAngels'][] = [
+        'TID' => $e['angel_type_id'],
+        'count' => $e['count'],
+        'restricted' => $e['restricted'],
+        'taken' => $e['taken'] 
+    ];
+  }
+  
+  return $result;
 }
 
 /**
