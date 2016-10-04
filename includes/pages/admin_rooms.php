@@ -118,7 +118,7 @@ function admin_rooms() {
               engelsystem_error("Unable to load angeltype.");
             }
             if ($angeltype != null) {
-              NeededAngelType_add(null, $angeltype_id, $room_id, $count);
+              NeededAngelType_add(null, $angeltype_id, $room_id, $angeltype_count);
               $needed_angeltype_info[] = $angeltype['name'] . ": " . $angeltype_count;
             }
           }

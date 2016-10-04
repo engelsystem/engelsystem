@@ -88,12 +88,12 @@ function shift_edit_controller() {
       $msg .= error(_("The ending time has to be after the starting time."), true);
     }
     
-    foreach ($needed_angel_types_source as $type) {
-      if (isset($_REQUEST['type_' . $type['id']]) && preg_match("/^[0-9]+$/", trim($_REQUEST['type_' . $type['id']]))) {
-        $needed_angel_types[$type['id']] = trim($_REQUEST['type_' . $type['id']]);
+    foreach ($needed_angel_types as $needed_angeltype_id => $needed_angeltype_name) {
+      if (isset($_REQUEST['type_' . $needed_angeltype_id]) && test_request_int('type_' . $needed_angeltype_id)) {
+        $needed_angel_types[$needed_angeltype_id] = trim($_REQUEST['type_' . $needed_angeltype_id]);
       } else {
         $valid = false;
-        $msg .= error(sprintf(_("Please check your input for needed angels of type %s."), $type['name']), true);
+        $msg .= error(sprintf(_("Please check your input for needed angels of type %s."), $needed_angeltype_name), true);
       }
     }
     

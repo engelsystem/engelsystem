@@ -9,7 +9,7 @@ function shifts_title() {
  * Start different controllers for deleting shifts and shift_entries, edit shifts and add shift entries.
  */
 function user_shifts() {
-  global $user, $privileges;
+  global $user;
   
   if (User_is_freeloader($user)) {
     redirect(page_link_to('user_myshifts'));
