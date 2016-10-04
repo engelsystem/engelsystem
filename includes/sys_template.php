@@ -374,11 +374,11 @@ function render_table($columns, $rows, $data = true) {
   foreach ($rows as $row) {
     $html .= '<tr>';
     foreach ($columns as $key => $column) {
+      $value = "&nbsp;";
       if (isset($row[$key])) {
-        $html .= '<td class="column_' . $key . '">' . $row[$key] . '</td>';
-      } else {
-        $html .= '<td class="column_' . $key . '">&nbsp;</td>';
+        $value = $row[$key];
       }
+      $html .= '<td class="column_' . $key . '">' . $value . '</td>';
     }
     $html .= '</tr>';
   }
