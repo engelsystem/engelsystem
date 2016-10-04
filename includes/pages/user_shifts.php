@@ -35,38 +35,13 @@ function user_shifts() {
  * @param ShiftsFilter $shiftsFilter
  *          The shiftfilter to update.
  */
-function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter) {
-  $day = date('Y-m-d', time());
-  $start_day = in_array($day, $days) ? $day : min($days);
-  if (isset($_REQUEST['start_day']) && in_array($_REQUEST['start_day'], $days)) {
-    $start_day = $_REQUEST['start_day'];
-  }
+function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days) {
+  $shiftsFilter->setStartTime(check_request_datetime('start_day', 'start_time', $days, time()));
+  $shiftsFilter->setEndTime(check_request_datetime('end_day', 'end_time', $days, time() + 24 * 60 * 60));
   
-  $start_time = date("H:i");
-  if (isset($_REQUEST['start_time']) && preg_match('#^\d{1,2}:\d\d$#', $_REQUEST['start_time'])) {
-    $start_time = $_REQUEST['start_time'];
+  if ($shiftsFilter->getStartTime() > $shiftsFilter->getEndTime()) {
+    $shiftsFilter->setEndTime($shiftsFilter->getStartTime() + 24 * 60 * 60);
   }
-  
-  $day = date('Y-m-d', time() + 24 * 60 * 60);
-  $end_day = in_array($day, $days) ? $day : max($days);
-  if (isset($_REQUEST['end_day']) && in_array($_REQUEST['end_day'], $days)) {
-    $end_day = $_REQUEST['end_day'];
-  }
-  
-  $end_time = date("H:i");
-  if (isset($_REQUEST['end_time']) && preg_match('#^\d{1,2}:\d\d$#', $_REQUEST['end_time'])) {
-    $end_time = $_REQUEST['end_time'];
-  }
-  
-  if ($start_day > $end_day) {
-    $end_day = $start_day;
-  }
-  if ($start_day == $end_day && $start_time >= $end_time) {
-    $end_time = "23:59";
-  }
-  
-  $shiftsFilter->setStartTime(parse_date("Y-m-d H:i", $start_day . " " . $start_time));
-  $shiftsFilter->setEndTime(parse_date("Y-m-d H:i", $end_day . " " . $end_time));
 }
 
 /**
@@ -91,7 +66,7 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
     $shiftsFilter->setTypes(check_request_int_array('types'));
   }
   if ((isset($_REQUEST['start_time']) && isset($_REQUEST['start_day']) && isset($_REQUEST['end_time']) && isset($_REQUEST['end_day'])) || $shiftsFilter->getStartTime() == null || $shiftsFilter->getEndTime() == null) {
-    update_ShiftsFilter_timerange($shiftsFilter);
+    update_ShiftsFilter_timerange($shiftsFilter, $days);
   }
 }
 

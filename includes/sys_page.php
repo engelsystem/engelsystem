@@ -5,6 +5,32 @@
  */
 
 /**
+ * Parse a date from da day and a time textfield.
+ *
+ * @param string $date_name
+ *          Name of the textfield containing the day (format Y-m-d)
+ * @param string $time_name
+ *          Name of the textfield containing the time (format H:i)
+ * @param string[] $allowed_days
+ *          List of allowed days in format Y-m-d
+ * @param int $default_value
+ *          Default value unix timestamp
+ */
+function check_request_datetime($date_name, $time_name, $allowed_days, $default_value) {
+  $time = date("H:i", $default_value);
+  $day = date("Y-m-d", $default_value);
+  
+  if (isset($_REQUEST[$time_name]) && preg_match('#^\d{1,2}:\d\d$#', trim($_REQUEST[$time_name]))) {
+    $time = trim($_REQUEST[$time_name]);
+  }
+  if (isset($_REQUEST[$date_name]) && in_array($_REQUEST[$date_name], $allowed_days)) {
+    $day = $_REQUEST[$date_name];
+  }
+  
+  return parse_date("Y-m-d H:i", $day . " " . $time);
+}
+
+/**
  * Parse a date into unix timestamp
  *
  * @param string $pattern
