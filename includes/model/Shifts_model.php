@@ -57,7 +57,11 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
   $SQL .= "
   ORDER BY `start`";
   
-  return sql_select($SQL);
+  $result = sql_select($SQL);
+  if ($result === false) {
+    engelsystem_error("Unable to load shifts by filter.");
+  }
+  return $result;
 }
 
 /**

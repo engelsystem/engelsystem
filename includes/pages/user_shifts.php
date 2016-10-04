@@ -29,9 +29,55 @@ function user_shifts() {
 }
 
 /**
+ * Helper function that updates the start and end time from request data.
+ * Use update_ShiftsFilter().
+ *
+ * @param ShiftsFilter $shiftsFilter
+ *          The shiftfilter to update.
+ */
+function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter) {
+  $day = date('Y-m-d', time());
+  $start_day = in_array($day, $days) ? $day : min($days);
+  if (isset($_REQUEST['start_day']) && in_array($_REQUEST['start_day'], $days)) {
+    $start_day = $_REQUEST['start_day'];
+  }
+  
+  $start_time = date("H:i");
+  if (isset($_REQUEST['start_time']) && preg_match('#^\d{1,2}:\d\d$#', $_REQUEST['start_time'])) {
+    $start_time = $_REQUEST['start_time'];
+  }
+  
+  $day = date('Y-m-d', time() + 24 * 60 * 60);
+  $end_day = in_array($day, $days) ? $day : max($days);
+  if (isset($_REQUEST['end_day']) && in_array($_REQUEST['end_day'], $days)) {
+    $end_day = $_REQUEST['end_day'];
+  }
+  
+  $end_time = date("H:i");
+  if (isset($_REQUEST['end_time']) && preg_match('#^\d{1,2}:\d\d$#', $_REQUEST['end_time'])) {
+    $end_time = $_REQUEST['end_time'];
+  }
+  
+  if ($start_day > $end_day) {
+    $end_day = $start_day;
+  }
+  if ($start_day == $end_day && $start_time >= $end_time) {
+    $end_time = "23:59";
+  }
+  
+  $shiftsFilter->setStartTime(parse_date("Y-m-d H:i", $start_day . " " . $start_time));
+  $shiftsFilter->setEndTime(parse_date("Y-m-d H:i", $end_day . " " . $end_time));
+}
+
+/**
  * Update given ShiftsFilter with filter params from user input
  *
- * @return the updated ShiftsFilter
+ * @param ShiftsFilter $shiftsFilter
+ *          The shifts filter to update from request data
+ * @param boolean $user_shifts_admin
+ *          Has the user user_shift_admin privilege?
+ * @param string[] $days
+ *          An array of available filter days
  */
 function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $days) {
   $shiftsFilter->setUserShiftsAdmin($user_shifts_admin);
@@ -44,42 +90,44 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
   if (isset($_REQUEST['types'])) {
     $shiftsFilter->setTypes(check_request_int_array('types'));
   }
-  
   if ((isset($_REQUEST['start_time']) && isset($_REQUEST['start_day']) && isset($_REQUEST['end_time']) && isset($_REQUEST['end_day'])) || $shiftsFilter->getStartTime() == null || $shiftsFilter->getEndTime() == null) {
-    $day = date('Y-m-d', time());
-    $start_day = in_array($day, $days) ? $day : min($days);
-    if (isset($_REQUEST['start_day']) && in_array($_REQUEST['start_day'], $days)) {
-      $start_day = $_REQUEST['start_day'];
-    }
-    
-    $start_time = date("H:i");
-    if (isset($_REQUEST['start_time']) && preg_match('#^\d{1,2}:\d\d$#', $_REQUEST['start_time'])) {
-      $start_time = $_REQUEST['start_time'];
-    }
-    
-    $day = date('Y-m-d', time() + 24 * 60 * 60);
-    $end_day = in_array($day, $days) ? $day : max($days);
-    if (isset($_REQUEST['end_day']) && in_array($_REQUEST['end_day'], $days)) {
-      $end_day = $_REQUEST['end_day'];
-    }
-    
-    $end_time = date("H:i");
-    if (isset($_REQUEST['end_time']) && preg_match('#^\d{1,2}:\d\d$#', $_REQUEST['end_time'])) {
-      $end_time = $_REQUEST['end_time'];
-    }
-    
-    if ($start_day > $end_day) {
-      $end_day = $start_day;
-    }
-    if ($start_day == $end_day && $start_time >= $end_time) {
-      $end_time = "23:59";
-    }
-    
-    $shiftsFilter->setStartTime(parse_date("Y-m-d H:i", $start_day . " " . $start_time));
-    $shiftsFilter->setEndTime(parse_date("Y-m-d H:i", $end_day . " " . $end_time));
+    update_ShiftsFilter_timerange($shiftsFilter);
   }
+}
+
+function load_rooms() {
+  $rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
+  if (count($rooms) == 0) {
+    error(_("The administration has not configured any rooms yet."));
+    redirect('?');
+  }
+  return $rooms;
+}
+
+function load_days() {
+  $days = sql_select_single_col("
+      SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name`
+      FROM `Shifts`
+      ORDER BY `start`");
+  if (count($days) == 0) {
+    error(_("The administration has not configured any shifts yet."));
+    redirect('?');
+  }
+  return $days;
+}
+
+function load_types() {
+  global $user;
   
-  return $shiftsFilter;
+  if (sql_num_query("SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0") == 0) {
+    error(_("The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype."));
+    redirect('?');
+  }
+  $types = sql_select("SELECT `AngelTypes`.`id`, `AngelTypes`.`name`, (`AngelTypes`.`restricted`=0 OR (NOT `UserAngelTypes`.`confirm_user_id` IS NULL OR `UserAngelTypes`.`id` IS NULL)) as `enabled` FROM `AngelTypes` LEFT JOIN `UserAngelTypes` ON (`UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id` AND `UserAngelTypes`.`user_id`='" . sql_escape($user['UID']) . "') ORDER BY `AngelTypes`.`name`");
+  if (empty($types)) {
+    return sql_select("SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0");
+  }
+  return $types;
 }
 
 function view_user_shifts() {
@@ -87,35 +135,9 @@ function view_user_shifts() {
   global $ical_shifts;
   
   $ical_shifts = [];
-  $days = sql_select_single_col("
-      SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name`
-      FROM `Shifts`
-      ORDER BY `start`");
-  
-  if (count($days) == 0) {
-    error(_("The administration has not configured any shifts yet."));
-    redirect('?');
-  }
-  
-  $rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
-  if (count($rooms) == 0) {
-    error(_("The administration has not configured any rooms yet."));
-    redirect('?');
-  }
-  
-  if (in_array('user_shifts_admin', $privileges)) {
-    $types = sql_select("SELECT `id`, `name` FROM `AngelTypes` ORDER BY `AngelTypes`.`name`");
-  } else {
-    $types = sql_select("SELECT `AngelTypes`.`id`, `AngelTypes`.`name`, (`AngelTypes`.`restricted`=0 OR (NOT `UserAngelTypes`.`confirm_user_id` IS NULL OR `UserAngelTypes`.`id` IS NULL)) as `enabled` FROM `AngelTypes` LEFT JOIN `UserAngelTypes` ON (`UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id` AND `UserAngelTypes`.`user_id`='" . sql_escape($user['UID']) . "') ORDER BY `AngelTypes`.`name`");
-  }
-  if (empty($types)) {
-    $types = sql_select("SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0");
-  }
-  
-  if (count($types) == 0) {
-    error(_("The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype."));
-    redirect('?');
-  }
+  $days = load_days();
+  $rooms = load_rooms();
+  $types = load_types();
   
   if (! isset($_SESSION['ShiftsFilter'])) {
     $room_ids = array_map('get_ids_from_array', $rooms);
@@ -126,9 +148,6 @@ function view_user_shifts() {
   $shiftsFilter = $_SESSION['ShiftsFilter'];
   
   $shifts = Shifts_by_ShiftsFilter($shiftsFilter, $user);
-  if ($shifts === false) {
-    engelsystem_error("Unable to load shifts by filter.");
-  }
   
   $ownshifts_source = sql_select("
       SELECT `ShiftTypes`.`name`, `Shifts`.*
