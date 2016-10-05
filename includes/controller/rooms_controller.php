@@ -1,6 +1,7 @@
 <?php
 use Engelsystem\ShiftsFilterRenderer;
 use Engelsystem\ShiftsFilter;
+use Engelsystem\ShiftCalendarRenderer;
 
 /**
  * Room controllers for managing everything room related.
@@ -26,18 +27,27 @@ function room_controller() {
     }
   }
   
-  $shiftsFilter = new ShiftsFilter(false, [
+  $shiftsFilter = new ShiftsFilter(true, [
       $room['RID'] 
-  ], []);
-  $shiftsFilter->setStartTime(time());
-  $shiftsFilter->setEndTime(time() + 24 * 60 * 60);
+  ], AngelType_ids());
+  $selected_day = date("Y-m-d");
+  if (! empty($days)) {
+    $selected_day = $days[0];
+  }
+  if (isset($_REQUEST['shifts_filter_day'])) {
+    $selected_day = $_REQUEST['shifts_filter_day'];
+  }
+  $shiftsFilter->setStartTime(parse_date("Y-m-d H:i", $selected_day . ' 00:00'));
+  $shiftsFilter->setEndTime(parse_date("Y-m-d H:i", $selected_day . ' 23:59'));
   
   $shiftsFilterRenderer = new ShiftsFilterRenderer($shiftsFilter);
-  $shiftsFilterRenderer->enableDaySelection($days, EventConfig());
+  $shiftsFilterRenderer->enableDaySelection($days);
+  
+  $shifts = Shifts_by_ShiftsFilter($shiftsFilter, $user);
   
   return [
       $room['Name'],
-      Room_view($room, $shiftsFilterRenderer) 
+      Room_view($room, $shiftsFilterRenderer, new ShiftCalendarRenderer($shifts, $shiftsFilter)) 
   ];
 }
 

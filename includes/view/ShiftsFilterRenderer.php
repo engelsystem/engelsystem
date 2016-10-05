@@ -18,9 +18,13 @@ class ShiftsFilterRenderer {
    */
   private $daySelectionEnabled = false;
 
+  /**
+   * Days that can be selected.
+   * Format Y-m-d
+   *
+   * @var string[]
+   */
   private $days = [];
-
-  private $event_config = null;
 
   public function __construct(ShiftsFilter $shiftsFilter) {
     $this->shiftsFilter = $shiftsFilter;
@@ -31,14 +35,14 @@ class ShiftsFilterRenderer {
    *
    * @return Generated HTML
    */
-  public function render() {
+  public function render($link_base) {
     $toolbar = [];
     if ($this->daySelectionEnabled && ! empty($this->days)) {
       $today = date("Y-m-d");
       $selected_day = date("Y-m-d", $this->shiftsFilter->getStartTime());
       $day_dropdown_items = [];
       foreach ($this->days as $day) {
-        $day_dropdown_items[] = toolbar_item_link('', '', $day);
+        $day_dropdown_items[] = toolbar_item_link($link_base . '&shifts_filter_day=' . $day, '', $day);
       }
       $toolbar[] = toolbar_dropdown('', $selected_day, $day_dropdown_items, 'active');
     }
@@ -48,10 +52,9 @@ class ShiftsFilterRenderer {
   /**
    * Should the filter display a day selection.
    */
-  public function enableDaySelection($days, $event_config) {
+  public function enableDaySelection($days) {
     $this->daySelectionEnabled = true;
     $this->days = $days;
-    $this->event_config = $event_config;
   }
 
   /**

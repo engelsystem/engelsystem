@@ -49,7 +49,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
               AND `ShiftEntry`.`SID` = `Shifts`.`SID`
           )
       )";
-    } elseif ($_SESSION['user_shifts']['filled'][0] == 1) {
+    } elseif ($_SESSION['user_shifts']['filled'][0] == ShiftsFilter::FILLED_FILLED) {
       $SQL .= "
       AND (
           nat.`count` <= entries.`count` 

@@ -124,14 +124,11 @@ function AngelTypes() {
  * Returns AngelType id array
  */
 function AngelType_ids() {
-  $angelType_source = sql_select("SELECT `id` FROM `AngelTypes`");
-  if ($angelType_source === false) {
-    return false;
+  $result = sql_select("SELECT `id` FROM `AngelTypes`");
+  if ($result === false) {
+    engelsystem_error("Unable to load angeltypes.");
   }
-  if (count($angelType_source) > 0) {
-    return $angelType_source;
-  }
-  return null;
+  return select_array($result, 'id', 'id');
 }
 
 /**

@@ -1,9 +1,11 @@
 <?php
 use Engelsystem\ShiftsFilterRenderer;
+use Engelsystem\ShiftCalendarRenderer;
 
-function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer) {
+function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalendarRenderer $shiftCalendarRenderer) {
   return page_with_title(glyph('map-marker') . $room['Name'], [
-      $shiftsFilterRenderer->render() 
+      $shiftsFilterRenderer->render(room_link($room)) ,
+      $shiftCalendarRenderer->render()
   ]);
 }
 
