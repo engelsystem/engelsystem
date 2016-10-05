@@ -129,6 +129,8 @@ function make_navigation() {
     }
   }
   
+  $menu = make_room_navigation($menu);
+  
   $admin_menu = [];
   $admin_pages = [
       "admin_arrive" => admin_arrive_title(),
@@ -156,6 +158,32 @@ function make_navigation() {
   }
   
   return toolbar($menu);
+}
+
+/**
+ * Adds room navigation to the given menu.
+ *
+ * @param string[] $menu
+ *          Rendered menu
+ */
+function make_room_navigation($menu) {
+  global $privileges;
+  
+  $rooms = Rooms();
+  $room_menu = [];
+  if (in_array('admin_rooms', $privileges)) {
+    $room_menu[] = toolbar_item_link(page_link_to('admin_rooms'), 'list', _("Manage rooms"));
+  }
+  if (count($room_menu) > 0) {
+    $room_menu[] = toolbar_item_divider();
+  }
+  foreach ($rooms as $room) {
+    $room_menu[] = toolbar_item_link(room_link($room), 'map-marker', $room['Name']);
+  }
+  if (count($room_menu > 0)) {
+    $menu[] = toolbar_dropdown('map-marker', _("Rooms"), $room_menu);
+  }
+  return $menu;
 }
 
 function make_menu() {

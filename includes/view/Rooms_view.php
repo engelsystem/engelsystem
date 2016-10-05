@@ -1,4 +1,11 @@
 <?php
+use Engelsystem\ShiftsFilterRenderer;
+
+function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer) {
+  return page_with_title(glyph('map-marker') . $room['Name'], [
+      $shiftsFilterRenderer->render() 
+  ]);
+}
 
 function Room_name_render($room) {
   global $privileges;

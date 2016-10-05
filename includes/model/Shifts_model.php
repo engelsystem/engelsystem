@@ -1,6 +1,14 @@
 <?php
 use Engelsystem\ShiftsFilter;
 
+function Shifts_by_room($room) {
+  $result = sql_select("SELECT * FROM `Shifts` WHERE `RID`=" . sql_escape($room['RID']));
+  if ($result === false) {
+    engelsystem_error("Unable to load shifts.");
+  }
+  return $result;
+}
+
 function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
   $SQL = "SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`, nat2.`special_needs` > 0 AS 'has_special_needs'
   FROM `Shifts`

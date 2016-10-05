@@ -9,7 +9,7 @@ function admin_rooms() {
   $rooms = [];
   foreach ($rooms_source as $room) {
     $rooms[] = [
-        'name' => $room['Name'],
+        'name' => Room_name_render($room),
         'from_pentabarf' => $room['FromPentabarf'] == 'Y' ? '&#10003;' : '',
         'public' => $room['show'] == 'Y' ? '&#10003;' : '',
         'actions' => buttons([

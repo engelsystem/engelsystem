@@ -60,6 +60,10 @@ function toolbar($items = [], $right = false) {
   return '<ul class="nav navbar-nav' . ($right ? ' navbar-right' : '') . '">' . join("\n", $items) . '</ul>';
 }
 
+function toolbar_pills($items) {
+  return '<ul class="nav nav-pills">' . join("\n", $items) . '</ul>';
+}
+
 /**
  * Render a link for a toolbar.
  *
