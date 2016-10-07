@@ -2,7 +2,7 @@
 use Engelsystem\ShiftsFilter;
 
 function Shifts_by_room($room) {
-  $result = sql_select("SELECT * FROM `Shifts` WHERE `RID`=" . sql_escape($room['RID']));
+  $result = sql_select("SELECT * FROM `Shifts` WHERE `RID`=" . sql_escape($room['RID']) . " ORDER BY `start`");
   if ($result === false) {
     engelsystem_error("Unable to load shifts.");
   }

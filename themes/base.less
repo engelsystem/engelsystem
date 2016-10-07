@@ -10,23 +10,22 @@ body {
   color: @text-muted;
 }
 
-#shifts {
-  td {
-    &.free {
-      border: 1px solid @brand-danger;
-      .bg-danger();
-    }
-    &.occupied {
-      border: 1px solid @brand-success;
-      .bg-success();
-    }
-    &.collides {
-      border: 1px solid @brand-warning;
-      .bg-warning();
-    }
-    &.own {
-      border: 1px solid @gray-light;
-    }
+#shifts.table {
+	td, th {
+	  background-color: #f0f0f0;
+	}
+	
+	.row-hour {
+	  border-top-color: @gray-light;
+	}
+	
+	td.shift {
+	  height: 1px;
+		padding: 0px 5px 5px 0px;
+		
+		.panel {
+      margin-bottom: 0px;
+		}
   }
 }
 

@@ -65,7 +65,7 @@ function NeededAngelTypes_by_shift($shiftId) {
         ORDER BY `room_id` DESC
         ");
   if ($needed_angeltypes_source === false) {
-    return false;
+    engelsystem_error("Unable to load needed angeltypes.");
   }
   
   // Use settings from room
@@ -80,18 +80,16 @@ function NeededAngelTypes_by_shift($shiftId) {
         ORDER BY `room_id` DESC
         ");
     if ($needed_angeltypes_source === false) {
-      return false;
+      engelsystem_error("Unable to load needed angeltypes.");
     }
   }
   
   $needed_angeltypes = [];
   foreach ($needed_angeltypes_source as $angeltype) {
     $shift_entries = ShiftEntries_by_shift_and_angeltype($shiftId, $angeltype['angel_type_id']);
-    if ($shift_entries === false) {
-      return false;
-    }
     
     $angeltype['taken'] = count($shift_entries);
+    $angeltype['shift_entries'] = $shift_entries;
     $needed_angeltypes[] = $angeltype;
   }
   

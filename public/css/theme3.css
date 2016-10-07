@@ -6739,32 +6739,19 @@ body {
 .footer a {
   color: #777777;
 }
-#shifts td.free {
-  border: 1px solid #da1639;
-  background-color: #f9c3cd;
+#shifts.table td,
+#shifts.table th {
+  background-color: #f0f0f0;
 }
-a#shifts td.free:hover,
-a#shifts td.free:focus {
-  background-color: #f495a6;
+#shifts.table .row-hour {
+  border-top-color: #777777;
 }
-#shifts td.occupied {
-  border: 1px solid #39ab50;
-  background-color: #c4eccc;
+#shifts.table td.shift {
+  height: 1px;
+  padding: 0px 5px 5px 0px;
 }
-a#shifts td.occupied:hover,
-a#shifts td.occupied:focus {
-  background-color: #9edfab;
-}
-#shifts td.collides {
-  border: 1px solid #dad216;
-  background-color: #f9f7c3;
-}
-a#shifts td.collides:hover,
-a#shifts td.collides:focus {
-  background-color: #f4f095;
-}
-#shifts td.own {
-  border: 1px solid #777777;
+#shifts.table td.shift .panel {
+  margin-bottom: 0px;
 }
 .row-day {
   border-top: 2px solid #777777;

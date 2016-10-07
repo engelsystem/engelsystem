@@ -46,7 +46,9 @@ class ShiftsFilterRenderer {
       }
       $toolbar[] = toolbar_dropdown('', $selected_day, $day_dropdown_items, 'active');
     }
-    return toolbar_pills($toolbar);
+    return div('form-group', [
+        toolbar_pills($toolbar) 
+    ]);
   }
 
   /**

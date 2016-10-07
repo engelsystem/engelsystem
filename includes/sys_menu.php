@@ -169,6 +169,10 @@ function make_navigation() {
 function make_room_navigation($menu) {
   global $privileges;
   
+  if (! in_array('view_rooms', $privileges)) {
+    return $menu;
+  }
+  
   $rooms = Rooms();
   $room_menu = [];
   if (in_array('admin_rooms', $privileges)) {
