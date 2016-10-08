@@ -55,8 +55,6 @@ function room_controller() {
  * Dispatch different room actions.
  */
 function rooms_controller() {
-  global $privileges;
-  
   if (! isset($_REQUEST['action'])) {
     $_REQUEST['action'] = 'list';
   }

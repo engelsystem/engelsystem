@@ -38,7 +38,6 @@ class ShiftsFilterRenderer {
   public function render($link_base) {
     $toolbar = [];
     if ($this->daySelectionEnabled && ! empty($this->days)) {
-      $today = date("Y-m-d");
       $selected_day = date("Y-m-d", $this->shiftsFilter->getStartTime());
       $day_dropdown_items = [];
       foreach ($this->days as $day) {

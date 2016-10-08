@@ -44,7 +44,7 @@ class ShiftCalendarRenderer {
     return $shifts_table;
   }
 
-  private function initTableBody($rooms, $slotSizes, $first_block_start_time, $blocks_per_slot) {
+  private function initTableBody($slotSizes, $first_block_start_time, $blocks_per_slot) {
     // Slot sizes plus 1 for the time
     $columns_needed = array_sum($slotSizes) + 1;
     $table_line = array_fill(0, $columns_needed, ShiftCalendarRenderer::EMPTY_CELL);
@@ -67,7 +67,7 @@ class ShiftCalendarRenderer {
   private function calcRoomSlots($rooms, $slotSizes) {
     $result = [];
     $slot = 1; // 1 for the time
-    foreach ($rooms as $room_id => $room_name) {
+    foreach (array_keys($rooms) as $room_id) {
       $result[$room_id] = $slot;
       $slot += $slotSizes[$room_id];
     }
@@ -81,7 +81,7 @@ class ShiftCalendarRenderer {
   }
 
   private function renderShift($shift) {
-    global $privileges, $user;
+    global $privileges;
     
     $collides = $this->collides();
     $is_free = false;
@@ -206,7 +206,7 @@ class ShiftCalendarRenderer {
   }
 
   private function renderTableBody($rooms, $slotSizes, $first_block_start_time, $blocks_per_slot) {
-    $table = $this->initTableBody($rooms, $slotSizes, $first_block_start_time, $blocks_per_slot);
+    $table = $this->initTableBody($slotSizes, $first_block_start_time, $blocks_per_slot);
     
     $room_slots = $this->calcRoomSlots($rooms, $slotSizes);
     
