@@ -5,7 +5,7 @@ function admin_active_title() {
 }
 
 function admin_active() {
-  global $tshirt_sizes;
+  global $tshirt_sizes, $shift_sum_formula;
   
   $msg = "";
   $search = "";
