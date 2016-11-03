@@ -108,13 +108,7 @@ class ShiftCalendarRenderer {
           $freeloader ++;
           $style = " text-decoration: line-through;";
         }
-        if (in_array('user_shifts_admin', $privileges)) {
-          $entry_list[] = "<span style=\"$style\">" . User_Nick_render(User($entry['UID'])) . ' ' . table_buttons([
-              button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], glyph('trash'), 'btn-xs') 
-          ]) . '</span>';
-        } else {
-          $entry_list[] = "<span style=\"$style\">" . User_Nick_render(User($entry['UID'])) . "</span>";
-        }
+        $entry_list[] = "<span style=\"$style\">" . User_Nick_render(User($entry['UID'])) . "</span>";
       }
       if ($angeltype['count'] - count($angeltype['shift_entries']) - $freeloader > 0) {
         $inner_text = sprintf(ngettext("%d helper needed", "%d helpers needed", $angeltype['count'] - count($angeltype['shift_entries'])), $angeltype['count'] - count($angeltype['shift_entries']));
@@ -138,7 +132,7 @@ class ShiftCalendarRenderer {
         // User shift admins may join anybody in every shift
         $user_may_join_shift |= in_array('user_shifts_admin', $privileges);
         if ($user_may_join_shift) {
-          $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . $inner_text . '</a> ' . button(page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'], _('Sign up'), 'btn-xs');
+          $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . $inner_text . '</a> ' . button(page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'], _('Sign up'), 'btn-xs btn-primary');
         } else {
           if (time() > $shift['start']) {
             $entry_list[] = $inner_text . ' (' . _('ended') . ')';
@@ -182,15 +176,13 @@ class ShiftCalendarRenderer {
     if ($blocks < 1) {
       $blocks = 1;
     }
+    $shift_length = ($shift["end"] - $shift["start"]) / (60 * 60);
+    $shift_heading = date('H:i', $shift['start']) . ' &dash; ' . date('H:i', $shift['end']) . ' &mdash; ' . ShiftType($shift['shifttype_id'])['name'];
     return [
         $blocks,
-        '<td class="shift" rowspan="' . $blocks . '">' . div('panel panel-' . $class, [
+        '<td class="shift" rowspan="' . $blocks . '">' . div('panel panel-' . $class . '" style="min-height: ' . ($shift_length * 100) . 'px"', [
             div('panel-heading', [
-                date('H:i', $shift['start']),
-                '&dash;',
-                date('H:i', $shift['end']),
-                '&mdash;',
-                ShiftType($shift['shifttype_id'])['name'],
+                '<a href="' . shift_link($shift) . '">' . $shift_heading . '</a>',
                 $header_buttons 
             ]),
             div('panel-body', [
@@ -200,7 +192,8 @@ class ShiftCalendarRenderer {
                     'Name' => $shift['room_name'] 
                 ]) 
             ]),
-            $shifts_row 
+            $shifts_row,
+            div('shift-spacer') 
         ]) . '</td>' 
     ];
   }

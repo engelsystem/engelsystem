@@ -6762,10 +6762,10 @@ body {
 }
 #shifts.table td.shift {
   height: 1px;
-  padding: 0px 5px 5px 0px;
+  padding: 0;
 }
 #shifts.table td.shift .panel {
-  margin-bottom: 0px;
+  margin: 0px 0px 0px 5px;
 }
 .row-day {
   border-top: 2px solid #888888;
