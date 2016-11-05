@@ -29,6 +29,7 @@ require_once realpath(__DIR__ . '/../includes/view/AngelTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/EventConfig_view.php');
 require_once realpath(__DIR__ . '/../includes/view/Questions_view.php');
 require_once realpath(__DIR__ . '/../includes/view/Rooms_view.php');
+require_once realpath(__DIR__ . '/../includes/view/ShiftCalendarLane.php');
 require_once realpath(__DIR__ . '/../includes/view/ShiftCalendarRenderer.php');
 require_once realpath(__DIR__ . '/../includes/view/ShiftsFilterRenderer.php');
 require_once realpath(__DIR__ . '/../includes/view/Shifts_view.php');

@@ -7,72 +7,186 @@ class ShiftCalendarRenderer {
   /**
    * 15m * 60s/m = 900s
    */
-  const MINUTES_PER_ROW = 900;
+  const SECONDS_PER_ROW = 900;
 
-  const EMPTY_CELL = '<td class="empty"></td>';
+  /**
+   * Height of a block in pixel.
+   * Do not change - corresponds with theme/css
+   */
+  const BLOCK_HEIGHT = 30;
 
-  private $shifts;
+  /**
+   * Distance between two shifts in pixels
+   */
+  const MARGIN = 5;
+
+  private $lanes;
 
   private $shiftsFilter;
 
+  private $firstBlockStartTime = null;
+
+  private $blocksPerSlot = null;
+
   public function __construct($shifts, ShiftsFilter $shiftsFilter) {
-    $this->shifts = $shifts;
     $this->shiftsFilter = $shiftsFilter;
+    $this->firstBlockStartTime = $this->calcFirstBlockStartTime($shifts);
+    $this->lanes = $this->assignShiftsToLanes($shifts);
   }
 
-  public function render() {
-    $rooms = $this->rooms();
+  /**
+   * Assigns the shifts to different lanes per room if they collide
+   *
+   * @param Shift[] $shifts
+   *          The shifts to assign
+   *          
+   * @return Returns an array that assigns a room_id to an array of ShiftCalendarLane containing the shifts
+   */
+  private function assignShiftsToLanes($shifts) {
+    // array that assigns a room id to a list of lanes (per room)
+    $lanes = [];
     
-    $first_block_start_time = $this->calcFirstBlockStartTime();
-    $blocks_per_slot = $this->calcBlocksPerSlot($first_block_start_time);
-    
-    $slotSizes = $this->calcSlotSizes($rooms, $first_block_start_time, $blocks_per_slot);
-    
-    return $this->renderTable($rooms, $slotSizes, $first_block_start_time, $blocks_per_slot);
-  }
-
-  private function renderTableHead($rooms, $slotSizes) {
-    $shifts_table = '<thead><tr><th>' . _("Time") . '</th>';
-    foreach ($rooms as $room_id => $room_name) {
-      $colspan = $slotSizes[$room_id];
-      $shifts_table .= "<th" . (($colspan > 1) ? ' colspan="' . $colspan . '"' : '') . ">" . Room_name_render([
-          'RID' => $room_id,
-          'Name' => $room_name 
-      ]) . "</th>\n";
-    }
-    $shifts_table .= "</tr></thead>";
-    return $shifts_table;
-  }
-
-  private function initTableBody($slotSizes, $first_block_start_time, $blocks_per_slot) {
-    // Slot sizes plus 1 for the time
-    $columns_needed = array_sum($slotSizes) + 1;
-    $table_line = array_fill(0, $columns_needed, ShiftCalendarRenderer::EMPTY_CELL);
-    $table = array_fill(0, $blocks_per_slot, $table_line);
-    
-    for ($block = 0; $block < $blocks_per_slot; $block ++) {
-      $thistime = $first_block_start_time + ($block * ShiftCalendarRenderer::MINUTES_PER_ROW);
-      if ($thistime % (24 * 60 * 60) == 23 * 60 * 60 && $this->shiftsFilter->getEndTime() - $this->shiftsFilter->getStartTime() > 24 * 60 * 60) {
-        $table[$block][0] = '<th class="row-day">' . date('Y-m-d<b\r />H:i', $thistime) . '</th>';
-      } elseif ($thistime % (60 * 60) == 0) {
-        $table[$block][0] = '<th class="row-hour">' . date('H:i', $thistime) . '</th>';
-      } else {
-        $table[$block][0] = '<th class="empty"></th>';
+    foreach ($shifts as $shift) {
+      $room_id = $shift['RID'];
+      if (! isset($lanes[$room_id])) {
+        // initialize room with one lane
+        $header = Room_name_render([
+            'RID' => $room_id,
+            'Name' => $shift['room_name'] 
+        ]);
+        $lanes[$room_id] = [
+            new ShiftCalendarLane($header, $this->getFirstBlockStartTime(), $this->getBlocksPerSlot()) 
+        ];
+      }
+      // Try to add the shift to the existing lanes for this room
+      $shift_added = false;
+      foreach ($lanes[$room_id] as $lane) {
+        $shift_added = $lane->addShift($shift);
+        if ($shift_added == true) {
+          break;
+        }
+      }
+      // If all lanes for this room are busy, create a new lane and add shift to it
+      if ($shift_added == false) {
+        $newLane = new ShiftCalendarLane("", $this->getFirstBlockStartTime(), $this->getBlocksPerSlot());
+        if (! $newLane->addShift($shift)) {
+          engelsystem_error("Unable to add shift to new lane.");
+        }
+        $lanes[$room_id][] = $newLane;
       }
     }
     
-    return $table;
+    return $lanes;
   }
 
-  private function calcRoomSlots($rooms, $slotSizes) {
-    $result = [];
-    $slot = 1; // 1 for the time
-    foreach (array_keys($rooms) as $room_id) {
-      $result[$room_id] = $slot;
-      $slot += $slotSizes[$room_id];
+  public function getFirstBlockStartTime() {
+    return $this->firstBlockStartTime;
+  }
+
+  public function getBlocksPerSlot() {
+    if ($this->blocksPerSlot == null) {
+      $this->blocksPerSlot = $this->calcBlocksPerSlot();
+    }
+    return $this->blocksPerSlot;
+  }
+
+  /**
+   * Renders the whole calendar
+   *
+   * @return the generated html
+   */
+  public function render() {
+    return div('shift-calendar', [
+        $this->renderTimeLane(),
+        $this->renderShiftLanes() 
+    ]);
+  }
+
+  /**
+   * Renders the lanes containing the shifts
+   */
+  private function renderShiftLanes() {
+    $html = "";
+    foreach ($this->lanes as $room_id => $room_lanes) {
+      foreach ($room_lanes as $lane) {
+        $html .= $this->renderLane($lane);
+      }
+    }
+    return $html;
+  }
+
+  /**
+   * Renders a single lane
+   *
+   * @param ShiftCalendarLane $lane
+   *          The lane to render
+   */
+  private function renderLane(ShiftCalendarLane $lane) {
+    $html = "";
+    $rendered_until = $this->getFirstBlockStartTime();
+    foreach ($lane->getShifts() as $shift) {
+      while ($rendered_until + ShiftCalendarRenderer::SECONDS_PER_ROW <= $shift['start']) {
+        $html .= $this->renderTick($rendered_until);
+        $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
+      }
+      
+      list($shift_height, $shift_html) = $this->renderShift($shift);
+      $html .= $shift_html;
+      $rendered_until += $shift_height * ShiftCalendarRenderer::SECONDS_PER_ROW;
+    }
+    while ($rendered_until <= $this->shiftsFilter->getEndTime()) {
+      $html .= $this->renderTick($rendered_until);
+      $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
     }
     
-    return $result;
+    return div('lane', [
+        div('header', $lane->getHeader()),
+        $html 
+    ]);
+  }
+
+  /**
+   * Renders a tick/block for given time
+   *
+   * @param int $time
+   *          unix timestamp
+   * @param boolean $label
+   *          Should time labels be generated?
+   * @return rendered tick html
+   */
+  private function renderTick($time, $label = false) {
+    if ($time % (24 * 60 * 60) == 23 * 60 * 60) {
+      if (! $label) {
+        return div('tick day');
+      }
+      return div('tick day', [
+          date('Y-m-d<b\r />H:i', $time) 
+      ]);
+    } elseif ($time % (60 * 60) == 0) {
+      if (! $label) {
+        return div('tick hour');
+      }
+      return div('tick hour', [
+          date('H:i', $time) 
+      ]);
+    }
+    return div('tick');
+  }
+
+  /**
+   * Renders the left time lane including hour/day ticks
+   */
+  private function renderTimeLane() {
+    $time_slot = [
+        div('header', [
+            _("Time") 
+        ]) 
+    ];
+    for ($block = 0; $block < $this->getBlocksPerSlot(); $block ++) {
+      $thistime = $this->getFirstBlockStartTime() + ($block * ShiftCalendarRenderer::SECONDS_PER_ROW);
+      $time_slot[] = $this->renderTick($thistime, true);
+    }
+    return div('lane time', $time_slot);
   }
 
   private function collides() {
@@ -172,15 +286,14 @@ class ShiftCalendarRenderer {
       $class = 'success';
     }
     
-    $blocks = ceil(($shift["end"] - $shift["start"]) / ShiftCalendarRenderer::MINUTES_PER_ROW);
+    $blocks = ceil(($shift["end"] - $shift["start"]) / ShiftCalendarRenderer::SECONDS_PER_ROW);
     if ($blocks < 1) {
       $blocks = 1;
     }
-    $shift_length = ($shift["end"] - $shift["start"]) / (60 * 60);
     $shift_heading = date('H:i', $shift['start']) . ' &dash; ' . date('H:i', $shift['end']) . ' &mdash; ' . ShiftType($shift['shifttype_id'])['name'];
     return [
         $blocks,
-        '<td class="shift" rowspan="' . $blocks . '">' . div('panel panel-' . $class . '" style="min-height: ' . ($shift_length * 100) . 'px"', [
+        '<td class="shift" rowspan="' . $blocks . '">' . div('shift panel panel-' . $class . '" style="height: ' . ($blocks * ShiftCalendarRenderer::BLOCK_HEIGHT - ShiftCalendarRenderer::MARGIN) . 'px"', [
             div('panel-heading', [
                 '<a href="' . shift_link($shift) . '">' . $shift_heading . '</a>',
                 $header_buttons 
@@ -198,87 +311,18 @@ class ShiftCalendarRenderer {
     ];
   }
 
-  private function renderTableBody($rooms, $slotSizes, $first_block_start_time, $blocks_per_slot) {
-    $table = $this->initTableBody($slotSizes, $first_block_start_time, $blocks_per_slot);
-    
-    $room_slots = $this->calcRoomSlots($rooms, $slotSizes);
-    
-    foreach ($this->shifts as $shift) {
-      list($blocks, $shift_content) = $this->renderShift($shift);
-      $start_block = floor(($shift['start'] - $first_block_start_time) / ShiftCalendarRenderer::MINUTES_PER_ROW);
-      $slot = $room_slots[$shift['RID']];
-      while ($table[$start_block][$slot] != ShiftCalendarRenderer::EMPTY_CELL) {
-        $slot ++;
-      }
-      $table[$start_block][$slot] = $shift_content;
-      for ($block = 1; $block < $blocks; $block ++) {
-        $table[$start_block + $block][$slot] = '';
-      }
-    }
-    
-    $result = '<tbody>';
-    foreach ($table as $table_line) {
-      $result .= '<tr>' . join('', $table_line) . '</tr>';
-    }
-    $result .= '</tbody>';
-    return $result;
-  }
-
-  private function renderTable($rooms, $slotSizes, $first_block_start_time, $blocks_per_slot) {
-    return div('shifts-table', [
-        '<table id="shifts" class="table scrollable">',
-        $this->renderTableHead($rooms, $slotSizes),
-        $this->renderTableBody($rooms, $slotSizes, $first_block_start_time, $blocks_per_slot),
-        '</table>' 
-    ]);
-  }
-
-  /**
-   * Calculates the slots for each room that appears in the shifts
-   */
-  private function rooms() {
-    $rooms = [];
-    foreach ($this->shifts as $shift) {
-      if (! isset($rooms[$shift['RID']])) {
-        $rooms[$shift['RID']] = $shift['room_name'];
-      }
-    }
-    return $rooms;
-  }
-
-  private function calcFirstBlockStartTime() {
+  private function calcFirstBlockStartTime($shifts) {
     $start_time = $this->shiftsFilter->getEndTime();
-    foreach ($this->shifts as $shift) {
+    foreach ($shifts as $shift) {
       if ($shift['start'] < $start_time) {
         $start_time = $shift['start'];
       }
     }
-    return ShiftCalendarRenderer::MINUTES_PER_ROW * floor(($start_time - 60 * 60) / ShiftCalendarRenderer::MINUTES_PER_ROW);
+    return ShiftCalendarRenderer::SECONDS_PER_ROW * floor(($start_time - 60 * 60) / ShiftCalendarRenderer::SECONDS_PER_ROW);
   }
 
-  private function calcBlocksPerSlot($first_block_start_time) {
-    return ceil(($this->shiftsFilter->getEndTime() - $first_block_start_time) / ShiftCalendarRenderer::MINUTES_PER_ROW);
-  }
-
-  private function calcSlotSizes($rooms, $first_block_start_time, $blocks_per_slot) {
-    $parallel_blocks = [];
-    
-    // initialize $block array
-    foreach (array_keys($rooms) as $room_id) {
-      $parallel_blocks[$room_id] = array_fill(0, $blocks_per_slot, 0);
-    }
-    
-    // calculate number of parallel shifts in each timeslot for each room
-    foreach ($this->shifts as $shift) {
-      $room_id = $shift["RID"];
-      $shift_blocks = ($shift["end"] - $shift["start"]) / ShiftCalendarRenderer::MINUTES_PER_ROW;
-      $firstblock = floor(($shift["start"] - $first_block_start_time) / ShiftCalendarRenderer::MINUTES_PER_ROW);
-      for ($block = $firstblock; $block < $shift_blocks + $firstblock && $block < $blocks_per_slot; $block ++) {
-        $parallel_blocks[$room_id][$block] ++;
-      }
-    }
-    
-    return array_map('max', $parallel_blocks);
+  private function calcBlocksPerSlot() {
+    return ceil(($this->shiftsFilter->getEndTime() - $this->getFirstBlockStartTime()) / ShiftCalendarRenderer::SECONDS_PER_ROW);
   }
 }
 

@@ -4,52 +4,13 @@
 <meta charset="UTF-8" />
 <link rel="stylesheet" type="text/css" href="public/css/theme3.css" />
 <style>
-.shift-calendar {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	align-itmes: stretch;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	align-itmes: stretch;
-	width: 100%;
-}
-
-.shift-calendar .lane {
-	background: #f0f0f0;
-	flex-grow: 1;
-  min-width: 300px;
-	width: 300px;
-	flex-grow: 1;
-}
-
-.shift-calendar .lane.time {
-	flex-grow: 0;
-  min-width: 100px;
-	width: 100px;
-	flex-grow: 0;
-}
-
-.shift-calendar .lane .tick {
-	height: 20px;
-	border-top: 1px solid #ddd;
-}
-
-.shift-calendar .lane .tick.hour {
-	border-top: 1px solid #aaa;
-}
-
-.shift-calendar .shift {
-	margin-bottom: 0;
-	overflow: hidden;
-}
 </style>
 </head>
 <body>
   <div class="shift-calendar">
     <div class="lane time">
-      <div class="tick hour">10:00</div>
+      <div class="header">Time</div>
+      <div class="tick day">2016-12-27 00:00</div>
       <div class="tick"></div>
       <div class="tick"></div>
       <div class="tick"></div>
@@ -67,7 +28,10 @@
       <div class="tick"></div>
     </div>
     <div class="lane">
-      <div class="tick hour"></div>
+      <div class="header">
+        <span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H)
+      </div>
+      <div class="tick day"></div>
       <div class="tick"></div>
       <div class="tick"></div>
       <div class="tick"></div>
@@ -99,7 +63,8 @@
       <div class="tick"></div>
     </div>
     <div class="lane">
-      <div class="tick hour"></div>
+      <div class="header"></div>
+      <div class="tick day"></div>
       <div class="tick"></div>
       <div class="tick"></div>
       <div class="tick"></div>

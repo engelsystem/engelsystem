@@ -57,7 +57,7 @@ function NeededAngelTypes_delete_by_room($room_id) {
  */
 function NeededAngelTypes_by_shift($shiftId) {
   $needed_angeltypes_source = sql_select("
-        SELECT `NeededAngelTypes`.*, `AngelTypes`.`name`, `AngelTypes`.`restricted`
+        SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`
         FROM `NeededAngelTypes`
         JOIN `AngelTypes` ON `AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id`
         WHERE `shift_id`='" . sql_escape($shiftId) . "'

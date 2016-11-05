@@ -6730,25 +6730,46 @@ body {
 .footer a {
   color: #777777;
 }
-#shifts.table td,
-#shifts.table th {
-  background-color: #f0f0f0;
+.shift-calendar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-itmes: stretch;
+  width: 100%;
 }
-#shifts.table .row-hour {
-  border-top-color: #777777;
+.shift-calendar .lane {
+  background: #f9f9f9;
+  min-width: 300px;
+  width: 300px;
+  flex-grow: 1;
 }
-#shifts.table td.shift {
-  height: 1px;
-  padding: 0;
+.shift-calendar .lane .header {
+  background: #fff;
+  height: 30px;
+  padding: 5px;
 }
-#shifts.table td.shift .panel {
-  margin: 0px 0px 0px 5px;
+.shift-calendar .lane .tick {
+  height: 30px;
+  border-top: 1px solid #f4f4f4;
 }
-.row-day {
-  border-top: 2px solid #777777;
+.shift-calendar .lane .tick.hour {
+  border-top: 2px solid #dddddd;
+  font-size: 0.9em;
+  padding-left: 5px;
 }
-.row-header {
-  min-width: 90px;
+.shift-calendar .lane .tick.day {
+  border-top: 2px solid #337ab7;
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+.shift-calendar .lane.time {
+  min-width: 100px;
+  width: 100px;
+  flex-grow: 0;
+}
+.shift-calendar .shift {
+  margin: 0 5px 5px 0;
+  overflow: hidden;
 }
 .space-top {
   margin-top: 15px;

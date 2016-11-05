@@ -42,8 +42,11 @@ function glyph_bool($boolean) {
 }
 
 function div($class, $content = [], $dom_id = "") {
+  if (is_array($content)) {
+    $content = join("\n", $content);
+  }
   $dom_id = $dom_id != '' ? ' id="' . $dom_id . '"' : '';
-  return '<div' . $dom_id . ' class="' . $class . '">' . join("\n", $content) . '</div>';
+  return '<div' . $dom_id . ' class="' . $class . '">' . $content . '</div>';
 }
 
 function heading($content, $number = 1) {
