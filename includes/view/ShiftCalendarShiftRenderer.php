@@ -17,23 +17,12 @@ class ShiftCalendarShiftRenderer {
     global $privileges;
     
     $collides = $this->collides();
-    $is_free = false;
-    $shifts_row = '';
     $info_text = "";
     if ($shift['title'] != '') {
       $info_text = glyph('info-sign') . $shift['title'] . '<br>';
     }
+    list($is_free, $shifts_row) = $this->renderShiftNeededAngeltypes($shift, $collides);
     
-    $angeltypes = NeededAngelTypes_by_shift($shift['SID']);
-    foreach ($angeltypes as $angeltype) {
-      $shifts_row .= $this->renderShiftNeededAngeltype($shift, $angeltype, $collides);
-    }
-    if (in_array('user_shifts_admin', $privileges)) {
-      $shifts_row .= '<li class="list-group-item">' . button(page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'], _("Add more angels"), 'btn-xs') . '</li>';
-    }
-    if ($shifts_row != '') {
-      $shifts_row = '<ul class="list-group">' . $shifts_row . '</ul>';
-    }
     if (isset($shift['own']) && $shift['own'] && ! in_array('user_shifts_admin', $privileges)) {
       $class = 'primary';
     } elseif ($collides && ! in_array('user_shifts_admin', $privileges)) {
@@ -45,9 +34,7 @@ class ShiftCalendarShiftRenderer {
     }
     
     $blocks = ceil(($shift["end"] - $shift["start"]) / ShiftCalendarRenderer::SECONDS_PER_ROW);
-    if ($blocks < 1) {
-      $blocks = 1;
-    }
+    $blocks = max(1, $blocks);
     return [
         $blocks,
         '<td class="shift" rowspan="' . $blocks . '">' . div('shift panel panel-' . $class . '" style="height: ' . ($blocks * ShiftCalendarRenderer::BLOCK_HEIGHT - ShiftCalendarRenderer::MARGIN) . 'px"', [
@@ -65,6 +52,32 @@ class ShiftCalendarShiftRenderer {
     ];
   }
 
+  private function renderShiftNeededAngeltypes($shift, $collides) {
+    global $privileges;
+    
+    $html = "";
+    $is_free = false;
+    $angeltypes = NeededAngelTypes_by_shift($shift['SID']);
+    foreach ($angeltypes as $angeltype) {
+      list($angeltype_free, $angeltype_html) = $this->renderShiftNeededAngeltype($shift, $angeltype, $collides);
+      $is_free |= $angeltype_free;
+      $html .= $angeltype_html;
+    }
+    if (in_array('user_shifts_admin', $privileges)) {
+      $html .= '<li class="list-group-item">' . button(page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'], _("Add more angels"), 'btn-xs') . '</li>';
+    }
+    if ($html != '') {
+      return [
+          $is_free,
+          '<ul class="list-group">' . $html . '</ul>' 
+      ];
+    }
+    return [
+        $is_free,
+        "" 
+    ];
+  }
+
   /**
    * Renders a list entry containing the needed angels for an angeltype
    *
@@ -78,6 +91,7 @@ class ShiftCalendarShiftRenderer {
   private function renderShiftNeededAngeltype($shift, $angeltype, $collides) {
     global $privileges;
     
+    $is_free = false;
     $entry_list = [];
     $freeloader = 0;
     foreach ($angeltype['shift_entries'] as $entry) {
@@ -126,13 +140,17 @@ class ShiftCalendarShiftRenderer {
       }
       
       unset($inner_text);
+      $is_free = true;
     }
     
     $shifts_row = '<li class="list-group-item">';
     $shifts_row .= '<strong>' . AngelType_name_render($angeltype) . ':</strong> ';
     $shifts_row .= join(", ", $entry_list);
     $shifts_row .= '</li>';
-    return $shifts_row;
+    return [
+        $is_free,
+        $shifts_row 
+    ];
   }
 
   /**
