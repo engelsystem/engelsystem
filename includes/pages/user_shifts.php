@@ -1,5 +1,6 @@
 <?php
 use Engelsystem\ShiftsFilter;
+use Engelsystem\ShiftCalendarRenderer;
 
 function shifts_title() {
   return _("Shifts");
@@ -137,229 +138,6 @@ function view_user_shifts() {
   }
   unset($ownshifts_source);
   
-  $shifts_table = "";
-  /*
-   * [0] => Array ( [SID] => 1 [start] => 1355958000 [end] => 1355961600 [RID] => 1 [name] => [URL] => [PSID] => [room_name] => test1 [has_special_needs] => 1 [is_full] => 0 )
-   */
-  $first = 15 * 60 * floor($shiftsFilter->getStartTime() / (15 * 60));
-  $maxshow = ceil(($shiftsFilter->getEndTime() - $first) / (60 * 15));
-  $block = [];
-  $todo = [];
-  $myrooms = $rooms;
-  
-  // delete un-selected rooms from array
-  foreach ($myrooms as $k => $v) {
-    if (array_search($v["id"], $shiftsFilter->getRooms()) === false) {
-      unset($myrooms[$k]);
-    }
-    // initialize $block array
-    $block[$v["id"]] = array_fill(0, $maxshow, 0);
-  }
-  
-  // calculate number of parallel shifts in each timeslot for each room
-  foreach ($shifts as $k => $shift) {
-    $rid = $shift["RID"];
-    $blocks = ($shift["end"] - $shift["start"]) / (15 * 60);
-    $firstblock = floor(($shift["start"] - $first) / (15 * 60));
-    for ($i = $firstblock; $i < $blocks + $firstblock && $i < $maxshow; $i ++) {
-      $block[$rid][$i] ++;
-    }
-    $shifts[$k]['own'] = in_array($shift['SID'], array_keys($ownshifts));
-  }
-  
-  $shifts_table = '<div class="shifts-table"><table id="shifts" class="table scrollable"><thead><tr><th>-</th>';
-  foreach ($myrooms as $key => $room) {
-    $rid = $room["id"];
-    if (array_sum($block[$rid]) == 0) {
-      // do not display columns without entries
-      unset($block[$rid]);
-      unset($myrooms[$key]);
-      continue;
-    }
-    $colspan = call_user_func_array('max', $block[$rid]);
-    if ($colspan == 0) {
-      $colspan = 1;
-    }
-    $todo[$rid] = array_fill(0, $maxshow, $colspan);
-    $shifts_table .= "<th" . (($colspan > 1) ? ' colspan="' . $colspan . '"' : '') . ">" . Room_name_render([
-        'RID' => $room['id'],
-        'Name' => $room['name'] 
-    ]) . "</th>\n";
-  }
-  unset($block, $blocks, $firstblock, $colspan, $key, $room);
-  
-  $shifts_table .= "</tr></thead><tbody>";
-  for ($i = 0; $i < $maxshow; $i ++) {
-    $thistime = $first + ($i * 15 * 60);
-    if ($thistime % (24 * 60 * 60) == 23 * 60 * 60 && $shiftsFilter->getEndTime() - $shiftsFilter->getStartTime() > 24 * 60 * 60) {
-      $shifts_table .= "<tr class=\"row-day\"><th class=\"row-header\">";
-      $shifts_table .= date('Y-m-d<b\r />H:i', $thistime);
-    } elseif ($thistime % (60 * 60) == 0) {
-      $shifts_table .= "<tr class=\"row-hour\"><th>";
-      $shifts_table .= date("H:i", $thistime);
-    } else {
-      $shifts_table .= "<tr><th>";
-    }
-    $shifts_table .= "</th>";
-    foreach ($myrooms as $room) {
-      $rid = $room["id"];
-      foreach ($shifts as $shift) {
-        if ($shift["RID"] == $rid) {
-          if (floor($shift["start"] / (15 * 60)) == $thistime / (15 * 60)) {
-            $blocks = ($shift["end"] - $shift["start"]) / (15 * 60);
-            if ($blocks < 1) {
-              $blocks = 1;
-            }
-            
-            $collides = in_array($shift['SID'], array_keys($ownshifts));
-            if (! $collides) {
-              foreach ($ownshifts as $ownshift) {
-                if ($ownshift['start'] >= $shift['start'] && $ownshift['start'] < $shift['end'] || $ownshift['end'] > $shift['start'] && $ownshift['end'] <= $shift['end'] || $ownshift['start'] < $shift['start'] && $ownshift['end'] > $shift['end']) {
-                  $collides = true;
-                  break;
-                }
-              }
-            }
-            
-            $is_free = false;
-            $shifts_row = '';
-            if (in_array('admin_shifts', $privileges)) {
-              $shifts_row .= '<div class="pull-right">' . table_buttons([
-                  button(page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'], glyph('edit'), 'btn-xs'),
-                  button(page_link_to('user_shifts') . '&delete_shift=' . $shift['SID'], glyph('trash'), 'btn-xs') 
-              ]) . '</div>';
-            }
-            $shifts_row .= Room_name_render([
-                'RID' => $room['id'],
-                'Name' => $room['name'] 
-            ]) . '<br />';
-            $shifts_row .= '<a href="' . shift_link($shift) . '">' . date('Y-m-d H:i', $shift['start']);
-            $shifts_row .= " &ndash; ";
-            $shifts_row .= date('H:i', $shift['end']);
-            $shifts_row .= "<br /><b>";
-            $shifts_row .= ShiftType($shift['shifttype_id'])['name'];
-            $shifts_row .= "</b><br />";
-            if ($shift['title'] != '') {
-              $shifts_row .= $shift['title'];
-              $shifts_row .= "<br />";
-            }
-            $shifts_row .= '</a>';
-            $shifts_row .= '<br />';
-            $query = "SELECT `NeededAngelTypes`.`count`, `AngelTypes`.`id`, `AngelTypes`.`restricted`, `UserAngelTypes`.`confirm_user_id`, `AngelTypes`.`name`, `UserAngelTypes`.`user_id`
-            FROM `NeededAngelTypes`
-            JOIN `AngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `AngelTypes`.`id`)
-            LEFT JOIN `UserAngelTypes` ON (`NeededAngelTypes`.`angel_type_id` = `UserAngelTypes`.`angeltype_id`AND `UserAngelTypes`.`user_id`='" . sql_escape($user['UID']) . "')
-            WHERE
-            `count` > 0
-            AND ";
-            if ($shift['has_special_needs']) {
-              $query .= "`shift_id` = '" . sql_escape($shift['SID']) . "'";
-            } else {
-              $query .= "`room_id` = '" . sql_escape($shift['RID']) . "'";
-            }
-            if (! empty($shiftsFilter->getTypes())) {
-              $query .= " AND `angel_type_id` IN (" . implode(',', $shiftsFilter->getTypes()) . ") ";
-            }
-            $query .= " ORDER BY `AngelTypes`.`name`";
-            $angeltypes = sql_select($query);
-            
-            if (count($angeltypes) > 0) {
-              foreach ($angeltypes as $angeltype) {
-                $entries = sql_select("SELECT * FROM `ShiftEntry` JOIN `User` ON (`ShiftEntry`.`UID` = `User`.`UID`) WHERE `SID`='" . sql_escape($shift['SID']) . "' AND `TID`='" . sql_escape($angeltype['id']) . "' ORDER BY `Nick`");
-                $entry_list = [];
-                $freeloader = 0;
-                foreach ($entries as $entry) {
-                  $style = '';
-                  if ($entry['freeloaded']) {
-                    $freeloader ++;
-                    $style = " text-decoration: line-through;";
-                  }
-                  if (in_array('user_shifts_admin', $privileges)) {
-                    $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) . ' ' . table_buttons([
-                        button(page_link_to('user_shifts') . '&entry_id=' . $entry['id'], glyph('trash'), 'btn-xs') 
-                    ]) . '</span>';
-                  } else {
-                    $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) . "</span>";
-                  }
-                }
-                if ($angeltype['count'] - count($entries) - $freeloader > 0) {
-                  $inner_text = sprintf(ngettext("%d helper needed", "%d helpers needed", $angeltype['count'] - count($entries)), $angeltype['count'] - count($entries));
-                  // is the shift still running or alternatively is the user shift admin?
-                  $user_may_join_shift = true;
-                  
-                  // you cannot join if user alread joined a parallel or this shift
-                  $user_may_join_shift &= ! $collides;
-                  
-                  // you cannot join if user is not of this angel type
-                  $user_may_join_shift &= isset($angeltype['user_id']);
-                  
-                  // you cannot join if you are not confirmed
-                  if ($angeltype['restricted'] == 1 && isset($angeltype['user_id'])) {
-                    $user_may_join_shift &= isset($angeltype['confirm_user_id']);
-                  }
-                  
-                  // you can only join if the shift is in future or running
-                  $user_may_join_shift &= time() < $shift['start'];
-                  
-                  // User shift admins may join anybody in every shift
-                  $user_may_join_shift |= in_array('user_shifts_admin', $privileges);
-                  if ($user_may_join_shift) {
-                    $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . $inner_text . '</a> ' . button(page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'], _('Sign up'), 'btn-xs');
-                  } else {
-                    if (time() > $shift['start']) {
-                      $entry_list[] = $inner_text . ' (' . _('ended') . ')';
-                    } elseif ($angeltype['restricted'] == 1 && isset($angeltype['user_id']) && ! isset($angeltype['confirm_user_id'])) {
-                      $entry_list[] = $inner_text . glyph('lock');
-                    } elseif ($angeltype['restricted'] == 1) {
-                      $entry_list[] = $inner_text;
-                    } elseif ($collides) {
-                      $entry_list[] = $inner_text;
-                    } else {
-                      $entry_list[] = $inner_text . '<br />' . button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], sprintf(_('Become %s'), $angeltype['name']), 'btn-xs');
-                    }
-                  }
-                  
-                  unset($inner_text);
-                  $is_free = true;
-                }
-                
-                $shifts_row .= '<strong>' . AngelType_name_render($angeltype) . ':</strong> ';
-                $shifts_row .= join(", ", $entry_list);
-                $shifts_row .= '<br />';
-              }
-              if (in_array('user_shifts_admin', $privileges)) {
-                $shifts_row .= ' ' . button(page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'], _("Add more angels"), 'btn-xs');
-              }
-            }
-            if ($shift['own'] && ! in_array('user_shifts_admin', $privileges)) {
-              $class = 'own';
-            } elseif ($collides && ! in_array('user_shifts_admin', $privileges)) {
-              $class = 'collides';
-            } elseif ($is_free) {
-              $class = 'free';
-            } else {
-              $class = 'occupied';
-            }
-            $shifts_table .= '<td rowspan="' . $blocks . '" class="' . $class . '">';
-            $shifts_table .= $shifts_row;
-            $shifts_table .= "</td>";
-            // also output that shift on ical export
-            $ical_shifts[] = $shift;
-            for ($j = 0; $j < $blocks && $i + $j < $maxshow; $j ++) {
-              $todo[$rid][$i + $j] --;
-            }
-          }
-        }
-      }
-      // fill up row with empty <td>
-      while ($todo[$rid][$i] -- > 0) {
-        $shifts_table .= '<td class="empty"></td>';
-      }
-    }
-    $shifts_table .= "</tr>\n";
-  }
-  $shifts_table .= '</tbody></table></div>';
-  
   if ($user['api_key'] == "") {
     User_reset_api_key($user, false);
   }
@@ -379,6 +157,7 @@ function view_user_shifts() {
   $end_day = date("Y-m-d", $shiftsFilter->getEndTime());
   $end_time = date("H:i", $shiftsFilter->getEndTime());
   
+  $shiftCalendarRenderer = new ShiftCalendarRenderer($shifts, $shiftsFilter);
   return page([
       div('col-md-12', [
           msg(),
@@ -392,7 +171,7 @@ function view_user_shifts() {
               'type_select' => make_select($types, $shiftsFilter->getTypes(), "types", _("Angeltypes") . '<sup>1</sup>'),
               'filled_select' => make_select($filled, $shiftsFilter->getFilled(), "filled", _("Occupancy")),
               'task_notice' => '<sup>1</sup>' . _("The tasks shown here are influenced by the angeltypes you joined already!") . " <a href=\"" . page_link_to('angeltypes') . '&action=about' . "\">" . _("Description of the jobs.") . "</a>",
-              'shifts_table' => msg() . $shifts_table,
+              'shifts_table' => msg() . $shiftCalendarRenderer->render(),
               'ical_text' => '<h2>' . _("iCal export") . '</h2><p>' . sprintf(_("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."), page_link_to_absolute('ical') . '&key=' . $user['api_key'], page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'], page_link_to('user_myshifts') . '&reset') . '</p>',
               'filter' => _("Filter") 
           ]) 
