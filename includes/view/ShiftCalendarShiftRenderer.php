@@ -126,7 +126,6 @@ class ShiftCalendarShiftRenderer {
       }
       
       unset($inner_text);
-      $is_free = true;
     }
     
     $shifts_row = '<li class="list-group-item">';
