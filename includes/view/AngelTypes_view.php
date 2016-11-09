@@ -264,6 +264,8 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes) {
  * Renders the about info for an angeltype.
  */
 function AngelTypes_about_view_angeltype($angeltype) {
+  $parsedown = new Parsedown();
+  
   $html = '<h2>' . $angeltype['name'] . '</h2>';
   
   if (isset($angeltype['user_angeltype_id'])) {
@@ -303,7 +305,6 @@ function AngelTypes_about_view($angeltypes, $user_logged_in) {
       '<p>' . _("Here is the list of teams and their tasks. If you have questions, read the FAQ.") . '</p>',
       '<hr />' 
   ];
-  $parsedown = new Parsedown();
   foreach ($angeltypes as $angeltype) {
     $content[] = AngelTypes_about_view_angeltype($angeltype);
   }
