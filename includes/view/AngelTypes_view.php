@@ -65,7 +65,10 @@ function AngelType_edit_view($name, $restricted, $description, $coordinator_mode
   ]);
 }
 
-function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angeltypes, $admin_angeltypes, $coordinator, $user_driver_license, $user) {
+/**
+ * Renders the buttons for the angeltype view.
+ */
+function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $coordinator, $user_driver_license, $user) {
   $buttons = [
       button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
   ];
@@ -94,17 +97,15 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
     $buttons[] = button(page_link_to('angeltypes') . '&action=delete&angeltype_id=' . $angeltype['id'], _("delete"), 'delete');
   }
   
-  $page = [
-      msg(),
-      buttons($buttons)
-  ];
-  
-  $page[] = '<h3>' . _("Description") . '</h3>';
-  $parsedown = new Parsedown();
-  if ($angeltype['description'] != "") {
-    $page[] = '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';
-  }
-  
+  return buttons($buttons);
+}
+
+/**
+ * Renders and sorts the members of an angeltype into coordinators, members and unconfirmed members.
+ *
+ * @return [coordinators, members, unconfirmed members]
+ */
+function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $admin_angeltypes) {
   $coordinators = [];
   $members_confirmed = [];
   $members_unconfirmed = [];
@@ -147,14 +148,19 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
     }
   }
   
-  $table_headers = [
-      'Nick' => _("Nick"),
-      'DECT' => _("DECT"),
-      'actions' => '' 
+  return [
+      $coordinators,
+      $members_confirmed,
+      $members_unconfirmed 
   ];
-  
+}
+
+/**
+ * Creates the needed member table headers according to given rights and settings from the angeltype.
+ */
+function AngelType_view_table_headers($angeltype, $coordinator, $admin_angeltypes) {
   if ($angeltype['requires_driver_license'] && ($coordinator || $admin_angeltypes)) {
-    $table_headers = [
+    return [
         'Nick' => _("Nick"),
         'DECT' => _("DECT"),
         'wants_to_drive' => _("Driver"),
@@ -167,6 +173,30 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
         'actions' => '' 
     ];
   }
+  return [
+      'Nick' => _("Nick"),
+      'DECT' => _("DECT"),
+      'actions' => '' 
+  ];
+}
+
+/**
+ * Render an angeltype page containing the member lists.
+ */
+function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angeltypes, $admin_angeltypes, $coordinator, $user_driver_license, $user) {
+  $page = [
+      msg(),
+      AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $coordinator, $user_driver_license, $user) 
+  ];
+  
+  $page[] = '<h3>' . _("Description") . '</h3>';
+  $parsedown = new Parsedown();
+  if ($angeltype['description'] != "") {
+    $page[] = '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';
+  }
+  
+  list($coordinators, $members_confirmed, $members_unconfirmed) = AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $admin_angeltypes);
+  $table_headers = AngelType_view_table_headers($angeltype, $coordinator, $admin_angeltypes);
   
   if (count($coordinators) > 0) {
     $page[] = '<h3>' . _("Coordinators") . '</h3>';
