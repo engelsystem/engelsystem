@@ -260,6 +260,36 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes) {
   ]);
 }
 
+/**
+ * Renders the about info for an angeltype.
+ */
+function AngelTypes_about_view_angeltype($angeltype) {
+  $html = '<h2>' . $angeltype['name'] . '</h2>';
+  
+  if (isset($angeltype['user_angeltype_id'])) {
+    $buttons = [];
+    if ($angeltype['user_angeltype_id'] != null) {
+      $buttons[] = button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $angeltype['user_angeltype_id'], _("leave"), 'cancel');
+    } else {
+      $buttons[] = button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], _("join"), 'add');
+    }
+    $html .= buttons($buttons);
+  }
+  
+  if ($angeltype['restricted']) {
+    $html .= info(_("This angeltype is restricted by double-opt-in by a team coordinator. Please show up at the according introduction meetings."), true);
+  }
+  if ($angeltype['description'] != "") {
+    $html .= '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';
+  }
+  $html .= '<hr />';
+  
+  return $html;
+}
+
+/**
+ * Renders a site that contains every angeltype and its description, basically as an overview of the needed help types.
+ */
 function AngelTypes_about_view($angeltypes, $user_logged_in) {
   global $faq_url;
   
@@ -275,25 +305,7 @@ function AngelTypes_about_view($angeltypes, $user_logged_in) {
   ];
   $parsedown = new Parsedown();
   foreach ($angeltypes as $angeltype) {
-    $content[] = '<h2>' . $angeltype['name'] . '</h2>';
-    
-    if (isset($angeltype['user_angeltype_id'])) {
-      $buttons = [];
-      if ($angeltype['user_angeltype_id'] != null) {
-        $buttons[] = button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $angeltype['user_angeltype_id'], _("leave"), 'cancel');
-      } else {
-        $buttons[] = button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], _("join"), 'add');
-      }
-      $content[] = buttons($buttons);
-    }
-    
-    if ($angeltype['restricted']) {
-      $content[] = info(_("This angeltype is restricted by double-opt-in by a team coordinator. Please show up at the according introduction meetings."), true);
-    }
-    if ($angeltype['description'] != "") {
-      $content[] = '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';
-    }
-    $content[] = '<hr />';
+    $content[] = AngelTypes_about_view_angeltype($angeltype);
   }
   
   return page_with_title(_("Teams/Job description"), $content);
