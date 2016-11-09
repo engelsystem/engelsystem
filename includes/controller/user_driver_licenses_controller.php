@@ -73,9 +73,6 @@ function user_driver_license_edit_controller() {
   
   if (isset($_REQUEST['user_id'])) {
     $user_source = User($_REQUEST['user_id']);
-    if ($user_source === false) {
-      engelsystem_error('Unable to load angeltype.');
-    }
     if ($user_source == null) {
       redirect(user_driver_license_edit_link());
     }

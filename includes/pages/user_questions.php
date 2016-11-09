@@ -13,9 +13,6 @@ function user_questions() {
     $answered_questions = sql_select("SELECT * FROM `Questions` WHERE NOT `AID` IS NULL AND `UID`='" . sql_escape($user['UID']) . "'");
     foreach ($answered_questions as &$question) {
       $answer_user_source = User($question['AID']);
-      if ($answer_user_source === false) {
-        engelsystem_error(_("Unable to load user."));
-      }
       $question['answer_user'] = User_Nick_render($answer_user_source);
     }
     

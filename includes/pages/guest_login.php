@@ -104,8 +104,8 @@ function guest_register() {
       $msg .= error(sprintf(_("Your password is too short (please use at least %s characters)."), MIN_PASSWORD_LENGTH), true);
     }
     
-    if (isset($_REQUEST['planned_arrival_date']) && DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))) {
-      $planned_arrival_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))->getTimestamp();
+    if (isset($_REQUEST['planned_arrival_date']) && $tmp = parse_date("Y-m-d", $_REQUEST['planned_arrival_date'])) {
+      $planned_arrival_date = $tmp;
     } else {
       $valid = false;
       $msg .= error(_("Please enter your planned date of arrival."), true);

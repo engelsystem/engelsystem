@@ -1,8 +1,17 @@
 <?php
 
 /**
+ * returns a list of rooms.
+ * @param boolean $show_all returns also hidden rooms when true
+ */
+function Rooms($show_all = false) {
+  return sql_select("SELECT * FROM `Room`" . ($show_all ? "" : " WHERE `show`='Y'") . " ORDER BY `Name`");
+}
+
+/**
  * Delete a room
- * @param int $room_id
+ *
+ * @param int $room_id          
  */
 function Room_delete($room_id) {
   return sql_query("DELETE FROM `Room` WHERE `RID`=" . sql_escape($room_id));

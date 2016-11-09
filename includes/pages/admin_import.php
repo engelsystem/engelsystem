@@ -312,8 +312,8 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
       'event-id' });
     $shifts_pb[$event_id] = [
         'shifttype_id' => $shifttype_id,
-        'start' => DateTime::createFromFormat("Ymd\THis", $event->dtstart)->getTimestamp() - $add_minutes_start * 60,
-        'end' => DateTime::createFromFormat("Ymd\THis", $event->dtend)->getTimestamp() + $add_minutes_end * 60,
+        'start' => parse_date("Ymd\THis", $event->dtstart) - $add_minutes_start * 60,
+        'end' => parse_date("Ymd\THis", $event->dtend) + $add_minutes_end * 60,
         'RID' => $rooms_import[trim($event->location)],
         'title' => trim($event->summary),
         'URL' => trim($event->url),

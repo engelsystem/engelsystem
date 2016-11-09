@@ -91,7 +91,7 @@ function AngelType_validate_name($name, $angeltype) {
  * @param User $user          
  */
 function AngelTypes_with_user($user) {
-  return sql_select("
+  $result = sql_select("
       SELECT `AngelTypes`.*, 
       `UserAngelTypes`.`id` as `user_angeltype_id`,
       `UserAngelTypes`.`confirm_user_id`,
@@ -100,30 +100,35 @@ function AngelTypes_with_user($user) {
       LEFT JOIN `UserAngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id` 
       AND `UserAngelTypes`.`user_id`=" . $user['UID'] . "
       ORDER BY `name`");
+  if ($result === false) {
+    engelsystem_error("Unable to load angeltypes.");
+  }
+  return $result;
 }
 
 /**
  * Returns all angeltypes.
  */
 function AngelTypes() {
-  return sql_select("
+  $result = sql_select("
       SELECT * 
       FROM `AngelTypes` 
       ORDER BY `name`");
+  if ($result === false) {
+    engelsystem_error("Unable to load angeltypes.");
+  }
+  return $result;
 }
 
 /**
  * Returns AngelType id array
  */
 function AngelType_ids() {
-  $angelType_source = sql_select("SELECT `id` FROM `AngelTypes`");
-  if ($angelType_source === false) {
-    return false;
+  $result = sql_select("SELECT `id` FROM `AngelTypes`");
+  if ($result === false) {
+    engelsystem_error("Unable to load angeltypes.");
   }
-  if (count($angelType_source) > 0) {
-    return $angelType_source;
-  }
-  return null;
+  return select_array($result, 'id', 'id');
 }
 
 /**
@@ -135,7 +140,7 @@ function AngelType_ids() {
 function AngelType($angeltype_id) {
   $angelType_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($angeltype_id) . "' LIMIT 1");
   if ($angelType_source === false) {
-    return false;
+    engelsystem_error("Unable to load angeltype.");
   }
   if (count($angelType_source) > 0) {
     return $angelType_source[0];

@@ -142,17 +142,13 @@ function user_edit_vouchers_controller() {
 function user_controller() {
   global $privileges, $user;
   
+  $user_source = $user;
   if (isset($_REQUEST['user_id'])) {
     $user_source = User($_REQUEST['user_id']);
-    if ($user_source === false) {
-      engelsystem_error("Unable to load user.");
-    }
     if ($user_source == null) {
       error(_("User not found."));
       redirect('?');
     }
-  } else {
-    $user_source = $user;
   }
   
   $shifts = Shifts_by_user($user_source);

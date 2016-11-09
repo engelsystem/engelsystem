@@ -10,32 +10,59 @@ body {
   color: @text-muted;
 }
 
-#shifts {
-  td {
-    &.free {
-      border: 1px solid @brand-danger;
-      .bg-danger();
+.shift-calendar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-itmes: stretch;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-itmes: stretch;
+  width: 100%;
+  
+	.lane {
+	  background: @table-bg-accent;
+	  flex-grow: 1;
+	  min-width: 300px;
+	  width: 300px;
+	  flex-grow: 1;
+	  
+		.header {
+		  background: #fff;
+		  height: 30px;
+		  padding: 5px;
+		}
+  
+	  .tick {
+	    height: 30px;
+	    border-top: 1px solid darken(@table-bg-accent, 2%);
+	  }
+    
+    .tick.hour {
+      border-top: 2px solid @table-border-color;
+      font-size: 0.9em;
+      padding-left: 5px;
     }
-    &.occupied {
-      border: 1px solid @brand-success;
-      .bg-success();
+    
+    .tick.day {
+      border-top: 2px solid @brand-primary;
+      font-size: 0.9em;
+      padding-left: 5px;
     }
-    &.collides {
-      border: 1px solid @brand-warning;
-      .bg-warning();
-    }
-    &.own {
-      border: 1px solid @gray-light;
-    }
-  }
-}
-
-.row-day {
-  border-top: 2px solid @gray-light;
-}
-
-.row-header {
-  min-width: 90px;
+	}
+	
+	.lane.time {
+	  flex-grow: 0;
+	  min-width: 100px;
+	  width: 100px;
+	  flex-grow: 0;
+	}
+	
+	.shift {
+	  margin: 0 5px 5px 0;
+	  overflow: hidden;
+	}
 }
 
 .space-top {

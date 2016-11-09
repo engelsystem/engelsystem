@@ -56,16 +56,16 @@ function user_settings() {
       $valid = false;
     }
     
-    if (isset($_REQUEST['planned_arrival_date']) && DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))) {
-      $planned_arrival_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))->getTimestamp();
+    if (isset($_REQUEST['planned_arrival_date']) && $tmp = parse_date("Y-m-d", $_REQUEST['planned_arrival_date'])) {
+      $planned_arrival_date = $tmp;
     } else {
       $valid = false;
       $msg .= error(_("Please enter your planned date of arrival."), true);
     }
     
     if (isset($_REQUEST['planned_departure_date']) && $_REQUEST['planned_departure_date'] != '') {
-      if (DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_departure_date']))) {
-        $planned_departure_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_departure_date']))->getTimestamp();
+      if ($tmp = parse_date("Y-m-d", $_REQUEST['planned_departure_date'])) {
+        $planned_departure_date = $tmp;
       } else {
         $valid = false;
         $msg .= error(_("Please enter your planned date of departure."), true);

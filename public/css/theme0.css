@@ -6730,38 +6730,46 @@ body {
 .footer a {
   color: #777777;
 }
-#shifts td.free {
-  border: 1px solid #d9534f;
-  background-color: #f2dede;
+.shift-calendar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-itmes: stretch;
+  width: 100%;
 }
-a#shifts td.free:hover,
-a#shifts td.free:focus {
-  background-color: #e4b9b9;
+.shift-calendar .lane {
+  background: #f9f9f9;
+  min-width: 300px;
+  width: 300px;
+  flex-grow: 1;
 }
-#shifts td.occupied {
-  border: 1px solid #5cb85c;
-  background-color: #dff0d8;
+.shift-calendar .lane .header {
+  background: #fff;
+  height: 30px;
+  padding: 5px;
 }
-a#shifts td.occupied:hover,
-a#shifts td.occupied:focus {
-  background-color: #c1e2b3;
+.shift-calendar .lane .tick {
+  height: 30px;
+  border-top: 1px solid #f4f4f4;
 }
-#shifts td.collides {
-  border: 1px solid #f0ad4e;
-  background-color: #fcf8e3;
+.shift-calendar .lane .tick.hour {
+  border-top: 2px solid #dddddd;
+  font-size: 0.9em;
+  padding-left: 5px;
 }
-a#shifts td.collides:hover,
-a#shifts td.collides:focus {
-  background-color: #f7ecb5;
+.shift-calendar .lane .tick.day {
+  border-top: 2px solid #337ab7;
+  font-size: 0.9em;
+  padding-left: 5px;
 }
-#shifts td.own {
-  border: 1px solid #777777;
+.shift-calendar .lane.time {
+  min-width: 100px;
+  width: 100px;
+  flex-grow: 0;
 }
-.row-day {
-  border-top: 2px solid #777777;
-}
-.row-header {
-  min-width: 90px;
+.shift-calendar .shift {
+  margin: 0 5px 5px 0;
+  overflow: hidden;
 }
 .space-top {
   margin-top: 15px;

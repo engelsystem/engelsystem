@@ -51,7 +51,7 @@ function ShiftType_create($name, $angeltype_id, $description) {
 function ShiftType($shifttype_id) {
   $shifttype = sql_select("SELECT * FROM `ShiftTypes` WHERE `id`='" . sql_escape($shifttype_id) . "'");
   if ($shifttype === false) {
-    return false;
+    engelsystem_error('Unable to load shift type.');
   }
   if ($shifttype == null) {
     return null;

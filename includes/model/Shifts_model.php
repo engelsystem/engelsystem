@@ -1,9 +1,82 @@
 <?php
+use Engelsystem\ShiftsFilter;
+
+function Shifts_by_room($room) {
+  $result = sql_select("SELECT * FROM `Shifts` WHERE `RID`=" . sql_escape($room['RID']) . " ORDER BY `start`");
+  if ($result === false) {
+    engelsystem_error("Unable to load shifts.");
+  }
+  return $result;
+}
+
+function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
+  $SQL = "SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`, nat2.`special_needs` > 0 AS 'has_special_needs'
+  FROM `Shifts`
+  INNER JOIN `Room` USING (`RID`)
+  INNER JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+  LEFT JOIN (
+      SELECT COUNT(*) AS special_needs , nat3.`shift_id` 
+      FROM `NeededAngelTypes` AS nat3 
+      WHERE `shift_id` IS NOT NULL 
+      GROUP BY nat3.`shift_id`
+  ) AS nat2 ON nat2.`shift_id` = `Shifts`.`SID`
+  INNER JOIN `NeededAngelTypes` AS nat 
+      ON nat.`count` != 0 
+      AND nat.`angel_type_id` IN (" . implode(',', $shiftsFilter->getTypes()) . ") 
+      AND (
+          (nat2.`special_needs` > 0 AND nat.`shift_id` = `Shifts`.`SID`) 
+          OR 
+          (
+              (nat2.`special_needs` = 0 OR nat2.`special_needs` IS NULL) 
+              AND nat.`room_id` = `RID`)
+          )
+  LEFT JOIN (
+      SELECT se.`SID`, se.`TID`, COUNT(*) as count 
+      FROM `ShiftEntry` AS se GROUP BY se.`SID`, se.`TID`
+  ) AS entries ON entries.`SID` = `Shifts`.`SID` AND entries.`TID` = nat.`angel_type_id`
+  WHERE `Shifts`.`RID` IN (" . implode(',', $shiftsFilter->getRooms()) . ")
+  AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime();
+  
+  if (count($shiftsFilter->getFilled()) == 1) {
+    if ($shiftsFilter->getFilled()[0] == ShiftsFilter::FILLED_FREE) {
+      $SQL .= "
+      AND (
+          nat.`count` > entries.`count` OR entries.`count` IS NULL 
+          OR EXISTS (
+              SELECT `SID` 
+              FROM `ShiftEntry` 
+              WHERE `UID` = '" . sql_escape($user['UID']) . "' 
+              AND `ShiftEntry`.`SID` = `Shifts`.`SID`
+          )
+      )";
+    } elseif ($_SESSION['user_shifts']['filled'][0] == ShiftsFilter::FILLED_FILLED) {
+      $SQL .= "
+      AND (
+          nat.`count` <= entries.`count` 
+          OR EXISTS (
+              SELECT `SID` 
+              FROM `ShiftEntry` 
+              WHERE `UID` = '" . sql_escape($user['UID']) . "' 
+              AND `ShiftEntry`.`SID` = `Shifts`.`SID`
+          )
+      )";
+    }
+  }
+  $SQL .= "
+  ORDER BY `start`";
+  
+  $result = sql_select($SQL);
+  if ($result === false) {
+    engelsystem_error("Unable to load shifts by filter.");
+  }
+  return $result;
+}
 
 /**
  * Check if a shift collides with other shifts (in time).
- * @param Shift $shift
- * @param array<Shift> $shifts
+ *
+ * @param Shift $shift          
+ * @param array<Shift> $shifts          
  */
 function Shift_collides($shift, $shifts) {
   foreach ($shifts as $other_shift) {
@@ -28,18 +101,12 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
   
   if ($user_shifts == null) {
     $user_shifts = Shifts_by_user($user);
-    if ($user_shifts === false) {
-      engelsystem_error('Unable to load users shifts.');
-    }
   }
   
   $collides = Shift_collides($shift, $user_shifts);
   
   if ($user_angeltype == null) {
     $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
-    if ($user_angeltype === false) {
-      engelsystem_error('Unable to load user angeltype.');
-    }
   }
   
   $signed_up = false;
@@ -104,7 +171,11 @@ function Shift_delete_by_psid($shift_psid) {
 function Shift_delete($shift_id) {
   mail_shift_delete(Shift($shift_id));
   
-  return sql_query("DELETE FROM `Shifts` WHERE `SID`='" . sql_escape($shift_id) . "'");
+  $result = sql_query("DELETE FROM `Shifts` WHERE `SID`='" . sql_escape($shift_id) . "'");
+  if ($result === false) {
+    engelsystem_error('Unable to delete shift.');
+  }
+  return $result;
 }
 
 /**
@@ -170,7 +241,7 @@ function Shift_create($shift) {
  * Return users shifts.
  */
 function Shifts_by_user($user) {
-  return sql_select("
+  $result = sql_select("
       SELECT `ShiftTypes`.`id` as `shifttype_id`, `ShiftTypes`.`name`, `ShiftEntry`.*, `Shifts`.*, `Room`.* 
       FROM `ShiftEntry` 
       JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
@@ -179,6 +250,10 @@ function Shifts_by_user($user) {
       WHERE `UID`='" . sql_escape($user['UID']) . "' 
       ORDER BY `start`
       ");
+  if ($result === false) {
+    engelsystem_error('Unable to load users shifts.');
+  }
+  return $result;
 }
 
 /**
@@ -242,27 +317,29 @@ function Shift($shift_id) {
   $shiftsEntry_source = sql_select("SELECT `id`, `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`='" . sql_escape($shift_id) . "'");
   
   if ($shifts_source === false) {
-    return false;
+    engelsystem_error('Unable to load shift.');
   }
-  if (count($shifts_source) > 0) {
-    $result = $shifts_source[0];
-    
-    $result['ShiftEntry'] = $shiftsEntry_source;
-    $result['NeedAngels'] = [];
-    
-    $temp = NeededAngelTypes_by_shift($shift_id);
-    foreach ($temp as $e) {
-      $result['NeedAngels'][] = [
-          'TID' => $e['angel_type_id'],
-          'count' => $e['count'],
-          'restricted' => $e['restricted'],
-          'taken' => $e['taken'] 
-      ];
-    }
-    
-    return $result;
+  
+  if (empty($shifts_source)) {
+    return null;
   }
-  return null;
+  
+  $result = $shifts_source[0];
+  
+  $result['ShiftEntry'] = $shiftsEntry_source;
+  $result['NeedAngels'] = [];
+  
+  $temp = NeededAngelTypes_by_shift($shift_id);
+  foreach ($temp as $e) {
+    $result['NeedAngels'][] = [
+        'TID' => $e['angel_type_id'],
+        'count' => $e['count'],
+        'restricted' => $e['restricted'],
+        'taken' => $e['taken'] 
+    ];
+  }
+  
+  return $result;
 }
 
 /**

@@ -42,8 +42,11 @@ function glyph_bool($boolean) {
 }
 
 function div($class, $content = [], $dom_id = "") {
+  if (is_array($content)) {
+    $content = join("\n", $content);
+  }
   $dom_id = $dom_id != '' ? ' id="' . $dom_id . '"' : '';
-  return '<div' . $dom_id . ' class="' . $class . '">' . join("\n", $content) . '</div>';
+  return '<div' . $dom_id . ' class="' . $class . '">' . $content . '</div>';
 }
 
 function heading($content, $number = 1) {
@@ -58,6 +61,10 @@ function heading($content, $number = 1) {
  */
 function toolbar($items = [], $right = false) {
   return '<ul class="nav navbar-nav' . ($right ? ' navbar-right' : '') . '">' . join("\n", $items) . '</ul>';
+}
+
+function toolbar_pills($items) {
+  return '<ul class="nav nav-pills">' . join("\n", $items) . '</ul>';
 }
 
 /**
@@ -374,11 +381,11 @@ function render_table($columns, $rows, $data = true) {
   foreach ($rows as $row) {
     $html .= '<tr>';
     foreach ($columns as $key => $column) {
+      $value = "&nbsp;";
       if (isset($row[$key])) {
-        $html .= '<td class="column_' . $key . '">' . $row[$key] . '</td>';
-      } else {
-        $html .= '<td class="column_' . $key . '">&nbsp;</td>';
+        $value = $row[$key];
       }
+      $html .= '<td class="column_' . $key . '">' . $value . '</td>';
     }
     $html .= '</tr>';
   }

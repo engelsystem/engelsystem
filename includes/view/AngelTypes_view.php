@@ -96,7 +96,7 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
   
   $page = [
       msg(),
-      buttons($buttons) 
+      buttons($buttons)
   ];
   
   $page[] = '<h3>' . _("Description") . '</h3>';
