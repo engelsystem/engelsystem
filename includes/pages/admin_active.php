@@ -40,7 +40,7 @@ function admin_active() {
     if (isset($_REQUEST['ack'])) {
       sql_query("UPDATE `User` SET `Aktiv` = 0 WHERE `Tshirt` = 0");
       $users = sql_select("
-          SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` 
+          SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, $shift_sum_formula as `shift_length` 
           FROM `User` 
           LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
           LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` 
