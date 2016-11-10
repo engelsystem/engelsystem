@@ -192,12 +192,7 @@ function angeltype_controller() {
   }
   
   $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
-  
   $user_driver_license = UserDriverLicense($user['UID']);
-  if ($user_driver_license === false) {
-    engelsystem_error("Unable to load user driver license.");
-  }
-  
   $members = Users_by_angeltype($angeltype);
   if ($members === false) {
     engelsystem_error("Unable to load members.");

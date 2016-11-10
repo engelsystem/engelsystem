@@ -28,12 +28,17 @@ function UserAngelType_exists($user, $angeltype) {
  * @param User $user          
  */
 function User_angeltypes($user) {
-  return sql_select("
+  $result = sql_select("
       SELECT `AngelTypes`.*, `UserAngelTypes`.`confirm_user_id`, `UserAngelTypes`.`coordinator`
       FROM `UserAngelTypes`
       JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`
       WHERE `UserAngelTypes`.`user_id`='" . sql_escape($user['UID']) . "'
       ");
+  if ($result === false) {
+    engelsystem_error("Unable to load user angeltypes.");
+    return false;
+  }
+  return $result;
 }
 
 /**
