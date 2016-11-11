@@ -18,6 +18,7 @@ function user_settings() {
   $mobile = $user['Handy'];
   $mail = $user['email'];
   $email_shiftinfo = $user['email_shiftinfo'];
+  $email_by_human_allowed = $user['email_by_human_allowed'];
   $jabber = $user['jabber'];
   $hometown = $user['Hometown'];
   $tshirt_size = $user['Size'];
@@ -39,8 +40,9 @@ function user_settings() {
       $valid = false;
       $msg .= error(_("Please enter your e-mail."), true);
     }
-    
+
     $email_shiftinfo = isset($_REQUEST['email_shiftinfo']);
+    $email_by_human_allowed = isset($_REQUEST['email_by_human_allowed']);
     
     if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
       $jabber = strip_request_item('jabber');
@@ -109,6 +111,7 @@ function user_settings() {
           `Handy`='" . sql_escape($mobile) . "',
           `email`='" . sql_escape($mail) . "',
           `email_shiftinfo`=" . sql_bool($email_shiftinfo) . ",
+          `email_by_human_allowed`=" . sql_bool($email_by_human_allowed) . ",
           `jabber`='" . sql_escape($jabber) . "',
           `Size`='" . sql_escape($tshirt_size) . "',
           `Hometown`='" . sql_escape($hometown) . "',
@@ -185,7 +188,8 @@ function user_settings() {
                   form_text('dect', _("DECT"), $dect),
                   form_text('mobile', _("Mobile"), $mobile),
                   form_text('mail', _("E-Mail") . ' ' . entry_required(), $mail),
-                  form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $email_shiftinfo),
+                  form_checkbox('email_shiftinfo', _("The engelsystem is allowed to send me an email (e.g. when my shifts change)"), $email_shiftinfo),
+                  form_checkbox('email_by_human_allowed', _("Humans are allowed to send me an email (e.g. for ticket vouchers)"), $email_by_human_allowed),
                   form_text('jabber', _("Jabber"), $jabber),
                   form_text('hometown', _("Hometown"), $hometown),
                   $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',

@@ -29,6 +29,7 @@ function User_update($user) {
       `Handy`='" . sql_escape($user['Handy']) . "',
       `email`='" . sql_escape($user['email']) . "',
       `email_shiftinfo`=" . sql_bool($user['email_shiftinfo']) . ",
+      `email_by_human_allowed`=" . sql_bool($user['email_by_human_allowed']) . ",
       `jabber`='" . sql_escape($user['jabber']) . "',
       `Size`='" . sql_escape($user['Size']) . "',
       `Gekommen`='" . sql_escape($user['Gekommen']) . "',

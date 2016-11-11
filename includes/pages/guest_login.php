@@ -17,9 +17,6 @@ function guest_register() {
   global $tshirt_sizes, $enable_tshirt_size, $default_theme, $user;
   
   $event_config = EventConfig();
-  if ($event_config === false) {
-    engelsystem_error("Unable to load event config.");
-  }
   
   $msg = "";
   $nick = "";
@@ -31,6 +28,7 @@ function guest_register() {
   $mobile = "";
   $mail = "";
   $email_shiftinfo = false;
+  $email_by_human_allowed = false;
   $jabber = "";
   $hometown = "";
   $comment = "";
@@ -39,7 +37,7 @@ function guest_register() {
   $selected_angel_types = [];
   $planned_arrival_date = null;
   
-  $angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
+  $angel_types_source = AngelTypes();
   $angel_types = [];
   foreach ($angel_types_source as $angel_type) {
     $angel_types[$angel_type['id']] = $angel_type['name'] . ($angel_type['restricted'] ? " (restricted)" : "");
@@ -75,6 +73,10 @@ function guest_register() {
     
     if (isset($_REQUEST['email_shiftinfo'])) {
       $email_shiftinfo = true;
+    }
+    
+    if (isset($_REQUEST['email_by_human_allowed'])) {
+      $email_by_human_allowed = true;
     }
     
     if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
@@ -157,6 +159,7 @@ function guest_register() {
           `Handy`='" . sql_escape($mobile) . "', 
           `email`='" . sql_escape($mail) . "', 
           `email_shiftinfo`=" . sql_bool($email_shiftinfo) . ", 
+          `email_by_human_allowed`=" . sql_bool($email_by_human_allowed) . ",
           `jabber`='" . sql_escape($jabber) . "',
           `Size`='" . sql_escape($tshirt_size) . "', 
           `Passwort`='" . sql_escape($password_hash) . "', 
@@ -209,7 +212,8 @@ function guest_register() {
                       ]),
                       div('col-sm-8', [
                           form_email('mail', _("E-Mail") . ' ' . entry_required(), $mail),
-                          form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $email_shiftinfo) 
+                          form_checkbox('email_shiftinfo', _("The engelsystem is allowed to send me an email (e.g. when my shifts change)"), $email_shiftinfo), 
+                          form_checkbox('email_by_human_allowed', _("Humans are allowed to send me an email (e.g. for ticket vouchers)"), $email_by_human_allowed) 
                       ]) 
                   ]),
                   div('row', [
@@ -318,9 +322,6 @@ function guest_login() {
   }
   
   $event_config = EventConfig();
-  if ($event_config === false) {
-    engelsystem_error("Unable to load event config.");
-  }
   
   return page([
       div('col-md-12', [

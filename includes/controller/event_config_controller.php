@@ -19,9 +19,6 @@ function event_config_edit_controller() {
   $teardown_end_date = null;
   
   $event_config = EventConfig();
-  if ($event_config === false) {
-    engelsystem_error('Unable to load event config.');
-  }
   if ($event_config != null) {
     $event_name = $event_config['event_name'];
     $buildup_start_date = $event_config['buildup_start_date'];

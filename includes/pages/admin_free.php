@@ -67,7 +67,7 @@ function admin_free() {
         'shift_state' => User_shift_state_render($usr),
         'dect' => $usr['DECT'],
         'jabber' => $usr['jabber'],
-        'email' => $usr['email'],
+        'email' => $usr['email_by_human_allowed'] ? $usr['email'] : glyph('eye-close'),
         'actions' => in_array('admin_user', $privileges) ? button(page_link_to('admin_user') . '&amp;id=' . $usr['UID'], _("edit"), 'btn-xs') : '' 
     ];
   }

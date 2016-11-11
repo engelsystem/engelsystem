@@ -36,8 +36,9 @@ function admin_user() {
     $html .= "  <tr><td>Telefon</td><td>" . "<input type=\"text\" size=\"40\" name=\"eTelefon\" value=\"" . $user_source['Telefon'] . "\"></td></tr>\n";
     $html .= "  <tr><td>Handy</td><td>" . "<input type=\"text\" size=\"40\" name=\"eHandy\" value=\"" . $user_source['Handy'] . "\"></td></tr>\n";
     $html .= "  <tr><td>DECT</td><td>" . "<input type=\"text\" size=\"4\" name=\"eDECT\" value=\"" . $user_source['DECT'] . "\"></td></tr>\n";
-    $html .= "  <tr><td>email</td><td>" . "<input type=\"text\" size=\"40\" name=\"eemail\" value=\"" . $user_source['email'] . "\"></td></tr>\n";
-    $html .= "<tr><td>" . form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $user_source['email_shiftinfo']) . "</td></tr>\n";
+    if ($user_source['email_by_human_allowed']) {
+      $html .= "  <tr><td>email</td><td>" . "<input type=\"text\" size=\"40\" name=\"eemail\" value=\"" . $user_source['email'] . "\"></td></tr>\n";
+    }
     $html .= "  <tr><td>jabber</td><td>" . "<input type=\"text\" size=\"40\" name=\"ejabber\" value=\"" . $user_source['jabber'] . "\"></td></tr>\n";
     $html .= "  <tr><td>Size</td><td>" . html_select_key('size', 'eSize', $tshirt_sizes, $user_source['Size']) . "</td></tr>\n";
     
@@ -173,7 +174,6 @@ function admin_user() {
               `Alter` = '" . sql_escape($_POST["eAlter"]) . "', 
               `DECT` = '" . sql_escape($_POST["eDECT"]) . "', 
               `email` = '" . sql_escape($_POST["eemail"]) . "', 
-              `email_shiftinfo` = " . sql_bool(isset($_REQUEST['email_shiftinfo'])) . ", 
               `jabber` = '" . sql_escape($_POST["ejabber"]) . "', 
               `Size` = '" . sql_escape($_POST["eSize"]) . "', 
               `Gekommen`= '" . sql_escape($_POST["eGekommen"]) . "', 

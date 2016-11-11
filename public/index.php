@@ -161,9 +161,6 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
 }
 
 $event_config = EventConfig();
-if ($event_config === false) {
-  engelsystem_error("Unable to load event config.");
-}
 
 echo template_render('../templates/layout.html', [
     'theme' => isset($user) ? $user['color'] : $default_theme,
