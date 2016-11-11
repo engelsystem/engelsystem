@@ -20,6 +20,66 @@ $tshirt_sizes = [
 ];
 
 /**
+ * Renders user settings page
+ *
+ * @param User $user_source
+ *          The user
+ * @param array<String> $locales
+ *          Available languages
+ * @param array<String> $themes
+ *          Available themes
+ */
+function User_settings_view($user_source, $locales, $themes, $buildup_start_date, $teardown_end_date, $enable_tshirt_size, $tshirt_sizes) {
+  return page_with_title(settings_title(), [
+      msg(),
+      div('row', [
+          div('col-md-6', [
+              form([
+                  form_info('', _("Here you can change your user details.")),
+                  form_info(entry_required() . ' = ' . _("Entry required!")),
+                  form_text('nick', _("Nick"), $user_source['Nick'], true),
+                  form_text('lastname', _("Last name"), $user_source['Name']),
+                  form_text('prename', _("First name"), $user_source['Vorname']),
+                  form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $user_source['planned_arrival_date'], $buildup_start_date, $teardown_end_date),
+                  form_date('planned_departure_date', _("Planned date of departure"), $user_source['planned_departure_date'], $buildup_start_date, $teardown_end_date),
+                  form_text('age', _("Age"), $user_source['Alter']),
+                  form_text('tel', _("Phone"), $user_source['Telefon']),
+                  form_text('dect', _("DECT"), $user_source['DECT']),
+                  form_text('mobile', _("Mobile"), $user_source['Handy']),
+                  form_text('mail', _("E-Mail") . ' ' . entry_required(), $user_source['email']),
+                  form_checkbox('email_shiftinfo', _("The engelsystem is allowed to send me an email (e.g. when my shifts change)"), $user_source['email_shiftinfo']),
+                  form_checkbox('email_by_human_allowed', _("Humans are allowed to send me an email (e.g. for ticket vouchers)"), $user_source['email_by_human_allowed']),
+                  form_text('jabber', _("Jabber"), $user_source['jabber']),
+                  form_text('hometown', _("Hometown"), $user_source['Hometown']),
+                  $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $user_source['Size']) : '',
+                  form_info('', _('Please visit the angeltypes page to manage your angeltypes.')),
+                  form_submit('submit', _("Save")) 
+              ]) 
+          ]),
+          div('col-md-6', [
+              form([
+                  form_info(_("Here you can change your password.")),
+                  form_password('password', _("Old password:")),
+                  form_password('new_password', _("New password:")),
+                  form_password('new_password2', _("Password confirmation:")),
+                  form_submit('submit_password', _("Save")) 
+              ]),
+              form([
+                  form_info(_("Here you can choose your color settings:")),
+                  form_select('theme', _("Color settings:"), $themes, $user_source['color']),
+                  form_submit('submit_theme', _("Save")) 
+              ]),
+              form([
+                  form_info(_("Here you can choose your language:")),
+                  form_select('language', _("Language:"), $locales, $user_source['Sprache']),
+                  form_submit('submit_language', _("Save")) 
+              ]) 
+          ]) 
+      ]) 
+  ]);
+}
+
+/**
  * Displays the welcome message to the user and shows a login form.
  */
 function User_registration_success_view($event_welcome_message) {
@@ -112,24 +172,24 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
       'actions' => '<strong>' . count($users) . '</strong>' 
   ];
   
-  return page_with_title(_('All users'), [
+  return page_with_title(_("All users"), [
       msg(),
       buttons([
-          button(page_link_to('register'), glyph('plus') . _('New user')) 
+          button(page_link_to('register'), glyph('plus') . _("New user")) 
       ]),
       table([
-          'Nick' => Users_table_header_link('Nick', _('Nick'), $order_by),
-          'Vorname' => Users_table_header_link('Vorname', _('Prename'), $order_by),
-          'Name' => Users_table_header_link('Name', _('Name'), $order_by),
-          'DECT' => Users_table_header_link('DECT', _('DECT'), $order_by),
-          'Gekommen' => Users_table_header_link('Gekommen', _('Arrived'), $order_by),
-          'got_voucher' => Users_table_header_link('got_voucher', _('Voucher'), $order_by),
+          'Nick' => Users_table_header_link('Nick', _("Nick"), $order_by),
+          'Vorname' => Users_table_header_link('Vorname', _("Prename"), $order_by),
+          'Name' => Users_table_header_link('Name', _("Name"), $order_by),
+          'DECT' => Users_table_header_link('DECT', _("DECT"), $order_by),
+          'Gekommen' => Users_table_header_link('Gekommen', _("Arrived"), $order_by),
+          'got_voucher' => Users_table_header_link('got_voucher', _("Voucher"), $order_by),
           'freeloads' => _('Freeloads'),
-          'Aktiv' => Users_table_header_link('Aktiv', _('Active'), $order_by),
-          'force_active' => Users_table_header_link('force_active', _('Forced'), $order_by),
-          'Tshirt' => Users_table_header_link('Tshirt', _('T-Shirt'), $order_by),
-          'Size' => Users_table_header_link('Size', _('Size'), $order_by),
-          'lastLogIn' => Users_table_header_link('lastLogIn', _('Last login'), $order_by),
+          'Aktiv' => Users_table_header_link('Aktiv', _("Active"), $order_by),
+          'force_active' => Users_table_header_link('force_active', _("Forced"), $order_by),
+          'Tshirt' => Users_table_header_link('Tshirt', _("T-Shirt"), $order_by),
+          'Size' => Users_table_header_link('Size', _("Size"), $order_by),
+          'lastLogIn' => Users_table_header_link('lastLogIn', _("Last login"), $order_by),
           'actions' => '' 
       ], $users) 
   ]);

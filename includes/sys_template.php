@@ -151,10 +151,11 @@ function form_spinner($name, $label, $value) {
  *          Earliest possible date
  * @return HTML
  */
-function form_date($name, $label, $value, $start_date = '') {
+function form_date($name, $label, $value, $start_date = '', $end_date = '') {
   $dom_id = $name . '-date';
   $value = is_numeric($value) ? date('Y-m-d', $value) : '';
   $start_date = is_numeric($start_date) ? date('Y-m-d', $start_date) : '';
+  $end_date = is_numeric($end_date) ? date('Y-m-d', $end_date) : '';
   return form_element($label, '
     <div class="input-group date" id="' . $dom_id . '">
       <input type="text" name="' . $name . '" class="form-control" value="' . $value . '"><span class="input-group-addon">' . glyph('th') . '</span>
@@ -165,7 +166,8 @@ function form_date($name, $label, $value, $start_date = '') {
 				  language: "' . locale_short() . '",
           todayBtn: "linked",
           format: "yyyy-mm-dd",
-          startDate: "' . $start_date . '"
+          startDate: "' . $start_date . '",
+          endDate: "' . $end_date . '"
 			  });
       });  
     </script>

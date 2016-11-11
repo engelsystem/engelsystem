@@ -41,7 +41,8 @@ function User_update($user) {
       `Hometown`='" . sql_escape($user['Hometown']) . "',
       `got_voucher`='" . sql_escape($user['got_voucher']) . "',
       `arrival_date`='" . sql_escape($user['arrival_date']) . "',
-      `planned_arrival_date`='" . sql_escape($user['planned_arrival_date']) . "'
+      `planned_arrival_date`='" . sql_escape($user['planned_arrival_date']) . "',
+      `planned_departure_date`='" . sql_escape($user['planned_departure_date']) . "'
       WHERE `UID`='" . sql_escape($user['UID']) . "'");
 }
 
@@ -160,6 +161,68 @@ function User_ids() {
  */
 function User_validate_Nick($nick) {
   return preg_replace("/([^a-z0-9üöäß. _+*-]{1,})/ui", '', $nick);
+}
+
+/**
+ * Validate the planned arrival date
+ *
+ * @param int $planned_arrival_date
+ *          Unix timestamp
+ * @return ValidationResult
+ */
+function User_validate_planned_arrival_date($planned_arrival_date) {
+  if ($planned_arrival_date == null) {
+    // null is not okay
+    return new ValidationResult(false, time());
+  }
+  $event_config = EventConfig();
+  if ($event_config == null) {
+    // Nothing to validate against
+    return new ValidationResult(true, $planned_arrival_date);
+  }
+  if (isset($event_config['buildup_start_date']) && $planned_arrival_date < $event_config['buildup_start_date']) {
+    // Planned arrival can not be before buildup start date
+    return new ValidationResult(false, $event_config['buildup_start_date']);
+  }
+  if (isset($event_config['teardown_end_date']) && $planned_arrival_date > $event_config['teardown_end_date']) {
+    // Planned arrival can not be after teardown end date
+    return new ValidationResult(false, $event_config['teardown_end_date']);
+  }
+  return new ValidationResult(true, $planned_arrival_date);
+}
+
+/**
+ * Validate the planned departure date
+ *
+ * @param int $planned_arrival_date
+ *          Unix timestamp
+ * @param int $planned_departure_date
+ *          Unix timestamp
+ * @return ValidationResult
+ */
+function User_validate_planned_departure_date($planned_arrival_date, $planned_departure_date) {
+  if ($planned_departure_date == null) {
+    // null is okay
+    return new ValidationResult(true, null);
+  }
+  if ($planned_arrival_date > $planned_departure_date) {
+    // departure cannot be before arrival
+    return new ValidationResult(false, $planned_arrival_date);
+  }
+  $event_config = EventConfig();
+  if ($event_config == null) {
+    // Nothing to validate against
+    return new ValidationResult(true, $planned_departure_date);
+  }
+  if (isset($event_config['buildup_start_date']) && $planned_departure_date < $event_config['buildup_start_date']) {
+    // Planned arrival can not be before buildup start date
+    return new ValidationResult(false, $event_config['buildup_start_date']);
+  }
+  if (isset($event_config['teardown_end_date']) && $planned_departure_date > $event_config['teardown_end_date']) {
+    // Planned arrival can not be after teardown end date
+    return new ValidationResult(false, $event_config['teardown_end_date']);
+  }
+  return new ValidationResult(true, $planned_departure_date);
 }
 
 /**
