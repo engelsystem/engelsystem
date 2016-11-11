@@ -9,16 +9,15 @@ function user_driver_license_required_hint() {
   $angeltypes = User_angeltypes($user);
   $user_driver_license = UserDriverLicense($user['UID']);
   
-  $driving_license_information_required = false;
-  foreach ($angeltypes as $angeltype) {
-    if ($angeltype['requires_driver_license']) {
-      $driving_license_information_required = true;
-      break;
-    }
+  // User has already entered data, no hint needed.
+  if ($user_driver_license != null) {
+    return '';
   }
   
-  if ($driving_license_information_required && $user_driver_license == null) {
-    return info(sprintf(_("You joined an angeltype which requires a driving license. Please edit your driving license information here: %s."), '<a href="' . user_driver_license_edit_link() . '">' . _("driving license information") . '</a>'), true);
+  foreach ($angeltypes as $angeltype) {
+    if ($angeltype['requires_driver_license']) {
+      return info(sprintf(_("You joined an angeltype which requires a driving license. Please edit your driving license information here: %s."), '<a href="' . user_driver_license_edit_link() . '">' . _("driving license information") . '</a>'), true);
+    }
   }
   
   return '';

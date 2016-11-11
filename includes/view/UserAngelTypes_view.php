@@ -1,12 +1,12 @@
 <?php
 
-function UserAngelType_update_view($user_angeltype, $user, $angeltype, $coordinator) {
-  return page_with_title($coordinator ? _("Add coordinator rights") : _("Remove coordinator rights"), [
+function UserAngelType_update_view($user_angeltype, $user, $angeltype, $supporter) {
+  return page_with_title($supporter ? _("Add supporter rights") : _("Remove supporter rights"), [
       msg(),
-      info(sprintf($coordinator ? _("Do you really want to add coordinator rights for %s to %s?") : _("Do you really want to remove coordinator rights for %s from %s?"), $angeltype['name'], User_Nick_render($user)), true),
+      info(sprintf($supporter ? _("Do you really want to add supporter rights for %s to %s?") : _("Do you really want to remove supporter rights for %s from %s?"), $angeltype['name'], User_Nick_render($user)), true),
       buttons([
           button(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'], _("cancel"), 'cancel'),
-          button(page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $user_angeltype['id'] . '&coordinator=' . ($coordinator ? '1' : '0') . '&confirmed', _("yes"), 'ok') 
+          button(page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $user_angeltype['id'] . '&supporter=' . ($supporter ? '1' : '0') . '&confirmed', _("yes"), 'ok') 
       ]) 
   ]);
 }

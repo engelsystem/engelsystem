@@ -25,12 +25,12 @@ function AngelType_render_membership($user_angeltype) {
     if ($user_angeltype['restricted']) {
       if ($user_angeltype['confirm_user_id'] == null) {
         return glyph('lock') . _("Unconfirmed");
-      } elseif ($user_angeltype['coordinator']) {
-        return glyph_bool(true) . _("Coordinator");
+      } elseif ($user_angeltype['supporter']) {
+        return glyph_bool(true) . _("supporter");
       }
       return glyph_bool(true) . _("Member");
-    } elseif ($user_angeltype['coordinator']) {
-      return glyph_bool(true) . _("Coordinator");
+    } elseif ($user_angeltype['supporter']) {
+      return glyph_bool(true) . _("supporter");
     }
     return glyph_bool(true) . _("Member");
   }
@@ -47,16 +47,16 @@ function AngelType_delete_view($angeltype) {
   ]);
 }
 
-function AngelType_edit_view($name, $restricted, $description, $coordinator_mode, $requires_driver_license) {
+function AngelType_edit_view($name, $restricted, $description, $supporter_mode, $requires_driver_license) {
   return page_with_title(sprintf(_("Edit %s"), $name), [
       buttons([
           button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
       ]),
       msg(),
       form([
-          $coordinator_mode ? form_info(_("Name"), $name) : form_text('name', _("Name"), $name),
-          $coordinator_mode ? form_info(_("Restricted"), $restricted ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $restricted),
-          $coordinator_mode ? form_info(_("Requires driver license"), $requires_driver_license ? _("Yes") : _("No")) : form_checkbox('requires_driver_license', _("Requires driver license"), $requires_driver_license),
+          $supporter_mode ? form_info(_("Name"), $name) : form_text('name', _("Name"), $name),
+          $supporter_mode ? form_info(_("Restricted"), $restricted ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $restricted),
+          $supporter_mode ? form_info(_("Requires driver license"), $requires_driver_license ? _("Yes") : _("No")) : form_checkbox('requires_driver_license', _("Requires driver license"), $requires_driver_license),
           form_info("", _("Restricted angel types can only be used by an angel if enabled by an archangel (double opt-in).")),
           form_textarea('description', _("Description"), $description),
           form_info("", _("Please use markdown for the description.")),
@@ -68,7 +68,7 @@ function AngelType_edit_view($name, $restricted, $description, $coordinator_mode
 /**
  * Renders the buttons for the angeltype view.
  */
-function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $coordinator, $user_driver_license, $user) {
+function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user) {
   $buttons = [
       button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
   ];
@@ -90,7 +90,7 @@ function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, 
     $buttons[] = button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $user_angeltype['id'], _("leave"), 'cancel');
   }
   
-  if ($admin_angeltypes || $coordinator) {
+  if ($admin_angeltypes || $supporter) {
     $buttons[] = button(page_link_to('angeltypes') . '&action=edit&angeltype_id=' . $angeltype['id'], _("edit"), 'edit');
   }
   if ($admin_angeltypes) {
@@ -101,12 +101,12 @@ function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, 
 }
 
 /**
- * Renders and sorts the members of an angeltype into coordinators, members and unconfirmed members.
+ * Renders and sorts the members of an angeltype into supporters, members and unconfirmed members.
  *
- * @return [coordinators, members, unconfirmed members]
+ * @return [supporters, members, unconfirmed members]
  */
 function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $admin_angeltypes) {
-  $coordinators = [];
+  $supporters = [];
   $members_confirmed = [];
   $members_unconfirmed = [];
   foreach ($members as $member) {
@@ -128,19 +128,19 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
           button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'], _("deny"), 'btn-xs') 
       ]);
       $members_unconfirmed[] = $member;
-    } elseif ($member['coordinator']) {
+    } elseif ($member['supporter']) {
       if ($admin_angeltypes) {
         $member['actions'] = table_buttons([
-            button(page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $member['user_angeltype_id'] . '&coordinator=0', _("Remove coordinator rights"), 'btn-xs') 
+            button(page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $member['user_angeltype_id'] . '&supporter=0', _("Remove supporter rights"), 'btn-xs') 
         ]);
       } else {
         $member['actions'] = '';
       }
-      $coordinators[] = $member;
+      $supporters[] = $member;
     } else {
       if ($admin_user_angeltypes) {
         $member['actions'] = table_buttons([
-            $admin_angeltypes ? button(page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $member['user_angeltype_id'] . '&coordinator=1', _("Add coordinator rights"), 'btn-xs') : '',
+            $admin_angeltypes ? button(page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $member['user_angeltype_id'] . '&supporter=1', _("Add supporter rights"), 'btn-xs') : '',
             button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'], _("remove"), 'btn-xs') 
         ]);
       }
@@ -149,7 +149,7 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
   }
   
   return [
-      $coordinators,
+      $supporters,
       $members_confirmed,
       $members_unconfirmed 
   ];
@@ -158,8 +158,8 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
 /**
  * Creates the needed member table headers according to given rights and settings from the angeltype.
  */
-function AngelType_view_table_headers($angeltype, $coordinator, $admin_angeltypes) {
-  if ($angeltype['requires_driver_license'] && ($coordinator || $admin_angeltypes)) {
+function AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes) {
+  if ($angeltype['requires_driver_license'] && ($supporter || $admin_angeltypes)) {
     return [
         'Nick' => _("Nick"),
         'DECT' => _("DECT"),
@@ -183,10 +183,10 @@ function AngelType_view_table_headers($angeltype, $coordinator, $admin_angeltype
 /**
  * Render an angeltype page containing the member lists.
  */
-function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angeltypes, $admin_angeltypes, $coordinator, $user_driver_license, $user) {
+function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angeltypes, $admin_angeltypes, $supporter, $user_driver_license, $user) {
   $page = [
       msg(),
-      AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $coordinator, $user_driver_license, $user) 
+      AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user) 
   ];
   
   $page[] = '<h3>' . _("Description") . '</h3>';
@@ -195,12 +195,12 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
     $page[] = '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';
   }
   
-  list($coordinators, $members_confirmed, $members_unconfirmed) = AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $admin_angeltypes);
-  $table_headers = AngelType_view_table_headers($angeltype, $coordinator, $admin_angeltypes);
+  list($supporters, $members_confirmed, $members_unconfirmed) = AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $admin_angeltypes);
+  $table_headers = AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes);
   
-  if (count($coordinators) > 0) {
-    $page[] = '<h3>' . _("Coordinators") . '</h3>';
-    $page[] = table($table_headers, $coordinators);
+  if (count($supporters) > 0) {
+    $page[] = '<h3>' . _("supporters") . '</h3>';
+    $page[] = table($table_headers, $supporters);
   }
   
   if (count($members_confirmed) > 0) {
@@ -279,7 +279,7 @@ function AngelTypes_about_view_angeltype($angeltype) {
   }
   
   if ($angeltype['restricted']) {
-    $html .= info(_("This angeltype is restricted by double-opt-in by a team coordinator. Please show up at the according introduction meetings."), true);
+    $html .= info(_("This angeltype is restricted by double-opt-in by a team supporter. Please show up at the according introduction meetings."), true);
   }
   if ($angeltype['description'] != "") {
     $html .= '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';

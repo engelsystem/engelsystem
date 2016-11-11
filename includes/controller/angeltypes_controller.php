@@ -112,7 +112,7 @@ function angeltype_edit_controller() {
     $description = $angeltype['description'];
     $requires_driver_license = $angeltype['requires_driver_license'];
     
-    if (! User_is_AngelType_coordinator($user, $angeltype)) {
+    if (! User_is_AngelType_supporter($user, $angeltype)) {
       redirect(page_link_to('angeltypes'));
     }
   } else {
@@ -121,13 +121,13 @@ function angeltype_edit_controller() {
     }
   }
   
-  // In coordinator mode only allow to modify description
-  $coordinator_mode = ! in_array('admin_angel_types', $privileges);
+  // In supporter mode only allow to modify description
+  $supporter_mode = ! in_array('admin_angel_types', $privileges);
   
   if (isset($_REQUEST['submit'])) {
     $valid = true;
     
-    if (! $coordinator_mode) {
+    if (! $supporter_mode) {
       if (isset($_REQUEST['name'])) {
         $result = AngelType_validate_name($_REQUEST['name'], $angeltype);
         $name = $result->getValue();
@@ -168,7 +168,7 @@ function angeltype_edit_controller() {
   
   return [
       sprintf(_("Edit %s"), $name),
-      AngelType_edit_view($name, $restricted, $description, $coordinator_mode, $requires_driver_license) 
+      AngelType_edit_view($name, $restricted, $description, $supporter_mode, $requires_driver_license) 
   ];
 }
 
@@ -200,7 +200,7 @@ function angeltype_controller() {
   
   return [
       sprintf(_("Team %s"), $angeltype['name']),
-      AngelType_view($angeltype, $members, $user_angeltype, in_array('admin_user_angeltypes', $privileges) || $user_angeltype['coordinator'], in_array('admin_angel_types', $privileges), $user_angeltype['coordinator'], $user_driver_license, $user) 
+      AngelType_view($angeltype, $members, $user_angeltype, in_array('admin_user_angeltypes', $privileges) || $user_angeltype['supporter'], in_array('admin_angel_types', $privileges), $user_angeltype['supporter'], $user_driver_license, $user) 
   ];
 }
 

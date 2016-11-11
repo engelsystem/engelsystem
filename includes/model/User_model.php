@@ -136,7 +136,7 @@ function Users_by_angeltype($angeltype) {
       `User`.*,
       `UserAngelTypes`.`id` as `user_angeltype_id`,
       `UserAngelTypes`.`confirm_user_id`,
-      `UserAngelTypes`.`coordinator`,
+      `UserAngelTypes`.`supporter`,
       `UserDriverLicenses`.*
       FROM `User`
       JOIN `UserAngelTypes` ON `User`.`UID`=`UserAngelTypes`.`user_id`

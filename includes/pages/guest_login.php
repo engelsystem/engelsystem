@@ -182,7 +182,7 @@ function guest_register() {
       engelsystem_log("User " . User_Nick_render(User($user_id)) . " signed up as: " . join(", ", $user_angel_types_info));
       success(_("Angel registration successful!"));
       
-      // User is already logged in - that means a coordinator has registered an angel. Return to register page.
+      // User is already logged in - that means a supporter has registered an angel. Return to register page.
       if (isset($user)) {
         redirect(page_link_to('register'));
       }

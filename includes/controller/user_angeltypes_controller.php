@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Display a hint for team/angeltype coordinators if there are unconfirmed users for his angeltype.
+ * Display a hint for team/angeltype supporters if there are unconfirmed users for his angeltype.
  */
 function user_angeltypes_unconfirmed_hint() {
   global $user;
@@ -36,7 +36,7 @@ function user_angeltypes_delete_all_controller() {
     redirect(page_link_to('angeltypes'));
   }
   
-  if (! User_is_AngelType_coordinator($user, $angeltype)) {
+  if (! User_is_AngelType_supporter($user, $angeltype)) {
     error(_("You are not allowed to delete all users for this angeltype."));
     redirect(page_link_to('angeltypes'));
   }
@@ -78,7 +78,7 @@ function user_angeltypes_confirm_all_controller() {
     redirect(page_link_to('angeltypes'));
   }
   
-  if (! in_array('admin_user_angeltypes', $privileges) && ! $user_angeltype['coordinator']) {
+  if (! in_array('admin_user_angeltypes', $privileges) && ! $user_angeltype['supporter']) {
     error(_("You are not allowed to confirm all users for this angeltype."));
     redirect(page_link_to('angeltypes'));
   }
@@ -120,7 +120,7 @@ function user_angeltype_confirm_controller() {
     redirect(page_link_to('angeltypes'));
   }
   
-  if (! User_is_AngelType_coordinator($user, $angeltype)) {
+  if (! User_is_AngelType_supporter($user, $angeltype)) {
     error(_("You are not allowed to confirm this users angeltype."));
     redirect(page_link_to('angeltypes'));
   }
@@ -177,7 +177,7 @@ function user_angeltype_delete_controller() {
     redirect(page_link_to('angeltypes'));
   }
   
-  if ($user['UID'] != $user_angeltype['user_id'] && ! User_is_AngelType_coordinator($user, $angeltype)) {
+  if ($user['UID'] != $user_angeltype['user_id'] && ! User_is_AngelType_supporter($user, $angeltype)) {
     error(_("You are not allowed to delete this users angeltype."));
     redirect(page_link_to('angeltypes'));
   }
@@ -208,7 +208,7 @@ function user_angeltype_update_controller() {
   global $privileges;
   
   if (! in_array('admin_angel_types', $privileges)) {
-    error(_("You are not allowed to set coordinator rights."));
+    error(_("You are not allowed to set supporter rights."));
     redirect(page_link_to('angeltypes'));
   }
   
@@ -217,10 +217,10 @@ function user_angeltype_update_controller() {
     redirect(page_link_to('angeltypes'));
   }
   
-  if (isset($_REQUEST['coordinator']) && preg_match("/^[01]$/", $_REQUEST['coordinator'])) {
-    $coordinator = $_REQUEST['coordinator'] == "1";
+  if (isset($_REQUEST['supporter']) && preg_match("/^[01]$/", $_REQUEST['supporter'])) {
+    $supporter = $_REQUEST['supporter'] == "1";
   } else {
-    error(_("No coordinator update given."));
+    error(_("No supporter update given."));
     redirect(page_link_to('angeltypes'));
   }
   
@@ -243,9 +243,9 @@ function user_angeltype_update_controller() {
   }
   
   if (isset($_REQUEST['confirmed'])) {
-    UserAngelType_update($user_angeltype['id'], $coordinator);
+    UserAngelType_update($user_angeltype['id'], $supporter);
     
-    $success_message = sprintf($coordinator ? _("Added coordinator rights for %s to %s.") : _("Removed coordinator rights for %s from %s."), AngelType_name_render($angeltype), User_Nick_render($user_source));
+    $success_message = sprintf($supporter ? _("Added supporter rights for %s to %s.") : _("Removed supporter rights for %s from %s."), AngelType_name_render($angeltype), User_Nick_render($user_source));
     engelsystem_log($success_message);
     success($success_message);
     
@@ -253,13 +253,13 @@ function user_angeltype_update_controller() {
   }
   
   return [
-      $coordinator ? _("Add coordinator rights") : _("Remove coordinator rights"),
-      UserAngelType_update_view($user_angeltype, $user_source, $angeltype, $coordinator) 
+      $supporter ? _("Add supporter rights") : _("Remove supporter rights"),
+      UserAngelType_update_view($user_angeltype, $user_source, $angeltype, $supporter) 
   ];
 }
 
 /**
- * User joining an Angeltype (Or Coordinator doing this for him).
+ * User joining an Angeltype (Or supporter doing this for him).
  */
 function user_angeltype_add_controller() {
   global $user;
@@ -267,7 +267,7 @@ function user_angeltype_add_controller() {
   $angeltype = load_angeltype();
   
   // User is joining by itself
-  if (! User_is_AngelType_coordinator($user, $angeltype)) {
+  if (! User_is_AngelType_supporter($user, $angeltype)) {
     return user_angeltype_join_controller($angeltype);
   }
   

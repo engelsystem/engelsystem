@@ -18,7 +18,7 @@ function UserDriverLicense_edit_view($user_source, $wants_to_drive, $has_car, $h
       ]),
       msg(),
       form([
-          form_info(_("Privacy"), _("Your driving license information is only visible for coordinators and admins.")),
+          form_info(_("Privacy"), _("Your driving license information is only visible for supporters and admins.")),
           form_checkbox('wants_to_drive', _("I am willing to operate cars for the PL"), $wants_to_drive),
           div('panel panel-default', [
               div('panel-body', [

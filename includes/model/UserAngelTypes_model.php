@@ -29,7 +29,7 @@ function UserAngelType_exists($user, $angeltype) {
  */
 function User_angeltypes($user) {
   $result = sql_select("
-      SELECT `AngelTypes`.*, `UserAngelTypes`.`confirm_user_id`, `UserAngelTypes`.`coordinator`
+      SELECT `AngelTypes`.*, `UserAngelTypes`.`confirm_user_id`, `UserAngelTypes`.`supporter`
       FROM `UserAngelTypes`
       JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`
       WHERE `UserAngelTypes`.`user_id`='" . sql_escape($user['UID']) . "'
@@ -42,7 +42,7 @@ function User_angeltypes($user) {
 }
 
 /**
- * Gets unconfirmed user angeltypes for angeltypes of which the given user is a coordinator.
+ * Gets unconfirmed user angeltypes for angeltypes of which the given user is a supporter.
  *
  * @param User $user          
  */
@@ -56,7 +56,7 @@ function User_unconfirmed_AngelTypes($user) {
     JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id`
     JOIN `UserAngelTypes` as `UnconfirmedMembers` ON `UserAngelTypes`.`angeltype_id`=`UnconfirmedMembers`.`angeltype_id`
     WHERE `UserAngelTypes`.`user_id`='" . sql_escape($user['UID']) . "'
-      AND `UserAngelTypes`.`coordinator`=TRUE
+      AND `UserAngelTypes`.`supporter`=TRUE
       AND `AngelTypes`.`restricted`=TRUE
       AND `UnconfirmedMembers`.`confirm_user_id` IS NULL
     GROUP BY `UserAngelTypes`.`angeltype_id`
@@ -68,35 +68,35 @@ function User_unconfirmed_AngelTypes($user) {
 }
 
 /**
- * Returns true if user is angeltype coordinator or has privilege admin_user_angeltypes.
+ * Returns true if user is angeltype supporter or has privilege admin_user_angeltypes.
  *
  * @param User $user          
  * @param AngelType $angeltype          
  */
-function User_is_AngelType_coordinator($user, $angeltype) {
+function User_is_AngelType_supporter($user, $angeltype) {
   return (sql_num_query("
       SELECT `id` 
       FROM `UserAngelTypes` 
       WHERE `user_id`='" . sql_escape($user['UID']) . "'
       AND `angeltype_id`='" . sql_escape($angeltype['id']) . "'
-      AND `coordinator`=TRUE
+      AND `supporter`=TRUE
       LIMIT 1") > 0) || in_array('admin_user_angeltypes', privileges_for_user($user['UID']));
 }
 
 /**
- * Add or remove coordinator rights.
+ * Add or remove supporter rights.
  *
  * @param int $user_angeltype_id          
- * @param bool $coordinator          
+ * @param bool $supporter          
  */
-function UserAngelType_update($user_angeltype_id, $coordinator) {
+function UserAngelType_update($user_angeltype_id, $supporter) {
   $result = sql_query("
       UPDATE `UserAngelTypes`
-      SET `coordinator`=" . sql_bool($coordinator) . "
+      SET `supporter`=" . sql_bool($supporter) . "
       WHERE `id`='" . sql_escape($user_angeltype_id) . "'
       LIMIT 1");
   if ($result === false) {
-    engelsystem_error("Unable to update coordinator rights.");
+    engelsystem_error("Unable to update supporter rights.");
   }
   return $result;
 }

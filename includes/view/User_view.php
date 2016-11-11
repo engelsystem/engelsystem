@@ -332,7 +332,7 @@ function User_angeltypes_render($user_angeltypes) {
     } else {
       $class = 'text-success';
     }
-    $output[] = '<a href="' . angeltype_link($angeltype['id']) . '" class="' . $class . '">' . ($angeltype['coordinator'] ? glyph('education') : '') . $angeltype['name'] . '</a>';
+    $output[] = '<a href="' . angeltype_link($angeltype['id']) . '" class="' . $class . '">' . ($angeltype['supporter'] ? glyph('education') : '') . $angeltype['name'] . '</a>';
   }
   return join('<br />', $output);
 }

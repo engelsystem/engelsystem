@@ -95,7 +95,7 @@ function AngelTypes_with_user($user) {
       SELECT `AngelTypes`.*, 
       `UserAngelTypes`.`id` as `user_angeltype_id`,
       `UserAngelTypes`.`confirm_user_id`,
-      `UserAngelTypes`.`coordinator`
+      `UserAngelTypes`.`supporter`
       FROM `AngelTypes` 
       LEFT JOIN `UserAngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id` 
       AND `UserAngelTypes`.`user_id`=" . $user['UID'] . "
