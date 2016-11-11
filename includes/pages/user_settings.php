@@ -13,9 +13,10 @@ function settings_title() {
 function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes) {
   $valid = true;
   
-  if (isset($_REQUEST['mail']) && strlen(strip_request_item('mail')) > 0) {
-    $user_source['email'] = strip_request_item('mail');
-    if (! check_email($user_source['email'])) {
+  if (isset($_REQUEST['mail'])) {
+    $result = User_validate_mail($_REQUEST['mail']);
+    $user_source['email'] = $result->getValue();
+    if (! $result->isValid()) {
       $valid = false;
       error(_("E-mail address is not correct."));
     }
@@ -27,9 +28,10 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes) {
   $user_source['email_shiftinfo'] = isset($_REQUEST['email_shiftinfo']);
   $user_source['email_by_human_allowed'] = isset($_REQUEST['email_by_human_allowed']);
   
-  if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
-    $user_source['jabber'] = strip_request_item('jabber');
-    if (! check_email($user_source['jabber'])) {
+  if (isset($_REQUEST['jabber'])) {
+    $result = User_validate_mail($_REQUEST['jabber']);
+    $user_source['jabber'] = $result->getValue();
+    if (! $result->isValid()) {
       $valid = false;
       error(_("Please check your jabber account information."));
     }
@@ -41,7 +43,8 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes) {
     $valid = false;
   }
   
-  if (isset($_REQUEST['planned_arrival_date']) && $tmp = parse_date("Y-m-d", $_REQUEST['planned_arrival_date'])) {
+  if (isset($_REQUEST['planned_arrival_date'])) {
+    $tmp = parse_date("Y-m-d", $_REQUEST['planned_arrival_date']);
     $result = User_validate_planned_arrival_date($tmp);
     $user_source['planned_arrival_date'] = $result->getValue();
     if (! $result->isValid()) {
@@ -50,7 +53,8 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes) {
     }
   }
   
-  if (isset($_REQUEST['planned_departure_date']) && $tmp = parse_date("Y-m-d", $_REQUEST['planned_departure_date'])) {
+  if (isset($_REQUEST['planned_departure_date'])) {
+    $tmp = parse_date("Y-m-d", $_REQUEST['planned_departure_date']);
     $result = User_validate_planned_departure_date($user_source['planned_arrival_date'], $tmp);
     $user_source['planned_departure_date'] = $result->getValue();
     if (! $result->isValid()) {
@@ -60,27 +64,13 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes) {
   }
   
   // Trivia
-  if (isset($_REQUEST['lastname'])) {
-    $user_source['Name'] = strip_request_item('lastname');
-  }
-  if (isset($_REQUEST['prename'])) {
-    $user_source['Vorname'] = strip_request_item('prename');
-  }
-  if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age'])) {
-    $user_source['Alter'] = strip_request_item('age');
-  }
-  if (isset($_REQUEST['tel'])) {
-    $user_source['Telefon'] = strip_request_item('tel');
-  }
-  if (isset($_REQUEST['dect'])) {
-    $user_source['DECT'] = strip_request_item('dect');
-  }
-  if (isset($_REQUEST['mobile'])) {
-    $user_source['Handy'] = strip_request_item('mobile');
-  }
-  if (isset($_REQUEST['hometown'])) {
-    $user_source['Hometown'] = strip_request_item('hometown');
-  }
+  $user_source['Name'] = strip_request_item('lastname', $user_source['Name']);
+  $user_source['Vorname'] = strip_request_item('prename', $user_source['Vorname']);
+  $user_source['Alter'] = strip_request_item('age', $user_source['Alter']);
+  $user_source['Telefon'] = strip_request_item('tel', $user_source['Telefon']);
+  $user_source['DECT'] = strip_request_item('dect', $user_source['DECT']);
+  $user_source['Handy'] = strip_request_item('mobile', $user_source['Handy']);
+  $user_source['Hometown'] = strip_request_item('hometown', $user_source['Hometown']);
   
   if ($valid) {
     User_update($user_source);

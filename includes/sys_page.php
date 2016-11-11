@@ -141,10 +141,13 @@ function check_date($input, $error_message = null, $null_allowed = false) {
 }
 
 /**
- * Gibt den gefilterten REQUEST Wert ohne Zeilenumbrüche zurück
+ * Returns REQUEST value filtered or default value (null) if not set.
  */
-function strip_request_item($name) {
-  return strip_item($_REQUEST[$name]);
+function strip_request_item($name, $default_value = null) {
+  if (isset($_REQUEST[$name])) {
+    return strip_item($_REQUEST[$name]);
+  }
+  return $default_value;
 }
 
 /**

@@ -164,6 +164,18 @@ function User_validate_Nick($nick) {
 }
 
 /**
+ * Validate user email address.
+ *
+ * @param string $mail
+ *          The email address to validate
+ * @return ValidationResult
+ */
+function User_validate_mail($mail) {
+  $mail = strip_item($mail);
+  return new ValidationResult(check_email($mail), $mail);
+}
+
+/**
  * Validate the planned arrival date
  *
  * @param int $planned_arrival_date
