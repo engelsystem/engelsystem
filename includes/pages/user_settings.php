@@ -10,7 +10,7 @@ function settings_title() {
  * @param User $user_source
  *          The user
  */
-function user_settings_main($user_source, $tshirt_sizes) {
+function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes) {
   $valid = true;
   
   if (isset($_REQUEST['mail']) && strlen(strip_request_item('mail')) > 0) {
@@ -96,8 +96,6 @@ function user_settings_main($user_source, $tshirt_sizes) {
  *          The user
  */
 function user_settings_password($user_source) {
-  $valid = true;
-  
   if (! isset($_REQUEST['password']) || ! verify_password($_REQUEST['password'], $user_source['Passwort'], $user_source['UID'])) {
     error(_("-> not OK. Please try again."));
   } elseif (strlen($_REQUEST['new_password']) < MIN_PASSWORD_LENGTH) {
@@ -120,7 +118,7 @@ function user_settings_password($user_source) {
  * @param array<String> $themes
  *          List of available themes
  */
-function user_settings_theme($user_sources, $themes) {
+function user_settings_theme($user_source, $themes) {
   $valid = true;
   
   if (isset($_REQUEST['theme']) && isset($themes[$_REQUEST['theme']])) {
@@ -185,11 +183,11 @@ function user_settings() {
   $user_source = $user;
   
   if (isset($_REQUEST['submit'])) {
-    user_settings_main($user_source, $tshirt_sizes);
+    user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes);
   } elseif (isset($_REQUEST['submit_password'])) {
     user_settings_password($user_source);
   } elseif (isset($_REQUEST['submit_theme'])) {
-    user_settings_theme($user_sources, $themes);
+    user_settings_theme($user_source, $themes);
   } elseif (isset($_REQUEST['submit_language'])) {
     user_settings_locale($user_source, $locales);
   }
