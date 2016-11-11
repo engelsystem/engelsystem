@@ -12,7 +12,7 @@ function admin_rooms() {
         'name' => Room_name_render($room),
         'from_pentabarf' => $room['FromPentabarf'] == 'Y' ? '&#10003;' : '',
         'public' => $room['show'] == 'Y' ? '&#10003;' : '',
-        'actions' => buttons([
+        'actions' => table_buttons([
             button(page_link_to('admin_rooms') . '&show=edit&id=' . $room['RID'], _("edit"), 'btn-xs'),
             button(page_link_to('admin_rooms') . '&show=delete&id=' . $room['RID'], _("delete"), 'btn-xs') 
         ]) 
