@@ -94,15 +94,15 @@ function Shift_collides($shift, $shifts) {
  *
  * @param int $shift_id
  *          ID of the shift to check
+ * @param int $angeltype_id
+ *          ID of the angeltype that should be checked
  */
-function Shift_occupied($shift_id) {
-  $needed_angeltypes = NeededAngelTypes_by_shift($shift['SID']);
+function Shift_occupied($shift_id, $angeltype_id) {
+  $needed_angeltypes = NeededAngelTypes_by_shift($shift_id);
   
   foreach ($needed_angeltypes as $needed_angeltype) {
     if ($needed_angeltype['angel_type_id'] == $angeltype['id']) {
-      if ($needed_angeltype['taken'] < $needed_angeltype['count']) {
-        return false;
-      }
+      return $needed_angeltype['taken'] < $needed_angeltype['count'];
     }
   }
   
@@ -136,7 +136,7 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
   }
   
   // you canot join if shift is full
-  $user_may_join_shift = ! Shift_occupied($shift['SID']);
+  $user_may_join_shift = ! Shift_occupied($shift['SID'], $angeltype['id']);
   
   // you cannot join if user alread joined a parallel or this shift
   $user_may_join_shift &= ! Shift_collides($shift, $user_shifts);
