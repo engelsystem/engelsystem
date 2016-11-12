@@ -101,7 +101,7 @@ function Shift_occupied($shift_id, $angeltype_id) {
   $needed_angeltypes = NeededAngelTypes_by_shift($shift_id);
   
   foreach ($needed_angeltypes as $needed_angeltype) {
-    if ($needed_angeltype['angel_type_id'] == $angeltype['id']) {
+    if ($needed_angeltype['angel_type_id'] == $angeltype_id) {
       return $needed_angeltype['taken'] < $needed_angeltype['count'];
     }
   }
@@ -112,9 +112,12 @@ function Shift_occupied($shift_id, $angeltype_id) {
 /**
  * Check if an angel can sign up for given shift.
  *
- * @param Shift $shift          
- * @param AngelType $angeltype          
- * @param array<Shift> $user_shifts          
+ * @param Shift $shift
+ *          The shift
+ * @param AngelType $angeltype
+ *          The angeltype to which the user wants to sign up
+ * @param array<Shift> $user_shifts
+ *          List of the users shifts
  */
 function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_shifts = null) {
   global $user, $privileges;

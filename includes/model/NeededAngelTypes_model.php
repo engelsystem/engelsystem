@@ -88,6 +88,7 @@ function NeededAngelTypes_by_shift($shiftId) {
   foreach ($needed_angeltypes_source as $angeltype) {
     $shift_entries = ShiftEntries_by_shift_and_angeltype($shiftId, $angeltype['angel_type_id']);
     
+    // TODO: Substract shift entries which are freeloader
     $angeltype['taken'] = count($shift_entries);
     $angeltype['shift_entries'] = $shift_entries;
     $needed_angeltypes[] = $angeltype;
