@@ -14,8 +14,6 @@ class ShiftCalendarShiftRenderer {
    *          The shift to render
    */
   public function render($shift) {
-    global $privileges;
-    
     $collides = $this->collides();
     $info_text = "";
     if ($shift['title'] != '') {
@@ -23,9 +21,9 @@ class ShiftCalendarShiftRenderer {
     }
     list($is_free, $shifts_row) = $this->renderShiftNeededAngeltypes($shift, $collides);
     
-    if (isset($shift['own']) && $shift['own'] && ! in_array('user_shifts_admin', $privileges)) {
+    if (isset($shift['own']) && $shift['own']) {
       $class = 'primary';
-    } elseif ($collides && ! in_array('user_shifts_admin', $privileges)) {
+    } elseif ($collides) {
       $class = 'default';
     } elseif ($is_free) {
       $class = 'danger';
