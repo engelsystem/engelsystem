@@ -12,24 +12,16 @@ class ShiftCalendarShiftRenderer {
    *
    * @param Shift $shift
    *          The shift to render
+   * @param User $user
+   *          The user who is viewing the shift calendar
    */
-  public function render($shift) {
-    $collides = $this->collides();
+  public function render($shift, $user) {
     $info_text = "";
     if ($shift['title'] != '') {
       $info_text = glyph('info-sign') . $shift['title'] . '<br>';
     }
-    list($is_free, $shifts_row) = $this->renderShiftNeededAngeltypes($shift, $collides);
-    
-    if (isset($shift['own']) && $shift['own']) {
-      $class = 'primary';
-    } elseif ($collides) {
-      $class = 'default';
-    } elseif ($is_free) {
-      $class = 'danger';
-    } else {
-      $class = 'success';
-    }
+    list($shift_signup_state, $shifts_row) = $this->renderShiftNeededAngeltypes($shift, $user);
+    $class = $this->classForSignupState($shift_signup_state);
     
     $blocks = ceil(($shift["end"] - $shift["start"]) / ShiftCalendarRenderer::SECONDS_PER_ROW);
     $blocks = max(1, $blocks);
@@ -50,15 +42,40 @@ class ShiftCalendarShiftRenderer {
     ];
   }
 
-  private function renderShiftNeededAngeltypes($shift, $collides) {
+  private function classForSignupState(ShiftSignupState $shiftSignupState) {
+    switch ($shiftSignupState->getState()) {
+      case ShiftSignupState::OCCUPIED:
+        return 'success';
+      
+      case ShiftSignupState::SIGNED_UP:
+        return 'primary';
+      
+      case ShiftSignupState::SHIFT_ENDED:
+        return 'default';
+      
+      case ShiftSignupState::ANGELTYPE:
+      case ShiftSignupState::COLLIDES:
+        return 'warning';
+      
+      case ShiftSignupState::ADMIN:
+      case ShiftSignupState::FREE:
+        return 'danger';
+    }
+  }
+
+  private function renderShiftNeededAngeltypes($shift, $user) {
     global $privileges;
     
     $html = "";
-    $is_free = false;
+    $shift_signup_state = null;
     $angeltypes = NeededAngelTypes_by_shift($shift['SID']);
     foreach ($angeltypes as $angeltype) {
-      list($angeltype_free, $angeltype_html) = $this->renderShiftNeededAngeltype($shift, $angeltype, $collides);
-      $is_free |= $angeltype_free;
+      list($angeltype_signup_state, $angeltype_html) = $this->renderShiftNeededAngeltype($shift, $angeltype, $user);
+      if ($shift_signup_state == null) {
+        $shift_signup_state = $angeltype_signup_state;
+      } else {
+        $shift_signup_state->combineWith($angeltype_signup_state);
+      }
       $html .= $angeltype_html;
     }
     if (in_array('user_shifts_admin', $privileges)) {
@@ -66,12 +83,12 @@ class ShiftCalendarShiftRenderer {
     }
     if ($html != '') {
       return [
-          $is_free,
+          $shift_signup_state,
           '<ul class="list-group">' . $html . '</ul>' 
       ];
     }
     return [
-        $is_free,
+        $shift_signup_state,
         "" 
     ];
   }
@@ -83,62 +100,48 @@ class ShiftCalendarShiftRenderer {
    *          The shift which is rendered
    * @param Angeltype $angeltype
    *          The angeltype, containing informations about needed angeltypes and already signed up angels
-   * @param boolean $collides
-   *          true if the shift collides with the users shifts
+   * @param User $user
+   *          The user who is viewing the shift calendar
    */
-  private function renderShiftNeededAngeltype($shift, $angeltype, $collides) {
-    global $privileges;
-    
-    $is_free = false;
+  private function renderShiftNeededAngeltype($shift, $angeltype, $user) {
     $entry_list = [];
-    $freeloader = 0;
     foreach ($angeltype['shift_entries'] as $entry) {
-      $style = '';
-      if ($entry['freeloaded']) {
-        $freeloader ++;
-        $style = " text-decoration: line-through;";
-      }
+      $style = $entry['freeloaded'] ? " text-decoration: line-through;" : '';
       $entry_list[] = "<span style=\"$style\">" . User_Nick_render(User($entry['UID'])) . "</span>";
     }
-    if ($angeltype['count'] - count($angeltype['shift_entries']) - $freeloader > 0) {
-      $inner_text = sprintf(ngettext("%d helper needed", "%d helpers needed", $angeltype['count'] - count($angeltype['shift_entries'])), $angeltype['count'] - count($angeltype['shift_entries']));
-      // is the shift still running or alternatively is the user shift admin?
-      $user_may_join_shift = true;
-      
-      // you cannot join if user alread joined a parallel or this shift
-      $user_may_join_shift &= ! $collides;
-      
-      // you cannot join if user is not of this angel type
-      $user_may_join_shift &= isset($angeltype['user_id']);
-      
-      // you cannot join if you are not confirmed
-      if ($angeltype['restricted'] == 1 && isset($angeltype['user_id'])) {
-        $user_may_join_shift &= isset($angeltype['confirm_user_id']);
-      }
-      
-      // you can only join if the shift is in future or running
-      $user_may_join_shift &= time() < $shift['start'];
-      
-      // User shift admins may join anybody in every shift
-      $user_may_join_shift |= in_array('user_shifts_admin', $privileges);
-      if ($user_may_join_shift) {
+    $shift_signup_state = Shift_signup_allowed($user, $shift, $angeltype);
+    $inner_text = sprintf(ngettext("%d helper needed", "%d helpers needed", $shift_signup_state->getFreeEntries()), $shift_signup_state->getFreeEntries());
+    switch ($shift_signup_state->getState()) {
+      case ShiftSignupState::ADMIN:
+      case ShiftSignupState::FREE:
+        // When admin or free display a link + button for sign up
         $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . $inner_text . '</a> ' . button(page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'], _('Sign up'), 'btn-xs btn-primary');
-      } else {
-        if (time() > $shift['start']) {
-          $entry_list[] = $inner_text . ' (' . _('ended') . ')';
-        } elseif ($angeltype['restricted'] == 1 && isset($angeltype['user_id']) && ! isset($angeltype['confirm_user_id'])) {
+        break;
+      
+      case ShiftSignupState::SHIFT_ENDED:
+        // No link and add a text hint, when the shift ended
+        $entry_list[] = $inner_text . ' (' . _('ended') . ')';
+        break;
+      
+      case ShiftSignupState::ANGELTYPE:
+        if ($angeltype['restricted'] == 1) {
+          // User has to be confirmed on the angeltype first
           $entry_list[] = $inner_text . glyph('lock');
-        } elseif ($angeltype['restricted'] == 1) {
-          $entry_list[] = $inner_text;
-        } elseif ($collides) {
-          $entry_list[] = $inner_text;
         } else {
+          // Add link to join the angeltype first
           $entry_list[] = $inner_text . '<br />' . button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], sprintf(_('Become %s'), $angeltype['name']), 'btn-xs');
         }
-      }
+        break;
       
-      unset($inner_text);
-      $is_free = true;
+      case ShiftSignupState::COLLIDES:
+      case ShiftSignupState::SIGNED_UP:
+        // Shift collides or user is already signed up: No signup allowed
+        $entry_list[] = $inner_text;
+        break;
+      
+      case ShiftSignupState::OCCUPIED:
+        // Shift is full
+        break;
     }
     
     $shifts_row = '<li class="list-group-item">';
@@ -146,7 +149,7 @@ class ShiftCalendarShiftRenderer {
     $shifts_row .= join(", ", $entry_list);
     $shifts_row .= '</li>';
     return [
-        $is_free,
+        $shift_signup_state,
         $shifts_row 
     ];
   }

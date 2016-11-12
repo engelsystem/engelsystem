@@ -42,8 +42,9 @@ function shift_entry_add_controller() {
   }
   $type = $type[0];
   
-  if (! Shift_signup_allowed($shift, $type)) {
-    error(_('You are not allowed to sign up for this shift. Maybe shift is full or already running.'));
+  $shift_signup_allowed = Shift_signup_allowed(User($user_id), $shift, $type);
+  if (! $shift_signup_allowed->isSignupAllowed()) {
+    error(_("You are not allowed to sign up for this shift. Maybe shift is full or already running."));
     redirect(shift_link($shift));
   }
   

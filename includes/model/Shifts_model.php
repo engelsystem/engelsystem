@@ -1,5 +1,6 @@
 <?php
 use Engelsystem\ShiftsFilter;
+use Engelsystem\ShiftSignupState;
 
 function Shifts_by_room($room) {
   $result = sql_select("SELECT * FROM `Shifts` WHERE `RID`=" . sql_escape($room['RID']) . " ORDER BY `start`");
@@ -90,23 +91,23 @@ function Shift_collides($shift, $shifts) {
 }
 
 /**
- * Returns true if a shift has no more free slots for angels.
+ * Returns the number of needed angels/free shift entries for an angeltype.
  *
  * @param int $shift_id
  *          ID of the shift to check
  * @param int $angeltype_id
  *          ID of the angeltype that should be checked
  */
-function Shift_occupied($shift_id, $angeltype_id) {
+function Shift_free_entries($shift_id, $angeltype_id) {
   $needed_angeltypes = NeededAngelTypes_by_shift($shift_id);
   
   foreach ($needed_angeltypes as $needed_angeltype) {
     if ($needed_angeltype['angel_type_id'] == $angeltype_id) {
-      return $needed_angeltype['taken'] < $needed_angeltype['count'];
+      return max(0, $needed_angeltype['count'] - $needed_angeltype['taken']);
     }
   }
   
-  return true;
+  return 0;
 }
 
 /**
@@ -119,15 +120,45 @@ function Shift_occupied($shift_id, $angeltype_id) {
  * @param array<Shift> $user_shifts
  *          List of the users shifts
  */
-function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_shifts = null) {
-  global $user, $privileges;
+function Shift_signup_allowed($user, $shift, $angeltype, $user_angeltype = null, $user_shifts = null) {
+  global $privileges;
+  
+  $free_entries = Shift_free_entries($shift['SID'], $angeltype['id']);
+  
+  if (in_array('user_shifts_admin', $privileges)) {
+    if ($free_entries == 0) {
+      // User shift admins may join anybody in every shift
+      return new ShiftSignupState(ShiftSignupState::ADMIN, $free_entries);
+    }
+    
+    return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
+  }
+  if (time() < $shift['start']) {
+    // you can only join if the shift is in future
+    return new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, $free_entries);
+  }
+  if ($free_entries == 0) {
+    // you cannot join if shift is full
+    return new ShiftSignupState(ShiftSignupState::OCCUPIED, $free_entries);
+  }
+  
+  if ($user_angeltype == null) {
+    $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
+  }
+  
+  if ($user_angeltype == null || ($angeltype['restricted'] == 1 && $user_angeltype != null && ! isset($user_angeltype['confirm_user_id']))) {
+    // you cannot join if user is not of this angel type
+    // you cannot join if you are not confirmed
+    return new ShiftSignupState(ShiftSignupState::ANGELTYPE, $free_entries);
+  }
   
   if ($user_shifts == null) {
     $user_shifts = Shifts_by_user($user);
   }
   
-  if ($user_angeltype == null) {
-    $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
+  if (Shift_collides($shift, $user_shifts)) {
+    // you cannot join if user alread joined a parallel or this shift
+    return new ShiftSignupState(ShiftSignupState::COLLIDES, $free_entries);
   }
   
   $signed_up = false;
@@ -138,30 +169,13 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
     }
   }
   
-  // you canot join if shift is full
-  $user_may_join_shift = ! Shift_occupied($shift['SID'], $angeltype['id']);
-  
-  // you cannot join if user alread joined a parallel or this shift
-  $user_may_join_shift &= ! Shift_collides($shift, $user_shifts);
-  
-  // you cannot join if you already singed up for this shift
-  $user_may_join_shift &= ! $signed_up;
-  
-  // you cannot join if user is not of this angel type
-  $user_may_join_shift &= $user_angeltype != null;
-  
-  // you cannot join if you are not confirmed
-  if ($angeltype['restricted'] == 1 && $user_angeltype != null) {
-    $user_may_join_shift &= isset($user_angeltype['confirm_user_id']);
+  if ($signed_up) {
+    // you cannot join if you already singed up for this shift
+    return new ShiftSignupState(ShiftSignupState::SIGNED_UP, $free_entries);
   }
   
-  // you can only join if the shift is in future
-  $user_may_join_shift &= time() < $shift['start'];
-  
-  // User shift admins may join anybody in every shift
-  $user_may_join_shift |= in_array('user_shifts_admin', $privileges);
-  
-  return $user_may_join_shift;
+  // Hooray, shift is free for you!
+  return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
 }
 
 /**

@@ -122,6 +122,8 @@ class ShiftCalendarRenderer {
    *          The lane to render
    */
   private function renderLane(ShiftCalendarLane $lane) {
+    global $user;
+    
     $shift_renderer = new ShiftCalendarShiftRenderer();
     $html = "";
     $rendered_until = $this->getFirstBlockStartTime();
@@ -131,7 +133,7 @@ class ShiftCalendarRenderer {
         $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
       }
       
-      list($shift_height, $shift_html) = $shift_renderer->render($shift);
+      list($shift_height, $shift_html) = $shift_renderer->render($shift, $user);
       $html .= $shift_html;
       $rendered_until += $shift_height * ShiftCalendarRenderer::SECONDS_PER_ROW;
     }
