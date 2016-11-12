@@ -90,6 +90,26 @@ function Shift_collides($shift, $shifts) {
 }
 
 /**
+ * Returns true if a shift has no more free slots for angels.
+ *
+ * @param int $shift_id
+ *          ID of the shift to check
+ */
+function Shift_occupied($shift_id) {
+  $needed_angeltypes = NeededAngelTypes_by_shift($shift['SID']);
+  
+  foreach ($needed_angeltypes as $needed_angeltype) {
+    if ($needed_angeltype['angel_type_id'] == $angeltype['id']) {
+      if ($needed_angeltype['taken'] < $needed_angeltype['count']) {
+        return false;
+      }
+    }
+  }
+  
+  return true;
+}
+
+/**
  * Check if an angel can sign up for given shift.
  *
  * @param Shift $shift          
@@ -103,8 +123,6 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
     $user_shifts = Shifts_by_user($user);
   }
   
-  $collides = Shift_collides($shift, $user_shifts);
-  
   if ($user_angeltype == null) {
     $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
   }
@@ -117,26 +135,11 @@ function Shift_signup_allowed($shift, $angeltype, $user_angeltype = null, $user_
     }
   }
   
-  $needed_angeltypes = NeededAngelTypes_by_shift($shift['SID']);
-  if ($needed_angeltypes === false) {
-    engelsystem_error('Unable to load needed angel types.');
-  }
-  
-  // is the shift still running or alternatively is the user shift admin?
-  $user_may_join_shift = true;
-  
   // you canot join if shift is full
-  foreach ($needed_angeltypes as $needed_angeltype) {
-    if ($needed_angeltype['angel_type_id'] == $angeltype['id']) {
-      if ($needed_angeltype['taken'] >= $needed_angeltype['count']) {
-        $user_may_join_shift = false;
-      }
-      break;
-    }
-  }
+  $user_may_join_shift = ! Shift_occupied($shift['SID']);
   
   // you cannot join if user alread joined a parallel or this shift
-  $user_may_join_shift &= ! $collides;
+  $user_may_join_shift &= ! Shift_collides($shift, $user_shifts);
   
   // you cannot join if you already singed up for this shift
   $user_may_join_shift &= ! $signed_up;
@@ -254,52 +257,6 @@ function Shifts_by_user($user) {
     engelsystem_error('Unable to load users shifts.');
   }
   return $result;
-}
-
-/**
- * TODO: $_REQUEST is not allowed in model!
- * Returns Shift id array
- */
-function Shifts_filtered() {
-  global $_REQUEST;
-  $filter = "";
-  
-  // filterRoom (Array of integer) - Array of Room IDs (optional, for list request)
-  if (isset($_REQUEST['filterRoom']) && is_array($_REQUEST['filterRoom'])) {
-    foreach ($_REQUEST['filterRoom'] as $key => $value) {
-      $filter .= ", `RID`='" . sql_escape($value) . "' ";
-    }
-  }
-  
-  // filterTask (Array of integer) - Array if Task (optional, for list request)
-  if (isset($_REQUEST['filterTask']) && is_array($_REQUEST['filterTask'])) {
-    foreach ($_REQUEST['filterTask'] as $key => $value) {
-      // TODO $filter .= ", `RID`=" . sql_escape($value) . " ";
-    }
-  }
-  
-  // filterOccupancy (integer) - Occupancy state: (optional, for list request)
-  // 1 occupied, 2 free, 3 occupied and free
-  if (isset($_REQUEST['filterOccupancy']) && is_array($_REQUEST['filterOccupancy'])) {
-    foreach ($_REQUEST['filterOccupancy'] as $key => $value) {
-      // TODO $filter .= ", `RID`=" . sql_escape($value) . " ";
-    }
-  }
-  
-  // format filter
-  if ($filter != "") {
-    $filter = ' WHERE ' . substr($filter, 1);
-  }
-  
-  // real request
-  $shifts_source = sql_select("SELECT `SID` FROM `Shifts`" . $filter);
-  if ($shifts_source === false) {
-    return false;
-  }
-  if (count($shifts_source) > 0) {
-    return $shifts_source;
-  }
-  return null;
 }
 
 /**
