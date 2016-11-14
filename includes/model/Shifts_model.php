@@ -133,7 +133,7 @@ function Shift_signup_allowed($user, $shift, $angeltype, $user_angeltype = null,
     
     return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
   }
-  if (time() < $shift['start']) {
+  if (time() > $shift['start']) {
     // you can only join if the shift is in future
     return new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, $free_entries);
   }

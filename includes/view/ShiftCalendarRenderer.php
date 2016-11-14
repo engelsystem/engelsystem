@@ -25,12 +25,15 @@ class ShiftCalendarRenderer {
   private $shiftsFilter;
 
   private $firstBlockStartTime = null;
+  
+  private $lastBlockEndTime = null;
 
   private $blocksPerSlot = null;
 
   public function __construct($shifts, ShiftsFilter $shiftsFilter) {
     $this->shiftsFilter = $shiftsFilter;
     $this->firstBlockStartTime = $this->calcFirstBlockStartTime($shifts);
+    $this->lastBlockEndTime = $this->calcLastBlockEndTime($shifts);
     $this->lanes = $this->assignShiftsToLanes($shifts);
   }
 
@@ -81,6 +84,10 @@ class ShiftCalendarRenderer {
 
   public function getFirstBlockStartTime() {
     return $this->firstBlockStartTime;
+  }
+  
+  public function getLastBlockEndTime() {
+    return $this->lastBlockEndTime;
   }
 
   public function getBlocksPerSlot() {
@@ -137,7 +144,7 @@ class ShiftCalendarRenderer {
       $html .= $shift_html;
       $rendered_until += $shift_height * ShiftCalendarRenderer::SECONDS_PER_ROW;
     }
-    while ($rendered_until <= $this->shiftsFilter->getEndTime()) {
+    while ($rendered_until < $this->getLastBlockEndTime()) {
       $html .= $this->renderTick($rendered_until);
       $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
     }
@@ -202,8 +209,18 @@ class ShiftCalendarRenderer {
     return ShiftCalendarRenderer::SECONDS_PER_ROW * floor(($start_time - 60 * 60) / ShiftCalendarRenderer::SECONDS_PER_ROW);
   }
 
+  private function calcLastBlockEndTime($shifts) {
+    $end_time = $this->shiftsFilter->getStartTime();
+    foreach ($shifts as $shift) {
+      if ($shift['end'] > $end_time) {
+        $end_time = $shift['end'];
+      }
+    }
+    return ShiftCalendarRenderer::SECONDS_PER_ROW * ceil(($end_time + 60 * 60) / ShiftCalendarRenderer::SECONDS_PER_ROW);
+  }
+
   private function calcBlocksPerSlot() {
-    return ceil(($this->shiftsFilter->getEndTime() - $this->getFirstBlockStartTime()) / ShiftCalendarRenderer::SECONDS_PER_ROW);
+    return ceil(($this->getLastBlockEndTime() - $this->getFirstBlockStartTime()) / ShiftCalendarRenderer::SECONDS_PER_ROW);
   }
 }
 

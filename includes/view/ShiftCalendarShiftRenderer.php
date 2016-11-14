@@ -44,6 +44,7 @@ class ShiftCalendarShiftRenderer {
 
   private function classForSignupState(ShiftSignupState $shiftSignupState) {
     switch ($shiftSignupState->getState()) {
+      case ShiftSignupState::ADMIN:
       case ShiftSignupState::OCCUPIED:
         return 'success';
       
@@ -57,7 +58,6 @@ class ShiftCalendarShiftRenderer {
       case ShiftSignupState::COLLIDES:
         return 'warning';
       
-      case ShiftSignupState::ADMIN:
       case ShiftSignupState::FREE:
         return 'danger';
     }
@@ -175,14 +175,6 @@ class ShiftCalendarShiftRenderer {
         '<a href="' . shift_link($shift) . '">' . $shift_heading . '</a>',
         $header_buttons 
     ]);
-  }
-
-  /**
-   * Does the shift collide with the user's shifts
-   */
-  private function collides() {
-    // TODO
-    return false;
   }
 }
 
