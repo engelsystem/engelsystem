@@ -10,6 +10,30 @@ body {
   color: @text-muted;
 }
 
+.panel-primary .panel-heading a {
+  color: @panel-primary-text;
+}
+
+.panel-default .panel-heading a {
+  color: @panel-default-text;
+}
+
+.panel-info .panel-heading a {
+  color: @panel-info-text;
+}
+
+.panel-success .panel-heading a {
+  color: @panel-success-text;
+}
+
+.panel-warning .panel-heading a {
+  color: @panel-warning-text;
+}
+
+.panel-danger .panel-heading a {
+  color: @panel-danger-text;
+}
+
 .shift-calendar {
   display: flex;
   flex-direction: row;
@@ -29,7 +53,7 @@ body {
 	  flex-grow: 1;
 	  
 		.header {
-		  background: #fff;
+		  background: @panel-bg;
 		  height: 30px;
 		  padding: 5px;
 		}

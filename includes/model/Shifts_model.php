@@ -133,6 +133,24 @@ function Shift_signup_allowed($user, $shift, $angeltype, $user_angeltype = null,
     
     return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
   }
+  
+  if ($user_shifts == null) {
+    $user_shifts = Shifts_by_user($user);
+  }
+  
+  $signed_up = false;
+  foreach ($user_shifts as $user_shift) {
+    if ($user_shift['SID'] == $shift['SID']) {
+      $signed_up = true;
+      break;
+    }
+  }
+  
+  if ($signed_up) {
+    // you cannot join if you already singed up for this shift
+    return new ShiftSignupState(ShiftSignupState::SIGNED_UP, $free_entries);
+  }
+  
   if (time() > $shift['start']) {
     // you can only join if the shift is in future
     return new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, $free_entries);
@@ -152,26 +170,9 @@ function Shift_signup_allowed($user, $shift, $angeltype, $user_angeltype = null,
     return new ShiftSignupState(ShiftSignupState::ANGELTYPE, $free_entries);
   }
   
-  if ($user_shifts == null) {
-    $user_shifts = Shifts_by_user($user);
-  }
-  
   if (Shift_collides($shift, $user_shifts)) {
     // you cannot join if user alread joined a parallel or this shift
     return new ShiftSignupState(ShiftSignupState::COLLIDES, $free_entries);
-  }
-  
-  $signed_up = false;
-  foreach ($user_shifts as $user_shift) {
-    if ($user_shift['SID'] == $shift['SID']) {
-      $signed_up = true;
-      break;
-    }
-  }
-  
-  if ($signed_up) {
-    // you cannot join if you already singed up for this shift
-    return new ShiftSignupState(ShiftSignupState::SIGNED_UP, $free_entries);
   }
   
   // Hooray, shift is free for you!

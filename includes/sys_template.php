@@ -19,6 +19,18 @@ function mute($text) {
   return '<span class="text-muted">' . $text . '</span>';
 }
 
+/**
+ * Renders a bootstrap label with given content and class.
+ *
+ * @param string $content
+ *          The text
+ * @param string $class
+ *          default, primary, info, success, warning, danger
+ */
+function label($content, $class = 'default') {
+  return '<span class="label label-' . $class . '">' . $content . '</span>';
+}
+
 function progress_bar($valuemin, $valuemax, $valuenow, $class = '', $content = '') {
   return '<div class="progress"><div class="progress-bar ' . $class . '" role="progressbar" aria-valuenow="' . $valuenow . '" aria-valuemin="' . $valuemin . '" aria-valuemax="' . $valuemax . '" style="width: ' . (($valuenow - $valuemin) * 100 / ($valuemax - $valuemin)) . '%">' . $content . '</div></div>';
 }

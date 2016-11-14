@@ -25,7 +25,7 @@ class ShiftCalendarRenderer {
   private $shiftsFilter;
 
   private $firstBlockStartTime = null;
-  
+
   private $lastBlockEndTime = null;
 
   private $blocksPerSlot = null;
@@ -85,7 +85,7 @@ class ShiftCalendarRenderer {
   public function getFirstBlockStartTime() {
     return $this->firstBlockStartTime;
   }
-  
+
   public function getLastBlockEndTime() {
     return $this->lastBlockEndTime;
   }
@@ -106,7 +106,7 @@ class ShiftCalendarRenderer {
     return div('shift-calendar', [
         $this->renderTimeLane(),
         $this->renderShiftLanes() 
-    ]);
+    ]) . $this->renderLegend();
   }
 
   /**
@@ -221,6 +221,19 @@ class ShiftCalendarRenderer {
 
   private function calcBlocksPerSlot() {
     return ceil(($this->getLastBlockEndTime() - $this->getFirstBlockStartTime()) / ShiftCalendarRenderer::SECONDS_PER_ROW);
+  }
+
+  /**
+   * Renders a legend explaining the shift coloring
+   */
+  private function renderLegend() {
+    return div('legend', [
+        label(_('Your shift'), 'primary'),
+        label(_('Help needed'), 'danger'),
+        label(_('Other angeltype needed / collides with my shifts'), 'warning'),
+        label(_('Shift is full'), 'success'),
+        label(_('Shift running/ended'), 'default') 
+    ]);
   }
 }
 

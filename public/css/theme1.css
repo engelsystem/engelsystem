@@ -6753,6 +6753,24 @@ body {
 .footer a {
   color: #888888;
 }
+.panel-primary .panel-heading a {
+  color: #ffffff;
+}
+.panel-default .panel-heading a {
+  color: #888888;
+}
+.panel-info .panel-heading a {
+  color: #ffffff;
+}
+.panel-success .panel-heading a {
+  color: #ffffff;
+}
+.panel-warning .panel-heading a {
+  color: #ffffff;
+}
+.panel-danger .panel-heading a {
+  color: #ffffff;
+}
 .shift-calendar {
   display: flex;
   flex-direction: row;
@@ -6767,7 +6785,7 @@ body {
   flex-grow: 1;
 }
 .shift-calendar .lane .header {
-  background: #fff;
+  background: #222222;
   height: 30px;
   padding: 5px;
 }
