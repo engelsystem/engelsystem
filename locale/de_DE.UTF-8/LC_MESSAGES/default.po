@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2016-11-11 16:34+0100\n"
-"PO-Revision-Date: 2016-11-11 16:35+0100\n"
+"POT-Creation-Date: 2016-11-14 18:01+0100\n"
+"PO-Revision-Date: 2016-11-14 18:02+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -68,7 +68,7 @@ msgstr "Verwalte Räume"
 msgid "Rooms"
 msgstr "Räume"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/sys_template.php:373
+#: /Users/msquare/workspace/projects/engelsystem/includes/sys_template.php:385
 msgid "No data found."
 msgstr "Nichts gefunden."
 
@@ -125,7 +125,7 @@ msgstr "ansehen"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_groups.php:23
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:16
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:94
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:80
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:81
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:55
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:66
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:273
@@ -143,7 +143,7 @@ msgstr "bearbeiten"
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:97
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:5
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:12
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:81
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:82
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:16
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:56
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:67
@@ -210,11 +210,11 @@ msgid "The buildup start date has to be before the teardown end date."
 msgstr "Das Aufbau Start Datum muss vor dem Abbau Ende Datum liegen."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/event_config_controller.php:92
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:87
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:77
 msgid "Settings saved."
 msgstr "Einstellungen gespeichert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:46
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:47
 msgid ""
 "You are not allowed to sign up for this shift. Maybe shift is full or "
 "already running."
@@ -222,25 +222,25 @@ msgstr ""
 "Du darfst Dich nicht für diese Schicht eintragen. Vielleicht ist die Schicht "
 "voll oder sie läuft bereits."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:100
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:101
 msgid "You are subscribed. Thank you!"
 msgstr "Du bist eingetragen. Danke!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:100
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:101
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_myshifts.php:4
 msgid "My shifts"
 msgstr "Meine Schichten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:109
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:110
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:309
 msgid "Freeloader"
 msgstr "Schwänzer"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:160
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:161
 msgid "Shift entry deleted."
 msgstr "Schicht-Eintrag gelöscht."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:162
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:163
 msgid "Entry not found."
 msgstr "Eintrag nicht gefunden."
 
@@ -288,7 +288,7 @@ msgstr "Schichttyp"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:166
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:175
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:320
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:87
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:88
 msgid "Title"
 msgstr "Titel"
 
@@ -307,7 +307,7 @@ msgstr "Ende:"
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/shifts_controller.php:141
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:270
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:334
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:113
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:114
 msgid "Needed angels"
 msgstr "Benötigte Engel"
 
@@ -599,12 +599,12 @@ msgstr "Der Token ist nicht in Ordnung."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:229
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:102
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:106
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:94
 msgid "Your passwords don't match."
 msgstr "Deine Passwörter stimmen nicht überein."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:233
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:104
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:92
 msgid "Your password is to short (please use at least 6 characters)."
 msgstr "Dein Passwort ist zu kurz (Bitte mindestens 6 Zeichen nutzen)."
 
@@ -613,20 +613,20 @@ msgid "Password could not be updated."
 msgstr "Passwort kann nicht neu gesetzt werden."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:242
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:108
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:96
 msgid "Password saved."
 msgstr "Passwort gespeichert."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:261
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:265
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:67
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:20
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:21
 msgid "E-mail address is not correct."
 msgstr "Die E-Mail Adresse ist nicht in Ordnung."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:269
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:71
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:24
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:25
 msgid "Please enter your e-mail."
 msgstr "Bitte gib Deine E-Mail-Adresse ein."
 
@@ -1163,7 +1163,7 @@ msgstr "Tag"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:163
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:172
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:324
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:91
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:92
 msgid "Start"
 msgstr "Beginn"
 
@@ -1171,7 +1171,7 @@ msgstr "Beginn"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:164
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:173
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_shifts.php:325
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:99
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:100
 msgid "End"
 msgstr "Ende"
 
@@ -1474,7 +1474,7 @@ msgid "Your nick &quot;%s&quot; is too short (min. 2 characters)."
 msgstr "Der Nick &quot;%s&quot; ist zu kurz (Mindestens 2 Zeichen)."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:86
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:34
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:36
 msgid "Please check your jabber account information."
 msgstr "Bitte überprüfe deine Jabber Account Eingabe."
 
@@ -1790,7 +1790,7 @@ msgstr "Keine Frage gefunden."
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:49
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:52
 msgid ""
 "Please enter your planned date of arrival. It should be after the buildup "
 "start date and before teardown end date."
@@ -1798,7 +1798,7 @@ msgstr ""
 "Bitte gib Dein geplantes Ankunftsdatum an. Es sollte nach dem Aufbaubeginn "
 "und vor dem Abbauende liegen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:58
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:62
 msgid ""
 "Please enter your planned date of departure. It should be after your planned "
 "arrival date and after buildup start date and before teardown end date."
@@ -1806,15 +1806,15 @@ msgstr ""
 "Bitte gibt dein geplantes Abreisedatum an. Es sollte nach Deinem "
 "Anreisedatum, nach dem Aufbaubeginn und vor dem Abbauende liegen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:102
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:90
 msgid "-> not OK. Please try again."
 msgstr "-> Nicht OK. Bitte erneut versuchen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:110
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:98
 msgid "Failed setting password."
 msgstr "Konnte Passwort nicht speichern."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:135
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:123
 msgid "Theme changed."
 msgstr "Aussehen geändert."
 
@@ -1936,7 +1936,7 @@ msgstr ""
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:61
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:192
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:117
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:118
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:37
 msgid "Description"
 msgstr "Beschreibung"
@@ -2145,33 +2145,53 @@ msgstr "Offene Fragen"
 msgid "Your Question:"
 msgstr "Deine Frage:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarRenderer.php:183
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarRenderer.php:192
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:342
 msgid "Time"
 msgstr "Zeit"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarShiftRenderer.php:67
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarRenderer.php:231
+msgid "Your shift"
+msgstr "Meine Schicht"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarRenderer.php:232
+msgid "Help needed"
+msgstr "Hilfe benötigt"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarRenderer.php:233
+msgid "Other angeltype needed / collides with my shifts"
+msgstr "Andere Engeltypen benötigt / kollidiert mit meinen Schichten"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarRenderer.php:234
+msgid "Shift is full"
+msgstr "Schicht ist voll"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarRenderer.php:235
+msgid "Shift running/ended"
+msgstr "Schicht läuft/vorbei"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarShiftRenderer.php:82
 msgid "Add more angels"
 msgstr "Neue Engel hinzufügen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarShiftRenderer.php:106
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarShiftRenderer.php:113
 #, php-format
 msgid "%d helper needed"
 msgid_plural "%d helpers needed"
 msgstr[0] "%d Helfer benötigt"
 msgstr[1] "%d Helfer benötigt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarShiftRenderer.php:127
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:22
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarShiftRenderer.php:118
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:23
 msgid "Sign up"
 msgstr "Eintragen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarShiftRenderer.php:130
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarShiftRenderer.php:123
 msgid "ended"
 msgstr "vorbei"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarShiftRenderer.php:138
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:24
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarShiftRenderer.php:132
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:25
 #, php-format
 msgid "Become %s"
 msgstr "Werde ein %s"
@@ -2224,15 +2244,15 @@ msgstr "erstellt am %s von %s"
 msgid "edited at %s by %s"
 msgstr "bearbeitet am %s von %s"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:77
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:78
 msgid "This shift collides with one of your shifts."
 msgstr "Diese Schicht kollidiert mit deinen Schichten."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:78
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:79
 msgid "You are signed up for this shift."
 msgstr "Du bist für diese Schicht eingetragen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:107
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:108
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:343
 msgid "Location"
 msgstr "Ort"
