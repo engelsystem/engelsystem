@@ -29,7 +29,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes) {
   $user_source['email_by_human_allowed'] = isset($_REQUEST['email_by_human_allowed']);
   
   if (isset($_REQUEST['jabber'])) {
-    $result = User_validate_mail($_REQUEST['jabber']);
+    $result = User_validate_jabber($_REQUEST['jabber']);
     $user_source['jabber'] = $result->getValue();
     if (! $result->isValid()) {
       $valid = false;
@@ -77,6 +77,8 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes) {
     success(_("Settings saved."));
     redirect(page_link_to('user_settings'));
   }
+  
+  return $user_source;
 }
 
 /**
@@ -123,6 +125,8 @@ function user_settings_theme($user_source, $themes) {
     success(_("Theme changed."));
     redirect(page_link_to('user_settings'));
   }
+  
+  return $user_source;
 }
 
 /**
@@ -149,6 +153,8 @@ function user_settings_locale($user_source, $locales) {
     success("Language changed.");
     redirect(page_link_to('user_settings'));
   }
+  
+  return $user_source;
 }
 
 /**
@@ -173,13 +179,13 @@ function user_settings() {
   $user_source = $user;
   
   if (isset($_REQUEST['submit'])) {
-    user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes);
+    $user_source = user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes);
   } elseif (isset($_REQUEST['submit_password'])) {
     user_settings_password($user_source);
   } elseif (isset($_REQUEST['submit_theme'])) {
-    user_settings_theme($user_source, $themes);
+    $user_source = user_settings_theme($user_source, $themes);
   } elseif (isset($_REQUEST['submit_language'])) {
-    user_settings_locale($user_source, $locales);
+    $user_source = user_settings_locale($user_source, $locales);
   }
   
   return User_settings_view($user_source, $locales, $themes, $buildup_start_date, $teardown_end_date, $enable_tshirt_size, $tshirt_sizes);

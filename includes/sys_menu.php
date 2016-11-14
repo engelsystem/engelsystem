@@ -12,29 +12,9 @@ function page_link_to_absolute($page) {
 }
 
 /**
- * Renders the header toolbar containing search, login/logout, user and settings links.
+ * Render the user hints
  */
-function header_toolbar() {
-  global $page, $privileges, $user, $enable_tshirt_size, $max_freeloadable_shifts;
-  
-  $toolbar_items = [];
-  
-  if (isset($user)) {
-    $toolbar_items[] = toolbar_item_link(page_link_to('shifts') . '&amp;action=next', 'time', User_shift_state_render($user));
-  }
-  
-  if (! isset($user) && in_array('register', $privileges)) {
-    $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'plus', register_title(), $page == 'register');
-  }
-  
-  if (in_array('login', $privileges)) {
-    $toolbar_items[] = toolbar_item_link(page_link_to('login'), 'log-in', login_title(), $page == 'login');
-  }
-  
-  if (isset($user) && in_array('user_messages', $privileges)) {
-    $toolbar_items[] = toolbar_item_link(page_link_to('user_messages'), 'envelope', user_unread_messages());
-  }
-  
+function header_render_hints($user, $page, $enable_tshirt_size) {
   $hints = [];
   if (isset($user)) {
     $hint_class = 'info';
@@ -87,8 +67,36 @@ function header_toolbar() {
     }
   }
   if (count($hints) > 0) {
-    $toolbar_items[] = toolbar_popover($glyphicon . ' text-' . $hint_class, '', $hints, 'bg-' . $hint_class);
+    return toolbar_popover($glyphicon . ' text-' . $hint_class, '', $hints, 'bg-' . $hint_class);
   }
+  return '';
+}
+
+/**
+ * Renders the header toolbar containing search, login/logout, user and settings links.
+ */
+function header_toolbar() {
+  global $page, $privileges, $user, $enable_tshirt_size, $max_freeloadable_shifts;
+  
+  $toolbar_items = [];
+  
+  if (isset($user)) {
+    $toolbar_items[] = toolbar_item_link(page_link_to('shifts') . '&amp;action=next', 'time', User_shift_state_render($user));
+  }
+  
+  if (! isset($user) && in_array('register', $privileges)) {
+    $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'plus', register_title(), $page == 'register');
+  }
+  
+  if (in_array('login', $privileges)) {
+    $toolbar_items[] = toolbar_item_link(page_link_to('login'), 'log-in', login_title(), $page == 'login');
+  }
+  
+  if (isset($user) && in_array('user_messages', $privileges)) {
+    $toolbar_items[] = toolbar_item_link(page_link_to('user_messages'), 'envelope', user_unread_messages());
+  }
+  
+  $toolbar_items[] = header_render_hints($user, $page, $enable_tshirt_size);
   
   $user_submenu = make_langselect();
   $user_submenu[] = toolbar_item_divider();

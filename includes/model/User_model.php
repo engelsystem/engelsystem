@@ -176,6 +176,22 @@ function User_validate_mail($mail) {
 }
 
 /**
+ * Validate user jabber address
+ *
+ * @param string $jabber
+ *          Jabber-ID to validate
+ * @return ValidationResult
+ */
+function User_validate_jabber($jabber) {
+  $jabber = strip_item($jabber);
+  if ($jabber == '') {
+    // Empty is ok
+    return new ValidationResult(true, '');
+  }
+  return new ValidationResult(check_email($jabber), $jabber);
+}
+
+/**
  * Validate the planned arrival date
  *
  * @param int $planned_arrival_date
