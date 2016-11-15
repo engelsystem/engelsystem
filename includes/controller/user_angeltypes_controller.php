@@ -8,7 +8,7 @@ function user_angeltypes_unconfirmed_hint() {
   
   $unconfirmed_user_angeltypes = User_unconfirmed_AngelTypes($user);
   if (count($unconfirmed_user_angeltypes) == 0) {
-    return '';
+    return null;
   }
   
   $unconfirmed_links = [];

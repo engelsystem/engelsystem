@@ -11,7 +11,7 @@ function user_driver_license_required_hint() {
   
   // User has already entered data, no hint needed.
   if ($user_driver_license != null) {
-    return '';
+    return null;
   }
   
   foreach ($angeltypes as $angeltype) {
@@ -20,7 +20,7 @@ function user_driver_license_required_hint() {
     }
   }
   
-  return '';
+  return null;
 }
 
 /**

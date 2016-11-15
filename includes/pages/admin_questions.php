@@ -4,18 +4,23 @@ function admin_questions_title() {
   return _("Answer questions");
 }
 
+/**
+ * Renders a hint for new questions to answer.
+ */
 function admin_new_questions() {
-  global $privileges;
+  global $privileges, $page;
   
-  if (in_array("admin_questions", $privileges)) {
-    $new_messages = sql_num_query("SELECT * FROM `Questions` WHERE `AID` IS NULL");
-    
-    if ($new_messages > 0) {
-      return info('<a href="' . page_link_to("admin_questions") . '">' . _('There are unanswered questions!') . '</a>', true);
+  if ($page != "admin_questions") {
+    if (in_array("admin_questions", $privileges)) {
+      $new_messages = sql_num_query("SELECT * FROM `Questions` WHERE `AID` IS NULL");
+      
+      if ($new_messages > 0) {
+        return info('<a href="' . page_link_to("admin_questions") . '">' . _('There are unanswered questions!') . '</a>', true);
+      }
     }
   }
   
-  return "";
+  return null;
 }
 
 function admin_questions() {

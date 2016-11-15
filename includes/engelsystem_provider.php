@@ -40,6 +40,7 @@ require_once realpath(__DIR__ . '/../includes/view/ShiftEntry_view.php');
 require_once realpath(__DIR__ . '/../includes/view/ShiftTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/UserAngelTypes_view.php');
 require_once realpath(__DIR__ . '/../includes/view/UserDriverLicenses_view.php');
+require_once realpath(__DIR__ . '/../includes/view/UserHintsRenderer.php');
 require_once realpath(__DIR__ . '/../includes/view/User_view.php');
 
 require_once realpath(__DIR__ . '/../includes/controller/angeltypes_controller.php');

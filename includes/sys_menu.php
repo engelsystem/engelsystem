@@ -1,4 +1,5 @@
 <?php
+use Engelsystem\UserHintsRenderer;
 
 function page_link_to($page = "") {
   if ($page == "") {
@@ -14,69 +15,32 @@ function page_link_to_absolute($page) {
 /**
  * Render the user hints
  */
-function header_render_hints($user, $page, $enable_tshirt_size) {
-  $hints = [];
+function header_render_hints() {
+  global $user, $page, $enable_tshirt_size, $max_freeloadable_shifts;
+  
+  $hints_renderer = new UserHintsRenderer();
+  
   if (isset($user)) {
-    $hint_class = 'info';
-    $glyphicon = 'info-sign';
-    // Erzengel Hinweis für unbeantwortete Fragen
-    if ($page != "admin_questions") {
-      $new_questions = admin_new_questions();
-      if ($new_questions != "") {
-        $hints[] = $new_questions;
-      }
-    }
+    $hints_renderer->addHint(admin_new_questions());
+    $hints_renderer->addHint(user_angeltypes_unconfirmed_hint());
+    $hints_renderer->addHint(render_user_departure_date_hint());
+    $hints_renderer->addHint(user_driver_license_required_hint());
     
-    $unconfirmed_hint = user_angeltypes_unconfirmed_hint();
-    if ($unconfirmed_hint != '') {
-      $hints[] = $unconfirmed_hint;
-    }
-    
-    if (! isset($user['planned_departure_date']) || $user['planned_departure_date'] == null) {
-      $hints[] = info(_("Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities."), true);
-    }
-    
-    $driver_license_required = user_driver_license_required_hint();
-    if ($driver_license_required != '') {
-      $hints[] = $driver_license_required;
-    }
-    
-    if (User_is_freeloader($user)) {
-      $hints[] = error(sprintf(_("You freeloaded at least %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again."), $max_freeloadable_shifts), true);
-      $hint_class = 'danger';
-      $glyphicon = 'warning-sign';
-    }
-    
-    // Hinweis für Engel, die noch nicht angekommen sind
-    if ($user['Gekommen'] == 0) {
-      $hints[] = error(_("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already."), true);
-      $hint_class = 'danger';
-      $glyphicon = 'warning-sign';
-    }
-    
-    if ($enable_tshirt_size && $user['Size'] == "") {
-      $hints[] = error(_("You need to specify a tshirt size in your settings!"), true);
-      $hint_class = 'danger';
-      $glyphicon = 'warning-sign';
-    }
-    
-    if ($user['DECT'] == "") {
-      $hints[] = error(_("You need to specify a DECT phone number in your settings! If you don't have a DECT phone, just enter \"-\"."), true);
-      $hint_class = 'danger';
-      $glyphicon = 'warning-sign';
-    }
+    // Important hints:
+    $hints_renderer->addHint(render_user_freeloader_hint(), true);
+    $hints_renderer->addHint(render_user_arrived_hint(), true);
+    $hints_renderer->addHint(render_user_tshirt_hint(), true);
+    $hints_renderer->addHint(render_user_dect_hint(), true);
   }
-  if (count($hints) > 0) {
-    return toolbar_popover($glyphicon . ' text-' . $hint_class, '', $hints, 'bg-' . $hint_class);
-  }
-  return '';
+  
+  return $hints_renderer->render();
 }
 
 /**
  * Renders the header toolbar containing search, login/logout, user and settings links.
  */
 function header_toolbar() {
-  global $page, $privileges, $user, $enable_tshirt_size, $max_freeloadable_shifts;
+  global $page, $privileges, $user;
   
   $toolbar_items = [];
   
@@ -96,12 +60,26 @@ function header_toolbar() {
     $toolbar_items[] = toolbar_item_link(page_link_to('user_messages'), 'envelope', user_unread_messages());
   }
   
-  $toolbar_items[] = header_render_hints($user, $page, $enable_tshirt_size);
-  
-  $user_submenu = make_langselect();
-  $user_submenu[] = toolbar_item_divider();
+  $toolbar_items[] = header_render_hints();
   if (in_array('user_myshifts', $privileges)) {
     $toolbar_items[] = toolbar_item_link(page_link_to('users') . '&amp;action=view', ' icon-icon_angel', $user['Nick'], $page == 'users');
+  }
+  
+  $user_submenu = make_user_submenu();
+  if (count($user_submenu) > 0) {
+    $toolbar_items[] = toolbar_dropdown('', '', $user_submenu);
+  }
+  
+  return toolbar($toolbar_items, true);
+}
+
+function make_user_submenu() {
+  global $privileges, $page;
+  
+  $user_submenu = make_langselect();
+  
+  if (in_array('user_settings', $privileges) || in_array('logout', $privileges)) {
+    $user_submenu[] = toolbar_item_divider();
   }
   
   if (in_array('user_settings', $privileges)) {
@@ -112,11 +90,7 @@ function header_toolbar() {
     $user_submenu[] = toolbar_item_link(page_link_to('logout'), 'log-out', logout_title(), $page == 'logout');
   }
   
-  if (count($user_submenu) > 0) {
-    $toolbar_items[] = toolbar_dropdown('', '', $user_submenu);
-  }
-  
-  return toolbar($toolbar_items, true);
+  return $user_submenu;
 }
 
 function make_navigation() {

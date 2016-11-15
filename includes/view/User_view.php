@@ -415,4 +415,55 @@ function User_Nick_render($user_source) {
   return '<a class="' . ($user_source['Gekommen'] ? '' : 'text-muted') . '" href="' . page_link_to('users') . '&amp;action=view&amp;user_id=' . $user_source['UID'] . '"><span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . '</a>';
 }
 
+function render_user_departure_date_hint() {
+  global $user;
+  
+  if (! isset($user['planned_departure_date']) || $user['planned_departure_date'] == null) {
+    return info(_("Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities."), true);
+  }
+  
+  return null;
+}
+
+function render_user_freeloader_hint() {
+  global $user;
+  
+  if (User_is_freeloader($user)) {
+    return error(sprintf(_("You freeloaded at least %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again."), $max_freeloadable_shifts), true);
+  }
+  
+  return null;
+}
+
+// Hinweis für Engel, die noch nicht angekommen sind
+function render_user_arrived_hint() {
+  global $user;
+  
+  if ($user['Gekommen'] == 0) {
+    return error(_("You are not marked as arrived. Please go to heaven's desk, get your angel badge and/or tell them that you arrived already."), true);
+  }
+  
+  return null;
+}
+
+function render_user_tshirt_hint() {
+  global $enable_tshirt_size, $user;
+  
+  if ($enable_tshirt_size && $user['Size'] == "") {
+    return error(_("You need to specify a tshirt size in your settings!"), true);
+  }
+  
+  return null;
+}
+
+function render_user_dect_hint() {
+  global $user;
+  
+  if ($user['DECT'] == "") {
+    return error(_("You need to specify a DECT phone number in your settings! If you don't have a DECT phone, just enter \"-\"."), true);
+  }
+  
+  return null;
+}
+
 ?>
