@@ -16,7 +16,7 @@ function user_angeltypes_unconfirmed_hint() {
     $unconfirmed_links[] = '<a href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $user_angeltype['angeltype_id'] . '">' . $user_angeltype['name'] . ' (+' . $user_angeltype['count'] . ')' . '</a>';
   }
   
-  return info(sprintf(ngettext("There is %d unconfirmed angeltype.", "There are %d unconfirmed angeltypes.", count($unconfirmed_user_angeltypes)), count($unconfirmed_user_angeltypes)) . " " . _('Angel types which need approvals:') . ' ' . join(', ', $unconfirmed_links), true);
+  return sprintf(ngettext("There is %d unconfirmed angeltype.", "There are %d unconfirmed angeltypes.", count($unconfirmed_user_angeltypes)), count($unconfirmed_user_angeltypes)) . " " . _('Angel types which need approvals:') . ' ' . join(', ', $unconfirmed_links);
 }
 
 /**

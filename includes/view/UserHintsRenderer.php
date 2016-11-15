@@ -32,9 +32,11 @@ class UserHintsRenderer {
    */
   public function addHint($hint, $important = false) {
     if ($hint != null && $hint != '') {
-      $this->hints[] = $hint;
       if ($important) {
         $this->important = true;
+        $this->hints[] = error($hint, true);
+      } else {
+        $this->hints[] = info($hint, true);
       }
     }
   }

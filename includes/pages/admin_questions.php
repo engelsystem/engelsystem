@@ -15,7 +15,7 @@ function admin_new_questions() {
       $new_messages = sql_num_query("SELECT * FROM `Questions` WHERE `AID` IS NULL");
       
       if ($new_messages > 0) {
-        return info('<a href="' . page_link_to("admin_questions") . '">' . _('There are unanswered questions!') . '</a>', true);
+        return '<a href="' . page_link_to("admin_questions") . '">' . _('There are unanswered questions!') . '</a>';
       }
     }
   }

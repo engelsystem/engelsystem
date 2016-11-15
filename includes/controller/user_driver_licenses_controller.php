@@ -16,7 +16,7 @@ function user_driver_license_required_hint() {
   
   foreach ($angeltypes as $angeltype) {
     if ($angeltype['requires_driver_license']) {
-      return info(sprintf(_("You joined an angeltype which requires a driving license. Please edit your driving license information here: %s."), '<a href="' . user_driver_license_edit_link() . '">' . _("driving license information") . '</a>'), true);
+      return sprintf(_("You joined an angeltype which requires a driving license. Please edit your driving license information here: %s."), '<a href="' . user_driver_license_edit_link() . '">' . _("driving license information") . '</a>');
     }
   }
   
