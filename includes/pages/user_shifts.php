@@ -37,8 +37,18 @@ function user_shifts() {
  *          The shiftfilter to update.
  */
 function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days) {
-  $shiftsFilter->setStartTime(check_request_datetime('start_day', 'start_time', $days, time()));
-  $shiftsFilter->setEndTime(check_request_datetime('end_day', 'end_time', $days, time() + 24 * 60 * 60));
+  $start_time = $shiftsFilter->getStartTime();
+  if ($start_time == null) {
+    $start_time = time();
+  }
+  
+  $end_time = $shiftsFilter->getEndTime();
+  if ($end_time == null) {
+    $end_time = $start_time + 24 * 60 * 60;
+  }
+  
+  $shiftsFilter->setStartTime(check_request_datetime('start_day', 'start_time', $days, $start_time));
+  $shiftsFilter->setEndTime(check_request_datetime('end_day', 'end_time', $days, $end_time));
   
   if ($shiftsFilter->getStartTime() > $shiftsFilter->getEndTime()) {
     $shiftsFilter->setEndTime($shiftsFilter->getStartTime() + 24 * 60 * 60);
@@ -57,18 +67,10 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days) {
  */
 function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $days) {
   $shiftsFilter->setUserShiftsAdmin($user_shifts_admin);
-  if (isset($_REQUEST['filled'])) {
-    $shiftsFilter->setFilled(check_request_int_array('filled'));
-  }
-  if (isset($_REQUEST['rooms'])) {
-    $shiftsFilter->setRooms(check_request_int_array('rooms'));
-  }
-  if (isset($_REQUEST['types'])) {
-    $shiftsFilter->setTypes(check_request_int_array('types'));
-  }
-  if ((isset($_REQUEST['start_time']) && isset($_REQUEST['start_day']) && isset($_REQUEST['end_time']) && isset($_REQUEST['end_day'])) || $shiftsFilter->getStartTime() == null || $shiftsFilter->getEndTime() == null) {
-    update_ShiftsFilter_timerange($shiftsFilter, $days);
-  }
+  $shiftsFilter->setFilled(check_request_int_array('filled', $shiftsFilter->getFilled()));
+  $shiftsFilter->setRooms(check_request_int_array('rooms', $shiftsFilter->getRooms()));
+  $shiftsFilter->setTypes(check_request_int_array('types', $shiftsFilter->getTypes()));
+  update_ShiftsFilter_timerange($shiftsFilter, $days);
 }
 
 function load_rooms() {

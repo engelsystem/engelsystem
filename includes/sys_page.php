@@ -89,12 +89,14 @@ function select_array($data, $key_name, $value_name) {
  *
  * @param String $name
  *          Name of the request param
+ * @param array<int> $default
+ *          Default return value, if param is not set
  */
-function check_request_int_array($name) {
+function check_request_int_array($name, $default = []) {
   if (isset($_REQUEST[$name]) && is_array($_REQUEST[$name])) {
     return array_filter($_REQUEST[$name], 'is_numeric');
   }
-  return [];
+  return $default;
 }
 
 /**

@@ -19,7 +19,7 @@ class ShiftCalendarRenderer {
    * Distance between two shifts in pixels
    */
   const MARGIN = 5;
-  
+
   /**
    * Seconds added to the start and end time
    */
@@ -56,12 +56,12 @@ class ShiftCalendarRenderer {
     
     foreach ($shifts as $shift) {
       $room_id = $shift['RID'];
+      $header = Room_name_render([
+          'RID' => $room_id,
+          'Name' => $shift['room_name'] 
+      ]);
       if (! isset($lanes[$room_id])) {
         // initialize room with one lane
-        $header = Room_name_render([
-            'RID' => $room_id,
-            'Name' => $shift['room_name'] 
-        ]);
         $lanes[$room_id] = [
             new ShiftCalendarLane($header, $this->getFirstBlockStartTime(), $this->getBlocksPerSlot()) 
         ];
@@ -108,6 +108,9 @@ class ShiftCalendarRenderer {
    * @return the generated html
    */
   public function render() {
+    if (count($this->lanes) == 0) {
+      return '';
+    }
     return div('shift-calendar', [
         $this->renderTimeLane(),
         $this->renderShiftLanes() 
