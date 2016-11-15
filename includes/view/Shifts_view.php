@@ -28,7 +28,7 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null, 
   return '';
 }
 
-function Shift_view($shift, $shifttype, $room, $angeltypes_source, $user_shifts, ShiftSignupState $shift_signup_state) {
+function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupState $shift_signup_state) {
   global $privileges;
   
   $shift_admin = in_array('admin_shifts', $privileges);

@@ -3,12 +3,12 @@
  */
 $(document).ready(
     function() {
-      var time_lanes = $(".shift-calendar .time");
+      var timeLanes = $(".shift-calendar .time");
       var headers = $(".shift-calendar .header");
-      var top_reference = $(".container-fluid .row");
+      var topReference = $(".container-fluid .row");
       var top = headers.offset().top;
       var left = 15;
-      time_lanes.css({
+      timeLanes.css({
         "position" : "relative",
         "z-index" : 1000
       });
@@ -18,12 +18,12 @@ $(document).ready(
       });
       $(window).scroll(
           function() {
-            time_lanes.css({
+            timeLanes.css({
               "left" : Math.max(0, $(window).scrollLeft() - left) + "px"
             });
             headers.css({
               "top" : Math.max(0, $(window).scrollTop() - top
-                  + top_reference.offset().top)
+                  + topReference.offset().top)
                   + "px"
             });
           });

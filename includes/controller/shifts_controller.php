@@ -212,7 +212,7 @@ function shift_controller() {
   
   return [
       $shift['name'],
-      Shift_view($shift, $shifttype, $room, $angeltypes, $user_shifts, $shift_signup_state) 
+      Shift_view($shift, $shifttype, $room, $angeltypes, $shift_signup_state) 
   ];
 }
 
