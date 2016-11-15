@@ -6775,7 +6775,7 @@ body {
   background: #ffffff;
   border-bottom: 1px solid #dddddd;
   height: 30px;
-  padding: 5px;
+  padding: 5px 5px 5px 16px;
 }
 .shift-calendar .lane .tick {
   height: 30px;

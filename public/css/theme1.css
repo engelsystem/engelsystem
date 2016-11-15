@@ -6789,7 +6789,7 @@ body {
   background: #222222;
   border-bottom: 1px solid #282828;
   height: 30px;
-  padding: 5px;
+  padding: 5px 5px 5px 16px;
 }
 .shift-calendar .lane .tick {
   height: 30px;
