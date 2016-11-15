@@ -200,17 +200,19 @@ function shift_controller() {
   $angeltypes = AngelTypes();
   $user_shifts = Shifts_by_user($user);
   
-  $signed_up = false;
-  foreach ($user_shifts as $user_shift) {
-    if ($user_shift['SID'] == $shift['SID']) {
-      $signed_up = true;
-      break;
+  $shift_signup_state = null;
+  foreach ($angeltypes as $angeltype) {
+    $angeltype_signup_state = Shift_signup_allowed($user, $shift, $angeltype, null, $user_shifts);
+    if ($shift_signup_state == null) {
+      $shift_signup_state = $angeltype_signup_state;
+    } else {
+      $shift_signup_state = $shift_signup_state->combineWith($angeltype_signup_state);
     }
   }
   
   return [
       $shift['name'],
-      Shift_view($shift, $shifttype, $room, in_array('admin_shifts', $privileges), $angeltypes, in_array('user_shifts_admin', $privileges), in_array('admin_rooms', $privileges), in_array('shifttypes', $privileges), $user_shifts, $signed_up) 
+      Shift_view($shift, $shifttype, $room, $angeltypes, $user_shifts, $shift_signup_state) 
   ];
 }
 

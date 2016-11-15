@@ -1,4 +1,5 @@
 <?php
+use Engelsystem\ShiftSignupState;
 
 function Shift_editor_info_render($shift) {
   $info = [];
@@ -27,7 +28,14 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null, 
   return '';
 }
 
-function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source, $user_shift_admin, $admin_rooms, $admin_shifttypes, $user_shifts, $signed_up) {
+function Shift_view($shift, $shifttype, $room, $angeltypes_source, $user_shifts, ShiftSignupState $shift_signup_state) {
+  global $privileges;
+  
+  $shift_admin = in_array('admin_shifts', $privileges);
+  $user_shift_admin = in_array('user_shifts_admin', $privileges);
+  $admin_rooms = in_array('admin_rooms', $privileges);
+  $admin_shifttypes = in_array('shifttypes', $privileges);
+  
   $parsedown = new Parsedown();
   
   $angeltypes = [];
@@ -76,7 +84,7 @@ function Shift_view($shift, $shifttype, $room, $shift_admin, $angeltypes_source,
   return page_with_title($shift['name'] . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>', [
       msg(),
       Shift_collides($shift, $user_shifts) ? info(_('This shift collides with one of your shifts.'), true) : '',
-      $signed_up ? info(_('You are signed up for this shift.'), true) : '',
+      $shift_signup_state->getState() == ShiftSignupState::SIGNED_UP ? info(_('You are signed up for this shift.'), true) : '',
       ($shift_admin || $admin_shifttypes || $admin_rooms) ? buttons([
           $shift_admin ? button(shift_edit_link($shift), glyph('pencil') . _('edit')) : '',
           $shift_admin ? button(shift_delete_link($shift), glyph('trash') . _('delete')) : '',
