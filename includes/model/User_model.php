@@ -42,7 +42,7 @@ function User_update($user) {
       `got_voucher`='" . sql_escape($user['got_voucher']) . "',
       `arrival_date`='" . sql_escape($user['arrival_date']) . "',
       `planned_arrival_date`='" . sql_escape($user['planned_arrival_date']) . "',
-      `planned_departure_date`='" . sql_escape($user['planned_departure_date']) . "'
+      `planned_departure_date`=" . sql_null($user['planned_departure_date']) . "
       WHERE `UID`='" . sql_escape($user['UID']) . "'");
 }
 
