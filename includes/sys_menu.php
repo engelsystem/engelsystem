@@ -16,7 +16,7 @@ function page_link_to_absolute($page) {
  * Render the user hints
  */
 function header_render_hints() {
-  global $user, $page, $enable_tshirt_size, $max_freeloadable_shifts;
+  global $user;
   
   $hints_renderer = new UserHintsRenderer();
   

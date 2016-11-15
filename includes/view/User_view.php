@@ -426,7 +426,7 @@ function render_user_departure_date_hint() {
 }
 
 function render_user_freeloader_hint() {
-  global $user;
+  global $user, $max_freeloadable_shifts;
   
   if (User_is_freeloader($user)) {
     return sprintf(_("You freeloaded at least %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again."), $max_freeloadable_shifts);
