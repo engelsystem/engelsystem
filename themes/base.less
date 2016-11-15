@@ -39,21 +39,18 @@ body {
   flex-direction: row;
   flex-wrap: nowrap;
   align-itmes: stretch;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-itmes: stretch;
   width: 100%;
   
 	.lane {
 	  background: @table-bg-accent;
 	  flex-grow: 1;
-	  min-width: 300px;
-	  width: 300px;
-	  flex-grow: 1;
+	  min-width: 280px;
+	  width: 280px;
+	  flex-shrink: 1;
 	  
 		.header {
 		  background: @panel-bg;
+		  border-bottom: 1px solid @table-border-color;
 		  height: 30px;
 		  padding: 5px;
 		}
@@ -77,10 +74,11 @@ body {
 	}
 	
 	.lane.time {
+	  border-right: 1px solid @table-border-color;
 	  flex-grow: 0;
-	  min-width: 100px;
-	  width: 100px;
-	  flex-grow: 0;
+	  min-width: 50px;
+	  width: 50px;
+	  flex-shrink: 0;
 	}
 	
 	.shift {

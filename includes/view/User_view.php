@@ -297,6 +297,20 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
   
   return page_with_title('<span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . ' <small>' . $user_name . '</small>', [
       msg(),
+      div('row space-top', [
+          div('col-md-12', [
+              buttons([
+                  $admin_user_privilege ? button(page_link_to('admin_user') . '&id=' . $user_source['UID'], glyph("edit") . _("edit")) : '',
+                  $admin_user_privilege ? button(user_driver_license_edit_link($user_source), glyph("road") . _("driving license")) : '',
+                  ($admin_user_privilege && ! $user_source['Gekommen']) ? button(page_link_to('admin_arrive') . '&arrived=' . $user_source['UID'], _("arrived")) : '',
+                  $admin_user_privilege ? button(page_link_to('users') . '&action=edit_vouchers&user_id=' . $user_source['UID'], glyph('cutlery') . _('Edit vouchers')) : '',
+                  $its_me ? button(page_link_to('user_settings'), glyph('list-alt') . _("Settings")) : '',
+                  $its_me ? button(page_link_to('ical') . '&key=' . $user_source['api_key'], glyph('calendar') . _("iCal Export")) : '',
+                  $its_me ? button(page_link_to('shifts_json_export') . '&key=' . $user_source['api_key'], glyph('export') . _("JSON Export")) : '',
+                  $its_me ? button(page_link_to('user_myshifts') . '&reset', glyph('repeat') . _('Reset API key')) : '' 
+              ]) 
+          ]) 
+      ]),
       div('row', [
           div('col-md-3', [
               '<h1>',
@@ -320,20 +334,6 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
           div('col-md-3', [
               '<h4>' . _("Rights") . '</h4>',
               User_groups_render($user_groups) 
-          ]) 
-      ]),
-      div('row space-top', [
-          div('col-md-12', [
-              buttons([
-                  $admin_user_privilege ? button(page_link_to('admin_user') . '&id=' . $user_source['UID'], glyph("edit") . _("edit")) : '',
-                  $admin_user_privilege ? button(user_driver_license_edit_link($user_source), glyph("road") . _("driving license")) : '',
-                  ($admin_user_privilege && ! $user_source['Gekommen']) ? button(page_link_to('admin_arrive') . '&arrived=' . $user_source['UID'], _("arrived")) : '',
-                  $admin_user_privilege ? button(page_link_to('users') . '&action=edit_vouchers&user_id=' . $user_source['UID'], glyph('cutlery') . _('Edit vouchers')) : '',
-                  $its_me ? button(page_link_to('user_settings'), glyph('list-alt') . _("Settings")) : '',
-                  $its_me ? button(page_link_to('ical') . '&key=' . $user_source['api_key'], glyph('calendar') . _("iCal Export")) : '',
-                  $its_me ? button(page_link_to('shifts_json_export') . '&key=' . $user_source['api_key'], glyph('export') . _("JSON Export")) : '',
-                  $its_me ? button(page_link_to('user_myshifts') . '&reset', glyph('repeat') . _('Reset API key')) : '' 
-              ]) 
           ]) 
       ]),
       ($its_me || $admin_user_privilege) ? '<h2>' . _("Shifts") . '</h2>' : '',

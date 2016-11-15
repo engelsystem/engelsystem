@@ -19,6 +19,11 @@ class ShiftCalendarRenderer {
    * Distance between two shifts in pixels
    */
   const MARGIN = 5;
+  
+  /**
+   * Seconds added to the start and end time
+   */
+  const TIME_MARGIN = 1800;
 
   private $lanes;
 
@@ -71,7 +76,7 @@ class ShiftCalendarRenderer {
       }
       // If all lanes for this room are busy, create a new lane and add shift to it
       if ($shift_added == false) {
-        $newLane = new ShiftCalendarLane("", $this->getFirstBlockStartTime(), $this->getBlocksPerSlot());
+        $newLane = new ShiftCalendarLane($header, $this->getFirstBlockStartTime(), $this->getBlocksPerSlot());
         if (! $newLane->addShift($shift)) {
           engelsystem_error("Unable to add shift to new lane.");
         }
@@ -170,7 +175,7 @@ class ShiftCalendarRenderer {
         return div('tick day');
       }
       return div('tick day', [
-          date('Y-m-d<b\r />H:i', $time) 
+          date('m-d<b\r />H:i', $time) 
       ]);
     } elseif ($time % (60 * 60) == 0) {
       if (! $label) {
@@ -206,7 +211,7 @@ class ShiftCalendarRenderer {
         $start_time = $shift['start'];
       }
     }
-    return ShiftCalendarRenderer::SECONDS_PER_ROW * floor(($start_time - 60 * 60) / ShiftCalendarRenderer::SECONDS_PER_ROW);
+    return ShiftCalendarRenderer::SECONDS_PER_ROW * floor(($start_time - ShiftCalendarRenderer::TIME_MARGIN) / ShiftCalendarRenderer::SECONDS_PER_ROW);
   }
 
   private function calcLastBlockEndTime($shifts) {
@@ -216,7 +221,7 @@ class ShiftCalendarRenderer {
         $end_time = $shift['end'];
       }
     }
-    return ShiftCalendarRenderer::SECONDS_PER_ROW * ceil(($end_time + 60 * 60) / ShiftCalendarRenderer::SECONDS_PER_ROW);
+    return ShiftCalendarRenderer::SECONDS_PER_ROW * ceil(($end_time + ShiftCalendarRenderer::TIME_MARGIN) / ShiftCalendarRenderer::SECONDS_PER_ROW);
   }
 
   private function calcBlocksPerSlot() {

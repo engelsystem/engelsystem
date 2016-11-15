@@ -50,7 +50,7 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, $user_shifts,
   
   return page_with_title($shift['name'] . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>', [
       msg(),
-      Shift_collides($shift, $user_shifts) ? info(_('This shift collides with one of your shifts.'), true) : '',
+      $shift_signup_state->getState() == ShiftSignupState::COLLIDES ? info(_('This shift collides with one of your shifts.'), true) : '',
       $shift_signup_state->getState() == ShiftSignupState::SIGNED_UP ? info(_('You are signed up for this shift.'), true) : '',
       ($shift_admin || $admin_shifttypes || $admin_rooms) ? buttons([
           $shift_admin ? button(shift_edit_link($shift), glyph('pencil') . _('edit')) : '',

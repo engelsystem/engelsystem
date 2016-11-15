@@ -6780,12 +6780,14 @@ body {
 }
 .shift-calendar .lane {
   background: #080808;
-  min-width: 300px;
-  width: 300px;
   flex-grow: 1;
+  min-width: 280px;
+  width: 280px;
+  flex-shrink: 1;
 }
 .shift-calendar .lane .header {
   background: #222222;
+  border-bottom: 1px solid #282828;
   height: 30px;
   padding: 5px;
 }
@@ -6804,9 +6806,11 @@ body {
   padding-left: 5px;
 }
 .shift-calendar .lane.time {
-  min-width: 100px;
-  width: 100px;
+  border-right: 1px solid #282828;
   flex-grow: 0;
+  min-width: 50px;
+  width: 50px;
+  flex-shrink: 0;
 }
 .shift-calendar .shift {
   margin: 0 5px 5px 0;
