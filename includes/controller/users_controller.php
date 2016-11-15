@@ -206,85 +206,82 @@ function users_list_controller() {
 }
 
 /**
- * User password recovery.
- * (By email)
+ * Second step of password recovery: set a new password using the token link from email
  */
-function user_password_recovery_controller() {
-  if (isset($_REQUEST['token'])) {
-    $user_source = User_by_password_recovery_token($_REQUEST['token']);
-    if ($user_source === false) {
-      engelsystem_error("Unable to load user.");
+function user_password_recovery_set_new_controller() {
+  $user_source = User_by_password_recovery_token($_REQUEST['token']);
+  if ($user_source == null) {
+    error(_("Token is not correct."));
+    redirect(page_link_to('login'));
+  }
+  
+  if (isset($_REQUEST['submit'])) {
+    $valid = true;
+    
+    if (isset($_REQUEST['password']) && strlen($_REQUEST['password']) >= MIN_PASSWORD_LENGTH) {
+      if ($_REQUEST['password'] != $_REQUEST['password2']) {
+        $valid = false;
+        error(_("Your passwords don't match."));
+      }
+    } else {
+      $valid = false;
+      error(_("Your password is to short (please use at least 6 characters)."));
     }
-    if ($user_source == null) {
-      error(_("Token is not correct."));
+    
+    if ($valid) {
+      set_password($user_source['UID'], $_REQUEST['password']);
+      success(_("Password saved."));
       redirect(page_link_to('login'));
     }
+  }
+  
+  return User_password_set_view();
+}
+
+/**
+ * First step of password recovery: display a form that asks for your email and send email with recovery link
+ */
+function user_password_recovery_start_controller() {
+  if (isset($_REQUEST['submit'])) {
+    $valid = true;
     
-    if (isset($_REQUEST['submit'])) {
-      $valid = true;
-      
-      if (isset($_REQUEST['password']) && strlen($_REQUEST['password']) >= MIN_PASSWORD_LENGTH) {
-        if ($_REQUEST['password'] != $_REQUEST['password2']) {
-          $valid = false;
-          error(_("Your passwords don't match."));
-        }
-      } else {
-        $valid = false;
-        error(_("Your password is to short (please use at least 6 characters)."));
-      }
-      
-      if ($valid) {
-        $result = set_password($user_source['UID'], $_REQUEST['password']);
-        if ($result === false) {
-          engelsystem_error(_("Password could not be updated."));
-        }
-        
-        success(_("Password saved."));
-        redirect(page_link_to('login'));
-      }
-    }
-    
-    return User_password_set_view();
-  } else {
-    if (isset($_REQUEST['submit'])) {
-      $valid = true;
-      
-      if (isset($_REQUEST['email']) && strlen(strip_request_item('email')) > 0) {
-        $email = strip_request_item('email');
-        if (check_email($email)) {
-          $user_source = User_by_email($email);
-          if ($user_source === false) {
-            engelsystem_error("Unable to load user.");
-          }
-          if ($user_source == null) {
-            $valid = false;
-            error(_("E-mail address is not correct."));
-          }
-        } else {
+    if (isset($_REQUEST['email']) && strlen(strip_request_item('email')) > 0) {
+      $email = strip_request_item('email');
+      if (check_email($email)) {
+        $user_source = User_by_email($email);
+        if ($user_source == null) {
           $valid = false;
           error(_("E-mail address is not correct."));
         }
       } else {
         $valid = false;
-        error(_("Please enter your e-mail."));
+        error(_("E-mail address is not correct."));
       }
-      
-      if ($valid) {
-        $token = User_generate_password_recovery_token($user_source);
-        if ($token === false) {
-          engelsystem_error("Unable to generate password recovery token.");
-        }
-        $result = engelsystem_email_to_user($user_source, _("Password recovery"), sprintf(_("Please visit %s to recover your password."), page_link_to_absolute('user_password_recovery') . '&token=' . $token));
-        if ($result === false) {
-          engelsystem_error("Unable to send password recovery email.");
-        }
-        
-        success(_("We sent an email containing your password recovery link."));
-        redirect(page_link_to('login'));
-      }
+    } else {
+      $valid = false;
+      error(_("Please enter your e-mail."));
     }
     
-    return User_password_recovery_view();
+    if ($valid) {
+      $token = User_generate_password_recovery_token($user_source);
+      engelsystem_email_to_user($user_source, _("Password recovery"), sprintf(_("Please visit %s to recover your password."), page_link_to_absolute('user_password_recovery') . '&token=' . $token));
+      success(_("We sent an email containing your password recovery link."));
+      redirect(page_link_to('login'));
+    }
+  }
+  
+  return User_password_recovery_view();
+}
+
+/**
+ * User password recovery in 2 steps.
+ * (By email)
+ */
+function user_password_recovery_controller() {
+  if (isset($_REQUEST['token'])) {
+    return user_password_recovery_set_new_controller();
+  } else {
+    return user_password_recovery_start_controller();
   }
 }
 

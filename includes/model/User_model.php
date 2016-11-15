@@ -313,7 +313,7 @@ function User_by_api_key($api_key) {
 function User_by_email($email) {
   $user = sql_select("SELECT * FROM `User` WHERE `email`='" . sql_escape($email) . "' LIMIT 1");
   if ($user === false) {
-    return false;
+    engelsystem_error("Unable to load user.");
   }
   if (count($user) == 0) {
     return null;
@@ -330,7 +330,7 @@ function User_by_email($email) {
 function User_by_password_recovery_token($token) {
   $user = sql_select("SELECT * FROM `User` WHERE `password_recovery_token`='" . sql_escape($token) . "' LIMIT 1");
   if ($user === false) {
-    return false;
+    engelsystem_error("Unable to load user.");
   }
   if (count($user) == 0) {
     return null;
@@ -363,7 +363,7 @@ function User_generate_password_recovery_token(&$user) {
   $user['password_recovery_token'] = md5($user['Nick'] . time() . rand());
   $result = sql_query("UPDATE `User` SET `password_recovery_token`='" . sql_escape($user['password_recovery_token']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
   if ($result === false) {
-    return false;
+    engelsystem_error("Unable to generate password recovery token.");
   }
   engelsystem_log("Password recovery for " . User_Nick_render($user) . " started.");
   return $user['password_recovery_token'];

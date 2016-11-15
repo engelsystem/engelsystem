@@ -39,7 +39,11 @@ function generate_salt($length = 16) {
  * set the password of a user
  */
 function set_password($uid, $password) {
-  return sql_query("UPDATE `User` SET `Passwort` = '" . sql_escape(crypt($password, CRYPT_ALG . '$' . generate_salt(16) . '$')) . "', `password_recovery_token`=NULL WHERE `UID` = " . intval($uid) . " LIMIT 1");
+  $result = sql_query("UPDATE `User` SET `Passwort` = '" . sql_escape(crypt($password, CRYPT_ALG . '$' . generate_salt(16) . '$')) . "', `password_recovery_token`=NULL WHERE `UID` = " . intval($uid) . " LIMIT 1");
+  if ($result === false) {
+    engelsystem_error('Unable to update password.');
+  }
+  return $result;
 }
 
 /**
