@@ -48,7 +48,7 @@ function EventConfig_info($event_config) {
   
   // Event name, start+end date are set
   if ($event_config['event_name'] != null && $event_config['event_start_date'] != null && $event_config['event_end_date'] != null) {
-    return sprintf(_("%s, from %s to %s"), $event_config['event_name'], date("Y-m-d", $event_config['event_start_date']), date(_("Y-m-d"), $event_config['event_end_date']));
+    return sprintf(_("%s, from %s to %s"), $event_config['event_name'], date(_("Y-m-d"), $event_config['event_start_date']), date(_("Y-m-d"), $event_config['event_end_date']));
   }
   
   // Event name, start date are set
@@ -58,7 +58,7 @@ function EventConfig_info($event_config) {
   
   // Event start+end date are set
   if ($event_config['event_start_date'] != null && $event_config['event_end_date'] != null) {
-    return sprintf(_("Event from %s to %s"), date("Y-m-d", $event_config['event_start_date']), date(_("Y-m-d"), $event_config['event_end_date']));
+    return sprintf(_("Event from %s to %s"), date(_("Y-m-d"), $event_config['event_start_date']), date(_("Y-m-d"), $event_config['event_end_date']));
   }
   
   // Only event name is set

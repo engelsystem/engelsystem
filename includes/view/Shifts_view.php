@@ -45,40 +45,7 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, $user_shifts,
   
   $needed_angels = '';
   foreach ($shift['NeedAngels'] as $needed_angeltype) {
-    $class = 'progress-bar-warning';
-    if ($needed_angeltype['taken'] == 0) {
-      $class = 'progress-bar-danger';
-    }
-    if ($needed_angeltype['taken'] >= $needed_angeltype['count']) {
-      $class = 'progress-bar-success';
-    }
-    $needed_angels .= '<div class="list-group-item">';
-    
-    $needed_angels .= '<div class="pull-right">' . Shift_signup_button_render($shift, $angeltypes[$needed_angeltype['TID']]) . '</div>';
-    
-    $needed_angels .= '<h3>' . AngelType_name_render($angeltypes[$needed_angeltype['TID']]) . '</h3>';
-    $needed_angels .= progress_bar(0, $needed_angeltype['count'], min($needed_angeltype['taken'], $needed_angeltype['count']), $class, $needed_angeltype['taken'] . ' / ' . $needed_angeltype['count']);
-    
-    $angels = [];
-    foreach ($shift['ShiftEntry'] as $shift_entry) {
-      if ($shift_entry['TID'] == $needed_angeltype['TID']) {
-        $entry = User_Nick_render(User($shift_entry['UID']));
-        if ($shift_entry['freeloaded']) {
-          $entry = '<strike>' . $entry . '</strike>';
-        }
-        if ($user_shift_admin) {
-          $entry .= ' <div class="btn-group">';
-          $entry .= button_glyph(page_link_to('user_myshifts') . '&edit=' . $shift_entry['id'] . '&id=' . $shift_entry['UID'], 'pencil', 'btn-xs');
-          $entry .= button_glyph(page_link_to('user_shifts') . '&entry_id=' . $shift_entry['id'], 'trash', 'btn-xs');
-          $entry .= '</div>';
-        }
-        $angels[] = $entry;
-      }
-    }
-    
-    $needed_angels .= join(', ', $angels);
-    
-    $needed_angels .= '</div>';
+    $needed_angels .= Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin);
   }
   
   return page_with_title($shift['name'] . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>', [
@@ -99,7 +66,7 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, $user_shifts,
           div('col-sm-3 col-xs-6', [
               '<h4>' . _('Start') . '</h4>',
               '<p class="lead' . (time() >= $shift['start'] ? ' text-success' : '') . '">',
-              glyph('calendar') . date('Y-m-d', $shift['start']),
+              glyph('calendar') . date(_('Y-m-d'), $shift['start']),
               '<br />',
               glyph('time') . date('H:i', $shift['start']),
               '</p>' 
@@ -107,7 +74,7 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, $user_shifts,
           div('col-sm-3 col-xs-6', [
               '<h4>' . _('End') . '</h4>',
               '<p class="lead' . (time() >= $shift['end'] ? ' text-success' : '') . '">',
-              glyph('calendar') . date('Y-m-d', $shift['end']),
+              glyph('calendar') . date(_('Y-m-d'), $shift['end']),
               '<br />',
               glyph('time') . date('H:i', $shift['end']),
               '</p>' 
@@ -129,6 +96,50 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, $user_shifts,
       ]),
       $shift_admin ? Shift_editor_info_render($shift) : '' 
   ]);
+}
+
+function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin) {
+  $needed_angels = '';
+  
+  $class = 'progress-bar-warning';
+  if ($needed_angeltype['taken'] == 0) {
+    $class = 'progress-bar-danger';
+  }
+  if ($needed_angeltype['taken'] >= $needed_angeltype['count']) {
+    $class = 'progress-bar-success';
+  }
+  $needed_angels .= '<div class="list-group-item">';
+  
+  $needed_angels .= '<div class="pull-right">' . Shift_signup_button_render($shift, $angeltypes[$needed_angeltype['TID']]) . '</div>';
+  
+  $needed_angels .= '<h3>' . AngelType_name_render($angeltypes[$needed_angeltype['TID']]) . '</h3>';
+  $needed_angels .= progress_bar(0, $needed_angeltype['count'], min($needed_angeltype['taken'], $needed_angeltype['count']), $class, $needed_angeltype['taken'] . ' / ' . $needed_angeltype['count']);
+  
+  $angels = [];
+  foreach ($shift['ShiftEntry'] as $shift_entry) {
+    if ($shift_entry['TID'] == $needed_angeltype['TID']) {
+      $angels[] = Shift_view_render_shift_entry($shift_entry, $user_shift_admin);
+    }
+  }
+  
+  $needed_angels .= join(', ', $angels);
+  $needed_angels .= '</div>';
+  
+  return $needed_angels;
+}
+
+function Shift_view_render_shift_entry($shift_entry, $user_shift_admin) {
+  $entry = User_Nick_render(User($shift_entry['UID']));
+  if ($shift_entry['freeloaded']) {
+    $entry = '<strike>' . $entry . '</strike>';
+  }
+  if ($user_shift_admin) {
+    $entry .= ' <div class="btn-group">';
+    $entry .= button_glyph(page_link_to('user_myshifts') . '&edit=' . $shift_entry['id'] . '&id=' . $shift_entry['UID'], 'pencil', 'btn-xs');
+    $entry .= button_glyph(page_link_to('user_shifts') . '&entry_id=' . $shift_entry['id'], 'trash', 'btn-xs');
+    $entry .= '</div>';
+  }
+  return $entry;
 }
 
 /**

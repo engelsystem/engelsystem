@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2016-11-15 17:40+0100\n"
-"PO-Revision-Date: 2016-11-15 17:40+0100\n"
+"PO-Revision-Date: 2016-11-15 17:49+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -2027,7 +2027,7 @@ msgstr "Wir haben aktuell keine Informationen über das Event."
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/EventConfig_view.php:19
 #, php-format
 msgid "from %s to %s"
-msgstr "von %s bis %s"
+msgstr "vom %s bis %s"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/EventConfig_view.php:23
 #, php-format
@@ -2052,7 +2052,7 @@ msgstr "Abbau endet in %c"
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/EventConfig_view.php:51
 #, php-format
 msgid "%s, from %s to %s"
-msgstr "%s, von %s bis %s"
+msgstr "%s, vom %s bis %s"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/EventConfig_view.php:51
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/EventConfig_view.php:56
@@ -2063,7 +2063,7 @@ msgstr "d.m.Y"
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/EventConfig_view.php:56
 #, php-format
 msgid "%s, starting %s"
-msgstr "%s, ab %s"
+msgstr "%s, ab dem %s"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/EventConfig_view.php:61
 #, php-format
