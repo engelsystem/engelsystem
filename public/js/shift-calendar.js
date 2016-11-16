@@ -10,7 +10,7 @@ $(document).ready(
       var left = 15;
       timeLanes.css({
         "position" : "relative",
-        "z-index" : 1000
+        "z-index" : 999
       });
       headers.css({
         "position" : "relative",
