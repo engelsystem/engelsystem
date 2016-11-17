@@ -85,16 +85,16 @@ function angeltype_delete_controller() {
 function angeltype_edit_controller() {
   global $privileges, $user;
   
-  if (! User_is_AngelType_supporter($user, $angeltype)) {
-    redirect(page_link_to('angeltypes'));
-  }
-  
   // In supporter mode only allow to modify description
   $supporter_mode = ! in_array('admin_angel_types', $privileges);
   
   if (isset($_REQUEST['angeltype_id'])) {
     // Edit existing angeltype
     $angeltype = load_angeltype();
+    
+    if (! User_is_AngelType_supporter($user, $angeltype)) {
+      redirect(page_link_to('angeltypes'));
+    }
   } else {
     // New angeltype
     if ($supporter_mode) {
