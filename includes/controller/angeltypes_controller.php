@@ -11,11 +11,9 @@ function angeltypes_title() {
  * Route angeltype actions.
  */
 function angeltypes_controller() {
-  if (! isset($_REQUEST['action'])) {
-    $_REQUEST['action'] = 'list';
-  }
+  $action = strip_request_item('action', 'list');
   
-  switch ($_REQUEST['action']) {
+  switch ($action) {
     default:
     case 'list':
       return angeltypes_list_controller();
@@ -67,10 +65,7 @@ function angeltype_delete_controller() {
     redirect(page_link_to('angeltypes'));
   }
   
-  $angeltype = AngelType($_REQUEST['angeltype_id']);
-  if ($angeltype == null) {
-    redirect(page_link_to('angeltypes'));
-  }
+  $angeltype = load_angeltype();
   
   if (isset($_REQUEST['confirmed'])) {
     AngelType_delete($angeltype);
@@ -90,20 +85,20 @@ function angeltype_delete_controller() {
 function angeltype_edit_controller() {
   global $privileges, $user;
   
+  if (! User_is_AngelType_supporter($user, $angeltype)) {
+    redirect(page_link_to('angeltypes'));
+  }
+  
   // In supporter mode only allow to modify description
   $supporter_mode = ! in_array('admin_angel_types', $privileges);
   
   if (isset($_REQUEST['angeltype_id'])) {
-    $angeltype = AngelType($_REQUEST['angeltype_id']);
-    if ($angeltype == null) {
-      redirect(page_link_to('angeltypes'));
-    }
-    
-    if (! User_is_AngelType_supporter($user, $angeltype)) {
-      redirect(page_link_to('angeltypes'));
-    }
+    // Edit existing angeltype
+    $angeltype = load_angeltype();
   } else {
+    // New angeltype
     if ($supporter_mode) {
+      // Supporters aren't allowed to create new angeltypes.
       redirect(page_link_to('angeltypes'));
     }
     $angeltype = AngelType_new();
@@ -156,21 +151,10 @@ function angeltype_controller() {
     redirect('?');
   }
   
-  if (! isset($_REQUEST['angeltype_id'])) {
-    redirect(page_link_to('angeltypes'));
-  }
-  
-  $angeltype = AngelType($_REQUEST['angeltype_id']);
-  if ($angeltype == null) {
-    redirect(page_link_to('angeltypes'));
-  }
-  
+  $angeltype = load_angeltype();
   $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
   $user_driver_license = UserDriverLicense($user['UID']);
   $members = Users_by_angeltype($angeltype);
-  if ($members === false) {
-    engelsystem_error("Unable to load members.");
-  }
   
   return [
       sprintf(_("Team %s"), $angeltype['name']),

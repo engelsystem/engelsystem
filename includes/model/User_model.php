@@ -133,7 +133,7 @@ function Users_by_angeltype_inverted($angeltype) {
  * @param Angeltype $angeltype          
  */
 function Users_by_angeltype($angeltype) {
-  return sql_select("
+  $result = sql_select("
       SELECT
       `User`.*,
       `UserAngelTypes`.`id` as `user_angeltype_id`,
@@ -145,6 +145,10 @@ function Users_by_angeltype($angeltype) {
       LEFT JOIN `UserDriverLicenses` ON `User`.`UID`=`UserDriverLicenses`.`user_id`
       WHERE `UserAngelTypes`.`angeltype_id`='" . sql_escape($angeltype['id']) . "'
       ORDER BY `Nick`");
+  if ($result === false) {
+    engelsystem_error("Unable to load members.");
+  }
+  return $result;
 }
 
 /**
