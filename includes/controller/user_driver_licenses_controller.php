@@ -94,7 +94,6 @@ function user_driver_license_edit_controller() {
   }
   
   if (isset($_REQUEST['submit'])) {
-    $valid = true;
     $wants_to_drive = isset($_REQUEST['wants_to_drive']);
     if ($wants_to_drive) {
       $user_driver_license['has_car'] = isset($_REQUEST['has_car']);
