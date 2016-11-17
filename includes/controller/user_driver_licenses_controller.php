@@ -88,7 +88,7 @@ function user_driver_license_edit_controller() {
   $user_driver_license = UserDriverLicense($user_source['UID']);
   if ($user_driver_license == null) {
     $wants_to_drive = false;
-    $user_driver_license = UserDriverLicense_new($user_source);
+    $user_driver_license = UserDriverLicense_new();
   } else {
     $wants_to_drive = true;
   }
@@ -105,8 +105,8 @@ function user_driver_license_edit_controller() {
       $user_driver_license['has_license_forklift'] = isset($_REQUEST['has_license_forklift']);
       
       if (UserDriverLicense_valid($user_driver_license)) {
-        if ($user_driver_license == null) {
-          UserDriverLicenses_create($user_driver_license);
+        if ($user_driver_license['user_id'] == null) {
+          $user_driver_license = UserDriverLicenses_create($user_driver_license, $user);
         } else {
           UserDriverLicenses_update($user_driver_license);
         }

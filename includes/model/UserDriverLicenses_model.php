@@ -4,9 +4,9 @@
  * Returns a new empty UserDriverLicense
  * FIXME entity object needed
  */
-function UserDriverLicense_new($user) {
+function UserDriverLicense_new() {
   return [
-      'user_id' => $user['UID'],
+      'user_id' => null,
       'has_car' => false,
       'has_license_car' => false,
       'has_license_3_5t_transporter' => false,
@@ -51,7 +51,8 @@ function UserDriverLicense($user_id) {
  * @param UserDriverLicense $user_driver_license
  *          The UserDriverLicense to create
  */
-function UserDriverLicenses_create($user_driver_license) {
+function UserDriverLicenses_create($user_driver_license, $user) {
+  $user_driver_license['user_id'] = $user['UID'];
   $result = sql_query("
       INSERT INTO `UserDriverLicenses` SET
       `user_id`=" . sql_escape($user_driver_license['user_id']) . ",
@@ -64,7 +65,7 @@ function UserDriverLicenses_create($user_driver_license) {
   if ($result === false) {
     engelsystem_error('Unable to create user driver license');
   }
-  return $result;
+  return $user_driver_license;
 }
 
 /**
