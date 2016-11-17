@@ -159,14 +159,16 @@ function Shift_signup_allowed($user, $shift, $angeltype, $user_angeltype = null,
     // you cannot join if shift is full
     return new ShiftSignupState(ShiftSignupState::OCCUPIED, $free_entries);
   }
-  
+
   if ($user_angeltype == null) {
     $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
   }
   
-  if ($user_angeltype == null || ($angeltype['restricted'] == 1 && $user_angeltype != null && ! isset($user_angeltype['confirm_user_id']))) {
+  if ($user_angeltype == null || ($angeltype['no_self_signup'] == 1 && $user_angeltype != null) ||
+      ($angeltype['restricted'] == 1 && $user_angeltype != null && ! isset($user_angeltype['confirm_user_id']))) {
     // you cannot join if user is not of this angel type
     // you cannot join if you are not confirmed
+
     return new ShiftSignupState(ShiftSignupState::ANGELTYPE, $free_entries);
   }
   

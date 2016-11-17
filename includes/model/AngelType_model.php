@@ -9,6 +9,7 @@ function AngelType_new() {
       'id' => null,
       'name' => "",
       'restricted' => false,
+      'no_self_signup' => false,
       'description' => '',
       'requires_driver_license' => false 
   ];
@@ -43,12 +44,13 @@ function AngelType_update($angeltype) {
       `name`='" . sql_escape($angeltype['name']) . "', 
       `restricted`=" . sql_bool($angeltype['restricted']) . ",
       `description`='" . sql_escape($angeltype['description']) . "',
-      `requires_driver_license`=" . sql_bool($angeltype['requires_driver_license']) . "
+      `requires_driver_license`=" . sql_bool($angeltype['requires_driver_license']) . ",
+      `no_self_signup`=" . sql_bool($angeltype['no_self_signup']) . "
       WHERE `id`='" . sql_escape($angeltype['id']) . "'");
   if ($result === false) {
     engelsystem_error("Unable to update angeltype.");
   }
-  engelsystem_log("Updated angeltype: " . $angeltype['name'] . ($angeltype['restricted'] ? ", restricted" : "") . ($angeltype['requires_driver_license'] ? ", requires driver license" : ""));
+  engelsystem_log("Updated angeltype: " . $angeltype['name'] . ($angeltype['restricted'] ? ", restricted" : "") . ($angeltype['no_self_signup'] ? ", no_self_signup" : "") . ($angeltype['requires_driver_license'] ? ", requires driver license" : ""));
   return $result;
 }
 

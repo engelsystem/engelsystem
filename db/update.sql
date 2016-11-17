@@ -4,3 +4,6 @@ INSERT INTO `GroupPrivileges` (`id`, `group_id`, `privilege_id`) VALUES (NULL, '
 ALTER TABLE `UserAngelTypes` CHANGE `coordinator` `supporter` BOOLEAN;
 
 ALTER TABLE `User` ADD COLUMN `email_by_human_allowed` BOOLEAN NOT NULL;
+
+-- No Self Sign Up for some Angel Types
+ALTER TABLE engelsystem.AngelTypes ADD no_self_signup TINYINT(1) NOT NULL;

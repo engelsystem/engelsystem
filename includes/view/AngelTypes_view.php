@@ -64,8 +64,10 @@ function AngelType_edit_view($angeltype, $supporter_mode) {
       form([
           $supporter_mode ? form_info(_("Name"), $angeltype['name']) : form_text('name', _("Name"), $angeltype['name']),
           $supporter_mode ? form_info(_("Restricted"), $angeltype['restricted'] ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $angeltype['restricted']),
+          $supporter_mode ? form_info(_("No Self Sign Up"), $angeltype['no_self_signup'] ? _("Yes") : _("No")) : form_checkbox('no_self_signup', _("No Self Sign Up"), $angeltype['no_self_signup']),
           $supporter_mode ? form_info(_("Requires driver license"), $angeltype['requires_driver_license'] ? _("Yes") : _("No")) : form_checkbox('requires_driver_license', _("Requires driver license"), $angeltype['requires_driver_license']),
           form_info("", _("Restricted angel types can only be used by an angel if enabled by an archangel (double opt-in).")),
+          form_info("", _("Disabled Self Sign Up prevents angels form self assigning to a shift. They have to been added by coordinator.")),
           form_textarea('description', _("Description"), $angeltype['description']),
           form_info("", _("Please use markdown for the description.")),
           form_submit('submit', _("Save")) 
@@ -262,6 +264,7 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes) {
       table([
           'name' => _("Name"),
           'restricted' => glyph('lock') . _("Restricted"),
+          'no_self_signup' => glyph('share') . _("Self Sign Up Allowed"),
           'membership' => _("Membership"),
           'actions' => "" 
       ], $angeltypes) 
@@ -288,6 +291,9 @@ function AngelTypes_about_view_angeltype($angeltype) {
   
   if ($angeltype['restricted']) {
     $html .= info(_("This angeltype is restricted by double-opt-in by a team supporter. Please show up at the according introduction meetings."), true);
+  }
+  if ($angeltype['no_self_signup']) {
+    $html .= info(_("This angeltype is unable to self sign up for shifts. Please show up at the according introduction meetings."), true);
   }
   if ($angeltype['description'] != "") {
     $html .= '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';
