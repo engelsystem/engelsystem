@@ -166,8 +166,11 @@ function test_request_int($name) {
 /**
  * Gibt den gefilterten REQUEST Wert mit Zeilenumbrüchen zurück
  */
-function strip_request_item_nl($name) {
-  return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]{1,})/ui", '', strip_tags($_REQUEST[$name]));
+function strip_request_item_nl($name, $default_value = null) {
+  if (isset($_REQUEST[$name])) {
+    return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]{1,})/ui", '', strip_tags($_REQUEST[$name]));
+  }
+  return $default_value;
 }
 
 /**

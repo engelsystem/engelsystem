@@ -73,12 +73,7 @@ function angeltype_delete_controller() {
   }
   
   if (isset($_REQUEST['confirmed'])) {
-    $result = AngelType_delete($angeltype);
-    if ($result === false) {
-      engelsystem_error("Unable to delete angeltype.");
-    }
-    
-    engelsystem_log("Deleted angeltype: " . AngelType_name_render($angeltype));
+    AngelType_delete($angeltype);
     success(sprintf(_("Angeltype %s deleted."), AngelType_name_render($angeltype)));
     redirect(page_link_to('angeltypes'));
   }
@@ -95,11 +90,8 @@ function angeltype_delete_controller() {
 function angeltype_edit_controller() {
   global $privileges, $user;
   
-  $angeltype = null;
-  $name = "";
-  $restricted = false;
-  $description = "";
-  $requires_driver_license = false;
+  // In supporter mode only allow to modify description
+  $supporter_mode = ! in_array('admin_angel_types', $privileges);
   
   if (isset($_REQUEST['angeltype_id'])) {
     $angeltype = AngelType($_REQUEST['angeltype_id']);
@@ -107,22 +99,15 @@ function angeltype_edit_controller() {
       redirect(page_link_to('angeltypes'));
     }
     
-    $name = $angeltype['name'];
-    $restricted = $angeltype['restricted'];
-    $description = $angeltype['description'];
-    $requires_driver_license = $angeltype['requires_driver_license'];
-    
     if (! User_is_AngelType_supporter($user, $angeltype)) {
       redirect(page_link_to('angeltypes'));
     }
   } else {
-    if (! in_array('admin_angel_types', $privileges)) {
+    if ($supporter_mode) {
       redirect(page_link_to('angeltypes'));
     }
+    $angeltype = AngelType_new();
   }
-  
-  // In supporter mode only allow to modify description
-  $supporter_mode = ! in_array('admin_angel_types', $privileges);
   
   if (isset($_REQUEST['submit'])) {
     $valid = true;
@@ -130,45 +115,34 @@ function angeltype_edit_controller() {
     if (! $supporter_mode) {
       if (isset($_REQUEST['name'])) {
         $result = AngelType_validate_name($_REQUEST['name'], $angeltype);
-        $name = $result->getValue();
+        $angeltype['name'] = $result->getValue();
         if (! $result->isValid()) {
           $valid = false;
           error(_("Please check the name. Maybe it already exists."));
         }
       }
       
-      $restricted = isset($_REQUEST['restricted']);
-      $requires_driver_license = isset($_REQUEST['requires_driver_license']);
+      $angeltype['restricted'] = isset($_REQUEST['restricted']);
+      $angeltype['requires_driver_license'] = isset($_REQUEST['requires_driver_license']);
     }
     
-    if (isset($_REQUEST['description'])) {
-      $description = strip_request_item_nl('description');
-    }
+    $angeltype['description'] = strip_request_item_nl('description', $angeltype['description']);
     
     if ($valid) {
-      if (isset($angeltype)) {
-        $result = AngelType_update($angeltype['id'], $name, $restricted, $description, $requires_driver_license);
-        if ($result === false) {
-          engelsystem_error("Unable to update angeltype.");
-        }
-        engelsystem_log("Updated angeltype: " . $name . ($restricted ? ", restricted" : "") . ($requires_driver_license ? ", requires driver license" : ""));
-        $angeltype_id = $angeltype['id'];
+      if ($angeltype['id'] != null) {
+        AngelType_update($angeltype);
       } else {
-        $angeltype_id = AngelType_create($name, $restricted, $description, $requires_driver_license);
-        if ($angeltype_id === false) {
-          engelsystem_error("Unable to create angeltype.");
-        }
-        engelsystem_log("Created angeltype: " . $name . ($restricted ? ", restricted" : "") . ($requires_driver_license ? ", requires driver license" : ""));
+        $angeltype = AngelType_create($angeltype);
       }
       
       success("Angel type saved.");
-      redirect(angeltype_link($angeltype_id));
+      redirect(angeltype_link($angeltype['id']));
     }
   }
   
   return [
-      sprintf(_("Edit %s"), $name),
-      AngelType_edit_view($name, $restricted, $description, $supporter_mode, $requires_driver_license) 
+      sprintf(_("Edit %s"), $angeltype['name']),
+      AngelType_edit_view($angeltype, $supporter_mode) 
   ];
 }
 

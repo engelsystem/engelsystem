@@ -9,7 +9,7 @@ function admin_log() {
   if (isset($_REQUEST['keyword'])) {
     $filter = strip_request_item('keyword');
   }
-  $log_entries_source = LogEntries_filter($_POST['keyword']);
+  $log_entries_source = LogEntries_filter($filter);
   
   $log_entries = [];
   foreach ($log_entries_source as $log_entry) {

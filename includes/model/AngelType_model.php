@@ -1,56 +1,77 @@
 <?php
 
 /**
+ * Returns an array containing the basic attributes of angeltypes.
+ * FIXME! This is the big sign for needing entity objects
+ */
+function AngelType_new() {
+  return [
+      'id' => null,
+      'name' => "",
+      'restricted' => false,
+      'description' => '',
+      'requires_driver_license' => false 
+  ];
+}
+
+/**
  * Delete an Angeltype.
- * 
+ *
  * @param Angeltype $angeltype          
  */
 function AngelType_delete($angeltype) {
-  return sql_query("
+  $result = sql_query("
       DELETE FROM `AngelTypes` 
       WHERE `id`='" . sql_escape($angeltype['id']) . "' 
       LIMIT 1");
+  if ($result === false) {
+    engelsystem_error("Unable to delete angeltype.");
+  }
+  engelsystem_log("Deleted angeltype: " . AngelType_name_render($angeltype));
+  return $result;
 }
 
 /**
  * Update Angeltype.
  *
- * @param int $angeltype_id          
- * @param string $name          
- * @param bool $restricted          
- * @param string $description          
- * @param bool $requires_driver_license          
+ * @param Angeltype $angeltype
+ *          The angeltype
  */
-function AngelType_update($angeltype_id, $name, $restricted, $description, $requires_driver_license) {
-  return sql_query("
+function AngelType_update($angeltype) {
+  $result = sql_query("
       UPDATE `AngelTypes` SET 
-      `name`='" . sql_escape($name) . "', 
-      `restricted`=" . sql_bool($restricted) . ",
-      `description`='" . sql_escape($description) . "',
-      `requires_driver_license`=" . sql_bool($requires_driver_license) . "
-      WHERE `id`='" . sql_escape($angeltype_id) . "' 
-      LIMIT 1");
+      `name`='" . sql_escape($angeltype['name']) . "', 
+      `restricted`=" . sql_bool($angeltype['restricted']) . ",
+      `description`='" . sql_escape($angeltype['description']) . "',
+      `requires_driver_license`=" . sql_bool($angeltype['requires_driver_license']) . "
+      WHERE `id`='" . sql_escape($angeltype['id']) . "'");
+  if ($result === false) {
+    engelsystem_error("Unable to update angeltype.");
+  }
+  engelsystem_log("Updated angeltype: " . $angeltype['name'] . ($angeltype['restricted'] ? ", restricted" : "") . ($angeltype['requires_driver_license'] ? ", requires driver license" : ""));
+  return $result;
 }
 
 /**
  * Create an Angeltype.
  *
- * @param string $name          
- * @param boolean $restricted          
- * @param string $description          
- * @return New Angeltype id
+ * @param Angeltype $angeltype
+ *          The angeltype
+ * @return the created angeltype
  */
-function AngelType_create($name, $restricted, $description, $requires_driver_license) {
+function AngelType_create($angeltype) {
   $result = sql_query("
       INSERT INTO `AngelTypes` SET 
-      `name`='" . sql_escape($name) . "', 
-      `restricted`=" . sql_bool($restricted) . ",
-      `description`='" . sql_escape($description) . "',
-      `requires_driver_license`=" . sql_bool($requires_driver_license));
+      `name`='" . sql_escape($angeltype['name']) . "', 
+      `restricted`=" . sql_bool($angeltype['restricted']) . ",
+      `description`='" . sql_escape($angeltype['description']) . "',
+      `requires_driver_license`=" . sql_bool($angeltype['requires_driver_license']));
   if ($result === false) {
-    return false;
+    engelsystem_error("Unable to create angeltype.");
   }
-  return sql_id();
+  $angeltype['id'] = sql_id();
+  engelsystem_log("Created angeltype: " . $angeltype['name'] . ($angeltype['restricted'] ? ", restricted" : "") . ($angeltype['requires_driver_license'] ? ", requires driver license" : ""));
+  return $angeltype;
 }
 
 /**

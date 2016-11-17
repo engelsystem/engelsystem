@@ -47,18 +47,26 @@ function AngelType_delete_view($angeltype) {
   ]);
 }
 
-function AngelType_edit_view($name, $restricted, $description, $supporter_mode, $requires_driver_license) {
-  return page_with_title(sprintf(_("Edit %s"), $name), [
+/**
+ * Render angeltype edit form.
+ * 
+ * @param Angeltype $angeltype
+ *          The angeltype to edit
+ * @param boolean $supporter_mode
+ *          Is the user a supporter of this angeltype?
+ */
+function AngelType_edit_view($angeltype, $supporter_mode) {
+  return page_with_title(sprintf(_("Edit %s"), $angeltype['name']), [
       buttons([
           button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
       ]),
       msg(),
       form([
-          $supporter_mode ? form_info(_("Name"), $name) : form_text('name', _("Name"), $name),
-          $supporter_mode ? form_info(_("Restricted"), $restricted ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $restricted),
-          $supporter_mode ? form_info(_("Requires driver license"), $requires_driver_license ? _("Yes") : _("No")) : form_checkbox('requires_driver_license', _("Requires driver license"), $requires_driver_license),
+          $supporter_mode ? form_info(_("Name"), $angeltype['name']) : form_text('name', _("Name"), $angeltype['name']),
+          $supporter_mode ? form_info(_("Restricted"), $angeltype['restricted'] ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $angeltype['restricted']),
+          $supporter_mode ? form_info(_("Requires driver license"), $angeltype['requires_driver_license'] ? _("Yes") : _("No")) : form_checkbox('requires_driver_license', _("Requires driver license"), $angeltype['requires_driver_license']),
           form_info("", _("Restricted angel types can only be used by an angel if enabled by an archangel (double opt-in).")),
-          form_textarea('description', _("Description"), $description),
+          form_textarea('description', _("Description"), $angeltype['description']),
           form_info("", _("Please use markdown for the description.")),
           form_submit('submit', _("Save")) 
       ]) 
