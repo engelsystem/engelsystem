@@ -8,6 +8,10 @@ function shifts_title() {
 
 /**
  * Start different controllers for deleting shifts and shift_entries, edit shifts and add shift entries.
+ * FIXME:
+ * Transform into shift controller and shift entry controller.
+ * Split actions into shift edit, shift delete, shift entry edit, shift entry delete
+ * Introduce simpler and beautiful actions for shift entry join/leave for users
  */
 function user_shifts() {
   global $user;

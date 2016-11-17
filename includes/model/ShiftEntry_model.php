@@ -1,6 +1,22 @@
 <?php
 
 /**
+ * Returns an array with the attributes of shift entries.
+ * FIXME! Needs entity object.
+ */
+function ShiftEntry_new() {
+  return [
+      'id' => null,
+      'SID' => null,
+      'TID' => null,
+      'UID' => null,
+      'Comment' => null,
+      'freeloaded_comment' => null,
+      'freeloaded' => false 
+  ];
+}
+
+/**
  * Counts all freeloaded shifts.
  */
 function ShiftEntries_freeleaded_count() {
