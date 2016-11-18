@@ -223,67 +223,83 @@ function User_shift_state_render($user) {
   return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['end'] . '">' . _("Shift ends %c") . '</span>';
 }
 
-function User_view($user_source, $admin_user_privilege, $freeloader, $user_angeltypes, $user_groups, $shifts, $its_me) {
+function User_view_shiftentries($needed_angel_type) {
+  $shift_info = '<br><b>' . $needed_angel_type['name'] . ':</b> ';
+  
+  $shift_entries = [];
+  foreach ($needed_angel_type['users'] as $user_shift) {
+    $member = User_Nick_render($user_shift);
+    if ($user_shift['freeloaded']) {
+      $member = '<strike>' . $member . '</strike>';
+    }
+    
+    $shift_entries[] = $member;
+  }
+  $shift_info .= join(", ", $shift_entries);
+  
+  return $shift_info;
+}
+
+/**
+ * Helper that renders a shift line for user view
+ */
+function User_view_myshift($shift, $user_source, $its_me) {
   global $LETZTES_AUSTRAGEN, $privileges;
   
-  $user_name = htmlspecialchars($user_source['Vorname']) . " " . htmlspecialchars($user_source['Name']);
+  $shift_info = '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';
+  if ($shift['title']) {
+    $shift_info .= '<br /><a href="' . shift_link($shift) . '">' . $shift['title'] . '</a>';
+  }
+  foreach ($shift['needed_angeltypes'] as $needed_angel_type) {
+    $shift_info .= User_view_shiftentries($needed_angel_type);
+  }
   
+  $myshift = [
+      'date' => date("Y-m-d", $shift['start']),
+      'time' => date("H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']),
+      'room' => $shift['Name'],
+      'shift_info' => $shift_info,
+      'comment' => $shift['Comment'] 
+  ];
+  
+  if ($shift['freeloaded']) {
+    if (in_array("user_shifts_admin", $privileges)) {
+      $myshift['comment'] .= '<br /><p class="error">' . _("Freeloaded") . ': ' . $shift['freeload_comment'] . '</p>';
+    } else {
+      $myshift['comment'] .= '<br /><p class="error">' . _("Freeloaded") . '</p>';
+    }
+  }
+  
+  $myshift['actions'] = [
+      button(shift_link($shift), glyph('eye-open') . _('view'), 'btn-xs') 
+  ];
+  if ($its_me || in_array('user_shifts_admin', $privileges)) {
+    $myshift['actions'][] = button(page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '&id=' . $user_source['UID'], glyph('edit') . _('edit'), 'btn-xs');
+  }
+  if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges)) {
+    $myshift['actions'][] = button(page_link_to('user_myshifts') . ((! $its_me) ? '&id=' . $user_source['UID'] : '') . '&cancel=' . $shift['id'], glyph('trash') . _('sign off'), 'btn-xs');
+  }
+  $myshift['actions'] = table_buttons($myshift['actions']);
+  
+  return $myshift;
+}
+
+/**
+ * Helper that prepares the shift table for user view
+ */
+function User_view_myshifts($shifts, $user_source, $its_me) {
   $myshifts_table = [];
   $timesum = 0;
   foreach ($shifts as $shift) {
-    $shift_info = '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';
-    if ($shift['title']) {
-      $shift_info .= '<br /><a href="' . shift_link($shift) . '">' . $shift['title'] . '</a>';
-    }
-    foreach ($shift['needed_angeltypes'] as $needed_angel_type) {
-      $shift_info .= '<br><b>' . $needed_angel_type['name'] . ':</b> ';
-      
-      $shift_entries = [];
-      foreach ($needed_angel_type['users'] as $user_shift) {
-        $member = User_Nick_render($user_shift);
-        if ($user_shift['freeloaded']) {
-          $member = '<strike>' . $member . '</strike>';
-        }
-        
-        $shift_entries[] = $member;
-      }
-      $shift_info .= join(", ", $shift_entries);
-    }
-    
-    $myshift = [
-        'date' => date("Y-m-d", $shift['start']),
-        'time' => date("H:i", $shift['start']) . ' - ' . date("H:i", $shift['end']),
-        'room' => $shift['Name'],
-        'shift_info' => $shift_info,
-        'comment' => $shift['Comment'] 
-    ];
-    
-    if ($shift['freeloaded']) {
-      if (in_array("user_shifts_admin", $privileges)) {
-        $myshift['comment'] .= '<br /><p class="error">' . _("Freeloaded") . ': ' . $shift['freeload_comment'] . '</p>';
-      } else {
-        $myshift['comment'] .= '<br /><p class="error">' . _("Freeloaded") . '</p>';
-      }
-    }
-    
-    $myshift['actions'] = [
-        button(shift_link($shift), glyph('eye-open') . _('view'), 'btn-xs') 
-    ];
-    if ($its_me || in_array('user_shifts_admin', $privileges)) {
-      $myshift['actions'][] = button(page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '&id=' . $user_source['UID'], glyph('edit') . _('edit'), 'btn-xs');
-    }
-    if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges)) {
-      $myshift['actions'][] = button(page_link_to('user_myshifts') . ((! $its_me) ? '&id=' . $user_source['UID'] : '') . '&cancel=' . $shift['id'], glyph('trash') . _('sign off'), 'btn-xs');
-    }
-    $myshift['actions'] = table_buttons($myshift['actions']);
+    $myshifts_table[] = User_view_myshift($shift, $user_source, $its_me);
     
     if ($shift['freeloaded']) {
       $timesum += (- 2 * ($shift['end'] - $shift['start']));
     } else {
       $timesum += ($shift['end'] - $shift['start']);
     }
-    $myshifts_table[] = $myshift;
   }
+  
   if (count($myshifts_table) > 0) {
     $myshifts_table[] = [
         'date' => '<b>' . _("Sum:") . '</b>',
@@ -294,6 +310,15 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
         'actions' => "" 
     ];
   }
+  return $myshifts_table;
+}
+
+/**
+ * Renders view for a single user
+ */
+function User_view($user_source, $admin_user_privilege, $freeloader, $user_angeltypes, $user_groups, $shifts, $its_me) {
+  $user_name = htmlspecialchars($user_source['Vorname']) . " " . htmlspecialchars($user_source['Name']);
+  $myshifts_table = User_view_myshifts($shifts, $user_source, $its_me);
   
   return page_with_title('<span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . ' <small>' . $user_name . '</small>', [
       msg(),

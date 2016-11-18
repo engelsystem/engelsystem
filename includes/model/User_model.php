@@ -275,23 +275,6 @@ function User($user_id) {
 }
 
 /**
- * TODO: Merge into normal user function
- * Returns user by id (limit informations.
- *
- * @param $user_id UID          
- */
-function mUser_Limit($user_id) {
-  $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `jabber` FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
-  if ($user_source === false) {
-    return false;
-  }
-  if (count($user_source) > 0) {
-    return $user_source[0];
-  }
-  return null;
-}
-
-/**
  * Returns User by api_key.
  *
  * @param string $api_key
