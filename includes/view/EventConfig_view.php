@@ -6,33 +6,49 @@
  */
 function EventConfig_countdown_page($event_config) {
   if ($event_config == null) {
-    return info(_("We got no information about the event right now."), true);
+    return div('col-md-12 text-center', [
+        heading(sprintf(_("Welcome to the %s!"), '<span class="icon-icon_angel"></span> ENGELSYSTEM'), 2) 
+    ]);
   }
   
   $elements = [];
   
   if ($event_config['event_name'] != null) {
-    $elements[] = heading($event_config['event_name'], 2);
+    $elements[] = div('col-md-12 text-center', [
+        heading(sprintf(_("Welcome to the %s!"), $event_config['event_name'] . ' <span class="icon-icon_angel"></span> ENGELSYSTEM'), 2) 
+    ]);
   }
   
-  if ($event_config['event_start_date'] != null && $event_config['event_end_date'] != null) {
-    $elements[] = sprintf(_("from %s to %s"), date("Y-m-d", $event_config['event_start_date']), date("Y-m-d", $event_config['event_end_date']));
+  if ($event_config['buildup_start_date'] != null) {
+    $elements[] = div('col-md-3 text-center', [
+        heading(_("Buildup starts"), 3),
+        '<h2 class="moment-countdown" data-timestamp="' . $event_config['buildup_start_date'] . '">%c</h2>',
+        '<small>' . date(_("Y-m-d"), $event_config['buildup_start_date']) . '</small>' 
+    ]);
   }
   
-  if ($event_config['buildup_start_date'] != null && time() < $event_config['buildup_start_date']) {
-    $elements[] = '<h2 class="moment-countdown" data-timestamp="' . $event_config['buildup_start_date'] . '">' . _("Buildup starts in %c") . '</h2>';
+  if ($event_config['event_start_date'] != null) {
+    $elements[] = div('col-md-3 text-center', [
+        heading(_("Event starts"), 3),
+        '<h2 class="moment-countdown" data-timestamp="' . $event_config['event_start_date'] . '">%c</h2>',
+        '<small>' . date(_("Y-m-d"), $event_config['event_start_date']) . '</small>' 
+    ]);
   }
   
-  if ($event_config['event_start_date'] != null && time() < $event_config['event_start_date']) {
-    $elements[] = '<h2 class="moment-countdown" data-timestamp="' . $event_config['event_start_date'] . '">' . _("Event starts in %c") . '</h2>';
+  if ($event_config['event_end_date'] != null) {
+    $elements[] = div('col-md-3 text-center', [
+        heading(_("Event ends"), 3),
+        '<h2 class="moment-countdown" data-timestamp="' . $event_config['event_end_date'] . '">%c</h2>',
+        '<small>' . date(_("Y-m-d"), $event_config['event_end_date']) . '</small>' 
+    ]);
   }
   
-  if ($event_config['event_end_date'] != null && time() < $event_config['event_end_date'] && ($event_config['event_start_date'] == null || time() > $event_config['event_start_date'])) {
-    $elements[] = '<h2 class="moment-countdown" data-timestamp="' . $event_config['event_end_date'] . '">' . _("Event ends in %c") . '</h2>';
-  }
-  
-  if ($event_config['teardown_end_date'] != null && time() < $event_config['teardown_end_date'] && ($event_config['event_start_date'] == null || time() > $event_config['event_start_date'])) {
-    $elements[] = '<h2 class="moment-countdown" data-timestamp="' . $event_config['teardown_end_date'] . '">' . _("Teardown ends in %c") . '</h2>';
+  if ($event_config['teardown_end_date'] != null) {
+    $elements[] = div('col-md-3 text-center', [
+        heading(_("Teardown ends"), 3),
+        '<h2 class="moment-countdown" data-timestamp="' . $event_config['teardown_end_date'] . '">%c</h2>',
+        '<small>' . date(_("Y-m-d"), $event_config['teardown_end_date']) . '</small>' 
+    ]);
   }
   
   return join("", $elements);

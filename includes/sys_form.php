@@ -176,6 +176,23 @@ function form_text($name, $label, $value, $disabled = false) {
 }
 
 /**
+ * Renders a text input with placeholder instead of label.
+ *
+ * @param String $name
+ *          Input name
+ * @param String $placeholder
+ *          Placeholder
+ * @param String $value
+ *          The value
+ * @param Boolean $disabled
+ *          Is the field enabled?
+ */
+function form_text_placeholder($name, $placeholder, $value, $disabled = false) {
+  $disabled = $disabled ? ' disabled="disabled"' : '';
+  return form_element('', '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name . '" value="' . htmlspecialchars($value) . '" placeholder="' . $placeholder . '" ' . $disabled . '/>');
+}
+
+/**
  * Rendert ein Formular-Emailfeld
  */
 function form_email($name, $label, $value, $disabled = false) {
@@ -196,6 +213,14 @@ function form_file($name, $label) {
 function form_password($name, $label, $disabled = false) {
   $disabled = $disabled ? ' disabled="disabled"' : '';
   return form_element($label, '<input class="form-control" id="form_' . $name . '" type="password" name="' . $name . '" value="" ' . $disabled . '/>', 'form_' . $name);
+}
+
+/**
+ * Renders a password input with placeholder instead of label.
+ */
+function form_password_placeholder($name, $placeholder, $disabled = false) {
+  $disabled = $disabled ? ' disabled="disabled"' : '';
+  return form_element('', '<input class="form-control" id="form_' . $name . '" type="password" name="' . $name . '" value="" placeholder="' . $placeholder . '" ' . $disabled . '/>', 'form_' . $name);
 }
 
 /**

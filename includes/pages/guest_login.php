@@ -212,7 +212,7 @@ function guest_register() {
                       ]),
                       div('col-sm-8', [
                           form_email('mail', _("E-Mail") . ' ' . entry_required(), $mail),
-                          form_checkbox('email_shiftinfo', _("The engelsystem is allowed to send me an email (e.g. when my shifts change)"), $email_shiftinfo), 
+                          form_checkbox('email_shiftinfo', _("The engelsystem is allowed to send me an email (e.g. when my shifts change)"), $email_shiftinfo),
                           form_checkbox('email_by_human_allowed', _("Humans are allowed to send me an email (e.g. for ticket vouchers)"), $email_by_human_allowed) 
                       ]) 
                   ]),
@@ -286,9 +286,9 @@ function guest_login() {
   $nick = "";
   
   unset($_SESSION['uid']);
+  $valid = true;
   
   if (isset($_REQUEST['submit'])) {
-    $valid = true;
     
     if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 0) {
       $nick = User_validate_Nick($_REQUEST['nick']);
@@ -326,25 +326,36 @@ function guest_login() {
   return page([
       div('col-md-12', [
           div('row', [
-              div('col-md-4', [
-                  EventConfig_countdown_page($event_config) 
+              EventConfig_countdown_page($event_config) 
+          ]),
+          div('row', []),
+          div('row', [
+              div('col-md-4 text-center', [
+                  heading(register_title(), 2),
+                  get_register_hint() 
               ]),
               div('col-md-4', [
-                  heading(login_title(), 2),
-                  msg(),
-                  form([
-                      form_text('nick', _("Nick"), $nick),
-                      form_password('password', _("Password")),
-                      form_submit('submit', _("Login")),
-                      buttons([
-                          button(page_link_to('user_password_recovery'), _("I forgot my password")) 
+                  div('panel panel-primary first', [
+                      div('panel-heading', [
+                          '<span class="icon-icon_angel"></span> ' . _("Login") 
                       ]),
-                      info(_("Please note: You have to activate cookies!"), true) 
+                      div('panel-body', [
+                          msg(),
+                          form([
+                              form_text_placeholder('nick', _("Nick"), $nick),
+                              form_password_placeholder('password', _("Password")),
+                              form_submit('submit', _("Login")),
+                              ! $valid ? buttons([
+                                  button(page_link_to('user_password_recovery'), _("I forgot my password")) 
+                              ]) : '' 
+                          ]) 
+                      ]),
+                      div('panel-footer', [
+                          glyph('info-sign') . _("Please note: You have to activate cookies!") 
+                      ]) 
                   ]) 
               ]),
-              div('col-md-4', [
-                  heading(register_title(), 2),
-                  get_register_hint(),
+              div('col-md-4 text-center', [
                   heading(_("What can I do?"), 2),
                   '<p>' . _("Please read about the jobs you can do to help us.") . '</p>',
                   buttons([
