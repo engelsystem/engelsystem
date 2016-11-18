@@ -1,6 +1,8 @@
 <?php
 
-class LogEntriesModelTest extends PHPUnit_Framework_TestCase {
+namespace Engelsystem\Test;
+
+class LogEntriesModelTest extends \PHPUnit_Framework_TestCase {
 
   public function create_LogEntry() {
     LogEntry_create('test', 'test');
