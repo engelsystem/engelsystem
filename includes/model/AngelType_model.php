@@ -1,4 +1,5 @@
 <?php
+use Engelsystem\ValidationResult;
 
 /**
  * Returns an array containing the basic attributes of angeltypes.
