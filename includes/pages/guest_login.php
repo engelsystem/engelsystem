@@ -328,13 +328,8 @@ function guest_login() {
           div('row', [
               EventConfig_countdown_page($event_config) 
           ]),
-          div('row', []),
           div('row', [
-              div('col-md-4 text-center', [
-                  heading(register_title(), 2),
-                  get_register_hint() 
-              ]),
-              div('col-md-4', [
+              div('col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4', [
                   div('panel panel-primary first', [
                       div('panel-heading', [
                           '<span class="icon-icon_angel"></span> ' . _("Login") 
@@ -354,8 +349,14 @@ function guest_login() {
                           glyph('info-sign') . _("Please note: You have to activate cookies!") 
                       ]) 
                   ]) 
+              ]) 
+          ]),
+          div('row', [
+              div('col-sm-6 text-center', [
+                  heading(register_title(), 2),
+                  get_register_hint() 
               ]),
-              div('col-md-4 text-center', [
+              div('col-sm-6 text-center', [
                   heading(_("What can I do?"), 2),
                   '<p>' . _("Please read about the jobs you can do to help us.") . '</p>',
                   buttons([
