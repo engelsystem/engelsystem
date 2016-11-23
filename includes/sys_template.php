@@ -4,7 +4,8 @@
  * Liste der verfügbaren Themes
  */
 $themes = [
-    '3' => "Engelsystem 32c3",
+    '4' => "Engelsystem 33c3 (2016)",
+    '3' => "Engelsystem 32c3 (2015)",
     "2" => "Engelsystem cccamp15",
     "0" => "Engelsystem light",
     "1" => "Engelsystem dark" 
