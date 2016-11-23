@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\ShiftSignupState;
 function shift_link($shift) {
   return page_link_to('shifts') . '&action=view&shift_id=' . $shift['SID'];
 }
@@ -200,7 +201,7 @@ function shift_controller() {
   $angeltypes = AngelTypes();
   $user_shifts = Shifts_by_user($user);
   
-  $shift_signup_state = null;
+  $shift_signup_state = new ShiftSignupState(ShiftSignupState::OCCUPIED, 0);
   foreach ($angeltypes as $angeltype) {
     $angeltype_signup_state = Shift_signup_allowed($user, $shift, $angeltype, null, $user_shifts);
     if ($shift_signup_state == null) {
