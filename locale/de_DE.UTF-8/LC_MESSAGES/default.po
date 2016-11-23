@@ -1710,8 +1710,8 @@ msgstr "News anlegen:"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_questions.php:4
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:29
-msgid "Ask an archangel"
-msgstr "Frage einen Erzengel"
+msgid "Ask the Heaven"
+msgstr "Frage den Himmel"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_questions.php:27
 msgid "Unable to save question."
