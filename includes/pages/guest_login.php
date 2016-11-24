@@ -306,7 +306,7 @@ function guest_login() {
         }
       } else {
         $valid = false;
-        error(_("No user was found with that Nickname. Please try again. If you are still having problems, ask an Dispatcher."));
+        error(_("No user was found with that Nickname. Please try again. If you are still having problems, ask a Dispatcher."));
       }
     } else {
       $valid = false;
