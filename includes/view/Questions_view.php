@@ -26,7 +26,7 @@ function Questions_view($open_questions, $answered_questions, $ask_action) {
           'Answer' => _("Answer"),
           'actions' => "" 
       ], $answered_questions),
-      heading(_("Ask an archangel"), 2),
+      heading(_("Ask the Heaven"), 2),
       form([
           form_textarea('question', _("Your Question:"), ""),
           form_submit('submit', _("Save")) 
