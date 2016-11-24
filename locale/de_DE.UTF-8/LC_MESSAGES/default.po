@@ -1544,7 +1544,7 @@ msgstr "Gib bitte ein Passwort ein."
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:309
 msgid ""
 "No user was found with that Nickname. Please try again. If you are still "
-"having problems, ask an Dispatcher."
+"having problems, ask a Dispatcher."
 msgstr ""
 "Es wurde kein Engel mit diesem Namen gefunden. Probiere es bitte noch "
 "einmal. Wenn das Problem weiterhin besteht, frage einen Dispatcher."
