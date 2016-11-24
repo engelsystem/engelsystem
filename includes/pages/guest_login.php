@@ -106,7 +106,7 @@ function guest_register() {
       $msg .= error(sprintf(_("Your password is too short (please use at least %s characters)."), MIN_PASSWORD_LENGTH), true);
     }
     
-    if (isset($_REQUEST['planned_arrival_date']) && $tmp = parse_date("Y-m-d", $_REQUEST['planned_arrival_date'])) {
+    if (isset($_REQUEST['planned_arrival_date']) && $tmp = parse_date("Y-m-d H:i", $_REQUEST['planned_arrival_date'] . " 00:00")) {
       $planned_arrival_date = $tmp;
     } else {
       $valid = false;
