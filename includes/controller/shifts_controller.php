@@ -207,7 +207,7 @@ function shift_controller() {
     if ($shift_signup_state == null) {
       $shift_signup_state = $angeltype_signup_state;
     } else {
-      $shift_signup_state = $shift_signup_state->combineWith($angeltype_signup_state);
+      $shift_signup_state->combineWith($angeltype_signup_state);
     }
   }
   
