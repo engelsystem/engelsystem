@@ -132,7 +132,7 @@ function check_request_date($name, $error_message = null, $null_allowed = false)
  * @return ValidationResult containing the parsed date
  */
 function check_date($input, $error_message = null, $null_allowed = false) {
-  if ($tmp = parse_date("Y-m-d", trim($input))) {
+  if ($tmp = parse_date("Y-m-d H:i", trim($input) . " 00:00")) {
     return new ValidationResult(true, $tmp);
   }
   if ($null_allowed) {
