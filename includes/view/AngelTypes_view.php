@@ -49,7 +49,7 @@ function AngelType_delete_view($angeltype) {
 
 /**
  * Render angeltype edit form.
- * 
+ *
  * @param Angeltype $angeltype
  *          The angeltype to edit
  * @param boolean $supporter_mode
@@ -193,8 +193,8 @@ function AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes)
  */
 function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angeltypes, $admin_angeltypes, $supporter, $user_driver_license, $user) {
   $page = [
-      msg(),
-      AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user) 
+      AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user),
+      msg() 
   ];
   
   $page[] = '<h3>' . _("Description") . '</h3>';
