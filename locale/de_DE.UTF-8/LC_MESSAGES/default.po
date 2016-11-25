@@ -686,7 +686,7 @@ msgstr "Aktive Engel"
 msgid ""
 "At least %s angels are forced to be active. The number has to be greater."
 msgstr ""
-"Mindestens %s engel werden als aktiv gekennzeichnet. Die Nummer muss größer "
+"Mindestens %s Engel werden als aktiv gekennzeichnet. Die Nummer muss größer "
 "sein."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_active.php:34
@@ -1496,10 +1496,10 @@ msgstr "Beschreibung der Aufgaben"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:236
 msgid ""
-"Restricted angel types need will be confirmed later by an archangel. You can "
+"Restricted angel types need will be confirmed later by a supporter. You can "
 "change your selection in the options section."
 msgstr ""
-"Beschränkte Engeltypen müssen später von einem Erzengel freigeschaltet "
+"Beschränkte Engeltypen müssen später von einem Supporter freigeschaltet "
 "werden. Du kannst Deine Auswahl später in den Einstellungen ändern."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:244
