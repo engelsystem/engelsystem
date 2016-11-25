@@ -261,10 +261,11 @@ function Shift_create($shift) {
 /**
  * Return users shifts.
  */
-function Shifts_by_user($user) {
+function Shifts_by_user($user, $include_freeload_comments = false) {
   $result = sql_select("
       SELECT `ShiftTypes`.`id` as `shifttype_id`, `ShiftTypes`.`name`,
       `ShiftEntry`.`id`, `ShiftEntry`.`SID`, `ShiftEntry`.`TID`, `ShiftEntry`.`UID`, `ShiftEntry`.`freeloaded`, `ShiftEntry`.`Comment`,
+      " . ($include_freeload_comments ? "`ShiftEntry`.`freeload_comment`, " : "") . "
       `Shifts`.*, `Room`.* 
       FROM `ShiftEntry` 
       JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
