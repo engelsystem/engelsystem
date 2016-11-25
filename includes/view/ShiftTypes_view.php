@@ -55,6 +55,7 @@ function ShiftType_view($shifttype, $angeltype) {
           button(page_link_to('shifttypes') . '&action=edit&shifttype_id=' . $shifttype['id'], _('edit'), 'edit'),
           button(page_link_to('shifttypes') . '&action=delete&shifttype_id=' . $shifttype['id'], _('delete'), 'delete') 
       ]),
+      heading(_("Description"), 2),
       $parsedown->parse($shifttype['description']) 
   ]);
 }

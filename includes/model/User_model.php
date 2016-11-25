@@ -284,7 +284,7 @@ function User($user_id) {
 function User_by_api_key($api_key) {
   $user = sql_select("SELECT * FROM `User` WHERE `api_key`='" . sql_escape($api_key) . "' LIMIT 1");
   if ($user === false) {
-    return false;
+    engelsystem_error("Unable to find user by api key.");
   }
   if (count($user) == 0) {
     return null;

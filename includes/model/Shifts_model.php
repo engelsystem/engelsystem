@@ -263,7 +263,9 @@ function Shift_create($shift) {
  */
 function Shifts_by_user($user) {
   $result = sql_select("
-      SELECT `ShiftTypes`.`id` as `shifttype_id`, `ShiftTypes`.`name`, `ShiftEntry`.*, `Shifts`.*, `Room`.* 
+      SELECT `ShiftTypes`.`id` as `shifttype_id`, `ShiftTypes`.`name`,
+      `ShiftEntry`.`id`, `ShiftEntry`.`SID`, `ShiftEntry`.`TID`, `ShiftEntry`.`UID`, `ShiftEntry`.`freeloaded`, `ShiftEntry`.`Comment`,
+      `Shifts`.*, `Room`.* 
       FROM `ShiftEntry` 
       JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
       JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)

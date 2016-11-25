@@ -1,6 +1,6 @@
 <?php
-
 use Engelsystem\ShiftSignupState;
+
 function shift_link($shift) {
   return page_link_to('shifts') . '&action=view&shift_id=' . $shift['SID'];
 }
@@ -286,7 +286,7 @@ function shifts_json_export_all_controller() {
  * (Like iCal Export or shifts view)
  */
 function shifts_json_export_controller() {
-  global $ical_shifts, $user;
+  global $user;
   
   if (! isset($_REQUEST['key']) || ! preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key'])) {
     engelsystem_error("Missing key.");
@@ -295,9 +295,6 @@ function shifts_json_export_controller() {
   $key = $_REQUEST['key'];
   
   $user = User_by_api_key($key);
-  if ($user === false) {
-    engelsystem_error("Unable to find user.");
-  }
   if ($user == null) {
     engelsystem_error("Key invalid.");
   }
@@ -305,25 +302,17 @@ function shifts_json_export_controller() {
     engelsystem_error("No privilege for shifts_json_export.");
   }
   
-  $ical_shifts = load_ical_shifts();
+  $shifts = load_ical_shifts();
   
   header("Content-Type: application/json; charset=utf-8");
-  raw_output(json_encode($ical_shifts));
+  raw_output(json_encode($shifts));
 }
 
 /**
- * Returns shifts to export.
- * Users shifts or user_shifts filter based shifts if export=user_shifts is given as param.
+ * Returns users shifts to export.
  */
 function load_ical_shifts() {
-  global $user, $ical_shifts;
-  
-  if (isset($_REQUEST['export']) && $_REQUEST['export'] == 'user_shifts') {
-    require_once realpath(__DIR__ . '/user_shifts.php');
-    view_user_shifts();
-    
-    return $ical_shifts;
-  }
+  global $user;
   
   return Shifts_by_user($user);
 }
