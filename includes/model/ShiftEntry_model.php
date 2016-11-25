@@ -115,6 +115,7 @@ function ShiftEntries_finished_by_user($user) {
       JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
       WHERE `ShiftEntry`.`UID`=" . sql_escape($user['UID']) . "
       AND `Shifts`.`end` < " . sql_escape(time()) . "
+      AND `ShiftEntry`.`freeloaded` = 0
       ORDER BY `Shifts`.`end`
       ");
 }
