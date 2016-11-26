@@ -65,7 +65,7 @@ function AngelType_edit_view($angeltype, $supporter_mode) {
           $supporter_mode ? form_info(_("Name"), $angeltype['name']) : form_text('name', _("Name"), $angeltype['name']),
           $supporter_mode ? form_info(_("Restricted"), $angeltype['restricted'] ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $angeltype['restricted']),
           $supporter_mode ? form_info(_("Requires driver license"), $angeltype['requires_driver_license'] ? _("Yes") : _("No")) : form_checkbox('requires_driver_license', _("Requires driver license"), $angeltype['requires_driver_license']),
-          form_info("", _("Restricted angel types can only be used by an angel if enabled by a sup1porter (double opt-in).")),
+          form_info("", _("Restricted angel types can only be used by an angel if enabled by a supporter (double opt-in).")),
           form_textarea('description', _("Description"), $angeltype['description']),
           form_info("", _("Please use markdown for the description.")),
           form_submit('submit', _("Save")) 
