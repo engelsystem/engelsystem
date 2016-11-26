@@ -1710,8 +1710,8 @@ msgstr "News anlegen:"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_questions.php:4
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Questions_view.php:29
-msgid "Ask the Heaven"
-msgstr "Frage den Himmel"
+msgid "Ask Heaven"
+msgstr "Frag den Himmel"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_questions.php:27
 msgid "Unable to save question."
@@ -1887,10 +1887,10 @@ msgstr "Benötigt Führerschein"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:68
 msgid ""
-"Restricted angel types can only be used by an angel if enabled by an "
-"archangel (double opt-in)."
+"Restricted angel types can only be used by an angel if enabled by a"
+"supporter (double opt-in)."
 msgstr ""
-"Beschränkte Engeltypen müssen von einem Erzengel oder Team-Koordinator "
+"Beschränkte Engeltypen müssen von einem Supporter "
 "freigeschaltet werden (double-opt-in)."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:69
