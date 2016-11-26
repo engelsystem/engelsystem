@@ -81,7 +81,7 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
           ]),
           div('col-sm-3 col-xs-6', [
               '<h4>' . _('Location') . '</h4>',
-              '<p class="lead">' . glyph('map-marker') . $room['Name'] . '</p>' 
+              '<p class="lead">' . Room_name_render($room) . '</p>' 
           ]) 
       ]),
       div('row', [
@@ -113,7 +113,9 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shi
   $needed_angels .= '<div class="pull-right">' . Shift_signup_button_render($shift, $angeltypes[$needed_angeltype['TID']]) . '</div>';
   
   $needed_angels .= '<h3>' . AngelType_name_render($angeltypes[$needed_angeltype['TID']]) . '</h3>';
-  $needed_angels .= progress_bar(0, $needed_angeltype['count'], min($needed_angeltype['taken'], $needed_angeltype['count']), $class, $needed_angeltype['taken'] . ' / ' . $needed_angeltype['count']);
+  $bar_max = max($needed_angeltype['count']*10, $needed_angeltype['taken']*10, 10);
+  $bar_value = max(1, $needed_angeltype['taken'] * 10);
+  $needed_angels .= progress_bar(0, $bar_max, $bar_value, $class, $needed_angeltype['taken'] . ' / ' . $needed_angeltype['count']);
   
   $angels = [];
   foreach ($shift['ShiftEntry'] as $shift_entry) {

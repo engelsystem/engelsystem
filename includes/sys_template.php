@@ -33,7 +33,7 @@ function label($content, $class = 'default') {
 }
 
 function progress_bar($valuemin, $valuemax, $valuenow, $class = '', $content = '') {
-  return '<div class="progress"><div class="progress-bar ' . $class . '" role="progressbar" aria-valuenow="' . $valuenow . '" aria-valuemin="' . $valuemin . '" aria-valuemax="' . $valuemax . '" style="width: ' . (($valuenow - $valuemin) * 100 / ($valuemax - $valuemin)) . '%">' . $content . '</div></div>';
+  return '<div class="progress"><div class="progress-bar ' . $class . '" role="progressbar" aria-valuenow="' . $valuenow . '" aria-valuemin="' . $valuemin . '" aria-valuemax="' . $valuemax . '" style="width: ' . floor(($valuenow - $valuemin) * 100 / ($valuemax - $valuemin)) . '%">' . $content . '</div></div>';
 }
 
 /**

@@ -7027,6 +7027,8 @@ a.thumbnail.active {
   color: #fff;
 }
 .label-warning,
-.label-success {
+.label-success,
+.progress-bar-warning,
+.progress-bar-success {
   color: #222222;
 }
