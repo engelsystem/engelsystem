@@ -43,7 +43,8 @@ function shift_entry_add_controller() {
   }
   $type = $type[0];
 
-  if (isset($_REQUEST['user_id']) && preg_match("/^[0-9]*$/", $_REQUEST['user_id']) && in_array('user_shifts_admin', $privileges)) {
+  if (isset($_REQUEST['user_id']) && preg_match("/^[0-9]*$/", $_REQUEST['user_id']) &&
+      in_array('user_shifts_admin', $privileges)) {
     $user_id = $_REQUEST['user_id'];
   } else {
     $user_id = $user['UID'];
