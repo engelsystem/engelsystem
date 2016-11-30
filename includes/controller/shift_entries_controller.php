@@ -36,12 +36,20 @@ function shift_entry_add_controller() {
   } else {
     $type = sql_select("SELECT * FROM `UserAngelTypes` JOIN `AngelTypes` ON (`UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`) WHERE `AngelTypes`.`id` = '" . sql_escape($type_id) . "' AND (`AngelTypes`.`restricted` = 0 OR (`UserAngelTypes`.`user_id` = '" . sql_escape($user['UID']) . "' AND NOT `UserAngelTypes`.`confirm_user_id` IS NULL)) LIMIT 1");
   }
-  
+
+
   if (count($type) == 0) {
     redirect(page_link_to('user_shifts'));
   }
   $type = $type[0];
-  
+
+  if (isset($_REQUEST['user_id']) && preg_match("/^[0-9]*$/", $_REQUEST['user_id']) &&
+      in_array('user_shifts_admin', $privileges)) {
+    $user_id = $_REQUEST['user_id'];
+  } else {
+    $user_id = $user['UID'];
+  }
+
   $shift_signup_allowed = Shift_signup_allowed(User($user_id), $shift, $type);
   if (! $shift_signup_allowed->isSignupAllowed()) {
     error(_("You are not allowed to sign up for this shift. Maybe shift is full or already running."));
