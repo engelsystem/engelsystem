@@ -59,12 +59,7 @@ function shift_entry_add_controller() {
   if (isset($_REQUEST['submit'])) {
     $selected_type_id = $type_id;
     if (in_array('user_shifts_admin', $privileges)) {
-      if (isset($_REQUEST['user_id']) && preg_match("/^[0-9]*$/", $_REQUEST['user_id'])) {
-        $user_id = $_REQUEST['user_id'];
-      } else {
-        $user_id = $user['UID'];
-      }
-      
+
       if (sql_num_query("SELECT * FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1") == 0) {
         redirect(page_link_to('user_shifts'));
       }
@@ -72,8 +67,6 @@ function shift_entry_add_controller() {
       if (isset($_REQUEST['angeltype_id']) && test_request_int('angeltype_id') && sql_num_query("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($_REQUEST['angeltype_id']) . "' LIMIT 1") > 0) {
         $selected_type_id = $_REQUEST['angeltype_id'];
       }
-    } else {
-      $user_id = $user['UID'];
     }
     
     if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`='" . sql_escape($shift['SID']) . "' AND `UID` = '" . sql_escape($user_id) . "'")) {
