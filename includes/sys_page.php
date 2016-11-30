@@ -1,4 +1,5 @@
 <?php
+use Engelsystem\ValidationResult;
 
 /**
  * Provide page/request helper functions
@@ -131,7 +132,7 @@ function check_request_date($name, $error_message = null, $null_allowed = false)
  * @return ValidationResult containing the parsed date
  */
 function check_date($input, $error_message = null, $null_allowed = false) {
-  if ($tmp = parse_date("Y-m-d", trim($input))) {
+  if ($tmp = parse_date("Y-m-d H:i", trim($input) . " 00:00")) {
     return new ValidationResult(true, $tmp);
   }
   if ($null_allowed) {
@@ -185,40 +186,6 @@ function strip_item($item) {
  */
 function check_email($email) {
   return (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
-}
-
-class ValidationResult {
-
-  private $valid;
-
-  private $value;
-
-  /**
-   * Constructor.
-   *
-   * @param boolean $valid
-   *          Is the value valid?
-   * @param * $value
-   *          The validated value
-   */
-  public function ValidationResult($valid, $value) {
-    $this->valid = $valid;
-    $this->value = $value;
-  }
-
-  /**
-   * Is the value valid?
-   */
-  public function isValid() {
-    return $this->valid;
-  }
-
-  /**
-   * The parsed/validated value.
-   */
-  public function getValue() {
-    return $this->value;
-  }
 }
 
 ?>

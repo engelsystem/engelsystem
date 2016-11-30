@@ -151,7 +151,7 @@ function user_controller() {
     }
   }
   
-  $shifts = Shifts_by_user($user_source);
+  $shifts = Shifts_by_user($user_source, in_array("user_shifts_admin", $privileges));
   foreach ($shifts as &$shift) {
     // TODO: Move queries to model
     $shift['needed_angeltypes'] = sql_select("SELECT DISTINCT `AngelTypes`.* FROM `ShiftEntry` JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id` WHERE `ShiftEntry`.`SID`='" . sql_escape($shift['SID']) . "'  ORDER BY `AngelTypes`.`name`");

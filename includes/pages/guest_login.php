@@ -106,7 +106,7 @@ function guest_register() {
       $msg .= error(sprintf(_("Your password is too short (please use at least %s characters)."), MIN_PASSWORD_LENGTH), true);
     }
     
-    if (isset($_REQUEST['planned_arrival_date']) && $tmp = parse_date("Y-m-d", $_REQUEST['planned_arrival_date'])) {
+    if (isset($_REQUEST['planned_arrival_date']) && $tmp = parse_date("Y-m-d H:i", $_REQUEST['planned_arrival_date'] . " 00:00")) {
       $planned_arrival_date = $tmp;
     } else {
       $valid = false;
@@ -212,7 +212,7 @@ function guest_register() {
                       ]),
                       div('col-sm-8', [
                           form_email('mail', _("E-Mail") . ' ' . entry_required(), $mail),
-                          form_checkbox('email_shiftinfo', _("The engelsystem is allowed to send me an email (e.g. when my shifts change)"), $email_shiftinfo), 
+                          form_checkbox('email_shiftinfo', _("The engelsystem is allowed to send me an email (e.g. when my shifts change)"), $email_shiftinfo),
                           form_checkbox('email_by_human_allowed', _("Humans are allowed to send me an email (e.g. for ticket vouchers)"), $email_by_human_allowed) 
                       ]) 
                   ]),
@@ -233,7 +233,7 @@ function guest_register() {
                       ]) 
                   ]),
                   form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
-                  form_info("", _("Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section.")) 
+                  form_info("", _("Restricted angel types need will be confirmed later by a supporter. You can change your selection in the options section.")) 
               ]),
               div('col-md-6', [
                   div('row', [
@@ -286,9 +286,9 @@ function guest_login() {
   $nick = "";
   
   unset($_SESSION['uid']);
+  $valid = true;
   
   if (isset($_REQUEST['submit'])) {
-    $valid = true;
     
     if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 0) {
       $nick = User_validate_Nick($_REQUEST['nick']);
@@ -306,7 +306,7 @@ function guest_login() {
         }
       } else {
         $valid = false;
-        error(_("No user was found with that Nickname. Please try again. If you are still having problems, ask an Dispatcher."));
+        error(_("No user was found with that Nickname. Please try again. If you are still having problems, ask a Dispatcher."));
       }
     } else {
       $valid = false;
@@ -326,25 +326,37 @@ function guest_login() {
   return page([
       div('col-md-12', [
           div('row', [
-              div('col-md-4', [
-                  EventConfig_countdown_page($event_config) 
-              ]),
-              div('col-md-4', [
-                  heading(login_title(), 2),
-                  msg(),
-                  form([
-                      form_text('nick', _("Nick"), $nick),
-                      form_password('password', _("Password")),
-                      form_submit('submit', _("Login")),
-                      buttons([
-                          button(page_link_to('user_password_recovery'), _("I forgot my password")) 
+              EventConfig_countdown_page($event_config) 
+          ]),
+          div('row', [
+              div('col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4', [
+                  div('panel panel-primary first', [
+                      div('panel-heading', [
+                          '<span class="icon-icon_angel"></span> ' . _("Login") 
                       ]),
-                      info(_("Please note: You have to activate cookies!"), true) 
+                      div('panel-body', [
+                          msg(),
+                          form([
+                              form_text_placeholder('nick', _("Nick"), $nick),
+                              form_password_placeholder('password', _("Password")),
+                              form_submit('submit', _("Login")),
+                              ! $valid ? buttons([
+                                  button(page_link_to('user_password_recovery'), _("I forgot my password")) 
+                              ]) : '' 
+                          ]) 
+                      ]),
+                      div('panel-footer', [
+                          glyph('info-sign') . _("Please note: You have to activate cookies!") 
+                      ]) 
                   ]) 
-              ]),
-              div('col-md-4', [
+              ]) 
+          ]),
+          div('row', [
+              div('col-sm-6 text-center', [
                   heading(register_title(), 2),
-                  get_register_hint(),
+                  get_register_hint() 
+              ]),
+              div('col-sm-6 text-center', [
                   heading(_("What can I do?"), 2),
                   '<p>' . _("Please read about the jobs you can do to help us.") . '</p>',
                   buttons([

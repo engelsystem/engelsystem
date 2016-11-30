@@ -44,7 +44,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes) {
   }
   
   if (isset($_REQUEST['planned_arrival_date'])) {
-    $tmp = parse_date("Y-m-d", $_REQUEST['planned_arrival_date']);
+    $tmp = parse_date("Y-m-d H:i", $_REQUEST['planned_arrival_date'] . " 00:00");
     $result = User_validate_planned_arrival_date($tmp);
     $user_source['planned_arrival_date'] = $result->getValue();
     if (! $result->isValid()) {
@@ -54,7 +54,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes) {
   }
   
   if (isset($_REQUEST['planned_departure_date'])) {
-    $tmp = parse_date("Y-m-d", $_REQUEST['planned_departure_date']);
+    $tmp = parse_date("Y-m-d H:i", $_REQUEST['planned_departure_date'] . " 00:00");
     $result = User_validate_planned_departure_date($user_source['planned_arrival_date'], $tmp);
     $user_source['planned_departure_date'] = $result->getValue();
     if (! $result->isValid()) {

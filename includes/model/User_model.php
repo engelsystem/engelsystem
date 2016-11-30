@@ -1,4 +1,5 @@
 <?php
+use Engelsystem\ValidationResult;
 
 /**
  * User model
@@ -274,23 +275,6 @@ function User($user_id) {
 }
 
 /**
- * TODO: Merge into normal user function
- * Returns user by id (limit informations.
- *
- * @param $user_id UID          
- */
-function mUser_Limit($user_id) {
-  $user_source = sql_select("SELECT `UID`, `Nick`, `Name`, `Vorname`, `Telefon`, `DECT`, `Handy`, `email`, `jabber` FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
-  if ($user_source === false) {
-    return false;
-  }
-  if (count($user_source) > 0) {
-    return $user_source[0];
-  }
-  return null;
-}
-
-/**
  * Returns User by api_key.
  *
  * @param string $api_key
@@ -300,7 +284,7 @@ function mUser_Limit($user_id) {
 function User_by_api_key($api_key) {
   $user = sql_select("SELECT * FROM `User` WHERE `api_key`='" . sql_escape($api_key) . "' LIMIT 1");
   if ($user === false) {
-    return false;
+    engelsystem_error("Unable to find user by api key.");
   }
   if (count($user) == 0) {
     return null;

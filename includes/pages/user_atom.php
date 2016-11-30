@@ -10,9 +10,6 @@ function user_atom() {
   $key = $_REQUEST['key'];
   
   $user = User_by_api_key($key);
-  if ($user === false) {
-    engelsystem_error("Unable to find user.");
-  }
   if ($user == null) {
     engelsystem_error("Key invalid.");
   }

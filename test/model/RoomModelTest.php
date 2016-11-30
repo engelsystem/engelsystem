@@ -1,6 +1,8 @@
 <?php
 
-class RoomModelTest extends PHPUnit_Framework_TestCase {
+namespace Engelsystem\Test;
+
+class RoomModelTest extends \PHPUnit_Framework_TestCase {
 
   private $room_id = null;
 

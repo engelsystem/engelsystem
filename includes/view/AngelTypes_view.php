@@ -49,7 +49,7 @@ function AngelType_delete_view($angeltype) {
 
 /**
  * Render angeltype edit form.
- * 
+ *
  * @param Angeltype $angeltype
  *          The angeltype to edit
  * @param boolean $supporter_mode
@@ -66,8 +66,7 @@ function AngelType_edit_view($angeltype, $supporter_mode) {
           $supporter_mode ? form_info(_("Restricted"), $angeltype['restricted'] ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $angeltype['restricted']),
           $supporter_mode ? form_info(_("No Self Sign Up"), $angeltype['no_self_signup'] ? _("Yes") : _("No")) : form_checkbox('no_self_signup', _("No Self Sign Up"), $angeltype['no_self_signup']),
           $supporter_mode ? form_info(_("Requires driver license"), $angeltype['requires_driver_license'] ? _("Yes") : _("No")) : form_checkbox('requires_driver_license', _("Requires driver license"), $angeltype['requires_driver_license']),
-          form_info("", _("Restricted angel types can only be used by an angel if enabled by an archangel (double opt-in).")),
-          form_info("", _("Disabled Self Sign Up prevents angels form self assigning to a shift. They have to been added by coordinator.")),
+          form_info("", _("Restricted angel types can only be used by an angel if enabled by a supporter (double opt-in).")),
           form_textarea('description', _("Description"), $angeltype['description']),
           form_info("", _("Please use markdown for the description.")),
           form_submit('submit', _("Save")) 
@@ -195,8 +194,8 @@ function AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes)
  */
 function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angeltypes, $admin_angeltypes, $supporter, $user_driver_license, $user) {
   $page = [
-      msg(),
-      AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user) 
+      AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user),
+      msg() 
   ];
   
   $page[] = '<h3>' . _("Description") . '</h3>';
@@ -291,9 +290,6 @@ function AngelTypes_about_view_angeltype($angeltype) {
   
   if ($angeltype['restricted']) {
     $html .= info(_("This angeltype is restricted by double-opt-in by a team supporter. Please show up at the according introduction meetings."), true);
-  }
-  if ($angeltype['no_self_signup']) {
-    $html .= info(_("This angeltype is unable to self sign up for shifts. Please show up at the according introduction meetings."), true);
   }
   if ($angeltype['description'] != "") {
     $html .= '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';
