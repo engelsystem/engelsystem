@@ -56,6 +56,7 @@ function AngelType_delete_view($angeltype) {
  *          Is the user a supporter of this angeltype?
  */
 function AngelType_edit_view($angeltype, $supporter_mode) {
+  $contact_info = AngelType_contact_info($angeltype);
   return page_with_title(sprintf(_("Edit %s"), $angeltype['name']), [
       buttons([
           button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
@@ -66,6 +67,12 @@ function AngelType_edit_view($angeltype, $supporter_mode) {
           $supporter_mode ? form_info(_("Restricted"), $angeltype['restricted'] ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $angeltype['restricted']),
           $supporter_mode ? form_info(_("No Self Sign Up"), $angeltype['no_self_signup'] ? _("Yes") : _("No")) : form_checkbox('no_self_signup', _("No Self Sign Up"), $angeltype['no_self_signup']),
           $supporter_mode ? form_info(_("Requires driver license"), $angeltype['requires_driver_license'] ? _("Yes") : _("No")) : form_checkbox('requires_driver_license', _("Requires driver license"), $angeltype['requires_driver_license']),
+          form_radio('mode', _("No contact"), $contact_info == null, 'no_contact'),
+          form_radio('mode', _("Supporter contact"), isset($angeltype['contact_user_id']), 'user_contact'),
+          form_radio('mode', _("Free contact"), ! isset($angeltype['contact_user_id']), 'free_contact'),
+          form_text('contact_name', _("Name"), $angeltype['contact_name']),
+          form_text('contact_dect', _("DECT"), $angeltype['contact_dect']),
+          form_text('contact_email', _("E-Mail"), $angeltype['contact_email']),
           form_info("", _("Restricted angel types can only be used by an angel if enabled by a supporter (double opt-in).")),
           form_textarea('description', _("Description"), $angeltype['description']),
           form_info("", _("Please use markdown for the description.")),
