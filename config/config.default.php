@@ -7,7 +7,7 @@ $maintenance_mode = false;
 $faq_url = "https://events.ccc.de/congress/2013/wiki/Static:Volunteers";
 
 // contact email address, linked on every page
-$contact_email = "mailto:erzengel@lists.ccc.de";
+$contact_email = "mailto:ticket@c3heaven.de";
 
 // Default-Theme auf der Startseite, 1=style1.css usw.
 $default_theme = 1;
