@@ -110,7 +110,7 @@ function shift_entry_add_controller() {
     foreach ($users as $usr) {
       $users_select[$usr['UID']] = $usr['Nick'] . ($usr['freeloaded'] == 0 ? "" : " (" . _("Freeloader") . ")");
     }
-    $user_text = html_select_key('user_id', 'user_id', $users_select, $user['UID']);
+    $user_text = html_select_key('user_id', 'user_id', $users_select, $user['UID'], true);
     
     $angeltypes_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
     $angeltypes = [];
