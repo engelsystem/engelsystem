@@ -118,6 +118,8 @@ function angeltype_edit_controller() {
       }
       
       $angeltype['restricted'] = isset($_REQUEST['restricted']);
+      $angeltype['no_self_signup'] = isset($_REQUEST['no_self_signup']);
+
       $angeltype['requires_driver_license'] = isset($_REQUEST['requires_driver_license']);
     }
     
@@ -192,6 +194,8 @@ function angeltypes_list_controller() {
     }
     
     $angeltype['restricted'] = $angeltype['restricted'] ? glyph('lock') : '';
+    $angeltype['no_self_signup'] = $angeltype['no_self_signup'] ? '' : glyph('share');
+
     $angeltype['name'] = '<a href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'] . '">' . $angeltype['name'] . '</a>';
     
     $angeltype['actions'] = table_buttons($actions);

@@ -64,6 +64,7 @@ function AngelType_edit_view($angeltype, $supporter_mode) {
       form([
           $supporter_mode ? form_info(_("Name"), $angeltype['name']) : form_text('name', _("Name"), $angeltype['name']),
           $supporter_mode ? form_info(_("Restricted"), $angeltype['restricted'] ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $angeltype['restricted']),
+          $supporter_mode ? form_info(_("No Self Sign Up"), $angeltype['no_self_signup'] ? _("Yes") : _("No")) : form_checkbox('no_self_signup', _("No Self Sign Up"), $angeltype['no_self_signup']),
           $supporter_mode ? form_info(_("Requires driver license"), $angeltype['requires_driver_license'] ? _("Yes") : _("No")) : form_checkbox('requires_driver_license', _("Requires driver license"), $angeltype['requires_driver_license']),
           form_info("", _("Restricted angel types can only be used by an angel if enabled by a supporter (double opt-in).")),
           form_textarea('description', _("Description"), $angeltype['description']),
@@ -262,6 +263,7 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes) {
       table([
           'name' => _("Name"),
           'restricted' => glyph('lock') . _("Restricted"),
+          'no_self_signup' => glyph('share') . _("Self Sign Up Allowed"),
           'membership' => _("Membership"),
           'actions' => "" 
       ], $angeltypes) 
