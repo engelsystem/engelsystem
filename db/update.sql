@@ -6,7 +6,7 @@ ALTER TABLE `UserAngelTypes` CHANGE `coordinator` `supporter` BOOLEAN;
 ALTER TABLE `User` ADD COLUMN `email_by_human_allowed` BOOLEAN NOT NULL;
 
 -- No Self Sign Up for some Angel Types
-ALTER TABLE engelsystem.AngelTypes ADD no_self_signup TINYINT(1) NOT NULL;
+ALTER TABLE AngelTypes ADD no_self_signup TINYINT(1) NOT NULL;
 
 ALTER TABLE `AngelTypes`  
   ADD `contact_user_id` INT NULL,  
