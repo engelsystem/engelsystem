@@ -12,8 +12,60 @@ function AngelType_new() {
       'restricted' => false,
       'no_self_signup' => false,
       'description' => '',
-      'requires_driver_license' => false 
+      'requires_driver_license' => false,
+      'contact_user_id' => null,
+      'contact_name' => null,
+      'contact_dect' => null,
+      'contact_email' => null 
   ];
+}
+
+/**
+ * Validates the contact user
+ *
+ * @param Angeltype $angeltype
+ *          The angeltype
+ * @return ValidationResult
+ */
+function AngelType_validate_contact_user_id($angeltype) {
+  if (! isset($angeltype['contact_user_id'])) {
+    return new ValidationResult(true, null);
+  }
+  if (isset($angeltype['contact_name']) || isset($angeltype['contact_dect']) || isset($angeltype['contact_email'])) {
+    return new ValidationResult(false, $angeltype['contact_user_id']);
+  }
+  if (User($angeltype['contact_user_id']) == null) {
+    return new ValidationResult(false, $angeltype['contact_user_id']);
+  }
+  return new ValidationResult(true, $angeltype['contact_user_id']);
+}
+
+/**
+ * Returns contact data (name, dect, email) for given angeltype or null
+ *
+ * @param Angeltype $angeltype
+ *          The angeltype
+ */
+function AngelType_contact_info($angeltype) {
+  if (isset($angeltype['contact_user_id'])) {
+    $contact_user = User($angeltype['contact_user_id']);
+    $contact_data = [
+        'contact_name' => $contact_user['Nick'],
+        'contact_dect' => $contact_user['DECT'] 
+    ];
+    if ($contact_user['email_by_human_allowed']) {
+      $contact_data['contact_email'] = $contact_user['email'];
+    }
+    return $contact_data;
+  }
+  if (isset($angeltype['contact_name'])) {
+    return [
+        'contact_name' => $angeltype['contact_name'],
+        'contact_dect' => $angeltype['contact_dect'],
+        'contact_email' => $angeltype['contact_email'] 
+    ];
+  }
+  return null;
 }
 
 /**
@@ -46,7 +98,11 @@ function AngelType_update($angeltype) {
       `restricted`=" . sql_bool($angeltype['restricted']) . ",
       `description`='" . sql_escape($angeltype['description']) . "',
       `requires_driver_license`=" . sql_bool($angeltype['requires_driver_license']) . ",
-      `no_self_signup`=" . sql_bool($angeltype['no_self_signup']) . "
+      `no_self_signup`=" . sql_bool($angeltype['no_self_signup']) . ",
+      `contact_user_id`=" . sql_null($angeltype['contact_user_id']) . ",
+      `contact_name`=" . sql_null($angeltype['contact_name']) . ",
+      `contact_dect`=" . sql_null($angeltype['contact_dect']) . ",
+      `contact_email`=" . sql_null($angeltype['contact_email']) . "
       WHERE `id`='" . sql_escape($angeltype['id']) . "'");
   if ($result === false) {
     engelsystem_error("Unable to update angeltype.");
@@ -68,7 +124,12 @@ function AngelType_create($angeltype) {
       `name`='" . sql_escape($angeltype['name']) . "', 
       `restricted`=" . sql_bool($angeltype['restricted']) . ",
       `description`='" . sql_escape($angeltype['description']) . "',
-      `requires_driver_license`=" . sql_bool($angeltype['requires_driver_license']));
+			`requires_driver_license`=" . sql_bool($angeltype['requires_driver_license']) . ",
+			`no_self_signup`=" . sql_bool($angeltype['no_self_signup']) . ",
+      `contact_user_id`=" . sql_null($angeltype['contact_user_id']) . ",
+      `contact_name`=" . sql_null($angeltype['contact_name']) . ",
+      `contact_dect`=" . sql_null($angeltype['contact_dect']) . ",
+      `contact_email`=" . sql_null($angeltype['contact_email']));
   if ($result === false) {
     engelsystem_error("Unable to create angeltype.");
   }
@@ -162,7 +223,7 @@ function AngelType_ids() {
  *          ID
  */
 function AngelType($angeltype_id) {
-  $angelType_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($angeltype_id) . "' LIMIT 1");
+  $angelType_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($angeltype_id) . "'");
   if ($angelType_source === false) {
     engelsystem_error("Unable to load angeltype.");
   }

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2016-11-20 17:33+0100\n"
-"PO-Revision-Date: 2016-11-20 17:34+0100\n"
+"PO-Revision-Date: 2016-12-01 10:06+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1887,11 +1887,11 @@ msgstr "Benötigt Führerschein"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:68
 msgid ""
-"Restricted angel types can only be used by an angel if enabled by a"
-"supporter (double opt-in)."
+"Restricted angel types can only be used by an angel if enabled by asupporter "
+"(double opt-in)."
 msgstr ""
-"Beschränkte Engeltypen müssen von einem Supporter "
-"freigeschaltet werden (double-opt-in)."
+"Beschränkte Engeltypen müssen von einem Supporter freigeschaltet werden "
+"(double-opt-in)."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:69
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:200
