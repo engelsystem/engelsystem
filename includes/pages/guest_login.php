@@ -106,11 +106,14 @@ function guest_register() {
       $msg .= error(sprintf(_("Your password is too short (please use at least %s characters)."), MIN_PASSWORD_LENGTH), true);
     }
     
-    if (isset($_REQUEST['planned_arrival_date']) && $tmp = parse_date("Y-m-d H:i", $_REQUEST['planned_arrival_date'] . " 00:00")) {
-      $planned_arrival_date = $tmp;
-    } else {
-      $valid = false;
-      $msg .= error(_("Please enter your planned date of arrival."), true);
+    if (isset($_REQUEST['planned_arrival_date'])) {
+      $tmp = parse_date("Y-m-d H:i", $_REQUEST['planned_arrival_date'] . " 00:00");
+      $result = User_validate_planned_arrival_date($tmp);
+      $planned_arrival_date = $result->getValue();
+      if (! $result->isValid()) {
+        $valid = false;
+        error(_("Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date."));
+      }
     }
     
     $selected_angel_types = [];
@@ -199,6 +202,17 @@ function guest_register() {
     }
   }
   
+  $buildup_start_date = time();
+  $teardown_end_date = null;
+  if ($event_config != null) {
+    if (isset($event_config['buildup_start_date'])) {
+      $buildup_start_date = $event_config['buildup_start_date'];
+    }
+    if(isset($event_config['teardown_end_date'])) {
+      $teardown_end_date = $event_config['teardown_end_date'];
+    }
+  }
+  
   return page_with_title(register_title(), [
       _("By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel task scheduler."),
       $msg,
@@ -218,7 +232,7 @@ function guest_register() {
                   ]),
                   div('row', [
                       div('col-sm-6', [
-                          form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, time()) 
+                          form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, $buildup_start_date, $teardown_end_date) 
                       ]),
                       div('col-sm-6', [
                           $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : '' 
