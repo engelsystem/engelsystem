@@ -44,7 +44,6 @@ class ShiftCalendarShiftRenderer {
 
   private function classForSignupState(ShiftSignupState $shiftSignupState) {
     switch ($shiftSignupState->getState()) {
-      case ShiftSignupState::ADMIN:
       case ShiftSignupState::OCCUPIED:
         return 'success';
       
@@ -58,6 +57,7 @@ class ShiftCalendarShiftRenderer {
       case ShiftSignupState::COLLIDES:
         return 'warning';
       
+      case ShiftSignupState::ADMIN:
       case ShiftSignupState::FREE:
         return 'danger';
     }
