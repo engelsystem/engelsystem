@@ -63,7 +63,7 @@ class ShiftSignupState {
     
     switch ($this->state) {
       case ShiftSignupState::ANGELTYPE:
-      case ShiftSignupState::OCCUPIED:
+      case ShiftSignupState::FREE:
         $this->state = $shiftSignupState->getState();
     }
   }
