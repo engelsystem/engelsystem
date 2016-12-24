@@ -138,7 +138,7 @@ function shift_entry_add_controller() {
     $angeltype_select = $type['name'];
   }
   
-  return ShiftEntry_edit_view($user_text, date("Y-m-d H:i", $shift['start']) . ' &ndash; ' . date('Y-m-d H:i', $shift['end']) . ' (' . shift_length($shift) . ')', $shift['Name'], $shift['name'], $angeltype_select, "", false, null, in_array('user_shifts_admin', $privileges) || in_array('shiftentry_edit_angeltype_supporter', $privileges));
+  return ShiftEntry_edit_view($user_text, date("Y-m-d H:i", $shift['start']) . ' &ndash; ' . date('Y-m-d H:i', $shift['end']) . ' (' . shift_length($shift) . ')', $shift['Name'], $shift['name'], $angeltype_select, "", false, null, in_array('user_shifts_admin', $privileges));
 }
 
 /**
