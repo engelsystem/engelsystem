@@ -16,3 +16,6 @@ ALTER TABLE `AngelTypes`
   ADD INDEX  (`contact_user_id`);
 ALTER TABLE `AngelTypes` 
   ADD  FOREIGN KEY (`contact_user_id`) REFERENCES `User`(`UID`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+  
+INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES (NULL, 'shiftentry_edit_angeltype_supporter', 'If user with this privilege is angeltype supporter, he can put users in shifts for their angeltype');

@@ -31,25 +31,23 @@ function shift_entry_add_controller() {
     redirect(page_link_to('user_shifts'));
   }
   
-  if (in_array('user_shifts_admin', $privileges)) {
-    $type = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($type_id) . "' LIMIT 1");
+  if (in_array('user_shifts_admin', $privileges) || in_array('shiftentry_edit_angeltype_supporter', $privileges)) {
+    $type = AngelType($type_id);
   } else {
     $type = sql_select("SELECT * FROM `UserAngelTypes` JOIN `AngelTypes` ON (`UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`) WHERE `AngelTypes`.`id` = '" . sql_escape($type_id) . "' AND (`AngelTypes`.`restricted` = 0 OR (`UserAngelTypes`.`user_id` = '" . sql_escape($user['UID']) . "' AND NOT `UserAngelTypes`.`confirm_user_id` IS NULL)) LIMIT 1");
+    $type = $type[0];
   }
-
-
-  if (count($type) == 0) {
+  
+  if ($type == null) {
     redirect(page_link_to('user_shifts'));
   }
-  $type = $type[0];
-
-  if (isset($_REQUEST['user_id']) && preg_match("/^[0-9]*$/", $_REQUEST['user_id']) &&
-      in_array('user_shifts_admin', $privileges)) {
+  
+  if (isset($_REQUEST['user_id']) && preg_match("/^[0-9]*$/", $_REQUEST['user_id']) && (in_array('user_shifts_admin', $privileges) || in_array('shiftentry_edit_angeltype_supporter', $privileges))) {
     $user_id = $_REQUEST['user_id'];
   } else {
     $user_id = $user['UID'];
   }
-
+  
   $shift_signup_allowed = Shift_signup_allowed(User($user_id), $shift, $type);
   if (! $shift_signup_allowed->isSignupAllowed()) {
     error(_("You are not allowed to sign up for this shift. Maybe shift is full or already running."));
@@ -58,8 +56,8 @@ function shift_entry_add_controller() {
   
   if (isset($_REQUEST['submit'])) {
     $selected_type_id = $type_id;
-    if (in_array('user_shifts_admin', $privileges)) {
-
+    if (in_array('user_shifts_admin', $privileges) || in_array('shiftentry_edit_angeltype_supporter', $privileges)) {
+      
       if (sql_num_query("SELECT * FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1") == 0) {
         redirect(page_link_to('user_shifts'));
       }
@@ -106,7 +104,6 @@ function shift_entry_add_controller() {
   if (in_array('user_shifts_admin', $privileges)) {
     $users = sql_select("SELECT *, (SELECT count(*) FROM `ShiftEntry` WHERE `freeloaded`=1 AND `ShiftEntry`.`UID`=`User`.`UID`) AS `freeloaded` FROM `User` ORDER BY `Nick`");
     $users_select = [];
-    
     foreach ($users as $usr) {
       $users_select[$usr['UID']] = $usr['Nick'] . ($usr['freeloaded'] == 0 ? "" : " (" . _("Freeloader") . ")");
     }
@@ -118,12 +115,30 @@ function shift_entry_add_controller() {
       $angeltypes[$angeltype['id']] = $angeltype['name'];
     }
     $angeltype_select = html_select_key('angeltype_id', 'angeltype_id', $angeltypes, $type['id']);
+  } elseif (in_array('shiftentry_edit_angeltype_supporter', $privileges)) {
+    $users = Users_by_angeltype($type);
+    $users_select = [];
+    foreach ($users as $usr) {
+      if (! $type['restricted'] || $usr['confirm_user_id'] != null) {
+        $users_select[$usr['UID']] = $usr['Nick'];
+      }
+    }
+    $user_text = html_select_key('user_id', 'user_id', $users_select, $user['UID']);
+    
+    $angeltypes_source = User_angeltypes($user);
+    $angeltypes = [];
+    foreach ($angeltypes_source as $angeltype) {
+      if ($angeltype['supporter']) {
+        $angeltypes[$angeltype['id']] = $angeltype['name'];
+      }
+      $angeltype_select = html_select_key('angeltype_id', 'angeltype_id', $angeltypes, $type['id']);
+    }
   } else {
     $user_text = User_Nick_render($user);
     $angeltype_select = $type['name'];
   }
   
-  return ShiftEntry_edit_view($user_text, date("Y-m-d H:i", $shift['start']) . ' &ndash; ' . date('Y-m-d H:i', $shift['end']) . ' (' . shift_length($shift) . ')', $shift['Name'], $shift['name'], $angeltype_select, "", false, null, in_array('user_shifts_admin', $privileges));
+  return ShiftEntry_edit_view($user_text, date("Y-m-d H:i", $shift['start']) . ' &ndash; ' . date('Y-m-d H:i', $shift['end']) . ' (' . shift_length($shift) . ')', $shift['Name'], $shift['name'], $angeltype_select, "", false, null, in_array('user_shifts_admin', $privileges) || in_array('shiftentry_edit_angeltype_supporter', $privileges));
 }
 
 /**

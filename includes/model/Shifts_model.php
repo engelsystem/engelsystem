@@ -111,7 +111,7 @@ function Shift_free_entries($shift_id, $angeltype_id) {
 }
 
 /**
- * Check if an angel can sign up for given shift.
+ * Check if shift signup is allowed from the end users point of view (no admin like privileges)
  *
  * @param Shift $shift
  *          The shift
@@ -119,20 +119,11 @@ function Shift_free_entries($shift_id, $angeltype_id) {
  *          The angeltype to which the user wants to sign up
  * @param array<Shift> $user_shifts
  *          List of the users shifts
+ * @param boolean $angeltype_supporter
+ *          True, if the user has angeltype supporter rights for the angeltype, which enables him to sign somebody up for the shift.
  */
-function Shift_signup_allowed($user, $shift, $angeltype, $user_angeltype = null, $user_shifts = null) {
-  global $privileges;
-  
+function Shift_signup_allowed_angel($user, $shift, $angeltype, $user_angeltype, $user_shifts, $angeltype_supporter = false) {
   $free_entries = Shift_free_entries($shift['SID'], $angeltype['id']);
-  
-  if (in_array('user_shifts_admin', $privileges)) {
-    if ($free_entries == 0) {
-      // User shift admins may join anybody in every shift
-      return new ShiftSignupState(ShiftSignupState::ADMIN, $free_entries);
-    }
-    
-    return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
-  }
   
   if ($user_shifts == null) {
     $user_shifts = Shifts_by_user($user);
@@ -159,16 +150,16 @@ function Shift_signup_allowed($user, $shift, $angeltype, $user_angeltype = null,
     // you cannot join if shift is full
     return new ShiftSignupState(ShiftSignupState::OCCUPIED, $free_entries);
   }
-
+  
   if ($user_angeltype == null) {
     $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
   }
   
-  if ($user_angeltype == null || ($angeltype['no_self_signup'] == 1 && $user_angeltype != null) ||
-      ($angeltype['restricted'] == 1 && $user_angeltype != null && ! isset($user_angeltype['confirm_user_id']))) {
+  if ($user_angeltype == null || ($angeltype['no_self_signup'] == 1 && $user_angeltype != null && $angeltype_supporter === false) || ($angeltype['restricted'] == 1 && $user_angeltype != null && ! isset($user_angeltype['confirm_user_id']))) {
     // you cannot join if user is not of this angel type
     // you cannot join if you are not confirmed
-
+    // you cannot join if angeltype has no self signup
+    
     return new ShiftSignupState(ShiftSignupState::ANGELTYPE, $free_entries);
   }
   
@@ -179,6 +170,48 @@ function Shift_signup_allowed($user, $shift, $angeltype, $user_angeltype = null,
   
   // Hooray, shift is free for you!
   return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
+}
+
+/**
+ * Check if an admin can sign up a user to a shift.
+ *
+ * @param Shift $shift
+ *          The shift
+ * @param AngelType $angeltype
+ *          The angeltype to which the user wants to sign up
+ */
+function Shift_signup_allowed_admin($shift, $angeltype) {
+  $free_entries = Shift_free_entries($shift['SID'], $angeltype['id']);
+  if ($free_entries == 0) {
+    // User shift admins may join anybody in every shift
+    return new ShiftSignupState(ShiftSignupState::ADMIN, $free_entries);
+  }
+  
+  return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
+}
+
+/**
+ * Check if an angel can sign up for given shift.
+ *
+ * @param Shift $shift
+ *          The shift
+ * @param AngelType $angeltype
+ *          The angeltype to which the user wants to sign up
+ * @param array<Shift> $user_shifts
+ *          List of the users shifts
+ */
+function Shift_signup_allowed($signup_user, $shift, $angeltype, $user_angeltype = null, $user_shifts = null) {
+  global $user, $privileges;
+  
+  if (in_array('user_shifts_admin', $privileges)) {
+    return Shift_signup_allowed_admin($shift, $angeltype);
+  }
+  
+  if (in_array('shiftentry_edit_angeltype_supporter', $privileges) && User_is_AngelType_supporter($user, $angeltype)) {
+    return Shift_signup_allowed_angel($signup_user, $shift, $angeltype, $user_angeltype, $user_shifts, true);
+  }
+  
+  return Shift_signup_allowed_angel($signup_user, $shift, $angeltype, $user_angeltype, $user_shifts, false);
 }
 
 /**
