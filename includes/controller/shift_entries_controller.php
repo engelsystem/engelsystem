@@ -145,11 +145,7 @@ function shift_entry_add_controller() {
  * Remove somebody from a shift.
  */
 function shift_entry_delete_controller() {
-  global $privileges;
-  
-  if (! in_array('user_shifts_admin', $privileges)) {
-    redirect(page_link_to('user_shifts'));
-  }
+  global $privileges, $user;
   
   if (! isset($_REQUEST['entry_id']) || ! test_request_int('entry_id')) {
     redirect(page_link_to('user_shifts'));
@@ -157,7 +153,7 @@ function shift_entry_delete_controller() {
   $entry_id = $_REQUEST['entry_id'];
   
   $shift_entry_source = sql_select("
-        SELECT `User`.`Nick`, `ShiftEntry`.`Comment`, `ShiftEntry`.`UID`, `ShiftTypes`.`name`, `Shifts`.*, `Room`.`Name`, `AngelTypes`.`name` as `angel_type`
+        SELECT `User`.`Nick`, `ShiftEntry`.`Comment`, `ShiftEntry`.`UID`, `ShiftTypes`.`name`, `Shifts`.*, `Room`.`Name`, `AngelTypes`.`name` as `angel_type`, `AngelTypes`.`id` as `angeltype_id`
         FROM `ShiftEntry`
         JOIN `User` ON (`User`.`UID`=`ShiftEntry`.`UID`)
         JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`)
@@ -167,6 +163,10 @@ function shift_entry_delete_controller() {
         WHERE `ShiftEntry`.`id`='" . sql_escape($entry_id) . "'");
   if (count($shift_entry_source) > 0) {
     $shift_entry_source = $shift_entry_source[0];
+    
+    if (!in_array('user_shifts_admin', $privileges) && (!in_array('shiftentry_edit_angeltype_supporter', $privileges) || !User_is_AngelType_supporter($user, AngelType($shift_entry_source['angeltype_id'])))) {
+      redirect(page_link_to('user_shifts'));
+    }
     
     $result = ShiftEntry_delete($entry_id);
     if ($result === false) {
@@ -178,7 +178,7 @@ function shift_entry_delete_controller() {
   } else {
     error(_("Entry not found."));
   }
-  redirect(page_link_to('user_shifts'));
+  redirect(shift_link($shift_entry_source));
 }
 
 ?>

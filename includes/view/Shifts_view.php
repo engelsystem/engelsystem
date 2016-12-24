@@ -99,6 +99,11 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
 }
 
 function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin) {
+  global $user;
+  
+  $angeltype = $angeltypes[$needed_angeltype['TID']];
+  $angeltype_supporter = User_is_AngelType_supporter($user, $angeltype);
+  
   $needed_angels = '';
   
   $class = 'progress-bar-warning';
@@ -110,17 +115,17 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shi
   }
   $needed_angels .= '<div class="list-group-item">';
   
-  $needed_angels .= '<div class="pull-right">' . Shift_signup_button_render($shift, $angeltypes[$needed_angeltype['TID']]) . '</div>';
+  $needed_angels .= '<div class="pull-right">' . Shift_signup_button_render($shift, $angeltype) . '</div>';
   
-  $needed_angels .= '<h3>' . AngelType_name_render($angeltypes[$needed_angeltype['TID']]) . '</h3>';
-  $bar_max = max($needed_angeltype['count']*10, $needed_angeltype['taken']*10, 10);
+  $needed_angels .= '<h3>' . AngelType_name_render($angeltype) . '</h3>';
+  $bar_max = max($needed_angeltype['count'] * 10, $needed_angeltype['taken'] * 10, 10);
   $bar_value = max(1, $needed_angeltype['taken'] * 10);
   $needed_angels .= progress_bar(0, $bar_max, $bar_value, $class, $needed_angeltype['taken'] . ' / ' . $needed_angeltype['count']);
   
   $angels = [];
   foreach ($shift['ShiftEntry'] as $shift_entry) {
     if ($shift_entry['TID'] == $needed_angeltype['TID']) {
-      $angels[] = Shift_view_render_shift_entry($shift_entry, $user_shift_admin);
+      $angels[] = Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angeltype_supporter);
     }
   }
   
@@ -130,14 +135,16 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shi
   return $needed_angels;
 }
 
-function Shift_view_render_shift_entry($shift_entry, $user_shift_admin) {
+function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angeltype_supporter) {
   $entry = User_Nick_render(User($shift_entry['UID']));
   if ($shift_entry['freeloaded']) {
     $entry = '<strike>' . $entry . '</strike>';
   }
-  if ($user_shift_admin) {
+  if ($user_shift_admin || $angeltype_supporter) {
     $entry .= ' <div class="btn-group">';
-    $entry .= button_glyph(page_link_to('user_myshifts') . '&edit=' . $shift_entry['id'] . '&id=' . $shift_entry['UID'], 'pencil', 'btn-xs');
+    if ($user_shift_admin) {
+      $entry .= button_glyph(page_link_to('user_myshifts') . '&edit=' . $shift_entry['id'] . '&id=' . $shift_entry['UID'], 'pencil', 'btn-xs');
+    }
     $entry .= button_glyph(page_link_to('user_shifts') . '&entry_id=' . $shift_entry['id'], 'trash', 'btn-xs');
     $entry .= '</div>';
   }
