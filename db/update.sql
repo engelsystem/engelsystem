@@ -19,3 +19,7 @@ ALTER TABLE `AngelTypes`
 
   
 INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES (NULL, 'shiftentry_edit_angeltype_supporter', 'If user with this privilege is angeltype supporter, he can put users in shifts for their angeltype');
+
+
+-- DB Performance
+ALTER TABLE `Shifts` ADD INDEX(`start`);

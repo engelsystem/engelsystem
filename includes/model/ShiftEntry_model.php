@@ -28,7 +28,7 @@ function ShiftEntries_freeleaded_count() {
  */
 function ShiftEntries_by_shift($shift_id) {
   return sql_select("
-      SELECT `User`.`Nick`, `User`.`email`, `User`.`email_shiftinfo`, `User`.`Sprache`, `ShiftEntry`.`UID`, `ShiftEntry`.`TID`, `ShiftEntry`.`SID`, `AngelTypes`.`name` as `angel_type_name`, `ShiftEntry`.`Comment`, `ShiftEntry`.`freeloaded`
+      SELECT `User`.`Nick`, `User`.`email`, `User`.`email_shiftinfo`, `User`.`Sprache`, `User`.`Gekommen`, `ShiftEntry`.`UID`, `ShiftEntry`.`TID`, `ShiftEntry`.`SID`, `AngelTypes`.`name` as `angel_type_name`, `ShiftEntry`.`Comment`, `ShiftEntry`.`freeloaded`
       FROM `ShiftEntry`
       JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
       JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`

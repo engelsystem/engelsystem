@@ -107,7 +107,7 @@ class ShiftCalendarShiftRenderer {
     $entry_list = [];
     foreach ($angeltype['shift_entries'] as $entry) {
       $style = $entry['freeloaded'] ? " text-decoration: line-through;" : '';
-      $entry_list[] = "<span style=\"$style\">" . User_Nick_render(User($entry['UID'])) . "</span>";
+      $entry_list[] = "<span style=\"$style\">" . User_Nick_render($entry) . "</span>";
     }
     $shift_signup_state = Shift_signup_allowed($user, $shift, $angeltype);
     $inner_text = sprintf(ngettext("%d helper needed", "%d helpers needed", $shift_signup_state->getFreeEntries()), $shift_signup_state->getFreeEntries());

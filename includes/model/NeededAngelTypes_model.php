@@ -84,13 +84,12 @@ function NeededAngelTypes_by_shift($shiftId) {
     }
   }
   
+  $shift_entries = ShiftEntries_by_shift($shiftId);
   $needed_angeltypes = [];
   foreach ($needed_angeltypes_source as $angeltype) {
-    $shift_entries = ShiftEntries_by_shift_and_angeltype($shiftId, $angeltype['angel_type_id']);
-    
     $angeltype['taken'] = 0;
     foreach($shift_entries as $shift_entry) {
-      if($shift_entry['freeloaded'] == 0) {
+      if($shift_entry['TID']==$angeltype['id'] && $shift_entry['freeloaded'] == 0) {
         $angeltype['taken']++;
       }
     }
