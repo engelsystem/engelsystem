@@ -129,10 +129,7 @@ function sql_select_db($db_name) {
  * @return Result array or false on error
  */
 function sql_select($query) {
-  global $sql_connection;
-  
-//   echo $query . ";\n";
-//   echo debug_string_backtrace() . "\n";
+  global $sql_connection, $query_count;
   
   $result = $sql_connection->query($query);
   if ($result) {
