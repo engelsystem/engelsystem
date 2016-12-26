@@ -185,7 +185,7 @@ class ShiftCalendarRenderer {
         return div('tick hour');
       }
       return div('tick hour', [
-          date('H:i', $time) 
+          date('m-d<b\r />H:i', $time) 
       ]);
     }
     return div('tick');
