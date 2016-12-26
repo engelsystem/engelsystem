@@ -173,6 +173,18 @@ function Shift_signup_allowed_angel($user, $shift, $angeltype, $user_angeltype, 
 }
 
 /**
+ * Check if an angeltype supporter can sign up a user to a shift.
+ */
+function Shift_signup_allowed_angeltype_supporter($shift, $angeltype) {
+  $free_entries = Shift_free_entries($shift['SID'], $angeltype['id']);
+  if ($free_entries == 0) {
+    return new ShiftSignupState(ShiftSignupState::OCCUPIED, $free_entries);
+  }
+  
+  return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
+}
+
+/**
  * Check if an admin can sign up a user to a shift.
  *
  * @param Shift $shift
@@ -208,7 +220,7 @@ function Shift_signup_allowed($signup_user, $shift, $angeltype, $user_angeltype 
   }
   
   if (in_array('shiftentry_edit_angeltype_supporter', $privileges) && User_is_AngelType_supporter($user, $angeltype)) {
-    return Shift_signup_allowed_angel($signup_user, $shift, $angeltype, $user_angeltype, $user_shifts, true);
+    return Shift_signup_allowed_angeltype_supporter($shift, $angeltype);
   }
   
   return Shift_signup_allowed_angel($signup_user, $shift, $angeltype, $user_angeltype, $user_shifts, false);
