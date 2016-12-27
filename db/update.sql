@@ -23,3 +23,4 @@ INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES (NULL, 'shiftentry_edit_a
 
 -- DB Performance
 ALTER TABLE `Shifts` ADD INDEX(`start`);
+ALTER TABLE `NeededAngelTypes` ADD INDEX(`count`);

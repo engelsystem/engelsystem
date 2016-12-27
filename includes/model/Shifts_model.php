@@ -11,7 +11,15 @@ function Shifts_by_room($room) {
 }
 
 function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
-  $SQL = "SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`, nat2.`special_needs` > 0 AS 'has_special_needs'
+  $SQL="SELECT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`
+      FROM `Shifts`
+      JOIN `Room` USING (`RID`)
+      JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
+      WHERE `Shifts`.`RID` IN (" . implode(',', $shiftsFilter->getRooms()) . ")
+      AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime() . "
+      ORDER BY `Shifts`.`start`";
+  /**
+  $SQL = "SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`
   FROM `Shifts`
   INNER JOIN `Room` USING (`RID`)
   INNER JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
@@ -42,30 +50,18 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
     if ($shiftsFilter->getFilled()[0] == ShiftsFilter::FILLED_FREE) {
       $SQL .= "
       AND (
-          nat.`count` > entries.`count` OR entries.`count` IS NULL 
-          OR EXISTS (
-              SELECT `SID` 
-              FROM `ShiftEntry` 
-              WHERE `UID` = '" . sql_escape($user['UID']) . "' 
-              AND `ShiftEntry`.`SID` = `Shifts`.`SID`
-          )
+          nat.`count` > entries.`count` OR entries.`count` IS NULL
       )";
     } elseif ($_SESSION['user_shifts']['filled'][0] == ShiftsFilter::FILLED_FILLED) {
       $SQL .= "
       AND (
-          nat.`count` <= entries.`count` 
-          OR EXISTS (
-              SELECT `SID` 
-              FROM `ShiftEntry` 
-              WHERE `UID` = '" . sql_escape($user['UID']) . "' 
-              AND `ShiftEntry`.`SID` = `Shifts`.`SID`
-          )
+          nat.`count` <= entries.`count`
       )";
     }
   }
   $SQL .= "
   ORDER BY `start`";
-  
+  */
   $result = sql_select($SQL);
   if ($result === false) {
     engelsystem_error("Unable to load shifts by filter.");
