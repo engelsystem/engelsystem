@@ -76,8 +76,17 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
       WHERE `Shifts`.`RID` IN (" . implode(',', $shiftsFilter->getRooms()) . ")
       AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime() . "
-      ORDER BY `Shifts`.`start`";
-  // FIXME: Use needed angeltypes on rooms!
+      AND `Shifts`.`PSID` IS NULL
+          
+      UNION
+          
+      SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+      FROM `Shifts`
+      JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
+      JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
+      WHERE `Shifts`.`RID` IN (" . implode(',', $shiftsFilter->getRooms()) . ")
+      AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime() . "
+      AND NOT `Shifts`.`PSID` IS NULL";
   $result = sql_select($SQL);
   if ($result === false) {
     engelsystem_error("Unable to load needed angeltypes by filter.");
@@ -92,21 +101,19 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype) {
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
       WHERE `Shifts`.`SID`=" . sql_escape($shift['SID']) . "
       AND `AngelTypes`.`id`=" . sql_escape($angeltype['id']) . "
-      ORDER BY `Shifts`.`start`");
-  if ($result === false) {
-    engelsystem_error("Unable to load needed angeltypes by filter.");
-  }
-  if (count($result) == 0) {
-    $result = sql_select("SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+      AND `Shifts`.`PSID` IS NULL
+          
+      UNION
+          
+      SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
       WHERE `Shifts`.`SID`=" . sql_escape($shift['SID']) . "
       AND `AngelTypes`.`id`=" . sql_escape($angeltype['id']) . "
-      ORDER BY `Shifts`.`start`");
-    if ($result === false) {
-      engelsystem_error("Unable to load needed angeltypes by filter.");
-    }
+      AND NOT `Shifts`.`PSID` IS NULL");
+  if ($result === false) {
+    engelsystem_error("Unable to load needed angeltypes by filter.");
   }
   if(count($result) == 0) {
     return null;
