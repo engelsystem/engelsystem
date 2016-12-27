@@ -70,17 +70,15 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
 }
 
 function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
-  $SQL = "SELECT `Shifts`.`SID` as `shift_id`,
-      COALESCE(
-      (SELECT `count` FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`Shifts`.`SID` AND `NeededAngelTypes`.`angel_type_id`=`AngelTypes`.`id`), 
-      (SELECT `count` FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID` AND `NeededAngelTypes`.`angel_type_id`=`AngelTypes`.`id`)
-      ) as `count`,
-      `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+  $SQL = "SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
       FROM `Shifts`
-      JOIN `AngelTypes`
+      JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
+      JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
+      JOIN `NeededAngelTypes` AS nat_room ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
       WHERE `Shifts`.`RID` IN (" . implode(',', $shiftsFilter->getRooms()) . ")
       AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime() . "
       ORDER BY `Shifts`.`start`";
+  // FIXME: Use needed angeltypes on rooms!
   $result = sql_select($SQL);
   if ($result === false) {
     engelsystem_error("Unable to load needed angeltypes by filter.");
@@ -89,19 +87,27 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
 }
 
 function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype) {
-  $result = sql_select("SELECT `Shifts`.`SID` as `shift_id`,
-      COALESCE(
-      (SELECT `count` FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`Shifts`.`SID` AND `NeededAngelTypes`.`angel_type_id`=`AngelTypes`.`id`), 
-      (SELECT `count` FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID` AND `NeededAngelTypes`.`angel_type_id`=`AngelTypes`.`id`)
-      ) as `count`,
-      `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+  $result = sql_select("SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
       FROM `Shifts`
-      JOIN `AngelTypes`
+      JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
+      JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
       WHERE `Shifts`.`SID`=" . sql_escape($shift['SID']) . "
       AND `AngelTypes`.`id`=" . sql_escape($angeltype['id']) . "
       ORDER BY `Shifts`.`start`");
   if ($result === false) {
     engelsystem_error("Unable to load needed angeltypes by filter.");
+  }
+  if (count($result) == 0) {
+    $result = sql_select("SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+      FROM `Shifts`
+      JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
+      JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
+      WHERE `Shifts`.`SID`=" . sql_escape($shift['SID']) . "
+      AND `AngelTypes`.`id`=" . sql_escape($angeltype['id']) . "
+      ORDER BY `Shifts`.`start`");
+    if ($result === false) {
+      engelsystem_error("Unable to load needed angeltypes by filter.");
+    }
   }
   if(count($result) == 0) {
     return null;
