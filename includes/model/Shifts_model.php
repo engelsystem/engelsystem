@@ -74,7 +74,6 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
-      JOIN `NeededAngelTypes` AS nat_room ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
       WHERE `Shifts`.`RID` IN (" . implode(',', $shiftsFilter->getRooms()) . ")
       AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime() . "
       ORDER BY `Shifts`.`start`";
