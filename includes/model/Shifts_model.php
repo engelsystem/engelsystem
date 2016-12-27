@@ -121,6 +121,10 @@ function Shift_free_entries($shift_id, $angeltype_id) {
 function Shift_signup_allowed_angel($user, $shift, $angeltype, $user_angeltype, $user_shifts, $angeltype_supporter = false) {
   $free_entries = Shift_free_entries($shift['SID'], $angeltype['id']);
   
+  if($user['Gekommen'] == 0) {
+    return new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, $free_entries);
+  }
+  
   if ($user_shifts == null) {
     $user_shifts = Shifts_by_user($user);
   }

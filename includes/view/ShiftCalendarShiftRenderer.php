@@ -78,6 +78,10 @@ class ShiftCalendarShiftRenderer {
       }
       $html .= $angeltype_html;
     }
+    if ($shift_signup_state == null) {
+      $shift_signup_state = new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, 0);
+    }
+    
     if (in_array('user_shifts_admin', $privileges)) {
       $html .= '<li class="list-group-item">' . button(page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'], _("Add more angels"), 'btn-xs') . '</li>';
     }
