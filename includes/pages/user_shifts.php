@@ -124,7 +124,7 @@ function view_user_shifts() {
   if (! isset($_SESSION['ShiftsFilter'])) {
     $room_ids = array_map('get_ids_from_array', $rooms);
     $type_ids = array_map('get_ids_from_array', $types);
-    $_SESSION['ShiftsFilter'] = new ShiftsFilter(in_array('user_shifts_admin', $privileges), $room_ids, $type_ids);
+    $_SESSION['ShiftsFilter'] = new ShiftsFilter(in_array('user_shifts_admin', $privileges), [$rooms[0]['id']], $type_ids);
   }
   update_ShiftsFilter($_SESSION['ShiftsFilter'], in_array('user_shifts_admin', $privileges), $days);
   $shiftsFilter = $_SESSION['ShiftsFilter'];
