@@ -173,7 +173,7 @@ function admin_user() {
               `Handy` = '" . sql_escape($_POST["eHandy"]) . "', 
               `Alter` = '" . sql_escape($_POST["eAlter"]) . "', 
               `DECT` = '" . sql_escape($_POST["eDECT"]) . "', 
-              `email` = '" . sql_escape($_POST["eemail"]) . "', 
+              `email` = '" . sql_escape(isset($_POST["eemail"]) ? $_POST["eemail"] : $user_source['email']) . "', 
               `jabber` = '" . sql_escape($_POST["ejabber"]) . "', 
               `Size` = '" . sql_escape($_POST["eSize"]) . "', 
               `Gekommen`= '" . sql_escape($_POST["eGekommen"]) . "', 
