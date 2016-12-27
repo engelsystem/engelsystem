@@ -73,14 +73,17 @@ function User_unconfirmed_AngelTypes($user) {
  * @param User $user          
  * @param AngelType $angeltype          
  */
-function User_is_AngelType_supporter($user, $angeltype) {
+function User_is_AngelType_supporter(&$user, $angeltype) {
+  if(!isset($user['privileges'])) {
+    $user['privileges'] = privileges_for_user($user['UID']);
+  }
   return (sql_num_query("
       SELECT `id` 
       FROM `UserAngelTypes` 
       WHERE `user_id`='" . sql_escape($user['UID']) . "'
       AND `angeltype_id`='" . sql_escape($angeltype['id']) . "'
       AND `supporter`=TRUE
-      LIMIT 1") > 0) || in_array('admin_user_angeltypes', privileges_for_user($user['UID']));
+      LIMIT 1") > 0) || in_array('admin_user_angeltypes', $user['privileges']);
 }
 
 /**

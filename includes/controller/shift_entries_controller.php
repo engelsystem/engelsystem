@@ -48,7 +48,10 @@ function shift_entry_add_controller() {
     $user_id = $user['UID'];
   }
   
-  $shift_signup_allowed = Shift_signup_allowed(User($user_id), $shift, $type);
+  $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $type);
+  $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $type['id']);
+  
+  $shift_signup_allowed = Shift_signup_allowed(User($user_id), $shift, $type, null, null, $needed_angeltype, $shift_entries);
   if (! $shift_signup_allowed->isSignupAllowed()) {
     error(_("You are not allowed to sign up for this shift. Maybe shift is full or already running."));
     redirect(shift_link($shift));

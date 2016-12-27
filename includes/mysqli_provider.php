@@ -131,6 +131,9 @@ function sql_select_db($db_name) {
 function sql_select($query) {
   global $sql_connection, $query_count;
   
+//   echo $query . ";\n";
+//   echo debug_string_backtrace() . "\n";
+  
   $result = $sql_connection->query($query);
   if ($result) {
     $data = [];

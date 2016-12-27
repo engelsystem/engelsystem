@@ -35,11 +35,17 @@ class ShiftCalendarRenderer {
 
   private $blocksPerSlot = null;
 
-  public function __construct($shifts, ShiftsFilter $shiftsFilter) {
+  private $needed_angeltypes = null;
+
+  private $shift_entries = null;
+
+  public function __construct($shifts, $needed_angeltypes, $shift_entries, ShiftsFilter $shiftsFilter) {
     $this->shiftsFilter = $shiftsFilter;
     $this->firstBlockStartTime = $this->calcFirstBlockStartTime($shifts);
     $this->lastBlockEndTime = $this->calcLastBlockEndTime($shifts);
     $this->lanes = $this->assignShiftsToLanes($shifts);
+    $this->needed_angeltypes = $needed_angeltypes;
+    $this->shift_entries = $shift_entries;
   }
 
   /**
@@ -127,6 +133,7 @@ class ShiftCalendarRenderer {
         $html .= $this->renderLane($lane);
       }
     }
+    
     return $html;
   }
 
@@ -142,16 +149,31 @@ class ShiftCalendarRenderer {
     $shift_renderer = new ShiftCalendarShiftRenderer();
     $html = "";
     $rendered_until = $this->getFirstBlockStartTime();
+    
+    $needed_angeltypes = [];
+    $shift_entries = [];
+    foreach ($lane->getShifts() as $shift) {
+      $needed_angeltypes[$shift['SID']] = [];
+      $shift_entries[$shift['SID']] = [];
+    }
+    foreach ($this->needed_angeltypes as $needed_angeltype) {
+      $needed_angeltypes[$needed_angeltype['shift_id']][] = $needed_angeltype;
+    }
+    foreach ($this->shift_entries as $shift_entry) {
+      $shift_entries[$shift_entry['SID']][] = $shift_entry;
+    }
+    
     foreach ($lane->getShifts() as $shift) {
       while ($rendered_until + ShiftCalendarRenderer::SECONDS_PER_ROW <= $shift['start']) {
         $html .= $this->renderTick($rendered_until);
         $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
       }
       
-      list($shift_height, $shift_html) = $shift_renderer->render($shift, $user);
+      list($shift_height, $shift_html) = $shift_renderer->render($shift, $needed_angeltypes[$shift['SID']], $shift_entries[$shift['SID']], $user);
       $html .= $shift_html;
       $rendered_until += $shift_height * ShiftCalendarRenderer::SECONDS_PER_ROW;
     }
+    
     while ($rendered_until < $this->getLastBlockEndTime()) {
       $html .= $this->renderTick($rendered_until);
       $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;

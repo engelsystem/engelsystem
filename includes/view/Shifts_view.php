@@ -14,13 +14,12 @@ function Shift_editor_info_render($shift) {
 
 function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null, $user_shifts = null) {
   global $user;
-  
+
   if ($user_angeltype == null) {
     $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
   }
   
-  $shift_signup_state = Shift_signup_allowed($user, $shift, $angeltype, $user_angeltype, $user_shifts);
-  if ($shift_signup_state->isSignupAllowed()) {
+  if ($angeltype['shift_signup_state']->isSignupAllowed()) {
     return button(page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'], _('Sign up'));
   } elseif ($user_angeltype == null) {
     return button(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'], sprintf(_('Become %s'), $angeltype['name']));

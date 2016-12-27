@@ -130,19 +130,8 @@ function view_user_shifts() {
   $shiftsFilter = $_SESSION['ShiftsFilter'];
   
   $shifts = Shifts_by_ShiftsFilter($shiftsFilter, $user);
-  
-  $ownshifts_source = sql_select("
-      SELECT `ShiftTypes`.`name`, `Shifts`.*
-      FROM `Shifts`
-      INNER JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-      INNER JOIN `ShiftEntry` ON (`Shifts`.`SID` = `ShiftEntry`.`SID` AND `ShiftEntry`.`UID` = '" . sql_escape($user['UID']) . "')
-      WHERE `Shifts`.`RID` IN (" . implode(',', $shiftsFilter->getRooms()) . ")
-      AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime());
-  $ownshifts = [];
-  foreach ($ownshifts_source as $ownshift) {
-    $ownshifts[$ownshift['SID']] = $ownshift;
-  }
-  unset($ownshifts_source);
+  $needed_angeltypes = NeededAngeltypes_by_ShiftsFilter($shiftsFilter, $user);
+  $shift_entries = ShiftEntries_by_ShiftsFilter($shiftsFilter, $user);
   
   if ($user['api_key'] == "") {
     User_reset_api_key($user, false);
@@ -163,7 +152,7 @@ function view_user_shifts() {
   $end_day = date("Y-m-d", $shiftsFilter->getEndTime());
   $end_time = date("H:i", $shiftsFilter->getEndTime());
   
-  $shiftCalendarRenderer = new ShiftCalendarRenderer($shifts, $shiftsFilter);
+  $shiftCalendarRenderer = new ShiftCalendarRenderer($shifts, $needed_angeltypes, $shift_entries, $shiftsFilter);
   return page([
       div('col-md-12', [
           msg(),
