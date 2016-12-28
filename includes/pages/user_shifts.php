@@ -132,8 +132,25 @@ function view_user_shifts() {
   $shiftsFilter = $_SESSION['ShiftsFilter'];
   
   $shifts = Shifts_by_ShiftsFilter($shiftsFilter);
-  $needed_angeltypes = NeededAngeltypes_by_ShiftsFilter($shiftsFilter);
-  $shift_entries = ShiftEntries_by_ShiftsFilter($shiftsFilter);
+  $needed_angeltypes_source = NeededAngeltypes_by_ShiftsFilter($shiftsFilter);
+  $shift_entries_source = ShiftEntries_by_ShiftsFilter($shiftsFilter);
+  
+  $needed_angeltypes = [];
+  $shift_entries = [];
+  foreach ($shifts as $shift) {
+    $needed_angeltypes[$shift['SID']] = [];
+    $shift_entries[$shift['SID']] = [];
+  }
+  foreach ($needed_angeltypes_source as $needed_angeltype) {
+    $needed_angeltypes[$needed_angeltype['SID']][] = $needed_angeltype;
+  }
+  foreach ($shift_entries_source as $shift_entry) {
+    $shift_entries[$shift_entry['SID']][] = $shift_entry;
+  }
+  unset($needed_angeltypes_source);
+  unset($shift_entries_source);
+  
+  $shiftCalendarRenderer = new ShiftCalendarRenderer($shifts, $needed_angeltypes, $shift_entries, $shiftsFilter);
   
   if ($user['api_key'] == "") {
     User_reset_api_key($user, false);
@@ -154,7 +171,6 @@ function view_user_shifts() {
   $end_day = date("Y-m-d", $shiftsFilter->getEndTime());
   $end_time = date("H:i", $shiftsFilter->getEndTime());
   
-  $shiftCalendarRenderer = new ShiftCalendarRenderer($shifts, $needed_angeltypes, $shift_entries, $shiftsFilter);
   return page([
       div('col-md-12', [
           msg(),

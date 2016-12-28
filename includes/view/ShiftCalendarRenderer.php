@@ -150,26 +150,13 @@ class ShiftCalendarRenderer {
     $html = "";
     $rendered_until = $this->getFirstBlockStartTime();
     
-    $needed_angeltypes = [];
-    $shift_entries = [];
-    foreach ($lane->getShifts() as $shift) {
-      $needed_angeltypes[$shift['SID']] = [];
-      $shift_entries[$shift['SID']] = [];
-    }
-    foreach ($this->needed_angeltypes as $needed_angeltype) {
-      $needed_angeltypes[$needed_angeltype['SID']][] = $needed_angeltype;
-    }
-    foreach ($this->shift_entries as $shift_entry) {
-      $shift_entries[$shift_entry['SID']][] = $shift_entry;
-    }
-    
     foreach ($lane->getShifts() as $shift) {
       while ($rendered_until + ShiftCalendarRenderer::SECONDS_PER_ROW <= $shift['start']) {
         $html .= $this->renderTick($rendered_until);
         $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
       }
       
-      list($shift_height, $shift_html) = $shift_renderer->render($shift, $needed_angeltypes[$shift['SID']], $shift_entries[$shift['SID']], $user);
+      list($shift_height, $shift_html) = $shift_renderer->render($shift, $this->needed_angeltypes[$shift['SID']], $this->shift_entries[$shift['SID']], $user);
       $html .= $shift_html;
       $rendered_until += $shift_height * ShiftCalendarRenderer::SECONDS_PER_ROW;
     }
