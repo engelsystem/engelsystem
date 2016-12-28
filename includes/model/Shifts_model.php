@@ -69,7 +69,9 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter) {
   return $result;
 }
 
+/*
 function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter) {
+  $time_start = microtime(true);
   $SQL = "SELECT `NeededAngelTypes`.*, `Shifts`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
@@ -77,9 +79,9 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter) {
       WHERE `Shifts`.`RID` IN (" . implode(',', $shiftsFilter->getRooms()) . ")
       AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime() . "
       AND `Shifts`.`PSID` IS NULL
-          
+
       UNION
-      
+
       SELECT `NeededAngelTypes`.*, `Shifts`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
@@ -91,6 +93,45 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter) {
   if ($result === false) {
     engelsystem_error("Unable to load needed angeltypes by filter.");
   }
+  echo microtime(true)-$time_start;die();
+  return $result;
+}
+*/
+function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter) {
+//   $time_start = microtime(true);
+  $SQL = "CREATE TEMPORARY TABLE
+            shifts_view
+      AS
+        SELECT `Shifts`.`SID`, `Shifts`.`PSID`, `Shifts`.`RID`
+        FROM `Shifts`
+        WHERE `Shifts`.`RID` IN (" . implode(',', $shiftsFilter->getRooms()) . ")
+        AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime() . "
+      ;";
+  $result = sql_query($SQL);
+  if ($result === false) {
+    engelsystem_error("Unable to load needed angeltypes by filter.");
+  }
+
+  $SQL = "SELECT `NeededAngelTypes`.*, `shifts_view`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+      FROM `shifts_view`
+      JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`shifts_view`.`SID`
+      JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
+      WHERE `shifts_view`.`PSID` IS NULL";
+  $result1 = sql_select($SQL);
+  if ($result === false) {
+    engelsystem_error("Unable to load needed angeltypes by filter.");
+  }
+  $SQL = "SELECT `NeededAngelTypes`.*, `shifts_view`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+      FROM `shifts_view`
+      JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`shifts_view`.`RID`
+      JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
+      WHERE NOT `shifts_view`.`PSID` IS NULL";
+  $result2 = sql_select($SQL);
+  if ($result === false) {
+    engelsystem_error("Unable to load needed angeltypes by filter.");
+  }
+  $result = array_merge($result1, $result2);
+//   echo microtime(true)-$time_start;die();
   return $result;
 }
 
