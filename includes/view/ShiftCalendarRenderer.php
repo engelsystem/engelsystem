@@ -157,7 +157,7 @@ class ShiftCalendarRenderer {
       $shift_entries[$shift['SID']] = [];
     }
     foreach ($this->needed_angeltypes as $needed_angeltype) {
-      $needed_angeltypes[$needed_angeltype['shift_id']][] = $needed_angeltype;
+      $needed_angeltypes[$needed_angeltype['SID']][] = $needed_angeltype;
     }
     foreach ($this->shift_entries as $shift_entry) {
       $shift_entries[$shift_entry['SID']][] = $shift_entry;

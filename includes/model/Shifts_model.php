@@ -70,7 +70,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
 }
 
 function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
-  $SQL = "SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+  $SQL = "SELECT `NeededAngelTypes`.*, `Shifts`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
@@ -79,8 +79,8 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
       AND `Shifts`.`PSID` IS NULL
           
       UNION
-          
-      SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+      
+      SELECT `NeededAngelTypes`.*, `Shifts`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
@@ -95,7 +95,7 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
 }
 
 function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype) {
-  $result = sql_select("SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+  $result = sql_select("SELECT `NeededAngelTypes`.*, `Shifts`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
@@ -105,7 +105,7 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype) {
           
       UNION
           
-      SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+      SELECT `NeededAngelTypes`.*, `Shifts`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
