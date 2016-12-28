@@ -107,12 +107,10 @@ function admin_active() {
   $users = sql_select("
       SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` 
       FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
-      LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` 
+      LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` " . ($show_all_shifts ? "" : "AND (`Shifts`.`end` < " . time() . " OR `Shifts`.`end` IS NULL)") . "
       WHERE `User`.`Gekommen` = 1
-      " . ($show_all_shifts ? "" : "AND (`Shifts`.`end` < " . time() . " OR `Shifts`.`end` IS NULL)") . "
       GROUP BY `User`.`UID` 
       ORDER BY `force_active` DESC, `shift_length` DESC" . $limit);
-  
   $matched_users = [];
   if ($search == "") {
     $tokens = [];
