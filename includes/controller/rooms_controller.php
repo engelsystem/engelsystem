@@ -43,13 +43,11 @@ function room_controller() {
   $shiftsFilterRenderer = new ShiftsFilterRenderer($shiftsFilter);
   $shiftsFilterRenderer->enableDaySelection($days);
   
-  $shifts = Shifts_by_ShiftsFilter($shiftsFilter);
-  $needed_angeltypes = NeededAngeltypes_by_ShiftsFilter($shiftsFilter);
-  $shift_entries = ShiftEntries_by_ShiftsFilter($shiftsFilter);
+  $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
   
   return [
       $room['Name'],
-      Room_view($room, $shiftsFilterRenderer, new ShiftCalendarRenderer($shifts, $needed_angeltypes, $shift_entries, $shiftsFilter)) 
+      Room_view($room, $shiftsFilterRenderer, $shiftCalendarRenderer) 
   ];
 }
 

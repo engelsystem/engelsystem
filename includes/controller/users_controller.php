@@ -1,4 +1,6 @@
 <?php
+use Engelsystem\ShiftsFilter;
+use Engelsystem\ShiftCalendarRenderer;
 
 /**
  * Route user actions.
@@ -311,6 +313,29 @@ function load_user() {
   }
   
   return $user;
+}
+
+function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter) {
+  $shifts = Shifts_by_ShiftsFilter($shiftsFilter);
+  $needed_angeltypes_source = NeededAngeltypes_by_ShiftsFilter($shiftsFilter);
+  $shift_entries_source = ShiftEntries_by_ShiftsFilter($shiftsFilter);
+  
+  $needed_angeltypes = [];
+  $shift_entries = [];
+  foreach ($shifts as $shift) {
+    $needed_angeltypes[$shift['SID']] = [];
+    $shift_entries[$shift['SID']] = [];
+  }
+  foreach ($needed_angeltypes_source as $needed_angeltype) {
+    $needed_angeltypes[$needed_angeltype['SID']][] = $needed_angeltype;
+  }
+  foreach ($shift_entries_source as $shift_entry) {
+    $shift_entries[$shift_entry['SID']][] = $shift_entry;
+  }
+  unset($needed_angeltypes_source);
+  unset($shift_entries_source);
+  
+  return new ShiftCalendarRenderer($shifts, $needed_angeltypes, $shift_entries, $shiftsFilter);
 }
 
 ?>
