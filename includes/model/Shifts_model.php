@@ -10,7 +10,7 @@ function Shifts_by_room($room) {
   return $result;
 }
 
-function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
+function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter) {
   $SQL = "SELECT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`
       FROM `Shifts`
       JOIN `Room` USING (`RID`)
@@ -69,7 +69,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
   return $result;
 }
 
-function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
+function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter) {
   $SQL = "SELECT `NeededAngelTypes`.*, `Shifts`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
@@ -121,7 +121,7 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype) {
   return $result[0];
 }
 
-function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter, $user) {
+function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter) {
   $SQL = "SELECT `User`.`Nick`, `User`.`email`, `User`.`email_shiftinfo`, `User`.`Sprache`, `User`.`Gekommen`, `ShiftEntry`.`UID`, `ShiftEntry`.`TID`, `ShiftEntry`.`SID`, `ShiftEntry`.`Comment`, `ShiftEntry`.`freeloaded`
       FROM `Shifts`
       JOIN `ShiftEntry` ON `ShiftEntry`.`SID`=`Shifts`.`SID`
@@ -235,7 +235,7 @@ function Shift_signup_allowed_angel($user, $shift, $angeltype, $user_angeltype, 
 /**
  * Check if an angeltype supporter can sign up a user to a shift.
  */
-function Shift_signup_allowed_angeltype_supporter($shift, $angeltype, $needed_angeltype, $shift_entries) {
+function Shift_signup_allowed_angeltype_supporter($angeltype, $needed_angeltype, $shift_entries) {
   $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
   if ($free_entries == 0) {
     return new ShiftSignupState(ShiftSignupState::OCCUPIED, $free_entries);
@@ -252,7 +252,7 @@ function Shift_signup_allowed_angeltype_supporter($shift, $angeltype, $needed_an
  * @param AngelType $angeltype
  *          The angeltype to which the user wants to sign up
  */
-function Shift_signup_allowed_admin($shift, $angeltype, $needed_angeltype, $shift_entries) {
+function Shift_signup_allowed_admin($angeltype, $needed_angeltype, $shift_entries) {
   $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
   if ($free_entries == 0) {
     // User shift admins may join anybody in every shift
@@ -276,11 +276,11 @@ function Shift_signup_allowed($signup_user, $shift, $angeltype, $user_angeltype 
   global $user, $privileges;
   
   if (in_array('user_shifts_admin', $privileges)) {
-    return Shift_signup_allowed_admin($shift, $angeltype, $needed_angeltype, $shift_entries);
+    return Shift_signup_allowed_admin($angeltype, $needed_angeltype, $shift_entries);
   }
   
   if (in_array('shiftentry_edit_angeltype_supporter', $privileges) && User_is_AngelType_supporter($user, $angeltype)) {
-    return Shift_signup_allowed_angeltype_supporter($shift, $angeltype, $needed_angeltype, $shift_entries);
+    return Shift_signup_allowed_angeltype_supporter($angeltype, $needed_angeltype, $shift_entries);
   }
   
   return Shift_signup_allowed_angel($signup_user, $shift, $angeltype, $user_angeltype, $user_shifts, $needed_angeltype, $shift_entries);

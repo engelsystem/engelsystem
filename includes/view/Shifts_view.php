@@ -12,9 +12,9 @@ function Shift_editor_info_render($shift) {
   return join('<br />', $info);
 }
 
-function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null, $user_shifts = null) {
+function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null) {
   global $user;
-
+  
   if ($user_angeltype == null) {
     $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
   }

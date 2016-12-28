@@ -11,7 +11,7 @@ use Engelsystem\ShiftCalendarRenderer;
  * View a room with its shifts.
  */
 function room_controller() {
-  global $privileges, $user;
+  global $privileges;
   
   if (! in_array('view_rooms', $privileges)) {
     redirect(page_link_to());
@@ -43,9 +43,9 @@ function room_controller() {
   $shiftsFilterRenderer = new ShiftsFilterRenderer($shiftsFilter);
   $shiftsFilterRenderer->enableDaySelection($days);
   
-  $shifts = Shifts_by_ShiftsFilter($shiftsFilter, $user);
-  $needed_angeltypes = NeededAngeltypes_by_ShiftsFilter($shiftsFilter, $user);
-  $shift_entries = ShiftEntries_by_ShiftsFilter($shiftsFilter, $user);
+  $shifts = Shifts_by_ShiftsFilter($shiftsFilter);
+  $needed_angeltypes = NeededAngeltypes_by_ShiftsFilter($shiftsFilter);
+  $shift_entries = ShiftEntries_by_ShiftsFilter($shiftsFilter);
   
   return [
       $room['Name'],

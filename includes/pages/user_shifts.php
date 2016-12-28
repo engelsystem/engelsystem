@@ -122,16 +122,18 @@ function view_user_shifts() {
   $types = load_types();
   
   if (! isset($_SESSION['ShiftsFilter'])) {
-    $room_ids = array_map('get_ids_from_array', $rooms);
+    $room_ids = [
+        $rooms[0]['id'] 
+    ];
     $type_ids = array_map('get_ids_from_array', $types);
-    $_SESSION['ShiftsFilter'] = new ShiftsFilter(in_array('user_shifts_admin', $privileges), [$rooms[0]['id']], $type_ids);
+    $_SESSION['ShiftsFilter'] = new ShiftsFilter(in_array('user_shifts_admin', $privileges), $room_ids, $type_ids);
   }
   update_ShiftsFilter($_SESSION['ShiftsFilter'], in_array('user_shifts_admin', $privileges), $days);
   $shiftsFilter = $_SESSION['ShiftsFilter'];
   
-  $shifts = Shifts_by_ShiftsFilter($shiftsFilter, $user);
-  $needed_angeltypes = NeededAngeltypes_by_ShiftsFilter($shiftsFilter, $user);
-  $shift_entries = ShiftEntries_by_ShiftsFilter($shiftsFilter, $user);
+  $shifts = Shifts_by_ShiftsFilter($shiftsFilter);
+  $needed_angeltypes = NeededAngeltypes_by_ShiftsFilter($shiftsFilter);
+  $shift_entries = ShiftEntries_by_ShiftsFilter($shiftsFilter);
   
   if ($user['api_key'] == "") {
     User_reset_api_key($user, false);
