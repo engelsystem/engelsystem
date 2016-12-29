@@ -11,13 +11,33 @@ function Shifts_by_room($room) {
 }
 
 function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter) {
-  $SQL = "SELECT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`
+  $SQL = "SELECT * FROM (
+      SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`
       FROM `Shifts`
       JOIN `Room` USING (`RID`)
       JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
+      JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
       WHERE `Shifts`.`RID` IN (" . implode(',', $shiftsFilter->getRooms()) . ")
       AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime() . "
-      ORDER BY `Shifts`.`start`";
+      AND `NeededAngelTypes`.`angel_type_id` IN (" . implode(',', $shiftsFilter->getTypes()) . ")
+      AND `NeededAngelTypes`.`count` > 0
+      AND `Shifts`.`PSID` IS NULL
+      
+      UNION
+      
+      SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`
+      FROM `Shifts`
+      JOIN `Room` USING (`RID`)
+      JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
+      JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
+      WHERE `Shifts`.`RID` IN (" . implode(',', $shiftsFilter->getRooms()) . ")
+      AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime() . "
+      AND `NeededAngelTypes`.`angel_type_id` IN (" . implode(',', $shiftsFilter->getTypes()) . ")
+      AND `NeededAngelTypes`.`count` > 0
+      AND NOT `Shifts`.`PSID` IS NULL) as tmp_shifts
+          
+      ORDER BY `start`
+          ";
   /**
    * $SQL = "SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`
    * FROM `Shifts`
@@ -115,7 +135,7 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype) {
   if ($result === false) {
     engelsystem_error("Unable to load needed angeltypes by filter.");
   }
-  if(count($result) == 0) {
+  if (count($result) == 0) {
     return null;
   }
   return $result[0];
