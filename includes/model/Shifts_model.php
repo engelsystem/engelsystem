@@ -251,10 +251,6 @@ function Shift_signup_allowed_admin($angeltype, $needed_angeltype, $shift_entrie
 function Shift_signup_allowed($signup_user, $shift, $angeltype, $user_angeltype = null, $user_shifts = null, $needed_angeltype, $shift_entries) {
   global $user, $privileges;
   
-//   if($shift['SID']==1907) {
-//     print_r(Shift_signup_allowed_admin($angeltype, $needed_angeltype, $shift_entries));
-//   }
-  
   if (in_array('user_shifts_admin', $privileges)) {
     return Shift_signup_allowed_admin($angeltype, $needed_angeltype, $shift_entries);
   }

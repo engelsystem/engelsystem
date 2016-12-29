@@ -347,13 +347,14 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter) {
   foreach ($shifts as $shift) {
     $needed_angels_count = 0;
     foreach ($needed_angeltypes[$shift['SID']] as $needed_angeltype) {
-      $needed_angels_count += $needed_angeltype['count'];
-    }
-    $taken = 0;
-    foreach ($shift_entries[$shift['SID']] as $shift_entry) {
-      if ($shift_entry['freeloaded'] == 0) {
-        $taken ++;
+      $taken = 0;
+      foreach ($shift_entries[$shift['SID']] as $shift_entry) {
+        if ($needed_angeltype['angel_type_id'] == $shift_entry['TID'] && $shift_entry['freeloaded'] == 0) {
+          $taken ++;
+        }
       }
+      
+      $needed_angels_count += max(0, $needed_angeltype['count'] - $taken);
     }
     if (in_array(ShiftsFilter::FILLED_FREE, $shiftsFilter->getFilled()) && $taken < $needed_angels_count) {
       $filtered_shifts[] = $shift;
