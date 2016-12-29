@@ -1,6 +1,5 @@
 <?php
 use Engelsystem\ShiftsFilter;
-use Engelsystem\ShiftCalendarRenderer;
 
 function shifts_title() {
   return _("Shifts");

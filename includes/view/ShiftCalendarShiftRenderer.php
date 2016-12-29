@@ -21,6 +21,7 @@ class ShiftCalendarShiftRenderer {
       $info_text = glyph('info-sign') . $shift['title'] . '<br>';
     }
     list($shift_signup_state, $shifts_row) = $this->renderShiftNeededAngeltypes($shift, $needed_angeltypes, $shift_entries, $user);
+    
     $class = $this->classForSignupState($shift_signup_state);
     
     $blocks = ceil(($shift["end"] - $shift["start"]) / ShiftCalendarRenderer::SECONDS_PER_ROW);

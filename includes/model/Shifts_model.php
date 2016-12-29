@@ -36,52 +36,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter) {
       AND `NeededAngelTypes`.`count` > 0
       AND NOT `Shifts`.`PSID` IS NULL) as tmp_shifts
           
-      ORDER BY `start`
-          ";
-  /**
-   * $SQL = "SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`
-   * FROM `Shifts`
-   * INNER JOIN `Room` USING (`RID`)
-   * INNER JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-   * LEFT JOIN (
-   * SELECT COUNT(*) AS special_needs , nat3.`shift_id`
-   * FROM `NeededAngelTypes` AS nat3
-   * WHERE `shift_id` IS NOT NULL
-   * GROUP BY nat3.`shift_id`
-   * ) AS nat2 ON nat2.`shift_id` = `Shifts`.`SID`
-   * INNER JOIN `NeededAngelTypes` AS nat
-   * ON nat.`count` != 0
-   * AND nat.`angel_type_id` IN (" . implode(',', $shiftsFilter->getTypes()) . ")
-   * AND (
-   * (nat2.`special_needs` > 0 AND nat.`shift_id` = `Shifts`.`SID`)
-   * OR
-   * (
-   * (nat2.`special_needs` = 0 OR nat2.`special_needs` IS NULL)
-   * AND nat.`room_id` = `RID`)
-   * )
-   * LEFT JOIN (
-   * SELECT se.`SID`, se.`TID`, COUNT(*) as count
-   * FROM `ShiftEntry` AS se GROUP BY se.`SID`, se.`TID`
-   * ) AS entries ON entries.`SID` = `Shifts`.`SID` AND entries.`TID` = nat.`angel_type_id`
-   * WHERE `Shifts`.`RID` IN (" . implode(',', $shiftsFilter->getRooms()) . ")
-   * AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime();
-   *
-   * if (count($shiftsFilter->getFilled()) == 1) {
-   * if ($shiftsFilter->getFilled()[0] == ShiftsFilter::FILLED_FREE) {
-   * $SQL .= "
-   * AND (
-   * nat.`count` > entries.`count` OR entries.`count` IS NULL
-   * )";
-   * } elseif ($_SESSION['user_shifts']['filled'][0] == ShiftsFilter::FILLED_FILLED) {
-   * $SQL .= "
-   * AND (
-   * nat.`count` <= entries.`count`
-   * )";
-   * }
-   * }
-   * $SQL .= "
-   * ORDER BY `start`";
-   */
+      ORDER BY `start`";
   $result = sql_select($SQL);
   if ($result === false) {
     engelsystem_error("Unable to load shifts by filter.");
