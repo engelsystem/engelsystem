@@ -61,10 +61,29 @@ class ShiftSignupState {
   public function combineWith(ShiftSignupState $shiftSignupState) {
     $this->freeEntries += $shiftSignupState->getFreeEntries();
     
-    switch ($this->state) {
+    if ($this->valueForState($shiftSignupState->state) > $this->valueForState($this->state)) {
+      $this->state = $shiftSignupState->state;
+    }
+  }
+
+  private function valueForState($state) {
+    switch ($state) {
+      case ShiftSignupState::SHIFT_ENDED:
+        return 100;
+      
+      case ShiftSignupState::SIGNED_UP:
+        return 90;
+      
+      case ShiftSignupState::FREE:
+        return 80;
+      
       case ShiftSignupState::ANGELTYPE:
+      case ShiftSignupState::COLLIDES:
+        return 70;
+      
       case ShiftSignupState::OCCUPIED:
-        $this->state = $shiftSignupState->getState();
+      case ShiftSignupState::ADMIN:
+        return 60;
     }
   }
 
