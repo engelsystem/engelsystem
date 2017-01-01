@@ -4,6 +4,6 @@ function credits_title() {
 }
 
 function guest_credits() {
-  return template_render('../templates/guest_credits.html', []);
+  return template_render(__DIR__ . '/../../templates/guest_credits.html', []);
 }
 ?>
