@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE_PATH="$(dirname \"$0\")"
+FILE_PATH="$(dirname "$0")"
 
 for file in $(ls "${FILE_PATH}/"*.less); do
     filename="${file##*/}"
