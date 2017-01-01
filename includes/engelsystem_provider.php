@@ -68,9 +68,6 @@ if (file_exists(realpath(__DIR__ . '/../config/config.php'))) {
   require_once realpath(__DIR__ . '/../config/config.php');
 }
 
-defined('CRYPT_ALG') || define('CRYPT_ALG', '$6$rounds=5000'); // SHA-512
-defined('MIN_PASSWORD_LENGTH') || define('MIN_PASSWORD_LENGTH', 8);
-
 if ($maintenance_mode) {
   echo file_get_contents(__DIR__ . '/../public/maintenance.html');
   die();
