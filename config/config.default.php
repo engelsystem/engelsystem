@@ -25,9 +25,9 @@ $LETZTES_AUSTRAGEN = 3;
 // define('CRYPT_ALG', '$1'); // MD5
 // define('CRYPT_ALG', '$2y$13'); // Blowfish
 // define('CRYPT_ALG', '$5$rounds=5000'); // SHA-256
-define('CRYPT_ALG', '$6$rounds=5000'); // SHA-512
+// define('CRYPT_ALG', '$6$rounds=5000'); // SHA-512
 
-define('MIN_PASSWORD_LENGTH', 8);
+// define('MIN_PASSWORD_LENGTH', 8);
 
 // Wenn Engel beim Registrieren oder in ihrem Profil eine T-Shirt Größe angeben sollen, auf true setzen:
 $enable_tshirt_size = true;
@@ -64,6 +64,6 @@ $config = [
     'host' => "localhost",
     'user' => "root",
     'pw' => "",
-    'db' => "engelsystem" 
+    'db' => "engelsystem"
 ];
 ?>
