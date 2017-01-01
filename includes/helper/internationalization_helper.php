@@ -25,15 +25,15 @@ function locale_short() {
  */
 function gettext_init() {
   global $locales, $default_locale;
-  
-  if (isset($_REQUEST['set_locale']) && in_array($_REQUEST['set_locale'], array_keys($locales))) {
+
+  if (isset($_REQUEST['set_locale']) && isset($locales[$_REQUEST['set_locale']])) {
     $_SESSION['locale'] = $_REQUEST['set_locale'];
   } elseif (! isset($_SESSION['locale'])) {
     $_SESSION['locale'] = $default_locale;
   }
-  
+
   gettext_locale();
-  bindtextdomain('default', __DIR__ . '../../locale');
+  bindtextdomain('default', realpath(__DIR__ . '/../../locale'));
   bind_textdomain_codeset('default', 'UTF-8');
   textdomain('default');
 }
