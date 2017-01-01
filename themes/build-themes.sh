@@ -1,7 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
-lessc theme0.less > ../public/css/theme0.css
-lessc theme1.less > ../public/css/theme1.css
-lessc theme2.less > ../public/css/theme2.css
-lessc theme3.less > ../public/css/theme3.css
-lessc theme4.less > ../public/css/theme4.css
+FILE_PATH="`dirname \"$0\"`"
+
+for file in `ls "${FILE_PATH}/"*.less`; do
+    filename="${file##*/}"
+    themeName="${filename%.less}"
+
+    if [[ "$filename" == "base.less" ]]; then
+        continue;
+    fi
+
+    echo "Building ${themeName}"
+    lessc "${file}" > "${FILE_PATH}/../public/css/${themeName}.css"
+done
