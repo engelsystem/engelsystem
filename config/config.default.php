@@ -22,12 +22,12 @@ $LETZTES_AUSTRAGEN = 3;
 // Falls ein Benutzerpasswort in einem anderen Format gespeichert ist,
 // wird es bei der ersten Benutzung des Klartext-Passworts in das neue Format
 // konvertiert.
-// define('CRYPT_ALG', '$1'); // MD5
-// define('CRYPT_ALG', '$2y$13'); // Blowfish
-// define('CRYPT_ALG', '$5$rounds=5000'); // SHA-256
-define('CRYPT_ALG', '$6$rounds=5000'); // SHA-512
+// $crypt_alg = '$1'; // MD5
+// $crypt_alg = '$2y$13'; // Blowfish
+// $crypt_alg = '$5$rounds=5000'; // SHA-256
+$crypt_alg = '$6$rounds=5000'; // SHA-512
 
-define('MIN_PASSWORD_LENGTH', 8);
+$min_password_length = 8;
 
 // Wenn Engel beim Registrieren oder in ihrem Profil eine T-Shirt Größe angeben sollen, auf true setzen:
 $enable_tshirt_size = true;
@@ -64,6 +64,6 @@ $config = [
     'host' => "localhost",
     'user' => "root",
     'pw' => "",
-    'db' => "engelsystem" 
+    'db' => "engelsystem"
 ];
 ?>

@@ -39,7 +39,8 @@ function generate_salt($length = 16) {
  * set the password of a user
  */
 function set_password($uid, $password) {
-  $result = sql_query("UPDATE `User` SET `Passwort` = '" . sql_escape(crypt($password, CRYPT_ALG . '$' . generate_salt(16) . '$')) . "', `password_recovery_token`=NULL WHERE `UID` = " . intval($uid) . " LIMIT 1");
+  global $crypt_alg;
+  $result = sql_query("UPDATE `User` SET `Passwort` = '" . sql_escape(crypt($password, $crypt_alg . '$' . generate_salt(16) . '$')) . "', `password_recovery_token`=NULL WHERE `UID` = " . intval($uid) . " LIMIT 1");
   if ($result === false) {
     engelsystem_error('Unable to update password.');
   }
@@ -51,6 +52,7 @@ function set_password($uid, $password) {
  * if $uid is given and $salt is an old-style salt (plain md5), we convert it automatically
  */
 function verify_password($password, $salt, $uid = false) {
+  global $crypt_alg;
   $correct = false;
   if (substr($salt, 0, 1) == '$') { // new-style crypt()
     $correct = crypt($password, $salt) == $salt;
@@ -59,12 +61,12 @@ function verify_password($password, $salt, $uid = false) {
   } elseif (strlen($salt) == 32) { // old-style md5 without salt - not used anymore
     $correct = md5($password) == $salt;
   }
-  
-  if ($correct && substr($salt, 0, strlen(CRYPT_ALG)) != CRYPT_ALG && $uid) {
+
+  if ($correct && substr($salt, 0, strlen($crypt_alg)) != $crypt_alg && $uid) {
     // this password is stored in another format than we want it to be.
     // let's update it!
     // we duplicate the query from the above set_password() function to have the extra safety of checking the old hash
-    sql_query("UPDATE `User` SET `Passwort` = '" . sql_escape(crypt($password, CRYPT_ALG . '$' . generate_salt() . '$')) . "' WHERE `UID` = " . intval($uid) . " AND `Passwort` = '" . sql_escape($salt) . "' LIMIT 1");
+    sql_query("UPDATE `User` SET `Passwort` = '" . sql_escape(crypt($password, $crypt_alg . '$' . generate_salt() . '$')) . "' WHERE `UID` = " . intval($uid) . " AND `Passwort` = '" . sql_escape($salt) . "' LIMIT 1");
   }
   return $correct;
 }
