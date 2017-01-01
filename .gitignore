@@ -1,8 +1,22 @@
+# Generic cache files
+*~
+.~*
+*.tmp
+*.temp
+*.lock
+*.DS_Store
+.*.swp
+*.out
+Thumbs.db
 .project
 .buildpath
 .settings
-.*.swp
 _vimrc_local.vim
 .sass-cache
-config/config.php
-test/coverage
+
+# PHPstorm config
+/.idea/
+
+# Project files
+/config/config.php
+/test/coverage
