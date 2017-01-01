@@ -162,7 +162,7 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
 
 $event_config = EventConfig();
 
-echo template_render('../templates/layout.html', [
+echo template_render(__DIR__ . '/../templates/layout.html', [
     'theme' => isset($user) ? $user['color'] : $default_theme,
     'title' => $title,
     'atom_link' => ($page == 'news' || $page == 'user_meetings') ? '<link href="' . page_link_to('atom') . (($page == 'user_meetings') ? '&amp;meetings=1' : '') . '&amp;key=' . $user['api_key'] . '" type="application/atom+xml" rel="alternate" title="Atom Feed">' : '',

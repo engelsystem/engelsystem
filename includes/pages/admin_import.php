@@ -8,6 +8,7 @@ function admin_import() {
   global $rooms_import;
   global $user;
   $html = "";
+  $import_dir = __DIR__ . '/../../import';
   
   $step = "input";
   if (isset($_REQUEST['step']) && in_array($step, [
@@ -18,14 +19,14 @@ function admin_import() {
     $step = $_REQUEST['step'];
   }
   
-  if ($test_handle = fopen('../import/tmp', 'w')) {
+  if ($test_handle = @fopen($import_dir . '/tmp', 'w')) {
     fclose($test_handle);
-    unlink('../import/tmp');
+    @unlink($import_dir . '/tmp');
   } else {
     error(_('Webserver has no write-permission on import directory.'));
   }
   
-  $import_file = '../import/import_' . $user['UID'] . '.xml';
+  $import_file = $import_dir . '/import_' . $user['UID'] . '.xml';
   $shifttype_id = null;
   $add_minutes_start = 15;
   $add_minutes_end = 15;
