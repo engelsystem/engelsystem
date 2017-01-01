@@ -9,7 +9,11 @@
 <link rel="stylesheet" type="text/css" href="vendor/bootstrap-datepicker-1.4.0/css/bootstrap-datepicker3.min.css" />
 <script type="text/javascript" src="vendor/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="vendor/jquery-ui.min.js"></script>
-%atom_link%
+<script type="text/javascript" src="vendor/jquery-ui.min.js"></script>
+<script type="text/javascript" src="vendor/select2/js/select2.min.js"></script>
+<link href="vendor/select2/css/select2.min.css" rel="stylesheet" />
+
+  %atom_link%
 </head>
 <body>
   <div class="navbar navbar-default navbar-fixed-top">
@@ -45,6 +49,7 @@
   <script type="text/javascript">
 			$(function() {
 				moment.locale("%locale%");
+                $(".select_helper").select2();
 			});
 		</script>
   <script type="text/javascript" src="js/moment-countdown.js"></script>

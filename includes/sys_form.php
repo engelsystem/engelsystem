@@ -234,8 +234,8 @@ function form_textarea($name, $label, $value, $disabled = false) {
 /**
  * Rendert ein Formular-Auswahlfeld
  */
-function form_select($name, $label, $values, $selected) {
-  return form_element($label, html_select_key('form_' . $name, $name, $values, $selected), 'form_' . $name);
+function form_select($name, $label, $values, $selected, $select_helper = false) {
+  return form_element($label, html_select_key('form_' . $name, $name, $values, $selected, $select_helper), 'form_' . $name);
 }
 
 /**
@@ -265,8 +265,8 @@ function html_options($name, $options, $selected = "") {
   return $html;
 }
 
-function html_select_key($dom_id, $name, $rows, $selected) {
-  $html = '<select class="form-control" id="' . $dom_id . '" name="' . $name . '">';
+function html_select_key($dom_id, $name, $rows, $selected, $select_helper = false) {
+  $html = '<select class="form-control'.($select_helper ? ' select_helper': '').' " id="' . $dom_id . '" name="' . $name . '">';
   foreach ($rows as $key => $row) {
     if (($key == $selected) || ($row == $selected)) {
       $html .= '<option value="' . $key . '" selected="selected">' . $row . '</option>';
