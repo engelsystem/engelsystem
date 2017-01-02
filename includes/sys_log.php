@@ -7,24 +7,26 @@
  * @param
  *          $message
  */
-function engelsystem_log($message) {
-  global $user;
+function engelsystem_log($message)
+{
+    global $user;
   
-  $nick = "Guest";
-  if (isset($user)) {
-    $nick = User_Nick_render($user);
-  }
-  LogEntry_create($nick, $message);
+    $nick = "Guest";
+    if (isset($user)) {
+        $nick = User_Nick_render($user);
+    }
+    LogEntry_create($nick, $message);
 }
 
 /**
  * Generates a PHP Stacktrace.
  */
-function debug_string_backtrace() {
-  ob_start();
-  debug_print_backtrace();
-  $trace = ob_get_contents();
-  ob_end_clean();
+function debug_string_backtrace()
+{
+    ob_start();
+    debug_print_backtrace();
+    $trace = ob_get_contents();
+    ob_end_clean();
   
   // Remove first item from backtrace as it's this function which
   // is redundant.
@@ -35,5 +37,3 @@ function debug_string_backtrace() {
   
   return $trace;
 }
-
-?>

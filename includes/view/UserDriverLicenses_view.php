@@ -11,10 +11,11 @@
  *          The user driver license
  * @return string
  */
-function UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver_license) {
-  return page_with_title(sprintf(_("Edit %s driving license information"), User_Nick_render($user_source)), [
+function UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver_license)
+{
+    return page_with_title(sprintf(_("Edit %s driving license information"), User_Nick_render($user_source)), [
       buttons([
-          button(user_link($user_source), _("Back to profile"), 'back') 
+          button(user_link($user_source), _("Back to profile"), 'back')
       ]),
       msg(),
       form([
@@ -28,10 +29,10 @@ function UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver
                   form_checkbox('has_license_3_5t_transporter', _("Transporter 3,5t"), $user_driver_license['has_license_3_5t_transporter']),
                   form_checkbox('has_license_7_5t_truck', _("Truck 7,5t"), $user_driver_license['has_license_7_5t_truck']),
                   form_checkbox('has_license_12_5t_truck', _("Truck 12,5t"), $user_driver_license['has_license_12_5t_truck']),
-                  form_checkbox('has_license_forklift', _("Forklift"), $user_driver_license['has_license_forklift']) 
-              ]) 
+                  form_checkbox('has_license_forklift', _("Forklift"), $user_driver_license['has_license_forklift'])
+              ])
           ], 'driving_license'),
-          form_submit('submit', _("Save")) 
+          form_submit('submit', _("Save"))
       ]),
       '<script type="text/javascript">
         $(function() {
@@ -49,8 +50,6 @@ function UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver
             }
           );
         });
-      </script>' 
+      </script>'
   ]);
 }
-
-?>

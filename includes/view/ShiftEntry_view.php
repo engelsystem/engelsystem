@@ -8,18 +8,19 @@
  * @param string $title
  * @param string $type
  * @param string $comment
- * 
+ *
  * @return string
  */
-function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment, $freeloaded, $freeload_comment, $user_admin_shifts = false) {
-  $freeload_form = [];
-  if ($user_admin_shifts) {
-    $freeload_form = [
+function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment, $freeloaded, $freeload_comment, $user_admin_shifts = false)
+{
+    $freeload_form = [];
+    if ($user_admin_shifts) {
+        $freeload_form = [
         form_checkbox('freeloaded', _("Freeloaded"), $freeloaded),
-        form_textarea('freeload_comment', _("Freeload comment (Only for shift coordination):"), $freeload_comment) 
+        form_textarea('freeload_comment', _("Freeload comment (Only for shift coordination):"), $freeload_comment)
     ];
-  }
-  return page_with_title(_("Edit shift entry"), [
+    }
+    return page_with_title(_("Edit shift entry"), [
       msg(),
       form([
           form_info(_("Angel:"), $angel),
@@ -29,9 +30,7 @@ function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment,
           form_info(_("Type:"), $type),
           form_textarea('comment', _("Comment (for your eyes only):"), $comment),
           join("", $freeload_form),
-          form_submit('submit', _("Save")) 
-      ]) 
+          form_submit('submit', _("Save"))
+      ])
   ]);
 }
-
-?>

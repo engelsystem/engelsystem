@@ -1,24 +1,25 @@
 <?php
 
-function admin_news() {
-  global $user;
+function admin_news()
+{
+    global $user;
   
-  if (! isset($_GET["action"])) {
-    redirect(page_link_to("news"));
-  }
+    if (! isset($_GET["action"])) {
+        redirect(page_link_to("news"));
+    }
   
-  $html = '<div class="col-md-12"><h1>' . _("Edit news entry") . '</h1>' . msg();
-  if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id'])) {
-    $news_id = $_REQUEST['id'];
-  } else {
-    return error("Incomplete call, missing News ID.", true);
-  }
+    $html = '<div class="col-md-12"><h1>' . _("Edit news entry") . '</h1>' . msg();
+    if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id'])) {
+        $news_id = $_REQUEST['id'];
+    } else {
+        return error("Incomplete call, missing News ID.", true);
+    }
   
-  $news = sql_select("SELECT * FROM `News` WHERE `ID`='" . sql_escape($news_id) . "' LIMIT 1");
-  if (empty($news)) {
-    return error("No News found.", true);
-  }
-  switch ($_REQUEST["action"]) {
+    $news = sql_select("SELECT * FROM `News` WHERE `ID`='" . sql_escape($news_id) . "' LIMIT 1");
+    if (empty($news)) {
+        return error("No News found.", true);
+    }
+    switch ($_REQUEST["action"]) {
     default:
       redirect(page_link_to('news'));
     case 'edit':
@@ -32,7 +33,7 @@ function admin_news() {
           form_text('eBetreff', _("Subject"), $news['Betreff']),
           form_textarea('eText', _("Message"), $news['Text']),
           form_checkbox('eTreffen', _("Meeting"), $news['Treffen'] == 1, 1),
-          form_submit('submit', _("Save")) 
+          form_submit('submit', _("Save"))
       ], page_link_to('admin_news&action=save&id=' . $news_id));
       
       $html .= '<a class="btn btn-danger" href="' . page_link_to('admin_news&action=delete&id=' . $news_id) . '"><span class="glyphicon glyphicon-trash"></span> ' . _("Delete") . '</a>';
@@ -62,6 +63,5 @@ function admin_news() {
       redirect(page_link_to("news"));
       break;
   }
-  return $html . '</div>';
+    return $html . '</div>';
 }
-?>

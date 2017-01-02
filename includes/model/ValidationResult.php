@@ -6,11 +6,11 @@ namespace Engelsystem;
  * BO that represents the result of an entity attribute validation.
  * It contains the validated value and a bool for validation success.
  */
-class ValidationResult {
+class ValidationResult
+{
+    private $valid;
 
-  private $valid;
-
-  private $value;
+    private $value;
 
   /**
    * Constructor.
@@ -20,23 +20,25 @@ class ValidationResult {
    * @param * $value
    *          The validated value
    */
-  public function __construct($valid, $value) {
-    $this->valid = $valid;
-    $this->value = $value;
+  public function __construct($valid, $value)
+  {
+      $this->valid = $valid;
+      $this->value = $value;
   }
 
   /**
    * Is the value valid?
    */
-  public function isValid() {
-    return $this->valid;
+  public function isValid()
+  {
+      return $this->valid;
   }
 
   /**
    * The parsed/validated value.
    */
-  public function getValue() {
-    return $this->value;
+  public function getValue()
+  {
+      return $this->value;
   }
 }
-?>

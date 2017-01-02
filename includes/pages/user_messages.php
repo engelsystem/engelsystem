@@ -1,73 +1,76 @@
 <?php
 
-function messages_title() {
-  return _("Messages");
+function messages_title()
+{
+    return _("Messages");
 }
 
-function user_unread_messages() {
-  global $user;
+function user_unread_messages()
+{
+    global $user;
   
-  if (isset($user)) {
-    $new_messages = sql_num_query("SELECT * FROM `Messages` WHERE isRead='N' AND `RUID`='" . sql_escape($user['UID']) . "'");
-    if ($new_messages > 0) {
-      return ' <span class="badge danger">' . $new_messages . '</span>';
+    if (isset($user)) {
+        $new_messages = sql_num_query("SELECT * FROM `Messages` WHERE isRead='N' AND `RUID`='" . sql_escape($user['UID']) . "'");
+        if ($new_messages > 0) {
+            return ' <span class="badge danger">' . $new_messages . '</span>';
+        }
     }
-  }
-  return '';
+    return '';
 }
 
-function user_messages() {
-  global $user;
+function user_messages()
+{
+    global $user;
   
-  if (! isset($_REQUEST['action'])) {
-    $users = sql_select("SELECT * FROM `User` WHERE NOT `UID`='" . sql_escape($user['UID']) . "' ORDER BY `Nick`");
+    if (! isset($_REQUEST['action'])) {
+        $users = sql_select("SELECT * FROM `User` WHERE NOT `UID`='" . sql_escape($user['UID']) . "' ORDER BY `Nick`");
     
-    $to_select_data = [
-        "" => _("Select recipient...") 
+        $to_select_data = [
+        "" => _("Select recipient...")
     ];
     
-    foreach ($users as $u) {
-      $to_select_data[$u['UID']] = $u['Nick'];
-    }
+        foreach ($users as $u) {
+            $to_select_data[$u['UID']] = $u['Nick'];
+        }
     
-    $to_select = html_select_key('to', 'to', $to_select_data, '');
+        $to_select = html_select_key('to', 'to', $to_select_data, '');
     
-    $messages = sql_select("SELECT * FROM `Messages` WHERE `SUID`='" . sql_escape($user['UID']) . "' OR `RUID`='" . sql_escape($user['UID']) . "' ORDER BY `isRead`,`Datum` DESC");
+        $messages = sql_select("SELECT * FROM `Messages` WHERE `SUID`='" . sql_escape($user['UID']) . "' OR `RUID`='" . sql_escape($user['UID']) . "' ORDER BY `isRead`,`Datum` DESC");
     
-    $messages_table = [
+        $messages_table = [
         [
             'news' => '',
             'timestamp' => date("Y-m-d H:i"),
             'from' => User_Nick_render($user),
             'to' => $to_select,
             'text' => form_textarea('text', '', ''),
-            'actions' => form_submit('submit', _("Save")) 
-        ] 
+            'actions' => form_submit('submit', _("Save"))
+        ]
     ];
     
-    foreach ($messages as $message) {
-      $sender_user_source = User($message['SUID']);
-      $receiver_user_source = User($message['RUID']);
+        foreach ($messages as $message) {
+            $sender_user_source = User($message['SUID']);
+            $receiver_user_source = User($message['RUID']);
       
-      $messages_table_entry = [
+            $messages_table_entry = [
           'new' => $message['isRead'] == 'N' ? '<span class="glyphicon glyphicon-envelope"></span>' : '',
           'timestamp' => date("Y-m-d H:i", $message['Datum']),
           'from' => User_Nick_render($sender_user_source),
           'to' => User_Nick_render($receiver_user_source),
-          'text' => str_replace("\n", '<br />', $message['Text']) 
+          'text' => str_replace("\n", '<br />', $message['Text'])
       ];
       
-      if ($message['RUID'] == $user['UID']) {
-        if ($message['isRead'] == 'N') {
-          $messages_table_entry['actions'] = button(page_link_to("user_messages") . '&action=read&id=' . $message['id'], _("mark as read"), 'btn-xs');
+            if ($message['RUID'] == $user['UID']) {
+                if ($message['isRead'] == 'N') {
+                    $messages_table_entry['actions'] = button(page_link_to("user_messages") . '&action=read&id=' . $message['id'], _("mark as read"), 'btn-xs');
+                }
+            } else {
+                $messages_table_entry['actions'] = button(page_link_to("user_messages") . '&action=delete&id=' . $message['id'], _("delete message"), 'btn-xs');
+            }
+            $messages_table[] = $messages_table_entry;
         }
-      } else {
-        $messages_table_entry['actions'] = button(page_link_to("user_messages") . '&action=delete&id=' . $message['id'], _("delete message"), 'btn-xs');
-      }
-      $messages_table[] = $messages_table_entry;
-    }
     
-    return page_with_title(messages_title(), [
+        return page_with_title(messages_title(), [
         msg(),
         sprintf(_("Hello %s, here can you leave messages for other angels"), User_Nick_render($user)),
         form([
@@ -77,55 +80,54 @@ function user_messages() {
                 'from' => _("Transmitted"),
                 'to' => _("Recipient"),
                 'text' => _("Message"),
-                'actions' => '' 
-            ], $messages_table) 
-        ], page_link_to('user_messages') . '&action=send') 
+                'actions' => ''
+            ], $messages_table)
+        ], page_link_to('user_messages') . '&action=send')
     ]);
-  } else {
-    switch ($_REQUEST['action']) {
+    } else {
+        switch ($_REQUEST['action']) {
       case "read":
         if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id'])) {
-          $message_id = $_REQUEST['id'];
+            $message_id = $_REQUEST['id'];
         } else {
-          return error(_("Incomplete call, missing Message ID."), true);
+            return error(_("Incomplete call, missing Message ID."), true);
         }
         
         $message = sql_select("SELECT * FROM `Messages` WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
         if (count($message) > 0 && $message[0]['RUID'] == $user['UID']) {
-          sql_query("UPDATE `Messages` SET `isRead`='Y' WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
-          redirect(page_link_to("user_messages"));
+            sql_query("UPDATE `Messages` SET `isRead`='Y' WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
+            redirect(page_link_to("user_messages"));
         } else {
-          return error(_("No Message found."), true);
+            return error(_("No Message found."), true);
         }
         break;
       
       case "delete":
         if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id'])) {
-          $message_id = $_REQUEST['id'];
+            $message_id = $_REQUEST['id'];
         } else {
-          return error(_("Incomplete call, missing Message ID."), true);
+            return error(_("Incomplete call, missing Message ID."), true);
         }
         
         $message = sql_select("SELECT * FROM `Messages` WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
         if (count($message) > 0 && $message[0]['SUID'] == $user['UID']) {
-          sql_query("DELETE FROM `Messages` WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
-          redirect(page_link_to("user_messages"));
+            sql_query("DELETE FROM `Messages` WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
+            redirect(page_link_to("user_messages"));
         } else {
-          return error(_("No Message found."), true);
+            return error(_("No Message found."), true);
         }
         break;
       
       case "send":
         if (Message_send($_REQUEST['to'], $_REQUEST['text']) === true) {
-          redirect(page_link_to("user_messages"));
+            redirect(page_link_to("user_messages"));
         } else {
-          return error(_("Transmitting was terminated with an Error."), true);
+            return error(_("Transmitting was terminated with an Error."), true);
         }
         break;
       
       default:
         return error(_("Wrong action."), true);
     }
-  }
+    }
 }
-?>

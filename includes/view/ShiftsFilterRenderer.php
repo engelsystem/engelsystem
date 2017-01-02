@@ -2,7 +2,8 @@
 
 namespace Engelsystem;
 
-class ShiftsFilterRenderer {
+class ShiftsFilterRenderer
+{
 
   /**
    * The shiftFilter to render.
@@ -26,44 +27,46 @@ class ShiftsFilterRenderer {
    */
   private $days = [];
 
-  public function __construct(ShiftsFilter $shiftsFilter) {
-    $this->shiftsFilter = $shiftsFilter;
-  }
+    public function __construct(ShiftsFilter $shiftsFilter)
+    {
+        $this->shiftsFilter = $shiftsFilter;
+    }
 
   /**
    * Renders the filter.
    *
    * @return Generated HTML
    */
-  public function render($link_base) {
-    $toolbar = [];
-    if ($this->daySelectionEnabled && ! empty($this->days)) {
-      $selected_day = date("Y-m-d", $this->shiftsFilter->getStartTime());
-      $day_dropdown_items = [];
-      foreach ($this->days as $day) {
-        $day_dropdown_items[] = toolbar_item_link($link_base . '&shifts_filter_day=' . $day, '', $day);
+  public function render($link_base)
+  {
+      $toolbar = [];
+      if ($this->daySelectionEnabled && ! empty($this->days)) {
+          $selected_day = date("Y-m-d", $this->shiftsFilter->getStartTime());
+          $day_dropdown_items = [];
+          foreach ($this->days as $day) {
+              $day_dropdown_items[] = toolbar_item_link($link_base . '&shifts_filter_day=' . $day, '', $day);
+          }
+          $toolbar[] = toolbar_dropdown('', $selected_day, $day_dropdown_items, 'active');
       }
-      $toolbar[] = toolbar_dropdown('', $selected_day, $day_dropdown_items, 'active');
-    }
-    return div('form-group', [
-        toolbar_pills($toolbar) 
+      return div('form-group', [
+        toolbar_pills($toolbar)
     ]);
   }
 
   /**
    * Should the filter display a day selection.
    */
-  public function enableDaySelection($days) {
-    $this->daySelectionEnabled = true;
-    $this->days = $days;
+  public function enableDaySelection($days)
+  {
+      $this->daySelectionEnabled = true;
+      $this->days = $days;
   }
 
   /**
    * Should the filter display a day selection.
    */
-  public function isDaySelectionEnabled() {
-    return $this->daySelectionEnabled;
+  public function isDaySelectionEnabled()
+  {
+      return $this->daySelectionEnabled;
   }
 }
-
-?>

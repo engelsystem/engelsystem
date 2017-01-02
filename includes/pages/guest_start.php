@@ -1,5 +1,5 @@
 <?php
-function guest_start() {
-  redirect(page_link_to('login'));
+function guest_start()
+{
+    redirect(page_link_to('login'));
 }
-?>

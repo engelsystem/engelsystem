@@ -16,17 +16,18 @@
  * @param int $count
  *          How many angels are needed?
  */
-function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count) {
-  $result = sql_query("
+function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
+{
+    $result = sql_query("
       INSERT INTO `NeededAngelTypes` SET 
       `shift_id`=" . sql_null($shift_id) . ", 
       `angel_type_id`='" . sql_escape($angeltype_id) . "', 
       `room_id`=" . sql_null($room_id) . ",
       `count`='" . sql_escape($count) . "'");
-  if ($result === false) {
-    return false;
-  }
-  return sql_id();
+    if ($result === false) {
+        return false;
+    }
+    return sql_id();
 }
 
 /**
@@ -35,8 +36,9 @@ function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count) {
  * @param int $shift_id
  *          id of the shift
  */
-function NeededAngelTypes_delete_by_shift($shift_id) {
-  return sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`='" . sql_escape($shift_id) . "'");
+function NeededAngelTypes_delete_by_shift($shift_id)
+{
+    return sql_query("DELETE FROM `NeededAngelTypes` WHERE `shift_id`='" . sql_escape($shift_id) . "'");
 }
 
 /**
@@ -45,8 +47,9 @@ function NeededAngelTypes_delete_by_shift($shift_id) {
  * @param int $room_id
  *          id of the room
  */
-function NeededAngelTypes_delete_by_room($room_id) {
-  return sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($room_id) . "'");
+function NeededAngelTypes_delete_by_room($room_id)
+{
+    return sql_query("DELETE FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($room_id) . "'");
 }
 
 /**
@@ -55,8 +58,9 @@ function NeededAngelTypes_delete_by_room($room_id) {
  * @param int $shiftID
  *          id of shift
  */
-function NeededAngelTypes_by_shift($shiftId) {
-  $needed_angeltypes_source = sql_select("
+function NeededAngelTypes_by_shift($shiftId)
+{
+    $needed_angeltypes_source = sql_select("
         SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
         FROM `NeededAngelTypes`
         JOIN `AngelTypes` ON `AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id`
@@ -64,13 +68,13 @@ function NeededAngelTypes_by_shift($shiftId) {
         AND `count` > 0
         ORDER BY `room_id` DESC
         ");
-  if ($needed_angeltypes_source === false) {
-    engelsystem_error("Unable to load needed angeltypes.");
-  }
+    if ($needed_angeltypes_source === false) {
+        engelsystem_error("Unable to load needed angeltypes.");
+    }
   
   // Use settings from room
   if (count($needed_angeltypes_source) == 0) {
-    $needed_angeltypes_source = sql_select("
+      $needed_angeltypes_source = sql_select("
         SELECT `NeededAngelTypes`.*, `AngelTypes`.`name`, `AngelTypes`.`restricted`
         FROM `NeededAngelTypes`
         JOIN `AngelTypes` ON `AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id`
@@ -79,27 +83,25 @@ function NeededAngelTypes_by_shift($shiftId) {
         AND `count` > 0
         ORDER BY `room_id` DESC
         ");
-    if ($needed_angeltypes_source === false) {
-      engelsystem_error("Unable to load needed angeltypes.");
-    }
-  }
-  
-  $shift_entries = ShiftEntries_by_shift($shiftId);
-  $needed_angeltypes = [];
-  foreach ($needed_angeltypes_source as $angeltype) {
-    $angeltype['shift_entries'] = [];
-    $angeltype['taken'] = 0;
-    foreach ($shift_entries as $shift_entry) {
-      if ($shift_entry['TID'] == $angeltype['angel_type_id'] && $shift_entry['freeloaded'] == 0) {
-        $angeltype['taken'] ++;
-        $angeltype['shift_entries'][] = $shift_entry;
+      if ($needed_angeltypes_source === false) {
+          engelsystem_error("Unable to load needed angeltypes.");
       }
-    }
-    
-    $needed_angeltypes[] = $angeltype;
   }
   
-  return $needed_angeltypes;
+    $shift_entries = ShiftEntries_by_shift($shiftId);
+    $needed_angeltypes = [];
+    foreach ($needed_angeltypes_source as $angeltype) {
+        $angeltype['shift_entries'] = [];
+        $angeltype['taken'] = 0;
+        foreach ($shift_entries as $shift_entry) {
+            if ($shift_entry['TID'] == $angeltype['angel_type_id'] && $shift_entry['freeloaded'] == 0) {
+                $angeltype['taken'] ++;
+                $angeltype['shift_entries'][] = $shift_entry;
+            }
+        }
+    
+        $needed_angeltypes[] = $angeltype;
+    }
+  
+    return $needed_angeltypes;
 }
-
-?>

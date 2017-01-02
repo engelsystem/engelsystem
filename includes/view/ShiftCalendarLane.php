@@ -5,21 +5,22 @@ namespace Engelsystem;
 /**
  * Represents a single lane in a shifts calendar.
  */
-class ShiftCalendarLane {
+class ShiftCalendarLane
+{
+    private $firstBlockStartTime;
 
-  private $firstBlockStartTime;
+    private $blockCount;
 
-  private $blockCount;
+    private $header;
 
-  private $header;
+    private $shifts = [];
 
-  private $shifts = [];
-
-  public function __construct($header, $firstBlockStartTime, $blockCount) {
-    $this->header = $header;
-    $this->firstBlockStartTime = $firstBlockStartTime;
-    $this->blockCount = $blockCount;
-  }
+    public function __construct($header, $firstBlockStartTime, $blockCount)
+    {
+        $this->header = $header;
+        $this->firstBlockStartTime = $firstBlockStartTime;
+        $this->blockCount = $blockCount;
+    }
 
   /**
    * Adds a shift to the lane, but only if it fits.
@@ -29,12 +30,13 @@ class ShiftCalendarLane {
    *          The shift to add
    * @return boolean true on success
    */
-  public function addShift($shift) {
-    if ($this->shiftFits($shift)) {
-      $this->shifts[] = $shift;
-      return true;
-    }
-    return false;
+  public function addShift($shift)
+  {
+      if ($this->shiftFits($shift)) {
+          $this->shifts[] = $shift;
+          return true;
+      }
+      return false;
   }
 
   /**
@@ -43,21 +45,23 @@ class ShiftCalendarLane {
    * @param Shift $shift
    *          The shift to fit into this lane
    */
-  public function shiftFits($newShift) {
-    foreach ($this->shifts as $laneShift) {
-      if (! ($newShift['start'] >= $laneShift['end'] || $newShift['end'] <= $laneShift['start'])) {
-        return false;
+  public function shiftFits($newShift)
+  {
+      foreach ($this->shifts as $laneShift) {
+          if (! ($newShift['start'] >= $laneShift['end'] || $newShift['end'] <= $laneShift['start'])) {
+              return false;
+          }
       }
+      return true;
+  }
+
+    public function getHeader()
+    {
+        return $this->header;
     }
-    return true;
-  }
 
-  public function getHeader() {
-    return $this->header;
-  }
-
-  public function getShifts() {
-    return $this->shifts;
-  }
+    public function getShifts()
+    {
+        return $this->shifts;
+    }
 }
-?>

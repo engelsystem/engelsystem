@@ -2,24 +2,25 @@
 
 namespace Engelsystem;
 
-class UserHintsRenderer {
+class UserHintsRenderer
+{
+    private $hints = [];
 
-  private $hints = [];
-
-  private $important = false;
+    private $important = false;
 
   /**
    * Render the added hints to a popover for the toolbar.
    */
-  public function render() {
-    if (count($this->hints) > 0) {
-      $hint_class = $this->important ? 'danger' : 'info';
-      $glyphicon = $this->important ? 'warning-sign' : 'info-sign';
+  public function render()
+  {
+      if (count($this->hints) > 0) {
+          $hint_class = $this->important ? 'danger' : 'info';
+          $glyphicon = $this->important ? 'warning-sign' : 'info-sign';
       
-      return toolbar_popover($glyphicon . ' text-' . $hint_class, '', $this->hints, 'bg-' . $hint_class);
-    }
+          return toolbar_popover($glyphicon . ' text-' . $hint_class, '', $this->hints, 'bg-' . $hint_class);
+      }
     
-    return '';
+      return '';
   }
 
   /**
@@ -30,30 +31,31 @@ class UserHintsRenderer {
    * @param boolean $important
    *          Is the hint important?
    */
-  public function addHint($hint, $important = false) {
-    if ($hint != null && $hint != '') {
-      if ($important) {
-        $this->important = true;
-        $this->hints[] = error($hint, true);
-      } else {
-        $this->hints[] = info($hint, true);
+  public function addHint($hint, $important = false)
+  {
+      if ($hint != null && $hint != '') {
+          if ($important) {
+              $this->important = true;
+              $this->hints[] = error($hint, true);
+          } else {
+              $this->hints[] = info($hint, true);
+          }
       }
-    }
   }
 
   /**
    * Get all hints.
    */
-  public function getHints() {
-    return $this->hints;
+  public function getHints()
+  {
+      return $this->hints;
   }
 
   /**
    * Are there important hints? This leads to a more intensive icon.
    */
-  public function isImportant() {
-    return $this->important;
+  public function isImportant()
+  {
+      return $this->important;
   }
 }
-
-?>

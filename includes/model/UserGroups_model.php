@@ -4,8 +4,9 @@
  * Returns users groups
  * @param User $user
  */
-function User_groups($user) {
-  return sql_select("
+function User_groups($user)
+{
+    return sql_select("
       SELECT `Groups`.*
       FROM `UserGroups`
       JOIN `Groups` ON `Groups`.`UID`=`UserGroups`.`group_id`
@@ -13,5 +14,3 @@ function User_groups($user) {
       ORDER BY `UserGroups`.`group_id`
       ");
 }
-
-?>

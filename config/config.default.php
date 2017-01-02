@@ -47,10 +47,10 @@ $shift_sum_formula = "SUM(
   ))*(`Shifts`.`end` - `Shifts`.`start`)*(1 - 3 * `ShiftEntry`.`freeloaded`)
 )";
 
-// voucher calculation 
+// voucher calculation
 $voucher_settings = [
-	"initial_vouchers" => 2,
-	"shifts_per_voucher" => 1
+    "initial_vouchers" => 2,
+    "shifts_per_voucher" => 1
 ];
 
 // weigh every shift the same
@@ -66,4 +66,3 @@ $config = [
     'pw' => "",
     'db' => "engelsystem"
 ];
-?>

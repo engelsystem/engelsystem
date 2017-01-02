@@ -7,7 +7,8 @@ namespace Engelsystem;
  *
  * @author msquare
  */
-class ShiftsFilter {
+class ShiftsFilter
+{
 
   /**
    * How long can the time interval be?
@@ -32,90 +33,101 @@ class ShiftsFilter {
    */
   private $userShiftsAdmin;
 
-  private $filled = [];
+    private $filled = [];
 
-  private $rooms = [];
+    private $rooms = [];
 
-  private $types = [];
+    private $types = [];
 
-  private $startTime = null;
+    private $startTime = null;
 
-  private $endTime = null;
+    private $endTime = null;
 
-  public function __construct($user_shifts_admin, $rooms, $types) {
-    $this->user_shifts_admin = $user_shifts_admin;
-    $this->rooms = $rooms;
-    $this->types = $types;
+    public function __construct($user_shifts_admin, $rooms, $types)
+    {
+        $this->user_shifts_admin = $user_shifts_admin;
+        $this->rooms = $rooms;
+        $this->types = $types;
     
-    $this->filled = [
-        ShiftsFilter::FILLED_FREE 
+        $this->filled = [
+        ShiftsFilter::FILLED_FREE
     ];
     
-    if ($user_shifts_admin) {
-      $this->filled[] = ShiftsFilter::FILLED_FILLED;
+        if ($user_shifts_admin) {
+            $this->filled[] = ShiftsFilter::FILLED_FILLED;
+        }
     }
-  }
 
-  public function getStartTime() {
-    return $this->startTime;
-  }
-
-  public function setStartTime($startTime) {
-    $this->startTime = $startTime;
-  }
-
-  public function getEndTime() {
-    return $this->endTime;
-  }
-
-  public function setEndTime($endTime) {
-    if ($endTime - $this->startTime > ShiftsFilter::MAX_DURATION) {
-      $endTime = $this->startTime + ShiftsFilter::MAX_DURATION;
+    public function getStartTime()
+    {
+        return $this->startTime;
     }
-    $this->endTime = $endTime;
-  }
 
-  public function getTypes() {
-    if (count($this->types) == 0) {
-      return [
-          0 
+    public function setStartTime($startTime)
+    {
+        $this->startTime = $startTime;
+    }
+
+    public function getEndTime()
+    {
+        return $this->endTime;
+    }
+
+    public function setEndTime($endTime)
+    {
+        if ($endTime - $this->startTime > ShiftsFilter::MAX_DURATION) {
+            $endTime = $this->startTime + ShiftsFilter::MAX_DURATION;
+        }
+        $this->endTime = $endTime;
+    }
+
+    public function getTypes()
+    {
+        if (count($this->types) == 0) {
+            return [
+          0
       ];
+        }
+        return $this->types;
     }
-    return $this->types;
-  }
 
-  public function setTypes($types) {
-    $this->types = $types;
-  }
+    public function setTypes($types)
+    {
+        $this->types = $types;
+    }
 
-  public function getRooms() {
-    if (count($this->rooms) == 0) {
-      return [
-          0 
+    public function getRooms()
+    {
+        if (count($this->rooms) == 0) {
+            return [
+          0
       ];
+        }
+        return $this->rooms;
     }
-    return $this->rooms;
-  }
 
-  public function setRooms($rooms) {
-    $this->rooms = $rooms;
-  }
+    public function setRooms($rooms)
+    {
+        $this->rooms = $rooms;
+    }
 
-  public function isUserShiftsAdmin() {
-    return $this->userShiftsAdmin;
-  }
+    public function isUserShiftsAdmin()
+    {
+        return $this->userShiftsAdmin;
+    }
 
-  public function setUserShiftsAdmin($userShiftsAdmin) {
-    $this->userShiftsAdmin = $userShiftsAdmin;
-  }
+    public function setUserShiftsAdmin($userShiftsAdmin)
+    {
+        $this->userShiftsAdmin = $userShiftsAdmin;
+    }
 
-  public function getFilled() {
-    return $this->filled;
-  }
+    public function getFilled()
+    {
+        return $this->filled;
+    }
 
-  public function setFilled($filled) {
-    $this->filled = $filled;
-  }
+    public function setFilled($filled)
+    {
+        $this->filled = $filled;
+    }
 }
-
-?>

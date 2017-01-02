@@ -2,8 +2,8 @@
 /**
  * This file includes all needed functions, connects to the db etc.
  */
-if(!is_readable(__DIR__ . '/../vendor/autoload.php')){
-  die('Please run composer.phar install');
+if (!is_readable(__DIR__ . '/../vendor/autoload.php')) {
+    die('Please run composer.phar install');
 }
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -70,12 +70,12 @@ require_once realpath(__DIR__ . '/../includes/mailer/users_mailer.php');
 
 require_once realpath(__DIR__ . '/../config/config.default.php');
 if (file_exists(realpath(__DIR__ . '/../config/config.php'))) {
-  require_once realpath(__DIR__ . '/../config/config.php');
+    require_once realpath(__DIR__ . '/../config/config.php');
 }
 
 if ($maintenance_mode) {
-  echo file_get_contents(__DIR__ . '/../public/maintenance.html');
-  die();
+    echo file_get_contents(__DIR__ . '/../public/maintenance.html');
+    die();
 }
 
 require_once realpath(__DIR__ . '/../includes/pages/admin_active.php');
@@ -103,5 +103,3 @@ gettext_init();
 sql_connect($config['host'], $config['user'], $config['pw'], $config['db']);
 
 load_auth();
-
-?>

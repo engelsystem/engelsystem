@@ -6,7 +6,8 @@ namespace Engelsystem;
  * BO to represent if there are free slots on a shift for a given angeltype
  * and if signup for a given user is possible (or not, because of collisions, etc.)
  */
-class ShiftSignupState {
+class ShiftSignupState
+{
 
   /**
    * Shift has free places
@@ -43,14 +44,15 @@ class ShiftSignupState {
    */
   const SIGNED_UP = 'SIGNED_UP';
 
-  private $state;
+    private $state;
 
-  private $freeEntries;
+    private $freeEntries;
 
-  public function __construct($state, $free_entries) {
-    $this->state = $state;
-    $this->freeEntries = $free_entries;
-  }
+    public function __construct($state, $free_entries)
+    {
+        $this->state = $state;
+        $this->freeEntries = $free_entries;
+    }
 
   /**
    * Combine this state with another state from the same shift.
@@ -58,16 +60,18 @@ class ShiftSignupState {
    * @param ShiftSignupState $shiftSignupState
    *          The other state to combine
    */
-  public function combineWith(ShiftSignupState $shiftSignupState) {
-    $this->freeEntries += $shiftSignupState->getFreeEntries();
+  public function combineWith(ShiftSignupState $shiftSignupState)
+  {
+      $this->freeEntries += $shiftSignupState->getFreeEntries();
     
-    if ($this->valueForState($shiftSignupState->state) > $this->valueForState($this->state)) {
-      $this->state = $shiftSignupState->state;
-    }
+      if ($this->valueForState($shiftSignupState->state) > $this->valueForState($this->state)) {
+          $this->state = $shiftSignupState->state;
+      }
   }
 
-  private function valueForState($state) {
-    switch ($state) {
+    private function valueForState($state)
+    {
+        switch ($state) {
       case ShiftSignupState::SHIFT_ENDED:
         return 100;
       
@@ -85,33 +89,34 @@ class ShiftSignupState {
       case ShiftSignupState::ADMIN:
         return 60;
     }
-  }
+    }
 
   /**
    * Returns true, if signup is allowed
    */
-  public function isSignupAllowed() {
-    switch ($this->state) {
+  public function isSignupAllowed()
+  {
+      switch ($this->state) {
       case ShiftSignupState::FREE:
       case ShiftSignupState::ADMIN:
         return true;
     }
-    return false;
+      return false;
   }
 
   /**
    * Return the shift signup state
    */
-  public function getState() {
-    return $this->state;
+  public function getState()
+  {
+      return $this->state;
   }
 
   /**
    * How many places are free in this shift for the angeltype?
    */
-  public function getFreeEntries() {
-    return $this->freeEntries;
+  public function getFreeEntries()
+  {
+      return $this->freeEntries;
   }
 }
-
-?>
