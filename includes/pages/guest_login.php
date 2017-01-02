@@ -14,7 +14,7 @@ function logout_title() {
 
 // Engel registrieren
 function guest_register() {
-  global $tshirt_sizes, $enable_tshirt_size, $default_theme, $user;
+  global $tshirt_sizes, $enable_tshirt_size, $default_theme, $user, $min_password_length;
   
   $event_config = EventConfig();
   
@@ -96,14 +96,14 @@ function guest_register() {
       }
     }
     
-    if (isset($_REQUEST['password']) && strlen($_REQUEST['password']) >= MIN_PASSWORD_LENGTH) {
+    if (isset($_REQUEST['password']) && strlen($_REQUEST['password']) >= $min_password_length) {
       if ($_REQUEST['password'] != $_REQUEST['password2']) {
         $valid = false;
         $msg .= error(_("Your passwords don't match."), true);
       }
     } else {
       $valid = false;
-      $msg .= error(sprintf(_("Your password is too short (please use at least %s characters)."), MIN_PASSWORD_LENGTH), true);
+      $msg .= error(sprintf(_("Your password is too short (please use at least %s characters)."), $min_password_length), true);
     }
     
     if (isset($_REQUEST['planned_arrival_date'])) {

@@ -88,9 +88,10 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes) {
  *          The user
  */
 function user_settings_password($user_source) {
+  global $min_password_length;
   if (! isset($_REQUEST['password']) || ! verify_password($_REQUEST['password'], $user_source['Passwort'], $user_source['UID'])) {
     error(_("-> not OK. Please try again."));
-  } elseif (strlen($_REQUEST['new_password']) < MIN_PASSWORD_LENGTH) {
+  } elseif (strlen($_REQUEST['new_password']) < $min_password_length) {
     error(_("Your password is to short (please use at least 6 characters)."));
   } elseif ($_REQUEST['new_password'] != $_REQUEST['new_password2']) {
     error(_("Your passwords don't match."));
