@@ -11,6 +11,7 @@ $free_pages = [
     'login',
     'rooms',
     'shifts',
+    'user_shifts_browser',
     'shifts_json_export',
     'shifts_json_export_all',
     'stats',
@@ -87,6 +88,9 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   } elseif ($page == "user_shifts") {
     $title = shifts_title();
     $content = user_shifts();
+  } elseif ($page == "user_shifts_browser") {
+    $title = shifts_browser_title();
+    $content = user_shifts_browser();
   } elseif ($page == "user_messages") {
     $title = messages_title();
     $content = user_messages();
