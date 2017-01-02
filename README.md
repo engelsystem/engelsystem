@@ -9,7 +9,7 @@
  * Webserver mit PHP-Anbindung, z.B. lighttpd, nginx oder Apache
 
 ## Vorgehen:
- * Klonen des `master` inkl. submodules in lokales Verzeichnis: `git clone --recursive https://github.com/engelsystem/engelsystem.git`
+ * Klonen des `master` in lokales Verzeichnis: `git clone https://github.com/engelsystem/engelsystem.git`
  * [Composer](https://getcomposer.org/download/) installieren
  * Abhängigkeiten installieren: `composer install`
  * Der Webserver muss Schreibrechte auf das Verzeichnis `import` bekommen, für alle anderen Dateien reichen Leserechte.
