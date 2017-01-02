@@ -71,10 +71,10 @@ function NeededAngelTypes_by_shift($shiftId)
     if ($needed_angeltypes_source === false) {
         engelsystem_error("Unable to load needed angeltypes.");
     }
-  
-  // Use settings from room
-  if (count($needed_angeltypes_source) == 0) {
-      $needed_angeltypes_source = sql_select("
+
+    // Use settings from room
+    if (count($needed_angeltypes_source) == 0) {
+        $needed_angeltypes_source = sql_select("
         SELECT `NeededAngelTypes`.*, `AngelTypes`.`name`, `AngelTypes`.`restricted`
         FROM `NeededAngelTypes`
         JOIN `AngelTypes` ON `AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id`
@@ -83,11 +83,11 @@ function NeededAngelTypes_by_shift($shiftId)
         AND `count` > 0
         ORDER BY `room_id` DESC
         ");
-      if ($needed_angeltypes_source === false) {
-          engelsystem_error("Unable to load needed angeltypes.");
-      }
-  }
-  
+        if ($needed_angeltypes_source === false) {
+            engelsystem_error("Unable to load needed angeltypes.");
+        }
+    }
+
     $shift_entries = ShiftEntries_by_shift($shiftId);
     $needed_angeltypes = [];
     foreach ($needed_angeltypes_source as $angeltype) {
@@ -95,13 +95,13 @@ function NeededAngelTypes_by_shift($shiftId)
         $angeltype['taken'] = 0;
         foreach ($shift_entries as $shift_entry) {
             if ($shift_entry['TID'] == $angeltype['angel_type_id'] && $shift_entry['freeloaded'] == 0) {
-                $angeltype['taken'] ++;
+                $angeltype['taken']++;
                 $angeltype['shift_entries'][] = $shift_entry;
             }
         }
-    
+
         $needed_angeltypes[] = $angeltype;
     }
-  
+
     return $needed_angeltypes;
 }

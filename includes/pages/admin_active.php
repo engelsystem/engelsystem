@@ -8,34 +8,37 @@ function admin_active_title()
 function admin_active()
 {
     global $tshirt_sizes, $shift_sum_formula;
-  
+
     $msg = "";
     $search = "";
     $forced_count = sql_num_query("SELECT * FROM `User` WHERE `force_active`=1");
     $count = $forced_count;
     $limit = "";
     $set_active = "";
-  
+
     if (isset($_REQUEST['search'])) {
         $search = strip_request_item('search');
     }
-  
+
     $show_all_shifts = isset($_REQUEST['show_all_shifts']);
-  
+
     if (isset($_REQUEST['set_active'])) {
         $valid = true;
-    
+
         if (isset($_REQUEST['count']) && preg_match("/^[0-9]+$/", $_REQUEST['count'])) {
             $count = strip_request_item('count');
             if ($count < $forced_count) {
-                error(sprintf(_("At least %s angels are forced to be active. The number has to be greater."), $forced_count));
+                error(sprintf(
+                    _("At least %s angels are forced to be active. The number has to be greater."),
+                    $forced_count
+                ));
                 redirect(page_link_to('admin_active'));
             }
         } else {
             $valid = false;
             $msg .= error(_("Please enter a number of angels to be marked as active."), true);
         }
-    
+
         if ($valid) {
             $limit = " LIMIT " . $count;
         }
@@ -56,14 +59,14 @@ function admin_active()
             }
             sql_query("UPDATE `User` SET `Aktiv`=1 WHERE `force_active`=TRUE");
             engelsystem_log("These angels are active now: " . join(", ", $user_nicks));
-      
+
             $limit = "";
             $msg = success(_("Marked angels."), true);
         } else {
             $set_active = '<a href="' . page_link_to('admin_active') . '&amp;serach=' . $search . '">&laquo; ' . _("back") . '</a> | <a href="' . page_link_to('admin_active') . '&amp;search=' . $search . '&amp;count=' . $count . '&amp;set_active&amp;ack">' . _("apply") . '</a>';
         }
     }
-  
+
     if (isset($_REQUEST['active']) && preg_match("/^[0-9]+$/", $_REQUEST['active'])) {
         $user_id = $_REQUEST['active'];
         $user_source = User($user_id);
@@ -105,14 +108,15 @@ function admin_active()
             $msg = error(_("Angel not found."), true);
         }
     }
-  
+
     $users = sql_select("
       SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, ${shift_sum_formula} as `shift_length` 
       FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
       LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` " . ($show_all_shifts ? "" : "AND (`Shifts`.`end` < " . time() . " OR `Shifts`.`end` IS NULL)") . "
       WHERE `User`.`Gekommen` = 1
       GROUP BY `User`.`UID` 
-      ORDER BY `force_active` DESC, `shift_length` DESC" . $limit);
+      ORDER BY `force_active` DESC, `shift_length` DESC" . $limit
+    );
     $matched_users = [];
     if ($search == "") {
         $tokens = [];
@@ -128,7 +132,7 @@ function admin_active()
                     break;
                 }
             }
-            if (! $match) {
+            if (!$match) {
                 continue;
             }
         }
@@ -138,7 +142,7 @@ function admin_active()
         $usr['active'] = glyph_bool($usr['Aktiv'] == 1);
         $usr['force_active'] = glyph_bool($usr['force_active'] == 1);
         $usr['tshirt'] = glyph_bool($usr['Tshirt'] == 1);
-    
+
         $actions = [];
         if ($usr['Aktiv'] == 0) {
             $actions[] = '<a href="' . page_link_to('admin_active') . '&amp;active=' . $usr['UID'] . ($show_all_shifts ? '&amp;show_all_shifts=' : '') . '&amp;search=' . $search . '">' . _("set active") . '</a>';
@@ -150,54 +154,54 @@ function admin_active()
         if ($usr['Tshirt'] == 1) {
             $actions[] = '<a href="' . page_link_to('admin_active') . '&amp;not_tshirt=' . $usr['UID'] . ($show_all_shifts ? '&amp;show_all_shifts=' : '') . '&amp;search=' . $search . '">' . _("remove t-shirt") . '</a>';
         }
-    
+
         $usr['actions'] = join(' ', $actions);
-    
+
         $matched_users[] = $usr;
     }
-  
+
     $shirt_statistics = [];
     foreach (array_keys($tshirt_sizes) as $size) {
         if ($size != '') {
             $shirt_statistics[] = [
-          'size' => $size,
-          'needed' => sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Size`='" . sql_escape($size) . "' AND `Gekommen`=1"),
-          'given' => sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Size`='" . sql_escape($size) . "' AND `Tshirt`=1")
-      ];
+                'size'   => $size,
+                'needed' => sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Size`='" . sql_escape($size) . "' AND `Gekommen`=1"),
+                'given'  => sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Size`='" . sql_escape($size) . "' AND `Tshirt`=1")
+            ];
         }
     }
     $shirt_statistics[] = [
-      'size' => '<b>' . _("Sum") . '</b>',
-      'needed' => '<b>' . User_arrived_count() . '</b>',
-      'given' => '<b>' . sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Tshirt`=1") . '</b>'
-  ];
-  
+        'size'   => '<b>' . _("Sum") . '</b>',
+        'needed' => '<b>' . User_arrived_count() . '</b>',
+        'given'  => '<b>' . sql_select_single_cell("SELECT count(*) FROM `User` WHERE `Tshirt`=1") . '</b>'
+    ];
+
     return page_with_title(admin_active_title(), [
-      form([
-          form_text('search', _("Search angel:"), $search),
-          form_checkbox('show_all_shifts', _("Show all shifts"), $show_all_shifts),
-          form_submit('submit', _("Search"))
-      ], page_link_to('admin_active')),
-      $set_active == "" ? form([
-          form_text('count', _("How much angels should be active?"), $count),
-          form_submit('set_active', _("Preview"))
-      ]) : $set_active,
-      msg(),
-      table([
-          'nick' => _("Nickname"),
-          'shirt_size' => _("Size"),
-          'shift_count' => _("Shifts"),
-          'work_time' => _("Length"),
-          'active' => _("Active?"),
-          'force_active' => _("Forced"),
-          'tshirt' => _("T-shirt?"),
-          'actions' => ""
-      ], $matched_users),
-      '<h2>' . _("Shirt statistics") . '</h2>',
-      table([
-          'size' => _("Size"),
-          'needed' => _("Needed shirts"),
-          'given' => _("Given shirts")
-      ], $shirt_statistics)
-  ]);
+        form([
+            form_text('search', _("Search angel:"), $search),
+            form_checkbox('show_all_shifts', _("Show all shifts"), $show_all_shifts),
+            form_submit('submit', _("Search"))
+        ], page_link_to('admin_active')),
+        $set_active == "" ? form([
+            form_text('count', _("How much angels should be active?"), $count),
+            form_submit('set_active', _("Preview"))
+        ]) : $set_active,
+        msg(),
+        table([
+            'nick'         => _("Nickname"),
+            'shirt_size'   => _("Size"),
+            'shift_count'  => _("Shifts"),
+            'work_time'    => _("Length"),
+            'active'       => _("Active?"),
+            'force_active' => _("Forced"),
+            'tshirt'       => _("T-shirt?"),
+            'actions'      => ""
+        ], $matched_users),
+        '<h2>' . _("Shirt statistics") . '</h2>',
+        table([
+            'size'   => _("Size"),
+            'needed' => _("Needed shirts"),
+            'given'  => _("Given shirts")
+        ], $shirt_statistics)
+    ]);
 }

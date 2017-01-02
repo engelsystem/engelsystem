@@ -21,16 +21,23 @@ $free_pages = [
 
 // Gewünschte Seite/Funktion
 $page = "";
-if (! isset($_REQUEST['p'])) {
+if (!isset($_REQUEST['p'])) {
     $_REQUEST['p'] = isset($user) ? "news" : "login";
 }
 
-if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $free_pages) || in_array($_REQUEST['p'], $privileges))) {
+if (
+    isset($_REQUEST['p'])
+    && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p'])
+    && (
+        in_array($_REQUEST['p'], $free_pages)
+        || in_array($_REQUEST['p'], $privileges)
+    )
+) {
     $page = $_REQUEST['p'];
-  
+
     $title = $page;
     $content = "";
-  
+
     if ($page == "api") {
         require_once realpath(__DIR__ . '/../includes/controller/api.php');
         error("Api disabled temporily.");
@@ -151,26 +158,26 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
     }
 } else {
     // Wenn schon eingeloggt, keine-Berechtigung-Seite anzeigen
-  if (isset($user)) {
-      $title = _("No Access");
-      $content = _("You don't have permission to view this page. You probably have to sign in or register in order to gain access!");
-  } else {
-      // Sonst zur Loginseite leiten
-    redirect(page_link_to("login"));
-  }
+    if (isset($user)) {
+        $title = _("No Access");
+        $content = _("You don't have permission to view this page. You probably have to sign in or register in order to gain access!");
+    } else {
+        // Sonst zur Loginseite leiten
+        redirect(page_link_to("login"));
+    }
 }
 
 $event_config = EventConfig();
 
 echo template_render(__DIR__ . '/../templates/layout.html', [
-    'theme' => isset($user) ? $user['color'] : $default_theme,
-    'title' => $title,
-    'atom_link' => ($page == 'news' || $page == 'user_meetings') ? '<link href="' . page_link_to('atom') . (($page == 'user_meetings') ? '&amp;meetings=1' : '') . '&amp;key=' . $user['api_key'] . '" type="application/atom+xml" rel="alternate" title="Atom Feed">' : '',
-    'menu' => make_menu(),
-    'content' => msg() . $content,
+    'theme'          => isset($user) ? $user['color'] : $default_theme,
+    'title'          => $title,
+    'atom_link'      => ($page == 'news' || $page == 'user_meetings') ? '<link href="' . page_link_to('atom') . (($page == 'user_meetings') ? '&amp;meetings=1' : '') . '&amp;key=' . $user['api_key'] . '" type="application/atom+xml" rel="alternate" title="Atom Feed">' : '',
+    'menu'           => make_menu(),
+    'content'        => msg() . $content,
     'header_toolbar' => header_toolbar(),
-    'faq_url' => $faq_url,
-    'contact_email' => $contact_email,
-    'locale' => locale(),
-    'event_info' => EventConfig_info($event_config) . '<br />'
+    'faq_url'        => $faq_url,
+    'contact_email'  => $contact_email,
+    'locale'         => locale(),
+    'event_info'     => EventConfig_info($event_config) . '<br />'
 ]);

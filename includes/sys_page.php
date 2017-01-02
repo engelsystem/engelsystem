@@ -8,27 +8,27 @@ use Engelsystem\ValidationResult;
 /**
  * Parse a date from da day and a time textfield.
  *
- * @param string $date_name
+ * @param string   $date_name
  *          Name of the textfield containing the day (format Y-m-d)
- * @param string $time_name
+ * @param string   $time_name
  *          Name of the textfield containing the time (format H:i)
  * @param string[] $allowed_days
  *          List of allowed days in format Y-m-d
- * @param int $default_value
+ * @param int      $default_value
  *          Default value unix timestamp
  */
 function check_request_datetime($date_name, $time_name, $allowed_days, $default_value)
 {
     $time = date("H:i", $default_value);
     $day = date("Y-m-d", $default_value);
-  
+
     if (isset($_REQUEST[$time_name]) && preg_match('#^\d{1,2}:\d\d$#', trim($_REQUEST[$time_name]))) {
         $time = trim($_REQUEST[$time_name]);
     }
     if (isset($_REQUEST[$date_name]) && in_array($_REQUEST[$date_name], $allowed_days)) {
         $day = $_REQUEST[$date_name];
     }
-  
+
     return parse_date("Y-m-d H:i", $day . " " . $time);
 }
 
@@ -74,7 +74,7 @@ function raw_output($output)
 /**
  * Helper function for transforming list of entities into array for select boxes.
  *
- * @param array $data
+ * @param array  $data
  *          The data array
  * @param string $key_name
  *          name of the column to use as id/key
@@ -94,9 +94,9 @@ function select_array($data, $key_name, $value_name)
  * Returns an int[] from given request param name.
  *
  * @param String $name
- *          Name of the request param
- * @param array<int> $default
- *          Default return value, if param is not set
+ *                     Name of the request param
+ * @param        array <int> $default
+ *                     Default return value, if param is not set
  */
 function check_request_int_array($name, $default = [])
 {
@@ -110,9 +110,9 @@ function check_request_int_array($name, $default = [])
  * Checks if given request item (name) can be parsed to a date.
  * If not parsable, given error message is put into msg() and null is returned.
  *
- * @param string $input
+ * @param string  $input
  *          String to be parsed into a date.
- * @param string $error_message
+ * @param string  $error_message
  *          the error message displayed if $input is not parsable
  * @param boolean $null_allowed
  *          is a null value allowed?
@@ -120,7 +120,7 @@ function check_request_int_array($name, $default = [])
  */
 function check_request_date($name, $error_message = null, $null_allowed = false)
 {
-    if (! isset($_REQUEST[$name])) {
+    if (!isset($_REQUEST[$name])) {
         return new ValidationResult($null_allowed, null);
     }
     return check_date($_REQUEST[$name], $error_message, $null_allowed);
@@ -130,9 +130,9 @@ function check_request_date($name, $error_message = null, $null_allowed = false)
  * Checks if given string can be parsed to a date.
  * If not parsable, given error message is put into msg() and null is returned.
  *
- * @param string $input
+ * @param string  $input
  *          String to be parsed into a date.
- * @param string $error_message
+ * @param string  $error_message
  *          the error message displayed if $input is not parsable
  * @param boolean $null_allowed
  *          is a null value allowed?
@@ -146,7 +146,7 @@ function check_date($input, $error_message = null, $null_allowed = false)
     if ($null_allowed) {
         return new ValidationResult(true, null);
     }
-  
+
     error($error_message);
     return new ValidationResult(false, null);
 }
@@ -198,5 +198,5 @@ function strip_item($item)
  */
 function check_email($email)
 {
-    return (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
+    return (bool)filter_var($email, FILTER_VALIDATE_EMAIL);
 }

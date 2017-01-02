@@ -95,7 +95,7 @@ function toolbar_pills($items)
  * @param string $href
  * @param string $glyphicon
  * @param string $label
- * @param bool $selected
+ * @param bool   $selected
  * @return string
  */
 function toolbar_item_link($href, $glyphicon, $label, $selected = false)
@@ -158,18 +158,18 @@ function page_with_title($title, $elements)
 function table($columns, $rows_raw, $data = true)
 {
     // If only one column is given
-  if (! is_array($columns)) {
-      $rows = [];
-      foreach ($rows_raw as $row) {
-          $rows[] = [
-          'col' => $row
-      ];
-      }
-      return render_table([
-        'col' => $columns
-    ], $rows, $data);
-  }
-  
+    if (!is_array($columns)) {
+        $rows = [];
+        foreach ($rows_raw as $row) {
+            $rows[] = [
+                'col' => $row
+            ];
+        }
+        return render_table([
+            'col' => $columns
+        ], $rows, $data);
+    }
+
     return render_table($columns, $rows_raw, $data);
 }
 
@@ -182,7 +182,7 @@ function render_table($columns, $rows, $data = true)
     if (count($rows) == 0) {
         return info(_("No data found."), true);
     }
-  
+
     $html = '<table class="table table-striped' . ($data ? ' data' : '') . '">';
     $html .= '<thead><tr>';
     foreach ($columns as $key => $column) {
@@ -255,7 +255,9 @@ function shorten($str, $length = 50)
     if (strlen($str) < $length) {
         return $str;
     }
-    return '<span title="' . htmlentities($str, ENT_COMPAT, 'UTF-8') . '">' . substr($str, 0, $length - 3) . '...</span>';
+    return '<span title="' . htmlentities($str, ENT_COMPAT, 'UTF-8') . '">'
+        . substr($str, 0, $length - 3)
+        . '...</span>';
 }
 
 function table_body($array)
@@ -297,6 +299,6 @@ function ReplaceSmilies($neueckig)
     $neueckig = str_replace(";P", "<img src=\"pic/smiles/icon_mad.gif\">", $neueckig);
     $neueckig = str_replace(";oP", "<img src=\"pic/smiles/icon_mad.gif\">", $neueckig);
     $neueckig = str_replace("?)", "<img src=\"pic/smiles/icon_question.gif\">", $neueckig);
-  
+
     return $neueckig;
 }

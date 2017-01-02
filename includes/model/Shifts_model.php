@@ -14,7 +14,7 @@ function Shifts_by_room($room)
 function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
     $SQL = "SELECT * FROM (
-      SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`
+      SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` AS `room_name`
       FROM `Shifts`
       JOIN `Room` USING (`RID`)
       JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
@@ -27,7 +27,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       
       UNION
       
-      SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` as `room_name`
+      SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` AS `room_name`
       FROM `Shifts`
       JOIN `Room` USING (`RID`)
       JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
@@ -36,7 +36,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       AND `start` BETWEEN " . $shiftsFilter->getStartTime() . " AND " . $shiftsFilter->getEndTime() . "
       AND `NeededAngelTypes`.`angel_type_id` IN (" . implode(',', $shiftsFilter->getTypes()) . ")
       AND `NeededAngelTypes`.`count` > 0
-      AND NOT `Shifts`.`PSID` IS NULL) as tmp_shifts
+      AND NOT `Shifts`.`PSID` IS NULL) AS tmp_shifts
           
       ORDER BY `start`";
     $result = sql_select($SQL);
@@ -48,7 +48,14 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 
 function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
-    $SQL = "SELECT `NeededAngelTypes`.*, `Shifts`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+    $SQL = "
+      SELECT
+          `NeededAngelTypes`.*,
+          `Shifts`.`SID`,
+          `AngelTypes`.`id`,
+          `AngelTypes`.`name`,
+          `AngelTypes`.`restricted`,
+          `AngelTypes`.`no_self_signup`
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
@@ -58,7 +65,13 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 
       UNION
 
-      SELECT `NeededAngelTypes`.*, `Shifts`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+      SELECT
+            `NeededAngelTypes`.*,
+            `Shifts`.`SID`,
+            `AngelTypes`.`id`,
+            `AngelTypes`.`name`,
+            `AngelTypes`.`restricted`,
+            `AngelTypes`.`no_self_signup`
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
@@ -74,7 +87,14 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 
 function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
 {
-    $result = sql_select("SELECT `NeededAngelTypes`.*, `Shifts`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+    $result = sql_select("
+      SELECT
+          `NeededAngelTypes`.*,
+          `Shifts`.`SID`,
+          `AngelTypes`.`id`,
+          `AngelTypes`.`name`,
+          `AngelTypes`.`restricted`,
+          `AngelTypes`.`no_self_signup`
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
@@ -84,7 +104,13 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
           
       UNION
           
-      SELECT `NeededAngelTypes`.*, `Shifts`.`SID`, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+      SELECT
+            `NeededAngelTypes`.*,
+            `Shifts`.`SID`,
+            `AngelTypes`.`id`,
+            `AngelTypes`.`name`,
+            `AngelTypes`.`restricted`,
+            `AngelTypes`.`no_self_signup`
       FROM `Shifts`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
@@ -102,7 +128,18 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
 
 function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
-    $SQL = "SELECT `User`.`Nick`, `User`.`email`, `User`.`email_shiftinfo`, `User`.`Sprache`, `User`.`Gekommen`, `ShiftEntry`.`UID`, `ShiftEntry`.`TID`, `ShiftEntry`.`SID`, `ShiftEntry`.`Comment`, `ShiftEntry`.`freeloaded`
+    $SQL = "
+      SELECT
+          `User`.`Nick`,
+          `User`.`email`,
+          `User`.`email_shiftinfo`,
+          `User`.`Sprache`,
+          `User`.`Gekommen`,
+          `ShiftEntry`.`UID`,
+          `ShiftEntry`.`TID`,
+          `ShiftEntry`.`SID`,
+          `ShiftEntry`.`Comment`,
+          `ShiftEntry`.`freeloaded`
       FROM `Shifts`
       JOIN `ShiftEntry` ON `ShiftEntry`.`SID`=`Shifts`.`SID`
       JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
@@ -120,13 +157,13 @@ function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
  * Check if a shift collides with other shifts (in time).
  *
  * @param Shift $shift
- * @param array<Shift> $shifts
+ * @param       array <Shift> $shifts
  */
 function Shift_collides($shift, $shifts)
 {
     foreach ($shifts as $other_shift) {
         if ($shift['SID'] != $other_shift['SID']) {
-            if (! ($shift['start'] >= $other_shift['end'] || $shift['end'] <= $other_shift['start'])) {
+            if (!($shift['start'] >= $other_shift['end'] || $shift['end'] <= $other_shift['start'])) {
                 return true;
             }
         }
@@ -142,7 +179,7 @@ function Shift_free_entries($needed_angeltype, $shift_entries)
     $taken = 0;
     foreach ($shift_entries as $shift_entry) {
         if ($shift_entry['freeloaded'] == 0) {
-            $taken ++;
+            $taken++;
         }
     }
     return max(0, $needed_angeltype['count'] - $taken);
@@ -151,27 +188,35 @@ function Shift_free_entries($needed_angeltype, $shift_entries)
 /**
  * Check if shift signup is allowed from the end users point of view (no admin like privileges)
  *
- * @param Shift $shift
- *          The shift
+ * @param Shift     $shift
+ *                        The shift
  * @param AngelType $angeltype
- *          The angeltype to which the user wants to sign up
- * @param array<Shift> $user_shifts
- *          List of the users shifts
- * @param boolean $angeltype_supporter
- *          True, if the user has angeltype supporter rights for the angeltype, which enables him to sign somebody up for the shift.
+ *                        The angeltype to which the user wants to sign up
+ * @param           array <Shift> $user_shifts
+ *                        List of the users shifts
+ * @param boolean   $angeltype_supporter
+ *                        True, if the user has angeltype supporter rights for the angeltype, which enables him to sign
+ *                        somebody up for the shift.
  */
-function Shift_signup_allowed_angel($user, $shift, $angeltype, $user_angeltype, $user_shifts, $needed_angeltype, $shift_entries)
-{
+function Shift_signup_allowed_angel(
+    $user,
+    $shift,
+    $angeltype,
+    $user_angeltype,
+    $user_shifts,
+    $needed_angeltype,
+    $shift_entries
+) {
     $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
-  
+
     if ($user['Gekommen'] == 0) {
         return new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, $free_entries);
     }
-  
+
     if ($user_shifts == null) {
         $user_shifts = Shifts_by_user($user);
     }
-  
+
     $signed_up = false;
     foreach ($user_shifts as $user_shift) {
         if ($user_shift['SID'] == $shift['SID']) {
@@ -179,40 +224,44 @@ function Shift_signup_allowed_angel($user, $shift, $angeltype, $user_angeltype, 
             break;
         }
     }
-  
+
     if ($signed_up) {
         // you cannot join if you already singed up for this shift
-    return new ShiftSignupState(ShiftSignupState::SIGNED_UP, $free_entries);
+        return new ShiftSignupState(ShiftSignupState::SIGNED_UP, $free_entries);
     }
-  
+
     if (time() > $shift['start']) {
         // you can only join if the shift is in future
-    return new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, $free_entries);
+        return new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, $free_entries);
     }
     if ($free_entries == 0) {
         // you cannot join if shift is full
-    return new ShiftSignupState(ShiftSignupState::OCCUPIED, $free_entries);
+        return new ShiftSignupState(ShiftSignupState::OCCUPIED, $free_entries);
     }
-  
+
     if ($user_angeltype == null) {
         $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
     }
-  
-    if ($user_angeltype == null || ($angeltype['no_self_signup'] == 1 && $user_angeltype != null) || ($angeltype['restricted'] == 1 && $user_angeltype != null && ! isset($user_angeltype['confirm_user_id']))) {
+
+    if (
+        $user_angeltype == null
+        || ($angeltype['no_self_signup'] == 1 && $user_angeltype != null)
+        || ($angeltype['restricted'] == 1 && $user_angeltype != null && !isset($user_angeltype['confirm_user_id']))
+    ) {
         // you cannot join if user is not of this angel type
-    // you cannot join if you are not confirmed
-    // you cannot join if angeltype has no self signup
-    
-    return new ShiftSignupState(ShiftSignupState::ANGELTYPE, $free_entries);
+        // you cannot join if you are not confirmed
+        // you cannot join if angeltype has no self signup
+
+        return new ShiftSignupState(ShiftSignupState::ANGELTYPE, $free_entries);
     }
-  
+
     if (Shift_collides($shift, $user_shifts)) {
         // you cannot join if user alread joined a parallel or this shift
-    return new ShiftSignupState(ShiftSignupState::COLLIDES, $free_entries);
+        return new ShiftSignupState(ShiftSignupState::COLLIDES, $free_entries);
     }
-  
-  // Hooray, shift is free for you!
-  return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
+
+    // Hooray, shift is free for you!
+    return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
 }
 
 /**
@@ -224,14 +273,14 @@ function Shift_signup_allowed_angeltype_supporter($angeltype, $needed_angeltype,
     if ($free_entries == 0) {
         return new ShiftSignupState(ShiftSignupState::OCCUPIED, $free_entries);
     }
-  
+
     return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
 }
 
 /**
  * Check if an admin can sign up a user to a shift.
  *
- * @param Shift $shift
+ * @param Shift     $shift
  *          The shift
  * @param AngelType $angeltype
  *          The angeltype to which the user wants to sign up
@@ -239,38 +288,56 @@ function Shift_signup_allowed_angeltype_supporter($angeltype, $needed_angeltype,
 function Shift_signup_allowed_admin($angeltype, $needed_angeltype, $shift_entries)
 {
     $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
-  
+
     if ($free_entries == 0) {
         // User shift admins may join anybody in every shift
-    return new ShiftSignupState(ShiftSignupState::ADMIN, $free_entries);
+        return new ShiftSignupState(ShiftSignupState::ADMIN, $free_entries);
     }
-  
+
     return new ShiftSignupState(ShiftSignupState::FREE, $free_entries);
 }
 
 /**
  * Check if an angel can sign up for given shift.
  *
- * @param Shift $shift
- *          The shift
+ * @param Shift     $shift
+ *                        The shift
  * @param AngelType $angeltype
- *          The angeltype to which the user wants to sign up
- * @param array<Shift> $user_shifts
- *          List of the users shifts
+ *                        The angeltype to which the user wants to sign up
+ * @param           array <Shift> $user_shifts
+ *                        List of the users shifts
  */
-function Shift_signup_allowed($signup_user, $shift, $angeltype, $user_angeltype = null, $user_shifts = null, $needed_angeltype, $shift_entries)
-{
+function Shift_signup_allowed(
+    $signup_user,
+    $shift,
+    $angeltype,
+    $user_angeltype = null,
+    $user_shifts = null,
+    $needed_angeltype,
+    $shift_entries
+) {
     global $user, $privileges;
-  
+
     if (in_array('user_shifts_admin', $privileges)) {
         return Shift_signup_allowed_admin($angeltype, $needed_angeltype, $shift_entries);
     }
-  
-    if (in_array('shiftentry_edit_angeltype_supporter', $privileges) && User_is_AngelType_supporter($user, $angeltype)) {
+
+    if (
+        in_array('shiftentry_edit_angeltype_supporter', $privileges)
+        && User_is_AngelType_supporter($user, $angeltype)
+    ) {
         return Shift_signup_allowed_angeltype_supporter($angeltype, $needed_angeltype, $shift_entries);
     }
-  
-    return Shift_signup_allowed_angel($signup_user, $shift, $angeltype, $user_angeltype, $user_shifts, $needed_angeltype, $shift_entries);
+
+    return Shift_signup_allowed_angel(
+        $signup_user,
+        $shift,
+        $angeltype,
+        $user_angeltype,
+        $user_shifts,
+        $needed_angeltype,
+        $shift_entries
+    );
 }
 
 /**
@@ -287,7 +354,7 @@ function Shift_delete_by_psid($shift_psid)
 function Shift_delete($shift_id)
 {
     mail_shift_delete(Shift($shift_id));
-  
+
     $result = sql_query("DELETE FROM `Shifts` WHERE `SID`='" . sql_escape($shift_id) . "'");
     if ($result === false) {
         engelsystem_error('Unable to delete shift.');
@@ -303,8 +370,9 @@ function Shift_update($shift)
     global $user;
     $shift['name'] = ShiftType($shift['shifttype_id'])['name'];
     mail_shift_change(Shift($shift['SID']), $shift);
-  
-    return sql_query("UPDATE `Shifts` SET
+
+    return sql_query("
+      UPDATE `Shifts` SET
       `shifttype_id`='" . sql_escape($shift['shifttype_id']) . "',
       `start`='" . sql_escape($shift['start']) . "',
       `end`='" . sql_escape($shift['end']) . "',
@@ -314,7 +382,8 @@ function Shift_update($shift)
       `PSID`=" . sql_null($shift['PSID']) . ",
       `edited_by_user_id`='" . sql_escape($user['UID']) . "',
       `edited_at_timestamp`=" . time() . "
-      WHERE `SID`='" . sql_escape($shift['SID']) . "'");
+      WHERE `SID`='" . sql_escape($shift['SID']) . "'
+    ");
 }
 
 /**
@@ -341,7 +410,8 @@ function Shift_update_by_psid($shift)
 function Shift_create($shift)
 {
     global $user;
-    $result = sql_query("INSERT INTO `Shifts` SET
+    $result = sql_query("
+      INSERT INTO `Shifts` SET
       `shifttype_id`='" . sql_escape($shift['shifttype_id']) . "',
       `start`='" . sql_escape($shift['start']) . "',
       `end`='" . sql_escape($shift['end']) . "',
@@ -350,7 +420,8 @@ function Shift_create($shift)
       `URL`=" . sql_null($shift['URL']) . ",
       `PSID`=" . sql_null($shift['PSID']) . ",
       `created_by_user_id`='" . sql_escape($user['UID']) . "',
-      `created_at_timestamp`=" . time());
+      `created_at_timestamp`=" . time()
+    );
     if ($result === false) {
         return false;
     }
@@ -384,7 +455,7 @@ function Shifts_by_user($user, $include_freeload_comments = false)
  * Returns Shift by id.
  *
  * @param $shift_id Shift
- *          ID
+ *                  ID
  */
 function Shift($shift_id)
 {
@@ -394,30 +465,30 @@ function Shift($shift_id)
       JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
       WHERE `SID`='" . sql_escape($shift_id) . "'");
     $shiftsEntry_source = sql_select("SELECT `id`, `TID` , `UID` , `freeloaded` FROM `ShiftEntry` WHERE `SID`='" . sql_escape($shift_id) . "'");
-  
+
     if ($shifts_source === false) {
         engelsystem_error('Unable to load shift.');
     }
-  
+
     if (empty($shifts_source)) {
         return null;
     }
-  
+
     $result = $shifts_source[0];
-  
+
     $result['ShiftEntry'] = $shiftsEntry_source;
     $result['NeedAngels'] = [];
-  
+
     $temp = NeededAngelTypes_by_shift($shift_id);
     foreach ($temp as $e) {
         $result['NeedAngels'][] = [
-        'TID' => $e['angel_type_id'],
-        'count' => $e['count'],
-        'restricted' => $e['restricted'],
-        'taken' => $e['taken']
-    ];
+            'TID'        => $e['angel_type_id'],
+            'count'      => $e['count'],
+            'restricted' => $e['restricted'],
+            'taken'      => $e['taken']
+        ];
     }
-  
+
     return $result;
 }
 
@@ -427,7 +498,7 @@ function Shift($shift_id)
 function Shifts()
 {
     $shifts_source = sql_select("
-    SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`RID`, `Room`.`Name` as `room_name` 
+    SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`RID`, `Room`.`Name` AS `room_name` 
     FROM `Shifts`
     JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
     JOIN `Room` ON `Room`.`RID` = `Shifts`.`RID`
@@ -435,15 +506,15 @@ function Shifts()
     if ($shifts_source === false) {
         return false;
     }
-  
+
     foreach ($shifts_source as &$shift) {
         $needed_angeltypes = NeededAngelTypes_by_shift($shift['SID']);
         if ($needed_angeltypes === false) {
             return false;
         }
-    
+
         $shift['angeltypes'] = $needed_angeltypes;
     }
-  
+
     return $shifts_source;
 }

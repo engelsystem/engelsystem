@@ -10,28 +10,28 @@ namespace Engelsystem;
 class ShiftsFilter
 {
 
-  /**
-   * How long can the time interval be?
-   */
-  const MAX_DURATION = 86400;
- // one day
-  
-  /**
-   * Shift is completely full.
-   */
-  const FILLED_FILLED = 1;
+    /**
+     * How long can the time interval be?
+     */
+    const MAX_DURATION = 86400;
+    // one day
 
-  /**
-   * Shift has some free slots.
-   */
-  const FILLED_FREE = 0;
+    /**
+     * Shift is completely full.
+     */
+    const FILLED_FILLED = 1;
 
-  /**
-   * Has the user "user shifts admin" privilege?
-   *
-   * @var boolean
-   */
-  private $userShiftsAdmin;
+    /**
+     * Shift has some free slots.
+     */
+    const FILLED_FREE = 0;
+
+    /**
+     * Has the user "user shifts admin" privilege?
+     *
+     * @var boolean
+     */
+    private $userShiftsAdmin;
 
     private $filled = [];
 
@@ -48,11 +48,11 @@ class ShiftsFilter
         $this->user_shifts_admin = $user_shifts_admin;
         $this->rooms = $rooms;
         $this->types = $types;
-    
+
         $this->filled = [
-        ShiftsFilter::FILLED_FREE
-    ];
-    
+            ShiftsFilter::FILLED_FREE
+        ];
+
         if ($user_shifts_admin) {
             $this->filled[] = ShiftsFilter::FILLED_FILLED;
         }
@@ -84,9 +84,7 @@ class ShiftsFilter
     public function getTypes()
     {
         if (count($this->types) == 0) {
-            return [
-          0
-      ];
+            return [0];
         }
         return $this->types;
     }
@@ -99,9 +97,7 @@ class ShiftsFilter
     public function getRooms()
     {
         if (count($this->rooms) == 0) {
-            return [
-          0
-      ];
+            return [0];
         }
         return $this->rooms;
     }

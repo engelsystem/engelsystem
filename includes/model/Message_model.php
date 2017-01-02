@@ -12,7 +12,7 @@ function Message_ids()
  * Returns message by id.
  *
  * @param $message_id message
- *          ID
+ *                    ID
  */
 function Message($message_id)
 {
@@ -32,21 +32,36 @@ function Message($message_id)
  * send message
  *
  * @param $receiver_user_id User
- *          ID of Reciever
- * @param $text Text
- *          of Message
+ *                          ID of Reciever
+ * @param $text             Text
+ *                          of Message
  */
 function Message_send($receiver_user_id, $text)
 {
     global $user;
-  
+
     $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($text));
     $receiver_user_id = preg_replace("/([^0-9]{1,})/ui", '', strip_tags($receiver_user_id));
-  
-    if (($text != "" && is_numeric($receiver_user_id)) && (sql_num_query("SELECT * FROM `User` WHERE `UID`='" . sql_escape($receiver_user_id) . "' AND NOT `UID`='" . sql_escape($user['UID']) . "' LIMIT 1") > 0)) {
-        sql_query("INSERT INTO `Messages` SET `Datum`='" . sql_escape(time()) . "', `SUID`='" . sql_escape($user['UID']) . "', `RUID`='" . sql_escape($receiver_user_id) . "', `Text`='" . sql_escape($text) . "'");
+
+    if (
+        ($text != "" && is_numeric($receiver_user_id))
+        && (sql_num_query("
+            SELECT *
+            FROM `User`
+            WHERE `UID`='" . sql_escape($receiver_user_id) . "'
+            AND NOT `UID`='" . sql_escape($user['UID']) . "'
+            LIMIT 1
+        ") > 0)
+    ) {
+        sql_query("
+            INSERT INTO `Messages`
+            SET `Datum`='" . sql_escape(time()) . "',
+                `SUID`='" . sql_escape($user['UID']) . "',
+                `RUID`='" . sql_escape($receiver_user_id) . "',
+                `Text`='" . sql_escape($text) . "'
+        ");
         return true;
     }
-  
+
     return false;
 }

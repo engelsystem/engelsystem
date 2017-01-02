@@ -5,7 +5,7 @@
  */
 function msg()
 {
-    if (! isset($_SESSION['msg'])) {
+    if (!isset($_SESSION['msg'])) {
         return "";
     }
     $msg = $_SESSION['msg'];
@@ -48,8 +48,8 @@ function alert($class, $msg, $immediatly = false)
         }
         return '<div class="alert alert-' . $class . '">' . $msg . '</div>';
     }
-  
-    if (! isset($_SESSION['msg'])) {
+
+    if (!isset($_SESSION['msg'])) {
         $_SESSION['msg'] = "";
     }
     $_SESSION['msg'] .= alert($class, $msg, true);

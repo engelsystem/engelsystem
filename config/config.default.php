@@ -49,7 +49,7 @@ $shift_sum_formula = "SUM(
 
 // voucher calculation
 $voucher_settings = [
-    "initial_vouchers" => 2,
+    "initial_vouchers"   => 2,
     "shifts_per_voucher" => 1
 ];
 
@@ -63,6 +63,6 @@ $api_key = "";
 $config = [
     'host' => "localhost",
     'user' => "root",
-    'pw' => "",
-    'db' => "engelsystem"
+    'pw'   => "",
+    'db'   => "engelsystem"
 ];

@@ -2,6 +2,7 @@
 
 /**
  * Returns users groups
+ *
  * @param User $user
  */
 function User_groups($user)

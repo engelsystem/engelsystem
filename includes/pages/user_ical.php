@@ -6,30 +6,30 @@
 function user_ical()
 {
     global $user;
-  
-    if (! isset($_REQUEST['key']) || ! preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key'])) {
+
+    if (!isset($_REQUEST['key']) || !preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key'])) {
         engelsystem_error("Missing key.");
     }
     $key = $_REQUEST['key'];
-  
+
     $user = User_by_api_key($key);
     if ($user == null) {
         engelsystem_error("Key invalid.");
     }
-  
-    if (! in_array('ical', privileges_for_user($user['UID']))) {
+
+    if (!in_array('ical', privileges_for_user($user['UID']))) {
         engelsystem_error("No privilege for ical.");
     }
-  
+
     $ical_shifts = load_ical_shifts();
-  
+
     send_ical_from_shifts($ical_shifts);
 }
 
 /**
  * Renders an ical calender from given shifts array.
  *
- * @param array<Shift> $shifts
+ * @param array <Shift> $shifts
  */
 function send_ical_from_shifts($shifts)
 {
@@ -53,7 +53,8 @@ function make_ical_entry_from_shift($shift)
 {
     $output = "BEGIN:VEVENT\r\n";
     $output .= "UID:" . md5($shift['start'] . $shift['end'] . $shift['name']) . "\r\n";
-    $output .= "SUMMARY:" . str_replace("\n", "\\n", $shift['name']) . " (" . str_replace("\n", "\\n", $shift['title']) . ")\r\n";
+    $output .= "SUMMARY:" . str_replace("\n", "\\n", $shift['name'])
+        . " (" . str_replace("\n", "\\n", $shift['title']) . ")\r\n";
     if (isset($shift['Comment'])) {
         $output .= "DESCRIPTION:" . str_replace("\n", "\\n", $shift['Comment']) . "\r\n";
     }

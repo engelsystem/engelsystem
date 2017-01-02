@@ -20,14 +20,20 @@ function EventConfig()
  * Update event config.
  *
  * @param string $event_name
- * @param int $buildup_start_date
- * @param int $event_start_date
- * @param int $event_end_date
- * @param int $teardown_end_date
+ * @param int    $buildup_start_date
+ * @param int    $event_start_date
+ * @param int    $event_end_date
+ * @param int    $teardown_end_date
  * @param string $event_welcome_msg
  */
-function EventConfig_update($event_name, $buildup_start_date, $event_start_date, $event_end_date, $teardown_end_date, $event_welcome_msg)
-{
+function EventConfig_update(
+    $event_name,
+    $buildup_start_date,
+    $event_start_date,
+    $event_end_date,
+    $teardown_end_date,
+    $event_welcome_msg
+) {
     if (EventConfig() == null) {
         return sql_query("INSERT INTO `EventConfig` SET
       `event_name`=" . sql_null($event_name) . ",

@@ -22,7 +22,8 @@ function User_delete($user_id)
  */
 function User_update($user)
 {
-    return sql_query("UPDATE `User` SET
+    return sql_query("
+      UPDATE `User` SET
       `Nick`='" . sql_escape($user['Nick']) . "',
       `Name`='" . sql_escape($user['Name']) . "',
       `Vorname`='" . sql_escape($user['Vorname']) . "',
@@ -46,7 +47,8 @@ function User_update($user)
       `arrival_date`='" . sql_escape($user['arrival_date']) . "',
       `planned_arrival_date`='" . sql_escape($user['planned_arrival_date']) . "',
       `planned_departure_date`=" . sql_null($user['planned_departure_date']) . "
-      WHERE `UID`='" . sql_escape($user['UID']) . "'");
+      WHERE `UID`='" . sql_escape($user['UID']) . "'
+    ");
 }
 
 /**
@@ -83,19 +85,19 @@ function User_tshirts_count()
 function User_sortable_columns()
 {
     return [
-      'Nick',
-      'Name',
-      'Vorname',
-      'Alter',
-      'DECT',
-      'email',
-      'Size',
-      'Gekommen',
-      'Aktiv',
-      'force_active',
-      'Tshirt',
-      'lastLogIn'
-  ];
+        'Nick',
+        'Name',
+        'Vorname',
+        'Alter',
+        'DECT',
+        'email',
+        'Size',
+        'Gekommen',
+        'Aktiv',
+        'force_active',
+        'Tshirt',
+        'lastLogIn'
+    ];
 }
 
 /**
@@ -116,7 +118,7 @@ function Users($order_by = 'Nick')
 function User_is_freeloader($user)
 {
     global $max_freeloadable_shifts, $user;
-  
+
     return count(ShiftEntries_freeloaded_by_user($user)) >= $max_freeloadable_shifts;
 }
 
@@ -130,7 +132,8 @@ function Users_by_angeltype_inverted($angeltype)
     $result = sql_select("
       SELECT `User`.*
       FROM `User`
-      LEFT JOIN `UserAngelTypes` ON (`User`.`UID`=`UserAngelTypes`.`user_id` AND `angeltype_id`='" . sql_escape($angeltype['id']) . "')
+      LEFT JOIN `UserAngelTypes`
+        ON (`User`.`UID`=`UserAngelTypes`.`user_id` AND `angeltype_id`='" . sql_escape($angeltype['id']) . "')
       WHERE `UserAngelTypes`.`id` IS NULL
       ORDER BY `Nick`");
     if ($result === false) {
@@ -149,7 +152,7 @@ function Users_by_angeltype($angeltype)
     $result = sql_select("
       SELECT
       `User`.*,
-      `UserAngelTypes`.`id` as `user_angeltype_id`,
+      `UserAngelTypes`.`id` AS `user_angeltype_id`,
       `UserAngelTypes`.`confirm_user_id`,
       `UserAngelTypes`.`supporter`,
       `UserDriverLicenses`.*
@@ -207,7 +210,7 @@ function User_validate_jabber($jabber)
     $jabber = strip_item($jabber);
     if ($jabber == '') {
         // Empty is ok
-    return new ValidationResult(true, '');
+        return new ValidationResult(true, '');
     }
     return new ValidationResult(check_email($jabber), $jabber);
 }
@@ -223,20 +226,20 @@ function User_validate_planned_arrival_date($planned_arrival_date)
 {
     if ($planned_arrival_date == null) {
         // null is not okay
-    return new ValidationResult(false, time());
+        return new ValidationResult(false, time());
     }
     $event_config = EventConfig();
     if ($event_config == null) {
         // Nothing to validate against
-    return new ValidationResult(true, $planned_arrival_date);
+        return new ValidationResult(true, $planned_arrival_date);
     }
     if (isset($event_config['buildup_start_date']) && $planned_arrival_date < $event_config['buildup_start_date']) {
         // Planned arrival can not be before buildup start date
-    return new ValidationResult(false, $event_config['buildup_start_date']);
+        return new ValidationResult(false, $event_config['buildup_start_date']);
     }
     if (isset($event_config['teardown_end_date']) && $planned_arrival_date > $event_config['teardown_end_date']) {
         // Planned arrival can not be after teardown end date
-    return new ValidationResult(false, $event_config['teardown_end_date']);
+        return new ValidationResult(false, $event_config['teardown_end_date']);
     }
     return new ValidationResult(true, $planned_arrival_date);
 }
@@ -254,24 +257,24 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
 {
     if ($planned_departure_date == null) {
         // null is okay
-    return new ValidationResult(true, null);
+        return new ValidationResult(true, null);
     }
     if ($planned_arrival_date > $planned_departure_date) {
         // departure cannot be before arrival
-    return new ValidationResult(false, $planned_arrival_date);
+        return new ValidationResult(false, $planned_arrival_date);
     }
     $event_config = EventConfig();
     if ($event_config == null) {
         // Nothing to validate against
-    return new ValidationResult(true, $planned_departure_date);
+        return new ValidationResult(true, $planned_departure_date);
     }
     if (isset($event_config['buildup_start_date']) && $planned_departure_date < $event_config['buildup_start_date']) {
         // Planned arrival can not be before buildup start date
-    return new ValidationResult(false, $event_config['buildup_start_date']);
+        return new ValidationResult(false, $event_config['buildup_start_date']);
     }
     if (isset($event_config['teardown_end_date']) && $planned_departure_date > $event_config['teardown_end_date']) {
         // Planned arrival can not be after teardown end date
-    return new ValidationResult(false, $event_config['teardown_end_date']);
+        return new ValidationResult(false, $event_config['teardown_end_date']);
     }
     return new ValidationResult(true, $planned_departure_date);
 }
@@ -384,14 +387,14 @@ function User_generate_password_recovery_token(&$user)
 function User_get_eligable_voucher_count(&$user)
 {
     global $voucher_settings;
-  
+
     $shifts_done = count(ShiftEntries_finished_by_user($user));
-  
+
     $earned_vouchers = $user['got_voucher'] - $voucher_settings['initial_vouchers'];
     $elegible_vouchers = $shifts_done / $voucher_settings['shifts_per_voucher'] - $earned_vouchers;
     if ($elegible_vouchers < 0) {
         return 0;
     }
-  
+
     return $elegible_vouchers;
 }

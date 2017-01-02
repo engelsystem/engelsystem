@@ -2,6 +2,7 @@
 
 /**
  * returns a list of rooms.
+ *
  * @param boolean $show_all returns also hidden rooms when true
  */
 function Rooms($show_all = false)
@@ -22,7 +23,7 @@ function Room_delete($room_id)
 /**
  * Create a new room
  *
- * @param string $name
+ * @param string  $name
  *          Name of the room
  * @param boolean $from_frab
  *          Is this a frab imported room?
@@ -51,7 +52,7 @@ function Room_create($name, $from_frab, $public)
 function Room($room_id)
 {
     $room_source = sql_select("SELECT * FROM `Room` WHERE `RID`='" . sql_escape($room_id) . "' AND `show` = 'Y'");
-  
+
     if ($room_source === false) {
         return false;
     }

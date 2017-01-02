@@ -50,9 +50,9 @@ function form_spinner($name, $label, $value)
  *          Name of the parameter
  * @param string $label
  *          Label
- * @param int $value
+ * @param int    $value
  *          Unix Timestamp
- * @param int $min_date
+ * @param int    $min_date
  *          Earliest possible date
  * @return HTML
  */
@@ -111,7 +111,8 @@ function form_checkboxes($name, $label, $items, $selected)
  * @param
  *          items Array mit den Beschriftungen der Zeilen
  * @param
- *          selected Mehrdimensionales Array, wobei $selected[foo] ein Array der in der Datenreihe foo markierten Checkboxen ist
+ *          selected Mehrdimensionales Array, wobei $selected[foo] ein Array der in der Datenreihe foo markierten
+ *          Checkboxen ist
  * @param
  *          disabled Wie selected, nur dass die entsprechenden Checkboxen deaktiviert statt markiert sind
  */
@@ -127,7 +128,7 @@ function form_multi_checkboxes($names, $label, $items, $selected, $disabled = []
         foreach ($names as $name => $title) {
             $dom_id = $name . '_' . $key;
             $sel = array_search($key, $selected[$name]) !== false ? ' checked="checked"' : "";
-            if (! empty($disabled) && ! empty($disabled[$name]) && array_search($key, $disabled[$name]) !== false) {
+            if (!empty($disabled) && !empty($disabled[$name]) && array_search($key, $disabled[$name]) !== false) {
                 $sel .= ' disabled="disabled"';
             }
             $html .= '<td style="text-align: center;"><input type="checkbox" id="' . $dom_id . '" name="' . $name . '[]" value="' . $key . '"' . $sel . ' /></td>';
@@ -173,7 +174,10 @@ function form_info($label, $text = "")
  */
 function form_submit($name, $label)
 {
-    return form_element('<input class="btn btn-primary" type="submit" name="' . $name . '" value="' . $label . '" />', "");
+    return form_element(
+        '<input class="btn btn-primary" type="submit" name="' . $name . '" value="' . $label . '" />',
+        ""
+    );
 }
 
 /**
@@ -182,17 +186,21 @@ function form_submit($name, $label)
 function form_text($name, $label, $value, $disabled = false)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
-    return form_element($label, '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . $disabled . '/>', 'form_' . $name);
+    return form_element(
+        $label,
+        '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . $disabled . '/>',
+        'form_' . $name
+    );
 }
 
 /**
  * Renders a text input with placeholder instead of label.
  *
- * @param String $name
+ * @param String  $name
  *          Input name
- * @param String $placeholder
+ * @param String  $placeholder
  *          Placeholder
- * @param String $value
+ * @param String  $value
  *          The value
  * @param Boolean $disabled
  *          Is the field enabled?
@@ -200,7 +208,8 @@ function form_text($name, $label, $value, $disabled = false)
 function form_text_placeholder($name, $placeholder, $value, $disabled = false)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
-    return form_element('', '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name . '" value="' . htmlspecialchars($value) . '" placeholder="' . $placeholder . '" ' . $disabled . '/>');
+    return form_element('',
+        '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name . '" value="' . htmlspecialchars($value) . '" placeholder="' . $placeholder . '" ' . $disabled . '/>');
 }
 
 /**
@@ -209,7 +218,11 @@ function form_text_placeholder($name, $placeholder, $value, $disabled = false)
 function form_email($name, $label, $value, $disabled = false)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
-    return form_element($label, '<input class="form-control" id="form_' . $name . '" type="email" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . $disabled . '/>', 'form_' . $name);
+    return form_element(
+        $label,
+        '<input class="form-control" id="form_' . $name . '" type="email" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . $disabled . '/>',
+        'form_' . $name
+    );
 }
 
 /**
@@ -226,7 +239,11 @@ function form_file($name, $label)
 function form_password($name, $label, $disabled = false)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
-    return form_element($label, '<input class="form-control" id="form_' . $name . '" type="password" name="' . $name . '" value="" ' . $disabled . '/>', 'form_' . $name);
+    return form_element(
+        $label,
+        '<input class="form-control" id="form_' . $name . '" type="password" name="' . $name . '" value="" ' . $disabled . '/>',
+        'form_' . $name
+    );
 }
 
 /**
@@ -235,7 +252,11 @@ function form_password($name, $label, $disabled = false)
 function form_password_placeholder($name, $placeholder, $disabled = false)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
-    return form_element('', '<input class="form-control" id="form_' . $name . '" type="password" name="' . $name . '" value="" placeholder="' . $placeholder . '" ' . $disabled . '/>', 'form_' . $name);
+    return form_element(
+        '',
+        '<input class="form-control" id="form_' . $name . '" type="password" name="' . $name . '" value="" placeholder="' . $placeholder . '" ' . $disabled . '/>',
+        'form_' . $name
+    );
 }
 
 /**
@@ -244,7 +265,11 @@ function form_password_placeholder($name, $placeholder, $disabled = false)
 function form_textarea($name, $label, $value, $disabled = false)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
-    return form_element($label, '<textarea rows="5" class="form-control" id="form_' . $name . '" type="text" name="' . $name . '" ' . $disabled . '>' . $value . '</textarea>', 'form_' . $name);
+    return form_element(
+        $label,
+        '<textarea rows="5" class="form-control" id="form_' . $name . '" type="text" name="' . $name . '" ' . $disabled . '>' . $value . '</textarea>',
+        'form_' . $name
+    );
 }
 
 /**
@@ -263,7 +288,7 @@ function form_element($label, $input, $for = "")
     if ($label == '') {
         return '<div class="form-group">' . $input . '</div>';
     }
-  
+
     return '<div class="form-group">' . '<label for="' . $for . '">' . $label . '</label>' . $input . '</div>';
 }
 
@@ -281,7 +306,7 @@ function html_options($name, $options, $selected = "")
     foreach ($options as $value => $label) {
         $html .= '<input type="radio"' . ($value == $selected ? ' checked="checked"' : '') . ' name="' . $name . '" value="' . $value . '"> ' . $label;
     }
-  
+
     return $html;
 }
 

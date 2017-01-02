@@ -2,10 +2,11 @@
 
 /**
  * Renders a bargraph
- * @param string $key keyname of the x-axis
- * @param array $row_names keynames for the data rows
- * @param unknown $colors colors for the data rows
- * @param unknown $data the data
+ *
+ * @param string  $key       keyname of the x-axis
+ * @param array   $row_names keynames for the data rows
+ * @param unknown $colors    colors for the data rows
+ * @param unknown $data      the data
  */
 function bargraph($dom_id, $key, $row_names, $colors, $data)
 {
@@ -13,7 +14,7 @@ function bargraph($dom_id, $key, $row_names, $colors, $data)
     foreach ($data as $dataset) {
         $labels[] = $dataset[$key];
     }
-  
+
     $datasets = [];
     foreach ($row_names as $row_key => $name) {
         $values = [];
@@ -21,20 +22,20 @@ function bargraph($dom_id, $key, $row_names, $colors, $data)
             $values[] = $dataset[$row_key];
         }
         $datasets[] = [
-        'label' => $name,
-        'fillColor' => $colors[$row_key],
-        'data' => $values
-    ];
+            'label'     => $name,
+            'fillColor' => $colors[$row_key],
+            'data'      => $values
+        ];
     }
-  
+
     return '<canvas id="' . $dom_id . '" style="width: 100%; height: 300px;"></canvas>
       <script type="text/javascript">
       $(function(){
         var ctx = $("#' . $dom_id . '").get(0).getContext("2d");
         var chart = new Chart(ctx).Bar(' . json_encode([
-      'labels' => $labels,
-      'datasets' => $datasets
-  ]) . ');
+            'labels'   => $labels,
+            'datasets' => $datasets
+        ]) . ');
       });
       </script>';
 }

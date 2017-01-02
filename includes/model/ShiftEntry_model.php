@@ -7,14 +7,14 @@
 function ShiftEntry_new()
 {
     return [
-      'id' => null,
-      'SID' => null,
-      'TID' => null,
-      'UID' => null,
-      'Comment' => null,
-      'freeloaded_comment' => null,
-      'freeloaded' => false
-  ];
+        'id'                 => null,
+        'SID'                => null,
+        'TID'                => null,
+        'UID'                => null,
+        'Comment'            => null,
+        'freeloaded_comment' => null,
+        'freeloaded'         => false
+    ];
 }
 
 /**
@@ -31,7 +31,18 @@ function ShiftEntries_freeleaded_count()
 function ShiftEntries_by_shift($shift_id)
 {
     return sql_select("
-      SELECT `User`.`Nick`, `User`.`email`, `User`.`email_shiftinfo`, `User`.`Sprache`, `User`.`Gekommen`, `ShiftEntry`.`UID`, `ShiftEntry`.`TID`, `ShiftEntry`.`SID`, `AngelTypes`.`name` as `angel_type_name`, `ShiftEntry`.`Comment`, `ShiftEntry`.`freeloaded`
+      SELECT
+          `User`.`Nick`,
+          `User`.`email`,
+          `User`.`email_shiftinfo`,
+          `User`.`Sprache`,
+          `User`.`Gekommen`,
+          `ShiftEntry`.`UID`,
+          `ShiftEntry`.`TID`,
+          `ShiftEntry`.`SID`,
+          `AngelTypes`.`name` AS `angel_type_name`,
+          `ShiftEntry`.`Comment`,
+          `ShiftEntry`.`freeloaded`
       FROM `ShiftEntry`
       JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
       JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`

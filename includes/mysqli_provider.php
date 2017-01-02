@@ -6,7 +6,7 @@
 function sql_close()
 {
     global $sql_connection;
-  
+
     return $sql_connection->close();
 }
 
@@ -24,11 +24,11 @@ function sql_null($value = null)
 function sql_transaction_start()
 {
     global $sql_nested_transaction_level;
-  
-    if ($sql_nested_transaction_level ++ == 0) {
+
+    if ($sql_nested_transaction_level++ == 0) {
         return sql_query("BEGIN");
     }
-  
+
     return true;
 }
 
@@ -38,11 +38,11 @@ function sql_transaction_start()
 function sql_transaction_commit()
 {
     global $sql_nested_transaction_level;
-  
-    if (-- $sql_nested_transaction_level == 0) {
+
+    if (--$sql_nested_transaction_level == 0) {
         return sql_query("COMMIT");
     }
-  
+
     return true;
 }
 
@@ -52,11 +52,11 @@ function sql_transaction_commit()
 function sql_transaction_rollback()
 {
     global $sql_nested_transaction_level;
-  
-    if (-- $sql_nested_transaction_level == 0) {
+
+    if (--$sql_nested_transaction_level == 0) {
         return sql_query("ROLLBACK");
     }
-  
+
     return true;
 }
 
@@ -69,12 +69,12 @@ function sql_transaction_rollback()
 function sql_error($message)
 {
     sql_close();
-  
+
     $message = trim($message) . "\n";
     $message .= debug_string_backtrace() . "\n";
-  
+
     error_log('mysql_provider error: ' . $message);
-  
+
     return false;
 }
 
@@ -94,23 +94,23 @@ function sql_error($message)
 function sql_connect($host, $user, $pass, $db_name)
 {
     global $sql_connection;
-  
+
     $sql_connection = new mysqli($host, $user, $pass, $db_name);
     if ($sql_connection->connect_errno) {
         error("Unable to connect to MySQL: " . $sql_connection->connect_error);
         return sql_error("Unable to connect to MySQL: " . $sql_connection->connect_error);
     }
-  
+
     $result = $sql_connection->query("SET CHARACTER SET utf8;");
-    if (! $result) {
+    if (!$result) {
         return sql_error("Unable to set utf8 character set (" . $sql_connection->errno . ") " . $sql_connection->error);
     }
-  
+
     $result = $sql_connection->set_charset('utf8');
-    if (! $result) {
+    if (!$result) {
         return sql_error("Unable to set utf8 names (" . $sql_connection->errno . ") " . $sql_connection->error);
     }
-  
+
     return $sql_connection;
 }
 
@@ -124,7 +124,7 @@ function sql_connect($host, $user, $pass, $db_name)
 function sql_select_db($db_name)
 {
     global $sql_connection;
-    if (! $sql_connection->select_db($db_name)) {
+    if (!$sql_connection->select_db($db_name)) {
         return sql_error("No database selected.");
     }
     return true;
@@ -139,11 +139,11 @@ function sql_select_db($db_name)
 function sql_select($query)
 {
     global $sql_connection;
-  
+
 //   echo $query . ";\n";
 //   echo debug_string_backtrace() . "\n";
-  
-  $result = $sql_connection->query($query);
+
+    $result = $sql_connection->query($query);
     if ($result) {
         $data = [];
         while ($line = $result->fetch_assoc()) {
@@ -151,7 +151,7 @@ function sql_select($query)
         }
         return $data;
     }
-  
+
     return sql_error("MySQL-query error: " . $query . " (" . $sql_connection->errno . ") " . $sql_connection->error);
 }
 
@@ -164,12 +164,12 @@ function sql_select($query)
 function sql_query($query)
 {
     global $sql_connection;
-  
+
     $result = $sql_connection->query($query);
     if ($result) {
         return $result;
     }
-  
+
     return sql_error("MySQL-query error: " . $query . " (" . $sql_connection->errno . ") " . $sql_connection->error);
 }
 

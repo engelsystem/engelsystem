@@ -8,17 +8,17 @@ use Engelsystem\ValidationResult;
 function AngelType_new()
 {
     return [
-      'id' => null,
-      'name' => "",
-      'restricted' => false,
-      'no_self_signup' => false,
-      'description' => '',
-      'requires_driver_license' => false,
-      'contact_user_id' => null,
-      'contact_name' => null,
-      'contact_dect' => null,
-      'contact_email' => null
-  ];
+        'id'                      => null,
+        'name'                    => "",
+        'restricted'              => false,
+        'no_self_signup'          => false,
+        'description'             => '',
+        'requires_driver_license' => false,
+        'contact_user_id'         => null,
+        'contact_name'            => null,
+        'contact_dect'            => null,
+        'contact_email'           => null
+    ];
 }
 
 /**
@@ -30,7 +30,7 @@ function AngelType_new()
  */
 function AngelType_validate_contact_user_id($angeltype)
 {
-    if (! isset($angeltype['contact_user_id'])) {
+    if (!isset($angeltype['contact_user_id'])) {
         return new ValidationResult(true, null);
     }
     if (isset($angeltype['contact_name']) || isset($angeltype['contact_dect']) || isset($angeltype['contact_email'])) {
@@ -53,9 +53,9 @@ function AngelType_contact_info($angeltype)
     if (isset($angeltype['contact_user_id'])) {
         $contact_user = User($angeltype['contact_user_id']);
         $contact_data = [
-        'contact_name' => $contact_user['Nick'],
-        'contact_dect' => $contact_user['DECT']
-    ];
+            'contact_name' => $contact_user['Nick'],
+            'contact_dect' => $contact_user['DECT']
+        ];
         if ($contact_user['email_by_human_allowed']) {
             $contact_data['contact_email'] = $contact_user['email'];
         }
@@ -63,10 +63,10 @@ function AngelType_contact_info($angeltype)
     }
     if (isset($angeltype['contact_name'])) {
         return [
-        'contact_name' => $angeltype['contact_name'],
-        'contact_dect' => $angeltype['contact_dect'],
-        'contact_email' => $angeltype['contact_email']
-    ];
+            'contact_name'  => $angeltype['contact_name'],
+            'contact_dect'  => $angeltype['contact_dect'],
+            'contact_email' => $angeltype['contact_email']
+        ];
     }
     return null;
 }
@@ -148,7 +148,7 @@ function AngelType_create($angeltype)
  * Validates a name for angeltypes.
  * Returns ValidationResult containing validation success and validated name.
  *
- * @param string $name
+ * @param string    $name
  *          Wanted name for the angeltype
  * @param AngelType $angeltype
  *          The angeltype the name is for
@@ -186,7 +186,7 @@ function AngelTypes_with_user($user)
 {
     $result = sql_select("
       SELECT `AngelTypes`.*, 
-      `UserAngelTypes`.`id` as `user_angeltype_id`,
+      `UserAngelTypes`.`id` AS `user_angeltype_id`,
       `UserAngelTypes`.`confirm_user_id`,
       `UserAngelTypes`.`supporter`
       FROM `AngelTypes` 
@@ -230,7 +230,7 @@ function AngelType_ids()
  * Returns angelType by id.
  *
  * @param $angeltype_id angelType
- *          ID
+ *                      ID
  */
 function AngelType($angeltype_id)
 {

@@ -13,9 +13,9 @@ class LogEntriesModelTest extends \PHPUnit_Framework_TestCase
     {
         $count = count(LogEntries());
         $this->assertNotFalse(LogEntry_create('test', 'test_LogEntry_create'));
-    
-    // There should be one more log entry now
-    $this->assertEquals(count(LogEntries()), $count + 1);
+
+        // There should be one more log entry now
+        $this->assertEquals(count(LogEntries()), $count + 1);
     }
 
     public function test_LogEntries_clear_all()
@@ -26,11 +26,11 @@ class LogEntriesModelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(count(LogEntries()), 0);
     }
 
-  /**
-   * @after
-   */
-  public function teardown()
-  {
-      LogEntries_clear_all();
-  }
+    /**
+     * @after
+     */
+    public function teardown()
+    {
+        LogEntries_clear_all();
+    }
 }

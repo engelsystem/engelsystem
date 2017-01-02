@@ -3,9 +3,9 @@
 /**
  * Creates a log entry.
  *
- * @param $nick Username
+ * @param $nick    Username
  * @param $message Log
- *          Message
+ *                 Message
  */
 function LogEntry_create($nick, $message)
 {
