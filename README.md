@@ -10,6 +10,8 @@
 
 ## Vorgehen:
  * Klonen des `master` inkl. submodules in lokales Verzeichnis: `git clone --recursive https://github.com/engelsystem/engelsystem.git`
+ * [Composer](https://getcomposer.org/download/) installieren
+ * Abhängigkeiten installieren: `composer install`
  * Der Webserver muss Schreibrechte auf das Verzeichnis `import` bekommen, für alle anderen Dateien reichen Leserechte.
  * Der Webserver muss auf `public` als http-root zeigen.
 

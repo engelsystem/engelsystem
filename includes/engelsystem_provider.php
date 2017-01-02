@@ -2,6 +2,11 @@
 /**
  * This file includes all needed functions, connects to the db etc.
  */
+if(!is_readable(__DIR__ . '/../vendor/autoload.php')){
+  die('Please run composer.phar install');
+}
+require __DIR__ . '/../vendor/autoload.php';
+
 require_once realpath(__DIR__ . '/../includes/mysqli_provider.php');
 
 require_once realpath(__DIR__ . '/../includes/sys_auth.php');
@@ -90,8 +95,6 @@ require_once realpath(__DIR__ . '/../includes/pages/user_news.php');
 require_once realpath(__DIR__ . '/../includes/pages/user_questions.php');
 require_once realpath(__DIR__ . '/../includes/pages/user_settings.php');
 require_once realpath(__DIR__ . '/../includes/pages/user_shifts.php');
-
-require_once realpath(__DIR__ . '/../vendor/parsedown/Parsedown.php');
 
 session_start();
 

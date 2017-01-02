@@ -7,6 +7,8 @@
 
 ## Directions:
  * Clone the master branch with the submodules: `git clone --recursive https://github.com/engelsystem/engelsystem.git`
+ * Install [Composer](https://getcomposer.org/download/)
+ * Install project dependencies: `composer install`
  * Webserver must have write access to the 'import' directory and read access for all other directories
  * Webserver must be public.
 

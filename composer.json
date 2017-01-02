@@ -1,0 +1,20 @@
+{
+    "name": "engelsystem/engelsystem",
+    "description": "Shift planning system for chaos events",
+    "type": "project",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "msquare",
+            "email": "msquare@notrademark.de"
+        },
+        {
+            "name": "MyIgel",
+            "email": "igor.scheller@igorshp.de"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "erusev/parsedown": "1.6.*"
+    }
+}
