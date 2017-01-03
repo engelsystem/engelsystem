@@ -368,8 +368,7 @@ function Shifts_by_user($user, $include_freeload_comments = false) {
  */
 function Shifts_for_websql() {
 
-    $limit = 100 * 1000; // set an arbitrary high limit
-    $limit = 100; //dev
+    $limit = 1000; // yes. but provide an argument "since" to fetch all remaining items.
 
     // fetch shifts
   $shifts = sql_select("
