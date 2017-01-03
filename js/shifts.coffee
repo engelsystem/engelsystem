@@ -1,7 +1,5 @@
 
-Shifts = window.Shifts || {}
-
-Shifts =
+Shifts = window.Shifts || {
     db:
         init: (done) ->
             Shifts.log 'init db'
@@ -52,12 +50,14 @@ Shifts =
             Shifts.log 'db initialized'
             Shifts.fetcher.start()
 
+    log: (msg) ->
+        console.info msg
+
+}
+
 
 
 # document ready
 $ ->
     Shifts.init()
-
-Shifts.log = (msg) ->
-    console.info msg
 

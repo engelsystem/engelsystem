@@ -1,8 +1,6 @@
 var Shifts;
 
-Shifts = window.Shifts || {};
-
-Shifts = {
+Shifts = window.Shifts || {
   db: {
     init: function(done) {
       Shifts.log('init db');
@@ -68,13 +66,12 @@ Shifts = {
       Shifts.log('db initialized');
       return Shifts.fetcher.start();
     });
+  },
+  log: function(msg) {
+    return console.info(msg);
   }
 };
 
 $(function() {
   return Shifts.init();
 });
-
-Shifts.log = function(msg) {
-  return console.info(msg);
-};
