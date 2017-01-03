@@ -18,16 +18,16 @@ Shifts = window.Shifts || {
         });
       });
     },
-    insert_room: function(room_id, name, done) {
-      return alasql("SELECT RID from Room WHERE RID = " + room_id, function(res) {
+    insert_room: function(room, done) {
+      return alasql("SELECT RID from Room WHERE RID = " + room.RID, function(res) {
         var error, room_exists;
         try {
-          room_exists = res[0].RID !== room_id;
+          room_exists = res[0].RID !== room.RID;
         } catch (error) {
           room_exists = false;
         }
         if (room_exists === false) {
-          return alasql("INSERT INTO Room (RID, Name) VALUES (" + room_id + ", '" + name + "')", function() {
+          return alasql("INSERT INTO Room (RID, Name) VALUES (" + room.RID + ", '" + room.Name + "')", function() {
             return done();
           });
         } else {
@@ -43,17 +43,17 @@ Shifts = window.Shifts || {
       return $.get(url, function(data) {
         var rooms;
         rooms = data.rooms;
-        return Shifts.fetcher.process(rooms, function() {
+        return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
           return Shifts.log('processing rooms done');
         });
       });
     },
-    process: function(rooms, done) {
-      var room;
-      room = rooms.shift();
-      return Shifts.db.insert_room(room.RID, room.Name, function() {
-        if (rooms.length > 0) {
-          return Shifts.fetcher.process(rooms, done);
+    process: function(processing_func, items_to_process, done) {
+      var item;
+      item = items_to_process.shift();
+      return processing_func(item, function() {
+        if (items_to_process.length > 0) {
+          return Shifts.fetcher.process(processing_func, items_to_process, done);
         } else {
           return done();
         }

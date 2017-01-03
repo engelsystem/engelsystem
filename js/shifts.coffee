@@ -15,15 +15,15 @@ Shifts = window.Shifts || {
                                 alasql 'CREATE TABLE IF NOT EXISTS options (option_key, option_value)', ->
                                     done()
 
-        insert_room: (room_id, name, done) ->
-            alasql "SELECT RID from Room WHERE RID = #{room_id}", (res) ->
+        insert_room: (room, done) ->
+            alasql "SELECT RID from Room WHERE RID = #{room.RID}", (res) ->
                 try
-                    room_exists = res[0].RID != room_id
+                    room_exists = res[0].RID != room.RID
                 catch
                     room_exists = false
 
                 if room_exists == false
-                    alasql "INSERT INTO Room (RID, Name) VALUES (#{room_id}, '#{name}')", ->
+                    alasql "INSERT INTO Room (RID, Name) VALUES (#{room.RID}, '#{room.Name}')", ->
                         done()
                 else
                     done()
@@ -33,14 +33,14 @@ Shifts = window.Shifts || {
             url = '?p=shifts_json_export_websql'
             $.get url, (data) ->
                 rooms = data.rooms
-                Shifts.fetcher.process rooms, ->
+                Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
                     Shifts.log 'processing rooms done'
 
-        process: (rooms, done) ->
-            room = rooms.shift()
-            Shifts.db.insert_room room.RID, room.Name, ->
-                if rooms.length > 0
-                    Shifts.fetcher.process rooms, done
+        process: (processing_func, items_to_process, done) ->
+            item = items_to_process.shift()
+            processing_func item, ->
+                if items_to_process.length > 0
+                    Shifts.fetcher.process processing_func, items_to_process, done
                 else
                     done()
 
