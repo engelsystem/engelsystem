@@ -14,6 +14,7 @@ $free_pages = [
     'user_shifts_browser',
     'shifts_json_export',
     'shifts_json_export_all',
+    'shifts_json_export_websql',
     'stats',
     'users',
     'user_driver_licenses',
@@ -49,6 +50,9 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   } elseif ($page == "shifts_json_export_all") {
     require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
     shifts_json_export_all_controller();
+  } elseif ($page == "shifts_json_export_websql") {
+    require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
+    shifts_json_export_websql_controller();
   } elseif ($page == "stats") {
     require_once realpath(__DIR__ . '/../includes/pages/guest_stats.php');
     guest_stats();

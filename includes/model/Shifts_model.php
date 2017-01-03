@@ -364,6 +364,74 @@ function Shifts_by_user($user, $include_freeload_comments = false) {
 }
 
 /**
+ * Return users shifts.
+ */
+function Shifts_for_websql() {
+
+    $limit = 100 * 1000; // set an arbitrary high limit
+
+    // fetch shifts
+  $shifts = sql_select("
+      SELECT SID, title, shifttype_id, start, end, RID
+      FROM Shifts
+      LIMIT " . $limit . "
+      ");
+  if ($shifts === false) {
+    engelsystem_error('Unable to load websql shifts.');
+  }
+
+    // fetch shift types
+  $shift_types = sql_select("
+      SELECT id, name, angeltype_id
+      FROM ShiftTypes
+      LIMIT " . $limit . "
+      ");
+  if ($shift_types === false) {
+    engelsystem_error('Unable to load websql shift_types.');
+  }
+
+    // fetch rooms
+  $rooms = sql_select("
+      SELECT RID, Name
+      FROM Room
+      LIMIT " . $limit . "
+      ");
+  if ($rooms === false) {
+    engelsystem_error('Unable to load websql rooms.');
+  }
+
+    // fetch shift_entries
+  $shift_entries = sql_select("
+      SELECT SID, TID, UID
+      FROM ShiftEntry
+      LIMIT " . $limit . "
+      ");
+  if ($shift_entries === false) {
+    engelsystem_error('Unable to load websql shift_entries.');
+  }
+
+    // fetch users
+  $users = sql_select("
+      SELECT UID, Nick
+      FROM User
+      WHERE Gekommen = '1'
+      LIMIT " . $limit . "
+      ");
+  if ($users === false) {
+    engelsystem_error('Unable to load websql users.');
+  }
+
+  $result = array(
+    'shift_types' => $shift_types,
+    'rooms' => $rooms,
+    'users' => $users,
+    'shift_entries' => $shift_entries,
+    'shifts' => $shifts,
+  );
+  return $result;
+}
+
+/**
  * Returns Shift by id.
  *
  * @param $shift_id Shift

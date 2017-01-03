@@ -286,6 +286,24 @@ function shifts_json_export_all_controller() {
 }
 
 /**
+ * Export shifts for use in the browser-based sql.
+ */
+function shifts_json_export_websql_controller() {
+
+  if (!isset($_SESSION['uid'])) {
+    engelsystem_error("You must be logged in to access shifts.");
+  }
+
+  $shifts = Shifts_for_websql();
+  if ($shifts === false) {
+    engelsystem_error("Unable to load shifts.");
+  }
+
+  header("Content-Type: application/json; charset=utf-8");
+  raw_output(json_encode($shifts));
+}
+
+/**
  * Export filtered shifts via JSON.
  * (Like iCal Export or shifts view)
  */
