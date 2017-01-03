@@ -41,6 +41,20 @@ Shifts = window.Shifts || {
                 else
                     done()
 
+        insert_shift: (shift, done) ->
+            Shifts.log "processing shift"
+            alasql "SELECT SID from Shifts WHERE SID = #{shift.SID}", (res) ->
+                try
+                    shift_exists = res[0].SID != shift.SID
+                catch
+                    shift_exists = false
+
+                if shift_exists == false
+                    alasql "INSERT INTO Shifts (SID, title, shift_start, shift_end) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.start}', '#{shift.end}')", ->
+                        done()
+                else
+                    done()
+
     fetcher:
         start: ->
             url = '?p=shifts_json_export_websql'
@@ -55,6 +69,11 @@ Shifts = window.Shifts || {
                 users = data.users
                 Shifts.fetcher.process Shifts.db.insert_user, users, ->
                     Shifts.log 'processing users done'
+
+                # insert shifts
+                shifts = data.shifts
+                Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
+                    Shifts.log 'processing shifts done'
 
         process: (processing_func, items_to_process, done) ->
             item = items_to_process.shift()

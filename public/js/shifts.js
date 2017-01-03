@@ -51,6 +51,24 @@ Shifts = window.Shifts || {
           return done();
         }
       });
+    },
+    insert_shift: function(shift, done) {
+      Shifts.log("processing shift");
+      return alasql("SELECT SID from Shifts WHERE SID = " + shift.SID, function(res) {
+        var error, shift_exists;
+        try {
+          shift_exists = res[0].SID !== shift.SID;
+        } catch (error) {
+          shift_exists = false;
+        }
+        if (shift_exists === false) {
+          return alasql("INSERT INTO Shifts (SID, title, shift_start, shift_end) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.start + "', '" + shift.end + "')", function() {
+            return done();
+          });
+        } else {
+          return done();
+        }
+      });
     }
   },
   fetcher: {
@@ -58,7 +76,11 @@ Shifts = window.Shifts || {
       var url;
       url = '?p=shifts_json_export_websql';
       return $.get(url, function(data) {
-        var rooms, users;
+        var rooms, shifts, users;
+        shifts = data.shifts;
+        Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
+          return Shifts.log('processing shifts done');
+        });
         rooms = data.rooms;
         Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
           return Shifts.log('processing rooms done');
