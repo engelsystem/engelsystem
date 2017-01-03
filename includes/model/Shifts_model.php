@@ -292,14 +292,11 @@ function Shift_signup_allowed_angel(
 /**
  * Check if an angeltype supporter can sign up a user to a shift.
  *
- * @TODO: remove $angeltype
- *
- * @param array|null $angeltype
- * @param array      $needed_angeltype
- * @param array[]    $shift_entries
+ * @param array   $needed_angeltype
+ * @param array[] $shift_entries
  * @return ShiftSignupState
  */
-function Shift_signup_allowed_angeltype_supporter($angeltype, $needed_angeltype, $shift_entries)
+function Shift_signup_allowed_angeltype_supporter($needed_angeltype, $shift_entries)
 {
     $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
     if ($free_entries == 0) {
@@ -312,14 +309,11 @@ function Shift_signup_allowed_angeltype_supporter($angeltype, $needed_angeltype,
 /**
  * Check if an admin can sign up a user to a shift.
  *
- * @TODO: remove $angeltype
- *
- * @param array|null $angeltype The angeltype to which the user wants to sign up
- * @param array      $needed_angeltype
- * @param array[]    $shift_entries
+ * @param array   $needed_angeltype
+ * @param array[] $shift_entries
  * @return ShiftSignupState
  */
-function Shift_signup_allowed_admin($angeltype, $needed_angeltype, $shift_entries)
+function Shift_signup_allowed_admin($needed_angeltype, $shift_entries)
 {
     $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
 
@@ -355,14 +349,14 @@ function Shift_signup_allowed(
     global $user, $privileges;
 
     if (in_array('user_shifts_admin', $privileges)) {
-        return Shift_signup_allowed_admin($angeltype, $needed_angeltype, $shift_entries);
+        return Shift_signup_allowed_admin($needed_angeltype, $shift_entries);
     }
 
     if (
         in_array('shiftentry_edit_angeltype_supporter', $privileges)
         && User_is_AngelType_supporter($user, $angeltype)
     ) {
-        return Shift_signup_allowed_angeltype_supporter($angeltype, $needed_angeltype, $shift_entries);
+        return Shift_signup_allowed_angeltype_supporter($needed_angeltype, $shift_entries);
     }
 
     return Shift_signup_allowed_angel(
