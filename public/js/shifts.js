@@ -185,8 +185,17 @@ Shifts = window.Shifts || {
         Shifts.log('db initialized');
         return Shifts.fetcher.start(function() {
           Shifts.log('fetch complete.');
-          return Shifts.db.get_my_shifts(function(res) {
-            return Shifts.render.shiftplan(res);
+          return Shifts.db.get_rooms(function(rooms) {
+            return Shifts.db.get_my_shifts(function(shifts) {
+              var data, i, len, room;
+              data = {};
+              for (i = 0, len = rooms.length; i < len; i++) {
+                room = rooms[i];
+                data[room.RID] = room;
+                data[room.RID].shifts = shifts;
+              }
+              return Shifts.log(data);
+            });
           });
         });
       });

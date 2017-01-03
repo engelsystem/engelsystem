@@ -155,8 +155,13 @@ Shifts = window.Shifts || {
                 Shifts.fetcher.start ->
                     Shifts.log 'fetch complete.'
 
-                    Shifts.db.get_my_shifts (res) ->
-                        Shifts.render.shiftplan res
+                    Shifts.db.get_rooms (rooms) ->
+                        Shifts.db.get_my_shifts (shifts) ->
+                            data = {}
+                            for room in rooms
+                                data[room.RID] = room
+                                data[room.RID].shifts = shifts
+                            Shifts.log data
 
     log: (msg) ->
         console.info msg
