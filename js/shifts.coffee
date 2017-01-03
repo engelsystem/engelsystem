@@ -162,7 +162,9 @@ Shifts = window.Shifts || {
                                 data[room.RID] = room
                                 data[room.RID].shifts = shifts
                             Shifts.log data
-                            Shifts.$shiftplan.html(Shifts.template.shift)
+                            tpl = Mustache.render Shifts.template.shift,
+                                shift_title: "Halleluja"
+                            Shifts.$shiftplan.html(tpl)
 
     log: (msg) ->
         console.info msg
@@ -170,15 +172,6 @@ Shifts = window.Shifts || {
     template:
 
         shift: '
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8" />
-<link rel="stylesheet" type="text/css" href="css/theme3.css" />
-<style>
-</style>
-</head>
-<body>
   <div class="shift-calendar">
     <div class="lane time">
       <div class="header">Time</div>
@@ -209,7 +202,7 @@ Shifts = window.Shifts || {
       <div class="tick"></div>
       <div class="shift panel panel-success" style="height: 160px;">
         <div class="panel-heading">
-          <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — Bottle Collection</a>
+          <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{ shift_title }}</a>
           <div class="pull-right">
             <div class="btn-group">
               <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-edit"></span>
@@ -253,9 +246,7 @@ Shifts = window.Shifts || {
       <div class="tick"></div>
       <div class="tick"></div>
     </div>
-  </div>
-</body>
-</html>'
+  </div>'
 
 }
 
