@@ -133,9 +133,17 @@ Shifts = window.Shifts || {
                 done()
 
     render:
-
-        shiftplan: (shifts) ->
-            Shifts.$shiftplan.html Shifts.render.calendar(shifts)
+        shiftplan: ->
+            Shifts.db.get_rooms (rooms) ->
+                Shifts.db.get_my_shifts (shifts) ->
+                    data = {}
+                    for room in rooms
+                        data[room.RID] = room
+                        data[room.RID].shifts = shifts
+                    Shifts.log data
+                    tpl = Mustache.render Shifts.template.shift,
+                        shift_title: "Halleluja"
+                    Shifts.$shiftplan.html(tpl)
 
         calendar: (shifts) ->
             return '<div class="shift-calendar">' + Shifts.render.lanes(shifts) + '</div>'
@@ -154,23 +162,12 @@ Shifts = window.Shifts || {
                 Shifts.log 'db initialized'
                 Shifts.fetcher.start ->
                     Shifts.log 'fetch complete.'
-
-                    Shifts.db.get_rooms (rooms) ->
-                        Shifts.db.get_my_shifts (shifts) ->
-                            data = {}
-                            for room in rooms
-                                data[room.RID] = room
-                                data[room.RID].shifts = shifts
-                            Shifts.log data
-                            tpl = Mustache.render Shifts.template.shift,
-                                shift_title: "Halleluja"
-                            Shifts.$shiftplan.html(tpl)
+                    Shifts.render.shiftplan()
 
     log: (msg) ->
         console.info msg
 
     template:
-
         shift: '
   <div class="shift-calendar">
     <div class="lane time">

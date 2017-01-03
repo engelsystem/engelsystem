@@ -162,8 +162,23 @@ Shifts = window.Shifts || {
     }
   },
   render: {
-    shiftplan: function(shifts) {
-      return Shifts.$shiftplan.html(Shifts.render.calendar(shifts));
+    shiftplan: function() {
+      return Shifts.db.get_rooms(function(rooms) {
+        return Shifts.db.get_my_shifts(function(shifts) {
+          var data, i, len, room, tpl;
+          data = {};
+          for (i = 0, len = rooms.length; i < len; i++) {
+            room = rooms[i];
+            data[room.RID] = room;
+            data[room.RID].shifts = shifts;
+          }
+          Shifts.log(data);
+          tpl = Mustache.render(Shifts.template.shift, {
+            shift_title: "Halleluja"
+          });
+          return Shifts.$shiftplan.html(tpl);
+        });
+      });
     },
     calendar: function(shifts) {
       return '<div class="shift-calendar">' + Shifts.render.lanes(shifts) + '</div>';
@@ -185,22 +200,7 @@ Shifts = window.Shifts || {
         Shifts.log('db initialized');
         return Shifts.fetcher.start(function() {
           Shifts.log('fetch complete.');
-          return Shifts.db.get_rooms(function(rooms) {
-            return Shifts.db.get_my_shifts(function(shifts) {
-              var data, i, len, room, tpl;
-              data = {};
-              for (i = 0, len = rooms.length; i < len; i++) {
-                room = rooms[i];
-                data[room.RID] = room;
-                data[room.RID].shifts = shifts;
-              }
-              Shifts.log(data);
-              tpl = Mustache.render(Shifts.template.shift, {
-                shift_title: "Halleluja"
-              });
-              return Shifts.$shiftplan.html(tpl);
-            });
-          });
+          return Shifts.render.shiftplan();
         });
       });
     }
