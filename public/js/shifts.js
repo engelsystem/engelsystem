@@ -104,29 +104,48 @@ Shifts = window.Shifts || {
       } else {
         return done();
       }
+    },
+    get_my_shifts: function(done) {
+      return alasql("SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", function(res) {
+        return done(res);
+      });
+    },
+    get_rooms: function(done) {
+      return alasql("SELECT * FROM Room", function(res) {
+        return done(res);
+      });
     }
   },
   fetcher: {
-    start: function() {
+    start: function(done) {
       var url;
       url = '?p=shifts_json_export_websql';
       return $.get(url, function(data) {
-        var rooms, shift_entries, shifts, users;
+        var rooms;
         rooms = data.rooms;
-        Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
-          return Shifts.log('processing rooms done');
-        });
-        users = data.users;
-        Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
-          return Shifts.log('processing users done');
-        });
-        shifts = data.shifts;
-        Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
-          return Shifts.log('processing shifts done');
-        });
-        shift_entries = data.shift_entries;
-        return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
-          return Shifts.log('processing shift_entries done');
+        Shifts.$shiftplan.html('fetching rooms...');
+        return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
+          var users;
+          Shifts.log('processing rooms done');
+          users = data.users;
+          Shifts.$shiftplan.html('fetching users...');
+          return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
+            var shifts;
+            Shifts.log('processing users done');
+            shifts = data.shifts;
+            Shifts.$shiftplan.html('fetching shifts...');
+            return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
+              var shift_entries;
+              Shifts.log('processing shifts done');
+              shift_entries = data.shift_entries;
+              Shifts.$shiftplan.html('fetching shift entries...');
+              return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
+                Shifts.log('processing shift_entries done');
+                Shifts.$shiftplan.html('done.');
+                return done();
+              });
+            });
+          });
         });
       });
     },
@@ -142,12 +161,36 @@ Shifts = window.Shifts || {
       }
     }
   },
+  render: {
+    shiftplan: function(shifts) {
+      return Shifts.$shiftplan.html(Shifts.render.calendar(shifts));
+    },
+    calendar: function(shifts) {
+      return '<div class="shift-calendar">' + Shifts.render.lanes(shifts) + '</div>';
+    },
+    lanes: function(shifts) {
+      var lanes;
+      lanes = [];
+      return Shifts.db.get_rooms(function(rooms) {
+        Shifts.log(rooms);
+        return '<div class="lane time">blubb</div>';
+      });
+    }
+  },
   init: function() {
-    Shifts.log('init');
-    return Shifts.db.init(function() {
-      Shifts.log('db initialized');
-      return Shifts.fetcher.start();
-    });
+    Shifts.$shiftplan = $('#shiftplan');
+    if (Shifts.$shiftplan.length > 0) {
+      Shifts.log('shifts init');
+      return Shifts.db.init(function() {
+        Shifts.log('db initialized');
+        return Shifts.fetcher.start(function() {
+          Shifts.log('fetch complete.');
+          return Shifts.db.get_my_shifts(function(res) {
+            return Shifts.render.shiftplan(res);
+          });
+        });
+      });
+    }
   },
   log: function(msg) {
     return console.info(msg);

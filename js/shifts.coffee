@@ -84,30 +84,45 @@ Shifts = window.Shifts || {
             else
                 done()
 
+        get_my_shifts: (done) ->
+            alasql "SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", (res) ->
+                done res
+
+        get_rooms: (done) ->
+            alasql "SELECT * FROM Room", (res) ->
+                done res
+
     fetcher:
-        start: ->
+        start: (done) ->
             url = '?p=shifts_json_export_websql'
             $.get url, (data) ->
 
                 # insert rooms
                 rooms = data.rooms
+                Shifts.$shiftplan.html 'fetching rooms...'
                 Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
                     Shifts.log 'processing rooms done'
 
-                # insert users
-                users = data.users
-                Shifts.fetcher.process Shifts.db.insert_user, users, ->
-                    Shifts.log 'processing users done'
+                    # insert users
+                    users = data.users
+                    Shifts.$shiftplan.html 'fetching users...'
+                    Shifts.fetcher.process Shifts.db.insert_user, users, ->
+                        Shifts.log 'processing users done'
 
-                # insert shifts
-                shifts = data.shifts
-                Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
-                    Shifts.log 'processing shifts done'
+                        # insert shifts
+                        shifts = data.shifts
+                        Shifts.$shiftplan.html 'fetching shifts...'
+                        Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
+                            Shifts.log 'processing shifts done'
 
-                # insert shift_entries
-                shift_entries = data.shift_entries
-                Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
-                    Shifts.log 'processing shift_entries done'
+                            # insert shift_entries
+                            shift_entries = data.shift_entries
+                            Shifts.$shiftplan.html 'fetching shift entries...'
+                            Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
+                                Shifts.log 'processing shift_entries done'
+
+                                Shifts.$shiftplan.html 'done.'
+                                done()
 
         process: (processing_func, items_to_process, done) ->
             if items_to_process.length > 0
@@ -117,11 +132,31 @@ Shifts = window.Shifts || {
             else
                 done()
 
+    render:
+
+        shiftplan: (shifts) ->
+            Shifts.$shiftplan.html Shifts.render.calendar(shifts)
+
+        calendar: (shifts) ->
+            return '<div class="shift-calendar">' + Shifts.render.lanes(shifts) + '</div>'
+
+        lanes: (shifts) ->
+            lanes = []
+            Shifts.db.get_rooms (rooms) ->
+                Shifts.log rooms
+                return '<div class="lane time">blubb</div>'
+
     init: ->
-        Shifts.log 'init'
-        Shifts.db.init ->
-            Shifts.log 'db initialized'
-            Shifts.fetcher.start()
+        Shifts.$shiftplan = $('#shiftplan')
+        if Shifts.$shiftplan.length > 0
+            Shifts.log 'shifts init'
+            Shifts.db.init ->
+                Shifts.log 'db initialized'
+                Shifts.fetcher.start ->
+                    Shifts.log 'fetch complete.'
+
+                    Shifts.db.get_my_shifts (res) ->
+                        Shifts.render.shiftplan res
 
     log: (msg) ->
         console.info msg
