@@ -34,6 +34,23 @@ Shifts = window.Shifts || {
           return done();
         }
       });
+    },
+    insert_user: function(user, done) {
+      return alasql("SELECT UID from User WHERE UID = " + user.UID, function(res) {
+        var error, user_exists;
+        try {
+          user_exists = res[0].UID !== user.UID;
+        } catch (error) {
+          user_exists = false;
+        }
+        if (user_exists === false) {
+          return alasql("INSERT INTO User (UID, Nick) VALUES (" + user.UID + ", '" + user.Nick + "')", function() {
+            return done();
+          });
+        } else {
+          return done();
+        }
+      });
     }
   },
   fetcher: {
@@ -41,10 +58,14 @@ Shifts = window.Shifts || {
       var url;
       url = '?p=shifts_json_export_websql';
       return $.get(url, function(data) {
-        var rooms;
+        var rooms, users;
         rooms = data.rooms;
-        return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
+        Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
           return Shifts.log('processing rooms done');
+        });
+        users = data.users;
+        return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
+          return Shifts.log('processing users done');
         });
       });
     },

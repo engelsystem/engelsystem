@@ -28,13 +28,33 @@ Shifts = window.Shifts || {
                 else
                     done()
 
+        insert_user: (user, done) ->
+            alasql "SELECT UID from User WHERE UID = #{user.UID}", (res) ->
+                try
+                    user_exists = res[0].UID != user.UID
+                catch
+                    user_exists = false
+
+                if user_exists == false
+                    alasql "INSERT INTO User (UID, Nick) VALUES (#{user.UID}, '#{user.Nick}')", ->
+                        done()
+                else
+                    done()
+
     fetcher:
         start: ->
             url = '?p=shifts_json_export_websql'
             $.get url, (data) ->
+
+                # insert rooms
                 rooms = data.rooms
                 Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
                     Shifts.log 'processing rooms done'
+
+                # insert users
+                users = data.users
+                Shifts.fetcher.process Shifts.db.insert_user, users, ->
+                    Shifts.log 'processing users done'
 
         process: (processing_func, items_to_process, done) ->
             item = items_to_process.shift()
