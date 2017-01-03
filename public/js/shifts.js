@@ -5,6 +5,7 @@ Shifts = window.Shifts || {
     room_ids: [],
     user_ids: [],
     shift_ids: [],
+    shiftentry_ids: [],
     init: function(done) {
       Shifts.log('init db');
       return alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem; ATTACH INDEXEDDB DATABASE engelsystem;', function() {
@@ -12,9 +13,11 @@ Shifts = window.Shifts || {
           return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID, title, shift_start, shift_end)', function() {
             return alasql('CREATE TABLE IF NOT EXISTS User (UID, nick)', function() {
               return alasql('CREATE TABLE IF NOT EXISTS Room (RID, Name)', function() {
-                return alasql('CREATE TABLE IF NOT EXISTS options (option_key, option_value)', function() {
-                  return Shifts.db.populate_ids(function() {
-                    return done();
+                return alasql('CREATE TABLE IF NOT EXISTS ShiftEntry (id, SID, TID, UID)', function() {
+                  return alasql('CREATE TABLE IF NOT EXISTS options (option_key, option_value)', function() {
+                    return Shifts.db.populate_ids(function() {
+                      return done();
+                    });
                   });
                 });
               });
@@ -42,7 +45,14 @@ Shifts = window.Shifts || {
               s = res[k];
               Shifts.db.shift_ids.push(s.SID);
             }
-            return done();
+            return alasql("SELECT id from ShiftEntry", function(res) {
+              var l, len3;
+              for (l = 0, len3 = res.length; l < len3; l++) {
+                s = res[l];
+                Shifts.db.shiftentry_ids.push(s.id);
+              }
+              return done();
+            });
           });
         });
       });
@@ -82,6 +92,18 @@ Shifts = window.Shifts || {
       } else {
         return done();
       }
+    },
+    insert_shiftentry: function(shiftentry, done) {
+      var shiftentry_exists;
+      shiftentry_exists = Shifts.db.shiftentry_ids.indexOf(parseInt(shiftentry.id, 10)) > -1;
+      if (shiftentry_exists === false) {
+        return alasql("INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (" + shiftentry.id + ", '" + shiftentry.SID + "', '" + shiftentry.TID + "', '" + shiftentry.UID + "')", function() {
+          Shifts.db.shiftentry_ids.push(shiftentry.id);
+          return done();
+        });
+      } else {
+        return done();
+      }
     }
   },
   fetcher: {
@@ -89,7 +111,7 @@ Shifts = window.Shifts || {
       var url;
       url = '?p=shifts_json_export_websql';
       return $.get(url, function(data) {
-        var rooms, shifts, users;
+        var rooms, shift_entries, shifts, users;
         rooms = data.rooms;
         Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
           return Shifts.log('processing rooms done');
@@ -99,21 +121,25 @@ Shifts = window.Shifts || {
           return Shifts.log('processing users done');
         });
         shifts = data.shifts;
-        return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
+        Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
           return Shifts.log('processing shifts done');
+        });
+        shift_entries = data.shift_entries;
+        return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
+          return Shifts.log('processing shift_entries done');
         });
       });
     },
     process: function(processing_func, items_to_process, done) {
       var item;
-      item = items_to_process.shift();
-      return processing_func(item, function() {
-        if (items_to_process.length > 0) {
+      if (items_to_process.length > 0) {
+        item = items_to_process.shift();
+        return processing_func(item, function() {
           return Shifts.fetcher.process(processing_func, items_to_process, done);
-        } else {
-          return done();
-        }
-      });
+        });
+      } else {
+        return done();
+      }
     }
   },
   init: function() {

@@ -402,7 +402,7 @@ function Shifts_for_websql() {
 
     // fetch shift_entries
   $shift_entries = sql_select("
-      SELECT SID, TID, UID
+      SELECT id, SID, TID, UID
       FROM ShiftEntry
       LIMIT " . $limit . "
       ");

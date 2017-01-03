@@ -4,6 +4,7 @@ Shifts = window.Shifts || {
         room_ids: []
         user_ids: []
         shift_ids: []
+        shiftentry_ids: []
 
         init: (done) ->
             Shifts.log 'init db'
@@ -16,9 +17,10 @@ Shifts = window.Shifts || {
                     alasql 'CREATE TABLE IF NOT EXISTS Shifts (SID, title, shift_start, shift_end)', ->
                         alasql 'CREATE TABLE IF NOT EXISTS User (UID, nick)', ->
                             alasql 'CREATE TABLE IF NOT EXISTS Room (RID, Name)', ->
-                                alasql 'CREATE TABLE IF NOT EXISTS options (option_key, option_value)', ->
-                                    Shifts.db.populate_ids ->
-                                        done()
+                                alasql 'CREATE TABLE IF NOT EXISTS ShiftEntry (id, SID, TID, UID)', ->
+                                    alasql 'CREATE TABLE IF NOT EXISTS options (option_key, option_value)', ->
+                                        Shifts.db.populate_ids ->
+                                            done()
 
         populate_ids: (done) ->
 
@@ -37,7 +39,12 @@ Shifts = window.Shifts || {
                         for s in res
                             Shifts.db.shift_ids.push s.SID
 
-                        done()
+                        # shift entries
+                        alasql "SELECT id from ShiftEntry", (res) ->
+                            for s in res
+                                Shifts.db.shiftentry_ids.push s.id
+
+                            done()
 
         insert_room: (room, done) ->
             room_exists = Shifts.db.room_ids.indexOf(parseInt(room.RID, 10)) > -1
@@ -68,6 +75,15 @@ Shifts = window.Shifts || {
             else
                 done()
 
+        insert_shiftentry: (shiftentry, done) ->
+            shiftentry_exists = Shifts.db.shiftentry_ids.indexOf(parseInt(shiftentry.id, 10)) > -1
+            if shiftentry_exists == false
+                alasql "INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (#{shiftentry.id}, '#{shiftentry.SID}', '#{shiftentry.TID}', '#{shiftentry.UID}')", ->
+                    Shifts.db.shiftentry_ids.push shiftentry.id
+                    done()
+            else
+                done()
+
     fetcher:
         start: ->
             url = '?p=shifts_json_export_websql'
@@ -88,13 +104,18 @@ Shifts = window.Shifts || {
                 Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
                     Shifts.log 'processing shifts done'
 
+                # insert shift_entries
+                shift_entries = data.shift_entries
+                Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
+                    Shifts.log 'processing shift_entries done'
+
         process: (processing_func, items_to_process, done) ->
-            item = items_to_process.shift()
-            processing_func item, ->
-                if items_to_process.length > 0
+            if items_to_process.length > 0
+                item = items_to_process.shift()
+                processing_func item, ->
                     Shifts.fetcher.process processing_func, items_to_process, done
-                else
-                    done()
+            else
+                done()
 
     init: ->
         Shifts.log 'init'
