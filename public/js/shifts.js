@@ -24,55 +24,59 @@ Shifts = window.Shifts || {
       });
     },
     populate_ids: function(done) {
-      return alasql("SELECT SID from Shifts", function(res) {
-        var i, len, s;
+      return alasql("SELECT RID from Room", function(res) {
+        var i, len, r;
         for (i = 0, len = res.length; i < len; i++) {
-          s = res[i];
-          Shifts.db.shift_ids.push(s.SID);
+          r = res[i];
+          Shifts.db.room_ids.push(r.RID);
         }
-        return done();
+        return alasql("SELECT UID from User", function(res) {
+          var j, len1, u;
+          for (j = 0, len1 = res.length; j < len1; j++) {
+            u = res[j];
+            Shifts.db.user_ids.push(u.UID);
+          }
+          return alasql("SELECT SID from Shifts", function(res) {
+            var k, len2, s;
+            for (k = 0, len2 = res.length; k < len2; k++) {
+              s = res[k];
+              Shifts.db.shift_ids.push(s.SID);
+            }
+            return done();
+          });
+        });
       });
     },
     insert_room: function(room, done) {
-      return alasql("SELECT RID from Room WHERE RID = " + room.RID, function(res) {
-        var error, room_exists;
-        try {
-          room_exists = res[0].RID !== room.RID;
-        } catch (error) {
-          room_exists = false;
-        }
-        if (room_exists === false) {
-          return alasql("INSERT INTO Room (RID, Name) VALUES (" + room.RID + ", '" + room.Name + "')", function() {
-            return done();
-          });
-        } else {
+      var room_exists;
+      room_exists = Shifts.db.room_ids.indexOf(parseInt(room.RID, 10)) > -1;
+      if (room_exists === false) {
+        return alasql("INSERT INTO Room (RID, Name) VALUES (" + room.RID + ", '" + room.Name + "')", function() {
+          Shifts.db.room_ids.push(room.RID);
           return done();
-        }
-      });
+        });
+      } else {
+        return done();
+      }
     },
     insert_user: function(user, done) {
-      return alasql("SELECT UID from User WHERE UID = " + user.UID, function(res) {
-        var error, user_exists;
-        try {
-          user_exists = res[0].UID !== user.UID;
-        } catch (error) {
-          user_exists = false;
-        }
-        if (user_exists === false) {
-          return alasql("INSERT INTO User (UID, Nick) VALUES (" + user.UID + ", '" + user.Nick + "')", function() {
-            return done();
-          });
-        } else {
+      var user_exists;
+      user_exists = Shifts.db.user_ids.indexOf(parseInt(user.UID, 10)) > -1;
+      if (user_exists === false) {
+        return alasql("INSERT INTO User (UID, Nick) VALUES (" + user.UID + ", '" + user.Nick + "')", function() {
+          Shifts.db.user_ids.push(user.UID);
           return done();
-        }
-      });
+        });
+      } else {
+        return done();
+      }
     },
     insert_shift: function(shift, done) {
       var shift_exists;
-      Shifts.log("processing shift");
       shift_exists = Shifts.db.shift_ids.indexOf(parseInt(shift.SID, 10)) > -1;
       if (shift_exists === false) {
         return alasql("INSERT INTO Shifts (SID, title, shift_start, shift_end) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.start + "', '" + shift.end + "')", function() {
+          Shifts.db.shift_ids.push(shift.SID);
           return done();
         });
       } else {
@@ -86,7 +90,6 @@ Shifts = window.Shifts || {
       url = '?p=shifts_json_export_websql';
       return $.get(url, function(data) {
         var rooms, shifts, users;
-        Shifts.log(Shifts.db.shift_ids);
         rooms = data.rooms;
         Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
           return Shifts.log('processing rooms done');

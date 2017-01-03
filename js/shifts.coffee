@@ -21,37 +21,41 @@ Shifts = window.Shifts || {
                                         done()
 
         populate_ids: (done) ->
-            # shifts
-            alasql "SELECT SID from Shifts", (res) ->
-                for s in res
-                    Shifts.db.shift_ids.push s.SID
-                done()
+
+            # Rooms
+            alasql "SELECT RID from Room", (res) ->
+                for r in res
+                    Shifts.db.room_ids.push r.RID
+
+                # Users
+                alasql "SELECT UID from User", (res) ->
+                    for u in res
+                        Shifts.db.user_ids.push u.UID
+
+                    # shifts
+                    alasql "SELECT SID from Shifts", (res) ->
+                        for s in res
+                            Shifts.db.shift_ids.push s.SID
+
+                        done()
 
         insert_room: (room, done) ->
-            alasql "SELECT RID from Room WHERE RID = #{room.RID}", (res) ->
-                try
-                    room_exists = res[0].RID != room.RID
-                catch
-                    room_exists = false
-
-                if room_exists == false
-                    alasql "INSERT INTO Room (RID, Name) VALUES (#{room.RID}, '#{room.Name}')", ->
-                        done()
-                else
+            room_exists = Shifts.db.room_ids.indexOf(parseInt(room.RID, 10)) > -1
+            if room_exists == false
+                alasql "INSERT INTO Room (RID, Name) VALUES (#{room.RID}, '#{room.Name}')", ->
+                    Shifts.db.room_ids.push room.RID
                     done()
+            else
+                done()
 
         insert_user: (user, done) ->
-            alasql "SELECT UID from User WHERE UID = #{user.UID}", (res) ->
-                try
-                    user_exists = res[0].UID != user.UID
-                catch
-                    user_exists = false
-
-                if user_exists == false
-                    alasql "INSERT INTO User (UID, Nick) VALUES (#{user.UID}, '#{user.Nick}')", ->
-                        done()
-                else
+            user_exists = Shifts.db.user_ids.indexOf(parseInt(user.UID, 10)) > -1
+            if user_exists == false
+                alasql "INSERT INTO User (UID, Nick) VALUES (#{user.UID}, '#{user.Nick}')", ->
+                    Shifts.db.user_ids.push user.UID
                     done()
+            else
+                done()
 
         insert_shift: (shift, done) ->
             # Debug note: Array.indexOf may need a polyfill for older browsers
@@ -68,8 +72,6 @@ Shifts = window.Shifts || {
         start: ->
             url = '?p=shifts_json_export_websql'
             $.get url, (data) ->
-
-                Shifts.log Shifts.db.shift_ids
 
                 # insert rooms
                 rooms = data.rooms
