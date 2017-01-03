@@ -45,7 +45,7 @@ function admin_rooms()
         }
 
         if (test_request_int('id')) {
-            $room = Room($_REQUEST['id']);
+            $room = Room($_REQUEST['id'], false);
             if ($room === false) {
                 engelsystem_error('Unable to load room.');
             }
@@ -209,7 +209,11 @@ function admin_rooms()
                 ]),
                 sprintf(_('Do you want to delete room %s?'), $name),
                 buttons([
-                    button(page_link_to('admin_rooms') . '&show=delete&id=' . $room_id . '&ack', _('Delete'), 'delete')
+                    button(
+                        page_link_to('admin_rooms') . '&show=delete&id=' . $room_id . '&ack',
+                        _('Delete'),
+                        'delete btn-danger'
+                    )
                 ])
             ]);
         }

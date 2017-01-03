@@ -26,7 +26,7 @@ function ShiftType_delete_view($shifttype)
             button(
                 page_link_to('shifttypes') . '&action=delete&shifttype_id=' . $shifttype['id'] . '&confirmed',
                 _('delete'),
-                'ok'
+                'ok btn-danger'
             )
         ])
     ]);

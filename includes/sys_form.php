@@ -36,11 +36,12 @@ function form_spinner($name, $label, $value)
         </div>
       </div>
       <script type="text/javascript">
-      var spinner = $("#spinner-' . $name . '");
         $("#spinner-' . $name . '-down").click(function() {
+          var spinner = $("#spinner-' . $name . '");
           spinner.val(parseInt(spinner.val()) - 1);
         });
         $("#spinner-' . $name . '-up").click(function() {
+          var spinner = $("#spinner-' . $name . '");
           spinner.val(parseInt(spinner.val()) + 1);
         });
       </script>

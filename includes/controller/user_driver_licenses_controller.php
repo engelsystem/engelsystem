@@ -123,7 +123,7 @@ function user_driver_license_edit_controller()
 
             if (UserDriverLicense_valid($user_driver_license)) {
                 if ($user_driver_license['user_id'] == null) {
-                    $user_driver_license = UserDriverLicenses_create($user_driver_license, $user);
+                    $user_driver_license = UserDriverLicenses_create($user_driver_license, $user_source['UID']);
                 } else {
                     UserDriverLicenses_update($user_driver_license);
                 }
