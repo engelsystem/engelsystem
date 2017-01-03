@@ -1,6 +1,10 @@
 
 Shifts = window.Shifts || {
     db:
+        room_ids: []
+        user_ids: []
+        shift_ids: []
+
         init: (done) ->
             Shifts.log 'init db'
             alasql 'CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem;
@@ -13,7 +17,15 @@ Shifts = window.Shifts || {
                         alasql 'CREATE TABLE IF NOT EXISTS User (UID, nick)', ->
                             alasql 'CREATE TABLE IF NOT EXISTS Room (RID, Name)', ->
                                 alasql 'CREATE TABLE IF NOT EXISTS options (option_key, option_value)', ->
-                                    done()
+                                    Shifts.db.populate_ids ->
+                                        done()
+
+        populate_ids: (done) ->
+            # shifts
+            alasql "SELECT SID from Shifts", (res) ->
+                for s in res
+                    Shifts.db.shift_ids.push s.SID
+                done()
 
         insert_room: (room, done) ->
             alasql "SELECT RID from Room WHERE RID = #{room.RID}", (res) ->
@@ -42,23 +54,22 @@ Shifts = window.Shifts || {
                     done()
 
         insert_shift: (shift, done) ->
-            Shifts.log "processing shift"
-            alasql "SELECT SID from Shifts WHERE SID = #{shift.SID}", (res) ->
-                try
-                    shift_exists = res[0].SID != shift.SID
-                catch
-                    shift_exists = false
-
-                if shift_exists == false
-                    alasql "INSERT INTO Shifts (SID, title, shift_start, shift_end) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.start}', '#{shift.end}')", ->
-                        done()
-                else
+            # Debug note: Array.indexOf may need a polyfill for older browsers
+            # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
+            shift_exists = Shifts.db.shift_ids.indexOf(parseInt(shift.SID, 10)) > -1
+            if shift_exists == false
+                alasql "INSERT INTO Shifts (SID, title, shift_start, shift_end) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.start}', '#{shift.end}')", ->
+                    Shifts.db.shift_ids.push shift.SID
                     done()
+            else
+                done()
 
     fetcher:
         start: ->
             url = '?p=shifts_json_export_websql'
             $.get url, (data) ->
+
+                Shifts.log Shifts.db.shift_ids
 
                 # insert rooms
                 rooms = data.rooms

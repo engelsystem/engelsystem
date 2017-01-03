@@ -2,6 +2,9 @@ var Shifts;
 
 Shifts = window.Shifts || {
   db: {
+    room_ids: [],
+    user_ids: [],
+    shift_ids: [],
     init: function(done) {
       Shifts.log('init db');
       return alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem; ATTACH INDEXEDDB DATABASE engelsystem;', function() {
@@ -10,12 +13,24 @@ Shifts = window.Shifts || {
             return alasql('CREATE TABLE IF NOT EXISTS User (UID, nick)', function() {
               return alasql('CREATE TABLE IF NOT EXISTS Room (RID, Name)', function() {
                 return alasql('CREATE TABLE IF NOT EXISTS options (option_key, option_value)', function() {
-                  return done();
+                  return Shifts.db.populate_ids(function() {
+                    return done();
+                  });
                 });
               });
             });
           });
         });
+      });
+    },
+    populate_ids: function(done) {
+      return alasql("SELECT SID from Shifts", function(res) {
+        var i, len, s;
+        for (i = 0, len = res.length; i < len; i++) {
+          s = res[i];
+          Shifts.db.shift_ids.push(s.SID);
+        }
+        return done();
       });
     },
     insert_room: function(room, done) {
@@ -53,22 +68,16 @@ Shifts = window.Shifts || {
       });
     },
     insert_shift: function(shift, done) {
+      var shift_exists;
       Shifts.log("processing shift");
-      return alasql("SELECT SID from Shifts WHERE SID = " + shift.SID, function(res) {
-        var error, shift_exists;
-        try {
-          shift_exists = res[0].SID !== shift.SID;
-        } catch (error) {
-          shift_exists = false;
-        }
-        if (shift_exists === false) {
-          return alasql("INSERT INTO Shifts (SID, title, shift_start, shift_end) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.start + "', '" + shift.end + "')", function() {
-            return done();
-          });
-        } else {
+      shift_exists = Shifts.db.shift_ids.indexOf(parseInt(shift.SID, 10)) > -1;
+      if (shift_exists === false) {
+        return alasql("INSERT INTO Shifts (SID, title, shift_start, shift_end) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.start + "', '" + shift.end + "')", function() {
           return done();
-        }
-      });
+        });
+      } else {
+        return done();
+      }
     }
   },
   fetcher: {
@@ -77,17 +86,18 @@ Shifts = window.Shifts || {
       url = '?p=shifts_json_export_websql';
       return $.get(url, function(data) {
         var rooms, shifts, users;
-        shifts = data.shifts;
-        Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
-          return Shifts.log('processing shifts done');
-        });
+        Shifts.log(Shifts.db.shift_ids);
         rooms = data.rooms;
         Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
           return Shifts.log('processing rooms done');
         });
         users = data.users;
-        return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
+        Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
           return Shifts.log('processing users done');
+        });
+        shifts = data.shifts;
+        return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
+          return Shifts.log('processing shifts done');
         });
       });
     },
