@@ -421,12 +421,23 @@ function Shifts_for_websql() {
     engelsystem_error('Unable to load websql users.');
   }
 
+    // fetch needed angel types
+  $needed_angeltypes = sql_select("
+      SELECT id, room_id as RID, shift_id as SID, angel_type_id as ATID, count
+      FROM NeededAngelTypes
+      LIMIT " . $limit . "
+      ");
+  if ($needed_angeltypes === false) {
+    engelsystem_error('Unable to load websql needed_angeltypes.');
+  }
+
   $result = array(
     'shift_types' => $shift_types,
     'rooms' => $rooms,
     'users' => $users,
     'shift_entries' => $shift_entries,
     'shifts' => $shifts,
+    'needed_angeltypes' => $needed_angeltypes,
   );
   return $result;
 }
