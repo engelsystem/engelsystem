@@ -7,9 +7,9 @@
  */
 function EventConfig()
 {
-    $event_config = sql_select("SELECT * FROM `EventConfig` LIMIT 1");
+    $event_config = sql_select('SELECT * FROM `EventConfig` LIMIT 1');
     if ($event_config === false) {
-        engelsystem_error("Unable to load event config.");
+        engelsystem_error('Unable to load event config.');
         return false;
     }
     if (count($event_config) > 0) {

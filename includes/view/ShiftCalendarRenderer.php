@@ -4,7 +4,6 @@ namespace Engelsystem;
 
 class ShiftCalendarRenderer
 {
-
     /**
      * 15m * 60s/m = 900s
      */
@@ -102,7 +101,7 @@ class ShiftCalendarRenderer
             if ($shift_added == false) {
                 $newLane = new ShiftCalendarLane($header, $this->getFirstBlockStartTime(), $this->getBlocksPerSlot());
                 if (!$newLane->addShift($shift)) {
-                    engelsystem_error("Unable to add shift to new lane.");
+                    engelsystem_error('Unable to add shift to new lane.');
                 }
                 $lanes[$room_id][] = $newLane;
             }
@@ -161,7 +160,7 @@ class ShiftCalendarRenderer
      */
     private function renderShiftLanes()
     {
-        $html = "";
+        $html = '';
         foreach ($this->lanes as $room_lanes) {
             foreach ($room_lanes as $lane) {
                 $html .= $this->renderLane($lane);
@@ -182,7 +181,7 @@ class ShiftCalendarRenderer
         global $user;
 
         $shift_renderer = new ShiftCalendarShiftRenderer();
-        $html = "";
+        $html = '';
         $rendered_until = $this->getFirstBlockStartTime();
 
         foreach ($lane->getShifts() as $shift) {
@@ -248,7 +247,7 @@ class ShiftCalendarRenderer
     {
         $time_slot = [
             div('header', [
-                _("Time")
+                _('Time')
             ])
         ];
         for ($block = 0; $block < $this->getBlocksPerSlot(); $block++) {

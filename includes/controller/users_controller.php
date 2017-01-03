@@ -53,7 +53,7 @@ function user_delete_controller()
 
     // You cannot delete yourself
     if ($user['UID'] == $user_source['UID']) {
-        error(_("You cannot delete yourself."));
+        error(_('You cannot delete yourself.'));
         redirect(user_link($user));
     }
 
@@ -64,7 +64,7 @@ function user_delete_controller()
                 $user['UID']))
         ) {
             $valid = false;
-            error(_("Your password is incorrect.  Please try it again."));
+            error(_('Your password is incorrect.  Please try it again.'));
         }
 
         if ($valid) {
@@ -74,15 +74,15 @@ function user_delete_controller()
             }
 
             mail_user_delete($user_source);
-            success(_("User deleted."));
-            engelsystem_log(sprintf("Deleted %s", User_Nick_render($user_source)));
+            success(_('User deleted.'));
+            engelsystem_log(sprintf('Deleted %s', User_Nick_render($user_source)));
 
             redirect(users_link());
         }
     }
 
     return [
-        sprintf(_("Delete %s"), $user_source['Nick']),
+        sprintf(_('Delete %s'), $user_source['Nick']),
         User_delete_view($user_source)
     ];
 }
@@ -147,7 +147,7 @@ function user_edit_vouchers_controller()
             $vouchers = trim($_REQUEST['vouchers']);
         } else {
             $valid = false;
-            error(_("Please enter a valid number of vouchers."));
+            error(_('Please enter a valid number of vouchers.'));
         }
 
         if ($valid) {
@@ -158,8 +158,8 @@ function user_edit_vouchers_controller()
                 engelsystem_error('Unable to update user.');
             }
 
-            success(_("Saved the number of vouchers."));
-            engelsystem_log(User_Nick_render($user_source) . ': ' . sprintf("Got %s vouchers",
+            success(_('Saved the number of vouchers.'));
+            engelsystem_log(User_Nick_render($user_source) . ': ' . sprintf('Got %s vouchers',
                     $user_source['got_voucher']));
 
             redirect(user_link($user_source));
@@ -167,7 +167,7 @@ function user_edit_vouchers_controller()
     }
 
     return [
-        sprintf(_("%s's vouchers"), $user_source['Nick']),
+        sprintf(_('%s\'s vouchers'), $user_source['Nick']),
         User_edit_vouchers_view($user_source)
     ];
 }
@@ -183,12 +183,12 @@ function user_controller()
     if (isset($_REQUEST['user_id'])) {
         $user_source = User($_REQUEST['user_id']);
         if ($user_source == null) {
-            error(_("User not found."));
+            error(_('User not found.'));
             redirect('?');
         }
     }
 
-    $shifts = Shifts_by_user($user_source, in_array("user_shifts_admin", $privileges));
+    $shifts = Shifts_by_user($user_source, in_array('user_shifts_admin', $privileges));
     foreach ($shifts as &$shift) {
         // TODO: Move queries to model
         $shift['needed_angeltypes'] = sql_select("
@@ -208,7 +208,7 @@ function user_controller()
         }
     }
 
-    if ($user_source['api_key'] == "") {
+    if ($user_source['api_key'] == '') {
         User_reset_api_key($user_source, false);
     }
 
@@ -278,7 +278,7 @@ function user_password_recovery_set_new_controller()
     global $min_password_length;
     $user_source = User_by_password_recovery_token($_REQUEST['token']);
     if ($user_source == null) {
-        error(_("Token is not correct."));
+        error(_('Token is not correct.'));
         redirect(page_link_to('login'));
     }
 
@@ -288,16 +288,16 @@ function user_password_recovery_set_new_controller()
         if (isset($_REQUEST['password']) && strlen($_REQUEST['password']) >= $min_password_length) {
             if ($_REQUEST['password'] != $_REQUEST['password2']) {
                 $valid = false;
-                error(_("Your passwords don't match."));
+                error(_('Your passwords don\'t match.'));
             }
         } else {
             $valid = false;
-            error(_("Your password is to short (please use at least 6 characters)."));
+            error(_('Your password is to short (please use at least 6 characters).'));
         }
 
         if ($valid) {
             set_password($user_source['UID'], $_REQUEST['password']);
-            success(_("Password saved."));
+            success(_('Password saved.'));
             redirect(page_link_to('login'));
         }
     }
@@ -321,28 +321,28 @@ function user_password_recovery_start_controller()
                 $user_source = User_by_email($email);
                 if ($user_source == null) {
                     $valid = false;
-                    error(_("E-mail address is not correct."));
+                    error(_('E-mail address is not correct.'));
                 }
             } else {
                 $valid = false;
-                error(_("E-mail address is not correct."));
+                error(_('E-mail address is not correct.'));
             }
         } else {
             $valid = false;
-            error(_("Please enter your e-mail."));
+            error(_('Please enter your e-mail.'));
         }
 
         if ($valid) {
             $token = User_generate_password_recovery_token($user_source);
             engelsystem_email_to_user(
                 $user_source,
-                _("Password recovery"),
+                _('Password recovery'),
                 sprintf(
-                    _("Please visit %s to recover your password."),
+                    _('Please visit %s to recover your password.'),
                     page_link_to_absolute('user_password_recovery') . '&token=' . $token
                 )
             );
-            success(_("We sent an email containing your password recovery link."));
+            success(_('We sent an email containing your password recovery link.'));
             redirect(page_link_to('login'));
         }
     }
@@ -372,7 +372,7 @@ function user_password_recovery_controller()
  */
 function user_password_recovery_title()
 {
-    return _("Password recovery");
+    return _('Password recovery');
 }
 
 /**
@@ -388,11 +388,11 @@ function load_user()
 
     $user = User($_REQUEST['user_id']);
     if ($user === false) {
-        engelsystem_error("Unable to load user.");
+        engelsystem_error('Unable to load user.');
     }
 
     if ($user == null) {
-        error(_("User doesn't exist."));
+        error(_('User doesn\'t exist.'));
         redirect(page_link_to());
     }
 

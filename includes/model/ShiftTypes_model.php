@@ -78,5 +78,5 @@ function ShiftType($shifttype_id)
  */
 function ShiftTypes()
 {
-    return sql_select("SELECT * FROM `ShiftTypes` ORDER BY `name`");
+    return sql_select('SELECT * FROM `ShiftTypes` ORDER BY `name`');
 }

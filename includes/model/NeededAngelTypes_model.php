@@ -70,7 +70,7 @@ function NeededAngelTypes_by_shift($shiftId)
         ORDER BY `room_id` DESC
         ");
     if ($needed_angeltypes_source === false) {
-        engelsystem_error("Unable to load needed angeltypes.");
+        engelsystem_error('Unable to load needed angeltypes.');
     }
 
     // Use settings from room
@@ -85,7 +85,7 @@ function NeededAngelTypes_by_shift($shiftId)
         ORDER BY `room_id` DESC
         ");
         if ($needed_angeltypes_source === false) {
-            engelsystem_error("Unable to load needed angeltypes.");
+            engelsystem_error('Unable to load needed angeltypes.');
         }
     }
 

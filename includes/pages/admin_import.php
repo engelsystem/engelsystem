@@ -5,7 +5,7 @@
  */
 function admin_import_title()
 {
-    return _("Frab import");
+    return _('Frab import');
 }
 
 /**
@@ -15,10 +15,10 @@ function admin_import()
 {
     global $rooms_import;
     global $user;
-    $html = "";
+    $html = '';
     $import_dir = __DIR__ . '/../../import';
 
-    $step = "input";
+    $step = 'input';
     if (
         isset($_REQUEST['step'])
         && in_array($step, [
@@ -69,14 +69,14 @@ function admin_import()
                     $add_minutes_start = trim($_REQUEST['add_minutes_start']);
                 } else {
                     $valid = false;
-                    error(_("Please enter an amount of minutes to add to a talk's begin."));
+                    error(_('Please enter an amount of minutes to add to a talk\'s begin.'));
                 }
 
                 if (isset($_REQUEST['add_minutes_end']) && is_numeric(trim($_REQUEST['add_minutes_end']))) {
                     $add_minutes_end = trim($_REQUEST['add_minutes_end']);
                 } else {
                     $valid = false;
-                    error(_("Please enter an amount of minutes to add to a talk's end."));
+                    error(_('Please enter an amount of minutes to add to a talk\'s end.'));
                 }
 
                 if (isset($_FILES['xcal_file']) && ($_FILES['xcal_file']['error'] == 0)) {
@@ -98,7 +98,12 @@ function admin_import()
             }
 
             if ($valid) {
-                redirect(page_link_to('admin_import') . "&step=check&shifttype_id=" . $shifttype_id . "&add_minutes_end=" . $add_minutes_end . "&add_minutes_start=" . $add_minutes_start);
+                redirect(
+                    page_link_to('admin_import')
+                    . '&step=check&shifttype_id=' . $shifttype_id
+                    . '&add_minutes_end=' . $add_minutes_end
+                    . '&add_minutes_start=' . $add_minutes_start
+                );
             } else {
                 $html .= div('well well-sm text-center', [
                         _('File Upload') . mute(glyph('arrow-right')) . mute(_('Validation')) . mute(glyph('arrow-right')) . mute(_('Import'))
@@ -107,13 +112,13 @@ function admin_import()
                             form([
                                 form_info(
                                     '',
-                                    _("This import will create/update/delete rooms and shifts by given FRAB-export file. The needed file format is xcal.")
+                                    _('This import will create/update/delete rooms and shifts by given FRAB-export file. The needed file format is xcal.')
                                 ),
                                 form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
-                                form_spinner('add_minutes_start', _("Add minutes to start"), $add_minutes_start),
-                                form_spinner('add_minutes_end', _("Add minutes to end"), $add_minutes_end),
-                                form_file('xcal_file', _("xcal-File (.xcal)")),
-                                form_submit('submit', _("Import"))
+                                form_spinner('add_minutes_start', _('Add minutes to start'), $add_minutes_start),
+                                form_spinner('add_minutes_end', _('Add minutes to end'), $add_minutes_end),
+                                form_file('xcal_file', _('xcal-File (.xcal)')),
+                                form_submit('submit', _('Import'))
                             ])
                         ])
                     ]);
@@ -136,14 +141,14 @@ function admin_import()
             if (isset($_REQUEST['add_minutes_start']) && is_numeric(trim($_REQUEST['add_minutes_start']))) {
                 $add_minutes_start = trim($_REQUEST['add_minutes_start']);
             } else {
-                error(_("Please enter an amount of minutes to add to a talk's begin."));
+                error(_('Please enter an amount of minutes to add to a talk\'s begin.'));
                 redirect(page_link_to('admin_import'));
             }
 
             if (isset($_REQUEST['add_minutes_end']) && is_numeric(trim($_REQUEST['add_minutes_end']))) {
                 $add_minutes_end = trim($_REQUEST['add_minutes_end']);
             } else {
-                error(_("Please enter an amount of minutes to add to a talk's end."));
+                error(_('Please enter an amount of minutes to add to a talk\'s end.'));
                 redirect(page_link_to('admin_import'));
             }
 
@@ -158,53 +163,55 @@ function admin_import()
             $html .= div(
                     'well well-sm text-center',
                     [
-                        '<span class="text-success">' . _('File Upload') . glyph('ok-circle') . '</span>' . mute(glyph('arrow-right')) . _('Validation') . mute(glyph('arrow-right')) . mute(_('Import'))
-                    ])
+                        '<span class="text-success">' . _('File Upload') . glyph('ok-circle') . '</span>'
+                        . mute(glyph('arrow-right')) . _('Validation') . mute(glyph('arrow-right')) . mute(_('Import'))
+                    ]
+                )
                 . form(
                     [
                         div('row', [
                             div('col-sm-6', [
-                                '<h3>' . _("Rooms to create") . '</h3>',
-                                table(_("Name"), $rooms_new)
+                                '<h3>' . _('Rooms to create') . '</h3>',
+                                table(_('Name'), $rooms_new)
                             ]),
                             div('col-sm-6', [
-                                '<h3>' . _("Rooms to delete") . '</h3>',
-                                table(_("Name"), $rooms_deleted)
+                                '<h3>' . _('Rooms to delete') . '</h3>',
+                                table(_('Name'), $rooms_deleted)
                             ])
                         ]),
-                        '<h3>' . _("Shifts to create") . '</h3>',
+                        '<h3>' . _('Shifts to create') . '</h3>',
                         table([
-                            'day'       => _("Day"),
-                            'start'     => _("Start"),
-                            'end'       => _("End"),
+                            'day'       => _('Day'),
+                            'start'     => _('Start'),
+                            'end'       => _('End'),
                             'shifttype' => _('Shift type'),
-                            'title'     => _("Title"),
-                            'room'      => _("Room")
+                            'title'     => _('Title'),
+                            'room'      => _('Room')
                         ], shifts_printable($events_new, $shifttypes)),
-                        '<h3>' . _("Shifts to update") . '</h3>',
+                        '<h3>' . _('Shifts to update') . '</h3>',
                         table([
-                            'day'       => _("Day"),
-                            'start'     => _("Start"),
-                            'end'       => _("End"),
+                            'day'       => _('Day'),
+                            'start'     => _('Start'),
+                            'end'       => _('End'),
                             'shifttype' => _('Shift type'),
-                            'title'     => _("Title"),
-                            'room'      => _("Room")
+                            'title'     => _('Title'),
+                            'room'      => _('Room')
                         ], shifts_printable($events_updated, $shifttypes)),
-                        '<h3>' . _("Shifts to delete") . '</h3>',
+                        '<h3>' . _('Shifts to delete') . '</h3>',
                         table([
-                            'day'       => _("Day"),
-                            'start'     => _("Start"),
-                            'end'       => _("End"),
+                            'day'       => _('Day'),
+                            'start'     => _('Start'),
+                            'end'       => _('End'),
                             'shifttype' => _('Shift type'),
-                            'title'     => _("Title"),
-                            'room'      => _("Room")
+                            'title'     => _('Title'),
+                            'room'      => _('Room')
                         ], shifts_printable($events_deleted, $shifttypes)),
-                        form_submit('submit', _("Import"))
+                        form_submit('submit', _('Import'))
                     ],
                     page_link_to('admin_import')
                     . '&step=import&shifttype_id=' . $shifttype_id
-                    . "&add_minutes_end=" . $add_minutes_end
-                    . "&add_minutes_start=" . $add_minutes_start
+                    . '&add_minutes_end=' . $add_minutes_end
+                    . '&add_minutes_start=' . $add_minutes_start
                 );
             break;
 
@@ -228,14 +235,14 @@ function admin_import()
             if (isset($_REQUEST['add_minutes_start']) && is_numeric(trim($_REQUEST['add_minutes_start']))) {
                 $add_minutes_start = trim($_REQUEST['add_minutes_start']);
             } else {
-                error(_("Please enter an amount of minutes to add to a talk's begin."));
+                error(_('Please enter an amount of minutes to add to a talk\'s begin.'));
                 redirect(page_link_to('admin_import'));
             }
 
             if (isset($_REQUEST['add_minutes_end']) && is_numeric(trim($_REQUEST['add_minutes_end']))) {
                 $add_minutes_end = trim($_REQUEST['add_minutes_end']);
             } else {
-                error(_("Please enter an amount of minutes to add to a talk's end."));
+                error(_('Please enter an amount of minutes to add to a talk\'s end.'));
                 redirect(page_link_to('admin_import'));
             }
 
@@ -278,13 +285,17 @@ function admin_import()
                 }
             }
 
-            engelsystem_log("Frab import done");
+            engelsystem_log('Frab import done');
 
             unlink($import_file);
 
             $html .= div('well well-sm text-center', [
-                    '<span class="text-success">' . _('File Upload') . glyph('ok-circle') . '</span>' . mute(glyph('arrow-right')) . '<span class="text-success">' . _('Validation') . glyph('ok-circle') . '</span>' . mute(glyph('arrow-right')) . '<span class="text-success">' . _('Import') . glyph('ok-circle') . '</span>'
-                ]) . success(_("It's done!"), true);
+                    '<span class="text-success">' . _('File Upload') . glyph('ok-circle') . '</span>'
+                    . mute(glyph('arrow-right'))
+                    . '<span class="text-success">' . _('Validation') . glyph('ok-circle') . '</span>'
+                    . mute(glyph('arrow-right'))
+                    . '<span class="text-success">' . _('Import') . glyph('ok-circle') . '</span>'
+                ]) . success(_('It\'s done!'), true);
             break;
         default:
             redirect(page_link_to('admin_import'));
@@ -306,7 +317,7 @@ function prepare_rooms($file)
     $data = read_xml($file);
 
     // Load rooms from db for compare with input
-    $rooms = sql_select("SELECT * FROM `Room` WHERE `FromPentabarf`='Y'");
+    $rooms = sql_select('SELECT * FROM `Room` WHERE `FromPentabarf`=\'Y\'');
     $rooms_db = [];
     $rooms_import = [];
     foreach ($rooms as $room) {
@@ -345,7 +356,7 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
     global $rooms_import;
     $data = read_xml($file);
 
-    $rooms = sql_select("SELECT * FROM `Room`");
+    $rooms = sql_select('SELECT * FROM `Room`');
     $rooms_db = [];
     foreach ($rooms as $room) {
         $rooms_db[$room['Name']] = $room['RID'];
@@ -354,9 +365,8 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
     $events = $data->vcalendar->vevent;
     $shifts_pb = [];
     foreach ($events as $event) {
-        $event_pb = $event->children("http://pentabarf.org");
-        $event_id = trim($event_pb->{
-        'event-id'});
+        $event_pb = $event->children('http://pentabarf.org');
+        $event_id = trim($event_pb->{'event-id'});
         $shifts_pb[$event_id] = [
             'shifttype_id' => $shifttype_id,
             'start'        => parse_date("Ymd\THis", $event->dtstart) - $add_minutes_start * 60,
@@ -368,7 +378,7 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
         ];
     }
 
-    $shifts = sql_select("SELECT * FROM `Shifts` WHERE `PSID` IS NOT NULL ORDER BY `start`");
+    $shifts = sql_select('SELECT * FROM `Shifts` WHERE `PSID` IS NOT NULL ORDER BY `start`');
     $shifts_db = [];
     foreach ($shifts as $shift) {
         $shifts_db[$shift['PSID']] = $shift;
@@ -381,7 +391,14 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
             $shifts_new[] = $shift;
         } else {
             $tmp = $shifts_db[$shift['PSID']];
-            if ($shift['shifttype_id'] != $tmp['shifttype_id'] || $shift['title'] != $tmp['title'] || $shift['start'] != $tmp['start'] || $shift['end'] != $tmp['end'] || $shift['RID'] != $tmp['RID'] || $shift['URL'] != $tmp['URL']) {
+            if (
+                $shift['shifttype_id'] != $tmp['shifttype_id']
+                || $shift['title'] != $tmp['title']
+                || $shift['start'] != $tmp['start']
+                || $shift['end'] != $tmp['end']
+                || $shift['RID'] != $tmp['RID']
+                || $shift['URL'] != $tmp['URL']
+            ) {
                 $shifts_updated[] = $shift;
             }
         }
@@ -429,14 +446,14 @@ function shifts_printable($shifts, $shifttypes)
     $shifts_printable = [];
     foreach ($shifts as $shift) {
         $shifts_printable[] = [
-            'day'       => date("l, Y-m-d", $shift['start']),
-            'start'     => date("H:i", $shift['start']),
+            'day'       => date('l, Y-m-d', $shift['start']),
+            'start'     => date('H:i', $shift['start']),
             'shifttype' => ShiftType_name_render([
                 'id'   => $shift['shifttype_id'],
                 'name' => $shifttypes[$shift['shifttype_id']]
             ]),
             'title'     => shorten($shift['title']),
-            'end'       => date("H:i", $shift['end']),
+            'end'       => date('H:i', $shift['end']),
             'room'      => $rooms[$shift['RID']]
         ];
     }

@@ -10,14 +10,14 @@ function shift_entry_add_controller()
     global $privileges, $user;
 
     $shift_id = 0;
-    if (isset($_REQUEST['shift_id']) && preg_match("/^[0-9]*$/", $_REQUEST['shift_id'])) {
+    if (isset($_REQUEST['shift_id']) && preg_match('/^[0-9]*$/', $_REQUEST['shift_id'])) {
         $shift_id = $_REQUEST['shift_id'];
     } else {
         redirect(page_link_to('user_shifts'));
     }
 
     // Locations laden
-    $rooms = sql_select("SELECT * FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
+    $rooms = sql_select('SELECT * FROM `Room` WHERE `show`=\'Y\' ORDER BY `Name`');
     $room_array = [];
     foreach ($rooms as $room) {
         $room_array[$room['RID']] = $room['Name'];
@@ -30,7 +30,7 @@ function shift_entry_add_controller()
     }
 
     $type_id = 0;
-    if (isset($_REQUEST['type_id']) && preg_match("/^[0-9]*$/", $_REQUEST['type_id'])) {
+    if (isset($_REQUEST['type_id']) && preg_match('/^[0-9]*$/', $_REQUEST['type_id'])) {
         $type_id = $_REQUEST['type_id'];
     } else {
         redirect(page_link_to('user_shifts'));
@@ -60,7 +60,7 @@ function shift_entry_add_controller()
 
     if (
         isset($_REQUEST['user_id'])
-        && preg_match("/^[0-9]*$/", $_REQUEST['user_id'])
+        && preg_match('/^[0-9]*$/', $_REQUEST['user_id'])
         && (
             in_array('user_shifts_admin', $privileges)
             || in_array('shiftentry_edit_angeltype_supporter', $privileges)
@@ -84,7 +84,7 @@ function shift_entry_add_controller()
         $shift_entries
     );
     if (!$shift_signup_allowed->isSignupAllowed()) {
-        error(_("You are not allowed to sign up for this shift. Maybe shift is full or already running."));
+        error(_('You are not allowed to sign up for this shift. Maybe shift is full or already running.'));
         redirect(shift_link($shift));
     }
 
@@ -143,26 +143,26 @@ function shift_entry_add_controller()
         }
 
         $user_source = User($user_id);
-        engelsystem_log("User " . User_Nick_render($user_source) . " signed up for shift " . $shift['name'] . " from " . date("Y-m-d H:i",
-                $shift['start']) . " to " . date("Y-m-d H:i", $shift['end']));
-        success(_("You are subscribed. Thank you!") . ' <a href="' . page_link_to('user_myshifts') . '">' . _("My shifts") . ' &raquo;</a>');
+        engelsystem_log('User ' . User_Nick_render($user_source) . ' signed up for shift ' . $shift['name'] . ' from ' . date('Y-m-d H:i',
+                $shift['start']) . ' to ' . date('Y-m-d H:i', $shift['end']));
+        success(_('You are subscribed. Thank you!') . ' <a href="' . page_link_to('user_myshifts') . '">' . _('My shifts') . ' &raquo;</a>');
         redirect(shift_link($shift));
     }
 
     $angeltype_select = '';
     if (in_array('user_shifts_admin', $privileges)) {
-        $users = sql_select("
+        $users = sql_select('
             SELECT *, (SELECT count(*) FROM `ShiftEntry` WHERE `freeloaded`=1 AND `ShiftEntry`.`UID`=`User`.`UID`) AS `freeloaded`
             FROM `User`
             ORDER BY `Nick`
-        ");
+        ');
         $users_select = [];
         foreach ($users as $usr) {
-            $users_select[$usr['UID']] = $usr['Nick'] . ($usr['freeloaded'] == 0 ? "" : " (" . _("Freeloader") . ")");
+            $users_select[$usr['UID']] = $usr['Nick'] . ($usr['freeloaded'] == 0 ? '' : ' (' . _('Freeloader') . ')');
         }
         $user_text = html_select_key('user_id', 'user_id', $users_select, $user['UID']);
 
-        $angeltypes_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
+        $angeltypes_source = sql_select('SELECT * FROM `AngelTypes` ORDER BY `name`');
         $angeltypes = [];
         foreach ($angeltypes_source as $angeltype) {
             $angeltypes[$angeltype['id']] = $angeltype['name'];
@@ -193,13 +193,13 @@ function shift_entry_add_controller()
 
     return ShiftEntry_edit_view(
         $user_text,
-        date("Y-m-d H:i", $shift['start'])
+        date('Y-m-d H:i', $shift['start'])
         . ' &ndash; '
         . date('Y-m-d H:i', $shift['end'])
         . ' (' . shift_length($shift) . ')',
         $shift['Name'],
         $shift['name'],
-        $angeltype_select, "",
+        $angeltype_select, '',
         false,
         null,
         in_array('user_shifts_admin', $privileges)
@@ -250,15 +250,15 @@ function shift_entry_delete_controller()
         }
 
         engelsystem_log(
-            "Deleted " . User_Nick_render($shift_entry_source) . "'s shift: " . $shift_entry_source['name']
-            . " at " . $shift_entry_source['Name']
-            . " from " . date("Y-m-d H:i", $shift_entry_source['start'])
-            . " to " . date("Y-m-d H:i", $shift_entry_source['end'])
-            . " as " . $shift_entry_source['angel_type']
+            'Deleted ' . User_Nick_render($shift_entry_source) . '\'s shift: ' . $shift_entry_source['name']
+            . ' at ' . $shift_entry_source['Name']
+            . ' from ' . date('Y-m-d H:i', $shift_entry_source['start'])
+            . ' to ' . date('Y-m-d H:i', $shift_entry_source['end'])
+            . ' as ' . $shift_entry_source['angel_type']
         );
-        success(_("Shift entry deleted."));
+        success(_('Shift entry deleted.'));
     } else {
-        error(_("Entry not found."));
+        error(_('Entry not found.'));
     }
 
     redirect(shift_link($shift_entry_source));

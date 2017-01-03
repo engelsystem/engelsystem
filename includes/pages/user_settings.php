@@ -5,7 +5,7 @@
  */
 function settings_title()
 {
-    return _("Settings");
+    return _('Settings');
 }
 
 /**
@@ -25,11 +25,11 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         $user_source['email'] = $result->getValue();
         if (!$result->isValid()) {
             $valid = false;
-            error(_("E-mail address is not correct."));
+            error(_('E-mail address is not correct.'));
         }
     } else {
         $valid = false;
-        error(_("Please enter your e-mail."));
+        error(_('Please enter your e-mail.'));
     }
 
     $user_source['email_shiftinfo'] = isset($_REQUEST['email_shiftinfo']);
@@ -40,7 +40,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         $user_source['jabber'] = $result->getValue();
         if (!$result->isValid()) {
             $valid = false;
-            error(_("Please check your jabber account information."));
+            error(_('Please check your jabber account information.'));
         }
     }
 
@@ -51,22 +51,22 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
     }
 
     if (isset($_REQUEST['planned_arrival_date'])) {
-        $tmp = parse_date("Y-m-d H:i", $_REQUEST['planned_arrival_date'] . " 00:00");
+        $tmp = parse_date('Y-m-d H:i', $_REQUEST['planned_arrival_date'] . ' 00:00');
         $result = User_validate_planned_arrival_date($tmp);
         $user_source['planned_arrival_date'] = $result->getValue();
         if (!$result->isValid()) {
             $valid = false;
-            error(_("Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date."));
+            error(_('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
         }
     }
 
     if (isset($_REQUEST['planned_departure_date'])) {
-        $tmp = parse_date("Y-m-d H:i", $_REQUEST['planned_departure_date'] . " 00:00");
+        $tmp = parse_date('Y-m-d H:i', $_REQUEST['planned_departure_date'] . ' 00:00');
         $result = User_validate_planned_departure_date($user_source['planned_arrival_date'], $tmp);
         $user_source['planned_departure_date'] = $result->getValue();
         if (!$result->isValid()) {
             $valid = false;
-            error(_("Please enter your planned date of departure. It should be after your planned arrival date and after buildup start date and before teardown end date."));
+            error(_('Please enter your planned date of departure. It should be after your planned arrival date and after buildup start date and before teardown end date.'));
         }
     }
 
@@ -81,7 +81,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 
     if ($valid) {
         User_update($user_source);
-        success(_("Settings saved."));
+        success(_('Settings saved.'));
         redirect(page_link_to('user_settings'));
     }
 
@@ -100,15 +100,15 @@ function user_settings_password($user_source)
         !isset($_REQUEST['password'])
         || !verify_password($_REQUEST['password'], $user_source['Passwort'], $user_source['UID'])
     ) {
-        error(_("-> not OK. Please try again."));
+        error(_('-> not OK. Please try again.'));
     } elseif (strlen($_REQUEST['new_password']) < $min_password_length) {
-        error(_("Your password is to short (please use at least 6 characters)."));
+        error(_('Your password is to short (please use at least 6 characters).'));
     } elseif ($_REQUEST['new_password'] != $_REQUEST['new_password2']) {
-        error(_("Your passwords don't match."));
+        error(_('Your passwords don\'t match.'));
     } elseif (set_password($user_source['UID'], $_REQUEST['new_password'])) {
-        success(_("Password saved."));
+        success(_('Password saved.'));
     } else {
-        error(_("Failed setting password."));
+        error(_('Failed setting password.'));
     }
     redirect(page_link_to('user_settings'));
 }
@@ -131,9 +131,13 @@ function user_settings_theme($user_source, $themes)
     }
 
     if ($valid) {
-        sql_query("UPDATE `User` SET `color`='" . sql_escape($user_source['color']) . "' WHERE `UID`='" . sql_escape($user_source['UID']) . "'");
+        sql_query("
+            UPDATE `User`
+            SET `color`='" . sql_escape($user_source['color']) . "'
+            WHERE `UID`='" . sql_escape($user_source['UID']) . "'
+        ");
 
-        success(_("Theme changed."));
+        success(_('Theme changed.'));
         redirect(page_link_to('user_settings'));
     }
 
@@ -158,10 +162,14 @@ function user_settings_locale($user_source, $locales)
     }
 
     if ($valid) {
-        sql_query("UPDATE `User` SET `Sprache`='" . sql_escape($user_source['Sprache']) . "' WHERE `UID`='" . sql_escape($user_source['UID']) . "'");
+        sql_query("
+            UPDATE `User`
+            SET `Sprache`='" . sql_escape($user_source['Sprache']) . "'
+            WHERE `UID`='" . sql_escape($user_source['UID']) . "'
+        ");
         $_SESSION['locale'] = $user_source['Sprache'];
 
-        success("Language changed.");
+        success('Language changed.');
         redirect(page_link_to('user_settings'));
     }
 
@@ -202,6 +210,13 @@ function user_settings()
         $user_source = user_settings_locale($user_source, $locales);
     }
 
-    return User_settings_view($user_source, $locales, $themes, $buildup_start_date, $teardown_end_date,
-        $enable_tshirt_size, $tshirt_sizes);
+    return User_settings_view(
+        $user_source,
+        $locales,
+        $themes,
+        $buildup_start_date,
+        $teardown_end_date,
+        $enable_tshirt_size,
+        $tshirt_sizes
+    );
 }

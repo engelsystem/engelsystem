@@ -10,14 +10,14 @@ function Shift_editor_info_render($shift)
     $info = [];
     if ($shift['created_by_user_id'] != null) {
         $info[] = sprintf(
-            glyph('plus') . _("created at %s by %s"),
+            glyph('plus') . _('created at %s by %s'),
             date('Y-m-d H:i', $shift['created_at_timestamp']),
             User_Nick_render(User($shift['created_by_user_id']))
         );
     }
     if ($shift['edited_by_user_id'] != null) {
         $info[] = sprintf(
-            glyph('pencil') . _("edited at %s by %s"),
+            glyph('pencil') . _('edited at %s by %s'),
             date('Y-m-d H:i', $shift['edited_at_timestamp']),
             User_Nick_render(User($shift['edited_by_user_id']))
         );
@@ -226,7 +226,7 @@ function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angelty
  */
 function shift_length($shift)
 {
-    $length = floor(($shift['end'] - $shift['start']) / (60 * 60)) . ":";
-    $length .= str_pad((($shift['end'] - $shift['start']) % (60 * 60)) / 60, 2, "0", STR_PAD_LEFT) . "h";
+    $length = floor(($shift['end'] - $shift['start']) / (60 * 60)) . ':';
+    $length .= str_pad((($shift['end'] - $shift['start']) % (60 * 60)) / 60, 2, '0', STR_PAD_LEFT) . 'h';
     return $length;
 }

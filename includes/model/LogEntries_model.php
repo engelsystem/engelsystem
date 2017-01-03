@@ -9,7 +9,13 @@
  */
 function LogEntry_create($nick, $message)
 {
-    return sql_query("INSERT INTO `LogEntries` SET `timestamp`='" . sql_escape(time()) . "', `nick`='" . sql_escape($nick) . "', `message`='" . sql_escape($message) . "'");
+    return sql_query("
+        INSERT INTO `LogEntries`
+        SET
+            `timestamp`='" . sql_escape(time()) . "',
+            `nick`='" . sql_escape($nick) . "',
+            `message`='" . sql_escape($message) . "'
+    ");
 }
 
 /**
@@ -19,7 +25,7 @@ function LogEntry_create($nick, $message)
  */
 function LogEntries()
 {
-    return sql_select("SELECT * FROM `LogEntries` ORDER BY `timestamp` DESC LIMIT 10000");
+    return sql_select('SELECT * FROM `LogEntries` ORDER BY `timestamp` DESC LIMIT 10000');
 }
 
 /**
@@ -30,10 +36,16 @@ function LogEntries()
  */
 function LogEntries_filter($keyword)
 {
-    if ($keyword == "") {
+    if ($keyword == '') {
         return LogEntries();
     }
-    return sql_select("SELECT * FROM `LogEntries` WHERE `nick` LIKE '%" . sql_escape($keyword) . "%' OR `message` LIKE '%" . sql_escape($keyword) . "%' ORDER BY `timestamp` DESC");
+    return sql_select("
+        SELECT *
+        FROM `LogEntries`
+        WHERE `nick` LIKE '%" . sql_escape($keyword) . "%'
+        OR `message` LIKE '%" . sql_escape($keyword) . "%'
+        ORDER BY `timestamp` DESC
+    ");
 }
 
 /**
@@ -43,5 +55,5 @@ function LogEntries_filter($keyword)
  */
 function LogEntries_clear_all()
 {
-    return sql_query("TRUNCATE `LogEntries`");
+    return sql_query('TRUNCATE `LogEntries`');
 }

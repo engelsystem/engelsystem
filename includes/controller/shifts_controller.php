@@ -38,7 +38,7 @@ function shift_edit_controller()
     global $privileges;
 
     // Schicht bearbeiten
-    $msg = "";
+    $msg = '';
     $valid = true;
 
     if (!in_array('admin_shifts', $privileges)) {
@@ -74,11 +74,11 @@ function shift_edit_controller()
         $title = strip_request_item('title');
 
         // Auswahl der sichtbaren Locations für die Schichten
-        if (isset($_REQUEST['rid']) && preg_match("/^[0-9]+$/", $_REQUEST['rid']) && isset($room[$_REQUEST['rid']])) {
+        if (isset($_REQUEST['rid']) && preg_match('/^[0-9]+$/', $_REQUEST['rid']) && isset($room[$_REQUEST['rid']])) {
             $rid = $_REQUEST['rid'];
         } else {
             $valid = false;
-            $msg .= error(_("Please select a room."), true);
+            $msg .= error(_('Please select a room.'), true);
         }
 
         if (isset($_REQUEST['shifttype_id']) && isset($shifttypes[$_REQUEST['shifttype_id']])) {
@@ -88,23 +88,23 @@ function shift_edit_controller()
             $msg .= error(_('Please select a shifttype.'), true);
         }
 
-        if (isset($_REQUEST['start']) && $tmp = parse_date("Y-m-d H:i", $_REQUEST['start'])) {
+        if (isset($_REQUEST['start']) && $tmp = parse_date('Y-m-d H:i', $_REQUEST['start'])) {
             $start = $tmp;
         } else {
             $valid = false;
-            $msg .= error(_("Please enter a valid starting time for the shifts."), true);
+            $msg .= error(_('Please enter a valid starting time for the shifts.'), true);
         }
 
-        if (isset($_REQUEST['end']) && $tmp = parse_date("Y-m-d H:i", $_REQUEST['end'])) {
+        if (isset($_REQUEST['end']) && $tmp = parse_date('Y-m-d H:i', $_REQUEST['end'])) {
             $end = $tmp;
         } else {
             $valid = false;
-            $msg .= error(_("Please enter a valid ending time for the shifts."), true);
+            $msg .= error(_('Please enter a valid ending time for the shifts.'), true);
         }
 
         if ($start >= $end) {
             $valid = false;
-            $msg .= error(_("The ending time has to be after the starting time."), true);
+            $msg .= error(_('The ending time has to be after the starting time.'), true);
         }
 
         foreach ($needed_angel_types as $needed_angeltype_id => $needed_angeltype_name) {
@@ -113,7 +113,7 @@ function shift_edit_controller()
             } else {
                 $valid = false;
                 $msg .= error(sprintf(
-                    _("Please check your input for needed angels of type %s."),
+                    _('Please check your input for needed angels of type %s.'),
                     $needed_angeltype_name
                 ), true);
             }
@@ -134,16 +134,16 @@ function shift_edit_controller()
             $needed_angel_types_info = [];
             foreach ($needed_angel_types as $type_id => $count) {
                 NeededAngelType_add($shift_id, $type_id, null, $count);
-                $needed_angel_types_info[] = $angeltypes[$type_id] . ": " . $count;
+                $needed_angel_types_info[] = $angeltypes[$type_id] . ': ' . $count;
             }
 
             engelsystem_log(
-                "Updated shift '" . $shifttypes[$shifttype_id] . ", " . $title
-                . "' from " . date("Y-m-d H:i", $start)
-                . " to " . date("Y-m-d H:i", $end)
-                . " with angel types " . join(", ", $needed_angel_types_info)
+                'Updated shift \'' . $shifttypes[$shifttype_id] . ', ' . $title
+                . '\' from ' . date('Y-m-d H:i', $start)
+                . ' to ' . date('Y-m-d H:i', $end)
+                . ' with angel types ' . join(', ', $needed_angel_types_info)
             );
-            success(_("Shift updated."));
+            success(_('Shift updated.'));
 
             redirect(shift_link([
                 'SID' => $shift_id
@@ -151,7 +151,7 @@ function shift_edit_controller()
         }
     }
 
-    $angel_types_spinner = "";
+    $angel_types_spinner = '';
     foreach ($angeltypes as $angeltype_id => $angeltype_name) {
         $angel_types_spinner .= form_spinner('type_' . $angeltype_id, $angeltype_name,
             $needed_angel_types[$angeltype_id]);
@@ -161,16 +161,16 @@ function shift_edit_controller()
         shifts_title(),
         [
             msg(),
-            '<noscript>' . info(_("This page is much more comfortable with javascript."), true) . '</noscript>',
+            '<noscript>' . info(_('This page is much more comfortable with javascript.'), true) . '</noscript>',
             form([
                 form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
-                form_text('title', _("Title"), $title),
-                form_select('rid', _("Room:"), $room, $rid),
-                form_text('start', _("Start:"), date("Y-m-d H:i", $start)),
-                form_text('end', _("End:"), date("Y-m-d H:i", $end)),
-                '<h2>' . _("Needed angels") . '</h2>',
+                form_text('title', _('Title'), $title),
+                form_select('rid', _('Room:'), $room, $rid),
+                form_text('start', _('Start:'), date('Y-m-d H:i', $start)),
+                form_text('end', _('End:'), date('Y-m-d H:i', $end)),
+                '<h2>' . _('Needed angels') . '</h2>',
                 $angel_types_spinner,
-                form_submit('submit', _("Save"))
+                form_submit('submit', _('Save'))
             ])
         ]
     );
@@ -188,7 +188,7 @@ function shift_delete_controller()
     }
 
     // Schicht komplett löschen (nur für admins/user mit user_shifts_admin privileg)
-    if (!isset($_REQUEST['delete_shift']) || !preg_match("/^[0-9]*$/", $_REQUEST['delete_shift'])) {
+    if (!isset($_REQUEST['delete_shift']) || !preg_match('/^[0-9]*$/', $_REQUEST['delete_shift'])) {
         redirect(page_link_to('user_shifts'));
     }
     $shift_id = $_REQUEST['delete_shift'];
@@ -203,22 +203,22 @@ function shift_delete_controller()
         Shift_delete($shift_id);
 
         engelsystem_log(
-            "Deleted shift " . $shift['name']
-            . " from " . date("Y-m-d H:i", $shift['start'])
-            . " to " . date("Y-m-d H:i", $shift['end'])
+            'Deleted shift ' . $shift['name']
+            . ' from ' . date('Y-m-d H:i', $shift['start'])
+            . ' to ' . date('Y-m-d H:i', $shift['end'])
         );
-        success(_("Shift deleted."));
+        success(_('Shift deleted.'));
         redirect(page_link_to('user_shifts'));
     }
 
     return page_with_title(shifts_title(), [
         error(sprintf(
-            _("Do you want to delete the shift %s from %s to %s?"),
+            _('Do you want to delete the shift %s from %s to %s?'),
             $shift['name'],
-            date("Y-m-d H:i", $shift['start']),
-            date("H:i", $shift['end'])
+            date('Y-m-d H:i', $shift['start']),
+            date('H:i', $shift['end'])
         ), true),
-        '<a class="button" href="?p=user_shifts&delete_shift=' . $shift_id . '&delete">' . _("delete") . '</a>'
+        '<a class="button" href="?p=user_shifts&delete_shift=' . $shift_id . '&delete">' . _('delete') . '</a>'
     ]);
 }
 
@@ -239,7 +239,7 @@ function shift_controller()
 
     $shift = Shift($_REQUEST['shift_id']);
     if ($shift == null) {
-        error(_("Shift could not be found."));
+        error(_('Shift could not be found.'));
         redirect(page_link_to('user_shifts'));
     }
 
@@ -323,24 +323,24 @@ function shifts_json_export_all_controller()
 {
     global $api_key;
 
-    if ($api_key == "") {
-        engelsystem_error("Config contains empty apikey.");
+    if ($api_key == '') {
+        engelsystem_error('Config contains empty apikey.');
     }
 
     if (!isset($_REQUEST['api_key'])) {
-        engelsystem_error("Missing parameter api_key.");
+        engelsystem_error('Missing parameter api_key.');
     }
 
     if ($_REQUEST['api_key'] != $api_key) {
-        engelsystem_error("Invalid api_key.");
+        engelsystem_error('Invalid api_key.');
     }
 
     $shifts_source = Shifts();
     if ($shifts_source === false) {
-        engelsystem_error("Unable to load shifts.");
+        engelsystem_error('Unable to load shifts.');
     }
 
-    header("Content-Type: application/json; charset=utf-8");
+    header('Content-Type: application/json; charset=utf-8');
     raw_output(json_encode($shifts_source));
 }
 
@@ -352,23 +352,23 @@ function shifts_json_export_controller()
 {
     global $user;
 
-    if (!isset($_REQUEST['key']) || !preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key'])) {
-        engelsystem_error("Missing key.");
+    if (!isset($_REQUEST['key']) || !preg_match('/^[0-9a-f]{32}$/', $_REQUEST['key'])) {
+        engelsystem_error('Missing key.');
     }
 
     $key = $_REQUEST['key'];
 
     $user = User_by_api_key($key);
     if ($user == null) {
-        engelsystem_error("Key invalid.");
+        engelsystem_error('Key invalid.');
     }
     if (!in_array('shifts_json_export', privileges_for_user($user['UID']))) {
-        engelsystem_error("No privilege for shifts_json_export.");
+        engelsystem_error('No privilege for shifts_json_export.');
     }
 
     $shifts = load_ical_shifts();
 
-    header("Content-Type: application/json; charset=utf-8");
+    header('Content-Type: application/json; charset=utf-8');
     raw_output(json_encode($shifts));
 }
 

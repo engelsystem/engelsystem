@@ -19,7 +19,7 @@ function Rooms($show_all = false)
  */
 function Room_delete($room_id)
 {
-    return sql_query("DELETE FROM `Room` WHERE `RID`=" . sql_escape($room_id));
+    return sql_query('DELETE FROM `Room` WHERE `RID`=' . sql_escape($room_id));
 }
 
 /**

@@ -16,8 +16,8 @@ use Engelsystem\ValidationResult;
  */
 function check_request_datetime($date_name, $time_name, $allowed_days, $default_value)
 {
-    $time = date("H:i", $default_value);
-    $day = date("Y-m-d", $default_value);
+    $time = date('H:i', $default_value);
+    $day = date('Y-m-d', $default_value);
 
     if (isset($_REQUEST[$time_name]) && preg_match('#^\d{1,2}:\d\d$#', trim($_REQUEST[$time_name]))) {
         $time = trim($_REQUEST[$time_name]);
@@ -26,7 +26,7 @@ function check_request_datetime($date_name, $time_name, $allowed_days, $default_
         $day = $_REQUEST[$date_name];
     }
 
-    return parse_date("Y-m-d H:i", $day . " " . $time);
+    return parse_date('Y-m-d H:i', $day . ' ' . $time);
 }
 
 /**
@@ -52,8 +52,8 @@ function parse_date($pattern, $value)
  */
 function redirect($url)
 {
-    header("Location: " . $url, true, 302);
-    raw_output("");
+    header('Location: ' . $url, true, 302);
+    raw_output('');
 }
 
 /**
@@ -128,7 +128,7 @@ function check_request_date($name, $error_message = null, $null_allowed = false)
  */
 function check_date($input, $error_message = null, $null_allowed = false)
 {
-    if ($tmp = parse_date("Y-m-d H:i", trim($input) . " 00:00")) {
+    if ($tmp = parse_date('Y-m-d H:i', trim($input) . ' 00:00')) {
         return new ValidationResult(true, $tmp);
     }
     if ($null_allowed) {
@@ -164,7 +164,7 @@ function strip_request_item($name, $default_value = null)
 function test_request_int($name)
 {
     if (isset($_REQUEST[$name])) {
-        return preg_match("/^[0-9]*$/", $_REQUEST[$name]);
+        return preg_match('/^[0-9]*$/', $_REQUEST[$name]);
     }
     return false;
 }

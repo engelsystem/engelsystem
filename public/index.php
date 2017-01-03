@@ -182,5 +182,5 @@ echo template_render(__DIR__ . '/../templates/layout.html', [
     'faq_url'        => $faq_url,
     'contact_email'  => $contact_email,
     'locale'         => locale(),
-    'event_info'     => EventConfig_info($event_config) . ' < br />'
+    'event_info'     => EventConfig_info($event_config) . ' <br />'
 ]);

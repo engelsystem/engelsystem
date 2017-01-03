@@ -23,7 +23,7 @@ function room_controller()
     $all_shifts = Shifts_by_room($room);
     $days = [];
     foreach ($all_shifts as $shift) {
-        $day = date("Y-m-d", $shift['start']);
+        $day = date('Y-m-d', $shift['start']);
         if (!in_array($day, $days)) {
             $days[] = $day;
         }
@@ -34,15 +34,15 @@ function room_controller()
         [$room['RID']],
         AngelType_ids()
     );
-    $selected_day = date("Y-m-d");
+    $selected_day = date('Y-m-d');
     if (!empty($days)) {
         $selected_day = $days[0];
     }
     if (isset($_REQUEST['shifts_filter_day'])) {
         $selected_day = $_REQUEST['shifts_filter_day'];
     }
-    $shiftsFilter->setStartTime(parse_date("Y-m-d H:i", $selected_day . ' 00:00'));
-    $shiftsFilter->setEndTime(parse_date("Y-m-d H:i", $selected_day . ' 23:59'));
+    $shiftsFilter->setStartTime(parse_date('Y-m-d H:i', $selected_day . ' 00:00'));
+    $shiftsFilter->setEndTime(parse_date('Y-m-d H:i', $selected_day . ' 23:59'));
 
     $shiftsFilterRenderer = new ShiftsFilterRenderer($shiftsFilter);
     $shiftsFilterRenderer->enableDaySelection($days);

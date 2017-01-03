@@ -35,7 +35,7 @@ function sql_transaction_start()
     global $sql_nested_transaction_level;
 
     if ($sql_nested_transaction_level++ == 0) {
-        return sql_query("BEGIN");
+        return sql_query('BEGIN');
     }
 
     return true;
@@ -51,7 +51,7 @@ function sql_transaction_commit()
     global $sql_nested_transaction_level;
 
     if (--$sql_nested_transaction_level == 0) {
-        return sql_query("COMMIT");
+        return sql_query('COMMIT');
     }
 
     return true;
@@ -67,7 +67,7 @@ function sql_transaction_rollback()
     global $sql_nested_transaction_level;
 
     if (--$sql_nested_transaction_level == 0) {
-        return sql_query("ROLLBACK");
+        return sql_query('ROLLBACK');
     }
 
     return true;
@@ -107,18 +107,18 @@ function sql_connect($host, $user, $pass, $db_name)
 
     $sql_connection = new mysqli($host, $user, $pass, $db_name);
     if ($sql_connection->connect_errno) {
-        error("Unable to connect to MySQL: " . $sql_connection->connect_error);
-        return sql_error("Unable to connect to MySQL: " . $sql_connection->connect_error);
+        error('Unable to connect to MySQL: ' . $sql_connection->connect_error);
+        return sql_error('Unable to connect to MySQL: ' . $sql_connection->connect_error);
     }
 
-    $result = $sql_connection->query("SET CHARACTER SET utf8;");
+    $result = $sql_connection->query('SET CHARACTER SET utf8;');
     if (!$result) {
-        return sql_error("Unable to set utf8 character set (" . $sql_connection->errno . ") " . $sql_connection->error);
+        return sql_error('Unable to set utf8 character set (' . $sql_connection->errno . ') ' . $sql_connection->error);
     }
 
     $result = $sql_connection->set_charset('utf8');
     if (!$result) {
-        return sql_error("Unable to set utf8 names (" . $sql_connection->errno . ") " . $sql_connection->error);
+        return sql_error('Unable to set utf8 names (' . $sql_connection->errno . ') ' . $sql_connection->error);
     }
 
     return $sql_connection;
@@ -134,7 +134,7 @@ function sql_select_db($db_name)
 {
     global $sql_connection;
     if (!$sql_connection->select_db($db_name)) {
-        return sql_error("No database selected.");
+        return sql_error('No database selected.');
     }
     return true;
 }
@@ -158,7 +158,7 @@ function sql_select($query)
         return $data;
     }
 
-    return sql_error("MySQL-query error: " . $query . " (" . $sql_connection->errno . ") " . $sql_connection->error);
+    return sql_error('MySQL-query error: ' . $query . ' (' . $sql_connection->errno . ') ' . $sql_connection->error);
 }
 
 /**
@@ -176,7 +176,7 @@ function sql_query($query)
         return $result;
     }
 
-    return sql_error("MySQL-query error: " . $query . " (" . $sql_connection->errno . ") " . $sql_connection->error);
+    return sql_error('MySQL-query error: ' . $query . ' (' . $sql_connection->errno . ') ' . $sql_connection->error);
 }
 
 /**

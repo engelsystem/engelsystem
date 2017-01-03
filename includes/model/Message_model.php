@@ -7,7 +7,7 @@
  */
 function Message_ids()
 {
-    return sql_select("SELECT `id` FROM `Messages`");
+    return sql_select('SELECT `id` FROM `Messages`');
 }
 
 /**
@@ -42,10 +42,10 @@ function Message_send($receiver_user_id, $text)
     global $user;
 
     $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($text));
-    $receiver_user_id = preg_replace("/([^0-9]{1,})/ui", '', strip_tags($receiver_user_id));
+    $receiver_user_id = preg_replace('/([^0-9]{1,})/ui', '', strip_tags($receiver_user_id));
 
     if (
-        ($text != "" && is_numeric($receiver_user_id))
+        ($text != '' && is_numeric($receiver_user_id))
         && (sql_num_query("
             SELECT *
             FROM `User`

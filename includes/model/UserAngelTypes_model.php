@@ -36,7 +36,7 @@ function User_angeltypes($user)
       WHERE `UserAngelTypes`.`user_id`='" . sql_escape($user['UID']) . "'
       ");
     if ($result === false) {
-        engelsystem_error("Unable to load user angeltypes.");
+        engelsystem_error('Unable to load user angeltypes.');
         return false;
     }
     return $result;
@@ -66,7 +66,7 @@ function User_unconfirmed_AngelTypes($user)
         ORDER BY `AngelTypes`.`name`
     ");
     if ($result === false) {
-        engelsystem_error("Unable to load user angeltypes.");
+        engelsystem_error('Unable to load user angeltypes.');
     }
     return $result;
 }
@@ -109,7 +109,7 @@ function UserAngelType_update($user_angeltype_id, $supporter)
       LIMIT 1
     ");
     if ($result === false) {
-        engelsystem_error("Unable to update supporter rights.");
+        engelsystem_error('Unable to update supporter rights.');
     }
     return $result;
 }
@@ -128,7 +128,7 @@ function UserAngelTypes_delete_all($angeltype_id)
       AND `confirm_user_id` IS NULL
     ");
     if ($result === false) {
-        engelsystem_error("Unable to delete all unconfirmed users.");
+        engelsystem_error('Unable to delete all unconfirmed users.');
     }
     return $result;
 }
@@ -149,7 +149,7 @@ function UserAngelTypes_confirm_all($angeltype_id, $confirm_user)
       AND `confirm_user_id` IS NULL
     ");
     if ($result === false) {
-        engelsystem_error("Unable to confirm all users.");
+        engelsystem_error('Unable to confirm all users.');
     }
     return $result;
 }
@@ -169,7 +169,7 @@ function UserAngelType_confirm($user_angeltype_id, $confirm_user)
       WHERE `id`='" . sql_escape($user_angeltype_id) . "'
       LIMIT 1");
     if ($result === false) {
-        engelsystem_error("Unable to confirm user angeltype.");
+        engelsystem_error('Unable to confirm user angeltype.');
     }
     return $result;
 }
@@ -202,7 +202,7 @@ function UserAngelType_create($user, $angeltype)
     `user_id`='" . sql_escape($user['UID']) . "',
     `angeltype_id`='" . sql_escape($angeltype['id']) . "'");
     if ($result === false) {
-        engelsystem_error("Unable to create user angeltype.");
+        engelsystem_error('Unable to create user angeltype.');
     }
     return sql_id();
 }
@@ -221,7 +221,7 @@ function UserAngelType($user_angeltype_id)
       WHERE `id`='" . sql_escape($user_angeltype_id) . "'
       LIMIT 1");
     if ($angeltype === false) {
-        engelsystem_error("Unable to load user angeltype.");
+        engelsystem_error('Unable to load user angeltype.');
     }
     if (count($angeltype) == 0) {
         return null;
@@ -245,7 +245,7 @@ function UserAngelType_by_User_and_AngelType($user, $angeltype)
       AND `angeltype_id`='" . sql_escape($angeltype['id']) . "'
       LIMIT 1");
     if ($angeltype === false) {
-        engelsystem_error("Unable to load user angeltype.");
+        engelsystem_error('Unable to load user angeltype.');
     }
     if (count($angeltype) == 0) {
         return null;

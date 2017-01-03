@@ -37,8 +37,8 @@ function load_auth()
  */
 function generate_salt($length = 16)
 {
-    $alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    $salt = "";
+    $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    $salt = '';
     for ($i = 0; $i < $length; $i++) {
         $salt .= $alphabet[rand(0, strlen($alphabet) - 1)];
     }

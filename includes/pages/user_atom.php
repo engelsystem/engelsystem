@@ -7,17 +7,17 @@ function user_atom()
 {
     global $user, $display_news;
 
-    if (!isset($_REQUEST['key']) || !preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key'])) {
-        engelsystem_error("Missing key.");
+    if (!isset($_REQUEST['key']) || !preg_match('/^[0-9a-f]{32}$/', $_REQUEST['key'])) {
+        engelsystem_error('Missing key.');
     }
     $key = $_REQUEST['key'];
 
     $user = User_by_api_key($key);
     if ($user == null) {
-        engelsystem_error("Key invalid.");
+        engelsystem_error('Key invalid.');
     }
     if (!in_array('atom', privileges_for_user($user['UID']))) {
-        engelsystem_error("No privilege for atom.");
+        engelsystem_error('No privilege for atom.');
     }
 
     $news = sql_select("
@@ -31,7 +31,7 @@ function user_atom()
     $output = make_atom_entries_from_news($news);
 
     header('Content-Type: application/atom+xml; charset=utf-8');
-    header("Content-Length: " . strlen($output));
+    header('Content-Length: ' . strlen($output));
     raw_output($output);
 }
 
@@ -51,21 +51,21 @@ function make_atom_entries_from_news($news_entries)
             $_SERVER['REQUEST_URI']
         ))
         . '</id>
-  <updated>' . date('Y-m-d\TH:i:sP', $news_entries[0]['Datum']) . "</updated>\n";
+  <updated>' . date('Y-m-d\TH:i:sP', $news_entries[0]['Datum']) . '</updated>' . "\n";
     foreach ($news_entries as $news_entry) {
         $html .= make_atom_entry_from_news($news_entry);
     }
-    $html .= "</feed>";
+    $html .= '</feed>';
     return $html;
 }
 
 function make_atom_entry_from_news($news_entry)
 {
-    return "  <entry>
-    <title>" . htmlspecialchars($news_entry['Betreff']) . "</title>
-    <link href=\"" . page_link_to_absolute("news_comments&amp;nid=") . "${news_entry['ID']}\"/>
-      <id>" . preg_replace('#^https?://#', '', page_link_to_absolute("news")) . "-${news_entry['ID']}</id>
-      <updated>" . date('Y-m-d\TH:i:sP', $news_entry['Datum']) . "</updated>
-    <summary type=\"html\">" . htmlspecialchars($news_entry['Text']) . "</summary>
-    </entry>\n";
+    return '  <entry>
+    <title>' . htmlspecialchars($news_entry['Betreff']) . '</title>
+    <link href="' . page_link_to_absolute('news_comments&amp;nid=') . $news_entry['ID'] . '"/>
+      <id>' . preg_replace('#^https?://#', '', page_link_to_absolute('news')) . '-' . $news_entry['ID'] . '</id>
+      <updated>' . date('Y-m-d\TH:i:sP', $news_entry['Datum']) . '</updated>
+    <summary type="html">' . htmlspecialchars($news_entry['Text']) . '</summary>
+    </entry>' . "\n";
 }

@@ -60,7 +60,7 @@ function User_update($user)
  */
 function User_force_active_count()
 {
-    return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `force_active` = 1");
+    return sql_select_single_cell('SELECT COUNT(*) FROM `User` WHERE `force_active` = 1');
 }
 
 /**
@@ -68,7 +68,7 @@ function User_force_active_count()
  */
 function User_active_count()
 {
-    return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1");
+    return sql_select_single_cell('SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1');
 }
 
 /**
@@ -76,7 +76,7 @@ function User_active_count()
  */
 function User_got_voucher_count()
 {
-    return sql_select_single_cell("SELECT SUM(`got_voucher`) FROM `User`");
+    return sql_select_single_cell('SELECT SUM(`got_voucher`) FROM `User`');
 }
 
 /**
@@ -84,7 +84,7 @@ function User_got_voucher_count()
  */
 function User_arrived_count()
 {
-    return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1");
+    return sql_select_single_cell('SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1');
 }
 
 /**
@@ -92,7 +92,7 @@ function User_arrived_count()
  */
 function User_tshirts_count()
 {
-    return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1");
+    return sql_select_single_cell('SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1');
 }
 
 /**
@@ -184,7 +184,7 @@ function Users_by_angeltype($angeltype)
       WHERE `UserAngelTypes`.`angeltype_id`='" . sql_escape($angeltype['id']) . "'
       ORDER BY `Nick`");
     if ($result === false) {
-        engelsystem_error("Unable to load members.");
+        engelsystem_error('Unable to load members.');
     }
     return $result;
 }
@@ -196,7 +196,7 @@ function Users_by_angeltype($angeltype)
  */
 function User_ids()
 {
-    return sql_select("SELECT `UID` FROM `User`");
+    return sql_select('SELECT `UID` FROM `User`');
 }
 
 /**
@@ -207,7 +207,7 @@ function User_ids()
  */
 function User_validate_Nick($nick)
 {
-    return preg_replace("/([^a-z0-9üöäß. _+*-]{1,})/ui", '', $nick);
+    return preg_replace('/([^a-z0-9üöäß. _+*-]{1,})/ui', '', $nick);
 }
 
 /**
@@ -313,7 +313,7 @@ function User($user_id)
 {
     $user_source = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
     if ($user_source === false) {
-        engelsystem_error("Unable to load user.");
+        engelsystem_error('Unable to load user.');
     }
     if (count($user_source) > 0) {
         return $user_source[0];
@@ -332,7 +332,7 @@ function User_by_api_key($api_key)
 {
     $user = sql_select("SELECT * FROM `User` WHERE `api_key`='" . sql_escape($api_key) . "' LIMIT 1");
     if ($user === false) {
-        engelsystem_error("Unable to find user by api key.");
+        engelsystem_error('Unable to find user by api key.');
     }
     if (count($user) == 0) {
         return null;
@@ -350,7 +350,7 @@ function User_by_email($email)
 {
     $user = sql_select("SELECT * FROM `User` WHERE `email`='" . sql_escape($email) . "' LIMIT 1");
     if ($user === false) {
-        engelsystem_error("Unable to load user.");
+        engelsystem_error('Unable to load user.');
     }
     if (count($user) == 0) {
         return null;
@@ -368,7 +368,7 @@ function User_by_password_recovery_token($token)
 {
     $user = sql_select("SELECT * FROM `User` WHERE `password_recovery_token`='" . sql_escape($token) . "' LIMIT 1");
     if ($user === false) {
-        engelsystem_error("Unable to load user.");
+        engelsystem_error('Unable to load user.');
     }
     if (count($user) == 0) {
         return null;
@@ -392,7 +392,7 @@ function User_reset_api_key(&$user, $log = true)
     }
 
     if ($log) {
-        engelsystem_log(sprintf("API key resetted (%s).", User_Nick_render($user)));
+        engelsystem_log(sprintf('API key resetted (%s).', User_Nick_render($user)));
     }
 
     return true;
@@ -407,11 +407,16 @@ function User_reset_api_key(&$user, $log = true)
 function User_generate_password_recovery_token(&$user)
 {
     $user['password_recovery_token'] = md5($user['Nick'] . time() . rand());
-    $result = sql_query("UPDATE `User` SET `password_recovery_token`='" . sql_escape($user['password_recovery_token']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
+    $result = sql_query("
+        UPDATE `User`
+        SET `password_recovery_token`='" . sql_escape($user['password_recovery_token']) . "'
+        WHERE `UID`='" . sql_escape($user['UID']) . "'
+        LIMIT 1
+    ");
     if ($result === false) {
-        engelsystem_error("Unable to generate password recovery token.");
+        engelsystem_error('Unable to generate password recovery token.');
     }
-    engelsystem_log("Password recovery for " . User_Nick_render($user) . " started.");
+    engelsystem_log('Password recovery for ' . User_Nick_render($user) . ' started.');
     return $user['password_recovery_token'];
 }
 

@@ -41,7 +41,7 @@ function shifttype_delete_controller()
     }
 
     return [
-        sprintf(_("Delete shifttype %s"), $shifttype['name']),
+        sprintf(_('Delete shifttype %s'), $shifttype['name']),
         ShiftType_delete_view($shifttype)
     ];
 }
@@ -54,9 +54,9 @@ function shifttype_delete_controller()
 function shifttype_edit_controller()
 {
     $shifttype_id = null;
-    $name = "";
+    $name = '';
     $angeltype_id = null;
-    $description = "";
+    $description = '';
 
     $angeltypes = AngelTypes();
 
@@ -85,7 +85,7 @@ function shifttype_edit_controller()
             error(_('Please enter a name.'));
         }
 
-        if (isset($_REQUEST['angeltype_id']) && preg_match("/^[0-9]+$/", $_REQUEST['angeltype_id'])) {
+        if (isset($_REQUEST['angeltype_id']) && preg_match('/^[0-9]+$/', $_REQUEST['angeltype_id'])) {
             $angeltype_id = $_REQUEST['angeltype_id'];
         } else {
             $angeltype_id = null;
@@ -157,7 +157,7 @@ function shifttypes_list_controller()
 {
     $shifttypes = ShiftTypes();
     if ($shifttypes === false) {
-        engelsystem_error("Unable to load shifttypes.");
+        engelsystem_error('Unable to load shifttypes.');
     }
 
     return [
@@ -173,7 +173,7 @@ function shifttypes_list_controller()
  */
 function shifttypes_title()
 {
-    return _("Shifttypes");
+    return _('Shifttypes');
 }
 
 /**

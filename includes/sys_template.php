@@ -4,11 +4,11 @@
  * Liste der verfügbaren Themes
  */
 $themes = [
-    '4' => "Engelsystem 33c3 (2016)",
-    '3' => "Engelsystem 32c3 (2015)",
-    "2" => "Engelsystem cccamp15",
-    "0" => "Engelsystem light",
-    "1" => "Engelsystem dark"
+    '4' => 'Engelsystem 33c3 (2016)',
+    '3' => 'Engelsystem 32c3 (2015)',
+    '2' => 'Engelsystem cccamp15',
+    '0' => 'Engelsystem light',
+    '1' => 'Engelsystem dark'
 ];
 
 /**
@@ -82,7 +82,7 @@ function glyph_bool($boolean)
  * @param string $dom_id
  * @return string
  */
-function div($class, $content = [], $dom_id = "")
+function div($class, $content = [], $dom_id = '')
 {
     if (is_array($content)) {
         $content = join("\n", $content);
@@ -98,7 +98,7 @@ function div($class, $content = [], $dom_id = "")
  */
 function heading($content, $number = 1)
 {
-    return "<h" . $number . ">" . $content . "</h" . $number . ">";
+    return '<h' . $number . '>' . $content . '</h' . $number . '>';
 }
 
 /**
@@ -294,7 +294,7 @@ function render_table($columns, $rows, $data = true)
  * @param string $class
  * @return string
  */
-function button($href, $label, $class = "")
+function button($href, $label, $class = '')
 {
     return '<a href="' . $href . '" class="btn btn-default ' . $class . '">' . $label . '</a>';
 }
@@ -307,7 +307,7 @@ function button($href, $label, $class = "")
  * @param string $class
  * @return string
  */
-function button_glyph($href, $glyph, $class = "")
+function button_glyph($href, $glyph, $class = '')
 {
     return button($href, glyph($glyph), $class);
 }
@@ -345,12 +345,12 @@ function template_render($file, $data)
         $template = file_get_contents($file);
         if (is_array($data)) {
             foreach ($data as $name => $content) {
-                $template = str_replace("%" . $name . "%", $content, $template);
+                $template = str_replace('%' . $name . '%', $content, $template);
             }
         }
         return $template;
     }
-    engelsystem_error("Cannot find template file &laquo;" . $file . "&raquo;.");
+    engelsystem_error('Cannot find template file &laquo;' . $file . '&raquo;.');
     return '';
 }
 
@@ -375,17 +375,17 @@ function shorten($str, $length = 50)
  */
 function table_body($array)
 {
-    $html = "";
+    $html = '';
     foreach ($array as $line) {
-        $html .= "<tr>";
+        $html .= '<tr>';
         if (is_array($line)) {
             foreach ($line as $td) {
-                $html .= "<td>" . $td . "</td>";
+                $html .= '<td>' . $td . '</td>';
             }
         } else {
-            $html .= "<td>" . $line . "</td>";
+            $html .= '<td>' . $line . '</td>';
         }
-        $html .= "</tr>";
+        $html .= '</tr>';
     }
     return $html;
 }
@@ -396,26 +396,26 @@ function table_body($array)
  */
 function ReplaceSmilies($msg)
 {
-    $msg = str_replace(";o))", "<img src=\"pic/smiles/icon_redface.gif\">", $msg);
-    $msg = str_replace(":-))", "<img src=\"pic/smiles/icon_redface.gif\">", $msg);
-    $msg = str_replace(";o)", "<img src=\"pic/smiles/icon_wind.gif\">", $msg);
-    $msg = str_replace(":)", "<img src=\"pic/smiles/icon_smile.gif\">", $msg);
-    $msg = str_replace(":-)", "<img src=\"pic/smiles/icon_smile.gif\">", $msg);
-    $msg = str_replace(":(", "<img src=\"pic/smiles/icon_sad.gif\">", $msg);
-    $msg = str_replace(":-(", "<img src=\"pic/smiles/icon_sad.gif\">", $msg);
-    $msg = str_replace(":o(", "<img src=\"pic/smiles/icon_sad.gif\">", $msg);
-    $msg = str_replace(":o)", "<img src=\"pic/smiles/icon_lol.gif\">", $msg);
-    $msg = str_replace(";o(", "<img src=\"pic/smiles/icon_cry.gif\">", $msg);
-    $msg = str_replace(";(", "<img src=\"pic/smiles/icon_cry.gif\">", $msg);
-    $msg = str_replace(";-(", "<img src=\"pic/smiles/icon_cry.gif\">", $msg);
-    $msg = str_replace("8)", "<img src=\"pic/smiles/icon_rolleyes.gif\">", $msg);
-    $msg = str_replace("8o)", "<img src=\"pic/smiles/icon_rolleyes.gif\">", $msg);
-    $msg = str_replace(":P", "<img src=\"pic/smiles/icon_evil.gif\">", $msg);
-    $msg = str_replace(":-P", "<img src=\"pic/smiles/icon_evil.gif\">", $msg);
-    $msg = str_replace(":oP", "<img src=\"pic/smiles/icon_evil.gif\">", $msg);
-    $msg = str_replace(";P", "<img src=\"pic/smiles/icon_mad.gif\">", $msg);
-    $msg = str_replace(";oP", "<img src=\"pic/smiles/icon_mad.gif\">", $msg);
-    $msg = str_replace("?)", "<img src=\"pic/smiles/icon_question.gif\">", $msg);
+    $msg = str_replace(';o))', '<img src="pic/smiles/icon_redface.gif">', $msg);
+    $msg = str_replace(':-))', '<img src="pic/smiles/icon_redface.gif">', $msg);
+    $msg = str_replace(';o)', '<img src="pic/smiles/icon_wind.gif">', $msg);
+    $msg = str_replace(':)', '<img src="pic/smiles/icon_smile.gif">', $msg);
+    $msg = str_replace(':-)', '<img src="pic/smiles/icon_smile.gif">', $msg);
+    $msg = str_replace(':(', '<img src="pic/smiles/icon_sad.gif">', $msg);
+    $msg = str_replace(':-(', '<img src="pic/smiles/icon_sad.gif">', $msg);
+    $msg = str_replace(':o(', '<img src="pic/smiles/icon_sad.gif">', $msg);
+    $msg = str_replace(':o)', '<img src="pic/smiles/icon_lol.gif">', $msg);
+    $msg = str_replace(';o(', '<img src="pic/smiles/icon_cry.gif">', $msg);
+    $msg = str_replace(';(', '<img src="pic/smiles/icon_cry.gif">', $msg);
+    $msg = str_replace(';-(', '<img src="pic/smiles/icon_cry.gif">', $msg);
+    $msg = str_replace('8)', '<img src="pic/smiles/icon_rolleyes.gif">', $msg);
+    $msg = str_replace('8o)', '<img src="pic/smiles/icon_rolleyes.gif">', $msg);
+    $msg = str_replace(':P', '<img src="pic/smiles/icon_evil.gif">', $msg);
+    $msg = str_replace(':-P', '<img src="pic/smiles/icon_evil.gif">', $msg);
+    $msg = str_replace(':oP', '<img src="pic/smiles/icon_evil.gif">', $msg);
+    $msg = str_replace(';P', '<img src="pic/smiles/icon_mad.gif">', $msg);
+    $msg = str_replace(';oP', '<img src="pic/smiles/icon_mad.gif">', $msg);
+    $msg = str_replace('?)', '<img src="pic/smiles/icon_question.gif">', $msg);
 
     return $msg;
 }

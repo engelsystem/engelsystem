@@ -8,10 +8,10 @@
 function msg()
 {
     if (!isset($_SESSION['msg'])) {
-        return "";
+        return '';
     }
     $msg = $_SESSION['msg'];
-    $_SESSION['msg'] = "";
+    $_SESSION['msg'] = '';
     return $msg;
 }
 
@@ -62,14 +62,14 @@ function success($msg, $immediately = false)
 function alert($class, $msg, $immediately = false)
 {
     if ($immediately) {
-        if ($msg == "") {
-            return "";
+        if ($msg == '') {
+            return '';
         }
         return '<div class="alert alert-' . $class . '">' . $msg . '</div>';
     }
 
     if (!isset($_SESSION['msg'])) {
-        $_SESSION['msg'] = "";
+        $_SESSION['msg'] = '';
     }
     $_SESSION['msg'] .= alert($class, $msg, true);
 

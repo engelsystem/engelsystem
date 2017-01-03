@@ -5,9 +5,9 @@ use Engelsystem\UserHintsRenderer;
  * @param string $page
  * @return string
  */
-function page_link_to($page = "")
+function page_link_to($page = '')
 {
-    if ($page == "") {
+    if ($page == '') {
         return '?';
     }
     return '?p=' . $page;
@@ -139,11 +139,11 @@ function make_navigation()
 
     $menu = [];
     $pages = [
-        "news"           => news_title(),
-        "user_meetings"  => meetings_title(),
-        "user_shifts"    => shifts_title(),
-        "angeltypes"     => angeltypes_title(),
-        "user_questions" => questions_title()
+        'news'           => news_title(),
+        'user_meetings'  => meetings_title(),
+        'user_shifts'    => shifts_title(),
+        'angeltypes'     => angeltypes_title(),
+        'user_questions' => questions_title()
     ];
 
     foreach ($pages as $menu_page => $title) {
@@ -156,18 +156,18 @@ function make_navigation()
 
     $admin_menu = [];
     $admin_pages = [
-        "admin_arrive"       => admin_arrive_title(),
-        "admin_active"       => admin_active_title(),
-        "admin_user"         => admin_user_title(),
-        "admin_free"         => admin_free_title(),
-        "admin_questions"    => admin_questions_title(),
-        "shifttypes"         => shifttypes_title(),
-        "admin_shifts"       => admin_shifts_title(),
-        "admin_rooms"        => admin_rooms_title(),
-        "admin_groups"       => admin_groups_title(),
-        "admin_import"       => admin_import_title(),
-        "admin_log"          => admin_log_title(),
-        "admin_event_config" => event_config_title()
+        'admin_arrive'       => admin_arrive_title(),
+        'admin_active'       => admin_active_title(),
+        'admin_user'         => admin_user_title(),
+        'admin_free'         => admin_free_title(),
+        'admin_questions'    => admin_questions_title(),
+        'shifttypes'         => shifttypes_title(),
+        'admin_shifts'       => admin_shifts_title(),
+        'admin_rooms'        => admin_rooms_title(),
+        'admin_groups'       => admin_groups_title(),
+        'admin_import'       => admin_import_title(),
+        'admin_log'          => admin_log_title(),
+        'admin_event_config' => event_config_title()
     ];
 
     foreach ($admin_pages as $menu_page => $title) {
@@ -177,7 +177,7 @@ function make_navigation()
     }
 
     if (count($admin_menu) > 0) {
-        $menu[] = toolbar_dropdown('', _("Admin"), $admin_menu);
+        $menu[] = toolbar_dropdown('', _('Admin'), $admin_menu);
     }
 
     return toolbar($menu);
@@ -200,7 +200,7 @@ function make_room_navigation($menu)
     $rooms = Rooms();
     $room_menu = [];
     if (in_array('admin_rooms', $privileges)) {
-        $room_menu[] = toolbar_item_link(page_link_to('admin_rooms'), 'list', _("Manage rooms"));
+        $room_menu[] = toolbar_item_link(page_link_to('admin_rooms'), 'list', _('Manage rooms'));
     }
     if (count($room_menu) > 0) {
         $room_menu[] = toolbar_item_divider();
@@ -209,7 +209,7 @@ function make_room_navigation($menu)
         $room_menu[] = toolbar_item_link(room_link($room), 'map-marker', $room['Name']);
     }
     if (count($room_menu) > 0) {
-        $menu[] = toolbar_dropdown('map-marker', _("Rooms"), $room_menu);
+        $menu[] = toolbar_dropdown('map-marker', _('Rooms'), $room_menu);
     }
     return $menu;
 }

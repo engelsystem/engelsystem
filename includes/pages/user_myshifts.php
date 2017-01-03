@@ -5,7 +5,7 @@
  */
 function myshifts_title()
 {
-    return _("My shifts");
+    return _('My shifts');
 }
 
 /**
@@ -20,8 +20,8 @@ function user_myshifts()
 
     if (
         isset($_REQUEST['id'])
-        && in_array("user_shifts_admin", $privileges)
-        && preg_match("/^[0-9]{1,}$/", $_REQUEST['id'])
+        && in_array('user_shifts_admin', $privileges)
+        && preg_match('/^[0-9]{1,}$/', $_REQUEST['id'])
         && sql_num_query("SELECT * FROM `User` WHERE `UID`='" . sql_escape($_REQUEST['id']) . "'") > 0
     ) {
         $user_id = $_REQUEST['id'];
@@ -32,19 +32,19 @@ function user_myshifts()
     list($shifts_user) = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
 
     if (isset($_REQUEST['reset'])) {
-        if ($_REQUEST['reset'] == "ack") {
+        if ($_REQUEST['reset'] == 'ack') {
             User_reset_api_key($user);
-            success(_("Key changed."));
+            success(_('Key changed.'));
             redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
         }
-        return page_with_title(_("Reset API key"), [
+        return page_with_title(_('Reset API key'), [
             error(
-                _("If you reset the key, the url to your iCal- and JSON-export and your atom feed changes! You have to update it in every application using one of these exports."),
+                _('If you reset the key, the url to your iCal- and JSON-export and your atom feed changes! You have to update it in every application using one of these exports.'),
                 true
             ),
-            button(page_link_to('user_myshifts') . '&reset=ack', _("Continue"), 'btn-danger')
+            button(page_link_to('user_myshifts') . '&reset=ack', _('Continue'), 'btn-danger')
         ]);
-    } elseif (isset($_REQUEST['edit']) && preg_match("/^[0-9]*$/", $_REQUEST['edit'])) {
+    } elseif (isset($_REQUEST['edit']) && preg_match('/^[0-9]*$/', $_REQUEST['edit'])) {
         $user_id = $_REQUEST['edit'];
         $shift = sql_select("SELECT
         `ShiftEntry`.`freeloaded`,
@@ -69,12 +69,12 @@ function user_myshifts()
 
             if (isset($_REQUEST['submit'])) {
                 $valid = true;
-                if (in_array("user_shifts_admin", $privileges)) {
+                if (in_array('user_shifts_admin', $privileges)) {
                     $freeloaded = isset($_REQUEST['freeloaded']);
                     $freeload_comment = strip_request_item_nl('freeload_comment');
                     if ($freeloaded && $freeload_comment == '') {
                         $valid = false;
-                        error(_("Please enter a freeload comment!"));
+                        error(_('Please enter a freeload comment!'));
                     }
                 }
 
@@ -93,32 +93,32 @@ function user_myshifts()
                     }
 
                     engelsystem_log(
-                        "Updated " . User_Nick_render($user_source) . "'s shift " . $shift['name']
-                        . " from " . date("Y-m-d H:i", $shift['start'])
-                        . " to " . date("Y-m-d H:i", $shift['end'])
-                        . " with comment " . $comment
-                        . ". Freeloaded: " . ($freeloaded ? "YES Comment: " . $freeload_comment : "NO")
+                        'Updated ' . User_Nick_render($user_source) . '\'s shift ' . $shift['name']
+                        . ' from ' . date('Y-m-d H:i', $shift['start'])
+                        . ' to ' . date('Y-m-d H:i', $shift['end'])
+                        . ' with comment ' . $comment
+                        . '. Freeloaded: ' . ($freeloaded ? 'YES Comment: ' . $freeload_comment : 'NO')
                     );
-                    success(_("Shift saved."));
+                    success(_('Shift saved.'));
                     redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
                 }
             }
 
             return ShiftEntry_edit_view(
                 User_Nick_render($shifts_user),
-                date("Y-m-d H:i", $shift['start']) . ', ' . shift_length($shift),
+                date('Y-m-d H:i', $shift['start']) . ', ' . shift_length($shift),
                 $shift['Name'],
                 $shift['name'],
                 $shift['angel_type'],
                 $shift['Comment'],
                 $shift['freeloaded'],
                 $shift['freeload_comment'],
-                in_array("user_shifts_admin", $privileges)
+                in_array('user_shifts_admin', $privileges)
             );
         } else {
             redirect(page_link_to('user_myshifts'));
         }
-    } elseif (isset($_REQUEST['cancel']) && preg_match("/^[0-9]*$/", $_REQUEST['cancel'])) {
+    } elseif (isset($_REQUEST['cancel']) && preg_match('/^[0-9]*$/', $_REQUEST['cancel'])) {
         $user_id = $_REQUEST['cancel'];
         $shift = sql_select("
         SELECT *
@@ -137,15 +137,15 @@ function user_myshifts()
                 $shifttype = ShiftType($shift['shifttype_id']);
 
                 engelsystem_log(
-                    "Deleted own shift: " . $shifttype['name']
-                    . " at " . $room['Name']
-                    . " from " . date("Y-m-d H:i", $shift['start'])
-                    . " to " . date("Y-m-d H:i", $shift['end'])
-                    . " as " . $angeltype['name']
+                    'Deleted own shift: ' . $shifttype['name']
+                    . ' at ' . $room['Name']
+                    . ' from ' . date('Y-m-d H:i', $shift['start'])
+                    . ' to ' . date('Y-m-d H:i', $shift['end'])
+                    . ' as ' . $angeltype['name']
                 );
-                success(_("Shift canceled."));
+                success(_('Shift canceled.'));
             } else {
-                error(_("It's too late to sign yourself off the shift. If neccessary, ask the dispatcher to do so."));
+                error(_('It\'s too late to sign yourself off the shift. If neccessary, ask the dispatcher to do so.'));
             }
         } else {
             redirect(user_link($shifts_user));

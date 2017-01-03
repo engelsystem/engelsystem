@@ -9,7 +9,7 @@ function AngelType_new()
 {
     return [
         'id'                      => null,
-        'name'                    => "",
+        'name'                    => '',
         'restricted'              => false,
         'no_self_signup'          => false,
         'description'             => '',
@@ -82,11 +82,12 @@ function AngelType_delete($angeltype)
     $result = sql_query("
       DELETE FROM `AngelTypes` 
       WHERE `id`='" . sql_escape($angeltype['id']) . "' 
-      LIMIT 1");
+      LIMIT 1
+    ");
     if ($result === false) {
-        engelsystem_error("Unable to delete angeltype.");
+        engelsystem_error('Unable to delete angeltype.');
     }
-    engelsystem_log("Deleted angeltype: " . AngelType_name_render($angeltype));
+    engelsystem_log('Deleted angeltype: ' . AngelType_name_render($angeltype));
     return $result;
 }
 
@@ -111,9 +112,13 @@ function AngelType_update($angeltype)
       `contact_email`=" . sql_null($angeltype['contact_email']) . "
       WHERE `id`='" . sql_escape($angeltype['id']) . "'");
     if ($result === false) {
-        engelsystem_error("Unable to update angeltype.");
+        engelsystem_error('Unable to update angeltype.');
     }
-    engelsystem_log("Updated angeltype: " . $angeltype['name'] . ($angeltype['restricted'] ? ", restricted" : "") . ($angeltype['no_self_signup'] ? ", no_self_signup" : "") . ($angeltype['requires_driver_license'] ? ", requires driver license" : ""));
+    engelsystem_log(
+        'Updated angeltype: ' . $angeltype['name'] . ($angeltype['restricted'] ? ', restricted' : '')
+        . ($angeltype['no_self_signup'] ? ', no_self_signup' : '')
+        . ($angeltype['requires_driver_license'] ? ', requires driver license' : '')
+    );
     return $result;
 }
 
@@ -140,7 +145,9 @@ function AngelType_create($angeltype)
         engelsystem_error("Unable to create angeltype.");
     }
     $angeltype['id'] = sql_id();
-    engelsystem_log("Created angeltype: " . $angeltype['name'] . ($angeltype['restricted'] ? ", restricted" : "") . ($angeltype['requires_driver_license'] ? ", requires driver license" : ""));
+    engelsystem_log(
+        'Created angeltype: ' . $angeltype['name'] . ($angeltype['restricted'] ? ', restricted' : '') 
+        . ($angeltype['requires_driver_license'] ? ', requires driver license' : ''));
     return $angeltype;
 }
 
@@ -156,8 +163,8 @@ function AngelType_create($angeltype)
 function AngelType_validate_name($name, $angeltype)
 {
     $name = strip_item($name);
-    if ($name == "") {
-        return new ValidationResult(false, "");
+    if ($name == '') {
+        return new ValidationResult(false, '');
     }
     if ($angeltype != null && isset($angeltype['id'])) {
         $valid = sql_num_query("
@@ -194,7 +201,7 @@ function AngelTypes_with_user($user)
       AND `UserAngelTypes`.`user_id`=" . $user['UID'] . "
       ORDER BY `name`");
     if ($result === false) {
-        engelsystem_error("Unable to load angeltypes.");
+        engelsystem_error('Unable to load angeltypes.');
     }
     return $result;
 }
@@ -211,7 +218,7 @@ function AngelTypes()
       FROM `AngelTypes` 
       ORDER BY `name`");
     if ($result === false) {
-        engelsystem_error("Unable to load angeltypes.");
+        engelsystem_error('Unable to load angeltypes.');
     }
     return $result;
 }
@@ -225,7 +232,7 @@ function AngelType_ids()
 {
     $result = sql_select("SELECT `id` FROM `AngelTypes`");
     if ($result === false) {
-        engelsystem_error("Unable to load angeltypes.");
+        engelsystem_error('Unable to load angeltypes.');
     }
     return select_array($result, 'id', 'id');
 }
@@ -240,7 +247,7 @@ function AngelType($angeltype_id)
 {
     $angelType_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($angeltype_id) . "'");
     if ($angelType_source === false) {
-        engelsystem_error("Unable to load angeltype.");
+        engelsystem_error('Unable to load angeltype.');
     }
     if (count($angelType_source) > 0) {
         return $angelType_source[0];

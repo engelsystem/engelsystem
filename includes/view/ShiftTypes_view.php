@@ -19,13 +19,13 @@ function ShiftType_name_render($shifttype)
  */
 function ShiftType_delete_view($shifttype)
 {
-    return page_with_title(sprintf(_("Delete shifttype %s"), $shifttype['name']), [
-        info(sprintf(_("Do you want to delete shifttype %s?"), $shifttype['name']), true),
+    return page_with_title(sprintf(_('Delete shifttype %s'), $shifttype['name']), [
+        info(sprintf(_('Do you want to delete shifttype %s?'), $shifttype['name']), true),
         buttons([
-            button(page_link_to('shifttypes'), _("cancel"), 'cancel'),
+            button(page_link_to('shifttypes'), _('cancel'), 'cancel'),
             button(
                 page_link_to('shifttypes') . '&action=delete&shifttype_id=' . $shifttype['id'] . '&confirmed',
-                _("delete"),
+                _('delete'),
                 'ok'
             )
         ])
@@ -91,7 +91,7 @@ function ShiftType_view($shifttype, $angeltype)
                 'delete'
             )
         ]),
-        heading(_("Description"), 2),
+        heading(_('Description'), 2),
         $parsedown->parse($shifttype['description'])
     ]);
 }

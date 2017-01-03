@@ -5,7 +5,7 @@
  */
 function user_news_comments_title()
 {
-    return _("News comments");
+    return _('News comments');
 }
 
 /**
@@ -13,7 +13,7 @@ function user_news_comments_title()
  */
 function news_title()
 {
-    return _("News");
+    return _('News');
 }
 
 /**
@@ -21,7 +21,7 @@ function news_title()
  */
 function meetings_title()
 {
-    return _("Meetings");
+    return _('Meetings');
 }
 
 /**
@@ -33,7 +33,7 @@ function user_meetings()
 
     $html = '<div class="col-md-12"><h1>' . meetings_title() . '</h1>' . msg();
 
-    if (isset($_REQUEST['page']) && preg_match("/^[0-9]{1,}$/", $_REQUEST['page'])) {
+    if (isset($_REQUEST['page']) && preg_match('/^[0-9]{1,}$/', $_REQUEST['page'])) {
         $page = $_REQUEST['page'];
     } else {
         $page = 0;
@@ -50,7 +50,7 @@ function user_meetings()
         $html .= display_news($entry);
     }
 
-    $dis_rows = ceil(sql_num_query("SELECT * FROM `News`") / $display_news);
+    $dis_rows = ceil(sql_num_query('SELECT * FROM `News`') / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
         if (isset($_REQUEST['page']) && $i == $_REQUEST['page']) {
@@ -60,7 +60,7 @@ function user_meetings()
         } else {
             $html .= '<li>';
         }
-        $html .= '<a href="' . page_link_to("user_meetings") . '&page=' . $i . '">' . ($i + 1) . '</a></li>';
+        $html .= '<a href="' . page_link_to('user_meetings') . '&page=' . $i . '">' . ($i + 1) . '</a></li>';
     }
     $html .= '</ul></div></div>';
 
@@ -83,20 +83,20 @@ function display_news($news)
     $html .= '<div class="panel-body">' . ReplaceSmilies(nl2br($news['Text'])) . '</div>';
 
     $html .= '<div class="panel-footer text-muted">';
-    if (in_array("admin_news", $privileges)) {
+    if (in_array('admin_news', $privileges)) {
         $html .= '<div class="pull-right">'
-            . button_glyph(page_link_to("admin_news") . '&action=edit&id=' . $news['ID'], 'edit', 'btn-xs')
+            . button_glyph(page_link_to('admin_news') . '&action=edit&id=' . $news['ID'], 'edit', 'btn-xs')
             . '</div>';
     }
-    $html .= '<span class="glyphicon glyphicon-time"></span> ' . date("Y-m-d H:i", $news['Datum']) . '&emsp;';
+    $html .= '<span class="glyphicon glyphicon-time"></span> ' . date('Y-m-d H:i', $news['Datum']) . '&emsp;';
 
     $user_source = User($news['UID']);
 
     $html .= User_Nick_render($user_source);
-    if ($page != "news_comments") {
-        $html .= '&emsp;<a href="' . page_link_to("news_comments") . '&nid=' . $news['ID'] . '">'
+    if ($page != 'news_comments') {
+        $html .= '&emsp;<a href="' . page_link_to('news_comments') . '&nid=' . $news['ID'] . '">'
             . '<span class="glyphicon glyphicon-comment"></span> '
-            . _("Comments") . ' &raquo;</a> '
+            . _('Comments') . ' &raquo;</a> '
             . '<span class="badge">'
             . sql_num_query("SELECT * FROM `NewsComments` WHERE `Refid`='" . sql_escape($news['ID']) . "'")
             . '</span>';
@@ -115,13 +115,13 @@ function user_news_comments()
 
     $html = '<div class="col-md-12"><h1>' . user_news_comments_title() . '</h1>';
     if (
-        isset($_REQUEST["nid"])
-        && preg_match("/^[0-9]{1,}$/", $_REQUEST['nid'])
+        isset($_REQUEST['nid'])
+        && preg_match('/^[0-9]{1,}$/', $_REQUEST['nid'])
         && sql_num_query("SELECT * FROM `News` WHERE `ID`='" . sql_escape($_REQUEST['nid']) . "' LIMIT 1") > 0
     ) {
-        $nid = $_REQUEST["nid"];
+        $nid = $_REQUEST['nid'];
         list($news) = sql_select("SELECT * FROM `News` WHERE `ID`='" . sql_escape($nid) . "' LIMIT 1");
-        if (isset($_REQUEST["text"])) {
+        if (isset($_REQUEST['text'])) {
             $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['text']));
             sql_query("
                 INSERT INTO `NewsComments` (`Refid`, `Datum`, `Text`, `UID`)
@@ -132,8 +132,8 @@ function user_news_comments()
                     '" . sql_escape($user["UID"]) . "'
                 )
             ");
-            engelsystem_log("Created news_comment: " . $text);
-            $html .= success(_("Entry saved."), true);
+            engelsystem_log('Created news_comment: ' . $text);
+            $html .= success(_('Entry saved.'), true);
         }
 
         $html .= display_news($news);
@@ -151,13 +151,13 @@ function user_news_comments()
             $html .= '</div>';
         }
 
-        $html .= '<hr /><h2>' . _("New Comment:") . '</h2>';
+        $html .= '<hr /><h2>' . _('New Comment:') . '</h2>';
         $html .= form([
-            form_textarea('text', _("Message"), ''),
-            form_submit('submit', _("Save"))
+            form_textarea('text', _('Message'), ''),
+            form_submit('submit', _('Save'))
         ], page_link_to('news_comments') . '&nid=' . $news['ID']);
     } else {
-        $html .= _("Invalid request.");
+        $html .= _('Invalid request.');
     }
 
     return $html . '</div>';
@@ -172,9 +172,9 @@ function user_news()
 
     $html = '<div class="col-md-12"><h1>' . news_title() . '</h1>' . msg();
 
-    if (isset($_POST["text"]) && isset($_POST["betreff"]) && in_array("admin_news", $privileges)) {
-        if (!isset($_POST["treffen"]) || !in_array("admin_news", $privileges)) {
-            $_POST["treffen"] = 0;
+    if (isset($_POST['text']) && isset($_POST['betreff']) && in_array('admin_news', $privileges)) {
+        if (!isset($_POST['treffen']) || !in_array('admin_news', $privileges)) {
+            $_POST['treffen'] = 0;
         }
         sql_query("
             INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`)
@@ -186,12 +186,12 @@ function user_news()
                 '" . sql_escape($_POST["treffen"]) . "'
             )
         ");
-        engelsystem_log("Created news: " . $_POST["betreff"] . ", treffen: " . $_POST["treffen"]);
-        success(_("Entry saved."));
+        engelsystem_log('Created news: ' . $_POST['betreff'] . ', treffen: ' . $_POST['treffen']);
+        success(_('Entry saved.'));
         redirect(page_link_to('news'));
     }
 
-    if (isset($_REQUEST['page']) && preg_match("/^[0-9]{1,}$/", $_REQUEST['page'])) {
+    if (isset($_REQUEST['page']) && preg_match('/^[0-9]{1,}$/', $_REQUEST['page'])) {
         $page = $_REQUEST['page'];
     } else {
         $page = 0;
@@ -207,7 +207,7 @@ function user_news()
         $html .= display_news($entry);
     }
 
-    $dis_rows = ceil(sql_num_query("SELECT * FROM `News`") / $display_news);
+    $dis_rows = ceil(sql_num_query('SELECT * FROM `News`') / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
         if (isset($_REQUEST['page']) && $i == $_REQUEST['page']) {
@@ -217,19 +217,19 @@ function user_news()
         } else {
             $html .= '<li>';
         }
-        $html .= '<a href="' . page_link_to("news") . '&page=' . $i . '">' . ($i + 1) . '</a></li>';
+        $html .= '<a href="' . page_link_to('news') . '&page=' . $i . '">' . ($i + 1) . '</a></li>';
     }
     $html .= '</ul></div>';
 
-    if (in_array("admin_news", $privileges)) {
+    if (in_array('admin_news', $privileges)) {
         $html .= '<hr />';
-        $html .= '<h2>' . _("Create news:") . '</h2>';
+        $html .= '<h2>' . _('Create news:') . '</h2>';
 
         $html .= form([
-            form_text('betreff', _("Subject"), ''),
-            form_textarea('text', _("Message"), ''),
-            form_checkbox('treffen', _("Meeting"), false, 1),
-            form_submit('submit', _("Save"))
+            form_text('betreff', _('Subject'), ''),
+            form_textarea('text', _('Message'), ''),
+            form_checkbox('treffen', _('Meeting'), false, 1),
+            form_submit('submit', _('Save'))
         ]);
     }
     return $html . '</div>';

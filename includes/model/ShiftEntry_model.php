@@ -26,7 +26,7 @@ function ShiftEntry_new()
  */
 function ShiftEntries_freeleaded_count()
 {
-    return (int)sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1");
+    return (int)sql_select_single_cell('SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1');
 }
 
 /**
@@ -175,7 +175,7 @@ function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
       AND `TID`=" . sql_escape($angeltype_id) . "
       ");
     if ($result === false) {
-        engelsystem_error("Unable to load shift entries.");
+        engelsystem_error('Unable to load shift entries.');
     }
     return $result;
 }

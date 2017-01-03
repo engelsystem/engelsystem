@@ -5,7 +5,7 @@
  */
 function admin_groups_title()
 {
-    return _("Grouprights");
+    return _('Grouprights');
 }
 
 /**
@@ -13,9 +13,9 @@ function admin_groups_title()
  */
 function admin_groups()
 {
-    $html = "";
-    $groups = sql_select("SELECT * FROM `Groups` ORDER BY `Name`");
-    if (!isset($_REQUEST["action"])) {
+    $html = '';
+    $groups = sql_select('SELECT * FROM `Groups` ORDER BY `Name`');
+    if (!isset($_REQUEST['action'])) {
         $groups_table = [];
         foreach ($groups as $group) {
             $privileges = sql_select("
@@ -35,7 +35,7 @@ function admin_groups()
                 'privileges' => join(', ', $privileges_html),
                 'actions'    => button(
                     page_link_to('admin_groups') . '&action=edit&id=' . $group['UID'],
-                    _("edit"),
+                    _('edit'),
                     'btn-xs'
                 )
             ];
@@ -43,18 +43,18 @@ function admin_groups()
 
         return page_with_title(admin_groups_title(), [
             table([
-                'name'       => _("Name"),
-                'privileges' => _("Privileges"),
+                'name'       => _('Name'),
+                'privileges' => _('Privileges'),
                 'actions'    => ''
             ], $groups_table)
         ]);
     } else {
-        switch ($_REQUEST["action"]) {
+        switch ($_REQUEST['action']) {
             case 'edit':
-                if (isset($_REQUEST['id']) && preg_match("/^-[0-9]{1,11}$/", $_REQUEST['id'])) {
+                if (isset($_REQUEST['id']) && preg_match('/^-[0-9]{1,11}$/', $_REQUEST['id'])) {
                     $group_id = $_REQUEST['id'];
                 } else {
-                    return error("Incomplete call, missing Groups ID.", true);
+                    return error('Incomplete call, missing Groups ID.', true);
                 }
 
                 $group = sql_select("SELECT * FROM `Groups` WHERE `UID`='" . sql_escape($group_id) . "' LIMIT 1");
@@ -69,38 +69,38 @@ function admin_groups()
                             )
                         ORDER BY `Privileges`.`name`
                     ");
-                    $privileges_html = "";
+                    $privileges_html = '';
                     $privileges_form = [];
                     foreach ($privileges as $priv) {
                         $privileges_form[] = form_checkbox(
                             'privileges[]',
                             $priv['desc'] . ' (' . $priv['name'] . ')',
-                            $priv['group_id'] != "",
+                            $priv['group_id'] != '',
                             $priv['id']
                         );
                         $privileges_html .= sprintf(
                             '<tr><td><input type="checkbox" name="privileges[]" value="%s" %s /></td> <td>%s</td> <td>%s</td></tr>',
                             $priv['id'],
-                            ($priv['group_id'] != "" ? 'checked="checked"' : ''),
+                            ($priv['group_id'] != '' ? 'checked="checked"' : ''),
                             $priv['name'],
                             $priv['desc']
                         );
                     }
 
-                    $privileges_form[] = form_submit('submit', _("Save"));
-                    $html .= page_with_title(_("Edit group"), [
+                    $privileges_form[] = form_submit('submit', _('Save'));
+                    $html .= page_with_title(_('Edit group'), [
                         form($privileges_form, page_link_to('admin_groups') . '&action=save&id=' . $group_id)
                     ]);
                 } else {
-                    return error("No Group found.", true);
+                    return error('No Group found.', true);
                 }
                 break;
 
             case 'save':
-                if (isset($_REQUEST['id']) && preg_match("/^-[0-9]{1,11}$/", $_REQUEST['id'])) {
+                if (isset($_REQUEST['id']) && preg_match('/^-[0-9]{1,11}$/', $_REQUEST['id'])) {
                     $group_id = $_REQUEST['id'];
                 } else {
-                    return error("Incomplete call, missing Groups ID.", true);
+                    return error('Incomplete call, missing Groups ID.', true);
                 }
 
                 $group = sql_select("SELECT * FROM `Groups` WHERE `UID`='" . sql_escape($group_id) . "' LIMIT 1");
@@ -121,12 +121,12 @@ function admin_groups()
                         }
                     }
                     engelsystem_log(
-                        "Group privileges of group " . $group['Name']
-                        . " edited: " . join(", ", $privilege_names)
+                        'Group privileges of group ' . $group['Name']
+                        . ' edited: ' . join(', ', $privilege_names)
                     );
-                    redirect(page_link_to("admin_groups"));
+                    redirect(page_link_to('admin_groups'));
                 } else {
-                    return error("No Group found.", true);
+                    return error('No Group found.', true);
                 }
                 break;
         }

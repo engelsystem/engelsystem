@@ -98,7 +98,7 @@ function UserDriverLicenses_update($user_driver_license)
       `has_license_forklift`=" . sql_bool($user_driver_license['has_license_forklift']) . "
       WHERE `user_id`='" . sql_escape($user_driver_license['user_id']) . "'");
     if ($result === false) {
-        engelsystem_error("Unable to update user driver license information");
+        engelsystem_error('Unable to update user driver license information');
     }
     return $result;
 }
@@ -113,7 +113,7 @@ function UserDriverLicenses_delete($user_id)
 {
     $result = sql_query("DELETE FROM `UserDriverLicenses` WHERE `user_id`=" . sql_escape($user_id));
     if ($result === false) {
-        engelsystem_error("Unable to remove user driver license information");
+        engelsystem_error('Unable to remove user driver license information');
     }
     return $result;
 }

@@ -6,7 +6,7 @@ use Engelsystem\ShiftsFilter;
  */
 function shifts_title()
 {
-    return _("Shifts");
+    return _('Shifts');
 }
 
 /**
@@ -91,9 +91,9 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
  */
 function load_rooms()
 {
-    $rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
+    $rooms = sql_select('SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`=\'Y\' ORDER BY `Name`');
     if (!$rooms || count($rooms) == 0) {
-        error(_("The administration has not configured any rooms yet."));
+        error(_('The administration has not configured any rooms yet.'));
         redirect('?');
     }
     return $rooms;
@@ -104,12 +104,13 @@ function load_rooms()
  */
 function load_days()
 {
-    $days = sql_select_single_col("
+    $days = sql_select_single_col('
       SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name`
       FROM `Shifts`
-      ORDER BY `start`");
+      ORDER BY `start`
+    ');
     if (count($days) == 0) {
-        error(_("The administration has not configured any shifts yet."));
+        error(_('The administration has not configured any shifts yet.'));
         redirect('?');
     }
     return $days;
@@ -122,8 +123,8 @@ function load_types()
 {
     global $user;
 
-    if (sql_num_query("SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0") == 0) {
-        error(_("The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype."));
+    if (sql_num_query('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0') == 0) {
+        error(_('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
         redirect('?');
     }
     $types = sql_select("
@@ -146,7 +147,7 @@ function load_types()
         ORDER BY `AngelTypes`.`name`
     ");
     if (empty($types)) {
-        return sql_select("SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0");
+        return sql_select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0');
     }
     return $types;
 }
@@ -175,56 +176,56 @@ function view_user_shifts()
 
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
 
-    if ($user['api_key'] == "") {
+    if ($user['api_key'] == '') {
         User_reset_api_key($user, false);
     }
 
     $filled = [
         [
             'id'   => '1',
-            'name' => _("occupied")
+            'name' => _('occupied')
         ],
         [
             'id'   => '0',
-            'name' => _("free")
+            'name' => _('free')
         ]
     ];
-    $start_day = date("Y-m-d", $shiftsFilter->getStartTime());
-    $start_time = date("H:i", $shiftsFilter->getStartTime());
-    $end_day = date("Y-m-d", $shiftsFilter->getEndTime());
-    $end_time = date("H:i", $shiftsFilter->getEndTime());
+    $start_day = date('Y-m-d', $shiftsFilter->getStartTime());
+    $start_time = date('H:i', $shiftsFilter->getStartTime());
+    $end_day = date('Y-m-d', $shiftsFilter->getEndTime());
+    $end_time = date('H:i', $shiftsFilter->getEndTime());
 
     return page([
         div('col-md-12', [
             msg(),
             template_render(__DIR__ . '/../../templates/user_shifts.html', [
                 'title'         => shifts_title(),
-                'room_select'   => make_select($rooms, $shiftsFilter->getRooms(), "rooms", _("Rooms")),
-                'start_select'  => html_select_key("start_day", "start_day", array_combine($days, $days), $start_day),
+                'room_select'   => make_select($rooms, $shiftsFilter->getRooms(), 'rooms', _('Rooms')),
+                'start_select'  => html_select_key('start_day', 'start_day', array_combine($days, $days), $start_day),
                 'start_time'    => $start_time,
-                'end_select'    => html_select_key("end_day", "end_day", array_combine($days, $days), $end_day),
+                'end_select'    => html_select_key('end_day', 'end_day', array_combine($days, $days), $end_day),
                 'end_time'      => $end_time,
                 'type_select'   => make_select(
                     $types,
                     $shiftsFilter->getTypes(),
-                    "types",
-                    _("Angeltypes") . '<sup>1</sup>'
+                    'types',
+                    _('Angeltypes') . '<sup>1</sup>'
                 ),
-                'filled_select' => make_select($filled, $shiftsFilter->getFilled(), "filled", _("Occupancy")),
+                'filled_select' => make_select($filled, $shiftsFilter->getFilled(), 'filled', _('Occupancy')),
                 'task_notice'   =>
                     '<sup>1</sup>'
-                    . _("The tasks shown here are influenced by the angeltypes you joined already!")
+                    . _('The tasks shown here are influenced by the angeltypes you joined already!')
                     . ' <a href="' . page_link_to('angeltypes') . '&action=about' . '">'
-                    . _("Description of the jobs.")
+                    . _('Description of the jobs.')
                     . '</a>',
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
-                'ical_text'     => '<h2>' . _("iCal export") . '</h2><p>' . sprintf(
-                        _("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."),
+                'ical_text'     => '<h2>' . _('iCal export') . '</h2><p>' . sprintf(
+                        _('Export of shown shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
                         page_link_to_absolute('ical') . '&key=' . $user['api_key'],
                         page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'],
                         page_link_to('user_myshifts') . '&reset'
                     ) . '</p>',
-                'filter'        => _("Filter")
+                'filter'        => _('Filter')
             ])
         ])
     ]);
@@ -236,7 +237,7 @@ function view_user_shifts()
  */
 function get_ids_from_array($array)
 {
-    return $array["id"];
+    return $array['id'];
 }
 
 function make_select($items, $selected, $name, $title = null)
@@ -251,14 +252,14 @@ function make_select($items, $selected, $name, $title = null)
             . '<label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '" '
             . (in_array($i['id'], $selected) ? ' checked="checked"' : '')
             . ' > ' . $i['name'] . '</label>'
-            . (!isset($i['enabled']) || $i['enabled'] ? '' : glyph("lock"))
+            . (!isset($i['enabled']) || $i['enabled'] ? '' : glyph('lock'))
             . '</div><br />';
     }
     $html = '<div id="selection_' . $name . '" class="selection ' . $name . '">' . "\n";
     $html .= implode("\n", $html_items);
     $html .= buttons([
-        button("javascript: checkAll('selection_" . $name . "', true)", _("All"), ""),
-        button("javascript: checkAll('selection_" . $name . "', false)", _("None"), "")
+        button("javascript: checkAll('selection_" . $name . "', true)", _('All'), ''),
+        button("javascript: checkAll('selection_" . $name . "', false)", _('None'), '')
     ]);
     $html .= '</div>' . "\n";
     return $html;
