@@ -2,6 +2,10 @@
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftSignupState;
 
+/**
+ * @param array $room
+ * @return array
+ */
 function Shifts_by_room($room)
 {
     $result = sql_select("SELECT * FROM `Shifts` WHERE `RID`=" . sql_escape($room['RID']) . " ORDER BY `start`");
@@ -11,6 +15,10 @@ function Shifts_by_room($room)
     return $result;
 }
 
+/**
+ * @param ShiftsFilter $shiftsFilter
+ * @return array[]
+ */
 function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
     $SQL = "SELECT * FROM (
@@ -46,6 +54,10 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
     return $result;
 }
 
+/**
+ * @param ShiftsFilter $shiftsFilter
+ * @return array
+ */
 function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
     $SQL = "
@@ -85,6 +97,11 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
     return $result;
 }
 
+/**
+ * @param array $shift
+ * @param array $angeltype
+ * @return array|null
+ */
 function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
 {
     $result = sql_select("
@@ -126,6 +143,10 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
     return $result[0];
 }
 
+/**
+ * @param ShiftsFilter $shiftsFilter
+ * @return array
+ */
 function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
     $SQL = "
@@ -156,8 +177,9 @@ function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 /**
  * Check if a shift collides with other shifts (in time).
  *
- * @param Shift $shift
- * @param       array <Shift> $shifts
+ * @param array $shift
+ * @param array $shifts
+ * @return bool
  */
 function Shift_collides($shift, $shifts)
 {
@@ -173,6 +195,10 @@ function Shift_collides($shift, $shifts)
 
 /**
  * Returns the number of needed angels/free shift entries for an angeltype.
+ *
+ * @param array   $needed_angeltype
+ * @param array[] $shift_entries
+ * @return int
  */
 function Shift_free_entries($needed_angeltype, $shift_entries)
 {
@@ -188,15 +214,14 @@ function Shift_free_entries($needed_angeltype, $shift_entries)
 /**
  * Check if shift signup is allowed from the end users point of view (no admin like privileges)
  *
- * @param Shift     $shift
- *                        The shift
- * @param AngelType $angeltype
- *                        The angeltype to which the user wants to sign up
- * @param           array <Shift> $user_shifts
- *                        List of the users shifts
- * @param boolean   $angeltype_supporter
- *                        True, if the user has angeltype supporter rights for the angeltype, which enables him to sign
- *                        somebody up for the shift.
+ * @param array      $user
+ * @param array      $shift       The shift
+ * @param array      $angeltype   The angeltype to which the user wants to sign up
+ * @param array|null $user_angeltype
+ * @param array|null $user_shifts List of the users shifts
+ * @param array      $needed_angeltype
+ * @param array[]    $shift_entries
+ * @return ShiftSignupState
  */
 function Shift_signup_allowed_angel(
     $user,
@@ -266,6 +291,13 @@ function Shift_signup_allowed_angel(
 
 /**
  * Check if an angeltype supporter can sign up a user to a shift.
+ *
+ * @TODO: remove $angeltype
+ *
+ * @param array|null $angeltype
+ * @param array      $needed_angeltype
+ * @param array[]    $shift_entries
+ * @return ShiftSignupState
  */
 function Shift_signup_allowed_angeltype_supporter($angeltype, $needed_angeltype, $shift_entries)
 {
@@ -280,10 +312,12 @@ function Shift_signup_allowed_angeltype_supporter($angeltype, $needed_angeltype,
 /**
  * Check if an admin can sign up a user to a shift.
  *
- * @param Shift     $shift
- *          The shift
- * @param AngelType $angeltype
- *          The angeltype to which the user wants to sign up
+ * @TODO: remove $angeltype
+ *
+ * @param array|null $angeltype The angeltype to which the user wants to sign up
+ * @param array      $needed_angeltype
+ * @param array[]    $shift_entries
+ * @return ShiftSignupState
  */
 function Shift_signup_allowed_admin($angeltype, $needed_angeltype, $shift_entries)
 {
@@ -300,12 +334,14 @@ function Shift_signup_allowed_admin($angeltype, $needed_angeltype, $shift_entrie
 /**
  * Check if an angel can sign up for given shift.
  *
- * @param Shift     $shift
- *                        The shift
- * @param AngelType $angeltype
- *                        The angeltype to which the user wants to sign up
- * @param           array <Shift> $user_shifts
- *                        List of the users shifts
+ * @param array      $signup_user
+ * @param array      $shift       The shift
+ * @param array      $angeltype   The angeltype to which the user wants to sign up
+ * @param array|null $user_angeltype
+ * @param array|null $user_shifts List of the users shifts
+ * @param array      $needed_angeltype
+ * @param array[]    $shift_entries
+ * @return ShiftSignupState
  */
 function Shift_signup_allowed(
     $signup_user,
@@ -342,6 +378,9 @@ function Shift_signup_allowed(
 
 /**
  * Delete a shift by its external id.
+ *
+ * @param int $shift_psid
+ * @return mysqli_result|false
  */
 function Shift_delete_by_psid($shift_psid)
 {
@@ -350,6 +389,9 @@ function Shift_delete_by_psid($shift_psid)
 
 /**
  * Delete a shift.
+ *
+ * @param int $shift_id
+ * @return mysqli_result
  */
 function Shift_delete($shift_id)
 {
@@ -364,6 +406,9 @@ function Shift_delete($shift_id)
 
 /**
  * Update a shift.
+ *
+ * @param array $shift
+ * @return mysqli_result|false
  */
 function Shift_update($shift)
 {
@@ -388,6 +433,9 @@ function Shift_update($shift)
 
 /**
  * Update a shift by its external id.
+ *
+ * @param array $shift
+ * @return mysqli_result|false|null
  */
 function Shift_update_by_psid($shift)
 {
@@ -405,7 +453,8 @@ function Shift_update_by_psid($shift)
 /**
  * Create a new shift.
  *
- * @return new shift id or false
+ * @param array $shift
+ * @return int|false shift id or false
  */
 function Shift_create($shift)
 {
@@ -430,20 +479,24 @@ function Shift_create($shift)
 
 /**
  * Return users shifts.
+ *
+ * @param array $user
+ * @param bool  $include_freeload_comments
+ * @return array
  */
 function Shifts_by_user($user, $include_freeload_comments = false)
 {
     $result = sql_select("
-      SELECT `ShiftTypes`.`id` as `shifttype_id`, `ShiftTypes`.`name`,
-      `ShiftEntry`.`id`, `ShiftEntry`.`SID`, `ShiftEntry`.`TID`, `ShiftEntry`.`UID`, `ShiftEntry`.`freeloaded`, `ShiftEntry`.`Comment`,
-      " . ($include_freeload_comments ? "`ShiftEntry`.`freeload_comment`, " : "") . "
-      `Shifts`.*, `Room`.* 
-      FROM `ShiftEntry` 
-      JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
-      JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-      JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
-      WHERE `UID`='" . sql_escape($user['UID']) . "' 
-      ORDER BY `start`
+          SELECT `ShiftTypes`.`id` AS `shifttype_id`, `ShiftTypes`.`name`,
+          `ShiftEntry`.`id`, `ShiftEntry`.`SID`, `ShiftEntry`.`TID`, `ShiftEntry`.`UID`, `ShiftEntry`.`freeloaded`, `ShiftEntry`.`Comment`,
+          " . ($include_freeload_comments ? "`ShiftEntry`.`freeload_comment`, " : "") . "
+          `Shifts`.*, `Room`.* 
+          FROM `ShiftEntry` 
+          JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
+          JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+          JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
+          WHERE `UID`='" . sql_escape($user['UID']) . "' 
+          ORDER BY `start`
       ");
     if ($result === false) {
         engelsystem_error('Unable to load users shifts.');
@@ -454,8 +507,8 @@ function Shifts_by_user($user, $include_freeload_comments = false)
 /**
  * Returns Shift by id.
  *
- * @param $shift_id Shift
- *                  ID
+ * @param int $shift_id Shift  ID
+ * @return array|null
  */
 function Shift($shift_id)
 {
@@ -494,14 +547,16 @@ function Shift($shift_id)
 
 /**
  * Returns all shifts with needed angeltypes and count of subscribed jobs.
+ *
+ * @return array|false
  */
 function Shifts()
 {
     $shifts_source = sql_select("
-    SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`RID`, `Room`.`Name` AS `room_name` 
-    FROM `Shifts`
-    JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-    JOIN `Room` ON `Room`.`RID` = `Shifts`.`RID`
+        SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`RID`, `Room`.`Name` AS `room_name` 
+        FROM `Shifts`
+        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+        JOIN `Room` ON `Room`.`RID` = `Shifts`.`RID`
     ");
     if ($shifts_source === false) {
         return false;

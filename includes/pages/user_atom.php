@@ -1,9 +1,11 @@
 <?php
 
-// publically available page to feed the news to feedreaders
+/**
+ * Publically available page to feed the news to feedreaders
+ */
 function user_atom()
 {
-    global $user, $DISPLAY_NEWS;
+    global $user, $display_news;
 
     if (!isset($_REQUEST['key']) || !preg_match("/^[0-9a-f]{32}$/", $_REQUEST['key'])) {
         engelsystem_error("Missing key.");
@@ -18,7 +20,13 @@ function user_atom()
         engelsystem_error("No privilege for atom.");
     }
 
-    $news = sql_select("SELECT * FROM `News` " . (empty($_REQUEST['meetings']) ? '' : 'WHERE `Treffen` = 1 ') . "ORDER BY `ID` DESC LIMIT " . sql_escape($DISPLAY_NEWS));
+    $news = sql_select("
+        SELECT *
+        FROM `News` 
+        " . (empty($_REQUEST['meetings']) ? '' : 'WHERE `Treffen` = 1 ') . "
+        ORDER BY `ID`
+        DESC LIMIT " . (int)$display_news
+    );
 
     $output = make_atom_entries_from_news($news);
 
@@ -27,6 +35,10 @@ function user_atom()
     raw_output($output);
 }
 
+/**
+ * @param array[] $news_entries
+ * @return string
+ */
 function make_atom_entries_from_news($news_entries)
 {
     $html = '<?xml version="1.0" encoding="utf-8"?>

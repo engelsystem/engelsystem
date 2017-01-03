@@ -7,14 +7,14 @@ namespace Engelsystem;
  */
 class ShiftCalendarShiftRenderer
 {
-
     /**
      * Renders a shift
      *
-     * @param Shift $shift
-     *          The shift to render
-     * @param User  $user
-     *          The user who is viewing the shift calendar
+     * @param array $shift The shift to render
+     * @param array $needed_angeltypes
+     * @param array $shift_entries
+     * @param array $user  The user who is viewing the shift calendar
+     * @return array
      */
     public function render($shift, $needed_angeltypes, $shift_entries, $user)
     {
@@ -53,6 +53,10 @@ class ShiftCalendarShiftRenderer
         ];
     }
 
+    /**
+     * @param ShiftSignupState $shiftSignupState
+     * @return string
+     */
     private function classForSignupState(ShiftSignupState $shiftSignupState)
     {
         switch ($shiftSignupState->getState()) {
@@ -72,9 +76,18 @@ class ShiftCalendarShiftRenderer
 
             case ShiftSignupState::FREE:
                 return 'danger';
+            default:
+                return '';
         }
     }
 
+    /**
+     * @param array   $shift
+     * @param array[] $needed_angeltypes
+     * @param array[] $shift_entries
+     * @param array   $user
+     * @return array
+     */
     private function renderShiftNeededAngeltypes($shift, $needed_angeltypes, $shift_entries, $user)
     {
         global $privileges;
@@ -88,6 +101,7 @@ class ShiftCalendarShiftRenderer
         }
 
         $html = "";
+        /** @var ShiftSignupState $shift_signup_state */
         $shift_signup_state = null;
         foreach ($needed_angeltypes as $angeltype) {
             if ($angeltype['count'] > 0 || count($shift_entries_filtered[$angeltype['id']]) > 0) {
@@ -131,12 +145,12 @@ class ShiftCalendarShiftRenderer
     /**
      * Renders a list entry containing the needed angels for an angeltype
      *
-     * @param Shift     $shift
-     *          The shift which is rendered
-     * @param Angeltype $angeltype
-     *          The angeltype, containing informations about needed angeltypes and already signed up angels
-     * @param User      $user
-     *          The user who is viewing the shift calendar
+     * @param array   $shift     The shift which is rendered
+     * @param array[] $shift_entries
+     * @param array[] $angeltype The angeltype, containing informations about needed angeltypes
+     *                           and already signed up angels
+     * @param array   $user      The user who is viewing the shift calendar
+     * @return array
      */
     private function renderShiftNeededAngeltype($shift, $shift_entries, $angeltype, $user)
     {
@@ -150,6 +164,7 @@ class ShiftCalendarShiftRenderer
             ngettext("%d helper needed", "%d helpers needed", $shift_signup_state->getFreeEntries()),
             $shift_signup_state->getFreeEntries()
         );
+
         switch ($shift_signup_state->getState()) {
             case ShiftSignupState::ADMIN:
             case ShiftSignupState::FREE:
@@ -207,8 +222,8 @@ class ShiftCalendarShiftRenderer
     /**
      * Renders the shift header
      *
-     * @param Shift $shift
-     *          The shift
+     * @param array $shift The shift
+     * @return string
      */
     private function renderShiftHead($shift)
     {

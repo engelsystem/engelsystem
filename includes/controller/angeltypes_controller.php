@@ -2,6 +2,8 @@
 
 /**
  * Text for Angeltype related links.
+ *
+ * @return string
  */
 function angeltypes_title()
 {
@@ -10,15 +12,14 @@ function angeltypes_title()
 
 /**
  * Route angeltype actions.
+ *
+ * @return array
  */
 function angeltypes_controller()
 {
     $action = strip_request_item('action', 'list');
 
     switch ($action) {
-        default:
-        case 'list':
-            return angeltypes_list_controller();
         case 'view':
             return angeltype_controller();
         case 'edit':
@@ -27,13 +28,17 @@ function angeltypes_controller()
             return angeltype_delete_controller();
         case 'about':
             return angeltypes_about_controller();
+        case 'list':
+        default:
+            return angeltypes_list_controller();
     }
 }
 
 /**
  * Path to angeltype view.
  *
- * @param AngelType $angeltype_id
+ * @param int $angeltype_id AngelType id
+ * @return string
  */
 function angeltype_link($angeltype_id)
 {
@@ -42,6 +47,8 @@ function angeltype_link($angeltype_id)
 
 /**
  * Job description for all angeltypes (public to everyone)
+ *
+ * @return array
  */
 function angeltypes_about_controller()
 {
@@ -61,6 +68,8 @@ function angeltypes_about_controller()
 
 /**
  * Delete an Angeltype.
+ *
+ * @return array
  */
 function angeltype_delete_controller()
 {
@@ -86,6 +95,8 @@ function angeltype_delete_controller()
 
 /**
  * Change an Angeltype.
+ *
+ * @return array
  */
 function angeltype_edit_controller()
 {
@@ -151,6 +162,8 @@ function angeltype_edit_controller()
 
 /**
  * View details of a given angeltype.
+ *
+ * @return array
  */
 function angeltype_controller()
 {
@@ -182,6 +195,8 @@ function angeltype_controller()
 
 /**
  * View a list of all angeltypes.
+ *
+ * @return array
  */
 function angeltypes_list_controller()
 {
@@ -242,6 +257,8 @@ function angeltypes_list_controller()
 
 /**
  * Loads an angeltype from given angeltype_id request param.
+ *
+ * @return array
  */
 function load_angeltype()
 {

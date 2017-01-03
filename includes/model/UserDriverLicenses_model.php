@@ -3,6 +3,8 @@
 /**
  * Returns a new empty UserDriverLicense
  * FIXME entity object needed
+ *
+ * @return array
  */
 function UserDriverLicense_new()
 {
@@ -20,8 +22,7 @@ function UserDriverLicense_new()
 /**
  * Is it valid?
  *
- * @param UserDriverLicense $user_driver_license
- *          The UserDriverLicense to check
+ * @param array $user_driver_license The UserDriverLicense to check
  * @return boolean
  */
 function UserDriverLicense_valid($user_driver_license)
@@ -37,8 +38,8 @@ function UserDriverLicense_valid($user_driver_license)
 /**
  * Get a users driver license information
  *
- * @param int $user_id
- *          The users id
+ * @param int $user_id The users id
+ * @return array|false|null
  */
 function UserDriverLicense($user_id)
 {
@@ -47,17 +48,20 @@ function UserDriverLicense($user_id)
         engelsystem_error('Unable to load user driver license.');
         return false;
     }
-    if (count($user_driver_license) > 0) {
-        return $user_driver_license[0];
+
+    if (count($user_driver_license) == 0) {
+        return null;
     }
-    return null;
+
+    return $user_driver_license[0];
 }
 
 /**
  * Create a user's driver license entry
  *
- * @param UserDriverLicense $user_driver_license
- *          The UserDriverLicense to create
+ * @param array $user_driver_license The UserDriverLicense to create
+ * @param array $user
+ * @return array
  */
 function UserDriverLicenses_create($user_driver_license, $user)
 {
@@ -80,8 +84,8 @@ function UserDriverLicenses_create($user_driver_license, $user)
 /**
  * Update a user's driver license entry
  *
- * @param UserDriverLicense $user_driver_license
- *          The UserDriverLicense to update
+ * @param array $user_driver_license The UserDriverLicense to update
+ * @return mysqli_result
  */
 function UserDriverLicenses_update($user_driver_license)
 {
@@ -103,6 +107,7 @@ function UserDriverLicenses_update($user_driver_license)
  * Delete a user's driver license entry
  *
  * @param int $user_id
+ * @return mysqli_result
  */
 function UserDriverLicenses_delete($user_id)
 {

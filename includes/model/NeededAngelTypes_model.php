@@ -15,6 +15,7 @@
  *          The room. Can be null, but then a shift_id must be given.
  * @param int $count
  *          How many angels are needed?
+ * @return false|int
  */
 function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
 {
@@ -33,8 +34,8 @@ function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
 /**
  * Deletes all needed angel types from given shift.
  *
- * @param int $shift_id
- *          id of the shift
+ * @param int $shift_id id of the shift
+ * @return mysqli_result|false
  */
 function NeededAngelTypes_delete_by_shift($shift_id)
 {
@@ -44,8 +45,8 @@ function NeededAngelTypes_delete_by_shift($shift_id)
 /**
  * Deletes all needed angel types from given room.
  *
- * @param int $room_id
- *          id of the room
+ * @param int $room_id id of the room
+ * @return mysqli_result|false
  */
 function NeededAngelTypes_delete_by_room($room_id)
 {
@@ -55,8 +56,8 @@ function NeededAngelTypes_delete_by_room($room_id)
 /**
  * Returns all needed angeltypes and already taken needs.
  *
- * @param int $shiftID
- *          id of shift
+ * @param int $shiftId id of shift
+ * @return array
  */
 function NeededAngelTypes_by_shift($shiftId)
 {

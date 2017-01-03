@@ -9,7 +9,9 @@
  * @param string $title
  * @param string $type
  * @param string $comment
- *
+ * @param bool   $freeloaded
+ * @param string $freeload_comment
+ * @param bool   $user_admin_shifts
  * @return string
  */
 function ShiftEntry_edit_view(

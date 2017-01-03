@@ -1,7 +1,11 @@
 <?php
+/** @var mysqli $sql_connection */
+$sql_connection = null;
 
 /**
  * Close connection.
+ *
+ * @return bool
  */
 function sql_close()
 {
@@ -12,6 +16,9 @@ function sql_close()
 
 /**
  * Return NULL if given value is null.
+ *
+ * @param mixed $value
+ * @return bool
  */
 function sql_null($value = null)
 {
@@ -20,6 +27,8 @@ function sql_null($value = null)
 
 /**
  * Start new transaction.
+ *
+ * @return mysqli_result|bool
  */
 function sql_transaction_start()
 {
@@ -34,6 +43,8 @@ function sql_transaction_start()
 
 /**
  * Commit transaction.
+ *
+ * @return mysqli_result|bool
  */
 function sql_transaction_commit()
 {
@@ -48,6 +59,8 @@ function sql_transaction_commit()
 
 /**
  * Stop transaction, revert database.
+ *
+ * @return mysqli_result|bool
  */
 function sql_transaction_rollback()
 {
@@ -68,6 +81,7 @@ function sql_transaction_rollback()
  */
 function sql_error($message)
 {
+    // @TODO: Bad idea..
     sql_close();
 
     $message = trim($message) . "\n";
@@ -81,15 +95,11 @@ function sql_error($message)
 /**
  * Connect to mysql server.
  *
- * @param string $host
- *          Host
- * @param string $user
- *          Username
- * @param string $pass
- *          Password
- * @param string $db_name
- *          DB to select
- * @return mysqli The connection handler
+ * @param string $host    Host
+ * @param string $user    Username
+ * @param string $pass    Password
+ * @param string $db_name DB to select
+ * @return mysqli|false The connection handler
  */
 function sql_connect($host, $user, $pass, $db_name)
 {
@@ -117,8 +127,7 @@ function sql_connect($host, $user, $pass, $db_name)
 /**
  * Change the selected db in current mysql-connection.
  *
- * @param
- *          $db_name
+ * @param $db_name
  * @return bool true on success, false on error
  */
 function sql_select_db($db_name)
@@ -134,14 +143,11 @@ function sql_select_db($db_name)
  * MySQL SELECT query
  *
  * @param string $query
- * @return Result array or false on error
+ * @return array|false Result array or false on error
  */
 function sql_select($query)
 {
     global $sql_connection;
-
-//   echo $query . ";\n";
-//   echo debug_string_backtrace() . "\n";
 
     $result = $sql_connection->query($query);
     if ($result) {
@@ -159,7 +165,7 @@ function sql_select($query)
  * MySQL execute a query
  *
  * @param string $query
- * @return mysqli_result boolean resource or false on error
+ * @return mysqli_result|false boolean resource or false on error
  */
 function sql_query($query)
 {
@@ -224,7 +230,21 @@ function sql_select_single_col($query)
     return array_map('array_shift', $result);
 }
 
+/**
+ * @param string $query
+ * @return string|null
+ */
 function sql_select_single_cell($query)
 {
-    return array_shift(array_shift(sql_select($query)));
+    $result = sql_select($query);
+    if ($result == false) {
+        return null;
+    }
+
+    $result = array_shift($result);
+    if (!is_array($result)) {
+        return null;
+    }
+
+    return array_shift($result);
 }

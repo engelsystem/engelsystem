@@ -68,6 +68,7 @@ require_once realpath(__DIR__ . '/../includes/helper/email_helper.php');
 require_once realpath(__DIR__ . '/../includes/mailer/shifts_mailer.php');
 require_once realpath(__DIR__ . '/../includes/mailer/users_mailer.php');
 
+$config = [];
 require_once realpath(__DIR__ . '/../config/config.default.php');
 if (file_exists(realpath(__DIR__ . '/../config/config.php'))) {
     require_once realpath(__DIR__ . '/../config/config.php');

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @return string
+ */
 function admin_questions_title()
 {
     return _("Answer questions");
@@ -7,6 +10,8 @@ function admin_questions_title()
 
 /**
  * Renders a hint for new questions to answer.
+ *
+ * @return string|null
  */
 function admin_new_questions()
 {
@@ -25,6 +30,9 @@ function admin_new_questions()
     return null;
 }
 
+/**
+ * @return string
+ */
 function admin_questions()
 {
     global $user;
@@ -136,4 +144,6 @@ function admin_questions()
                 break;
         }
     }
+
+    return '';
 }

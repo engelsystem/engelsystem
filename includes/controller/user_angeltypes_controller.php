@@ -2,6 +2,8 @@
 
 /**
  * Display a hint for team/angeltype supporters if there are unconfirmed users for his angeltype.
+ *
+ * @return string|null
  */
 function user_angeltypes_unconfirmed_hint()
 {
@@ -14,7 +16,12 @@ function user_angeltypes_unconfirmed_hint()
 
     $unconfirmed_links = [];
     foreach ($unconfirmed_user_angeltypes as $user_angeltype) {
-        $unconfirmed_links[] = '<a href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $user_angeltype['angeltype_id'] . '">' . $user_angeltype['name'] . ' (+' . $user_angeltype['count'] . ')' . '</a>';
+        $unconfirmed_links[] = '<a href="'
+            . page_link_to('angeltypes')
+            . '&action=view&angeltype_id=' . $user_angeltype['angeltype_id']
+            . '">' . $user_angeltype['name']
+            . ' (+' . $user_angeltype['count'] . ')'
+            . '</a>';
     }
 
     return sprintf(ngettext("There is %d unconfirmed angeltype.", "There are %d unconfirmed angeltypes.",
@@ -25,6 +32,8 @@ function user_angeltypes_unconfirmed_hint()
 
 /**
  * Remove all unconfirmed users from a specific angeltype.
+ *
+ * @return array
  */
 function user_angeltypes_delete_all_controller()
 {
@@ -62,6 +71,8 @@ function user_angeltypes_delete_all_controller()
 
 /**
  * Confirm all unconfirmed users for an angeltype.
+ *
+ * @return array
  */
 function user_angeltypes_confirm_all_controller()
 {
@@ -105,6 +116,8 @@ function user_angeltypes_confirm_all_controller()
 
 /**
  * Confirm an user for an angeltype.
+ *
+ * @return array
  */
 function user_angeltype_confirm_controller()
 {
@@ -165,6 +178,8 @@ function user_angeltype_confirm_controller()
 
 /**
  * Remove a user from an Angeltype.
+ *
+ * @return array
  */
 function user_angeltype_delete_controller()
 {
@@ -219,10 +234,13 @@ function user_angeltype_delete_controller()
 
 /**
  * Update an UserAngelType.
+ *
+ * @return array
  */
 function user_angeltype_update_controller()
 {
     global $privileges;
+    $supporter = false;
 
     if (!in_array('admin_angel_types', $privileges)) {
         error(_("You are not allowed to set supporter rights."));
@@ -337,6 +355,9 @@ function user_angeltype_add_controller()
 
 /**
  * A user joins an angeltype.
+ *
+ * @param array $angeltype
+ * @return array
  */
 function user_angeltype_join_controller($angeltype)
 {
@@ -375,6 +396,8 @@ function user_angeltype_join_controller($angeltype)
 
 /**
  * Route UserAngelType actions.
+ *
+ * @return array
  */
 function user_angeltypes_controller()
 {
@@ -397,5 +420,6 @@ function user_angeltypes_controller()
             return user_angeltype_add_controller();
         default:
             redirect(page_link_to('angeltypes'));
+            exit;
     }
 }

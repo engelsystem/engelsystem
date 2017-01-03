@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * @return string
+ */
 function event_config_title()
 {
     return _("Event config");
 }
 
+/**
+ * @return array
+ */
 function event_config_edit_controller()
 {
     global $privileges;

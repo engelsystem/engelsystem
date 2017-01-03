@@ -1,21 +1,34 @@
 <?php
 
+/**
+ * @return string
+ */
 function login_title()
 {
     return _("Login");
 }
 
+/**
+ * @return string
+ */
 function register_title()
 {
     return _("Register");
 }
 
+/**
+ * @return string
+ */
 function logout_title()
 {
     return _("Logout");
 }
 
-// Engel registrieren
+/**
+ * Engel registrieren
+ *
+ * @return string
+ */
 function guest_register()
 {
     global $tshirt_sizes, $enable_tshirt_size, $default_theme, $user, $min_password_length;
@@ -335,6 +348,7 @@ function guest_logout()
 {
     session_destroy();
     redirect(page_link_to("start"));
+    return true;
 }
 
 function guest_login()
@@ -368,7 +382,7 @@ function guest_login()
             error(_("Please enter a nickname."));
         }
 
-        if ($valid) {
+        if ($valid && !empty($login_user)) {
             $_SESSION['uid'] = $login_user['UID'];
             $_SESSION['locale'] = $login_user['Sprache'];
 

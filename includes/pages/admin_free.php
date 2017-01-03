@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * @return string
+ */
 function admin_free_title()
 {
     return _("Free angels");
 }
 
+/**
+ * @return string
+ */
 function admin_free()
 {
     global $privileges;

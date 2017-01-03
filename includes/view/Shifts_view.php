@@ -1,6 +1,10 @@
 <?php
 use Engelsystem\ShiftSignupState;
 
+/**
+ * @param array $shift
+ * @return string
+ */
 function Shift_editor_info_render($shift)
 {
     $info = [];
@@ -21,6 +25,12 @@ function Shift_editor_info_render($shift)
     return join('<br />', $info);
 }
 
+/**
+ * @param array $shift
+ * @param array $angeltype
+ * @param array $user_angeltype
+ * @return string
+ */
 function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
 {
     global $user;
@@ -44,6 +54,14 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
     return '';
 }
 
+/**
+ * @param array            $shift
+ * @param array            $shifttype
+ * @param array            $room
+ * @param array[]          $angeltypes_source
+ * @param ShiftSignupState $shift_signup_state
+ * @return string
+ */
 function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupState $shift_signup_state)
 {
     global $privileges;
@@ -122,6 +140,13 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
     );
 }
 
+/**
+ * @param array   $needed_angeltype
+ * @param array   $angeltypes
+ * @param array[] $shift
+ * @param bool    $user_shift_admin
+ * @return string
+ */
 function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin)
 {
     global $user;
@@ -166,11 +191,17 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shi
     return $needed_angels;
 }
 
+/**
+ * @param array $shift_entry
+ * @param bool  $user_shift_admin
+ * @param bool  $angeltype_supporter
+ * @return string
+ */
 function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angeltype_supporter)
 {
     $entry = User_Nick_render(User($shift_entry['UID']));
     if ($shift_entry['freeloaded']) {
-        $entry = '<strike>' . $entry . '</strike>';
+        $entry = '<del>' . $entry . '</del>';
     }
     if ($user_shift_admin || $angeltype_supporter) {
         $entry .= ' <div class="btn-group">';
@@ -190,7 +221,8 @@ function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angelty
 /**
  * Calc shift length in format 12:23h.
  *
- * @param Shift $shift
+ * @param array $shift
+ * @return string
  */
 function shift_length($shift)
 {

@@ -3,6 +3,8 @@
 /**
  * Generates a hint, if user joined angeltypes that require a driving license and the user has no driver license
  * information provided.
+ *
+ * @return string|null
  */
 function user_driver_license_required_hint()
 {
@@ -30,6 +32,8 @@ function user_driver_license_required_hint()
 
 /**
  * Route user driver licenses actions.
+ *
+ * @return array
  */
 function user_driver_licenses_controller()
 {
@@ -51,7 +55,8 @@ function user_driver_licenses_controller()
 /**
  * Link to user driver license edit page for given user.
  *
- * @param User $user
+ * @param array $user
+ * @return string
  */
 function user_driver_license_edit_link($user = null)
 {
@@ -63,6 +68,8 @@ function user_driver_license_edit_link($user = null)
 
 /**
  * Loads the user for the driver license.
+ *
+ * @return array
  */
 function user_driver_license_load_user()
 {
@@ -82,6 +89,8 @@ function user_driver_license_load_user()
 
 /**
  * Edit a users driver license information.
+ *
+ * @return array
  */
 function user_driver_license_edit_controller()
 {

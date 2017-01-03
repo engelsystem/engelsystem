@@ -1,6 +1,10 @@
 <?php
 use Engelsystem\UserHintsRenderer;
 
+/**
+ * @param string $page
+ * @return string
+ */
 function page_link_to($page = "")
 {
     if ($page == "") {
@@ -9,6 +13,10 @@ function page_link_to($page = "")
     return '?p=' . $page;
 }
 
+/**
+ * @param string $page
+ * @return string
+ */
 function page_link_to_absolute($page)
 {
     return (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://'
@@ -19,6 +27,8 @@ function page_link_to_absolute($page)
 
 /**
  * Render the user hints
+ *
+ * @return string
  */
 function header_render_hints()
 {
@@ -44,6 +54,8 @@ function header_render_hints()
 
 /**
  * Renders the header toolbar containing search, login/logout, user and settings links.
+ *
+ * @return string
  */
 function header_toolbar()
 {
@@ -89,6 +101,9 @@ function header_toolbar()
     return toolbar($toolbar_items, true);
 }
 
+/**
+ * @return array
+ */
 function make_user_submenu()
 {
     global $privileges, $page;
@@ -115,6 +130,9 @@ function make_user_submenu()
     return $user_submenu;
 }
 
+/**
+ * @return string
+ */
 function make_navigation()
 {
     global $page, $privileges;
@@ -168,8 +186,8 @@ function make_navigation()
 /**
  * Adds room navigation to the given menu.
  *
- * @param string[] $menu
- *          Rendered menu
+ * @param string[] $menu Rendered menu
+ * @return string[]
  */
 function make_room_navigation($menu)
 {
@@ -190,12 +208,15 @@ function make_room_navigation($menu)
     foreach ($rooms as $room) {
         $room_menu[] = toolbar_item_link(room_link($room), 'map-marker', $room['Name']);
     }
-    if (count($room_menu > 0)) {
+    if (count($room_menu) > 0) {
         $menu[] = toolbar_dropdown('map-marker', _("Rooms"), $room_menu);
     }
     return $menu;
 }
 
+/**
+ * @return string
+ */
 function make_menu()
 {
     return make_navigation();

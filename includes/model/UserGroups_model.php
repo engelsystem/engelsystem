@@ -3,7 +3,8 @@
 /**
  * Returns users groups
  *
- * @param User $user
+ * @param array $user
+ * @return array|false
  */
 function User_groups($user)
 {

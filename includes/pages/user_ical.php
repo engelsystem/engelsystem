@@ -47,7 +47,8 @@ function send_ical_from_shifts($shifts)
 /**
  * Renders an ical vevent from given shift.
  *
- * @param Shift $shift
+ * @param array $shift
+ * @return string
  */
 function make_ical_entry_from_shift($shift)
 {

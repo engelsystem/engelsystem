@@ -4,6 +4,7 @@
  * Delete a shift type.
  *
  * @param int $shifttype_id
+ * @return mysqli_result|false
  */
 function ShiftType_delete($shifttype_id)
 {
@@ -17,6 +18,7 @@ function ShiftType_delete($shifttype_id)
  * @param string $name
  * @param int    $angeltype_id
  * @param string $description
+ * @return mysqli_result|false
  */
 function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
 {
@@ -35,7 +37,7 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
  * @param string $name
  * @param int    $angeltype_id
  * @param string $description
- * @return new shifttype id
+ * @return int|false new shifttype id
  */
 function ShiftType_create($name, $angeltype_id, $description)
 {
@@ -55,6 +57,7 @@ function ShiftType_create($name, $angeltype_id, $description)
  * Get a shift type by id.
  *
  * @param int $shifttype_id
+ * @return array|null
  */
 function ShiftType($shifttype_id)
 {
@@ -70,6 +73,8 @@ function ShiftType($shifttype_id)
 
 /**
  * Get all shift types.
+ *
+ * @return array|false
  */
 function ShiftTypes()
 {

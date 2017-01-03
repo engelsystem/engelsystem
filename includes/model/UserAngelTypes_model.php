@@ -7,10 +7,8 @@
 /**
  * Checks if a user joined an angeltype.
  *
- * @param User      $user
- *          The user to be checked
- * @param Angeltype $angeltype
- *          The angeltype to be checked
+ * @param array $user      The user to be checked
+ * @param array $angeltype The angeltype to be checked
  * @return boolean
  */
 function UserAngelType_exists($user, $angeltype)
@@ -26,7 +24,8 @@ function UserAngelType_exists($user, $angeltype)
 /**
  * List users angeltypes.
  *
- * @param User $user
+ * @param array $user
+ * @return array|false
  */
 function User_angeltypes($user)
 {
@@ -46,7 +45,8 @@ function User_angeltypes($user)
 /**
  * Gets unconfirmed user angeltypes for angeltypes of which the given user is a supporter.
  *
- * @param User $user
+ * @param array $user
+ * @return array
  */
 function User_unconfirmed_AngelTypes($user)
 {
@@ -74,8 +74,9 @@ function User_unconfirmed_AngelTypes($user)
 /**
  * Returns true if user is angeltype supporter or has privilege admin_user_angeltypes.
  *
- * @param User      $user
- * @param AngelType $angeltype
+ * @param array $user
+ * @param array $angeltype
+ * @return bool
  */
 function User_is_AngelType_supporter(&$user, $angeltype)
 {
@@ -97,6 +98,7 @@ function User_is_AngelType_supporter(&$user, $angeltype)
  *
  * @param int  $user_angeltype_id
  * @param bool $supporter
+ * @return mysqli_result
  */
 function UserAngelType_update($user_angeltype_id, $supporter)
 {
@@ -116,6 +118,7 @@ function UserAngelType_update($user_angeltype_id, $supporter)
  * Delete all unconfirmed UserAngelTypes for given Angeltype.
  *
  * @param int $angeltype_id
+ * @return mysqli_result
  */
 function UserAngelTypes_delete_all($angeltype_id)
 {
@@ -133,8 +136,9 @@ function UserAngelTypes_delete_all($angeltype_id)
 /**
  * Confirm all unconfirmed UserAngelTypes for given Angeltype.
  *
- * @param int  $angeltype_id
- * @param User $confirm_user
+ * @param int   $angeltype_id
+ * @param array $confirm_user
+ * @return mysqli_result
  */
 function UserAngelTypes_confirm_all($angeltype_id, $confirm_user)
 {
@@ -153,8 +157,9 @@ function UserAngelTypes_confirm_all($angeltype_id, $confirm_user)
 /**
  * Confirm an UserAngelType with confirming user.
  *
- * @param int  $user_angeltype_id
- * @param User $confirm_user
+ * @param int   $user_angeltype_id
+ * @param array $confirm_user
+ * @return mysqli_result
  */
 function UserAngelType_confirm($user_angeltype_id, $confirm_user)
 {
@@ -172,7 +177,8 @@ function UserAngelType_confirm($user_angeltype_id, $confirm_user)
 /**
  * Delete an UserAngelType.
  *
- * @param UserAngelType $user_angeltype
+ * @param array $user_angeltype
+ * @return mysqli_result|false
  */
 function UserAngelType_delete($user_angeltype)
 {
@@ -185,8 +191,9 @@ function UserAngelType_delete($user_angeltype)
 /**
  * Create an UserAngelType.
  *
- * @param User      $user
- * @param Angeltype $angeltype
+ * @param array $user
+ * @param array $angeltype
+ * @return int
  */
 function UserAngelType_create($user, $angeltype)
 {
@@ -204,6 +211,7 @@ function UserAngelType_create($user, $angeltype)
  * Get an UserAngelType by its id.
  *
  * @param int $user_angeltype_id
+ * @return array|null
  */
 function UserAngelType($user_angeltype_id)
 {
@@ -224,8 +232,9 @@ function UserAngelType($user_angeltype_id)
 /**
  * Get an UserAngelType by user and angeltype.
  *
- * @param User      $user
- * @param Angeltype $angeltype
+ * @param array $user
+ * @param array $angeltype
+ * @return array|null
  */
 function UserAngelType_by_User_and_AngelType($user, $angeltype)
 {

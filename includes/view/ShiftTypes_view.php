@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @param array $shifttype
+ * @return string
+ */
 function ShiftType_name_render($shifttype)
 {
     global $privileges;
@@ -9,6 +13,10 @@ function ShiftType_name_render($shifttype)
     return $shifttype['name'];
 }
 
+/**
+ * @param array $shifttype
+ * @return string
+ */
 function ShiftType_delete_view($shifttype)
 {
     return page_with_title(sprintf(_("Delete shifttype %s"), $shifttype['name']), [
@@ -24,6 +32,14 @@ function ShiftType_delete_view($shifttype)
     ]);
 }
 
+/**
+ * @param string   $name
+ * @param int      $angeltype_id
+ * @param array[]  $angeltypes
+ * @param string   $description
+ * @param int|bool $shifttype_id
+ * @return string
+ */
 function ShiftType_edit_view($name, $angeltype_id, $angeltypes, $description, $shifttype_id)
 {
     $angeltypes_select = [
@@ -48,6 +64,11 @@ function ShiftType_edit_view($name, $angeltype_id, $angeltypes, $description, $s
     ]);
 }
 
+/**
+ * @param array $shifttype
+ * @param array $angeltype
+ * @return string
+ */
 function ShiftType_view($shifttype, $angeltype)
 {
     $parsedown = new Parsedown();
@@ -75,6 +96,10 @@ function ShiftType_view($shifttype, $angeltype)
     ]);
 }
 
+/**
+ * @param array[] $shifttypes
+ * @return string
+ */
 function ShiftTypes_list_view($shifttypes)
 {
     foreach ($shifttypes as &$shifttype) {

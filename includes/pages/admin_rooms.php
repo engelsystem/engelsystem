@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * @return string
+ */
 function admin_rooms_title()
 {
     return _("Rooms");
 }
 
+/**
+ * @return string
+ */
 function admin_rooms()
 {
     $rooms_source = sql_select("SELECT * FROM `Room` ORDER BY `Name`");
@@ -28,6 +34,7 @@ function admin_rooms()
         $from_pentabarf = "";
         $public = 'Y';
         $number = "";
+        $room_id = 0;
 
         $angeltypes_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
         $angeltypes = [];
@@ -99,7 +106,7 @@ function admin_rooms()
                         $angeltypes_count[$angeltype_id] = $_REQUEST['angeltype_count_' . $angeltype_id];
                     } else {
                         $valid = false;
-                        $msg .= error(sprintf(_("Please enter needed angels for type %s.", $angeltype)), true);
+                        $msg .= error(sprintf(_("Please enter needed angels for type %s."), $angeltype), true);
                     }
                 }
 

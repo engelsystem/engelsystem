@@ -8,7 +8,6 @@ namespace Engelsystem;
  */
 class ShiftSignupState
 {
-
     /**
      * Shift has free places
      */
@@ -44,10 +43,18 @@ class ShiftSignupState
      */
     const SIGNED_UP = 'SIGNED_UP';
 
+    /** @var string */
     private $state;
 
+    /** @var int */
     private $freeEntries;
 
+    /**
+     * ShiftSignupState constructor.
+     *
+     * @param string $state
+     * @param int    $free_entries
+     */
     public function __construct($state, $free_entries)
     {
         $this->state = $state;
@@ -69,6 +76,10 @@ class ShiftSignupState
         }
     }
 
+    /**
+     * @param string $state
+     * @return int
+     */
     private function valueForState($state)
     {
         switch ($state) {
@@ -88,11 +99,15 @@ class ShiftSignupState
             case ShiftSignupState::OCCUPIED:
             case ShiftSignupState::ADMIN:
                 return 60;
+            default:
+                return 0;
         }
     }
 
     /**
      * Returns true, if signup is allowed
+     *
+     * @return bool
      */
     public function isSignupAllowed()
     {
@@ -106,6 +121,8 @@ class ShiftSignupState
 
     /**
      * Return the shift signup state
+     *
+     * @return string
      */
     public function getState()
     {
@@ -114,6 +131,8 @@ class ShiftSignupState
 
     /**
      * How many places are free in this shift for the angeltype?
+     *
+     * @return int
      */
     public function getFreeEntries()
     {

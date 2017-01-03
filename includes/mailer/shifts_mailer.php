@@ -1,24 +1,28 @@
 <?php
 
+/**
+ * @param array $old_shift
+ * @param array $new_shift
+ */
 function mail_shift_change($old_shift, $new_shift)
 {
     $users = ShiftEntries_by_shift($old_shift["SID"]);
     $old_room = Room($old_shift["RID"]);
     $new_room = Room($new_shift["RID"]);
 
-    $noticable_changes = false;
+    $noticeable_changes = false;
 
     $message = _("A Shift you are registered on has changed:");
     $message .= "\n";
 
     if ($old_shift["name"] != $new_shift["name"]) {
         $message .= sprintf(_("* Shift type changed from %s to %s"), $old_shift["name"], $new_shift["name"]) . "\n";
-        $noticable_changes = true;
+        $noticeable_changes = true;
     }
 
     if ($old_shift["title"] != $new_shift["title"]) {
         $message .= sprintf(_("* Shift title changed from %s to %s"), $old_shift["title"], $new_shift["title"]) . "\n";
-        $noticable_changes = true;
+        $noticeable_changes = true;
     }
 
     if ($old_shift["start"] != $new_shift["start"]) {
@@ -27,7 +31,7 @@ function mail_shift_change($old_shift, $new_shift)
                 date("Y-m-d H:i", $old_shift["start"]),
                 date("Y-m-d H:i", $new_shift["start"])
             ) . "\n";
-        $noticable_changes = true;
+        $noticeable_changes = true;
     }
 
     if ($old_shift["end"] != $new_shift["end"]) {
@@ -36,15 +40,15 @@ function mail_shift_change($old_shift, $new_shift)
                 date("Y-m-d H:i", $old_shift["end"]),
                 date("Y-m-d H:i", $new_shift["end"])
             ) . "\n";
-        $noticable_changes = true;
+        $noticeable_changes = true;
     }
 
     if ($old_shift["RID"] != $new_shift["RID"]) {
         $message .= sprintf(_("* Shift Location changed from %s to %s"), $old_room["Name"], $new_room["Name"]) . "\n";
-        $noticable_changes = true;
+        $noticeable_changes = true;
     }
 
-    if (!$noticable_changes) {
+    if (!$noticeable_changes) {
         // There are no changes worth sending an E-Mail
         return;
     }
@@ -64,6 +68,9 @@ function mail_shift_change($old_shift, $new_shift)
     }
 }
 
+/**
+ * @param array $shift
+ */
 function mail_shift_delete($shift)
 {
     $users = ShiftEntries_by_shift($shift["SID"]);
@@ -83,32 +90,40 @@ function mail_shift_delete($shift)
     }
 }
 
+/**
+ * @param array $user
+ * @param array $shift
+ */
 function mail_shift_assign($user, $shift)
 {
-    if ($user["email_shiftinfo"]) {
-        $room = Room($shift["RID"]);
-
-        $message = _("You have been assigned to a Shift:") . "\n";
-        $message .= $shift["name"] . "\n";
-        $message .= $shift["title"] . "\n";
-        $message .= date("Y-m-d H:i", $shift["start"]) . " - " . date("H:i", $shift["end"]) . "\n";
-        $message .= $room["Name"] . "\n";
-
-        engelsystem_email_to_user($user, '[engelsystem] ' . _("Assigned to Shift"), $message, true);
+    if (!$user["email_shiftinfo"]) {
+        return;
     }
+
+    $room = Room($shift["RID"]);
+
+    $message = _("You have been assigned to a Shift:") . "\n";
+    $message .= $shift["name"] . "\n";
+    $message .= $shift["title"] . "\n";
+    $message .= date("Y-m-d H:i", $shift["start"]) . " - " . date("H:i", $shift["end"]) . "\n";
+    $message .= $room["Name"] . "\n";
+
+    engelsystem_email_to_user($user, '[engelsystem] ' . _("Assigned to Shift"), $message, true);
 }
 
 function mail_shift_removed($user, $shift)
 {
-    if ($user["email_shiftinfo"]) {
-        $room = Room($shift["RID"]);
-
-        $message = _("You have been removed from a Shift:") . "\n";
-        $message .= $shift["name"] . "\n";
-        $message .= $shift["title"] . "\n";
-        $message .= date("Y-m-d H:i", $shift["start"]) . " - " . date("H:i", $shift["end"]) . "\n";
-        $message .= $room["Name"] . "\n";
-
-        engelsystem_email_to_user($user, '[engelsystem] ' . _("Removed from Shift"), $message, true);
+    if (!$user["email_shiftinfo"]) {
+        return;
     }
+
+    $room = Room($shift["RID"]);
+
+    $message = _("You have been removed from a Shift:") . "\n";
+    $message .= $shift["name"] . "\n";
+    $message .= $shift["title"] . "\n";
+    $message .= date("Y-m-d H:i", $shift["start"]) . " - " . date("H:i", $shift["end"]) . "\n";
+    $message .= $room["Name"] . "\n";
+
+    engelsystem_email_to_user($user, '[engelsystem] ' . _("Removed from Shift"), $message, true);
 }

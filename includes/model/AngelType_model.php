@@ -24,8 +24,7 @@ function AngelType_new()
 /**
  * Validates the contact user
  *
- * @param Angeltype $angeltype
- *          The angeltype
+ * @param array $angeltype The angeltype
  * @return ValidationResult
  */
 function AngelType_validate_contact_user_id($angeltype)
@@ -45,8 +44,8 @@ function AngelType_validate_contact_user_id($angeltype)
 /**
  * Returns contact data (name, dect, email) for given angeltype or null
  *
- * @param Angeltype $angeltype
- *          The angeltype
+ * @param array $angeltype The angeltype
+ * @return array|null
  */
 function AngelType_contact_info($angeltype)
 {
@@ -68,13 +67,15 @@ function AngelType_contact_info($angeltype)
             'contact_email' => $angeltype['contact_email']
         ];
     }
+
     return null;
 }
 
 /**
  * Delete an Angeltype.
  *
- * @param Angeltype $angeltype
+ * @param array $angeltype
+ * @return mysqli_result
  */
 function AngelType_delete($angeltype)
 {
@@ -92,8 +93,8 @@ function AngelType_delete($angeltype)
 /**
  * Update Angeltype.
  *
- * @param Angeltype $angeltype
- *          The angeltype
+ * @param array $angeltype The angeltype
+ * @return mysqli_result
  */
 function AngelType_update($angeltype)
 {
@@ -119,9 +120,8 @@ function AngelType_update($angeltype)
 /**
  * Create an Angeltype.
  *
- * @param Angeltype $angeltype
- *          The angeltype
- * @return the created angeltype
+ * @param array $angeltype The angeltype
+ * @return array the created angeltype
  */
 function AngelType_create($angeltype)
 {
@@ -148,10 +148,9 @@ function AngelType_create($angeltype)
  * Validates a name for angeltypes.
  * Returns ValidationResult containing validation success and validated name.
  *
- * @param string    $name
- *          Wanted name for the angeltype
- * @param AngelType $angeltype
- *          The angeltype the name is for
+ * @param string $name      Wanted name for the angeltype
+ * @param array  $angeltype The angeltype the name is for
+ *
  * @return ValidationResult result and validated name
  */
 function AngelType_validate_name($name, $angeltype)
@@ -180,7 +179,8 @@ function AngelType_validate_name($name, $angeltype)
 /**
  * Returns all angeltypes and subscription state to each of them for given user.
  *
- * @param User $user
+ * @param array $user
+ * @return array
  */
 function AngelTypes_with_user($user)
 {
@@ -201,6 +201,8 @@ function AngelTypes_with_user($user)
 
 /**
  * Returns all angeltypes.
+ *
+ * @return array
  */
 function AngelTypes()
 {
@@ -216,6 +218,8 @@ function AngelTypes()
 
 /**
  * Returns AngelType id array
+ *
+ * @return array
  */
 function AngelType_ids()
 {
@@ -229,8 +233,8 @@ function AngelType_ids()
 /**
  * Returns angelType by id.
  *
- * @param $angeltype_id angelType
- *                      ID
+ * @param int $angeltype_id angelType ID
+ * @return array
  */
 function AngelType($angeltype_id)
 {

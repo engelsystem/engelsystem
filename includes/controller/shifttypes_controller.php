@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @param array $shifttype
+ * @return string
+ */
 function shifttype_link($shifttype)
 {
     return page_link_to('shifttypes') . '&action=view&shifttype_id=' . $shifttype['id'];
@@ -7,6 +11,8 @@ function shifttype_link($shifttype)
 
 /**
  * Delete a shifttype.
+ *
+ * @return array
  */
 function shifttype_delete_controller()
 {
@@ -42,6 +48,8 @@ function shifttype_delete_controller()
 
 /**
  * Edit or create shift type.
+ *
+ * @return array
  */
 function shifttype_edit_controller()
 {
@@ -113,6 +121,9 @@ function shifttype_edit_controller()
     ];
 }
 
+/**
+ * @return array
+ */
 function shifttype_controller()
 {
     if (!isset($_REQUEST['shifttype_id'])) {
@@ -139,6 +150,8 @@ function shifttype_controller()
 
 /**
  * List all shift types.
+ *
+ * @return array
  */
 function shifttypes_list_controller()
 {
@@ -155,6 +168,8 @@ function shifttypes_list_controller()
 
 /**
  * Text for shift type related links.
+ *
+ * @return string
  */
 function shifttypes_title()
 {
@@ -163,6 +178,8 @@ function shifttypes_title()
 
 /**
  * Route shift type actions
+ *
+ * @return array
  */
 function shifttypes_controller()
 {
@@ -171,14 +188,14 @@ function shifttypes_controller()
     }
 
     switch ($_REQUEST['action']) {
-        default:
-        case 'list':
-            return shifttypes_list_controller();
         case 'view':
             return shifttype_controller();
         case 'edit':
             return shifttype_edit_controller();
         case 'delete':
             return shifttype_delete_controller();
+        case 'list':
+        default:
+            return shifttypes_list_controller();
     }
 }

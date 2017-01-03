@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * @return string
+ */
 function questions_title()
 {
     return _("Ask the Heaven");
 }
 
+/**
+ * @return string
+ */
 function user_questions()
 {
     global $user;
@@ -62,4 +68,6 @@ function user_questions()
                 break;
         }
     }
+
+    return '';
 }

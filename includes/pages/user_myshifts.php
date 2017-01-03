@@ -1,14 +1,21 @@
 <?php
 
+/**
+ * @return string
+ */
 function myshifts_title()
 {
     return _("My shifts");
 }
 
-// Zeigt die Schichten an, die ein Benutzer belegt
+/**
+ * Zeigt die Schichten an, die ein Benutzer belegt
+ *
+ * @return string
+ */
 function user_myshifts()
 {
-    global $LETZTES_AUSTRAGEN;
+    global $last_unsubscribe;
     global $user, $privileges;
 
     if (
@@ -120,7 +127,7 @@ function user_myshifts()
         WHERE `ShiftEntry`.`id`='" . sql_escape($user_id) . "' AND `UID`='" . sql_escape($shifts_user['UID']) . "'");
         if (count($shift) > 0) {
             $shift = $shift[0];
-            if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges)) {
+            if (($shift['start'] > time() + $last_unsubscribe * 3600) || in_array('user_shifts_admin', $privileges)) {
                 $result = ShiftEntry_delete($user_id);
                 if ($result === false) {
                     engelsystem_error('Unable to delete shift entry.');
@@ -146,4 +153,5 @@ function user_myshifts()
     }
 
     redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
+    return '';
 }

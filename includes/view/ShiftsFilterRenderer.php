@@ -4,7 +4,6 @@ namespace Engelsystem;
 
 class ShiftsFilterRenderer
 {
-
     /**
      * The shiftFilter to render.
      *
@@ -27,6 +26,11 @@ class ShiftsFilterRenderer
      */
     private $days = [];
 
+    /**
+     * ShiftsFilterRenderer constructor.
+     *
+     * @param ShiftsFilter $shiftsFilter
+     */
     public function __construct(ShiftsFilter $shiftsFilter)
     {
         $this->shiftsFilter = $shiftsFilter;
@@ -35,7 +39,8 @@ class ShiftsFilterRenderer
     /**
      * Renders the filter.
      *
-     * @return Generated HTML
+     * @param string $link_base
+     * @return string Generated HTML
      */
     public function render($link_base)
     {
@@ -55,6 +60,8 @@ class ShiftsFilterRenderer
 
     /**
      * Should the filter display a day selection.
+     *
+     * @param string[] $days
      */
     public function enableDaySelection($days)
     {
@@ -64,6 +71,8 @@ class ShiftsFilterRenderer
 
     /**
      * Should the filter display a day selection.
+     *
+     * @return bool
      */
     public function isDaySelectionEnabled()
     {

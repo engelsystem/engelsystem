@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @return string
+ */
 function settings_title()
 {
     return _("Settings");
@@ -8,8 +11,10 @@ function settings_title()
 /**
  * Change user main attributes (name, dates, etc.)
  *
- * @param User $user_source
- *          The user
+ * @param array $user_source The user
+ * @param bool  $enable_tshirt_size
+ * @param array $tshirt_sizes
+ * @return array
  */
 function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 {
@@ -86,8 +91,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 /**
  * Change user password.
  *
- * @param User $user_source
- *          The user
+ * @param array $user_source The user
  */
 function user_settings_password($user_source)
 {
@@ -112,10 +116,9 @@ function user_settings_password($user_source)
 /**
  * Change user theme
  *
- * @param User $user_sources
- *                   The user
- * @param      array <String> $themes
- *                   List of available themes
+ * @param array $user_source The user
+ * @param array $themes      List of available themes
+ * @return mixed
  */
 function user_settings_theme($user_source, $themes)
 {
@@ -140,10 +143,9 @@ function user_settings_theme($user_source, $themes)
 /**
  * Change use locale
  *
- * @param User $user_source
- *                   The user
- * @param      array <String> $locales
- *                   List of available locales
+ * @param array $user_source The user
+ * @param array $locales     List of available locales
+ * @return array
  */
 function user_settings_locale($user_source, $locales)
 {
@@ -168,6 +170,8 @@ function user_settings_locale($user_source, $locales)
 
 /**
  * Main user settings page/controller
+ *
+ * @return string
  */
 function user_settings()
 {

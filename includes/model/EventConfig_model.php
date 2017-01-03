@@ -2,6 +2,8 @@
 
 /**
  * Get event config.
+ *
+ * łreturn array|false|null
  */
 function EventConfig()
 {
@@ -25,6 +27,7 @@ function EventConfig()
  * @param int    $event_end_date
  * @param int    $teardown_end_date
  * @param string $event_welcome_msg
+ * @return mysqli_result|false
  */
 function EventConfig_update(
     $event_name,
@@ -43,6 +46,7 @@ function EventConfig_update(
       `teardown_end_date`=" . sql_null($teardown_end_date) . ",
       `event_welcome_msg`=" . sql_null($event_welcome_msg));
     }
+
     return sql_query("UPDATE `EventConfig` SET
       `event_name`=" . sql_null($event_name) . ", 
       `buildup_start_date`=" . sql_null($buildup_start_date) . ",

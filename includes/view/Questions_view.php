@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @param array[] $open_questions
+ * @param array[] $answered_questions
+ * @param string  $ask_action
+ * @return string
+ */
 function Questions_view($open_questions, $answered_questions, $ask_action)
 {
     foreach ($open_questions as &$question) {

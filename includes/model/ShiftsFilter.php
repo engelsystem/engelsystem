@@ -9,12 +9,11 @@ namespace Engelsystem;
  */
 class ShiftsFilter
 {
-
     /**
      * How long can the time interval be?
+     * 86400 = one day
      */
     const MAX_DURATION = 86400;
-    // one day
 
     /**
      * Shift is completely full.
@@ -33,16 +32,28 @@ class ShiftsFilter
      */
     private $userShiftsAdmin;
 
+    /** @var int[] */
     private $filled = [];
 
+    /** @var int[] */
     private $rooms = [];
 
+    /** @var int[] */
     private $types = [];
 
+    /** @var int unix timestamp */
     private $startTime = null;
 
+    /** @var int unix timestamp */
     private $endTime = null;
 
+    /**
+     * ShiftsFilter constructor.
+     *
+     * @param bool  $user_shifts_admin
+     * @param int[] $rooms
+     * @param int[] $types
+     */
     public function __construct($user_shifts_admin, $rooms, $types)
     {
         $this->user_shifts_admin = $user_shifts_admin;
@@ -58,21 +69,33 @@ class ShiftsFilter
         }
     }
 
+    /**
+     * @return int unix timestamp
+     */
     public function getStartTime()
     {
         return $this->startTime;
     }
 
+    /**
+     * @param int $startTime unix timestamp
+     */
     public function setStartTime($startTime)
     {
         $this->startTime = $startTime;
     }
 
+    /**
+     * @return int unix timestamp
+     */
     public function getEndTime()
     {
         return $this->endTime;
     }
 
+    /**
+     * @param int $endTime unix timestamp
+     */
     public function setEndTime($endTime)
     {
         if ($endTime - $this->startTime > ShiftsFilter::MAX_DURATION) {
@@ -81,6 +104,9 @@ class ShiftsFilter
         $this->endTime = $endTime;
     }
 
+    /**
+     * @return int[]
+     */
     public function getTypes()
     {
         if (count($this->types) == 0) {
@@ -89,11 +115,17 @@ class ShiftsFilter
         return $this->types;
     }
 
+    /**
+     * @param int[] $types
+     */
     public function setTypes($types)
     {
         $this->types = $types;
     }
 
+    /**
+     * @return int[]
+     */
     public function getRooms()
     {
         if (count($this->rooms) == 0) {
@@ -102,26 +134,41 @@ class ShiftsFilter
         return $this->rooms;
     }
 
+    /**
+     * @param int[] $rooms
+     */
     public function setRooms($rooms)
     {
         $this->rooms = $rooms;
     }
 
+    /**
+     * @return bool
+     */
     public function isUserShiftsAdmin()
     {
         return $this->userShiftsAdmin;
     }
 
+    /**
+     * @param bool $userShiftsAdmin
+     */
     public function setUserShiftsAdmin($userShiftsAdmin)
     {
         $this->userShiftsAdmin = $userShiftsAdmin;
     }
 
+    /**
+     * @return int[]
+     */
     public function getFilled()
     {
         return $this->filled;
     }
 
+    /**
+     * @param int[] $filled
+     */
     public function setFilled($filled)
     {
         $this->filled = $filled;

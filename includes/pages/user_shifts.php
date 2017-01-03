@@ -1,6 +1,9 @@
 <?php
 use Engelsystem\ShiftsFilter;
 
+/**
+ * @return string
+ */
 function shifts_title()
 {
     return _("Shifts");
@@ -12,6 +15,8 @@ function shifts_title()
  * Transform into shift controller and shift entry controller.
  * Split actions into shift edit, shift delete, shift entry edit, shift entry delete
  * Introduce simpler and beautiful actions for shift entry join/leave for users
+ *
+ * @return string
  */
 function user_shifts()
 {
@@ -23,7 +28,8 @@ function user_shifts()
 
     // Löschen einzelner Schicht-Einträge (Also Belegung einer Schicht von Engeln) durch Admins
     if (isset($_REQUEST['entry_id'])) {
-        return shift_entry_delete_controller();
+        shift_entry_delete_controller();
+        return '';
     } elseif (isset($_REQUEST['edit_shift'])) {
         return shift_edit_controller();
     } elseif (isset($_REQUEST['delete_shift'])) {
@@ -38,8 +44,8 @@ function user_shifts()
  * Helper function that updates the start and end time from request data.
  * Use update_ShiftsFilter().
  *
- * @param ShiftsFilter $shiftsFilter
- *          The shiftfilter to update.
+ * @param ShiftsFilter $shiftsFilter The shiftfilter to update.
+ * @param string[]     $days
  */
 function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
 {
@@ -80,16 +86,22 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
     update_ShiftsFilter_timerange($shiftsFilter, $days);
 }
 
+/**
+ * @return array
+ */
 function load_rooms()
 {
     $rooms = sql_select("SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`='Y' ORDER BY `Name`");
-    if (count($rooms) == 0) {
+    if (!$rooms || count($rooms) == 0) {
         error(_("The administration has not configured any rooms yet."));
         redirect('?');
     }
     return $rooms;
 }
 
+/**
+ * @return array
+ */
 function load_days()
 {
     $days = sql_select_single_col("
@@ -103,6 +115,9 @@ function load_days()
     return $days;
 }
 
+/**
+ * @return array|false
+ */
 function load_types()
 {
     global $user;
@@ -136,10 +151,12 @@ function load_types()
     return $types;
 }
 
+/**
+ * @return string
+ */
 function view_user_shifts()
 {
-    global $user, $privileges;
-    global $ical_shifts;
+    global $user, $privileges, $ical_shifts;
 
     $ical_shifts = [];
     $days = load_days();
@@ -197,9 +214,9 @@ function view_user_shifts()
                 'task_notice'   =>
                     '<sup>1</sup>'
                     . _("The tasks shown here are influenced by the angeltypes you joined already!")
-                    . " <a href=\"" . page_link_to('angeltypes') . '&action=about' . "\">"
+                    . ' <a href="' . page_link_to('angeltypes') . '&action=about' . '">'
                     . _("Description of the jobs.")
-                    . "</a>",
+                    . '</a>',
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
                 'ical_text'     => '<h2>' . _("iCal export") . '</h2><p>' . sprintf(
                         _("Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s\">JSON format</a> available (please keep secret, otherwise <a href=\"%s\">reset the api key</a>)."),
@@ -213,6 +230,10 @@ function view_user_shifts()
     ]);
 }
 
+/**
+ * @param array $array
+ * @return array
+ */
 function get_ids_from_array($array)
 {
     return $array["id"];
@@ -227,9 +248,9 @@ function make_select($items, $selected, $name, $title = null)
 
     foreach ($items as $i) {
         $html_items[] = '<div class="checkbox">'
-            . '<label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '"'
+            . '<label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '" '
             . (in_array($i['id'], $selected) ? ' checked="checked"' : '')
-            . '> ' . $i['name'] . '</label>'
+            . ' > ' . $i['name'] . '</label>'
             . (!isset($i['enabled']) || $i['enabled'] ? '' : glyph("lock"))
             . '</div><br />';
     }

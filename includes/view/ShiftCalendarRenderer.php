@@ -26,20 +26,35 @@ class ShiftCalendarRenderer
      */
     const TIME_MARGIN = 1800;
 
+    /** @var array */
     private $lanes;
 
+    /** @var ShiftsFilter */
     private $shiftsFilter;
 
-    private $firstBlockStartTime = null;
+    /** @var int */
+    private $firstBlockStartTime = 0;
 
-    private $lastBlockEndTime = null;
+    /** @var int */
+    private $lastBlockEndTime = 0;
 
+    /** @var int */
     private $blocksPerSlot = null;
 
-    private $needed_angeltypes = null;
+    /** @var array[] */
+    private $needed_angeltypes = [];
 
-    private $shift_entries = null;
+    /** @var array[] */
+    private $shift_entries = [];
 
+    /**
+     * ShiftCalendarRenderer constructor.
+     *
+     * @param array[]      $shifts
+     * @param array[]      $needed_angeltypes
+     * @param array[]      $shift_entries
+     * @param ShiftsFilter $shiftsFilter
+     */
     public function __construct($shifts, $needed_angeltypes, $shift_entries, ShiftsFilter $shiftsFilter)
     {
         $this->shiftsFilter = $shiftsFilter;
@@ -53,10 +68,9 @@ class ShiftCalendarRenderer
     /**
      * Assigns the shifts to different lanes per room if they collide
      *
-     * @param Shift[] $shifts
-     *          The shifts to assign
+     * @param array[] $shifts The shifts to assign
      *
-     * @return Returns an array that assigns a room_id to an array of ShiftCalendarLane containing the shifts
+     * @return array Returns an array that assigns a room_id to an array of ShiftCalendarLane containing the shifts
      */
     private function assignShiftsToLanes($shifts)
     {
@@ -78,6 +92,7 @@ class ShiftCalendarRenderer
             // Try to add the shift to the existing lanes for this room
             $shift_added = false;
             foreach ($lanes[$room_id] as $lane) {
+                /** @var ShiftCalendarLane $lane */
                 $shift_added = $lane->addShift($shift);
                 if ($shift_added == true) {
                     break;
@@ -96,16 +111,25 @@ class ShiftCalendarRenderer
         return $lanes;
     }
 
+    /**
+     * @return int
+     */
     public function getFirstBlockStartTime()
     {
         return $this->firstBlockStartTime;
     }
 
+    /**
+     * @return int
+     */
     public function getLastBlockEndTime()
     {
         return $this->lastBlockEndTime;
     }
 
+    /**
+     * @return float
+     */
     public function getBlocksPerSlot()
     {
         if ($this->blocksPerSlot == null) {
@@ -117,7 +141,7 @@ class ShiftCalendarRenderer
     /**
      * Renders the whole calendar
      *
-     * @return the generated html
+     * @return string the generated html
      */
     public function render()
     {
@@ -132,6 +156,8 @@ class ShiftCalendarRenderer
 
     /**
      * Renders the lanes containing the shifts
+     *
+     * @return string
      */
     private function renderShiftLanes()
     {
@@ -148,8 +174,8 @@ class ShiftCalendarRenderer
     /**
      * Renders a single lane
      *
-     * @param ShiftCalendarLane $lane
-     *          The lane to render
+     * @param ShiftCalendarLane $lane The lane to render
+     * @return string
      */
     private function renderLane(ShiftCalendarLane $lane)
     {
@@ -165,8 +191,12 @@ class ShiftCalendarRenderer
                 $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
             }
 
-            list($shift_height, $shift_html) = $shift_renderer->render($shift, $this->needed_angeltypes[$shift['SID']],
-                $this->shift_entries[$shift['SID']], $user);
+            list($shift_height, $shift_html) = $shift_renderer->render(
+                $shift,
+                $this->needed_angeltypes[$shift['SID']],
+                $this->shift_entries[$shift['SID']],
+                $user
+            );
             $html .= $shift_html;
             $rendered_until += $shift_height * ShiftCalendarRenderer::SECONDS_PER_ROW;
         }
@@ -185,11 +215,9 @@ class ShiftCalendarRenderer
     /**
      * Renders a tick/block for given time
      *
-     * @param int     $time
-     *          unix timestamp
-     * @param boolean $label
-     *          Should time labels be generated?
-     * @return rendered tick html
+     * @param int     $time  unix timestamp
+     * @param boolean $label Should time labels be generated?
+     * @return string rendered tick html
      */
     private function renderTick($time, $label = false)
     {
@@ -213,6 +241,8 @@ class ShiftCalendarRenderer
 
     /**
      * Renders the left time lane including hour/day ticks
+     *
+     * @return string
      */
     private function renderTimeLane()
     {
@@ -228,6 +258,10 @@ class ShiftCalendarRenderer
         return div('lane time', $time_slot);
     }
 
+    /**
+     * @param array[] $shifts
+     * @return int
+     */
     private function calcFirstBlockStartTime($shifts)
     {
         $start_time = $this->shiftsFilter->getEndTime();
@@ -239,6 +273,10 @@ class ShiftCalendarRenderer
         return ShiftCalendarRenderer::SECONDS_PER_ROW * floor(($start_time - ShiftCalendarRenderer::TIME_MARGIN) / ShiftCalendarRenderer::SECONDS_PER_ROW);
     }
 
+    /**
+     * @param array[] $shifts
+     * @return int
+     */
     private function calcLastBlockEndTime($shifts)
     {
         $end_time = $this->shiftsFilter->getStartTime();
@@ -250,6 +288,9 @@ class ShiftCalendarRenderer
         return ShiftCalendarRenderer::SECONDS_PER_ROW * ceil(($end_time + ShiftCalendarRenderer::TIME_MARGIN) / ShiftCalendarRenderer::SECONDS_PER_ROW);
     }
 
+    /**
+     * @return int
+     */
     private function calcBlocksPerSlot()
     {
         return ceil(($this->getLastBlockEndTime() - $this->getFirstBlockStartTime()) / ShiftCalendarRenderer::SECONDS_PER_ROW);
@@ -257,6 +298,8 @@ class ShiftCalendarRenderer
 
     /**
      * Renders a legend explaining the shift coloring
+     *
+     * @return string
      */
     private function renderLegend()
     {

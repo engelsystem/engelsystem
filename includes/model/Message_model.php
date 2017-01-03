@@ -2,6 +2,8 @@
 
 /**
  * Returns Message id array
+ *
+ * @return array|false
  */
 function Message_ids()
 {
@@ -11,8 +13,8 @@ function Message_ids()
 /**
  * Returns message by id.
  *
- * @param $message_id message
- *                    ID
+ * @param int $message_id message ID
+ * @return array|false|null
  */
 function Message($message_id)
 {
@@ -31,10 +33,9 @@ function Message($message_id)
  * TODO: global $user con not be used in model!
  * send message
  *
- * @param $receiver_user_id User
- *                          ID of Reciever
- * @param $text             Text
- *                          of Message
+ * @param int    $receiver_user_id User ID of Reciever
+ * @param string $text             Text of Message
+ * @return bool
  */
 function Message_send($receiver_user_id, $text)
 {

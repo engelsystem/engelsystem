@@ -8,14 +8,11 @@ use Engelsystem\ValidationResult;
 /**
  * Parse a date from da day and a time textfield.
  *
- * @param string   $date_name
- *          Name of the textfield containing the day (format Y-m-d)
- * @param string   $time_name
- *          Name of the textfield containing the time (format H:i)
- * @param string[] $allowed_days
- *          List of allowed days in format Y-m-d
- * @param int      $default_value
- *          Default value unix timestamp
+ * @param string   $date_name     Name of the textfield containing the day (format Y-m-d)
+ * @param string   $time_name     Name of the textfield containing the time (format H:i)
+ * @param string[] $allowed_days  List of allowed days in format Y-m-d
+ * @param int      $default_value Default value unix timestamp
+ * @return int|null
  */
 function check_request_datetime($date_name, $time_name, $allowed_days, $default_value)
 {
@@ -35,11 +32,9 @@ function check_request_datetime($date_name, $time_name, $allowed_days, $default_
 /**
  * Parse a date into unix timestamp
  *
- * @param string $pattern
- *          The date pattern (i.e. Y-m-d H:i)
- * @param string $value
- *          The string to parse
- * @return The parsed unix timestamp
+ * @param string $pattern The date pattern (i.e. Y-m-d H:i)
+ * @param string $value   The string to parse
+ * @return int|null The parsed unix timestamp
  */
 function parse_date($pattern, $value)
 {
@@ -52,6 +47,8 @@ function parse_date($pattern, $value)
 
 /**
  * Leitet den Browser an die übergebene URL weiter und hält das Script an.
+ *
+ * @param string $url
  */
 function redirect($url)
 {
@@ -62,8 +59,7 @@ function redirect($url)
 /**
  * Echoes given output and dies.
  *
- * @param String $output
- *          String to display
+ * @param String $output String to display
  */
 function raw_output($output)
 {
@@ -74,12 +70,11 @@ function raw_output($output)
 /**
  * Helper function for transforming list of entities into array for select boxes.
  *
- * @param array  $data
- *          The data array
- * @param string $key_name
- *          name of the column to use as id/key
- * @param string $value_name
- *          name of the column to use as displayed value
+ * @param array  $data       The data array
+ * @param string $key_name   name of the column to use as id/key
+ * @param string $value_name name of the column to use as displayed value
+ *
+ * @return array
  */
 function select_array($data, $key_name, $value_name)
 {
@@ -93,10 +88,9 @@ function select_array($data, $key_name, $value_name)
 /**
  * Returns an int[] from given request param name.
  *
- * @param String $name
- *                     Name of the request param
- * @param        array <int> $default
- *                     Default return value, if param is not set
+ * @param string $name    Name of the request param
+ * @param array  $default Default return value, if param is not set
+ * @return array
  */
 function check_request_int_array($name, $default = [])
 {
@@ -110,12 +104,9 @@ function check_request_int_array($name, $default = [])
  * Checks if given request item (name) can be parsed to a date.
  * If not parsable, given error message is put into msg() and null is returned.
  *
- * @param string  $input
- *          String to be parsed into a date.
- * @param string  $error_message
- *          the error message displayed if $input is not parsable
- * @param boolean $null_allowed
- *          is a null value allowed?
+ * @param string  $name          to be parsed into a date.
+ * @param string  $error_message the error message displayed if $input is not parsable
+ * @param boolean $null_allowed  is a null value allowed?
  * @return ValidationResult containing the parsed date
  */
 function check_request_date($name, $error_message = null, $null_allowed = false)
@@ -130,12 +121,9 @@ function check_request_date($name, $error_message = null, $null_allowed = false)
  * Checks if given string can be parsed to a date.
  * If not parsable, given error message is put into msg() and null is returned.
  *
- * @param string  $input
- *          String to be parsed into a date.
- * @param string  $error_message
- *          the error message displayed if $input is not parsable
- * @param boolean $null_allowed
- *          is a null value allowed?
+ * @param string  $input         String to be parsed into a date.
+ * @param string  $error_message the error message displayed if $input is not parsable
+ * @param boolean $null_allowed  is a null value allowed?
  * @return ValidationResult containing the parsed date
  */
 function check_date($input, $error_message = null, $null_allowed = false)
@@ -153,6 +141,10 @@ function check_date($input, $error_message = null, $null_allowed = false)
 
 /**
  * Returns REQUEST value filtered or default value (null) if not set.
+ *
+ * @param string $name
+ * @param string $default_value
+ * @return mixed|null
  */
 function strip_request_item($name, $default_value = null)
 {
@@ -165,6 +157,9 @@ function strip_request_item($name, $default_value = null)
 /**
  * Testet, ob der angegebene REQUEST Wert ein Integer ist, bzw.
  * eine ID sein könnte.
+ *
+ * @param string $name
+ * @return int|false
  */
 function test_request_int($name)
 {
@@ -176,6 +171,10 @@ function test_request_int($name)
 
 /**
  * Gibt den gefilterten REQUEST Wert mit Zeilenumbrüchen zurück
+ *
+ * @param string $name
+ * @param mixed  $default_value
+ * @return mixed
  */
 function strip_request_item_nl($name, $default_value = null)
 {
@@ -187,6 +186,9 @@ function strip_request_item_nl($name, $default_value = null)
 
 /**
  * Entfernt unerwünschte Zeichen
+ *
+ * @param string $item
+ * @return string
  */
 function strip_item($item)
 {
@@ -195,6 +197,9 @@ function strip_item($item)
 
 /**
  * Überprüft eine E-Mail-Adresse.
+ *
+ * @param string $email
+ * @return bool
  */
 function check_email($email)
 {

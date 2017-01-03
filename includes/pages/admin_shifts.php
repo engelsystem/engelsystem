@@ -1,16 +1,22 @@
 <?php
 
+/**
+ * @return string
+ */
 function admin_shifts_title()
 {
     return _("Create shifts");
 }
 
-// Assistent zum Anlegen mehrerer neuer Schichten
+/**
+ * Assistent zum Anlegen mehrerer neuer Schichten
+ *
+ * @return string
+ */
 function admin_shifts()
 {
     $valid = true;
 
-    $rid = 0;
     $start = parse_date("Y-m-d H:i", date("Y-m-d") . " 00:00");
     $end = $start;
     $mode = 'single';
@@ -177,9 +183,9 @@ function admin_shifts()
                     'shifttype_id' => $shifttype_id
                 ];
             } elseif ($mode == 'multi') {
-                $shift_start = $start;
+                $shift_start = (int)$start;
                 do {
-                    $shift_end = $shift_start + $length * 60;
+                    $shift_end = $shift_start + (int)$length * 60;
 
                     if ($shift_end > $end) {
                         $shift_end = $end;
@@ -298,6 +304,7 @@ function admin_shifts()
             redirect(page_link_to('admin_shifts'));
         }
 
+        $needed_angel_types_info = [];
         foreach ($_SESSION['admin_shifts_shifts'] as $shift) {
             $shift['URL'] = null;
             $shift['PSID'] = null;
@@ -312,7 +319,7 @@ function admin_shifts()
                 . " from " . date("Y-m-d H:i", $shift['start'])
                 . " to " . date("Y-m-d H:i", $shift['end'])
             );
-            $needed_angel_types_info = [];
+
             foreach ($_SESSION['admin_shifts_types'] as $type_id => $count) {
                 $angel_type_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($type_id) . "' LIMIT 1");
                 if (count($angel_type_source) > 0) {

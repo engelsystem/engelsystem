@@ -2,6 +2,12 @@
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilterRenderer;
 
+/**
+ * @param array                 $room
+ * @param ShiftsFilterRenderer  $shiftsFilterRenderer
+ * @param ShiftCalendarRenderer $shiftCalendarRenderer
+ * @return string
+ */
 function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalendarRenderer $shiftCalendarRenderer)
 {
     return page_with_title(glyph('map-marker') . $room['Name'], [
@@ -10,6 +16,10 @@ function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalen
     ]);
 }
 
+/**
+ * @param array $room
+ * @return string
+ */
 function Room_name_render($room)
 {
     global $privileges;

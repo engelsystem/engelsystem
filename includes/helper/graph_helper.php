@@ -3,10 +3,12 @@
 /**
  * Renders a bargraph
  *
- * @param string  $key       keyname of the x-axis
- * @param array   $row_names keynames for the data rows
- * @param unknown $colors    colors for the data rows
- * @param unknown $data      the data
+ * @param string $dom_id
+ * @param string $key       key name of the x-axis
+ * @param array  $row_names key names for the data rows
+ * @param array  $colors    colors for the data rows
+ * @param array  $data      the data
+ * @return string
  */
 function bargraph($dom_id, $key, $row_names, $colors, $data)
 {

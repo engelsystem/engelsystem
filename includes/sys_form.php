@@ -4,10 +4,8 @@
 /**
  * Renders a hidden input
  *
- * @param string $name
- *          Name of the input
- * @param string $value
- *          The value
+ * @param string $name  Name of the input
+ * @param string $value The value
  * @return string rendered html
  */
 function form_hidden($name, $value)
@@ -17,6 +15,11 @@ function form_hidden($name, $value)
 
 /**
  * Rendert ein Zahlenfeld mit Buttons zum verstellen
+ *
+ * @param string $name
+ * @param string $label
+ * @param string $value
+ * @return string
  */
 function form_spinner($name, $label, $value)
 {
@@ -33,11 +36,12 @@ function form_spinner($name, $label, $value)
         </div>
       </div>
       <script type="text/javascript">
-        $("#spinner-' . $name . '-down").click(function(e) {
-          $("#spinner-' . $name . '").val(parseInt($("#spinner-' . $name . '").val()) - 1);
+      var spinner = $("#spinner-' . $name . '");
+        $("#spinner-' . $name . '-down").click(function() {
+          spinner.val(parseInt(spinner.val()) - 1);
         });
-        $("#spinner-' . $name . '-up").click(function(e) {
-          $("#spinner-' . $name . '").val(parseInt($("#spinner-' . $name . '").val()) + 1);
+        $("#spinner-' . $name . '-up").click(function() {
+          spinner.val(parseInt(spinner.val()) + 1);
         });
       </script>
       ');
@@ -46,15 +50,12 @@ function form_spinner($name, $label, $value)
 /**
  * Render a bootstrap datepicker
  *
- * @param string $name
- *          Name of the parameter
- * @param string $label
- *          Label
- * @param int    $value
- *          Unix Timestamp
- * @param int    $min_date
- *          Earliest possible date
- * @return HTML
+ * @param string $name       Name of the parameter
+ * @param string $label      Label
+ * @param int    $value      Unix Timestamp
+ * @param string $start_date Earliest possible date
+ * @param string $end_date
+ * @return string HTML
  */
 function form_date($name, $label, $value, $start_date = '', $end_date = '')
 {
@@ -83,14 +84,11 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
 /**
  * Rendert eine Liste von Checkboxen für ein Formular
  *
- * @param
- *          name Die Namen der Checkboxen werden aus name_key gebildet
- * @param
- *          label Die Beschriftung der Liste
- * @param
- *          items Array mit den einzelnen Checkboxen
- * @param
- *          selected Array mit den Keys, die ausgewählt sind
+ * @param string $name     Die Namen der Checkboxen werden aus name_key gebildet
+ * @param string $label    Die Beschriftung der Liste
+ * @param array  $items    Array mit den einzelnen Checkboxen
+ * @param array  $selected Array mit den Keys, die ausgewählt sind
+ * @return string
  */
 function form_checkboxes($name, $label, $items, $selected)
 {
@@ -104,17 +102,13 @@ function form_checkboxes($name, $label, $items, $selected)
 /**
  * Rendert eine Tabelle von Checkboxen für ein Formular
  *
- * @param
- *          names Assoziatives Array mit Namen der Checkboxen als Keys und Überschriften als Values
- * @param
- *          label Die Beschriftung der gesamten Tabelle
- * @param
- *          items Array mit den Beschriftungen der Zeilen
- * @param
- *          selected Mehrdimensionales Array, wobei $selected[foo] ein Array der in der Datenreihe foo markierten
- *          Checkboxen ist
- * @param
- *          disabled Wie selected, nur dass die entsprechenden Checkboxen deaktiviert statt markiert sind
+ * @param string[] $names    Assoziatives Array mit Namen der Checkboxen als Keys und Überschriften als Values
+ * @param string   $label    Die Beschriftung der gesamten Tabelle
+ * @param string[] $items    Array mit den Beschriftungen der Zeilen
+ * @param array[]  $selected Mehrdimensionales Array, wobei $selected[foo] ein Array der in der Datenreihe foo
+ *                           markierten Checkboxen ist
+ * @param array    $disabled Wie selected, nur dass die entsprechenden Checkboxen deaktiviert statt markiert sind
+ * @return string
  */
 function form_multi_checkboxes($names, $label, $items, $selected, $disabled = [])
 {
@@ -125,13 +119,16 @@ function form_multi_checkboxes($names, $label, $items, $selected, $disabled = []
     $html .= "</tr></thead><tbody>";
     foreach ($items as $key => $item) {
         $html .= "<tr>";
+        $dom_id = '';
         foreach ($names as $name => $title) {
             $dom_id = $name . '_' . $key;
             $sel = array_search($key, $selected[$name]) !== false ? ' checked="checked"' : "";
             if (!empty($disabled) && !empty($disabled[$name]) && array_search($key, $disabled[$name]) !== false) {
                 $sel .= ' disabled="disabled"';
             }
-            $html .= '<td style="text-align: center;"><input type="checkbox" id="' . $dom_id . '" name="' . $name . '[]" value="' . $key . '"' . $sel . ' /></td>';
+            $html .= '<td style="text-align: center;">'
+                . '<input type="checkbox" id="' . $dom_id . '" name="' . $name . '[]" value="' . $key . '" ' . $sel . ' />'
+                . '</td>';
         }
         $html .= '<td><label for="' . $dom_id . '">' . $item . '</label></td></tr>';
     }
@@ -141,22 +138,38 @@ function form_multi_checkboxes($names, $label, $items, $selected, $disabled = []
 
 /**
  * Rendert eine Checkbox
+ *
+ * @param string $name
+ * @param string $label
+ * @param string $selected
+ * @param string $value
+ * @return string
  */
 function form_checkbox($name, $label, $selected, $value = 'checked')
 {
-    return '<div class="checkbox"><label><input type="checkbox" id="' . $name . '" name="' . $name . '" value="' . $value . '"' . ($selected ? ' checked="checked"' : '') . ' /> ' . $label . '</label></div>';
+    return '<div class="checkbox"><label><input type="checkbox" id="' . $name . '" name="' . $name . '" value="' . $value . '" ' . ($selected ? ' checked="checked"' : '') . ' /> ' . $label . '</label></div>';
 }
 
 /**
  * Rendert einen Radio
+ *
+ * @param string $name
+ * @param string $label
+ * @param string $selected
+ * @param string $value
+ * @return string
  */
 function form_radio($name, $label, $selected, $value)
 {
-    return '<div class="radio"><label><input type="radio" id="' . $name . '" name="' . $name . '" value="' . $value . '"' . ($selected ? ' checked="checked"' : '') . ' /> ' . $label . '</label></div>';
+    return '<div class="radio"><label><input type="radio" id="' . $name . '" name="' . $name . '" value="' . $value . '" ' . ($selected ? ' checked="checked"' : '') . ' /> ' . $label . '</label></div>';
 }
 
 /**
  * Rendert einen Infotext in das Formular
+ *
+ * @param string $label
+ * @param string $text
+ * @return string
  */
 function form_info($label, $text = "")
 {
@@ -171,6 +184,10 @@ function form_info($label, $text = "")
 
 /**
  * Rendert den Absenden-Button eines Formulars
+ *
+ * @param string $name
+ * @param string $label
+ * @return string
  */
 function form_submit($name, $label)
 {
@@ -182,6 +199,12 @@ function form_submit($name, $label)
 
 /**
  * Rendert ein Formular-Textfeld
+ *
+ * @param string $name
+ * @param string $label
+ * @param string $value
+ * @param bool   $disabled
+ * @return string
  */
 function form_text($name, $label, $value, $disabled = false)
 {
@@ -196,14 +219,11 @@ function form_text($name, $label, $value, $disabled = false)
 /**
  * Renders a text input with placeholder instead of label.
  *
- * @param String  $name
- *          Input name
- * @param String  $placeholder
- *          Placeholder
- * @param String  $value
- *          The value
- * @param Boolean $disabled
- *          Is the field enabled?
+ * @param String  $name        Input name
+ * @param String  $placeholder Placeholder
+ * @param String  $value       The value
+ * @param Boolean $disabled    Is the field enabled?
+ * @return string
  */
 function form_text_placeholder($name, $placeholder, $value, $disabled = false)
 {
@@ -214,6 +234,12 @@ function form_text_placeholder($name, $placeholder, $value, $disabled = false)
 
 /**
  * Rendert ein Formular-Emailfeld
+ *
+ * @param string $name
+ * @param string $label
+ * @param string $value
+ * @param bool   $disabled
+ * @return string
  */
 function form_email($name, $label, $value, $disabled = false)
 {
@@ -227,6 +253,10 @@ function form_email($name, $label, $value, $disabled = false)
 
 /**
  * Rendert ein Formular-Dateifeld
+ *
+ * @param string $name
+ * @param string $label
+ * @return string
  */
 function form_file($name, $label)
 {
@@ -235,6 +265,11 @@ function form_file($name, $label)
 
 /**
  * Rendert ein Formular-Passwortfeld
+ *
+ * @param string $name
+ * @param string $label
+ * @param bool   $disabled
+ * @return string
  */
 function form_password($name, $label, $disabled = false)
 {
@@ -248,6 +283,11 @@ function form_password($name, $label, $disabled = false)
 
 /**
  * Renders a password input with placeholder instead of label.
+ *
+ * @param string $name
+ * @param string $placeholder
+ * @param bool   $disabled
+ * @return string
  */
 function form_password_placeholder($name, $placeholder, $disabled = false)
 {
@@ -261,6 +301,12 @@ function form_password_placeholder($name, $placeholder, $disabled = false)
 
 /**
  * Rendert ein Formular-Textfeld
+ *
+ * @param string $name
+ * @param string $label
+ * @param string $value
+ * @param bool   $disabled
+ * @return string
  */
 function form_textarea($name, $label, $value, $disabled = false)
 {
@@ -274,6 +320,12 @@ function form_textarea($name, $label, $value, $disabled = false)
 
 /**
  * Rendert ein Formular-Auswahlfeld
+ *
+ * @param string   $name
+ * @param string   $label
+ * @param string[] $values
+ * @param string   $selected
+ * @return string
  */
 function form_select($name, $label, $values, $selected)
 {
@@ -282,6 +334,11 @@ function form_select($name, $label, $values, $selected)
 
 /**
  * Rendert ein Formular-Element
+ *
+ * @param string $label
+ * @param string $input
+ * @param string $for
+ * @return string
  */
 function form_element($label, $input, $for = "")
 {
@@ -294,12 +351,22 @@ function form_element($label, $input, $for = "")
 
 /**
  * Rendert ein Formular
+ *
+ * @param string[] $elements
+ * @param string   $action
+ * @return string
  */
 function form($elements, $action = "")
 {
     return '<form role="form" action="' . $action . '" enctype="multipart/form-data" method="post">' . join($elements) . '</form>';
 }
 
+/**
+ * @param string   $name
+ * @param String[] $options
+ * @param string   $selected
+ * @return string
+ */
 function html_options($name, $options, $selected = "")
 {
     $html = "";
@@ -310,6 +377,13 @@ function html_options($name, $options, $selected = "")
     return $html;
 }
 
+/**
+ * @param string   $dom_id
+ * @param string   $name
+ * @param string[] $rows
+ * @param string   $selected
+ * @return string
+ */
 function html_select_key($dom_id, $name, $rows, $selected)
 {
     $html = '<select class="form-control" id="' . $dom_id . '" name="' . $name . '">';

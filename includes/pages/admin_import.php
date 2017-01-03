@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * @return string
+ */
 function admin_import_title()
 {
     return _("Frab import");
 }
 
+/**
+ * @return string
+ */
 function admin_import()
 {
     global $rooms_import;
@@ -290,6 +296,10 @@ function admin_import()
     ]);
 }
 
+/**
+ * @param string $file
+ * @return array
+ */
 function prepare_rooms($file)
 {
     global $rooms_import;
@@ -323,6 +333,13 @@ function prepare_rooms($file)
     ];
 }
 
+/**
+ * @param string $file
+ * @param int    $shifttype_id
+ * @param int    $add_minutes_start
+ * @param int    $add_minutes_end
+ * @return array
+ */
 function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_end)
 {
     global $rooms_import;
@@ -384,6 +401,10 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
     ];
 }
 
+/**
+ * @param string $file
+ * @return SimpleXMLElement
+ */
 function read_xml($file)
 {
     global $xml_import;
@@ -393,6 +414,11 @@ function read_xml($file)
     return $xml_import;
 }
 
+/**
+ * @param array $shifts
+ * @param array $shifttypes
+ * @return array
+ */
 function shifts_printable($shifts, $shifttypes)
 {
     global $rooms_import;
@@ -417,6 +443,11 @@ function shifts_printable($shifts, $shifttypes)
     return $shifts_printable;
 }
 
+/**
+ * @param array $shift_a
+ * @param array $shift_b
+ * @return int
+ */
 function shift_sort($shift_a, $shift_b)
 {
     return ($shift_a['start'] < $shift_b['start']) ? -1 : 1;

@@ -9,6 +9,7 @@ use Engelsystem\ValidationResult;
  * Delete a user
  *
  * @param int $user_id
+ * @return mysqli_result|false
  */
 function User_delete($user_id)
 {
@@ -18,7 +19,8 @@ function User_delete($user_id)
 /**
  * Update user.
  *
- * @param User $user
+ * @param array $user
+ * @return mysqli_result|false
  */
 function User_update($user)
 {
@@ -53,27 +55,41 @@ function User_update($user)
 
 /**
  * Counts all forced active users.
+ *
+ * @return string|null
  */
 function User_force_active_count()
 {
     return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `force_active` = 1");
 }
 
+/**
+ * @return string|null
+ */
 function User_active_count()
 {
     return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1");
 }
 
+/**
+ * @return string|null
+ */
 function User_got_voucher_count()
 {
     return sql_select_single_cell("SELECT SUM(`got_voucher`) FROM `User`");
 }
 
+/**
+ * @return string|null
+ */
 function User_arrived_count()
 {
     return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1");
 }
 
+/**
+ * @return string|null
+ */
 function User_tshirts_count()
 {
     return sql_select_single_cell("SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1");
@@ -81,6 +97,8 @@ function User_tshirts_count()
 
 /**
  * Returns all column names for sorting in an array.
+ *
+ * @return array
  */
 function User_sortable_columns()
 {
@@ -104,6 +122,7 @@ function User_sortable_columns()
  * Get all users, ordered by Nick by default or by given param.
  *
  * @param string $order_by
+ * @return array|false
  */
 function Users($order_by = 'Nick')
 {
@@ -113,7 +132,8 @@ function Users($order_by = 'Nick')
 /**
  * Returns true if user is freeloader
  *
- * @param User $user
+ * @param array $user
+ * @return bool
  */
 function User_is_freeloader($user)
 {
@@ -125,7 +145,8 @@ function User_is_freeloader($user)
 /**
  * Returns all users that are not member of given angeltype.
  *
- * @param Angeltype $angeltype
+ * @param array $angeltype Angeltype
+ * @return array
  */
 function Users_by_angeltype_inverted($angeltype)
 {
@@ -145,7 +166,8 @@ function Users_by_angeltype_inverted($angeltype)
 /**
  * Returns all members of given angeltype.
  *
- * @param Angeltype $angeltype
+ * @param array $angeltype
+ * @return array
  */
 function Users_by_angeltype($angeltype)
 {
@@ -169,6 +191,8 @@ function Users_by_angeltype($angeltype)
 
 /**
  * Returns User id array
+ *
+ * @return array|false
  */
 function User_ids()
 {
@@ -179,6 +203,7 @@ function User_ids()
  * Strip unwanted characters from a users nick.
  *
  * @param string $nick
+ * @return string
  */
 function User_validate_Nick($nick)
 {
@@ -218,8 +243,7 @@ function User_validate_jabber($jabber)
 /**
  * Validate the planned arrival date
  *
- * @param int $planned_arrival_date
- *          Unix timestamp
+ * @param int $planned_arrival_date Unix timestamp
  * @return ValidationResult
  */
 function User_validate_planned_arrival_date($planned_arrival_date)
@@ -282,7 +306,8 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
 /**
  * Returns user by id.
  *
- * @param $user_id UID
+ * @param int $user_id UID
+ * @return array|null
  */
 function User($user_id)
 {
@@ -301,7 +326,7 @@ function User($user_id)
  *
  * @param string $api_key
  *          User api key
- * @return Matching user, null or false on error
+ * @return array|null Matching user, null on error
  */
 function User_by_api_key($api_key)
 {
@@ -319,7 +344,7 @@ function User_by_api_key($api_key)
  * Returns User by email.
  *
  * @param string $email
- * @return Matching user, null or false on error
+ * @return array|null Matching user, null or false on error
  */
 function User_by_email($email)
 {
@@ -337,7 +362,7 @@ function User_by_email($email)
  * Returns User by password token.
  *
  * @param string $token
- * @return Matching user, null or false on error
+ * @return array|null Matching user, null or false on error
  */
 function User_by_password_recovery_token($token)
 {
@@ -354,7 +379,9 @@ function User_by_password_recovery_token($token)
 /**
  * Generates a new api key for given user.
  *
- * @param User $user
+ * @param array $user
+ * @param bool  $log
+ * @return bool
  */
 function User_reset_api_key(&$user, $log = true)
 {
@@ -363,15 +390,19 @@ function User_reset_api_key(&$user, $log = true)
     if ($result === false) {
         return false;
     }
+
     if ($log) {
         engelsystem_log(sprintf("API key resetted (%s).", User_Nick_render($user)));
     }
+
+    return true;
 }
 
 /**
  * Generates a new password recovery token for given user.
  *
- * @param User $user
+ * @param array $user
+ * @return string
  */
 function User_generate_password_recovery_token(&$user)
 {
@@ -384,6 +415,10 @@ function User_generate_password_recovery_token(&$user)
     return $user['password_recovery_token'];
 }
 
+/**
+ * @param array $user
+ * @return float
+ */
 function User_get_eligable_voucher_count(&$user)
 {
     global $voucher_settings;

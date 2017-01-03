@@ -15,6 +15,7 @@ $themes = [
  * Display muted (grey) text.
  *
  * @param string $text
+ * @return string
  */
 function mute($text)
 {
@@ -24,25 +25,40 @@ function mute($text)
 /**
  * Renders a bootstrap label with given content and class.
  *
- * @param string $content
- *          The text
- * @param string $class
- *          default, primary, info, success, warning, danger
+ * @param string $content The text
+ * @param string $class   default, primary, info, success, warning, danger
+ * @return string
  */
 function label($content, $class = 'default')
 {
     return '<span class="label label-' . $class . '">' . $content . '</span>';
 }
 
+/**
+ * @param int    $valuemin
+ * @param int    $valuemax
+ * @param int    $valuenow
+ * @param string $class
+ * @param string $content
+ * @return string
+ */
 function progress_bar($valuemin, $valuemax, $valuenow, $class = '', $content = '')
 {
-    return '<div class="progress"><div class="progress-bar ' . $class . '" role="progressbar" aria-valuenow="' . $valuenow . '" aria-valuemin="' . $valuemin . '" aria-valuemax="' . $valuemax . '" style="width: ' . floor(($valuenow - $valuemin) * 100 / ($valuemax - $valuemin)) . '%">' . $content . '</div></div>';
+    return '<div class="progress">'
+        . '<div class="progress-bar ' . $class . '" role="progressbar" '
+        . 'aria-valuenow="' . $valuenow . '" aria-valuemin="' . $valuemin . '" aria-valuemax="' . $valuemax . '" '
+        . 'style="width: ' . floor(($valuenow - $valuemin) * 100 / ($valuemax - $valuemin)) . '%"'
+        . '>'
+        . $content . ''
+        . '</div>'
+        . '</div>';
 }
 
 /**
  * Render glyphicon
  *
  * @param string $glyph_name
+ * @return string
  */
 function glyph($glyph_name)
 {
@@ -53,12 +69,19 @@ function glyph($glyph_name)
  * Renders a tick or a cross by given boolean
  *
  * @param boolean $boolean
+ * @return string
  */
 function glyph_bool($boolean)
 {
     return '<span class="text-' . ($boolean ? 'success' : 'danger') . '">' . glyph($boolean ? 'ok' : 'remove') . '</span>';
 }
 
+/**
+ * @param string $class
+ * @param array  $content
+ * @param string $dom_id
+ * @return string
+ */
 function div($class, $content = [], $dom_id = "")
 {
     if (is_array($content)) {
@@ -68,6 +91,11 @@ function div($class, $content = [], $dom_id = "")
     return '<div' . $dom_id . ' class="' . $class . '">' . $content . '</div>';
 }
 
+/**
+ * @param string $content
+ * @param int    $number
+ * @return string
+ */
 function heading($content, $number = 1)
 {
     return "<h" . $number . ">" . $content . "</h" . $number . ">";
@@ -77,6 +105,7 @@ function heading($content, $number = 1)
  * Render a toolbar.
  *
  * @param array $items
+ * @param bool  $right
  * @return string
  */
 function toolbar($items = [], $right = false)
@@ -84,6 +113,10 @@ function toolbar($items = [], $right = false)
     return '<ul class="nav navbar-nav' . ($right ? ' navbar-right' : '') . '">' . join("\n", $items) . '</ul>';
 }
 
+/**
+ * @param string[] $items
+ * @return string
+ */
 function toolbar_pills($items)
 {
     return '<ul class="nav nav-pills">' . join("\n", $items) . '</ul>';
@@ -100,26 +133,56 @@ function toolbar_pills($items)
  */
 function toolbar_item_link($href, $glyphicon, $label, $selected = false)
 {
-    return '<li class="' . ($selected ? 'active' : '') . '"><a href="' . $href . '">' . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '') . $label . '</a></li>';
+    return '<li class="' . ($selected ? 'active' : '') . '">'
+        . '<a href="' . $href . '">'
+        . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '')
+        . $label
+        . '</a>'
+        . '</li>';
 }
 
+/**
+ * @return string
+ */
 function toolbar_item_divider()
 {
     return '<li class="divider"></li>';
 }
 
+/**
+ * @param string $glyphicon
+ * @param string $label
+ * @param array  $submenu
+ * @param string $class
+ * @return string
+ */
 function toolbar_dropdown($glyphicon, $label, $submenu, $class = '')
 {
     return '<li class="dropdown ' . $class . '">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">' . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '') . $label . ' <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">' . join("\n", $submenu) . '</ul></li>';
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">'
+        . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '')
+        . $label
+        . ' <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">'
+        . join("\n", $submenu)
+        . '</ul></li>';
 }
 
+/**
+ * @param string   $glyphicon
+ * @param string   $label
+ * @param string[] $content
+ * @param string   $class
+ * @return string
+ */
 function toolbar_popover($glyphicon, $label, $content, $class = '')
 {
     $dom_id = md5(microtime() . $glyphicon . $label);
     return '<li class="dropdown messages ' . $class . '">
-          <a id="' . $dom_id . '" href="#" tabindex="0">' . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '') . $label . ' <span class="caret"></span></a>
+          <a id="' . $dom_id . '" href="#" tabindex="0">'
+        . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '')
+        . $label
+        . ' <span class="caret"></span></a>
           <script type="text/javascript">
           $(function(){
               $("#' . $dom_id . '").popover({
@@ -137,6 +200,9 @@ function toolbar_popover($glyphicon, $label, $content, $class = '')
 /**
  * Generiert HTML Code für eine "Seite".
  * Fügt dazu die übergebenen Elemente zusammen.
+ *
+ * @param string[] $elements
+ * @return string
  */
 function page($elements)
 {
@@ -146,6 +212,10 @@ function page($elements)
 /**
  * Generiert HTML Code für eine "Seite" mit zentraler Überschrift
  * Fügt dazu die übergebenen Elemente zusammen.
+ *
+ * @param string   $title
+ * @param string[] $elements
+ * @return string
  */
 function page_with_title($title, $elements)
 {
@@ -154,6 +224,11 @@ function page_with_title($title, $elements)
 
 /**
  * Rendert eine Datentabelle
+ *
+ * @param array|string $columns
+ * @param array[]      $rows_raw
+ * @param bool         $data
+ * @return string
  */
 function table($columns, $rows_raw, $data = true)
 {
@@ -176,6 +251,11 @@ function table($columns, $rows_raw, $data = true)
 /**
  * Helper for rendering a html-table.
  * use table()
+ *
+ * @param string[] $columns
+ * @param array[]  $rows
+ * @param bool     $data
+ * @return string
  */
 function render_table($columns, $rows, $data = true)
 {
@@ -208,6 +288,11 @@ function render_table($columns, $rows, $data = true)
 
 /**
  * Rendert einen Knopf
+ *
+ * @param string $href
+ * @param string $label
+ * @param string $class
+ * @return string
  */
 function button($href, $label, $class = "")
 {
@@ -216,6 +301,11 @@ function button($href, $label, $class = "")
 
 /**
  * Rendert einen Knopf mit Glyph
+ *
+ * @param string $href
+ * @param string $glyph
+ * @param string $class
+ * @return string
  */
 function button_glyph($href, $glyph, $class = "")
 {
@@ -224,18 +314,31 @@ function button_glyph($href, $glyph, $class = "")
 
 /**
  * Rendert eine Toolbar mit Knöpfen
+ *
+ * @param array $buttons
+ * @return string
  */
 function buttons($buttons = [])
 {
     return '<div class="form-group">' . table_buttons($buttons) . '</div>';
 }
 
+/**
+ * @param array $buttons
+ * @return string
+ */
 function table_buttons($buttons = [])
 {
     return '<div class="btn-group">' . join(' ', $buttons) . '</div>';
 }
 
-// Load and render template
+/**
+ * Load and render template
+ *
+ * @param string $file
+ * @param string $data
+ * @return string
+ */
 function template_render($file, $data)
 {
     if (file_exists($file)) {
@@ -248,8 +351,14 @@ function template_render($file, $data)
         return $template;
     }
     engelsystem_error("Cannot find template file &laquo;" . $file . "&raquo;.");
+    return '';
 }
 
+/**
+ * @param string $str
+ * @param int    $length
+ * @return string
+ */
 function shorten($str, $length = 50)
 {
     if (strlen($str) < $length) {
@@ -260,6 +369,10 @@ function shorten($str, $length = 50)
         . '...</span>';
 }
 
+/**
+ * @param array[] $array
+ * @return string
+ */
 function table_body($array)
 {
     $html = "";
@@ -277,28 +390,32 @@ function table_body($array)
     return $html;
 }
 
-function ReplaceSmilies($neueckig)
+/**
+ * @param string $msg
+ * @return mixed
+ */
+function ReplaceSmilies($msg)
 {
-    $neueckig = str_replace(";o))", "<img src=\"pic/smiles/icon_redface.gif\">", $neueckig);
-    $neueckig = str_replace(":-))", "<img src=\"pic/smiles/icon_redface.gif\">", $neueckig);
-    $neueckig = str_replace(";o)", "<img src=\"pic/smiles/icon_wind.gif\">", $neueckig);
-    $neueckig = str_replace(":)", "<img src=\"pic/smiles/icon_smile.gif\">", $neueckig);
-    $neueckig = str_replace(":-)", "<img src=\"pic/smiles/icon_smile.gif\">", $neueckig);
-    $neueckig = str_replace(":(", "<img src=\"pic/smiles/icon_sad.gif\">", $neueckig);
-    $neueckig = str_replace(":-(", "<img src=\"pic/smiles/icon_sad.gif\">", $neueckig);
-    $neueckig = str_replace(":o(", "<img src=\"pic/smiles/icon_sad.gif\">", $neueckig);
-    $neueckig = str_replace(":o)", "<img src=\"pic/smiles/icon_lol.gif\">", $neueckig);
-    $neueckig = str_replace(";o(", "<img src=\"pic/smiles/icon_cry.gif\">", $neueckig);
-    $neueckig = str_replace(";(", "<img src=\"pic/smiles/icon_cry.gif\">", $neueckig);
-    $neueckig = str_replace(";-(", "<img src=\"pic/smiles/icon_cry.gif\">", $neueckig);
-    $neueckig = str_replace("8)", "<img src=\"pic/smiles/icon_rolleyes.gif\">", $neueckig);
-    $neueckig = str_replace("8o)", "<img src=\"pic/smiles/icon_rolleyes.gif\">", $neueckig);
-    $neueckig = str_replace(":P", "<img src=\"pic/smiles/icon_evil.gif\">", $neueckig);
-    $neueckig = str_replace(":-P", "<img src=\"pic/smiles/icon_evil.gif\">", $neueckig);
-    $neueckig = str_replace(":oP", "<img src=\"pic/smiles/icon_evil.gif\">", $neueckig);
-    $neueckig = str_replace(";P", "<img src=\"pic/smiles/icon_mad.gif\">", $neueckig);
-    $neueckig = str_replace(";oP", "<img src=\"pic/smiles/icon_mad.gif\">", $neueckig);
-    $neueckig = str_replace("?)", "<img src=\"pic/smiles/icon_question.gif\">", $neueckig);
+    $msg = str_replace(";o))", "<img src=\"pic/smiles/icon_redface.gif\">", $msg);
+    $msg = str_replace(":-))", "<img src=\"pic/smiles/icon_redface.gif\">", $msg);
+    $msg = str_replace(";o)", "<img src=\"pic/smiles/icon_wind.gif\">", $msg);
+    $msg = str_replace(":)", "<img src=\"pic/smiles/icon_smile.gif\">", $msg);
+    $msg = str_replace(":-)", "<img src=\"pic/smiles/icon_smile.gif\">", $msg);
+    $msg = str_replace(":(", "<img src=\"pic/smiles/icon_sad.gif\">", $msg);
+    $msg = str_replace(":-(", "<img src=\"pic/smiles/icon_sad.gif\">", $msg);
+    $msg = str_replace(":o(", "<img src=\"pic/smiles/icon_sad.gif\">", $msg);
+    $msg = str_replace(":o)", "<img src=\"pic/smiles/icon_lol.gif\">", $msg);
+    $msg = str_replace(";o(", "<img src=\"pic/smiles/icon_cry.gif\">", $msg);
+    $msg = str_replace(";(", "<img src=\"pic/smiles/icon_cry.gif\">", $msg);
+    $msg = str_replace(";-(", "<img src=\"pic/smiles/icon_cry.gif\">", $msg);
+    $msg = str_replace("8)", "<img src=\"pic/smiles/icon_rolleyes.gif\">", $msg);
+    $msg = str_replace("8o)", "<img src=\"pic/smiles/icon_rolleyes.gif\">", $msg);
+    $msg = str_replace(":P", "<img src=\"pic/smiles/icon_evil.gif\">", $msg);
+    $msg = str_replace(":-P", "<img src=\"pic/smiles/icon_evil.gif\">", $msg);
+    $msg = str_replace(":oP", "<img src=\"pic/smiles/icon_evil.gif\">", $msg);
+    $msg = str_replace(";P", "<img src=\"pic/smiles/icon_mad.gif\">", $msg);
+    $msg = str_replace(";oP", "<img src=\"pic/smiles/icon_mad.gif\">", $msg);
+    $msg = str_replace("?)", "<img src=\"pic/smiles/icon_question.gif\">", $msg);
 
-    return $neueckig;
+    return $msg;
 }

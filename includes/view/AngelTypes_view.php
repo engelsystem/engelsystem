@@ -7,7 +7,8 @@
 /**
  * Renders the angeltypes name as link.
  *
- * @param AngelType $angeltype
+ * @param array $angeltype
+ * @return string
  */
 function AngelType_name_render($angeltype)
 {
@@ -17,8 +18,7 @@ function AngelType_name_render($angeltype)
 /**
  * Render angeltype membership state
  *
- * @param UserAngelType $user_angeltype
- *          UserAngelType and AngelType
+ * @param array $user_angeltype UserAngelType and AngelType
  * @return string
  */
 function AngelType_render_membership($user_angeltype)
@@ -39,6 +39,10 @@ function AngelType_render_membership($user_angeltype)
     return glyph_bool(false);
 }
 
+/**
+ * @param array $angeltype
+ * @return string
+ */
 function AngelType_delete_view($angeltype)
 {
     return page_with_title(sprintf(_("Delete angeltype %s"), $angeltype['name']), [
@@ -57,10 +61,9 @@ function AngelType_delete_view($angeltype)
 /**
  * Render angeltype edit form.
  *
- * @param Angeltype $angeltype
- *          The angeltype to edit
- * @param boolean   $supporter_mode
- *          Is the user a supporter of this angeltype?
+ * @param array   $angeltype      The angeltype to edit
+ * @param boolean $supporter_mode Is the user a supporter of this angeltype?
+ * @return string
  */
 function AngelType_edit_view($angeltype, $supporter_mode)
 {
@@ -103,6 +106,14 @@ function AngelType_edit_view($angeltype, $supporter_mode)
 
 /**
  * Renders the buttons for the angeltype view.
+ *
+ * @param array      $angeltype
+ * @param array|null $user_angeltype
+ * @param bool       $admin_angeltypes
+ * @param bool       $supporter
+ * @param array|null $user_driver_license
+ * @param array|null $user
+ * @return string
  */
 function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user)
 {
@@ -156,7 +167,11 @@ function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, 
 /**
  * Renders and sorts the members of an angeltype into supporters, members and unconfirmed members.
  *
- * @return [supporters, members, unconfirmed members]
+ * @param array $angeltype
+ * @param array $members
+ * @param bool  $admin_user_angeltypes
+ * @param bool  $admin_angeltypes
+ * @return array [supporters, members, unconfirmed members]
  */
 function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $admin_angeltypes)
 {
@@ -230,6 +245,11 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
 
 /**
  * Creates the needed member table headers according to given rights and settings from the angeltype.
+ *
+ * @param array $angeltype
+ * @param bool  $supporter
+ * @param bool  $admin_angeltypes
+ * @return array
  */
 function AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes)
 {
@@ -256,6 +276,16 @@ function AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes)
 
 /**
  * Render an angeltype page containing the member lists.
+ *
+ * @param array   $angeltype
+ * @param array[] $members
+ * @param array   $user_angeltype
+ * @param bool    $admin_user_angeltypes
+ * @param bool    $admin_angeltypes
+ * @param bool    $supporter
+ * @param array   $user_driver_license
+ * @param array   $user
+ * @return string
  */
 function AngelType_view(
     $angeltype,
@@ -339,6 +369,8 @@ function AngelType_view(
  * Display the list of angeltypes.
  *
  * @param array $angeltypes
+ * @param bool  $admin_angeltypes
+ * @return string
  */
 function AngelTypes_list_view($angeltypes, $admin_angeltypes)
 {
@@ -360,6 +392,9 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes)
 
 /**
  * Renders the about info for an angeltype.
+ *
+ * @param array $angeltype
+ * @return string
  */
 function AngelTypes_about_view_angeltype($angeltype)
 {
@@ -401,6 +436,10 @@ function AngelTypes_about_view_angeltype($angeltype)
 
 /**
  * Renders a site that contains every angeltype and its description, basically as an overview of the needed help types.
+ *
+ * @param array[] $angeltypes
+ * @param bool    $user_logged_in
+ * @return string
  */
 function AngelTypes_about_view($angeltypes, $user_logged_in)
 {

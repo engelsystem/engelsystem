@@ -8,6 +8,8 @@ use Engelsystem\ShiftsFilterRenderer;
 
 /**
  * View a room with its shifts.
+ *
+ * @return array
  */
 function room_controller()
 {
@@ -55,6 +57,8 @@ function room_controller()
 
 /**
  * Dispatch different room actions.
+ *
+ * @return array
  */
 function rooms_controller()
 {
@@ -63,19 +67,30 @@ function rooms_controller()
     }
 
     switch ($_REQUEST['action']) {
-        default:
-        case 'list':
-            redirect(page_link_to('admin_rooms'));
         case 'view':
             return room_controller();
+        case 'list':
+        default:
+            redirect(page_link_to('admin_rooms'));
+            break;
     }
+
+    exit;
 }
 
+/**
+ * @param array $room
+ * @return string
+ */
 function room_link($room)
 {
     return page_link_to('rooms') . '&action=view&room_id=' . $room['RID'];
 }
 
+/**
+ * @param array $room
+ * @return string
+ */
 function room_edit_link($room)
 {
     return page_link_to('admin_rooms') . '&show=edit&id=' . $room['RID'];
@@ -83,6 +98,8 @@ function room_edit_link($room)
 
 /**
  * Loads room by request param room_id
+ *
+ * @return array
  */
 function load_room()
 {

@@ -13,10 +13,10 @@ $contact_email = "mailto:ticket@c3heaven.de";
 $default_theme = 1;
 
 // Anzahl der News, die auf einer Seite ausgeben werden koennen...
-$DISPLAY_NEWS = 6;
+$display_news = 6;
 
 // Anzahl Stunden bis zum Austragen eigener Schichten
-$LETZTES_AUSTRAGEN = 3;
+$last_unsubscribe = 3;
 
 // Setzt den zu verwendenden Crypto-Algorismus (entsprechend der Dokumentation von crypt()).
 // Falls ein Benutzerpasswort in einem anderen Format gespeichert ist,

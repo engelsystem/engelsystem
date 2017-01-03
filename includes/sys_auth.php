@@ -31,6 +31,9 @@ function load_auth()
 
 /**
  * generate a salt (random string) of arbitrary length suitable for the use with crypt()
+ *
+ * @param int $length
+ * @return string
  */
 function generate_salt($length = 16)
 {
@@ -44,6 +47,10 @@ function generate_salt($length = 16)
 
 /**
  * set the password of a user
+ *
+ * @param int    $uid
+ * @param string $password
+ * @return mysqli_result
  */
 function set_password($uid, $password)
 {
@@ -64,8 +71,13 @@ function set_password($uid, $password)
 /**
  * verify a password given a precomputed salt.
  * if $uid is given and $salt is an old-style salt (plain md5), we convert it automatically
+ *
+ * @param string $password
+ * @param string $salt
+ * @param int    $uid
+ * @return bool
  */
-function verify_password($password, $salt, $uid = false)
+function verify_password($password, $salt, $uid = null)
 {
     global $crypt_alg;
     $correct = false;
@@ -77,7 +89,7 @@ function verify_password($password, $salt, $uid = false)
         $correct = md5($password) == $salt;
     }
 
-    if ($correct && substr($salt, 0, strlen($crypt_alg)) != $crypt_alg && $uid) {
+    if ($correct && substr($salt, 0, strlen($crypt_alg)) != $crypt_alg && intval($uid)) {
         // this password is stored in another format than we want it to be.
         // let's update it!
         // we duplicate the query from the above set_password() function to have the extra safety of checking the old hash
@@ -92,6 +104,10 @@ function verify_password($password, $salt, $uid = false)
     return $correct;
 }
 
+/**
+ * @param int $user_id
+ * @return array
+ */
 function privileges_for_user($user_id)
 {
     $privileges = [];
@@ -109,6 +125,10 @@ function privileges_for_user($user_id)
     return $privileges;
 }
 
+/**
+ * @param int $group_id
+ * @return array
+ */
 function privileges_for_group($group_id)
 {
     $privileges = [];

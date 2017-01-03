@@ -3,12 +3,9 @@
 /**
  * Edit a user's driving license information.
  *
- * @param User              $user_source
- *          The user
- * @param bool              $wants_to_drive
- *          true, if the user wants to drive
- * @param UserDriverLicense $user_driver_license
- *          The user driver license
+ * @param array $user_source         The user
+ * @param bool  $wants_to_drive      true, if the user wants to drive
+ * @param array $user_driver_license The user driver license
  * @return string
  */
 function UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver_license)
@@ -52,13 +49,14 @@ function UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver
         ]),
         '<script type="text/javascript">
         $(function() {
-          if($("#wants_to_drive").is(":checked"))
+          var checkbox = $("#wants_to_drive");
+          if(checkbox.is(":checked"))
             $("#driving_license").show();
           else
             $("#driving_license").hide();
         
-          $("#wants_to_drive").click(
-            function(e) {
+          checkbox.click(
+            function() {
               if($("#wants_to_drive").is(":checked"))
                 $("#driving_license").show();
               else

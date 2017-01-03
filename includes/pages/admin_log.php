@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * @return string
+ */
 function admin_log_title()
 {
     return _("Log");
 }
 
+/**
+ * @return string
+ */
 function admin_log()
 {
     $filter = "";

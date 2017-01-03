@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @param array $user_angeltype
+ * @param array $user
+ * @param array $angeltype
+ * @param bool  $supporter
+ * @return string
+ */
 function UserAngelType_update_view($user_angeltype, $user, $angeltype, $supporter)
 {
     return page_with_title($supporter ? _("Add supporter rights") : _("Remove supporter rights"), [
@@ -25,6 +32,10 @@ function UserAngelType_update_view($user_angeltype, $user, $angeltype, $supporte
     ]);
 }
 
+/**
+ * @param array $angeltype
+ * @return string
+ */
 function UserAngelTypes_delete_all_view($angeltype)
 {
     return page_with_title(_("Deny all users"), [
@@ -41,6 +52,10 @@ function UserAngelTypes_delete_all_view($angeltype)
     ]);
 }
 
+/**
+ * @param array $angeltype
+ * @return string
+ */
 function UserAngelTypes_confirm_all_view($angeltype)
 {
     return page_with_title(_("Confirm all users"), [
@@ -57,6 +72,12 @@ function UserAngelTypes_confirm_all_view($angeltype)
     ]);
 }
 
+/**
+ * @param array $user_angeltype
+ * @param array $user
+ * @param array $angeltype
+ * @return string
+ */
 function UserAngelType_confirm_view($user_angeltype, $user, $angeltype)
 {
     return page_with_title(_("Confirm angeltype for user"), [
@@ -73,6 +94,12 @@ function UserAngelType_confirm_view($user_angeltype, $user, $angeltype)
     ]);
 }
 
+/**
+ * @param array $user_angeltype
+ * @param array $user
+ * @param array $angeltype
+ * @return string
+ */
 function UserAngelType_delete_view($user_angeltype, $user, $angeltype)
 {
     return page_with_title(_("Remove angeltype"), [
@@ -89,6 +116,12 @@ function UserAngelType_delete_view($user_angeltype, $user, $angeltype)
     ]);
 }
 
+/**
+ * @param array   $angeltype
+ * @param array[] $users_source
+ * @param int     $user_id
+ * @return string
+ */
 function UserAngelType_add_view($angeltype, $users_source, $user_id)
 {
     $users = [];
@@ -109,6 +142,11 @@ function UserAngelType_add_view($angeltype, $users_source, $user_id)
     ]);
 }
 
+/**
+ * @param array $user
+ * @param array $angeltype
+ * @return string
+ */
 function UserAngelType_join_view($user, $angeltype)
 {
     return page_with_title(sprintf(_("Become a %s"), $angeltype['name']), [

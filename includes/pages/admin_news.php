@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @return string
+ */
 function admin_news()
 {
     global $user;
@@ -19,12 +22,10 @@ function admin_news()
     if (empty($news)) {
         return error("No News found.", true);
     }
+
     switch ($_REQUEST["action"]) {
-        default:
-            redirect(page_link_to('news'));
         case 'edit':
             list($news) = $news;
-
             $user_source = User($news['UID']);
 
             $html .= form([
@@ -42,8 +43,6 @@ function admin_news()
             break;
 
         case 'save':
-            list($news) = $news;
-
             sql_query("UPDATE `News` SET 
               `Datum`='" . sql_escape(time()) . "', 
               `Betreff`='" . sql_escape($_POST["eBetreff"]) . "', 
@@ -58,12 +57,13 @@ function admin_news()
 
         case 'delete':
             list($news) = $news;
-
             sql_query("DELETE FROM `News` WHERE `ID`='" . sql_escape($news_id) . "' LIMIT 1");
             engelsystem_log("News deleted: " . $news['Betreff']);
             success(_("News entry deleted."));
             redirect(page_link_to("news"));
             break;
+        default:
+            redirect(page_link_to('news'));
     }
     return $html . '</div>';
 }

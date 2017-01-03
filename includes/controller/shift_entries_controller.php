@@ -2,11 +2,14 @@
 
 /**
  * Sign up for a shift.
+ *
+ * @return string
  */
 function shift_entry_add_controller()
 {
     global $privileges, $user;
 
+    $shift_id = 0;
     if (isset($_REQUEST['shift_id']) && preg_match("/^[0-9]*$/", $_REQUEST['shift_id'])) {
         $shift_id = $_REQUEST['shift_id'];
     } else {
@@ -26,6 +29,7 @@ function shift_entry_add_controller()
         redirect(page_link_to('user_shifts'));
     }
 
+    $type_id = 0;
     if (isset($_REQUEST['type_id']) && preg_match("/^[0-9]*$/", $_REQUEST['type_id'])) {
         $type_id = $_REQUEST['type_id'];
     } else {
@@ -145,6 +149,7 @@ function shift_entry_add_controller()
         redirect(shift_link($shift));
     }
 
+    $angeltype_select = '';
     if (in_array('user_shifts_admin', $privileges)) {
         $users = sql_select("
             SELECT *, (SELECT count(*) FROM `ShiftEntry` WHERE `freeloaded`=1 AND `ShiftEntry`.`UID`=`User`.`UID`) AS `freeloaded`
@@ -186,9 +191,19 @@ function shift_entry_add_controller()
         $angeltype_select = $type['name'];
     }
 
-    return ShiftEntry_edit_view($user_text, date("Y-m-d H:i", $shift['start']) . ' &ndash; ' . date('Y-m-d H:i',
-            $shift['end']) . ' (' . shift_length($shift) . ')', $shift['Name'], $shift['name'], $angeltype_select, "",
-        false, null, in_array('user_shifts_admin', $privileges));
+    return ShiftEntry_edit_view(
+        $user_text,
+        date("Y-m-d H:i", $shift['start'])
+        . ' &ndash; '
+        . date('Y-m-d H:i', $shift['end'])
+        . ' (' . shift_length($shift) . ')',
+        $shift['Name'],
+        $shift['name'],
+        $angeltype_select, "",
+        false,
+        null,
+        in_array('user_shifts_admin', $privileges)
+    );
 }
 
 /**
@@ -245,5 +260,6 @@ function shift_entry_delete_controller()
     } else {
         error(_("Entry not found."));
     }
+
     redirect(shift_link($shift_entry_source));
 }

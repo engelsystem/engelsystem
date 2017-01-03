@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * @return string
+ */
 function admin_groups_title()
 {
     return _("Grouprights");
 }
 
+/**
+ * @return string
+ */
 function admin_groups()
 {
     $html = "";
@@ -53,7 +59,6 @@ function admin_groups()
 
                 $group = sql_select("SELECT * FROM `Groups` WHERE `UID`='" . sql_escape($group_id) . "' LIMIT 1");
                 if (count($group) > 0) {
-                    list($group) = $group;
                     $privileges = sql_select("
                         SELECT `Privileges`.*, `GroupPrivileges`.`group_id`
                         FROM `Privileges`

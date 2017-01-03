@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * @return string
+ */
 function admin_arrive_title()
 {
     return _("Arrived angels");
 }
 
+/**
+ * @return string
+ */
 function admin_arrive()
 {
     $msg = "";
@@ -138,7 +144,7 @@ function admin_arrive()
     }
 
     return page_with_title(admin_arrive_title(), [
-        msg(),
+        $msg . msg(),
         form([
             form_text('search', _("Search"), $search),
             form_submit('submit', _("Search"))

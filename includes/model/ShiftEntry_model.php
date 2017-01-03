@@ -3,6 +3,8 @@
 /**
  * Returns an array with the attributes of shift entries.
  * FIXME! Needs entity object.
+ *
+ * @return array
  */
 function ShiftEntry_new()
 {
@@ -19,14 +21,19 @@ function ShiftEntry_new()
 
 /**
  * Counts all freeloaded shifts.
+ *
+ * @return int
  */
 function ShiftEntries_freeleaded_count()
 {
-    return sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1");
+    return (int)sql_select_single_cell("SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1");
 }
 
 /**
  * List users subsribed to a given shift.
+ *
+ * @param int $shift_id
+ * @return array|false
  */
 function ShiftEntries_by_shift($shift_id)
 {
@@ -52,7 +59,8 @@ function ShiftEntries_by_shift($shift_id)
 /**
  * Create a new shift entry.
  *
- * @param ShiftEntry $shift_entry
+ * @param array $shift_entry
+ * @return mysqli_result|false
  */
 function ShiftEntry_create($shift_entry)
 {
@@ -68,6 +76,9 @@ function ShiftEntry_create($shift_entry)
 
 /**
  * Update a shift entry.
+ *
+ * @param array $shift_entry
+ * @return false|mysqli_result
  */
 function ShiftEntry_update($shift_entry)
 {
@@ -80,6 +91,9 @@ function ShiftEntry_update($shift_entry)
 
 /**
  * Get a shift entry.
+ *
+ * @param int $shift_entry_id
+ * @return array|false|null
  */
 function ShiftEntry($shift_entry_id)
 {
@@ -95,6 +109,9 @@ function ShiftEntry($shift_entry_id)
 
 /**
  * Delete a shift entry.
+ *
+ * @param int $shift_entry_id
+ * @return mysqli_result|false
  */
 function ShiftEntry_delete($shift_entry_id)
 {
@@ -106,7 +123,8 @@ function ShiftEntry_delete($shift_entry_id)
 /**
  * Returns next (or current) shifts of given user.
  *
- * @param User $user
+ * @param array $user
+ * @return array|false
  */
 function ShiftEntries_upcoming_for_user($user)
 {
@@ -124,7 +142,8 @@ function ShiftEntries_upcoming_for_user($user)
 /**
  * Returns shifts completed by the given user.
  *
- * @param User $user
+ * @param array $user
+ * @return array|false
  */
 function ShiftEntries_finished_by_user($user)
 {
@@ -145,6 +164,7 @@ function ShiftEntries_finished_by_user($user)
  *
  * @param int $shift_id
  * @param int $angeltype_id
+ * @return array|false
  */
 function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
 {
@@ -162,6 +182,9 @@ function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
 
 /**
  * Returns all freeloaded shifts for given user.
+ *
+ * @param array $user
+ * @return array|false
  */
 function ShiftEntries_freeloaded_by_user($user)
 {

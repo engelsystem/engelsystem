@@ -3,9 +3,9 @@
 /**
  * Creates a log entry.
  *
- * @param $nick    Username
- * @param $message Log
- *                 Message
+ * @param string $nick    Username
+ * @param string $message Log  Message
+ * @return mysqli_result|false
  */
 function LogEntry_create($nick, $message)
 {
@@ -14,6 +14,8 @@ function LogEntry_create($nick, $message)
 
 /**
  * Returns log entries with maximum count of 10000.
+ *
+ * @return array|false
  */
 function LogEntries()
 {
@@ -22,6 +24,9 @@ function LogEntries()
 
 /**
  * Returns log entries filtered by a keyword
+ *
+ * @param string $keyword
+ * @return array|false
  */
 function LogEntries_filter($keyword)
 {
@@ -33,6 +38,8 @@ function LogEntries_filter($keyword)
 
 /**
  * Delete all log entries.
+ *
+ * @return mysqli_result|false
  */
 function LogEntries_clear_all()
 {

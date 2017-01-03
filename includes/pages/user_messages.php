@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * @return string
+ */
 function messages_title()
 {
     return _("Messages");
 }
 
+/**
+ * @return string
+ */
 function user_unread_messages()
 {
     global $user;
@@ -18,6 +24,9 @@ function user_unread_messages()
     return '';
 }
 
+/**
+ * @return string
+ */
 function user_messages()
 {
     global $user;
@@ -138,4 +147,6 @@ function user_messages()
                 return error(_("Wrong action."), true);
         }
     }
+
+    return '';
 }

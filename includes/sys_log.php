@@ -4,8 +4,7 @@
  * Write a log entry.
  * This should be used to log user's activity.
  *
- * @param
- *          $message
+ * @param string $message
  */
 function engelsystem_log($message)
 {
@@ -20,6 +19,8 @@ function engelsystem_log($message)
 
 /**
  * Generates a PHP Stacktrace.
+ *
+ * @return string
  */
 function debug_string_backtrace()
 {

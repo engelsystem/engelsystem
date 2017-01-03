@@ -22,12 +22,14 @@ $tshirt_sizes = [
 /**
  * Renders user settings page
  *
- * @param User $user_source
- *                   The user
- * @param      array <String> $locales
- *                   Available languages
- * @param      array <String> $themes
- *                   Available themes
+ * @param array $user_source        The user
+ * @param array $locales            Available languages
+ * @param array $themes             Available themes
+ * @param int   $buildup_start_date Unix timestamp
+ * @param int   $teardown_end_date  Unix timestamp
+ * @param bool  $enable_tshirt_size
+ * @param array $tshirt_sizes
+ * @return string
  */
 function User_settings_view(
     $user_source,
@@ -52,7 +54,8 @@ function User_settings_view(
                         'planned_arrival_date',
                         _("Planned date of arrival") . ' ' . entry_required(),
                         $user_source['planned_arrival_date'],
-                        $buildup_start_date, $teardown_end_date
+                        $buildup_start_date,
+                        $teardown_end_date
                     ),
                     form_date(
                         'planned_departure_date',
@@ -113,6 +116,9 @@ function User_settings_view(
 
 /**
  * Displays the welcome message to the user and shows a login form.
+ *
+ * @param string $event_welcome_message
+ * @return string
  */
 function User_registration_success_view($event_welcome_message)
 {
@@ -149,6 +155,9 @@ function User_registration_success_view($event_welcome_message)
 
 /**
  * Gui for deleting user with password field.
+ *
+ * @param array $user
+ * @return string
  */
 function User_delete_view($user)
 {
@@ -170,6 +179,9 @@ function User_delete_view($user)
 
 /**
  * View for editing the number of given vouchers
+ *
+ * @param array $user
+ * @return string
  */
 function User_edit_vouchers_view($user)
 {
@@ -186,6 +198,17 @@ function User_edit_vouchers_view($user)
     ]);
 }
 
+/**
+ * @param array[] $users
+ * @param string  $order_by
+ * @param int     $arrived_count
+ * @param int     $active_count
+ * @param int     $force_active_count
+ * @param int     $freeloads_count
+ * @param int     $tshirts_count
+ * @param int     $voucher_count
+ * @return string
+ */
 function Users_view(
     $users,
     $order_by,
@@ -199,7 +222,6 @@ function Users_view(
     foreach ($users as &$user) {
         $user['Nick'] = User_Nick_render($user);
         $user['Gekommen'] = glyph_bool($user['Gekommen']);
-        $user['got_voucher'] = $user['got_voucher'];
         $user['Aktiv'] = glyph_bool($user['Aktiv']);
         $user['force_active'] = glyph_bool($user['force_active']);
         $user['Tshirt'] = glyph_bool($user['Tshirt']);
@@ -242,11 +264,21 @@ function Users_view(
     ]);
 }
 
+/**
+ * @param string $column
+ * @param string $label
+ * @param string $order_by
+ * @return string
+ */
 function Users_table_header_link($column, $label, $order_by)
 {
     return '<a href="' . page_link_to('users') . '&OrderBy=' . $column . '">' . $label . ($order_by == $column ? ' <span class="caret"></span>' : '') . '</a>';
 }
 
+/**
+ * @param array $user
+ * @return string|false
+ */
 function User_shift_state_render($user)
 {
     $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
@@ -272,6 +304,10 @@ function User_shift_state_render($user)
     return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['end'] . '">' . _("Shift ends %c") . '</span>';
 }
 
+/**
+ * @param array $needed_angel_type
+ * @return string
+ */
 function User_view_shiftentries($needed_angel_type)
 {
     $shift_info = '<br><b>' . $needed_angel_type['name'] . ':</b> ';
@@ -280,7 +316,7 @@ function User_view_shiftentries($needed_angel_type)
     foreach ($needed_angel_type['users'] as $user_shift) {
         $member = User_Nick_render($user_shift);
         if ($user_shift['freeloaded']) {
-            $member = '<strike>' . $member . '</strike>';
+            $member = '<del>' . $member . '</del>';
         }
 
         $shift_entries[] = $member;
@@ -292,10 +328,15 @@ function User_view_shiftentries($needed_angel_type)
 
 /**
  * Helper that renders a shift line for user view
+ *
+ * @param array $shift
+ * @param array $user_source
+ * @param bool  $its_me
+ * @return array
  */
 function User_view_myshift($shift, $user_source, $its_me)
 {
-    global $LETZTES_AUSTRAGEN, $privileges;
+    global $last_unsubscribe, $privileges;
 
     $shift_info = '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';
     if ($shift['title']) {
@@ -331,7 +372,7 @@ function User_view_myshift($shift, $user_source, $its_me)
             'btn-xs'
         );
     }
-    if (($shift['start'] > time() + $LETZTES_AUSTRAGEN * 3600) || in_array('user_shifts_admin', $privileges)) {
+    if (($shift['start'] > time() + $last_unsubscribe * 3600) || in_array('user_shifts_admin', $privileges)) {
         $myshift['actions'][] = button(
             page_link_to('user_myshifts') . ((!$its_me) ? '&id=' . $user_source['UID'] : '') . '&cancel=' . $shift['id'],
             glyph('trash') . _('sign off'),
@@ -345,6 +386,11 @@ function User_view_myshift($shift, $user_source, $its_me)
 
 /**
  * Helper that prepares the shift table for user view
+ *
+ * @param array[] $shifts
+ * @param array   $user_source
+ * @param bool    $its_me
+ * @return array
  */
 function User_view_myshifts($shifts, $user_source, $its_me)
 {
@@ -375,6 +421,15 @@ function User_view_myshifts($shifts, $user_source, $its_me)
 
 /**
  * Renders view for a single user
+ *
+ * @param array   $user_source
+ * @param bool    $admin_user_privilege
+ * @param bool    $freeloader
+ * @param array[] $user_angeltypes
+ * @param array[] $user_groups
+ * @param array[] $shifts
+ * @param bool    $its_me
+ * @return string
  */
 function User_view($user_source, $admin_user_privilege, $freeloader, $user_angeltypes, $user_groups, $shifts, $its_me)
 {
@@ -489,11 +544,14 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
                 page_link_to('user_shifts')
             ), true)
                 : ''
-        ]);
+        ]
+    );
 }
 
 /**
  * View for password recovery step 1: E-Mail
+ *
+ * @return string
  */
 function User_password_recovery_view()
 {
@@ -509,6 +567,8 @@ function User_password_recovery_view()
 
 /**
  * View for password recovery step 2: New password
+ *
+ * @return string
  */
 function User_password_set_view()
 {
@@ -523,25 +583,27 @@ function User_password_set_view()
     ]);
 }
 
+/**
+ * @param array[] $user_angeltypes
+ * @return string
+ */
 function User_angeltypes_render($user_angeltypes)
 {
     $output = [];
     foreach ($user_angeltypes as $angeltype) {
-        $class = "";
-        if ($angeltype['restricted'] == 1) {
-            if ($angeltype['confirm_user_id'] != null) {
-                $class = 'text-success';
-            } else {
-                $class = 'text-warning';
-            }
-        } else {
-            $class = 'text-success';
+        $class = 'text-success';
+        if ($angeltype['restricted'] == 1 && $angeltype['confirm_user_id'] == null) {
+            $class = 'text-warning';
         }
         $output[] = '<a href="' . angeltype_link($angeltype['id']) . '" class="' . $class . '">' . ($angeltype['supporter'] ? glyph('education') : '') . $angeltype['name'] . '</a>';
     }
     return join('<br />', $output);
 }
 
+/**
+ * @param array[] $user_groups
+ * @return string
+ */
 function User_groups_render($user_groups)
 {
     $output = [];
@@ -554,14 +616,19 @@ function User_groups_render($user_groups)
 /**
  * Render a user nickname.
  *
- * @param User $user_source
+ * @param array $user_source
  * @return string
  */
 function User_Nick_render($user_source)
 {
-    return '<a class="' . ($user_source['Gekommen'] ? '' : 'text-muted') . '" href="' . page_link_to('users') . '&amp;action=view&amp;user_id=' . $user_source['UID'] . '"><span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . '</a>';
+    return '<a class="' . ($user_source['Gekommen'] ? '' : 'text-muted') . '" href="'
+        . page_link_to('users') . '&amp;action=view&amp;user_id=' . $user_source['UID']
+        . '"><span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . '</a>';
 }
 
+/**
+ * @return string|null
+ */
 function render_user_departure_date_hint()
 {
     global $user;
@@ -573,6 +640,9 @@ function render_user_departure_date_hint()
     return null;
 }
 
+/**
+ * @return string|null
+ */
 function render_user_freeloader_hint()
 {
     global $user, $max_freeloadable_shifts;
@@ -587,7 +657,11 @@ function render_user_freeloader_hint()
     return null;
 }
 
-// Hinweis für Engel, die noch nicht angekommen sind
+/**
+ * Hinweis für Engel, die noch nicht angekommen sind
+ *
+ * @return string|null
+ */
 function render_user_arrived_hint()
 {
     global $user;
@@ -599,6 +673,9 @@ function render_user_arrived_hint()
     return null;
 }
 
+/**
+ * @return string|null
+ */
 function render_user_tshirt_hint()
 {
     global $enable_tshirt_size, $user;
@@ -610,6 +687,9 @@ function render_user_tshirt_hint()
     return null;
 }
 
+/**
+ * @return string|null
+ */
 function render_user_dect_hint()
 {
     global $user;

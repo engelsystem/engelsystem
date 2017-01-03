@@ -1,13 +1,19 @@
 <?php
 
+/**
+ * @return string
+ */
 function admin_user_title()
 {
     return _("All Angels");
 }
 
+/**
+ * @return string
+ */
 function admin_user()
 {
-    global $user, $privileges, $tshirt_sizes, $privileges;
+    global $user, $tshirt_sizes, $privileges;
 
     $html = '';
 
@@ -109,7 +115,7 @@ function admin_user()
 
             $groups = sql_select("SELECT * FROM `Groups` LEFT OUTER JOIN `UserGroups` ON (`UserGroups`.`group_id` = `Groups`.`UID` AND `UserGroups`.`uid` = '" . sql_escape($user_id) . "') WHERE `Groups`.`UID` >= '" . sql_escape($my_highest_group) . "' ORDER BY `Groups`.`Name`");
             foreach ($groups as $group) {
-                $html .= '<tr><td><input type="checkbox" name="groups[]" value="' . $group['UID'] . '"' . ($group['group_id'] != "" ? ' checked="checked"' : '') . ' /></td><td>' . $group['Name'] . '</td></tr>';
+                $html .= '<tr><td><input type="checkbox" name="groups[]" value="' . $group['UID'] . '" ' . ($group['group_id'] != "" ? ' checked="checked"' : '') . ' /></td><td>' . $group['Name'] . '</td></tr>';
             }
 
             $html .= '</table>';
@@ -167,6 +173,7 @@ function admin_user()
 
             case 'save':
                 $force_active = $user['force_active'];
+                $user_source = User($user_id);
                 if (in_array('admin_active', $privileges)) {
                     $force_active = $_REQUEST['force_active'];
                 }
@@ -178,7 +185,7 @@ function admin_user()
               `Handy` = '" . sql_escape($_POST["eHandy"]) . "', 
               `Alter` = '" . sql_escape($_POST["eAlter"]) . "', 
               `DECT` = '" . sql_escape($_POST["eDECT"]) . "', 
-              " . ($user_source['email_by_human_allowed'] ? "`email` = '" . sql_escape($_POST["eemail"]) . "'" : "") . "
+              " . ($user_source['email_by_human_allowed'] ? "`email` = '" . sql_escape($_POST["eemail"]) . "'," : "") . "
               `jabber` = '" . sql_escape($_POST["ejabber"]) . "', 
               `Size` = '" . sql_escape($_POST["eSize"]) . "', 
               `Gekommen`= '" . sql_escape($_POST["eGekommen"]) . "', 

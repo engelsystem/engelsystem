@@ -1,16 +1,28 @@
 <?php
 use Engelsystem\ShiftSignupState;
 
+/**
+ * @param array $shift
+ * @return string
+ */
 function shift_link($shift)
 {
     return page_link_to('shifts') . '&action=view&shift_id=' . $shift['SID'];
 }
 
+/**
+ * @param array $shift
+ * @return string
+ */
 function shift_delete_link($shift)
 {
     return page_link_to('user_shifts') . '&delete_shift=' . $shift['SID'];
 }
 
+/**
+ * @param array $shift
+ * @return string
+ */
 function shift_edit_link($shift)
 {
     return page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'];
@@ -18,6 +30,8 @@ function shift_edit_link($shift)
 
 /**
  * Edit a single shift.
+ *
+ * @return string
  */
 function shift_edit_controller()
 {
@@ -162,6 +176,9 @@ function shift_edit_controller()
     );
 }
 
+/**
+ * @return string
+ */
 function shift_delete_controller()
 {
     global $privileges;
@@ -205,6 +222,9 @@ function shift_delete_controller()
     ]);
 }
 
+/**
+ * @return array
+ */
 function shift_controller()
 {
     global $user, $privileges;
@@ -249,6 +269,9 @@ function shift_controller()
     ];
 }
 
+/**
+ * @return array|false
+ */
 function shifts_controller()
 {
     if (!isset($_REQUEST['action'])) {
@@ -256,17 +279,21 @@ function shifts_controller()
     }
 
     switch ($_REQUEST['action']) {
-        default:
-            redirect(page_link_to('?'));
         case 'view':
             return shift_controller();
         case 'next':
             return shift_next_controller();
+        default:
+            redirect(page_link_to('?'));
     }
+
+    return false;
 }
 
 /**
  * Redirects the user to his next shift.
+ *
+ * @return false
  */
 function shift_next_controller()
 {
@@ -286,6 +313,7 @@ function shift_next_controller()
     }
 
     redirect(page_link_to('user_shifts'));
+    exit;
 }
 
 /**
@@ -346,6 +374,8 @@ function shifts_json_export_controller()
 
 /**
  * Returns users shifts to export.
+ *
+ * @return array
  */
 function load_ical_shifts()
 {

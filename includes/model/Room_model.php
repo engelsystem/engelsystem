@@ -4,6 +4,7 @@
  * returns a list of rooms.
  *
  * @param boolean $show_all returns also hidden rooms when true
+ * @return array|false
  */
 function Rooms($show_all = false)
 {
@@ -14,6 +15,7 @@ function Rooms($show_all = false)
  * Delete a room
  *
  * @param int $room_id
+ * @return mysqli_result|false
  */
 function Room_delete($room_id)
 {
@@ -29,15 +31,19 @@ function Room_delete($room_id)
  *          Is this a frab imported room?
  * @param boolean $public
  *          Is the room visible for angels?
+ * @param int     $number
+ *          Room number
+ * @return false|int
  */
-function Room_create($name, $from_frab, $public)
+function Room_create($name, $from_frab, $public, $number = null)
 {
     $result = sql_query("
       INSERT INTO `Room` SET 
       `Name`='" . sql_escape($name) . "', 
       `FromPentabarf`='" . sql_escape($from_frab ? 'Y' : '') . "', 
       `show`='" . sql_escape($public ? 'Y' : '') . "', 
-      `Number`=0");
+      `Number`=" . (int)$number
+    );
     if ($result === false) {
         return false;
     }
@@ -47,7 +53,8 @@ function Room_create($name, $from_frab, $public)
 /**
  * Returns room by id.
  *
- * @param $room_id RID
+ * @param int $room_id RID
+ * @return array|false
  */
 function Room($room_id)
 {

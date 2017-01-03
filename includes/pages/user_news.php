@@ -1,23 +1,35 @@
 <?php
 
+/**
+ * @return string
+ */
 function user_news_comments_title()
 {
     return _("News comments");
 }
 
+/**
+ * @return string
+ */
 function news_title()
 {
     return _("News");
 }
 
+/**
+ * @return string
+ */
 function meetings_title()
 {
     return _("Meetings");
 }
 
+/**
+ * @return string
+ */
 function user_meetings()
 {
-    global $DISPLAY_NEWS;
+    global $display_news;
 
     $html = '<div class="col-md-12"><h1>' . meetings_title() . '</h1>' . msg();
 
@@ -27,12 +39,18 @@ function user_meetings()
         $page = 0;
     }
 
-    $news = sql_select("SELECT * FROM `News` WHERE `Treffen`=1 ORDER BY `Datum` DESC LIMIT " . sql_escape($page * $DISPLAY_NEWS) . ", " . sql_escape($DISPLAY_NEWS));
+    $news = sql_select("
+        SELECT *
+        FROM `News`
+        WHERE `Treffen`=1
+        ORDER BY `Datum`DESC
+        LIMIT " . sql_escape($page * $display_news) . ", " . sql_escape($display_news)
+    );
     foreach ($news as $entry) {
         $html .= display_news($entry);
     }
 
-    $dis_rows = ceil(sql_num_query("SELECT * FROM `News`") / $DISPLAY_NEWS);
+    $dis_rows = ceil(sql_num_query("SELECT * FROM `News`") / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
         if (isset($_REQUEST['page']) && $i == $_REQUEST['page']) {
@@ -49,6 +67,10 @@ function user_meetings()
     return $html;
 }
 
+/**
+ * @param array $news
+ * @return string
+ */
 function display_news($news)
 {
     global $privileges, $page;
@@ -72,13 +94,21 @@ function display_news($news)
 
     $html .= User_Nick_render($user_source);
     if ($page != "news_comments") {
-        $html .= '&emsp;<a href="' . page_link_to("news_comments") . '&nid=' . $news['ID'] . '"><span class="glyphicon glyphicon-comment"></span> ' . _("Comments") . ' &raquo;</a> <span class="badge">' . sql_num_query("SELECT * FROM `NewsComments` WHERE `Refid`='" . sql_escape($news['ID']) . "'") . '</span>';
+        $html .= '&emsp;<a href="' . page_link_to("news_comments") . '&nid=' . $news['ID'] . '">'
+            . '<span class="glyphicon glyphicon-comment"></span> '
+            . _("Comments") . ' &raquo;</a> '
+            . '<span class="badge">'
+            . sql_num_query("SELECT * FROM `NewsComments` WHERE `Refid`='" . sql_escape($news['ID']) . "'")
+            . '</span>';
     }
     $html .= '</div>';
     $html .= '</div>';
     return $html;
 }
 
+/**
+ * @return string
+ */
 function user_news_comments()
 {
     global $user;
@@ -93,7 +123,15 @@ function user_news_comments()
         list($news) = sql_select("SELECT * FROM `News` WHERE `ID`='" . sql_escape($nid) . "' LIMIT 1");
         if (isset($_REQUEST["text"])) {
             $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['text']));
-            sql_query("INSERT INTO `NewsComments` (`Refid`, `Datum`, `Text`, `UID`) VALUES ('" . sql_escape($nid) . "', '" . date("Y-m-d H:i:s") . "', '" . sql_escape($text) . "', '" . sql_escape($user["UID"]) . "')");
+            sql_query("
+                INSERT INTO `NewsComments` (`Refid`, `Datum`, `Text`, `UID`)
+                VALUES (
+                    '" . sql_escape($nid) . "',
+                    '" . date("Y-m-d H:i:s") . "',
+                    '" . sql_escape($text) . "',
+                    '" . sql_escape($user["UID"]) . "'
+                )
+            ");
             engelsystem_log("Created news_comment: " . $text);
             $html .= success(_("Entry saved."), true);
         }
@@ -125,9 +163,12 @@ function user_news_comments()
     return $html . '</div>';
 }
 
+/**
+ * @return string
+ */
 function user_news()
 {
-    global $DISPLAY_NEWS, $privileges, $user;
+    global $display_news, $privileges, $user;
 
     $html = '<div class="col-md-12"><h1>' . news_title() . '</h1>' . msg();
 
@@ -135,7 +176,16 @@ function user_news()
         if (!isset($_POST["treffen"]) || !in_array("admin_news", $privileges)) {
             $_POST["treffen"] = 0;
         }
-        sql_query("INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`) " . "VALUES ('" . sql_escape(time()) . "', '" . sql_escape($_POST["betreff"]) . "', '" . sql_escape($_POST["text"]) . "', '" . sql_escape($user['UID']) . "', '" . sql_escape($_POST["treffen"]) . "');");
+        sql_query("
+            INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`)
+            VALUES (
+                '" . sql_escape(time()) . "',
+                '" . sql_escape($_POST["betreff"]) . "',
+                '" . sql_escape($_POST["text"]) . "',
+                '" . sql_escape($user['UID']) . "',
+                '" . sql_escape($_POST["treffen"]) . "'
+            )
+        ");
         engelsystem_log("Created news: " . $_POST["betreff"] . ", treffen: " . $_POST["treffen"]);
         success(_("Entry saved."));
         redirect(page_link_to('news'));
@@ -147,12 +197,17 @@ function user_news()
         $page = 0;
     }
 
-    $news = sql_select("SELECT * FROM `News` ORDER BY `Datum` DESC LIMIT " . sql_escape($page * $DISPLAY_NEWS) . ", " . sql_escape($DISPLAY_NEWS));
+    $news = sql_select("
+        SELECT *
+        FROM `News`
+        ORDER BY `Datum`
+        DESC LIMIT " . sql_escape($page * $display_news) . ", " . sql_escape($display_news)
+    );
     foreach ($news as $entry) {
         $html .= display_news($entry);
     }
 
-    $dis_rows = ceil(sql_num_query("SELECT * FROM `News`") / $DISPLAY_NEWS);
+    $dis_rows = ceil(sql_num_query("SELECT * FROM `News`") / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
         if (isset($_REQUEST['page']) && $i == $_REQUEST['page']) {

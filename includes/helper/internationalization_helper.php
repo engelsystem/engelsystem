@@ -8,6 +8,8 @@ $default_locale = 'en_US.UTF-8';
 
 /**
  * Return currently active locale
+ *
+ * @return string
  */
 function locale()
 {
@@ -16,6 +18,8 @@ function locale()
 
 /**
  * Returns two letter language code from currently active locale
+ *
+ * @return string
  */
 function locale_short()
 {
@@ -59,7 +63,7 @@ function gettext_locale($locale = null)
 /**
  * Renders language selection.
  *
- * @return string
+ * @return array
  */
 function make_langselect()
 {

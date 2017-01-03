@@ -4,6 +4,8 @@ use Engelsystem\ShiftsFilter;
 
 /**
  * Route user actions.
+ *
+ * @return array
  */
 function users_controller()
 {
@@ -18,22 +20,22 @@ function users_controller()
     }
 
     switch ($_REQUEST['action']) {
-        default:
-        case 'list':
-            return users_list_controller();
         case 'view':
             return user_controller();
-        case 'edit':
-            return user_edit_controller();
         case 'delete':
             return user_delete_controller();
         case 'edit_vouchers':
             return user_edit_vouchers_controller();
+        case 'list':
+        default:
+            return users_list_controller();
     }
 }
 
 /**
  * Delete a user, requires to enter own password for reasons.
+ *
+ * @return array
  */
 function user_delete_controller()
 {
@@ -85,26 +87,44 @@ function user_delete_controller()
     ];
 }
 
+/**
+ * @return string
+ */
 function users_link()
 {
     return page_link_to('users');
 }
 
+/**
+ * @param array $user
+ * @return string
+ */
 function user_edit_link($user)
 {
     return page_link_to('admin_user') . '&user_id=' . $user['UID'];
 }
 
+/**
+ * @param array $user
+ * @return string
+ */
 function user_delete_link($user)
 {
     return page_link_to('users') . '&action=delete&user_id=' . $user['UID'];
 }
 
+/**
+ * @param array $user
+ * @return string
+ */
 function user_link($user)
 {
     return page_link_to('users') . '&action=view&user_id=' . $user['UID'];
 }
 
+/**
+ * @return array
+ */
 function user_edit_vouchers_controller()
 {
     global $privileges, $user;
@@ -122,6 +142,7 @@ function user_edit_vouchers_controller()
     if (isset($_REQUEST['submit'])) {
         $valid = true;
 
+        $vouchers = '';
         if (isset($_REQUEST['vouchers']) && test_request_int('vouchers') && trim($_REQUEST['vouchers']) >= 0) {
             $vouchers = trim($_REQUEST['vouchers']);
         } else {
@@ -151,6 +172,9 @@ function user_edit_vouchers_controller()
     ];
 }
 
+/**
+ * @return array
+ */
 function user_controller()
 {
     global $privileges, $user;
@@ -167,7 +191,13 @@ function user_controller()
     $shifts = Shifts_by_user($user_source, in_array("user_shifts_admin", $privileges));
     foreach ($shifts as &$shift) {
         // TODO: Move queries to model
-        $shift['needed_angeltypes'] = sql_select("SELECT DISTINCT `AngelTypes`.* FROM `ShiftEntry` JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id` WHERE `ShiftEntry`.`SID`='" . sql_escape($shift['SID']) . "'  ORDER BY `AngelTypes`.`name`");
+        $shift['needed_angeltypes'] = sql_select("
+            SELECT DISTINCT `AngelTypes`.*
+            FROM `ShiftEntry`
+            JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
+            WHERE `ShiftEntry`.`SID`='" . sql_escape($shift['SID']) . "'
+            ORDER BY `AngelTypes`.`name`
+        ");
         foreach ($shift['needed_angeltypes'] as &$needed_angeltype) {
             $needed_angeltype['users'] = sql_select("
           SELECT `ShiftEntry`.`freeloaded`, `User`.*
@@ -198,6 +228,8 @@ function user_controller()
 
 /**
  * List all users.
+ *
+ * @return array
  */
 function users_list_controller()
 {
@@ -238,6 +270,8 @@ function users_list_controller()
 
 /**
  * Second step of password recovery: set a new password using the token link from email
+ *
+ * @return string
  */
 function user_password_recovery_set_new_controller()
 {
@@ -273,6 +307,8 @@ function user_password_recovery_set_new_controller()
 
 /**
  * First step of password recovery: display a form that asks for your email and send email with recovery link
+ *
+ * @return string
  */
 function user_password_recovery_start_controller()
 {
@@ -317,18 +353,22 @@ function user_password_recovery_start_controller()
 /**
  * User password recovery in 2 steps.
  * (By email)
+ *
+ * @return string
  */
 function user_password_recovery_controller()
 {
     if (isset($_REQUEST['token'])) {
         return user_password_recovery_set_new_controller();
-    } else {
-        return user_password_recovery_start_controller();
     }
+
+    return user_password_recovery_start_controller();
 }
 
 /**
  * Menu title for password recovery.
+ *
+ * @return string
  */
 function user_password_recovery_title()
 {
@@ -337,6 +377,8 @@ function user_password_recovery_title()
 
 /**
  * Loads a user from param user_id.
+ *
+ * return array
  */
 function load_user()
 {
@@ -357,6 +399,10 @@ function load_user()
     return $user;
 }
 
+/**
+ * @param ShiftsFilter $shiftsFilter
+ * @return ShiftCalendarRenderer
+ */
 function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
 {
     $shifts = Shifts_by_ShiftsFilter($shiftsFilter);
@@ -392,6 +438,7 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
     $filtered_shifts = [];
     foreach ($shifts as $shift) {
         $needed_angels_count = 0;
+        $taken = 0;
         foreach ($needed_angeltypes[$shift['SID']] as $needed_angeltype) {
             $taken = 0;
             foreach ($shift_entries[$shift['SID']] as $shift_entry) {

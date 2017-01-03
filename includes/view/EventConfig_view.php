@@ -3,7 +3,8 @@
 /**
  * Shows basic event infos and countdowns.
  *
- * @param EventConfig $event_config The event configuration
+ * @param array $event_config The event configuration
+ * @return string
  */
 function EventConfig_countdown_page($event_config)
 {
@@ -61,6 +62,9 @@ function EventConfig_countdown_page($event_config)
 
 /**
  * Converts event name and start+end date into a line of text.
+ *
+ * @param array $event_config
+ * @return string
  */
 function EventConfig_info($event_config)
 {
@@ -106,14 +110,13 @@ function EventConfig_info($event_config)
 /**
  * Render edit page for event config.
  *
- * @param string $event_name
- *          The event name
- * @param string $event_welcome_msg
- *          The welcome message
- * @param date   $buildup_start_date
- * @param date   $event_start_date
- * @param date   $event_end_date
- * @param date   $teardown_end_date
+ * @param string $event_name         The event name
+ * @param string $event_welcome_msg  The welcome message
+ * @param int    $buildup_start_date unix time stamp
+ * @param int    $event_start_date   unix time stamp
+ * @param int    $event_end_date     unix time stamp
+ * @param int    $teardown_end_date  unix time stamp
+ * @return string
  */
 function EventConfig_edit_view(
     $event_name,
