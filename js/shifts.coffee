@@ -84,7 +84,8 @@ Shifts = window.Shifts || {
 
         get_my_shifts: (done) ->
             #alasql "SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", (res) ->
-            alasql "SELECT * FROM Shifts LIMIT 10", (res) ->
+            rand = 1 + parseInt(Math.random() * 10, 10)
+            alasql "SELECT * FROM Shifts LIMIT #{rand}", (res) ->
                 done res
 
         get_rooms: (done) ->
@@ -161,6 +162,8 @@ Shifts = window.Shifts || {
         shiftplan: ->
             Shifts.db.get_rooms (rooms) ->
                 Shifts.db.get_my_shifts (shifts) ->
+                    for s of shifts
+                        shifts[s].title = Math.random()
                     lanes = []
                     for room in rooms
                         lanes.push room
@@ -185,11 +188,55 @@ Shifts = window.Shifts || {
                     Shifts.log 'fetch complete.'
                     Shifts.render.shiftplan()
 
+            $('body').on 'click', '#filterbutton', ->
+                Shifts.render.shiftplan()
+                return false
+
     log: (msg) ->
         console.info msg
 
     template:
         shift: '
+<form class="form-inline" action="" method="get">
+  <input type="hidden" name="p" value="user_shifts">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>%title%</h1>
+      <div class="form-group">%start_select%</div>
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control" type="text" id="start_time" name="start_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%">
+          <div class="input-group-btn">
+            <button class="btn btn-default" title="Now" type="button" onclick="">
+              <span class="glyphicon glyphicon-time"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+      &#8211;
+      <div class="form-group">%end_select%</div>
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control" type="text" id="end_time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%">
+          <div class="input-group-btn">
+            <button class="btn btn-default" title="Now" type="button" onclick="">
+              <span class="glyphicon glyphicon-time"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">%room_select%</div>
+    <div class="col-md-2">%type_select%</div>
+    <div class="col-md-2">%filled_select%</div>
+  </div>
+	<div class="row">
+		<div class="col-md-6">
+        <div>%task_notice%</div>
+        <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="%filter%">
+		</div>
+	</div>
+</form>
 <div class="shift-calendar">
   <div class="lane time">
     <div class="header">Time</div>
