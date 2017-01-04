@@ -134,26 +134,55 @@ Shifts = window.Shifts || {
 
     render:
         timelane_ticks: [
-            { hour: false }
-            { hour: false }
-            { hour: false }
-            { hour: true, time: "6:00" }
-            { hour: false }
-            { hour: false }
-            { hour: false }
-            { hour: true, time: "7:00" }
-            { hour: false }
-            { hour: false }
-            { hour: false }
-            { hour: true, time: "8:00" }
-            { hour: false }
-            { hour: false }
-            { hour: false }
-            { hour: true, time: "9:00" }
-            { hour: false }
-            { hour: false }
-            { hour: false }
-            { hour: true, time: "10:00" }
+            { tick_day: true, text: "2016-12-27 00:00" }
+            { tick: true }
+            { tick: true }
+            { tick: true }
+            { tick_hour: true, text: "01:00" }
+            { tick: true }
+            { tick: true }
+            { tick: true }
+            { tick_hour: true, text: "02:00" }
+            { tick: true }
+            { tick: true }
+            { tick: true }
+            { tick_hour: true, text: "03:00" }
+            { tick: true }
+            { tick: true }
+            { tick: true }
+            { tick_hour: true, text: "04:00" }
+            { tick: true }
+            { tick: true }
+            { tick: true }
+            { tick_hour: true, text: "05:00" }
+            { tick: true }
+            { tick: true }
+            { tick: true }
+            { tick_hour: true, text: "06:00" }
+            { tick: true }
+            { tick: true }
+            { tick: true }
+            { tick_hour: true, text: "07:00" }
+            { tick: true }
+            { tick: true }
+            { tick: true }
+            { tick_hour: true, text: "08:00" }
+            { tick: true }
+            { tick: true }
+            { tick: true }
+            { tick_hour: true, text: "09:00" }
+            { tick: true }
+            { tick: true }
+            { tick: true }
+            { tick_hour: true, text: "10:00" }
+            { tick: true }
+            { tick: true }
+            { tick: true }
+            { tick_hour: true, text: "11:00" }
+            { tick: true }
+            { tick: true }
+            { tick: true }
+            { tick_hour: true, text: "12:00" }
         ]
         shifts: [
             { title: "Schicht 1" }
@@ -161,9 +190,22 @@ Shifts = window.Shifts || {
         ]
         shiftplan: ->
             Shifts.db.get_rooms (rooms) ->
-                Shifts.db.get_my_shifts (shifts) ->
-                    for s of shifts
-                        shifts[s].title = Math.random()
+                Shifts.db.get_my_shifts (db_shifts) ->
+                    for s of db_shifts
+                        db_shifts[s].title = Math.random()
+
+                    shifts = []
+                    for shift in db_shifts
+                        shifts.push
+                            shift: true
+                            shift_data: shift
+                        random_ticks = 1 + Math.floor(Math.random() * 7)
+                        for ticks in [1..random_ticks]
+                            shifts.push
+                                tick: true
+
+                    Shifts.log shifts
+
                     lanes = []
                     for room in rooms
                         lanes.push room
@@ -171,8 +213,6 @@ Shifts = window.Shifts || {
                     for l of lanes
                         lanes[l].shifts = shifts
 
-                    Shifts.log shifts
-                    Shifts.log lanes
                     tpl = Mustache.render Shifts.template.shift,
                         lanes: lanes
                         timelane_ticks: Shifts.render.timelane_ticks
@@ -238,68 +278,66 @@ Shifts = window.Shifts || {
 	</div>
 </form>
 <div class="shift-calendar">
+
   <div class="lane time">
     <div class="header">Time</div>
     {{#timelane_ticks}}
-        {{#hour}}
-            <div class="tick hour">{{time}}</div>
-        {{/hour}}
-        {{^hour}}
+        {{#tick}}
             <div class="tick"></div>
-        {{/hour}}
+        {{/tick}}
+        {{#tick_hour}}
+            <div class="tick hour">{{text}}</div>
+        {{/tick_hour}}
+        {{#tick_day}}
+            <div class="tick day">{{text}}</div>
+        {{/tick_day}}
     {{/timelane_ticks}}
-    <div class="tick day">2016-12-27 00:00</div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick hour">11:00</div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick hour">12:00</div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick hour">13:00</div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
   </div>
-    {{#lanes}}
+
+{{#lanes}}
   <div class="lane">
     <div class="header">
       <span class="glyphicon glyphicon-map-marker"></span> {{Name}}
     </div>
     {{#shifts}}
-    <div class="shift panel panel-success" style="height: 160px;">
-      <div class="panel-heading">
-        <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{title}}</a>
-        <div class="pull-right">
-          <div class="btn-group">
-            <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-edit"></span>
-            </a> <a href="?p=user_shifts&amp;delete_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-trash"></span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="panel-body">
-        <span class="glyphicon glyphicon-info-sign"></span> Bottle Collection Quick Response Team<br> <a href="?p=rooms&amp;action=view&amp;room_id=42"> <span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H)
-        </a>
-      </div>
-      <ul class="list-group">
-        <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong> <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>, <span style=""><a
-            class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span></li>
-        <li class="list-group-item"><a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a></li>
-      </ul>
-      <div class="shift-spacer"></div>
-    </div>
+        {{#tick}}
+            <div class="tick"></div>
+        {{/tick}}
+        {{#tick_hour}}
+            <div class="tick hour">{{text}}</div>
+        {{/tick_hour}}
+        {{#tick_day}}
+            <div class="tick day">{{text}}</div>
+        {{/tick_day}}
+        {{#shift}}
+            {{#shift_data}}
+                <div class="shift panel panel-success" style="height: 235px;">
+                  <div class="panel-heading">
+                    <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{title}}</a>
+                    <div class="pull-right">
+                      <div class="btn-group">
+                        <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-edit"></span>
+                        </a> <a href="?p=user_shifts&amp;delete_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel-body">
+                    <span class="glyphicon glyphicon-info-sign"></span> Bottle Collection Quick Response Team<br> <a href="?p=rooms&amp;action=view&amp;room_id=42"> <span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H)
+                    </a>
+                  </div>
+                  <ul class="list-group">
+                    <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong> <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>, <span style=""><a
+                        class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span></li>
+                    <li class="list-group-item"><a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a></li>
+                  </ul>
+                  <div class="shift-spacer"></div>
+                </div>
+            {{/shift_data}}
+        {{/shift}}
     {{/shifts}}
-    <div class="tick hour"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
   </div>
-    {{/lanes}}
+{{/lanes}}
 </div>'
 
 }
