@@ -10,17 +10,9 @@ Shifts = window.Shifts || {
       Shifts.log('init db');
       return alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem; ATTACH INDEXEDDB DATABASE engelsystem;', function() {
         return alasql('USE engelsystem', function() {
-          return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID, title, shift_start, shift_end)', function() {
-            return alasql('CREATE TABLE IF NOT EXISTS User (UID, nick)', function() {
-              return alasql('CREATE TABLE IF NOT EXISTS Room (RID, Name)', function() {
-                return alasql('CREATE TABLE IF NOT EXISTS ShiftEntry (id, SID, TID, UID)', function() {
-                  return alasql('CREATE TABLE IF NOT EXISTS options (option_key, option_value)', function() {
-                    return Shifts.db.populate_ids(function() {
-                      return done();
-                    });
-                  });
-                });
-              });
+          return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID, title, shift_start, shift_end); CREATE TABLE IF NOT EXISTS User (UID, nick); CREATE TABLE IF NOT EXISTS Room (RID, Name); CREATE TABLE IF NOT EXISTS ShiftEntry (id, SID, TID, UID); CREATE TABLE IF NOT EXISTS options (option_key, option_value);', function() {
+            return Shifts.db.populate_ids(function() {
+              return done();
             });
           });
         });

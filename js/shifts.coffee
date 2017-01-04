@@ -11,16 +11,14 @@ Shifts = window.Shifts || {
             alasql 'CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem;
             ATTACH INDEXEDDB DATABASE engelsystem;', ->
                 alasql 'USE engelsystem', ->
-                    # note: primkey doesn't work, see https://github.com/agershun/alasql/issues/566
-                    # 'CREATE TABLE IF NOT EXISTS Shifts (SID, title, start, shift_end, PRIMARY KEY (SID))'
-                    # alasq.promise is ALSO b0rken, wtf. welcome to callback hell...
-                    alasql 'CREATE TABLE IF NOT EXISTS Shifts (SID, title, shift_start, shift_end)', ->
-                        alasql 'CREATE TABLE IF NOT EXISTS User (UID, nick)', ->
-                            alasql 'CREATE TABLE IF NOT EXISTS Room (RID, Name)', ->
-                                alasql 'CREATE TABLE IF NOT EXISTS ShiftEntry (id, SID, TID, UID)', ->
-                                    alasql 'CREATE TABLE IF NOT EXISTS options (option_key, option_value)', ->
-                                        Shifts.db.populate_ids ->
-                                            done()
+                    # note: primary key doesn't work, see https://github.com/agershun/alasql/issues/566
+                    alasql 'CREATE TABLE IF NOT EXISTS Shifts (SID, title, shift_start, shift_end);
+                    CREATE TABLE IF NOT EXISTS User (UID, nick);
+                    CREATE TABLE IF NOT EXISTS Room (RID, Name);
+                    CREATE TABLE IF NOT EXISTS ShiftEntry (id, SID, TID, UID);
+                    CREATE TABLE IF NOT EXISTS options (option_key, option_value);', ->
+                        Shifts.db.populate_ids ->
+                            done()
 
         populate_ids: (done) ->
 
