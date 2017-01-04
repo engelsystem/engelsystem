@@ -153,6 +153,10 @@ Shifts = window.Shifts || {
             { hour: false }
             { hour: true, time: "10:00" }
         ]
+        shifts: [
+            { title: "Schicht 1" }
+            { title: "Schicht 2" }
+        ]
         shiftplan: ->
             Shifts.db.get_rooms (rooms) ->
                 Shifts.db.get_my_shifts (shifts) ->
@@ -160,19 +164,11 @@ Shifts = window.Shifts || {
                     for room in rooms
                         data[room.RID] = room
                         data[room.RID].shifts = shifts
-                    Shifts.log data
                     tpl = Mustache.render Shifts.template.shift,
-                        shift_title: "Halleluja"
+                        lanes: rooms
+                        shifts: shifts
                         timelane_ticks: Shifts.render.timelane_ticks
                     Shifts.$shiftplan.html(tpl)
-        calendar: (shifts) ->
-            return '<div class="shift-calendar">' + Shifts.render.lanes(shifts) + '</div>'
-
-        lanes: (shifts) ->
-            lanes = []
-            Shifts.db.get_rooms (rooms) ->
-                Shifts.log rooms
-                return '<div class="lane time">blubb</div>'
 
     init: ->
         Shifts.$shiftplan = $('#shiftplan')
@@ -225,9 +221,10 @@ Shifts = window.Shifts || {
     <div class="tick"></div>
     <div class="tick"></div>
     <div class="tick"></div>
+    {{#shifts}}
     <div class="shift panel panel-success" style="height: 160px;">
       <div class="panel-heading">
-        <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{ shift_title }}</a>
+        <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{title}}</a>
         <div class="pull-right">
           <div class="btn-group">
             <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-edit"></span>
@@ -247,6 +244,7 @@ Shifts = window.Shifts || {
       </ul>
       <div class="shift-spacer"></div>
     </div>
+    {{/shifts}}
     <div class="tick hour"></div>
     <div class="tick"></div>
     <div class="tick"></div>
@@ -271,6 +269,13 @@ Shifts = window.Shifts || {
     <div class="tick"></div>
     <div class="tick"></div>
   </div>
+    {{#lanes}}
+  <div class="lane">
+    <div class="header">
+      <span class="glyphicon glyphicon-map-marker"></span> {{Name}}
+    </div>
+  </div>
+    {{/lanes}}
 </div>'
 
 }
