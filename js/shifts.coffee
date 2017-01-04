@@ -83,7 +83,8 @@ Shifts = window.Shifts || {
                 done()
 
         get_my_shifts: (done) ->
-            alasql "SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", (res) ->
+            #alasql "SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", (res) ->
+            alasql "SELECT * FROM Shifts LIMIT 10", (res) ->
                 done res
 
         get_rooms: (done) ->
@@ -160,13 +161,17 @@ Shifts = window.Shifts || {
         shiftplan: ->
             Shifts.db.get_rooms (rooms) ->
                 Shifts.db.get_my_shifts (shifts) ->
-                    data = {}
+                    lanes = []
                     for room in rooms
-                        data[room.RID] = room
-                        data[room.RID].shifts = shifts
+                        lanes.push room
+
+                    for l of lanes
+                        lanes[l].shifts = shifts
+
+                    Shifts.log shifts
+                    Shifts.log lanes
                     tpl = Mustache.render Shifts.template.shift,
-                        lanes: rooms
-                        shifts: shifts
+                        lanes: lanes
                         timelane_ticks: Shifts.render.timelane_ticks
                     Shifts.$shiftplan.html(tpl)
 
@@ -213,14 +218,11 @@ Shifts = window.Shifts || {
     <div class="tick"></div>
     <div class="tick"></div>
   </div>
+    {{#lanes}}
   <div class="lane">
     <div class="header">
-      <span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H)
+      <span class="glyphicon glyphicon-map-marker"></span> {{Name}}
     </div>
-    <div class="tick day"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
     {{#shifts}}
     <div class="shift panel panel-success" style="height: 160px;">
       <div class="panel-heading">
@@ -249,31 +251,6 @@ Shifts = window.Shifts || {
     <div class="tick"></div>
     <div class="tick"></div>
     <div class="tick"></div>
-  </div>
-  <div class="lane">
-    <div class="header"></div>
-    <div class="tick day"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick hour"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick hour"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick hour"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-    <div class="tick"></div>
-  </div>
-    {{#lanes}}
-  <div class="lane">
-    <div class="header">
-      <span class="glyphicon glyphicon-map-marker"></span> {{Name}}
-    </div>
   </div>
     {{/lanes}}
 </div>'

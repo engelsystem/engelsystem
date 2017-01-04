@@ -38,9 +38,9 @@ Shifts = window.Shifts || {
               Shifts.db.shift_ids.push(s.SID);
             }
             return alasql("SELECT id from ShiftEntry", function(res) {
-              var l, len3;
-              for (l = 0, len3 = res.length; l < len3; l++) {
-                s = res[l];
+              var len3, m;
+              for (m = 0, len3 = res.length; m < len3; m++) {
+                s = res[m];
                 Shifts.db.shiftentry_ids.push(s.id);
               }
               return done();
@@ -98,7 +98,7 @@ Shifts = window.Shifts || {
       }
     },
     get_my_shifts: function(done) {
-      return alasql("SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", function(res) {
+      return alasql("SELECT * FROM Shifts LIMIT 10", function(res) {
         return done(res);
       });
     },
@@ -212,16 +212,19 @@ Shifts = window.Shifts || {
     shiftplan: function() {
       return Shifts.db.get_rooms(function(rooms) {
         return Shifts.db.get_my_shifts(function(shifts) {
-          var data, i, len, room, tpl;
-          data = {};
+          var i, l, lanes, len, room, tpl;
+          lanes = [];
           for (i = 0, len = rooms.length; i < len; i++) {
             room = rooms[i];
-            data[room.RID] = room;
-            data[room.RID].shifts = shifts;
+            lanes.push(room);
           }
+          for (l in lanes) {
+            lanes[l].shifts = shifts;
+          }
+          Shifts.log(shifts);
+          Shifts.log(lanes);
           tpl = Mustache.render(Shifts.template.shift, {
-            lanes: rooms,
-            shifts: shifts,
+            lanes: lanes,
             timelane_ticks: Shifts.render.timelane_ticks
           });
           return Shifts.$shiftplan.html(tpl);
@@ -246,7 +249,7 @@ Shifts = window.Shifts || {
     return console.info(msg);
   },
   template: {
-    shift: '<div class="shift-calendar"> <div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#hour}} <div class="tick hour">{{time}}</div> {{/hour}} {{^hour}} <div class="tick"></div> {{/hour}} {{/timelane_ticks}} <div class="tick day">2016-12-27 00:00</div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick hour">11:00</div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick hour">12:00</div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick hour">13:00</div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> </div> <div class="lane"> <div class="header"> <span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H) </div> <div class="tick day"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> {{#shifts}} <div class="shift panel panel-success" style="height: 160px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{title}}</a> <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-edit"></span> </a> <a href="?p=user_shifts&amp;delete_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-trash"></span> </a> </div> </div> </div> <div class="panel-body"> <span class="glyphicon glyphicon-info-sign"></span> Bottle Collection Quick Response Team<br> <a href="?p=rooms&amp;action=view&amp;room_id=42"> <span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H) </a> </div> <ul class="list-group"> <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong> <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>, <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span></li> <li class="list-group-item"><a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a></li> </ul> <div class="shift-spacer"></div> </div> {{/shifts}} <div class="tick hour"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> </div> <div class="lane"> <div class="header"></div> <div class="tick day"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick hour"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick hour"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick hour"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> </div> {{#lanes}} <div class="lane"> <div class="header"> <span class="glyphicon glyphicon-map-marker"></span> {{Name}} </div> </div> {{/lanes}} </div>'
+    shift: '<div class="shift-calendar"> <div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#hour}} <div class="tick hour">{{time}}</div> {{/hour}} {{^hour}} <div class="tick"></div> {{/hour}} {{/timelane_ticks}} <div class="tick day">2016-12-27 00:00</div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick hour">11:00</div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick hour">12:00</div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick hour">13:00</div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> </div> {{#lanes}} <div class="lane"> <div class="header"> <span class="glyphicon glyphicon-map-marker"></span> {{Name}} </div> {{#shifts}} <div class="shift panel panel-success" style="height: 160px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{title}}</a> <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-edit"></span> </a> <a href="?p=user_shifts&amp;delete_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-trash"></span> </a> </div> </div> </div> <div class="panel-body"> <span class="glyphicon glyphicon-info-sign"></span> Bottle Collection Quick Response Team<br> <a href="?p=rooms&amp;action=view&amp;room_id=42"> <span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H) </a> </div> <ul class="list-group"> <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong> <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>, <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span></li> <li class="list-group-item"><a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a></li> </ul> <div class="shift-spacer"></div> </div> {{/shifts}} <div class="tick hour"></div> <div class="tick"></div> <div class="tick"></div> <div class="tick"></div> </div> {{/lanes}} </div>'
   }
 };
 
