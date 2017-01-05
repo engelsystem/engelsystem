@@ -95,12 +95,19 @@ function make_user_submenu() {
 
 function make_navigation() {
   global $page, $privileges;
+
+  if (in_array('user_shifts', $privileges)) {
+      $user_shifts_offset = array_search('user_shifts', $privileges, true);
+      $user_shifts_offset++;
+      array_splice($privileges, $user_shifts_offset, 0, 'user_shifts_browser');
+  }
   
   $menu = [];
   $pages = [
       "news" => news_title(),
       "user_meetings" => meetings_title(),
       "user_shifts" => shifts_title(),
+      "user_shifts_browser" => shifts_browser_title(),
       "angeltypes" => angeltypes_title(),
       "user_questions" => questions_title() 
   ];
