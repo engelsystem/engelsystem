@@ -92,9 +92,6 @@ Shifts = window.Shifts || {
         insert_shifttype: (shifttype, done) ->
             shifttype.id = parseInt shifttype.id, 10
             shifttype_exists = Shifts.db.shifttype_ids.indexOf(shifttype.id) > -1
-            Shifts.log Shifts.db.shifttype_ids
-            Shifts.log shifttype
-            Shifts.log shifttype_exists
             if shifttype_exists == false
                 alasql "INSERT INTO ShiftTypes (id, name) VALUES (#{shifttype.id}, '#{shifttype.name}')", ->
                     Shifts.db.shifttype_ids.push shifttype.id
@@ -106,8 +103,7 @@ Shifts = window.Shifts || {
             #alasql "SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", (res) ->
             rand = 1 + parseInt(Math.random() * 10, 10)
             rand = 20
-            alasql "SELECT * FROM Shifts LEFT JOIN ShiftTypes ON Shifts.SID = Shifts.shifttype_id LIMIT #{rand}", (res) ->
-                Shifts.log res
+            alasql "SELECT * FROM Shifts LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id LIMIT #{rand}", (res) ->
                 done res
 
         get_rooms: (done) ->
@@ -202,11 +198,11 @@ Shifts = window.Shifts || {
         shiftplan: ->
             Shifts.db.get_rooms (rooms) ->
                 Shifts.db.get_my_shifts (db_shifts) ->
+                    Shifts.log db_shifts
                     for shift in db_shifts
                         shift.title = shift.name #Math.random()
 
                     Shifts.log db_shifts
-                    Shifts.log rooms
 
                     for room in rooms
                         room.shifts = []

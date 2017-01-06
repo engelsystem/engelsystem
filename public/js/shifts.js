@@ -109,9 +109,6 @@ Shifts = window.Shifts || {
       var shifttype_exists;
       shifttype.id = parseInt(shifttype.id, 10);
       shifttype_exists = Shifts.db.shifttype_ids.indexOf(shifttype.id) > -1;
-      Shifts.log(Shifts.db.shifttype_ids);
-      Shifts.log(shifttype);
-      Shifts.log(shifttype_exists);
       if (shifttype_exists === false) {
         return alasql("INSERT INTO ShiftTypes (id, name) VALUES (" + shifttype.id + ", '" + shifttype.name + "')", function() {
           Shifts.db.shifttype_ids.push(shifttype.id);
@@ -125,8 +122,7 @@ Shifts = window.Shifts || {
       var rand;
       rand = 1 + parseInt(Math.random() * 10, 10);
       rand = 20;
-      return alasql("SELECT * FROM Shifts LEFT JOIN ShiftTypes ON Shifts.SID = Shifts.shifttype_id LIMIT " + rand, function(res) {
-        Shifts.log(res);
+      return alasql("SELECT * FROM Shifts LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id LIMIT " + rand, function(res) {
         return done(res);
       });
     },
@@ -239,12 +235,12 @@ Shifts = window.Shifts || {
       return Shifts.db.get_rooms(function(rooms) {
         return Shifts.db.get_my_shifts(function(db_shifts) {
           var j, k, l, len, len1, len2, m, random_ticks, ref, room, shift, ticks, tpl;
+          Shifts.log(db_shifts);
           for (j = 0, len = db_shifts.length; j < len; j++) {
             shift = db_shifts[j];
             shift.title = shift.name;
           }
           Shifts.log(db_shifts);
-          Shifts.log(rooms);
           for (k = 0, len1 = rooms.length; k < len1; k++) {
             room = rooms[k];
             room.shifts = [];
