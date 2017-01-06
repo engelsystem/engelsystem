@@ -282,7 +282,7 @@ Shifts = window.Shifts || {
 {{#lanes}}
   <div class="lane">
     <div class="header">
-      <span class="glyphicon glyphicon-map-marker"></span> {{Name}}
+      <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a>
     </div>
     {{#shifts}}
         {{#tick}}
