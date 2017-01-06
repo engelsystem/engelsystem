@@ -20,27 +20,27 @@ Shifts = window.Shifts || {
     },
     populate_ids: function(done) {
       return alasql("SELECT RID from Room", function(res) {
-        var i, len, r;
-        for (i = 0, len = res.length; i < len; i++) {
-          r = res[i];
+        var j, len, r;
+        for (j = 0, len = res.length; j < len; j++) {
+          r = res[j];
           Shifts.db.room_ids.push(r.RID);
         }
         return alasql("SELECT UID from User", function(res) {
-          var j, len1, u;
-          for (j = 0, len1 = res.length; j < len1; j++) {
-            u = res[j];
+          var k, len1, u;
+          for (k = 0, len1 = res.length; k < len1; k++) {
+            u = res[k];
             Shifts.db.user_ids.push(u.UID);
           }
           return alasql("SELECT SID from Shifts", function(res) {
-            var k, len2, s;
-            for (k = 0, len2 = res.length; k < len2; k++) {
-              s = res[k];
+            var len2, m, s;
+            for (m = 0, len2 = res.length; m < len2; m++) {
+              s = res[m];
               Shifts.db.shift_ids.push(s.SID);
             }
             return alasql("SELECT id from ShiftEntry", function(res) {
-              var len3, m;
-              for (m = 0, len3 = res.length; m < len3; m++) {
-                s = res[m];
+              var len3, n;
+              for (n = 0, len3 = res.length; n < len3; n++) {
+                s = res[n];
                 Shifts.db.shiftentry_ids.push(s.id);
               }
               return done();
@@ -156,151 +156,76 @@ Shifts = window.Shifts || {
     }
   },
   render: {
-    timelane_ticks: [
-      {
-        tick_day: true,
-        text: "2016-12-27 00:00"
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick_hour: true,
-        text: "01:00"
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick_hour: true,
-        text: "02:00"
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick_hour: true,
-        text: "03:00"
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick_hour: true,
-        text: "04:00"
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick_hour: true,
-        text: "05:00"
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick_hour: true,
-        text: "06:00"
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick_hour: true,
-        text: "07:00"
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick_hour: true,
-        text: "08:00"
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick_hour: true,
-        text: "09:00"
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick_hour: true,
-        text: "10:00"
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick_hour: true,
-        text: "11:00"
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick: true
-      }, {
-        tick_hour: true,
-        text: "12:00"
+    SECONDS_PER_ROW: 900,
+    BLOCK_HEIGHT: 30,
+    MARGIN: 5,
+    TIME_MARGIN: 1800,
+    tick: function(time, label) {
+      if (label == null) {
+        label = false;
       }
-    ],
-    shifts: [
-      {
-        title: "Schicht 1"
-      }, {
-        title: "Schicht 2"
+      if (time % (24 * 60 * 60) === 23 * 60 * 60) {
+        if (label) {
+          return {
+            tick_day: true,
+            label: moment.unix(time).format('MM-DD HH:mm')
+          };
+        } else {
+          return {
+            tick_day: true
+          };
+        }
+      } else if (time % (60 * 60) === 0) {
+        if (label) {
+          return {
+            tick_hour: true,
+            label: moment.unix(time).format('HH:mm')
+          };
+        } else {
+          return {
+            tick_hour: true
+          };
+        }
+      } else {
+        return {
+          tick: true
+        };
       }
-    ],
+    },
+    timelane: function() {
+      var i, j, start_time, thistime, time_slot;
+      time_slot = [];
+      start_time = moment('2017-12-26').format('X');
+      start_time = parseInt(start_time, 10);
+      for (i = j = 0; j <= 100; i = ++j) {
+        thistime = start_time + i * Shifts.render.SECONDS_PER_ROW;
+        time_slot.push(Shifts.render.tick(thistime, true));
+      }
+      return time_slot;
+    },
     shiftplan: function() {
       return Shifts.db.get_rooms(function(rooms) {
         return Shifts.db.get_my_shifts(function(db_shifts) {
-          var i, j, k, l, lanes, len, len1, random_ticks, ref, room, s, shift, shifts, ticks, tpl;
+          var j, k, l, lanes, len, len1, m, random_ticks, ref, room, s, shift, shifts, ticks, tpl;
           for (s in db_shifts) {
             db_shifts[s].title = Math.random();
           }
           shifts = [];
-          for (i = 0, len = db_shifts.length; i < len; i++) {
-            shift = db_shifts[i];
+          for (j = 0, len = db_shifts.length; j < len; j++) {
+            shift = db_shifts[j];
             shifts.push({
               shift: shift
             });
             random_ticks = 1 + Math.floor(Math.random() * 7);
-            for (ticks = j = 1, ref = random_ticks; 1 <= ref ? j <= ref : j >= ref; ticks = 1 <= ref ? ++j : --j) {
+            for (ticks = k = 1, ref = random_ticks; 1 <= ref ? k <= ref : k >= ref; ticks = 1 <= ref ? ++k : --k) {
               shifts.push({
                 tick: true
               });
             }
           }
-          Shifts.log(shifts);
           lanes = [];
-          for (k = 0, len1 = rooms.length; k < len1; k++) {
-            room = rooms[k];
+          for (m = 0, len1 = rooms.length; m < len1; m++) {
+            room = rooms[m];
             lanes.push(room);
           }
           for (l in lanes) {
@@ -310,7 +235,7 @@ Shifts = window.Shifts || {
           tpl += Mustache.render(Shifts.template.filter_form);
           tpl += Mustache.render(Shifts.template.shift_calendar, {
             lanes: lanes,
-            timelane_ticks: Shifts.render.timelane_ticks
+            timelane_ticks: Shifts.render.timelane()
           });
           return Shifts.$shiftplan.html(tpl);
         });
@@ -339,7 +264,7 @@ Shifts = window.Shifts || {
   },
   template: {
     filter_form: '<form class="form-inline" action="" method="get"> <input type="hidden" name="p" value="user_shifts"> <div class="row"> <div class="col-md-6"> <h1>%title%</h1> <div class="form-group">%start_select%</div> <div class="form-group"> <div class="input-group"> <input class="form-control" type="text" id="start_time" name="start_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%"> <div class="input-group-btn"> <button class="btn btn-default" title="Now" type="button" onclick=""> <span class="glyphicon glyphicon-time"></span> </button> </div> </div> </div> &#8211; <div class="form-group">%end_select%</div> <div class="form-group"> <div class="input-group"> <input class="form-control" type="text" id="end_time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%"> <div class="input-group-btn"> <button class="btn btn-default" title="Now" type="button" onclick=""> <span class="glyphicon glyphicon-time"></span> </button> </div> </div> </div> </div> <div class="col-md-2">%room_select%</div> <div class="col-md-2">%type_select%</div> <div class="col-md-2">%filled_select%</div> </div> <div class="row"> <div class="col-md-6"> <div>%task_notice%</div> <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="%filter%"> </div> </div> </form>',
-    shift_calendar: '<div class="shift-calendar"> <div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{text}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{text}}</div> {{/tick_day}} {{/timelane_ticks}} </div> {{#lanes}} <div class="lane"> <div class="header"> <span class="glyphicon glyphicon-map-marker"></span> {{Name}} </div> {{#shifts}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{text}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{text}}</div> {{/tick_day}} {{#shift}} <div class="shift panel panel-success" style="height: 235px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{title}}</a> <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-edit"></span> </a> <a href="?p=user_shifts&amp;delete_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-trash"></span> </a> </div> </div> </div> <div class="panel-body"> <span class="glyphicon glyphicon-info-sign"></span> Bottle Collection Quick Response Team<br> <a href="?p=rooms&amp;action=view&amp;room_id=42"> <span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H) </a> </div> <ul class="list-group"> <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong> <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>, <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span></li> <li class="list-group-item"><a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a></li> </ul> <div class="shift-spacer"></div> </div> {{/shift}} {{/shifts}} </div> {{/lanes}} </div>'
+    shift_calendar: '<div class="shift-calendar"> <div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{label}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{label}}</div> {{/tick_day}} {{/timelane_ticks}} </div> {{#lanes}} <div class="lane"> <div class="header"> <span class="glyphicon glyphicon-map-marker"></span> {{Name}} </div> {{#shifts}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{text}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{text}}</div> {{/tick_day}} {{#shift}} <div class="shift panel panel-success" style="height: 235px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{title}}</a> <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-edit"></span> </a> <a href="?p=user_shifts&amp;delete_shift=2696" class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-trash"></span> </a> </div> </div> </div> <div class="panel-body"> <span class="glyphicon glyphicon-info-sign"></span> Bottle Collection Quick Response Team<br> <a href="?p=rooms&amp;action=view&amp;room_id=42"> <span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H) </a> </div> <ul class="list-group"> <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong> <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>, <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span></li> <li class="list-group-item"><a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a></li> </ul> <div class="shift-spacer"></div> </div> {{/shift}} {{/shifts}} </div> {{/lanes}} </div>'
   }
 };
 

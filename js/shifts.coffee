@@ -133,61 +133,44 @@ Shifts = window.Shifts || {
                 done()
 
     render:
-        timelane_ticks: [
-            { tick_day: true, text: "2016-12-27 00:00" }
-            { tick: true }
-            { tick: true }
-            { tick: true }
-            { tick_hour: true, text: "01:00" }
-            { tick: true }
-            { tick: true }
-            { tick: true }
-            { tick_hour: true, text: "02:00" }
-            { tick: true }
-            { tick: true }
-            { tick: true }
-            { tick_hour: true, text: "03:00" }
-            { tick: true }
-            { tick: true }
-            { tick: true }
-            { tick_hour: true, text: "04:00" }
-            { tick: true }
-            { tick: true }
-            { tick: true }
-            { tick_hour: true, text: "05:00" }
-            { tick: true }
-            { tick: true }
-            { tick: true }
-            { tick_hour: true, text: "06:00" }
-            { tick: true }
-            { tick: true }
-            { tick: true }
-            { tick_hour: true, text: "07:00" }
-            { tick: true }
-            { tick: true }
-            { tick: true }
-            { tick_hour: true, text: "08:00" }
-            { tick: true }
-            { tick: true }
-            { tick: true }
-            { tick_hour: true, text: "09:00" }
-            { tick: true }
-            { tick: true }
-            { tick: true }
-            { tick_hour: true, text: "10:00" }
-            { tick: true }
-            { tick: true }
-            { tick: true }
-            { tick_hour: true, text: "11:00" }
-            { tick: true }
-            { tick: true }
-            { tick: true }
-            { tick_hour: true, text: "12:00" }
-        ]
-        shifts: [
-            { title: "Schicht 1" }
-            { title: "Schicht 2" }
-        ]
+
+        # 15m * 60s/m = 900s
+        SECONDS_PER_ROW: 900
+
+        # Height of a block in pixel.
+        # Do not change - corresponds with theme/css
+        BLOCK_HEIGHT: 30
+
+        # Distance between two shifts in pixels
+        MARGIN: 5
+
+        # Seconds added to the start and end time
+        TIME_MARGIN: 1800
+
+        tick: (time, label = false) ->
+            if time % (24*60*60) == 23*60*60
+                if label
+                    return { tick_day: true, label: moment.unix(time).format('MM-DD HH:mm') }
+                else
+                    return { tick_day: true }
+            else if time % (60*60) == 0
+                if label
+                    return { tick_hour: true, label: moment.unix(time).format('HH:mm') }
+                else
+                    return { tick_hour: true }
+            else
+                return { tick: true }
+
+        timelane: ->
+            time_slot = []
+            start_time = moment('2017-12-26').format('X')
+            start_time = parseInt start_time, 10
+            for i in [0..100]
+                thistime = start_time + i * Shifts.render.SECONDS_PER_ROW
+                time_slot.push Shifts.render.tick thistime, true
+
+            return time_slot
+
         shiftplan: ->
             Shifts.db.get_rooms (rooms) ->
                 Shifts.db.get_my_shifts (db_shifts) ->
@@ -203,8 +186,6 @@ Shifts = window.Shifts || {
                             shifts.push
                                 tick: true
 
-                    Shifts.log shifts
-
                     lanes = []
                     for room in rooms
                         lanes.push room
@@ -216,7 +197,7 @@ Shifts = window.Shifts || {
                     tpl += Mustache.render Shifts.template.filter_form
                     tpl += Mustache.render Shifts.template.shift_calendar,
                         lanes: lanes
-                        timelane_ticks: Shifts.render.timelane_ticks
+                        timelane_ticks: Shifts.render.timelane()
 
                     Shifts.$shiftplan.html(tpl)
 
@@ -290,10 +271,10 @@ Shifts = window.Shifts || {
             <div class="tick"></div>
         {{/tick}}
         {{#tick_hour}}
-            <div class="tick hour">{{text}}</div>
+            <div class="tick hour">{{label}}</div>
         {{/tick_hour}}
         {{#tick_day}}
-            <div class="tick day">{{text}}</div>
+            <div class="tick day">{{label}}</div>
         {{/tick_day}}
     {{/timelane_ticks}}
   </div>
