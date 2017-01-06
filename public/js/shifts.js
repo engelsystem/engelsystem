@@ -6,11 +6,12 @@ Shifts = window.Shifts || {
     user_ids: [],
     shift_ids: [],
     shiftentry_ids: [],
+    shifttype_ids: [],
     init: function(done) {
       Shifts.log('init db');
       return alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem; ATTACH INDEXEDDB DATABASE engelsystem;', function() {
         return alasql('USE engelsystem', function() {
-          return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shift_start INT, shift_end INT, RID INT); CREATE TABLE IF NOT EXISTS User (UID INT, nick); CREATE TABLE IF NOT EXISTS Room (RID INT, Name); CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT); CREATE TABLE IF NOT EXISTS options (option_key, option_value);', function() {
+          return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, shift_start INT, shift_end INT, RID INT); CREATE TABLE IF NOT EXISTS User (UID INT, nick); CREATE TABLE IF NOT EXISTS Room (RID INT, Name); CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT); CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT); CREATE TABLE IF NOT EXISTS options (option_key, option_value);', function() {
             return Shifts.db.populate_ids(function() {
               return done();
             });
@@ -31,19 +32,26 @@ Shifts = window.Shifts || {
             u = res[k];
             Shifts.db.user_ids.push(u.UID);
           }
-          return alasql("SELECT SID from Shifts", function(res) {
-            var len2, m, s;
-            for (m = 0, len2 = res.length; m < len2; m++) {
-              s = res[m];
-              Shifts.db.shift_ids.push(s.SID);
+          return alasql("SELECT id from ShiftTypes", function(res) {
+            var l, len2, s;
+            for (l = 0, len2 = res.length; l < len2; l++) {
+              s = res[l];
+              Shifts.db.shifttype_ids.push(s.id);
             }
-            return alasql("SELECT id from ShiftEntry", function(res) {
-              var len3, n;
-              for (n = 0, len3 = res.length; n < len3; n++) {
-                s = res[n];
-                Shifts.db.shiftentry_ids.push(s.id);
+            return alasql("SELECT SID from Shifts", function(res) {
+              var len3, m;
+              for (m = 0, len3 = res.length; m < len3; m++) {
+                s = res[m];
+                Shifts.db.shift_ids.push(s.SID);
               }
-              return done();
+              return alasql("SELECT id from ShiftEntry", function(res) {
+                var len4, n;
+                for (n = 0, len4 = res.length; n < len4; n++) {
+                  s = res[n];
+                  Shifts.db.shiftentry_ids.push(s.id);
+                }
+                return done();
+              });
             });
           });
         });
@@ -77,7 +85,7 @@ Shifts = window.Shifts || {
       var shift_exists;
       shift_exists = Shifts.db.shift_ids.indexOf(parseInt(shift.SID, 10)) > -1;
       if (shift_exists === false) {
-        return alasql("INSERT INTO Shifts (SID, title, shift_start, shift_end, RID) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.start + "', '" + shift.end + "', '" + shift.RID + "')", function() {
+        return alasql("INSERT INTO Shifts (SID, title, shifttype_id, shift_start, shift_end, RID) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.shifttype_id + "', '" + shift.start + "', '" + shift.end + "', '" + shift.RID + "')", function() {
           Shifts.db.shift_ids.push(shift.SID);
           return done();
         });
@@ -97,10 +105,28 @@ Shifts = window.Shifts || {
         return done();
       }
     },
+    insert_shifttype: function(shifttype, done) {
+      var shifttype_exists;
+      shifttype.id = parseInt(shifttype.id, 10);
+      shifttype_exists = Shifts.db.shifttype_ids.indexOf(shifttype.id) > -1;
+      Shifts.log(Shifts.db.shifttype_ids);
+      Shifts.log(shifttype);
+      Shifts.log(shifttype_exists);
+      if (shifttype_exists === false) {
+        return alasql("INSERT INTO ShiftTypes (id, name) VALUES (" + shifttype.id + ", '" + shifttype.name + "')", function() {
+          Shifts.db.shifttype_ids.push(shifttype.id);
+          return done();
+        });
+      } else {
+        return done();
+      }
+    },
     get_my_shifts: function(done) {
       var rand;
       rand = 1 + parseInt(Math.random() * 10, 10);
-      return alasql("SELECT * FROM Shifts LIMIT " + rand, function(res) {
+      rand = 20;
+      return alasql("SELECT * FROM Shifts LEFT JOIN ShiftTypes ON Shifts.SID = Shifts.shifttype_id LIMIT " + rand, function(res) {
+        Shifts.log(res);
         return done(res);
       });
     },
@@ -124,19 +150,25 @@ Shifts = window.Shifts || {
           users = data.users;
           Shifts.$shiftplan.html('fetching users...');
           return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
-            var shifts;
+            var shift_types;
             Shifts.log('processing users done');
-            shifts = data.shifts;
-            Shifts.$shiftplan.html('fetching shifts...');
-            return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
-              var shift_entries;
-              Shifts.log('processing shifts done');
-              shift_entries = data.shift_entries;
-              Shifts.$shiftplan.html('fetching shift entries...');
-              return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
-                Shifts.log('processing shift_entries done');
-                Shifts.$shiftplan.html('done.');
-                return done();
+            shift_types = data.shift_types;
+            Shifts.$shiftplan.html('fetching shift_types...');
+            return Shifts.fetcher.process(Shifts.db.insert_shifttype, shift_types, function() {
+              var shifts;
+              Shifts.log('processing shift_types done');
+              shifts = data.shifts;
+              Shifts.$shiftplan.html('fetching shifts...');
+              return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
+                var shift_entries;
+                Shifts.log('processing shifts done');
+                shift_entries = data.shift_entries;
+                Shifts.$shiftplan.html('fetching shift entries...');
+                return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
+                  Shifts.log('processing shift_entries done');
+                  Shifts.$shiftplan.html('done.');
+                  return done();
+                });
               });
             });
           });
@@ -206,35 +238,36 @@ Shifts = window.Shifts || {
     shiftplan: function() {
       return Shifts.db.get_rooms(function(rooms) {
         return Shifts.db.get_my_shifts(function(db_shifts) {
-          var j, k, l, lanes, len, len1, m, random_ticks, ref, room, s, shift, shifts, ticks, tpl;
-          for (s in db_shifts) {
-            db_shifts[s].title = Math.random();
-          }
-          shifts = [];
+          var j, k, l, len, len1, len2, m, random_ticks, ref, room, shift, ticks, tpl;
           for (j = 0, len = db_shifts.length; j < len; j++) {
             shift = db_shifts[j];
-            shifts.push({
-              shift: shift
-            });
-            random_ticks = 1 + Math.floor(Math.random() * 7);
-            for (ticks = k = 1, ref = random_ticks; 1 <= ref ? k <= ref : k >= ref; ticks = 1 <= ref ? ++k : --k) {
-              shifts.push({
-                tick: true
-              });
+            shift.title = shift.name;
+          }
+          Shifts.log(db_shifts);
+          Shifts.log(rooms);
+          for (k = 0, len1 = rooms.length; k < len1; k++) {
+            room = rooms[k];
+            room.shifts = [];
+            for (l = 0, len2 = db_shifts.length; l < len2; l++) {
+              shift = db_shifts[l];
+              if (shift.RID === room.RID) {
+                room.shifts.push({
+                  shift: shift
+                });
+                random_ticks = 1;
+                for (ticks = m = 1, ref = random_ticks; 1 <= ref ? m <= ref : m >= ref; ticks = 1 <= ref ? ++m : --m) {
+                  room.shifts.push({
+                    tick: true
+                  });
+                }
+              }
             }
-          }
-          lanes = [];
-          for (m = 0, len1 = rooms.length; m < len1; m++) {
-            room = rooms[m];
-            lanes.push(room);
-          }
-          for (l in lanes) {
-            lanes[l].shifts = shifts;
+            Shifts.log(room);
           }
           tpl = '';
           tpl += Mustache.render(Shifts.template.filter_form);
           tpl += Mustache.render(Shifts.template.shift_calendar, {
-            lanes: lanes,
+            lanes: rooms,
             timelane_ticks: Shifts.render.timelane()
           });
           return Shifts.$shiftplan.html(tpl);

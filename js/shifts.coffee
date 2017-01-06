@@ -5,6 +5,7 @@ Shifts = window.Shifts || {
         user_ids: []
         shift_ids: []
         shiftentry_ids: []
+        shifttype_ids: []
 
         init: (done) ->
             Shifts.log 'init db'
@@ -12,37 +13,43 @@ Shifts = window.Shifts || {
             ATTACH INDEXEDDB DATABASE engelsystem;', ->
                 alasql 'USE engelsystem', ->
                     # note: primary key doesn't work, see https://github.com/agershun/alasql/issues/566
-                    alasql 'CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shift_start INT, shift_end INT, RID INT);
+                    alasql 'CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, shift_start INT, shift_end INT, RID INT);
                     CREATE TABLE IF NOT EXISTS User (UID INT, nick);
                     CREATE TABLE IF NOT EXISTS Room (RID INT, Name);
                     CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT);
+                    CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT);
                     CREATE TABLE IF NOT EXISTS options (option_key, option_value);', ->
                         Shifts.db.populate_ids ->
                             done()
 
         populate_ids: (done) ->
 
-            # Rooms
+            # rooms
             alasql "SELECT RID from Room", (res) ->
                 for r in res
                     Shifts.db.room_ids.push r.RID
 
-                # Users
+                # users
                 alasql "SELECT UID from User", (res) ->
                     for u in res
                         Shifts.db.user_ids.push u.UID
 
-                    # shifts
-                    alasql "SELECT SID from Shifts", (res) ->
+                    # shift types
+                    alasql "SELECT id from ShiftTypes", (res) ->
                         for s in res
-                            Shifts.db.shift_ids.push s.SID
+                            Shifts.db.shifttype_ids.push s.id
 
-                        # shift entries
-                        alasql "SELECT id from ShiftEntry", (res) ->
+                        # shifts
+                        alasql "SELECT SID from Shifts", (res) ->
                             for s in res
-                                Shifts.db.shiftentry_ids.push s.id
+                                Shifts.db.shift_ids.push s.SID
 
-                            done()
+                            # shift entries
+                            alasql "SELECT id from ShiftEntry", (res) ->
+                                for s in res
+                                    Shifts.db.shiftentry_ids.push s.id
+
+                                done()
 
         insert_room: (room, done) ->
             room_exists = Shifts.db.room_ids.indexOf(parseInt(room.RID, 10)) > -1
@@ -67,7 +74,7 @@ Shifts = window.Shifts || {
             # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
             shift_exists = Shifts.db.shift_ids.indexOf(parseInt(shift.SID, 10)) > -1
             if shift_exists == false
-                alasql "INSERT INTO Shifts (SID, title, shift_start, shift_end, RID) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.start}', '#{shift.end}', '#{shift.RID}')", ->
+                alasql "INSERT INTO Shifts (SID, title, shifttype_id, shift_start, shift_end, RID) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.shifttype_id}', '#{shift.start}', '#{shift.end}', '#{shift.RID}')", ->
                     Shifts.db.shift_ids.push shift.SID
                     done()
             else
@@ -82,10 +89,25 @@ Shifts = window.Shifts || {
             else
                 done()
 
+        insert_shifttype: (shifttype, done) ->
+            shifttype.id = parseInt shifttype.id, 10
+            shifttype_exists = Shifts.db.shifttype_ids.indexOf(shifttype.id) > -1
+            Shifts.log Shifts.db.shifttype_ids
+            Shifts.log shifttype
+            Shifts.log shifttype_exists
+            if shifttype_exists == false
+                alasql "INSERT INTO ShiftTypes (id, name) VALUES (#{shifttype.id}, '#{shifttype.name}')", ->
+                    Shifts.db.shifttype_ids.push shifttype.id
+                    done()
+            else
+                done()
+
         get_my_shifts: (done) ->
             #alasql "SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", (res) ->
             rand = 1 + parseInt(Math.random() * 10, 10)
-            alasql "SELECT * FROM Shifts LIMIT #{rand}", (res) ->
+            rand = 20
+            alasql "SELECT * FROM Shifts LEFT JOIN ShiftTypes ON Shifts.SID = Shifts.shifttype_id LIMIT #{rand}", (res) ->
+                Shifts.log res
                 done res
 
         get_rooms: (done) ->
@@ -109,20 +131,26 @@ Shifts = window.Shifts || {
                     Shifts.fetcher.process Shifts.db.insert_user, users, ->
                         Shifts.log 'processing users done'
 
-                        # insert shifts
-                        shifts = data.shifts
-                        Shifts.$shiftplan.html 'fetching shifts...'
-                        Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
-                            Shifts.log 'processing shifts done'
+                        # insert shift_types
+                        shift_types = data.shift_types
+                        Shifts.$shiftplan.html 'fetching shift_types...'
+                        Shifts.fetcher.process Shifts.db.insert_shifttype, shift_types, ->
+                            Shifts.log 'processing shift_types done'
 
-                            # insert shift_entries
-                            shift_entries = data.shift_entries
-                            Shifts.$shiftplan.html 'fetching shift entries...'
-                            Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
-                                Shifts.log 'processing shift_entries done'
+                            # insert shifts
+                            shifts = data.shifts
+                            Shifts.$shiftplan.html 'fetching shifts...'
+                            Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
+                                Shifts.log 'processing shifts done'
 
-                                Shifts.$shiftplan.html 'done.'
-                                done()
+                                # insert shift_entries
+                                shift_entries = data.shift_entries
+                                Shifts.$shiftplan.html 'fetching shift entries...'
+                                Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
+                                    Shifts.log 'processing shift_entries done'
+
+                                    Shifts.$shiftplan.html 'done.'
+                                    done()
 
         process: (processing_func, items_to_process, done) ->
             if items_to_process.length > 0
@@ -174,29 +202,28 @@ Shifts = window.Shifts || {
         shiftplan: ->
             Shifts.db.get_rooms (rooms) ->
                 Shifts.db.get_my_shifts (db_shifts) ->
-                    for s of db_shifts
-                        db_shifts[s].title = Math.random()
-
-                    shifts = []
                     for shift in db_shifts
-                        shifts.push
-                            shift: shift
-                        random_ticks = 1 + Math.floor(Math.random() * 7)
-                        for ticks in [1..random_ticks]
-                            shifts.push
-                                tick: true
+                        shift.title = shift.name #Math.random()
 
-                    lanes = []
+                    Shifts.log db_shifts
+                    Shifts.log rooms
+
                     for room in rooms
-                        lanes.push room
-
-                    for l of lanes
-                        lanes[l].shifts = shifts
+                        room.shifts = []
+                        for shift in db_shifts
+                            if shift.RID == room.RID
+                                room.shifts.push
+                                    shift: shift
+                                random_ticks = 1 #1 + Math.floor(Math.random() * 7)
+                                for ticks in [1..random_ticks]
+                                    room.shifts.push
+                                        tick: true
+                        Shifts.log room
 
                     tpl = ''
                     tpl += Mustache.render Shifts.template.filter_form
                     tpl += Mustache.render Shifts.template.shift_calendar,
-                        lanes: lanes
+                        lanes: rooms
                         timelane_ticks: Shifts.render.timelane()
 
                     Shifts.$shiftplan.html(tpl)
