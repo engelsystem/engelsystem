@@ -212,9 +212,12 @@ Shifts = window.Shifts || {
                     for l of lanes
                         lanes[l].shifts = shifts
 
-                    tpl = Mustache.render Shifts.template.shift,
+                    tpl = ''
+                    tpl += Mustache.render Shifts.template.filter_form
+                    tpl += Mustache.render Shifts.template.shift_calendar,
                         lanes: lanes
                         timelane_ticks: Shifts.render.timelane_ticks
+
                     Shifts.$shiftplan.html(tpl)
 
     init: ->
@@ -235,7 +238,7 @@ Shifts = window.Shifts || {
         console.info msg
 
     template:
-        shift: '
+        filter_form: '
 <form class="form-inline" action="" method="get">
   <input type="hidden" name="p" value="user_shifts">
   <div class="row">
@@ -275,7 +278,9 @@ Shifts = window.Shifts || {
         <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="%filter%">
 		</div>
 	</div>
-</form>
+</form>'
+
+        shift_calendar: '
 <div class="shift-calendar">
 
   <div class="lane time">
