@@ -12,10 +12,10 @@ Shifts = window.Shifts || {
             ATTACH INDEXEDDB DATABASE engelsystem;', ->
                 alasql 'USE engelsystem', ->
                     # note: primary key doesn't work, see https://github.com/agershun/alasql/issues/566
-                    alasql 'CREATE TABLE IF NOT EXISTS Shifts (SID, title, shift_start, shift_end);
-                    CREATE TABLE IF NOT EXISTS User (UID, nick);
-                    CREATE TABLE IF NOT EXISTS Room (RID, Name);
-                    CREATE TABLE IF NOT EXISTS ShiftEntry (id, SID, TID, UID);
+                    alasql 'CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shift_start INT, shift_end INT, RID INT);
+                    CREATE TABLE IF NOT EXISTS User (UID INT, nick);
+                    CREATE TABLE IF NOT EXISTS Room (RID INT, Name);
+                    CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT);
                     CREATE TABLE IF NOT EXISTS options (option_key, option_value);', ->
                         Shifts.db.populate_ids ->
                             done()
@@ -67,7 +67,7 @@ Shifts = window.Shifts || {
             # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
             shift_exists = Shifts.db.shift_ids.indexOf(parseInt(shift.SID, 10)) > -1
             if shift_exists == false
-                alasql "INSERT INTO Shifts (SID, title, shift_start, shift_end) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.start}', '#{shift.end}')", ->
+                alasql "INSERT INTO Shifts (SID, title, shift_start, shift_end, RID) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.start}', '#{shift.end}', '#{shift.RID}')", ->
                     Shifts.db.shift_ids.push shift.SID
                     done()
             else
@@ -163,7 +163,7 @@ Shifts = window.Shifts || {
 
         timelane: ->
             time_slot = []
-            start_time = moment('2017-12-26').format('X')
+            start_time = moment(moment().format('YYYY-MM-DD')).format('X')
             start_time = parseInt start_time, 10
             for i in [0..100]
                 thistime = start_time + i * Shifts.render.SECONDS_PER_ROW

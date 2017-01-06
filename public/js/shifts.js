@@ -10,7 +10,7 @@ Shifts = window.Shifts || {
       Shifts.log('init db');
       return alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem; ATTACH INDEXEDDB DATABASE engelsystem;', function() {
         return alasql('USE engelsystem', function() {
-          return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID, title, shift_start, shift_end); CREATE TABLE IF NOT EXISTS User (UID, nick); CREATE TABLE IF NOT EXISTS Room (RID, Name); CREATE TABLE IF NOT EXISTS ShiftEntry (id, SID, TID, UID); CREATE TABLE IF NOT EXISTS options (option_key, option_value);', function() {
+          return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shift_start INT, shift_end INT, RID INT); CREATE TABLE IF NOT EXISTS User (UID INT, nick); CREATE TABLE IF NOT EXISTS Room (RID INT, Name); CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT); CREATE TABLE IF NOT EXISTS options (option_key, option_value);', function() {
             return Shifts.db.populate_ids(function() {
               return done();
             });
@@ -77,7 +77,7 @@ Shifts = window.Shifts || {
       var shift_exists;
       shift_exists = Shifts.db.shift_ids.indexOf(parseInt(shift.SID, 10)) > -1;
       if (shift_exists === false) {
-        return alasql("INSERT INTO Shifts (SID, title, shift_start, shift_end) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.start + "', '" + shift.end + "')", function() {
+        return alasql("INSERT INTO Shifts (SID, title, shift_start, shift_end, RID) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.start + "', '" + shift.end + "', '" + shift.RID + "')", function() {
           Shifts.db.shift_ids.push(shift.SID);
           return done();
         });
@@ -195,7 +195,7 @@ Shifts = window.Shifts || {
     timelane: function() {
       var i, j, start_time, thistime, time_slot;
       time_slot = [];
-      start_time = moment('2017-12-26').format('X');
+      start_time = moment(moment().format('YYYY-MM-DD')).format('X');
       start_time = parseInt(start_time, 10);
       for (i = j = 0; j <= 100; i = ++j) {
         thistime = start_time + i * Shifts.render.SECONDS_PER_ROW;
