@@ -46,6 +46,13 @@ Shifts.render =
                 lanes = {}
 
                 add_shift = (shift, room_id) ->
+
+                    # calculate shift height
+                    blocks = Math.ceil(shift.shift_end - shift.shift_start) / Shifts.render.SECONDS_PER_ROW
+                    blocks = Math.max(1, blocks)
+                    height = blocks * Shifts.render.BLOCK_HEIGHT - Shifts.render.MARGIN
+                    shift.height = height
+
                     for lane_nr of lanes[room_id]
                         if shift_fits(shift, room_id, lane_nr)
                             lanes[room_id][lane_nr].push shift

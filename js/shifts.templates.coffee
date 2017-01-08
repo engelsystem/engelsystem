@@ -78,7 +78,7 @@ Shifts.templates =
                 <div class="tick day">{{text}}</div>
             {{/tick_day}}
             {{#shift}}
-                <div class="shift panel panel-success" style="height: 235px;">
+                <div class="shift panel panel-success" style="height: {{height}}px;">
                   <div class="panel-heading">
                     <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{shifttype_name}}</a>
                     <div class="pull-right">
