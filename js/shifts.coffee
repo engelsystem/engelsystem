@@ -189,6 +189,7 @@ Shifts = window.Shifts || {
             time_slot = []
             start_time = moment(moment().format('YYYY-MM-DD')).format('X')
             start_time = parseInt start_time, 10
+            start_time = start_time - Shifts.render.TIME_MARGIN
             for i in [0..100]
                 thistime = start_time + i * Shifts.render.SECONDS_PER_ROW
                 time_slot.push Shifts.render.tick thistime, true
@@ -198,12 +199,6 @@ Shifts = window.Shifts || {
         shiftplan: ->
             Shifts.db.get_rooms (rooms) ->
                 Shifts.db.get_my_shifts (db_shifts) ->
-                    Shifts.log db_shifts
-                    for shift in db_shifts
-                        shift.title = shift.name #Math.random()
-
-                    Shifts.log db_shifts
-
                     for room in rooms
                         room.shifts = []
                         for shift in db_shifts
@@ -320,7 +315,7 @@ Shifts = window.Shifts || {
         {{#shift}}
             <div class="shift panel panel-success" style="height: 235px;">
               <div class="panel-heading">
-                <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{title}}</a>
+                <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{name}}</a>
                 <div class="pull-right">
                   <div class="btn-group">
                     <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
@@ -329,7 +324,7 @@ Shifts = window.Shifts || {
                 </div>
               </div>
               <div class="panel-body">
-                <span class="glyphicon glyphicon-info-sign"></span> Bottle Collection Quick Response Team<br />
+                <span class="glyphicon glyphicon-info-sign"></span> {{title}}<br />
                 <a href="?p=rooms&amp;action=view&amp;room_id=42"><span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H)</a>
               </div>
               <ul class="list-group">

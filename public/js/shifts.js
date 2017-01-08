@@ -225,6 +225,7 @@ Shifts = window.Shifts || {
       time_slot = [];
       start_time = moment(moment().format('YYYY-MM-DD')).format('X');
       start_time = parseInt(start_time, 10);
+      start_time = start_time - Shifts.render.TIME_MARGIN;
       for (i = j = 0; j <= 100; i = ++j) {
         thistime = start_time + i * Shifts.render.SECONDS_PER_ROW;
         time_slot.push(Shifts.render.tick(thistime, true));
@@ -234,24 +235,18 @@ Shifts = window.Shifts || {
     shiftplan: function() {
       return Shifts.db.get_rooms(function(rooms) {
         return Shifts.db.get_my_shifts(function(db_shifts) {
-          var j, k, l, len, len1, len2, m, random_ticks, ref, room, shift, ticks, tpl;
-          Shifts.log(db_shifts);
-          for (j = 0, len = db_shifts.length; j < len; j++) {
-            shift = db_shifts[j];
-            shift.title = shift.name;
-          }
-          Shifts.log(db_shifts);
-          for (k = 0, len1 = rooms.length; k < len1; k++) {
-            room = rooms[k];
+          var j, k, l, len, len1, random_ticks, ref, room, shift, ticks, tpl;
+          for (j = 0, len = rooms.length; j < len; j++) {
+            room = rooms[j];
             room.shifts = [];
-            for (l = 0, len2 = db_shifts.length; l < len2; l++) {
-              shift = db_shifts[l];
+            for (k = 0, len1 = db_shifts.length; k < len1; k++) {
+              shift = db_shifts[k];
               if (shift.RID === room.RID) {
                 room.shifts.push({
                   shift: shift
                 });
                 random_ticks = 1;
-                for (ticks = m = 1, ref = random_ticks; 1 <= ref ? m <= ref : m >= ref; ticks = 1 <= ref ? ++m : --m) {
+                for (ticks = l = 1, ref = random_ticks; 1 <= ref ? l <= ref : l >= ref; ticks = 1 <= ref ? ++l : --l) {
                   room.shifts.push({
                     tick: true
                   });
@@ -293,7 +288,7 @@ Shifts = window.Shifts || {
   },
   template: {
     filter_form: '<form class="form-inline" action="" method="get"> <input type="hidden" name="p" value="user_shifts"> <div class="row"> <div class="col-md-6"> <h1>%title%</h1> <div class="form-group">%start_select%</div> <div class="form-group"> <div class="input-group"> <input class="form-control" type="text" id="start_time" name="start_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%"> <div class="input-group-btn"> <button class="btn btn-default" title="Now" type="button" onclick=""> <span class="glyphicon glyphicon-time"></span> </button> </div> </div> </div> &#8211; <div class="form-group">%end_select%</div> <div class="form-group"> <div class="input-group"> <input class="form-control" type="text" id="end_time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%"> <div class="input-group-btn"> <button class="btn btn-default" title="Now" type="button" onclick=""> <span class="glyphicon glyphicon-time"></span> </button> </div> </div> </div> </div> <div class="col-md-2">%room_select%</div> <div class="col-md-2">%type_select%</div> <div class="col-md-2">%filled_select%</div> </div> <div class="row"> <div class="col-md-6"> <div>%task_notice%</div> <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="%filter%"> </div> </div> </form>',
-    shift_calendar: '<div class="shift-calendar"> <div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{label}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{label}}</div> {{/tick_day}} {{/timelane_ticks}} </div> {{#lanes}} <div class="lane"> <div class="header"> <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a> </div> {{#shifts}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{text}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{text}}</div> {{/tick_day}} {{#shift}} <div class="shift panel panel-success" style="height: 235px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{title}}</a> <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a> <a href="?p=user_shifts&amp;delete_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a> </div> </div> </div> <div class="panel-body"> <span class="glyphicon glyphicon-info-sign"></span> Bottle Collection Quick Response Team<br /> <a href="?p=rooms&amp;action=view&amp;room_id=42"><span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H)</a> </div> <ul class="list-group"> <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong> <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>, <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span> </li> <li class="list-group-item"> <a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a> </li> </ul> <div class="shift-spacer"></div> </div> {{/shift}} {{/shifts}} </div> {{/lanes}} </div>'
+    shift_calendar: '<div class="shift-calendar"> <div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{label}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{label}}</div> {{/tick_day}} {{/timelane_ticks}} </div> {{#lanes}} <div class="lane"> <div class="header"> <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a> </div> {{#shifts}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{text}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{text}}</div> {{/tick_day}} {{#shift}} <div class="shift panel panel-success" style="height: 235px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{name}}</a> <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a> <a href="?p=user_shifts&amp;delete_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a> </div> </div> </div> <div class="panel-body"> <span class="glyphicon glyphicon-info-sign"></span> {{title}}<br /> <a href="?p=rooms&amp;action=view&amp;room_id=42"><span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H)</a> </div> <ul class="list-group"> <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong> <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>, <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span> </li> <li class="list-group-item"> <a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a> </li> </ul> <div class="shift-spacer"></div> </div> {{/shift}} {{/shifts}} </div> {{/lanes}} </div>'
   }
 };
 
