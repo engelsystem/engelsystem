@@ -268,7 +268,7 @@ Shifts.render = {
   shiftplan: function() {
     return Shifts.db.get_rooms(function(rooms) {
       return Shifts.db.get_my_shifts(function(db_shifts) {
-        var add_shift, highest_lane_nr, j, k, lane, lane_nr, lanes, len, len1, mustache_rooms, r, ref, room_id, s, shift, shift_added, shift_fits, sid, tpl;
+        var add_shift, highest_lane_nr, j, k, lane, lane_nr, lanes, len, len1, mustache_rooms, ref, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, tpl;
         lanes = {};
         add_shift = function(shift, room_id) {
           var blocks, height, lane_nr;
@@ -318,23 +318,22 @@ Shifts.render = {
           }
         }
         mustache_rooms = [];
-        for (r in rooms) {
-          room_id = rooms[r].RID;
-          mustache_rooms[r] = {};
-          mustache_rooms[r].Name = rooms[r].Name;
-          mustache_rooms[r].lanes = [];
+        for (room_nr in rooms) {
+          room_id = rooms[room_nr].RID;
+          mustache_rooms[room_nr] = {};
+          mustache_rooms[room_nr].Name = rooms[room_nr].Name;
+          mustache_rooms[room_nr].lanes = [];
           for (lane_nr in lanes[room_id]) {
-            mustache_rooms[r].lanes[lane_nr] = {};
-            mustache_rooms[r].lanes[lane_nr].shifts = [];
-            for (s in lanes[room_id][lane_nr]) {
-              for (sid in lanes[room_id][lane_nr]) {
-                mustache_rooms[r].lanes[lane_nr].shifts[sid] = {
-                  shift: lanes[room_id][lane_nr][sid]
-                };
-              }
+            mustache_rooms[room_nr].lanes[lane_nr] = {};
+            mustache_rooms[room_nr].lanes[lane_nr].shifts = [];
+            for (shift_nr in lanes[room_id][lane_nr]) {
+              mustache_rooms[room_nr].lanes[lane_nr].shifts[shift_nr] = {
+                shift: lanes[room_id][lane_nr][shift_nr]
+              };
             }
           }
         }
+        Shifts.log(mustache_rooms);
         tpl = '';
         tpl += Mustache.render(Shifts.templates.filter_form);
         tpl += Mustache.render(Shifts.templates.shift_calendar, {

@@ -86,18 +86,19 @@ Shifts.render =
 
                 # build datastruct for mustache
                 mustache_rooms = []
-                for r of rooms
-                    room_id = rooms[r].RID
-                    mustache_rooms[r] = {}
-                    mustache_rooms[r].Name = rooms[r].Name
-                    mustache_rooms[r].lanes = []
+                for room_nr of rooms
+                    room_id = rooms[room_nr].RID
+                    mustache_rooms[room_nr] = {}
+                    mustache_rooms[room_nr].Name = rooms[room_nr].Name
+                    mustache_rooms[room_nr].lanes = []
                     for lane_nr of lanes[room_id]
-                        mustache_rooms[r].lanes[lane_nr] = {}
-                        mustache_rooms[r].lanes[lane_nr].shifts = []
-                        for s of lanes[room_id][lane_nr]
-                            for sid of lanes[room_id][lane_nr]
-                                mustache_rooms[r].lanes[lane_nr].shifts[sid] =
-                                    shift: lanes[room_id][lane_nr][sid]
+                        mustache_rooms[room_nr].lanes[lane_nr] = {}
+                        mustache_rooms[room_nr].lanes[lane_nr].shifts = []
+                        for shift_nr of lanes[room_id][lane_nr]
+                            mustache_rooms[room_nr].lanes[lane_nr].shifts[shift_nr] =
+                                shift: lanes[room_id][lane_nr][shift_nr]
+
+                Shifts.log mustache_rooms
 
                 tpl = ''
                 tpl += Mustache.render Shifts.templates.filter_form
