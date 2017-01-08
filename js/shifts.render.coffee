@@ -95,8 +95,17 @@ Shifts.render =
                         mustache_rooms[room_nr].lanes[lane_nr] = {}
                         mustache_rooms[room_nr].lanes[lane_nr].shifts = []
                         for shift_nr of lanes[room_id][lane_nr]
+
+                            # render ticks.
+                            # render_until = firstblockstarttime
+                            # while ru < shift_start
+
                             mustache_rooms[room_nr].lanes[lane_nr].shifts[shift_nr] =
                                 shift: lanes[room_id][lane_nr][shift_nr]
+
+                            # render ticks till end block.
+                            # render_until = firstblockstarttime
+                            # while ru < lastblock_endtime
 
                 Shifts.log mustache_rooms
 
