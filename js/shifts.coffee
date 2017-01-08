@@ -242,9 +242,6 @@ Shifts = window.Shifts || {
 
                     # build datastruct for mustache
                     mustache_rooms = []
-                    #for lane in lanes
-                    #    rooms.
-
                     for r of rooms
                         room_id = rooms[r].RID
                         mustache_rooms[r] = {}
@@ -257,18 +254,6 @@ Shifts = window.Shifts || {
                                 for sid of lanes[room_id][lane_nr]
                                     mustache_rooms[r].lanes[lane_nr].shifts[sid] =
                                         shift: lanes[room_id][lane_nr][sid]
-
-                    #mustache_rooms = [
-                    #    { lanes: [
-                    #        {Name: 'sdf'}
-                    #    ] }
-                    #    { lanes: [
-                    #        {Name: 'rdf'}
-                    #    ] }
-                    #]
-
-                    Shifts.log "mustache_rooms:"
-                    Shifts.log mustache_rooms
 
                     tpl = ''
                     tpl += Mustache.render Shifts.template.filter_form

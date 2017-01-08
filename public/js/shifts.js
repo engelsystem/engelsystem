@@ -298,8 +298,6 @@ Shifts = window.Shifts || {
               }
             }
           }
-          Shifts.log("mustache_rooms:");
-          Shifts.log(mustache_rooms);
           tpl = '';
           tpl += Mustache.render(Shifts.template.filter_form);
           tpl += Mustache.render(Shifts.template.shift_calendar, {
