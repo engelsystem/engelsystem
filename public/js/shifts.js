@@ -235,7 +235,7 @@ Shifts = window.Shifts || {
     shiftplan: function() {
       return Shifts.db.get_rooms(function(rooms) {
         return Shifts.db.get_my_shifts(function(db_shifts) {
-          var add_shift, highest_lane_nr, j, k, lane, lane_nr, lanes, len, len1, mustache_rooms, r, ref, room_id, shift, shift_added, shift_fits, tpl;
+          var add_shift, highest_lane_nr, j, k, lane, lane_nr, lanes, len, len1, mustache_rooms, r, ref, room_id, s, shift, shift_added, shift_fits, tpl;
           lanes = {};
           add_shift = function(shift, room_id) {
             var lane_nr;
@@ -280,20 +280,18 @@ Shifts = window.Shifts || {
               add_shift(shift, room_id);
             }
           }
-          Shifts.log("lanes:");
-          Shifts.log(lanes);
           mustache_rooms = {};
-          Shifts.log("rooms:");
-          Shifts.log(rooms);
           for (r in rooms) {
             room_id = rooms[r].RID;
-            Shifts.log(room_id);
             mustache_rooms[room_id] = {};
             mustache_rooms[room_id].Name = rooms[r].Name;
             mustache_rooms[room_id].lanes = [];
             for (lane_nr in lanes[room_id]) {
-              Shifts.log(lane_nr);
-              mustache_rooms[room_id].lanes[lane_nr] = lanes[room_id][lane_nr];
+              mustache_rooms[room_id].lanes[lane_nr] = {};
+              mustache_rooms[room_id].lanes[lane_nr].shifts = [];
+              for (s in lanes[room_id][lane_nr]) {
+                mustache_rooms[room_id].lanes[lane_nr].shifts = lanes[room_id][lane_nr];
+              }
             }
           }
           Shifts.log("mustache_rooms:");

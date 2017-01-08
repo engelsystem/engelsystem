@@ -240,27 +240,21 @@ Shifts = window.Shifts || {
                             highest_lane_nr = lanes[room_id].length - 1
                             add_shift(shift, room_id)
 
-                    Shifts.log "lanes:"
-                    Shifts.log lanes
-
                     # build datastruct for mustache
                     mustache_rooms = {}
                     #for lane in lanes
                     #    rooms.
 
-                    Shifts.log "rooms:"
-                    Shifts.log rooms
-
                     for r of rooms
                         room_id = rooms[r].RID
-                        Shifts.log room_id
                         mustache_rooms[room_id] = {}
                         mustache_rooms[room_id].Name = rooms[r].Name
                         mustache_rooms[room_id].lanes = []
-
                         for lane_nr of lanes[room_id]
-                            Shifts.log lane_nr
-                            mustache_rooms[room_id].lanes[lane_nr] = lanes[room_id][lane_nr]
+                            mustache_rooms[room_id].lanes[lane_nr] = {}
+                            mustache_rooms[room_id].lanes[lane_nr].shifts = []
+                            for s of lanes[room_id][lane_nr]
+                                mustache_rooms[room_id].lanes[lane_nr].shifts = lanes[room_id][lane_nr]
 
                     #mustache_rooms = [
                     #    { lanes: [
