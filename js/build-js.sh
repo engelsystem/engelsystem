@@ -1,3 +1,4 @@
 #!/bin/sh
 
-coffee -c -b --no-header -o ../public/js/ .
+cat *.coffee | coffee --compile --bare --no-header --stdio > ../public/js/shifts.js
+
