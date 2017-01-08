@@ -280,17 +280,17 @@ Shifts = window.Shifts || {
               add_shift(shift, room_id);
             }
           }
-          mustache_rooms = {};
+          mustache_rooms = [];
           for (r in rooms) {
             room_id = rooms[r].RID;
-            mustache_rooms[room_id] = {};
-            mustache_rooms[room_id].Name = rooms[r].Name;
-            mustache_rooms[room_id].lanes = [];
+            mustache_rooms[r] = {};
+            mustache_rooms[r].Name = rooms[r].Name;
+            mustache_rooms[r].lanes = [];
             for (lane_nr in lanes[room_id]) {
-              mustache_rooms[room_id].lanes[lane_nr] = {};
-              mustache_rooms[room_id].lanes[lane_nr].shifts = [];
+              mustache_rooms[r].lanes[lane_nr] = {};
+              mustache_rooms[r].lanes[lane_nr].shifts = [];
               for (s in lanes[room_id][lane_nr]) {
-                mustache_rooms[room_id].lanes[lane_nr].shifts = lanes[room_id][lane_nr];
+                mustache_rooms[r].lanes[lane_nr].shifts = lanes[room_id][lane_nr];
               }
             }
           }
