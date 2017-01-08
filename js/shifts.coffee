@@ -102,7 +102,7 @@ Shifts = window.Shifts || {
         get_my_shifts: (done) ->
             #alasql "SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", (res) ->
             rand = 1 + parseInt(Math.random() * 10, 10)
-            rand = 100
+            rand = 20
             alasql "SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.shift_start, Shifts.shift_end, Shifts.RID,
                 ShiftTypes.name as shifttype_name,
                 Room.Name as room_name
@@ -254,7 +254,9 @@ Shifts = window.Shifts || {
                             mustache_rooms[r].lanes[lane_nr] = {}
                             mustache_rooms[r].lanes[lane_nr].shifts = []
                             for s of lanes[room_id][lane_nr]
-                                mustache_rooms[r].lanes[lane_nr].shifts = lanes[room_id][lane_nr]
+                                for sid of lanes[room_id][lane_nr]
+                                    mustache_rooms[r].lanes[lane_nr].shifts[sid] =
+                                        shift: lanes[room_id][lane_nr][sid]
 
                     #mustache_rooms = [
                     #    { lanes: [
@@ -373,7 +375,7 @@ Shifts = window.Shifts || {
             {{#shift}}
                 <div class="shift panel panel-success" style="height: 235px;">
                   <div class="panel-heading">
-                    <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{name}}</a>
+                    <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{shifttype_name}}</a>
                     <div class="pull-right">
                       <div class="btn-group">
                         <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
@@ -382,8 +384,8 @@ Shifts = window.Shifts || {
                     </div>
                   </div>
                   <div class="panel-body">
-                    <span class="glyphicon glyphicon-info-sign"></span> {{title}}<br />
-                    <a href="?p=rooms&amp;action=view&amp;room_id=42"><span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H)</a>
+                    <span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />
+                    <a href="?p=rooms&amp;action=view&amp;room_id=42"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a>
                   </div>
                   <ul class="list-group">
                     <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong>
