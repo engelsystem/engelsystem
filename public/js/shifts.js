@@ -235,12 +235,17 @@ Shifts = window.Shifts || {
     shiftplan: function() {
       return Shifts.db.get_rooms(function(rooms) {
         return Shifts.db.get_my_shifts(function(db_shifts) {
-          var j, lanes, len, shift, tpl;
-          lanes = [];
+          var j, lanes, len, room_id, shift, tpl;
+          lanes = {};
           for (j = 0, len = db_shifts.length; j < len; j++) {
             shift = db_shifts[j];
             Shifts.log(shift);
+            room_id = shift.RID;
+            if (typeof lanes[room_id] === "undefined") {
+              lanes[room_id] = [shift];
+            }
           }
+          Shifts.log(lanes);
           tpl = '';
           tpl += Mustache.render(Shifts.template.filter_form);
           tpl += Mustache.render(Shifts.template.shift_calendar, {

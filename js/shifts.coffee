@@ -206,10 +206,32 @@ Shifts = window.Shifts || {
             Shifts.db.get_rooms (rooms) ->
                 Shifts.db.get_my_shifts (db_shifts) ->
 
-                    lanes = []
+                    lanes = {}
 
                     for shift in db_shifts
                         Shifts.log shift
+                        room_id = shift.RID
+
+                        if typeof lanes[room_id] == "undefined"
+                            # initialize room with one lane
+                            lanes[room_id] = [shift]
+
+                            #  // Try to add the shift to the existing lanes for this room
+                            #  $shift_added = false;
+                            #  foreach ($lanes[$room_id] as $lane) {
+                            #    $shift_added = $lane->addShift($shift);
+                            #    if ($shift_added == true) {
+                            #      break;
+                            #    }
+                            #  }
+                            #  // If all lanes for this room are busy, create a new lane and add shift to it
+                            #  if ($shift_added == false) {
+                            #    $newLane = new ShiftCalendarLane($header, $this->getFirstBlockStartTime(), $this->getBlocksPerSlot());
+                            #    if (! $newLane->addShift($shift)) {
+                            #      engelsystem_error("Unable to add shift to new lane.");
+                            #    }
+                            #    $lanes[$room_id][] = $newLane;
+                            #  }
 
                         # check if shift fits in lane (room)
                         #for lane_shift in room.shifts
@@ -220,7 +242,7 @@ Shifts = window.Shifts || {
                         #        room.shifts.push
                         #            shift: shift
 
-                        #Shifts.log lanes
+                    Shifts.log lanes
 
                     tpl = ''
                     tpl += Mustache.render Shifts.template.filter_form
