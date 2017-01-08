@@ -210,7 +210,6 @@ Shifts = window.Shifts || {
 
                     add_shift = (shift, room_id) ->
                         for lane_nr of lanes[room_id]
-                            Shifts.log "shift: #{shift}, room_id: #{room_id}, lane_nr: #{lane_nr}"
                             if shift_fits(shift, room_id, lane_nr)
                                 lanes[room_id][lane_nr].push shift
                                 return true
@@ -237,19 +236,10 @@ Shifts = window.Shifts || {
                                 break
 
                         if not shift_added
-                            # TODO: create new lane, add shift to it
-                            # TODO: when add_shift: try all lanes for room
-                            Shifts.log "jodenn."
-
-
-                        # check if shift fits in lane (room)
-                        #for lane_shift in room.shifts
-                        #    if not (shift.shift_start >= lane_shift.shift_end or shift.shift_end <= lane_shift.shift_start)
-                        #        Shifts.log lane_shift
-                        #        # todo: add lane, push
-                        #    else
-                        #        room.shifts.push
-                        #            shift: shift
+                            Shifts.log "lane is full, adding new one"
+                            lanes[room_id].push []
+                            highest_lane_nr = lanes[room_id].length - 1
+                            add_shift(shift, room_id)
 
                     Shifts.log lanes
 

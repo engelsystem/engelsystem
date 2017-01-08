@@ -235,12 +235,11 @@ Shifts = window.Shifts || {
     shiftplan: function() {
       return Shifts.db.get_rooms(function(rooms) {
         return Shifts.db.get_my_shifts(function(db_shifts) {
-          var add_shift, j, k, lane, lanes, len, len1, ref, room_id, shift, shift_added, shift_fits, tpl;
+          var add_shift, highest_lane_nr, j, k, lane, lanes, len, len1, ref, room_id, shift, shift_added, shift_fits, tpl;
           lanes = {};
           add_shift = function(shift, room_id) {
             var lane_nr;
             for (lane_nr in lanes[room_id]) {
-              Shifts.log("shift: " + shift + ", room_id: " + room_id + ", lane_nr: " + lane_nr);
               if (shift_fits(shift, room_id, lane_nr)) {
                 lanes[room_id][lane_nr].push(shift);
                 return true;
@@ -276,7 +275,10 @@ Shifts = window.Shifts || {
               }
             }
             if (!shift_added) {
-              Shifts.log("jodenn.");
+              Shifts.log("lane is full, adding new one");
+              lanes[room_id].push([]);
+              highest_lane_nr = lanes[room_id].length - 1;
+              add_shift(shift, room_id);
             }
           }
           Shifts.log(lanes);
