@@ -121,7 +121,7 @@ Shifts = window.Shifts || {
     get_my_shifts: function(done) {
       var rand;
       rand = 1 + parseInt(Math.random() * 10, 10);
-      rand = 20;
+      rand = 100;
       return alasql("SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.shift_start, Shifts.shift_end, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM Shifts LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id LEFT JOIN Room ON Room.RID = Shifts.RID LIMIT " + rand, function(res) {
         return done(res);
       });
@@ -260,10 +260,9 @@ Shifts = window.Shifts || {
           };
           for (j = 0, len = db_shifts.length; j < len; j++) {
             shift = db_shifts[j];
-            Shifts.log(shift);
             room_id = shift.RID;
             if (typeof lanes[room_id] === "undefined") {
-              lanes[room_id] = [[shift]];
+              lanes[room_id] = [[]];
             }
             shift_added = false;
             ref = lanes[room_id];
@@ -285,7 +284,7 @@ Shifts = window.Shifts || {
           tpl = '';
           tpl += Mustache.render(Shifts.template.filter_form);
           tpl += Mustache.render(Shifts.template.shift_calendar, {
-            lanes: rooms,
+            lanes: lanes,
             timelane_ticks: Shifts.render.timelane()
           });
           return Shifts.$shiftplan.html(tpl);

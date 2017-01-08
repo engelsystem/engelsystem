@@ -102,7 +102,7 @@ Shifts = window.Shifts || {
         get_my_shifts: (done) ->
             #alasql "SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", (res) ->
             rand = 1 + parseInt(Math.random() * 10, 10)
-            rand = 20
+            rand = 100
             alasql "SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.shift_start, Shifts.shift_end, Shifts.RID,
                 ShiftTypes.name as shifttype_name,
                 Room.Name as room_name
@@ -222,12 +222,11 @@ Shifts = window.Shifts || {
                         return true
 
                     for shift in db_shifts
-                        Shifts.log shift
                         room_id = shift.RID
 
                         if typeof lanes[room_id] == "undefined"
                             # initialize room with one lane
-                            lanes[room_id] = [[shift]] # lanes.roomid.lanenr.shifts
+                            lanes[room_id] = [[]] # lanes.roomid.lanenr.shifts
 
                         shift_added = false
                         for lane in lanes[room_id]
@@ -246,7 +245,7 @@ Shifts = window.Shifts || {
                     tpl = ''
                     tpl += Mustache.render Shifts.template.filter_form
                     tpl += Mustache.render Shifts.template.shift_calendar,
-                        lanes: rooms
+                        lanes: lanes
                         timelane_ticks: Shifts.render.timelane()
 
                     Shifts.$shiftplan.html(tpl)
