@@ -235,14 +235,32 @@ Shifts = window.Shifts || {
     shiftplan: function() {
       return Shifts.db.get_rooms(function(rooms) {
         return Shifts.db.get_my_shifts(function(db_shifts) {
-          var j, lanes, len, room_id, shift, tpl;
+          var add_shift, j, k, lane, lanes, len, len1, ref, room_id, shift, shift_added, shift_fits, tpl;
+          add_shift = function(shift, room_id) {
+            return true;
+          };
+          shift_fits = function(shift, room_id) {
+            return true;
+          };
           lanes = {};
           for (j = 0, len = db_shifts.length; j < len; j++) {
             shift = db_shifts[j];
             Shifts.log(shift);
             room_id = shift.RID;
             if (typeof lanes[room_id] === "undefined") {
-              lanes[room_id] = [shift];
+              lanes[room_id] = [[shift]];
+            }
+            shift_added = false;
+            ref = lanes[room_id];
+            for (k = 0, len1 = ref.length; k < len1; k++) {
+              lane = ref[k];
+              shift_added = add_shift(shift, room_id);
+              if (shift_added) {
+                break;
+              }
+            }
+            if (!shift_added) {
+              Shifts.log("jodenn.");
             }
           }
           Shifts.log(lanes);

@@ -206,6 +206,12 @@ Shifts = window.Shifts || {
             Shifts.db.get_rooms (rooms) ->
                 Shifts.db.get_my_shifts (db_shifts) ->
 
+                    add_shift = (shift, room_id) ->
+                        return true
+
+                    shift_fits = (shift, room_id) ->
+                        return true
+
                     lanes = {}
 
                     for shift in db_shifts
@@ -214,24 +220,33 @@ Shifts = window.Shifts || {
 
                         if typeof lanes[room_id] == "undefined"
                             # initialize room with one lane
-                            lanes[room_id] = [shift]
+                            lanes[room_id] = [[shift]] # lanes.roomid.laneid.shifts
 
-                            #  // Try to add the shift to the existing lanes for this room
-                            #  $shift_added = false;
-                            #  foreach ($lanes[$room_id] as $lane) {
-                            #    $shift_added = $lane->addShift($shift);
-                            #    if ($shift_added == true) {
-                            #      break;
-                            #    }
-                            #  }
-                            #  // If all lanes for this room are busy, create a new lane and add shift to it
-                            #  if ($shift_added == false) {
-                            #    $newLane = new ShiftCalendarLane($header, $this->getFirstBlockStartTime(), $this->getBlocksPerSlot());
-                            #    if (! $newLane->addShift($shift)) {
-                            #      engelsystem_error("Unable to add shift to new lane.");
-                            #    }
-                            #    $lanes[$room_id][] = $newLane;
-                            #  }
+                        shift_added = false
+                        for lane in lanes[room_id]
+                            shift_added = add_shift(shift, room_id)
+                            if shift_added
+                                break
+
+                        if not shift_added
+                            Shifts.log "jodenn."
+
+                        #  // Try to add the shift to the existing lanes for this room
+                        #  $shift_added = false;
+                        #  foreach ($lanes[$room_id] as $lane) {
+                        #    $shift_added = $lane->addShift($shift);
+                        #    if ($shift_added == true) {
+                        #      break;
+                        #    }
+                        #  }
+                        #  // If all lanes for this room are busy, create a new lane and add shift to it
+                        #  if ($shift_added == false) {
+                        #    $newLane = new ShiftCalendarLane($header, $this->getFirstBlockStartTime(), $this->getBlocksPerSlot());
+                        #    if (! $newLane->addShift($shift)) {
+                        #      engelsystem_error("Unable to add shift to new lane.");
+                        #    }
+                        #    $lanes[$room_id][] = $newLane;
+                        #  }
 
                         # check if shift fits in lane (room)
                         #for lane_shift in room.shifts
