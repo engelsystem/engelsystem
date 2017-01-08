@@ -268,7 +268,7 @@ Shifts.render = {
   shiftplan: function() {
     return Shifts.db.get_rooms(function(rooms) {
       return Shifts.db.get_my_shifts(function(db_shifts) {
-        var add_shift, highest_lane_nr, j, k, lane, lane_nr, lanes, len, len1, mustache_rooms, ref, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, tpl;
+        var add_shift, highest_lane_nr, j, k, l, lane, lane_nr, lanes, len, len1, m, mustache_rooms, ref, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, t, tpl;
         lanes = {};
         add_shift = function(shift, room_id) {
           var blocks, height, lane_nr;
@@ -327,9 +327,19 @@ Shifts.render = {
             mustache_rooms[room_nr].lanes[lane_nr] = {};
             mustache_rooms[room_nr].lanes[lane_nr].shifts = [];
             for (shift_nr in lanes[room_id][lane_nr]) {
-              mustache_rooms[room_nr].lanes[lane_nr].shifts[shift_nr] = {
+              for (t = l = 1; l <= 2; t = ++l) {
+                mustache_rooms[room_nr].lanes[lane_nr].shifts.push({
+                  tick: true
+                });
+              }
+              mustache_rooms[room_nr].lanes[lane_nr].shifts.push({
                 shift: lanes[room_id][lane_nr][shift_nr]
-              };
+              });
+              for (t = m = 1; m <= 2; t = ++m) {
+                mustache_rooms[room_nr].lanes[lane_nr].shifts.push({
+                  tick: true
+                });
+              }
             }
           }
         }

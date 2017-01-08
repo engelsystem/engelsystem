@@ -99,13 +99,16 @@ Shifts.render =
                             # render ticks.
                             # render_until = firstblockstarttime
                             # while ru < shift_start
+                            for t in [1..2]
+                                mustache_rooms[room_nr].lanes[lane_nr].shifts.push { tick: true }
 
-                            mustache_rooms[room_nr].lanes[lane_nr].shifts[shift_nr] =
-                                shift: lanes[room_id][lane_nr][shift_nr]
+                            mustache_rooms[room_nr].lanes[lane_nr].shifts.push { shift: lanes[room_id][lane_nr][shift_nr] }
 
                             # render ticks till end block.
                             # render_until = firstblockstarttime
                             # while ru < lastblock_endtime
+                            for t in [1..2]
+                                mustache_rooms[room_nr].lanes[lane_nr].shifts.push { tick: true }
 
                 Shifts.log mustache_rooms
 
