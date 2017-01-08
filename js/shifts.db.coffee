@@ -109,13 +109,13 @@ Shifts.db =
         end_time = start_time + 24*60*60
 
         alasql "SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.shift_start, Shifts.shift_end, Shifts.RID,
-            ShiftTypes.name as shifttype_name,
-            Room.Name as room_name
-            FROM Shifts
-            LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
-            LEFT JOIN Room ON Room.RID = Shifts.RID
-            WHERE Shifts.shift_start >= #{start_time} AND Shifts.shift_end <= #{end_time}
-            LIMIT #{rand}", (res) ->
+        ShiftTypes.name as shifttype_name,
+        Room.Name as room_name
+        FROM Shifts
+        LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
+        LEFT JOIN Room ON Room.RID = Shifts.RID
+        WHERE Shifts.shift_start >= #{start_time} AND Shifts.shift_end <= #{end_time}
+        LIMIT #{rand}", (res) ->
             done res
 
     get_rooms: (done) ->
