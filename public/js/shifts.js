@@ -122,7 +122,7 @@ Shifts = window.Shifts || {
       var rand;
       rand = 1 + parseInt(Math.random() * 10, 10);
       rand = 20;
-      return alasql("SELECT * FROM Shifts LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id LIMIT " + rand, function(res) {
+      return alasql("SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.shift_start, Shifts.shift_end, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM Shifts LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id LEFT JOIN Room ON Room.RID = Shifts.RID LIMIT " + rand, function(res) {
         return done(res);
       });
     },
@@ -235,25 +235,11 @@ Shifts = window.Shifts || {
     shiftplan: function() {
       return Shifts.db.get_rooms(function(rooms) {
         return Shifts.db.get_my_shifts(function(db_shifts) {
-          var j, k, l, len, len1, random_ticks, ref, room, shift, ticks, tpl;
-          for (j = 0, len = rooms.length; j < len; j++) {
-            room = rooms[j];
-            room.shifts = [];
-            for (k = 0, len1 = db_shifts.length; k < len1; k++) {
-              shift = db_shifts[k];
-              if (shift.RID === room.RID) {
-                room.shifts.push({
-                  shift: shift
-                });
-                random_ticks = 1;
-                for (ticks = l = 1, ref = random_ticks; 1 <= ref ? l <= ref : l >= ref; ticks = 1 <= ref ? ++l : --l) {
-                  room.shifts.push({
-                    tick: true
-                  });
-                }
-              }
-            }
-            Shifts.log(room);
+          var j, lanes, len, shift, tpl;
+          lanes = [];
+          for (j = 0, len = db_shifts.length; j < len; j++) {
+            shift = db_shifts[j];
+            Shifts.log(shift);
           }
           tpl = '';
           tpl += Mustache.render(Shifts.template.filter_form);

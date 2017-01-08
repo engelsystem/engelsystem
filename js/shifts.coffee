@@ -103,7 +103,13 @@ Shifts = window.Shifts || {
             #alasql "SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", (res) ->
             rand = 1 + parseInt(Math.random() * 10, 10)
             rand = 20
-            alasql "SELECT * FROM Shifts LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id LIMIT #{rand}", (res) ->
+            alasql "SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.shift_start, Shifts.shift_end, Shifts.RID,
+                ShiftTypes.name as shifttype_name,
+                Room.Name as room_name
+                FROM Shifts
+                LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
+                LEFT JOIN Room ON Room.RID = Shifts.RID
+                LIMIT #{rand}", (res) ->
                 done res
 
         get_rooms: (done) ->
@@ -199,17 +205,22 @@ Shifts = window.Shifts || {
         shiftplan: ->
             Shifts.db.get_rooms (rooms) ->
                 Shifts.db.get_my_shifts (db_shifts) ->
-                    for room in rooms
-                        room.shifts = []
-                        for shift in db_shifts
-                            if shift.RID == room.RID
-                                room.shifts.push
-                                    shift: shift
-                                random_ticks = 1 #1 + Math.floor(Math.random() * 7)
-                                for ticks in [1..random_ticks]
-                                    room.shifts.push
-                                        tick: true
-                        Shifts.log room
+
+                    lanes = []
+
+                    for shift in db_shifts
+                        Shifts.log shift
+
+                        # check if shift fits in lane (room)
+                        #for lane_shift in room.shifts
+                        #    if not (shift.shift_start >= lane_shift.shift_end or shift.shift_end <= lane_shift.shift_start)
+                        #        Shifts.log lane_shift
+                        #        # todo: add lane, push
+                        #    else
+                        #        room.shifts.push
+                        #            shift: shift
+
+                        #Shifts.log lanes
 
                     tpl = ''
                     tpl += Mustache.render Shifts.template.filter_form
