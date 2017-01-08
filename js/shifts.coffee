@@ -240,12 +240,40 @@ Shifts = window.Shifts || {
                             highest_lane_nr = lanes[room_id].length - 1
                             add_shift(shift, room_id)
 
+                    Shifts.log "lanes:"
                     Shifts.log lanes
+
+                    # build datastruct for mustache
+                    mustache_rooms = {}
+                    #for lane in lanes
+                    #    rooms.
+
+                    Shifts.log "rooms:"
+                    Shifts.log rooms
+
+                    for r of rooms
+                        room_id = rooms[r].RID
+                        Shifts.log room_id
+                        mustache_rooms[room_id] =
+                            Name: rooms[r].Name
+                            lanes: lanes[room_id]
+
+                    #mustache_rooms = [
+                    #    { lanes: [
+                    #        {Name: 'sdf'}
+                    #    ] }
+                    #    { lanes: [
+                    #        {Name: 'rdf'}
+                    #    ] }
+                    #]
+
+                    Shifts.log "mustache_rooms:"
+                    Shifts.log mustache_rooms
 
                     tpl = ''
                     tpl += Mustache.render Shifts.template.filter_form
                     tpl += Mustache.render Shifts.template.shift_calendar,
-                        lanes: lanes
+                        rooms: mustache_rooms
                         timelane_ticks: Shifts.render.timelane()
 
                     Shifts.$shiftplan.html(tpl)
@@ -328,51 +356,53 @@ Shifts = window.Shifts || {
     {{/timelane_ticks}}
   </div>
 
-{{#lanes}}
-  <div class="lane">
-    <div class="header">
-      <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a>
-    </div>
-    {{#shifts}}
-        {{#tick}}
-            <div class="tick"></div>
-        {{/tick}}
-        {{#tick_hour}}
-            <div class="tick hour">{{text}}</div>
-        {{/tick_hour}}
-        {{#tick_day}}
-            <div class="tick day">{{text}}</div>
-        {{/tick_day}}
-        {{#shift}}
-            <div class="shift panel panel-success" style="height: 235px;">
-              <div class="panel-heading">
-                <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{name}}</a>
-                <div class="pull-right">
-                  <div class="btn-group">
-                    <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
-                    <a href="?p=user_shifts&amp;delete_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+{{#rooms}}
+    {{#lanes}}
+      <div class="lane">
+        <div class="header">
+          <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a>
+        </div>
+        {{#shifts}}
+            {{#tick}}
+                <div class="tick"></div>
+            {{/tick}}
+            {{#tick_hour}}
+                <div class="tick hour">{{text}}</div>
+            {{/tick_hour}}
+            {{#tick_day}}
+                <div class="tick day">{{text}}</div>
+            {{/tick_day}}
+            {{#shift}}
+                <div class="shift panel panel-success" style="height: 235px;">
+                  <div class="panel-heading">
+                    <a href="?p=shifts&amp;action=view&amp;shift_id=2696">00:00 ‐ 02:00 — {{name}}</a>
+                    <div class="pull-right">
+                      <div class="btn-group">
+                        <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a href="?p=user_shifts&amp;delete_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                      </div>
+                    </div>
                   </div>
+                  <div class="panel-body">
+                    <span class="glyphicon glyphicon-info-sign"></span> {{title}}<br />
+                    <a href="?p=rooms&amp;action=view&amp;room_id=42"><span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H)</a>
+                  </div>
+                  <ul class="list-group">
+                    <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong>
+                      <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>,
+                      <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span>
+                    </li>
+                    <li class="list-group-item">
+                      <a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a>
+                    </li>
+                  </ul>
+                  <div class="shift-spacer"></div>
                 </div>
-              </div>
-              <div class="panel-body">
-                <span class="glyphicon glyphicon-info-sign"></span> {{title}}<br />
-                <a href="?p=rooms&amp;action=view&amp;room_id=42"><span class="glyphicon glyphicon-map-marker"></span> Bottle Sorting (Hall H)</a>
-              </div>
-              <ul class="list-group">
-                <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong>
-                  <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>,
-                  <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span>
-                </li>
-                <li class="list-group-item">
-                  <a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a>
-                </li>
-              </ul>
-              <div class="shift-spacer"></div>
-            </div>
-        {{/shift}}
-    {{/shifts}}
-  </div>
-{{/lanes}}
+            {{/shift}}
+        {{/shifts}}
+      </div>
+    {{/lanes}}
+{{/rooms}}
 </div>'
 
 }
