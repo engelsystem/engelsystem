@@ -47,6 +47,10 @@ Shifts.render =
 
                 add_shift = (shift, room_id) ->
 
+                    # fix empty title
+                    if shift.shift_title == "null"
+                        shift.shift_title = null
+
                     # calculate shift height
                     blocks = Math.ceil(shift.shift_end - shift.shift_start) / Shifts.render.SECONDS_PER_ROW
                     blocks = Math.max(1, blocks)
@@ -107,8 +111,8 @@ Shifts.render =
                             # render ticks till end block.
                             # render_until = firstblockstarttime
                             # while ru < lastblock_endtime
-                            for t in [1..2]
-                                mustache_rooms[room_nr].lanes[lane_nr].shifts.push { tick: true }
+                            #for t in [1..2]
+                            #    mustache_rooms[room_nr].lanes[lane_nr].shifts.push { tick: true }
 
                 Shifts.log mustache_rooms
 

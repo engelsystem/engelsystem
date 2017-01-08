@@ -89,7 +89,7 @@ Shifts.templates =
                     </div>
                   </div>
                   <div class="panel-body">
-                    <span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />
+                    {{#shift_title}}<span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />{{/shift_title}}
                     <a href="?p=rooms&amp;action=view&amp;room_id=42"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a>
                   </div>
                   <ul class="list-group">
