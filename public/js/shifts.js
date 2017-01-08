@@ -237,10 +237,19 @@ Shifts = window.Shifts || {
         return Shifts.db.get_my_shifts(function(db_shifts) {
           var add_shift, j, k, lane, lanes, len, len1, ref, room_id, shift, shift_added, shift_fits, tpl;
           add_shift = function(shift, room_id) {
-            return true;
+            var lane_nr;
+            for (lane_nr in lanes[room_id]) {
+              Shifts.log("shift: " + shift + ", room_id: " + room_id + ", lane_nr: " + lane_nr);
+              if (shift_fits(shift, room_id, lane_nr)) {
+                Shifts.log("retting tru");
+                lanes[room_id][lane_nr] = shift;
+                return true;
+              }
+            }
+            return false;
           };
-          shift_fits = function(shift, room_id) {
-            return true;
+          shift_fits = function(shift, room_id, lane_nr) {
+            return false;
           };
           lanes = {};
           for (j = 0, len = db_shifts.length; j < len; j++) {

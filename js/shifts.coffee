@@ -207,10 +207,16 @@ Shifts = window.Shifts || {
                 Shifts.db.get_my_shifts (db_shifts) ->
 
                     add_shift = (shift, room_id) ->
-                        return true
+                        for lane_nr of lanes[room_id]
+                            Shifts.log "shift: #{shift}, room_id: #{room_id}, lane_nr: #{lane_nr}"
+                            if shift_fits(shift, room_id, lane_nr)
+                                Shifts.log "retting tru"
+                                lanes[room_id][lane_nr] = shift
+                                return true
+                        return false
 
-                    shift_fits = (shift, room_id) ->
-                        return true
+                    shift_fits = (shift, room_id, lane_nr) ->
+                        return false
 
                     lanes = {}
 
@@ -220,7 +226,7 @@ Shifts = window.Shifts || {
 
                         if typeof lanes[room_id] == "undefined"
                             # initialize room with one lane
-                            lanes[room_id] = [[shift]] # lanes.roomid.laneid.shifts
+                            lanes[room_id] = [[shift]] # lanes.roomid.lanenr.shifts
 
                         shift_added = false
                         for lane in lanes[room_id]
@@ -229,6 +235,8 @@ Shifts = window.Shifts || {
                                 break
 
                         if not shift_added
+                            # TODO: create new lane, add shift to it
+                            # TODO: when add_shift: try all lanes for room
                             Shifts.log "jodenn."
 
                         #  // Try to add the shift to the existing lanes for this room
