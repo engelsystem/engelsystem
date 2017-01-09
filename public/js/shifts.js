@@ -380,7 +380,6 @@ Shifts.render = {
             }
           }
         }
-        Shifts.log(mustache_rooms);
         tpl = '';
         tpl += Mustache.render(Shifts.templates.filter_form);
         tpl += Mustache.render(Shifts.templates.shift_calendar, {
