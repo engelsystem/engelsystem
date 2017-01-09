@@ -43,6 +43,9 @@ Shifts.render =
         start_time = start_time - Shifts.render.TIME_MARGIN
         return start_time
 
+    get_endtime: ->
+        return Shifts.render.get_starttime() + 24*60*60
+
     shiftplan: ->
         Shifts.db.get_rooms (rooms) ->
             Shifts.db.get_my_shifts (db_shifts) ->
@@ -79,7 +82,7 @@ Shifts.render =
 
                 # temporary
                 start_time = Shifts.render.get_starttime()
-                end_time = start_time + 24*60*60
+                end_time = Shifts.render.get_endtime()
                 # /temporary
 
                 firstblock_starttime = end_time
@@ -123,7 +126,7 @@ Shifts.render =
                         mustache_rooms[room_nr].lanes[lane_nr] = {}
                         mustache_rooms[room_nr].lanes[lane_nr].shifts = []
 
-                        rendered_until = firstblock_starttime
+                        rendered_until = firstblock_starttime - Shifts.render.TIME_MARGIN
 
                         for shift_nr of lanes[room_id][lane_nr]
 

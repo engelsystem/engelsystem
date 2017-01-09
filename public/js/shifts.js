@@ -270,6 +270,9 @@ Shifts.render = {
     start_time = start_time - Shifts.render.TIME_MARGIN;
     return start_time;
   },
+  get_endtime: function() {
+    return Shifts.render.get_starttime() + 24 * 60 * 60;
+  },
   shiftplan: function() {
     return Shifts.db.get_rooms(function(rooms) {
       return Shifts.db.get_my_shifts(function(db_shifts) {
@@ -307,7 +310,7 @@ Shifts.render = {
           return true;
         };
         start_time = Shifts.render.get_starttime();
-        end_time = start_time + 24 * 60 * 60;
+        end_time = Shifts.render.get_endtime();
         firstblock_starttime = end_time;
         lastblock_endtime = start_time;
         for (j = 0, len = db_shifts.length; j < len; j++) {
@@ -347,7 +350,7 @@ Shifts.render = {
           for (lane_nr in lanes[room_id]) {
             mustache_rooms[room_nr].lanes[lane_nr] = {};
             mustache_rooms[room_nr].lanes[lane_nr].shifts = [];
-            rendered_until = firstblock_starttime;
+            rendered_until = firstblock_starttime - Shifts.render.TIME_MARGIN;
             for (shift_nr in lanes[room_id][lane_nr]) {
               while (rendered_until + Shifts.render.SECONDS_PER_ROW <= lanes[room_id][lane_nr][shift_nr].shift_start) {
                 mustache_rooms[room_nr].lanes[lane_nr].shifts.push(Shifts.render.tick(rendered_until, true));
