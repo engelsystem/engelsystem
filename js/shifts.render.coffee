@@ -30,14 +30,18 @@ Shifts.render =
 
     timelane: ->
         time_slot = []
-        start_time = moment(moment().format('YYYY-MM-DD')).format('X')
-        start_time = parseInt start_time, 10
-        start_time = start_time - Shifts.render.TIME_MARGIN
+        start_time = Shifts.render.get_starttime()
         for i in [0..100]
             thistime = start_time + i * Shifts.render.SECONDS_PER_ROW
             time_slot.push Shifts.render.tick thistime, true
 
         return time_slot
+
+    get_starttime: ->
+        start_time = moment(moment().format('YYYY-MM-DD')).format('X')
+        start_time = parseInt start_time, 10
+        start_time = start_time - Shifts.render.TIME_MARGIN
+        return start_time
 
     shiftplan: ->
         Shifts.db.get_rooms (rooms) ->
@@ -50,10 +54,15 @@ Shifts.render =
                     if shift.shift_title == "null"
                         shift.shift_title = null
 
+                    # start- and endtime
+                    shift.starttime = moment(shift.shift_start*1000).format('HH:mm')
+                    shift.endtime = moment(shift.shift_end*1000).format('HH:mm')
+
                     # calculate shift height
                     blocks = Math.ceil(shift.shift_end - shift.shift_start) / Shifts.render.SECONDS_PER_ROW
                     blocks = Math.max(1, blocks)
                     height = blocks * Shifts.render.BLOCK_HEIGHT - Shifts.render.MARGIN
+                    shift.blocks = blocks
                     shift.height = height
 
                     for lane_nr of lanes[room_id]
@@ -69,9 +78,7 @@ Shifts.render =
                     return true
 
                 # temporary
-                start_time = moment(moment().format('YYYY-MM-DD')).format('X')
-                start_time = parseInt start_time, 10
-                start_time = start_time - Shifts.render.TIME_MARGIN
+                start_time = Shifts.render.get_starttime()
                 end_time = start_time + 24*60*60
                 # /temporary
 
@@ -117,20 +124,17 @@ Shifts.render =
                         mustache_rooms[room_nr].lanes[lane_nr].shifts = []
 
                         rendered_until = firstblock_starttime
+
                         for shift_nr of lanes[room_id][lane_nr]
 
                             # render ticks
-                            Shifts.log lanes[room_id][lane_nr][shift_nr].shift_start
                             while rendered_until + Shifts.render.SECONDS_PER_ROW <= lanes[room_id][lane_nr][shift_nr].shift_start
                                 mustache_rooms[room_nr].lanes[lane_nr].shifts.push Shifts.render.tick(rendered_until, true)
-                                Shifts.log "tick start"
-                                Shifts.log mustache_rooms[room_nr].lanes[lane_nr].shifts
-                                Shifts.log "tick end\n"
                                 rendered_until += Shifts.render.SECONDS_PER_ROW
 
                             # render shift
                             mustache_rooms[room_nr].lanes[lane_nr].shifts.push { shift: lanes[room_id][lane_nr][shift_nr] }
-                            rendered_until += lanes[room_id][lane_nr][shift_nr].height * Shifts.render.SECONDS_PER_ROW
+                            rendered_until += lanes[room_id][lane_nr][shift_nr].blocks * Shifts.render.SECONDS_PER_ROW
 
                         # render ticks till end block.
                         while rendered_until < lastblock_endtime
