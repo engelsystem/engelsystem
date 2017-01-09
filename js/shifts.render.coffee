@@ -76,6 +76,7 @@ Shifts.render =
                 # /temporary
 
                 firstblock_starttime = end_time
+                lastblock_endtime = start_time
 
                 for shift in db_shifts
                     room_id = shift.RID
@@ -100,6 +101,10 @@ Shifts.render =
                     if shift.shift_start < firstblock_starttime
                         firstblock_starttime = shift.shift_start
 
+                    # calculate last block end time
+                    if shift.shift_end > lastblock_endtime
+                        lastblock_endtime = shift.shift_end
+
                 # build datastruct for mustache
                 mustache_rooms = []
                 for room_nr of rooms
@@ -110,21 +115,27 @@ Shifts.render =
                     for lane_nr of lanes[room_id]
                         mustache_rooms[room_nr].lanes[lane_nr] = {}
                         mustache_rooms[room_nr].lanes[lane_nr].shifts = []
+
+                        rendered_until = firstblock_starttime
                         for shift_nr of lanes[room_id][lane_nr]
 
-                            # render ticks.
-                            # render_until = firstblockstarttime
-                            # while ru < shift_start
-                            for t in [1..2]
-                                mustache_rooms[room_nr].lanes[lane_nr].shifts.push { tick: true }
+                            # render ticks
+                            Shifts.log lanes[room_id][lane_nr][shift_nr].shift_start
+                            while rendered_until + Shifts.render.SECONDS_PER_ROW <= lanes[room_id][lane_nr][shift_nr].shift_start
+                                mustache_rooms[room_nr].lanes[lane_nr].shifts.push Shifts.render.tick(rendered_until, true)
+                                Shifts.log "tick start"
+                                Shifts.log mustache_rooms[room_nr].lanes[lane_nr].shifts
+                                Shifts.log "tick end\n"
+                                rendered_until += Shifts.render.SECONDS_PER_ROW
 
+                            # render shift
                             mustache_rooms[room_nr].lanes[lane_nr].shifts.push { shift: lanes[room_id][lane_nr][shift_nr] }
+                            rendered_until += lanes[room_id][lane_nr][shift_nr].height * Shifts.render.SECONDS_PER_ROW
 
-                            # render ticks till end block.
-                            # render_until = firstblockstarttime
-                            # while ru < lastblock_endtime
-                            #for t in [1..2]
-                            #    mustache_rooms[room_nr].lanes[lane_nr].shifts.push { tick: true }
+                        # render ticks till end block.
+                        while rendered_until < lastblock_endtime
+                            mustache_rooms[room_nr].lanes[lane_nr].shifts.push Shifts.render.tick(rendered_until, true)
+                            rendered_until += Shifts.render.SECONDS_PER_ROW
 
                 Shifts.log mustache_rooms
 

@@ -268,7 +268,7 @@ Shifts.render = {
   shiftplan: function() {
     return Shifts.db.get_rooms(function(rooms) {
       return Shifts.db.get_my_shifts(function(db_shifts) {
-        var add_shift, end_time, firstblock_starttime, highest_lane_nr, j, k, l, lane, lane_nr, lanes, len, len1, mustache_rooms, ref, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, start_time, t, tpl;
+        var add_shift, end_time, firstblock_starttime, highest_lane_nr, j, k, lane, lane_nr, lanes, lastblock_endtime, len, len1, mustache_rooms, ref, rendered_until, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, start_time, tpl;
         lanes = {};
         add_shift = function(shift, room_id) {
           var blocks, height, lane_nr;
@@ -303,6 +303,7 @@ Shifts.render = {
         start_time = start_time - Shifts.render.TIME_MARGIN;
         end_time = start_time + 24 * 60 * 60;
         firstblock_starttime = end_time;
+        lastblock_endtime = start_time;
         for (j = 0, len = db_shifts.length; j < len; j++) {
           shift = db_shifts[j];
           room_id = shift.RID;
@@ -327,6 +328,9 @@ Shifts.render = {
           if (shift.shift_start < firstblock_starttime) {
             firstblock_starttime = shift.shift_start;
           }
+          if (shift.shift_end > lastblock_endtime) {
+            lastblock_endtime = shift.shift_end;
+          }
         }
         mustache_rooms = [];
         for (room_nr in rooms) {
@@ -337,15 +341,24 @@ Shifts.render = {
           for (lane_nr in lanes[room_id]) {
             mustache_rooms[room_nr].lanes[lane_nr] = {};
             mustache_rooms[room_nr].lanes[lane_nr].shifts = [];
+            rendered_until = firstblock_starttime;
             for (shift_nr in lanes[room_id][lane_nr]) {
-              for (t = l = 1; l <= 2; t = ++l) {
-                mustache_rooms[room_nr].lanes[lane_nr].shifts.push({
-                  tick: true
-                });
+              Shifts.log(lanes[room_id][lane_nr][shift_nr].shift_start);
+              while (rendered_until + Shifts.render.SECONDS_PER_ROW <= lanes[room_id][lane_nr][shift_nr].shift_start) {
+                mustache_rooms[room_nr].lanes[lane_nr].shifts.push(Shifts.render.tick(rendered_until, true));
+                Shifts.log("tick start");
+                Shifts.log(mustache_rooms[room_nr].lanes[lane_nr].shifts);
+                Shifts.log("tick end\n");
+                rendered_until += Shifts.render.SECONDS_PER_ROW;
               }
               mustache_rooms[room_nr].lanes[lane_nr].shifts.push({
                 shift: lanes[room_id][lane_nr][shift_nr]
               });
+              rendered_until += lanes[room_id][lane_nr][shift_nr].height * Shifts.render.SECONDS_PER_ROW;
+            }
+            while (rendered_until < lastblock_endtime) {
+              mustache_rooms[room_nr].lanes[lane_nr].shifts.push(Shifts.render.tick(rendered_until, true));
+              rendered_until += Shifts.render.SECONDS_PER_ROW;
             }
           }
         }
