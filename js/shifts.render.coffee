@@ -46,7 +46,6 @@ Shifts.render =
                 lanes = {}
 
                 add_shift = (shift, room_id) ->
-
                     # fix empty title
                     if shift.shift_title == "null"
                         shift.shift_title = null
@@ -69,11 +68,20 @@ Shifts.render =
                             return false
                     return true
 
+                # temporary
+                start_time = moment(moment().format('YYYY-MM-DD')).format('X')
+                start_time = parseInt start_time, 10
+                start_time = start_time - Shifts.render.TIME_MARGIN
+                end_time = start_time + 24*60*60
+                # /temporary
+
+                firstblock_starttime = end_time
+
                 for shift in db_shifts
                     room_id = shift.RID
 
                     if typeof lanes[room_id] == "undefined"
-                        # initialize room with one lane
+                        # initialize room
                         lanes[room_id] = [[]] # lanes.roomid.lanenr.shifts
 
                     shift_added = false
@@ -87,6 +95,10 @@ Shifts.render =
                         lanes[room_id].push []
                         highest_lane_nr = lanes[room_id].length - 1
                         add_shift(shift, room_id)
+
+                    # calculate first block start time
+                    if shift.shift_start < firstblock_starttime
+                        firstblock_starttime = shift.shift_start
 
                 # build datastruct for mustache
                 mustache_rooms = []
