@@ -95,6 +95,15 @@ Shifts.render =
                 lastblock_endtime = start_time
 
                 for shift in db_shifts
+
+                    # calculate first block start time
+                    if shift.shift_start < firstblock_starttime
+                        firstblock_starttime = shift.shift_start
+
+                    # calculate last block end time
+                    if shift.shift_end > lastblock_endtime
+                        lastblock_endtime = shift.shift_end
+
                     room_id = shift.RID
 
                     if typeof lanes[room_id] == "undefined"
@@ -112,14 +121,6 @@ Shifts.render =
                         lanes[room_id].push []
                         highest_lane_nr = lanes[room_id].length - 1
                         add_shift(shift, room_id)
-
-                    # calculate first block start time
-                    if shift.shift_start < firstblock_starttime
-                        firstblock_starttime = shift.shift_start
-
-                    # calculate last block end time
-                    if shift.shift_end > lastblock_endtime
-                        lastblock_endtime = shift.shift_end
 
                 # build datastruct for mustache
                 mustache_rooms = []

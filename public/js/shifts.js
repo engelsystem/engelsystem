@@ -328,6 +328,12 @@ Shifts.render = {
         lastblock_endtime = start_time;
         for (i = 0, len = db_shifts.length; i < len; i++) {
           shift = db_shifts[i];
+          if (shift.shift_start < firstblock_starttime) {
+            firstblock_starttime = shift.shift_start;
+          }
+          if (shift.shift_end > lastblock_endtime) {
+            lastblock_endtime = shift.shift_end;
+          }
           room_id = shift.RID;
           if (typeof lanes[room_id] === "undefined") {
             lanes[room_id] = [[]];
@@ -346,12 +352,6 @@ Shifts.render = {
             lanes[room_id].push([]);
             highest_lane_nr = lanes[room_id].length - 1;
             add_shift(shift, room_id);
-          }
-          if (shift.shift_start < firstblock_starttime) {
-            firstblock_starttime = shift.shift_start;
-          }
-          if (shift.shift_end > lastblock_endtime) {
-            lastblock_endtime = shift.shift_end;
           }
         }
         mustache_rooms = [];
