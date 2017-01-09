@@ -103,10 +103,8 @@ Shifts.db =
         rand = 1 + parseInt(Math.random() * 10, 10)
         rand = 2000
 
-        start_time = moment(moment().format('YYYY-MM-DD')).format('X')
-        start_time = parseInt start_time, 10
-        start_time = start_time - Shifts.render.TIME_MARGIN
-        end_time = start_time + 24*60*60
+        start_time = Shifts.render.get_starttime()
+        end_time = Shifts.render.get_endtime()
 
         alasql "SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.shift_start, Shifts.shift_end, Shifts.RID,
         ShiftTypes.name as shifttype_name,
