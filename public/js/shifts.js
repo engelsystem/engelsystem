@@ -383,8 +383,8 @@ Shifts.render = {
         tpl = '';
         tpl += Mustache.render(Shifts.templates.filter_form);
         tpl += Mustache.render(Shifts.templates.shift_calendar, {
-          rooms: mustache_rooms,
-          timelane_ticks: Shifts.render.timelane()
+          timelane_ticks: Shifts.render.timelane(),
+          rooms: mustache_rooms
         });
         return Shifts.$shiftplan.html(tpl);
       });
