@@ -48,33 +48,33 @@ Shifts.db = {
   },
   populate_ids: function(done) {
     return alasql("SELECT RID from Room", function(res) {
-      var j, len, r;
-      for (j = 0, len = res.length; j < len; j++) {
-        r = res[j];
+      var i, len, r;
+      for (i = 0, len = res.length; i < len; i++) {
+        r = res[i];
         Shifts.db.room_ids.push(r.RID);
       }
       return alasql("SELECT UID from User", function(res) {
-        var k, len1, u;
-        for (k = 0, len1 = res.length; k < len1; k++) {
-          u = res[k];
+        var j, len1, u;
+        for (j = 0, len1 = res.length; j < len1; j++) {
+          u = res[j];
           Shifts.db.user_ids.push(u.UID);
         }
         return alasql("SELECT id from ShiftTypes", function(res) {
-          var l, len2, s;
-          for (l = 0, len2 = res.length; l < len2; l++) {
-            s = res[l];
+          var k, len2, s;
+          for (k = 0, len2 = res.length; k < len2; k++) {
+            s = res[k];
             Shifts.db.shifttype_ids.push(s.id);
           }
           return alasql("SELECT SID from Shifts", function(res) {
-            var len3, m;
-            for (m = 0, len3 = res.length; m < len3; m++) {
-              s = res[m];
+            var l, len3;
+            for (l = 0, len3 = res.length; l < len3; l++) {
+              s = res[l];
               Shifts.db.shift_ids.push(s.SID);
             }
             return alasql("SELECT id from ShiftEntry", function(res) {
-              var len4, n;
-              for (n = 0, len4 = res.length; n < len4; n++) {
-                s = res[n];
+              var len4, m;
+              for (m = 0, len4 = res.length; m < len4; m++) {
+                s = res[m];
                 Shifts.db.shiftentry_ids.push(s.id);
               }
               return done();
@@ -253,30 +253,45 @@ Shifts.render = {
       };
     }
   },
-  timelane: function() {
-    var i, j, start_time, thistime, time_slot;
-    time_slot = [];
-    start_time = Shifts.render.get_starttime();
-    for (i = j = 0; j <= 100; i = ++j) {
-      thistime = start_time + i * Shifts.render.SECONDS_PER_ROW;
-      time_slot.push(Shifts.render.tick(thistime, true));
-    }
-    return time_slot;
-  },
-  get_starttime: function() {
+  get_starttime: function(margin) {
     var start_time;
+    if (margin == null) {
+      margin = false;
+    }
     start_time = moment(moment().format('YYYY-MM-DD')).format('X');
     start_time = parseInt(start_time, 10);
-    start_time = start_time - Shifts.render.TIME_MARGIN;
+    if (margin) {
+      start_time = start_time - Shifts.render.TIME_MARGIN;
+    }
     return start_time;
   },
-  get_endtime: function() {
-    return Shifts.render.get_starttime() + 24 * 60 * 60;
+  get_endtime: function(margin) {
+    var end_time;
+    if (margin == null) {
+      margin = false;
+    }
+    end_time = Shifts.render.get_starttime() + 24 * 60 * 60;
+    if (margin) {
+      end_time = end_time + Shifts.render.TIME_MARGIN;
+    }
+    return end_time;
+  },
+  timelane: function() {
+    var end_time, start_time, thistime, time_slot;
+    time_slot = [];
+    start_time = Shifts.render.get_starttime(true);
+    end_time = Shifts.render.get_endtime(true);
+    thistime = start_time;
+    while (thistime < end_time) {
+      time_slot.push(Shifts.render.tick(thistime, true));
+      thistime += Shifts.render.SECONDS_PER_ROW;
+    }
+    return time_slot;
   },
   shiftplan: function() {
     return Shifts.db.get_rooms(function(rooms) {
       return Shifts.db.get_my_shifts(function(db_shifts) {
-        var add_shift, end_time, firstblock_starttime, highest_lane_nr, j, k, lane, lane_nr, lanes, lastblock_endtime, len, len1, mustache_rooms, ref, rendered_until, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, start_time, tpl;
+        var add_shift, end_time, firstblock_starttime, highest_lane_nr, i, j, lane, lane_nr, lanes, lastblock_endtime, len, len1, mustache_rooms, ref, rendered_until, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, start_time, tpl;
         lanes = {};
         add_shift = function(shift, room_id) {
           var blocks, height, lane_nr;
@@ -299,30 +314,30 @@ Shifts.render = {
           return false;
         };
         shift_fits = function(shift, room_id, lane_nr) {
-          var j, lane_shift, len, ref;
+          var i, lane_shift, len, ref;
           ref = lanes[room_id][lane_nr];
-          for (j = 0, len = ref.length; j < len; j++) {
-            lane_shift = ref[j];
+          for (i = 0, len = ref.length; i < len; i++) {
+            lane_shift = ref[i];
             if (!(shift.shift_start >= lane_shift.shift_end || shift.shift_end <= lane_shift.shift_start)) {
               return false;
             }
           }
           return true;
         };
-        start_time = Shifts.render.get_starttime();
-        end_time = Shifts.render.get_endtime();
+        start_time = Shifts.render.get_starttime(true);
+        end_time = Shifts.render.get_endtime(true);
         firstblock_starttime = end_time;
         lastblock_endtime = start_time;
-        for (j = 0, len = db_shifts.length; j < len; j++) {
-          shift = db_shifts[j];
+        for (i = 0, len = db_shifts.length; i < len; i++) {
+          shift = db_shifts[i];
           room_id = shift.RID;
           if (typeof lanes[room_id] === "undefined") {
             lanes[room_id] = [[]];
           }
           shift_added = false;
           ref = lanes[room_id];
-          for (k = 0, len1 = ref.length; k < len1; k++) {
-            lane = ref[k];
+          for (j = 0, len1 = ref.length; j < len1; j++) {
+            lane = ref[j];
             shift_added = add_shift(shift, room_id);
             if (shift_added) {
               break;

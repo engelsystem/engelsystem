@@ -28,23 +28,29 @@ Shifts.render =
         else
             return { tick: true }
 
-    timelane: ->
-        time_slot = []
-        start_time = Shifts.render.get_starttime()
-        for i in [0..100]
-            thistime = start_time + i * Shifts.render.SECONDS_PER_ROW
-            time_slot.push Shifts.render.tick thistime, true
-
-        return time_slot
-
-    get_starttime: ->
+    get_starttime: (margin = false) ->
         start_time = moment(moment().format('YYYY-MM-DD')).format('X')
         start_time = parseInt start_time, 10
-        start_time = start_time - Shifts.render.TIME_MARGIN
+        if margin
+            start_time = start_time - Shifts.render.TIME_MARGIN
         return start_time
 
-    get_endtime: ->
-        return Shifts.render.get_starttime() + 24*60*60
+    get_endtime: (margin = false) ->
+        end_time = Shifts.render.get_starttime() + 24*60*60
+        if margin
+            end_time = end_time + Shifts.render.TIME_MARGIN
+        return end_time
+
+    timelane: ->
+        time_slot = []
+        start_time = Shifts.render.get_starttime(true)
+        end_time = Shifts.render.get_endtime(true)
+        thistime = start_time
+        while thistime < end_time
+            time_slot.push Shifts.render.tick thistime, true
+            thistime += Shifts.render.SECONDS_PER_ROW
+
+        return time_slot
 
     shiftplan: ->
         Shifts.db.get_rooms (rooms) ->
@@ -81,8 +87,8 @@ Shifts.render =
                     return true
 
                 # temporary
-                start_time = Shifts.render.get_starttime()
-                end_time = Shifts.render.get_endtime()
+                start_time = Shifts.render.get_starttime(true)
+                end_time = Shifts.render.get_endtime(true)
                 # /temporary
 
                 firstblock_starttime = end_time
