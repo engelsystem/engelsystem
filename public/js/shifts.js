@@ -99,6 +99,7 @@ Shifts.db = {
     if (room_exists === false) {
       return alasql("INSERT INTO Room (RID, Name) VALUES (" + room.RID + ", '" + room.Name + "')", function() {
         Shifts.db.room_ids.push(room.RID);
+        Shifts.interaction.selected_rooms.push(room.RID);
         return done();
       });
     } else {
@@ -165,6 +166,7 @@ Shifts.db = {
     if (angeltype_exists === false) {
       return alasql("INSERT INTO AngelTypes (id, name) VALUES (" + angeltype.id + ", '" + angeltype.name + "')", function() {
         Shifts.db.angeltype_ids.push(angeltype.id);
+        Shifts.interaction.selected_angeltypes.push(angeltype.id);
         return done();
       });
     } else {

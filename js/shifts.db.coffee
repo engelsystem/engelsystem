@@ -67,6 +67,8 @@ Shifts.db =
         if room_exists == false
             alasql "INSERT INTO Room (RID, Name) VALUES (#{room.RID}, '#{room.Name}')", ->
                 Shifts.db.room_ids.push room.RID
+                # populate select filter
+                Shifts.interaction.selected_rooms.push room.RID
                 done()
         else
             done()
@@ -118,6 +120,8 @@ Shifts.db =
         if angeltype_exists == false
             alasql "INSERT INTO AngelTypes (id, name) VALUES (#{angeltype.id}, '#{angeltype.name}')", ->
                 Shifts.db.angeltype_ids.push angeltype.id
+                # populate select filter
+                Shifts.interaction.selected_angeltypes.push angeltype.id
                 done()
         else
             done()
