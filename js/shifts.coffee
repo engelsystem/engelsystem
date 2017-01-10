@@ -10,10 +10,7 @@ Shifts.init = ->
             Shifts.fetcher.start ->
                 Shifts.log 'fetch complete.'
                 Shifts.render.shiftplan()
-
-        $('body').on 'click', '#filterbutton', ->
-            Shifts.render.shiftplan()
-            return false
+                Shifts.interaction.init()
 
 Shifts.log = (msg) ->
     console.info msg
