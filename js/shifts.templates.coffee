@@ -159,7 +159,7 @@ Shifts.templates =
             {{#shift}}
                 <div class="shift panel panel-success" style="height: {{height}}px;">
                   <div class="panel-heading">
-                    <a href="?p=shifts&amp;action=view&amp;shift_id={{SID}}"><span class="label label-success">{{SID}}</span> {{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a>
+                    <a href="?p=shifts&amp;action=view&amp;shift_id={{SID}}">{{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a>
                     <div class="pull-right">
                       <div class="btn-group">
                         <a href="?p=user_shifts&amp;edit_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>

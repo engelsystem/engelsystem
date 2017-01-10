@@ -33,11 +33,12 @@ Shifts.db = {
   shiftentry_ids: [],
   shifttype_ids: [],
   angeltype_ids: [],
+  needed_angeltype_ids: [],
   init: function(done) {
     Shifts.log('init db');
     return alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem; ATTACH INDEXEDDB DATABASE engelsystem;', function() {
       return alasql('USE engelsystem', function() {
-        return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, start_time INT, end_time INT, RID INT); CREATE TABLE IF NOT EXISTS User (UID INT, nick); CREATE TABLE IF NOT EXISTS Room (RID INT, Name); CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT); CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT); CREATE TABLE IF NOT EXISTS AngelTypes (id INT, name); CREATE TABLE IF NOT EXISTS options (option_key, option_value);', function() {
+        return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, start_time INT, end_time INT, RID INT); CREATE TABLE IF NOT EXISTS User (UID INT, nick); CREATE TABLE IF NOT EXISTS Room (RID INT, Name); CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT); CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT); CREATE TABLE IF NOT EXISTS AngelTypes (id INT, name); CREATE TABLE IF NOT EXISTS NeededAngelTypes (id INT, room_id INT, shift_id INT, angel_type_id INT, angel_count INT); CREATE TABLE IF NOT EXISTS options (option_key, option_value);', function() {
           return Shifts.db.populate_ids(function() {
             return done();
           });
@@ -66,25 +67,32 @@ Shifts.db = {
             Shifts.db.shifttype_ids.push(s.id);
           }
           return alasql("SELECT id from AngelTypes", function(res) {
-            var l, len3;
+            var a, l, len3;
             for (l = 0, len3 = res.length; l < len3; l++) {
-              s = res[l];
-              Shifts.db.angeltype_ids.push(s.id);
-              Shifts.interaction.selected_angeltypes.push(s.id);
+              a = res[l];
+              Shifts.db.angeltype_ids.push(a.id);
+              Shifts.interaction.selected_angeltypes.push(a.id);
             }
-            return alasql("SELECT SID from Shifts", function(res) {
+            return alasql("SELECT id from NeededAngelTypes", function(res) {
               var len4, m;
               for (m = 0, len4 = res.length; m < len4; m++) {
-                s = res[m];
-                Shifts.db.shift_ids.push(s.SID);
+                a = res[m];
+                Shifts.db.needed_angeltype_ids.push(a.id);
               }
-              return alasql("SELECT id from ShiftEntry", function(res) {
+              return alasql("SELECT SID from Shifts", function(res) {
                 var len5, n;
                 for (n = 0, len5 = res.length; n < len5; n++) {
                   s = res[n];
-                  Shifts.db.shiftentry_ids.push(s.id);
+                  Shifts.db.shift_ids.push(s.SID);
                 }
-                return done();
+                return alasql("SELECT id from ShiftEntry", function(res) {
+                  var len6, o;
+                  for (o = 0, len6 = res.length; o < len6; o++) {
+                    s = res[o];
+                    Shifts.db.shiftentry_ids.push(s.id);
+                  }
+                  return done();
+                });
               });
             });
           });
@@ -136,9 +144,12 @@ Shifts.db = {
   insert_shiftentry: function(shiftentry, done) {
     var ref, shiftentry_exists;
     shiftentry.id = parseInt(shiftentry.id, 10);
+    shiftentry.SID = parseInt(shiftentry.SID, 10);
+    shiftentry.TID = parseInt(shiftentry.TID, 10);
+    shiftentry.UID = parseInt(shiftentry.UID, 10);
     shiftentry_exists = (ref = shiftentry.id, indexOf.call(Shifts.db.shiftentry_ids, ref) >= 0);
     if (shiftentry_exists === false) {
-      return alasql("INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (" + shiftentry.id + ", '" + shiftentry.SID + "', '" + shiftentry.TID + "', '" + shiftentry.UID + "')", function() {
+      return alasql("INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (" + shiftentry.id + ", " + shiftentry.SID + ", " + shiftentry.TID + ", " + shiftentry.UID + ")", function() {
         Shifts.db.shiftentry_ids.push(shiftentry.id);
         return done();
       });
@@ -173,14 +184,29 @@ Shifts.db = {
       return done();
     }
   },
+  insert_needed_angeltype: function(needed_angeltype, done) {
+    var needed_angeltype_exists, ref;
+    needed_angeltype.id = parseInt(needed_angeltype.id, 10);
+    needed_angeltype.RID = parseInt(needed_angeltype.RID, 10) || null;
+    needed_angeltype.SID = parseInt(needed_angeltype.SID, 10);
+    needed_angeltype.ATID = parseInt(needed_angeltype.ATID, 10);
+    needed_angeltype.count = parseInt(needed_angeltype.count, 10);
+    needed_angeltype_exists = (ref = needed_angeltype.id, indexOf.call(Shifts.db.needed_angeltype_ids, ref) >= 0);
+    if (needed_angeltype_exists === false) {
+      return alasql("INSERT INTO NeededAngelTypes (id, room_id, shift_id, angel_type_id, angel_count) VALUES (" + needed_angeltype.id + ", " + needed_angeltype.RID + ", " + needed_angeltype.SID + ", " + needed_angeltype.ATID + ", " + needed_angeltype.count + ")", function() {
+        Shifts.db.needed_angeltype_ids.push(needed_angeltype.id);
+        return done();
+      });
+    } else {
+      return done();
+    }
+  },
   get_shifts: function(filter_rooms, filter_angeltypes, done) {
-    var end_time, filter_rooms_ids, rand, start_time;
-    rand = 1 + parseInt(Math.random() * 10, 10);
-    rand = 2000;
+    var end_time, filter_rooms_ids, start_time;
     filter_rooms_ids = filter_rooms.join(',');
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return alasql("SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM Shifts JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id JOIN Room ON Room.RID = Shifts.RID WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND Shifts.RID IN (" + filter_rooms_ids + ") ORDER BY Shifts.start_time, Shifts.SID LIMIT " + rand, function(res) {
+    return alasql("SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM Shifts JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id JOIN Room ON Room.RID = Shifts.RID WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND Shifts.RID IN (" + filter_rooms_ids + ") ORDER BY Shifts.start_time, Shifts.SID", function(res) {
       return done(res);
     });
   },
@@ -220,19 +246,25 @@ Shifts.fetcher = {
             angeltypes = data.angeltypes;
             Shifts.$shiftplan.html('fetching angeltypes...');
             return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
-              var shifts;
+              var needed_angeltypes;
               Shifts.log('processing angeltypes done');
-              shifts = data.shifts;
-              Shifts.$shiftplan.html('fetching shifts...');
-              return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
-                var shift_entries;
-                Shifts.log('processing shifts done');
-                shift_entries = data.shift_entries;
-                Shifts.$shiftplan.html('fetching shift entries...');
-                return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
-                  Shifts.log('processing shift_entries done');
-                  Shifts.$shiftplan.html('done.');
-                  return done();
+              needed_angeltypes = data.needed_angeltypes;
+              Shifts.$shiftplan.html('fetching needed_angeltypes...');
+              return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
+                var shifts;
+                Shifts.log('processing needed_angeltypes done');
+                shifts = data.shifts;
+                Shifts.$shiftplan.html('fetching shifts...');
+                return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
+                  var shift_entries;
+                  Shifts.log('processing shifts done');
+                  shift_entries = data.shift_entries;
+                  Shifts.$shiftplan.html('fetching shift entries...');
+                  return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
+                    Shifts.log('processing shift_entries done');
+                    Shifts.$shiftplan.html('done.');
+                    return done();
+                  });
                 });
               });
             });
@@ -542,5 +574,5 @@ Shifts.render = {
 
 Shifts.templates = {
   filter_form: '<form class="form-inline" action="" method="get"> <input type="hidden" name="p" value="user_shifts"> <div class="row"> <div class="col-md-6"> <h1>Shifts</h1> <div class="form-group"> <select class="form-control" id="start_day" name="start_day"> <option value="2017-01-08">2017-01-08</option> <option value="2017-01-09">2017-01-09</option> <option value="2017-01-10" selected="selected">2017-01-10</option> <option value="2017-01-11">2017-01-11</option> <option value="2017-01-12">2017-01-12</option> <option value="2017-01-13">2017-01-13</option> <option value="2017-01-14">2017-01-14</option> <option value="2017-01-15">2017-01-15</option> <option value="2017-01-16">2017-01-16</option> </select> </div> <div class="form-group"> <div class="input-group"> <input class="form-control" type="text" id="start_time" name="start_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="00:00"> <div class="input-group-btn"> <button class="btn btn-default" title="Now" type="button"> <span class="glyphicon glyphicon-time"></span> </button> </div> </div> </div> &#8211; <div class="form-group"> <select class="form-control" id="start_day" name="start_day"> <option value="2017-01-08">2017-01-08</option> <option value="2017-01-09">2017-01-09</option> <option value="2017-01-10">2017-01-10</option> <option value="2017-01-11" selected="selected">2017-01-11</option> <option value="2017-01-12">2017-01-12</option> <option value="2017-01-13">2017-01-13</option> <option value="2017-01-14">2017-01-14</option> <option value="2017-01-15">2017-01-15</option> <option value="2017-01-16">2017-01-16</option> </select> </div> <div class="form-group"> <div class="input-group"> <input class="form-control" type="text" id="end_time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="00:00"> <div class="input-group-btn"> <button class="btn btn-default" title="Now" type="button"> <span class="glyphicon glyphicon-time"></span> </button> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_rooms" class="selection rooms"> <h4>Rooms</h4> {{#rooms}} <div class="checkbox"> <label> <input type="checkbox" name="rooms[]" value="{{RID}}" {{#selected}}checked="checked"{{/selected}}> {{Name}} </label> </div><br /> {{/rooms}} <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-default">All</a> <a href="#none" class="btn btn-default">None</a> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_types" class="selection types"> <h4>Angeltypes<sup>1</sup></h4> {{#angeltypes}} <div class="checkbox"> <label> <input type="checkbox" name="types[]" value="{{id}}" {{#selected}}checked="checked"{{/selected}}> {{name}} </label> </div><br /> {{/angeltypes}} <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-default">All</a> <a href="#none" class="btn btn-default">None</a> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_filled" class="selection filled"> <h4>Occupancy</h4> <div class="checkbox"> <label> <input type="checkbox" name="filled[]" value="0" checked="checked"> occupied </label> </div><br /> <div class="checkbox"> <label> <input type="checkbox" name="filled[]" value="1" checked="checked"> free </label> </div><br /> <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-default">All</a> <a href="#none" class="btn btn-default">None</a> </div> </div> </div> </div> </div> <div class="row"> <div class="col-md-6"> <div><sup>1</sup>The tasks shown here are influenced by the angeltypes you joined already! <a href="?p=angeltypes&amp;action=about">Description of the jobs.</a></div> <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="Filter"> </div> </div> </form>',
-  shift_calendar: '<div class="shift-calendar"> <div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{label}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{label}}</div> {{/tick_day}} {{/timelane_ticks}} </div> {{#rooms}} {{#lanes}} <div class="lane"> <div class="header"> <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a> </div> {{#shifts}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{text}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{text}}</div> {{/tick_day}} {{#shift}} <div class="shift panel panel-success" style="height: {{height}}px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id={{SID}}"><span class="label label-success">{{SID}}</span> {{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a> <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a> <a href="?p=user_shifts&amp;delete_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a> </div> </div> </div> <div class="panel-body"> {{#shift_title}}<span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />{{/shift_title}} <a href="?p=rooms&amp;action=view&amp;room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a> </div> <ul class="list-group"> <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong> <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>, <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span> </li> <li class="list-group-item"> <a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a> </li> </ul> <div class="shift-spacer"></div> </div> {{/shift}} {{/shifts}} </div> {{/lanes}} {{/rooms}} </div>'
+  shift_calendar: '<div class="shift-calendar"> <div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{label}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{label}}</div> {{/tick_day}} {{/timelane_ticks}} </div> {{#rooms}} {{#lanes}} <div class="lane"> <div class="header"> <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a> </div> {{#shifts}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{text}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{text}}</div> {{/tick_day}} {{#shift}} <div class="shift panel panel-success" style="height: {{height}}px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id={{SID}}">{{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a> <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a> <a href="?p=user_shifts&amp;delete_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a> </div> </div> </div> <div class="panel-body"> {{#shift_title}}<span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />{{/shift_title}} <a href="?p=rooms&amp;action=view&amp;room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a> </div> <ul class="list-group"> <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong> <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>, <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span> </li> <li class="list-group-item"> <a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a> </li> </ul> <div class="shift-spacer"></div> </div> {{/shift}} {{/shifts}} </div> {{/lanes}} {{/rooms}} </div>'
 };

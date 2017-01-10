@@ -6,6 +6,7 @@ Shifts.db =
     shiftentry_ids: []
     shifttype_ids: []
     angeltype_ids: []
+    needed_angeltype_ids: []
 
     init: (done) ->
         Shifts.log 'init db'
@@ -19,6 +20,7 @@ Shifts.db =
                 CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT);
                 CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT);
                 CREATE TABLE IF NOT EXISTS AngelTypes (id INT, name);
+                CREATE TABLE IF NOT EXISTS NeededAngelTypes (id INT, room_id INT, shift_id INT, angel_type_id INT, angel_count INT);
                 CREATE TABLE IF NOT EXISTS options (option_key, option_value);', ->
                     Shifts.db.populate_ids ->
                         done()
@@ -44,22 +46,27 @@ Shifts.db =
 
                     # angel types
                     alasql "SELECT id from AngelTypes", (res) ->
-                        for s in res
-                            Shifts.db.angeltype_ids.push s.id
+                        for a in res
+                            Shifts.db.angeltype_ids.push a.id
                             # populate select filter
-                            Shifts.interaction.selected_angeltypes.push s.id
+                            Shifts.interaction.selected_angeltypes.push a.id
 
-                        # shifts
-                        alasql "SELECT SID from Shifts", (res) ->
-                            for s in res
-                                Shifts.db.shift_ids.push s.SID
+                        # needed angel types
+                        alasql "SELECT id from NeededAngelTypes", (res) ->
+                            for a in res
+                                Shifts.db.needed_angeltype_ids.push a.id
 
-                            # shift entries
-                            alasql "SELECT id from ShiftEntry", (res) ->
+                            # shifts
+                            alasql "SELECT SID from Shifts", (res) ->
                                 for s in res
-                                    Shifts.db.shiftentry_ids.push s.id
+                                    Shifts.db.shift_ids.push s.SID
 
-                                done()
+                                # shift entries
+                                alasql "SELECT id from ShiftEntry", (res) ->
+                                    for s in res
+                                        Shifts.db.shiftentry_ids.push s.id
+
+                                    done()
 
     insert_room: (room, done) ->
         room.RID = parseInt(room.RID, 10)
@@ -96,9 +103,12 @@ Shifts.db =
 
     insert_shiftentry: (shiftentry, done) ->
         shiftentry.id = parseInt shiftentry.id, 10
+        shiftentry.SID = parseInt shiftentry.SID, 10
+        shiftentry.TID = parseInt shiftentry.TID, 10
+        shiftentry.UID = parseInt shiftentry.UID, 10
         shiftentry_exists = shiftentry.id in Shifts.db.shiftentry_ids
         if shiftentry_exists == false
-            alasql "INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (#{shiftentry.id}, '#{shiftentry.SID}', '#{shiftentry.TID}', '#{shiftentry.UID}')", ->
+            alasql "INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (#{shiftentry.id}, #{shiftentry.SID}, #{shiftentry.TID}, #{shiftentry.UID})", ->
                 Shifts.db.shiftentry_ids.push shiftentry.id
                 done()
         else
@@ -126,10 +136,21 @@ Shifts.db =
         else
             done()
 
-    get_shifts: (filter_rooms, filter_angeltypes, done) ->
-        rand = 1 + parseInt(Math.random() * 10, 10)
-        rand = 2000
+    insert_needed_angeltype: (needed_angeltype, done) ->
+        needed_angeltype.id = parseInt needed_angeltype.id, 10
+        needed_angeltype.RID = parseInt(needed_angeltype.RID, 10) || null
+        needed_angeltype.SID = parseInt needed_angeltype.SID, 10
+        needed_angeltype.ATID = parseInt needed_angeltype.ATID, 10
+        needed_angeltype.count = parseInt needed_angeltype.count, 10
+        needed_angeltype_exists = needed_angeltype.id in Shifts.db.needed_angeltype_ids
+        if needed_angeltype_exists == false
+            alasql "INSERT INTO NeededAngelTypes (id, room_id, shift_id, angel_type_id, angel_count) VALUES (#{needed_angeltype.id}, #{needed_angeltype.RID}, #{needed_angeltype.SID}, #{needed_angeltype.ATID}, #{needed_angeltype.count})", ->
+                Shifts.db.needed_angeltype_ids.push needed_angeltype.id
+                done()
+        else
+            done()
 
+    get_shifts: (filter_rooms, filter_angeltypes, done) ->
         filter_rooms_ids = filter_rooms.join ','
         start_time = Shifts.render.get_starttime()
         end_time = Shifts.render.get_endtime()
@@ -142,8 +163,7 @@ Shifts.db =
         JOIN Room ON Room.RID = Shifts.RID
         WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
         AND Shifts.RID IN (#{filter_rooms_ids})
-        ORDER BY Shifts.start_time, Shifts.SID
-        LIMIT #{rand}", (res) ->
+        ORDER BY Shifts.start_time, Shifts.SID", (res) ->
             done res
 
     get_rooms: (done) ->
