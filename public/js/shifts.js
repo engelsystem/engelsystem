@@ -93,8 +93,9 @@ Shifts.db = {
     });
   },
   insert_room: function(room, done) {
-    var room_exists;
-    room_exists = Shifts.db.room_ids.indexOf(parseInt(room.RID, 10)) > -1;
+    var ref, room_exists;
+    room.RID = parseInt(room.RID, 10);
+    room_exists = (ref = room.RID, indexOf.call(Shifts.db.room_ids, ref) >= 0);
     if (room_exists === false) {
       return alasql("INSERT INTO Room (RID, Name) VALUES (" + room.RID + ", '" + room.Name + "')", function() {
         Shifts.db.room_ids.push(room.RID);
@@ -105,8 +106,9 @@ Shifts.db = {
     }
   },
   insert_user: function(user, done) {
-    var user_exists;
-    user_exists = Shifts.db.user_ids.indexOf(parseInt(user.UID, 10)) > -1;
+    var ref, user_exists;
+    user.UID = parseInt(user.UID, 10);
+    user_exists = (ref = user.UID, indexOf.call(Shifts.db.user_ids, ref) >= 0);
     if (user_exists === false) {
       return alasql("INSERT INTO User (UID, Nick) VALUES (" + user.UID + ", '" + user.Nick + "')", function() {
         Shifts.db.user_ids.push(user.UID);
@@ -117,8 +119,9 @@ Shifts.db = {
     }
   },
   insert_shift: function(shift, done) {
-    var shift_exists;
-    shift_exists = Shifts.db.shift_ids.indexOf(parseInt(shift.SID, 10)) > -1;
+    var ref, shift_exists;
+    shift.SID = parseInt(shift.SID, 10);
+    shift_exists = (ref = shift.SID, indexOf.call(Shifts.db.shift_ids, ref) >= 0);
     if (shift_exists === false) {
       return alasql("INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.shifttype_id + "', '" + shift.start + "', '" + shift.end + "', '" + shift.RID + "')", function() {
         Shifts.db.shift_ids.push(shift.SID);
@@ -129,8 +132,9 @@ Shifts.db = {
     }
   },
   insert_shiftentry: function(shiftentry, done) {
-    var shiftentry_exists;
-    shiftentry_exists = Shifts.db.shiftentry_ids.indexOf(parseInt(shiftentry.id, 10)) > -1;
+    var ref, shiftentry_exists;
+    shiftentry.id = parseInt(shiftentry.id, 10);
+    shiftentry_exists = (ref = shiftentry.id, indexOf.call(Shifts.db.shiftentry_ids, ref) >= 0);
     if (shiftentry_exists === false) {
       return alasql("INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (" + shiftentry.id + ", '" + shiftentry.SID + "', '" + shiftentry.TID + "', '" + shiftentry.UID + "')", function() {
         Shifts.db.shiftentry_ids.push(shiftentry.id);
@@ -141,9 +145,9 @@ Shifts.db = {
     }
   },
   insert_shifttype: function(shifttype, done) {
-    var shifttype_exists;
+    var ref, shifttype_exists;
     shifttype.id = parseInt(shifttype.id, 10);
-    shifttype_exists = Shifts.db.shifttype_ids.indexOf(shifttype.id) > -1;
+    shifttype_exists = (ref = shifttype.id, indexOf.call(Shifts.db.shifttype_ids, ref) >= 0);
     if (shifttype_exists === false) {
       return alasql("INSERT INTO ShiftTypes (id, name) VALUES (" + shifttype.id + ", '" + shifttype.name + "')", function() {
         Shifts.db.shifttype_ids.push(shifttype.id);
@@ -154,9 +158,9 @@ Shifts.db = {
     }
   },
   insert_angeltype: function(angeltype, done) {
-    var angeltype_exists;
+    var angeltype_exists, ref;
     angeltype.id = parseInt(angeltype.id, 10);
-    angeltype_exists = Shifts.db.angeltype_ids.indexOf(angeltype.id) > -1;
+    angeltype_exists = (ref = angeltype.id, indexOf.call(Shifts.db.angeltype_ids, ref) >= 0);
     if (angeltype_exists === false) {
       return alasql("INSERT INTO AngelTypes (id, name) VALUES (" + angeltype.id + ", '" + angeltype.name + "')", function() {
         Shifts.db.angeltype_ids.push(angeltype.id);

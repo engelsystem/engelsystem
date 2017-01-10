@@ -62,7 +62,8 @@ Shifts.db =
                                 done()
 
     insert_room: (room, done) ->
-        room_exists = Shifts.db.room_ids.indexOf(parseInt(room.RID, 10)) > -1
+        room.RID = parseInt(room.RID, 10)
+        room_exists = room.RID in Shifts.db.room_ids
         if room_exists == false
             alasql "INSERT INTO Room (RID, Name) VALUES (#{room.RID}, '#{room.Name}')", ->
                 Shifts.db.room_ids.push room.RID
@@ -71,7 +72,8 @@ Shifts.db =
             done()
 
     insert_user: (user, done) ->
-        user_exists = Shifts.db.user_ids.indexOf(parseInt(user.UID, 10)) > -1
+        user.UID = parseInt(user.UID, 10)
+        user_exists = user.UID in Shifts.db.user_ids
         if user_exists == false
             alasql "INSERT INTO User (UID, Nick) VALUES (#{user.UID}, '#{user.Nick}')", ->
                 Shifts.db.user_ids.push user.UID
@@ -80,9 +82,8 @@ Shifts.db =
             done()
 
     insert_shift: (shift, done) ->
-        # Debug note: Array.indexOf may need a polyfill for older browsers
-        # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
-        shift_exists = Shifts.db.shift_ids.indexOf(parseInt(shift.SID, 10)) > -1
+        shift.SID = parseInt(shift.SID, 10)
+        shift_exists = shift.SID in Shifts.db.shift_ids
         if shift_exists == false
             alasql "INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.shifttype_id}', '#{shift.start}', '#{shift.end}', '#{shift.RID}')", ->
                 Shifts.db.shift_ids.push shift.SID
@@ -91,7 +92,8 @@ Shifts.db =
             done()
 
     insert_shiftentry: (shiftentry, done) ->
-        shiftentry_exists = Shifts.db.shiftentry_ids.indexOf(parseInt(shiftentry.id, 10)) > -1
+        shiftentry.id = parseInt shiftentry.id, 10
+        shiftentry_exists = shiftentry.id in Shifts.db.shiftentry_ids
         if shiftentry_exists == false
             alasql "INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (#{shiftentry.id}, '#{shiftentry.SID}', '#{shiftentry.TID}', '#{shiftentry.UID}')", ->
                 Shifts.db.shiftentry_ids.push shiftentry.id
@@ -101,7 +103,7 @@ Shifts.db =
 
     insert_shifttype: (shifttype, done) ->
         shifttype.id = parseInt shifttype.id, 10
-        shifttype_exists = Shifts.db.shifttype_ids.indexOf(shifttype.id) > -1
+        shifttype_exists = shifttype.id in Shifts.db.shifttype_ids
         if shifttype_exists == false
             alasql "INSERT INTO ShiftTypes (id, name) VALUES (#{shifttype.id}, '#{shifttype.name}')", ->
                 Shifts.db.shifttype_ids.push shifttype.id
@@ -111,7 +113,7 @@ Shifts.db =
 
     insert_angeltype: (angeltype, done) ->
         angeltype.id = parseInt angeltype.id, 10
-        angeltype_exists = Shifts.db.angeltype_ids.indexOf(angeltype.id) > -1
+        angeltype_exists = angeltype.id in Shifts.db.angeltype_ids
         if angeltype_exists == false
             alasql "INSERT INTO AngelTypes (id, name) VALUES (#{angeltype.id}, '#{angeltype.name}')", ->
                 Shifts.db.angeltype_ids.push angeltype.id
@@ -120,7 +122,6 @@ Shifts.db =
             done()
 
     get_shifts: (filter_rooms, filter_angeltypes, done) ->
-        #alasql "SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", (res) ->
         rand = 1 + parseInt(Math.random() * 10, 10)
         rand = 2000
 
