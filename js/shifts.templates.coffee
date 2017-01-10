@@ -96,12 +96,12 @@ Shifts.templates =
             <h4>Occupancy</h4>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="filled[]" value="1" checked="checked"> occupied
+                    <input type="checkbox" name="filled[]" value="0" checked="checked"> occupied
                 </label>
             </div><br />
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="filled[]" value="0" checked="checked"> occupied
+                    <input type="checkbox" name="filled[]" value="1" checked="checked"> free
                 </label>
             </div><br />
             <div class="form-group">
