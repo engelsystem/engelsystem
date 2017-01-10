@@ -121,6 +121,7 @@ Shifts.db = {
   insert_shift: function(shift, done) {
     var ref, shift_exists;
     shift.SID = parseInt(shift.SID, 10);
+    shift.RID = parseInt(shift.RID, 10);
     shift_exists = (ref = shift.SID, indexOf.call(Shifts.db.shift_ids, ref) >= 0);
     if (shift_exists === false) {
       return alasql("INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.shifttype_id + "', '" + shift.start + "', '" + shift.end + "', '" + shift.RID + "')", function() {
