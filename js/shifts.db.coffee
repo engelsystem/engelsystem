@@ -29,6 +29,8 @@ Shifts.db =
         alasql "SELECT RID from Room", (res) ->
             for r in res
                 Shifts.db.room_ids.push r.RID
+                # populate select filter
+                Shifts.interaction.selected_rooms.push r.RID
 
             # users
             alasql "SELECT UID from User", (res) ->
@@ -44,6 +46,8 @@ Shifts.db =
                     alasql "SELECT id from AngelTypes", (res) ->
                         for s in res
                             Shifts.db.angeltype_ids.push s.id
+                            # populate select filter
+                            Shifts.interaction.selected_angeltypes.push r.RID
 
                         # shifts
                         alasql "SELECT SID from Shifts", (res) ->
@@ -121,7 +125,6 @@ Shifts.db =
         rand = 2000
 
         filter_rooms_ids = filter_rooms.join ','
-        Shifts.log filter_rooms_ids
         start_time = Shifts.render.get_starttime()
         end_time = Shifts.render.get_endtime()
 

@@ -56,7 +56,7 @@ Shifts.templates =
       </div>
     </div>
     <div class="col-md-2">
-        <div id="selection_rooms" class="selection types">
+        <div id="selection_rooms" class="selection rooms">
             <h4>Rooms</h4>
             {{#rooms}}
                 <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="{{RID}}" checked="checked"> {{Name}}</label></div><br />

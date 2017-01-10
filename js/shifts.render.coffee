@@ -56,14 +56,10 @@ Shifts.render =
         Shifts.db.get_rooms (rooms) ->
             Shifts.db.get_angeltypes (angeltypes) ->
 
-                filter_rooms = []
-                filter_angeltypes = []
+                selected_rooms = Shifts.interaction.selected_rooms
+                selected_angeltypes = Shifts.interaction.selected_angeltypes
 
-                filter_rooms.push 2
-                filter_rooms.push 3
-                filter_rooms.push 4
-
-                Shifts.db.get_shifts filter_rooms, filter_angeltypes, (db_shifts) ->
+                Shifts.db.get_shifts selected_rooms, selected_angeltypes, (db_shifts) ->
 
                     lanes = {}
 
