@@ -206,7 +206,7 @@ Shifts.db = {
     filter_rooms_ids = filter_rooms.join(',');
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return alasql("SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM NeededAngelTypes JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id JOIN Room ON Room.RID = Shifts.RID JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id WHERE (NeededAngelTypes.shift_id IS NOT NULL OR NeededAngelTypes.room_id IS NOT NULL) AND NeededAngelTypes.angel_count > 0 AND Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " ORDER BY Shifts.start_time, Shifts.SID", function(res) {
+    return alasql("SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM NeededAngelTypes JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id JOIN Room ON Room.RID = Shifts.RID JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id WHERE NeededAngelTypes.angel_count > 0 AND Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " ORDER BY Shifts.start_time, Shifts.SID", function(res) {
       Shifts.log(res);
       return done(res);
     });
