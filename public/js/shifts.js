@@ -269,7 +269,7 @@ Shifts.interaction = {
       for (i = 0, len = ref.length; i < len; i++) {
         room = ref[i];
         if (room.checked) {
-          Shifts.interaction.selected_rooms.push(room.value);
+          Shifts.interaction.selected_rooms.push(parseInt(room.value, 10));
         }
       }
       return Shifts.render.shiftplan();

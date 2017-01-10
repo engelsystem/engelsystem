@@ -23,7 +23,7 @@ Shifts.interaction =
             Shifts.interaction.selected_rooms = []
             for room in $('#selection_rooms input')
                 if room.checked
-                    Shifts.interaction.selected_rooms.push room.value
+                    Shifts.interaction.selected_rooms.push parseInt(room.value, 10)
 
             Shifts.render.shiftplan()
 
