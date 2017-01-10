@@ -13,7 +13,7 @@ Shifts.init = ->
                 Shifts.interaction.init()
 
 Shifts.log = (msg) ->
-    console.info msg
+    console.log msg
 
 
 

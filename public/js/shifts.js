@@ -19,7 +19,7 @@ Shifts.init = function() {
 };
 
 Shifts.log = function(msg) {
-  return console.info(msg);
+  return console.log(msg);
 };
 
 $(function() {
@@ -124,7 +124,7 @@ Shifts.db = {
     shift.RID = parseInt(shift.RID, 10);
     shift_exists = (ref = shift.SID, indexOf.call(Shifts.db.shift_ids, ref) >= 0);
     if (shift_exists === false) {
-      return alasql("INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.shifttype_id + "', '" + shift.start + "', '" + shift.end + "', '" + shift.RID + "')", function() {
+      return alasql("INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.shifttype_id + "', '" + shift.start + "', '" + shift.end + "', " + shift.RID + ")", function() {
         Shifts.db.shift_ids.push(shift.SID);
         return done();
       });

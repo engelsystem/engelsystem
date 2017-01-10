@@ -86,7 +86,7 @@ Shifts.db =
         shift.RID = parseInt(shift.RID, 10)
         shift_exists = shift.SID in Shifts.db.shift_ids
         if shift_exists == false
-            alasql "INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.shifttype_id}', '#{shift.start}', '#{shift.end}', '#{shift.RID}')", ->
+            alasql "INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.shifttype_id}', '#{shift.start}', '#{shift.end}', #{shift.RID})", ->
                 Shifts.db.shift_ids.push shift.SID
                 done()
         else
