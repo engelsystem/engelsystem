@@ -5,6 +5,7 @@ Shifts.db =
     shift_ids: []
     shiftentry_ids: []
     shifttype_ids: []
+    angeltype_ids: []
 
     init: (done) ->
         Shifts.log 'init db'
@@ -17,6 +18,7 @@ Shifts.db =
                 CREATE TABLE IF NOT EXISTS Room (RID INT, Name);
                 CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT);
                 CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT);
+                CREATE TABLE IF NOT EXISTS AngelTypes (id INT, name);
                 CREATE TABLE IF NOT EXISTS options (option_key, option_value);', ->
                     Shifts.db.populate_ids ->
                         done()
@@ -38,17 +40,22 @@ Shifts.db =
                     for s in res
                         Shifts.db.shifttype_ids.push s.id
 
-                    # shifts
-                    alasql "SELECT SID from Shifts", (res) ->
+                    # angel types
+                    alasql "SELECT id from AngelTypes", (res) ->
                         for s in res
-                            Shifts.db.shift_ids.push s.SID
+                            Shifts.db.angeltype_ids.push s.id
 
-                        # shift entries
-                        alasql "SELECT id from ShiftEntry", (res) ->
+                        # shifts
+                        alasql "SELECT SID from Shifts", (res) ->
                             for s in res
-                                Shifts.db.shiftentry_ids.push s.id
+                                Shifts.db.shift_ids.push s.SID
 
-                            done()
+                            # shift entries
+                            alasql "SELECT id from ShiftEntry", (res) ->
+                                for s in res
+                                    Shifts.db.shiftentry_ids.push s.id
+
+                                done()
 
     insert_room: (room, done) ->
         room_exists = Shifts.db.room_ids.indexOf(parseInt(room.RID, 10)) > -1
@@ -94,6 +101,16 @@ Shifts.db =
         if shifttype_exists == false
             alasql "INSERT INTO ShiftTypes (id, name) VALUES (#{shifttype.id}, '#{shifttype.name}')", ->
                 Shifts.db.shifttype_ids.push shifttype.id
+                done()
+        else
+            done()
+
+    insert_angeltype: (angeltype, done) ->
+        angeltype.id = parseInt angeltype.id, 10
+        angeltype_exists = Shifts.db.angeltype_ids.indexOf(angeltype.id) > -1
+        if angeltype_exists == false
+            alasql "INSERT INTO AngelTypes (id, name) VALUES (#{angeltype.id}, '#{angeltype.name}')", ->
+                Shifts.db.angeltype_ids.push angeltype.id
                 done()
         else
             done()

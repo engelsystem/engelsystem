@@ -369,6 +369,8 @@ function Shifts_by_user($user, $include_freeload_comments = false) {
 function Shifts_for_websql() {
 
     $limit = 1000; // yes. but provide an argument "since" to fetch all remaining items.
+                    // todo: only limit shifts, users and shift_entries, provide separate json,
+                    // because of different updated rows
 
     // fetch shifts
   $shifts = sql_select("
@@ -421,6 +423,16 @@ function Shifts_for_websql() {
     engelsystem_error('Unable to load websql users.');
   }
 
+    // fetch angel types
+  $angeltypes = sql_select("
+      SELECT id, name
+      FROM AngelTypes
+      LIMIT " . $limit . "
+      ");
+  if ($needed_angeltypes === false) {
+    engelsystem_error('Unable to load websql angeltypes.');
+  }
+
     // fetch needed angel types
   $needed_angeltypes = sql_select("
       SELECT id, room_id as RID, shift_id as SID, angel_type_id as ATID, count
@@ -433,6 +445,7 @@ function Shifts_for_websql() {
 
   $result = array(
     'shift_types' => $shift_types,
+    'angeltypes' => $angeltypes,
     'rooms' => $rooms,
     'users' => $users,
     'shift_entries' => $shift_entries,

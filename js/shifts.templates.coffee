@@ -48,9 +48,9 @@ Shifts.templates =
     <div class="col-md-2">
         <div id="selection_types" class="selection types">
             <h4>Angeltypes<sup>1</sup></h4>
-            <div class="checkbox"><label><input type="checkbox" name="types[]" value="4" checked="checked"> Angel</label></div><br />
-            <div class="checkbox"><label><input type="checkbox" name="types[]" value="6" checked="checked"> Camera angel</label></div><br />
-            <div class="checkbox"><label><input type="checkbox" name="types[]" value="5" checked="checked"> Guardian Angel</label></div><br />
+            {{#angeltypes}}
+                <div class="checkbox"><label><input type="checkbox" name="types[]" value="{{id}}" checked="checked"> {{name}}</label></div><br />
+            {{/angeltypes}}
             <div class="form-group">
                 <div class="btn-group">
                     <a href="" class="btn btn-default ">All</a>
