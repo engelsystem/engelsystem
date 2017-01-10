@@ -70,7 +70,7 @@ Shifts.db = {
             for (l = 0, len3 = res.length; l < len3; l++) {
               s = res[l];
               Shifts.db.angeltype_ids.push(s.id);
-              Shifts.interaction.selected_angeltypes.push(r.RID);
+              Shifts.interaction.selected_angeltypes.push(s.id);
             }
             return alasql("SELECT SID from Shifts", function(res) {
               var len4, m;
@@ -259,10 +259,11 @@ Shifts.interaction = {
     Shifts.interaction.selected_occupancy.push('1');
     Shifts.interaction.selected_occupancy.push('0');
     Shifts.interaction.on_filter_change();
+    Shifts.interaction.on_mass_select();
     return Shifts.interaction.on_filter_click();
   },
   on_filter_change: function() {
-    return Shifts.$shiftplan.on('change', '#selection_rooms input', function() {
+    Shifts.$shiftplan.on('change', '#selection_rooms input', function() {
       var i, len, ref, room;
       Shifts.interaction.selected_rooms = [];
       ref = $('#selection_rooms input');
@@ -273,6 +274,62 @@ Shifts.interaction = {
         }
       }
       return Shifts.render.shiftplan();
+    });
+    return Shifts.$shiftplan.on('change', '#selection_types input', function() {
+      var i, len, ref, type;
+      Shifts.interaction.selected_angeltypes = [];
+      ref = $('#selection_types input');
+      for (i = 0, len = ref.length; i < len; i++) {
+        type = ref[i];
+        if (type.checked) {
+          Shifts.interaction.selected_angeltypes.push(parseInt(type.value, 10));
+        }
+      }
+      return Shifts.render.shiftplan();
+    });
+  },
+  on_mass_select: function() {
+    return Shifts.$shiftplan.on('click', '.mass-select a', function(ev) {
+      var i, j, k, len, len1, len2, occupancy, ref, ref1, ref2, room, type;
+      if ($(this).parents('#selection_rooms').length) {
+        if ($(ev.target).attr('href') === '#all') {
+          ref = $('#selection_rooms input');
+          for (i = 0, len = ref.length; i < len; i++) {
+            room = ref[i];
+            Shifts.interaction.selected_rooms.push(parseInt(room.value, 10));
+          }
+        }
+        if ($(ev.target).attr('href') === '#none') {
+          Shifts.interaction.selected_rooms = [];
+        }
+      }
+      if ($(this).parents('#selection_types').length) {
+        Shifts.log('dagg');
+        if ($(ev.target).attr('href') === '#all') {
+          ref1 = $('#selection_types input');
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            type = ref1[j];
+            Shifts.interaction.selected_angeltypes.push(parseInt(type.value, 10));
+          }
+        }
+        if ($(ev.target).attr('href') === '#none') {
+          Shifts.interaction.selected_angeltypes = [];
+        }
+      }
+      if ($(this).parents('#selection_filled').length) {
+        if ($(ev.target).attr('href') === '#all') {
+          ref2 = $('#selection_filled input');
+          for (k = 0, len2 = ref2.length; k < len2; k++) {
+            occupancy = ref2[k];
+            Shifts.interaction.selected_occupancy.push(parseInt(occupancy.value, 10));
+          }
+        }
+        if ($(ev.target).attr('href') === '#none') {
+          Shifts.interaction.selected_occupancy = [];
+        }
+      }
+      Shifts.render.shiftplan();
+      return false;
     });
   },
   on_filter_click: function() {
@@ -362,7 +419,7 @@ Shifts.render = {
         selected_rooms = Shifts.interaction.selected_rooms;
         selected_angeltypes = Shifts.interaction.selected_angeltypes;
         return Shifts.db.get_shifts(selected_rooms, selected_angeltypes, function(db_shifts) {
-          var add_shift, end_time, firstblock_starttime, highest_lane_nr, i, j, k, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, mustache_rooms, ref, ref1, rendered_until, room, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, start_time, tpl;
+          var add_shift, angeltype, end_time, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, mustache_rooms, ref, ref1, ref2, rendered_until, room, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, start_time, tpl;
           lanes = {};
           add_shift = function(shift, room_id) {
             var blocks, height, lane_nr;
@@ -459,6 +516,12 @@ Shifts.render = {
               room.selected = true;
             }
           }
+          for (l = 0, len3 = angeltypes.length; l < len3; l++) {
+            angeltype = angeltypes[l];
+            if (ref2 = angeltype.id, indexOf.call(Shifts.interaction.selected_angeltypes, ref2) >= 0) {
+              angeltype.selected = true;
+            }
+          }
           tpl = '';
           tpl += Mustache.render(Shifts.templates.filter_form, {
             rooms: rooms,
@@ -476,6 +539,6 @@ Shifts.render = {
 };
 
 Shifts.templates = {
-  filter_form: '<form class="form-inline" action="" method="get"> <input type="hidden" name="p" value="user_shifts"> <div class="row"> <div class="col-md-6"> <h1>Shifts</h1> <div class="form-group"> <select class="form-control" id="start_day" name="start_day"> <option value="2017-01-08">2017-01-08</option> <option value="2017-01-09">2017-01-09</option> <option value="2017-01-10" selected="selected">2017-01-10</option> <option value="2017-01-11">2017-01-11</option> <option value="2017-01-12">2017-01-12</option> <option value="2017-01-13">2017-01-13</option> <option value="2017-01-14">2017-01-14</option> <option value="2017-01-15">2017-01-15</option> <option value="2017-01-16">2017-01-16</option> </select> </div> <div class="form-group"> <div class="input-group"> <input class="form-control" type="text" id="start_time" name="start_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="00:00"> <div class="input-group-btn"> <button class="btn btn-default" title="Now" type="button"> <span class="glyphicon glyphicon-time"></span> </button> </div> </div> </div> &#8211; <div class="form-group"> <select class="form-control" id="start_day" name="start_day"> <option value="2017-01-08">2017-01-08</option> <option value="2017-01-09">2017-01-09</option> <option value="2017-01-10">2017-01-10</option> <option value="2017-01-11" selected="selected">2017-01-11</option> <option value="2017-01-12">2017-01-12</option> <option value="2017-01-13">2017-01-13</option> <option value="2017-01-14">2017-01-14</option> <option value="2017-01-15">2017-01-15</option> <option value="2017-01-16">2017-01-16</option> </select> </div> <div class="form-group"> <div class="input-group"> <input class="form-control" type="text" id="end_time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="00:00"> <div class="input-group-btn"> <button class="btn btn-default" title="Now" type="button"> <span class="glyphicon glyphicon-time"></span> </button> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_rooms" class="selection rooms"> <h4>Rooms</h4> {{#rooms}} <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="{{RID}}" {{#selected}}checked="checked"{{/selected}}> {{Name}}</label></div><br /> {{/rooms}} <div class="form-group"> <div class="btn-group"> <a href="" class="btn btn-default ">All</a> <a href="" class="btn btn-default ">None</a> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_types" class="selection types"> <h4>Angeltypes<sup>1</sup></h4> {{#angeltypes}} <div class="checkbox"><label><input type="checkbox" name="types[]" value="{{id}}" checked="checked"> {{name}}</label></div><br /> {{/angeltypes}} <div class="form-group"> <div class="btn-group"> <a href="" class="btn btn-default ">All</a> <a href="" class="btn btn-default ">None</a> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_filled" class="selection filled"> <h4>Occupancy</h4> <div class="checkbox"><label><input type="checkbox" name="filled[]" value="1" checked="checked"> occupied</label></div><br /> <div class="checkbox"><label><input type="checkbox" name="filled[]" value="0" checked="checked"> free</label></div><br /> <div class="form-group"> <div class="btn-group"> <a href="" class="btn btn-default ">All</a> <a href="" class="btn btn-default ">None</a> </div> </div> </div> </div> </div> <div class="row"> <div class="col-md-6"> <div><sup>1</sup>The tasks shown here are influenced by the angeltypes you joined already! <a href="?p=angeltypes&amp;action=about">Description of the jobs.</a></div> <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="Filter"> </div> </div> </form>',
+  filter_form: '<form class="form-inline" action="" method="get"> <input type="hidden" name="p" value="user_shifts"> <div class="row"> <div class="col-md-6"> <h1>Shifts</h1> <div class="form-group"> <select class="form-control" id="start_day" name="start_day"> <option value="2017-01-08">2017-01-08</option> <option value="2017-01-09">2017-01-09</option> <option value="2017-01-10" selected="selected">2017-01-10</option> <option value="2017-01-11">2017-01-11</option> <option value="2017-01-12">2017-01-12</option> <option value="2017-01-13">2017-01-13</option> <option value="2017-01-14">2017-01-14</option> <option value="2017-01-15">2017-01-15</option> <option value="2017-01-16">2017-01-16</option> </select> </div> <div class="form-group"> <div class="input-group"> <input class="form-control" type="text" id="start_time" name="start_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="00:00"> <div class="input-group-btn"> <button class="btn btn-default" title="Now" type="button"> <span class="glyphicon glyphicon-time"></span> </button> </div> </div> </div> &#8211; <div class="form-group"> <select class="form-control" id="start_day" name="start_day"> <option value="2017-01-08">2017-01-08</option> <option value="2017-01-09">2017-01-09</option> <option value="2017-01-10">2017-01-10</option> <option value="2017-01-11" selected="selected">2017-01-11</option> <option value="2017-01-12">2017-01-12</option> <option value="2017-01-13">2017-01-13</option> <option value="2017-01-14">2017-01-14</option> <option value="2017-01-15">2017-01-15</option> <option value="2017-01-16">2017-01-16</option> </select> </div> <div class="form-group"> <div class="input-group"> <input class="form-control" type="text" id="end_time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="00:00"> <div class="input-group-btn"> <button class="btn btn-default" title="Now" type="button"> <span class="glyphicon glyphicon-time"></span> </button> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_rooms" class="selection rooms"> <h4>Rooms</h4> {{#rooms}} <div class="checkbox"> <label> <input type="checkbox" name="rooms[]" value="{{RID}}" {{#selected}}checked="checked"{{/selected}}> {{Name}} </label> </div><br /> {{/rooms}} <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-default">All</a> <a href="#none" class="btn btn-default">None</a> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_types" class="selection types"> <h4>Angeltypes<sup>1</sup></h4> {{#angeltypes}} <div class="checkbox"> <label> <input type="checkbox" name="types[]" value="{{id}}" {{#selected}}checked="checked"{{/selected}}> {{name}} </label> </div><br /> {{/angeltypes}} <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-default">All</a> <a href="#none" class="btn btn-default">None</a> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_filled" class="selection filled"> <h4>Occupancy</h4> <div class="checkbox"> <label> <input type="checkbox" name="filled[]" value="1" checked="checked"> occupied </label> </div><br /> <div class="checkbox"> <label> <input type="checkbox" name="filled[]" value="0" checked="checked"> occupied </label> </div><br /> <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-default">All</a> <a href="#none" class="btn btn-default">None</a> </div> </div> </div> </div> </div> <div class="row"> <div class="col-md-6"> <div><sup>1</sup>The tasks shown here are influenced by the angeltypes you joined already! <a href="?p=angeltypes&amp;action=about">Description of the jobs.</a></div> <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="Filter"> </div> </div> </form>',
   shift_calendar: '<div class="shift-calendar"> <div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{label}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{label}}</div> {{/tick_day}} {{/timelane_ticks}} </div> {{#rooms}} {{#lanes}} <div class="lane"> <div class="header"> <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a> </div> {{#shifts}} {{#tick}} <div class="tick"></div> {{/tick}} {{#tick_hour}} <div class="tick hour">{{text}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick day">{{text}}</div> {{/tick_day}} {{#shift}} <div class="shift panel panel-success" style="height: {{height}}px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id=2696">{{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a> <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a> <a href="?p=user_shifts&amp;delete_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a> </div> </div> </div> <div class="panel-body"> {{#shift_title}}<span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />{{/shift_title}} <a href="?p=rooms&amp;action=view&amp;room_id=42"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a> </div> <ul class="list-group"> <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong> <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>, <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span> </li> <li class="list-group-item"> <a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a> </li> </ul> <div class="shift-spacer"></div> </div> {{/shift}} {{/shifts}} </div> {{/lanes}} {{/rooms}} </div>'
 };

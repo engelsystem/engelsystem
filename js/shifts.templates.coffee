@@ -59,12 +59,16 @@ Shifts.templates =
         <div id="selection_rooms" class="selection rooms">
             <h4>Rooms</h4>
             {{#rooms}}
-                <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="{{RID}}" {{#selected}}checked="checked"{{/selected}}> {{Name}}</label></div><br />
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="rooms[]" value="{{RID}}" {{#selected}}checked="checked"{{/selected}}> {{Name}}
+                    </label>
+                </div><br />
             {{/rooms}}
             <div class="form-group">
-                <div class="btn-group">
-                    <a href="" class="btn btn-default ">All</a>
-                    <a href="" class="btn btn-default ">None</a>
+                <div class="btn-group mass-select">
+                    <a href="#all" class="btn btn-default">All</a>
+                    <a href="#none" class="btn btn-default">None</a>
                 </div>
             </div>
         </div>
@@ -73,12 +77,16 @@ Shifts.templates =
         <div id="selection_types" class="selection types">
             <h4>Angeltypes<sup>1</sup></h4>
             {{#angeltypes}}
-                <div class="checkbox"><label><input type="checkbox" name="types[]" value="{{id}}" checked="checked"> {{name}}</label></div><br />
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="types[]" value="{{id}}" {{#selected}}checked="checked"{{/selected}}> {{name}}
+                    </label>
+                </div><br />
             {{/angeltypes}}
             <div class="form-group">
-                <div class="btn-group">
-                    <a href="" class="btn btn-default ">All</a>
-                    <a href="" class="btn btn-default ">None</a>
+                <div class="btn-group mass-select">
+                    <a href="#all" class="btn btn-default">All</a>
+                    <a href="#none" class="btn btn-default">None</a>
                 </div>
             </div>
         </div>
@@ -86,12 +94,20 @@ Shifts.templates =
     <div class="col-md-2">
         <div id="selection_filled" class="selection filled">
             <h4>Occupancy</h4>
-            <div class="checkbox"><label><input type="checkbox" name="filled[]" value="1" checked="checked"> occupied</label></div><br />
-            <div class="checkbox"><label><input type="checkbox" name="filled[]" value="0" checked="checked"> free</label></div><br />
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="filled[]" value="1" checked="checked"> occupied
+                </label>
+            </div><br />
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="filled[]" value="0" checked="checked"> occupied
+                </label>
+            </div><br />
             <div class="form-group">
-                <div class="btn-group">
-                    <a href="" class="btn btn-default ">All</a>
-                    <a href="" class="btn btn-default ">None</a>
+                <div class="btn-group mass-select">
+                    <a href="#all" class="btn btn-default">All</a>
+                    <a href="#none" class="btn btn-default">None</a>
                 </div>
             </div>
         </div>

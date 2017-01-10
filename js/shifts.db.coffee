@@ -47,7 +47,7 @@ Shifts.db =
                         for s in res
                             Shifts.db.angeltype_ids.push s.id
                             # populate select filter
-                            Shifts.interaction.selected_angeltypes.push r.RID
+                            Shifts.interaction.selected_angeltypes.push s.id
 
                         # shifts
                         alasql "SELECT SID from Shifts", (res) ->

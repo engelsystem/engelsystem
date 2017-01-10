@@ -161,6 +161,11 @@ Shifts.render =
                         if room.RID in Shifts.interaction.selected_rooms
                             room.selected = true
 
+                    # check for selected angeltypes
+                    for angeltype in angeltypes
+                        if angeltype.id in Shifts.interaction.selected_angeltypes
+                            angeltype.selected = true
+
                     tpl = ''
 
                     tpl += Mustache.render Shifts.templates.filter_form,
