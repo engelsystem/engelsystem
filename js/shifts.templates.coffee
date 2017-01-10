@@ -59,7 +59,7 @@ Shifts.templates =
         <div id="selection_rooms" class="selection rooms">
             <h4>Rooms</h4>
             {{#rooms}}
-                <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="{{RID}}" checked="checked"> {{Name}}</label></div><br />
+                <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="{{RID}}" {{#selected}}checked="checked"{{/selected}}> {{Name}}</label></div><br />
             {{/rooms}}
             <div class="form-group">
                 <div class="btn-group">
