@@ -101,6 +101,8 @@ Shifts.render =
 
                     for shift in db_shifts
 
+                        #Shifts.log shift
+
                         # calculate first block start time
                         if shift.start_time < firstblock_starttime
                             firstblock_starttime = shift.start_time
