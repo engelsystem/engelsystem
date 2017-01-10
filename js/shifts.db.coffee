@@ -127,9 +127,10 @@ Shifts.db =
         ShiftTypes.name as shifttype_name,
         Room.Name as room_name
         FROM Shifts
-        LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
-        LEFT JOIN Room ON Room.RID = Shifts.RID
+        JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
+        JOIN Room ON Room.RID = Shifts.RID
         WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
+        AND Shifts.RID IN (2, 3, 4)
         ORDER BY Shifts.start_time
         LIMIT #{rand}", (res) ->
             done res
