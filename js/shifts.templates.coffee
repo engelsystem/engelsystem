@@ -79,8 +79,9 @@ Shifts.templates =
     </div>
 	<div class="row">
 		<div class="col-md-6">
-        <div>%task_notice%</div>
-        <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="%filter%">
+            <div><sup>1</sup>The tasks shown here are influenced by the angeltypes you joined already!
+            <a href="?p=angeltypes&amp;action=about">Description of the jobs.</a></div>
+            <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="Filter">
 		</div>
 	</div>
 </form>'
