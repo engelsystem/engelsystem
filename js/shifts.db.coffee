@@ -121,3 +121,7 @@ Shifts.db =
         alasql "SELECT * FROM Room ORDER BY Name", (res) ->
             done res
 
+    get_angeltypes: (done) ->
+        alasql "SELECT * FROM AngelTypes ORDER BY name", (res) ->
+            done res
+

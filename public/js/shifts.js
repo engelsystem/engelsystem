@@ -159,6 +159,11 @@ Shifts.db = {
     return alasql("SELECT * FROM Room ORDER BY Name", function(res) {
       return done(res);
     });
+  },
+  get_angeltypes: function(done) {
+    return alasql("SELECT * FROM AngelTypes ORDER BY name", function(res) {
+      return done(res);
+    });
   }
 };
 
@@ -288,107 +293,110 @@ Shifts.render = {
   },
   shiftplan: function() {
     return Shifts.db.get_rooms(function(rooms) {
-      return Shifts.db.get_my_shifts(function(db_shifts) {
-        var add_shift, end_time, firstblock_starttime, highest_lane_nr, i, j, lane, lane_nr, lanes, lastblock_endtime, len, len1, mustache_rooms, ref, rendered_until, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, start_time, tpl;
-        lanes = {};
-        add_shift = function(shift, room_id) {
-          var blocks, height, lane_nr;
-          if (shift.shift_title === "null") {
-            shift.shift_title = null;
-          }
-          shift.starttime = moment.unix(shift.start_time).format('HH:mm');
-          shift.endtime = moment.unix(shift.end_time).format('HH:mm');
-          blocks = Math.ceil(shift.end_time - shift.start_time) / Shifts.render.SECONDS_PER_ROW;
-          blocks = Math.max(1, blocks);
-          height = blocks * Shifts.render.BLOCK_HEIGHT - Shifts.render.MARGIN;
-          shift.blocks = blocks;
-          shift.height = height;
-          for (lane_nr in lanes[room_id]) {
-            if (shift_fits(shift, room_id, lane_nr)) {
-              lanes[room_id][lane_nr].push(shift);
-              return true;
+      return Shifts.db.get_angeltypes(function(angeltypes) {
+        return Shifts.db.get_my_shifts(function(db_shifts) {
+          var add_shift, end_time, firstblock_starttime, highest_lane_nr, i, j, lane, lane_nr, lanes, lastblock_endtime, len, len1, mustache_rooms, ref, rendered_until, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, start_time, tpl;
+          lanes = {};
+          add_shift = function(shift, room_id) {
+            var blocks, height, lane_nr;
+            if (shift.shift_title === "null") {
+              shift.shift_title = null;
+            }
+            shift.starttime = moment.unix(shift.start_time).format('HH:mm');
+            shift.endtime = moment.unix(shift.end_time).format('HH:mm');
+            blocks = Math.ceil(shift.end_time - shift.start_time) / Shifts.render.SECONDS_PER_ROW;
+            blocks = Math.max(1, blocks);
+            height = blocks * Shifts.render.BLOCK_HEIGHT - Shifts.render.MARGIN;
+            shift.blocks = blocks;
+            shift.height = height;
+            for (lane_nr in lanes[room_id]) {
+              if (shift_fits(shift, room_id, lane_nr)) {
+                lanes[room_id][lane_nr].push(shift);
+                return true;
+              }
+            }
+            return false;
+          };
+          shift_fits = function(shift, room_id, lane_nr) {
+            var i, lane_shift, len, ref;
+            ref = lanes[room_id][lane_nr];
+            for (i = 0, len = ref.length; i < len; i++) {
+              lane_shift = ref[i];
+              if (!(shift.start_time >= lane_shift.end_time || shift.end_time <= lane_shift.start_time)) {
+                return false;
+              }
+            }
+            return true;
+          };
+          start_time = Shifts.render.get_starttime(true);
+          end_time = Shifts.render.get_endtime(true);
+          firstblock_starttime = end_time;
+          lastblock_endtime = start_time;
+          for (i = 0, len = db_shifts.length; i < len; i++) {
+            shift = db_shifts[i];
+            if (shift.start_time < firstblock_starttime) {
+              firstblock_starttime = shift.start_time;
+            }
+            if (shift.end_time > lastblock_endtime) {
+              lastblock_endtime = shift.end_time;
+            }
+            room_id = shift.RID;
+            if (typeof lanes[room_id] === "undefined") {
+              lanes[room_id] = [[]];
+            }
+            shift_added = false;
+            ref = lanes[room_id];
+            for (j = 0, len1 = ref.length; j < len1; j++) {
+              lane = ref[j];
+              shift_added = add_shift(shift, room_id);
+              if (shift_added) {
+                break;
+              }
+            }
+            if (!shift_added) {
+              Shifts.log("lane is full, adding new one");
+              lanes[room_id].push([]);
+              highest_lane_nr = lanes[room_id].length - 1;
+              add_shift(shift, room_id);
             }
           }
-          return false;
-        };
-        shift_fits = function(shift, room_id, lane_nr) {
-          var i, lane_shift, len, ref;
-          ref = lanes[room_id][lane_nr];
-          for (i = 0, len = ref.length; i < len; i++) {
-            lane_shift = ref[i];
-            if (!(shift.start_time >= lane_shift.end_time || shift.end_time <= lane_shift.start_time)) {
-              return false;
-            }
-          }
-          return true;
-        };
-        start_time = Shifts.render.get_starttime(true);
-        end_time = Shifts.render.get_endtime(true);
-        firstblock_starttime = end_time;
-        lastblock_endtime = start_time;
-        for (i = 0, len = db_shifts.length; i < len; i++) {
-          shift = db_shifts[i];
-          if (shift.start_time < firstblock_starttime) {
-            firstblock_starttime = shift.start_time;
-          }
-          if (shift.end_time > lastblock_endtime) {
-            lastblock_endtime = shift.end_time;
-          }
-          room_id = shift.RID;
-          if (typeof lanes[room_id] === "undefined") {
-            lanes[room_id] = [[]];
-          }
-          shift_added = false;
-          ref = lanes[room_id];
-          for (j = 0, len1 = ref.length; j < len1; j++) {
-            lane = ref[j];
-            shift_added = add_shift(shift, room_id);
-            if (shift_added) {
-              break;
-            }
-          }
-          if (!shift_added) {
-            Shifts.log("lane is full, adding new one");
-            lanes[room_id].push([]);
-            highest_lane_nr = lanes[room_id].length - 1;
-            add_shift(shift, room_id);
-          }
-        }
-        mustache_rooms = [];
-        for (room_nr in rooms) {
-          room_id = rooms[room_nr].RID;
-          mustache_rooms[room_nr] = {};
-          mustache_rooms[room_nr].Name = rooms[room_nr].Name;
-          mustache_rooms[room_nr].lanes = [];
-          for (lane_nr in lanes[room_id]) {
-            mustache_rooms[room_nr].lanes[lane_nr] = {};
-            mustache_rooms[room_nr].lanes[lane_nr].shifts = [];
-            rendered_until = firstblock_starttime - Shifts.render.TIME_MARGIN;
-            for (shift_nr in lanes[room_id][lane_nr]) {
-              while (rendered_until + Shifts.render.SECONDS_PER_ROW <= lanes[room_id][lane_nr][shift_nr].start_time) {
+          mustache_rooms = [];
+          for (room_nr in rooms) {
+            room_id = rooms[room_nr].RID;
+            mustache_rooms[room_nr] = {};
+            mustache_rooms[room_nr].Name = rooms[room_nr].Name;
+            mustache_rooms[room_nr].lanes = [];
+            for (lane_nr in lanes[room_id]) {
+              mustache_rooms[room_nr].lanes[lane_nr] = {};
+              mustache_rooms[room_nr].lanes[lane_nr].shifts = [];
+              rendered_until = firstblock_starttime - Shifts.render.TIME_MARGIN;
+              for (shift_nr in lanes[room_id][lane_nr]) {
+                while (rendered_until + Shifts.render.SECONDS_PER_ROW <= lanes[room_id][lane_nr][shift_nr].start_time) {
+                  mustache_rooms[room_nr].lanes[lane_nr].shifts.push(Shifts.render.tick(rendered_until, true));
+                  rendered_until += Shifts.render.SECONDS_PER_ROW;
+                }
+                mustache_rooms[room_nr].lanes[lane_nr].shifts.push({
+                  shift: lanes[room_id][lane_nr][shift_nr]
+                });
+                rendered_until += lanes[room_id][lane_nr][shift_nr].blocks * Shifts.render.SECONDS_PER_ROW;
+              }
+              while (rendered_until < lastblock_endtime) {
                 mustache_rooms[room_nr].lanes[lane_nr].shifts.push(Shifts.render.tick(rendered_until, true));
                 rendered_until += Shifts.render.SECONDS_PER_ROW;
               }
-              mustache_rooms[room_nr].lanes[lane_nr].shifts.push({
-                shift: lanes[room_id][lane_nr][shift_nr]
-              });
-              rendered_until += lanes[room_id][lane_nr][shift_nr].blocks * Shifts.render.SECONDS_PER_ROW;
-            }
-            while (rendered_until < lastblock_endtime) {
-              mustache_rooms[room_nr].lanes[lane_nr].shifts.push(Shifts.render.tick(rendered_until, true));
-              rendered_until += Shifts.render.SECONDS_PER_ROW;
             }
           }
-        }
-        tpl = '';
-        tpl += Mustache.render(Shifts.templates.filter_form, {
-          rooms: rooms
+          tpl = '';
+          tpl += Mustache.render(Shifts.templates.filter_form, {
+            rooms: rooms,
+            angeltypes: angeltypes
+          });
+          tpl += Mustache.render(Shifts.templates.shift_calendar, {
+            timelane_ticks: Shifts.render.timelane(),
+            rooms: mustache_rooms
+          });
+          return Shifts.$shiftplan.html(tpl);
         });
-        tpl += Mustache.render(Shifts.templates.shift_calendar, {
-          timelane_ticks: Shifts.render.timelane(),
-          rooms: mustache_rooms
-        });
-        return Shifts.$shiftplan.html(tpl);
       });
     });
   }
