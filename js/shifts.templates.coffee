@@ -31,10 +31,52 @@ Shifts.templates =
         </div>
       </div>
     </div>
-    <div class="col-md-2">%room_select%</div>
-    <div class="col-md-2">%type_select%</div>
-    <div class="col-md-2">%filled_select%</div>
-  </div>
+    <div class="col-md-2">
+        <div id="selection_types" class="selection types">
+            <h4>Rooms</h4>
+            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Eingang A</label></div><br />
+            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Eingang B</label></div><br />
+            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Hall 1</label></div><br />
+            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Hall 2</label></div><br />
+            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Hall 3</label></div><br />
+            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Main Building</label></div><br />
+            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Testraum</label></div><br />
+            <div class="form-group">
+                <div class="btn-group">
+                    <a href="" class="btn btn-default ">All</a>
+                    <a href="" class="btn btn-default ">None</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div id="selection_types" class="selection types">
+            <h4>Angeltypes<sup>1</sup></h4>
+            <div class="checkbox"><label><input type="checkbox" name="types[]" value="4" checked="checked"> Angel</label></div><br />
+            <div class="checkbox"><label><input type="checkbox" name="types[]" value="6" checked="checked"> Camera angel</label></div><br />
+            <div class="checkbox"><label><input type="checkbox" name="types[]" value="5" checked="checked"> Guardian Angel</label></div><br />
+            <div class="form-group">
+                <div class="btn-group">
+                    <a href="" class="btn btn-default ">All</a>
+                    <a href="" class="btn btn-default ">None</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div id="selection_filled" class="selection filled">
+            <h4>Occupancy</h4>
+            <div class="checkbox"><label><input type="checkbox" name="filled[]" value="1" checked="checked"> occupied</label></div><br />
+            <div class="checkbox"><label><input type="checkbox" name="filled[]" value="0" checked="checked"> free</label></div><br />
+            <div class="form-group">
+                <div class="btn-group">
+                    <a href="" class="btn btn-default ">All</a>
+                    <a href="" class="btn btn-default ">None</a>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
 	<div class="row">
 		<div class="col-md-6">
         <div>%task_notice%</div>
