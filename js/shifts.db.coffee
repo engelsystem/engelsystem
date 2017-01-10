@@ -139,7 +139,7 @@ Shifts.db =
     insert_needed_angeltype: (needed_angeltype, done) ->
         needed_angeltype.id = parseInt needed_angeltype.id, 10
         needed_angeltype.RID = parseInt(needed_angeltype.RID, 10) || null
-        needed_angeltype.SID = parseInt needed_angeltype.SID, 10
+        needed_angeltype.SID = parseInt(needed_angeltype.SID, 10) || null
         needed_angeltype.ATID = parseInt needed_angeltype.ATID, 10
         needed_angeltype.count = parseInt needed_angeltype.count, 10
         needed_angeltype_exists = needed_angeltype.id in Shifts.db.needed_angeltype_ids
@@ -186,7 +186,7 @@ Shifts.db =
         JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id
         JOIN Room ON Room.RID = Shifts.RID
         JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
-        WHERE (shift_id IS NOT NULL OR room_id IS NOT NULL)
+        WHERE (NeededAngelTypes.shift_id IS NOT NULL OR NeededAngelTypes.room_id IS NOT NULL)
         AND NeededAngelTypes.angel_count > 0
         AND Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
         ORDER BY Shifts.start_time, Shifts.SID", (res) ->

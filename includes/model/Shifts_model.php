@@ -368,7 +368,7 @@ function Shifts_by_user($user, $include_freeload_comments = false) {
  */
 function Shifts_for_websql() {
 
-    $limit = 1000; // yes. but provide an argument "since" to fetch all remaining items.
+    $limit = 8000; // yes. but provide an argument "since" to fetch all remaining items.
                     // todo: only limit shifts, users and shift_entries, provide separate json,
                     // because of different updated rows
 
