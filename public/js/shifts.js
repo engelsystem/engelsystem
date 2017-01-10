@@ -151,12 +151,12 @@ Shifts.db = {
     rand = 2000;
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return alasql("SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.shift_start, Shifts.shift_end, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM Shifts LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id LEFT JOIN Room ON Room.RID = Shifts.RID WHERE Shifts.shift_start >= " + start_time + " AND Shifts.shift_end <= " + end_time + " LIMIT " + rand, function(res) {
+    return alasql("SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.shift_start, Shifts.shift_end, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM Shifts LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id LEFT JOIN Room ON Room.RID = Shifts.RID WHERE Shifts.shift_start >= " + start_time + " AND Shifts.shift_end <= " + end_time + " ORDER BY Shifts.shift_start LIMIT " + rand, function(res) {
       return done(res);
     });
   },
   get_rooms: function(done) {
-    return alasql("SELECT * FROM Room", function(res) {
+    return alasql("SELECT * FROM Room ORDER BY Name", function(res) {
       return done(res);
     });
   }

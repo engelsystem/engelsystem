@@ -113,10 +113,11 @@ Shifts.db =
         LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
         LEFT JOIN Room ON Room.RID = Shifts.RID
         WHERE Shifts.shift_start >= #{start_time} AND Shifts.shift_end <= #{end_time}
+        ORDER BY Shifts.shift_start
         LIMIT #{rand}", (res) ->
             done res
 
     get_rooms: (done) ->
-        alasql "SELECT * FROM Room", (res) ->
+        alasql "SELECT * FROM Room ORDER BY Name", (res) ->
             done res
 
