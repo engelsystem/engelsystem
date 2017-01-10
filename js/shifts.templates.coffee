@@ -34,13 +34,9 @@ Shifts.templates =
     <div class="col-md-2">
         <div id="selection_types" class="selection types">
             <h4>Rooms</h4>
-            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Eingang A</label></div><br />
-            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Eingang B</label></div><br />
-            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Hall 1</label></div><br />
-            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Hall 2</label></div><br />
-            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Hall 3</label></div><br />
-            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Main Building</label></div><br />
-            <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="2" checked="checked"> Testraum</label></div><br />
+            {{#rooms}}
+                <div class="checkbox"><label><input type="checkbox" name="rooms[]" value="{{RID}}" checked="checked"> {{Name}}</label></div><br />
+            {{/rooms}}
             <div class="form-group">
                 <div class="btn-group">
                     <a href="" class="btn btn-default ">All</a>

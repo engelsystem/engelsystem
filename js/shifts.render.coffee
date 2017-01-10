@@ -151,10 +151,11 @@ Shifts.render =
                             mustache_rooms[room_nr].lanes[lane_nr].shifts.push Shifts.render.tick(rendered_until, true)
                             rendered_until += Shifts.render.SECONDS_PER_ROW
 
-                #Shifts.log mustache_rooms
-
                 tpl = ''
-                tpl += Mustache.render Shifts.templates.filter_form
+
+                tpl += Mustache.render Shifts.templates.filter_form,
+                    rooms: rooms
+
                 tpl += Mustache.render Shifts.templates.shift_calendar,
                     timelane_ticks: Shifts.render.timelane()
                     rooms: mustache_rooms
