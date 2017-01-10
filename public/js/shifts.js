@@ -166,13 +166,15 @@ Shifts.db = {
       return done();
     }
   },
-  get_my_shifts: function(done) {
-    var end_time, rand, start_time;
+  get_shifts: function(filter_rooms, filter_angeltypes, done) {
+    var end_time, filter_rooms_ids, rand, start_time;
     rand = 1 + parseInt(Math.random() * 10, 10);
     rand = 2000;
+    filter_rooms_ids = filter_rooms.join(',');
+    Shifts.log(filter_rooms_ids);
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return alasql("SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM Shifts JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id JOIN Room ON Room.RID = Shifts.RID WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND Shifts.RID IN (2, 3, 4) ORDER BY Shifts.start_time LIMIT " + rand, function(res) {
+    return alasql("SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM Shifts JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id JOIN Room ON Room.RID = Shifts.RID WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND Shifts.RID IN (" + filter_rooms_ids + ") ORDER BY Shifts.start_time LIMIT " + rand, function(res) {
       return done(res);
     });
   },
@@ -321,7 +323,13 @@ Shifts.render = {
   shiftplan: function() {
     return Shifts.db.get_rooms(function(rooms) {
       return Shifts.db.get_angeltypes(function(angeltypes) {
-        return Shifts.db.get_my_shifts(function(db_shifts) {
+        var filter_angeltypes, filter_rooms;
+        filter_rooms = [];
+        filter_angeltypes = [];
+        filter_rooms.push(2);
+        filter_rooms.push(3);
+        filter_rooms.push(4);
+        return Shifts.db.get_shifts(filter_rooms, filter_angeltypes, function(db_shifts) {
           var add_shift, end_time, firstblock_starttime, highest_lane_nr, i, j, lane, lane_nr, lanes, lastblock_endtime, len, len1, mustache_rooms, ref, rendered_until, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, start_time, tpl;
           lanes = {};
           add_shift = function(shift, room_id) {

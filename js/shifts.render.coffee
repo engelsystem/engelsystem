@@ -55,7 +55,15 @@ Shifts.render =
     shiftplan: ->
         Shifts.db.get_rooms (rooms) ->
             Shifts.db.get_angeltypes (angeltypes) ->
-                Shifts.db.get_my_shifts (db_shifts) ->
+
+                filter_rooms = []
+                filter_angeltypes = []
+
+                filter_rooms.push 2
+                filter_rooms.push 3
+                filter_rooms.push 4
+
+                Shifts.db.get_shifts filter_rooms, filter_angeltypes, (db_shifts) ->
 
                     lanes = {}
 

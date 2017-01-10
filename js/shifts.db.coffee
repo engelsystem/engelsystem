@@ -115,11 +115,13 @@ Shifts.db =
         else
             done()
 
-    get_my_shifts: (done) ->
+    get_shifts: (filter_rooms, filter_angeltypes, done) ->
         #alasql "SELECT * FROM ShiftEntry LEFT JOIN User ON ShiftEntry.UID = User.UID LEFT JOIN Shifts ON ShiftEntry.SID = Shifts.SID", (res) ->
         rand = 1 + parseInt(Math.random() * 10, 10)
         rand = 2000
 
+        filter_rooms_ids = filter_rooms.join ','
+        Shifts.log filter_rooms_ids
         start_time = Shifts.render.get_starttime()
         end_time = Shifts.render.get_endtime()
 
@@ -130,7 +132,7 @@ Shifts.db =
         JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
         JOIN Room ON Room.RID = Shifts.RID
         WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
-        AND Shifts.RID IN (2, 3, 4)
+        AND Shifts.RID IN (#{filter_rooms_ids})
         ORDER BY Shifts.start_time
         LIMIT #{rand}", (res) ->
             done res
