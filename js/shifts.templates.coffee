@@ -159,17 +159,17 @@ Shifts.templates =
             {{#shift}}
                 <div class="shift panel panel-success" style="height: {{height}}px;">
                   <div class="panel-heading">
-                    <a href="?p=shifts&amp;action=view&amp;shift_id=2696">{{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a>
+                    <a href="?p=shifts&amp;action=view&amp;shift_id={{SID}}"><span class="label label-success">{{SID}}</span> {{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a>
                     <div class="pull-right">
                       <div class="btn-group">
-                        <a href="?p=user_shifts&amp;edit_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
-                        <a href="?p=user_shifts&amp;delete_shift=2696" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                        <a href="?p=user_shifts&amp;edit_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a href="?p=user_shifts&amp;delete_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
                       </div>
                     </div>
                   </div>
                   <div class="panel-body">
                     {{#shift_title}}<span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />{{/shift_title}}
-                    <a href="?p=rooms&amp;action=view&amp;room_id=42"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a>
+                    <a href="?p=rooms&amp;action=view&amp;room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a>
                   </div>
                   <ul class="list-group">
                     <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong>

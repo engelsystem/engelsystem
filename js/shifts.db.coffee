@@ -142,7 +142,7 @@ Shifts.db =
         JOIN Room ON Room.RID = Shifts.RID
         WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
         AND Shifts.RID IN (#{filter_rooms_ids})
-        ORDER BY Shifts.start_time
+        ORDER BY Shifts.start_time, Shifts.SID
         LIMIT #{rand}", (res) ->
             done res
 

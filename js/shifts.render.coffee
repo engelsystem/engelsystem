@@ -122,7 +122,7 @@ Shifts.render =
                                 break
 
                         if not shift_added
-                            Shifts.log "lane is full, adding new one"
+                            #Shifts.log "lane is full, adding new one"
                             lanes[room_id].push []
                             highest_lane_nr = lanes[room_id].length - 1
                             add_shift(shift, room_id)
