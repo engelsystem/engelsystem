@@ -38,7 +38,7 @@ Shifts.db = {
     Shifts.log('init db');
     return alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem; ATTACH INDEXEDDB DATABASE engelsystem;', function() {
       return alasql('USE engelsystem', function() {
-        return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, shift_start INT, shift_end INT, RID INT); CREATE TABLE IF NOT EXISTS User (UID INT, nick); CREATE TABLE IF NOT EXISTS Room (RID INT, Name); CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT); CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT); CREATE TABLE IF NOT EXISTS options (option_key, option_value);', function() {
+        return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, start_time INT, end_time INT, RID INT); CREATE TABLE IF NOT EXISTS User (UID INT, nick); CREATE TABLE IF NOT EXISTS Room (RID INT, Name); CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT); CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT); CREATE TABLE IF NOT EXISTS options (option_key, option_value);', function() {
           return Shifts.db.populate_ids(function() {
             return done();
           });
@@ -112,7 +112,7 @@ Shifts.db = {
     var shift_exists;
     shift_exists = Shifts.db.shift_ids.indexOf(parseInt(shift.SID, 10)) > -1;
     if (shift_exists === false) {
-      return alasql("INSERT INTO Shifts (SID, title, shifttype_id, shift_start, shift_end, RID) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.shifttype_id + "', '" + shift.start + "', '" + shift.end + "', '" + shift.RID + "')", function() {
+      return alasql("INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (" + shift.SID + ", '" + shift.title + "', '" + shift.shifttype_id + "', '" + shift.start + "', '" + shift.end + "', '" + shift.RID + "')", function() {
         Shifts.db.shift_ids.push(shift.SID);
         return done();
       });
@@ -151,7 +151,7 @@ Shifts.db = {
     rand = 2000;
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return alasql("SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.shift_start, Shifts.shift_end, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM Shifts LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id LEFT JOIN Room ON Room.RID = Shifts.RID WHERE Shifts.shift_start >= " + start_time + " AND Shifts.shift_end <= " + end_time + " ORDER BY Shifts.shift_start LIMIT " + rand, function(res) {
+    return alasql("SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM Shifts LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id LEFT JOIN Room ON Room.RID = Shifts.RID WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " ORDER BY Shifts.start_time LIMIT " + rand, function(res) {
       return done(res);
     });
   },
@@ -296,9 +296,9 @@ Shifts.render = {
           if (shift.shift_title === "null") {
             shift.shift_title = null;
           }
-          shift.starttime = moment(shift.shift_start * 1000).format('HH:mm');
-          shift.endtime = moment(shift.shift_end * 1000).format('HH:mm');
-          blocks = Math.ceil(shift.shift_end - shift.shift_start) / Shifts.render.SECONDS_PER_ROW;
+          shift.starttime = moment.unix(shift.start_time).format('HH:mm');
+          shift.endtime = moment.unix(shift.end_time).format('HH:mm');
+          blocks = Math.ceil(shift.end_time - shift.start_time) / Shifts.render.SECONDS_PER_ROW;
           blocks = Math.max(1, blocks);
           height = blocks * Shifts.render.BLOCK_HEIGHT - Shifts.render.MARGIN;
           shift.blocks = blocks;
@@ -316,7 +316,7 @@ Shifts.render = {
           ref = lanes[room_id][lane_nr];
           for (i = 0, len = ref.length; i < len; i++) {
             lane_shift = ref[i];
-            if (!(shift.shift_start >= lane_shift.shift_end || shift.shift_end <= lane_shift.shift_start)) {
+            if (!(shift.start_time >= lane_shift.end_time || shift.end_time <= lane_shift.start_time)) {
               return false;
             }
           }
@@ -328,11 +328,11 @@ Shifts.render = {
         lastblock_endtime = start_time;
         for (i = 0, len = db_shifts.length; i < len; i++) {
           shift = db_shifts[i];
-          if (shift.shift_start < firstblock_starttime) {
-            firstblock_starttime = shift.shift_start;
+          if (shift.start_time < firstblock_starttime) {
+            firstblock_starttime = shift.start_time;
           }
-          if (shift.shift_end > lastblock_endtime) {
-            lastblock_endtime = shift.shift_end;
+          if (shift.end_time > lastblock_endtime) {
+            lastblock_endtime = shift.end_time;
           }
           room_id = shift.RID;
           if (typeof lanes[room_id] === "undefined") {
@@ -365,7 +365,7 @@ Shifts.render = {
             mustache_rooms[room_nr].lanes[lane_nr].shifts = [];
             rendered_until = firstblock_starttime - Shifts.render.TIME_MARGIN;
             for (shift_nr in lanes[room_id][lane_nr]) {
-              while (rendered_until + Shifts.render.SECONDS_PER_ROW <= lanes[room_id][lane_nr][shift_nr].shift_start) {
+              while (rendered_until + Shifts.render.SECONDS_PER_ROW <= lanes[room_id][lane_nr][shift_nr].start_time) {
                 mustache_rooms[room_nr].lanes[lane_nr].shifts.push(Shifts.render.tick(rendered_until, true));
                 rendered_until += Shifts.render.SECONDS_PER_ROW;
               }

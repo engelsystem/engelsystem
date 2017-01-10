@@ -12,7 +12,7 @@ Shifts.db =
         ATTACH INDEXEDDB DATABASE engelsystem;', ->
             alasql 'USE engelsystem', ->
                 # note: primary key doesn't work, see https://github.com/agershun/alasql/issues/566
-                alasql 'CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, shift_start INT, shift_end INT, RID INT);
+                alasql 'CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, start_time INT, end_time INT, RID INT);
                 CREATE TABLE IF NOT EXISTS User (UID INT, nick);
                 CREATE TABLE IF NOT EXISTS Room (RID INT, Name);
                 CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT);
@@ -73,7 +73,7 @@ Shifts.db =
         # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
         shift_exists = Shifts.db.shift_ids.indexOf(parseInt(shift.SID, 10)) > -1
         if shift_exists == false
-            alasql "INSERT INTO Shifts (SID, title, shifttype_id, shift_start, shift_end, RID) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.shifttype_id}', '#{shift.start}', '#{shift.end}', '#{shift.RID}')", ->
+            alasql "INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.shifttype_id}', '#{shift.start}', '#{shift.end}', '#{shift.RID}')", ->
                 Shifts.db.shift_ids.push shift.SID
                 done()
         else
@@ -106,14 +106,14 @@ Shifts.db =
         start_time = Shifts.render.get_starttime()
         end_time = Shifts.render.get_endtime()
 
-        alasql "SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.shift_start, Shifts.shift_end, Shifts.RID,
+        alasql "SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID,
         ShiftTypes.name as shifttype_name,
         Room.Name as room_name
         FROM Shifts
         LEFT JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
         LEFT JOIN Room ON Room.RID = Shifts.RID
-        WHERE Shifts.shift_start >= #{start_time} AND Shifts.shift_end <= #{end_time}
-        ORDER BY Shifts.shift_start
+        WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
+        ORDER BY Shifts.start_time
         LIMIT #{rand}", (res) ->
             done res
 
