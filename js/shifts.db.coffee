@@ -188,6 +188,7 @@ Shifts.db =
         JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
         WHERE NeededAngelTypes.angel_count > 0
         AND Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
+        AND Shifts.RID IN (#{filter_rooms_ids})
         ORDER BY Shifts.start_time, Shifts.SID", (res) ->
             Shifts.log res
             done res
