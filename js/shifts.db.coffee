@@ -152,6 +152,7 @@ Shifts.db =
 
     get_shifts: (filter_rooms, filter_angeltypes, done) ->
         filter_rooms_ids = filter_rooms.join ','
+        filter_angeltypes_ids = filter_angeltypes.join ','
         start_time = Shifts.render.get_starttime()
         end_time = Shifts.render.get_endtime()
 
@@ -165,6 +166,7 @@ Shifts.db =
         WHERE NeededAngelTypes.angel_count > 0
         AND Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
         AND Shifts.RID IN (#{filter_rooms_ids})
+        AND NeededAngelTypes.angel_type_id IN (#{filter_angeltypes_ids})
         ORDER BY Shifts.start_time, Shifts.SID", (res) ->
             done res
 
