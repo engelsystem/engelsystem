@@ -155,30 +155,6 @@ Shifts.db =
         start_time = Shifts.render.get_starttime()
         end_time = Shifts.render.get_endtime()
 
-        #alasql "SELECT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID,
-        #ShiftTypes.name as shifttype_name,
-        #Room.Name as room_name
-        #FROM Shifts
-        #JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
-        #JOIN Room ON Room.RID = Shifts.RID
-        #WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
-        #AND Shifts.RID IN (#{filter_rooms_ids})
-        #ORDER BY Shifts.start_time, Shifts.SID", (res) ->
-        #    done res
-
-        #alasql "SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID,
-        #ShiftTypes.name as shifttype_name,
-        #Room.Name as room_name
-        #FROM NeededAngelTypes
-        #JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id
-        #JOIN Room ON Room.RID = Shifts.RID
-        #WHERE (shift_id IS NOT NULL OR room_id IS NOT NULL)
-        #AND count > 0
-        #AND Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
-    #   #AND Shifts.RID IN (#{filter_rooms_ids})
-        #ORDER BY Shifts.start_time, Shifts.SID", (res) ->
-        #    done res
-
         alasql "SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID,
         ShiftTypes.name as shifttype_name,
         Room.Name as room_name
@@ -190,76 +166,7 @@ Shifts.db =
         AND Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
         AND Shifts.RID IN (#{filter_rooms_ids})
         ORDER BY Shifts.start_time, Shifts.SID", (res) ->
-            Shifts.log res
             done res
-
-
-
-        # crap after here:
-        #
-        #alasql "SELECT * FROM
-        #(
-        #    SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID,
-        #    ShiftTypes.name as shifttype_name,
-        #    Room.Name as room_name
-        #    FROM Shifts
-        #    JOIN Room ON Room.RID = Shifts.RID
-        #    JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
-        #    JOIN NeededAngelTypes ON NeededAngelTypes.shift_id = Shifts.SID
-        #    WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
-        #    AND Shifts.RID IN (#{filter_rooms_ids})
-        #    AND NeededAngelTypes.angel_count > 0
-
-        #    UNION
-
-        #    SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID,
-        #    ShiftTypes.name as shifttype_name,
-        #    Room.Name as room_name
-        #    FROM Shifts
-        #    JOIN Room ON Room.RID = Shifts.RID
-        #    JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
-        #    JOIN NeededAngelTypes ON NeededAngelTypes.room_id = Shifts.RID
-        #    WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
-        #    AND Shifts.RID IN (#{filter_rooms_ids})
-        #    AND NeededAngelTypes.angel_count > 0
-        #) as tmp_shifts
-
-        #    ORDER BY Shifts.start_time, Shifts.SID", (res) ->
-        #        done res
-
-        #sqlstring = "SELECT * FROM
-        #(
-        #    SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID,
-        #    ShiftTypes.name as shifttype_name,
-        #    Room.Name as room_name
-        #    FROM Shifts
-        #    JOIN Room ON Room.RID = Shifts.RID
-        #    JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
-        #    JOIN NeededAngelTypes ON NeededAngelTypes.shift_id = Shifts.SID
-        #    WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
-        #    AND Shifts.RID IN (#{filter_rooms_ids})
-        #    AND NeededAngelTypes.angel_count > 0
-
-        #    UNION
-
-        #    SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID,
-        #    ShiftTypes.name as shifttype_name,
-        #    Room.Name as room_name
-        #    FROM Shifts
-        #    JOIN Room ON Room.RID = Shifts.RID
-        #    JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
-        #    JOIN NeededAngelTypes ON NeededAngelTypes.room_id = Shifts.RID
-        #    WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
-        #    AND Shifts.RID IN (#{filter_rooms_ids})
-        #    AND NeededAngelTypes.angel_count > 0
-        #) as tmp_shifts
-
-        #    ORDER BY start"
-
-        #Shifts.log sqlstring
-
-        #alasql sqlstring, (res) ->
-        #    done res
 
     get_rooms: (done) ->
         alasql "SELECT * FROM Room ORDER BY Name", (res) ->
