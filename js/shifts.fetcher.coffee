@@ -11,11 +11,11 @@ Shifts.fetcher =
             Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
                 Shifts.log 'processing rooms done'
 
-                # insert users
-                users = data.users
-                Shifts.$shiftplan.html 'fetching users...'
-                Shifts.fetcher.process Shifts.db.insert_user, users, ->
-                    Shifts.log 'processing users done'
+                # insert angeltypes
+                angeltypes = data.angeltypes
+                Shifts.$shiftplan.html 'fetching angeltypes...'
+                Shifts.fetcher.process Shifts.db.insert_angeltype, angeltypes, ->
+                    Shifts.log 'processing angeltypes done'
 
                     # insert shift_types
                     shift_types = data.shift_types
@@ -23,23 +23,23 @@ Shifts.fetcher =
                     Shifts.fetcher.process Shifts.db.insert_shifttype, shift_types, ->
                         Shifts.log 'processing shift_types done'
 
-                        # insert angeltypes
-                        angeltypes = data.angeltypes
-                        Shifts.$shiftplan.html 'fetching angeltypes...'
-                        Shifts.fetcher.process Shifts.db.insert_angeltype, angeltypes, ->
-                            Shifts.log 'processing angeltypes done'
+                        # insert users
+                        users = data.users
+                        Shifts.$shiftplan.html 'fetching users...'
+                        Shifts.fetcher.process Shifts.db.insert_user, users, ->
+                            Shifts.log 'processing users done'
 
-                            # insert needed_angeltypes
-                            needed_angeltypes = data.needed_angeltypes
-                            Shifts.$shiftplan.html 'fetching needed_angeltypes...'
-                            Shifts.fetcher.process Shifts.db.insert_needed_angeltype, needed_angeltypes, ->
-                                Shifts.log 'processing needed_angeltypes done'
+                            # insert shifts
+                            shifts = data.shifts
+                            Shifts.$shiftplan.html 'fetching shifts...'
+                            Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
+                                Shifts.log 'processing shifts done'
 
-                                # insert shifts
-                                shifts = data.shifts
-                                Shifts.$shiftplan.html 'fetching shifts...'
-                                Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
-                                    Shifts.log 'processing shifts done'
+                                # insert needed_angeltypes
+                                needed_angeltypes = data.needed_angeltypes
+                                Shifts.$shiftplan.html 'fetching needed_angeltypes...'
+                                Shifts.fetcher.process Shifts.db.insert_needed_angeltype, needed_angeltypes, ->
+                                    Shifts.log 'processing needed_angeltypes done'
 
                                     # insert shift_entries
                                     shift_entries = data.shift_entries

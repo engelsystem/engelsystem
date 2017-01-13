@@ -232,33 +232,33 @@ Shifts.fetcher = {
       rooms = data.rooms;
       Shifts.$shiftplan.html('fetching rooms...');
       return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
-        var users;
+        var angeltypes;
         Shifts.log('processing rooms done');
-        users = data.users;
-        Shifts.$shiftplan.html('fetching users...');
-        return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
+        angeltypes = data.angeltypes;
+        Shifts.$shiftplan.html('fetching angeltypes...');
+        return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
           var shift_types;
-          Shifts.log('processing users done');
+          Shifts.log('processing angeltypes done');
           shift_types = data.shift_types;
           Shifts.$shiftplan.html('fetching shift_types...');
           return Shifts.fetcher.process(Shifts.db.insert_shifttype, shift_types, function() {
-            var angeltypes;
+            var users;
             Shifts.log('processing shift_types done');
-            angeltypes = data.angeltypes;
-            Shifts.$shiftplan.html('fetching angeltypes...');
-            return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
-              var needed_angeltypes;
-              Shifts.log('processing angeltypes done');
-              needed_angeltypes = data.needed_angeltypes;
-              Shifts.$shiftplan.html('fetching needed_angeltypes...');
-              return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
-                var shifts;
-                Shifts.log('processing needed_angeltypes done');
-                shifts = data.shifts;
-                Shifts.$shiftplan.html('fetching shifts...');
-                return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
+            users = data.users;
+            Shifts.$shiftplan.html('fetching users...');
+            return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
+              var shifts;
+              Shifts.log('processing users done');
+              shifts = data.shifts;
+              Shifts.$shiftplan.html('fetching shifts...');
+              return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
+                var needed_angeltypes;
+                Shifts.log('processing shifts done');
+                needed_angeltypes = data.needed_angeltypes;
+                Shifts.$shiftplan.html('fetching needed_angeltypes...');
+                return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
                   var shift_entries;
-                  Shifts.log('processing shifts done');
+                  Shifts.log('processing needed_angeltypes done');
                   shift_entries = data.shift_entries;
                   Shifts.$shiftplan.html('fetching shift entries...');
                   return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
