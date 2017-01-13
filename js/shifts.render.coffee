@@ -41,6 +41,12 @@ Shifts.render =
             end_time = end_time + Shifts.render.TIME_MARGIN
         return end_time
 
+    calculate_signup_state: (shift) ->
+        now_unix = moment().format('X')
+        if shift.start_time > now_unix
+            return "success"
+        return "default"
+
     timelane: ->
         time_slot = []
         start_time = Shifts.render.get_starttime(true)
@@ -72,6 +78,9 @@ Shifts.render =
                         shift.starttime = moment.unix(shift.start_time).format('HH:mm')
                         shift.endtime = moment.unix(shift.end_time).format('HH:mm')
 
+                        # set state class
+                        shift.state_class = Shifts.render.calculate_signup_state(shift)
+
                         # calculate shift height
                         blocks = Math.ceil(shift.end_time - shift.start_time) / Shifts.render.SECONDS_PER_ROW
                         blocks = Math.max(1, blocks)
@@ -91,10 +100,8 @@ Shifts.render =
                                 return false
                         return true
 
-                    # temporary
                     start_time = Shifts.render.get_starttime(true)
                     end_time = Shifts.render.get_endtime(true)
-                    # /temporary
 
                     firstblock_starttime = end_time
                     lastblock_endtime = start_time
