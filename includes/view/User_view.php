@@ -182,7 +182,6 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
           'Vorname' => Users_table_header_link('Vorname', _("Prename"), $order_by),
           'Name' => Users_table_header_link('Name', _("Name"), $order_by),
           'email' => Users_table_header_link('E-Mail', _("E-Mail"), $order_by),
-          'Telefon' => Users_table_header_link('Telefon', _("Phone"), $order_by),
           'Handy' => Users_table_header_link('Handy', _("Mobile"), $order_by),
           'Gekommen' => Users_table_header_link('Gekommen', _("Arrived"), $order_by),
           'Tshirt' => Users_table_header_link('Tshirt', _("T-Shirt"), $order_by),
