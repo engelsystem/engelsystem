@@ -1,4 +1,7 @@
 <?php
+
+use Engelsystem\Exceptions\Handler as ExceptionHandler;
+
 /**
  * This file includes all needed functions, connects to the db etc.
  */
@@ -96,6 +99,13 @@ require_once realpath(__DIR__ . '/../includes/pages/user_news.php');
 require_once realpath(__DIR__ . '/../includes/pages/user_questions.php');
 require_once realpath(__DIR__ . '/../includes/pages/user_settings.php');
 require_once realpath(__DIR__ . '/../includes/pages/user_shifts.php');
+
+$errorHandler = new ExceptionHandler(
+    ($environment == 'development'
+        ? ExceptionHandler::ENV_DEVELOPMENT
+        : ExceptionHandler::ENV_PRODUCTION
+    )
+);
 
 session_start();
 
