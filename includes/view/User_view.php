@@ -1,25 +1,6 @@
 <?php
 
 /**
- * Available T-Shirt sizes
- */
-$tshirt_sizes = [
-    ''     => _('Please select...'),
-    'S'    => 'S',
-    'M'    => 'M',
-    'L'    => 'L',
-    'XL'   => 'XL',
-    '2XL'  => '2XL',
-    '3XL'  => '3XL',
-    '4XL'  => '4XL',
-    '5XL'  => '5XL',
-    'S-G'  => 'S Girl',
-    'M-G'  => 'M Girl',
-    'L-G'  => 'L Girl',
-    'XL-G' => 'XL Girl'
-];
-
-/**
  * Renders user settings page
  *
  * @param array $user_source        The user
@@ -335,7 +316,7 @@ function User_view_shiftentries($needed_angel_type)
  */
 function User_view_myshift($shift, $user_source, $its_me)
 {
-    global $last_unsubscribe, $privileges;
+    global $privileges;
 
     $shift_info = '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';
     if ($shift['title']) {
@@ -371,7 +352,10 @@ function User_view_myshift($shift, $user_source, $its_me)
             'btn-xs'
         );
     }
-    if (($shift['start'] > time() + $last_unsubscribe * 3600) || in_array('user_shifts_admin', $privileges)) {
+    if (
+        ($shift['start'] > time() + config('last_unsubscribe') * 3600)
+        || in_array('user_shifts_admin', $privileges)
+    ) {
         $myshift['actions'][] = button(
             page_link_to('user_myshifts') . ((!$its_me) ? '&id=' . $user_source['UID'] : '') . '&cancel=' . $shift['id'],
             glyph('trash') . _('sign off'),
@@ -646,12 +630,12 @@ function render_user_departure_date_hint()
  */
 function render_user_freeloader_hint()
 {
-    global $user, $max_freeloadable_shifts;
+    global $user;
 
     if (User_is_freeloader($user)) {
         return sprintf(
             _('You freeloaded at least %s shifts. Shift signup is locked. Please go to heavens desk to be unlocked again.'),
-            $max_freeloadable_shifts
+            config('max_freeloadable_shifts')
         );
     }
 
@@ -679,9 +663,9 @@ function render_user_arrived_hint()
  */
 function render_user_tshirt_hint()
 {
-    global $enable_tshirt_size, $user;
+    global $user;
 
-    if ($enable_tshirt_size && $user['Size'] == '') {
+    if (config('enable_tshirt_size') && $user['Size'] == '') {
         return _('You need to specify a tshirt size in your settings!');
     }
 

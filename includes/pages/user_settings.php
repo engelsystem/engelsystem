@@ -97,13 +97,12 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
  */
 function user_settings_password($user_source)
 {
-    global $min_password_length;
     if (
         !isset($_REQUEST['password'])
         || !verify_password($_REQUEST['password'], $user_source['Passwort'], $user_source['UID'])
     ) {
         error(_('-> not OK. Please try again.'));
-    } elseif (strlen($_REQUEST['new_password']) < $min_password_length) {
+    } elseif (strlen($_REQUEST['new_password']) < config('min_password_length')) {
         error(_('Your password is to short (please use at least 6 characters).'));
     } elseif ($_REQUEST['new_password'] != $_REQUEST['new_password2']) {
         error(_('Your passwords don\'t match.'));
@@ -195,8 +194,11 @@ function user_settings_locale($user_source, $locales)
  */
 function user_settings()
 {
-    global $enable_tshirt_size, $tshirt_sizes, $themes, $locales;
-    global $user;
+    global $themes, $user;
+
+    $enable_tshirt_size = config('enable_tshirt_size');
+    $tshirt_sizes = config('tshirt_sizes');
+    $locales = config('locales');
 
     $buildup_start_date = null;
     $teardown_end_date = null;
@@ -207,6 +209,12 @@ function user_settings()
         }
         if (isset($event_config['teardown_end_date'])) {
             $teardown_end_date = $event_config['teardown_end_date'];
+        }
+    }
+
+    foreach ($tshirt_sizes as $key => $size) {
+        if (empty($size)) {
+            unset($tshirt_sizes[$key]);
         }
     }
 

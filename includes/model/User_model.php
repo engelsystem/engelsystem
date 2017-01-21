@@ -215,9 +215,9 @@ function Users($order_by = 'Nick')
  */
 function User_is_freeloader($user)
 {
-    global $max_freeloadable_shifts, $user;
+    global $user;
 
-    return count(ShiftEntries_freeloaded_by_user($user)) >= $max_freeloadable_shifts;
+    return count(ShiftEntries_freeloaded_by_user($user)) >= config('max_freeloadable_shifts');
 }
 
 /**
@@ -542,8 +542,7 @@ function User_generate_password_recovery_token(&$user)
  */
 function User_get_eligable_voucher_count(&$user)
 {
-    global $voucher_settings;
-
+    $voucher_settings = config('voucher_settings');
     $shifts_done = count(ShiftEntries_finished_by_user($user));
 
     $earned_vouchers = $user['got_voucher'] - $voucher_settings['initial_vouchers'];

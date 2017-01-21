@@ -31,8 +31,7 @@ function meetings_title()
  */
 function user_meetings()
 {
-    global $display_news;
-
+    $display_news = config('display_news');
     $html = '<div class="col-md-12"><h1>' . meetings_title() . '</h1>' . msg();
 
     if (isset($_REQUEST['page']) && preg_match('/^\d{1,}$/', $_REQUEST['page'])) {
@@ -178,7 +177,8 @@ function user_news_comments()
  */
 function user_news()
 {
-    global $display_news, $privileges, $user;
+    global $privileges, $user;
+    $display_news = config('display_news');
 
     $html = '<div class="col-md-12"><h1>' . news_title() . '</h1>' . msg();
 

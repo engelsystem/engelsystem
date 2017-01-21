@@ -1,10 +1,4 @@
 <?php
-$locales = [
-    'de_DE.UTF-8' => 'Deutsch',
-    'en_US.UTF-8' => 'English'
-];
-
-$default_locale = 'en_US.UTF-8';
 
 /**
  * Return currently active locale
@@ -31,7 +25,8 @@ function locale_short()
  */
 function gettext_init()
 {
-    global $locales, $default_locale;
+    $locales = config('locales');
+    $default_locale = config('default_locale');
 
     if (isset($_REQUEST['set_locale']) && isset($locales[$_REQUEST['set_locale']])) {
         $_SESSION['locale'] = $_REQUEST['set_locale'];
@@ -67,11 +62,10 @@ function gettext_locale($locale = null)
  */
 function make_langselect()
 {
-    global $locales;
     $url = $_SERVER['REQUEST_URI'] . (strpos($_SERVER['REQUEST_URI'], '?') > 0 ? '&' : '?') . 'set_locale=';
 
     $items = [];
-    foreach ($locales as $locale => $name) {
+    foreach (config('locales') as $locale => $name) {
         $items[] = toolbar_item_link(
             htmlspecialchars($url) . $locale,
             '',

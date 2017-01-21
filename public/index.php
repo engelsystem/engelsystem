@@ -169,7 +169,7 @@ if (
 $event_config = EventConfig();
 
 echo template_render(__DIR__ . '/../templates/layout.html', [
-    'theme'          => isset($user) ? $user['color'] : $default_theme,
+    'theme'          => isset($user) ? $user['color'] : config('default_theme'),
     'title'          => $title,
     'atom_link'      => ($page == 'news' || $page == 'user_meetings')
         ? ' <link href="' . page_link_to('atom') . (($page == 'user_meetings') ? '&meetings=1' : '')
@@ -179,8 +179,8 @@ echo template_render(__DIR__ . '/../templates/layout.html', [
     'menu'           => make_menu(),
     'content'        => msg() . $content,
     'header_toolbar' => header_toolbar(),
-    'faq_url'        => $faq_url,
-    'contact_email'  => $contact_email,
+    'faq_url'        => config('faq_url'),
+    'contact_email'  => config('contact_email'),
     'locale'         => locale(),
     'event_info'     => EventConfig_info($event_config) . ' <br />'
 ]);

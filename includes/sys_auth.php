@@ -59,7 +59,6 @@ function generate_salt($length = 16)
  */
 function set_password($uid, $password)
 {
-    global $crypt_alg;
     $result = DB::update('
         UPDATE `User`
         SET `Passwort` = ?,
@@ -68,7 +67,7 @@ function set_password($uid, $password)
         LIMIT 1
         ',
         [
-            crypt($password, $crypt_alg . '$' . generate_salt(16) . '$'),
+            crypt($password, config('crypt_alg') . '$' . generate_salt(16) . '$'),
             $uid
         ]
     );
@@ -89,7 +88,7 @@ function set_password($uid, $password)
  */
 function verify_password($password, $salt, $uid = null)
 {
-    global $crypt_alg;
+    $crypt_alg = config('crypt_alg');
     $correct = false;
     if (substr($salt, 0, 1) == '$') { // new-style crypt()
         $correct = crypt($password, $salt) == $salt;

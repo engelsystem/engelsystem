@@ -329,9 +329,9 @@ function shift_next_controller()
  */
 function shifts_json_export_all_controller()
 {
-    global $api_key;
+    $api_key = config('api_key');
 
-    if ($api_key == '') {
+    if (empty($api_key)) {
         engelsystem_error('Config contains empty apikey.');
     }
 

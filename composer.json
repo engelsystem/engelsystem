@@ -21,6 +21,9 @@
     "autoload": {
         "psr-4": {
             "Engelsystem\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     }
 }

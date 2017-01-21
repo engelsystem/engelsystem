@@ -17,7 +17,6 @@ function myshifts_title()
  */
 function user_myshifts()
 {
-    global $last_unsubscribe;
     global $user, $privileges;
 
     if (
@@ -144,7 +143,10 @@ function user_myshifts()
         );
         if (count($shift) > 0) {
             $shift = array_shift($shift);
-            if (($shift['start'] > time() + $last_unsubscribe * 3600) || in_array('user_shifts_admin', $privileges)) {
+            if (
+                ($shift['start'] > time() + config('last_unsubscribe') * 3600)
+                || in_array('user_shifts_admin', $privileges)
+            ) {
                 $result = ShiftEntry_delete($user_id);
                 if ($result === false) {
                     engelsystem_error('Unable to delete shift entry.');

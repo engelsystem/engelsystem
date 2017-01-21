@@ -282,7 +282,6 @@ function users_list_controller()
  */
 function user_password_recovery_set_new_controller()
 {
-    global $min_password_length;
     $user_source = User_by_password_recovery_token($_REQUEST['token']);
     if ($user_source == null) {
         error(_('Token is not correct.'));
@@ -292,7 +291,10 @@ function user_password_recovery_set_new_controller()
     if (isset($_REQUEST['submit'])) {
         $valid = true;
 
-        if (isset($_REQUEST['password']) && strlen($_REQUEST['password']) >= $min_password_length) {
+        if (
+            isset($_REQUEST['password'])
+            && strlen($_REQUEST['password']) >= config('min_password_length')
+        ) {
             if ($_REQUEST['password'] != $_REQUEST['password2']) {
                 $valid = false;
                 error(_('Your passwords don\'t match.'));

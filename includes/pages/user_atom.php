@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function user_atom()
 {
-    global $user, $display_news;
+    global $user;
 
     if (!isset($_REQUEST['key']) || !preg_match('/^[\da-f]{32}$/', $_REQUEST['key'])) {
         engelsystem_error('Missing key.');
@@ -27,7 +27,7 @@ function user_atom()
         FROM `News` 
         ' . (empty($_REQUEST['meetings']) ? '' : 'WHERE `Treffen` = 1 ') . '
         ORDER BY `ID`
-        DESC LIMIT ' . (int)$display_news
+        DESC LIMIT ' . (int)config('display_news')
     );
 
     $output = make_atom_entries_from_news($news);

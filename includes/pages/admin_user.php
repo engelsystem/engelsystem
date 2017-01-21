@@ -15,7 +15,14 @@ function admin_user_title()
  */
 function admin_user()
 {
-    global $user, $tshirt_sizes, $privileges;
+    global $user, $privileges;
+    $tshirt_sizes = config('tshirt_sizes');
+
+    foreach ($tshirt_sizes as $key => $size) {
+        if (empty($size)) {
+            unset($tshirt_sizes[$key]);
+        }
+    }
 
     $html = '';
 

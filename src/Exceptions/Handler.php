@@ -11,7 +11,6 @@ class Handler
 
     const ENV_PRODUCTION = 'prod';
     const ENV_DEVELOPMENT = 'dev';
-    const ENV_DEBUGGING = 'debug';
 
     /**
      * Handler constructor.
@@ -48,7 +47,8 @@ class Handler
             $e->getCode(),
             get_class($e) . ': ' . $e->getMessage(),
             $e->getFile(),
-            $e->getLine()
+            $e->getLine(),
+            ['exception' => $e]
         );
     }
 
@@ -71,13 +71,13 @@ class Handler
             json_encode($context)
         ));
 
-        if ($this->environment == self::ENV_DEVELOPMENT || $this->environment == self::ENV_DEBUGGING) {
+        if ($this->environment == self::ENV_DEVELOPMENT) {
             echo '<pre style="background-color:#333;color:#ccc;z-index:1000;position:fixed;bottom:1em;padding:1em;width:97%;overflow-y:auto;">';
             echo sprintf('%s: (%s)' . PHP_EOL, ucfirst($type), $number);
             var_export([
                 'string'  => $string,
                 'file'    => $file . ':' . $line,
-                'context' => ($this->environment == self::ENV_DEBUGGING ? $context : null),
+                'context' => ($this->environment == self::ENV_DEVELOPMENT ? $context : null),
             ]);
             echo '</pre>';
             die();

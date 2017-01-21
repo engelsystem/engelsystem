@@ -33,8 +33,10 @@ function logout_title()
  */
 function guest_register()
 {
-    global $tshirt_sizes, $enable_tshirt_size, $default_theme, $user, $min_password_length;
-
+    global $user;
+    $tshirt_sizes = config('tshirt_sizes');
+    $enable_tshirt_size = config('enable_tshirt_size');
+    $min_password_length = config('min_password_length');
     $event_config = EventConfig();
 
     $msg = '';
@@ -62,6 +64,12 @@ function guest_register()
         $angel_types[$angel_type['id']] = $angel_type['name'] . ($angel_type['restricted'] ? ' (restricted)' : '');
         if (!$angel_type['restricted']) {
             $selected_angel_types[] = $angel_type['id'];
+        }
+    }
+
+    foreach ($tshirt_sizes as $key => $size) {
+        if (empty($size)) {
+            unset($tshirt_sizes[$key]);
         }
     }
 
@@ -201,7 +209,7 @@ function guest_register()
                     VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NULL, ?)
                 ',
                 [
-                    $default_theme,
+                    config('default_theme'),
                     $nick,
                     $preName,
                     $lastName,

@@ -15,7 +15,8 @@ function admin_active_title()
  */
 function admin_active()
 {
-    global $tshirt_sizes, $shift_sum_formula;
+    $tshirt_sizes = config('tshirt_sizes');
+    $shift_sum_formula = config('shift_sum_formula');
 
     $msg = '';
     $search = '';
@@ -208,7 +209,7 @@ function admin_active()
 
     $shirt_statistics = [];
     foreach (array_keys($tshirt_sizes) as $size) {
-        if ($size != '') {
+        if (!empty($size)) {
             $sc = DB::select(
                 'SELECT count(*) FROM `User` WHERE `Size`=? AND `Gekommen`=1',
                 [$size]
