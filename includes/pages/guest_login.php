@@ -155,7 +155,7 @@ function guest_register()
         if (isset($_REQUEST['prename'])) {
             $preName = strip_request_item('prename');
         }
-        if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age'])) {
+        if (isset($_REQUEST['age']) && preg_match('/^[0-9]{0,4}$/', $_REQUEST['age'])) {
             $age = strip_request_item('age');
         }
         if (isset($_REQUEST['tel'])) {
@@ -317,8 +317,8 @@ function guest_register()
                     ]),
                     form_checkboxes(
                         'angel_types',
-                        _("What do you want to do?") . sprintf(
-                            " (<a href=\"%s\">%s</a>)",
+                        _('What do you want to do?') . sprintf(
+                            ' (<a href="%s">%s</a>)',
                             page_link_to('angeltypes') . '&action=about',
                             _('Description of job types')
                         ),

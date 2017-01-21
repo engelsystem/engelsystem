@@ -260,7 +260,7 @@ function table($columns, $rows_raw, $data = true)
 function render_table($columns, $rows, $data = true)
 {
     if (count($rows) == 0) {
-        return info(_("No data found."), true);
+        return info(_('No data found.'), true);
     }
 
     $html = '<table class="table table-striped' . ($data ? ' data' : '') . '">';

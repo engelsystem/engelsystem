@@ -118,12 +118,12 @@ function shift_entry_add_controller()
             'SELECT `id` FROM `ShiftEntry` WHERE `SID`= ? AND `UID` = ?',
             [$shift['SID'], $user_id]))
         ) {
-            return error("This angel does already have an entry for this shift.", true);
+            return error('This angel does already have an entry for this shift.', true);
         }
 
         $freeloaded = isset($shift['freeloaded']) ? $shift['freeloaded'] : false;
         $freeload_comment = isset($shift['freeload_comment']) ? $shift['freeload_comment'] : '';
-        if (in_array("user_shifts_admin", $privileges)) {
+        if (in_array('user_shifts_admin', $privileges)) {
             $freeloaded = isset($_REQUEST['freeloaded']);
             $freeload_comment = strip_request_item_nl('freeload_comment');
         }
@@ -144,7 +144,7 @@ function shift_entry_add_controller()
         if (
             $type['restricted'] == 0
             && count(DB::select('
-              SELECT `id` FROM `UserAngelTypes`
+              SELECT `UserAngelTypes`.`id` FROM `UserAngelTypes`
               INNER JOIN `AngelTypes` ON `AngelTypes`.`id` = `UserAngelTypes`.`angeltype_id`
               WHERE `angeltype_id` = ?
               AND `user_id` = ?

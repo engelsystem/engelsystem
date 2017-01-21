@@ -13,8 +13,8 @@ function admin_news()
         redirect(page_link_to('news'));
     }
 
-    $html = '<div class="col-md-12"><h1>' . _("Edit news entry") . '</h1>' . msg();
-    if (isset($_REQUEST['id']) && preg_match("/^[0-9]{1,11}$/", $_REQUEST['id'])) {
+    $html = '<div class="col-md-12"><h1>' . _('Edit news entry') . '</h1>' . msg();
+    if (isset($_REQUEST['id']) && preg_match('/^[0-9]{1,11}$/', $_REQUEST['id'])) {
         $news_id = $_REQUEST['id'];
     } else {
         return error('Incomplete call, missing News ID.', true);
@@ -40,7 +40,7 @@ function admin_news()
             ], page_link_to('admin_news&action=save&id=' . $news_id));
 
             $html .= '<a class="btn btn-danger" href="' . page_link_to('admin_news&action=delete&id=' . $news_id) . '">'
-                . '<span class="glyphicon glyphicon-trash"></span> ' . _("Delete")
+                . '<span class="glyphicon glyphicon-trash"></span> ' . _('Delete')
                 . '</a>';
             break;
 

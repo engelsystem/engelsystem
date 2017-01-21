@@ -24,7 +24,7 @@ function admin_new_questions()
             $new_messages = count(DB::select('SELECT `QID` FROM `Questions` WHERE `AID` IS NULL'));
 
             if ($new_messages > 0) {
-                return '<a href="' . page_link_to("admin_questions") . '">' . _('There are unanswered questions!') . '</a>';
+                return '<a href="' . page_link_to('admin_questions') . '">' . _('There are unanswered questions!') . '</a>';
             }
         }
     }

@@ -241,24 +241,24 @@ function Users_view(
         'actions'      => '<strong>' . count($users) . '</strong>'
     ];
 
-    return page_with_title(_("All users"), [
+    return page_with_title(_('All users'), [
         msg(),
         buttons([
-            button(page_link_to('register'), glyph('plus') . _("New user"))
+            button(page_link_to('register'), glyph('plus') . _('New user'))
         ]),
         table([
-            'Nick'         => Users_table_header_link('Nick', _("Nick"), $order_by),
-            'Vorname'      => Users_table_header_link('Vorname', _("Prename"), $order_by),
-            'Name'         => Users_table_header_link('Name', _("Name"), $order_by),
-            'DECT'         => Users_table_header_link('DECT', _("DECT"), $order_by),
-            'Gekommen'     => Users_table_header_link('Gekommen', _("Arrived"), $order_by),
-            'got_voucher'  => Users_table_header_link('got_voucher', _("Voucher"), $order_by),
+            'Nick'         => Users_table_header_link('Nick', _('Nick'), $order_by),
+            'Vorname'      => Users_table_header_link('Vorname', _('Prename'), $order_by),
+            'Name'         => Users_table_header_link('Name', _('Name'), $order_by),
+            'DECT'         => Users_table_header_link('DECT', _('DECT'), $order_by),
+            'Gekommen'     => Users_table_header_link('Gekommen', _('Arrived'), $order_by),
+            'got_voucher'  => Users_table_header_link('got_voucher', _('Voucher'), $order_by),
             'freeloads'    => _('Freeloads'),
-            'Aktiv'        => Users_table_header_link('Aktiv', _("Active"), $order_by),
-            'force_active' => Users_table_header_link('force_active', _("Forced"), $order_by),
-            'Tshirt'       => Users_table_header_link('Tshirt', _("T-Shirt"), $order_by),
-            'Size'         => Users_table_header_link('Size', _("Size"), $order_by),
-            'lastLogIn'    => Users_table_header_link('lastLogIn', _("Last login"), $order_by),
+            'Aktiv'        => Users_table_header_link('Aktiv', _('Active'), $order_by),
+            'force_active' => Users_table_header_link('force_active', _('Forced'), $order_by),
+            'Tshirt'       => Users_table_header_link('Tshirt', _('T-Shirt'), $order_by),
+            'Size'         => Users_table_header_link('Size', _('Size'), $order_by),
+            'lastLogIn'    => Users_table_header_link('lastLogIn', _('Last login'), $order_by),
             'actions'      => ''
         ], $users)
     ]);
@@ -320,7 +320,7 @@ function User_view_shiftentries($needed_angel_type)
 
         $shift_entries[] = $member;
     }
-    $shift_info .= join(", ", $shift_entries);
+    $shift_info .= join(', ', $shift_entries);
 
     return $shift_info;
 }

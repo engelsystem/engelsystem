@@ -28,7 +28,7 @@ function User_delete($user_id)
  */
 function User_update($user)
 {
-    return (bool)DB::update("
+    return (bool)DB::update('
           UPDATE `User` SET
           `Nick`=?,
           `Name`=?,
@@ -54,7 +54,7 @@ function User_update($user)
           `planned_arrival_date`=?,
           `planned_departure_date`=?
           WHERE `UID`=?
-        ",
+        ',
         [
             $user['Nick'],
             $user['Name'],
@@ -241,7 +241,7 @@ function Users_by_angeltype_inverted($angeltype)
         ]
     );
     if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error("Unable to load users.");
+        engelsystem_error('Unable to load users.');
     }
     return $result;
 }

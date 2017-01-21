@@ -114,7 +114,7 @@ function admin_groups()
                     DB::delete('DELETE FROM `GroupPrivileges` WHERE `group_id`=?', [$group_id]);
                     $privilege_names = [];
                     foreach ($_REQUEST['privileges'] as $privilege) {
-                        if (preg_match("/^[0-9]{1,}$/", $privilege)) {
+                        if (preg_match('/^[0-9]{1,}$/', $privilege)) {
                             $group_privileges_source = DB::select(
                                 'SELECT `name` FROM `Privileges` WHERE `id`=? LIMIT 1',
                                 [$privilege]

@@ -46,7 +46,7 @@ function ShiftEntries_freeleaded_count()
  */
 function ShiftEntries_by_shift($shift_id)
 {
-    return DB::select("
+    return DB::select('
           SELECT
               `User`.`Nick`,
               `User`.`email`,
@@ -62,7 +62,7 @@ function ShiftEntries_by_shift($shift_id)
           FROM `ShiftEntry`
           JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
           JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
-          WHERE `ShiftEntry`.`SID` = ?",
+          WHERE `ShiftEntry`.`SID` = ?',
         [$shift_id]
     );
 }

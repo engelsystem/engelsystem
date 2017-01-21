@@ -134,7 +134,7 @@ function user_news_comments()
                 ',
                 [
                     $nid,
-                    date("Y-m-d H:i:s"),
+                    date('Y-m-d H:i:s'),
                     $text,
                     $user["UID"],
                 ]
