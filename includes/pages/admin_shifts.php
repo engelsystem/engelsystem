@@ -72,7 +72,7 @@ function admin_shifts()
         // Auswahl der sichtbaren Locations für die Schichten
         if (
             isset($_REQUEST['rid'])
-            && preg_match('/^[0-9]+$/', $_REQUEST['rid'])
+            && preg_match('/^\d+$/', $_REQUEST['rid'])
             && isset($room_array[$_REQUEST['rid']])
         ) {
             $rid = $_REQUEST['rid'];
@@ -105,7 +105,7 @@ function admin_shifts()
             if ($_REQUEST['mode'] == 'single') {
                 $mode = 'single';
             } elseif ($_REQUEST['mode'] == 'multi') {
-                if (isset($_REQUEST['length']) && preg_match('/^[0-9]+$/', trim($_REQUEST['length']))) {
+                if (isset($_REQUEST['length']) && preg_match('/^\d+$/', trim($_REQUEST['length']))) {
                     $mode = 'multi';
                     $length = trim($_REQUEST['length']);
                 } else {
@@ -115,7 +115,7 @@ function admin_shifts()
             } elseif ($_REQUEST['mode'] == 'variable') {
                 if (
                     isset($_REQUEST['change_hours'])
-                    && preg_match('/^([0-9]{2}(,|$))/', trim(str_replace(' ', '', $_REQUEST['change_hours'])))
+                    && preg_match('/^(\d{2}(,|$))/', trim(str_replace(' ', '', $_REQUEST['change_hours'])))
                 ) {
                     $mode = 'variable';
                     $change_hours = array_map('trim', explode(',', $_REQUEST['change_hours']));
@@ -137,7 +137,7 @@ function admin_shifts()
                 foreach ($types as $type) {
                     if (
                         isset($_REQUEST['type_' . $type['id']])
-                        && preg_match('/^[0-9]+$/', trim($_REQUEST['type_' . $type['id']]))
+                        && preg_match('/^\d+$/', trim($_REQUEST['type_' . $type['id']]))
                     ) {
                         $needed_angel_types[$type['id']] = trim($_REQUEST['type_' . $type['id']]);
                     } else {

@@ -79,7 +79,7 @@ function shifttype_edit_controller()
             error(_('Please enter a name.'));
         }
 
-        if (isset($_REQUEST['angeltype_id']) && preg_match('/^[0-9]+$/', $_REQUEST['angeltype_id'])) {
+        if (isset($_REQUEST['angeltype_id']) && preg_match('/^\d+$/', $_REQUEST['angeltype_id'])) {
             $angeltype_id = $_REQUEST['angeltype_id'];
         } else {
             $angeltype_id = null;

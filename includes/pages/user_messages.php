@@ -123,7 +123,7 @@ function user_messages()
     } else {
         switch ($_REQUEST['action']) {
             case 'read':
-                if (isset($_REQUEST['id']) && preg_match('/^[0-9]{1,11}$/', $_REQUEST['id'])) {
+                if (isset($_REQUEST['id']) && preg_match('/^\d{1,11}$/', $_REQUEST['id'])) {
                     $message_id = $_REQUEST['id'];
                 } else {
                     return error(_('Incomplete call, missing Message ID.'), true);
@@ -145,7 +145,7 @@ function user_messages()
                 break;
 
             case 'delete':
-                if (isset($_REQUEST['id']) && preg_match('/^[0-9]{1,11}$/', $_REQUEST['id'])) {
+                if (isset($_REQUEST['id']) && preg_match('/^\d{1,11}$/', $_REQUEST['id'])) {
                     $message_id = $_REQUEST['id'];
                 } else {
                     return error(_('Incomplete call, missing Message ID.'), true);

@@ -155,7 +155,7 @@ function guest_register()
         if (isset($_REQUEST['prename'])) {
             $preName = strip_request_item('prename');
         }
-        if (isset($_REQUEST['age']) && preg_match('/^[0-9]{0,4}$/', $_REQUEST['age'])) {
+        if (isset($_REQUEST['age']) && preg_match('/^\d{0,4}$/', $_REQUEST['age'])) {
             $age = strip_request_item('age');
         }
         if (isset($_REQUEST['tel'])) {

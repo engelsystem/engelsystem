@@ -98,7 +98,7 @@ function admin_questions()
     } else {
         switch ($_REQUEST['action']) {
             case 'answer':
-                if (isset($_REQUEST['id']) && preg_match('/^[0-9]{1,11}$/', $_REQUEST['id'])) {
+                if (isset($_REQUEST['id']) && preg_match('/^\d{1,11}$/', $_REQUEST['id'])) {
                     $question_id = $_REQUEST['id'];
                 } else {
                     return error('Incomplete call, missing Question ID.', true);
@@ -139,7 +139,7 @@ function admin_questions()
                 }
                 break;
             case 'delete':
-                if (isset($_REQUEST['id']) && preg_match('/^[0-9]{1,11}$/', $_REQUEST['id'])) {
+                if (isset($_REQUEST['id']) && preg_match('/^\d{1,11}$/', $_REQUEST['id'])) {
                     $question_id = $_REQUEST['id'];
                 } else {
                     return error('Incomplete call, missing Question ID.', true);

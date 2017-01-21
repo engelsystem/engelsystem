@@ -9,7 +9,7 @@ function user_atom()
 {
     global $user, $display_news;
 
-    if (!isset($_REQUEST['key']) || !preg_match('/^[0-9a-f]{32}$/', $_REQUEST['key'])) {
+    if (!isset($_REQUEST['key']) || !preg_match('/^[\da-f]{32}$/', $_REQUEST['key'])) {
         engelsystem_error('Missing key.');
     }
     $key = $_REQUEST['key'];
@@ -48,7 +48,7 @@ function make_atom_entries_from_news($news_entries)
   <title>Engelsystem</title>
   <id>' . $_SERVER['HTTP_HOST']
         . htmlspecialchars(preg_replace(
-            '#[&?]key=[a-f0-9]{32}#',
+            '#[&?]key=[a-f\d]{32}#',
             '',
             $_SERVER['REQUEST_URI']
         ))

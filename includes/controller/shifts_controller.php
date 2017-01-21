@@ -78,7 +78,7 @@ function shift_edit_controller()
         $title = strip_request_item('title');
 
         // Auswahl der sichtbaren Locations für die Schichten
-        if (isset($_REQUEST['rid']) && preg_match('/^[0-9]+$/', $_REQUEST['rid']) && isset($room[$_REQUEST['rid']])) {
+        if (isset($_REQUEST['rid']) && preg_match('/^\d+$/', $_REQUEST['rid']) && isset($room[$_REQUEST['rid']])) {
             $rid = $_REQUEST['rid'];
         } else {
             $valid = false;
@@ -192,7 +192,7 @@ function shift_delete_controller()
     }
 
     // Schicht komplett löschen (nur für admins/user mit user_shifts_admin privileg)
-    if (!isset($_REQUEST['delete_shift']) || !preg_match('/^[0-9]*$/', $_REQUEST['delete_shift'])) {
+    if (!isset($_REQUEST['delete_shift']) || !preg_match('/^\d*$/', $_REQUEST['delete_shift'])) {
         redirect(page_link_to('user_shifts'));
     }
     $shift_id = $_REQUEST['delete_shift'];
@@ -360,7 +360,7 @@ function shifts_json_export_controller()
 {
     global $user;
 
-    if (!isset($_REQUEST['key']) || !preg_match('/^[0-9a-f]{32}$/', $_REQUEST['key'])) {
+    if (!isset($_REQUEST['key']) || !preg_match('/^[\da-f]{32}$/', $_REQUEST['key'])) {
         engelsystem_error('Missing key.');
     }
 

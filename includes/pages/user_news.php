@@ -35,7 +35,7 @@ function user_meetings()
 
     $html = '<div class="col-md-12"><h1>' . meetings_title() . '</h1>' . msg();
 
-    if (isset($_REQUEST['page']) && preg_match('/^[0-9]{1,}$/', $_REQUEST['page'])) {
+    if (isset($_REQUEST['page']) && preg_match('/^\d{1,}$/', $_REQUEST['page'])) {
         $page = $_REQUEST['page'];
     } else {
         $page = 0;
@@ -120,7 +120,7 @@ function user_news_comments()
     $html = '<div class="col-md-12"><h1>' . user_news_comments_title() . '</h1>';
     if (
         isset($_REQUEST['nid'])
-        && preg_match('/^[0-9]{1,}$/', $_REQUEST['nid'])
+        && preg_match('/^\d{1,}$/', $_REQUEST['nid'])
         && count(DB::select('SELECT `ID` FROM `News` WHERE `ID`=? LIMIT 1', [$_REQUEST['nid']])) > 0
     ) {
         $nid = $_REQUEST['nid'];
@@ -203,7 +203,7 @@ function user_news()
         redirect(page_link_to('news'));
     }
 
-    if (isset($_REQUEST['page']) && preg_match('/^[0-9]{1,}$/', $_REQUEST['page'])) {
+    if (isset($_REQUEST['page']) && preg_match('/^\d{1,}$/', $_REQUEST['page'])) {
         $page = $_REQUEST['page'];
     } else {
         $page = 0;

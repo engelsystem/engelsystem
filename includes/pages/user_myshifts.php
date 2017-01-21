@@ -23,7 +23,7 @@ function user_myshifts()
     if (
         isset($_REQUEST['id'])
         && in_array('user_shifts_admin', $privileges)
-        && preg_match('/^[0-9]{1,}$/', $_REQUEST['id'])
+        && preg_match('/^\d{1,}$/', $_REQUEST['id'])
         && count(DB::select('SELECT `UID` FROM `User` WHERE `UID`=?', [$_REQUEST['id']])) > 0
     ) {
         $user_id = $_REQUEST['id'];
@@ -47,7 +47,7 @@ function user_myshifts()
             ),
             button(page_link_to('user_myshifts') . '&reset=ack', _('Continue'), 'btn-danger')
         ]);
-    } elseif (isset($_REQUEST['edit']) && preg_match('/^[0-9]*$/', $_REQUEST['edit'])) {
+    } elseif (isset($_REQUEST['edit']) && preg_match('/^\d*$/', $_REQUEST['edit'])) {
         $user_id = $_REQUEST['edit'];
         $shift = DB::select('
                 SELECT
@@ -129,7 +129,7 @@ function user_myshifts()
         } else {
             redirect(page_link_to('user_myshifts'));
         }
-    } elseif (isset($_REQUEST['cancel']) && preg_match('/^[0-9]*$/', $_REQUEST['cancel'])) {
+    } elseif (isset($_REQUEST['cancel']) && preg_match('/^\d*$/', $_REQUEST['cancel'])) {
         $user_id = $_REQUEST['cancel'];
         $shift = DB::select('
                 SELECT *

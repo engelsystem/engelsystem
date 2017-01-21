@@ -30,7 +30,7 @@ if (!isset($_REQUEST['p'])) {
 
 if (
     isset($_REQUEST['p'])
-    && preg_match('/^[a-z0-9_]*$/i', $_REQUEST['p'])
+    && preg_match('/^\w*$/i', $_REQUEST['p'])
     && (
         in_array($_REQUEST['p'], $free_pages)
         || (isset($privileges) && in_array($_REQUEST['p'], $privileges))

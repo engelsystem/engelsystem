@@ -7,7 +7,7 @@ function user_ical()
 {
     global $user;
 
-    if (!isset($_REQUEST['key']) || !preg_match('/^[0-9a-f]{32}$/', $_REQUEST['key'])) {
+    if (!isset($_REQUEST['key']) || !preg_match('/^[\da-f]{32}$/', $_REQUEST['key'])) {
         engelsystem_error('Missing key.');
     }
     $key = $_REQUEST['key'];

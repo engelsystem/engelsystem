@@ -33,7 +33,7 @@ function admin_active()
     if (isset($_REQUEST['set_active'])) {
         $valid = true;
 
-        if (isset($_REQUEST['count']) && preg_match('/^[0-9]+$/', $_REQUEST['count'])) {
+        if (isset($_REQUEST['count']) && preg_match('/^\d+$/', $_REQUEST['count'])) {
             $count = strip_request_item('count');
             if ($count < $forced_count) {
                 error(sprintf(
@@ -89,7 +89,7 @@ function admin_active()
         }
     }
 
-    if (isset($_REQUEST['active']) && preg_match('/^[0-9]+$/', $_REQUEST['active'])) {
+    if (isset($_REQUEST['active']) && preg_match('/^\d+$/', $_REQUEST['active'])) {
         $user_id = $_REQUEST['active'];
         $user_source = User($user_id);
         if ($user_source != null) {
@@ -99,7 +99,7 @@ function admin_active()
         } else {
             $msg = error(_('Angel not found.'), true);
         }
-    } elseif (isset($_REQUEST['not_active']) && preg_match('/^[0-9]+$/', $_REQUEST['not_active'])) {
+    } elseif (isset($_REQUEST['not_active']) && preg_match('/^\d+$/', $_REQUEST['not_active'])) {
         $user_id = $_REQUEST['not_active'];
         $user_source = User($user_id);
         if ($user_source != null) {
@@ -109,7 +109,7 @@ function admin_active()
         } else {
             $msg = error(_('Angel not found.'), true);
         }
-    } elseif (isset($_REQUEST['tshirt']) && preg_match('/^[0-9]+$/', $_REQUEST['tshirt'])) {
+    } elseif (isset($_REQUEST['tshirt']) && preg_match('/^\d+$/', $_REQUEST['tshirt'])) {
         $user_id = $_REQUEST['tshirt'];
         $user_source = User($user_id);
         if ($user_source != null) {
@@ -119,7 +119,7 @@ function admin_active()
         } else {
             $msg = error('Angel not found.', true);
         }
-    } elseif (isset($_REQUEST['not_tshirt']) && preg_match('/^[0-9]+$/', $_REQUEST['not_tshirt'])) {
+    } elseif (isset($_REQUEST['not_tshirt']) && preg_match('/^\d+$/', $_REQUEST['not_tshirt'])) {
         $user_id = $_REQUEST['not_tshirt'];
         $user_source = User($user_id);
         if ($user_source != null) {

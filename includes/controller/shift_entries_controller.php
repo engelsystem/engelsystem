@@ -12,7 +12,7 @@ function shift_entry_add_controller()
     global $privileges, $user;
 
     $shift_id = 0;
-    if (isset($_REQUEST['shift_id']) && preg_match('/^[0-9]*$/', $_REQUEST['shift_id'])) {
+    if (isset($_REQUEST['shift_id']) && preg_match('/^\d*$/', $_REQUEST['shift_id'])) {
         $shift_id = $_REQUEST['shift_id'];
     } else {
         redirect(page_link_to('user_shifts'));
@@ -32,7 +32,7 @@ function shift_entry_add_controller()
     }
 
     $type_id = 0;
-    if (isset($_REQUEST['type_id']) && preg_match('/^[0-9]*$/', $_REQUEST['type_id'])) {
+    if (isset($_REQUEST['type_id']) && preg_match('/^\d*$/', $_REQUEST['type_id'])) {
         $type_id = $_REQUEST['type_id'];
     } else {
         redirect(page_link_to('user_shifts'));
@@ -64,7 +64,7 @@ function shift_entry_add_controller()
 
     if (
         isset($_REQUEST['user_id'])
-        && preg_match('/^[0-9]*$/', $_REQUEST['user_id'])
+        && preg_match('/^\d*$/', $_REQUEST['user_id'])
         && (
             in_array('user_shifts_admin', $privileges)
             || in_array('shiftentry_edit_angeltype_supporter', $privileges)

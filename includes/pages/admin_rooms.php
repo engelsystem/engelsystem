@@ -112,7 +112,7 @@ function admin_rooms()
                 foreach ($angeltypes as $angeltype_id => $angeltype) {
                     if (
                         isset($_REQUEST['angeltype_count_' . $angeltype_id])
-                        && preg_match('/^[0-9]{1,4}$/', $_REQUEST['angeltype_count_' . $angeltype_id])
+                        && preg_match('/^\d{1,4}$/', $_REQUEST['angeltype_count_' . $angeltype_id])
                     ) {
                         $angeltypes_count[$angeltype_id] = $_REQUEST['angeltype_count_' . $angeltype_id];
                     } else {

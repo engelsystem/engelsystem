@@ -164,7 +164,7 @@ function strip_request_item($name, $default_value = null)
 function test_request_int($name)
 {
     if (isset($_REQUEST[$name])) {
-        return preg_match('/^[0-9]*$/', $_REQUEST[$name]);
+        return preg_match('/^\d*$/', $_REQUEST[$name]);
     }
     return false;
 }

@@ -14,7 +14,7 @@ function admin_news()
     }
 
     $html = '<div class="col-md-12"><h1>' . _('Edit news entry') . '</h1>' . msg();
-    if (isset($_REQUEST['id']) && preg_match('/^[0-9]{1,11}$/', $_REQUEST['id'])) {
+    if (isset($_REQUEST['id']) && preg_match('/^\d{1,11}$/', $_REQUEST['id'])) {
         $news_id = $_REQUEST['id'];
     } else {
         return error('Incomplete call, missing News ID.', true);
