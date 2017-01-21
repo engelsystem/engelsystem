@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  *  Testet ob ein User eingeloggt ist und lädt die entsprechenden Privilegien
  */
@@ -9,16 +11,19 @@ function load_auth()
 
     $user = null;
     if (isset($_SESSION['uid'])) {
-        $user = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($_SESSION['uid']) . "' LIMIT 1");
+        $user = DB::select('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$_SESSION['uid']]);
         if (count($user) > 0) {
             // User ist eingeloggt, Datensatz zur Verfügung stellen und Timestamp updaten
-            list($user) = $user;
-            sql_query("
+            $user = array_shift($user);
+            DB::update('
                 UPDATE `User`
-                SET " . "`lastLogIn` = '" . time() . "'" . "
-                WHERE `UID` = '" . sql_escape($_SESSION['uid']) . "'
+                SET `lastLogIn` = ?
+                WHERE `UID` = ?
                 LIMIT 1
-            ");
+            ', [
+                time(),
+                $_SESSION['uid'],
+            ]);
             $privileges = privileges_for_user($user['UID']);
             return;
         }
@@ -50,19 +55,24 @@ function generate_salt($length = 16)
  *
  * @param int    $uid
  * @param string $password
- * @return mysqli_result
+ * @return bool
  */
 function set_password($uid, $password)
 {
     global $crypt_alg;
-    $result = sql_query("
+    $result = DB::update('
         UPDATE `User`
-        SET `Passwort` = '" . sql_escape(crypt($password, $crypt_alg . '$' . generate_salt(16) . '$')) . "',
+        SET `Passwort` = ?,
         `password_recovery_token`=NULL
-        WHERE `UID` = " . intval($uid) . "
+        WHERE `UID` = ?
         LIMIT 1
-    ");
-    if ($result === false) {
+        ',
+        [
+            crypt($password, $crypt_alg . '$' . generate_salt(16) . '$'),
+            $uid
+        ]
+    );
+    if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error('Unable to update password.');
     }
     return $result;
@@ -93,13 +103,19 @@ function verify_password($password, $salt, $uid = null)
         // this password is stored in another format than we want it to be.
         // let's update it!
         // we duplicate the query from the above set_password() function to have the extra safety of checking the old hash
-        sql_query("
-            UPDATE `User`
-            SET `Passwort` = '" . sql_escape(crypt($password, $crypt_alg . '$' . generate_salt() . '$')) . "' 
-            WHERE `UID` = " . intval($uid) . " 
-            AND `Passwort` = '" . sql_escape($salt) . "' 
-            LIMIT 1
-        ");
+        DB::update('
+                UPDATE `User`
+                SET `Passwort` = ?
+                WHERE `UID` = ?
+                AND `Passwort` = ?
+                LIMIT 1
+            ',
+            [
+                crypt($password, $crypt_alg . '$' . generate_salt() . '$'),
+                $uid,
+                $salt,
+            ]
+        );
     }
     return $correct;
 }
@@ -111,16 +127,16 @@ function verify_password($password, $salt, $uid = null)
 function privileges_for_user($user_id)
 {
     $privileges = [];
-    $user_privs = sql_select("
+    $user_privileges = DB::select('
         SELECT `Privileges`.`name`
         FROM `User`
         JOIN `UserGroups` ON (`User`.`UID` = `UserGroups`.`uid`)
         JOIN `GroupPrivileges` ON (`UserGroups`.`group_id` = `GroupPrivileges`.`group_id`)
         JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`)
-        WHERE `User`.`UID`='" . sql_escape($user_id) . "'
-    ");
-    foreach ($user_privs as $user_priv) {
-        $privileges[] = $user_priv['name'];
+        WHERE `User`.`UID`=?
+    ', [$user_id]);
+    foreach ($user_privileges as $user_privilege) {
+        $privileges[] = $user_privilege['name'];
     }
     return $privileges;
 }
@@ -132,14 +148,14 @@ function privileges_for_user($user_id)
 function privileges_for_group($group_id)
 {
     $privileges = [];
-    $groups_privs = sql_select("
-        SELECT *
+    $groups_privileges = DB::select('
+        SELECT `name`
         FROM `GroupPrivileges`
         JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`)
-        WHERE `group_id`='" . sql_escape($group_id) . "'
-    ");
-    foreach ($groups_privs as $guest_priv) {
-        $privileges[] = $guest_priv['name'];
+        WHERE `group_id`=?
+    ', [$group_id]);
+    foreach ($groups_privileges as $guest_privilege) {
+        $privileges[] = $guest_privilege['name'];
     }
     return $privileges;
 }

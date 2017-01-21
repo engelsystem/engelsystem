@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -20,19 +22,20 @@ function admin_free()
         $search = strip_request_item('search');
     }
 
-    $angeltypesearch = '';
+    $angelTypeSearch = '';
     if (empty($_REQUEST['angeltype'])) {
         $_REQUEST['angeltype'] = '';
     } else {
-        $angeltypesearch = ' INNER JOIN `UserAngelTypes` ON (`UserAngelTypes`.`angeltype_id` = \''
-            . sql_escape($_REQUEST['angeltype']) . "' AND `UserAngelTypes`.`user_id` = `User`.`UID`";
+        $angelTypeSearch = ' INNER JOIN `UserAngelTypes` ON (`UserAngelTypes`.`angeltype_id` = '
+            . DB::getPdo()->quote($_REQUEST['angeltype'])
+            . ' AND `UserAngelTypes`.`user_id` = `User`.`UID`';
         if (isset($_REQUEST['confirmed_only'])) {
-            $angeltypesearch .= ' AND `UserAngelTypes`.`confirm_user_id`';
+            $angelTypeSearch .= ' AND `UserAngelTypes`.`confirm_user_id`';
         }
-        $angeltypesearch .= ') ';
+        $angelTypeSearch .= ') ';
     }
 
-    $angel_types_source = sql_select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
+    $angel_types_source = DB::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
     $angel_types = [
         '' => 'alle Typen'
     ];
@@ -40,20 +43,27 @@ function admin_free()
         $angel_types[$angel_type['id']] = $angel_type['name'];
     }
 
-    $users = sql_select("
-      SELECT `User`.* 
-      FROM `User` 
-      ${angeltypesearch} 
-      LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
-      LEFT JOIN `Shifts`
-          ON (
-              `ShiftEntry`.`SID` = `Shifts`.`SID`
-              AND `Shifts`.`start` < '" . sql_escape(time()) . "'
-              AND `Shifts`.`end` > '" . sql_escape(time()) . "'
-          )
-      WHERE `User`.`Gekommen` = 1 AND `Shifts`.`SID` IS NULL 
-      GROUP BY `User`.`UID` 
-      ORDER BY `Nick`");
+    $users = DB::select('
+          SELECT `User`.* 
+          FROM `User` 
+          ' . $angelTypeSearch . '
+          LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
+          LEFT JOIN `Shifts`
+              ON (
+                  `ShiftEntry`.`SID` = `Shifts`.`SID`
+                  AND `Shifts`.`start` < ?
+                  AND `Shifts`.`end` > ?
+              )
+          WHERE `User`.`Gekommen` = 1
+          AND `Shifts`.`SID` IS NULL 
+          GROUP BY `User`.`UID` 
+          ORDER BY `Nick`
+        ',
+        [
+            time(),
+            time(),
+        ]
+    );
 
     $free_users_table = [];
     if ($search == '') {

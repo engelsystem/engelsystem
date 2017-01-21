@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -27,14 +29,14 @@ function admin_shifts()
     $shifttype_id = null;
 
     // Locations laden (auch unsichtbare - fuer Erzengel ist das ok)
-    $rooms = sql_select('SELECT * FROM `Room` ORDER BY `Name`');
+    $rooms = DB::select('SELECT `RID`, `Name` FROM `Room` ORDER BY `Name`');
     $room_array = [];
     foreach ($rooms as $room) {
         $room_array[$room['RID']] = $room['Name'];
     }
 
     // Engeltypen laden
-    $types = sql_select('SELECT * FROM `AngelTypes` ORDER BY `name`');
+    $types = DB::select('SELECT * FROM `AngelTypes` ORDER BY `name`');
     $needed_angel_types = [];
     foreach ($types as $type) {
         $needed_angel_types[$type['id']] = 0;
@@ -53,9 +55,6 @@ function admin_shifts()
     if (isset($_REQUEST['preview']) || isset($_REQUEST['back'])) {
         if (isset($_REQUEST['shifttype_id'])) {
             $shifttype = ShiftType($_REQUEST['shifttype_id']);
-            if ($shifttype === false) {
-                engelsystem_error('Unable to load shift type.');
-            }
             if ($shifttype == null) {
                 $valid = false;
                 error(_('Please select a shift type.'));
@@ -168,7 +167,13 @@ function admin_shifts()
         if ($valid) {
             if ($angelmode == 'location') {
                 $needed_angel_types = [];
-                $needed_angel_types_location = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($rid) . "'");
+                $needed_angel_types_location = DB::select('
+                        SELECT `angel_type_id`, `count`
+                        FROM `NeededAngelTypes`
+                        WHERE `room_id`=?
+                    ',
+                    [$rid]
+                );
                 foreach ($needed_angel_types_location as $type) {
                     $needed_angel_types[$type['angel_type_id']] = $type['count'];
                 }
@@ -300,7 +305,12 @@ function admin_shifts()
             ]);
         }
     } elseif (isset($_REQUEST['submit'])) {
-        if (!is_array($_SESSION['admin_shifts_shifts']) || !is_array($_SESSION['admin_shifts_types'])) {
+        if (
+            !isset($_SESSION['admin_shifts_shifts'])
+            || !isset($_SESSION['admin_shifts_types'])
+            || !is_array($_SESSION['admin_shifts_shifts'])
+            || !is_array($_SESSION['admin_shifts_types'])
+        ) {
             redirect(page_link_to('admin_shifts'));
         }
 
@@ -321,10 +331,23 @@ function admin_shifts()
             );
 
             foreach ($_SESSION['admin_shifts_types'] as $type_id => $count) {
-                $angel_type_source = sql_select("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($type_id) . "' LIMIT 1");
-                if (count($angel_type_source) > 0) {
-                    sql_query("INSERT INTO `NeededAngelTypes` SET `shift_id`='" . sql_escape($shift_id) . "', `angel_type_id`='" . sql_escape($type_id) . "', `count`='" . sql_escape($count) . "'");
-                    $needed_angel_types_info[] = $angel_type_source[0]['name'] . ": " . $count;
+                $angel_type_source = DB::select('
+                      SELECT *
+                      FROM `AngelTypes`
+                      WHERE `id` = ?
+                      LIMIT 1', [$type_id]);
+                if (!empty($angel_type_source)) {
+                    DB::insert('
+                        INSERT INTO `NeededAngelTypes` (`shift_id`, `angel_type_id`, `count`)
+                        VALUES (?, ?, ?)
+                      ',
+                        [
+                            $shift_id,
+                            $type_id,
+                            $count
+                        ]
+                    );
+                    $needed_angel_types_info[] = $angel_type_source[0]['name'] . ': ' . $count;
                 }
             }
         }

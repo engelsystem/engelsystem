@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -16,12 +18,14 @@ function user_questions()
     global $user;
 
     if (!isset($_REQUEST['action'])) {
-        $open_questions = sql_select(
-            "SELECT * FROM `Questions` WHERE `AID` IS NULL AND `UID`='" . sql_escape($user['UID']) . "'"
+        $open_questions = DB::select(
+            'SELECT * FROM `Questions` WHERE `AID` IS NULL AND `UID`=?',
+            [$user['UID']]
         );
 
-        $answered_questions = sql_select(
-            "SELECT * FROM `Questions` WHERE NOT `AID` IS NULL AND `UID`='" . sql_escape($user['UID']) . "'"
+        $answered_questions = DB::select(
+            'SELECT * FROM `Questions` WHERE NOT `AID` IS NULL AND `UID`=?',
+            [$user['UID']]
         );
         foreach ($answered_questions as &$question) {
             $answer_user_source = User($question['AID']);
@@ -34,11 +38,13 @@ function user_questions()
             case 'ask':
                 $question = strip_request_item_nl('question');
                 if ($question != '') {
-                    $result = sql_query("
-                        INSERT INTO `Questions`
-                        SET `UID`='" . sql_escape($user['UID']) . "', `Question`='" . sql_escape($question) . "'
-                    ");
-                    if ($result === false) {
+                    $result = DB::insert('
+                        INSERT INTO `Questions` (`UID`, `Question`)
+                        VALUES (?, ?)
+                        ',
+                        [$user['UID'], $question]
+                    );
+                    if (!$result) {
                         engelsystem_error(_('Unable to save question.'));
                     }
                     success(_('You question was saved.'));
@@ -56,9 +62,15 @@ function user_questions()
                     return error(_('Incomplete call, missing Question ID.'), true);
                 }
 
-                $question = sql_select("SELECT * FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
+                $question = DB::select(
+                    'SELECT `UID` FROM `Questions` WHERE `QID`=? LIMIT 1',
+                    [$question_id]
+                );
                 if (count($question) > 0 && $question[0]['UID'] == $user['UID']) {
-                    sql_query("DELETE FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
+                    DB::delete(
+                        'DELETE FROM `Questions` WHERE `QID`=? LIMIT 1',
+                        [$question_id]
+                    );
                     redirect(page_link_to('user_questions'));
                 } else {
                     return page_with_title(questions_title(), [

@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -18,14 +20,14 @@ function admin_news()
         return error('Incomplete call, missing News ID.', true);
     }
 
-    $news = sql_select("SELECT * FROM `News` WHERE `ID`='" . sql_escape($news_id) . "' LIMIT 1");
+    $news = DB::select('SELECT * FROM `News` WHERE `ID`=? LIMIT 1', [$news_id]);
     if (empty($news)) {
         return error('No News found.', true);
     }
 
     switch ($_REQUEST['action']) {
         case 'edit':
-            list($news) = $news;
+            $news = array_shift($news);
             $user_source = User($news['UID']);
 
             $html .= form([
@@ -43,21 +45,32 @@ function admin_news()
             break;
 
         case 'save':
-            sql_query("UPDATE `News` SET 
-              `Datum`='" . sql_escape(time()) . "', 
-              `Betreff`='" . sql_escape($_POST["eBetreff"]) . "', 
-              `Text`='" . sql_escape($_POST["eText"]) . "', 
-              `UID`='" . sql_escape($user['UID']) . "', 
-              `Treffen`='" . sql_escape($_POST["eTreffen"]) . "' 
-              WHERE `ID`='" . sql_escape($news_id) . "'");
+            DB::update('
+                UPDATE `News` SET 
+                    `Datum`=?,
+                    `Betreff`=?,
+                    `Text`=?,
+                    `UID`=?,
+                    `Treffen`=?
+                WHERE `ID`=?
+                ',
+                [
+                    time(),
+                    $_POST["eBetreff"],
+                    $_POST["eText"],
+                    $user['UID'],
+                    isset($_POST["eTreffen"]) ? 1 : 0,
+                    $news_id
+                ]
+            );
             engelsystem_log('News updated: ' . $_POST['eBetreff']);
             success(_('News entry updated.'));
             redirect(page_link_to('news'));
             break;
 
         case 'delete':
-            list($news) = $news;
-            sql_query("DELETE FROM `News` WHERE `ID`='" . sql_escape($news_id) . "' LIMIT 1");
+            $news = array_shift($news);
+            DB::delete('DELETE FROM `News` WHERE `ID`=? LIMIT 1', [$news_id]);
             engelsystem_log('News deleted: ' . $news['Betreff']);
             success(_('News entry deleted.'));
             redirect(page_link_to('news'));

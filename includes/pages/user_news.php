@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -39,18 +41,20 @@ function user_meetings()
         $page = 0;
     }
 
-    $news = sql_select("
+    $news = DB::select(sprintf('
         SELECT *
         FROM `News`
         WHERE `Treffen`=1
         ORDER BY `Datum`DESC
-        LIMIT " . sql_escape($page * $display_news) . ", " . sql_escape($display_news)
-    );
+        LIMIT %u, %u',
+        $page * $display_news,
+        $display_news
+    ));
     foreach ($news as $entry) {
         $html .= display_news($entry);
     }
 
-    $dis_rows = ceil(sql_num_query('SELECT * FROM `News`') / $display_news);
+    $dis_rows = ceil(count(DB::select('SELECT `ID` FROM `News`')) / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
         if (isset($_REQUEST['page']) && $i == $_REQUEST['page']) {
@@ -98,7 +102,7 @@ function display_news($news)
             . '<span class="glyphicon glyphicon-comment"></span> '
             . _('Comments') . ' &raquo;</a> '
             . '<span class="badge">'
-            . sql_num_query("SELECT * FROM `NewsComments` WHERE `Refid`='" . sql_escape($news['ID']) . "'")
+            . count(DB::select('SELECT `ID` FROM `NewsComments` WHERE `Refid`=?', [$news['ID']]))
             . '</span>';
     }
     $html .= '</div>';
@@ -117,28 +121,34 @@ function user_news_comments()
     if (
         isset($_REQUEST['nid'])
         && preg_match('/^[0-9]{1,}$/', $_REQUEST['nid'])
-        && sql_num_query("SELECT * FROM `News` WHERE `ID`='" . sql_escape($_REQUEST['nid']) . "' LIMIT 1") > 0
+        && count(DB::select('SELECT `ID` FROM `News` WHERE `ID`=? LIMIT 1', [$_REQUEST['nid']])) > 0
     ) {
         $nid = $_REQUEST['nid'];
-        list($news) = sql_select("SELECT * FROM `News` WHERE `ID`='" . sql_escape($nid) . "' LIMIT 1");
+        $news = DB::select('SELECT * FROM `News` WHERE `ID`=? LIMIT 1', [$nid]);
+        $news = array_shift($news);
         if (isset($_REQUEST['text'])) {
             $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['text']));
-            sql_query("
-                INSERT INTO `NewsComments` (`Refid`, `Datum`, `Text`, `UID`)
-                VALUES (
-                    '" . sql_escape($nid) . "',
-                    '" . date("Y-m-d H:i:s") . "',
-                    '" . sql_escape($text) . "',
-                    '" . sql_escape($user["UID"]) . "'
-                )
-            ");
+            DB::insert('
+                    INSERT INTO `NewsComments` (`Refid`, `Datum`, `Text`, `UID`)
+                    VALUES (?, ?, ?, ?)
+                ',
+                [
+                    $nid,
+                    date("Y-m-d H:i:s"),
+                    $text,
+                    $user["UID"],
+                ]
+            );
             engelsystem_log('Created news_comment: ' . $text);
             $html .= success(_('Entry saved.'), true);
         }
 
         $html .= display_news($news);
 
-        $comments = sql_select("SELECT * FROM `NewsComments` WHERE `Refid`='" . sql_escape($nid) . "' ORDER BY 'ID'");
+        $comments = DB::select(
+            'SELECT * FROM `NewsComments` WHERE `Refid`=? ORDER BY \'ID\'',
+            [$nid]
+        );
         foreach ($comments as $comment) {
             $user_source = User($comment['UID']);
 
@@ -176,16 +186,18 @@ function user_news()
         if (!isset($_POST['treffen']) || !in_array('admin_news', $privileges)) {
             $_POST['treffen'] = 0;
         }
-        sql_query("
+        DB::insert('
             INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`)
-            VALUES (
-                '" . sql_escape(time()) . "',
-                '" . sql_escape($_POST["betreff"]) . "',
-                '" . sql_escape($_POST["text"]) . "',
-                '" . sql_escape($user['UID']) . "',
-                '" . sql_escape($_POST["treffen"]) . "'
-            )
-        ");
+            VALUES (?, ?, ?, ?, ?)
+            ',
+            [
+                time(),
+                $_POST['betreff'],
+                $_POST['text'],
+                $user['UID'],
+                $_POST['treffen'],
+            ]
+        );
         engelsystem_log('Created news: ' . $_POST['betreff'] . ', treffen: ' . $_POST['treffen']);
         success(_('Entry saved.'));
         redirect(page_link_to('news'));
@@ -197,17 +209,20 @@ function user_news()
         $page = 0;
     }
 
-    $news = sql_select("
-        SELECT *
-        FROM `News`
-        ORDER BY `Datum`
-        DESC LIMIT " . sql_escape($page * $display_news) . ", " . sql_escape($display_news)
-    );
+    $news = DB::select(sprintf('
+            SELECT *
+            FROM `News`
+            ORDER BY `Datum`
+            DESC LIMIT %u, %u
+        ',
+        $page * $display_news,
+        $display_news
+    ));
     foreach ($news as $entry) {
         $html .= display_news($entry);
     }
 
-    $dis_rows = ceil(sql_num_query('SELECT * FROM `News`') / $display_news);
+    $dis_rows = ceil(count(DB::select('SELECT `ID` FROM `News`')) / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
         if (isset($_REQUEST['page']) && $i == $_REQUEST['page']) {

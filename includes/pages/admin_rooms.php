@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -13,7 +15,7 @@ function admin_rooms_title()
  */
 function admin_rooms()
 {
-    $rooms_source = sql_select('SELECT * FROM `Room` ORDER BY `Name`');
+    $rooms_source = DB::select('SELECT * FROM `Room` ORDER BY `Name`');
     $rooms = [];
     foreach ($rooms_source as $room) {
         $rooms[] = [
@@ -36,7 +38,7 @@ function admin_rooms()
         $number = '';
         $room_id = 0;
 
-        $angeltypes_source = sql_select('SELECT * FROM `AngelTypes` ORDER BY `name`');
+        $angeltypes_source = DB::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
         $angeltypes = [];
         $angeltypes_count = [];
         foreach ($angeltypes_source as $angeltype) {
@@ -59,7 +61,10 @@ function admin_rooms()
             $public = $room['show'];
             $number = $room['Number'];
 
-            $needed_angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($room_id) . "'");
+            $needed_angeltypes = DB::select(
+                'SELECT `angel_type_id`, `count` FROM `NeededAngelTypes` WHERE `room_id`=?',
+                [$room_id]
+            );
             foreach ($needed_angeltypes as $needed_angeltype) {
                 $angeltypes_count[$needed_angeltype['angel_type_id']] = $needed_angeltype['count'];
             }
@@ -71,7 +76,13 @@ function admin_rooms()
 
                 if (isset($_REQUEST['name']) && strlen(strip_request_item('name')) > 0) {
                     $name = strip_request_item('name');
-                    if (isset($room) && sql_num_query("SELECT * FROM `Room` WHERE `Name`='" . sql_escape($name) . "' AND NOT `RID`=" . sql_escape($room_id)) > 0) {
+                    if (
+                        isset($room)
+                        && count(DB::select(
+                            'SELECT RID FROM `Room` WHERE `Name`=? AND NOT `RID`=?',
+                            [$name, $room_id]
+                        )) > 0
+                    ) {
                         $valid = false;
                         $msg .= error(_('This name is already in use.'), true);
                     }
@@ -111,17 +122,23 @@ function admin_rooms()
                 }
 
                 if ($valid) {
-                    if (isset($room_id)) {
-                        sql_query("
+                    if (!empty($room_id)) {
+                        DB::update('
                             UPDATE `Room`
                             SET
-                                `Name`='" . sql_escape($name) . "',
-                                `FromPentabarf`='" . sql_escape($from_pentabarf) . "',
-                                `show`='" . sql_escape($public) . "',
-                                `Number`='" . sql_escape($number) . "'
-                            WHERE `RID`='" . sql_escape($room_id) . "'
+                                `Name`=?,
+                                `FromPentabarf`=?,
+                                `show`=?,
+                                `Number`=?
+                            WHERE `RID`=?
                             LIMIT 1
-                        ");
+                        ', [
+                            $name,
+                            $from_pentabarf,
+                            $public,
+                            $number,
+                            $room_id,
+                        ]);
                         engelsystem_log(
                             'Room updated: ' . $name
                             . ', pentabarf import: ' . $from_pentabarf

@@ -1,31 +1,30 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * Returns Message id array
  *
- * @return array|false
+ * @return array
  */
 function Message_ids()
 {
-    return sql_select('SELECT `id` FROM `Messages`');
+    return DB::select('SELECT `id` FROM `Messages`');
 }
 
 /**
  * Returns message by id.
  *
  * @param int $message_id message ID
- * @return array|false|null
+ * @return array|null
  */
 function Message($message_id)
 {
-    $message_source = sql_select("SELECT * FROM `Messages` WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
-    if ($message_source === false) {
-        return false;
+    $message_source = DB::select('SELECT * FROM `Messages` WHERE `id`=? LIMIT 1', [$message_id]);
+    if (empty($message_source)) {
+        return null;
     }
-    if (count($message_source) > 0) {
-        return $message_source[0];
-    }
-    return null;
+    return array_shift($message_source);
 }
 
 /**
@@ -46,22 +45,25 @@ function Message_send($receiver_user_id, $text)
 
     if (
         ($text != '' && is_numeric($receiver_user_id))
-        && (sql_num_query("
-            SELECT *
+        && count(DB::select('
+            SELECT `UID`
             FROM `User`
-            WHERE `UID`='" . sql_escape($receiver_user_id) . "'
-            AND NOT `UID`='" . sql_escape($user['UID']) . "'
+            WHERE `UID` = ?
+            AND NOT `UID` = ?
             LIMIT 1
-        ") > 0)
+        ', [$receiver_user_id, $user['UID']])) > 0
     ) {
-        sql_query("
-            INSERT INTO `Messages`
-            SET `Datum`='" . sql_escape(time()) . "',
-                `SUID`='" . sql_escape($user['UID']) . "',
-                `RUID`='" . sql_escape($receiver_user_id) . "',
-                `Text`='" . sql_escape($text) . "'
-        ");
-        return true;
+        return DB::insert('
+            INSERT INTO `Messages` (`Datum`, `SUID`, `RUID`, `Text`)
+            VALUES(?, ?, ?, ?)
+            ',
+            [
+                time(),
+                $user['UID'],
+                $receiver_user_id,
+                $text
+            ]
+        );
     }
 
     return false;

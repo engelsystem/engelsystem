@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -131,11 +133,16 @@ function user_settings_theme($user_source, $themes)
     }
 
     if ($valid) {
-        sql_query("
+        DB::update('
             UPDATE `User`
-            SET `color`='" . sql_escape($user_source['color']) . "'
-            WHERE `UID`='" . sql_escape($user_source['UID']) . "'
-        ");
+            SET `color`=?
+            WHERE `UID`=?
+            ',
+            [
+                $user_source['color'],
+                $user_source['UID'],
+            ]
+        );
 
         success(_('Theme changed.'));
         redirect(page_link_to('user_settings'));
@@ -162,11 +169,16 @@ function user_settings_locale($user_source, $locales)
     }
 
     if ($valid) {
-        sql_query("
+        DB::update('
             UPDATE `User`
-            SET `Sprache`='" . sql_escape($user_source['Sprache']) . "'
-            WHERE `UID`='" . sql_escape($user_source['UID']) . "'
-        ");
+            SET `Sprache`=?
+            WHERE `UID`=?
+        ',
+            [
+                $user_source['Sprache'],
+                $user_source['UID'],
+            ]
+        );
         $_SESSION['locale'] = $user_source['Sprache'];
 
         success('Language changed.');

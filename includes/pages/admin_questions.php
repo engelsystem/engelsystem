@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -19,7 +21,7 @@ function admin_new_questions()
 
     if ($page != 'admin_questions') {
         if (in_array('admin_questions', $privileges)) {
-            $new_messages = sql_num_query('SELECT * FROM `Questions` WHERE `AID` IS NULL');
+            $new_messages = count(DB::select('SELECT `QID` FROM `Questions` WHERE `AID` IS NULL'));
 
             if ($new_messages > 0) {
                 return '<a href="' . page_link_to("admin_questions") . '">' . _('There are unanswered questions!') . '</a>';
@@ -39,7 +41,7 @@ function admin_questions()
 
     if (!isset($_REQUEST['action'])) {
         $unanswered_questions_table = [];
-        $questions = sql_select("SELECT * FROM `Questions` WHERE `AID` IS NULL");
+        $questions = DB::select('SELECT * FROM `Questions` WHERE `AID` IS NULL');
         foreach ($questions as $question) {
             $user_source = User($question['UID']);
 
@@ -59,7 +61,7 @@ function admin_questions()
         }
 
         $answered_questions_table = [];
-        $questions = sql_select("SELECT * FROM `Questions` WHERE NOT `AID` IS NULL");
+        $questions = DB::select('SELECT * FROM `Questions` WHERE NOT `AID` IS NULL');
         foreach ($questions as $question) {
             $user_source = User($question['UID']);
             $answer_user_source = User($question['AID']);
@@ -102,7 +104,10 @@ function admin_questions()
                     return error('Incomplete call, missing Question ID.', true);
                 }
 
-                $question = sql_select("SELECT * FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
+                $question = DB::select(
+                    'SELECT * FROM `Questions` WHERE `QID`=? LIMIT 1',
+                    [$question_id]
+                );
                 if (count($question) > 0 && $question[0]['AID'] == null) {
                     $answer = trim(
                         preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui",
@@ -111,12 +116,19 @@ function admin_questions()
                         ));
 
                     if ($answer != '') {
-                        sql_query("
-                            UPDATE `Questions`
-                            SET `AID`='" . sql_escape($user['UID']) . "', `Answer`='" . sql_escape($answer) . "'
-                            WHERE `QID`='" . sql_escape($question_id) . "'
-                            LIMIT 1
-                        ");
+                        DB::update(
+                            '
+                                UPDATE `Questions`
+                                SET `AID`=?, `Answer`=?
+                                WHERE `QID`=?
+                                LIMIT 1
+                            ',
+                            [
+                                $user['UID'],
+                                $answer,
+                                $question_id,
+                            ]
+                        );
                         engelsystem_log('Question ' . $question[0]['Question'] . ' answered: ' . $answer);
                         redirect(page_link_to('admin_questions'));
                     } else {
@@ -133,9 +145,12 @@ function admin_questions()
                     return error('Incomplete call, missing Question ID.', true);
                 }
 
-                $question = sql_select("SELECT * FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
+                $question = DB::select(
+                    'SELECT * FROM `Questions` WHERE `QID`=? LIMIT 1',
+                    [$question_id]
+                );
                 if (count($question) > 0) {
-                    sql_query("DELETE FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
+                    DB::delete('DELETE FROM `Questions` WHERE `QID`=? LIMIT 1', [$question_id]);
                     engelsystem_log('Question deleted: ' . $question[0]['Question']);
                     redirect(page_link_to('admin_questions'));
                 } else {

@@ -282,26 +282,25 @@ function Users_table_header_link($column, $label, $order_by)
 function User_shift_state_render($user)
 {
     $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
-    if ($upcoming_shifts === false) {
-        return false;
-    }
 
-    if (count($upcoming_shifts) == 0) {
+    if (empty($upcoming_shifts)) {
         return '<span class="text-success">' . _('Free') . '</span>';
     }
 
-    if ($upcoming_shifts[0]['start'] > time()) {
-        if ($upcoming_shifts[0]['start'] - time() > 3600) {
-            return '<span class="text-success moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _('Next shift %c') . '</span>';
+    $nextShift = array_shift($upcoming_shifts);
+
+    if ($nextShift['start'] > time()) {
+        if ($nextShift['start'] - time() > 3600) {
+            return '<span class="text-success moment-countdown" data-timestamp="' . $nextShift['start'] . '">' . _('Next shift %c') . '</span>';
         }
-        return '<span class="text-warning moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _('Next shift %c') . '</span>';
+        return '<span class="text-warning moment-countdown" data-timestamp="' . $nextShift['start'] . '">' . _('Next shift %c') . '</span>';
     }
-    $halfway = ($upcoming_shifts[0]['start'] + $upcoming_shifts[0]['end']) / 2;
+    $halfway = ($nextShift['start'] + $nextShift['end']) / 2;
 
     if (time() < $halfway) {
-        return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['start'] . '">' . _('Shift starts %c') . '</span>';
+        return '<span class="text-danger moment-countdown" data-timestamp="' . $nextShift['start'] . '">' . _('Shift starts %c') . '</span>';
     }
-    return '<span class="text-danger moment-countdown" data-timestamp="' . $upcoming_shifts[0]['end'] . '">' . _('Shift ends %c') . '</span>';
+    return '<span class="text-danger moment-countdown" data-timestamp="' . $nextShift['end'] . '">' . _('Shift ends %c') . '</span>';
 }
 
 /**

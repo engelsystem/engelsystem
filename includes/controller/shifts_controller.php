@@ -7,7 +7,11 @@ use Engelsystem\ShiftSignupState;
  */
 function shift_link($shift)
 {
-    return page_link_to('shifts') . '&action=view&shift_id=' . $shift['SID'];
+    $link = page_link_to('shifts') . '&action=view';
+    if (isset($shift['SID'])) {
+        $link .= '&shift_id=' . $shift['SID'];
+    }
+    return $link;
 }
 
 /**
@@ -253,8 +257,15 @@ function shift_controller()
         $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
         $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['id']);
 
-        $angeltype_signup_state = Shift_signup_allowed($user, $shift, $angeltype, null, $user_shifts, $needed_angeltype,
-            $shift_entries);
+        $angeltype_signup_state = Shift_signup_allowed(
+            $user,
+            $shift,
+            $angeltype,
+            null,
+            $user_shifts,
+            $needed_angeltype,
+            $shift_entries
+        );
         if ($shift_signup_state == null) {
             $shift_signup_state = $angeltype_signup_state;
         } else {
@@ -304,11 +315,8 @@ function shift_next_controller()
     }
 
     $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
-    if ($upcoming_shifts === false) {
-        return false;
-    }
 
-    if (count($upcoming_shifts) > 0) {
+    if (empty($upcoming_shifts)) {
         redirect(shift_link($upcoming_shifts[0]));
     }
 

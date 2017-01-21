@@ -1,4 +1,6 @@
 <?php
+
+use Engelsystem\Database\DB;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilter;
 
@@ -191,20 +193,25 @@ function user_controller()
     $shifts = Shifts_by_user($user_source, in_array('user_shifts_admin', $privileges));
     foreach ($shifts as &$shift) {
         // TODO: Move queries to model
-        $shift['needed_angeltypes'] = sql_select("
+        $shift['needed_angeltypes'] = DB::select('
             SELECT DISTINCT `AngelTypes`.*
             FROM `ShiftEntry`
             JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
-            WHERE `ShiftEntry`.`SID`='" . sql_escape($shift['SID']) . "'
+            WHERE `ShiftEntry`.`SID` = ?
             ORDER BY `AngelTypes`.`name`
-        ");
+            ',
+            [$shift['SID']]
+        );
         foreach ($shift['needed_angeltypes'] as &$needed_angeltype) {
-            $needed_angeltype['users'] = sql_select("
-          SELECT `ShiftEntry`.`freeloaded`, `User`.*
-          FROM `ShiftEntry`
-          JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
-          WHERE `ShiftEntry`.`SID`='" . sql_escape($shift['SID']) . "'
-          AND `ShiftEntry`.`TID`='" . sql_escape($needed_angeltype['id']) . "'");
+            $needed_angeltype['users'] = DB::select('
+                  SELECT `ShiftEntry`.`freeloaded`, `User`.*
+                  FROM `ShiftEntry`
+                  JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
+                  WHERE `ShiftEntry`.`SID` = ?
+                  AND `ShiftEntry`.`TID` = ?
+                ',
+                [$shift['SID'], $needed_angeltype['id']]
+            );
         }
     }
 
@@ -387,9 +394,6 @@ function load_user()
     }
 
     $user = User($_REQUEST['user_id']);
-    if ($user === false) {
-        engelsystem_error('Unable to load user.');
-    }
 
     if ($user == null) {
         error(_('User doesn\'t exist.'));

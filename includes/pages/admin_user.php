@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -106,12 +108,18 @@ function admin_user()
 
         $html .= '<hr />';
 
-        $my_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($user['UID']) . "' ORDER BY `group_id` LIMIT 1");
+        $my_highest_group = DB::select(
+            'SELECT group_id FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` LIMIT 1',
+            [$user['UID']]
+        );
         if (count($my_highest_group) > 0) {
             $my_highest_group = $my_highest_group[0]['group_id'];
         }
 
-        $his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($user_id) . "' ORDER BY `group_id` LIMIT 1");
+        $his_highest_group = DB::select(
+            'SELECT `group_id` FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` LIMIT 1',
+            [$user_id]
+        );
         if (count($his_highest_group) > 0) {
             $his_highest_group = $his_highest_group[0]['group_id'];
         }
@@ -121,16 +129,21 @@ function admin_user()
                 . page_link_to('admin_user') . '&action=save_groups&id=' . $user_id . '" method="post">' . "\n";
             $html .= '<table>';
 
-            $groups = sql_select("
-                SELECT *
-                FROM `Groups`
-                LEFT OUTER JOIN `UserGroups` ON (
-                    `UserGroups`.`group_id` = `Groups`.`UID`
-                    AND `UserGroups`.`uid` = '" . sql_escape($user_id) . "'
-                )
-                WHERE `Groups`.`UID` >= '" . sql_escape($my_highest_group) . "'
-                ORDER BY `Groups`.`Name`
-            ");
+            $groups = DB::select('
+                    SELECT *
+                    FROM `Groups`
+                    LEFT OUTER JOIN `UserGroups` ON (
+                        `UserGroups`.`group_id` = `Groups`.`UID`
+                        AND `UserGroups`.`uid` = ?
+                    )
+                    WHERE `Groups`.`UID` >= ?
+                    ORDER BY `Groups`.`Name`
+                ',
+                [
+                    $user_id,
+                    $my_highest_group,
+                ]
+            );
             foreach ($groups as $group) {
                 $html .= '<tr><td><input type="checkbox" name="groups[]" value="' . $group['UID'] . '" '
                     . ($group['group_id'] != '' ? ' checked="checked"' : '')
@@ -154,20 +167,37 @@ function admin_user()
         switch ($_REQUEST['action']) {
             case 'save_groups':
                 if ($user_id != $user['UID']) {
-                    $my_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($user['UID']) . "' ORDER BY `group_id`");
-                    $his_highest_group = sql_select("SELECT * FROM `UserGroups` WHERE `uid`='" . sql_escape($user_id) . "' ORDER BY `group_id`");
+                    $my_highest_group = DB::select(
+                        'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id`',
+                        [$user['UID']]
+                    );
+                    $his_highest_group = DB::select(
+                        'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id`',
+                        [$user_id]
+                    );
 
-                    if (count($my_highest_group) > 0 && (count($his_highest_group) == 0 || ($my_highest_group[0]['group_id'] <= $his_highest_group[0]['group_id']))) {
-                        $groups_source = sql_select("
-                            SELECT *
-                            FROM `Groups`
-                            LEFT OUTER JOIN `UserGroups` ON (
-                                `UserGroups`.`group_id` = `Groups`.`UID`
-                                AND `UserGroups`.`uid` = '" . sql_escape($user_id) . "'
-                            )
-                            WHERE `Groups`.`UID` >= '" . sql_escape($my_highest_group[0]['group_id']) . "'
-                            ORDER BY `Groups`.`Name`
-                        ");
+                    if (
+                        count($my_highest_group) > 0
+                        && (
+                            count($his_highest_group) == 0
+                            || ($my_highest_group[0]['group_id'] <= $his_highest_group[0]['group_id'])
+                        )
+                    ) {
+                        $groups_source = DB::select('
+                                SELECT *
+                                FROM `Groups`
+                                LEFT OUTER JOIN `UserGroups` ON (
+                                    `UserGroups`.`group_id` = `Groups`.`UID`
+                                    AND `UserGroups`.`uid` = ?
+                                )
+                                WHERE `Groups`.`UID` >= ?
+                                ORDER BY `Groups`.`Name`
+                            ',
+                            [
+                                $user_id,
+                                $my_highest_group[0]['group_id'],
+                            ]
+                        );
                         $groups = [];
                         $grouplist = [];
                         foreach ($groups_source as $group) {
@@ -179,11 +209,14 @@ function admin_user()
                             $_REQUEST['groups'] = [];
                         }
 
-                        sql_query("DELETE FROM `UserGroups` WHERE `uid`='" . sql_escape($user_id) . "'");
+                        DB::delete('DELETE FROM `UserGroups` WHERE `uid`=?', [$user_id]);
                         $user_groups_info = [];
                         foreach ($_REQUEST['groups'] as $group) {
                             if (in_array($group, $grouplist)) {
-                                sql_query("INSERT INTO `UserGroups` SET `uid`='" . sql_escape($user_id) . "', `group_id`='" . sql_escape($group) . "'");
+                                DB::insert(
+                                    'INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, ?)',
+                                    [$user_id, $group]
+                                );
                                 $user_groups_info[] = $groups[$group]['Name'];
                             }
                         }
@@ -206,25 +239,42 @@ function admin_user()
                 if (in_array('admin_active', $privileges)) {
                     $force_active = $_REQUEST['force_active'];
                 }
-                $SQL = "UPDATE `User` SET 
-              `Nick` = '" . sql_escape($_POST["eNick"]) . "', 
-              `Name` = '" . sql_escape($_POST["eName"]) . "', 
-              `Vorname` = '" . sql_escape($_POST["eVorname"]) . "', 
-              `Telefon` = '" . sql_escape($_POST["eTelefon"]) . "', 
-              `Handy` = '" . sql_escape($_POST["eHandy"]) . "', 
-              `Alter` = '" . sql_escape($_POST["eAlter"]) . "', 
-              `DECT` = '" . sql_escape($_POST["eDECT"]) . "', 
-              " . ($user_source['email_by_human_allowed'] ? "`email` = '" . sql_escape($_POST["eemail"]) . "'," : "") . "
-              `jabber` = '" . sql_escape($_POST["ejabber"]) . "', 
-              `Size` = '" . sql_escape($_POST["eSize"]) . "', 
-              `Gekommen`= '" . sql_escape($_POST["eGekommen"]) . "', 
-              `Aktiv`= '" . sql_escape($_POST["eAktiv"]) . "', 
-              `force_active`= " . sql_escape($force_active) . ", 
-              `Tshirt` = '" . sql_escape($_POST["eTshirt"]) . "', 
-              `Hometown` = '" . sql_escape($_POST["Hometown"]) . "' 
-              WHERE `UID` = '" . sql_escape($user_id) . "' 
-              LIMIT 1";
-                sql_query($SQL);
+                $sql = '
+                    UPDATE `User` SET 
+                      `Nick` = ?,
+                      `Name` = ?,
+                      `Vorname` = ?,
+                      `Telefon` = ?,
+                      `Handy` = ?,
+                      `Alter` =?,
+                      `DECT` = ?,
+                      ' . ($user_source['email_by_human_allowed'] ? '`email` = ' . DB::getPdo()->quote($_POST["eemail"]) . ',' : '') . '
+                      `jabber` = ?,
+                      `Size` = ?,
+                      `Gekommen`= ?,
+                      `Aktiv`= ?,
+                      `force_active`= ?,
+                      `Tshirt` = ?,
+                      `Hometown` = ?
+                      WHERE `UID` = ?
+                      LIMIT 1';
+                DB::update($sql, [
+                    $_POST['eNick'],
+                    $_POST['eName'],
+                    $_POST['eVorname'],
+                    $_POST['eTelefon'],
+                    $_POST['eHandy'],
+                    $_POST['eAlter'],
+                    $_POST['eDECT'],
+                    $_POST['ejabber'],
+                    $_POST['eSize'],
+                    $_POST['eGekommen'],
+                    $_POST['eAktiv'],
+                    $force_active,
+                    $_POST['eTshirt'],
+                    $_POST['Hometown'],
+                    $user_id,
+                ]);
                 engelsystem_log(
                     'Updated user: ' . $_POST['eNick'] . ', ' . $_POST['eSize']
                     . ', arrived: ' . $_POST['eGekommen']

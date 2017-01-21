@@ -1,6 +1,8 @@
 <?php
+// Set to development to enable debugging messages
+$environment = 'production';
 
-// Enable maintenance mode (showin a static page)
+// Enable maintenance mode (show a static page)
 $maintenance_mode = false;
 
 // URL to the angel faq and job description

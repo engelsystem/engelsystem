@@ -1,59 +1,62 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * Creates a log entry.
  *
  * @param string $nick    Username
  * @param string $message Log  Message
- * @return mysqli_result|false
+ * @return bool
  */
 function LogEntry_create($nick, $message)
 {
-    return sql_query("
-        INSERT INTO `LogEntries`
-        SET
-            `timestamp`='" . sql_escape(time()) . "',
-            `nick`='" . sql_escape($nick) . "',
-            `message`='" . sql_escape($message) . "'
-    ");
+    return DB::insert('
+        INSERT INTO `LogEntries` (`timestamp`, `nick`, `message`)
+        VALUES(?, ?, ?)
+    ', [time(), $nick, $message]);
 }
 
 /**
  * Returns log entries with maximum count of 10000.
  *
- * @return array|false
+ * @return array
  */
 function LogEntries()
 {
-    return sql_select('SELECT * FROM `LogEntries` ORDER BY `timestamp` DESC LIMIT 10000');
+    return DB::select('SELECT * FROM `LogEntries` ORDER BY `timestamp` DESC LIMIT 10000');
 }
 
 /**
  * Returns log entries filtered by a keyword
  *
  * @param string $keyword
- * @return array|false
+ * @return array
  */
 function LogEntries_filter($keyword)
 {
     if ($keyword == '') {
         return LogEntries();
     }
-    return sql_select("
-        SELECT *
-        FROM `LogEntries`
-        WHERE `nick` LIKE '%" . sql_escape($keyword) . "%'
-        OR `message` LIKE '%" . sql_escape($keyword) . "%'
-        ORDER BY `timestamp` DESC
-    ");
+
+    $keyword = '%' . $keyword . '%';
+    return DB::select('
+            SELECT *
+            FROM `LogEntries`
+            WHERE `nick` LIKE ?
+            OR `message` LIKE ?
+            ORDER BY `timestamp` DESC
+        ',
+        [$keyword, $keyword]
+    );
 }
 
 /**
  * Delete all log entries.
  *
- * @return mysqli_result|false
+ * @return bool
  */
 function LogEntries_clear_all()
 {
-    return sql_query('TRUNCATE `LogEntries`');
+    return DB::statement('TRUNCATE `LogEntries`');
 }

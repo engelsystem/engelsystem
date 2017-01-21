@@ -1,16 +1,16 @@
 <?php
 
+use Engelsystem\Database\Db;
 use Engelsystem\Exceptions\Handler as ExceptionHandler;
 
 /**
  * This file includes all needed functions, connects to the db etc.
  */
+
 if (!is_readable(__DIR__ . '/../vendor/autoload.php')) {
     die('Please run composer.phar install');
 }
 require __DIR__ . '/../vendor/autoload.php';
-
-require_once realpath(__DIR__ . '/../includes/mysqli_provider.php');
 
 require_once realpath(__DIR__ . '/../includes/sys_auth.php');
 require_once realpath(__DIR__ . '/../includes/sys_form.php');
@@ -107,10 +107,15 @@ $errorHandler = new ExceptionHandler(
     )
 );
 
+Db::connect(
+    'mysql:host=' . $config['host'] . ';dbname=' . $config['db'] . ';charset=utf8',
+    $config['user'],
+    $config['pw']
+) || die('Error: Unable to connect to database');
+Db::getPdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 session_start();
 
 gettext_init();
-
-sql_connect($config['host'], $config['user'], $config['pw'], $config['db']);
 
 load_auth();

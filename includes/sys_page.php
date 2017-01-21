@@ -61,7 +61,7 @@ function redirect($url)
  *
  * @param String $output String to display
  */
-function raw_output($output)
+function raw_output($output = '')
 {
     echo $output;
     die();
@@ -78,11 +78,11 @@ function raw_output($output)
  */
 function select_array($data, $key_name, $value_name)
 {
-    $ret = [];
+    $return = [];
     foreach ($data as $value) {
-        $ret[$value[$key_name]] = $value[$value_name];
+        $return[$value[$key_name]] = $value[$value_name];
     }
-    return $ret;
+    return $return;
 }
 
 /**

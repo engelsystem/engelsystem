@@ -1,4 +1,6 @@
 <?php
+
+use Engelsystem\Database\DB;
 use Engelsystem\ValidationResult;
 
 /**
@@ -9,90 +11,154 @@ use Engelsystem\ValidationResult;
  * Delete a user
  *
  * @param int $user_id
- * @return mysqli_result|false
+ * @return bool
  */
 function User_delete($user_id)
 {
-    return sql_query("DELETE FROM `User` WHERE `UID`='" . sql_escape($user_id) . "'");
+    DB::delete('DELETE FROM `User` WHERE `UID`=?', [$user_id]);
+
+    return DB::getStm()->errorCode() == '00000';
 }
 
 /**
  * Update user.
  *
  * @param array $user
- * @return mysqli_result|false
+ * @return bool
  */
 function User_update($user)
 {
-    return sql_query("
-      UPDATE `User` SET
-      `Nick`='" . sql_escape($user['Nick']) . "',
-      `Name`='" . sql_escape($user['Name']) . "',
-      `Vorname`='" . sql_escape($user['Vorname']) . "',
-      `Alter`='" . sql_escape($user['Alter']) . "',
-      `Telefon`='" . sql_escape($user['Telefon']) . "',
-      `DECT`='" . sql_escape($user['DECT']) . "',
-      `Handy`='" . sql_escape($user['Handy']) . "',
-      `email`='" . sql_escape($user['email']) . "',
-      `email_shiftinfo`=" . sql_bool($user['email_shiftinfo']) . ",
-      `email_by_human_allowed`=" . sql_bool($user['email_by_human_allowed']) . ",
-      `jabber`='" . sql_escape($user['jabber']) . "',
-      `Size`='" . sql_escape($user['Size']) . "',
-      `Gekommen`='" . sql_escape($user['Gekommen']) . "',
-      `Aktiv`='" . sql_escape($user['Aktiv']) . "',
-      `force_active`=" . sql_bool($user['force_active']) . ",
-      `Tshirt`='" . sql_escape($user['Tshirt']) . "',
-      `color`='" . sql_escape($user['color']) . "',
-      `Sprache`='" . sql_escape($user['Sprache']) . "',
-      `Hometown`='" . sql_escape($user['Hometown']) . "',
-      `got_voucher`='" . sql_escape($user['got_voucher']) . "',
-      `arrival_date`='" . sql_escape($user['arrival_date']) . "',
-      `planned_arrival_date`='" . sql_escape($user['planned_arrival_date']) . "',
-      `planned_departure_date`=" . sql_null($user['planned_departure_date']) . "
-      WHERE `UID`='" . sql_escape($user['UID']) . "'
-    ");
+    return (bool)DB::update("
+          UPDATE `User` SET
+          `Nick`=?,
+          `Name`=?,
+          `Vorname`=?,
+          `Alter`=?,
+          `Telefon`=?,
+          `DECT`=?,
+          `Handy`=?,
+          `email`=?,
+          `email_shiftinfo`=?,
+          `email_by_human_allowed`=?,
+          `jabber`=?,
+          `Size`=?,
+          `Gekommen`=?,
+          `Aktiv`=?,
+          `force_active`=?,
+          `Tshirt`=?,
+          `color`=?,
+          `Sprache`=?,
+          `Hometown`=?,
+          `got_voucher`=?,
+          `arrival_date`=?,
+          `planned_arrival_date`=?,
+          `planned_departure_date`=?
+          WHERE `UID`=?
+        ",
+        [
+            $user['Nick'],
+            $user['Name'],
+            $user['Vorname'],
+            $user['Alter'],
+            $user['Telefon'],
+            $user['DECT'],
+            $user['Handy'],
+            $user['email'],
+            (bool)$user['email_shiftinfo'],
+            (bool)$user['email_by_human_allowed'],
+            $user['jabber'],
+            $user['Size'],
+            $user['Gekommen'],
+            $user['Aktiv'],
+            (bool)$user['force_active'],
+            $user['Tshirt'],
+            $user['color'],
+            $user['Sprache'],
+            $user['Hometown'],
+            $user['got_voucher'],
+            $user['arrival_date'],
+            $user['planned_arrival_date'],
+            $user['planned_departure_date'],
+            $user['UID'],
+        ]
+    );
 }
 
 /**
  * Counts all forced active users.
  *
- * @return string|null
+ * @return int
  */
 function User_force_active_count()
 {
-    return sql_select_single_cell('SELECT COUNT(*) FROM `User` WHERE `force_active` = 1');
+    $result = DB::select('SELECT COUNT(*) FROM `User` WHERE `force_active` = 1');
+    $result = array_shift($result);
+
+    if (empty($result)) {
+        return 0;
+    }
+
+    return (int)array_shift($result);
 }
 
 /**
- * @return string|null
+ * @return int
  */
 function User_active_count()
 {
-    return sql_select_single_cell('SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1');
+    $result = DB::select('SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1');
+    $result = array_shift($result);
+
+    if (empty($result)) {
+        return 0;
+    }
+
+    return (int)array_shift($result);
 }
 
 /**
- * @return string|null
+ * @return int
  */
 function User_got_voucher_count()
 {
-    return sql_select_single_cell('SELECT SUM(`got_voucher`) FROM `User`');
+    $result = DB::select('SELECT SUM(`got_voucher`) FROM `User`');
+    $result = array_shift($result);
+
+    if (empty($result)) {
+        return 0;
+    }
+
+    return (int)array_shift($result);
 }
 
 /**
- * @return string|null
+ * @return int
  */
 function User_arrived_count()
 {
-    return sql_select_single_cell('SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1');
+    $result = DB::select('SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1');
+    $result = array_shift($result);
+
+    if (empty($result)) {
+        return 0;
+    }
+
+    return (int)array_shift($result);
 }
 
 /**
- * @return string|null
+ * @return int
  */
 function User_tshirts_count()
 {
-    return sql_select_single_cell('SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1');
+    $result = DB::select('SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1');
+    $result = array_shift($result);
+
+    if (empty($result)) {
+        return 0;
+    }
+
+    return (int)array_shift($result);
 }
 
 /**
@@ -126,7 +192,19 @@ function User_sortable_columns()
  */
 function Users($order_by = 'Nick')
 {
-    return sql_select("SELECT * FROM `User` ORDER BY `" . sql_escape($order_by) . "` ASC");
+    $result = DB::select(sprintf('
+            SELECT *
+            FROM `User`
+            ORDER BY `%s` ASC
+        ',
+        trim(DB::getPdo()->quote($order_by), '\'')
+    ));
+
+    if (DB::getStm()->errorCode() != '00000') {
+        return false;
+    }
+
+    return $result;
 }
 
 /**
@@ -150,14 +228,19 @@ function User_is_freeloader($user)
  */
 function Users_by_angeltype_inverted($angeltype)
 {
-    $result = sql_select("
-      SELECT `User`.*
-      FROM `User`
-      LEFT JOIN `UserAngelTypes`
-        ON (`User`.`UID`=`UserAngelTypes`.`user_id` AND `angeltype_id`='" . sql_escape($angeltype['id']) . "')
-      WHERE `UserAngelTypes`.`id` IS NULL
-      ORDER BY `Nick`");
-    if ($result === false) {
+    $result = DB::select('
+            SELECT `User`.*
+            FROM `User`
+            LEFT JOIN `UserAngelTypes`
+            ON (`User`.`UID`=`UserAngelTypes`.`user_id` AND `angeltype_id`=?)
+            WHERE `UserAngelTypes`.`id` IS NULL
+            ORDER BY `Nick`
+        ',
+        [
+            $angeltype['id']
+        ]
+    );
+    if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error("Unable to load users.");
     }
     return $result;
@@ -171,19 +254,24 @@ function Users_by_angeltype_inverted($angeltype)
  */
 function Users_by_angeltype($angeltype)
 {
-    $result = sql_select("
-      SELECT
-      `User`.*,
-      `UserAngelTypes`.`id` AS `user_angeltype_id`,
-      `UserAngelTypes`.`confirm_user_id`,
-      `UserAngelTypes`.`supporter`,
-      `UserDriverLicenses`.*
-      FROM `User`
-      JOIN `UserAngelTypes` ON `User`.`UID`=`UserAngelTypes`.`user_id`
-      LEFT JOIN `UserDriverLicenses` ON `User`.`UID`=`UserDriverLicenses`.`user_id`
-      WHERE `UserAngelTypes`.`angeltype_id`='" . sql_escape($angeltype['id']) . "'
-      ORDER BY `Nick`");
-    if ($result === false) {
+    $result = DB::select('
+            SELECT
+            `User`.*,
+            `UserAngelTypes`.`id` AS `user_angeltype_id`,
+            `UserAngelTypes`.`confirm_user_id`,
+            `UserAngelTypes`.`supporter`,
+            `UserDriverLicenses`.*
+            FROM `User`
+            JOIN `UserAngelTypes` ON `User`.`UID`=`UserAngelTypes`.`user_id`
+            LEFT JOIN `UserDriverLicenses` ON `User`.`UID`=`UserDriverLicenses`.`user_id`
+            WHERE `UserAngelTypes`.`angeltype_id`=?
+            ORDER BY `Nick`
+        ',
+        [
+            $angeltype['id']
+        ]
+    );
+    if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error('Unable to load members.');
     }
     return $result;
@@ -192,11 +280,11 @@ function Users_by_angeltype($angeltype)
 /**
  * Returns User id array
  *
- * @return array|false
+ * @return array
  */
 function User_ids()
 {
-    return sql_select('SELECT `UID` FROM `User`');
+    return DB::select('SELECT `UID` FROM `User`');
 }
 
 /**
@@ -207,7 +295,7 @@ function User_ids()
  */
 function User_validate_Nick($nick)
 {
-    return preg_replace('/([^a-z0-9üöäß. _+*-]{1,})/ui', '', $nick);
+    return preg_replace('/([^\wüöäß. +*-]{1,})/ui', '', $nick);
 }
 
 /**
@@ -311,14 +399,17 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
  */
 function User($user_id)
 {
-    $user_source = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
-    if ($user_source === false) {
+    $user_source = DB::select('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
+
+    if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error('Unable to load user.');
     }
-    if (count($user_source) > 0) {
-        return $user_source[0];
+
+    if (empty($user_source)) {
+        return null;
     }
-    return null;
+
+    return array_shift($user_source);
 }
 
 /**
@@ -330,13 +421,16 @@ function User($user_id)
  */
 function User_by_api_key($api_key)
 {
-    $user = sql_select("SELECT * FROM `User` WHERE `api_key`='" . sql_escape($api_key) . "' LIMIT 1");
-    if ($user === false) {
+    $user = DB::select('SELECT * FROM `User` WHERE `api_key`=? LIMIT 1', [$api_key]);
+
+    if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error('Unable to find user by api key.');
     }
-    if (count($user) == 0) {
+
+    if (empty($user)) {
         return null;
     }
+
     return $user[0];
 }
 
@@ -348,14 +442,17 @@ function User_by_api_key($api_key)
  */
 function User_by_email($email)
 {
-    $user = sql_select("SELECT * FROM `User` WHERE `email`='" . sql_escape($email) . "' LIMIT 1");
-    if ($user === false) {
+    $user = DB::select('SELECT * FROM `User` WHERE `email`=? LIMIT 1', [$email]);
+
+    if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error('Unable to load user.');
     }
-    if (count($user) == 0) {
+
+    if (empty($user)) {
         return null;
     }
-    return $user[0];
+
+    return array_shift($user);
 }
 
 /**
@@ -366,14 +463,17 @@ function User_by_email($email)
  */
 function User_by_password_recovery_token($token)
 {
-    $user = sql_select("SELECT * FROM `User` WHERE `password_recovery_token`='" . sql_escape($token) . "' LIMIT 1");
-    if ($user === false) {
+    $user = DB::select('SELECT * FROM `User` WHERE `password_recovery_token`=? LIMIT 1', [$token]);
+
+    if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error('Unable to load user.');
     }
-    if (count($user) == 0) {
+
+    if (empty($user)) {
         return null;
     }
-    return $user[0];
+
+    return array_shift($user);
 }
 
 /**
@@ -386,8 +486,19 @@ function User_by_password_recovery_token($token)
 function User_reset_api_key(&$user, $log = true)
 {
     $user['api_key'] = md5($user['Nick'] . time() . rand());
-    $result = sql_query("UPDATE `User` SET `api_key`='" . sql_escape($user['api_key']) . "' WHERE `UID`='" . sql_escape($user['UID']) . "' LIMIT 1");
-    if ($result === false) {
+    DB::update(
+        '
+            UPDATE `User`
+            SET `api_key`=?
+            WHERE `UID`=?
+            LIMIT 1
+        ',
+        [
+            $user['api_key'],
+            $user['UID']
+        ]
+    );
+    if (DB::getStm()->errorCode() != '00000') {
         return false;
     }
 
@@ -407,13 +518,18 @@ function User_reset_api_key(&$user, $log = true)
 function User_generate_password_recovery_token(&$user)
 {
     $user['password_recovery_token'] = md5($user['Nick'] . time() . rand());
-    $result = sql_query("
-        UPDATE `User`
-        SET `password_recovery_token`='" . sql_escape($user['password_recovery_token']) . "'
-        WHERE `UID`='" . sql_escape($user['UID']) . "'
-        LIMIT 1
-    ");
-    if ($result === false) {
+    DB::update('
+            UPDATE `User`
+            SET `password_recovery_token`=?
+            WHERE `UID`=?
+            LIMIT 1
+        ',
+        [
+            $user['password_recovery_token'],
+            $user['UID'],
+        ]
+    );
+    if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error('Unable to generate password recovery token.');
     }
     engelsystem_log('Password recovery for ' . User_Nick_render($user) . ' started.');

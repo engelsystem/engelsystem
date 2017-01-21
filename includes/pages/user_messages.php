@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -16,7 +18,10 @@ function user_unread_messages()
     global $user;
 
     if (isset($user)) {
-        $new_messages = sql_num_query("SELECT * FROM `Messages` WHERE isRead='N' AND `RUID`='" . sql_escape($user['UID']) . "'");
+        $new_messages = count(DB::select(
+            'SELECT `id` FROM `Messages` WHERE isRead=\'N\' AND `RUID`=?',
+            [$user['UID']]
+        ));
         if ($new_messages > 0) {
             return ' <span class="badge danger">' . $new_messages . '</span>';
         }
@@ -32,7 +37,10 @@ function user_messages()
     global $user;
 
     if (!isset($_REQUEST['action'])) {
-        $users = sql_select("SELECT * FROM `User` WHERE NOT `UID`='" . sql_escape($user['UID']) . "' ORDER BY `Nick`");
+        $users = DB::select(
+            'SELECT `UID`, `Nick` FROM `User` WHERE NOT `UID`=? ORDER BY `Nick`',
+            [$user['UID']]
+        );
 
         $to_select_data = [
             '' => _('Select recipient...')
@@ -44,13 +52,18 @@ function user_messages()
 
         $to_select = html_select_key('to', 'to', $to_select_data, '');
 
-        $messages = sql_select("
+        $messages = DB::select('
             SELECT *
             FROM `Messages`
-            WHERE `SUID`='" . sql_escape($user['UID']) . "'
-            OR `RUID`='" . sql_escape($user['UID']) . "'
+            WHERE `SUID`=?
+            OR `RUID`=?
             ORDER BY `isRead`,`Datum` DESC
-        ");
+        ',
+            [
+                $user['UID'],
+                $user['UID'],
+            ]
+        );
 
         $messages_table = [
             [
@@ -116,9 +129,15 @@ function user_messages()
                     return error(_('Incomplete call, missing Message ID.'), true);
                 }
 
-                $message = sql_select("SELECT * FROM `Messages` WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
+                $message = DB::select(
+                    'SELECT `RUID` FROM `Messages` WHERE `id`=? LIMIT 1',
+                    [$message_id]
+                );
                 if (count($message) > 0 && $message[0]['RUID'] == $user['UID']) {
-                    sql_query("UPDATE `Messages` SET `isRead`='Y' WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
+                    DB::update(
+                        'UPDATE `Messages` SET `isRead`=\'Y\' WHERE `id`=? LIMIT 1',
+                        [$message_id]
+                    );
                     redirect(page_link_to('user_messages'));
                 } else {
                     return error(_('No Message found.'), true);
@@ -132,9 +151,12 @@ function user_messages()
                     return error(_('Incomplete call, missing Message ID.'), true);
                 }
 
-                $message = sql_select("SELECT * FROM `Messages` WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
+                $message = DB::select(
+                    'SELECT `SUID` FROM `Messages` WHERE `id`=? LIMIT 1',
+                    [$message_id]
+                );
                 if (count($message) > 0 && $message[0]['SUID'] == $user['UID']) {
-                    sql_query("DELETE FROM `Messages` WHERE `id`='" . sql_escape($message_id) . "' LIMIT 1");
+                    DB::delete('DELETE FROM `Messages` WHERE `id`=? LIMIT 1', [$message_id]);
                     redirect(page_link_to('user_messages'));
                 } else {
                     return error(_('No Message found.'), true);
@@ -142,7 +164,7 @@ function user_messages()
                 break;
 
             case 'send':
-                if (Message_send($_REQUEST['to'], $_REQUEST['text']) === true) {
+                if (Message_send($_REQUEST['to'], $_REQUEST['text'])) {
                     redirect(page_link_to('user_messages'));
                 } else {
                     return error(_('Transmitting was terminated with an Error.'), true);

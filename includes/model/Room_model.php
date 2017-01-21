@@ -1,53 +1,56 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * returns a list of rooms.
  *
  * @param boolean $show_all returns also hidden rooms when true
- * @return array|false
+ * @return array
  */
 function Rooms($show_all = false)
 {
-    return sql_select("SELECT * FROM `Room`" . ($show_all ? "" : " WHERE `show`='Y'") . " ORDER BY `Name`");
+    return DB::select('SELECT * FROM `Room`' . ($show_all ? '' : ' WHERE `show`=\'Y\'') . ' ORDER BY `Name`');
 }
 
 /**
  * Delete a room
  *
  * @param int $room_id
- * @return mysqli_result|false
+ * @return bool
  */
 function Room_delete($room_id)
 {
-    return sql_query('DELETE FROM `Room` WHERE `RID`=' . sql_escape($room_id));
+    return DB::delete('DELETE FROM `Room` WHERE `RID` = ?', [$room_id]);
 }
 
 /**
  * Create a new room
  *
- * @param string  $name
- *          Name of the room
- * @param boolean $from_frab
- *          Is this a frab imported room?
- * @param boolean $public
- *          Is the room visible for angels?
- * @param int     $number
- *          Room number
+ * @param string  $name      Name of the room
+ * @param boolean $from_frab Is this a frab imported room?
+ * @param boolean $public    Is the room visible for angels?
+ * @param int     $number    Room number
  * @return false|int
  */
 function Room_create($name, $from_frab, $public, $number = null)
 {
-    $result = sql_query("
-      INSERT INTO `Room` SET 
-      `Name`='" . sql_escape($name) . "', 
-      `FromPentabarf`='" . sql_escape($from_frab ? 'Y' : '') . "', 
-      `show`='" . sql_escape($public ? 'Y' : '') . "', 
-      `Number`=" . (int)$number
+    $result = DB::insert('
+          INSERT INTO `Room` (`Name`, `FromPentabarf`, `show`, `Number`)
+           VALUES (?, ?, ?, ?)
+        ',
+        [
+            $name,
+            $from_frab ? 'Y' : '',
+            $public ? 'Y' : '',
+            (int)$number,
+        ]
     );
-    if ($result === false) {
+    if (!$result) {
         return false;
     }
-    return sql_id();
+
+    return DB::getPdo()->lastInsertId();
 }
 
 /**
@@ -59,18 +62,21 @@ function Room_create($name, $from_frab, $public, $number = null)
  */
 function Room($room_id, $show_only = true)
 {
-    $room_source = sql_select("
+    $room_source = DB::select('
         SELECT *
         FROM `Room`
-        WHERE `RID`='" . sql_escape($room_id) . "'
-        " . ($show_only ? "AND `show` = 'Y'" : '')
+        WHERE `RID` = ?
+        ' . ($show_only ? 'AND `show` = \'Y\'' : ''),
+        [$room_id]
     );
 
-    if ($room_source === false) {
+    if (DB::getStm()->errorCode() != '00000') {
         return false;
     }
-    if (count($room_source) > 0) {
-        return $room_source[0];
+
+    if (empty($room_source)) {
+        return null;
     }
-    return null;
+
+    return array_shift($room_source);
 }

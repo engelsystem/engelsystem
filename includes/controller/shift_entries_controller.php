@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * Sign up for a shift.
  *
@@ -17,7 +19,7 @@ function shift_entry_add_controller()
     }
 
     // Locations laden
-    $rooms = sql_select('SELECT * FROM `Room` WHERE `show`=\'Y\' ORDER BY `Name`');
+    $rooms = Rooms();
     $room_array = [];
     foreach ($rooms as $room) {
         $room_array[$room['RID']] = $room['Name'];
@@ -39,22 +41,24 @@ function shift_entry_add_controller()
     if (in_array('user_shifts_admin', $privileges) || in_array('shiftentry_edit_angeltype_supporter', $privileges)) {
         $type = AngelType($type_id);
     } else {
-        $type = sql_select("
-            SELECT * FROM `UserAngelTypes`
+        // TODO: Move queries to model
+        $type = DB::select('
+            SELECT *
+            FROM `UserAngelTypes`
             JOIN `AngelTypes` ON (`UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`)
-            WHERE `AngelTypes`.`id` = '" . sql_escape($type_id) . "'
+            WHERE `AngelTypes`.`id` = ?
             AND (
                 `AngelTypes`.`restricted` = 0
                 OR (
-                    `UserAngelTypes`.`user_id` = '" . sql_escape($user['UID']) . "'
+                    `UserAngelTypes`.`user_id` = ?
                     AND NOT `UserAngelTypes`.`confirm_user_id` IS NULL
                 )
             )
-        ");
-        $type = $type[0];
+        ', [$type_id, $user['UID']]);
+        $type = array_shift($type);
     }
 
-    if ($type == null) {
+    if (empty($type)) {
         redirect(page_link_to('user_shifts'));
     }
 
@@ -93,25 +97,32 @@ function shift_entry_add_controller()
         if (in_array('user_shifts_admin', $privileges) || in_array('shiftentry_edit_angeltype_supporter',
                 $privileges)
         ) {
-            if (sql_num_query("SELECT * FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1") == 0) {
+
+            if (count(DB::select('SELECT `UID` FROM `User` WHERE `UID`=? LIMIT 1', [$user_id])) == 0) {
                 redirect(page_link_to('user_shifts'));
             }
 
             if (
                 isset($_REQUEST['angeltype_id'])
                 && test_request_int('angeltype_id')
-                && sql_num_query("SELECT * FROM `AngelTypes` WHERE `id`='" . sql_escape($_REQUEST['angeltype_id']) . "' LIMIT 1") > 0
+                && count(DB::select(
+                    'SELECT `id` FROM `AngelTypes` WHERE `id`=? LIMIT 1',
+                    [$_REQUEST['angeltype_id']]
+                )) > 0
             ) {
                 $selected_type_id = $_REQUEST['angeltype_id'];
             }
         }
 
-        if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`='" . sql_escape($shift['SID']) . "' AND `UID` = '" . sql_escape($user_id) . "'")) {
+        if (count(DB::select(
+            'SELECT `id` FROM `ShiftEntry` WHERE `SID`= ? AND `UID` = ?',
+            [$shift['SID'], $user_id]))
+        ) {
             return error("This angel does already have an entry for this shift.", true);
         }
 
-        $freeloaded = $shift['freeloaded'];
-        $freeload_comment = $shift['freeload_comment'];
+        $freeloaded = isset($shift['freeloaded']) ? $shift['freeloaded'] : false;
+        $freeload_comment = isset($shift['freeload_comment']) ? $shift['freeload_comment'] : '';
         if (in_array("user_shifts_admin", $privileges)) {
             $freeloaded = isset($_REQUEST['freeloaded']);
             $freeload_comment = strip_request_item_nl('freeload_comment');
@@ -132,27 +143,40 @@ function shift_entry_add_controller()
 
         if (
             $type['restricted'] == 0
-            && sql_num_query("
-              SELECT * FROM `UserAngelTypes`
+            && count(DB::select('
+              SELECT `id` FROM `UserAngelTypes`
               INNER JOIN `AngelTypes` ON `AngelTypes`.`id` = `UserAngelTypes`.`angeltype_id`
-              WHERE `angeltype_id` = '" . sql_escape($selected_type_id) . "' 
-              AND `user_id` = '" . sql_escape($user_id) . "'
-            ") == 0
+              WHERE `angeltype_id` = ?
+              AND `user_id` = ?
+            ', [$selected_type_id, $user_id])) == 0
         ) {
-            sql_query("INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`) VALUES ('" . sql_escape($user_id) . "', '" . sql_escape($selected_type_id) . "')");
+            DB::insert(
+                'INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`) VALUES (?, ?)',
+                [$user_id, $selected_type_id]
+            );
         }
 
         $user_source = User($user_id);
-        engelsystem_log('User ' . User_Nick_render($user_source) . ' signed up for shift ' . $shift['name'] . ' from ' . date('Y-m-d H:i',
-                $shift['start']) . ' to ' . date('Y-m-d H:i', $shift['end']));
+        engelsystem_log(
+            'User ' . User_Nick_render($user_source)
+            . ' signed up for shift ' . $shift['name']
+            . ' from ' . date('Y-m-d H:i', $shift['start'])
+            . ' to ' . date('Y-m-d H:i', $shift['end'])
+        );
         success(_('You are subscribed. Thank you!') . ' <a href="' . page_link_to('user_myshifts') . '">' . _('My shifts') . ' &raquo;</a>');
         redirect(shift_link($shift));
     }
 
     $angeltype_select = '';
     if (in_array('user_shifts_admin', $privileges)) {
-        $users = sql_select('
-            SELECT *, (SELECT count(*) FROM `ShiftEntry` WHERE `freeloaded`=1 AND `ShiftEntry`.`UID`=`User`.`UID`) AS `freeloaded`
+        $users = DB::select('
+            SELECT *,
+            (
+                SELECT count(*)
+                FROM `ShiftEntry`
+                WHERE `freeloaded`=1
+                AND `ShiftEntry`.`UID`=`User`.`UID`
+            ) AS `freeloaded`
             FROM `User`
             ORDER BY `Nick`
         ');
@@ -162,7 +186,7 @@ function shift_entry_add_controller()
         }
         $user_text = html_select_key('user_id', 'user_id', $users_select, $user['UID']);
 
-        $angeltypes_source = sql_select('SELECT * FROM `AngelTypes` ORDER BY `name`');
+        $angeltypes_source = DB::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
         $angeltypes = [];
         foreach ($angeltypes_source as $angeltype) {
             $angeltypes[$angeltype['id']] = $angeltype['name'];
@@ -218,7 +242,7 @@ function shift_entry_delete_controller()
     }
     $entry_id = $_REQUEST['entry_id'];
 
-    $shift_entry_source = sql_select("
+    $shift_entry_source = DB::select('
         SELECT
             `User`.`Nick`,
             `ShiftEntry`.`Comment`,
@@ -234,9 +258,11 @@ function shift_entry_delete_controller()
         JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
         JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
         JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`)
-        WHERE `ShiftEntry`.`id`='" . sql_escape($entry_id) . "'");
+        WHERE `ShiftEntry`.`id`=?',
+        [$entry_id]
+    );
     if (count($shift_entry_source) > 0) {
-        $shift_entry_source = $shift_entry_source[0];
+        $shift_entry_source = array_shift($shift_entry_source);
 
         if (!in_array('user_shifts_admin', $privileges) && (!in_array('shiftentry_edit_angeltype_supporter',
                     $privileges) || !User_is_AngelType_supporter($user, AngelType($shift_entry_source['angeltype_id'])))

@@ -1,21 +1,25 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * Get event config.
  *
- * łreturn array|false|null
+ * @return array|null
  */
 function EventConfig()
 {
-    $event_config = sql_select('SELECT * FROM `EventConfig` LIMIT 1');
-    if ($event_config === false) {
+    $event_config = DB::select('SELECT * FROM `EventConfig` LIMIT 1');
+    if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error('Unable to load event config.');
-        return false;
+        return null;
     }
-    if (count($event_config) > 0) {
-        return $event_config[0];
+
+    if (empty($event_config)) {
+        return null;
     }
-    return null;
+
+    return array_shift($event_config);
 }
 
 /**
@@ -27,7 +31,7 @@ function EventConfig()
  * @param int    $event_end_date
  * @param int    $teardown_end_date
  * @param string $event_welcome_msg
- * @return mysqli_result|false
+ * @return bool
  */
 function EventConfig_update(
     $event_name,
@@ -38,20 +42,44 @@ function EventConfig_update(
     $event_welcome_msg
 ) {
     if (EventConfig() == null) {
-        return sql_query("INSERT INTO `EventConfig` SET
-      `event_name`=" . sql_null($event_name) . ",
-      `buildup_start_date`=" . sql_null($buildup_start_date) . ",
-      `event_start_date`=" . sql_null($event_start_date) . ",
-      `event_end_date`=" . sql_null($event_end_date) . ",
-      `teardown_end_date`=" . sql_null($teardown_end_date) . ",
-      `event_welcome_msg`=" . sql_null($event_welcome_msg));
+        return DB::insert('
+              INSERT INTO `EventConfig` (
+                  `event_name`,
+                  `buildup_start_date`,
+                  `event_start_date`,
+                  `event_end_date`,
+                  `teardown_end_date`,
+                  `event_welcome_msg`
+              )
+              VALUES (?, ?, ?, ?, ?, ?)
+            ',
+            [
+                $event_name,
+                $buildup_start_date,
+                $event_start_date,
+                $event_end_date,
+                $teardown_end_date,
+                $event_welcome_msg
+            ]
+        );
     }
 
-    return sql_query("UPDATE `EventConfig` SET
-      `event_name`=" . sql_null($event_name) . ", 
-      `buildup_start_date`=" . sql_null($buildup_start_date) . ",
-      `event_start_date`=" . sql_null($event_start_date) . ",
-      `event_end_date`=" . sql_null($event_end_date) . ",
-      `teardown_end_date`=" . sql_null($teardown_end_date) . ",        
-      `event_welcome_msg`=" . sql_null($event_welcome_msg));
+    return (bool)DB::update('
+          UPDATE `EventConfig` SET
+          `event_name` = ?,
+          `buildup_start_date` = ?,
+          `event_start_date` = ?,
+          `event_end_date` = ?,
+          `teardown_end_date` = ?,       
+          `event_welcome_msg` = ?
+        ',
+        [
+            $event_name,
+            $buildup_start_date,
+            $event_start_date,
+            $event_end_date,
+            $teardown_end_date,
+            $event_welcome_msg,
+        ]
+    );
 }

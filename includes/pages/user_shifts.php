@@ -1,4 +1,6 @@
 <?php
+
+use Engelsystem\Database\DB;
 use Engelsystem\ShiftsFilter;
 
 /**
@@ -70,12 +72,9 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
 /**
  * Update given ShiftsFilter with filter params from user input
  *
- * @param ShiftsFilter $shiftsFilter
- *          The shifts filter to update from request data
- * @param boolean      $user_shifts_admin
- *          Has the user user_shift_admin privilege?
- * @param string[]     $days
- *          An array of available filter days
+ * @param ShiftsFilter $shiftsFilter      The shifts filter to update from request data
+ * @param boolean      $user_shifts_admin Has the user user_shift_admin privilege?
+ * @param string[]     $days              An array of available filter days
  */
 function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $days)
 {
@@ -91,8 +90,10 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
  */
 function load_rooms()
 {
-    $rooms = sql_select('SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`=\'Y\' ORDER BY `Name`');
-    if (!$rooms || count($rooms) == 0) {
+    $rooms = DB::select(
+        'SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`=\'Y\' ORDER BY `Name`'
+    );
+    if (empty($rooms)) {
         error(_('The administration has not configured any rooms yet.'));
         redirect('?');
     }
@@ -104,12 +105,14 @@ function load_rooms()
  */
 function load_days()
 {
-    $days = sql_select_single_col('
+    $days = DB::select('
       SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name`
       FROM `Shifts`
       ORDER BY `start`
     ');
-    if (count($days) == 0) {
+    $days = array_map('array_shift', $days);
+
+    if (empty($days)) {
         error(_('The administration has not configured any shifts yet.'));
         redirect('?');
     }
@@ -123,31 +126,35 @@ function load_types()
 {
     global $user;
 
-    if (sql_num_query('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0') == 0) {
+    if (!count(DB::select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0'))) {
         error(_('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
         redirect('?');
     }
-    $types = sql_select("
-        SELECT
-            `AngelTypes`.`id`,
-            `AngelTypes`.`name`,
-            (
-                `AngelTypes`.`restricted`=0
-                OR (
-                    NOT `UserAngelTypes`.`confirm_user_id` IS NULL
-                    OR `UserAngelTypes`.`id` IS NULL
+    $types = DB::select('
+            SELECT
+                `AngelTypes`.`id`,
+                `AngelTypes`.`name`,
+                (
+                    `AngelTypes`.`restricted`=0
+                    OR (
+                        NOT `UserAngelTypes`.`confirm_user_id` IS NULL
+                        OR `UserAngelTypes`.`id` IS NULL
+                    )
+                ) AS `enabled`
+            FROM `AngelTypes`
+            LEFT JOIN `UserAngelTypes`
+                ON (
+                    `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id`
+                    AND `UserAngelTypes`.`user_id`=?
                 )
-            ) AS `enabled`
-        FROM `AngelTypes`
-        LEFT JOIN `UserAngelTypes`
-            ON (
-                `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id`
-                AND `UserAngelTypes`.`user_id`='" . sql_escape($user['UID']) . "'
-            )
-        ORDER BY `AngelTypes`.`name`
-    ");
+            ORDER BY `AngelTypes`.`name`
+        ',
+        [
+            $user['UID'],
+        ]
+    );
     if (empty($types)) {
-        return sql_select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0');
+        return DB::select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0');
     }
     return $types;
 }

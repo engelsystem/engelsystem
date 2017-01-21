@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -17,7 +19,7 @@ function admin_active()
 
     $msg = '';
     $search = '';
-    $forced_count = sql_num_query('SELECT * FROM `User` WHERE `force_active`=1');
+    $forced_count = count(DB::select('SELECT `UID` FROM `User` WHERE `force_active`=1'));
     $count = $forced_count;
     $limit = '';
     $set_active = '';
@@ -49,22 +51,31 @@ function admin_active()
             $limit = ' LIMIT ' . $count;
         }
         if (isset($_REQUEST['ack'])) {
-            sql_query('UPDATE `User` SET `Aktiv` = 0 WHERE `Tshirt` = 0');
-            $users = sql_select("
-                  SELECT `User`.*, COUNT(`ShiftEntry`.`id`) as `shift_count`, $shift_sum_formula as `shift_length` 
-                  FROM `User` 
-                  LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
-                  LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` 
-                  WHERE `User`.`Gekommen` = 1 AND `User`.`force_active`=0 
-                  GROUP BY `User`.`UID` 
-                  ORDER BY `force_active` DESC, `shift_length` DESC" . $limit
-            );
+            DB::update('UPDATE `User` SET `Aktiv` = 0 WHERE `Tshirt` = 0');
+            $users = DB::select(sprintf(
+                '
+                  SELECT
+                      `User`.*,
+                      COUNT(`ShiftEntry`.`id`) AS `shift_count`,
+                      %s AS `shift_length`
+                  FROM `User`
+                  LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
+                  LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID`
+                  WHERE `User`.`Gekommen` = 1
+                  AND `User`.`force_active`=0
+                  GROUP BY `User`.`UID`
+                  ORDER BY `force_active` DESC, `shift_length` DESC
+                  %s
+                ',
+                $shift_sum_formula,
+                $limit
+            ));
             $user_nicks = [];
             foreach ($users as $usr) {
-                sql_query('UPDATE `User` SET `Aktiv` = 1 WHERE `UID`=\'' . sql_escape($usr['UID']) . '\'');
+                DB::update('UPDATE `User` SET `Aktiv` = 1 WHERE `UID`=?', [$usr['UID']]);
                 $user_nicks[] = User_Nick_render($usr);
             }
-            sql_query('UPDATE `User` SET `Aktiv`=1 WHERE `force_active`=TRUE');
+            DB::update('UPDATE `User` SET `Aktiv`=1 WHERE `force_active`=TRUE');
             engelsystem_log('These angels are active now: ' . join(', ', $user_nicks));
 
             $limit = '';
@@ -82,7 +93,7 @@ function admin_active()
         $user_id = $_REQUEST['active'];
         $user_source = User($user_id);
         if ($user_source != null) {
-            sql_query('UPDATE `User` SET `Aktiv`=1 WHERE `UID`=\'' . sql_escape($user_id) . '\' LIMIT 1');
+            DB::update('UPDATE `User` SET `Aktiv`=1 WHERE `UID`=? LIMIT 1', [$user_id]);
             engelsystem_log('User ' . User_Nick_render($user_source) . ' is active now.');
             $msg = success(_('Angel has been marked as active.'), true);
         } else {
@@ -92,7 +103,7 @@ function admin_active()
         $user_id = $_REQUEST['not_active'];
         $user_source = User($user_id);
         if ($user_source != null) {
-            sql_query("UPDATE `User` SET `Aktiv`=0 WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
+            DB::update('UPDATE `User` SET `Aktiv`=0 WHERE `UID`=? LIMIT 1', [$user_id]);
             engelsystem_log('User ' . User_Nick_render($user_source) . ' is NOT active now.');
             $msg = success(_('Angel has been marked as not active.'), true);
         } else {
@@ -102,7 +113,7 @@ function admin_active()
         $user_id = $_REQUEST['tshirt'];
         $user_source = User($user_id);
         if ($user_source != null) {
-            sql_query("UPDATE `User` SET `Tshirt`=1 WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
+            DB::update('UPDATE `User` SET `Tshirt`=1 WHERE `UID`=? LIMIT 1', [$user_id]);
             engelsystem_log('User ' . User_Nick_render($user_source) . ' has tshirt now.');
             $msg = success(_('Angel has got a t-shirt.'), true);
         } else {
@@ -112,7 +123,7 @@ function admin_active()
         $user_id = $_REQUEST['not_tshirt'];
         $user_source = User($user_id);
         if ($user_source != null) {
-            sql_query("UPDATE `User` SET `Tshirt`=0 WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
+            DB::update('UPDATE `User` SET `Tshirt`=0 WHERE `UID`=? LIMIT 1', [$user_id]);
             engelsystem_log('User ' . User_Nick_render($user_source) . ' has NO tshirt.');
             $msg = success(_('Angel has got no t-shirt.'), true);
         } else {
@@ -120,18 +131,22 @@ function admin_active()
         }
     }
 
-    $users = sql_select("
-      SELECT
-          `User`.*,
-          COUNT(`ShiftEntry`.`id`) AS `shift_count`,
-          ${shift_sum_formula} AS `shift_length`
-      FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
-      LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` "
-        . ($show_all_shifts ? "" : "AND (`Shifts`.`end` < " . time() . " OR `Shifts`.`end` IS NULL)") . "
-      WHERE `User`.`Gekommen` = 1
-      GROUP BY `User`.`UID` 
-      ORDER BY `force_active` DESC, `shift_length` DESC" . $limit
-    );
+    $users = DB::select(sprintf('
+            SELECT
+                `User`.*,
+                COUNT(`ShiftEntry`.`id`) AS `shift_count`,
+                %s AS `shift_length`
+            FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
+            LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` '
+        . ($show_all_shifts ? '' : 'AND (`Shifts`.`end` < ' . time() . " OR `Shifts`.`end` IS NULL)") . '
+            WHERE `User`.`Gekommen` = 1
+            GROUP BY `User`.`UID` 
+            ORDER BY `force_active` DESC, `shift_length` DESC
+            %s
+        ',
+        $shift_sum_formula,
+        $limit
+    ));
     $matched_users = [];
     if ($search == '') {
         $tokens = [];
@@ -194,21 +209,36 @@ function admin_active()
     $shirt_statistics = [];
     foreach (array_keys($tshirt_sizes) as $size) {
         if ($size != '') {
+            $sc = DB::select(
+                'SELECT count(*) FROM `User` WHERE `Size`=? AND `Gekommen`=1',
+                [$size]
+            );
+            $sc = array_shift($sc);
+            $sc = array_shift($sc);
+
+            $gc = DB::select(
+                'SELECT count(*) FROM `User` WHERE `Size`=? AND `Tshirt`=1',
+                [$size]
+            );
+            $gc = array_shift($gc);
+            $gc = array_shift($gc);
+
             $shirt_statistics[] = [
                 'size'   => $size,
-                'needed' => sql_select_single_cell(
-                    "SELECT count(*) FROM `User` WHERE `Size`='" . sql_escape($size) . "' AND `Gekommen`=1"
-                ),
-                'given'  => sql_select_single_cell(
-                    "SELECT count(*) FROM `User` WHERE `Size`='" . sql_escape($size) . "' AND `Tshirt`=1"
-                )
+                'needed' => (int)$sc,
+                'given'  => (int)$gc
             ];
         }
     }
+
+    $uc = DB::select('SELECT count(*) FROM `User` WHERE `Tshirt`=1');
+    $uc = array_shift($uc);
+    $uc = array_shift($uc);
+
     $shirt_statistics[] = [
         'size'   => '<b>' . _('Sum') . '</b>',
         'needed' => '<b>' . User_arrived_count() . '</b>',
-        'given'  => '<b>' . sql_select_single_cell('SELECT count(*) FROM `User` WHERE `Tshirt`=1') . '</b>'
+        'given'  => '<b>' . (int)$uc . '</b>'
     ];
 
     return page_with_title(admin_active_title(), [

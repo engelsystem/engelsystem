@@ -153,9 +153,6 @@ function user_angeltype_confirm_controller()
 
     if (isset($_REQUEST['confirmed'])) {
         $result = UserAngelType_confirm($user_angeltype['id'], $user);
-        if ($result === false) {
-            engelsystem_error('Unable to confirm user angeltype.');
-        }
 
         engelsystem_log(sprintf(
             '%s confirmed for angeltype %s',

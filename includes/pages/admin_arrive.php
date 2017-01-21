@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -23,12 +25,12 @@ function admin_arrive()
         $user_id = $_REQUEST['reset'];
         $user_source = User($user_id);
         if ($user_source != null) {
-            sql_query("
+            DB::update('
                 UPDATE `User`
                 SET `Gekommen`=0, `arrival_date` = NULL
-                WHERE `UID`='" . sql_escape($user_id) . "'
+                WHERE `UID`=?
                 LIMIT 1
-            ");
+            ', [$user_id]);
             engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source));
             success(_('Reset done. Angel has not arrived.'));
             redirect(user_link($user_source));
@@ -39,12 +41,12 @@ function admin_arrive()
         $user_id = $_REQUEST['arrived'];
         $user_source = User($user_id);
         if ($user_source != null) {
-            sql_query("
+            DB::update('
                 UPDATE `User`
-                SET `Gekommen`=1, `arrival_date`='" . time() . "'
-                WHERE `UID`='" . sql_escape($user_id) . "'
+                SET `Gekommen`=1, `arrival_date`=?
+                WHERE `UID`=?
                 LIMIT 1
-            ");
+            ', [time(), $user_id]);
             engelsystem_log('User set has arrived: ' . User_Nick_render($user_source));
             success(_('Angel has been marked as arrived.'));
             redirect(user_link($user_source));
@@ -53,7 +55,7 @@ function admin_arrive()
         }
     }
 
-    $users = sql_select('SELECT * FROM `User` ORDER BY `Nick`');
+    $users = DB::select('SELECT * FROM `User` ORDER BY `Nick`');
     $arrival_count_at_day = [];
     $planned_arrival_count_at_day = [];
     $planned_departure_count_at_day = [];

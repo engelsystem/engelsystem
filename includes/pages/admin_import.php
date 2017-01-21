@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -252,10 +254,10 @@ function admin_import()
                 if ($result === false) {
                     engelsystem_error('Unable to create room.');
                 }
-                $rooms_import[trim($room)] = sql_id();
+                $rooms_import[trim($room)] = $result;
             }
             foreach ($rooms_deleted as $room) {
-                sql_query("DELETE FROM `Room` WHERE `Name`='" . sql_escape($room) . "' LIMIT 1");
+                DB::delete('DELETE FROM `Room` WHERE `Name`=? LIMIT 1', [$room]);
             }
 
             list($events_new, $events_updated, $events_deleted) = prepare_events(
@@ -317,11 +319,11 @@ function prepare_rooms($file)
     $data = read_xml($file);
 
     // Load rooms from db for compare with input
-    $rooms = sql_select('SELECT * FROM `Room` WHERE `FromPentabarf`=\'Y\'');
+    $rooms = DB::select('SELECT `Name`, `RID` FROM `Room` WHERE `FromPentabarf`=\'Y\'');
     $rooms_db = [];
     $rooms_import = [];
     foreach ($rooms as $room) {
-        $rooms_db[] = (string)$room['Name'];
+        $rooms_db[] = $room['Name'];
         $rooms_import[$room['Name']] = $room['RID'];
     }
 
@@ -356,7 +358,7 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
     global $rooms_import;
     $data = read_xml($file);
 
-    $rooms = sql_select('SELECT * FROM `Room`');
+    $rooms = Rooms(true);
     $rooms_db = [];
     foreach ($rooms as $room) {
         $rooms_db[$room['Name']] = $room['RID'];
@@ -378,7 +380,7 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
         ];
     }
 
-    $shifts = sql_select('SELECT * FROM `Shifts` WHERE `PSID` IS NOT NULL ORDER BY `start`');
+    $shifts = DB::select('SELECT * FROM `Shifts` WHERE `PSID` IS NOT NULL ORDER BY `start`');
     $shifts_db = [];
     foreach ($shifts as $shift) {
         $shifts_db[$shift['PSID']] = $shift;

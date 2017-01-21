@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * Publically available page to feed the news to feedreaders
  */
@@ -20,12 +22,12 @@ function user_atom()
         engelsystem_error('No privilege for atom.');
     }
 
-    $news = sql_select("
+    $news = DB::select('
         SELECT *
         FROM `News` 
-        " . (empty($_REQUEST['meetings']) ? '' : 'WHERE `Treffen` = 1 ') . "
+        ' . (empty($_REQUEST['meetings']) ? '' : 'WHERE `Treffen` = 1 ') . '
         ORDER BY `ID`
-        DESC LIMIT " . (int)$display_news
+        DESC LIMIT ' . (int)$display_news
     );
 
     $output = make_atom_entries_from_news($news);

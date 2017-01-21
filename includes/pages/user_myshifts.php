@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -22,14 +24,15 @@ function user_myshifts()
         isset($_REQUEST['id'])
         && in_array('user_shifts_admin', $privileges)
         && preg_match('/^[0-9]{1,}$/', $_REQUEST['id'])
-        && sql_num_query("SELECT * FROM `User` WHERE `UID`='" . sql_escape($_REQUEST['id']) . "'") > 0
+        && count(DB::select('SELECT `UID` FROM `User` WHERE `UID`=?', [$_REQUEST['id']])) > 0
     ) {
         $user_id = $_REQUEST['id'];
     } else {
         $user_id = $user['UID'];
     }
 
-    list($shifts_user) = sql_select("SELECT * FROM `User` WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
+    $shifts_user = DB::select('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
+    $shifts_user = array_shift($shifts_user);
 
     if (isset($_REQUEST['reset'])) {
         if ($_REQUEST['reset'] == 'ack') {
@@ -46,24 +49,32 @@ function user_myshifts()
         ]);
     } elseif (isset($_REQUEST['edit']) && preg_match('/^[0-9]*$/', $_REQUEST['edit'])) {
         $user_id = $_REQUEST['edit'];
-        $shift = sql_select("SELECT
-        `ShiftEntry`.`freeloaded`,
-        `ShiftEntry`.`freeload_comment`,
-        `ShiftEntry`.`Comment`,
-        `ShiftEntry`.`UID`,
-        `ShiftTypes`.`name`,
-        `Shifts`.*,
-        `Room`.`Name`,
-        `AngelTypes`.`name` AS `angel_type`
-        FROM `ShiftEntry`
-        JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`)
-        JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
-        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`)
-        WHERE `ShiftEntry`.`id`='" . sql_escape($user_id) . "'
-        AND `UID`='" . sql_escape($shifts_user['UID']) . "' LIMIT 1");
+        $shift = DB::select('
+                SELECT
+                    `ShiftEntry`.`freeloaded`,
+                    `ShiftEntry`.`freeload_comment`,
+                    `ShiftEntry`.`Comment`,
+                    `ShiftEntry`.`UID`,
+                    `ShiftTypes`.`name`,
+                    `Shifts`.*,
+                    `Room`.`Name`,
+                    `AngelTypes`.`name` AS `angel_type`
+                FROM `ShiftEntry`
+                JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`)
+                JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
+                JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
+                JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`)
+                WHERE `ShiftEntry`.`id`=?
+                AND `UID`=?
+                LIMIT 1
+            ',
+            [
+                $user_id,
+                $shifts_user['UID'],
+            ]
+        );
         if (count($shift) > 0) {
-            $shift = $shift[0];
+            $shift = array_shift($shift);
             $freeloaded = $shift['freeloaded'];
             $freeload_comment = $shift['freeload_comment'];
 
@@ -120,13 +131,19 @@ function user_myshifts()
         }
     } elseif (isset($_REQUEST['cancel']) && preg_match('/^[0-9]*$/', $_REQUEST['cancel'])) {
         $user_id = $_REQUEST['cancel'];
-        $shift = sql_select("
-        SELECT *
-        FROM `Shifts` 
-        INNER JOIN `ShiftEntry` USING (`SID`) 
-        WHERE `ShiftEntry`.`id`='" . sql_escape($user_id) . "' AND `UID`='" . sql_escape($shifts_user['UID']) . "'");
+        $shift = DB::select('
+                SELECT *
+                FROM `Shifts` 
+                INNER JOIN `ShiftEntry` USING (`SID`) 
+                WHERE `ShiftEntry`.`id`=? AND `UID`=?
+            ',
+            [
+                $user_id,
+                $shifts_user['UID'],
+            ]
+        );
         if (count($shift) > 0) {
-            $shift = $shift[0];
+            $shift = array_shift($shift);
             if (($shift['start'] > time() + $last_unsubscribe * 3600) || in_array('user_shifts_admin', $privileges)) {
                 $result = ShiftEntry_delete($user_id);
                 if ($result === false) {

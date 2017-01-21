@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * @return string
  */
@@ -37,8 +39,8 @@ function guest_register()
 
     $msg = '';
     $nick = '';
-    $lastname = '';
-    $prename = '';
+    $lastName = '';
+    $preName = '';
     $age = '';
     $tel = '';
     $dect = '';
@@ -68,7 +70,7 @@ function guest_register()
 
         if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 1) {
             $nick = User_validate_Nick($_REQUEST['nick']);
-            if (sql_num_query("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "' LIMIT 1") > 0) {
+            if (count(DB::select('SELECT `UID` FROM `User` WHERE `Nick`=? LIMIT 1', [$nick])) > 0) {
                 $valid = false;
                 $msg .= error(sprintf(_('Your nick &quot;%s&quot; already exists.'), $nick), true);
             }
@@ -148,10 +150,10 @@ function guest_register()
 
         // Trivia
         if (isset($_REQUEST['lastname'])) {
-            $lastname = strip_request_item('lastname');
+            $lastName = strip_request_item('lastname');
         }
         if (isset($_REQUEST['prename'])) {
-            $prename = strip_request_item('prename');
+            $preName = strip_request_item('prename');
         }
         if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age'])) {
             $age = strip_request_item('age');
@@ -173,38 +175,65 @@ function guest_register()
         }
 
         if ($valid) {
-            sql_query("
-          INSERT INTO `User` SET 
-          `color`='" . sql_escape($default_theme) . "', 
-          `Nick`='" . sql_escape($nick) . "', 
-          `Vorname`='" . sql_escape($prename) . "', 
-          `Name`='" . sql_escape($lastname) . "', 
-          `Alter`='" . sql_escape($age) . "', 
-          `Telefon`='" . sql_escape($tel) . "', 
-          `DECT`='" . sql_escape($dect) . "', 
-          `Handy`='" . sql_escape($mobile) . "', 
-          `email`='" . sql_escape($mail) . "', 
-          `email_shiftinfo`=" . sql_bool($email_shiftinfo) . ", 
-          `email_by_human_allowed`=" . sql_bool($email_by_human_allowed) . ",
-          `jabber`='" . sql_escape($jabber) . "',
-          `Size`='" . sql_escape($tshirt_size) . "', 
-          `Passwort`='" . sql_escape($password_hash) . "', 
-          `kommentar`='" . sql_escape($comment) . "', 
-          `Hometown`='" . sql_escape($hometown) . "', 
-          `CreateDate`=NOW(), 
-          `Sprache`='" . sql_escape($_SESSION["locale"]) . "',
-          `arrival_date`=NULL,
-          `planned_arrival_date`='" . sql_escape($planned_arrival_date) . "'");
+            DB::insert('
+                    INSERT INTO `User` (
+                        `color`,
+                        `Nick`,
+                        `Vorname`,
+                        `Name`,
+                        `Alter`,
+                        `Telefon`,
+                        `DECT`,
+                        `Handy`,
+                        `email`,
+                        `email_shiftinfo`,
+                        `email_by_human_allowed`,
+                        `jabber`,
+                        `Size`,
+                        `Passwort`,
+                        `kommentar`,
+                        `Hometown`,
+                        `CreateDate`,
+                        `Sprache`,
+                        `arrival_date`,
+                        `planned_arrival_date`
+                    )
+                    VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NULL, ?)
+                ',
+                [
+                    $default_theme,
+                    $nick,
+                    $preName,
+                    $lastName,
+                    $age,
+                    $tel,
+                    $dect,
+                    $mobile,
+                    $mail,
+                    (bool)$email_shiftinfo,
+                    (bool)$email_by_human_allowed,
+                    $jabber,
+                    $tshirt_size,
+                    $password_hash,
+                    $comment,
+                    $hometown,
+                    $_SESSION['locale'],
+                    $planned_arrival_date,
+                ]
+            );
 
             // Assign user-group and set password
-            $user_id = sql_id();
-            sql_query("INSERT INTO `UserGroups` SET `uid`='" . sql_escape($user_id) . "', `group_id`=-2");
+            $user_id = DB::getPdo()->lastInsertId();
+            DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -2)', [$user_id]);
             set_password($user_id, $_REQUEST['password']);
 
             // Assign angel-types
             $user_angel_types_info = [];
             foreach ($selected_angel_types as $selected_angel_type_id) {
-                sql_query("INSERT INTO `UserAngelTypes` SET `user_id`='" . sql_escape($user_id) . "', `angeltype_id`='" . sql_escape($selected_angel_type_id) . "'");
+                DB::insert(
+                    'INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`) VALUES (?, ?)',
+                    [$user_id, $selected_angel_type_id]
+                );
                 $user_angel_types_info[] = $angel_types[$selected_angel_type_id];
             }
 
@@ -316,10 +345,10 @@ function guest_register()
                     form_text('jabber', _('Jabber'), $jabber),
                     div('row', [
                         div('col-sm-6', [
-                            form_text('prename', _('First name'), $prename)
+                            form_text('prename', _('First name'), $preName)
                         ]),
                         div('col-sm-6', [
-                            form_text('lastname', _('Last name'), $lastname)
+                            form_text('lastname', _('Last name'), $lastName)
                         ])
                     ]),
                     div('row', [
@@ -361,7 +390,7 @@ function guest_login()
     if (isset($_REQUEST['submit'])) {
         if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 0) {
             $nick = User_validate_Nick($_REQUEST['nick']);
-            $login_user = sql_select("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "'");
+            $login_user = DB::select('SELECT * FROM `User` WHERE `Nick`=?', [$nick]);
             if (count($login_user) > 0) {
                 $login_user = $login_user[0];
                 if (isset($_REQUEST['password'])) {
