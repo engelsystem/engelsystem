@@ -37,7 +37,8 @@ function admin_questions() {
           'question' => str_replace("\n", "<br />", $question['Question']),
           'answer' => form([
               form_textarea('answer', '', ''),
-              form_submit('submit', _("Save")) 
+              form_checkbox('showGlobal', _("Show answer to all angels"), false),
+              form_submit('submit', _("Save"))
           ], page_link_to('admin_questions') . '&action=answer&id=' . $question['QID']),
           'actions' => button(page_link_to("admin_questions") . '&action=delete&id=' . $question['QID'], _("delete"), 'btn-xs') 
       ];
@@ -88,7 +89,7 @@ function admin_questions() {
           $answer = trim(preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['answer'])));
           
           if ($answer != "") {
-            sql_query("UPDATE `Questions` SET `AID`='" . sql_escape($user['UID']) . "', `Answer`='" . sql_escape($answer) . "' WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
+            sql_query("UPDATE `Questions` SET `AID`='" . sql_escape($user['UID']) . "', `Answer`='" . sql_escape($answer) . "', `showGlobal`=" . sql_bool(isset($_REQUEST['showGlobal']) && $_REQUEST['showGlobal'] == 'checked') . " WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
             engelsystem_log("Question " . $question[0]['Question'] . " answered: " . $answer);
             redirect(page_link_to("admin_questions"));
           } else {

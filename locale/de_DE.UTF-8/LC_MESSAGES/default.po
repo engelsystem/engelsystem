@@ -1737,8 +1737,8 @@ msgid "Incomplete call, missing Question ID."
 msgstr "Unvollständiger Aufruf, fehlende Fragen ID."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_questions.php:50
-msgid "No question found."
-msgstr "Keine Frage gefunden."
+msgid "No question found or permissions denied."
+msgstr "Keine Frage gefunden oder keine Berechtigung."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:4
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:332
@@ -2629,6 +2629,9 @@ msgstr "Bitte gib Deine Handynumber ein."
 
 msgid "Please enter your hometown."
 msgstr "Bitte gib Deine Universität ein."
+
+msgid "Show answer to all angels"
+msgstr "Zeige Antwort allen Engeln"
 
 #~ msgid "Please enter your planned date of arrival."
 #~ msgstr "Bitte gib Dein geplantes Ankunftsdatum an."

@@ -1,0 +1,2 @@
+ALTER TABLE Questions
+ADD COLUMN showGlobal BOOLEAN;

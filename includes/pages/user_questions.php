@@ -10,7 +10,7 @@ function user_questions() {
   if (! isset($_REQUEST['action'])) {
     $open_questions = sql_select("SELECT * FROM `Questions` WHERE `AID` IS NULL AND `UID`='" . sql_escape($user['UID']) . "'");
     
-    $answered_questions = sql_select("SELECT * FROM `Questions` WHERE NOT `AID` IS NULL AND `UID`='" . sql_escape($user['UID']) . "'");
+    $answered_questions = sql_select("SELECT * FROM `Questions` WHERE NOT `AID` IS NULL AND (`showGlobal` = 1 OR `UID`='" . sql_escape($user['UID']) . "')");
     foreach ($answered_questions as &$question) {
       $answer_user_source = User($question['AID']);
       $question['answer_user'] = User_Nick_render($answer_user_source);
@@ -47,7 +47,7 @@ function user_questions() {
           redirect(page_link_to("user_questions"));
         } else {
           return page_with_title(questions_title(), [
-              error(_("No question found."), true) 
+              error(_("No question found or permissions denied."), true) 
           ]);
         }
         break;
