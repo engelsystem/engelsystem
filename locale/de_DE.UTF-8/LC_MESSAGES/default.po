@@ -2589,7 +2589,7 @@ msgid ""
 "badge and/or tell them that you arrived already."
 msgstr ""
 "Du bist nicht als bestätigt markiert. Bitte melde dich bei der Helfikaverwaltung "
-"unter helfika@zapf.in-berlin.de oder jemand von der Orga vor Ort an deiner Uni."
+"unter helfika@zapf.in-berlin.de oder jemanden von der Orga/Fachschaft an deiner Uni."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:478
 msgid "You need to specify a tshirt size in your settings!"
