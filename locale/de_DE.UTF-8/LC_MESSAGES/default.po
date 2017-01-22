@@ -2615,6 +2615,21 @@ msgstr ""
 "Du hast keinen Zugriff auf diese Seite. Registriere Dich und logge Dich "
 "bitte ein, um Zugriff zu erhalten!"
 
+msgid "Mobile (used only for important problems)"
+msgstr "Handy (wird nur für wichtige Anrufe verwendet)"
+
+msgid "Please enter your last name."
+msgstr "Bitte gib Deinen Nachnamen ein."
+
+msgid "Please enter your first name."
+msgstr "Bitte gib Deinen Vornamen ein."
+
+msgid "Please enter your mobile number."
+msgstr "Bitte gib Deine Handynumber ein."
+
+msgid "Please enter your hometown."
+msgstr "Bitte gib Deine Universität ein."
+
 #~ msgid "Please enter your planned date of arrival."
 #~ msgstr "Bitte gib Dein geplantes Ankunftsdatum an."
 
