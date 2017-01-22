@@ -116,8 +116,7 @@ function admin_questions()
                         ));
 
                     if ($answer != '') {
-                        DB::update(
-                            '
+                        DB::update('
                                 UPDATE `Questions`
                                 SET `AID`=?, `Answer`=?
                                 WHERE `QID`=?

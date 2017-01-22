@@ -26,7 +26,7 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
 {
     DB::update('
       UPDATE `ShiftTypes` SET
-      `name`=?, 
+      `name`=?,
       `angeltype_id`=?,
       `description`=?
       WHERE `id`=?

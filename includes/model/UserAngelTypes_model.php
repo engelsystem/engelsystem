@@ -16,7 +16,7 @@ use Engelsystem\Database\DB;
 function UserAngelType_exists($user, $angeltype)
 {
     return count(DB::select('
-      SELECT `id` 
+      SELECT `id`
       FROM `UserAngelTypes`
       WHERE `UserAngelTypes`.`user_id`=?
       AND `angeltype_id`=?
@@ -55,10 +55,10 @@ function User_angeltypes($user)
 function User_unconfirmed_AngelTypes($user)
 {
     $result = DB::select('
-        SELECT 
-          `UserAngelTypes`.*, 
-          `AngelTypes`.`name`, 
-          count(`UnconfirmedMembers`.`user_id`) AS `count` 
+        SELECT
+          `UserAngelTypes`.*,
+          `AngelTypes`.`name`,
+          count(`UnconfirmedMembers`.`user_id`) AS `count`
         FROM `UserAngelTypes`
         JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id`=`AngelTypes`.`id`
         JOIN `UserAngelTypes` AS `UnconfirmedMembers` ON `UserAngelTypes`.`angeltype_id`=`UnconfirmedMembers`.`angeltype_id`
@@ -90,8 +90,8 @@ function User_is_AngelType_supporter(&$user, $angeltype)
         $user['privileges'] = privileges_for_user($user['UID']);
     }
     return (count(DB::select('
-                      SELECT `id` 
-                      FROM `UserAngelTypes` 
+                      SELECT `id`
+                      FROM `UserAngelTypes`
                       WHERE `user_id`=?
                       AND `angeltype_id`=?
                       AND `supporter`=TRUE
@@ -201,7 +201,7 @@ function UserAngelType_confirm($user_angeltype_id, $confirm_user)
 function UserAngelType_delete($user_angeltype)
 {
     return (bool)DB::delete('
-      DELETE FROM `UserAngelTypes` 
+      DELETE FROM `UserAngelTypes`
       WHERE `id`=?
       LIMIT 1', [$user_angeltype['id']]);
 }

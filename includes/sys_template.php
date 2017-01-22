@@ -186,10 +186,10 @@ function toolbar_popover($glyphicon, $label, $content, $class = '')
           <script type="text/javascript">
           $(function(){
               $("#' . $dom_id . '").popover({
-                  trigger: "focus", 
-                  html: true, 
-                  content: "' . addslashes(join('', $content)) . '", 
-                  placement: "bottom", 
+                  trigger: "focus",
+                  html: true,
+                  content: "' . addslashes(join('', $content)) . '",
+                  placement: "bottom",
                   container: "#navbar-collapse-1"
               })
           });

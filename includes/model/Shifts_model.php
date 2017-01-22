@@ -35,9 +35,9 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       AND `NeededAngelTypes`.`angel_type_id` IN (' . implode(',', $shiftsFilter->getTypes()) . ')
       AND `NeededAngelTypes`.`count` > 0
       AND `Shifts`.`PSID` IS NULL
-      
+
       UNION
-      
+
       SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` AS `room_name`
       FROM `Shifts`
       JOIN `Room` USING (`RID`)
@@ -48,7 +48,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       AND `NeededAngelTypes`.`angel_type_id` IN (' . implode(',', $shiftsFilter->getTypes()) . ')
       AND `NeededAngelTypes`.`count` > 0
       AND NOT `Shifts`.`PSID` IS NULL) AS tmp_shifts
-          
+
       ORDER BY `start`';
     $result = DB::select($sql);
     if (DB::getStm()->errorCode() != '00000') {
@@ -122,9 +122,9 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
           WHERE `Shifts`.`SID`=?
           AND `AngelTypes`.`id`=?
           AND `Shifts`.`PSID` IS NULL
-              
+
           UNION
-              
+
           SELECT
                 `NeededAngelTypes`.*,
                 `Shifts`.`SID`,
@@ -532,12 +532,12 @@ function Shifts_by_user($user, $include_freeload_comments = false)
           SELECT `ShiftTypes`.`id` AS `shifttype_id`, `ShiftTypes`.`name`,
           `ShiftEntry`.`id`, `ShiftEntry`.`SID`, `ShiftEntry`.`TID`, `ShiftEntry`.`UID`, `ShiftEntry`.`freeloaded`, `ShiftEntry`.`Comment`,
           ' . ($include_freeload_comments ? '`ShiftEntry`.`freeload_comment`, ' : '') . '
-          `Shifts`.*, `Room`.* 
-          FROM `ShiftEntry` 
-          JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`) 
+          `Shifts`.*, `Room`.*
+          FROM `ShiftEntry`
+          JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
           JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-          JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`) 
-          WHERE `UID` = ? 
+          JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`)
+          WHERE `UID` = ?
           ORDER BY `start`
       ',
         [
@@ -560,7 +560,7 @@ function Shift($shift_id)
 {
     $shifts_source = DB::select('
       SELECT `Shifts`.*, `ShiftTypes`.`name`
-      FROM `Shifts` 
+      FROM `Shifts`
       JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
       WHERE `SID`=?', [$shift_id]);
 
@@ -603,7 +603,7 @@ function Shift($shift_id)
 function Shifts()
 {
     $shifts_source = DB::select('
-        SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`RID`, `Room`.`Name` AS `room_name` 
+        SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`RID`, `Room`.`Name` AS `room_name`
         FROM `Shifts`
         JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
         JOIN `Room` ON `Room`.`RID` = `Shifts`.`RID`

@@ -486,8 +486,7 @@ function User_by_password_recovery_token($token)
 function User_reset_api_key(&$user, $log = true)
 {
     $user['api_key'] = md5($user['Nick'] . time() . rand());
-    DB::update(
-        '
+    DB::update('
             UPDATE `User`
             SET `api_key`=?
             WHERE `UID`=?

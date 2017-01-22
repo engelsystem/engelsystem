@@ -247,7 +247,7 @@ function admin_user()
                     $force_active = $_REQUEST['force_active'];
                 }
                 $sql = '
-                    UPDATE `User` SET 
+                    UPDATE `User` SET
                       `Nick` = ?,
                       `Name` = ?,
                       `Vorname` = ?,

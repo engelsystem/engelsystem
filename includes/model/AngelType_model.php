@@ -82,7 +82,7 @@ function AngelType_contact_info($angeltype)
 function AngelType_delete($angeltype)
 {
     $result = DB::delete('
-      DELETE FROM `AngelTypes` 
+      DELETE FROM `AngelTypes`
       WHERE `id`=?
       LIMIT 1
     ', [$angeltype['id']]);
@@ -102,8 +102,8 @@ function AngelType_delete($angeltype)
 function AngelType_update($angeltype)
 {
     $result = DB::update('
-          UPDATE `AngelTypes` SET 
-          `name` = ?, 
+          UPDATE `AngelTypes` SET
+          `name` = ?,
           `restricted` = ?,
           `description` = ?,
           `requires_driver_license` = ?,
@@ -201,7 +201,7 @@ function AngelType_validate_name($name, $angeltype)
     if ($angeltype != null && isset($angeltype['id'])) {
         $valid = (count(DB::select('
             SELECT `id`
-            FROM `AngelTypes` 
+            FROM `AngelTypes`
             WHERE `name`=?
             AND NOT `id`=?
             LIMIT 1
@@ -209,8 +209,8 @@ function AngelType_validate_name($name, $angeltype)
         return new ValidationResult($valid, $name);
     }
     $valid = (count(DB::select('
-        SELECT `id` 
-        FROM `AngelTypes` 
+        SELECT `id`
+        FROM `AngelTypes`
         WHERE `name`=?
         LIMIT 1', [$name])) == 0);
     return new ValidationResult($valid, $name);
@@ -225,12 +225,12 @@ function AngelType_validate_name($name, $angeltype)
 function AngelTypes_with_user($user)
 {
     $result = DB::select('
-      SELECT `AngelTypes`.*, 
+      SELECT `AngelTypes`.*,
       `UserAngelTypes`.`id` AS `user_angeltype_id`,
       `UserAngelTypes`.`confirm_user_id`,
       `UserAngelTypes`.`supporter`
-      FROM `AngelTypes` 
-      LEFT JOIN `UserAngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id` 
+      FROM `AngelTypes`
+      LEFT JOIN `UserAngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id`
       AND `UserAngelTypes`.`user_id` = ?
       ORDER BY `name`', [$user['UID']]);
 
@@ -248,8 +248,8 @@ function AngelTypes_with_user($user)
 function AngelTypes()
 {
     $result = DB::select('
-      SELECT * 
-      FROM `AngelTypes` 
+      SELECT *
+      FROM `AngelTypes`
       ORDER BY `name`');
 
     if (DB::getStm()->errorCode() != '00000') {

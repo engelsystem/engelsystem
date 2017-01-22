@@ -24,7 +24,7 @@ function user_atom()
 
     $news = DB::select('
         SELECT *
-        FROM `News` 
+        FROM `News`
         ' . (empty($_REQUEST['meetings']) ? '' : 'WHERE `Treffen` = 1 ') . '
         ORDER BY `ID`
         DESC LIMIT ' . (int)config('display_news')

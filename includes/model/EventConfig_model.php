@@ -70,7 +70,7 @@ function EventConfig_update(
           `buildup_start_date` = ?,
           `event_start_date` = ?,
           `event_end_date` = ?,
-          `teardown_end_date` = ?,       
+          `teardown_end_date` = ?,
           `event_welcome_msg` = ?
         ',
         [

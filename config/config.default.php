@@ -59,7 +59,7 @@ return [
     // multiply 'night shifts' and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
     'shift_sum_formula'       => '
         SUM(
-            (1 + 
+            (1 +
                 (
                   (HOUR(FROM_UNIXTIME(`Shifts`.`end`)) > 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) < 6)
                   OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) > 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`start`)) < 6)

@@ -132,8 +132,8 @@ function user_myshifts()
         $user_id = $_REQUEST['cancel'];
         $shift = DB::select('
                 SELECT *
-                FROM `Shifts` 
-                INNER JOIN `ShiftEntry` USING (`SID`) 
+                FROM `Shifts`
+                INNER JOIN `ShiftEntry` USING (`SID`)
                 WHERE `ShiftEntry`.`id`=? AND `UID`=?
             ',
             [

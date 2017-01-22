@@ -53,8 +53,7 @@ function admin_active()
         }
         if (isset($_REQUEST['ack'])) {
             DB::update('UPDATE `User` SET `Aktiv` = 0 WHERE `Tshirt` = 0');
-            $users = DB::select(sprintf(
-                '
+            $users = DB::select(sprintf('
                   SELECT
                       `User`.*,
                       COUNT(`ShiftEntry`.`id`) AS `shift_count`,
@@ -137,11 +136,11 @@ function admin_active()
                 `User`.*,
                 COUNT(`ShiftEntry`.`id`) AS `shift_count`,
                 %s AS `shift_length`
-            FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
+            FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
             LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` '
         . ($show_all_shifts ? '' : 'AND (`Shifts`.`end` < ' . time() . " OR `Shifts`.`end` IS NULL)") . '
             WHERE `User`.`Gekommen` = 1
-            GROUP BY `User`.`UID` 
+            GROUP BY `User`.`UID`
             ORDER BY `force_active` DESC, `shift_length` DESC
             %s
         ',

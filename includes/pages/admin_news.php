@@ -46,7 +46,7 @@ function admin_news()
 
         case 'save':
             DB::update('
-                UPDATE `News` SET 
+                UPDATE `News` SET
                     `Datum`=?,
                     `Betreff`=?,
                     `Text`=?,

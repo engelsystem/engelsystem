@@ -44,10 +44,10 @@ function admin_free()
     }
 
     $users = DB::select('
-          SELECT `User`.* 
-          FROM `User` 
+          SELECT `User`.*
+          FROM `User`
           ' . $angelTypeSearch . '
-          LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID` 
+          LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
           LEFT JOIN `Shifts`
               ON (
                   `ShiftEntry`.`SID` = `Shifts`.`SID`
@@ -55,8 +55,8 @@ function admin_free()
                   AND `Shifts`.`end` > ?
               )
           WHERE `User`.`Gekommen` = 1
-          AND `Shifts`.`SID` IS NULL 
-          GROUP BY `User`.`UID` 
+          AND `Shifts`.`SID` IS NULL
+          GROUP BY `User`.`UID`
           ORDER BY `Nick`
         ',
         [
