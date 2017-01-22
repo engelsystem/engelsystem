@@ -11,7 +11,7 @@ use Engelsystem\ShiftSignupState;
 function Shifts_by_room($room)
 {
     $result = DB::select('SELECT * FROM `Shifts` WHERE `RID`=? ORDER BY `start`', [$room['RID']]);
-    if (empty($result)) {
+    if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error('Unable to load shifts.');
     }
     return $result;
@@ -23,7 +23,6 @@ function Shifts_by_room($room)
  */
 function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
-    //@TODO
     $sql = 'SELECT * FROM (
       SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` AS `room_name`
       FROM `Shifts`
@@ -31,7 +30,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
       WHERE `Shifts`.`RID` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
-      AND `start` BETWEEN ' . $shiftsFilter->getStartTime() . ' AND ' . $shiftsFilter->getEndTime() . '
+      AND `start` BETWEEN ? AND ?
       AND `NeededAngelTypes`.`angel_type_id` IN (' . implode(',', $shiftsFilter->getTypes()) . ')
       AND `NeededAngelTypes`.`count` > 0
       AND `Shifts`.`PSID` IS NULL
@@ -44,13 +43,21 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
       WHERE `Shifts`.`RID` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
-      AND `start` BETWEEN ' . $shiftsFilter->getStartTime() . ' AND ' . $shiftsFilter->getEndTime() . '
+      AND `start` BETWEEN ? AND ?
       AND `NeededAngelTypes`.`angel_type_id` IN (' . implode(',', $shiftsFilter->getTypes()) . ')
       AND `NeededAngelTypes`.`count` > 0
       AND NOT `Shifts`.`PSID` IS NULL) AS tmp_shifts
 
       ORDER BY `start`';
-    $result = DB::select($sql);
+    $result = DB::select(
+        $sql,
+        [
+            $shiftsFilter->getStartTime(),
+            $shiftsFilter->getEndTime(),
+            $shiftsFilter->getStartTime(),
+            $shiftsFilter->getEndTime(),
+        ]
+    );
     if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error('Unable to load shifts by filter.');
     }
@@ -63,7 +70,6 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
  */
 function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
-    //@TODO
     $sql = '
       SELECT
           `NeededAngelTypes`.*,
@@ -76,7 +82,7 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
       WHERE `Shifts`.`RID` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
-      AND `start` BETWEEN ' . $shiftsFilter->getStartTime() . ' AND ' . $shiftsFilter->getEndTime() . '
+      AND `start` BETWEEN ? AND ?
       AND `Shifts`.`PSID` IS NULL
 
       UNION
@@ -92,9 +98,17 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
       JOIN `AngelTypes` ON `AngelTypes`.`id`= `NeededAngelTypes`.`angel_type_id`
       WHERE `Shifts`.`RID` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
-      AND `start` BETWEEN ' . $shiftsFilter->getStartTime() . ' AND ' . $shiftsFilter->getEndTime() . '
+      AND `start` BETWEEN ? AND ?
       AND NOT `Shifts`.`PSID` IS NULL';
-    $result = DB::select($sql);
+    $result = DB::select(
+        $sql,
+        [
+            $shiftsFilter->getStartTime(),
+            $shiftsFilter->getEndTime(),
+            $shiftsFilter->getStartTime(),
+            $shiftsFilter->getEndTime(),
+        ]
+    );
     if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error('Unable to load needed angeltypes by filter.');
     }
@@ -161,7 +175,6 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
  */
 function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
-    // @TODO
     $sql = '
       SELECT
           `User`.`Nick`,
@@ -178,9 +191,15 @@ function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       JOIN `ShiftEntry` ON `ShiftEntry`.`SID`=`Shifts`.`SID`
       JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
       WHERE `Shifts`.`RID` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
-      AND `start` BETWEEN ' . $shiftsFilter->getStartTime() . ' AND ' . $shiftsFilter->getEndTime() . '
+      AND `start` BETWEEN ? AND ?
       ORDER BY `Shifts`.`start`';
-    $result = DB::select($sql);
+    $result = DB::select(
+        $sql,
+        [
+            $shiftsFilter->getStartTime(),
+            $shiftsFilter->getEndTime(),
+        ]
+    );
     if (DB::getStm()->errorCode() != '00000') {
         engelsystem_error('Unable to load shift entries by filter.');
     }

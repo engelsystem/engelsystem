@@ -45,7 +45,7 @@ function admin_user()
             . 'Wenn T-Shirt ein \'Ja\' enth&auml;lt, bedeutet dies, dass der Engel '
             . 'bereits sein T-Shirt erhalten hat.<br /><br />' . "\n";
 
-        $html .= '<form action="' . page_link_to('admin_user') . '&action=save&id=$user_id" method="post">' . "\n";
+        $html .= '<form action="' . page_link_to('admin_user') . '&action=save&id=' . $user_id . '" method="post">' . "\n";
         $html .= '<table border="0">' . "\n";
         $html .= '<input type="hidden" name="Type" value="Normal">' . "\n";
         $html .= '<tr><td>' . "\n";

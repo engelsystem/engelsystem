@@ -316,7 +316,7 @@ function shift_next_controller()
 
     $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
 
-    if (empty($upcoming_shifts)) {
+    if (!empty($upcoming_shifts)) {
         redirect(shift_link($upcoming_shifts[0]));
     }
 

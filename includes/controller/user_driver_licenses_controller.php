@@ -123,7 +123,7 @@ function user_driver_license_edit_controller()
 
             if (UserDriverLicense_valid($user_driver_license)) {
                 if ($user_driver_license['user_id'] == null) {
-                    $user_driver_license = UserDriverLicenses_create($user_driver_license, $user_source['UID']);
+                    $user_driver_license = UserDriverLicenses_create($user_driver_license, $user_source);
                 } else {
                     UserDriverLicenses_update($user_driver_license);
                 }
@@ -133,7 +133,7 @@ function user_driver_license_edit_controller()
             } else {
                 error(_('Please select at least one driving license.'));
             }
-        } elseif ($user_driver_license['id'] != null) {
+        } elseif ($user_driver_license['user_id'] != null) {
             UserDriverLicenses_delete($user_source['UID']);
             engelsystem_log('Driver license information removed.');
             success(_('Your driver license information has been removed.'));
