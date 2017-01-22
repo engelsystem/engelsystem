@@ -43,7 +43,7 @@ function user_questions() {
         }
         
         $question = sql_select("SELECT * FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
-        if (count($question) > 0 && $question[0]['UID'] == $user['UID']) {
+        if (count($question) > 0 && $question[0]['UID'] == $user['UID'] && $question[0]['showGlobal'] == 0) {
           sql_query("DELETE FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
           redirect(page_link_to("user_questions"));
         } else {
