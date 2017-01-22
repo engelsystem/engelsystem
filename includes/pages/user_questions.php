@@ -10,7 +10,7 @@ function user_questions() {
   if (! isset($_REQUEST['action'])) {
     $open_questions = sql_select("SELECT * FROM `Questions` WHERE `AID` IS NULL AND `UID`='" . sql_escape($user['UID']) . "'");
     
-    $answered_questions = sql_select("SELECT * FROM `Questions` WHERE NOT `AID` IS NULL AND `UID`='" . sql_escape($user['UID']) . "'");
+    $answered_questions = sql_select("SELECT * FROM `Questions` WHERE NOT `AID` IS NULL AND (`showGlobal` = 1 OR `UID`='" . sql_escape($user['UID']) . "')");
     foreach ($answered_questions as &$question) {
       $answer_user_source = User($question['AID']);
       $question['answer_user'] = User_Nick_render($answer_user_source);
@@ -27,6 +27,7 @@ function user_questions() {
             engelsystem_error(_("Unable to save question."));
           }
           success(_("You question was saved."));
+          engelsystem_email("helfika@zapf.in-berlin.de", "[ZaPF-Engelsystem] Neue Frage im Engelsystem", "Hey,\n\nim Engelsystem wurde eine neue Frage gestellt.\nDu kannst sie unter folgenden URL beantworten:\n\nhttps://zapf.in-berlin.de/engelsystem/?p=admin_questions\n\nViele Grüße,\nDas Engelsystem");
           redirect(page_link_to("user_questions"));
         } else {
           return page_with_title(questions_title(), [
@@ -42,12 +43,12 @@ function user_questions() {
         }
         
         $question = sql_select("SELECT * FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
-        if (count($question) > 0 && $question[0]['UID'] == $user['UID']) {
+        if (count($question) > 0 && $question[0]['UID'] == $user['UID'] && $question[0]['showGlobal'] == 0) {
           sql_query("DELETE FROM `Questions` WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
           redirect(page_link_to("user_questions"));
         } else {
           return page_with_title(questions_title(), [
-              error(_("No question found."), true) 
+              error(_("No question found or permissions denied."), true) 
           ]);
         }
         break;
