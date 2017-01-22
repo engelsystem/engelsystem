@@ -839,15 +839,15 @@ msgstr "Ausgegebene T-Shirts"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:4
 msgid "Arrived angels"
-msgstr "Angekommene Engel"
+msgstr "Bestätigte Engel"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:20
 msgid "Reset done. Angel has not arrived."
-msgstr "Zurückgesetzt. Engel ist nicht angekommen."
+msgstr "Zurückgesetzt. Engel ist nicht bestätigt."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:31
 msgid "Angel has been marked as arrived."
-msgstr "Engel wurde als angekommen markiert."
+msgstr "Engel wurde als bestätigt markiert."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:71
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/UserAngelTypes_view.php:9
@@ -868,7 +868,7 @@ msgstr "zurücksetzen"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:186
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:330
 msgid "arrived"
-msgstr "angekommen"
+msgstr "bestätigt"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:146
 msgid "Planned arrival"
@@ -876,7 +876,7 @@ msgstr "Geplanter Ankunftstag"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:147
 msgid "Arrived?"
-msgstr "Angekommen?"
+msgstr "Bestätigt?"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:148
 msgid "Arrival date"
@@ -2423,7 +2423,7 @@ msgstr "Vorname"
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:185
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:350
 msgid "Arrived"
-msgstr "Angekommen"
+msgstr "Bestätigt"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:186
 msgid "Voucher"
@@ -2498,16 +2498,16 @@ msgstr "Engelzustand"
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:350
 #, php-format
 msgid "Arrived at %s"
-msgstr "Angekommen am %s"
+msgstr "Bestätigt am %s"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:350
 #, php-format
 msgid "Not arrived (Planned: %s)"
-msgstr "Nicht angekommen (Geplant: %s)"
+msgstr "Nicht bestätigt (Geplant: %s)"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:350
 msgid "Not arrived"
-msgstr "Nicht angekommen"
+msgstr "Nicht bestätigt"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:351
 #, php-format
@@ -2588,8 +2588,8 @@ msgid ""
 "You are not marked as arrived. Please go to heaven's desk, get your angel "
 "badge and/or tell them that you arrived already."
 msgstr ""
-"Du bist nicht als angekommen markiert. Bitte gehe zur Himmelsverwaltung, "
-"hole Dein Badge ab und/oder erkläre ihnen, dass Du bereits angekommen bist."
+"Du bist nicht als bestätigt markiert. Bitte melde dich bei der Helferverwaltung "
+"unter helfika@zapf.in-berlin.de oder jemand von der Orga vor Ort an deiner Uni."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:478
 msgid "You need to specify a tshirt size in your settings!"
