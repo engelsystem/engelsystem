@@ -76,11 +76,7 @@ function header_toolbar() {
 function make_user_submenu() {
   global $privileges, $page;
   
-  $user_submenu = make_langselect();
-  
-  if (in_array('user_settings', $privileges) || in_array('logout', $privileges)) {
-    $user_submenu[] = toolbar_item_divider();
-  }
+  $user_submenu = [];
   
   if (in_array('user_settings', $privileges)) {
     $user_submenu[] = toolbar_item_link(page_link_to('user_settings'), 'list-alt', settings_title(), $page == 'user_settings');
