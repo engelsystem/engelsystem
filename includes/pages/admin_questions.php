@@ -91,6 +91,7 @@ function admin_questions() {
           if ($answer != "") {
             sql_query("UPDATE `Questions` SET `AID`='" . sql_escape($user['UID']) . "', `Answer`='" . sql_escape($answer) . "', `showGlobal`=" . sql_bool(isset($_REQUEST['showGlobal']) && $_REQUEST['showGlobal'] == 'checked') . " WHERE `QID`='" . sql_escape($question_id) . "' LIMIT 1");
             engelsystem_log("Question " . $question[0]['Question'] . " answered: " . $answer);
+            engelsystem_email_to_user(User($question[0]['UID']), "[ZaPF-Engelsystem] Deine Frage wurde beantwortet", "Deine Frage wurde beantwortet.\nDu kannst du Antwort unter folgender URL einsehen:\n\nhttps://zapf.in-berlin.de/engelsystem/?p=user_questions");
             redirect(page_link_to("admin_questions"));
           } else {
             return error("Enter an answer!", true);

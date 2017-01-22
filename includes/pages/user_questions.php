@@ -27,6 +27,7 @@ function user_questions() {
             engelsystem_error(_("Unable to save question."));
           }
           success(_("You question was saved."));
+          engelsystem_email("helfika@zapf.in-berlin.de", "[ZaPF-Engelsystem] Neue Frage im Engelsystem", "Hey,\n\nim Engelsystem wurde eine neue Frage gestellt.\nDu kannst sie unter folgenden URL beantworten:\n\nhttps://zapf.in-berlin.de/engelsystem/?p=admin_questions\n\nViele Grüße,\nDas Engelsystem");
           redirect(page_link_to("user_questions"));
         } else {
           return page_with_title(questions_title(), [
