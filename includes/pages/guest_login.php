@@ -27,7 +27,7 @@ function guest_register() {
   $dect = "";
   $mobile = "";
   $mail = "";
-  $email_shiftinfo = false;
+  $email_shiftinfo = true;
   $email_by_human_allowed = false;
   $jabber = "";
   $hometown = "";
@@ -71,22 +71,6 @@ function guest_register() {
       $msg .= error(_("Please enter your e-mail."), true);
     }
     
-    if (isset($_REQUEST['email_shiftinfo'])) {
-      $email_shiftinfo = true;
-    }
-    
-    if (isset($_REQUEST['email_by_human_allowed'])) {
-      $email_by_human_allowed = true;
-    }
-    
-    if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
-      $jabber = strip_request_item('jabber');
-      if (! check_email($jabber)) {
-        $valid = false;
-        $msg .= error(_("Please check your jabber account information."), true);
-      }
-    }
-    
     if ($enable_tshirt_size) {
       if (isset($_REQUEST['tshirt_size']) && isset($tshirt_sizes[$_REQUEST['tshirt_size']]) && $_REQUEST['tshirt_size'] != '') {
         $tshirt_size = $_REQUEST['tshirt_size'];
@@ -106,16 +90,6 @@ function guest_register() {
       $msg .= error(sprintf(_("Your password is too short (please use at least %s characters)."), $min_password_length), true);
     }
     
-    if (isset($_REQUEST['planned_arrival_date'])) {
-      $tmp = parse_date("Y-m-d H:i", $_REQUEST['planned_arrival_date'] . " 00:00");
-      $result = User_validate_planned_arrival_date($tmp);
-      $planned_arrival_date = $result->getValue();
-      if (! $result->isValid()) {
-        $valid = false;
-        error(_("Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date."));
-      }
-    }
-    
     $selected_angel_types = [];
     foreach (array_keys($angel_types) as $angel_type_id) {
       if (isset($_REQUEST['angel_types_' . $angel_type_id])) {
@@ -124,26 +98,29 @@ function guest_register() {
     }
     
     // Trivia
-    if (isset($_REQUEST['lastname'])) {
+    if (isset($_REQUEST['lastname']) && strlen(strip_request_item('lastname')) > 0) {
       $lastname = strip_request_item('lastname');
+    } else {
+      $valid = false;
+      $msg .= error(_("Please enter your last name."), true);
     }
-    if (isset($_REQUEST['prename'])) {
+    if (isset($_REQUEST['prename']) && strlen(strip_request_item('prename')) > 0) {
       $prename = strip_request_item('prename');
+    } else {
+      $valid = false;
+      $msg .= error(_("Please enter your first name."), true);
     }
-    if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age'])) {
-      $age = strip_request_item('age');
-    }
-    if (isset($_REQUEST['tel'])) {
-      $tel = strip_request_item('tel');
-    }
-    if (isset($_REQUEST['dect'])) {
-      $dect = strip_request_item('dect');
-    }
-    if (isset($_REQUEST['mobile'])) {
+    if (isset($_REQUEST['mobile']) && strlen(strip_request_item('mobile')) > 0) {
       $mobile = strip_request_item('mobile');
+    } else {
+      $valid = false;
+      $msg .= error(_("Please enter your mobile number."), true);
     }
-    if (isset($_REQUEST['hometown'])) {
+    if (isset($_REQUEST['hometown']) && strlen(strip_request_item('hometown')) > 0) {
       $hometown = strip_request_item('hometown');
+    } else {
+      $valid = false;
+      $msg .= error(_("Please enter your hometown."), true);
     }
     if (isset($_REQUEST['comment'])) {
       $comment = strip_request_item_nl('comment');
@@ -226,17 +203,15 @@ function guest_register() {
                       ]),
                       div('col-sm-8', [
                           form_email('mail', _("E-Mail") . ' ' . entry_required(), $mail),
-                          form_checkbox('email_shiftinfo', _("The engelsystem is allowed to send me an email (e.g. when my shifts change)"), $email_shiftinfo),
-                          form_checkbox('email_by_human_allowed', _("Humans are allowed to send me an email (e.g. for ticket vouchers)"), $email_by_human_allowed) 
                       ]) 
                   ]),
                   div('row', [
                       div('col-sm-6', [
-                          form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, $buildup_start_date, $teardown_end_date) 
+                          form_text('prename', _("First name") . ' ' . entry_required(), $prename) 
                       ]),
                       div('col-sm-6', [
-                          $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : '' 
-                      ]) 
+                          form_text('lastname', _("Last name") . ' ' . entry_required(), $lastname) 
+                      ])
                   ]),
                   div('row', [
                       div('col-sm-6', [
@@ -251,31 +226,18 @@ function guest_register() {
               ]),
               div('col-md-6', [
                   div('row', [
-                      div('col-sm-4', [
-                          form_text('dect', _("DECT"), $dect) 
-                      ]),
-                      div('col-sm-4', [
-                          form_text('mobile', _("Mobile"), $mobile) 
-                      ]),
-                      div('col-sm-4', [
-                          form_text('tel', _("Phone"), $tel) 
-                      ]) 
-                  ]),
-                  form_text('jabber', _("Jabber"), $jabber),
-                  div('row', [
                       div('col-sm-6', [
-                          form_text('prename', _("First name"), $prename) 
-                      ]),
-                      div('col-sm-6', [
-                          form_text('lastname', _("Last name"), $lastname) 
-                      ]) 
+                          form_text('mobile', _("Mobile (used only for important problems)") . ' ' . entry_required(), $mobile) 
+                      ])
                   ]),
                   div('row', [
-                      div('col-sm-3', [
-                          form_text('age', _("Age"), $age) 
+                  ]),
+                  div('row', [
+                      div('col-sm-4', [
+                          $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : '' 
                       ]),
-                      div('col-sm-9', [
-                          form_text('hometown', _("Hometown"), $hometown) 
+                      div('col-sm-6', [
+                          form_text('hometown', _("Hometown") . ' ' . entry_required(), $hometown) 
                       ]) 
                   ]),
                   form_info(entry_required() . ' = ' . _("Entry required!")) 
