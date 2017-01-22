@@ -146,7 +146,7 @@ function guest_register() {
           `kommentar`='" . sql_escape($comment) . "', 
           `Hometown`='" . sql_escape($hometown) . "', 
           `CreateDate`=NOW(), 
-          `Sprache`='" . sql_escape($_SESSION["locale"]) . "',
+          `Sprache`='" . sql_escape("de_DE.UTF-8") . "',
           `arrival_date`=NULL,
           `planned_arrival_date`='" . sql_escape($planned_arrival_date) . "'");
       
