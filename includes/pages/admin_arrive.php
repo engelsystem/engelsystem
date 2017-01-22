@@ -26,7 +26,7 @@ function admin_arrive() {
     $user_id = $_REQUEST['arrived'];
     $user_source = User($user_id);
     if ($user_source != null) {
-      sql_query("UPDATE `User` SET `Gekommen`=1, `arrival_date`='" . time() . "' WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
+      sql_query("UPDATE `User` SET `Gekommen`=1, `Aktiv`=1, `arrival_date`='" . time() . "' WHERE `UID`='" . sql_escape($user_id) . "' LIMIT 1");
       engelsystem_log("User set has arrived: " . User_Nick_render($user_source));
       success(_("Angel has been marked as arrived."));
       redirect(user_link($user_source));

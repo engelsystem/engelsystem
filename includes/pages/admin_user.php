@@ -51,16 +51,6 @@ function admin_user() {
     $html .= "  <tr><td>Gekommen</td><td>\n";
     $html .= html_options('eGekommen', $options, $user_source['Gekommen']) . "</td></tr>\n";
     
-    // Aktiv?
-    $html .= "  <tr><td>Aktiv</td><td>\n";
-    $html .= html_options('eAktiv', $options, $user_source['Aktiv']) . "</td></tr>\n";
-    
-    // Aktiv erzwingen
-    if (in_array('admin_active', $privileges)) {
-      $html .= "  <tr><td>" . _("Force active") . "</td><td>\n";
-      $html .= html_options('force_active', $options, $user_source['force_active']) . "</td></tr>\n";
-    }
-    
     // T-Shirt bekommen?
     $html .= "  <tr><td>T-Shirt</td><td>\n";
     $html .= html_options('eTshirt', $options, $user_source['Tshirt']) . "</td></tr>\n";
@@ -177,8 +167,8 @@ function admin_user() {
               `jabber` = '" . sql_escape($_POST["ejabber"]) . "', 
               `Size` = '" . sql_escape($_POST["eSize"]) . "', 
               `Gekommen`= '" . sql_escape($_POST["eGekommen"]) . "', 
-              `Aktiv`= '" . sql_escape($_POST["eAktiv"]) . "', 
-              `force_active`= " . sql_escape($force_active) . ", 
+              `Aktiv`= '" . sql_escape(1) . "', 
+              `force_active`= " . sql_escape(1) . ", 
               `Tshirt` = '" . sql_escape($_POST["eTshirt"]) . "', 
               `Hometown` = '" . sql_escape($_POST["Hometown"]) . "' 
               WHERE `UID` = '" . sql_escape($user_id) . "' 
