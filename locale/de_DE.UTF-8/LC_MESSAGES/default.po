@@ -2588,7 +2588,7 @@ msgid ""
 "You are not marked as arrived. Please go to heaven's desk, get your angel "
 "badge and/or tell them that you arrived already."
 msgstr ""
-"Du bist nicht als bestätigt markiert. Bitte melde dich bei der Helferverwaltung "
+"Du bist nicht als bestätigt markiert. Bitte melde dich bei der Helfikaverwaltung "
 "unter helfika@zapf.in-berlin.de oder jemand von der Orga vor Ort an deiner Uni."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:478
