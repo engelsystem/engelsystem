@@ -1537,7 +1537,7 @@ msgstr "Alter"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:278
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:53
 msgid "Hometown"
-msgstr "Wohnort"
+msgstr "Universität"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:281
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:39
