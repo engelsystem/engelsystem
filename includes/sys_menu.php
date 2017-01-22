@@ -23,14 +23,14 @@ function header_render_hints() {
   if (isset($user)) {
     $hints_renderer->addHint(admin_new_questions());
     $hints_renderer->addHint(user_angeltypes_unconfirmed_hint());
-    $hints_renderer->addHint(render_user_departure_date_hint());
+    //$hints_renderer->addHint(render_user_departure_date_hint());
     $hints_renderer->addHint(user_driver_license_required_hint());
     
     // Important hints:
-    $hints_renderer->addHint(render_user_freeloader_hint(), true);
+    //$hints_renderer->addHint(render_user_freeloader_hint(), true);
     $hints_renderer->addHint(render_user_arrived_hint(), true);
     $hints_renderer->addHint(render_user_tshirt_hint(), true);
-    $hints_renderer->addHint(render_user_dect_hint(), true);
+    //$hints_renderer->addHint(render_user_dect_hint(), true);
   }
   
   return $hints_renderer->render();
