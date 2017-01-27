@@ -10,6 +10,7 @@ $default_locale = 'de_DE.UTF-8';
  * Return currently active locale
  */
 function locale() {
+  global $default_locale;
   return $default_locale;
 }
 
@@ -44,6 +45,7 @@ function gettext_init() {
  * @param string $locale          
  */
 function gettext_locale($locale = null) {
+  global $default_locale;
   if ($locale == null) {
     $locale = $default_locale;
   }
