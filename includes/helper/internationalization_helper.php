@@ -4,13 +4,13 @@ $locales = [
     'en_US.UTF-8' => "English" 
 ];
 
-$default_locale = 'en_US.UTF-8';
+$default_locale = 'de_DE.UTF-8';
 
 /**
  * Return currently active locale
  */
 function locale() {
-  return $_SESSION['locale'];
+  return $default_locale;
 }
 
 /**
@@ -27,7 +27,7 @@ function gettext_init() {
   global $locales, $default_locale;
 
   if (isset($_REQUEST['set_locale']) && isset($locales[$_REQUEST['set_locale']])) {
-    $_SESSION['locale'] = $_REQUEST['set_locale'];
+    $_SESSION['locale'] = $default_locale;
   } elseif (! isset($_SESSION['locale'])) {
     $_SESSION['locale'] = $default_locale;
   }
@@ -45,7 +45,7 @@ function gettext_init() {
  */
 function gettext_locale($locale = null) {
   if ($locale == null) {
-    $locale = $_SESSION['locale'];
+    $locale = $default_locale;
   }
   
   putenv('LC_ALL=' . $locale);
