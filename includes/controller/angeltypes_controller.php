@@ -23,6 +23,8 @@ function angeltypes_controller() {
       return angeltype_edit_controller();
     case 'delete':
       return angeltype_delete_controller();
+    case 'sendMail':
+      return angeltype_sendMail_controller();
     case 'about':
       return angeltypes_about_controller();
   }
@@ -140,6 +142,55 @@ function angeltype_edit_controller() {
   return [
       sprintf(_("Edit %s"), $angeltype['name']),
       AngelType_edit_view($angeltype, $supporter_mode) 
+  ];
+}
+
+/**
+ * Send mail to all angles of one type.
+ */
+function angeltype_sendMail_controller() {
+  global $privileges, $user;
+
+  // In supporter mode only allow to modify description
+  $supporter_mode = ! in_array('admin_angel_types', $privileges);
+
+  if (isset($_REQUEST['angeltype_id'])) {
+    // Edit existing angeltype
+    $angeltype = load_angeltype();
+
+    if (! User_is_AngelType_supporter($user, $angeltype)) {
+      redirect(page_link_to('angeltypes'));
+    }
+  } else {
+    redirect(page_link_to('angeltypes'));
+  }
+
+  if (isset($_REQUEST['submit'])) {
+    $valid = true;
+
+    $subject = strip_request_item('subject');
+    $message = strip_request_item_nl('message');
+
+    if ($subject == null || $subject == "" || $message == null || $message == "") {
+      $valid = false;
+      error(_("Subject or message field is empty."));
+    }
+
+    if ($valid) {
+      $members = Users_by_angeltype($angeltype);
+
+      foreach ($members as $member) {
+        engelsystem_email_to_user($member, $subject, $message);
+      }
+
+      success("Mail sent to angels");
+      redirect(angeltype_link($angeltype['id']));
+    }
+  }
+
+  return [
+      sprintf(_("Send mail to %s"), $angeltype['name']),
+      AngelType_sendMail_view($angeltype, $supporter_mode)
   ];
 }
 
