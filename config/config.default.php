@@ -9,6 +9,7 @@ $base_url = "https://events.ccc.de/";
 
 // contact email address, linked on every page
 $contact_email = "mailto:ticket@c3heaven.de";
+$no_reply_email = "noreply@engelsystem.de";
 
 // Default-Theme auf der Startseite, 1=style1.css usw.
 $default_theme = 1;
