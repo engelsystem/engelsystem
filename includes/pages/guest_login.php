@@ -209,7 +209,7 @@ function guest_register()
                     VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NULL, ?)
                 ',
                 [
-                    config('default_theme'),
+                    config('theme'),
                     $nick,
                     $preName,
                     $lastName,

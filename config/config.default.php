@@ -27,7 +27,7 @@ return [
     'contact_email'    => 'mailto:ticket@c3heaven.de',
 
     // Default theme of the start page, 1=style1.css
-    'default_theme'    => 1,
+    'theme'            => 1,
 
     // Number of News shown on one site
     'display_news'     => 6,
@@ -56,7 +56,10 @@ return [
     // local timezone
     'timezone'                => 'Europe/Berlin',
 
-    // multiply 'night shifts' and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
+    // weigh every shift the same
+    //'shift_sum_formula'       => 'SUM(`end` - `start`)',
+
+    // Multiply 'night shifts' and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
     'shift_sum_formula'       => '
         SUM(
             (1 +
@@ -70,10 +73,8 @@ return [
             * (1 - 3 * `ShiftEntry`.`freeloaded`)
         )
     ',
-    // weigh every shift the same
-    //'shift_sum_formula'       => 'SUM(`end` - `start`)',
 
-    // voucher calculation
+    // Voucher calculation
     'voucher_settings'        => [
         'initial_vouchers'   => 2,
         'shifts_per_voucher' => 1,

@@ -169,7 +169,7 @@ if (
 $event_config = EventConfig();
 
 echo template_render(__DIR__ . '/../templates/layout.html', [
-    'theme'          => isset($user) ? $user['color'] : config('default_theme'),
+    'theme'          => isset($user) ? $user['color'] : config('theme'),
     'title'          => $title,
     'atom_link'      => ($page == 'news' || $page == 'user_meetings')
         ? ' <link href="' . page_link_to('atom') . (($page == 'user_meetings') ? '&meetings=1' : '')
