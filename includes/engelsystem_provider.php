@@ -62,6 +62,7 @@ Db::connect(
     config('database')['pw']
 ) || die('Error: Unable to connect to database');
 Db::getPdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+Db::getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 
 /**
