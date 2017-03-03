@@ -16,6 +16,7 @@ function admin_shifts() {
   $length = '';
   $change_hours = [];
   $title = "";
+  $comment = "";
   $shifttype_id = null;
   
   // Locations laden (auch unsichtbare - fuer Erzengel ist das ok)
@@ -61,7 +62,10 @@ function admin_shifts() {
     
     // Name/Bezeichnung der Schicht, darf leer sein
     $title = strip_request_item('title');
-    
+
+    // Kommentar für die Schicht
+    $comment = strip_request_item_nl('comment');
+
     // Auswahl der sichtbaren Locations für die Schichten
     if (isset($_REQUEST['rid']) && preg_match("/^[0-9]+$/", $_REQUEST['rid']) && isset($room_array[$_REQUEST['rid']])) {
       $rid = $_REQUEST['rid'];
@@ -162,6 +166,7 @@ function admin_shifts() {
             'end' => $end,
             'RID' => $rid,
             'title' => $title,
+            'comment' => $comment,
             'shifttype_id' => $shifttype_id 
         ];
       } elseif ($mode == 'multi') {
@@ -181,6 +186,7 @@ function admin_shifts() {
               'end' => $shift_end,
               'RID' => $rid,
               'title' => $title,
+              'comment' => $comment,
               'shifttype_id' => $shifttype_id 
           ];
           
@@ -220,6 +226,7 @@ function admin_shifts() {
               'end' => $shift_end,
               'RID' => $rid,
               'title' => $title,
+              'comment' => $comment,
               'shifttype_id' => $shifttype_id 
           ];
           
@@ -263,6 +270,7 @@ function admin_shifts() {
               form_hidden('length', $length),
               form_hidden('change_hours', implode(', ', $change_hours)),
               form_hidden('angelmode', $angelmode),
+              form_hidden('comment', $comment),
               form_submit('back', _("back")),
               table([
                   'timeslot' => _('Time and location'),
@@ -319,6 +327,7 @@ function admin_shifts() {
           form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
           form_text('title', _("Title"), $title),
           form_select('rid', _("Room"), $room_array, $_REQUEST['rid']),
+          form_textarea('comment', _("Comment"), $comment),
           div('row', [
               div('col-md-6', [
                   form_text('start', _("Start"), date("Y-m-d H:i", $start)),

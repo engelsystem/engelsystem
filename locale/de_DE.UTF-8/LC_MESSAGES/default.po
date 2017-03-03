@@ -2642,6 +2642,9 @@ msgstr "E-Mail an %s senden"
 msgid "Subject or message input field is empty."
 msgstr "Betreff- oder Nachricht-Eingabefeld ist leer."
 
+msgid "Comment:"
+msgstr "Kommentar:"
+
 #~ msgid "Please enter your planned date of arrival."
 #~ msgstr "Bitte gib Dein geplantes Ankunftsdatum an."
 
