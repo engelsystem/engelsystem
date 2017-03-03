@@ -73,7 +73,12 @@ function shift_entry_add_controller() {
     if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`='" . sql_escape($shift['SID']) . "' AND `UID` = '" . sql_escape($user_id) . "'")) {
       return error("This angel does already have an entry for this shift.", true);
     }
-    
+
+    $user_shifts = Shifts_by_user(User($user_id));
+    if (Shift_collides($shift, $user_shifts)) {
+      return error("This angel has already a shift at this time.", true);
+    }
+
     $freeloaded = $shift['freeloaded'];
     $freeload_comment = $shift['freeload_comment'];
     if (in_array("user_shifts_admin", $privileges)) {
