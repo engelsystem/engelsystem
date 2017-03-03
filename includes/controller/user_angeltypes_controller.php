@@ -152,7 +152,7 @@ function user_angeltype_confirm_controller()
     }
 
     if (isset($_REQUEST['confirmed'])) {
-        $result = UserAngelType_confirm($user_angeltype['id'], $user);
+        UserAngelType_confirm($user_angeltype['id'], $user);
 
         engelsystem_log(sprintf(
             '%s confirmed for angeltype %s',

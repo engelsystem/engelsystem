@@ -373,8 +373,8 @@ function Shift_signup_allowed(
     $signup_user,
     $shift,
     $angeltype,
-    $user_angeltype = null,
-    $user_shifts = null,
+    $user_angeltype,
+    $user_shifts,
     $needed_angeltype,
     $shift_entries
 ) {
