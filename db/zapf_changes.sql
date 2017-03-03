@@ -1,2 +1,5 @@
 ALTER TABLE Questions
 ADD COLUMN showGlobal BOOLEAN;
+
+ALTER TABLE Shifts
+ADD COLUMN comment TEXT;

@@ -50,10 +50,12 @@ function shift_edit_controller() {
   $rid = $shift['RID'];
   $start = $shift['start'];
   $end = $shift['end'];
+  $comment = $shift['comment'];
   
   if (isset($_REQUEST['submit'])) {
     // Name/Bezeichnung der Schicht, darf leer sein
     $title = strip_request_item('title');
+    $comment = strip_request_item_nl('comment');
     
     // Auswahl der sichtbaren Locations für die Schichten
     if (isset($_REQUEST['rid']) && preg_match("/^[0-9]+$/", $_REQUEST['rid']) && isset($room[$_REQUEST['rid']])) {
@@ -104,6 +106,7 @@ function shift_edit_controller() {
       $shift['RID'] = $rid;
       $shift['start'] = $start;
       $shift['end'] = $end;
+      $shift['comment'] = $comment;
       
       $result = Shift_update($shift);
       if ($result === false) {
@@ -139,6 +142,7 @@ function shift_edit_controller() {
           form_select('rid', _("Room:"), $room, $rid),
           form_text('start', _("Start:"), date("Y-m-d H:i", $start)),
           form_text('end', _("End:"), date("Y-m-d H:i", $end)),
+          form_textarea('comment', _("Comment:"), $comment),
           '<h2>' . _("Needed angels") . '</h2>',
           $angel_types_spinner,
           form_submit('submit', _("Save")) 

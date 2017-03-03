@@ -298,6 +298,7 @@ function Shift_update($shift) {
       `title`=" . sql_null($shift['title']) . ",
       `URL`=" . sql_null($shift['URL']) . ",
       `PSID`=" . sql_null($shift['PSID']) . ",
+      `comment`=" . sql_null($shift['comment']) . ",
       `edited_by_user_id`='" . sql_escape($user['UID']) . "',
       `edited_at_timestamp`=" . time() . "
       WHERE `SID`='" . sql_escape($shift['SID']) . "'");
@@ -333,6 +334,7 @@ function Shift_create($shift) {
       `title`=" . sql_null($shift['title']) . ",
       `URL`=" . sql_null($shift['URL']) . ",
       `PSID`=" . sql_null($shift['PSID']) . ",
+      `comment`=" . sql_null($shift['comment']) . ",
       `created_by_user_id`='" . sql_escape($user['UID']) . "',
       `created_at_timestamp`=" . time());
   if ($result === false) {

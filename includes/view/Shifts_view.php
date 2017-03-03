@@ -90,7 +90,9 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
           ]),
           div('col-sm-6', [
               '<h2>' . _('Description') . '</h2>',
-              $parsedown->parse($shifttype['description']) 
+              $parsedown->parse($shifttype['description']),
+              '<h2>' . _('Comment') . '</h2>',
+              $parsedown->parse($shift['comment'])
           ]) 
       ]),
       $shift_admin ? Shift_editor_info_render($shift) : '' 

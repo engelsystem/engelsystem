@@ -21,7 +21,12 @@ class ShiftCalendarShiftRenderer {
       $info_text = glyph('info-sign') . $shift['title'] . '<br>';
     }
     list($shift_signup_state, $shifts_row) = $this->renderShiftNeededAngeltypes($shift, $needed_angeltypes, $shift_entries, $user);
-    
+
+    $comment_text = "";
+    if ($shift['comment'] != '') {
+      $comment_text = '<br>' . glyph('exclamation-sign') . $shift['comment'] . '<br>';
+    }
+
     $class = $this->classForSignupState($shift_signup_state);
     
     $blocks = ceil(($shift["end"] - $shift["start"]) / ShiftCalendarRenderer::SECONDS_PER_ROW);
@@ -35,7 +40,8 @@ class ShiftCalendarShiftRenderer {
                 Room_name_render([
                     'RID' => $shift['RID'],
                     'Name' => $shift['room_name'] 
-                ]) 
+                ]),
+                $comment_text
             ]),
             $shifts_row,
             div('shift-spacer') 
