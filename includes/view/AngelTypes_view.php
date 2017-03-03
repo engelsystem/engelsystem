@@ -79,6 +79,29 @@ function AngelType_edit_view($angeltype, $supporter_mode) {
 }
 
 /**
+ * Render angeltype send mail form.
+ *
+ * @param Angeltype $angeltype
+ *          The angeltype to send mail to
+ * @param boolean $supporter_mode
+ *          Is the user a supporter of this angeltype?
+ */
+function AngelType_sendMail_view($angeltype, $supporter_mode) {
+  $contact_info = AngelType_contact_info($angeltype);
+  return page_with_title(sprintf(_("Send mail to %s"), $angeltype['name']), [
+      buttons([
+          button(page_link_to('angeltypes'), _("Angeltypes"), 'back')
+      ]),
+      msg(),
+      form([
+          form_text('subject', _("Subject"), ""),
+          form_textarea('message', _("Message")),
+          form_submit('submit', _("Send mail"))
+      ])
+  ]);
+}
+
+/**
  * Renders the buttons for the angeltype view.
  */
 function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user) {
@@ -108,6 +131,9 @@ function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, 
   }
   if ($admin_angeltypes) {
     $buttons[] = button(page_link_to('angeltypes') . '&action=delete&angeltype_id=' . $angeltype['id'], _("delete"), 'delete');
+  }
+  if ($admin_angeltypes || $supporter) {
+    $buttons[] = button(page_link_to('angeltypes') . '&action=sendMail&angeltype_id=' . $angeltype['id'], _("Send mail"), 'sendMail');
   }
   
   return buttons($buttons);
