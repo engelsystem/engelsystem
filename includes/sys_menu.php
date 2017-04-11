@@ -154,8 +154,10 @@ function make_room_navigation($menu) {
   if (! in_array('view_rooms', $privileges)) {
     return $menu;
   }
-  
-  $rooms = Rooms();
+
+  //get a list of all rooms
+  $rooms = Rooms(true);
+
   $room_menu = [];
   if (in_array('admin_rooms', $privileges)) {
     $room_menu[] = toolbar_item_link(page_link_to('admin_rooms'), 'list', _("Manage rooms"));
@@ -164,7 +166,11 @@ function make_room_navigation($menu) {
     $room_menu[] = toolbar_item_divider();
   }
   foreach ($rooms as $room) {
-    $room_menu[] = toolbar_item_link(room_link($room), 'map-marker', $room['Name']);
+    if($room['show'] == 'Y' || // room is public
+        ($room['show'] != 'Y' && in_array('admin_rooms', $privileges)) // room is not public, but user can admin_rooms
+     ) {
+      $room_menu[] = toolbar_item_link(room_link($room), 'map-marker', $room['Name']);
+    }
   }
   if (count($room_menu > 0)) {
     $menu[] = toolbar_dropdown('map-marker', _("Rooms"), $room_menu);

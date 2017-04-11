@@ -16,8 +16,14 @@ function room_controller() {
   if (! in_array('view_rooms', $privileges)) {
     redirect(page_link_to());
   }
-  
+
+
   $room = load_room();
+
+  if($room['show'] != 'Y' && !in_array('admin_rooms', $privileges)) {
+      redirect(page_link_to());
+  }
+
   $all_shifts = Shifts_by_room($room);
   $days = [];
   foreach ($all_shifts as $shift) {
