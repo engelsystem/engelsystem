@@ -43,18 +43,21 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days) {
   $start_time = $shiftsFilter->getStartTime();
   if ($start_time == null) {
     $start_time = time();
+    if($start_time < 1495238400) {
+      $start_time = 1495238400; // 20.05.2017 00:00
+    }
   }
   
   $end_time = $shiftsFilter->getEndTime();
   if ($end_time == null) {
-    $end_time = $start_time + 24 * 60 * 60;
+    $end_time = $start_time + 12 * 24 * 60 * 60;
   }
   
   $shiftsFilter->setStartTime(check_request_datetime('start_day', 'start_time', $days, $start_time));
   $shiftsFilter->setEndTime(check_request_datetime('end_day', 'end_time', $days, $end_time));
   
   if ($shiftsFilter->getStartTime() > $shiftsFilter->getEndTime()) {
-    $shiftsFilter->setEndTime($shiftsFilter->getStartTime() + 24 * 60 * 60);
+    $shiftsFilter->setEndTime($shiftsFilter->getStartTime() + 12 * 24 * 60 * 60);
   }
 }
 
@@ -121,9 +124,10 @@ function view_user_shifts() {
   $types = load_types();
   
   if (! isset($_SESSION['ShiftsFilter'])) {
-    $room_ids = [
-        $rooms[0]['id'] 
-    ];
+    $room_ids = [];
+    foreach($rooms as $room) {
+      $room_ids[] = $room['id'];
+    }
     $type_ids = array_map('get_ids_from_array', $types);
     $_SESSION['ShiftsFilter'] = new ShiftsFilter(in_array('user_shifts_admin', $privileges), $room_ids, $type_ids);
   }
@@ -150,6 +154,16 @@ function view_user_shifts() {
   $start_time = date("H:i", $shiftsFilter->getStartTime());
   $end_day = date("Y-m-d", $shiftsFilter->getEndTime());
   $end_time = date("H:i", $shiftsFilter->getEndTime());
+
+  if(!in_array($start_day, $days)) {
+    $start_day = $days[0];
+    $start_time = "00:00";
+  }
+  if(!in_array($end_day, $days)) {
+    $end_day = end($days);
+    $end_time = "23:59";
+    reset($days);
+  }
   
   return page([
       div('col-md-12', [
