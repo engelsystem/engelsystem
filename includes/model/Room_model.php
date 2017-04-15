@@ -46,7 +46,7 @@ function Room_create($name, $from_frab, $public) {
  * @param $room_id RID          
  */
 function Room($room_id) {
-  $room_source = sql_select("SELECT * FROM `Room` WHERE `RID`='" . sql_escape($room_id) . "' AND `show` = 'Y'");
+  $room_source = sql_select("SELECT * FROM `Room` WHERE `RID`='" . sql_escape($room_id) . "'");
   
   if ($room_source === false) {
     return false;
