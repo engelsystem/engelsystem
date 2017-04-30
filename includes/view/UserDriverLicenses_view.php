@@ -19,10 +19,10 @@ function UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver
       msg(),
       form([
           form_info(_("Privacy"), _("Your driving license information is only visible for supporters and admins.")),
-          form_checkbox('wants_to_drive', _("I am willing to operate cars for the PL"), $wants_to_drive),
+          form_checkbox('wants_to_drive', _("I am willing to drive a car for the event"), $wants_to_drive),
           div('panel panel-default', [
               div('panel-body', [
-                  form_checkbox('has_car', _("I have my own car with me and am willing to use it for the PL (You'll get reimbursed for fuel)"), $user_driver_license['has_car']),
+                  form_checkbox('has_car', _("I have my own car with me and am willing to use it for the event (You'll get reimbursed for fuel)"), $user_driver_license['has_car']),
                   heading(_("Driver license"), 3),
                   form_checkbox('has_license_car', _("Car"), $user_driver_license['has_license_car']),
                   form_checkbox('has_license_3_5t_transporter', _("Transporter 3,5t"), $user_driver_license['has_license_3_5t_transporter']),
