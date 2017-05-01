@@ -12,8 +12,8 @@ class ShiftsFilter {
   /**
    * How long can the time interval be?
    */
-  const MAX_DURATION = 86400;
- // one day
+  const MAX_DURATION = 1036800;
+ // twolve days
   
   /**
    * Shift is completely full.
@@ -48,12 +48,13 @@ class ShiftsFilter {
     $this->types = $types;
     
     $this->filled = [
-        ShiftsFilter::FILLED_FREE 
+        ShiftsFilter::FILLED_FREE,
+        ShiftsFilter::FILLED_FILLED
     ];
     
-    if ($user_shifts_admin) {
-      $this->filled[] = ShiftsFilter::FILLED_FILLED;
-    }
+//    if ($user_shifts_admin) {
+//      $this->filled[] = ShiftsFilter::FILLED_FILLED;
+//    }
   }
 
   public function getStartTime() {
