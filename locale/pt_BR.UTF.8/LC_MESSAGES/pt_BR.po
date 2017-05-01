@@ -2159,12 +2159,12 @@ msgstr ""
 "e os admins."
 
 #: includes/view/UserDriverLicenses_view.php:22
-msgid "I am willing to operate cars for the PL"
+msgid "I am willing to drive a car for the event"
 msgstr "Eu desejo dirigir carros para o evento"
 
 #: includes/view/UserDriverLicenses_view.php:25
 msgid ""
-"I have my own car with me and am willing to use it for the PL (You'll get "
+"I have my own car with me and am willing to use it for the event (You'll get "
 "reimbursed for fuel)"
 msgstr ""
 "Eu tenho meu próprio carro e estou disposto a usá-lo no evento\n"

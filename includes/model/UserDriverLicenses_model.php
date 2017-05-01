@@ -24,7 +24,7 @@ function UserDriverLicense_new() {
  * @return boolean
  */
 function UserDriverLicense_valid($user_driver_license) {
-  return $user_driver_license['has_car'] || $user_driver_license['has_license_car'] || $user_driver_license['has_license_3_5t_transporter'] || $user_driver_license['has_license_7_5t_truck'] || $user_driver_license['has_license_12_5t_truck'] || $user_driver_license['has_license_forklift'];
+  return $user_driver_license['has_license_car'] || $user_driver_license['has_license_3_5t_transporter'] || $user_driver_license['has_license_7_5t_truck'] || $user_driver_license['has_license_12_5t_truck'] || $user_driver_license['has_license_forklift'];
 }
 
 /**

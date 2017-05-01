@@ -124,9 +124,9 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
   $members_unconfirmed = [];
   foreach ($members as $member) {
     $member['Nick'] = User_Nick_render($member);
-    
+
     if ($angeltype['requires_driver_license']) {
-      $member['wants_to_drive'] = glyph_bool($member['user_id']);
+      $member['wants_to_drive'] = glyph_bool($member['wants_to_drive']);
       $member['has_car'] = glyph_bool($member['has_car']);
       $member['has_license_car'] = glyph_bool($member['has_license_car']);
       $member['has_license_3_5t_transporter'] = glyph_bool($member['has_license_3_5t_transporter']);
