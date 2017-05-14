@@ -1965,7 +1965,7 @@ msgstr "7,5t LKW"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:184
 msgid "12,5t Truck"
-msgstr "12,5t LKW"
+msgstr "Anhänger (BE)"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:185
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:31
@@ -2333,7 +2333,7 @@ msgstr "7,5t LKW"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:30
 msgid "Truck 12,5t"
-msgstr "12,5t LKW"
+msgstr "Anhänger (BE)"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:7
 msgid "Please select..."
