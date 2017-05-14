@@ -49,6 +49,7 @@ function admin_rooms() {
       $from_pentabarf = $room['FromPentabarf'];
       $public = $room['show'];
       $number = $room['Number'];
+      $number = $room['comment'];
       
       $needed_angeltypes = sql_select("SELECT * FROM `NeededAngelTypes` WHERE `room_id`='" . sql_escape($room_id) . "'");
       foreach ($needed_angeltypes as $needed_angeltype) {
@@ -88,6 +89,10 @@ function admin_rooms() {
         } else {
           $valid = false;
         }
+
+        if (isset($_REQUEST['comment'])) {
+          $comment = strip_request_item_nl('comment');
+        }
         
         foreach ($angeltypes as $angeltype_id => $angeltype) {
           if (isset($_REQUEST['angeltype_count_' . $angeltype_id]) && preg_match("/^[0-9]{1,4}$/", $_REQUEST['angeltype_count_' . $angeltype_id])) {
@@ -100,10 +105,10 @@ function admin_rooms() {
         
         if ($valid) {
           if (isset($room_id)) {
-            sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "' WHERE `RID`='" . sql_escape($room_id) . "' LIMIT 1");
+            sql_query("UPDATE `Room` SET `Name`='" . sql_escape($name) . "', `FromPentabarf`='" . sql_escape($from_pentabarf) . "', `show`='" . sql_escape($public) . "', `Number`='" . sql_escape($number) . "', `comment`='". sql_escape($comment) ."' WHERE `RID`='" . sql_escape($room_id) . "' LIMIT 1");
             engelsystem_log("Room updated: " . $name . ", pentabarf import: " . $from_pentabarf . ", public: " . $public . ", number: " . $number);
           } else {
-            $room_id = Room_create($name, $from_pentabarf, $public, $number);
+            $room_id = Room_create($name, $from_pentabarf, $public, $number, $comment);
             if ($room_id === false) {
               engelsystem_error("Unable to create room.");
             }
@@ -143,7 +148,8 @@ function admin_rooms() {
                       form_text('name', _("Name"), $name),
                       form_checkbox('from_pentabarf', _("Frab import"), $from_pentabarf),
                       form_checkbox('public', _("Public"), $public),
-                      form_text('number', _("Room number"), $number) 
+                      form_text('number', _("Room number"), $number),
+                      form_text('comment', _("Comment"), $comment)
                   ]),
                   div('col-md-6', [
                       div('row', [

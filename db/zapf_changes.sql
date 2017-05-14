@@ -3,3 +3,7 @@ ADD COLUMN showGlobal BOOLEAN;
 
 ALTER TABLE Shifts
 ADD COLUMN comment TEXT;
+
+ALTER TABLE Room
+ADD COLUMN comment TEXT;
+

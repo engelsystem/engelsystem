@@ -4,6 +4,7 @@ use Engelsystem\ShiftCalendarRenderer;
 
 function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalendarRenderer $shiftCalendarRenderer) {
   return page_with_title(glyph('map-marker') . $room['Name'], [
+      $room['comment'],
       $shiftsFilterRenderer->render(room_link($room)) ,
       $shiftCalendarRenderer->render()
   ]);
