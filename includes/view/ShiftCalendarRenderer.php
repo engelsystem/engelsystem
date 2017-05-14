@@ -187,14 +187,14 @@ class ShiftCalendarRenderer {
         return div('tick day');
       }
       return div('tick day', [
-          date('m-d<b\r />H:i', $time) 
+          date('D<b\r />d M<b\r />H:i', $time) 
       ]);
     } elseif ($time % (60 * 60) == 0) {
       if (! $label) {
         return div('tick hour');
       }
       return div('tick hour', [
-          date('m-d<b\r />H:i', $time) 
+          date('D<b\r />d M<b\r />H:i', $time) 
       ]);
     }
     return div('tick');
