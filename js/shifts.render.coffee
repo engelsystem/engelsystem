@@ -197,6 +197,8 @@ Shifts.render =
             minDate: '-1970-01-02'
             maxDate: '+1970-01-02'
             onChangeDateTime: (dp, $input) ->
-                Shifts.render.START_TIME = parseInt moment($input.val()).format('X'), 10
-                Shifts.render.shiftplan()
+                stime = parseInt moment($input.val()).format('X'), 10
+                Shifts.render.START_TIME = stime
+                Shifts.db.set_option 'filter_start_time', stime, ->
+                    Shifts.render.shiftplan()
 
