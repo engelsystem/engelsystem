@@ -597,7 +597,11 @@ Shifts.render = {
       inline: true,
       format: 'Y-m-d H:i',
       minDate: '-1970-01-02',
-      maxDate: '+1970-01-02'
+      maxDate: '+1970-01-02',
+      onChangeDateTime: function(dp, $input) {
+        Shifts.render.START_TIME = moment($input.val()).format('X');
+        return Shifts.render.shiftplan();
+      }
     });
   }
 };
