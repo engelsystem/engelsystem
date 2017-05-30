@@ -7,12 +7,20 @@ Shifts.db =
     shifttype_ids: []
     angeltype_ids: []
     needed_angeltype_ids: []
+    prefix: ''
 
     init: (done) ->
+
+        # get db prefix
+        try
+            Shifts.db.prefix = '_' + Shifts.db.slugify( $('.footer').html().split('<br>')[0] )
+        catch
+            Shifts.db.prefix = ''
+
         Shifts.log 'init db'
-        alasql 'CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem;
-        ATTACH INDEXEDDB DATABASE engelsystem;', ->
-            alasql 'USE engelsystem', ->
+        alasql 'CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem' + Shifts.db.prefix + ';
+        ATTACH INDEXEDDB DATABASE engelsystem' + Shifts.db.prefix + ';', ->
+            alasql 'USE engelsystem' + Shifts.db.prefix + ';', ->
                 # note: primary key doesn't work, see https://github.com/agershun/alasql/issues/566
                 alasql 'CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, start_time INT, end_time INT, RID INT);
                 CREATE TABLE IF NOT EXISTS User (UID INT, nick);
@@ -24,6 +32,14 @@ Shifts.db =
                 CREATE TABLE IF NOT EXISTS options (option_key, option_value);', ->
                     Shifts.db.populate_ids ->
                         done()
+
+    slugify: (text) ->
+        return text.toString().toLowerCase()
+        .replace(/^[\s|\-|_]+/, '')     # Trim start
+        .replace(/[\s|\-|_]+$/, '')     # Trim end
+        .replace(/\s+/g, '_')           # Replace spaces with _
+        .replace(/__+/g, '_')           # Replace multiple _ with single _
+        .replace(/[^\w\-]+/g, '')       # Remove all non-word chars
 
     populate_ids: (done) ->
 

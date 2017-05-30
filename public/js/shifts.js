@@ -34,10 +34,16 @@ Shifts.db = {
   shifttype_ids: [],
   angeltype_ids: [],
   needed_angeltype_ids: [],
+  prefix: '',
   init: function(done) {
+    try {
+      Shifts.db.prefix = '_' + Shifts.db.slugify($('.footer').html().split('<br>')[0]);
+    } catch (error) {
+      Shifts.db.prefix = '';
+    }
     Shifts.log('init db');
-    return alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem; ATTACH INDEXEDDB DATABASE engelsystem;', function() {
-      return alasql('USE engelsystem', function() {
+    return alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem' + Shifts.db.prefix + '; ATTACH INDEXEDDB DATABASE engelsystem' + Shifts.db.prefix + ';', function() {
+      return alasql('USE engelsystem' + Shifts.db.prefix + ';', function() {
         return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, start_time INT, end_time INT, RID INT); CREATE TABLE IF NOT EXISTS User (UID INT, nick); CREATE TABLE IF NOT EXISTS Room (RID INT, Name); CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT); CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT); CREATE TABLE IF NOT EXISTS AngelTypes (id INT, name); CREATE TABLE IF NOT EXISTS NeededAngelTypes (id INT, room_id INT, shift_id INT, angel_type_id INT, angel_count INT); CREATE TABLE IF NOT EXISTS options (option_key, option_value);', function() {
           return Shifts.db.populate_ids(function() {
             return done();
@@ -45,6 +51,9 @@ Shifts.db = {
         });
       });
     });
+  },
+  slugify: function(text) {
+    return text.toString().toLowerCase().replace(/^[\s|\-|_]+/, '').replace(/[\s|\-|_]+$/, '').replace(/\s+/g, '_').replace(/__+/g, '_').replace(/[^\w\-]+/g, '');
   },
   populate_ids: function(done) {
     return alasql("SELECT RID from Room", function(res) {
