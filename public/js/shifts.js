@@ -457,18 +457,6 @@ Shifts.render = {
     }
     return "default";
   },
-  timelane: function() {
-    var end_time, start_time, thistime, time_slot;
-    time_slot = [];
-    start_time = Shifts.render.get_starttime(true);
-    end_time = Shifts.render.get_endtime(true);
-    thistime = start_time;
-    while (thistime < end_time) {
-      time_slot.push(Shifts.render.tick(thistime, true));
-      thistime += Shifts.render.SECONDS_PER_ROW;
-    }
-    return time_slot;
-  },
   shiftplan: function() {
     return Shifts.db.get_rooms(function(rooms) {
       return Shifts.db.get_angeltypes(function(angeltypes) {
@@ -482,7 +470,7 @@ Shifts.render = {
     });
   },
   shiftplan_assemble: function(rooms, angeltypes, db_shifts) {
-    var add_shift, angeltype, end_time, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, mustache_rooms, ref, ref1, ref2, rendered_until, room, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, start_time, tpl;
+    var add_shift, angeltype, end_time, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, mustache_rooms, ref, ref1, ref2, rendered_until, room, room_id, room_nr, shift, shift_added, shift_fits, shift_nr, start_time, thistime, time_slot, tpl;
     lanes = {};
     add_shift = function(shift, room_id) {
       var blocks, height, lane_nr;
@@ -547,6 +535,12 @@ Shifts.render = {
         add_shift(shift, room_id);
       }
     }
+    time_slot = [];
+    thistime = firstblock_starttime - Shifts.render.TIME_MARGIN;
+    while (thistime < end_time) {
+      time_slot.push(Shifts.render.tick(thistime, true));
+      thistime += Shifts.render.SECONDS_PER_ROW;
+    }
     mustache_rooms = [];
     for (room_nr in rooms) {
       room_id = rooms[room_nr].RID;
@@ -591,7 +585,7 @@ Shifts.render = {
       angeltypes: angeltypes
     });
     tpl += Mustache.render(Shifts.templates.shift_calendar, {
-      timelane_ticks: Shifts.render.timelane(),
+      timelane_ticks: time_slot,
       rooms: mustache_rooms
     });
     Shifts.$shiftplan.html(tpl);

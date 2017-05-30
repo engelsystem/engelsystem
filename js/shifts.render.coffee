@@ -54,17 +54,6 @@ Shifts.render =
             return "success"
         return "default"
 
-    timelane: ->
-        time_slot = []
-        start_time = Shifts.render.get_starttime(true)
-        end_time = Shifts.render.get_endtime(true)
-        thistime = start_time
-        while thistime < end_time
-            time_slot.push Shifts.render.tick thistime, true
-            thistime += Shifts.render.SECONDS_PER_ROW
-
-        return time_slot
-
     shiftplan: ->
         Shifts.db.get_rooms (rooms) ->
             Shifts.db.get_angeltypes (angeltypes) ->
@@ -115,8 +104,6 @@ Shifts.render =
 
         for shift in db_shifts
 
-            #Shifts.log shift
-
             # calculate first block start time
             if shift.start_time < firstblock_starttime
                 firstblock_starttime = shift.start_time
@@ -142,6 +129,13 @@ Shifts.render =
                 lanes[room_id].push []
                 highest_lane_nr = lanes[room_id].length - 1
                 add_shift(shift, room_id)
+
+        # build datastruct for the timelane
+        time_slot = []
+        thistime = firstblock_starttime - Shifts.render.TIME_MARGIN
+        while thistime < end_time
+            time_slot.push Shifts.render.tick thistime, true
+            thistime += Shifts.render.SECONDS_PER_ROW
 
         # build datastruct for mustache
         mustache_rooms = []
@@ -189,7 +183,7 @@ Shifts.render =
             angeltypes: angeltypes
 
         tpl += Mustache.render Shifts.templates.shift_calendar,
-            timelane_ticks: Shifts.render.timelane()
+            timelane_ticks: time_slot
             rooms: mustache_rooms
 
         Shifts.$shiftplan.html(tpl)
