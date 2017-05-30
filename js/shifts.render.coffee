@@ -132,10 +132,11 @@ Shifts.render =
 
         # build datastruct for the timelane
         time_slot = []
-        thistime = firstblock_starttime - Shifts.render.TIME_MARGIN
-        while thistime < end_time
-            time_slot.push Shifts.render.tick thistime, true
-            thistime += Shifts.render.SECONDS_PER_ROW
+        if db_shifts.length > 0
+            thistime = firstblock_starttime - Shifts.render.TIME_MARGIN
+            while thistime < end_time
+                time_slot.push Shifts.render.tick thistime, true
+                thistime += Shifts.render.SECONDS_PER_ROW
 
         # build datastruct for mustache
         mustache_rooms = []
