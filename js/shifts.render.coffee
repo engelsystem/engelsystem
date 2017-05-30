@@ -14,6 +14,9 @@ Shifts.render =
     # Seconds added to the start and end time
     TIME_MARGIN: 1800
 
+    # holder for start time
+    START_TIME: false
+
     tick: (time, label = false) ->
         if time % (24*60*60) == 23*60*60
             if label
@@ -29,8 +32,12 @@ Shifts.render =
             return { tick: true }
 
     get_starttime: (margin = false) ->
-        start_time = moment(moment().format('YYYY-MM-DD')).format('X')
-        start_time = parseInt start_time, 10
+
+        # if START_TIME is not set, set it to 0:00 at the current day and format as unix timestamp
+        if not Shifts.render.START_TIME
+            Shifts.render.START_TIME = parseInt moment(moment().format('YYYY-MM-DD')).format('X'), 10
+
+        start_time = Shifts.render.START_TIME
         if margin
             start_time = start_time - Shifts.render.TIME_MARGIN
         return start_time
@@ -188,8 +195,9 @@ Shifts.render =
         Shifts.$shiftplan.html(tpl)
 
         $('#datetimepicker').datetimepicker
-            timepicker:true
-            formatDate:'Y/m/d'
-            minDate:'-1970/01/02'
-            maxDate:'+1970/01/02'
+            value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD')
+            timepicker: true
+            formatDate: 'Y-m-d'
+            minDate: '-1970-01-02'
+            maxDate: '+1970-01-02'
 

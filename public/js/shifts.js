@@ -391,6 +391,7 @@ Shifts.render = {
   BLOCK_HEIGHT: 30,
   MARGIN: 5,
   TIME_MARGIN: 1800,
+  START_TIME: false,
   tick: function(time, label) {
     if (label == null) {
       label = false;
@@ -428,8 +429,10 @@ Shifts.render = {
     if (margin == null) {
       margin = false;
     }
-    start_time = moment(moment().format('YYYY-MM-DD')).format('X');
-    start_time = parseInt(start_time, 10);
+    if (!Shifts.render.START_TIME) {
+      Shifts.render.START_TIME = parseInt(moment(moment().format('YYYY-MM-DD')).format('X'), 10);
+    }
+    start_time = Shifts.render.START_TIME;
     if (margin) {
       start_time = start_time - Shifts.render.TIME_MARGIN;
     }
@@ -593,10 +596,11 @@ Shifts.render = {
     });
     Shifts.$shiftplan.html(tpl);
     return $('#datetimepicker').datetimepicker({
+      value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD'),
       timepicker: true,
-      formatDate: 'Y/m/d',
-      minDate: '-1970/01/02',
-      maxDate: '+1970/01/02'
+      formatDate: 'Y-m-d',
+      minDate: '-1970-01-02',
+      maxDate: '+1970-01-02'
     });
   }
 };
