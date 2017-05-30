@@ -430,7 +430,7 @@ Shifts.render = {
       margin = false;
     }
     if (!Shifts.render.START_TIME) {
-      Shifts.render.START_TIME = parseInt(moment(moment().format('YYYY-MM-DD')).format('X'), 10);
+      Shifts.render.START_TIME = parseInt(moment(moment().format('YYYY-MM-DD HH:00')).format('X'), 10);
     }
     start_time = Shifts.render.START_TIME;
     if (margin) {
@@ -596,9 +596,9 @@ Shifts.render = {
     });
     Shifts.$shiftplan.html(tpl);
     return $('#datetimepicker').datetimepicker({
-      value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD'),
+      value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm'),
       timepicker: true,
-      formatDate: 'Y-m-d',
+      formatDate: 'Y-m-d H:i',
       minDate: '-1970-01-02',
       maxDate: '+1970-01-02'
     });
