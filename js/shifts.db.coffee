@@ -83,7 +83,12 @@ Shifts.db =
                                     for s in res
                                         Shifts.db.shiftentry_ids.push s.id
 
-                                    done()
+                                    # option keys
+                                    alasql "SELECT option_key from options", (res) ->
+                                        for o in res
+                                            Shifts.db.option_keys.push o.option_key
+
+                                        done()
 
     insert_room: (room, done) ->
         room.RID = parseInt(room.RID, 10)
@@ -196,16 +201,19 @@ Shifts.db =
             done res
 
     get_option: (key, done) ->
-        alasql "SELECT * FROM options WHERE option_key = #{key} LIMIT 1", (res) ->
-            done res
+        alasql "SELECT * FROM options WHERE option_key = '#{key}' LIMIT 1", (res) ->
+            try
+                done res[0].option_value
+            catch
+                done false
 
     set_option: (key, value, done) ->
         option_key_exists = key in Shifts.db.option_keys
         if option_key_exists == false
-            alasql "INSERT INTO options (option_key, option_value) VALUES (#{key}, #{value})", ->
+            alasql "INSERT INTO options (option_key, option_value) VALUES ('#{key}', '#{value}')", ->
                 Shifts.db.option_keys.push key
                 done()
         else
-            alasql "UPDATE options SET option_value = #{value} WHERE option_key = #{key}", ->
+            alasql "UPDATE options SET option_value = '#{value}' WHERE option_key = '#{key}'", ->
                 done()
 

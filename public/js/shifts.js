@@ -96,12 +96,19 @@ Shifts.db = {
                   Shifts.db.shift_ids.push(s.SID);
                 }
                 return alasql("SELECT id from ShiftEntry", function(res) {
-                  var len6, o;
-                  for (o = 0, len6 = res.length; o < len6; o++) {
-                    s = res[o];
+                  var len6, p;
+                  for (p = 0, len6 = res.length; p < len6; p++) {
+                    s = res[p];
                     Shifts.db.shiftentry_ids.push(s.id);
                   }
-                  return done();
+                  return alasql("SELECT option_key from options", function(res) {
+                    var len7, o, q;
+                    for (q = 0, len7 = res.length; q < len7; q++) {
+                      o = res[q];
+                      Shifts.db.option_keys.push(o.option_key);
+                    }
+                    return done();
+                  });
                 });
               });
             });
@@ -232,20 +239,24 @@ Shifts.db = {
     });
   },
   get_option: function(key, done) {
-    return alasql("SELECT * FROM options WHERE option_key = " + key + " LIMIT 1", function(res) {
-      return done(res);
+    return alasql("SELECT * FROM options WHERE option_key = '" + key + "' LIMIT 1", function(res) {
+      try {
+        return done(res[0].option_value);
+      } catch (error) {
+        return done(false);
+      }
     });
   },
   set_option: function(key, value, done) {
     var option_key_exists;
     option_key_exists = indexOf.call(Shifts.db.option_keys, key) >= 0;
     if (option_key_exists === false) {
-      return alasql("INSERT INTO options (option_key, option_value) VALUES (" + key + ", " + value + ")", function() {
+      return alasql("INSERT INTO options (option_key, option_value) VALUES ('" + key + "', '" + value + "')", function() {
         Shifts.db.option_keys.push(key);
         return done();
       });
     } else {
-      return alasql("UPDATE options SET option_value = " + value + " WHERE option_key = " + key, function() {
+      return alasql("UPDATE options SET option_value = '" + value + "' WHERE option_key = '" + key + "'", function() {
         return done();
       });
     }
