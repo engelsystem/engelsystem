@@ -8,6 +8,7 @@ Shifts.templates =
     <div class="col-md-6">
       <h1>Shifts</h1>
       <div class="form-group">
+        <input id="datetimepicker" type="text" />
           <select class="form-control" id="start_day" name="start_day">
             <option value="2017-01-08">2017-01-08</option>
             <option value="2017-01-09">2017-01-09</option>

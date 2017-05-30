@@ -4,6 +4,7 @@ Shifts.interaction =
     selected_rooms: []
     selected_angeltypes: []
     selected_occupancy: []
+    datepicker_interval: false
 
     init: ->
 
@@ -18,6 +19,19 @@ Shifts.interaction =
         Shifts.interaction.on_filter_change()
         Shifts.interaction.on_mass_select()
         Shifts.interaction.on_filter_click()
+
+        # Init Datepicker
+        if Shifts.$shiftplan.length
+            Shifts.interaction.datepicker_interval = setInterval ->
+                $dtp = $('#datetimepicker')
+                if $dtp.length
+                    $dtp.datetimepicker
+                        timepicker:true
+                        formatDate:'Y/m/d'
+                        minDate:'-1970/01/02'
+                        maxDate:'+1970/01/02'
+                clearInterval Shifts.interaction.datepicker_interval
+            , 100
 
     on_filter_change: ->
         Shifts.$shiftplan.on 'change', '#selection_rooms input', ->
