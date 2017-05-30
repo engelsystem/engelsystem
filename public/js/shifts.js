@@ -396,7 +396,7 @@ Shifts.render = {
     if (label == null) {
       label = false;
     }
-    if (time % (24 * 60 * 60) === 23 * 60 * 60) {
+    if (time % (24 * 60 * 60) === 22 * 60 * 60) {
       if (label) {
         return {
           tick_day: true,
@@ -537,8 +537,8 @@ Shifts.render = {
     }
     time_slot = [];
     if (db_shifts.length > 0) {
-      thistime = firstblock_starttime - Shifts.render.TIME_MARGIN;
-      while (thistime < end_time) {
+      thistime = parseInt(firstblock_starttime, 10) - Shifts.render.TIME_MARGIN;
+      while (thistime < parseInt(lastblock_endtime, 10) + Shifts.render.TIME_MARGIN) {
         time_slot.push(Shifts.render.tick(thistime, true));
         thistime += Shifts.render.SECONDS_PER_ROW;
       }
