@@ -37,7 +37,7 @@ Shifts.render =
         if not Shifts.render.START_TIME
             Shifts.render.START_TIME = parseInt moment(moment().format('YYYY-MM-DD HH:00')).format('X'), 10
 
-        start_time = Shifts.render.START_TIME
+        start_time = parseInt Shifts.render.START_TIME, 10
         if margin
             start_time = start_time - Shifts.render.TIME_MARGIN
         return start_time
@@ -197,6 +197,6 @@ Shifts.render =
             minDate: '-1970-01-02'
             maxDate: '+1970-01-02'
             onChangeDateTime: (dp, $input) ->
-                Shifts.render.START_TIME = moment($input.val()).format('X')
+                Shifts.render.START_TIME = parseInt moment($input.val()).format('X'), 10
                 Shifts.render.shiftplan()
 
