@@ -598,7 +598,7 @@ Shifts.render = {
     return $('#datetimepicker').datetimepicker({
       value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm'),
       timepicker: true,
-      formatDate: 'Y-m-d H:i',
+      format: 'Y-m-d H:i',
       minDate: '-1970-01-02',
       maxDate: '+1970-01-02'
     });
