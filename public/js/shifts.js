@@ -599,7 +599,7 @@ Shifts.render = {
           });
           rendered_until += lanes[room_id][lane_nr][shift_nr].blocks * Shifts.render.SECONDS_PER_ROW;
         }
-        while (rendered_until < lastblock_endtime) {
+        while (rendered_until < parseInt(lastblock_endtime, 10) + Shifts.render.TIME_MARGIN) {
           mustache_rooms[room_nr].lanes[lane_nr].shifts.push(Shifts.render.tick(rendered_until, true));
           rendered_until += Shifts.render.SECONDS_PER_ROW;
         }
