@@ -9,27 +9,6 @@ Shifts.templates =
       <h1>Shifts</h1>
       <div class="form-group">
         <input id="datetimepicker" type="text" />
-          <select class="form-control" id="start_day" name="start_day">
-            <option value="2017-01-08">2017-01-08</option>
-            <option value="2017-01-09">2017-01-09</option>
-            <option value="2017-01-10" selected="selected">2017-01-10</option>
-            <option value="2017-01-11">2017-01-11</option>
-            <option value="2017-01-12">2017-01-12</option>
-            <option value="2017-01-13">2017-01-13</option>
-            <option value="2017-01-14">2017-01-14</option>
-            <option value="2017-01-15">2017-01-15</option>
-            <option value="2017-01-16">2017-01-16</option>
-          </select>
-      </div>
-      <div class="form-group">
-        <div class="input-group">
-          <input class="form-control" type="text" id="start_time" name="start_time" size="5" pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="00:00">
-          <div class="input-group-btn">
-            <button class="btn btn-default" title="Now" type="button">
-              <span class="glyphicon glyphicon-time"></span>
-            </button>
-          </div>
-        </div>
       </div>
     </div>
     <div class="col-md-2">
