@@ -85,13 +85,13 @@ Shifts.templates =
     <div class="header">Time</div>
     {{#timelane_ticks}}
         {{#tick}}
-            <div class="{{daytime}}"></div>
+            <div class="tick {{daytime}}"></div>
         {{/tick}}
         {{#tick_hour}}
-            <div class="{{daytime}} hour">{{label}}</div>
+            <div class="tick {{daytime}} hour">{{label}}</div>
         {{/tick_hour}}
         {{#tick_day}}
-            <div class="{{daytime}} day">{{label}}</div>
+            <div class="tick {{daytime}} day">{{label}}</div>
         {{/tick_day}}
     {{/timelane_ticks}}
   </div>
@@ -104,13 +104,13 @@ Shifts.templates =
         </div>
         {{#shifts}}
             {{#tick}}
-                <div class="{{daytime}}"></div>
+                <div class="tick {{daytime}}"></div>
             {{/tick}}
             {{#tick_hour}}
-                <div class="{{daytime}} hour">{{text}}</div>
+                <div class="tick {{daytime}} hour">{{text}}</div>
             {{/tick_hour}}
             {{#tick_day}}
-                <div class="{{daytime}} day">{{text}}</div>
+                <div class="tick {{daytime}} day">{{text}}</div>
             {{/tick_day}}
             {{#shift}}
                 <div class="shift panel panel-{{state_class}}" style="height: {{height}}px;">
@@ -129,8 +129,8 @@ Shifts.templates =
                   </div>
                   <ul class="list-group">
                     <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong>
-                      <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>,
-                      <span style=""><a class="" href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span>
+                      <span><a href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>,
+                      <span><a href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span>
                     </li>
                     <li class="list-group-item">
                       <a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a>
