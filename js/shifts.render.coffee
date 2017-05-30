@@ -18,18 +18,24 @@ Shifts.render =
     START_TIME: false
 
     tick: (time, label = false) ->
-        if time % (24*60*60) == 22*60*60
+
+        daytime = "tick_bright"
+        hour = moment.unix(time).format('H')
+        if  hour > 19 or hour < 8
+            daytime = "tick_dark"
+
+        if time % (24*60*60) == 22*60*60 #TODO: daylight saving bug, investigate
             if label
-                return { tick_day: true, label: moment.unix(time).format('MM-DD HH:mm') }
+                return { tick_day: true, label: moment.unix(time).format('MM-DD HH:mm'), daytime: daytime }
             else
-                return { tick_day: true }
+                return { tick_day: true, daytime: daytime }
         else if time % (60*60) == 0
             if label
-                return { tick_hour: true, label: moment.unix(time).format('HH:mm') }
+                return { tick_hour: true, label: moment.unix(time).format('HH:mm'), daytime: daytime }
             else
-                return { tick_hour: true }
+                return { tick_hour: true, daytime: daytime }
         else
-            return { tick: true }
+            return { tick: true, daytime: daytime }
 
     get_starttime: (margin = false) ->
 
