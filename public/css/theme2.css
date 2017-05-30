@@ -6798,6 +6798,10 @@ body {
   width: 50px;
   flex-shrink: 0;
 }
+.shift-calendar .panel:hover {
+  /* Show full panel content when hovering over it */
+  height: auto !important;
+}
 .shift-calendar .shift {
   margin: 0 5px 5px 0;
   overflow: hidden;
