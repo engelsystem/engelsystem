@@ -85,13 +85,13 @@ Shifts.templates =
     <div class="header">Time</div>
     {{#timelane_ticks}}
         {{#tick}}
-            <div class="tick {{daytime}}"></div>
+            <div class="{{daytime}}"></div>
         {{/tick}}
         {{#tick_hour}}
-            <div class="tick hour {{daytime}}">{{label}}</div>
+            <div class="{{daytime}} hour">{{label}}</div>
         {{/tick_hour}}
         {{#tick_day}}
-            <div class="tick day {{daytime}}">{{label}}</div>
+            <div class="{{daytime}} day">{{label}}</div>
         {{/tick_day}}
     {{/timelane_ticks}}
   </div>
@@ -104,13 +104,13 @@ Shifts.templates =
         </div>
         {{#shifts}}
             {{#tick}}
-                <div class="tick {{daytime}}"></div>
+                <div class="{{daytime}}"></div>
             {{/tick}}
             {{#tick_hour}}
-                <div class="tick hour {{daytime}}">{{text}}</div>
+                <div class="{{daytime}} hour">{{text}}</div>
             {{/tick_hour}}
             {{#tick_day}}
-                <div class="tick day {{daytime}}">{{text}}</div>
+                <div class="{{daytime}} day">{{text}}</div>
             {{/tick_day}}
             {{#shift}}
                 <div class="shift panel panel-{{state_class}}" style="height: {{height}}px;">

@@ -6777,26 +6777,45 @@ body {
   height: 30px;
   padding: 5px 5px 5px 16px;
 }
-.shift-calendar .lane .tick {
+.shift-calendar .lane .tick_bright {
   height: 30px;
   border-top: 1px solid #f4f4f4;
 }
-.shift-calendar .lane .tick.hour {
+.shift-calendar .lane .tick_bright.hour {
   border-top: 2px solid #dddddd;
   font-size: 0.9em;
   padding-left: 5px;
 }
-.shift-calendar .lane .tick.day {
+.shift-calendar .lane .tick_bright.day {
   border-top: 2px solid #337ab7;
   font-size: 0.9em;
   padding-left: 5px;
 }
+.shift-calendar .lane .tick_dark {
+  height: 30px;
+  border-top: 1px solid #666;
+  background: #333;
+}
+.shift-calendar .lane .tick_dark.hour {
+  border-top: 2px solid #999;
+  font-size: 0.9em;
+  padding-left: 5px;
+  color: #ddd;
+}
+.shift-calendar .lane .tick_dark.day {
+  border-top: 2px solid #337ab7;
+  font-size: 0.9em;
+  padding-left: 5px;
+  color: #ddd;
+}
+/*
 .shift-calendar .lane .tick_dark {
     background: #333;
 }
 .shift-calendar .lane .tick_bright {
     background: #f9f9f9;
 }
+*/
 .shift-calendar .lane.time {
   border-right: 1px solid #dddddd;
   flex-grow: 0;
