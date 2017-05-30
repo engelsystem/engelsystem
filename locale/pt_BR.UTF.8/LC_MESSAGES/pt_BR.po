@@ -1,0 +1,2643 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Engelsystem 2.0\n"
+"POT-Creation-Date: 2017-04-25 05:23+0200\n"
+"PO-Revision-Date: 2017-04-25 05:23+0200\n"
+"Last-Translator: samba <samba@autistici.org>\n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.1\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
+"X-Poedit-Basepath: ../../..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/controller/angeltypes_controller.php:7
+#: includes/pages/user_shifts.php:164 includes/view/AngelTypes_view.php:62
+#: includes/view/AngelTypes_view.php:86 includes/view/User_view.php:356
+msgid "Angeltypes"
+msgstr "Tipo de Anjo"
+
+#: includes/controller/angeltypes_controller.php:53
+#: includes/pages/guest_login.php:377 includes/view/AngelTypes_view.php:265
+#: includes/view/AngelTypes_view.php:326 includes/view/User_view.php:110
+msgid "Teams/Job description"
+msgstr "Time/Descrição do trabalho"
+
+#: includes/controller/angeltypes_controller.php:72
+#, php-format
+msgid "Angeltype %s deleted."
+msgstr "Tipo de anjo %s apagado."
+
+#: includes/controller/angeltypes_controller.php:77
+#: includes/view/AngelTypes_view.php:41
+#, php-format
+msgid "Delete angeltype %s"
+msgstr "Apagar tipo de anjo %s"
+
+#: includes/controller/angeltypes_controller.php:116
+msgid "Please check the name. Maybe it already exists."
+msgstr "Por favor verifique o nome. Pode ser que já exista."
+
+#: includes/controller/angeltypes_controller.php:141
+#: includes/view/AngelTypes_view.php:60
+#, php-format
+msgid "Edit %s"
+msgstr "Editar %s"
+
+#: includes/controller/angeltypes_controller.php:162
+#: includes/view/AngelTypes_view.php:252
+#, php-format
+msgid "Team %s"
+msgstr "Time %s"
+
+#: includes/controller/angeltypes_controller.php:181
+#: includes/view/User_view.php:274
+msgid "view"
+msgstr "ver"
+
+#: includes/controller/angeltypes_controller.php:185
+#: includes/pages/admin_free.php:71 includes/pages/admin_groups.php:23
+#: includes/pages/admin_rooms.php:16 includes/view/AngelTypes_view.php:107
+#: includes/view/ShiftTypes_view.php:55 includes/view/ShiftTypes_view.php:67
+#: includes/view/Shifts_view.php:55 includes/view/User_view.php:277
+#: includes/view/User_view.php:328
+msgid "edit"
+msgstr "editar"
+
+#: includes/controller/angeltypes_controller.php:186
+#: includes/controller/shifts_controller.php:178
+#: includes/pages/admin_questions.php:42 includes/pages/admin_questions.php:56
+#: includes/pages/admin_rooms.php:17 includes/pages/admin_user.php:120
+#: includes/view/AngelTypes_view.php:45 includes/view/AngelTypes_view.php:110
+#: includes/view/Questions_view.php:5 includes/view/Questions_view.php:12
+#: includes/view/ShiftTypes_view.php:16 includes/view/ShiftTypes_view.php:56
+#: includes/view/ShiftTypes_view.php:68 includes/view/Shifts_view.php:56
+msgid "delete"
+msgstr "deletar"
+
+#: includes/controller/angeltypes_controller.php:191
+#: includes/view/AngelTypes_view.php:103 includes/view/AngelTypes_view.php:288
+msgid "leave"
+msgstr "sair"
+
+#: includes/controller/angeltypes_controller.php:193
+#: includes/view/AngelTypes_view.php:94 includes/view/AngelTypes_view.php:290
+msgid "join"
+msgstr "entrar"
+
+#: includes/controller/angeltypes_controller.php:220
+#: includes/controller/user_angeltypes_controller.php:29
+#: includes/controller/user_angeltypes_controller.php:35
+#: includes/controller/user_angeltypes_controller.php:65
+#: includes/controller/user_angeltypes_controller.php:71
+#: includes/controller/user_angeltypes_controller.php:119
+#: includes/controller/user_angeltypes_controller.php:170
+#: includes/controller/user_angeltypes_controller.php:235
+msgid "Angeltype doesn't exist."
+msgstr "Esse tipo de anjo não existe."
+
+#: includes/controller/event_config_controller.php:4
+msgid "Event config"
+msgstr "Configuração do evento"
+
+#: includes/controller/event_config_controller.php:48
+msgid "Please enter buildup start date."
+msgstr "Por favor digite a data de início da montagem."
+
+#: includes/controller/event_config_controller.php:52
+msgid "Please enter event start date."
+msgstr "Por favor digite a data de início do evento."
+
+#: includes/controller/event_config_controller.php:56
+msgid "Please enter event end date."
+msgstr "Por favor digite a data de término do evento."
+
+#: includes/controller/event_config_controller.php:60
+msgid "Please enter teardown end date."
+msgstr "Por favor digite a data de desmontagem do evento"
+
+#: includes/controller/event_config_controller.php:66
+msgid "The buildup start date has to be before the event start date."
+msgstr "A data de montagem deve ser anterior a data de início do evento."
+
+#: includes/controller/event_config_controller.php:71
+msgid "The event start date has to be before the event end date."
+msgstr ""
+"A data de início do evento deve ser anterior a data de término do evento."
+
+#: includes/controller/event_config_controller.php:76
+msgid "The event end date has to be before the teardown end date."
+msgstr "A data de término deve ser anterior a data de desmontagem do evento."
+
+#: includes/controller/event_config_controller.php:81
+msgid "The buildup start date has to be before the teardown end date."
+msgstr "A data de montagem deve ser anterior a data de desmontagem do evento."
+
+#: includes/controller/event_config_controller.php:92
+#: includes/pages/user_settings.php:77
+msgid "Settings saved."
+msgstr "Configurações salvas."
+
+#: includes/controller/shift_entries_controller.php:56
+msgid ""
+"You are not allowed to sign up for this shift. Maybe shift is full or "
+"already running."
+msgstr ""
+"Você não tem permissão para se inscrever nesse turno. Talvez o turno esteja "
+"lotado ou já esteja em andamento."
+
+#: includes/controller/shift_entries_controller.php:103
+msgid "You are subscribed. Thank you!"
+msgstr "Você já está inscrito. Obrigado!"
+
+#: includes/controller/shift_entries_controller.php:103
+#: includes/pages/user_myshifts.php:4
+msgid "My shifts"
+msgstr "Meus turnos"
+
+#: includes/controller/shift_entries_controller.php:111
+#: includes/view/User_view.php:348
+msgid "Freeloader"
+msgstr "Freeloader"
+
+#: includes/controller/shift_entries_controller.php:180
+msgid "Shift entry deleted."
+msgstr "O turno foi deletado."
+
+#: includes/controller/shift_entries_controller.php:182
+msgid "Entry not found."
+msgstr "Entrada não encontrada."
+
+#: includes/controller/shifts_controller.php:63
+msgid "Please select a room."
+msgstr "Por favor selecione uma sala."
+
+#: includes/controller/shifts_controller.php:70
+msgid "Please select a shifttype."
+msgstr "Por favor selecione um tssipo de turno."
+
+#: includes/controller/shifts_controller.php:77
+msgid "Please enter a valid starting time for the shifts."
+msgstr "Por favor entre com um horário de início válido para os turnos."
+
+#: includes/controller/shifts_controller.php:84
+msgid "Please enter a valid ending time for the shifts."
+msgstr "Por favor entre com um horário de término válido para os turnos."
+
+#: includes/controller/shifts_controller.php:89
+msgid "The ending time has to be after the starting time."
+msgstr "O horário de término deve ser após o horário de início."
+
+#: includes/controller/shifts_controller.php:97
+#, php-format
+msgid "Please check your input for needed angels of type %s."
+msgstr "Por favor verifique seu input para os anjos de tipo %s necessários."
+
+#: includes/controller/shifts_controller.php:120
+msgid "Shift updated."
+msgstr "Turno atualizado."
+
+#: includes/controller/shifts_controller.php:135
+msgid "This page is much more comfortable with javascript."
+msgstr "Esta página é muito mais confortável com javascript"
+
+#: includes/controller/shifts_controller.php:137
+#: includes/pages/admin_import.php:98 includes/pages/admin_shifts.php:319
+msgid "Shifttype"
+msgstr "Tipo de turno"
+
+#: includes/controller/shifts_controller.php:138
+#: includes/pages/admin_import.php:158 includes/pages/admin_import.php:167
+#: includes/pages/admin_import.php:176 includes/pages/admin_shifts.php:320
+#: includes/view/Shifts_view.php:62
+msgid "Title"
+msgstr "Título"
+
+#: includes/controller/shifts_controller.php:139
+msgid "Room:"
+msgstr "Sala:"
+
+#: includes/controller/shifts_controller.php:140
+msgid "Start:"
+msgstr "Início:"
+
+#: includes/controller/shifts_controller.php:141
+msgid "End:"
+msgstr "Fim:"
+
+#: includes/controller/shifts_controller.php:142
+#: includes/pages/admin_shifts.php:270 includes/pages/admin_shifts.php:334
+#: includes/view/Shifts_view.php:88
+msgid "Needed angels"
+msgstr "Anjos necessários"
+
+#: includes/controller/shifts_controller.php:144
+#: includes/pages/admin_groups.php:54 includes/pages/admin_news.php:35
+#: includes/pages/admin_questions.php:40 includes/pages/admin_rooms.php:157
+#: includes/pages/admin_shifts.php:272 includes/pages/user_messages.php:44
+#: includes/pages/user_news.php:107 includes/pages/user_news.php:164
+#: includes/view/AngelTypes_view.php:76 includes/view/EventConfig_view.php:122
+#: includes/view/Questions_view.php:32 includes/view/ShiftEntry_view.php:32
+#: includes/view/ShiftTypes_view.php:39
+#: includes/view/UserDriverLicenses_view.php:34 includes/view/User_view.php:56
+#: includes/view/User_view.php:65 includes/view/User_view.php:70
+#: includes/view/User_view.php:75 includes/view/User_view.php:146
+#: includes/view/User_view.php:402
+msgid "Save"
+msgstr "Salvar"
+
+#: includes/controller/shifts_controller.php:172
+msgid "Shift deleted."
+msgstr "Turno deletado."
+
+#: includes/controller/shifts_controller.php:177
+#, php-format
+msgid "Do you want to delete the shift %s from %s to %s?"
+msgstr "Você quer deletar o turno %s de %s para %s?"
+
+#: includes/controller/shifts_controller.php:195
+msgid "Shift could not be found."
+msgstr "O turno não pôde ser encontrado."
+
+#: includes/controller/shifttypes_controller.php:31
+#, php-format
+msgid "Shifttype %s deleted."
+msgstr "Tipo de turno %s deletado."
+
+#: includes/controller/shifttypes_controller.php:36
+#: includes/view/ShiftTypes_view.php:12
+#, php-format
+msgid "Delete shifttype %s"
+msgstr "Apagar tipo de turno %s"
+
+#: includes/controller/shifttypes_controller.php:58
+msgid "Shifttype not found."
+msgstr "Tipo de turno não encontrado."
+
+#: includes/controller/shifttypes_controller.php:74
+#: includes/pages/admin_rooms.php:71
+msgid "Please enter a name."
+msgstr "Por favor digite um nome."
+
+#: includes/controller/shifttypes_controller.php:94
+msgid "Updated shifttype."
+msgstr "Tipo de turno atualizado."
+
+#: includes/controller/shifttypes_controller.php:101
+msgid "Created shifttype."
+msgstr "Tipo de turno criado"
+
+#: includes/controller/shifttypes_controller.php:155
+msgid "Shifttypes"
+msgstr "Tipos de turno"
+
+#: includes/controller/user_angeltypes_controller.php:19
+#, php-format
+msgid "There is %d unconfirmed angeltype."
+msgid_plural "There are %d unconfirmed angeltypes."
+msgstr[0] "Há %d anjo não confirmado."
+msgstr[1] "There are %d unconfirmed angeltypes."
+
+#: includes/controller/user_angeltypes_controller.php:19
+msgid "Angel types which need approvals:"
+msgstr "Tipos de anjo que precisam de aprovações:"
+
+#: includes/controller/user_angeltypes_controller.php:40
+msgid "You are not allowed to delete all users for this angeltype."
+msgstr ""
+"Você não têm permissão para apagar todos os usuários desse tipo de anjo."
+
+#: includes/controller/user_angeltypes_controller.php:48
+#, php-format
+msgid "Denied all users for angeltype %s."
+msgstr "Todos os usuários com tipo de anjo %s negados."
+
+#: includes/controller/user_angeltypes_controller.php:53
+#: includes/view/UserAngelTypes_view.php:15
+msgid "Deny all users"
+msgstr "Negar todos os usuários"
+
+#: includes/controller/user_angeltypes_controller.php:77
+#: includes/controller/user_angeltypes_controller.php:107
+#: includes/controller/user_angeltypes_controller.php:113
+#: includes/controller/user_angeltypes_controller.php:158
+#: includes/controller/user_angeltypes_controller.php:164
+#: includes/controller/user_angeltypes_controller.php:216
+#: includes/controller/user_angeltypes_controller.php:229
+msgid "User angeltype doesn't exist."
+msgstr "O tipo de anjo deste usuário não existe."
+
+#: includes/controller/user_angeltypes_controller.php:82
+msgid "You are not allowed to confirm all users for this angeltype."
+msgstr ""
+"Você não tem permissão para confirmar todos os usuários com este tipo de "
+"anjo."
+
+#: includes/controller/user_angeltypes_controller.php:90
+#, php-format
+msgid "Confirmed all users for angeltype %s."
+msgstr "Todos os usuários com tipo de anjo %s confirmados."
+
+#: includes/controller/user_angeltypes_controller.php:95
+#: includes/view/UserAngelTypes_view.php:26
+msgid "Confirm all users"
+msgstr "Confirmar todos usuários"
+
+#: includes/controller/user_angeltypes_controller.php:124
+msgid "You are not allowed to confirm this users angeltype."
+msgstr "Você não tem permissão para confirmar o tipo de anjo deste usuário."
+
+#: includes/controller/user_angeltypes_controller.php:130
+#: includes/controller/user_angeltypes_controller.php:176
+#: includes/controller/user_angeltypes_controller.php:241
+#: includes/controller/users_controller.php:312
+msgid "User doesn't exist."
+msgstr "Usuário não existente."
+
+#: includes/controller/user_angeltypes_controller.php:141
+#, php-format
+msgid "%s confirmed for angeltype %s."
+msgstr "%s confirmado para o tipo de anjo %s."
+
+#: includes/controller/user_angeltypes_controller.php:146
+#: includes/view/UserAngelTypes_view.php:37
+msgid "Confirm angeltype for user"
+msgstr "Confirme o tipo de anjo para o usuário"
+
+#: includes/controller/user_angeltypes_controller.php:181
+msgid "You are not allowed to delete this users angeltype."
+msgstr "Você não tem permissão para deletar o tipo de anjo deste usuário."
+
+#: includes/controller/user_angeltypes_controller.php:191
+#, php-format
+msgid "User %s removed from %s."
+msgstr "Usuário %s removido de %s."
+
+#: includes/controller/user_angeltypes_controller.php:199
+#: includes/view/UserAngelTypes_view.php:48
+msgid "Remove angeltype"
+msgstr "Remover esse tipo de anjo"
+
+#: includes/controller/user_angeltypes_controller.php:211
+msgid "You are not allowed to set supporter rights."
+msgstr "Você não tem autorização para definir permissões de apoiadores."
+
+#: includes/controller/user_angeltypes_controller.php:223
+msgid "No supporter update given."
+msgstr "Nenhuma atualização de apoiador informada."
+
+#: includes/controller/user_angeltypes_controller.php:248
+#, php-format
+msgid "Added supporter rights for %s to %s."
+msgstr "Permissões de apoiador incluídos para %s a %s."
+
+#: includes/controller/user_angeltypes_controller.php:248
+#, php-format
+msgid "Removed supporter rights for %s from %s."
+msgstr "Permissões de apoiador removidos para %s a %s."
+
+#: includes/controller/user_angeltypes_controller.php:256
+#: includes/view/AngelTypes_view.php:156
+#: includes/view/UserAngelTypes_view.php:4
+msgid "Add supporter rights"
+msgstr "Adicionar permissão ao apoiador"
+
+#: includes/controller/user_angeltypes_controller.php:256
+#: includes/view/AngelTypes_view.php:147
+#: includes/view/UserAngelTypes_view.php:4
+msgid "Remove supporter rights"
+msgstr "Remover permissões de apoiador"
+
+#: includes/controller/user_angeltypes_controller.php:289
+#, php-format
+msgid "User %s added to %s."
+msgstr "Usuário %s adicionado a %s."
+
+#: includes/controller/user_angeltypes_controller.php:299
+#: includes/view/UserAngelTypes_view.php:64
+msgid "Add user to angeltype"
+msgstr "Adicionar usuário a tipo de anjo"
+
+#: includes/controller/user_angeltypes_controller.php:312
+#, php-format
+msgid "You are already a %s."
+msgstr "Você já é %s."
+
+#: includes/controller/user_angeltypes_controller.php:319
+#, php-format
+msgid "You joined %s."
+msgstr "Você se juntou a %s."
+
+#: includes/controller/user_angeltypes_controller.php:332
+#: includes/view/UserAngelTypes_view.php:78
+#, php-format
+msgid "Become a %s"
+msgstr "Torne-se %s"
+
+#: includes/controller/user_driver_licenses_controller.php:19
+#, php-format
+msgid ""
+"You joined an angeltype which requires a driving license. Please edit your "
+"driving license information here: %s."
+msgstr ""
+"Você se tornou um tipo de anjo que requer carteira de motorista. Por favor "
+"inclua \n"
+"seus dados aqui: %s."
+
+#: includes/controller/user_driver_licenses_controller.php:19
+msgid "driving license information"
+msgstr "dados da carteira de motorista"
+
+#: includes/controller/user_driver_licenses_controller.php:113
+msgid "Your driver license information has been saved."
+msgstr "Dados da carteira de motorista salvos."
+
+#: includes/controller/user_driver_licenses_controller.php:116
+msgid "Please select at least one driving license."
+msgstr "Selecione pelo menos uma carteira de motorista."
+
+#: includes/controller/user_driver_licenses_controller.php:121
+msgid "Your driver license information has been removed."
+msgstr "Seus dados de carteira de motorista foram removidos."
+
+#: includes/controller/user_driver_licenses_controller.php:127
+#: includes/view/UserDriverLicenses_view.php:15
+#, php-format
+msgid "Edit %s driving license information"
+msgstr "Editar dados da carteira de motorista de %s"
+
+#: includes/controller/users_controller.php:52
+msgid "You cannot delete yourself."
+msgstr "Você não pode se deletar."
+
+#: includes/controller/users_controller.php:61
+#: includes/pages/guest_login.php:315
+msgid "Your password is incorrect.  Please try it again."
+msgstr "Sua senha está incorreta. Por favor, tente novamente."
+
+#: includes/controller/users_controller.php:71
+msgid "User deleted."
+msgstr "Usuário deletado."
+
+#: includes/controller/users_controller.php:79 includes/view/User_view.php:121
+#, php-format
+msgid "Delete %s"
+msgstr "Apagar %s"
+
+#: includes/controller/users_controller.php:120
+msgid "Please enter a valid number of vouchers."
+msgstr "Por favor, entre com um número válido de vouchers."
+
+#: includes/controller/users_controller.php:131
+msgid "Saved the number of vouchers."
+msgstr "Número de vouchers salvo."
+
+#: includes/controller/users_controller.php:139 includes/view/User_view.php:138
+#, php-format
+msgid "%s's vouchers"
+msgstr "Vouchers de %s"
+
+#: includes/controller/users_controller.php:151
+msgid "User not found."
+msgstr "Usuário não encontrado."
+
+#: includes/controller/users_controller.php:205 includes/view/User_view.php:175
+msgid "All users"
+msgstr "Todos usuários"
+
+#: includes/controller/users_controller.php:217
+msgid "Token is not correct."
+msgstr "O token não está correto."
+
+#: includes/controller/users_controller.php:227
+#: includes/pages/guest_login.php:102 includes/pages/user_settings.php:97
+msgid "Your passwords don't match."
+msgstr "Suas senhas não correspondem."
+
+#: includes/controller/users_controller.php:231
+#: includes/pages/user_settings.php:95
+msgid "Your password is to short (please use at least 6 characters)."
+msgstr "Sua senha é muito curta (por favor use no mínimo 6 caracteres)."
+
+#: includes/controller/users_controller.php:236
+#: includes/pages/user_settings.php:99
+msgid "Password saved."
+msgstr "Sua senha foi salva."
+
+#: includes/controller/users_controller.php:257
+#: includes/controller/users_controller.php:261
+#: includes/pages/guest_login.php:67 includes/pages/user_settings.php:21
+msgid "E-mail address is not correct."
+msgstr "E-mail não está correto."
+
+#: includes/controller/users_controller.php:265
+#: includes/pages/guest_login.php:71 includes/pages/user_settings.php:25
+msgid "Please enter your e-mail."
+msgstr "Por favor digite seu e-mail."
+
+#: includes/controller/users_controller.php:270
+#: includes/controller/users_controller.php:295
+msgid "Password recovery"
+msgstr "Recuperação de senha"
+
+#: includes/controller/users_controller.php:270
+#, php-format
+msgid "Please visit %s to recover your password."
+msgstr "Por favor visite %s para recuperar sua senha"
+
+#: includes/controller/users_controller.php:271
+msgid "We sent an email containing your password recovery link."
+msgstr "Nós enviamos um email com o link para recuperação da sua senha."
+
+#: includes/helper/email_helper.php:12
+#, php-format
+msgid "Hi %s,"
+msgstr "Oi %s,"
+
+#: includes/helper/email_helper.php:12
+msgid "here is a message for you from the engelsystem:"
+msgstr "aqui está uma mensagem do engelsystem para você:"
+
+#: includes/helper/email_helper.php:12
+msgid ""
+"This email is autogenerated and has not to be signed. You got this email "
+"because you are registered in the engelsystem."
+msgstr "Você recebeu esse email porque está registrado no engelsystem."
+
+#: includes/mailer/shifts_mailer.php:10
+msgid "A Shift you are registered on has changed:"
+msgstr "Um turno em que você estava registrado foi modificado:"
+
+#: includes/mailer/shifts_mailer.php:14
+#, php-format
+msgid "* Shift type changed from %s to %s"
+msgstr "* Tipo de turno alterado de %s para %s"
+
+#: includes/mailer/shifts_mailer.php:19
+#, php-format
+msgid "* Shift title changed from %s to %s"
+msgstr "* Título do turno alterado de %s para %s"
+
+#: includes/mailer/shifts_mailer.php:24
+#, php-format
+msgid "* Shift Start changed from %s to %s"
+msgstr "* Início do turno alterado de %s para %s"
+
+#: includes/mailer/shifts_mailer.php:29
+#, php-format
+msgid "* Shift End changed from %s to %s"
+msgstr "* Término do turno alterado de %s para %s"
+
+#: includes/mailer/shifts_mailer.php:34
+#, php-format
+msgid "* Shift Location changed from %s to %s"
+msgstr "* Local do turno alterado de %s para %s"
+
+#: includes/mailer/shifts_mailer.php:44
+msgid "The updated Shift:"
+msgstr "Turno atualizado:"
+
+#: includes/mailer/shifts_mailer.php:53
+msgid "Your Shift has changed"
+msgstr "O seu turno foi modificado"
+
+#: includes/mailer/shifts_mailer.php:62
+msgid "A Shift you are registered on was deleted:"
+msgstr "Um turno em que você estava registrado foi apagado:"
+
+#: includes/mailer/shifts_mailer.php:71
+msgid "Your Shift was deleted"
+msgstr "Seu turno foi apagado"
+
+#: includes/mailer/shifts_mailer.php:80
+msgid "You have been assigned to a Shift:"
+msgstr "Você foi alocado a um turno:"
+
+#: includes/mailer/shifts_mailer.php:86
+msgid "Assigned to Shift"
+msgstr "Alocado ao turno"
+
+#: includes/mailer/shifts_mailer.php:94
+msgid "You have been removed from a Shift:"
+msgstr "Você foi removido de um turno:"
+
+#: includes/mailer/shifts_mailer.php:100
+msgid "Removed from Shift"
+msgstr "Removido do turno"
+
+#: includes/mailer/users_mailer.php:7
+msgid "Your account has been deleted"
+msgstr "A sua conta foi deletada."
+
+#: includes/mailer/users_mailer.php:7
+msgid ""
+"Your angelsystem account has been deleted. If you have any questions "
+"regarding your account deletion, please contact heaven."
+msgstr ""
+"Sua conta engelsystem foi deletada. Se você tiver questões sobre a deleção "
+"da sua conta, por favor entre em contato com o paraíso."
+
+#: includes/pages/admin_active.php:4
+msgid "Active angels"
+msgstr "Anjos ativos"
+
+#: includes/pages/admin_active.php:29
+#, php-format
+msgid ""
+"At least %s angels are forced to be active. The number has to be greater."
+msgstr "No mínimo %s anjos precisam estar ativos. O número deve ser maior."
+
+#: includes/pages/admin_active.php:34
+msgid "Please enter a number of angels to be marked as active."
+msgstr "Por favor insira o número de anjos a marcar como ativos."
+
+#: includes/pages/admin_active.php:59
+msgid "Marked angels."
+msgstr "Anjos marcados."
+
+#: includes/pages/admin_active.php:61 includes/pages/admin_rooms.php:137
+#: includes/pages/admin_rooms.php:173 includes/pages/admin_shifts.php:266
+#: includes/view/UserAngelTypes_view.php:67 includes/view/User_view.php:124
+#: includes/view/User_view.php:141
+msgid "back"
+msgstr "voltar"
+
+#: includes/pages/admin_active.php:61
+msgid "apply"
+msgstr "aplicar"
+
+#: includes/pages/admin_active.php:71
+msgid "Angel has been marked as active."
+msgstr "Anjo marcado como ativo."
+
+#: includes/pages/admin_active.php:73 includes/pages/admin_active.php:83
+#: includes/pages/admin_active.php:103 includes/pages/admin_arrive.php:23
+#: includes/pages/admin_arrive.php:34
+msgid "Angel not found."
+msgstr "Anjo não encontrado."
+
+#: includes/pages/admin_active.php:81
+msgid "Angel has been marked as not active."
+msgstr "Anjo marcado como não ativo."
+
+#: includes/pages/admin_active.php:91
+msgid "Angel has got a t-shirt."
+msgstr "Anjo tem uma camiseta."
+
+#: includes/pages/admin_active.php:101
+msgid "Angel has got no t-shirt."
+msgstr "Anjo não tem camiseta."
+
+#: includes/pages/admin_active.php:142
+msgid "set active"
+msgstr "definir ativo"
+
+#: includes/pages/admin_active.php:145
+msgid "remove active"
+msgstr "remover ativo"
+
+#: includes/pages/admin_active.php:146
+msgid "got t-shirt"
+msgstr "pegou camiseta"
+
+#: includes/pages/admin_active.php:149
+msgid "remove t-shirt"
+msgstr "remover camiseta"
+
+#: includes/pages/admin_active.php:168 includes/pages/admin_arrive.php:165
+#: includes/pages/admin_arrive.php:180 includes/pages/admin_arrive.php:195
+#: includes/view/AngelTypes_view.php:221 includes/view/AngelTypes_view.php:229
+#: includes/view/User_view.php:165
+msgid "Sum"
+msgstr "Somatória"
+
+#: includes/pages/admin_active.php:175
+msgid "Search angel:"
+msgstr "Buscar Anjo:"
+
+#: includes/pages/admin_active.php:176
+msgid "Show all shifts"
+msgstr "Mostrar todos os turnos"
+
+#: includes/pages/admin_active.php:177 includes/pages/admin_arrive.php:141
+#: includes/pages/admin_arrive.php:142 includes/pages/admin_free.php:78
+#: includes/pages/admin_free.php:87 includes/pages/admin_log.php:23
+#: includes/pages/admin_log.php:24
+msgid "Search"
+msgstr "Buscar"
+
+#: includes/pages/admin_active.php:180
+msgid "How much angels should be active?"
+msgstr "Quantos anjos deverão estar ativos?"
+
+#: includes/pages/admin_active.php:181 includes/pages/admin_shifts.php:254
+#: includes/pages/admin_shifts.php:342
+msgid "Preview"
+msgstr "Pré-visualizar"
+
+#: includes/pages/admin_active.php:185 includes/pages/admin_arrive.php:145
+msgid "Nickname"
+msgstr "Apelido"
+
+#: includes/pages/admin_active.php:186 includes/pages/admin_active.php:196
+#: includes/view/User_view.php:191
+msgid "Size"
+msgstr "Tamanho"
+
+#: includes/pages/admin_active.php:187 includes/pages/user_shifts.php:5
+#: includes/view/User_view.php:364
+msgid "Shifts"
+msgstr "Turnos"
+
+#: includes/pages/admin_active.php:188 includes/pages/admin_shifts.php:329
+msgid "Length"
+msgstr "Duração"
+
+#: includes/pages/admin_active.php:189
+msgid "Active?"
+msgstr "Ativo?"
+
+#: includes/pages/admin_active.php:190 includes/view/User_view.php:189
+msgid "Forced"
+msgstr "Forçados"
+
+#: includes/pages/admin_active.php:191
+msgid "T-shirt?"
+msgstr "Camiseta?"
+
+#: includes/pages/admin_active.php:194
+msgid "Shirt statistics"
+msgstr "Estatísticas de camiseta"
+
+#: includes/pages/admin_active.php:197
+msgid "Needed shirts"
+msgstr "Camisetas necessárias"
+
+#: includes/pages/admin_active.php:198
+msgid "Given shirts"
+msgstr "Camisetas entregues"
+
+#: includes/pages/admin_arrive.php:4
+msgid "Arrived angels"
+msgstr "Anjos que chegaram"
+
+#: includes/pages/admin_arrive.php:20
+msgid "Reset done. Angel has not arrived."
+msgstr "Reset realizado. Anjo não chegou."
+
+#: includes/pages/admin_arrive.php:31
+msgid "Angel has been marked as arrived."
+msgstr "Chegada do anjo registrada."
+
+#: includes/pages/admin_arrive.php:71 includes/view/UserAngelTypes_view.php:9
+#: includes/view/UserAngelTypes_view.php:20
+#: includes/view/UserAngelTypes_view.php:31
+#: includes/view/UserAngelTypes_view.php:42
+#: includes/view/UserAngelTypes_view.php:53
+msgid "yes"
+msgstr "sim"
+
+#: includes/pages/admin_arrive.php:72
+msgid "reset"
+msgstr "resetar"
+
+#: includes/pages/admin_arrive.php:72 includes/pages/admin_arrive.php:156
+#: includes/pages/admin_arrive.php:171 includes/pages/admin_arrive.php:186
+#: includes/view/User_view.php:330
+msgid "arrived"
+msgstr "chegou"
+
+#: includes/pages/admin_arrive.php:146
+msgid "Planned arrival"
+msgstr "Chegada planejada"
+
+#: includes/pages/admin_arrive.php:147
+msgid "Arrived?"
+msgstr "Chegou?"
+
+#: includes/pages/admin_arrive.php:148
+msgid "Arrival date"
+msgstr "Data de chegada"
+
+#: includes/pages/admin_arrive.php:149
+msgid "Planned departure"
+msgstr "Saída planejada"
+
+#: includes/pages/admin_arrive.php:154
+msgid "Planned arrival statistics"
+msgstr "Estatísticas de chegadas planejadas"
+
+#: includes/pages/admin_arrive.php:157 includes/pages/admin_arrive.php:172
+#: includes/pages/admin_arrive.php:187
+msgid "arrived sum"
+msgstr "soma dos que chegaram"
+
+#: includes/pages/admin_arrive.php:163 includes/pages/admin_arrive.php:178
+#: includes/pages/admin_arrive.php:193 includes/pages/admin_news.php:30
+#: includes/pages/user_messages.php:76
+msgid "Date"
+msgstr "Data"
+
+#: includes/pages/admin_arrive.php:164 includes/pages/admin_arrive.php:179
+#: includes/pages/admin_arrive.php:194
+msgid "Count"
+msgstr "Contar"
+
+#: includes/pages/admin_arrive.php:169
+msgid "Arrival statistics"
+msgstr "Estatísticas de chegadas"
+
+#: includes/pages/admin_arrive.php:184
+msgid "Planned departure statistics"
+msgstr "Estatísticas de saídas planejadas"
+
+#: includes/pages/admin_free.php:4
+msgid "Free angels"
+msgstr "Anjos livres"
+
+#: includes/pages/admin_free.php:81 includes/view/ShiftTypes_view.php:36
+#: includes/view/UserAngelTypes_view.php:70
+msgid "Angeltype"
+msgstr "Tipo de anjo"
+
+#: includes/pages/admin_free.php:84
+msgid "Only confirmed"
+msgstr "Somente confirmados"
+
+#: includes/pages/admin_free.php:92 includes/pages/guest_login.php:225
+#: includes/pages/guest_login.php:354 includes/view/AngelTypes_view.php:177
+#: includes/view/AngelTypes_view.php:190 includes/view/User_view.php:40
+#: includes/view/User_view.php:97 includes/view/User_view.php:181
+msgid "Nick"
+msgstr "Apelido"
+
+#: includes/pages/admin_free.php:94 includes/pages/guest_login.php:255
+#: includes/view/AngelTypes_view.php:178 includes/view/AngelTypes_view.php:191
+#: includes/view/User_view.php:47 includes/view/User_view.php:184
+msgid "DECT"
+msgstr "DECT"
+
+#: includes/pages/admin_free.php:95 includes/pages/guest_login.php:264
+#: includes/view/User_view.php:52
+msgid "Jabber"
+msgstr "Jabber"
+
+#: includes/pages/admin_free.php:96 includes/pages/guest_login.php:228
+#: includes/view/User_view.php:49 includes/view/User_view.php:386
+msgid "E-Mail"
+msgstr "E-Mail"
+
+#: includes/pages/admin_groups.php:4
+msgid "Grouprights"
+msgstr "Direitos de grupo"
+
+#: includes/pages/admin_groups.php:29 includes/pages/admin_import.php:145
+#: includes/pages/admin_import.php:149 includes/pages/admin_rooms.php:143
+#: includes/pages/admin_rooms.php:189 includes/view/AngelTypes_view.php:66
+#: includes/view/AngelTypes_view.php:268 includes/view/ShiftTypes_view.php:35
+#: includes/view/ShiftTypes_view.php:78 includes/view/User_view.php:183
+msgid "Name"
+msgstr "Nome"
+
+#: includes/pages/admin_groups.php:30
+msgid "Privileges"
+msgstr "Privilégios"
+
+#: includes/pages/admin_groups.php:55
+msgid "Edit group"
+msgstr "Editar grupo"
+
+#: includes/pages/admin_import.php:4 includes/pages/admin_rooms.php:144
+#: includes/pages/admin_rooms.php:190
+msgid "Frab import"
+msgstr "Importação Frab"
+
+#: includes/pages/admin_import.php:26
+msgid "Webserver has no write-permission on import directory."
+msgstr ""
+"O servidor web não possui permissão de escrita no diretório de importação."
+
+#: includes/pages/admin_import.php:54 includes/pages/admin_import.php:118
+#: includes/pages/admin_import.php:196 includes/pages/admin_shifts.php:53
+#: includes/pages/admin_shifts.php:59
+msgid "Please select a shift type."
+msgstr "Por favor selecione um tipo de turno."
+
+#: includes/pages/admin_import.php:61 includes/pages/admin_import.php:125
+#: includes/pages/admin_import.php:203
+msgid "Please enter an amount of minutes to add to a talk's begin."
+msgstr ""
+"Por favor insira um número de minutos para adicionar ao início de uma "
+"palestra."
+
+#: includes/pages/admin_import.php:68 includes/pages/admin_import.php:132
+#: includes/pages/admin_import.php:210
+msgid "Please enter an amount of minutes to add to a talk's end."
+msgstr ""
+"Por favor insira um número de minutos para adicionar ao término de uma "
+"palestra."
+
+#: includes/pages/admin_import.php:76
+msgid "No valid xml/xcal file provided."
+msgstr "Nenhum arquivo xml/xcal válido foi fornecido."
+
+#: includes/pages/admin_import.php:81
+msgid "File upload went wrong."
+msgstr "Falha no upload do arquivo."
+
+#: includes/pages/admin_import.php:85
+msgid "Please provide some data."
+msgstr "Por favor insira alguns dados."
+
+#: includes/pages/admin_import.php:93 includes/pages/admin_import.php:140
+#: includes/pages/admin_import.php:253
+msgid "File Upload"
+msgstr "Enviar arquivo"
+
+#: includes/pages/admin_import.php:93 includes/pages/admin_import.php:140
+#: includes/pages/admin_import.php:253
+msgid "Validation"
+msgstr "Validação"
+
+#: includes/pages/admin_import.php:93 includes/pages/admin_import.php:102
+#: includes/pages/admin_import.php:140 includes/pages/admin_import.php:179
+#: includes/pages/admin_import.php:253
+msgid "Import"
+msgstr "Importar"
+
+#: includes/pages/admin_import.php:97
+msgid ""
+"This import will create/update/delete rooms and shifts by given FRAB-export "
+"file. The needed file format is xcal."
+msgstr ""
+"Esta importação irá criar/atualizar/deletar salas e turnos a partir do "
+"arquivo  FRAB-Export. O formato necessário é xcal."
+
+#: includes/pages/admin_import.php:99
+msgid "Add minutes to start"
+msgstr "Adicionar minutos ao início"
+
+#: includes/pages/admin_import.php:100
+msgid "Add minutes to end"
+msgstr "Adicionar minutos ao fim"
+
+#: includes/pages/admin_import.php:101
+msgid "xcal-File (.xcal)"
+msgstr "Adicionar minutos ao fim"
+
+#: includes/pages/admin_import.php:111 includes/pages/admin_import.php:185
+msgid "Missing import file."
+msgstr "Arquivo para importar não encontrado."
+
+#: includes/pages/admin_import.php:144
+msgid "Rooms to create"
+msgstr "Salas para criar"
+
+#: includes/pages/admin_import.php:148
+msgid "Rooms to delete"
+msgstr "Salas para apagar"
+
+#: includes/pages/admin_import.php:152
+msgid "Shifts to create"
+msgstr "Turnos para criar"
+
+#: includes/pages/admin_import.php:154 includes/pages/admin_import.php:163
+#: includes/pages/admin_import.php:172 includes/view/User_view.php:366
+msgid "Day"
+msgstr "Dia"
+
+#: includes/pages/admin_import.php:155 includes/pages/admin_import.php:164
+#: includes/pages/admin_import.php:173 includes/pages/admin_shifts.php:324
+#: includes/view/Shifts_view.php:66
+msgid "Start"
+msgstr "Início"
+
+#: includes/pages/admin_import.php:156 includes/pages/admin_import.php:165
+#: includes/pages/admin_import.php:174 includes/pages/admin_shifts.php:325
+#: includes/view/Shifts_view.php:74
+msgid "End"
+msgstr "Fim"
+
+#: includes/pages/admin_import.php:157 includes/pages/admin_import.php:166
+#: includes/pages/admin_import.php:175
+msgid "Shift type"
+msgstr "Tipo de turno"
+
+#: includes/pages/admin_import.php:159 includes/pages/admin_import.php:168
+#: includes/pages/admin_import.php:177 includes/pages/admin_shifts.php:321
+msgid "Room"
+msgstr "Sala"
+
+#: includes/pages/admin_import.php:161
+msgid "Shifts to update"
+msgstr "Turnos para atualizar"
+
+#: includes/pages/admin_import.php:170
+msgid "Shifts to delete"
+msgstr "Turnos para deletar"
+
+#: includes/pages/admin_import.php:254
+msgid "It's done!"
+msgstr "Está feito!"
+
+#: includes/pages/admin_log.php:4
+msgid "Log"
+msgstr "Log"
+
+#: includes/pages/admin_news.php:10
+msgid "Edit news entry"
+msgstr "Editar notícia"
+
+#: includes/pages/admin_news.php:31
+msgid "Author"
+msgstr "Autor"
+
+#: includes/pages/admin_news.php:32 includes/pages/user_news.php:161
+msgid "Subject"
+msgstr "Assunto"
+
+#: includes/pages/admin_news.php:33 includes/pages/user_messages.php:79
+#: includes/pages/user_news.php:106 includes/pages/user_news.php:162
+msgid "Message"
+msgstr "Mensagem"
+
+#: includes/pages/admin_news.php:34 includes/pages/user_news.php:163
+msgid "Meeting"
+msgstr "Reunião"
+
+#: includes/pages/admin_news.php:38 includes/pages/admin_rooms.php:177
+#: includes/view/User_view.php:129
+msgid "Delete"
+msgstr "Apagar"
+
+#: includes/pages/admin_news.php:52
+msgid "News entry updated."
+msgstr "Notícia atualizada."
+
+#: includes/pages/admin_news.php:61
+msgid "News entry deleted."
+msgstr "Notícia deletada."
+
+#: includes/pages/admin_questions.php:4
+msgid "Answer questions"
+msgstr "Responder perguntas"
+
+#: includes/pages/admin_questions.php:18
+msgid "There are unanswered questions!"
+msgstr "Existem perguntas não respondidas!"
+
+#: includes/pages/admin_questions.php:61
+msgid "Unanswered questions"
+msgstr "Perguntas não respondidas"
+
+#: includes/pages/admin_questions.php:63 includes/pages/admin_questions.php:70
+msgid "From"
+msgstr "De"
+
+#: includes/pages/admin_questions.php:64 includes/pages/admin_questions.php:71
+#: includes/view/Questions_view.php:19 includes/view/Questions_view.php:24
+msgid "Question"
+msgstr "Questão"
+
+#: includes/pages/admin_questions.php:65 includes/pages/admin_questions.php:73
+#: includes/view/Questions_view.php:26
+msgid "Answer"
+msgstr "Resposta"
+
+#: includes/pages/admin_questions.php:68 includes/view/Questions_view.php:22
+msgid "Answered questions"
+msgstr "Perguntas respondidas"
+
+#: includes/pages/admin_questions.php:72 includes/view/Questions_view.php:25
+msgid "Answered by"
+msgstr "Respondido por"
+
+#: includes/pages/admin_rooms.php:4 includes/pages/user_shifts.php:159
+#: includes/sys_menu.php:176
+msgid "Rooms"
+msgstr "Salas"
+
+#: includes/pages/admin_rooms.php:67
+msgid "This name is already in use."
+msgstr "Este nome já está em uso."
+
+#: includes/pages/admin_rooms.php:97
+#, php-format
+msgid "Please enter needed angels for type %s."
+msgstr "Por favor insira os anjos necessários de tipo %s."
+
+#: includes/pages/admin_rooms.php:124
+msgid "Room saved."
+msgstr "Sala salva"
+
+#: includes/pages/admin_rooms.php:145 includes/pages/admin_rooms.php:191
+msgid "Public"
+msgstr "Público"
+
+#: includes/pages/admin_rooms.php:146
+msgid "Room number"
+msgstr "Número da sala"
+
+#: includes/pages/admin_rooms.php:151
+msgid "Needed angels:"
+msgstr "Anjos necessários:"
+
+#: includes/pages/admin_rooms.php:167
+#, php-format
+msgid "Room %s deleted."
+msgstr "Sala %s deletada."
+
+#: includes/pages/admin_rooms.php:175
+#, php-format
+msgid "Do you want to delete room %s?"
+msgstr "Você quer deletar as salas %s?"
+
+#: includes/pages/admin_rooms.php:185
+msgid "add"
+msgstr "adicionar"
+
+#: includes/pages/admin_shifts.php:4
+msgid "Create shifts"
+msgstr "Criar turnos"
+
+#: includes/pages/admin_shifts.php:71
+msgid "Please select a location."
+msgstr "Por favor, selecione uma localização."
+
+#: includes/pages/admin_shifts.php:78
+msgid "Please select a start time."
+msgstr "Por favor, selecione um horário de início."
+
+#: includes/pages/admin_shifts.php:85
+msgid "Please select an end time."
+msgstr "Por favor, selecione um horário de término."
+
+#: includes/pages/admin_shifts.php:90
+msgid "The shifts end has to be after its start."
+msgstr "O término do turno deve ser posterior ao seu início."
+
+#: includes/pages/admin_shifts.php:102
+msgid "Please enter a shift duration in minutes."
+msgstr "Por favor insira a duração do turno em minutos."
+
+#: includes/pages/admin_shifts.php:110
+msgid "Please split the shift-change hours by colons."
+msgstr "Por favor divida os horários de mudança de turno por vírgulas."
+
+#: includes/pages/admin_shifts.php:115
+msgid "Please select a mode."
+msgstr "Por favor selecione um modo."
+
+#: includes/pages/admin_shifts.php:128
+#, php-format
+msgid "Please check the needed angels for team %s."
+msgstr "Por favor confira os anjos necessários para o time %s."
+
+#: includes/pages/admin_shifts.php:133
+msgid "There are 0 angels needed. Please enter the amounts of needed angels."
+msgstr ""
+"Há 0 anjos necessários. Por favor insira o número de anjos necessários."
+
+#: includes/pages/admin_shifts.php:137
+msgid "Please select a mode for needed angels."
+msgstr "Por favor escolha um modo para os anjos necessários."
+
+#: includes/pages/admin_shifts.php:141
+msgid "Please select needed angels."
+msgstr "Por favor selecione os anjos necessários."
+
+#: includes/pages/admin_shifts.php:268
+msgid "Time and location"
+msgstr "Horário e localização"
+
+#: includes/pages/admin_shifts.php:269
+msgid "Type and title"
+msgstr "Tipo e título"
+
+#: includes/pages/admin_shifts.php:326
+msgid "Mode"
+msgstr "Modo"
+
+#: includes/pages/admin_shifts.php:327
+msgid "Create one shift"
+msgstr "Criar um turno"
+
+#: includes/pages/admin_shifts.php:328
+msgid "Create multiple shifts"
+msgstr "Criar múltiplos turnos"
+
+#: includes/pages/admin_shifts.php:330
+msgid "Create multiple shifts with variable length"
+msgstr "Criar múltiplos turnos com duração variável"
+
+#: includes/pages/admin_shifts.php:331
+msgid "Shift change hours"
+msgstr "Mudança de horário do turno"
+
+#: includes/pages/admin_shifts.php:335
+msgid "Take needed angels from room settings"
+msgstr "Pegar os anjos necessários a partir das configurações das salas"
+
+#: includes/pages/admin_shifts.php:336
+msgid "The following angels are needed"
+msgstr "Os seguintes anjos são necessários"
+
+#: includes/pages/admin_user.php:4
+msgid "All Angels"
+msgstr "Todos os anjos"
+
+#: includes/pages/admin_user.php:20
+msgid "This user does not exist."
+msgstr "Esse usuário não existe."
+
+#: includes/pages/admin_user.php:46 includes/view/AngelTypes_view.php:67
+#: includes/view/AngelTypes_view.php:68 includes/view/AngelTypes_view.php:69
+msgid "Yes"
+msgstr "Sim"
+
+#: includes/pages/admin_user.php:47 includes/view/AngelTypes_view.php:67
+#: includes/view/AngelTypes_view.php:68 includes/view/AngelTypes_view.php:69
+msgid "No"
+msgstr "Não"
+
+#: includes/pages/admin_user.php:60
+msgid "Force active"
+msgstr "Forçar ativação"
+
+#: includes/pages/admin_user.php:79
+msgid ""
+"Please visit the angeltypes page or the users profile to manage users "
+"angeltypes."
+msgstr ""
+"Por favor visite a página de tipos de anjo ou o perfil do usuário para "
+"gerenciar\n"
+"seus tipos de anjo."
+
+#: includes/pages/admin_user.php:204
+msgid "Edit user"
+msgstr "Editar usuário"
+
+#: includes/pages/guest_credits.php:3
+msgid "Credits"
+msgstr "Créditos"
+
+#: includes/pages/guest_login.php:4 includes/pages/guest_login.php:349
+#: includes/pages/guest_login.php:356 includes/view/User_view.php:95
+#: includes/view/User_view.php:99
+msgid "Login"
+msgstr "Login"
+
+#: includes/pages/guest_login.php:8 includes/pages/guest_login.php:285
+msgid "Register"
+msgstr "Registrar"
+
+#: includes/pages/guest_login.php:12
+msgid "Logout"
+msgstr "Logout"
+
+#: includes/pages/guest_login.php:56
+#, php-format
+msgid "Your nick &quot;%s&quot; already exists."
+msgstr "Seu apelido &quot;%s&quot; já existe."
+
+#: includes/pages/guest_login.php:60
+#, php-format
+msgid "Your nick &quot;%s&quot; is too short (min. 2 characters)."
+msgstr "Seu apelido &quot;%s&quot; é muito pequeno (mínimo 2 caracteres)."
+
+#: includes/pages/guest_login.php:86 includes/pages/user_settings.php:36
+msgid "Please check your jabber account information."
+msgstr "Por favor verifique a informação da sua conta jabber."
+
+#: includes/pages/guest_login.php:95
+msgid "Please select your shirt size."
+msgstr "Por favor escolha o tamanho da camisa."
+
+#: includes/pages/guest_login.php:106
+#, php-format
+msgid "Your password is too short (please use at least %s characters)."
+msgstr "Sua senha é muito curta (por favor use pelo menos %s caracteres)."
+
+#: includes/pages/guest_login.php:115 includes/pages/user_settings.php:52
+msgid ""
+"Please enter your planned date of arrival. It should be after the buildup "
+"start date and before teardown end date."
+msgstr ""
+"Por favor insira a data planejada para sua chegada. Ela deve ser posterior à "
+"data de montagem e anterior à data de desmontagem."
+
+#: includes/pages/guest_login.php:189
+msgid "Angel registration successful!"
+msgstr "Conta criada com sucesso!"
+
+#: includes/pages/guest_login.php:217
+msgid ""
+"By completing this form you're registering as a Chaos-Angel. This script "
+"will create you an account in the angel task scheduler."
+msgstr ""
+"Ao completar esse formulário você estará se registrando como um voluntário. "
+"Esse script criará uma conta no sistema."
+
+#: includes/pages/guest_login.php:229 includes/view/User_view.php:50
+msgid ""
+"The engelsystem is allowed to send me an email (e.g. when my shifts change)"
+msgstr ""
+"Permito que o engelsystem me envie emails (por exemplo, quando meus turnos "
+"mudam)"
+
+#: includes/pages/guest_login.php:230 includes/view/User_view.php:51
+msgid "Humans are allowed to send me an email (e.g. for ticket vouchers)"
+msgstr "Permito que humanos me enviem emails (por exemplo, para um voucher)"
+
+#: includes/pages/guest_login.php:235 includes/view/User_view.php:43
+msgid "Planned date of arrival"
+msgstr "Data planejada de chegada"
+
+#: includes/pages/guest_login.php:238 includes/view/User_view.php:54
+msgid "Shirt size"
+msgstr "Tamanho da camiseta"
+
+#: includes/pages/guest_login.php:243 includes/pages/guest_login.php:355
+#: includes/view/User_view.php:98 includes/view/User_view.php:400
+msgid "Password"
+msgstr "Senha"
+
+#: includes/pages/guest_login.php:246 includes/view/User_view.php:401
+msgid "Confirm password"
+msgstr "Confirme a senha"
+
+#: includes/pages/guest_login.php:249
+msgid "What do you want to do?"
+msgstr "O que você gostaria de fazer?"
+
+#: includes/pages/guest_login.php:249
+msgid "Description of job types"
+msgstr "Descrição dos trabalhos"
+
+#: includes/pages/guest_login.php:250
+msgid ""
+"Restricted angel types need will be confirmed later by a supporter. You can "
+"change your selection in the options section."
+msgstr ""
+"Tipos de anjo restritos precisam de confirmação posterior de um apoiador. "
+"Você pode \n"
+"mudar sua seleção na seção 'Opções'."
+
+#: includes/pages/guest_login.php:258 includes/view/User_view.php:48
+msgid "Mobile"
+msgstr "Celular"
+
+#: includes/pages/guest_login.php:261 includes/view/User_view.php:46
+msgid "Phone"
+msgstr "Telefone"
+
+#: includes/pages/guest_login.php:267 includes/view/User_view.php:42
+msgid "First name"
+msgstr "Nome"
+
+#: includes/pages/guest_login.php:270 includes/view/User_view.php:41
+msgid "Last name"
+msgstr "Sobrenome"
+
+#: includes/pages/guest_login.php:275 includes/view/User_view.php:45
+msgid "Age"
+msgstr "Idade"
+
+#: includes/pages/guest_login.php:278 includes/view/User_view.php:53
+msgid "Hometown"
+msgstr "Cidade"
+
+#: includes/pages/guest_login.php:281 includes/view/User_view.php:39
+msgid "Entry required!"
+msgstr "Campo necessário!"
+
+#: includes/pages/guest_login.php:319
+msgid "Please enter a password."
+msgstr "Por favor digite uma senha."
+
+#: includes/pages/guest_login.php:323
+msgid ""
+"No user was found with that Nickname. Please try again. If you are still "
+"having problems, ask a Dispatcher."
+msgstr ""
+"Nenhum usuário com esse apelido foi encontrado. Por favor tente novamente. \n"
+"Se você continuar com problemas, pergunte a um Dispatcher."
+
+#: includes/pages/guest_login.php:327
+msgid "Please enter a nickname."
+msgstr "Por favor digite um apelido."
+
+#: includes/pages/guest_login.php:358 includes/view/User_view.php:101
+msgid "I forgot my password"
+msgstr "Esqueci minha senha"
+
+#: includes/pages/guest_login.php:363 includes/view/User_view.php:103
+msgid "Please note: You have to activate cookies!"
+msgstr "Nota: você precisa habilitar cookies!"
+
+#: includes/pages/guest_login.php:374 includes/view/User_view.php:107
+msgid "What can I do?"
+msgstr "O que posso fazer?"
+
+#: includes/pages/guest_login.php:375 includes/view/User_view.php:108
+msgid "Please read about the jobs you can do to help us."
+msgstr "Por favor leia sobre as tarefas que pode realizar para nos ajudar."
+
+#: includes/pages/guest_login.php:390
+msgid "Please sign up, if you want to help us!"
+msgstr "Se você quer nos ajudar, por favor se registre!"
+
+#: includes/pages/user_messages.php:4
+msgid "Messages"
+msgstr "Mensagens"
+
+#: includes/pages/user_messages.php:26
+msgid "Select recipient..."
+msgstr "Selecionar recipiente..."
+
+#: includes/pages/user_messages.php:62
+msgid "mark as read"
+msgstr "marcar como lido"
+
+#: includes/pages/user_messages.php:65
+msgid "delete message"
+msgstr "apagar mensagem"
+
+#: includes/pages/user_messages.php:72
+#, php-format
+msgid "Hello %s, here can you leave messages for other angels"
+msgstr "Oi %s, aqui você pode deixar mensagens para outros anjos."
+
+#: includes/pages/user_messages.php:75
+msgid "New"
+msgstr "Nova"
+
+#: includes/pages/user_messages.php:77
+msgid "Transmitted"
+msgstr "Enviado"
+
+#: includes/pages/user_messages.php:78
+msgid "Recipient"
+msgstr "Recipiente"
+
+#: includes/pages/user_messages.php:90 includes/pages/user_messages.php:106
+msgid "Incomplete call, missing Message ID."
+msgstr "Chamada incompleta, falta o ID da Mensagem."
+
+#: includes/pages/user_messages.php:98 includes/pages/user_messages.php:114
+msgid "No Message found."
+msgstr "Nenhuma mensagem encontrada."
+
+#: includes/pages/user_messages.php:122
+msgid "Transmitting was terminated with an Error."
+msgstr "Transmissão encerrada com um erro."
+
+#: includes/pages/user_messages.php:127
+msgid "Wrong action."
+msgstr "Ação errada."
+
+#: includes/pages/user_myshifts.php:23
+msgid "Key changed."
+msgstr "Chave modificada."
+
+#: includes/pages/user_myshifts.php:26 includes/view/User_view.php:335
+msgid "Reset API key"
+msgstr "Resetar a chave API"
+
+#: includes/pages/user_myshifts.php:27
+msgid ""
+"If you reset the key, the url to your iCal- and JSON-export and your atom "
+"feed changes! You have to update it in every application using one of these "
+"exports."
+msgstr ""
+"Se você reconfigurar a chave, as urls para seu iCal, a exportação em formato "
+"JSON \n"
+"e seu feed atom será alterada! Você precisará atualizá-las em todas as "
+"aplicações que estiverem \n"
+"usando uma delas."
+
+#: includes/pages/user_myshifts.php:28
+msgid "Continue"
+msgstr "Continuar"
+
+#: includes/pages/user_myshifts.php:60
+msgid "Please enter a freeload comment!"
+msgstr "Por favor insira um comentário freeload!"
+
+#: includes/pages/user_myshifts.php:79
+msgid "Shift saved."
+msgstr "Turno salvo."
+
+#: includes/pages/user_myshifts.php:107
+msgid "Shift canceled."
+msgstr "Turno cancelado."
+
+#: includes/pages/user_myshifts.php:109
+msgid ""
+"It's too late to sign yourself off the shift. If neccessary, ask the "
+"dispatcher to do so."
+msgstr ""
+"Está muito tarde para se retirar deste turno. Se necessário, peça a \n"
+"um dispatcher para removê-lo."
+
+#: includes/pages/user_news.php:4
+msgid "News comments"
+msgstr "Novos comentários"
+
+#: includes/pages/user_news.php:8
+msgid "News"
+msgstr "Novidades"
+
+#: includes/pages/user_news.php:12
+msgid "Meetings"
+msgstr "Encontros"
+
+#: includes/pages/user_news.php:68
+msgid "Comments"
+msgstr "Comentários"
+
+#: includes/pages/user_news.php:86 includes/pages/user_news.php:127
+msgid "Entry saved."
+msgstr "Entrada salva."
+
+#: includes/pages/user_news.php:104
+msgid "New Comment:"
+msgstr "Novo comentário:"
+
+#: includes/pages/user_news.php:110
+msgid "Invalid request."
+msgstr "Requisição inválida."
+
+#: includes/pages/user_news.php:158
+msgid "Create news:"
+msgstr "Criar novidades:"
+
+#: includes/pages/user_questions.php:4 includes/view/Questions_view.php:29
+msgid "Ask the Heaven"
+msgstr "Pergunte ao paraíso"
+
+#: includes/pages/user_questions.php:27
+msgid "Unable to save question."
+msgstr "Não foi possível salvar a sua pergunta."
+
+#: includes/pages/user_questions.php:29
+msgid "You question was saved."
+msgstr "Sua pergunta foi salva."
+
+#: includes/pages/user_questions.php:33
+msgid "Please enter a question!"
+msgstr "Por favor digite sua dúvida!"
+
+#: includes/pages/user_questions.php:41
+msgid "Incomplete call, missing Question ID."
+msgstr "Chamada incompletada, falta o ID da pergunta."
+
+#: includes/pages/user_questions.php:50
+msgid "No question found."
+msgstr "Nenhuma dúvida encontrada."
+
+#: includes/pages/user_settings.php:4 includes/view/User_view.php:332
+msgid "Settings"
+msgstr "Configurações"
+
+#: includes/pages/user_settings.php:62
+msgid ""
+"Please enter your planned date of departure. It should be after your planned "
+"arrival date and after buildup start date and before teardown end date."
+msgstr ""
+"Por favor digite sua data de saída. Ela deve ser posterior à data de "
+"chegada\n"
+"e ao início da montagem, e anterior à data de desmontagem."
+
+#: includes/pages/user_settings.php:93
+msgid "-> not OK. Please try again."
+msgstr "-> não OK. Por favor tente novamente."
+
+#: includes/pages/user_settings.php:101
+msgid "Failed setting password."
+msgstr "A alteração da senha falhaou."
+
+#: includes/pages/user_settings.php:126
+msgid "Theme changed."
+msgstr "Tema alterado."
+
+#: includes/pages/user_shifts.php:82
+msgid "The administration has not configured any rooms yet."
+msgstr "O administrador não configurou nenhuma sala ainda."
+
+#: includes/pages/user_shifts.php:94
+msgid "The administration has not configured any shifts yet."
+msgstr "O administrador não configurou nenhum turno ainda."
+
+#: includes/pages/user_shifts.php:104
+msgid ""
+"The administration has not configured any angeltypes yet - or you are not "
+"subscribed to any angeltype."
+msgstr ""
+"O administrador ainda não configurou os tipos de anjos - ou você não está\n"
+"inscrito em nenhum tipo de anjo."
+
+#: includes/pages/user_shifts.php:142
+msgid "occupied"
+msgstr "ocupado"
+
+#: includes/pages/user_shifts.php:146
+msgid "free"
+msgstr "livre"
+
+#: includes/pages/user_shifts.php:165
+msgid "Occupancy"
+msgstr "Ocupação"
+
+#: includes/pages/user_shifts.php:166
+msgid ""
+"The tasks shown here are influenced by the angeltypes you joined already!"
+msgstr ""
+"As tarefas mostradas aqui são influenciadas pelos tipos de anjos de que você "
+"já faz parte!"
+
+#: includes/pages/user_shifts.php:166
+msgid "Description of the jobs."
+msgstr "Descrição dos trabalhos."
+
+#: includes/pages/user_shifts.php:168
+msgid "iCal export"
+msgstr "Exportar iCal"
+
+#: includes/pages/user_shifts.php:168
+#, php-format
+msgid ""
+"Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s"
+"\">JSON format</a> available (please keep secret, otherwise <a href=\"%s"
+"\">reset the api key</a>)."
+msgstr ""
+"Exportar os turnos mostrados. <a href=\\%s\\>formato iCal</a> ou <a href=\\"
+"%s\n"
+"\\>formato JSON</a> disponíveis (por favor mantenha secreto, ou <a href=\\"
+"%s\n"
+"\\>resete a chave API</a>)."
+
+#: includes/pages/user_shifts.php:169
+msgid "Filter"
+msgstr "Filtro"
+
+#: includes/pages/user_shifts.php:191 includes/view/ShiftTypes_view.php:23
+msgid "All"
+msgstr "Todos"
+
+#: includes/pages/user_shifts.php:192
+msgid "None"
+msgstr "Nenhum"
+
+#: includes/sys_menu.php:139
+msgid "Admin"
+msgstr "Admin"
+
+#: includes/sys_menu.php:163
+msgid "Manage rooms"
+msgstr "Gerenciar salas"
+
+#: includes/sys_template.php:166
+msgid "No data found."
+msgstr "Nenhum dado encontrado."
+
+#: includes/view/AngelTypes_view.php:27 includes/view/AngelTypes_view.php:244
+msgid "Unconfirmed"
+msgstr "Não confirmado"
+
+#: includes/view/AngelTypes_view.php:29 includes/view/AngelTypes_view.php:33
+msgid "supporter"
+msgstr "apoiador"
+
+#: includes/view/AngelTypes_view.php:31 includes/view/AngelTypes_view.php:35
+msgid "Member"
+msgstr "Membro"
+
+#: includes/view/AngelTypes_view.php:42
+#, php-format
+msgid "Do you want to delete angeltype %s?"
+msgstr "Você deseja apagar o tipo de anjo %s?"
+
+#: includes/view/AngelTypes_view.php:44 includes/view/ShiftTypes_view.php:15
+#: includes/view/UserAngelTypes_view.php:8
+#: includes/view/UserAngelTypes_view.php:19
+#: includes/view/UserAngelTypes_view.php:30
+#: includes/view/UserAngelTypes_view.php:41
+#: includes/view/UserAngelTypes_view.php:52
+#: includes/view/UserAngelTypes_view.php:82
+msgid "cancel"
+msgstr "cancelar"
+
+#: includes/view/AngelTypes_view.php:67 includes/view/AngelTypes_view.php:269
+msgid "Restricted"
+msgstr "Restrito"
+
+#: includes/view/AngelTypes_view.php:68
+msgid "No Self Sign Up"
+msgstr "Auto inscrição não permitida"
+
+#: includes/view/AngelTypes_view.php:69
+msgid "Requires driver license"
+msgstr "Requer carteira de motorista"
+
+#: includes/view/AngelTypes_view.php:73
+msgid ""
+"Restricted angel types can only be used by an angel if enabled by a "
+"supporter (double opt-in)."
+msgstr ""
+"Tipos de anjo restritos só podem ser usados por um anjo quando autorizados "
+"por \n"
+"um apoiador (duplo opt-in)."
+
+#: includes/view/AngelTypes_view.php:74 includes/view/AngelTypes_view.php:205
+#: includes/view/ShiftTypes_view.php:37 includes/view/ShiftTypes_view.php:58
+#: includes/view/Shifts_view.php:92
+msgid "Description"
+msgstr "Descrição"
+
+#: includes/view/AngelTypes_view.php:75 includes/view/ShiftTypes_view.php:38
+msgid "Please use markdown for the description."
+msgstr "Por favor use markdown para a descrição."
+
+#: includes/view/AngelTypes_view.php:90
+msgid "my driving license"
+msgstr "Minha carteira de motorista"
+
+#: includes/view/AngelTypes_view.php:97
+msgid ""
+"This angeltype requires a driver license. Please enter your driver license "
+"information!"
+msgstr ""
+"Esse tipo de anjo requer carteira de motorista. Por favor digite sua "
+"carteira de motorista."
+
+#: includes/view/AngelTypes_view.php:101
+#, php-format
+msgid ""
+"You are unconfirmed for this angeltype. Please go to the introduction for %s "
+"to get confirmed."
+msgstr ""
+"Você não está confirmado para esse tipo de anjo. Por favor vá para a "
+"apresentação para %s\n"
+"para ser confirmado."
+
+#: includes/view/AngelTypes_view.php:140
+msgid "confirm"
+msgstr "confirmar"
+
+#: includes/view/AngelTypes_view.php:141
+msgid "deny"
+msgstr "rejeitar"
+
+#: includes/view/AngelTypes_view.php:157
+msgid "remove"
+msgstr "remover"
+
+#: includes/view/AngelTypes_view.php:179
+msgid "Driver"
+msgstr "Motorista"
+
+#: includes/view/AngelTypes_view.php:180
+msgid "Has car"
+msgstr "Tem carro"
+
+#: includes/view/AngelTypes_view.php:181
+#: includes/view/UserDriverLicenses_view.php:27
+msgid "Car"
+msgstr "Carro"
+
+#: includes/view/AngelTypes_view.php:182
+msgid "3,5t Transporter"
+msgstr "Transporte 3,5t"
+
+#: includes/view/AngelTypes_view.php:183
+msgid "7,5t Truck"
+msgstr "Caminhão 7,5t"
+
+#: includes/view/AngelTypes_view.php:184
+msgid "12,5t Truck"
+msgstr "Caminhão 12,5t"
+
+#: includes/view/AngelTypes_view.php:185
+#: includes/view/UserDriverLicenses_view.php:31
+msgid "Forklift"
+msgstr "Empilhadeira"
+
+#: includes/view/AngelTypes_view.php:215
+msgid "supporters"
+msgstr "apoiadores"
+
+#: includes/view/AngelTypes_view.php:235
+msgid "Members"
+msgstr "Membros"
+
+#: includes/view/AngelTypes_view.php:238
+#: includes/view/UserAngelTypes_view.php:72
+msgid "Add"
+msgstr "Adicionar"
+
+#: includes/view/AngelTypes_view.php:246
+msgid "confirm all"
+msgstr "confirmar todos"
+
+#: includes/view/AngelTypes_view.php:247
+msgid "deny all"
+msgstr "rejeitar todos"
+
+#: includes/view/AngelTypes_view.php:264
+msgid "New angeltype"
+msgstr "Novo tipo de anjo"
+
+#: includes/view/AngelTypes_view.php:270
+msgid "Self Sign Up Allowed"
+msgstr "Auto Inscrição autorizada"
+
+#: includes/view/AngelTypes_view.php:271
+msgid "Membership"
+msgstr "Membro"
+
+#: includes/view/AngelTypes_view.php:296
+msgid ""
+"This angeltype is restricted by double-opt-in by a team supporter. Please "
+"show up at the according introduction meetings."
+msgstr ""
+"Esse tipo de anjo é restrito por um opt-in duplo por um time de apoio. Por "
+"favor\n"
+"compareça de acordo com os encontros de introdução."
+
+#: includes/view/AngelTypes_view.php:317
+msgid "FAQ"
+msgstr "FAQ"
+
+#: includes/view/AngelTypes_view.php:319
+msgid ""
+"Here is the list of teams and their tasks. If you have questions, read the "
+"FAQ."
+msgstr ""
+"Aqui está uma lista dos times e suas tarefas. Se você tem dúvidas, leia a\n"
+"FAQ."
+
+#: includes/view/EventConfig_view.php:10 includes/view/EventConfig_view.php:18
+#, php-format
+msgid "Welcome to the %s!"
+msgstr "Bem vindo a %s!"
+
+#: includes/view/EventConfig_view.php:24
+msgid "Buildup starts"
+msgstr "Início da montagem"
+
+#: includes/view/EventConfig_view.php:26 includes/view/EventConfig_view.php:34
+#: includes/view/EventConfig_view.php:42 includes/view/EventConfig_view.php:50
+#: includes/view/EventConfig_view.php:67 includes/view/EventConfig_view.php:72
+#: includes/view/EventConfig_view.php:77 includes/view/Shifts_view.php:68
+#: includes/view/Shifts_view.php:76
+msgid "Y-m-d"
+msgstr "d/m/Y"
+
+#: includes/view/EventConfig_view.php:32
+msgid "Event starts"
+msgstr "O evento começa em"
+
+#: includes/view/EventConfig_view.php:40
+msgid "Event ends"
+msgstr "O evento termina em"
+
+#: includes/view/EventConfig_view.php:48
+msgid "Teardown ends"
+msgstr "Desmontagem termina"
+
+#: includes/view/EventConfig_view.php:67
+#, php-format
+msgid "%s, from %s to %s"
+msgstr "%s, de %s para %s"
+
+#: includes/view/EventConfig_view.php:72
+#, php-format
+msgid "%s, starting %s"
+msgstr "%s, começando %s"
+
+#: includes/view/EventConfig_view.php:77
+#, php-format
+msgid "Event from %s to %s"
+msgstr "Evento de %s para %s"
+
+#: includes/view/EventConfig_view.php:106
+msgid "Event Name"
+msgstr "Nome do evento"
+
+#: includes/view/EventConfig_view.php:107
+msgid "Event Name is shown on the start page."
+msgstr "Nome do evento é mostrado na página inicial."
+
+#: includes/view/EventConfig_view.php:108
+msgid "Event Welcome Message"
+msgstr "Mensagem de boas vindas do evento"
+
+#: includes/view/EventConfig_view.php:109
+msgid ""
+"Welcome message is shown after successful registration. You can use markdown."
+msgstr ""
+"A mensagem de boas vindas é mostrada após a inscrição. Você pode usar "
+"markdown."
+
+#: includes/view/EventConfig_view.php:112
+msgid "Buildup date"
+msgstr "Data da montagem"
+
+#: includes/view/EventConfig_view.php:113
+msgid "Event start date"
+msgstr "Data de início do evento"
+
+#: includes/view/EventConfig_view.php:116
+msgid "Teardown end date"
+msgstr "Data da desmontagem"
+
+#: includes/view/EventConfig_view.php:117
+msgid "Event end date"
+msgstr "Data de término do evento"
+
+#: includes/view/Questions_view.php:17
+msgid "Open questions"
+msgstr "Dúvidas abertas"
+
+#: includes/view/Questions_view.php:31
+msgid "Your Question:"
+msgstr "Sua dúvida:"
+
+#: includes/view/ShiftCalendarRenderer.php:209 includes/view/User_view.php:367
+msgid "Time"
+msgstr "Hora"
+
+#: includes/view/ShiftCalendarRenderer.php:248
+msgid "Your shift"
+msgstr "Seu turno"
+
+#: includes/view/ShiftCalendarRenderer.php:249
+msgid "Help needed"
+msgstr "Necessita ajuda"
+
+#: includes/view/ShiftCalendarRenderer.php:250
+msgid "Other angeltype needed / collides with my shifts"
+msgstr "Outro tipo de anjo necessário / colide com seus turnos"
+
+#: includes/view/ShiftCalendarRenderer.php:251
+msgid "Shift is full"
+msgstr "O turno está lotado"
+
+#: includes/view/ShiftCalendarRenderer.php:252
+msgid "Shift running/ended"
+msgstr "Turno em andamento/finalizado"
+
+#: includes/view/ShiftCalendarShiftRenderer.php:96
+msgid "Add more angels"
+msgstr "Adicionar mais anjos"
+
+#: includes/view/ShiftCalendarShiftRenderer.php:127
+#, php-format
+msgid "%d helper needed"
+msgid_plural "%d helpers needed"
+msgstr[0] "%d necessita de ajuda"
+msgstr[1] "%d necessitam de ajuda"
+
+#: includes/view/ShiftCalendarShiftRenderer.php:132
+#: includes/view/Shifts_view.php:23
+msgid "Sign up"
+msgstr "Registrar"
+
+#: includes/view/ShiftCalendarShiftRenderer.php:137
+msgid "ended"
+msgstr "encerrado"
+
+#: includes/view/ShiftCalendarShiftRenderer.php:146
+#: includes/view/Shifts_view.php:25
+#, php-format
+msgid "Become %s"
+msgstr "Tornar-se %s"
+
+#: includes/view/ShiftEntry_view.php:18 includes/view/User_view.php:267
+#: includes/view/User_view.php:269
+msgid "Freeloaded"
+msgstr "Freeloaded"
+
+#: includes/view/ShiftEntry_view.php:19
+msgid "Freeload comment (Only for shift coordination):"
+msgstr "Comentário freeload (Apenas para coordenação de turno):"
+
+#: includes/view/ShiftEntry_view.php:22
+msgid "Edit shift entry"
+msgstr "Editar entrada de turno"
+
+#: includes/view/ShiftEntry_view.php:25
+msgid "Angel:"
+msgstr "Anjo:"
+
+#: includes/view/ShiftEntry_view.php:26
+msgid "Date, Duration:"
+msgstr "Data, Duração:"
+
+#: includes/view/ShiftEntry_view.php:27
+msgid "Location:"
+msgstr "Local:"
+
+#: includes/view/ShiftEntry_view.php:28
+msgid "Title:"
+msgstr "Título:"
+
+#: includes/view/ShiftEntry_view.php:29
+msgid "Type:"
+msgstr "Tipo:"
+
+#: includes/view/ShiftEntry_view.php:30
+msgid "Comment (for your eyes only):"
+msgstr "Comentário (apenas para ler):"
+
+#: includes/view/ShiftTypes_view.php:13
+#, php-format
+msgid "Do you want to delete shifttype %s?"
+msgstr "Você quer apagar o turno %s?"
+
+#: includes/view/ShiftTypes_view.php:29
+msgid "Edit shifttype"
+msgstr "Editar tipo de turno"
+
+#: includes/view/ShiftTypes_view.php:29
+msgid "Create shifttype"
+msgstr "Criar tipo de turno"
+
+#: includes/view/ShiftTypes_view.php:48
+#, php-format
+msgid "for team %s"
+msgstr "para o time %s"
+
+#: includes/view/ShiftTypes_view.php:75
+msgid "New shifttype"
+msgstr "Novo tipo de turno"
+
+#: includes/view/Shifts_view.php:7
+#, php-format
+msgid "created at %s by %s"
+msgstr "criado em %s por %s"
+
+#: includes/view/Shifts_view.php:10
+#, php-format
+msgid "edited at %s by %s"
+msgstr "editado em %s por %s"
+
+#: includes/view/Shifts_view.php:52
+msgid "This shift collides with one of your shifts."
+msgstr "Esse turno colide com um dos seus outros turnos."
+
+#: includes/view/Shifts_view.php:53
+msgid "You are signed up for this shift."
+msgstr "Você foi designado para esse turno."
+
+#: includes/view/Shifts_view.php:82 includes/view/User_view.php:368
+msgid "Location"
+msgstr "Local"
+
+#: includes/view/UserAngelTypes_view.php:6
+#, php-format
+msgid "Do you really want to add supporter rights for %s to %s?"
+msgstr "Você realmente quer dar permissão de apoiador de %s para %s?"
+
+#: includes/view/UserAngelTypes_view.php:6
+#, php-format
+msgid "Do you really want to remove supporter rights for %s from %s?"
+msgstr "Você realmente quer remover a permissão de apoiador de %s para %s?"
+
+#: includes/view/UserAngelTypes_view.php:17
+#, php-format
+msgid "Do you really want to deny all users for %s?"
+msgstr "Você realmente quer negar todos os usuários para %s?"
+
+#: includes/view/UserAngelTypes_view.php:28
+#, php-format
+msgid "Do you really want to confirm all users for %s?"
+msgstr "Você realmente quer confirmar todos os usuários para %s?"
+
+#: includes/view/UserAngelTypes_view.php:39
+#, php-format
+msgid "Do you really want to confirm %s for %s?"
+msgstr "Você realmente quer confirmar %s para %s?"
+
+#: includes/view/UserAngelTypes_view.php:50
+#, php-format
+msgid "Do you really want to delete %s from %s?"
+msgstr "Você realmente quer apagar %s de %s?"
+
+#: includes/view/UserAngelTypes_view.php:71
+msgid "User"
+msgstr "Usuário"
+
+#: includes/view/UserAngelTypes_view.php:80
+#, php-format
+msgid "Do you really want to add %s to %s?"
+msgstr "Você realmente quer adicionar %s em %s?"
+
+#: includes/view/UserAngelTypes_view.php:83
+msgid "save"
+msgstr "salvar"
+
+#: includes/view/UserDriverLicenses_view.php:17
+msgid "Back to profile"
+msgstr "Voltar para o perfil"
+
+#: includes/view/UserDriverLicenses_view.php:21
+msgid "Privacy"
+msgstr "Privacidade"
+
+#: includes/view/UserDriverLicenses_view.php:21
+msgid ""
+"Your driving license information is only visible for supporters and admins."
+msgstr ""
+"Os dados da sua carteira de motorista são apenas visíveis para os apoiadores "
+"e os admins."
+
+#: includes/view/UserDriverLicenses_view.php:22
+msgid "I am willing to drive a car for the event"
+msgstr "Eu desejo dirigir carros para o evento"
+
+#: includes/view/UserDriverLicenses_view.php:25
+msgid ""
+"I have my own car with me and am willing to use it for the event (You'll get "
+"reimbursed for fuel)"
+msgstr ""
+"Eu tenho meu próprio carro e estou disposto a usá-lo no evento\n"
+"(Você terá o combustível reembolsado)"
+
+#: includes/view/UserDriverLicenses_view.php:26
+msgid "Driver license"
+msgstr "Carteira de motorista"
+
+#: includes/view/UserDriverLicenses_view.php:28
+msgid "Transporter 3,5t"
+msgstr "Transportador 3,5t"
+
+#: includes/view/UserDriverLicenses_view.php:29
+msgid "Truck 7,5t"
+msgstr "Caminhão 7,5t"
+
+#: includes/view/UserDriverLicenses_view.php:30
+msgid "Truck 12,5t"
+msgstr "Caminhão 12,5t"
+
+#: includes/view/User_view.php:7
+msgid "Please select..."
+msgstr "Por favor selecione..."
+
+#: includes/view/User_view.php:38
+msgid "Here you can change your user details."
+msgstr "Aqui você pode mudar os seus detalhes de usuário."
+
+#: includes/view/User_view.php:44
+msgid "Planned date of departure"
+msgstr "Data planejada para saída"
+
+#: includes/view/User_view.php:55
+msgid "Please visit the angeltypes page to manage your angeltypes."
+msgstr ""
+"Por favor visite a página de tipos de anjo para gerenciar os tipos de anjo"
+
+#: includes/view/User_view.php:61
+msgid "Here you can change your password."
+msgstr "Aqui você pode mudar sua senha."
+
+#: includes/view/User_view.php:62
+msgid "Old password:"
+msgstr "Senha antiga:"
+
+#: includes/view/User_view.php:63
+msgid "New password:"
+msgstr "Nova senha:"
+
+#: includes/view/User_view.php:64
+msgid "Password confirmation:"
+msgstr "Confirmação de senha:"
+
+#: includes/view/User_view.php:68
+msgid "Here you can choose your color settings:"
+msgstr "Aqui você pode selecionar sua configuração de cor:"
+
+#: includes/view/User_view.php:69
+msgid "Color settings:"
+msgstr "Configuração de cor:"
+
+#: includes/view/User_view.php:73
+msgid "Here you can choose your language:"
+msgstr "Aqui você pode selecionar seu idioma:"
+
+#: includes/view/User_view.php:74
+msgid "Language:"
+msgstr "Idioma:"
+
+#: includes/view/User_view.php:88
+msgid "Registration successful"
+msgstr "Registrado com sucesso"
+
+#: includes/view/User_view.php:126
+msgid ""
+"Do you really want to delete the user including all his shifts and every "
+"other piece of his data?"
+msgstr ""
+"Você realmente quer apagar o usuário, incluindo todos seus turnos e todos\n"
+"os seus dados?"
+
+#: includes/view/User_view.php:128
+msgid "Your password"
+msgstr "Sua senha"
+
+#: includes/view/User_view.php:143
+#, php-format
+msgid "Angel should receive at least  %d vouchers."
+msgstr "Um anjo deve receber no mínimo %d vouchers."
+
+#: includes/view/User_view.php:145
+msgid "Number of vouchers given out"
+msgstr "Número de vouchers dados"
+
+#: includes/view/User_view.php:159
+msgid "m/d/Y h:i a"
+msgstr "d/m/Y H:i"
+
+#: includes/view/User_view.php:178
+msgid "New user"
+msgstr "Novo usuário"
+
+#: includes/view/User_view.php:182
+msgid "Prename"
+msgstr "Nome"
+
+#: includes/view/User_view.php:185 includes/view/User_view.php:350
+msgid "Arrived"
+msgstr "Chegou"
+
+#: includes/view/User_view.php:186
+msgid "Voucher"
+msgstr "Voucher"
+
+#: includes/view/User_view.php:187
+msgid "Freeloads"
+msgstr "Freeloads"
+
+#: includes/view/User_view.php:188 includes/view/User_view.php:352
+msgid "Active"
+msgstr "Ativo"
+
+#: includes/view/User_view.php:190 includes/view/User_view.php:353
+msgid "T-Shirt"
+msgstr "Camiseta"
+
+#: includes/view/User_view.php:192
+msgid "Last login"
+msgstr "Último login"
+
+#: includes/view/User_view.php:209
+msgid "Free"
+msgstr "Livre"
+
+#: includes/view/User_view.php:214 includes/view/User_view.php:216
+#, php-format
+msgid "Next shift %c"
+msgstr "Próximo turno %c"
+
+#: includes/view/User_view.php:221
+#, php-format
+msgid "Shift starts %c"
+msgstr "Turno inicia em %c"
+
+#: includes/view/User_view.php:223
+#, php-format
+msgid "Shift ends %c"
+msgstr "Turno termina em %c"
+
+#: includes/view/User_view.php:280
+msgid "sign off"
+msgstr "sair"
+
+#: includes/view/User_view.php:305
+msgid "Sum:"
+msgstr "Soma:"
+
+#: includes/view/User_view.php:329
+msgid "driving license"
+msgstr "carteira de motorista"
+
+#: includes/view/User_view.php:331
+msgid "Edit vouchers"
+msgstr "Editar vouchers"
+
+#: includes/view/User_view.php:333
+msgid "iCal Export"
+msgstr "Exportar iCal"
+
+#: includes/view/User_view.php:334
+msgid "JSON Export"
+msgstr "Exportar em formato JSON"
+
+#: includes/view/User_view.php:347
+msgid "User state"
+msgstr "Status"
+
+#: includes/view/User_view.php:350
+#, php-format
+msgid "Arrived at %s"
+msgstr "Chegous às %s"
+
+#: includes/view/User_view.php:350
+#, php-format
+msgid "Not arrived (Planned: %s)"
+msgstr "Não chegou (Planejado: %s)"
+
+#: includes/view/User_view.php:350
+msgid "Not arrived"
+msgstr "Não chegou"
+
+#: includes/view/User_view.php:351
+#, php-format
+msgid "Got %s voucher"
+msgid_plural "Got %s vouchers"
+msgstr[0] "Einen Voucher bekommen"
+msgstr[1] "%s Voucher bekommen"
+
+#: includes/view/User_view.php:351
+msgid "Got no vouchers"
+msgstr "Pegou voucher %s"
+
+#: includes/view/User_view.php:360
+msgid "Rights"
+msgstr "Permissões"
+
+#: includes/view/User_view.php:369
+msgid "Name &amp; workmates"
+msgstr "Nome &amp; colegas"
+
+#: includes/view/User_view.php:370
+msgid "Comment"
+msgstr "Comentar"
+
+#: includes/view/User_view.php:371
+msgid "Action"
+msgstr "Ação"
+
+#: includes/view/User_view.php:373
+msgid "Your night shifts between 2 and 8 am count twice."
+msgstr "Os seus turnos noturnos entre 2h e 8h contam como dois."
+
+#: includes/view/User_view.php:374
+#, php-format
+msgid ""
+"Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some "
+"shifts."
+msgstr ""
+"Vá para a <a href=\\%s\\>tabela de turnos</a> para se inscrever em alguns\n"
+"turnos."
+
+#: includes/view/User_view.php:384
+msgid ""
+"We will send you an e-mail with a password recovery link. Please use the "
+"email address you used for registration."
+msgstr ""
+"Nós enviaremos um email com um link para recuperação de senha. Por favor use "
+"o \n"
+"endereço de email informado no seu registro."
+
+#: includes/view/User_view.php:387
+msgid "Recover"
+msgstr "Recuperar"
+
+#: includes/view/User_view.php:398
+msgid "Please enter a new password."
+msgstr "Por favor digite uma nova senha."
+
+#: includes/view/User_view.php:447
+msgid ""
+"Please enter your planned date of departure on your settings page to give us "
+"a feeling for teardown capacities."
+msgstr ""
+"Por favor digite sua data planejada de saída na sua página de configurações "
+"para\n"
+"termos uma noção da nossa capacidade de desmontagem."
+
+#: includes/view/User_view.php:457
+#, php-format
+msgid ""
+"You freeloaded at least %s shifts. Shift signup is locked. Please go to "
+"heavens desk to be unlocked again."
+msgstr ""
+"Você deixou de participar de pelo menos %s dos turnos. O registro em turnos "
+"está suspenso.\n"
+"Por favor vá até a mesa do paraíso para ser desbloqueado novamente."
+
+#: includes/view/User_view.php:468
+msgid ""
+"You are not marked as arrived. Please go to heaven's desk, get your angel "
+"badge and/or tell them that you arrived already."
+msgstr ""
+"Sua chegada não foi marcada. Por favor vá até a mesa do paraíso, pegue sua "
+"credencial\n"
+"de anjo e/ou informe que você já chegou."
+
+#: includes/view/User_view.php:478
+msgid "You need to specify a tshirt size in your settings!"
+msgstr "Você precisa especificar o tamanho de camiseta nas suas configurações!"
+
+#: includes/view/User_view.php:488
+msgid ""
+"You need to specify a DECT phone number in your settings! If you don't have "
+"a DECT phone, just enter \"-\"."
+msgstr ""
+"Você precisa especificar um número DECT de telefone nas suas configuracões!\n"
+"Se você não tem um telefone DECT, apenas digite  \\-\\."
+
+#: public/index.php:155
+msgid "No Access"
+msgstr "Sem acesso"
+
+#: public/index.php:156
+msgid ""
+"You don't have permission to view this page. You probably have to sign in or "
+"register in order to gain access!"
+msgstr ""
+"Você não tem permissão para ver essa página. Você provavelmente terá que "
+"fazer login ou se registrar para ganhar acesso!"
+
+#~ msgid "Registration is disabled."
+#~ msgstr "Registros estão desabilitados."
+
+#~ msgid "Please enter your planned date of arrival."
+#~ msgstr "Por favor digite seu horario planificado de chagada "
+
+#~ msgid "Password could not be updated."
+#~ msgstr "Nao foi possivel atualizar a senha"
+
+#~ msgid "We got no information about the event right now."
+#~ msgstr "Nao tem info sobre o evento agora"
+
+#~ msgid "from %s to %s"
+#~ msgstr "desde %s ate %s"
+
+#~ msgid "Please enter your planned date of departure."
+#~ msgstr "Por favor pone seu horario planificado de ida"
+
+#~ msgid "Please select a user."
+#~ msgstr "Seleciona um usuario"
+
+#~ msgid "Unable to load user."
+#~ msgstr "Nao foi possivel carregar o usuario"
+
+#~ msgid "Entries"
+#~ msgstr "Entradas"
+
+#~ msgid "Use new style if possible"
+#~ msgstr "Usa umo estilo novo se possivel"
+
+#~ msgid "Coordinator"
+#~ msgstr "Coordinador"
+
+#~ msgid "Coordinators"
+#~ msgstr "Coordinadores"
+
+#~ msgid " vouchers."
+#~ msgstr " vouchers."
+
+#~ msgid ""
+#~ "This is a automatically calculated MINIMUM value, you can of course give "
+#~ "out more if appropriate!"
+#~ msgstr ""
+#~ "Esso e' calucula automaticamente o valor MINIMO, voce pode claramente "
+#~ "mudar isso com umo mais appropriado! "
+
+#~ msgid "You have been signed off from the shift."
+#~ msgstr "Voce se desconnecto do seu turno"
+
+#~ msgid "planned departure"
+#~ msgstr "saida planejada"
+
+#~ msgid "Tasks"
+#~ msgstr "tarefas"
+
+#~ msgid "User didnt got vouchers."
+#~ msgstr "O usuario nao tem vouchers."
+
+#~ msgid "Remove vouchers"
+#~ msgstr "Apaga voucher"
+
+#~ msgid ""
+#~ "This shift is running now or ended already. Please contact a dispatcher "
+#~ "to join the shift."
+#~ msgstr ""
+#~ "Esse turno esta ativo agora o ja acabou. Por favor contata o coordinador "
+#~ "para partecipar nesse turno"
+
+#~ msgid ""
+#~ "You already subscribed to shift in the same timeslot. Please contact a "
+#~ "dispatcher to join the shift."
+#~ msgstr ""
+#~ "Voce ja se registrou al turno no mesmo timeslot. Por favor contata o "
+#~ "coordinador para partecipar a esse turno."
+
+#~ msgid ""
+#~ "Hello %s, here you can change your personal settings i.e. password, color "
+#~ "settings etc."
+#~ msgstr ""
+#~ "Oi %s, aqui pode mudar as tuas configuraçeos pessoal (i.e. senha, "
+#~ "cor, ...)"
+
+#~ msgid "Name/Description:"
+#~ msgstr "Nome/Descriçao:"
+
+#~ msgid "Timeslot"
+#~ msgstr "Timeslot"
+
+#~ msgid "The first wants to join %s."
+#~ msgstr "O primeiro que quer partecipar %s"
+
+#~ msgid "Groups"
+#~ msgstr "Grupos"
+
+#~ msgid "ICQ"
+#~ msgstr "ICQ"
+
+#~ msgid "You are not confirmed for this angel type."
+#~ msgstr "Voce nao ta confirmado por esse tipo de anjo."
+
+#~ msgid "Exports"
+#~ msgstr "Esporta"
+
+#~ msgid "Add new angeltype"
+#~ msgstr "Adicione um novo tipo de anjo"
+
+#~ msgid "Language"
+#~ msgstr "Idioma"
+
+#~ msgid "You have %s new message."
+#~ msgid_plural "You have %s new messages."
+#~ msgstr[0] "Voce tem %s novo message"
+#~ msgstr[1] ""
+
+#~ msgid ""
+#~ "These are your shifts.<br/>Please try to appear <b>15 minutes</b> before "
+#~ "your shift begins!<br/>You can remove yourself from a shift up to %d "
+#~ "hours before it starts."
+#~ msgstr ""
+#~ "Esses som teu turnos.<br/>Por favor tenta chegar <b> 15 minudos</b> antes "
+#~ "que seu turno comença!<br/>Voce pode se tirar desse turno ate %d horas "
+#~ "antes dele començar."
+
+#~ msgid "Page:"
+#~ msgstr "Pagina"
+
+#~ msgid "Message:"
+#~ msgstr "Messagem:"
+
+#~ msgid "Wakeup"
+#~ msgstr "Wakeup"
+
+#~ msgid "Incomplete call, missing wake-up ID."
+#~ msgstr "chamada incompleta, falta o wake-up ID"
+
+#~ msgid "Wake-up call deleted."
+#~ msgstr "wake-up chamada apagada"
+
+#~ msgid "No wake-up found."
+#~ msgstr "Nao encontrei nenhum wake-up"
+
+#~ msgid ""
+#~ "Hello %s, here you can register for a wake-up call. Simply say when and "
+#~ "where the angel should come to wake you."
+#~ msgstr ""
+#~ "Oi %s, aqui voce pode se registrar para a chamada wake-up. So tem que "
+#~ "dizer quando e onde os anjos tem que chegar para te acordar (wake up)"
+
+#~ msgid "All ordered wake-up calls, next first."
+#~ msgstr "Todos os ordem wake-up, o proximo primeiro"
+
+#~ msgid "Place"
+#~ msgstr "Lugar"
+
+#~ msgid "Notes"
+#~ msgstr "Notas"
+
+#~ msgid "Schedule a new wake-up here:"
+#~ msgstr "Planifica um novo wake-up aqui:"
+
+#~ msgid "User %s confirmed as %s."
+#~ msgstr "Usuario %s confirmado como %s"
+
+#~ msgid ""
+#~ "Resistance is futile! Your biological and physical parameters will be "
+#~ "added to our collectiv! Assimilating angel:"
+#~ msgstr ""
+#~ "Resistir e' inútil! Seus parâmetros biológico e físico serão adicionados "
+#~ "dentro do nosso coletivo! Anjo assimilado: "
+
+#~ msgid "Confirmed all."
+#~ msgstr "Tudo confirmado."
+
+#~ msgid "asdf"
+#~ msgstr "asdf"

@@ -2308,15 +2308,15 @@ msgid ""
 msgstr "Deine Führerschein-Infos sind nur für Supporter und Admins sichtbar."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:22
-msgid "I am willing to operate cars for the PL"
-msgstr "Ich möchte für die PL Auto fahren"
+msgid "I am willing to drive a car for the event"
+msgstr "Ich möchte für das Event Auto fahren"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:25
 msgid ""
-"I have my own car with me and am willing to use it for the PL (You'll get "
+"I have my own car with me and am willing to use it for the event (You'll get "
 "reimbursed for fuel)"
 msgstr ""
-"Ich habe mein eigenes Auto dabei und möchte würde es zum Fahren für die PL "
+"Ich habe mein eigenes Auto dabei und möchte würde es zum Fahren für das Event "
 "verwenden (Du wirst für Spritkosten entschädigt)"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/UserDriverLicenses_view.php:26
