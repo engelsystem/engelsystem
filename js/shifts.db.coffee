@@ -7,6 +7,7 @@ Shifts.db =
     shifttype_ids: []
     angeltype_ids: []
     needed_angeltype_ids: []
+    option_keys: []
     prefix: ''
 
     init: (done) ->
@@ -193,4 +194,18 @@ Shifts.db =
     get_angeltypes: (done) ->
         alasql "SELECT * FROM AngelTypes ORDER BY name", (res) ->
             done res
+
+    get_option: (key, done) ->
+        alasql "SELECT * FROM options WHERE option_key = #{key} LIMIT 1", (res) ->
+            done res
+
+    set_option: (key, value, done) ->
+        option_key_exists = key in Shifts.db.option_keys
+        if option_key_exists == false
+            alasql "INSERT INTO options (option_key, option_value) VALUES (#{key}, #{value})", ->
+                Shifts.db.option_keys.push key
+                done()
+        else
+            alasql "UPDATE options SET option_value = #{value} WHERE option_key = #{key}", ->
+                done()
 

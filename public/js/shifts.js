@@ -34,6 +34,7 @@ Shifts.db = {
   shifttype_ids: [],
   angeltype_ids: [],
   needed_angeltype_ids: [],
+  option_keys: [],
   prefix: '',
   init: function(done) {
     try {
@@ -229,6 +230,25 @@ Shifts.db = {
     return alasql("SELECT * FROM AngelTypes ORDER BY name", function(res) {
       return done(res);
     });
+  },
+  get_option: function(key, done) {
+    return alasql("SELECT * FROM options WHERE option_key = " + key + " LIMIT 1", function(res) {
+      return done(res);
+    });
+  },
+  set_option: function(key, value, done) {
+    var option_key_exists;
+    option_key_exists = indexOf.call(Shifts.db.option_keys, key) >= 0;
+    if (option_key_exists === false) {
+      return alasql("INSERT INTO options (option_key, option_value) VALUES (" + key + ", " + value + ")", function() {
+        Shifts.db.option_keys.push(key);
+        return done();
+      });
+    } else {
+      return alasql("UPDATE options SET option_value = " + value + " WHERE option_key = " + key, function() {
+        return done();
+      });
+    }
   }
 };
 
