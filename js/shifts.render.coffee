@@ -187,3 +187,9 @@ Shifts.render =
 
         Shifts.$shiftplan.html(tpl)
 
+        $('#datetimepicker').datetimepicker
+            timepicker:true
+            formatDate:'Y/m/d'
+            minDate:'-1970/01/02'
+            maxDate:'+1970/01/02'
+
