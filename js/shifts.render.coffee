@@ -74,33 +74,23 @@ Shifts.render =
         shiftentries = {}
 
         # build shiftentries object
-        # build temp-array, shifts.types.angels
+        #
+        # build shift angeltypes first
         for se in db_shiftentries
             if typeof shiftentries[se.SID] == "undefined"
-                shiftentries[se.SID] = [{
-                        TID: 33
-                        at_name: "Mikroengel"
-                        angels: [{
-                            UID: 1
-                            Nick: "admin"
-                        }, {
-                            UID: 2
-                            Nick: "Dampfgrotte"
-                        }]
-                    }, {
-                        TID: 3
-                        at_name: "Videoängeli"
-                        angels: [{
-                            UID: 1
-                            Nick: "admin"
-                        }, {
-                            UID: 2
-                            Nick: "Dampfgrotte"
-                        }]
-                    },
-                ]
-
-        Shifts.log shiftentries
+                shiftentries[se.SID] = []
+                shiftentries[se.SID].push
+                    TID: se.TID
+                    at_name: se.at_name
+                    angels: []
+        #
+        # fill it with angels
+        for se in db_shiftentries
+            for s of shiftentries[se.SID]
+                if se.TID == shiftentries[se.SID][s].TID
+                    shiftentries[se.SID][s].angels.push
+                        UID: se.UID
+                        Nick: se.Nick
 
         add_shift = (shift, room_id) ->
             # fix empty title

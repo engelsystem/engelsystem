@@ -529,42 +529,31 @@ Shifts.render = {
     });
   },
   shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_shiftentries) {
-    var add_shift, angeltype, end_time, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, m, mustache_rooms, ref, ref1, ref2, rendered_until, room, room_id, room_nr, se, shift, shift_added, shift_fits, shift_nr, shiftentries, start_time, thistime, time_slot, tpl;
+    var add_shift, angeltype, end_time, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, m, mustache_rooms, n, ref, ref1, ref2, rendered_until, room, room_id, room_nr, s, se, shift, shift_added, shift_fits, shift_nr, shiftentries, start_time, thistime, time_slot, tpl;
     lanes = {};
     shiftentries = {};
     for (i = 0, len = db_shiftentries.length; i < len; i++) {
       se = db_shiftentries[i];
       if (typeof shiftentries[se.SID] === "undefined") {
-        shiftentries[se.SID] = [
-          {
-            TID: 33,
-            at_name: "Mikroengel",
-            angels: [
-              {
-                UID: 1,
-                Nick: "admin"
-              }, {
-                UID: 2,
-                Nick: "Dampfgrotte"
-              }
-            ]
-          }, {
-            TID: 3,
-            at_name: "Videoängeli",
-            angels: [
-              {
-                UID: 1,
-                Nick: "admin"
-              }, {
-                UID: 2,
-                Nick: "Dampfgrotte"
-              }
-            ]
-          }
-        ];
+        shiftentries[se.SID] = [];
+        shiftentries[se.SID].push({
+          TID: se.TID,
+          at_name: se.at_name,
+          angels: []
+        });
       }
     }
-    Shifts.log(shiftentries);
+    for (j = 0, len1 = db_shiftentries.length; j < len1; j++) {
+      se = db_shiftentries[j];
+      for (s in shiftentries[se.SID]) {
+        if (se.TID === shiftentries[se.SID][s].TID) {
+          shiftentries[se.SID][s].angels.push({
+            UID: se.UID,
+            Nick: se.Nick
+          });
+        }
+      }
+    }
     add_shift = function(shift, room_id) {
       var blocks, height, lane_nr;
       if (shift.shift_title === "null") {
@@ -588,10 +577,10 @@ Shifts.render = {
       return false;
     };
     shift_fits = function(shift, room_id, lane_nr) {
-      var j, lane_shift, len1, ref;
+      var k, lane_shift, len2, ref;
       ref = lanes[room_id][lane_nr];
-      for (j = 0, len1 = ref.length; j < len1; j++) {
-        lane_shift = ref[j];
+      for (k = 0, len2 = ref.length; k < len2; k++) {
+        lane_shift = ref[k];
         if (!(shift.start_time >= lane_shift.end_time || shift.end_time <= lane_shift.start_time)) {
           return false;
         }
@@ -602,8 +591,8 @@ Shifts.render = {
     end_time = Shifts.render.get_endtime(true);
     firstblock_starttime = end_time;
     lastblock_endtime = start_time;
-    for (j = 0, len1 = db_shifts.length; j < len1; j++) {
-      shift = db_shifts[j];
+    for (k = 0, len2 = db_shifts.length; k < len2; k++) {
+      shift = db_shifts[k];
       if (shift.start_time < firstblock_starttime) {
         firstblock_starttime = shift.start_time;
       }
@@ -616,8 +605,8 @@ Shifts.render = {
       }
       shift_added = false;
       ref = lanes[room_id];
-      for (k = 0, len2 = ref.length; k < len2; k++) {
-        lane = ref[k];
+      for (l = 0, len3 = ref.length; l < len3; l++) {
+        lane = ref[l];
         shift_added = add_shift(shift, room_id);
         if (shift_added) {
           break;
@@ -663,14 +652,14 @@ Shifts.render = {
         }
       }
     }
-    for (l = 0, len3 = rooms.length; l < len3; l++) {
-      room = rooms[l];
+    for (m = 0, len4 = rooms.length; m < len4; m++) {
+      room = rooms[m];
       if (ref1 = room.RID, indexOf.call(Shifts.interaction.selected_rooms, ref1) >= 0) {
         room.selected = true;
       }
     }
-    for (m = 0, len4 = angeltypes.length; m < len4; m++) {
-      angeltype = angeltypes[m];
+    for (n = 0, len5 = angeltypes.length; n < len5; n++) {
+      angeltype = angeltypes[n];
       if (ref2 = angeltype.id, indexOf.call(Shifts.interaction.selected_angeltypes, ref2) >= 0) {
         angeltype.selected = true;
       }
