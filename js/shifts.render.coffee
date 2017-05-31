@@ -78,17 +78,30 @@ Shifts.render =
         # build shiftentries object
         for se in db_shiftentries
             if typeof shiftentries[se.SID] == "undefined"
-                shiftentries[se.SID] = {}
-                if typeof shiftentries[se.SID][se.TID] == "undefined"
-                    shiftentries[se.SID][se.TID] = {}
-                    shiftentries[se.SID][se.TID].TID = se.TID
-                    shiftentries[se.SID][se.TID].at_name = se.at_name
-                    if typeof shiftentries[se.SID][se.TID].angels == "undefined"
-                        shiftentries[se.SID][se.TID].angels = []
+                shiftentries[se.SID] = [{
+                        TID: 33
+                        at_name: "Mikroengel"
+                        angels: [{
+                            UID: 1
+                            Nick: "admin"
+                        }, {
+                            UID: 2
+                            Nick: "Dampfgrotte"
+                        }]
+                    }, {
+                        TID: 3
+                        at_name: "Videoängeli"
+                        angels: [{
+                            UID: 1
+                            Nick: "admin"
+                        }, {
+                            UID: 2
+                            Nick: "Dampfgrotte"
+                        }]
+                    },
+                ]
 
-            shiftentries[se.SID][se.TID].angels.push
-                UID: se.UID
-                Nick: se.Nick
+        Shifts.log shiftentries
 
         add_shift = (shift, room_id) ->
             # fix empty title
@@ -103,7 +116,7 @@ Shifts.render =
             shift.state_class = Shifts.render.calculate_signup_state(shift)
 
             # add shiftentries
-            shift.entries = shiftentries[shift.SID]
+            shift.angeltypes = shiftentries[shift.SID]
 
             # calculate shift height
             blocks = Math.ceil(shift.end_time - shift.start_time) / Shifts.render.SECONDS_PER_ROW

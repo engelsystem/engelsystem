@@ -128,13 +128,12 @@ Shifts.templates =
                     <a href="?p=rooms&amp;action=view&amp;room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a>
                   </div>
                   <ul class="list-group">
-                    {{#entries}}
-                    {{TID}}
-                        <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}">{{at_name}}</a>:</strong>
-                        {{#angels}}
-                          <span><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>,
-                        {{/angels}}
-                    {{/entries}}
+                    {{#angeltypes}}
+                    <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}">{{at_name}}</a>:</strong>
+                      {{#angels}}
+                        <span><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>,
+                      {{/angels}}
+                    {{/angeltypes}}
                     </li>
                     <li class="list-group-item">
                       <a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a>
