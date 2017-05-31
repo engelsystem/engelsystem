@@ -79,12 +79,15 @@ Shifts.render =
         for se in db_shiftentries
             if typeof shiftentries[se.SID] == "undefined"
                 shiftentries[se.SID] = {}
-                if typeof shiftentries[se.SID].types == "undefined"
-                    shiftentries[se.SID].types = []
+                if typeof shiftentries[se.SID].angeltypes == "undefined"
+                    shiftentries[se.SID].angeltypes = {}
+                    if typeof shiftentries[se.SID].angeltypes[se.TID] == "undefined"
+                        shiftentries[se.SID].angeltypes[se.TID] = {}
+                        shiftentries[se.SID].angeltypes[se.TID].at_name = se.at_name
+                        if typeof shiftentries[se.SID].angeltypes[se.TID].angels == "undefined"
+                            shiftentries[se.SID].angeltypes[se.TID].angels = []
 
-            shiftentries[se.SID].types.push
-                TID: se.TID
-                at_name: se.at_name
+            shiftentries[se.SID].angeltypes[se.TID].angels.push
                 UID: se.UID
                 Nick: se.Nick
 
