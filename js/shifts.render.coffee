@@ -73,13 +73,22 @@ Shifts.render =
         lanes = {}
         shiftentries = {}
 
+        Shifts.log db_shiftentries
+
         # build shiftentries object
         for se in db_shiftentries
-            if not shiftentries[se.SID]
-                shiftentries[se.SID] = []
-            shiftentries[se.SID].push
+            if typeof shiftentries[se.SID] == "undefined"
+                shiftentries[se.SID] = {}
+                if typeof shiftentries[se.SID].types == "undefined"
+                    shiftentries[se.SID].types = []
+
+            shiftentries[se.SID].types.push
+                TID: se.TID
+                at_name: se.at_name
                 UID: se.UID
                 Nick: se.Nick
+
+        Shifts.log shiftentries
 
         add_shift = (shift, room_id) ->
             # fix empty title
@@ -214,7 +223,7 @@ Shifts.render =
             inline: true
             format: 'Y-m-d H:i'
             minDate: '-1970-01-02'
-            maxDate: '+1970-01-02'
+            maxDate: '+1970-01-03'
             onChangeDateTime: (dp, $input) ->
                 stime = parseInt moment($input.val()).format('X'), 10
                 Shifts.render.START_TIME = stime
