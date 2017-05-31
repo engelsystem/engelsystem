@@ -7,7 +7,7 @@ Shifts.templates =
   <div class="row">
     <div class="col-md-6">
       <h1>Shifts</h1>
-      <div class="form-group">
+      <div class="form-group" style="width: 768px; height: 250px;">
         <input id="datetimepicker" type="text" />
       </div>
     </div>
@@ -129,8 +129,9 @@ Shifts.templates =
                   </div>
                   <ul class="list-group">
                     <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id=104575">Angel</a>:</strong>
-                      <span><a href="?p=users&amp;action=view&amp;user_id=1755"><span class="icon-icon_angel"></span> Pantomime</a></span>,
-                      <span><a href="?p=users&amp;action=view&amp;user_id=50"><span class="icon-icon_angel"></span> sandzwerg</a></span>
+                    {{#entries}}
+                      <span><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>,
+                    {{/entries}}
                     </li>
                     <li class="list-group-item">
                       <a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a>

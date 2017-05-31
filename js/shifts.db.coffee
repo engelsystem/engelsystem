@@ -192,6 +192,22 @@ Shifts.db =
         ORDER BY Shifts.start_time, Shifts.SID", (res) ->
             done res
 
+    get_shiftentries: (filter_rooms, filter_angeltypes, done) ->
+        filter_rooms_ids = filter_rooms.join ','
+        filter_angeltypes_ids = filter_angeltypes.join ','
+        start_time = Shifts.render.get_starttime()
+        end_time = Shifts.render.get_endtime()
+
+        alasql "SELECT DISTINCT ShiftEntry.SID, ShiftEntry.UID, User.Nick
+        FROM ShiftEntry
+        JOIN User ON ShiftEntry.UID = User.UID
+        JOIN Shifts ON ShiftEntry.SID = Shifts.SID
+        WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
+        AND Shifts.RID IN (#{filter_rooms_ids})
+        AND ShiftEntry.TID IN (#{filter_angeltypes_ids})
+        ORDER BY ShiftEntry.SID", (res) ->
+            done res
+
     get_rooms: (done) ->
         alasql "SELECT * FROM Room ORDER BY Name", (res) ->
             done res

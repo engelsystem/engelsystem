@@ -66,10 +66,20 @@ Shifts.render =
                 selected_rooms = Shifts.interaction.selected_rooms
                 selected_angeltypes = Shifts.interaction.selected_angeltypes
                 Shifts.db.get_shifts selected_rooms, selected_angeltypes, (db_shifts) ->
-                    Shifts.render.shiftplan_assemble rooms, angeltypes, db_shifts
+                    Shifts.db.get_shiftentries selected_rooms, selected_angeltypes, (db_shiftentries) ->
+                        Shifts.render.shiftplan_assemble rooms, angeltypes, db_shifts, db_shiftentries
 
-    shiftplan_assemble: (rooms, angeltypes, db_shifts) ->
+    shiftplan_assemble: (rooms, angeltypes, db_shifts, db_shiftentries) ->
         lanes = {}
+        shiftentries = {}
+
+        # build shiftentries object
+        for se in db_shiftentries
+            if not shiftentries[se.SID]
+                shiftentries[se.SID] = []
+            shiftentries[se.SID].push
+                UID: se.UID
+                Nick: se.Nick
 
         add_shift = (shift, room_id) ->
             # fix empty title
@@ -82,6 +92,9 @@ Shifts.render =
 
             # set state class
             shift.state_class = Shifts.render.calculate_signup_state(shift)
+
+            # add shiftentries
+            shift.entries = shiftentries[shift.SID]
 
             # calculate shift height
             blocks = Math.ceil(shift.end_time - shift.start_time) / Shifts.render.SECONDS_PER_ROW
