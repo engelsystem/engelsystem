@@ -532,7 +532,6 @@ Shifts.render = {
     var add_shift, angeltype, end_time, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, m, mustache_rooms, ref, ref1, ref2, rendered_until, room, room_id, room_nr, se, shift, shift_added, shift_fits, shift_nr, shiftentries, start_time, thistime, time_slot, tpl;
     lanes = {};
     shiftentries = {};
-    Shifts.log(db_shiftentries);
     for (i = 0, len = db_shiftentries.length; i < len; i++) {
       se = db_shiftentries[i];
       if (typeof shiftentries[se.SID] === "undefined") {
@@ -686,7 +685,6 @@ Shifts.render = {
       rooms: mustache_rooms
     });
     Shifts.$shiftplan.html(tpl);
-    Shifts.log(mustache_rooms);
     return $('#datetimepicker').datetimepicker({
       value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm'),
       timepicker: true,

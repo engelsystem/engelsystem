@@ -73,9 +73,8 @@ Shifts.render =
         lanes = {}
         shiftentries = {}
 
-        Shifts.log db_shiftentries
-
         # build shiftentries object
+        # build temp-array, shifts.types.angels
         for se in db_shiftentries
             if typeof shiftentries[se.SID] == "undefined"
                 shiftentries[se.SID] = [{
@@ -229,7 +228,6 @@ Shifts.render =
             rooms: mustache_rooms
 
         Shifts.$shiftplan.html(tpl)
-        Shifts.log mustache_rooms
 
         $('#datetimepicker').datetimepicker
             value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm')
