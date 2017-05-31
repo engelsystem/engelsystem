@@ -79,19 +79,16 @@ Shifts.render =
         for se in db_shiftentries
             if typeof shiftentries[se.SID] == "undefined"
                 shiftentries[se.SID] = {}
-                if typeof shiftentries[se.SID].angeltypes == "undefined"
-                    shiftentries[se.SID].angeltypes = {}
-                    if typeof shiftentries[se.SID].angeltypes[se.TID] == "undefined"
-                        shiftentries[se.SID].angeltypes[se.TID] = {}
-                        shiftentries[se.SID].angeltypes[se.TID].at_name = se.at_name
-                        if typeof shiftentries[se.SID].angeltypes[se.TID].angels == "undefined"
-                            shiftentries[se.SID].angeltypes[se.TID].angels = []
+                if typeof shiftentries[se.SID][se.TID] == "undefined"
+                    shiftentries[se.SID][se.TID] = {}
+                    shiftentries[se.SID][se.TID].TID = se.TID
+                    shiftentries[se.SID][se.TID].at_name = se.at_name
+                    if typeof shiftentries[se.SID][se.TID].angels == "undefined"
+                        shiftentries[se.SID][se.TID].angels = []
 
-            shiftentries[se.SID].angeltypes[se.TID].angels.push
+            shiftentries[se.SID][se.TID].angels.push
                 UID: se.UID
                 Nick: se.Nick
-
-        Shifts.log shiftentries
 
         add_shift = (shift, room_id) ->
             # fix empty title
@@ -219,6 +216,7 @@ Shifts.render =
             rooms: mustache_rooms
 
         Shifts.$shiftplan.html(tpl)
+        Shifts.log mustache_rooms
 
         $('#datetimepicker').datetimepicker
             value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm')

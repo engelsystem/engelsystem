@@ -129,13 +129,11 @@ Shifts.templates =
                   </div>
                   <ul class="list-group">
                     {{#entries}}
-                      {{#angeltypes}}
-                      {{at_name}}
+                    {{TID}}
                         <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}">{{at_name}}</a>:</strong>
                         {{#angels}}
                           <span><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>,
                         {{/angels}}
-                      {{/angeltypes}}
                     {{/entries}}
                     </li>
                     <li class="list-group-item">
