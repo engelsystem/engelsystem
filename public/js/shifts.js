@@ -573,7 +573,7 @@ Shifts.render = {
     calculate_signup_state = function(shift) {
       var now_unix;
       now_unix = moment().format('X');
-      if (shift.start_time < now_unix) {
+      if (shift.end_time < now_unix) {
         return "shift_ended";
       }
       return "free";
