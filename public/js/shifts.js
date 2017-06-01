@@ -239,7 +239,7 @@ Shifts.db = {
     });
   },
   get_usershifts: function(user_id, done) {
-    return alasql("SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID FROM ShiftEntry WHERE ShiftEntry.UID = " + user_id + " ORDER BY ShiftEntry.SID", function(res) {
+    return alasql("SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, Shifts.start_time, Shifts.end_time FROM ShiftEntry JOIN Shifts ON ShiftEntry.SID = Shifts.SID WHERE ShiftEntry.UID = " + user_id + " ORDER BY ShiftEntry.SID", function(res) {
       return done(res);
     });
   },
@@ -580,7 +580,7 @@ Shifts.render = {
       return false;
     };
     calculate_signup_state = function(shift) {
-      var k, len2, now_unix, u;
+      var k, l, len2, len3, now_unix, u;
       for (k = 0, len2 = db_usershifts.length; k < len2; k++) {
         u = db_usershifts[k];
         if (u.SID === shift.SID) {
@@ -590,6 +590,14 @@ Shifts.render = {
       now_unix = moment().format('X');
       if (shift.end_time < now_unix) {
         return "shift_ended";
+      }
+      for (l = 0, len3 = db_usershifts.length; l < len3; l++) {
+        u = db_usershifts[l];
+        if (u.SID !== shift.SID) {
+          if (shift.start_time >= u.start_time && shift.end_time <= u.end_time) {
+            return "collides";
+          }
+        }
       }
       return "free";
     };

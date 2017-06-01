@@ -214,8 +214,9 @@ Shifts.db =
         #start_time = Shifts.render.get_starttime()
         #end_time = Shifts.render.get_endtime()
 
-        alasql "SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID
+        alasql "SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, Shifts.start_time, Shifts.end_time
         FROM ShiftEntry
+        JOIN Shifts ON ShiftEntry.SID = Shifts.SID
         WHERE ShiftEntry.UID = #{user_id}
         ORDER BY ShiftEntry.SID", (res) ->
             done res
