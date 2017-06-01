@@ -507,14 +507,6 @@ Shifts.render = {
     }
     return end_time;
   },
-  calculate_signup_state: function(shift) {
-    var now_unix;
-    now_unix = moment().format('X');
-    if (shift.start_time > now_unix) {
-      return "success";
-    }
-    return "default";
-  },
   shiftplan: function() {
     return Shifts.db.get_rooms(function(rooms) {
       return Shifts.db.get_angeltypes(function(angeltypes) {
@@ -530,7 +522,7 @@ Shifts.render = {
     });
   },
   shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_shiftentries) {
-    var add_shift, angeltype, end_time, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, m, mustache_rooms, n, ref, ref1, ref2, rendered_until, room, room_id, room_nr, s, se, shift, shift_added, shift_fits, shift_nr, shiftentries, start_time, thistime, time_slot, tpl;
+    var add_shift, angeltype, calculate_signup_state, calculate_state_class, end_time, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, m, mustache_rooms, n, ref, ref1, ref2, rendered_until, room, room_id, room_nr, s, se, shift, shift_added, shift_fits, shift_nr, shiftentries, start_time, thistime, time_slot, tpl;
     lanes = {};
     shiftentries = {};
     for (i = 0, len = db_shiftentries.length; i < len; i++) {
@@ -562,7 +554,8 @@ Shifts.render = {
       }
       shift.starttime = moment.unix(shift.start_time).format('HH:mm');
       shift.endtime = moment.unix(shift.end_time).format('HH:mm');
-      shift.state_class = Shifts.render.calculate_signup_state(shift);
+      shift.signup_state = calculate_signup_state(shift);
+      shift.state_class = calculate_state_class(shift.signup_state);
       shift.angeltypes = shiftentries[shift.SID];
       blocks = Math.ceil(shift.end_time - shift.start_time) / Shifts.render.SECONDS_PER_ROW;
       blocks = Math.max(1, blocks);
@@ -576,6 +569,32 @@ Shifts.render = {
         }
       }
       return false;
+    };
+    calculate_signup_state = function(shift) {
+      var now_unix;
+      now_unix = moment().format('X');
+      if (shift.end_time > now_unix) {
+        return "free";
+      }
+      return "shift_ended";
+    };
+    calculate_state_class = function(signup_state) {
+      switch (signup_state) {
+        case "shift_ended":
+          return "default";
+        case "signed_up":
+          return "primary";
+        case "free":
+          return "danger";
+        case "angeltype":
+          return "primary";
+        case "collides":
+          return "primary";
+        case "occupied":
+          return "primary";
+        case "admin":
+          return "primary";
+      }
     };
     shift_fits = function(shift, room_id, lane_nr) {
       var k, lane_shift, len2, ref;

@@ -56,12 +56,6 @@ Shifts.render =
             end_time = end_time + Shifts.render.TIME_MARGIN
         return end_time
 
-    calculate_signup_state: (shift) ->
-        now_unix = moment().format('X')
-        if shift.start_time > now_unix
-            return "success"
-        return "default"
-
     shiftplan: ->
         Shifts.db.get_rooms (rooms) ->
             Shifts.db.get_angeltypes (angeltypes) ->
@@ -104,7 +98,8 @@ Shifts.render =
             shift.endtime = moment.unix(shift.end_time).format('HH:mm')
 
             # set state class
-            shift.state_class = Shifts.render.calculate_signup_state(shift)
+            shift.signup_state = calculate_signup_state(shift)
+            shift.state_class = calculate_state_class(shift.signup_state)
 
             # add shiftentries
             shift.angeltypes = shiftentries[shift.SID]
@@ -121,6 +116,23 @@ Shifts.render =
                     lanes[room_id][lane_nr].push shift
                     return true
             return false
+
+        calculate_signup_state = (shift) ->
+            now_unix = moment().format('X')
+            if shift.end_time > now_unix
+                return "free"
+            return "shift_ended"
+            # get usershifts, save separately for collision detection
+
+        calculate_state_class = (signup_state) ->
+            switch signup_state
+                when "shift_ended" then "default"
+                when "signed_up" then "primary"
+                when "free" then "danger"
+                when "angeltype" then "primary"
+                when "collides" then "primary"
+                when "occupied" then "primary"
+                when "admin" then "primary"
 
         shift_fits = (shift, room_id, lane_nr) ->
             for lane_shift in lanes[room_id][lane_nr]
