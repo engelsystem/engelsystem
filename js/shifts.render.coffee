@@ -117,6 +117,7 @@ Shifts.render =
                         UID: se.UID
                         Nick: se.Nick
                     shiftentries[se.SID][s].angels_needed--
+                    shiftentries[se.SID][s].if_angels = true
 
         add_shift = (shift, room_id) ->
             # fix empty title
