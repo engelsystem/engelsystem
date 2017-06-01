@@ -609,9 +609,9 @@ Shifts.render = {
       }
       shift.starttime = moment.unix(shift.start_time).format('HH:mm');
       shift.endtime = moment.unix(shift.end_time).format('HH:mm');
+      shift.angeltypes = shiftentries[shift.SID];
       shift.signup_state = calculate_signup_state(shift);
       shift.state_class = calculate_state_class(shift.signup_state);
-      shift.angeltypes = shiftentries[shift.SID];
       blocks = Math.ceil(shift.end_time - shift.start_time) / Shifts.render.SECONDS_PER_ROW;
       blocks = Math.max(1, blocks);
       height = blocks * Shifts.render.BLOCK_HEIGHT - Shifts.render.MARGIN;
@@ -626,7 +626,7 @@ Shifts.render = {
       return false;
     };
     calculate_signup_state = function(shift) {
-      var len4, len5, m, n, now_unix, u;
+      var angels_needed, at, len4, len5, len6, m, n, now_unix, p, ref, u;
       for (m = 0, len4 = db_usershifts.length; m < len4; m++) {
         u = db_usershifts[m];
         if (u.SID === shift.SID) {
@@ -637,8 +637,17 @@ Shifts.render = {
       if (shift.end_time < now_unix) {
         return "shift_ended";
       }
-      for (n = 0, len5 = db_usershifts.length; n < len5; n++) {
-        u = db_usershifts[n];
+      angels_needed = 0;
+      ref = shift.angeltypes;
+      for (n = 0, len5 = ref.length; n < len5; n++) {
+        at = ref[n];
+        angels_needed = angels_needed + at.angels_needed;
+      }
+      if (angels_needed === 0) {
+        return "occupied";
+      }
+      for (p = 0, len6 = db_usershifts.length; p < len6; p++) {
+        u = db_usershifts[p];
         if (u.SID !== shift.SID) {
           if (shift.start_time >= u.start_time && shift.end_time <= u.end_time) {
             return "collides";

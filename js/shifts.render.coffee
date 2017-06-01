@@ -128,12 +128,12 @@ Shifts.render =
             shift.starttime = moment.unix(shift.start_time).format('HH:mm')
             shift.endtime = moment.unix(shift.end_time).format('HH:mm')
 
+            # add shiftentries
+            shift.angeltypes = shiftentries[shift.SID]
+
             # set state class
             shift.signup_state = calculate_signup_state(shift)
             shift.state_class = calculate_state_class(shift.signup_state)
-
-            # add shiftentries
-            shift.angeltypes = shiftentries[shift.SID]
 
             # calculate shift height
             blocks = Math.ceil(shift.end_time - shift.start_time) / Shifts.render.SECONDS_PER_ROW
@@ -160,6 +160,11 @@ Shifts.render =
                 return "shift_ended"
 
             # you cannot join if the shift is full
+            angels_needed = 0
+            for at in shift.angeltypes
+                angels_needed = angels_needed + at.angels_needed
+            if angels_needed == 0
+                return "occupied"
 
             # you cannot join if the user is not of this angel type
             # you cannot join if you are not confirmed
