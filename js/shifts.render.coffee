@@ -75,8 +75,7 @@ Shifts.render =
 
         # build needed angeltypes
         for atn in db_angeltypes_needed
-            needed_angeltypes[atn.shift_id] = {}
-            needed_angeltypes[atn.shift_id][atn.angel_type_id] = atn.angel_count
+            needed_angeltypes[atn.shift_id + '-' + atn.angel_type_id] = atn.angel_count
 
         # build shiftentries object
         for se in db_shiftentries
@@ -86,7 +85,7 @@ Shifts.render =
                     TID: se.TID
                     at_name: se.at_name
                     angels: []
-                    angels_needed: needed_angeltypes[se.SID][se.TID]
+                    angels_needed: needed_angeltypes[se.SID + '-' + se.TID]
 
         # fill shiftentries with needed angeltypes
         for atn in db_angeltypes_needed
@@ -110,21 +109,14 @@ Shifts.render =
                         angels: []
                         angels_needed: atn.angel_count
 
-        Shifts.log db_angeltypes_needed
-
         # fill it with angels
         for se in db_shiftentries
             for s of shiftentries[se.SID]
                 if se.TID == shiftentries[se.SID][s].TID
-                    Shifts.log "Shift #{se.SID}, tid: #{se.TID}: got one. #{se.Nick}"
                     shiftentries[se.SID][s].angels.push
                         UID: se.UID
                         Nick: se.Nick
-                    Shifts.log "current value: #{shiftentries[se.SID][s].angels_needed}"
                     shiftentries[se.SID][s].angels_needed--
-                    Shifts.log "got one angel (#{se.Nick}, reduced. new value: #{shiftentries[se.SID][s].angels_needed}"
-
-        Shifts.log shiftentries
 
         add_shift = (shift, room_id) ->
             # fix empty title

@@ -547,8 +547,7 @@ Shifts.render = {
     needed_angeltypes = {};
     for (i = 0, len = db_angeltypes_needed.length; i < len; i++) {
       atn = db_angeltypes_needed[i];
-      needed_angeltypes[atn.shift_id] = {};
-      needed_angeltypes[atn.shift_id][atn.angel_type_id] = atn.angel_count;
+      needed_angeltypes[atn.shift_id + '-' + atn.angel_type_id] = atn.angel_count;
     }
     for (j = 0, len1 = db_shiftentries.length; j < len1; j++) {
       se = db_shiftentries[j];
@@ -558,7 +557,7 @@ Shifts.render = {
           TID: se.TID,
           at_name: se.at_name,
           angels: [],
-          angels_needed: needed_angeltypes[se.SID][se.TID]
+          angels_needed: needed_angeltypes[se.SID + '-' + se.TID]
         });
       }
     }
@@ -590,23 +589,18 @@ Shifts.render = {
         }
       }
     }
-    Shifts.log(db_angeltypes_needed);
     for (l = 0, len3 = db_shiftentries.length; l < len3; l++) {
       se = db_shiftentries[l];
       for (s in shiftentries[se.SID]) {
         if (se.TID === shiftentries[se.SID][s].TID) {
-          Shifts.log("Shift " + se.SID + ", tid: " + se.TID + ": got one. " + se.Nick);
           shiftentries[se.SID][s].angels.push({
             UID: se.UID,
             Nick: se.Nick
           });
-          Shifts.log("current value: " + shiftentries[se.SID][s].angels_needed);
           shiftentries[se.SID][s].angels_needed--;
-          Shifts.log("got one angel (" + se.Nick + ", reduced. new value: " + shiftentries[se.SID][s].angels_needed);
         }
       }
     }
-    Shifts.log(shiftentries);
     add_shift = function(shift, room_id) {
       var blocks, height, lane_nr;
       if (shift.shift_title === "null") {
