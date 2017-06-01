@@ -138,7 +138,7 @@ Shifts.templates =
                     {{/angeltypes}}
                     </li>
                     <li class="list-group-item">
-                      <a href="?p=user_shifts&amp;shift_id=2696&amp;type_id=104575" class="btn btn-default btn-xs">Neue Engel hinzufügen</a>
+                      <a href="?p=user_shifts&amp;shift_id={{SID}}" class="btn btn-default btn-xs">Neue Engel hinzufügen</a>
                     </li>
                   </ul>
                   <div class="shift-spacer"></div>
