@@ -209,6 +209,17 @@ Shifts.db =
         ORDER BY ShiftEntry.SID", (res) ->
             done res
 
+    get_usershifts: (user_id, done) ->
+        # optional (performance?): restrict to current dateselection
+        #start_time = Shifts.render.get_starttime()
+        #end_time = Shifts.render.get_endtime()
+
+        alasql "SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID
+        FROM ShiftEntry
+        WHERE ShiftEntry.UID = #{user_id}
+        ORDER BY ShiftEntry.SID", (res) ->
+            done res
+
     get_rooms: (done) ->
         alasql "SELECT * FROM Room ORDER BY Name", (res) ->
             done res

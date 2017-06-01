@@ -57,15 +57,17 @@ Shifts.render =
         return end_time
 
     shiftplan: ->
+        user_id = parseInt $('#shiftplan').data('user_id'), 10
         Shifts.db.get_rooms (rooms) ->
             Shifts.db.get_angeltypes (angeltypes) ->
                 selected_rooms = Shifts.interaction.selected_rooms
                 selected_angeltypes = Shifts.interaction.selected_angeltypes
                 Shifts.db.get_shifts selected_rooms, selected_angeltypes, (db_shifts) ->
                     Shifts.db.get_shiftentries selected_rooms, selected_angeltypes, (db_shiftentries) ->
-                        Shifts.render.shiftplan_assemble rooms, angeltypes, db_shifts, db_shiftentries
+                        Shifts.db.get_usershifts user_id, (db_usershifts) ->
+                            Shifts.render.shiftplan_assemble rooms, angeltypes, db_shifts, db_shiftentries, db_usershifts
 
-    shiftplan_assemble: (rooms, angeltypes, db_shifts, db_shiftentries) ->
+    shiftplan_assemble: (rooms, angeltypes, db_shifts, db_shiftentries, db_usershifts) ->
         lanes = {}
         shiftentries = {}
 
@@ -118,9 +120,10 @@ Shifts.render =
             return false
 
         calculate_signup_state = (shift) ->
-            # get user shifts
-
             # you cannot join if you already signed up for this shift
+            for u in db_usershifts
+                if u.SID == shift.SID
+                    return "signed_up"
 
             # you can only join if the shift is in the future
             now_unix = moment().format('X')

@@ -238,6 +238,11 @@ Shifts.db = {
       return done(res);
     });
   },
+  get_usershifts: function(user_id, done) {
+    return alasql("SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID FROM ShiftEntry WHERE ShiftEntry.UID = " + user_id + " ORDER BY ShiftEntry.SID", function(res) {
+      return done(res);
+    });
+  },
   get_rooms: function(done) {
     return alasql("SELECT * FROM Room ORDER BY Name", function(res) {
       return done(res);
@@ -508,6 +513,8 @@ Shifts.render = {
     return end_time;
   },
   shiftplan: function() {
+    var user_id;
+    user_id = parseInt($('#shiftplan').data('user_id'), 10);
     return Shifts.db.get_rooms(function(rooms) {
       return Shifts.db.get_angeltypes(function(angeltypes) {
         var selected_angeltypes, selected_rooms;
@@ -515,13 +522,15 @@ Shifts.render = {
         selected_angeltypes = Shifts.interaction.selected_angeltypes;
         return Shifts.db.get_shifts(selected_rooms, selected_angeltypes, function(db_shifts) {
           return Shifts.db.get_shiftentries(selected_rooms, selected_angeltypes, function(db_shiftentries) {
-            return Shifts.render.shiftplan_assemble(rooms, angeltypes, db_shifts, db_shiftentries);
+            return Shifts.db.get_usershifts(user_id, function(db_usershifts) {
+              return Shifts.render.shiftplan_assemble(rooms, angeltypes, db_shifts, db_shiftentries, db_usershifts);
+            });
           });
         });
       });
     });
   },
-  shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_shiftentries) {
+  shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_shiftentries, db_usershifts) {
     var add_shift, angeltype, calculate_signup_state, calculate_state_class, end_time, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, m, mustache_rooms, n, ref, ref1, ref2, rendered_until, room, room_id, room_nr, s, se, shift, shift_added, shift_fits, shift_nr, shiftentries, start_time, thistime, time_slot, tpl;
     lanes = {};
     shiftentries = {};
@@ -571,7 +580,13 @@ Shifts.render = {
       return false;
     };
     calculate_signup_state = function(shift) {
-      var now_unix;
+      var k, len2, now_unix, u;
+      for (k = 0, len2 = db_usershifts.length; k < len2; k++) {
+        u = db_usershifts[k];
+        if (u.SID === shift.SID) {
+          return "signed_up";
+        }
+      }
       now_unix = moment().format('X');
       if (shift.end_time < now_unix) {
         return "shift_ended";
