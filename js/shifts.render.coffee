@@ -88,7 +88,27 @@ Shifts.render =
                     TID: se.TID
                     at_name: se.at_name
                     angels: []
-                    angels_needed: needed_angeltypes[se.SID][se.TID] || 0
+                    needed_angels: needed_angeltypes[se.SID][se.TID]
+        #
+        # fill it with angels
+        #for se in db_shiftentries
+        #    for s of shiftentries[se.SID]
+        #        if se.TID == shiftentries[se.SID][s].TID
+        #            shiftentries[se.SID][s].angels.push
+        #                UID: se.UID
+        #                Nick: se.Nick
+
+        # build needed angeltypes object
+        #
+        # build needed angeltypes first
+        for atn in db_angeltypes_needed
+            if typeof shiftentries[atn.shift_id] == "undefined"
+                shiftentries[atn.shift_id] = []
+                shiftentries[atn.shift_id].push
+                    TID: atn.angel_type_id
+                    at_name: atn.name
+                    angels: []
+                    needed_angels: atn.count
         #
         # fill it with angels
         for se in db_shiftentries

@@ -541,7 +541,7 @@ Shifts.render = {
     });
   },
   shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts) {
-    var add_shift, angeltype, atn, calculate_signup_state, calculate_state_class, end_time, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, len6, m, mustache_rooms, n, needed_angeltypes, p, ref, ref1, ref2, rendered_until, room, room_id, room_nr, s, se, shift, shift_added, shift_fits, shift_nr, shiftentries, start_time, thistime, time_slot, tpl;
+    var add_shift, angeltype, atn, calculate_signup_state, calculate_state_class, end_time, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, len6, len7, m, mustache_rooms, n, needed_angeltypes, p, q, ref, ref1, ref2, rendered_until, room, room_id, room_nr, s, se, shift, shift_added, shift_fits, shift_nr, shiftentries, start_time, thistime, time_slot, tpl;
     lanes = {};
     shiftentries = {};
     needed_angeltypes = {};
@@ -558,12 +558,24 @@ Shifts.render = {
           TID: se.TID,
           at_name: se.at_name,
           angels: [],
-          angels_needed: needed_angeltypes[se.SID][se.TID] || 0
+          needed_angels: needed_angeltypes[se.SID][se.TID]
         });
       }
     }
-    for (k = 0, len2 = db_shiftentries.length; k < len2; k++) {
-      se = db_shiftentries[k];
+    for (k = 0, len2 = db_angeltypes_needed.length; k < len2; k++) {
+      atn = db_angeltypes_needed[k];
+      if (typeof shiftentries[atn.shift_id] === "undefined") {
+        shiftentries[atn.shift_id] = [];
+        shiftentries[atn.shift_id].push({
+          TID: atn.angel_type_id,
+          at_name: atn.name,
+          angels: [],
+          needed_angels: atn.count
+        });
+      }
+    }
+    for (l = 0, len3 = db_shiftentries.length; l < len3; l++) {
+      se = db_shiftentries[l];
       for (s in shiftentries[se.SID]) {
         if (se.TID === shiftentries[se.SID][s].TID) {
           shiftentries[se.SID][s].angels.push({
@@ -598,9 +610,9 @@ Shifts.render = {
       return false;
     };
     calculate_signup_state = function(shift) {
-      var l, len3, len4, m, now_unix, u;
-      for (l = 0, len3 = db_usershifts.length; l < len3; l++) {
-        u = db_usershifts[l];
+      var len4, len5, m, n, now_unix, u;
+      for (m = 0, len4 = db_usershifts.length; m < len4; m++) {
+        u = db_usershifts[m];
         if (u.SID === shift.SID) {
           return "signed_up";
         }
@@ -609,8 +621,8 @@ Shifts.render = {
       if (shift.end_time < now_unix) {
         return "shift_ended";
       }
-      for (m = 0, len4 = db_usershifts.length; m < len4; m++) {
-        u = db_usershifts[m];
+      for (n = 0, len5 = db_usershifts.length; n < len5; n++) {
+        u = db_usershifts[n];
         if (u.SID !== shift.SID) {
           if (shift.start_time >= u.start_time && shift.end_time <= u.end_time) {
             return "collides";
@@ -638,10 +650,10 @@ Shifts.render = {
       }
     };
     shift_fits = function(shift, room_id, lane_nr) {
-      var l, lane_shift, len3, ref;
+      var lane_shift, len4, m, ref;
       ref = lanes[room_id][lane_nr];
-      for (l = 0, len3 = ref.length; l < len3; l++) {
-        lane_shift = ref[l];
+      for (m = 0, len4 = ref.length; m < len4; m++) {
+        lane_shift = ref[m];
         if (!(shift.start_time >= lane_shift.end_time || shift.end_time <= lane_shift.start_time)) {
           return false;
         }
@@ -652,8 +664,8 @@ Shifts.render = {
     end_time = Shifts.render.get_endtime(true);
     firstblock_starttime = end_time;
     lastblock_endtime = start_time;
-    for (l = 0, len3 = db_shifts.length; l < len3; l++) {
-      shift = db_shifts[l];
+    for (m = 0, len4 = db_shifts.length; m < len4; m++) {
+      shift = db_shifts[m];
       if (shift.start_time < firstblock_starttime) {
         firstblock_starttime = shift.start_time;
       }
@@ -666,8 +678,8 @@ Shifts.render = {
       }
       shift_added = false;
       ref = lanes[room_id];
-      for (m = 0, len4 = ref.length; m < len4; m++) {
-        lane = ref[m];
+      for (n = 0, len5 = ref.length; n < len5; n++) {
+        lane = ref[n];
         shift_added = add_shift(shift, room_id);
         if (shift_added) {
           break;
@@ -713,14 +725,14 @@ Shifts.render = {
         }
       }
     }
-    for (n = 0, len5 = rooms.length; n < len5; n++) {
-      room = rooms[n];
+    for (p = 0, len6 = rooms.length; p < len6; p++) {
+      room = rooms[p];
       if (ref1 = room.RID, indexOf.call(Shifts.interaction.selected_rooms, ref1) >= 0) {
         room.selected = true;
       }
     }
-    for (p = 0, len6 = angeltypes.length; p < len6; p++) {
-      angeltype = angeltypes[p];
+    for (q = 0, len7 = angeltypes.length; q < len7; q++) {
+      angeltype = angeltypes[q];
       if (ref2 = angeltype.id, indexOf.call(Shifts.interaction.selected_angeltypes, ref2) >= 0) {
         angeltype.selected = true;
       }
