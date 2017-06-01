@@ -649,7 +649,7 @@ Shifts.render = {
       for (p = 0, len6 = db_usershifts.length; p < len6; p++) {
         u = db_usershifts[p];
         if (u.SID !== shift.SID) {
-          if (shift.start_time >= u.start_time && shift.end_time <= u.end_time) {
+          if (!(shift.start_time >= u.end_time || shift.end_time <= u.start_time)) {
             return "collides";
           }
         }

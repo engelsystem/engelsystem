@@ -166,6 +166,7 @@ Shifts.render =
             if angels_needed == 0
                 return "occupied"
 
+            # TODO:
             # you cannot join if the user is not of this angel type
             # you cannot join if you are not confirmed
             # you cannot join if angeltype has no self signup
@@ -173,7 +174,7 @@ Shifts.render =
             # you cannot join if user already joined a parallel or this shift
             for u in db_usershifts
                 if u.SID != shift.SID
-                    if shift.start_time >= u.start_time and shift.end_time <= u.end_time
+                    if not (shift.start_time >= u.end_time or shift.end_time <= u.start_time)
                         return "collides"
 
             # hooray, shift is free for you!
