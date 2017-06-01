@@ -201,6 +201,7 @@ Shifts.db =
         JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID
         JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id
         WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
+        AND NeededAngelTypes.angel_count > 0
         ORDER BY NeededAngelTypes.shift_id", (res) ->
             done res
 

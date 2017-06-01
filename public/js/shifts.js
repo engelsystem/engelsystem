@@ -232,7 +232,7 @@ Shifts.db = {
     var end_time, start_time;
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return alasql("SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count, AngelTypes.name FROM NeededAngelTypes JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " ORDER BY NeededAngelTypes.shift_id", function(res) {
+    return alasql("SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count, AngelTypes.name FROM NeededAngelTypes JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND NeededAngelTypes.angel_count > 0 ORDER BY NeededAngelTypes.shift_id", function(res) {
       return done(res);
     });
   },
@@ -541,7 +541,7 @@ Shifts.render = {
     });
   },
   shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts) {
-    var add_shift, angeltype, atn, calculate_signup_state, calculate_state_class, end_time, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, len6, len7, m, mustache_rooms, n, needed_angeltypes, p, q, ref, ref1, ref2, rendered_until, room, room_id, room_nr, s, se, shift, shift_added, shift_fits, shift_nr, shiftentries, start_time, thistime, time_slot, tpl;
+    var add_shift, angeltype, atn, calculate_signup_state, calculate_state_class, end_time, entry_exists, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, len6, len7, m, mustache_rooms, n, needed_angeltypes, p, q, ref, ref1, ref2, rendered_until, room, room_id, room_nr, s, se, shift, shift_added, shift_fits, shift_nr, shiftentries, start_time, thistime, time_slot, tpl;
     lanes = {};
     shiftentries = {};
     needed_angeltypes = {};
@@ -565,7 +565,6 @@ Shifts.render = {
     for (k = 0, len2 = db_angeltypes_needed.length; k < len2; k++) {
       atn = db_angeltypes_needed[k];
       if (typeof shiftentries[atn.shift_id] === "undefined") {
-        Shifts.log(atn);
         shiftentries[atn.shift_id] = [];
         shiftentries[atn.shift_id].push({
           TID: atn.angel_type_id,
@@ -574,26 +573,36 @@ Shifts.render = {
           angels_needed: atn.angel_count
         });
       } else {
+        entry_exists = false;
         for (s in shiftentries[atn.shift_id]) {
-          if (atn.angel_type_id !== shiftentries[atn.shift_id][s].TID) {
-            shiftentries[atn.shift_id].push({
-              TID: atn.angel_type_id,
-              at_name: atn.name,
-              angels: [],
-              angels_needed: atn.angel_count
-            });
+          if (atn.angel_type_id === shiftentries[atn.shift_id][s].TID) {
+            entry_exists = true;
+            break;
           }
+        }
+        if (!entry_exists) {
+          shiftentries[atn.shift_id].push({
+            TID: atn.angel_type_id,
+            at_name: atn.name,
+            angels: [],
+            angels_needed: atn.angel_count
+          });
         }
       }
     }
+    Shifts.log(db_angeltypes_needed);
     for (l = 0, len3 = db_shiftentries.length; l < len3; l++) {
       se = db_shiftentries[l];
       for (s in shiftentries[se.SID]) {
         if (se.TID === shiftentries[se.SID][s].TID) {
+          Shifts.log("Shift " + se.SID + ", tid: " + se.TID + ": got one. " + se.Nick);
           shiftentries[se.SID][s].angels.push({
             UID: se.UID,
             Nick: se.Nick
           });
+          Shifts.log("current value: " + shiftentries[se.SID][s].angels_needed);
+          shiftentries[se.SID][s].angels_needed--;
+          Shifts.log("got one angel (" + se.Nick + ", reduced. new value: " + shiftentries[se.SID][s].angels_needed);
         }
       }
     }

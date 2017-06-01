@@ -88,7 +88,7 @@ Shifts.render =
                     angels: []
                     angels_needed: needed_angeltypes[se.SID][se.TID]
 
-        # build needed angeltypes
+        # fill shiftentries with needed angeltypes
         for atn in db_angeltypes_needed
             if typeof shiftentries[atn.shift_id] == "undefined"
                 shiftentries[atn.shift_id] = []
@@ -98,21 +98,31 @@ Shifts.render =
                     angels: []
                     angels_needed: atn.angel_count
             else
+                entry_exists = false
                 for s of shiftentries[atn.shift_id]
-                    if atn.angel_type_id != shiftentries[atn.shift_id][s].TID
-                        shiftentries[atn.shift_id].push
-                            TID: atn.angel_type_id
-                            at_name: atn.name
-                            angels: []
-                            angels_needed: atn.angel_count
-        #
+                    if atn.angel_type_id == shiftentries[atn.shift_id][s].TID
+                        entry_exists = true
+                        break
+                if not entry_exists
+                    shiftentries[atn.shift_id].push
+                        TID: atn.angel_type_id
+                        at_name: atn.name
+                        angels: []
+                        angels_needed: atn.angel_count
+
+        Shifts.log db_angeltypes_needed
+
         # fill it with angels
         for se in db_shiftentries
             for s of shiftentries[se.SID]
                 if se.TID == shiftentries[se.SID][s].TID
+                    Shifts.log "Shift #{se.SID}, tid: #{se.TID}: got one. #{se.Nick}"
                     shiftentries[se.SID][s].angels.push
                         UID: se.UID
                         Nick: se.Nick
+                    Shifts.log "current value: #{shiftentries[se.SID][s].angels_needed}"
+                    shiftentries[se.SID][s].angels_needed--
+                    Shifts.log "got one angel (#{se.Nick}, reduced. new value: #{shiftentries[se.SID][s].angels_needed}"
 
         Shifts.log shiftentries
 
