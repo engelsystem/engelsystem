@@ -24,7 +24,9 @@ Shifts.render =
         if  hour > 19 or hour < 8
             daytime = "tick_dark"
 
-        if time % (24*60*60) == 22*60*60 #TODO: daylight saving bug, investigate
+        diffhour = if moment().isDST() then 22 else 23
+
+        if time % (24*60*60) == diffhour*60*60
             if label
                 return { tick_day: true, label: moment.unix(time).format('MM-DD HH:mm'), daytime: daytime }
             else

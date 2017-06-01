@@ -439,7 +439,7 @@ Shifts.render = {
   TIME_MARGIN: 1800,
   START_TIME: false,
   tick: function(time, label) {
-    var daytime, hour;
+    var daytime, diffhour, hour;
     if (label == null) {
       label = false;
     }
@@ -448,7 +448,8 @@ Shifts.render = {
     if (hour > 19 || hour < 8) {
       daytime = "tick_dark";
     }
-    if (time % (24 * 60 * 60) === 22 * 60 * 60) {
+    diffhour = moment().isDST() ? 22 : 23;
+    if (time % (24 * 60 * 60) === diffhour * 60 * 60) {
       if (label) {
         return {
           tick_day: true,
