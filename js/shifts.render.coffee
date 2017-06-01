@@ -64,12 +64,19 @@ Shifts.render =
                 selected_angeltypes = Shifts.interaction.selected_angeltypes
                 Shifts.db.get_shifts selected_rooms, selected_angeltypes, (db_shifts) ->
                     Shifts.db.get_shiftentries selected_rooms, selected_angeltypes, (db_shiftentries) ->
-                        Shifts.db.get_usershifts user_id, (db_usershifts) ->
-                            Shifts.render.shiftplan_assemble rooms, angeltypes, db_shifts, db_shiftentries, db_usershifts
+                        Shifts.db.get_angeltypes_needed (db_angeltypes_needed) ->
+                            Shifts.db.get_usershifts user_id, (db_usershifts) ->
+                                Shifts.render.shiftplan_assemble rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts
 
-    shiftplan_assemble: (rooms, angeltypes, db_shifts, db_shiftentries, db_usershifts) ->
+    shiftplan_assemble: (rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts) ->
         lanes = {}
         shiftentries = {}
+        needed_angeltypes = {}
+
+        # build needed angeltypes
+        for atn in db_angeltypes_needed
+            needed_angeltypes[atn.shift_id] = {}
+            needed_angeltypes[atn.shift_id][atn.angel_type_id] = atn.angel_count
 
         # build shiftentries object
         #
@@ -81,6 +88,7 @@ Shifts.render =
                     TID: se.TID
                     at_name: se.at_name
                     angels: []
+                    angels_needed: needed_angeltypes[se.SID][se.TID] || 0
         #
         # fill it with angels
         for se in db_shiftentries
@@ -90,6 +98,7 @@ Shifts.render =
                         UID: se.UID
                         Nick: se.Nick
 
+        Shifts.log shiftentries
         add_shift = (shift, room_id) ->
             # fix empty title
             if shift.shift_title == "null"
@@ -259,7 +268,7 @@ Shifts.render =
             timepicker: true
             inline: true
             format: 'Y-m-d H:i'
-            minDate: '-1970-01-02'
+            minDate: '-1970-01-05'
             maxDate: '+1970-01-03'
             onChangeDateTime: (dp, $input) ->
                 stime = parseInt moment($input.val()).format('X'), 10

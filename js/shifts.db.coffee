@@ -192,6 +192,17 @@ Shifts.db =
         ORDER BY Shifts.start_time, Shifts.SID", (res) ->
             done res
 
+    get_angeltypes_needed: (done) ->
+        start_time = Shifts.render.get_starttime()
+        end_time = Shifts.render.get_endtime()
+
+        alasql "SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count
+        FROM NeededAngelTypes
+        JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID
+        WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
+        ORDER BY NeededAngelTypes.shift_id", (res) ->
+            done res
+
     get_shiftentries: (filter_rooms, filter_angeltypes, done) ->
         filter_rooms_ids = filter_rooms.join ','
         filter_angeltypes_ids = filter_angeltypes.join ','
