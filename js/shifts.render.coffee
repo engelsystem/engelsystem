@@ -141,6 +141,12 @@ Shifts.render =
             shift.blocks = blocks
             shift.height = height
 
+            # TODO: use checkboxe
+            if false
+                # show only free shifts
+                if shift.signup_state not in ['free', 'collides', 'signed_up']
+                    return true
+
             for lane_nr of lanes[room_id]
                 if shift_fits(shift, room_id, lane_nr)
                     lanes[room_id][lane_nr].push shift
@@ -276,11 +282,19 @@ Shifts.render =
             if angeltype.id in Shifts.interaction.selected_angeltypes
                 angeltype.selected = true
 
+        ## check for selected occupancy
+        #occupancies = [ {value: "free"}, {value: "occupied"}]
+        #
+        #for occupancy in occupancies
+        #    if occupancy.value in Shifts.interaction.occupancy
+        #        occupancy.selected = true
+
         tpl = ''
 
         tpl += Mustache.render Shifts.templates.filter_form,
             rooms: rooms
             angeltypes: angeltypes
+            #occupancies: occupancies
 
         tpl += Mustache.render Shifts.templates.shift_calendar,
             timelane_ticks: time_slot

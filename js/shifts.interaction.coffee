@@ -12,7 +12,7 @@ Shifts.interaction =
         #
 
         # prefill occupancy
-        Shifts.interaction.selected_occupancy.push '1'
+        #Shifts.interaction.selected_occupancy.push '1'
         Shifts.interaction.selected_occupancy.push '0'
 
         # init frontend events

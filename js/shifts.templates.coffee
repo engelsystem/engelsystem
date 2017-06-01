@@ -50,16 +50,13 @@ Shifts.templates =
     <div class="col-md-2">
         <div id="selection_filled" class="selection filled">
             <h4>Occupancy</h4>
+            {{#occupancies}}
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="filled[]" value="0" checked="checked"> occupied
+                    <input type="checkbox" name="occupancy[]" value="{{value}}" {{#selected}}checked="checked"{{/selected}}> {{value}}
                 </label>
             </div><br />
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="filled[]" value="1" checked="checked"> free
-                </label>
-            </div><br />
+            {{/occupancies}}
             <div class="form-group">
                 <div class="btn-group mass-select">
                     <a href="#all" class="btn btn-default">All</a>
