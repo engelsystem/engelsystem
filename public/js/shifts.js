@@ -232,7 +232,7 @@ Shifts.db = {
     var end_time, start_time;
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return alasql("SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count FROM NeededAngelTypes JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " ORDER BY NeededAngelTypes.shift_id", function(res) {
+    return alasql("SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count, AngelTypes.name FROM NeededAngelTypes JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " ORDER BY NeededAngelTypes.shift_id", function(res) {
       return done(res);
     });
   },
@@ -565,6 +565,7 @@ Shifts.render = {
     for (k = 0, len2 = db_angeltypes_needed.length; k < len2; k++) {
       atn = db_angeltypes_needed[k];
       if (typeof shiftentries[atn.shift_id] === "undefined") {
+        Shifts.log(atn);
         shiftentries[atn.shift_id] = [];
         shiftentries[atn.shift_id].push({
           TID: atn.angel_type_id,
@@ -572,6 +573,17 @@ Shifts.render = {
           angels: [],
           needed_angels: atn.count
         });
+      } else {
+        for (s in shiftentries[atn.shift_id]) {
+          if (atn.angel_type_id !== shiftentries[atn.shift_id][s].TID) {
+            shiftentries[atn.shift_id].push({
+              TID: atn.angel_type_id,
+              at_name: atn.name,
+              angels: [],
+              needed_angels: atn.count
+            });
+          }
+        }
       }
     }
     for (l = 0, len3 = db_shiftentries.length; l < len3; l++) {

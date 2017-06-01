@@ -196,9 +196,10 @@ Shifts.db =
         start_time = Shifts.render.get_starttime()
         end_time = Shifts.render.get_endtime()
 
-        alasql "SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count
+        alasql "SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count, AngelTypes.name
         FROM NeededAngelTypes
         JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID
+        JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id
         WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
         ORDER BY NeededAngelTypes.shift_id", (res) ->
             done res
