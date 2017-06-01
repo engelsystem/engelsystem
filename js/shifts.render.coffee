@@ -118,21 +118,37 @@ Shifts.render =
             return false
 
         calculate_signup_state = (shift) ->
+            # get user shifts
+
+            # you cannot join if you already signed up for this shift
+
+            # you can only join if the shift is in the future
             now_unix = moment().format('X')
-            if shift.end_time > now_unix
-                return "free"
-            return "shift_ended"
-            # get usershifts, save separately for collision detection
+            if shift.start_time < now_unix
+                return "shift_ended"
+
+            # you cannot join if you already signed up for this shift
+
+            # you cannot join if the shift is full
+
+            # you cannot join if the user is not of this angel type
+            # you cannot join if you are not confirmed
+            # you cannot join if angeltype has no self signup
+
+            # you cannot join if user already joined a parallel or this shift
+
+            # hooray, shift is free for you!
+            return "free"
 
         calculate_state_class = (signup_state) ->
             switch signup_state
                 when "shift_ended" then "default"
                 when "signed_up" then "primary"
                 when "free" then "danger"
-                when "angeltype" then "primary"
-                when "collides" then "primary"
-                when "occupied" then "primary"
-                when "admin" then "primary"
+                when "angeltype" then "warning"
+                when "collides" then "warning"
+                when "occupied" then "success"
+                when "admin" then "success"
 
         shift_fits = (shift, room_id, lane_nr) ->
             for lane_shift in lanes[room_id][lane_nr]

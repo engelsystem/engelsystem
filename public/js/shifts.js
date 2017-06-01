@@ -573,10 +573,10 @@ Shifts.render = {
     calculate_signup_state = function(shift) {
       var now_unix;
       now_unix = moment().format('X');
-      if (shift.end_time > now_unix) {
-        return "free";
+      if (shift.start_time < now_unix) {
+        return "shift_ended";
       }
-      return "shift_ended";
+      return "free";
     };
     calculate_state_class = function(signup_state) {
       switch (signup_state) {
@@ -587,13 +587,13 @@ Shifts.render = {
         case "free":
           return "danger";
         case "angeltype":
-          return "primary";
+          return "warning";
         case "collides":
-          return "primary";
+          return "warning";
         case "occupied":
-          return "primary";
+          return "success";
         case "admin":
-          return "primary";
+          return "success";
       }
     };
     shift_fits = function(shift, room_id, lane_nr) {
