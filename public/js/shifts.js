@@ -236,13 +236,11 @@ Shifts.db = {
       return done(res);
     });
   },
-  get_shiftentries: function(filter_rooms, filter_angeltypes, done) {
-    var end_time, filter_angeltypes_ids, filter_rooms_ids, start_time;
-    filter_rooms_ids = filter_rooms.join(',');
-    filter_angeltypes_ids = filter_angeltypes.join(',');
+  get_shiftentries: function(done) {
+    var end_time, start_time;
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return alasql("SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick, AngelTypes.name as at_name FROM ShiftEntry JOIN User ON ShiftEntry.UID = User.UID JOIN Shifts ON ShiftEntry.SID = Shifts.SID JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND Shifts.RID IN (" + filter_rooms_ids + ") AND ShiftEntry.TID IN (" + filter_angeltypes_ids + ") ORDER BY ShiftEntry.SID", function(res) {
+    return alasql("SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick, AngelTypes.name as at_name FROM ShiftEntry JOIN User ON ShiftEntry.UID = User.UID JOIN Shifts ON ShiftEntry.SID = Shifts.SID JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " ORDER BY ShiftEntry.SID", function(res) {
       return done(res);
     });
   },
@@ -529,7 +527,7 @@ Shifts.render = {
         selected_rooms = Shifts.interaction.selected_rooms;
         selected_angeltypes = Shifts.interaction.selected_angeltypes;
         return Shifts.db.get_shifts(selected_rooms, selected_angeltypes, function(db_shifts) {
-          return Shifts.db.get_shiftentries(selected_rooms, selected_angeltypes, function(db_shiftentries) {
+          return Shifts.db.get_shiftentries(function(db_shiftentries) {
             return Shifts.db.get_angeltypes_needed(function(db_angeltypes_needed) {
               return Shifts.db.get_usershifts(user_id, function(db_usershifts) {
                 return Shifts.render.shiftplan_assemble(rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts);

@@ -63,7 +63,7 @@ Shifts.render =
                 selected_rooms = Shifts.interaction.selected_rooms
                 selected_angeltypes = Shifts.interaction.selected_angeltypes
                 Shifts.db.get_shifts selected_rooms, selected_angeltypes, (db_shifts) ->
-                    Shifts.db.get_shiftentries selected_rooms, selected_angeltypes, (db_shiftentries) ->
+                    Shifts.db.get_shiftentries (db_shiftentries) ->
                         Shifts.db.get_angeltypes_needed (db_angeltypes_needed) ->
                             Shifts.db.get_usershifts user_id, (db_usershifts) ->
                                 Shifts.render.shiftplan_assemble rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts
