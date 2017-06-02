@@ -2,7 +2,7 @@
 use Engelsystem\ShiftsFilter;
 
 function shifts_browser_title() {
-  return _("Shifts (Web SQL)");
+  return _("Shifts");
 }
 
 /**
