@@ -130,9 +130,14 @@ Shifts.render =
             # add shiftentries
             shift.angeltypes = shiftentries[shift.SID]
 
-            # set state class
+            # calculate signup state
             shift.signup_state = calculate_signup_state(shift)
             shift.state_class = calculate_state_class(shift.signup_state)
+
+            if Shifts.interaction.occupancy == 'free'
+                # show only free shifts
+                if shift.signup_state not in ['free', 'collides', 'signed_up']
+                    return true
 
             # calculate shift height
             blocks = Math.ceil(shift.end_time - shift.start_time) / Shifts.render.SECONDS_PER_ROW
@@ -140,12 +145,6 @@ Shifts.render =
             height = blocks * Shifts.render.BLOCK_HEIGHT - Shifts.render.MARGIN
             shift.blocks = blocks
             shift.height = height
-
-            # TODO: use checkboxe
-            if false
-                # show only free shifts
-                if shift.signup_state not in ['free', 'collides', 'signed_up']
-                    return true
 
             for lane_nr of lanes[room_id]
                 if shift_fits(shift, room_id, lane_nr)
@@ -282,19 +281,23 @@ Shifts.render =
             if angeltype.id in Shifts.interaction.selected_angeltypes
                 angeltype.selected = true
 
-        ## check for selected occupancy
-        #occupancies = [ {value: "free"}, {value: "occupied"}]
-        #
-        #for occupancy in occupancies
-        #    if occupancy.value in Shifts.interaction.occupancy
-        #        occupancy.selected = true
+        # check for selected occupancy
+        switch Shifts.interaction.occupancy
+            when "all"
+                occupancy =
+                    all: 'primary'
+                    free: 'default'
+            when "free"
+                occupancy =
+                    all: 'default'
+                    free: 'primary'
 
         tpl = ''
 
         tpl += Mustache.render Shifts.templates.filter_form,
             rooms: rooms
             angeltypes: angeltypes
-            #occupancies: occupancies
+            occupancy: occupancy
 
         tpl += Mustache.render Shifts.templates.shift_calendar,
             timelane_ticks: time_slot

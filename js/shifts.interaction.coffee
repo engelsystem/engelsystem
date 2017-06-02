@@ -3,17 +3,13 @@ Shifts.interaction =
 
     selected_rooms: []
     selected_angeltypes: []
-    selected_occupancy: []
+    occupancy: 'all'
     datepicker_interval: false
 
     init: ->
 
         # prefill all rooms and angeltypes - done in Shifts.db.populate_ids()
         #
-
-        # prefill occupancy
-        #Shifts.interaction.selected_occupancy.push '1'
-        Shifts.interaction.selected_occupancy.push '0'
 
         # init frontend events
         Shifts.interaction.on_filter_change()
@@ -48,7 +44,6 @@ Shifts.interaction =
                     Shifts.interaction.selected_rooms = []
 
             if $(this).parents('#selection_types').length
-                Shifts.log 'dagg'
                 if $(ev.target).attr('href') == '#all'
                     for type in $('#selection_types input')
                         Shifts.interaction.selected_angeltypes.push parseInt(type.value, 10)
@@ -57,10 +52,9 @@ Shifts.interaction =
 
             if $(this).parents('#selection_filled').length
                 if $(ev.target).attr('href') == '#all'
-                    for occupancy in $('#selection_filled input')
-                        Shifts.interaction.selected_occupancy.push parseInt(occupancy.value, 10)
-                if $(ev.target).attr('href') == '#none'
-                    Shifts.interaction.selected_occupancy = []
+                    Shifts.interaction.occupancy = 'all'
+                if $(ev.target).attr('href') == '#free'
+                    Shifts.interaction.occupancy = 'free'
 
             Shifts.render.shiftplan()
             return false
