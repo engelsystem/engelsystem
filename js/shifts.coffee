@@ -5,6 +5,20 @@ Shifts.init = ->
     Shifts.$shiftplan = $('#shiftplan')
     if Shifts.$shiftplan.length > 0
         Shifts.log 'shifts init'
+
+        if 'websql=' not in document.cookie
+            try
+                dbtest = window.indexedDB.open("_engelsystem_test", 3)
+                dbtest.onerror (ev) ->
+                    throw 'error'
+
+                alasql 'CREATE INDEXEDDB DATABASE IF NOT EXISTS _engelsystem_test;', ->
+                    alasql 'DROP INDEXEDDB DATABASE _engelsystem_test;'
+                    document.cookie = 'websql=yes'
+            catch
+                document.cookie = 'websql=nope'
+                window.location.href = ''
+
         Shifts.db.init ->
             Shifts.log 'db initialized'
             Shifts.fetcher.start ->

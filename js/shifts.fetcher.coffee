@@ -24,6 +24,7 @@ Shifts.fetcher =
                 max_id = Math.max.apply(Math, idlist)
             else
                 max_id = 0
+
             latest_ids.push(
                 table + '=' + max_id
             )
