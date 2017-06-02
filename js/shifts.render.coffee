@@ -24,6 +24,12 @@ Shifts.render =
         if  hour > 19 or hour < 8
             daytime = "tick_dark"
 
+        if hour == moment().format('H')
+            tick_quarter = Math.floor(moment.unix(time).format('m') / 60 * 4)
+            current_quarter = Math.floor(moment().format('m') / 60 * 4)
+            if tick_quarter == current_quarter
+                daytime = "tick_active"
+
         diffhour = if moment().isDST() then 22 else 23
 
         if time % (24*60*60) == diffhour*60*60

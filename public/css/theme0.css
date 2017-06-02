@@ -6797,6 +6797,9 @@ body {
 .shift-calendar .lane .tick_bright {
     background: #f9f9f9;
 }
+.shift-calendar .lane .tick_active {
+    background: #7ba9d0;
+}
 .shift-calendar .lane.time {
   border-right: 1px solid #dddddd;
   flex-grow: 0;

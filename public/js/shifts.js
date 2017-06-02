@@ -460,7 +460,7 @@ Shifts.render = {
   TIME_MARGIN: 1800,
   START_TIME: false,
   tick: function(time, label) {
-    var daytime, diffhour, hour;
+    var current_quarter, daytime, diffhour, hour, tick_quarter;
     if (label == null) {
       label = false;
     }
@@ -468,6 +468,13 @@ Shifts.render = {
     hour = moment.unix(time).format('H');
     if (hour > 19 || hour < 8) {
       daytime = "tick_dark";
+    }
+    if (hour === moment().format('H')) {
+      tick_quarter = Math.floor(moment.unix(time).format('m') / 60 * 4);
+      current_quarter = Math.floor(moment().format('m') / 60 * 4);
+      if (tick_quarter === current_quarter) {
+        daytime = "tick_active";
+      }
     }
     diffhour = moment().isDST() ? 22 : 23;
     if (time % (24 * 60 * 60) === diffhour * 60 * 60) {
