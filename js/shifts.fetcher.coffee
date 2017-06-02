@@ -8,6 +8,27 @@ Shifts.fetcher =
 
         Shifts.$shiftplan.html 'Fetching data from server...'
 
+        table_mapping =
+            rooms: 'room_ids'
+            angeltypes: 'angeltype_ids'
+            shift_types: 'shifttype_ids'
+            users: 'user_ids'
+            shifts: 'shift_ids'
+            needed_angeltypes: 'needed_angeltype_ids'
+            shift_entries: 'shiftentry_ids'
+
+        latest_ids = []
+        for table, idsname of table_mapping
+            idlist = Shifts.db[idsname]
+            if idlist
+                max_id = Math.max.apply(Math, idlist)
+            else
+                max_id = 0
+            latest_ids.push {}
+            latest_ids[latest_ids.length-1][table] = max_id
+
+        Shifts.log latest_ids
+
         url = '?p=shifts_json_export_websql'
         $.get url, (data) ->
             Shifts.fetcher.total_process_count += data.rooms.length

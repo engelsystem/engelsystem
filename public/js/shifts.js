@@ -311,8 +311,30 @@ Shifts.fetcher = {
   total_process_count: 0,
   remaining_process_count: 0,
   start: function(done) {
-    var url;
+    var idlist, idsname, latest_ids, max_id, table, table_mapping, url;
     Shifts.$shiftplan.html('Fetching data from server...');
+    table_mapping = {
+      rooms: 'room_ids',
+      angeltypes: 'angeltype_ids',
+      shift_types: 'shifttype_ids',
+      users: 'user_ids',
+      shifts: 'shift_ids',
+      needed_angeltypes: 'needed_angeltype_ids',
+      shift_entries: 'shiftentry_ids'
+    };
+    latest_ids = [];
+    for (table in table_mapping) {
+      idsname = table_mapping[table];
+      idlist = Shifts.db[idsname];
+      if (idlist) {
+        max_id = Math.max.apply(Math, idlist);
+      } else {
+        max_id = 0;
+      }
+      latest_ids.push({});
+      latest_ids[latest_ids.length - 1][table] = max_id;
+    }
+    Shifts.log(latest_ids);
     url = '?p=shifts_json_export_websql';
     return $.get(url, function(data) {
       Shifts.fetcher.total_process_count += data.rooms.length;
@@ -370,11 +392,9 @@ Shifts.fetcher = {
       Shifts.fetcher.remaining_process_count--;
       if (Shifts.fetcher.remaining_process_count % 100 === 0) {
         percentage = 100 - Math.round(Shifts.fetcher.remaining_process_count / Shifts.fetcher.total_process_count * 100);
-        if (percentage % 1 === 0) {
-          $ro.text(Shifts.fetcher.remaining_process_count);
-          $pb.text(percentage + '%');
-          $pb.width(percentage + '%');
-        }
+        $ro.text(Shifts.fetcher.remaining_process_count);
+        $pb.text(percentage + '%');
+        $pb.width(percentage + '%');
       }
       return processing_func(item, function() {
         return Shifts.fetcher.process(processing_func, items_to_process, done);
