@@ -1,7 +1,7 @@
 
 Shifts.templates =
 
-    filter_form: '
+    header_and_dateselect: '
 <form class="form-inline" action="" method="get">
   <input type="hidden" name="p" value="user_shifts">
   <div class="row">
@@ -11,6 +11,18 @@ Shifts.templates =
         <input id="datetimepicker" type="text" />
       </div>
     </div>
+    <div class="filter-form"></div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+        <div><sup>1</sup>The tasks shown here are influenced by the angeltypes you joined already!
+        <a href="?p=angeltypes&amp;action=about">Description of the jobs.</a></div>
+        <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="Filter">
+    </div>
+  </div>
+  <div class="shift-calendar"></div>'
+
+    filter_form: '
     <div class="col-md-2">
         <div id="selection_rooms" class="selection rooms">
             <h4>Rooms</h4>
@@ -58,33 +70,26 @@ Shifts.templates =
             </div>
         </div>
       </div>
-    </div>
-	<div class="row">
-		<div class="col-md-6">
-            <div><sup>1</sup>The tasks shown here are influenced by the angeltypes you joined already!
-            <a href="?p=angeltypes&amp;action=about">Description of the jobs.</a></div>
-            <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="Filter">
-		</div>
-	</div>
+    </div>'
+
+    footer: '
 </form>'
 
     shift_calendar: '
-<div class="shift-calendar">
-
-  <div class="lane time">
-    <div class="header">Time</div>
-    {{#timelane_ticks}}
-        {{#tick}}
-            <div class="tick {{daytime}}"></div>
-        {{/tick}}
-        {{#tick_hour}}
-            <div class="tick {{daytime}} hour">{{label}}</div>
-        {{/tick_hour}}
-        {{#tick_day}}
-            <div class="tick {{daytime}} day">{{label}}</div>
-        {{/tick_day}}
-    {{/timelane_ticks}}
-  </div>
+<div class="lane time">
+  <div class="header">Time</div>
+  {{#timelane_ticks}}
+      {{#tick}}
+          <div class="tick {{daytime}}"></div>
+      {{/tick}}
+      {{#tick_hour}}
+          <div class="tick {{daytime}} hour">{{label}}</div>
+      {{/tick_hour}}
+      {{#tick_day}}
+          <div class="tick {{daytime}} day">{{label}}</div>
+      {{/tick_day}}
+  {{/timelane_ticks}}
+</div>
 
 {{#rooms}}
     {{#lanes}}
@@ -137,6 +142,5 @@ Shifts.templates =
         {{/shifts}}
       </div>
     {{/lanes}}
-{{/rooms}}
-</div>'
+{{/rooms}}'
 

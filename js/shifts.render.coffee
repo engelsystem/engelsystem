@@ -56,6 +56,12 @@ Shifts.render =
             end_time = end_time + Shifts.render.TIME_MARGIN
         return end_time
 
+    header_footer: ->
+        tpl = ''
+        tpl += Mustache.render Shifts.templates.header_and_dateselect
+        tpl += Mustache.render Shifts.templates.footer
+        Shifts.$shiftplan.html(tpl)
+
     shiftplan: ->
         user_id = parseInt $('#shiftplan').data('user_id'), 10
         Shifts.db.get_rooms (rooms) ->
@@ -292,31 +298,18 @@ Shifts.render =
                     all: 'default'
                     free: 'primary'
 
-        tpl = ''
-
-        tpl += Mustache.render Shifts.templates.filter_form,
+        filter_form = Mustache.render Shifts.templates.filter_form,
             rooms: rooms
             angeltypes: angeltypes
             occupancy: occupancy
 
-        tpl += Mustache.render Shifts.templates.shift_calendar,
+        Shifts.$shiftplan.find('.filter-form').html(filter_form)
+
+        shift_calendar = Mustache.render Shifts.templates.shift_calendar,
             timelane_ticks: time_slot
             rooms: mustache_rooms
 
-        Shifts.$shiftplan.html(tpl)
-
-        $('#datetimepicker').datetimepicker
-            value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm')
-            timepicker: true
-            inline: true
-            format: 'Y-m-d H:i'
-            minDate: '-1970-01-05'
-            maxDate: '+1970-01-03'
-            onChangeDateTime: (dp, $input) ->
-                stime = parseInt moment($input.val()).format('X'), 10
-                Shifts.render.START_TIME = stime
-                Shifts.db.set_option 'filter_start_time', stime, ->
-                    Shifts.render.shiftplan()
+        Shifts.$shiftplan.find('.shift-calendar').html(shift_calendar)
 
         # sticky headers
         do ->
