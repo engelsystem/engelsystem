@@ -3,7 +3,7 @@ Shifts.interaction =
 
     selected_rooms: []
     selected_angeltypes: []
-    occupancy: 'all'
+    occupancy: 'free'
     datepicker_interval: false
 
     init: ->
