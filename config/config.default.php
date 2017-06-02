@@ -60,6 +60,10 @@ $voucher_settings = [
 // For accessing stats
 $api_key = "";
 
+// enable browser-based sql for the shifts view
+// the browser will fallback to legacy view if it lacks the required features
+$enable_websql = true;
+
 // MySQL-Connection Settings
 $config = [
     'host' => "localhost",

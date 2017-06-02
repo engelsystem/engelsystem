@@ -14,6 +14,7 @@ function shifts_title() {
  */
 function user_shifts() {
   global $user;
+  global $enable_websql;
   
   if (User_is_freeloader($user)) {
     redirect(page_link_to('user_myshifts'));
@@ -28,6 +29,11 @@ function user_shifts() {
     return shift_delete_controller();
   } elseif (isset($_REQUEST['shift_id'])) {
     return shift_entry_add_controller();
+  }
+
+  // websql disabled by config
+  if ($enable_websql != true) {
+      return view_user_shifts();
   }
 
   // cookie is not set: display websql-version to let it check for websql support
