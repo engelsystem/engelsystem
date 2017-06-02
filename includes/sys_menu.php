@@ -95,7 +95,7 @@ function make_user_submenu() {
 
 function make_navigation() {
   global $page, $privileges;
-
+  
   $menu = [];
   $pages = [
       "news" => news_title(),
