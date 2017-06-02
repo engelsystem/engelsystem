@@ -145,5 +145,8 @@ Shifts.templates =
         {{/shifts}}
       </div>
     {{/lanes}}
+{{/rooms}}
+{{^rooms}}
+<div class="alert alert-warning" style="margin-top: 2em;">No shifts could be found for the selected date.</div>
 {{/rooms}}'
 

@@ -255,6 +255,7 @@ Shifts.render =
                 thistime += Shifts.render.SECONDS_PER_ROW
 
         # build datastruct for mustache
+        shifts_count = 0
         mustache_rooms = []
         for room_nr of rooms
             room_id = rooms[room_nr].RID
@@ -277,6 +278,8 @@ Shifts.render =
                     # render shift
                     mustache_rooms[room_nr].lanes[lane_nr].shifts.push { shift: lanes[room_id][lane_nr][shift_nr] }
                     rendered_until += lanes[room_id][lane_nr][shift_nr].blocks * Shifts.render.SECONDS_PER_ROW
+
+                    shifts_count++
 
                 # render ticks till end block.
                 while rendered_until < parseInt(lastblock_endtime, 10) + Shifts.render.TIME_MARGIN
@@ -311,6 +314,10 @@ Shifts.render =
 
         Shifts.$shiftplan.find('.filter-form').html(filter_form)
 
+        if shifts_count == 0
+            # set all to zero to trigger the message in the template
+            mustache_rooms = []
+
         shift_calendar = Mustache.render Shifts.templates.shift_calendar,
             timelane_ticks: time_slot
             rooms: mustache_rooms
@@ -337,3 +344,4 @@ Shifts.render =
                     'left': Math.max(0, $(window).scrollLeft() - left) + 'px'
                 $header.css
                     'top': Math.max(0, $(window).scrollTop() - top + $top_ref.offset().top) + 'px'
+
