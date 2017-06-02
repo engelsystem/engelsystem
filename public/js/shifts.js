@@ -11,13 +11,16 @@ Shifts.init = function() {
     if (indexOf.call(document.cookie, 'websql=') < 0) {
       try {
         dbtest = window.indexedDB.open("_engelsystem_test", 3);
-        dbtest.onerror(function(ev) {
-          throw 'error';
-        });
-        alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS _engelsystem_test;', function() {
-          alasql('DROP INDEXEDDB DATABASE _engelsystem_test;');
-          return document.cookie = 'websql=yes';
-        });
+        dbtest.onerror = function(ev) {
+          document.cookie = 'websql=nope';
+          return window.location.href = '';
+        };
+        dbtest.onsuccess = function(ev) {
+          return alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS _engelsystem_test;', function() {
+            alasql('DROP INDEXEDDB DATABASE _engelsystem_test;');
+            return document.cookie = 'websql=yes';
+          });
+        };
       } catch (error) {
         document.cookie = 'websql=nope';
         window.location.href = '';
