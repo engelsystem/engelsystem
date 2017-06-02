@@ -74,10 +74,9 @@ Importing new objects into browser database. <span id="remaining_objects"></span
             Shifts.fetcher.remaining_process_count--
             if Shifts.fetcher.remaining_process_count % 100 == 0
                 percentage = 100 - Math.round(Shifts.fetcher.remaining_process_count / Shifts.fetcher.total_process_count * 100)
-                if percentage % 1 == 0
-                    $ro.text Shifts.fetcher.remaining_process_count
-                    $pb.text percentage + '%'
-                    $pb.width percentage + '%'
+                $ro.text Shifts.fetcher.remaining_process_count
+                $pb.text percentage + '%'
+                $pb.width percentage + '%'
 
             processing_func item, ->
                 Shifts.fetcher.process processing_func, items_to_process, done

@@ -294,7 +294,16 @@ function shifts_json_export_websql_controller() {
     engelsystem_error("You must be logged in to access shifts.");
   }
 
-  $shifts = Shifts_for_websql();
+  $latest_ids = array();
+  $latest_ids['rooms'] = isset($_GET['rooms']) ? $_GET['rooms'] : 0;
+  $latest_ids['angeltypes'] = isset($_GET['angeltypes']) ? $_GET['angeltypes'] : 0;
+  $latest_ids['shift_types'] = isset($_GET['shift_types']) ? $_GET['shift_types'] : 0;
+  $latest_ids['users'] = isset($_GET['users']) ? $_GET['users'] : 0;
+  $latest_ids['shifts'] = isset($_GET['shifts']) ? $_GET['shifts'] : 0;
+  $latest_ids['needed_angeltypes'] = isset($_GET['needed_angeltypes']) ? $_GET['needed_angeltypes'] : 0;
+  $latest_ids['shift_entries'] = isset($_GET['shift_entries']) ? $_GET['shift_entries'] : 0;
+
+  $shifts = Shifts_for_websql($latest_ids);
   if ($shifts === false) {
     engelsystem_error("Unable to load shifts.");
   }

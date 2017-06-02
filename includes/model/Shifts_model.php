@@ -366,7 +366,7 @@ function Shifts_by_user($user, $include_freeload_comments = false) {
 /**
  * Return users shifts.
  */
-function Shifts_for_websql() {
+function Shifts_for_websql($latest_ids) {
 
     $limit = 8000; // yes. but provide an argument "since" to fetch all remaining items.
                     // todo: only limit shifts, users and shift_entries, provide separate json,
@@ -376,6 +376,8 @@ function Shifts_for_websql() {
   $shifts = sql_select("
       SELECT SID, title, shifttype_id, start, end, RID
       FROM Shifts
+      WHERE SID > '" . sql_escape($latest_ids['shifts']) . "'
+      ORDER BY SID ASC
       LIMIT " . $limit . "
       ");
   if ($shifts === false) {
@@ -386,6 +388,8 @@ function Shifts_for_websql() {
   $shift_types = sql_select("
       SELECT id, name, angeltype_id
       FROM ShiftTypes
+      WHERE id > '" . sql_escape($latest_ids['shift_types']) . "'
+      ORDER BY id ASC
       LIMIT " . $limit . "
       ");
   if ($shift_types === false) {
@@ -396,6 +400,8 @@ function Shifts_for_websql() {
   $rooms = sql_select("
       SELECT RID, Name
       FROM Room
+      WHERE RID > '" . sql_escape($latest_ids['rooms']) . "'
+      ORDER BY RID ASC
       LIMIT " . $limit . "
       ");
   if ($rooms === false) {
@@ -406,6 +412,8 @@ function Shifts_for_websql() {
   $shift_entries = sql_select("
       SELECT id, SID, TID, UID
       FROM ShiftEntry
+      WHERE id > '" . sql_escape($latest_ids['shift_entries']) . "'
+      ORDER BY id ASC
       LIMIT " . $limit . "
       ");
   if ($shift_entries === false) {
@@ -417,6 +425,8 @@ function Shifts_for_websql() {
       SELECT UID, Nick
       FROM User
       WHERE Gekommen = '1'
+      AND UID > '" . sql_escape($latest_ids['users']) . "'
+      ORDER BY UID ASC
       LIMIT " . $limit . "
       ");
   if ($users === false) {
@@ -427,6 +437,8 @@ function Shifts_for_websql() {
   $angeltypes = sql_select("
       SELECT id, name
       FROM AngelTypes
+      WHERE id > '" . sql_escape($latest_ids['angeltypes']) . "'
+      ORDER BY id ASC
       LIMIT " . $limit . "
       ");
   if ($needed_angeltypes === false) {
@@ -437,6 +449,8 @@ function Shifts_for_websql() {
   $needed_angeltypes = sql_select("
       SELECT id, room_id as RID, shift_id as SID, angel_type_id as ATID, count
       FROM NeededAngelTypes
+      WHERE id > '" . sql_escape($latest_ids['needed_angeltypes']) . "'
+      ORDER BY id ASC
       LIMIT " . $limit . "
       ");
   if ($needed_angeltypes === false) {
