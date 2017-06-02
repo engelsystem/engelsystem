@@ -331,11 +331,9 @@ Shifts.fetcher = {
       } else {
         max_id = 0;
       }
-      latest_ids.push({});
-      latest_ids[latest_ids.length - 1][table] = max_id;
+      latest_ids.push(table + '=' + max_id);
     }
-    Shifts.log(latest_ids);
-    url = '?p=shifts_json_export_websql';
+    url = '?p=shifts_json_export_websql&' + latest_ids.join('&');
     return $.get(url, function(data) {
       Shifts.fetcher.total_process_count += data.rooms.length;
       Shifts.fetcher.total_process_count += data.angeltypes.length;
