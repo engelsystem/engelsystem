@@ -29,32 +29,34 @@ Shifts.init = function() {
     return Shifts.db.init(function() {
       Shifts.log('db initialized');
       return Shifts.fetcher.start(function() {
-        var waitforcal;
         Shifts.log('fetch complete.');
         Shifts.render.header_footer();
         Shifts.render.shiftplan();
         Shifts.interaction.init();
-        return waitforcal = setInterval(function() {
-          if (Shifts.render.START_TIME) {
-            $('#datetimepicker').datetimepicker({
-              value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm'),
-              timepicker: true,
-              inline: true,
-              format: 'Y-m-d H:i',
-              minDate: '-1970-01-05',
-              maxDate: '+1970-01-03',
-              onChangeDateTime: function(dp, $input) {
-                var stime;
-                stime = parseInt(moment($input.val()).format('X'), 10);
-                Shifts.render.START_TIME = stime;
-                return Shifts.db.set_option('filter_start_time', stime, function() {
-                  return Shifts.render.shiftplan();
-                });
-              }
-            });
-            return clearInterval(waitforcal);
-          }
-        }, 1);
+        return Shifts.db.get_shift_range(function(date_range) {
+          var waitforcal;
+          return waitforcal = setInterval(function() {
+            if (Shifts.render.START_TIME) {
+              $('#datetimepicker').datetimepicker({
+                value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm'),
+                timepicker: true,
+                inline: true,
+                format: 'Y-m-d H:i',
+                minDate: moment.unix(date_range[0]).format('YYYY-MM-DD'),
+                maxDate: moment.unix(date_range[1]).format('YYYY-MM-DD'),
+                onChangeDateTime: function(dp, $input) {
+                  var stime;
+                  stime = parseInt(moment($input.val()).format('X'), 10);
+                  Shifts.render.START_TIME = stime;
+                  return Shifts.db.set_option('filter_start_time', stime, function() {
+                    return Shifts.render.shiftplan();
+                  });
+                }
+              });
+              return clearInterval(waitforcal);
+            }
+          }, 1);
+        });
       });
     });
   }
@@ -289,6 +291,17 @@ Shifts.db = {
   get_usershifts: function(user_id, done) {
     return alasql("SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, Shifts.start_time, Shifts.end_time FROM ShiftEntry JOIN Shifts ON ShiftEntry.SID = Shifts.SID WHERE ShiftEntry.UID = " + user_id + " ORDER BY ShiftEntry.SID", function(res) {
       return done(res);
+    });
+  },
+  get_shift_range: function(done) {
+    return alasql("SELECT start_time FROM Shifts ORDER BY start_time ASC LIMIT 1", function(res) {
+      var start_time;
+      start_time = res[0].start_time;
+      return alasql("SELECT end_time FROM Shifts ORDER BY end_time DESC LIMIT 1", function(res) {
+        var end_time;
+        end_time = res[0].end_time;
+        return done([start_time, end_time]);
+      });
     });
   },
   get_rooms: function(done) {
