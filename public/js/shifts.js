@@ -10,26 +10,32 @@ Shifts.init = function() {
     return Shifts.db.init(function() {
       Shifts.log('db initialized');
       return Shifts.fetcher.start(function() {
+        var waitforcal;
         Shifts.log('fetch complete.');
         Shifts.render.header_footer();
         Shifts.render.shiftplan();
         Shifts.interaction.init();
-        return $('#datetimepicker').datetimepicker({
-          value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm'),
-          timepicker: true,
-          inline: true,
-          format: 'Y-m-d H:i',
-          minDate: '-1970-01-05',
-          maxDate: '+1970-01-03',
-          onChangeDateTime: function(dp, $input) {
-            var stime;
-            stime = parseInt(moment($input.val()).format('X'), 10);
-            Shifts.render.START_TIME = stime;
-            return Shifts.db.set_option('filter_start_time', stime, function() {
-              return Shifts.render.shiftplan();
+        return waitforcal = setInterval(function() {
+          if (Shifts.render.START_TIME) {
+            $('#datetimepicker').datetimepicker({
+              value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm'),
+              timepicker: true,
+              inline: true,
+              format: 'Y-m-d H:i',
+              minDate: '-1970-01-05',
+              maxDate: '+1970-01-03',
+              onChangeDateTime: function(dp, $input) {
+                var stime;
+                stime = parseInt(moment($input.val()).format('X'), 10);
+                Shifts.render.START_TIME = stime;
+                return Shifts.db.set_option('filter_start_time', stime, function() {
+                  return Shifts.render.shiftplan();
+                });
+              }
             });
+            return clearInterval(waitforcal);
           }
-        });
+        }, 1);
       });
     });
   }
