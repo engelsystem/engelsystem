@@ -781,7 +781,7 @@ Shifts.render = {
       rooms: mustache_rooms
     });
     Shifts.$shiftplan.html(tpl);
-    return $('#datetimepicker').datetimepicker({
+    $('#datetimepicker').datetimepicker({
       value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm'),
       timepicker: true,
       inline: true,
@@ -797,6 +797,30 @@ Shifts.render = {
         });
       }
     });
+    return (function() {
+      var $header, $time_lanes, $top_ref, left, top;
+      $time_lanes = $('.shift-calendar .time');
+      $header = $('.shift-calendar .header');
+      $top_ref = $('.container-fluid .row');
+      top = $header.offset().top;
+      left = 15;
+      $time_lanes.css({
+        'position': 'relative',
+        'z-index': 999
+      });
+      $header.css({
+        'position': 'relative',
+        'z-index': 900
+      });
+      return $(window).on('scroll', function() {
+        $time_lanes.css({
+          'left': Math.max(0, $(window).scrollLeft() - left) + 'px'
+        });
+        return $header.css({
+          'top': Math.max(0, $(window).scrollTop() - top + $top_ref.offset().top) + 'px'
+        });
+      });
+    })();
   }
 };
 

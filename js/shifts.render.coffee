@@ -318,3 +318,23 @@ Shifts.render =
                 Shifts.db.set_option 'filter_start_time', stime, ->
                     Shifts.render.shiftplan()
 
+        # sticky headers
+        do ->
+            $time_lanes = $('.shift-calendar .time')
+            $header = $('.shift-calendar .header')
+            $top_ref = $('.container-fluid .row')
+            top = $header.offset().top
+            left = 15
+            $time_lanes.css
+              'position': 'relative',
+              'z-index': 999
+
+            $header.css
+              'position': 'relative',
+              'z-index': 900
+
+            $(window).on 'scroll', ->
+                $time_lanes.css
+                    'left': Math.max(0, $(window).scrollLeft() - left) + 'px'
+                $header.css
+                    'top': Math.max(0, $(window).scrollTop() - top + $top_ref.offset().top) + 'px'
