@@ -461,6 +461,7 @@ Shifts.interaction = {
           Shifts.interaction.selected_rooms.push(parseInt(room.value, 10));
         }
       }
+      $('#filterbutton').removeAttr('disabled');
       if (Shifts.render.rendering_time < 500) {
         return Shifts.render.shiftplan();
       }
@@ -475,6 +476,7 @@ Shifts.interaction = {
           Shifts.interaction.selected_angeltypes.push(parseInt(type.value, 10));
         }
       }
+      $('#filterbutton').removeAttr('disabled');
       if (Shifts.render.rendering_time < 500) {
         return Shifts.render.shiftplan();
       }
@@ -525,6 +527,7 @@ Shifts.interaction = {
           $all.addClass('btn-default');
         }
       }
+      $('#filterbutton').removeAttr('disabled');
       if (Shifts.render.rendering_time < 500) {
         Shifts.render.shiftplan();
       }
@@ -935,7 +938,6 @@ Shifts.render = {
     Shifts.$shiftplan.find('.loading-overlay, .loading-overlay-msg').remove();
     end_timestamp = new Date();
     Shifts.render.rendering_time = end_timestamp - Shifts.render.metric_timestamp;
-    $('#filterbutton').removeAttr('disabled');
     Shifts.db.set_option('rendering_time', Shifts.render.rendering_time, function() {});
     return (function() {
       var $header, $time_lanes, $top_ref, left, top;

@@ -23,6 +23,8 @@ Shifts.interaction =
                 if room.checked
                     Shifts.interaction.selected_rooms.push parseInt(room.value, 10)
 
+            $('#filterbutton').removeAttr 'disabled'
+
             if Shifts.render.rendering_time < 500
                 Shifts.render.shiftplan()
 
@@ -31,6 +33,8 @@ Shifts.interaction =
             for type in $('#selection_types input')
                 if type.checked
                     Shifts.interaction.selected_angeltypes.push parseInt(type.value, 10)
+
+            $('#filterbutton').removeAttr 'disabled'
 
             if Shifts.render.rendering_time < 500
                 Shifts.render.shiftplan()
@@ -68,6 +72,8 @@ Shifts.interaction =
                     $free.addClass 'btn-primary'
                     $all.removeClass 'btn-primary'
                     $all.addClass 'btn-default'
+
+            $('#filterbutton').removeAttr 'disabled'
 
             if Shifts.render.rendering_time < 500
                 Shifts.render.shiftplan()
