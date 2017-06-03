@@ -75,7 +75,17 @@ Shifts.render =
         user_id = parseInt $('#shiftplan').data('user_id'), 10
         Shifts.render.metric_timestamp = new Date()
 
-        Shifts.$shiftplan.find('.shift-calendar').html(Shifts.templates.loading)
+        $sc = Shifts.$shiftplan.find('.shift-calendar')
+        sco = $sc.offset()
+        tpl = Mustache.render Shifts.templates.loading,
+            cal_t: sco.top - 50
+            cal_l: sco.left
+            cal_w: $sc.width()
+            cal_h: $sc.height()
+            msg_t: sco.top - 50 + $sc.height() / 50
+            msg_l: sco.left + $sc.width() / 2 - 200
+
+        $sc.before(tpl)
 
         Shifts.db.get_rooms (rooms) ->
             Shifts.db.get_angeltypes (angeltypes) ->
@@ -333,6 +343,7 @@ Shifts.render =
             rooms: mustache_rooms
 
         Shifts.$shiftplan.find('.shift-calendar').html(shift_calendar)
+        Shifts.$shiftplan.find('.loading-overlay, .loading-overlay-msg').remove()
 
         end_timestamp = new Date()
         Shifts.log end_timestamp - Shifts.render.metric_timestamp

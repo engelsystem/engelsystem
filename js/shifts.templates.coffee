@@ -2,13 +2,37 @@
 Shifts.templates =
 
     loading: '
-<div class="row" style="margin: 2em 0 0; width: 100%;">
+<div class="loading-overlay" style="
+position: absolute;
+top: {{cal_t}}px;
+left: {{cal_l}}px;
+width: {{cal_w}}px;
+height: {{cal_h}}px;
+background: #fff;
+opacity: 0.5;
+z-index: 1000;
+"></div>
+
+<div class="loading-overlay-msg" style="
+position: absolute;
+top: {{msg_t}}px;
+left: {{msg_l}}px;
+width: 400px;
+height: 80px;
+padding: 1em;
+text-align: center;
+background: #fff;
+border: 1px solid #999;
+border-radius: 3px;
+z-index: 1001;
+">Loading...
+
+<div class="row" style="margin: 2px 0 0 0; width: 100%;">
   <div class="progress">
-    <div class="progress-bar progress-bar-striped active" style="width: 100%">
-      <span class="sr-only">45% Complete</span>
-    </div>
+    <div class="progress-bar" style="width: 0%">
   </div>
-</div>'
+</div>
+'
 
     header_and_dateselect: '
 <form class="form-inline" action="" method="get">
@@ -32,7 +56,11 @@ Shifts.templates =
     </div>
   </div>
 
-  <div class="shift-calendar"></div>'
+  <div class="shift-calendar">
+      <div style="height: 100px;">
+          Loading...
+      </div>
+  </div>'
 
     filter_form: '
     <div class="col-md-2">
