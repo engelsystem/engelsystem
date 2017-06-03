@@ -47,8 +47,12 @@ Importing new objects into browser database. <span id="remaining_objects"></span
   <div id="progress_bar" class="progress-bar" style="width: 0%;">
     0%
   </div>
-</div>'
+</div>
+<a id="abort" href="" class="btn btn-danger btn-xs">Abort and switch to legacy view</a>'
             Shifts.$shiftplan.find('#remaining_objects').text Shifts.fetcher.remaining_process_count
+            Shifts.$shiftplan.find('#abort').on 'click', ->
+                document.cookie = 'websql=nope'
+                window.location.href = ''
 
             # populate start_time
             Shifts.db.get_option 'filter_start_time', (res) ->
