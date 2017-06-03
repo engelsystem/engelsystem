@@ -906,7 +906,7 @@ Shifts.render = {
     Shifts.$shiftplan.find('.loading-overlay, .loading-overlay-msg').remove();
     end_timestamp = new Date();
     Shifts.render.rendering_time = end_timestamp - Shifts.render.metric_timestamp;
-    Shifts.db.set_option('rendering_time', Shifts.render.rendering_time);
+    Shifts.db.set_option('rendering_time', Shifts.render.rendering_time, function() {});
     return (function() {
       var $header, $time_lanes, $top_ref, left, top;
       $time_lanes = $('.shift-calendar .time');
