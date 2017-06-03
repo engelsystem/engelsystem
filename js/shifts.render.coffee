@@ -94,7 +94,7 @@ Shifts.render =
             step_size = refresh_time
             curr_progress = 0
             loadprg = setInterval ->
-                percentage = Math.round(curr_progress / Shifts.render.rendering_time * 150) #150: be faster than the bootstrap animation
+                percentage = Math.round(curr_progress / Shifts.render.rendering_time * 130) #130: be faster than the bootstrap animation
                 Shifts.$shiftplan.find('#cal_loading_progress').width percentage + '%'
                 curr_progress += step_size
                 if curr_progress > Shifts.render.rendering_time

@@ -45,16 +45,22 @@ Shifts.interaction =
             if $(this).parents('#selection_rooms').length
                 if $(ev.target).attr('href') == '#all'
                     for room in $('#selection_rooms input')
+                        $(room).prop 'checked', true
                         Shifts.interaction.selected_rooms.push parseInt(room.value, 10)
                 if $(ev.target).attr('href') == '#none'
                     Shifts.interaction.selected_rooms = []
+                    for room in $('#selection_rooms input')
+                        $(room).prop 'checked', false
 
             if $(this).parents('#selection_types').length
                 if $(ev.target).attr('href') == '#all'
                     for type in $('#selection_types input')
+                        $(type).prop 'checked', true
                         Shifts.interaction.selected_angeltypes.push parseInt(type.value, 10)
                 if $(ev.target).attr('href') == '#none'
                     Shifts.interaction.selected_angeltypes = []
+                    for type in $('#selection_types input')
+                        $(type).prop 'checked', false
 
             if $(this).parents('#selection_filled').length
                 $all = $('#selection_filled a[href=#all]')

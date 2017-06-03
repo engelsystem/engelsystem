@@ -487,29 +487,41 @@ Shifts.interaction = {
   },
   on_mass_select: function() {
     return Shifts.$shiftplan.on('click', '.mass-select a', function(ev) {
-      var $all, $free, i, j, len, len1, ref, ref1, room, type;
+      var $all, $free, i, j, k, l, len, len1, len2, len3, ref, ref1, ref2, ref3, room, type;
       if ($(this).parents('#selection_rooms').length) {
         if ($(ev.target).attr('href') === '#all') {
           ref = $('#selection_rooms input');
           for (i = 0, len = ref.length; i < len; i++) {
             room = ref[i];
+            $(room).prop('checked', true);
             Shifts.interaction.selected_rooms.push(parseInt(room.value, 10));
           }
         }
         if ($(ev.target).attr('href') === '#none') {
           Shifts.interaction.selected_rooms = [];
+          ref1 = $('#selection_rooms input');
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            room = ref1[j];
+            $(room).prop('checked', false);
+          }
         }
       }
       if ($(this).parents('#selection_types').length) {
         if ($(ev.target).attr('href') === '#all') {
-          ref1 = $('#selection_types input');
-          for (j = 0, len1 = ref1.length; j < len1; j++) {
-            type = ref1[j];
+          ref2 = $('#selection_types input');
+          for (k = 0, len2 = ref2.length; k < len2; k++) {
+            type = ref2[k];
+            $(type).prop('checked', true);
             Shifts.interaction.selected_angeltypes.push(parseInt(type.value, 10));
           }
         }
         if ($(ev.target).attr('href') === '#none') {
           Shifts.interaction.selected_angeltypes = [];
+          ref3 = $('#selection_types input');
+          for (l = 0, len3 = ref3.length; l < len3; l++) {
+            type = ref3[l];
+            $(type).prop('checked', false);
+          }
         }
       }
       if ($(this).parents('#selection_filled').length) {
@@ -658,7 +670,7 @@ Shifts.render = {
       curr_progress = 0;
       loadprg = setInterval(function() {
         var percentage;
-        percentage = Math.round(curr_progress / Shifts.render.rendering_time * 150);
+        percentage = Math.round(curr_progress / Shifts.render.rendering_time * 130);
         Shifts.$shiftplan.find('#cal_loading_progress').width(percentage + '%');
         curr_progress += step_size;
         if (curr_progress > Shifts.render.rendering_time) {
