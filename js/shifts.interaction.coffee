@@ -53,14 +53,26 @@ Shifts.interaction =
                     Shifts.interaction.selected_angeltypes = []
 
             if $(this).parents('#selection_filled').length
+                $all = $('#selection_filled a[href=#all]')
+                $free = $('#selection_filled a[href=#free]')
+
                 if $(ev.target).attr('href') == '#all'
                     Shifts.interaction.occupancy = 'all'
+                    $all.removeClass 'btn-default'
+                    $all.addClass 'btn-primary'
+                    $free.removeClass 'btn-primary'
+                    $free.addClass 'btn-default'
                 if $(ev.target).attr('href') == '#free'
                     Shifts.interaction.occupancy = 'free'
+                    $free.removeClass 'btn-default'
+                    $free.addClass 'btn-primary'
+                    $all.removeClass 'btn-primary'
+                    $all.addClass 'btn-default'
 
             if Shifts.render.rendering_time < 500
                 Shifts.render.shiftplan()
-                return false
+
+            return false
 
     on_filter_click: ->
         Shifts.$shiftplan.on 'click', '#filterbutton', ->

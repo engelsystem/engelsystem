@@ -482,7 +482,7 @@ Shifts.interaction = {
   },
   on_mass_select: function() {
     return Shifts.$shiftplan.on('click', '.mass-select a', function(ev) {
-      var i, j, len, len1, ref, ref1, room, type;
+      var $all, $free, i, j, len, len1, ref, ref1, room, type;
       if ($(this).parents('#selection_rooms').length) {
         if ($(ev.target).attr('href') === '#all') {
           ref = $('#selection_rooms input');
@@ -508,17 +508,27 @@ Shifts.interaction = {
         }
       }
       if ($(this).parents('#selection_filled').length) {
+        $all = $('#selection_filled a[href=#all]');
+        $free = $('#selection_filled a[href=#free]');
         if ($(ev.target).attr('href') === '#all') {
           Shifts.interaction.occupancy = 'all';
+          $all.removeClass('btn-default');
+          $all.addClass('btn-primary');
+          $free.removeClass('btn-primary');
+          $free.addClass('btn-default');
         }
         if ($(ev.target).attr('href') === '#free') {
           Shifts.interaction.occupancy = 'free';
+          $free.removeClass('btn-default');
+          $free.addClass('btn-primary');
+          $all.removeClass('btn-primary');
+          $all.addClass('btn-default');
         }
       }
       if (Shifts.render.rendering_time < 500) {
         Shifts.render.shiftplan();
-        return false;
       }
+      return false;
     });
   },
   on_filter_click: function() {
