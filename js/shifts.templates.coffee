@@ -31,7 +31,7 @@ Loading...
 
 <div class="row" style="margin: 2px 0 0; width: 100%;">
   <div class="progress">
-    <div class="progress-bar" style="width: 0%">
+    <div id="cal_loading_progress" class="progress-bar" style="width: 0%">
   </div>
 </div>'
 

@@ -89,6 +89,17 @@ Shifts.render =
                 msg_l: sco.left + $sc.width() / 2 - 200
             $sc.before(tpl)
 
+            refresh_time = 200
+            step_size = refresh_time
+            curr_progress = 0
+            loadprg = setInterval ->
+                percentage = Math.round(curr_progress / Shifts.render.rendering_time * 150) #150: be faster than the bootstrap animation
+                Shifts.$shiftplan.find('#cal_loading_progress').width percentage + '%'
+                curr_progress += step_size
+                if curr_progress > Shifts.render.rendering_time
+                    clearInterval loadprg
+            , refresh_time
+
         Shifts.db.get_rooms (rooms) ->
             Shifts.db.get_angeltypes (angeltypes) ->
 
