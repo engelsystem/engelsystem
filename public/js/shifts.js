@@ -461,7 +461,9 @@ Shifts.interaction = {
           Shifts.interaction.selected_rooms.push(parseInt(room.value, 10));
         }
       }
-      return Shifts.render.shiftplan();
+      if (Shifts.render.rendering_time < 500) {
+        return Shifts.render.shiftplan();
+      }
     });
     return Shifts.$shiftplan.on('change', '#selection_types input', function() {
       var i, len, ref, type;
@@ -473,7 +475,9 @@ Shifts.interaction = {
           Shifts.interaction.selected_angeltypes.push(parseInt(type.value, 10));
         }
       }
-      return Shifts.render.shiftplan();
+      if (Shifts.render.rendering_time < 500) {
+        return Shifts.render.shiftplan();
+      }
     });
   },
   on_mass_select: function() {
@@ -511,8 +515,10 @@ Shifts.interaction = {
           Shifts.interaction.occupancy = 'free';
         }
       }
-      Shifts.render.shiftplan();
-      return false;
+      if (Shifts.render.rendering_time < 500) {
+        Shifts.render.shiftplan();
+        return false;
+      }
     });
   },
   on_filter_click: function() {

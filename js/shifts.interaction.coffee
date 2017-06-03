@@ -23,7 +23,8 @@ Shifts.interaction =
                 if room.checked
                     Shifts.interaction.selected_rooms.push parseInt(room.value, 10)
 
-            Shifts.render.shiftplan()
+            if Shifts.render.rendering_time < 500
+                Shifts.render.shiftplan()
 
         Shifts.$shiftplan.on 'change', '#selection_types input', ->
             Shifts.interaction.selected_angeltypes = []
@@ -31,7 +32,8 @@ Shifts.interaction =
                 if type.checked
                     Shifts.interaction.selected_angeltypes.push parseInt(type.value, 10)
 
-            Shifts.render.shiftplan()
+            if Shifts.render.rendering_time < 500
+                Shifts.render.shiftplan()
 
     on_mass_select: ->
         Shifts.$shiftplan.on 'click', '.mass-select a', (ev) ->
@@ -56,8 +58,9 @@ Shifts.interaction =
                 if $(ev.target).attr('href') == '#free'
                     Shifts.interaction.occupancy = 'free'
 
-            Shifts.render.shiftplan()
-            return false
+            if Shifts.render.rendering_time < 500
+                Shifts.render.shiftplan()
+                return false
 
     on_filter_click: ->
         Shifts.$shiftplan.on 'click', '#filterbutton', ->

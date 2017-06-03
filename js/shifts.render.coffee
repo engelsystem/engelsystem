@@ -76,9 +76,8 @@ Shifts.render =
         user_id = parseInt $('#shiftplan').data('user_id'), 10
         Shifts.render.metric_timestamp = new Date()
 
+        # Render loading
         if Shifts.render.rendering_time > 500
-
-            # Render loading
             $sc = Shifts.$shiftplan.find('.shift-calendar')
             sco = $sc.offset()
             tpl = Mustache.render Shifts.templates.loading,
