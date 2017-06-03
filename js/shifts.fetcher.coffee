@@ -55,35 +55,40 @@ Importing new objects into browser database. <span id="remaining_objects"></span
                 if res
                     Shifts.render.START_TIME = parseInt res, 10
 
-                # insert rooms
-                rooms = data.rooms
-                Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
+                # populate rendering_time
+                Shifts.db.get_option 'rendering_time', (res) ->
+                    if res
+                        Shifts.render.rendering_time = parseInt res, 10
 
-                    # insert angeltypes
-                    angeltypes = data.angeltypes
-                    Shifts.fetcher.process Shifts.db.insert_angeltype, angeltypes, ->
+                    # insert rooms
+                    rooms = data.rooms
+                    Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
 
-                        # insert shift_types
-                        shift_types = data.shift_types
-                        Shifts.fetcher.process Shifts.db.insert_shifttype, shift_types, ->
+                        # insert angeltypes
+                        angeltypes = data.angeltypes
+                        Shifts.fetcher.process Shifts.db.insert_angeltype, angeltypes, ->
 
-                            # insert users
-                            users = data.users
-                            Shifts.fetcher.process Shifts.db.insert_user, users, ->
+                            # insert shift_types
+                            shift_types = data.shift_types
+                            Shifts.fetcher.process Shifts.db.insert_shifttype, shift_types, ->
 
-                                # insert shifts
-                                shifts = data.shifts
-                                Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
+                                # insert users
+                                users = data.users
+                                Shifts.fetcher.process Shifts.db.insert_user, users, ->
 
-                                    # insert needed_angeltypes
-                                    needed_angeltypes = data.needed_angeltypes
-                                    Shifts.fetcher.process Shifts.db.insert_needed_angeltype, needed_angeltypes, ->
+                                    # insert shifts
+                                    shifts = data.shifts
+                                    Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
 
-                                        # insert shift_entries
-                                        shift_entries = data.shift_entries
-                                        Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
+                                        # insert needed_angeltypes
+                                        needed_angeltypes = data.needed_angeltypes
+                                        Shifts.fetcher.process Shifts.db.insert_needed_angeltype, needed_angeltypes, ->
 
-                                            done()
+                                            # insert shift_entries
+                                            shift_entries = data.shift_entries
+                                            Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
+
+                                                done()
 
     process: (processing_func, items_to_process, done) ->
         $ro = Shifts.$shiftplan.find('#remaining_objects')

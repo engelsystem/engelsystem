@@ -378,31 +378,36 @@ Shifts.fetcher = {
       Shifts.$shiftplan.html('Importing new objects into browser database. <span id="remaining_objects"></span> remaining... <div class="progress"> <div id="progress_bar" class="progress-bar" style="width: 0%;"> 0% </div> </div>');
       Shifts.$shiftplan.find('#remaining_objects').text(Shifts.fetcher.remaining_process_count);
       return Shifts.db.get_option('filter_start_time', function(res) {
-        var rooms;
         if (res) {
           Shifts.render.START_TIME = parseInt(res, 10);
         }
-        rooms = data.rooms;
-        return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
-          var angeltypes;
-          angeltypes = data.angeltypes;
-          return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
-            var shift_types;
-            shift_types = data.shift_types;
-            return Shifts.fetcher.process(Shifts.db.insert_shifttype, shift_types, function() {
-              var users;
-              users = data.users;
-              return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
-                var shifts;
-                shifts = data.shifts;
-                return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
-                  var needed_angeltypes;
-                  needed_angeltypes = data.needed_angeltypes;
-                  return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
-                    var shift_entries;
-                    shift_entries = data.shift_entries;
-                    return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
-                      return done();
+        return Shifts.db.get_option('rendering_time', function(res) {
+          var rooms;
+          if (res) {
+            Shifts.render.rendering_time = parseInt(res, 10);
+          }
+          rooms = data.rooms;
+          return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
+            var angeltypes;
+            angeltypes = data.angeltypes;
+            return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
+              var shift_types;
+              shift_types = data.shift_types;
+              return Shifts.fetcher.process(Shifts.db.insert_shifttype, shift_types, function() {
+                var users;
+                users = data.users;
+                return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
+                  var shifts;
+                  shifts = data.shifts;
+                  return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
+                    var needed_angeltypes;
+                    needed_angeltypes = data.needed_angeltypes;
+                    return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
+                      var shift_entries;
+                      shift_entries = data.shift_entries;
+                      return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
+                        return done();
+                      });
                     });
                   });
                 });
@@ -901,6 +906,7 @@ Shifts.render = {
     Shifts.$shiftplan.find('.loading-overlay, .loading-overlay-msg').remove();
     end_timestamp = new Date();
     Shifts.render.rendering_time = end_timestamp - Shifts.render.metric_timestamp;
+    Shifts.db.set_option('rendering_time', Shifts.render.rendering_time);
     return (function() {
       var $header, $time_lanes, $top_ref, left, top;
       $time_lanes = $('.shift-calendar .time');
