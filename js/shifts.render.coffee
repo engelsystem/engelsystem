@@ -75,6 +75,8 @@ Shifts.render =
         user_id = parseInt $('#shiftplan').data('user_id'), 10
         Shifts.render.metric_timestamp = new Date()
 
+        Shifts.$shiftplan.find('.shift-calendar').html(Shifts.templates.loading)
+
         Shifts.db.get_rooms (rooms) ->
             Shifts.db.get_angeltypes (angeltypes) ->
 

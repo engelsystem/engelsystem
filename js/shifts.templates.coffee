@@ -1,6 +1,15 @@
 
 Shifts.templates =
 
+    loading: '
+<div class="row" style="margin: 2em 0 0; width: 100%;">
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped active" style="width: 100%">
+      <span class="sr-only">45% Complete</span>
+    </div>
+  </div>
+</div>'
+
     header_and_dateselect: '
 <form class="form-inline" action="" method="get">
   <input type="hidden" name="p" value="user_shifts">
