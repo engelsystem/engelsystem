@@ -524,6 +524,7 @@ Shifts.render = {
   MARGIN: 5,
   TIME_MARGIN: 1800,
   START_TIME: false,
+  metric_timestamp: false,
   tick: function(time, label) {
     var current_quarter, daytime, diffhour, hour, tick_quarter;
     if (label == null) {
@@ -610,9 +611,41 @@ Shifts.render = {
   shiftplan: function() {
     var user_id;
     user_id = parseInt($('#shiftplan').data('user_id'), 10);
+    Shifts.render.metric_timestamp = new Date();
     return Shifts.db.get_rooms(function(rooms) {
       return Shifts.db.get_angeltypes(function(angeltypes) {
-        var selected_angeltypes, selected_rooms;
+        var angeltype, filter_form, i, j, len, len1, occupancy, ref, ref1, room, selected_angeltypes, selected_rooms;
+        for (i = 0, len = rooms.length; i < len; i++) {
+          room = rooms[i];
+          if (ref = room.RID, indexOf.call(Shifts.interaction.selected_rooms, ref) >= 0) {
+            room.selected = true;
+          }
+        }
+        for (j = 0, len1 = angeltypes.length; j < len1; j++) {
+          angeltype = angeltypes[j];
+          if (ref1 = angeltype.id, indexOf.call(Shifts.interaction.selected_angeltypes, ref1) >= 0) {
+            angeltype.selected = true;
+          }
+        }
+        switch (Shifts.interaction.occupancy) {
+          case "all":
+            occupancy = {
+              all: 'primary',
+              free: 'default'
+            };
+            break;
+          case "free":
+            occupancy = {
+              all: 'default',
+              free: 'primary'
+            };
+        }
+        filter_form = Mustache.render(Shifts.templates.filter_form, {
+          rooms: rooms,
+          angeltypes: angeltypes,
+          occupancy: occupancy
+        });
+        Shifts.$shiftplan.find('.filter-form').html(filter_form);
         selected_rooms = Shifts.interaction.selected_rooms;
         selected_angeltypes = Shifts.interaction.selected_angeltypes;
         return Shifts.db.get_shifts(selected_rooms, selected_angeltypes, function(db_shifts) {
@@ -628,7 +661,7 @@ Shifts.render = {
     });
   },
   shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts) {
-    var add_shift, angeltype, atn, calculate_signup_state, calculate_state_class, end_time, entry_exists, filter_form, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, len6, len7, m, mustache_rooms, n, needed_angeltypes, occupancy, p, q, ref, ref1, ref2, rendered_until, room, room_id, room_nr, s, se, shift, shift_added, shift_calendar, shift_fits, shift_nr, shiftentries, shifts_count, start_time, thistime, time_slot;
+    var add_shift, atn, calculate_signup_state, calculate_state_class, end_time, end_timestamp, entry_exists, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, m, mustache_rooms, n, needed_angeltypes, ref, rendered_until, room_id, room_nr, s, se, shift, shift_added, shift_calendar, shift_fits, shift_nr, shiftentries, shifts_count, start_time, thistime, time_slot;
     lanes = {};
     shiftentries = {};
     needed_angeltypes = {};
@@ -843,37 +876,6 @@ Shifts.render = {
         }
       }
     }
-    for (p = 0, len6 = rooms.length; p < len6; p++) {
-      room = rooms[p];
-      if (ref1 = room.RID, indexOf.call(Shifts.interaction.selected_rooms, ref1) >= 0) {
-        room.selected = true;
-      }
-    }
-    for (q = 0, len7 = angeltypes.length; q < len7; q++) {
-      angeltype = angeltypes[q];
-      if (ref2 = angeltype.id, indexOf.call(Shifts.interaction.selected_angeltypes, ref2) >= 0) {
-        angeltype.selected = true;
-      }
-    }
-    switch (Shifts.interaction.occupancy) {
-      case "all":
-        occupancy = {
-          all: 'primary',
-          free: 'default'
-        };
-        break;
-      case "free":
-        occupancy = {
-          all: 'default',
-          free: 'primary'
-        };
-    }
-    filter_form = Mustache.render(Shifts.templates.filter_form, {
-      rooms: rooms,
-      angeltypes: angeltypes,
-      occupancy: occupancy
-    });
-    Shifts.$shiftplan.find('.filter-form').html(filter_form);
     if (shifts_count === 0) {
       mustache_rooms = [];
     }
@@ -882,6 +884,8 @@ Shifts.render = {
       rooms: mustache_rooms
     });
     Shifts.$shiftplan.find('.shift-calendar').html(shift_calendar);
+    end_timestamp = new Date();
+    Shifts.log(end_timestamp - Shifts.render.metric_timestamp);
     return (function() {
       var $header, $time_lanes, $top_ref, left, top;
       $time_lanes = $('.shift-calendar .time');

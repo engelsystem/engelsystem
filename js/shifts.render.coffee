@@ -17,6 +17,9 @@ Shifts.render =
     # holder for start time
     START_TIME: false
 
+    # used to hold timestamps to calculate rendering time
+    metric_timestamp: false
+
     tick: (time, label = false) ->
 
         daytime = "tick_bright"
@@ -70,8 +73,41 @@ Shifts.render =
 
     shiftplan: ->
         user_id = parseInt $('#shiftplan').data('user_id'), 10
+        Shifts.render.metric_timestamp = new Date()
+
         Shifts.db.get_rooms (rooms) ->
             Shifts.db.get_angeltypes (angeltypes) ->
+
+                # Render filterselects
+                #
+                # check for selected rooms
+                for room in rooms
+                    if room.RID in Shifts.interaction.selected_rooms
+                        room.selected = true
+                #
+                # check for selected angeltypes
+                for angeltype in angeltypes
+                    if angeltype.id in Shifts.interaction.selected_angeltypes
+                        angeltype.selected = true
+                #
+                # check for selected occupancy
+                switch Shifts.interaction.occupancy
+                    when "all"
+                        occupancy =
+                            all: 'primary'
+                            free: 'default'
+                    when "free"
+                        occupancy =
+                            all: 'default'
+                            free: 'primary'
+                #
+                filter_form = Mustache.render Shifts.templates.filter_form,
+                    rooms: rooms
+                    angeltypes: angeltypes
+                    occupancy: occupancy
+                #
+                Shifts.$shiftplan.find('.filter-form').html(filter_form)
+
                 selected_rooms = Shifts.interaction.selected_rooms
                 selected_angeltypes = Shifts.interaction.selected_angeltypes
                 Shifts.db.get_shifts selected_rooms, selected_angeltypes, (db_shifts) ->
@@ -286,34 +322,6 @@ Shifts.render =
                     mustache_rooms[room_nr].lanes[lane_nr].shifts.push Shifts.render.tick(rendered_until, true)
                     rendered_until += Shifts.render.SECONDS_PER_ROW
 
-        # check for selected rooms
-        for room in rooms
-            if room.RID in Shifts.interaction.selected_rooms
-                room.selected = true
-
-        # check for selected angeltypes
-        for angeltype in angeltypes
-            if angeltype.id in Shifts.interaction.selected_angeltypes
-                angeltype.selected = true
-
-        # check for selected occupancy
-        switch Shifts.interaction.occupancy
-            when "all"
-                occupancy =
-                    all: 'primary'
-                    free: 'default'
-            when "free"
-                occupancy =
-                    all: 'default'
-                    free: 'primary'
-
-        filter_form = Mustache.render Shifts.templates.filter_form,
-            rooms: rooms
-            angeltypes: angeltypes
-            occupancy: occupancy
-
-        Shifts.$shiftplan.find('.filter-form').html(filter_form)
-
         if shifts_count == 0
             # set all to zero to trigger the message in the template
             mustache_rooms = []
@@ -323,6 +331,9 @@ Shifts.render =
             rooms: mustache_rooms
 
         Shifts.$shiftplan.find('.shift-calendar').html(shift_calendar)
+
+        end_timestamp = new Date()
+        Shifts.log end_timestamp - Shifts.render.metric_timestamp
 
         # sticky headers
         do ->
