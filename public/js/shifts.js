@@ -48,8 +48,11 @@ Shifts.init = function() {
                   var stime;
                   stime = parseInt(moment($input.val()).format('X'), 10);
                   Shifts.render.START_TIME = stime;
+                  $('#filterbutton').removeAttr('disabled');
                   return Shifts.db.set_option('filter_start_time', stime, function() {
-                    return Shifts.render.shiftplan();
+                    if (Shifts.render.rendering_time < 500) {
+                      return Shifts.render.shiftplan();
+                    }
                   });
                 }
               });

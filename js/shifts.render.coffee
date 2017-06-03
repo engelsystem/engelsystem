@@ -361,7 +361,6 @@ Shifts.render =
 
         end_timestamp = new Date()
         Shifts.render.rendering_time = end_timestamp - Shifts.render.metric_timestamp
-        #$('#filterbutton').removeAttr 'disabled'
         Shifts.db.set_option 'rendering_time', Shifts.render.rendering_time, ->
 
         # sticky headers
