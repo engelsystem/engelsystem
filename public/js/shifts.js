@@ -525,6 +525,7 @@ Shifts.render = {
   TIME_MARGIN: 1800,
   START_TIME: false,
   metric_timestamp: false,
+  rendering_time: 0,
   tick: function(time, label) {
     var current_quarter, daytime, diffhour, hour, tick_quarter;
     if (label == null) {
@@ -612,17 +613,19 @@ Shifts.render = {
     var $sc, sco, tpl, user_id;
     user_id = parseInt($('#shiftplan').data('user_id'), 10);
     Shifts.render.metric_timestamp = new Date();
-    $sc = Shifts.$shiftplan.find('.shift-calendar');
-    sco = $sc.offset();
-    tpl = Mustache.render(Shifts.templates.loading, {
-      cal_t: sco.top - 50,
-      cal_l: sco.left,
-      cal_w: $sc.width(),
-      cal_h: $sc.height(),
-      msg_t: sco.top - 50 + $sc.height() / 50,
-      msg_l: sco.left + $sc.width() / 2 - 200
-    });
-    $sc.before(tpl);
+    if (Shifts.render.rendering_time > 500) {
+      $sc = Shifts.$shiftplan.find('.shift-calendar');
+      sco = $sc.offset();
+      tpl = Mustache.render(Shifts.templates.loading, {
+        cal_t: sco.top - 50,
+        cal_l: sco.left,
+        cal_w: $sc.width(),
+        cal_h: $sc.height(),
+        msg_t: sco.top - 50 + $sc.height() / 50,
+        msg_l: sco.left + $sc.width() / 2 - 200
+      });
+      $sc.before(tpl);
+    }
     return Shifts.db.get_rooms(function(rooms) {
       return Shifts.db.get_angeltypes(function(angeltypes) {
         var angeltype, filter_form, i, j, len, len1, occupancy, ref, ref1, room, selected_angeltypes, selected_rooms;
@@ -897,7 +900,7 @@ Shifts.render = {
     Shifts.$shiftplan.find('.shift-calendar').html(shift_calendar);
     Shifts.$shiftplan.find('.loading-overlay, .loading-overlay-msg').remove();
     end_timestamp = new Date();
-    Shifts.log(end_timestamp - Shifts.render.metric_timestamp);
+    Shifts.render.rendering_time = end_timestamp - Shifts.render.metric_timestamp;
     return (function() {
       var $header, $time_lanes, $top_ref, left, top;
       $time_lanes = $('.shift-calendar .time');
@@ -926,7 +929,7 @@ Shifts.render = {
 };
 
 Shifts.templates = {
-  loading: '<div class="loading-overlay" style=" position: absolute; top: {{cal_t}}px; left: {{cal_l}}px; width: {{cal_w}}px; height: {{cal_h}}px; background: #fff; opacity: 0.5; z-index: 1000; "></div> <div class="loading-overlay-msg" style=" position: absolute; top: {{msg_t}}px; left: {{msg_l}}px; width: 400px; height: 80px; padding: 1em; text-align: center; background: #fff; border: 1px solid #999; border-radius: 3px; z-index: 1001; ">Loading... <div class="row" style="margin: 2px 0 0 0; width: 100%;"> <div class="progress"> <div class="progress-bar" style="width: 0%"> </div> </div>',
+  loading: '<div class="loading-overlay" style=" position: absolute; top: {{cal_t}}px; left: {{cal_l}}px; width: {{cal_w}}px; height: {{cal_h}}px; background: #fff; opacity: 0.5; z-index: 1000; "></div> <div class="loading-overlay-msg" style=" position: absolute; top: {{msg_t}}px; left: {{msg_l}}px; width: 400px; height: 80px; padding: 1em; text-align: center; background: #fff; border: 1px solid #999; border-radius: 3px; z-index: 1001; "> Loading... <div class="row" style="margin: 2px 0 0; width: 100%;"> <div class="progress"> <div class="progress-bar" style="width: 0%"> </div> </div>',
   header_and_dateselect: '<form class="form-inline" action="" method="get"> <input type="hidden" name="p" value="user_shifts"> <div class="row"> <div class="col-md-6"> <h1>Shifts</h1> <div class="form-group" style="width: 768px; height: 250px;"> <input id="datetimepicker" type="text" /> </div> </div> <div class="filter-form"></div> </div> <div class="row"> <div class="col-md-6"> <div><sup>1</sup>The tasks shown here are influenced by the angeltypes you joined already! <a href="?p=angeltypes&amp;action=about">Description of the jobs.</a></div> <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="Filter"> </div> </div> <div class="shift-calendar"> <div style="height: 100px;"> Loading... </div> </div>',
   filter_form: '<div class="col-md-2"> <div id="selection_rooms" class="selection rooms"> <h4>Rooms</h4> {{#rooms}} <div class="checkbox"> <label> <input type="checkbox" name="rooms[]" value="{{RID}}" {{#selected}}checked="checked"{{/selected}}> {{Name}} </label> </div><br /> {{/rooms}} <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-default">All</a> <a href="#none" class="btn btn-default">None</a> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_types" class="selection types"> <h4>Angeltypes<sup>1</sup></h4> {{#angeltypes}} <div class="checkbox"> <label> <input type="checkbox" name="types[]" value="{{id}}" {{#selected}}checked="checked"{{/selected}}> {{name}} </label> </div><br /> {{/angeltypes}} <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-default">All</a> <a href="#none" class="btn btn-default">None</a> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_filled" class="selection filled"> <h4>Occupancy</h4> <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-{{#occupancy}}{{all}}{{/occupancy}}">All</a> <a href="#free" class="btn btn-{{#occupancy}}{{free}}{{/occupancy}}">Free</a> </div> </div> </div> </div> </div>',
   footer: '</form>',

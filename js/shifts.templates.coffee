@@ -25,14 +25,15 @@ background: #fff;
 border: 1px solid #999;
 border-radius: 3px;
 z-index: 1001;
-">Loading...
+">
 
-<div class="row" style="margin: 2px 0 0 0; width: 100%;">
+Loading...
+
+<div class="row" style="margin: 2px 0 0; width: 100%;">
   <div class="progress">
     <div class="progress-bar" style="width: 0%">
   </div>
-</div>
-'
+</div>'
 
     header_and_dateselect: '
 <form class="form-inline" action="" method="get">
