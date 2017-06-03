@@ -48,7 +48,7 @@ Importing new objects into browser database. <span id="remaining_objects"></span
     0%
   </div>
 </div>
-<a id="abort" href="" class="btn btn-danger btn-xs">Abort and switch to legacy view</a>'
+<a id="abort" href="" class="btn btn-default btn-xs">Abort and switch to legacy view</a>'
             Shifts.$shiftplan.find('#remaining_objects').text Shifts.fetcher.remaining_process_count
             Shifts.$shiftplan.find('#abort').on 'click', ->
                 document.cookie = 'websql=nope'
