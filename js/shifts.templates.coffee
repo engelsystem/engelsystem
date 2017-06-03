@@ -27,7 +27,7 @@ border-radius: 3px;
 z-index: 1001;
 ">
 
-Loading...
+Building view...
 
 <div class="row" style="margin: 2px 0 0; width: 100%;">
   <div class="progress">
