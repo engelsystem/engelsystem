@@ -7,7 +7,7 @@ Shifts.fetcher =
 
     start: (done) ->
         Shifts.$shiftplan.html '
-<span id="fetcher_statustext">Fetching data from server...</span> <span id="remaining_objects"></span> remaining...
+<span id="fetcher_statustext">Fetching data from server...</span> <span id="remaining_objects"></span>
 <div class="progress">
   <div id="progress_bar" class="progress-bar" style="width: 0%;">
     0%
@@ -40,6 +40,7 @@ Shifts.fetcher =
             )
 
         Shifts.$shiftplan.find('#fetcher_statustext').text 'Fetching data from server...'
+        Shifts.$shiftplan.find('#remaining_objects').text ''
         url = '?p=shifts_json_export_websql&' + latest_ids.join('&')
         $.get url, (data) ->
             Shifts.fetcher.total_objects_count = 0
@@ -57,7 +58,7 @@ Shifts.fetcher =
                 Shifts.fetcher.total_objects_count_since_start = Shifts.fetcher.total_objects_count
 
             Shifts.$shiftplan.find('#fetcher_statustext').text 'Importing new objects into browser database.'
-            Shifts.$shiftplan.find('#remaining_objects').text Shifts.fetcher.remaining_objects_count
+            Shifts.$shiftplan.find('#remaining_objects').text Shifts.fetcher.remaining_objects_count + ' remaining...'
             Shifts.$shiftplan.find('#abort').on 'click', ->
                 document.cookie = 'websql=nope'
                 window.location.href = ''
@@ -115,7 +116,7 @@ Shifts.fetcher =
             Shifts.fetcher.remaining_objects_count--
             if Shifts.fetcher.remaining_objects_count % 100 == 0
                 percentage = 100 - Shifts.fetcher.remaining_objects_count / Shifts.fetcher.total_objects_count_since_start * 100
-                $ro.text Shifts.fetcher.remaining_objects_count
+                $ro.text Shifts.fetcher.remaining_objects_count + ' remaining...'
                 $pb.text Math.round(percentage) + '%'
                 $pb.width percentage + '%'
 
