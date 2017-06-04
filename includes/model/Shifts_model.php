@@ -368,9 +368,18 @@ function Shifts_by_user($user, $include_freeload_comments = false) {
  */
 function Shifts_for_websql($latest_ids) {
 
-    $limit = 8000; // yes. but provide an argument "since" to fetch all remaining items.
-                    // todo: only limit shifts, users and shift_entries, provide separate json,
-                    // because of different updated rows
+    $limit = 5000; // 5k items per fetch, gives ~1MB large json-response
+
+    // fetch shifts count
+  $shifts_count = sql_select("
+      SELECT COUNT(SID) as count
+      FROM Shifts
+      WHERE SID > '" . sql_escape($latest_ids['shifts']) . "'
+      ");
+  if ($shifts_count === false) {
+    engelsystem_error('Unable to load websql shifts_count.');
+  }
+  $shifts_count = $shifts_count[0]['count'];
 
     // fetch shifts
   $shifts = sql_select("
@@ -384,6 +393,19 @@ function Shifts_for_websql($latest_ids) {
     engelsystem_error('Unable to load websql shifts.');
   }
 
+
+
+    // fetch shift types count
+  $shift_types_count = sql_select("
+      SELECT COUNT(id) as count
+      FROM ShiftTypes
+      WHERE id > '" . sql_escape($latest_ids['shift_types']) . "'
+      ");
+  if ($shift_types_count === false) {
+    engelsystem_error('Unable to load websql shift_types_count.');
+  }
+  $shift_types_count = $shift_types_count[0]['count'];
+
     // fetch shift types
   $shift_types = sql_select("
       SELECT id, name, angeltype_id
@@ -395,6 +417,19 @@ function Shifts_for_websql($latest_ids) {
   if ($shift_types === false) {
     engelsystem_error('Unable to load websql shift_types.');
   }
+
+
+
+    // fetch rooms count
+  $rooms_count = sql_select("
+      SELECT COUNT(RID) as count
+      FROM Room
+      WHERE RID > '" . sql_escape($latest_ids['rooms']) . "'
+      ");
+  if ($rooms_count === false) {
+    engelsystem_error('Unable to load websql rooms_count.');
+  }
+  $rooms_count = $rooms_count[0]['count'];
 
     // fetch rooms
   $rooms = sql_select("
@@ -408,6 +443,19 @@ function Shifts_for_websql($latest_ids) {
     engelsystem_error('Unable to load websql rooms.');
   }
 
+
+
+    // fetch shift_entries count
+  $shift_entries_count = sql_select("
+      SELECT COUNT(id) as count
+      FROM ShiftEntry
+      WHERE id > '" . sql_escape($latest_ids['shift_entries']) . "'
+      ");
+  if ($shift_entries_count === false) {
+    engelsystem_error('Unable to load websql shift_entries_count.');
+  }
+  $shift_entries_count = $shift_entries_count[0]['count'];
+
     // fetch shift_entries
   $shift_entries = sql_select("
       SELECT id, SID, TID, UID
@@ -417,8 +465,22 @@ function Shifts_for_websql($latest_ids) {
       LIMIT " . $limit . "
       ");
   if ($shift_entries === false) {
-    engelsystem_error('Unable to load websql shift_entries.');
+    engelsystem_error('Unable to load websql shift_entries_count.');
   }
+
+
+
+    // fetch users count
+  $users_count = sql_select("
+      SELECT COUNT(UID) as count
+      FROM User
+      WHERE Gekommen = '1'
+      AND UID > '" . sql_escape($latest_ids['users']) . "'
+      ");
+  if ($users_count === false) {
+    engelsystem_error('Unable to load websql users_count.');
+  }
+  $users_count = $users_count[0]['count'];
 
     // fetch users
   $users = sql_select("
@@ -433,6 +495,19 @@ function Shifts_for_websql($latest_ids) {
     engelsystem_error('Unable to load websql users.');
   }
 
+
+
+    // fetch angel types count
+  $angeltypes_count = sql_select("
+      SELECT COUNT(id) as count
+      FROM AngelTypes
+      WHERE id > '" . sql_escape($latest_ids['angeltypes']) . "'
+      ");
+  if ($angeltypes_count === false) {
+    engelsystem_error('Unable to load websql angeltypes_count.');
+  }
+  $angeltypes_count = $angeltypes_count[0]['count'];
+
     // fetch angel types
   $angeltypes = sql_select("
       SELECT id, name
@@ -441,9 +516,22 @@ function Shifts_for_websql($latest_ids) {
       ORDER BY id ASC
       LIMIT " . $limit . "
       ");
-  if ($needed_angeltypes === false) {
+  if ($angeltypes === false) {
     engelsystem_error('Unable to load websql angeltypes.');
   }
+
+
+
+    // fetch needed angel types count
+  $needed_angeltypes_count = sql_select("
+      SELECT COUNT(id) as count
+      FROM NeededAngelTypes
+      WHERE id > '" . sql_escape($latest_ids['needed_angeltypes']) . "'
+      ");
+  if ($needed_angeltypes_count === false) {
+    engelsystem_error('Unable to load websql needed_angeltypes_count.');
+  }
+  $needed_angeltypes_count = $needed_angeltypes_count[0]['count'];
 
     // fetch needed angel types
   $needed_angeltypes = sql_select("
@@ -457,14 +545,23 @@ function Shifts_for_websql($latest_ids) {
     engelsystem_error('Unable to load websql needed_angeltypes.');
   }
 
+
+
   $result = array(
     'shift_types' => $shift_types,
+    'shift_types_total' => $shift_types_count,
     'angeltypes' => $angeltypes,
+    'angeltypes_total' => $angeltypes_count,
     'rooms' => $rooms,
+    'rooms_total' => $rooms_count,
     'users' => $users,
+    'users_total' => $users_count,
     'shift_entries' => $shift_entries,
+    'shift_entries_total' => $shift_entries_count,
     'shifts' => $shifts,
+    'shifts_total' => $shifts_count,
     'needed_angeltypes' => $needed_angeltypes,
+    'needed_angeltypes_total' => $needed_angeltypes_count,
   );
   return $result;
 }
