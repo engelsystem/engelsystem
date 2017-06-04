@@ -367,7 +367,7 @@ Shifts.fetcher = {
     for (table in table_mapping) {
       idsname = table_mapping[table];
       idlist = Shifts.db[idsname];
-      if (idlist) {
+      if (idlist.length > 0) {
         max_id = Math.max.apply(Math, idlist);
       } else {
         max_id = 0;
@@ -689,7 +689,7 @@ Shifts.render = {
       curr_progress = 0;
       loadprg = setInterval(function() {
         var percentage;
-        percentage = Math.round(curr_progress / Shifts.render.rendering_time * 130);
+        percentage = Math.round(curr_progress / Shifts.render.rendering_time * 120);
         Shifts.$shiftplan.find('#cal_loading_progress').width(percentage + '%');
         curr_progress += step_size;
         if (curr_progress > Shifts.render.rendering_time) {

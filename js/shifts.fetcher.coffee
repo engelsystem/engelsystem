@@ -30,7 +30,7 @@ Shifts.fetcher =
         latest_ids = []
         for table, idsname of table_mapping
             idlist = Shifts.db[idsname]
-            if idlist
+            if idlist.length > 0
                 max_id = Math.max.apply(Math, idlist)
             else
                 max_id = 0
