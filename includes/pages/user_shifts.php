@@ -36,12 +36,17 @@ function user_shifts() {
       return view_user_shifts();
   }
 
+  if (isset($_GET['nojs'])) {
+      setcookie('websql', 'nope');
+      redirect(page_link_to('user_shifts'));
+  }
+
   // cookie is not set: display websql-version to let it check for websql support
-  if(! isset($_COOKIE['websql'])) {
+  if (! isset($_COOKIE['websql'])) {
       return view_user_shifts_browser();
 
   // cookie is set and websql is supported: display websql-version
-  } else if(isset($_COOKIE['websql']) && $_COOKIE['websql'] == 'yes') {
+  } else if (isset($_COOKIE['websql']) && $_COOKIE['websql'] == 'yes') {
       return view_user_shifts_browser();
 
   // cookie is set and websql is not supported: display regular version
