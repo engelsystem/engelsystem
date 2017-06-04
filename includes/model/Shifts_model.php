@@ -368,7 +368,7 @@ function Shifts_by_user($user, $include_freeload_comments = false) {
  */
 function Shifts_for_websql($latest_ids) {
 
-    $limit = 8000; // 8k items per fetch, gives ~1-4MB large json-response
+    $limit = 5000; // 5k items per fetch, gives ~1MB large json-response
 
     // fetch shifts count
   $shifts_count = sql_select("

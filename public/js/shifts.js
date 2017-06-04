@@ -344,6 +344,7 @@ Shifts.db = {
 
 Shifts.fetcher = {
   total_objects_count: 0,
+  total_objects_count_since_start: 0,
   remaining_objects_count: 0,
   start: function(done) {
     Shifts.$shiftplan.html('<span id="fetcher_statustext">Fetching data from server...</span> <span id="remaining_objects"></span> remaining... <div class="progress"> <div id="progress_bar" class="progress-bar" style="width: 0%;"> 0% </div> </div> <a id="abort" href="" class="btn btn-default btn-xs">Abort and switch to legacy view</a>');
@@ -376,15 +377,17 @@ Shifts.fetcher = {
     Shifts.$shiftplan.find('#fetcher_statustext').text('Fetching data from server...');
     url = '?p=shifts_json_export_websql&' + latest_ids.join('&');
     return $.get(url, function(data) {
-      if (Shifts.fetcher.total_objects_count === 0) {
-        Shifts.fetcher.total_objects_count += parseInt(data.rooms_total, 10);
-        Shifts.fetcher.total_objects_count += parseInt(data.angeltypes_total, 10);
-        Shifts.fetcher.total_objects_count += parseInt(data.shift_types_total, 10);
-        Shifts.fetcher.total_objects_count += parseInt(data.users_total, 10);
-        Shifts.fetcher.total_objects_count += parseInt(data.shifts_total, 10);
-        Shifts.fetcher.total_objects_count += parseInt(data.needed_angeltypes_total, 10);
-        Shifts.fetcher.total_objects_count += parseInt(data.shift_entries_total, 10);
-        Shifts.fetcher.remaining_objects_count = Shifts.fetcher.total_objects_count;
+      Shifts.fetcher.total_objects_count = 0;
+      Shifts.fetcher.total_objects_count += parseInt(data.rooms_total, 10);
+      Shifts.fetcher.total_objects_count += parseInt(data.angeltypes_total, 10);
+      Shifts.fetcher.total_objects_count += parseInt(data.shift_types_total, 10);
+      Shifts.fetcher.total_objects_count += parseInt(data.users_total, 10);
+      Shifts.fetcher.total_objects_count += parseInt(data.shifts_total, 10);
+      Shifts.fetcher.total_objects_count += parseInt(data.needed_angeltypes_total, 10);
+      Shifts.fetcher.total_objects_count += parseInt(data.shift_entries_total, 10);
+      Shifts.fetcher.remaining_objects_count = Shifts.fetcher.total_objects_count;
+      if (Shifts.fetcher.total_objects_count_since_start === 0) {
+        Shifts.fetcher.total_objects_count_since_start = Shifts.fetcher.total_objects_count;
       }
       Shifts.$shiftplan.find('#fetcher_statustext').text('Importing new objects into browser database.');
       Shifts.$shiftplan.find('#remaining_objects').text(Shifts.fetcher.remaining_objects_count);
@@ -445,7 +448,7 @@ Shifts.fetcher = {
       item = items_to_process.shift();
       Shifts.fetcher.remaining_objects_count--;
       if (Shifts.fetcher.remaining_objects_count % 100 === 0) {
-        percentage = 100 - Shifts.fetcher.remaining_objects_count / Shifts.fetcher.total_objects_count * 100;
+        percentage = 100 - Shifts.fetcher.remaining_objects_count / Shifts.fetcher.total_objects_count_since_start * 100;
         $ro.text(Shifts.fetcher.remaining_objects_count);
         $pb.text(Math.round(percentage) + '%');
         $pb.width(percentage + '%');
