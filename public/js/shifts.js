@@ -343,8 +343,8 @@ Shifts.db = {
 };
 
 Shifts.fetcher = {
-  total_process_count: 0,
-  remaining_process_count: 0,
+  total_objects_count: 0,
+  remaining_objects_count: 0,
   start: function(done) {
     var idlist, idsname, latest_ids, max_id, table, table_mapping, url;
     Shifts.$shiftplan.html('Fetching data from server...');
@@ -370,16 +370,16 @@ Shifts.fetcher = {
     }
     url = '?p=shifts_json_export_websql&' + latest_ids.join('&');
     return $.get(url, function(data) {
-      Shifts.fetcher.total_process_count += data.rooms.length;
-      Shifts.fetcher.total_process_count += data.angeltypes.length;
-      Shifts.fetcher.total_process_count += data.shift_types.length;
-      Shifts.fetcher.total_process_count += data.users.length;
-      Shifts.fetcher.total_process_count += data.shifts.length;
-      Shifts.fetcher.total_process_count += data.needed_angeltypes.length;
-      Shifts.fetcher.total_process_count += data.shift_entries.length;
-      Shifts.fetcher.remaining_process_count = Shifts.fetcher.total_process_count;
+      Shifts.fetcher.total_objects_count += data.rooms_total;
+      Shifts.fetcher.total_objects_count += data.angeltypes_total;
+      Shifts.fetcher.total_objects_count += data.shift_types_total;
+      Shifts.fetcher.total_objects_count += data.users_total;
+      Shifts.fetcher.total_objects_count += data.shifts_total;
+      Shifts.fetcher.total_objects_count += data.needed_angeltypes_total;
+      Shifts.fetcher.total_objects_count += data.shift_entries_total;
+      Shifts.fetcher.remaining_objects_count = Shifts.fetcher.total_objects_count;
       Shifts.$shiftplan.html('Importing new objects into browser database. <span id="remaining_objects"></span> remaining... <div class="progress"> <div id="progress_bar" class="progress-bar" style="width: 0%;"> 0% </div> </div> <a id="abort" href="" class="btn btn-default btn-xs">Abort and switch to legacy view</a>');
-      Shifts.$shiftplan.find('#remaining_objects').text(Shifts.fetcher.remaining_process_count);
+      Shifts.$shiftplan.find('#remaining_objects').text(Shifts.fetcher.remaining_objects_count);
       Shifts.$shiftplan.find('#abort').on('click', function() {
         document.cookie = 'websql=nope';
         return window.location.href = '';
@@ -431,10 +431,10 @@ Shifts.fetcher = {
     $pb = Shifts.$shiftplan.find('#progress_bar');
     if (items_to_process.length > 0) {
       item = items_to_process.shift();
-      Shifts.fetcher.remaining_process_count--;
-      if (Shifts.fetcher.remaining_process_count % 100 === 0) {
-        percentage = 100 - Math.round(Shifts.fetcher.remaining_process_count / Shifts.fetcher.total_process_count * 100);
-        $ro.text(Shifts.fetcher.remaining_process_count);
+      Shifts.fetcher.remaining_objects_count--;
+      if (Shifts.fetcher.remaining_objects_count % 100 === 0) {
+        percentage = 100 - Math.round(Shifts.fetcher.remaining_objects_count / Shifts.fetcher.total_objects_count * 100);
+        $ro.text(Shifts.fetcher.remaining_objects_count);
         $pb.text(percentage + '%');
         $pb.width(percentage + '%');
       }
