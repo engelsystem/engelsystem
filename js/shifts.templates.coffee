@@ -42,7 +42,7 @@ Building view...
     <div class="col-md-6">
       <h1>Shifts</h1>
       <div class="form-group" style="width: 768px; height: 250px;">
-        <input id="datetimepicker" type="text" />
+        <input id="datetimepicker" type="hidden" />
       </div>
     </div>
 
