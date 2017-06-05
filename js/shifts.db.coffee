@@ -94,7 +94,7 @@ Shifts.db =
         room.RID = parseInt(room.RID, 10)
         room_exists = room.RID in Shifts.db.room_ids
         if room_exists == false
-            alasql "INSERT INTO Room (RID, Name) VALUES (#{room.RID}, '#{room.Name}')", ->
+            alasql "INSERT INTO Room (RID, Name) VALUES (?, ?)", [room.RID, room.Name], ->
                 Shifts.db.room_ids.push room.RID
                 # populate select filter
                 Shifts.interaction.selected_rooms.push room.RID
@@ -106,7 +106,7 @@ Shifts.db =
         user.UID = parseInt(user.UID, 10)
         user_exists = user.UID in Shifts.db.user_ids
         if user_exists == false
-            alasql "INSERT INTO User (UID, Nick) VALUES (#{user.UID}, '#{user.Nick}')", ->
+            alasql "INSERT INTO User (UID, Nick) VALUES (?, ?)", [user.UID, user.Nick], ->
                 Shifts.db.user_ids.push user.UID
                 done()
         else
@@ -117,7 +117,7 @@ Shifts.db =
         shift.RID = parseInt(shift.RID, 10)
         shift_exists = shift.SID in Shifts.db.shift_ids
         if shift_exists == false
-            alasql "INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (#{shift.SID}, '#{shift.title}', '#{shift.shifttype_id}', '#{shift.start}', '#{shift.end}', #{shift.RID})", ->
+            alasql "INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (?, ?, ?, ?, ?, ?)", [shift.SID, shift.title, shift.shifttype_id, shift.start, shift.end, shift.RID], ->
                 Shifts.db.shift_ids.push shift.SID
                 done()
         else
@@ -130,7 +130,7 @@ Shifts.db =
         shiftentry.UID = parseInt shiftentry.UID, 10
         shiftentry_exists = shiftentry.id in Shifts.db.shiftentry_ids
         if shiftentry_exists == false
-            alasql "INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (#{shiftentry.id}, #{shiftentry.SID}, #{shiftentry.TID}, #{shiftentry.UID})", ->
+            alasql "INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (?, ?, ?, ?)", [shiftentry.id, shiftentry.SID, shiftentry.TID, shiftentry.UID], ->
                 Shifts.db.shiftentry_ids.push shiftentry.id
                 done()
         else
@@ -140,7 +140,7 @@ Shifts.db =
         shifttype.id = parseInt shifttype.id, 10
         shifttype_exists = shifttype.id in Shifts.db.shifttype_ids
         if shifttype_exists == false
-            alasql "INSERT INTO ShiftTypes (id, name) VALUES (#{shifttype.id}, '#{shifttype.name}')", ->
+            alasql "INSERT INTO ShiftTypes (id, name) VALUES (?, ?)", [shifttype.id, shifttype.name], ->
                 Shifts.db.shifttype_ids.push shifttype.id
                 done()
         else
@@ -150,7 +150,7 @@ Shifts.db =
         angeltype.id = parseInt angeltype.id, 10
         angeltype_exists = angeltype.id in Shifts.db.angeltype_ids
         if angeltype_exists == false
-            alasql "INSERT INTO AngelTypes (id, name) VALUES (#{angeltype.id}, '#{angeltype.name}')", ->
+            alasql "INSERT INTO AngelTypes (id, name) VALUES (?, ?)", [angeltype.id, angeltype.name], ->
                 Shifts.db.angeltype_ids.push angeltype.id
                 # populate select filter
                 Shifts.interaction.selected_angeltypes.push angeltype.id
@@ -166,7 +166,7 @@ Shifts.db =
         needed_angeltype.count = parseInt needed_angeltype.count, 10
         needed_angeltype_exists = needed_angeltype.id in Shifts.db.needed_angeltype_ids
         if needed_angeltype_exists == false
-            alasql "INSERT INTO NeededAngelTypes (id, room_id, shift_id, angel_type_id, angel_count) VALUES (#{needed_angeltype.id}, #{needed_angeltype.RID}, #{needed_angeltype.SID}, #{needed_angeltype.ATID}, #{needed_angeltype.count})", ->
+            alasql "INSERT INTO NeededAngelTypes (id, room_id, shift_id, angel_type_id, angel_count) VALUES (?, ?, ?, ?, ?)", [needed_angeltype.id, needed_angeltype.RID, needed_angeltype.SID, needed_angeltype.ATID, needed_angeltype.count], ->
                 Shifts.db.needed_angeltype_ids.push needed_angeltype.id
                 done()
         else
@@ -261,10 +261,10 @@ Shifts.db =
     set_option: (key, value, done) ->
         option_key_exists = key in Shifts.db.option_keys
         if option_key_exists == false
-            alasql "INSERT INTO options (option_key, option_value) VALUES ('#{key}', '#{value}')", ->
+            alasql "INSERT INTO options (option_key, option_value) VALUES (?, ?)", [key, value], ->
                 Shifts.db.option_keys.push key
                 done()
         else
-            alasql "UPDATE options SET option_value = '#{value}' WHERE option_key = '#{key}'", ->
+            alasql "UPDATE options SET option_value = ? WHERE option_key = ?", [value, key], ->
                 done()
 
