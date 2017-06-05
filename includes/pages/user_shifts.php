@@ -36,8 +36,15 @@ function user_shifts() {
       return view_user_shifts();
   }
 
+  // target for the noscript meta-redirect
   if (isset($_GET['nojs'])) {
       setcookie('websql', 'nope');
+      redirect(page_link_to('user_shifts'));
+  }
+
+  // ability to turn websql back on
+  if (isset($_GET['websql'])) {
+      setcookie('websql', 'yes');
       redirect(page_link_to('user_shifts'));
   }
 
