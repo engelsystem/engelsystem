@@ -235,13 +235,17 @@ Shifts.db =
         FROM Shifts
         ORDER BY start_time ASC
         LIMIT 1", (res) ->
-            start_time = res[0].start_time
-            alasql "SELECT end_time
-            FROM Shifts
-            ORDER BY end_time DESC
-            LIMIT 1", (res) ->
-                end_time = res[0].end_time
-                done [start_time, end_time]
+            if res.length > 0
+                start_time = res[0].start_time
+                alasql "SELECT end_time
+                FROM Shifts
+                ORDER BY end_time DESC
+                LIMIT 1", (res) ->
+                    end_time = res[0].end_time
+                    done [start_time, end_time]
+            else
+                now = new Date()
+                done [now, now]
 
     get_rooms: (done) ->
         alasql "SELECT * FROM Room ORDER BY Name", (res) ->

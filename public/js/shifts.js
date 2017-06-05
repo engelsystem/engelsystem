@@ -301,13 +301,18 @@ Shifts.db = {
   },
   get_shift_range: function(done) {
     return alasql("SELECT start_time FROM Shifts ORDER BY start_time ASC LIMIT 1", function(res) {
-      var start_time;
-      start_time = res[0].start_time;
-      return alasql("SELECT end_time FROM Shifts ORDER BY end_time DESC LIMIT 1", function(res) {
-        var end_time;
-        end_time = res[0].end_time;
-        return done([start_time, end_time]);
-      });
+      var now, start_time;
+      if (res.length > 0) {
+        start_time = res[0].start_time;
+        return alasql("SELECT end_time FROM Shifts ORDER BY end_time DESC LIMIT 1", function(res) {
+          var end_time;
+          end_time = res[0].end_time;
+          return done([start_time, end_time]);
+        });
+      } else {
+        now = new Date();
+        return done([now, now]);
+      }
     });
   },
   get_rooms: function(done) {
