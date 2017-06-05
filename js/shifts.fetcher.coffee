@@ -5,8 +5,9 @@ Shifts.fetcher =
     total_objects_count_since_start: 0
     remaining_objects_count: 0
 
-    start: (done) ->
-        Shifts.$shiftplan.html '
+    start: (display_status, done) ->
+        if display_status
+            Shifts.$shiftplan.html '
 <span id="fetcher_statustext">Fetching data from server...</span> <span id="remaining_objects"></span>
 <div class="progress">
   <div id="progress_bar" class="progress-bar" style="width: 0%;">

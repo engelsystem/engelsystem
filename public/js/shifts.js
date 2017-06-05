@@ -28,11 +28,14 @@ Shifts.init = function() {
     }
     return Shifts.db.init(function() {
       Shifts.log('db initialized');
-      return Shifts.fetcher.start(function() {
+      return Shifts.fetcher.start(true, function() {
         Shifts.log('fetch complete.');
         Shifts.render.header_footer();
         Shifts.render.shiftplan();
         Shifts.interaction.init();
+        setInterval(function() {
+          return Shifts.fetcher.start(false, function() {});
+        }, 1000 * 60 * 5);
         return Shifts.db.get_shift_range(function(date_range) {
           var waitforcal;
           return waitforcal = setInterval(function() {
@@ -346,8 +349,10 @@ Shifts.fetcher = {
   total_objects_count: 0,
   total_objects_count_since_start: 0,
   remaining_objects_count: 0,
-  start: function(done) {
-    Shifts.$shiftplan.html('<span id="fetcher_statustext">Fetching data from server...</span> <span id="remaining_objects"></span> <div class="progress"> <div id="progress_bar" class="progress-bar" style="width: 0%;"> 0% </div> </div> <a id="abort" href="" class="btn btn-default btn-xs">Abort and switch to legacy view</a>');
+  start: function(display_status, done) {
+    if (display_status) {
+      Shifts.$shiftplan.html('<span id="fetcher_statustext">Fetching data from server...</span> <span id="remaining_objects"></span> <div class="progress"> <div id="progress_bar" class="progress-bar" style="width: 0%;"> 0% </div> </div> <a id="abort" href="" class="btn btn-default btn-xs">Abort and switch to legacy view</a>');
+    }
     return Shifts.fetcher.fetch_in_parts(function() {
       return done();
     });

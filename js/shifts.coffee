@@ -22,11 +22,16 @@ Shifts.init = ->
 
         Shifts.db.init ->
             Shifts.log 'db initialized'
-            Shifts.fetcher.start ->
+            Shifts.fetcher.start true, ->
                 Shifts.log 'fetch complete.'
                 Shifts.render.header_footer()
                 Shifts.render.shiftplan()
                 Shifts.interaction.init()
+
+                # fetch data every 5mins
+                setInterval ->
+                    Shifts.fetcher.start false, ->
+                , 1000 * 60 * 5
 
                 Shifts.db.get_shift_range (date_range) ->
                     waitforcal = setInterval ->
