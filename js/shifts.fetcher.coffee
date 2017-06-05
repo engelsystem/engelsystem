@@ -72,6 +72,8 @@ Shifts.fetcher =
                 Shifts.db.get_option 'rendering_time', (res) ->
                     if res
                         Shifts.render.rendering_time = parseInt res, 10
+                    else
+                        Shifts.render.rendering_time = 2000
 
                     # insert rooms
                     rooms = data.rooms

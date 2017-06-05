@@ -404,6 +404,8 @@ Shifts.fetcher = {
           var rooms;
           if (res) {
             Shifts.render.rendering_time = parseInt(res, 10);
+          } else {
+            Shifts.render.rendering_time = 2000;
           }
           rooms = data.rooms;
           return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
