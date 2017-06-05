@@ -68,45 +68,64 @@ Shifts.fetcher =
                 if res
                     Shifts.render.START_TIME = parseInt res, 10
 
-                # populate rendering_time
-                Shifts.db.get_option 'rendering_time', (res) ->
+                # populate selected_rooms
+                Shifts.db.get_option 'filter_selected_rooms', (res) ->
                     if res
-                        Shifts.render.rendering_time = parseInt res, 10
-                    else
-                        Shifts.render.rendering_time = 2000
+                        Shifts.interaction.selected_rooms = []
+                        for r in res.split(',')
+                            Shifts.interaction.selected_rooms.push parseInt(r, 10)
 
-                    # insert rooms
-                    rooms = data.rooms
-                    Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
+                    # populate selected_angeltypes
+                    Shifts.db.get_option 'filter_selected_angeltypes', (res) ->
+                        if res
+                            Shifts.interaction.selected_angeltypes = []
+                            for a in res.split(',')
+                                Shifts.interaction.selected_angeltypes.push parseInt(a, 10)
 
-                        # insert angeltypes
-                        angeltypes = data.angeltypes
-                        Shifts.fetcher.process Shifts.db.insert_angeltype, angeltypes, ->
+                        # populate occupancy
+                        Shifts.db.get_option 'filter_occupancy', (res) ->
+                            if res
+                                Shifts.interaction.occupancy = res
 
-                            # insert shift_types
-                            shift_types = data.shift_types
-                            Shifts.fetcher.process Shifts.db.insert_shifttype, shift_types, ->
+                            # populate rendering_time
+                            Shifts.db.get_option 'rendering_time', (res) ->
+                                if res
+                                    Shifts.render.rendering_time = parseInt res, 10
+                                else
+                                    Shifts.render.rendering_time = 2000
 
-                                # insert users
-                                users = data.users
-                                Shifts.fetcher.process Shifts.db.insert_user, users, ->
+                                # insert rooms
+                                rooms = data.rooms
+                                Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
 
-                                    # insert shifts
-                                    shifts = data.shifts
-                                    Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
+                                    # insert angeltypes
+                                    angeltypes = data.angeltypes
+                                    Shifts.fetcher.process Shifts.db.insert_angeltype, angeltypes, ->
 
-                                        # insert needed_angeltypes
-                                        needed_angeltypes = data.needed_angeltypes
-                                        Shifts.fetcher.process Shifts.db.insert_needed_angeltype, needed_angeltypes, ->
+                                        # insert shift_types
+                                        shift_types = data.shift_types
+                                        Shifts.fetcher.process Shifts.db.insert_shifttype, shift_types, ->
 
-                                            # insert shift_entries
-                                            shift_entries = data.shift_entries
-                                            Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
+                                            # insert users
+                                            users = data.users
+                                            Shifts.fetcher.process Shifts.db.insert_user, users, ->
 
-                                                if Shifts.fetcher.total_objects_count <= 0
-                                                    done()
-                                                else
-                                                    Shifts.fetcher.fetch_in_parts done
+                                                # insert shifts
+                                                shifts = data.shifts
+                                                Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
+
+                                                    # insert needed_angeltypes
+                                                    needed_angeltypes = data.needed_angeltypes
+                                                    Shifts.fetcher.process Shifts.db.insert_needed_angeltype, needed_angeltypes, ->
+
+                                                        # insert shift_entries
+                                                        shift_entries = data.shift_entries
+                                                        Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
+
+                                                            if Shifts.fetcher.total_objects_count <= 0
+                                                                done()
+                                                            else
+                                                                Shifts.fetcher.fetch_in_parts done
 
     process: (processing_func, items_to_process, done) ->
         $ro = Shifts.$shiftplan.find('#remaining_objects')

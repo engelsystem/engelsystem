@@ -400,38 +400,65 @@ Shifts.fetcher = {
         if (res) {
           Shifts.render.START_TIME = parseInt(res, 10);
         }
-        return Shifts.db.get_option('rendering_time', function(res) {
-          var rooms;
+        return Shifts.db.get_option('filter_selected_rooms', function(res) {
+          var i, len, r, ref;
           if (res) {
-            Shifts.render.rendering_time = parseInt(res, 10);
-          } else {
-            Shifts.render.rendering_time = 2000;
+            Shifts.interaction.selected_rooms = [];
+            ref = res.split(',');
+            for (i = 0, len = ref.length; i < len; i++) {
+              r = ref[i];
+              Shifts.interaction.selected_rooms.push(parseInt(r, 10));
+            }
           }
-          rooms = data.rooms;
-          return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
-            var angeltypes;
-            angeltypes = data.angeltypes;
-            return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
-              var shift_types;
-              shift_types = data.shift_types;
-              return Shifts.fetcher.process(Shifts.db.insert_shifttype, shift_types, function() {
-                var users;
-                users = data.users;
-                return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
-                  var shifts;
-                  shifts = data.shifts;
-                  return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
-                    var needed_angeltypes;
-                    needed_angeltypes = data.needed_angeltypes;
-                    return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
-                      var shift_entries;
-                      shift_entries = data.shift_entries;
-                      return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
-                        if (Shifts.fetcher.total_objects_count <= 0) {
-                          return done();
-                        } else {
-                          return Shifts.fetcher.fetch_in_parts(done);
-                        }
+          return Shifts.db.get_option('filter_selected_angeltypes', function(res) {
+            var a, j, len1, ref1;
+            if (res) {
+              Shifts.interaction.selected_angeltypes = [];
+              ref1 = res.split(',');
+              for (j = 0, len1 = ref1.length; j < len1; j++) {
+                a = ref1[j];
+                Shifts.interaction.selected_angeltypes.push(parseInt(a, 10));
+              }
+            }
+            return Shifts.db.get_option('filter_occupancy', function(res) {
+              if (res) {
+                Shifts.interaction.occupancy = res;
+              }
+              return Shifts.db.get_option('rendering_time', function(res) {
+                var rooms;
+                if (res) {
+                  Shifts.render.rendering_time = parseInt(res, 10);
+                } else {
+                  Shifts.render.rendering_time = 2000;
+                }
+                rooms = data.rooms;
+                return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
+                  var angeltypes;
+                  angeltypes = data.angeltypes;
+                  return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
+                    var shift_types;
+                    shift_types = data.shift_types;
+                    return Shifts.fetcher.process(Shifts.db.insert_shifttype, shift_types, function() {
+                      var users;
+                      users = data.users;
+                      return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
+                        var shifts;
+                        shifts = data.shifts;
+                        return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
+                          var needed_angeltypes;
+                          needed_angeltypes = data.needed_angeltypes;
+                          return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
+                            var shift_entries;
+                            shift_entries = data.shift_entries;
+                            return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
+                              if (Shifts.fetcher.total_objects_count <= 0) {
+                                return done();
+                              } else {
+                                return Shifts.fetcher.fetch_in_parts(done);
+                              }
+                            });
+                          });
+                        });
                       });
                     });
                   });
@@ -486,6 +513,7 @@ Shifts.interaction = {
           Shifts.interaction.selected_rooms.push(parseInt(room.value, 10));
         }
       }
+      Shifts.db.set_option('filter_selected_rooms', Shifts.interaction.selected_rooms.join(','), function() {});
       $('#filterbutton').removeAttr('disabled');
       if (Shifts.render.rendering_time < 500) {
         return Shifts.render.shiftplan();
@@ -501,6 +529,7 @@ Shifts.interaction = {
           Shifts.interaction.selected_angeltypes.push(parseInt(type.value, 10));
         }
       }
+      Shifts.db.set_option('filter_selected_angeltypes', Shifts.interaction.selected_angeltypes.join(','), function() {});
       $('#filterbutton').removeAttr('disabled');
       if (Shifts.render.rendering_time < 500) {
         return Shifts.render.shiftplan();
@@ -518,14 +547,16 @@ Shifts.interaction = {
             $(room).prop('checked', true);
             Shifts.interaction.selected_rooms.push(parseInt(room.value, 10));
           }
+          Shifts.db.set_option('filter_selected_rooms', Shifts.interaction.selected_rooms.join(','), function() {});
         }
         if ($(ev.target).attr('href') === '#none') {
-          Shifts.interaction.selected_rooms = [];
           ref1 = $('#selection_rooms input');
           for (j = 0, len1 = ref1.length; j < len1; j++) {
             room = ref1[j];
             $(room).prop('checked', false);
           }
+          Shifts.interaction.selected_rooms = [];
+          Shifts.db.set_option('filter_selected_rooms', 'none', function() {});
         }
       }
       if ($(this).parents('#selection_types').length) {
@@ -536,14 +567,16 @@ Shifts.interaction = {
             $(type).prop('checked', true);
             Shifts.interaction.selected_angeltypes.push(parseInt(type.value, 10));
           }
+          Shifts.db.set_option('filter_selected_angeltypes', Shifts.interaction.selected_angeltypes.join(','), function() {});
         }
         if ($(ev.target).attr('href') === '#none') {
-          Shifts.interaction.selected_angeltypes = [];
           ref3 = $('#selection_types input');
           for (l = 0, len3 = ref3.length; l < len3; l++) {
             type = ref3[l];
             $(type).prop('checked', false);
           }
+          Shifts.interaction.selected_angeltypes = [];
+          Shifts.db.set_option('filter_selected_angeltypes', 'none', function() {});
         }
       }
       if ($(this).parents('#selection_filled').length) {
@@ -563,6 +596,7 @@ Shifts.interaction = {
           $all.removeClass('btn-primary');
           $all.addClass('btn-default');
         }
+        Shifts.db.set_option('filter_occupancy', Shifts.interaction.occupancy, function() {});
       }
       $('#filterbutton').removeAttr('disabled');
       if (Shifts.render.rendering_time < 500) {
