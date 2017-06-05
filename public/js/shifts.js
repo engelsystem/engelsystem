@@ -351,7 +351,7 @@ Shifts.fetcher = {
   remaining_objects_count: 0,
   start: function(display_status, done) {
     if (display_status) {
-      Shifts.$shiftplan.html('<span id="fetcher_statustext">Fetching data from server...</span> <span id="remaining_objects"></span> <div class="progress"> <div id="progress_bar" class="progress-bar" style="width: 0%;"> 0% </div> </div> <a id="abort" href="" class="btn btn-default btn-xs">Abort and switch to legacy view</a>');
+      Shifts.$shiftplan.html('<style> @media (max-width: 1080px) and (min-width: 768px) { #fetcher_status { margin-top: 4em; } } </style> <div id="fetcher_status"> <span id="fetcher_statustext">Fetching data from server...</span> <span id="remaining_objects"></span> <div class="progress"> <div id="progress_bar" class="progress-bar" style="width: 0%;"> 0% </div> </div> </div> <a id="abort" href="" class="btn btn-default btn-xs">Abort and switch to legacy view</a>');
     }
     return Shifts.fetcher.fetch_in_parts(function() {
       return done();
