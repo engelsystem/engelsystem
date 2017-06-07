@@ -35,6 +35,24 @@ Building view...
   </div>
 </div>'
 
+    fetcher_status: '
+<style>
+@media (max-width: 1080px) and (min-width: 768px) {
+    #fetcher_status {
+        margin-top: 4em;
+    }
+}
+</style>
+<div id="fetcher_status">
+    <span id="fetcher_statustext">Fetching data from server...</span> <span id="remaining_objects"></span>
+    <div class="progress">
+      <div id="progress_bar" class="progress-bar" style="width: 0%;">
+        0%
+      </div>
+    </div>
+</div>
+<a id="abort" href="" class="btn btn-default btn-xs">Abort and switch to legacy view</a>'
+
     header_and_dateselect: '
 <form class="form-inline" action="" method="get">
   <input type="hidden" name="p" value="user_shifts">
