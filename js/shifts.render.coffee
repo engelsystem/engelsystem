@@ -19,7 +19,12 @@ Shifts.render =
 
     # used to hold timestamps to calculate rendering time
     metric_timestamp: false
+
+    # result of rendering_time
     rendering_time: 0
+
+    # threshold to determine whether to show progress bar or not
+    render_threshold: 700
 
     tick: (time, label = false) ->
 
@@ -78,7 +83,7 @@ Shifts.render =
         $('#filterbutton').attr 'disabled', 'disabled'
 
         # Render loading
-        if Shifts.render.rendering_time > 500
+        if Shifts.render.rendering_time > Shifts.render.render_threshold
             $sc = Shifts.$shiftplan.find('.shift-calendar')
             sco = $sc.offset()
             tpl = Mustache.render Shifts.templates.loading,

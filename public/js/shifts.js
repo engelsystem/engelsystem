@@ -53,7 +53,7 @@ Shifts.init = function() {
                   Shifts.render.START_TIME = stime;
                   $('#filterbutton').removeAttr('disabled');
                   return Shifts.db.set_option('filter_start_time', stime, function() {
-                    if (Shifts.render.rendering_time < 500) {
+                    if (Shifts.render.rendering_time < Shifts.render.render_threshold) {
                       return Shifts.render.shiftplan();
                     }
                   });
@@ -525,7 +525,7 @@ Shifts.interaction = {
       }
       Shifts.db.set_option('filter_selected_rooms', Shifts.interaction.selected_rooms.join(','), function() {});
       $('#filterbutton').removeAttr('disabled');
-      if (Shifts.render.rendering_time < 500) {
+      if (Shifts.render.rendering_time < Shifts.render.render_threshold) {
         return Shifts.render.shiftplan();
       }
     });
@@ -541,7 +541,7 @@ Shifts.interaction = {
       }
       Shifts.db.set_option('filter_selected_angeltypes', Shifts.interaction.selected_angeltypes.join(','), function() {});
       $('#filterbutton').removeAttr('disabled');
-      if (Shifts.render.rendering_time < 500) {
+      if (Shifts.render.rendering_time < Shifts.render.render_threshold) {
         return Shifts.render.shiftplan();
       }
     });
@@ -609,7 +609,7 @@ Shifts.interaction = {
         Shifts.db.set_option('filter_occupancy', Shifts.interaction.occupancy, function() {});
       }
       $('#filterbutton').removeAttr('disabled');
-      if (Shifts.render.rendering_time < 500) {
+      if (Shifts.render.rendering_time < Shifts.render.render_threshold) {
         Shifts.render.shiftplan();
       }
       return false;
@@ -631,6 +631,7 @@ Shifts.render = {
   START_TIME: false,
   metric_timestamp: false,
   rendering_time: 0,
+  render_threshold: 700,
   tick: function(time, label) {
     var current_quarter, daytime, diffhour, hour, tick_quarter;
     if (label == null) {
@@ -719,7 +720,7 @@ Shifts.render = {
     user_id = parseInt($('#shiftplan').data('user_id'), 10);
     Shifts.render.metric_timestamp = new Date();
     $('#filterbutton').attr('disabled', 'disabled');
-    if (Shifts.render.rendering_time > 500) {
+    if (Shifts.render.rendering_time > Shifts.render.render_threshold) {
       $sc = Shifts.$shiftplan.find('.shift-calendar');
       sco = $sc.offset();
       tpl = Mustache.render(Shifts.templates.loading, {

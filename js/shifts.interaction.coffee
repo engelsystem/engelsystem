@@ -26,7 +26,7 @@ Shifts.interaction =
 
             $('#filterbutton').removeAttr 'disabled'
 
-            if Shifts.render.rendering_time < 500
+            if Shifts.render.rendering_time < Shifts.render.render_threshold
                 Shifts.render.shiftplan()
 
         Shifts.$shiftplan.on 'change', '#selection_types input', ->
@@ -38,7 +38,7 @@ Shifts.interaction =
 
             $('#filterbutton').removeAttr 'disabled'
 
-            if Shifts.render.rendering_time < 500
+            if Shifts.render.rendering_time < Shifts.render.render_threshold
                 Shifts.render.shiftplan()
 
     on_mass_select: ->
@@ -86,7 +86,7 @@ Shifts.interaction =
 
             $('#filterbutton').removeAttr 'disabled'
 
-            if Shifts.render.rendering_time < 500
+            if Shifts.render.rendering_time < Shifts.render.render_threshold
                 Shifts.render.shiftplan()
 
             return false

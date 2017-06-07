@@ -48,7 +48,7 @@ Shifts.init = ->
                                     Shifts.render.START_TIME = stime
                                     $('#filterbutton').removeAttr 'disabled'
                                     Shifts.db.set_option 'filter_start_time', stime, ->
-                                        if Shifts.render.rendering_time < 500
+                                        if Shifts.render.rendering_time < Shifts.render.render_threshold
                                             Shifts.render.shiftplan()
                             clearInterval waitforcal
                     , 1
