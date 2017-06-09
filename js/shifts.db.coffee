@@ -14,13 +14,13 @@ Shifts.db =
         Shifts.log 'init db'
         Shifts.db.websql = openDatabase "engelsystem" + Shifts.db.prefix, "1.0", "", 10*1024*1024
         Shifts.db.websql.transaction (tx) ->
-            tx.executeSql "CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, start_time INT, end_time INT, RID INT)"
-            tx.executeSql "CREATE TABLE IF NOT EXISTS User (UID INT, nick)"
-            tx.executeSql "CREATE TABLE IF NOT EXISTS Room (RID INT, Name)"
-            tx.executeSql "CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT)"
-            tx.executeSql "CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT)"
-            tx.executeSql "CREATE TABLE IF NOT EXISTS AngelTypes (id INT, name)"
-            tx.executeSql "CREATE TABLE IF NOT EXISTS NeededAngelTypes (id INT, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS Shifts (SID unique, title, shifttype_id INT, start_time INT, end_time INT, RID INT)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS User (UID unique, nick)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS Room (RID unique, Name)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS ShiftEntry (id unique, SID INT, TID INT, UID INT)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS ShiftTypes (id unique, name, angeltype_id INT)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS AngelTypes (id unique, name)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS NeededAngelTypes (id unique, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)"
             tx.executeSql "CREATE TABLE IF NOT EXISTS options (option_key, option_value)"
             Shifts.db.populate_ids ->
                 done()
@@ -59,23 +59,15 @@ Shifts.db =
 
     insert_user: (user, done) ->
         user.UID = parseInt(user.UID, 10)
-        user_exists = user.UID in Shifts.db.user_ids
-        if user_exists == false
-            alasql "INSERT INTO User (UID, Nick) VALUES (?, ?)", [user.UID, user.Nick], ->
-                Shifts.db.user_ids.push user.UID
-                done()
-        else
+        Shifts.db.websql.transaction (tx) ->
+            tx.executeSql "INSERT INTO User (UID, Nick) VALUES (?, ?)", [user.UID, user.Nick]
             done()
 
     insert_shift: (shift, done) ->
         shift.SID = parseInt(shift.SID, 10)
         shift.RID = parseInt(shift.RID, 10)
-        shift_exists = shift.SID in Shifts.db.shift_ids
-        if shift_exists == false
-            alasql "INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (?, ?, ?, ?, ?, ?)", [shift.SID, shift.title, shift.shifttype_id, shift.start, shift.end, shift.RID], ->
-                Shifts.db.shift_ids.push shift.SID
-                done()
-        else
+        Shifts.db.websql.transaction (tx) ->
+            tx.executeSql "INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (?, ?, ?, ?, ?, ?)", [shift.SID, shift.title, shift.shifttype_id, shift.start, shift.end, shift.RID]
             done()
 
     insert_shiftentry: (shiftentry, done) ->
@@ -83,34 +75,22 @@ Shifts.db =
         shiftentry.SID = parseInt shiftentry.SID, 10
         shiftentry.TID = parseInt shiftentry.TID, 10
         shiftentry.UID = parseInt shiftentry.UID, 10
-        shiftentry_exists = shiftentry.id in Shifts.db.shiftentry_ids
-        if shiftentry_exists == false
-            alasql "INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (?, ?, ?, ?)", [shiftentry.id, shiftentry.SID, shiftentry.TID, shiftentry.UID], ->
-                Shifts.db.shiftentry_ids.push shiftentry.id
-                done()
-        else
+        Shifts.db.websql.transaction (tx) ->
+            tx.executeSql "INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (?, ?, ?, ?)", [shiftentry.id, shiftentry.SID, shiftentry.TID, shiftentry.UID], ->
             done()
 
     insert_shifttype: (shifttype, done) ->
         shifttype.id = parseInt shifttype.id, 10
-        shifttype_exists = shifttype.id in Shifts.db.shifttype_ids
-        if shifttype_exists == false
-            alasql "INSERT INTO ShiftTypes (id, name) VALUES (?, ?)", [shifttype.id, shifttype.name], ->
-                Shifts.db.shifttype_ids.push shifttype.id
-                done()
-        else
+        Shifts.db.websql.transaction (tx) ->
+            tx.executeSql "INSERT INTO ShiftTypes (id, name) VALUES (?, ?)", [shifttype.id, shifttype.name]
             done()
 
     insert_angeltype: (angeltype, done) ->
-        angeltype.id = parseInt angeltype.id, 10
-        angeltype_exists = angeltype.id in Shifts.db.angeltype_ids
-        if angeltype_exists == false
-            alasql "INSERT INTO AngelTypes (id, name) VALUES (?, ?)", [angeltype.id, angeltype.name], ->
-                Shifts.db.angeltype_ids.push angeltype.id
+        Shifts.db.websql.transaction (tx) ->
+            tx.executeSql "INSERT INTO AngelTypes (id, name) VALUES (?, ?)", [angeltype.id, angeltype.name], ->
                 # populate select filter
                 Shifts.interaction.selected_angeltypes.push angeltype.id
-                done()
-        else
+            # TODO (für alle inserts): timer, falls done nach Xms nicht ausgeführt wurde, ausführen.
             done()
 
     insert_needed_angeltype: (needed_angeltype, done) ->
@@ -119,12 +99,8 @@ Shifts.db =
         needed_angeltype.SID = parseInt(needed_angeltype.SID, 10) || null
         needed_angeltype.ATID = parseInt needed_angeltype.ATID, 10
         needed_angeltype.count = parseInt needed_angeltype.count, 10
-        needed_angeltype_exists = needed_angeltype.id in Shifts.db.needed_angeltype_ids
-        if needed_angeltype_exists == false
-            alasql "INSERT INTO NeededAngelTypes (id, room_id, shift_id, angel_type_id, angel_count) VALUES (?, ?, ?, ?, ?)", [needed_angeltype.id, needed_angeltype.RID, needed_angeltype.SID, needed_angeltype.ATID, needed_angeltype.count], ->
-                Shifts.db.needed_angeltype_ids.push needed_angeltype.id
-                done()
-        else
+        Shifts.db.websql.transaction (tx) ->
+            tx.executeSql "INSERT INTO NeededAngelTypes (id, room_id, shift_id, angel_type_id, angel_count) VALUES (?, ?, ?, ?, ?)", [needed_angeltype.id, needed_angeltype.RID, needed_angeltype.SID, needed_angeltype.ATID, needed_angeltype.count], ->
             done()
 
     get_shifts: (filter_rooms, filter_angeltypes, done) ->
