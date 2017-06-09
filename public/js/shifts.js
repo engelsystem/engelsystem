@@ -261,18 +261,11 @@ Shifts.db = {
     });
   },
   set_option: function(key, value, done) {
-    var option_key_exists;
-    option_key_exists = indexOf.call(Shifts.db.option_keys, key) >= 0;
-    if (option_key_exists === false) {
-      return alasql("INSERT INTO options (option_key, option_value) VALUES (?, ?)", [key, value], function() {
-        Shifts.db.option_keys.push(key);
+    return Shifts.db.websql.transaction(function(tx) {
+      return tx.executeSql("INSERT INTO options (option_key, option_value) VALUES (?, ?)", [key, value], function() {
         return done();
       });
-    } else {
-      return alasql("UPDATE options SET option_value = ? WHERE option_key = ?", [value, key], function() {
-        return done();
-      });
-    }
+    });
   }
 };
 
@@ -920,6 +913,10 @@ Shifts.render = {
     shifts_count = 0;
     mustache_rooms = [];
     for (room_nr in rooms) {
+      if (room_nr === "length") {
+        break;
+      }
+      Shifts.log(room_nr);
       room_id = rooms[room_nr].RID;
       mustache_rooms[room_nr] = {};
       mustache_rooms[room_nr].Name = rooms[room_nr].Name;

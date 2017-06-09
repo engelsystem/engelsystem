@@ -202,12 +202,10 @@ Shifts.db =
                     done false
 
     set_option: (key, value, done) ->
-        option_key_exists = key in Shifts.db.option_keys
-        if option_key_exists == false
-            alasql "INSERT INTO options (option_key, option_value) VALUES (?, ?)", [key, value], ->
-                Shifts.db.option_keys.push key
+        Shifts.db.websql.transaction (tx) ->
+            tx.executeSql "INSERT INTO options (option_key, option_value) VALUES (?, ?)", [key, value], ->
                 done()
-        else
-            alasql "UPDATE options SET option_value = ? WHERE option_key = ?", [value, key], ->
-                done()
+        #else
+        #    alasql "UPDATE options SET option_value = ? WHERE option_key = ?", [value, key], ->
+        #        done()
 
