@@ -1,14 +1,7 @@
 
 Shifts.db =
-    room_ids: []
-    user_ids: []
-    shift_ids: []
-    shiftentry_ids: []
-    shifttype_ids: []
-    angeltype_ids: []
-    needed_angeltype_ids: []
-    option_keys: []
     prefix: ''
+    websql: {} # this will be the db instance
 
     init: (done) ->
 
@@ -19,20 +12,18 @@ Shifts.db =
             Shifts.db.prefix = ''
 
         Shifts.log 'init db'
-        alasql 'CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem' + Shifts.db.prefix + ';
-        ATTACH INDEXEDDB DATABASE engelsystem' + Shifts.db.prefix + ';', ->
-            alasql 'USE engelsystem' + Shifts.db.prefix + ';', ->
-                # note: primary key doesn't work, see https://github.com/agershun/alasql/issues/566
-                alasql 'CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, start_time INT, end_time INT, RID INT);
-                CREATE TABLE IF NOT EXISTS User (UID INT, nick);
-                CREATE TABLE IF NOT EXISTS Room (RID INT, Name);
-                CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT);
-                CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT);
-                CREATE TABLE IF NOT EXISTS AngelTypes (id INT, name);
-                CREATE TABLE IF NOT EXISTS NeededAngelTypes (id INT, room_id INT, shift_id INT, angel_type_id INT, angel_count INT);
-                CREATE TABLE IF NOT EXISTS options (option_key, option_value);', ->
-                    Shifts.db.populate_ids ->
-                        done()
+        Shifts.db.websql = openDatabase "engelsystem" + Shifts.db.prefix, "1.0", "", 10*1024*1024
+        Shifts.db.websql.transaction (tx) ->
+            tx.executeSql "CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, start_time INT, end_time INT, RID INT)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS User (UID INT, nick)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS Room (RID INT, Name)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS AngelTypes (id INT, name)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS NeededAngelTypes (id INT, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)"
+            tx.executeSql "CREATE TABLE IF NOT EXISTS options (option_key, option_value)"
+            Shifts.db.populate_ids ->
+                done()
 
     slugify: (text) ->
         return text.toString().toLowerCase()
@@ -45,50 +36,19 @@ Shifts.db =
     populate_ids: (done) ->
 
         # rooms
-        alasql "SELECT RID from Room", (res) ->
-            for r in res
-                Shifts.db.room_ids.push r.RID
-                # populate select filter
-                Shifts.interaction.selected_rooms.push r.RID
+        Shifts.db.websql.transaction (tx) ->
+            tx.executeSql "SELECT RID from Room", [], (tx, res) ->
+                for r in res.rows
+                    # populate select filter
+                    Shifts.interaction.selected_rooms.push r.RID
 
-            # users
-            alasql "SELECT UID from User", (res) ->
-                for u in res
-                    Shifts.db.user_ids.push u.UID
+            # angel types
+            tx.executeSql "SELECT id from AngelTypes", [], (tx, res) ->
+                for a in res
+                    # populate select filter
+                    Shifts.interaction.selected_angeltypes.push a.id
 
-                # shift types
-                alasql "SELECT id from ShiftTypes", (res) ->
-                    for s in res
-                        Shifts.db.shifttype_ids.push s.id
-
-                    # angel types
-                    alasql "SELECT id from AngelTypes", (res) ->
-                        for a in res
-                            Shifts.db.angeltype_ids.push a.id
-                            # populate select filter
-                            Shifts.interaction.selected_angeltypes.push a.id
-
-                        # needed angel types
-                        alasql "SELECT id from NeededAngelTypes", (res) ->
-                            for a in res
-                                Shifts.db.needed_angeltype_ids.push a.id
-
-                            # shifts
-                            alasql "SELECT SID from Shifts", (res) ->
-                                for s in res
-                                    Shifts.db.shift_ids.push s.SID
-
-                                # shift entries
-                                alasql "SELECT id from ShiftEntry", (res) ->
-                                    for s in res
-                                        Shifts.db.shiftentry_ids.push s.id
-
-                                    # option keys
-                                    alasql "SELECT option_key from options", (res) ->
-                                        for o in res
-                                            Shifts.db.option_keys.push o.option_key
-
-                                        done()
+            done()
 
     insert_room: (room, done) ->
         room.RID = parseInt(room.RID, 10)

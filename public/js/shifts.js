@@ -77,15 +77,8 @@ $(function() {
 });
 
 Shifts.db = {
-  room_ids: [],
-  user_ids: [],
-  shift_ids: [],
-  shiftentry_ids: [],
-  shifttype_ids: [],
-  angeltype_ids: [],
-  needed_angeltype_ids: [],
-  option_keys: [],
   prefix: '',
+  websql: {},
   init: function(done) {
     try {
       Shifts.db.prefix = '_' + Shifts.db.slugify($('.footer').html().split('<br>')[0]);
@@ -93,13 +86,18 @@ Shifts.db = {
       Shifts.db.prefix = '';
     }
     Shifts.log('init db');
-    return alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS engelsystem' + Shifts.db.prefix + '; ATTACH INDEXEDDB DATABASE engelsystem' + Shifts.db.prefix + ';', function() {
-      return alasql('USE engelsystem' + Shifts.db.prefix + ';', function() {
-        return alasql('CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, start_time INT, end_time INT, RID INT); CREATE TABLE IF NOT EXISTS User (UID INT, nick); CREATE TABLE IF NOT EXISTS Room (RID INT, Name); CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT); CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT); CREATE TABLE IF NOT EXISTS AngelTypes (id INT, name); CREATE TABLE IF NOT EXISTS NeededAngelTypes (id INT, room_id INT, shift_id INT, angel_type_id INT, angel_count INT); CREATE TABLE IF NOT EXISTS options (option_key, option_value);', function() {
-          return Shifts.db.populate_ids(function() {
-            return done();
-          });
-        });
+    Shifts.db.websql = openDatabase("engelsystem" + Shifts.db.prefix, "1.0", "", 10 * 1024 * 1024);
+    return Shifts.db.websql.transaction(function(tx) {
+      tx.executeSql("CREATE TABLE IF NOT EXISTS Shifts (SID INT, title, shifttype_id INT, start_time INT, end_time INT, RID INT)");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS User (UID INT, nick)");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS Room (RID INT, Name)");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS ShiftEntry (id INT, SID INT, TID INT, UID INT)");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS ShiftTypes (id INT, name, angeltype_id INT)");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS AngelTypes (id INT, name)");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS NeededAngelTypes (id INT, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS options (option_key, option_value)");
+      return Shifts.db.populate_ids(function() {
+        return done();
       });
     });
   },
@@ -107,64 +105,27 @@ Shifts.db = {
     return text.toString().toLowerCase().replace(/^[\s|\-|_]+/, '').replace(/[\s|\-|_]+$/, '').replace(/\s+/g, '_').replace(/__+/g, '_').replace(/[^\w\-]+/g, '');
   },
   populate_ids: function(done) {
-    return alasql("SELECT RID from Room", function(res) {
-      var i, len, r;
-      for (i = 0, len = res.length; i < len; i++) {
-        r = res[i];
-        Shifts.db.room_ids.push(r.RID);
-        Shifts.interaction.selected_rooms.push(r.RID);
-      }
-      return alasql("SELECT UID from User", function(res) {
-        var j, len1, u;
-        for (j = 0, len1 = res.length; j < len1; j++) {
-          u = res[j];
-          Shifts.db.user_ids.push(u.UID);
+    return Shifts.db.websql.transaction(function(tx) {
+      tx.executeSql("SELECT RID from Room", [], function(tx, res) {
+        var i, len, r, ref, results;
+        ref = res.rows;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          r = ref[i];
+          results.push(Shifts.interaction.selected_rooms.push(r.RID));
         }
-        return alasql("SELECT id from ShiftTypes", function(res) {
-          var k, len2, s;
-          for (k = 0, len2 = res.length; k < len2; k++) {
-            s = res[k];
-            Shifts.db.shifttype_ids.push(s.id);
-          }
-          return alasql("SELECT id from AngelTypes", function(res) {
-            var a, l, len3;
-            for (l = 0, len3 = res.length; l < len3; l++) {
-              a = res[l];
-              Shifts.db.angeltype_ids.push(a.id);
-              Shifts.interaction.selected_angeltypes.push(a.id);
-            }
-            return alasql("SELECT id from NeededAngelTypes", function(res) {
-              var len4, m;
-              for (m = 0, len4 = res.length; m < len4; m++) {
-                a = res[m];
-                Shifts.db.needed_angeltype_ids.push(a.id);
-              }
-              return alasql("SELECT SID from Shifts", function(res) {
-                var len5, n;
-                for (n = 0, len5 = res.length; n < len5; n++) {
-                  s = res[n];
-                  Shifts.db.shift_ids.push(s.SID);
-                }
-                return alasql("SELECT id from ShiftEntry", function(res) {
-                  var len6, p;
-                  for (p = 0, len6 = res.length; p < len6; p++) {
-                    s = res[p];
-                    Shifts.db.shiftentry_ids.push(s.id);
-                  }
-                  return alasql("SELECT option_key from options", function(res) {
-                    var len7, o, q;
-                    for (q = 0, len7 = res.length; q < len7; q++) {
-                      o = res[q];
-                      Shifts.db.option_keys.push(o.option_key);
-                    }
-                    return done();
-                  });
-                });
-              });
-            });
-          });
-        });
+        return results;
       });
+      tx.executeSql("SELECT id from AngelTypes", [], function(tx, res) {
+        var a, i, len, results;
+        results = [];
+        for (i = 0, len = res.length; i < len; i++) {
+          a = res[i];
+          results.push(Shifts.interaction.selected_angeltypes.push(a.id));
+        }
+        return results;
+      });
+      return done();
     });
   },
   insert_room: function(room, done) {
@@ -883,7 +844,7 @@ Shifts.render = {
       return false;
     };
     calculate_signup_state = function(shift) {
-      var angels_needed, at, len4, len5, len6, m, n, now_unix, p, ref, u;
+      var angels_needed, at, len4, len5, len6, m, n, now_unix, o, ref, u;
       for (m = 0, len4 = db_usershifts.length; m < len4; m++) {
         u = db_usershifts[m];
         if (u.SID === shift.SID) {
@@ -903,8 +864,8 @@ Shifts.render = {
       if (angels_needed === 0) {
         return "occupied";
       }
-      for (p = 0, len6 = db_usershifts.length; p < len6; p++) {
-        u = db_usershifts[p];
+      for (o = 0, len6 = db_usershifts.length; o < len6; o++) {
+        u = db_usershifts[o];
         if (u.SID !== shift.SID) {
           if (!(shift.start_time >= u.end_time || shift.end_time <= u.start_time)) {
             return "collides";
