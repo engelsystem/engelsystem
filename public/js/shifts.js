@@ -184,55 +184,69 @@ Shifts.db = {
     filter_angeltypes_ids = filter_angeltypes.join(',');
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return alasql("SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM NeededAngelTypes JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id JOIN Room ON Room.RID = Shifts.RID JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id WHERE NeededAngelTypes.angel_count > 0 AND Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND Shifts.RID IN (" + filter_rooms_ids + ") AND NeededAngelTypes.angel_type_id IN (" + filter_angeltypes_ids + ") ORDER BY Shifts.start_time, Shifts.SID", function(res) {
-      return done(res);
+    return Shifts.db.websql.transaction(function(tx) {
+      return tx.executeSql("SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM NeededAngelTypes JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id JOIN Room ON Room.RID = Shifts.RID JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id WHERE NeededAngelTypes.angel_count > 0 AND Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND Shifts.RID IN (" + filter_rooms_ids + ") AND NeededAngelTypes.angel_type_id IN (" + filter_angeltypes_ids + ") ORDER BY Shifts.start_time, Shifts.SID", [], function(tx, res) {
+        return done(res.rows);
+      });
     });
   },
   get_angeltypes_needed: function(done) {
     var end_time, start_time;
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return alasql("SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count, AngelTypes.name FROM NeededAngelTypes JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND NeededAngelTypes.angel_count > 0 ORDER BY NeededAngelTypes.shift_id", function(res) {
-      return done(res);
+    return Shifts.db.websql.transaction(function(tx) {
+      return tx.executeSql("SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count, AngelTypes.name FROM NeededAngelTypes JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND NeededAngelTypes.angel_count > 0 ORDER BY NeededAngelTypes.shift_id", [], function(tx, res) {
+        return done(res.rows);
+      });
     });
   },
   get_shiftentries: function(done) {
     var end_time, start_time;
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return alasql("SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick, AngelTypes.name as at_name FROM ShiftEntry JOIN User ON ShiftEntry.UID = User.UID JOIN Shifts ON ShiftEntry.SID = Shifts.SID JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " ORDER BY ShiftEntry.SID", function(res) {
-      return done(res);
+    return Shifts.db.websql.transaction(function(tx) {
+      return tx.executeSql("SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick, AngelTypes.name as at_name FROM ShiftEntry JOIN User ON ShiftEntry.UID = User.UID JOIN Shifts ON ShiftEntry.SID = Shifts.SID JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " ORDER BY ShiftEntry.SID", [], function(tx, res) {
+        return done(res.rows);
+      });
     });
   },
   get_usershifts: function(user_id, done) {
-    return alasql("SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, Shifts.start_time, Shifts.end_time FROM ShiftEntry JOIN Shifts ON ShiftEntry.SID = Shifts.SID WHERE ShiftEntry.UID = " + user_id + " ORDER BY ShiftEntry.SID", function(res) {
-      return done(res);
+    return Shifts.db.websql.transaction(function(tx) {
+      return tx.executeSql("SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, Shifts.start_time, Shifts.end_time FROM ShiftEntry JOIN Shifts ON ShiftEntry.SID = Shifts.SID WHERE ShiftEntry.UID = " + user_id + " ORDER BY ShiftEntry.SID", [], function(tx, res) {
+        return done(res.rows);
+      });
     });
   },
   get_shift_range: function(done) {
-    return alasql("SELECT start_time FROM Shifts ORDER BY start_time ASC LIMIT 1", function(res) {
-      var now, start_time;
-      if (res.length > 0) {
-        start_time = res[0].start_time;
-        return alasql("SELECT end_time FROM Shifts ORDER BY end_time DESC LIMIT 1", function(res) {
-          var end_time;
-          end_time = res[0].end_time;
-          return done([start_time, end_time]);
-        });
-      } else {
-        now = new Date();
-        return done([now, now]);
-      }
+    return Shifts.db.websql.transaction(function(tx) {
+      return tx.executeSql("SELECT start_time FROM Shifts ORDER BY start_time ASC LIMIT 1", [], function(tx, res) {
+        var now, start_time;
+        if (res.rows.length > 0) {
+          start_time = res.rows[0].start_time;
+          return tx.executeSql("SELECT end_time FROM Shifts ORDER BY end_time DESC LIMIT 1", [], function(tx, res) {
+            var end_time;
+            end_time = res.rows[0].end_time;
+            return done([start_time, end_time]);
+          });
+        } else {
+          now = new Date();
+          return done([now, now]);
+        }
+      });
     });
   },
   get_rooms: function(done) {
-    return alasql("SELECT * FROM Room ORDER BY Name", function(res) {
-      return done(res);
+    return Shifts.db.websql.transaction(function(tx) {
+      return tx.executeSql("SELECT * FROM Room ORDER BY Name", [], function(tx, res) {
+        return done(res.rows);
+      });
     });
   },
   get_angeltypes: function(done) {
-    return alasql("SELECT * FROM AngelTypes ORDER BY name", function(res) {
-      return done(res);
+    return Shifts.db.websql.transaction(function(tx) {
+      return tx.executeSql("SELECT * FROM AngelTypes ORDER BY name", [], function(tx, res) {
+        return done(res.rows);
+      });
     });
   },
   get_option: function(key, done) {
