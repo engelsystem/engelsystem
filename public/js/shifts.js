@@ -10,17 +10,8 @@ Shifts.init = function() {
     Shifts.log('shifts init');
     if (indexOf.call(document.cookie, 'websql=') < 0) {
       try {
-        dbtest = window.indexedDB.open("_engelsystem_test", 3);
-        dbtest.onerror = function(ev) {
-          document.cookie = 'websql=nope';
-          return window.location.href = '';
-        };
-        dbtest.onsuccess = function(ev) {
-          return alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS _engelsystem_test;', function() {
-            alasql('DROP INDEXEDDB DATABASE _engelsystem_test;');
-            return document.cookie = 'websql=yes';
-          });
-        };
+        dbtest = window.openDatabase("_engelsystem_test", "1.0", "", 10 * 1024 * 1024);
+        document.cookie = 'websql=yes';
       } catch (error) {
         document.cookie = 'websql=nope';
         window.location.href = '';
@@ -129,18 +120,12 @@ Shifts.db = {
     });
   },
   insert_room: function(room, done) {
-    var ref, room_exists;
     room.RID = parseInt(room.RID, 10);
-    room_exists = (ref = room.RID, indexOf.call(Shifts.db.room_ids, ref) >= 0);
-    if (room_exists === false) {
-      return alasql("INSERT INTO Room (RID, Name) VALUES (?, ?)", [room.RID, room.Name], function() {
-        Shifts.db.room_ids.push(room.RID);
-        Shifts.interaction.selected_rooms.push(room.RID);
-        return done();
-      });
-    } else {
+    return Shifts.db.websql.transaction(function(tx) {
+      tx.executeSql("INSERT INTO Room (RID, Name) VALUES (?, ?)", [room.RID, room.Name]);
+      Shifts.interaction.selected_rooms.push(room.RID);
       return done();
-    }
+    });
   },
   insert_user: function(user, done) {
     var ref, user_exists;

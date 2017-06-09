@@ -8,14 +8,8 @@ Shifts.init = ->
 
         if 'websql=' not in document.cookie
             try
-                dbtest = window.indexedDB.open("_engelsystem_test", 3)
-                dbtest.onerror = (ev) ->
-                    document.cookie = 'websql=nope'
-                    window.location.href = ''
-                dbtest.onsuccess = (ev) ->
-                    alasql 'CREATE INDEXEDDB DATABASE IF NOT EXISTS _engelsystem_test;', ->
-                        alasql 'DROP INDEXEDDB DATABASE _engelsystem_test;'
-                        document.cookie = 'websql=yes'
+                dbtest = window.openDatabase "_engelsystem_test", "1.0", "", 10*1024*1024
+                document.cookie = 'websql=yes'
             catch
                 document.cookie = 'websql=nope'
                 window.location.href = ''

@@ -34,7 +34,6 @@ Shifts.db =
         .replace(/[^\w\-]+/g, '')       # Remove all non-word chars
 
     populate_ids: (done) ->
-
         # rooms
         Shifts.db.websql.transaction (tx) ->
             tx.executeSql "SELECT RID from Room", [], (tx, res) ->
@@ -52,14 +51,10 @@ Shifts.db =
 
     insert_room: (room, done) ->
         room.RID = parseInt(room.RID, 10)
-        room_exists = room.RID in Shifts.db.room_ids
-        if room_exists == false
-            alasql "INSERT INTO Room (RID, Name) VALUES (?, ?)", [room.RID, room.Name], ->
-                Shifts.db.room_ids.push room.RID
-                # populate select filter
-                Shifts.interaction.selected_rooms.push room.RID
-                done()
-        else
+        Shifts.db.websql.transaction (tx) ->
+            tx.executeSql "INSERT INTO Room (RID, Name) VALUES (?, ?)", [room.RID, room.Name]
+            # populate select filter
+            Shifts.interaction.selected_rooms.push room.RID
             done()
 
     insert_user: (user, done) ->
