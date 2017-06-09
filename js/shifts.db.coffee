@@ -211,11 +211,12 @@ Shifts.db =
             done res
 
     get_option: (key, done) ->
-        alasql "SELECT * FROM options WHERE option_key = '#{key}' LIMIT 1", (res) ->
-            try
-                done res[0].option_value
-            catch
-                done false
+        Shifts.db.websql.transaction (tx) ->
+            tx.executeSql "SELECT option_value FROM options WHERE option_key = ? LIMIT 1", [key], (tx, res) ->
+                try
+                    done res.rows[0].option_value
+                catch
+                    done false
 
     set_option: (key, value, done) ->
         option_key_exists = key in Shifts.db.option_keys

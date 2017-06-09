@@ -13,25 +13,27 @@ Shifts.fetcher =
 
     fetch_in_parts: (done) ->
         table_mapping =
-            rooms: 'room_ids'
-            angeltypes: 'angeltype_ids'
-            shift_types: 'shifttype_ids'
-            users: 'user_ids'
-            shifts: 'shift_ids'
-            needed_angeltypes: 'needed_angeltype_ids'
-            shift_entries: 'shiftentry_ids'
+            Room: 'RID'
+            AngelTypes: 'id'
+            ShiftTypes: 'id'
+            User: 'UID'
+            Shifts: 'SID'
+            NeededAngelTypes: 'id'
+            ShiftEntry: 'id'
 
         latest_ids = []
-        for table, idsname of table_mapping
-            idlist = Shifts.db[idsname]
-            if idlist.length > 0
-                max_id = Math.max.apply(Math, idlist)
-            else
-                max_id = 0
-
-            latest_ids.push(
-                table + '=' + max_id
-            )
+        # TODO: callback
+        for table, idname of table_mapping
+            do (table, idname) ->
+                Shifts.db.websql.transaction (tx) ->
+                    tx.executeSql "SELECT #{idname} FROM #{table} ORDER BY #{idname} DESC LIMIT 1", [], (tx, res) ->
+                        if res.rows.length > 0
+                            r = res.rows[0][idname]
+                        else
+                            r = 0
+                        latest_ids.push(
+                            table + '=' + r
+                        )
 
         Shifts.$shiftplan.find('#fetcher_statustext').text 'Fetching data from server...'
         Shifts.$shiftplan.find('#remaining_objects').text ''

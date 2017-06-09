@@ -272,12 +272,14 @@ Shifts.db = {
     });
   },
   get_option: function(key, done) {
-    return alasql("SELECT * FROM options WHERE option_key = '" + key + "' LIMIT 1", function(res) {
-      try {
-        return done(res[0].option_value);
-      } catch (error) {
-        return done(false);
-      }
+    return Shifts.db.websql.transaction(function(tx) {
+      return tx.executeSql("SELECT option_value FROM options WHERE option_key = ? LIMIT 1", [key], function(tx, res) {
+        try {
+          return done(res.rows[0].option_value);
+        } catch (error) {
+          return done(false);
+        }
+      });
     });
   },
   set_option: function(key, value, done) {
@@ -309,26 +311,33 @@ Shifts.fetcher = {
     });
   },
   fetch_in_parts: function(done) {
-    var idlist, idsname, latest_ids, max_id, table, table_mapping, url;
+    var fn, idname, latest_ids, table, table_mapping, url;
     table_mapping = {
-      rooms: 'room_ids',
-      angeltypes: 'angeltype_ids',
-      shift_types: 'shifttype_ids',
-      users: 'user_ids',
-      shifts: 'shift_ids',
-      needed_angeltypes: 'needed_angeltype_ids',
-      shift_entries: 'shiftentry_ids'
+      Room: 'RID',
+      AngelTypes: 'id',
+      ShiftTypes: 'id',
+      User: 'UID',
+      Shifts: 'SID',
+      NeededAngelTypes: 'id',
+      ShiftEntry: 'id'
     };
     latest_ids = [];
+    fn = function(table, idname) {
+      return Shifts.db.websql.transaction(function(tx) {
+        return tx.executeSql("SELECT " + idname + " FROM " + table + " ORDER BY " + idname + " DESC LIMIT 1", [], function(tx, res) {
+          var r;
+          if (res.rows.length > 0) {
+            r = res.rows[0][idname];
+          } else {
+            r = 0;
+          }
+          return latest_ids.push(table + '=' + r);
+        });
+      });
+    };
     for (table in table_mapping) {
-      idsname = table_mapping[table];
-      idlist = Shifts.db[idsname];
-      if (idlist.length > 0) {
-        max_id = Math.max.apply(Math, idlist);
-      } else {
-        max_id = 0;
-      }
-      latest_ids.push(table + '=' + max_id);
+      idname = table_mapping[table];
+      fn(table, idname);
     }
     Shifts.$shiftplan.find('#fetcher_statustext').text('Fetching data from server...');
     Shifts.$shiftplan.find('#remaining_objects').text('');
