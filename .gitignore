@@ -20,3 +20,7 @@ _vimrc_local.vim
 # Project files
 /config/config.php
 /test/coverage
+
+# Composer files
+/vendor/
+/composer.lock

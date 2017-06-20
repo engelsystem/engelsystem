@@ -1,53 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>%title% - Engelsystem</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="css/theme%theme%.css" />
-<link rel="stylesheet" type="text/css" href="vendor/icomoon/style.css" />
-<link rel="stylesheet" type="text/css" href="vendor/bootstrap-datepicker-1.4.0/css/bootstrap-datepicker3.min.css" />
-<script type="text/javascript" src="vendor/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="vendor/jquery-ui.min.js"></script>
-%atom_link%
+    <title>%title% - Engelsystem</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/theme%theme%.css"/>
+    <link rel="stylesheet" type="text/css" href="vendor/icomoon/style.css"/>
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap-datepicker-1.4.0/css/bootstrap-datepicker3.min.css"/>
+    <script type="text/javascript" src="vendor/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="vendor/jquery-ui.min.js"></script>
+    %atom_link%
 </head>
 <body>
-  <div class="navbar navbar-default navbar-fixed-top">
+<div class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1">
-          <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="?"><span class="icon-icon_angel"></span> <strong class="visible-lg-inline">ENGELSYSTEM</strong></a>
-      </div>
-      <div class="collapse navbar-collapse" id="navbar-collapse-1">%menu% %header_toolbar%</div>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="?"><span class="icon-icon_angel"></span> <strong class="visible-lg-inline">ENGELSYSTEM</strong></a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">%menu% %header_toolbar%</div>
     </div>
-  </div>
-  <div class="container-fluid">
+</div>
+<div class="container-fluid">
     <div class="row">%content%</div>
     <div class="row">
-      <div class="col-md-12">
-        <hr />
-        <div class="text-center footer" style="margin-bottom: 10px;">
-          %event_info%
-          <a href="%faq_url%">FAQ</a> · <a href="%contact_email%"><span class="glyphicon glyphicon-envelope"></span> Contact</a> · <a href="https://github.com/engelsystem/engelsystem/issues">Bugs / Features</a> · <a href="https://github.com/engelsystem/engelsystem/">Development
-            Platform</a> · <a href="?p=credits">Credits</a>
+        <div class="col-md-12">
+            <hr/>
+            <div class="text-center footer" style="margin-bottom: 10px;">
+                %event_info%
+                <a href="%faq_url%">FAQ</a>
+                · <a href="%contact_email%"><span class="glyphicon glyphicon-envelope"></span> Contact</a>
+                · <a href="https://github.com/engelsystem/engelsystem/issues">Bugs / Features</a>
+                · <a href="https://github.com/engelsystem/engelsystem/">Development Platform</a>
+                · <a href="?p=credits">Credits</a>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="vendor/bootstrap-datepicker-1.4.0/js/bootstrap-datepicker.min.js"></script>
-  <script type="text/javascript" src="vendor/bootstrap-datepicker-1.4.0/locales/bootstrap-datepicker.de.min.js"></script>
-  <script type="text/javascript" src="vendor/Chart.min.js"></script>
-  <script type="text/javascript" src="js/forms.js"></script>
-  <script type="text/javascript" src="vendor/moment-with-locales.min.js"></script>
-  <script type="text/javascript">
-			$(function() {
-				moment.locale("%locale%");
-			});
-		</script>
-  <script type="text/javascript" src="js/moment-countdown.js"></script>
-  <script type="text/javascript" src="js/sticky-headers.js"></script>
+</div>
+<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="vendor/bootstrap-datepicker-1.4.0/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="vendor/bootstrap-datepicker-1.4.0/locales/bootstrap-datepicker.de.min.js"></script>
+<script type="text/javascript" src="vendor/Chart.min.js"></script>
+<script type="text/javascript" src="js/forms.js"></script>
+<script type="text/javascript" src="vendor/moment-with-locales.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        moment.locale("%locale%");
+    });
+</script>
+<script type="text/javascript" src="js/moment-countdown.js"></script>
+<script type="text/javascript" src="js/sticky-headers.js"></script>
 </body>
 </html>

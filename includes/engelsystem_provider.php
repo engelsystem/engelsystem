@@ -1,9 +1,73 @@
 <?php
+
+use Engelsystem\Config\Config;
+use Engelsystem\Database\Db;
+use Engelsystem\Exceptions\Handler as ExceptionHandler;
+
 /**
  * This file includes all needed functions, connects to the db etc.
  */
-require_once realpath(__DIR__ . '/../includes/mysqli_provider.php');
 
+if (!is_readable(__DIR__ . '/../vendor/autoload.php')) {
+    die('Please run composer.phar install');
+}
+require __DIR__ . '/../vendor/autoload.php';
+
+
+/**
+ * Load configuration
+ */
+$config = new Config();
+Config::setInstance($config);
+$config->set(require __DIR__ . '/../config/config.default.php');
+
+if (file_exists(__DIR__ . '/../config/config.php')) {
+    $config->set(array_replace_recursive(
+        $config->get(null),
+        require __DIR__ . '/../config/config.php'
+    ));
+}
+
+date_default_timezone_set($config->get('timezone'));
+
+
+/**
+ * Check for maintenance
+ */
+if ($config->get('maintenance')) {
+    echo file_get_contents(__DIR__ . '/../public/maintenance.html');
+    die();
+}
+
+
+/**
+ * Register error handler
+ */
+$errorHandler = new ExceptionHandler();
+if (config('environment') == 'development') {
+    $errorHandler->setEnvironment(ExceptionHandler::ENV_DEVELOPMENT);
+    ini_set('display_errors', true);
+    error_reporting(E_ALL);
+} else {
+    ini_set('display_errors', false);
+}
+
+
+/**
+ * Connect to database
+ */
+Db::connect(
+    'mysql:host=' . config('database')['host'] . ';dbname=' . config('database')['db'] . ';charset=utf8',
+    config('database')['user'],
+    config('database')['pw']
+) || die('Error: Unable to connect to database');
+Db::getPdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+Db::getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+
+/**
+ * Include legacy code
+ */
 require_once realpath(__DIR__ . '/../includes/sys_auth.php');
 require_once realpath(__DIR__ . '/../includes/sys_form.php');
 require_once realpath(__DIR__ . '/../includes/sys_log.php');
@@ -63,16 +127,6 @@ require_once realpath(__DIR__ . '/../includes/helper/email_helper.php');
 require_once realpath(__DIR__ . '/../includes/mailer/shifts_mailer.php');
 require_once realpath(__DIR__ . '/../includes/mailer/users_mailer.php');
 
-require_once realpath(__DIR__ . '/../config/config.default.php');
-if (file_exists(realpath(__DIR__ . '/../config/config.php'))) {
-  require_once realpath(__DIR__ . '/../config/config.php');
-}
-
-if ($maintenance_mode) {
-  echo file_get_contents(__DIR__ . '/../public/maintenance.html');
-  die();
-}
-
 require_once realpath(__DIR__ . '/../includes/pages/admin_active.php');
 require_once realpath(__DIR__ . '/../includes/pages/admin_arrive.php');
 require_once realpath(__DIR__ . '/../includes/pages/admin_free.php');
@@ -91,14 +145,12 @@ require_once realpath(__DIR__ . '/../includes/pages/user_questions.php');
 require_once realpath(__DIR__ . '/../includes/pages/user_settings.php');
 require_once realpath(__DIR__ . '/../includes/pages/user_shifts.php');
 
-require_once realpath(__DIR__ . '/../vendor/parsedown/Parsedown.php');
 
+/**
+ * Init application
+ */
 session_start();
 
 gettext_init();
 
-sql_connect($config['host'], $config['user'], $config['pw'], $config['db']);
-
 load_auth();
-
-?>
