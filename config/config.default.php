@@ -35,7 +35,7 @@ return [
     // Anzahl Stunden bis zum Austragen eigener Schichten
     'last_unsubscribe' => 3,
 
-    // Setzt den zu verwendenden Crypto-Algorismus (entsprechend der Dokumentation von crypt()).
+    // Setzt den zu verwendenden Crypto-Algorithmus (entsprechend der Dokumentation von crypt()).
     // Falls ein Benutzerpasswort in einem anderen Format gespeichert ist,
     // wird es bei der ersten Benutzung des Klartext-Passworts in das neue Format
     // konvertiert.
