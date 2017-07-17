@@ -26,6 +26,9 @@ return [
     // Contact email address, linked on every page
     'contact_email'    => 'mailto:ticket@c3heaven.de',
 
+    // From address of all emails
+    'no_reply_email'   => 'noreply@engelsystem.de',
+
     // Default theme of the start page, 1=style1.css
     'theme'            => 1,
 

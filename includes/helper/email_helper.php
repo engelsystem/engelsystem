@@ -39,7 +39,7 @@ function engelsystem_email($address, $title, $message)
         $address,
         $title,
         $message,
-        "Content-Type: text/plain; charset=UTF-8\r\nFrom: Engelsystem <noreply@engelsystem.de>"
+        sprintf("Content-Type: text/plain; charset=UTF-8\r\nFrom: Engelsystem <%s>", config('no_reply_email'))
     );
 
     if ($result === false) {
