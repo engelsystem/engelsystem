@@ -17,6 +17,8 @@ function admin_rooms()
 {
     $rooms_source = DB::select('SELECT * FROM `Room` ORDER BY `Name`');
     $rooms = [];
+    $request = request();
+
     foreach ($rooms_source as $room) {
         $rooms[] = [
             'name'           => Room_name_render($room),
@@ -30,7 +32,7 @@ function admin_rooms()
     }
     $room = null;
 
-    if (isset($_REQUEST['show'])) {
+    if ($request->has('show')) {
         $msg = '';
         $name = '';
         $from_pentabarf = '';
@@ -47,7 +49,7 @@ function admin_rooms()
         }
 
         if (test_request_int('id')) {
-            $room = Room($_REQUEST['id'], false);
+            $room = Room($request->input('id'), false);
             if ($room === false) {
                 engelsystem_error('Unable to load room.');
             }
@@ -55,7 +57,7 @@ function admin_rooms()
                 redirect(page_link_to('admin_rooms'));
             }
 
-            $room_id = $_REQUEST['id'];
+            $room_id = $request->input('id');
             $name = $room['Name'];
             $from_pentabarf = $room['FromPentabarf'];
             $public = $room['show'];
@@ -70,11 +72,11 @@ function admin_rooms()
             }
         }
 
-        if ($_REQUEST['show'] == 'edit') {
-            if (isset($_REQUEST['submit'])) {
+        if ($request->input('show') == 'edit') {
+            if ($request->has('submit')) {
                 $valid = true;
 
-                if (isset($_REQUEST['name']) && strlen(strip_request_item('name')) > 0) {
+                if ($request->has('name') && strlen(strip_request_item('name')) > 0) {
                     $name = strip_request_item('name');
                     if (
                         isset($room)
@@ -91,19 +93,17 @@ function admin_rooms()
                     $msg .= error(_('Please enter a name.'), true);
                 }
 
-                if (isset($_REQUEST['from_pentabarf'])) {
+                $from_pentabarf = '';
+                if ($request->has('from_pentabarf')) {
                     $from_pentabarf = 'Y';
-                } else {
-                    $from_pentabarf = '';
                 }
 
-                if (isset($_REQUEST['public'])) {
+                $public = '';
+                if ($request->has('public')) {
                     $public = 'Y';
-                } else {
-                    $public = '';
                 }
 
-                if (isset($_REQUEST['number'])) {
+                if ($request->has('number')) {
                     $number = strip_request_item('number');
                 } else {
                     $valid = false;
@@ -111,10 +111,10 @@ function admin_rooms()
 
                 foreach ($angeltypes as $angeltype_id => $angeltype) {
                     if (
-                        isset($_REQUEST['angeltype_count_' . $angeltype_id])
-                        && preg_match('/^\d{1,4}$/', $_REQUEST['angeltype_count_' . $angeltype_id])
+                        $request->has('angeltype_count_' . $angeltype_id)
+                        && preg_match('/^\d{1,4}$/', $request->input('angeltype_count_' . $angeltype_id))
                     ) {
-                        $angeltypes_count[$angeltype_id] = $_REQUEST['angeltype_count_' . $angeltype_id];
+                        $angeltypes_count[$angeltype_id] = $request->input('angeltype_count_' . $angeltype_id);
                     } else {
                         $valid = false;
                         $msg .= error(sprintf(_('Please enter needed angels for type %s.'), $angeltype), true);
@@ -209,8 +209,8 @@ function admin_rooms()
                     form_submit('submit', _('Save'))
                 ])
             ]);
-        } elseif ($_REQUEST['show'] == 'delete') {
-            if (isset($_REQUEST['ack'])) {
+        } elseif ($request->input('show') == 'delete') {
+            if ($request->has('ack')) {
                 if (!Room_delete($room_id)) {
                     engelsystem_error('Unable to delete room.');
                 }

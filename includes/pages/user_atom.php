@@ -3,16 +3,17 @@
 use Engelsystem\Database\DB;
 
 /**
- * Publically available page to feed the news to feedreaders
+ * Publically available page to feed the news to feed readers
  */
 function user_atom()
 {
     global $user;
+    $request = request();
 
-    if (!isset($_REQUEST['key']) || !preg_match('/^[\da-f]{32}$/', $_REQUEST['key'])) {
+    if (!$request->has('key') || !preg_match('/^[\da-f]{32}$/', $request->input('key'))) {
         engelsystem_error('Missing key.');
     }
-    $key = $_REQUEST['key'];
+    $key = $request->input('key');
 
     $user = User_by_api_key($key);
     if ($user == null) {
@@ -25,7 +26,7 @@ function user_atom()
     $news = DB::select('
         SELECT *
         FROM `News`
-        ' . (empty($_REQUEST['meetings']) ? '' : 'WHERE `Treffen` = 1 ') . '
+        ' . (!$request->has('meetings') ? '' : 'WHERE `Treffen` = 1 ') . '
         ORDER BY `ID`
         DESC LIMIT ' . (int)config('display_news')
     );

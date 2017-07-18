@@ -18,7 +18,7 @@ function admin_shifts_title()
 function admin_shifts()
 {
     $valid = true;
-
+    $request = request();
     $start = parse_date('Y-m-d H:i', date('Y-m-d') . ' 00:00');
     $end = $start;
     $mode = 'single';
@@ -52,14 +52,14 @@ function admin_shifts()
         $shifttypes[$shifttype['id']] = $shifttype['name'];
     }
 
-    if (isset($_REQUEST['preview']) || isset($_REQUEST['back'])) {
-        if (isset($_REQUEST['shifttype_id'])) {
-            $shifttype = ShiftType($_REQUEST['shifttype_id']);
+    if ($request->has('preview') || $request->has('back')) {
+        if ($request->has('shifttype_id')) {
+            $shifttype = ShiftType($request->input('shifttype_id'));
             if ($shifttype == null) {
                 $valid = false;
                 error(_('Please select a shift type.'));
             } else {
-                $shifttype_id = $_REQUEST['shifttype_id'];
+                $shifttype_id = $request->input('shifttype_id');
             }
         } else {
             $valid = false;
@@ -71,25 +71,25 @@ function admin_shifts()
 
         // Auswahl der sichtbaren Locations für die Schichten
         if (
-            isset($_REQUEST['rid'])
-            && preg_match('/^\d+$/', $_REQUEST['rid'])
-            && isset($room_array[$_REQUEST['rid']])
+            $request->has('rid')
+            && preg_match('/^\d+$/', $request->input('rid'))
+            && isset($room_array[$request->input('rid')])
         ) {
-            $rid = $_REQUEST['rid'];
+            $rid = $request->input('rid');
         } else {
             $valid = false;
             $rid = $rooms[0]['RID'];
             error(_('Please select a location.'));
         }
 
-        if (isset($_REQUEST['start']) && $tmp = parse_date('Y-m-d H:i', $_REQUEST['start'])) {
+        if ($request->has('start') && $tmp = parse_date('Y-m-d H:i', $request->input('start'))) {
             $start = $tmp;
         } else {
             $valid = false;
             error(_('Please select a start time.'));
         }
 
-        if (isset($_REQUEST['end']) && $tmp = parse_date('Y-m-d H:i', $_REQUEST['end'])) {
+        if ($request->has('end') && $tmp = parse_date('Y-m-d H:i', $request->input('end'))) {
             $end = $tmp;
         } else {
             $valid = false;
@@ -101,24 +101,24 @@ function admin_shifts()
             error(_('The shifts end has to be after its start.'));
         }
 
-        if (isset($_REQUEST['mode'])) {
-            if ($_REQUEST['mode'] == 'single') {
+        if ($request->has('mode')) {
+            if ($request->input('mode') == 'single') {
                 $mode = 'single';
-            } elseif ($_REQUEST['mode'] == 'multi') {
-                if (isset($_REQUEST['length']) && preg_match('/^\d+$/', trim($_REQUEST['length']))) {
+            } elseif ($request->input('mode') == 'multi') {
+                if ($request->has('length') && preg_match('/^\d+$/', trim($request->input('length')))) {
                     $mode = 'multi';
-                    $length = trim($_REQUEST['length']);
+                    $length = trim($request->input('length'));
                 } else {
                     $valid = false;
                     error(_('Please enter a shift duration in minutes.'));
                 }
-            } elseif ($_REQUEST['mode'] == 'variable') {
+            } elseif ($request->input('mode') == 'variable') {
                 if (
-                    isset($_REQUEST['change_hours'])
-                    && preg_match('/^(\d{2}(,|$))/', trim(str_replace(' ', '', $_REQUEST['change_hours'])))
+                    $request->has('change_hours')
+                    && preg_match('/^(\d{2}(,|$))/', trim(str_replace(' ', '', $request->input('change_hours'))))
                 ) {
                     $mode = 'variable';
-                    $change_hours = array_map('trim', explode(',', $_REQUEST['change_hours']));
+                    $change_hours = array_map('trim', explode(',', $request->input('change_hours')));
                 } else {
                     $valid = false;
                     error(_('Please split the shift-change hours by colons.'));
@@ -129,17 +129,17 @@ function admin_shifts()
             error(_('Please select a mode.'));
         }
 
-        if (isset($_REQUEST['angelmode'])) {
-            if ($_REQUEST['angelmode'] == 'location') {
+        if ($request->has('angelmode')) {
+            if ($request->input('angelmode') == 'location') {
                 $angelmode = 'location';
-            } elseif ($_REQUEST['angelmode'] == 'manually') {
+            } elseif ($request->input('angelmode') == 'manually') {
                 $angelmode = 'manually';
                 foreach ($types as $type) {
                     if (
-                        isset($_REQUEST['type_' . $type['id']])
-                        && preg_match('/^\d+$/', trim($_REQUEST['type_' . $type['id']]))
+                        $request->has('type_' . $type['id'])
+                        && preg_match('/^\d+$/', trim($request->input('type_' . $type['id'])))
                     ) {
-                        $needed_angel_types[$type['id']] = trim($_REQUEST['type_' . $type['id']]);
+                        $needed_angel_types[$type['id']] = trim($request->input('type_' . $type['id']));
                     } else {
                         $valid = false;
                         error(sprintf(_('Please check the needed angels for team %s.'), $type['name']));
@@ -159,7 +159,7 @@ function admin_shifts()
         }
 
         // Beim Zurück-Knopf das Formular zeigen
-        if (isset($_REQUEST['back'])) {
+        if ($request->has('back')) {
             $valid = false;
         }
 
@@ -304,9 +304,9 @@ function admin_shifts()
                 ])
             ]);
         }
-    } elseif (isset($_REQUEST['submit'])) {
+    } elseif ($request->has('submit')) {
         if (
-            !isset($_SESSION['admin_shifts_shifts'])
+            !$request->has('admin_shifts_shifts')
             || !isset($_SESSION['admin_shifts_types'])
             || !is_array($_SESSION['admin_shifts_shifts'])
             || !is_array($_SESSION['admin_shifts_types'])
@@ -360,8 +360,9 @@ function admin_shifts()
         unset($_SESSION['admin_shifts_types']);
     }
 
-    if (!isset($_REQUEST['rid'])) {
-        $_REQUEST['rid'] = null;
+    $rid = null;
+    if ($request->has('rid')) {
+        $rid = $request->input('rid');
     }
     $angel_types = '';
     foreach ($types as $type) {
@@ -378,7 +379,7 @@ function admin_shifts()
         form([
             form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
             form_text('title', _('Title'), $title),
-            form_select('rid', _('Room'), $room_array, $_REQUEST['rid']),
+            form_select('rid', _('Room'), $room_array, $rid),
             div('row', [
                 div('col-md-6', [
                     form_text('start', _('Start'), date('Y-m-d H:i', $start)),
@@ -386,7 +387,7 @@ function admin_shifts()
                     form_info(_('Mode'), ''),
                     form_radio('mode', _('Create one shift'), $mode == 'single', 'single'),
                     form_radio('mode', _('Create multiple shifts'), $mode == 'multi', 'multi'),
-                    form_text('length', _('Length'), !empty($_REQUEST['length']) ? $_REQUEST['length'] : '120'),
+                    form_text('length', _('Length'), $request->has('length') ? $request->input('length') : '120'),
                     form_radio(
                         'mode',
                         _('Create multiple shifts with variable length'),
@@ -396,7 +397,7 @@ function admin_shifts()
                     form_text(
                         'change_hours',
                         _('Shift change hours'),
-                        !empty($_REQUEST['change_hours']) ? $_REQUEST['change_hours'] : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22'
+                        $request->has('change_hours') ? $request->input('input') : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22'
                     )
                 ]),
                 div('col-md-6', [

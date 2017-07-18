@@ -74,11 +74,11 @@ function user_driver_license_edit_link($user = null)
 function user_driver_license_load_user()
 {
     global $user;
-
+    $request = request();
     $user_source = $user;
 
-    if (isset($_REQUEST['user_id'])) {
-        $user_source = User($_REQUEST['user_id']);
+    if ($request->has('user_id')) {
+        $user_source = User($request->input('user_id'));
         if ($user_source == null) {
             redirect(user_driver_license_edit_link());
         }
@@ -95,7 +95,7 @@ function user_driver_license_load_user()
 function user_driver_license_edit_controller()
 {
     global $privileges, $user;
-
+    $request = request();
     $user_source = user_driver_license_load_user();
 
     // only privilege admin_user can edit other users driver license information
@@ -111,15 +111,15 @@ function user_driver_license_edit_controller()
         $wants_to_drive = true;
     }
 
-    if (isset($_REQUEST['submit'])) {
-        $wants_to_drive = isset($_REQUEST['wants_to_drive']);
+    if ($request->has('submit')) {
+        $wants_to_drive = $request->has('wants_to_drive');
         if ($wants_to_drive) {
-            $user_driver_license['has_car'] = isset($_REQUEST['has_car']);
-            $user_driver_license['has_license_car'] = isset($_REQUEST['has_license_car']);
-            $user_driver_license['has_license_3_5t_transporter'] = isset($_REQUEST['has_license_3_5t_transporter']);
-            $user_driver_license['has_license_7_5t_truck'] = isset($_REQUEST['has_license_7_5t_truck']);
-            $user_driver_license['has_license_12_5t_truck'] = isset($_REQUEST['has_license_12_5t_truck']);
-            $user_driver_license['has_license_forklift'] = isset($_REQUEST['has_license_forklift']);
+            $user_driver_license['has_car'] = $request->has('has_car');
+            $user_driver_license['has_license_car'] = $request->has('has_license_car');
+            $user_driver_license['has_license_3_5t_transporter'] = $request->has('has_license_3_5t_transporter');
+            $user_driver_license['has_license_7_5t_truck'] = $request->has('has_license_7_5t_truck');
+            $user_driver_license['has_license_12_5t_truck'] = $request->has('has_license_12_5t_truck');
+            $user_driver_license['has_license_forklift'] = $request->has('has_license_forklift');
 
             if (UserDriverLicense_valid($user_driver_license)) {
                 if ($user_driver_license['user_id'] == null) {

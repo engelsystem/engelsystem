@@ -26,12 +26,12 @@ function locale_short()
 function gettext_init()
 {
     $locales = config('locales');
-    $default_locale = config('default_locale');
+    $request = request();
 
-    if (isset($_REQUEST['set_locale']) && isset($locales[$_REQUEST['set_locale']])) {
-        $_SESSION['locale'] = $_REQUEST['set_locale'];
+    if ($request->has('set_locale') && isset($locales[$request->input('set_locale')])) {
+        $_SESSION['locale'] = $request->input('set_locale');
     } elseif (!isset($_SESSION['locale'])) {
-        $_SESSION['locale'] = $default_locale;
+        $_SESSION['locale'] = config('default_locale');
     }
 
     gettext_locale();

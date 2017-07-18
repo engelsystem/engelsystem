@@ -81,7 +81,7 @@ function angeltype_delete_controller()
 
     $angeltype = load_angeltype();
 
-    if (isset($_REQUEST['confirmed'])) {
+    if (request()->has('confirmed')) {
         AngelType_delete($angeltype);
         success(sprintf(_('Angeltype %s deleted.'), AngelType_name_render($angeltype)));
         redirect(page_link_to('angeltypes'));
@@ -104,8 +104,9 @@ function angeltype_edit_controller()
 
     // In supporter mode only allow to modify description
     $supporter_mode = !in_array('admin_angel_types', $privileges);
+    $request = request();
 
-    if (isset($_REQUEST['angeltype_id'])) {
+    if ($request->has('angeltype_id')) {
         // Edit existing angeltype
         $angeltype = load_angeltype();
 
@@ -121,12 +122,12 @@ function angeltype_edit_controller()
         $angeltype = AngelType_new();
     }
 
-    if (isset($_REQUEST['submit'])) {
+    if ($request->has('submit')) {
         $valid = true;
 
         if (!$supporter_mode) {
-            if (isset($_REQUEST['name'])) {
-                $result = AngelType_validate_name($_REQUEST['name'], $angeltype);
+            if ($request->has('name')) {
+                $result = AngelType_validate_name($request->get('name'), $angeltype);
                 $angeltype['name'] = $result->getValue();
                 if (!$result->isValid()) {
                     $valid = false;
@@ -134,10 +135,10 @@ function angeltype_edit_controller()
                 }
             }
 
-            $angeltype['restricted'] = isset($_REQUEST['restricted']);
-            $angeltype['no_self_signup'] = isset($_REQUEST['no_self_signup']);
+            $angeltype['restricted'] = $request->has('restricted');
+            $angeltype['no_self_signup'] = $request->has('no_self_signup');
 
-            $angeltype['requires_driver_license'] = isset($_REQUEST['requires_driver_license']);
+            $angeltype['requires_driver_license'] = $request->has('requires_driver_license');
         }
 
         $angeltype['description'] = strip_request_item_nl('description', $angeltype['description']);
@@ -262,11 +263,12 @@ function angeltypes_list_controller()
  */
 function load_angeltype()
 {
-    if (!isset($_REQUEST['angeltype_id'])) {
+    $request = request();
+    if (!$request->has('angeltype_id')) {
         redirect(page_link_to('angeltypes'));
     }
 
-    $angeltype = AngelType($_REQUEST['angeltype_id']);
+    $angeltype = AngelType($request->input('angeltype_id'));
     if ($angeltype == null) {
         error(_('Angeltype doesn\'t exist . '));
         redirect(page_link_to('angeltypes'));

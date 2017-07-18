@@ -15,21 +15,21 @@ function admin_import_title()
  */
 function admin_import()
 {
-    global $rooms_import;
-    global $user;
+    global $rooms_import, $user;
     $html = '';
     $import_dir = __DIR__ . '/../../import';
+    $request = request();
 
     $step = 'input';
     if (
-        isset($_REQUEST['step'])
-        && in_array($step, [
+        $request->has('step')
+        && in_array($request->input('step'), [
             'input',
             'check',
             'import'
         ])
     ) {
-        $step = $_REQUEST['step'];
+        $step = $request->input('step');
     }
 
     if ($test_handle = @fopen($import_dir . '/tmp', 'w')) {
@@ -57,25 +57,25 @@ function admin_import()
         case 'input':
             $valid = false;
 
-            if (isset($_REQUEST['submit'])) {
+            if ($request->has('submit')) {
                 $valid = true;
 
-                if (isset($_REQUEST['shifttype_id']) && isset($shifttypes[$_REQUEST['shifttype_id']])) {
-                    $shifttype_id = $_REQUEST['shifttype_id'];
+                if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
+                    $shifttype_id = $request->input('shifttype_id');
                 } else {
                     $valid = false;
                     error(_('Please select a shift type.'));
                 }
 
-                if (isset($_REQUEST['add_minutes_start']) && is_numeric(trim($_REQUEST['add_minutes_start']))) {
-                    $add_minutes_start = trim($_REQUEST['add_minutes_start']);
+                if ($request->has('add_minutes_start') && is_numeric(trim($request->input('add_minutes_start')))) {
+                    $add_minutes_start = trim($request->input('add_minutes_start'));
                 } else {
                     $valid = false;
                     error(_('Please enter an amount of minutes to add to a talk\'s begin.'));
                 }
 
-                if (isset($_REQUEST['add_minutes_end']) && is_numeric(trim($_REQUEST['add_minutes_end']))) {
-                    $add_minutes_end = trim($_REQUEST['add_minutes_end']);
+                if ($request->has('add_minutes_end') && is_numeric(trim($request->input('add_minutes_end')))) {
+                    $add_minutes_end = trim($request->input('add_minutes_end'));
                 } else {
                     $valid = false;
                     error(_('Please enter an amount of minutes to add to a talk\'s end.'));
@@ -133,22 +133,22 @@ function admin_import()
                 redirect(page_link_to('admin_import'));
             }
 
-            if (isset($_REQUEST['shifttype_id']) && isset($shifttypes[$_REQUEST['shifttype_id']])) {
-                $shifttype_id = $_REQUEST['shifttype_id'];
+            if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
+                $shifttype_id = $request->input('shifttype_id');
             } else {
                 error(_('Please select a shift type.'));
                 redirect(page_link_to('admin_import'));
             }
 
-            if (isset($_REQUEST['add_minutes_start']) && is_numeric(trim($_REQUEST['add_minutes_start']))) {
-                $add_minutes_start = trim($_REQUEST['add_minutes_start']);
+            if ($request->has('add_minutes_start') && is_numeric(trim($request->input('add_minutes_start')))) {
+                $add_minutes_start = trim($request->input('add_minutes_start'));
             } else {
                 error(_('Please enter an amount of minutes to add to a talk\'s begin.'));
                 redirect(page_link_to('admin_import'));
             }
 
-            if (isset($_REQUEST['add_minutes_end']) && is_numeric(trim($_REQUEST['add_minutes_end']))) {
-                $add_minutes_end = trim($_REQUEST['add_minutes_end']);
+            if ($request->has('add_minutes_end') && is_numeric(trim($request->input(('add_minutes_end'))))) {
+                $add_minutes_end = trim($request->input('add_minutes_end'));
             } else {
                 error(_('Please enter an amount of minutes to add to a talk\'s end.'));
                 redirect(page_link_to('admin_import'));
@@ -227,22 +227,22 @@ function admin_import()
                 redirect(page_link_to('admin_import'));
             }
 
-            if (isset($_REQUEST['shifttype_id']) && isset($shifttypes[$_REQUEST['shifttype_id']])) {
-                $shifttype_id = $_REQUEST['shifttype_id'];
+            if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
+                $shifttype_id = $request->input('shifttype_id');
             } else {
                 error(_('Please select a shift type.'));
                 redirect(page_link_to('admin_import'));
             }
 
-            if (isset($_REQUEST['add_minutes_start']) && is_numeric(trim($_REQUEST['add_minutes_start']))) {
-                $add_minutes_start = trim($_REQUEST['add_minutes_start']);
+            if ($request->has('add_minutes_start') && is_numeric(trim($request->input('add_minutes_start')))) {
+                $add_minutes_start = trim($request->input('add_minutes_start'));
             } else {
                 error(_('Please enter an amount of minutes to add to a talk\'s begin.'));
                 redirect(page_link_to('admin_import'));
             }
 
-            if (isset($_REQUEST['add_minutes_end']) && is_numeric(trim($_REQUEST['add_minutes_end']))) {
-                $add_minutes_end = trim($_REQUEST['add_minutes_end']);
+            if ($request->has('add_minutes_end') && is_numeric(trim($request->input('add_minutes_end')))) {
+                $add_minutes_end = trim($request->input('add_minutes_end'));
             } else {
                 error(_('Please enter an amount of minutes to add to a talk\'s end.'));
                 redirect(page_link_to('admin_import'));

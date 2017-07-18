@@ -5,9 +5,10 @@ use Engelsystem\Database\DB;
 function guest_stats()
 {
     $apiKey = config('api_key');
+    $request = request();
 
-    if (isset($_REQUEST['api_key'])) {
-        if ($_REQUEST['api_key'] == $apiKey && !empty($apiKey)) {
+    if ($request->has('api_key')) {
+        if (!empty($apiKey) && $request->input('api_key') == $apiKey) {
             $stats = [];
 
             list($user_count) = DB::select('SELECT count(*) AS `user_count` FROM `User`');

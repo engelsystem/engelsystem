@@ -14,7 +14,7 @@ function admin_log_title()
 function admin_log()
 {
     $filter = '';
-    if (isset($_REQUEST['keyword'])) {
+    if (request()->has('keyword')) {
         $filter = strip_request_item('keyword');
     }
     $log_entries_source = LogEntries_filter($filter);

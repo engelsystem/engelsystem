@@ -3,6 +3,7 @@
 use Engelsystem\Config\Config;
 use Engelsystem\Database\Db;
 use Engelsystem\Exceptions\Handler as ExceptionHandler;
+use Engelsystem\Http\Request;
 
 /**
  * This file includes all needed functions, connects to the db etc.
@@ -30,6 +31,13 @@ if (file_exists(__DIR__ . '/../config/config.php')) {
 
 date_default_timezone_set($config->get('timezone'));
 
+
+/**
+ * Initialize Request
+ */
+$request = new Request();
+$request->create();
+$request::setInstance($request);
 
 /**
  * Check for maintenance

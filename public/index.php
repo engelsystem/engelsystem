@@ -24,24 +24,22 @@ $page = '';
 $title = '';
 $content = '';
 
-if (!isset($_REQUEST['p'])) {
-    $_REQUEST['p'] = isset($user) ? 'news' : 'login';
+$page = $request->input('p');
+if (empty($page)) {
+    $page = isset($user) ? 'news' : 'login';
 }
 
 if (
-    isset($_REQUEST['p'])
-    && preg_match('/^\w*$/i', $_REQUEST['p'])
+    preg_match('/^\w*$/i', $page)
     && (
-        in_array($_REQUEST['p'], $free_pages)
-        || (isset($privileges) && in_array($_REQUEST['p'], $privileges))
+        in_array($page, $free_pages)
+        || (isset($privileges) && in_array($page, $privileges))
     )
 ) {
-    $page = $_REQUEST['p'];
-
     $title = $page;
 
     if ($page == 'api') {
-        error('Api disabled temporily.');
+        error('Api disabled temporarily.');
         redirect(page_link_to());
         require_once realpath(__DIR__ . '/../includes/controller/api.php');
         api_controller();

@@ -44,15 +44,16 @@ function shift_edit_controller()
     // Schicht bearbeiten
     $msg = '';
     $valid = true;
+    $request = request();
 
     if (!in_array('admin_shifts', $privileges)) {
         redirect(page_link_to('user_shifts'));
     }
 
-    if (!isset($_REQUEST['edit_shift']) || !test_request_int('edit_shift')) {
+    if (!$request->has('edit_shift') || !test_request_int('edit_shift')) {
         redirect(page_link_to('user_shifts'));
     }
-    $shift_id = $_REQUEST['edit_shift'];
+    $shift_id = $request->input('edit_shift');
 
     $shift = Shift($shift_id);
 
@@ -73,33 +74,37 @@ function shift_edit_controller()
     $start = $shift['start'];
     $end = $shift['end'];
 
-    if (isset($_REQUEST['submit'])) {
+    if ($request->has('submit')) {
         // Name/Bezeichnung der Schicht, darf leer sein
         $title = strip_request_item('title');
 
         // Auswahl der sichtbaren Locations für die Schichten
-        if (isset($_REQUEST['rid']) && preg_match('/^\d+$/', $_REQUEST['rid']) && isset($room[$_REQUEST['rid']])) {
-            $rid = $_REQUEST['rid'];
+        if (
+            $request->has('rid')
+            && preg_match('/^\d+$/', $request->input('rid'))
+            && isset($room[$request->input('rid')])
+        ) {
+            $rid = $request->input('rid');
         } else {
             $valid = false;
             $msg .= error(_('Please select a room.'), true);
         }
 
-        if (isset($_REQUEST['shifttype_id']) && isset($shifttypes[$_REQUEST['shifttype_id']])) {
-            $shifttype_id = $_REQUEST['shifttype_id'];
+        if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
+            $shifttype_id = $request->input('shifttype_id');
         } else {
             $valid = false;
             $msg .= error(_('Please select a shifttype.'), true);
         }
 
-        if (isset($_REQUEST['start']) && $tmp = parse_date('Y-m-d H:i', $_REQUEST['start'])) {
+        if ($request->has('start') && $tmp = parse_date('Y-m-d H:i', $request->input('start'))) {
             $start = $tmp;
         } else {
             $valid = false;
             $msg .= error(_('Please enter a valid starting time for the shifts.'), true);
         }
 
-        if (isset($_REQUEST['end']) && $tmp = parse_date('Y-m-d H:i', $_REQUEST['end'])) {
+        if ($request->has('end') && $tmp = parse_date('Y-m-d H:i', $request->input('end'))) {
             $end = $tmp;
         } else {
             $valid = false;
@@ -112,8 +117,8 @@ function shift_edit_controller()
         }
 
         foreach ($needed_angel_types as $needed_angeltype_id => $needed_angeltype_name) {
-            if (isset($_REQUEST['type_' . $needed_angeltype_id]) && test_request_int('type_' . $needed_angeltype_id)) {
-                $needed_angel_types[$needed_angeltype_id] = trim($_REQUEST['type_' . $needed_angeltype_id]);
+            if ($request->has('type_' . $needed_angeltype_id) && test_request_int('type_' . $needed_angeltype_id)) {
+                $needed_angel_types[$needed_angeltype_id] = trim($request->input('type_' . $needed_angeltype_id));
             } else {
                 $valid = false;
                 $msg .= error(sprintf(
@@ -186,16 +191,17 @@ function shift_edit_controller()
 function shift_delete_controller()
 {
     global $privileges;
+    $request = request();
 
     if (!in_array('user_shifts_admin', $privileges)) {
         redirect(page_link_to('user_shifts'));
     }
 
     // Schicht komplett löschen (nur für admins/user mit user_shifts_admin privileg)
-    if (!isset($_REQUEST['delete_shift']) || !preg_match('/^\d*$/', $_REQUEST['delete_shift'])) {
+    if (!$request->has('delete_shift') || !preg_match('/^\d*$/', $request->input('delete_shift'))) {
         redirect(page_link_to('user_shifts'));
     }
-    $shift_id = $_REQUEST['delete_shift'];
+    $shift_id = $request->input('delete_shift');
 
     $shift = Shift($shift_id);
     if ($shift == null) {
@@ -203,7 +209,7 @@ function shift_delete_controller()
     }
 
     // Schicht löschen bestätigt
-    if (isset($_REQUEST['delete'])) {
+    if ($request->has('delete')) {
         Shift_delete($shift_id);
 
         engelsystem_log(
@@ -232,16 +238,17 @@ function shift_delete_controller()
 function shift_controller()
 {
     global $user, $privileges;
+    $request = request();
 
     if (!in_array('user_shifts', $privileges)) {
         redirect(page_link_to('?'));
     }
 
-    if (!isset($_REQUEST['shift_id'])) {
+    if (!$request->has('shift_id')) {
         redirect(page_link_to('user_shifts'));
     }
 
-    $shift = Shift($_REQUEST['shift_id']);
+    $shift = Shift($request->input('shift_id'));
     if ($shift == null) {
         error(_('Shift could not be found.'));
         redirect(page_link_to('user_shifts'));
@@ -285,11 +292,12 @@ function shift_controller()
  */
 function shifts_controller()
 {
-    if (!isset($_REQUEST['action'])) {
+    $request = request();
+    if (!$request->has('action')) {
         redirect(page_link_to('user_shifts'));
     }
 
-    switch ($_REQUEST['action']) {
+    switch ($request->input('action')) {
         case 'view':
             return shift_controller();
         case 'next':
@@ -330,16 +338,17 @@ function shift_next_controller()
 function shifts_json_export_all_controller()
 {
     $api_key = config('api_key');
+    $request = request();
 
     if (empty($api_key)) {
         engelsystem_error('Config contains empty apikey.');
     }
 
-    if (!isset($_REQUEST['api_key'])) {
+    if (!$request->has('api_key')) {
         engelsystem_error('Missing parameter api_key.');
     }
 
-    if ($_REQUEST['api_key'] != $api_key) {
+    if ($request->input('api_key') != $api_key) {
         engelsystem_error('Invalid api_key.');
     }
 
@@ -359,12 +368,13 @@ function shifts_json_export_all_controller()
 function shifts_json_export_controller()
 {
     global $user;
+    $request = request();
 
-    if (!isset($_REQUEST['key']) || !preg_match('/^[\da-f]{32}$/', $_REQUEST['key'])) {
+    if (!$request->has('key') || !preg_match('/^[\da-f]{32}$/', $request->input('key'))) {
         engelsystem_error('Missing key.');
     }
 
-    $key = $_REQUEST['key'];
+    $key = $request->input('key');
 
     $user = User_by_api_key($key);
     if ($user == null) {

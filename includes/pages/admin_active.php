@@ -17,6 +17,7 @@ function admin_active()
 {
     $tshirt_sizes = config('tshirt_sizes');
     $shift_sum_formula = config('shift_sum_formula');
+    $request = request();
 
     $msg = '';
     $search = '';
@@ -25,16 +26,16 @@ function admin_active()
     $limit = '';
     $set_active = '';
 
-    if (isset($_REQUEST['search'])) {
+    if ($request->has('search')) {
         $search = strip_request_item('search');
     }
 
-    $show_all_shifts = isset($_REQUEST['show_all_shifts']);
+    $show_all_shifts = $request->has('show_all_shifts');
 
-    if (isset($_REQUEST['set_active'])) {
+    if ($request->has('set_active')) {
         $valid = true;
 
-        if (isset($_REQUEST['count']) && preg_match('/^\d+$/', $_REQUEST['count'])) {
+        if ($request->has('count') && preg_match('/^\d+$/', $request->input('count'))) {
             $count = strip_request_item('count');
             if ($count < $forced_count) {
                 error(sprintf(
@@ -51,7 +52,7 @@ function admin_active()
         if ($valid) {
             $limit = ' LIMIT ' . $count;
         }
-        if (isset($_REQUEST['ack'])) {
+        if ($request->has('ack')) {
             DB::update('UPDATE `User` SET `Aktiv` = 0 WHERE `Tshirt` = 0');
             $users = DB::select(sprintf('
                   SELECT
@@ -89,8 +90,8 @@ function admin_active()
         }
     }
 
-    if (isset($_REQUEST['active']) && preg_match('/^\d+$/', $_REQUEST['active'])) {
-        $user_id = $_REQUEST['active'];
+    if ($request->has('active') && preg_match('/^\d+$/', $request->input('active'))) {
+        $user_id = $request->input('active');
         $user_source = User($user_id);
         if ($user_source != null) {
             DB::update('UPDATE `User` SET `Aktiv`=1 WHERE `UID`=? LIMIT 1', [$user_id]);
@@ -99,8 +100,8 @@ function admin_active()
         } else {
             $msg = error(_('Angel not found.'), true);
         }
-    } elseif (isset($_REQUEST['not_active']) && preg_match('/^\d+$/', $_REQUEST['not_active'])) {
-        $user_id = $_REQUEST['not_active'];
+    } elseif ($request->has('not_active') && preg_match('/^\d+$/', $request->input('not_active'))) {
+        $user_id = $request->input('not_active');
         $user_source = User($user_id);
         if ($user_source != null) {
             DB::update('UPDATE `User` SET `Aktiv`=0 WHERE `UID`=? LIMIT 1', [$user_id]);
@@ -109,8 +110,8 @@ function admin_active()
         } else {
             $msg = error(_('Angel not found.'), true);
         }
-    } elseif (isset($_REQUEST['tshirt']) && preg_match('/^\d+$/', $_REQUEST['tshirt'])) {
-        $user_id = $_REQUEST['tshirt'];
+    } elseif ($request->has('tshirt') && preg_match('/^\d+$/', $request->input('tshirt'))) {
+        $user_id = $request->input('tshirt');
         $user_source = User($user_id);
         if ($user_source != null) {
             DB::update('UPDATE `User` SET `Tshirt`=1 WHERE `UID`=? LIMIT 1', [$user_id]);
@@ -119,8 +120,8 @@ function admin_active()
         } else {
             $msg = error('Angel not found.', true);
         }
-    } elseif (isset($_REQUEST['not_tshirt']) && preg_match('/^\d+$/', $_REQUEST['not_tshirt'])) {
-        $user_id = $_REQUEST['not_tshirt'];
+    } elseif ($request->has('not_tshirt') && preg_match('/^\d+$/', $request->input('not_tshirt'))) {
+        $user_id = $request->input('not_tshirt');
         $user_source = User($user_id);
         if ($user_source != null) {
             DB::update('UPDATE `User` SET `Tshirt`=0 WHERE `UID`=? LIMIT 1', [$user_id]);

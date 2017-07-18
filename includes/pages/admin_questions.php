@@ -38,8 +38,9 @@ function admin_new_questions()
 function admin_questions()
 {
     global $user;
+    $request = request();
 
-    if (!isset($_REQUEST['action'])) {
+    if (!$request->has('action')) {
         $unanswered_questions_table = [];
         $questions = DB::select('SELECT * FROM `Questions` WHERE `AID` IS NULL');
         foreach ($questions as $question) {
@@ -96,10 +97,10 @@ function admin_questions()
             ], $answered_questions_table)
         ]);
     } else {
-        switch ($_REQUEST['action']) {
+        switch ($request->input('action')) {
             case 'answer':
-                if (isset($_REQUEST['id']) && preg_match('/^\d{1,11}$/', $_REQUEST['id'])) {
-                    $question_id = $_REQUEST['id'];
+                if ($request->has('id') && preg_match('/^\d{1,11}$/', $request->input('id'))) {
+                    $question_id = $request->input('id');
                 } else {
                     return error('Incomplete call, missing Question ID.', true);
                 }
@@ -112,7 +113,7 @@ function admin_questions()
                     $answer = trim(
                         preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui",
                             '',
-                            strip_tags($_REQUEST['answer'])
+                            strip_tags($request->input('answer'))
                         ));
 
                     if ($answer != '') {
@@ -138,8 +139,8 @@ function admin_questions()
                 }
                 break;
             case 'delete':
-                if (isset($_REQUEST['id']) && preg_match('/^\d{1,11}$/', $_REQUEST['id'])) {
-                    $question_id = $_REQUEST['id'];
+                if ($request->has('id') && preg_match('/^\d{1,11}$/', $request->input('id'))) {
+                    $question_id = $request->input('id');
                 } else {
                     return error('Incomplete call, missing Question ID.', true);
                 }

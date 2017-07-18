@@ -38,13 +38,14 @@ function user_angeltypes_unconfirmed_hint()
 function user_angeltypes_delete_all_controller()
 {
     global $user;
+    $request = request();
 
-    if (!isset($_REQUEST['angeltype_id'])) {
+    if (!$request->has('angeltype_id')) {
         error(_('Angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
 
-    $angeltype = AngelType($_REQUEST['angeltype_id']);
+    $angeltype = AngelType($request->input('angeltype_id'));
     if ($angeltype == null) {
         error(_('Angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
@@ -55,7 +56,7 @@ function user_angeltypes_delete_all_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if (isset($_REQUEST['confirmed'])) {
+    if ($request->has('confirmed')) {
         UserAngelTypes_delete_all($angeltype['id']);
 
         engelsystem_log(sprintf('Denied all users for angeltype %s', AngelType_name_render($angeltype)));
@@ -77,13 +78,14 @@ function user_angeltypes_delete_all_controller()
 function user_angeltypes_confirm_all_controller()
 {
     global $user, $privileges;
+    $request = request();
 
-    if (!isset($_REQUEST['angeltype_id'])) {
+    if (!$request->has('angeltype_id')) {
         error(_('Angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
 
-    $angeltype = AngelType($_REQUEST['angeltype_id']);
+    $angeltype = AngelType($request->input('angeltype_id'));
     if ($angeltype == null) {
         error(_('Angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
@@ -100,7 +102,7 @@ function user_angeltypes_confirm_all_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if (isset($_REQUEST['confirmed'])) {
+    if ($request->has('confirmed')) {
         UserAngelTypes_confirm_all($angeltype['id'], $user);
 
         engelsystem_log(sprintf('Confirmed all users for angeltype %s', AngelType_name_render($angeltype)));
@@ -122,13 +124,14 @@ function user_angeltypes_confirm_all_controller()
 function user_angeltype_confirm_controller()
 {
     global $user;
+    $request = request();
 
-    if (!isset($_REQUEST['user_angeltype_id'])) {
+    if (!$request->has('user_angeltype_id')) {
         error(_('User angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
 
-    $user_angeltype = UserAngelType($_REQUEST['user_angeltype_id']);
+    $user_angeltype = UserAngelType($request->input('user_angeltype_id'));
     if ($user_angeltype == null) {
         error(_('User angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
@@ -151,7 +154,7 @@ function user_angeltype_confirm_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if (isset($_REQUEST['confirmed'])) {
+    if ($request->has('confirmed')) {
         UserAngelType_confirm($user_angeltype['id'], $user);
 
         engelsystem_log(sprintf(
@@ -181,13 +184,14 @@ function user_angeltype_confirm_controller()
 function user_angeltype_delete_controller()
 {
     global $user;
+    $request = request();
 
-    if (!isset($_REQUEST['user_angeltype_id'])) {
+    if (!$request->has('user_angeltype_id')) {
         error(_('User angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
 
-    $user_angeltype = UserAngelType($_REQUEST['user_angeltype_id']);
+    $user_angeltype = UserAngelType($request->input('user_angeltype_id'));
     if ($user_angeltype == null) {
         error(_('User angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
@@ -210,7 +214,7 @@ function user_angeltype_delete_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if (isset($_REQUEST['confirmed'])) {
+    if ($request->has('confirmed')) {
         $result = UserAngelType_delete($user_angeltype);
         if ($result === false) {
             engelsystem_error('Unable to delete user angeltype.');
@@ -238,25 +242,26 @@ function user_angeltype_update_controller()
 {
     global $privileges;
     $supporter = false;
+    $request = request();
 
     if (!in_array('admin_angel_types', $privileges)) {
         error(_('You are not allowed to set supporter rights.'));
         redirect(page_link_to('angeltypes'));
     }
 
-    if (!isset($_REQUEST['user_angeltype_id'])) {
+    if (!$request->has('user_angeltype_id')) {
         error(_('User angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
 
-    if (isset($_REQUEST['supporter']) && preg_match('/^[01]$/', $_REQUEST['supporter'])) {
-        $supporter = $_REQUEST['supporter'] == '1';
+    if ($request->has('supporter') && preg_match('/^[01]$/', $request->input('supporter'))) {
+        $supporter = $request->input('supporter') == '1';
     } else {
         error(_('No supporter update given.'));
         redirect(page_link_to('angeltypes'));
     }
 
-    $user_angeltype = UserAngelType($_REQUEST['user_angeltype_id']);
+    $user_angeltype = UserAngelType($request->input('user_angeltype_id'));
     if ($user_angeltype == null) {
         error(_('User angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
@@ -274,7 +279,7 @@ function user_angeltype_update_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if (isset($_REQUEST['confirmed'])) {
+    if ($request->has('confirmed')) {
         UserAngelType_update($user_angeltype['id'], $supporter);
 
         $success_message = sprintf(
@@ -300,7 +305,6 @@ function user_angeltype_update_controller()
 function user_angeltype_add_controller()
 {
     global $user;
-
     $angeltype = load_angeltype();
 
     // User is joining by itself
@@ -316,7 +320,7 @@ function user_angeltype_add_controller()
     // Load possible users, that are not in the angeltype already
     $users_source = Users_by_angeltype_inverted($angeltype);
 
-    if (isset($_REQUEST['submit'])) {
+    if (request()->has('submit')) {
         $user_source = load_user();
 
         if (!UserAngelType_exists($user_source, $angeltype)) {
@@ -366,7 +370,7 @@ function user_angeltype_join_controller($angeltype)
         redirect(page_link_to('angeltypes'));
     }
 
-    if (isset($_REQUEST['confirmed'])) {
+    if (request()->has('confirmed')) {
         $user_angeltype_id = UserAngelType_create($user, $angeltype);
 
         $success_message = sprintf(_('You joined %s.'), $angeltype['name']);
@@ -398,11 +402,12 @@ function user_angeltype_join_controller($angeltype)
  */
 function user_angeltypes_controller()
 {
-    if (!isset($_REQUEST['action'])) {
+    $request = request();
+    if (!$request->has('action')) {
         redirect(page_link_to('angeltypes'));
     }
 
-    switch ($_REQUEST['action']) {
+    switch ($request->input('action')) {
         case 'delete_all':
             return user_angeltypes_delete_all_controller();
         case 'confirm_all':

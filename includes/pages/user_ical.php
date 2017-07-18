@@ -6,11 +6,12 @@
 function user_ical()
 {
     global $user;
+    $request = request();
 
-    if (!isset($_REQUEST['key']) || !preg_match('/^[\da-f]{32}$/', $_REQUEST['key'])) {
+    if (!$request->has('key') || !preg_match('/^[\da-f]{32}$/', $request->input('key'))) {
         engelsystem_error('Missing key.');
     }
-    $key = $_REQUEST['key'];
+    $key = $request->input('key');
 
     $user = User_by_api_key($key);
     if ($user == null) {
