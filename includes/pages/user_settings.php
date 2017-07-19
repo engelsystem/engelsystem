@@ -198,8 +198,9 @@ function user_settings_locale($user_source, $locales)
  */
 function user_settings()
 {
-    global $themes, $user;
+    global $user;
     $request = request();
+    $themes = config('available_themes');
 
     $enable_tshirt_size = config('enable_tshirt_size');
     $tshirt_sizes = config('tshirt_sizes');
