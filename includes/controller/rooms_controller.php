@@ -19,7 +19,11 @@ function room_controller()
         redirect(page_link_to());
     }
 
-    $room = load_room();
+    $room = load_room(false);
+    if ($room['show'] != 'Y' && !in_array('admin_rooms', $privileges)) {
+        redirect(page_link_to());
+    }
+
     $all_shifts = Shifts_by_room($room);
     $days = [];
     foreach ($all_shifts as $shift) {
@@ -99,15 +103,16 @@ function room_edit_link($room)
 /**
  * Loads room by request param room_id
  *
+ * @param bool $onlyVisible
  * @return array
  */
-function load_room()
+function load_room($onlyVisible = true)
 {
     if (!test_request_int('room_id')) {
         redirect(page_link_to());
     }
 
-    $room = Room($_REQUEST['room_id']);
+    $room = Room($_REQUEST['room_id'], $onlyVisible);
     if ($room == null) {
         redirect(page_link_to());
     }

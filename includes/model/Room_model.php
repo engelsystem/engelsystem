@@ -57,16 +57,16 @@ function Room_create($name, $from_frab, $public, $number = null)
  * Returns room by id.
  *
  * @param int  $room_id RID
- * @param bool $show_only
+ * @param bool $onlyVisible
  * @return array|false
  */
-function Room($room_id, $show_only = true)
+function Room($room_id, $onlyVisible = true)
 {
     $room_source = DB::select('
         SELECT *
         FROM `Room`
         WHERE `RID` = ?
-        ' . ($show_only ? 'AND `show` = \'Y\'' : ''),
+        ' . ($onlyVisible ? 'AND `show` = \'Y\'' : ''),
         [$room_id]
     );
 

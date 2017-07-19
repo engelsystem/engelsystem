@@ -18,6 +18,9 @@
         "erusev/parsedown": "1.6.*",
         "twbs/bootstrap": "^3.3"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^6.2"
+    },
     "autoload": {
         "psr-4": {
             "Engelsystem\\": "src/"

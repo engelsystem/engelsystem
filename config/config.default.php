@@ -26,6 +26,9 @@ return [
     // Contact email address, linked on every page
     'contact_email'    => 'mailto:ticket@c3heaven.de',
 
+    // From address of all emails
+    'no_reply_email'   => 'noreply@engelsystem.de',
+
     // Default theme of the start page, 1=style1.css
     'theme'            => 1,
 
@@ -35,7 +38,7 @@ return [
     // Anzahl Stunden bis zum Austragen eigener Schichten
     'last_unsubscribe' => 3,
 
-    // Setzt den zu verwendenden Crypto-Algorismus (entsprechend der Dokumentation von crypt()).
+    // Setzt den zu verwendenden Crypto-Algorithmus (entsprechend der Dokumentation von crypt()).
     // Falls ein Benutzerpasswort in einem anderen Format gespeichert ist,
     // wird es bei der ersten Benutzung des Klartext-Passworts in das neue Format
     // konvertiert.
