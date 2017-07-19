@@ -68,7 +68,7 @@ function user_delete_controller()
         if (
         !(
             $request->has('password')
-            && verify_password($request->input('password'), $user['Passwort'], $user['UID'])
+            && verify_password($request->post('password'), $user['Passwort'], $user['UID'])
         )
         ) {
             $valid = false;
