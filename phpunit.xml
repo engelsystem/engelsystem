@@ -16,7 +16,8 @@
         <whitelist>
             <directory>./include/</directory>
             <directory>./public/</directory>
-        </whitelist>
+						<directory>./src/</directory>
+				</whitelist>
     </filter>
     <php>
         <const name="PHPUNIT_TESTSUITE" value="true"/>

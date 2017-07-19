@@ -1,9 +1,11 @@
 <?php
-
 namespace Engelsystem\Test;
 
-class LogEntriesModelTest extends \PHPUnit_Framework_TestCase
+use \PHPUnit\Framework\TestCase;
+
+class LogEntriesModelTest extends TestCase
 {
+
     public function create_LogEntry()
     {
         LogEntry_create('test', 'test');
@@ -13,7 +15,7 @@ class LogEntriesModelTest extends \PHPUnit_Framework_TestCase
     {
         $count = count(LogEntries());
         $this->assertNotFalse(LogEntry_create('test', 'test_LogEntry_create'));
-
+        
         // There should be one more log entry now
         $this->assertEquals(count(LogEntries()), $count + 1);
     }

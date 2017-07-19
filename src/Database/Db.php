@@ -81,31 +81,31 @@ class Db
     }
 
     /**
-     * Run a insert query
+     * Run an insert query
      *
      * @param string $query
      * @param array  $bindings
-     * @return bool
+     * @return int|bool
      */
     public static function insert($query, array $bindings = [])
     {
         self::query($query, $bindings);
 
-        return self::$lastStatus;
+        return (self::$lastStatus ? self::$stm->rowCount() : false);
     }
 
     /**
-     * Run a update query
+     * Run an update query
      *
      * @param string $query
      * @param array  $bindings
-     * @return int|null
+     * @return int|bool
      */
     public static function update($query, array $bindings = [])
     {
         self::query($query, $bindings);
 
-        return (self::$lastStatus ? self::$stm->rowCount() : null);
+        return (self::$lastStatus ? self::$stm->rowCount() : false);
     }
 
     /**
@@ -113,13 +113,13 @@ class Db
      *
      * @param string $query
      * @param array  $bindings
-     * @return int|null
+     * @return int|bool
      */
     public static function delete($query, array $bindings = [])
     {
         self::query($query, $bindings);
 
-        return (self::$lastStatus ? self::$stm->rowCount() : null);
+        return (self::$lastStatus ? self::$stm->rowCount() : false);
     }
 
     /**

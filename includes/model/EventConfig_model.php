@@ -64,7 +64,7 @@ function EventConfig_update(
         );
     }
 
-    return (bool)DB::update('
+    return DB::update('
           UPDATE `EventConfig` SET
           `event_name` = ?,
           `buildup_start_date` = ?,
