@@ -1,17 +1,6 @@
 <?php
 
 /**
- * Liste der verfügbaren Themes
- */
-$themes = [
-    '4' => 'Engelsystem 33c3 (2016)',
-    '3' => 'Engelsystem 32c3 (2015)',
-    '2' => 'Engelsystem cccamp15',
-    '0' => 'Engelsystem light',
-    '1' => 'Engelsystem dark'
-];
-
-/**
  * Display muted (grey) text.
  *
  * @param string $text
@@ -330,28 +319,6 @@ function buttons($buttons = [])
 function table_buttons($buttons = [])
 {
     return '<div class="btn-group">' . join(' ', $buttons) . '</div>';
-}
-
-/**
- * Load and render template
- *
- * @param string   $file
- * @param string[] $data
- * @return string
- */
-function template_render($file, $data = [])
-{
-    if (file_exists($file)) {
-        $template = file_get_contents($file);
-        if (is_array($data)) {
-            foreach ($data as $name => $content) {
-                $template = str_replace('%' . $name . '%', $content, $template);
-            }
-        }
-        return $template;
-    }
-    engelsystem_error('Cannot find template file &laquo;' . $file . '&raquo;.');
-    return '';
 }
 
 /**

@@ -29,8 +29,17 @@ return [
     // From address of all emails
     'no_reply_email'   => 'noreply@engelsystem.de',
 
-    // Default theme of the start page, 1=style1.css
+    // Default theme, 1=style1.css
     'theme'            => 1,
+
+    // Available themes
+    'available_themes' => [
+        '4' => 'Engelsystem 33c3 (2016)',
+        '3' => 'Engelsystem 32c3 (2015)',
+        '2' => 'Engelsystem cccamp15',
+        '0' => 'Engelsystem light',
+        '1' => 'Engelsystem dark'
+    ],
 
     // Number of News shown on one site
     'display_news'     => 6,

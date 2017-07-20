@@ -4,6 +4,8 @@ use Engelsystem\Config\Config;
 use Engelsystem\Database\Db;
 use Engelsystem\Exceptions\Handler as ExceptionHandler;
 use Engelsystem\Http\Request;
+use Engelsystem\Renderer\HtmlEngine;
+use Engelsystem\Renderer\Renderer;
 
 /**
  * This file includes all needed functions, connects to the db etc.
@@ -43,9 +45,17 @@ $request::setInstance($request);
  * Check for maintenance
  */
 if ($config->get('maintenance')) {
-    echo file_get_contents(__DIR__ . '/../public/maintenance.html');
+    echo file_get_contents(__DIR__ . '/../templates/maintenance.html');
     die();
 }
+
+
+/**
+ * Initialize renderer
+ */
+$renderer = new Renderer();
+$renderer->addRenderer(new HtmlEngine());
+Renderer::setInstance($renderer);
 
 
 /**
