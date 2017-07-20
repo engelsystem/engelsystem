@@ -17,6 +17,7 @@ function admin_user()
 {
     global $user, $privileges;
     $tshirt_sizes = config('tshirt_sizes');
+    $request = request();
 
     foreach ($tshirt_sizes as $key => $size) {
         if (empty($size)) {
@@ -26,12 +27,12 @@ function admin_user()
 
     $html = '';
 
-    if (!isset($_REQUEST['id'])) {
+    if (!$request->has('id')) {
         redirect(users_link());
     }
 
-    $user_id = $_REQUEST['id'];
-    if (!isset($_REQUEST['action'])) {
+    $user_id = $request->input('id');
+    if (!$request->has('action')) {
         $user_source = User($user_id);
         if ($user_source == null) {
             error(_('This user does not exist.'));
@@ -171,7 +172,7 @@ function admin_user()
 
         $html .= "<hr />";
     } else {
-        switch ($_REQUEST['action']) {
+        switch ($request->input('action')) {
             case 'save_groups':
                 if ($user_id != $user['UID']) {
                     $my_highest_group = DB::select(
@@ -212,13 +213,14 @@ function admin_user()
                             $grouplist[] = $group['UID'];
                         }
 
-                        if (!is_array($_REQUEST['groups'])) {
-                            $_REQUEST['groups'] = [];
+                        $groupsRequest = $request->input('groups');
+                        if (!is_array($groupsRequest)) {
+                            $groupsRequest = [];
                         }
 
                         DB::delete('DELETE FROM `UserGroups` WHERE `uid`=?', [$user_id]);
                         $user_groups_info = [];
-                        foreach ($_REQUEST['groups'] as $group) {
+                        foreach ($groupsRequest as $group) {
                             if (in_array($group, $grouplist)) {
                                 DB::insert(
                                     'INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, ?)',
@@ -244,7 +246,7 @@ function admin_user()
                 $force_active = $user['force_active'];
                 $user_source = User($user_id);
                 if (in_array('admin_active', $privileges)) {
-                    $force_active = $_REQUEST['force_active'];
+                    $force_active = $request->input('force_active');
                 }
                 $sql = '
                     UPDATE `User` SET
@@ -255,7 +257,7 @@ function admin_user()
                       `Handy` = ?,
                       `Alter` =?,
                       `DECT` = ?,
-                      ' . ($user_source['email_by_human_allowed'] ? '`email` = ' . DB::getPdo()->quote($_POST["eemail"]) . ',' : '') . '
+                      ' . ($user_source['email_by_human_allowed'] ? '`email` = ' . DB::getPdo()->quote($request->post('eemail')) . ',' : '') . '
                       `jabber` = ?,
                       `Size` = ?,
                       `Gekommen`= ?,
@@ -266,34 +268,34 @@ function admin_user()
                       WHERE `UID` = ?
                       LIMIT 1';
                 DB::update($sql, [
-                    $_POST['eNick'],
-                    $_POST['eName'],
-                    $_POST['eVorname'],
-                    $_POST['eTelefon'],
-                    $_POST['eHandy'],
-                    $_POST['eAlter'],
-                    $_POST['eDECT'],
-                    $_POST['ejabber'],
-                    $_POST['eSize'],
-                    $_POST['eGekommen'],
-                    $_POST['eAktiv'],
+                    $request->post('eNick'),
+                    $request->post('eName'),
+                    $request->post('eVorname'),
+                    $request->post('eTelefon'),
+                    $request->post('eHandy'),
+                    $request->post('eAlter'),
+                    $request->post('eDECT'),
+                    $request->post('ejabber'),
+                    $request->post('eSize'),
+                    $request->post('eGekommen'),
+                    $request->post('eAktiv'),
                     $force_active,
-                    $_POST['eTshirt'],
-                    $_POST['Hometown'],
+                    $request->post('eTshirt'),
+                    $request->post('Hometown'),
                     $user_id,
                 ]);
                 engelsystem_log(
-                    'Updated user: ' . $_POST['eNick'] . ', ' . $_POST['eSize']
-                    . ', arrived: ' . $_POST['eGekommen']
-                    . ', active: ' . $_POST['eAktiv']
-                    . ', tshirt: ' . $_POST['eTshirt']
+                    'Updated user: ' . $request->post('eNick') . ', ' . $request->post('eSize')
+                    . ', arrived: ' . $request->post('eVorname')
+                    . ', active: ' . $request->post('eAktiv')
+                    . ', tshirt: ' . $request->post('eTshirt')
                 );
                 $html .= success('Änderung wurde gespeichert...' . "\n", true);
                 break;
 
             case 'change_pw':
-                if ($_REQUEST['new_pw'] != '' && $_REQUEST['new_pw'] == $_REQUEST['new_pw2']) {
-                    set_password($user_id, $_REQUEST['new_pw']);
+                if ($request->post('new_pw') != '' && $request->post('new_pw') == $request->post('new_pw2')) {
+                    set_password($user_id, $request->post('new_pw'));
                     $user_source = User($user_id);
                     engelsystem_log('Set new password for ' . User_Nick_render($user_source));
                     $html .= success('Passwort neu gesetzt.', true);

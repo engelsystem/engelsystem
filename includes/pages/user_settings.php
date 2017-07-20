@@ -21,9 +21,10 @@ function settings_title()
 function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 {
     $valid = true;
+    $request = request();
 
-    if (isset($_REQUEST['mail'])) {
-        $result = User_validate_mail($_REQUEST['mail']);
+    if ($request->has('mail')) {
+        $result = User_validate_mail($request->input('mail'));
         $user_source['email'] = $result->getValue();
         if (!$result->isValid()) {
             $valid = false;
@@ -34,11 +35,11 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         error(_('Please enter your e-mail.'));
     }
 
-    $user_source['email_shiftinfo'] = isset($_REQUEST['email_shiftinfo']);
-    $user_source['email_by_human_allowed'] = isset($_REQUEST['email_by_human_allowed']);
+    $user_source['email_shiftinfo'] = $request->has('email_shiftinfo');
+    $user_source['email_by_human_allowed'] = $request->has('email_by_human_allowed');
 
-    if (isset($_REQUEST['jabber'])) {
-        $result = User_validate_jabber($_REQUEST['jabber']);
+    if ($request->has('jabber')) {
+        $result = User_validate_jabber($request->input('jabber'));
         $user_source['jabber'] = $result->getValue();
         if (!$result->isValid()) {
             $valid = false;
@@ -46,14 +47,14 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         }
     }
 
-    if (isset($_REQUEST['tshirt_size']) && isset($tshirt_sizes[$_REQUEST['tshirt_size']])) {
-        $user_source['Size'] = $_REQUEST['tshirt_size'];
+    if ($request->has('tshirt_size') && isset($tshirt_sizes[$request->input('tshirt_size')])) {
+        $user_source['Size'] = $request->input('tshirt_size');
     } elseif ($enable_tshirt_size) {
         $valid = false;
     }
 
-    if (isset($_REQUEST['planned_arrival_date'])) {
-        $tmp = parse_date('Y-m-d H:i', $_REQUEST['planned_arrival_date'] . ' 00:00');
+    if ($request->has('planned_arrival_date')) {
+        $tmp = parse_date('Y-m-d H:i', $request->input('planned_arrival_date') . ' 00:00');
         $result = User_validate_planned_arrival_date($tmp);
         $user_source['planned_arrival_date'] = $result->getValue();
         if (!$result->isValid()) {
@@ -62,8 +63,8 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         }
     }
 
-    if (isset($_REQUEST['planned_departure_date'])) {
-        $tmp = parse_date('Y-m-d H:i', $_REQUEST['planned_departure_date'] . ' 00:00');
+    if ($request->has('planned_departure_date')) {
+        $tmp = parse_date('Y-m-d H:i', $request->input('planned_departure_date') . ' 00:00');
         $result = User_validate_planned_departure_date($user_source['planned_arrival_date'], $tmp);
         $user_source['planned_departure_date'] = $result->getValue();
         if (!$result->isValid()) {
@@ -97,16 +98,17 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
  */
 function user_settings_password($user_source)
 {
+    $request = request();
     if (
-        !isset($_REQUEST['password'])
-        || !verify_password($_REQUEST['password'], $user_source['Passwort'], $user_source['UID'])
+        !$request->has('password')
+        || !verify_password($request->post('password'), $user_source['Passwort'], $user_source['UID'])
     ) {
         error(_('-> not OK. Please try again.'));
-    } elseif (strlen($_REQUEST['new_password']) < config('min_password_length')) {
+    } elseif (strlen($request->post('new_password')) < config('min_password_length')) {
         error(_('Your password is to short (please use at least 6 characters).'));
-    } elseif ($_REQUEST['new_password'] != $_REQUEST['new_password2']) {
+    } elseif ($request->post('new_password') != $request->post('new_password2')) {
         error(_('Your passwords don\'t match.'));
-    } elseif (set_password($user_source['UID'], $_REQUEST['new_password'])) {
+    } elseif (set_password($user_source['UID'], $request->post('new_password'))) {
         success(_('Password saved.'));
     } else {
         error(_('Failed setting password.'));
@@ -124,9 +126,10 @@ function user_settings_password($user_source)
 function user_settings_theme($user_source, $themes)
 {
     $valid = true;
+    $request = request();
 
-    if (isset($_REQUEST['theme']) && isset($themes[$_REQUEST['theme']])) {
-        $user_source['color'] = $_REQUEST['theme'];
+    if ($request->has('theme') && isset($themes[$request->input('theme')])) {
+        $user_source['color'] = $request->input('theme');
     } else {
         $valid = false;
     }
@@ -160,9 +163,10 @@ function user_settings_theme($user_source, $themes)
 function user_settings_locale($user_source, $locales)
 {
     $valid = true;
+    $request = request();
 
-    if (isset($_REQUEST['language']) && isset($locales[$_REQUEST['language']])) {
-        $user_source['Sprache'] = $_REQUEST['language'];
+    if ($request->has('language') && isset($locales[$request->input('language')])) {
+        $user_source['Sprache'] = $request->input('language');
     } else {
         $valid = false;
     }
@@ -195,6 +199,7 @@ function user_settings_locale($user_source, $locales)
 function user_settings()
 {
     global $themes, $user;
+    $request = request();
 
     $enable_tshirt_size = config('enable_tshirt_size');
     $tshirt_sizes = config('tshirt_sizes');
@@ -220,13 +225,13 @@ function user_settings()
 
     $user_source = $user;
 
-    if (isset($_REQUEST['submit'])) {
+    if ($request->has('submit')) {
         $user_source = user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes);
-    } elseif (isset($_REQUEST['submit_password'])) {
+    } elseif ($request->has('submit_password')) {
         user_settings_password($user_source);
-    } elseif (isset($_REQUEST['submit_theme'])) {
+    } elseif ($request->has('submit_theme')) {
         $user_source = user_settings_theme($user_source, $themes);
-    } elseif (isset($_REQUEST['submit_language'])) {
+    } elseif ($request->has('submit_language')) {
         $user_source = user_settings_locale($user_source, $locales);
     }
 

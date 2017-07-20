@@ -23,20 +23,21 @@ function shifts_title()
 function user_shifts()
 {
     global $user;
+    $request = request();
 
     if (User_is_freeloader($user)) {
         redirect(page_link_to('user_myshifts'));
     }
 
     // Löschen einzelner Schicht-Einträge (Also Belegung einer Schicht von Engeln) durch Admins
-    if (isset($_REQUEST['entry_id'])) {
+    if ($request->has('entry_id')) {
         shift_entry_delete_controller();
         return '';
-    } elseif (isset($_REQUEST['edit_shift'])) {
+    } elseif ($request->has('edit_shift')) {
         return shift_edit_controller();
-    } elseif (isset($_REQUEST['delete_shift'])) {
+    } elseif ($request->has('delete_shift')) {
         return shift_delete_controller();
-    } elseif (isset($_REQUEST['shift_id'])) {
+    } elseif ($request->has('shift_id')) {
         return shift_entry_add_controller();
     }
     return view_user_shifts();

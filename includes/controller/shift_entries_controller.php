@@ -11,9 +11,10 @@ function shift_entry_add_controller()
 {
     global $privileges, $user;
 
+    $request = request();
     $shift_id = 0;
-    if (isset($_REQUEST['shift_id']) && preg_match('/^\d*$/', $_REQUEST['shift_id'])) {
-        $shift_id = $_REQUEST['shift_id'];
+    if ($request->has('shift_id') && preg_match('/^\d*$/', $request->input('shift_id'))) {
+        $shift_id = $request->input('shift_id');
     } else {
         redirect(page_link_to('user_shifts'));
     }
@@ -32,8 +33,8 @@ function shift_entry_add_controller()
     }
 
     $type_id = 0;
-    if (isset($_REQUEST['type_id']) && preg_match('/^\d*$/', $_REQUEST['type_id'])) {
-        $type_id = $_REQUEST['type_id'];
+    if ($request->has('type_id') && preg_match('/^\d*$/', $request->input('type_id'))) {
+        $type_id = $request->input('type_id');
     } else {
         redirect(page_link_to('user_shifts'));
     }
@@ -63,14 +64,14 @@ function shift_entry_add_controller()
     }
 
     if (
-        isset($_REQUEST['user_id'])
-        && preg_match('/^\d*$/', $_REQUEST['user_id'])
+        $request->has('user_id')
+        && preg_match('/^\d*$/', $request->input('user_id'))
         && (
             in_array('user_shifts_admin', $privileges)
             || in_array('shiftentry_edit_angeltype_supporter', $privileges)
         )
     ) {
-        $user_id = $_REQUEST['user_id'];
+        $user_id = $request->input('user_id');
     } else {
         $user_id = $user['UID'];
     }
@@ -92,7 +93,7 @@ function shift_entry_add_controller()
         redirect(shift_link($shift));
     }
 
-    if (isset($_REQUEST['submit'])) {
+    if ($request->has('submit')) {
         $selected_type_id = $type_id;
         if (in_array('user_shifts_admin', $privileges) || in_array('shiftentry_edit_angeltype_supporter',
                 $privileges)
@@ -103,14 +104,14 @@ function shift_entry_add_controller()
             }
 
             if (
-                isset($_REQUEST['angeltype_id'])
+                $request->has('angeltype_id')
                 && test_request_int('angeltype_id')
                 && count(DB::select(
                     'SELECT `id` FROM `AngelTypes` WHERE `id`=? LIMIT 1',
-                    [$_REQUEST['angeltype_id']]
+                    [$request->input('angeltype_id')]
                 )) > 0
             ) {
-                $selected_type_id = $_REQUEST['angeltype_id'];
+                $selected_type_id = $request->input('angeltype_id');
             }
         }
 
@@ -124,7 +125,7 @@ function shift_entry_add_controller()
         $freeloaded = isset($shift['freeloaded']) ? $shift['freeloaded'] : false;
         $freeload_comment = isset($shift['freeload_comment']) ? $shift['freeload_comment'] : '';
         if (in_array('user_shifts_admin', $privileges)) {
-            $freeloaded = isset($_REQUEST['freeloaded']);
+            $freeloaded = $request->has('freeloaded');
             $freeload_comment = strip_request_item_nl('freeload_comment');
         }
 
@@ -236,11 +237,12 @@ function shift_entry_add_controller()
 function shift_entry_delete_controller()
 {
     global $privileges, $user;
+    $request = request();
 
-    if (!isset($_REQUEST['entry_id']) || !test_request_int('entry_id')) {
+    if (!$request->has('entry_id') || !test_request_int('entry_id')) {
         redirect(page_link_to('user_shifts'));
     }
-    $entry_id = $_REQUEST['entry_id'];
+    $entry_id = $request->input('entry_id');
 
     $shift_entry_source = DB::select('
         SELECT

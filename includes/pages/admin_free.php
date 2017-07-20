@@ -16,20 +16,20 @@ function admin_free_title()
 function admin_free()
 {
     global $privileges;
+    $request = request();
 
     $search = '';
-    if (isset($_REQUEST['search'])) {
+    if ($request->has('search')) {
         $search = strip_request_item('search');
     }
 
     $angelTypeSearch = '';
-    if (empty($_REQUEST['angeltype'])) {
-        $_REQUEST['angeltype'] = '';
-    } else {
+    $angelType = $request->input('angeltype', '');
+    if (!empty($angelType)) {
         $angelTypeSearch = ' INNER JOIN `UserAngelTypes` ON (`UserAngelTypes`.`angeltype_id` = '
-            . DB::getPdo()->quote($_REQUEST['angeltype'])
+            . DB::getPdo()->quote($angelType)
             . ' AND `UserAngelTypes`.`user_id` = `User`.`UID`';
-        if (isset($_REQUEST['confirmed_only'])) {
+        if ($request->has('confirmed_only')) {
             $angelTypeSearch .= ' AND `UserAngelTypes`.`confirm_user_id`';
         }
         $angelTypeSearch .= ') ';
@@ -105,10 +105,10 @@ function admin_free()
                     form_text('search', _('Search'), $search)
                 ]),
                 div('col-md-4', [
-                    form_select('angeltype', _('Angeltype'), $angel_types, $_REQUEST['angeltype'])
+                    form_select('angeltype', _('Angeltype'), $angel_types, $angelType)
                 ]),
                 div('col-md-2', [
-                    form_checkbox('confirmed_only', _('Only confirmed'), isset($_REQUEST['confirmed_only']))
+                    form_checkbox('confirmed_only', _('Only confirmed'), $request->has('confirmed_only'))
                 ]),
                 div('col-md-2', [
                     form_submit('submit', _('Search'))

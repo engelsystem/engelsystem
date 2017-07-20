@@ -18,14 +18,15 @@ function myshifts_title()
 function user_myshifts()
 {
     global $user, $privileges;
+    $request = request();
 
     if (
-        isset($_REQUEST['id'])
+        $request->has('id')
         && in_array('user_shifts_admin', $privileges)
-        && preg_match('/^\d{1,}$/', $_REQUEST['id'])
-        && count(DB::select('SELECT `UID` FROM `User` WHERE `UID`=?', [$_REQUEST['id']])) > 0
+        && preg_match('/^\d{1,}$/', $request->input('id'))
+        && count(DB::select('SELECT `UID` FROM `User` WHERE `UID`=?', [$request->input('id')])) > 0
     ) {
-        $user_id = $_REQUEST['id'];
+        $user_id = $request->input('id');
     } else {
         $user_id = $user['UID'];
     }
@@ -33,8 +34,8 @@ function user_myshifts()
     $shifts_user = DB::select('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
     $shifts_user = array_shift($shifts_user);
 
-    if (isset($_REQUEST['reset'])) {
-        if ($_REQUEST['reset'] == 'ack') {
+    if ($request->has('reset')) {
+        if ($request->input('reset') == 'ack') {
             User_reset_api_key($user);
             success(_('Key changed.'));
             redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
@@ -46,8 +47,8 @@ function user_myshifts()
             ),
             button(page_link_to('user_myshifts') . '&reset=ack', _('Continue'), 'btn-danger')
         ]);
-    } elseif (isset($_REQUEST['edit']) && preg_match('/^\d*$/', $_REQUEST['edit'])) {
-        $user_id = $_REQUEST['edit'];
+    } elseif ($request->has('edit') && preg_match('/^\d*$/', $request->input('edit'))) {
+        $user_id = $request->input('edit');
         $shift = DB::select('
                 SELECT
                     `ShiftEntry`.`freeloaded`,
@@ -77,10 +78,10 @@ function user_myshifts()
             $freeloaded = $shift['freeloaded'];
             $freeload_comment = $shift['freeload_comment'];
 
-            if (isset($_REQUEST['submit'])) {
+            if ($request->has('submit')) {
                 $valid = true;
                 if (in_array('user_shifts_admin', $privileges)) {
-                    $freeloaded = isset($_REQUEST['freeloaded']);
+                    $freeloaded = $request->has('freeloaded');
                     $freeload_comment = strip_request_item_nl('freeload_comment');
                     if ($freeloaded && $freeload_comment == '') {
                         $valid = false;
@@ -128,8 +129,8 @@ function user_myshifts()
         } else {
             redirect(page_link_to('user_myshifts'));
         }
-    } elseif (isset($_REQUEST['cancel']) && preg_match('/^\d*$/', $_REQUEST['cancel'])) {
-        $user_id = $_REQUEST['cancel'];
+    } elseif ($request->has('cancel') && preg_match('/^\d*$/', $request->input('cancel'))) {
+        $user_id = $request->input('cancel');
         $shift = DB::select('
                 SELECT *
                 FROM `Shifts`

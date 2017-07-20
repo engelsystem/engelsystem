@@ -19,6 +19,7 @@ function room_controller()
         redirect(page_link_to());
     }
 
+    $request = request();
     $room = load_room(false);
     if ($room['show'] != 'Y' && !in_array('admin_rooms', $privileges)) {
         redirect(page_link_to());
@@ -42,8 +43,8 @@ function room_controller()
     if (!empty($days)) {
         $selected_day = $days[0];
     }
-    if (isset($_REQUEST['shifts_filter_day'])) {
-        $selected_day = $_REQUEST['shifts_filter_day'];
+    if ($request->has('shifts_filter_day')) {
+        $selected_day = $request->input('shifts_filter_day');
     }
     $shiftsFilter->setStartTime(parse_date('Y-m-d H:i', $selected_day . ' 00:00'));
     $shiftsFilter->setEndTime(parse_date('Y-m-d H:i', $selected_day . ' 23:59'));
@@ -66,11 +67,13 @@ function room_controller()
  */
 function rooms_controller()
 {
-    if (!isset($_REQUEST['action'])) {
-        $_REQUEST['action'] = 'list';
+    $request = request();
+    $action = $request->input('action');
+    if (!$request->has('action')) {
+        $action = 'list';
     }
 
-    switch ($_REQUEST['action']) {
+    switch ($action) {
         case 'view':
             return room_controller();
         case 'list':
@@ -112,7 +115,7 @@ function load_room($onlyVisible = true)
         redirect(page_link_to());
     }
 
-    $room = Room($_REQUEST['room_id'], $onlyVisible);
+    $room = Room(request()->input('room_id'), $onlyVisible);
     if ($room == null) {
         redirect(page_link_to());
     }

@@ -33,9 +33,10 @@ function user_meetings()
 {
     $display_news = config('display_news');
     $html = '<div class="col-md-12"><h1>' . meetings_title() . '</h1>' . msg();
+    $request = request();
 
-    if (isset($_REQUEST['page']) && preg_match('/^\d{1,}$/', $_REQUEST['page'])) {
-        $page = $_REQUEST['page'];
+    if ($request->has('page') && preg_match('/^\d{1,}$/', $request->input('page'))) {
+        $page = $request->input('page');
     } else {
         $page = 0;
     }
@@ -56,9 +57,9 @@ function user_meetings()
     $dis_rows = ceil(count(DB::select('SELECT `ID` FROM `News`')) / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
-        if (isset($_REQUEST['page']) && $i == $_REQUEST['page']) {
+        if ($request->has('page') && $i == $request->input('page')) {
             $html .= '<li class="active">';
-        } elseif (!isset($_REQUEST['page']) && $i == 0) {
+        } elseif (!$request->has('page') && $i == 0) {
             $html .= '<li class="active">';
         } else {
             $html .= '<li>';
@@ -116,17 +117,19 @@ function user_news_comments()
 {
     global $user;
 
+    $request = request();
+
     $html = '<div class="col-md-12"><h1>' . user_news_comments_title() . '</h1>';
     if (
-        isset($_REQUEST['nid'])
-        && preg_match('/^\d{1,}$/', $_REQUEST['nid'])
-        && count(DB::select('SELECT `ID` FROM `News` WHERE `ID`=? LIMIT 1', [$_REQUEST['nid']])) > 0
+        $request->has('nid')
+        && preg_match('/^\d{1,}$/', $request->input('nid'))
+        && count(DB::select('SELECT `ID` FROM `News` WHERE `ID`=? LIMIT 1', [$request->input('nid')])) > 0
     ) {
-        $nid = $_REQUEST['nid'];
+        $nid = $request->input('nid');
         $news = DB::select('SELECT * FROM `News` WHERE `ID`=? LIMIT 1', [$nid]);
         $news = array_shift($news);
-        if (isset($_REQUEST['text'])) {
-            $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($_REQUEST['text']));
+        if ($request->has('text')) {
+            $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($request->input('text')));
             DB::insert('
                     INSERT INTO `NewsComments` (`Refid`, `Datum`, `Text`, `UID`)
                     VALUES (?, ?, ?, ?)
@@ -179,12 +182,14 @@ function user_news()
 {
     global $privileges, $user;
     $display_news = config('display_news');
+    $request = request();
 
     $html = '<div class="col-md-12"><h1>' . news_title() . '</h1>' . msg();
 
-    if (isset($_POST['text']) && isset($_POST['betreff']) && in_array('admin_news', $privileges)) {
-        if (!isset($_POST['treffen']) || !in_array('admin_news', $privileges)) {
-            $_POST['treffen'] = 0;
+    $isMeeting = $request->post('treffen');
+    if ($request->has('text') && $request->has('betreff') && in_array('admin_news', $privileges)) {
+        if (!$request->has('treffen') || !in_array('admin_news', $privileges)) {
+            $isMeeting = 0;
         }
         DB::insert('
             INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`)
@@ -192,19 +197,19 @@ function user_news()
             ',
             [
                 time(),
-                $_POST['betreff'],
-                $_POST['text'],
+                $request->post('betreff'),
+                $request->post('text'),
                 $user['UID'],
-                $_POST['treffen'],
+                $isMeeting,
             ]
         );
-        engelsystem_log('Created news: ' . $_POST['betreff'] . ', treffen: ' . $_POST['treffen']);
+        engelsystem_log('Created news: ' . $_POST['betreff'] . ', treffen: ' . $isMeeting);
         success(_('Entry saved.'));
         redirect(page_link_to('news'));
     }
 
-    if (isset($_REQUEST['page']) && preg_match('/^\d{1,}$/', $_REQUEST['page'])) {
-        $page = $_REQUEST['page'];
+    if ($request->has('page') && preg_match('/^\d{1,}$/', $request->input('page'))) {
+        $page = $request->input('page');
     } else {
         $page = 0;
     }
@@ -225,9 +230,9 @@ function user_news()
     $dis_rows = ceil(count(DB::select('SELECT `ID` FROM `News`')) / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
-        if (isset($_REQUEST['page']) && $i == $_REQUEST['page']) {
+        if ($request->has('page') && $i == $request->input('page')) {
             $html .= '<li class="active">';
-        } elseif (!isset($_REQUEST['page']) && $i == 0) {
+        } elseif (!$request->has('page') && $i == 0) {
             $html .= '<li class="active">';
         } else {
             $html .= '<li>';

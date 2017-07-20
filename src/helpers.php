@@ -2,6 +2,7 @@
 // Some useful functions
 
 use Engelsystem\Config\Config;
+use Engelsystem\Http\Request;
 
 /**
  * Get or set config values
@@ -21,4 +22,20 @@ function config($key = null, $default = null)
     }
 
     return Config::getInstance()->get($key, $default);
+}
+
+/**
+ * @param string $key
+ * @param mixed  $default
+ * @return Request|mixed
+ */
+function request($key = null, $default = null)
+{
+    $request = Request::getInstance();
+
+    if (is_null($key)) {
+        return $request;
+    }
+
+    return $request->input($key, $default);
 }

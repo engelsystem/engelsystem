@@ -19,6 +19,7 @@ function event_config_edit_controller()
         redirect('?');
     }
 
+    $request = request();
     $event_name = null;
     $event_welcome_msg = null;
     $buildup_start_date = null;
@@ -36,17 +37,17 @@ function event_config_edit_controller()
         $event_welcome_msg = $event_config['event_welcome_msg'];
     }
 
-    if (isset($_REQUEST['submit'])) {
+    if ($request->has('submit')) {
         $valid = true;
 
-        if (isset($_REQUEST['event_name'])) {
+        if ($request->has('event_name')) {
             $event_name = strip_request_item('event_name');
         }
         if ($event_name == '') {
             $event_name = null;
         }
 
-        if (isset($_REQUEST['event_welcome_msg'])) {
+        if ($request->has('event_welcome_msg')) {
             $event_welcome_msg = strip_request_item_nl('event_welcome_msg');
         }
         if ($event_welcome_msg == '') {

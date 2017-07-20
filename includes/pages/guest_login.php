@@ -38,6 +38,7 @@ function guest_register()
     $enable_tshirt_size = config('enable_tshirt_size');
     $min_password_length = config('min_password_length');
     $event_config = EventConfig();
+    $request = request();
 
     $msg = '';
     $nick = '';
@@ -73,11 +74,11 @@ function guest_register()
         }
     }
 
-    if (isset($_REQUEST['submit'])) {
+    if ($request->has('submit')) {
         $valid = true;
 
-        if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 1) {
-            $nick = User_validate_Nick($_REQUEST['nick']);
+        if ($request->has('nick') && strlen(User_validate_Nick($request->input('nick'))) > 1) {
+            $nick = User_validate_Nick($request->input('nick'));
             if (count(DB::select('SELECT `UID` FROM `User` WHERE `Nick`=? LIMIT 1', [$nick])) > 0) {
                 $valid = false;
                 $msg .= error(sprintf(_('Your nick &quot;%s&quot; already exists.'), $nick), true);
@@ -86,11 +87,11 @@ function guest_register()
             $valid = false;
             $msg .= error(sprintf(
                 _('Your nick &quot;%s&quot; is too short (min. 2 characters).'),
-                User_validate_Nick($_REQUEST['nick'])
+                User_validate_Nick($request->input('nick'))
             ), true);
         }
 
-        if (isset($_REQUEST['mail']) && strlen(strip_request_item('mail')) > 0) {
+        if ($request->has('mail') && strlen(strip_request_item('mail')) > 0) {
             $mail = strip_request_item('mail');
             if (!check_email($mail)) {
                 $valid = false;
@@ -101,15 +102,15 @@ function guest_register()
             $msg .= error(_('Please enter your e-mail.'), true);
         }
 
-        if (isset($_REQUEST['email_shiftinfo'])) {
+        if ($request->has('email_shiftinfo')) {
             $email_shiftinfo = true;
         }
 
-        if (isset($_REQUEST['email_by_human_allowed'])) {
+        if ($request->has('email_by_human_allowed')) {
             $email_by_human_allowed = true;
         }
 
-        if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
+        if ($request->has('jabber') && strlen(strip_request_item('jabber')) > 0) {
             $jabber = strip_request_item('jabber');
             if (!check_email($jabber)) {
                 $valid = false;
@@ -118,16 +119,16 @@ function guest_register()
         }
 
         if ($enable_tshirt_size) {
-            if (isset($_REQUEST['tshirt_size']) && isset($tshirt_sizes[$_REQUEST['tshirt_size']]) && $_REQUEST['tshirt_size'] != '') {
-                $tshirt_size = $_REQUEST['tshirt_size'];
+            if ($request->has('tshirt_size') && isset($tshirt_sizes[$request->input('tshirt_size')])) {
+                $tshirt_size = $request->input('tshirt_size');
             } else {
                 $valid = false;
                 $msg .= error(_('Please select your shirt size.'), true);
             }
         }
 
-        if (isset($_REQUEST['password']) && strlen($_REQUEST['password']) >= $min_password_length) {
-            if ($_REQUEST['password'] != $_REQUEST['password2']) {
+        if ($request->has('password') && strlen($request->post('password')) >= $min_password_length) {
+            if ($request->post('password') != $request->post('password2')) {
                 $valid = false;
                 $msg .= error(_('Your passwords don\'t match.'), true);
             }
@@ -139,8 +140,8 @@ function guest_register()
             ), true);
         }
 
-        if (isset($_REQUEST['planned_arrival_date'])) {
-            $tmp = parse_date('Y-m-d H:i', $_REQUEST['planned_arrival_date'] . ' 00:00');
+        if ($request->has('planned_arrival_date')) {
+            $tmp = parse_date('Y-m-d H:i', $request->input('planned_arrival_date') . ' 00:00');
             $result = User_validate_planned_arrival_date($tmp);
             $planned_arrival_date = $result->getValue();
             if (!$result->isValid()) {
@@ -151,34 +152,34 @@ function guest_register()
 
         $selected_angel_types = [];
         foreach (array_keys($angel_types) as $angel_type_id) {
-            if (isset($_REQUEST['angel_types_' . $angel_type_id])) {
+            if ($request->has('angel_types_' . $angel_type_id)) {
                 $selected_angel_types[] = $angel_type_id;
             }
         }
 
         // Trivia
-        if (isset($_REQUEST['lastname'])) {
+        if ($request->has('lastname')) {
             $lastName = strip_request_item('lastname');
         }
-        if (isset($_REQUEST['prename'])) {
+        if ($request->has('prename')) {
             $preName = strip_request_item('prename');
         }
-        if (isset($_REQUEST['age']) && preg_match('/^\d{0,4}$/', $_REQUEST['age'])) {
+        if ($request->has('age') && preg_match('/^\d{0,4}$/', $request->input('age'))) {
             $age = strip_request_item('age');
         }
-        if (isset($_REQUEST['tel'])) {
+        if ($request->has('tel')) {
             $tel = strip_request_item('tel');
         }
-        if (isset($_REQUEST['dect'])) {
+        if ($request->has('dect')) {
             $dect = strip_request_item('dect');
         }
-        if (isset($_REQUEST['mobile'])) {
+        if ($request->has('mobile')) {
             $mobile = strip_request_item('mobile');
         }
-        if (isset($_REQUEST['hometown'])) {
+        if ($request->has('hometown')) {
             $hometown = strip_request_item('hometown');
         }
-        if (isset($_REQUEST['comment'])) {
+        if ($request->has('comment')) {
             $comment = strip_request_item_nl('comment');
         }
 
@@ -233,7 +234,7 @@ function guest_register()
             // Assign user-group and set password
             $user_id = DB::getPdo()->lastInsertId();
             DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -2)', [$user_id]);
-            set_password($user_id, $_REQUEST['password']);
+            set_password($user_id, $request->post('password'));
 
             // Assign angel-types
             $user_angel_types_info = [];
@@ -391,18 +392,18 @@ function guest_logout()
 function guest_login()
 {
     $nick = '';
-
+    $request = request();
     unset($_SESSION['uid']);
     $valid = true;
 
-    if (isset($_REQUEST['submit'])) {
-        if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 0) {
-            $nick = User_validate_Nick($_REQUEST['nick']);
+    if ($request->has('submit')) {
+        if ($request->has('nick') && strlen(User_validate_Nick($request->input('nick'))) > 0) {
+            $nick = User_validate_Nick($request->input('nick'));
             $login_user = DB::select('SELECT * FROM `User` WHERE `Nick`=?', [$nick]);
             if (count($login_user) > 0) {
                 $login_user = $login_user[0];
-                if (isset($_REQUEST['password'])) {
-                    if (!verify_password($_REQUEST['password'], $login_user['Passwort'], $login_user['UID'])) {
+                if ($request->has('password')) {
+                    if (!verify_password($request->post('password'), $login_user['Passwort'], $login_user['UID'])) {
                         $valid = false;
                         error(_('Your password is incorrect.  Please try it again.'));
                     }
@@ -487,6 +488,6 @@ function get_register_hint()
         ]);
     }
 
-    //FIXME: return error(_('Registration is disabled.'), true);
+    //@TODO: FIXME: return error(_('Registration is disabled.'), true);
     return error('Registration is <a href="https://engelsystem.de/33c3/overwhelmed.html">disabled</a>.', true);
 }

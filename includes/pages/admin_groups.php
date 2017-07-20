@@ -16,8 +16,10 @@ function admin_groups_title()
 function admin_groups()
 {
     $html = '';
+    $request = request();
     $groups = DB::select('SELECT * FROM `Groups` ORDER BY `Name`');
-    if (!isset($_REQUEST['action'])) {
+
+    if (!$request->has('action')) {
         $groups_table = [];
         foreach ($groups as $group) {
             $privileges = DB::select('
@@ -51,10 +53,10 @@ function admin_groups()
             ], $groups_table)
         ]);
     } else {
-        switch ($_REQUEST['action']) {
+        switch ($request->input('action')) {
             case 'edit':
-                if (isset($_REQUEST['id']) && preg_match('/^-\d{1,11}$/', $_REQUEST['id'])) {
-                    $group_id = $_REQUEST['id'];
+                if ($request->has('id') && preg_match('/^-\d{1,11}$/', $request->input('id'))) {
+                    $group_id = $request->input('id');
                 } else {
                     return error('Incomplete call, missing Groups ID.', true);
                 }
@@ -99,21 +101,22 @@ function admin_groups()
                 break;
 
             case 'save':
-                if (isset($_REQUEST['id']) && preg_match('/^-\d{1,11}$/', $_REQUEST['id'])) {
-                    $group_id = $_REQUEST['id'];
+                if ($request->has('id') && preg_match('/^-\d{1,11}$/', $request->input('id'))) {
+                    $group_id = $request->input('id');
                 } else {
                     return error('Incomplete call, missing Groups ID.', true);
                 }
 
                 $group = DB::select('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
-                if (!is_array($_REQUEST['privileges'])) {
-                    $_REQUEST['privileges'] = [];
+                $privileges = $request->get('privileges');
+                if (!is_array($privileges)) {
+                    $privileges = [];
                 }
                 if (!empty($group)) {
                     $group = array_shift($group);
                     DB::delete('DELETE FROM `GroupPrivileges` WHERE `group_id`=?', [$group_id]);
                     $privilege_names = [];
-                    foreach ($_REQUEST['privileges'] as $privilege) {
+                    foreach ($privileges as $privilege) {
                         if (preg_match('/^\d{1,}$/', $privilege)) {
                             $group_privileges_source = DB::select(
                                 'SELECT `name` FROM `Privileges` WHERE `id`=? LIMIT 1',

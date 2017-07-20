@@ -18,12 +18,14 @@ function check_request_datetime($date_name, $time_name, $allowed_days, $default_
 {
     $time = date('H:i', $default_value);
     $day = date('Y-m-d', $default_value);
+    $request = request();
 
-    if (isset($_REQUEST[$time_name]) && preg_match('#^\d{1,2}:\d\d$#', trim($_REQUEST[$time_name]))) {
-        $time = trim($_REQUEST[$time_name]);
+    if ($request->has($time_name) && preg_match('#^\d{1,2}:\d\d$#', trim($request->input($time_name)))) {
+        $time = trim($request->input($time_name));
     }
-    if (isset($_REQUEST[$date_name]) && in_array($_REQUEST[$date_name], $allowed_days)) {
-        $day = $_REQUEST[$date_name];
+
+    if ($request->has($date_name) && in_array($request->input($date_name), $allowed_days)) {
+        $day = $request->input($date_name);
     }
 
     return parse_date('Y-m-d H:i', $day . ' ' . $time);
@@ -94,8 +96,9 @@ function select_array($data, $key_name, $value_name)
  */
 function check_request_int_array($name, $default = [])
 {
-    if (isset($_REQUEST[$name]) && is_array($_REQUEST[$name])) {
-        return array_filter($_REQUEST[$name], 'is_numeric');
+    $request = request();
+    if ($request->has($name) && is_array($request->input($name))) {
+        return array_filter($request->input($name), 'is_numeric');
     }
     return $default;
 }
@@ -111,10 +114,11 @@ function check_request_int_array($name, $default = [])
  */
 function check_request_date($name, $error_message = null, $null_allowed = false)
 {
-    if (!isset($_REQUEST[$name])) {
+    $request = request();
+    if (!$request->has($name)) {
         return new ValidationResult($null_allowed, null);
     }
-    return check_date($_REQUEST[$name], $error_message, $null_allowed);
+    return check_date($request->input($name), $error_message, $null_allowed);
 }
 
 /**
@@ -148,8 +152,9 @@ function check_date($input, $error_message = null, $null_allowed = false)
  */
 function strip_request_item($name, $default_value = null)
 {
-    if (isset($_REQUEST[$name])) {
-        return strip_item($_REQUEST[$name]);
+    $request = request();
+    if ($request->has($name)) {
+        return strip_item($request->input($name));
     }
     return $default_value;
 }
@@ -163,8 +168,9 @@ function strip_request_item($name, $default_value = null)
  */
 function test_request_int($name)
 {
-    if (isset($_REQUEST[$name])) {
-        return preg_match('/^\d*$/', $_REQUEST[$name]);
+    $request = request();
+    if ($request->has($name)) {
+        return preg_match('/^\d*$/', $request->input($name));
     }
     return false;
 }
@@ -178,8 +184,9 @@ function test_request_int($name)
  */
 function strip_request_item_nl($name, $default_value = null)
 {
-    if (isset($_REQUEST[$name])) {
-        return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]{1,})/ui", '', strip_tags($_REQUEST[$name]));
+    $request = request();
+    if ($request->has($name)) {
+        return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]{1,})/ui", '', strip_tags($request->get($name)));
     }
     return $default_value;
 }

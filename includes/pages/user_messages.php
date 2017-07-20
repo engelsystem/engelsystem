@@ -35,8 +35,9 @@ function user_unread_messages()
 function user_messages()
 {
     global $user;
+    $request = request();
 
-    if (!isset($_REQUEST['action'])) {
+    if (!$request->has('action')) {
         $users = DB::select(
             'SELECT `UID`, `Nick` FROM `User` WHERE NOT `UID`=? ORDER BY `Nick`',
             [$user['UID']]
@@ -121,10 +122,10 @@ function user_messages()
             ], page_link_to('user_messages') . '&action=send')
         ]);
     } else {
-        switch ($_REQUEST['action']) {
+        switch ($request->input('action')) {
             case 'read':
-                if (isset($_REQUEST['id']) && preg_match('/^\d{1,11}$/', $_REQUEST['id'])) {
-                    $message_id = $_REQUEST['id'];
+                if ($request->has('id') && preg_match('/^\d{1,11}$/', $request->input('id'))) {
+                    $message_id = $request->input('id');
                 } else {
                     return error(_('Incomplete call, missing Message ID.'), true);
                 }
@@ -145,8 +146,8 @@ function user_messages()
                 break;
 
             case 'delete':
-                if (isset($_REQUEST['id']) && preg_match('/^\d{1,11}$/', $_REQUEST['id'])) {
-                    $message_id = $_REQUEST['id'];
+                if ($request->has('id') && preg_match('/^\d{1,11}$/', $request->input('id'))) {
+                    $message_id = $request->input('id');
                 } else {
                     return error(_('Incomplete call, missing Message ID.'), true);
                 }
@@ -164,7 +165,8 @@ function user_messages()
                 break;
 
             case 'send':
-                if (Message_send($_REQUEST['to'], $_REQUEST['text'])) {
+                // @TODO: Validation?
+                if (Message_send($request->input('to'), $request->input('text'))) {
                     redirect(page_link_to('user_messages'));
                 } else {
                     return error(_('Transmitting was terminated with an Error.'), true);

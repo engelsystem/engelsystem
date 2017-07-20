@@ -16,8 +16,9 @@ function questions_title()
 function user_questions()
 {
     global $user;
+    $request = request();
 
-    if (!isset($_REQUEST['action'])) {
+    if (!$request->has('action')) {
         $open_questions = DB::select(
             'SELECT * FROM `Questions` WHERE `AID` IS NULL AND `UID`=?',
             [$user['UID']]
@@ -34,7 +35,7 @@ function user_questions()
 
         return Questions_view($open_questions, $answered_questions, page_link_to('user_questions') . '&action=ask');
     } else {
-        switch ($_REQUEST['action']) {
+        switch ($request->input('action')) {
             case 'ask':
                 $question = strip_request_item_nl('question');
                 if ($question != '') {
@@ -56,8 +57,8 @@ function user_questions()
                 }
                 break;
             case 'delete':
-                if (isset($_REQUEST['id']) && preg_match('/^\d{1,11}$/', $_REQUEST['id'])) {
-                    $question_id = $_REQUEST['id'];
+                if ($request->has('id') && preg_match('/^\d{1,11}$/', $request->input('id'))) {
+                    $question_id = $request->input('id');
                 } else {
                     return error(_('Incomplete call, missing Question ID.'), true);
                 }

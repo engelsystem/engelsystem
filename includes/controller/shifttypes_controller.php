@@ -16,17 +16,18 @@ function shifttype_link($shifttype)
  */
 function shifttype_delete_controller()
 {
-    if (!isset($_REQUEST['shifttype_id'])) {
+    $request = request();
+    if (!$request->has('shifttype_id')) {
         redirect(page_link_to('shifttypes'));
     }
 
-    $shifttype = ShiftType($_REQUEST['shifttype_id']);
+    $shifttype = ShiftType($request->input('shifttype_id'));
 
     if ($shifttype == null) {
         redirect(page_link_to('shifttypes'));
     }
 
-    if (isset($_REQUEST['confirmed'])) {
+    if ($request->has('confirmed')) {
         $result = ShiftType_delete($shifttype['id']);
         if (empty($result)) {
             engelsystem_error('Unable to delete shifttype.');
@@ -56,9 +57,10 @@ function shifttype_edit_controller()
     $description = '';
 
     $angeltypes = AngelTypes();
+    $request = request();
 
-    if (isset($_REQUEST['shifttype_id'])) {
-        $shifttype = ShiftType($_REQUEST['shifttype_id']);
+    if ($request->has('shifttype_id')) {
+        $shifttype = ShiftType($request->input('shifttype_id'));
         if ($shifttype == null) {
             error(_('Shifttype not found.'));
             redirect(page_link_to('shifttypes'));
@@ -69,23 +71,23 @@ function shifttype_edit_controller()
         $description = $shifttype['description'];
     }
 
-    if (isset($_REQUEST['submit'])) {
+    if ($request->has('submit')) {
         $valid = true;
 
-        if (isset($_REQUEST['name']) && $_REQUEST['name'] != '') {
+        if ($request->has('name') && $request->input('name') != '') {
             $name = strip_request_item('name');
         } else {
             $valid = false;
             error(_('Please enter a name.'));
         }
 
-        if (isset($_REQUEST['angeltype_id']) && preg_match('/^\d+$/', $_REQUEST['angeltype_id'])) {
-            $angeltype_id = $_REQUEST['angeltype_id'];
+        if ($request->has('angeltype_id') && preg_match('/^\d+$/', $request->input('angeltype_id'))) {
+            $angeltype_id = $request->input('angeltype_id');
         } else {
             $angeltype_id = null;
         }
 
-        if (isset($_REQUEST['description'])) {
+        if ($request->has('description')) {
             $description = strip_request_item_nl('description');
         }
 
@@ -120,10 +122,11 @@ function shifttype_edit_controller()
  */
 function shifttype_controller()
 {
-    if (!isset($_REQUEST['shifttype_id'])) {
+    $request = request();
+    if (!$request->has('shifttype_id')) {
         redirect(page_link_to('shifttypes'));
     }
-    $shifttype = ShiftType($_REQUEST['shifttype_id']);
+    $shifttype = ShiftType($request->input('shifttype_id'));
     if ($shifttype == null) {
         redirect(page_link_to('shifttypes'));
     }
@@ -174,11 +177,13 @@ function shifttypes_title()
  */
 function shifttypes_controller()
 {
-    if (!isset($_REQUEST['action'])) {
-        $_REQUEST['action'] = 'list';
+    $request = request();
+    $action = 'list';
+    if ($request->has('action')) {
+        $action = $request->input('action');
     }
 
-    switch ($_REQUEST['action']) {
+    switch ($action) {
         case 'view':
             return shifttype_controller();
         case 'edit':

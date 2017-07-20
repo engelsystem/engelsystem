@@ -12,16 +12,18 @@ use Engelsystem\ShiftsFilter;
 function users_controller()
 {
     global $user;
+    $request = request();
 
     if (!isset($user)) {
         redirect(page_link_to(''));
     }
 
-    if (!isset($_REQUEST['action'])) {
-        $_REQUEST['action'] = 'list';
+    $action = 'list';
+    if ($request->has('action')) {
+        $action = $request->input('action');
     }
 
-    switch ($_REQUEST['action']) {
+    switch ($action) {
         case 'view':
             return user_controller();
         case 'delete':
@@ -42,9 +44,10 @@ function users_controller()
 function user_delete_controller()
 {
     global $privileges, $user;
+    $request = request();
 
-    if (isset($_REQUEST['user_id'])) {
-        $user_source = User($_REQUEST['user_id']);
+    if ($request->has('user_id')) {
+        $user_source = User($request->get('user_id'));
     } else {
         $user_source = $user;
     }
@@ -59,11 +62,14 @@ function user_delete_controller()
         redirect(user_link($user));
     }
 
-    if (isset($_REQUEST['submit'])) {
+    if ($request->has('submit')) {
         $valid = true;
 
-        if (!(isset($_REQUEST['password']) && verify_password($_REQUEST['password'], $user['Passwort'],
-                $user['UID']))
+        if (
+        !(
+            $request->has('password')
+            && verify_password($request->post('password'), $user['Passwort'], $user['UID'])
+        )
         ) {
             $valid = false;
             error(_('Your password is incorrect.  Please try it again.'));
@@ -130,9 +136,10 @@ function user_link($user)
 function user_edit_vouchers_controller()
 {
     global $privileges, $user;
+    $request = request();
 
-    if (isset($_REQUEST['user_id'])) {
-        $user_source = User($_REQUEST['user_id']);
+    if ($request->has('user_id')) {
+        $user_source = User($request->input('user_id'));
     } else {
         $user_source = $user;
     }
@@ -141,12 +148,16 @@ function user_edit_vouchers_controller()
         redirect(page_link_to(''));
     }
 
-    if (isset($_REQUEST['submit'])) {
+    if ($request->has('submit')) {
         $valid = true;
 
         $vouchers = '';
-        if (isset($_REQUEST['vouchers']) && test_request_int('vouchers') && trim($_REQUEST['vouchers']) >= 0) {
-            $vouchers = trim($_REQUEST['vouchers']);
+        if (
+            $request->has('vouchers')
+            && test_request_int('vouchers')
+            && trim($request->input('vouchers')) >= 0
+        ) {
+            $vouchers = trim($request->input('vouchers'));
         } else {
             $valid = false;
             error(_('Please enter a valid number of vouchers.'));
@@ -180,10 +191,11 @@ function user_edit_vouchers_controller()
 function user_controller()
 {
     global $privileges, $user;
+    $request = request();
 
     $user_source = $user;
-    if (isset($_REQUEST['user_id'])) {
-        $user_source = User($_REQUEST['user_id']);
+    if ($request->has('user_id')) {
+        $user_source = User($request->input('user_id'));
         if ($user_source == null) {
             error(_('User not found.'));
             redirect('?');
@@ -241,14 +253,15 @@ function user_controller()
 function users_list_controller()
 {
     global $privileges;
+    $request = request();
 
     if (!in_array('admin_user', $privileges)) {
         redirect(page_link_to(''));
     }
 
     $order_by = 'Nick';
-    if (isset($_REQUEST['OrderBy']) && in_array($_REQUEST['OrderBy'], User_sortable_columns())) {
-        $order_by = $_REQUEST['OrderBy'];
+    if ($request->has('OrderBy') && in_array($request->input('OrderBy'), User_sortable_columns())) {
+        $order_by = $request->input('OrderBy');
     }
 
     $users = Users($order_by);
@@ -282,20 +295,21 @@ function users_list_controller()
  */
 function user_password_recovery_set_new_controller()
 {
-    $user_source = User_by_password_recovery_token($_REQUEST['token']);
+    $request = request();
+    $user_source = User_by_password_recovery_token($request->input('token'));
     if ($user_source == null) {
         error(_('Token is not correct.'));
         redirect(page_link_to('login'));
     }
 
-    if (isset($_REQUEST['submit'])) {
+    if ($request->has('submit')) {
         $valid = true;
 
         if (
-            isset($_REQUEST['password'])
-            && strlen($_REQUEST['password']) >= config('min_password_length')
+            $request->has('password')
+            && strlen($request->post('password')) >= config('min_password_length')
         ) {
-            if ($_REQUEST['password'] != $_REQUEST['password2']) {
+            if ($request->post('password') != $request->post('password2')) {
                 $valid = false;
                 error(_('Your passwords don\'t match.'));
             }
@@ -305,7 +319,7 @@ function user_password_recovery_set_new_controller()
         }
 
         if ($valid) {
-            set_password($user_source['UID'], $_REQUEST['password']);
+            set_password($user_source['UID'], $request->post('password'));
             success(_('Password saved.'));
             redirect(page_link_to('login'));
         }
@@ -321,10 +335,11 @@ function user_password_recovery_set_new_controller()
  */
 function user_password_recovery_start_controller()
 {
-    if (isset($_REQUEST['submit'])) {
+    $request = request();
+    if ($request->has('submit')) {
         $valid = true;
 
-        if (isset($_REQUEST['email']) && strlen(strip_request_item('email')) > 0) {
+        if ($request->has('email') && strlen(strip_request_item('email')) > 0) {
             $email = strip_request_item('email');
             if (check_email($email)) {
                 $user_source = User_by_email($email);
@@ -367,7 +382,7 @@ function user_password_recovery_start_controller()
  */
 function user_password_recovery_controller()
 {
-    if (isset($_REQUEST['token'])) {
+    if (request()->has('token')) {
         return user_password_recovery_set_new_controller();
     }
 
@@ -391,11 +406,12 @@ function user_password_recovery_title()
  */
 function load_user()
 {
-    if (!isset($_REQUEST['user_id'])) {
+    $request = request();
+    if (!$request->has('user_id')) {
         redirect(page_link_to());
     }
 
-    $user = User($_REQUEST['user_id']);
+    $user = User($request->input('user_id'));
 
     if ($user == null) {
         error(_('User doesn\'t exist.'));

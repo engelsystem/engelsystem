@@ -8,14 +8,15 @@ use Engelsystem\Database\DB;
 function admin_news()
 {
     global $user;
+    $request = request();
 
-    if (!isset($_GET['action'])) {
+    if (!$request->has('action')) {
         redirect(page_link_to('news'));
     }
 
     $html = '<div class="col-md-12"><h1>' . _('Edit news entry') . '</h1>' . msg();
-    if (isset($_REQUEST['id']) && preg_match('/^\d{1,11}$/', $_REQUEST['id'])) {
-        $news_id = $_REQUEST['id'];
+    if ($request->has('id') && preg_match('/^\d{1,11}$/', $request->input('id'))) {
+        $news_id = $request->input('id');
     } else {
         return error('Incomplete call, missing News ID.', true);
     }
@@ -25,7 +26,7 @@ function admin_news()
         return error('No News found.', true);
     }
 
-    switch ($_REQUEST['action']) {
+    switch ($request->input('action')) {
         case 'edit':
             $news = array_shift($news);
             $user_source = User($news['UID']);
@@ -56,14 +57,14 @@ function admin_news()
                 ',
                 [
                     time(),
-                    $_POST["eBetreff"],
-                    $_POST["eText"],
+                    $request->post('eBetreff'),
+                    $request->post('eText'),
                     $user['UID'],
-                    isset($_POST["eTreffen"]) ? 1 : 0,
+                    $request->has('eTreffen') ? 1 : 0,
                     $news_id
                 ]
             );
-            engelsystem_log('News updated: ' . $_POST['eBetreff']);
+            engelsystem_log('News updated: ' . $request->post('eBetreff'));
             success(_('News entry updated.'));
             redirect(page_link_to('news'));
             break;
