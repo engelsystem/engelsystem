@@ -488,6 +488,5 @@ function get_register_hint()
         ]);
     }
 
-    //@TODO: FIXME: return error(_('Registration is disabled.'), true);
-    return error('Registration is <a href="https://engelsystem.de/33c3/overwhelmed.html">disabled</a>.', true);
+    return error(_('Registration is disabled.'), true);
 }
