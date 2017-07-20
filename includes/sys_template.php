@@ -322,28 +322,6 @@ function table_buttons($buttons = [])
 }
 
 /**
- * Load and render template
- *
- * @param string   $file
- * @param string[] $data
- * @return string
- */
-function template_render($file, $data = [])
-{
-    if (file_exists($file)) {
-        $template = file_get_contents($file);
-        if (is_array($data)) {
-            foreach ($data as $name => $content) {
-                $template = str_replace('%' . $name . '%', $content, $template);
-            }
-        }
-        return $template;
-    }
-    engelsystem_error('Cannot find template file &laquo;' . $file . '&raquo;.');
-    return '';
-}
-
-/**
  * @param string $str
  * @param int    $length
  * @return string

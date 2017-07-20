@@ -206,7 +206,7 @@ function view_user_shifts()
     return page([
         div('col-md-12', [
             msg(),
-            template_render(__DIR__ . '/../../templates/user_shifts.html', [
+            view(__DIR__ . '/../../templates/user_shifts.html', [
                 'title'         => shifts_title(),
                 'room_select'   => make_select($rooms, $shiftsFilter->getRooms(), 'rooms', _('Rooms')),
                 'start_select'  => html_select_key('start_day', 'start_day', array_combine($days, $days), $start_day),

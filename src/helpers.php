@@ -3,6 +3,7 @@
 
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
+use Engelsystem\Renderer\Renderer;
 
 /**
  * Get or set config values
@@ -38,4 +39,20 @@ function request($key = null, $default = null)
     }
 
     return $request->input($key, $default);
+}
+
+/**
+ * @param string  $template
+ * @param mixed[] $data
+ * @return Renderer|string
+ */
+function view($template = null, $data = null)
+{
+    $renderer = Renderer::getInstance();
+
+    if (is_null($template)) {
+        return $renderer;
+    }
+
+    return $renderer->render($template, $data);
 }

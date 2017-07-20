@@ -166,7 +166,7 @@ if (
 
 $event_config = EventConfig();
 
-echo template_render(__DIR__ . '/../templates/layout.html', [
+echo view(__DIR__ . '/../templates/layout.html', [
     'theme'          => isset($user) ? $user['color'] : config('theme'),
     'title'          => $title,
     'atom_link'      => ($page == 'news' || $page == 'user_meetings')
