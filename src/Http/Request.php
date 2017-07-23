@@ -82,9 +82,9 @@ class Request
      */
     public function has($key)
     {
-        $value = $this->input($key);
+        $data = $this->request + $this->query;
 
-        return !(empty($value) && strlen($value) == 0);
+        return isset($data[$key]);
     }
 
     /**
