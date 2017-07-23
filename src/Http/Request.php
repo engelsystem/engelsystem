@@ -67,7 +67,7 @@ class Request
     {
         $data = $this->request + $this->query;
 
-        if (!empty($data[$key])) {
+        if (isset($data[$key])) {
             return $data[$key];
         }
 
@@ -84,7 +84,7 @@ class Request
     {
         $value = $this->input($key);
 
-        return !empty($value);
+        return !(empty($value) && strlen($value) == 0);
     }
 
     /**
