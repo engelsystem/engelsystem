@@ -72,7 +72,7 @@ class Handler
         ));
 
         if ($this->environment == self::ENV_DEVELOPMENT) {
-            echo '<pre style="background-color:#333;color:#ccc;z-index:1000;position:fixed;bottom:1em;padding:1em;width:97%;overflow-y:auto;">';
+            echo '<pre style="background-color:#333;color:#ccc;z-index:1000;position:absolute;top:1em;padding:1em;width:97%;overflow-y:auto;">';
             echo sprintf('%s: (%s)' . PHP_EOL, ucfirst($type), $number);
             var_export([
                 'string'  => $string,
