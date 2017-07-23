@@ -94,9 +94,6 @@ function UserDriverLicenses_create($user_driver_license, $user)
             (bool)$user_driver_license['has_license_forklift'],
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to create user driver license');
-    }
 
     return $user_driver_license;
 }
@@ -105,11 +102,10 @@ function UserDriverLicenses_create($user_driver_license, $user)
  * Update a user's driver license entry
  *
  * @param array $user_driver_license The UserDriverLicense to update
- * @return bool
  */
 function UserDriverLicenses_update($user_driver_license)
 {
-    $result = DB::update('
+    DB::update('
           UPDATE `UserDriverLicenses`
           SET
               `has_car`=?,
@@ -130,10 +126,6 @@ function UserDriverLicenses_update($user_driver_license)
             $user_driver_license['user_id'],
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to update user driver license information');
-    }
-    return $result;
 }
 
 /**

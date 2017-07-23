@@ -102,7 +102,6 @@ function ShiftEntry_create($shift_entry)
  * Update a shift entry.
  *
  * @param array $shift_entry
- * @return bool
  */
 function ShiftEntry_update($shift_entry)
 {
@@ -120,8 +119,6 @@ function ShiftEntry_update($shift_entry)
             $shift_entry['id']
         ]
     );
-
-    return (DB::getStm()->errorCode() == '00000');
 }
 
 /**

@@ -39,15 +39,13 @@ function user_questions()
             case 'ask':
                 $question = strip_request_item_nl('question');
                 if ($question != '') {
-                    $result = DB::insert('
+                    DB::insert('
                         INSERT INTO `Questions` (`UID`, `Question`)
                         VALUES (?, ?)
                         ',
                         [$user['UID'], $question]
                     );
-                    if (!$result) {
-                        engelsystem_error(_('Unable to save question.'));
-                    }
+
                     success(_('You question was saved.'));
                     redirect(page_link_to('user_questions'));
                 } else {

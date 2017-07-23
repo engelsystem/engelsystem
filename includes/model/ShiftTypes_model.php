@@ -20,7 +20,6 @@ function ShiftType_delete($shifttype_id)
  * @param string $name
  * @param int    $angeltype_id
  * @param string $description
- * @return bool
  */
 function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
 {
@@ -38,8 +37,6 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
             $shifttype_id,
         ]
     );
-
-    return DB::getStm()->errorCode() == '00000';
 }
 
 /**
@@ -52,7 +49,7 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
  */
 function ShiftType_create($name, $angeltype_id, $description)
 {
-    $result = DB::insert('
+    DB::insert('
         INSERT INTO `ShiftTypes` (`name`, `angeltype_id`, `description`)
         VALUES(?, ?, ?)
         ',
@@ -62,10 +59,6 @@ function ShiftType_create($name, $angeltype_id, $description)
             $description
         ]
     );
-
-    if ($result === false) {
-        return false;
-    }
 
     return DB::getPdo()->lastInsertId();
 }

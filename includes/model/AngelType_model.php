@@ -97,11 +97,10 @@ function AngelType_delete($angeltype)
  * Update Angeltype.
  *
  * @param array $angeltype The angeltype
- * @return bool
  */
 function AngelType_update($angeltype)
 {
-    $result = DB::update('
+    DB::update('
           UPDATE `AngelTypes` SET
           `name` = ?,
           `restricted` = ?,
@@ -126,15 +125,12 @@ function AngelType_update($angeltype)
             $angeltype['id'],
         ]
     );
-    if (is_null($result)) {
-        engelsystem_error('Unable to update angeltype.');
-    }
+
     engelsystem_log(
         'Updated angeltype: ' . $angeltype['name'] . ($angeltype['restricted'] ? ', restricted' : '')
         . ($angeltype['no_self_signup'] ? ', no_self_signup' : '')
         . ($angeltype['requires_driver_license'] ? ', requires driver license' : '')
     );
-    return true;
 }
 
 /**
@@ -145,7 +141,7 @@ function AngelType_update($angeltype)
  */
 function AngelType_create($angeltype)
 {
-    $result = DB::insert('
+    DB::insert('
           INSERT INTO `AngelTypes` (
               `name`,
               `restricted`,
@@ -171,9 +167,7 @@ function AngelType_create($angeltype)
             $angeltype['contact_email'],
         ]
     );
-    if (is_null($result)) {
-        engelsystem_error('Unable to create angeltype.');
-    }
+
     $angeltype['id'] = DB::getPdo()->lastInsertId();
     engelsystem_log(
         'Created angeltype: ' . $angeltype['name']

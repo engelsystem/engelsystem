@@ -93,17 +93,13 @@ function shifttype_edit_controller()
 
         if ($valid) {
             if ($shifttype_id) {
-                $result = ShiftType_update($shifttype_id, $name, $angeltype_id, $description);
-                if ($result === false) {
-                    engelsystem_error('Unable to update shifttype.');
-                }
+                ShiftType_update($shifttype_id, $name, $angeltype_id, $description);
+
                 engelsystem_log('Updated shifttype ' . $name);
                 success(_('Updated shifttype.'));
             } else {
                 $shifttype_id = ShiftType_create($name, $angeltype_id, $description);
-                if ($shifttype_id === false) {
-                    engelsystem_error('Unable to create shifttype.');
-                }
+
                 engelsystem_log('Created shifttype ' . $name);
                 success(_('Created shifttype.'));
             }

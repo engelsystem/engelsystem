@@ -91,7 +91,7 @@ function event_config_edit_controller()
         }
 
         if ($valid) {
-            $result = EventConfig_update(
+            EventConfig_update(
                 $event_name,
                 $buildup_start_date,
                 $event_start_date,
@@ -99,10 +99,6 @@ function event_config_edit_controller()
                 $teardown_end_date,
                 $event_welcome_msg
             );
-
-            if ($result === false) {
-                engelsystem_error('Unable to update event config.');
-            }
 
             engelsystem_log(
                 'Changed event config: $event_name, $event_welcome_msg, '

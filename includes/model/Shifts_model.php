@@ -436,7 +436,7 @@ function Shift_delete($shift_id)
  * Update a shift.
  *
  * @param array $shift
- * @return bool
+ * @return int Updated row count
  */
 function Shift_update($shift)
 {
@@ -444,7 +444,7 @@ function Shift_update($shift)
     $shift['name'] = ShiftType($shift['shifttype_id'])['name'];
     mail_shift_change(Shift($shift['SID']), $shift);
 
-    return (bool)DB::update('
+    return DB::update('
       UPDATE `Shifts` SET
       `shifttype_id` = ?,
       `start` = ?,

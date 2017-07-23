@@ -17,7 +17,7 @@ use Engelsystem\Database\DB;
  */
 function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
 {
-    $result = DB::insert('
+    DB::insert('
           INSERT INTO `NeededAngelTypes` ( `shift_id`, `angel_type_id`, `room_id`, `count`)
            VALUES (?, ?, ?, ?)
         ',
@@ -27,9 +27,6 @@ function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
             $room_id,
             $count,
         ]);
-    if ($result === false) {
-        return false;
-    }
 
     return DB::getPdo()->lastInsertId();
 }

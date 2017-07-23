@@ -55,11 +55,10 @@ function generate_salt($length = 16)
  *
  * @param int    $uid
  * @param string $password
- * @return bool
  */
 function set_password($uid, $password)
 {
-    $result = DB::update('
+    DB::update('
         UPDATE `User`
         SET `Passwort` = ?,
         `password_recovery_token`=NULL
@@ -71,10 +70,6 @@ function set_password($uid, $password)
             $uid
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to update password.');
-    }
-    return $result;
 }
 
 /**

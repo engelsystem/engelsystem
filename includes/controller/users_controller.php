@@ -166,10 +166,7 @@ function user_edit_vouchers_controller()
         if ($valid) {
             $user_source['got_voucher'] = $vouchers;
 
-            $result = User_update($user_source);
-            if ($result === false) {
-                engelsystem_error('Unable to update user.');
-            }
+            User_update($user_source);
 
             success(_('Saved the number of vouchers.'));
             engelsystem_log(User_Nick_render($user_source) . ': ' . sprintf('Got %s vouchers',

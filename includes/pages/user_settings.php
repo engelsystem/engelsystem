@@ -84,6 +84,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 
     if ($valid) {
         User_update($user_source);
+        
         success(_('Settings saved.'));
         redirect(page_link_to('user_settings'));
     }
@@ -108,10 +109,9 @@ function user_settings_password($user_source)
         error(_('Your password is to short (please use at least 6 characters).'));
     } elseif ($request->post('new_password') != $request->post('new_password2')) {
         error(_('Your passwords don\'t match.'));
-    } elseif (set_password($user_source['UID'], $request->post('new_password'))) {
-        success(_('Password saved.'));
     } else {
-        error(_('Failed setting password.'));
+        set_password($user_source['UID'], $request->post('new_password'));
+        success(_('Password saved.'));
     }
     redirect(page_link_to('user_settings'));
 }

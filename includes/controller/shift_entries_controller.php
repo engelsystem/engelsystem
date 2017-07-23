@@ -130,7 +130,7 @@ function shift_entry_add_controller()
         }
 
         $comment = strip_request_item_nl('comment');
-        $result = ShiftEntry_create([
+        ShiftEntry_create([
             'SID'              => $shift_id,
             'TID'              => $selected_type_id,
             'UID'              => $user_id,
@@ -138,9 +138,6 @@ function shift_entry_add_controller()
             'freeloaded'       => $freeloaded,
             'freeload_comment' => $freeload_comment
         ]);
-        if ($result === false) {
-            engelsystem_error('Unable to create shift entry.');
-        }
 
         if (
             $type['restricted'] == 0

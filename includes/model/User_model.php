@@ -24,11 +24,10 @@ function User_delete($user_id)
  * Update user.
  *
  * @param array $user
- * @return bool
  */
 function User_update($user)
 {
-    return (bool)DB::update('
+    DB::update('
           UPDATE `User` SET
           `Nick`=?,
           `Name`=?,
@@ -481,7 +480,6 @@ function User_by_password_recovery_token($token)
  *
  * @param array $user
  * @param bool  $log
- * @return bool
  */
 function User_reset_api_key(&$user, $log = true)
 {
@@ -497,15 +495,10 @@ function User_reset_api_key(&$user, $log = true)
             $user['UID']
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        return false;
-    }
 
     if ($log) {
         engelsystem_log(sprintf('API key resetted (%s).', User_Nick_render($user)));
     }
-
-    return true;
 }
 
 /**
@@ -528,9 +521,6 @@ function User_generate_password_recovery_token(&$user)
             $user['UID'],
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to generate password recovery token.');
-    }
     engelsystem_log('Password recovery for ' . User_Nick_render($user) . ' started.');
     return $user['password_recovery_token'];
 }

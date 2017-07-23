@@ -93,15 +93,12 @@ function user_myshifts()
                 $user_source = User($shift['UID']);
 
                 if ($valid) {
-                    $result = ShiftEntry_update([
+                    ShiftEntry_update([
                         'id'               => $user_id,
                         'Comment'          => $comment,
                         'freeloaded'       => $freeloaded,
                         'freeload_comment' => $freeload_comment
                     ]);
-                    if ($result === false) {
-                        engelsystem_error('Unable to update shift entry.');
-                    }
 
                     engelsystem_log(
                         'Updated ' . User_Nick_render($user_source) . '\'s shift ' . $shift['name']

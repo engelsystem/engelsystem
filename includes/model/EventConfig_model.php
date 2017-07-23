@@ -31,7 +31,7 @@ function EventConfig()
  * @param int    $event_end_date
  * @param int    $teardown_end_date
  * @param string $event_welcome_msg
- * @return bool
+ * @return int Rows updated
  */
 function EventConfig_update(
     $event_name,

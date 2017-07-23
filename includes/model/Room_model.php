@@ -35,7 +35,7 @@ function Room_delete($room_id)
  */
 function Room_create($name, $from_frab, $public, $number = null)
 {
-    $result = DB::insert('
+    DB::insert('
           INSERT INTO `Room` (`Name`, `FromPentabarf`, `show`, `Number`)
            VALUES (?, ?, ?, ?)
         ',
@@ -46,9 +46,6 @@ function Room_create($name, $from_frab, $public, $number = null)
             (int)$number,
         ]
     );
-    if (!$result) {
-        return false;
-    }
 
     return DB::getPdo()->lastInsertId();
 }

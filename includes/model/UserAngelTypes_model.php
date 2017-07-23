@@ -110,22 +110,15 @@ function User_is_AngelType_supporter(&$user, $angeltype)
  *
  * @param int  $user_angeltype_id
  * @param bool $supporter
- * @return int
  */
 function UserAngelType_update($user_angeltype_id, $supporter)
 {
-    $result = DB::update('
+    DB::update('
       UPDATE `UserAngelTypes`
       SET `supporter`=?
       WHERE `id`=?
       LIMIT 1
     ', [$supporter, $user_angeltype_id]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to update supporter rights.');
-    }
-
-    return $result;
 }
 
 /**
@@ -154,22 +147,15 @@ function UserAngelTypes_delete_all($angeltype_id)
  *
  * @param int   $angeltype_id
  * @param array $confirm_user
- * @return bool
  */
 function UserAngelTypes_confirm_all($angeltype_id, $confirm_user)
 {
-    $result = DB::update('
+    DB::update('
       UPDATE `UserAngelTypes`
       SET `confirm_user_id`=?
       WHERE `angeltype_id`=?
       AND `confirm_user_id` IS NULL
     ', [$confirm_user['UID'], $angeltype_id]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to confirm all users.');
-    }
-
-    return (bool)$result;
 }
 
 /**
@@ -181,15 +167,11 @@ function UserAngelTypes_confirm_all($angeltype_id, $confirm_user)
  */
 function UserAngelType_confirm($user_angeltype_id, $confirm_user)
 {
-    $result = DB::update('
+    DB::update('
       UPDATE `UserAngelTypes`
       SET `confirm_user_id`=?
       WHERE `id`=?
       LIMIT 1', [$confirm_user['UID'], $user_angeltype_id]);
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to confirm user angeltype.');
-    }
-    return (bool)$result;
 }
 
 /**
@@ -224,10 +206,6 @@ function UserAngelType_create($user, $angeltype)
             $angeltype['id']
         ]
     );
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to create user angeltype.');
-    }
 
     return DB::getPdo()->lastInsertId();
 }

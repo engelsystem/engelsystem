@@ -147,9 +147,7 @@ function admin_rooms()
                         );
                     } else {
                         $room_id = Room_create($name, $from_pentabarf, $public, $number);
-                        if ($room_id === false) {
-                            engelsystem_error('Unable to create room.');
-                        }
+
                         engelsystem_log(
                             'Room created: ' . $name
                             . ', pentabarf import: '

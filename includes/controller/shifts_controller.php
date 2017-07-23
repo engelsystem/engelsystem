@@ -135,10 +135,7 @@ function shift_edit_controller()
             $shift['start'] = $start;
             $shift['end'] = $end;
 
-            $result = Shift_update($shift);
-            if ($result === false) {
-                engelsystem_error('Unable to update shift.');
-            }
+            Shift_update($shift);
             NeededAngelTypes_delete_by_shift($shift_id);
             $needed_angel_types_info = [];
             foreach ($needed_angel_types as $type_id => $count) {
