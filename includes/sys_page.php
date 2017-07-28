@@ -186,7 +186,7 @@ function strip_request_item_nl($name, $default_value = null)
 {
     $request = request();
     if ($request->has($name)) {
-        return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]{1,})/ui", '', strip_tags($request->get($name)));
+        return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]{1,})/ui", '', strip_tags($request->input($name)));
     }
     return $default_value;
 }
