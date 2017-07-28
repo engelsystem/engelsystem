@@ -11,13 +11,10 @@ use Engelsystem\ValidationResult;
  * Delete a user
  *
  * @param int $user_id
- * @return bool
  */
 function User_delete($user_id)
 {
     DB::delete('DELETE FROM `User` WHERE `UID`=?', [$user_id]);
-
-    return DB::getStm()->errorCode() == '00000';
 }
 
 /**

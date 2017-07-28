@@ -402,34 +402,22 @@ function Shift_signup_allowed(
  * Delete a shift by its external id.
  *
  * @param int $shift_psid
- * @return bool
  */
 function Shift_delete_by_psid($shift_psid)
 {
     DB::delete('DELETE FROM `Shifts` WHERE `PSID`=?', [$shift_psid]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        return false;
-    }
-
-    return true;
 }
 
 /**
  * Delete a shift.
  *
  * @param int $shift_id
- * @return bool
  */
 function Shift_delete($shift_id)
 {
     mail_shift_delete(Shift($shift_id));
 
-    $result = DB::delete('DELETE FROM `Shifts` WHERE `SID`=?', [$shift_id]);
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to delete shift.');
-    }
-    return $result;
+    DB::delete('DELETE FROM `Shifts` WHERE `SID`=?', [$shift_id]);
 }
 
 /**

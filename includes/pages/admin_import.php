@@ -279,10 +279,7 @@ function admin_import()
             }
 
             foreach ($events_deleted as $event) {
-                $result = Shift_delete_by_psid($event['PSID']);
-                if ($result === false) {
-                    engelsystem_error('Unable to delete shift.');
-                }
+                Shift_delete_by_psid($event['PSID']);
             }
 
             engelsystem_log('Frab import done');

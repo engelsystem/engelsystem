@@ -125,7 +125,6 @@ function UserAngelType_update($user_angeltype_id, $supporter)
  * Delete all unconfirmed UserAngelTypes for given Angeltype.
  *
  * @param int $angeltype_id
- * @return bool
  */
 function UserAngelTypes_delete_all($angeltype_id)
 {
@@ -134,12 +133,6 @@ function UserAngelTypes_delete_all($angeltype_id)
       WHERE `angeltype_id`=?
       AND `confirm_user_id` IS NULL
     ', [$angeltype_id]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to delete all unconfirmed users.');
-    }
-
-    return true;
 }
 
 /**
@@ -178,11 +171,10 @@ function UserAngelType_confirm($user_angeltype_id, $confirm_user)
  * Delete an UserAngelType.
  *
  * @param array $user_angeltype
- * @return bool
  */
 function UserAngelType_delete($user_angeltype)
 {
-    return (bool)DB::delete('
+    DB::delete('
       DELETE FROM `UserAngelTypes`
       WHERE `id`=?
       LIMIT 1', [$user_angeltype['id']]);

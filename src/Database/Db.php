@@ -113,13 +113,13 @@ class Db
      *
      * @param string $query
      * @param array  $bindings
-     * @return int|bool
+     * @return int
      */
     public static function delete($query, array $bindings = [])
     {
         self::query($query, $bindings);
 
-        return (self::$lastStatus ? self::$stm->rowCount() : false);
+        return self::$stm->rowCount();
     }
 
     /**

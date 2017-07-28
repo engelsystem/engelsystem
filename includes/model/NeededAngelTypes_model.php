@@ -35,22 +35,20 @@ function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
  * Deletes all needed angel types from given shift.
  *
  * @param int $shift_id id of the shift
- * @return int count of affected rows
  */
 function NeededAngelTypes_delete_by_shift($shift_id)
 {
-    return (int)DB::delete('DELETE FROM `NeededAngelTypes` WHERE `shift_id` = ?', [$shift_id]);
+    DB::delete('DELETE FROM `NeededAngelTypes` WHERE `shift_id` = ?', [$shift_id]);
 }
 
 /**
  * Deletes all needed angel types from given room.
  *
  * @param int $room_id id of the room
- * @return int count of affected rows
  */
 function NeededAngelTypes_delete_by_room($room_id)
 {
-    return (int)DB::delete(
+    DB::delete(
         'DELETE FROM `NeededAngelTypes` WHERE `room_id` = ?',
         [$room_id]
     );

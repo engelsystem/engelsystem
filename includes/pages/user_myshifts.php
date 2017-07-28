@@ -145,10 +145,8 @@ function user_myshifts()
                 ($shift['start'] > time() + config('last_unsubscribe') * 3600)
                 || in_array('user_shifts_admin', $privileges)
             ) {
-                $result = ShiftEntry_delete($user_id);
-                if ($result === false) {
-                    engelsystem_error('Unable to delete shift entry.');
-                }
+                ShiftEntry_delete($user_id);
+
                 $room = Room($shift['RID']);
                 $angeltype = AngelType($shift['TID']);
                 $shifttype = ShiftType($shift['shifttype_id']);

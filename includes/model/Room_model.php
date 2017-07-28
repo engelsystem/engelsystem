@@ -17,11 +17,10 @@ function Rooms($show_all = false)
  * Delete a room
  *
  * @param int $room_id
- * @return bool
  */
 function Room_delete($room_id)
 {
-    return DB::delete('DELETE FROM `Room` WHERE `RID` = ?', [$room_id]);
+    DB::delete('DELETE FROM `Room` WHERE `RID` = ?', [$room_id]);
 }
 
 /**

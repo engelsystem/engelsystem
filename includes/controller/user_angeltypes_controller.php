@@ -215,10 +215,7 @@ function user_angeltype_delete_controller()
     }
 
     if ($request->has('confirmed')) {
-        $result = UserAngelType_delete($user_angeltype);
-        if ($result === false) {
-            engelsystem_error('Unable to delete user angeltype.');
-        }
+        UserAngelType_delete($user_angeltype);
 
         $success_message = sprintf(_('User %s removed from %s.'), User_Nick_render($user_source), $angeltype['name']);
         engelsystem_log($success_message);

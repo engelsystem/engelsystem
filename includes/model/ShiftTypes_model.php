@@ -6,11 +6,10 @@ use Engelsystem\Database\DB;
  * Delete a shift type.
  *
  * @param int $shifttype_id
- * @return bool
  */
 function ShiftType_delete($shifttype_id)
 {
-    return DB::delete('DELETE FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
+    DB::delete('DELETE FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
 }
 
 /**

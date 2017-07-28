@@ -77,20 +77,15 @@ function AngelType_contact_info($angeltype)
  * Delete an Angeltype.
  *
  * @param array $angeltype
- * @return bool
  */
 function AngelType_delete($angeltype)
 {
-    $result = DB::delete('
+    DB::delete('
       DELETE FROM `AngelTypes`
       WHERE `id`=?
       LIMIT 1
     ', [$angeltype['id']]);
-    if (is_null($result)) {
-        engelsystem_error('Unable to delete angeltype.');
-    }
     engelsystem_log('Deleted angeltype: ' . AngelType_name_render($angeltype));
-    return true;
 }
 
 /**

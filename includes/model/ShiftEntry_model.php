@@ -143,13 +143,12 @@ function ShiftEntry($shift_entry_id)
  * Delete a shift entry.
  *
  * @param int $shift_entry_id
- * @return bool
  */
 function ShiftEntry_delete($shift_entry_id)
 {
     $shift_entry = ShiftEntry($shift_entry_id);
     mail_shift_removed(User($shift_entry['UID']), Shift($shift_entry['SID']));
-    return DB::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
+    DB::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
 }
 
 /**

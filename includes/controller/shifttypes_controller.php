@@ -28,10 +28,7 @@ function shifttype_delete_controller()
     }
 
     if ($request->has('confirmed')) {
-        $result = ShiftType_delete($shifttype['id']);
-        if (empty($result)) {
-            engelsystem_error('Unable to delete shifttype.');
-        }
+        ShiftType_delete($shifttype['id']);
 
         engelsystem_log('Deleted shifttype ' . $shifttype['name']);
         success(sprintf(_('Shifttype %s deleted.'), $shifttype['name']));

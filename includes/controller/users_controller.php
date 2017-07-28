@@ -76,10 +76,7 @@ function user_delete_controller()
         }
 
         if ($valid) {
-            $result = User_delete($user_source['UID']);
-            if ($result === false) {
-                engelsystem_error('Unable to delete user.');
-            }
+            User_delete($user_source['UID']);
 
             mail_user_delete($user_source);
             success(_('User deleted.'));

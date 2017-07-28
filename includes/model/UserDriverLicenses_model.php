@@ -132,13 +132,8 @@ function UserDriverLicenses_update($user_driver_license)
  * Delete a user's driver license entry
  *
  * @param int $user_id
- * @return bool
  */
 function UserDriverLicenses_delete($user_id)
 {
-    $result = DB::delete('DELETE FROM `UserDriverLicenses` WHERE `user_id`=?', [$user_id]);
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to remove user driver license information');
-    }
-    return $result;
+    DB::delete('DELETE FROM `UserDriverLicenses` WHERE `user_id`=?', [$user_id]);
 }

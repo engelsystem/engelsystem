@@ -269,10 +269,7 @@ function shift_entry_delete_controller()
             redirect(page_link_to('user_shifts'));
         }
 
-        $result = ShiftEntry_delete($entry_id);
-        if ($result === false) {
-            engelsystem_error('Unable to delete shift entry.');
-        }
+        ShiftEntry_delete($entry_id);
 
         engelsystem_log(
             'Deleted ' . User_Nick_render($shift_entry_source) . '\'s shift: ' . $shift_entry_source['name']

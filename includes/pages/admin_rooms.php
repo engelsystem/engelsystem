@@ -209,9 +209,7 @@ function admin_rooms()
             ]);
         } elseif ($request->input('show') == 'delete') {
             if ($request->has('ack')) {
-                if (!Room_delete($room_id)) {
-                    engelsystem_error('Unable to delete room.');
-                }
+                Room_delete($room_id);
 
                 engelsystem_log('Room deleted: ' . $name);
                 success(sprintf(_('Room %s deleted.'), $name));
