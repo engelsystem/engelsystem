@@ -2,7 +2,7 @@
 
 namespace Engelsystem\Exceptions;
 
-use Exception;
+use Throwable;
 
 class Handler
 {
@@ -38,9 +38,9 @@ class Handler
     }
 
     /**
-     * @param Exception $e
+     * @param Throwable $e
      */
-    public function exceptionHandler(Exception $e)
+    public function exceptionHandler(Throwable $e)
     {
         $this->handle(
             'exception',
