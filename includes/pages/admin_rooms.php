@@ -22,8 +22,8 @@ function admin_rooms()
     foreach ($rooms_source as $room) {
         $rooms[] = [
             'name'           => Room_name_render($room),
-            'from_pentabarf' => $room['FromPentabarf'] == 'Y' ? '&#10003;' : '',
-            'public'         => $room['show'] == 'Y' ? '&#10003;' : '',
+            'from_pentabarf' => glyph_bool($room['FromPentabarf'] == 'Y'),
+            'public'         => glyph_bool($room['show'] == 'Y'),
             'actions'        => table_buttons([
                 button(page_link_to('admin_rooms') . '&show=edit&id=' . $room['RID'], _('edit'), 'btn-xs'),
                 button(page_link_to('admin_rooms') . '&show=delete&id=' . $room['RID'], _('delete'), 'btn-xs')
