@@ -419,6 +419,5 @@ function user_angeltypes_controller()
             return user_angeltype_add_controller();
         default:
             redirect(page_link_to('angeltypes'));
-            exit;
     }
 }

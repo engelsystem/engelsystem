@@ -326,7 +326,6 @@ function shift_next_controller()
     }
 
     redirect(page_link_to('user_shifts'));
-    exit;
 }
 
 /**

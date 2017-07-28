@@ -79,10 +79,7 @@ function rooms_controller()
         case 'list':
         default:
             redirect(page_link_to('admin_rooms'));
-            break;
     }
-
-    exit;
 }
 
 /**
