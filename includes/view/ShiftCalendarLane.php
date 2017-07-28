@@ -2,6 +2,8 @@
 
 namespace Engelsystem;
 
+use Exception;
+
 /**
  * Represents a single lane in a shifts calendar.
  */
@@ -38,6 +40,7 @@ class ShiftCalendarLane
      * Returns true on success.
      *
      * @param array $shift The shift to add
+     * @throws Exception if the shift doesn't fit into the lane.
      */
     public function addShift($shift)
     {

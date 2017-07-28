@@ -1,6 +1,8 @@
 <?php
 namespace Engelsystem;
 
+use Exception;
+
 class ShiftCalendarRenderer
 {
 
@@ -93,9 +95,9 @@ class ShiftCalendarRenderer
             $shift_added = false;
             foreach ($lanes[$room_id] as $lane) {
                 /** @var ShiftCalendarLane $lane */
-                try {
+                if($lane->shiftFits($shift)) {
                     $lane->addShift($shift);
-                } catch (Exception $e) {
+                    $shift_added = true;
                     break;
                 }
             }
