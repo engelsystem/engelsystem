@@ -246,6 +246,7 @@ function Users_by_angeltype($angeltype)
             `UserAngelTypes`.`id` AS `user_angeltype_id`,
             `UserAngelTypes`.`confirm_user_id`,
             `UserAngelTypes`.`supporter`,
+            (`UserDriverLicenses`.`user_id` IS NOT NULL) as `wants_to_drive`,
             `UserDriverLicenses`.*
             FROM `User`
             JOIN `UserAngelTypes` ON `User`.`UID`=`UserAngelTypes`.`user_id`
