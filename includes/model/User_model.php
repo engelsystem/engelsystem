@@ -184,23 +184,17 @@ function User_sortable_columns()
  * Get all users, ordered by Nick by default or by given param.
  *
  * @param string $order_by
- * @return array|false
+ * @return array
  */
 function Users($order_by = 'Nick')
 {
-    $result = DB::select(sprintf('
+    return DB::select(sprintf('
             SELECT *
             FROM `User`
             ORDER BY `%s` ASC
         ',
         trim(DB::getPdo()->quote($order_by), '\'')
     ));
-
-    if (DB::getStm()->errorCode() != '00000') {
-        return false;
-    }
-
-    return $result;
 }
 
 /**
@@ -224,7 +218,7 @@ function User_is_freeloader($user)
  */
 function Users_by_angeltype_inverted($angeltype)
 {
-    $result = DB::select('
+    return DB::select('
             SELECT `User`.*
             FROM `User`
             LEFT JOIN `UserAngelTypes`
@@ -236,10 +230,6 @@ function Users_by_angeltype_inverted($angeltype)
             $angeltype['id']
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load users.');
-    }
-    return $result;
 }
 
 /**
@@ -250,7 +240,7 @@ function Users_by_angeltype_inverted($angeltype)
  */
 function Users_by_angeltype($angeltype)
 {
-    $result = DB::select('
+    return DB::select('
             SELECT
             `User`.*,
             `UserAngelTypes`.`id` AS `user_angeltype_id`,
@@ -267,10 +257,6 @@ function Users_by_angeltype($angeltype)
             $angeltype['id']
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load members.');
-    }
-    return $result;
 }
 
 /**
@@ -397,10 +383,6 @@ function User($user_id)
 {
     $user_source = DB::select('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
 
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load user.');
-    }
-
     if (empty($user_source)) {
         return null;
     }
@@ -413,15 +395,11 @@ function User($user_id)
  *
  * @param string $api_key
  *          User api key
- * @return array|null Matching user, null on error
+ * @return array|null Matching user, null if not found
  */
 function User_by_api_key($api_key)
 {
     $user = DB::select('SELECT * FROM `User` WHERE `api_key`=? LIMIT 1', [$api_key]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to find user by api key.');
-    }
 
     if (empty($user)) {
         return null;
@@ -440,10 +418,6 @@ function User_by_email($email)
 {
     $user = DB::select('SELECT * FROM `User` WHERE `email`=? LIMIT 1', [$email]);
 
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load user.');
-    }
-
     if (empty($user)) {
         return null;
     }
@@ -460,10 +434,6 @@ function User_by_email($email)
 function User_by_password_recovery_token($token)
 {
     $user = DB::select('SELECT * FROM `User` WHERE `password_recovery_token`=? LIMIT 1', [$token]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load user.');
-    }
 
     if (empty($user)) {
         return null;

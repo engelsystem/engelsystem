@@ -71,9 +71,6 @@ function NeededAngelTypes_by_shift($shiftId)
         ORDER BY `room_id` DESC',
         [$shiftId]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load needed angeltypes.');
-    }
 
     // Use settings from room
     if (count($needed_angeltypes_source) == 0) {
@@ -86,9 +83,6 @@ function NeededAngelTypes_by_shift($shiftId)
         AND `count` > 0
         ORDER BY `room_id` DESC
         ', [$shiftId]);
-        if (DB::getStm()->errorCode() != '00000') {
-            engelsystem_error('Unable to load needed angeltypes.');
-        }
     }
 
     $shift_entries = ShiftEntries_by_shift($shiftId);

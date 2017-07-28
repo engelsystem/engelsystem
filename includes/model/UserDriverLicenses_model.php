@@ -41,7 +41,7 @@ function UserDriverLicense_valid($user_driver_license)
  * Get a users driver license information
  *
  * @param int $user_id The users id
- * @return array|false|null
+ * @return array|null
  */
 function UserDriverLicense($user_id)
 {
@@ -49,11 +49,6 @@ function UserDriverLicense($user_id)
         SELECT *
         FROM `UserDriverLicenses`
         WHERE `user_id`=?', [$user_id]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load user driver license.');
-        return false;
-    }
 
     if (empty($user_driver_license)) {
         return null;

@@ -125,17 +125,16 @@ function ShiftEntry_update($shift_entry)
  * Get a shift entry.
  *
  * @param int $shift_entry_id
- * @return array|false|null
+ * @return array|null
  */
 function ShiftEntry($shift_entry_id)
 {
     $shift_entry = DB::select('SELECT * FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
-    if (DB::getStm()->errorCode() != '00000') {
-        return false;
-    }
+
     if (empty($shift_entry)) {
         return null;
     }
+
     return $shift_entry[0];
 }
 
@@ -209,7 +208,7 @@ function ShiftEntries_finished_by_user($user)
  */
 function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
 {
-    $result = DB::select('
+    return DB::select('
             SELECT *
             FROM `ShiftEntry`
             WHERE `SID` = ?
@@ -220,10 +219,6 @@ function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
             $angeltype_id,
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load shift entries.');
-    }
-    return $result;
 }
 
 /**

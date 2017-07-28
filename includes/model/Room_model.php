@@ -66,10 +66,6 @@ function Room($room_id, $onlyVisible = true)
         [$room_id]
     );
 
-    if (DB::getStm()->errorCode() != '00000') {
-        return false;
-    }
-
     if (empty($room_source)) {
         return null;
     }

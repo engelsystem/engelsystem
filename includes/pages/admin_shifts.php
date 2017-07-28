@@ -44,9 +44,6 @@ function admin_shifts()
 
     // Load shift types
     $shifttypes_source = ShiftTypes();
-    if ($shifttypes_source === false) {
-        engelsystem_error('Unable to load shift types.');
-    }
     $shifttypes = [];
     foreach ($shifttypes_source as $shifttype) {
         $shifttypes[$shifttype['id']] = $shifttype['name'];
@@ -319,9 +316,6 @@ function admin_shifts()
             $shift['URL'] = null;
             $shift['PSID'] = null;
             $shift_id = Shift_create($shift);
-            if ($shift_id === false) {
-                engelsystem_error('Unable to create shift.');
-            }
 
             engelsystem_log(
                 'Shift created: ' . $shifttypes[$shift['shifttype_id']]

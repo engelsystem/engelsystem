@@ -10,10 +10,6 @@ use Engelsystem\Database\DB;
 function EventConfig()
 {
     $event_config = DB::select('SELECT * FROM `EventConfig` LIMIT 1');
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load event config.');
-        return null;
-    }
 
     if (empty($event_config)) {
         return null;

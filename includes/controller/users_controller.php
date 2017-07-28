@@ -259,10 +259,6 @@ function users_list_controller()
     }
 
     $users = Users($order_by);
-    if ($users === false) {
-        engelsystem_error('Unable to load users.');
-    }
-
     foreach ($users as &$user) {
         $user['freeloads'] = count(ShiftEntries_freeloaded_by_user($user));
     }

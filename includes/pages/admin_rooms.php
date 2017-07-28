@@ -50,9 +50,6 @@ function admin_rooms()
 
         if (test_request_int('id')) {
             $room = Room($request->input('id'), false);
-            if ($room === false) {
-                engelsystem_error('Unable to load room.');
-            }
             if ($room == null) {
                 redirect(page_link_to('admin_rooms'));
             }

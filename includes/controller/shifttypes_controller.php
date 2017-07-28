@@ -143,9 +143,6 @@ function shifttype_controller()
 function shifttypes_list_controller()
 {
     $shifttypes = ShiftTypes();
-    if ($shifttypes === false) {
-        engelsystem_error('Unable to load shifttypes.');
-    }
 
     return [
         shifttypes_title(),

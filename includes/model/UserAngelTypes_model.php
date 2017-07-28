@@ -27,23 +27,16 @@ function UserAngelType_exists($user, $angeltype)
  * List users angeltypes.
  *
  * @param array $user
- * @return array|false
+ * @return array
  */
 function User_angeltypes($user)
 {
-    $result = DB::select('
+    return DB::select('
       SELECT `AngelTypes`.*, `UserAngelTypes`.`confirm_user_id`, `UserAngelTypes`.`supporter`
       FROM `UserAngelTypes`
       JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`
       WHERE `UserAngelTypes`.`user_id`=?
       ', [$user['UID']]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load user angeltypes.');
-        return false;
-    }
-
-    return $result;
 }
 
 /**
@@ -54,7 +47,7 @@ function User_angeltypes($user)
  */
 function User_unconfirmed_AngelTypes($user)
 {
-    $result = DB::select('
+    return DB::select('
         SELECT
           `UserAngelTypes`.*,
           `AngelTypes`.`name`,
@@ -69,12 +62,6 @@ function User_unconfirmed_AngelTypes($user)
         GROUP BY `UserAngelTypes`.`angeltype_id`
         ORDER BY `AngelTypes`.`name`
     ', [$user['UID']]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load user angeltypes.');
-    }
-
-    return $result;
 }
 
 /**
@@ -216,10 +203,6 @@ function UserAngelType($user_angeltype_id)
       WHERE `id`=?
       LIMIT 1', [$user_angeltype_id]);
 
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load user angeltype.');
-    }
-
     if (empty($angeltype)) {
         return null;
     }
@@ -248,10 +231,6 @@ function UserAngelType_by_User_and_AngelType($user, $angeltype)
             $angeltype['id']
         ]
     );
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load user angeltype.');
-    }
 
     if (empty($angeltype)) {
         return null;

@@ -38,15 +38,14 @@ class ShiftCalendarLane
      * Returns true on success.
      *
      * @param array $shift The shift to add
-     * @return boolean true on success
      */
     public function addShift($shift)
     {
         if ($this->shiftFits($shift)) {
             $this->shifts[] = $shift;
-            return true;
+            return;
         }
-        return false;
+        throw new Exception('Unable to add shift to shift calendar lane.');
     }
 
     /**

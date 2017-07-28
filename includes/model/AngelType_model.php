@@ -213,7 +213,7 @@ function AngelType_validate_name($name, $angeltype)
  */
 function AngelTypes_with_user($user)
 {
-    $result = DB::select('
+    return DB::select('
       SELECT `AngelTypes`.*,
       `UserAngelTypes`.`id` AS `user_angeltype_id`,
       `UserAngelTypes`.`confirm_user_id`,
@@ -222,11 +222,6 @@ function AngelTypes_with_user($user)
       LEFT JOIN `UserAngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id`
       AND `UserAngelTypes`.`user_id` = ?
       ORDER BY `name`', [$user['UID']]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load angeltypes.');
-    }
-    return $result;
 }
 
 /**
@@ -236,15 +231,10 @@ function AngelTypes_with_user($user)
  */
 function AngelTypes()
 {
-    $result = DB::select('
+    return DB::select('
       SELECT *
       FROM `AngelTypes`
       ORDER BY `name`');
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load angeltypes.');
-    }
-    return $result;
 }
 
 /**
@@ -255,10 +245,6 @@ function AngelTypes()
 function AngelType_ids()
 {
     $result = DB::select('SELECT `id` FROM `AngelTypes`');
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load angeltypes.');
-    }
     return select_array($result, 'id', 'id');
 }
 
@@ -274,10 +260,6 @@ function AngelType($angeltype_id)
         'SELECT * FROM `AngelTypes` WHERE `id`=?',
         [$angeltype_id]
     );
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load angeltype.');
-    }
 
     if (empty($angelType_source)) {
         return null;

@@ -10,11 +10,7 @@ use Engelsystem\ShiftSignupState;
  */
 function Shifts_by_room($room)
 {
-    $result = DB::select('SELECT * FROM `Shifts` WHERE `RID`=? ORDER BY `start`', [$room['RID']]);
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load shifts.');
-    }
-    return $result;
+    return DB::select('SELECT * FROM `Shifts` WHERE `RID`=? ORDER BY `start`', [$room['RID']]);
 }
 
 /**
@@ -49,7 +45,8 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       AND NOT `Shifts`.`PSID` IS NULL) AS tmp_shifts
 
       ORDER BY `start`';
-    $result = DB::select(
+    
+    return DB::select(
         $sql,
         [
             $shiftsFilter->getStartTime(),
@@ -58,10 +55,6 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
             $shiftsFilter->getEndTime(),
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load shifts by filter.');
-    }
-    return $result;
 }
 
 /**
@@ -100,7 +93,8 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       WHERE `Shifts`.`RID` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
       AND `start` BETWEEN ? AND ?
       AND NOT `Shifts`.`PSID` IS NULL';
-    $result = DB::select(
+
+    return DB::select(
         $sql,
         [
             $shiftsFilter->getStartTime(),
@@ -109,10 +103,6 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
             $shiftsFilter->getEndTime(),
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load needed angeltypes by filter.');
-    }
-    return $result;
 }
 
 /**
@@ -160,12 +150,11 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
             $angeltype['id']
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load needed angeltypes by filter.');
-    }
+
     if (empty($result)) {
         return null;
     }
+
     return $result[0];
 }
 
@@ -193,17 +182,13 @@ function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       WHERE `Shifts`.`RID` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
       AND `start` BETWEEN ? AND ?
       ORDER BY `Shifts`.`start`';
-    $result = DB::select(
+    return DB::select(
         $sql,
         [
             $shiftsFilter->getStartTime(),
             $shiftsFilter->getEndTime(),
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load shift entries by filter.');
-    }
-    return $result;
 }
 
 /**
@@ -469,12 +454,9 @@ function Shift_update($shift)
 function Shift_update_by_psid($shift)
 {
     $shift_source = DB::select('SELECT `SID` FROM `Shifts` WHERE `PSID`=?', [$shift['PSID']]);
-    if (DB::getStm()->errorCode() != '00000') {
-        return false;
-    }
 
     if (empty($shift_source)) {
-        return null;
+        throw new Exception('Shift not found.');
     }
 
     $shift['SID'] = $shift_source[0]['SID'];
@@ -485,7 +467,7 @@ function Shift_update_by_psid($shift)
  * Create a new shift.
  *
  * @param array $shift
- * @return int|false shift id or false
+ * @return int ID of the new created shift
  */
 function Shift_create($shift)
 {
@@ -516,9 +498,7 @@ function Shift_create($shift)
             time(),
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        return false;
-    }
+
     return DB::getPdo()->lastInsertId();
 }
 
@@ -531,7 +511,7 @@ function Shift_create($shift)
  */
 function Shifts_by_user($user, $include_freeload_comments = false)
 {
-    $result = DB::select('
+    return DB::select('
           SELECT `ShiftTypes`.`id` AS `shifttype_id`, `ShiftTypes`.`name`,
           `ShiftEntry`.`id`, `ShiftEntry`.`SID`, `ShiftEntry`.`TID`, `ShiftEntry`.`UID`, `ShiftEntry`.`freeloaded`, `ShiftEntry`.`Comment`,
           ' . ($include_freeload_comments ? '`ShiftEntry`.`freeload_comment`, ' : '') . '
@@ -547,10 +527,6 @@ function Shifts_by_user($user, $include_freeload_comments = false)
             $user['UID']
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load users shifts.');
-    }
-    return $result;
 }
 
 /**
@@ -566,10 +542,6 @@ function Shift($shift_id)
       FROM `Shifts`
       JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
       WHERE `SID`=?', [$shift_id]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load shift.');
-    }
 
     if (empty($shifts_source)) {
         return null;
@@ -601,7 +573,7 @@ function Shift($shift_id)
 /**
  * Returns all shifts with needed angeltypes and count of subscribed jobs.
  *
- * @return array|false
+ * @return array
  */
 function Shifts()
 {
@@ -611,10 +583,6 @@ function Shifts()
         JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
         JOIN `Room` ON `Room`.`RID` = `Shifts`.`RID`
     ');
-
-    if (DB::getStm()->errorCode() != '00000') {
-        return false;
-    }
 
     foreach ($shifts_source as &$shift) {
         $needed_angeltypes = NeededAngelTypes_by_shift($shift['SID']);

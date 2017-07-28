@@ -71,27 +71,20 @@ function ShiftType_create($name, $angeltype_id, $description)
 function ShiftType($shifttype_id)
 {
     $shifttype = DB::select('SELECT * FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load shift type.');
-    }
+
     if (empty($shifttype)) {
         return null;
     }
+
     return array_shift($shifttype);
 }
 
 /**
  * Get all shift types.
  *
- * @return array|false
+ * @return array
  */
 function ShiftTypes()
 {
-    $result = DB::select('SELECT * FROM `ShiftTypes` ORDER BY `name`');
-
-    if (DB::getStm()->errorCode() != '00000') {
-        return false;
-    }
-
-    return $result;
+    return DB::select('SELECT * FROM `ShiftTypes` ORDER BY `name`');
 }

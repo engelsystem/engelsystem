@@ -350,9 +350,6 @@ function shifts_json_export_all_controller()
     }
 
     $shifts_source = Shifts();
-    if ($shifts_source === false) {
-        engelsystem_error('Unable to load shifts.');
-    }
 
     header('Content-Type: application/json; charset=utf-8');
     raw_output(json_encode($shifts_source));

@@ -45,9 +45,6 @@ function admin_import()
     $add_minutes_end = 15;
 
     $shifttypes_source = ShiftTypes();
-    if ($shifttypes_source === false) {
-        engelsystem_error('Unable to load shifttypes.');
-    }
     $shifttypes = [];
     foreach ($shifttypes_source as $shifttype) {
         $shifttypes[$shifttype['id']] = $shifttype['name'];
@@ -265,17 +262,11 @@ function admin_import()
                 $add_minutes_end
             );
             foreach ($events_new as $event) {
-                $result = Shift_create($event);
-                if ($result === false) {
-                    engelsystem_error('Unable to create shift.');
-                }
+                Shift_create($event);
             }
 
             foreach ($events_updated as $event) {
-                $result = Shift_update_by_psid($event);
-                if ($result === false) {
-                    engelsystem_error('Unable to update shift.');
-                }
+                Shift_update_by_psid($event);
             }
 
             foreach ($events_deleted as $event) {
