@@ -88,7 +88,7 @@ class Db
      */
     public static function selectOne($query, array $bindings = [])
     {
-        $result = self::select($query);
+        $result = self::select($query, $bindings);
         
         if(empty($result)) {
             return null;
