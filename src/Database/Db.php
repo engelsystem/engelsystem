@@ -79,6 +79,23 @@ class Db
 
         return self::$stm->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    /**
+     * Run a select query and return only the first result or null if no result is found.
+     * @param string $query
+     * @param array  $bindings
+     * @return array|null
+     */
+    public static function selectOne($query, array $bindings = [])
+    {
+        $result = self::select($query);
+        
+        if(empty($result)) {
+            return null;
+        }
+        
+        return array_shift($result);
+    }
 
     /**
      * Run an insert query

@@ -112,7 +112,7 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
  */
 function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
 {
-    $result = DB::select('
+    return DB::selectOne('
           SELECT
               `NeededAngelTypes`.*,
               `Shifts`.`SID`,
@@ -150,12 +150,6 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
             $angeltype['id']
         ]
     );
-
-    if (empty($result)) {
-        return null;
-    }
-
-    return $result[0];
 }
 
 /**
@@ -453,13 +447,13 @@ function Shift_update($shift)
  */
 function Shift_update_by_psid($shift)
 {
-    $shift_source = DB::select('SELECT `SID` FROM `Shifts` WHERE `PSID`=?', [$shift['PSID']]);
+    $shift_source = DB::selectOne('SELECT `SID` FROM `Shifts` WHERE `PSID`=?', [$shift['PSID']]);
 
     if (empty($shift_source)) {
         throw new Exception('Shift not found.');
     }
 
-    $shift['SID'] = $shift_source[0]['SID'];
+    $shift['SID'] = $shift_source['SID'];
     return Shift_update($shift);
 }
 
@@ -537,17 +531,15 @@ function Shifts_by_user($user, $include_freeload_comments = false)
  */
 function Shift($shift_id)
 {
-    $shifts_source = DB::select('
+    $result = DB::selectOne('
       SELECT `Shifts`.*, `ShiftTypes`.`name`
       FROM `Shifts`
       JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
       WHERE `SID`=?', [$shift_id]);
 
-    if (empty($shifts_source)) {
+    if (empty($result)) {
         return null;
     }
-
-    $result = $shifts_source[0];
 
     $shiftsEntry_source = DB::select('
         SELECT `id`, `TID` , `UID` , `freeloaded`

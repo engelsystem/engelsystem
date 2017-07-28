@@ -130,11 +130,11 @@ function user_messages()
                     return error(_('Incomplete call, missing Message ID.'), true);
                 }
 
-                $message = DB::select(
+                $message = DB::selectOne(
                     'SELECT `RUID` FROM `Messages` WHERE `id`=? LIMIT 1',
                     [$message_id]
                 );
-                if (count($message) > 0 && $message[0]['RUID'] == $user['UID']) {
+                if (!empty($message) && $message['RUID'] == $user['UID']) {
                     DB::update(
                         'UPDATE `Messages` SET `isRead`=\'Y\' WHERE `id`=? LIMIT 1',
                         [$message_id]
@@ -152,11 +152,11 @@ function user_messages()
                     return error(_('Incomplete call, missing Message ID.'), true);
                 }
 
-                $message = DB::select(
+                $message = DB::selectOne(
                     'SELECT `SUID` FROM `Messages` WHERE `id`=? LIMIT 1',
                     [$message_id]
                 );
-                if (count($message) > 0 && $message[0]['SUID'] == $user['UID']) {
+                if (!empty($message) && $message['SUID'] == $user['UID']) {
                     DB::delete('DELETE FROM `Messages` WHERE `id`=? LIMIT 1', [$message_id]);
                     redirect(page_link_to('user_messages'));
                 } else {

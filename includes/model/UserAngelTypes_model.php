@@ -197,17 +197,11 @@ function UserAngelType_create($user, $angeltype)
  */
 function UserAngelType($user_angeltype_id)
 {
-    $angeltype = DB::select('
+    return DB::selectOne('
       SELECT *
       FROM `UserAngelTypes`
       WHERE `id`=?
       LIMIT 1', [$user_angeltype_id]);
-
-    if (empty($angeltype)) {
-        return null;
-    }
-
-    return $angeltype[0];
 }
 
 /**
@@ -219,7 +213,7 @@ function UserAngelType($user_angeltype_id)
  */
 function UserAngelType_by_User_and_AngelType($user, $angeltype)
 {
-    $angeltype = DB::select('
+    return DB::selectOne('
           SELECT *
           FROM `UserAngelTypes`
           WHERE `user_id`=?
@@ -231,10 +225,4 @@ function UserAngelType_by_User_and_AngelType($user, $angeltype)
             $angeltype['id']
         ]
     );
-
-    if (empty($angeltype)) {
-        return null;
-    }
-
-    return array_shift($angeltype);
 }

@@ -116,20 +116,20 @@ function admin_user()
 
         $html .= '<hr />';
 
-        $my_highest_group = DB::select(
+        $my_highest_group = DB::selectOne(
             'SELECT group_id FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` LIMIT 1',
             [$user['UID']]
         );
-        if (count($my_highest_group) > 0) {
-            $my_highest_group = $my_highest_group[0]['group_id'];
+        if (!empty($my_highest_group)) {
+            $my_highest_group = $my_highest_group['group_id'];
         }
 
-        $his_highest_group = DB::select(
+        $his_highest_group = DB::selectOne(
             'SELECT `group_id` FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` LIMIT 1',
             [$user_id]
         );
-        if (count($his_highest_group) > 0) {
-            $his_highest_group = $his_highest_group[0]['group_id'];
+        if (!empty($his_highest_group)) {
+            $his_highest_group = $his_highest_group['group_id'];
         }
 
         if ($user_id != $user['UID'] && $my_highest_group <= $his_highest_group) {
@@ -188,7 +188,7 @@ function admin_user()
                         count($my_highest_group) > 0
                         && (
                             count($his_highest_group) == 0
-                            || ($my_highest_group[0]['group_id'] <= $his_highest_group[0]['group_id'])
+                            || ($my_highest_group['group_id'] <= $his_highest_group['group_id'])
                         )
                     ) {
                         $groups_source = DB::select('
@@ -203,7 +203,7 @@ function admin_user()
                             ',
                             [
                                 $user_id,
-                                $my_highest_group[0]['group_id'],
+                                $my_highest_group['group_id'],
                             ]
                         );
                         $groups = [];

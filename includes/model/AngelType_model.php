@@ -256,14 +256,8 @@ function AngelType_ids()
  */
 function AngelType($angeltype_id)
 {
-    $angelType_source = DB::select(
+    return DB::selectOne(
         'SELECT * FROM `AngelTypes` WHERE `id`=?',
         [$angeltype_id]
     );
-
-    if (empty($angelType_source)) {
-        return null;
-    }
-
-    return array_shift($angelType_source);
 }

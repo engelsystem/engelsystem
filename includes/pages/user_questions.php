@@ -61,11 +61,11 @@ function user_questions()
                     return error(_('Incomplete call, missing Question ID.'), true);
                 }
 
-                $question = DB::select(
+                $question = DB::selectOne(
                     'SELECT `UID` FROM `Questions` WHERE `QID`=? LIMIT 1',
                     [$question_id]
                 );
-                if (count($question) > 0 && $question[0]['UID'] == $user['UID']) {
+                if (!empty($question) && $question['UID'] == $user['UID']) {
                     DB::delete(
                         'DELETE FROM `Questions` WHERE `QID`=? LIMIT 1',
                         [$question_id]

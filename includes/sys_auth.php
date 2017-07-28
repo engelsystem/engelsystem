@@ -11,10 +11,9 @@ function load_auth()
 
     $user = null;
     if (isset($_SESSION['uid'])) {
-        $user = DB::select('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$_SESSION['uid']]);
-        if (count($user) > 0) {
+        $user = DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$_SESSION['uid']]);
+        if (!empty($user)) {
             // User ist eingeloggt, Datensatz zur Verfügung stellen und Timestamp updaten
-            $user = array_shift($user);
             DB::update('
                 UPDATE `User`
                 SET `lastLogIn` = ?

@@ -325,7 +325,7 @@ function admin_shifts()
             );
 
             foreach ($_SESSION['admin_shifts_types'] as $type_id => $count) {
-                $angel_type_source = DB::select('
+                $angel_type_source = DB::selectOne('
                       SELECT *
                       FROM `AngelTypes`
                       WHERE `id` = ?
@@ -341,7 +341,7 @@ function admin_shifts()
                             $count
                         ]
                     );
-                    $needed_angel_types_info[] = $angel_type_source[0]['name'] . ': ' . $count;
+                    $needed_angel_types_info[] = $angel_type_source['name'] . ': ' . $count;
                 }
             }
         }

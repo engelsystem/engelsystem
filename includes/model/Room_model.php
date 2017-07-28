@@ -58,17 +58,11 @@ function Room_create($name, $from_frab, $public, $number = null)
  */
 function Room($room_id, $onlyVisible = true)
 {
-    $room_source = DB::select('
+    return DB::selectOne('
         SELECT *
         FROM `Room`
         WHERE `RID` = ?
         ' . ($onlyVisible ? 'AND `show` = \'Y\'' : ''),
         [$room_id]
     );
-
-    if (empty($room_source)) {
-        return null;
-    }
-
-    return array_shift($room_source);
 }

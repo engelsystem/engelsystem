@@ -43,7 +43,7 @@ function shift_entry_add_controller()
         $type = AngelType($type_id);
     } else {
         // TODO: Move queries to model
-        $type = DB::select('
+        $type = DB::selectOne('
             SELECT *
             FROM `UserAngelTypes`
             JOIN `AngelTypes` ON (`UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`)
@@ -56,7 +56,6 @@ function shift_entry_add_controller()
                 )
             )
         ', [$type_id, $user['UID']]);
-        $type = array_shift($type);
     }
 
     if (empty($type)) {
@@ -241,7 +240,7 @@ function shift_entry_delete_controller()
     }
     $entry_id = $request->input('entry_id');
 
-    $shift_entry_source = DB::select('
+    $shift_entry_source = DB::selectOne('
         SELECT
             `User`.`Nick`,
             `ShiftEntry`.`Comment`,
@@ -260,9 +259,7 @@ function shift_entry_delete_controller()
         WHERE `ShiftEntry`.`id`=?',
         [$entry_id]
     );
-    if (count($shift_entry_source) > 0) {
-        $shift_entry_source = array_shift($shift_entry_source);
-
+    if (!empty($shift_entry_source)) {
         if (!in_array('user_shifts_admin', $privileges) && (!in_array('shiftentry_edit_angeltype_supporter',
                     $privileges) || !User_is_AngelType_supporter($user, AngelType($shift_entry_source['angeltype_id'])))
         ) {

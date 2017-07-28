@@ -28,10 +28,9 @@ function ShiftEntry_new()
  */
 function ShiftEntries_freeleaded_count()
 {
-    $result = DB::select('SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1');
-    $result = array_shift($result);
+    $result = DB::selectOne('SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1');
 
-    if (!is_array($result)) {
+    if (empty($result)) {
         return 0;
     }
 
@@ -129,13 +128,7 @@ function ShiftEntry_update($shift_entry)
  */
 function ShiftEntry($shift_entry_id)
 {
-    $shift_entry = DB::select('SELECT * FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
-
-    if (empty($shift_entry)) {
-        return null;
-    }
-
-    return $shift_entry[0];
+    return DB::selectOne('SELECT * FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
 }
 
 /**

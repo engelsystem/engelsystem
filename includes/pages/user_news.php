@@ -126,8 +126,7 @@ function user_news_comments()
         && count(DB::select('SELECT `ID` FROM `News` WHERE `ID`=? LIMIT 1', [$request->input('nid')])) > 0
     ) {
         $nid = $request->input('nid');
-        $news = DB::select('SELECT * FROM `News` WHERE `ID`=? LIMIT 1', [$nid]);
-        $news = array_shift($news);
+        $news = DB::selectOne('SELECT * FROM `News` WHERE `ID`=? LIMIT 1', [$nid]);
         if ($request->has('text')) {
             $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($request->input('text')));
             DB::insert('

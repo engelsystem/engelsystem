@@ -21,14 +21,13 @@ function admin_news()
         return error('Incomplete call, missing News ID.', true);
     }
 
-    $news = DB::select('SELECT * FROM `News` WHERE `ID`=? LIMIT 1', [$news_id]);
+    $news = DB::selectOne('SELECT * FROM `News` WHERE `ID`=? LIMIT 1', [$news_id]);
     if (empty($news)) {
         return error('No News found.', true);
     }
 
     switch ($request->input('action')) {
         case 'edit':
-            $news = array_shift($news);
             $user_source = User($news['UID']);
 
             $html .= form([
@@ -70,7 +69,6 @@ function admin_news()
             break;
 
         case 'delete':
-            $news = array_shift($news);
             DB::delete('DELETE FROM `News` WHERE `ID`=? LIMIT 1', [$news_id]);
             engelsystem_log('News deleted: ' . $news['Betreff']);
             success(_('News entry deleted.'));

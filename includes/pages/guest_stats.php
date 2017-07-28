@@ -17,13 +17,12 @@ function guest_stats()
             list($arrived_user_count) = DB::select('SELECT count(*) AS `user_count` FROM `User` WHERE `Gekommen`=1');
             $stats['arrived_user_count'] = $arrived_user_count['user_count'];
 
-            $done_shifts_seconds = DB::select('
+            $done_shifts_seconds = DB::selectOne('
                 SELECT SUM(`Shifts`.`end` - `Shifts`.`start`)
                 FROM `ShiftEntry`
                 JOIN `Shifts` USING (`SID`)
                 WHERE `Shifts`.`end` < UNIX_TIMESTAMP()
             ');
-            $done_shifts_seconds = array_shift($done_shifts_seconds);
             $done_shifts_seconds = (int)array_shift($done_shifts_seconds);
             $stats['done_work_hours'] = round($done_shifts_seconds / (60 * 60), 0);
 

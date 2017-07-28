@@ -87,8 +87,7 @@ function User_update($user)
  */
 function User_force_active_count()
 {
-    $result = DB::select('SELECT COUNT(*) FROM `User` WHERE `force_active` = 1');
-    $result = array_shift($result);
+    $result = DB::selectOne('SELECT COUNT(*) FROM `User` WHERE `force_active` = 1');
 
     if (empty($result)) {
         return 0;
@@ -102,8 +101,7 @@ function User_force_active_count()
  */
 function User_active_count()
 {
-    $result = DB::select('SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1');
-    $result = array_shift($result);
+    $result = DB::selectOne('SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1');
 
     if (empty($result)) {
         return 0;
@@ -117,8 +115,7 @@ function User_active_count()
  */
 function User_got_voucher_count()
 {
-    $result = DB::select('SELECT SUM(`got_voucher`) FROM `User`');
-    $result = array_shift($result);
+    $result = DB::selectOne('SELECT SUM(`got_voucher`) FROM `User`');
 
     if (empty($result)) {
         return 0;
@@ -132,8 +129,7 @@ function User_got_voucher_count()
  */
 function User_arrived_count()
 {
-    $result = DB::select('SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1');
-    $result = array_shift($result);
+    $result = DB::selectOne('SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1');
 
     if (empty($result)) {
         return 0;
@@ -147,8 +143,7 @@ function User_arrived_count()
  */
 function User_tshirts_count()
 {
-    $result = DB::select('SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1');
-    $result = array_shift($result);
+    $result = DB::selectOne('SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1');
 
     if (empty($result)) {
         return 0;
@@ -382,13 +377,7 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
  */
 function User($user_id)
 {
-    $user_source = DB::select('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
-
-    if (empty($user_source)) {
-        return null;
-    }
-
-    return array_shift($user_source);
+    return DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
 }
 
 /**
@@ -400,13 +389,7 @@ function User($user_id)
  */
 function User_by_api_key($api_key)
 {
-    $user = DB::select('SELECT * FROM `User` WHERE `api_key`=? LIMIT 1', [$api_key]);
-
-    if (empty($user)) {
-        return null;
-    }
-
-    return $user[0];
+    return DB::selectOne('SELECT * FROM `User` WHERE `api_key`=? LIMIT 1', [$api_key]);
 }
 
 /**
@@ -417,30 +400,18 @@ function User_by_api_key($api_key)
  */
 function User_by_email($email)
 {
-    $user = DB::select('SELECT * FROM `User` WHERE `email`=? LIMIT 1', [$email]);
-
-    if (empty($user)) {
-        return null;
-    }
-
-    return array_shift($user);
+    return DB::selectOne('SELECT * FROM `User` WHERE `email`=? LIMIT 1', [$email]);
 }
 
 /**
  * Returns User by password token.
  *
  * @param string $token
- * @return array|null Matching user, null or false on error
+ * @return array|null Matching user, null when not found
  */
 function User_by_password_recovery_token($token)
 {
-    $user = DB::select('SELECT * FROM `User` WHERE `password_recovery_token`=? LIMIT 1', [$token]);
-
-    if (empty($user)) {
-        return null;
-    }
-
-    return array_shift($user);
+    return DB::selectOne('SELECT * FROM `User` WHERE `password_recovery_token`=? LIMIT 1', [$token]);
 }
 
 /**

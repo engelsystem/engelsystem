@@ -70,13 +70,7 @@ function ShiftType_create($name, $angeltype_id, $description)
  */
 function ShiftType($shifttype_id)
 {
-    $shifttype = DB::select('SELECT * FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
-
-    if (empty($shifttype)) {
-        return null;
-    }
-
-    return array_shift($shifttype);
+    return DB::selectOne('SELECT * FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
 }
 
 /**

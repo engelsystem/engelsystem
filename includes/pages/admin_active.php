@@ -210,18 +210,16 @@ function admin_active()
     $shirt_statistics = [];
     foreach (array_keys($tshirt_sizes) as $size) {
         if (!empty($size)) {
-            $sc = DB::select(
+            $sc = DB::selectOne(
                 'SELECT count(*) FROM `User` WHERE `Size`=? AND `Gekommen`=1',
                 [$size]
             );
             $sc = array_shift($sc);
-            $sc = array_shift($sc);
 
-            $gc = DB::select(
+            $gc = DB::selectOne(
                 'SELECT count(*) FROM `User` WHERE `Size`=? AND `Tshirt`=1',
                 [$size]
             );
-            $gc = array_shift($gc);
             $gc = array_shift($gc);
 
             $shirt_statistics[] = [
@@ -232,8 +230,7 @@ function admin_active()
         }
     }
 
-    $uc = DB::select('SELECT count(*) FROM `User` WHERE `Tshirt`=1');
-    $uc = array_shift($uc);
+    $uc = DB::selectOne('SELECT count(*) FROM `User` WHERE `Tshirt`=1');
     $uc = array_shift($uc);
 
     $shirt_statistics[] = [

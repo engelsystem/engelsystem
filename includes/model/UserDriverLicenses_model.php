@@ -45,16 +45,10 @@ function UserDriverLicense_valid($user_driver_license)
  */
 function UserDriverLicense($user_id)
 {
-    $user_driver_license = DB::select('
+    return DB::selectOne('
         SELECT *
         FROM `UserDriverLicenses`
         WHERE `user_id`=?', [$user_id]);
-
-    if (empty($user_driver_license)) {
-        return null;
-    }
-
-    return array_shift($user_driver_license);
 }
 
 /**

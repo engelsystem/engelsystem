@@ -9,13 +9,7 @@ use Engelsystem\Database\DB;
  */
 function EventConfig()
 {
-    $event_config = DB::select('SELECT * FROM `EventConfig` LIMIT 1');
-
-    if (empty($event_config)) {
-        return null;
-    }
-
-    return array_shift($event_config);
+    return DB::selectOne('SELECT * FROM `EventConfig` LIMIT 1');
 }
 
 /**
