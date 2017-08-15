@@ -89,7 +89,7 @@ function load_days() {
   $days = sql_select_single_col("
       SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name`
       FROM `Shifts`
-      ORDER BY `start`");
+      ORDER BY `id`, `name`");
   if (count($days) == 0) {
     error(_("The administration has not configured any shifts yet."));
     redirect('?');
