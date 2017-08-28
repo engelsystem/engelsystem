@@ -66,9 +66,9 @@ function make_atom_entry_from_news($news_entry)
 {
     return '  <entry>
     <title>' . htmlspecialchars($news_entry['Betreff']) . '</title>
-    <link href="' . page_link_to_absolute('news_comments&amp;nid=') . $news_entry['ID'] . '"/>
+    <link href="' . page_link_to_absolute('news_comments', ['nid' => $news_entry['ID']]) . '"/>
       <id>' . preg_replace('#^https?://#', '', page_link_to_absolute('news')) . '-' . $news_entry['ID'] . '</id>
       <updated>' . date('Y-m-d\TH:i:sP', $news_entry['Datum']) . '</updated>
-    <summary type="html">' . htmlspecialchars($news_entry['Text']) . '</summary>
+    <summary>' . htmlspecialchars($news_entry['Text']) . '</summary>
     </entry>' . "\n";
 }

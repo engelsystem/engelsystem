@@ -25,8 +25,8 @@ function admin_rooms()
             'from_pentabarf' => $room['FromPentabarf'] == 'Y' ? '&#10003;' : '',
             'public'         => $room['show'] == 'Y' ? '&#10003;' : '',
             'actions'        => table_buttons([
-                button(page_link_to('admin_rooms') . '&show=edit&id=' . $room['RID'], _('edit'), 'btn-xs'),
-                button(page_link_to('admin_rooms') . '&show=delete&id=' . $room['RID'], _('delete'), 'btn-xs')
+                button(page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room['RID']]), _('edit'), 'btn-xs'),
+                button(page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room['RID']]), _('delete'), 'btn-xs')
             ])
         ];
     }
@@ -227,7 +227,7 @@ function admin_rooms()
                 sprintf(_('Do you want to delete room %s?'), $name),
                 buttons([
                     button(
-                        page_link_to('admin_rooms') . '&show=delete&id=' . $room_id . '&ack',
+                        page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room_id, 'ack' => 1]),
                         _('Delete'),
                         'delete btn-danger'
                     )
@@ -238,7 +238,7 @@ function admin_rooms()
 
     return page_with_title(admin_rooms_title(), [
         buttons([
-            button(page_link_to('admin_rooms') . '&show=edit', _('add'))
+            button(page_link_to('admin_rooms', ['show' => 'edit']), _('add'))
         ]),
         msg(),
         table([

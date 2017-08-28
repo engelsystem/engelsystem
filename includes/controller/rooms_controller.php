@@ -1,4 +1,5 @@
 <?php
+
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftsFilterRenderer;
 
@@ -91,7 +92,7 @@ function rooms_controller()
  */
 function room_link($room)
 {
-    return page_link_to('rooms') . '&action=view&room_id=' . $room['RID'];
+    return page_link_to('rooms', ['action' => 'view', 'room_id' => $room['RID']]);
 }
 
 /**
@@ -100,7 +101,7 @@ function room_link($room)
  */
 function room_edit_link($room)
 {
-    return page_link_to('admin_rooms') . '&show=edit&id=' . $room['RID'];
+    return page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room['RID']]);
 }
 
 /**

@@ -125,7 +125,7 @@ class ShiftCalendarShiftRenderer
 
         if (in_array('user_shifts_admin', $privileges)) {
             $html .= '<li class="list-group-item">' . button(
-                    page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'],
+                    page_link_to('user_shifts', ['shift_id' => $shift['SID']]),
                     _('Add more angels'),
                     'btn-xs'
                 ) . '</li>';
@@ -169,11 +169,13 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::ADMIN:
             case ShiftSignupState::FREE:
                 // When admin or free display a link + button for sign up
-                $entry_list[] = '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">'
+                $entry_list[] = '<a href="'
+                    . page_link_to('user_shifts', ['shift_id' => $shift['SID'], 'type_id' => $angeltype['id']])
+                    . '">'
                     . $inner_text
                     . '</a> '
                     . button(
-                        page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'],
+                        page_link_to('user_shifts', ['shift_id' => $shift['SID'], 'type_id' => $angeltype['id']]),
                         _('Sign up'), 'btn-xs btn-primary'
                     );
                 break;
@@ -191,7 +193,7 @@ class ShiftCalendarShiftRenderer
                     // Add link to join the angeltype first
                     $entry_list[] = $inner_text . '<br />'
                         . button(
-                            page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'],
+                            page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype['id']]),
                             sprintf(_('Become %s'), $angeltype['name']),
                             'btn-xs'
                         );
@@ -232,8 +234,8 @@ class ShiftCalendarShiftRenderer
         $header_buttons = '';
         if (in_array('admin_shifts', $privileges)) {
             $header_buttons = '<div class="pull-right">' . table_buttons([
-                    button(page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'], glyph('edit'), 'btn-xs'),
-                    button(page_link_to('user_shifts') . '&delete_shift=' . $shift['SID'], glyph('trash'), 'btn-xs')
+                    button(page_link_to('user_shifts', ['edit_shift' => $shift['SID']]), glyph('edit'), 'btn-xs'),
+                    button(page_link_to('user_shifts', ['delete_shift' => $shift['SID']]), glyph('trash'), 'btn-xs')
                 ]) . '</div>';
         }
         $shift_heading = date('H:i', $shift['start']) . ' &dash; '

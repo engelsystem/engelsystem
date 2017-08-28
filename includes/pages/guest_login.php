@@ -328,7 +328,7 @@ function guest_register()
                         'angel_types',
                         _('What do you want to do?') . sprintf(
                             ' (<a href="%s">%s</a>)',
-                            page_link_to('angeltypes') . '&action=about',
+                            page_link_to('angeltypes', ['action' => 'about']),
                             _('Description of job types')
                         ),
                         $angel_types,
@@ -467,7 +467,10 @@ function guest_login()
                     heading(_('What can I do?'), 2),
                     '<p>' . _('Please read about the jobs you can do to help us.') . '</p>',
                     buttons([
-                        button(page_link_to('angeltypes') . '&action=about', _('Teams/Job description') . ' &raquo;')
+                        button(
+                            page_link_to('angeltypes', ['action' => 'about']),
+                            _('Teams/Job description') . ' &raquo;'
+                        )
                     ])
                 ])
             ])

@@ -6,7 +6,7 @@
  */
 function shifttype_link($shifttype)
 {
-    return page_link_to('shifttypes') . '&action=view&shifttype_id=' . $shifttype['id'];
+    return page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype['id']]);
 }
 
 /**
@@ -107,7 +107,7 @@ function shifttype_edit_controller()
                 engelsystem_log('Created shifttype ' . $name);
                 success(_('Created shifttype.'));
             }
-            redirect(page_link_to('shifttypes') . '&action=view&shifttype_id=' . $shifttype_id);
+            redirect(page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype_id]));
         }
     }
 

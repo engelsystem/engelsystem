@@ -92,14 +92,14 @@ function user_messages()
             if ($message['RUID'] == $user['UID']) {
                 if ($message['isRead'] == 'N') {
                     $messages_table_entry['actions'] = button(
-                        page_link_to('user_messages') . '&action=read&id=' . $message['id'],
+                        page_link_to('user_messages', ['action' => 'read', 'id' => $message['id']]),
                         _('mark as read'),
                         'btn-xs'
                     );
                 }
             } else {
                 $messages_table_entry['actions'] = button(
-                    page_link_to('user_messages') . '&action=delete&id=' . $message['id'],
+                    page_link_to('user_messages', ['action' => 'delete', 'id' => $message['id']]),
                     _('delete message'),
                     'btn-xs'
                 );
@@ -119,7 +119,7 @@ function user_messages()
                     'text'      => _('Message'),
                     'actions'   => ''
                 ], $messages_table)
-            ], page_link_to('user_messages') . '&action=send')
+            ], page_link_to('user_messages', ['action' => 'send']))
         ]);
     } else {
         switch ($request->input('action')) {

@@ -63,7 +63,7 @@ function user_driver_license_edit_link($user = null)
     if ($user == null) {
         return page_link_to('user_driver_licenses');
     }
-    return page_link_to('user_driver_licenses') . '&user_id=' . $user['UID'];
+    return page_link_to('user_driver_licenses', ['user_id' => $user['UID']]);
 }
 
 /**

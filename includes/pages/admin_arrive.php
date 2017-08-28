@@ -92,8 +92,14 @@ function admin_arrive()
         $usr['rendered_arrival_date'] = $usr['arrival_date'] > 0 ? date('Y-m-d', $usr['arrival_date']) : '-';
         $usr['arrived'] = $usr['Gekommen'] == 1 ? _('yes') : '';
         $usr['actions'] = $usr['Gekommen'] == 1
-            ? '<a href="' . page_link_to('admin_arrive') . '&reset=' . $usr['UID'] . '&search=' . $search . '">' . _('reset') . '</a>'
-            : '<a href="' . page_link_to('admin_arrive') . '&arrived=' . $usr['UID'] . '&search=' . $search . '">' . _('arrived') . '</a>';
+            ? '<a href="' . page_link_to(
+                'admin_arrive',
+                ['reset' => $usr['UID'], 'search' => $search]
+            ) . '">' . _('reset') . '</a>'
+            : '<a href="' . page_link_to(
+                'admin_arrive',
+                ['arrived' => $usr['UID'], 'search' => $search]
+            ) . '">' . _('arrived') . '</a>';
 
         if ($usr['arrival_date'] > 0) {
             $day = date('Y-m-d', $usr['arrival_date']);

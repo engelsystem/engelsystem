@@ -35,8 +35,8 @@ function user_meetings()
     $html = '<div class="col-md-12"><h1>' . meetings_title() . '</h1>' . msg();
     $request = request();
 
-    if ($request->has('page') && preg_match('/^\d{1,}$/', $request->input('page'))) {
-        $page = $request->input('page');
+    if (preg_match('/^\d{1,}$/', $request->input('page', 0))) {
+        $page = $request->input('page', 0);
     } else {
         $page = 0;
     }
@@ -57,14 +57,14 @@ function user_meetings()
     $dis_rows = ceil(count(DB::select('SELECT `ID` FROM `News`')) / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
-        if ($request->has('page') && $i == $request->input('page')) {
+        if ($request->has('page') && $i == $request->input('page', 0)) {
             $html .= '<li class="active">';
         } elseif (!$request->has('page') && $i == 0) {
             $html .= '<li class="active">';
         } else {
             $html .= '<li>';
         }
-        $html .= '<a href="' . page_link_to('user_meetings') . '&page=' . $i . '">' . ($i + 1) . '</a></li>';
+        $html .= '<a href="' . page_link_to('user_meetings', ['page' => $i]) . '">' . ($i + 1) . '</a></li>';
     }
     $html .= '</ul></div></div>';
 
@@ -89,7 +89,7 @@ function display_news($news)
     $html .= '<div class="panel-footer text-muted">';
     if (in_array('admin_news', $privileges)) {
         $html .= '<div class="pull-right">'
-            . button_glyph(page_link_to('admin_news') . '&action=edit&id=' . $news['ID'], 'edit', 'btn-xs')
+            . button_glyph(page_link_to('admin_news', ['action' => 'edit', 'id' => $news['ID']]), 'edit', 'btn-xs')
             . '</div>';
     }
     $html .= '<span class="glyphicon glyphicon-time"></span> ' . date('Y-m-d H:i', $news['Datum']) . '&emsp;';
@@ -98,7 +98,7 @@ function display_news($news)
 
     $html .= User_Nick_render($user_source);
     if ($page != 'news_comments') {
-        $html .= '&emsp;<a href="' . page_link_to('news_comments') . '&nid=' . $news['ID'] . '">'
+        $html .= '&emsp;<a href="' . page_link_to('news_comments', ['nid' => $news['ID']]) . '">'
             . '<span class="glyphicon glyphicon-comment"></span> '
             . _('Comments') . ' &raquo;</a> '
             . '<span class="badge">'
@@ -167,7 +167,7 @@ function user_news_comments()
         $html .= form([
             form_textarea('text', _('Message'), ''),
             form_submit('submit', _('Save'))
-        ], page_link_to('news_comments') . '&nid=' . $news['ID']);
+        ], page_link_to('news_comments', ['nid' => $news['ID']]));
     } else {
         $html .= _('Invalid request.');
     }
@@ -208,8 +208,8 @@ function user_news()
         redirect(page_link_to('news'));
     }
 
-    if ($request->has('page') && preg_match('/^\d{1,}$/', $request->input('page'))) {
-        $page = $request->input('page');
+    if (preg_match('/^\d{1,}$/', $request->input('page', 0))) {
+        $page = $request->input('page', 0);
     } else {
         $page = 0;
     }
@@ -230,14 +230,14 @@ function user_news()
     $dis_rows = ceil(count(DB::select('SELECT `ID` FROM `News`')) / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
-        if ($request->has('page') && $i == $request->input('page')) {
+        if ($request->has('page') && $i == $request->input('page', 0)) {
             $html .= '<li class="active">';
         } elseif (!$request->has('page') && $i == 0) {
             $html .= '<li class="active">';
         } else {
             $html .= '<li>';
         }
-        $html .= '<a href="' . page_link_to('news') . '&page=' . $i . '">' . ($i + 1) . '</a></li>';
+        $html .= '<a href="' . page_link_to('news', ['page' => $i]) . '">' . ($i + 1) . '</a></li>';
     }
     $html .= '</ul></div>';
 

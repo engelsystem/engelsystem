@@ -38,14 +38,14 @@ function user_myshifts()
         if ($request->input('reset') == 'ack') {
             User_reset_api_key($user);
             success(_('Key changed.'));
-            redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
+            redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user['UID']]));
         }
         return page_with_title(_('Reset API key'), [
             error(
                 _('If you reset the key, the url to your iCal- and JSON-export and your atom feed changes! You have to update it in every application using one of these exports.'),
                 true
             ),
-            button(page_link_to('user_myshifts') . '&reset=ack', _('Continue'), 'btn-danger')
+            button(page_link_to('user_myshifts', ['reset' => 'ack']), _('Continue'), 'btn-danger')
         ]);
     } elseif ($request->has('edit') && preg_match('/^\d*$/', $request->input('edit'))) {
         $user_id = $request->input('edit');
@@ -111,7 +111,7 @@ function user_myshifts()
                         . '. Freeloaded: ' . ($freeloaded ? 'YES Comment: ' . $freeload_comment : 'NO')
                     );
                     success(_('Shift saved.'));
-                    redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
+                    redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user['UID']]));
                 }
             }
 
@@ -172,6 +172,6 @@ function user_myshifts()
         }
     }
 
-    redirect(page_link_to('users') . '&action=view&user_id=' . $shifts_user['UID']);
+    redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user['UID']]));
     return '';
 }

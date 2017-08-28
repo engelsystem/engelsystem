@@ -17,8 +17,7 @@ function user_angeltypes_unconfirmed_hint()
     $unconfirmed_links = [];
     foreach ($unconfirmed_user_angeltypes as $user_angeltype) {
         $unconfirmed_links[] = '<a href="'
-            . page_link_to('angeltypes')
-            . '&action=view&angeltype_id=' . $user_angeltype['angeltype_id']
+            . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $user_angeltype['angeltype_id']])
             . '">' . $user_angeltype['name']
             . ' (+' . $user_angeltype['count'] . ')'
             . '</a>';
@@ -61,7 +60,7 @@ function user_angeltypes_delete_all_controller()
 
         engelsystem_log(sprintf('Denied all users for angeltype %s', AngelType_name_render($angeltype)));
         success(sprintf(_('Denied all users for angeltype %s.'), AngelType_name_render($angeltype)));
-        redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id']);
+        redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
     return [
@@ -107,7 +106,7 @@ function user_angeltypes_confirm_all_controller()
 
         engelsystem_log(sprintf('Confirmed all users for angeltype %s', AngelType_name_render($angeltype)));
         success(sprintf(_('Confirmed all users for angeltype %s.'), AngelType_name_render($angeltype)));
-        redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id']);
+        redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
     return [
@@ -167,7 +166,7 @@ function user_angeltype_confirm_controller()
             User_Nick_render($user_source),
             AngelType_name_render($angeltype)
         ));
-        redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id']);
+        redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
     return [
@@ -224,7 +223,7 @@ function user_angeltype_delete_controller()
         engelsystem_log($success_message);
         success($success_message);
 
-        redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id']);
+        redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
     return [
@@ -290,7 +289,7 @@ function user_angeltype_update_controller()
         engelsystem_log($success_message);
         success($success_message);
 
-        redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id']);
+        redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
     return [
@@ -344,7 +343,7 @@ function user_angeltype_add_controller()
                 AngelType_name_render($angeltype)
             ));
 
-            redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id']);
+            redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
         }
     }
 
@@ -386,7 +385,7 @@ function user_angeltype_join_controller($angeltype)
             ));
         }
 
-        redirect(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id']);
+        redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
     return [

@@ -11,11 +11,7 @@ use Engelsystem\Renderer\Renderer;
  * This file includes all needed functions, connects to the db etc.
  */
 
-if (!is_readable(__DIR__ . '/../vendor/autoload.php')) {
-    die('Please run composer.phar install');
-}
-require __DIR__ . '/../vendor/autoload.php';
-
+require_once __DIR__ . '/autoload.php';
 
 /**
  * Load configuration
@@ -38,7 +34,7 @@ date_default_timezone_set($config->get('timezone'));
  * Initialize Request
  */
 $request = new Request();
-$request->create();
+$request->create($_GET, $_POST, $_SERVER, config('url'));
 $request::setInstance($request);
 
 /**

@@ -31,16 +31,21 @@ function admin_news()
             $news = array_shift($news);
             $user_source = User($news['UID']);
 
-            $html .= form([
-                form_info(_('Date'), date('Y-m-d H:i', $news['Datum'])),
-                form_info(_('Author'), User_Nick_render($user_source)),
-                form_text('eBetreff', _('Subject'), $news['Betreff']),
-                form_textarea('eText', _('Message'), $news['Text']),
-                form_checkbox('eTreffen', _('Meeting'), $news['Treffen'] == 1, 1),
-                form_submit('submit', _('Save'))
-            ], page_link_to('admin_news&action=save&id=' . $news_id));
+            $html .= form(
+                [
+                    form_info(_('Date'), date('Y-m-d H:i', $news['Datum'])),
+                    form_info(_('Author'), User_Nick_render($user_source)),
+                    form_text('eBetreff', _('Subject'), $news['Betreff']),
+                    form_textarea('eText', _('Message'), $news['Text']),
+                    form_checkbox('eTreffen', _('Meeting'), $news['Treffen'] == 1, 1),
+                    form_submit('submit', _('Save'))
+                ],
+                page_link_to('admin_news', ['action' => 'save', 'id' => $news_id])
+            );
 
-            $html .= '<a class="btn btn-danger" href="' . page_link_to('admin_news&action=delete&id=' . $news_id) . '">'
+            $html .= '<a class="btn btn-danger" href="'
+                . page_link_to('admin_news', ['action' => 'delete', 'id' => $news_id])
+                . '">'
                 . '<span class="glyphicon glyphicon-trash"></span> ' . _('Delete')
                 . '</a>';
             break;

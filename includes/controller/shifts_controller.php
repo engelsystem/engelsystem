@@ -1,4 +1,5 @@
 <?php
+
 use Engelsystem\ShiftSignupState;
 
 /**
@@ -7,7 +8,7 @@ use Engelsystem\ShiftSignupState;
  */
 function shift_link($shift)
 {
-    $link = page_link_to('shifts') . '&action=view';
+    $link = page_link_to('shifts', ['action' => 'view']);
     if (isset($shift['SID'])) {
         $link .= '&shift_id=' . $shift['SID'];
     }
@@ -20,7 +21,7 @@ function shift_link($shift)
  */
 function shift_delete_link($shift)
 {
-    return page_link_to('user_shifts') . '&delete_shift=' . $shift['SID'];
+    return page_link_to('user_shifts', ['delete_shift' => $shift['SID']]);
 }
 
 /**
@@ -29,7 +30,7 @@ function shift_delete_link($shift)
  */
 function shift_edit_link($shift)
 {
-    return page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'];
+    return page_link_to('user_shifts', ['edit_shift' => $shift['SID']]);
 }
 
 /**
@@ -228,7 +229,9 @@ function shift_delete_controller()
             date('Y-m-d H:i', $shift['start']),
             date('H:i', $shift['end'])
         ), true),
-        '<a class="button" href="?p=user_shifts&delete_shift=' . $shift_id . '&delete">' . _('delete') . '</a>'
+        '<a class="button" href="'
+        . page_link_to('user_shifts', ['delete_shift' => $shift_id, 'delete' => 1]) .
+        '">' . _('delete') . '</a>'
     ]);
 }
 

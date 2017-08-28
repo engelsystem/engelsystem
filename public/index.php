@@ -26,6 +26,10 @@ $content = '';
 
 $page = $request->input('p');
 if (empty($page)) {
+    $page = $request->path();
+    $page = str_replace('-', '_', $page);
+}
+if (empty($page)) {
     $page = isset($user) ? 'news' : 'login';
 }
 
@@ -38,120 +42,158 @@ if (
 ) {
     $title = $page;
 
-    if ($page == 'api') {
-        error('Api disabled temporarily.');
-        redirect(page_link_to());
-        require_once realpath(__DIR__ . '/../includes/controller/api.php');
-        api_controller();
-    } elseif ($page == 'ical') {
-        require_once realpath(__DIR__ . '/../includes/pages/user_ical.php');
-        user_ical();
-    } elseif ($page == 'atom') {
-        require_once realpath(__DIR__ . '/../includes/pages/user_atom.php');
-        user_atom();
-    } elseif ($page == 'shifts_json_export') {
-        require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
-        shifts_json_export_controller();
-    } elseif ($page == 'shifts_json_export_all') {
-        require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
-        shifts_json_export_all_controller();
-    } elseif ($page == 'stats') {
-        require_once realpath(__DIR__ . '/../includes/pages/guest_stats.php');
-        guest_stats();
-    } elseif ($page == 'user_password_recovery') {
-        require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
-        $title = user_password_recovery_title();
-        $content = user_password_recovery_controller();
-    } elseif ($page == 'angeltypes') {
-        list($title, $content) = angeltypes_controller();
-    } elseif ($page == 'shifts') {
-        list($title, $content) = shifts_controller();
-    } elseif ($page == 'users') {
-        list($title, $content) = users_controller();
-    } elseif ($page == 'user_angeltypes') {
-        list($title, $content) = user_angeltypes_controller();
-    } elseif ($page == 'user_driver_licenses') {
-        list($title, $content) = user_driver_licenses_controller();
-    } elseif ($page == 'shifttypes') {
-        list($title, $content) = shifttypes_controller();
-    } elseif ($page == 'admin_event_config') {
-        list($title, $content) = event_config_edit_controller();
-    } elseif ($page == 'rooms') {
-        list($title, $content) = rooms_controller();
-    } elseif ($page == 'news') {
-        $title = news_title();
-        $content = user_news();
-    } elseif ($page == 'news_comments') {
-        require_once realpath(__DIR__ . '/../includes/pages/user_news.php');
-        $title = user_news_comments_title();
-        $content = user_news_comments();
-    } elseif ($page == 'user_meetings') {
-        $title = meetings_title();
-        $content = user_meetings();
-    } elseif ($page == 'user_myshifts') {
-        $title = myshifts_title();
-        $content = user_myshifts();
-    } elseif ($page == 'user_shifts') {
-        $title = shifts_title();
-        $content = user_shifts();
-    } elseif ($page == 'user_messages') {
-        $title = messages_title();
-        $content = user_messages();
-    } elseif ($page == 'user_questions') {
-        $title = questions_title();
-        $content = user_questions();
-    } elseif ($page == 'user_settings') {
-        $title = settings_title();
-        $content = user_settings();
-    } elseif ($page == 'login') {
-        $title = login_title();
-        $content = guest_login();
-    } elseif ($page == 'register') {
-        $title = register_title();
-        $content = guest_register();
-    } elseif ($page == 'logout') {
-        $title = logout_title();
-        $content = guest_logout();
-    } elseif ($page == 'admin_questions') {
-        $title = admin_questions_title();
-        $content = admin_questions();
-    } elseif ($page == 'admin_user') {
-        $title = admin_user_title();
-        $content = admin_user();
-    } elseif ($page == 'admin_arrive') {
-        $title = admin_arrive_title();
-        $content = admin_arrive();
-    } elseif ($page == 'admin_active') {
-        $title = admin_active_title();
-        $content = admin_active();
-    } elseif ($page == 'admin_free') {
-        $title = admin_free_title();
-        $content = admin_free();
-    } elseif ($page == 'admin_news') {
-        require_once realpath(__DIR__ . '/../includes/pages/admin_news.php');
-        $content = admin_news();
-    } elseif ($page == 'admin_rooms') {
-        $title = admin_rooms_title();
-        $content = admin_rooms();
-    } elseif ($page == 'admin_groups') {
-        $title = admin_groups_title();
-        $content = admin_groups();
-    } elseif ($page == 'admin_import') {
-        $title = admin_import_title();
-        $content = admin_import();
-    } elseif ($page == 'admin_shifts') {
-        $title = admin_shifts_title();
-        $content = admin_shifts();
-    } elseif ($page == 'admin_log') {
-        $title = admin_log_title();
-        $content = admin_log();
-    } elseif ($page == 'credits') {
-        require_once realpath(__DIR__ . '/../includes/pages/guest_credits.php');
-        $title = credits_title();
-        $content = guest_credits();
-    } else {
-        require_once realpath(__DIR__ . '/../includes/pages/guest_start.php');
-        $content = guest_start();
+    switch ($page) {
+        case 'api':
+            error('Api disabled temporarily.');
+            redirect(page_link_to());
+            break;
+        case 'ical':
+            require_once realpath(__DIR__ . '/../includes/pages/user_ical.php');
+            user_ical();
+            break;
+        case 'atom':
+            require_once realpath(__DIR__ . '/../includes/pages/user_atom.php');
+            user_atom();
+            break;
+        case 'shifts_json_export':
+            require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
+            shifts_json_export_controller();
+            break;
+        case 'shifts_json_export_all':
+            require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
+            shifts_json_export_all_controller();
+            break;
+        case 'stats':
+            require_once realpath(__DIR__ . '/../includes/pages/guest_stats.php');
+            guest_stats();
+            break;
+        case 'user_password_recovery':
+            require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
+            $title = user_password_recovery_title();
+            $content = user_password_recovery_controller();
+            break;
+        case 'angeltypes':
+            list($title, $content) = angeltypes_controller();
+            break;
+        case 'shifts':
+            list($title, $content) = shifts_controller();
+            break;
+        case 'users':
+            list($title, $content) = users_controller();
+            break;
+        case 'user_angeltypes':
+            list($title, $content) = user_angeltypes_controller();
+            break;
+        case 'user_driver_licenses':
+            list($title, $content) = user_driver_licenses_controller();
+            break;
+        case 'shifttypes':
+            list($title, $content) = shifttypes_controller();
+            break;
+        case 'admin_event_config':
+            list($title, $content) = event_config_edit_controller();
+            break;
+        case 'rooms':
+            list($title, $content) = rooms_controller();
+            break;
+        case 'news':
+            $title = news_title();
+            $content = user_news();
+            break;
+        case 'news_comments':
+            require_once realpath(__DIR__ . '/../includes/pages/user_news.php');
+            $title = user_news_comments_title();
+            $content = user_news_comments();
+            break;
+        case 'user_meetings':
+            $title = meetings_title();
+            $content = user_meetings();
+            break;
+        case 'user_myshifts':
+            $title = myshifts_title();
+            $content = user_myshifts();
+            break;
+        case 'user_shifts':
+            $title = shifts_title();
+            $content = user_shifts();
+            break;
+        case 'user_messages':
+            $title = messages_title();
+            $content = user_messages();
+            break;
+        case 'user_questions':
+            $title = questions_title();
+            $content = user_questions();
+            break;
+        case 'user_settings':
+            $title = settings_title();
+            $content = user_settings();
+            break;
+        case 'login':
+            $title = login_title();
+            $content = guest_login();
+            break;
+        case 'register':
+            $title = register_title();
+            $content = guest_register();
+            break;
+        case 'logout':
+            $title = logout_title();
+            $content = guest_logout();
+            break;
+        case 'admin_questions':
+            $title = admin_questions_title();
+            $content = admin_questions();
+            break;
+        case 'admin_user':
+            $title = admin_user_title();
+            $content = admin_user();
+            break;
+        case 'admin_arrive':
+            $title = admin_arrive_title();
+            $content = admin_arrive();
+            break;
+        case 'admin_active':
+            $title = admin_active_title();
+            $content = admin_active();
+            break;
+        case 'admin_free':
+            $title = admin_free_title();
+            $content = admin_free();
+            break;
+        case 'admin_news':
+            require_once realpath(__DIR__ . '/../includes/pages/admin_news.php');
+            $content = admin_news();
+            break;
+        case 'admin_rooms':
+            $title = admin_rooms_title();
+            $content = admin_rooms();
+            break;
+        case 'admin_groups':
+            $title = admin_groups_title();
+            $content = admin_groups();
+            break;
+        case 'admin_import':
+            $title = admin_import_title();
+            $content = admin_import();
+            break;
+        case 'admin_shifts':
+            $title = admin_shifts_title();
+            $content = admin_shifts();
+            break;
+        case 'admin_log':
+            $title = admin_log_title();
+            $content = admin_log();
+            break;
+        case 'credits':
+            require_once realpath(__DIR__ . '/../includes/pages/guest_credits.php');
+            $title = credits_title();
+            $content = guest_credits();
+            break;
+        default:
+            require_once realpath(__DIR__ . '/../includes/pages/guest_start.php');
+            $content = guest_start();
+            break;
     }
 } else {
     // Wenn schon eingeloggt, keine-Berechtigung-Seite anzeigen
@@ -166,14 +208,22 @@ if (
 
 $event_config = EventConfig();
 
+$parameters = [
+    'key' => (isset($user) ? $user['api_key'] : ''),
+];
+if ($page == 'user_meetings') {
+    $parameters['meetings'] = 1;
+}
 echo view(__DIR__ . '/../templates/layout.html', [
     'theme'          => isset($user) ? $user['color'] : config('theme'),
     'title'          => $title,
     'atom_link'      => ($page == 'news' || $page == 'user_meetings')
-        ? ' <link href="' . page_link_to('atom') . (($page == 'user_meetings') ? '&meetings=1' : '')
-        . '&amp;key=' . (isset($user) ? $user['api_key'] : '')
+        ? ' <link href="'
+        . page_link_to('atom', $parameters)
         . '" type = "application/atom+xml" rel = "alternate" title = "Atom Feed">'
         : '',
+    'start_page_url' => page_link_to('/'),
+    'credits_url'    => page_link_to('credits'),
     'menu'           => make_menu(),
     'content'        => msg() . $content,
     'header_toolbar' => header_toolbar(),

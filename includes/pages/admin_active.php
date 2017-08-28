@@ -82,9 +82,13 @@ function admin_active()
             $limit = '';
             $msg = success(_('Marked angels.'), true);
         } else {
-            $set_active = '<a href="' . page_link_to('admin_active') . '&amp;serach=' . $search . '">&laquo; '
-                . _('back') . '</a> | <a href="'
-                . page_link_to('admin_active') . '&amp;search=' . $search . '&amp;count=' . $count . '&amp;set_active&amp;ack">'
+            $set_active = '<a href="' . page_link_to('admin_active', ['search' => $search]) . '">&laquo; '
+                . _('back')
+                . '</a> | <a href="'
+                . page_link_to(
+                    'admin_active',
+                    ['search' => $search, 'count' => $count, 'set_active' => 1, 'ack' => 1]
+                ) . '">'
                 . _('apply')
                 . '</a>';
         }
@@ -176,28 +180,46 @@ function admin_active()
 
         $actions = [];
         if ($usr['Aktiv'] == 0) {
-            $actions[] = '<a href="'
-                . page_link_to('admin_active') . '&amp;active=' . $usr['UID']
-                . ($show_all_shifts ? '&amp;show_all_shifts=' : '') . '&amp;search=' . $search . '">'
+            $parameters = [
+                'active' => $usr['UID'],
+                'search' => $search,
+            ];
+            if ($show_all_shifts) {
+                $parameters['show_all_shifts'] = 1;
+            }
+            $actions[] = '<a href="' . page_link_to('admin_active', $parameters) . '">'
                 . _('set active')
                 . '</a>';
         }
         if ($usr['Aktiv'] == 1 && $usr['Tshirt'] == 0) {
-            $actions[] = '<a href="'
-                . page_link_to('admin_active') . '&amp;not_active=' . $usr['UID']
-                . ($show_all_shifts ? '&amp;show_all_shifts=' : '') . '&amp;search=' . $search . '">'
+            $parametersRemove = [
+                'not_active' => $usr['UID'],
+                'search'     => $search,
+            ];
+            $parametersShirt = [
+                'tshirt' => $usr['UID'],
+                'search' => $search,
+            ];
+            if ($show_all_shifts) {
+                $parametersRemove['show_all_shifts'] = 1;
+                $parametersShirt['show_all_shifts'] = 1;
+            }
+            $actions[] = '<a href="' . page_link_to('admin_active', $parametersRemove) . '">'
                 . _('remove active')
                 . '</a>';
-            $actions[] = '<a href="'
-                . page_link_to('admin_active') . '&amp;tshirt=' . $usr['UID']
-                . ($show_all_shifts ? '&amp;show_all_shifts=' : '') . '&amp;search=' . $search . '">'
+            $actions[] = '<a href="' . page_link_to('admin_active', $parametersShirt) . '">'
                 . _('got t-shirt')
                 . '</a>';
         }
         if ($usr['Tshirt'] == 1) {
-            $actions[] = '<a href="'
-                . page_link_to('admin_active') . '&amp;not_tshirt=' . $usr['UID']
-                . ($show_all_shifts ? '&amp;show_all_shifts=' : '') . '&amp;search=' . $search . '">'
+            $parameters = [
+                'not_tshirt' => $usr['UID'],
+                'search'     => $search,
+            ];
+            if ($show_all_shifts) {
+                $parameters['show_all_shifts'] = 1;
+            }
+            $actions[] = '<a href="' . page_link_to('admin_active', $parameters) . '">'
                 . _('remove t-shirt')
                 . '</a>';
         }

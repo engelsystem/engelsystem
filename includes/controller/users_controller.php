@@ -109,7 +109,7 @@ function users_link()
  */
 function user_edit_link($user)
 {
-    return page_link_to('admin_user') . '&user_id=' . $user['UID'];
+    return page_link_to('admin_user', ['user_id' => $user['UID']]);
 }
 
 /**
@@ -118,7 +118,7 @@ function user_edit_link($user)
  */
 function user_delete_link($user)
 {
-    return page_link_to('users') . '&action=delete&user_id=' . $user['UID'];
+    return page_link_to('users', ['action' => 'delete', 'user_id' => $user['UID']]);
 }
 
 /**
@@ -127,7 +127,7 @@ function user_delete_link($user)
  */
 function user_link($user)
 {
-    return page_link_to('users') . '&action=view&user_id=' . $user['UID'];
+    return page_link_to('users', ['action' => 'view', 'user_id' => $user['UID']]);
 }
 
 /**
@@ -363,7 +363,7 @@ function user_password_recovery_start_controller()
                 _('Password recovery'),
                 sprintf(
                     _('Please visit %s to recover your password.'),
-                    page_link_to_absolute('user_password_recovery') . '&token=' . $token
+                    page_link_to_absolute('user_password_recovery', ['token' => $token])
                 )
             );
             success(_('We sent an email containing your password recovery link.'));

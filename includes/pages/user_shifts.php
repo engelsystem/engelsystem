@@ -223,15 +223,15 @@ function view_user_shifts()
                 'task_notice'   =>
                     '<sup>1</sup>'
                     . _('The tasks shown here are influenced by the angeltypes you joined already!')
-                    . ' <a href="' . page_link_to('angeltypes') . '&action=about' . '">'
+                    . ' <a href="' . page_link_to('angeltypes', ['action' => 'about']) . '">'
                     . _('Description of the jobs.')
                     . '</a>',
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
                 'ical_text'     => '<h2>' . _('iCal export') . '</h2><p>' . sprintf(
                         _('Export of shown shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
-                        page_link_to_absolute('ical') . '&key=' . $user['api_key'],
-                        page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'],
-                        page_link_to('user_myshifts') . '&reset'
+                        page_link_to_absolute('ical', ['key' => $user['api_key']]),
+                        page_link_to_absolute('shifts_json_export', ['key' => $user['api_key']]),
+                        page_link_to('user_myshifts', ['reset' => 1])
                     ) . '</p>',
                 'filter'        => _('Filter')
             ])

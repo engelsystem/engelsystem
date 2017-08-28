@@ -20,6 +20,9 @@ return [
     // Set to development to enable debugging messages
     'environment'      => 'production',
 
+    // Site URL, used to generate links on page (https://example.com/[sub-dir/])
+    'url'              => null,
+
     // URL to the angel faq and job description
     'faq_url'          => 'https://events.ccc.de/congress/2013/wiki/Static:Volunteers',
 

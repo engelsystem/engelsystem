@@ -9,19 +9,73 @@ class Request
     /** @var self */
     protected static $instance;
 
-    /** @var array of POST data */
-    protected $request;
-
     /** @var array of GET data */
     protected $query;
 
+    /** @var array of POST data */
+    protected $request;
+
+    /** @var array of SERVER data */
+    protected $server;
+
+    /** @var string */
+    protected $scheme;
+
+    /** @var string */
+    protected $host;
+
+    /** @var string */
+    protected $baseUrl = '';
+
+    /** @var string */
+    protected $path;
+
     /**
      * Initialize request
+     *
+     * @param array  $query   The GET data
+     * @param array  $request the POST data
+     * @param array  $server  the SERVER data
+     * @param string $baseUrl base url to use for links
      */
-    public function create()
+    public function create(array $query, array $request, array $server, $baseUrl = null)
     {
-        $this->request = $_POST;
-        $this->query = $_GET;
+        $this->query = $query;
+        $this->request = $request;
+        $this->server = array_merge([
+            'SERVER_NAME' => 'localhost',
+            'HTTP_HOST'   => 'localhost',
+            'SERVER_PORT' => 80,
+            'REQUEST_URI' => '/',
+        ], $server);
+
+        if (isset($this->server['HTTPS']) && $this->server['HTTPS'] == 'off') {
+            unset($this->server['HTTPS']);
+        }
+
+        $uri = $this->server['REQUEST_URI'];
+        $uri = '/' . ltrim($uri, '/');
+        $uri = explode('?', $uri);
+        $this->path = array_shift($uri);
+
+        $components = parse_url($baseUrl);
+        if (!$components) {
+            $components = [];
+        }
+
+        $this->scheme = (isset($components['scheme']) ? $components['scheme'] : ($this->isSecure() ? 'https' : 'http'));
+        $this->host = (isset($components['host']) ? $components['host'] : $this->server['SERVER_NAME']);
+
+        if (isset($components['path'])) {
+            $this->baseUrl = '/' . ltrim($components['path'], '/');
+            $this->path = preg_replace('~^' . preg_quote($this->baseUrl, '~') . '~i', '', $this->path);
+            $this->path = '/' . ltrim($this->path, '/');
+        }
+    }
+
+    public function isSecure()
+    {
+        return isset($this->server['HTTPS']);
     }
 
     /**
@@ -85,6 +139,50 @@ class Request
         $value = $this->input($key);
 
         return !empty($value);
+    }
+
+    /**
+     * Get the requested path
+     *
+     * @return string
+     */
+    public function path()
+    {
+        // @TODO: base uri?
+        return $this->path;
+    }
+
+    public function url()
+    {
+        return $this->getSchemeAndHttpHost() . $this->getBaseUrl() . '/' . $this->path();
+    }
+
+    /**
+     * @return string
+     */
+    public function root()
+    {
+        return $this->baseUrl;
+    }
+
+    public function getSchemeAndHttpHost()
+    {
+        return $this->getScheme() . '://' . $this->getHttpHost();
+    }
+
+    public function getScheme()
+    {
+        return $this->scheme;
+    }
+
+    public function getHttpHost()
+    {
+        return $this->host;
+    }
+
+    public function getBaseUrl()
+    {
+        return $this->baseUrl;
     }
 
     /**
