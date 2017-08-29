@@ -83,82 +83,87 @@ Db::getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 /**
  * Include legacy code
  */
-require_once realpath(__DIR__ . '/../includes/sys_auth.php');
-require_once realpath(__DIR__ . '/../includes/sys_form.php');
-require_once realpath(__DIR__ . '/../includes/sys_log.php');
-require_once realpath(__DIR__ . '/../includes/sys_menu.php');
-require_once realpath(__DIR__ . '/../includes/sys_page.php');
-require_once realpath(__DIR__ . '/../includes/sys_template.php');
+$includeFiles = [
+    __DIR__ . '/../includes/sys_auth.php',
+    __DIR__ . '/../includes/sys_form.php',
+    __DIR__ . '/../includes/sys_log.php',
+    __DIR__ . '/../includes/sys_menu.php',
+    __DIR__ . '/../includes/sys_page.php',
+    __DIR__ . '/../includes/sys_template.php',
 
-require_once realpath(__DIR__ . '/../includes/model/AngelType_model.php');
-require_once realpath(__DIR__ . '/../includes/model/EventConfig_model.php');
-require_once realpath(__DIR__ . '/../includes/model/LogEntries_model.php');
-require_once realpath(__DIR__ . '/../includes/model/Message_model.php');
-require_once realpath(__DIR__ . '/../includes/model/NeededAngelTypes_model.php');
-require_once realpath(__DIR__ . '/../includes/model/Room_model.php');
-require_once realpath(__DIR__ . '/../includes/model/ShiftEntry_model.php');
-require_once realpath(__DIR__ . '/../includes/model/Shifts_model.php');
-require_once realpath(__DIR__ . '/../includes/model/ShiftsFilter.php');
-require_once realpath(__DIR__ . '/../includes/model/ShiftSignupState.php');
-require_once realpath(__DIR__ . '/../includes/model/ShiftTypes_model.php');
-require_once realpath(__DIR__ . '/../includes/model/UserAngelTypes_model.php');
-require_once realpath(__DIR__ . '/../includes/model/UserDriverLicenses_model.php');
-require_once realpath(__DIR__ . '/../includes/model/UserGroups_model.php');
-require_once realpath(__DIR__ . '/../includes/model/User_model.php');
-require_once realpath(__DIR__ . '/../includes/model/ValidationResult.php');
+    __DIR__ . '/../includes/model/AngelType_model.php',
+    __DIR__ . '/../includes/model/EventConfig_model.php',
+    __DIR__ . '/../includes/model/LogEntries_model.php',
+    __DIR__ . '/../includes/model/Message_model.php',
+    __DIR__ . '/../includes/model/NeededAngelTypes_model.php',
+    __DIR__ . '/../includes/model/Room_model.php',
+    __DIR__ . '/../includes/model/ShiftEntry_model.php',
+    __DIR__ . '/../includes/model/Shifts_model.php',
+    __DIR__ . '/../includes/model/ShiftsFilter.php',
+    __DIR__ . '/../includes/model/ShiftSignupState.php',
+    __DIR__ . '/../includes/model/ShiftTypes_model.php',
+    __DIR__ . '/../includes/model/UserAngelTypes_model.php',
+    __DIR__ . '/../includes/model/UserDriverLicenses_model.php',
+    __DIR__ . '/../includes/model/UserGroups_model.php',
+    __DIR__ . '/../includes/model/User_model.php',
+    __DIR__ . '/../includes/model/ValidationResult.php',
 
-require_once realpath(__DIR__ . '/../includes/view/AngelTypes_view.php');
-require_once realpath(__DIR__ . '/../includes/view/EventConfig_view.php');
-require_once realpath(__DIR__ . '/../includes/view/Questions_view.php');
-require_once realpath(__DIR__ . '/../includes/view/Rooms_view.php');
-require_once realpath(__DIR__ . '/../includes/view/ShiftCalendarLane.php');
-require_once realpath(__DIR__ . '/../includes/view/ShiftCalendarRenderer.php');
-require_once realpath(__DIR__ . '/../includes/view/ShiftCalendarShiftRenderer.php');
-require_once realpath(__DIR__ . '/../includes/view/ShiftsFilterRenderer.php');
-require_once realpath(__DIR__ . '/../includes/view/Shifts_view.php');
-require_once realpath(__DIR__ . '/../includes/view/ShiftEntry_view.php');
-require_once realpath(__DIR__ . '/../includes/view/ShiftTypes_view.php');
-require_once realpath(__DIR__ . '/../includes/view/UserAngelTypes_view.php');
-require_once realpath(__DIR__ . '/../includes/view/UserDriverLicenses_view.php');
-require_once realpath(__DIR__ . '/../includes/view/UserHintsRenderer.php');
-require_once realpath(__DIR__ . '/../includes/view/User_view.php');
+    __DIR__ . '/../includes/view/AngelTypes_view.php',
+    __DIR__ . '/../includes/view/EventConfig_view.php',
+    __DIR__ . '/../includes/view/Questions_view.php',
+    __DIR__ . '/../includes/view/Rooms_view.php',
+    __DIR__ . '/../includes/view/ShiftCalendarLane.php',
+    __DIR__ . '/../includes/view/ShiftCalendarRenderer.php',
+    __DIR__ . '/../includes/view/ShiftCalendarShiftRenderer.php',
+    __DIR__ . '/../includes/view/ShiftsFilterRenderer.php',
+    __DIR__ . '/../includes/view/Shifts_view.php',
+    __DIR__ . '/../includes/view/ShiftEntry_view.php',
+    __DIR__ . '/../includes/view/ShiftTypes_view.php',
+    __DIR__ . '/../includes/view/UserAngelTypes_view.php',
+    __DIR__ . '/../includes/view/UserDriverLicenses_view.php',
+    __DIR__ . '/../includes/view/UserHintsRenderer.php',
+    __DIR__ . '/../includes/view/User_view.php',
 
-require_once realpath(__DIR__ . '/../includes/controller/angeltypes_controller.php');
-require_once realpath(__DIR__ . '/../includes/controller/event_config_controller.php');
-require_once realpath(__DIR__ . '/../includes/controller/rooms_controller.php');
-require_once realpath(__DIR__ . '/../includes/controller/shift_entries_controller.php');
-require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
-require_once realpath(__DIR__ . '/../includes/controller/shifttypes_controller.php');
-require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
-require_once realpath(__DIR__ . '/../includes/controller/user_angeltypes_controller.php');
-require_once realpath(__DIR__ . '/../includes/controller/user_driver_licenses_controller.php');
+    __DIR__ . '/../includes/controller/angeltypes_controller.php',
+    __DIR__ . '/../includes/controller/event_config_controller.php',
+    __DIR__ . '/../includes/controller/rooms_controller.php',
+    __DIR__ . '/../includes/controller/shift_entries_controller.php',
+    __DIR__ . '/../includes/controller/shifts_controller.php',
+    __DIR__ . '/../includes/controller/shifttypes_controller.php',
+    __DIR__ . '/../includes/controller/users_controller.php',
+    __DIR__ . '/../includes/controller/user_angeltypes_controller.php',
+    __DIR__ . '/../includes/controller/user_driver_licenses_controller.php',
 
-require_once realpath(__DIR__ . '/../includes/helper/graph_helper.php');
-require_once realpath(__DIR__ . '/../includes/helper/internationalization_helper.php');
-require_once realpath(__DIR__ . '/../includes/helper/message_helper.php');
-require_once realpath(__DIR__ . '/../includes/helper/error_helper.php');
-require_once realpath(__DIR__ . '/../includes/helper/email_helper.php');
+    __DIR__ . '/../includes/helper/graph_helper.php',
+    __DIR__ . '/../includes/helper/internationalization_helper.php',
+    __DIR__ . '/../includes/helper/message_helper.php',
+    __DIR__ . '/../includes/helper/error_helper.php',
+    __DIR__ . '/../includes/helper/email_helper.php',
 
-require_once realpath(__DIR__ . '/../includes/mailer/shifts_mailer.php');
-require_once realpath(__DIR__ . '/../includes/mailer/users_mailer.php');
+    __DIR__ . '/../includes/mailer/shifts_mailer.php',
+    __DIR__ . '/../includes/mailer/users_mailer.php',
 
-require_once realpath(__DIR__ . '/../includes/pages/admin_active.php');
-require_once realpath(__DIR__ . '/../includes/pages/admin_arrive.php');
-require_once realpath(__DIR__ . '/../includes/pages/admin_free.php');
-require_once realpath(__DIR__ . '/../includes/pages/admin_groups.php');
-require_once realpath(__DIR__ . '/../includes/pages/admin_import.php');
-require_once realpath(__DIR__ . '/../includes/pages/admin_log.php');
-require_once realpath(__DIR__ . '/../includes/pages/admin_questions.php');
-require_once realpath(__DIR__ . '/../includes/pages/admin_rooms.php');
-require_once realpath(__DIR__ . '/../includes/pages/admin_shifts.php');
-require_once realpath(__DIR__ . '/../includes/pages/admin_user.php');
-require_once realpath(__DIR__ . '/../includes/pages/guest_login.php');
-require_once realpath(__DIR__ . '/../includes/pages/user_messages.php');
-require_once realpath(__DIR__ . '/../includes/pages/user_myshifts.php');
-require_once realpath(__DIR__ . '/../includes/pages/user_news.php');
-require_once realpath(__DIR__ . '/../includes/pages/user_questions.php');
-require_once realpath(__DIR__ . '/../includes/pages/user_settings.php');
-require_once realpath(__DIR__ . '/../includes/pages/user_shifts.php');
+    __DIR__ . '/../includes/pages/admin_active.php',
+    __DIR__ . '/../includes/pages/admin_arrive.php',
+    __DIR__ . '/../includes/pages/admin_free.php',
+    __DIR__ . '/../includes/pages/admin_groups.php',
+    __DIR__ . '/../includes/pages/admin_import.php',
+    __DIR__ . '/../includes/pages/admin_log.php',
+    __DIR__ . '/../includes/pages/admin_questions.php',
+    __DIR__ . '/../includes/pages/admin_rooms.php',
+    __DIR__ . '/../includes/pages/admin_shifts.php',
+    __DIR__ . '/../includes/pages/admin_user.php',
+    __DIR__ . '/../includes/pages/guest_login.php',
+    __DIR__ . '/../includes/pages/user_messages.php',
+    __DIR__ . '/../includes/pages/user_myshifts.php',
+    __DIR__ . '/../includes/pages/user_news.php',
+    __DIR__ . '/../includes/pages/user_questions.php',
+    __DIR__ . '/../includes/pages/user_settings.php',
+    __DIR__ . '/../includes/pages/user_shifts.php',
+];
+foreach ($includeFiles as $file) {
+    require_once realpath($file);
+}
 
 
 /**
