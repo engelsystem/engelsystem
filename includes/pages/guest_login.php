@@ -233,7 +233,7 @@ function guest_register()
 
             // Assign user-group and set password
             $user_id = DB::getPdo()->lastInsertId();
-            DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -2)', [$user_id]);
+            DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -20)', [$user_id]);
             set_password($user_id, $request->postData('password'));
 
             // Assign angel-types

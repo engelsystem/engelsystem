@@ -31,7 +31,7 @@ function load_auth()
     }
 
     // guest privileges
-    $privileges = privileges_for_group(-1);
+    $privileges = privileges_for_group(-10);
 }
 
 /**

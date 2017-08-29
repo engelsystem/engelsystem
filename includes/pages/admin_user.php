@@ -272,7 +272,7 @@ function admin_user()
                       WHERE `UID` = ?
                       LIMIT 1';
                 DB::update($sql, [
-                    $request->postData('eNick'),
+                    User_validate_Nick($request->postData('eNick')),
                     $request->postData('eName'),
                     $request->postData('eVorname'),
                     $request->postData('eTelefon'),

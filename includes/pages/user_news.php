@@ -155,7 +155,7 @@ function user_news_comments()
             $user_source = User($comment['UID']);
 
             $html .= '<div class="panel panel-default">';
-            $html .= '<div class="panel-body">' . nl2br($comment['Text']) . '</div>';
+            $html .= '<div class="panel-body">' . nl2br(htmlspecialchars($comment['Text'])) . '</div>';
             $html .= '<div class="panel-footer text-muted">';
             $html .= '<span class="glyphicon glyphicon-time"></span> ' . $comment['Datum'] . '&emsp;';
             $html .= User_Nick_render($user_source);
@@ -191,14 +191,20 @@ function user_news()
         if (!$request->has('treffen')) {
             $isMeeting = 0;
         }
+
+        $text = $request->postData('text');
+        if (!in_array('admin_news_html', $privileges)) {
+            $text = strip_tags($text);
+        }
+
         DB::insert('
             INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`)
             VALUES (?, ?, ?, ?, ?)
             ',
             [
                 time(),
-                $request->postData('betreff'),
-                $request->postData('text'),
+                strip_tags($request->postData('betreff')),
+                $text,
                 $user['UID'],
                 $isMeeting,
             ]

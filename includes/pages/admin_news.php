@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function admin_news()
 {
-    global $user;
+    global $user, $privileges;
     $request = request();
 
     if (!$request->has('action')) {
@@ -51,6 +51,11 @@ function admin_news()
             break;
 
         case 'save':
+            $text = $request->postData('eText');
+            if (!in_array('admin_news_html', $privileges)) {
+                $text = strip_tags($text);
+            }
+
             DB::update('
                 UPDATE `News` SET
                     `Datum`=?,
@@ -62,8 +67,8 @@ function admin_news()
                 ',
                 [
                     time(),
-                    $request->postData('eBetreff'),
-                    $request->postData('eText'),
+                    strip_tags($request->postData('eBetreff')),
+                    $text,
                     $user['UID'],
                     $request->has('eTreffen') ? 1 : 0,
                     $news_id
