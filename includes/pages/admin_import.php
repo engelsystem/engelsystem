@@ -248,7 +248,7 @@ function admin_import()
             list($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
             foreach ($rooms_new as $room) {
                 $result = Room_create($room, true, true);
-                
+
                 $rooms_import[trim($room)] = $result;
             }
             foreach ($rooms_deleted as $room) {

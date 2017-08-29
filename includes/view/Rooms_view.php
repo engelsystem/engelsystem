@@ -1,4 +1,5 @@
 <?php
+
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilterRenderer;
 

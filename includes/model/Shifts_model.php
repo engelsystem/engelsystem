@@ -45,7 +45,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       AND NOT `Shifts`.`PSID` IS NULL) AS tmp_shifts
 
       ORDER BY `start`';
-    
+
     return DB::select(
         $sql,
         [
@@ -444,6 +444,7 @@ function Shift_update($shift)
  *
  * @param array $shift
  * @return bool|null
+ * @throws Exception
  */
 function Shift_update_by_psid($shift)
 {
