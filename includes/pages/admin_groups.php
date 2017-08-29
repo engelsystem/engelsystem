@@ -112,23 +112,21 @@ function admin_groups()
                     return error('Incomplete call, missing Groups ID.', true);
                 }
 
-                $group = DB::select('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
+                $group = DB::selectOne('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
                 $privileges = $request->postData('privileges');
                 if (!is_array($privileges)) {
                     $privileges = [];
                 }
                 if (!empty($group)) {
-                    $group = array_shift($group);
                     DB::delete('DELETE FROM `GroupPrivileges` WHERE `group_id`=?', [$group_id]);
                     $privilege_names = [];
                     foreach ($privileges as $privilege) {
                         if (preg_match('/^\d{1,}$/', $privilege)) {
-                            $group_privileges_source = DB::select(
+                            $group_privileges_source = DB::selectOne(
                                 'SELECT `name` FROM `Privileges` WHERE `id`=? LIMIT 1',
                                 [$privilege]
                             );
                             if (!empty($group_privileges_source)) {
-                                $group_privileges_source = array_shift($group_privileges_source);
                                 DB::insert(
                                     'INSERT INTO `GroupPrivileges` (`group_id`, `privilege_id`) VALUES (?, ?)',
                                     [$group_id, $privilege]

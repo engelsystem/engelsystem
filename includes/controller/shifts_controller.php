@@ -141,10 +141,7 @@ function shift_edit_controller()
             $shift['start'] = $start;
             $shift['end'] = $end;
 
-            $result = Shift_update($shift);
-            if ($result === false) {
-                engelsystem_error('Unable to update shift.');
-            }
+            Shift_update($shift);
             NeededAngelTypes_delete_by_shift($shift_id);
             $needed_angel_types_info = [];
             foreach ($needed_angel_types as $type_id => $count) {
@@ -337,7 +334,6 @@ function shift_next_controller()
     }
 
     redirect(page_link_to('user_shifts'));
-    exit;
 }
 
 /**
@@ -361,9 +357,6 @@ function shifts_json_export_all_controller()
     }
 
     $shifts_source = Shifts();
-    if ($shifts_source === false) {
-        engelsystem_error('Unable to load shifts.');
-    }
 
     header('Content-Type: application/json; charset=utf-8');
     raw_output(json_encode($shifts_source));

@@ -105,11 +105,11 @@ function admin_questions()
                     return error('Incomplete call, missing Question ID.', true);
                 }
 
-                $question = DB::select(
+                $question = DB::selectOne(
                     'SELECT * FROM `Questions` WHERE `QID`=? LIMIT 1',
                     [$question_id]
                 );
-                if (count($question) > 0 && $question[0]['AID'] == null) {
+                if (!empty($question) && $question['AID'] == null) {
                     $answer = trim(
                         preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui",
                             '',
@@ -129,7 +129,7 @@ function admin_questions()
                                 $question_id,
                             ]
                         );
-                        engelsystem_log('Question ' . $question[0]['Question'] . ' answered: ' . $answer);
+                        engelsystem_log('Question ' . $question['Question'] . ' answered: ' . $answer);
                         redirect(page_link_to('admin_questions'));
                     } else {
                         return error('Enter an answer!', true);
@@ -145,13 +145,13 @@ function admin_questions()
                     return error('Incomplete call, missing Question ID.', true);
                 }
 
-                $question = DB::select(
+                $question = DB::selectOne(
                     'SELECT * FROM `Questions` WHERE `QID`=? LIMIT 1',
                     [$question_id]
                 );
-                if (count($question) > 0) {
+                if (!empty($question)) {
                     DB::delete('DELETE FROM `Questions` WHERE `QID`=? LIMIT 1', [$question_id]);
-                    engelsystem_log('Question deleted: ' . $question[0]['Question']);
+                    engelsystem_log('Question deleted: ' . $question['Question']);
                     redirect(page_link_to('admin_questions'));
                 } else {
                     return error('No question found.', true);

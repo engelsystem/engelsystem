@@ -17,7 +17,7 @@ use Engelsystem\Database\DB;
  */
 function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
 {
-    $result = DB::insert('
+    DB::insert('
           INSERT INTO `NeededAngelTypes` ( `shift_id`, `angel_type_id`, `room_id`, `count`)
            VALUES (?, ?, ?, ?)
         ',
@@ -27,9 +27,6 @@ function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
             $room_id,
             $count,
         ]);
-    if ($result === false) {
-        return false;
-    }
 
     return DB::getPdo()->lastInsertId();
 }
@@ -38,22 +35,20 @@ function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
  * Deletes all needed angel types from given shift.
  *
  * @param int $shift_id id of the shift
- * @return int count of affected rows
  */
 function NeededAngelTypes_delete_by_shift($shift_id)
 {
-    return (int)DB::delete('DELETE FROM `NeededAngelTypes` WHERE `shift_id` = ?', [$shift_id]);
+    DB::delete('DELETE FROM `NeededAngelTypes` WHERE `shift_id` = ?', [$shift_id]);
 }
 
 /**
  * Deletes all needed angel types from given room.
  *
  * @param int $room_id id of the room
- * @return int count of affected rows
  */
 function NeededAngelTypes_delete_by_room($room_id)
 {
-    return (int)DB::delete(
+    DB::delete(
         'DELETE FROM `NeededAngelTypes` WHERE `room_id` = ?',
         [$room_id]
     );
@@ -76,9 +71,6 @@ function NeededAngelTypes_by_shift($shiftId)
         ORDER BY `room_id` DESC',
         [$shiftId]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load needed angeltypes.');
-    }
 
     // Use settings from room
     if (count($needed_angeltypes_source) == 0) {
@@ -91,9 +83,6 @@ function NeededAngelTypes_by_shift($shiftId)
         AND `count` > 0
         ORDER BY `room_id` DESC
         ', [$shiftId]);
-        if (DB::getStm()->errorCode() != '00000') {
-            engelsystem_error('Unable to load needed angeltypes.');
-        }
     }
 
     $shift_entries = ShiftEntries_by_shift($shiftId);

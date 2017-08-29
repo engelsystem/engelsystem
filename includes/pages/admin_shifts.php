@@ -44,9 +44,6 @@ function admin_shifts()
 
     // Load shift types
     $shifttypes_source = ShiftTypes();
-    if ($shifttypes_source === false) {
-        engelsystem_error('Unable to load shift types.');
-    }
     $shifttypes = [];
     foreach ($shifttypes_source as $shifttype) {
         $shifttypes[$shifttype['id']] = $shifttype['name'];
@@ -317,9 +314,6 @@ function admin_shifts()
             $shift['URL'] = null;
             $shift['PSID'] = null;
             $shift_id = Shift_create($shift);
-            if ($shift_id === false) {
-                engelsystem_error('Unable to create shift.');
-            }
 
             engelsystem_log(
                 'Shift created: ' . $shifttypes[$shift['shifttype_id']]
@@ -329,7 +323,7 @@ function admin_shifts()
             );
 
             foreach ($_SESSION['admin_shifts_types'] as $type_id => $count) {
-                $angel_type_source = DB::select('
+                $angel_type_source = DB::selectOne('
                       SELECT *
                       FROM `AngelTypes`
                       WHERE `id` = ?
@@ -345,7 +339,7 @@ function admin_shifts()
                             $count
                         ]
                     );
-                    $needed_angel_types_info[] = $angel_type_source[0]['name'] . ': ' . $count;
+                    $needed_angel_types_info[] = $angel_type_source['name'] . ': ' . $count;
                 }
             }
         }

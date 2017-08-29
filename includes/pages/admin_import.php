@@ -45,9 +45,6 @@ function admin_import()
     $add_minutes_end = 15;
 
     $shifttypes_source = ShiftTypes();
-    if ($shifttypes_source === false) {
-        engelsystem_error('Unable to load shifttypes.');
-    }
     $shifttypes = [];
     foreach ($shifttypes_source as $shifttype) {
         $shifttypes[$shifttype['id']] = $shifttype['name'];
@@ -251,9 +248,7 @@ function admin_import()
             list($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
             foreach ($rooms_new as $room) {
                 $result = Room_create($room, true, true);
-                if ($result === false) {
-                    engelsystem_error('Unable to create room.');
-                }
+                
                 $rooms_import[trim($room)] = $result;
             }
             foreach ($rooms_deleted as $room) {
@@ -267,24 +262,15 @@ function admin_import()
                 $add_minutes_end
             );
             foreach ($events_new as $event) {
-                $result = Shift_create($event);
-                if ($result === false) {
-                    engelsystem_error('Unable to create shift.');
-                }
+                Shift_create($event);
             }
 
             foreach ($events_updated as $event) {
-                $result = Shift_update_by_psid($event);
-                if ($result === false) {
-                    engelsystem_error('Unable to update shift.');
-                }
+                Shift_update_by_psid($event);
             }
 
             foreach ($events_deleted as $event) {
-                $result = Shift_delete_by_psid($event['PSID']);
-                if ($result === false) {
-                    engelsystem_error('Unable to delete shift.');
-                }
+                Shift_delete_by_psid($event['PSID']);
             }
 
             engelsystem_log('Frab import done');

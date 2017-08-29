@@ -28,10 +28,9 @@ function ShiftEntry_new()
  */
 function ShiftEntries_freeleaded_count()
 {
-    $result = DB::select('SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1');
-    $result = array_shift($result);
+    $result = DB::selectOne('SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1');
 
-    if (!is_array($result)) {
+    if (empty($result)) {
         return 0;
     }
 
@@ -102,7 +101,6 @@ function ShiftEntry_create($shift_entry)
  * Update a shift entry.
  *
  * @param array $shift_entry
- * @return bool
  */
 function ShiftEntry_update($shift_entry)
 {
@@ -120,39 +118,29 @@ function ShiftEntry_update($shift_entry)
             $shift_entry['id']
         ]
     );
-
-    return (DB::getStm()->errorCode() == '00000');
 }
 
 /**
  * Get a shift entry.
  *
  * @param int $shift_entry_id
- * @return array|false|null
+ * @return array|null
  */
 function ShiftEntry($shift_entry_id)
 {
-    $shift_entry = DB::select('SELECT * FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
-    if (DB::getStm()->errorCode() != '00000') {
-        return false;
-    }
-    if (empty($shift_entry)) {
-        return null;
-    }
-    return $shift_entry[0];
+    return DB::selectOne('SELECT * FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
 }
 
 /**
  * Delete a shift entry.
  *
  * @param int $shift_entry_id
- * @return bool
  */
 function ShiftEntry_delete($shift_entry_id)
 {
     $shift_entry = ShiftEntry($shift_entry_id);
     mail_shift_removed(User($shift_entry['UID']), Shift($shift_entry['SID']));
-    return DB::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
+    DB::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
 }
 
 /**
@@ -213,7 +201,7 @@ function ShiftEntries_finished_by_user($user)
  */
 function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
 {
-    $result = DB::select('
+    return DB::select('
             SELECT *
             FROM `ShiftEntry`
             WHERE `SID` = ?
@@ -224,10 +212,6 @@ function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
             $angeltype_id,
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load shift entries.');
-    }
-    return $result;
 }
 
 /**

@@ -76,10 +76,7 @@ function user_delete_controller()
         }
 
         if ($valid) {
-            $result = User_delete($user_source['UID']);
-            if ($result === false) {
-                engelsystem_error('Unable to delete user.');
-            }
+            User_delete($user_source['UID']);
 
             mail_user_delete($user_source);
             success(_('User deleted.'));
@@ -166,10 +163,7 @@ function user_edit_vouchers_controller()
         if ($valid) {
             $user_source['got_voucher'] = $vouchers;
 
-            $result = User_update($user_source);
-            if ($result === false) {
-                engelsystem_error('Unable to update user.');
-            }
+            User_update($user_source);
 
             success(_('Saved the number of vouchers.'));
             engelsystem_log(User_Nick_render($user_source) . ': ' . sprintf('Got %s vouchers',
@@ -265,10 +259,6 @@ function users_list_controller()
     }
 
     $users = Users($order_by);
-    if ($users === false) {
-        engelsystem_error('Unable to load users.');
-    }
-
     foreach ($users as &$user) {
         $user['freeloads'] = count(ShiftEntries_freeloaded_by_user($user));
     }

@@ -31,8 +31,7 @@ function user_myshifts()
         $user_id = $user['UID'];
     }
 
-    $shifts_user = DB::select('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
-    $shifts_user = array_shift($shifts_user);
+    $shifts_user = DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
 
     if ($request->has('reset')) {
         if ($request->input('reset') == 'ack') {
@@ -49,7 +48,7 @@ function user_myshifts()
         ]);
     } elseif ($request->has('edit') && preg_match('/^\d*$/', $request->input('edit'))) {
         $user_id = $request->input('edit');
-        $shift = DB::select('
+        $shift = DB::selectOne('
                 SELECT
                     `ShiftEntry`.`freeloaded`,
                     `ShiftEntry`.`freeload_comment`,
@@ -74,7 +73,6 @@ function user_myshifts()
             ]
         );
         if (count($shift) > 0) {
-            $shift = array_shift($shift);
             $freeloaded = $shift['freeloaded'];
             $freeload_comment = $shift['freeload_comment'];
 
@@ -93,15 +91,12 @@ function user_myshifts()
                 $user_source = User($shift['UID']);
 
                 if ($valid) {
-                    $result = ShiftEntry_update([
+                    ShiftEntry_update([
                         'id'               => $user_id,
                         'Comment'          => $comment,
                         'freeloaded'       => $freeloaded,
                         'freeload_comment' => $freeload_comment
                     ]);
-                    if ($result === false) {
-                        engelsystem_error('Unable to update shift entry.');
-                    }
 
                     engelsystem_log(
                         'Updated ' . User_Nick_render($user_source) . '\'s shift ' . $shift['name']
@@ -131,7 +126,7 @@ function user_myshifts()
         }
     } elseif ($request->has('cancel') && preg_match('/^\d*$/', $request->input('cancel'))) {
         $user_id = $request->input('cancel');
-        $shift = DB::select('
+        $shift = DB::selectOne('
                 SELECT *
                 FROM `Shifts`
                 INNER JOIN `ShiftEntry` USING (`SID`)
@@ -143,15 +138,12 @@ function user_myshifts()
             ]
         );
         if (count($shift) > 0) {
-            $shift = array_shift($shift);
             if (
                 ($shift['start'] > time() + config('last_unsubscribe') * 3600)
                 || in_array('user_shifts_admin', $privileges)
             ) {
-                $result = ShiftEntry_delete($user_id);
-                if ($result === false) {
-                    engelsystem_error('Unable to delete shift entry.');
-                }
+                ShiftEntry_delete($user_id);
+
                 $room = Room($shift['RID']);
                 $angeltype = AngelType($shift['TID']);
                 $shifttype = ShiftType($shift['shifttype_id']);

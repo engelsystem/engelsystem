@@ -17,11 +17,10 @@ function Rooms($show_all = false)
  * Delete a room
  *
  * @param int $room_id
- * @return bool
  */
 function Room_delete($room_id)
 {
-    return DB::delete('DELETE FROM `Room` WHERE `RID` = ?', [$room_id]);
+    DB::delete('DELETE FROM `Room` WHERE `RID` = ?', [$room_id]);
 }
 
 /**
@@ -35,7 +34,7 @@ function Room_delete($room_id)
  */
 function Room_create($name, $from_frab, $public, $number = null)
 {
-    $result = DB::insert('
+    DB::insert('
           INSERT INTO `Room` (`Name`, `FromPentabarf`, `show`, `Number`)
            VALUES (?, ?, ?, ?)
         ',
@@ -46,9 +45,6 @@ function Room_create($name, $from_frab, $public, $number = null)
             (int)$number,
         ]
     );
-    if (!$result) {
-        return false;
-    }
 
     return DB::getPdo()->lastInsertId();
 }
@@ -62,21 +58,11 @@ function Room_create($name, $from_frab, $public, $number = null)
  */
 function Room($room_id, $onlyVisible = true)
 {
-    $room_source = DB::select('
+    return DB::selectOne('
         SELECT *
         FROM `Room`
         WHERE `RID` = ?
         ' . ($onlyVisible ? 'AND `show` = \'Y\'' : ''),
         [$room_id]
     );
-
-    if (DB::getStm()->errorCode() != '00000') {
-        return false;
-    }
-
-    if (empty($room_source)) {
-        return null;
-    }
-
-    return array_shift($room_source);
 }

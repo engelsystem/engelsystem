@@ -11,10 +11,9 @@ function load_auth()
 
     $user = null;
     if (isset($_SESSION['uid'])) {
-        $user = DB::select('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$_SESSION['uid']]);
-        if (count($user) > 0) {
+        $user = DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$_SESSION['uid']]);
+        if (!empty($user)) {
             // User ist eingeloggt, Datensatz zur Verfügung stellen und Timestamp updaten
-            $user = array_shift($user);
             DB::update('
                 UPDATE `User`
                 SET `lastLogIn` = ?
@@ -55,11 +54,10 @@ function generate_salt($length = 16)
  *
  * @param int    $uid
  * @param string $password
- * @return bool
  */
 function set_password($uid, $password)
 {
-    $result = DB::update('
+    DB::update('
         UPDATE `User`
         SET `Passwort` = ?,
         `password_recovery_token`=NULL
@@ -71,10 +69,6 @@ function set_password($uid, $password)
             $uid
         ]
     );
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to update password.');
-    }
-    return $result;
 }
 
 /**

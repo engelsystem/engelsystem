@@ -9,17 +9,7 @@ use Engelsystem\Database\DB;
  */
 function EventConfig()
 {
-    $event_config = DB::select('SELECT * FROM `EventConfig` LIMIT 1');
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load event config.');
-        return null;
-    }
-
-    if (empty($event_config)) {
-        return null;
-    }
-
-    return array_shift($event_config);
+    return DB::selectOne('SELECT * FROM `EventConfig` LIMIT 1');
 }
 
 /**
@@ -31,7 +21,7 @@ function EventConfig()
  * @param int    $event_end_date
  * @param int    $teardown_end_date
  * @param string $event_welcome_msg
- * @return bool
+ * @return int Rows updated
  */
 function EventConfig_update(
     $event_name,

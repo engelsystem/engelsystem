@@ -27,23 +27,16 @@ function UserAngelType_exists($user, $angeltype)
  * List users angeltypes.
  *
  * @param array $user
- * @return array|false
+ * @return array
  */
 function User_angeltypes($user)
 {
-    $result = DB::select('
+    return DB::select('
       SELECT `AngelTypes`.*, `UserAngelTypes`.`confirm_user_id`, `UserAngelTypes`.`supporter`
       FROM `UserAngelTypes`
       JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`
       WHERE `UserAngelTypes`.`user_id`=?
       ', [$user['UID']]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load user angeltypes.');
-        return false;
-    }
-
-    return $result;
 }
 
 /**
@@ -54,7 +47,7 @@ function User_angeltypes($user)
  */
 function User_unconfirmed_AngelTypes($user)
 {
-    $result = DB::select('
+    return DB::select('
         SELECT
           `UserAngelTypes`.*,
           `AngelTypes`.`name`,
@@ -69,12 +62,6 @@ function User_unconfirmed_AngelTypes($user)
         GROUP BY `UserAngelTypes`.`angeltype_id`
         ORDER BY `AngelTypes`.`name`
     ', [$user['UID']]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load user angeltypes.');
-    }
-
-    return $result;
 }
 
 /**
@@ -110,29 +97,21 @@ function User_is_AngelType_supporter(&$user, $angeltype)
  *
  * @param int  $user_angeltype_id
  * @param bool $supporter
- * @return int
  */
 function UserAngelType_update($user_angeltype_id, $supporter)
 {
-    $result = DB::update('
+    DB::update('
       UPDATE `UserAngelTypes`
       SET `supporter`=?
       WHERE `id`=?
       LIMIT 1
     ', [$supporter, $user_angeltype_id]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to update supporter rights.');
-    }
-
-    return $result;
 }
 
 /**
  * Delete all unconfirmed UserAngelTypes for given Angeltype.
  *
  * @param int $angeltype_id
- * @return bool
  */
 function UserAngelTypes_delete_all($angeltype_id)
 {
@@ -141,12 +120,6 @@ function UserAngelTypes_delete_all($angeltype_id)
       WHERE `angeltype_id`=?
       AND `confirm_user_id` IS NULL
     ', [$angeltype_id]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to delete all unconfirmed users.');
-    }
-
-    return true;
 }
 
 /**
@@ -154,22 +127,15 @@ function UserAngelTypes_delete_all($angeltype_id)
  *
  * @param int   $angeltype_id
  * @param array $confirm_user
- * @return bool
  */
 function UserAngelTypes_confirm_all($angeltype_id, $confirm_user)
 {
-    $result = DB::update('
+    DB::update('
       UPDATE `UserAngelTypes`
       SET `confirm_user_id`=?
       WHERE `angeltype_id`=?
       AND `confirm_user_id` IS NULL
     ', [$confirm_user['UID'], $angeltype_id]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to confirm all users.');
-    }
-
-    return (bool)$result;
 }
 
 /**
@@ -181,26 +147,21 @@ function UserAngelTypes_confirm_all($angeltype_id, $confirm_user)
  */
 function UserAngelType_confirm($user_angeltype_id, $confirm_user)
 {
-    $result = DB::update('
+    DB::update('
       UPDATE `UserAngelTypes`
       SET `confirm_user_id`=?
       WHERE `id`=?
       LIMIT 1', [$confirm_user['UID'], $user_angeltype_id]);
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to confirm user angeltype.');
-    }
-    return (bool)$result;
 }
 
 /**
  * Delete an UserAngelType.
  *
  * @param array $user_angeltype
- * @return bool
  */
 function UserAngelType_delete($user_angeltype)
 {
-    return (bool)DB::delete('
+    DB::delete('
       DELETE FROM `UserAngelTypes`
       WHERE `id`=?
       LIMIT 1', [$user_angeltype['id']]);
@@ -225,10 +186,6 @@ function UserAngelType_create($user, $angeltype)
         ]
     );
 
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to create user angeltype.');
-    }
-
     return DB::getPdo()->lastInsertId();
 }
 
@@ -240,21 +197,11 @@ function UserAngelType_create($user, $angeltype)
  */
 function UserAngelType($user_angeltype_id)
 {
-    $angeltype = DB::select('
+    return DB::selectOne('
       SELECT *
       FROM `UserAngelTypes`
       WHERE `id`=?
       LIMIT 1', [$user_angeltype_id]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load user angeltype.');
-    }
-
-    if (empty($angeltype)) {
-        return null;
-    }
-
-    return $angeltype[0];
 }
 
 /**
@@ -266,7 +213,7 @@ function UserAngelType($user_angeltype_id)
  */
 function UserAngelType_by_User_and_AngelType($user, $angeltype)
 {
-    $angeltype = DB::select('
+    return DB::selectOne('
           SELECT *
           FROM `UserAngelTypes`
           WHERE `user_id`=?
@@ -278,14 +225,4 @@ function UserAngelType_by_User_and_AngelType($user, $angeltype)
             $angeltype['id']
         ]
     );
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load user angeltype.');
-    }
-
-    if (empty($angeltype)) {
-        return null;
-    }
-
-    return array_shift($angeltype);
 }

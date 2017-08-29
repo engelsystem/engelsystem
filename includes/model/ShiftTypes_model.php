@@ -6,11 +6,10 @@ use Engelsystem\Database\DB;
  * Delete a shift type.
  *
  * @param int $shifttype_id
- * @return bool
  */
 function ShiftType_delete($shifttype_id)
 {
-    return DB::delete('DELETE FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
+    DB::delete('DELETE FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
 }
 
 /**
@@ -20,7 +19,6 @@ function ShiftType_delete($shifttype_id)
  * @param string $name
  * @param int    $angeltype_id
  * @param string $description
- * @return bool
  */
 function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
 {
@@ -38,8 +36,6 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
             $shifttype_id,
         ]
     );
-
-    return DB::getStm()->errorCode() == '00000';
 }
 
 /**
@@ -52,7 +48,7 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
  */
 function ShiftType_create($name, $angeltype_id, $description)
 {
-    $result = DB::insert('
+    DB::insert('
         INSERT INTO `ShiftTypes` (`name`, `angeltype_id`, `description`)
         VALUES(?, ?, ?)
         ',
@@ -62,10 +58,6 @@ function ShiftType_create($name, $angeltype_id, $description)
             $description
         ]
     );
-
-    if ($result === false) {
-        return false;
-    }
 
     return DB::getPdo()->lastInsertId();
 }
@@ -78,28 +70,15 @@ function ShiftType_create($name, $angeltype_id, $description)
  */
 function ShiftType($shifttype_id)
 {
-    $shifttype = DB::select('SELECT * FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load shift type.');
-    }
-    if (empty($shifttype)) {
-        return null;
-    }
-    return array_shift($shifttype);
+    return DB::selectOne('SELECT * FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
 }
 
 /**
  * Get all shift types.
  *
- * @return array|false
+ * @return array
  */
 function ShiftTypes()
 {
-    $result = DB::select('SELECT * FROM `ShiftTypes` ORDER BY `name`');
-
-    if (DB::getStm()->errorCode() != '00000') {
-        return false;
-    }
-
-    return $result;
+    return DB::select('SELECT * FROM `ShiftTypes` ORDER BY `name`');
 }

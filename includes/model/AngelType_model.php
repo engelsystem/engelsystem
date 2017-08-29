@@ -77,31 +77,25 @@ function AngelType_contact_info($angeltype)
  * Delete an Angeltype.
  *
  * @param array $angeltype
- * @return bool
  */
 function AngelType_delete($angeltype)
 {
-    $result = DB::delete('
+    DB::delete('
       DELETE FROM `AngelTypes`
       WHERE `id`=?
       LIMIT 1
     ', [$angeltype['id']]);
-    if (is_null($result)) {
-        engelsystem_error('Unable to delete angeltype.');
-    }
     engelsystem_log('Deleted angeltype: ' . AngelType_name_render($angeltype));
-    return true;
 }
 
 /**
  * Update Angeltype.
  *
  * @param array $angeltype The angeltype
- * @return bool
  */
 function AngelType_update($angeltype)
 {
-    $result = DB::update('
+    DB::update('
           UPDATE `AngelTypes` SET
           `name` = ?,
           `restricted` = ?,
@@ -126,15 +120,12 @@ function AngelType_update($angeltype)
             $angeltype['id'],
         ]
     );
-    if (is_null($result)) {
-        engelsystem_error('Unable to update angeltype.');
-    }
+
     engelsystem_log(
         'Updated angeltype: ' . $angeltype['name'] . ($angeltype['restricted'] ? ', restricted' : '')
         . ($angeltype['no_self_signup'] ? ', no_self_signup' : '')
         . ($angeltype['requires_driver_license'] ? ', requires driver license' : '')
     );
-    return true;
 }
 
 /**
@@ -145,7 +136,7 @@ function AngelType_update($angeltype)
  */
 function AngelType_create($angeltype)
 {
-    $result = DB::insert('
+    DB::insert('
           INSERT INTO `AngelTypes` (
               `name`,
               `restricted`,
@@ -171,9 +162,7 @@ function AngelType_create($angeltype)
             $angeltype['contact_email'],
         ]
     );
-    if (is_null($result)) {
-        engelsystem_error('Unable to create angeltype.');
-    }
+
     $angeltype['id'] = DB::getPdo()->lastInsertId();
     engelsystem_log(
         'Created angeltype: ' . $angeltype['name']
@@ -224,7 +213,7 @@ function AngelType_validate_name($name, $angeltype)
  */
 function AngelTypes_with_user($user)
 {
-    $result = DB::select('
+    return DB::select('
       SELECT `AngelTypes`.*,
       `UserAngelTypes`.`id` AS `user_angeltype_id`,
       `UserAngelTypes`.`confirm_user_id`,
@@ -233,11 +222,6 @@ function AngelTypes_with_user($user)
       LEFT JOIN `UserAngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id`
       AND `UserAngelTypes`.`user_id` = ?
       ORDER BY `name`', [$user['UID']]);
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load angeltypes.');
-    }
-    return $result;
 }
 
 /**
@@ -247,15 +231,10 @@ function AngelTypes_with_user($user)
  */
 function AngelTypes()
 {
-    $result = DB::select('
+    return DB::select('
       SELECT *
       FROM `AngelTypes`
       ORDER BY `name`');
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load angeltypes.');
-    }
-    return $result;
 }
 
 /**
@@ -266,10 +245,6 @@ function AngelTypes()
 function AngelType_ids()
 {
     $result = DB::select('SELECT `id` FROM `AngelTypes`');
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load angeltypes.');
-    }
     return select_array($result, 'id', 'id');
 }
 
@@ -281,18 +256,8 @@ function AngelType_ids()
  */
 function AngelType($angeltype_id)
 {
-    $angelType_source = DB::select(
+    return DB::selectOne(
         'SELECT * FROM `AngelTypes` WHERE `id`=?',
         [$angeltype_id]
     );
-
-    if (DB::getStm()->errorCode() != '00000') {
-        engelsystem_error('Unable to load angeltype.');
-    }
-
-    if (empty($angelType_source)) {
-        return null;
-    }
-
-    return array_shift($angelType_source);
 }

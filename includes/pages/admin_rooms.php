@@ -22,8 +22,8 @@ function admin_rooms()
     foreach ($rooms_source as $room) {
         $rooms[] = [
             'name'           => Room_name_render($room),
-            'from_pentabarf' => $room['FromPentabarf'] == 'Y' ? '&#10003;' : '',
-            'public'         => $room['show'] == 'Y' ? '&#10003;' : '',
+            'from_pentabarf' => glyph_bool($room['FromPentabarf'] == 'Y'),
+            'public'         => glyph_bool($room['show'] == 'Y'),
             'actions'        => table_buttons([
                 button(page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room['RID']]), _('edit'), 'btn-xs'),
                 button(page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room['RID']]), _('delete'), 'btn-xs')
@@ -50,9 +50,6 @@ function admin_rooms()
 
         if (test_request_int('id')) {
             $room = Room($request->input('id'), false);
-            if ($room === false) {
-                engelsystem_error('Unable to load room.');
-            }
             if ($room == null) {
                 redirect(page_link_to('admin_rooms'));
             }
@@ -150,9 +147,7 @@ function admin_rooms()
                         );
                     } else {
                         $room_id = Room_create($name, $from_pentabarf, $public, $number);
-                        if ($room_id === false) {
-                            engelsystem_error('Unable to create room.');
-                        }
+
                         engelsystem_log(
                             'Room created: ' . $name
                             . ', pentabarf import: '
@@ -214,9 +209,7 @@ function admin_rooms()
             ]);
         } elseif ($request->input('show') == 'delete') {
             if ($request->has('ack')) {
-                if (!Room_delete($room_id)) {
-                    engelsystem_error('Unable to delete room.');
-                }
+                Room_delete($room_id);
 
                 engelsystem_log('Room deleted: ' . $name);
                 success(sprintf(_('Room %s deleted.'), $name));
