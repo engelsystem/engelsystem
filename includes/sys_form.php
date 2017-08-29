@@ -144,10 +144,15 @@ function form_multi_checkboxes($names, $label, $items, $selected, $disabled = []
  * @param string $label
  * @param string $selected
  * @param string $value
+ * @param string $id
  * @return string
  */
-function form_checkbox($name, $label, $selected, $value = 'checked')
+function form_checkbox($name, $label, $selected, $value = 'checked', $id = null)
 {
+    if (is_null($id)) {
+        $id = $name;
+    }
+
     return '<div class="checkbox"><label>'
         . '<input type="checkbox" id="' . $name . '" name="' . $name . '" value="' . $value . '" '
         . ($selected ? ' checked="checked"' : '') . ' /> '
@@ -374,7 +379,7 @@ function form_element($label, $input, $for = '')
  */
 function form($elements, $action = '')
 {
-    return '<form role="form" action="' . $action . '" enctype="multipart/form-data" method="post">' . join($elements) . '</form>';
+    return '<form action="' . $action . '" enctype="multipart/form-data" method="post">' . join($elements) . '</form>';
 }
 
 /**

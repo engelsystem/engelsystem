@@ -9,24 +9,8 @@ use Engelsystem\UserHintsRenderer;
  */
 function page_link_to($page = '', $parameters = [])
 {
-    $parameters = http_build_query($parameters);
-    $page = ltrim($page, '/');
     $page = str_replace('_', '-', $page);
-    return '/' . $page . (!empty($parameters) ? '?' . $parameters : '');
-}
-
-/**
- * @TODO: remove?
- * @param string $page
- * @param array  $parameters get parameters
- * @return string
- */
-function page_link_to_absolute($page, $parameters = [])
-{
-    return (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://'
-        . $_SERVER['HTTP_HOST']
-        . preg_replace("/\?.*$/", '', $_SERVER['REQUEST_URI'])
-        . page_link_to($page, $parameters);
+    return url($page, $parameters);
 }
 
 /**

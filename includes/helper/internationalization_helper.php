@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Http\Request;
+
 /**
  * Return currently active locale
  *
@@ -62,14 +64,20 @@ function gettext_locale($locale = null)
  */
 function make_langselect()
 {
-    $url = $_SERVER['REQUEST_URI'] . (strpos($_SERVER['REQUEST_URI'], '?') > 0 ? '&' : '?') . 'set_locale=';
+    $request = Request::getInstance();
 
     $items = [];
     foreach (config('locales') as $locale => $name) {
+        $url = url($request->getPathInfo(), ['set_locale' => $locale]);
+
         $items[] = toolbar_item_link(
-            htmlspecialchars($url) . $locale,
+            htmlspecialchars($url),
             '',
-            '<img src="pic/flag/' . $locale . '.png" alt="' . $name . '" title="' . $name . '"> ' . $name
+            sprintf(
+                '<img src="%s" alt="%s" title="%2$s"> %2$s',
+                url('pic/flag/' . $locale . '.png'),
+                $name
+            )
         );
     }
     return $items;

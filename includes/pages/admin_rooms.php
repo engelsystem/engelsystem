@@ -110,11 +110,14 @@ function admin_rooms()
                 }
 
                 foreach ($angeltypes as $angeltype_id => $angeltype) {
-                    if (
-                        $request->has('angeltype_count_' . $angeltype_id)
-                        && preg_match('/^\d{1,4}$/', $request->input('angeltype_count_' . $angeltype_id))
-                    ) {
-                        $angeltypes_count[$angeltype_id] = $request->input('angeltype_count_' . $angeltype_id);
+                    $angeltypes_count[$angeltype_id] = 0;
+                    $queryKey = 'angeltype_count_' . $angeltype_id;
+                    if (!$request->has($queryKey)) {
+                        continue;
+                    }
+
+                    if (preg_match('/^\d{1,4}$/', $request->input($queryKey))) {
+                        $angeltypes_count[$angeltype_id] = $request->input($queryKey);
                     } else {
                         $valid = false;
                         $msg .= error(sprintf(_('Please enter needed angels for type %s.'), $angeltype), true);

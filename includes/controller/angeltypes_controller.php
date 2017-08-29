@@ -127,7 +127,7 @@ function angeltype_edit_controller()
 
         if (!$supporter_mode) {
             if ($request->has('name')) {
-                $result = AngelType_validate_name($request->get('name'), $angeltype);
+                $result = AngelType_validate_name($request->postData('name'), $angeltype);
                 $angeltype['name'] = $result->getValue();
                 if (!$result->isValid()) {
                     $valid = false;

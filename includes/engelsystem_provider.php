@@ -32,9 +32,10 @@ date_default_timezone_set($config->get('timezone'));
 
 /**
  * Initialize Request
+ *
+ * @var Request $request
  */
-$request = new Request();
-$request->create($_GET, $_POST, $_SERVER, config('url'));
+$request = Request::createFromGlobals();
 $request::setInstance($request);
 
 /**

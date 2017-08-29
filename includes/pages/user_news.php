@@ -186,9 +186,9 @@ function user_news()
 
     $html = '<div class="col-md-12"><h1>' . news_title() . '</h1>' . msg();
 
-    $isMeeting = $request->post('treffen');
+    $isMeeting = $request->postData('treffen');
     if ($request->has('text') && $request->has('betreff') && in_array('admin_news', $privileges)) {
-        if (!$request->has('treffen') || !in_array('admin_news', $privileges)) {
+        if (!$request->has('treffen')) {
             $isMeeting = 0;
         }
         DB::insert('
@@ -197,13 +197,13 @@ function user_news()
             ',
             [
                 time(),
-                $request->post('betreff'),
-                $request->post('text'),
+                $request->postData('betreff'),
+                $request->postData('text'),
                 $user['UID'],
                 $isMeeting,
             ]
         );
-        engelsystem_log('Created news: ' . $_POST['betreff'] . ', treffen: ' . $isMeeting);
+        engelsystem_log('Created news: ' . $request->postData('betreff') . ', treffen: ' . $isMeeting);
         success(_('Entry saved.'));
         redirect(page_link_to('news'));
     }

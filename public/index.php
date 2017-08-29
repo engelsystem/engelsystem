@@ -1,4 +1,7 @@
 <?php
+
+use Engelsystem\Http\Request;
+
 require_once realpath(__DIR__ . '/../includes/engelsystem_provider.php');
 
 $free_pages = [
@@ -24,12 +27,13 @@ $page = '';
 $title = '';
 $content = '';
 
-$page = $request->input('p');
+/** @var Request $request */
+$page = $request->query->get('p');
 if (empty($page)) {
     $page = $request->path();
     $page = str_replace('-', '_', $page);
 }
-if (empty($page)) {
+if ($page == '/') {
     $page = isset($user) ? 'news' : 'login';
 }
 

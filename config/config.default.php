@@ -20,9 +20,6 @@ return [
     // Set to development to enable debugging messages
     'environment'      => 'production',
 
-    // Site URL, used to generate links on page (https://example.com/[sub-dir/])
-    'url'              => null,
-
     // URL to the angel faq and job description
     'faq_url'          => 'https://events.ccc.de/congress/2013/wiki/Static:Volunteers',
 
@@ -58,7 +55,7 @@ return [
     //  Blowfish    '$2y$13'
     //  SHA-256     '$5$rounds=5000'
     //  SHA-512     '$6$rounds=5000'
-    'crypt_alg'        => '$6$rounds=5000', // SHA-512
+    'crypt_alg'        => '$6$rounds=5000',
 
     'min_password_length'     => 8,
 

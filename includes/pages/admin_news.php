@@ -62,14 +62,15 @@ function admin_news()
                 ',
                 [
                     time(),
-                    $request->post('eBetreff'),
-                    $request->post('eText'),
+                    $request->postData('eBetreff'),
+                    $request->postData('eText'),
                     $user['UID'],
                     $request->has('eTreffen') ? 1 : 0,
                     $news_id
                 ]
             );
-            engelsystem_log('News updated: ' . $request->post('eBetreff'));
+
+            engelsystem_log('News updated: ' . $request->postData('eBetreff'));
             success(_('News entry updated.'));
             redirect(page_link_to('news'));
             break;

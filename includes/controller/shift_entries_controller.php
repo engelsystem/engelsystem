@@ -27,10 +27,10 @@ function shift_entry_add_controller()
     }
 
     $shift = Shift($shift_id);
-    $shift['Name'] = $room_array[$shift['RID']];
     if ($shift == null) {
         redirect(page_link_to('user_shifts'));
     }
+    $shift['Name'] = $room_array[$shift['RID']];
 
     $type_id = 0;
     if ($request->has('type_id') && preg_match('/^\d*$/', $request->input('type_id'))) {

@@ -81,7 +81,8 @@ function admin_groups()
                             'privileges[]',
                             $privilege['desc'] . ' (' . $privilege['name'] . ')',
                             $privilege['group_id'] != '',
-                            $privilege['id']
+                            $privilege['id'],
+                            'privilege-' . $privilege['name']
                         );
                         $privileges_html .= sprintf(
                             '<tr><td><input type="checkbox" name="privileges[]" value="%s" %s /></td> <td>%s</td> <td>%s</td></tr>',
@@ -112,7 +113,7 @@ function admin_groups()
                 }
 
                 $group = DB::select('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
-                $privileges = $request->get('privileges');
+                $privileges = $request->postData('privileges');
                 if (!is_array($privileges)) {
                     $privileges = [];
                 }

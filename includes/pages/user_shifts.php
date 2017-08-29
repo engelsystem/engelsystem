@@ -229,8 +229,8 @@ function view_user_shifts()
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
                 'ical_text'     => '<h2>' . _('iCal export') . '</h2><p>' . sprintf(
                         _('Export of shown shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
-                        page_link_to_absolute('ical', ['key' => $user['api_key']]),
-                        page_link_to_absolute('shifts_json_export', ['key' => $user['api_key']]),
+                        page_link_to('ical', ['key' => $user['api_key']]),
+                        page_link_to('shifts_json_export', ['key' => $user['api_key']]),
                         page_link_to('user_myshifts', ['reset' => 1])
                     ) . '</p>',
                 'filter'        => _('Filter')

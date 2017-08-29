@@ -34,7 +34,9 @@ class Handler
      */
     public function errorHandler($number, $string, $file, $line, $context)
     {
-        $this->handle('error', $number, $string, $file, $line, $context);
+        $trace = array_reverse(debug_backtrace());
+
+        $this->handle('error', $number, $string, $file, $line, $context, $trace);
     }
 
     /**
@@ -59,8 +61,9 @@ class Handler
      * @param string $file
      * @param int    $line
      * @param array  $context
+     * @param array  $trace
      */
-    protected function handle($type, $number, $string, $file, $line, $context = [])
+    protected function handle($type, $number, $string, $file, $line, $context = [], $trace = [])
     {
         error_log(sprintf('%s: Number: %s, String: %s, File: %s:%u, Context: %s',
             $type,
@@ -71,13 +74,16 @@ class Handler
             json_encode($context)
         ));
 
+        $file = $this->stripBasePath($file);
+
         if ($this->environment == self::ENV_DEVELOPMENT) {
-            echo '<pre style="background-color:#333;color:#ccc;z-index:1000;position:fixed;bottom:1em;padding:1em;width:97%;overflow-y:auto;">';
+            echo '<pre style="background-color:#333;color:#ccc;z-index:1000;position:fixed;bottom:1em;padding:1em;width:97%;max-height: 90%;overflow-y:auto;">';
             echo sprintf('%s: (%s)' . PHP_EOL, ucfirst($type), $number);
             var_export([
-                'string'  => $string,
-                'file'    => $file . ':' . $line,
-                'context' => ($this->environment == self::ENV_DEVELOPMENT ? $context : null),
+                'string'     => $string,
+                'file'       => $file . ':' . $line,
+                'context'    => $context,
+                'stacktrace' => $this->formatStackTrace($trace),
             ]);
             echo '</pre>';
             die();
@@ -85,6 +91,44 @@ class Handler
 
         echo 'An <del>un</del>expected error occurred, a team of untrained monkeys has been dispatched to deal with it.';
         die();
+    }
+
+    /**
+     * @param array $stackTrace
+     * @return array
+     */
+    protected function formatStackTrace($stackTrace)
+    {
+        $return = [];
+
+        foreach ($stackTrace as $trace) {
+            $path = '';
+            $line = '';
+
+            if (isset($trace['file']) && isset($trace['line'])) {
+                $path = $this->stripBasePath($trace['file']);
+                $line = $trace['line'];
+            }
+
+            $functionName = $trace['function'];
+
+            $return[] = [
+                'file'        => $path . ':' . $line,
+                $functionName => $trace['args'],
+            ];
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    protected function stripBasePath($path)
+    {
+        $basePath = realpath(__DIR__ . '/../..') . '/';
+        return str_replace($basePath, '', $path);
     }
 
     /**

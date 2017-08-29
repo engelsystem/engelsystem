@@ -135,16 +135,14 @@ function admin_shifts()
             } elseif ($request->input('angelmode') == 'manually') {
                 $angelmode = 'manually';
                 foreach ($types as $type) {
-                    if (
-                        $request->has('type_' . $type['id'])
-                        && preg_match('/^\d+$/', trim($request->input('type_' . $type['id'])))
-                    ) {
-                        $needed_angel_types[$type['id']] = trim($request->input('type_' . $type['id']));
+                    if (preg_match('/^\d+$/', trim($request->input('type_' . $type['id'], 0)))) {
+                        $needed_angel_types[$type['id']] = trim($request->input('type_' . $type['id'], 0));
                     } else {
                         $valid = false;
                         error(sprintf(_('Please check the needed angels for team %s.'), $type['name']));
                     }
                 }
+
                 if (array_sum($needed_angel_types) == 0) {
                     $valid = false;
                     error(_('There are 0 angels needed. Please enter the amounts of needed angels.'));
@@ -306,7 +304,7 @@ function admin_shifts()
         }
     } elseif ($request->has('submit')) {
         if (
-            !$request->has('admin_shifts_shifts')
+            !isset($_SESSION['admin_shifts_shifts'])
             || !isset($_SESSION['admin_shifts_types'])
             || !is_array($_SESSION['admin_shifts_shifts'])
             || !is_array($_SESSION['admin_shifts_types'])

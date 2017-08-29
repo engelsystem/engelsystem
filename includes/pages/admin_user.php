@@ -261,7 +261,7 @@ function admin_user()
                       `Handy` = ?,
                       `Alter` =?,
                       `DECT` = ?,
-                      ' . ($user_source['email_by_human_allowed'] ? '`email` = ' . DB::getPdo()->quote($request->post('eemail')) . ',' : '') . '
+                      ' . ($user_source['email_by_human_allowed'] ? '`email` = ' . DB::getPdo()->quote($request->postData('eemail')) . ',' : '') . '
                       `jabber` = ?,
                       `Size` = ?,
                       `Gekommen`= ?,
@@ -272,34 +272,34 @@ function admin_user()
                       WHERE `UID` = ?
                       LIMIT 1';
                 DB::update($sql, [
-                    $request->post('eNick'),
-                    $request->post('eName'),
-                    $request->post('eVorname'),
-                    $request->post('eTelefon'),
-                    $request->post('eHandy'),
-                    $request->post('eAlter'),
-                    $request->post('eDECT'),
-                    $request->post('ejabber'),
-                    $request->post('eSize'),
-                    $request->post('eGekommen'),
-                    $request->post('eAktiv'),
+                    $request->postData('eNick'),
+                    $request->postData('eName'),
+                    $request->postData('eVorname'),
+                    $request->postData('eTelefon'),
+                    $request->postData('eHandy'),
+                    $request->postData('eAlter'),
+                    $request->postData('eDECT'),
+                    $request->postData('ejabber'),
+                    $request->postData('eSize'),
+                    $request->postData('eGekommen'),
+                    $request->postData('eAktiv'),
                     $force_active,
-                    $request->post('eTshirt'),
-                    $request->post('Hometown'),
+                    $request->postData('eTshirt'),
+                    $request->postData('Hometown'),
                     $user_id,
                 ]);
                 engelsystem_log(
-                    'Updated user: ' . $request->post('eNick') . ', ' . $request->post('eSize')
-                    . ', arrived: ' . $request->post('eVorname')
-                    . ', active: ' . $request->post('eAktiv')
-                    . ', tshirt: ' . $request->post('eTshirt')
+                    'Updated user: ' . $request->postData('eNick') . ', ' . $request->postData('eSize')
+                    . ', arrived: ' . $request->postData('eVorname')
+                    . ', active: ' . $request->postData('eAktiv')
+                    . ', tshirt: ' . $request->postData('eTshirt')
                 );
                 $html .= success('Änderung wurde gespeichert...' . "\n", true);
                 break;
 
             case 'change_pw':
-                if ($request->post('new_pw') != '' && $request->post('new_pw') == $request->post('new_pw2')) {
-                    set_password($user_id, $request->post('new_pw'));
+                if ($request->postData('new_pw') != '' && $request->postData('new_pw') == $request->postData('new_pw2')) {
+                    set_password($user_id, $request->postData('new_pw'));
                     $user_source = User($user_id);
                     engelsystem_log('Set new password for ' . User_Nick_render($user_source));
                     $html .= success('Passwort neu gesetzt.', true);

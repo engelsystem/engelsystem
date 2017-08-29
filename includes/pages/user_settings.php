@@ -101,14 +101,14 @@ function user_settings_password($user_source)
     $request = request();
     if (
         !$request->has('password')
-        || !verify_password($request->post('password'), $user_source['Passwort'], $user_source['UID'])
+        || !verify_password($request->postData('password'), $user_source['Passwort'], $user_source['UID'])
     ) {
         error(_('-> not OK. Please try again.'));
-    } elseif (strlen($request->post('new_password')) < config('min_password_length')) {
+    } elseif (strlen($request->postData('new_password')) < config('min_password_length')) {
         error(_('Your password is to short (please use at least 6 characters).'));
-    } elseif ($request->post('new_password') != $request->post('new_password2')) {
+    } elseif ($request->postData('new_password') != $request->postData('new_password2')) {
         error(_('Your passwords don\'t match.'));
-    } elseif (set_password($user_source['UID'], $request->post('new_password'))) {
+    } elseif (set_password($user_source['UID'], $request->postData('new_password'))) {
         success(_('Password saved.'));
     } else {
         error(_('Failed setting password.'));

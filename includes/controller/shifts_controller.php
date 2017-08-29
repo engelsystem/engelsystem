@@ -62,7 +62,7 @@ function shift_edit_controller()
     $angeltypes = select_array(AngelTypes(), 'id', 'name');
     $shifttypes = select_array(ShiftTypes(), 'id', 'name');
 
-    $needed_angel_types = select_array(NeededAngelTypes_by_shift($shift_id), 'id', 'count');
+    $needed_angel_types = select_array(NeededAngelTypes_by_shift($shift_id), 'angel_type_id', 'count');
     foreach (array_keys($angeltypes) as $angeltype_id) {
         if (!isset($needed_angel_types[$angeltype_id])) {
             $needed_angel_types[$angeltype_id] = 0;
@@ -117,15 +117,20 @@ function shift_edit_controller()
             $msg .= error(_('The ending time has to be after the starting time.'), true);
         }
 
-        foreach ($needed_angel_types as $needed_angeltype_id => $needed_angeltype_name) {
-            if ($request->has('type_' . $needed_angeltype_id) && test_request_int('type_' . $needed_angeltype_id)) {
-                $needed_angel_types[$needed_angeltype_id] = trim($request->input('type_' . $needed_angeltype_id));
-            } else {
-                $valid = false;
-                $msg .= error(sprintf(
-                    _('Please check your input for needed angels of type %s.'),
-                    $needed_angeltype_name
-                ), true);
+        foreach ($needed_angel_types as $needed_angeltype_id => $count) {
+            $needed_angel_types[$needed_angeltype_id] = 0;
+
+            $queryKey = 'type_' . $needed_angeltype_id;
+            if ($request->has($queryKey)) {
+                if (test_request_int($queryKey)) {
+                    $needed_angel_types[$needed_angeltype_id] = trim($request->input($queryKey));
+                } else {
+                    $valid = false;
+                    $msg .= error(sprintf(
+                        _('Please check your input for needed angels of type %s.'),
+                        $angeltypes[$needed_angeltype_id]
+                    ), true);
+                }
             }
         }
 

@@ -4,6 +4,7 @@
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
 use Engelsystem\Renderer\Renderer;
+use Engelsystem\Routing\UrlGenerator;
 
 /**
  * Get or set config values
@@ -55,4 +56,14 @@ function view($template = null, $data = null)
     }
 
     return $renderer->render($template, $data);
+}
+
+/**
+ * @param string $path
+ * @param array  $parameters
+ * @return string
+ */
+function url($path, $parameters = [])
+{
+    return UrlGenerator::to($path, $parameters);
 }

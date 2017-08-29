@@ -127,8 +127,8 @@ function guest_register()
             }
         }
 
-        if ($request->has('password') && strlen($request->post('password')) >= $min_password_length) {
-            if ($request->post('password') != $request->post('password2')) {
+        if ($request->has('password') && strlen($request->postData('password')) >= $min_password_length) {
+            if ($request->postData('password') != $request->postData('password2')) {
                 $valid = false;
                 $msg .= error(_('Your passwords don\'t match.'), true);
             }
@@ -234,7 +234,7 @@ function guest_register()
             // Assign user-group and set password
             $user_id = DB::getPdo()->lastInsertId();
             DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -2)', [$user_id]);
-            set_password($user_id, $request->post('password'));
+            set_password($user_id, $request->postData('password'));
 
             // Assign angel-types
             $user_angel_types_info = [];
@@ -403,7 +403,7 @@ function guest_login()
             if (count($login_user) > 0) {
                 $login_user = $login_user[0];
                 if ($request->has('password')) {
-                    if (!verify_password($request->post('password'), $login_user['Passwort'], $login_user['UID'])) {
+                    if (!verify_password($request->postData('password'), $login_user['Passwort'], $login_user['UID'])) {
                         $valid = false;
                         error(_('Your password is incorrect.  Please try it again.'));
                     }
