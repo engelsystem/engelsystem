@@ -46,7 +46,7 @@ function user_myshifts()
             ),
             button(page_link_to('user_myshifts', ['reset' => 'ack']), _('Continue'), 'btn-danger')
         ]);
-    } elseif ($request->has('edit') && preg_match('/^\d*$/', $request->input('edit'))) {
+    } elseif ($request->has('edit') && preg_match('/^\d+$/', $request->input('edit'))) {
         $user_id = $request->input('edit');
         $shift = DB::selectOne('
                 SELECT
@@ -124,7 +124,7 @@ function user_myshifts()
         } else {
             redirect(page_link_to('user_myshifts'));
         }
-    } elseif ($request->has('cancel') && preg_match('/^\d*$/', $request->input('cancel'))) {
+    } elseif ($request->has('cancel') && preg_match('/^\d+$/', $request->input('cancel'))) {
         $user_id = $request->input('cancel');
         $shift = DB::selectOne('
                 SELECT *

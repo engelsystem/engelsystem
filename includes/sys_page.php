@@ -170,7 +170,11 @@ function strip_request_item($name, $default_value = null)
 function test_request_int($name)
 {
     $input = request()->input($name);
-    return preg_match('/^\d*$/', $input);
+    if (is_null($input)) {
+        return false;
+    }
+
+    return preg_match('/^\d+$/', $input);
 }
 
 /**

@@ -23,7 +23,7 @@ function admin_arrive()
         $search = strip_request_item('search');
     }
 
-    if ($request->has('reset') && preg_match('/^\d*$/', $request->input('reset'))) {
+    if ($request->has('reset') && preg_match('/^\d+$/', $request->input('reset'))) {
         $user_id = $request->input('reset');
         $user_source = User($user_id);
         if ($user_source != null) {
@@ -39,7 +39,7 @@ function admin_arrive()
         } else {
             $msg = error(_('Angel not found.'), true);
         }
-    } elseif ($request->has('arrived') && preg_match('/^\d*$/', $request->input('arrived'))) {
+    } elseif ($request->has('arrived') && preg_match('/^\d+$/', $request->input('arrived'))) {
         $user_id = $request->input('arrived');
         $user_source = User($user_id);
         if ($user_source != null) {

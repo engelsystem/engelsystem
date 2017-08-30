@@ -98,10 +98,12 @@ function admin_import()
 
             if ($valid) {
                 redirect(
-                    page_link_to('admin_import')
-                    . '&step=check&shifttype_id=' . $shifttype_id
-                    . '&add_minutes_end=' . $add_minutes_end
-                    . '&add_minutes_start=' . $add_minutes_start
+                    page_link_to('admin_import', [
+                        'step'              => 'check',
+                        'shifttype_id'      => $shifttype_id,
+                        'add_minutes_end'   => $add_minutes_end,
+                        'add_minutes_start' => $add_minutes_start,
+                    ])
                 );
             } else {
                 $html .= div('well well-sm text-center', [
@@ -207,10 +209,12 @@ function admin_import()
                         ], shifts_printable($events_deleted, $shifttypes)),
                         form_submit('submit', _('Import'))
                     ],
-                    page_link_to('admin_import')
-                    . '&step=import&shifttype_id=' . $shifttype_id
-                    . '&add_minutes_end=' . $add_minutes_end
-                    . '&add_minutes_start=' . $add_minutes_start
+                    page_link_to('admin_import', [
+                        'step'              => 'import',
+                        'shifttype_id'      => $shifttype_id,
+                        'add_minutes_end'   => $add_minutes_end,
+                        'add_minutes_start' => $add_minutes_start,
+                    ])
                 );
             break;
 

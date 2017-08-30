@@ -179,11 +179,11 @@ function admin_user()
         switch ($request->input('action')) {
             case 'save_groups':
                 if ($user_id != $user['UID']) {
-                    $my_highest_group = DB::select(
+                    $my_highest_group = DB::selectOne(
                         'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id`',
                         [$user['UID']]
                     );
-                    $his_highest_group = DB::select(
+                    $his_highest_group = DB::selectOne(
                         'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id`',
                         [$user_id]
                     );

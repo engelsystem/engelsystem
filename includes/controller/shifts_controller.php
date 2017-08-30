@@ -8,10 +8,13 @@ use Engelsystem\ShiftSignupState;
  */
 function shift_link($shift)
 {
-    $link = page_link_to('shifts', ['action' => 'view']);
+    $parameters = ['action' => 'view'];
     if (isset($shift['SID'])) {
-        $link .= '&shift_id=' . $shift['SID'];
+        $parameters['shift_id'] = $shift['SID'];
     }
+
+    $link = page_link_to('shifts', $parameters);
+
     return $link;
 }
 
@@ -201,7 +204,7 @@ function shift_delete_controller()
     }
 
     // Schicht komplett löschen (nur für admins/user mit user_shifts_admin privileg)
-    if (!$request->has('delete_shift') || !preg_match('/^\d*$/', $request->input('delete_shift'))) {
+    if (!$request->has('delete_shift') || !preg_match('/^\d+$/', $request->input('delete_shift'))) {
         redirect(page_link_to('user_shifts'));
     }
     $shift_id = $request->input('delete_shift');
@@ -316,8 +319,6 @@ function shifts_controller()
 
 /**
  * Redirects the user to his next shift.
- *
- * @return false
  */
 function shift_next_controller()
 {

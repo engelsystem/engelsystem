@@ -12,7 +12,7 @@ use Engelsystem\ShiftsFilterRenderer;
 function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalendarRenderer $shiftCalendarRenderer)
 {
     return page_with_title(glyph('map-marker') . $room['Name'], [
-        $shiftsFilterRenderer->render(room_link($room)),
+        $shiftsFilterRenderer->render($room),
         $shiftCalendarRenderer->render()
     ]);
 }
