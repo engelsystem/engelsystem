@@ -6,6 +6,7 @@ use Engelsystem\Exceptions\Handler as ExceptionHandler;
 use Engelsystem\Http\Request;
 use Engelsystem\Renderer\HtmlEngine;
 use Engelsystem\Renderer\Renderer;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * This file includes all needed functions, connects to the db etc.
@@ -169,7 +170,9 @@ foreach ($includeFiles as $file) {
 /**
  * Init application
  */
-session_start();
+$session = new Session();
+$session->start();
+$request->setSession($session);
 
 gettext_init();
 

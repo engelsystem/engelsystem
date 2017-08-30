@@ -9,7 +9,7 @@ use Engelsystem\Http\Request;
  */
 function locale()
 {
-    return $_SESSION['locale'];
+    return session()->get('locale');
 }
 
 /**
@@ -29,11 +29,12 @@ function gettext_init()
 {
     $locales = config('locales');
     $request = request();
+    $session = session();
 
     if ($request->has('set_locale') && isset($locales[$request->input('set_locale')])) {
-        $_SESSION['locale'] = $request->input('set_locale');
-    } elseif (!isset($_SESSION['locale'])) {
-        $_SESSION['locale'] = config('default_locale');
+        $session->set('locale', $request->input('set_locale'));
+    } elseif (!$session->has('locale')) {
+        $session->set('locale', config('default_locale'));
     }
 
     gettext_locale();
@@ -50,7 +51,7 @@ function gettext_init()
 function gettext_locale($locale = null)
 {
     if ($locale == null) {
-        $locale = $_SESSION['locale'];
+        $locale = session()->get('locale');
     }
 
     putenv('LC_ALL=' . $locale);

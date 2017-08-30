@@ -10,8 +10,10 @@ function load_auth()
     global $user, $privileges;
 
     $user = null;
-    if (isset($_SESSION['uid'])) {
-        $user = DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$_SESSION['uid']]);
+    $session = session();
+
+    if ($session->has('uid')) {
+        $user = DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$session->get('uid')]);
         if (!empty($user)) {
             // User ist eingeloggt, Datensatz zur Verfügung stellen und Timestamp updaten
             DB::update('
@@ -21,12 +23,13 @@ function load_auth()
                 LIMIT 1
             ', [
                 time(),
-                $_SESSION['uid'],
+                $session->get('uid'),
             ]);
             $privileges = privileges_for_user($user['UID']);
             return;
         }
-        unset($_SESSION['uid']);
+
+        $session->remove('uid');
     }
 
     // guest privileges

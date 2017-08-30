@@ -39,6 +39,7 @@ function guest_register()
     $min_password_length = config('min_password_length');
     $event_config = EventConfig();
     $request = request();
+    $session = session();
 
     $msg = '';
     $nick = '';
@@ -226,7 +227,7 @@ function guest_register()
                     $password_hash,
                     $comment,
                     $hometown,
-                    $_SESSION['locale'],
+                    $session->get('locale'),
                     $planned_arrival_date,
                 ]
             );
@@ -377,24 +378,35 @@ function guest_register()
     ]);
 }
 
+/**
+ * @return string
+ */
 function entry_required()
 {
     return '<span class="text-info glyphicon glyphicon-warning-sign"></span>';
 }
 
+/**
+ * @return bool
+ */
 function guest_logout()
 {
-    session_destroy();
+    session()->invalidate();
     redirect(page_link_to('start'));
     return true;
 }
 
+/**
+ * @return string
+ */
 function guest_login()
 {
     $nick = '';
     $request = request();
-    unset($_SESSION['uid']);
+    $session = session();
     $valid = true;
+
+    $session->remove('uid');
 
     if ($request->has('submit')) {
         if ($request->has('nick') && strlen(User_validate_Nick($request->input('nick'))) > 0) {
@@ -420,8 +432,8 @@ function guest_login()
         }
 
         if ($valid && !empty($login_user)) {
-            $_SESSION['uid'] = $login_user['UID'];
-            $_SESSION['locale'] = $login_user['Sprache'];
+            $session->set('uid', $login_user['UID']);
+            $session->set('locale', $login_user['Sprache']);
 
             redirect(page_link_to('news'));
         }
@@ -477,6 +489,9 @@ function guest_login()
     ]);
 }
 
+/**
+ * @return string
+ */
 function get_register_hint()
 {
     global $privileges;

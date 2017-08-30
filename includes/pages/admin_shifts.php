@@ -19,6 +19,7 @@ function admin_shifts()
 {
     $valid = true;
     $request = request();
+    $session = session();
     $start = parse_date('Y-m-d H:i', date('Y-m-d') . ' 00:00');
     $end = $start;
     $mode = 'single';
@@ -270,8 +271,8 @@ function admin_shifts()
             }
 
             // Fürs Anlegen zwischenspeichern:
-            $_SESSION['admin_shifts_shifts'] = $shifts;
-            $_SESSION['admin_shifts_types'] = $needed_angel_types;
+            $session->set('admin_shifts_shifts', $shifts);
+            $session->set('admin_shifts_types', $needed_angel_types);
 
             $hidden_types = '';
             foreach ($needed_angel_types as $type_id => $count) {
@@ -301,16 +302,14 @@ function admin_shifts()
         }
     } elseif ($request->has('submit')) {
         if (
-            !isset($_SESSION['admin_shifts_shifts'])
-            || !isset($_SESSION['admin_shifts_types'])
-            || !is_array($_SESSION['admin_shifts_shifts'])
-            || !is_array($_SESSION['admin_shifts_types'])
+            !is_array($session->get('admin_shifts_shifts'))
+            || !is_array($session->get('admin_shifts_types'))
         ) {
             redirect(page_link_to('admin_shifts'));
         }
 
         $needed_angel_types_info = [];
-        foreach ($_SESSION['admin_shifts_shifts'] as $shift) {
+        foreach ($session->get('admin_shifts_shifts', []) as $shift) {
             $shift['URL'] = null;
             $shift['PSID'] = null;
             $shift_id = Shift_create($shift);
@@ -322,7 +321,7 @@ function admin_shifts()
                 . ' to ' . date('Y-m-d H:i', $shift['end'])
             );
 
-            foreach ($_SESSION['admin_shifts_types'] as $type_id => $count) {
+            foreach ($session->get('admin_shifts_types', []) as $type_id => $count) {
                 $angel_type_source = DB::selectOne('
                       SELECT *
                       FROM `AngelTypes`
@@ -348,8 +347,8 @@ function admin_shifts()
         success('Schichten angelegt.');
         redirect(page_link_to('admin_shifts'));
     } else {
-        unset($_SESSION['admin_shifts_shifts']);
-        unset($_SESSION['admin_shifts_types']);
+        $session->remove('admin_shifts_shifts');
+        $session->remove('admin_shifts_types');
     }
 
     $rid = null;

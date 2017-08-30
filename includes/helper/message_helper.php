@@ -7,12 +7,12 @@
  */
 function msg()
 {
-    if (!isset($_SESSION['msg'])) {
-        return '';
-    }
-    $msg = $_SESSION['msg'];
-    $_SESSION['msg'] = '';
-    return $msg;
+    $session = session();
+
+    $message = $session->get('msg', '');
+    $session->set('msg', '');
+
+    return $message;
 }
 
 /**
@@ -61,6 +61,8 @@ function success($msg, $immediately = false)
  */
 function alert($class, $msg, $immediately = false)
 {
+    $session = session();
+
     if ($immediately) {
         if ($msg == '') {
             return '';
@@ -68,10 +70,9 @@ function alert($class, $msg, $immediately = false)
         return '<div class="alert alert-' . $class . '">' . $msg . '</div>';
     }
 
-    if (!isset($_SESSION['msg'])) {
-        $_SESSION['msg'] = '';
-    }
-    $_SESSION['msg'] .= alert($class, $msg, true);
+    $message = $session->get('msg', '');
+    $message .= alert($class, $msg, true);
+    $session->set('msg', $message);
 
     return null;
 }

@@ -164,6 +164,7 @@ function user_settings_locale($user_source, $locales)
 {
     $valid = true;
     $request = request();
+    $session = session();
 
     if ($request->has('language') && isset($locales[$request->input('language')])) {
         $user_source['Sprache'] = $request->input('language');
@@ -182,7 +183,7 @@ function user_settings_locale($user_source, $locales)
                 $user_source['UID'],
             ]
         );
-        $_SESSION['locale'] = $user_source['Sprache'];
+        $session->set('locale', $user_source['Sprache']);
 
         success('Language changed.');
         redirect(page_link_to('user_settings'));
