@@ -2,15 +2,8 @@
 
 namespace Engelsystem\Config;
 
-use ErrorException;
-
 class Config
 {
-    /**
-     * @var self
-     */
-    protected static $instance;
-
     /**
      * The config values
      *
@@ -103,26 +96,5 @@ class Config
     public function __unset($key)
     {
         $this->remove($key);
-    }
-
-    /**
-     * @return Config
-     * @throws ErrorException
-     */
-    public static function getInstance()
-    {
-        if (!self::$instance instanceof self) {
-            throw new ErrorException('Config not initialized');
-        }
-
-        return self::$instance;
-    }
-
-    /**
-     * @param self $instance
-     */
-    public static function setInstance($instance)
-    {
-        self::$instance = $instance;
     }
 }

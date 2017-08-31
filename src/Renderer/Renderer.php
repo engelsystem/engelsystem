@@ -2,13 +2,8 @@
 
 namespace Engelsystem\Renderer;
 
-use ErrorException;
-
 class Renderer
 {
-    /** @var self */
-    protected static $instance;
-
     /** @var EngineInterface[] */
     protected $renderer = [];
 
@@ -29,7 +24,7 @@ class Renderer
             return $renderer->get($template, $data);
         }
 
-        engelsystem_error('Unable to find a renderer for template file &laquo;' . $template . '&raquo;.');
+        engelsystem_error('Unable to find a renderer for template file "' . $template . '".');
         return '';
     }
 
@@ -41,22 +36,5 @@ class Renderer
     public function addRenderer(EngineInterface $renderer)
     {
         $this->renderer[] = $renderer;
-    }
-
-    /**
-     * @return self
-     * @throws ErrorException
-     */
-    public static function getInstance()
-    {
-        return self::$instance;
-    }
-
-    /**
-     * @param self $instance
-     */
-    public static function setInstance($instance)
-    {
-        self::$instance = $instance;
     }
 }

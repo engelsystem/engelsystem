@@ -1,11 +1,13 @@
 <?php
 
 use Engelsystem\Config\Config;
+use Engelsystem\Container\Container;
 use Engelsystem\Database\Db;
 use Engelsystem\Exceptions\Handler as ExceptionHandler;
 use Engelsystem\Http\Request;
 use Engelsystem\Renderer\HtmlEngine;
 use Engelsystem\Renderer\Renderer;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -14,11 +16,20 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 require_once __DIR__ . '/autoload.php';
 
+
+/**
+ * Initialize the container
+ */
+$container = Container::getInstance();
+$container->instance('container', $container);
+$container->instance(ContainerInterface::class, $container);
+
+
 /**
  * Load configuration
  */
 $config = new Config();
-Config::setInstance($config);
+$container->instance('config', $config);
 $config->set(require __DIR__ . '/../config/config.default.php');
 
 if (file_exists(__DIR__ . '/../config/config.php')) {
@@ -37,7 +48,8 @@ date_default_timezone_set($config->get('timezone'));
  * @var Request $request
  */
 $request = Request::createFromGlobals();
-$request::setInstance($request);
+$container->instance('request', $request);
+
 
 /**
  * Check for maintenance
@@ -52,14 +64,15 @@ if ($config->get('maintenance')) {
  * Initialize renderer
  */
 $renderer = new Renderer();
+$container->instance('renderer', $renderer);
 $renderer->addRenderer(new HtmlEngine());
-Renderer::setInstance($renderer);
 
 
 /**
  * Register error handler
  */
 $errorHandler = new ExceptionHandler();
+$container->instance('error.handler', $errorHandler);
 if (config('environment') == 'development') {
     $errorHandler->setEnvironment(ExceptionHandler::ENV_DEVELOPMENT);
     ini_set('display_errors', true);
@@ -171,6 +184,7 @@ foreach ($includeFiles as $file) {
  * Init application
  */
 $session = new Session();
+$container->instance('session', $session);
 $session->start();
 $request->setSession($session);
 

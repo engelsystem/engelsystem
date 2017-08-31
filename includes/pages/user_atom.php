@@ -1,7 +1,6 @@
 <?php
 
 use Engelsystem\Database\DB;
-use Engelsystem\Http\Request;
 
 /**
  * Publically available page to feed the news to feed readers
@@ -45,7 +44,7 @@ function user_atom()
  */
 function make_atom_entries_from_news($news_entries)
 {
-    $request = Request::getInstance();
+    $request = app('request');
     $html = '<?xml version="1.0" encoding="utf-8"?>
   <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Engelsystem</title>
