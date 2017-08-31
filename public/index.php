@@ -19,7 +19,7 @@ $free_pages = [
     'stats',
     'users',
     'user_driver_licenses',
-    'user_password_recovery'
+    'user_password_recovery',
 ];
 
 // Gewünschte Seite/Funktion
@@ -218,6 +218,7 @@ $parameters = [
 if ($page == 'user_meetings') {
     $parameters['meetings'] = 1;
 }
+
 echo view(__DIR__ . '/../templates/layout.html', [
     'theme'          => isset($user) ? $user['color'] : config('theme'),
     'title'          => $title,

@@ -4,12 +4,14 @@
         var days = document.getElementById(id + '_day').getElementsByTagName(
             'option');
         for (var i = 0; i < days.length; i++) {
-            if (days[i].value == moment().format('YYYY-MM-DD'))
+            if (days[i].value === moment().format('YYYY-MM-DD')) {
                 days[i].selected = true;
+            }
         }
     }
 </script>
-<form class="form-inline" action="" method="get">
+
+<form class="form-inline" action="">
     <input type="hidden" name="p" value="user_shifts">
     <div class="row">
         <div class="col-md-6">
@@ -17,7 +19,7 @@
             <div class="form-group">%start_select%</div>
             <div class="form-group">
                 <div class="input-group">
-                    <input class="form-control" type="text" id="start_time" name="start_time" size="5"
+                    <input class="form-control" id="start_time" name="start_time" size="5"
                            pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%">
                     <div class="input-group-btn">
                         <button class="btn btn-default" title="Now" type="button" onclick="set_to_now('start');">
@@ -30,7 +32,7 @@
             <div class="form-group">%end_select%</div>
             <div class="form-group">
                 <div class="input-group">
-                    <input class="form-control" type="text" id="end_time" name="end_time" size="5"
+                    <input class="form-control" id="end_time" name="end_time" size="5"
                            pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%">
                     <div class="input-group-btn">
                         <button class="btn btn-default" title="Now" type="button" onclick="set_to_now('end');">
@@ -46,8 +48,11 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div>%task_notice%</div>
-            <input class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="%filter%">
+            <div>%assign_notice%</div>
+        </div>
+        <div class="col-md-6">
+            <div><p>%task_notice%</p></div>
+            <input class="btn btn-primary" type="submit" style="width:75%; margin-bottom: 20px" value="%filter%">
         </div>
     </div>
 </form>

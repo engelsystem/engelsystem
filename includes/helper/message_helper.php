@@ -57,16 +57,17 @@ function success($msg, $immediately = false)
  * @param string $class
  * @param string $msg
  * @param bool   $immediately
- * @return string|null
+ * @return string
  */
 function alert($class, $msg, $immediately = false)
 {
     $session = session();
 
+    if (empty($msg)) {
+        return '';
+    }
+
     if ($immediately) {
-        if ($msg == '') {
-            return '';
-        }
         return '<div class="alert alert-' . $class . '">' . $msg . '</div>';
     }
 
@@ -74,5 +75,5 @@ function alert($class, $msg, $immediately = false)
     $message .= alert($class, $msg, true);
     $session->set('msg', $message);
 
-    return null;
+    return '';
 }

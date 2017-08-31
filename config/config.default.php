@@ -4,7 +4,7 @@
 
 return [
     // MySQL-Connection Settings
-    'database'         => [
+    'database'                => [
         'host' => 'localhost',
         'user' => 'root',
         'pw'   => '',
@@ -12,28 +12,28 @@ return [
     ],
 
     // For accessing stats
-    'api_key'          => '',
+    'api_key'                 => '',
 
     // Enable maintenance mode (show a static page)
-    'maintenance'      => false,
+    'maintenance'             => false,
 
     // Set to development to enable debugging messages
-    'environment'      => 'production',
+    'environment'             => 'production',
 
     // URL to the angel faq and job description
-    'faq_url'          => 'https://events.ccc.de/congress/2013/wiki/Static:Volunteers',
+    'faq_url'                 => 'https://events.ccc.de/congress/2013/wiki/Static:Volunteers',
 
     // Contact email address, linked on every page
-    'contact_email'    => 'mailto:ticket@c3heaven.de',
+    'contact_email'           => 'mailto:ticket@c3heaven.de',
 
     // From address of all emails
-    'no_reply_email'   => 'noreply@engelsystem.de',
+    'no_reply_email'          => 'noreply@engelsystem.de',
 
     // Default theme, 1=style1.css
-    'theme'            => 1,
+    'theme'                   => 1,
 
     // Available themes
-    'available_themes' => [
+    'available_themes'        => [
         '4' => 'Engelsystem 33c3 (2016)',
         '3' => 'Engelsystem 32c3 (2015)',
         '2' => 'Engelsystem cccamp15',
@@ -42,10 +42,13 @@ return [
     ],
 
     // Number of News shown on one site
-    'display_news'     => 6,
+    'display_news'            => 6,
+
+    // Only arrived angels can sign up for shifts
+    'signup_requires_arrival' => false,
 
     // Anzahl Stunden bis zum Austragen eigener Schichten
-    'last_unsubscribe' => 3,
+    'last_unsubscribe'        => 3,
 
     // Setzt den zu verwendenden Crypto-Algorithmus (entsprechend der Dokumentation von crypt()).
     // Falls ein Benutzerpasswort in einem anderen Format gespeichert ist,
@@ -55,7 +58,7 @@ return [
     //  Blowfish    '$2y$13'
     //  SHA-256     '$5$rounds=5000'
     //  SHA-512     '$6$rounds=5000'
-    'crypt_alg'        => '$6$rounds=5000',
+    'crypt_alg'               => '$6$rounds=5000',
 
     'min_password_length'     => 8,
 
