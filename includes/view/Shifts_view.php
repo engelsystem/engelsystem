@@ -1,4 +1,5 @@
 <?php
+
 use Engelsystem\ShiftSignupState;
 
 /**
@@ -41,12 +42,12 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
 
     if ($angeltype['shift_signup_state']->isSignupAllowed()) {
         return button(
-            page_link_to('user_shifts') . '&shift_id=' . $shift['SID'] . '&type_id=' . $angeltype['id'],
+            page_link_to('user_shifts', ['shift_id' => $shift['SID'], 'type_id' => $angeltype['id']]),
             _('Sign up')
         );
     } elseif ($user_angeltype == null) {
         return button(
-            page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'],
+            page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
             sprintf(_('Become %s'),
                 $angeltype['name'])
         );
@@ -207,12 +208,12 @@ function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angelty
         $entry .= ' <div class="btn-group">';
         if ($user_shift_admin) {
             $entry .= button_glyph(
-                page_link_to('user_myshifts') . '&edit=' . $shift_entry['id'] . '&id=' . $shift_entry['UID'],
+                page_link_to('user_myshifts', ['edit' => $shift_entry['id'], 'id' => $shift_entry['UID']]),
                 'pencil',
                 'btn-xs'
             );
         }
-        $entry .= button_glyph(page_link_to('user_shifts') . '&entry_id=' . $shift_entry['id'], 'trash', 'btn-xs');
+        $entry .= button_glyph(page_link_to('user_shifts', ['entry_id' => $shift_entry['id']]), 'trash', 'btn-xs');
         $entry .= '</div>';
     }
     return $entry;

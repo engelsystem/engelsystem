@@ -94,7 +94,7 @@ function admin_free()
             'email'       => $usr['email_by_human_allowed'] ? $usr['email'] : glyph('eye-close'),
             'actions'     =>
                 in_array('admin_user', $privileges)
-                    ? button(page_link_to('admin_user') . '&amp;id=' . $usr['UID'], _('edit'), 'btn-xs')
+                    ? button(page_link_to('admin_user', ['id' => $usr['UID']]), _('edit'), 'btn-xs')
                     : ''
         ];
     }

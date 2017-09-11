@@ -47,7 +47,7 @@ function user_delete_controller()
     $request = request();
 
     if ($request->has('user_id')) {
-        $user_source = User($request->get('user_id'));
+        $user_source = User($request->query->get('user_id'));
     } else {
         $user_source = $user;
     }
@@ -68,7 +68,7 @@ function user_delete_controller()
         if (
         !(
             $request->has('password')
-            && verify_password($request->post('password'), $user['Passwort'], $user['UID'])
+            && verify_password($request->postData('password'), $user['Passwort'], $user['UID'])
         )
         ) {
             $valid = false;
@@ -106,7 +106,7 @@ function users_link()
  */
 function user_edit_link($user)
 {
-    return page_link_to('admin_user') . '&user_id=' . $user['UID'];
+    return page_link_to('admin_user', ['user_id' => $user['UID']]);
 }
 
 /**
@@ -115,7 +115,7 @@ function user_edit_link($user)
  */
 function user_delete_link($user)
 {
-    return page_link_to('users') . '&action=delete&user_id=' . $user['UID'];
+    return page_link_to('users', ['action' => 'delete', 'user_id' => $user['UID']]);
 }
 
 /**
@@ -124,7 +124,7 @@ function user_delete_link($user)
  */
 function user_link($user)
 {
-    return page_link_to('users') . '&action=view&user_id=' . $user['UID'];
+    return page_link_to('users', ['action' => 'view', 'user_id' => $user['UID']]);
 }
 
 /**
@@ -297,9 +297,9 @@ function user_password_recovery_set_new_controller()
 
         if (
             $request->has('password')
-            && strlen($request->post('password')) >= config('min_password_length')
+            && strlen($request->postData('password')) >= config('min_password_length')
         ) {
-            if ($request->post('password') != $request->post('password2')) {
+            if ($request->postData('password') != $request->postData('password2')) {
                 $valid = false;
                 error(_('Your passwords don\'t match.'));
             }
@@ -309,7 +309,7 @@ function user_password_recovery_set_new_controller()
         }
 
         if ($valid) {
-            set_password($user_source['UID'], $request->post('password'));
+            set_password($user_source['UID'], $request->postData('password'));
             success(_('Password saved.'));
             redirect(page_link_to('login'));
         }
@@ -353,7 +353,7 @@ function user_password_recovery_start_controller()
                 _('Password recovery'),
                 sprintf(
                     _('Please visit %s to recover your password.'),
-                    page_link_to_absolute('user_password_recovery') . '&token=' . $token
+                    page_link_to('user_password_recovery', ['token' => $token])
                 )
             );
             success(_('We sent an email containing your password recovery link.'));

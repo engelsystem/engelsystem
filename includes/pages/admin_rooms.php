@@ -25,8 +25,8 @@ function admin_rooms()
             'from_pentabarf' => glyph_bool($room['FromPentabarf'] == 'Y'),
             'public'         => glyph_bool($room['show'] == 'Y'),
             'actions'        => table_buttons([
-                button(page_link_to('admin_rooms') . '&show=edit&id=' . $room['RID'], _('edit'), 'btn-xs'),
-                button(page_link_to('admin_rooms') . '&show=delete&id=' . $room['RID'], _('delete'), 'btn-xs')
+                button(page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room['RID']]), _('edit'), 'btn-xs'),
+                button(page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room['RID']]), _('delete'), 'btn-xs')
             ])
         ];
     }
@@ -107,11 +107,14 @@ function admin_rooms()
                 }
 
                 foreach ($angeltypes as $angeltype_id => $angeltype) {
-                    if (
-                        $request->has('angeltype_count_' . $angeltype_id)
-                        && preg_match('/^\d{1,4}$/', $request->input('angeltype_count_' . $angeltype_id))
-                    ) {
-                        $angeltypes_count[$angeltype_id] = $request->input('angeltype_count_' . $angeltype_id);
+                    $angeltypes_count[$angeltype_id] = 0;
+                    $queryKey = 'angeltype_count_' . $angeltype_id;
+                    if (!$request->has($queryKey)) {
+                        continue;
+                    }
+
+                    if (preg_match('/^\d{1,4}$/', $request->input($queryKey))) {
+                        $angeltypes_count[$angeltype_id] = $request->input($queryKey);
                     } else {
                         $valid = false;
                         $msg .= error(sprintf(_('Please enter needed angels for type %s.'), $angeltype), true);
@@ -220,7 +223,7 @@ function admin_rooms()
                 sprintf(_('Do you want to delete room %s?'), $name),
                 buttons([
                     button(
-                        page_link_to('admin_rooms') . '&show=delete&id=' . $room_id . '&ack',
+                        page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room_id, 'ack' => 1]),
                         _('Delete'),
                         'delete btn-danger'
                     )
@@ -231,7 +234,7 @@ function admin_rooms()
 
     return page_with_title(admin_rooms_title(), [
         buttons([
-            button(page_link_to('admin_rooms') . '&show=edit', _('add'))
+            button(page_link_to('admin_rooms', ['show' => 'edit']), _('add'))
         ]),
         msg(),
         table([

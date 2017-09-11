@@ -19,6 +19,7 @@ function admin_shifts()
 {
     $valid = true;
     $request = request();
+    $session = session();
     $start = parse_date('Y-m-d H:i', date('Y-m-d') . ' 00:00');
     $end = $start;
     $mode = 'single';
@@ -132,16 +133,14 @@ function admin_shifts()
             } elseif ($request->input('angelmode') == 'manually') {
                 $angelmode = 'manually';
                 foreach ($types as $type) {
-                    if (
-                        $request->has('type_' . $type['id'])
-                        && preg_match('/^\d+$/', trim($request->input('type_' . $type['id'])))
-                    ) {
-                        $needed_angel_types[$type['id']] = trim($request->input('type_' . $type['id']));
+                    if (preg_match('/^\d+$/', trim($request->input('type_' . $type['id'], 0)))) {
+                        $needed_angel_types[$type['id']] = trim($request->input('type_' . $type['id'], 0));
                     } else {
                         $valid = false;
                         error(sprintf(_('Please check the needed angels for team %s.'), $type['name']));
                     }
                 }
+
                 if (array_sum($needed_angel_types) == 0) {
                     $valid = false;
                     error(_('There are 0 angels needed. Please enter the amounts of needed angels.'));
@@ -272,8 +271,8 @@ function admin_shifts()
             }
 
             // Fürs Anlegen zwischenspeichern:
-            $_SESSION['admin_shifts_shifts'] = $shifts;
-            $_SESSION['admin_shifts_types'] = $needed_angel_types;
+            $session->set('admin_shifts_shifts', $shifts);
+            $session->set('admin_shifts_types', $needed_angel_types);
 
             $hidden_types = '';
             foreach ($needed_angel_types as $type_id => $count) {
@@ -303,16 +302,14 @@ function admin_shifts()
         }
     } elseif ($request->has('submit')) {
         if (
-            !$request->has('admin_shifts_shifts')
-            || !isset($_SESSION['admin_shifts_types'])
-            || !is_array($_SESSION['admin_shifts_shifts'])
-            || !is_array($_SESSION['admin_shifts_types'])
+            !is_array($session->get('admin_shifts_shifts'))
+            || !is_array($session->get('admin_shifts_types'))
         ) {
             redirect(page_link_to('admin_shifts'));
         }
 
         $needed_angel_types_info = [];
-        foreach ($_SESSION['admin_shifts_shifts'] as $shift) {
+        foreach ($session->get('admin_shifts_shifts', []) as $shift) {
             $shift['URL'] = null;
             $shift['PSID'] = null;
             $shift_id = Shift_create($shift);
@@ -324,7 +321,7 @@ function admin_shifts()
                 . ' to ' . date('Y-m-d H:i', $shift['end'])
             );
 
-            foreach ($_SESSION['admin_shifts_types'] as $type_id => $count) {
+            foreach ($session->get('admin_shifts_types', []) as $type_id => $count) {
                 $angel_type_source = DB::selectOne('
                       SELECT *
                       FROM `AngelTypes`
@@ -350,8 +347,8 @@ function admin_shifts()
         success('Schichten angelegt.');
         redirect(page_link_to('admin_shifts'));
     } else {
-        unset($_SESSION['admin_shifts_shifts']);
-        unset($_SESSION['admin_shifts_types']);
+        $session->remove('admin_shifts_shifts');
+        $session->remove('admin_shifts_types');
     }
 
     $rid = null;

@@ -8,7 +8,7 @@ Please visit https://engelsystem.de for a feature list.
 ## Installation
 
 ### Requirements:
- * PHP >= 5.6.4, PHP >= 7.0.0 recommended
+ * PHP >= 7.0.0
  * MySQL-Server >= 5.5.x
  * Webserver, i.e. lighttpd, nginx, or Apache
 

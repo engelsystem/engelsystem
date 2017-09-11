@@ -23,7 +23,7 @@ function admin_arrive()
         $search = strip_request_item('search');
     }
 
-    if ($request->has('reset') && preg_match('/^\d*$/', $request->input('reset'))) {
+    if ($request->has('reset') && preg_match('/^\d+$/', $request->input('reset'))) {
         $user_id = $request->input('reset');
         $user_source = User($user_id);
         if ($user_source != null) {
@@ -39,7 +39,7 @@ function admin_arrive()
         } else {
             $msg = error(_('Angel not found.'), true);
         }
-    } elseif ($request->has('arrived') && preg_match('/^\d*$/', $request->input('arrived'))) {
+    } elseif ($request->has('arrived') && preg_match('/^\d+$/', $request->input('arrived'))) {
         $user_id = $request->input('arrived');
         $user_source = User($user_id);
         if ($user_source != null) {
@@ -92,8 +92,14 @@ function admin_arrive()
         $usr['rendered_arrival_date'] = $usr['arrival_date'] > 0 ? date('Y-m-d', $usr['arrival_date']) : '-';
         $usr['arrived'] = $usr['Gekommen'] == 1 ? _('yes') : '';
         $usr['actions'] = $usr['Gekommen'] == 1
-            ? '<a href="' . page_link_to('admin_arrive') . '&reset=' . $usr['UID'] . '&search=' . $search . '">' . _('reset') . '</a>'
-            : '<a href="' . page_link_to('admin_arrive') . '&arrived=' . $usr['UID'] . '&search=' . $search . '">' . _('arrived') . '</a>';
+            ? '<a href="' . page_link_to(
+                'admin_arrive',
+                ['reset' => $usr['UID'], 'search' => $search]
+            ) . '">' . _('reset') . '</a>'
+            : '<a href="' . page_link_to(
+                'admin_arrive',
+                ['arrived' => $usr['UID'], 'search' => $search]
+            ) . '">' . _('arrived') . '</a>';
 
         if ($usr['arrival_date'] > 0) {
             $day = date('Y-m-d', $usr['arrival_date']);

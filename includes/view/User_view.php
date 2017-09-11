@@ -127,7 +127,7 @@ function User_registration_success_view($event_welcome_message)
                 '<h2>' . _('What can I do?') . '</h2>',
                 '<p>' . _('Please read about the jobs you can do to help us.') . '</p>',
                 buttons([
-                    button(page_link_to('angeltypes') . '&action=about', _('Teams/Job description') . ' &raquo;')
+                    button(page_link_to('angeltypes', ['action' => 'about']), _('Teams/Job description') . ' &raquo;')
                 ])
             ])
         ])
@@ -172,10 +172,13 @@ function User_edit_vouchers_view($user)
             button(user_link($user), glyph('chevron-left') . _('back'))
         ]),
         info(sprintf(_('Angel should receive at least  %d vouchers.'), User_get_eligable_voucher_count($user)), true),
-        form([
-            form_spinner('vouchers', _('Number of vouchers given out'), $user['got_voucher']),
-            form_submit('submit', _('Save'))
-        ], page_link_to('users') . '&action=edit_vouchers&user_id=' . $user['UID'])
+        form(
+            [
+                form_spinner('vouchers', _('Number of vouchers given out'), $user['got_voucher']),
+                form_submit('submit', _('Save'))
+            ],
+            page_link_to('users', ['action' => 'edit_vouchers', 'user_id' => $user['UID']])
+        )
     ]);
 }
 
@@ -208,7 +211,7 @@ function Users_view(
         $user['Tshirt'] = glyph_bool($user['Tshirt']);
         $user['lastLogIn'] = date(_('m/d/Y h:i a'), $user['lastLogIn']);
         $user['actions'] = table_buttons([
-            button_glyph(page_link_to('admin_user') . '&id=' . $user['UID'], 'edit', 'btn-xs')
+            button_glyph(page_link_to('admin_user', ['id' => $user['UID']]), 'edit', 'btn-xs')
         ]);
     }
     $users[] = [
@@ -253,7 +256,11 @@ function Users_view(
  */
 function Users_table_header_link($column, $label, $order_by)
 {
-    return '<a href="' . page_link_to('users') . '&OrderBy=' . $column . '">' . $label . ($order_by == $column ? ' <span class="caret"></span>' : '') . '</a>';
+    return '<a href="'
+        . page_link_to('users', ['OrderBy' => $column])
+        . '">'
+        . $label . ($order_by == $column ? ' <span class="caret"></span>' : '')
+        . '</a>';
 }
 
 /**
@@ -347,7 +354,7 @@ function User_view_myshift($shift, $user_source, $its_me)
     ];
     if ($its_me || in_array('user_shifts_admin', $privileges)) {
         $myshift['actions'][] = button(
-            page_link_to('user_myshifts') . '&edit=' . $shift['id'] . '&id=' . $user_source['UID'],
+            page_link_to('user_myshifts', ['edit' => $shift['id'], 'id' => $user_source['UID']]),
             glyph('edit') . _('edit'),
             'btn-xs'
         );
@@ -356,8 +363,15 @@ function User_view_myshift($shift, $user_source, $its_me)
         ($shift['start'] > time() + config('last_unsubscribe') * 3600)
         || in_array('user_shifts_admin', $privileges)
     ) {
+        $parameters = [
+            'cancel' => $shift['id'],
+            'id'     => $user_source['UID'],
+        ];
+        if ($its_me) {
+            $parameters['id'] = '';
+        }
         $myshift['actions'][] = button(
-            page_link_to('user_myshifts') . ((!$its_me) ? '&id=' . $user_source['UID'] : '') . '&cancel=' . $shift['id'],
+            page_link_to('user_myshifts', $parameters),
             glyph('trash') . _('sign off'),
             'btn-xs'
         );
@@ -427,7 +441,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
                 div('col-md-12', [
                     buttons([
                         $admin_user_privilege ? button(
-                            page_link_to('admin_user') . '&id=' . $user_source['UID'],
+                            page_link_to('admin_user', ['id' => $user_source['UID']]),
                             glyph('edit') . _('edit')
                         ) : '',
                         $admin_user_privilege ? button(
@@ -435,24 +449,24 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
                             glyph('road') . _('driving license')
                         ) : '',
                         ($admin_user_privilege && !$user_source['Gekommen']) ? button(
-                            page_link_to('admin_arrive') . '&arrived=' . $user_source['UID'],
+                            page_link_to('admin_arrive', ['arrived' => $user_source['UID']]),
                             _('arrived')
                         ) : '',
                         $admin_user_privilege ? button(
-                            page_link_to('users') . '&action=edit_vouchers&user_id=' . $user_source['UID'],
+                            page_link_to('users', ['action' => 'edit_vouchers', 'user_id' => $user_source['UID']]),
                             glyph('cutlery') . _('Edit vouchers')
                         ) : '',
                         $its_me ? button(page_link_to('user_settings'), glyph('list-alt') . _('Settings')) : '',
                         $its_me ? button(
-                            page_link_to('ical') . '&key=' . $user_source['api_key'],
+                            page_link_to('ical', ['key' => $user_source['api_key']]),
                             glyph('calendar') . _('iCal Export')
                         ) : '',
                         $its_me ? button(
-                            page_link_to('shifts_json_export') . '&key=' . $user_source['api_key'],
+                            page_link_to('shifts_json_export', ['key' => $user_source['api_key']]),
                             glyph('export') . _('JSON Export')
                         ) : '',
                         $its_me ? button(
-                            page_link_to('user_myshifts') . '&reset',
+                            page_link_to('user_myshifts', ['reset' => 1]),
                             glyph('repeat') . _('Reset API key')
                         ) : ''
                     ])
@@ -607,7 +621,7 @@ function User_groups_render($user_groups)
 function User_Nick_render($user_source)
 {
     return '<a class="' . ($user_source['Gekommen'] ? '' : 'text-muted') . '" href="'
-        . page_link_to('users') . '&amp;action=view&amp;user_id=' . $user_source['UID']
+        . page_link_to('users', ['action' => 'view', 'user_id' => $user_source['UID']])
         . '"><span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . '</a>';
 }
 

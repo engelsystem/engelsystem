@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function admin_news()
 {
-    global $user;
+    global $user, $privileges;
     $request = request();
 
     if (!$request->has('action')) {
@@ -30,21 +30,31 @@ function admin_news()
         case 'edit':
             $user_source = User($news['UID']);
 
-            $html .= form([
-                form_info(_('Date'), date('Y-m-d H:i', $news['Datum'])),
-                form_info(_('Author'), User_Nick_render($user_source)),
-                form_text('eBetreff', _('Subject'), $news['Betreff']),
-                form_textarea('eText', _('Message'), $news['Text']),
-                form_checkbox('eTreffen', _('Meeting'), $news['Treffen'] == 1, 1),
-                form_submit('submit', _('Save'))
-            ], page_link_to('admin_news&action=save&id=' . $news_id));
+            $html .= form(
+                [
+                    form_info(_('Date'), date('Y-m-d H:i', $news['Datum'])),
+                    form_info(_('Author'), User_Nick_render($user_source)),
+                    form_text('eBetreff', _('Subject'), $news['Betreff']),
+                    form_textarea('eText', _('Message'), $news['Text']),
+                    form_checkbox('eTreffen', _('Meeting'), $news['Treffen'] == 1, 1),
+                    form_submit('submit', _('Save'))
+                ],
+                page_link_to('admin_news', ['action' => 'save', 'id' => $news_id])
+            );
 
-            $html .= '<a class="btn btn-danger" href="' . page_link_to('admin_news&action=delete&id=' . $news_id) . '">'
+            $html .= '<a class="btn btn-danger" href="'
+                . page_link_to('admin_news', ['action' => 'delete', 'id' => $news_id])
+                . '">'
                 . '<span class="glyphicon glyphicon-trash"></span> ' . _('Delete')
                 . '</a>';
             break;
 
         case 'save':
+            $text = $request->postData('eText');
+            if (!in_array('admin_news_html', $privileges)) {
+                $text = strip_tags($text);
+            }
+
             DB::update('
                 UPDATE `News` SET
                     `Datum`=?,
@@ -56,14 +66,15 @@ function admin_news()
                 ',
                 [
                     time(),
-                    $request->post('eBetreff'),
-                    $request->post('eText'),
+                    strip_tags($request->postData('eBetreff')),
+                    $text,
                     $user['UID'],
                     $request->has('eTreffen') ? 1 : 0,
                     $news_id
                 ]
             );
-            engelsystem_log('News updated: ' . $request->post('eBetreff'));
+
+            engelsystem_log('News updated: ' . $request->postData('eBetreff'));
             success(_('News entry updated.'));
             redirect(page_link_to('news'));
             break;

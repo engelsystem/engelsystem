@@ -1,12 +1,8 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.5/phpunit.xsd"
-         backupGlobals="false"
          bootstrap="./includes/engelsystem_provider.php"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.3/phpunit.xsd"
          colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false">
+>
     <testsuites>
         <testsuite name="Models">
             <directory>./test/model/</directory>
@@ -16,10 +12,7 @@
         <whitelist>
             <directory>./include/</directory>
             <directory>./public/</directory>
-						<directory>./src/</directory>
-				</whitelist>
+            <directory>./src/</directory>
+        </whitelist>
     </filter>
-    <php>
-        <const name="PHPUNIT_TESTSUITE" value="true"/>
-    </php>
 </phpunit>

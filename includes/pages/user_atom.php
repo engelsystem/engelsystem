@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Http\Request;
 
 /**
  * Publically available page to feed the news to feed readers
@@ -44,14 +45,15 @@ function user_atom()
  */
 function make_atom_entries_from_news($news_entries)
 {
+    $request = Request::getInstance();
     $html = '<?xml version="1.0" encoding="utf-8"?>
   <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Engelsystem</title>
-  <id>' . $_SERVER['HTTP_HOST']
+  <id>' . $request->getHttpHost()
         . htmlspecialchars(preg_replace(
             '#[&?]key=[a-f\d]{32}#',
             '',
-            $_SERVER['REQUEST_URI']
+            $request->getRequestUri()
         ))
         . '</id>
   <updated>' . date('Y-m-d\TH:i:sP', $news_entries[0]['Datum']) . '</updated>' . "\n";
@@ -64,11 +66,12 @@ function make_atom_entries_from_news($news_entries)
 
 function make_atom_entry_from_news($news_entry)
 {
-    return '  <entry>
+    return '
+  <entry>
     <title>' . htmlspecialchars($news_entry['Betreff']) . '</title>
-    <link href="' . page_link_to_absolute('news_comments&amp;nid=') . $news_entry['ID'] . '"/>
-      <id>' . preg_replace('#^https?://#', '', page_link_to_absolute('news')) . '-' . $news_entry['ID'] . '</id>
-      <updated>' . date('Y-m-d\TH:i:sP', $news_entry['Datum']) . '</updated>
-    <summary type="html">' . htmlspecialchars($news_entry['Text']) . '</summary>
-    </entry>' . "\n";
+    <link href="' . page_link_to('news_comments', ['nid' => $news_entry['ID']]) . '"/>
+    <id>' . preg_replace('#^https?://#', '', page_link_to('news_comments', ['nid' => $news_entry['ID']])) . '</id>
+    <updated>' . date('Y-m-d\TH:i:sP', $news_entry['Datum']) . '</updated>
+    <summary>' . htmlspecialchars($news_entry['Text']) . '</summary>
+  </entry>' . "\n";
 }

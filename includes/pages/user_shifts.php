@@ -167,20 +167,23 @@ function view_user_shifts()
 {
     global $user, $privileges, $ical_shifts;
 
+    $session = session();
     $ical_shifts = [];
     $days = load_days();
     $rooms = load_rooms();
     $types = load_types();
 
-    if (!isset($_SESSION['ShiftsFilter'])) {
+    if (!$session->has('ShiftsFilter')) {
         $room_ids = [
             $rooms[0]['id']
         ];
         $type_ids = array_map('get_ids_from_array', $types);
-        $_SESSION['ShiftsFilter'] = new ShiftsFilter(in_array('user_shifts_admin', $privileges), $room_ids, $type_ids);
+        $shiftsFilter = new ShiftsFilter(in_array('user_shifts_admin', $privileges), $room_ids, $type_ids);
+        $session->set('ShiftsFilter', $shiftsFilter);
     }
-    update_ShiftsFilter($_SESSION['ShiftsFilter'], in_array('user_shifts_admin', $privileges), $days);
-    $shiftsFilter = $_SESSION['ShiftsFilter'];
+
+    $shiftsFilter = $session->get('ShiftsFilter');
+    update_ShiftsFilter($shiftsFilter, in_array('user_shifts_admin', $privileges), $days);
 
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
 
@@ -203,6 +206,11 @@ function view_user_shifts()
     $end_day = date('Y-m-d', $shiftsFilter->getEndTime());
     $end_time = date('H:i', $shiftsFilter->getEndTime());
 
+    $assignNotice = '';
+    if (config('signup_requires_arrival') && !$user['Gekommen']) {
+        $assignNotice = info(render_user_arrived_hint(), true);
+    }
+
     return page([
         div('col-md-12', [
             msg(),
@@ -223,15 +231,16 @@ function view_user_shifts()
                 'task_notice'   =>
                     '<sup>1</sup>'
                     . _('The tasks shown here are influenced by the angeltypes you joined already!')
-                    . ' <a href="' . page_link_to('angeltypes') . '&action=about' . '">'
+                    . ' <a href="' . page_link_to('angeltypes', ['action' => 'about']) . '">'
                     . _('Description of the jobs.')
                     . '</a>',
+                'assign_notice' => $assignNotice,
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
                 'ical_text'     => '<h2>' . _('iCal export') . '</h2><p>' . sprintf(
                         _('Export of shown shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
-                        page_link_to_absolute('ical') . '&key=' . $user['api_key'],
-                        page_link_to_absolute('shifts_json_export') . '&key=' . $user['api_key'],
-                        page_link_to('user_myshifts') . '&reset'
+                        page_link_to('ical', ['key' => $user['api_key']]),
+                        page_link_to('shifts_json_export', ['key' => $user['api_key']]),
+                        page_link_to('user_myshifts', ['reset' => 1])
                     ) . '</p>',
                 'filter'        => _('Filter')
             ])

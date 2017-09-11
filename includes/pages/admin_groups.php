@@ -38,7 +38,8 @@ function admin_groups()
                 'name'       => $group['Name'],
                 'privileges' => join(', ', $privileges_html),
                 'actions'    => button(
-                    page_link_to('admin_groups') . '&action=edit&id=' . $group['UID'],
+                    page_link_to('admin_groups',
+                        ['action' => 'edit', 'id' => $group['UID']]),
                     _('edit'),
                     'btn-xs'
                 )
@@ -80,7 +81,8 @@ function admin_groups()
                             'privileges[]',
                             $privilege['desc'] . ' (' . $privilege['name'] . ')',
                             $privilege['group_id'] != '',
-                            $privilege['id']
+                            $privilege['id'],
+                            'privilege-' . $privilege['name']
                         );
                         $privileges_html .= sprintf(
                             '<tr><td><input type="checkbox" name="privileges[]" value="%s" %s /></td> <td>%s</td> <td>%s</td></tr>',
@@ -93,7 +95,10 @@ function admin_groups()
 
                     $privileges_form[] = form_submit('submit', _('Save'));
                     $html .= page_with_title(_('Edit group'), [
-                        form($privileges_form, page_link_to('admin_groups') . '&action=save&id=' . $group_id)
+                        form(
+                            $privileges_form,
+                            page_link_to('admin_groups', ['action' => 'save', 'id' => $group_id])
+                        )
                     ]);
                 } else {
                     return error('No Group found.', true);
@@ -108,7 +113,7 @@ function admin_groups()
                 }
 
                 $group = DB::selectOne('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
-                $privileges = $request->get('privileges');
+                $privileges = $request->postData('privileges');
                 if (!is_array($privileges)) {
                     $privileges = [];
                 }

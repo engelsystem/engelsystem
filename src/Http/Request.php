@@ -3,42 +3,12 @@
 namespace Engelsystem\Http;
 
 use ErrorException;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-class Request
+class Request extends SymfonyRequest
 {
     /** @var self */
     protected static $instance;
-
-    /** @var array of POST data */
-    protected $request;
-
-    /** @var array of GET data */
-    protected $query;
-
-    /**
-     * Initialize request
-     */
-    public function create()
-    {
-        $this->request = $_POST;
-        $this->query = $_GET;
-    }
-
-    /**
-     * Get GET input
-     *
-     * @param string $key
-     * @param mixed  $default
-     * @return mixed
-     */
-    public function get($key, $default = null)
-    {
-        if (!empty($this->query[$key])) {
-            return $this->query[$key];
-        }
-
-        return $default;
-    }
 
     /**
      * Get POST input
@@ -47,13 +17,9 @@ class Request
      * @param mixed  $default
      * @return mixed
      */
-    public function post($key, $default = null)
+    public function postData($key, $default = null)
     {
-        if (!empty($this->request[$key])) {
-            return $this->request[$key];
-        }
-
-        return $default;
+        return $this->request->get($key, $default);
     }
 
     /**
@@ -65,13 +31,7 @@ class Request
      */
     public function input($key, $default = null)
     {
-        $data = $this->request + $this->query;
-
-        if (isset($data[$key])) {
-            return $data[$key];
-        }
-
-        return $default;
+        return $this->get($key, $default);
     }
 
     /**
@@ -82,9 +42,31 @@ class Request
      */
     public function has($key)
     {
-        $data = $this->request + $this->query;
+        $value = $this->input($key);
 
-        return isset($data[$key]);
+        return !empty($value);
+    }
+
+    /**
+     * Get the requested path
+     *
+     * @return string
+     */
+    public function path()
+    {
+        $pattern = trim($this->getPathInfo(), '/');
+
+        return $pattern == '' ? '/' : $pattern;
+    }
+
+    /**
+     * Return the current URL
+     *
+     * @return string
+     */
+    public function url()
+    {
+        return rtrim(preg_replace('/\?.*/', '', $this->getUri()), '/');
     }
 
     /**

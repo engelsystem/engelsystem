@@ -10,7 +10,7 @@
  */
 function form_hidden($name, $value)
 {
-    return '<input type="hidden" name="' . $name . '" value="' . $value . '" />';
+    return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 }
 
 /**
@@ -25,7 +25,7 @@ function form_spinner($name, $label, $value)
 {
     return form_element($label, '
       <div class="input-group">
-        <input id="spinner-' . $name . '" class="form-control" type="text" name="' . $name . '" value="' . $value . '" />
+        <input id="spinner-' . $name . '" class="form-control" name="' . $name . '" value="' . htmlspecialchars($value) . '" />
         <div class="input-group-btn">
           <button id="spinner-' . $name . '-down" class="btn btn-default" type="button">
             <span class="glyphicon glyphicon-minus"></span>
@@ -66,7 +66,8 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
     $end_date = is_numeric($end_date) ? date('Y-m-d', $end_date) : '';
     return form_element($label, '
     <div class="input-group date" id="' . $dom_id . '">
-      <input type="text" name="' . $name . '" class="form-control" value="' . $value . '"><span class="input-group-addon">' . glyph('th') . '</span>
+      <input name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '">'
+        . '<span class="input-group-addon">' . glyph('th') . '</span>
     </div>
     <script type="text/javascript">
 			$(function(){
@@ -144,12 +145,17 @@ function form_multi_checkboxes($names, $label, $items, $selected, $disabled = []
  * @param string $label
  * @param string $selected
  * @param string $value
+ * @param string $id
  * @return string
  */
-function form_checkbox($name, $label, $selected, $value = 'checked')
+function form_checkbox($name, $label, $selected, $value = 'checked', $id = null)
 {
+    if (is_null($id)) {
+        $id = $name;
+    }
+
     return '<div class="checkbox"><label>'
-        . '<input type="checkbox" id="' . $name . '" name="' . $name . '" value="' . $value . '" '
+        . '<input type="checkbox" id="' . $id . '" name="' . $name . '" value="' . htmlspecialchars($value) . '" '
         . ($selected ? ' checked="checked"' : '') . ' /> '
         . $label
         . '</label></div>';
@@ -167,7 +173,7 @@ function form_checkbox($name, $label, $selected, $value = 'checked')
 function form_radio($name, $label, $selected, $value)
 {
     return '<div class="radio">'
-        . '<label><input type="radio" id="' . $name . '" name="' . $name . '" value="' . $value . '" '
+        . '<label><input type="radio" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars($value) . '" '
         . ($selected ? ' checked="checked"' : '') . ' /> '
         . $label
         . '</label></div>';
@@ -328,8 +334,8 @@ function form_textarea($name, $label, $value, $disabled = false)
     $disabled = $disabled ? ' disabled="disabled"' : '';
     return form_element(
         $label,
-        '<textarea rows="5" class="form-control" id="form_' . $name . '" type="text" name="'
-        . $name . '" ' . $disabled . '>' . $value . '</textarea>',
+        '<textarea rows="5" class="form-control" id="form_' . $name . '" name="'
+        . $name . '" ' . $disabled . '>' . htmlspecialchars($value) . '</textarea>',
         'form_' . $name
     );
 }
@@ -374,7 +380,7 @@ function form_element($label, $input, $for = '')
  */
 function form($elements, $action = '')
 {
-    return '<form role="form" action="' . $action . '" enctype="multipart/form-data" method="post">' . join($elements) . '</form>';
+    return '<form action="' . $action . '" enctype="multipart/form-data" method="post">' . join($elements) . '</form>';
 }
 
 /**

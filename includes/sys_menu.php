@@ -1,28 +1,16 @@
 <?php
+
 use Engelsystem\UserHintsRenderer;
 
 /**
  * @param string $page
+ * @param array  $parameters get parameters
  * @return string
  */
-function page_link_to($page = '')
+function page_link_to($page = '', $parameters = [])
 {
-    if ($page == '') {
-        return '?';
-    }
-    return '?p=' . $page;
-}
-
-/**
- * @param string $page
- * @return string
- */
-function page_link_to_absolute($page)
-{
-    return (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://'
-        . $_SERVER['HTTP_HOST']
-        . preg_replace("/\?.*$/", '', $_SERVER['REQUEST_URI'])
-        . page_link_to($page);
+    $page = str_replace('_', '-', $page);
+    return url($page, $parameters);
 }
 
 /**
@@ -65,7 +53,7 @@ function header_toolbar()
 
     if (isset($user)) {
         $toolbar_items[] = toolbar_item_link(
-            page_link_to('shifts') . '&amp;action=next',
+            page_link_to('shifts', ['action' => 'next']),
             'time',
             User_shift_state_render($user)
         );
@@ -86,7 +74,7 @@ function header_toolbar()
     $toolbar_items[] = header_render_hints();
     if (in_array('user_myshifts', $privileges)) {
         $toolbar_items[] = toolbar_item_link(
-            page_link_to('users') . '&amp;action=view',
+            page_link_to('users', ['action' => 'view']),
             ' icon-icon_angel',
             $user['Nick'],
             $page == 'users'

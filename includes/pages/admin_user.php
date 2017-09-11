@@ -46,25 +46,27 @@ function admin_user()
             . 'Wenn T-Shirt ein \'Ja\' enth&auml;lt, bedeutet dies, dass der Engel '
             . 'bereits sein T-Shirt erhalten hat.<br /><br />' . "\n";
 
-        $html .= '<form action="' . page_link_to('admin_user') . '&action=save&id=' . $user_id . '" method="post">' . "\n";
+        $html .= '<form action="'
+            . page_link_to('admin_user', ['action' => 'save', 'id' => $user_id])
+            . '" method="post">' . "\n";
         $html .= '<table border="0">' . "\n";
         $html .= '<input type="hidden" name="Type" value="Normal">' . "\n";
         $html .= '<tr><td>' . "\n";
         $html .= '<table>' . "\n";
-        $html .= '  <tr><td>Nick</td><td>' . '<input type="text" size="40" name="eNick" value="' . $user_source['Nick'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Nick</td><td>' . '<input size="40" name="eNick" value="' . $user_source['Nick'] . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Last login</td><td><p class="help-block">'
             . date('Y-m-d H:i', $user_source['lastLogIn'])
             . '</p></td></tr>' . "\n";
-        $html .= '  <tr><td>Name</td><td>' . '<input type="text" size="40" name="eName" value="' . $user_source['Name'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Vorname</td><td>' . '<input type="text" size="40" name="eVorname" value="' . $user_source['Vorname'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Alter</td><td>' . '<input type="text" size="5" name="eAlter" value="' . $user_source['Alter'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Telefon</td><td>' . '<input type="text" size="40" name="eTelefon" value="' . $user_source['Telefon'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Handy</td><td>' . '<input type="text" size="40" name="eHandy" value="' . $user_source['Handy'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>DECT</td><td>' . '<input type="text" size="4" name="eDECT" value="' . $user_source['DECT'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Name</td><td>' . '<input size="40" name="eName" value="' . $user_source['Name'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Vorname</td><td>' . '<input size="40" name="eVorname" value="' . $user_source['Vorname'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Alter</td><td>' . '<input size="5" name="eAlter" value="' . $user_source['Alter'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Telefon</td><td>' . '<input size="40" name="eTelefon" value="' . $user_source['Telefon'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Handy</td><td>' . '<input size="40" name="eHandy" value="' . $user_source['Handy'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>DECT</td><td>' . '<input size="4" name="eDECT" value="' . $user_source['DECT'] . '" class="form-control"></td></tr>' . "\n";
         if ($user_source['email_by_human_allowed']) {
-            $html .= "  <tr><td>email</td><td>" . '<input type="text" size="40" name="eemail" value="' . $user_source['email'] . '" class="form-control"></td></tr>' . "\n";
+            $html .= "  <tr><td>email</td><td>" . '<input size="40" name="eemail" value="' . $user_source['email'] . '" class="form-control"></td></tr>' . "\n";
         }
-        $html .= "  <tr><td>jabber</td><td>" . '<input type="text" size="40" name="ejabber" value="' . $user_source['jabber'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= "  <tr><td>jabber</td><td>" . '<input size="40" name="ejabber" value="' . $user_source['jabber'] . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Size</td><td>'
             . html_select_key('size', 'eSize', $tshirt_sizes, $user_source['Size']) . '</td></tr>' . "\n";
 
@@ -91,7 +93,7 @@ function admin_user()
         $html .= '  <tr><td>T-Shirt</td><td>' . "\n";
         $html .= html_options('eTshirt', $options, $user_source['Tshirt']) . '</td></tr>' . "\n";
 
-        $html .= '  <tr><td>Hometown</td><td>' . '<input type="text" size="40" name="Hometown" value="' . $user_source['Hometown'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Hometown</td><td>' . '<input size="40" name="Hometown" value="' . $user_source['Hometown'] . '" class="form-control"></td></tr>' . "\n";
 
         $html .= '</table>' . "\n" . '</td><td valign="top"></td></tr>';
 
@@ -105,7 +107,8 @@ function admin_user()
         $html .= form_info('', _('Please visit the angeltypes page or the users profile to manage users angeltypes.'));
 
         $html .= 'Hier kannst Du das Passwort dieses Engels neu setzen:<form action="'
-            . page_link_to('admin_user') . '&action=change_pw&id=' . $user_id . '" method="post">' . "\n";
+            . page_link_to('admin_user', ['action' => 'change_pw', 'id' => $user_id])
+            . '" method="post">' . "\n";
         $html .= '<table>' . "\n";
         $html .= '  <tr><td>Passwort</td><td>' . '<input type="password" size="40" name="new_pw" value="" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Wiederholung</td><td>' . '<input type="password" size="40" name="new_pw2" value="" class="form-control"></td></tr>' . "\n";
@@ -134,7 +137,8 @@ function admin_user()
 
         if ($user_id != $user['UID'] && $my_highest_group <= $his_highest_group) {
             $html .= 'Hier kannst Du die Benutzergruppen des Engels festlegen:<form action="'
-                . page_link_to('admin_user') . '&action=save_groups&id=' . $user_id . '" method="post">' . "\n";
+                . page_link_to('admin_user', ['action' => 'save_groups', 'id' => $user_id])
+                . '" method="post">' . "\n";
             $html .= '<table>';
 
             $groups = DB::select('
@@ -175,11 +179,11 @@ function admin_user()
         switch ($request->input('action')) {
             case 'save_groups':
                 if ($user_id != $user['UID']) {
-                    $my_highest_group = DB::select(
+                    $my_highest_group = DB::selectOne(
                         'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id`',
                         [$user['UID']]
                     );
-                    $his_highest_group = DB::select(
+                    $his_highest_group = DB::selectOne(
                         'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id`',
                         [$user_id]
                     );
@@ -257,7 +261,7 @@ function admin_user()
                       `Handy` = ?,
                       `Alter` =?,
                       `DECT` = ?,
-                      ' . ($user_source['email_by_human_allowed'] ? '`email` = ' . DB::getPdo()->quote($request->post('eemail')) . ',' : '') . '
+                      ' . ($user_source['email_by_human_allowed'] ? '`email` = ' . DB::getPdo()->quote($request->postData('eemail')) . ',' : '') . '
                       `jabber` = ?,
                       `Size` = ?,
                       `Gekommen`= ?,
@@ -268,34 +272,34 @@ function admin_user()
                       WHERE `UID` = ?
                       LIMIT 1';
                 DB::update($sql, [
-                    $request->post('eNick'),
-                    $request->post('eName'),
-                    $request->post('eVorname'),
-                    $request->post('eTelefon'),
-                    $request->post('eHandy'),
-                    $request->post('eAlter'),
-                    $request->post('eDECT'),
-                    $request->post('ejabber'),
-                    $request->post('eSize'),
-                    $request->post('eGekommen'),
-                    $request->post('eAktiv'),
+                    User_validate_Nick($request->postData('eNick')),
+                    $request->postData('eName'),
+                    $request->postData('eVorname'),
+                    $request->postData('eTelefon'),
+                    $request->postData('eHandy'),
+                    $request->postData('eAlter'),
+                    $request->postData('eDECT'),
+                    $request->postData('ejabber'),
+                    $request->postData('eSize'),
+                    $request->postData('eGekommen'),
+                    $request->postData('eAktiv'),
                     $force_active,
-                    $request->post('eTshirt'),
-                    $request->post('Hometown'),
+                    $request->postData('eTshirt'),
+                    $request->postData('Hometown'),
                     $user_id,
                 ]);
                 engelsystem_log(
-                    'Updated user: ' . $request->post('eNick') . ', ' . $request->post('eSize')
-                    . ', arrived: ' . $request->post('eVorname')
-                    . ', active: ' . $request->post('eAktiv')
-                    . ', tshirt: ' . $request->post('eTshirt')
+                    'Updated user: ' . $request->postData('eNick') . ', ' . $request->postData('eSize')
+                    . ', arrived: ' . $request->postData('eVorname')
+                    . ', active: ' . $request->postData('eAktiv')
+                    . ', tshirt: ' . $request->postData('eTshirt')
                 );
                 $html .= success('Änderung wurde gespeichert...' . "\n", true);
                 break;
 
             case 'change_pw':
-                if ($request->post('new_pw') != '' && $request->post('new_pw') == $request->post('new_pw2')) {
-                    set_password($user_id, $request->post('new_pw'));
+                if ($request->postData('new_pw') != '' && $request->postData('new_pw') == $request->postData('new_pw2')) {
+                    set_password($user_id, $request->postData('new_pw'));
                     $user_source = User($user_id);
                     engelsystem_log('Set new password for ' . User_Nick_render($user_source));
                     $html .= success('Passwort neu gesetzt.', true);

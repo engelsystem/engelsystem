@@ -1,4 +1,5 @@
 <?php
+
 use Engelsystem\ValidationResult;
 
 /**
@@ -168,11 +169,12 @@ function strip_request_item($name, $default_value = null)
  */
 function test_request_int($name)
 {
-    $request = request();
-    if ($request->has($name)) {
-        return preg_match('/^\d*$/', $request->input($name));
+    $input = request()->input($name);
+    if (is_null($input)) {
+        return false;
     }
-    return false;
+
+    return preg_match('/^\d+$/', $input);
 }
 
 /**
@@ -186,7 +188,11 @@ function strip_request_item_nl($name, $default_value = null)
 {
     $request = request();
     if ($request->has($name)) {
-        return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]{1,})/ui", '', strip_tags($request->input($name)));
+        return preg_replace(
+            "/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]{1,})/ui",
+            '',
+            strip_tags($request->input($name))
+        );
     }
     return $default_value;
 }

@@ -33,7 +33,11 @@ function user_questions()
             $question['answer_user'] = User_Nick_render($answer_user_source);
         }
 
-        return Questions_view($open_questions, $answered_questions, page_link_to('user_questions') . '&action=ask');
+        return Questions_view(
+            $open_questions,
+            $answered_questions,
+            page_link_to('user_questions', ['action' => 'ask'])
+        );
     } else {
         switch ($request->input('action')) {
             case 'ask':

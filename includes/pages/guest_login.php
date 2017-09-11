@@ -39,6 +39,7 @@ function guest_register()
     $min_password_length = config('min_password_length');
     $event_config = EventConfig();
     $request = request();
+    $session = session();
 
     $msg = '';
     $nick = '';
@@ -127,8 +128,8 @@ function guest_register()
             }
         }
 
-        if ($request->has('password') && strlen($request->post('password')) >= $min_password_length) {
-            if ($request->post('password') != $request->post('password2')) {
+        if ($request->has('password') && strlen($request->postData('password')) >= $min_password_length) {
+            if ($request->postData('password') != $request->postData('password2')) {
                 $valid = false;
                 $msg .= error(_('Your passwords don\'t match.'), true);
             }
@@ -226,15 +227,15 @@ function guest_register()
                     $password_hash,
                     $comment,
                     $hometown,
-                    $_SESSION['locale'],
+                    $session->get('locale'),
                     $planned_arrival_date,
                 ]
             );
 
             // Assign user-group and set password
             $user_id = DB::getPdo()->lastInsertId();
-            DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -2)', [$user_id]);
-            set_password($user_id, $request->post('password'));
+            DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -20)', [$user_id]);
+            set_password($user_id, $request->postData('password'));
 
             // Assign angel-types
             $user_angel_types_info = [];
@@ -328,7 +329,7 @@ function guest_register()
                         'angel_types',
                         _('What do you want to do?') . sprintf(
                             ' (<a href="%s">%s</a>)',
-                            page_link_to('angeltypes') . '&action=about',
+                            page_link_to('angeltypes', ['action' => 'about']),
                             _('Description of job types')
                         ),
                         $angel_types,
@@ -377,24 +378,35 @@ function guest_register()
     ]);
 }
 
+/**
+ * @return string
+ */
 function entry_required()
 {
     return '<span class="text-info glyphicon glyphicon-warning-sign"></span>';
 }
 
+/**
+ * @return bool
+ */
 function guest_logout()
 {
-    session_destroy();
+    session()->invalidate();
     redirect(page_link_to('start'));
     return true;
 }
 
+/**
+ * @return string
+ */
 function guest_login()
 {
     $nick = '';
     $request = request();
-    unset($_SESSION['uid']);
+    $session = session();
     $valid = true;
+
+    $session->remove('uid');
 
     if ($request->has('submit')) {
         if ($request->has('nick') && strlen(User_validate_Nick($request->input('nick'))) > 0) {
@@ -402,7 +414,7 @@ function guest_login()
             $login_user = DB::selectOne('SELECT * FROM `User` WHERE `Nick`=?', [$nick]);
             if (!empty($login_user)) {
                 if ($request->has('password')) {
-                    if (!verify_password($request->post('password'), $login_user['Passwort'], $login_user['UID'])) {
+                    if (!verify_password($request->postData('password'), $login_user['Passwort'], $login_user['UID'])) {
                         $valid = false;
                         error(_('Your password is incorrect.  Please try it again.'));
                     }
@@ -420,8 +432,8 @@ function guest_login()
         }
 
         if ($valid && !empty($login_user)) {
-            $_SESSION['uid'] = $login_user['UID'];
-            $_SESSION['locale'] = $login_user['Sprache'];
+            $session->set('uid', $login_user['UID']);
+            $session->set('locale', $login_user['Sprache']);
 
             redirect(page_link_to('news'));
         }
@@ -466,7 +478,10 @@ function guest_login()
                     heading(_('What can I do?'), 2),
                     '<p>' . _('Please read about the jobs you can do to help us.') . '</p>',
                     buttons([
-                        button(page_link_to('angeltypes') . '&action=about', _('Teams/Job description') . ' &raquo;')
+                        button(
+                            page_link_to('angeltypes', ['action' => 'about']),
+                            _('Teams/Job description') . ' &raquo;'
+                        )
                     ])
                 ])
             ])
@@ -474,6 +489,9 @@ function guest_login()
     ]);
 }
 
+/**
+ * @return string
+ */
 function get_register_hint()
 {
     global $privileges;

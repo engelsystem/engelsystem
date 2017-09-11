@@ -1,4 +1,5 @@
 <?php
+
 use Engelsystem\ShiftSignupState;
 
 /**
@@ -7,10 +8,13 @@ use Engelsystem\ShiftSignupState;
  */
 function shift_link($shift)
 {
-    $link = page_link_to('shifts') . '&action=view';
+    $parameters = ['action' => 'view'];
     if (isset($shift['SID'])) {
-        $link .= '&shift_id=' . $shift['SID'];
+        $parameters['shift_id'] = $shift['SID'];
     }
+
+    $link = page_link_to('shifts', $parameters);
+
     return $link;
 }
 
@@ -20,7 +24,7 @@ function shift_link($shift)
  */
 function shift_delete_link($shift)
 {
-    return page_link_to('user_shifts') . '&delete_shift=' . $shift['SID'];
+    return page_link_to('user_shifts', ['delete_shift' => $shift['SID']]);
 }
 
 /**
@@ -29,7 +33,7 @@ function shift_delete_link($shift)
  */
 function shift_edit_link($shift)
 {
-    return page_link_to('user_shifts') . '&edit_shift=' . $shift['SID'];
+    return page_link_to('user_shifts', ['edit_shift' => $shift['SID']]);
 }
 
 /**
@@ -61,7 +65,7 @@ function shift_edit_controller()
     $angeltypes = select_array(AngelTypes(), 'id', 'name');
     $shifttypes = select_array(ShiftTypes(), 'id', 'name');
 
-    $needed_angel_types = select_array(NeededAngelTypes_by_shift($shift_id), 'id', 'count');
+    $needed_angel_types = select_array(NeededAngelTypes_by_shift($shift_id), 'angel_type_id', 'count');
     foreach (array_keys($angeltypes) as $angeltype_id) {
         if (!isset($needed_angel_types[$angeltype_id])) {
             $needed_angel_types[$angeltype_id] = 0;
@@ -116,15 +120,20 @@ function shift_edit_controller()
             $msg .= error(_('The ending time has to be after the starting time.'), true);
         }
 
-        foreach ($needed_angel_types as $needed_angeltype_id => $needed_angeltype_name) {
-            if ($request->has('type_' . $needed_angeltype_id) && test_request_int('type_' . $needed_angeltype_id)) {
-                $needed_angel_types[$needed_angeltype_id] = trim($request->input('type_' . $needed_angeltype_id));
-            } else {
-                $valid = false;
-                $msg .= error(sprintf(
-                    _('Please check your input for needed angels of type %s.'),
-                    $needed_angeltype_name
-                ), true);
+        foreach ($needed_angel_types as $needed_angeltype_id => $count) {
+            $needed_angel_types[$needed_angeltype_id] = 0;
+
+            $queryKey = 'type_' . $needed_angeltype_id;
+            if ($request->has($queryKey)) {
+                if (test_request_int($queryKey)) {
+                    $needed_angel_types[$needed_angeltype_id] = trim($request->input($queryKey));
+                } else {
+                    $valid = false;
+                    $msg .= error(sprintf(
+                        _('Please check your input for needed angels of type %s.'),
+                        $angeltypes[$needed_angeltype_id]
+                    ), true);
+                }
             }
         }
 
@@ -195,7 +204,7 @@ function shift_delete_controller()
     }
 
     // Schicht komplett löschen (nur für admins/user mit user_shifts_admin privileg)
-    if (!$request->has('delete_shift') || !preg_match('/^\d*$/', $request->input('delete_shift'))) {
+    if (!$request->has('delete_shift') || !preg_match('/^\d+$/', $request->input('delete_shift'))) {
         redirect(page_link_to('user_shifts'));
     }
     $shift_id = $request->input('delete_shift');
@@ -225,7 +234,9 @@ function shift_delete_controller()
             date('Y-m-d H:i', $shift['start']),
             date('H:i', $shift['end'])
         ), true),
-        '<a class="button" href="?p=user_shifts&delete_shift=' . $shift_id . '&delete">' . _('delete') . '</a>'
+        '<a class="button" href="'
+        . page_link_to('user_shifts', ['delete_shift' => $shift_id, 'delete' => 1]) .
+        '">' . _('delete') . '</a>'
     ]);
 }
 
@@ -308,8 +319,6 @@ function shifts_controller()
 
 /**
  * Redirects the user to his next shift.
- *
- * @return false
  */
 function shift_next_controller()
 {

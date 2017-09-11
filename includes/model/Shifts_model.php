@@ -45,7 +45,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       AND NOT `Shifts`.`PSID` IS NULL) AS tmp_shifts
 
       ORDER BY `start`';
-    
+
     return DB::select(
         $sql,
         [
@@ -244,6 +244,10 @@ function Shift_signup_allowed_angel(
     $shift_entries
 ) {
     $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
+
+    if (config('signup_requires_arrival') && !$user['Gekommen']) {
+        return new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, $free_entries);
+    }
 
     if ($user_shifts == null) {
         $user_shifts = Shifts_by_user($user);
@@ -444,6 +448,7 @@ function Shift_update($shift)
  *
  * @param array $shift
  * @return bool|null
+ * @throws Exception
  */
 function Shift_update_by_psid($shift)
 {

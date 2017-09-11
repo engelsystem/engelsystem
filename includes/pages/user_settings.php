@@ -84,7 +84,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 
     if ($valid) {
         User_update($user_source);
-        
+
         success(_('Settings saved.'));
         redirect(page_link_to('user_settings'));
     }
@@ -102,15 +102,15 @@ function user_settings_password($user_source)
     $request = request();
     if (
         !$request->has('password')
-        || !verify_password($request->post('password'), $user_source['Passwort'], $user_source['UID'])
+        || !verify_password($request->postData('password'), $user_source['Passwort'], $user_source['UID'])
     ) {
         error(_('-> not OK. Please try again.'));
-    } elseif (strlen($request->post('new_password')) < config('min_password_length')) {
+    } elseif (strlen($request->postData('new_password')) < config('min_password_length')) {
         error(_('Your password is to short (please use at least 6 characters).'));
-    } elseif ($request->post('new_password') != $request->post('new_password2')) {
+    } elseif ($request->postData('new_password') != $request->postData('new_password2')) {
         error(_('Your passwords don\'t match.'));
     } else {
-        set_password($user_source['UID'], $request->post('new_password'));
+        set_password($user_source['UID'], $request->postData('new_password'));
         success(_('Password saved.'));
     }
     redirect(page_link_to('user_settings'));
@@ -164,6 +164,7 @@ function user_settings_locale($user_source, $locales)
 {
     $valid = true;
     $request = request();
+    $session = session();
 
     if ($request->has('language') && isset($locales[$request->input('language')])) {
         $user_source['Sprache'] = $request->input('language');
@@ -182,7 +183,7 @@ function user_settings_locale($user_source, $locales)
                 $user_source['UID'],
             ]
         );
-        $_SESSION['locale'] = $user_source['Sprache'];
+        $session->set('locale', $user_source['Sprache']);
 
         success('Language changed.');
         redirect(page_link_to('user_settings'));

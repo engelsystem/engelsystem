@@ -52,9 +52,9 @@ function admin_questions()
                 'answer'   => form([
                     form_textarea('answer', '', ''),
                     form_submit('submit', _('Save'))
-                ], page_link_to('admin_questions') . '&action=answer&id=' . $question['QID']),
+                ], page_link_to('admin_questions', ['action' => 'answer', 'id' => $question['QID']])),
                 'actions'  => button(
-                    page_link_to('admin_questions') . '&action=delete&id=' . $question['QID'],
+                    page_link_to('admin_questions', ['action' => 'delete', 'id' => $question['QID']]),
                     _('delete'),
                     'btn-xs'
                 )
@@ -72,7 +72,7 @@ function admin_questions()
                 'answered_by' => User_Nick_render($answer_user_source),
                 'answer'      => str_replace("\n", '<br />', $question['Answer']),
                 'actions'     => button(
-                    page_link_to('admin_questions') . '&action=delete&id=' . $question['QID'],
+                    page_link_to('admin_questions', ['action' => 'delete', 'id' => $question['QID']]),
                     _('delete'),
                     'btn-xs'
                 )

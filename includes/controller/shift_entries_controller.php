@@ -13,7 +13,7 @@ function shift_entry_add_controller()
 
     $request = request();
     $shift_id = 0;
-    if ($request->has('shift_id') && preg_match('/^\d*$/', $request->input('shift_id'))) {
+    if ($request->has('shift_id') && preg_match('/^\d+$/', $request->input('shift_id'))) {
         $shift_id = $request->input('shift_id');
     } else {
         redirect(page_link_to('user_shifts'));
@@ -27,13 +27,13 @@ function shift_entry_add_controller()
     }
 
     $shift = Shift($shift_id);
-    $shift['Name'] = $room_array[$shift['RID']];
     if ($shift == null) {
         redirect(page_link_to('user_shifts'));
     }
+    $shift['Name'] = $room_array[$shift['RID']];
 
     $type_id = 0;
-    if ($request->has('type_id') && preg_match('/^\d*$/', $request->input('type_id'))) {
+    if ($request->has('type_id') && preg_match('/^\d+$/', $request->input('type_id'))) {
         $type_id = $request->input('type_id');
     } else {
         redirect(page_link_to('user_shifts'));
@@ -64,7 +64,7 @@ function shift_entry_add_controller()
 
     if (
         $request->has('user_id')
-        && preg_match('/^\d*$/', $request->input('user_id'))
+        && preg_match('/^\d+$/', $request->input('user_id'))
         && (
             in_array('user_shifts_admin', $privileges)
             || in_array('shiftentry_edit_angeltype_supporter', $privileges)

@@ -4,6 +4,8 @@
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
 use Engelsystem\Renderer\Renderer;
+use Engelsystem\Routing\UrlGenerator;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Get or set config values
@@ -42,6 +44,22 @@ function request($key = null, $default = null)
 }
 
 /**
+ * @param string $key
+ * @param mixed  $default
+ * @return SessionInterface|mixed
+ */
+function session($key = null, $default = null)
+{
+    $session = request()->getSession();
+
+    if (is_null($key)) {
+        return $session;
+    }
+
+    return $session->get($key, $default);
+}
+
+/**
  * @param string  $template
  * @param mixed[] $data
  * @return Renderer|string
@@ -55,4 +73,14 @@ function view($template = null, $data = null)
     }
 
     return $renderer->render($template, $data);
+}
+
+/**
+ * @param string $path
+ * @param array  $parameters
+ * @return string
+ */
+function url($path, $parameters = [])
+{
+    return UrlGenerator::to($path, $parameters);
 }

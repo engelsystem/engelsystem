@@ -42,7 +42,7 @@ function angeltypes_controller()
  */
 function angeltype_link($angeltype_id)
 {
-    return page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype_id;
+    return page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype_id]);
 }
 
 /**
@@ -127,7 +127,7 @@ function angeltype_edit_controller()
 
         if (!$supporter_mode) {
             if ($request->has('name')) {
-                $result = AngelType_validate_name($request->input('name'), $angeltype);
+                $result = AngelType_validate_name($request->postData('name'), $angeltype);
                 $angeltype['name'] = $result->getValue();
                 if (!$result->isValid()) {
                     $valid = false;
@@ -211,17 +211,21 @@ function angeltypes_list_controller()
 
     foreach ($angeltypes as &$angeltype) {
         $actions = [
-            button(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'], _('view'), 'btn-xs')
+            button(
+                page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
+                _('view'),
+                'btn-xs'
+            )
         ];
 
         if (in_array('admin_angel_types', $privileges)) {
             $actions[] = button(
-                page_link_to('angeltypes') . '&action=edit&angeltype_id=' . $angeltype['id'],
+                page_link_to('angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype['id']]),
                 _('edit'),
                 'btn-xs'
             );
             $actions[] = button(
-                page_link_to('angeltypes') . '&action=delete&angeltype_id=' . $angeltype['id'],
+                page_link_to('angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype['id']]),
                 _('delete'),
                 'btn-xs'
             );
@@ -230,13 +234,15 @@ function angeltypes_list_controller()
         $angeltype['membership'] = AngelType_render_membership($angeltype);
         if ($angeltype['user_angeltype_id'] != null) {
             $actions[] = button(
-                page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $angeltype['user_angeltype_id'],
+                page_link_to('user_angeltypes',
+                    ['action' => 'delete', 'user_angeltype_id' => $angeltype['user_angeltype_id']]
+                ),
                 _('leave'),
                 'btn-xs'
             );
         } else {
             $actions[] = button(
-                page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'],
+                page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype['id']]),
                 _('join'),
                 'btn-xs'
             );
@@ -245,7 +251,11 @@ function angeltypes_list_controller()
         $angeltype['restricted'] = $angeltype['restricted'] ? glyph('lock') : '';
         $angeltype['no_self_signup'] = $angeltype['no_self_signup'] ? '' : glyph('share');
 
-        $angeltype['name'] = '<a href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'] . '">' . $angeltype['name'] . '</a>';
+        $angeltype['name'] = '<a href="'
+            . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']])
+            . '">'
+            . $angeltype['name']
+            . '</a>';
 
         $angeltype['actions'] = table_buttons($actions);
     }

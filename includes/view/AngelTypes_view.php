@@ -50,7 +50,10 @@ function AngelType_delete_view($angeltype)
         buttons([
             button(page_link_to('angeltypes'), _('cancel'), 'cancel'),
             button(
-                page_link_to('angeltypes') . '&action=delete&angeltype_id=' . $angeltype['id'] . '&confirmed',
+                page_link_to(
+                    'angeltypes',
+                    ['action' => 'delete', 'angeltype_id' => $angeltype['id'], 'confirmed' => 1]
+                ),
                 _('delete'),
                 'ok'
             )
@@ -67,7 +70,6 @@ function AngelType_delete_view($angeltype)
  */
 function AngelType_edit_view($angeltype, $supporter_mode)
 {
-    $contact_info = AngelType_contact_info($angeltype);
     return page_with_title(sprintf(_('Edit %s'), $angeltype['name']), [
         buttons([
             button(page_link_to('angeltypes'), _('Angeltypes'), 'back')
@@ -127,7 +129,7 @@ function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, 
 
     if ($user_angeltype == null) {
         $buttons[] = button(
-            page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'],
+            page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype['id']]),
             _('join'),
             'add'
         );
@@ -142,20 +144,22 @@ function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, 
                 $angeltype['name']
             ));
         }
-        $buttons[] = button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $user_angeltype['id'],
-            _('leave'), 'cancel');
+        $buttons[] = button(
+            page_link_to('user_angeltypes', ['action' => 'delete', 'user_angeltype_id' => $user_angeltype['id']]),
+            _('leave'), 'cancel'
+        );
     }
 
     if ($admin_angeltypes || $supporter) {
         $buttons[] = button(
-            page_link_to('angeltypes') . '&action=edit&angeltype_id=' . $angeltype['id'],
+            page_link_to('angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype['id']]),
             _('edit'),
             'edit'
         );
     }
     if ($admin_angeltypes) {
         $buttons[] = button(
-            page_link_to('angeltypes') . '&action=delete&angeltype_id=' . $angeltype['id'],
+            page_link_to('angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype['id']]),
             _('delete'),
             'delete'
         );
@@ -193,12 +197,18 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
         if ($angeltype['restricted'] && $member['confirm_user_id'] == null) {
             $member['actions'] = table_buttons([
                 button(
-                    page_link_to('user_angeltypes') . '&action=confirm&user_angeltype_id=' . $member['user_angeltype_id'],
+                    page_link_to(
+                        'user_angeltypes',
+                        ['action' => 'confirm', 'user_angeltype_id' => $member['user_angeltype_id']]
+                    ),
                     _('confirm'),
                     'btn-xs'
                 ),
                 button(
-                    page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'],
+                    page_link_to(
+                        'user_angeltypes',
+                        ['action' => 'delete', 'user_angeltype_id' => $member['user_angeltype_id']]
+                    ),
                     _('deny'),
                     'btn-xs'
                 )
@@ -208,7 +218,11 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
             if ($admin_angeltypes) {
                 $member['actions'] = table_buttons([
                     button(
-                        page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $member['user_angeltype_id'] . '&supporter=0',
+                        page_link_to('user_angeltypes', [
+                            'action'            => 'update',
+                            'user_angeltype_id' => $member['user_angeltype_id'],
+                            'supporter'         => 0
+                        ]),
                         _('Remove supporter rights'),
                         'btn-xs'
                     )
@@ -221,11 +235,18 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
             if ($admin_user_angeltypes) {
                 $member['actions'] = table_buttons([
                     $admin_angeltypes
-                        ? button(page_link_to('user_angeltypes') . '&action=update&user_angeltype_id=' . $member['user_angeltype_id'] . '&supporter=1',
+                        ? button(page_link_to('user_angeltypes', [
+                        'action'            => 'update',
+                        'user_angeltype_id' => $member['user_angeltype_id'],
+                        'supporter'         => 1
+                    ]),
                         _('Add supporter rights'), 'btn-xs')
                         : '',
                     button(
-                        page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $member['user_angeltype_id'],
+                        page_link_to('user_angeltypes', [
+                            'action'            => 'delete',
+                            'user_angeltype_id' => $member['user_angeltype_id']
+                        ]),
                         _('remove'),
                         'btn-xs'
                     )
@@ -339,7 +360,14 @@ function AngelType_view(
     $page[] = '<h3>' . _('Members') . '</h3>';
     if ($admin_user_angeltypes) {
         $page[] = buttons([
-            button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], _('Add'), 'add')
+            button(
+                page_link_to(
+                    'user_angeltypes',
+                    ['action' => 'add', 'angeltype_id' => $angeltype['id']]
+                ),
+                _('Add'),
+                'add'
+            )
         ]);
     }
     $page[] = table($table_headers, $members_confirmed);
@@ -348,12 +376,12 @@ function AngelType_view(
         $page[] = '<h3>' . _('Unconfirmed') . '</h3>';
         $page[] = buttons([
             button(
-                page_link_to('user_angeltypes') . '&action=confirm_all&angeltype_id=' . $angeltype['id'],
+                page_link_to('user_angeltypes', ['action' => 'confirm_all', 'angeltype_id' => $angeltype['id']]),
                 _('confirm all'),
                 'ok'
             ),
             button(
-                page_link_to('user_angeltypes') . '&action=delete_all&angeltype_id=' . $angeltype['id'],
+                page_link_to('user_angeltypes', ['action' => 'delete_all', 'angeltype_id' => $angeltype['id']]),
                 _('deny all'),
                 'cancel'
             )
@@ -376,8 +404,10 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes)
     return page_with_title(angeltypes_title(), [
         msg(),
         buttons([
-            $admin_angeltypes ? button(page_link_to('angeltypes') . '&action=edit', _('New angeltype'), 'add') : '',
-            button(page_link_to('angeltypes') . '&action=about', _('Teams/Job description'))
+            $admin_angeltypes
+                ? button(page_link_to('angeltypes', ['action' => 'edit']), _('New angeltype'), 'add')
+                : '',
+            button(page_link_to('angeltypes', ['action' => 'about']), _('Teams/Job description'))
         ]),
         table([
             'name'           => _('Name'),
@@ -405,13 +435,16 @@ function AngelTypes_about_view_angeltype($angeltype)
         $buttons = [];
         if ($angeltype['user_angeltype_id'] != null) {
             $buttons[] = button(
-                page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $angeltype['user_angeltype_id'],
+                page_link_to(
+                    'user_angeltypes',
+                    ['action' => 'delete', 'user_angeltype_id' => $angeltype['user_angeltype_id']]
+                ),
                 _('leave'),
                 'cancel'
             );
         } else {
             $buttons[] = button(
-                page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'],
+                page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype['id']]),
                 _('join'),
                 'add'
             );
