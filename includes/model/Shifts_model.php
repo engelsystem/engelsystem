@@ -334,6 +334,7 @@ function Shift_create($shift) {
       `URL`=" . sql_null($shift['URL']) . ",
       `PSID`=" . sql_null($shift['PSID']) . ",
       `created_by_user_id`='" . sql_escape($user['UID']) . "',
+      `edited_at_timestamp`=" . time() .",
       `created_at_timestamp`=" . time());
   if ($result === false) {
     return false;
