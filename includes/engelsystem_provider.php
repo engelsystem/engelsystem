@@ -5,9 +5,12 @@ use Engelsystem\Config\Config;
 use Engelsystem\Database\Db;
 use Engelsystem\Exceptions\Handler as ExceptionHandler;
 use Engelsystem\Http\Request;
+use Engelsystem\Logger\EngelsystemLogger;
 use Engelsystem\Renderer\HtmlEngine;
 use Engelsystem\Renderer\Renderer;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * This file includes all needed functions, connects to the db etc.
@@ -88,6 +91,14 @@ Db::connect(
 ) || die('Error: Unable to connect to database');
 Db::getPdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 Db::getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+/**
+ * Init logger
+ */
+$logger = new EngelsystemLogger();
+$app->instance('logger', $logger);
+$app->instance(LoggerInterface::class, $logger);
+$app->instance(EngelsystemLogger::class, $logger);
 
 
 /**
@@ -180,6 +191,9 @@ foreach ($includeFiles as $file) {
  * Init application
  */
 $session = new Session();
+if (PHP_SAPI == 'cli') {
+    $session = new Session(new MockArraySessionStorage());
+}
 $app->instance('session', $session);
 $session->start();
 $request->setSession($session);
