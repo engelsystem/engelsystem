@@ -66,7 +66,7 @@ class EngelsystemLoggerTest extends TestCase
 
         $entry = $this->getLastEntry();
         $this->assertEquals('My username is Foo', $entry['message']);
-        $this->assertContains(LogLevel::INFO, $entry['nick'], '', true);
+        $this->assertEquals(LogLevel::INFO, $entry['level']);
 
         foreach (
             [
@@ -122,5 +122,10 @@ class EngelsystemLoggerTest extends TestCase
         $entry = array_pop($entries);
 
         return $entry;
+    }
+
+    public function tearDown()
+    {
+        LogEntries_clear_all();
     }
 }

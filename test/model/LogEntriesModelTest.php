@@ -1,37 +1,32 @@
 <?php
+
 namespace Engelsystem\Test;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LogLevel;
 
 class LogEntriesModelTest extends TestCase
 {
-
-    public function create_LogEntry()
+    public function testCreateLogEntry()
     {
-        LogEntry_create('test', 'test');
-    }
-
-    public function test_LogEntry_create()
-    {
+        LogEntries_clear_all();
         $count = count(LogEntries());
-        $this->assertNotFalse(LogEntry_create('test', 'test_LogEntry_create'));
-        
+        $this->assertNotFalse(LogEntry_create(LogLevel::WARNING, 'test_LogEntry_create'));
+
         // There should be one more log entry now
         $this->assertEquals(count(LogEntries()), $count + 1);
     }
 
-    public function test_LogEntries_clear_all()
+    public function testClearAllLogEntries()
     {
-        $this->create_LogEntry();
+        LogEntry_create(LogLevel::WARNING, 'test');
         $this->assertTrue(count(LogEntries()) > 0);
+
         $this->assertNotFalse(LogEntries_clear_all());
-        $this->assertEquals(count(LogEntries()), 0);
+        $this->assertCount(0, LogEntries());
     }
 
-    /**
-     * @after
-     */
-    public function teardown()
+    public function tearDown()
     {
         LogEntries_clear_all();
     }

@@ -1,11 +1,11 @@
 <?php
+
 namespace Engelsystem\Test;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class RoomModelTest extends TestCase
 {
-
     private $room_id = null;
 
     public function create_Room()
@@ -16,20 +16,17 @@ class RoomModelTest extends TestCase
     public function test_Room()
     {
         $this->create_Room();
-        
+
         $room = Room($this->room_id);
-        
+
         $this->assertNotFalse($room);
         $this->assertNotNull($room);
         $this->assertEquals($room['Name'], 'test');
-        
-        $this->assertNull(Room(- 1));
+
+        $this->assertNull(Room(-1));
     }
 
-    /**
-     * @after
-     */
-    public function teardown()
+    public function tearDown()
     {
         if ($this->room_id != null) {
             Room_delete($this->room_id);

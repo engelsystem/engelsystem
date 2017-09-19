@@ -28,3 +28,6 @@ UPDATE `Groups` SET UID = UID * 10;
 INSERT INTO `Groups` (Name, UID) VALUES ('News Admin', -65);
 INSERT INTO `Privileges` (id, name, `desc`) VALUES (42, 'admin_news_html', 'Use HTML in news');
 INSERT INTO `GroupPrivileges` (group_id, privilege_id) VALUES (-65, 14), (-65, 42);
+
+-- Add log level to LogEntries
+ALTER TABLE `LogEntries` CHANGE COLUMN `nick` `level` VARCHAR(20) NOT NULL;

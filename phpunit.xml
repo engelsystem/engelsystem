@@ -7,6 +7,9 @@
         <testsuite name="Models">
             <directory>./test/model/</directory>
         </testsuite>
+        <testsuite name="Logger">
+            <directory>./test/Logger/</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist>

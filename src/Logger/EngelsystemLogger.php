@@ -38,7 +38,7 @@ class EngelsystemLogger extends AbstractLogger
 
         $message = $this->interpolate($message, $context);
 
-        LogEntry_create('Logger: ' . $level, $message);
+        LogEntry_create($level, $message);
     }
 
     /**
