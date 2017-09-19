@@ -1,13 +1,12 @@
 <?php
 
+use Engelsystem\Application;
 use Engelsystem\Config\Config;
-use Engelsystem\Container\Container;
 use Engelsystem\Database\Db;
 use Engelsystem\Exceptions\Handler as ExceptionHandler;
 use Engelsystem\Http\Request;
 use Engelsystem\Renderer\HtmlEngine;
 use Engelsystem\Renderer\Renderer;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -18,18 +17,16 @@ require_once __DIR__ . '/autoload.php';
 
 
 /**
- * Initialize the container
+ * Initialize the application
  */
-$container = Container::getInstance();
-$container->instance('container', $container);
-$container->instance(ContainerInterface::class, $container);
+$app = Application::getInstance();
 
 
 /**
  * Load configuration
  */
 $config = new Config();
-$container->instance('config', $config);
+$app->instance('config', $config);
 $config->set(require __DIR__ . '/../config/config.default.php');
 
 if (file_exists(__DIR__ . '/../config/config.php')) {
@@ -48,7 +45,7 @@ date_default_timezone_set($config->get('timezone'));
  * @var Request $request
  */
 $request = Request::createFromGlobals();
-$container->instance('request', $request);
+$app->instance('request', $request);
 
 
 /**
@@ -64,7 +61,7 @@ if ($config->get('maintenance')) {
  * Initialize renderer
  */
 $renderer = new Renderer();
-$container->instance('renderer', $renderer);
+$app->instance('renderer', $renderer);
 $renderer->addRenderer(new HtmlEngine());
 
 
@@ -72,7 +69,7 @@ $renderer->addRenderer(new HtmlEngine());
  * Register error handler
  */
 $errorHandler = new ExceptionHandler();
-$container->instance('error.handler', $errorHandler);
+$app->instance('error.handler', $errorHandler);
 if (config('environment') == 'development') {
     $errorHandler->setEnvironment(ExceptionHandler::ENV_DEVELOPMENT);
     ini_set('display_errors', true);
@@ -184,7 +181,7 @@ foreach ($includeFiles as $file) {
  * Init application
  */
 $session = new Session();
-$container->instance('session', $session);
+$app->instance('session', $session);
 $session->start();
 $request->setSession($session);
 

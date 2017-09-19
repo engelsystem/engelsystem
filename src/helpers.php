@@ -1,15 +1,15 @@
 <?php
 // Some useful functions
 
+use Engelsystem\Application;
 use Engelsystem\Config\Config;
-use Engelsystem\Container\Container;
 use Engelsystem\Http\Request;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Routing\UrlGenerator;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * Get the global container instance
+ * Get the global app instance
  *
  * @param string $id
  * @return mixed
@@ -17,10 +17,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 function app($id = null)
 {
     if (is_null($id)) {
-        return Container::getInstance();
+        return Application::getInstance();
     }
 
-    return Container::getInstance()->get($id);
+    return Application::getInstance()->get($id);
 }
 
 /**

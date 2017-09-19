@@ -49,6 +49,17 @@ class Container implements ContainerInterface
      */
     public function instance($abstract, $instance)
     {
+        $this->singleton($abstract, $instance);
+    }
+
+    /**
+     * Register a shared entry as singleton in the container
+     *
+     * @param string $abstract
+     * @param mixed  $instance
+     */
+    public function singleton($abstract, $instance)
+    {
         $this->instances[$abstract] = $instance;
     }
 
@@ -69,9 +80,20 @@ class Container implements ContainerInterface
     }
 
     /**
+     * Resolve the requested object
+     *
+     * @param string $abstract
+     * @return mixed
+     */
+    protected function resolve($abstract)
+    {
+        return $this->instances[$abstract];
+    }
+
+    /**
      * Get the globally available instance of the container
      *
-     * @return Container
+     * @return self
      */
     public static function getInstance()
     {
@@ -90,16 +112,5 @@ class Container implements ContainerInterface
     public static function setInstance(Container $container)
     {
         static::$instance = $container;
-    }
-
-    /**
-     * Resolve the requested object
-     *
-     * @param string $abstract
-     * @return mixed
-     */
-    protected function resolve($abstract)
-    {
-        return $this->instances[$abstract];
     }
 }
