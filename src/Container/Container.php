@@ -38,7 +38,7 @@ class Container implements ContainerInterface
             return $this->resolve($id);
         }
 
-        throw new NotFoundException(sprintf('The entry with the id "%s" could not be found'));
+        throw new NotFoundException(sprintf('The entry with the id "%s" could not be found', $id));
     }
 
     /**
