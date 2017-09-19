@@ -2,8 +2,12 @@
 
 namespace Engelsystem\Renderer;
 
+use Psr\Log\LoggerAwareTrait;
+
 class Renderer
 {
+    use LoggerAwareTrait;
+
     /** @var EngineInterface[] */
     protected $renderer = [];
 
@@ -24,7 +28,10 @@ class Renderer
             return $renderer->get($template, $data);
         }
 
-        engelsystem_error('Unable to find a renderer for template file "' . $template . '".');
+        if ($this->logger) {
+            $this->logger->error('Unable to find a renderer for template file "{file}"', ['file' => $template]);
+        }
+
         return '';
     }
 
