@@ -14,7 +14,6 @@
     <filter>
         <whitelist>
             <directory>./include/</directory>
-            <directory>./public/</directory>
             <directory>./src/</directory>
         </whitelist>
     </filter>

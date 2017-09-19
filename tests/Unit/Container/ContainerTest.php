@@ -85,6 +85,12 @@ class ContainerTest extends TestCase
      */
     public function testContainerSingleton()
     {
+        // Ensure that no container has been initialized
+        $reflection = new \ReflectionProperty(Container::class, 'instance');
+        $reflection->setAccessible(true);
+        $reflection->setValue(null, null);
+        $reflection->setAccessible(false);
+
         $container0 = new Container();
         $container = Container::getInstance();
 
