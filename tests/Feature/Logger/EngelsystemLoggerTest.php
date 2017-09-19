@@ -29,23 +29,6 @@ class EngelsystemLoggerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideLogLevels
-     * @param string $level
-     */
-    public function testAllLevels($level)
-    {
-        $logger = $this->getLogger();
-
-        LogEntries_clear_all();
-
-        $logger->log($level, 'First log message');
-        $logger->{$level}('Second log message');
-
-        $entries = LogEntries();
-        $this->assertCount(2, $entries);
-    }
-
-    /**
      * @return string[]
      */
     public function provideLogLevels()
@@ -62,6 +45,23 @@ class EngelsystemLoggerTest extends TestCase
         ];
     }
 
+    /**
+     * @dataProvider provideLogLevels
+     * @param string $level
+     */
+    public function testAllLevels($level)
+    {
+        $logger = $this->getLogger();
+
+        LogEntries_clear_all();
+
+        $logger->log($level, 'First log message');
+        $logger->{$level}('Second log message');
+
+        $entries = LogEntries();
+        $this->assertCount(2, $entries);
+    }
+
     public function testContextReplacement()
     {
         $logger = $this->getLogger();
@@ -72,21 +72,35 @@ class EngelsystemLoggerTest extends TestCase
         $entry = $this->getLastEntry();
         $this->assertEquals('My username is Foo', $entry['message']);
         $this->assertEquals(LogLevel::INFO, $entry['level']);
+    }
 
-        foreach (
-            [
-                ['Data and {context}', []],
-                ['Data and ', ['context' => null]],
-                ['Data and {context}', ['context' => new \stdClass()]],
-            ] as $data
-        ) {
-            list($result, $context) = $data;
+    /**
+     * @return string[]
+     */
+    public function provideContextReplaceValues()
+    {
+        return [
+            ['Data and {context}', [], 'Data and {context}'],
+            ['Data and {context}', ['context' => null], 'Data and '],
+            ['Data and {context}', ['context' => new \stdClass()], 'Data and {context}'],
+            ['Some user asked: {question}', ['question' => 'Foo?'], 'Some user asked: Foo?'],
+        ];
+    }
 
-            $logger->log(LogLevel::INFO, 'Data and {context}', $context);
+    /**
+     * @dataProvider provideContextReplaceValues
+     *
+     * @param string   $message
+     * @param string[] $context
+     * @param string   $expected
+     */
+    public function testContextReplaceValues($message, $context, $expected)
+    {
+        $logger = $this->getLogger();
+        $logger->log(LogLevel::INFO, $message, $context);
 
-            $entry = $this->getLastEntry();
-            $this->assertEquals($result, $entry['message']);
-        }
+        $entry = $this->getLastEntry();
+        $this->assertEquals($expected, $entry['message']);
     }
 
     public function testContextToString()
