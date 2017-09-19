@@ -124,14 +124,12 @@ class ShiftCalendarShiftRenderer
         }
 
         if (in_array('user_shifts_admin', $privileges)) {
-            $html .= '<li class="list-group-item">' . _('Add more angels') . ':';
-            foreach ($needed_angeltypes as $angeltype) {
-                $html .= ' ' . button(
-                        page_link_to('user_shifts', ['shift_id' => $shift['SID'], 'type_id' => $angeltype['id']]),
-                        $angeltype['name'],
-                        'btn-xs'
-                    );
-            }
+            $html .= '<li class="list-group-item">';
+            $html .= button(
+                    page_link_to('user_shifts', ['shift_id' => $shift['SID']]),
+                    glyph('plus') . _('Add more angels'),
+                    'btn-xs'
+                );
             $html .= '</li>';
         }
         if ($html != '') {

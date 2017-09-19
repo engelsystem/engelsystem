@@ -32,14 +32,19 @@ function shift_entry_add_controller()
     }
     $shift['Name'] = $room_array[$shift['RID']];
 
-    $type_id = 0;
+    $type_id = null;
     if ($request->has('type_id') && preg_match('/^\d+$/', $request->input('type_id'))) {
         $type_id = $request->input('type_id');
-    } else {
-        redirect(page_link_to('user_shifts'));
     }
 
     if (in_array('user_shifts_admin', $privileges) || in_array('shiftentry_edit_angeltype_supporter', $privileges)) {
+        if($type_id == null) {
+            // If no angeltype id is given, then select first existing angeltype.
+            $needed_angeltypes = NeededAngelTypes_by_shift($shift_id);
+            if(count($needed_angeltypes) > 0) {
+                $type_id = $needed_angeltypes[0]['id'];
+            }
+        }
         $type = AngelType($type_id);
     } else {
         // TODO: Move queries to model
