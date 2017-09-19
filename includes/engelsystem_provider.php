@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 /**
  * This file includes all needed functions, connects to the db etc.
  */
-
 require_once __DIR__ . '/autoload.php';
 
 
