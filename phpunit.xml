@@ -1,14 +1,11 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         bootstrap="./includes/engelsystem_provider.php"
+         bootstrap="./includes/autoload.php"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.3/phpunit.xsd"
          colors="true"
 >
     <testsuites>
-        <testsuite name="Models">
-            <directory>./test/model/</directory>
-        </testsuite>
-        <testsuite name="Logger">
-            <directory>./test/Logger/</directory>
+        <testsuite name="Feature">
+            <directory>./tests/Feature</directory>
         </testsuite>
     </testsuites>
     <filter>

@@ -7,6 +7,11 @@ use Psr\Log\LogLevel;
 
 class LogEntriesModelTest extends TestCase
 {
+    public static function setUpBeforeClass()
+    {
+        require_once __DIR__ . '/../../../includes/engelsystem_provider.php';
+    }
+
     public function testCreateLogEntry()
     {
         LogEntries_clear_all();
