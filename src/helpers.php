@@ -69,7 +69,7 @@ function request($key = null, $default = null)
  */
 function session($key = null, $default = null)
 {
-    $session = request()->getSession();
+    $session = app('session');
 
     if (is_null($key)) {
         return $session;
@@ -97,9 +97,15 @@ function view($template = null, $data = null)
 /**
  * @param string $path
  * @param array  $parameters
- * @return string
+ * @return UrlGenerator|string
  */
-function url($path, $parameters = [])
+function url($path = null, $parameters = [])
 {
-    return UrlGenerator::to($path, $parameters);
+    $urlGenerator = app('routing.urlGenerator');
+
+    if (is_null($path)) {
+        return $urlGenerator;
+    }
+
+    return $urlGenerator->to($path, $parameters);
 }

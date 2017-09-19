@@ -9,7 +9,7 @@ class UrlGenerator
      * @param array  $parameters
      * @return string
      */
-    public static function to($path, $parameters = [])
+    public function to($path, $parameters = [])
     {
         $path = '/' . ltrim($path, '/');
         $request = app('request');

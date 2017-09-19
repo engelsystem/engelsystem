@@ -32,6 +32,7 @@ class UrlGeneratorTest extends TestCase
     public function testTo($urlToPath, $path, $willReturn, $arguments, $expectedUrl)
     {
         $app = new Container();
+        $urlGenerator = new UrlGenerator();
         Application::setInstance($app);
 
         $request = $this->getMockBuilder(Request::class)
@@ -44,7 +45,7 @@ class UrlGeneratorTest extends TestCase
 
         $app->instance('request', $request);
 
-        $url = UrlGenerator::to($urlToPath, $arguments);
+        $url = $urlGenerator->to($urlToPath, $arguments);
         $this->assertEquals($expectedUrl, $url);
     }
 }

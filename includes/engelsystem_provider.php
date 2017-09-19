@@ -8,6 +8,7 @@ use Engelsystem\Http\Request;
 use Engelsystem\Logger\EngelsystemLogger;
 use Engelsystem\Renderer\HtmlEngine;
 use Engelsystem\Renderer\Renderer;
+use Engelsystem\Routing\UrlGenerator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -57,6 +58,13 @@ if ($config->get('maintenance')) {
     echo file_get_contents(__DIR__ . '/../templates/maintenance.html');
     die();
 }
+
+
+/**
+ * Register UrlGenerator
+ */
+$urlGenerator = new UrlGenerator();
+$app->instance('routing.urlGenerator', $urlGenerator);
 
 
 /**
