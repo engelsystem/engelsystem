@@ -21,6 +21,7 @@ _vimrc_local.vim
 # Project files
 /config/config.php
 /test/coverage
+/public/coverage
 
 # Composer files
 /vendor/

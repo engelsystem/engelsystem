@@ -42,7 +42,7 @@ class Handler
     /**
      * @param Throwable $e
      */
-    public function exceptionHandler(Throwable $e)
+    public function exceptionHandler($e)
     {
         $this->handle(
             'exception',
