@@ -12,6 +12,7 @@ use Engelsystem\Routing\UrlGenerator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 /**
  * This file includes all needed functions, connects to the db etc.
@@ -198,10 +199,8 @@ foreach ($includeFiles as $file) {
 /**
  * Init application
  */
-$session = new Session();
-if (PHP_SAPI == 'cli') {
-    $session = new Session(new MockArraySessionStorage());
-}
+$sessionStorage = (PHP_SAPI != 'cli' ? new NativeSessionStorage(['cookie_httponly' => true]) : new MockArraySessionStorage());
+$session = new Session($sessionStorage);
 $app->instance('session', $session);
 $session->start();
 $request->setSession($session);
