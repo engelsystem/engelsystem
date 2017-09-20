@@ -44,6 +44,9 @@ return [
     // Number of News shown on one site
     'display_news'            => 6,
 
+    // Users are able to sign up
+    'registration_enabled'    => true,
+
     // Only arrived angels can sign up for shifts
     'signup_requires_arrival' => false,
 

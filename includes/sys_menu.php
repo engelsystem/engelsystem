@@ -59,7 +59,7 @@ function header_toolbar()
         );
     }
 
-    if (!isset($user) && in_array('register', $privileges)) {
+    if (!isset($user) && in_array('register', $privileges) && config('registration_enabled')) {
         $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'plus', register_title(), $page == 'register');
     }
 

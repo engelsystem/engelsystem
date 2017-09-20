@@ -475,13 +475,27 @@ function AngelTypes_about_view_angeltype($angeltype)
  */
 function AngelTypes_about_view($angeltypes, $user_logged_in)
 {
+    global $privileges;
+
+    $buttons = [];
+
+    if ($user_logged_in) {
+        $buttons[] = button(page_link_to('angeltypes'), angeltypes_title(), 'back');
+    } else {
+        if (in_array('register', $privileges) && config('registration_enabled')) {
+            $buttons[] = button(page_link_to('register'), register_title());
+        }
+
+        $buttons[] = button(page_link_to('login'), login_title());
+    }
+
+    $faqUrl = config('faq_url');
+    if (!empty($faqUrl)) {
+        $buttons[] = button($faqUrl, _('FAQ'), 'btn-primary');
+    }
+
     $content = [
-        buttons([
-            !$user_logged_in ? button(page_link_to('register'), register_title()) : '',
-            !$user_logged_in ? button(page_link_to('login'), login_title()) : '',
-            $user_logged_in ? button(page_link_to('angeltypes'), angeltypes_title(), 'back') : '',
-            button(config('faq_url'), _('FAQ'), 'btn-primary')
-        ]),
+        buttons($buttons),
         '<p>' . _('Here is the list of teams and their tasks. If you have questions, read the FAQ.') . '</p>',
         '<hr />'
     ];
