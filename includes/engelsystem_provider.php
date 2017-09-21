@@ -23,7 +23,7 @@ require_once __DIR__ . '/autoload.php';
 /**
  * Initialize the application
  */
-$app = Application::getInstance();
+$app = new Application(realpath(__DIR__ . DIRECTORY_SEPARATOR . '..'));
 
 
 /**
