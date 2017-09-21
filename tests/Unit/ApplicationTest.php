@@ -24,6 +24,7 @@ class ApplicationTest extends TestCase
         $this->assertSame($app, $app->get(Container::class));
         $this->assertSame($app, $app->get(Application::class));
         $this->assertSame($app, $app->get(ContainerInterface::class));
+        $this->assertSame($app, Application::getInstance());
         $this->assertSame($app, Container::getInstance());
     }
 }

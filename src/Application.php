@@ -14,12 +14,12 @@ class Application extends Container
 
     protected function registerBaseBindings()
     {
-        self::setInstance($this);
+        static::setInstance($this);
         Container::setInstance($this);
         $this->instance('app', $this);
         $this->instance('container', $this);
         $this->instance(Container::class, $this);
         $this->instance(Application::class, $this);
-        $this->instance(ContainerInterface::class, $this);
+        $this->bind(ContainerInterface::class, Application::class);
     }
 }

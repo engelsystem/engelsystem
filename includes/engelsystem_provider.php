@@ -106,8 +106,8 @@ Db::getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
  */
 $logger = new EngelsystemLogger();
 $app->instance('logger', $logger);
-$app->instance(LoggerInterface::class, $logger);
-$app->instance(EngelsystemLogger::class, $logger);
+$app->bind(LoggerInterface::class, 'logger');
+$app->bind(EngelsystemLogger::class, 'logger');
 
 
 /**
