@@ -27,6 +27,13 @@ $app = new Application(realpath(__DIR__ . DIRECTORY_SEPARATOR . '..'));
 
 
 /**
+ * Bootstrap application
+ */
+$appConfig = $app->make(Config::class);
+$appConfig->set(app('path.config') . '/app.php');
+$app->bootstrap($appConfig);
+
+/**
  * Load configuration
  */
 $config = new Config();
@@ -40,6 +47,10 @@ if (file_exists(__DIR__ . '/../config/config.php')) {
     ));
 }
 
+
+/**
+ * Configure application
+ */
 date_default_timezone_set($config->get('timezone'));
 
 
@@ -55,7 +66,7 @@ $app->instance('request', $request);
 /**
  * Check for maintenance
  */
-if ($config->get('maintenance')) {
+if ($app->get('config')->get('maintenance')) {
     echo file_get_contents(__DIR__ . '/../templates/maintenance.html');
     die();
 }
