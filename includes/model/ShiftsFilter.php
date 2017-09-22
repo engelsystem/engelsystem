@@ -10,12 +10,6 @@ namespace Engelsystem;
 class ShiftsFilter {
 
   /**
-   * How long can the time interval be?
-   */
-  const MAX_DURATION = 86400;
- // one day
-  
-  /**
    * Shift is completely full.
    */
   const FILLED_FILLED = 1;
@@ -69,8 +63,11 @@ class ShiftsFilter {
   }
 
   public function setEndTime($endTime) {
-    if ($endTime - $this->startTime > ShiftsFilter::MAX_DURATION) {
-      $endTime = $this->startTime + ShiftsFilter::MAX_DURATION;
+    global $max_shift_duration_filter;
+    if ($max_shift_duration_filter != 0){
+      if ($endTime - $this->startTime > $max_shift_duration_filter) {
+        $endTime = $this->startTime + $max_shift_duration_filter;
+      }
     }
     $this->endTime = $endTime;
   }

@@ -57,6 +57,9 @@ $voucher_settings = [
 // weigh every shift the same
 // $shift_sum_formula = "SUM(`end` - `start`)";
 
+// Limits the max shift duration filter (useful for huge setups), 0 to disable
+$max_shift_duration_filter = 86400;
+
 // For accessing stats
 $api_key = "";
 
