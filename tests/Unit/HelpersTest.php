@@ -54,6 +54,20 @@ class HelpersTest extends TestCase
     }
 
     /**
+     * @covers \env
+     */
+    public function testEnv()
+    {
+        putenv('envTestVar=someContent');
+
+        $env = env('envTestVar');
+        $this->assertEquals('someContent', $env);
+
+        $env = env('someRandomEnvVarThatShouldNeverExist', 'someDefaultValue');
+        $this->assertEquals('someDefaultValue', $env);
+    }
+
+    /**
      * @covers \request
      */
     public function testRequest()

@@ -1,0 +1,47 @@
+image: php
+
+cache:
+  paths:
+  - .composer
+
+services:
+  - mysql:5.6
+
+variables:
+  MYSQL_DATABASE: engelsystem
+  MYSQL_USER: engel
+  MYSQL_PASSWORD: engelsystem
+  COMPOSER_HOME: .composer
+  MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+
+before_script:
+  # Install required Packages
+  - apt-get update -yqq
+  - apt-get install -yqq git unzip mysql-client
+  - docker-php-ext-install pdo pdo_mysql gettext
+  # Install xdebug
+  - pecl install xdebug
+  - docker-php-ext-enable xdebug
+  # MySQL DB
+  - mysql -h mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < db/install.sql
+  - mysql -h mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < db/update.sql
+  # Install Composer
+  - curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
+  - /usr/local/bin/composer --no-ansi install
+
+.test_template: &test_definition
+  artifacts:
+    name: "${CI_JOB_NAME}_${CI_PROJECT_ID}_${PHP_VERSION}"
+    expire_in: 1 week
+    paths:
+      - ./coverage/
+  coverage: '/^\s*Lines:\s*(\d+(?:\.\d+)?%)/'
+  script: vendor/bin/phpunit --colors=never --coverage-text --coverage-html ./coverage/
+
+test:7.0:
+  image: php:7.0
+  <<: *test_definition
+
+test:7.1:
+  image: php:7.1
+  <<: *test_definition

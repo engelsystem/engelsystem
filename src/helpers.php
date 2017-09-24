@@ -67,6 +67,21 @@ function config_path($path = '')
 /**
  * @param string $key
  * @param mixed  $default
+ * @return mixed
+ */
+function env($key, $default = null)
+{
+    $value = getenv($key);
+    if ($value === false) {
+        return $default;
+    }
+
+    return $value;
+}
+
+/**
+ * @param string $key
+ * @param mixed  $default
  * @return Request|mixed
  */
 function request($key = null, $default = null)
