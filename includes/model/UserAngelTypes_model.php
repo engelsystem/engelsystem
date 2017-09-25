@@ -59,7 +59,7 @@ function User_unconfirmed_AngelTypes($user)
           AND `UserAngelTypes`.`supporter`=TRUE
           AND `AngelTypes`.`restricted`=TRUE
           AND `UnconfirmedMembers`.`confirm_user_id` IS NULL
-        GROUP BY `UserAngelTypes`.`angeltype_id`
+        GROUP BY `UserAngelTypes`.`angeltype_id`, `UserAngelTypes`.`id`
         ORDER BY `AngelTypes`.`name`
     ', [$user['UID']]);
 }
