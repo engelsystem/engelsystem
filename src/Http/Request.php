@@ -2,14 +2,10 @@
 
 namespace Engelsystem\Http;
 
-use ErrorException;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class Request extends SymfonyRequest
 {
-    /** @var self */
-    protected static $instance;
-
     /**
      * Get POST input
      *
@@ -67,26 +63,5 @@ class Request extends SymfonyRequest
     public function url()
     {
         return rtrim(preg_replace('/\?.*/', '', $this->getUri()), '/');
-    }
-
-    /**
-     * @return self
-     * @throws ErrorException
-     */
-    public static function getInstance()
-    {
-        if (!self::$instance instanceof self) {
-            throw new ErrorException('Request not initialized');
-        }
-
-        return self::$instance;
-    }
-
-    /**
-     * @param self $instance
-     */
-    public static function setInstance($instance)
-    {
-        self::$instance = $instance;
     }
 }

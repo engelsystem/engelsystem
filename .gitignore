@@ -14,12 +14,14 @@ Thumbs.db
 _vimrc_local.vim
 .sass-cache
 
-# PHPstorm config
+# PHPstorm files
 /.idea/
+/.phpstorm.meta.php
 
 # Project files
 /config/config.php
 /test/coverage
+/public/coverage
 
 # Composer files
 /vendor/

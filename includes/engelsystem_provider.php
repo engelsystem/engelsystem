@@ -1,24 +1,36 @@
 <?php
 
+use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Database\Db;
 use Engelsystem\Exceptions\Handler as ExceptionHandler;
 use Engelsystem\Http\Request;
+use Engelsystem\Logger\EngelsystemLogger;
 use Engelsystem\Renderer\HtmlEngine;
 use Engelsystem\Renderer\Renderer;
+use Engelsystem\Routing\UrlGenerator;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 /**
  * This file includes all needed functions, connects to the db etc.
  */
-
 require_once __DIR__ . '/autoload.php';
+
+
+/**
+ * Initialize the application
+ */
+$app = Application::getInstance();
+
 
 /**
  * Load configuration
  */
 $config = new Config();
-Config::setInstance($config);
+$app->instance('config', $config);
 $config->set(require __DIR__ . '/../config/config.default.php');
 
 if (file_exists(__DIR__ . '/../config/config.php')) {
@@ -37,7 +49,8 @@ date_default_timezone_set($config->get('timezone'));
  * @var Request $request
  */
 $request = Request::createFromGlobals();
-$request::setInstance($request);
+$app->instance('request', $request);
+
 
 /**
  * Check for maintenance
@@ -49,17 +62,25 @@ if ($config->get('maintenance')) {
 
 
 /**
+ * Register UrlGenerator
+ */
+$urlGenerator = new UrlGenerator();
+$app->instance('routing.urlGenerator', $urlGenerator);
+
+
+/**
  * Initialize renderer
  */
 $renderer = new Renderer();
+$app->instance('renderer', $renderer);
 $renderer->addRenderer(new HtmlEngine());
-Renderer::setInstance($renderer);
 
 
 /**
  * Register error handler
  */
 $errorHandler = new ExceptionHandler();
+$app->instance('error.handler', $errorHandler);
 if (config('environment') == 'development') {
     $errorHandler->setEnvironment(ExceptionHandler::ENV_DEVELOPMENT);
     ini_set('display_errors', true);
@@ -79,6 +100,14 @@ Db::connect(
 ) || die('Error: Unable to connect to database');
 Db::getPdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 Db::getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+/**
+ * Init logger
+ */
+$logger = new EngelsystemLogger();
+$app->instance('logger', $logger);
+$app->instance(LoggerInterface::class, $logger);
+$app->instance(EngelsystemLogger::class, $logger);
 
 
 /**
@@ -170,7 +199,9 @@ foreach ($includeFiles as $file) {
 /**
  * Init application
  */
-$session = new Session();
+$sessionStorage = (PHP_SAPI != 'cli' ? new NativeSessionStorage(['cookie_httponly' => true]) : new MockArraySessionStorage());
+$session = new Session($sessionStorage);
+$app->instance('session', $session);
 $session->start();
 $request->setSession($session);
 

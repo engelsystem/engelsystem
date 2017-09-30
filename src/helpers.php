@@ -1,11 +1,27 @@
 <?php
 // Some useful functions
 
+use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Routing\UrlGenerator;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+/**
+ * Get the global app instance
+ *
+ * @param string $id
+ * @return mixed
+ */
+function app($id = null)
+{
+    if (is_null($id)) {
+        return Application::getInstance();
+    }
+
+    return Application::getInstance()->get($id);
+}
 
 /**
  * Get or set config values
@@ -16,15 +32,18 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 function config($key = null, $default = null)
 {
+    $config = app('config');
+
     if (empty($key)) {
-        return Config::getInstance();
+        return $config;
     }
 
     if (is_array($key)) {
-        Config::getInstance()->set($key);
+        $config->set($key);
+        return true;
     }
 
-    return Config::getInstance()->get($key, $default);
+    return $config->get($key, $default);
 }
 
 /**
@@ -34,7 +53,7 @@ function config($key = null, $default = null)
  */
 function request($key = null, $default = null)
 {
-    $request = Request::getInstance();
+    $request = app('request');
 
     if (is_null($key)) {
         return $request;
@@ -50,7 +69,7 @@ function request($key = null, $default = null)
  */
 function session($key = null, $default = null)
 {
-    $session = request()->getSession();
+    $session = app('session');
 
     if (is_null($key)) {
         return $session;
@@ -66,7 +85,7 @@ function session($key = null, $default = null)
  */
 function view($template = null, $data = null)
 {
-    $renderer = Renderer::getInstance();
+    $renderer = app('renderer');
 
     if (is_null($template)) {
         return $renderer;
@@ -78,9 +97,15 @@ function view($template = null, $data = null)
 /**
  * @param string $path
  * @param array  $parameters
- * @return string
+ * @return UrlGenerator|string
  */
-function url($path, $parameters = [])
+function url($path = null, $parameters = [])
 {
-    return UrlGenerator::to($path, $parameters);
+    $urlGenerator = app('routing.urlGenerator');
+
+    if (is_null($path)) {
+        return $urlGenerator;
+    }
+
+    return $urlGenerator->to($path, $parameters);
 }

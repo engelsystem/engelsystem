@@ -1,7 +1,5 @@
 <?php
 
-use Engelsystem\Http\Request;
-
 /**
  * Return currently active locale
  *
@@ -65,7 +63,7 @@ function gettext_locale($locale = null)
  */
 function make_langselect()
 {
-    $request = Request::getInstance();
+    $request = app('request');
 
     $items = [];
     foreach (config('locales') as $locale => $name) {

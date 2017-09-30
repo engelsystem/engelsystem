@@ -9,10 +9,12 @@
 function engelsystem_log($message)
 {
     global $user;
-
     $nick = "Guest";
+    $logger = app('logger');
+
     if (isset($user)) {
         $nick = User_Nick_render($user);
     }
-    LogEntry_create($nick, $message);
+
+    $logger->info('{nick}: {message}', ['nick' => $nick, 'message' => $message]);
 }

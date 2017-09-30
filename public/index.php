@@ -1,7 +1,5 @@
 <?php
 
-use Engelsystem\Http\Request;
-
 require_once realpath(__DIR__ . '/../includes/engelsystem_provider.php');
 
 $free_pages = [
@@ -27,7 +25,6 @@ $page = '';
 $title = '';
 $content = '';
 
-/** @var Request $request */
 $page = $request->query->get('p');
 if (empty($page)) {
     $page = $request->path();

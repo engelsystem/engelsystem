@@ -5,16 +5,16 @@ use Engelsystem\Database\DB;
 /**
  * Creates a log entry.
  *
- * @param string $nick    Username
- * @param string $message Log  Message
+ * @param string $logLevel Log level
+ * @param string $message  Log  Message
  * @return bool
  */
-function LogEntry_create($nick, $message)
+function LogEntry_create($logLevel, $message)
 {
     return DB::insert('
-        INSERT INTO `LogEntries` (`timestamp`, `nick`, `message`)
+        INSERT INTO `LogEntries` (`timestamp`, `level`, `message`)
         VALUES(?, ?, ?)
-    ', [time(), $nick, $message]);
+    ', [time(), $logLevel, $message]);
 }
 
 /**
@@ -43,7 +43,7 @@ function LogEntries_filter($keyword)
     return DB::select('
             SELECT *
             FROM `LogEntries`
-            WHERE `nick` LIKE ?
+            WHERE `level` LIKE ?
             OR `message` LIKE ?
             ORDER BY `timestamp` DESC
         ',

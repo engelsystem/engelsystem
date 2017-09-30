@@ -29,6 +29,6 @@ class HtmlEngine implements EngineInterface
      */
     public function canRender($path)
     {
-        return strpos($path, '.html') && file_exists($path);
+        return strpos($path, '.htm') && file_exists($path);
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Engelsystem\Routing;
 
-use Engelsystem\Http\Request;
-
 class UrlGenerator
 {
     /**
@@ -11,10 +9,10 @@ class UrlGenerator
      * @param array  $parameters
      * @return string
      */
-    public static function to($path, $parameters = [])
+    public function to($path, $parameters = [])
     {
         $path = '/' . ltrim($path, '/');
-        $request = Request::getInstance();
+        $request = app('request');
         $uri = $request->getUriForPath($path);
 
         if (!empty($parameters) && is_array($parameters)) {
