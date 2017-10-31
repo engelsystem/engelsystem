@@ -2,13 +2,12 @@
 
 namespace Engelsystem\Test\Routing;
 
-use Engelsystem\Application;
 use Engelsystem\Routing\RoutingServiceProvider;
 use Engelsystem\Routing\UrlGenerator;
-use PHPUnit\Framework\TestCase;
+use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit_Framework_MockObject_MockObject;
 
-class RoutingServiceProviderTest extends TestCase
+class RoutingServiceProviderTest extends ServiceProviderTest
 {
     /**
      * @covers \Engelsystem\Routing\RoutingServiceProvider::register()
@@ -19,19 +18,10 @@ class RoutingServiceProviderTest extends TestCase
         $urlGenerator = $this->getMockBuilder(UrlGenerator::class)
             ->getMock();
 
-        /** @var PHPUnit_Framework_MockObject_MockObject|Application $app */
-        $app = $this->getMockBuilder(Application::class)
-            ->setMethods(['make', 'instance'])
-            ->getMock();
+        $app = $this->getApp();
 
-        $app->expects($this->once())
-            ->method('make')
-            ->with(UrlGenerator::class)
-            ->willReturn($urlGenerator);
-
-        $app->expects($this->once())
-            ->method('instance')
-            ->with('routing.urlGenerator', $urlGenerator);
+        $this->setExpects($app, 'make', [UrlGenerator::class], $urlGenerator);
+        $this->setExpects($app, 'instance', ['routing.urlGenerator', $urlGenerator]);
 
         $serviceProvider = new RoutingServiceProvider($app);
         $serviceProvider->register();

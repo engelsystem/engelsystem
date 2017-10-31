@@ -2,13 +2,12 @@
 
 namespace Engelsystem\Test\Exceptions;
 
-use Engelsystem\Application;
 use Engelsystem\Exceptions\ExceptionsServiceProvider;
 use Engelsystem\Exceptions\Handler as ExceptionHandler;
-use PHPUnit\Framework\TestCase;
+use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit_Framework_MockObject_MockObject;
 
-class ExceptionsServiceProviderTest extends TestCase
+class ExceptionsServiceProviderTest extends ServiceProviderTest
 {
     /**
      * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::register()
@@ -19,19 +18,10 @@ class ExceptionsServiceProviderTest extends TestCase
         $exceptionHandler = $this->getMockBuilder(ExceptionHandler::class)
             ->getMock();
 
-        /** @var PHPUnit_Framework_MockObject_MockObject|Application $app */
-        $app = $this->getMockBuilder(Application::class)
-            ->setMethods(['make', 'instance'])
-            ->getMock();
+        $app = $this->getApp();
 
-        $app->expects($this->once())
-            ->method('make')
-            ->with(ExceptionHandler::class)
-            ->willReturn($exceptionHandler);
-
-        $app->expects($this->once())
-            ->method('instance')
-            ->with('error.handler', $exceptionHandler);
+        $this->setExpects($app, 'make', [ExceptionHandler::class], $exceptionHandler);
+        $this->setExpects($app, 'instance', ['error.handler', $exceptionHandler]);
 
         $serviceProvider = new ExceptionsServiceProvider($app);
         $serviceProvider->register();

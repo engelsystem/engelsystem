@@ -2,14 +2,13 @@
 
 namespace Engelsystem\Test\Logger;
 
-use Engelsystem\Application;
 use Engelsystem\Logger\EngelsystemLogger;
 use Engelsystem\Logger\LoggerServiceProvider;
-use PHPUnit\Framework\TestCase;
+use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit_Framework_MockObject_MockObject;
 use Psr\Log\LoggerInterface;
 
-class LoggerServiceProviderTest extends TestCase
+class LoggerServiceProviderTest extends ServiceProviderTest
 {
     /**
      * @covers \Engelsystem\Logger\LoggerServiceProvider::register()
@@ -20,19 +19,10 @@ class LoggerServiceProviderTest extends TestCase
         $logger = $this->getMockBuilder(EngelsystemLogger::class)
             ->getMock();
 
-        /** @var PHPUnit_Framework_MockObject_MockObject|Application $app */
-        $app = $this->getMockBuilder(Application::class)
-            ->setMethods(['make', 'instance', 'bind'])
-            ->getMock();
+        $app = $this->getApp(['make', 'instance', 'bind']);
 
-        $app->expects($this->once())
-            ->method('make')
-            ->with(EngelsystemLogger::class)
-            ->willReturn($logger);
-
-        $app->expects($this->once())
-            ->method('instance')
-            ->with('logger', $logger);
+        $this->setExpects($app, 'make', [EngelsystemLogger::class], $logger);
+        $this->setExpects($app, 'instance', ['logger', $logger]);
 
         $app->expects($this->atLeastOnce())
             ->method('bind')

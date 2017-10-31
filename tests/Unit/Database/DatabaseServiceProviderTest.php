@@ -2,14 +2,13 @@
 
 namespace Engelsystem\Test\Database;
 
-use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Database\DatabaseServiceProvider;
+use Engelsystem\Test\Unit\ServiceProviderTest;
 use Exception;
-use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
-class DatabaseServiceProviderTest extends TestCase
+class DatabaseServiceProviderTest extends ServiceProviderTest
 {
     /**
      * @covers \Engelsystem\Database\DatabaseServiceProvider::register()
@@ -21,29 +20,18 @@ class DatabaseServiceProviderTest extends TestCase
         $config = $this->getMockBuilder(Config::class)
             ->getMock();
 
-        /** @var PHPUnit_Framework_MockObject_MockObject|Application $app */
-        $app = $this->getMockBuilder(Application::class)
-            ->setMethods(['get'])
-            ->getMock();
+        $app = $this->getApp(['get']);
 
-        $app->expects($this->once())
-            ->method('get')
-            ->with('config')
-            ->willReturn($config);
-
-        $config->expects($this->atLeastOnce())
-            ->method('get')
-            ->with('database')
-            ->willReturn([
-                'host' => 'localhost',
-                'db'   => 'database',
-                'user' => 'user',
-                'pw'   => 'password',
-            ]);
-
-        $serviceProvider = new DatabaseServiceProvider($app);
+        $this->setExpects($app, 'get', ['config'], $config);
+        $this->setExpects($config, 'get', ['database'], [
+            'host' => 'localhost',
+            'db'   => 'database',
+            'user' => 'user',
+            'pw'   => 'password',
+        ], $this->atLeastOnce());
         $this->expectException(Exception::class);
 
+        $serviceProvider = new DatabaseServiceProvider($app);
         $serviceProvider->register();
     }
 }

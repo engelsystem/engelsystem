@@ -4,33 +4,44 @@ namespace Engelsystem\Test\Unit;
 
 use Engelsystem\Application;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_Matcher_InvokedRecorder as InvokedRecorder;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 abstract class ServiceProviderTest extends TestCase
 {
     /**
      * @param array $methods
-     * @return Application|PHPUnit_Framework_MockObject_MockObject
+     * @return Application|MockObject
      */
     protected function getApp($methods = ['make', 'instance'])
     {
-        /** @var PHPUnit_Framework_MockObject_MockObject|Application $app */
+        /** @var MockObject|Application $app */
         return $this->getMockBuilder(Application::class)
             ->setMethods($methods)
             ->getMock();
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_MockObject $object
-     * @param string                                  $method
-     * @param array                                   $arguments
-     * @param mixed                                   $return
+     * @param MockObject      $object
+     * @param string          $method
+     * @param array           $arguments
+     * @param mixed           $return
+     * @param InvokedRecorder $times
      */
-    protected function setExpects($object, $method, $arguments, $return = null)
+    protected function setExpects($object, $method, $arguments = null, $return = null, $times = null)
     {
-        $invocation = $object->expects($this->once())
+        if (is_null($times)) {
+            $times = $this->once();
+        }
+
+        $invocation = $object->expects($times)
             ->method($method);
-        call_user_func_array([$invocation, 'with'], $arguments);
+
+        if (is_null($arguments)) {
+            $invocation->withAnyParameters();
+        } else {
+            call_user_func_array([$invocation, 'with'], $arguments);
+        }
 
         if (!is_null($return)) {
             $invocation->willReturn($return);
