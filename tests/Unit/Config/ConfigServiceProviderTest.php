@@ -29,7 +29,17 @@ class ConfigServiceProviderTest extends ServiceProviderTest
         $this->setExpects($config, 'set', null, null, $this->exactly(2));
         $this->setExpects($config, 'get', [null], []);
 
+        $configFile = __DIR__ . '/../../../config/config.php';
+        $configExists = file_exists($configFile);
+        if (!$configExists) {
+            file_put_contents($configFile, '<?php return [];');
+        }
+
         $serviceProvider = new ConfigServiceProvider($app);
         $serviceProvider->register();
+
+        if (!$configExists) {
+            unlink($configFile);
+        }
     }
 }
