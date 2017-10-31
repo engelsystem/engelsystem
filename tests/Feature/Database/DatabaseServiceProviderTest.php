@@ -5,21 +5,20 @@ namespace Engelsystem\Test\Feature\Database;
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Database\DatabaseServiceProvider;
-use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
-class DatabaseServiceProviderConnectionTest extends TestCase
+class DatabaseServiceProviderTest extends DatabaseTest
 {
     /**
      * @covers \Engelsystem\Database\DatabaseServiceProvider::register()
      */
     public function testRegister()
     {
-        /** @var PHPUnit_Framework_MockObject_MockObject|Config $config */
+        /** @var MockObject|Config $config */
         $config = $this->getMockBuilder(Config::class)
             ->getMock();
 
-        /** @var PHPUnit_Framework_MockObject_MockObject|Application $app */
+        /** @var MockObject|Application $app */
         $app = $this->getMockBuilder(Application::class)
             ->setMethods(['get'])
             ->getMock();
@@ -37,17 +36,5 @@ class DatabaseServiceProviderConnectionTest extends TestCase
 
         $serviceProvider = new DatabaseServiceProvider($app);
         $serviceProvider->register();
-    }
-
-    private function getDbConfig()
-    {
-        $configValues = require __DIR__ . '/../../../config/config.default.php';
-        $configFile = __DIR__ . '/../../../config/config.php';
-
-        if (file_exists($configFile)) {
-            $configValues = array_replace_recursive($configValues, require $configFile);
-        }
-
-        return $configValues['database'];
     }
 }
