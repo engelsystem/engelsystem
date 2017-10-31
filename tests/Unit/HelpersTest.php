@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Config;
+namespace Engelsystem\Test\Unit;
 
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
@@ -9,6 +9,7 @@ use Engelsystem\Http\Request;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Routing\UrlGenerator;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class HelpersTest extends TestCase
@@ -26,6 +27,25 @@ class HelpersTest extends TestCase
 
         $this->assertEquals($appMock, app());
         $this->assertEquals($class, app('some.name'));
+    }
+
+    /**
+     * @covers \base_path()
+     */
+    public function testBasePath()
+    {
+        /** @var MockObject|Application $app */
+        $app = $this->getMockBuilder(Container::class)
+            ->getMock();
+        Application::setInstance($app);
+
+        $app->expects($this->atLeastOnce())
+            ->method('get')
+            ->with('path')
+            ->willReturn('/foo/bar');
+
+        $this->assertEquals('/foo/bar', base_path());
+        $this->assertEquals('/foo/bar/bla-foo.conf', base_path('bla-foo.conf'));
     }
 
     /**
@@ -51,6 +71,25 @@ class HelpersTest extends TestCase
             ->willReturn(['user' => 'FooBar']);
 
         $this->assertEquals(['user' => 'FooBar'], config('mail'));
+    }
+
+    /**
+     * @covers \config_path()
+     */
+    public function testConfigPath()
+    {
+        /** @var MockObject|Application $app */
+        $app = $this->getMockBuilder(Container::class)
+            ->getMock();
+        Application::setInstance($app);
+
+        $app->expects($this->atLeastOnce())
+            ->method('get')
+            ->with('path.config')
+            ->willReturn('/foo/conf');
+
+        $this->assertEquals('/foo/conf', config_path());
+        $this->assertEquals('/foo/conf/bar.php', config_path('bar.php'));
     }
 
     /**
@@ -146,7 +185,7 @@ class HelpersTest extends TestCase
     /**
      * @param string $alias
      * @param object $object
-     * @return Application|\PHPUnit_Framework_MockObject_MockObject
+     * @return Application|MockObject
      */
     protected function getAppMock($alias, $object)
     {

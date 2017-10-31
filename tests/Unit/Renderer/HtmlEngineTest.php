@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Config;
+namespace Engelsystem\Test\Unit\Renderer;
 
 use Engelsystem\Renderer\HtmlEngine;
 use PHPUnit\Framework\TestCase;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Config;
+namespace Engelsystem\Test\Unit;
 
 use Engelsystem\Application;
 use Engelsystem\Config\Config;

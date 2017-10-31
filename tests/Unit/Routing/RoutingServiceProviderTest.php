@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Routing;
+namespace Engelsystem\Test\Unit\Routing;
 
 use Engelsystem\Routing\RoutingServiceProvider;
 use Engelsystem\Routing\UrlGenerator;

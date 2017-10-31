@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test;
+namespace Engelsystem\Test\Feature\Model;
 
 use PHPUnit\Framework\TestCase;
 

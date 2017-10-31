@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Exceptions;
+namespace Engelsystem\Test\Unit\Exceptions;
 
 use Engelsystem\Exceptions\ExceptionsServiceProvider;
 use Engelsystem\Exceptions\Handler as ExceptionHandler;

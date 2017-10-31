@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Logger;
+namespace Engelsystem\Test\Feature\Logger;
 
 use Engelsystem\Logger\EngelsystemLogger;
 use PHPUnit\Framework\TestCase;

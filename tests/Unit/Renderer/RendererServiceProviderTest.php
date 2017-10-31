@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Logger;
+namespace Engelsystem\Test\Unit\Renderer;
 
 use Engelsystem\Renderer\EngineInterface;
 use Engelsystem\Renderer\HtmlEngine;

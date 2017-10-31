@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Config;
+namespace Engelsystem\Test\Unit\Config;
 
 use Engelsystem\Config\Config;
 use PHPUnit\Framework\TestCase;

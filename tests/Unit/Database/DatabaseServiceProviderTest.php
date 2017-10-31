@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Database;
+namespace Engelsystem\Test\Unit\Database;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Database\DatabaseServiceProvider;
