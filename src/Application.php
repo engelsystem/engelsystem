@@ -54,7 +54,7 @@ class Application extends Container
     public function register($provider)
     {
         if (is_string($provider)) {
-            $provider = $this->get($provider);
+            $provider = $this->make($provider);
         }
 
         $this->serviceProviders[] = $provider;
