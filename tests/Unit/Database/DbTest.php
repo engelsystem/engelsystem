@@ -19,7 +19,7 @@ class DbTest extends TestCase
         $result = Db::connect('mysql:host=localhost;dbname=someTestDatabaseThatDoesNotExist;charset=utf8');
         $this->assertFalse($result);
 
-        $result = Db::connect('sqlite::memory');
+        $result = Db::connect('sqlite::memory:');
         $this->assertTrue($result);
     }
 

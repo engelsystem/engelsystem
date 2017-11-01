@@ -11,5 +11,7 @@ return [
         \Engelsystem\Routing\RoutingServiceProvider::class,
         \Engelsystem\Renderer\RendererServiceProvider::class,
         \Engelsystem\Database\DatabaseServiceProvider::class,
+        \Engelsystem\Http\RequestServiceProvider::class,
+        \Engelsystem\Http\SessionServiceProvider::class,
     ],
 ];

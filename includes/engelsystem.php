@@ -3,15 +3,17 @@
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Exceptions\Handler as ExceptionHandler;
-use Engelsystem\Http\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 /**
  * This file includes all needed functions, connects to the db etc.
  */
 require_once __DIR__ . '/autoload.php';
+
+
+/**
+ * Include legacy code
+ */
+require __DIR__ . '/includes.php';
 
 
 /**
@@ -48,30 +50,12 @@ if ($app->get('config')->get('maintenance')) {
 
 
 /**
- * Initialize Request
- *
- * @var Request $request
+ * Init translations
  */
-$request = Request::createFromGlobals();
-$app->instance('request', $request);
-
-
-/**
- * Include legacy code
- */
-require __DIR__ . '/includes.php';
-
-
-/**
- * Init application
- */
-$sessionStorage = (PHP_SAPI != 'cli' ? new NativeSessionStorage(['cookie_httponly' => true]) : new MockArraySessionStorage());
-$session = new Session($sessionStorage);
-$app->instance('session', $session);
-$session->start();
-$request->setSession($session);
-
-
 gettext_init();
 
+
+/**
+ * Init authorization
+ */
 load_auth();
