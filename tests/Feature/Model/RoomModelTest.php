@@ -10,7 +10,7 @@ class RoomModelTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        require_once __DIR__ . '/../../../includes/engelsystem_provider.php';
+        require_once __DIR__ . '/../../../includes/engelsystem.php';
     }
 
     public function create_Room()
