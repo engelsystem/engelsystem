@@ -109,7 +109,9 @@ class SessionServiceProviderTest extends ServiceProviderTest
      */
     private function getSessionMock()
     {
+        $sessionStorage = $this->getMockForAbstractClass(StorageInterface::class);
         return $this->getMockBuilder(Session::class)
+            ->setConstructorArgs([$sessionStorage])
             ->setMethods(['start'])
             ->getMock();
     }
