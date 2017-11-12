@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Config;
+namespace Engelsystem\Test\Unit\Routing;
 
 use Engelsystem\Application;
 use Engelsystem\Container\Container;

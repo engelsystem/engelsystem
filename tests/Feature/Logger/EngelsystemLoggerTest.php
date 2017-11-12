@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Logger;
+namespace Engelsystem\Test\Feature\Logger;
 
 use Engelsystem\Logger\EngelsystemLogger;
 use PHPUnit\Framework\TestCase;
@@ -12,7 +12,7 @@ class EngelsystemLoggerTest extends TestCase
 {
     public static function setUpBeforeClass()
     {
-        require_once __DIR__ . '/../../../includes/engelsystem_provider.php';
+        require_once __DIR__ . '/../../../includes/engelsystem.php';
     }
 
     /**

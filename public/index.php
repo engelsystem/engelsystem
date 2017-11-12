@@ -1,6 +1,8 @@
 <?php
 
-require_once realpath(__DIR__ . '/../includes/engelsystem_provider.php');
+use Engelsystem\Http\Request;
+
+require_once realpath(__DIR__ . '/../includes/engelsystem.php');
 
 $free_pages = [
     'admin_event_config',
@@ -25,6 +27,8 @@ $page = '';
 $title = '';
 $content = '';
 
+/** @var Request $request */
+$request = $app->get('request');
 $page = $request->query->get('p');
 if (empty($page)) {
     $page = $request->path();

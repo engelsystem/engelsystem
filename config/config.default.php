@@ -5,10 +5,10 @@
 return [
     // MySQL-Connection Settings
     'database'                => [
-        'host' => 'localhost',
-        'user' => 'root',
-        'pw'   => '',
-        'db'   => 'engelsystem',
+        'host' => env('MYSQL_HOST', (env('CI', false) ? 'mysql' : 'localhost')),
+        'user' => env('MYSQL_USER', 'root'),
+        'pw'   => env('MYSQL_PASSWORD', ''),
+        'db'   => env('MYSQL_DATABASE', 'engelsystem'),
     ],
 
     // For accessing stats

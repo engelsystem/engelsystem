@@ -6,4 +6,4 @@ if (!is_readable(__DIR__ . '/../vendor/autoload.php')) {
 }
 
 // Include composer autoloader
-require_once __DIR__ . '/../vendor/autoload.php';
+$loader = require __DIR__ . '/../vendor/autoload.php';

@@ -24,6 +24,15 @@ function app($id = null)
 }
 
 /**
+ * @param string $path
+ * @return string
+ */
+function base_path($path = '')
+{
+    return app('path') . (empty($path) ? '' : DIRECTORY_SEPARATOR . $path);
+}
+
+/**
  * Get or set config values
  *
  * @param string|array $key
@@ -44,6 +53,30 @@ function config($key = null, $default = null)
     }
 
     return $config->get($key, $default);
+}
+
+/**
+ * @param string $path
+ * @return string
+ */
+function config_path($path = '')
+{
+    return app('path.config') . (empty($path) ? '' : DIRECTORY_SEPARATOR . $path);
+}
+
+/**
+ * @param string $key
+ * @param mixed  $default
+ * @return mixed
+ */
+function env($key, $default = null)
+{
+    $value = getenv($key);
+    if ($value === false) {
+        return $default;
+    }
+
+    return $value;
 }
 
 /**
@@ -79,22 +112,6 @@ function session($key = null, $default = null)
 }
 
 /**
- * @param string  $template
- * @param mixed[] $data
- * @return Renderer|string
- */
-function view($template = null, $data = null)
-{
-    $renderer = app('renderer');
-
-    if (is_null($template)) {
-        return $renderer;
-    }
-
-    return $renderer->render($template, $data);
-}
-
-/**
  * @param string $path
  * @param array  $parameters
  * @return UrlGenerator|string
@@ -108,4 +125,20 @@ function url($path = null, $parameters = [])
     }
 
     return $urlGenerator->to($path, $parameters);
+}
+
+/**
+ * @param string  $template
+ * @param mixed[] $data
+ * @return Renderer|string
+ */
+function view($template = null, $data = null)
+{
+    $renderer = app('renderer');
+
+    if (is_null($template)) {
+        return $renderer;
+    }
+
+    return $renderer->render($template, $data);
 }

@@ -36,7 +36,7 @@ function gettext_init()
     }
 
     gettext_locale();
-    bindtextdomain('default', realpath(__DIR__ . '/../../locale'));
+    bindtextdomain('default', app('path.lang'));
     bind_textdomain_codeset('default', 'UTF-8');
     textdomain('default');
 }

@@ -1,5 +1,5 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         bootstrap="./includes/autoload.php"
+         bootstrap="./tests/autoload.php"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.3/phpunit.xsd"
          colors="true"
 >
@@ -13,7 +13,6 @@
     </testsuites>
     <filter>
         <whitelist>
-            <directory>./include/</directory>
             <directory>./src/</directory>
         </whitelist>
     </filter>
