@@ -13,14 +13,14 @@ class RoomModelTest extends TestCase
         require_once __DIR__ . '/../../../includes/engelsystem.php';
     }
 
-    public function create_Room()
+    public function createRoom()
     {
         $this->room_id = Room_create('test', false, true, '');
     }
 
-    public function test_Room()
+    public function testRoom()
     {
-        $this->create_Room();
+        $this->createRoom();
 
         $room = Room($this->room_id);
 

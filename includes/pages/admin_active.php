@@ -252,13 +252,13 @@ function admin_active()
         }
     }
 
-    $uc = DB::selectOne('SELECT count(*) FROM `User` WHERE `Tshirt`=1');
-    $uc = array_shift($uc);
+    $shirtCount = DB::selectOne('SELECT count(*) FROM `User` WHERE `Tshirt`=1');
+    $shirtCount = array_shift($shirtCount);
 
     $shirt_statistics[] = [
         'size'   => '<b>' . _('Sum') . '</b>',
         'needed' => '<b>' . User_arrived_count() . '</b>',
-        'given'  => '<b>' . (int)$uc . '</b>'
+        'given'  => '<b>' . (int)$shirtCount . '</b>'
     ];
 
     return page_with_title(admin_active_title(), [
