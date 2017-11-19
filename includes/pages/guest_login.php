@@ -45,7 +45,7 @@ function guest_register()
     $nick = '';
     $lastName = '';
     $preName = '';
-    $age = '';
+    $age = 0;
     $tel = '';
     $dect = '';
     $mobile = '';
