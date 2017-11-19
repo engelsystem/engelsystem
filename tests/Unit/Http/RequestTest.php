@@ -47,7 +47,8 @@ class RequestTest extends TestCase
         ]);
 
         $this->assertTrue($request->has('foo'));
-        $this->assertFalse($request->has('bar'));
+        $this->assertTrue($request->has('bar'));
+        $this->assertFalse($request->has('baz'));
     }
 
     /**
