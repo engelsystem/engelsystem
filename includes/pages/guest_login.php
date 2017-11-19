@@ -256,7 +256,7 @@ function guest_register()
             $user_angel_types_info = [];
             foreach ($selected_angel_types as $selected_angel_type_id) {
                 DB::insert(
-                    'INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`) VALUES (?, ?)',
+                    'INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`, `supporter`) VALUES (?, ?, FALSE)',
                     [$user_id, $selected_angel_type_id]
                 );
                 $user_angel_types_info[] = $angel_types[$selected_angel_type_id];
