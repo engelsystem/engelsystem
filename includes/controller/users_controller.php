@@ -192,7 +192,7 @@ function user_controller()
         $user_source = User($request->input('user_id'));
         if ($user_source == null) {
             error(_('User not found.'));
-            redirect('?');
+            redirect(page_link_to('/'));
         }
     }
 

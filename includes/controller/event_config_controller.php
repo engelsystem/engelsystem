@@ -16,7 +16,7 @@ function event_config_edit_controller()
     global $privileges;
 
     if (!in_array('admin_event_config', $privileges)) {
-        redirect('?');
+        redirect(page_link_to('/'));
     }
 
     $request = request();

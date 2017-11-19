@@ -171,7 +171,7 @@ function angeltype_controller()
     global $privileges, $user;
 
     if (!in_array('angeltypes', $privileges)) {
-        redirect('?');
+        redirect(page_link_to('/'));
     }
 
     $angeltype = load_angeltype();
@@ -204,7 +204,7 @@ function angeltypes_list_controller()
     global $privileges, $user;
 
     if (!in_array('angeltypes', $privileges)) {
-        redirect('?');
+        redirect(page_link_to('/'));
     }
 
     $angeltypes = AngelTypes_with_user($user);

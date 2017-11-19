@@ -249,7 +249,7 @@ function shift_controller()
     $request = request();
 
     if (!in_array('user_shifts', $privileges)) {
-        redirect(page_link_to('?'));
+        redirect(page_link_to('/'));
     }
 
     if (!$request->has('shift_id')) {
@@ -311,7 +311,7 @@ function shifts_controller()
         case 'next':
             return shift_next_controller();
         default:
-            redirect(page_link_to('?'));
+            redirect(page_link_to('/'));
     }
 
     return false;
@@ -325,7 +325,7 @@ function shift_next_controller()
     global $user, $privileges;
 
     if (!in_array('user_shifts', $privileges)) {
-        redirect(page_link_to('?'));
+        redirect(page_link_to('/'));
     }
 
     $upcoming_shifts = ShiftEntries_upcoming_for_user($user);

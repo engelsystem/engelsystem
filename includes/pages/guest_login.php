@@ -271,7 +271,7 @@ function guest_register()
                 return User_registration_success_view($event_config['event_welcome_msg']);
             }
 
-            redirect('?');
+            redirect(page_link_to('/'));
         }
     }
 
