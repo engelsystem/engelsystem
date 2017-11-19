@@ -657,7 +657,7 @@ function render_user_departure_date_hint()
 
     if (!isset($user['planned_departure_date']) || $user['planned_departure_date'] == null) {
         $text = _('Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities.');
-        return render_profile_link($text);
+        return render_profile_link($text, null, 'alert-link');
     }
 
     return null;
@@ -705,7 +705,7 @@ function render_user_tshirt_hint()
 
     if (config('enable_tshirt_size') && $user['Size'] == '') {
         $text = _('You need to specify a tshirt size in your settings!');
-        return render_profile_link($text);
+        return render_profile_link($text, null, 'alert-link');
     }
 
     return null;
@@ -720,7 +720,7 @@ function render_user_dect_hint()
 
     if ($user['DECT'] == '') {
         $text = _('You need to specify a DECT phone number in your settings! If you don\'t have a DECT phone, just enter \'-\'.');
-        return render_profile_link($text);
+        return render_profile_link($text, null, 'alert-link');
     }
 
     return null;
