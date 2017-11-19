@@ -38,9 +38,9 @@ class Request extends SymfonyRequest
      */
     public function has($key)
     {
-        $value = $this->input($key, null);
+        $value = $this->input($key);
 
-        return !($value === null);
+        return !is_null($value);
     }
 
     /**
