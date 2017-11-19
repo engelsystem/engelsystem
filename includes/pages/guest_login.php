@@ -214,9 +214,10 @@ function guest_register()
                         `CreateDate`,
                         `Sprache`,
                         `arrival_date`,
-                        `planned_arrival_date`
+                        `planned_arrival_date`,
+                        `force_active`
                     )
-                    VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NULL, ?)
+                    VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NULL, ?, FALSE)
                 ',
                 [
                     config('theme'),
