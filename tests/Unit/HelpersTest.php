@@ -11,6 +11,7 @@ use Engelsystem\Routing\UrlGenerator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface as StorageInterface;
 
 class HelpersTest extends TestCase
 {
@@ -130,7 +131,9 @@ class HelpersTest extends TestCase
      */
     public function testSession()
     {
+        $sessionStorage = $this->getMockForAbstractClass(StorageInterface::class);
         $sessionMock = $this->getMockBuilder(Session::class)
+            ->setConstructorArgs([$sessionStorage])
             ->getMock();
 
         $this->getAppMock('session', $sessionMock);
