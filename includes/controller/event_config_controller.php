@@ -101,9 +101,14 @@ function event_config_edit_controller()
             );
 
             engelsystem_log(
-                'Changed event config: $event_name, $event_welcome_msg, '
-                . date('Y-m-d', $buildup_start_date) . ', ' . date('Y-m-d', $event_start_date) . ', '
-                . date('Y-m-d', $event_end_date) . ', ' . date('Y-m-d', $teardown_end_date)
+                sprintf('Changed event config: %s, %s, %s, %s, %s, %s', 
+                    $event_name, 
+                    $event_welcome_msg, 
+                    date('Y-m-d', $buildup_start_date),
+                    date('Y-m-d', $event_start_date),
+                    date('Y-m-d', $event_end_date),
+                    date('Y-m-d', $teardown_end_date)
+                )
             );
             success(_('Settings saved.'));
             redirect(page_link_to('admin_event_config'));
