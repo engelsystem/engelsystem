@@ -248,6 +248,7 @@ function shift_entry_delete_controller()
     $shift_entry_source = DB::selectOne('
         SELECT
             `User`.`Nick`,
+            `User`.`Gekommen`,
             `ShiftEntry`.`Comment`,
             `ShiftEntry`.`UID`,
             `ShiftTypes`.`name`,
