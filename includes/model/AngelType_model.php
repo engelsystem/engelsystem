@@ -152,10 +152,10 @@ function AngelType_create($angeltype)
         ',
         [
             $angeltype['name'],
-            (bool)$angeltype['restricted'],
+            (int)$angeltype['restricted'],
             $angeltype['description'],
-            (bool)$angeltype['requires_driver_license'],
-            (bool)$angeltype['no_self_signup'],
+            (int)$angeltype['requires_driver_license'],
+            (int)$angeltype['no_self_signup'],
             $angeltype['contact_user_id'],
             $angeltype['contact_name'],
             $angeltype['contact_dect'],

@@ -75,12 +75,12 @@ function UserDriverLicenses_create($user_driver_license, $user)
         ',
         [
             $user_driver_license['user_id'],
-            (bool)$user_driver_license['has_car'],
-            (bool)$user_driver_license['has_license_car'],
-            (bool)$user_driver_license['has_license_3_5t_transporter'],
-            (bool)$user_driver_license['has_license_7_5t_truck'],
-            (bool)$user_driver_license['has_license_12_5t_truck'],
-            (bool)$user_driver_license['has_license_forklift'],
+            (int)$user_driver_license['has_car'],
+            (int)$user_driver_license['has_license_car'],
+            (int)$user_driver_license['has_license_3_5t_transporter'],
+            (int)$user_driver_license['has_license_7_5t_truck'],
+            (int)$user_driver_license['has_license_12_5t_truck'],
+            (int)$user_driver_license['has_license_forklift'],
         ]
     );
 
@@ -106,12 +106,12 @@ function UserDriverLicenses_update($user_driver_license)
           WHERE `user_id`=?
        ',
         [
-            (bool)$user_driver_license['has_car'],
-            (bool)$user_driver_license['has_license_car'],
-            (bool)$user_driver_license['has_license_3_5t_transporter'],
-            (bool)$user_driver_license['has_license_7_5t_truck'],
-            (bool)$user_driver_license['has_license_12_5t_truck'],
-            (bool)$user_driver_license['has_license_forklift'],
+            (int)$user_driver_license['has_car'],
+            (int)$user_driver_license['has_license_car'],
+            (int)$user_driver_license['has_license_3_5t_transporter'],
+            (int)$user_driver_license['has_license_7_5t_truck'],
+            (int)$user_driver_license['has_license_12_5t_truck'],
+            (int)$user_driver_license['has_license_forklift'],
             $user_driver_license['user_id'],
         ]
     );
