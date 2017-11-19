@@ -157,6 +157,9 @@ function guest_register()
                 $valid = false;
                 error(_('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
             }
+        } else {
+            $valid = false;
+            error(_('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
         }
 
         $selected_angel_types = [];
