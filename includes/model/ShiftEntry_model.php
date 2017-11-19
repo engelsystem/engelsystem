@@ -92,7 +92,7 @@ function ShiftEntry_create($shift_entry)
             $shift_entry['UID'],
             $shift_entry['Comment'],
             $shift_entry['freeload_comment'],
-            $shift_entry['freeloaded'],
+            (int)$shift_entry['freeloaded'],
         ]
     );
 }
@@ -114,7 +114,7 @@ function ShiftEntry_update($shift_entry)
         [
             $shift_entry['Comment'],
             $shift_entry['freeload_comment'],
-            $shift_entry['freeloaded'],
+            (int)$shift_entry['freeloaded'],
             $shift_entry['id']
         ]
     );

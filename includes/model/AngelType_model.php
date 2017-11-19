@@ -109,10 +109,10 @@ function AngelType_update($angeltype)
           WHERE `id` = ?',
         [
             $angeltype['name'],
-            $angeltype['restricted'],
+            (int)$angeltype['restricted'],
             $angeltype['description'],
-            $angeltype['requires_driver_license'],
-            $angeltype['no_self_signup'],
+            (int)$angeltype['requires_driver_license'],
+            (int)$angeltype['no_self_signup'],
             $angeltype['contact_user_id'],
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
