@@ -308,7 +308,6 @@ function admin_shifts()
             redirect(page_link_to('admin_shifts'));
         }
 
-        $needed_angel_types_info = [];
         foreach ($session->get('admin_shifts_shifts', []) as $shift) {
             $shift['URL'] = null;
             $shift['PSID'] = null;
@@ -321,6 +320,7 @@ function admin_shifts()
                 . ' to ' . date('Y-m-d H:i', $shift['end'])
             );
 
+            $needed_angel_types_info = [];
             foreach ($session->get('admin_shifts_types', []) as $type_id => $count) {
                 $angel_type_source = DB::selectOne('
                       SELECT *
@@ -341,9 +341,9 @@ function admin_shifts()
                     $needed_angel_types_info[] = $angel_type_source['name'] . ': ' . $count;
                 }
             }
+            engelsystem_log('Shift needs following angel types: ' . join(', ', $needed_angel_types_info));
         }
 
-        engelsystem_log('Shift needs following angel types: ' . join(', ', $needed_angel_types_info));
         success('Schichten angelegt.');
         redirect(page_link_to('admin_shifts'));
     } else {
