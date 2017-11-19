@@ -620,9 +620,32 @@ function User_groups_render($user_groups)
  */
 function User_Nick_render($user_source)
 {
-    return '<a class="' . ($user_source['Gekommen'] ? '' : 'text-muted') . '" href="'
-        . page_link_to('users', ['action' => 'view', 'user_id' => $user_source['UID']])
-        . '"><span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . '</a>';
+    return render_profile_link(
+        '<span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . '</a>',
+        $user_source['UID'],
+        ($user_source['Gekommen'] ? '' : 'text-muted')
+    );
+}
+
+/**
+ * @param string $text
+ * @param int    $user_id
+ * @param string $class
+ * @return string
+ */
+function render_profile_link($text, $user_id = null, $class = '')
+{
+    $profile_link = page_link_to('user-settings');
+    if (!is_null($user_id)) {
+        $profile_link = page_link_to('users', ['action' => 'view', 'user_id' => $user_id]);
+    }
+
+    return sprintf(
+        '<a class="%s" href="%s">%s</a>',
+        $class,
+        $profile_link,
+        $text
+    );
 }
 
 /**
@@ -633,7 +656,8 @@ function render_user_departure_date_hint()
     global $user;
 
     if (!isset($user['planned_departure_date']) || $user['planned_departure_date'] == null) {
-        return _('Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities.');
+        $text = _('Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities.');
+        return render_profile_link($text);
     }
 
     return null;
@@ -680,7 +704,8 @@ function render_user_tshirt_hint()
     global $user;
 
     if (config('enable_tshirt_size') && $user['Size'] == '') {
-        return _('You need to specify a tshirt size in your settings!');
+        $text = _('You need to specify a tshirt size in your settings!');
+        return render_profile_link($text);
     }
 
     return null;
@@ -694,7 +719,8 @@ function render_user_dect_hint()
     global $user;
 
     if ($user['DECT'] == '') {
-        return _('You need to specify a DECT phone number in your settings! If you don\'t have a DECT phone, just enter \'-\'.');
+        $text = _('You need to specify a DECT phone number in your settings! If you don\'t have a DECT phone, just enter \'-\'.');
+        return render_profile_link($text);
     }
 
     return null;
