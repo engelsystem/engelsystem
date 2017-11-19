@@ -220,9 +220,10 @@ function guest_register()
                         `planned_arrival_date`,
                         `force_active`,
                         `lastLogIn`,
-                        `api_key`
+                        `api_key`,
+                        `got_voucher`
                     )
-                    VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NULL, ?, FALSE, 0, "")
+                    VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NULL, ?, FALSE, 0, "", 0)
                 ',
                 [
                     config('theme'),
