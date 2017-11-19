@@ -177,8 +177,8 @@ function UserAngelType_delete($user_angeltype)
 function UserAngelType_create($user, $angeltype)
 {
     DB::insert('
-            INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`)
-            VALUES (?, ?)
+            INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`, `supporter`)
+            VALUES (?, ?, FALSE)
         ',
         [
             $user['UID'],
