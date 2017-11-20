@@ -78,15 +78,15 @@ Shifts.db = {
     }
     Shifts.log('init db');
     Shifts.db.websql = openDatabase('engelsystem' + Shifts.db.prefix, '1.0', '', 10 * 1024 * 1024);
-    return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS Shifts (SID unique, title, shifttype_id INT, start_time INT, end_time INT, RID INT)');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS User (UID unique, nick)');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS Room (RID unique, Name)');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS ShiftEntry (id unique, SID INT, TID INT, UID INT)');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS ShiftTypes (id unique, name, angeltype_id INT)');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS AngelTypes (id unique, name)');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS NeededAngelTypes (id unique, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS options (option_key, option_value)');
+    return Shifts.db.websql.transaction(function(t) {
+      t.executeSql('CREATE TABLE IF NOT EXISTS Shifts (SID unique, title, shifttype_id INT, start_time INT, end_time INT, RID INT)');
+      t.executeSql('CREATE TABLE IF NOT EXISTS User (UID unique, nick)');
+      t.executeSql('CREATE TABLE IF NOT EXISTS Room (RID unique, Name)');
+      t.executeSql('CREATE TABLE IF NOT EXISTS ShiftEntry (id unique, SID INT, TID INT, UID INT)');
+      t.executeSql('CREATE TABLE IF NOT EXISTS ShiftTypes (id unique, name, angeltype_id INT)');
+      t.executeSql('CREATE TABLE IF NOT EXISTS AngelTypes (id unique, name)');
+      t.executeSql('CREATE TABLE IF NOT EXISTS NeededAngelTypes (id unique, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)');
+      t.executeSql('CREATE TABLE IF NOT EXISTS options (option_key, option_value)');
       return Shifts.db.populate_ids(function() {
         return done();
       });
@@ -105,8 +105,8 @@ Shifts.db = {
     return a;
   },
   populate_ids: function(done) {
-    return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql('SELECT RID from Room', [], function(tx, res) {
+    return Shifts.db.websql.transaction(function(t) {
+      t.executeSql('SELECT RID from Room', [], function(t, res) {
         var i, len, r, ref, results;
         ref = res.rows;
         results = [];
@@ -116,7 +116,7 @@ Shifts.db = {
         }
         return results;
       });
-      tx.executeSql('SELECT id from AngelTypes', [], function(tx, res) {
+      t.executeSql('SELECT id from AngelTypes', [], function(t, res) {
         var a, i, len, results;
         results = [];
         for (i = 0, len = res.length; i < len; i++) {
@@ -130,24 +130,24 @@ Shifts.db = {
   },
   insert_room: function(room, done) {
     room.RID = parseInt(room.RID, 10);
-    return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql('INSERT INTO Room (RID, Name) VALUES (?, ?)', [room.RID, room.Name]);
+    return Shifts.db.websql.transaction(function(t) {
+      t.executeSql('INSERT INTO Room (RID, Name) VALUES (?, ?)', [room.RID, room.Name]);
       Shifts.interaction.selected_rooms.push(room.RID);
       return done();
     });
   },
   insert_user: function(user, done) {
     user.UID = parseInt(user.UID, 10);
-    return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql('INSERT INTO User (UID, Nick) VALUES (?, ?)', [user.UID, user.Nick]);
+    return Shifts.db.websql.transaction(function(t) {
+      t.executeSql('INSERT INTO User (UID, Nick) VALUES (?, ?)', [user.UID, user.Nick]);
       return done();
     });
   },
   insert_shift: function(shift, done) {
     shift.SID = parseInt(shift.SID, 10);
     shift.RID = parseInt(shift.RID, 10);
-    return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql('INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (?, ?, ?, ?, ?, ?)', [shift.SID, shift.title, shift.shifttype_id, shift.start, shift.end, shift.RID]);
+    return Shifts.db.websql.transaction(function(t) {
+      t.executeSql('INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (?, ?, ?, ?, ?, ?)', [shift.SID, shift.title, shift.shifttype_id, shift.start, shift.end, shift.RID]);
       return done();
     });
   },
@@ -156,21 +156,21 @@ Shifts.db = {
     shiftentry.SID = parseInt(shiftentry.SID, 10);
     shiftentry.TID = parseInt(shiftentry.TID, 10);
     shiftentry.UID = parseInt(shiftentry.UID, 10);
-    return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql('INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (?, ?, ?, ?)', [shiftentry.id, shiftentry.SID, shiftentry.TID, shiftentry.UID], function() {});
+    return Shifts.db.websql.transaction(function(t) {
+      t.executeSql('INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (?, ?, ?, ?)', [shiftentry.id, shiftentry.SID, shiftentry.TID, shiftentry.UID], function() {});
       return done();
     });
   },
   insert_shifttype: function(shifttype, done) {
     shifttype.id = parseInt(shifttype.id, 10);
-    return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql('INSERT INTO ShiftTypes (id, name) VALUES (?, ?)', [shifttype.id, shifttype.name]);
+    return Shifts.db.websql.transaction(function(t) {
+      t.executeSql('INSERT INTO ShiftTypes (id, name) VALUES (?, ?)', [shifttype.id, shifttype.name]);
       return done();
     });
   },
   insert_angeltype: function(angeltype, done) {
-    return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql('INSERT INTO AngelTypes (id, name) VALUES (?, ?)', [angeltype.id, angeltype.name], function() {
+    return Shifts.db.websql.transaction(function(t) {
+      t.executeSql('INSERT INTO AngelTypes (id, name) VALUES (?, ?)', [angeltype.id, angeltype.name], function() {
         return Shifts.interaction.selected_angeltypes.push(angeltype.id);
       });
       return done();
@@ -182,8 +182,8 @@ Shifts.db = {
     needed_angeltype.SID = parseInt(needed_angeltype.SID, 10) || null;
     needed_angeltype.ATID = parseInt(needed_angeltype.ATID, 10);
     needed_angeltype.count = parseInt(needed_angeltype.count, 10);
-    return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql('INSERT INTO NeededAngelTypes (id, room_id, shift_id, angel_type_id, angel_count) VALUES (?, ?, ?, ?, ?)', [needed_angeltype.id, needed_angeltype.RID, needed_angeltype.SID, needed_angeltype.ATID, needed_angeltype.count], function() {});
+    return Shifts.db.websql.transaction(function(t) {
+      t.executeSql('INSERT INTO NeededAngelTypes (id, room_id, shift_id, angel_type_id, angel_count) VALUES (?, ?, ?, ?, ?)', [needed_angeltype.id, needed_angeltype.RID, needed_angeltype.SID, needed_angeltype.ATID, needed_angeltype.count], function() {});
       return done();
     });
   },
@@ -193,8 +193,8 @@ Shifts.db = {
     filter_angeltypes_ids = filter_angeltypes.join(',');
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM NeededAngelTypes JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id JOIN Room ON Room.RID = Shifts.RID JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id WHERE NeededAngelTypes.angel_count > 0 AND Shifts.start_time >= ? AND Shifts.end_time <= ? AND Shifts.RID IN (?) AND NeededAngelTypes.angel_type_id IN (?) ORDER BY Shifts.start_time, Shifts.SID', [start_time, end_time, filter_rooms_ids, filter_angeltypes_ids], function(tx, res) {
+    return Shifts.db.websql.transaction(function(t) {
+      return t.executeSql('SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM NeededAngelTypes JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id JOIN Room ON Room.RID = Shifts.RID JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id WHERE NeededAngelTypes.angel_count > 0 AND Shifts.start_time >= ? AND Shifts.end_time <= ? AND Shifts.RID IN (?) AND NeededAngelTypes.angel_type_id IN (?) ORDER BY Shifts.start_time, Shifts.SID', [start_time, end_time, filter_rooms_ids, filter_angeltypes_ids], function(t, res) {
         var r;
         r = Shifts.db.object_to_array(res.rows);
         return done(r);
@@ -205,8 +205,8 @@ Shifts.db = {
     var end_time, start_time;
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count, AngelTypes.name FROM NeededAngelTypes JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id WHERE Shifts.start_time >= ? AND Shifts.end_time <= ? AND NeededAngelTypes.angel_count > 0 ORDER BY NeededAngelTypes.shift_id', [start_time, end_time], function(tx, res) {
+    return Shifts.db.websql.transaction(function(t) {
+      return t.executeSql('SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count, AngelTypes.name FROM NeededAngelTypes JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id WHERE Shifts.start_time >= ? AND Shifts.end_time <= ? AND NeededAngelTypes.angel_count > 0 ORDER BY NeededAngelTypes.shift_id', [start_time, end_time], function(t, res) {
         var r;
         r = Shifts.db.object_to_array(res.rows);
         return done(r);
@@ -217,8 +217,8 @@ Shifts.db = {
     var end_time, start_time;
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
-    return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick, AngelTypes.name as at_name FROM ShiftEntry JOIN User ON ShiftEntry.UID = User.UID JOIN Shifts ON ShiftEntry.SID = Shifts.SID JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id WHERE Shifts.start_time >= ? AND Shifts.end_time <= ? ORDER BY ShiftEntry.SID', [start_time, end_time], function(tx, res) {
+    return Shifts.db.websql.transaction(function(t) {
+      return t.executeSql('SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick, AngelTypes.name as at_name FROM ShiftEntry JOIN User ON ShiftEntry.UID = User.UID JOIN Shifts ON ShiftEntry.SID = Shifts.SID JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id WHERE Shifts.start_time >= ? AND Shifts.end_time <= ? ORDER BY ShiftEntry.SID', [start_time, end_time], function(t, res) {
         var r;
         r = Shifts.db.object_to_array(res.rows);
         return done(r);
@@ -226,8 +226,8 @@ Shifts.db = {
     });
   },
   get_usershifts: function(user_id, done) {
-    return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, Shifts.start_time, Shifts.end_time FROM ShiftEntry JOIN Shifts ON ShiftEntry.SID = Shifts.SID WHERE ShiftEntry.UID = ? ORDER BY ShiftEntry.SID', [user_id], function(tx, res) {
+    return Shifts.db.websql.transaction(function(t) {
+      return t.executeSql('SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, Shifts.start_time, Shifts.end_time FROM ShiftEntry JOIN Shifts ON ShiftEntry.SID = Shifts.SID WHERE ShiftEntry.UID = ? ORDER BY ShiftEntry.SID', [user_id], function(t, res) {
         var r;
         r = Shifts.db.object_to_array(res.rows);
         return done(r);
@@ -235,12 +235,12 @@ Shifts.db = {
     });
   },
   get_shift_range: function(done) {
-    return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('SELECT start_time FROM Shifts ORDER BY start_time ASC LIMIT 1', [], function(tx, res) {
+    return Shifts.db.websql.transaction(function(t) {
+      return t.executeSql('SELECT start_time FROM Shifts ORDER BY start_time ASC LIMIT 1', [], function(t, res) {
         var now, start_time;
         if (res.rows.length > 0) {
           start_time = res.rows[0].start_time;
-          return tx.executeSql('SELECT end_time FROM Shifts ORDER BY end_time DESC LIMIT 1', [], function(tx, res) {
+          return t.executeSql('SELECT end_time FROM Shifts ORDER BY end_time DESC LIMIT 1', [], function(t, res) {
             var end_time;
             end_time = res.rows[0].end_time;
             return done([start_time, end_time]);
@@ -253,8 +253,8 @@ Shifts.db = {
     });
   },
   get_rooms: function(done) {
-    return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('SELECT * FROM Room ORDER BY Name', [], function(tx, res) {
+    return Shifts.db.websql.transaction(function(t) {
+      return t.executeSql('SELECT * FROM Room ORDER BY Name', [], function(t, res) {
         var r;
         r = Shifts.db.object_to_array(res.rows);
         return done(r);
@@ -262,8 +262,8 @@ Shifts.db = {
     });
   },
   get_angeltypes: function(done) {
-    return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('SELECT * FROM AngelTypes ORDER BY name', [], function(tx, res) {
+    return Shifts.db.websql.transaction(function(t) {
+      return t.executeSql('SELECT * FROM AngelTypes ORDER BY name', [], function(t, res) {
         var r;
         r = Shifts.db.object_to_array(res.rows);
         return done(r);
@@ -271,8 +271,8 @@ Shifts.db = {
     });
   },
   get_option: function(key, done) {
-    return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('SELECT option_value FROM options WHERE option_key = ? LIMIT 1', [key], function(tx, res) {
+    return Shifts.db.websql.transaction(function(t) {
+      return t.executeSql('SELECT option_value FROM options WHERE option_key = ? LIMIT 1', [key], function(t, res) {
         try {
           return done(res.rows[0].option_value);
         } catch (error) {
@@ -282,10 +282,10 @@ Shifts.db = {
     });
   },
   set_option: function(key, value, done) {
-    return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('DELETE FROM options WHERE option_key = ?', [key], function() {
-        return Shifts.db.websql.transaction(function(tx2) {
-          return tx2.executeSql('INSERT INTO options (option_key, option_value) VALUES (?, ?)', [key, value], function() {
+    return Shifts.db.websql.transaction(function(t) {
+      return t.executeSql('DELETE FROM options WHERE option_key = ?', [key], function() {
+        return Shifts.db.websql.transaction(function(t2) {
+          return t2.executeSql('INSERT INTO options (option_key, option_value) VALUES (?, ?)', [key, value], function() {
             return done();
           });
         });
