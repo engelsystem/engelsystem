@@ -283,8 +283,12 @@ Shifts.db = {
   },
   set_option: function(key, value, done) {
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('INSERT INTO options (option_key, option_value) VALUES (?, ?)', [key, value], function() {
-        return done();
+      return tx.executeSql('DELETE FROM options WHERE option_key = ?', [key], function() {
+        return Shifts.db.websql.transaction(function(tx2) {
+          return tx2.executeSql('INSERT INTO options (option_key, option_value) VALUES (?, ?)', [key, value], function() {
+            return done();
+          });
+        });
       });
     });
   }

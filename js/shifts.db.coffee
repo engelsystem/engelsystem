@@ -215,9 +215,8 @@ Shifts.db =
 
     set_option: (key, value, done) ->
         Shifts.db.websql.transaction (tx) ->
-            tx.executeSql 'INSERT INTO options (option_key, option_value) VALUES (?, ?)', [key, value], ->
-                done()
-        #else
-        #    alasql 'UPDATE options SET option_value = ? WHERE option_key = ?', [value, key], ->
-        #        done()
+            tx.executeSql 'DELETE FROM options WHERE option_key = ?', [key], ->
+                Shifts.db.websql.transaction (tx2) ->
+                    tx2.executeSql 'INSERT INTO options (option_key, option_value) VALUES (?, ?)', [key, value], ->
+                        done()
 
