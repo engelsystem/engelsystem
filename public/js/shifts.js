@@ -185,7 +185,7 @@ Shifts.db = {
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM NeededAngelTypes JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id JOIN Room ON Room.RID = Shifts.RID JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id WHERE NeededAngelTypes.angel_count > 0 AND Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time} AND Shifts.RID IN (#{filter_rooms_ids}) AND NeededAngelTypes.angel_type_id IN (#{filter_angeltypes_ids}) ORDER BY Shifts.start_time, Shifts.SID', [], function(tx, res) {
+      return tx.executeSql('SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM NeededAngelTypes JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id JOIN Room ON Room.RID = Shifts.RID JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id WHERE NeededAngelTypes.angel_count > 0 AND Shifts.start_time >= ? AND Shifts.end_time <= ? AND Shifts.RID IN (?) AND NeededAngelTypes.angel_type_id IN (?) ORDER BY Shifts.start_time, Shifts.SID', [start_time, end_time, filter_rooms_ids, filter_angeltypes_ids], function(tx, res) {
         return done(res.rows);
       });
     });
@@ -195,7 +195,7 @@ Shifts.db = {
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count, AngelTypes.name FROM NeededAngelTypes JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time} AND NeededAngelTypes.angel_count > 0 ORDER BY NeededAngelTypes.shift_id', [], function(tx, res) {
+      return tx.executeSql('SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count, AngelTypes.name FROM NeededAngelTypes JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id WHERE Shifts.start_time >= ? AND Shifts.end_time <= ? AND NeededAngelTypes.angel_count > 0 ORDER BY NeededAngelTypes.shift_id', [start_time, end_time], function(tx, res) {
         return done(res.rows);
       });
     });
@@ -205,14 +205,14 @@ Shifts.db = {
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick, AngelTypes.name as at_name FROM ShiftEntry JOIN User ON ShiftEntry.UID = User.UID JOIN Shifts ON ShiftEntry.SID = Shifts.SID JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time} ORDER BY ShiftEntry.SID', [], function(tx, res) {
+      return tx.executeSql('SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick, AngelTypes.name as at_name FROM ShiftEntry JOIN User ON ShiftEntry.UID = User.UID JOIN Shifts ON ShiftEntry.SID = Shifts.SID JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id WHERE Shifts.start_time >= ? AND Shifts.end_time <= ? ORDER BY ShiftEntry.SID', [start_time, end_time], function(tx, res) {
         return done(res.rows);
       });
     });
   },
   get_usershifts: function(user_id, done) {
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql('SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, Shifts.start_time, Shifts.end_time FROM ShiftEntry JOIN Shifts ON ShiftEntry.SID = Shifts.SID WHERE ShiftEntry.UID = #{user_id} ORDER BY ShiftEntry.SID', [], function(tx, res) {
+      return tx.executeSql('SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, Shifts.start_time, Shifts.end_time FROM ShiftEntry JOIN Shifts ON ShiftEntry.SID = Shifts.SID WHERE ShiftEntry.UID = ? ORDER BY ShiftEntry.SID', [user_id], function(tx, res) {
         return done(res.rows);
       });
     });

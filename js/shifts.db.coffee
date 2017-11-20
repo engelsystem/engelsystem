@@ -118,10 +118,10 @@ Shifts.db =
             JOIN Room ON Room.RID = Shifts.RID
             JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
             WHERE NeededAngelTypes.angel_count > 0
-            AND Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
-            AND Shifts.RID IN (#{filter_rooms_ids})
-            AND NeededAngelTypes.angel_type_id IN (#{filter_angeltypes_ids})
-            ORDER BY Shifts.start_time, Shifts.SID', [], (tx, res) ->
+            AND Shifts.start_time >= ? AND Shifts.end_time <= ?
+            AND Shifts.RID IN (?)
+            AND NeededAngelTypes.angel_type_id IN (?)
+            ORDER BY Shifts.start_time, Shifts.SID', [start_time, end_time, filter_rooms_ids, filter_angeltypes_ids], (tx, res) ->
                 done res.rows
 
     get_angeltypes_needed: (done) ->
@@ -133,9 +133,9 @@ Shifts.db =
             FROM NeededAngelTypes
             JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID
             JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id
-            WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
+            WHERE Shifts.start_time >= ? AND Shifts.end_time <= ?
             AND NeededAngelTypes.angel_count > 0
-            ORDER BY NeededAngelTypes.shift_id', [], (tx, res) ->
+            ORDER BY NeededAngelTypes.shift_id', [start_time, end_time], (tx, res) ->
                 done res.rows
 
     get_shiftentries: (done) ->
@@ -148,8 +148,8 @@ Shifts.db =
             JOIN User ON ShiftEntry.UID = User.UID
             JOIN Shifts ON ShiftEntry.SID = Shifts.SID
             JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id
-            WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
-            ORDER BY ShiftEntry.SID', [], (tx, res) ->
+            WHERE Shifts.start_time >= ? AND Shifts.end_time <= ?
+            ORDER BY ShiftEntry.SID', [start_time, end_time], (tx, res) ->
                 done res.rows
 
     get_usershifts: (user_id, done) ->
@@ -161,8 +161,8 @@ Shifts.db =
             tx.executeSql 'SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, Shifts.start_time, Shifts.end_time
             FROM ShiftEntry
             JOIN Shifts ON ShiftEntry.SID = Shifts.SID
-            WHERE ShiftEntry.UID = #{user_id}
-            ORDER BY ShiftEntry.SID', [], (tx, res) ->
+            WHERE ShiftEntry.UID = ?
+            ORDER BY ShiftEntry.SID', [user_id], (tx, res) ->
                 done res.rows
 
     get_shift_range: (done) ->
