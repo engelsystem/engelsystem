@@ -2,7 +2,7 @@
 
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
-use Engelsystem\Exceptions\Handler as ExceptionHandler;
+use Engelsystem\Exceptions\BasicHandler as ExceptionHandler;
 
 /**
  * This file includes all needed functions, connects to the db etc.
