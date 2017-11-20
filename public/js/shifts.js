@@ -95,6 +95,15 @@ Shifts.db = {
   slugify: function(text) {
     return text.toString().toLowerCase().replace(/^[\s|\-|_]+/, '').replace(/[\s|\-|_]+$/, '').replace(/\s+/g, '_').replace(/__+/g, '_').replace(/[^\w\-]+/g, '');
   },
+  object_to_array: function(obj) {
+    var a, i, len, o;
+    a = [];
+    for (i = 0, len = obj.length; i < len; i++) {
+      o = obj[i];
+      a.push(o);
+    }
+    return a;
+  },
   populate_ids: function(done) {
     return Shifts.db.websql.transaction(function(tx) {
       tx.executeSql('SELECT RID from Room', [], function(tx, res) {
@@ -238,7 +247,10 @@ Shifts.db = {
   get_rooms: function(done) {
     return Shifts.db.websql.transaction(function(tx) {
       return tx.executeSql('SELECT * FROM Room ORDER BY Name', [], function(tx, res) {
-        return done(res.rows);
+        var r;
+        r = Shifts.db.object_to_array(res.rows);
+        Shifts.log(r);
+        return done(r);
       });
     });
   },
@@ -702,7 +714,6 @@ Shifts.render = {
               free: 'primary'
             };
         }
-        Shifts.log(rooms);
         filter_form = Mustache.render(Shifts.templates.filter_form, {
           rooms: rooms,
           angeltypes: angeltypes,
@@ -813,7 +824,7 @@ Shifts.render = {
       return false;
     };
     calculate_signup_state = function(shift) {
-      var angels_needed, at, len4, len5, len6, m, n, now_unix, o, ref, u;
+      var angels_needed, at, len4, len5, len6, m, n, now_unix, p, ref, u;
       for (m = 0, len4 = db_usershifts.length; m < len4; m++) {
         u = db_usershifts[m];
         if (u.SID === shift.SID) {
@@ -833,8 +844,8 @@ Shifts.render = {
       if (angels_needed === 0) {
         return 'occupied';
       }
-      for (o = 0, len6 = db_usershifts.length; o < len6; o++) {
-        u = db_usershifts[o];
+      for (p = 0, len6 = db_usershifts.length; p < len6; p++) {
+        u = db_usershifts[p];
         if (u.SID !== shift.SID) {
           if (!(shift.start_time >= u.end_time || shift.end_time <= u.start_time)) {
             return 'collides';

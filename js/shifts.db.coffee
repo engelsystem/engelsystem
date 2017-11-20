@@ -33,6 +33,12 @@ Shifts.db =
         .replace(/__+/g, '_')           # Replace multiple _ with single _
         .replace(/[^\w\-]+/g, '')       # Remove all non-word chars
 
+    object_to_array: (obj) ->
+        a = []
+        for o in obj
+            a.push o
+        return a
+
     populate_ids: (done) ->
         # rooms
         Shifts.db.websql.transaction (tx) ->
@@ -186,7 +192,9 @@ Shifts.db =
     get_rooms: (done) ->
         Shifts.db.websql.transaction (tx) ->
             tx.executeSql 'SELECT * FROM Room ORDER BY Name', [], (tx, res) ->
-                done res.rows
+                r = Shifts.db.object_to_array res.rows
+                Shifts.log r
+                done r
 
     get_angeltypes: (done) ->
         Shifts.db.websql.transaction (tx) ->

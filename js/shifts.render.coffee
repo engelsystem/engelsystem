@@ -132,7 +132,6 @@ Shifts.render =
                             all: 'default'
                             free: 'primary'
                 #
-                Shifts.log rooms
                 filter_form = Mustache.render Shifts.templates.filter_form,
                     rooms: rooms
                     angeltypes: angeltypes
