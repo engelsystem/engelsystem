@@ -22,7 +22,12 @@ Shifts.fetcher =
             ShiftEntry: 'id'
 
         latest_ids = []
-        # TODO: callback
+        tables_to_process = 0
+
+        # determine object count in table_mapping
+        for i of table_mapping
+            tables_to_process++
+
         for table, idname of table_mapping
             do (table, idname) ->
                 Shifts.db.websql.transaction (tx) ->
@@ -31,11 +36,16 @@ Shifts.fetcher =
                             r = res.rows[0][idname]
                         else
                             r = 0
+
                         latest_ids.push(
                             table + '=' + r
                         )
 
-        setTimeout ->
+                        tables_to_process--
+                        if tables_to_process == 0
+                            start_filling(done)
+
+        start_filling = (done) ->
             Shifts.$shiftplan.find('#fetcher_statustext').text 'Fetching data from server...'
             Shifts.$shiftplan.find('#remaining_objects').text ''
             url = '?p=shifts_json_export_websql&' + latest_ids.join('&')
@@ -123,7 +133,6 @@ Shifts.fetcher =
                                                                     done()
                                                                 else
                                                                     Shifts.fetcher.fetch_in_parts done
-        , 500
 
     process: (processing_func, items_to_process, done) ->
         $ro = Shifts.$shiftplan.find('#remaining_objects')
