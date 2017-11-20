@@ -327,7 +327,7 @@ Shifts.render =
         for room_nr of rooms
             if room_nr == 'length'
                 break
-            Shifts.log room_nr
+            #Shifts.log room_nr
             room_id = rooms[room_nr].RID
             mustache_rooms[room_nr] = {}
             mustache_rooms[room_nr].Name = rooms[room_nr].Name
