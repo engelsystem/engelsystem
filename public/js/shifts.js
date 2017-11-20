@@ -10,7 +10,7 @@ Shifts.init = function() {
     Shifts.log('shifts init');
     if (indexOf.call(document.cookie, 'websql=') < 0) {
       try {
-        dbtest = window.openDatabase("_engelsystem_test", "1.0", "", 10 * 1024 * 1024);
+        dbtest = window.openDatabase('_engelsystem_test', '1.0', '', 10 * 1024 * 1024);
         document.cookie = 'websql=yes';
       } catch (error) {
         document.cookie = 'websql=nope';
@@ -77,16 +77,16 @@ Shifts.db = {
       Shifts.db.prefix = '';
     }
     Shifts.log('init db');
-    Shifts.db.websql = openDatabase("engelsystem" + Shifts.db.prefix, "1.0", "", 10 * 1024 * 1024);
+    Shifts.db.websql = openDatabase('engelsystem' + Shifts.db.prefix, '1.0', '', 10 * 1024 * 1024);
     return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql("CREATE TABLE IF NOT EXISTS Shifts (SID unique, title, shifttype_id INT, start_time INT, end_time INT, RID INT)");
-      tx.executeSql("CREATE TABLE IF NOT EXISTS User (UID unique, nick)");
-      tx.executeSql("CREATE TABLE IF NOT EXISTS Room (RID unique, Name)");
-      tx.executeSql("CREATE TABLE IF NOT EXISTS ShiftEntry (id unique, SID INT, TID INT, UID INT)");
-      tx.executeSql("CREATE TABLE IF NOT EXISTS ShiftTypes (id unique, name, angeltype_id INT)");
-      tx.executeSql("CREATE TABLE IF NOT EXISTS AngelTypes (id unique, name)");
-      tx.executeSql("CREATE TABLE IF NOT EXISTS NeededAngelTypes (id unique, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)");
-      tx.executeSql("CREATE TABLE IF NOT EXISTS options (option_key, option_value)");
+      tx.executeSql('CREATE TABLE IF NOT EXISTS Shifts (SID unique, title, shifttype_id INT, start_time INT, end_time INT, RID INT)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS User (UID unique, nick)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS Room (RID unique, Name)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS ShiftEntry (id unique, SID INT, TID INT, UID INT)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS ShiftTypes (id unique, name, angeltype_id INT)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS AngelTypes (id unique, name)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS NeededAngelTypes (id unique, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS options (option_key, option_value)');
       return Shifts.db.populate_ids(function() {
         return done();
       });
@@ -97,7 +97,7 @@ Shifts.db = {
   },
   populate_ids: function(done) {
     return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql("SELECT RID from Room", [], function(tx, res) {
+      tx.executeSql('SELECT RID from Room', [], function(tx, res) {
         var i, len, r, ref, results;
         ref = res.rows;
         results = [];
@@ -107,7 +107,7 @@ Shifts.db = {
         }
         return results;
       });
-      tx.executeSql("SELECT id from AngelTypes", [], function(tx, res) {
+      tx.executeSql('SELECT id from AngelTypes', [], function(tx, res) {
         var a, i, len, results;
         results = [];
         for (i = 0, len = res.length; i < len; i++) {
@@ -122,7 +122,7 @@ Shifts.db = {
   insert_room: function(room, done) {
     room.RID = parseInt(room.RID, 10);
     return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql("INSERT INTO Room (RID, Name) VALUES (?, ?)", [room.RID, room.Name]);
+      tx.executeSql('INSERT INTO Room (RID, Name) VALUES (?, ?)', [room.RID, room.Name]);
       Shifts.interaction.selected_rooms.push(room.RID);
       return done();
     });
@@ -130,7 +130,7 @@ Shifts.db = {
   insert_user: function(user, done) {
     user.UID = parseInt(user.UID, 10);
     return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql("INSERT INTO User (UID, Nick) VALUES (?, ?)", [user.UID, user.Nick]);
+      tx.executeSql('INSERT INTO User (UID, Nick) VALUES (?, ?)', [user.UID, user.Nick]);
       return done();
     });
   },
@@ -138,7 +138,7 @@ Shifts.db = {
     shift.SID = parseInt(shift.SID, 10);
     shift.RID = parseInt(shift.RID, 10);
     return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql("INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (?, ?, ?, ?, ?, ?)", [shift.SID, shift.title, shift.shifttype_id, shift.start, shift.end, shift.RID]);
+      tx.executeSql('INSERT INTO Shifts (SID, title, shifttype_id, start_time, end_time, RID) VALUES (?, ?, ?, ?, ?, ?)', [shift.SID, shift.title, shift.shifttype_id, shift.start, shift.end, shift.RID]);
       return done();
     });
   },
@@ -148,20 +148,20 @@ Shifts.db = {
     shiftentry.TID = parseInt(shiftentry.TID, 10);
     shiftentry.UID = parseInt(shiftentry.UID, 10);
     return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql("INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (?, ?, ?, ?)", [shiftentry.id, shiftentry.SID, shiftentry.TID, shiftentry.UID], function() {});
+      tx.executeSql('INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (?, ?, ?, ?)', [shiftentry.id, shiftentry.SID, shiftentry.TID, shiftentry.UID], function() {});
       return done();
     });
   },
   insert_shifttype: function(shifttype, done) {
     shifttype.id = parseInt(shifttype.id, 10);
     return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql("INSERT INTO ShiftTypes (id, name) VALUES (?, ?)", [shifttype.id, shifttype.name]);
+      tx.executeSql('INSERT INTO ShiftTypes (id, name) VALUES (?, ?)', [shifttype.id, shifttype.name]);
       return done();
     });
   },
   insert_angeltype: function(angeltype, done) {
     return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql("INSERT INTO AngelTypes (id, name) VALUES (?, ?)", [angeltype.id, angeltype.name], function() {
+      tx.executeSql('INSERT INTO AngelTypes (id, name) VALUES (?, ?)', [angeltype.id, angeltype.name], function() {
         return Shifts.interaction.selected_angeltypes.push(angeltype.id);
       });
       return done();
@@ -174,7 +174,7 @@ Shifts.db = {
     needed_angeltype.ATID = parseInt(needed_angeltype.ATID, 10);
     needed_angeltype.count = parseInt(needed_angeltype.count, 10);
     return Shifts.db.websql.transaction(function(tx) {
-      tx.executeSql("INSERT INTO NeededAngelTypes (id, room_id, shift_id, angel_type_id, angel_count) VALUES (?, ?, ?, ?, ?)", [needed_angeltype.id, needed_angeltype.RID, needed_angeltype.SID, needed_angeltype.ATID, needed_angeltype.count], function() {});
+      tx.executeSql('INSERT INTO NeededAngelTypes (id, room_id, shift_id, angel_type_id, angel_count) VALUES (?, ?, ?, ?, ?)', [needed_angeltype.id, needed_angeltype.RID, needed_angeltype.SID, needed_angeltype.ATID, needed_angeltype.count], function() {});
       return done();
     });
   },
@@ -185,7 +185,7 @@ Shifts.db = {
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql("SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM NeededAngelTypes JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id JOIN Room ON Room.RID = Shifts.RID JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id WHERE NeededAngelTypes.angel_count > 0 AND Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND Shifts.RID IN (" + filter_rooms_ids + ") AND NeededAngelTypes.angel_type_id IN (" + filter_angeltypes_ids + ") ORDER BY Shifts.start_time, Shifts.SID", [], function(tx, res) {
+      return tx.executeSql('SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM NeededAngelTypes JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id JOIN Room ON Room.RID = Shifts.RID JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id WHERE NeededAngelTypes.angel_count > 0 AND Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time} AND Shifts.RID IN (#{filter_rooms_ids}) AND NeededAngelTypes.angel_type_id IN (#{filter_angeltypes_ids}) ORDER BY Shifts.start_time, Shifts.SID', [], function(tx, res) {
         return done(res.rows);
       });
     });
@@ -195,7 +195,7 @@ Shifts.db = {
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql("SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count, AngelTypes.name FROM NeededAngelTypes JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND NeededAngelTypes.angel_count > 0 ORDER BY NeededAngelTypes.shift_id", [], function(tx, res) {
+      return tx.executeSql('SELECT DISTINCT NeededAngelTypes.shift_id, NeededAngelTypes.angel_type_id, NeededAngelTypes.angel_count, AngelTypes.name FROM NeededAngelTypes JOIN Shifts ON NeededAngelTypes.shift_id = Shifts.SID JOIN AngelTypes ON NeededAngelTypes.angel_type_id = AngelTypes.id WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time} AND NeededAngelTypes.angel_count > 0 ORDER BY NeededAngelTypes.shift_id', [], function(tx, res) {
         return done(res.rows);
       });
     });
@@ -205,25 +205,25 @@ Shifts.db = {
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql("SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick, AngelTypes.name as at_name FROM ShiftEntry JOIN User ON ShiftEntry.UID = User.UID JOIN Shifts ON ShiftEntry.SID = Shifts.SID JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id WHERE Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " ORDER BY ShiftEntry.SID", [], function(tx, res) {
+      return tx.executeSql('SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick, AngelTypes.name as at_name FROM ShiftEntry JOIN User ON ShiftEntry.UID = User.UID JOIN Shifts ON ShiftEntry.SID = Shifts.SID JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id WHERE Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time} ORDER BY ShiftEntry.SID', [], function(tx, res) {
         return done(res.rows);
       });
     });
   },
   get_usershifts: function(user_id, done) {
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql("SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, Shifts.start_time, Shifts.end_time FROM ShiftEntry JOIN Shifts ON ShiftEntry.SID = Shifts.SID WHERE ShiftEntry.UID = " + user_id + " ORDER BY ShiftEntry.SID", [], function(tx, res) {
+      return tx.executeSql('SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, Shifts.start_time, Shifts.end_time FROM ShiftEntry JOIN Shifts ON ShiftEntry.SID = Shifts.SID WHERE ShiftEntry.UID = #{user_id} ORDER BY ShiftEntry.SID', [], function(tx, res) {
         return done(res.rows);
       });
     });
   },
   get_shift_range: function(done) {
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql("SELECT start_time FROM Shifts ORDER BY start_time ASC LIMIT 1", [], function(tx, res) {
+      return tx.executeSql('SELECT start_time FROM Shifts ORDER BY start_time ASC LIMIT 1', [], function(tx, res) {
         var now, start_time;
         if (res.rows.length > 0) {
           start_time = res.rows[0].start_time;
-          return tx.executeSql("SELECT end_time FROM Shifts ORDER BY end_time DESC LIMIT 1", [], function(tx, res) {
+          return tx.executeSql('SELECT end_time FROM Shifts ORDER BY end_time DESC LIMIT 1', [], function(tx, res) {
             var end_time;
             end_time = res.rows[0].end_time;
             return done([start_time, end_time]);
@@ -237,21 +237,21 @@ Shifts.db = {
   },
   get_rooms: function(done) {
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql("SELECT * FROM Room ORDER BY Name", [], function(tx, res) {
+      return tx.executeSql('SELECT * FROM Room ORDER BY Name', [], function(tx, res) {
         return done(res.rows);
       });
     });
   },
   get_angeltypes: function(done) {
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql("SELECT * FROM AngelTypes ORDER BY name", [], function(tx, res) {
+      return tx.executeSql('SELECT * FROM AngelTypes ORDER BY name', [], function(tx, res) {
         return done(res.rows);
       });
     });
   },
   get_option: function(key, done) {
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql("SELECT option_value FROM options WHERE option_key = ? LIMIT 1", [key], function(tx, res) {
+      return tx.executeSql('SELECT option_value FROM options WHERE option_key = ? LIMIT 1', [key], function(tx, res) {
         try {
           return done(res.rows[0].option_value);
         } catch (error) {
@@ -262,7 +262,7 @@ Shifts.db = {
   },
   set_option: function(key, value, done) {
     return Shifts.db.websql.transaction(function(tx) {
-      return tx.executeSql("INSERT INTO options (option_key, option_value) VALUES (?, ?)", [key, value], function() {
+      return tx.executeSql('INSERT INTO options (option_key, option_value) VALUES (?, ?)', [key, value], function() {
         return done();
       });
     });
@@ -566,16 +566,16 @@ Shifts.render = {
     if (label == null) {
       label = false;
     }
-    daytime = "tick_bright";
+    daytime = 'tick_bright';
     hour = moment.unix(time).format('H');
     if (hour > 19 || hour < 8) {
-      daytime = "tick_dark";
+      daytime = 'tick_dark';
     }
     if (hour === moment().format('H')) {
       tick_quarter = Math.floor(moment.unix(time).format('m') / 60 * 4);
       current_quarter = Math.floor(moment().format('m') / 60 * 4);
       if (tick_quarter === current_quarter) {
-        daytime = "tick_active";
+        daytime = 'tick_active';
       }
     }
     diffhour = moment().isDST() ? 22 : 23;
@@ -690,13 +690,13 @@ Shifts.render = {
           }
         }
         switch (Shifts.interaction.occupancy) {
-          case "all":
+          case 'all':
             occupancy = {
               all: 'primary',
               free: 'default'
             };
             break;
-          case "free":
+          case 'free':
             occupancy = {
               all: 'default',
               free: 'primary'
@@ -733,7 +733,7 @@ Shifts.render = {
     }
     for (j = 0, len1 = db_shiftentries.length; j < len1; j++) {
       se = db_shiftentries[j];
-      if (typeof shiftentries[se.SID] === "undefined") {
+      if (typeof shiftentries[se.SID] === 'undefined') {
         shiftentries[se.SID] = [];
         shiftentries[se.SID].push({
           TID: se.TID,
@@ -745,7 +745,7 @@ Shifts.render = {
     }
     for (k = 0, len2 = db_angeltypes_needed.length; k < len2; k++) {
       atn = db_angeltypes_needed[k];
-      if (typeof shiftentries[atn.shift_id] === "undefined") {
+      if (typeof shiftentries[atn.shift_id] === 'undefined') {
         shiftentries[atn.shift_id] = [];
         shiftentries[atn.shift_id].push({
           TID: atn.angel_type_id,
@@ -785,7 +785,7 @@ Shifts.render = {
     }
     add_shift = function(shift, room_id) {
       var blocks, height, lane_nr, ref;
-      if (shift.shift_title === "null") {
+      if (shift.shift_title === 'null') {
         shift.shift_title = null;
       }
       shift.starttime = moment.unix(shift.start_time).format('HH:mm');
@@ -816,12 +816,12 @@ Shifts.render = {
       for (m = 0, len4 = db_usershifts.length; m < len4; m++) {
         u = db_usershifts[m];
         if (u.SID === shift.SID) {
-          return "signed_up";
+          return 'signed_up';
         }
       }
       now_unix = moment().format('X');
       if (shift.end_time < now_unix) {
-        return "shift_ended";
+        return 'shift_ended';
       }
       angels_needed = 0;
       ref = shift.angeltypes;
@@ -830,34 +830,34 @@ Shifts.render = {
         angels_needed = angels_needed + at.angels_needed;
       }
       if (angels_needed === 0) {
-        return "occupied";
+        return 'occupied';
       }
       for (o = 0, len6 = db_usershifts.length; o < len6; o++) {
         u = db_usershifts[o];
         if (u.SID !== shift.SID) {
           if (!(shift.start_time >= u.end_time || shift.end_time <= u.start_time)) {
-            return "collides";
+            return 'collides';
           }
         }
       }
-      return "free";
+      return 'free';
     };
     calculate_state_class = function(signup_state) {
       switch (signup_state) {
-        case "shift_ended":
-          return "default";
-        case "signed_up":
-          return "primary";
-        case "free":
-          return "danger";
-        case "angeltype":
-          return "warning";
-        case "collides":
-          return "warning";
-        case "occupied":
-          return "success";
-        case "admin":
-          return "success";
+        case 'shift_ended':
+          return 'default';
+        case 'signed_up':
+          return 'primary';
+        case 'free':
+          return 'danger';
+        case 'angeltype':
+          return 'warning';
+        case 'collides':
+          return 'warning';
+        case 'occupied':
+          return 'success';
+        case 'admin':
+          return 'success';
       }
     };
     shift_fits = function(shift, room_id, lane_nr) {
@@ -884,7 +884,7 @@ Shifts.render = {
         lastblock_endtime = shift.end_time;
       }
       room_id = shift.RID;
-      if (typeof lanes[room_id] === "undefined") {
+      if (typeof lanes[room_id] === 'undefined') {
         lanes[room_id] = [[]];
       }
       shift_added = false;
@@ -913,7 +913,7 @@ Shifts.render = {
     shifts_count = 0;
     mustache_rooms = [];
     for (room_nr in rooms) {
-      if (room_nr === "length") {
+      if (room_nr === 'length') {
         break;
       }
       Shifts.log(room_nr);
