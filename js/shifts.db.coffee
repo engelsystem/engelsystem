@@ -128,7 +128,8 @@ Shifts.db =
             AND Shifts.RID IN (?)
             AND NeededAngelTypes.angel_type_id IN (?)
             ORDER BY Shifts.start_time, Shifts.SID', [start_time, end_time, filter_rooms_ids, filter_angeltypes_ids], (tx, res) ->
-                done res.rows
+                r = Shifts.db.object_to_array res.rows
+                done r
 
     get_angeltypes_needed: (done) ->
         start_time = Shifts.render.get_starttime()
@@ -142,7 +143,8 @@ Shifts.db =
             WHERE Shifts.start_time >= ? AND Shifts.end_time <= ?
             AND NeededAngelTypes.angel_count > 0
             ORDER BY NeededAngelTypes.shift_id', [start_time, end_time], (tx, res) ->
-                done res.rows
+                r = Shifts.db.object_to_array res.rows
+                done r
 
     get_shiftentries: (done) ->
         start_time = Shifts.render.get_starttime()
@@ -156,7 +158,8 @@ Shifts.db =
             JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id
             WHERE Shifts.start_time >= ? AND Shifts.end_time <= ?
             ORDER BY ShiftEntry.SID', [start_time, end_time], (tx, res) ->
-                done res.rows
+                r = Shifts.db.object_to_array res.rows
+                done r
 
     get_usershifts: (user_id, done) ->
         # optional (performance?): restrict to current dateselection
@@ -169,7 +172,8 @@ Shifts.db =
             JOIN Shifts ON ShiftEntry.SID = Shifts.SID
             WHERE ShiftEntry.UID = ?
             ORDER BY ShiftEntry.SID', [user_id], (tx, res) ->
-                done res.rows
+                r = Shifts.db.object_to_array res.rows
+                done r
 
     get_shift_range: (done) ->
         Shifts.db.websql.transaction (tx) ->
@@ -193,13 +197,13 @@ Shifts.db =
         Shifts.db.websql.transaction (tx) ->
             tx.executeSql 'SELECT * FROM Room ORDER BY Name', [], (tx, res) ->
                 r = Shifts.db.object_to_array res.rows
-                Shifts.log r
                 done r
 
     get_angeltypes: (done) ->
         Shifts.db.websql.transaction (tx) ->
             tx.executeSql 'SELECT * FROM AngelTypes ORDER BY name', [], (tx, res) ->
-                done res.rows
+                r = Shifts.db.object_to_array res.rows
+                done r
 
     get_option: (key, done) ->
         Shifts.db.websql.transaction (tx) ->
