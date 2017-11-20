@@ -169,6 +169,7 @@ Shifts.db = {
     });
   },
   insert_angeltype: function(angeltype, done) {
+    angeltype.id = parseInt(angeltype.id, 10);
     return Shifts.db.websql.transaction(function(t) {
       t.executeSql('INSERT INTO AngelTypes (id, name) VALUES (?, ?)', [angeltype.id, angeltype.name], function() {
         return Shifts.interaction.selected_angeltypes.push(angeltype.id);

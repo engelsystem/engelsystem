@@ -92,6 +92,7 @@ Shifts.db =
             done()
 
     insert_angeltype: (angeltype, done) ->
+        angeltype.id = parseInt angeltype.id, 10
         Shifts.db.websql.transaction (t) ->
             t.executeSql 'INSERT INTO AngelTypes (id, name) VALUES (?, ?)', [angeltype.id, angeltype.name], ->
                 # populate select filter
