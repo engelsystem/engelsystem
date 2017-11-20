@@ -195,7 +195,7 @@ Shifts.db = {
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
     return Shifts.db.websql.transaction(function(t) {
-      return t.executeSql('SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM NeededAngelTypes JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id JOIN Room ON Room.RID = Shifts.RID JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id WHERE NeededAngelTypes.angel_count > 0 AND Shifts.start_time >= ? AND Shifts.end_time <= ? AND Shifts.RID IN (?) AND NeededAngelTypes.angel_type_id IN (?) ORDER BY Shifts.start_time, Shifts.SID', [start_time, end_time, filter_rooms_ids, filter_angeltypes_ids], function(t, res) {
+      return t.executeSql("SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID, ShiftTypes.name as shifttype_name, Room.Name as room_name FROM NeededAngelTypes JOIN Shifts ON Shifts.SID = NeededAngelTypes.shift_id JOIN Room ON Room.RID = Shifts.RID JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id WHERE NeededAngelTypes.angel_count > 0 AND Shifts.start_time >= " + start_time + " AND Shifts.end_time <= " + end_time + " AND Shifts.RID IN (" + filter_rooms_ids + ") AND NeededAngelTypes.angel_type_id IN (" + filter_angeltypes_ids + ") ORDER BY Shifts.start_time, Shifts.SID", [], function(t, res) {
         var r;
         r = Shifts.db.object_to_array(res.rows);
         return done(r);

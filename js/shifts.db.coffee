@@ -117,7 +117,8 @@ Shifts.db =
         end_time = Shifts.render.get_endtime()
 
         Shifts.db.websql.transaction (t) ->
-            t.executeSql 'SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID,
+            # not as prepared statement because the "in (?)" hiccups
+            t.executeSql "SELECT DISTINCT Shifts.SID, Shifts.title as shift_title, Shifts.shifttype_id, Shifts.start_time, Shifts.end_time, Shifts.RID,
             ShiftTypes.name as shifttype_name,
             Room.Name as room_name
             FROM NeededAngelTypes
@@ -125,10 +126,10 @@ Shifts.db =
             JOIN Room ON Room.RID = Shifts.RID
             JOIN ShiftTypes ON ShiftTypes.id = Shifts.shifttype_id
             WHERE NeededAngelTypes.angel_count > 0
-            AND Shifts.start_time >= ? AND Shifts.end_time <= ?
-            AND Shifts.RID IN (?)
-            AND NeededAngelTypes.angel_type_id IN (?)
-            ORDER BY Shifts.start_time, Shifts.SID', [start_time, end_time, filter_rooms_ids, filter_angeltypes_ids], (t, res) ->
+            AND Shifts.start_time >= #{start_time} AND Shifts.end_time <= #{end_time}
+            AND Shifts.RID IN (#{filter_rooms_ids})
+            AND NeededAngelTypes.angel_type_id IN (#{filter_angeltypes_ids})
+            ORDER BY Shifts.start_time, Shifts.SID", [], (t, res) ->
                 r = Shifts.db.object_to_array res.rows
                 done r
 
