@@ -178,6 +178,7 @@ Shifts.render =
                     no_self_signup: if atn.no_self_signup == 1 then true else false
                     angels: []
                     angels_needed: atn.angel_count
+                    helpers_needed: atn.angel_count > 0 # bool for mustache
             else
                 entry_exists = false
                 for s of shiftentries[atn.shift_id]
@@ -192,6 +193,7 @@ Shifts.render =
                         no_self_signup: if atn.no_self_signup == 1 then true else false
                         angels: []
                         angels_needed: atn.angel_count
+                        helpers_needed: atn.angel_count > 0 # bool for mustache
 
         # fill it with angels
         for se in db_shiftentries
