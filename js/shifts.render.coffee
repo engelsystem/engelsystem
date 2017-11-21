@@ -173,6 +173,8 @@ Shifts.render =
                 shiftentries[atn.shift_id].push
                     TID: atn.angel_type_id
                     at_name: atn.name
+                    restricted: if atn.restricted == 1 then true else false
+                    no_self_signup: if atn.no_self_signup == 1 then true else false
                     angels: []
                     angels_needed: atn.angel_count
             else
@@ -185,6 +187,8 @@ Shifts.render =
                     shiftentries[atn.shift_id].push
                         TID: atn.angel_type_id
                         at_name: atn.name
+                        restricted: if atn.restricted == 1 then true else false
+                        no_self_signup: if atn.no_self_signup == 1 then true else false
                         angels: []
                         angels_needed: atn.angel_count
 
