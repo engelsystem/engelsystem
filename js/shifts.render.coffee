@@ -78,7 +78,7 @@ Shifts.render =
         Shifts.$shiftplan.html(tpl)
 
     shiftplan: ->
-        user_id = parseInt $('#shiftplan').data('user_id'), 10
+        user_id = Shifts.db.current_user.id
         Shifts.render.metric_timestamp = new Date()
         $('#filterbutton').attr 'disabled', 'disabled'
 
@@ -179,6 +179,7 @@ Shifts.render =
                     angels: []
                     angels_needed: atn.angel_count
                     helpers_needed: atn.angel_count > 0 # bool for mustache
+                    angeltype_mismatch: atn.angel_type_id not in Shifts.db.current_user.angeltypes
             else
                 entry_exists = false
                 for s of shiftentries[atn.shift_id]
@@ -194,6 +195,7 @@ Shifts.render =
                         angels: []
                         angels_needed: atn.angel_count
                         helpers_needed: atn.angel_count > 0 # bool for mustache
+                        angeltype_mismatch: atn.angel_type_id not in Shifts.db.current_user.angeltypes
 
         # fill it with angels
         for se in db_shiftentries
@@ -263,7 +265,8 @@ Shifts.render =
 
             # TODO:
             # you cannot join if the user is not of this angel type
-            # you cannot join if angeltype has no self signup
+
+            # you cannot join if angeltype has no self signup #that is missing even in the regular Engelsystem!
 
             # you cannot join if user already joined a parallel or this shift
             for u in db_usershifts

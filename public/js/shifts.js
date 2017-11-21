@@ -71,6 +71,7 @@ $(function() {
 Shifts.db = {
   prefix: '',
   websql: {},
+  current_user: {},
   init: function(done) {
     try {
       Shifts.db.prefix = '_' + Shifts.db.slugify($('.footer').html().split('<br>')[0]);
@@ -118,12 +119,18 @@ Shifts.db = {
         return results;
       });
       return t.executeSql('SELECT id from AngelTypes', [], function(t, res) {
-        var a, j, len;
+        var a, j, len, user_id;
         for (j = 0, len = res.length; j < len; j++) {
           a = res[j];
           Shifts.interaction.selected_angeltypes.push(a.id);
         }
-        return done();
+        user_id = parseInt($('#shiftplan').data('user_id'), 10);
+        Shifts.db.current_user.id = user_id;
+        return t.executeSql('SELECT UID FROM User WHERE UID = ?', [user_id], function(t, res) {
+          Shifts.db.current_user.arrived = res.rows.length > 0;
+          Shifts.db.current_user.angeltypes = [4];
+          return done();
+        });
       });
     });
   },
@@ -688,7 +695,7 @@ Shifts.render = {
   },
   shiftplan: function() {
     var $sc, curr_progress, loadprg, refresh_time, sco, step_size, tpl, user_id;
-    user_id = parseInt($('#shiftplan').data('user_id'), 10);
+    user_id = Shifts.db.current_user.id;
     Shifts.render.metric_timestamp = new Date();
     $('#filterbutton').attr('disabled', 'disabled');
     if (Shifts.render.rendering_time > Shifts.render.render_threshold) {
@@ -767,7 +774,7 @@ Shifts.render = {
     });
   },
   shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts, db_userishere) {
-    var add_shift, atn, calculate_signup_state, calculate_state_class, end_time, end_timestamp, entry_exists, firstblock_starttime, highest_lane_nr, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, m, mustache_rooms, n, needed_angeltypes, p, ref, rendered_until, room_id, room_nr, s, se, shift, shift_added, shift_calendar, shift_fits, shift_nr, shiftentries, shifts_count, start_time, thistime, time_slot;
+    var add_shift, atn, calculate_signup_state, calculate_state_class, end_time, end_timestamp, entry_exists, firstblock_starttime, highest_lane_nr, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, m, mustache_rooms, n, needed_angeltypes, p, ref, ref1, ref2, rendered_until, room_id, room_nr, s, se, shift, shift_added, shift_calendar, shift_fits, shift_nr, shiftentries, shifts_count, start_time, thistime, time_slot;
     lanes = {};
     shiftentries = {};
     needed_angeltypes = {};
@@ -798,7 +805,8 @@ Shifts.render = {
           no_self_signup: atn.no_self_signup === 1 ? true : false,
           angels: [],
           angels_needed: atn.angel_count,
-          helpers_needed: atn.angel_count > 0
+          helpers_needed: atn.angel_count > 0,
+          angeltype_mismatch: (ref = atn.angel_type_id, indexOf.call(Shifts.db.current_user.angeltypes, ref) < 0)
         });
       } else {
         entry_exists = false;
@@ -816,7 +824,8 @@ Shifts.render = {
             no_self_signup: atn.no_self_signup === 1 ? true : false,
             angels: [],
             angels_needed: atn.angel_count,
-            helpers_needed: atn.angel_count > 0
+            helpers_needed: atn.angel_count > 0,
+            angeltype_mismatch: (ref1 = atn.angel_type_id, indexOf.call(Shifts.db.current_user.angeltypes, ref1) < 0)
           });
         }
       }
@@ -834,7 +843,7 @@ Shifts.render = {
       }
     }
     add_shift = function(shift, room_id) {
-      var blocks, height, lane_nr, ref;
+      var blocks, height, lane_nr, ref2;
       if (shift.shift_title === 'null') {
         shift.shift_title = null;
       }
@@ -845,7 +854,7 @@ Shifts.render = {
       shift.state_class = calculate_state_class(shift.signup_state);
       shift.shift_ended = shift.signup_state === 'shift_ended';
       if (Shifts.interaction.occupancy === 'free') {
-        if ((ref = shift.signup_state) !== 'free' && ref !== 'collides' && ref !== 'signed_up') {
+        if ((ref2 = shift.signup_state) !== 'free' && ref2 !== 'collides' && ref2 !== 'signed_up') {
           return true;
         }
       }
@@ -863,7 +872,7 @@ Shifts.render = {
       return false;
     };
     calculate_signup_state = function(shift) {
-      var angels_needed, at, len4, len5, len6, n, now_unix, p, q, ref, u;
+      var angels_needed, at, len4, len5, len6, n, now_unix, p, q, ref2, u;
       for (n = 0, len4 = db_usershifts.length; n < len4; n++) {
         u = db_usershifts[n];
         if (u.SID === shift.SID) {
@@ -875,9 +884,9 @@ Shifts.render = {
         return 'shift_ended';
       }
       angels_needed = 0;
-      ref = shift.angeltypes;
-      for (p = 0, len5 = ref.length; p < len5; p++) {
-        at = ref[p];
+      ref2 = shift.angeltypes;
+      for (p = 0, len5 = ref2.length; p < len5; p++) {
+        at = ref2[p];
         angels_needed = angels_needed + at.angels_needed;
       }
       if (angels_needed === 0) {
@@ -915,10 +924,10 @@ Shifts.render = {
       }
     };
     shift_fits = function(shift, room_id, lane_nr) {
-      var lane_shift, len4, n, ref;
-      ref = lanes[room_id][lane_nr];
-      for (n = 0, len4 = ref.length; n < len4; n++) {
-        lane_shift = ref[n];
+      var lane_shift, len4, n, ref2;
+      ref2 = lanes[room_id][lane_nr];
+      for (n = 0, len4 = ref2.length; n < len4; n++) {
+        lane_shift = ref2[n];
         if (!(shift.start_time >= lane_shift.end_time || shift.end_time <= lane_shift.start_time)) {
           return false;
         }
@@ -942,9 +951,9 @@ Shifts.render = {
         lanes[room_id] = [[]];
       }
       shift_added = false;
-      ref = lanes[room_id];
-      for (p = 0, len5 = ref.length; p < len5; p++) {
-        lane = ref[p];
+      ref2 = lanes[room_id];
+      for (p = 0, len5 = ref2.length; p < len5; p++) {
+        lane = ref2[p];
         shift_added = add_shift(shift, room_id);
         if (shift_added) {
           break;
@@ -1040,5 +1049,5 @@ Shifts.templates = {
   header_and_dateselect: '<form class="form-inline" action="" method="get"> <input type="hidden" name="p" value="user_shifts"> <div class="row"> <div class="col-md-6"> <h1>Shifts</h1> <div class="form-group" style="width: 768px; height: 250px;"> <input id="datetimepicker" type="hidden" /> </div> </div> <div class="filter-form"></div> </div> <div class="row"> <div class="col-md-6"> <div><sup>1</sup>The tasks shown here are influenced by the angeltypes you joined already! <a href="?p=angeltypes&amp;action=about">Description of the jobs.</a></div> <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="Filter"> </div> </div> <div class="shift-calendar"> <div style="height: 100px;"> Loading... </div> </div>',
   filter_form: '<div class="col-md-2"> <div id="selection_rooms" class="selection rooms"> <h4>Rooms</h4> {{#rooms}} <div class="checkbox"> <label> <input type="checkbox" name="rooms[]" value="{{RID}}" {{#selected}}checked="checked"{{/selected}}> {{Name}} </label> </div><br /> {{/rooms}} <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-default">All</a> <a href="#none" class="btn btn-default">None</a> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_types" class="selection types"> <h4>Angeltypes<sup>1</sup></h4> {{#angeltypes}} <div class="checkbox"> <label> <input type="checkbox" name="types[]" value="{{id}}" {{#selected}}checked="checked"{{/selected}}> {{name}} </label> </div><br /> {{/angeltypes}} <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-default">All</a> <a href="#none" class="btn btn-default">None</a> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_filled" class="selection filled"> <h4>Occupancy</h4> <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-{{#occupancy}}{{all}}{{/occupancy}}">All</a> <a href="#free" class="btn btn-{{#occupancy}}{{free}}{{/occupancy}}">Free</a> </div> </div> </div> </div> </div>',
   footer: '</form>',
-  shift_calendar: '<div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#tick}} <div class="tick {{daytime}}"></div> {{/tick}} {{#tick_hour}} <div class="tick {{daytime}} hour">{{label}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick {{daytime}} day">{{label}}</div> {{/tick_day}} {{/timelane_ticks}} </div> {{#rooms}} {{#lanes}} <div class="lane"> <div class="header"> <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a> </div> {{#shifts}} {{#tick}} <div class="tick {{daytime}}"></div> {{/tick}} {{#tick_hour}} <div class="tick {{daytime}} hour">{{text}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick {{daytime}} day">{{text}}</div> {{/tick_day}} {{#shift}} <div class="shift panel panel-{{state_class}}" style="height: {{height}}px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id={{SID}}">{{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a> <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a> <a href="?p=user_shifts&amp;delete_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a> </div> </div> </div> <div class="panel-body"> {{#shift_title}}<span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />{{/shift_title}} <a href="?p=rooms&amp;action=view&amp;room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a> </div> <ul class="list-group"> {{#angeltypes}} {{#restricted}} <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}"> <span class="glyphicon glyphicon-lock"></span> {{at_name}}</a>:</strong> {{/restricted}} {{^restricted}} <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}">{{at_name}}</a>:</strong> {{/restricted}} {{#angels}} <span><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>, {{/angels}} {{#helpers_needed}} {{#shift_ended}} {{angels_needed}} helpers needed (ended) {{/shift_ended}} {{^shift_ended}} {{#restricted}} {{angels_needed}} helpers needed <span class="glyphicon glyphicon-lock"></span> {{/restricted}} {{^restricted}} <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}">{{angels_needed}} helpers needed</a> <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a> {{/restricted}} {{/shift_ended}} {{/helpers_needed}} {{/angeltypes}} </li> <li class="list-group-item"> <a href="?p=user_shifts&amp;shift_id={{SID}}" class="btn btn-default btn-xs">Neue Engel hinzufügen</a> </li> </ul> <div class="shift-spacer"></div> </div> {{/shift}} {{/shifts}} </div> {{/lanes}} {{/rooms}} {{^rooms}} <div class="alert alert-warning" style="margin-top: 2em;">No shifts could be found for the selected date.</div> {{/rooms}}'
+  shift_calendar: '<div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#tick}} <div class="tick {{daytime}}"></div> {{/tick}} {{#tick_hour}} <div class="tick {{daytime}} hour">{{label}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick {{daytime}} day">{{label}}</div> {{/tick_day}} {{/timelane_ticks}} </div> {{#rooms}} {{#lanes}} <div class="lane"> <div class="header"> <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a> </div> {{#shifts}} {{#tick}} <div class="tick {{daytime}}"></div> {{/tick}} {{#tick_hour}} <div class="tick {{daytime}} hour">{{text}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick {{daytime}} day">{{text}}</div> {{/tick_day}} {{#shift}} <div class="shift panel panel-{{state_class}}" style="height: {{height}}px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id={{SID}}">{{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a> <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a> <a href="?p=user_shifts&amp;delete_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a> </div> </div> </div> <div class="panel-body"> {{#shift_title}}<span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />{{/shift_title}} <a href="?p=rooms&amp;action=view&amp;room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a> </div> <ul class="list-group"> {{#angeltypes}} {{#restricted}} <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}"> <span class="glyphicon glyphicon-lock"></span> {{at_name}}</a>:</strong> {{/restricted}} {{^restricted}} <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}">{{at_name}}</a>:</strong> {{/restricted}} {{#angels}} <span><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>, {{/angels}} {{#helpers_needed}} {{#shift_ended}} {{angels_needed}} helpers needed (ended) {{/shift_ended}} {{^shift_ended}} {{#restricted}} {{angels_needed}} helpers needed <span class="glyphicon glyphicon-lock"></span> {{/restricted}} {{^restricted}} {{#angeltype_mismatch}} {{angels_needed}} helpers needed <a href="?p=user_angeltypes&amp;action=add&amp;angeltype_id={{TID}}" class="btn btn-default btn-xs">Become {{at_name}}</a> {{/angeltype_mismatch}} {{^angeltype_mismatch}} <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}">{{angels_needed}} helpers needed</a> <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a> {{/angeltype_mismatch}} {{/restricted}} {{/shift_ended}} {{/helpers_needed}} {{/angeltypes}} </li> <li class="list-group-item"> <a href="?p=user_shifts&amp;shift_id={{SID}}" class="btn btn-default btn-xs">Neue Engel hinzufügen</a> </li> </ul> <div class="shift-spacer"></div> </div> {{/shift}} {{/shifts}} </div> {{/lanes}} {{/rooms}} {{^rooms}} <div class="alert alert-warning" style="margin-top: 2em;">No shifts could be found for the selected date.</div> {{/rooms}}'
 };

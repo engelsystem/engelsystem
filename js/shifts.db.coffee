@@ -2,6 +2,7 @@
 Shifts.db =
     prefix: ''
     websql: {} # this will be the db instance
+    current_user: {} # stores user_id and user's angeltypes
 
     init: (done) ->
 
@@ -53,7 +54,20 @@ Shifts.db =
                     # populate select filter
                     Shifts.interaction.selected_angeltypes.push a.id
 
-                done()
+                # user
+                user_id = parseInt $('#shiftplan').data('user_id'), 10
+
+                # store user_id
+                Shifts.db.current_user.id = user_id
+
+                # store arrived status
+                t.executeSql 'SELECT UID FROM User WHERE UID = ?', [user_id], (t, res) ->
+                    Shifts.db.current_user.arrived = res.rows.length > 0
+
+                    # store angeltypes
+                    Shifts.db.current_user.angeltypes = [4] #todo (provide it via html)
+
+                    done()
 
     insert_room: (room, done) ->
         room.RID = parseInt(room.RID, 10)

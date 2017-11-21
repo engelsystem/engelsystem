@@ -201,8 +201,14 @@ Building view...
                                   {{angels_needed}} helpers needed <span class="glyphicon glyphicon-lock"></span>
                                 {{/restricted}}
                                 {{^restricted}}
-                                  <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}">{{angels_needed}} helpers needed</a>
-                                  <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a>
+                                    {{#angeltype_mismatch}}
+                                      {{angels_needed}} helpers needed
+                                      <a href="?p=user_angeltypes&amp;action=add&amp;angeltype_id={{TID}}" class="btn btn-default btn-xs">Become {{at_name}}</a>
+                                    {{/angeltype_mismatch}}
+                                    {{^angeltype_mismatch}}
+                                      <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}">{{angels_needed}} helpers needed</a>
+                                      <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a>
+                                    {{/angeltype_mismatch}}
                                 {{/restricted}}
                             {{/shift_ended}}
                         {{/helpers_needed}}
