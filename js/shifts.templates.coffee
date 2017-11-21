@@ -192,13 +192,18 @@ Building view...
                           {{#angels}}
                             <span><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>,
                           {{/angels}}
-                        {{#restricted}}
-                          {{angels_needed}} helpers needed <span class="glyphicon glyphicon-lock"></span>
-                        {{/restricted}}
-                        {{^restricted}}
-                          <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}">{{angels_needed}} helpers needed</a>
-                          <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a>
-                        {{/restricted}}
+                        {{#shift_ended}}
+                              {{angels_needed}} helpers needed (ended)
+                        {{/shift_ended}}
+                        {{^shift_ended}}
+                            {{#restricted}}
+                              {{angels_needed}} helpers needed <span class="glyphicon glyphicon-lock"></span>
+                            {{/restricted}}
+                            {{^restricted}}
+                              <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}">{{angels_needed}} helpers needed</a>
+                              <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a>
+                            {{/restricted}}
+                        {{/shift_ended}}
                     {{/angeltypes}}
                     </li>
                     <li class="list-group-item">

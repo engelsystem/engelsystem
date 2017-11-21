@@ -217,6 +217,7 @@ Shifts.render =
             # calculate signup state
             shift.signup_state = calculate_signup_state(shift)
             shift.state_class = calculate_state_class(shift.signup_state)
+            shift.shift_ended = shift.signup_state == 'shift_ended'
 
             if Shifts.interaction.occupancy == 'free'
                 # show only free shifts
