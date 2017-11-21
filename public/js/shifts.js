@@ -84,7 +84,7 @@ Shifts.db = {
       t.executeSql('CREATE TABLE IF NOT EXISTS Room (RID unique, Name)');
       t.executeSql('CREATE TABLE IF NOT EXISTS ShiftEntry (id unique, SID INT, TID INT, UID INT)');
       t.executeSql('CREATE TABLE IF NOT EXISTS ShiftTypes (id unique, name, angeltype_id INT)');
-      t.executeSql('CREATE TABLE IF NOT EXISTS AngelTypes (id unique, name)');
+      t.executeSql('CREATE TABLE IF NOT EXISTS AngelTypes (id unique, name, restricted INT, no_self_signup INT)');
       t.executeSql('CREATE TABLE IF NOT EXISTS NeededAngelTypes (id unique, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)');
       t.executeSql('CREATE TABLE IF NOT EXISTS options (option_key unique, option_value)');
       return Shifts.db.populate_ids(function() {
@@ -168,8 +168,10 @@ Shifts.db = {
   },
   insert_angeltype: function(angeltype, done) {
     angeltype.id = parseInt(angeltype.id, 10);
+    angeltype.restricted = parseInt(angeltype.restricted, 10);
+    angeltype.no_self_signup = parseInt(angeltype.no_self_signup, 10);
     return Shifts.db.websql.transaction(function(t) {
-      t.executeSql('INSERT INTO AngelTypes (id, name) VALUES (?, ?)', [angeltype.id, angeltype.name], function() {
+      t.executeSql('INSERT INTO AngelTypes (id, name, restricted, no_self_signup) VALUES (?, ?, ?, ?)', [angeltype.id, angeltype.name, angeltype.restricted, angeltype.no_self_signup], function() {
         return Shifts.interaction.selected_angeltypes.push(angeltype.id);
       });
       return done();

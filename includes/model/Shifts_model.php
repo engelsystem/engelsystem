@@ -510,7 +510,7 @@ function Shifts_for_websql($latest_ids) {
 
     // fetch angel types
   $angeltypes = sql_select("
-      SELECT id, name
+      SELECT id, name, restricted, no_self_signup
       FROM AngelTypes
       WHERE id > '" . sql_escape($latest_ids['angeltypes']) . "'
       ORDER BY id ASC
