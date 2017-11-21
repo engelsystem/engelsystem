@@ -145,9 +145,10 @@ Shifts.render =
                     Shifts.db.get_shiftentries (db_shiftentries) ->
                         Shifts.db.get_angeltypes_needed (db_angeltypes_needed) ->
                             Shifts.db.get_usershifts user_id, (db_usershifts) ->
-                                Shifts.render.shiftplan_assemble rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts
+                                Shifts.db.get_userishere user_id, (db_userishere) ->
+                                    Shifts.render.shiftplan_assemble rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts, db_userishere
 
-    shiftplan_assemble: (rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts) ->
+    shiftplan_assemble: (rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts, db_userishere) ->
         lanes = {}
         shiftentries = {}
         needed_angeltypes = {}
@@ -253,9 +254,12 @@ Shifts.render =
             if angels_needed == 0
                 return 'occupied'
 
+            # you cannot join if you are not confirmed
+            if db_userishere == false
+                return 'shift_ended'
+
             # TODO:
             # you cannot join if the user is not of this angel type
-            # you cannot join if you are not confirmed
             # you cannot join if angeltype has no self signup
 
             # you cannot join if user already joined a parallel or this shift

@@ -236,6 +236,13 @@ Shifts.db = {
       });
     });
   },
+  get_userishere: function(user_id, done) {
+    return Shifts.db.websql.transaction(function(t) {
+      return t.executeSql('SELECT UID FROM User WHERE UID = ?', [user_id], function(t, res) {
+        return done(res.rows.length > 0);
+      });
+    });
+  },
   get_shift_range: function(done) {
     return Shifts.db.websql.transaction(function(t) {
       return t.executeSql('SELECT start_time FROM Shifts ORDER BY start_time ASC LIMIT 1', [], function(t, res) {
@@ -749,7 +756,9 @@ Shifts.render = {
           return Shifts.db.get_shiftentries(function(db_shiftentries) {
             return Shifts.db.get_angeltypes_needed(function(db_angeltypes_needed) {
               return Shifts.db.get_usershifts(user_id, function(db_usershifts) {
-                return Shifts.render.shiftplan_assemble(rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts);
+                return Shifts.db.get_userishere(user_id, function(db_userishere) {
+                  return Shifts.render.shiftplan_assemble(rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts, db_userishere);
+                });
               });
             });
           });
@@ -757,7 +766,7 @@ Shifts.render = {
       });
     });
   },
-  shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts) {
+  shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts, db_userishere) {
     var add_shift, atn, calculate_signup_state, calculate_state_class, end_time, end_timestamp, entry_exists, firstblock_starttime, highest_lane_nr, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, m, mustache_rooms, n, needed_angeltypes, p, ref, rendered_until, room_id, room_nr, s, se, shift, shift_added, shift_calendar, shift_fits, shift_nr, shiftentries, shifts_count, start_time, thistime, time_slot;
     lanes = {};
     shiftentries = {};
@@ -870,6 +879,9 @@ Shifts.render = {
       }
       if (angels_needed === 0) {
         return 'occupied';
+      }
+      if (db_userishere === false) {
+        return 'shift_ended';
       }
       for (q = 0, len6 = db_usershifts.length; q < len6; q++) {
         u = db_usershifts[q];

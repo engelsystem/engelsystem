@@ -99,7 +99,6 @@ Shifts.db =
             t.executeSql 'INSERT INTO AngelTypes (id, name, restricted, no_self_signup) VALUES (?, ?, ?, ?)', [angeltype.id, angeltype.name, angeltype.restricted, angeltype.no_self_signup], ->
                 # populate select filter
                 Shifts.interaction.selected_angeltypes.push angeltype.id
-            # TODO (für alle inserts): timer, falls done nach Xms nicht ausgeführt wurde, ausführen.
             done()
 
     insert_needed_angeltype: (needed_angeltype, done) ->
@@ -178,6 +177,13 @@ Shifts.db =
             ORDER BY ShiftEntry.SID', [user_id], (t, res) ->
                 r = Shifts.db.object_to_array res.rows
                 done r
+
+    get_userishere: (user_id, done) ->
+        Shifts.db.websql.transaction (t) ->
+            t.executeSql 'SELECT UID
+            FROM User
+            WHERE UID = ?', [user_id], (t, res) ->
+                done res.rows.length > 0
 
     get_shift_range: (done) ->
         Shifts.db.websql.transaction (t) ->
