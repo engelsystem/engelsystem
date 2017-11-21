@@ -220,7 +220,7 @@ Shifts.db = {
     start_time = Shifts.render.get_starttime();
     end_time = Shifts.render.get_endtime();
     return Shifts.db.websql.transaction(function(t) {
-      return t.executeSql('SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick, AngelTypes.name as at_name FROM ShiftEntry JOIN User ON ShiftEntry.UID = User.UID JOIN Shifts ON ShiftEntry.SID = Shifts.SID JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id WHERE Shifts.start_time >= ? AND Shifts.end_time <= ? ORDER BY ShiftEntry.SID', [start_time, end_time], function(t, res) {
+      return t.executeSql('SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick as Nick, AngelTypes.name as at_name FROM ShiftEntry JOIN User ON ShiftEntry.UID = User.UID JOIN Shifts ON ShiftEntry.SID = Shifts.SID JOIN AngelTypes ON ShiftEntry.TID = AngelTypes.id WHERE Shifts.start_time >= ? AND Shifts.end_time <= ? ORDER BY ShiftEntry.SID', [start_time, end_time], function(t, res) {
         var r;
         r = Shifts.db.object_to_array(res.rows);
         return done(r);
