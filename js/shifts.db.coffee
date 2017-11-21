@@ -192,13 +192,6 @@ Shifts.db =
                 r = Shifts.db.object_to_array res.rows
                 done r
 
-    get_userishere: (user_id, done) ->
-        Shifts.db.websql.transaction (t) ->
-            t.executeSql 'SELECT UID
-            FROM User
-            WHERE UID = ?', [user_id], (t, res) ->
-                done res.rows.length > 0
-
     get_shift_range: (done) ->
         Shifts.db.websql.transaction (t) ->
             t.executeSql 'SELECT start_time

@@ -145,10 +145,9 @@ Shifts.render =
                     Shifts.db.get_shiftentries (db_shiftentries) ->
                         Shifts.db.get_angeltypes_needed (db_angeltypes_needed) ->
                             Shifts.db.get_usershifts user_id, (db_usershifts) ->
-                                Shifts.db.get_userishere user_id, (db_userishere) ->
-                                    Shifts.render.shiftplan_assemble rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts, db_userishere
+                                Shifts.render.shiftplan_assemble rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts
 
-    shiftplan_assemble: (rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts, db_userishere) ->
+    shiftplan_assemble: (rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts) ->
         lanes = {}
         shiftentries = {}
         needed_angeltypes = {}
@@ -260,7 +259,7 @@ Shifts.render =
                 return 'occupied'
 
             # you cannot join if you are not confirmed
-            if db_userishere == false
+            if Shifts.db.current_user.arrived == false
                 return 'shift_ended'
 
             # TODO:
