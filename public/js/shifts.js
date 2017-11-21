@@ -74,7 +74,7 @@ Shifts.db = {
     try {
       Shifts.db.prefix = '_' + Shifts.db.slugify($('.footer').html().split('<br>')[0]);
     } catch (error) {
-      Shifts.db.prefix = '';
+      Shifts.db.prefix = 'noname';
     }
     Shifts.log('init db');
     Shifts.db.websql = openDatabase('engelsystem' + Shifts.db.prefix, '1.0', '', 10 * 1024 * 1024);
@@ -86,7 +86,7 @@ Shifts.db = {
       t.executeSql('CREATE TABLE IF NOT EXISTS ShiftTypes (id unique, name, angeltype_id INT)');
       t.executeSql('CREATE TABLE IF NOT EXISTS AngelTypes (id unique, name)');
       t.executeSql('CREATE TABLE IF NOT EXISTS NeededAngelTypes (id unique, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)');
-      t.executeSql('CREATE TABLE IF NOT EXISTS options (option_key, option_value)');
+      t.executeSql('CREATE TABLE IF NOT EXISTS options (option_key unique, option_value)');
       return Shifts.db.populate_ids(function() {
         return done();
       });
@@ -96,13 +96,13 @@ Shifts.db = {
     return text.toString().toLowerCase().replace(/^[\s|\-|_]+/, '').replace(/[\s|\-|_]+$/, '').replace(/\s+/g, '_').replace(/__+/g, '_').replace(/[^\w\-]+/g, '');
   },
   object_to_array: function(obj) {
-    var a, j, len, o;
-    a = [];
+    var arr, j, len, o;
+    arr = [];
     for (j = 0, len = obj.length; j < len; j++) {
       o = obj[j];
-      a.push(o);
+      arr.push(o);
     }
-    return a;
+    return arr;
   },
   populate_ids: function(done) {
     return Shifts.db.websql.transaction(function(t) {
@@ -116,16 +116,14 @@ Shifts.db = {
         }
         return results;
       });
-      t.executeSql('SELECT id from AngelTypes', [], function(t, res) {
-        var a, j, len, results;
-        results = [];
+      return t.executeSql('SELECT id from AngelTypes', [], function(t, res) {
+        var a, j, len;
         for (j = 0, len = res.length; j < len; j++) {
           a = res[j];
-          results.push(Shifts.interaction.selected_angeltypes.push(a.id));
+          Shifts.interaction.selected_angeltypes.push(a.id);
         }
-        return results;
+        return done();
       });
-      return done();
     });
   },
   insert_room: function(room, done) {

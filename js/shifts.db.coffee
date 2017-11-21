@@ -9,7 +9,7 @@ Shifts.db =
         try
             Shifts.db.prefix = '_' + Shifts.db.slugify( $('.footer').html().split('<br>')[0] )
         catch
-            Shifts.db.prefix = ''
+            Shifts.db.prefix = 'noname'
 
         Shifts.log 'init db'
         Shifts.db.websql = openDatabase 'engelsystem' + Shifts.db.prefix, '1.0', '', 10*1024*1024
@@ -21,7 +21,7 @@ Shifts.db =
             t.executeSql 'CREATE TABLE IF NOT EXISTS ShiftTypes (id unique, name, angeltype_id INT)'
             t.executeSql 'CREATE TABLE IF NOT EXISTS AngelTypes (id unique, name)'
             t.executeSql 'CREATE TABLE IF NOT EXISTS NeededAngelTypes (id unique, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)'
-            t.executeSql 'CREATE TABLE IF NOT EXISTS options (option_key, option_value)'
+            t.executeSql 'CREATE TABLE IF NOT EXISTS options (option_key unique, option_value)'
             Shifts.db.populate_ids ->
                 done()
 
@@ -34,10 +34,10 @@ Shifts.db =
         .replace(/[^\w\-]+/g, '')       # Remove all non-word chars
 
     object_to_array: (obj) ->
-        a = []
+        arr = []
         for o in obj
-            a.push o
-        return a
+            arr.push o
+        return arr
 
     populate_ids: (done) ->
         # rooms
@@ -53,7 +53,7 @@ Shifts.db =
                     # populate select filter
                     Shifts.interaction.selected_angeltypes.push a.id
 
-            done()
+                done()
 
     insert_room: (room, done) ->
         room.RID = parseInt(room.RID, 10)
