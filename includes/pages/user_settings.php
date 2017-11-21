@@ -78,7 +78,12 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
     $user_source['Vorname'] = strip_request_item('prename', $user_source['Vorname']);
     $user_source['Alter'] = strip_request_item('age', $user_source['Alter']);
     $user_source['Telefon'] = strip_request_item('tel', $user_source['Telefon']);
-    $user_source['DECT'] = strip_request_item('dect', $user_source['DECT']);
+    if(strlen(strip_request_item('dect')) <= 5) {
+        $user_source['DECT'] = strip_request_item('dect', $user_source['DECT']);
+    } else {
+        $valid = false;
+        error(_('For dect numbers are only 5 digits allowed.'));
+    }
     $user_source['Handy'] = strip_request_item('mobile', $user_source['Handy']);
     $user_source['Hometown'] = strip_request_item('hometown', $user_source['Hometown']);
 

@@ -183,7 +183,12 @@ function guest_register()
             $tel = strip_request_item('tel');
         }
         if ($request->has('dect')) {
-            $dect = strip_request_item('dect');
+            if(strlen(strip_request_item('dect')) <= 5) {
+                $dect = strip_request_item('dect');
+            } else {
+                $valid = false;
+                error(_('For dect numbers are only 5 digits allowed.'));
+            }
         }
         if ($request->has('mobile')) {
             $mobile = strip_request_item('mobile');
