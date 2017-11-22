@@ -170,12 +170,14 @@ Building view...
                 <div class="shift panel panel-{{state_class}}" style="height: {{height}}px;">
                   <div class="panel-heading">
                     <a href="?p=shifts&amp;action=view&amp;shift_id={{SID}}">{{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a>
+                {{#is_admin}}
                     <div class="pull-right">
                       <div class="btn-group">
                         <a href="?p=user_shifts&amp;edit_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
                         <a href="?p=user_shifts&amp;delete_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
                       </div>
                     </div>
+                {{/is_admin}}
                   </div>
                   <div class="panel-body">
                     {{#shift_title}}<span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />{{/shift_title}}
