@@ -28,16 +28,16 @@ Shifts.render =
 
     tick: (time, label = false) ->
 
-        daytime = "tick_bright"
+        daytime = 'tick_bright'
         hour = moment.unix(time).format('H')
         if  hour > 19 or hour < 8
-            daytime = "tick_dark"
+            daytime = 'tick_dark'
 
         if hour == moment().format('H')
             tick_quarter = Math.floor(moment.unix(time).format('m') / 60 * 4)
             current_quarter = Math.floor(moment().format('m') / 60 * 4)
             if tick_quarter == current_quarter
-                daytime = "tick_active"
+                daytime = 'tick_active'
 
         diffhour = if moment().isDST() then 22 else 23
 
@@ -78,7 +78,7 @@ Shifts.render =
         Shifts.$shiftplan.html(tpl)
 
     shiftplan: ->
-        user_id = parseInt $('#shiftplan').data('user_id'), 10
+        user_id = Shifts.db.current_user.id
         Shifts.render.metric_timestamp = new Date()
         $('#filterbutton').attr 'disabled', 'disabled'
 
@@ -123,11 +123,11 @@ Shifts.render =
                 #
                 # check for selected occupancy
                 switch Shifts.interaction.occupancy
-                    when "all"
+                    when 'all'
                         occupancy =
                             all: 'primary'
                             free: 'default'
-                    when "free"
+                    when 'free'
                         occupancy =
                             all: 'default'
                             free: 'primary'
@@ -158,7 +158,7 @@ Shifts.render =
 
         # build shiftentries object
         for se in db_shiftentries
-            if typeof shiftentries[se.SID] == "undefined"
+            if typeof shiftentries[se.SID] == 'undefined'
                 shiftentries[se.SID] = []
                 shiftentries[se.SID].push
                     TID: se.TID
@@ -168,13 +168,17 @@ Shifts.render =
 
         # fill shiftentries with needed angeltypes
         for atn in db_angeltypes_needed
-            if typeof shiftentries[atn.shift_id] == "undefined"
+            if typeof shiftentries[atn.shift_id] == 'undefined'
                 shiftentries[atn.shift_id] = []
                 shiftentries[atn.shift_id].push
                     TID: atn.angel_type_id
                     at_name: atn.name
+                    restricted: if atn.restricted == 1 then true else false
+                    no_self_signup: if atn.no_self_signup == 1 then true else false
                     angels: []
                     angels_needed: atn.angel_count
+                    helpers_needed: atn.angel_count > 0 # bool for mustache
+                    angeltype_mismatch: atn.angel_type_id not in Shifts.db.current_user.angeltypes
             else
                 entry_exists = false
                 for s of shiftentries[atn.shift_id]
@@ -185,8 +189,12 @@ Shifts.render =
                     shiftentries[atn.shift_id].push
                         TID: atn.angel_type_id
                         at_name: atn.name
+                        restricted: if atn.restricted == 1 then true else false
+                        no_self_signup: if atn.no_self_signup == 1 then true else false
                         angels: []
                         angels_needed: atn.angel_count
+                        helpers_needed: atn.angel_count > 0 # bool for mustache
+                        angeltype_mismatch: atn.angel_type_id not in Shifts.db.current_user.angeltypes
 
         # fill it with angels
         for se in db_shiftentries
@@ -199,7 +207,7 @@ Shifts.render =
 
         add_shift = (shift, room_id) ->
             # fix empty title
-            if shift.shift_title == "null"
+            if shift.shift_title == 'null'
                 shift.shift_title = null
 
             # start- and endtime
@@ -212,6 +220,7 @@ Shifts.render =
             # calculate signup state
             shift.signup_state = calculate_signup_state(shift)
             shift.state_class = calculate_state_class(shift.signup_state)
+            shift.shift_ended = shift.signup_state == 'shift_ended'
 
             if Shifts.interaction.occupancy == 'free'
                 # show only free shifts
@@ -235,43 +244,47 @@ Shifts.render =
             # you cannot join if you already signed up for this shift
             for u in db_usershifts
                 if u.SID == shift.SID
-                    return "signed_up"
+                    return 'signed_up'
 
             # you can only join if the shift is in the future
             now_unix = moment().format('X')
             if shift.end_time < now_unix
-                return "shift_ended"
+                return 'shift_ended'
 
             # you cannot join if the shift is full
             angels_needed = 0
             for at in shift.angeltypes
                 angels_needed = angels_needed + at.angels_needed
             if angels_needed == 0
-                return "occupied"
+                return 'occupied'
+
+            # you cannot join if you are not confirmed
+            if Shifts.db.current_user.arrived == false
+                return 'shift_ended'
 
             # TODO:
             # you cannot join if the user is not of this angel type
-            # you cannot join if you are not confirmed
-            # you cannot join if angeltype has no self signup
+
+            # you cannot join if angeltype has no self signup #that is missing even in the regular Engelsystem!
 
             # you cannot join if user already joined a parallel or this shift
             for u in db_usershifts
                 if u.SID != shift.SID
                     if not (shift.start_time >= u.end_time or shift.end_time <= u.start_time)
-                        return "collides"
+                        return 'collides'
 
             # hooray, shift is free for you!
-            return "free"
+            return 'free'
 
         calculate_state_class = (signup_state) ->
             switch signup_state
-                when "shift_ended" then "default"
-                when "signed_up" then "primary"
-                when "free" then "danger"
-                when "angeltype" then "warning"
-                when "collides" then "warning"
-                when "occupied" then "success"
-                when "admin" then "success"
+                when 'shift_ended' then 'default'
+                when 'signed_up' then 'primary'
+                when 'free' then 'danger'
+                when 'angeltype' then 'warning'
+                when 'collides' then 'warning'
+                when 'occupied' then 'success'
+                when 'admin' then 'success'
 
         shift_fits = (shift, room_id, lane_nr) ->
             for lane_shift in lanes[room_id][lane_nr]
@@ -297,7 +310,7 @@ Shifts.render =
 
             room_id = shift.RID
 
-            if typeof lanes[room_id] == "undefined"
+            if typeof lanes[room_id] == 'undefined'
                 # initialize room
                 lanes[room_id] = [[]] # lanes.roomid.lanenr.shifts
 
@@ -308,7 +321,7 @@ Shifts.render =
                     break
 
             if not shift_added
-                #Shifts.log "lane is full, adding new one"
+                #Shifts.log 'lane is full, adding new one'
                 lanes[room_id].push []
                 highest_lane_nr = lanes[room_id].length - 1
                 add_shift(shift, room_id)
@@ -325,6 +338,9 @@ Shifts.render =
         shifts_count = 0
         mustache_rooms = []
         for room_nr of rooms
+            if room_nr == 'length'
+                break
+            #Shifts.log room_nr
             room_id = rooms[room_nr].RID
             mustache_rooms[room_nr] = {}
             mustache_rooms[room_nr].Name = rooms[room_nr].Name
