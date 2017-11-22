@@ -165,6 +165,8 @@ Shifts.render =
                     at_name: se.at_name
                     angels: []
                     angels_needed: needed_angeltypes[se.SID + '-' + se.TID]
+                    helpers_needed: atn.angel_count > 0 # bool for mustache
+                    angeltype_mismatch: atn.angel_type_id not in Shifts.db.current_user.angeltypes
 
         # fill shiftentries with needed angeltypes
         for atn in db_angeltypes_needed
