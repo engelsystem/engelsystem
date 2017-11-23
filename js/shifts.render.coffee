@@ -151,6 +151,19 @@ Shifts.render =
         lanes = {}
         shiftentries = {}
 
+        build_shiftentry = (atn) ->
+            se =
+                TID: atn.angel_type_id
+                at_name: atn.name
+                restricted: if atn.restricted == 1 then true else false
+                no_self_signup: if atn.no_self_signup == 1 then true else false
+                angels: []
+                angels_needed: atn.angel_count
+                helpers_needed: atn.angel_count > 0 # bool for mustache
+                angeltype_mismatch: atn.angel_type_id not in Shifts.db.current_user.angeltypes
+
+            return se
+
         ## *** THIS BLOCK IS NOT NEEDED. shifts always have a "needed_angeltypes" and need that information,
         ## otherwise the shift-entry would be useless.
         ## I'll leave this code-block in for later Nachvollziehbarkeit.
@@ -181,15 +194,8 @@ Shifts.render =
         for atn in db_angeltypes_needed
             if typeof shiftentries[atn.shift_id] == 'undefined'
                 shiftentries[atn.shift_id] = []
-                shiftentries[atn.shift_id].push
-                    TID: atn.angel_type_id
-                    at_name: atn.name
-                    restricted: if atn.restricted == 1 then true else false
-                    no_self_signup: if atn.no_self_signup == 1 then true else false
-                    angels: []
-                    angels_needed: atn.angel_count
-                    helpers_needed: atn.angel_count > 0 # bool for mustache
-                    angeltype_mismatch: atn.angel_type_id not in Shifts.db.current_user.angeltypes
+                shiftentry = build_shiftentry atn
+                shiftentries[atn.shift_id].push shiftentry
             else
                 entry_exists = false
                 for s of shiftentries[atn.shift_id]
@@ -197,15 +203,8 @@ Shifts.render =
                         entry_exists = true
                         break
                 if not entry_exists
-                    shiftentries[atn.shift_id].push
-                        TID: atn.angel_type_id
-                        at_name: atn.name
-                        restricted: if atn.restricted == 1 then true else false
-                        no_self_signup: if atn.no_self_signup == 1 then true else false
-                        angels: []
-                        angels_needed: atn.angel_count
-                        helpers_needed: atn.angel_count > 0 # bool for mustache
-                        angeltype_mismatch: atn.angel_type_id not in Shifts.db.current_user.angeltypes
+                    shiftentry = build_shiftentry atn
+                    shiftentries[atn.shift_id].push shiftentry
 
         # fill it with angels
         for se in db_shiftentries
