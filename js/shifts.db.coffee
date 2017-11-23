@@ -24,8 +24,7 @@ Shifts.db =
             t.executeSql 'CREATE TABLE IF NOT EXISTS AngelTypes (id unique, name, restricted INT, no_self_signup INT)'
             t.executeSql 'CREATE TABLE IF NOT EXISTS NeededAngelTypes (id unique, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)'
             t.executeSql 'CREATE TABLE IF NOT EXISTS options (option_key unique, option_value)'
-            Shifts.db.populate_ids ->
-                done()
+            done()
 
     slugify: (text) ->
         return text.toString().toLowerCase()
@@ -67,7 +66,6 @@ Shifts.db =
 
                         # store angeltypes
                         Shifts.db.current_user.angeltypes = [4] #todo (provide it via html)
-
                         done()
 
     insert_room: (room, done) ->

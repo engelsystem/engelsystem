@@ -23,38 +23,40 @@ Shifts.init = function() {
       Shifts.log('db initialized');
       return Shifts.fetcher.start(true, function() {
         Shifts.log('fetch complete.');
-        Shifts.render.header_footer();
-        Shifts.render.shiftplan();
-        Shifts.interaction.init();
-        setInterval(function() {
-          return Shifts.fetcher.start(false, function() {});
-        }, 1000 * 60 * 5);
-        return Shifts.db.get_shift_range(function(date_range) {
-          var waitforcal;
-          return waitforcal = setInterval(function() {
-            if (Shifts.render.START_TIME) {
-              $('#datetimepicker').datetimepicker({
-                value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm'),
-                timepicker: true,
-                inline: true,
-                format: 'Y-m-d H:i',
-                minDate: moment.unix(date_range[0]).format('YYYY-MM-DD'),
-                maxDate: moment.unix(date_range[1]).format('YYYY-MM-DD'),
-                onChangeDateTime: function(dp, $input) {
-                  var stime;
-                  stime = parseInt(moment($input.val()).format('X'), 10);
-                  Shifts.render.START_TIME = stime;
-                  $('#filterbutton').removeAttr('disabled');
-                  return Shifts.db.set_option('filter_start_time', stime, function() {
-                    if (Shifts.render.rendering_time < Shifts.render.render_threshold) {
-                      return Shifts.render.shiftplan();
-                    }
-                  });
-                }
-              });
-              return clearInterval(waitforcal);
-            }
-          }, 1);
+        return Shifts.db.populate_ids(function() {
+          Shifts.render.header_footer();
+          Shifts.render.shiftplan();
+          Shifts.interaction.init();
+          setInterval(function() {
+            return Shifts.fetcher.start(false, function() {});
+          }, 1000 * 60 * 5);
+          return Shifts.db.get_shift_range(function(date_range) {
+            var waitforcal;
+            return waitforcal = setInterval(function() {
+              if (Shifts.render.START_TIME) {
+                $('#datetimepicker').datetimepicker({
+                  value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm'),
+                  timepicker: true,
+                  inline: true,
+                  format: 'Y-m-d H:i',
+                  minDate: moment.unix(date_range[0]).format('YYYY-MM-DD'),
+                  maxDate: moment.unix(date_range[1]).format('YYYY-MM-DD'),
+                  onChangeDateTime: function(dp, $input) {
+                    var stime;
+                    stime = parseInt(moment($input.val()).format('X'), 10);
+                    Shifts.render.START_TIME = stime;
+                    $('#filterbutton').removeAttr('disabled');
+                    return Shifts.db.set_option('filter_start_time', stime, function() {
+                      if (Shifts.render.rendering_time < Shifts.render.render_threshold) {
+                        return Shifts.render.shiftplan();
+                      }
+                    });
+                  }
+                });
+                return clearInterval(waitforcal);
+              }
+            }, 1);
+          });
         });
       });
     });
@@ -90,9 +92,7 @@ Shifts.db = {
       t.executeSql('CREATE TABLE IF NOT EXISTS AngelTypes (id unique, name, restricted INT, no_self_signup INT)');
       t.executeSql('CREATE TABLE IF NOT EXISTS NeededAngelTypes (id unique, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)');
       t.executeSql('CREATE TABLE IF NOT EXISTS options (option_key unique, option_value)');
-      return Shifts.db.populate_ids(function() {
-        return done();
-      });
+      return done();
     });
   },
   slugify: function(text) {
