@@ -117,9 +117,10 @@ Shifts.db = {
           Shifts.interaction.selected_rooms.push(r.RID);
         }
         return t.executeSql('SELECT id from AngelTypes', [], function(t, res) {
-          var a, k, len1, user_id;
-          for (k = 0, len1 = res.length; k < len1; k++) {
-            a = res[k];
+          var a, k, len1, ref1, user_id;
+          ref1 = res.rows;
+          for (k = 0, len1 = ref1.length; k < len1; k++) {
+            a = ref1[k];
             Shifts.interaction.selected_angeltypes.push(a.id);
           }
           user_id = parseInt($('#shiftplan').data('user_id'), 10);

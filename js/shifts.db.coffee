@@ -50,8 +50,9 @@ Shifts.db =
 
                 # angel types
                 t.executeSql 'SELECT id from AngelTypes', [], (t, res) ->
-                    for a in res
+                    for a in res.rows
                         # populate select filter
+                        # todo: fill it with angeltypes provided by html - joined types preselect is default.
                         Shifts.interaction.selected_angeltypes.push a.id
 
                     # user
