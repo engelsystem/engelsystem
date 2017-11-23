@@ -164,39 +164,15 @@ Shifts.render =
 
             return se
 
-        ## *** THIS BLOCK IS NOT NEEDED. shifts always have a "needed_angeltypes" and need that information,
-        ## otherwise the shift-entry would be useless.
-        ## I'll leave this code-block in for later Nachvollziehbarkeit.
-        ##
-        ##
-        ##
-        ##
-        ## #build needed angeltypes
-        ## needed_angeltypes = {}
-        ## for atn in db_angeltypes_needed
-        ##     needed_angeltypes[atn.shift_id + '-' + atn.angel_type_id] = atn.angel_count
-        ##
-        ## #build shiftentries object - create it with default values
-        ## #after filling it with needed angeltypes information, process _needed and _mismatch values
-        ## for se in db_shiftentries
-        ##    if typeof shiftentries[se.SID] == 'undefined'
-        ##        shiftentries[se.SID] = []
-        ##        shiftentries[se.SID].push
-        ##            TID: se.TID
-        ##            at_name: se.at_name
-        ##            angels: []
-        ##            angels_needed: needed_angeltypes[se.SID + '-' + se.TID]
-        ##            helpers_needed: true # bool for mustache
-        ##            angeltype_mismatch: false
-        ##        Shifts.log shiftentries[se.SID]
-
         # fill shiftentries with needed angeltypes
         for atn in db_angeltypes_needed
             if typeof shiftentries[atn.shift_id] == 'undefined'
+                # add shift if it does not yet exists
                 shiftentries[atn.shift_id] = []
                 shiftentry = build_shiftentry atn
                 shiftentries[atn.shift_id].push shiftentry
             else
+                # add shift for the rest of angeltypes
                 entry_exists = false
                 for s of shiftentries[atn.shift_id]
                     if atn.angel_type_id == shiftentries[atn.shift_id][s].TID
