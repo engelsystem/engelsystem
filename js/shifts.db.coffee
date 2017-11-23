@@ -48,26 +48,26 @@ Shifts.db =
                     # populate select filter
                     Shifts.interaction.selected_rooms.push r.RID
 
-            # angel types
-            t.executeSql 'SELECT id from AngelTypes', [], (t, res) ->
-                for a in res
-                    # populate select filter
-                    Shifts.interaction.selected_angeltypes.push a.id
+                # angel types
+                t.executeSql 'SELECT id from AngelTypes', [], (t, res) ->
+                    for a in res
+                        # populate select filter
+                        Shifts.interaction.selected_angeltypes.push a.id
 
-                # user
-                user_id = parseInt $('#shiftplan').data('user_id'), 10
+                    # user
+                    user_id = parseInt $('#shiftplan').data('user_id'), 10
 
-                # store user_id
-                Shifts.db.current_user.id = user_id
+                    # store user_id
+                    Shifts.db.current_user.id = user_id
 
-                # store arrived status
-                t.executeSql 'SELECT UID FROM User WHERE UID = ?', [user_id], (t, res) ->
-                    Shifts.db.current_user.arrived = res.rows.length > 0
+                    # store arrived status
+                    t.executeSql 'SELECT UID FROM User WHERE UID = ?', [user_id], (t, res) ->
+                        Shifts.db.current_user.arrived = res.rows.length > 0
 
-                    # store angeltypes
-                    Shifts.db.current_user.angeltypes = [4] #todo (provide it via html)
+                        # store angeltypes
+                        Shifts.db.current_user.angeltypes = [4] #todo (provide it via html)
 
-                    done()
+                        done()
 
     insert_room: (room, done) ->
         room.RID = parseInt(room.RID, 10)

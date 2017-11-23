@@ -108,28 +108,26 @@ Shifts.db = {
   },
   populate_ids: function(done) {
     return Shifts.db.websql.transaction(function(t) {
-      t.executeSql('SELECT RID from Room', [], function(t, res) {
-        var j, len, r, ref, results;
+      return t.executeSql('SELECT RID from Room', [], function(t, res) {
+        var j, len, r, ref;
         ref = res.rows;
-        results = [];
         for (j = 0, len = ref.length; j < len; j++) {
           r = ref[j];
-          results.push(Shifts.interaction.selected_rooms.push(r.RID));
+          Shifts.interaction.selected_rooms.push(r.RID);
         }
-        return results;
-      });
-      return t.executeSql('SELECT id from AngelTypes', [], function(t, res) {
-        var a, j, len, user_id;
-        for (j = 0, len = res.length; j < len; j++) {
-          a = res[j];
-          Shifts.interaction.selected_angeltypes.push(a.id);
-        }
-        user_id = parseInt($('#shiftplan').data('user_id'), 10);
-        Shifts.db.current_user.id = user_id;
-        return t.executeSql('SELECT UID FROM User WHERE UID = ?', [user_id], function(t, res) {
-          Shifts.db.current_user.arrived = res.rows.length > 0;
-          Shifts.db.current_user.angeltypes = [4];
-          return done();
+        return t.executeSql('SELECT id from AngelTypes', [], function(t, res) {
+          var a, k, len1, user_id;
+          for (k = 0, len1 = res.length; k < len1; k++) {
+            a = res[k];
+            Shifts.interaction.selected_angeltypes.push(a.id);
+          }
+          user_id = parseInt($('#shiftplan').data('user_id'), 10);
+          Shifts.db.current_user.id = user_id;
+          return t.executeSql('SELECT UID FROM User WHERE UID = ?', [user_id], function(t, res) {
+            Shifts.db.current_user.arrived = res.rows.length > 0;
+            Shifts.db.current_user.angeltypes = [4];
+            return done();
+          });
         });
       });
     });
