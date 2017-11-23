@@ -243,7 +243,7 @@ Shifts.render =
 
             # you can only join if the shift is in the future
             now_unix = moment().format('X')
-            if shift.end_time < now_unix
+            if shift.start_time < now_unix
                 return 'shift_ended'
 
             # you cannot join if the shift is full

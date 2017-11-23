@@ -857,7 +857,7 @@ Shifts.render = {
         }
       }
       now_unix = moment().format('X');
-      if (shift.end_time < now_unix) {
+      if (shift.start_time < now_unix) {
         return 'shift_ended';
       }
       angels_needed = 0;
