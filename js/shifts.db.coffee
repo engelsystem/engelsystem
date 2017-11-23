@@ -170,7 +170,7 @@ Shifts.db =
         end_time = Shifts.render.get_endtime()
 
         Shifts.db.websql.transaction (t) ->
-            t.executeSql 'SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, User.Nick as Nick, AngelTypes.name as at_name
+            t.executeSql 'SELECT DISTINCT ShiftEntry.SID, ShiftEntry.TID, ShiftEntry.UID, ShiftEntry.freeloaded, User.Nick as Nick, AngelTypes.name as at_name
             FROM ShiftEntry
             JOIN User ON ShiftEntry.UID = User.UID
             JOIN Shifts ON ShiftEntry.SID = Shifts.SID

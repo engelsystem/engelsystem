@@ -192,7 +192,12 @@ Building view...
                             <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}">{{at_name}}</a>:</strong>
                         {{/restricted}}
                           {{#angels}}
-                            <span><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>,
+                              {{#freeloaded}}
+                                <span style="text-decoration: line-through;"><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>,
+                              {{/freeloaded}}
+                              {{^freeloaded}}
+                                <span><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>,
+                              {{/freeloaded}}
                           {{/angels}}
                         {{#helpers_needed}}
                             {{#shift_ended}}
