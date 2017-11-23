@@ -150,23 +150,32 @@ Shifts.render =
     shiftplan_assemble: (rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts) ->
         lanes = {}
         shiftentries = {}
-        needed_angeltypes = {}
 
-        # build needed angeltypes
-        for atn in db_angeltypes_needed
-            needed_angeltypes[atn.shift_id + '-' + atn.angel_type_id] = atn.angel_count
-
-        # build shiftentries object
-        for se in db_shiftentries
-            if typeof shiftentries[se.SID] == 'undefined'
-                shiftentries[se.SID] = []
-                shiftentries[se.SID].push
-                    TID: se.TID
-                    at_name: se.at_name
-                    angels: []
-                    angels_needed: needed_angeltypes[se.SID + '-' + se.TID]
-                    helpers_needed: atn.angel_count > 0 # bool for mustache
-                    angeltype_mismatch: atn.angel_type_id not in Shifts.db.current_user.angeltypes
+        ## *** THIS BLOCK IS NOT NEEDED. shifts always have a "needed_angeltypes" and need that information,
+        ## otherwise the shift-entry would be useless.
+        ## I'll leave this code-block in for later Nachvollziehbarkeit.
+        ##
+        ##
+        ##
+        ##
+        ## #build needed angeltypes
+        ## needed_angeltypes = {}
+        ## for atn in db_angeltypes_needed
+        ##     needed_angeltypes[atn.shift_id + '-' + atn.angel_type_id] = atn.angel_count
+        ##
+        ## #build shiftentries object - create it with default values
+        ## #after filling it with needed angeltypes information, process _needed and _mismatch values
+        ## for se in db_shiftentries
+        ##    if typeof shiftentries[se.SID] == 'undefined'
+        ##        shiftentries[se.SID] = []
+        ##        shiftentries[se.SID].push
+        ##            TID: se.TID
+        ##            at_name: se.at_name
+        ##            angels: []
+        ##            angels_needed: needed_angeltypes[se.SID + '-' + se.TID]
+        ##            helpers_needed: true # bool for mustache
+        ##            angeltype_mismatch: false
+        ##        Shifts.log shiftentries[se.SID]
 
         # fill shiftentries with needed angeltypes
         for atn in db_angeltypes_needed

@@ -763,30 +763,11 @@ Shifts.render = {
     });
   },
   shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts) {
-    var add_shift, atn, calculate_signup_state, calculate_state_class, end_time, end_timestamp, entry_exists, firstblock_starttime, highest_lane_nr, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, len4, len5, m, mustache_rooms, n, needed_angeltypes, p, ref, ref1, ref2, ref3, rendered_until, room_id, room_nr, s, se, shift, shift_added, shift_calendar, shift_fits, shift_nr, shiftentries, shifts_count, start_time, thistime, time_slot;
+    var add_shift, atn, calculate_signup_state, calculate_state_class, end_time, end_timestamp, entry_exists, firstblock_starttime, highest_lane_nr, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, m, mustache_rooms, ref, ref1, ref2, rendered_until, room_id, room_nr, s, se, shift, shift_added, shift_calendar, shift_fits, shift_nr, shiftentries, shifts_count, start_time, thistime, time_slot;
     lanes = {};
     shiftentries = {};
-    needed_angeltypes = {};
     for (j = 0, len = db_angeltypes_needed.length; j < len; j++) {
       atn = db_angeltypes_needed[j];
-      needed_angeltypes[atn.shift_id + '-' + atn.angel_type_id] = atn.angel_count;
-    }
-    for (k = 0, len1 = db_shiftentries.length; k < len1; k++) {
-      se = db_shiftentries[k];
-      if (typeof shiftentries[se.SID] === 'undefined') {
-        shiftentries[se.SID] = [];
-        shiftentries[se.SID].push({
-          TID: se.TID,
-          at_name: se.at_name,
-          angels: [],
-          angels_needed: needed_angeltypes[se.SID + '-' + se.TID],
-          helpers_needed: atn.angel_count > 0,
-          angeltype_mismatch: (ref = atn.angel_type_id, indexOf.call(Shifts.db.current_user.angeltypes, ref) < 0)
-        });
-      }
-    }
-    for (l = 0, len2 = db_angeltypes_needed.length; l < len2; l++) {
-      atn = db_angeltypes_needed[l];
       if (typeof shiftentries[atn.shift_id] === 'undefined') {
         shiftentries[atn.shift_id] = [];
         shiftentries[atn.shift_id].push({
@@ -797,7 +778,7 @@ Shifts.render = {
           angels: [],
           angels_needed: atn.angel_count,
           helpers_needed: atn.angel_count > 0,
-          angeltype_mismatch: (ref1 = atn.angel_type_id, indexOf.call(Shifts.db.current_user.angeltypes, ref1) < 0)
+          angeltype_mismatch: (ref = atn.angel_type_id, indexOf.call(Shifts.db.current_user.angeltypes, ref) < 0)
         });
       } else {
         entry_exists = false;
@@ -816,13 +797,13 @@ Shifts.render = {
             angels: [],
             angels_needed: atn.angel_count,
             helpers_needed: atn.angel_count > 0,
-            angeltype_mismatch: (ref2 = atn.angel_type_id, indexOf.call(Shifts.db.current_user.angeltypes, ref2) < 0)
+            angeltype_mismatch: (ref1 = atn.angel_type_id, indexOf.call(Shifts.db.current_user.angeltypes, ref1) < 0)
           });
         }
       }
     }
-    for (m = 0, len3 = db_shiftentries.length; m < len3; m++) {
-      se = db_shiftentries[m];
+    for (k = 0, len1 = db_shiftentries.length; k < len1; k++) {
+      se = db_shiftentries[k];
       for (s in shiftentries[se.SID]) {
         if (se.TID === shiftentries[se.SID][s].TID) {
           shiftentries[se.SID][s].angels.push({
@@ -834,7 +815,7 @@ Shifts.render = {
       }
     }
     add_shift = function(shift, room_id) {
-      var blocks, height, lane_nr, ref3;
+      var blocks, height, lane_nr, ref2;
       if (shift.shift_title === 'null') {
         shift.shift_title = null;
       }
@@ -845,7 +826,7 @@ Shifts.render = {
       shift.state_class = calculate_state_class(shift.signup_state);
       shift.shift_ended = shift.signup_state === 'shift_ended';
       if (Shifts.interaction.occupancy === 'free') {
-        if ((ref3 = shift.signup_state) !== 'free' && ref3 !== 'collides' && ref3 !== 'signed_up') {
+        if ((ref2 = shift.signup_state) !== 'free' && ref2 !== 'collides' && ref2 !== 'signed_up') {
           return true;
         }
       }
@@ -863,9 +844,9 @@ Shifts.render = {
       return false;
     };
     calculate_signup_state = function(shift) {
-      var angels_needed, at, len4, len5, len6, n, now_unix, p, q, ref3, u;
-      for (n = 0, len4 = db_usershifts.length; n < len4; n++) {
-        u = db_usershifts[n];
+      var angels_needed, at, l, len2, len3, len4, m, n, now_unix, ref2, u;
+      for (l = 0, len2 = db_usershifts.length; l < len2; l++) {
+        u = db_usershifts[l];
         if (u.SID === shift.SID) {
           return 'signed_up';
         }
@@ -875,9 +856,9 @@ Shifts.render = {
         return 'shift_ended';
       }
       angels_needed = 0;
-      ref3 = shift.angeltypes;
-      for (p = 0, len5 = ref3.length; p < len5; p++) {
-        at = ref3[p];
+      ref2 = shift.angeltypes;
+      for (m = 0, len3 = ref2.length; m < len3; m++) {
+        at = ref2[m];
         angels_needed = angels_needed + at.angels_needed;
       }
       if (angels_needed === 0) {
@@ -886,8 +867,8 @@ Shifts.render = {
       if (Shifts.db.current_user.arrived === false) {
         return 'shift_ended';
       }
-      for (q = 0, len6 = db_usershifts.length; q < len6; q++) {
-        u = db_usershifts[q];
+      for (n = 0, len4 = db_usershifts.length; n < len4; n++) {
+        u = db_usershifts[n];
         if (u.SID !== shift.SID) {
           if (!(shift.start_time >= u.end_time || shift.end_time <= u.start_time)) {
             return 'collides';
@@ -915,10 +896,10 @@ Shifts.render = {
       }
     };
     shift_fits = function(shift, room_id, lane_nr) {
-      var lane_shift, len4, n, ref3;
-      ref3 = lanes[room_id][lane_nr];
-      for (n = 0, len4 = ref3.length; n < len4; n++) {
-        lane_shift = ref3[n];
+      var l, lane_shift, len2, ref2;
+      ref2 = lanes[room_id][lane_nr];
+      for (l = 0, len2 = ref2.length; l < len2; l++) {
+        lane_shift = ref2[l];
         if (!(shift.start_time >= lane_shift.end_time || shift.end_time <= lane_shift.start_time)) {
           return false;
         }
@@ -929,8 +910,8 @@ Shifts.render = {
     end_time = Shifts.render.get_endtime(true);
     firstblock_starttime = end_time;
     lastblock_endtime = start_time;
-    for (n = 0, len4 = db_shifts.length; n < len4; n++) {
-      shift = db_shifts[n];
+    for (l = 0, len2 = db_shifts.length; l < len2; l++) {
+      shift = db_shifts[l];
       if (shift.start_time < firstblock_starttime) {
         firstblock_starttime = shift.start_time;
       }
@@ -942,9 +923,9 @@ Shifts.render = {
         lanes[room_id] = [[]];
       }
       shift_added = false;
-      ref3 = lanes[room_id];
-      for (p = 0, len5 = ref3.length; p < len5; p++) {
-        lane = ref3[p];
+      ref2 = lanes[room_id];
+      for (m = 0, len3 = ref2.length; m < len3; m++) {
+        lane = ref2[m];
         shift_added = add_shift(shift, room_id);
         if (shift_added) {
           break;
