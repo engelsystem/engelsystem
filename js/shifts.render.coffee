@@ -190,6 +190,8 @@ Shifts.render =
                         UID: se.UID
                         Nick: se.Nick
                     shiftentries[se.SID][s].angels_needed--
+                    # todo: process freeloaders
+                    # todo: process helpers needed
 
         add_shift = (shift, room_id) ->
             # fix empty title
@@ -248,10 +250,8 @@ Shifts.render =
             if Shifts.db.current_user.arrived == false
                 return 'shift_ended'
 
-            # TODO:
-            # you cannot join if the user is not of this angel type
-
-            # you cannot join if angeltype has no self signup #that is missing even in the regular Engelsystem!
+            # you cannot join if angeltype has no self signup
+            # that is missing even in the regular Engelsystem!
 
             # you cannot join if user already joined a parallel or this shift
             for u in db_usershifts
