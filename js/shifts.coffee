@@ -10,6 +10,7 @@ Shifts.init = ->
         if 'websql=' not in document.cookie
             try
                 dbtest = window.openDatabase '_engelsystem_test', '1.0', '', 10*1024*1024
+                dbtest.transaction (t) ->
                 document.cookie = 'websql=yes'
             catch
                 document.cookie = 'websql=nope'

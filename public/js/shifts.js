@@ -12,6 +12,7 @@ Shifts.init = function() {
     if (indexOf.call(document.cookie, 'websql=') < 0) {
       try {
         dbtest = window.openDatabase('_engelsystem_test', '1.0', '', 10 * 1024 * 1024);
+        dbtest.transaction(function(t) {});
         document.cookie = 'websql=yes';
       } catch (error) {
         document.cookie = 'websql=nope';
