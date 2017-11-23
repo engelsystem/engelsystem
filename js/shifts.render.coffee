@@ -167,7 +167,7 @@ Shifts.render =
         # fill shiftentries with needed angeltypes
         for atn in db_angeltypes_needed
             if typeof shiftentries[atn.shift_id] == 'undefined'
-                # add shift if it does not yet exists
+                # add shift if it does not yet exist
                 shiftentries[atn.shift_id] = []
                 shiftentry = build_shiftentry atn
                 shiftentries[atn.shift_id].push shiftentry

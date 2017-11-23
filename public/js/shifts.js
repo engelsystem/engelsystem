@@ -69,7 +69,7 @@ $(function() {
 });
 
 Shifts.db = {
-  prefix: '',
+  prefix: 'noname',
   websql: {},
   current_user: {},
   init: function(done) {

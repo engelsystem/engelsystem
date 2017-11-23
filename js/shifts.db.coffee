@@ -1,6 +1,6 @@
 
 Shifts.db =
-    prefix: ''
+    prefix: 'noname'
     websql: {} # this will be the db instance
     current_user: {} # stores user_id and user's angeltypes
 
