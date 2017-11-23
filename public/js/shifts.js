@@ -84,7 +84,7 @@ Shifts.db = {
       t.executeSql('CREATE TABLE IF NOT EXISTS Shifts (SID unique, title, shifttype_id INT, start_time INT, end_time INT, RID INT)');
       t.executeSql('CREATE TABLE IF NOT EXISTS User (UID unique, nick)');
       t.executeSql('CREATE TABLE IF NOT EXISTS Room (RID unique, Name)');
-      t.executeSql('CREATE TABLE IF NOT EXISTS ShiftEntry (id unique, SID INT, TID INT, UID INT)');
+      t.executeSql('CREATE TABLE IF NOT EXISTS ShiftEntry (id unique, SID INT, TID INT, UID INT, freeloaded INT)');
       t.executeSql('CREATE TABLE IF NOT EXISTS ShiftTypes (id unique, name, angeltype_id INT)');
       t.executeSql('CREATE TABLE IF NOT EXISTS AngelTypes (id unique, name, restricted INT, no_self_signup INT)');
       t.executeSql('CREATE TABLE IF NOT EXISTS NeededAngelTypes (id unique, room_id INT, shift_id INT, angel_type_id INT, angel_count INT)');
@@ -160,8 +160,9 @@ Shifts.db = {
     shiftentry.SID = parseInt(shiftentry.SID, 10);
     shiftentry.TID = parseInt(shiftentry.TID, 10);
     shiftentry.UID = parseInt(shiftentry.UID, 10);
+    shiftentry.freeloaded = parseInt(shiftentry.freeloaded, 10);
     return Shifts.db.websql.transaction(function(t) {
-      t.executeSql('INSERT INTO ShiftEntry (id, SID, TID, UID) VALUES (?, ?, ?, ?)', [shiftentry.id, shiftentry.SID, shiftentry.TID, shiftentry.UID], function() {});
+      t.executeSql('INSERT INTO ShiftEntry (id, SID, TID, UID, freeloaded) VALUES (?, ?, ?, ?, ?)', [shiftentry.id, shiftentry.SID, shiftentry.TID, shiftentry.UID, shiftentry.freeloaded], function() {});
       return done();
     });
   },
@@ -809,6 +810,10 @@ Shifts.render = {
             Nick: se.Nick
           });
           shiftentries[se.SID][s].angels_needed--;
+          if (shiftentries[se.SID][s].angels_needed === 0) {
+            shiftentries[se.SID][s].helpers_needed = false;
+          }
+          Shifts.log(shiftentries[se.SID][s]);
         }
       }
     }

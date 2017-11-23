@@ -186,12 +186,18 @@ Shifts.render =
         for se in db_shiftentries
             for s of shiftentries[se.SID]
                 if se.TID == shiftentries[se.SID][s].TID
+
+                    # todo: process freeloaders
                     shiftentries[se.SID][s].angels.push
                         UID: se.UID
                         Nick: se.Nick
                     shiftentries[se.SID][s].angels_needed--
-                    # todo: process freeloaders
-                    # todo: process helpers needed
+
+                    # process helpers needed
+                    if shiftentries[se.SID][s].angels_needed == 0
+                        shiftentries[se.SID][s].helpers_needed = false
+
+                    Shifts.log shiftentries[se.SID][s]
 
         add_shift = (shift, room_id) ->
             # fix empty title

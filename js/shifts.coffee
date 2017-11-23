@@ -2,6 +2,7 @@
 Shifts = window.Shifts || {}
 
 Shifts.init = ->
+
     Shifts.$shiftplan = $('#shiftplan')
     if Shifts.$shiftplan.length > 0
         Shifts.log 'shifts init'

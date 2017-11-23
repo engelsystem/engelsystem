@@ -458,7 +458,7 @@ function Shifts_for_websql($latest_ids) {
 
     // fetch shift_entries
   $shift_entries = sql_select("
-      SELECT id, SID, TID, UID
+      SELECT id, SID, TID, UID, freeloaded
       FROM ShiftEntry
       WHERE id > '" . sql_escape($latest_ids['shift_entries']) . "'
       ORDER BY id ASC
