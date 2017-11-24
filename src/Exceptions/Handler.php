@@ -2,10 +2,21 @@
 
 namespace Engelsystem\Exceptions;
 
-abstract class Handler
+use Engelsystem\Exceptions\Handlers\HandlerInterface;
+use Engelsystem\Http\Request;
+use ErrorException;
+use Throwable;
+
+class Handler
 {
     /** @var string */
     protected $environment;
+
+    /** @var HandlerInterface[] */
+    protected $handler = [];
+
+    /** @var Request */
+    protected $request;
 
     const ENV_PRODUCTION = 'prod';
     const ENV_DEVELOPMENT = 'dev';
@@ -13,7 +24,7 @@ abstract class Handler
     /**
      * Handler constructor.
      *
-     * @param string $environment production|development
+     * @param string $environment prod|dev
      */
     public function __construct($environment = self::ENV_PRODUCTION)
     {
@@ -25,6 +36,55 @@ abstract class Handler
      */
     public function register()
     {
+        set_error_handler([$this, 'errorHandler']);
+        set_exception_handler([$this, 'exceptionHandler']);
+    }
+
+    /**
+     * @param int    $number
+     * @param string $message
+     * @param string $file
+     * @param int    $line
+     */
+    public function errorHandler($number, $message, $file, $line)
+    {
+        $exception = new ErrorException($message, 0, $number, $file, $line);
+        $this->exceptionHandler($exception);
+    }
+
+    /**
+     * @param Throwable $e
+     */
+    public function exceptionHandler($e)
+    {
+        if (!$this->request instanceof Request) {
+            $this->request = new Request();
+        }
+
+        $handler = $this->handler[$this->environment];
+        $handler->report($e);
+        $handler->render($this->request, $e);
+        $this->die();
+    }
+
+    /**
+     * Exit the application
+     *
+     * @codeCoverageIgnore
+     * @param string $message
+     */
+    protected function die($message = '')
+    {
+        echo $message;
+        die();
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnvironment()
+    {
+        return $this->environment;
     }
 
     /**
@@ -36,10 +96,40 @@ abstract class Handler
     }
 
     /**
-     * @return string
+     * @param string $environment
+     * @return HandlerInterface|HandlerInterface[]
      */
-    public function getEnvironment()
+    public function getHandler($environment = null)
     {
-        return $this->environment;
+        if (!is_null($environment)) {
+            return $this->handler[$environment];
+        }
+
+        return $this->handler;
+    }
+
+    /**
+     * @param string           $environment
+     * @param HandlerInterface $handler
+     */
+    public function setHandler($environment, HandlerInterface $handler)
+    {
+        $this->handler[$environment] = $handler;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request)
+    {
+        $this->request = $request;
     }
 }
