@@ -17,7 +17,7 @@ Please visit https://engelsystem.de for a feature list.
  * Install [Composer](https://getcomposer.org/download/)
  * Install project dependencies: `composer install`
  * Webserver must have write access to the 'import' directory and read access for all other directories
- * Webserver must be public.
+ * Webserver must point to the public directory.
 
  * Recommended: Directory Listing should be disabled.
  * There must a be MySQL database created with a user who has full rights to that database.
