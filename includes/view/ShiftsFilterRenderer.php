@@ -39,21 +39,17 @@ class ShiftsFilterRenderer
     /**
      * Renders the filter.
      *
-     * @param array $room
+     * @param string $page_link Link pointing to the actual page.
      * @return string Generated HTML
      */
-    public function render($room)
+    public function render($page_link)
     {
         $toolbar = [];
         if ($this->daySelectionEnabled && !empty($this->days)) {
             $selected_day = date('Y-m-d', $this->shiftsFilter->getStartTime());
             $day_dropdown_items = [];
             foreach ($this->days as $day) {
-                $link = page_link_to('rooms', [
-                    'action'            => 'view',
-                    'room_id'           => $room['RID'],
-                    'shifts_filter_day' => $day,
-                ]);
+                $link = $page_link . '&shifts_filter_day=' . $day;
                 $day_dropdown_items[] = toolbar_item_link($link, '', $day);
             }
             $toolbar[] = toolbar_dropdown('', $selected_day, $day_dropdown_items, 'active');

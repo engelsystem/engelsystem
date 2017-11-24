@@ -5,6 +5,29 @@ use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftSignupState;
 
 /**
+ * @param array $angeltype
+ * @return array
+ */
+function Shifts_by_angeltype($angeltype) {
+    return DB::select('
+        SELECT DISTINCT `Shifts`.* FROM `Shifts`
+        JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id` = `Shifts`.`SID`
+        WHERE `NeededAngelTypes`.`angel_type_id` = ?
+        AND `NeededAngelTypes`.`count` > 0
+        AND `Shifts`.`PSID` IS NULL
+        
+        UNION
+        
+        SELECT DISTINCT `Shifts`.* FROM `Shifts`
+        JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id` = `Shifts`.`RID`
+        WHERE `NeededAngelTypes`.`angel_type_id` = ?
+        AND `NeededAngelTypes`.`count` > 0
+        AND NOT `Shifts`.`PSID` IS NULL
+        ', [$angeltype['id'], $angeltype['id']]);
+}
+
+
+/**
  * @param array $room
  * @return array
  */
@@ -24,7 +47,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       FROM `Shifts`
       JOIN `Room` USING (`RID`)
       JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
-      JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
+      JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id` = `Shifts`.`SID`
       WHERE `Shifts`.`RID` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
       AND `start` BETWEEN ? AND ?
       AND `NeededAngelTypes`.`angel_type_id` IN (' . implode(',', $shiftsFilter->getTypes()) . ')

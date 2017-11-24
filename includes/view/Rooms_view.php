@@ -19,7 +19,10 @@ function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalen
     }
 
     return page_with_title(glyph('map-marker') . $room['Name'], [
-        $shiftsFilterRenderer->render($room),
+        $shiftsFilterRenderer->render(page_link_to('rooms', [
+                    'action'            => 'view',
+                    'room_id'           => $room['RID']
+        ])),
         $assignNotice,
         $shiftCalendarRenderer->render()
     ]);

@@ -1,6 +1,32 @@
 <?php
 
 /**
+ * Renders tabs from the array. Array key is tab name, array value is tab content.
+ * 
+ * @param array $tabs
+ * @return string HTML
+ */
+function tabs($tabs)
+{
+    $tab_header = [];
+    $tab_content = [];
+    foreach($tabs as $header => $content) {
+        $class = '';
+        if(count($tab_header) == 0) {
+            $class = 'active';
+        }
+        $tab_header[] = '<li role="presentation" class="' . $class . '">
+                <a href="#' . $header . '" aria-controls="' . $header . '" role="tab" data-toggle="tab">' 
+                    . $header . '</a></li>';
+        $tab_content[] = '<div role="tabpanel" class="tab-pane ' . $class . '" id="' . $header . '">' . $content . '</div>';
+    }
+    return div('', [
+        '<ul class="nav nav-tabs" role="tablist">' . join($tab_header) . '</ul>',
+        '<div class="tab-content">' . join($tab_content) . '</div>'
+    ]);
+}
+
+/**
  * Display muted (grey) text.
  *
  * @param string $text

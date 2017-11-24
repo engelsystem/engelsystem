@@ -6,8 +6,6 @@ $(document).ready(function () {
         var timeLanes = $(".shift-calendar .time");
         var headers = $(".shift-calendar .header");
         var topReference = $(".container-fluid .row");
-        var top = headers.offset().top;
-        var left = 15;
         timeLanes.css({
             "position": "relative",
             "z-index": 999
@@ -18,6 +16,8 @@ $(document).ready(function () {
         });
         $(window).scroll(
             function () {
+                var top = headers.parent().offset().top;
+                var left = 15;
                 timeLanes.css({
                     "left": Math.max(0, $(window).scrollLeft() - left) + "px"
                 });

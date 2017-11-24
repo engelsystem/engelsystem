@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\ShiftsFilter;
+use Engelsystem\ShiftsFilterRenderer;
 /**
  * Text for Angeltype related links.
  *
@@ -182,6 +184,14 @@ function angeltype_controller()
     $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
     $user_driver_license = UserDriverLicense($user['UID']);
     $members = Users_by_angeltype($angeltype);
+    
+    $days = angeltype_controller_shiftsFilterDays($angeltype);
+    $shiftsFilter = angeltype_controller_shiftsFilter($angeltype, $days);
+    
+    $shiftsFilterRenderer = new ShiftsFilterRenderer($shiftsFilter);
+    $shiftsFilterRenderer->enableDaySelection($days);
+    
+    $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
 
     return [
         sprintf(_('Team %s'), $angeltype['name']),
@@ -193,9 +203,58 @@ function angeltype_controller()
             in_array('admin_angel_types', $privileges),
             $user_angeltype['supporter'],
             $user_driver_license,
-            $user
+            $user,
+            $shiftsFilterRenderer,
+            $shiftCalendarRenderer
         )
     ];
+}
+
+/**
+ * On which days do shifts for this angeltype occur? Needed for shiftCalendar.
+ * 
+ * @param Angeltype $angeltype
+ * @return array
+ */
+function angeltype_controller_shiftsFilterDays($angeltype) {
+    $all_shifts = Shifts_by_angeltype($angeltype);
+    $days = [];
+    foreach ($all_shifts as $shift) {
+        $day = date('Y-m-d', $shift['start']);
+        if (!in_array($day, $days)) {
+            $days[] = $day;
+        }
+    }
+    return $days;
+}
+
+/**
+ * Sets up the shift filter for the angeltype.
+ * 
+ * @param Angeltype $angeltype
+ * @param array $days
+ * @return ShiftsFilter
+ */
+function angeltype_controller_shiftsFilter($angeltype, $days) {
+    global $privileges;
+    
+    $request = request();
+    $shiftsFilter = new ShiftsFilter(
+        in_array('user_shifts_admin', $privileges),
+        Room_ids(),
+        [$angeltype['id']]
+        );
+    $selected_day = date('Y-m-d');
+    if (!empty($days)) {
+        $selected_day = $days[0];
+    }
+    if ($request->has('shifts_filter_day')) {
+        $selected_day = $request->input('shifts_filter_day');
+    }
+    $shiftsFilter->setStartTime(parse_date('Y-m-d H:i', $selected_day . ' 00:00'));
+    $shiftsFilter->setEndTime(parse_date('Y-m-d H:i', $selected_day . ' 23:59'));
+    
+    return $shiftsFilter;
 }
 
 /**

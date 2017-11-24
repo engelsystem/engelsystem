@@ -143,7 +143,7 @@ class ShiftCalendarRenderer
     public function render()
     {
         if (count($this->lanes) == 0) {
-            return '';
+            return info(_('No shifts found.'), true);
         }
         return div('shift-calendar', [
                 $this->renderTimeLane(),

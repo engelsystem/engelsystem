@@ -14,6 +14,17 @@ function Rooms($show_all = false)
 }
 
 /**
+ * Returns Room id array
+ *
+ * @return array
+ */
+function Room_ids()
+{
+    $result = DB::select('SELECT `RID` FROM `Room`');
+    return select_array($result, 'RID', 'RID');
+}
+
+/**
  * Delete a room
  *
  * @param int $room_id
