@@ -304,14 +304,17 @@ function AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes)
 /**
  * Render an angeltype page containing the member lists.
  *
- * @param array   $angeltype
- * @param array[] $members
- * @param array   $user_angeltype
- * @param bool    $admin_user_angeltypes
- * @param bool    $admin_angeltypes
- * @param bool    $supporter
- * @param array   $user_driver_license
- * @param array   $user
+ * @param array                 $angeltype
+ * @param array[]               $members
+ * @param array                 $user_angeltype
+ * @param bool                  $admin_user_angeltypes
+ * @param bool                  $admin_angeltypes
+ * @param bool                  $supporter
+ * @param array                 $user_driver_license
+ * @param array                 $user
+ * @param ShiftsFilterRenderer  $shiftsFilterRenderer
+ * @param ShiftCalendarRenderer $shiftCalendarRenderer
+ * @param int                   $tab The selected tab
  * @return string
  */
 function AngelType_view(
@@ -324,7 +327,8 @@ function AngelType_view(
     $user_driver_license,
     $user,
     ShiftsFilterRenderer $shiftsFilterRenderer,
-    ShiftCalendarRenderer $shiftCalendarRenderer
+    ShiftCalendarRenderer $shiftCalendarRenderer,
+    $tab
 ) {
     return page_with_title(sprintf(_('Team %s'), $angeltype['name']), [
         AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user),
@@ -342,7 +346,7 @@ function AngelType_view(
                 $shiftsFilterRenderer,
                 $shiftCalendarRenderer
                 )
-        ])  
+        ], $tab)  
     ]);
 }
 

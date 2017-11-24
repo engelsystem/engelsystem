@@ -4,15 +4,16 @@
  * Renders tabs from the array. Array key is tab name, array value is tab content.
  * 
  * @param array $tabs
+ * @param int $selected The selected tab, default 0
  * @return string HTML
  */
-function tabs($tabs)
+function tabs($tabs, $selected = 0)
 {
     $tab_header = [];
     $tab_content = [];
     foreach($tabs as $header => $content) {
         $class = '';
-        if(count($tab_header) == 0) {
+        if(count($tab_header) == $selected) {
             $class = 'active';
         }
         $tab_header[] = '<li role="presentation" class="' . $class . '">

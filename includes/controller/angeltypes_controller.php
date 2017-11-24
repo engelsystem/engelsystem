@@ -192,6 +192,11 @@ function angeltype_controller()
     $shiftsFilterRenderer->enableDaySelection($days);
     
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
+    $request = request();
+    $tab = 0;
+    if($request->has('shifts_filter_day')) {
+        $tab = 1;
+    }
 
     return [
         sprintf(_('Team %s'), $angeltype['name']),
@@ -205,7 +210,8 @@ function angeltype_controller()
             $user_driver_license,
             $user,
             $shiftsFilterRenderer,
-            $shiftCalendarRenderer
+            $shiftCalendarRenderer,
+            $tab
         )
     ];
 }
