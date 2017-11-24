@@ -16,7 +16,6 @@ function AngelType_new()
         'no_self_signup'          => false,
         'description'             => '',
         'requires_driver_license' => false,
-        'contact_user_id'         => null,
         'contact_name'            => null,
         'contact_dect'            => null,
         'contact_email'           => null
@@ -24,53 +23,15 @@ function AngelType_new()
 }
 
 /**
- * Validates the contact user
- *
- * @param array $angeltype The angeltype
- * @return ValidationResult
+ * Checks if the angeltype has any contact information.
+ * 
+ * @param Angeltype $angeltype
+ * @return bool
  */
-function AngelType_validate_contact_user_id($angeltype)
-{
-    if (!isset($angeltype['contact_user_id'])) {
-        return new ValidationResult(true, null);
-    }
-    if (isset($angeltype['contact_name']) || isset($angeltype['contact_dect']) || isset($angeltype['contact_email'])) {
-        return new ValidationResult(false, $angeltype['contact_user_id']);
-    }
-    if (User($angeltype['contact_user_id']) == null) {
-        return new ValidationResult(false, $angeltype['contact_user_id']);
-    }
-    return new ValidationResult(true, $angeltype['contact_user_id']);
-}
-
-/**
- * Returns contact data (name, dect, email) for given angeltype or null
- *
- * @param array $angeltype The angeltype
- * @return array|null
- */
-function AngelType_contact_info($angeltype)
-{
-    if (isset($angeltype['contact_user_id'])) {
-        $contact_user = User($angeltype['contact_user_id']);
-        $contact_data = [
-            'contact_name' => $contact_user['Nick'],
-            'contact_dect' => $contact_user['DECT']
-        ];
-        if ($contact_user['email_by_human_allowed']) {
-            $contact_data['contact_email'] = $contact_user['email'];
-        }
-        return $contact_data;
-    }
-    if (isset($angeltype['contact_name'])) {
-        return [
-            'contact_name'  => $angeltype['contact_name'],
-            'contact_dect'  => $angeltype['contact_dect'],
-            'contact_email' => $angeltype['contact_email']
-        ];
-    }
-
-    return null;
+function AngelType_has_contact_info($angeltype) {
+    return !empty($angeltype['contact_name']) 
+        || !empty($angeltype['contact_dect']) 
+        || !empty($angeltype['contact_email']);
 }
 
 /**
@@ -102,7 +63,6 @@ function AngelType_update($angeltype)
           `description` = ?,
           `requires_driver_license` = ?,
           `no_self_signup` = ?,
-          `contact_user_id` = ?,
           `contact_name` = ?,
           `contact_dect` = ?,
           `contact_email` = ?
@@ -113,7 +73,6 @@ function AngelType_update($angeltype)
             $angeltype['description'],
             (int)$angeltype['requires_driver_license'],
             (int)$angeltype['no_self_signup'],
-            $angeltype['contact_user_id'],
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
@@ -124,7 +83,10 @@ function AngelType_update($angeltype)
     engelsystem_log(
         'Updated angeltype: ' . $angeltype['name'] . ($angeltype['restricted'] ? ', restricted' : '')
         . ($angeltype['no_self_signup'] ? ', no_self_signup' : '')
-        . ($angeltype['requires_driver_license'] ? ', requires driver license' : '')
+        . ($angeltype['requires_driver_license'] ? ', requires driver license' : '') . ', '
+        . $angeltype['contact_name'] . ', '
+        . $angeltype['contact_dect'] . ', '
+        . $angeltype['contact_email']
     );
 }
 
@@ -143,7 +105,6 @@ function AngelType_create($angeltype)
               `description`,
               `requires_driver_license`,
               `no_self_signup`,
-              `contact_user_id`,
               `contact_name`,
               `contact_dect`,
               `contact_email`
@@ -156,7 +117,6 @@ function AngelType_create($angeltype)
             $angeltype['description'],
             (int)$angeltype['requires_driver_license'],
             (int)$angeltype['no_self_signup'],
-            $angeltype['contact_user_id'],
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
@@ -167,7 +127,10 @@ function AngelType_create($angeltype)
     engelsystem_log(
         'Created angeltype: ' . $angeltype['name']
         . ($angeltype['restricted'] ? ', restricted' : '')
-        . ($angeltype['requires_driver_license'] ? ', requires driver license' : '')
+        . ($angeltype['requires_driver_license'] ? ', requires driver license' : '') . ', '
+        . $angeltype['contact_name'] . ', '
+        . $angeltype['contact_dect'] . ', '
+        . $angeltype['contact_email']
     );
     return $angeltype;
 }

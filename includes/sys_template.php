@@ -212,6 +212,20 @@ function page_with_title($title, $elements)
 }
 
 /**
+ * Renders a description based on the data arrays key and values as label an description.
+ * @param array $data
+ */
+function description($data) {
+    $elements = [];
+    foreach($data as $label => $description) {
+        if(!empty($label) && !empty($description)) {
+            $elements[] = '<dt>' . $label . '</dt><dd>' . $description . '</dd>';
+        }
+    }
+    return '<dl class="dl-horizontal">' . join($elements) . '</dl>';
+}
+
+/**
  * Rendert eine Datentabelle
  *
  * @param array|string $columns

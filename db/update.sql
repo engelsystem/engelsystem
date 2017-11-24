@@ -31,3 +31,7 @@ INSERT INTO `GroupPrivileges` (group_id, privilege_id) VALUES (-65, 14), (-65, 4
 
 -- Add log level to LogEntries
 ALTER TABLE `LogEntries` CHANGE COLUMN `nick` `level` VARCHAR(20) NOT NULL;
+
+-- Angeltype contact update
+ALTER TABLE `AngelTypes` DROP FOREIGN KEY angeltypes_ibfk_1;
+ALTER TABLE `AngelTypes` DROP `contact_user_id`;

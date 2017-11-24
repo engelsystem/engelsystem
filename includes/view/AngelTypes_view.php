@@ -92,15 +92,20 @@ function AngelType_edit_view($angeltype, $supporter_mode)
                 _('Requires driver license'),
                 $angeltype['requires_driver_license']
             ),
-            //form_text('contact_name', _('Name'), $angeltype['contact_name']),
-            //form_text('contact_dect', _('DECT'), $angeltype['contact_dect']),
-            //form_text('contact_email', _('E-Mail'), $angeltype['contact_email']),
             form_info(
                 '',
                 _('Restricted angel types can only be used by an angel if enabled by a supporter (double opt-in).')
             ),
             form_textarea('description', _('Description'), $angeltype['description']),
             form_info('', _('Please use markdown for the description.')),
+            heading(_('Contact'), 3),
+            form_info(
+                '',
+                _('Primary contact person/desk for user questions.')
+            ),
+            form_text('contact_name', _('Name'), $angeltype['contact_name']),
+            form_text('contact_dect', _('DECT'), $angeltype['contact_dect']),
+            form_text('contact_email', _('E-Mail'), $angeltype['contact_email']),
             form_submit('submit', _('Save'))
         ])
     ]);
@@ -322,6 +327,10 @@ function AngelType_view(
         msg()
     ];
 
+    if(AngelType_has_contact_info($angeltype)) {
+        $page[] = AngelTypes_render_contact_info($angeltype);
+    }
+    
     $page[] = '<h3>' . _('Description') . '</h3>';
     $parsedown = new Parsedown();
     if ($angeltype['description'] != '') {
@@ -393,6 +402,20 @@ function AngelType_view(
 }
 
 /**
+ * Renders the contact info
+ * 
+ * @param Anteltype $angeltype
+ * @return string HTML
+ */
+function AngelTypes_render_contact_info($angeltype) {
+    return heading(_('Contact'), 3) . description([
+        _('Name') => $angeltype['contact_name'],
+        _('DECT') => $angeltype['contact_dect'],
+        _('E-Mail') => $angeltype['contact_email']
+    ]);
+}
+
+/**
  * Display the list of angeltypes.
  *
  * @param array $angeltypes
@@ -430,6 +453,10 @@ function AngelTypes_about_view_angeltype($angeltype)
     $parsedown = new Parsedown();
 
     $html = '<h2>' . $angeltype['name'] . '</h2>';
+
+    if(AngelType_has_contact_info($angeltype)) {
+        $html .= AngelTypes_render_contact_info($angeltype);
+    }
 
     if (isset($angeltype['user_angeltype_id'])) {
         $buttons = [];

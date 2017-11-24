@@ -143,6 +143,10 @@ function angeltype_edit_controller()
 
         $angeltype['description'] = strip_request_item_nl('description', $angeltype['description']);
 
+        $angeltype['contact_name'] = strip_request_item('contact_name', $angeltype['contact_name']);
+        $angeltype['contact_dect'] = strip_request_item('contact_dect', $angeltype['contact_dect']);
+        $angeltype['contact_email'] = strip_request_item('contact_email', $angeltype['contact_email']);
+
         if ($valid) {
             if ($angeltype['id'] != null) {
                 AngelType_update($angeltype);
