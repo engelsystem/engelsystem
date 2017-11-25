@@ -5,7 +5,7 @@
 return [
     // MySQL-Connection Settings
     'database'                => [
-        'host' => env('MYSQL_HOST', (env('CI', false) ? 'mysql' : 'localhost')),
+        'host' => env('MYSQL_HOST', (env('CI', false) ? 'mariadb' : 'localhost')),
         'user' => env('MYSQL_USER', 'root'),
         'pw'   => env('MYSQL_PASSWORD', ''),
         'db'   => env('MYSQL_DATABASE', 'engelsystem'),
