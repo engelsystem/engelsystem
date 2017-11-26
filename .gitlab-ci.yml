@@ -5,12 +5,13 @@ cache:
   - .composer
 
 services:
-  - mysql:5.6
+  - mariadb:10.2
 
 variables:
   MYSQL_DATABASE: engelsystem
   MYSQL_USER: engel
   MYSQL_PASSWORD: engelsystem
+  MYSQL_HOST: mariadb
   COMPOSER_HOME: .composer
   MYSQL_RANDOM_ROOT_PASSWORD: "yes"
 
@@ -20,14 +21,14 @@ before_script:
   - find . -type d -exec chmod 755 {} \;
   # Install required Packages
   - apt update -yqq
-  - apt install -yqq git unzip mysql-client
+  - apt install -yqq git unzip mariadb-client
   - docker-php-ext-install pdo pdo_mysql gettext
   # Install xdebug
   - pecl install xdebug
   - docker-php-ext-enable xdebug
   # MySQL DB
-  - mysql -h mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < db/install.sql
-  - mysql -h mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < db/update.sql
+  - mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < db/install.sql
+  - mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < db/update.sql
   # Install Composer
   - curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
   - /usr/local/bin/composer --no-ansi install

@@ -2,7 +2,8 @@
 
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
-use Engelsystem\Exceptions\Handler as ExceptionHandler;
+use Engelsystem\Exceptions\Handler;
+use Engelsystem\Exceptions\Handlers\HandlerInterface;
 
 /**
  * This file includes all needed functions, connects to the db etc.
@@ -32,7 +33,8 @@ date_default_timezone_set($app->get('config')->get('timezone'));
 
 if (config('environment') == 'development') {
     $errorHandler = $app->get('error.handler');
-    $errorHandler->setEnvironment(ExceptionHandler::ENV_DEVELOPMENT);
+    $errorHandler->setEnvironment(Handler::ENV_DEVELOPMENT);
+    $app->bind(HandlerInterface::class, 'error.handler.development');
     ini_set('display_errors', true);
     error_reporting(E_ALL);
 } else {

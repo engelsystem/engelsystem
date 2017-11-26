@@ -2,6 +2,9 @@
 
 namespace Engelsystem\Exceptions;
 
+use Engelsystem\Exceptions\Handlers\HandlerInterface;
+use Engelsystem\Http\Request;
+use ErrorException;
 use Throwable;
 
 class Handler
@@ -9,34 +12,44 @@ class Handler
     /** @var string */
     protected $environment;
 
+    /** @var HandlerInterface[] */
+    protected $handler = [];
+
+    /** @var Request */
+    protected $request;
+
     const ENV_PRODUCTION = 'prod';
     const ENV_DEVELOPMENT = 'dev';
 
     /**
      * Handler constructor.
      *
-     * @param string $environment production|development
+     * @param string $environment prod|dev
      */
     public function __construct($environment = self::ENV_PRODUCTION)
     {
         $this->environment = $environment;
+    }
 
+    /**
+     * Activate the error handler
+     */
+    public function register()
+    {
         set_error_handler([$this, 'errorHandler']);
         set_exception_handler([$this, 'exceptionHandler']);
     }
 
     /**
      * @param int    $number
-     * @param string $string
+     * @param string $message
      * @param string $file
      * @param int    $line
-     * @param array  $context
      */
-    public function errorHandler($number, $string, $file, $line, $context)
+    public function errorHandler($number, $message, $file, $line)
     {
-        $trace = array_reverse(debug_backtrace());
-
-        $this->handle('error', $number, $string, $file, $line, $context, $trace);
+        $exception = new ErrorException($message, 0, $number, $file, $line);
+        $this->exceptionHandler($exception);
     }
 
     /**
@@ -44,91 +57,34 @@ class Handler
      */
     public function exceptionHandler($e)
     {
-        $this->handle(
-            'exception',
-            $e->getCode(),
-            get_class($e) . ': ' . $e->getMessage(),
-            $e->getFile(),
-            $e->getLine(),
-            ['exception' => $e]
-        );
+        if (!$this->request instanceof Request) {
+            $this->request = new Request();
+        }
+
+        $handler = $this->handler[$this->environment];
+        $handler->report($e);
+        $handler->render($this->request, $e);
+        $this->die();
     }
 
     /**
-     * @param string $type
-     * @param int    $number
-     * @param string $string
-     * @param string $file
-     * @param int    $line
-     * @param array  $context
-     * @param array  $trace
+     * Exit the application
+     *
+     * @codeCoverageIgnore
+     * @param string $message
      */
-    protected function handle($type, $number, $string, $file, $line, $context = [], $trace = [])
+    protected function die($message = '')
     {
-        error_log(sprintf('%s: Number: %s, String: %s, File: %s:%u, Context: %s',
-            $type,
-            $number,
-            $string,
-            $file,
-            $line,
-            json_encode($context)
-        ));
-
-        $file = $this->stripBasePath($file);
-
-        if ($this->environment == self::ENV_DEVELOPMENT) {
-            echo '<pre style="background-color:#333;color:#ccc;z-index:1000;position:fixed;bottom:1em;padding:1em;width:97%;max-height: 90%;overflow-y:auto;">';
-            echo sprintf('%s: (%s)' . PHP_EOL, ucfirst($type), $number);
-            var_export([
-                'string'     => $string,
-                'file'       => $file . ':' . $line,
-                'context'    => $context,
-                'stacktrace' => $this->formatStackTrace($trace),
-            ]);
-            echo '</pre>';
-            die();
-        }
-
-        echo 'An <del>un</del>expected error occurred, a team of untrained monkeys has been dispatched to deal with it.';
+        echo $message;
         die();
     }
 
     /**
-     * @param array $stackTrace
-     * @return array
-     */
-    protected function formatStackTrace($stackTrace)
-    {
-        $return = [];
-
-        foreach ($stackTrace as $trace) {
-            $path = '';
-            $line = '';
-
-            if (isset($trace['file']) && isset($trace['line'])) {
-                $path = $this->stripBasePath($trace['file']);
-                $line = $trace['line'];
-            }
-
-            $functionName = $trace['function'];
-
-            $return[] = [
-                'file'        => $path . ':' . $line,
-                $functionName => $trace['args'],
-            ];
-        }
-
-        return $return;
-    }
-
-    /**
-     * @param string $path
      * @return string
      */
-    protected function stripBasePath($path)
+    public function getEnvironment()
     {
-        $basePath = realpath(__DIR__ . '/../..') . '/';
-        return str_replace($basePath, '', $path);
+        return $this->environment;
     }
 
     /**
@@ -137,5 +93,43 @@ class Handler
     public function setEnvironment($environment)
     {
         $this->environment = $environment;
+    }
+
+    /**
+     * @param string $environment
+     * @return HandlerInterface|HandlerInterface[]
+     */
+    public function getHandler($environment = null)
+    {
+        if (!is_null($environment)) {
+            return $this->handler[$environment];
+        }
+
+        return $this->handler;
+    }
+
+    /**
+     * @param string           $environment
+     * @param HandlerInterface $handler
+     */
+    public function setHandler($environment, HandlerInterface $handler)
+    {
+        $this->handler[$environment] = $handler;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request)
+    {
+        $this->request = $request;
     }
 }
