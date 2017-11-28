@@ -5,8 +5,7 @@
  *
  * @param string $message
  */
-function engelsystem_error($message) {
-  raw_output($message);
+function engelsystem_error($message)
+{
+    raw_output($message);
 }
-
-?>

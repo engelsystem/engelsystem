@@ -205,7 +205,7 @@ DROP TABLE IF EXISTS `NewsComments`;
 CREATE TABLE `NewsComments` (
   `ID` bigint(11) NOT NULL,
   `Refid` int(11) NOT NULL DEFAULT '0',
-  `Datum` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `Datum` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
   `Text` text NOT NULL,
   `UID` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -395,7 +395,7 @@ CREATE TABLE `User` (
   `Sprache` char(64) NOT NULL,
   `Menu` char(1) NOT NULL DEFAULT 'L',
   `lastLogIn` int(11) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `CreateDate` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
   `Art` varchar(30) DEFAULT NULL,
   `kommentar` text,
   `Hometown` varchar(255) NOT NULL DEFAULT '',

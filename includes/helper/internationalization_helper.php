@@ -1,71 +1,83 @@
 <?php
-$locales = [
-    'de_DE.UTF-8' => "Deutsch",
-    'en_US.UTF-8' => "English" 
-];
-
-$default_locale = 'en_US.UTF-8';
 
 /**
  * Return currently active locale
+ *
+ * @return string
  */
-function locale() {
-  return $_SESSION['locale'];
+function locale()
+{
+    return session()->get('locale');
 }
 
 /**
  * Returns two letter language code from currently active locale
+ *
+ * @return string
  */
-function locale_short() {
-  return substr(locale(), 0, 2);
+function locale_short()
+{
+    return substr(locale(), 0, 2);
 }
 
 /**
  * Initializes gettext for internationalization and updates the sessions locale to use for translation.
  */
-function gettext_init() {
-  global $locales, $default_locale;
+function gettext_init()
+{
+    $locales = config('locales');
+    $request = request();
+    $session = session();
 
-  if (isset($_REQUEST['set_locale']) && isset($locales[$_REQUEST['set_locale']])) {
-    $_SESSION['locale'] = $_REQUEST['set_locale'];
-  } elseif (! isset($_SESSION['locale'])) {
-    $_SESSION['locale'] = $default_locale;
-  }
+    if ($request->has('set_locale') && isset($locales[$request->input('set_locale')])) {
+        $session->set('locale', $request->input('set_locale'));
+    } elseif (!$session->has('locale')) {
+        $session->set('locale', config('default_locale'));
+    }
 
-  gettext_locale();
-  bindtextdomain('default', realpath(__DIR__ . '/../../locale'));
-  bind_textdomain_codeset('default', 'UTF-8');
-  textdomain('default');
+    gettext_locale();
+    bindtextdomain('default', app('path.lang'));
+    bind_textdomain_codeset('default', 'UTF-8');
+    textdomain('default');
 }
 
 /**
  * Swich gettext locale.
  *
- * @param string $locale          
+ * @param string $locale
  */
-function gettext_locale($locale = null) {
-  if ($locale == null) {
-    $locale = $_SESSION['locale'];
-  }
-  
-  putenv('LC_ALL=' . $locale);
-  setlocale(LC_ALL, $locale);
+function gettext_locale($locale = null)
+{
+    if ($locale == null) {
+        $locale = session()->get('locale');
+    }
+
+    putenv('LC_ALL=' . $locale);
+    setlocale(LC_ALL, $locale);
 }
 
 /**
  * Renders language selection.
  *
- * @return string
+ * @return array
  */
-function make_langselect() {
-  global $locales;
-  $URL = $_SERVER["REQUEST_URI"] . (strpos($_SERVER["REQUEST_URI"], "?") > 0 ? '&' : '?') . "set_locale=";
-  
-  $items = [];
-  foreach ($locales as $locale => $name) {
-    $items[] = toolbar_item_link(htmlspecialchars($URL) . $locale, '', '<img src="pic/flag/' . $locale . '.png" alt="' . $name . '" title="' . $name . '"> ' . $name);
-  }
-  return $items;
-}
+function make_langselect()
+{
+    $request = app('request');
 
-?>
+    $items = [];
+    foreach (config('locales') as $locale => $name) {
+        $url = url($request->getPathInfo(), ['set_locale' => $locale]);
+
+        $items[] = toolbar_item_link(
+            htmlspecialchars($url),
+            '',
+            sprintf(
+                '<img src="%s" alt="%s" title="%2$s"> %2$s',
+                url('pic/flag/' . $locale . '.png'),
+                $name
+            )
+        );
+    }
+    return $items;
+}
