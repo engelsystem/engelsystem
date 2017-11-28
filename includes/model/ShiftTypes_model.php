@@ -1,69 +1,84 @@
 <?php
 
+use Engelsystem\Database\DB;
+
 /**
  * Delete a shift type.
+ *
  * @param int $shifttype_id
  */
-function ShiftType_delete($shifttype_id) {
-  return sql_query("DELETE FROM `ShiftTypes` WHERE `id`='" . sql_escape($shifttype_id) . "'");
+function ShiftType_delete($shifttype_id)
+{
+    DB::delete('DELETE FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
 }
 
 /**
  * Update a shift type.
  *
- * @param int $shifttype_id          
- * @param string $name          
- * @param int $angeltype_id          
- * @param string $description          
+ * @param int    $shifttype_id
+ * @param string $name
+ * @param int    $angeltype_id
+ * @param string $description
  */
-function ShiftType_update($shifttype_id, $name, $angeltype_id, $description) {
-  return sql_query("UPDATE `ShiftTypes` SET
-      `name`='" . sql_escape($name) . "', 
-      `angeltype_id`=" . sql_null($angeltype_id) . ",
-      `description`='" . sql_escape($description) . "'
-      WHERE `id`='" . sql_escape($shifttype_id) . "'");
+function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
+{
+    DB::update('
+      UPDATE `ShiftTypes` SET
+      `name`=?,
+      `angeltype_id`=?,
+      `description`=?
+      WHERE `id`=?
+    ',
+        [
+            $name,
+            $angeltype_id,
+            $description,
+            $shifttype_id,
+        ]
+    );
 }
 
 /**
  * Create a shift type.
  *
- * @param string $name          
- * @param int $angeltype_id          
- * @param string $description          
- * @return new shifttype id
+ * @param string $name
+ * @param int    $angeltype_id
+ * @param string $description
+ * @return int|false new shifttype id
  */
-function ShiftType_create($name, $angeltype_id, $description) {
-  $result = sql_query("INSERT INTO `ShiftTypes` SET
-      `name`='" . sql_escape($name) . "', 
-      `angeltype_id`=" . sql_null($angeltype_id) . ",
-      `description`='" . sql_escape($description) . "'");
-  if ($result === false) {
-    return false;
-  }
-  return sql_id();
+function ShiftType_create($name, $angeltype_id, $description)
+{
+    DB::insert('
+        INSERT INTO `ShiftTypes` (`name`, `angeltype_id`, `description`)
+        VALUES(?, ?, ?)
+        ',
+        [
+            $name,
+            $angeltype_id,
+            $description
+        ]
+    );
+
+    return DB::getPdo()->lastInsertId();
 }
 
 /**
  * Get a shift type by id.
  *
- * @param int $shifttype_id          
+ * @param int $shifttype_id
+ * @return array|null
  */
-function ShiftType($shifttype_id) {
-  $shifttype = sql_select("SELECT * FROM `ShiftTypes` WHERE `id`='" . sql_escape($shifttype_id) . "'");
-  if ($shifttype === false) {
-    engelsystem_error('Unable to load shift type.');
-  }
-  if ($shifttype == null) {
-    return null;
-  }
-  return $shifttype[0];
+function ShiftType($shifttype_id)
+{
+    return DB::selectOne('SELECT * FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
 }
 
 /**
  * Get all shift types.
+ *
+ * @return array
  */
-function ShiftTypes() {
-  return sql_select("SELECT * FROM `ShiftTypes` ORDER BY `name`");
+function ShiftTypes()
+{
+    return DB::select('SELECT * FROM `ShiftTypes` ORDER BY `name`');
 }
-
-?>

@@ -1,0 +1,38 @@
+{
+    "name": "engelsystem/engelsystem",
+    "description": "Shift planning system for chaos events",
+    "type": "project",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "msquare",
+            "email": "msquare@notrademark.de"
+        },
+        {
+            "name": "MyIgel",
+            "email": "igor.scheller@igorshp.de"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "erusev/parsedown": "^1.6",
+        "illuminate/container": "5.5.*",
+        "psr/container": "^1.0",
+        "psr/log": "^1.0",
+        "symfony/http-foundation": "^3.3",
+        "twbs/bootstrap": "^3.3"
+    },
+    "require-dev": {
+        "filp/whoops": "^2.1",
+        "phpunit/phpunit": "^6.3",
+        "symfony/var-dumper": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Engelsystem\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    }
+}
