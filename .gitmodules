@@ -1,6 +1,0 @@
-[submodule "vendor/parsedown"]
-	path = vendor/parsedown
-	url = https://github.com/erusev/parsedown.git
-[submodule "themes/assets/bootstrap"]
-	path = themes/assets/bootstrap
-	url = https://github.com/twbs/bootstrap.git
