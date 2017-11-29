@@ -69,6 +69,10 @@ if (
             require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
             shifts_json_export_all_controller();
             break;
+        case 'shifts_json_export_websql':
+            require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
+            shifts_json_export_websql_controller();
+            break;
         case 'stats':
             require_once realpath(__DIR__ . '/../includes/pages/guest_stats.php');
             guest_stats();

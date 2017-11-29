@@ -366,9 +366,12 @@ function shifts_json_export_all_controller()
 /**
  * Export shifts for use in the browser-based sql.
  */
-function shifts_json_export_websql_controller() {
+function shifts_json_export_websql_controller()
+{
 
-  if (!isset($_SESSION['uid'])) {
+  $session = session();
+  if (!$session->has('uid'))
+  {
     engelsystem_error("You must be logged in to access shifts.");
   }
 
@@ -382,7 +385,8 @@ function shifts_json_export_websql_controller() {
   $latest_ids['shift_entries'] = isset($_GET['ShiftEntry']) ? $_GET['ShiftEntry'] : 0;
 
   $shifts = Shifts_for_websql($latest_ids);
-  if ($shifts === false) {
+  if ($shifts === false)
+  {
     engelsystem_error("Unable to load shifts.");
   }
 

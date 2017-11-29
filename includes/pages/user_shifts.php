@@ -40,7 +40,7 @@ function user_shifts()
     } elseif ($request->has('shift_id')) {
         return shift_entry_add_controller();
     }
-    return view_user_shifts();
+    return view_user_shifts_browser();
 }
 
 /**

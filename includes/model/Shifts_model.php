@@ -561,24 +561,32 @@ function Shifts_for_websql($latest_ids) {
     $limit = 5000; // 5k items per fetch, gives ~1MB large json-response
 
     // fetch shifts count
-  $shifts_count = sql_select("
+  $shifts_count = DB::select("
       SELECT COUNT(SID) as count
       FROM Shifts
-      WHERE SID > '" . sql_escape($latest_ids['shifts']) . "'
-      ");
+      WHERE SID > ?
+      ",
+      [
+        $latest_ids['shifts']
+      ]
+  );
   if ($shifts_count === false) {
     engelsystem_error('Unable to load websql shifts_count.');
   }
   $shifts_count = $shifts_count[0]['count'];
 
     // fetch shifts
-  $shifts = sql_select("
+  $shifts = DB::select("
       SELECT SID, title, shifttype_id, start, end, RID
       FROM Shifts
-      WHERE SID > '" . sql_escape($latest_ids['shifts']) . "'
+      WHERE SID > ?
       ORDER BY SID ASC
       LIMIT " . $limit . "
-      ");
+      ",
+      [
+        $latest_ids['shifts']
+      ]
+  );
   if ($shifts === false) {
     engelsystem_error('Unable to load websql shifts.');
   }
@@ -586,24 +594,32 @@ function Shifts_for_websql($latest_ids) {
 
 
     // fetch shift types count
-  $shift_types_count = sql_select("
+  $shift_types_count = DB::select("
       SELECT COUNT(id) as count
       FROM ShiftTypes
-      WHERE id > '" . sql_escape($latest_ids['shift_types']) . "'
-      ");
+      WHERE id > ?
+      ",
+      [
+        $latest_ids['shift_types']
+      ]
+  );
   if ($shift_types_count === false) {
     engelsystem_error('Unable to load websql shift_types_count.');
   }
   $shift_types_count = $shift_types_count[0]['count'];
 
     // fetch shift types
-  $shift_types = sql_select("
+  $shift_types = DB::select("
       SELECT id, name, angeltype_id
       FROM ShiftTypes
-      WHERE id > '" . sql_escape($latest_ids['shift_types']) . "'
+      WHERE id > ?
       ORDER BY id ASC
       LIMIT " . $limit . "
-      ");
+      ",
+      [
+        $latest_ids['shift_types']
+      ]
+  );
   if ($shift_types === false) {
     engelsystem_error('Unable to load websql shift_types.');
   }
@@ -611,24 +627,32 @@ function Shifts_for_websql($latest_ids) {
 
 
     // fetch rooms count
-  $rooms_count = sql_select("
+  $rooms_count = DB::select("
       SELECT COUNT(RID) as count
       FROM Room
-      WHERE RID > '" . sql_escape($latest_ids['rooms']) . "'
-      ");
+      WHERE RID > ?
+      ",
+      [
+        $latest_ids['rooms']
+      ]
+  );
   if ($rooms_count === false) {
     engelsystem_error('Unable to load websql rooms_count.');
   }
   $rooms_count = $rooms_count[0]['count'];
 
     // fetch rooms
-  $rooms = sql_select("
+  $rooms = DB::select("
       SELECT RID, Name
       FROM Room
-      WHERE RID > '" . sql_escape($latest_ids['rooms']) . "'
+      WHERE RID > ?
       ORDER BY RID ASC
       LIMIT " . $limit . "
-      ");
+      ",
+      [
+        $latest_ids['rooms']
+      ]
+  );
   if ($rooms === false) {
     engelsystem_error('Unable to load websql rooms.');
   }
@@ -636,24 +660,32 @@ function Shifts_for_websql($latest_ids) {
 
 
     // fetch shift_entries count
-  $shift_entries_count = sql_select("
+  $shift_entries_count = DB::select("
       SELECT COUNT(id) as count
       FROM ShiftEntry
-      WHERE id > '" . sql_escape($latest_ids['shift_entries']) . "'
-      ");
+      WHERE id > ?
+      ",
+      [
+        $latest_ids['shift_entries']
+      ]
+  );
   if ($shift_entries_count === false) {
     engelsystem_error('Unable to load websql shift_entries_count.');
   }
   $shift_entries_count = $shift_entries_count[0]['count'];
 
     // fetch shift_entries
-  $shift_entries = sql_select("
+  $shift_entries = DB::select("
       SELECT id, SID, TID, UID, freeloaded
       FROM ShiftEntry
-      WHERE id > '" . sql_escape($latest_ids['shift_entries']) . "'
+      WHERE id > ?
       ORDER BY id ASC
       LIMIT " . $limit . "
-      ");
+      ",
+      [
+        $latest_ids['shift_entries']
+      ]
+  );
   if ($shift_entries === false) {
     engelsystem_error('Unable to load websql shift_entries_count.');
   }
@@ -661,26 +693,34 @@ function Shifts_for_websql($latest_ids) {
 
 
     // fetch users count
-  $users_count = sql_select("
+  $users_count = DB::select("
       SELECT COUNT(UID) as count
       FROM User
       WHERE Gekommen = '1'
-      AND UID > '" . sql_escape($latest_ids['users']) . "'
-      ");
+      AND UID > ?
+      ",
+      [
+        $latest_ids['users']
+      ]
+  );
   if ($users_count === false) {
     engelsystem_error('Unable to load websql users_count.');
   }
   $users_count = $users_count[0]['count'];
 
     // fetch users
-  $users = sql_select("
+  $users = DB::select("
       SELECT UID, Nick
       FROM User
       WHERE Gekommen = '1'
-      AND UID > '" . sql_escape($latest_ids['users']) . "'
+      AND UID > ?
       ORDER BY UID ASC
       LIMIT " . $limit . "
-      ");
+      ",
+      [
+        $latest_ids['users']
+      ]
+  );
   if ($users === false) {
     engelsystem_error('Unable to load websql users.');
   }
@@ -688,24 +728,32 @@ function Shifts_for_websql($latest_ids) {
 
 
     // fetch angel types count
-  $angeltypes_count = sql_select("
+  $angeltypes_count = DB::select("
       SELECT COUNT(id) as count
       FROM AngelTypes
-      WHERE id > '" . sql_escape($latest_ids['angeltypes']) . "'
-      ");
+      WHERE id > ?
+      ",
+      [
+        $latest_ids['angeltypes']
+      ]
+  );
   if ($angeltypes_count === false) {
     engelsystem_error('Unable to load websql angeltypes_count.');
   }
   $angeltypes_count = $angeltypes_count[0]['count'];
 
     // fetch angel types
-  $angeltypes = sql_select("
+  $angeltypes = DB::select("
       SELECT id, name, restricted, no_self_signup
       FROM AngelTypes
-      WHERE id > '" . sql_escape($latest_ids['angeltypes']) . "'
+      WHERE id > ?
       ORDER BY id ASC
       LIMIT " . $limit . "
-      ");
+      ",
+      [
+        $latest_ids['angeltypes']
+      ]
+  );
   if ($angeltypes === false) {
     engelsystem_error('Unable to load websql angeltypes.');
   }
@@ -713,24 +761,32 @@ function Shifts_for_websql($latest_ids) {
 
 
     // fetch needed angel types count
-  $needed_angeltypes_count = sql_select("
+  $needed_angeltypes_count = DB::select("
       SELECT COUNT(id) as count
       FROM NeededAngelTypes
-      WHERE id > '" . sql_escape($latest_ids['needed_angeltypes']) . "'
-      ");
+      WHERE id > ?
+      ",
+      [
+        $latest_ids['needed_angeltypes']
+      ]
+  );
   if ($needed_angeltypes_count === false) {
     engelsystem_error('Unable to load websql needed_angeltypes_count.');
   }
   $needed_angeltypes_count = $needed_angeltypes_count[0]['count'];
 
     // fetch needed angel types
-  $needed_angeltypes = sql_select("
+  $needed_angeltypes = DB::select("
       SELECT id, room_id as RID, shift_id as SID, angel_type_id as ATID, count
       FROM NeededAngelTypes
-      WHERE id > '" . sql_escape($latest_ids['needed_angeltypes']) . "'
+      WHERE id > ?
       ORDER BY id ASC
       LIMIT " . $limit . "
-      ");
+      ",
+      [
+        $latest_ids['needed_angeltypes']
+      ]
+  );
   if ($needed_angeltypes === false) {
     engelsystem_error('Unable to load websql needed_angeltypes.');
   }
