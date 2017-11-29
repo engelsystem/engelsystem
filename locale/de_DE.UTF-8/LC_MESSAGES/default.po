@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2017-11-24 11:59+0100\n"
-"PO-Revision-Date: 2017-11-24 12:00+0100\n"
+"PO-Revision-Date: 2017-11-29 13:20+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1836,6 +1836,34 @@ msgstr ""
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:245
 msgid "Filter"
 msgstr "Filter"
+
+#: engelsystem/includes/pages/user_shifts.php:246
+msgid "Yesterday"
+msgstr "Gestern"
+
+#: engelsystem/includes/pages/user_shifts.php:247
+msgid "Today"
+msgstr "Heute"
+
+#: engelsystem/includes/pages/user_shifts.php:248
+msgid "Tomorrow"
+msgstr "Morgen"
+
+#: engelsystem/includes/pages/user_shifts.php:249
+msgid "last 8h"
+msgstr "letzte 8h"
+
+#: engelsystem/includes/pages/user_shifts.php:250
+msgid "last 4h"
+msgstr "letzte 4h"
+
+#: engelsystem/includes/pages/user_shifts.php:251
+msgid "next 4h"
+msgstr "nächste 4h"
+
+#: engelsystem/includes/pages/user_shifts.php:252
+msgid "next 8h"
+msgstr "nächste 8h"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:278
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:49
