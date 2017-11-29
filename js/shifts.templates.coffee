@@ -68,6 +68,7 @@ Building view...
 
   </div>
   <div class="row">
+    <div class="col-md-6"></div>
     <div class="col-md-6">
         <div><sup>1</sup>The tasks shown here are influenced by the angeltypes you joined already!
         <a href="?p=angeltypes&amp;action=about">Description of the jobs.</a></div>

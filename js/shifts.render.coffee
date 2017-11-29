@@ -30,7 +30,7 @@ Shifts.render =
 
         daytime = 'tick_bright'
         hour = moment.unix(time).format('H')
-        if  hour > 19 or hour < 8
+        if  hour >= 2 and hour < 8
             daytime = 'tick_dark'
 
         if hour == moment().format('H')
