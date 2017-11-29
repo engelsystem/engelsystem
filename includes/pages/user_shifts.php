@@ -40,7 +40,36 @@ function user_shifts()
     } elseif ($request->has('shift_id')) {
         return shift_entry_add_controller();
     }
-    return view_user_shifts_browser();
+
+  // websql disabled by config
+  if (config('enable_websql') != true) {
+      return view_user_shifts();
+  }
+
+  // target for the noscript meta-redirect
+  if (isset($_GET['nojs'])) {
+      setcookie('websql', 'nope');
+      redirect(page_link_to('user_shifts'));
+  }
+
+  // ability to turn websql back on
+  if (isset($_GET['websql'])) {
+      setcookie('websql', 'yes');
+      redirect(page_link_to('user_shifts'));
+  }
+
+  // cookie is not set: display websql-version to let it check for websql support
+  if (! isset($_COOKIE['websql'])) {
+      return view_user_shifts_browser();
+
+  // cookie is set and websql is supported: display websql-version
+  } else if (isset($_COOKIE['websql']) && $_COOKIE['websql'] == 'yes') {
+      return view_user_shifts_browser();
+
+  // cookie is set and websql is not supported: display regular version
+  } else {
+      return view_user_shifts();
+  }
 }
 
 /**
