@@ -176,7 +176,7 @@ function guest_register()
         if ($request->has('prename')) {
             $preName = strip_request_item('prename');
         }
-        if ($request->has('age') && preg_match('/^\d{0,4}$/', $request->input('age'))) {
+        if ($request->has('age') && preg_match('/^\d{1,4}$/', $request->input('age'))) {
             $age = strip_request_item('age');
         }
         if ($request->has('tel')) {
