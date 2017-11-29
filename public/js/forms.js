@@ -21,14 +21,14 @@ function checkAll(id, checked) {
  * @param {moment} date
  */
 function formatDay(date) {
-    return date.format('YYYY-MM-DD')
+    return date.format("YYYY-MM-DD");
 }
 
 /**
  * @param {moment} date
  */
 function formatTime(date) {
-    return date.format('HH:mm')
+    return date.format("HH:mm");
 }
 
 /**
@@ -36,13 +36,13 @@ function formatTime(date) {
  * @param {moment} to
  */
 function setInput(from, to) {
-    var from_day = $('#start_day'), from_time = $('#start_time'), to_day = $('#end_day'), to_time = $('#end_time');
+    var fromDay = $("#start_day"), fromTime = $("#start_time"), toDay = $("#end_day"), toTime = $("#end_time");
 
-    from_day.val(formatDay(from));
-    from_time.val(formatTime(from));
+    fromDay.val(formatDay(from));
+    fromTime.val(formatTime(from));
 
-    to_day.val(formatDay(to));
-    to_time.val(formatTime(to));
+    toDay.val(formatDay(to));
+    toTime.val(formatTime(to));
 }
 
 function setDay(days) {
@@ -51,12 +51,12 @@ function setDay(days) {
     var from = moment();
     from.hours(0).minutes(0).seconds(0);
 
-    from.add(days, 'd');
+    from.add(days, "d");
 
     var to = from.clone();
     to.hours(23).minutes(59);
 
-    setInput(from, to)
+    setInput(from, to);
 }
 
 function setHours(hours) {
@@ -65,7 +65,7 @@ function setHours(hours) {
     var from = moment();
     var to = from.clone();
 
-    to.add(hours, 'h');
+    to.add(hours, "h");
     if (to < from) {
         setInput(to, from);
         return;
