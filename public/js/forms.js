@@ -17,6 +17,63 @@ function checkAll(id, checked) {
     }
 }
 
+/**
+ * @param {moment} date
+ */
+function formatDay(date) {
+    return date.format('YYYY-MM-DD')
+}
+
+/**
+ * @param {moment} date
+ */
+function formatTime(date) {
+    return date.format('HH:mm')
+}
+
+/**
+ * @param {moment} from
+ * @param {moment} to
+ */
+function setInput(from, to) {
+    var from_day = $('#start_day'), from_time = $('#start_time'), to_day = $('#end_day'), to_time = $('#end_time');
+
+    from_day.val(formatDay(from));
+    from_time.val(formatTime(from));
+
+    to_day.val(formatDay(to));
+    to_time.val(formatTime(to));
+}
+
+function setDay(days) {
+    days = days || 0;
+
+    var from = moment();
+    from.hours(0).minutes(0).seconds(0);
+
+    from.add(days, 'd');
+
+    var to = from.clone();
+    to.hours(23).minutes(59);
+
+    setInput(from, to)
+}
+
+function setHours(hours) {
+    hours = hours || 1;
+
+    var from = moment();
+    var to = from.clone();
+
+    to.add(hours, 'h');
+    if (to < from) {
+        setInput(to, from);
+        return;
+    }
+
+    setInput(from, to);
+}
+
 $(function () {
     /**
      * Disable every submit button after clicking (to prevent double-clicking)
