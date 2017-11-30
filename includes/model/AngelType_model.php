@@ -46,6 +46,7 @@ function AngelType_delete($angeltype)
       WHERE `id`=?
       LIMIT 1
     ', [$angeltype['id']]);
+    db_log_delete('angeltypes', $angeltype);
     engelsystem_log('Deleted angeltype: ' . AngelType_name_render($angeltype));
 }
 

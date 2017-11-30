@@ -9,7 +9,7 @@ use Engelsystem\Database\DB;
  * @param string $tablename
  * @param int $entry_id
  */
-function db_track_delete($tablename, $entry_id)
+function db_log_delete($tablename, $entry_id)
 {
     DB::insert('
           INSERT INTO `DeleteLog` (

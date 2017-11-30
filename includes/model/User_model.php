@@ -15,6 +15,7 @@ use Engelsystem\ValidationResult;
 function User_delete($user_id)
 {
     DB::delete('DELETE FROM `User` WHERE `UID`=?', [$user_id]);
+    db_log_delete('user', $user_id);
 }
 
 /**

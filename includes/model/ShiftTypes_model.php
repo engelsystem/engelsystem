@@ -10,6 +10,7 @@ use Engelsystem\Database\DB;
 function ShiftType_delete($shifttype_id)
 {
     DB::delete('DELETE FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
+    db_log_delete('shifttypes', $shifttype_id);
 }
 
 /**

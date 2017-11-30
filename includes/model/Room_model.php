@@ -32,6 +32,7 @@ function Room_ids()
 function Room_delete($room_id)
 {
     DB::delete('DELETE FROM `Room` WHERE `RID` = ?', [$room_id]);
+    db_log_delete('room', $room_id);
 }
 
 /**
