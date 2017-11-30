@@ -690,7 +690,12 @@ function render_user_arrived_hint()
     global $user;
 
     if ($user['Gekommen'] == 0) {
-        return _('You are not marked as arrived. Please go to heaven\'s desk, get your angel badge and/or tell them that you arrived already.');
+        $event_config = EventConfig();
+        if(!is_null($event_config) 
+            && !is_null($event_config['buildup_start_date'])
+            && time() > $event_config['buildup_start_date']) {
+            return _('You are not marked as arrived. Please go to heaven\'s desk, get your angel badge and/or tell them that you arrived already.');
+        }
     }
 
     return null;
