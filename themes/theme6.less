@@ -32,8 +32,8 @@ THE SOFTWARE.
 //
 //## Gray and brand colors for use across Bootstrap.
 
-@gray-darker:            #333; // #222
-@gray-dark:              #383838;   // #333
+@gray-darker:            #222; // #222
+@gray-dark:              #282828;   // #333
 @gray:                   #555; // #555
 @gray-light:             #888;   // #999
 @gray-lighter:           #ADAFAE; // #eee
@@ -674,7 +674,7 @@ THE SOFTWARE.
 //##
 
 //** Background color on `.list-group-item`
-@list-group-bg:                 @gray-darker;
+@list-group-bg:                 darken(@gray-darker, 10%);
 //** `.list-group-item` border color
 @list-group-border:             @gray-dark;
 //** List group border radius
@@ -707,7 +707,7 @@ THE SOFTWARE.
 //
 //##
 
-@panel-bg:                    @gray-darker;
+@panel-bg:                    darken(@gray-darker, 10%);
 @panel-body-padding:          15px;
 @panel-heading-padding:       10px 15px;
 @panel-footer-padding:        @panel-heading-padding;
@@ -718,7 +718,7 @@ THE SOFTWARE.
 
 @panel-default-text:          @text-color;
 @panel-default-border:        @panel-inner-border;
-@panel-default-heading-bg:    darken(@gray-darker, 10%);
+@panel-default-heading-bg:    darken(@gray-darker, 5%);
 
 @panel-footer-bg:             @panel-default-heading-bg;
 
