@@ -34,6 +34,7 @@ return [
 
     // Available themes
     'available_themes'        => [
+        '5' => 'Engelsystem 34c3 (2017)',
         '4' => 'Engelsystem 33c3 (2016)',
         '3' => 'Engelsystem 32c3 (2015)',
         '2' => 'Engelsystem cccamp15',
