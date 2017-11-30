@@ -169,14 +169,23 @@ Shifts.fetcher =
             done()
 
     process_deleted_entries: (deleted_entries, deleted_lastid, done) ->
-        # set option erst wenn alles prozessiert ist!
-        #shifttype.id = parseInt shifttype.id, 10
-        #Shifts.db.websql.transaction (t) ->
-        #    t.executeSql 'INSERT INTO ShiftTypes (id, name) VALUES (?, ?)', [shifttype.id, shifttype.name]
-        #    done()
-        if deleted_lastid != false
-            Shifts.db.set_option 'deleted_lastid', deleted_lastid, ->
+
+        update_lastid = (done) ->
+            if deleted_lastid != false
+                Shifts.db.set_option 'deleted_lastid', deleted_lastid, ->
+                    done()
+            else
                 done()
+
+        if deleted_entries.length > 0
+            e = deleted_entries.shift()
+
+            switch e.tablename
+                when 'Shifts'
+                    Shifts.db.delete_many_by_id 'Shifts', 'SID', e.entry_ids, ->
+                        Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
+
         else
-            done()
+            update_lastid ->
+                done()
 

@@ -126,6 +126,11 @@ Shifts.db =
             t.executeSql 'INSERT INTO NeededAngelTypes (id, room_id, shift_id, angel_type_id, angel_count) VALUES (?, ?, ?, ?, ?)', [needed_angeltype.id, needed_angeltype.RID, needed_angeltype.SID, needed_angeltype.ATID, needed_angeltype.count], ->
             done()
 
+    delete_many_by_id: (tablename, idname, ids, done) ->
+        Shifts.db.websql.transaction (t) ->
+            t.executeSql "DELETE FROM #{tablename} WHERE #{idname} IN (#{ids.join(',')})"
+            done()
+
     get_shifts: (filter_rooms, filter_angeltypes, done) ->
         filter_rooms_ids = filter_rooms.join ','
         filter_angeltypes_ids = filter_angeltypes.join ','

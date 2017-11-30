@@ -197,6 +197,12 @@ Shifts.db = {
       return done();
     });
   },
+  delete_many_by_id: function(tablename, idname, ids, done) {
+    return Shifts.db.websql.transaction(function(t) {
+      t.executeSql("DELETE FROM " + tablename + " WHERE " + idname + " IN (" + (ids.join(',')) + ")");
+      return done();
+    });
+  },
   get_shifts: function(filter_rooms, filter_angeltypes, done) {
     var end_time, filter_angeltypes_ids, filter_rooms_ids, start_time;
     filter_rooms_ids = filter_rooms.join(',');
@@ -487,12 +493,28 @@ Shifts.fetcher = {
     }
   },
   process_deleted_entries: function(deleted_entries, deleted_lastid, done) {
-    if (deleted_lastid !== false) {
-      return Shifts.db.set_option('deleted_lastid', deleted_lastid, function() {
+    var e, update_lastid;
+    update_lastid = function(done) {
+      if (deleted_lastid !== false) {
+        return Shifts.db.set_option('deleted_lastid', deleted_lastid, function() {
+          return done();
+        });
+      } else {
+        return done();
+      }
+    };
+    if (deleted_entries.length > 0) {
+      e = deleted_entries.shift();
+      switch (e.tablename) {
+        case 'Shifts':
+          return Shifts.db.delete_many_by_id('Shifts', 'SID', e.entry_ids, function() {
+            return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
+          });
+      }
+    } else {
+      return update_lastid(function() {
         return done();
       });
-    } else {
-      return done();
     }
   }
 };

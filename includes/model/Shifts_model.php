@@ -818,6 +818,16 @@ function Shifts_for_websql($since, $deleted_lastid) {
       }
       array_push($deleted_entries[$k], $v);
   }
+
+  // simplify it for js
+  $deleted_entries_simplified = array();
+  foreach ($deleted_entries as $key => $values) {
+      array_push($deleted_entries_simplified, array(
+        'tablename' => $key,
+        'entry_ids' => $values,
+      ));
+  }
+
   if (count($all_deleted_entries) > 0) {
       $last = count($all_deleted_entries) - 1;
       $deleted_entries_lastid = $all_deleted_entries[$last]['id'];
@@ -842,7 +852,7 @@ function Shifts_for_websql($since, $deleted_lastid) {
     'shifts_total' => $shifts_count,
     'needed_angeltypes' => $needed_angeltypes,
     'needed_angeltypes_total' => $needed_angeltypes_count,
-    'deleted_entries' => $deleted_entries,
+    'deleted_entries' => $deleted_entries_simplified,
     'deleted_entries_lastid' => $deleted_entries_lastid,
   );
   return $result;
