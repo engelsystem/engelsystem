@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2017-11-24 11:59+0100\n"
-"PO-Revision-Date: 2017-11-29 13:20+0100\n"
+"PO-Revision-Date: 2017-11-30 13:59+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -2057,7 +2057,7 @@ msgstr "Neuer Engeltyp"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:491
 msgid "Self Sign Up Allowed"
-msgstr "Kein Selbst-Eintragen erlaubt"
+msgstr "Selbst-Eintragen erlaubt"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:492
 msgid "Membership"
