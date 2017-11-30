@@ -110,7 +110,7 @@ function AngelType_create($angeltype)
               `contact_dect`,
               `contact_email`
           )
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $angeltype['name'],

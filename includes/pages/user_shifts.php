@@ -271,7 +271,14 @@ function view_user_shifts()
                         page_link_to('shifts_json_export', ['key' => $user['api_key']]),
                         page_link_to('user_myshifts', ['reset' => 1])
                     ) . '</p>',
-                'filter'        => _('Filter')
+                'filter'        => _('Filter'),
+                'set_yesterday' => _('Yesterday'),
+                'set_today'     => _('Today'),
+                'set_tomorrow'  => _('Tomorrow'),
+                'set_last_8h'   => _('last 8h'),
+                'set_last_4h'   => _('last 4h'),
+                'set_next_4h'   => _('next 4h'),
+                'set_next_8h'   => _('next 8h'),
             ])
         ])
     ]);
