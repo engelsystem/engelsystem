@@ -317,7 +317,7 @@ Shifts.fetcher = {
     });
   },
   fetch_in_parts: function(done) {
-    var fn, i, idname, latest_ids, start_filling, table, table_mapping, tables_to_process;
+    var deleted_lastid, fn, i, idname, latest_ids, start_filling, table, table_mapping, tables_to_process;
     table_mapping = {
       Room: 'RID',
       AngelTypes: 'id',
@@ -328,6 +328,7 @@ Shifts.fetcher = {
       ShiftEntry: 'id'
     };
     latest_ids = [];
+    deleted_lastid = 0;
     tables_to_process = 0;
     for (i in table_mapping) {
       tables_to_process++;
@@ -344,7 +345,12 @@ Shifts.fetcher = {
           latest_ids.push(table + '=' + r);
           tables_to_process--;
           if (tables_to_process === 0) {
-            return start_filling(done);
+            return Shifts.db.get_option('deleted_lastid', function(res) {
+              if (res) {
+                deleted_lastid = res;
+              }
+              return start_filling(done);
+            });
           }
         });
       });
@@ -357,7 +363,7 @@ Shifts.fetcher = {
       var url;
       Shifts.$shiftplan.find('#fetcher_statustext').text('Fetching data from server...');
       Shifts.$shiftplan.find('#remaining_objects').text('');
-      url = '?p=shifts_json_export_websql&' + latest_ids.join('&');
+      url = '?p=shifts_json_export_websql&' + latest_ids.join('&') + '&deleted_lastid=' + deleted_lastid;
       return $.get(url, function(data) {
         Shifts.fetcher.total_objects_count = 0;
         Shifts.fetcher.total_objects_count += parseInt(data.rooms_total, 10);
@@ -367,6 +373,9 @@ Shifts.fetcher = {
         Shifts.fetcher.total_objects_count += parseInt(data.shifts_total, 10);
         Shifts.fetcher.total_objects_count += parseInt(data.needed_angeltypes_total, 10);
         Shifts.fetcher.total_objects_count += parseInt(data.shift_entries_total, 10);
+        if (data.deleted_entries_lastid !== false) {
+          Shifts.fetcher.total_objects_count += 1;
+        }
         Shifts.fetcher.remaining_objects_count = Shifts.fetcher.total_objects_count;
         if (Shifts.fetcher.total_objects_count_since_start === 0) {
           Shifts.fetcher.total_objects_count_since_start = Shifts.fetcher.total_objects_count;
@@ -432,11 +441,16 @@ Shifts.fetcher = {
                               var shift_entries;
                               shift_entries = data.shift_entries;
                               return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
-                                if (Shifts.fetcher.total_objects_count <= 0) {
-                                  return done();
-                                } else {
-                                  return Shifts.fetcher.fetch_in_parts(done);
-                                }
+                                var deleted_entries, deleted_entries_lastid;
+                                deleted_entries = data.deleted_entries;
+                                deleted_entries_lastid = data.deleted_entries_lastid;
+                                return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_entries_lastid, function() {
+                                  if (Shifts.fetcher.total_objects_count <= 0) {
+                                    return done();
+                                  } else {
+                                    return Shifts.fetcher.fetch_in_parts(done);
+                                  }
+                                });
                               });
                             });
                           });
@@ -459,7 +473,7 @@ Shifts.fetcher = {
     if (items_to_process.length > 0) {
       item = items_to_process.shift();
       Shifts.fetcher.remaining_objects_count--;
-      if (Shifts.fetcher.remaining_objects_count % 100 === 0) {
+      if (Shifts.fetcher.remaining_objects_count % 10 === 0) {
         percentage = 100 - Shifts.fetcher.remaining_objects_count / Shifts.fetcher.total_objects_count_since_start * 100;
         $ro.text(Shifts.fetcher.remaining_objects_count + ' remaining...');
         $pb.text(Math.round(percentage) + '%');
@@ -467,6 +481,15 @@ Shifts.fetcher = {
       }
       return processing_func(item, function() {
         return Shifts.fetcher.process(processing_func, items_to_process, done);
+      });
+    } else {
+      return done();
+    }
+  },
+  process_deleted_entries: function(deleted_entries, deleted_lastid, done) {
+    if (deleted_lastid !== false) {
+      return Shifts.db.set_option('deleted_lastid', deleted_lastid, function() {
+        return done();
       });
     } else {
       return done();
