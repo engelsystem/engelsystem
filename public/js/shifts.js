@@ -506,8 +506,40 @@ Shifts.fetcher = {
     if (deleted_entries.length > 0) {
       e = deleted_entries.shift();
       switch (e.tablename) {
-        case 'Shifts':
+        case 'room':
+          return Shifts.db.delete_many_by_id('Room', 'RID', e.entry_ids, function() {
+            return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
+          });
+        case 'user':
+          return Shifts.db.delete_many_by_id('User', 'UID', e.entry_ids, function() {
+            return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
+          });
+        case 'shifts':
           return Shifts.db.delete_many_by_id('Shifts', 'SID', e.entry_ids, function() {
+            return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
+          });
+        case 'shifts_psid':
+          return Shifts.db.delete_many_by_id('Shifts', 'PSID', e.entry_ids, function() {
+            return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
+          });
+        case 'shiftentry':
+          return Shifts.db.delete_many_by_id('ShiftEntry', 'id', e.entry_ids, function() {
+            return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
+          });
+        case 'shifttypes':
+          return Shifts.db.delete_many_by_id('ShiftTypes', 'id', e.entry_ids, function() {
+            return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
+          });
+        case 'angeltypes':
+          return Shifts.db.delete_many_by_id('Angeltypes', 'id', e.entry_ids, function() {
+            return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
+          });
+        case 'needed_angeltypes_shiftid':
+          return Shifts.db.delete_many_by_id('NeededAngelTypes', 'shift_id', e.entry_ids, function() {
+            return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
+          });
+        case 'needed_angeltypes_roomid':
+          return Shifts.db.delete_many_by_id('NeededAngelTypes', 'room_id', e.entry_ids, function() {
             return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
           });
       }

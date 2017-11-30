@@ -181,8 +181,32 @@ Shifts.fetcher =
             e = deleted_entries.shift()
 
             switch e.tablename
-                when 'Shifts'
+                when 'room'
+                    Shifts.db.delete_many_by_id 'Room', 'RID', e.entry_ids, ->
+                        Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
+                when 'user'
+                    Shifts.db.delete_many_by_id 'User', 'UID', e.entry_ids, ->
+                        Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
+                when 'shifts'
                     Shifts.db.delete_many_by_id 'Shifts', 'SID', e.entry_ids, ->
+                        Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
+                when 'shifts_psid'
+                    Shifts.db.delete_many_by_id 'Shifts', 'PSID', e.entry_ids, ->
+                        Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
+                when 'shiftentry'
+                    Shifts.db.delete_many_by_id 'ShiftEntry', 'id', e.entry_ids, ->
+                        Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
+                when 'shifttypes'
+                    Shifts.db.delete_many_by_id 'ShiftTypes', 'id', e.entry_ids, ->
+                        Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
+                when 'angeltypes'
+                    Shifts.db.delete_many_by_id 'Angeltypes', 'id', e.entry_ids, ->
+                        Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
+                when 'needed_angeltypes_shiftid'
+                    Shifts.db.delete_many_by_id 'NeededAngelTypes', 'shift_id', e.entry_ids, ->
+                        Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
+                when 'needed_angeltypes_roomid'
+                    Shifts.db.delete_many_by_id 'NeededAngelTypes', 'room_id', e.entry_ids, ->
                         Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
 
         else
