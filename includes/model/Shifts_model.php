@@ -424,6 +424,7 @@ function Shift_delete($shift_id)
     mail_shift_delete(Shift($shift_id));
 
     DB::delete('DELETE FROM `Shifts` WHERE `SID`=?', [$shift_id]);
+    db_track_delete('Shifts', $shift_id);
 }
 
 /**
