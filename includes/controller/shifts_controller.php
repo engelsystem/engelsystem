@@ -375,16 +375,18 @@ function shifts_json_export_websql_controller()
     engelsystem_error("You must be logged in to access shifts.");
   }
 
-  $latest_ids = array();
-  $latest_ids['rooms'] = isset($_GET['Room']) ? $_GET['Room'] : 0;
-  $latest_ids['angeltypes'] = isset($_GET['AngelTypes']) ? $_GET['AngelTypes'] : 0;
-  $latest_ids['shift_types'] = isset($_GET['ShiftTypes']) ? $_GET['ShiftTypes'] : 0;
-  $latest_ids['users'] = isset($_GET['User']) ? $_GET['User'] : 0;
-  $latest_ids['shifts'] = isset($_GET['Shifts']) ? $_GET['Shifts'] : 0;
-  $latest_ids['needed_angeltypes'] = isset($_GET['NeededAngelTypes']) ? $_GET['NeededAngelTypes'] : 0;
-  $latest_ids['shift_entries'] = isset($_GET['ShiftEntry']) ? $_GET['ShiftEntry'] : 0;
+  $since = array();
+  $since['rooms'] = isset($_GET['Room']) ? $_GET['Room'] : 0;
+  $since['angeltypes'] = isset($_GET['AngelTypes']) ? $_GET['AngelTypes'] : 0;
+  $since['shift_types'] = isset($_GET['ShiftTypes']) ? $_GET['ShiftTypes'] : 0;
+  $since['users'] = isset($_GET['User']) ? $_GET['User'] : 0;
+  $since['shifts'] = isset($_GET['Shifts']) ? $_GET['Shifts'] : 0;
+  $since['needed_angeltypes'] = isset($_GET['NeededAngelTypes']) ? $_GET['NeededAngelTypes'] : 0;
+  $since['shift_entries'] = isset($_GET['ShiftEntry']) ? $_GET['ShiftEntry'] : 0;
 
-  $shifts = Shifts_for_websql($latest_ids);
+  $deleted_lastid = isset($_GET['deleted_lastid']) ? $_GET['deleted_lastid'] : 0;
+
+  $shifts = Shifts_for_websql($since, $deleted_lastid);
   if ($shifts === false)
   {
     engelsystem_error("Unable to load shifts.");

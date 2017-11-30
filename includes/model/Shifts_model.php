@@ -557,7 +557,7 @@ function Shifts_by_user($user, $include_freeload_comments = false)
 /**
  * Return users shifts.
  */
-function Shifts_for_websql($latest_ids) {
+function Shifts_for_websql($since, $deleted_lastid) {
 
     $limit = 5000; // 5k items per fetch, gives ~1MB large json-response
 
@@ -568,7 +568,7 @@ function Shifts_for_websql($latest_ids) {
       WHERE SID > ?
       ",
       [
-        $latest_ids['shifts']
+        $since['shifts']
       ]
   );
   if ($shifts_count === false) {
@@ -585,7 +585,7 @@ function Shifts_for_websql($latest_ids) {
       LIMIT " . $limit . "
       ",
       [
-        $latest_ids['shifts']
+        $since['shifts']
       ]
   );
   if ($shifts === false) {
@@ -601,7 +601,7 @@ function Shifts_for_websql($latest_ids) {
       WHERE id > ?
       ",
       [
-        $latest_ids['shift_types']
+        $since['shift_types']
       ]
   );
   if ($shift_types_count === false) {
@@ -618,7 +618,7 @@ function Shifts_for_websql($latest_ids) {
       LIMIT " . $limit . "
       ",
       [
-        $latest_ids['shift_types']
+        $since['shift_types']
       ]
   );
   if ($shift_types === false) {
@@ -634,7 +634,7 @@ function Shifts_for_websql($latest_ids) {
       WHERE RID > ?
       ",
       [
-        $latest_ids['rooms']
+        $since['rooms']
       ]
   );
   if ($rooms_count === false) {
@@ -651,7 +651,7 @@ function Shifts_for_websql($latest_ids) {
       LIMIT " . $limit . "
       ",
       [
-        $latest_ids['rooms']
+        $since['rooms']
       ]
   );
   if ($rooms === false) {
@@ -667,7 +667,7 @@ function Shifts_for_websql($latest_ids) {
       WHERE id > ?
       ",
       [
-        $latest_ids['shift_entries']
+        $since['shift_entries']
       ]
   );
   if ($shift_entries_count === false) {
@@ -684,7 +684,7 @@ function Shifts_for_websql($latest_ids) {
       LIMIT " . $limit . "
       ",
       [
-        $latest_ids['shift_entries']
+        $since['shift_entries']
       ]
   );
   if ($shift_entries === false) {
@@ -701,7 +701,7 @@ function Shifts_for_websql($latest_ids) {
       AND UID > ?
       ",
       [
-        $latest_ids['users']
+        $since['users']
       ]
   );
   if ($users_count === false) {
@@ -719,7 +719,7 @@ function Shifts_for_websql($latest_ids) {
       LIMIT " . $limit . "
       ",
       [
-        $latest_ids['users']
+        $since['users']
       ]
   );
   if ($users === false) {
@@ -735,7 +735,7 @@ function Shifts_for_websql($latest_ids) {
       WHERE id > ?
       ",
       [
-        $latest_ids['angeltypes']
+        $since['angeltypes']
       ]
   );
   if ($angeltypes_count === false) {
@@ -752,7 +752,7 @@ function Shifts_for_websql($latest_ids) {
       LIMIT " . $limit . "
       ",
       [
-        $latest_ids['angeltypes']
+        $since['angeltypes']
       ]
   );
   if ($angeltypes === false) {
@@ -768,7 +768,7 @@ function Shifts_for_websql($latest_ids) {
       WHERE id > ?
       ",
       [
-        $latest_ids['needed_angeltypes']
+        $since['needed_angeltypes']
       ]
   );
   if ($needed_angeltypes_count === false) {
@@ -785,11 +785,44 @@ function Shifts_for_websql($latest_ids) {
       LIMIT " . $limit . "
       ",
       [
-        $latest_ids['needed_angeltypes']
+        $since['needed_angeltypes']
       ]
   );
   if ($needed_angeltypes === false) {
     engelsystem_error('Unable to load websql needed_angeltypes.');
+  }
+
+    // fetch deleted entries
+  $all_deleted_entries = DB::select("
+      SELECT id, tablename, entry_id
+      FROM DeleteLog
+      WHERE id > ?
+      ORDER BY id ASC
+      LIMIT " . $limit . "
+      ",
+      [
+        $deleted_lastid
+      ]
+  );
+  if ($all_deleted_entries === false) {
+    engelsystem_error('Unable to load websql deleted_entries.');
+  }
+
+  // build array
+  $deleted_entries = array();
+  foreach ($all_deleted_entries as $e) {
+      $k = $e['tablename'];
+      $v = $e['entry_id'];
+      if(!array_key_exists($k, $deleted_entries)) {
+        $deleted_entries[$k] = array();
+      }
+      array_push($deleted_entries[$k], $v);
+  }
+  if (count($all_deleted_entries) > 0) {
+      $last = count($all_deleted_entries) - 1;
+      $deleted_entries_lastid = $all_deleted_entries[$last]['id'];
+  } else {
+      $deleted_entries_lastid = false;
   }
 
 
@@ -809,6 +842,8 @@ function Shifts_for_websql($latest_ids) {
     'shifts_total' => $shifts_count,
     'needed_angeltypes' => $needed_angeltypes,
     'needed_angeltypes_total' => $needed_angeltypes_count,
+    'deleted_entries' => $deleted_entries,
+    'deleted_entries_lastid' => $deleted_entries_lastid,
   );
   return $result;
 }
