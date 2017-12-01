@@ -507,9 +507,10 @@ function Shift_create($shift)
               `PSID`,
               `created_by_user_id`,
               `edited_at_timestamp`,
-              `created_at_timestamp`
+              `created_at_timestamp`,
+              `updated_microseconds`
           )
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $shift['shifttype_id'],
@@ -522,6 +523,7 @@ function Shift_create($shift)
             $user['UID'],
             time(),
             time(),
+            time_microseconds(),
         ]
     );
 
