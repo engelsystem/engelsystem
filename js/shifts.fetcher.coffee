@@ -110,38 +110,38 @@ Shifts.fetcher =
                                     else
                                         Shifts.render.rendering_time = 2000
 
-                                    # insert rooms
-                                    rooms = data.rooms
-                                    Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
+                                    # process deleted entries
+                                    deleted_entries = data.deleted_entries
+                                    deleted_entries_lastid = data.deleted_entries_lastid
+                                    Shifts.fetcher.process_deleted_entries deleted_entries, deleted_entries_lastid, ->
 
-                                        # insert angeltypes
-                                        angeltypes = data.angeltypes
-                                        Shifts.fetcher.process Shifts.db.insert_angeltype, angeltypes, ->
+                                        # insert rooms
+                                        rooms = data.rooms
+                                        Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
 
-                                            # insert shift_types
-                                            shift_types = data.shift_types
-                                            Shifts.fetcher.process Shifts.db.insert_shifttype, shift_types, ->
+                                            # insert angeltypes
+                                            angeltypes = data.angeltypes
+                                            Shifts.fetcher.process Shifts.db.insert_angeltype, angeltypes, ->
 
-                                                # insert users
-                                                users = data.users
-                                                Shifts.fetcher.process Shifts.db.insert_user, users, ->
+                                                # insert shift_types
+                                                shift_types = data.shift_types
+                                                Shifts.fetcher.process Shifts.db.insert_shifttype, shift_types, ->
 
-                                                    # insert shifts
-                                                    shifts = data.shifts
-                                                    Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
+                                                    # insert users
+                                                    users = data.users
+                                                    Shifts.fetcher.process Shifts.db.insert_user, users, ->
 
-                                                        # insert needed_angeltypes
-                                                        needed_angeltypes = data.needed_angeltypes
-                                                        Shifts.fetcher.process Shifts.db.insert_needed_angeltype, needed_angeltypes, ->
+                                                        # insert shifts
+                                                        shifts = data.shifts
+                                                        Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
 
-                                                            # insert shift_entries
-                                                            shift_entries = data.shift_entries
-                                                            Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
+                                                            # insert needed_angeltypes
+                                                            needed_angeltypes = data.needed_angeltypes
+                                                            Shifts.fetcher.process Shifts.db.insert_needed_angeltype, needed_angeltypes, ->
 
-                                                                # process deleted entries
-                                                                deleted_entries = data.deleted_entries
-                                                                deleted_entries_lastid = data.deleted_entries_lastid
-                                                                Shifts.fetcher.process_deleted_entries deleted_entries, deleted_entries_lastid, ->
+                                                                # insert shift_entries
+                                                                shift_entries = data.shift_entries
+                                                                Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
 
                                                                     if Shifts.fetcher.total_objects_count <= 0
                                                                         done()

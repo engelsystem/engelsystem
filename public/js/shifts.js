@@ -421,36 +421,36 @@ Shifts.fetcher = {
                   Shifts.interaction.occupancy = res;
                 }
                 return Shifts.db.get_option('rendering_time', function(res) {
-                  var rooms;
+                  var deleted_entries, deleted_entries_lastid;
                   if (res) {
                     Shifts.render.rendering_time = parseInt(res, 10);
                   } else {
                     Shifts.render.rendering_time = 2000;
                   }
-                  rooms = data.rooms;
-                  return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
-                    var angeltypes;
-                    angeltypes = data.angeltypes;
-                    return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
-                      var shift_types;
-                      shift_types = data.shift_types;
-                      return Shifts.fetcher.process(Shifts.db.insert_shifttype, shift_types, function() {
-                        var users;
-                        users = data.users;
-                        return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
-                          var shifts;
-                          shifts = data.shifts;
-                          return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
-                            var needed_angeltypes;
-                            needed_angeltypes = data.needed_angeltypes;
-                            return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
-                              var shift_entries;
-                              shift_entries = data.shift_entries;
-                              return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
-                                var deleted_entries, deleted_entries_lastid;
-                                deleted_entries = data.deleted_entries;
-                                deleted_entries_lastid = data.deleted_entries_lastid;
-                                return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_entries_lastid, function() {
+                  deleted_entries = data.deleted_entries;
+                  deleted_entries_lastid = data.deleted_entries_lastid;
+                  return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_entries_lastid, function() {
+                    var rooms;
+                    rooms = data.rooms;
+                    return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
+                      var angeltypes;
+                      angeltypes = data.angeltypes;
+                      return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
+                        var shift_types;
+                        shift_types = data.shift_types;
+                        return Shifts.fetcher.process(Shifts.db.insert_shifttype, shift_types, function() {
+                          var users;
+                          users = data.users;
+                          return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
+                            var shifts;
+                            shifts = data.shifts;
+                            return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
+                              var needed_angeltypes;
+                              needed_angeltypes = data.needed_angeltypes;
+                              return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
+                                var shift_entries;
+                                shift_entries = data.shift_entries;
+                                return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
                                   if (Shifts.fetcher.total_objects_count <= 0) {
                                     return done();
                                   } else {
