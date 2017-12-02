@@ -30,11 +30,11 @@ function AngelType_render_membership($user_angeltype)
             if ($user_angeltype['confirm_user_id'] == null) {
                 return glyph('lock') . _('Unconfirmed');
             } elseif ($user_angeltype['supporter']) {
-                return glyph_bool(true) . _('supporter');
+                return glyph_bool(true) . _('Supporter');
             }
             return glyph_bool(true) . _('Member');
         } elseif ($user_angeltype['supporter']) {
-            return glyph_bool(true) . _('supporter');
+            return glyph_bool(true) . _('Supporter');
         }
         return glyph_bool(true) . _('Member');
     }
@@ -402,7 +402,7 @@ function AngelType_view_info(
     $table_headers = AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes);
     
     if (count($supporters) > 0) {
-        $info[] = '<h3>' . _('supporters') . '</h3>';
+        $info[] = '<h3>' . _('Supporters') . '</h3>';
         $info[] = table($table_headers, $supporters);
     }
     
