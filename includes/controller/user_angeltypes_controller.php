@@ -336,7 +336,7 @@ function user_angeltype_add_controller()
             UserAngelType_confirm($user_angeltype_id, $user_source);
             engelsystem_log(sprintf(
                 'User %s confirmed as %s.',
-                User_Nick_render($user),
+                User_Nick_render($user_source),
                 AngelType_name_render($angeltype)
             ));
 
