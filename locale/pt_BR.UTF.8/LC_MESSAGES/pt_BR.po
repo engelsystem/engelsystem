@@ -1711,8 +1711,8 @@ msgid "Unconfirmed"
 msgstr "Não confirmado"
 
 #: includes/view/AngelTypes_view.php:29 includes/view/AngelTypes_view.php:33
-msgid "supporter"
-msgstr "apoiador"
+msgid "Supporter"
+msgstr "Apoiador"
 
 #: includes/view/AngelTypes_view.php:31 includes/view/AngelTypes_view.php:35
 msgid "Member"
@@ -1829,8 +1829,8 @@ msgid "Forklift"
 msgstr "Empilhadeira"
 
 #: includes/view/AngelTypes_view.php:215
-msgid "supporters"
-msgstr "apoiadores"
+msgid "Supporters"
+msgstr "Apoiadores"
 
 #: includes/view/AngelTypes_view.php:235
 msgid "Members"

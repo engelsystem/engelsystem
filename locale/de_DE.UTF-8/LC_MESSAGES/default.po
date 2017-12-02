@@ -1893,7 +1893,7 @@ msgstr "Unbestätigt"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:33
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:37
-msgid "supporter"
+msgid "Supporter"
 msgstr "Supporter"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:35
@@ -2031,7 +2031,7 @@ msgid "Info"
 msgstr "Info"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:401
-msgid "supporters"
+msgid "Supporters"
 msgstr "Supporter"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:421
