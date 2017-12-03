@@ -723,7 +723,7 @@ function render_user_dect_hint()
 {
     global $user;
 
-    if ($user['DECT'] == '') {
+    if ($user['Gekommen'] == 1 && $user['DECT'] == '') {
         $text = _('You need to specify a DECT phone number in your settings! If you don\'t have a DECT phone, just enter \'-\'.');
         return render_profile_link($text, null, 'alert-link');
     }
