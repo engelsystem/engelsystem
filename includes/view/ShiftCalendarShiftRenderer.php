@@ -67,6 +67,7 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::SIGNED_UP:
                 return 'primary';
 
+            case ShiftSignupState::NOT_YET:
             case ShiftSignupState::SHIFT_ENDED:
                 return 'default';
 
@@ -185,6 +186,10 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::SHIFT_ENDED:
                 // No link and add a text hint, when the shift ended
                 $entry_list[] = $inner_text . ' (' . _('ended') . ')';
+                break;
+
+            case ShiftSignupState::NOT_YET:
+                $entry_list[] = $inner_text . '(' . _('not yet') . ')';
                 break;
 
             case ShiftSignupState::ANGELTYPE:

@@ -52,6 +52,10 @@ return [
     // Only arrived angels can sign up for shifts
     'signup_requires_arrival' => false,
 
+    // Only allow shift signup this number of hours in advance
+    // Setting this to 0 disables the feature
+    'signup_advance_hours'    => 0,
+
     // Anzahl Stunden bis zum Austragen eigener Schichten
     'last_unsubscribe'        => 3,
 

@@ -94,6 +94,9 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
             $shift_signup_state->getState() == ShiftSignupState::SIGNED_UP
                 ? info(_('You are signed up for this shift.'), true)
                 : '',
+            (config('signup_advance_hours') && $shift['start'] > time() + config('signup_advance_hours') * 3600)
+                ? info(sprintf(_('This shift is in the far future and becomes available for signup at %s.'), date(_('Y-m-d') . ' H:i', $shift['start'] - config('signup_advance_hours') * 3600)), true)
+                : '',
             ($shift_admin || $admin_shifttypes || $admin_rooms) ? buttons([
                 $shift_admin ? button(shift_edit_link($shift), glyph('pencil') . _('edit')) : '',
                 $shift_admin ? button(shift_delete_link($shift), glyph('trash') . _('delete')) : '',
