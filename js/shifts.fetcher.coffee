@@ -4,6 +4,10 @@ Shifts.fetcher =
     total_objects_count: 0
     total_objects_count_since_start: 0
     remaining_objects_count: 0
+    run_count: 0 # this is a rough evaluation how many fetcherruns happened.
+                        # if > 0, decrease every second. stop fetcher if > 10 (runbuffersize)
+                        # tl;dr: prevent hammering on the server if something in the fetcher fails and too many requests would happen
+    runbuffersize: 10
 
     start: (display_status, done) ->
         if display_status
@@ -17,6 +21,12 @@ Shifts.fetcher =
             Shifts.fetcher.fetch_in_parts ->
                 #Shifts.render.shiftplan()
         , 5 * 60 * 1000
+
+        # decrease run_count every second
+        setInterval ->
+            if Shifts.fetcher.run_count > 0
+                Shifts.fetcher.run_count--
+        , 1 * 1000
 
     fetch_in_parts: (done) ->
         table_mapping =
@@ -62,7 +72,10 @@ Shifts.fetcher =
             Shifts.$shiftplan.find('#fetcher_statustext').text 'Fetching data from server...'
             Shifts.$shiftplan.find('#remaining_objects').text ''
             url = '?p=shifts_json_export_websql&' + latest_ids.join('&') + '&deleted_lastid=' + deleted_lastid
-            $.get url, (data) ->
+
+            # only fetch if you didn't run for too often
+            Shifts.fetcher.run_count++
+            if Shifts.fetcher.run_count > Shifts.fetcher.runbuffersize then return done() else $.get url, (data) ->
                 Shifts.fetcher.total_objects_count = 0
                 Shifts.fetcher.total_objects_count += parseInt data.rooms_total, 10
                 Shifts.fetcher.total_objects_count += parseInt data.angeltypes_total, 10

@@ -562,7 +562,7 @@ function Shifts_by_user($user, $include_freeload_comments = false)
  */
 function Shifts_for_websql($since, $deleted_lastid) {
 
-    $limit = 5000; // 5k items per fetch, gives ~1MB large json-response
+    $limit = 2000; // 5k items per fetch gives ~1MB large json-response
 
     // fetch shifts count
   $shifts_count = DB::select("
