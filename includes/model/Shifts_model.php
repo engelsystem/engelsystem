@@ -325,6 +325,10 @@ function Shift_signup_allowed_angel(
         return new ShiftSignupState(ShiftSignupState::NOT_ARRIVED, $free_entries);
     }
 
+    if (config('signup_advance_hours') && $shift['start'] > time() + config('signup_advance_hours') * 3600) {
+        return new ShiftSignupState(ShiftSignupState::NOT_YET, $free_entries);
+    }
+
     if (empty($user_shifts)) {
         $user_shifts = Shifts_by_user($user->id);
     }

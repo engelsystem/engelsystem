@@ -129,6 +129,13 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
         $content[] = info(__('You are signed up for this shift.'), true);
     }
 
+    if (config('signup_advance_hours') && $shift['start'] > time() + config('signup_advance_hours') * 3600) {
+        $content[] = info(sprintf(
+            _('This shift is in the far future and becomes available for signup at %s.'),
+            date(_('Y-m-d') . ' H:i', $shift['start'] - config('signup_advance_hours') * 3600)
+        ), true);
+    }
+
     $buttons = [];
     if ($shift_admin || $admin_shifttypes || $admin_rooms) {
         $buttons = [

@@ -88,6 +88,10 @@ return [
     // Whether newly-registered user should automatically be marked as arrived
     'autoarrive'              => false,
 
+    // Only allow shift signup this number of hours in advance
+    // Setting this to 0 disables the feature
+    'signup_advance_hours'    => 0,
+
     // Number of hours that an angel has to sign out own shifts
     'last_unsubscribe'        => 3,
 
