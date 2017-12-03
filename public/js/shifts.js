@@ -318,9 +318,12 @@ Shifts.fetcher = {
     if (display_status) {
       Shifts.$shiftplan.html(Shifts.templates.fetcher_status);
     }
-    return Shifts.fetcher.fetch_in_parts(function() {
+    Shifts.fetcher.fetch_in_parts(function() {
       return done();
     });
+    return setInterval(function() {
+      return Shifts.fetcher.fetch_in_parts(function() {});
+    }, 5 * 60 * 1000);
   },
   fetch_in_parts: function(done) {
     var deleted_lastid, fn, i, idname, latest_ids, start_filling, table, table_mapping, tables_to_process;
@@ -680,7 +683,7 @@ Shifts.render = {
   START_TIME: false,
   metric_timestamp: false,
   rendering_time: 0,
-  render_threshold: 700,
+  render_threshold: 1000,
   tick: function(time, label) {
     var current_quarter, daytime, diffhour, hour, tick_quarter;
     if (label == null) {

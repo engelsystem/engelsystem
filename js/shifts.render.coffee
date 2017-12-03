@@ -24,7 +24,7 @@ Shifts.render =
     rendering_time: 0
 
     # threshold to determine whether to show progress bar or not
-    render_threshold: 700
+    render_threshold: 1000
 
     tick: (time, label = false) ->
 

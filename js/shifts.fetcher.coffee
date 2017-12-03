@@ -11,6 +11,13 @@ Shifts.fetcher =
         Shifts.fetcher.fetch_in_parts ->
             done()
 
+        # background fetch every 5 mins,
+        # to keep incremental updates low #user_experience
+        setInterval ->
+            Shifts.fetcher.fetch_in_parts ->
+                #Shifts.render.shiftplan()
+        , 5 * 60 * 1000
+
     fetch_in_parts: (done) ->
         table_mapping =
             Room: 'RID'
