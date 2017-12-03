@@ -315,7 +315,7 @@ Shifts.fetcher = {
   total_objects_count_since_start: 0,
   remaining_objects_count: 0,
   run_count: 0,
-  max_runs_per_second: 10,
+  runbuffersize: 10,
   start: function(display_status, done) {
     if (display_status) {
       Shifts.$shiftplan.html(Shifts.templates.fetcher_status);
@@ -381,7 +381,7 @@ Shifts.fetcher = {
       Shifts.$shiftplan.find('#remaining_objects').text('');
       url = '?p=shifts_json_export_websql&' + latest_ids.join('&') + '&deleted_lastid=' + deleted_lastid;
       Shifts.fetcher.run_count++;
-      if (Shifts.fetcher.run_count > Shifts.fetcher.max_runs_per_second) {
+      if (Shifts.fetcher.run_count > Shifts.fetcher.runbuffersize) {
         return done();
       } else {
         return $.get(url, function(data) {
@@ -695,7 +695,7 @@ Shifts.render = {
   START_TIME: false,
   metric_timestamp: false,
   rendering_time: 0,
-  render_threshold: 1000,
+  render_threshold: 3000,
   tick: function(time, label) {
     var current_quarter, daytime, diffhour, hour, tick_quarter;
     if (label == null) {
