@@ -39,6 +39,11 @@ class ShiftSignupState
     const SHIFT_ENDED = 'SHIFT_ENDED';
 
     /**
+     * Shift is not available yet
+     */
+    const NOT_YET = 'NOT_YET';
+
+    /**
      * User is already signed up
      */
     const SIGNED_UP = 'SIGNED_UP';

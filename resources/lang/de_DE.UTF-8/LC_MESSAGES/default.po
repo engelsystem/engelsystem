@@ -2124,6 +2124,12 @@ msgstr "Eintragen"
 msgid "ended"
 msgstr "vorbei"
 
+msgid "not yet"
+msgstr "noch nicht"
+
+msgid "This shift is in the far future and becomes available for signup at %s."
+msgstr "Diese Schicht liegt in der fernen Zukunft und du kannst dich ab %s eintragen."
+
 # Wie ist dies zu verstehen bitte?
 #: includes/view/ShiftCalendarShiftRenderer.php:203
 msgid "please arrive for signup"
