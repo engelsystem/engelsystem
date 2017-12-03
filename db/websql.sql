@@ -7,6 +7,7 @@ CREATE TABLE `DeleteLog` (
   `tablename` varchar(30) NOT NULL,
   `entry_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `DeleteLog` ADD PRIMARY KEY (`id`);
 
 
 -- Updated Microseconds
