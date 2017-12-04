@@ -649,10 +649,10 @@ function Shifts_for_websql($since, $deleted_lastid) {
 
     // fetch rooms
   $rooms = DB::select("
-      SELECT RID, Name
+      SELECT RID, Name, updated_microseconds
       FROM Room
-      WHERE RID > ?
-      ORDER BY RID ASC
+      WHERE updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
       LIMIT " . $limit . "
       ",
       [
@@ -840,7 +840,21 @@ function Shifts_for_websql($since, $deleted_lastid) {
       $deleted_entries_lastid = false;
   }
 
+  // explanation:
+  // fetch updated_microseconds, but don't transfer it in the json
+  //
+  // pack it in a single value information field instead.
+  // --> decreased transfer size
+  //
+  // select in sql and delete in array later:
+  // --> minus one query
 
+  // grab room_lastupdate and clean array
+  $last = count($rooms)-1;
+  $rooms_lastupdate = $rooms[$last]['updated_microseconds'];
+  foreach($rooms as $k => $r) {
+    unset($rooms[$k]['updated_microseconds']);
+  }
 
   $result = array(
     'shift_types' => $shift_types,
@@ -849,6 +863,7 @@ function Shifts_for_websql($since, $deleted_lastid) {
     'angeltypes_total' => $angeltypes_count,
     'rooms' => $rooms,
     'rooms_total' => $rooms_count,
+    'rooms_lastupdate' => $rooms_lastupdate,
     'users' => $users,
     'users_total' => $users_count,
     'shift_entries' => $shift_entries,
