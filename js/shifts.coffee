@@ -1,5 +1,5 @@
 ###
-# JavaScript-based Shiftplan solution using distributed WebSQL technology in the cloud -
+# JavaScript Shiftplan Solution™ using distributed WebSQL technology in the browser-based cloud -
 # empowering angels leveraging their visible return
 #
 ###
