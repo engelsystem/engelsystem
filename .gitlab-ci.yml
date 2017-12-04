@@ -95,7 +95,7 @@ deploy_staging:
     - *deployment_ssh
     - *deployment_dependencies
     # Deploy to server
-    - ./deploy.sh -h "${STAGING_REMOTE}" -p "${STAGING_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"
+    - ./deploy.sh -r "${STAGING_REMOTE}" -p "${STAGING_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"
 
 deploy_production:
   <<: *deploy_definition
@@ -112,4 +112,4 @@ deploy_production:
     - *deployment_ssh
     - *deployment_dependencies
     # Deploy to server
-    - ./deploy.sh -h "${PRODUCTION_REMOTE}" -p "${PRODUCTION_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"
+    - ./deploy.sh -r "${PRODUCTION_REMOTE}" -p "${PRODUCTION_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"

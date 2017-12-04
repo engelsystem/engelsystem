@@ -6,9 +6,24 @@ remote_host=
 remote_path=
 deploy_id=
 
-while getopts ":h:p:i:" opt; do
+show_help(){
+    echo "Usage: $0 [OPTION]..." >&2
+    echo "Deploys a software with rsync over ssh" >&2
+    echo "The options -i, -p and -r are required" >&2
+    echo "" >&2
+    echo "  -h          Display this help screen" >&2
+    echo "  -i <id>     Sets the id, a unique name for the deployment" >&2
+    echo "  -p <path>   Define the base path on the server" >&2
+    echo "  -r <host>   The remote server name and user" >&2
+}
+
+while getopts ":hi:p:r:" opt; do
     case ${opt} in
         h)
+            show_help
+            exit 1
+            ;;
+        r)
             remote_host="$OPTARG"
             ;;
         p)
@@ -29,7 +44,7 @@ while getopts ":h:p:i:" opt; do
 done
 
 if [ -z "${remote_host}" ] || [ -z "${remote_path}" ] || [ -z "${deploy_id}" ]; then
-    echo "Please specify -h[remote host], -p[remote path] and -i[deploy id]" >&2
+    show_help
     exit 1
 fi
 
@@ -48,8 +63,7 @@ ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "${remote_hos
     fi
 
     echo \"Changing symlink\"
-    unlink \"${remote_path}/current\"
-    ln -s \"${remote_path}/${deploy_id}\" \"${remote_path}/current\"
+    unlink \"${remote_path}/current\" && ln -s \"${remote_path}/${deploy_id}\" \"${remote_path}/current\"
 
     if [[ -f \"${deploy_id}-config.php\" ]]; then
         echo \"Restoring config\"
