@@ -6814,6 +6814,15 @@ body {
   font-size: 0.9em;
   padding-left: 5px;
 }
+.shift-calendar .lane .tick_dark {
+  background: #eee;
+}
+.shift-calendar .lane .tick_bright {
+  background: #f9f9f9;
+}
+.shift-calendar .lane .tick_active {
+  background: #7ba9d0;
+}
 .shift-calendar .lane.time {
   border-right: 1px solid #282828;
   flex-grow: 0;
