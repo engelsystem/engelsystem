@@ -18,14 +18,15 @@ use Engelsystem\Database\DB;
 function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
 {
     DB::insert('
-          INSERT INTO `NeededAngelTypes` ( `shift_id`, `angel_type_id`, `room_id`, `count`)
-           VALUES (?, ?, ?, ?)
+          INSERT INTO `NeededAngelTypes` ( `shift_id`, `angel_type_id`, `room_id`, `count`, `updated_microseconds`)
+           VALUES (?, ?, ?, ?, ?)
         ',
         [
             $shift_id,
             $angeltype_id,
             $room_id,
             $count,
+            time_microseconds(),
         ]);
 
     return DB::getPdo()->lastInsertId();

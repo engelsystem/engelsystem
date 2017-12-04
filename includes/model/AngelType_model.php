@@ -66,7 +66,8 @@ function AngelType_update($angeltype)
           `no_self_signup` = ?,
           `contact_name` = ?,
           `contact_dect` = ?,
-          `contact_email` = ?
+          `contact_email` = ?,
+          `updated_microseconds` = ?
           WHERE `id` = ?',
         [
             $angeltype['name'],
@@ -77,6 +78,7 @@ function AngelType_update($angeltype)
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
+            time_microseconds(),
             $angeltype['id'],
         ]
     );
@@ -108,9 +110,10 @@ function AngelType_create($angeltype)
               `no_self_signup`,
               `contact_name`,
               `contact_dect`,
-              `contact_email`
+              `contact_email`,
+              `updated_microseconds`
           )
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $angeltype['name'],
@@ -121,6 +124,7 @@ function AngelType_create($angeltype)
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
+            time_microseconds(),
         ]
     );
 

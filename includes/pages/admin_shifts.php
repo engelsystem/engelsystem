@@ -329,13 +329,14 @@ function admin_shifts()
                       LIMIT 1', [$type_id]);
                 if (!empty($angel_type_source)) {
                     DB::insert('
-                        INSERT INTO `NeededAngelTypes` (`shift_id`, `angel_type_id`, `count`)
-                        VALUES (?, ?, ?)
+                        INSERT INTO `NeededAngelTypes` (`shift_id`, `angel_type_id`, `count`, `updated_microseconds`)
+                        VALUES (?, ?, ?, ?)
                       ',
                         [
                             $shift_id,
                             $type_id,
-                            $count
+                            $count,
+                            time_microseconds(),
                         ]
                     );
                     $needed_angel_types_info[] = $angel_type_source['name'] . ': ' . $count;

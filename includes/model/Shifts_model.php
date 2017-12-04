@@ -450,7 +450,8 @@ function Shift_update($shift)
       `URL` = ?,
       `PSID` = ?,
       `edited_by_user_id` = ?,
-      `edited_at_timestamp` = ?
+      `edited_at_timestamp` = ?,
+      `updated_microseconds` = ?
       WHERE `SID` = ?
     ',
         [
@@ -463,7 +464,8 @@ function Shift_update($shift)
             $shift['PSID'],
             $user['UID'],
             time(),
-            $shift['SID']
+            time_microseconds(),
+            $shift['SID'],
         ]
     );
 }

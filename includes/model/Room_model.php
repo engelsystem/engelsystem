@@ -47,14 +47,15 @@ function Room_delete($room_id)
 function Room_create($name, $from_frab, $public, $number = null)
 {
     DB::insert('
-          INSERT INTO `Room` (`Name`, `FromPentabarf`, `show`, `Number`)
-           VALUES (?, ?, ?, ?)
+          INSERT INTO `Room` (`Name`, `FromPentabarf`, `show`, `Number`, `updated_microseconds`)
+           VALUES (?, ?, ?, ?, ?)
         ',
         [
             $name,
             $from_frab ? 'Y' : '',
             $public ? 'Y' : '',
             (int)$number,
+            time_microseconds(),
         ]
     );
 

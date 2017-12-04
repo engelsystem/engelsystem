@@ -82,9 +82,10 @@ function ShiftEntry_create($shift_entry)
               `UID`,
               `Comment`,
               `freeload_comment`,
-              `freeloaded`
+              `freeloaded`,
+              `updated_microseconds`
           )
-          VALUES(?, ?, ?, ?, ?, ?)
+          VALUES(?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $shift_entry['SID'],
@@ -93,6 +94,7 @@ function ShiftEntry_create($shift_entry)
             $shift_entry['Comment'],
             $shift_entry['freeload_comment'],
             (int)$shift_entry['freeloaded'],
+            time_microseconds(),
         ]
     );
 }
@@ -109,12 +111,14 @@ function ShiftEntry_update($shift_entry)
       SET
           `Comment` = ?,
           `freeload_comment` = ?,
-          `freeloaded` = ?
+          `freeloaded` = ?,
+          `updated_microseconds` = ?
       WHERE `id` = ?',
         [
             $shift_entry['Comment'],
             $shift_entry['freeload_comment'],
             (int)$shift_entry['freeloaded'],
+            time_microseconds(),
             $shift_entry['id']
         ]
     );

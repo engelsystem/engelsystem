@@ -49,7 +49,8 @@ function User_update($user)
           `got_voucher`=?,
           `arrival_date`=?,
           `planned_arrival_date`=?,
-          `planned_departure_date`=?
+          `planned_departure_date`=?,
+          `updated_microseconds`=?
           WHERE `UID`=?
         ',
         [
@@ -76,6 +77,7 @@ function User_update($user)
             $user['arrival_date'],
             $user['planned_arrival_date'],
             $user['planned_departure_date'],
+            time_microseconds(),
             $user['UID'],
         ]
     );
