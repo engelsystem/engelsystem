@@ -128,6 +128,7 @@ Shifts.db =
 
     delete_many_by_id: (tablename, idname, ids, done) ->
         Shifts.db.websql.transaction (t) ->
+            #Shifts.log "DELETE FROM #{tablename} WHERE #{idname} IN (#{ids.join(',')})"
             t.executeSql "DELETE FROM #{tablename} WHERE #{idname} IN (#{ids.join(',')})"
             done()
 

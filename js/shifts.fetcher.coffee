@@ -137,36 +137,69 @@ Shifts.fetcher =
 
                                         # insert rooms
                                         rooms = data.rooms
-                                        Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
+                                        ids = []
+                                        for r in rooms
+                                            ids.push r.RID
+                                        Shifts.db.delete_many_by_id 'Room', 'RID', ids, ->
+                                            Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
 
-                                            # insert angeltypes
-                                            angeltypes = data.angeltypes
-                                            Shifts.fetcher.process Shifts.db.insert_angeltype, angeltypes, ->
+                                                # insert angeltypes
+                                                angeltypes = data.angeltypes
+                                                ids = []
+                                                for a in angeltypes
+                                                    ids.push a.id
+                                                Shifts.db.delete_many_by_id 'AngelTypes', 'id', ids, ->
+                                                    Shifts.fetcher.process Shifts.db.insert_angeltype, angeltypes, ->
 
-                                                # insert shift_types
-                                                shift_types = data.shift_types
-                                                Shifts.fetcher.process Shifts.db.insert_shifttype, shift_types, ->
+                                                        # insert shift_types
+                                                        shift_types = data.shift_types
+                                                        ids = []
+                                                        for s in shift_types
+                                                            ids.push s.id
+                                                        Shifts.db.delete_many_by_id 'ShiftTypes', 'id', ids, ->
+                                                            Shifts.fetcher.process Shifts.db.insert_shifttype, shift_types, ->
 
-                                                    # insert users
-                                                    users = data.users
-                                                    Shifts.fetcher.process Shifts.db.insert_user, users, ->
+                                                                # insert users
+                                                                users = data.users
+                                                                ids = []
+                                                                for u in users
+                                                                    ids.push u.UID
+                                                                Shifts.db.delete_many_by_id 'User', 'UID', ids, ->
+                                                                    Shifts.fetcher.process Shifts.db.insert_user, users, ->
 
-                                                        # insert shifts
-                                                        shifts = data.shifts
-                                                        Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
+                                                                        # insert shifts
+                                                                        shifts = data.shifts
+                                                                        ids = []
+                                                                        for s in shifts
+                                                                            ids.push s.SID
+                                                                        Shifts.db.delete_many_by_id 'Shifts', 'SID', ids, ->
+                                                                            Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
 
-                                                            # insert needed_angeltypes
-                                                            needed_angeltypes = data.needed_angeltypes
-                                                            Shifts.fetcher.process Shifts.db.insert_needed_angeltype, needed_angeltypes, ->
+                                                                                # insert needed_angeltypes
+                                                                                needed_angeltypes = data.needed_angeltypes
+                                                                                ids = []
+                                                                                for n in needed_angeltypes
+                                                                                    ids.push n.id
+                                                                                Shifts.db.delete_many_by_id 'NeededAngelTypes', 'id', ids, ->
+                                                                                    Shifts.fetcher.process Shifts.db.insert_needed_angeltype, needed_angeltypes, ->
 
-                                                                # insert shift_entries
-                                                                shift_entries = data.shift_entries
-                                                                Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
+                                                                                        # insert shift_entries
+                                                                                        shift_entries = data.shift_entries
+                                                                                        ids = []
+                                                                                        for s in shift_entries
+                                                                                            ids.push s.id
+                                                                                        Shifts.db.delete_many_by_id 'ShiftEntry', 'id', ids, ->
+                                                                                            Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
 
-                                                                    if Shifts.fetcher.total_objects_count <= 0
-                                                                        done()
-                                                                    else
-                                                                        Shifts.fetcher.fetch_in_parts done
+                                                                                                if Shifts.fetcher.total_objects_count <= 0
+                                                                                                    done()
+                                                                                                else
+                                                                                                    Shifts.fetcher.fetch_in_parts done
+
+                                                                                                ###
+                                                                                                # Hottest point in callback-hell
+                                                                                                ###
+
 
     process: (processing_func, items_to_process, done) ->
         $ro = Shifts.$shiftplan.find('#remaining_objects')

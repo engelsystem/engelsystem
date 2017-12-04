@@ -1,3 +1,8 @@
+###
+# JavaScript-based Shiftplan solution using distributed WebSQL technology in the cloud -
+# empowering angels leveraging their visible return
+#
+###
 
 Shifts = window.Shifts || {}
 
