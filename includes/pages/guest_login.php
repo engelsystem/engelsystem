@@ -227,7 +227,7 @@ function guest_register()
                         `lastLogIn`,
                         `api_key`,
                         `got_voucher`,
-                        `updated_microtime`
+                        `updated_microseconds`
                     )
                     VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NULL, ?, FALSE, 0, "", 0, ?)
                 ',
