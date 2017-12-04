@@ -141,6 +141,9 @@ function admin_rooms()
                             time_microseconds(),
                             $room_id,
                         ]);
+                        if ($public != 'Y') {
+                            db_log_delete('room', $room_id);
+                        }
                         engelsystem_log(
                             'Room updated: ' . $name
                             . ', pentabarf import: ' . $from_pentabarf
