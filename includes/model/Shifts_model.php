@@ -570,7 +570,7 @@ function Shifts_for_websql($since, $deleted_lastid) {
   $shifts_count = DB::select("
       SELECT COUNT(SID) as count
       FROM Shifts
-      WHERE SID > ?
+      WHERE updated_microseconds > ?
       ",
       [
         $since['shifts']
@@ -583,10 +583,10 @@ function Shifts_for_websql($since, $deleted_lastid) {
 
     // fetch shifts
   $shifts = DB::select("
-      SELECT SID, title, shifttype_id, start, end, RID
+      SELECT SID, title, shifttype_id, start, end, RID, updated_microseconds
       FROM Shifts
-      WHERE SID > ?
-      ORDER BY SID ASC
+      WHERE updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
       LIMIT " . $limit . "
       ",
       [
@@ -603,7 +603,7 @@ function Shifts_for_websql($since, $deleted_lastid) {
   $shift_types_count = DB::select("
       SELECT COUNT(id) as count
       FROM ShiftTypes
-      WHERE id > ?
+      WHERE updated_microseconds > ?
       ",
       [
         $since['shift_types']
@@ -616,10 +616,10 @@ function Shifts_for_websql($since, $deleted_lastid) {
 
     // fetch shift types
   $shift_types = DB::select("
-      SELECT id, name, angeltype_id
+      SELECT id, name, angeltype_id, updated_microseconds
       FROM ShiftTypes
-      WHERE id > ?
-      ORDER BY id ASC
+      WHERE updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
       LIMIT " . $limit . "
       ",
       [
@@ -636,7 +636,7 @@ function Shifts_for_websql($since, $deleted_lastid) {
   $rooms_count = DB::select("
       SELECT COUNT(RID) as count
       FROM Room
-      WHERE RID > ?
+      WHERE updated_microseconds > ?
       ",
       [
         $since['rooms']
@@ -669,7 +669,7 @@ function Shifts_for_websql($since, $deleted_lastid) {
   $shift_entries_count = DB::select("
       SELECT COUNT(id) as count
       FROM ShiftEntry
-      WHERE id > ?
+      WHERE updated_microseconds > ?
       ",
       [
         $since['shift_entries']
@@ -682,10 +682,10 @@ function Shifts_for_websql($since, $deleted_lastid) {
 
     // fetch shift_entries
   $shift_entries = DB::select("
-      SELECT id, SID, TID, UID, freeloaded
+      SELECT id, SID, TID, UID, freeloaded, updated_microseconds
       FROM ShiftEntry
-      WHERE id > ?
-      ORDER BY id ASC
+      WHERE updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
       LIMIT " . $limit . "
       ",
       [
@@ -703,7 +703,7 @@ function Shifts_for_websql($since, $deleted_lastid) {
       SELECT COUNT(UID) as count
       FROM User
       WHERE Gekommen = '1'
-      AND UID > ?
+      AND updated_microseconds > ?
       ",
       [
         $since['users']
@@ -716,11 +716,11 @@ function Shifts_for_websql($since, $deleted_lastid) {
 
     // fetch users
   $users = DB::select("
-      SELECT UID, Nick
+      SELECT UID, Nick, updated_microseconds
       FROM User
       WHERE Gekommen = '1'
-      AND UID > ?
-      ORDER BY UID ASC
+      AND updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
       LIMIT " . $limit . "
       ",
       [
@@ -737,7 +737,7 @@ function Shifts_for_websql($since, $deleted_lastid) {
   $angeltypes_count = DB::select("
       SELECT COUNT(id) as count
       FROM AngelTypes
-      WHERE id > ?
+      WHERE updated_microseconds > ?
       ",
       [
         $since['angeltypes']
@@ -750,10 +750,10 @@ function Shifts_for_websql($since, $deleted_lastid) {
 
     // fetch angel types
   $angeltypes = DB::select("
-      SELECT id, name, restricted, no_self_signup
+      SELECT id, name, restricted, no_self_signup, updated_microseconds
       FROM AngelTypes
-      WHERE id > ?
-      ORDER BY id ASC
+      WHERE updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
       LIMIT " . $limit . "
       ",
       [
@@ -770,7 +770,7 @@ function Shifts_for_websql($since, $deleted_lastid) {
   $needed_angeltypes_count = DB::select("
       SELECT COUNT(id) as count
       FROM NeededAngelTypes
-      WHERE id > ?
+      WHERE updated_microseconds > ?
       ",
       [
         $since['needed_angeltypes']
@@ -783,10 +783,10 @@ function Shifts_for_websql($since, $deleted_lastid) {
 
     // fetch needed angel types
   $needed_angeltypes = DB::select("
-      SELECT id, room_id as RID, shift_id as SID, angel_type_id as ATID, count
+      SELECT id, room_id as RID, shift_id as SID, angel_type_id as ATID, count, updated_microseconds
       FROM NeededAngelTypes
-      WHERE id > ?
-      ORDER BY id ASC
+      WHERE updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
       LIMIT " . $limit . "
       ",
       [
@@ -847,31 +847,107 @@ function Shifts_for_websql($since, $deleted_lastid) {
   // --> decreased transfer size
   //
   // select in sql and delete in array later:
-  // --> minus one query
+  // --> minus one query to the mysql-server
+
+  // grab shift_types_lastupdate and clean array
+  $last = count($shift_types)-1;
+  if ($last > -1) {
+      $shift_types_lastupdate = $shift_types[$last]['updated_microseconds'];
+      foreach($shift_types as $k => $v) {
+        unset($shift_types[$k]['updated_microseconds']);
+      }
+  } else {
+      $shift_types_lastupdate = false;
+  }
+
+  // grab angeltypes_lastupdate and clean array
+  $last = count($angeltypes)-1;
+  if ($last > -1) {
+      $angeltypes_lastupdate = $angeltypes[$last]['updated_microseconds'];
+      foreach($angeltypes as $k => $v) {
+        unset($angeltypes[$k]['updated_microseconds']);
+      }
+  } else {
+      $angeltypes_lastupdate = false;
+  }
 
   // grab room_lastupdate and clean array
   $last = count($rooms)-1;
-  $rooms_lastupdate = $rooms[$last]['updated_microseconds'];
-  foreach($rooms as $k => $r) {
-    unset($rooms[$k]['updated_microseconds']);
+  if ($last > -1) {
+      $rooms_lastupdate = $rooms[$last]['updated_microseconds'];
+      foreach($rooms as $k => $v) {
+        unset($rooms[$k]['updated_microseconds']);
+      }
+  } else {
+      $rooms_lastupdate = false;
+  }
+
+  // grab users_lastupdate and clean array
+  $last = count($users)-1;
+  if ($last > -1) {
+      $users_lastupdate = $users[$last]['updated_microseconds'];
+      foreach($users as $k => $v) {
+        unset($users[$k]['updated_microseconds']);
+      }
+  } else {
+      $users_lastupdate = false;
+  }
+
+  // grab shift_entries_lastupdate and clean array
+  $last = count($shift_entries)-1;
+  if ($last > -1) {
+      $shift_entries_lastupdate = $shift_entries[$last]['updated_microseconds'];
+      foreach($shift_entries as $k => $v) {
+        unset($shift_entries[$k]['updated_microseconds']);
+      }
+  } else {
+      $shift_entries_lastupdate = false;
+  }
+
+  // grab shifts_lastupdate and clean array
+  $last = count($shifts)-1;
+  if ($last > -1) {
+      $shifts_lastupdate = $shifts[$last]['updated_microseconds'];
+      foreach($shifts as $k => $v) {
+        unset($shifts[$k]['updated_microseconds']);
+      }
+  } else {
+      $shifts_lastupdate = false;
+  }
+
+  // grab needed_angeltypes_lastupdate and clean array
+  $last = count($needed_angeltypes)-1;
+  if ($last > -1) {
+      $needed_angeltypes_lastupdate = $needed_angeltypes[$last]['updated_microseconds'];
+      foreach($needed_angeltypes as $k => $v) {
+        unset($needed_angeltypes[$k]['updated_microseconds']);
+      }
+  } else {
+      $needed_angeltypes_lastupdate = false;
   }
 
   $result = array(
     'shift_types' => $shift_types,
     'shift_types_total' => $shift_types_count,
+    'shift_types_lastupdate' => $shift_types_lastupdate,
     'angeltypes' => $angeltypes,
     'angeltypes_total' => $angeltypes_count,
+    'angeltypes_lastupdate' => $angeltypes_lastupdate,
     'rooms' => $rooms,
     'rooms_total' => $rooms_count,
     'rooms_lastupdate' => $rooms_lastupdate,
     'users' => $users,
     'users_total' => $users_count,
+    'users_lastupdate' => $users_lastupdate,
     'shift_entries' => $shift_entries,
     'shift_entries_total' => $shift_entries_count,
+    'shift_entries_lastupdate' => $shift_entries_lastupdate,
     'shifts' => $shifts,
     'shifts_total' => $shifts_count,
+    'shifts_lastupdate' => $shifts_lastupdate,
     'needed_angeltypes' => $needed_angeltypes,
     'needed_angeltypes_total' => $needed_angeltypes_count,
+    'needed_angeltypes_lastupdate' => $needed_angeltypes_lastupdate,
     'deleted_entries' => $deleted_entries_simplified,
     'deleted_entries_lastid' => $deleted_entries_lastid,
   );
