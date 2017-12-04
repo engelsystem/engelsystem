@@ -130,7 +130,8 @@ Shifts.fetcher =
                                             ids.push r.RID
                                         Shifts.db.delete_many_by_id 'Room', 'RID', ids, ->
                                             Shifts.fetcher.process Shifts.db.insert_room, rooms, ->
-                                                Shifts.db.set_option 'Room_lastupdate', data.rooms_lastupdate, ->
+                                                if data.rooms_lastupdate
+                                                    Shifts.db.set_option 'Room_lastupdate', data.rooms_lastupdate, ->
 
                                                 # insert angeltypes
                                                 angeltypes = data.angeltypes
@@ -139,7 +140,8 @@ Shifts.fetcher =
                                                     ids.push a.id
                                                 Shifts.db.delete_many_by_id 'AngelTypes', 'id', ids, ->
                                                     Shifts.fetcher.process Shifts.db.insert_angeltype, angeltypes, ->
-                                                        Shifts.db.set_option 'AngelTypes_lastupdate', data.angeltypes_lastupdate, ->
+                                                        if data.angeltypes_lastupdate
+                                                            Shifts.db.set_option 'AngelTypes_lastupdate', data.angeltypes_lastupdate, ->
 
                                                         # insert shift_types
                                                         shift_types = data.shift_types
@@ -148,7 +150,8 @@ Shifts.fetcher =
                                                             ids.push s.id
                                                         Shifts.db.delete_many_by_id 'ShiftTypes', 'id', ids, ->
                                                             Shifts.fetcher.process Shifts.db.insert_shifttype, shift_types, ->
-                                                                Shifts.db.set_option 'ShiftTypes_lastupdate', data.shift_types_lastupdate, ->
+                                                                if data.shift_types_lastupdate
+                                                                    Shifts.db.set_option 'ShiftTypes_lastupdate', data.shift_types_lastupdate, ->
 
                                                                 # insert users
                                                                 users = data.users
@@ -157,7 +160,8 @@ Shifts.fetcher =
                                                                     ids.push u.UID
                                                                 Shifts.db.delete_many_by_id 'User', 'UID', ids, ->
                                                                     Shifts.fetcher.process Shifts.db.insert_user, users, ->
-                                                                        Shifts.db.set_option 'User_lastupdate', data.users_lastupdate, ->
+                                                                        if data.users_lastupdate
+                                                                            Shifts.db.set_option 'User_lastupdate', data.users_lastupdate, ->
 
                                                                         # insert shifts
                                                                         shifts = data.shifts
@@ -166,7 +170,8 @@ Shifts.fetcher =
                                                                             ids.push s.SID
                                                                         Shifts.db.delete_many_by_id 'Shifts', 'SID', ids, ->
                                                                             Shifts.fetcher.process Shifts.db.insert_shift, shifts, ->
-                                                                                Shifts.db.set_option 'Shifts_lastupdate', data.shifts_lastupdate, ->
+                                                                                if data.shifts_lastupdate
+                                                                                    Shifts.db.set_option 'Shifts_lastupdate', data.shifts_lastupdate, ->
 
                                                                                 # insert needed_angeltypes
                                                                                 needed_angeltypes = data.needed_angeltypes
@@ -175,7 +180,8 @@ Shifts.fetcher =
                                                                                     ids.push n.id
                                                                                 Shifts.db.delete_many_by_id 'NeededAngelTypes', 'id', ids, ->
                                                                                     Shifts.fetcher.process Shifts.db.insert_needed_angeltype, needed_angeltypes, ->
-                                                                                        Shifts.db.set_option 'NeededAngelTypes_lastupdate', data.neededangeltypes_lastupdate, ->
+                                                                                        if data.needed_angeltypes_lastupdate
+                                                                                            Shifts.db.set_option 'NeededAngelTypes_lastupdate', data.needed_angeltypes_lastupdate, ->
 
                                                                                         # insert shift_entries
                                                                                         shift_entries = data.shift_entries
@@ -184,7 +190,8 @@ Shifts.fetcher =
                                                                                             ids.push s.id
                                                                                         Shifts.db.delete_many_by_id 'ShiftEntry', 'id', ids, ->
                                                                                             Shifts.fetcher.process Shifts.db.insert_shiftentry, shift_entries, ->
-                                                                                                Shifts.db.set_option 'ShiftEntry_lastupdate', data.shiftentries_lastupdate, ->
+                                                                                                if data.shift_entries_lastupdate
+                                                                                                    Shifts.db.set_option 'ShiftEntry_lastupdate', data.shift_entries_lastupdate, ->
 
                                                                                                 if Shifts.fetcher.total_objects_count <= 0
                                                                                                     done()
