@@ -268,7 +268,8 @@ function admin_user()
                       `Aktiv`= ?,
                       `force_active`= ?,
                       `Tshirt` = ?,
-                      `Hometown` = ?
+                      `Hometown` = ?,
+                      `updated_microseconds` = ?
                       WHERE `UID` = ?
                       LIMIT 1';
                 DB::update($sql, [
@@ -286,6 +287,7 @@ function admin_user()
                     $force_active,
                     $request->postData('eTshirt'),
                     $request->postData('Hometown'),
+                    time_microseconds(),
                     $user_id,
                 ]);
                 engelsystem_log(

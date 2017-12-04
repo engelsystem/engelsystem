@@ -29,10 +29,10 @@ function admin_arrive()
         if ($user_source != null) {
             DB::update('
                 UPDATE `User`
-                SET `Gekommen`=0, `arrival_date` = NULL
+                SET `Gekommen`=0, `arrival_date` = NULL, `updated_microseconds`=?
                 WHERE `UID`=?
                 LIMIT 1
-            ', [$user_id]);
+            ', [time_microseconds(), $user_id]);
             engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source));
             success(_('Reset done. Angel has not arrived.'));
             redirect(user_link($user_source));
@@ -45,10 +45,10 @@ function admin_arrive()
         if ($user_source != null) {
             DB::update('
                 UPDATE `User`
-                SET `Gekommen`=1, `arrival_date`=?
+                SET `Gekommen`=1, `arrival_date`=?, `updated_microseconds`=?
                 WHERE `UID`=?
                 LIMIT 1
-            ', [time(), $user_id]);
+            ', [time(), time_microseconds(), $user_id]);
             engelsystem_log('User set has arrived: ' . User_Nick_render($user_source));
             success(_('Angel has been marked as arrived.'));
             redirect(user_link($user_source));

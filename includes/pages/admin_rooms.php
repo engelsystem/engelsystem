@@ -129,7 +129,8 @@ function admin_rooms()
                                 `Name`=?,
                                 `FromPentabarf`=?,
                                 `show`=?,
-                                `Number`=?
+                                `Number`=?,
+                                `updated_microseconds`=?
                             WHERE `RID`=?
                             LIMIT 1
                         ', [
@@ -137,6 +138,7 @@ function admin_rooms()
                             $from_pentabarf,
                             $public,
                             $number,
+                            time_microseconds(),
                             $room_id,
                         ]);
                         engelsystem_log(
