@@ -82,4 +82,8 @@ $(function () {
         $("input[type='submit']").prop("readonly", true).addClass("disabled");
         return true;
     });
+    
+    $(".dropdown-menu").css("max-height", function() {
+      return ($(window).height() - 50) + "px";
+    }).css("overflow-y", "scroll");
 });

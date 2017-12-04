@@ -267,14 +267,14 @@ function User_ids()
 }
 
 /**
- * Strip unwanted characters from a users nick.
- *
+ * Strip unwanted characters from a users nick. Allowed are letters, numbers, connecting punctuation and simple space.
+ * Nick is trimmed.
  * @param string $nick
  * @return string
  */
 function User_validate_Nick($nick)
 {
-    return preg_replace('/([^\wüöäß. +*-]{1,})/ui', '', $nick);
+    return preg_replace('/([^\p{L}\p{N}-_ ]+)/ui', '', trim($nick));
 }
 
 /**

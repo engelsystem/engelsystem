@@ -76,7 +76,8 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
           todayBtn: "linked",
           format: "yyyy-mm-dd",
           startDate: "' . $start_date . '",
-          endDate: "' . $end_date . '"
+          endDate: "' . $end_date . '",
+          orientation: "bottom"
 			  });
       });
     </script>
