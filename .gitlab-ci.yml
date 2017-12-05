@@ -12,28 +12,35 @@ variables:
   MYSQL_USER: engel
   MYSQL_PASSWORD: engelsystem
   MYSQL_HOST: mariadb
-  COMPOSER_HOME: .composer
   MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+  COMPOSER_HOME: .composer
 
 before_script:
   # Fix permissions after gitlab messed them up
-  - find . -type f -exec chmod 644 {} \;
-  - find . -type d -exec chmod 755 {} \;
+  - &before_fix_permissions |-
+    find . -type f -exec chmod 644 {} \;
+    find . -type d -exec chmod 755 {} \;
   # Install required Packages
-  - apt update -yqq
-  - apt install -yqq git unzip mariadb-client
-  - docker-php-ext-install pdo pdo_mysql gettext
+  - &before_install_packages |-
+    apt update -yqq
+    apt install -yqq git unzip
+    docker-php-ext-install pdo pdo_mysql gettext
   # Install xdebug
-  - pecl install xdebug
-  - docker-php-ext-enable xdebug
+  - &before_install_xdebug |-
+    pecl install xdebug
+    docker-php-ext-enable xdebug
   # MySQL DB
-  - mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < db/install.sql
-  - mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < db/update.sql
+  - &before_setup_mysql |-
+    apt install -yqq mariadb-client
+    mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < db/install.sql
+    mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < db/update.sql
   # Install Composer
-  - curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
-  - /usr/local/bin/composer --no-ansi install
+  - &before_install_composer |-
+    curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
+    /usr/local/bin/composer --no-ansi install
 
 .test_template: &test_definition
+  stage: test
   artifacts:
     name: "${CI_JOB_NAME}_${CI_PROJECT_ID}_${PHP_VERSION}"
     expire_in: 1 week
@@ -43,49 +50,66 @@ before_script:
   script: vendor/bin/phpunit --colors=never --coverage-text --coverage-html ./coverage/
 
 test:7.0:
-  image: php:7.0
   <<: *test_definition
+  image: php:7.0
 
 test:7.1:
-  image: php:7.1
   <<: *test_definition
+  image: php:7.1
 
-deploy_staging:
+.deploy_template: &deploy_definition
+  services: []
   stage: deploy
   only:
   - master
+  before_script:
+    - *before_fix_permissions
+    - *before_install_packages
+    - *before_install_composer
+
+.deploy_template_script:
+  # Configure SSH
+  - &deployment_ssh |-
+    mkdir -p ~/.ssh
+    echo "$SSH_PRIVATE_KEY" | sed -e 's/\r//g' > ~/.ssh/id_ed25519
+    chmod 600 ~/.ssh/id_ed25519
+
+  # Install project and dependencies
+  - &deployment_dependencies |-
+    chmod +x ./deploy.sh
+    apt update && apt install -yqq rsync openssh-client
+    /usr/local/bin/composer --no-ansi install --no-dev
+    /usr/local/bin/composer --no-ansi dump-autoload --optimize
+
+deploy_staging:
+  <<: *deploy_definition
+  environment:
+    name: staging
   script:
+    # Check if deployment variables where set
     - |-
-      if [ -z "${SSH_PRIVATE_KEY}" ] || [ -z "${REMOTE}" ] || [ -z "${REMOTE_PATH}" ]; then
+      if [ -z "${SSH_PRIVATE_KEY}" ] || [ -z "${STAGING_REMOTE}" ] || [ -z "${STAGING_REMOTE_PATH}" ]; then
         echo "Skipping deployment";
         exit
       fi
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" | sed -e 's/\r//g' > ~/.ssh/id_ed25519
-    - chmod 600 ~/.ssh/id_ed25519
-    - apt update && apt install -yqq rsync openssh-client
-    - /usr/local/bin/composer --no-ansi install --no-dev
-    - /usr/local/bin/composer --no-ansi dump-autoload --optimize
-    - echo "syncing ${PWD}/ to ${REMOTE}:${REMOTE_PATH}/${CI_JOB_ID}-${CI_COMMIT_SHA}/"
+    - *deployment_ssh
+    - *deployment_dependencies
+    # Deploy to server
+    - ./deploy.sh -r "${STAGING_REMOTE}" -p "${STAGING_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"
+
+deploy_production:
+  <<: *deploy_definition
+  environment:
+    name: production
+  when: manual
+  script:
+    # Check if deployment variables where set
     - |-
-      rsync -vAax --exclude '.git*' --exclude .composer/ \
-        -e "ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
-        ./ "${REMOTE}:${REMOTE_PATH}/${CI_JOB_ID}-${CI_COMMIT_SHA}/"
-    - |-
-      ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "${REMOTE}" "
-        set -e
-
-        if [[ -f \"${REMOTE_PATH}/current/config/config.php\" ]]; then
-          echo \"Config backup\"
-          cp \"${REMOTE_PATH}/current/config/config.php\" config.php
-        fi
-
-        echo \"Changing symlink\"
-        unlink \"${REMOTE_PATH}/current\"
-        ln -s \"${REMOTE_PATH}/${CI_JOB_ID}-${CI_COMMIT_SHA}\" \"${REMOTE_PATH}/current\"
-
-        if [[ -f config.php ]]; then
-          echo \"Restoring config\"
-          cp  config.php \"${REMOTE_PATH}/current/config/config.php\"
-        fi
-      "
+      if [ -z "${SSH_PRIVATE_KEY}" ] || [ -z "${PRODUCTION_REMOTE}" ] || [ -z "${PRODUCTION_REMOTE_PATH}" ]; then
+        echo "Skipping deployment";
+        exit
+      fi
+    - *deployment_ssh
+    - *deployment_dependencies
+    # Deploy to server
+    - ./deploy.sh -r "${PRODUCTION_REMOTE}" -p "${PRODUCTION_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"
