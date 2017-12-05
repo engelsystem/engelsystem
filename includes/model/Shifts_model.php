@@ -800,17 +800,34 @@ function Shifts_for_websql($since, $deleted_lastid) {
   }
 
     // fetch deleted entries
-  $all_deleted_entries = DB::select("
-      SELECT id, tablename, entry_id
-      FROM DeleteLog
-      WHERE id > ?
-      ORDER BY id ASC
-      LIMIT " . $limit . "
-      ",
-      [
-        $deleted_lastid
-      ]
-  );
+    // if this is the first fetch (lastid=0), then fetch all entries from now - we don't have to do vergangenheitsbewältigung
+    if ($deleted_lastid == 0) {
+      $all_deleted_entries = DB::select("
+          SELECT id, tablename, entry_id
+          FROM DeleteLog
+          WHERE updated_microseconds > ?
+          ORDER BY id ASC
+          LIMIT " . $limit . "
+          ",
+          [
+            time()
+          ]
+      );
+
+    } else {
+
+      $all_deleted_entries = DB::select("
+          SELECT id, tablename, entry_id
+          FROM DeleteLog
+          WHERE id > ?
+          ORDER BY id ASC
+          LIMIT " . $limit . "
+          ",
+          [
+            $deleted_lastid
+          ]
+      );
+    }
   if ($all_deleted_entries === false) {
     engelsystem_error('Unable to load websql deleted_entries.');
   }
