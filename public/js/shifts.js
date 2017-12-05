@@ -114,13 +114,17 @@ Shifts.db = {
     return arr;
   },
   populate_ids: function(done) {
+    var prefill_all_rooms;
+    prefill_all_rooms = Shifts.interaction.selected_rooms.length === 0;
     return Shifts.db.websql.transaction(function(t) {
       return t.executeSql('SELECT RID from Room', [], function(t, res) {
         var i, j, k, len, len1, r, ref, user_angeltypes, user_id, v;
-        ref = res.rows;
-        for (i = 0, len = ref.length; i < len; i++) {
-          r = ref[i];
-          Shifts.interaction.selected_rooms.push(r.RID);
+        if (prefill_all_rooms) {
+          ref = res.rows;
+          for (i = 0, len = ref.length; i < len; i++) {
+            r = ref[i];
+            Shifts.interaction.selected_rooms.push(r.RID);
+          }
         }
         user_id = parseInt($('#shiftplan').data('user_id'), 10);
         Shifts.db.current_user.id = user_id;
@@ -130,7 +134,7 @@ Shifts.db = {
           user_angeltypes[k] = parseInt(v, 10);
         }
         Shifts.db.current_user.angeltypes = user_angeltypes;
-        Shifts.interaction.selected_angeltypes = user_angeltypes;
+        $.extend(Shifts.interaction.selected_angeltypes, user_angeltypes);
         return t.executeSql('SELECT UID FROM User WHERE UID = ?', [user_id], function(t, res) {
           Shifts.db.current_user.arrived = res.rows.length > 0;
           return done();
@@ -184,9 +188,7 @@ Shifts.db = {
     angeltype.restricted = parseInt(angeltype.restricted, 10);
     angeltype.no_self_signup = parseInt(angeltype.no_self_signup, 10);
     return Shifts.db.websql.transaction(function(t) {
-      t.executeSql('INSERT INTO AngelTypes (id, name, restricted, no_self_signup) VALUES (?, ?, ?, ?)', [angeltype.id, angeltype.name, angeltype.restricted, angeltype.no_self_signup], function() {
-        return Shifts.interaction.selected_angeltypes.push(angeltype.id);
-      });
+      t.executeSql('INSERT INTO AngelTypes (id, name, restricted, no_self_signup) VALUES (?, ?, ?, ?)', [angeltype.id, angeltype.name, angeltype.restricted, angeltype.no_self_signup], function() {});
       return done();
     });
   },
@@ -411,126 +413,115 @@ Shifts.fetcher = {
                   Shifts.interaction.selected_rooms.push(parseInt(r, 10));
                 }
               }
-              return Shifts.db.get_option('filter_selected_angeltypes', function(res) {
-                var a, l, len2, ref1;
+              return Shifts.db.get_option('filter_occupancy', function(res) {
                 if (res) {
-                  Shifts.interaction.selected_angeltypes = [];
-                  ref1 = res.split(',');
-                  for (l = 0, len2 = ref1.length; l < len2; l++) {
-                    a = ref1[l];
-                    Shifts.interaction.selected_angeltypes.push(parseInt(a, 10));
-                  }
+                  Shifts.interaction.occupancy = res;
                 }
-                return Shifts.db.get_option('filter_occupancy', function(res) {
+                return Shifts.db.get_option('rendering_time', function(res) {
+                  var deleted_entries, deleted_entries_lastid;
                   if (res) {
-                    Shifts.interaction.occupancy = res;
+                    Shifts.render.rendering_time = parseInt(res, 10);
+                  } else {
+                    Shifts.render.rendering_time = 2000;
                   }
-                  return Shifts.db.get_option('rendering_time', function(res) {
-                    var deleted_entries, deleted_entries_lastid;
-                    if (res) {
-                      Shifts.render.rendering_time = parseInt(res, 10);
-                    } else {
-                      Shifts.render.rendering_time = 2000;
+                  deleted_entries = data.deleted_entries;
+                  deleted_entries_lastid = data.deleted_entries_lastid;
+                  return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_entries_lastid, function() {
+                    var ids, l, len2, rooms;
+                    rooms = data.rooms;
+                    ids = [];
+                    for (l = 0, len2 = rooms.length; l < len2; l++) {
+                      r = rooms[l];
+                      ids.push(r.RID);
                     }
-                    deleted_entries = data.deleted_entries;
-                    deleted_entries_lastid = data.deleted_entries_lastid;
-                    return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_entries_lastid, function() {
-                      var ids, len3, m, rooms;
-                      rooms = data.rooms;
-                      ids = [];
-                      for (m = 0, len3 = rooms.length; m < len3; m++) {
-                        r = rooms[m];
-                        ids.push(r.RID);
-                      }
-                      return Shifts.db.delete_many_by_id('Room', 'RID', ids, function() {
-                        return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
-                          var angeltypes, len4, p;
-                          if (data.rooms_lastupdate) {
-                            Shifts.db.set_option('Room_lastupdate', data.rooms_lastupdate, function() {});
-                          }
-                          angeltypes = data.angeltypes;
-                          ids = [];
-                          for (p = 0, len4 = angeltypes.length; p < len4; p++) {
-                            a = angeltypes[p];
-                            ids.push(a.id);
-                          }
-                          return Shifts.db.delete_many_by_id('AngelTypes', 'id', ids, function() {
-                            return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
-                              var len5, q, s, shift_types;
-                              if (data.angeltypes_lastupdate) {
-                                Shifts.db.set_option('AngelTypes_lastupdate', data.angeltypes_lastupdate, function() {});
-                              }
-                              shift_types = data.shift_types;
-                              ids = [];
-                              for (q = 0, len5 = shift_types.length; q < len5; q++) {
-                                s = shift_types[q];
-                                ids.push(s.id);
-                              }
-                              return Shifts.db.delete_many_by_id('ShiftTypes', 'id', ids, function() {
-                                return Shifts.fetcher.process(Shifts.db.insert_shifttype, shift_types, function() {
-                                  var len6, u, users, w;
-                                  if (data.shift_types_lastupdate) {
-                                    Shifts.db.set_option('ShiftTypes_lastupdate', data.shift_types_lastupdate, function() {});
-                                  }
-                                  users = data.users;
-                                  ids = [];
-                                  for (w = 0, len6 = users.length; w < len6; w++) {
-                                    u = users[w];
-                                    ids.push(u.UID);
-                                  }
-                                  return Shifts.db.delete_many_by_id('User', 'UID', ids, function() {
-                                    return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
-                                      var len7, shifts, x;
-                                      if (data.users_lastupdate) {
-                                        Shifts.db.set_option('User_lastupdate', data.users_lastupdate, function() {});
-                                      }
-                                      shifts = data.shifts;
-                                      ids = [];
-                                      for (x = 0, len7 = shifts.length; x < len7; x++) {
-                                        s = shifts[x];
-                                        ids.push(s.SID);
-                                      }
-                                      return Shifts.db.delete_many_by_id('Shifts', 'SID', ids, function() {
-                                        return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
-                                          var len8, n, needed_angeltypes, y;
-                                          if (data.shifts_lastupdate) {
-                                            Shifts.db.set_option('Shifts_lastupdate', data.shifts_lastupdate, function() {});
-                                          }
-                                          needed_angeltypes = data.needed_angeltypes;
-                                          ids = [];
-                                          for (y = 0, len8 = needed_angeltypes.length; y < len8; y++) {
-                                            n = needed_angeltypes[y];
-                                            ids.push(n.id);
-                                          }
-                                          return Shifts.db.delete_many_by_id('NeededAngelTypes', 'id', ids, function() {
-                                            return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
-                                              var len9, shift_entries, z;
-                                              if (data.needed_angeltypes_lastupdate) {
-                                                Shifts.db.set_option('NeededAngelTypes_lastupdate', data.needed_angeltypes_lastupdate, function() {});
-                                              }
-                                              shift_entries = data.shift_entries;
-                                              ids = [];
-                                              for (z = 0, len9 = shift_entries.length; z < len9; z++) {
-                                                s = shift_entries[z];
-                                                ids.push(s.id);
-                                              }
-                                              return Shifts.db.delete_many_by_id('ShiftEntry', 'id', ids, function() {
-                                                return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
-                                                  if (data.shift_entries_lastupdate) {
-                                                    Shifts.db.set_option('ShiftEntry_lastupdate', data.shift_entries_lastupdate, function() {});
-                                                  }
-                                                  if (Shifts.fetcher.total_objects_count <= 0) {
-                                                    return done();
-                                                  } else {
-                                                    return setTimeout(function() {
-                                                      return Shifts.fetcher.fetch_in_parts(done);
-                                                    }, 20);
-                                                  }
+                    return Shifts.db.delete_many_by_id('Room', 'RID', ids, function() {
+                      return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
+                        var a, angeltypes, len3, m;
+                        if (data.rooms_lastupdate) {
+                          Shifts.db.set_option('Room_lastupdate', data.rooms_lastupdate, function() {});
+                        }
+                        angeltypes = data.angeltypes;
+                        ids = [];
+                        for (m = 0, len3 = angeltypes.length; m < len3; m++) {
+                          a = angeltypes[m];
+                          ids.push(a.id);
+                        }
+                        return Shifts.db.delete_many_by_id('AngelTypes', 'id', ids, function() {
+                          return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
+                            var len4, p, s, shift_types;
+                            if (data.angeltypes_lastupdate) {
+                              Shifts.db.set_option('AngelTypes_lastupdate', data.angeltypes_lastupdate, function() {});
+                            }
+                            shift_types = data.shift_types;
+                            ids = [];
+                            for (p = 0, len4 = shift_types.length; p < len4; p++) {
+                              s = shift_types[p];
+                              ids.push(s.id);
+                            }
+                            return Shifts.db.delete_many_by_id('ShiftTypes', 'id', ids, function() {
+                              return Shifts.fetcher.process(Shifts.db.insert_shifttype, shift_types, function() {
+                                var len5, q, u, users;
+                                if (data.shift_types_lastupdate) {
+                                  Shifts.db.set_option('ShiftTypes_lastupdate', data.shift_types_lastupdate, function() {});
+                                }
+                                users = data.users;
+                                ids = [];
+                                for (q = 0, len5 = users.length; q < len5; q++) {
+                                  u = users[q];
+                                  ids.push(u.UID);
+                                }
+                                return Shifts.db.delete_many_by_id('User', 'UID', ids, function() {
+                                  return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
+                                    var len6, shifts, w;
+                                    if (data.users_lastupdate) {
+                                      Shifts.db.set_option('User_lastupdate', data.users_lastupdate, function() {});
+                                    }
+                                    shifts = data.shifts;
+                                    ids = [];
+                                    for (w = 0, len6 = shifts.length; w < len6; w++) {
+                                      s = shifts[w];
+                                      ids.push(s.SID);
+                                    }
+                                    return Shifts.db.delete_many_by_id('Shifts', 'SID', ids, function() {
+                                      return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
+                                        var len7, n, needed_angeltypes, x;
+                                        if (data.shifts_lastupdate) {
+                                          Shifts.db.set_option('Shifts_lastupdate', data.shifts_lastupdate, function() {});
+                                        }
+                                        needed_angeltypes = data.needed_angeltypes;
+                                        ids = [];
+                                        for (x = 0, len7 = needed_angeltypes.length; x < len7; x++) {
+                                          n = needed_angeltypes[x];
+                                          ids.push(n.id);
+                                        }
+                                        return Shifts.db.delete_many_by_id('NeededAngelTypes', 'id', ids, function() {
+                                          return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
+                                            var len8, shift_entries, y;
+                                            if (data.needed_angeltypes_lastupdate) {
+                                              Shifts.db.set_option('NeededAngelTypes_lastupdate', data.needed_angeltypes_lastupdate, function() {});
+                                            }
+                                            shift_entries = data.shift_entries;
+                                            ids = [];
+                                            for (y = 0, len8 = shift_entries.length; y < len8; y++) {
+                                              s = shift_entries[y];
+                                              ids.push(s.id);
+                                            }
+                                            return Shifts.db.delete_many_by_id('ShiftEntry', 'id', ids, function() {
+                                              return Shifts.fetcher.process(Shifts.db.insert_shiftentry, shift_entries, function() {
+                                                if (data.shift_entries_lastupdate) {
+                                                  Shifts.db.set_option('ShiftEntry_lastupdate', data.shift_entries_lastupdate, function() {});
+                                                }
+                                                if (Shifts.fetcher.total_objects_count <= 0) {
+                                                  return done();
+                                                } else {
+                                                  return setTimeout(function() {
+                                                    return Shifts.fetcher.fetch_in_parts(done);
+                                                  }, 20);
+                                                }
 
-                                                  /*
-                                                   * Hottest point in callback-hell
-                                                   */
-                                                });
+                                                /*
+                                                 * Hottest point in callback-hell
+                                                 */
                                               });
                                             });
                                           });

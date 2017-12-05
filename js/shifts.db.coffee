@@ -42,11 +42,13 @@ Shifts.db =
 
     populate_ids: (done) ->
         # rooms
+        prefill_all_rooms = Shifts.interaction.selected_rooms.length == 0
         Shifts.db.websql.transaction (t) ->
             t.executeSql 'SELECT RID from Room', [], (t, res) ->
-                for r in res.rows
-                    # populate select filter
-                    Shifts.interaction.selected_rooms.push r.RID
+                if prefill_all_rooms
+                    for r in res.rows
+                        # populate select filter
+                        Shifts.interaction.selected_rooms.push r.RID
 
                 # user
                 user_id = parseInt $('#shiftplan').data('user_id'), 10
@@ -59,7 +61,7 @@ Shifts.db =
                 Shifts.db.current_user.angeltypes = user_angeltypes
 
                 # populate select filter
-                Shifts.interaction.selected_angeltypes = user_angeltypes
+                $.extend Shifts.interaction.selected_angeltypes, user_angeltypes
 
                 # store arrived status
                 t.executeSql 'SELECT UID FROM User WHERE UID = ?', [user_id], (t, res) ->
@@ -110,8 +112,6 @@ Shifts.db =
         angeltype.no_self_signup = parseInt angeltype.no_self_signup, 10
         Shifts.db.websql.transaction (t) ->
             t.executeSql 'INSERT INTO AngelTypes (id, name, restricted, no_self_signup) VALUES (?, ?, ?, ?)', [angeltype.id, angeltype.name, angeltype.restricted, angeltype.no_self_signup], ->
-                # populate select filter
-                Shifts.interaction.selected_angeltypes.push angeltype.id
             done()
 
     insert_needed_angeltype: (needed_angeltype, done) ->
