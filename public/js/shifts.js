@@ -116,31 +116,24 @@ Shifts.db = {
   populate_ids: function(done) {
     return Shifts.db.websql.transaction(function(t) {
       return t.executeSql('SELECT RID from Room', [], function(t, res) {
-        var i, len, r, ref;
+        var i, j, k, len, len1, r, ref, user_angeltypes, user_id, v;
         ref = res.rows;
         for (i = 0, len = ref.length; i < len; i++) {
           r = ref[i];
           Shifts.interaction.selected_rooms.push(r.RID);
         }
-        return t.executeSql('SELECT id from AngelTypes', [], function(t, res) {
-          var a, j, k, l, len1, len2, ref1, user_angeltypes, user_id, v;
-          ref1 = res.rows;
-          for (j = 0, len1 = ref1.length; j < len1; j++) {
-            a = ref1[j];
-            Shifts.interaction.selected_angeltypes.push(a.id);
-          }
-          user_id = parseInt($('#shiftplan').data('user_id'), 10);
-          Shifts.db.current_user.id = user_id;
-          user_angeltypes = $('#shiftplan').data('user_angeltypes').split(',');
-          for (k = l = 0, len2 = user_angeltypes.length; l < len2; k = ++l) {
-            v = user_angeltypes[k];
-            user_angeltypes[k] = parseInt(v, 10);
-          }
-          Shifts.db.current_user.angeltypes = user_angeltypes;
-          return t.executeSql('SELECT UID FROM User WHERE UID = ?', [user_id], function(t, res) {
-            Shifts.db.current_user.arrived = res.rows.length > 0;
-            return done();
-          });
+        user_id = parseInt($('#shiftplan').data('user_id'), 10);
+        Shifts.db.current_user.id = user_id;
+        user_angeltypes = $('#shiftplan').data('user_angeltypes').split(',');
+        for (k = j = 0, len1 = user_angeltypes.length; j < len1; k = ++j) {
+          v = user_angeltypes[k];
+          user_angeltypes[k] = parseInt(v, 10);
+        }
+        Shifts.db.current_user.angeltypes = user_angeltypes;
+        Shifts.interaction.selected_angeltypes = user_angeltypes;
+        return t.executeSql('SELECT UID FROM User WHERE UID = ?', [user_id], function(t, res) {
+          Shifts.db.current_user.arrived = res.rows.length > 0;
+          return done();
         });
       });
     });
