@@ -55,9 +55,10 @@ Shifts.db =
                 Shifts.db.current_user.id = user_id
 
                 # user's angeltypes
-                user_angeltypes = $('#shiftplan').data('user_angeltypes').split(',')
-                for v, k in user_angeltypes
-                    user_angeltypes[k] = parseInt v, 10
+                user_angeltypes_text = $('#shiftplan').data('user_angeltypes') + '' # ensure its text
+                user_angeltypes = []
+                for a in user_angeltypes_text.split(',')
+                    user_angeltypes.push parseInt(a, 10)
                 Shifts.db.current_user.angeltypes = user_angeltypes
 
                 # populate select filter

@@ -118,7 +118,7 @@ Shifts.db = {
     prefill_all_rooms = Shifts.interaction.selected_rooms.length === 0;
     return Shifts.db.websql.transaction(function(t) {
       return t.executeSql('SELECT RID from Room', [], function(t, res) {
-        var i, j, k, len, len1, r, ref, user_angeltypes, user_id, v;
+        var a, i, j, len, len1, r, ref, ref1, user_angeltypes, user_angeltypes_text, user_id;
         if (prefill_all_rooms) {
           ref = res.rows;
           for (i = 0, len = ref.length; i < len; i++) {
@@ -128,10 +128,12 @@ Shifts.db = {
         }
         user_id = parseInt($('#shiftplan').data('user_id'), 10);
         Shifts.db.current_user.id = user_id;
-        user_angeltypes = $('#shiftplan').data('user_angeltypes').split(',');
-        for (k = j = 0, len1 = user_angeltypes.length; j < len1; k = ++j) {
-          v = user_angeltypes[k];
-          user_angeltypes[k] = parseInt(v, 10);
+        user_angeltypes_text = $('#shiftplan').data('user_angeltypes') + '';
+        user_angeltypes = [];
+        ref1 = user_angeltypes_text.split(',');
+        for (j = 0, len1 = ref1.length; j < len1; j++) {
+          a = ref1[j];
+          user_angeltypes.push(parseInt(a, 10));
         }
         Shifts.db.current_user.angeltypes = user_angeltypes;
         $.extend(Shifts.interaction.selected_angeltypes, user_angeltypes);
@@ -427,83 +429,83 @@ Shifts.fetcher = {
                   deleted_entries = data.deleted_entries;
                   deleted_entries_lastid = data.deleted_entries_lastid;
                   return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_entries_lastid, function() {
-                    var ids, l, len2, rooms;
+                    var ids, k, len2, rooms;
                     rooms = data.rooms;
                     ids = [];
-                    for (l = 0, len2 = rooms.length; l < len2; l++) {
-                      r = rooms[l];
+                    for (k = 0, len2 = rooms.length; k < len2; k++) {
+                      r = rooms[k];
                       ids.push(r.RID);
                     }
                     return Shifts.db.delete_many_by_id('Room', 'RID', ids, function() {
                       return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
-                        var a, angeltypes, len3, m;
+                        var a, angeltypes, l, len3;
                         if (data.rooms_lastupdate) {
                           Shifts.db.set_option('Room_lastupdate', data.rooms_lastupdate, function() {});
                         }
                         angeltypes = data.angeltypes;
                         ids = [];
-                        for (m = 0, len3 = angeltypes.length; m < len3; m++) {
-                          a = angeltypes[m];
+                        for (l = 0, len3 = angeltypes.length; l < len3; l++) {
+                          a = angeltypes[l];
                           ids.push(a.id);
                         }
                         return Shifts.db.delete_many_by_id('AngelTypes', 'id', ids, function() {
                           return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
-                            var len4, p, s, shift_types;
+                            var len4, m, s, shift_types;
                             if (data.angeltypes_lastupdate) {
                               Shifts.db.set_option('AngelTypes_lastupdate', data.angeltypes_lastupdate, function() {});
                             }
                             shift_types = data.shift_types;
                             ids = [];
-                            for (p = 0, len4 = shift_types.length; p < len4; p++) {
-                              s = shift_types[p];
+                            for (m = 0, len4 = shift_types.length; m < len4; m++) {
+                              s = shift_types[m];
                               ids.push(s.id);
                             }
                             return Shifts.db.delete_many_by_id('ShiftTypes', 'id', ids, function() {
                               return Shifts.fetcher.process(Shifts.db.insert_shifttype, shift_types, function() {
-                                var len5, q, u, users;
+                                var len5, p, u, users;
                                 if (data.shift_types_lastupdate) {
                                   Shifts.db.set_option('ShiftTypes_lastupdate', data.shift_types_lastupdate, function() {});
                                 }
                                 users = data.users;
                                 ids = [];
-                                for (q = 0, len5 = users.length; q < len5; q++) {
-                                  u = users[q];
+                                for (p = 0, len5 = users.length; p < len5; p++) {
+                                  u = users[p];
                                   ids.push(u.UID);
                                 }
                                 return Shifts.db.delete_many_by_id('User', 'UID', ids, function() {
                                   return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
-                                    var len6, shifts, w;
+                                    var len6, q, shifts;
                                     if (data.users_lastupdate) {
                                       Shifts.db.set_option('User_lastupdate', data.users_lastupdate, function() {});
                                     }
                                     shifts = data.shifts;
                                     ids = [];
-                                    for (w = 0, len6 = shifts.length; w < len6; w++) {
-                                      s = shifts[w];
+                                    for (q = 0, len6 = shifts.length; q < len6; q++) {
+                                      s = shifts[q];
                                       ids.push(s.SID);
                                     }
                                     return Shifts.db.delete_many_by_id('Shifts', 'SID', ids, function() {
                                       return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
-                                        var len7, n, needed_angeltypes, x;
+                                        var len7, n, needed_angeltypes, v;
                                         if (data.shifts_lastupdate) {
                                           Shifts.db.set_option('Shifts_lastupdate', data.shifts_lastupdate, function() {});
                                         }
                                         needed_angeltypes = data.needed_angeltypes;
                                         ids = [];
-                                        for (x = 0, len7 = needed_angeltypes.length; x < len7; x++) {
-                                          n = needed_angeltypes[x];
+                                        for (v = 0, len7 = needed_angeltypes.length; v < len7; v++) {
+                                          n = needed_angeltypes[v];
                                           ids.push(n.id);
                                         }
                                         return Shifts.db.delete_many_by_id('NeededAngelTypes', 'id', ids, function() {
                                           return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
-                                            var len8, shift_entries, y;
+                                            var len8, shift_entries, w;
                                             if (data.needed_angeltypes_lastupdate) {
                                               Shifts.db.set_option('NeededAngelTypes_lastupdate', data.needed_angeltypes_lastupdate, function() {});
                                             }
                                             shift_entries = data.shift_entries;
                                             ids = [];
-                                            for (y = 0, len8 = shift_entries.length; y < len8; y++) {
-                                              s = shift_entries[y];
+                                            for (w = 0, len8 = shift_entries.length; w < len8; w++) {
+                                              s = shift_entries[w];
                                               ids.push(s.id);
                                             }
                                             return Shifts.db.delete_many_by_id('ShiftEntry', 'id', ids, function() {
@@ -670,7 +672,7 @@ Shifts.interaction = {
   },
   on_mass_select: function() {
     return Shifts.$shiftplan.on('click', '.mass-select a', function(ev) {
-      var $all, $free, i, j, l, len, len1, len2, len3, m, ref, ref1, ref2, ref3, room, type;
+      var $all, $free, i, j, k, l, len, len1, len2, len3, ref, ref1, ref2, ref3, room, type;
       if ($(this).parents('#selection_rooms').length) {
         if ($(ev.target).attr('href') === '#all') {
           ref = $('#selection_rooms input');
@@ -694,8 +696,8 @@ Shifts.interaction = {
       if ($(this).parents('#selection_types').length) {
         if ($(ev.target).attr('href') === '#all') {
           ref2 = $('#selection_types input');
-          for (l = 0, len2 = ref2.length; l < len2; l++) {
-            type = ref2[l];
+          for (k = 0, len2 = ref2.length; k < len2; k++) {
+            type = ref2[k];
             $(type).prop('checked', true);
             Shifts.interaction.selected_angeltypes.push(parseInt(type.value, 10));
           }
@@ -703,8 +705,8 @@ Shifts.interaction = {
         }
         if ($(ev.target).attr('href') === '#none') {
           ref3 = $('#selection_types input');
-          for (m = 0, len3 = ref3.length; m < len3; m++) {
-            type = ref3[m];
+          for (l = 0, len3 = ref3.length; l < len3; l++) {
+            type = ref3[l];
             $(type).prop('checked', false);
           }
           Shifts.interaction.selected_angeltypes = [];
@@ -916,7 +918,7 @@ Shifts.render = {
     });
   },
   shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts) {
-    var add_shift, atn, build_shiftentry, calculate_signup_state, calculate_state_class, end_time, end_timestamp, entry_exists, firstblock_starttime, highest_lane_nr, i, j, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, m, mustache_rooms, ref, rendered_until, room_id, room_nr, s, se, shift, shift_added, shift_calendar, shift_fits, shift_nr, shiftentries, shiftentry, shifts_count, start_time, thistime, time_slot, user_angeltypes;
+    var add_shift, atn, build_shiftentry, calculate_signup_state, calculate_state_class, end_time, end_timestamp, entry_exists, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, mustache_rooms, ref, rendered_until, room_id, room_nr, s, se, shift, shift_added, shift_calendar, shift_fits, shift_nr, shiftentries, shiftentry, shifts_count, start_time, thistime, time_slot, user_angeltypes;
     lanes = {};
     shiftentries = {};
     user_angeltypes = Shifts.db.current_user.angeltypes;
@@ -1003,9 +1005,9 @@ Shifts.render = {
       return false;
     };
     calculate_signup_state = function(shift) {
-      var angels_needed, at, l, len2, len3, len4, m, now_unix, p, ref, u;
-      for (l = 0, len2 = db_usershifts.length; l < len2; l++) {
-        u = db_usershifts[l];
+      var angels_needed, at, k, l, len2, len3, len4, m, now_unix, ref, u;
+      for (k = 0, len2 = db_usershifts.length; k < len2; k++) {
+        u = db_usershifts[k];
         if (u.SID === shift.SID) {
           return 'signed_up';
         }
@@ -1016,8 +1018,8 @@ Shifts.render = {
       }
       angels_needed = 0;
       ref = shift.angeltypes;
-      for (m = 0, len3 = ref.length; m < len3; m++) {
-        at = ref[m];
+      for (l = 0, len3 = ref.length; l < len3; l++) {
+        at = ref[l];
         angels_needed = angels_needed + at.angels_needed;
       }
       if (angels_needed === 0) {
@@ -1026,8 +1028,8 @@ Shifts.render = {
       if (Shifts.db.current_user.arrived === false) {
         return 'shift_ended';
       }
-      for (p = 0, len4 = db_usershifts.length; p < len4; p++) {
-        u = db_usershifts[p];
+      for (m = 0, len4 = db_usershifts.length; m < len4; m++) {
+        u = db_usershifts[m];
         if (u.SID !== shift.SID) {
           if (!(shift.start_time >= u.end_time || shift.end_time <= u.start_time)) {
             return 'collides';
@@ -1055,10 +1057,10 @@ Shifts.render = {
       }
     };
     shift_fits = function(shift, room_id, lane_nr) {
-      var l, lane_shift, len2, ref;
+      var k, lane_shift, len2, ref;
       ref = lanes[room_id][lane_nr];
-      for (l = 0, len2 = ref.length; l < len2; l++) {
-        lane_shift = ref[l];
+      for (k = 0, len2 = ref.length; k < len2; k++) {
+        lane_shift = ref[k];
         if (!(shift.start_time >= lane_shift.end_time || shift.end_time <= lane_shift.start_time)) {
           return false;
         }
@@ -1069,8 +1071,8 @@ Shifts.render = {
     end_time = Shifts.render.get_endtime(true);
     firstblock_starttime = end_time;
     lastblock_endtime = start_time;
-    for (l = 0, len2 = db_shifts.length; l < len2; l++) {
-      shift = db_shifts[l];
+    for (k = 0, len2 = db_shifts.length; k < len2; k++) {
+      shift = db_shifts[k];
       if (shift.start_time < firstblock_starttime) {
         firstblock_starttime = shift.start_time;
       }
@@ -1083,8 +1085,8 @@ Shifts.render = {
       }
       shift_added = false;
       ref = lanes[room_id];
-      for (m = 0, len3 = ref.length; m < len3; m++) {
-        lane = ref[m];
+      for (l = 0, len3 = ref.length; l < len3; l++) {
+        lane = ref[l];
         shift_added = add_shift(shift, room_id);
         if (shift_added) {
           break;
