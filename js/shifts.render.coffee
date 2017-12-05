@@ -151,11 +151,14 @@ Shifts.render =
         lanes = {}
         shiftentries = {}
 
+        user_angeltypes = Shifts.db.current_user.angeltypes
+
         build_shiftentry = (atn) ->
             se =
                 TID: atn.angel_type_id
                 at_name: atn.name
                 restricted: if atn.restricted == 1 then true else false
+                confirmed: atn.angel_type_id in user_angeltypes
                 no_self_signup: if atn.no_self_signup == 1 then true else false
                 angels: []
                 angels_needed: atn.angel_count

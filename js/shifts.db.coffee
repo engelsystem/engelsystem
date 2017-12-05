@@ -57,16 +57,18 @@ Shifts.db =
 
                     # user
                     user_id = parseInt $('#shiftplan').data('user_id'), 10
-
-                    # store user_id
                     Shifts.db.current_user.id = user_id
+
+                    # user's angeltypes
+                    user_angeltypes = $('#shiftplan').data('user_angeltypes').split(',')
+                    for v, k in user_angeltypes
+                        user_angeltypes[k] = parseInt v, 10
+                    Shifts.db.current_user.angeltypes = user_angeltypes
 
                     # store arrived status
                     t.executeSql 'SELECT UID FROM User WHERE UID = ?', [user_id], (t, res) ->
                         Shifts.db.current_user.arrived = res.rows.length > 0
 
-                        # store angeltypes
-                        Shifts.db.current_user.angeltypes = [4] #todo (provide it via html)
                         done()
 
     insert_room: (room, done) ->

@@ -123,7 +123,7 @@ Shifts.db = {
           Shifts.interaction.selected_rooms.push(r.RID);
         }
         return t.executeSql('SELECT id from AngelTypes', [], function(t, res) {
-          var a, j, len1, ref1, user_id;
+          var a, j, k, l, len1, len2, ref1, user_angeltypes, user_id, v;
           ref1 = res.rows;
           for (j = 0, len1 = ref1.length; j < len1; j++) {
             a = ref1[j];
@@ -131,9 +131,14 @@ Shifts.db = {
           }
           user_id = parseInt($('#shiftplan').data('user_id'), 10);
           Shifts.db.current_user.id = user_id;
+          user_angeltypes = $('#shiftplan').data('user_angeltypes').split(',');
+          for (k = l = 0, len2 = user_angeltypes.length; l < len2; k = ++l) {
+            v = user_angeltypes[k];
+            user_angeltypes[k] = parseInt(v, 10);
+          }
+          Shifts.db.current_user.angeltypes = user_angeltypes;
           return t.executeSql('SELECT UID FROM User WHERE UID = ?', [user_id], function(t, res) {
             Shifts.db.current_user.arrived = res.rows.length > 0;
-            Shifts.db.current_user.angeltypes = [4];
             return done();
           });
         });
@@ -414,12 +419,12 @@ Shifts.fetcher = {
                 }
               }
               return Shifts.db.get_option('filter_selected_angeltypes', function(res) {
-                var a, k, len2, ref1;
+                var a, l, len2, ref1;
                 if (res) {
                   Shifts.interaction.selected_angeltypes = [];
                   ref1 = res.split(',');
-                  for (k = 0, len2 = ref1.length; k < len2; k++) {
-                    a = ref1[k];
+                  for (l = 0, len2 = ref1.length; l < len2; l++) {
+                    a = ref1[l];
                     Shifts.interaction.selected_angeltypes.push(parseInt(a, 10));
                   }
                 }
@@ -437,83 +442,83 @@ Shifts.fetcher = {
                     deleted_entries = data.deleted_entries;
                     deleted_entries_lastid = data.deleted_entries_lastid;
                     return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_entries_lastid, function() {
-                      var ids, l, len3, rooms;
+                      var ids, len3, m, rooms;
                       rooms = data.rooms;
                       ids = [];
-                      for (l = 0, len3 = rooms.length; l < len3; l++) {
-                        r = rooms[l];
+                      for (m = 0, len3 = rooms.length; m < len3; m++) {
+                        r = rooms[m];
                         ids.push(r.RID);
                       }
                       return Shifts.db.delete_many_by_id('Room', 'RID', ids, function() {
                         return Shifts.fetcher.process(Shifts.db.insert_room, rooms, function() {
-                          var angeltypes, len4, m;
+                          var angeltypes, len4, p;
                           if (data.rooms_lastupdate) {
                             Shifts.db.set_option('Room_lastupdate', data.rooms_lastupdate, function() {});
                           }
                           angeltypes = data.angeltypes;
                           ids = [];
-                          for (m = 0, len4 = angeltypes.length; m < len4; m++) {
-                            a = angeltypes[m];
+                          for (p = 0, len4 = angeltypes.length; p < len4; p++) {
+                            a = angeltypes[p];
                             ids.push(a.id);
                           }
                           return Shifts.db.delete_many_by_id('AngelTypes', 'id', ids, function() {
                             return Shifts.fetcher.process(Shifts.db.insert_angeltype, angeltypes, function() {
-                              var len5, p, s, shift_types;
+                              var len5, q, s, shift_types;
                               if (data.angeltypes_lastupdate) {
                                 Shifts.db.set_option('AngelTypes_lastupdate', data.angeltypes_lastupdate, function() {});
                               }
                               shift_types = data.shift_types;
                               ids = [];
-                              for (p = 0, len5 = shift_types.length; p < len5; p++) {
-                                s = shift_types[p];
+                              for (q = 0, len5 = shift_types.length; q < len5; q++) {
+                                s = shift_types[q];
                                 ids.push(s.id);
                               }
                               return Shifts.db.delete_many_by_id('ShiftTypes', 'id', ids, function() {
                                 return Shifts.fetcher.process(Shifts.db.insert_shifttype, shift_types, function() {
-                                  var len6, q, u, users;
+                                  var len6, u, users, w;
                                   if (data.shift_types_lastupdate) {
                                     Shifts.db.set_option('ShiftTypes_lastupdate', data.shift_types_lastupdate, function() {});
                                   }
                                   users = data.users;
                                   ids = [];
-                                  for (q = 0, len6 = users.length; q < len6; q++) {
-                                    u = users[q];
+                                  for (w = 0, len6 = users.length; w < len6; w++) {
+                                    u = users[w];
                                     ids.push(u.UID);
                                   }
                                   return Shifts.db.delete_many_by_id('User', 'UID', ids, function() {
                                     return Shifts.fetcher.process(Shifts.db.insert_user, users, function() {
-                                      var len7, shifts, v;
+                                      var len7, shifts, x;
                                       if (data.users_lastupdate) {
                                         Shifts.db.set_option('User_lastupdate', data.users_lastupdate, function() {});
                                       }
                                       shifts = data.shifts;
                                       ids = [];
-                                      for (v = 0, len7 = shifts.length; v < len7; v++) {
-                                        s = shifts[v];
+                                      for (x = 0, len7 = shifts.length; x < len7; x++) {
+                                        s = shifts[x];
                                         ids.push(s.SID);
                                       }
                                       return Shifts.db.delete_many_by_id('Shifts', 'SID', ids, function() {
                                         return Shifts.fetcher.process(Shifts.db.insert_shift, shifts, function() {
-                                          var len8, n, needed_angeltypes, w;
+                                          var len8, n, needed_angeltypes, y;
                                           if (data.shifts_lastupdate) {
                                             Shifts.db.set_option('Shifts_lastupdate', data.shifts_lastupdate, function() {});
                                           }
                                           needed_angeltypes = data.needed_angeltypes;
                                           ids = [];
-                                          for (w = 0, len8 = needed_angeltypes.length; w < len8; w++) {
-                                            n = needed_angeltypes[w];
+                                          for (y = 0, len8 = needed_angeltypes.length; y < len8; y++) {
+                                            n = needed_angeltypes[y];
                                             ids.push(n.id);
                                           }
                                           return Shifts.db.delete_many_by_id('NeededAngelTypes', 'id', ids, function() {
                                             return Shifts.fetcher.process(Shifts.db.insert_needed_angeltype, needed_angeltypes, function() {
-                                              var len9, shift_entries, x;
+                                              var len9, shift_entries, z;
                                               if (data.needed_angeltypes_lastupdate) {
                                                 Shifts.db.set_option('NeededAngelTypes_lastupdate', data.needed_angeltypes_lastupdate, function() {});
                                               }
                                               shift_entries = data.shift_entries;
                                               ids = [];
-                                              for (x = 0, len9 = shift_entries.length; x < len9; x++) {
-                                                s = shift_entries[x];
+                                              for (z = 0, len9 = shift_entries.length; z < len9; z++) {
+                                                s = shift_entries[z];
                                                 ids.push(s.id);
                                               }
                                               return Shifts.db.delete_many_by_id('ShiftEntry', 'id', ids, function() {
@@ -681,7 +686,7 @@ Shifts.interaction = {
   },
   on_mass_select: function() {
     return Shifts.$shiftplan.on('click', '.mass-select a', function(ev) {
-      var $all, $free, i, j, k, l, len, len1, len2, len3, ref, ref1, ref2, ref3, room, type;
+      var $all, $free, i, j, l, len, len1, len2, len3, m, ref, ref1, ref2, ref3, room, type;
       if ($(this).parents('#selection_rooms').length) {
         if ($(ev.target).attr('href') === '#all') {
           ref = $('#selection_rooms input');
@@ -705,8 +710,8 @@ Shifts.interaction = {
       if ($(this).parents('#selection_types').length) {
         if ($(ev.target).attr('href') === '#all') {
           ref2 = $('#selection_types input');
-          for (k = 0, len2 = ref2.length; k < len2; k++) {
-            type = ref2[k];
+          for (l = 0, len2 = ref2.length; l < len2; l++) {
+            type = ref2[l];
             $(type).prop('checked', true);
             Shifts.interaction.selected_angeltypes.push(parseInt(type.value, 10));
           }
@@ -714,8 +719,8 @@ Shifts.interaction = {
         }
         if ($(ev.target).attr('href') === '#none') {
           ref3 = $('#selection_types input');
-          for (l = 0, len3 = ref3.length; l < len3; l++) {
-            type = ref3[l];
+          for (m = 0, len3 = ref3.length; m < len3; m++) {
+            type = ref3[m];
             $(type).prop('checked', false);
           }
           Shifts.interaction.selected_angeltypes = [];
@@ -927,20 +932,22 @@ Shifts.render = {
     });
   },
   shiftplan_assemble: function(rooms, angeltypes, db_shifts, db_angeltypes_needed, db_shiftentries, db_usershifts) {
-    var add_shift, atn, build_shiftentry, calculate_signup_state, calculate_state_class, end_time, end_timestamp, entry_exists, firstblock_starttime, highest_lane_nr, i, j, k, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, mustache_rooms, ref, rendered_until, room_id, room_nr, s, se, shift, shift_added, shift_calendar, shift_fits, shift_nr, shiftentries, shiftentry, shifts_count, start_time, thistime, time_slot;
+    var add_shift, atn, build_shiftentry, calculate_signup_state, calculate_state_class, end_time, end_timestamp, entry_exists, firstblock_starttime, highest_lane_nr, i, j, l, lane, lane_nr, lanes, lastblock_endtime, len, len1, len2, len3, m, mustache_rooms, ref, rendered_until, room_id, room_nr, s, se, shift, shift_added, shift_calendar, shift_fits, shift_nr, shiftentries, shiftentry, shifts_count, start_time, thistime, time_slot, user_angeltypes;
     lanes = {};
     shiftentries = {};
+    user_angeltypes = Shifts.db.current_user.angeltypes;
     build_shiftentry = function(atn) {
-      var ref, se;
+      var ref, ref1, se;
       se = {
         TID: atn.angel_type_id,
         at_name: atn.name,
         restricted: atn.restricted === 1 ? true : false,
+        confirmed: (ref = atn.angel_type_id, indexOf.call(user_angeltypes, ref) >= 0),
         no_self_signup: atn.no_self_signup === 1 ? true : false,
         angels: [],
         angels_needed: atn.angel_count,
         helpers_needed: atn.angel_count > 0,
-        angeltype_mismatch: (ref = atn.angel_type_id, indexOf.call(Shifts.db.current_user.angeltypes, ref) < 0)
+        angeltype_mismatch: (ref1 = atn.angel_type_id, indexOf.call(Shifts.db.current_user.angeltypes, ref1) < 0)
       };
       return se;
     };
@@ -1012,9 +1019,9 @@ Shifts.render = {
       return false;
     };
     calculate_signup_state = function(shift) {
-      var angels_needed, at, k, l, len2, len3, len4, m, now_unix, ref, u;
-      for (k = 0, len2 = db_usershifts.length; k < len2; k++) {
-        u = db_usershifts[k];
+      var angels_needed, at, l, len2, len3, len4, m, now_unix, p, ref, u;
+      for (l = 0, len2 = db_usershifts.length; l < len2; l++) {
+        u = db_usershifts[l];
         if (u.SID === shift.SID) {
           return 'signed_up';
         }
@@ -1025,8 +1032,8 @@ Shifts.render = {
       }
       angels_needed = 0;
       ref = shift.angeltypes;
-      for (l = 0, len3 = ref.length; l < len3; l++) {
-        at = ref[l];
+      for (m = 0, len3 = ref.length; m < len3; m++) {
+        at = ref[m];
         angels_needed = angels_needed + at.angels_needed;
       }
       if (angels_needed === 0) {
@@ -1035,8 +1042,8 @@ Shifts.render = {
       if (Shifts.db.current_user.arrived === false) {
         return 'shift_ended';
       }
-      for (m = 0, len4 = db_usershifts.length; m < len4; m++) {
-        u = db_usershifts[m];
+      for (p = 0, len4 = db_usershifts.length; p < len4; p++) {
+        u = db_usershifts[p];
         if (u.SID !== shift.SID) {
           if (!(shift.start_time >= u.end_time || shift.end_time <= u.start_time)) {
             return 'collides';
@@ -1064,10 +1071,10 @@ Shifts.render = {
       }
     };
     shift_fits = function(shift, room_id, lane_nr) {
-      var k, lane_shift, len2, ref;
+      var l, lane_shift, len2, ref;
       ref = lanes[room_id][lane_nr];
-      for (k = 0, len2 = ref.length; k < len2; k++) {
-        lane_shift = ref[k];
+      for (l = 0, len2 = ref.length; l < len2; l++) {
+        lane_shift = ref[l];
         if (!(shift.start_time >= lane_shift.end_time || shift.end_time <= lane_shift.start_time)) {
           return false;
         }
@@ -1078,8 +1085,8 @@ Shifts.render = {
     end_time = Shifts.render.get_endtime(true);
     firstblock_starttime = end_time;
     lastblock_endtime = start_time;
-    for (k = 0, len2 = db_shifts.length; k < len2; k++) {
-      shift = db_shifts[k];
+    for (l = 0, len2 = db_shifts.length; l < len2; l++) {
+      shift = db_shifts[l];
       if (shift.start_time < firstblock_starttime) {
         firstblock_starttime = shift.start_time;
       }
@@ -1092,8 +1099,8 @@ Shifts.render = {
       }
       shift_added = false;
       ref = lanes[room_id];
-      for (l = 0, len3 = ref.length; l < len3; l++) {
-        lane = ref[l];
+      for (m = 0, len3 = ref.length; m < len3; m++) {
+        lane = ref[m];
         shift_added = add_shift(shift, room_id);
         if (shift_added) {
           break;
@@ -1189,5 +1196,5 @@ Shifts.templates = {
   header_and_dateselect: '<form class="form-inline" action="" method="get"> <input type="hidden" name="p" value="user_shifts"> <div class="row"> <div class="col-md-6"> <h1>Shifts</h1> <div class="form-group" style="width: 768px; height: 250px;"> <input id="datetimepicker" type="hidden" /> </div> </div> <div class="filter-form"></div> </div> <div class="row"> <div class="col-md-6"></div> <div class="col-md-6"> <div><sup>1</sup>The tasks shown here are influenced by the angeltypes you joined already! <a href="?p=angeltypes&amp;action=about">Description of the jobs.</a></div> <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="Filter"> </div> </div> <div class="shift-calendar"> <div style="height: 100px;"> Loading... </div> </div>',
   filter_form: '<div class="col-md-2"> <div id="selection_rooms" class="selection rooms"> <h4>Rooms</h4> {{#rooms}} <div class="checkbox"> <label> <input type="checkbox" name="rooms[]" value="{{RID}}" {{#selected}}checked="checked"{{/selected}}> {{Name}} </label> </div><br /> {{/rooms}} <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-default">All</a> <a href="#none" class="btn btn-default">None</a> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_types" class="selection types"> <h4>Angeltypes<sup>1</sup></h4> {{#angeltypes}} <div class="checkbox"> <label> <input type="checkbox" name="types[]" value="{{id}}" {{#selected}}checked="checked"{{/selected}}> {{name}} </label> </div><br /> {{/angeltypes}} <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-default">All</a> <a href="#none" class="btn btn-default">None</a> </div> </div> </div> </div> <div class="col-md-2"> <div id="selection_filled" class="selection filled"> <h4>Occupancy</h4> <div class="form-group"> <div class="btn-group mass-select"> <a href="#all" class="btn btn-{{#occupancy}}{{all}}{{/occupancy}}">All</a> <a href="#free" class="btn btn-{{#occupancy}}{{free}}{{/occupancy}}">Free</a> </div> </div> </div> </div> </div>',
   footer: '</form>',
-  shift_calendar: '<div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#tick}} <div class="tick {{daytime}}"></div> {{/tick}} {{#tick_hour}} <div class="tick {{daytime}} hour">{{label}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick {{daytime}} day">{{label}}</div> {{/tick_day}} {{/timelane_ticks}} </div> {{#rooms}} {{#lanes}} <div class="lane"> <div class="header"> <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a> </div> {{#shifts}} {{#tick}} <div class="tick {{daytime}}"></div> {{/tick}} {{#tick_hour}} <div class="tick {{daytime}} hour">{{text}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick {{daytime}} day">{{text}}</div> {{/tick_day}} {{#shift}} <div class="shift panel panel-{{state_class}}" style="height: {{height}}px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id={{SID}}">{{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a> {{#is_admin}} <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a> <a href="?p=user_shifts&amp;delete_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a> </div> </div> {{/is_admin}} </div> <div class="panel-body"> {{#shift_title}}<span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />{{/shift_title}} <a href="?p=rooms&amp;action=view&amp;room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a> </div> <ul class="list-group"> {{#angeltypes}} {{#restricted}} <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}"> <span class="glyphicon glyphicon-lock"></span> {{at_name}}</a>:</strong> {{/restricted}} {{^restricted}} <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}">{{at_name}}</a>:</strong> {{/restricted}} {{#angels}} {{#freeloaded}} <span style="text-decoration: line-through;"><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>, {{/freeloaded}} {{^freeloaded}} <span><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>, {{/freeloaded}} {{/angels}} {{#helpers_needed}} {{#shift_ended}} {{angels_needed}} helpers needed (ended) {{/shift_ended}} {{^shift_ended}} {{#restricted}} {{angels_needed}} helpers needed <span class="glyphicon glyphicon-lock"></span> {{/restricted}} {{^restricted}} {{#angeltype_mismatch}} {{angels_needed}} helpers needed <a href="?p=user_angeltypes&amp;action=add&amp;angeltype_id={{TID}}" class="btn btn-default btn-xs">Become {{at_name}}</a> {{/angeltype_mismatch}} {{^angeltype_mismatch}} <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}">{{angels_needed}} helpers needed</a> <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a> {{/angeltype_mismatch}} {{/restricted}} {{/shift_ended}} {{/helpers_needed}} {{/angeltypes}} </li> <li class="list-group-item"> <a href="?p=user_shifts&amp;shift_id={{SID}}" class="btn btn-default btn-xs">Neue Engel hinzufügen</a> </li> </ul> <div class="shift-spacer"></div> </div> {{/shift}} {{/shifts}} </div> {{/lanes}} {{/rooms}} {{^rooms}} <div class="alert alert-warning" style="margin-top: 2em;">No shifts could be found for the selected date.</div> {{/rooms}}'
+  shift_calendar: '<div class="lane time"> <div class="header">Time</div> {{#timelane_ticks}} {{#tick}} <div class="tick {{daytime}}"></div> {{/tick}} {{#tick_hour}} <div class="tick {{daytime}} hour">{{label}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick {{daytime}} day">{{label}}</div> {{/tick_day}} {{/timelane_ticks}} </div> {{#rooms}} {{#lanes}} <div class="lane"> <div class="header"> <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a> </div> {{#shifts}} {{#tick}} <div class="tick {{daytime}}"></div> {{/tick}} {{#tick_hour}} <div class="tick {{daytime}} hour">{{text}}</div> {{/tick_hour}} {{#tick_day}} <div class="tick {{daytime}} day">{{text}}</div> {{/tick_day}} {{#shift}} <div class="shift panel panel-{{state_class}}" style="height: {{height}}px;"> <div class="panel-heading"> <a href="?p=shifts&amp;action=view&amp;shift_id={{SID}}">{{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a> {{#is_admin}} <div class="pull-right"> <div class="btn-group"> <a href="?p=user_shifts&amp;edit_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a> <a href="?p=user_shifts&amp;delete_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a> </div> </div> {{/is_admin}} </div> <div class="panel-body"> {{#shift_title}}<span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />{{/shift_title}} <a href="?p=rooms&amp;action=view&amp;room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a> </div> <ul class="list-group"> {{#angeltypes}} {{#restricted}} <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}"> <span class="glyphicon glyphicon-lock"></span> {{at_name}}</a>:</strong> {{/restricted}} {{^restricted}} <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}">{{at_name}}</a>:</strong> {{/restricted}} {{#angels}} {{#freeloaded}} <span style="text-decoration: line-through;"><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>, {{/freeloaded}} {{^freeloaded}} <span><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>, {{/freeloaded}} {{/angels}} {{#helpers_needed}} {{#shift_ended}} {{angels_needed}} helpers needed (ended) {{/shift_ended}} {{^shift_ended}} {{#restricted}} {{angels_needed}} helpers needed <span class="glyphicon glyphicon-lock"></span> {{#confirmed}} <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a> {{/confirmed}} {{/restricted}} {{^restricted}} {{#angeltype_mismatch}} {{angels_needed}} helpers needed <a href="?p=user_angeltypes&amp;action=add&amp;angeltype_id={{TID}}" class="btn btn-default btn-xs">Become {{at_name}}</a> {{/angeltype_mismatch}} {{^angeltype_mismatch}} <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}">{{angels_needed}} helpers needed</a> <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a> {{/angeltype_mismatch}} {{/restricted}} {{/shift_ended}} {{/helpers_needed}} {{/angeltypes}} </li> <li class="list-group-item"> <a href="?p=user_shifts&amp;shift_id={{SID}}" class="btn btn-default btn-xs">Neue Engel hinzufügen</a> </li> </ul> <div class="shift-spacer"></div> </div> {{/shift}} {{/shifts}} </div> {{/lanes}} {{/rooms}} {{^rooms}} <div class="alert alert-warning" style="margin-top: 2em;">No shifts could be found for the selected date.</div> {{/rooms}}'
 };

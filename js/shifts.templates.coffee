@@ -207,6 +207,9 @@ Building view...
                             {{^shift_ended}}
                                 {{#restricted}}
                                   {{angels_needed}} helpers needed <span class="glyphicon glyphicon-lock"></span>
+                                  {{#confirmed}}
+                                    <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a>
+                                  {{/confirmed}}
                                 {{/restricted}}
                                 {{^restricted}}
                                     {{#angeltype_mismatch}}
