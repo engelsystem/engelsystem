@@ -57,7 +57,7 @@ Shifts.fetcher =
                             start_filling(done)
 
         start_filling = (done) ->
-            Shifts.$shiftplan.find('#fetcher_statustext').text 'Fetching data from server...'
+            Shifts.$shiftplan.find('#fetcher_statustext').text Shifts._('Fetching data from server...')
             Shifts.$shiftplan.find('#remaining_objects').text ''
             url = '?p=shifts_json_export_websql&' + latest_updates.join('&') + '&deleted_lastid=' + deleted_lastid
 
@@ -81,8 +81,8 @@ Shifts.fetcher =
                     # first fetch, for correct display of the status bar
                     Shifts.fetcher.total_objects_count_since_start = Shifts.fetcher.total_objects_count
 
-                Shifts.$shiftplan.find('#fetcher_statustext').text 'Importing new objects into browser database.'
-                Shifts.$shiftplan.find('#remaining_objects').text Shifts.fetcher.remaining_objects_count + ' remaining...'
+                Shifts.$shiftplan.find('#fetcher_statustext').text Shifts._('Importing new objects into browser database.')
+                Shifts.$shiftplan.find('#remaining_objects').text Shifts.fetcher.remaining_objects_count + ' ' + Shifts._('remaining...')
                 Shifts.$shiftplan.find('#abort').on 'click', ->
                     document.cookie = 'websql=nope'
                     window.location.href = ''
@@ -208,7 +208,7 @@ Shifts.fetcher =
             Shifts.fetcher.remaining_objects_count--
             if Shifts.fetcher.remaining_objects_count % 10 == 0
                 percentage = 100 - Shifts.fetcher.remaining_objects_count / Shifts.fetcher.total_objects_count_since_start * 100
-                $ro.text Shifts.fetcher.remaining_objects_count + ' remaining...'
+                $ro.text Shifts.fetcher.remaining_objects_count + ' ' + Shifts._('remaining...')
                 $pb.text Math.round(percentage) + '%'
                 $pb.width percentage + '%'
 

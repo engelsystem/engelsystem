@@ -44,21 +44,21 @@ Building view...
 }
 </style>
 <div id="fetcher_status">
-    <span id="fetcher_statustext">Fetching data from server...</span> <span id="remaining_objects"></span>
+    <span id="fetcher_statustext">' + Shifts._('Fetching data from server...') + '</span> <span id="remaining_objects"></span>
     <div class="progress">
       <div id="progress_bar" class="progress-bar" style="width: 0%;">
         0%
       </div>
     </div>
 </div>
-<a id="abort" href="" class="btn btn-default btn-xs">Abort and switch to legacy view</a>'
+<a id="abort" href="" class="btn btn-default btn-xs">' + Shifts._('Abort and switch to legacy view') + '</a>'
 
     header_and_dateselect: '
 <form class="form-inline" action="" method="get">
   <input type="hidden" name="p" value="user_shifts">
   <div class="row">
     <div class="col-md-6">
-      <h1>Shifts</h1>
+      <h1>' + Shifts._('Shifts') + '</h1>
       <div class="form-group" style="width: 768px; height: 250px;">
         <input id="datetimepicker" type="hidden" />
       </div>
@@ -70,22 +70,22 @@ Building view...
   <div class="row">
     <div class="col-md-6"></div>
     <div class="col-md-6">
-        <div><sup>1</sup>The tasks shown here are influenced by the angeltypes you joined already!
-        <a href="angeltypes?action=about">Description of the jobs.</a></div>
+        <div><sup>1</sup>' + Shifts._('The tasks shown here are influenced by the angeltypes you joined already!') + '
+        <a href="angeltypes?action=about">' + Shifts._('Description of the jobs.') + '</a></div>
         <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="Filter">
     </div>
   </div>
 
   <div class="shift-calendar">
       <div style="height: 100px;">
-          Loading...
+          ' + Shifts._('Loading...') + '
       </div>
   </div>'
 
     filter_form: '
     <div class="col-md-2">
         <div id="selection_rooms" class="selection rooms">
-            <h4>Rooms</h4>
+            <h4>' + Shifts._('Rooms') + '</h4>
             {{#rooms}}
                 <div class="checkbox">
                     <label>
@@ -95,15 +95,15 @@ Building view...
             {{/rooms}}
             <div class="form-group">
                 <div class="btn-group mass-select">
-                    <a href="#all" class="btn btn-default">All</a>
-                    <a href="#none" class="btn btn-default">None</a>
+                    <a href="#all" class="btn btn-default">' + Shifts._('All') + '</a>
+                    <a href="#none" class="btn btn-default">' + Shifts._('None') + '</a>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-2">
         <div id="selection_types" class="selection types">
-            <h4>Angeltypes<sup>1</sup></h4>
+            <h4>' + Shifts._('Angeltypes') + '<sup>1</sup></h4>
             {{#angeltypes}}
                 <div class="checkbox">
                     <label>
@@ -113,19 +113,19 @@ Building view...
             {{/angeltypes}}
             <div class="form-group">
                 <div class="btn-group mass-select">
-                    <a href="#all" class="btn btn-default">All</a>
-                    <a href="#none" class="btn btn-default">None</a>
+                    <a href="#all" class="btn btn-default">' + Shifts._('All') + '</a>
+                    <a href="#none" class="btn btn-default">' + Shifts._('None') + '</a>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-2">
         <div id="selection_filled" class="selection filled">
-            <h4>Occupancy</h4>
+            <h4>' + Shifts._('Occupancy') + '</h4>
             <div class="form-group">
                 <div class="btn-group mass-select">
-                    <a href="#all" class="btn btn-{{#occupancy}}{{all}}{{/occupancy}}">All</a>
-                    <a href="#free" class="btn btn-{{#occupancy}}{{free}}{{/occupancy}}">Free</a>
+                    <a href="#all" class="btn btn-{{#occupancy}}{{all}}{{/occupancy}}">' + Shifts._('All') + '</a>
+                    <a href="#free" class="btn btn-{{#occupancy}}{{free}}{{/occupancy}}">' + Shifts._('Free') + '</a>
                 </div>
             </div>
         </div>
@@ -137,7 +137,7 @@ Building view...
 
     shift_calendar: '
 <div class="lane time">
-  <div class="header">Time</div>
+  <div class="header">' + Shifts._('Time') + '</div>
   {{#timelane_ticks}}
       {{#tick}}
           <div class="tick {{daytime}}"></div>
@@ -202,19 +202,19 @@ Building view...
                           {{/angels}}
                         {{#helpers_needed}}
                             {{#shift_ended}}
-                              {{angels_needed}} helpers needed (ended)
+                              {{angels_needed}} ' + Shifts._('helpers needed (ended)') + '
                             {{/shift_ended}}
                             {{^shift_ended}}
-                              {{angels_needed}} helpers needed
+                              {{angels_needed}} ' + Shifts._('helpers needed') + '
                                 {{#angeltype_mismatch}}
-                                  <a href="user_angeltypes?action=add&amp;angeltype_id={{TID}}" class="btn btn-default btn-xs">Become {{at_name}}</a>
+                                  <a href="user_angeltypes?action=add&amp;angeltype_id={{TID}}" class="btn btn-default btn-xs">' + Shifts._('Become') + ' {{at_name}}</a>
                                 {{/angeltype_mismatch}}
                                 {{^angeltype_mismatch}}
                                   {{#restricted}}
                                       <span class="glyphicon glyphicon-lock"></span>
                                   {{/restricted}}
                                   {{#confirmed}}
-                                    <a href="user-shifts?shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a>
+                                    <a href="user-shifts?shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">' + Shifts._('Sign up') + '</a>
                                   {{/confirmed}}
                                 {{/angeltype_mismatch}}
                             {{/shift_ended}}
@@ -222,7 +222,7 @@ Building view...
                     {{/angeltypes}}
                     </li>
                     <li class="list-group-item">
-                      <a href="user-shifts?edit_shift={{SID}}" class="btn btn-default btn-xs">Neue Engel hinzufügen</a>
+                      <a href="user-shifts?edit_shift={{SID}}" class="btn btn-default btn-xs">' + Shifts._('Add new angels') + '</a>
                     </li>
                   </ul>
                   <div class="shift-spacer"></div>
@@ -233,6 +233,6 @@ Building view...
     {{/lanes}}
 {{/rooms}}
 {{^rooms}}
-<div class="alert alert-warning" style="margin-top: 2em;">No shifts could be found for the selected date.</div>
+<div class="alert alert-warning" style="margin-top: 2em;">' + Shifts._('No shifts could be found for the selected date.') + '</div>
 {{/rooms}}'
 

@@ -23,6 +23,7 @@ Shifts.init = ->
 
         Shifts.db.init ->
             Shifts.log 'db initialized'
+            Shifts.lang.init()
             Shifts.fetcher.start true, ->
                 Shifts.log 'fetch complete.'
                 Shifts.db.populate_ids ->
