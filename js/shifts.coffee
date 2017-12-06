@@ -38,10 +38,16 @@ Shifts.init = ->
                     Shifts.db.get_shift_range (date_range) ->
                         waitforcal = setInterval ->
                             if Shifts.render.START_TIME
+                                theme = 'light'
+                                try
+                                    css = $('link:nth(0)').attr('href')
+                                    if css.match /theme[1,4,6]/ # define dark themes
+                                        theme = 'dark'
                                 $('#datetimepicker').datetimepicker
                                     value: moment.unix(Shifts.render.START_TIME).format('YYYY-MM-DD HH:mm')
                                     timepicker: true
                                     inline: true
+                                    theme: theme
                                     format: 'Y-m-d H:i'
                                     minDate: moment.unix(date_range[0]).format('YYYY-MM-DD')
                                     maxDate: moment.unix(date_range[1]).format('YYYY-MM-DD')
