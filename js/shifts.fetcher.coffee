@@ -231,9 +231,6 @@ Shifts.fetcher =
             e = deleted_entries.shift()
 
             switch e.tablename
-                when 'no-op'
-                    # do nothing. i.e. first entry of the DeleteLog, to pass an id to clients
-                    Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
                 when 'room'
                     Shifts.db.delete_many_by_id 'Room', 'RID', e.entry_ids, ->
                         Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
@@ -261,6 +258,10 @@ Shifts.fetcher =
                 when 'needed_angeltypes_roomid'
                     Shifts.db.delete_many_by_id 'NeededAngelTypes', 'room_id', e.entry_ids, ->
                         Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
+                else
+                    # do nothing. i.e. first entry of the DeleteLog, to pass an id to clients
+                    # prevents hanging of this process on unknown names
+                    Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
 
         else
             update_lastid ->
