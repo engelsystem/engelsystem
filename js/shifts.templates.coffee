@@ -71,7 +71,7 @@ Building view...
     <div class="col-md-6"></div>
     <div class="col-md-6">
         <div><sup>1</sup>The tasks shown here are influenced by the angeltypes you joined already!
-        <a href="?p=angeltypes&amp;action=about">Description of the jobs.</a></div>
+        <a href="angeltypes?action=about">Description of the jobs.</a></div>
         <input id="filterbutton" class="btn btn-primary" type="submit" style="width: 75%; margin-bottom: 20px" value="Filter">
     </div>
   </div>
@@ -155,7 +155,7 @@ Building view...
     {{#lanes}}
       <div class="lane">
         <div class="header">
-          <a href="?p=rooms&action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a>
+          <a href="rooms?action=view&room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{Name}}</a>
         </div>
         {{#shifts}}
             {{#tick}}
@@ -170,34 +170,34 @@ Building view...
             {{#shift}}
                 <div class="shift panel panel-{{state_class}}" style="height: {{height}}px;">
                   <div class="panel-heading">
-                    <a href="?p=shifts&amp;action=view&amp;shift_id={{SID}}">{{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a>
+                    <a href="shifts?action=view&amp;shift_id={{SID}}">{{starttime}} ‐ {{endtime}} — {{shifttype_name}}</a>
                 {{#is_admin}}
                     <div class="pull-right">
                       <div class="btn-group">
-                        <a href="?p=user_shifts&amp;edit_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
-                        <a href="?p=user_shifts&amp;delete_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                        <a href="user-shifts?edit_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a href="user-shifts?delete_shift={{SID}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
                       </div>
                     </div>
                 {{/is_admin}}
                   </div>
                   <div class="panel-body">
                     {{#shift_title}}<span class="glyphicon glyphicon-info-sign"></span> {{shift_title}}<br />{{/shift_title}}
-                    <a href="?p=rooms&amp;action=view&amp;room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a>
+                    <a href="rooms?action=view&amp;room_id={{RID}}"><span class="glyphicon glyphicon-map-marker"></span> {{room_name}}</a>
                   </div>
                   <ul class="list-group">
                     {{#angeltypes}}
                         {{#restricted}}
-                            <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}"> <span class="glyphicon glyphicon-lock"></span> {{at_name}}</a>:</strong>
+                            <li class="list-group-item"><strong><a href="angeltypes?action=view&amp;angeltype_id={{TID}}"> <span class="glyphicon glyphicon-lock"></span> {{at_name}}</a>:</strong>
                         {{/restricted}}
                         {{^restricted}}
-                            <li class="list-group-item"><strong><a href="?p=angeltypes&amp;action=view&amp;angeltype_id={{TID}}">{{at_name}}</a>:</strong>
+                            <li class="list-group-item"><strong><a href="angeltypes?action=view&amp;angeltype_id={{TID}}">{{at_name}}</a>:</strong>
                         {{/restricted}}
                           {{#angels}}
                               {{#freeloaded}}
-                                <span style="text-decoration: line-through;"><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>,
+                                <span style="text-decoration: line-through;"><a href="users?action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>,
                               {{/freeloaded}}
                               {{^freeloaded}}
-                                <span><a href="?p=users&amp;action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>,
+                                <span><a href="users?action=view&amp;user_id={{UID}}"><span class="icon-icon_angel"></span> {{Nick}}</a></span>,
                               {{/freeloaded}}
                           {{/angels}}
                         {{#helpers_needed}}
@@ -208,17 +208,17 @@ Building view...
                                 {{#restricted}}
                                   {{angels_needed}} helpers needed <span class="glyphicon glyphicon-lock"></span>
                                   {{#confirmed}}
-                                    <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a>
+                                    <a href="user-shifts?shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a>
                                   {{/confirmed}}
                                 {{/restricted}}
                                 {{^restricted}}
                                     {{#angeltype_mismatch}}
                                       {{angels_needed}} helpers needed
-                                      <a href="?p=user_angeltypes&amp;action=add&amp;angeltype_id={{TID}}" class="btn btn-default btn-xs">Become {{at_name}}</a>
+                                      <a href="user_angeltypes?action=add&amp;angeltype_id={{TID}}" class="btn btn-default btn-xs">Become {{at_name}}</a>
                                     {{/angeltype_mismatch}}
                                     {{^angeltype_mismatch}}
-                                      <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}">{{angels_needed}} helpers needed</a>
-                                      <a href="?p=user_shifts&amp;shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a>
+                                      <a href="user-shifts?shift_id={{SID}}&amp;type_id={{TID}}">{{angels_needed}} helpers needed</a>
+                                      <a href="user-shifts?shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a>
                                     {{/angeltype_mismatch}}
                                 {{/restricted}}
                             {{/shift_ended}}
@@ -226,7 +226,7 @@ Building view...
                     {{/angeltypes}}
                     </li>
                     <li class="list-group-item">
-                      <a href="?p=user_shifts&amp;shift_id={{SID}}" class="btn btn-default btn-xs">Neue Engel hinzufügen</a>
+                      <a href="user-shifts?edit_shift={{SID}}" class="btn btn-default btn-xs">Neue Engel hinzufügen</a>
                     </li>
                   </ul>
                   <div class="shift-spacer"></div>
