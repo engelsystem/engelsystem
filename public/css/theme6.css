@@ -6918,23 +6918,33 @@ body {
   color: #fff;
 }
 .text-primary,
-.text-primary:hover {
+.text-primary:hover,
+a.text-primary,
+a.text-primary:hover {
   color: #a41c31;
 }
 .text-success,
-.text-success:hover {
+.text-success:hover,
+a.text-success,
+a.text-success:hover {
   color: #99cc00;
 }
 .text-danger,
-.text-danger:hover {
+.text-danger:hover,
+a.text-danger,
+a.text-danger:hover {
   color: #ff6600;
 }
 .text-warning,
-.text-warning:hover {
+.text-warning:hover,
+a.text-warning,
+a.text-warning:hover {
   color: #ffff33;
 }
 .text-info,
-.text-info:hover {
+.text-info:hover,
+a.text-info,
+a.text-info:hover {
   color: #00ccff;
 }
 table,
