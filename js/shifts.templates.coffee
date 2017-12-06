@@ -202,25 +202,21 @@ Building view...
                           {{/angels}}
                         {{#helpers_needed}}
                             {{#shift_ended}}
-                                  {{angels_needed}} helpers needed (ended)
+                              {{angels_needed}} helpers needed (ended)
                             {{/shift_ended}}
                             {{^shift_ended}}
-                                {{#restricted}}
-                                  {{angels_needed}} helpers needed <span class="glyphicon glyphicon-lock"></span>
+                              {{angels_needed}} helpers needed
+                                {{#angeltype_mismatch}}
+                                  <a href="user_angeltypes?action=add&amp;angeltype_id={{TID}}" class="btn btn-default btn-xs">Become {{at_name}}</a>
+                                {{/angeltype_mismatch}}
+                                {{^angeltype_mismatch}}
+                                  {{#restricted}}
+                                      <span class="glyphicon glyphicon-lock"></span>
+                                  {{/restricted}}
                                   {{#confirmed}}
                                     <a href="user-shifts?shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a>
                                   {{/confirmed}}
-                                {{/restricted}}
-                                {{^restricted}}
-                                    {{#angeltype_mismatch}}
-                                      {{angels_needed}} helpers needed
-                                      <a href="user_angeltypes?action=add&amp;angeltype_id={{TID}}" class="btn btn-default btn-xs">Become {{at_name}}</a>
-                                    {{/angeltype_mismatch}}
-                                    {{^angeltype_mismatch}}
-                                      <a href="user-shifts?shift_id={{SID}}&amp;type_id={{TID}}">{{angels_needed}} helpers needed</a>
-                                      <a href="user-shifts?shift_id={{SID}}&amp;type_id={{TID}}" class="btn btn-default btn-xs btn-primary">Sign up</a>
-                                    {{/angeltype_mismatch}}
-                                {{/restricted}}
+                                {{/angeltype_mismatch}}
                             {{/shift_ended}}
                         {{/helpers_needed}}
                     {{/angeltypes}}
