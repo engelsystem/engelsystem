@@ -79,16 +79,20 @@ $(function() {
 
 Shifts.db = {
   prefix: 'noname',
+  version: '1',
   websql: {},
   current_user: {},
   init: function(done) {
     try {
-      Shifts.db.prefix = '_' + Shifts.db.slugify($('.footer').html().split('<br>')[0]);
+      Shifts.db.prefix = Shifts.db.slugify($('.footer').html().split('<br>')[0]);
     } catch (error) {
       Shifts.db.prefix = 'noname';
     }
+    if (Shifts.db.prefix === '') {
+      Shifts.db.prefix = 'noname';
+    }
     Shifts.log('init db');
-    Shifts.db.websql = openDatabase('engelsystem' + Shifts.db.prefix, '1.0', '', 10 * 1024 * 1024);
+    Shifts.db.websql = openDatabase('engelsystem_' + Shifts.db.prefix + '_' + Shifts.db.version, '1.0', '', 10 * 1024 * 1024);
     return Shifts.db.websql.transaction(function(t) {
       t.executeSql('CREATE TABLE IF NOT EXISTS Shifts (SID unique, title, shifttype_id INT, start_time INT, end_time INT, RID INT)');
       t.executeSql('CREATE TABLE IF NOT EXISTS User (UID unique, nick)');
