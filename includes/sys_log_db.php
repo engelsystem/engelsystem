@@ -14,15 +14,13 @@ function db_log_delete($tablename, $entry_id)
     DB::insert('
           INSERT INTO `DeleteLog` (
               `tablename`,
-              `entry_id`,
-              `updated_microseconds`
+              `entry_id`
           )
-          VALUES (?, ?, ?)
+          VALUES (?, ?)
         ',
         [
             $tablename,
-            (int) $entry_id,
-            time_microseconds(),
+            (int) $entry_id
         ]
     );
 }

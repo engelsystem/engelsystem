@@ -800,22 +800,16 @@ function Shifts_for_websql($since, $deleted_lastid) {
   }
 
     // fetch deleted entries
-    // if this is the first fetch (lastid=0), then fetch all entries from now - we don't have to do vergangenheitsbewältigung
     if ($deleted_lastid == 0) {
+        // first fetch? pass the latest entry, so that the client knows the id from now on
       $all_deleted_entries = DB::select("
           SELECT id, tablename, entry_id
           FROM DeleteLog
-          WHERE updated_microseconds > ?
-          ORDER BY id ASC
-          LIMIT " . $limit . "
-          ",
-          [
-            time()
-          ]
+          ORDER BY id DESC
+          LIMIT 1
+          "
       );
-
     } else {
-
       $all_deleted_entries = DB::select("
           SELECT id, tablename, entry_id
           FROM DeleteLog

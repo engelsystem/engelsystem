@@ -581,6 +581,8 @@ Shifts.fetcher = {
     if (deleted_entries.length > 0) {
       e = deleted_entries.shift();
       switch (e.tablename) {
+        case 'no-op':
+          return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
         case 'room':
           return Shifts.db.delete_many_by_id('Room', 'RID', e.entry_ids, function() {
             return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);

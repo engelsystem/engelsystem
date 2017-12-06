@@ -40,11 +40,12 @@ ALTER TABLE `AngelTypes` DROP `contact_user_id`;
 CREATE TABLE `DeleteLog` (
   `id` int(11) NOT NULL,
   `tablename` varchar(30) NOT NULL,
-  `entry_id` int(11) NOT NULL,
-  `updated_microseconds` DOUBLE NOT NULL
+  `entry_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ALTER TABLE `DeleteLog` ADD PRIMARY KEY (`id`);
 ALTER TABLE `DeleteLog` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+-- Insert dummy-entry to have at least one entry to pass to clients for the lastid
+INSERT INTO `DeleteLog` (`tablename`, `entry_id`) VALUES ('no-op', '123456789');
 
 -- Updated Microseconds
 ALTER TABLE `Shifts` ADD `updated_microseconds` DOUBLE NOT NULL DEFAULT '10' AFTER `edited_at_timestamp`;
