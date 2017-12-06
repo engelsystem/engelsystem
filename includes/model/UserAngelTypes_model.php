@@ -105,7 +105,7 @@ function UserAngelType_update($user_angeltype_id, $supporter)
       SET `supporter`=?
       WHERE `id`=?
       LIMIT 1
-    ', [$supporter, $user_angeltype_id]);
+    ', [(int) $supporter, $user_angeltype_id]);
 }
 
 /**
