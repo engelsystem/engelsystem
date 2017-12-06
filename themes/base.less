@@ -60,7 +60,7 @@ body {
     flex-shrink: 1;
 
     .header {
-      background: @panel-bg;
+      background: @table-bg;
       border-bottom: 1px solid @table-border-color;
       height: 30px;
       padding: 5px 5px 5px 16px;
@@ -68,7 +68,7 @@ body {
 
     .tick {
       height: 30px;
-      border-top: 1px solid darken(@table-bg-accent, 2%);
+      border-top: 1px solid @table-border-color;
     }
 
     .tick.hour {
@@ -84,15 +84,15 @@ body {
     }
 
     .tick_dark {
-      background: #eee;
+      background: darken(@table-bg-accent, 4%);
     }
 
     .tick_bright {
-      background: #f9f9f9;
+      background: @table-bg;
     }
 
     .tick_active {
-      background: #7ba9d0;
+      background: @brand-success;
     }
   }
 
