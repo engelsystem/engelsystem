@@ -4,9 +4,9 @@ Shifts.fetcher =
     total_objects_count: 0
     total_objects_count_since_start: 0
     remaining_objects_count: 0
-    run_count: 0 # this is a rough evaluation how many fetcherruns happened.
-                        # if > 0, decrease every second. stop fetcher if > 10 (runbuffersize)
-                        # tl;dr: prevent hammering on the server if something in the fetcher fails and too many requests would happen
+    run_count: 0    # this is a rough evaluation how many fetcherruns happened.
+                    # if > 0, decrease every second. stop fetcher if > 10 (runbuffersize)
+                    # tl;dr: prevent hammering on the server if something in the fetcher fails and too many requests would happen
     runbuffersize: 10
 
     start: (display_status, done) ->

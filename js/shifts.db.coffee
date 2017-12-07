@@ -2,9 +2,9 @@
 Shifts.db =
 
     prefix: 'noname'
-    version: '1' # arbitrary version. In case of a fuckup, increase, and all browser-dbs will rebuild.
-    websql: {} # this will be the db instance
-    current_user: {} # stores user_id and user's angeltypes
+    version: '1'        # arbitrary version. In case of a fuckup, increase, and all browser-dbs will rebuild.
+    websql: {}          # this will be the db instance
+    current_user: {}    # stores user_id and user's angeltypes
 
     init: (done) ->
 
