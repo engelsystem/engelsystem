@@ -47,13 +47,13 @@ function user_shifts()
   }
 
   // target for the noscript meta-redirect
-  if (isset($_GET['nojs'])) {
+  if ($request->has('nojs')) {
       setcookie('websql', 'nope');
       redirect(page_link_to('user_shifts'));
   }
 
   // ability to turn websql back on
-  if (isset($_GET['websql'])) {
+  if ($request->has('websql')) {
       setcookie('websql', 'yes');
       redirect(page_link_to('user_shifts'));
   }
