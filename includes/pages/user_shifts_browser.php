@@ -35,12 +35,44 @@ function view_user_shifts_browser()
     }
     $user_angeltypes = implode(',', $uat);
 
+    // translation definitions
+    $lang_items = array(
+        'Shifts',
+        'Time',
+        'Fetching data from server...',
+        'Importing new objects into browser database.',
+        'remaining...',
+        'Abort and switch to legacy view',
+        'The tasks shown here are influenced by the angeltypes you joined already!',
+        'Description of the jobs.',
+        'Loading...',
+        'Rooms',
+        'All',
+        'None',
+        'Angeltypes',
+        'Occupancy',
+        'Free',
+        'helpers needed (ended)',
+        'helpers needed',
+        'Become',
+        'Sign up',
+        'Add more angels',
+        'No shifts could be found for the selected date.',
+    );
+
+    // translate those definitions
+    $lang = array();
+    foreach($lang_items as $li) {
+        $lang[$li] = _($li);
+    }
+
     return page([
         div('col-md-12', [
             view(__DIR__ . '/../../templates/user_shifts_browser.html', [
                 'title' => shifts_browser_title(),
                 'user_id' => $user['UID'],
                 'user_angeltypes' => $user_angeltypes,
+                'lang_json' => json_encode($lang),
             ])
         ])
     ]);
