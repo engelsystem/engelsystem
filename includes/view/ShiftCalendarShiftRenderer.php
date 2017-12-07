@@ -126,7 +126,7 @@ class ShiftCalendarShiftRenderer
         if (in_array('user_shifts_admin', $privileges)) {
             $html .= '<li class="list-group-item">';
             $html .= button(
-                    page_link_to('user_shifts', ['shift_id' => $shift['SID']]),
+                    page_link_to('user_shifts', ['edit_shift' => $shift['SID']]),
                     glyph('plus') . _('Add more angels'),
                     'btn-xs'
                 );
