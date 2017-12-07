@@ -6769,7 +6769,7 @@ body {
   flex-shrink: 1;
 }
 .shift-calendar .lane .header {
-  background: transparent;
+  background: #ffffff;
   border-bottom: 1px solid #dddddd;
   height: 30px;
   padding: 5px 5px 5px 16px;
