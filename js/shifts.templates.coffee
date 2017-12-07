@@ -202,7 +202,7 @@ Building view...
                           {{/angels}}
                         {{#helpers_needed}}
                             {{#shift_ended}}
-                              {{angels_needed}} [[helpers needed (ended)]]
+                              {{angels_needed}} [[helpers needed]] ([[ended]])
                             {{/shift_ended}}
                             {{^shift_ended}}
                               {{angels_needed}} [[helpers needed]]
