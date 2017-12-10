@@ -29,8 +29,8 @@ function admin_shifts()
     $title = '';
     $shifttype_id = null;
 
-    // Locations laden (auch unsichtbare - fuer Erzengel ist das ok)
-    $rooms = DB::select('SELECT `RID`, `Name` FROM `Room` ORDER BY `Name`');
+    // Locations laden
+    $rooms = Rooms();
     $room_array = [];
     foreach ($rooms as $room) {
         $room_array[$room['RID']] = $room['Name'];

@@ -55,6 +55,19 @@ function NeededAngelTypes_delete_by_room($room_id)
 }
 
 /**
+ * Returns all needed angeltypes by room.
+ * 
+ * @param int $room_id
+ * @return array
+ */
+function NeededAngelTypes_by_room($room_id) {
+    return DB::select(
+        'SELECT `angel_type_id`, `count` FROM `NeededAngelTypes` WHERE `room_id`=?',
+        [$room_id]
+    );
+}
+
+/**
  * Returns all needed angeltypes and already taken needs.
  *
  * @param int $shiftId id of shift

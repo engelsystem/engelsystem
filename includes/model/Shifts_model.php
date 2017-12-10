@@ -26,6 +26,12 @@ function Shifts_by_angeltype($angeltype) {
         ', [$angeltype['id'], $angeltype['id']]);
 }
 
+/**
+ * Returns all shifts with a PSID (from frab import)
+ */
+function Shifts_from_frab() {
+    return DB::select('SELECT * FROM `Shifts` WHERE `PSID` IS NOT NULL ORDER BY `start`');
+}
 
 /**
  * @param array $room

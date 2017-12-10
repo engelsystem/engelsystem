@@ -253,11 +253,10 @@ function admin_import()
             list($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
             foreach ($rooms_new as $room) {
                 $result = Room_create($room, true, null, null);
-
                 $rooms_import[trim($room)] = $result;
             }
             foreach ($rooms_deleted as $room) {
-                DB::delete('DELETE FROM `Room` WHERE `Name`=? LIMIT 1', [$room]);
+                Room_delete_by_name($room);
             }
 
             list($events_new, $events_updated, $events_deleted) = prepare_events(
@@ -378,7 +377,7 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
         ];
     }
 
-    $shifts = DB::select('SELECT * FROM `Shifts` WHERE `PSID` IS NOT NULL ORDER BY `start`');
+    $shifts = Shifts_from_frab();
     $shifts_db = [];
     foreach ($shifts as $shift) {
         $shifts_db[$shift['PSID']] = $shift;

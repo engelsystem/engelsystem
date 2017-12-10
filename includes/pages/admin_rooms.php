@@ -1,7 +1,4 @@
 <?php
-
-use Engelsystem\Database\DB;
-
 /**
  * @return string
  */
@@ -15,7 +12,7 @@ function admin_rooms_title()
  */
 function admin_rooms()
 {
-    $rooms_source = DB::select('SELECT * FROM `Room` ORDER BY `Name`');
+    $rooms_source = Rooms();
     $rooms = [];
     $request = request();
 
@@ -40,7 +37,7 @@ function admin_rooms()
         $description = null;
         $room_id = 0;
 
-        $angeltypes_source = DB::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
+        $angeltypes_source = AngelTypes();
         $angeltypes = [];
         $angeltypes_count = [];
         foreach ($angeltypes_source as $angeltype) {
@@ -60,10 +57,7 @@ function admin_rooms()
             $map_url = $room['map_url'];
             $description = $room['description'];
 
-            $needed_angeltypes = DB::select(
-                'SELECT `angel_type_id`, `count` FROM `NeededAngelTypes` WHERE `room_id`=?',
-                [$room_id]
-            );
+            $needed_angeltypes = NeededAngelTypes_by_room($room_id);
             foreach ($needed_angeltypes as $needed_angeltype) {
                 $angeltypes_count[$needed_angeltype['angel_type_id']] = $needed_angeltype['count'];
             }
@@ -74,16 +68,12 @@ function admin_rooms()
                 $valid = true;
 
                 if ($request->has('name') && strlen(strip_request_item('name')) > 0) {
-                    $name = strip_request_item('name');
-                    if (
-                        isset($room)
-                        && count(DB::select(
-                            'SELECT RID FROM `Room` WHERE `Name`=? AND NOT `RID`=?',
-                            [$name, $room_id]
-                        )) > 0
-                    ) {
+                    $result = Room_validate_name(strip_request_item('name'), $room_id);
+                    if(!$result->isValid()) {
                         $valid = false;
                         $msg .= error(_('This name is already in use.'), true);
+                    } else {
+                        $name = $result->getValue();
                     }
                 } else {
                     $valid = false;
@@ -116,38 +106,10 @@ function admin_rooms()
                 }
 
                 if ($valid) {
-                    if (!empty($room_id)) {
-                        DB::update('
-                            UPDATE `Room`
-                            SET
-                                `Name`=?,
-                                `from_frab`=?,
-                                `map_url`=?,
-                                `description`=?
-                            WHERE `RID`=?
-                            LIMIT 1
-                        ', [
-                            $name,
-                            (int) $from_frab,
-                            $map_url,
-                            $description,
-                            $room_id,
-                        ]);
-                        engelsystem_log(
-                            'Room updated: ' . $name
-                            . ', frab import: ' . ($from_frab ? 'Yes' : '')
-                            . ', map_url: ' . $map_url
-                            . ', description: ' . $description
-                        );
-                    } else {
+                    if (empty($room_id)) {
                         $room_id = Room_create($name, $from_frab, $map_url, $description);
-
-                        engelsystem_log(
-                            'Room created: ' . $name
-                            . ', frab import: ' . ($from_frab ? 'Yes' : '')
-                            . ', map_url: ' . $map_url
-                            . ', description: ' . $description
-                        );
+                    } else {
+                        Room_update($room_id, $name, $from_frab, $map_url, $description);
                     }
 
                     NeededAngelTypes_delete_by_room($room_id);
