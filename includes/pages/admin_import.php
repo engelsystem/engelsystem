@@ -310,26 +310,33 @@ function prepare_rooms($file)
     $data = read_xml($file);
 
     // Load rooms from db for compare with input
-    $rooms = DB::select('SELECT `Name`, `RID` FROM `Room` WHERE `from_frab`=TRUE');
+    $rooms = Rooms();
+    // Contains rooms from db with from_frab==true
     $rooms_db = [];
+    // Contains all rooms from db
+    $rooms_db_all = [];
+    // Contains all rooms from db and frab
     $rooms_import = [];
     foreach ($rooms as $room) {
-        $rooms_db[] = $room['Name'];
+        if($room['from_frab']) {
+            $rooms_db[] = $room['Name'];
+        }
+        $rooms_db_all[] = $room['Name'];
         $rooms_import[$room['Name']] = $room['RID'];
     }
 
     $events = $data->vcalendar->vevent;
-    $rooms_pb = [];
+    $rooms_frab = [];
     foreach ($events as $event) {
-        $rooms_pb[] = (string)$event->location;
+        $rooms_frab[] = (string)$event->location;
         if (!isset($rooms_import[trim($event->location)])) {
             $rooms_import[trim($event->location)] = trim($event->location);
         }
     }
-    $rooms_pb = array_unique($rooms_pb);
+    $rooms_frab = array_unique($rooms_frab);
 
-    $rooms_new = array_diff($rooms_pb, $rooms_db);
-    $rooms_deleted = array_diff($rooms_db, $rooms_pb);
+    $rooms_new = array_diff($rooms_frab, $rooms_db_all);
+    $rooms_deleted = array_diff($rooms_db, $rooms_frab);
 
     return [
         $rooms_new,
