@@ -26,7 +26,6 @@ function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalen
     }
     
     $tabs = [];
-    $selected = 0;
     if (! empty($room['map_url'])) {
         $tabs[_('Map')] = '<div class="map"><iframe style="width: 100%; min-height: 400px; border: 0px none;" src="' . $room['map_url'] . '"></iframe></div>';
     }
