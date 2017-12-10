@@ -194,7 +194,7 @@ function shift_entry_add_controller()
             $angeltypes[$angeltype['id']] = $angeltype['name'];
         }
         $angeltype_select = html_select_key('angeltype_id', 'angeltype_id', $angeltypes, $type['id']);
-    } elseif (in_array('shiftentry_edit_angeltype_supporter', $privileges)) {
+    } elseif (in_array('shiftentry_edit_angeltype_supporter', $privileges) && User_is_AngelType_supporter($user, $type)) {
         $users = Users_by_angeltype($type);
         $users_select = [];
         foreach ($users as $usr) {
