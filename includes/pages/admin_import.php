@@ -32,10 +32,11 @@ function admin_import()
         $step = $request->input('step');
     }
 
-    if ($test_handle = @fopen($import_dir . '/tmp', 'w')) {
+    try {
+        $test_handle = @fopen($import_dir . '/tmp', 'w');
         fclose($test_handle);
         @unlink($import_dir . '/tmp');
-    } else {
+    } catch(Exception $e) {
         error(_('Webserver has no write-permission on import directory.'));
     }
 
