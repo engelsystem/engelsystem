@@ -15,7 +15,7 @@ class RoomModelTest extends TestCase
 
     public function createRoom()
     {
-        $this->room_id = Room_create('test', false, true, '');
+        $this->room_id = Room_create('test', false, null, null);
     }
 
     public function testRoom()

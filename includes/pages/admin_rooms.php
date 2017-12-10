@@ -22,8 +22,8 @@ function admin_rooms()
     foreach ($rooms_source as $room) {
         $rooms[] = [
             'name'           => Room_name_render($room),
-            'from_pentabarf' => glyph_bool($room['FromPentabarf'] == 'Y'),
-            'public'         => glyph_bool($room['show'] == 'Y'),
+            'from_frab' => glyph_bool($room['from_frab']),
+            'map_url'         => glyph_bool(!empty($room['map_url'])),
             'actions'        => table_buttons([
                 button(page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room['RID']]), _('edit'), 'btn-xs'),
                 button(page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room['RID']]), _('delete'), 'btn-xs')
@@ -35,9 +35,9 @@ function admin_rooms()
     if ($request->has('show')) {
         $msg = '';
         $name = '';
-        $from_pentabarf = '';
-        $public = 'Y';
-        $number = '';
+        $from_frab = false;
+        $map_url = null;
+        $description = null;
         $room_id = 0;
 
         $angeltypes_source = DB::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
@@ -49,16 +49,16 @@ function admin_rooms()
         }
 
         if (test_request_int('id')) {
-            $room = Room($request->input('id'), false);
+            $room = Room($request->input('id'));
             if ($room == null) {
                 redirect(page_link_to('admin_rooms'));
             }
 
             $room_id = $request->input('id');
             $name = $room['Name'];
-            $from_pentabarf = $room['FromPentabarf'];
-            $public = $room['show'];
-            $number = $room['Number'];
+            $from_frab = $room['from_frab'];
+            $map_url = $room['map_url'];
+            $description = $room['description'];
 
             $needed_angeltypes = DB::select(
                 'SELECT `angel_type_id`, `count` FROM `NeededAngelTypes` WHERE `room_id`=?',
@@ -90,20 +90,14 @@ function admin_rooms()
                     $msg .= error(_('Please enter a name.'), true);
                 }
 
-                $from_pentabarf = '';
-                if ($request->has('from_pentabarf')) {
-                    $from_pentabarf = 'Y';
+                $from_frab = $request->has('from_frab');
+
+                if ($request->has('map_url')) {
+                    $map_url = strip_request_item('map_url');
                 }
 
-                $public = '';
-                if ($request->has('public')) {
-                    $public = 'Y';
-                }
-
-                if ($request->has('number')) {
-                    $number = strip_request_item('number');
-                } else {
-                    $valid = false;
+                if ($request->has('description')) {
+                    $description= strip_request_item_nl('description');
                 }
 
                 foreach ($angeltypes as $angeltype_id => $angeltype) {
@@ -127,33 +121,32 @@ function admin_rooms()
                             UPDATE `Room`
                             SET
                                 `Name`=?,
-                                `FromPentabarf`=?,
-                                `show`=?,
-                                `Number`=?
+                                `from_frab`=?,
+                                `map_url`=?,
+                                `description`=?
                             WHERE `RID`=?
                             LIMIT 1
                         ', [
                             $name,
-                            $from_pentabarf,
-                            $public,
-                            $number,
+                            (int) $from_frab,
+                            $map_url,
+                            $description,
                             $room_id,
                         ]);
                         engelsystem_log(
                             'Room updated: ' . $name
-                            . ', pentabarf import: ' . $from_pentabarf
-                            . ', public: ' . $public
-                            . ', number: ' . $number
+                            . ', frab import: ' . ($from_frab ? 'Yes' : '')
+                            . ', map_url: ' . $map_url
+                            . ', description: ' . $description
                         );
                     } else {
-                        $room_id = Room_create($name, $from_pentabarf, $public, $number);
+                        $room_id = Room_create($name, $from_frab, $map_url, $description);
 
                         engelsystem_log(
                             'Room created: ' . $name
-                            . ', pentabarf import: '
-                            . $from_pentabarf
-                            . ', public: ' . $public
-                            . ', number: ' . $number
+                            . ', frab import: ' . ($from_frab ? 'Yes' : '')
+                            . ', map_url: ' . $map_url
+                            . ', description: ' . $description
                         );
                     }
 
@@ -191,9 +184,11 @@ function admin_rooms()
                     div('row', [
                         div('col-md-6', [
                             form_text('name', _('Name'), $name),
-                            form_checkbox('from_pentabarf', _('Frab import'), $from_pentabarf),
-                            form_checkbox('public', _('Public'), $public),
-                            form_text('number', _('Room number'), $number)
+                            form_checkbox('from_frab', _('Frab import'), $from_frab),
+                            form_text('map_url', _('Map URL'), $map_url),
+                            form_info('', _('The map url is used to display an iframe on the room page.')),
+                            form_textarea('description', _('Description'), $description),
+                            form_info('', _('Please use markdown for the description.')),
                         ]),
                         div('col-md-6', [
                             div('row', [
@@ -239,8 +234,8 @@ function admin_rooms()
         msg(),
         table([
             'name'           => _('Name'),
-            'from_pentabarf' => _('Frab import'),
-            'public'         => _('Public'),
+            'from_frab' => _('Frab import'),
+            'map_url'         => _('Map'),
             'actions'        => ''
         ], $rooms)
     ]);

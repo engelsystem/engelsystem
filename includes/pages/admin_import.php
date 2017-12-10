@@ -251,7 +251,7 @@ function admin_import()
 
             list($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
             foreach ($rooms_new as $room) {
-                $result = Room_create($room, true, true);
+                $result = Room_create($room, true, null, null);
 
                 $rooms_import[trim($room)] = $result;
             }
@@ -309,7 +309,7 @@ function prepare_rooms($file)
     $data = read_xml($file);
 
     // Load rooms from db for compare with input
-    $rooms = DB::select('SELECT `Name`, `RID` FROM `Room` WHERE `FromPentabarf`=\'Y\'');
+    $rooms = DB::select('SELECT `Name`, `RID` FROM `Room` WHERE `from_frab`=TRUE');
     $rooms_db = [];
     $rooms_import = [];
     foreach ($rooms as $room) {
@@ -348,7 +348,7 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
     global $rooms_import;
     $data = read_xml($file);
 
-    $rooms = Rooms(true);
+    $rooms = Rooms();
     $rooms_db = [];
     foreach ($rooms as $room) {
         $rooms_db[$room['Name']] = $room['RID'];

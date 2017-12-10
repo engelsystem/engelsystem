@@ -5,12 +5,11 @@ use Engelsystem\Database\DB;
 /**
  * returns a list of rooms.
  *
- * @param boolean $show_all returns also hidden rooms when true
  * @return array
  */
-function Rooms($show_all = false)
+function Rooms()
 {
-    return DB::select('SELECT * FROM `Room`' . ($show_all ? '' : ' WHERE `show`=\'Y\'') . ' ORDER BY `Name`');
+    return DB::select('SELECT * FROM `Room` ORDER BY `Name`');
 }
 
 /**
@@ -39,21 +38,21 @@ function Room_delete($room_id)
  *
  * @param string  $name      Name of the room
  * @param boolean $from_frab Is this a frab imported room?
- * @param boolean $public    Is the room visible for angels?
- * @param int     $number    Room number
+ * @param string $map_url URL to a map tha can be displayed in an iframe
+ * @param description markdown description
  * @return false|int
  */
-function Room_create($name, $from_frab, $public, $number = null)
+function Room_create($name, $from_frab, $map_url, $description)
 {
     DB::insert('
-          INSERT INTO `Room` (`Name`, `FromPentabarf`, `show`, `Number`)
+          INSERT INTO `Room` (`Name`, `from_frab`, `map_url`, `description`)
            VALUES (?, ?, ?, ?)
         ',
         [
             $name,
-            $from_frab ? 'Y' : '',
-            $public ? 'Y' : '',
-            (int)$number,
+            (int) $from_frab,
+            $map_url,
+            $description,
         ]
     );
 
@@ -67,13 +66,12 @@ function Room_create($name, $from_frab, $public, $number = null)
  * @param bool $onlyVisible
  * @return array|false
  */
-function Room($room_id, $onlyVisible = true)
+function Room($room_id)
 {
     return DB::selectOne('
         SELECT *
         FROM `Room`
-        WHERE `RID` = ?
-        ' . ($onlyVisible ? 'AND `show` = \'Y\'' : ''),
+        WHERE `RID` = ?',
         [$room_id]
     );
 }

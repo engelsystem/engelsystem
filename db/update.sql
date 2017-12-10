@@ -35,3 +35,13 @@ ALTER TABLE `LogEntries` CHANGE COLUMN `nick` `level` VARCHAR(20) NOT NULL;
 -- Angeltype contact update
 ALTER TABLE `AngelTypes` DROP FOREIGN KEY angeltypes_ibfk_1;
 ALTER TABLE `AngelTypes` DROP `contact_user_id`;
+
+-- Room update
+ALTER TABLE `Room` DROP `Number`;
+ALTER TABLE `Room` DROP `show`;
+ALTER TABLE `Room` DROP `Man`;
+ALTER TABLE `Room` ADD `from_frab` BOOLEAN NOT NULL AFTER `FromPentabarf`;
+update Room set `from_frab`=(`FromPentabarf`='Y');
+ALTER TABLE `Room` DROP `FromPentabarf`;
+ALTER TABLE `Room` ADD `map_url` VARCHAR(300) NULL AFTER `from_frab`;
+ALTER TABLE `Room` ADD `description` TEXT NULL AFTER `map_url`;

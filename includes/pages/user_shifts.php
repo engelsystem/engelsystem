@@ -92,7 +92,7 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
 function load_rooms()
 {
     $rooms = DB::select(
-        'SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`=\'Y\' ORDER BY `Name`'
+        'SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` ORDER BY `Name`'
     );
     if (empty($rooms)) {
         error(_('The administration has not configured any rooms yet.'));
