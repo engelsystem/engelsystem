@@ -12,6 +12,7 @@ $free_pages = [
     'credits',
     'ical',
     'login',
+    'public_dashboard',
     'rooms',
     'shifts',
     'shifts_json_export',
@@ -76,6 +77,9 @@ if (
             require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
             $title = user_password_recovery_title();
             $content = user_password_recovery_controller();
+            break;
+        case 'public_dashboard':
+            list($title, $content) = public_dashboard_controller();
             break;
         case 'angeltypes':
             list($title, $content) = angeltypes_controller();
