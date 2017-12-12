@@ -5,9 +5,18 @@
  */
 function public_dashboard_view($stats, $free_shifts)
 {
-    $shift_panels = [];
-    foreach ($free_shifts as $shift) {
-        $shift_panels[] = public_dashborad_shift_render($shift);
+    $needed_angels = '';
+    if (count($free_shifts) > 0) {
+        $shift_panels = [];
+        foreach ($free_shifts as $shift) {
+            $shift_panels[] = public_dashborad_shift_render($shift);
+        }
+        $needed_angels = div('container-fluid first', [
+            div('col-xs-12', [
+                heading(_('Needed angels:'), 1)
+            ]),
+            join($shift_panels)
+        ]);
     }
     return page([
         div('first container-fluid', [
@@ -17,12 +26,7 @@ function public_dashboard_view($stats, $free_shifts)
             stats(_('Hours to be worked'), $stats['hours-to-work'], 'default'),
             '<script>$(function(){setTimeout(function(){window.location.reload();}, 60000)})</script>'
         ]),
-        div('container-fluid first', [
-            div('col-xs-12', [
-                heading(_('Needed angels:'), 1)
-            ]),
-            join($shift_panels)
-        ])
+        $needed_angels
     ]);
 }
 
