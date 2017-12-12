@@ -18,7 +18,9 @@ function public_dashboard_view($stats, $free_shifts)
             '<script>$(function(){setTimeout(function(){window.location.reload();}, 60000)})</script>'
         ]),
         div('container-fluid first', [
-            heading(_('Needed angels:'), 1),
+            div('col-xs-12', [
+                heading(_('Needed angels:'), 1)
+            ]),
             join($shift_panels)
         ])
     ]);
@@ -38,7 +40,7 @@ function public_dashborad_shift_render($shift)
     }
     
     $panel_body = glyph('time') . date('H:i', $shift['start']) . ' - ' . date('H:i', $shift['end']);
-    $panel_body .= ' (' . round(($shift['end'] - $shift['start']) / 3600) . ')';
+    $panel_body .= ' (' . round(($shift['end'] - $shift['start']) / 3600) . ' h)';
     
     $panel_body .= '<br>' . glyph('tasks') . ShiftType($shift['shifttype_id'])['name'];
     if (! empty($shift['title'])) {
