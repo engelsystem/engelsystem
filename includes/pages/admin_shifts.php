@@ -338,7 +338,9 @@ function admin_shifts()
                             $count
                         ]
                     );
-                    $needed_angel_types_info[] = $angel_type_source['name'] . ': ' . $count;
+                    if($count > 0) {
+                        $needed_angel_types_info[] = $angel_type_source['name'] . ': ' . $count;
+                    }
                 }
             }
             engelsystem_log('Shift needs following angel types: ' . join(', ', $needed_angel_types_info));
