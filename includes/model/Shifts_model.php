@@ -27,6 +27,29 @@ function Shifts_by_angeltype($angeltype) {
 }
 
 /**
+ * Returns every shift with needed angels in the given time range.
+ */
+function Shifts_free($start, $end)
+{
+    $shifts = Db::select("
+        SELECT *
+        FROM `Shifts`
+        WHERE (`end` > ? AND `start` < ?)
+        AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`)
+        > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
+        ORDER BY `start`
+        ", [
+                $start,
+                $end
+            ]);
+    $free_shifts = [];
+    foreach ($shifts as $shift) {
+        $free_shifts[] = Shift($shift['SID']);
+    }
+    return $free_shifts;
+}
+
+/**
  * Returns all shifts with a PSID (from frab import)
  */
 function Shifts_from_frab() {

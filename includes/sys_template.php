@@ -1,6 +1,31 @@
 <?php
 
 /**
+ * Render a stat for dashborad (big number with label).
+ * If no style given, style is danger if number > 0, and success if number == 0.
+ * 
+ * @param string $label
+ * @param string $number
+ * @param string $style default, warning, danger or success. Optional.
+ */
+function stats($label, $number, $style = null)
+{
+    if(empty($style)) {
+        if($number > 0) {
+            $style = 'danger';
+        } else {
+            $style = 'success';
+        }
+    }
+    return div('stats stats-' . $style, [
+        $label,
+        div('number', [
+            $number
+        ])
+    ]);
+}
+
+/**
  * Renders tabs from the array. Array key is tab name, array value is tab content.
  * 
  * @param array $tabs

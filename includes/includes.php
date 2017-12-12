@@ -22,6 +22,7 @@ $includeFiles = [
     __DIR__ . '/../includes/model/ShiftsFilter.php',
     __DIR__ . '/../includes/model/ShiftSignupState.php',
     __DIR__ . '/../includes/model/ShiftTypes_model.php',
+    __DIR__ . '/../includes/model/Stats.php',
     __DIR__ . '/../includes/model/UserAngelTypes_model.php',
     __DIR__ . '/../includes/model/UserDriverLicenses_model.php',
     __DIR__ . '/../includes/model/UserGroups_model.php',

@@ -6759,6 +6759,28 @@ body {
   line-height: 30px;
   margin: 0px;
 }
+.stats {
+  position: relative;
+  float: left;
+  width: 25%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: center;
+}
+.stats .number {
+  font-size: 80px;
+  font-weight: 200;
+}
+.stats-danger {
+  color: #d9534f;
+}
+.stats-warning {
+  color: #f0ad4e;
+}
+.stats-success {
+  color: #5cb85c;
+}
 .panel-primary .panel-heading a {
   color: #ffffff;
 }
