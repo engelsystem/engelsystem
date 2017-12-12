@@ -38,6 +38,7 @@ function public_dashborad_shift_render($shift)
     }
     
     $panel_body = glyph('time') . date('H:i', $shift['start']) . ' - ' . date('H:i', $shift['end']);
+    $panel_body .= ' (' . round(($shift['end'] - $shift['start']) / 3600) . ')';
     
     $panel_body .= '<br>' . glyph('tasks') . ShiftType($shift['shifttype_id'])['name'];
     if (! empty($shift['title'])) {
@@ -55,9 +56,11 @@ function public_dashborad_shift_render($shift)
     
     $panel_body = '<a href="' . shift_link($shift) . '">' . $panel_body . '</a>';
     
-    return div('panel panel-' . $style . ' col-xs-3', [
-        div('panel-body', [
-            heading($panel_body, 4)
+    return div('col-xs-3', [
+        div('panel panel-' . $style, [
+            div('panel-body', [
+                heading($panel_body, 4)
+            ])
         ])
     ]);
 }
