@@ -250,6 +250,7 @@ function view_user_shifts()
                 'set_last_4h'   => _('last 4h'),
                 'set_next_4h'   => _('next 4h'),
                 'set_next_8h'   => _('next 8h'),
+                'buttons'       => button(public_dashboard_link(), glyph('dashboard') . _('Public Dashboard'))
             ])
         ])
     ]);

@@ -19,4 +19,12 @@ function public_dashboard_controller()
         public_dashboard_view($stats, $free_shifts)
     ];
 }
+
+/**
+ * Returns url to public dashboard
+ */
+function public_dashboard_link()
+{
+    return page_link_to('public-dashboard');
+}
 ?>
