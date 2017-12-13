@@ -12,7 +12,7 @@ function public_dashboard_view($stats, $free_shifts)
             $shift_panels[] = public_dashborad_shift_render($shift);
         }
         $needed_angels = div('container-fluid first', [
-            div('col-xs-12', [
+            div('col-md-12', [
                 heading(_('Needed angels:'), 1)
             ]),
             join($shift_panels)
@@ -66,11 +66,11 @@ function public_dashborad_shift_render($shift)
     
     // $panel_body = '<a href="' . shift_link($shift) . '">' . $panel_body . '</a>';
     
-    return div('col-xs-3', [
+    return div('col-md-3', [
         div('dashboard-panel panel panel-' . $style, [
             div('panel-body', [
                 '<a class="panel-link" href="' . shift_link($shift) . '"></a>',
-                heading($panel_body, 4)
+                $panel_body
             ])
         ])
     ]);

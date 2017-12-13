@@ -6738,12 +6738,16 @@ body {
 }
 .stats {
   position: relative;
-  float: left;
-  width: 25%;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
   text-align: center;
+}
+@media (min-width: 992px) {
+  .stats {
+    float: left;
+    width: 25%;
+  }
 }
 .stats .number {
   font-size: 80px;
@@ -6760,6 +6764,8 @@ body {
 }
 .dashboard-panel {
   position: relative;
+  font-size: 20px;
+  color: inherit;
 }
 .dashboard-panel .panel-link {
   position: absolute;
