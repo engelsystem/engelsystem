@@ -6747,6 +6747,8 @@ body {
 }
 .stats {
   position: relative;
+  float: left;
+  width: 50%;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
@@ -6761,6 +6763,11 @@ body {
 .stats .number {
   font-size: 80px;
   font-weight: 200;
+}
+@media (max-width: 992px) {
+  .stats .number {
+    font-size: 40px;
+  }
 }
 .stats-danger {
   color: #da1639;

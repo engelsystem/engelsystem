@@ -22,13 +22,19 @@ body {
 }
 
 .stats {
-	.make-md-column(3);
+  .make-md-column(3);
+  .make-xs-column(6);
 	text-align: center;
 	
 	.number {
 	  font-size: 80px;
 	  font-weight: 200;
 	}
+	@media (max-width: @screen-md) {
+	  .number {
+	    font-size: 40px;
+	  }
+  }
 }
 
 .stats-danger {
