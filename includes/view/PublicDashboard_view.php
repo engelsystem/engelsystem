@@ -19,15 +19,24 @@ function public_dashboard_view($stats, $free_shifts)
         ]);
     }
     return page([
-        div('first container-fluid', [
-            stats(_('Angels needed in the next 3 hrs'), $stats['needed-3-hours']),
-            stats(_('Angels needed for nightshifts'), $stats['needed-night']),
-            stats(_('Angels currently working'), $stats['angels-working'], 'default'),
-            stats(_('Hours to be worked'), $stats['hours-to-work'], 'default'),
-            '<script>$(function(){setTimeout(function(){$(\'#statistics\').load(window.location.href + \' #statistics\');}, 60000)})</script>'
-        ], 'statistics'),
-        $needed_angels
-    ]);
+        div('public-dashboard', [
+            div('first container-fluid', [
+                stats(_('Angels needed in the next 3 hrs'), $stats['needed-3-hours']),
+                stats(_('Angels needed for nightshifts'), $stats['needed-night']),
+                stats(_('Angels currently working'), $stats['angels-working'], 'default'),
+                stats(_('Hours to be worked'), $stats['hours-to-work'], 'default'),
+                '<script>
+                $(function() {
+                    setInterval(function() {
+                        $(\'#public-dashboard\').parent().load(window.location.href + \' #public-dashboard\');
+                    }, 60000);
+                })
+            </script>'
+            ], 'statistics'),
+            $needed_angels
+        ], 'public-dashboard')
+    ]
+    );
 }
 
 /**
@@ -56,11 +65,7 @@ function public_dashborad_shift_render($shift)
     foreach ($shift['NeedAngels'] as $needed_angels) {
         $need = $needed_angels['count'] - $needed_angels['taken'];
         if ($need > 0) {
-            $panel_body .= 
-                '<br>' . glyph('user') . 
-                '<span class="text-' . $style . '">' . 
-                $need . ' &times; ' . AngelType($needed_angels['TID'])['name'] . 
-                '</span>';
+            $panel_body .= '<br>' . glyph('user') . '<span class="text-' . $style . '">' . $need . ' &times; ' . AngelType($needed_angels['TID'])['name'] . '</span>';
         }
     }
     
