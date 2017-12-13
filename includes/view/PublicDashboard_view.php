@@ -56,15 +56,20 @@ function public_dashborad_shift_render($shift)
     foreach ($shift['NeedAngels'] as $needed_angels) {
         $need = $needed_angels['count'] - $needed_angels['taken'];
         if ($need > 0) {
-            $panel_body .= '<br>' . glyph('user') . $need . ' &times; ' . AngelType($needed_angels['TID'])['name'];
+            $panel_body .= 
+                '<br>' . glyph('user') . 
+                '<span class="text-' . $style . '">' . 
+                $need . ' &times; ' . AngelType($needed_angels['TID'])['name'] . 
+                '</span>';
         }
     }
     
-    $panel_body = '<a href="' . shift_link($shift) . '">' . $panel_body . '</a>';
+    // $panel_body = '<a href="' . shift_link($shift) . '">' . $panel_body . '</a>';
     
     return div('col-xs-3', [
-        div('panel panel-' . $style, [
+        div('dashboard-panel panel panel-' . $style, [
             div('panel-body', [
+                '<a class="panel-link" href="' . shift_link($shift) . '"></a>',
                 heading($panel_body, 4)
             ])
         ])

@@ -6758,6 +6758,29 @@ body {
 .stats-success {
   color: #5cb85c;
 }
+.dashboard-panel {
+  position: relative;
+}
+.dashboard-panel .panel-link {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-decoration: none;
+  /* No underlines on the link */
+  z-index: 10;
+  /* Places the link above everything else in the div */
+  background-color: #337ab7;
+  /* Fix to make div clickable in IE */
+  opacity: 0;
+  /* Fix to make div clickable in IE */
+  filter: alpha(opacity=1);
+  /* Fix to make div clickable in IE */
+}
+.dashboard-panel .panel-link:hover {
+  opacity: 0.3;
+}
 .panel-primary .panel-heading a {
   color: #ffffff;
 }
