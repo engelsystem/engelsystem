@@ -1,7 +1,5 @@
 <?php
 
-use Engelsystem\Database\DB;
-
 /**
  * @return string
  */
@@ -82,6 +80,7 @@ function admin_import()
                 if (isset($_FILES['xcal_file']) && ($_FILES['xcal_file']['error'] == 0)) {
                     if (move_uploaded_file($_FILES['xcal_file']['tmp_name'], $import_file)) {
                         libxml_use_internal_errors(true);
+                        libxml_disable_entity_loader(true);
                         if (simplexml_load_file($import_file) === false) {
                             $valid = false;
                             error(_('No valid xml/xcal file provided.'));
@@ -425,6 +424,8 @@ function read_xml($file)
 {
     global $xml_import;
     if (!isset($xml_import)) {
+        libxml_use_internal_errors(true);
+        libxml_disable_entity_loader(true);
         $xml_import = simplexml_load_file($file);
     }
     return $xml_import;
