@@ -11,7 +11,7 @@ function public_dashboard_view($stats, $free_shifts)
         foreach ($free_shifts as $shift) {
             $shift_panels[] = public_dashborad_shift_render($shift);
         }
-        $needed_angels = div('container-fluid first', [
+        $needed_angels = div('first', [
             div('col-md-12', [
                 heading(_('Needed angels:'), 1)
             ]),
@@ -20,7 +20,7 @@ function public_dashboard_view($stats, $free_shifts)
     }
     return page([
         div('public-dashboard', [
-            div('first container-fluid', [
+            div('first', [
                 stats(_('Angels needed in the next 3 hrs'), $stats['needed-3-hours']),
                 stats(_('Angels needed for nightshifts'), $stats['needed-night']),
                 stats(_('Angels currently working'), $stats['angels-working'], 'default'),
@@ -33,10 +33,17 @@ function public_dashboard_view($stats, $free_shifts)
                 })
             </script>'
             ], 'statistics'),
-            $needed_angels
+            $needed_angels,
+            div('col-md-12', [
+                buttons([
+                    button_js('
+                        $(\'#navbar-collapse-1,#footer,#fullscreen-button\').remove();
+                        $(\'.navbar-brand\').append(\' ' . _('Public Dashboard') . '\');
+                        ', glyph('fullscreen') . _('Fullscreen'))
+                ])
+            ], 'fullscreen-button')
         ], 'public-dashboard')
-    ]
-    );
+    ]);
 }
 
 /**

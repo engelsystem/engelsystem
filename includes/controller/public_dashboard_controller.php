@@ -15,7 +15,7 @@ function public_dashboard_controller()
     $free_shifts = Shifts_free(time(), time() + 12 * 60 * 60);
     
     return [
-        _('Engelsystem Public Dashboard'),
+        _('Public Dashboard'),
         public_dashboard_view($stats, $free_shifts)
     ];
 }

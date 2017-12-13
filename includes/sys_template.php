@@ -355,6 +355,19 @@ function button($href, $label, $class = '')
 }
 
 /**
+ * Rendert einen Knopf mit JavaScript onclick Handler
+ *
+ * @param string $javascript
+ * @param string $label
+ * @param string $class
+ * @return string
+ */
+function button_js($javascript, $label, $class = '')
+{
+    return '<a onclick="' . $javascript . '" href="#" class="btn btn-default ' . $class . '">' . $label . '</a>';
+}
+
+/**
  * Rendert einen Knopf mit Glyph
  *
  * @param string $href
