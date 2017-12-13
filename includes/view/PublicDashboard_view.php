@@ -24,8 +24,8 @@ function public_dashboard_view($stats, $free_shifts)
             stats(_('Angels needed for nightshifts'), $stats['needed-night']),
             stats(_('Angels currently working'), $stats['angels-working'], 'default'),
             stats(_('Hours to be worked'), $stats['hours-to-work'], 'default'),
-            '<script>$(function(){setTimeout(function(){window.location.reload();}, 60000)})</script>'
-        ]),
+            '<script>$(function(){setTimeout(function(){$(\'#statistics\').load(window.location.href + \' #statistics\');}, 60000)})</script>'
+        ], 'statistics'),
         $needed_angels
     ]);
 }
