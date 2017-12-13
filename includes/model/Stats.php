@@ -54,9 +54,7 @@ function stats_angels_needed_three_hours()
             - (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
             ) as `count`
         FROM `Shifts`
-        WHERE ((`end` > ? AND `end` < ?) OR (`start` > ? AND `start` < ?))", [
-        $now,
-        $in3hours,
+        WHERE `end` > ? AND `start` < ?", [
         $now,
         $in3hours
     ]);
@@ -79,9 +77,7 @@ function stats_angels_needed_for_nightshifts()
             - (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
             ) as `count`
         FROM `Shifts`
-        WHERE ((`end` > ? AND `end` < ?) OR (`start` > ? AND `start` < ?))", [
-        $night_start,
-        $night_end,
+        WHERE `end` > ? AND `start` < ?", [
         $night_start,
         $night_end
     ]);
