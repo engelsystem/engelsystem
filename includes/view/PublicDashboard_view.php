@@ -34,7 +34,7 @@ function public_dashboard_view($stats, $free_shifts)
             </script>'
             ], 'statistics'),
             $needed_angels,
-            div('col-md-12', [
+            div('first col-md-12 text-center', [
                 buttons([
                     button_js('
                         $(\'#navbar-collapse-1,#footer,#fullscreen-button\').remove();
