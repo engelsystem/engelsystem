@@ -35,7 +35,7 @@ function stats_hours_to_work()
             WHERE `end` >= ?
             AND `Shifts`.`PSID` IS NULL
         
-            UNION
+            UNION ALL
         
             SELECT
                 (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID`)
@@ -71,7 +71,7 @@ function stats_angels_needed_three_hours()
             WHERE `end` > ? AND `start` < ?
             AND `Shifts`.`PSID` IS NULL
         
-            UNION
+            UNION ALL
         
             SELECT
                 (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID`)
@@ -109,7 +109,7 @@ function stats_angels_needed_for_nightshifts()
             WHERE `end` > ? AND `start` < ?
             AND `Shifts`.`PSID` IS NULL
         
-            UNION
+            UNION ALL
         
             SELECT
                 (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID`)

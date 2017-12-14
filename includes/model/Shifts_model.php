@@ -38,6 +38,7 @@ function Shifts_free($start, $end)
             WHERE (`end` > ? AND `start` < ?)
             AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`)
             > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
+            AND `Shifts`.`PSID` IS NULL
         
             UNION
         
@@ -46,6 +47,7 @@ function Shifts_free($start, $end)
             WHERE (`end` > ? AND `start` < ?)
             AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID`)
             > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
+            AND NOT `Shifts`.`PSID` IS NULL
         ) as `tmp`
         ORDER BY `tmp`.`start`
         ", [
