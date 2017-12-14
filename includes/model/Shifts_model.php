@@ -32,13 +32,25 @@ function Shifts_by_angeltype($angeltype) {
 function Shifts_free($start, $end)
 {
     $shifts = Db::select("
-        SELECT *
-        FROM `Shifts`
-        WHERE (`end` > ? AND `start` < ?)
-        AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`)
-        > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
-        ORDER BY `start`
+        SELECT * FROM (
+            SELECT *
+            FROM `Shifts`
+            WHERE (`end` > ? AND `start` < ?)
+            AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`)
+            > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
+        
+            UNION
+        
+            SELECT *
+            FROM `Shifts`
+            WHERE (`end` > ? AND `start` < ?)
+            AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID`)
+            > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
+        ) as `tmp`
+        ORDER BY `tmp`.`start`
         ", [
+                $start,
+                $end,
                 $start,
                 $end
             ]);
