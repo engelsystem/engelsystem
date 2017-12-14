@@ -33,16 +33,16 @@ function public_dashboard_view($stats, $free_shifts)
                 })
             </script>'
             ], 'statistics'),
-            $needed_angels,
-            div('first col-md-12 text-center', [
-                buttons([
-                    button_js('
+            $needed_angels
+        ], 'public-dashboard'),
+        div('first col-md-12 text-center', [
+            buttons([
+                button_js('
                         $(\'#navbar-collapse-1,#footer,#fullscreen-button\').remove();
                         $(\'.navbar-brand\').append(\' ' . _('Public Dashboard') . '\');
                         ', glyph('fullscreen') . _('Fullscreen'))
-                ])
-            ], 'fullscreen-button')
-        ], 'public-dashboard')
+            ])
+        ], 'fullscreen-button')
     ]);
 }
 
