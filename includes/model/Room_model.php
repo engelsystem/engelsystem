@@ -54,9 +54,11 @@ function Room_ids()
  */
 function Room_delete($room_id)
 {
+    $room = Room($room_id);
     DB::delete('DELETE FROM `Room` WHERE `RID` = ?', [
         $room_id
     ]);
+    engelsystem_log('Room deleted: ' . $room['Name']);
 }
 
 /**
@@ -69,6 +71,7 @@ function Room_delete_by_name($name)
     DB::delete('DELETE FROM `Room` WHERE `Name` = ?', [
         $name
     ]);
+    engelsystem_log('Room deleted: ' . $name);
 }
 
 /**
