@@ -149,7 +149,9 @@ function shift_edit_controller()
             $needed_angel_types_info = [];
             foreach ($needed_angel_types as $type_id => $count) {
                 NeededAngelType_add($shift_id, $type_id, null, $count);
-                $needed_angel_types_info[] = $angeltypes[$type_id] . ': ' . $count;
+                if($count > 0) {
+                    $needed_angel_types_info[] = $angeltypes[$type_id] . ': ' . $count;
+                }
             }
 
             engelsystem_log(
