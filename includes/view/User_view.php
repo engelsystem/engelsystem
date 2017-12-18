@@ -338,8 +338,12 @@ function User_view_myshift($shift, $user_source, $its_me)
         'time'       => date('H:i', $shift['start']) . ' - ' . date('H:i', $shift['end']),
         'room'       => $shift['Name'],
         'shift_info' => $shift_info,
-        'comment'    => $shift['Comment']
+        'comment'    => ''
     ];
+    
+    if($its_me) {
+        $myshift['comment'] = $shift['Comment'];
+    }
 
     if ($shift['freeloaded']) {
         if (in_array('user_shifts_admin', $privileges)) {
