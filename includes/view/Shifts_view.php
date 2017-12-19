@@ -78,7 +78,7 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
     }
 
     if ($angeltype['shift_signup_state']->isSignupAllowed()) {
-        return button(shift_entry_create_link($shift, $angeltype),  _('Sign up'));
+        return button(shift_entry_create_link($shift, $angeltype), _('Sign up'));
     } elseif ($user_angeltype == null) {
         return button(
             page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),

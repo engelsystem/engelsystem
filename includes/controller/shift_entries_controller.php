@@ -179,6 +179,24 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
 }
 
 /**
+ * Generates an error message for the given shift signup state.
+ * @param ShiftSignupState $shift_signup_state
+ */
+function shift_entry_error_message(ShiftSignupState $shift_signup_state) {
+    if ($shift_signup_state->getState() == ShiftSignupState::ANGELTYPE) {
+        error(_('You need be accepted member of the angeltype.'));
+    } elseif ($shift_signup_state->getState() == ShiftSignupState::COLLIDES) {
+        error(_('This shift collides with one of your shifts.'));
+    } elseif ($shift_signup_state->getState() == ShiftSignupState::OCCUPIED) {
+        error(_('This shift is already occupied.'));
+    } elseif ($shift_signup_state->getState() == ShiftSignupState::SHIFT_ENDED) {
+        error(_('This shift ended already.'));
+    } elseif ($shift_signup_state->getState() == ShiftSignupState::SIGNED_UP) {
+        error(_('You are signed up for this shift.'));
+    }
+}
+
+/**
  * Sign up for a shift.
  * Case: User
  *
@@ -193,21 +211,9 @@ function shift_entry_create_controller_user($shift, $angeltype)
     $signup_user = $user;
     $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
     $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['id']);
-    
     $shift_signup_state = Shift_signup_allowed($signup_user, $shift, $angeltype, null, null, $needed_angeltype, $shift_entries);
-    
     if (! $shift_signup_state->isSignupAllowed()) {
-        if ($shift_signup_state->getState() == ShiftSignupState::ANGELTYPE) {
-            error(_('You need be accepted member of the angeltype.'));
-        } elseif ($shift_signup_state->getState() == ShiftSignupState::COLLIDES) {
-            error(_('This shift collides with one of your shifts.'));
-        } elseif ($shift_signup_state->getState() == ShiftSignupState::OCCUPIED) {
-            error(_('This shift is already occupied.'));
-        } elseif ($shift_signup_state->getState() == ShiftSignupState::SHIFT_ENDED) {
-            error(_('This shift ended already.'));
-        } elseif ($shift_signup_state->getState() == ShiftSignupState::SIGNED_UP) {
-            error(_('You are signed up for this shift.'));
-        }
+        shift_entry_error_message($shift_signup_state);
         redirect(shift_link($shift));
     }
     
