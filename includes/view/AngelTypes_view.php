@@ -50,14 +50,14 @@ function AngelType_delete_view($angeltype)
     return page_with_title(sprintf(_('Delete angeltype %s'), $angeltype['name']), [
         info(sprintf(_('Do you want to delete angeltype %s?'), $angeltype['name']), true),
         buttons([
-            button(page_link_to('angeltypes'), _('cancel'), 'cancel'),
+            button(page_link_to('angeltypes'), glyph('remove') . _('cancel')),
             button(
                 page_link_to(
                     'angeltypes',
                     ['action' => 'delete', 'angeltype_id' => $angeltype['id'], 'confirmed' => 1]
                 ),
-                _('delete'),
-                'ok'
+                glyph('ok') . _('delete'),
+                'btn-danger'
             )
         ])
     ]);
@@ -153,7 +153,7 @@ function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, 
         }
         $buttons[] = button(
             page_link_to('user_angeltypes', ['action' => 'delete', 'user_angeltype_id' => $user_angeltype['id']]),
-            _('leave'), 'cancel'
+            _('leave')
         );
     }
 
@@ -442,13 +442,11 @@ function AngelType_view_info(
         $info[] = buttons([
             button(
                 page_link_to('user_angeltypes', ['action' => 'confirm_all', 'angeltype_id' => $angeltype['id']]),
-                _('confirm all'),
-                'ok'
+                glyph('ok') . _('confirm all')
                 ),
             button(
                 page_link_to('user_angeltypes', ['action' => 'delete_all', 'angeltype_id' => $angeltype['id']]),
-                _('deny all'),
-                'cancel'
+                glyph('remove') . _('deny all')
                 )
         ]);
         $info[] = table($table_headers, $members_unconfirmed);
@@ -523,8 +521,7 @@ function AngelTypes_about_view_angeltype($angeltype)
                     'user_angeltypes',
                     ['action' => 'delete', 'user_angeltype_id' => $angeltype['user_angeltype_id']]
                 ),
-                _('leave'),
-                'cancel'
+                _('leave')
             );
         } else {
             $buttons[] = button(

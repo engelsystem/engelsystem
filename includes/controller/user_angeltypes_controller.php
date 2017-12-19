@@ -90,13 +90,7 @@ function user_angeltypes_confirm_all_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
-    if ($user_angeltype == null) {
-        error(_('User angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
-    }
-
-    if (!in_array('admin_user_angeltypes', $privileges) && !$user_angeltype['supporter']) {
+    if (!in_array('admin_user_angeltypes', $privileges) && !User_is_AngelType_supporter($user, $angeltype)) {
         error(_('You are not allowed to confirm all users for this angeltype.'));
         redirect(page_link_to('angeltypes'));
     }

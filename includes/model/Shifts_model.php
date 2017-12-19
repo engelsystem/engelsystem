@@ -403,6 +403,38 @@ function Shift_signup_allowed_admin($needed_angeltype, $shift_entries)
 }
 
 /**
+ * Check if an angel can signout from a shift.
+ * 
+ * @param $shift The shift
+ * @param $angeltype The angeltype
+ * @param $signout_user The user that was signed up for the shift
+ * 
+ * @return bool
+ */
+function Shift_signout_allowed($shift, $angeltype, $signout_user) {
+    global $user, $privileges;
+    
+    // user shifts admin can sign out any user at any time
+    if (in_array('user_shifts_admin', $privileges)) {
+        return true;
+    }
+    
+    // angeltype supporter can sign out any user at any time from their supported angeltype
+    if (
+        in_array('shiftentry_edit_angeltype_supporter', $privileges)
+        && User_is_AngelType_supporter($user, $angeltype)
+        ) {
+        return true;
+    }
+    
+    if($signout_user['UID'] == $user['UID'] && $shift['start'] > time() + config('last_unsubscribe') * 3600) {
+        return true;
+    }
+    
+    return false;
+}
+
+/**
  * Check if an angel can sign up for given shift.
  *
  * @param array      $signup_user

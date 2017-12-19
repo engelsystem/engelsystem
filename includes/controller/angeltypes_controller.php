@@ -40,11 +40,13 @@ function angeltypes_controller()
  * Path to angeltype view.
  *
  * @param int $angeltype_id AngelType id
+ * @param array $params additional params
  * @return string
  */
-function angeltype_link($angeltype_id)
+function angeltype_link($angeltype_id, $params = [])
 {
-    return page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype_id]);
+    $params = array_merge(['action' => 'view', 'angeltype_id' => $angeltype_id], $params);
+    return page_link_to('angeltypes', $params);
 }
 
 /**

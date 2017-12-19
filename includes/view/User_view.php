@@ -363,19 +363,9 @@ function User_view_myshift($shift, $user_source, $its_me)
             'btn-xs'
         );
     }
-    if (
-        ($shift['start'] > time() + config('last_unsubscribe') * 3600)
-        || in_array('user_shifts_admin', $privileges)
-    ) {
-        $parameters = [
-            'cancel' => $shift['id'],
-            'id'     => $user_source['UID'],
-        ];
-        if ($its_me) {
-            $parameters['id'] = '';
-        }
+    if (Shift_signout_allowed($shift, ['id' => $shift['TID']], $user_source)) {
         $myshift['actions'][] = button(
-            page_link_to('user_myshifts', $parameters),
+            ShiftEntry_delete_link($shift),
             glyph('trash') . _('sign off'),
             'btn-xs'
         );

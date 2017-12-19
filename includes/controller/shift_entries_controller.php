@@ -233,58 +233,49 @@ function shift_entry_add_controller()
 }
 
 /**
+ * Load a shift entry from get parameter entry_id.
+ */
+function shift_entry_load() {
+    $request = request();
+
+    if (!$request->has('entry_id') || !test_request_int('entry_id')) {
+        redirect(page_link_to('user_shifts'));
+    }
+    $shiftEntry = ShiftEntry($request->input('entry_id'));
+    if($shiftEntry == null) {
+        error(_('Shift entry not found.'));
+        redirect(page_link_to('user_shifts'));
+    }
+    
+    return $shiftEntry;
+}
+
+/**
  * Remove somebody from a shift.
  */
 function shift_entry_delete_controller()
 {
     global $privileges, $user;
     $request = request();
+    $shiftEntry = shift_entry_load();
 
-    if (!$request->has('entry_id') || !test_request_int('entry_id')) {
-        redirect(page_link_to('user_shifts'));
+    $shift = Shift($shiftEntry['SID']);
+    $angeltype = AngelType($shiftEntry['TID']);
+    $signout_user = User($shiftEntry['UID']);
+    if(!Shift_signout_allowed($shift, $angeltype, $signout_user)) {
+        error(_('You are not allowed to remove this shift entry. If neccessary, ask your supporter or heaven to do so.'));
+        redirect(user_link($signout_user));
     }
-    $entry_id = $request->input('entry_id');
-
-    $shift_entry_source = DB::selectOne('
-        SELECT
-            `User`.`Nick`,
-            `User`.`Gekommen`,
-            `ShiftEntry`.`Comment`,
-            `ShiftEntry`.`UID`,
-            `ShiftTypes`.`name`,
-            `Shifts`.*,
-            `Room`.`Name`,
-            `AngelTypes`.`name` AS `angel_type`,
-            `AngelTypes`.`id` AS `angeltype_id`
-        FROM `ShiftEntry`
-        JOIN `User` ON (`User`.`UID`=`ShiftEntry`.`UID`)
-        JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`)
-        JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
-        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`)
-        WHERE `ShiftEntry`.`id`=?',
-        [$entry_id]
-    );
-    if (!empty($shift_entry_source)) {
-        if (!in_array('user_shifts_admin', $privileges) && (!in_array('shiftentry_edit_angeltype_supporter',
-                    $privileges) || !User_is_AngelType_supporter($user, AngelType($shift_entry_source['angeltype_id'])))
-        ) {
-            redirect(page_link_to('user_shifts'));
-        }
-
-        ShiftEntry_delete($entry_id);
-
-        engelsystem_log(
-            'Deleted ' . User_Nick_render($shift_entry_source) . '\'s shift: ' . $shift_entry_source['name']
-            . ' at ' . $shift_entry_source['Name']
-            . ' from ' . date('Y-m-d H:i', $shift_entry_source['start'])
-            . ' to ' . date('Y-m-d H:i', $shift_entry_source['end'])
-            . ' as ' . $shift_entry_source['angel_type']
-        );
-        success(_('Shift entry deleted.'));
-    } else {
-        error(_('Entry not found.'));
+    
+    if($request->has('continue')) {
+        ShiftEntry_delete($shiftEntry);
+        success(_('Shift entry removed.'));
+        redirect(shift_link($shift));
     }
 
-    redirect(shift_link($shift_entry_source));
+    if($user['UID'] == $signout_user['UID']) {
+        return ShiftEntry_delete_view($shiftEntry, $shift, $angeltype, $signout_user);
+    }
+    
+    return ShiftEntry_delete_view_admin($shiftEntry, $shift, $angeltype, $signout_user);
 }

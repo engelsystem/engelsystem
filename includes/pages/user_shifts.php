@@ -31,8 +31,7 @@ function user_shifts()
 
     // Löschen einzelner Schicht-Einträge (Also Belegung einer Schicht von Engeln) durch Admins
     if ($request->has('entry_id')) {
-        shift_entry_delete_controller();
-        return '';
+        return shift_entry_delete_controller();
     } elseif ($request->has('edit_shift')) {
         return shift_edit_controller();
     } elseif ($request->has('delete_shift')) {

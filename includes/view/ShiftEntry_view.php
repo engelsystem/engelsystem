@@ -1,6 +1,77 @@
 <?php
 
 /**
+ * Sign off from an user from a shift with admin permissions, asking for ack.
+ *
+ * @param array $shiftEntry
+ * @param array $shift
+ * @param array $angeltype
+ * @param array $signoff_user
+ *
+ * @return string HTML
+ */
+function ShiftEntry_delete_view_admin($shiftEntry, $shift, $angeltype, $signoff_user) {
+    return page_with_title(ShiftEntry_delete_title(), [
+        info(sprintf(
+            _('Do you want to sign off %s from shift %s from %s to %s as %s?'), 
+            User_Nick_render($signoff_user),
+            $shift['name'],
+            date('Y-m-d H:i', $shift['start']),
+            date('Y-m-d H:i', $shift['end']),
+            $angeltype['name']
+        ), true),
+        buttons([
+            button(user_link($signoff_user), glyph('remove') . _('cancel')),
+            button(ShiftEntry_delete_link($shiftEntry, ['continue' => 1]), glyph('ok') . _('delete'), 'btn-danger')
+        ])
+    ]);
+}
+
+/**
+ * Sign off from a shift, asking for ack.
+ * 
+ * @param array $shiftEntry
+ * @param array $shift
+ * @param array $angeltype
+ * @param array $signoff_user
+ * 
+ * @return string HTML
+ */
+function ShiftEntry_delete_view($shiftEntry, $shift, $angeltype, $signoff_user) {
+    return page_with_title(ShiftEntry_delete_title(), [
+        info(sprintf(
+            _('Do you want to sign off from your shift %s from %s to %s as %s?'), 
+            $shift['name'],
+            date('Y-m-d H:i', $shift['start']),
+            date('Y-m-d H:i', $shift['end']),
+            $angeltype['name']
+        ), true),
+        buttons([
+            button(user_link($signoff_user), glyph('remove') . _('cancel')),
+            button(ShiftEntry_delete_link($shiftEntry, ['continue' => 1]), glyph('ok') . _('delete'), 'btn-danger')
+        ])
+    ]);
+}
+
+/**
+ * Link to delete a shift entry.
+ * @param array $shiftEntry
+ * 
+ * @return string URL
+ */
+function ShiftEntry_delete_link($shiftEntry, $params = []) {
+    $params = array_merge(['entry_id' => $shiftEntry['id']], $params);
+    return page_link_to('user_shifts', $params);
+}
+
+/**
+ * Title for deleting a shift entry.
+ */
+function ShiftEntry_delete_title() {
+    return _('Shift sign off');
+}
+
+/**
  * Display form for adding/editing a shift entry.
  *
  * @param string $angel

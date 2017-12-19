@@ -134,13 +134,26 @@ function ShiftEntry($shift_entry_id)
 /**
  * Delete a shift entry.
  *
- * @param int $shift_entry_id
+ * @param array $shiftEntry
  */
-function ShiftEntry_delete($shift_entry_id)
+function ShiftEntry_delete($shiftEntry)
 {
-    $shift_entry = ShiftEntry($shift_entry_id);
-    mail_shift_removed(User($shift_entry['UID']), Shift($shift_entry['SID']));
+    mail_shift_removed(User($shiftEntry['UID']), Shift($shiftEntry['SID']));
     DB::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
+    
+    $signout_user = User($shiftEntry['UID']);
+    $shift = Shift($shiftEntry['SID']);
+    $shifttype = ShiftType($shift['shifttype_id']);
+    $room = Room($shift['RID']);
+    $angeltype = AngelType($shiftEntry['TID']);
+    
+    engelsystem_log(
+        'Shift signout: '. User_Nick_render($signout_user) . ' from shift ' . $shifttype['name']
+        . ' at ' . $room['Name']
+        . ' from ' . date('Y-m-d H:i', $shift['start'])
+        . ' to ' . date('Y-m-d H:i', $shift['end'])
+        . ' as ' . $angeltype['name']
+        );
 }
 
 /**
