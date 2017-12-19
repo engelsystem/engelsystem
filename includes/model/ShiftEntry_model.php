@@ -139,7 +139,7 @@ function ShiftEntry($shift_entry_id)
 function ShiftEntry_delete($shiftEntry)
 {
     mail_shift_removed(User($shiftEntry['UID']), Shift($shiftEntry['SID']));
-    DB::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
+    DB::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shiftEntry['id']]);
     
     $signout_user = User($shiftEntry['UID']);
     $shift = Shift($shiftEntry['SID']);
