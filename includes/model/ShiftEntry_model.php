@@ -74,8 +74,10 @@ function ShiftEntries_by_shift($shift_id)
  */
 function ShiftEntry_create($shift_entry)
 {
-    mail_shift_assign(User($shift_entry['UID']), Shift($shift_entry['SID']));
-    return DB::insert('
+    $user = User($shift_entry['UID']);
+    $shift = Shift($shift_entry['SID']);
+    mail_shift_assign($user, $shift);
+    $result = DB::insert('
           INSERT INTO `ShiftEntry` (
               `SID`,
               `TID`,
@@ -95,6 +97,13 @@ function ShiftEntry_create($shift_entry)
             (int)$shift_entry['freeloaded'],
         ]
     );
+    engelsystem_log(
+        'User ' . User_Nick_render($user)
+        . ' signed up for shift ' . $shift['name']
+        . ' from ' . date('Y-m-d H:i', $shift['start'])
+        . ' to ' . date('Y-m-d H:i', $shift['end'])
+        );
+    return $result;
 }
 
 /**

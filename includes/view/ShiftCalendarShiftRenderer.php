@@ -125,8 +125,7 @@ class ShiftCalendarShiftRenderer
 
         if (in_array('user_shifts_admin', $privileges)) {
             $html .= '<li class="list-group-item">';
-            $html .= button(
-                    page_link_to('user_shifts', ['shift_id' => $shift['SID']]),
+            $html .= button(shift_entry_create_link_admin($shift),
                     glyph('plus') . _('Add more angels'),
                     'btn-xs'
                 );
@@ -172,12 +171,12 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::FREE:
                 // When admin or free display a link + button for sign up
                 $entry_list[] = '<a href="'
-                    . page_link_to('user_shifts', ['shift_id' => $shift['SID'], 'type_id' => $angeltype['id']])
+                    . shift_entry_create_link($shift, $angeltype)
                     . '">'
                     . $inner_text
                     . '</a> '
                     . button(
-                        page_link_to('user_shifts', ['shift_id' => $shift['SID'], 'type_id' => $angeltype['id']]),
+                        shift_entry_create_link($shift, $angeltype),
                         _('Sign up'), 'btn-xs btn-primary'
                     );
                 break;

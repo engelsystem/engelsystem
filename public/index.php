@@ -14,6 +14,7 @@ $free_pages = [
     'login',
     'public_dashboard',
     'rooms',
+    'shift_entries',
     'shifts',
     'shifts_json_export',
     'shifts_json_export_all',
@@ -83,6 +84,9 @@ if (
             break;
         case 'angeltypes':
             list($title, $content) = angeltypes_controller();
+            break;
+        case 'shift_entries':
+            list($title, $content) = shift_entries_controller();
             break;
         case 'shifts':
             list($title, $content) = shifts_controller();

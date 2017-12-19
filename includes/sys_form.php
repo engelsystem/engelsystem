@@ -208,7 +208,7 @@ function form_info($label, $text = '')
 function form_submit($name, $label)
 {
     return form_element(
-        '<input class="btn btn-primary" type="submit" name="' . $name . '" value="' . $label . '" />',
+        '<button class="btn btn-primary" type="submit" name="' . $name . '">' . $label . '</button>',
         ''
     );
 }

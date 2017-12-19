@@ -365,7 +365,7 @@ function User_view_myshift($shift, $user_source, $its_me)
     }
     if (Shift_signout_allowed($shift, ['id' => $shift['TID']], $user_source)) {
         $myshift['actions'][] = button(
-            ShiftEntry_delete_link($shift),
+            shift_entry_delete_link($shift),
             glyph('trash') . _('sign off'),
             'btn-xs'
         );

@@ -29,15 +29,10 @@ function user_shifts()
         redirect(page_link_to('user_myshifts'));
     }
 
-    // Löschen einzelner Schicht-Einträge (Also Belegung einer Schicht von Engeln) durch Admins
-    if ($request->has('entry_id')) {
-        return shift_entry_delete_controller();
-    } elseif ($request->has('edit_shift')) {
+    if ($request->has('edit_shift')) {
         return shift_edit_controller();
     } elseif ($request->has('delete_shift')) {
         return shift_delete_controller();
-    } elseif ($request->has('shift_id')) {
-        return shift_entry_add_controller();
     }
     return view_user_shifts();
 }
