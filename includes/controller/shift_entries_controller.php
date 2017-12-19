@@ -123,7 +123,7 @@ function shift_entry_add_controller()
             'SELECT `id` FROM `ShiftEntry` WHERE `SID`= ? AND `UID` = ?',
             [$shift['SID'], $user_id]))
         ) {
-            return error('This angel does already have an entry for this shift.', true);
+            return error(_('This angel does already have an entry for this shift.'), true);
         }
 
         $freeloaded = isset($shift['freeloaded']) ? $shift['freeloaded'] : false;
