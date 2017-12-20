@@ -42,7 +42,12 @@ class ShiftSignupState
      * User is already signed up
      */
     const SIGNED_UP = 'SIGNED_UP';
-
+    
+    /**
+     * User has to be arrived
+     */
+    const NOT_ARRIVED = 'NOT_ARRIVED';
+    
     /** @var string */
     private $state;
 
@@ -83,6 +88,7 @@ class ShiftSignupState
     private function valueForState($state)
     {
         switch ($state) {
+            case ShiftSignupState::NOT_ARRIVED:
             case ShiftSignupState::SHIFT_ENDED:
                 return 100;
 

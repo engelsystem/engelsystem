@@ -312,7 +312,7 @@ function Shift_signup_allowed_angel(
     $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
 
     if (config('signup_requires_arrival') && !$user['Gekommen']) {
-        return new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, $free_entries);
+        return new ShiftSignupState(ShiftSignupState::NOT_ARRIVED, $free_entries);
     }
 
     if ($user_shifts == null) {
