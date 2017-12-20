@@ -79,7 +79,7 @@ function user_meetings()
  */
 function news_text($news) {
     $text = ReplaceSmilies($news['Text']);
-    $text = str_replace("\n\n", '<br><br>', $text);
+    $text = preg_replace("@\n[\w]*\n@m", '<br><br>', $text);
     return $text;
 }
 
