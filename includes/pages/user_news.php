@@ -72,6 +72,18 @@ function user_meetings()
 }
 
 /**
+ * Renders the text content of a news entry
+ * 
+ * @param array $news
+ * @return string HTML
+ */
+function news_text($news) {
+    $text = ReplaceSmilies($news['Text']);
+    $text = str_replace("\n\n", '<br><br>', $text);
+    return $text;
+}
+
+/**
  * @param array $news
  * @return string
  */
@@ -84,7 +96,7 @@ function display_news($news)
     $html .= '<div class="panel-heading">';
     $html .= '<h3 class="panel-title">' . ($news['Treffen'] == 1 ? '[Meeting] ' : '') . ReplaceSmilies($news['Betreff']) . '</h3>';
     $html .= '</div>';
-    $html .= '<div class="panel-body">' . ReplaceSmilies(nl2br($news['Text'])) . '</div>';
+    $html .= '<div class="panel-body">' . news_text($news) . '</div>';
 
     $html .= '<div class="panel-footer text-muted">';
     if (in_array('admin_news', $privileges)) {
