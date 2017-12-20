@@ -305,7 +305,7 @@ class ShiftCalendarRenderer
             label(_('Help needed'), 'danger'),
             label(_('Other angeltype needed / collides with my shifts'), 'warning'),
             label(_('Shift is full'), 'success'),
-            label(_('Shift running/ended'), 'default')
+            label(_('Shift running/ended or user not arrived'), 'default')
         ]);
     }
 }

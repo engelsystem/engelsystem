@@ -189,7 +189,7 @@ class ShiftCalendarShiftRenderer
                 
             case ShiftSignupState::NOT_ARRIVED:
                 // No link and add a text hint, when the shift ended
-                $entry_list[] = $inner_text . ' (' . _('not arrived') . ')';
+                $entry_list[] = $inner_text . ' (' . _('please arrive for signup') . ')';
                 break;
 
             case ShiftSignupState::ANGELTYPE:
