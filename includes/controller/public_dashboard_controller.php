@@ -38,6 +38,7 @@ function public_dashboard_controller_free_shift($shift)
     $room = Room($shift['RID']);
     
     $free_shift = [
+        'SID' => $shift['SID'],
         'style' => 'default',
         'start' => date('H:i', $shift['start']),
         'end' => date('H:i', $shift['end']),
