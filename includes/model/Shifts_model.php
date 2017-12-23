@@ -27,7 +27,7 @@ function Shifts_by_angeltype($angeltype) {
 }
 
 /**
- * Returns every shift with needed angels in the given time range.
+ * Returns every shift with needed angels in the given time range. 
  */
 function Shifts_free($start, $end)
 {

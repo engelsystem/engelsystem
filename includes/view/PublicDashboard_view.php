@@ -51,35 +51,22 @@ function public_dashboard_view($stats, $free_shifts)
  */
 function public_dashborad_shift_render($shift)
 {
-    $style = 'default';
-    if (time() + 3 * 60 * 60 > $shift['start']) {
-        $style = 'warning';
-    }
-    if (time() > $shift['start']) {
-        $style = 'danger';
-    }
+    $panel_body = glyph('time') . $shift['start'] . ' - ' . $shift['end'];
+    $panel_body .= ' (' . $shift['duration'] . ' h)';
     
-    $panel_body = glyph('time') . date('H:i', $shift['start']) . ' - ' . date('H:i', $shift['end']);
-    $panel_body .= ' (' . round(($shift['end'] - $shift['start']) / 3600) . ' h)';
-    
-    $panel_body .= '<br>' . glyph('tasks') . ShiftType($shift['shifttype_id'])['name'];
+    $panel_body .= '<br>' . glyph('tasks') . $shift['shifttype_name'];
     if (! empty($shift['title'])) {
         $panel_body .= ' (' . $shift['title'] . ')';
     }
     
-    $panel_body .= '<br>' . glyph('map-marker') . Room($shift['RID'])['Name'];
+    $panel_body .= '<br>' . glyph('map-marker') . $shift['room_name'];
     
-    foreach ($shift['NeedAngels'] as $needed_angels) {
-        $need = $needed_angels['count'] - $needed_angels['taken'];
-        if ($need > 0) {
-            $panel_body .= '<br>' . glyph('user') . '<span class="text-' . $style . '">' . $need . ' &times; ' . AngelType($needed_angels['TID'])['name'] . '</span>';
-        }
+    foreach ($shift['needed_angels'] as $needed_angels) {
+        $panel_body .= '<br>' . glyph('user') . '<span class="text-' . $shift['style'] . '">' . $needed_angels['need'] . ' &times; ' . $needed_angels['angeltype_name'] . '</span>';
     }
     
-    // $panel_body = '<a href="' . shift_link($shift) . '">' . $panel_body . '</a>';
-    
     return div('col-md-3', [
-        div('dashboard-panel panel panel-' . $style, [
+        div('dashboard-panel panel panel-' . $shift['style'], [
             div('panel-body', [
                 '<a class="panel-link" href="' . shift_link($shift) . '"></a>',
                 $panel_body

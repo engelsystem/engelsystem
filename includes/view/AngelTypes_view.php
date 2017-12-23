@@ -84,6 +84,10 @@ function AngelType_edit_view($angeltype, $supporter_mode)
             $supporter_mode
                 ? form_info(_('Restricted'), $angeltype['restricted'] ? _('Yes') : _('No'))
                 : form_checkbox('restricted', _('Restricted'), $angeltype['restricted']),
+            form_info(
+                '',
+                _('Restricted angel types can only be used by an angel if enabled by a supporter (double opt-in).')
+            ),
             $supporter_mode
                 ? form_info(_('No Self Sign Up'), $angeltype['no_self_signup'] ? _('Yes') : _('No'))
                 : form_checkbox('no_self_signup', _('No Self Sign Up'), $angeltype['no_self_signup']),
@@ -92,12 +96,10 @@ function AngelType_edit_view($angeltype, $supporter_mode)
                 : form_checkbox(
                 'requires_driver_license',
                 _('Requires driver license'),
-                $angeltype['requires_driver_license']
-            ),
-            form_info(
-                '',
-                _('Restricted angel types can only be used by an angel if enabled by a supporter (double opt-in).')
-            ),
+                $angeltype['requires_driver_license']),
+            $supporter_mode
+                ? form_info(_('Show on dashboard'), $angeltype['show_on_dashboard'] ? _('Yes') : _('No'))
+                : form_checkbox('show_on_dashboard', _('Show on dashboard'), $angeltype['show_on_dashboard']),
             form_textarea('description', _('Description'), $angeltype['description']),
             form_info('', _('Please use markdown for the description.')),
             heading(_('Contact'), 3),

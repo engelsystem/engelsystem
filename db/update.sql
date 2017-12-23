@@ -45,3 +45,7 @@ update Room set `from_frab`=(`FromPentabarf`='Y');
 ALTER TABLE `Room` DROP `FromPentabarf`;
 ALTER TABLE `Room` ADD `map_url` VARCHAR(300) NULL AFTER `from_frab`;
 ALTER TABLE `Room` ADD `description` TEXT NULL AFTER `map_url`;
+
+-- Dashboard
+ALTER TABLE `AngelTypes` ADD `show_on_dashboard` BOOLEAN NOT NULL AFTER `contact_email`;
+UPDATE `AngelTypes` SET `show_on_dashboard`=TRUE;

@@ -18,7 +18,8 @@ function AngelType_new()
         'requires_driver_license' => false,
         'contact_name'            => null,
         'contact_dect'            => null,
-        'contact_email'           => null
+        'contact_email'           => null,
+        'show_on_dashboard'       => true
     ];
 }
 
@@ -65,7 +66,8 @@ function AngelType_update($angeltype)
           `no_self_signup` = ?,
           `contact_name` = ?,
           `contact_dect` = ?,
-          `contact_email` = ?
+          `contact_email` = ?,
+          `show_on_dashboard` = ?
           WHERE `id` = ?',
         [
             $angeltype['name'],
@@ -76,6 +78,7 @@ function AngelType_update($angeltype)
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
+            (int)$angeltype['show_on_dashboard'],
             $angeltype['id'],
         ]
     );
@@ -86,7 +89,8 @@ function AngelType_update($angeltype)
         . ($angeltype['requires_driver_license'] ? ', requires driver license' : '') . ', '
         . $angeltype['contact_name'] . ', '
         . $angeltype['contact_dect'] . ', '
-        . $angeltype['contact_email']
+        . $angeltype['contact_email'] . ', '
+        . $angeltype['show_on_dashboard']
     );
 }
 
@@ -107,9 +111,10 @@ function AngelType_create($angeltype)
               `no_self_signup`,
               `contact_name`,
               `contact_dect`,
-              `contact_email`
+              `contact_email`,
+              `show_on_dashboard`
           )
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $angeltype['name'],
@@ -120,6 +125,7 @@ function AngelType_create($angeltype)
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
+            $angeltype['show_on_dashboard']
         ]
     );
 
@@ -130,7 +136,8 @@ function AngelType_create($angeltype)
         . ($angeltype['requires_driver_license'] ? ', requires driver license' : '') . ', '
         . $angeltype['contact_name'] . ', '
         . $angeltype['contact_dect'] . ', '
-        . $angeltype['contact_email']
+        . $angeltype['contact_email'] . ', '
+        . $angeltype['show_on_dashboard']
     );
     return $angeltype;
 }
