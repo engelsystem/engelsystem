@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2017-12-23 11:35+0100\n"
-"PO-Revision-Date: 2017-12-23 11:35+0100\n"
+"PO-Revision-Date: 2017-12-23 22:31+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -168,7 +168,7 @@ msgstr "Public Dashboard"
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:164
 #, php-format
 msgid "%s has been subscribed to the shift."
-msgstr "%s wurde aus der Schicht ausgetragen."
+msgstr "%s wurde in die Schicht eingetragen."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:140
 msgid "User is not in angeltype."
