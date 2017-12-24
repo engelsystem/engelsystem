@@ -269,6 +269,10 @@ function Users_table_header_link($column, $label, $order_by)
  */
 function User_shift_state_render($user)
 {
+    if(!$user['Gekommen']) {
+        return '';
+    }
+    
     $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
 
     if (empty($upcoming_shifts)) {
@@ -473,43 +477,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
                     $user_source['DECT'],
                     '</h1>'
                 ]),
-                div('col-md-3', [
-                    '<h4>' . _('User state') . '</h4>',
-                    ($admin_user_privilege && $freeloader)
-                        ? '<span class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> ' . _('Freeloader') . '</span><br />'
-                        : '',
-                    $user_source['Gekommen']
-                        ? User_shift_state_render($user_source) . '<br />'
-                        : '',
-                    $admin_user_privilege || $its_me
-                        ? (
-                    $user_source['Gekommen']
-                        ? '<span class="text-success"><span class="glyphicon glyphicon-home"></span> '
-                        . sprintf(_('Arrived at %s'), date('Y-m-d', $user_source['arrival_date']))
-                        . '</span>'
-                        : '<span class="text-danger">'
-                        . sprintf(_('Not arrived (Planned: %s)'), date('Y-m-d', $user_source['planned_arrival_date']))
-                        . '</span>'
-                    )
-                        : (
-                    $user_source['Gekommen']
-                        ? '<span class="text-success"><span class="glyphicon glyphicon-home"></span> ' . _('Arrived') . '</span>'
-                        : '<span class="text-danger">' . _('Not arrived') . '</span>'),
-                    $admin_user_privilege
-                        ? (
-                    $user_source['got_voucher'] > 0
-                        ? '<br /><span class="text-success">'
-                        . glyph('cutlery')
-                        . sprintf(
-                            ngettext('Got %s voucher', 'Got %s vouchers', $user_source['got_voucher']),
-                            $user_source['got_voucher']
-                        )
-                        . '</span><br />'
-                        : '<br /><span class="text-danger">' . _('Got no vouchers') . '</span><br />')
-                        : '',
-                    ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Aktiv']) ? ' <span class="text-success">' . _('Active') . '</span>' : '',
-                    ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Tshirt']) ? ' <span class="text-success">' . _('T-Shirt') . '</span>' : ''
-                ]),
+                User_view_state($admin_user_privilege, $freeloader, $its_me, $user_source),
                 div('col-md-3', [
                     '<h4>' . _('Angeltypes') . '</h4>',
                     User_angeltypes_render($user_angeltypes)
@@ -537,6 +505,63 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
                 : ''
         ]
     );
+}
+
+/**
+ * Render the state section of user view.
+ */
+function User_view_state($admin_user_privilege, $freeloader, $its_me, $user_source) {
+    $state = [
+    ];
+    if($admin_user_privilege && $freeloader) {
+        $state[] = '<span class="text-danger">' . glyph('exclamation-sign') . _('Freeloader') . '</span>';
+    }
+    $state[] = User_shift_state_render($user_source);
+    if($admin_user_privilege || $its_me) {
+        if($user_source['Gekommen']) {
+            $state[] = '<span class="text-success">' . glyph('home')
+                . sprintf(_('Arrived at %s'), date('Y-m-d', $user_source['arrival_date']))
+                . '</span>';
+        } else {
+            $state[] = '<span class="text-danger">'
+                . sprintf(_('Not arrived (Planned: %s)'), date('Y-m-d', $user_source['planned_arrival_date']))
+                . '</span>';
+        }
+    } else {
+        if($user_source['Gekommen']) {
+            $state[] = '<span class="text-success">' . glyph('home') . _('Arrived') . '</span>';
+        } else {
+            $state[] = '<span class="text-danger">' . _('Not arrived') . '</span>';
+        }
+    }
+    if($admin_user_privilege) {
+        if($user_source['got_voucher'] > 0) {
+            $state[] = '<span class="text-success">'
+                . glyph('cutlery')
+                . sprintf(
+                    ngettext('Got %s voucher', 'Got %s vouchers', $user_source['got_voucher']),
+                    $user_source['got_voucher']
+                    )
+                . '</span>';
+        } else {
+            $state[] = '<span class="text-danger">' . _('Got no vouchers') . '</span>';
+        }
+        if($user_source['Gekommen']) {
+            if($user_source['force_active']) {
+                $state[] = '<span class="text-success">' . _('Active (forced)') . '</span>';
+            } elseif($user_source['Aktiv']) {
+                $state[] = '<span class="text-success">' . _('Active') . '</span>';
+            }
+            if($user_source['Tshirt']) {
+                $state[] = '<span class="text-success">' . _('T-Shirt') . '</span>';
+            }
+        }
+    }
+    
+    return div('col-md-3',[
+        heading(_('User state'), 4),
+        join('<br>', $state)
+    ]);
 }
 
 /**
