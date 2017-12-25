@@ -28,7 +28,7 @@ function Message($message_id)
  * TODO: global $user con not be used in model!
  * send message
  *
- * @param int    $receiver_user_id User ID of Reciever
+ * @param int    $receiver_user_id User ID of Receiver
  * @param string $text             Text of Message
  * @return bool
  */

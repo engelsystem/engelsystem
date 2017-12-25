@@ -149,7 +149,7 @@ class ShiftCalendarShiftRenderer
      *
      * @param array   $shift     The shift which is rendered
      * @param array[] $shift_entries
-     * @param array[] $angeltype The angeltype, containing informations about needed angeltypes
+     * @param array[] $angeltype The angeltype, containing information about needed angeltypes
      *                           and already signed up angels
      * @param array   $user      The user who is viewing the shift calendar
      * @return array

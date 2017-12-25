@@ -328,7 +328,7 @@ function Shift_signup_allowed_angel(
     }
 
     if ($signed_up) {
-        // you cannot join if you already singed up for this shift
+        // you cannot join if you already signed up for this shift
         return new ShiftSignupState(ShiftSignupState::SIGNED_UP, $free_entries);
     }
 

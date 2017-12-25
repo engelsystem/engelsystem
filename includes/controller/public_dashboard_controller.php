@@ -28,7 +28,7 @@ function public_dashboard_controller()
 }
 
 /**
- * Gathers informations for free shifts to display.
+ * Gathers information for free shifts to display.
  *
  * @param array $shift            
  */
@@ -62,7 +62,7 @@ function public_dashboard_controller_free_shift($shift)
 }
 
 /**
- * Gathers informations for needed angels on dashboard
+ * Gathers information for needed angels on dashboard
  *
  * @param array $needed_angels            
  */
