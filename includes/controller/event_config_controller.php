@@ -101,9 +101,10 @@ function event_config_edit_controller()
             );
 
             engelsystem_log(
-                sprintf('Changed event config: %s, %s, %s, %s, %s, %s', 
-                    $event_name, 
-                    $event_welcome_msg, 
+                sprintf(
+                    'Changed event config: %s, %s, %s, %s, %s, %s',
+                    $event_name,
+                    $event_welcome_msg,
                     date('Y-m-d', $buildup_start_date),
                     date('Y-m-d', $event_start_date),
                     date('Y-m-d', $event_end_date),

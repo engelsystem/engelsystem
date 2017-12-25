@@ -97,7 +97,11 @@ function UserAngelType_confirm_view($user_angeltype, $user, $angeltype)
 {
     return page_with_title(_('Confirm angeltype for user'), [
         msg(),
-        info(sprintf(_('Do you really want to confirm %s for %s?'), User_Nick_render($user), $angeltype['name']), true),
+        info(sprintf(
+            _('Do you really want to confirm %s for %s?'),
+            User_Nick_render($user),
+            $angeltype['name']
+        ), true),
         buttons([
             button(angeltype_link($angeltype['id']), glyph('remove') . _('cancel')),
             button(
@@ -122,7 +126,11 @@ function UserAngelType_delete_view($user_angeltype, $user, $angeltype)
 {
     return page_with_title(_('Remove angeltype'), [
         msg(),
-        info(sprintf(_('Do you really want to delete %s from %s?'), User_Nick_render($user), $angeltype['name']), true),
+        info(sprintf(
+            _('Do you really want to delete %s from %s?'),
+            User_Nick_render($user),
+            $angeltype['name']
+        ), true),
         buttons([
             button(angeltype_link($angeltype['id']), glyph('remove') . _('cancel')),
             button(
@@ -174,7 +182,11 @@ function UserAngelType_join_view($user, $angeltype)
 {
     return page_with_title(sprintf(_('Become a %s'), $angeltype['name']), [
         msg(),
-        info(sprintf(_('Do you really want to add %s to %s?'), User_Nick_render($user), $angeltype['name']), true),
+        info(sprintf(
+            _('Do you really want to add %s to %s?'),
+            User_Nick_render($user),
+            $angeltype['name']
+        ), true),
         buttons([
             button(angeltype_link($angeltype['id']), glyph('remove') . _('cancel')),
             button(

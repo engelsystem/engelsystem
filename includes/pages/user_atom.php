@@ -63,13 +63,21 @@ function make_atom_entries_from_news($news_entries)
     return $html;
 }
 
+/**
+ * @param array $news_entry
+ * @return string
+ */
 function make_atom_entry_from_news($news_entry)
 {
     return '
   <entry>
     <title>' . htmlspecialchars($news_entry['Betreff']) . '</title>
     <link href="' . page_link_to('news_comments', ['nid' => $news_entry['ID']]) . '"/>
-    <id>' . preg_replace('#^https?://#', '', page_link_to('news_comments', ['nid' => $news_entry['ID']])) . '</id>
+    <id>' . preg_replace(
+            '#^https?://#',
+            '',
+            page_link_to('news_comments', ['nid' => $news_entry['ID']])
+        ) . '</id>
     <updated>' . date('Y-m-d\TH:i:sP', $news_entry['Datum']) . '</updated>
     <summary>' . htmlspecialchars($news_entry['Text']) . '</summary>
   </entry>' . "\n";

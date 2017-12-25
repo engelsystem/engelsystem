@@ -41,11 +41,11 @@ ALTER TABLE `Room` DROP `Number`;
 ALTER TABLE `Room` DROP `show`;
 ALTER TABLE `Room` DROP `Man`;
 ALTER TABLE `Room` ADD `from_frab` BOOLEAN NOT NULL AFTER `FromPentabarf`;
-update Room set `from_frab`=(`FromPentabarf`='Y');
+UPDATE Room SET `from_frab` = (`FromPentabarf` = 'Y');
 ALTER TABLE `Room` DROP `FromPentabarf`;
 ALTER TABLE `Room` ADD `map_url` VARCHAR(300) NULL AFTER `from_frab`;
 ALTER TABLE `Room` ADD `description` TEXT NULL AFTER `map_url`;
 
 -- Dashboard
 ALTER TABLE `AngelTypes` ADD `show_on_dashboard` BOOLEAN NOT NULL AFTER `contact_email`;
-UPDATE `AngelTypes` SET `show_on_dashboard`=TRUE;
+UPDATE `AngelTypes` SET `show_on_dashboard` = TRUE;

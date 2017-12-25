@@ -56,11 +56,12 @@ function NeededAngelTypes_delete_by_room($room_id)
 
 /**
  * Returns all needed angeltypes by room.
- * 
+ *
  * @param int $room_id
  * @return array
  */
-function NeededAngelTypes_by_room($room_id) {
+function NeededAngelTypes_by_room($room_id)
+{
     return DB::select(
         'SELECT `angel_type_id`, `count` FROM `NeededAngelTypes` WHERE `room_id`=?',
         [$room_id]
@@ -76,7 +77,12 @@ function NeededAngelTypes_by_room($room_id) {
 function NeededAngelTypes_by_shift($shiftId)
 {
     $needed_angeltypes_source = DB::select('
-        SELECT `NeededAngelTypes`.*, `AngelTypes`.`id`, `AngelTypes`.`name`, `AngelTypes`.`restricted`, `AngelTypes`.`no_self_signup`
+        SELECT
+            `NeededAngelTypes`.*,
+            `AngelTypes`.`id`,
+            `AngelTypes`.`name`,
+            `AngelTypes`.`restricted`,
+            `AngelTypes`.`no_self_signup`
         FROM `NeededAngelTypes`
         JOIN `AngelTypes` ON `AngelTypes`.`id` = `NeededAngelTypes`.`angel_type_id`
         WHERE `shift_id` = ?

@@ -2,6 +2,7 @@
 
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftsFilterRenderer;
+
 /**
  * Text for Angeltype related links.
  *
@@ -39,8 +40,8 @@ function angeltypes_controller()
 /**
  * Path to angeltype view.
  *
- * @param int $angeltype_id AngelType id
- * @param array $params additional params
+ * @param int   $angeltype_id AngelType id
+ * @param array $params       additional params
  * @return string
  */
 function angeltype_link($angeltype_id, $params = [])
@@ -187,17 +188,18 @@ function angeltype_controller()
     $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
     $user_driver_license = UserDriverLicense($user['UID']);
     $members = Users_by_angeltype($angeltype);
-    
+
     $days = angeltype_controller_shiftsFilterDays($angeltype);
     $shiftsFilter = angeltype_controller_shiftsFilter($angeltype, $days);
-    
+
     $shiftsFilterRenderer = new ShiftsFilterRenderer($shiftsFilter);
     $shiftsFilterRenderer->enableDaySelection($days);
-    
+
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
     $request = request();
     $tab = 0;
-    if($request->has('shifts_filter_day')) {
+
+    if ($request->has('shifts_filter_day')) {
         $tab = 1;
     }
 
@@ -221,11 +223,12 @@ function angeltype_controller()
 
 /**
  * On which days do shifts for this angeltype occur? Needed for shiftCalendar.
- * 
- * @param Angeltype $angeltype
+ *
+ * @param array $angeltype
  * @return array
  */
-function angeltype_controller_shiftsFilterDays($angeltype) {
+function angeltype_controller_shiftsFilterDays($angeltype)
+{
     $all_shifts = Shifts_by_angeltype($angeltype);
     $days = [];
     foreach ($all_shifts as $shift) {
@@ -239,20 +242,21 @@ function angeltype_controller_shiftsFilterDays($angeltype) {
 
 /**
  * Sets up the shift filter for the angeltype.
- * 
- * @param Angeltype $angeltype
+ *
+ * @param array $angeltype
  * @param array $days
  * @return ShiftsFilter
  */
-function angeltype_controller_shiftsFilter($angeltype, $days) {
+function angeltype_controller_shiftsFilter($angeltype, $days)
+{
     global $privileges;
-    
+
     $request = request();
     $shiftsFilter = new ShiftsFilter(
         in_array('user_shifts_admin', $privileges),
         Room_ids(),
         [$angeltype['id']]
-        );
+    );
     $selected_day = date('Y-m-d');
     if (!empty($days)) {
         $selected_day = $days[0];
@@ -262,7 +266,7 @@ function angeltype_controller_shiftsFilter($angeltype, $days) {
     }
     $shiftsFilter->setStartTime(parse_date('Y-m-d H:i', $selected_day . ' 00:00'));
     $shiftsFilter->setEndTime(parse_date('Y-m-d H:i', $selected_day . ' 23:59'));
-    
+
     return $shiftsFilter;
 }
 

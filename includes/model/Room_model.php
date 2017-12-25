@@ -1,14 +1,13 @@
 <?php
+
 use Engelsystem\Database\DB;
 use Engelsystem\ValidationResult;
 
 /**
  * Validate a name for a room.
  *
- * @param string $name
- *            The new name
- * @param int $room_id
- *            The room id
+ * @param string $name    The new name
+ * @param int    $room_id The room id
  * @return ValidationResult
  */
 function Room_validate_name($name, $room_id)
@@ -17,10 +16,11 @@ function Room_validate_name($name, $room_id)
     if (empty($name)) {
         $valid = false;
     }
+
     if (count(DB::select('SELECT RID FROM `Room` WHERE `Name`=? AND NOT `RID`=?', [
-        $name,
-        $room_id
-    ])) > 0) {
+            $name,
+            $room_id
+        ])) > 0) {
         $valid = false;
     }
     return new ValidationResult($valid, $name);
@@ -50,7 +50,7 @@ function Room_ids()
 /**
  * Delete a room
  *
- * @param int $room_id            
+ * @param int $room_id
  */
 function Room_delete($room_id)
 {
@@ -64,7 +64,7 @@ function Room_delete($room_id)
 /**
  * Delete a room by its name
  *
- * @param string $name            
+ * @param string $name
  */
 function Room_delete_by_name($name)
 {
@@ -77,14 +77,10 @@ function Room_delete_by_name($name)
 /**
  * Create a new room
  *
- * @param string $name
- *            Name of the room
- * @param boolean $from_frab
- *            Is this a frab imported room?
- * @param string $map_url
- *            URL to a map tha can be displayed in an iframe
- * @param
- *            description markdown description
+ * @param string  $name      Name of the room
+ * @param boolean $from_frab Is this a frab imported room?
+ * @param string  $map_url   URL to a map tha can be displayed in an iframe
+ * @param string description Markdown description
  * @return false|int
  */
 function Room_create($name, $from_frab, $map_url, $description)
@@ -94,33 +90,31 @@ function Room_create($name, $from_frab, $map_url, $description)
            VALUES (?, ?, ?, ?)
         ', [
         $name,
-        (int) $from_frab,
+        (int)$from_frab,
         $map_url,
         $description
     ]);
     $result = DB::getPdo()->lastInsertId();
-    
+
     engelsystem_log(
         'Room created: ' . $name
         . ', frab import: ' . ($from_frab ? 'Yes' : '')
         . ', map_url: ' . $map_url
         . ', description: ' . $description
     );
-    
+
     return $result;
 }
 
 /**
  * update a room
  *
- * @param string $name
- *            Name of the room
- * @param boolean $from_frab
- *            Is this a frab imported room?
- * @param string $map_url
- *            URL to a map tha can be displayed in an iframe
- * @param
- *            description markdown description
+ * @param int     $room_id     The rooms id
+ * @param string  $name        Name of the room
+ * @param boolean $from_frab   Is this a frab imported room?
+ * @param string  $map_url     URL to a map tha can be displayed in an iframe
+ * @param string  $description Markdown description
+ * @return int
  */
 function Room_update($room_id, $name, $from_frab, $map_url, $description)
 {
@@ -134,28 +128,26 @@ function Room_update($room_id, $name, $from_frab, $map_url, $description)
         WHERE `RID`=?
         LIMIT 1', [
         $name,
-        (int) $from_frab,
+        (int)$from_frab,
         $map_url,
         $description,
         $room_id
     ]);
-    
+
     engelsystem_log(
-        'Room updated: ' . $name . 
-        ', frab import: ' . ($from_frab ? 'Yes' : '') . 
-        ', map_url: ' . $map_url . 
+        'Room updated: ' . $name .
+        ', frab import: ' . ($from_frab ? 'Yes' : '') .
+        ', map_url: ' . $map_url .
         ', description: ' . $description
     );
-    
+
     return $result;
 }
 
 /**
  * Returns room by id.
  *
- * @param int $room_id
- *            RID
- * @param bool $onlyVisible            
+ * @param int $room_id RID
  * @return array|false
  */
 function Room($room_id)

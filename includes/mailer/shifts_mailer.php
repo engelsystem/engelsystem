@@ -63,7 +63,12 @@ function mail_shift_change($old_shift, $new_shift)
 
     foreach ($users as $user) {
         if ($user['email_shiftinfo']) {
-            engelsystem_email_to_user($user, '[engelsystem] ' . _('Your Shift has changed'), $message, true);
+            engelsystem_email_to_user(
+                $user,
+                '[engelsystem] ' . _('Your Shift has changed'),
+                $message,
+                true
+            );
         }
     }
 }
@@ -111,6 +116,10 @@ function mail_shift_assign($user, $shift)
     engelsystem_email_to_user($user, '[engelsystem] ' . _('Assigned to Shift'), $message, true);
 }
 
+/**
+ * @param array $user
+ * @param array $shift
+ */
 function mail_shift_removed($user, $shift)
 {
     if (!$user['email_shiftinfo']) {

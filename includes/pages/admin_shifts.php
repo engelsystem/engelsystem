@@ -113,10 +113,16 @@ function admin_shifts()
             } elseif ($request->input('mode') == 'variable') {
                 if (
                     $request->has('change_hours')
-                    && preg_match('/^(\d{2}(,|$))/', trim(str_replace(' ', '', $request->input('change_hours'))))
+                    && preg_match(
+                        '/^(\d{2}(,|$))/',
+                        trim(str_replace(' ', '', $request->input('change_hours')))
+                    )
                 ) {
                     $mode = 'variable';
-                    $change_hours = array_map('trim', explode(',', $request->input('change_hours')));
+                    $change_hours = array_map(
+                        'trim',
+                        explode(',', $request->input('change_hours'))
+                    );
                 } else {
                     $valid = false;
                     error(_('Please split the shift-change hours by colons.'));
@@ -264,7 +270,8 @@ function admin_shifts()
                 ];
                 foreach ($types as $type) {
                     if (isset($needed_angel_types[$type['id']]) && $needed_angel_types[$type['id']] > 0) {
-                        $shifts_table_entry['needed_angels'] .= '<b>' . AngelType_name_render($type) . ':</b> ' . $needed_angel_types[$type['id']] . '<br />';
+                        $shifts_table_entry['needed_angels'] .= '<b>' . AngelType_name_render($type) . ':</b> '
+                            . $needed_angel_types[$type['id']] . '<br />';
                     }
                 }
                 $shifts_table[] = $shifts_table_entry;
@@ -327,6 +334,7 @@ function admin_shifts()
                       FROM `AngelTypes`
                       WHERE `id` = ?
                       LIMIT 1', [$type_id]);
+
                 if (!empty($angel_type_source)) {
                     DB::insert('
                         INSERT INTO `NeededAngelTypes` (`shift_id`, `angel_type_id`, `count`)
@@ -338,7 +346,8 @@ function admin_shifts()
                             $count
                         ]
                     );
-                    if($count > 0) {
+
+                    if ($count > 0) {
                         $needed_angel_types_info[] = $angel_type_source['name'] . ': ' . $count;
                     }
                 }
@@ -380,7 +389,13 @@ function admin_shifts()
                     form_info(_('Mode'), ''),
                     form_radio('mode', _('Create one shift'), $mode == 'single', 'single'),
                     form_radio('mode', _('Create multiple shifts'), $mode == 'multi', 'multi'),
-                    form_text('length', _('Length'), $request->has('length') ? $request->input('length') : '120'),
+                    form_text(
+                        'length',
+                        _('Length'),
+                        $request->has('length')
+                            ? $request->input('length')
+                            : '120'
+                    ),
                     form_radio(
                         'mode',
                         _('Create multiple shifts with variable length'),
@@ -390,7 +405,9 @@ function admin_shifts()
                     form_text(
                         'change_hours',
                         _('Shift change hours'),
-                        $request->has('change_hours') ? $request->input('input') : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22'
+                        $request->has('change_hours')
+                            ? $request->input('input')
+                            : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22'
                     )
                 ]),
                 div('col-md-6', [
@@ -401,7 +418,12 @@ function admin_shifts()
                         $angelmode == 'location',
                         'location'
                     ),
-                    form_radio('angelmode', _('The following angels are needed'), $angelmode == 'manually', 'manually'),
+                    form_radio(
+                        'angelmode',
+                        _('The following angels are needed'),
+                        $angelmode == 'manually',
+                        'manually'
+                    ),
                     div('row', [
                         $angel_types
                     ])

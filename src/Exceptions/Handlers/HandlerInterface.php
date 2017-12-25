@@ -15,7 +15,6 @@ interface HandlerInterface
 
     /**
      * @param Throwable $e
-     * @return
      */
     public function report(Throwable $e);
 }

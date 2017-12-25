@@ -8,7 +8,8 @@ use Engelsystem\ShiftSignupState;
  * @param array $angeltype
  * @return array
  */
-function Shifts_by_angeltype($angeltype) {
+function Shifts_by_angeltype($angeltype)
+{
     return DB::select('
         SELECT DISTINCT `Shifts`.* FROM `Shifts`
         JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id` = `Shifts`.`SID`
@@ -27,7 +28,11 @@ function Shifts_by_angeltype($angeltype) {
 }
 
 /**
- * Returns every shift with needed angels in the given time range. 
+ * Returns every shift with needed angels in the given time range.
+ *
+ * @param int $start timestamp
+ * @param int $end   timestamp
+ * @return array
  */
 function Shifts_free($start, $end)
 {
@@ -48,14 +53,14 @@ function Shifts_free($start, $end)
             AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID`)
             > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
             AND NOT `Shifts`.`PSID` IS NULL
-        ) as `tmp`
+        ) AS `tmp`
         ORDER BY `tmp`.`start`
         ", [
-                $start,
-                $end,
-                $start,
-                $end
-            ]);
+        $start,
+        $end,
+        $start,
+        $end
+    ]);
     $free_shifts = [];
     foreach ($shifts as $shift) {
         $free_shifts[] = Shift($shift['SID']);
@@ -65,14 +70,17 @@ function Shifts_free($start, $end)
 
 /**
  * Returns all shifts with a PSID (from frab import)
+ *
+ * @return array[]
  */
-function Shifts_from_frab() {
+function Shifts_from_frab()
+{
     return DB::select('SELECT * FROM `Shifts` WHERE `PSID` IS NOT NULL ORDER BY `start`');
 }
 
 /**
  * @param array $room
- * @return array
+ * @return array[]
  */
 function Shifts_by_room($room)
 {
@@ -220,7 +228,7 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
 
 /**
  * @param ShiftsFilter $shiftsFilter
- * @return array
+ * @return array[]
  */
 function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
@@ -404,33 +412,33 @@ function Shift_signup_allowed_admin($needed_angeltype, $shift_entries)
 
 /**
  * Check if an angel can signout from a shift.
- * 
- * @param $shift The shift
- * @param $angeltype The angeltype
- * @param $signout_user The user that was signed up for the shift
- * 
+ *
+ * @param array $shift        The shift
+ * @param array $angeltype    The angeltype
+ * @param array $signout_user The user that was signed up for the shift
  * @return bool
  */
-function Shift_signout_allowed($shift, $angeltype, $signout_user) {
+function Shift_signout_allowed($shift, $angeltype, $signout_user)
+{
     global $user, $privileges;
-    
+
     // user shifts admin can sign out any user at any time
     if (in_array('user_shifts_admin', $privileges)) {
         return true;
     }
-    
+
     // angeltype supporter can sign out any user at any time from their supported angeltype
     if (
         in_array('shiftentry_edit_angeltype_supporter', $privileges)
         && User_is_AngelType_supporter($user, $angeltype)
-        ) {
+    ) {
         return true;
     }
-    
-    if($signout_user['UID'] == $user['UID'] && $shift['start'] > time() + config('last_unsubscribe') * 3600) {
+
+    if ($signout_user['UID'] == $user['UID'] && $shift['start'] > time() + config('last_unsubscribe') * 3600) {
         return true;
     }
-    
+
     return false;
 }
 
@@ -496,9 +504,8 @@ function Shift_delete_by_psid($shift_psid)
  */
 function Shift_delete($shift_id)
 {
-    mail_shift_delete(Shift($shift_id));
-
     DB::delete('DELETE FROM `Shifts` WHERE `SID`=?', [$shift_id]);
+    mail_shift_delete(Shift($shift_id));
 }
 
 /**
@@ -606,15 +613,23 @@ function Shift_create($shift)
  *
  * @param array $user
  * @param bool  $include_freeload_comments
- * @return array
+ * @return array[]
  */
 function Shifts_by_user($user, $include_freeload_comments = false)
 {
     return DB::select('
-          SELECT `ShiftTypes`.`id` AS `shifttype_id`, `ShiftTypes`.`name`,
-          `ShiftEntry`.`id`, `ShiftEntry`.`SID`, `ShiftEntry`.`TID`, `ShiftEntry`.`UID`, `ShiftEntry`.`freeloaded`, `ShiftEntry`.`Comment`,
-          ' . ($include_freeload_comments ? '`ShiftEntry`.`freeload_comment`, ' : '') . '
-          `Shifts`.*, `Room`.*
+          SELECT 
+              `ShiftTypes`.`id` AS `shifttype_id`,
+              `ShiftTypes`.`name`,
+              `ShiftEntry`.`id`,
+              `ShiftEntry`.`SID`,
+              `ShiftEntry`.`TID`,
+              `ShiftEntry`.`UID`,
+              `ShiftEntry`.`freeloaded`,
+              `ShiftEntry`.`Comment`,
+              ' . ($include_freeload_comments ? '`ShiftEntry`.`freeload_comment`, ' : '') . '
+              `Shifts`.*,
+              `Room`.*
           FROM `ShiftEntry`
           JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
           JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)

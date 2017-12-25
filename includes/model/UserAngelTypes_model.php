@@ -27,7 +27,7 @@ function UserAngelType_exists($user, $angeltype)
  * List users angeltypes.
  *
  * @param array $user
- * @return array
+ * @return array[]
  */
 function User_angeltypes($user)
 {
@@ -43,7 +43,7 @@ function User_angeltypes($user)
  * Gets unconfirmed user angeltypes for angeltypes of which the given user is a supporter.
  *
  * @param array $user
- * @return array
+ * @return array[]
  */
 function User_unconfirmed_AngelTypes($user)
 {
@@ -76,6 +76,7 @@ function User_is_AngelType_supporter(&$user, $angeltype)
     if (!isset($user['privileges'])) {
         $user['privileges'] = privileges_for_user($user['UID']);
     }
+
     return (count(DB::select('
                       SELECT `id`
                       FROM `UserAngelTypes`
@@ -105,7 +106,7 @@ function UserAngelType_update($user_angeltype_id, $supporter)
       SET `supporter`=?
       WHERE `id`=?
       LIMIT 1
-    ', [(int) $supporter, $user_angeltype_id]);
+    ', [(int)$supporter, $user_angeltype_id]);
 }
 
 /**
@@ -143,7 +144,6 @@ function UserAngelTypes_confirm_all($angeltype_id, $confirm_user)
  *
  * @param int   $user_angeltype_id
  * @param array $confirm_user
- * @return bool
  */
 function UserAngelType_confirm($user_angeltype_id, $confirm_user)
 {

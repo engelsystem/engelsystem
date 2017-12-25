@@ -25,13 +25,14 @@ function AngelType_new()
 
 /**
  * Checks if the angeltype has any contact information.
- * 
- * @param Angeltype $angeltype
+ *
+ * @param array $angeltype Angeltype
  * @return bool
  */
-function AngelType_has_contact_info($angeltype) {
-    return !empty($angeltype['contact_name']) 
-        || !empty($angeltype['contact_dect']) 
+function AngelType_has_contact_info($angeltype)
+{
+    return !empty($angeltype['contact_name'])
+        || !empty($angeltype['contact_dect'])
         || !empty($angeltype['contact_email']);
 }
 
@@ -139,6 +140,7 @@ function AngelType_create($angeltype)
         . $angeltype['contact_email'] . ', '
         . $angeltype['show_on_dashboard']
     );
+
     return $angeltype;
 }
 
@@ -172,6 +174,7 @@ function AngelType_validate_name($name, $angeltype)
         FROM `AngelTypes`
         WHERE `name`=?
         LIMIT 1', [$name])) == 0);
+
     return new ValidationResult($valid, $name);
 }
 

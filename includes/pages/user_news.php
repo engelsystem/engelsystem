@@ -73,11 +73,12 @@ function user_meetings()
 
 /**
  * Renders the text content of a news entry
- * 
+ *
  * @param array $news
  * @return string HTML
  */
-function news_text($news) {
+function news_text($news)
+{
     $text = ReplaceSmilies($news['Text']);
     $text = preg_replace("/\r\n\r\n/m", '<br><br>', $text);
     return $text;
@@ -101,7 +102,11 @@ function display_news($news)
     $html .= '<div class="panel-footer text-muted">';
     if (in_array('admin_news', $privileges)) {
         $html .= '<div class="pull-right">'
-            . button_glyph(page_link_to('admin_news', ['action' => 'edit', 'id' => $news['ID']]), 'edit', 'btn-xs')
+            . button_glyph(
+                page_link_to('admin_news', ['action' => 'edit', 'id' => $news['ID']]),
+                'edit',
+                'btn-xs'
+            )
             . '</div>';
     }
     $html .= '<span class="glyphicon glyphicon-time"></span> ' . date('Y-m-d H:i', $news['Datum']) . '&emsp;';
@@ -140,7 +145,11 @@ function user_news_comments()
         $nid = $request->input('nid');
         $news = DB::selectOne('SELECT * FROM `News` WHERE `ID`=? LIMIT 1', [$nid]);
         if ($request->has('text')) {
-            $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($request->input('text')));
+            $text = preg_replace(
+                "/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui",
+                '',
+                strip_tags($request->input('text'))
+            );
             DB::insert('
                     INSERT INTO `NewsComments` (`Refid`, `Datum`, `Text`, `UID`)
                     VALUES (?, ?, ?, ?)

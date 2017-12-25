@@ -2,6 +2,10 @@
 
 /**
  * Public dashboard (formerly known as angel news hub)
+ *
+ * @param array   $stats
+ * @param array[] $free_shifts
+ * @return string
  */
 function public_dashboard_view($stats, $free_shifts)
 {
@@ -9,7 +13,7 @@ function public_dashboard_view($stats, $free_shifts)
     if (count($free_shifts) > 0) {
         $shift_panels = [];
         foreach ($free_shifts as $shift) {
-            $shift_panels[] = public_dashborad_shift_render($shift);
+            $shift_panels[] = public_dashboard_shift_render($shift);
         }
         $needed_angels = div('first', [
             div('col-md-12', [
@@ -18,6 +22,7 @@ function public_dashboard_view($stats, $free_shifts)
             join($shift_panels)
         ]);
     }
+
     return page([
         div('public-dashboard', [
             div('first', [
@@ -48,23 +53,29 @@ function public_dashboard_view($stats, $free_shifts)
 
 /**
  * Renders a single shift panel for a dashboard shift with needed angels
+ *
+ * @param array $shift
+ * @return string
  */
-function public_dashborad_shift_render($shift)
+function public_dashboard_shift_render($shift)
 {
     $panel_body = glyph('time') . $shift['start'] . ' - ' . $shift['end'];
     $panel_body .= ' (' . $shift['duration'] . ' h)';
-    
+
     $panel_body .= '<br>' . glyph('tasks') . $shift['shifttype_name'];
-    if (! empty($shift['title'])) {
+    if (!empty($shift['title'])) {
         $panel_body .= ' (' . $shift['title'] . ')';
     }
-    
+
     $panel_body .= '<br>' . glyph('map-marker') . $shift['room_name'];
-    
+
     foreach ($shift['needed_angels'] as $needed_angels) {
-        $panel_body .= '<br>' . glyph('user') . '<span class="text-' . $shift['style'] . '">' . $needed_angels['need'] . ' &times; ' . $needed_angels['angeltype_name'] . '</span>';
+        $panel_body .= '<br>' . glyph('user')
+            . '<span class="text-' . $shift['style'] . '">'
+            . $needed_angels['need'] . ' &times; ' . $needed_angels['angeltype_name']
+            . '</span>';
     }
-    
+
     return div('col-md-3', [
         div('dashboard-panel panel panel-' . $shift['style'], [
             div('panel-body', [
@@ -74,4 +85,3 @@ function public_dashborad_shift_render($shift)
         ])
     ]);
 }
-?>

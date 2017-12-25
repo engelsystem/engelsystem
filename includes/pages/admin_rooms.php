@@ -18,17 +18,25 @@ function admin_rooms()
 
     foreach ($rooms_source as $room) {
         $rooms[] = [
-            'name'           => Room_name_render($room),
+            'name'      => Room_name_render($room),
             'from_frab' => glyph_bool($room['from_frab']),
-            'map_url'         => glyph_bool(!empty($room['map_url'])),
-            'actions'        => table_buttons([
-                button(page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room['RID']]), _('edit'), 'btn-xs'),
-                button(page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room['RID']]), _('delete'), 'btn-xs')
+            'map_url'   => glyph_bool(!empty($room['map_url'])),
+            'actions'   => table_buttons([
+                button(
+                    page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room['RID']]),
+                    _('edit'),
+                    'btn-xs'
+                ),
+                button(
+                    page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room['RID']]),
+                    _('delete'),
+                    'btn-xs'
+                )
             ])
         ];
     }
-    $room = null;
 
+    $room = null;
     if ($request->has('show')) {
         $msg = '';
         $name = '';
@@ -69,7 +77,7 @@ function admin_rooms()
 
                 if ($request->has('name') && strlen(strip_request_item('name')) > 0) {
                     $result = Room_validate_name(strip_request_item('name'), $room_id);
-                    if(!$result->isValid()) {
+                    if (!$result->isValid()) {
                         $valid = false;
                         $msg .= error(_('This name is already in use.'), true);
                     } else {
@@ -87,7 +95,7 @@ function admin_rooms()
                 }
 
                 if ($request->has('description')) {
-                    $description= strip_request_item_nl('description');
+                    $description = strip_request_item_nl('description');
                 }
 
                 foreach ($angeltypes as $angeltype_id => $angeltype) {
@@ -101,7 +109,10 @@ function admin_rooms()
                         $angeltypes_count[$angeltype_id] = $request->input($queryKey);
                     } else {
                         $valid = false;
-                        $msg .= error(sprintf(_('Please enter needed angels for type %s.'), $angeltype), true);
+                        $msg .= error(sprintf(
+                            _('Please enter needed angels for type %s.'),
+                            $angeltype
+                        ), true);
                     }
                 }
 
@@ -118,7 +129,7 @@ function admin_rooms()
                         $angeltype = AngelType($angeltype_id);
                         if ($angeltype != null) {
                             NeededAngelType_add(null, $angeltype_id, $room_id, $angeltype_count);
-                            if($angeltype_count > 0) {
+                            if ($angeltype_count > 0) {
                                 $needed_angeltype_info[] = $angeltype['name'] . ': ' . $angeltype_count;
                             }
                         }
@@ -197,10 +208,10 @@ function admin_rooms()
         ]),
         msg(),
         table([
-            'name'           => _('Name'),
+            'name'      => _('Name'),
             'from_frab' => _('Frab import'),
-            'map_url'         => _('Map'),
-            'actions'        => ''
+            'map_url'   => _('Map'),
+            'actions'   => ''
         ], $rooms)
     ]);
 }

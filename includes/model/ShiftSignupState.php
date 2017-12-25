@@ -42,12 +42,12 @@ class ShiftSignupState
      * User is already signed up
      */
     const SIGNED_UP = 'SIGNED_UP';
-    
+
     /**
      * User has to be arrived
      */
     const NOT_ARRIVED = 'NOT_ARRIVED';
-    
+
     /** @var string */
     private $state;
 
@@ -69,8 +69,7 @@ class ShiftSignupState
     /**
      * Combine this state with another state from the same shift.
      *
-     * @param ShiftSignupState $shiftSignupState
-     *          The other state to combine
+     * @param ShiftSignupState $shiftSignupState The other state to combine
      */
     public function combineWith(ShiftSignupState $shiftSignupState)
     {
@@ -122,6 +121,7 @@ class ShiftSignupState
             case ShiftSignupState::ADMIN:
                 return true;
         }
+
         return false;
     }
 
