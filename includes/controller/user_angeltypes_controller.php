@@ -275,8 +275,7 @@ function user_angeltype_update_controller()
         $success_message = sprintf(
             $supporter
                 ? _('Added supporter rights for %s to %s.')
-                : _('Removed supporter rights for %s from %s.')
-            ,
+                : _('Removed supporter rights for %s from %s.'),
             AngelType_name_render($angeltype),
             User_Nick_render($user_source)
         );

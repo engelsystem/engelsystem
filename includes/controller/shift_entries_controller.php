@@ -339,7 +339,7 @@ function shift_entry_delete_controller()
     $shift = Shift($shiftEntry['SID']);
     $angeltype = AngelType($shiftEntry['TID']);
     $signout_user = User($shiftEntry['UID']);
-    if (! Shift_signout_allowed($shift, $angeltype, $signout_user)) {
+    if (!Shift_signout_allowed($shift, $angeltype, $signout_user)) {
         error(_('You are not allowed to remove this shift entry. If necessary, ask your supporter or heaven to do so.'));
         redirect(user_link($signout_user));
     }
