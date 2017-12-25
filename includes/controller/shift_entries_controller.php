@@ -19,8 +19,6 @@ function shift_entries_controller()
     switch ($action) {
         case 'create':
             return shift_entry_create_controller();
-        case 'edit':
-            return shift_entry_edit_controller();
         case 'delete':
             return shift_entry_delete_controller();
     }
