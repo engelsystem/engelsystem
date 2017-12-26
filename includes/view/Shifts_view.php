@@ -103,7 +103,7 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
  */
 function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupState $shift_signup_state)
 {
-    global $privileges;
+    global $user, $privileges;
 
     $shift_admin = in_array('admin_shifts', $privileges);
     $user_shift_admin = in_array('user_shifts_admin', $privileges);
@@ -132,12 +132,16 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
             $shift_signup_state->getState() == ShiftSignupState::SIGNED_UP
                 ? info(_('You are signed up for this shift.'), true)
                 : '',
-            ($shift_admin || $admin_shifttypes || $admin_rooms) ? buttons([
+            buttons(
+            ($shift_admin || $admin_shifttypes || $admin_rooms) ? [
                 $shift_admin ? button(shift_edit_link($shift), glyph('pencil') . _('edit')) : '',
                 $shift_admin ? button(shift_delete_link($shift), glyph('trash') . _('delete')) : '',
                 $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype['name']) : '',
-                $admin_rooms ? button(room_link($room), glyph('map-marker') . $room['Name']) : ''
-            ]) : '',
+                $admin_rooms ? button(room_link($room), glyph('map-marker') . $room['Name']) : '',
+                button(user_link($user), '<span class="icon-icon_angel"></span> ' . _('My shifts'))
+            ] : [
+                button(user_link($user), '<span class="icon-icon_angel"></span> ' . _('My shifts'))
+            ]),
             Shift_view_header($shift, $room),
             div('row', [
                 div('col-sm-6', [
