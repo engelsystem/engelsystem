@@ -14,9 +14,9 @@ function public_dashboard_view($stats, $free_shifts)
         $shift_panels = [
             '<div class="row">'
         ];
-        foreach ($free_shifts as $shift) {
+        foreach ($free_shifts as $i => $shift) {
             $shift_panels[] = public_dashboard_shift_render($shift);
-            if(count($shift_panels) % 4 == 0) {
+            if($i % 4 == 0) {
                 $shift_panels[] = '</div><div class="row">';
             }
         }
@@ -25,7 +25,9 @@ function public_dashboard_view($stats, $free_shifts)
             div('col-md-12', [
                 heading(_('Needed angels:'), 1)
             ]),
-            join($shift_panels)
+            div('container-fluid', [
+                join($shift_panels)
+            ])
         ]);
     }
 
