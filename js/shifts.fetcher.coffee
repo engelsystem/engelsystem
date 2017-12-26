@@ -234,6 +234,9 @@ Shifts.fetcher =
                 when 'room'
                     Shifts.db.delete_many_by_id 'Room', 'RID', e.entry_ids, ->
                         Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
+                when 'room_byname'
+                    Shifts.db.delete_many_by_id 'Room', 'Name', e.entry_ids, ->
+                        Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done
                 when 'user'
                     Shifts.db.delete_many_by_id 'User', 'UID', e.entry_ids, ->
                         Shifts.fetcher.process_deleted_entries deleted_entries, deleted_lastid, done

@@ -601,6 +601,10 @@ Shifts.fetcher = {
           return Shifts.db.delete_many_by_id('Room', 'RID', e.entry_ids, function() {
             return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
           });
+        case 'room_byname':
+          return Shifts.db.delete_many_by_id('Room', 'Name', e.entry_ids, function() {
+            return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
+          });
         case 'user':
           return Shifts.db.delete_many_by_id('User', 'UID', e.entry_ids, function() {
             return Shifts.fetcher.process_deleted_entries(deleted_entries, deleted_lastid, done);
