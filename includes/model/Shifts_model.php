@@ -725,8 +725,7 @@ function Shifts_for_websql($since, $deleted_lastid) {
   $rooms_count = DB::select("
       SELECT COUNT(RID) as count
       FROM Room
-      WHERE `show` = 'Y'
-      AND updated_microseconds > ?
+      WHERE updated_microseconds > ?
       ",
       [
         $since['rooms']
@@ -741,8 +740,7 @@ function Shifts_for_websql($since, $deleted_lastid) {
   $rooms = DB::select("
       SELECT RID, Name, updated_microseconds
       FROM Room
-      WHERE `show` = 'Y'
-      AND updated_microseconds > ?
+      WHERE updated_microseconds > ?
       ORDER BY updated_microseconds ASC
       LIMIT " . $limit . "
       ",
