@@ -248,12 +248,7 @@ function view_user_shifts()
                     . _('Description of the jobs.')
                     . '</a>',
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
-                'ical_text'     => '<h2>' . _('iCal export') . '</h2><p>' . sprintf(
-                        _('Export of shown shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
-                        page_link_to('ical', ['key' => $user['api_key']]),
-                        page_link_to('shifts_json_export', ['key' => $user['api_key']]),
-                        page_link_to('user_myshifts', ['reset' => 1])
-                    ) . '</p>',
+                'ical_text'     => ical_hint(),
                 'filter'        => _('Filter'),
                 'set_yesterday' => _('Yesterday'),
                 'set_today'     => _('Today'),
@@ -269,6 +264,22 @@ function view_user_shifts()
             ])
         ])
     ]);
+}
+
+/**
+ * Returns a hint for the user how the ical feature works.
+ */
+function ical_hint() {
+    global $user;
+
+    return heading(
+        _('iCal export'), 2) 
+        . '<p>' . sprintf(
+            _('Export of shown shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
+            page_link_to('ical', ['key' => $user['api_key']]),
+            page_link_to('shifts_json_export', ['key' => $user['api_key']]),
+            page_link_to('user_myshifts', ['reset' => 1])
+        ) . '</p>';
 }
 
 /**

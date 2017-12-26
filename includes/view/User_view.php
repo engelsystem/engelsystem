@@ -518,7 +518,8 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
                 _('Go to the <a href="%s">shifts table</a> to sign yourself up for some shifts.'),
                 page_link_to('user_shifts')
             ), true)
-                : ''
+                : '',
+            ical_hint()
         ]
     );
 }

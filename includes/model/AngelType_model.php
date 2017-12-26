@@ -126,7 +126,7 @@ function AngelType_create($angeltype)
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
-            $angeltype['show_on_dashboard']
+            (int)$angeltype['show_on_dashboard']
         ]
     );
 
