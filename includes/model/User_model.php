@@ -209,7 +209,7 @@ function User_is_freeloader($user)
  * Returns all users that are not member of given angeltype.
  *
  * @param array $angeltype Angeltype
- * @return array
+ * @return array[]
  */
 function Users_by_angeltype_inverted($angeltype)
 {
@@ -231,7 +231,7 @@ function Users_by_angeltype_inverted($angeltype)
  * Returns all members of given angeltype.
  *
  * @param array $angeltype
- * @return array
+ * @return array[]
  */
 function Users_by_angeltype($angeltype)
 {
@@ -258,7 +258,7 @@ function Users_by_angeltype($angeltype)
 /**
  * Returns User id array
  *
- * @return array
+ * @return array[]
  */
 function User_ids()
 {
@@ -268,6 +268,7 @@ function User_ids()
 /**
  * Strip unwanted characters from a users nick. Allowed are letters, numbers, connecting punctuation and simple space.
  * Nick is trimmed.
+ *
  * @param string $nick
  * @return string
  */
@@ -279,8 +280,7 @@ function User_validate_Nick($nick)
 /**
  * Validate user email address.
  *
- * @param string $mail
- *          The email address to validate
+ * @param string $mail The email address to validate
  * @return ValidationResult
  */
 function User_validate_mail($mail)
@@ -292,8 +292,7 @@ function User_validate_mail($mail)
 /**
  * Validate user jabber address
  *
- * @param string $jabber
- *          Jabber-ID to validate
+ * @param string $jabber Jabber-ID to validate
  * @return ValidationResult
  */
 function User_validate_jabber($jabber)
@@ -337,10 +336,8 @@ function User_validate_planned_arrival_date($planned_arrival_date)
 /**
  * Validate the planned departure date
  *
- * @param int $planned_arrival_date
- *          Unix timestamp
- * @param int $planned_departure_date
- *          Unix timestamp
+ * @param int $planned_arrival_date   Unix timestamp
+ * @param int $planned_departure_date Unix timestamp
  * @return ValidationResult
  */
 function User_validate_planned_departure_date($planned_arrival_date, $planned_departure_date)
@@ -383,8 +380,7 @@ function User($user_id)
 /**
  * Returns User by api_key.
  *
- * @param string $api_key
- *          User api key
+ * @param string $api_key User api key
  * @return array|null Matching user, null if not found
  */
 function User_by_api_key($api_key)
@@ -396,7 +392,7 @@ function User_by_api_key($api_key)
  * Returns User by email.
  *
  * @param string $email
- * @return array|null Matching user, null or false on error
+ * @return array|null Matching user, null on error
  */
 function User_by_email($email)
 {
@@ -460,7 +456,9 @@ function User_generate_password_recovery_token(&$user)
             $user['UID'],
         ]
     );
+
     engelsystem_log('Password recovery for ' . User_Nick_render($user) . ' started.');
+
     return $user['password_recovery_token'];
 }
 
@@ -474,10 +472,10 @@ function User_get_eligable_voucher_count(&$user)
     $shifts_done = count(ShiftEntries_finished_by_user($user));
 
     $earned_vouchers = $user['got_voucher'] - $voucher_settings['initial_vouchers'];
-    $elegible_vouchers = $shifts_done / $voucher_settings['shifts_per_voucher'] - $earned_vouchers;
-    if ($elegible_vouchers < 0) {
+    $eligable_vouchers = $shifts_done / $voucher_settings['shifts_per_voucher'] - $earned_vouchers;
+    if ($eligable_vouchers < 0) {
         return 0;
     }
 
-    return $elegible_vouchers;
+    return $eligable_vouchers;
 }

@@ -4,17 +4,21 @@ use Engelsystem\ShiftSignupState;
 
 /**
  * Renders the basic shift view header.
- * 
+ *
  * @param array $shift
  * @param array $room
- * 
  * @return string HTML
  */
-function Shift_view_header($shift, $room) {
+function Shift_view_header($shift, $room)
+{
     return div('row', [
         div('col-sm-3 col-xs-6', [
             '<h4>' . _('Title') . '</h4>',
-            '<p class="lead">' . ($shift['URL'] != '' ? '<a href="' . $shift['URL'] . '">' . $shift['title'] . '</a>' : $shift['title']) . '</p>'
+            '<p class="lead">'
+            . ($shift['URL'] != ''
+                ? '<a href="' . $shift['URL'] . '">' . $shift['title'] . '</a>'
+                : $shift['title'])
+            . '</p>'
         ]),
         div('col-sm-3 col-xs-6', [
             '<h4>' . _('Start') . '</h4>',
@@ -237,6 +241,11 @@ function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angelty
 function shift_length($shift)
 {
     $length = floor(($shift['end'] - $shift['start']) / (60 * 60)) . ':';
-    $length .= str_pad((($shift['end'] - $shift['start']) % (60 * 60)) / 60, 2, '0', STR_PAD_LEFT) . 'h';
+    $length .= str_pad(
+            (($shift['end'] - $shift['start']) % (60 * 60)) / 60,
+            2,
+            '0',
+            STR_PAD_LEFT
+        ) . 'h';
     return $length;
 }

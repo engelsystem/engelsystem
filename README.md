@@ -24,7 +24,7 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
     On production systems it is recommended to use
     ```bash
     composer install --no-dev
-    composerdump-autoload --optimize
+    composer dump-autoload --optimize
     ```
     to install the engelsystem
  * The webserver must have write access to the 'import' directory and read access for all other directories

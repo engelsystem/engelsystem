@@ -56,8 +56,18 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
         $end_time = $start_time + 24 * 60 * 60;
     }
 
-    $shiftsFilter->setStartTime(check_request_datetime('start_day', 'start_time', $days, $start_time));
-    $shiftsFilter->setEndTime(check_request_datetime('end_day', 'end_time', $days, $end_time));
+    $shiftsFilter->setStartTime(check_request_datetime(
+        'start_day',
+        'start_time',
+        $days,
+        $start_time
+    ));
+    $shiftsFilter->setEndTime(check_request_datetime(
+        'end_day',
+        'end_time',
+        $days,
+        $end_time
+    ));
 
     if ($shiftsFilter->getStartTime() > $shiftsFilter->getEndTime()) {
         $shiftsFilter->setEndTime($shiftsFilter->getStartTime() + 24 * 60 * 60);
@@ -115,7 +125,7 @@ function load_days()
 }
 
 /**
- * @return array|false
+ * @return array[]|false
  */
 function load_types()
 {
@@ -210,9 +220,19 @@ function view_user_shifts()
             view(__DIR__ . '/../../templates/user_shifts.html', [
                 'title'         => shifts_title(),
                 'room_select'   => make_select($rooms, $shiftsFilter->getRooms(), 'rooms', _('Rooms')),
-                'start_select'  => html_select_key('start_day', 'start_day', array_combine($days, $days), $start_day),
+                'start_select'  => html_select_key(
+                    'start_day',
+                    'start_day',
+                    array_combine($days, $days),
+                    $start_day
+                ),
                 'start_time'    => $start_time,
-                'end_select'    => html_select_key('end_day', 'end_day', array_combine($days, $days), $end_day),
+                'end_select'    => html_select_key(
+                    'end_day',
+                    'end_day',
+                    array_combine($days, $days),
+                    $end_day
+                ),
                 'end_time'      => $end_time,
                 'type_select'   => make_select(
                     $types,
@@ -242,7 +262,10 @@ function view_user_shifts()
                 'set_last_4h'   => _('last 4h'),
                 'set_next_4h'   => _('next 4h'),
                 'set_next_8h'   => _('next 8h'),
-                'buttons'       => button(public_dashboard_link(), glyph('dashboard') . _('Public Dashboard'))
+                'buttons'       => button(
+                    public_dashboard_link(),
+                    glyph('dashboard') . _('Public Dashboard')
+                )
             ])
         ])
     ]);

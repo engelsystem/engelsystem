@@ -271,7 +271,7 @@ function users_list_controller()
             User_arrived_count(),
             User_active_count(),
             User_force_active_count(),
-            ShiftEntries_freeleaded_count(),
+            ShiftEntries_freeloaded_count(),
             User_tshirts_count(),
             User_got_voucher_count()
         )
@@ -464,7 +464,10 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
         if (in_array(ShiftsFilter::FILLED_FREE, $shiftsFilter->getFilled()) && $taken < $needed_angels_count) {
             $filtered_shifts[] = $shift;
         }
-        if (in_array(ShiftsFilter::FILLED_FILLED, $shiftsFilter->getFilled()) && $taken >= $needed_angels_count) {
+        if (
+            in_array(ShiftsFilter::FILLED_FILLED, $shiftsFilter->getFilled())
+            && $taken >= $needed_angels_count
+        ) {
             $filtered_shifts[] = $shift;
         }
     }

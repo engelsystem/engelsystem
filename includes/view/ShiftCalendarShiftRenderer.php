@@ -33,10 +33,14 @@ class ShiftCalendarShiftRenderer
 
         $blocks = ceil(($shift['end'] - $shift['start']) / ShiftCalendarRenderer::SECONDS_PER_ROW);
         $blocks = max(1, $blocks);
+
         return [
             $blocks,
             div(
-                'shift panel panel-' . $class . '" style="height: ' . ($blocks * ShiftCalendarRenderer::BLOCK_HEIGHT - ShiftCalendarRenderer::MARGIN) . 'px"',
+                'shift panel panel-' . $class . '" '
+                . 'style="height: '
+                . ($blocks * ShiftCalendarRenderer::BLOCK_HEIGHT - ShiftCalendarRenderer::MARGIN)
+                . 'px"',
                 [
                     $this->renderShiftHead($shift),
                     div('panel-body', [
@@ -127,9 +131,9 @@ class ShiftCalendarShiftRenderer
         if (in_array('user_shifts_admin', $privileges)) {
             $html .= '<li class="list-group-item">';
             $html .= button(shift_entry_create_link_admin($shift),
-                    glyph('plus') . _('Add more angels'),
-                    'btn-xs'
-                );
+                glyph('plus') . _('Add more angels'),
+                'btn-xs'
+            );
             $html .= '</li>';
         }
         if ($html != '') {
@@ -138,6 +142,7 @@ class ShiftCalendarShiftRenderer
                 '<ul class="list-group">' . $html . '</ul>'
             ];
         }
+
         return [
             $shift_signup_state,
             ''
@@ -161,7 +166,15 @@ class ShiftCalendarShiftRenderer
             $style = $entry['freeloaded'] ? ' text-decoration: line-through;' : '';
             $entry_list[] = '<span style="' . $style . '">' . User_Nick_render($entry) . '</span>';
         }
-        $shift_signup_state = Shift_signup_allowed($user, $shift, $angeltype, null, null, $angeltype, $shift_entries);
+        $shift_signup_state = Shift_signup_allowed(
+            $user,
+            $shift,
+            $angeltype,
+            null,
+            null,
+            $angeltype,
+            $shift_entries
+        );
         $inner_text = sprintf(
             ngettext('%d helper needed', '%d helpers needed', $shift_signup_state->getFreeEntries()),
             $shift_signup_state->getFreeEntries()
@@ -181,12 +194,12 @@ class ShiftCalendarShiftRenderer
                         _('Sign up'), 'btn-xs btn-primary'
                     );
                 break;
-                
+
             case ShiftSignupState::SHIFT_ENDED:
                 // No link and add a text hint, when the shift ended
                 $entry_list[] = $inner_text . ' (' . _('ended') . ')';
                 break;
-                
+
             case ShiftSignupState::NOT_ARRIVED:
                 // No link and add a text hint, when the shift ended
                 $entry_list[] = $inner_text . ' (' . _('please arrive for signup') . ')';
@@ -200,7 +213,10 @@ class ShiftCalendarShiftRenderer
                     // Add link to join the angeltype first
                     $entry_list[] = $inner_text . '<br />'
                         . button(
-                            page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype['id']]),
+                            page_link_to(
+                                'user_angeltypes',
+                                ['action' => 'add', 'angeltype_id' => $angeltype['id']]
+                            ),
                             sprintf(_('Become %s'), $angeltype['name']),
                             'btn-xs'
                         );
@@ -241,8 +257,16 @@ class ShiftCalendarShiftRenderer
         $header_buttons = '';
         if (in_array('admin_shifts', $privileges)) {
             $header_buttons = '<div class="pull-right">' . table_buttons([
-                    button(page_link_to('user_shifts', ['edit_shift' => $shift['SID']]), glyph('edit'), 'btn-xs'),
-                    button(page_link_to('user_shifts', ['delete_shift' => $shift['SID']]), glyph('trash'), 'btn-xs')
+                    button(
+                        page_link_to('user_shifts', ['edit_shift' => $shift['SID']]),
+                        glyph('edit'),
+                        'btn-xs'
+                    ),
+                    button(
+                        page_link_to('user_shifts', ['delete_shift' => $shift['SID']]),
+                        glyph('trash'),
+                        'btn-xs'
+                    )
                 ]) . '</div>';
         }
         $shift_heading = date('H:i', $shift['start']) . ' &dash; '

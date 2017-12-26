@@ -183,7 +183,7 @@ function guest_register()
             $tel = strip_request_item('tel');
         }
         if ($request->has('dect')) {
-            if(strlen(strip_request_item('dect')) <= 5) {
+            if (strlen(strip_request_item('dect')) <= 5) {
                 $dect = strip_request_item('dect');
             } else {
                 $valid = false;
@@ -392,7 +392,6 @@ function guest_register()
                     form_info(entry_required() . ' = ' . _('Entry required!'))
                 ])
             ]),
-            // form_textarea('comment', _('Did you help at former CCC events and which tasks have you performed then?'), $comment),
             form_submit('submit', _('Register'))
         ])
     ]);

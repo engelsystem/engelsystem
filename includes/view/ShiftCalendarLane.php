@@ -48,6 +48,7 @@ class ShiftCalendarLane
             $this->shifts[] = $shift;
             return;
         }
+
         throw new Exception('Unable to add shift to shift calendar lane.');
     }
 
@@ -65,6 +66,7 @@ class ShiftCalendarLane
                 return false;
             }
         }
+
         return true;
     }
 

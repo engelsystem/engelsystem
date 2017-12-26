@@ -78,7 +78,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
     $user_source['Vorname'] = strip_request_item('prename', $user_source['Vorname']);
     $user_source['Alter'] = strip_request_item('age', $user_source['Alter']);
     $user_source['Telefon'] = strip_request_item('tel', $user_source['Telefon']);
-    if(strlen(strip_request_item('dect')) <= 5) {
+    if (strlen(strip_request_item('dect')) <= 5) {
         $user_source['DECT'] = strip_request_item('dect', $user_source['DECT']);
     } else {
         $valid = false;
@@ -126,7 +126,7 @@ function user_settings_password($user_source)
  *
  * @param array $user_source The user
  * @param array $themes      List of available themes
- * @return mixed
+ * @return array
  */
 function user_settings_theme($user_source, $themes)
 {

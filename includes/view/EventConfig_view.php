@@ -73,7 +73,11 @@ function EventConfig_info($event_config)
     }
 
     // Event name, start+end date are set
-    if ($event_config['event_name'] != null && $event_config['event_start_date'] != null && $event_config['event_end_date'] != null) {
+    if (
+        $event_config['event_name'] != null
+        && $event_config['event_start_date'] != null
+        && $event_config['event_end_date'] != null
+    ) {
         return sprintf(
             _('%s, from %s to %s'),
             $event_config['event_name'],
@@ -134,7 +138,10 @@ function EventConfig_edit_view(
                     form_text('event_name', _('Event Name'), $event_name),
                     form_info('', _('Event Name is shown on the start page.')),
                     form_textarea('event_welcome_msg', _('Event Welcome Message'), $event_welcome_msg),
-                    form_info('', _('Welcome message is shown after successful registration. You can use markdown.'))
+                    form_info(
+                        '',
+                        _('Welcome message is shown after successful registration. You can use markdown.')
+                    )
                 ]),
                 div('col-md-3 col-xs-6', [
                     form_date('buildup_start_date', _('Buildup date'), $buildup_start_date),

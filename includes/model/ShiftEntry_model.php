@@ -26,7 +26,7 @@ function ShiftEntry_new()
  *
  * @return int
  */
-function ShiftEntries_freeleaded_count()
+function ShiftEntries_freeloaded_count()
 {
     $result = DB::selectOne('SELECT COUNT(*) FROM `ShiftEntry` WHERE `freeloaded` = 1');
 
@@ -38,7 +38,7 @@ function ShiftEntries_freeleaded_count()
 }
 
 /**
- * List users subsribed to a given shift.
+ * List users subscribed to a given shift.
  *
  * @param int $shift_id
  * @return array
@@ -102,7 +102,8 @@ function ShiftEntry_create($shift_entry)
         . ' signed up for shift ' . $shift['name']
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
-        );
+    );
+
     return $result;
 }
 
@@ -149,20 +150,20 @@ function ShiftEntry_delete($shiftEntry)
 {
     mail_shift_removed(User($shiftEntry['UID']), Shift($shiftEntry['SID']));
     DB::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shiftEntry['id']]);
-    
+
     $signout_user = User($shiftEntry['UID']);
     $shift = Shift($shiftEntry['SID']);
     $shifttype = ShiftType($shift['shifttype_id']);
     $room = Room($shift['RID']);
     $angeltype = AngelType($shiftEntry['TID']);
-    
+
     engelsystem_log(
-        'Shift signout: '. User_Nick_render($signout_user) . ' from shift ' . $shifttype['name']
+        'Shift signout: ' . User_Nick_render($signout_user) . ' from shift ' . $shifttype['name']
         . ' at ' . $room['Name']
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
         . ' as ' . $angeltype['name']
-        );
+    );
 }
 
 /**

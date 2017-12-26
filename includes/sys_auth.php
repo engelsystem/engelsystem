@@ -87,18 +87,22 @@ function verify_password($password, $salt, $uid = null)
 {
     $crypt_alg = config('crypt_alg');
     $correct = false;
-    if (substr($salt, 0, 1) == '$') { // new-style crypt()
+    if (substr($salt, 0, 1) == '$') {
+        // new-style crypt()
         $correct = crypt($password, $salt) == $salt;
-    } elseif (substr($salt, 0, 7) == '{crypt}') { // old-style crypt() with DES and static salt - not used anymore
+    } elseif (substr($salt, 0, 7) == '{crypt}') {
+        // old-style crypt() with DES and static salt - not used anymore
         $correct = crypt($password, '77') == $salt;
-    } elseif (strlen($salt) == 32) { // old-style md5 without salt - not used anymore
+    } elseif (strlen($salt) == 32) {
+        // old-style md5 without salt - not used anymore
         $correct = md5($password) == $salt;
     }
 
     if ($correct && substr($salt, 0, strlen($crypt_alg)) != $crypt_alg && intval($uid)) {
         // this password is stored in another format than we want it to be.
         // let's update it!
-        // we duplicate the query from the above set_password() function to have the extra safety of checking the old hash
+        // we duplicate the query from the above set_password() function to have the extra safety of checking
+        // the old hash
         DB::update('
                 UPDATE `User`
                 SET `Passwort` = ?

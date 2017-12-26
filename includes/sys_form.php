@@ -23,9 +23,11 @@ function form_hidden($name, $value)
  */
 function form_spinner($name, $label, $value)
 {
+    $value = htmlspecialchars($value);
+
     return form_element($label, '
       <div class="input-group">
-        <input id="spinner-' . $name . '" class="form-control" name="' . $name . '" value="' . htmlspecialchars($value) . '" />
+        <input id="spinner-' . $name . '" class="form-control" name="' . $name . '" value="' . $value . '" />
         <div class="input-group-btn">
           <button id="spinner-' . $name . '-down" class="btn btn-default" type="button">
             <span class="glyphicon glyphicon-minus"></span>
@@ -130,7 +132,13 @@ function form_multi_checkboxes($names, $label, $items, $selected, $disabled = []
                 $sel .= ' disabled="disabled"';
             }
             $html .= '<td style="text-align: center;">'
-                . '<input type="checkbox" id="' . $dom_id . '" name="' . $name . '[]" value="' . $key . '" ' . $sel . ' />'
+                . sprintf(
+                    '<input type="checkbox" id="%s" name="%s[]" value="%s" %s />',
+                    $dom_id,
+                    $name,
+                    $key,
+                    $sel
+                )
                 . '</td>';
         }
         $html .= '<td><label for="' . $dom_id . '">' . $item . '</label></td></tr>';
@@ -281,7 +289,11 @@ function form_email($name, $label, $value, $disabled = false)
  */
 function form_file($name, $label)
 {
-    return form_element($label, '<input id="form_' . $name . '" type="file" name="' . $name . '" />', 'form_' . $name);
+    return form_element(
+        $label,
+        sprintf('<input id="form_%1$s" type="file" name="%1$s" />', $name),
+        'form_' . $name
+    );
 }
 
 /**
@@ -297,7 +309,11 @@ function form_password($name, $label, $disabled = false)
     $disabled = $disabled ? ' disabled="disabled"' : '';
     return form_element(
         $label,
-        '<input class="form-control" id="form_' . $name . '" type="password" name="' . $name . '" value="" ' . $disabled . '/>',
+        sprintf(
+            '<input class="form-control" id="form_%1$s" type="password" name="%1$s" value=""%s/>',
+            $name,
+            $disabled
+        ),
         'form_' . $name
     );
 }

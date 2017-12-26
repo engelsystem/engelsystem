@@ -42,7 +42,7 @@ before_script:
 .test_template: &test_definition
   stage: test
   artifacts:
-    name: "${CI_JOB_NAME}_${CI_PROJECT_ID}_${PHP_VERSION}"
+    name: "${CI_JOB_NAME}_${CI_PROJECT_ID}"
     expire_in: 1 week
     paths:
       - ./coverage/

@@ -12,7 +12,9 @@ class DatabaseServiceProvider extends ServiceProvider
     {
         $config = $this->app->get('config');
         Db::connect(
-            'mysql:host=' . $config->get('database')['host'] . ';dbname=' . $config->get('database')['db'] . ';charset=utf8',
+            'mysql:host=' . $config->get('database')['host']
+            . ';dbname=' . $config->get('database')['db']
+            . ';charset=utf8',
             $config->get('database')['user'],
             $config->get('database')['pw']
         ) || $this->exitOnError();

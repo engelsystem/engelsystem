@@ -76,7 +76,7 @@ function ShiftType($shifttype_id)
 /**
  * Get all shift types.
  *
- * @return array
+ * @return array[]
  */
 function ShiftTypes()
 {

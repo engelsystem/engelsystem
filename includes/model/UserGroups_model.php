@@ -6,7 +6,7 @@ use Engelsystem\Database\DB;
  * Returns users groups
  *
  * @param array $user
- * @return array
+ * @return array[]
  */
 function User_groups($user)
 {

@@ -60,15 +60,29 @@ function header_toolbar()
     }
 
     if (!isset($user) && in_array('register', $privileges) && config('registration_enabled')) {
-        $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'plus', register_title(), $page == 'register');
+        $toolbar_items[] = toolbar_item_link(
+            page_link_to('register'),
+            'plus',
+            register_title(),
+            $page == 'register'
+        );
     }
 
     if (in_array('login', $privileges)) {
-        $toolbar_items[] = toolbar_item_link(page_link_to('login'), 'log-in', login_title(), $page == 'login');
+        $toolbar_items[] = toolbar_item_link(
+            page_link_to('login'),
+            'log-in',
+            login_title(),
+            $page == 'login'
+        );
     }
 
     if (isset($user) && in_array('user_messages', $privileges)) {
-        $toolbar_items[] = toolbar_item_link(page_link_to('user_messages'), 'envelope', user_unread_messages());
+        $toolbar_items[] = toolbar_item_link(
+            page_link_to('user_messages'),
+            'envelope',
+            user_unread_messages()
+        );
     }
 
     $toolbar_items[] = header_render_hints();
@@ -112,7 +126,12 @@ function make_user_submenu()
     }
 
     if (in_array('logout', $privileges)) {
-        $user_submenu[] = toolbar_item_link(page_link_to('logout'), 'log-out', logout_title(), $page == 'logout');
+        $user_submenu[] = toolbar_item_link(
+            page_link_to('logout'),
+            'log-out',
+            logout_title(),
+            $page == 'logout'
+        );
     }
 
     return $user_submenu;
@@ -160,7 +179,12 @@ function make_navigation()
 
     foreach ($admin_pages as $menu_page => $title) {
         if (in_array($menu_page, $privileges)) {
-            $admin_menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
+            $admin_menu[] = toolbar_item_link(
+                page_link_to($menu_page),
+                '',
+                $title,
+                $menu_page == $page
+            );
         }
     }
 

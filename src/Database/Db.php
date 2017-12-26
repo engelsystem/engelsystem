@@ -71,7 +71,7 @@ class Db
      *
      * @param string $query
      * @param array  $bindings
-     * @return array
+     * @return array[]
      */
     public static function select($query, array $bindings = [])
     {

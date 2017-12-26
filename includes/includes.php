@@ -84,6 +84,7 @@ $includeFiles = [
     __DIR__ . '/../includes/pages/user_settings.php',
     __DIR__ . '/../includes/pages/user_shifts.php',
 ];
+
 foreach ($includeFiles as $file) {
     require_once realpath($file);
 }

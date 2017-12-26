@@ -273,7 +273,9 @@ function user_angeltype_update_controller()
         UserAngelType_update($user_angeltype['id'], $supporter);
 
         $success_message = sprintf(
-            $supporter ? _('Added supporter rights for %s to %s.') : _('Removed supporter rights for %s from %s.'),
+            $supporter
+                ? _('Added supporter rights for %s to %s.')
+                : _('Removed supporter rights for %s from %s.'),
             AngelType_name_render($angeltype),
             User_Nick_render($user_source)
         );
@@ -291,6 +293,8 @@ function user_angeltype_update_controller()
 
 /**
  * User joining an Angeltype (Or supporter doing this for him).
+ *
+ * @return array
  */
 function user_angeltype_add_controller()
 {
@@ -364,7 +368,11 @@ function user_angeltype_join_controller($angeltype)
         $user_angeltype_id = UserAngelType_create($user, $angeltype);
 
         $success_message = sprintf(_('You joined %s.'), $angeltype['name']);
-        engelsystem_log(sprintf('User %s joined %s.', User_Nick_render($user), AngelType_name_render($angeltype)));
+        engelsystem_log(sprintf(
+            'User %s joined %s.',
+            User_Nick_render($user),
+            AngelType_name_render($angeltype)
+        ));
         success($success_message);
 
         if (in_array('admin_user_angeltypes', $privileges)) {

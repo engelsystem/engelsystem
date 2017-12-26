@@ -20,7 +20,9 @@ class UserHintsRenderer
             $hint_class = $this->important ? 'danger' : 'info';
             $glyphicon = $this->important ? 'warning-sign' : 'info-sign';
 
-            return toolbar_popover($glyphicon . ' text-' . $hint_class, '', $this->hints, 'bg-' . $hint_class);
+            return toolbar_popover(
+                $glyphicon . ' text-' . $hint_class, '', $this->hints, 'bg-' . $hint_class
+            );
         }
 
         return '';
