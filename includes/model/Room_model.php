@@ -58,6 +58,7 @@ function Room_delete($room_id)
     DB::delete('DELETE FROM `Room` WHERE `RID` = ?', [
         $room_id
     ]);
+    db_log_delete('room', $room_id);
     engelsystem_log('Room deleted: ' . $room['Name']);
 }
 
@@ -71,6 +72,7 @@ function Room_delete_by_name($name)
     DB::delete('DELETE FROM `Room` WHERE `Name` = ?', [
         $name
     ]);
+    db_log_delete('room_byname', $name);
     engelsystem_log('Room deleted: ' . $name);
 }
 
@@ -86,13 +88,14 @@ function Room_delete_by_name($name)
 function Room_create($name, $from_frab, $map_url, $description)
 {
     DB::insert('
-          INSERT INTO `Room` (`Name`, `from_frab`, `map_url`, `description`)
-           VALUES (?, ?, ?, ?)
+          INSERT INTO `Room` (`Name`, `from_frab`, `map_url`, `description`, `updated_microseconds`)
+           VALUES (?, ?, ?, ?, ?)
         ', [
         $name,
         (int)$from_frab,
         $map_url,
-        $description
+        $description,
+        time_microseconds(),
     ]);
     $result = DB::getPdo()->lastInsertId();
 
@@ -124,13 +127,15 @@ function Room_update($room_id, $name, $from_frab, $map_url, $description)
             `Name`=?,
             `from_frab`=?,
             `map_url`=?,
-            `description`=?
+            `description`=?,
+            `updated_microseconds`=?
         WHERE `RID`=?
         LIMIT 1', [
         $name,
         (int)$from_frab,
         $map_url,
         $description,
+        time_microseconds(),
         $room_id
     ]);
 

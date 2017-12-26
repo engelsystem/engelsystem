@@ -372,6 +372,41 @@ function shifts_json_export_all_controller()
 }
 
 /**
+ * Export shifts for use in the browser-based sql.
+ */
+function shifts_json_export_websql_controller()
+{
+
+  $session = session();
+  if (!$session->has('uid'))
+  {
+    engelsystem_error("You must be logged in to access shifts.");
+  }
+
+  $request = request();
+
+  $since = array();
+  $since['rooms'] = $request->has('Room') ? $request->input('Room') : 0;
+  $since['angeltypes'] = $request->has('AngelTypes') ? $request->input('AngelTypes') : 0;
+  $since['shift_types'] = $request->has('ShiftTypes') ? $request->input('ShiftTypes') : 0;
+  $since['users'] = $request->has('User') ? $request->input('User') : 0;
+  $since['shifts'] = $request->has('Shifts') ? $request->input('Shifts') : 0;
+  $since['needed_angeltypes'] = $request->has('NeededAngelTypes') ? $request->input('NeededAngelTypes') : 0;
+  $since['shift_entries'] = $request->has('ShiftEntry') ? $request->input('ShiftEntry') : 0;
+
+  $deleted_lastid = $request->has('deleted_lastid') ? $request->input('deleted_lastid') : 0;
+
+  $shifts = Shifts_for_websql($since, $deleted_lastid);
+  if ($shifts === false)
+  {
+    engelsystem_error("Unable to load shifts.");
+  }
+
+  header("Content-Type: application/json; charset=utf-8");
+  raw_output(json_encode($shifts));
+}
+
+/**
  * Export filtered shifts via JSON.
  * (Like iCal Export or shifts view)
  */

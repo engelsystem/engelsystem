@@ -84,9 +84,10 @@ function ShiftEntry_create($shift_entry)
               `UID`,
               `Comment`,
               `freeload_comment`,
-              `freeloaded`
+              `freeloaded`,
+              `updated_microseconds`
           )
-          VALUES(?, ?, ?, ?, ?, ?)
+          VALUES(?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $shift_entry['SID'],
@@ -95,6 +96,7 @@ function ShiftEntry_create($shift_entry)
             $shift_entry['Comment'],
             $shift_entry['freeload_comment'],
             (int)$shift_entry['freeloaded'],
+            time_microseconds(),
         ]
     );
     engelsystem_log(
@@ -119,12 +121,14 @@ function ShiftEntry_update($shift_entry)
       SET
           `Comment` = ?,
           `freeload_comment` = ?,
-          `freeloaded` = ?
+          `freeloaded` = ?,
+          `updated_microseconds` = ?
       WHERE `id` = ?',
         [
             $shift_entry['Comment'],
             $shift_entry['freeload_comment'],
             (int)$shift_entry['freeloaded'],
+            time_microseconds(),
             $shift_entry['id']
         ]
     );
@@ -150,6 +154,7 @@ function ShiftEntry_delete($shiftEntry)
 {
     mail_shift_removed(User($shiftEntry['UID']), Shift($shiftEntry['SID']));
     DB::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shiftEntry['id']]);
+    db_log_delete('shiftentry', $shiftEntry['id']);
 
     $signout_user = User($shiftEntry['UID']);
     $shift = Shift($shiftEntry['SID']);

@@ -18,14 +18,15 @@ use Engelsystem\Database\DB;
 function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
 {
     DB::insert('
-          INSERT INTO `NeededAngelTypes` ( `shift_id`, `angel_type_id`, `room_id`, `count`)
-           VALUES (?, ?, ?, ?)
+          INSERT INTO `NeededAngelTypes` ( `shift_id`, `angel_type_id`, `room_id`, `count`, `updated_microseconds`)
+           VALUES (?, ?, ?, ?, ?)
         ',
         [
             $shift_id,
             $angeltype_id,
             $room_id,
             $count,
+            time_microseconds(),
         ]);
 
     return DB::getPdo()->lastInsertId();
@@ -39,6 +40,7 @@ function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)
 function NeededAngelTypes_delete_by_shift($shift_id)
 {
     DB::delete('DELETE FROM `NeededAngelTypes` WHERE `shift_id` = ?', [$shift_id]);
+    db_log_delete('needed_angeltypes_shiftid', $shift_id);
 }
 
 /**
@@ -52,6 +54,7 @@ function NeededAngelTypes_delete_by_room($room_id)
         'DELETE FROM `NeededAngelTypes` WHERE `room_id` = ?',
         [$room_id]
     );
+    db_log_delete('needed_angeltypes_roomid', $room_id);
 }
 
 /**

@@ -226,9 +226,10 @@ function guest_register()
                         `force_active`,
                         `lastLogIn`,
                         `api_key`,
-                        `got_voucher`
+                        `got_voucher`,
+                        `updated_microseconds`
                     )
-                    VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NULL, ?, FALSE, 0, "", 0)
+                    VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NULL, ?, FALSE, 0, "", 0, ?)
                 ',
                 [
                     config('theme'),
@@ -249,6 +250,7 @@ function guest_register()
                     $hometown,
                     $session->get('locale'),
                     $planned_arrival_date,
+                    time_microseconds(),
                 ]
             );
 

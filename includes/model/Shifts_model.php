@@ -495,6 +495,7 @@ function Shift_signup_allowed(
 function Shift_delete_by_psid($shift_psid)
 {
     DB::delete('DELETE FROM `Shifts` WHERE `PSID`=?', [$shift_psid]);
+    db_log_delete('shifts_psid', $shift_psid);
 }
 
 /**
@@ -505,6 +506,7 @@ function Shift_delete_by_psid($shift_psid)
 function Shift_delete($shift_id)
 {
     DB::delete('DELETE FROM `Shifts` WHERE `SID`=?', [$shift_id]);
+    db_log_delete('shifts', $shift_id);
     mail_shift_delete(Shift($shift_id));
 }
 
@@ -530,7 +532,8 @@ function Shift_update($shift)
       `URL` = ?,
       `PSID` = ?,
       `edited_by_user_id` = ?,
-      `edited_at_timestamp` = ?
+      `edited_at_timestamp` = ?,
+      `updated_microseconds` = ?
       WHERE `SID` = ?
     ',
         [
@@ -543,7 +546,8 @@ function Shift_update($shift)
             $shift['PSID'],
             $user['UID'],
             time(),
-            $shift['SID']
+            time_microseconds(),
+            $shift['SID'],
         ]
     );
 }
@@ -587,9 +591,10 @@ function Shift_create($shift)
               `PSID`,
               `created_by_user_id`,
               `edited_at_timestamp`,
-              `created_at_timestamp`
+              `created_at_timestamp`,
+              `updated_microseconds`
           )
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $shift['shifttype_id'],
@@ -602,6 +607,7 @@ function Shift_create($shift)
             $user['UID'],
             time(),
             time(),
+            time_microseconds(),
         ]
     );
 
@@ -641,6 +647,412 @@ function Shifts_by_user($user, $include_freeload_comments = false)
             $user['UID']
         ]
     );
+}
+
+/**
+ * Return users shifts.
+ */
+function Shifts_for_websql($since, $deleted_lastid) {
+
+    $limit = 2000; // 5k items per fetch gives ~1MB large json-response
+
+    // fetch shifts count
+  $shifts_count = DB::select("
+      SELECT COUNT(SID) as count
+      FROM Shifts
+      WHERE updated_microseconds > ?
+      ",
+      [
+        $since['shifts']
+      ]
+  );
+  if ($shifts_count === false) {
+    engelsystem_error('Unable to load websql shifts_count.');
+  }
+  $shifts_count = $shifts_count[0]['count'];
+
+    // fetch shifts
+  $shifts = DB::select("
+      SELECT SID, title, shifttype_id, start, end, RID, updated_microseconds
+      FROM Shifts
+      WHERE updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
+      LIMIT " . $limit . "
+      ",
+      [
+        $since['shifts']
+      ]
+  );
+  if ($shifts === false) {
+    engelsystem_error('Unable to load websql shifts.');
+  }
+
+
+
+    // fetch shift types count
+  $shift_types_count = DB::select("
+      SELECT COUNT(id) as count
+      FROM ShiftTypes
+      WHERE updated_microseconds > ?
+      ",
+      [
+        $since['shift_types']
+      ]
+  );
+  if ($shift_types_count === false) {
+    engelsystem_error('Unable to load websql shift_types_count.');
+  }
+  $shift_types_count = $shift_types_count[0]['count'];
+
+    // fetch shift types
+  $shift_types = DB::select("
+      SELECT id, name, angeltype_id, updated_microseconds
+      FROM ShiftTypes
+      WHERE updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
+      LIMIT " . $limit . "
+      ",
+      [
+        $since['shift_types']
+      ]
+  );
+  if ($shift_types === false) {
+    engelsystem_error('Unable to load websql shift_types.');
+  }
+
+
+
+    // fetch rooms count
+  $rooms_count = DB::select("
+      SELECT COUNT(RID) as count
+      FROM Room
+      WHERE updated_microseconds > ?
+      ",
+      [
+        $since['rooms']
+      ]
+  );
+  if ($rooms_count === false) {
+    engelsystem_error('Unable to load websql rooms_count.');
+  }
+  $rooms_count = $rooms_count[0]['count'];
+
+    // fetch rooms
+  $rooms = DB::select("
+      SELECT RID, Name, updated_microseconds
+      FROM Room
+      WHERE updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
+      LIMIT " . $limit . "
+      ",
+      [
+        $since['rooms']
+      ]
+  );
+  if ($rooms === false) {
+    engelsystem_error('Unable to load websql rooms.');
+  }
+
+
+
+    // fetch shift_entries count
+  $shift_entries_count = DB::select("
+      SELECT COUNT(id) as count
+      FROM ShiftEntry
+      WHERE updated_microseconds > ?
+      ",
+      [
+        $since['shift_entries']
+      ]
+  );
+  if ($shift_entries_count === false) {
+    engelsystem_error('Unable to load websql shift_entries_count.');
+  }
+  $shift_entries_count = $shift_entries_count[0]['count'];
+
+    // fetch shift_entries
+  $shift_entries = DB::select("
+      SELECT id, SID, TID, UID, freeloaded, updated_microseconds
+      FROM ShiftEntry
+      WHERE updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
+      LIMIT " . $limit . "
+      ",
+      [
+        $since['shift_entries']
+      ]
+  );
+  if ($shift_entries === false) {
+    engelsystem_error('Unable to load websql shift_entries_count.');
+  }
+
+
+
+    // fetch users count
+  $users_count = DB::select("
+      SELECT COUNT(UID) as count
+      FROM User
+      WHERE Gekommen = '1'
+      AND updated_microseconds > ?
+      ",
+      [
+        $since['users']
+      ]
+  );
+  if ($users_count === false) {
+    engelsystem_error('Unable to load websql users_count.');
+  }
+  $users_count = $users_count[0]['count'];
+
+    // fetch users
+  $users = DB::select("
+      SELECT UID, Nick, updated_microseconds
+      FROM User
+      WHERE Gekommen = '1'
+      AND updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
+      LIMIT " . $limit . "
+      ",
+      [
+        $since['users']
+      ]
+  );
+  if ($users === false) {
+    engelsystem_error('Unable to load websql users.');
+  }
+
+
+
+    // fetch angel types count
+  $angeltypes_count = DB::select("
+      SELECT COUNT(id) as count
+      FROM AngelTypes
+      WHERE updated_microseconds > ?
+      ",
+      [
+        $since['angeltypes']
+      ]
+  );
+  if ($angeltypes_count === false) {
+    engelsystem_error('Unable to load websql angeltypes_count.');
+  }
+  $angeltypes_count = $angeltypes_count[0]['count'];
+
+    // fetch angel types
+  $angeltypes = DB::select("
+      SELECT id, name, restricted, no_self_signup, updated_microseconds
+      FROM AngelTypes
+      WHERE updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
+      LIMIT " . $limit . "
+      ",
+      [
+        $since['angeltypes']
+      ]
+  );
+  if ($angeltypes === false) {
+    engelsystem_error('Unable to load websql angeltypes.');
+  }
+
+
+
+    // fetch needed angel types count
+  $needed_angeltypes_count = DB::select("
+      SELECT COUNT(id) as count
+      FROM NeededAngelTypes
+      WHERE updated_microseconds > ?
+      ",
+      [
+        $since['needed_angeltypes']
+      ]
+  );
+  if ($needed_angeltypes_count === false) {
+    engelsystem_error('Unable to load websql needed_angeltypes_count.');
+  }
+  $needed_angeltypes_count = $needed_angeltypes_count[0]['count'];
+
+    // fetch needed angel types
+  $needed_angeltypes = DB::select("
+      SELECT id, room_id as RID, shift_id as SID, angel_type_id as ATID, count, updated_microseconds
+      FROM NeededAngelTypes
+      WHERE updated_microseconds > ?
+      ORDER BY updated_microseconds ASC
+      LIMIT " . $limit . "
+      ",
+      [
+        $since['needed_angeltypes']
+      ]
+  );
+  if ($needed_angeltypes === false) {
+    engelsystem_error('Unable to load websql needed_angeltypes.');
+  }
+
+    // fetch deleted entries
+    if ($deleted_lastid == 0) {
+        // first fetch? pass the latest entry, so that the client knows the id from now on
+      $all_deleted_entries = DB::select("
+          SELECT id, tablename, entry_id
+          FROM DeleteLog
+          ORDER BY id DESC
+          LIMIT 1
+          "
+      );
+    } else {
+      $all_deleted_entries = DB::select("
+          SELECT id, tablename, entry_id
+          FROM DeleteLog
+          WHERE id > ?
+          ORDER BY id ASC
+          LIMIT " . $limit . "
+          ",
+          [
+            $deleted_lastid
+          ]
+      );
+    }
+  if ($all_deleted_entries === false) {
+    engelsystem_error('Unable to load websql deleted_entries.');
+  }
+
+  // build array
+  $deleted_entries = array();
+  foreach ($all_deleted_entries as $e) {
+      $k = $e['tablename'];
+      $v = $e['entry_id'];
+      if(!array_key_exists($k, $deleted_entries)) {
+        $deleted_entries[$k] = array();
+      }
+      array_push($deleted_entries[$k], $v);
+  }
+
+  // simplify it for js
+  $deleted_entries_simplified = array();
+  foreach ($deleted_entries as $key => $values) {
+      array_push($deleted_entries_simplified, array(
+        'tablename' => $key,
+        'entry_ids' => $values,
+      ));
+  }
+
+  if (count($all_deleted_entries) > 0) {
+      $last = count($all_deleted_entries) - 1;
+      $deleted_entries_lastid = $all_deleted_entries[$last]['id'];
+  } else {
+      $deleted_entries_lastid = false;
+  }
+
+  // explanation:
+  // fetch updated_microseconds, but don't transfer it in the json
+  //
+  // pack it in a single value information field instead.
+  // --> decreased transfer size
+  //
+  // select in sql and delete in array later:
+  // --> minus one query to the mysql-server
+
+  // grab shift_types_lastupdate and clean array
+  $last = count($shift_types)-1;
+  if ($last > -1) {
+      $shift_types_lastupdate = $shift_types[$last]['updated_microseconds'];
+      foreach($shift_types as $k => $v) {
+        unset($shift_types[$k]['updated_microseconds']);
+      }
+  } else {
+      $shift_types_lastupdate = false;
+  }
+
+  // grab angeltypes_lastupdate and clean array
+  $last = count($angeltypes)-1;
+  if ($last > -1) {
+      $angeltypes_lastupdate = $angeltypes[$last]['updated_microseconds'];
+      foreach($angeltypes as $k => $v) {
+        unset($angeltypes[$k]['updated_microseconds']);
+      }
+  } else {
+      $angeltypes_lastupdate = false;
+  }
+
+  // grab room_lastupdate and clean array
+  $last = count($rooms)-1;
+  if ($last > -1) {
+      $rooms_lastupdate = $rooms[$last]['updated_microseconds'];
+      foreach($rooms as $k => $v) {
+        unset($rooms[$k]['updated_microseconds']);
+      }
+  } else {
+      $rooms_lastupdate = false;
+  }
+
+  // grab users_lastupdate and clean array
+  $last = count($users)-1;
+  if ($last > -1) {
+      $users_lastupdate = $users[$last]['updated_microseconds'];
+      foreach($users as $k => $v) {
+        unset($users[$k]['updated_microseconds']);
+      }
+  } else {
+      $users_lastupdate = false;
+  }
+
+  // grab shift_entries_lastupdate and clean array
+  $last = count($shift_entries)-1;
+  if ($last > -1) {
+      $shift_entries_lastupdate = $shift_entries[$last]['updated_microseconds'];
+      foreach($shift_entries as $k => $v) {
+        unset($shift_entries[$k]['updated_microseconds']);
+      }
+  } else {
+      $shift_entries_lastupdate = false;
+  }
+
+  // grab shifts_lastupdate and clean array
+  $last = count($shifts)-1;
+  if ($last > -1) {
+      $shifts_lastupdate = $shifts[$last]['updated_microseconds'];
+      foreach($shifts as $k => $v) {
+        unset($shifts[$k]['updated_microseconds']);
+      }
+  } else {
+      $shifts_lastupdate = false;
+  }
+
+  // grab needed_angeltypes_lastupdate and clean array
+  $last = count($needed_angeltypes)-1;
+  if ($last > -1) {
+      $needed_angeltypes_lastupdate = $needed_angeltypes[$last]['updated_microseconds'];
+      foreach($needed_angeltypes as $k => $v) {
+        unset($needed_angeltypes[$k]['updated_microseconds']);
+      }
+  } else {
+      $needed_angeltypes_lastupdate = false;
+  }
+
+  $result = array(
+    'shift_types' => $shift_types,
+    'shift_types_total' => $shift_types_count,
+    'shift_types_lastupdate' => $shift_types_lastupdate,
+    'angeltypes' => $angeltypes,
+    'angeltypes_total' => $angeltypes_count,
+    'angeltypes_lastupdate' => $angeltypes_lastupdate,
+    'rooms' => $rooms,
+    'rooms_total' => $rooms_count,
+    'rooms_lastupdate' => $rooms_lastupdate,
+    'users' => $users,
+    'users_total' => $users_count,
+    'users_lastupdate' => $users_lastupdate,
+    'shift_entries' => $shift_entries,
+    'shift_entries_total' => $shift_entries_count,
+    'shift_entries_lastupdate' => $shift_entries_lastupdate,
+    'shifts' => $shifts,
+    'shifts_total' => $shifts_count,
+    'shifts_lastupdate' => $shifts_lastupdate,
+    'needed_angeltypes' => $needed_angeltypes,
+    'needed_angeltypes_total' => $needed_angeltypes_count,
+    'needed_angeltypes_lastupdate' => $needed_angeltypes_lastupdate,
+    'deleted_entries' => $deleted_entries_simplified,
+    'deleted_entries_lastid' => $deleted_entries_lastid,
+  );
+  return $result;
 }
 
 /**

@@ -10,6 +10,7 @@ use Engelsystem\Database\DB;
 function ShiftType_delete($shifttype_id)
 {
     DB::delete('DELETE FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
+    db_log_delete('shifttypes', $shifttype_id);
 }
 
 /**
@@ -26,13 +27,15 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
       UPDATE `ShiftTypes` SET
       `name`=?,
       `angeltype_id`=?,
-      `description`=?
+      `description`=?,
+      `updated_microseconds`=?
       WHERE `id`=?
     ',
         [
             $name,
             $angeltype_id,
             $description,
+            time_microseconds(),
             $shifttype_id,
         ]
     );
@@ -49,13 +52,14 @@ function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
 function ShiftType_create($name, $angeltype_id, $description)
 {
     DB::insert('
-        INSERT INTO `ShiftTypes` (`name`, `angeltype_id`, `description`)
-        VALUES(?, ?, ?)
+        INSERT INTO `ShiftTypes` (`name`, `angeltype_id`, `description`, `updated_microseconds`)
+        VALUES(?, ?, ?, ?)
         ',
         [
             $name,
             $angeltype_id,
-            $description
+            $description,
+            time_microseconds(),
         ]
     );
 

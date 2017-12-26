@@ -7,6 +7,7 @@ $includeFiles = [
     __DIR__ . '/../includes/sys_auth.php',
     __DIR__ . '/../includes/sys_form.php',
     __DIR__ . '/../includes/sys_log.php',
+    __DIR__ . '/../includes/sys_log_db.php',
     __DIR__ . '/../includes/sys_menu.php',
     __DIR__ . '/../includes/sys_page.php',
     __DIR__ . '/../includes/sys_template.php',
@@ -83,6 +84,7 @@ $includeFiles = [
     __DIR__ . '/../includes/pages/user_questions.php',
     __DIR__ . '/../includes/pages/user_settings.php',
     __DIR__ . '/../includes/pages/user_shifts.php',
+    __DIR__ . '/../includes/pages/user_shifts_browser.php',
 ];
 
 foreach ($includeFiles as $file) {

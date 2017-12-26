@@ -48,6 +48,7 @@ function AngelType_delete($angeltype)
       WHERE `id`=?
       LIMIT 1
     ', [$angeltype['id']]);
+    db_log_delete('angeltypes', $angeltype['id']);
     engelsystem_log('Deleted angeltype: ' . AngelType_name_render($angeltype));
 }
 
@@ -68,6 +69,7 @@ function AngelType_update($angeltype)
           `contact_name` = ?,
           `contact_dect` = ?,
           `contact_email` = ?,
+          `updated_microseconds` = ?,
           `show_on_dashboard` = ?
           WHERE `id` = ?',
         [
@@ -79,6 +81,7 @@ function AngelType_update($angeltype)
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
+            time_microseconds(),
             (int)$angeltype['show_on_dashboard'],
             $angeltype['id'],
         ]
@@ -113,9 +116,10 @@ function AngelType_create($angeltype)
               `contact_name`,
               `contact_dect`,
               `contact_email`,
+              `updated_microseconds`,
               `show_on_dashboard`
           )
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $angeltype['name'],
@@ -126,6 +130,7 @@ function AngelType_create($angeltype)
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
+            time_microseconds(),
             $angeltype['show_on_dashboard']
         ]
     );

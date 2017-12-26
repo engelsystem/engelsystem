@@ -123,7 +123,7 @@ body {
 
     .tick {
       height: 30px;
-      border-top: 1px solid darken(@table-bg-accent, 2%);
+      border-top: 1px solid @table-border-color;
     }
 
     .tick.hour {
@@ -136,6 +136,18 @@ body {
       border-top: 2px solid @brand-primary;
       font-size: 0.9em;
       padding-left: 5px;
+    }
+
+    .tick_dark {
+      background: darken(@table-bg-accent, 6%);
+    }
+
+    .tick_bright {
+      background: @table-bg;
+    }
+
+    .tick_active {
+      background: @brand-success;
     }
   }
 

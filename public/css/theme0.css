@@ -6840,7 +6840,7 @@ body {
 }
 .shift-calendar .lane .tick {
   height: 30px;
-  border-top: 1px solid #f4f4f4;
+  border-top: 1px solid #dddddd;
 }
 .shift-calendar .lane .tick.hour {
   border-top: 2px solid #dddddd;
@@ -6851,6 +6851,15 @@ body {
   border-top: 2px solid #337ab7;
   font-size: 0.9em;
   padding-left: 5px;
+}
+.shift-calendar .lane .tick_dark {
+  background: #eaeaea;
+}
+.shift-calendar .lane .tick_bright {
+  background: transparent;
+}
+.shift-calendar .lane .tick_active {
+  background: #5cb85c;
 }
 .shift-calendar .lane.time {
   border-right: 1px solid #dddddd;
