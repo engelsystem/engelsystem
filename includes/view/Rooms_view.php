@@ -30,7 +30,7 @@ function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalen
     if (!empty($room['map_url'])) {
         $tabs[_('Map')] = sprintf(
             '<div class="map">'
-            . '<iframe style="width: 100%; min-height: 400px; border: 0 none;" src="%s"></iframe>'
+            . '<iframe style="width: 100%%; min-height: 400px; border: 0 none;" src="%s"></iframe>'
             . '</div>',
             $room['map_url']
         );
