@@ -78,12 +78,12 @@ function stats_angels_needed_three_hours()
                     SELECT SUM(`count`) 
                     FROM `NeededAngelTypes` 
                     JOIN `AngelTypes` ON `AngelTypes`.`id`=`NeededAngelTypes`.`angel_type_id` 
-                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE 
                         AND `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
                     ) - (
                     SELECT COUNT(*) FROM `ShiftEntry` 
                     JOIN `AngelTypes` ON `AngelTypes`.`id`=`ShiftEntry`.`TID` 
-                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE 
                         AND `ShiftEntry`.`SID`=`Shifts`.`SID` 
                         AND `freeloaded`=0
                     )
@@ -101,12 +101,12 @@ function stats_angels_needed_three_hours()
                     SELECT SUM(`count`) 
                     FROM `NeededAngelTypes` 
                     JOIN `AngelTypes` ON `AngelTypes`.`id`=`NeededAngelTypes`.`angel_type_id` 
-                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE 
                         AND `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
                     ) - (
                     SELECT COUNT(*) FROM `ShiftEntry` 
                     JOIN `AngelTypes` ON `AngelTypes`.`id`=`ShiftEntry`.`TID` 
-                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE 
                         AND `ShiftEntry`.`SID`=`Shifts`.`SID` 
                         AND `freeloaded`=0
                     )
@@ -147,12 +147,12 @@ function stats_angels_needed_for_nightshifts()
                     SELECT SUM(`count`) 
                     FROM `NeededAngelTypes` 
                     JOIN `AngelTypes` ON `AngelTypes`.`id`=`NeededAngelTypes`.`angel_type_id` 
-                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE 
                         AND `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
                     ) - (
                     SELECT COUNT(*) FROM `ShiftEntry` 
                     JOIN `AngelTypes` ON `AngelTypes`.`id`=`ShiftEntry`.`TID` 
-                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE 
                         AND `ShiftEntry`.`SID`=`Shifts`.`SID` 
                         AND `freeloaded`=0
                     )
@@ -170,12 +170,12 @@ function stats_angels_needed_for_nightshifts()
                     SELECT SUM(`count`) 
                     FROM `NeededAngelTypes` 
                     JOIN `AngelTypes` ON `AngelTypes`.`id`=`NeededAngelTypes`.`angel_type_id` 
-                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE 
                         AND `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
                     ) - (
                     SELECT COUNT(*) FROM `ShiftEntry` 
                     JOIN `AngelTypes` ON `AngelTypes`.`id`=`ShiftEntry`.`TID` 
-                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                    WHERE `AngelTypes`.`show_on_dashboard`=TRUE 
                         AND `ShiftEntry`.`SID`=`Shifts`.`SID` 
                         AND `freeloaded`=0
                     )

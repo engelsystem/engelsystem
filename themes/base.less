@@ -25,7 +25,8 @@ body {
 .stats {
   .make-md-column(3);
   .make-xs-column(6);
-  height: 130px;
+  font-size: 20px;
+  height: 150px;
 	text-align: center;
 
 	.number {
@@ -33,6 +34,7 @@ body {
 	  font-weight: 200;
 	}
 	@media (max-width: @screen-md) {
+	  font-size: inherit;
 	  .number {
 	    font-size: 40px;
 	  }

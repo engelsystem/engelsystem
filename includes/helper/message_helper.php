@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Gibt zwischengespeicherte Fehlermeldungen zurück und löscht den Zwischenspeicher
+ * Returns messages from session and removes them from the stack
  *
  * @return string
  */
@@ -16,7 +16,7 @@ function msg()
 }
 
 /**
- * Rendert eine Information
+ * Renders an information message
  *
  * @param string $msg
  * @param bool   $immediately
@@ -28,7 +28,19 @@ function info($msg, $immediately = false)
 }
 
 /**
- * Rendert eine Fehlermeldung
+ * Renders a warning message
+ *
+ * @param string $msg
+ * @param bool   $immediately
+ * @return string
+ */
+function warning($msg, $immediately = false)
+{
+    return alert('warning', $msg, $immediately);
+}
+
+/**
+ * Renders an error message
  *
  * @param string $msg
  * @param bool   $immediately
@@ -40,7 +52,7 @@ function error($msg, $immediately = false)
 }
 
 /**
- * Rendert eine Erfolgsmeldung
+ * Renders a success message
  *
  * @param string $msg
  * @param bool   $immediately
@@ -52,7 +64,7 @@ function success($msg, $immediately = false)
 }
 
 /**
- * Renders an alert with given alert-* class.
+ * Renders an alert message with the given alert-* class.
  *
  * @param string $class
  * @param string $msg
