@@ -73,8 +73,21 @@ function stats_angels_needed_three_hours()
     $result = Db::selectOne("
         SELECT SUM(`count`) AS `count` FROM (
             SELECT
-                (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`)
-                - (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
+                GREATEST(0,
+                    (
+                    SELECT SUM(`count`) 
+                    FROM `NeededAngelTypes` 
+                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`NeededAngelTypes`.`angel_type_id` 
+                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                        AND `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
+                    ) - (
+                    SELECT COUNT(*) FROM `ShiftEntry` 
+                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`ShiftEntry`.`TID` 
+                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                        AND `ShiftEntry`.`SID`=`Shifts`.`SID` 
+                        AND `freeloaded`=0
+                    )
+                )
                 AS `count`
             FROM `Shifts`
             WHERE `end` > ? AND `start` < ?
@@ -83,8 +96,21 @@ function stats_angels_needed_three_hours()
             UNION ALL
         
             SELECT
-                (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID`)
-                - (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
+                GREATEST(0,
+                    (
+                    SELECT SUM(`count`) 
+                    FROM `NeededAngelTypes` 
+                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`NeededAngelTypes`.`angel_type_id` 
+                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                        AND `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
+                    ) - (
+                    SELECT COUNT(*) FROM `ShiftEntry` 
+                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`ShiftEntry`.`TID` 
+                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                        AND `ShiftEntry`.`SID`=`Shifts`.`SID` 
+                        AND `freeloaded`=0
+                    )
+                )
                 AS `count`
             FROM `Shifts`
             WHERE `end` > ? AND `start` < ?
@@ -116,8 +142,21 @@ function stats_angels_needed_for_nightshifts()
     $result = Db::selectOne("
         SELECT SUM(`count`) AS `count` FROM (
             SELECT
-                (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`)
-                - (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
+                GREATEST(0,
+                    (
+                    SELECT SUM(`count`) 
+                    FROM `NeededAngelTypes` 
+                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`NeededAngelTypes`.`angel_type_id` 
+                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                        AND `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`
+                    ) - (
+                    SELECT COUNT(*) FROM `ShiftEntry` 
+                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`ShiftEntry`.`TID` 
+                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                        AND `ShiftEntry`.`SID`=`Shifts`.`SID` 
+                        AND `freeloaded`=0
+                    )
+                )
                 AS `count`
             FROM `Shifts`
             WHERE `end` > ? AND `start` < ?
@@ -126,8 +165,21 @@ function stats_angels_needed_for_nightshifts()
             UNION ALL
         
             SELECT
-                (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID`)
-                - (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
+                GREATEST(0,
+                    (
+                    SELECT SUM(`count`) 
+                    FROM `NeededAngelTypes` 
+                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`NeededAngelTypes`.`angel_type_id` 
+                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                        AND `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
+                    ) - (
+                    SELECT COUNT(*) FROM `ShiftEntry` 
+                    JOIN `AngelTypes` ON `AngelTypes`.`id`=`ShiftEntry`.`TID` 
+                    WHERE `AngelTypes`.`show_on_dashboard`=FALSE 
+                        AND `ShiftEntry`.`SID`=`Shifts`.`SID` 
+                        AND `freeloaded`=0
+                    )
+                )
                 AS `count`
             FROM `Shifts`
             WHERE `end` > ? AND `start` < ?

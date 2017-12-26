@@ -11,10 +11,16 @@ function public_dashboard_view($stats, $free_shifts)
 {
     $needed_angels = '';
     if (count($free_shifts) > 0) {
-        $shift_panels = [];
+        $shift_panels = [
+            '<div class="row">'
+        ];
         foreach ($free_shifts as $shift) {
             $shift_panels[] = public_dashboard_shift_render($shift);
+            if(count($shift_panels) % 4 == 0) {
+                $shift_panels[] = '</div><div class="row">';
+            }
         }
+        $shift_panels[] = '</div>';
         $needed_angels = div('first', [
             div('col-md-12', [
                 heading(_('Needed angels:'), 1)
