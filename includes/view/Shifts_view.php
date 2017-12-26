@@ -122,39 +122,47 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
         $needed_angels .= Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin);
     }
 
+    $content = [msg()];
+
+    if ($shift_signup_state->getState() == ShiftSignupState::COLLIDES) {
+        $content[] = info(_('This shift collides with one of your shifts.'), true);
+    }
+
+    if ($shift_signup_state->getState() == ShiftSignupState::SIGNED_UP) {
+        $content[] = info(_('You are signed up for this shift.'), true);
+    }
+
+    $buttons = [];
+    if ($shift_admin || $admin_shifttypes || $admin_rooms) {
+        $buttons = [
+            $shift_admin ? button(shift_edit_link($shift), glyph('pencil') . _('edit')) : '',
+            $shift_admin ? button(shift_delete_link($shift), glyph('trash') . _('delete')) : '',
+            $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype['name']) : '',
+            $admin_rooms ? button(room_link($room), glyph('map-marker') . $room['Name']) : '',
+        ];
+    }
+    $buttons[] = button(user_link($user), '<span class="icon-icon_angel"></span> ' . _('My shifts'));
+    $content[] = buttons($buttons);
+
+    $content[] = Shift_view_header($shift, $room);
+    $content[] = div('row', [
+        div('col-sm-6', [
+            '<h2>' . _('Needed angels') . '</h2>',
+            '<div class="list-group">' . $needed_angels . '</div>'
+        ]),
+        div('col-sm-6', [
+            '<h2>' . _('Description') . '</h2>',
+            $parsedown->parse($shifttype['description'])
+        ])
+    ]);
+
+    if ($shift_admin) {
+        $content[] = Shift_editor_info_render($shift);
+    }
+
     return page_with_title(
         $shift['name'] . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>',
-        [
-            msg(),
-            $shift_signup_state->getState() == ShiftSignupState::COLLIDES
-                ? info(_('This shift collides with one of your shifts.'), true)
-                : '',
-            $shift_signup_state->getState() == ShiftSignupState::SIGNED_UP
-                ? info(_('You are signed up for this shift.'), true)
-                : '',
-            buttons(
-            ($shift_admin || $admin_shifttypes || $admin_rooms) ? [
-                $shift_admin ? button(shift_edit_link($shift), glyph('pencil') . _('edit')) : '',
-                $shift_admin ? button(shift_delete_link($shift), glyph('trash') . _('delete')) : '',
-                $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype['name']) : '',
-                $admin_rooms ? button(room_link($room), glyph('map-marker') . $room['Name']) : '',
-                button(user_link($user), '<span class="icon-icon_angel"></span> ' . _('My shifts'))
-            ] : [
-                button(user_link($user), '<span class="icon-icon_angel"></span> ' . _('My shifts'))
-            ]),
-            Shift_view_header($shift, $room),
-            div('row', [
-                div('col-sm-6', [
-                    '<h2>' . _('Needed angels') . '</h2>',
-                    '<div class="list-group">' . $needed_angels . '</div>'
-                ]),
-                div('col-sm-6', [
-                    '<h2>' . _('Description') . '</h2>',
-                    $parsedown->parse($shifttype['description'])
-                ])
-            ]),
-            $shift_admin ? Shift_editor_info_render($shift) : ''
-        ]
+        $content
     );
 }
 
