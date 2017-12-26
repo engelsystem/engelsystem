@@ -1,7 +1,5 @@
 <?php
 
-use Engelsystem\Database\DB;
-
 /**
  * @return string
  */
@@ -32,10 +30,11 @@ function admin_import()
         $step = $request->input('step');
     }
 
-    if ($test_handle = @fopen($import_dir . '/tmp', 'w')) {
+    try {
+        $test_handle = @fopen($import_dir . '/tmp', 'w');
         fclose($test_handle);
         @unlink($import_dir . '/tmp');
-    } else {
+    } catch (Exception $e) {
         error(_('Webserver has no write-permission on import directory.'));
     }
 
@@ -64,8 +63,9 @@ function admin_import()
                     error(_('Please select a shift type.'));
                 }
 
-                if ($request->has('add_minutes_start') && is_numeric(trim($request->input('add_minutes_start')))) {
-                    $add_minutes_start = trim($request->input('add_minutes_start'));
+                $minutes_start = trim($request->input('add_minutes_start'));
+                if ($request->has('add_minutes_start') && is_numeric($minutes_start)) {
+                    $add_minutes_start = $minutes_start;
                 } else {
                     $valid = false;
                     error(_('Please enter an amount of minutes to add to a talk\'s begin.'));
@@ -107,7 +107,11 @@ function admin_import()
                 );
             } else {
                 $html .= div('well well-sm text-center', [
-                        _('File Upload') . mute(glyph('arrow-right')) . mute(_('Validation')) . mute(glyph('arrow-right')) . mute(_('Import'))
+                        _('File Upload')
+                        . mute(glyph('arrow-right'))
+                        . mute(_('Validation'))
+                        . mute(glyph('arrow-right'))
+                        . mute(_('Import'))
                     ]) . div('row', [
                         div('col-md-offset-3 col-md-6', [
                             form([
@@ -165,7 +169,10 @@ function admin_import()
                     'well well-sm text-center',
                     [
                         '<span class="text-success">' . _('File Upload') . glyph('ok-circle') . '</span>'
-                        . mute(glyph('arrow-right')) . _('Validation') . mute(glyph('arrow-right')) . mute(_('Import'))
+                        . mute(glyph('arrow-right'))
+                        . _('Validation')
+                        . mute(glyph('arrow-right'))
+                        . mute(_('Import'))
                     ]
                 )
                 . form(
@@ -251,12 +258,11 @@ function admin_import()
 
             list($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
             foreach ($rooms_new as $room) {
-                $result = Room_create($room, true, true);
-
+                $result = Room_create($room, true, null, null);
                 $rooms_import[trim($room)] = $result;
             }
             foreach ($rooms_deleted as $room) {
-                DB::delete('DELETE FROM `Room` WHERE `Name`=? LIMIT 1', [$room]);
+                Room_delete_by_name($room);
             }
 
             list($events_new, $events_updated, $events_deleted) = prepare_events(
@@ -309,26 +315,33 @@ function prepare_rooms($file)
     $data = read_xml($file);
 
     // Load rooms from db for compare with input
-    $rooms = DB::select('SELECT `Name`, `RID` FROM `Room` WHERE `FromPentabarf`=\'Y\'');
+    $rooms = Rooms();
+    // Contains rooms from db with from_frab==true
     $rooms_db = [];
+    // Contains all rooms from db
+    $rooms_db_all = [];
+    // Contains all rooms from db and frab
     $rooms_import = [];
     foreach ($rooms as $room) {
-        $rooms_db[] = $room['Name'];
+        if ($room['from_frab']) {
+            $rooms_db[] = $room['Name'];
+        }
+        $rooms_db_all[] = $room['Name'];
         $rooms_import[$room['Name']] = $room['RID'];
     }
 
     $events = $data->vcalendar->vevent;
-    $rooms_pb = [];
+    $rooms_frab = [];
     foreach ($events as $event) {
-        $rooms_pb[] = (string)$event->location;
+        $rooms_frab[] = (string)$event->location;
         if (!isset($rooms_import[trim($event->location)])) {
             $rooms_import[trim($event->location)] = trim($event->location);
         }
     }
-    $rooms_pb = array_unique($rooms_pb);
+    $rooms_frab = array_unique($rooms_frab);
 
-    $rooms_new = array_diff($rooms_pb, $rooms_db);
-    $rooms_deleted = array_diff($rooms_db, $rooms_pb);
+    $rooms_new = array_diff($rooms_frab, $rooms_db_all);
+    $rooms_deleted = array_diff($rooms_db, $rooms_frab);
 
     return [
         $rooms_new,
@@ -348,7 +361,7 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
     global $rooms_import;
     $data = read_xml($file);
 
-    $rooms = Rooms(true);
+    $rooms = Rooms();
     $rooms_db = [];
     foreach ($rooms as $room) {
         $rooms_db[$room['Name']] = $room['RID'];
@@ -370,7 +383,7 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
         ];
     }
 
-    $shifts = DB::select('SELECT * FROM `Shifts` WHERE `PSID` IS NOT NULL ORDER BY `start`');
+    $shifts = Shifts_from_frab();
     $shifts_db = [];
     foreach ($shifts as $shift) {
         $shifts_db[$shift['PSID']] = $shift;
@@ -418,6 +431,7 @@ function read_xml($file)
 {
     global $xml_import;
     if (!isset($xml_import)) {
+        libxml_use_internal_errors(true);
         $xml_import = simplexml_load_file($file);
     }
     return $xml_import;

@@ -267,7 +267,10 @@ class ShiftCalendarRenderer
                 $start_time = $shift['start'];
             }
         }
-        return ShiftCalendarRenderer::SECONDS_PER_ROW * floor(($start_time - ShiftCalendarRenderer::TIME_MARGIN) / ShiftCalendarRenderer::SECONDS_PER_ROW);
+        return ShiftCalendarRenderer::SECONDS_PER_ROW * floor(
+                ($start_time - ShiftCalendarRenderer::TIME_MARGIN)
+                / ShiftCalendarRenderer::SECONDS_PER_ROW
+            );
     }
 
     /**
@@ -282,7 +285,11 @@ class ShiftCalendarRenderer
                 $end_time = $shift['end'];
             }
         }
-        return ShiftCalendarRenderer::SECONDS_PER_ROW * ceil(($end_time + ShiftCalendarRenderer::TIME_MARGIN) / ShiftCalendarRenderer::SECONDS_PER_ROW);
+
+        return ShiftCalendarRenderer::SECONDS_PER_ROW * ceil(
+                ($end_time + ShiftCalendarRenderer::TIME_MARGIN)
+                / ShiftCalendarRenderer::SECONDS_PER_ROW
+            );
     }
 
     /**
@@ -290,7 +297,10 @@ class ShiftCalendarRenderer
      */
     private function calcBlocksPerSlot()
     {
-        return ceil(($this->getLastBlockEndTime() - $this->getFirstBlockStartTime()) / ShiftCalendarRenderer::SECONDS_PER_ROW);
+        return ceil(
+            ($this->getLastBlockEndTime() - $this->getFirstBlockStartTime())
+            / ShiftCalendarRenderer::SECONDS_PER_ROW
+        );
     }
 
     /**
@@ -305,7 +315,7 @@ class ShiftCalendarRenderer
             label(_('Help needed'), 'danger'),
             label(_('Other angeltype needed / collides with my shifts'), 'warning'),
             label(_('Shift is full'), 'success'),
-            label(_('Shift running/ended'), 'default')
+            label(_('Shift running/ended or user not arrived'), 'default')
         ]);
     }
 }

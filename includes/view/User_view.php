@@ -105,6 +105,7 @@ function User_registration_success_view($event_welcome_message)
 {
     $parsedown = new Parsedown();
     $event_welcome_message = $parsedown->text($event_welcome_message);
+
     return page_with_title(_('Registration successful'), [
         msg(),
         div('row', [
@@ -171,7 +172,10 @@ function User_edit_vouchers_view($user)
         buttons([
             button(user_link($user), glyph('chevron-left') . _('back'))
         ]),
-        info(sprintf(_('Angel should receive at least  %d vouchers.'), User_get_eligable_voucher_count($user)), true),
+        info(sprintf(
+            _('Angel should receive at least  %d vouchers.'),
+            User_get_eligable_voucher_count($user)
+        ), true),
         form(
             [
                 form_spinner('vouchers', _('Number of vouchers given out'), $user['got_voucher']),
@@ -269,6 +273,10 @@ function Users_table_header_link($column, $label, $order_by)
  */
 function User_shift_state_render($user)
 {
+    if (!$user['Gekommen']) {
+        return '';
+    }
+
     $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
 
     if (empty($upcoming_shifts)) {
@@ -279,16 +287,25 @@ function User_shift_state_render($user)
 
     if ($nextShift['start'] > time()) {
         if ($nextShift['start'] - time() > 3600) {
-            return '<span class="text-success moment-countdown" data-timestamp="' . $nextShift['start'] . '">' . _('Next shift %c') . '</span>';
+            return '<span class="text-success moment-countdown" data-timestamp="' . $nextShift['start'] . '">'
+                . _('Next shift %c')
+                . '</span>';
         }
-        return '<span class="text-warning moment-countdown" data-timestamp="' . $nextShift['start'] . '">' . _('Next shift %c') . '</span>';
+        return '<span class="text-warning moment-countdown" data-timestamp="' . $nextShift['start'] . '">'
+            . _('Next shift %c')
+            . '</span>';
     }
     $halfway = ($nextShift['start'] + $nextShift['end']) / 2;
 
     if (time() < $halfway) {
-        return '<span class="text-danger moment-countdown" data-timestamp="' . $nextShift['start'] . '">' . _('Shift starts %c') . '</span>';
+        return '<span class="text-danger moment-countdown" data-timestamp="' . $nextShift['start'] . '">'
+            . _('Shift starts %c')
+            . '</span>';
     }
-    return '<span class="text-danger moment-countdown" data-timestamp="' . $nextShift['end'] . '">' . _('Shift ends %c') . '</span>';
+
+    return '<span class="text-danger moment-countdown" data-timestamp="' . $nextShift['end'] . '">'
+        . _('Shift ends %c')
+        . '</span>';
 }
 
 /**
@@ -338,12 +355,17 @@ function User_view_myshift($shift, $user_source, $its_me)
         'time'       => date('H:i', $shift['start']) . ' - ' . date('H:i', $shift['end']),
         'room'       => $shift['Name'],
         'shift_info' => $shift_info,
-        'comment'    => $shift['Comment']
+        'comment'    => ''
     ];
+
+    if ($its_me) {
+        $myshift['comment'] = $shift['Comment'];
+    }
 
     if ($shift['freeloaded']) {
         if (in_array('user_shifts_admin', $privileges)) {
-            $myshift['comment'] .= '<br /><p class="error">' . _('Freeloaded') . ': ' . $shift['freeload_comment'] . '</p>';
+            $myshift['comment'] .= '<br />'
+                . '<p class="error">' . _('Freeloaded') . ': ' . $shift['freeload_comment'] . '</p>';
         } else {
             $myshift['comment'] .= '<br /><p class="error">' . _('Freeloaded') . '</p>';
         }
@@ -359,19 +381,9 @@ function User_view_myshift($shift, $user_source, $its_me)
             'btn-xs'
         );
     }
-    if (
-        ($shift['start'] > time() + config('last_unsubscribe') * 3600)
-        || in_array('user_shifts_admin', $privileges)
-    ) {
-        $parameters = [
-            'cancel' => $shift['id'],
-            'id'     => $user_source['UID'],
-        ];
-        if ($its_me) {
-            $parameters['id'] = '';
-        }
+    if (Shift_signout_allowed($shift, ['id' => $shift['TID']], $user_source)) {
         $myshift['actions'][] = button(
-            page_link_to('user_myshifts', $parameters),
+            shift_entry_delete_link($shift),
             glyph('trash') . _('sign off'),
             'btn-xs'
         );
@@ -434,7 +446,9 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
     $myshifts_table = User_view_myshifts($shifts, $user_source, $its_me);
 
     return page_with_title(
-        '<span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . ' <small>' . $user_name . '</small>',
+        '<span class="icon-icon_angel"></span> '
+        . htmlspecialchars($user_source['Nick'])
+        . ' <small>' . $user_name . '</small>',
         [
             msg(),
             div('row space-top', [
@@ -453,10 +467,16 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
                             _('arrived')
                         ) : '',
                         $admin_user_privilege ? button(
-                            page_link_to('users', ['action' => 'edit_vouchers', 'user_id' => $user_source['UID']]),
+                            page_link_to(
+                                'users',
+                                ['action' => 'edit_vouchers', 'user_id' => $user_source['UID']]
+                            ),
                             glyph('cutlery') . _('Edit vouchers')
                         ) : '',
-                        $its_me ? button(page_link_to('user_settings'), glyph('list-alt') . _('Settings')) : '',
+                        $its_me ? button(
+                            page_link_to('user_settings'),
+                            glyph('list-alt') . _('Settings')
+                        ) : '',
                         $its_me ? button(
                             page_link_to('ical', ['key' => $user_source['api_key']]),
                             glyph('calendar') . _('iCal Export')
@@ -474,56 +494,11 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
             ]),
             div('row', [
                 div('col-md-3', [
-                    '<h1>',
-                    '<span class="glyphicon glyphicon-phone"></span>',
-                    $user_source['DECT'],
-                    '</h1>'
+                    heading(glyph('phone') . $user_source['DECT'], 1)
                 ]),
-                div('col-md-3', [
-                    '<h4>' . _('User state') . '</h4>',
-                    ($admin_user_privilege && $freeloader)
-                        ? '<span class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> ' . _('Freeloader') . '</span><br />'
-                        : '',
-                    $user_source['Gekommen']
-                        ? User_shift_state_render($user_source) . '<br />'
-                        : '',
-                    $admin_user_privilege || $its_me
-                        ? (
-                    $user_source['Gekommen']
-                        ? '<span class="text-success"><span class="glyphicon glyphicon-home"></span> '
-                        . sprintf(_('Arrived at %s'), date('Y-m-d', $user_source['arrival_date']))
-                        . '</span>'
-                        : '<span class="text-danger">'
-                        . sprintf(_('Not arrived (Planned: %s)'), date('Y-m-d', $user_source['planned_arrival_date']))
-                        . '</span>'
-                    )
-                        : (
-                    $user_source['Gekommen']
-                        ? '<span class="text-success"><span class="glyphicon glyphicon-home"></span> ' . _('Arrived') . '</span>'
-                        : '<span class="text-danger">' . _('Not arrived') . '</span>'),
-                    $admin_user_privilege
-                        ? (
-                    $user_source['got_voucher'] > 0
-                        ? '<br /><span class="text-success">'
-                        . glyph('cutlery')
-                        . sprintf(
-                            ngettext('Got %s voucher', 'Got %s vouchers', $user_source['got_voucher']),
-                            $user_source['got_voucher']
-                        )
-                        . '</span><br />'
-                        : '<br /><span class="text-danger">' . _('Got no vouchers') . '</span><br />')
-                        : '',
-                    ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Aktiv']) ? ' <span class="text-success">' . _('Active') . '</span>' : '',
-                    ($user_source['Gekommen'] && $admin_user_privilege && $user_source['Tshirt']) ? ' <span class="text-success">' . _('T-Shirt') . '</span>' : ''
-                ]),
-                div('col-md-3', [
-                    '<h4>' . _('Angeltypes') . '</h4>',
-                    User_angeltypes_render($user_angeltypes)
-                ]),
-                div('col-md-3', [
-                    '<h4>' . _('Rights') . '</h4>',
-                    User_groups_render($user_groups)
-                ])
+                User_view_state($admin_user_privilege, $freeloader, $user_source),
+                User_angeltypes_render($user_angeltypes),
+                User_groups_render($user_groups)
             ]),
             ($its_me || $admin_user_privilege) ? '<h2>' . _('Shifts') . '</h2>' : '',
             ($its_me || $admin_user_privilege) ? table([
@@ -534,7 +509,10 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
                 'comment'    => _('Comment'),
                 'actions'    => _('Action')
             ], $myshifts_table) : '',
-            $its_me ? info(glyph('info-sign') . _('Your night shifts between 2 and 8 am count twice.'), true) : '',
+            $its_me ? info(
+                glyph('info-sign') . _('Your night shifts between 2 and 8 am count twice.'),
+                true
+            ) : '',
             $its_me && count($shifts) == 0
                 ? error(sprintf(
                 _('Go to the <a href="%s">shifts table</a> to sign yourself up for some shifts.'),
@@ -543,6 +521,101 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
                 : ''
         ]
     );
+}
+
+/**
+ * Render the state section of user view
+ *
+ * @param bool  $admin_user_privilege
+ * @param bool  $freeloader
+ * @param array $user_source
+ * @return string
+ */
+function User_view_state($admin_user_privilege, $freeloader, $user_source)
+{
+    if ($admin_user_privilege) {
+        $state = User_view_state_admin($freeloader, $user_source);
+    } else {
+        $state = User_view_state_user($user_source);
+    }
+
+    return div('col-md-3', [
+        heading(_('User state'), 4),
+        join('<br>', $state)
+    ]);
+}
+
+/**
+ * Render the state section of user view for users.
+ *
+ * @param array $user_source
+ * @return array
+ */
+function User_view_state_user($user_source)
+{
+    $state = [
+        User_shift_state_render($user_source)
+    ];
+
+    if ($user_source['Gekommen']) {
+        $state[] = '<span class="text-success">' . glyph('home') . _('Arrived') . '</span>';
+    } else {
+        $state[] = '<span class="text-danger">' . _('Not arrived') . '</span>';
+    }
+
+    return $state;
+}
+
+
+/**
+ * Render the state section of user view for admins.
+ *
+ * @param bool  $freeloader
+ * @param array $user_source
+ * @return array
+ */
+function User_view_state_admin($freeloader, $user_source)
+{
+    $state = [];
+
+    if ($freeloader) {
+        $state[] = '<span class="text-danger">' . glyph('exclamation-sign') . _('Freeloader') . '</span>';
+    }
+
+    $state[] = User_shift_state_render($user_source);
+
+    if ($user_source['Gekommen']) {
+        $state[] = '<span class="text-success">' . glyph('home')
+            . sprintf(_('Arrived at %s'), date('Y-m-d', $user_source['arrival_date']))
+            . '</span>';
+
+        if ($user_source['force_active']) {
+            $state[] = '<span class="text-success">' . _('Active (forced)') . '</span>';
+        } elseif ($user_source['Aktiv']) {
+            $state[] = '<span class="text-success">' . _('Active') . '</span>';
+        }
+        if ($user_source['Tshirt']) {
+            $state[] = '<span class="text-success">' . _('T-Shirt') . '</span>';
+        }
+    } else {
+        $state[] = '<span class="text-danger">'
+            . sprintf(_('Not arrived (Planned: %s)'), date('Y-m-d', $user_source['planned_arrival_date']))
+            . '</span>';
+    }
+
+    if ($user_source['got_voucher'] > 0) {
+        $state[] = '<span class="text-success">'
+            . glyph('cutlery')
+            . sprintf(
+                ngettext('Got %s voucher', 'Got %s vouchers', $user_source['got_voucher']),
+                $user_source['got_voucher']
+            )
+            . '</span>';
+    } else {
+        $state[] = '<span class="text-danger">' . _('Got no vouchers') . '</span>';
+    }
+
+    return $state;
 }
 
 /**
@@ -596,7 +669,10 @@ function User_angeltypes_render($user_angeltypes)
             . ($angeltype['supporter'] ? glyph('education') : '') . $angeltype['name']
             . '</a>';
     }
-    return join('<br />', $output);
+    return div('col-md-3', [
+        heading(_('Angeltypes'), 4),
+        join('<br>', $output)
+    ]);
 }
 
 /**
@@ -609,7 +685,11 @@ function User_groups_render($user_groups)
     foreach ($user_groups as $group) {
         $output[] = substr($group['Name'], 2);
     }
-    return join('<br />', $output);
+
+    return div('col-md-3', [
+        '<h4>' . _('Rights') . '</h4>',
+        join('<br>', $output)
+    ]);
 }
 
 /**
@@ -691,7 +771,7 @@ function render_user_arrived_hint()
 
     if ($user['Gekommen'] == 0) {
         $event_config = EventConfig();
-        if(!is_null($event_config) 
+        if (!is_null($event_config)
             && !is_null($event_config['buildup_start_date'])
             && time() > $event_config['buildup_start_date']) {
             return _('You are not marked as arrived. Please go to heaven\'s desk, get your angel badge and/or tell them that you arrived already.');

@@ -11,6 +11,7 @@ body {
 }
 
 .first {
+	clear: both;
   margin-top: 30px;
 }
 
@@ -19,6 +20,58 @@ body {
   font-size: 30px;
   line-height: 30px;
   margin: 0px;
+}
+
+.stats {
+  .make-md-column(3);
+  .make-xs-column(6);
+  height: 130px;
+	text-align: center;
+
+	.number {
+	  font-size: 80px;
+	  font-weight: 200;
+	}
+	@media (max-width: @screen-md) {
+	  .number {
+	    font-size: 40px;
+	  }
+  }
+}
+
+.stats-danger {
+  color: @brand-danger;
+}
+
+.stats-warning {
+  color: @brand-warning;
+}
+
+.stats-success {
+  color: @brand-success;
+}
+
+.dashboard-panel {
+	position: relative;
+	font-size: 20px;
+  color: @headings-color;
+	
+	.panel-link {
+	  position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-decoration: none; /* No underlines on the link */
+    z-index: 10; /* Places the link above everything else in the div */
+    background-color: @brand-primary; /* Fix to make div clickable in IE */
+    opacity: 0; /* Fix to make div clickable in IE */
+    filter: alpha(opacity=1); /* Fix to make div clickable in IE */
+	}
+	
+	.panel-link:hover {
+    opacity: 0.3;
+	}
 }
 
 .panel-primary .panel-heading a {

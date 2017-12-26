@@ -42,7 +42,11 @@ function UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver
                         _('Truck 12,5t'),
                         $user_driver_license['has_license_12_5t_truck']
                     ),
-                    form_checkbox('has_license_forklift', _('Forklift'), $user_driver_license['has_license_forklift'])
+                    form_checkbox(
+                        'has_license_forklift',
+                        _('Forklift'),
+                        $user_driver_license['has_license_forklift']
+                    )
                 ])
             ], 'driving_license'),
             form_submit('submit', _('Save'))

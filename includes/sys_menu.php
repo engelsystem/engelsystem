@@ -60,15 +60,29 @@ function header_toolbar()
     }
 
     if (!isset($user) && in_array('register', $privileges) && config('registration_enabled')) {
-        $toolbar_items[] = toolbar_item_link(page_link_to('register'), 'plus', register_title(), $page == 'register');
+        $toolbar_items[] = toolbar_item_link(
+            page_link_to('register'),
+            'plus',
+            register_title(),
+            $page == 'register'
+        );
     }
 
     if (in_array('login', $privileges)) {
-        $toolbar_items[] = toolbar_item_link(page_link_to('login'), 'log-in', login_title(), $page == 'login');
+        $toolbar_items[] = toolbar_item_link(
+            page_link_to('login'),
+            'log-in',
+            login_title(),
+            $page == 'login'
+        );
     }
 
     if (isset($user) && in_array('user_messages', $privileges)) {
-        $toolbar_items[] = toolbar_item_link(page_link_to('user_messages'), 'envelope', user_unread_messages());
+        $toolbar_items[] = toolbar_item_link(
+            page_link_to('user_messages'),
+            'envelope',
+            user_unread_messages()
+        );
     }
 
     $toolbar_items[] = header_render_hints();
@@ -112,7 +126,12 @@ function make_user_submenu()
     }
 
     if (in_array('logout', $privileges)) {
-        $user_submenu[] = toolbar_item_link(page_link_to('logout'), 'log-out', logout_title(), $page == 'logout');
+        $user_submenu[] = toolbar_item_link(
+            page_link_to('logout'),
+            'log-out',
+            logout_title(),
+            $page == 'logout'
+        );
     }
 
     return $user_submenu;
@@ -160,7 +179,12 @@ function make_navigation()
 
     foreach ($admin_pages as $menu_page => $title) {
         if (in_array($menu_page, $privileges)) {
-            $admin_menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
+            $admin_menu[] = toolbar_item_link(
+                page_link_to($menu_page),
+                '',
+                $title,
+                $menu_page == $page
+            );
         }
     }
 
@@ -186,7 +210,7 @@ function make_room_navigation($menu)
     }
 
     // Get a list of all rooms
-    $rooms = Rooms(true);
+    $rooms = Rooms();
     $room_menu = [];
     if (in_array('admin_rooms', $privileges)) {
         $room_menu[] = toolbar_item_link(page_link_to('admin_rooms'), 'list', _('Manage rooms'));
@@ -195,16 +219,7 @@ function make_room_navigation($menu)
         $room_menu[] = toolbar_item_divider();
     }
     foreach ($rooms as $room) {
-        if (
-            $room['show'] == 'Y' // room is public
-            || (
-                // room is not public, but user can admin_rooms
-                $room['show'] != 'Y'
-                && in_array('admin_rooms', $privileges)
-            )
-        ) {
-            $room_menu[] = toolbar_item_link(room_link($room), 'map-marker', $room['Name']);
-        }
+        $room_menu[] = toolbar_item_link(room_link($room), 'map-marker', $room['Name']);
     }
     if (count($room_menu) > 0) {
         $menu[] = toolbar_dropdown('map-marker', _('Rooms'), $room_menu);

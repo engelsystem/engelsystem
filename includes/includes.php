@@ -23,6 +23,7 @@ $includeFiles = [
     __DIR__ . '/../includes/model/ShiftsFilter.php',
     __DIR__ . '/../includes/model/ShiftSignupState.php',
     __DIR__ . '/../includes/model/ShiftTypes_model.php',
+    __DIR__ . '/../includes/model/Stats.php',
     __DIR__ . '/../includes/model/UserAngelTypes_model.php',
     __DIR__ . '/../includes/model/UserDriverLicenses_model.php',
     __DIR__ . '/../includes/model/UserGroups_model.php',
@@ -31,6 +32,7 @@ $includeFiles = [
 
     __DIR__ . '/../includes/view/AngelTypes_view.php',
     __DIR__ . '/../includes/view/EventConfig_view.php',
+    __DIR__ . '/../includes/view/PublicDashboard_view.php',
     __DIR__ . '/../includes/view/Questions_view.php',
     __DIR__ . '/../includes/view/Rooms_view.php',
     __DIR__ . '/../includes/view/ShiftCalendarLane.php',
@@ -47,6 +49,7 @@ $includeFiles = [
 
     __DIR__ . '/../includes/controller/angeltypes_controller.php',
     __DIR__ . '/../includes/controller/event_config_controller.php',
+    __DIR__ . '/../includes/controller/public_dashboard_controller.php',
     __DIR__ . '/../includes/controller/rooms_controller.php',
     __DIR__ . '/../includes/controller/shift_entries_controller.php',
     __DIR__ . '/../includes/controller/shifts_controller.php',
@@ -83,6 +86,7 @@ $includeFiles = [
     __DIR__ . '/../includes/pages/user_shifts.php',
     __DIR__ . '/../includes/pages/user_shifts_browser.php',
 ];
+
 foreach ($includeFiles as $file) {
     require_once realpath($file);
 }

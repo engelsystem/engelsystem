@@ -100,7 +100,7 @@ return [
 
     // Voucher calculation
     'voucher_settings'        => [
-        'initial_vouchers'   => 2,
+        'initial_vouchers'   => 0,
         'shifts_per_voucher' => 1,
     ],
 

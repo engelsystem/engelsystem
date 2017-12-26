@@ -15,6 +15,11 @@ class Whoops extends Legacy implements HandlerInterface
     /** @var Application */
     protected $app;
 
+    /**
+     * Whoops constructor.
+     *
+     * @param Container $app
+     */
     public function __construct(Container $app)
     {
         $this->app = $app;

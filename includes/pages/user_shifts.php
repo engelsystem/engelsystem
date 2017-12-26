@@ -29,16 +29,10 @@ function user_shifts()
         redirect(page_link_to('user_myshifts'));
     }
 
-    // Löschen einzelner Schicht-Einträge (Also Belegung einer Schicht von Engeln) durch Admins
-    if ($request->has('entry_id')) {
-        shift_entry_delete_controller();
-        return '';
-    } elseif ($request->has('edit_shift')) {
+    if ($request->has('edit_shift')) {
         return shift_edit_controller();
     } elseif ($request->has('delete_shift')) {
         return shift_delete_controller();
-    } elseif ($request->has('shift_id')) {
-        return shift_entry_add_controller();
     }
 
   // websql disabled by config
@@ -91,8 +85,18 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
         $end_time = $start_time + 24 * 60 * 60;
     }
 
-    $shiftsFilter->setStartTime(check_request_datetime('start_day', 'start_time', $days, $start_time));
-    $shiftsFilter->setEndTime(check_request_datetime('end_day', 'end_time', $days, $end_time));
+    $shiftsFilter->setStartTime(check_request_datetime(
+        'start_day',
+        'start_time',
+        $days,
+        $start_time
+    ));
+    $shiftsFilter->setEndTime(check_request_datetime(
+        'end_day',
+        'end_time',
+        $days,
+        $end_time
+    ));
 
     if ($shiftsFilter->getStartTime() > $shiftsFilter->getEndTime()) {
         $shiftsFilter->setEndTime($shiftsFilter->getStartTime() + 24 * 60 * 60);
@@ -121,7 +125,7 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
 function load_rooms()
 {
     $rooms = DB::select(
-        'SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` WHERE `show`=\'Y\' ORDER BY `Name`'
+        'SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` ORDER BY `Name`'
     );
     if (empty($rooms)) {
         error(_('The administration has not configured any rooms yet.'));
@@ -150,7 +154,7 @@ function load_days()
 }
 
 /**
- * @return array|false
+ * @return array[]|false
  */
 function load_types()
 {
@@ -235,9 +239,8 @@ function view_user_shifts()
     $end_day = date('Y-m-d', $shiftsFilter->getEndTime());
     $end_time = date('H:i', $shiftsFilter->getEndTime());
 
-    $assignNotice = '';
     if (config('signup_requires_arrival') && !$user['Gekommen']) {
-        $assignNotice = info(render_user_arrived_hint(), true);
+        info(render_user_arrived_hint());
     }
 
     return page([
@@ -246,9 +249,19 @@ function view_user_shifts()
             view(__DIR__ . '/../../templates/user_shifts.html', [
                 'title'         => shifts_title(),
                 'room_select'   => make_select($rooms, $shiftsFilter->getRooms(), 'rooms', _('Rooms')),
-                'start_select'  => html_select_key('start_day', 'start_day', array_combine($days, $days), $start_day),
+                'start_select'  => html_select_key(
+                    'start_day',
+                    'start_day',
+                    array_combine($days, $days),
+                    $start_day
+                ),
                 'start_time'    => $start_time,
-                'end_select'    => html_select_key('end_day', 'end_day', array_combine($days, $days), $end_day),
+                'end_select'    => html_select_key(
+                    'end_day',
+                    'end_day',
+                    array_combine($days, $days),
+                    $end_day
+                ),
                 'end_time'      => $end_time,
                 'type_select'   => make_select(
                     $types,
@@ -263,7 +276,6 @@ function view_user_shifts()
                     . ' <a href="' . page_link_to('angeltypes', ['action' => 'about']) . '">'
                     . _('Description of the jobs.')
                     . '</a>',
-                'assign_notice' => $assignNotice,
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
                 'ical_text'     => '<h2>' . _('iCal export') . '</h2><p>' . sprintf(
                         _('Export of shown shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
@@ -279,6 +291,10 @@ function view_user_shifts()
                 'set_last_4h'   => _('last 4h'),
                 'set_next_4h'   => _('next 4h'),
                 'set_next_8h'   => _('next 8h'),
+                'buttons'       => button(
+                    public_dashboard_link(),
+                    glyph('dashboard') . _('Public Dashboard')
+                )
             ])
         ])
     ]);

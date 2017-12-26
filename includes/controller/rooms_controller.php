@@ -21,10 +21,7 @@ function room_controller()
     }
 
     $request = request();
-    $room = load_room(false);
-    if ($room['show'] != 'Y' && !in_array('admin_rooms', $privileges)) {
-        redirect(page_link_to());
-    }
+    $room = load_room();
 
     $all_shifts = Shifts_by_room($room);
     $days = [];
@@ -104,16 +101,15 @@ function room_edit_link($room)
 /**
  * Loads room by request param room_id
  *
- * @param bool $onlyVisible
  * @return array
  */
-function load_room($onlyVisible = true)
+function load_room()
 {
     if (!test_request_int('room_id')) {
         redirect(page_link_to());
     }
 
-    $room = Room(request()->input('room_id'), $onlyVisible);
+    $room = Room(request()->input('room_id'));
     if ($room == null) {
         redirect(page_link_to());
     }

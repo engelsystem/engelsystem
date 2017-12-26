@@ -28,9 +28,9 @@ function user_ical()
 }
 
 /**
- * Renders an ical calender from given shifts array.
+ * Renders an ical calendar from given shifts array.
  *
- * @param array <Shift> $shifts
+ * @param array $shifts Shift
  */
 function send_ical_from_shifts($shifts)
 {

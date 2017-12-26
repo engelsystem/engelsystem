@@ -45,7 +45,6 @@ function shift_edit_controller()
 {
     global $privileges;
 
-    // Schicht bearbeiten
     $msg = '';
     $valid = true;
     $request = request();
@@ -65,7 +64,11 @@ function shift_edit_controller()
     $angeltypes = select_array(AngelTypes(), 'id', 'name');
     $shifttypes = select_array(ShiftTypes(), 'id', 'name');
 
-    $needed_angel_types = select_array(NeededAngelTypes_by_shift($shift_id), 'angel_type_id', 'count');
+    $needed_angel_types = select_array(
+        NeededAngelTypes_by_shift($shift_id),
+        'angel_type_id',
+        'count'
+    );
     foreach (array_keys($angeltypes) as $angeltype_id) {
         if (!isset($needed_angel_types[$angeltype_id])) {
             $needed_angel_types[$angeltype_id] = 0;
@@ -149,7 +152,9 @@ function shift_edit_controller()
             $needed_angel_types_info = [];
             foreach ($needed_angel_types as $type_id => $count) {
                 NeededAngelType_add($shift_id, $type_id, null, $count);
-                $needed_angel_types_info[] = $angeltypes[$type_id] . ': ' . $count;
+                if ($count > 0) {
+                    $needed_angel_types_info[] = $angeltypes[$type_id] . ': ' . $count;
+                }
             }
 
             engelsystem_log(
@@ -176,7 +181,9 @@ function shift_edit_controller()
         shifts_title(),
         [
             msg(),
-            '<noscript>' . info(_('This page is much more comfortable with javascript.'), true) . '</noscript>',
+            '<noscript>'
+            . info(_('This page is much more comfortable with javascript.'), true)
+            . '</noscript>',
             form([
                 form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
                 form_text('title', _('Title'), $title),
@@ -308,8 +315,9 @@ function shifts_controller()
     switch ($request->input('action')) {
         case 'view':
             return shift_controller();
+        /** @noinspection PhpMissingBreakStatementInspection */
         case 'next':
-            return shift_next_controller();
+            shift_next_controller();
         default:
             redirect(page_link_to('/'));
     }

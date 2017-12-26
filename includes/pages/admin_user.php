@@ -235,7 +235,8 @@ function admin_user()
                         }
                         $user_source = User($user_id);
                         engelsystem_log(
-                            'Set groups of ' . User_Nick_render($user_source) . ' to: ' . join(', ', $user_groups_info)
+                            'Set groups of ' . User_Nick_render($user_source) . ' to: '
+                            . join(', ', $user_groups_info)
                         );
                         $html .= success('Benutzergruppen gespeichert.', true);
                     } else {
@@ -261,7 +262,9 @@ function admin_user()
                       `Handy` = ?,
                       `Alter` =?,
                       `DECT` = ?,
-                      ' . ($user_source['email_by_human_allowed'] ? '`email` = ' . DB::getPdo()->quote($request->postData('eemail')) . ',' : '') . '
+                      ' . ($user_source['email_by_human_allowed']
+                        ? '`email` = ' . DB::getPdo()->quote($request->postData('eemail')) . ','
+                        : '') . '
                       `jabber` = ?,
                       `Size` = ?,
                       `Gekommen`= ?,
@@ -300,13 +303,19 @@ function admin_user()
                 break;
 
             case 'change_pw':
-                if ($request->postData('new_pw') != '' && $request->postData('new_pw') == $request->postData('new_pw2')) {
+                if (
+                    $request->postData('new_pw') != ''
+                    && $request->postData('new_pw') == $request->postData('new_pw2')
+                ) {
                     set_password($user_id, $request->postData('new_pw'));
                     $user_source = User($user_id);
                     engelsystem_log('Set new password for ' . User_Nick_render($user_source));
                     $html .= success('Passwort neu gesetzt.', true);
                 } else {
-                    $html .= error('Die Eingaben müssen übereinstimmen und dürfen nicht leer sein!', true);
+                    $html .= error(
+                        'Die Eingaben müssen übereinstimmen und dürfen nicht leer sein!',
+                        true
+                    );
                 }
                 break;
         }

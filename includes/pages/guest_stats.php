@@ -14,7 +14,11 @@ function guest_stats()
             list($user_count) = DB::select('SELECT count(*) AS `user_count` FROM `User`');
             $stats['user_count'] = $user_count['user_count'];
 
-            list($arrived_user_count) = DB::select('SELECT count(*) AS `user_count` FROM `User` WHERE `Gekommen`=1');
+            list($arrived_user_count) = DB::select('
+                SELECT count(*) AS `user_count`
+                FROM `User`
+                WHERE `Gekommen`=1
+            ');
             $stats['arrived_user_count'] = $arrived_user_count['user_count'];
 
             $done_shifts_seconds = DB::selectOne('

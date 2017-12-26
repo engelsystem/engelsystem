@@ -1,25 +1,53 @@
 <?php
 
 /**
+ * Render a stat for dashborad (big number with label).
+ * If no style given, style is danger if number > 0, and success if number == 0.
+ *
+ * @param string $label
+ * @param string $number
+ * @param string $style default, warning, danger or success. Optional.
+ * @return string
+ */
+function stats($label, $number, $style = null)
+{
+    if (empty($style)) {
+        if ($number > 0) {
+            $style = 'danger';
+        } else {
+            $style = 'success';
+        }
+    }
+    return div('stats stats-' . $style, [
+        $label,
+        div('number', [
+            $number
+        ])
+    ]);
+}
+
+/**
  * Renders tabs from the array. Array key is tab name, array value is tab content.
- * 
+ *
  * @param array $tabs
- * @param int $selected The selected tab, default 0
+ * @param int   $selected The selected tab, default 0
  * @return string HTML
  */
 function tabs($tabs, $selected = 0)
 {
     $tab_header = [];
     $tab_content = [];
-    foreach($tabs as $header => $content) {
+    foreach ($tabs as $header => $content) {
         $class = '';
-        if(count($tab_header) == $selected) {
+        if (count($tab_header) == $selected) {
             $class = 'active';
         }
         $tab_header[] = '<li role="presentation" class="' . $class . '">
-                <a href="#' . $header . '" aria-controls="' . $header . '" role="tab" data-toggle="tab">' 
-                    . $header . '</a></li>';
-        $tab_content[] = '<div role="tabpanel" class="tab-pane ' . $class . '" id="' . $header . '">' . $content . '</div>';
+                <a href="#' . $header . '" aria-controls="' . $header . '" role="tab" data-toggle="tab">'
+            . $header . '</a></li>';
+        $tab_content[] = '<div role="tabpanel" class="tab-pane ' . $class . '" id="' . $header . '">'
+            . $content
+            . '</div>';
     }
     return div('', [
         '<ul class="nav nav-tabs" role="tablist">' . join($tab_header) . '</ul>',
@@ -89,7 +117,9 @@ function glyph($glyph_name)
  */
 function glyph_bool($boolean)
 {
-    return '<span class="text-' . ($boolean ? 'success' : 'danger') . '">' . glyph($boolean ? 'ok' : 'remove') . '</span>';
+    return '<span class="text-' . ($boolean ? 'success' : 'danger') . '">'
+        . glyph($boolean ? 'ok' : 'remove')
+        . '</span>';
 }
 
 /**
@@ -240,12 +270,15 @@ function page_with_title($title, $elements)
 
 /**
  * Renders a description based on the data arrays key and values as label an description.
+ *
  * @param array $data
+ * @return string
  */
-function description($data) {
+function description($data)
+{
     $elements = [];
-    foreach($data as $label => $description) {
-        if(!empty($label) && !empty($description)) {
+    foreach ($data as $label => $description) {
+        if (!empty($label) && !empty($description)) {
             $elements[] = '<dt>' . $label . '</dt><dd>' . $description . '</dd>';
         }
     }
@@ -327,6 +360,19 @@ function render_table($columns, $rows, $data = true)
 function button($href, $label, $class = '')
 {
     return '<a href="' . $href . '" class="btn btn-default ' . $class . '">' . $label . '</a>';
+}
+
+/**
+ * Rendert einen Knopf mit JavaScript onclick Handler
+ *
+ * @param string $javascript
+ * @param string $label
+ * @param string $class
+ * @return string
+ */
+function button_js($javascript, $label, $class = '')
+{
+    return '<a onclick="' . $javascript . '" href="#" class="btn btn-default ' . $class . '">' . $label . '</a>';
 }
 
 /**

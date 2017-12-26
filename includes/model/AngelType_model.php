@@ -18,19 +18,21 @@ function AngelType_new()
         'requires_driver_license' => false,
         'contact_name'            => null,
         'contact_dect'            => null,
-        'contact_email'           => null
+        'contact_email'           => null,
+        'show_on_dashboard'       => true
     ];
 }
 
 /**
  * Checks if the angeltype has any contact information.
- * 
- * @param Angeltype $angeltype
+ *
+ * @param array $angeltype Angeltype
  * @return bool
  */
-function AngelType_has_contact_info($angeltype) {
-    return !empty($angeltype['contact_name']) 
-        || !empty($angeltype['contact_dect']) 
+function AngelType_has_contact_info($angeltype)
+{
+    return !empty($angeltype['contact_name'])
+        || !empty($angeltype['contact_dect'])
         || !empty($angeltype['contact_email']);
 }
 
@@ -67,7 +69,7 @@ function AngelType_update($angeltype)
           `contact_name` = ?,
           `contact_dect` = ?,
           `contact_email` = ?,
-          `updated_microseconds` = ?
+          `show_on_dashboard` = ?
           WHERE `id` = ?',
         [
             $angeltype['name'],
@@ -78,7 +80,7 @@ function AngelType_update($angeltype)
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
-            time_microseconds(),
+            (int)$angeltype['show_on_dashboard'],
             $angeltype['id'],
         ]
     );
@@ -89,7 +91,8 @@ function AngelType_update($angeltype)
         . ($angeltype['requires_driver_license'] ? ', requires driver license' : '') . ', '
         . $angeltype['contact_name'] . ', '
         . $angeltype['contact_dect'] . ', '
-        . $angeltype['contact_email']
+        . $angeltype['contact_email'] . ', '
+        . $angeltype['show_on_dashboard']
     );
 }
 
@@ -111,7 +114,7 @@ function AngelType_create($angeltype)
               `contact_name`,
               `contact_dect`,
               `contact_email`,
-              `updated_microseconds`
+              `show_on_dashboard`
           )
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ',
@@ -124,7 +127,7 @@ function AngelType_create($angeltype)
             $angeltype['contact_name'],
             $angeltype['contact_dect'],
             $angeltype['contact_email'],
-            time_microseconds(),
+            $angeltype['show_on_dashboard']
         ]
     );
 
@@ -135,8 +138,10 @@ function AngelType_create($angeltype)
         . ($angeltype['requires_driver_license'] ? ', requires driver license' : '') . ', '
         . $angeltype['contact_name'] . ', '
         . $angeltype['contact_dect'] . ', '
-        . $angeltype['contact_email']
+        . $angeltype['contact_email'] . ', '
+        . $angeltype['show_on_dashboard']
     );
+
     return $angeltype;
 }
 
@@ -170,6 +175,7 @@ function AngelType_validate_name($name, $angeltype)
         FROM `AngelTypes`
         WHERE `name`=?
         LIMIT 1', [$name])) == 0);
+
     return new ValidationResult($valid, $name);
 }
 

@@ -3,8 +3,8 @@
 namespace Engelsystem\Test\Unit;
 
 use Engelsystem\Application;
+use PHPUnit\Framework\MockObject\Matcher\InvokedRecorder;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_Matcher_InvokedRecorder as InvokedRecorder;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 abstract class ServiceProviderTest extends TestCase

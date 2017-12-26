@@ -1,7 +1,4 @@
 <?php
-
-use Engelsystem\Database\DB;
-
 /**
  * @return string
  */
@@ -15,32 +12,40 @@ function admin_rooms_title()
  */
 function admin_rooms()
 {
-    $rooms_source = DB::select('SELECT * FROM `Room` ORDER BY `Name`');
+    $rooms_source = Rooms();
     $rooms = [];
     $request = request();
 
     foreach ($rooms_source as $room) {
         $rooms[] = [
-            'name'           => Room_name_render($room),
-            'from_pentabarf' => glyph_bool($room['FromPentabarf'] == 'Y'),
-            'public'         => glyph_bool($room['show'] == 'Y'),
-            'actions'        => table_buttons([
-                button(page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room['RID']]), _('edit'), 'btn-xs'),
-                button(page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room['RID']]), _('delete'), 'btn-xs')
+            'name'      => Room_name_render($room),
+            'from_frab' => glyph_bool($room['from_frab']),
+            'map_url'   => glyph_bool(!empty($room['map_url'])),
+            'actions'   => table_buttons([
+                button(
+                    page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room['RID']]),
+                    _('edit'),
+                    'btn-xs'
+                ),
+                button(
+                    page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room['RID']]),
+                    _('delete'),
+                    'btn-xs'
+                )
             ])
         ];
     }
-    $room = null;
 
+    $room = null;
     if ($request->has('show')) {
         $msg = '';
         $name = '';
-        $from_pentabarf = '';
-        $public = 'Y';
-        $number = '';
+        $from_frab = false;
+        $map_url = null;
+        $description = null;
         $room_id = 0;
 
-        $angeltypes_source = DB::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
+        $angeltypes_source = AngelTypes();
         $angeltypes = [];
         $angeltypes_count = [];
         foreach ($angeltypes_source as $angeltype) {
@@ -49,21 +54,18 @@ function admin_rooms()
         }
 
         if (test_request_int('id')) {
-            $room = Room($request->input('id'), false);
+            $room = Room($request->input('id'));
             if ($room == null) {
                 redirect(page_link_to('admin_rooms'));
             }
 
             $room_id = $request->input('id');
             $name = $room['Name'];
-            $from_pentabarf = $room['FromPentabarf'];
-            $public = $room['show'];
-            $number = $room['Number'];
+            $from_frab = $room['from_frab'];
+            $map_url = $room['map_url'];
+            $description = $room['description'];
 
-            $needed_angeltypes = DB::select(
-                'SELECT `angel_type_id`, `count` FROM `NeededAngelTypes` WHERE `room_id`=?',
-                [$room_id]
-            );
+            $needed_angeltypes = NeededAngelTypes_by_room($room_id);
             foreach ($needed_angeltypes as $needed_angeltype) {
                 $angeltypes_count[$needed_angeltype['angel_type_id']] = $needed_angeltype['count'];
             }
@@ -74,36 +76,26 @@ function admin_rooms()
                 $valid = true;
 
                 if ($request->has('name') && strlen(strip_request_item('name')) > 0) {
-                    $name = strip_request_item('name');
-                    if (
-                        isset($room)
-                        && count(DB::select(
-                            'SELECT RID FROM `Room` WHERE `Name`=? AND NOT `RID`=?',
-                            [$name, $room_id]
-                        )) > 0
-                    ) {
+                    $result = Room_validate_name(strip_request_item('name'), $room_id);
+                    if (!$result->isValid()) {
                         $valid = false;
                         $msg .= error(_('This name is already in use.'), true);
+                    } else {
+                        $name = $result->getValue();
                     }
                 } else {
                     $valid = false;
                     $msg .= error(_('Please enter a name.'), true);
                 }
 
-                $from_pentabarf = '';
-                if ($request->has('from_pentabarf')) {
-                    $from_pentabarf = 'Y';
+                $from_frab = $request->has('from_frab');
+
+                if ($request->has('map_url')) {
+                    $map_url = strip_request_item('map_url');
                 }
 
-                $public = '';
-                if ($request->has('public')) {
-                    $public = 'Y';
-                }
-
-                if ($request->has('number')) {
-                    $number = strip_request_item('number');
-                } else {
-                    $valid = false;
+                if ($request->has('description')) {
+                    $description = strip_request_item_nl('description');
                 }
 
                 foreach ($angeltypes as $angeltype_id => $angeltype) {
@@ -117,49 +109,18 @@ function admin_rooms()
                         $angeltypes_count[$angeltype_id] = $request->input($queryKey);
                     } else {
                         $valid = false;
-                        $msg .= error(sprintf(_('Please enter needed angels for type %s.'), $angeltype), true);
+                        $msg .= error(sprintf(
+                            _('Please enter needed angels for type %s.'),
+                            $angeltype
+                        ), true);
                     }
                 }
 
                 if ($valid) {
-                    if (!empty($room_id)) {
-                        DB::update('
-                            UPDATE `Room`
-                            SET
-                                `Name`=?,
-                                `FromPentabarf`=?,
-                                `show`=?,
-                                `Number`=?,
-                                `updated_microseconds`=?
-                            WHERE `RID`=?
-                            LIMIT 1
-                        ', [
-                            $name,
-                            $from_pentabarf,
-                            $public,
-                            $number,
-                            time_microseconds(),
-                            $room_id,
-                        ]);
-                        if ($public != 'Y') {
-                            db_log_delete('room', $room_id);
-                        }
-                        engelsystem_log(
-                            'Room updated: ' . $name
-                            . ', pentabarf import: ' . $from_pentabarf
-                            . ', public: ' . $public
-                            . ', number: ' . $number
-                        );
+                    if (empty($room_id)) {
+                        $room_id = Room_create($name, $from_frab, $map_url, $description);
                     } else {
-                        $room_id = Room_create($name, $from_pentabarf, $public, $number);
-
-                        engelsystem_log(
-                            'Room created: ' . $name
-                            . ', pentabarf import: '
-                            . $from_pentabarf
-                            . ', public: ' . $public
-                            . ', number: ' . $number
-                        );
+                        Room_update($room_id, $name, $from_frab, $map_url, $description);
                     }
 
                     NeededAngelTypes_delete_by_room($room_id);
@@ -168,7 +129,9 @@ function admin_rooms()
                         $angeltype = AngelType($angeltype_id);
                         if ($angeltype != null) {
                             NeededAngelType_add(null, $angeltype_id, $room_id, $angeltype_count);
-                            $needed_angeltype_info[] = $angeltype['name'] . ': ' . $angeltype_count;
+                            if ($angeltype_count > 0) {
+                                $needed_angeltype_info[] = $angeltype['name'] . ': ' . $angeltype_count;
+                            }
                         }
                     }
 
@@ -196,9 +159,11 @@ function admin_rooms()
                     div('row', [
                         div('col-md-6', [
                             form_text('name', _('Name'), $name),
-                            form_checkbox('from_pentabarf', _('Frab import'), $from_pentabarf),
-                            form_checkbox('public', _('Public'), $public),
-                            form_text('number', _('Room number'), $number)
+                            form_checkbox('from_frab', _('Frab import'), $from_frab),
+                            form_text('map_url', _('Map URL'), $map_url),
+                            form_info('', _('The map url is used to display an iframe on the room page.')),
+                            form_textarea('description', _('Description'), $description),
+                            form_info('', _('Please use markdown for the description.')),
                         ]),
                         div('col-md-6', [
                             div('row', [
@@ -243,10 +208,10 @@ function admin_rooms()
         ]),
         msg(),
         table([
-            'name'           => _('Name'),
-            'from_pentabarf' => _('Frab import'),
-            'public'         => _('Public'),
-            'actions'        => ''
+            'name'      => _('Name'),
+            'from_frab' => _('Frab import'),
+            'map_url'   => _('Map'),
+            'actions'   => ''
         ], $rooms)
     ]);
 }

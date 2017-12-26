@@ -3,6 +3,47 @@
 use Engelsystem\ShiftSignupState;
 
 /**
+ * Renders the basic shift view header.
+ *
+ * @param array $shift
+ * @param array $room
+ * @return string HTML
+ */
+function Shift_view_header($shift, $room)
+{
+    return div('row', [
+        div('col-sm-3 col-xs-6', [
+            '<h4>' . _('Title') . '</h4>',
+            '<p class="lead">'
+            . ($shift['URL'] != ''
+                ? '<a href="' . $shift['URL'] . '">' . $shift['title'] . '</a>'
+                : $shift['title'])
+            . '</p>'
+        ]),
+        div('col-sm-3 col-xs-6', [
+            '<h4>' . _('Start') . '</h4>',
+            '<p class="lead' . (time() >= $shift['start'] ? ' text-success' : '') . '">',
+            glyph('calendar') . date(_('Y-m-d'), $shift['start']),
+            '<br />',
+            glyph('time') . date('H:i', $shift['start']),
+            '</p>'
+        ]),
+        div('col-sm-3 col-xs-6', [
+            '<h4>' . _('End') . '</h4>',
+            '<p class="lead' . (time() >= $shift['end'] ? ' text-success' : '') . '">',
+            glyph('calendar') . date(_('Y-m-d'), $shift['end']),
+            '<br />',
+            glyph('time') . date('H:i', $shift['end']),
+            '</p>'
+        ]),
+        div('col-sm-3 col-xs-6', [
+            '<h4>' . _('Location') . '</h4>',
+            '<p class="lead">' . Room_name_render($room) . '</p>'
+        ])
+    ]);
+}
+
+/**
  * @param array $shift
  * @return string
  */
@@ -41,10 +82,7 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
     }
 
     if ($angeltype['shift_signup_state']->isSignupAllowed()) {
-        return button(
-            page_link_to('user_shifts', ['shift_id' => $shift['SID'], 'type_id' => $angeltype['id']]),
-            _('Sign up')
-        );
+        return button(shift_entry_create_link($shift, $angeltype), _('Sign up'));
     } elseif ($user_angeltype == null) {
         return button(
             page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
@@ -65,7 +103,7 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
  */
 function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupState $shift_signup_state)
 {
-    global $privileges;
+    global $user, $privileges;
 
     $shift_admin = in_array('admin_shifts', $privileges);
     $user_shift_admin = in_array('user_shifts_admin', $privileges);
@@ -94,38 +132,17 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
             $shift_signup_state->getState() == ShiftSignupState::SIGNED_UP
                 ? info(_('You are signed up for this shift.'), true)
                 : '',
-            ($shift_admin || $admin_shifttypes || $admin_rooms) ? buttons([
+            buttons(
+            ($shift_admin || $admin_shifttypes || $admin_rooms) ? [
                 $shift_admin ? button(shift_edit_link($shift), glyph('pencil') . _('edit')) : '',
                 $shift_admin ? button(shift_delete_link($shift), glyph('trash') . _('delete')) : '',
                 $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype['name']) : '',
-                $admin_rooms ? button(room_link($room), glyph('map-marker') . $room['Name']) : ''
-            ]) : '',
-            div('row', [
-                div('col-sm-3 col-xs-6', [
-                    '<h4>' . _('Title') . '</h4>',
-                    '<p class="lead">' . ($shift['URL'] != '' ? '<a href="' . $shift['URL'] . '">' . $shift['title'] . '</a>' : $shift['title']) . '</p>'
-                ]),
-                div('col-sm-3 col-xs-6', [
-                    '<h4>' . _('Start') . '</h4>',
-                    '<p class="lead' . (time() >= $shift['start'] ? ' text-success' : '') . '">',
-                    glyph('calendar') . date(_('Y-m-d'), $shift['start']),
-                    '<br />',
-                    glyph('time') . date('H:i', $shift['start']),
-                    '</p>'
-                ]),
-                div('col-sm-3 col-xs-6', [
-                    '<h4>' . _('End') . '</h4>',
-                    '<p class="lead' . (time() >= $shift['end'] ? ' text-success' : '') . '">',
-                    glyph('calendar') . date(_('Y-m-d'), $shift['end']),
-                    '<br />',
-                    glyph('time') . date('H:i', $shift['end']),
-                    '</p>'
-                ]),
-                div('col-sm-3 col-xs-6', [
-                    '<h4>' . _('Location') . '</h4>',
-                    '<p class="lead">' . Room_name_render($room) . '</p>'
-                ])
+                $admin_rooms ? button(room_link($room), glyph('map-marker') . $room['Name']) : '',
+                button(user_link($user), '<span class="icon-icon_angel"></span> ' . _('My shifts'))
+            ] : [
+                button(user_link($user), '<span class="icon-icon_angel"></span> ' . _('My shifts'))
             ]),
+            Shift_view_header($shift, $room),
             div('row', [
                 div('col-sm-6', [
                     '<h2>' . _('Needed angels') . '</h2>',
@@ -213,7 +230,7 @@ function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angelty
                 'btn-xs'
             );
         }
-        $entry .= button_glyph(page_link_to('user_shifts', ['entry_id' => $shift_entry['id']]), 'trash', 'btn-xs');
+        $entry .= button_glyph(shift_entry_delete_link($shift_entry), 'trash', 'btn-xs');
         $entry .= '</div>';
     }
     return $entry;
@@ -228,6 +245,11 @@ function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angelty
 function shift_length($shift)
 {
     $length = floor(($shift['end'] - $shift['start']) / (60 * 60)) . ':';
-    $length .= str_pad((($shift['end'] - $shift['start']) % (60 * 60)) / 60, 2, '0', STR_PAD_LEFT) . 'h';
+    $length .= str_pad(
+            (($shift['end'] - $shift['start']) % (60 * 60)) / 60,
+            2,
+            '0',
+            STR_PAD_LEFT
+        ) . 'h';
     return $length;
 }

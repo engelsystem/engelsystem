@@ -85,7 +85,11 @@ function admin_groups()
                             'privilege-' . $privilege['name']
                         );
                         $privileges_html .= sprintf(
-                            '<tr><td><input type="checkbox" name="privileges[]" value="%s" %s /></td> <td>%s</td> <td>%s</td></tr>',
+                            '<tr>'
+                            . '<td><input type="checkbox" name="privileges[]" value="%s" %s /></td>'
+                            . '<td>%s</td>'
+                            . '<td>%s</td>'
+                            . '</tr>',
                             $privilege['id'],
                             ($privilege['group_id'] != '' ? 'checked="checked"' : ''),
                             $privilege['name'],

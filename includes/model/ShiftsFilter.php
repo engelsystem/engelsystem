@@ -50,7 +50,6 @@ class ShiftsFilter
      */
     public function __construct($user_shifts_admin, $rooms, $types)
     {
-        $this->user_shifts_admin = $user_shifts_admin;
         $this->rooms = $rooms;
         $this->types = $types;
 
