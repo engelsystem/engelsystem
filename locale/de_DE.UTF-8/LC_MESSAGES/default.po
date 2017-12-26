@@ -1203,6 +1203,10 @@ msgstr "Log"
 msgid "Edit news entry"
 msgstr "News-Eintrag bearbeiten"
 
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:37
+msgid "This message contains HTML. After saving the post some formatting will be lost!"
+msgstr "Diese Nachricht beinhaltet HTML. Wenn du sie speicherst gehen diese Formatierungen verloren!"
+
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_news.php:36
 msgid "Author"
 msgstr "Autor"
