@@ -6771,6 +6771,7 @@ body {
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
+  font-size: 20px;
   height: 130px;
   text-align: center;
 }
@@ -6785,6 +6786,9 @@ body {
   font-weight: 200;
 }
 @media (max-width: 992px) {
+  .stats {
+    font-size: inherit;
+  }
   .stats .number {
     font-size: 40px;
   }
