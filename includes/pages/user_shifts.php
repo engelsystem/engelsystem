@@ -186,6 +186,7 @@ function view_user_shifts()
         $session->set('ShiftsFilter', $shiftsFilter);
     }
 
+    /** @var ShiftsFilter $shiftsFilter */
     $shiftsFilter = $session->get('ShiftsFilter');
     update_ShiftsFilter($shiftsFilter, in_array('user_shifts_admin', $privileges), $days);
 
@@ -214,6 +215,11 @@ function view_user_shifts()
         info(render_user_arrived_hint());
     }
 
+    $ownTypes = [];
+    foreach (UserAngelTypes_by_User($user) as $type) {
+        $ownTypes[] = (int)$type['angeltype_id'];
+    }
+
     return page([
         div('col-md-12', [
             msg(),
@@ -238,7 +244,13 @@ function view_user_shifts()
                     $types,
                     $shiftsFilter->getTypes(),
                     'types',
-                    _('Angeltypes') . '<sup>1</sup>'
+                    _('Angeltypes') . '<sup>1</sup>',
+                    [
+                        button(
+                            'javascript: checkOwnTypes(\'selection_types\', ' . json_encode($ownTypes) . ')',
+                            _('Own')
+                        ),
+                    ]
                 ),
                 'filled_select' => make_select($filled, $shiftsFilter->getFilled(), 'filled', _('Occupancy')),
                 'task_notice'   =>
@@ -269,12 +281,12 @@ function view_user_shifts()
 /**
  * Returns a hint for the user how the ical feature works.
  */
-function ical_hint() {
+function ical_hint()
+{
     global $user;
 
     return heading(
-        _('iCal export'), 2) 
-        . '<p>' . sprintf(
+            _('iCal export'), 2) . '<p>' . sprintf(
             _('Export of shown shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
             page_link_to('ical', ['key' => $user['api_key']]),
             page_link_to('shifts_json_export', ['key' => $user['api_key']]),
@@ -291,15 +303,23 @@ function get_ids_from_array($array)
     return $array['id'];
 }
 
-function make_select($items, $selected, $name, $title = null)
+/**
+ * @param array  $items
+ * @param array  $selected
+ * @param string $name
+ * @param string $title
+ * @param array  $additionalButtons
+ * @return string
+ */
+function make_select($items, $selected, $name, $title = null, $additionalButtons = [])
 {
-    $html_items = [];
+    $htmlItems = [];
     if (isset($title)) {
-        $html_items[] = '<h4>' . $title . '</h4>' . "\n";
+        $htmlItems[] = '<h4>' . $title . '</h4>' . "\n";
     }
 
     foreach ($items as $i) {
-        $html_items[] = '<div class="checkbox">'
+        $htmlItems[] = '<div class="checkbox">'
             . '<label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '" '
             . (in_array($i['id'], $selected) ? ' checked="checked"' : '')
             . ' > ' . $i['name'] . '</label>'
@@ -307,11 +327,14 @@ function make_select($items, $selected, $name, $title = null)
             . '</div><br />';
     }
     $html = '<div id="selection_' . $name . '" class="selection ' . $name . '">' . "\n";
-    $html .= implode("\n", $html_items);
-    $html .= buttons([
-        button('javascript: checkAll(\'selection_' . $name . '\', true)', _('All'), ''),
-        button('javascript: checkAll(\'selection_' . $name . '\', false)', _('None'), '')
-    ]);
+    $html .= implode("\n", $htmlItems);
+
+    $buttons = [];
+    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', true)', _('All'));
+    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', false)', _('None'));
+    $buttons = array_merge($buttons, $additionalButtons);
+    $html .= buttons($buttons);
+
     $html .= '</div>' . "\n";
     return $html;
 }

@@ -226,3 +226,20 @@ function UserAngelType_by_User_and_AngelType($user, $angeltype)
         ]
     );
 }
+
+/**
+ * Get an UserAngelTypes by user
+ *
+ * @param array $user
+ * @return array[]|null
+ */
+function UserAngelTypes_by_User($user)
+{
+    return DB::select('
+          SELECT *
+          FROM `UserAngelTypes`
+          WHERE `user_id`=?
+        ',
+        [$user['UID']]
+    );
+}

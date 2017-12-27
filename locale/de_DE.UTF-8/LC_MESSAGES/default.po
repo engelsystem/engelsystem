@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2017-12-27 12:17+0100\n"
-"PO-Revision-Date: 2017-12-27 12:17+0100\n"
+"POT-Creation-Date: 2017-12-27 13:38+0100\n"
+"PO-Revision-Date: 2017-12-27 13:38+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1866,6 +1866,10 @@ msgstr "belegt"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:205
 msgid "free"
 msgstr "frei"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:251
+msgid "Own"
+msgstr "Eigene"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:243
 msgid "Occupancy"
