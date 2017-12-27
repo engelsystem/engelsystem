@@ -6875,6 +6875,9 @@ body {
 .space-top {
   margin-top: 15px;
 }
+.column_duration {
+  text-align: right;
+}
 .messages:focus {
   outline: none;
 }

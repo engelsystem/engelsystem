@@ -351,9 +351,10 @@ function User_view_myshift($shift, $user_source, $its_me)
     }
 
     $myshift = [
-        'date'       => date('Y-m-d', $shift['start']),
-        'time'       => date('H:i', $shift['start']) . ' - ' . date('H:i', $shift['end']),
-        'room'       => $shift['Name'],
+        'date'       => glyph('calendar') . date('Y-m-d', $shift['start']) . '<br>'
+                        . glyph('time') . date('H:i', $shift['start']) . ' - ' . date('H:i', $shift['end']),
+        'duration'   => round(($shift['end'] - $shift['start']) / 3600, 2) . ' h',
+        'room'       => Room_name_render($shift),
         'shift_info' => $shift_info,
         'comment'    => ''
     ];
@@ -363,11 +364,12 @@ function User_view_myshift($shift, $user_source, $its_me)
     }
 
     if ($shift['freeloaded']) {
+        $myshift['duration'] = '<p class="text-danger">' . round(-($shift['end'] - $shift['start']) / 3600 * 2, 2) . ' h' . '</p>';
         if (in_array('user_shifts_admin', $privileges)) {
             $myshift['comment'] .= '<br />'
-                . '<p class="error">' . _('Freeloaded') . ': ' . $shift['freeload_comment'] . '</p>';
+                . '<p class="text-danger">' . _('Freeloaded') . ': ' . $shift['freeload_comment'] . '</p>';
         } else {
-            $myshift['comment'] .= '<br /><p class="error">' . _('Freeloaded') . '</p>';
+            $myshift['comment'] .= '<br /><p class="text-danger">' . _('Freeloaded') . '</p>';
         }
     }
 
@@ -416,7 +418,7 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
     if (count($myshifts_table) > 0) {
         $myshifts_table[] = [
             'date'       => '<b>' . _('Sum:') . '</b>',
-            'time'       => '<b>' . round($timesum / 3600, 2) . ' h</b>',
+            'duration'   => '<b>' . round($timesum / 3600, 2) . ' h</b>',
             'room'       => '',
             'shift_info' => '',
             'comment'    => '',
@@ -425,7 +427,7 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
         if($its_me || $tshirt_admin) {
             $myshifts_table[] = [
                 'date'       => '<b>' . _('Your t-shirt score') . '&trade;:</b>',
-                'time'       => '<b>' . round($tshirt_score, 2) . ' h</b>',
+                'duration'   => '<b>' . round($tshirt_score, 2) . ' h</b>',
                 'room'       => '',
                 'shift_info' => '',
                 'comment'    => '',
@@ -512,8 +514,8 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
             ]),
             ($its_me || $admin_user_privilege) ? '<h2>' . _('Shifts') . '</h2>' : '',
             ($its_me || $admin_user_privilege) ? table([
-                'date'       => _('Day'),
-                'time'       => _('Time'),
+                'date'       => _('Day &amp; time'),
+                'duration'   => _('Duration'),
                 'room'       => _('Location'),
                 'shift_info' => _('Name &amp; workmates'),
                 'comment'    => _('Comment'),
