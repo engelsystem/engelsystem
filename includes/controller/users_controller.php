@@ -224,6 +224,12 @@ function user_controller()
     if ($user_source['api_key'] == '') {
         User_reset_api_key($user_source, false);
     }
+    
+    if($user_source['force_active']) {
+        $tshirt_score = _('Enough');
+    } else {
+        $tshirt_score = round(User_tshirt_score($user_source), 2) . 'h';
+    }
 
     return [
         $user_source['Nick'],
@@ -235,7 +241,7 @@ function user_controller()
             User_groups($user_source),
             $shifts,
             $user['UID'] == $user_source['UID'],
-            User_tshirt_score($user_source),
+            $tshirt_score,
             in_array('admin_active', $privileges)
         )
     ];

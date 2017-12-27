@@ -429,10 +429,10 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
             'comment'    => '',
             'actions'    => ''
         ];
-        if ($its_me || $tshirt_admin) {
+        if (config('enable_tshirt_size', false) && ($its_me || $tshirt_admin)) {
             $myshifts_table[] = [
                 'date'       => '<b>' . _('Your t-shirt score') . '&trade;:</b>',
-                'duration'   => '<b>' . round($tshirt_score, 2) . ' h</b>',
+                'duration'   => '<b>' . $tshirt_score . '</b>',
                 'room'       => '',
                 'shift_info' => '',
                 'comment'    => '',

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2017-12-27 15:02+0100\n"
-"PO-Revision-Date: 2017-12-27 15:02+0100\n"
+"POT-Creation-Date: 2017-12-27 20:29+0100\n"
+"PO-Revision-Date: 2017-12-27 20:29+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -425,7 +425,7 @@ msgstr "Du darfst diesen Benutzer nicht für diesen Engeltyp freischalten."
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:146
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:201
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/user_angeltypes_controller.php:268
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:409
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:415
 msgid "User doesn't exist."
 msgstr "Benutzer existiert nicht."
 
@@ -577,55 +577,59 @@ msgstr "Voucher von %s"
 msgid "User not found."
 msgstr "Benutzer nicht gefunden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:269
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:229
+msgid "Enough"
+msgstr "Genug"
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:275
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:232
 msgid "All users"
 msgstr "Alle Benutzer"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:293
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:299
 msgid "Token is not correct."
 msgstr "Der Token ist nicht in Ordnung."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:306
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:312
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:142
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:116
 msgid "Your passwords don't match."
 msgstr "Deine Passwörter stimmen nicht überein."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:310
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:316
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:114
 msgid "Your password is to short (please use at least 6 characters)."
 msgstr "Dein Passwort ist zu kurz (Bitte mindestens 6 Zeichen nutzen)."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:315
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:321
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:119
 msgid "Password saved."
 msgstr "Passwort gespeichert."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:340
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:344
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:346
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:350
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:107
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:31
 msgid "E-mail address is not correct."
 msgstr "Die E-Mail Adresse ist nicht in Ordnung."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:348
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:354
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:111
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:35
 msgid "Please enter your e-mail."
 msgstr "Bitte gib Deine E-Mail-Adresse ein."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:355
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:391
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:361
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:397
 msgid "Password recovery"
 msgstr "Passwort wiederherstellen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:357
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:363
 #, php-format
 msgid "Please visit %s to recover your password."
 msgstr "Bitte besuche %s, um Dein Passwort zurückzusetzen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:361
+#: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:367
 msgid "We sent an email containing your password recovery link."
 msgstr ""
 "Wir haben eine eMail mit einem Link zum Passwort-zurücksetzen geschickt."
