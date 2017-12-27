@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
-"POT-Creation-Date: 2017-12-27 13:38+0100\n"
-"PO-Revision-Date: 2017-12-27 13:38+0100\n"
+"POT-Creation-Date: 2017-12-27 15:02+0100\n"
+"PO-Revision-Date: 2017-12-27 15:02+0100\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -22,10 +22,10 @@ msgid "Please select..."
 msgstr "Bitte auswählen..."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:13
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:241
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:247
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:80
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:138
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:686
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:700
 msgid "Angeltypes"
 msgstr "Engeltypen"
 
@@ -65,7 +65,7 @@ msgid "Team %s"
 msgstr "Team %s"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:292
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:377
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:382
 msgid "view"
 msgstr "ansehen"
 
@@ -77,8 +77,8 @@ msgstr "ansehen"
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:92
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:124
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:138
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:382
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:471
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:387
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:485
 msgid "edit"
 msgstr "bearbeiten"
 
@@ -159,7 +159,7 @@ msgid "Settings saved."
 msgstr "Einstellungen gespeichert."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/public_dashboard_controller.php:27
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:262
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:274
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/PublicDashboard_view.php:55
 msgid "Public Dashboard"
 msgstr "Public Dashboard"
@@ -311,7 +311,7 @@ msgstr "Benötigte Engel"
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:86
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:91
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:182
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:664
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:678
 msgid "Save"
 msgstr "Speichern"
 
@@ -849,7 +849,7 @@ msgstr "Größe"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:11
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:355
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Rooms_view.php:39
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:515
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:529
 msgid "Shifts"
 msgstr "Schichten"
 
@@ -912,7 +912,7 @@ msgstr "zurücksetzen"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:186
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:201
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_arrive.php:216
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:479
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:493
 msgid "arrived"
 msgstr "angekommen"
 
@@ -1012,7 +1012,7 @@ msgstr "Jabber"
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:118
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:480
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:52
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:645
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:659
 msgid "E-Mail"
 msgstr "E-Mail"
 
@@ -1286,7 +1286,7 @@ msgid "Answered by"
 msgstr "Antwort von"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:7
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:222
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:228
 #: /Users/msquare/workspace/projects/engelsystem/includes/sys_menu.php:225
 msgid "Rooms"
 msgstr "Räume"
@@ -1580,12 +1580,12 @@ msgstr "T-Shirt Größe"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:342
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:478
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:119
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:662
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:676
 msgid "Password"
 msgstr "Passwort"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:345
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:663
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:677
 msgid "Confirm password"
 msgstr "Passwort wiederholen"
 
@@ -1742,7 +1742,7 @@ msgid "Key changed."
 msgstr "Key geändert."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_myshifts.php:42
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:502
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:516
 msgid "Reset API key"
 msgstr "API-Key zurücksetzen"
 
@@ -1822,7 +1822,7 @@ msgid "No question found."
 msgstr "Keine Frage gefunden."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:10
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:490
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:504
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -1858,11 +1858,11 @@ msgstr ""
 "Die Administratoren haben noch keine Engeltypen konfiguriert - oder Du hast "
 "noch keine Engeltypen ausgewählt."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:201
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:202
 msgid "occupied"
 msgstr "belegt"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:205
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:206
 msgid "free"
 msgstr "frei"
 
@@ -1870,61 +1870,61 @@ msgstr "frei"
 msgid "Own"
 msgstr "Eigene"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:243
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:255
 msgid "Occupancy"
 msgstr "Belegung"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:246
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:258
 msgid ""
 "The tasks shown here are influenced by the angeltypes you joined already!"
 msgstr ""
 "Die Schichten, die hier angezeigt werden, sind von Deinen Einstellungen "
 "(Engeltypen/Aufgaben) abhängig!"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:248
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:260
 msgid "Description of the jobs."
 msgstr "Beschreibung der Aufgaben."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:252
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:264
 msgid "Filter"
 msgstr "Filter"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:253
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:265
 msgid "Yesterday"
 msgstr "Gestern"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:254
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:266
 msgid "Today"
 msgstr "Heute"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:255
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:267
 msgid "Tomorrow"
 msgstr "Morgen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:256
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:268
 msgid "last 8h"
 msgstr "letzte 8h"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:257
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:269
 msgid "last 4h"
 msgstr "letzte 4h"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:258
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:270
 msgid "next 4h"
 msgstr "nächste 4h"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:259
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:271
 msgid "next 8h"
 msgstr "nächste 8h"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:276
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:288
 msgid "iCal export"
 msgstr "iCal Export"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:278
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:290
 #, php-format
 msgid ""
-"Export of shown shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s"
+"Export your own shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s"
 "\">JSON format</a> available (please keep secret, otherwise <a href=\"%s"
 "\">reset the api key</a>)."
 msgstr ""
@@ -1932,12 +1932,12 @@ msgstr ""
 "\">JSON Format</a> verfügbar (Link bitte geheimhalten, sonst <a href=\"%s"
 "\">API-Key zurücksetzen</a>)."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:312
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:333
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:49
 msgid "All"
 msgstr "Alle"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:313
+#: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:334
 msgid "None"
 msgstr "Keine"
 
@@ -2360,8 +2360,8 @@ msgid "Shift signup"
 msgstr "Schicht Anmeldung"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftEntry_view.php:181
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:370
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:372
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:375
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:377
 msgid "Freeloaded"
 msgstr "Geschwänzt"
 
@@ -2416,7 +2416,7 @@ msgid "New shifttype"
 msgstr "Neuer Schichttyp"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/Shifts_view.php:40
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:519
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:533
 msgid "Location"
 msgstr "Ort"
 
@@ -2592,7 +2592,7 @@ msgid "Prename"
 msgstr "Vorname"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:242
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:574
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:588
 msgid "Arrived"
 msgstr "Angekommen"
 
@@ -2605,12 +2605,12 @@ msgid "Freeloads"
 msgstr "Schwänzereien"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:245
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:608
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:622
 msgid "Active"
 msgstr "Aktiv"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:247
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:611
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:625
 msgid "T-Shirt"
 msgstr "T-Shirt"
 
@@ -2638,59 +2638,59 @@ msgstr "Schicht startet %c"
 msgid "Shift ends %c"
 msgstr "Schicht endet %c"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:389
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:394
 msgid "sign off"
 msgstr "abmelden"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:420
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:425
 msgid "Sum:"
 msgstr "Summe:"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:429
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:434
 msgid "Your t-shirt score"
 msgstr "Dein T-Shirt Score"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:475
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:489
 msgid "driving license"
 msgstr "Führerschein"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:486
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:500
 msgid "Edit vouchers"
 msgstr "Voucher bearbeiten"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:494
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:508
 msgid "iCal Export"
 msgstr "iCal Export"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:498
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:512
 msgid "JSON Export"
 msgstr "JSON Export"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:517
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:531
 msgid "Day &amp; time"
 msgstr "Day &amp; time"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:518
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:532
 msgid "Duration"
 msgstr "Dauer"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:520
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:534
 msgid "Name &amp; workmates"
 msgstr "Name &amp; Kollegen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:521
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:535
 msgid "Comment"
 msgstr "Kommentar"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:522
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:536
 msgid "Action"
 msgstr "Aktion"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:525
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:539
 msgid "Your night shifts between 2 and 8 am count twice."
 msgstr "Deine Nachtschichten zwischen 2 und 8 Uhr zählen doppelt."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:530
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:544
 #, php-format
 msgid ""
 "Go to the <a href=\"%s\">shifts table</a> to sign yourself up for some "
@@ -2699,44 +2699,44 @@ msgstr ""
 "Gehe zur <a href=\"%s\">Schicht-Tabelle</a>, um Dich für Schichten "
 "einzutragen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:556
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:570
 msgid "User state"
 msgstr "Engelzustand"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:576
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:590
 msgid "Not arrived"
 msgstr "Nicht angekommen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:595
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:609
 msgid "Freeloader"
 msgstr "Schwänzer"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:602
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:616
 #, php-format
 msgid "Arrived at %s"
 msgstr "Angekommen am %s"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:606
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:620
 msgid "Active (forced)"
 msgstr "Aktiv (gezwungen)"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:615
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:629
 #, php-format
 msgid "Not arrived (Planned: %s)"
 msgstr "Nicht angekommen (Geplant: %s)"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:623
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:637
 #, php-format
 msgid "Got %s voucher"
 msgid_plural "Got %s vouchers"
 msgstr[0] "Einen Voucher bekommen"
 msgstr[1] "%s Voucher bekommen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:628
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:642
 msgid "Got no vouchers"
 msgstr "Voucher nicht bekommen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:643
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:657
 msgid ""
 "We will send you an e-mail with a password recovery link. Please use the "
 "email address you used for registration."
@@ -2745,19 +2745,19 @@ msgstr ""
 "zurücksetzen kannst. Bitte benutze die Mailadresse, die du bei der Anmeldung "
 "verwendet hast."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:646
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:660
 msgid "Recover"
 msgstr "Wiederherstellen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:660
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:674
 msgid "Please enter a new password."
 msgstr "Gib bitte ein neues Passwort ein."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:703
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:717
 msgid "Rights"
 msgstr "Rechte"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:752
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:766
 msgid ""
 "Please enter your planned date of departure on your settings page to give us "
 "a feeling for teardown capacities."
@@ -2765,7 +2765,7 @@ msgstr ""
 "Bitte gib Dein geplantes Abreisedatum an, damit wir ein Gefühl für die Abbau-"
 "Planung bekommen."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:768
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:782
 #, php-format
 msgid ""
 "You freeloaded at least %s shifts. Shift signup is locked. Please go to "
@@ -2774,7 +2774,7 @@ msgstr ""
 "Du hast mindestens %s Schichten geschwänzt. Schicht-Registrierung ist "
 "gesperrt. Bitte gehe zum Himmelsschreibtisch um wieder entsperrt zu werden."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:790
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:804
 msgid ""
 "You are not marked as arrived. Please go to heaven's desk, get your angel "
 "badge and/or tell them that you arrived already."
@@ -2782,11 +2782,11 @@ msgstr ""
 "Du bist nicht als angekommen markiert. Bitte gehe zur Himmelsverwaltung, "
 "hole Dein Badge ab und/oder erkläre ihnen, dass Du bereits angekommen bist."
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:805
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:819
 msgid "You need to specify a tshirt size in your settings!"
 msgstr "Bitte eine T-Shirt-Größe auswählen"
 
-#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:820
+#: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:834
 msgid ""
 "You need to specify a DECT phone number in your settings! If you don't have "
 "a DECT phone, just enter '-'."
