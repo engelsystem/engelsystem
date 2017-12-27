@@ -1,20 +1,25 @@
 /**
- * Runs through the DOM under the element with the given id, finds all
- * checkboxes and sets them to the wanted state.
+ * Sets all checkboxes to the wanted state
  *
- * @param String
- *            id Id of the element containing all the checkboxes
- * @param Boolean
- *            checked True if the checkboxes should be checked
+ * @param {string} id Id of the element containing all the checkboxes
+ * @param {bool} checked True if the checkboxes should be checked
  */
 function checkAll(id, checked) {
-    var obj = document.getElementById(id);
-    var boxes = obj.getElementsByTagName("input");
-    for (var i = 0; i < boxes.length; i++) {
-        if (boxes[i].type === "checkbox" && !boxes[i].disabled) {
-            boxes[i].checked = checked;
-        }
-    }
+    $("#" + id + " input[type='checkbox']").each(function () {
+        this.checked = checked;
+    });
+}
+
+/**
+ * Sets the checkboxes according to the given type
+ *
+ * @param {string} id The elements ID
+ * @param {list} shifts_list A list of numbers
+ */
+function checkOwnTypes(id, shifts_list) {
+    $('#' + id + ' input[type=checkbox]').each(function () {
+        this.checked = $.inArray(parseInt(this.value), shifts_list);
+    });
 }
 
 /**
@@ -82,8 +87,8 @@ $(function () {
         $("input[type='submit']").prop("readonly", true).addClass("disabled");
         return true;
     });
-    
-    $(".dropdown-menu").css("max-height", function() {
-      return ($(window).height() - 50) + "px";
+
+    $(".dropdown-menu").css("max-height", function () {
+        return ($(window).height() - 50) + "px";
     }).css("overflow-y", "scroll");
 });

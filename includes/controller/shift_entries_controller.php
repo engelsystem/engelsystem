@@ -10,8 +10,8 @@ use Engelsystem\ShiftSignupState;
 function shift_entries_controller()
 {
     global $user;
-    
-    if(!isset($user)) {
+
+    if (!isset($user)) {
         redirect(page_link_to('login'));
     }
 
