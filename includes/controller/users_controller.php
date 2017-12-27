@@ -220,7 +220,7 @@ function user_controller()
             );
         }
     }
-
+    
     if ($user_source['api_key'] == '') {
         User_reset_api_key($user_source, false);
     }
@@ -234,7 +234,9 @@ function user_controller()
             User_angeltypes($user_source),
             User_groups($user_source),
             $shifts,
-            $user['UID'] == $user_source['UID']
+            $user['UID'] == $user_source['UID'],
+            User_tshirt_score($user_source),
+            in_array('admin_active', $privileges)
         )
     ];
 }

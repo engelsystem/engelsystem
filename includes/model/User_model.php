@@ -18,6 +18,30 @@ function User_delete($user_id)
 }
 
 /**
+ * Returns the tshirt score (number of hours counted for tshirt).
+ * Accounts only ended shifts.
+ * 
+ * @param array[] $user
+ */
+function User_tshirt_score($user) {
+    $shift_sum_formula = config('shift_sum_formula');
+    
+    $result = DB::selectOne('
+        SELECT ROUND((' . $shift_sum_formula . ') / 3600, 2) AS `tshirt_score`
+        FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
+        LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` 
+        WHERE `User`.`UID` = ?
+        AND `Shifts`.`end` < ?
+        GROUP BY `User`.`UID`
+    ',[
+        $user['UID'],
+        time()
+    ]);
+    
+    return $result['tshirt_score'];
+}
+
+/**
  * Update user.
  *
  * @param array $user

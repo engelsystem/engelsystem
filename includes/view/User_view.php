@@ -401,16 +401,14 @@ function User_view_myshift($shift, $user_source, $its_me)
  * @param bool    $its_me
  * @return array
  */
-function User_view_myshifts($shifts, $user_source, $its_me)
+function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshirt_admin)
 {
     $myshifts_table = [];
     $timesum = 0;
     foreach ($shifts as $shift) {
         $myshifts_table[] = User_view_myshift($shift, $user_source, $its_me);
 
-        if ($shift['freeloaded']) {
-            $timesum += (-2 * ($shift['end'] - $shift['start']));
-        } else {
+        if (!$shift['freeloaded']) {
             $timesum += ($shift['end'] - $shift['start']);
         }
     }
@@ -418,12 +416,22 @@ function User_view_myshifts($shifts, $user_source, $its_me)
     if (count($myshifts_table) > 0) {
         $myshifts_table[] = [
             'date'       => '<b>' . _('Sum:') . '</b>',
-            'time'       => '<b>' . round($timesum / 3600, 1) . ' h</b>',
+            'time'       => '<b>' . round($timesum / 3600, 2) . ' h</b>',
             'room'       => '',
             'shift_info' => '',
             'comment'    => '',
             'actions'    => ''
         ];
+        if($its_me || $tshirt_admin) {
+            $myshifts_table[] = [
+                'date'       => '<b>' . _('Your t-shirt score') . '&trade;:</b>',
+                'time'       => '<b>' . round($tshirt_score, 2) . ' h</b>',
+                'room'       => '',
+                'shift_info' => '',
+                'comment'    => '',
+                'actions'    => ''
+            ];
+        }
     }
     return $myshifts_table;
 }
@@ -438,12 +446,14 @@ function User_view_myshifts($shifts, $user_source, $its_me)
  * @param array[] $user_groups
  * @param array[] $shifts
  * @param bool    $its_me
+ * @param int     $tshirt_score
+ * @param bool    $tshirt_admin
  * @return string
  */
-function User_view($user_source, $admin_user_privilege, $freeloader, $user_angeltypes, $user_groups, $shifts, $its_me)
+function User_view($user_source, $admin_user_privilege, $freeloader, $user_angeltypes, $user_groups, $shifts, $its_me, $tshirt_score, $tshirt_admin)
 {
     $user_name = htmlspecialchars($user_source['Vorname']) . ' ' . htmlspecialchars($user_source['Name']);
-    $myshifts_table = User_view_myshifts($shifts, $user_source, $its_me);
+    $myshifts_table = User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshirt_admin);
 
     return page_with_title(
         '<span class="icon-icon_angel"></span> '
