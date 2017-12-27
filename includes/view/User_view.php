@@ -351,8 +351,11 @@ function User_view_myshift($shift, $user_source, $its_me)
     }
 
     $myshift = [
-        'date'       => glyph('calendar') . date('Y-m-d', $shift['start']) . '<br>'
-                        . glyph('time') . date('H:i', $shift['start']) . ' - ' . date('H:i', $shift['end']),
+        'date'       => glyph('calendar')
+            . date('Y-m-d', $shift['start']) . '<br>'
+            . glyph('time') . date('H:i', $shift['start'])
+            . ' - '
+            . date('H:i', $shift['end']),
         'duration'   => round(($shift['end'] - $shift['start']) / 3600, 2) . ' h',
         'room'       => Room_name_render($shift),
         'shift_info' => $shift_info,
@@ -364,7 +367,9 @@ function User_view_myshift($shift, $user_source, $its_me)
     }
 
     if ($shift['freeloaded']) {
-        $myshift['duration'] = '<p class="text-danger">' . round(-($shift['end'] - $shift['start']) / 3600 * 2, 2) . ' h' . '</p>';
+        $myshift['duration'] = '<p class="text-danger">'
+            . round(-($shift['end'] - $shift['start']) / 3600 * 2, 2) . ' h'
+            . '</p>';
         if (in_array('user_shifts_admin', $privileges)) {
             $myshift['comment'] .= '<br />'
                 . '<p class="text-danger">' . _('Freeloaded') . ': ' . $shift['freeload_comment'] . '</p>';
@@ -424,7 +429,7 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
             'comment'    => '',
             'actions'    => ''
         ];
-        if($its_me || $tshirt_admin) {
+        if ($its_me || $tshirt_admin) {
             $myshifts_table[] = [
                 'date'       => '<b>' . _('Your t-shirt score') . '&trade;:</b>',
                 'duration'   => '<b>' . round($tshirt_score, 2) . ' h</b>',
@@ -452,8 +457,17 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
  * @param bool    $tshirt_admin
  * @return string
  */
-function User_view($user_source, $admin_user_privilege, $freeloader, $user_angeltypes, $user_groups, $shifts, $its_me, $tshirt_score, $tshirt_admin)
-{
+function User_view(
+    $user_source,
+    $admin_user_privilege,
+    $freeloader,
+    $user_angeltypes,
+    $user_groups,
+    $shifts,
+    $its_me,
+    $tshirt_score,
+    $tshirt_admin
+) {
     $user_name = htmlspecialchars($user_source['Vorname']) . ' ' . htmlspecialchars($user_source['Name']);
     $myshifts_table = User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshirt_admin);
 
