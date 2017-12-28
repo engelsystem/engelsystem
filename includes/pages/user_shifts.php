@@ -287,7 +287,7 @@ function ical_hint()
 
     return heading(_('iCal export'), 2)
         . '<p>' . sprintf(
-            _('Export your own shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
+            _('Export of shown shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>). On Android, you can use <a href="https://icsdroid.bitfire.at/download/">ICSdroid</a> (<a href="https://f-droid.org/packages/at.bitfire.icsdroid/">F-Droid</a>), to subscribe to your shifts.'),
             page_link_to('ical', ['key' => $user['api_key']]),
             page_link_to('shifts_json_export', ['key' => $user['api_key']]),
             page_link_to('user_myshifts', ['reset' => 1])
