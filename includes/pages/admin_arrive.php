@@ -21,6 +21,7 @@ function admin_arrive()
 
     if ($request->has('search')) {
         $search = strip_request_item('search');
+        $search = trim($search);
     }
 
     if ($request->has('reset') && preg_match('/^\d+$/', $request->input('reset'))) {
