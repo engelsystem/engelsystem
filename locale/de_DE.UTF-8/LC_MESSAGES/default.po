@@ -1930,11 +1930,17 @@ msgstr "iCal Export"
 msgid ""
 "Export your own shifts. <a href=\"%s\">iCal format</a> or <a href=\"%s"
 "\">JSON format</a> available (please keep secret, otherwise <a href=\"%s"
-"\">reset the api key</a>)."
+"\">reset the api key</a>). On Android, you can use 
+<a href="https://icsdroid.bitfire.at/download/">ICSdroid</a> 
+(<a href="https://f-droid.org/packages/at.bitfire.icsdroid/">F-Droid</a>), 
+to subscribe to your shifts."
 msgstr ""
 "Exportiere Deine Schichten. <a href=\"%s\">iCal Format</a> oder <a href=\"%s"
 "\">JSON Format</a> verfügbar (Link bitte geheimhalten, sonst <a href=\"%s"
-"\">API-Key zurücksetzen</a>)."
+"\">API-Key zurücksetzen</a>). Auf Android kannst du mittels
+<a href="https://icsdroid.bitfire.at/download/">ICSdroid</a> 
+(<a href="https://f-droid.org/packages/at.bitfire.icsdroid/">F-Droid</a>), 
+ein Kalender-Abo einrichten."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:333
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftTypes_view.php:49
