@@ -121,7 +121,6 @@ return [
         'XL-G' => 'XL Girl',
         '2XL'  => '2XL',
         '3XL'  => '3XL',
-        '4XL'  => '4XL',
-        '5XL'  => '5XL',
+        '4XL'  => '4XL'
     ],
 ];
