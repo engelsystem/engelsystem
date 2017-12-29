@@ -439,8 +439,6 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
                 'actions'    => ''
             ];
         }
-    } elseif($user_source['force_active']) {
-        $myshifts_table[] = success(_('You have done enough to get a t-shirt.'), true);
     }
     return $myshifts_table;
 }
@@ -471,7 +469,22 @@ function User_view(
     $tshirt_admin
 ) {
     $user_name = htmlspecialchars($user_source['Vorname']) . ' ' . htmlspecialchars($user_source['Name']);
-    $myshifts_table = User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshirt_admin);
+    $myshifts_table = '';
+    if($its_me || $admin_user_privilege) {
+        $my_shifts = User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshirt_admin);
+        if(count($my_shifts) > 0) {
+            $myshifts_table = table([
+                'date'       => _('Day &amp; time'),
+                'duration'   => _('Duration'),
+                'room'       => _('Location'),
+                'shift_info' => _('Name &amp; workmates'),
+                'comment'    => _('Comment'),
+                'actions'    => _('Action')
+            ], $my_shifts);
+        } elseif($user_source['force_active']) {
+            $myshifts_table = success(_('You have done enough to get a t-shirt.'), true);
+        }
+    }
 
     return page_with_title(
         '<span class="icon-icon_angel"></span> '
@@ -529,14 +542,7 @@ function User_view(
                 User_groups_render($user_groups)
             ]),
             ($its_me || $admin_user_privilege) ? '<h2>' . _('Shifts') . '</h2>' : '',
-            ($its_me || $admin_user_privilege) ? table([
-                'date'       => _('Day &amp; time'),
-                'duration'   => _('Duration'),
-                'room'       => _('Location'),
-                'shift_info' => _('Name &amp; workmates'),
-                'comment'    => _('Comment'),
-                'actions'    => _('Action')
-            ], $myshifts_table) : '',
+            $myshifts_table,
             $its_me ? info(
                 glyph('info-sign') . _('Your night shifts between 2 and 8 am count twice.'),
                 true
