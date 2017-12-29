@@ -227,7 +227,6 @@ function user_controller()
     
     if($user_source['force_active']) {
         $tshirt_score = _('Enough');
-        success(_('You have done enough to get a t-shirt.'));
     } else {
         $tshirt_score = round(User_tshirt_score($user_source), 2) . ' h';
     }
