@@ -23,7 +23,7 @@ function UserWorkLogsForUser($user) {
  */
 function UserWorkLog_delete($userWorkLog)
 {
-    $user_source = $userWorkLog['user_id'];
+    $user_source = User($userWorkLog['user_id']);
     $result = Db::delete("DELETE FROM `UserWorkLog` WHERE `id`=?", [
         $userWorkLog['id']
     ]);
@@ -42,7 +42,7 @@ function UserWorkLog_delete($userWorkLog)
  */
 function UserWorkLog_update($userWorkLog)
 {
-    $user_source = $userWorkLog['user_id'];
+    $user_source = User($userWorkLog['user_id']);
 
     $result = Db::update("UPDATE `UserWorkLog` SET
         `work_hours`=?,
@@ -69,7 +69,7 @@ function UserWorkLog_create($userWorkLog)
 {
     global $user;
     
-    $user_source = $userWorkLog['user_id'];
+    $user_source = User($userWorkLog['user_id']);
     
     $result = Db::insert("INSERT INTO `UserWorkLog` (
             `user_id`,
