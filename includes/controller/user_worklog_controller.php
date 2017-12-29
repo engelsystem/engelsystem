@@ -69,6 +69,12 @@ function user_worklog_from_request($userWorkLog)
     
     $valid = true;
     
+    $userWorkLog['work_timestamp'] = parse_date('Y-m-d H:i', $request->input('work_timestamp') . ' 00:00');
+    if ($userWorkLog['work_timestamp'] == null) {
+        $valid = false;
+        error(_('Please enter work date.'));
+    }
+    
     $userWorkLog['work_hours'] = $request->input('work_hours');
     if (! preg_match("/[0-9]+(\.[0-9]+)?/", $userWorkLog['work_hours'])) {
         $valid = false;

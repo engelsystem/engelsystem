@@ -36,9 +36,10 @@ function UserWorkLog_edit_form($user_source, $userWorkLog)
 {
     return form([
         form_info(_('User'), User_Nick_render($user_source)),
+        form_date('work_timestamp', _('Work date'), $userWorkLog['work_timestamp'], null, time()),
         form_text('work_hours', _('Work hours'), $userWorkLog['work_hours']),
         form_text('comment', _('Comment'), $userWorkLog['comment']),
-        form_submit('submit', _('Add'))
+        form_submit('submit', _('Save'))
     ]);
 }
 

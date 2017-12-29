@@ -56,3 +56,4 @@ ALTER TABLE `UserWorkLog` ADD FOREIGN KEY (`created_user_id`) REFERENCES `User`(
 ALTER TABLE `UserWorkLog` ADD INDEX(`created_timestamp`);
 INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES (NULL, 'admin_user_worklog', 'Manage user work log entries.');
 ALTER TABLE `UserWorkLog` CHANGE `work_hours` `work_hours` DECIMAL(10,2) NOT NULL;
+ALTER TABLE `UserWorkLog` ADD `work_timestamp` INT NOT NULL AFTER `user_id`;

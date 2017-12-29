@@ -42,8 +42,10 @@ function User_tshirt_score($user) {
         FROM `User` 
         LEFT JOIN `UserWorkLog` ON `User`.`UID` = `UserWorkLog`.`user_id`
         WHERE `User`.`UID` = ?
+        AND `UserWorkLog`.`work_timestamp` < ?
     ',[
-        $user['UID']
+        $user['UID'],
+        time()
     ]);
     
     return $result_shifts['tshirt_score'] + $result_worklog['tshirt_score'];

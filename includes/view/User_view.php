@@ -356,7 +356,7 @@ function User_view_myshift($shift, $user_source, $its_me)
             . glyph('time') . date('H:i', $shift['start'])
             . ' - '
             . date('H:i', $shift['end']),
-        'duration'   => round(($shift['end'] - $shift['start']) / 3600, 2) . ' h',
+        'duration'   => sprintf('%.2f', round(($shift['end'] - $shift['start']) / 3600, 2)) . ' h',
         'room'       => Room_name_render($shift),
         'shift_info' => $shift_info,
         'comment'    => ''
@@ -413,7 +413,7 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
     $myshifts_table = [];
     $timesum = 0;
     foreach ($shifts as $shift) {
-        $myshifts_table[] = User_view_myshift($shift, $user_source, $its_me);
+        $myshifts_table[$shift['start']] = User_view_myshift($shift, $user_source, $its_me);
 
         if (!$shift['freeloaded']) {
             $timesum += ($shift['end'] - $shift['start']);
@@ -422,15 +422,16 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
 
     if($its_me || $admin_user_worklog_privilege) {
         foreach($user_worklogs as $worklog) {
-            $myshifts_table[] = User_view_worklog($worklog, $admin_user_worklog_privilege);
+            $myshifts_table[$worklog['work_timestamp']] = User_view_worklog($worklog, $admin_user_worklog_privilege);
             $timesum += $worklog['work_hours'] * 3600;
         }
     }
 
     if (count($myshifts_table) > 0) {
+        ksort($myshifts_table);
         $myshifts_table[] = [
             'date'       => '<b>' . _('Sum:') . '</b>',
-            'duration'   => '<b>' . round($timesum / 3600, 2) . ' h</b>',
+            'duration'   => '<b>' . sprintf('%.2f', round($timesum / 3600, 2)) . ' h</b>',
             'room'       => '',
             'shift_info' => '',
             'comment'    => '',
@@ -439,7 +440,7 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
         if (config('enable_tshirt_size', false) && ($its_me || $tshirt_admin)) {
             $myshifts_table[] = [
                 'date'       => '<b>' . _('Your t-shirt score') . '&trade;:</b>',
-                'duration'   => '<b>' . $tshirt_score . '</b>',
+                'duration'   => '<b>' . sprintf('%.2f', $tshirt_score) . ' h</b>',
                 'room'       => '',
                 'shift_info' => '',
                 'comment'    => '',
@@ -473,8 +474,8 @@ function User_view_worklog($worklog, $admin_user_worklog_privilege) {
     }
     
     return [
-        'date'       => '',
-        'duration'   => '<b>' . $worklog['work_hours'] . ' h</b>',
+        'date'       => glyph('calendar') . date('Y-m-d', $worklog['work_timestamp']),
+        'duration'   => '<b>' . sprintf('%.2f', $worklog['work_hours']) . ' h</b>',
         'room'       => '',
         'shift_info' => _('Work log entry'),
         'comment'    => $worklog['comment'] . '<br>'
