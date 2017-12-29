@@ -481,7 +481,7 @@ function User_view_worklog($worklog, $admin_user_worklog_privilege) {
         'comment'    => $worklog['comment'] . '<br>'
                         . sprintf(
                             _('Added by %s at %s'), 
-                            User_Nick_render(User($worklog['user_id'])), 
+                            User_Nick_render(User($worklog['created_user_id'])), 
                             date('Y-m-d H:i', $worklog['created_timestamp'])
                         ),
         'actions'    => $actions
