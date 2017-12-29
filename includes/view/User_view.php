@@ -419,10 +419,6 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
             $timesum += ($shift['end'] - $shift['start']);
         }
     }
-    
-    if($user_source['force_active']) {
-        $myshifts_table[] = success(_('You have done enough to get a t-shirt.'), true);
-    }
 
     if (count($myshifts_table) > 0) {
         $myshifts_table[] = [
@@ -443,6 +439,8 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
                 'actions'    => ''
             ];
         }
+    } elseif($user_source['force_active']) {
+        $myshifts_table[] = success(_('You have done enough to get a t-shirt.'), true);
     }
     return $myshifts_table;
 }
