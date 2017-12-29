@@ -49,3 +49,10 @@ ALTER TABLE `Room` ADD `description` TEXT NULL AFTER `map_url`;
 -- Dashboard
 ALTER TABLE `AngelTypes` ADD `show_on_dashboard` BOOLEAN NOT NULL AFTER `contact_email`;
 UPDATE `AngelTypes` SET `show_on_dashboard` = TRUE;
+
+-- Work Log
+CREATE TABLE `engelsystem`.`UserWorkLog` ( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `work_hours` DECIMAL NOT NULL , `comment` VARCHAR(200) NOT NULL , `created_user_id` INT NOT NULL , `created_timestamp` INT NOT NULL , PRIMARY KEY (`id`), INDEX (`user_id`), INDEX (`created_user_id`)) ENGINE = InnoDB;
+ALTER TABLE `UserWorkLog` ADD FOREIGN KEY (`created_user_id`) REFERENCES `User`(`UID`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `UserWorkLog` ADD FOREIGN KEY (`user_id`) REFERENCES `User`(`UID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `UserWorkLog` ADD INDEX(`created_timestamp`);
+INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES (NULL, 'admin_user_worklog', 'Manage user work log entries.');
+ALTER TABLE `UserWorkLog` CHANGE `work_hours` `work_hours` DECIMAL(10,2) NOT NULL;
