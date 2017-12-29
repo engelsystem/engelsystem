@@ -477,7 +477,12 @@ function User_view_worklog($worklog, $admin_user_worklog_privilege) {
         'duration'   => '<b>' . $worklog['work_hours'] . ' h</b>',
         'room'       => '',
         'shift_info' => _('Work log entry'),
-        'comment'    => $worklog['comment'],
+        'comment'    => $worklog['comment'] . '<br>'
+                        . sprintf(
+                            _('Added by %s at %s'), 
+                            User_Nick_render(User($worklog['user_id'])), 
+                            date('Y-m-d H:i', $worklog['created_timestamp'])
+                        ),
         'actions'    => $actions
     ];
 }
