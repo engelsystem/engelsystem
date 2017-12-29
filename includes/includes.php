@@ -27,6 +27,7 @@ $includeFiles = [
     __DIR__ . '/../includes/model/UserDriverLicenses_model.php',
     __DIR__ . '/../includes/model/UserGroups_model.php',
     __DIR__ . '/../includes/model/User_model.php',
+    __DIR__ . '/../includes/model/UserWorkLog_model.php',
     __DIR__ . '/../includes/model/ValidationResult.php',
 
     __DIR__ . '/../includes/view/AngelTypes_view.php',
@@ -45,6 +46,7 @@ $includeFiles = [
     __DIR__ . '/../includes/view/UserDriverLicenses_view.php',
     __DIR__ . '/../includes/view/UserHintsRenderer.php',
     __DIR__ . '/../includes/view/User_view.php',
+    __DIR__ . '/../includes/view/UserWorkLog_view.php',
 
     __DIR__ . '/../includes/controller/angeltypes_controller.php',
     __DIR__ . '/../includes/controller/event_config_controller.php',
@@ -56,6 +58,7 @@ $includeFiles = [
     __DIR__ . '/../includes/controller/users_controller.php',
     __DIR__ . '/../includes/controller/user_angeltypes_controller.php',
     __DIR__ . '/../includes/controller/user_driver_licenses_controller.php',
+    __DIR__ . '/../includes/controller/user_worklog_controller.php',
 
     __DIR__ . '/../includes/helper/graph_helper.php',
     __DIR__ . '/../includes/helper/internationalization_helper.php',

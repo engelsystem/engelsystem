@@ -58,7 +58,10 @@ function admin_active()
                   SELECT
                       `User`.*,
                       COUNT(`ShiftEntry`.`id`) AS `shift_count`,
-                      %s AS `shift_length`
+                      (%s + (
+                          SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`User`.`UID`
+                          AND `work_timestamp` < %s
+                      )) AS `shift_length`
                   FROM `User`
                   LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
                   LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID`
@@ -69,6 +72,7 @@ function admin_active()
                   %s
                 ',
                 $shift_sum_formula,
+                time(),
                 $limit
             ));
             $user_nicks = [];
@@ -140,7 +144,10 @@ function admin_active()
             SELECT
                 `User`.*,
                 COUNT(`ShiftEntry`.`id`) AS `shift_count`,
-                %s AS `shift_length`
+                (%s + (
+                    SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`User`.`UID`
+                    AND `work_timestamp` < %s
+                )) AS `shift_length`
             FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
             LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` '
         . ($show_all_shifts ? '' : 'AND (`Shifts`.`end` < ' . time() . " OR `Shifts`.`end` IS NULL)") . '
@@ -150,6 +157,7 @@ function admin_active()
             %s
         ',
         $shift_sum_formula,
+        time(),
         $limit
     ));
     $matched_users = [];

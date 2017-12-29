@@ -242,7 +242,9 @@ function user_controller()
             $shifts,
             $user['UID'] == $user_source['UID'],
             $tshirt_score,
-            in_array('admin_active', $privileges)
+            in_array('admin_active', $privileges),
+            in_array('admin_user_worklog', $privileges),
+            UserWorkLogsForUser($user_source)
         )
     ];
 }
