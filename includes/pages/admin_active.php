@@ -245,12 +245,6 @@ function admin_active()
     $shirt_statistics = [];
     foreach (array_keys($tshirt_sizes) as $size) {
         if (!empty($size)) {
-            $sc = DB::selectOne(
-                'SELECT count(*) FROM `User` WHERE `Size`=? AND `Gekommen`=1',
-                [$size]
-            );
-            $sc = array_shift($sc);
-
             $gc = DB::selectOne(
                 'SELECT count(*) FROM `User` WHERE `Size`=? AND `Tshirt`=1',
                 [$size]
@@ -259,7 +253,6 @@ function admin_active()
 
             $shirt_statistics[] = [
                 'size'   => $size,
-                'needed' => (int)$sc,
                 'given'  => (int)$gc
             ];
         }
@@ -270,7 +263,6 @@ function admin_active()
 
     $shirt_statistics[] = [
         'size'   => '<b>' . _('Sum') . '</b>',
-        'needed' => '<b>' . User_arrived_count() . '</b>',
         'given'  => '<b>' . (int)$shirtCount . '</b>'
     ];
 
@@ -298,7 +290,6 @@ function admin_active()
         '<h2>' . _('Shirt statistics') . '</h2>',
         table([
             'size'   => _('Size'),
-            'needed' => _('Needed shirts'),
             'given'  => _('Given shirts')
         ], $shirt_statistics)
     ]);
