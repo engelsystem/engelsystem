@@ -68,7 +68,7 @@ function public_dashboard_view($stats, $free_shifts)
 function public_dashboard_shift_render($shift)
 {
     $panel_body = glyph('time') . $shift['start'] . ' - ' . $shift['end'];
-    $panel_body .= ' (' . $shift['duration'] . ' h)';
+    $panel_body .= ' (' . $shift['duration'] . '&nbsp;h)';
 
     $panel_body .= '<br>' . glyph('tasks') . $shift['shifttype_name'];
     if (!empty($shift['title'])) {

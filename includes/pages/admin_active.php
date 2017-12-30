@@ -182,7 +182,7 @@ function admin_active()
         $usr['nick'] = User_Nick_render($usr);
         $usr['shirt_size'] = $tshirt_sizes[$usr['Size']];
         $usr['work_time'] = round($usr['shift_length'] / 60)
-            . ' min (' . round($usr['shift_length'] / 3600) . ' h)';
+            . ' min (' . sprintf('%.2f', $usr['shift_length'] / 3600) . '&nbsp;h)';
         $usr['active'] = glyph_bool($usr['Aktiv'] == 1);
         $usr['force_active'] = glyph_bool($usr['force_active'] == 1);
         $usr['tshirt'] = glyph_bool($usr['Tshirt'] == 1);

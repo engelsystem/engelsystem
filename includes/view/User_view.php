@@ -356,7 +356,7 @@ function User_view_myshift($shift, $user_source, $its_me)
             . glyph('time') . date('H:i', $shift['start'])
             . ' - '
             . date('H:i', $shift['end']),
-        'duration'   => sprintf('%.2f', round(($shift['end'] - $shift['start']) / 3600, 2)) . ' h',
+        'duration'   => sprintf('%.2f', ($shift['end'] - $shift['start']) / 3600) . '&nbsp;h',
         'room'       => Room_name_render($shift),
         'shift_info' => $shift_info,
         'comment'    => ''
@@ -368,7 +368,7 @@ function User_view_myshift($shift, $user_source, $its_me)
 
     if ($shift['freeloaded']) {
         $myshift['duration'] = '<p class="text-danger">'
-            . round(-($shift['end'] - $shift['start']) / 3600 * 2, 2) . ' h'
+            . round(-($shift['end'] - $shift['start']) / 3600 * 2, 2) . '&nbsp;h'
             . '</p>';
         if (in_array('user_shifts_admin', $privileges)) {
             $myshift['comment'] .= '<br />'
@@ -431,7 +431,7 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
         ksort($myshifts_table);
         $myshifts_table[] = [
             'date'       => '<b>' . _('Sum:') . '</b>',
-            'duration'   => '<b>' . sprintf('%.2f', round($timesum / 3600, 2)) . ' h</b>',
+            'duration'   => '<b>' . sprintf('%.2f', round($timesum / 3600, 2)) . '&nbsp;h</b>',
             'room'       => '',
             'shift_info' => '',
             'comment'    => '',
@@ -440,7 +440,7 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
         if (config('enable_tshirt_size', false) && ($its_me || $tshirt_admin)) {
             $myshifts_table[] = [
                 'date'       => '<b>' . _('Your t-shirt score') . '&trade;:</b>',
-                'duration'   => '<b>' . sprintf('%.2f', $tshirt_score) . ' h</b>',
+                'duration'   => '<b>' . $tshirt_score . '</b>',
                 'room'       => '',
                 'shift_info' => '',
                 'comment'    => '',
@@ -475,7 +475,7 @@ function User_view_worklog($worklog, $admin_user_worklog_privilege) {
     
     return [
         'date'       => glyph('calendar') . date('Y-m-d', $worklog['work_timestamp']),
-        'duration'   => '<b>' . sprintf('%.2f', $worklog['work_hours']) . ' h</b>',
+        'duration'   => '<b>' . sprintf('%.2f', $worklog['work_hours']) . '</b>',
         'room'       => '',
         'shift_info' => _('Work log entry'),
         'comment'    => $worklog['comment'] . '<br>'
