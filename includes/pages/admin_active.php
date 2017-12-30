@@ -200,22 +200,26 @@ function admin_active()
                 . _('set active')
                 . '</a>';
         }
-        if ($usr['Aktiv'] == 1 && $usr['Tshirt'] == 0) {
+        if ($usr['Aktiv'] == 1) {
             $parametersRemove = [
                 'not_active' => $usr['UID'],
                 'search'     => $search,
             ];
+            if ($show_all_shifts) {
+                $parametersRemove['show_all_shifts'] = 1;
+            }
+            $actions[] = '<a href="' . page_link_to('admin_active', $parametersRemove) . '">'
+                . _('remove active')
+                . '</a>';
+        }
+        if ($usr['Tshirt'] == 0) {
             $parametersShirt = [
                 'tshirt' => $usr['UID'],
                 'search' => $search,
             ];
             if ($show_all_shifts) {
-                $parametersRemove['show_all_shifts'] = 1;
                 $parametersShirt['show_all_shifts'] = 1;
             }
-            $actions[] = '<a href="' . page_link_to('admin_active', $parametersRemove) . '">'
-                . _('remove active')
-                . '</a>';
             $actions[] = '<a href="' . page_link_to('admin_active', $parametersShirt) . '">'
                 . _('got t-shirt')
                 . '</a>';
