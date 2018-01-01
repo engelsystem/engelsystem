@@ -299,7 +299,7 @@ function User_shift_state_render($user)
 
     if (time() < $halfway) {
         return '<span class="text-danger moment-countdown" data-timestamp="' . $nextShift['start'] . '">'
-            . _('Shift starts %c')
+            . _('Shift started %c')
             . '</span>';
     }
 
