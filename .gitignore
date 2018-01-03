@@ -26,3 +26,6 @@ _vimrc_local.vim
 # Composer files
 /vendor/
 /composer.lock
+
+node_modules
+public/assets

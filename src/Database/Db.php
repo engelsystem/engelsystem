@@ -31,6 +31,7 @@ class Db
         try {
             self::$db = new PDO($dsn, $username, $password, $options);
         } catch (PDOException $e) {
+            var_dump($e);
             return false;
         }
 

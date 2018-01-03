@@ -1,0 +1,36 @@
+{
+  "name": "engelsystem",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/engelsystem/engelsystem.git",
+  "author": "marudor <marudor@marudor.de>",
+  "license": "MIT",
+  "scripts": {
+    "build": "NODE_ENV=production webpack",
+    "build:watch": "webpack --watch"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootstrap-datepicker": "^1.7.1",
+    "chart.js": "^1.0.2",
+    "icomoon": "^1.0.0",
+    "jquery": "^2.1.1",
+    "jquery-ui": "^1.11.2",
+    "moment": "^2.8.2",
+    "select2": "^4.0.6-rc.1",
+    "select2-bootstrap-theme": "0.1.0-beta.10"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "imports-loader": "^0.7.1",
+    "less": "^2.7.3",
+    "less-loader": "^4.0.5",
+    "style-loader": "^0.19.1",
+    "webpack": "^3.10.0"
+  }
+}

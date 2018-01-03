@@ -1,0 +1,17 @@
+{
+  "presets": [["env", {
+      "targets": {
+        "chrome": 45,
+        "firefox": 42,
+        "safari": 9,
+        "opera": 32,
+        "edge": 12,
+        "iOS": 9
+      },
+      "loose": true,
+      "useBuiltIns": true
+      }]
+    ],
+  "plugins": [
+  ]
+}
