@@ -26,7 +26,7 @@ function User_delete($user_id)
 function User_tshirt_score($user) {
     $shift_sum_formula = config('shift_sum_formula');
     
-    $result = DB::selectOne('
+    $result_shifts = DB::selectOne('
         SELECT ROUND((' . $shift_sum_formula . ') / 3600, 2) AS `tshirt_score`
         FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
         LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` 
@@ -37,8 +37,18 @@ function User_tshirt_score($user) {
         $user['UID'],
         time()
     ]);
+    $result_worklog = DB::selectOne('
+        SELECT SUM(`work_hours`) AS `tshirt_score`
+        FROM `User` 
+        LEFT JOIN `UserWorkLog` ON `User`.`UID` = `UserWorkLog`.`user_id`
+        WHERE `User`.`UID` = ?
+        AND `UserWorkLog`.`work_timestamp` < ?
+    ',[
+        $user['UID'],
+        time()
+    ]);
     
-    return $result['tshirt_score'];
+    return $result_shifts['tshirt_score'] + $result_worklog['tshirt_score'];
 }
 
 /**

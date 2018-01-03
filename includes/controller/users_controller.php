@@ -228,7 +228,7 @@ function user_controller()
     if($user_source['force_active']) {
         $tshirt_score = _('Enough');
     } else {
-        $tshirt_score = round(User_tshirt_score($user_source), 2) . ' h';
+        $tshirt_score = sprintf('%.2f', User_tshirt_score($user_source)) . '&nbsp;h';
     }
 
     return [
@@ -242,7 +242,9 @@ function user_controller()
             $shifts,
             $user['UID'] == $user_source['UID'],
             $tshirt_score,
-            in_array('admin_active', $privileges)
+            in_array('admin_active', $privileges),
+            in_array('admin_user_worklog', $privileges),
+            UserWorkLogsForUser($user_source)
         )
     ];
 }

@@ -313,10 +313,18 @@ function get_ids_from_array($array)
  */
 function make_select($items, $selected, $name, $title = null, $additionalButtons = [])
 {
+    $html = '';
     $htmlItems = [];
     if (isset($title)) {
-        $htmlItems[] = '<h4>' . $title . '</h4>' . "\n";
+        $html .= '<h4>' . $title . '</h4>' . "\n";
     }
+
+    $buttons = [];
+    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', true)', _('All'));
+    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', false)', _('None'));
+    $buttons = array_merge($buttons, $additionalButtons);
+
+    $html .= buttons($buttons);
 
     foreach ($items as $i) {
         $htmlItems[] = '<div class="checkbox">'
@@ -326,13 +334,9 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
             . (!isset($i['enabled']) || $i['enabled'] ? '' : glyph('lock'))
             . '</div><br />';
     }
-    $html = '<div id="selection_' . $name . '" class="selection ' . $name . '">' . "\n";
+    $html .= '<div id="selection_' . $name . '" class="selection ' . $name . '">' . "\n";
     $html .= implode("\n", $htmlItems);
 
-    $buttons = [];
-    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', true)', _('All'));
-    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', false)', _('None'));
-    $buttons = array_merge($buttons, $additionalButtons);
     $html .= buttons($buttons);
 
     $html .= '</div>' . "\n";

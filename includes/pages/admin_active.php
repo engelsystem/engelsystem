@@ -58,7 +58,10 @@ function admin_active()
                   SELECT
                       `User`.*,
                       COUNT(`ShiftEntry`.`id`) AS `shift_count`,
-                      %s AS `shift_length`
+                      (%s + (
+                          SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`User`.`UID`
+                          AND `work_timestamp` < %s
+                      )) AS `shift_length`
                   FROM `User`
                   LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
                   LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID`
@@ -69,6 +72,7 @@ function admin_active()
                   %s
                 ',
                 $shift_sum_formula,
+                time(),
                 $limit
             ));
             $user_nicks = [];
@@ -140,7 +144,10 @@ function admin_active()
             SELECT
                 `User`.*,
                 COUNT(`ShiftEntry`.`id`) AS `shift_count`,
-                %s AS `shift_length`
+                (%s + (
+                    SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`User`.`UID`
+                    AND `work_timestamp` < %s
+                )) AS `shift_length`
             FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
             LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` '
         . ($show_all_shifts ? '' : 'AND (`Shifts`.`end` < ' . time() . " OR `Shifts`.`end` IS NULL)") . '
@@ -150,6 +157,7 @@ function admin_active()
             %s
         ',
         $shift_sum_formula,
+        time(),
         $limit
     ));
     $matched_users = [];
@@ -174,7 +182,7 @@ function admin_active()
         $usr['nick'] = User_Nick_render($usr);
         $usr['shirt_size'] = $tshirt_sizes[$usr['Size']];
         $usr['work_time'] = round($usr['shift_length'] / 60)
-            . ' min (' . round($usr['shift_length'] / 3600) . ' h)';
+            . ' min (' . sprintf('%.2f', $usr['shift_length'] / 3600) . '&nbsp;h)';
         $usr['active'] = glyph_bool($usr['Aktiv'] == 1);
         $usr['force_active'] = glyph_bool($usr['force_active'] == 1);
         $usr['tshirt'] = glyph_bool($usr['Tshirt'] == 1);
@@ -192,22 +200,26 @@ function admin_active()
                 . _('set active')
                 . '</a>';
         }
-        if ($usr['Aktiv'] == 1 && $usr['Tshirt'] == 0) {
+        if ($usr['Aktiv'] == 1) {
             $parametersRemove = [
                 'not_active' => $usr['UID'],
                 'search'     => $search,
             ];
+            if ($show_all_shifts) {
+                $parametersRemove['show_all_shifts'] = 1;
+            }
+            $actions[] = '<a href="' . page_link_to('admin_active', $parametersRemove) . '">'
+                . _('remove active')
+                . '</a>';
+        }
+        if ($usr['Tshirt'] == 0) {
             $parametersShirt = [
                 'tshirt' => $usr['UID'],
                 'search' => $search,
             ];
             if ($show_all_shifts) {
-                $parametersRemove['show_all_shifts'] = 1;
                 $parametersShirt['show_all_shifts'] = 1;
             }
-            $actions[] = '<a href="' . page_link_to('admin_active', $parametersRemove) . '">'
-                . _('remove active')
-                . '</a>';
             $actions[] = '<a href="' . page_link_to('admin_active', $parametersShirt) . '">'
                 . _('got t-shirt')
                 . '</a>';
@@ -233,12 +245,6 @@ function admin_active()
     $shirt_statistics = [];
     foreach (array_keys($tshirt_sizes) as $size) {
         if (!empty($size)) {
-            $sc = DB::selectOne(
-                'SELECT count(*) FROM `User` WHERE `Size`=? AND `Gekommen`=1',
-                [$size]
-            );
-            $sc = array_shift($sc);
-
             $gc = DB::selectOne(
                 'SELECT count(*) FROM `User` WHERE `Size`=? AND `Tshirt`=1',
                 [$size]
@@ -247,19 +253,16 @@ function admin_active()
 
             $shirt_statistics[] = [
                 'size'   => $size,
-                'needed' => (int)$sc,
                 'given'  => (int)$gc
             ];
         }
     }
 
-    $shirtCount = DB::selectOne('SELECT count(*) FROM `User` WHERE `Tshirt`=1');
-    $shirtCount = array_shift($shirtCount);
+    $shirtCount = User_tshirts_count();
 
     $shirt_statistics[] = [
         'size'   => '<b>' . _('Sum') . '</b>',
-        'needed' => '<b>' . User_arrived_count() . '</b>',
-        'given'  => '<b>' . (int)$shirtCount . '</b>'
+        'given'  => '<b>' . $shirtCount . '</b>'
     ];
 
     return page_with_title(admin_active_title(), [
@@ -286,7 +289,6 @@ function admin_active()
         '<h2>' . _('Shirt statistics') . '</h2>',
         table([
             'size'   => _('Size'),
-            'needed' => _('Needed shirts'),
             'given'  => _('Given shirts')
         ], $shirt_statistics)
     ]);

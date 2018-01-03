@@ -22,6 +22,7 @@ $free_pages = [
     'users',
     'user_driver_licenses',
     'user_password_recovery',
+    'user_worklog'
 ];
 
 // Gewünschte Seite/Funktion
@@ -129,6 +130,9 @@ if (
         case 'user_shifts':
             $title = shifts_title();
             $content = user_shifts();
+            break;
+        case 'user_worklog':
+            list($title, $content) = user_worklogs_controller();
             break;
         case 'user_messages':
             $title = messages_title();
