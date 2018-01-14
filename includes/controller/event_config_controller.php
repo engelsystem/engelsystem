@@ -28,7 +28,7 @@ function event_config_edit_controller()
     $teardown_end_date = null;
 
     $event_config = EventConfig();
-    if ($event_config != null) {
+    if (empty($event_config)) {
         $event_name = $event_config['event_name'];
         $buildup_start_date = $event_config['buildup_start_date'];
         $event_start_date = $event_config['event_start_date'];
@@ -70,22 +70,22 @@ function event_config_edit_controller()
         $teardown_end_date = $result->getValue();
         $valid &= $result->isValid();
 
-        if ($buildup_start_date != null && $event_start_date != null && $buildup_start_date > $event_start_date) {
+        if (!is_null($buildup_start_date) && !is_null($event_start_date) && $buildup_start_date > $event_start_date) {
             $valid = false;
             error(_('The buildup start date has to be before the event start date.'));
         }
 
-        if ($event_start_date != null && $event_end_date != null && $event_start_date > $event_end_date) {
+        if (!is_null($event_start_date) && !is_null($event_end_date) && $event_start_date > $event_end_date) {
             $valid = false;
             error(_('The event start date has to be before the event end date.'));
         }
 
-        if ($event_end_date != null && $teardown_end_date != null && $event_end_date > $teardown_end_date) {
+        if (!is_null($event_end_date) && !is_null($teardown_end_date) && $event_end_date > $teardown_end_date) {
             $valid = false;
             error(_('The event end date has to be before the teardown end date.'));
         }
 
-        if ($buildup_start_date != null && $teardown_end_date != null && $buildup_start_date > $teardown_end_date) {
+        if (!is_null($buildup_start_date) && !is_null($teardown_end_date) && $buildup_start_date > $teardown_end_date) {
             $valid = false;
             error(_('The buildup start date has to be before the teardown end date.'));
         }

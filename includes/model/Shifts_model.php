@@ -182,7 +182,7 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 /**
  * @param array $shift
  * @param array $angeltype
- * @return array|null
+ * @return array
  */
 function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
 {
@@ -323,7 +323,7 @@ function Shift_signup_allowed_angel(
         return new ShiftSignupState(ShiftSignupState::NOT_ARRIVED, $free_entries);
     }
 
-    if ($user_shifts == null) {
+    if (empty($user_shifts)) {
         $user_shifts = Shifts_by_user($user);
     }
 
@@ -349,14 +349,14 @@ function Shift_signup_allowed_angel(
         return new ShiftSignupState(ShiftSignupState::OCCUPIED, $free_entries);
     }
 
-    if ($user_angeltype == null) {
+    if (empty($user_angeltype)) {
         $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
     }
 
     if (
-        $user_angeltype == null
-        || ($angeltype['no_self_signup'] == 1 && $user_angeltype != null)
-        || ($angeltype['restricted'] == 1 && $user_angeltype != null && !isset($user_angeltype['confirm_user_id']))
+        empty($user_angeltype)
+        || ($angeltype['no_self_signup'] == 1 && !empty($user_angeltype))
+        || ($angeltype['restricted'] == 1 && !empty($user_angeltype) && !isset($user_angeltype['confirm_user_id']))
     ) {
         // you cannot join if user is not of this angel type
         // you cannot join if you are not confirmed

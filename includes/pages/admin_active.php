@@ -101,7 +101,7 @@ function admin_active()
     if ($request->has('active') && preg_match('/^\d+$/', $request->input('active'))) {
         $user_id = $request->input('active');
         $user_source = User($user_id);
-        if ($user_source != null) {
+        if (!empty($user_source)) {
             DB::update('UPDATE `User` SET `Aktiv`=1 WHERE `UID`=? LIMIT 1', [$user_id]);
             engelsystem_log('User ' . User_Nick_render($user_source) . ' is active now.');
             $msg = success(_('Angel has been marked as active.'), true);
@@ -111,7 +111,7 @@ function admin_active()
     } elseif ($request->has('not_active') && preg_match('/^\d+$/', $request->input('not_active'))) {
         $user_id = $request->input('not_active');
         $user_source = User($user_id);
-        if ($user_source != null) {
+        if (!empty($user_source)) {
             DB::update('UPDATE `User` SET `Aktiv`=0 WHERE `UID`=? LIMIT 1', [$user_id]);
             engelsystem_log('User ' . User_Nick_render($user_source) . ' is NOT active now.');
             $msg = success(_('Angel has been marked as not active.'), true);
@@ -121,7 +121,7 @@ function admin_active()
     } elseif ($request->has('tshirt') && preg_match('/^\d+$/', $request->input('tshirt'))) {
         $user_id = $request->input('tshirt');
         $user_source = User($user_id);
-        if ($user_source != null) {
+        if (!empty($user_source)) {
             DB::update('UPDATE `User` SET `Tshirt`=1 WHERE `UID`=? LIMIT 1', [$user_id]);
             engelsystem_log('User ' . User_Nick_render($user_source) . ' has tshirt now.');
             $msg = success(_('Angel has got a t-shirt.'), true);
@@ -131,7 +131,7 @@ function admin_active()
     } elseif ($request->has('not_tshirt') && preg_match('/^\d+$/', $request->input('not_tshirt'))) {
         $user_id = $request->input('not_tshirt');
         $user_source = User($user_id);
-        if ($user_source != null) {
+        if (!empty($user_source)) {
             DB::update('UPDATE `User` SET `Tshirt`=0 WHERE `UID`=? LIMIT 1', [$user_id]);
             engelsystem_log('User ' . User_Nick_render($user_source) . ' has NO tshirt.');
             $msg = success(_('Angel has got no t-shirt.'), true);
@@ -252,8 +252,8 @@ function admin_active()
             $gc = array_shift($gc);
 
             $shirt_statistics[] = [
-                'size'   => $size,
-                'given'  => (int)$gc
+                'size'  => $size,
+                'given' => (int)$gc
             ];
         }
     }
@@ -261,8 +261,8 @@ function admin_active()
     $shirtCount = User_tshirts_count();
 
     $shirt_statistics[] = [
-        'size'   => '<b>' . _('Sum') . '</b>',
-        'given'  => '<b>' . $shirtCount . '</b>'
+        'size'  => '<b>' . _('Sum') . '</b>',
+        'given' => '<b>' . $shirtCount . '</b>'
     ];
 
     return page_with_title(admin_active_title(), [
@@ -288,8 +288,8 @@ function admin_active()
         ], $matched_users),
         '<h2>' . _('Shirt statistics') . '</h2>',
         table([
-            'size'   => _('Size'),
-            'given'  => _('Given shirts')
+            'size'  => _('Size'),
+            'given' => _('Given shirts')
         ], $shirt_statistics)
     ]);
 }

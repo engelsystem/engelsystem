@@ -148,7 +148,7 @@ function Room_update($room_id, $name, $from_frab, $map_url, $description)
  * Returns room by id.
  *
  * @param int $room_id RID
- * @return array|false
+ * @return array
  */
 function Room($room_id)
 {

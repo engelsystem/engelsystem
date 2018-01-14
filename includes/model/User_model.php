@@ -347,12 +347,12 @@ function User_validate_jabber($jabber)
  */
 function User_validate_planned_arrival_date($planned_arrival_date)
 {
-    if ($planned_arrival_date == null) {
+    if (is_null($planned_arrival_date)) {
         // null is not okay
         return new ValidationResult(false, time());
     }
     $event_config = EventConfig();
-    if ($event_config == null) {
+    if (empty($event_config)) {
         // Nothing to validate against
         return new ValidationResult(true, $planned_arrival_date);
     }
@@ -376,7 +376,7 @@ function User_validate_planned_arrival_date($planned_arrival_date)
  */
 function User_validate_planned_departure_date($planned_arrival_date, $planned_departure_date)
 {
-    if ($planned_departure_date == null) {
+    if (is_null($planned_departure_date)) {
         // null is okay
         return new ValidationResult(true, null);
     }
@@ -385,7 +385,7 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
         return new ValidationResult(false, $planned_arrival_date);
     }
     $event_config = EventConfig();
-    if ($event_config == null) {
+    if (empty($event_config )) {
         // Nothing to validate against
         return new ValidationResult(true, $planned_departure_date);
     }
@@ -404,7 +404,7 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
  * Returns user by id.
  *
  * @param int $user_id UID
- * @return array|null
+ * @return array
  */
 function User($user_id)
 {
@@ -415,7 +415,7 @@ function User($user_id)
  * Returns User by api_key.
  *
  * @param string $api_key User api key
- * @return array|null Matching user, null if not found
+ * @return array Matching user, empty if not found
  */
 function User_by_api_key($api_key)
 {
@@ -426,7 +426,7 @@ function User_by_api_key($api_key)
  * Returns User by email.
  *
  * @param string $email
- * @return array|null Matching user, null on error
+ * @return array Matching user, empty on error
  */
 function User_by_email($email)
 {
@@ -437,7 +437,7 @@ function User_by_email($email)
  * Returns User by password token.
  *
  * @param string $token
- * @return array|null Matching user, null when not found
+ * @return array Matching user, empty when not found
  */
 function User_by_password_recovery_token($token)
 {

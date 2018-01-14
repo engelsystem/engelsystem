@@ -193,7 +193,7 @@ function UserAngelType_create($user, $angeltype)
  * Get an UserAngelType by its id.
  *
  * @param int $user_angeltype_id
- * @return array|null
+ * @return array
  */
 function UserAngelType($user_angeltype_id)
 {
@@ -209,7 +209,7 @@ function UserAngelType($user_angeltype_id)
  *
  * @param array $user
  * @param array $angeltype
- * @return array|null
+ * @return array
  */
 function UserAngelType_by_User_and_AngelType($user, $angeltype)
 {

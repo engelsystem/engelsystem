@@ -42,7 +42,7 @@ function check_request_datetime($date_name, $time_name, $allowed_days, $default_
 function parse_date($pattern, $value)
 {
     $datetime = DateTime::createFromFormat($pattern, trim($value));
-    if ($datetime == null) {
+    if (is_null($datetime)) {
         return null;
     }
     return $datetime->getTimestamp();

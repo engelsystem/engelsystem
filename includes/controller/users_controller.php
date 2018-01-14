@@ -190,7 +190,7 @@ function user_controller()
     $user_source = $user;
     if ($request->has('user_id')) {
         $user_source = User($request->input('user_id'));
-        if ($user_source == null) {
+        if (empty($user_source)) {
             error(_('User not found.'));
             redirect(page_link_to('/'));
         }
@@ -220,12 +220,12 @@ function user_controller()
             );
         }
     }
-    
+
     if ($user_source['api_key'] == '') {
         User_reset_api_key($user_source, false);
     }
-    
-    if($user_source['force_active']) {
+
+    if ($user_source['force_active']) {
         $tshirt_score = _('Enough');
     } else {
         $tshirt_score = sprintf('%.2f', User_tshirt_score($user_source)) . '&nbsp;h';
@@ -297,7 +297,7 @@ function user_password_recovery_set_new_controller()
 {
     $request = request();
     $user_source = User_by_password_recovery_token($request->input('token'));
-    if ($user_source == null) {
+    if (empty($user_source)) {
         error(_('Token is not correct.'));
         redirect(page_link_to('login'));
     }
@@ -343,7 +343,7 @@ function user_password_recovery_start_controller()
             $email = strip_request_item('email');
             if (check_email($email)) {
                 $user_source = User_by_email($email);
-                if ($user_source == null) {
+                if (empty($user_source)) {
                     $valid = false;
                     error(_('E-mail address is not correct.'));
                 }
@@ -412,8 +412,7 @@ function load_user()
     }
 
     $user = User($request->input('user_id'));
-
-    if ($user == null) {
+    if (empty($user)) {
         error(_('User doesn\'t exist.'));
         redirect(page_link_to());
     }

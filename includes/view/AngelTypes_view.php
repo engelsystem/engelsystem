@@ -28,9 +28,9 @@ function AngelType_name_render($angeltype)
  */
 function AngelType_render_membership($user_angeltype)
 {
-    if ($user_angeltype['user_angeltype_id'] != null) {
+    if (!empty($user_angeltype['user_angeltype_id'])) {
         if ($user_angeltype['restricted']) {
-            if ($user_angeltype['confirm_user_id'] == null) {
+            if (empty($user_angeltype['confirm_user_id'])) {
                 return glyph('lock') . _('Unconfirmed');
             } elseif ($user_angeltype['supporter']) {
                 return glyph_bool(true) . _('Supporter');
@@ -145,18 +145,18 @@ function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, 
         );
     }
 
-    if ($user_angeltype == null) {
+    if (is_null($user_angeltype)) {
         $buttons[] = button(
             page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype['id']]),
             _('join'),
             'add'
         );
     } else {
-        if ($angeltype['requires_driver_license'] && $user_driver_license == null) {
+        if ($angeltype['requires_driver_license'] && empty($user_driver_license)) {
             error(_('This angeltype requires a driver license. Please enter your driver license information!'));
         }
 
-        if ($angeltype['restricted'] && $user_angeltype['confirm_user_id'] == null) {
+        if ($angeltype['restricted'] && empty($user_angeltype['confirm_user_id'])) {
             error(sprintf(
                 _('You are unconfirmed for this angeltype. Please go to the introduction for %s to get confirmed.'),
                 $angeltype['name']
@@ -212,7 +212,7 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
             $member['has_license_forklift'] = glyph_bool($member['has_license_forklift']);
         }
 
-        if ($angeltype['restricted'] && $member['confirm_user_id'] == null) {
+        if ($angeltype['restricted'] && empty($member['confirm_user_id'])) {
             $member['actions'] = table_buttons([
                 button(
                     page_link_to(
@@ -526,7 +526,7 @@ function AngelTypes_about_view_angeltype($angeltype)
 
     if (isset($angeltype['user_angeltype_id'])) {
         $buttons = [];
-        if ($angeltype['user_angeltype_id'] != null) {
+        if (!empty($angeltype['user_angeltype_id'])) {
             $buttons[] = button(
                 page_link_to(
                     'user_angeltypes',

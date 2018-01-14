@@ -45,7 +45,7 @@ function user_angeltypes_delete_all_controller()
     }
 
     $angeltype = AngelType($request->input('angeltype_id'));
-    if ($angeltype == null) {
+    if (empty($angeltype)) {
         error(_('Angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
@@ -85,7 +85,7 @@ function user_angeltypes_confirm_all_controller()
     }
 
     $angeltype = AngelType($request->input('angeltype_id'));
-    if ($angeltype == null) {
+    if (empty($angeltype)) {
         error(_('Angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
@@ -125,13 +125,13 @@ function user_angeltype_confirm_controller()
     }
 
     $user_angeltype = UserAngelType($request->input('user_angeltype_id'));
-    if ($user_angeltype == null) {
+    if (empty($user_angeltype)) {
         error(_('User angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
 
     $angeltype = AngelType($user_angeltype['angeltype_id']);
-    if ($angeltype == null) {
+    if (empty($angeltype)) {
         error(_('Angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
@@ -142,7 +142,7 @@ function user_angeltype_confirm_controller()
     }
 
     $user_source = User($user_angeltype['user_id']);
-    if ($user_source == null) {
+    if (empty($user_source)) {
         error(_('User doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
@@ -185,19 +185,19 @@ function user_angeltype_delete_controller()
     }
 
     $user_angeltype = UserAngelType($request->input('user_angeltype_id'));
-    if ($user_angeltype == null) {
+    if (empty($user_angeltype)) {
         error(_('User angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
 
     $angeltype = AngelType($user_angeltype['angeltype_id']);
-    if ($angeltype == null) {
+    if (empty($angeltype)) {
         error(_('Angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
 
     $user_source = User($user_angeltype['user_id']);
-    if ($user_source == null) {
+    if (empty($user_source)) {
         error(_('User doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
@@ -252,19 +252,19 @@ function user_angeltype_update_controller()
     }
 
     $user_angeltype = UserAngelType($request->input('user_angeltype_id'));
-    if ($user_angeltype == null) {
+    if (empty($user_angeltype)) {
         error(_('User angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
 
     $angeltype = AngelType($user_angeltype['angeltype_id']);
-    if ($angeltype == null) {
+    if (empty($angeltype)) {
         error(_('Angeltype doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
 
     $user_source = User($user_angeltype['user_id']);
-    if ($user_source == null) {
+    if (empty($user_source)) {
         error(_('User doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
@@ -359,7 +359,7 @@ function user_angeltype_join_controller($angeltype)
     global $user, $privileges;
 
     $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
-    if ($user_angeltype != null) {
+    if (!empty($user_angeltype)) {
         error(sprintf(_('You are already a %s.'), $angeltype['name']));
         redirect(page_link_to('angeltypes'));
     }

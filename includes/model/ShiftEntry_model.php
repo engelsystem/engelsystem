@@ -134,7 +134,7 @@ function ShiftEntry_update($shift_entry)
  * Get a shift entry.
  *
  * @param int $shift_entry_id
- * @return array|null
+ * @return array
  */
 function ShiftEntry($shift_entry_id)
 {

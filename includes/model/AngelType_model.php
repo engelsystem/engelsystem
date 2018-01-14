@@ -159,7 +159,7 @@ function AngelType_validate_name($name, $angeltype)
     if ($name == '') {
         return new ValidationResult(false, '');
     }
-    if ($angeltype != null && isset($angeltype['id'])) {
+    if (!empty($angeltype) && isset($angeltype['id'])) {
         $valid = (count(DB::select('
             SELECT `id`
             FROM `AngelTypes`
@@ -225,7 +225,7 @@ function AngelType_ids()
  * Returns angelType by id.
  *
  * @param int $angeltype_id angelType ID
- * @return array|null
+ * @return array
  */
 function AngelType($angeltype_id)
 {

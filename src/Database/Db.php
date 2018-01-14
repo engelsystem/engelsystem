@@ -32,6 +32,7 @@ class Db
     {
         $return = self::connection()->select($query, $bindings);
 
+        // @TODO: Remove type casting
         foreach ($return as $key => $value) {
             $return[$key] = (array)$value;
         }
@@ -44,16 +45,13 @@ class Db
      *
      * @param string $query
      * @param array  $bindings
-     * @return array|null
+     * @return array
      */
     public static function selectOne($query, array $bindings = [])
     {
         $result = self::connection()->selectOne($query, $bindings);
 
-        if (empty($result)) {
-            return null;
-        }
-
+        // @TODO: remove typecast
         return (array)$result;
     }
 

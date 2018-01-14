@@ -472,7 +472,7 @@ function User_view_worklog($worklog, $admin_user_worklog_privilege) {
             )
         ]);
     }
-    
+
     return [
         'date'       => glyph('calendar') . date('Y-m-d', $worklog['work_timestamp']),
         'duration'   => '<b>' . sprintf('%.2f', $worklog['work_hours']) . '</b>',
@@ -480,8 +480,8 @@ function User_view_worklog($worklog, $admin_user_worklog_privilege) {
         'shift_info' => _('Work log entry'),
         'comment'    => $worklog['comment'] . '<br>'
                         . sprintf(
-                            _('Added by %s at %s'), 
-                            User_Nick_render(User($worklog['created_user_id'])), 
+                            _('Added by %s at %s'),
+                            User_Nick_render(User($worklog['created_user_id'])),
                             date('Y-m-d H:i', $worklog['created_timestamp'])
                         ),
         'actions'    => $actions
@@ -748,7 +748,7 @@ function User_angeltypes_render($user_angeltypes)
     $output = [];
     foreach ($user_angeltypes as $angeltype) {
         $class = 'text-success';
-        if ($angeltype['restricted'] == 1 && $angeltype['confirm_user_id'] == null) {
+        if ($angeltype['restricted'] == 1 && empty($angeltype['confirm_user_id'])) {
             $class = 'text-warning';
         }
         $output[] = '<a href="' . angeltype_link($angeltype['id']) . '" class="' . $class . '">'
@@ -821,7 +821,7 @@ function render_user_departure_date_hint()
 {
     global $user;
 
-    if (!isset($user['planned_departure_date']) || $user['planned_departure_date'] == null) {
+    if (!isset($user['planned_departure_date']) || empty($user['planned_departure_date'])) {
         $text = _('Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities.');
         return render_profile_link($text, null, 'alert-link');
     }
@@ -857,7 +857,7 @@ function render_user_arrived_hint()
 
     if ($user['Gekommen'] == 0) {
         $event_config = EventConfig();
-        if (!is_null($event_config)
+        if (!empty($event_config)
             && !is_null($event_config['buildup_start_date'])
             && time() > $event_config['buildup_start_date']) {
             return _('You are not marked as arrived. Please go to heaven\'s desk, get your angel badge and/or tell them that you arrived already.');

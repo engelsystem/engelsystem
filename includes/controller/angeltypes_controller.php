@@ -154,7 +154,7 @@ function angeltype_edit_controller()
         $angeltype['contact_email'] = strip_request_item('contact_email', $angeltype['contact_email']);
 
         if ($valid) {
-            if ($angeltype['id'] != null) {
+            if (!empty($angeltype['id'])) {
                 AngelType_update($angeltype);
             } else {
                 $angeltype = AngelType_create($angeltype);
@@ -308,7 +308,7 @@ function angeltypes_list_controller()
         }
 
         $angeltype['membership'] = AngelType_render_membership($angeltype);
-        if ($angeltype['user_angeltype_id'] != null) {
+        if (!empty($angeltype['user_angeltype_id'])) {
             $actions[] = button(
                 page_link_to('user_angeltypes',
                     ['action' => 'delete', 'user_angeltype_id' => $angeltype['user_angeltype_id']]
@@ -355,7 +355,7 @@ function load_angeltype()
     }
 
     $angeltype = AngelType($request->input('angeltype_id'));
-    if ($angeltype == null) {
+    if (empty($angeltype)) {
         error(_('Angeltype doesn\'t exist . '));
         redirect(page_link_to('angeltypes'));
     }

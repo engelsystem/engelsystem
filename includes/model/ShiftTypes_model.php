@@ -66,7 +66,7 @@ function ShiftType_create($name, $angeltype_id, $description)
  * Get a shift type by id.
  *
  * @param int $shifttype_id
- * @return array|null
+ * @return array
  */
 function ShiftType($shifttype_id)
 {

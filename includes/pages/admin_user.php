@@ -34,7 +34,7 @@ function admin_user()
     $user_id = $request->input('id');
     if (!$request->has('action')) {
         $user_source = User($user_id);
-        if ($user_source == null) {
+        if (empty($user_source)) {
             error(_('This user does not exist.'));
             redirect(users_link());
         }

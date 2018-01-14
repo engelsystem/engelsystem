@@ -16,7 +16,7 @@ function Message_ids()
  * Returns message by id.
  *
  * @param int $message_id message ID
- * @return array|null
+ * @return array
  */
 function Message($message_id)
 {

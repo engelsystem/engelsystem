@@ -129,7 +129,7 @@ class ShiftCalendarRenderer
      */
     public function getBlocksPerSlot()
     {
-        if ($this->blocksPerSlot == null) {
+        if (is_null($this->blocksPerSlot)) {
             $this->blocksPerSlot = $this->calcBlocksPerSlot();
         }
         return $this->blocksPerSlot;

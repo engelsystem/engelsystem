@@ -5,7 +5,7 @@ use Engelsystem\Database\DB;
 /**
  * Get event config.
  *
- * @return array|null
+ * @return array
  */
 function EventConfig()
 {
@@ -31,7 +31,8 @@ function EventConfig_update(
     $teardown_end_date,
     $event_welcome_msg
 ) {
-    if (EventConfig() == null) {
+    $eventConfig = EventConfig();
+    if (empty($eventConfig)) {
         return DB::insert('
               INSERT INTO `EventConfig` (
                   `event_name`,

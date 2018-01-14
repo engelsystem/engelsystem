@@ -36,7 +36,7 @@ class UserHintsRenderer
      */
     public function addHint($hint, $important = false)
     {
-        if ($hint != null && $hint != '') {
+        if (!empty($hint)) {
             if ($important) {
                 $this->important = true;
                 $this->hints[] = error($hint, true);

@@ -14,7 +14,7 @@ function user_driver_license_required_hint()
     $user_driver_license = UserDriverLicense($user['UID']);
 
     // User has already entered data, no hint needed.
-    if ($user_driver_license != null) {
+    if (!empty($user_driver_license)) {
         return null;
     }
 
@@ -60,7 +60,7 @@ function user_driver_licenses_controller()
  */
 function user_driver_license_edit_link($user = null)
 {
-    if ($user == null) {
+    if (empty($user)) {
         return page_link_to('user_driver_licenses');
     }
     return page_link_to('user_driver_licenses', ['user_id' => $user['UID']]);
@@ -79,7 +79,7 @@ function user_driver_license_load_user()
 
     if ($request->has('user_id')) {
         $user_source = User($request->input('user_id'));
-        if ($user_source == null) {
+        if (empty($user_source)) {
             redirect(user_driver_license_edit_link());
         }
     }
@@ -104,7 +104,7 @@ function user_driver_license_edit_controller()
     }
 
     $user_driver_license = UserDriverLicense($user_source['UID']);
-    if ($user_driver_license == null) {
+    if (empty($user_driver_license)) {
         $wants_to_drive = false;
         $user_driver_license = UserDriverLicense_new();
     } else {
@@ -122,7 +122,7 @@ function user_driver_license_edit_controller()
             $user_driver_license['has_license_forklift'] = $request->has('has_license_forklift');
 
             if (UserDriverLicense_valid($user_driver_license)) {
-                if ($user_driver_license['user_id'] == null) {
+                if (empty($user_driver_license['user_id'])) {
                     $user_driver_license = UserDriverLicenses_create($user_driver_license, $user_source);
                 } else {
                     UserDriverLicenses_update($user_driver_license);
@@ -133,7 +133,7 @@ function user_driver_license_edit_controller()
             } else {
                 error(_('Please select at least one driving license.'));
             }
-        } elseif ($user_driver_license['user_id'] != null) {
+        } elseif (!empty($user_driver_license['user_id'])) {
             UserDriverLicenses_delete($user_source['UID']);
             engelsystem_log('Driver license information removed.');
             success(_('Your driver license information has been removed.'));

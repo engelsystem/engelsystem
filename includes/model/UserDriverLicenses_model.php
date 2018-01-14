@@ -41,7 +41,7 @@ function UserDriverLicense_valid($user_driver_license)
  * Get a users driver license information
  *
  * @param int $user_id The users id
- * @return array|null
+ * @return array
  */
 function UserDriverLicense($user_id)
 {
