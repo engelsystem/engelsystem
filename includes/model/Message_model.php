@@ -16,11 +16,13 @@ function Message_ids()
  * Returns message by id.
  *
  * @param int $message_id message ID
- * @return array
+ * @return array|null
  */
 function Message($message_id)
 {
-    return DB::selectOne('SELECT * FROM `Messages` WHERE `id`=? LIMIT 1', [$message_id]);
+    $message = DB::selectOne('SELECT * FROM `Messages` WHERE `id`=? LIMIT 1', [$message_id]);
+
+    return empty($message) ? null : $message;
 }
 
 /**

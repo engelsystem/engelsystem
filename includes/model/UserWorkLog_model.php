@@ -6,13 +6,15 @@ use Engelsystem\Database\Db;
  * Load a single work log entry.
  *
  * @param int $user_worklog_id
- * @return array
+ * @return array|null
  */
 function UserWorkLog($user_worklog_id)
 {
-    return Db::selectOne("SELECT * FROM `UserWorkLog` WHERE `id`=?", [
+    $workLog = Db::selectOne("SELECT * FROM `UserWorkLog` WHERE `id`=?", [
         $user_worklog_id
     ]);
+
+    return empty($workLog) ? null : $workLog;
 }
 
 /**

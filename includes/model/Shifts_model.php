@@ -552,7 +552,7 @@ function Shift_update($shift)
  * Update a shift by its external id.
  *
  * @param array $shift
- * @return bool|null
+ * @return int
  * @throws Exception
  */
 function Shift_update_by_psid($shift)

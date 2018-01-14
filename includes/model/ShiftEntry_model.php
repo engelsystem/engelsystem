@@ -134,11 +134,13 @@ function ShiftEntry_update($shift_entry)
  * Get a shift entry.
  *
  * @param int $shift_entry_id
- * @return array
+ * @return array|null
  */
 function ShiftEntry($shift_entry_id)
 {
-    return DB::selectOne('SELECT * FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
+    $shiftEntry = DB::selectOne('SELECT * FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
+
+    return empty($shiftEntry) ? null : $shiftEntry;
 }
 
 /**

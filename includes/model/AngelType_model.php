@@ -225,12 +225,14 @@ function AngelType_ids()
  * Returns angelType by id.
  *
  * @param int $angeltype_id angelType ID
- * @return array
+ * @return array|null
  */
 function AngelType($angeltype_id)
 {
-    return DB::selectOne(
+    $angelType = DB::selectOne(
         'SELECT * FROM `AngelTypes` WHERE `id`=?',
         [$angeltype_id]
     );
+
+    return empty($angelType) ? null : $angelType;
 }

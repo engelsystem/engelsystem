@@ -41,14 +41,16 @@ function UserDriverLicense_valid($user_driver_license)
  * Get a users driver license information
  *
  * @param int $user_id The users id
- * @return array
+ * @return array|null
  */
 function UserDriverLicense($user_id)
 {
-    return DB::selectOne('
+    $driverLicense = DB::selectOne('
         SELECT *
         FROM `UserDriverLicenses`
         WHERE `user_id`=?', [$user_id]);
+
+    return empty($driverLicense) ? null : $driverLicense;
 }
 
 /**

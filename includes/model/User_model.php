@@ -406,44 +406,52 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
  * Returns user by id.
  *
  * @param int $user_id UID
- * @return array
+ * @return array|null
  */
 function User($user_id)
 {
-    return DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
+    $user = DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
+
+    return empty($user) ? null : $user;
 }
 
 /**
  * Returns User by api_key.
  *
  * @param string $api_key User api key
- * @return array Matching user, empty if not found
+ * @return array|null Matching user, null if not found
  */
 function User_by_api_key($api_key)
 {
-    return DB::selectOne('SELECT * FROM `User` WHERE `api_key`=? LIMIT 1', [$api_key]);
+    $user = DB::selectOne('SELECT * FROM `User` WHERE `api_key`=? LIMIT 1', [$api_key]);
+
+    return empty($user) ? null : $user;
 }
 
 /**
  * Returns User by email.
  *
  * @param string $email
- * @return array Matching user, empty on error
+ * @return array|null Matching user, null when not found
  */
 function User_by_email($email)
 {
-    return DB::selectOne('SELECT * FROM `User` WHERE `email`=? LIMIT 1', [$email]);
+    $user = DB::selectOne('SELECT * FROM `User` WHERE `email`=? LIMIT 1', [$email]);
+
+    return empty($user) ? null : $user;
 }
 
 /**
  * Returns User by password token.
  *
  * @param string $token
- * @return array Matching user, empty when not found
+ * @return array|null Matching user, null when not found
  */
 function User_by_password_recovery_token($token)
 {
-    return DB::selectOne('SELECT * FROM `User` WHERE `password_recovery_token`=? LIMIT 1', [$token]);
+    $user = DB::selectOne('SELECT * FROM `User` WHERE `password_recovery_token`=? LIMIT 1', [$token]);
+
+    return empty($user) ? null : $user;
 }
 
 /**

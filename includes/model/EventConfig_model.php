@@ -5,11 +5,13 @@ use Engelsystem\Database\DB;
 /**
  * Get event config.
  *
- * @return array
+ * @return array|null
  */
 function EventConfig()
 {
-    return DB::selectOne('SELECT * FROM `EventConfig` LIMIT 1');
+    $config = DB::selectOne('SELECT * FROM `EventConfig` LIMIT 1');
+
+    return empty($config) ? null : $config;
 }
 
 /**
