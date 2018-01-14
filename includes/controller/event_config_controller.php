@@ -28,7 +28,7 @@ function event_config_edit_controller()
     $teardown_end_date = null;
 
     $event_config = EventConfig();
-    if (empty($event_config)) {
+    if (!empty($event_config)) {
         $event_name = $event_config['event_name'];
         $buildup_start_date = $event_config['buildup_start_date'];
         $event_start_date = $event_config['event_start_date'];
