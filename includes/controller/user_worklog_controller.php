@@ -2,6 +2,8 @@
 
 /**
  * Delete a work log entry.
+ *
+ * @return array
  */
 function user_worklog_delete_controller()
 {
@@ -29,6 +31,8 @@ function user_worklog_delete_controller()
 
 /**
  * Edit work log for user.
+ *
+ * @return array
  */
 function user_worklog_edit_controller()
 {
@@ -59,9 +63,10 @@ function user_worklog_edit_controller()
 }
 
 /**
+ * Handle form
  *
- * @param UserWorkLog $userWorkLog
- * @return [bool $valid, UserWorkLog $userWorkLog]
+ * @param array $userWorkLog
+ * @return array [bool $valid, UserWorkLog $userWorkLog]
  */
 function user_worklog_from_request($userWorkLog)
 {
@@ -69,14 +74,17 @@ function user_worklog_from_request($userWorkLog)
 
     $valid = true;
 
-    $userWorkLog['work_timestamp'] = parse_date('Y-m-d H:i', $request->input('work_timestamp') . ' 00:00');
+    $userWorkLog['work_timestamp'] = parse_date(
+        'Y-m-d H:i',
+        $request->input('work_timestamp') . ' 00:00'
+    );
     if (is_null($userWorkLog['work_timestamp'])) {
         $valid = false;
         error(_('Please enter work date.'));
     }
 
     $userWorkLog['work_hours'] = $request->input('work_hours');
-    if (! preg_match("/[0-9]+(\.[0-9]+)?/", $userWorkLog['work_hours'])) {
+    if (!preg_match("/[0-9]+(\.[0-9]+)?/", $userWorkLog['work_hours'])) {
         $valid = false;
         error(_('Please enter work hours in format ##[.##].'));
     }
@@ -95,6 +103,8 @@ function user_worklog_from_request($userWorkLog)
 
 /**
  * Add work log entry to user.
+ *
+ * @return array
  */
 function user_worklog_add_controller()
 {
@@ -128,12 +138,14 @@ function user_worklog_add_controller()
 /**
  * Link to work log entry add for given user.
  *
- * @param User $user
+ * @param array $user
+ *
+ * @return string
  */
 function user_worklog_add_link($user)
 {
     return page_link_to('user_worklog', [
-        'action' => 'add',
+        'action'  => 'add',
         'user_id' => $user['UID']
     ]);
 }
@@ -141,12 +153,13 @@ function user_worklog_add_link($user)
 /**
  * Link to work log entry edit.
  *
- * @param UserWorkLog $userWorkLog
+ * @param array $userWorkLog
+ * @return string
  */
 function user_worklog_edit_link($userWorkLog)
 {
     return page_link_to('user_worklog', [
-        'action' => 'edit',
+        'action'          => 'edit',
         'user_worklog_id' => $userWorkLog['id']
     ]);
 }
@@ -154,31 +167,34 @@ function user_worklog_edit_link($userWorkLog)
 /**
  * Link to work log entry delete.
  *
- * @param UserWorkLog $userWorkLog
+ * @param array   $userWorkLog
  * @param array[] $parameters
+ * @return string
  */
 function user_worklog_delete_link($userWorkLog, $parameters = [])
 {
     return page_link_to('user_worklog', array_merge([
-        'action' => 'delete',
+        'action'          => 'delete',
         'user_worklog_id' => $userWorkLog['id']
     ], $parameters));
 }
 
 /**
  * Work log entry actions
+ *
+ * @return array
  */
-function user_worklogs_controller()
+function user_worklog_controller()
 {
     global $user, $privileges;
 
-    if (! in_array('admin_user_worklog', $privileges)) {
+    if (!in_array('admin_user_worklog', $privileges)) {
         redirect(user_link($user));
     }
 
     $request = request();
     $action = $request->input('action');
-    if (! $request->has('action')) {
+    if (!$request->has('action')) {
         redirect(user_link($user));
     }
 

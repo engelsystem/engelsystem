@@ -20,12 +20,14 @@ function User_delete($user_id)
 /**
  * Returns the tshirt score (number of hours counted for tshirt).
  * Accounts only ended shifts.
- * 
+ *
  * @param array[] $user
+ * @return int
  */
-function User_tshirt_score($user) {
+function User_tshirt_score($user)
+{
     $shift_sum_formula = config('shift_sum_formula');
-    
+
     $result_shifts = DB::selectOne('
         SELECT ROUND((' . $shift_sum_formula . ') / 3600, 2) AS `tshirt_score`
         FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
@@ -33,7 +35,7 @@ function User_tshirt_score($user) {
         WHERE `User`.`UID` = ?
         AND `Shifts`.`end` < ?
         GROUP BY `User`.`UID`
-    ',[
+    ', [
         $user['UID'],
         time()
     ]);
@@ -43,11 +45,11 @@ function User_tshirt_score($user) {
         LEFT JOIN `UserWorkLog` ON `User`.`UID` = `UserWorkLog`.`user_id`
         WHERE `User`.`UID` = ?
         AND `UserWorkLog`.`work_timestamp` < ?
-    ',[
+    ', [
         $user['UID'],
         time()
     ]);
-    
+
     return $result_shifts['tshirt_score'] + $result_worklog['tshirt_score'];
 }
 
@@ -385,7 +387,7 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
         return new ValidationResult(false, $planned_arrival_date);
     }
     $event_config = EventConfig();
-    if (empty($event_config )) {
+    if (empty($event_config)) {
         // Nothing to validate against
         return new ValidationResult(true, $planned_departure_date);
     }

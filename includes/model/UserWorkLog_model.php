@@ -1,10 +1,12 @@
 <?php
+
 use Engelsystem\Database\Db;
 
 /**
  * Load a single work log entry.
- * 
- * @param int $user_worklog_id            
+ *
+ * @param int $user_worklog_id
+ * @return array
  */
 function UserWorkLog($user_worklog_id)
 {
@@ -15,8 +17,9 @@ function UserWorkLog($user_worklog_id)
 
 /**
  * Returns all work log entries for a user.
- * 
- * @param User $user            
+ *
+ * @param array $user
+ * @return array[]
  */
 function UserWorkLogsForUser($user)
 {
@@ -27,8 +30,9 @@ function UserWorkLogsForUser($user)
 
 /**
  * Delete a work log entry.
- * 
- * @param UserWorkLog $userWorkLog            
+ *
+ * @param $userWorkLog
+ * @return int
  */
 function UserWorkLog_delete($userWorkLog)
 {
@@ -36,21 +40,27 @@ function UserWorkLog_delete($userWorkLog)
     $result = Db::delete("DELETE FROM `UserWorkLog` WHERE `id`=?", [
         $userWorkLog['id']
     ]);
-    
-    engelsystem_log(sprintf('Delete work log for %s, %s hours, %s', User_Nick_render($user_source), $userWorkLog['work_hours'], $userWorkLog['comment']));
-    
+
+    engelsystem_log(sprintf(
+        'Delete work log for %s, %s hours, %s',
+        User_Nick_render($user_source),
+        $userWorkLog['work_hours'],
+        $userWorkLog['comment']
+    ));
+
     return $result;
 }
 
 /**
  * Update work log entry (only work hours and comment)
- * 
- * @param UserWorkLog $userWorkLog            
+ *
+ * @param $userWorkLog
+ * @return int
  */
 function UserWorkLog_update($userWorkLog)
 {
     $user_source = User($userWorkLog['user_id']);
-    
+
     $result = Db::update("UPDATE `UserWorkLog` SET
         `work_timestamp`=?,
         `work_hours`=?,
@@ -61,23 +71,29 @@ function UserWorkLog_update($userWorkLog)
         $userWorkLog['comment'],
         $userWorkLog['id']
     ]);
-    
-    engelsystem_log(sprintf('Updated work log for %s, %s hours, %s', User_Nick_render($user_source), $userWorkLog['work_hours'], $userWorkLog['comment']));
-    
+
+    engelsystem_log(sprintf(
+            'Updated work log for %s, %s hours, %s',
+            User_Nick_render($user_source),
+            $userWorkLog['work_hours'],
+            $userWorkLog['comment'])
+    );
+
     return $result;
 }
 
 /**
  * Create a new work log entry
- * 
- * @param UserWorkLog $userWorkLog            
+ *
+ * @param $userWorkLog
+ * @return bool
  */
 function UserWorkLog_create($userWorkLog)
 {
     global $user;
-    
+
     $user_source = User($userWorkLog['user_id']);
-    
+
     $result = Db::insert("INSERT INTO `UserWorkLog` (
             `user_id`,
             `work_timestamp`,
@@ -94,30 +110,30 @@ function UserWorkLog_create($userWorkLog)
         $user['UID'],
         time()
     ]);
-    
-    engelsystem_log(sprintf('Added work log entry for %s, %s hours, %s', User_Nick_render($user_source), $userWorkLog['work_hours'], $userWorkLog['comment']));
-    
+
+    engelsystem_log(sprintf('Added work log entry for %s, %s hours, %s', User_Nick_render($user_source),
+        $userWorkLog['work_hours'], $userWorkLog['comment']));
+
     return $result;
 }
 
 /**
  * New user work log entry
  *
- * @param array[] $user            
+ * @param array[] $user
+ * @return array
  */
 function UserWorkLog_new($user)
 {
     $work_date = parse_date('Y-m-d H:i', date('Y-m-d 00:00', time()));
     $event_config = EventConfig();
-    if (! empty($event_config['buildup_start_date'])) {
+    if (!empty($event_config['buildup_start_date'])) {
         $work_date = parse_date('Y-m-d H:i', date('Y-m-d 00:00', $event_config['buildup_start_date']));
     }
     return [
-        'user_id' => $user['UID'],
+        'user_id'        => $user['UID'],
         'work_timestamp' => $work_date,
-        'work_hours' => 0,
-        'comment' => ''
+        'work_hours'     => 0,
+        'comment'        => ''
     ];
 }
-
-?>
