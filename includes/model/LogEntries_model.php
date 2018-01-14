@@ -58,5 +58,5 @@ function LogEntries_filter($keyword)
  */
 function LogEntries_clear_all()
 {
-    return DB::statement('TRUNCATE `LogEntries`');
+    return DB::connection()->statement('TRUNCATE `LogEntries`');
 }

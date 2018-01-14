@@ -21,7 +21,7 @@ function EventConfig()
  * @param int    $event_end_date
  * @param int    $teardown_end_date
  * @param string $event_welcome_msg
- * @return int Rows updated
+ * @return bool
  */
 function EventConfig_update(
     $event_name,
@@ -54,7 +54,7 @@ function EventConfig_update(
         );
     }
 
-    return DB::update('
+    return (bool)DB::update('
           UPDATE `EventConfig` SET
           `event_name` = ?,
           `buildup_start_date` = ?,
