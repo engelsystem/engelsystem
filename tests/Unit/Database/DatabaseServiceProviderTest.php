@@ -24,10 +24,10 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
 
         $this->setExpects($app, 'get', ['config'], $config);
         $this->setExpects($config, 'get', ['database'], [
-            'host' => 'localhost',
-            'db'   => 'database',
-            'user' => 'user',
-            'pw'   => 'password',
+            'host'     => 'localhost',
+            'database' => 'database',
+            'username' => 'user',
+            'password' => 'password',
         ], $this->atLeastOnce());
         $this->expectException(Exception::class);
 

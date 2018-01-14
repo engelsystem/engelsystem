@@ -2,14 +2,14 @@
 
 namespace Engelsystem\Database;
 
+use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use PDO;
-use PDOException;
 use PDOStatement;
 
 class Db
 {
-    /** @var PDO */
-    protected static $db;
+    /** @var CapsuleManager */
+    protected static $dbManager;
 
     /** @var PDOStatement */
     protected static $stm = null;
@@ -18,23 +18,13 @@ class Db
     protected static $lastStatus = true;
 
     /**
-     * Connect to database
+     * Set the database connection manager
      *
-     * @param string $dsn
-     * @param string $username
-     * @param string $password
-     * @param array  $options
-     * @return bool
+     * @param CapsuleManager $dbManager
      */
-    public static function connect($dsn, $username = null, $password = null, $options = [])
+    public static function setDbManager($dbManager)
     {
-        try {
-            self::$db = new PDO($dsn, $username, $password, $options);
-        } catch (PDOException $e) {
-            return false;
-        }
-
-        return true;
+        self::$dbManager = $dbManager;
     }
 
     /**
@@ -46,7 +36,7 @@ class Db
      */
     public static function query($query, array $bindings = [])
     {
-        self::$stm = self::$db->prepare($query);
+        self::$stm = self::getPdo()->prepare($query);
         self::$lastStatus = self::$stm->execute($bindings);
 
         return self::$stm;
@@ -60,7 +50,7 @@ class Db
      */
     public static function unprepared($query)
     {
-        self::$stm = self::$db->query($query);
+        self::$stm = self::getPdo()->query($query);
         self::$lastStatus = (self::$stm instanceof PDOStatement);
 
         return self::$lastStatus;
@@ -175,7 +165,7 @@ class Db
      */
     public static function getPdo()
     {
-        return self::$db;
+        return self::$dbManager->getConnection()->getPdo();
     }
 
     /**

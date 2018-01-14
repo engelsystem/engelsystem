@@ -5,10 +5,10 @@
 return [
     // MySQL-Connection Settings
     'database'                => [
-        'host' => env('MYSQL_HOST', (env('CI', false) ? 'mariadb' : 'localhost')),
-        'user' => env('MYSQL_USER', 'root'),
-        'pw'   => env('MYSQL_PASSWORD', ''),
-        'db'   => env('MYSQL_DATABASE', 'engelsystem'),
+        'host'     => env('MYSQL_HOST', (env('CI', false) ? 'mariadb' : 'localhost')),
+        'database' => env('MYSQL_DATABASE', 'engelsystem'),
+        'username' => env('MYSQL_USER', 'root'),
+        'password' => env('MYSQL_PASSWORD', ''),
     ],
 
     // For accessing stats

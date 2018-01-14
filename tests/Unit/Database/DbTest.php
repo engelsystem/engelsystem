@@ -3,24 +3,46 @@
 namespace Engelsystem\Test\Unit\Database;
 
 use Engelsystem\Database\Db;
+use Illuminate\Database\Capsule\Manager as CapsuleManager;
+use Illuminate\Database\Connection as DatabaseConnection;
 use PDO;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use ReflectionObject;
 use Throwable;
 
 class DbTest extends TestCase
 {
     /**
-     * @covers \Engelsystem\Database\Db::connect()
+     * @covers \Engelsystem\Database\Db::setDbManager()
      */
-    public function testConnect()
+    public function testSetDbManager()
     {
-        $result = Db::connect('mysql:host=localhost;dbname=someTestDatabaseThatDoesNotExist;charset=utf8');
-        $this->assertFalse($result);
+        /** @var MockObject|Pdo $pdo */
+        $pdo = $this->getMockBuilder(Pdo::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        /** @var MockObject|CapsuleManager $dbManager */
+        $dbManager = $this->getMockBuilder(CapsuleManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        /** @var MockObject|DatabaseConnection $dbManager */
+        $databaseConnection = $this->getMockBuilder(DatabaseConnection::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $result = Db::connect('sqlite::memory:');
-        $this->assertTrue($result);
+        $dbManager
+            ->expects($this->atLeastOnce())
+            ->method('getConnection')
+            ->willReturn($databaseConnection);
+        $databaseConnection
+            ->expects($this->atLeastOnce())
+            ->method('getPdo')
+            ->willReturn($pdo);
+
+        Db::setDbManager($dbManager);
+        $this->assertEquals($pdo, Db::getPdo());
     }
 
     /**
@@ -167,7 +189,12 @@ class DbTest extends TestCase
      */
     protected function setUp()
     {
-        Db::connect('sqlite::memory:');
+        $dbManager = new CapsuleManager();
+        $dbManager->addConnection(['driver' => 'sqlite', 'database' => ':memory:']);
+        $dbManager->setAsGlobal();
+        $dbManager->bootEloquent();
+
+        Db::setDbManager($dbManager);
         Db::getPdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         Db::query(
             '
