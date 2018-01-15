@@ -5,7 +5,7 @@ namespace Engelsystem\Database;
 use Engelsystem\Container\ServiceProvider;
 use Exception;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
-use Illuminate\Events\Dispatcher as EventsDispatcher;
+use PDOException;
 
 class DatabaseServiceProvider extends ServiceProvider
 {
@@ -31,7 +31,7 @@ class DatabaseServiceProvider extends ServiceProvider
 
         try {
             $capsule->getConnection()->getPdo();
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $this->exitOnError();
         }
 
