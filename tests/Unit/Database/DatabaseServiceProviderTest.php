@@ -74,6 +74,7 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
         $this->setExpects($dbManager, 'setAsGlobal');
         $this->setExpects($dbManager, 'bootEloquent');
 
+        $this->setExpects($connection, 'useDefaultSchemaGrammar');
         $connection->expects($this->once())
             ->method('getPdo')
             ->willReturnCallback(function () use ($getPdoThrowException) {

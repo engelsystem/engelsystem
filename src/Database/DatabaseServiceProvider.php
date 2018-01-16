@@ -28,6 +28,7 @@ class DatabaseServiceProvider extends ServiceProvider
 
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
+        $capsule->getConnection()->useDefaultSchemaGrammar();
 
         try {
             $capsule->getConnection()->getPdo();
