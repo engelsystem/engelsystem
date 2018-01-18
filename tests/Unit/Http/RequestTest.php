@@ -5,9 +5,19 @@ namespace Engelsystem\Test\Unit\Http;
 use Engelsystem\Http\Request;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class RequestTest extends TestCase
 {
+    /**
+     * @covers \Engelsystem\Http\Request
+     */
+    public function testCreate()
+    {
+        $response = new Request();
+        $this->assertInstanceOf(SymfonyRequest::class, $response);
+    }
+
     /**
      * @covers \Engelsystem\Http\Request::postData
      */
