@@ -3,18 +3,13 @@
 namespace Engelsystem\Test\Feature\Logger;
 
 use Engelsystem\Logger\EngelsystemLogger;
-use PHPUnit\Framework\TestCase;
+use Engelsystem\Test\Feature\ApplicationFeatureTest;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-class EngelsystemLoggerTest extends TestCase
+class EngelsystemLoggerTest extends ApplicationFeatureTest
 {
-    public static function setUpBeforeClass()
-    {
-        require_once __DIR__ . '/../../../includes/engelsystem.php';
-    }
-
     /**
      * @return LoggerInterface
      */

@@ -2,16 +2,11 @@
 
 namespace Engelsystem\Test\Feature\Model;
 
-use PHPUnit\Framework\TestCase;
+use Engelsystem\Test\Feature\ApplicationFeatureTest;
 use Psr\Log\LogLevel;
 
-class LogEntriesModelTest extends TestCase
+class LogEntriesModelTest extends ApplicationFeatureTest
 {
-    public static function setUpBeforeClass()
-    {
-        require_once __DIR__ . '/../../../includes/engelsystem.php';
-    }
-
     public function testCreateLogEntry()
     {
         LogEntries_clear_all();
