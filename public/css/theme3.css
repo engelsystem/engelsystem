@@ -6827,6 +6827,9 @@ body {
 .panel-danger .panel-heading a {
   color: #da1639;
 }
+.selection .checkbox {
+  display: block;
+}
 .shift-calendar {
   display: flex;
   flex-direction: row;

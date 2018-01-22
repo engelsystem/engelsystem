@@ -332,7 +332,7 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
             . (in_array($i['id'], $selected) ? ' checked="checked"' : '')
             . ' > ' . $i['name'] . '</label>'
             . (!isset($i['enabled']) || $i['enabled'] ? '' : glyph('lock'))
-            . '</div><br />';
+            . '</div>';
     }
     $html .= '<div id="selection_' . $name . '" class="selection ' . $name . '">' . "\n";
     $html .= implode("\n", $htmlItems);
