@@ -27,14 +27,15 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
     composer dump-autoload --optimize
     ```
     to install the engelsystem
- * The webserver must have write access to the 'import' directory and read access for all other directories
- * The webserver must point to the public directory.
+ * The webserver must have write access to the ```import``` directory and read access for all other directories
+ * The webserver must point to the ```public``` directory.
+ * The webserver must read the ```.htaccess``` file and ```mod_rewrite``` must be enabled
 
  * Recommended: Directory Listing should be disabled.
  * There must a be MySQL database created with a user who has full rights to that database.
- * It must be created by the db/install.sql and db/update.sql files.
- * If necessary, create a config/config.php to override values from config/config.default.php.
- * In the browser, login with credentials admin:asdfasdf and change the password.
+ * It must be created by the ```db/install.sql``` and ```db/update.sql``` files.
+ * If necessary, create a ```config/config.php``` to override values from ```config/config.default.php```.
+ * In the browser, login with credentials ```admin```:```asdfasdf``` and change the password.
 
 Engelsystem can now be used.
 
