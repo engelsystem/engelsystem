@@ -346,32 +346,6 @@ function shift_next_controller()
 }
 
 /**
- * Export all shifts using api-key.
- */
-function shifts_json_export_all_controller()
-{
-    $api_key = config('api_key');
-    $request = request();
-
-    if (empty($api_key)) {
-        engelsystem_error('Config contains empty apikey.');
-    }
-
-    if (!$request->has('api_key')) {
-        engelsystem_error('Missing parameter api_key.');
-    }
-
-    if ($request->input('api_key') != $api_key) {
-        engelsystem_error('Invalid api_key.');
-    }
-
-    $shifts_source = Shifts();
-
-    header('Content-Type: application/json; charset=utf-8');
-    raw_output(json_encode($shifts_source));
-}
-
-/**
  * Export filtered shifts via JSON.
  * (Like iCal Export or shifts view)
  */
