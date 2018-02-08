@@ -60,13 +60,22 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2">%room_select%</div>
-        <div class="col-md-2">%type_select%</div>
-        <div class="col-md-2">%filled_select%</div>
+        <div class="col-md-6">
+            <button class="btn btn-info btn-sm" style="margin-top: 20px; margin-bottom:10px" type="button" data-toggle="collapse" 
+              data-target="#collapseRoomSelect" aria-expanded="false"
+              aria-controls="collapseRoomSelect">
+                collapse/show filters
+            </button>
+            <div class="collapse in row" id="collapseRoomSelect">
+                <div class="col-xs-4 col-xxs-12">%room_select%</div>
+                <div class="col-xs-4 col-xxs-12">%type_select%</div>
+                <div class="col-xs-4 col-xxs-12">%filled_select%</div>
+                <div class="col-sm-12"><p>%task_notice%</p></div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div><p>%task_notice%</p></div>
             <input class="btn btn-primary" type="submit" style="width:75%; margin-bottom: 20px" value="%filter%">
         </div>
     </div>

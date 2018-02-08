@@ -2696,8 +2696,8 @@ msgstr "Nächste Schicht %c"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:302
 #, php-format
-msgid "Shift starts %c"
-msgstr "Schicht startet %c"
+msgid "Shift started %c"
+msgstr "Schicht startete %c"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:307
 #, php-format
