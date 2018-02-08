@@ -10,22 +10,10 @@ import 'imports-loader?this=>window&define=>false&exports=>false!moment/locale/d
 import './forms';
 import './sticky-headers';
 import 'icomoon/style.css';
+import './moment-countdown';
 
 $(function () {
     moment.locale("%locale%");
 });
 
-$(document).ready(function () {
-    if (typeof moment !== "undefined") {
-        $.each($(".moment-countdown"), function (i, e) {
-            var span = $(e);
-            var text = span.html();
-            /* global moment */
-            var timestamp = moment(parseInt(span.attr("data-timestamp") * 1000));
-            span.html(text.replace("%c", timestamp.fromNow()));
-            setInterval(function () {
-                span.html(text.replace("%c", timestamp.fromNow()));
-            }, 1000);
-        });
-    }
-});
+
