@@ -1,0 +1,37 @@
+version: "3.3"
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-proxy
+    ports:
+      - 5000:80
+    volumes:
+      - static:/var/www/html
+  engelsystem:
+    build: ./
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: engelsystem
+      MYSQL_PASSWORD: engelsystem
+      MYSQL_DATABASE: engelsystem
+    volumes:
+      - static:/var/www/html
+  db:
+    image: mariadb:latest
+    environment:
+      MYSQL_DATABASE: engelsystem
+      MYSQL_USER: engelsystem
+      MYSQL_PASSWORD: engelsystem
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+    volumes:
+      - db:/var/lib/mysql
+  # used for initial database stuff
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
+volumes:
+  db: {}  
+  static: {}
