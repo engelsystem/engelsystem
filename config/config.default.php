@@ -15,7 +15,7 @@ return [
     'api_key'                 => '',
 
     // Enable maintenance mode (show a static page)
-    'maintenance'             => false,
+    'maintenance'             => env('MAINTENANCE', false),
 
     // Set to development to enable debugging messages
     'environment'             => 'production',
@@ -24,10 +24,10 @@ return [
     'faq_url'                 => 'https://events.ccc.de/congress/2013/wiki/Static:Volunteers',
 
     // Contact email address, linked on every page
-    'contact_email'           => 'mailto:ticket@c3heaven.de',
+    'contact_email'           => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
 
     // From address of all emails
-    'no_reply_email'          => 'noreply@engelsystem.de',
+    'no_reply_email'          => env('NO_REPLY_EMAIL', 'noreply@engelsystem.de'),
 
     // Default theme, 1=style1.css
     'theme'                   => 1,
@@ -50,7 +50,7 @@ return [
     'display_news'            => 6,
 
     // Users are able to sign up
-    'registration_enabled'    => true,
+    'registration_enabled'    => env('REGISTRATION_ENABLED', 1),
 
     // Only arrived angels can sign up for shifts
     'signup_requires_arrival' => false,
