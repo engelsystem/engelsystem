@@ -17,7 +17,6 @@ $free_pages = [
     'shift_entries',
     'shifts',
     'shifts_json_export',
-    'shifts_json_export_all',
     'stats',
     'users',
     'user_driver_licenses',
@@ -66,10 +65,6 @@ if (
         case 'shifts_json_export':
             require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
             shifts_json_export_controller();
-            break;
-        case 'shifts_json_export_all':
-            require_once realpath(__DIR__ . '/../includes/controller/shifts_controller.php');
-            shifts_json_export_all_controller();
             break;
         case 'stats':
             require_once realpath(__DIR__ . '/../includes/pages/guest_stats.php');
