@@ -7,7 +7,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Container\Container;
 use Engelsystem\Http\Request;
 use Engelsystem\Renderer\Renderer;
-use Engelsystem\Routing\UrlGenerator;
+use Engelsystem\Routing\UrlGeneratorInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -171,8 +171,7 @@ class HelpersTest extends TestCase
      */
     public function testUrl()
     {
-        $urlGeneratorMock = $this->getMockBuilder(UrlGenerator::class)
-            ->getMock();
+        $urlGeneratorMock = $this->getMockForAbstractClass(UrlGeneratorInterface::class);
 
         $this->getAppMock('routing.urlGenerator', $urlGeneratorMock);
         $this->assertEquals($urlGeneratorMock, url());
