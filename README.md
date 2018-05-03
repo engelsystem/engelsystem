@@ -18,7 +18,7 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
 
 ### Directions:
  * Clone the master branch: `git clone https://github.com/engelsystem/engelsystem.git`
- * Install [Composer](https://getcomposer.org/download/)
+ * Install [Composer](https://getcomposer.org/download/) and [Yarn](https://yarnpkg.com/en/docs/install)
  * Install project dependencies:
      ```bash
      composer install
@@ -28,14 +28,13 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
     ```bash
     composer install --no-dev
     composer dump-autoload --optimize
-    
     ```
     to install the engelsystem
  * Build the frontend assets
     ```bash
     yarn build
     ```
-    
+
  * The webserver must have write access to the ```import``` directory and read access for all other directories
  * The webserver must point to the ```public``` directory.
  * The webserver must read the ```.htaccess``` file and ```mod_rewrite``` must be enabled
