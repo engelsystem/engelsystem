@@ -17,24 +17,10 @@ const plugins = [
   new ExtractTextPlugin('[name].css'),
 ];
 
-// if (!__DEV__) {
-//   plugins.push(
-//     new webpack.optimize.UglifyJsPlugin({
-//       compress: {
-//         warnings: false,
-//       },
-//       output: {
-//         comments: false,
-//       },
-//       screwIe8: true,
-//       sourceMap: false,
-//     })
-//   );
-// }
 
 const themeEntries = {};
 for (let i = 0; i < 7; i++) {
-  themeEntries[`theme${i}`] = `./themes/theme${i}.less`;
+  themeEntries[`theme${i}`] = `./frontend/themes/theme${i}.less`;
 }
 
 module.exports = {
@@ -44,7 +30,7 @@ module.exports = {
   },
   entry: {
     ...themeEntries,
-      vendor: './js/vendor.js',
+      vendor: './frontend/js/vendor.js',
   },
   output: {
     path: path.resolve('public/assets'),

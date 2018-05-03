@@ -1,3 +1,8 @@
+/*
+ * Initialize all moment countdowns on the page. A moment countdown has the
+ * class "moment-countdown" and the attribute "data-timestamp" which defines the
+ * countdown's time goal.
+ */
 $(document).ready(function () {
     if (typeof moment !== "undefined") {
         $.each($(".moment-countdown"), function (i, e) {

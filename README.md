@@ -13,6 +13,8 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
  * PHP >= 7.0.0
  * MySQL-Server >= 5.5 or MariaDB-Server >= 5.5 
  * Webserver, i.e. lighttpd, nginx, or Apache
+ * Node >= 8 (Development/Building only)
+ * Yarn (Development/Building only)
 
 ### Directions:
  * Clone the master branch: `git clone https://github.com/engelsystem/engelsystem.git`
@@ -20,13 +22,20 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
  * Install project dependencies:
      ```bash
      composer install
+     yarn
      ```
     On production systems it is recommended to use
     ```bash
     composer install --no-dev
     composer dump-autoload --optimize
+    
     ```
     to install the engelsystem
+ * Build the frontend assets
+    ```bash
+    yarn build
+    ```
+    
  * The webserver must have write access to the ```import``` directory and read access for all other directories
  * The webserver must point to the ```public``` directory.
  * The webserver must read the ```.htaccess``` file and ```mod_rewrite``` must be enabled

@@ -9,7 +9,6 @@ import 'imports-loader?this=>window&define=>false&exports=>false!moment';
 import 'imports-loader?this=>window&define=>false&exports=>false!moment/locale/de';
 import './forms';
 import './sticky-headers';
-import 'icomoon/style.css';
 import './moment-countdown';
 
 $(function () {
