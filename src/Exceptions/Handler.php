@@ -64,7 +64,7 @@ class Handler
         $handler = $this->handler[$this->environment];
         $handler->report($e);
         $handler->render($this->request, $e);
-        $this->stirb();
+        $this->terminate_application_immediately();
     }
 
     /**
@@ -73,7 +73,7 @@ class Handler
      * @codeCoverageIgnore
      * @param string $message
      */
-    protected function stirb($message = '')
+    protected function terminate_application_immediately($message = '')
     {
         echo $message;
         die();
