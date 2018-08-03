@@ -27,5 +27,7 @@ _vimrc_local.vim
 /vendor/
 /composer.lock
 
-node_modules
-public/assets
+# Frontend files
+/node_modules
+/public/assets
+/package-lock.json
