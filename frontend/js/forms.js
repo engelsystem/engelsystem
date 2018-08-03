@@ -4,7 +4,7 @@
  * @param {string} id Id of the element containing all the checkboxes
  * @param {bool} checked True if the checkboxes should be checked
  */
-function checkAll(id, checked) {
+global.checkAll = (id, checked) => {
     $("#" + id + " input[type='checkbox']").each(function () {
         this.checked = checked;
     });
@@ -16,7 +16,7 @@ function checkAll(id, checked) {
  * @param {string} id The elements ID
  * @param {list} shifts_list A list of numbers
  */
-function checkOwnTypes(id, shifts_list) {
+global.checkOwnTypes = (id, shifts_list) => {
     $("#" + id + " input[type='checkbox']").each(function () {
         this.checked = $.inArray(parseInt(this.value), shifts_list) != -1;
     });
@@ -25,14 +25,14 @@ function checkOwnTypes(id, shifts_list) {
 /**
  * @param {moment} date
  */
-function formatDay(date) {
+global.formatDay = (date) => {
     return date.format("YYYY-MM-DD");
 }
 
 /**
  * @param {moment} date
  */
-function formatTime(date) {
+global.formatTime = (date) => {
     return date.format("HH:mm");
 }
 
@@ -40,7 +40,7 @@ function formatTime(date) {
  * @param {moment} from
  * @param {moment} to
  */
-function setInput(from, to) {
+global.setInput = (from, to) => {
     var fromDay = $("#start_day"), fromTime = $("#start_time"), toDay = $("#end_day"), toTime = $("#end_time");
 
     fromDay.val(formatDay(from));
@@ -50,7 +50,7 @@ function setInput(from, to) {
     toTime.val(formatTime(to));
 }
 
-function setDay(days) {
+global.setDay = (days) => {
     days = days || 0;
 
     var from = moment();
@@ -64,7 +64,7 @@ function setDay(days) {
     setInput(from, to);
 }
 
-function setHours(hours) {
+global.setHours = (hours) => {
     hours = hours || 1;
 
     var from = moment();
