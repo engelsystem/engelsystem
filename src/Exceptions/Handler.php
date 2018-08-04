@@ -76,7 +76,7 @@ class Handler
     protected function terminateApplicationImmediately($message = '')
     {
         echo $message;
-        die();
+        die(1);
     }
 
     /**
