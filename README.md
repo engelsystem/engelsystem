@@ -10,7 +10,7 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
 ## Installation
 
 ### Requirements:
- * PHP >= 7.0.0
+ * PHP >= 7.0
  * MySQL-Server >= 5.5 or MariaDB-Server >= 5.5 
  * Webserver, i.e. lighttpd, nginx, or Apache
 
