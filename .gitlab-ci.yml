@@ -51,7 +51,7 @@ before_script:
 .test_template: &test_definition
   stage: test
   artifacts:
-    name: "${CI_JOB_NAME}_${CI_PROJECT_ID}"
+    name: "${CI_JOB_NAME}_${CI_JOB_ID}"
     expire_in: 1 week
     paths:
       - ./coverage/
@@ -90,6 +90,17 @@ test:7.1:
     apt update && apt install -yqq rsync openssh-client
     composer --no-ansi install --no-dev
     composer --no-ansi dump-autoload --optimize
+
+build_release_file:
+  <<: *deploy_definition
+  artifacts:
+    name: "release_${CI_COMMIT_REF_SLUG}_${CI_JOB_ID}_${CI_COMMIT_SHA}"
+    expire_in: 1 week
+    paths:
+      - ./release/
+  script:
+    - *deployment_dependencies
+    - rsync -vAax --exclude '.git*' --exclude .composer/ --exclude coverage/ --exclude node_modules/ --exclude release/ ./ release/
 
 deploy_staging:
   <<: *deploy_definition

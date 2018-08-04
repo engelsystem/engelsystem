@@ -50,7 +50,7 @@ fi
 
 echo "syncing ${PWD}/ to ${remote_host}:${remote_path}/${deploy_id}/"
 
-rsync -vAax --exclude '.git*' --exclude .composer/ --exclude node_modules/ \
+rsync -vAax --exclude '.git*' --exclude .composer/ --exclude coverage/ --exclude node_modules/ \
     -e "ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
     ./ "${remote_host}:${remote_path}/${deploy_id}/"
 
