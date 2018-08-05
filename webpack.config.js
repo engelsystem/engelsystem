@@ -35,7 +35,7 @@ module.exports = {
   output: {
     path: path.resolve('public/assets'),
     filename: '[name].js',
-    publicPath: '/assets/',
+    publicPath: '',
   },
   module: {
     rules: [
