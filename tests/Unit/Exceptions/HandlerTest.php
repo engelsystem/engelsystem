@@ -61,10 +61,10 @@ class HandlerTest extends TestCase
 
         /** @var Handler|Mock $handler */
         $handler = $this->getMockBuilder(Handler::class)
-            ->setMethods(['die'])
+            ->setMethods(['terminateApplicationImmediately'])
             ->getMock();
         $handler->expects($this->once())
-            ->method('die');
+            ->method('terminateApplicationImmediately');
 
         $handler->setHandler(Handler::ENV_PRODUCTION, $handlerMock);
 
