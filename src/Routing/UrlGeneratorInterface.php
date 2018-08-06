@@ -12,5 +12,5 @@ interface UrlGeneratorInterface
      * @param array  $parameters
      * @return string
      */
-    public function link_to($path, $parameters = []);
+    public function linkTo($path, $parameters = []);
 }

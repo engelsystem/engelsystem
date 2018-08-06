@@ -48,7 +48,7 @@ class LegacyUrlGeneratorTest extends TestCase
         $urlGenerator = new LegacyUrlGenerator();
         $this->assertInstanceOf(UrlGeneratorInterface::class, $urlGenerator);
 
-        $url = $urlGenerator->link_to($urlToPath, $arguments);
+        $url = $urlGenerator->linkTo($urlToPath, $arguments);
         $this->assertEquals($expectedUrl, $url);
     }
 }

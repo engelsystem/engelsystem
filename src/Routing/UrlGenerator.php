@@ -14,7 +14,7 @@ class UrlGenerator implements UrlGeneratorInterface
      * @param array  $parameters
      * @return string url in the form [app url]/[path]?[parameters]
      */
-    public function link_to($path, $parameters = [])
+    public function linkTo($path, $parameters = [])
     {
         $path = '/' . ltrim($path, '/');
         $request = app('request');

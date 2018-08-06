@@ -33,7 +33,7 @@ function User_tshirt_score($user) {
         WHERE `User`.`UID` = ?
         AND `Shifts`.`end` < ?
         GROUP BY `User`.`UID`
-    ',[
+    ', [
         $user['UID'],
         time()
     ]);
