@@ -14,13 +14,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  * @param string $id
  * @return mixed
  */
-function app($id = null)
+function app($instance_id = null)
 {
-    if (is_null($id)) {
+    if (is_null($instance_id)) {
         return Application::getInstance();
     }
 
-    return Application::getInstance()->get($id);
+    return Application::getInstance()->get($instance_id);
 }
 
 /**

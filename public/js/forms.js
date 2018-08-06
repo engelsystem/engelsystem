@@ -16,9 +16,9 @@ function checkAll(id, checked) {
  * @param {string} id The elements ID
  * @param {list} shifts_list A list of numbers
  */
-function checkOwnTypes(id, shifts_list) {
+function checkOwnTypes(id, shiftsList) {
     $("#" + id + " input[type='checkbox']").each(function () {
-        this.checked = $.inArray(parseInt(this.value), shifts_list) != -1;
+        this.checked = $.inArray(parseInt(this.value), shiftsList) != -1;
     });
 }
 
