@@ -22,7 +22,7 @@ class UrlGeneratorTest extends TestCase
 
     /**
      * @dataProvider provideLinksTo
-     * @covers       \Engelsystem\Routing\UrlGenerator::to
+     * @covers       \Engelsystem\Routing\UrlGenerator::linkTo
      *
      * @param string   $path
      * @param string   $willReturn
@@ -30,7 +30,7 @@ class UrlGeneratorTest extends TestCase
      * @param string[] $arguments
      * @param string   $expectedUrl
      */
-    public function testTo($urlToPath, $path, $willReturn, $arguments, $expectedUrl)
+    public function testLinkTo($urlToPath, $path, $willReturn, $arguments, $expectedUrl)
     {
         $app = new Container();
         Application::setInstance($app);

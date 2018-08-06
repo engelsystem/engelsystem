@@ -23,14 +23,14 @@ class LegacyUrlGeneratorTest extends TestCase
 
     /**
      * @dataProvider provideLinksTo
-     * @covers       \Engelsystem\Routing\LegacyUrlGenerator::to
+     * @covers       \Engelsystem\Routing\LegacyUrlGenerator::linkTo
      *
      * @param string   $urlToPath
      * @param string   $willReturn
      * @param string[] $arguments
      * @param string   $expectedUrl
      */
-    public function testTo($urlToPath, $willReturn, $arguments, $expectedUrl)
+    public function testLinkTo($urlToPath, $willReturn, $arguments, $expectedUrl)
     {
         $app = new Container();
         Application::setInstance($app);
