@@ -2,6 +2,9 @@
 
 namespace Engelsystem\Routing;
 
+/**
+ * To switch between different URL schemes.
+ */
 interface UrlGeneratorInterface
 {
     /**
@@ -9,5 +12,5 @@ interface UrlGeneratorInterface
      * @param array  $parameters
      * @return string
      */
-    public function to($path, $parameters = []);
+    public function link_to($path, $parameters = []);
 }

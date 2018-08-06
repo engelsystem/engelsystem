@@ -177,7 +177,7 @@ class HelpersTest extends TestCase
         $this->assertEquals($urlGeneratorMock, url());
 
         $urlGeneratorMock->expects($this->once())
-            ->method('to')
+            ->method('link_to')
             ->with('foo/bar', ['param' => 'value'])
             ->willReturn('http://lorem.ipsum/foo/bar?param=value');
 

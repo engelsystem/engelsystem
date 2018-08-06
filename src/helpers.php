@@ -124,7 +124,7 @@ function url($path = null, $parameters = [])
         return $urlGenerator;
     }
 
-    return $urlGenerator->to($path, $parameters);
+    return $urlGenerator->link_to($path, $parameters);
 }
 
 /**

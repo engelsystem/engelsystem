@@ -48,7 +48,7 @@ class UrlGeneratorTest extends TestCase
         $urlGenerator = new UrlGenerator();
         $this->assertInstanceOf(UrlGeneratorInterface::class, $urlGenerator);
 
-        $url = $urlGenerator->to($urlToPath, $arguments);
+        $url = $urlGenerator->link_to($urlToPath, $arguments);
         $this->assertEquals($expectedUrl, $url);
     }
 }
