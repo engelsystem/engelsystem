@@ -2,7 +2,7 @@
 
 namespace Engelsystem\Routing;
 
-class UrlGenerator
+class UrlGenerator implements UrlGeneratorInterface
 {
     /**
      * @param string $path

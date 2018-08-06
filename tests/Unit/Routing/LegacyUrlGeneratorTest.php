@@ -5,32 +5,32 @@ namespace Engelsystem\Test\Unit\Routing;
 use Engelsystem\Application;
 use Engelsystem\Container\Container;
 use Engelsystem\Http\Request;
-use Engelsystem\Routing\UrlGenerator;
+use Engelsystem\Routing\LegacyUrlGenerator;
 use Engelsystem\Routing\UrlGeneratorInterface;
 use PHPUnit\Framework\TestCase;
 
-class UrlGeneratorTest extends TestCase
+class LegacyUrlGeneratorTest extends TestCase
 {
     public function provideLinksTo()
     {
         return [
-            ['/foo/path', '/foo/path', 'http://foo.bar/foo/path', [], 'http://foo.bar/foo/path'],
-            ['foo', '/foo', 'https://foo.bar/foo', [], 'https://foo.bar/foo'],
-            ['foo', '/foo', 'http://f.b/foo', ['test' => 'abc', 'bla' => 'foo'], 'http://f.b/foo?test=abc&bla=foo'],
+            ['/', 'http://foo.bar/index.php', [], 'http://foo.bar/index.php'],
+            ['/foo-path', 'http://foo.bar/index.php/index.php', [], 'http://foo.bar/index.php?p=foo_path'],
+            ['/foo', 'http://foo.bar/index.php/index.php',  [], 'http://foo.bar/index.php?p=foo'],
+            ['foo', 'http://foo.bar/index.php', ['test' => 'abc'], 'http://foo.bar/index.php?p=foo&test=abc'],
         ];
     }
 
     /**
      * @dataProvider provideLinksTo
-     * @covers       \Engelsystem\Routing\UrlGenerator::to
+     * @covers       \Engelsystem\Routing\LegacyUrlGenerator::to
      *
-     * @param string   $path
-     * @param string   $willReturn
      * @param string   $urlToPath
+     * @param string   $willReturn
      * @param string[] $arguments
      * @param string   $expectedUrl
      */
-    public function testTo($urlToPath, $path, $willReturn, $arguments, $expectedUrl)
+    public function testTo($urlToPath, $willReturn, $arguments, $expectedUrl)
     {
         $app = new Container();
         Application::setInstance($app);
@@ -40,12 +40,12 @@ class UrlGeneratorTest extends TestCase
 
         $request->expects($this->once())
             ->method('getUriForPath')
-            ->with($path)
+            ->with('/index.php')
             ->willReturn($willReturn);
 
         $app->instance('request', $request);
 
-        $urlGenerator = new UrlGenerator();
+        $urlGenerator = new LegacyUrlGenerator();
         $this->assertInstanceOf(UrlGeneratorInterface::class, $urlGenerator);
 
         $url = $urlGenerator->to($urlToPath, $arguments);

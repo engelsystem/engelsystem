@@ -5,7 +5,7 @@ use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
 use Engelsystem\Renderer\Renderer;
-use Engelsystem\Routing\UrlGenerator;
+use Engelsystem\Routing\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -114,7 +114,7 @@ function session($key = null, $default = null)
 /**
  * @param string $path
  * @param array  $parameters
- * @return UrlGenerator|string
+ * @return UrlGeneratorInterface|string
  */
 function url($path = null, $parameters = [])
 {

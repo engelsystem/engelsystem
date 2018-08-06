@@ -43,6 +43,9 @@ return [
         '1' => 'Engelsystem dark'
     ],
 
+    // Rewrite URLs with mod_rewrite
+    'rewrite_urls'            => true,
+
     // Number of News shown on one site
     'display_news'            => 6,
 
