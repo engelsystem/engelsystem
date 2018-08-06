@@ -89,8 +89,8 @@ function header_toolbar()
     if (in_array('user_myshifts', $privileges)) {
         $toolbar_items[] = toolbar_item_link(
             page_link_to('users', ['action' => 'view']),
-            ' icon-icon_angel',
-            $user['Nick'],
+            '',
+            '<span class="icon-icon_angel"></span> ' . $user['Nick'],
             $page == 'users'
         );
     }
