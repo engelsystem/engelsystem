@@ -48,7 +48,7 @@ class ShiftsFilter
      * @param int[] $rooms
      * @param int[] $types
      */
-    public function __construct($user_shifts_admin, $rooms, $types)
+    public function __construct($user_shifts_admin = false, $rooms = [], $types = [])
     {
         $this->rooms = $rooms;
         $this->types = $types;
@@ -60,6 +60,34 @@ class ShiftsFilter
         if ($user_shifts_admin) {
             $this->filled[] = ShiftsFilter::FILLED_FILLED;
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function sessionExport()
+    {
+        return [
+            'userShiftsAdmin' => $this->userShiftsAdmin,
+            'filled'          => $this->filled,
+            'rooms'           => $this->rooms,
+            'types'           => $this->types,
+            'startTime'       => $this->startTime,
+            'endTime'         => $this->endTime,
+        ];
+    }
+
+    /**
+     * @param array $data
+     */
+    public function sessionImport($data)
+    {
+        $this->userShiftsAdmin = $data['userShiftsAdmin'];
+        $this->filled = $data['filled'];
+        $this->rooms = $data['rooms'];
+        $this->types = $data['types'];
+        $this->startTime = $data['startTime'];
+        $this->endTime = $data['endTime'];
     }
 
     /**
