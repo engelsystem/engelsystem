@@ -177,18 +177,19 @@ function view_user_shifts()
     $rooms = load_rooms();
     $types = load_types();
 
-    if (!$session->has('ShiftsFilter')) {
+    if (!$session->has('shifts-filter')) {
         $room_ids = [
             $rooms[0]['id']
         ];
         $type_ids = array_map('get_ids_from_array', $types);
         $shiftsFilter = new ShiftsFilter(in_array('user_shifts_admin', $privileges), $room_ids, $type_ids);
-        $session->set('ShiftsFilter', $shiftsFilter);
+        $session->set('shifts-filter', $shiftsFilter->sessionExport());
     }
 
-    /** @var ShiftsFilter $shiftsFilter */
-    $shiftsFilter = $session->get('ShiftsFilter');
+    $shiftsFilter = new ShiftsFilter();
+    $shiftsFilter->sessionImport($session->get('shifts-filter'));
     update_ShiftsFilter($shiftsFilter, in_array('user_shifts_admin', $privileges), $days);
+    $session->set('shifts-filter', $shiftsFilter->sessionExport());
 
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
 
