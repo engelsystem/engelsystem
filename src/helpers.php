@@ -6,13 +6,15 @@ use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Routing\UrlGenerator;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Zend\Diactoros\Stream;
 
 /**
  * Get the global app instance
  *
  * @param string $id
- * @return mixed
+ * @return mixed|Application
  */
 function app($id = null)
 {
@@ -78,6 +80,32 @@ function request($key = null, $default = null)
     }
 
     return $request->input($key, $default);
+}
+
+/**
+ * @param string $content
+ * @param int    $status
+ * @param array  $headers
+ * @return ResponseInterface
+ */
+function response($content = '', $status = 200, $headers = [])
+{
+    /** @var ResponseInterface $response */
+    $response = app('psr7.response');
+
+    /** @var Stream $stream */
+    $stream = app()->make(Stream::class, ['stream' => 'php://memory', 'mode' => 'wb+']);
+    $stream->write($content);
+    $stream->rewind();
+
+    $response = $response
+        ->withBody($stream)
+        ->withStatus($status);
+    foreach ($headers as $key => $value) {
+        $response = $response->withAddedHeader($key, $value);
+    }
+
+    return $response;
 }
 
 /**
