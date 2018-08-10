@@ -3,24 +3,33 @@
 namespace Engelsystem\Config;
 
 use Engelsystem\Container\ServiceProvider;
+use Exception;
 
 class ConfigServiceProvider extends ServiceProvider
 {
+    /** @var array */
+    protected $configFiles = ['config.default.php', 'config.php'];
+
     public function register()
     {
-        $defaultConfigFile = config_path('config.default.php');
-        $configFile = config_path('config.php');
-
         $config = $this->app->make(Config::class);
         $this->app->instance('config', $config);
 
-        $config->set(require $defaultConfigFile);
+        foreach ($this->configFiles as $file) {
+            $file = config_path($file);
 
-        if (file_exists($configFile)) {
+            if (!file_exists($file)) {
+                continue;
+            }
+
             $config->set(array_replace_recursive(
                 $config->get(null),
-                require $configFile
+                require $file
             ));
+        }
+
+        if (empty($config->get(null))) {
+            throw new Exception('Configuration not found');
         }
     }
 }
