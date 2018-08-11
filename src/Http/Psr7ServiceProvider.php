@@ -24,8 +24,7 @@ class Psr7ServiceProvider extends ServiceProvider
 
         /** @var Response $response */
         $response = $this->app->get('response');
-        $psr7response = $psr7Factory->createResponse($response);
-        $this->app->instance('psr7.response', $psr7response);
+        $this->app->instance('psr7.response', $response);
         $this->app->bind(ResponseInterface::class, 'psr7.response');
     }
 }
