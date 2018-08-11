@@ -247,6 +247,6 @@ echo view(__DIR__ . '/../templates/layout.html', [
     'header_toolbar' => header_toolbar(),
     'faq_url'        => config('faq_url'),
     'contact_email'  => config('contact_email'),
-    'locale'         => locale(),
+    'locale'         => locale_short(),
     'event_info'     => EventConfig_info($event_config) . ' <br />'
 ]);

@@ -12,5 +12,5 @@ require('./sticky-headers');
 require('./moment-countdown');
 
 $(function () {
-    moment.locale("%locale%");
+    moment.locale($('html').attr('lang'));
 });
