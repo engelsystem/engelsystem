@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Middleware;
 
+use Engelsystem\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -22,12 +23,20 @@ class NotFoundResponse implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
+        $info = _('This page could not be found or you don\'t have permission to view it. You probably have to sign in or register in order to gain access!');
+
+        return $this->renderPage($info);
+    }
+
+    /**
+     * @param string $content
+     * @return Response
+     * @codeCoverageIgnore
+     */
+    protected function renderPage($content)
+    {
         global $user;
         $event_config = EventConfig();
-        $content = info(
-            _('This page could not be found or you don\'t have permission to view it. You probably have to sign in or register in order to gain access!'),
-            true
-        );
 
         return response(view(__DIR__ . '/../../templates/layout.html', [
             'theme'          => isset($user) ? $user['color'] : config('theme'),
@@ -36,7 +45,7 @@ class NotFoundResponse implements MiddlewareInterface
             'start_page_url' => page_link_to('/'),
             'credits_url'    => page_link_to('credits'),
             'menu'           => make_menu(),
-            'content'        => msg() . $content,
+            'content'        => msg() . info($content),
             'header_toolbar' => header_toolbar(),
             'faq_url'        => config('faq_url'),
             'contact_email'  => config('contact_email'),

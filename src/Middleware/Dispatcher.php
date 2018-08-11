@@ -12,7 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
 {
-    /** @var MiddlewareInterface[] */
+    /** @var MiddlewareInterface[]|string[] */
     protected $stack;
 
     /** @var Application */
@@ -22,8 +22,8 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
     protected $next;
 
     /**
-     * @param MiddlewareInterface[] $stack
-     * @param Application|null      $container
+     * @param MiddlewareInterface[]|string[] $stack
+     * @param Application|null               $container
      */
     public function __construct($stack = [], Application $container = null)
     {

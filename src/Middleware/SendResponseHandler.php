@@ -24,8 +24,8 @@ class SendResponseHandler implements MiddlewareInterface
     ): ResponseInterface {
         $response = $handler->handle($request);
 
-        if (!headers_sent()) {
-            header(sprintf(
+        if (!$this->headersSent()) {
+            $this->sendHeader(sprintf(
                 'HTTP/%s %s %s',
                 $response->getProtocolVersion(),
                 $response->getStatusCode(),
@@ -34,12 +34,36 @@ class SendResponseHandler implements MiddlewareInterface
 
             foreach ($response->getHeaders() as $name => $values) {
                 foreach ($values as $value) {
-                    header($name . ': ' . $value, false);
+                    $this->sendHeader($name . ': ' . $value, false);
                 }
             }
         }
 
         echo $response->getBody();
         return $response;
+    }
+
+    /**
+     * Checks if headers have been sent
+     *
+     * @return bool
+     * @codeCoverageIgnore
+     */
+    protected function headersSent()
+    {
+        return headers_sent();
+    }
+
+    /**
+     * Send a raw HTTP header
+     *
+     * @param string $content
+     * @param bool   $replace
+     * @param int    $code
+     * @codeCoverageIgnore
+     */
+    protected function sendHeader($content, $replace = true, $code = null)
+    {
+        header($content, $replace, $code);
     }
 }
