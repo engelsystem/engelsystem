@@ -9,6 +9,7 @@ use Engelsystem\Container\ServiceProvider;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use ReflectionClass;
 
 class ApplicationTest extends TestCase
@@ -118,6 +119,7 @@ class ApplicationTest extends TestCase
     /**
      * @covers \Engelsystem\Application::bootstrap
      * @covers \Engelsystem\Application::isBooted
+     * @covers \Engelsystem\Application::getMiddleware
      */
     public function testBootstrap()
     {
@@ -137,10 +139,11 @@ class ApplicationTest extends TestCase
         $config = $this->getMockBuilder(Config::class)
             ->getMock();
 
-        $config->expects($this->once())
+        $middleware = [MiddlewareInterface::class];
+        $config->expects($this->exactly(2))
             ->method('get')
-            ->with('providers')
-            ->willReturn([$serviceProvider]);
+            ->withConsecutive(['providers'], ['middleware'])
+            ->willReturnOnConsecutiveCalls([$serviceProvider], $middleware);
 
         $property = (new ReflectionClass($app))->getProperty('serviceProviders');
         $property->setAccessible(true);
@@ -149,6 +152,7 @@ class ApplicationTest extends TestCase
         $app->bootstrap($config);
 
         $this->assertTrue($app->isBooted());
+        $this->assertEquals($middleware, $app->getMiddleware());
 
         // Run bootstrap another time to ensure that providers are registered only once
         $app->bootstrap($config);
