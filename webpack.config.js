@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeEnv = (process.env.NODE_ENV || 'development').trim();
 
 // eslint-disable-next-line
