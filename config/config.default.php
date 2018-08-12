@@ -15,13 +15,13 @@ return [
     'api_key'                 => '',
 
     // Enable maintenance mode (show a static page)
-    'maintenance'             => env('MAINTENANCE', false),
+    'maintenance'             => (bool)env('MAINTENANCE', false),
 
     // Set to development to enable debugging messages
-    'environment'             => 'production',
+    'environment'             => env('ENVIRONMENT', 'production'),
 
     // URL to the angel faq and job description
-    'faq_url'                 => 'https://events.ccc.de/congress/2013/wiki/Static:Volunteers',
+    'faq_url'                 => env('FAQ_URL', 'https://events.ccc.de/congress/2013/wiki/Static:Volunteers'),
 
     // Contact email address, linked on every page
     'contact_email'           => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
@@ -30,7 +30,7 @@ return [
     'no_reply_email'          => env('NO_REPLY_EMAIL', 'noreply@engelsystem.de'),
 
     // Default theme, 1=style1.css
-    'theme'                   => 1,
+    'theme'                   => env('THEME', 1),
 
     // Available themes
     'available_themes'        => [
@@ -50,7 +50,7 @@ return [
     'display_news'            => 6,
 
     // Users are able to sign up
-    'registration_enabled'    => env('REGISTRATION_ENABLED', 1),
+    'registration_enabled'    => (bool)env('REGISTRATION_ENABLED', true),
 
     // Only arrived angels can sign up for shifts
     'signup_requires_arrival' => false,
@@ -77,7 +77,7 @@ return [
     'max_freeloadable_shifts' => 2,
 
     // local timezone
-    'timezone'                => 'Europe/Berlin',
+    'timezone'                => env('TIMEZONE', 'Europe/Berlin'),
 
     // weigh every shift the same
     //'shift_sum_formula'       => 'SUM(`end` - `start`)',
@@ -109,7 +109,7 @@ return [
         'en_US.UTF-8' => 'English',
     ],
 
-    'default_locale' => 'en_US.UTF-8',
+    'default_locale' => env('DEFAULT_LOCALE', 'en_US.UTF-8'),
 
     // Available T-Shirt sizes, set value to null if not available
     'tshirt_sizes'   => [
