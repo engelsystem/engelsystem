@@ -13,13 +13,16 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
  * PHP >= 7.0
  * MySQL-Server >= 5.5 or MariaDB-Server >= 5.5 
  * Webserver, i.e. lighttpd, nginx, or Apache
+ * Node >= 8 (Development/Building only)
+ * Yarn (Development/Building only)
 
 ### Directions:
  * Clone the master branch: `git clone https://github.com/engelsystem/engelsystem.git`
- * Install [Composer](https://getcomposer.org/download/)
+ * Install [Composer](https://getcomposer.org/download/) and [Yarn](https://yarnpkg.com/en/docs/install) (which requires [Node.js](https://nodejs.org/en/download/package-manager/))
  * Install project dependencies:
      ```bash
      composer install
+     yarn
      ```
     On production systems it is recommended to use
     ```bash
@@ -27,6 +30,11 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
     composer dump-autoload --optimize
     ```
     to install the engelsystem
+ * Build the frontend assets
+    ```bash
+    yarn build
+    ```
+
  * The webserver must have write access to the ```import``` directory and read access for all other directories
  * The webserver must point to the ```public``` directory.
  * The webserver must read the ```.htaccess``` file and ```mod_rewrite``` must be enabled
@@ -69,7 +77,7 @@ To use the deployment features the following secret variables need to be defined
 ```bash
 SSH_PRIVATE_KEY         # The ssh private key
 STAGING_REMOTE          # The staging server, e.g. user@remote.host
-STAGING_REMOTE_PATH     # The psth on the remote server, e.g. /var/www/engelsystem
+STAGING_REMOTE_PATH     # The path on the remote server, e.g. /var/www/engelsystem
 PRODUCTION_REMOTE       # Same as STAGING_REMOTE but for the production environment
 PRODUCTION_REMOTE_PATH  # Same as STAGING_REMOTE_PATH but for the production environment
 ```

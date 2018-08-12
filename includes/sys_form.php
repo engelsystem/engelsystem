@@ -38,12 +38,12 @@ function form_spinner($name, $label, $value)
         </div>
       </div>
       <script type="text/javascript">
-        $("#spinner-' . $name . '-down").click(function() {
-          var spinner = $("#spinner-' . $name . '");
+        $(\'#spinner-' . $name . '-down\').click(function() {
+          var spinner = $(\'#spinner-' . $name . '\');
           spinner.val(parseInt(spinner.val()) - 1);
         });
-        $("#spinner-' . $name . '-up").click(function() {
-          var spinner = $("#spinner-' . $name . '");
+        $(\'#spinner-' . $name . '-up\').click(function() {
+          var spinner = $(\'#spinner-' . $name . '\');
           spinner.val(parseInt(spinner.val()) + 1);
         });
       </script>
@@ -73,13 +73,13 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
     </div>
     <script type="text/javascript">
 			$(function(){
-        $("#' . $dom_id . '").datepicker({
-				  language: "' . locale_short() . '",
-          todayBtn: "linked",
-          format: "yyyy-mm-dd",
-          startDate: "' . $start_date . '",
-          endDate: "' . $end_date . '",
-          orientation: "bottom"
+        $(\'#' . $dom_id . '\').datepicker({
+				  language: \'' . locale_short() . '\',
+          todayBtn: \'linked\',
+          format: \'yyyy-mm-dd\',
+          startDate: \'' . $start_date . '\',
+          endDate: \'' . $end_date . '\',
+          orientation: \'bottom\'
 			  });
       });
     </script>

@@ -231,12 +231,12 @@ function toolbar_popover($glyphicon, $label, $content, $class = '')
         . ' <span class="caret"></span></a>
           <script type="text/javascript">
           $(function(){
-              $("#' . $dom_id . '").popover({
-                  trigger: "focus",
+              $(\'#' . $dom_id . '\').popover({
+                  trigger: \'focus\',
                   html: true,
-                  content: "' . addslashes(join('', $content)) . '",
-                  placement: "bottom",
-                  container: "#navbar-collapse-1"
+                  content: \'' . addslashes(join('', $content)) . '\',
+                  placement: \'bottom\',
+                  container: \'#navbar-collapse-1\'
               })
           });
           </script></li>';

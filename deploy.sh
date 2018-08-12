@@ -50,7 +50,7 @@ fi
 
 echo "syncing ${PWD}/ to ${remote_host}:${remote_path}/${deploy_id}/"
 
-rsync -vAax --exclude '.git*' --exclude .composer/ \
+rsync -vAax --exclude '.git*' --exclude .composer/ --exclude coverage/ --exclude node_modules/ \
     -e "ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
     ./ "${remote_host}:${remote_path}/${deploy_id}/"
 
@@ -63,7 +63,8 @@ ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "${remote_hos
     fi
 
     echo \"Changing symlink\"
-    unlink \"${remote_path}/current\" && ln -s \"${remote_path}/${deploy_id}\" \"${remote_path}/current\"
+    unlink_cmd=\$(command -v unlink || command -v rm)
+    \$unlink_cmd \"${remote_path}/current\" && ln -s \"${remote_path}/${deploy_id}\" \"${remote_path}/current\"
 
     if [[ -f \"${deploy_id}-config.php\" ]]; then
         echo \"Restoring config\"

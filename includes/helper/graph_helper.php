@@ -33,7 +33,7 @@ function bargraph($dom_id, $key, $row_names, $colors, $data)
     return '<canvas id="' . $dom_id . '" style="width: 100%; height: 300px;"></canvas>
       <script type="text/javascript">
       $(function(){
-        var ctx = $("#' . $dom_id . '").get(0).getContext("2d");
+        var ctx = $(\'#' . $dom_id . '\').get(0).getContext(\'2d\');
         var chart = new Chart(ctx).Bar(' . json_encode([
             'labels'   => $labels,
             'datasets' => $datasets

@@ -1,16 +1,16 @@
 @font-face {
-	font-family: 'icomoon';
-	src:url('fonts/icomoon.eot?-kja6ux');
-	src:url('fonts/icomoon.eot?#iefix-kja6ux') format('embedded-opentype'),
-		url('fonts/icomoon.woff?-kja6ux') format('woff'),
-		url('fonts/icomoon.ttf?-kja6ux') format('truetype'),
-		url('fonts/icomoon.svg?-kja6ux#icomoon') format('svg');
+	font-family: 'angelFont';
+	src:url('./angelFont.eot?-kja6ux');
+	src:url('./angelFont.eot?#iefix-kja6ux') format('embedded-opentype'),
+		url('./angelFont.woff?-kja6ux') format('woff'),
+		url('./angelFont.ttf?-kja6ux') format('truetype'),
+		url('./angelFont.svg?-kja6ux#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
-	font-family: 'icomoon';
+	font-family: 'angelFont';
 	speak: none;
 	font-style: normal;
 	font-weight: normal;

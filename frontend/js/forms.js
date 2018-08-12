@@ -2,10 +2,10 @@
  * Sets all checkboxes to the wanted state
  *
  * @param {string} id Id of the element containing all the checkboxes
- * @param {bool} checked True if the checkboxes should be checked
+ * @param {boolean} checked True if the checkboxes should be checked
  */
-function checkAll(id, checked) {
-    $("#" + id + " input[type='checkbox']").each(function () {
+global.checkAll = (id, checked) => {
+    $('#' + id + ' input[type="checkbox"]').each(function () {
         this.checked = checked;
     });
 }
@@ -16,8 +16,8 @@ function checkAll(id, checked) {
  * @param {string} id The elements ID
  * @param {list} shifts_list A list of numbers
  */
-function checkOwnTypes(id, shiftsList) {
-    $("#" + id + " input[type='checkbox']").each(function () {
+global.checkOwnTypes = (id, shiftsList) => {
+    $('#' + id + ' input[type="checkbox"]').each(function () {
         this.checked = $.inArray(parseInt(this.value), shiftsList) != -1;
     });
 }
@@ -25,23 +25,23 @@ function checkOwnTypes(id, shiftsList) {
 /**
  * @param {moment} date
  */
-function formatDay(date) {
-    return date.format("YYYY-MM-DD");
+global.formatDay = (date) => {
+    return date.format('YYYY-MM-DD');
 }
 
 /**
  * @param {moment} date
  */
-function formatTime(date) {
-    return date.format("HH:mm");
+global.formatTime = (date) => {
+    return date.format('HH:mm');
 }
 
 /**
  * @param {moment} from
  * @param {moment} to
  */
-function setInput(from, to) {
-    var fromDay = $("#start_day"), fromTime = $("#start_time"), toDay = $("#end_day"), toTime = $("#end_time");
+global.setInput = (from, to) => {
+    var fromDay = $('#start_day'), fromTime = $('#start_time'), toDay = $('#end_day'), toTime = $('#end_time');
 
     fromDay.val(formatDay(from));
     fromTime.val(formatTime(from));
@@ -50,13 +50,13 @@ function setInput(from, to) {
     toTime.val(formatTime(to));
 }
 
-function setDay(days) {
+global.setDay = (days) => {
     days = days || 0;
 
     var from = moment();
     from.hours(0).minutes(0).seconds(0);
 
-    from.add(days, "d");
+    from.add(days, 'd');
 
     var to = from.clone();
     to.hours(23).minutes(59);
@@ -64,13 +64,13 @@ function setDay(days) {
     setInput(from, to);
 }
 
-function setHours(hours) {
+global.setHours = (hours) => {
     hours = hours || 1;
 
     var from = moment();
     var to = from.clone();
 
-    to.add(hours, "h");
+    to.add(hours, 'h');
     if (to < from) {
         setInput(to, from);
         return;
@@ -83,12 +83,12 @@ $(function () {
     /**
      * Disable every submit button after clicking (to prevent double-clicking)
      */
-    $("form").submit(function (ev) {
-        $("input[type='submit']").prop("readonly", true).addClass("disabled");
+    $('form').submit(function (ev) {
+        $('input[type="submit"]').prop('readonly', true).addClass('disabled');
         return true;
     });
 
-    $(".dropdown-menu").css("max-height", function () {
-        return ($(window).height() - 50) + "px";
-    }).css("overflow-y", "scroll");
+    $('.dropdown-menu').css('max-height', function () {
+        return ($(window).height() - 50) + 'px';
+    }).css('overflow-y', 'scroll');
 });

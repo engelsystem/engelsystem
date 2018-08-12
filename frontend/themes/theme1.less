@@ -1,4 +1,4 @@
-@import "../vendor/twbs/bootstrap/less/variables";
+@import "../../node_modules/bootstrap/less/variables";
 
 /*
 The MIT License (MIT)
@@ -38,15 +38,12 @@ THE SOFTWARE.
 @gray-light:             #888;   // #999
 @gray-lighter:           #ADAFAE; // #eee
 
-@brand-primary:         rgb(164, 28, 49);
-@brand-success:         rgb(153, 204, 0);
-@brand-info:            rgb(0, 204, 255);
-@brand-warning:         rgb(255, 255, 51);
-@brand-danger:          rgb(255, 102, 0);
+@brand-primary:         #428bca;
+@brand-success:         #5cb85c;
+@brand-info:            #5bc0de;
+@brand-warning:         #f0ad4e;
+@brand-danger:          #d9534f;
 
-.label.label-warning, .progress-bar.progress-bar-warning {
-  color: #000;
-}
 
 //== Scaffolding
 //
@@ -99,8 +96,6 @@ THE SOFTWARE.
 //
 //## Specify custom location and filename of the included Glyphicons icon font. Useful for those including Bootstrap via Bower.
 
-//** Load fonts from this directory.
-@icon-font-path:          "../fonts/";
 //** File name for all font files.
 @icon-font-name:          "glyphicons-halflings-regular";
 //** Element ID within SVG icon file.
@@ -511,7 +506,7 @@ THE SOFTWARE.
 @state-info-bg:                  @brand-info;
 @state-info-border:              darken(@state-info-bg, 7%);
 
-@state-warning-text:             #000;
+@state-warning-text:             #fff;
 @state-warning-bg:               @brand-warning;
 @state-warning-border:           darken(@state-warning-bg, 3%);
 
@@ -674,7 +669,7 @@ THE SOFTWARE.
 //##
 
 //** Background color on `.list-group-item`
-@list-group-bg:                 darken(@gray-darker, 10%);
+@list-group-bg:                 @gray-darker;
 //** `.list-group-item` border color
 @list-group-border:             @gray-dark;
 //** List group border radius
@@ -707,7 +702,7 @@ THE SOFTWARE.
 //
 //##
 
-@panel-bg:                    darken(@gray-darker, 10%);
+@panel-bg:                    @gray-darker;
 @panel-body-padding:          15px;
 @panel-heading-padding:       10px 15px;
 @panel-footer-padding:        @panel-heading-padding;
@@ -718,7 +713,7 @@ THE SOFTWARE.
 
 @panel-default-text:          @text-color;
 @panel-default-border:        @panel-inner-border;
-@panel-default-heading-bg:    darken(@gray-darker, 5%);
+@panel-default-heading-bg:    lighten(@gray-darker, 10%);
 
 @panel-footer-bg:             @panel-default-heading-bg;
 
@@ -897,37 +892,27 @@ THE SOFTWARE.
 // Typography =================================================================
 
 .text-primary,
-.text-primary:hover,
-a.text-primary,
-a.text-primary:hover {
+.text-primary:hover {
   color: @brand-primary;
 }
 
 .text-success,
-.text-success:hover,
-a.text-success,
-a.text-success:hover {
+.text-success:hover {
   color: @brand-success;
 }
 
 .text-danger,
-.text-danger:hover,
-a.text-danger,
-a.text-danger:hover {
+.text-danger:hover {
   color: @brand-danger;
 }
 
 .text-warning,
-.text-warning:hover,
-a.text-warning,
-a.text-warning:hover {
+.text-warning:hover {
   color: @brand-warning;
 }
 
 .text-info,
-.text-info:hover,
-a.text-info,
-a.text-info:hover {
+.text-info:hover {
   color: @brand-info;
 }
 

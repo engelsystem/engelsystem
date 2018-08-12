@@ -2,7 +2,7 @@ image: php
 
 cache:
   paths:
-  - .composer
+    - .composer
 
 services:
   - mariadb:10.2
@@ -37,12 +37,21 @@ before_script:
   # Install Composer
   - &before_install_composer |-
     curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
-    /usr/local/bin/composer --no-ansi install
+    composer --no-ansi install
+  # Install Node.js and Yarn
+  - &before_install_yarn |-
+    apt -yqq install gnupg2 apt-transport-https
+    curl -sL https://deb.nodesource.com/setup_8.x | bash -
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
+    apt -yqq update && apt -yqq install nodejs yarn
+    yarn install
+    yarn build
 
 .test_template: &test_definition
   stage: test
   artifacts:
-    name: "${CI_JOB_NAME}_${CI_PROJECT_ID}"
+    name: "${CI_JOB_NAME}_${CI_JOB_ID}"
     expire_in: 1 week
     paths:
       - ./coverage/
@@ -61,11 +70,12 @@ test:7.1:
   services: []
   stage: deploy
   only:
-  - master
+    - master
   before_script:
     - *before_fix_permissions
     - *before_install_packages
     - *before_install_composer
+    - *before_install_yarn
 
 .deploy_template_script:
   # Configure SSH
@@ -78,8 +88,19 @@ test:7.1:
   - &deployment_dependencies |-
     chmod +x ./deploy.sh
     apt update && apt install -yqq rsync openssh-client
-    /usr/local/bin/composer --no-ansi install --no-dev
-    /usr/local/bin/composer --no-ansi dump-autoload --optimize
+    composer --no-ansi install --no-dev
+    composer --no-ansi dump-autoload --optimize
+
+build_release_file:
+  <<: *deploy_definition
+  artifacts:
+    name: "release_${CI_COMMIT_REF_SLUG}_${CI_JOB_ID}_${CI_COMMIT_SHA}"
+    expire_in: 1 week
+    paths:
+      - ./release/
+  script:
+    - *deployment_dependencies
+    - rsync -vAax --exclude '.git*' --exclude .composer/ --exclude coverage/ --exclude node_modules/ --exclude release/ ./ release/
 
 deploy_staging:
   <<: *deploy_definition
