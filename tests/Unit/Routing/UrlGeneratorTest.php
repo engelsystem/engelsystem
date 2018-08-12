@@ -14,6 +14,7 @@ class UrlGeneratorTest extends TestCase
     public function provideLinksTo()
     {
         return [
+            ['/', '/', 'http://foo.bar/', [], 'http://foo.bar/'],
             ['/foo/path', '/foo/path', 'http://foo.bar/foo/path', [], 'http://foo.bar/foo/path'],
             ['foo', '/foo', 'https://foo.bar/foo', [], 'https://foo.bar/foo'],
             ['foo', '/foo', 'http://f.b/foo', ['test' => 'abc', 'bla' => 'foo'], 'http://f.b/foo?test=abc&bla=foo'],
