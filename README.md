@@ -82,6 +82,19 @@ PRODUCTION_REMOTE       # Same as STAGING_REMOTE but for the production environm
 PRODUCTION_REMOTE_PATH  # Same as STAGING_REMOTE_PATH but for the production environment
 ```
 
+### Docker container
+To build the `engelsystem` and the `engelsystem-nginx` container:
+```bash
+cd contrib
+docker-compose build
+```
+
+or to build the containers separately
+```bash
+docker build -f contrib/Dockerfile . -t engelsystem
+docker build -f contrib/nginx/Dockerfile . -t engelsystem-nginx
+```
+
 #### deploy.sh
 The `deploy.sh` script can be used to deploy the engelsystem. It uses rsync to deploy the application to a server over ssh.
 

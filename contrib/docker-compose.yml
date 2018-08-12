@@ -1,23 +1,31 @@
-version: "3.3"
+version: "3.6"
 services:
   nginx:
+    image: engelsystem-nginx
     build:
-      context: .
-      dockerfile: Dockerfile-proxy
+      context: ..
+      dockerfile: contrib/nginx/Dockerfile
     ports:
       - 5000:80
     volumes:
       - static:/var/www/html
+    depends_on:
+      - engelsystem
   engelsystem:
-    build: ./
+    image: engelsystem
+    build:
+      context: ..
+      dockerfile: contrib/Dockerfile
     environment:
-      MYSQL_HOST: db
+      MYSQL_HOST: database
       MYSQL_USER: engelsystem
       MYSQL_PASSWORD: engelsystem
       MYSQL_DATABASE: engelsystem
     volumes:
       - static:/var/www/html
-  db:
+    depends_on:
+      - database
+  database:
     image: mariadb:latest
     environment:
       MYSQL_DATABASE: engelsystem
@@ -33,5 +41,5 @@ services:
   #   ports:
   #     - 8080:8080
 volumes:
-  db: {}  
+  db: {}
   static: {}
