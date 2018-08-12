@@ -8,7 +8,7 @@ global.checkAll = (id, checked) => {
     $('#' + id + ' input[type="checkbox"]').each(function () {
         this.checked = checked;
     });
-}
+};
 
 /**
  * Sets the checkboxes according to the given type
@@ -20,21 +20,21 @@ global.checkOwnTypes = (id, shiftsList) => {
     $('#' + id + ' input[type="checkbox"]').each(function () {
         this.checked = $.inArray(parseInt(this.value), shiftsList) != -1;
     });
-}
+};
 
 /**
  * @param {moment} date
  */
 global.formatDay = (date) => {
     return date.format('YYYY-MM-DD');
-}
+};
 
 /**
  * @param {moment} date
  */
 global.formatTime = (date) => {
     return date.format('HH:mm');
-}
+};
 
 /**
  * @param {moment} from
@@ -48,7 +48,7 @@ global.setInput = (from, to) => {
 
     toDay.val(formatDay(to));
     toTime.val(formatTime(to));
-}
+};
 
 global.setDay = (days) => {
     days = days || 0;
@@ -62,7 +62,7 @@ global.setDay = (days) => {
     to.hours(23).minutes(59);
 
     setInput(from, to);
-}
+};
 
 global.setHours = (hours) => {
     hours = hours || 1;
@@ -77,7 +77,7 @@ global.setHours = (hours) => {
     }
 
     setInput(from, to);
-}
+};
 
 $(function () {
     /**
