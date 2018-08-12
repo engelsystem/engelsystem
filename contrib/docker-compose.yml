@@ -34,12 +34,6 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: 1
     volumes:
       - db:/var/lib/mysql
-  # used for initial database stuff
-  # adminer:
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - 8080:8080
 volumes:
   db: {}
   static: {}

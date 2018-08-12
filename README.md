@@ -95,6 +95,14 @@ docker build -f contrib/Dockerfile . -t engelsystem
 docker build -f contrib/nginx/Dockerfile . -t engelsystem-nginx
 ```
 
+Import database
+```bash
+docker exec -i db_container mysql -u engelsystem -pengelsystem engelsystem < db/install.sql
+docker exec -i db_container mysql -u engelsystem -pengelsystem engelsystem < db/update.sql
+```
+
+To be able to send mails a relay is needed. Set `SMTPHOST=[mail container]` to configure it.
+
 #### deploy.sh
 The `deploy.sh` script can be used to deploy the engelsystem. It uses rsync to deploy the application to a server over ssh.
 
