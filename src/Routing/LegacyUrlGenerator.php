@@ -4,7 +4,7 @@ namespace Engelsystem\Routing;
 
 /**
  * Provides urls when webserver rewriting is disabled.
- * 
+ *
  * The urls have the form <app url>/index.php?p=<path>&<parameters>
  */
 class LegacyUrlGenerator extends UrlGenerator
@@ -24,6 +24,7 @@ class LegacyUrlGenerator extends UrlGenerator
 
         $uri = parent::linkTo('index.php', $parameters);
         $uri = preg_replace('~(/index\.php)+~', '/index.php', $uri);
+        $uri = preg_replace('~(/index\.php)$~', '/', $uri);
 
         return $uri;
     }

@@ -14,9 +14,9 @@ class LegacyUrlGeneratorTest extends TestCase
     public function provideLinksTo()
     {
         return [
-            ['/', 'http://foo.bar/index.php', [], 'http://foo.bar/index.php'],
+            ['/', 'http://foo.bar/index.php', [], 'http://foo.bar/'],
             ['/foo-path', 'http://foo.bar/index.php/index.php', [], 'http://foo.bar/index.php?p=foo_path'],
-            ['/foo', 'http://foo.bar/index.php/index.php',  [], 'http://foo.bar/index.php?p=foo'],
+            ['/foo', 'http://foo.bar/index.php/index.php', [], 'http://foo.bar/index.php?p=foo'],
             ['foo', 'http://foo.bar/index.php', ['test' => 'abc'], 'http://foo.bar/index.php?p=foo&test=abc'],
         ];
     }
