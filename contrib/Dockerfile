@@ -1,31 +1,35 @@
 FROM composer AS composer
 COPY composer.json /app/
-RUN composer install
-
+RUN composer install --no-dev
+RUN composer dump-autoload --optimize
 
 FROM node:8-alpine as themes
 WORKDIR /app
-RUN npm install -g less
-COPY --from=composer /app/vendor /app/vendor
-COPY public/ /app/public
-COPY themes/ /app/themes
-RUN sh /app/themes/build-themes.sh
+COPY frontend/ /app/frontend
+COPY .babelrc package.json webpack.config.js /app/
+RUN apk add --no-cache yarn
+RUN yarn install
+RUN yarn build
+
+# Intermediate container for less layers
+FROM alpine as data
+COPY config/ /app/config
+COPY db/ /app/db
+COPY includes/ /app/includes
+COPY locale/ /app/locale
+COPY public/ /app/html
+COPY src/ /app/src
+COPY templates/ /app/templates
+
+COPY --from=composer /app/vendor/ /app/vendor
+COPY --from=composer /app/composer.lock /app/
+
+COPY --from=themes /app/public/assets /app/html/assets
+COPY --from=themes /app/yarn.lock /app/
+
+RUN rm -f /app/config/config.php
 
 FROM php:7-fpm-alpine
-RUN apk add --no-cache icu-dev
-RUN docker-php-ext-install intl
-RUN apk add --no-cache gettext-dev
-RUN docker-php-ext-install gettext
-RUN docker-php-ext-install pdo_mysql
-
-COPY --from=composer /app/vendor /var/www/vendor
-COPY --from=themes /app/public/ /var/www/html
-COPY src/ /var/www/src/
-COPY includes/ /var/www/includes/
-COPY config/ /var/www/config/
-COPY locale/ /var/www/locale
-COPY templates/ /var/www/templates
-
-# Symlink gets copied so we delete the symlink.
-RUN rm /var/www/html/vendor/bootstrap
-COPY vendor/twbs/bootstrap/dist/ /var/www/html/vendor/bootstrap/
+COPY --from=data /app/ /var/www
+RUN apk add --no-cache icu-dev gettext-dev && \
+    docker-php-ext-install intl gettext pdo_mysql
