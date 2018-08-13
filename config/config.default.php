@@ -126,4 +126,7 @@ return [
         '3XL'  => '3XL',
         '4XL'  => '4XL'
     ],
+
+    // IP addresses of reverse proxies that are trusted, can be an array or a comma separated list
+    'trusted_proxies' => env('TRUSTED_PROXIES', ['127.0.0.0/8', '::ffff:127.0.0.0/8', '::1/128']),
 ];
