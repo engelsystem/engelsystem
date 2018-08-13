@@ -9,6 +9,8 @@ services:
       - 5000:80
     volumes:
       - static:/var/www/html
+    networks:
+      - internal
     depends_on:
       - engelsystem
   engelsystem:
@@ -23,6 +25,9 @@ services:
       MYSQL_DATABASE: engelsystem
     volumes:
       - static:/var/www/html
+    networks:
+      - internal
+      - database
     depends_on:
       - database
   database:
@@ -34,6 +39,12 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: 1
     volumes:
       - db:/var/lib/mysql
+    networks:
+      - database
 volumes:
   db: {}
   static: {}
+
+networks:
+  internal:
+  database:
