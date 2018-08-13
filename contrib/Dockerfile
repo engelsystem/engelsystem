@@ -33,3 +33,9 @@ FROM php:7-fpm-alpine
 COPY --from=data /app/ /var/www
 RUN apk add --no-cache icu-dev gettext-dev && \
     docker-php-ext-install intl gettext pdo_mysql
+
+ENV TRUSTED_PROXIES 10.0.0.0/8,::ffff:10.0.0.0/8,\
+                    127.0.0.0/8,::ffff:127.0.0.0/8,\
+                    172.16.0.0/12,::ffff:172.16.0.0/12,\
+                    192.168.0.0/16,::ffff:192.168.0.0/16,\
+                    ::1/128,fc00::/7,fec0::/10
