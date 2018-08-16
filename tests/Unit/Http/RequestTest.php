@@ -5,6 +5,8 @@ namespace Engelsystem\Test\Unit\Http;
 use Engelsystem\Http\Request;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class RequestTest extends TestCase
@@ -16,6 +18,7 @@ class RequestTest extends TestCase
     {
         $response = new Request();
         $this->assertInstanceOf(SymfonyRequest::class, $response);
+        $this->assertInstanceOf(RequestInterface::class, $response);
     }
 
     /**
@@ -105,5 +108,92 @@ class RequestTest extends TestCase
 
         $this->assertEquals('http://foo.bar/bla/foo', $request->url());
         $this->assertEquals('https://lorem.ipsum/dolor/sit', $request->url());
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Request::getRequestTarget
+     */
+    public function testGetRequestTarget()
+    {
+        /** @var Request|MockObject $request */
+        $request = $this
+            ->getMockBuilder(Request::class)
+            ->setMethods(['getQueryString', 'path'])
+            ->getMock();
+
+        $request->expects($this->exactly(2))
+            ->method('getQueryString')
+            ->willReturnOnConsecutiveCalls(null, 'foo=bar&lorem=ipsum');
+        $request->expects($this->exactly(2))
+            ->method('path')
+            ->willReturn('foo/bar');
+
+        $this->assertEquals('/foo/bar', $request->getRequestTarget());
+        $this->assertEquals('/foo/bar?foo=bar&lorem=ipsum', $request->getRequestTarget());
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Request::withRequestTarget
+     */
+    public function testWithRequestTarget()
+    {
+        $request = new Request();
+        foreach (
+            [
+                '*',
+                '/foo/bar',
+                'https://lorem.ipsum/test?lor=em'
+            ] as $target
+        ) {
+            $new = $request->withRequestTarget($target);
+            $this->assertNotEquals($request, $new);
+        }
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Request::withMethod
+     */
+    public function testWithMethod()
+    {
+        $request = new Request();
+
+        $new = $request->withMethod('PUT');
+
+        $this->assertNotEquals($request, $new);
+        $this->assertEquals('PUT', $new->getMethod());
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Request::withUri
+     */
+    public function testWithUri()
+    {
+        /** @var UriInterface|MockObject $uri */
+        $uri = $this->getMockForAbstractClass(UriInterface::class);
+
+        $uri->expects($this->atLeastOnce())
+            ->method('__toString')
+            ->willReturn('http://foo.bar/bla?foo=bar');
+
+        $request = Request::create('http://lor.em/');
+
+        $new = $request->withUri($uri);
+        $this->assertNotEquals($request, $new);
+        $this->assertEquals('http://foo.bar/bla?foo=bar', (string)$new->getUri());
+
+        $new = $request->withUri($uri, true);
+        $this->assertEquals('http://lor.em/bla?foo=bar', (string)$new->getUri());
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Request::getUri
+     */
+    public function testGetUri()
+    {
+        $request = Request::create('http://lor.em/test?bla=foo');
+
+        $uri = $request->getUri();
+        $this->assertInstanceOf(UriInterface::class, $uri);
+        $this->assertEquals('http://lor.em/test?bla=foo', (string)$uri);
     }
 }

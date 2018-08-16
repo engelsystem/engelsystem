@@ -4,9 +4,9 @@ namespace Engelsystem\Test\Unit\Http\Stub;
 
 use Engelsystem\Http\MessageTrait;
 use Psr\Http\Message\MessageInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
-class MessageTraitImplementation extends Response implements MessageInterface
+class MessageTraitRequestImplementation extends Request implements MessageInterface
 {
     use MessageTrait;
 }

@@ -2,21 +2,21 @@
 
 namespace Engelsystem\Test\Unit\Http;
 
-use Engelsystem\Test\Unit\Http\Stub\MessageTraitImplementation;
+use Engelsystem\Test\Unit\Http\Stub\MessageTraitResponseImplementation;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Zend\Diactoros\Stream;
 
-class MessageTraitTest extends TestCase
+class MessageTraitResponseTest extends TestCase
 {
     /**
      * @covers \Engelsystem\Http\MessageTrait
      */
     public function testCreate()
     {
-        $message = new MessageTraitImplementation();
+        $message = new MessageTraitResponseImplementation();
         $this->assertInstanceOf(MessageInterface::class, $message);
         $this->assertInstanceOf(SymfonyResponse::class, $message);
     }
@@ -27,7 +27,7 @@ class MessageTraitTest extends TestCase
      */
     public function testGetProtocolVersion()
     {
-        $message = new MessageTraitImplementation();
+        $message = new MessageTraitResponseImplementation();
         $newMessage = $message->withProtocolVersion('0.1');
         $this->assertNotEquals($message, $newMessage);
         $this->assertEquals('0.1', $newMessage->getProtocolVersion());
@@ -38,7 +38,7 @@ class MessageTraitTest extends TestCase
      */
     public function testGetHeaders()
     {
-        $message = new MessageTraitImplementation();
+        $message = new MessageTraitResponseImplementation();
         $newMessage = $message->withHeader('Foo', 'bar');
 
         $this->assertNotEquals($message, $newMessage);
@@ -53,7 +53,7 @@ class MessageTraitTest extends TestCase
      */
     public function testHasHeader()
     {
-        $message = new MessageTraitImplementation();
+        $message = new MessageTraitResponseImplementation();
         $this->assertFalse($message->hasHeader('test'));
 
         $newMessage = $message->withHeader('test', '12345');
@@ -66,7 +66,7 @@ class MessageTraitTest extends TestCase
      */
     public function testGetHeader()
     {
-        $message = new MessageTraitImplementation();
+        $message = new MessageTraitResponseImplementation();
         $newMessage = $message->withHeader('foo', 'bar');
 
         $this->assertEquals(['bar'], $newMessage->getHeader('Foo'));
@@ -78,7 +78,7 @@ class MessageTraitTest extends TestCase
      */
     public function testGetHeaderLine()
     {
-        $message = new MessageTraitImplementation();
+        $message = new MessageTraitResponseImplementation();
         $newMessage = $message->withHeader('foo', ['bar', 'bla']);
 
         $this->assertEquals('', $newMessage->getHeaderLine('Lorem-Ipsum'));
@@ -90,7 +90,7 @@ class MessageTraitTest extends TestCase
      */
     public function testWithHeader()
     {
-        $message = new MessageTraitImplementation();
+        $message = new MessageTraitResponseImplementation();
         $newMessage = $message->withHeader('foo', 'bar');
 
         $this->assertNotEquals($message, $newMessage);
@@ -105,7 +105,7 @@ class MessageTraitTest extends TestCase
      */
     public function testWithAddedHeader()
     {
-        $message = new MessageTraitImplementation();
+        $message = new MessageTraitResponseImplementation();
         $newMessage = $message->withHeader('foo', 'bar');
 
         $this->assertNotEquals($message, $newMessage);
@@ -120,7 +120,7 @@ class MessageTraitTest extends TestCase
      */
     public function testWithoutHeader()
     {
-        $message = (new MessageTraitImplementation())->withHeader('foo', 'bar');
+        $message = (new MessageTraitResponseImplementation())->withHeader('foo', 'bar');
         $this->assertTrue($message->hasHeader('foo'));
 
         $newMessage = $message->withoutHeader('Foo');
@@ -133,7 +133,7 @@ class MessageTraitTest extends TestCase
      */
     public function testGetBody()
     {
-        $message = (new MessageTraitImplementation())->setContent('Foo bar!');
+        $message = (new MessageTraitResponseImplementation())->setContent('Foo bar!');
         $body = $message->getBody();
 
         $this->assertInstanceOf(StreamInterface::class, $body);
@@ -150,7 +150,7 @@ class MessageTraitTest extends TestCase
         $stream->write('Test content');
         $stream->rewind();
 
-        $message = new MessageTraitImplementation();
+        $message = new MessageTraitResponseImplementation();
         $newMessage = $message->withBody($stream);
 
         $this->assertNotEquals($message, $newMessage);

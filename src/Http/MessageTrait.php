@@ -4,7 +4,6 @@ namespace Engelsystem\Http;
 
 
 use Psr\Http\Message\StreamInterface;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Zend\Diactoros\Stream;
 
 /**
@@ -41,7 +40,12 @@ trait MessageTrait
     public function withProtocolVersion($version)
     {
         $new = clone $this;
-        $new->setProtocolVersion($version);
+        if (method_exists($new, 'setProtocolVersion')) {
+            $new->setProtocolVersion($version);
+        } else {
+            $new->server->set('SERVER_PROTOCOL', $version);
+        }
+
         return $new;
     }
 
@@ -72,7 +76,11 @@ trait MessageTrait
      */
     public function getHeaders()
     {
-        return $this->headers->allPreserveCase();
+        if (method_exists($this->headers, 'allPreserveCase')) {
+            return $this->headers->allPreserveCase();
+        }
+
+        return $this->headers->all();
     }
 
     /**
@@ -228,7 +236,12 @@ trait MessageTrait
     public function withBody(StreamInterface $body)
     {
         $new = clone $this;
-        $new->setContent($body);
+
+        if (method_exists($new, 'setContent')) {
+            $new->setContent($body);
+        } else {
+            $new->content = $body;
+        }
 
         return $new;
     }
