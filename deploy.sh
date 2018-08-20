@@ -60,14 +60,11 @@ ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "${remote_hos
     if [[ -f \"${remote_path}/current/config/config.php\" ]]; then
         echo \"Config backup\"
         cp \"${remote_path}/current/config/config.php\" \"${deploy_id}-config.php\"
+
+        echo \"Restoring config\"
+        cp  \"${deploy_id}-config.php\" \"${remote_path}/${deploy_id}/config/config.php\"
     fi
 
     echo \"Changing symlink\"
-    unlink_cmd=\$(command -v unlink || command -v rm)
-    \$unlink_cmd \"${remote_path}/current\" && ln -s \"${remote_path}/${deploy_id}\" \"${remote_path}/current\"
-
-    if [[ -f \"${deploy_id}-config.php\" ]]; then
-        echo \"Restoring config\"
-        cp  \"${deploy_id}-config.php\" \"${remote_path}/current/config/config.php\"
-    fi
+    ln -nsf \"${remote_path}/${deploy_id}\" \"${remote_path}/current\"
 "
