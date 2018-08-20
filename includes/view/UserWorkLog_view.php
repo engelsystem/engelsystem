@@ -2,13 +2,18 @@
 
 /**
  * Delete work log entry.
- * @param User $user_source
- * @param UserWorkLog $userWorkLog
+ *
+ * @param array $user_source
+ * @param array $userWorkLog
+ * @return string
  */
 function UserWorkLog_delete_view($user_source, $userWorkLog)
 {
     return page_with_title(UserWorkLog_delete_title(), [
-        info(sprintf(_('Do you want to delete the worklog entry for %s?'), User_Nick_render($user_source)), true),
+        info(sprintf(
+            _('Do you want to delete the worklog entry for %s?'),
+            User_Nick_render($user_source)
+        ), true),
         buttons([
             button(user_link($user_source), glyph('remove') . _('cancel')),
             button(user_worklog_delete_link($userWorkLog, [
@@ -28,9 +33,10 @@ function UserWorkLog_delete_title()
 
 /**
  * Render edit table.
- * 
- * @param User $user_source            
- * @param UserWorkLog $userWorkLog            
+ *
+ * @param array $user_source
+ * @param array $userWorkLog
+ * @return string
  */
 function UserWorkLog_edit_form($user_source, $userWorkLog)
 {
@@ -46,8 +52,9 @@ function UserWorkLog_edit_form($user_source, $userWorkLog)
 /**
  * Form for edit a user work log entry.
  *
- * @param User $user_source            
- * @param UserWorkLog $userWorkLog            
+ * @param array $user_source
+ * @param array $userWorkLog
+ * @return string
  */
 function UserWorkLog_edit_view($user_source, $userWorkLog)
 {
@@ -63,8 +70,9 @@ function UserWorkLog_edit_view($user_source, $userWorkLog)
 /**
  * Form for adding a user work log entry.
  *
- * @param User $user_source            
- * @param UserWorkLog $userWorkLog            
+ * @param array $user_source
+ * @param array $userWorkLog
+ * @return string
  */
 function UserWorkLog_add_view($user_source, $userWorkLog)
 {
@@ -92,5 +100,3 @@ function UserWorkLog_add_title()
 {
     return _('Add work log entry');
 }
-
-?>

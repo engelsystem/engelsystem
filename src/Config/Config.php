@@ -2,14 +2,16 @@
 
 namespace Engelsystem\Config;
 
-class Config
+use Illuminate\Support\Fluent;
+
+class Config extends Fluent
 {
     /**
      * The config values
      *
      * @var array
      */
-    protected $data = [];
+    protected $attributes = [];
 
     /**
      * @param string|null $key
@@ -19,11 +21,11 @@ class Config
     public function get($key, $default = null)
     {
         if (is_null($key)) {
-            return $this->data;
+            return $this->attributes;
         }
 
         if ($this->has($key)) {
-            return $this->data[$key];
+            return $this->attributes[$key];
         }
 
         return $default;
@@ -43,7 +45,7 @@ class Config
             return;
         }
 
-        $this->data[$key] = $value;
+        $this->attributes[$key] = $value;
     }
 
     /**
@@ -52,7 +54,7 @@ class Config
      */
     public function has($key)
     {
-        return isset($this->data[$key]);
+        return $this->offsetExists($key);
     }
 
     /**
@@ -60,41 +62,6 @@ class Config
      */
     public function remove($key)
     {
-        unset($this->data[$key]);
-    }
-
-    /**
-     * @param string $key
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        return $this->get($key);
-    }
-
-    /**
-     * @param string $key
-     * @param mixed  $value
-     */
-    public function __set($key, $value)
-    {
-        $this->set($key, $value);
-    }
-
-    /**
-     * @param string $key
-     * @return bool
-     */
-    public function __isset($key)
-    {
-        return $this->has($key);
-    }
-
-    /**
-     * @param string $key
-     */
-    public function __unset($key)
-    {
-        $this->remove($key);
+        $this->offsetUnset($key);
     }
 }

@@ -20,12 +20,14 @@ function User_delete($user_id)
 /**
  * Returns the tshirt score (number of hours counted for tshirt).
  * Accounts only ended shifts.
- * 
+ *
  * @param array[] $user
+ * @return int
  */
-function User_tshirt_score($user) {
+function User_tshirt_score($user)
+{
     $shift_sum_formula = config('shift_sum_formula');
-    
+
     $result_shifts = DB::selectOne('
         SELECT ROUND((' . $shift_sum_formula . ') / 3600, 2) AS `tshirt_score`
         FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
@@ -43,11 +45,11 @@ function User_tshirt_score($user) {
         LEFT JOIN `UserWorkLog` ON `User`.`UID` = `UserWorkLog`.`user_id`
         WHERE `User`.`UID` = ?
         AND `UserWorkLog`.`work_timestamp` < ?
-    ',[
+    ', [
         $user['UID'],
         time()
     ]);
-    
+
     return $result_shifts['tshirt_score'] + $result_worklog['tshirt_score'];
 }
 
@@ -347,12 +349,12 @@ function User_validate_jabber($jabber)
  */
 function User_validate_planned_arrival_date($planned_arrival_date)
 {
-    if ($planned_arrival_date == null) {
+    if (is_null($planned_arrival_date)) {
         // null is not okay
         return new ValidationResult(false, time());
     }
     $event_config = EventConfig();
-    if ($event_config == null) {
+    if (empty($event_config)) {
         // Nothing to validate against
         return new ValidationResult(true, $planned_arrival_date);
     }
@@ -376,7 +378,7 @@ function User_validate_planned_arrival_date($planned_arrival_date)
  */
 function User_validate_planned_departure_date($planned_arrival_date, $planned_departure_date)
 {
-    if ($planned_departure_date == null) {
+    if (is_null($planned_departure_date)) {
         // null is okay
         return new ValidationResult(true, null);
     }
@@ -385,7 +387,7 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
         return new ValidationResult(false, $planned_arrival_date);
     }
     $event_config = EventConfig();
-    if ($event_config == null) {
+    if (empty($event_config)) {
         // Nothing to validate against
         return new ValidationResult(true, $planned_departure_date);
     }
@@ -408,7 +410,9 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
  */
 function User($user_id)
 {
-    return DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
+    $user = DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
+
+    return empty($user) ? null : $user;
 }
 
 /**
@@ -419,18 +423,22 @@ function User($user_id)
  */
 function User_by_api_key($api_key)
 {
-    return DB::selectOne('SELECT * FROM `User` WHERE `api_key`=? LIMIT 1', [$api_key]);
+    $user = DB::selectOne('SELECT * FROM `User` WHERE `api_key`=? LIMIT 1', [$api_key]);
+
+    return empty($user) ? null : $user;
 }
 
 /**
  * Returns User by email.
  *
  * @param string $email
- * @return array|null Matching user, null on error
+ * @return array|null Matching user, null when not found
  */
 function User_by_email($email)
 {
-    return DB::selectOne('SELECT * FROM `User` WHERE `email`=? LIMIT 1', [$email]);
+    $user = DB::selectOne('SELECT * FROM `User` WHERE `email`=? LIMIT 1', [$email]);
+
+    return empty($user) ? null : $user;
 }
 
 /**
@@ -441,7 +449,9 @@ function User_by_email($email)
  */
 function User_by_password_recovery_token($token)
 {
-    return DB::selectOne('SELECT * FROM `User` WHERE `password_recovery_token`=? LIMIT 1', [$token]);
+    $user = DB::selectOne('SELECT * FROM `User` WHERE `password_recovery_token`=? LIMIT 1', [$token]);
+
+    return empty($user) ? null : $user;
 }
 
 /**

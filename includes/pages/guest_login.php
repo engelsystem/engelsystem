@@ -279,7 +279,7 @@ function guest_register()
             }
 
             // If a welcome message is present, display registration success page.
-            if ($event_config != null && $event_config['event_welcome_msg'] != null) {
+            if (!empty($event_config) && !empty($event_config['event_welcome_msg'])) {
                 return User_registration_success_view($event_config['event_welcome_msg']);
             }
 
@@ -289,7 +289,7 @@ function guest_register()
 
     $buildup_start_date = time();
     $teardown_end_date = null;
-    if ($event_config != null) {
+    if (!empty($event_config)) {
         if (isset($event_config['buildup_start_date'])) {
             $buildup_start_date = $event_config['buildup_start_date'];
         }

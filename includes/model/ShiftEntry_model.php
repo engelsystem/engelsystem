@@ -138,7 +138,9 @@ function ShiftEntry_update($shift_entry)
  */
 function ShiftEntry($shift_entry_id)
 {
-    return DB::selectOne('SELECT * FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
+    $shiftEntry = DB::selectOne('SELECT * FROM `ShiftEntry` WHERE `id` = ?', [$shift_entry_id]);
+
+    return empty($shiftEntry) ? null : $shiftEntry;
 }
 
 /**

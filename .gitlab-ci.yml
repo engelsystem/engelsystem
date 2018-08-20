@@ -86,7 +86,7 @@ test:7.1:
 
   # Install project and dependencies
   - &deployment_dependencies |-
-    chmod +x ./deploy.sh
+    chmod +x ./bin/deploy.sh
     apt update && apt install -yqq rsync openssh-client
     composer --no-ansi install --no-dev
     composer --no-ansi dump-autoload --optimize
@@ -116,7 +116,7 @@ deploy_staging:
     - *deployment_ssh
     - *deployment_dependencies
     # Deploy to server
-    - ./deploy.sh -r "${STAGING_REMOTE}" -p "${STAGING_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"
+    - ./bin/deploy.sh -r "${STAGING_REMOTE}" -p "${STAGING_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"
 
 deploy_production:
   <<: *deploy_definition
@@ -133,4 +133,4 @@ deploy_production:
     - *deployment_ssh
     - *deployment_dependencies
     # Deploy to server
-    - ./deploy.sh -r "${PRODUCTION_REMOTE}" -p "${PRODUCTION_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"
+    - ./bin/deploy.sh -r "${PRODUCTION_REMOTE}" -p "${PRODUCTION_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"

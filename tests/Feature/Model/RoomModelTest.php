@@ -24,11 +24,11 @@ class RoomModelTest extends TestCase
 
         $room = Room($this->room_id);
 
-        $this->assertNotFalse($room);
+        $this->assertNotEmpty($room);
         $this->assertNotNull($room);
         $this->assertEquals($room['Name'], 'test');
 
-        $this->assertNull(Room(-1));
+        $this->assertEmpty(Room(-1));
     }
 
     public function tearDown()

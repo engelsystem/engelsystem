@@ -103,10 +103,11 @@ docker exec -i db_container mysql -u engelsystem -pengelsystem engelsystem < db/
 
 To be able to send mails a relay is needed. Set `SMTPHOST=[mail container]` to configure it.
 
-#### deploy.sh
-The `deploy.sh` script can be used to deploy the engelsystem. It uses rsync to deploy the application to a server over ssh.
+#### Scripts
+##### bin/deploy.sh
+The `bin/deploy.sh` script can be used to deploy the engelsystem. It uses rsync to deploy the application to a server over ssh.
 
-For usage see `./deploy.sh -h`
+For usage see `./bin/deploy.sh -h`
 
 ### Codestyle
 Please ensure that your pull requests follow [PSR-2](http://www.php-fig.org/psr/psr-2/) and [PSR-4](http://www.php-fig.org/psr/psr-4/).

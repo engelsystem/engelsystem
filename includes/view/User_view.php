@@ -406,10 +406,21 @@ function User_view_myshift($shift, $user_source, $its_me)
  * @param array[] $shifts
  * @param array   $user_source
  * @param bool    $its_me
+ * @param int     $tshirt_score
+ * @param bool    $tshirt_admin
+ * @param array[] $user_worklogs
+ * @param         $admin_user_worklog_privilege
  * @return array
  */
-function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshirt_admin, $user_worklogs, $admin_user_worklog_privilege)
-{
+function User_view_myshifts(
+    $shifts,
+    $user_source,
+    $its_me,
+    $tshirt_score,
+    $tshirt_admin,
+    $user_worklogs,
+    $admin_user_worklog_privilege
+) {
     $myshifts_table = [];
     $timesum = 0;
     foreach ($shifts as $shift) {
@@ -420,8 +431,8 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
         }
     }
 
-    if($its_me || $admin_user_worklog_privilege) {
-        foreach($user_worklogs as $worklog) {
+    if ($its_me || $admin_user_worklog_privilege) {
+        foreach ($user_worklogs as $worklog) {
             $myshifts_table[$worklog['work_timestamp']] = User_view_worklog($worklog, $admin_user_worklog_privilege);
             $timesum += $worklog['work_hours'] * 3600;
         }
@@ -453,12 +464,15 @@ function User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshi
 
 /**
  * Renders table entry for user work log
- * @param UserWorkLog $worklog
- * @param bool $admin_user_worklog_privilege
+ *
+ * @param array $worklog
+ * @param bool  $admin_user_worklog_privilege
+ * @return array
  */
-function User_view_worklog($worklog, $admin_user_worklog_privilege) {
+function User_view_worklog($worklog, $admin_user_worklog_privilege)
+{
     $actions = '';
-    if($admin_user_worklog_privilege) {
+    if ($admin_user_worklog_privilege) {
         $actions = table_buttons([
             button(
                 user_worklog_edit_link($worklog),
@@ -472,18 +486,18 @@ function User_view_worklog($worklog, $admin_user_worklog_privilege) {
             )
         ]);
     }
-    
+
     return [
         'date'       => glyph('calendar') . date('Y-m-d', $worklog['work_timestamp']),
         'duration'   => '<b>' . sprintf('%.2f', $worklog['work_hours']) . '</b>',
         'room'       => '',
         'shift_info' => _('Work log entry'),
         'comment'    => $worklog['comment'] . '<br>'
-                        . sprintf(
-                            _('Added by %s at %s'), 
-                            User_Nick_render(User($worklog['created_user_id'])), 
-                            date('Y-m-d H:i', $worklog['created_timestamp'])
-                        ),
+            . sprintf(
+                _('Added by %s at %s'),
+                User_Nick_render(User($worklog['created_user_id'])),
+                date('Y-m-d H:i', $worklog['created_timestamp'])
+            ),
         'actions'    => $actions
     ];
 }
@@ -500,6 +514,8 @@ function User_view_worklog($worklog, $admin_user_worklog_privilege) {
  * @param bool    $its_me
  * @param int     $tshirt_score
  * @param bool    $tshirt_admin
+ * @param bool    $admin_user_worklog_privilege
+ * @param array[] $user_worklogs
  * @return string
  */
 function User_view(
@@ -517,9 +533,17 @@ function User_view(
 ) {
     $user_name = htmlspecialchars($user_source['Vorname']) . ' ' . htmlspecialchars($user_source['Name']);
     $myshifts_table = '';
-    if($its_me || $admin_user_privilege) {
-        $my_shifts = User_view_myshifts($shifts, $user_source, $its_me, $tshirt_score, $tshirt_admin, $user_worklogs, $admin_user_worklog_privilege);
-        if(count($my_shifts) > 0) {
+    if ($its_me || $admin_user_privilege) {
+        $my_shifts = User_view_myshifts(
+            $shifts,
+            $user_source,
+            $its_me,
+            $tshirt_score,
+            $tshirt_admin,
+            $user_worklogs,
+            $admin_user_worklog_privilege
+        );
+        if (count($my_shifts) > 0) {
             $myshifts_table = table([
                 'date'       => _('Day &amp; time'),
                 'duration'   => _('Duration'),
@@ -528,7 +552,7 @@ function User_view(
                 'comment'    => _('Comment'),
                 'actions'    => _('Action')
             ], $my_shifts);
-        } elseif($user_source['force_active']) {
+        } elseif ($user_source['force_active']) {
             $myshifts_table = success(_('You have done enough to get a t-shirt.'), true);
         }
     }
@@ -748,7 +772,7 @@ function User_angeltypes_render($user_angeltypes)
     $output = [];
     foreach ($user_angeltypes as $angeltype) {
         $class = 'text-success';
-        if ($angeltype['restricted'] == 1 && $angeltype['confirm_user_id'] == null) {
+        if ($angeltype['restricted'] == 1 && empty($angeltype['confirm_user_id'])) {
             $class = 'text-warning';
         }
         $output[] = '<a href="' . angeltype_link($angeltype['id']) . '" class="' . $class . '">'
@@ -821,7 +845,7 @@ function render_user_departure_date_hint()
 {
     global $user;
 
-    if (!isset($user['planned_departure_date']) || $user['planned_departure_date'] == null) {
+    if (!isset($user['planned_departure_date']) || empty($user['planned_departure_date'])) {
         $text = _('Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities.');
         return render_profile_link($text, null, 'alert-link');
     }
@@ -857,7 +881,7 @@ function render_user_arrived_hint()
 
     if ($user['Gekommen'] == 0) {
         $event_config = EventConfig();
-        if (!is_null($event_config)
+        if (!empty($event_config)
             && !is_null($event_config['buildup_start_date'])
             && time() > $event_config['buildup_start_date']) {
             return _('You are not marked as arrived. Please go to heaven\'s desk, get your angel badge and/or tell them that you arrived already.');

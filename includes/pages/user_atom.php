@@ -16,7 +16,7 @@ function user_atom()
     $key = $request->input('key');
 
     $user = User_by_api_key($key);
-    if ($user == null) {
+    if (empty($user)) {
         engelsystem_error('Key invalid.');
     }
     if (!in_array('atom', privileges_for_user($user['UID']))) {

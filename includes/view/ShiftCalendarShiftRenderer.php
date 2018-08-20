@@ -116,7 +116,7 @@ class ShiftCalendarShiftRenderer
                     $angeltype,
                     $user
                 );
-                if ($shift_signup_state == null) {
+                if (is_null($shift_signup_state)) {
                     $shift_signup_state = $angeltype_signup_state;
                 } else {
                     $shift_signup_state->combineWith($angeltype_signup_state);
@@ -124,7 +124,7 @@ class ShiftCalendarShiftRenderer
                 $html .= $angeltype_html;
             }
         }
-        if ($shift_signup_state == null) {
+        if (is_null($shift_signup_state)) {
             $shift_signup_state = new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, 0);
         }
 

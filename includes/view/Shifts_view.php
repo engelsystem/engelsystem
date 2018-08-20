@@ -50,14 +50,14 @@ function Shift_view_header($shift, $room)
 function Shift_editor_info_render($shift)
 {
     $info = [];
-    if ($shift['created_by_user_id'] != null) {
+    if (!empty($shift['created_by_user_id'])) {
         $info[] = sprintf(
             glyph('plus') . _('created at %s by %s'),
             date('Y-m-d H:i', $shift['created_at_timestamp']),
             User_Nick_render(User($shift['created_by_user_id']))
         );
     }
-    if ($shift['edited_by_user_id'] != null) {
+    if (!empty($shift['edited_by_user_id'])) {
         $info[] = sprintf(
             glyph('pencil') . _('edited at %s by %s'),
             date('Y-m-d H:i', $shift['edited_at_timestamp']),
@@ -77,13 +77,13 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
 {
     global $user;
 
-    if ($user_angeltype == null) {
+    if (empty($user_angeltype)) {
         $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
     }
 
     if ($angeltype['shift_signup_state']->isSignupAllowed()) {
         return button(shift_entry_create_link($shift, $angeltype), _('Sign up'));
-    } elseif ($user_angeltype == null) {
+    } elseif (empty($user_angeltype)) {
         return button(
             page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
             sprintf(_('Become %s'),

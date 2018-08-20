@@ -32,7 +32,6 @@ function user_myshifts()
     }
 
     $shifts_user = DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$shift_entry_id]);
-
     if ($request->has('reset')) {
         if ($request->input('reset') == 'ack') {
             User_reset_api_key($user);

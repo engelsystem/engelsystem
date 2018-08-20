@@ -9,7 +9,9 @@ use Engelsystem\Database\DB;
  */
 function EventConfig()
 {
-    return DB::selectOne('SELECT * FROM `EventConfig` LIMIT 1');
+    $config = DB::selectOne('SELECT * FROM `EventConfig` LIMIT 1');
+
+    return empty($config) ? null : $config;
 }
 
 /**
@@ -21,7 +23,7 @@ function EventConfig()
  * @param int    $event_end_date
  * @param int    $teardown_end_date
  * @param string $event_welcome_msg
- * @return int Rows updated
+ * @return bool
  */
 function EventConfig_update(
     $event_name,
@@ -31,7 +33,8 @@ function EventConfig_update(
     $teardown_end_date,
     $event_welcome_msg
 ) {
-    if (EventConfig() == null) {
+    $eventConfig = EventConfig();
+    if (empty($eventConfig)) {
         return DB::insert('
               INSERT INTO `EventConfig` (
                   `event_name`,
@@ -54,7 +57,7 @@ function EventConfig_update(
         );
     }
 
-    return DB::update('
+    return (bool)DB::update('
           UPDATE `EventConfig` SET
           `event_name` = ?,
           `buildup_start_date` = ?,

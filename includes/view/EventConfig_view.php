@@ -8,7 +8,7 @@
  */
 function EventConfig_countdown_page($event_config)
 {
-    if ($event_config == null) {
+    if (empty($event_config)) {
         return div('col-md-12 text-center', [
             heading(sprintf(_('Welcome to the %s!'), '<span class="icon-icon_angel"></span> ENGELSYSTEM'), 2)
         ]);
@@ -16,7 +16,7 @@ function EventConfig_countdown_page($event_config)
 
     $elements = [];
 
-    if ($event_config['event_name'] != null) {
+    if (!is_null($event_config['event_name'])) {
         $elements[] = div('col-sm-12 text-center', [
             heading(sprintf(
                 _('Welcome to the %s!'),
@@ -25,7 +25,7 @@ function EventConfig_countdown_page($event_config)
         ]);
     }
 
-    if ($event_config['buildup_start_date'] != null && time() < $event_config['buildup_start_date']) {
+    if (!is_null($event_config['buildup_start_date']) && time() < $event_config['buildup_start_date']) {
         $elements[] = div('col-sm-3 text-center hidden-xs', [
             heading(_('Buildup starts'), 4),
             '<span class="moment-countdown text-big" data-timestamp="' . $event_config['buildup_start_date'] . '">%c</span>',
@@ -33,7 +33,7 @@ function EventConfig_countdown_page($event_config)
         ]);
     }
 
-    if ($event_config['event_start_date'] != null && time() < $event_config['event_start_date']) {
+    if (!is_null($event_config['event_start_date']) && time() < $event_config['event_start_date']) {
         $elements[] = div('col-sm-3 text-center hidden-xs', [
             heading(_('Event starts'), 4),
             '<span class="moment-countdown text-big" data-timestamp="' . $event_config['event_start_date'] . '">%c</span>',
@@ -41,7 +41,7 @@ function EventConfig_countdown_page($event_config)
         ]);
     }
 
-    if ($event_config['event_end_date'] != null && time() < $event_config['event_end_date']) {
+    if (!is_null($event_config['event_end_date']) && time() < $event_config['event_end_date']) {
         $elements[] = div('col-sm-3 text-center hidden-xs', [
             heading(_('Event ends'), 4),
             '<span class="moment-countdown text-big" data-timestamp="' . $event_config['event_end_date'] . '">%c</span>',
@@ -49,7 +49,7 @@ function EventConfig_countdown_page($event_config)
         ]);
     }
 
-    if ($event_config['teardown_end_date'] != null && time() < $event_config['teardown_end_date']) {
+    if (!is_null($event_config['teardown_end_date']) && time() < $event_config['teardown_end_date']) {
         $elements[] = div('col-sm-3 text-center hidden-xs', [
             heading(_('Teardown ends'), 4),
             '<span class="moment-countdown text-big" data-timestamp="' . $event_config['teardown_end_date'] . '">%c</span>',
@@ -68,15 +68,15 @@ function EventConfig_countdown_page($event_config)
  */
 function EventConfig_info($event_config)
 {
-    if ($event_config == null) {
+    if (empty($event_config)) {
         return '';
     }
 
     // Event name, start+end date are set
     if (
-        $event_config['event_name'] != null
-        && $event_config['event_start_date'] != null
-        && $event_config['event_end_date'] != null
+        !is_null($event_config['event_name'])
+        && !is_null($event_config['event_start_date'])
+        && !is_null($event_config['event_end_date'])
     ) {
         return sprintf(
             _('%s, from %s to %s'),
@@ -87,7 +87,7 @@ function EventConfig_info($event_config)
     }
 
     // Event name, start date are set
-    if ($event_config['event_name'] != null && $event_config['event_start_date'] != null) {
+    if (!is_null($event_config['event_name']) && !is_null($event_config['event_start_date'])) {
         return sprintf(
             _('%s, starting %s'), $event_config['event_name'],
             date(_('Y-m-d'), $event_config['event_start_date'])
@@ -95,7 +95,7 @@ function EventConfig_info($event_config)
     }
 
     // Event start+end date are set
-    if ($event_config['event_start_date'] != null && $event_config['event_end_date'] != null) {
+    if (!is_null($event_config['event_start_date']) && !is_null($event_config['event_end_date'])) {
         return sprintf(
             _('Event from %s to %s'),
             date(_('Y-m-d'), $event_config['event_start_date']),
@@ -104,7 +104,7 @@ function EventConfig_info($event_config)
     }
 
     // Only event name is set
-    if ($event_config['event_name'] != null) {
+    if (!is_null($event_config['event_name'])) {
         return sprintf($event_config['event_name']);
     }
 

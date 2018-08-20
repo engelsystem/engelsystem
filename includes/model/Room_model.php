@@ -148,14 +148,16 @@ function Room_update($room_id, $name, $from_frab, $map_url, $description)
  * Returns room by id.
  *
  * @param int $room_id RID
- * @return array|false
+ * @return array|null
  */
 function Room($room_id)
 {
-    return DB::selectOne('
+    $room = DB::selectOne('
         SELECT *
         FROM `Room`
         WHERE `RID` = ?', [
         $room_id
     ]);
+
+    return empty($room) ? null : $room;
 }

@@ -47,7 +47,7 @@ function user_shifts()
 function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
 {
     $start_time = $shiftsFilter->getStartTime();
-    if ($start_time == null) {
+    if (is_null($start_time)) {
         $start_time = time();
     }
 

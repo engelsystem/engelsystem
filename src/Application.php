@@ -5,6 +5,7 @@ namespace Engelsystem;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\Container;
 use Engelsystem\Container\ServiceProvider;
+use Illuminate\Container\Container as IlluminateContainer;
 use Psr\Container\ContainerInterface;
 
 class Application extends Container
@@ -44,6 +45,7 @@ class Application extends Container
         $this->instance('container', $this);
         $this->instance(Container::class, $this);
         $this->instance(Application::class, $this);
+        $this->instance(IlluminateContainer::class, $this);
         $this->bind(ContainerInterface::class, Application::class);
     }
 

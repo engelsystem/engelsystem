@@ -110,7 +110,7 @@ function load_room()
     }
 
     $room = Room(request()->input('room_id'));
-    if ($room == null) {
+    if (empty($room)) {
         redirect(page_link_to());
     }
 
