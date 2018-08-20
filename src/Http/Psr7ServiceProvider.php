@@ -18,8 +18,7 @@ class Psr7ServiceProvider extends ServiceProvider
 
         /** @var Request $request */
         $request = $this->app->get('request');
-        $psr7request = $psr7Factory->createRequest($request);
-        $this->app->instance('psr7.request', $psr7request);
+        $this->app->instance('psr7.request', $request);
         $this->app->bind(ServerRequestInterface::class, 'psr7.request');
 
         /** @var Response $response */

@@ -50,11 +50,6 @@ class Psr7ServiceProviderTest extends ServiceProviderTest
                 [ResponseInterface::class, 'psr7.response']
             );
 
-        $psr7Factory->expects($this->once())
-            ->method('createRequest')
-            ->with($request)
-            ->willReturn($psr7request);
-
         $serviceProvider = new Psr7ServiceProvider($app);
         $serviceProvider->register();
     }
