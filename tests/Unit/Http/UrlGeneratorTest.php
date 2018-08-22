@@ -5,7 +5,7 @@ namespace Engelsystem\Test\Unit\Routing;
 use Engelsystem\Application;
 use Engelsystem\Container\Container;
 use Engelsystem\Http\Request;
-use Engelsystem\Routing\UrlGenerator;
+use Engelsystem\Http\UrlGenerator;
 use PHPUnit\Framework\TestCase;
 
 class UrlGeneratorTest extends TestCase
@@ -21,7 +21,7 @@ class UrlGeneratorTest extends TestCase
 
     /**
      * @dataProvider provideLinksTo
-     * @covers       \Engelsystem\Routing\UrlGenerator::to
+     * @covers       \Engelsystem\Http\UrlGenerator::to
      *
      * @param string   $path
      * @param string   $willReturn

@@ -2,15 +2,15 @@
 
 namespace Engelsystem\Test\Unit\Routing;
 
-use Engelsystem\Routing\RoutingServiceProvider;
-use Engelsystem\Routing\UrlGenerator;
+use Engelsystem\Http\UrlGenerator;
+use Engelsystem\Http\UrlGeneratorServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit_Framework_MockObject_MockObject;
 
-class RoutingServiceProviderTest extends ServiceProviderTest
+class UrlGeneratorServiceProviderTest extends ServiceProviderTest
 {
     /**
-     * @covers \Engelsystem\Routing\RoutingServiceProvider::register()
+     * @covers \Engelsystem\Http\UrlGeneratorServiceProvider::register()
      */
     public function testRegister()
     {
@@ -21,9 +21,9 @@ class RoutingServiceProviderTest extends ServiceProviderTest
         $app = $this->getApp();
 
         $this->setExpects($app, 'make', [UrlGenerator::class], $urlGenerator);
-        $this->setExpects($app, 'instance', ['routing.urlGenerator', $urlGenerator]);
+        $this->setExpects($app, 'instance', ['http.urlGenerator', $urlGenerator]);
 
-        $serviceProvider = new RoutingServiceProvider($app);
+        $serviceProvider = new UrlGeneratorServiceProvider($app);
         $serviceProvider->register();
     }
 }

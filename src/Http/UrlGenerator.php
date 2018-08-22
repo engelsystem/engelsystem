@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Routing;
+namespace Engelsystem\Http;
 
 class UrlGenerator
 {
