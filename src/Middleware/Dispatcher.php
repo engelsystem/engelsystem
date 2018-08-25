@@ -12,6 +12,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
 {
+    use ResolvesMiddlewareTrait;
+
     /** @var MiddlewareInterface[]|string[] */
     protected $stack;
 
@@ -70,34 +72,12 @@ class Dispatcher implements MiddlewareInterface, RequestHandlerInterface
             throw new LogicException('Middleware queue is empty');
         }
 
-        if (is_string($middleware)) {
-            $middleware = $this->resolveMiddleware($middleware);
-        }
-
+        $middleware = $this->resolveMiddleware($middleware);
         if (!$middleware instanceof MiddlewareInterface) {
             throw new InvalidArgumentException('Middleware is no instance of ' . MiddlewareInterface::class);
         }
 
         return $middleware->process($request, $this);
-    }
-
-    /**
-     * Resolve the middleware with the container
-     *
-     * @param string $middleware
-     * @return MiddlewareInterface
-     */
-    protected function resolveMiddleware($middleware)
-    {
-        if (!$this->container instanceof Application) {
-            throw new InvalidArgumentException('Unable to resolve middleware ' . $middleware);
-        }
-
-        if ($this->container->has($middleware)) {
-            return $this->container->get($middleware);
-        }
-
-        return $this->container->make($middleware);
     }
 
     /**
