@@ -1,3 +1,4 @@
+{% set theme = user.color|default(config('theme')) %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,9 @@
         <link rel="stylesheet" type="text/css" href="vendor/bootstrap-datepicker-1.7.1/css/bootstrap-datepicker3.min.css"/>
         <script type="text/javascript" src="vendor/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="vendor/jquery-ui.min.js"></script>
-        {{ atom_link|raw }}
+        {% if atom_feed -%}
+            <link href="{{ url('atom', atom_feed) }}" type="application/atom+xml" rel="alternate" title="Atom Feed">
+        {% endif %}
     {% endblock %}
 </head>
 <body>
@@ -27,14 +30,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{{ start_page_url }}">
+                    <a class="navbar-brand" href="{{ url('/') }}">
                         <span class="icon-icon_angel"></span> <strong class="visible-lg-inline">ENGELSYSTEM</strong>
                     </a>
                 </div>
 
                 {% block navbar %}
-                    <div class="collapse navbar-collapse"
-                         id="navbar-collapse-1">{{ menu|raw }} {{ header_toolbar|raw }}</div>
+                    <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                        {{ menu|raw }}
+                        {{ header_toolbar|raw }}
+                    </div>
                 {% endblock %}
             </div>
         {% endblock %}
@@ -50,11 +55,13 @@
                         {% block eventinfo %}
                             {{ event_info|raw }}
                         {% endblock %}
-                        <a href="{{ faq_url }}">FAQ</a>
-                        · <a href="{{ contact_email }}"><span class="glyphicon glyphicon-envelope"></span> Contact</a>
+                        <a href="{{ config('faq_url') }}">FAQ</a>
+                        · <a href="{{ config('contact_email') }}">
+                            <span class="glyphicon glyphicon-envelope"></span>Contact
+                          </a>
                         · <a href="https://github.com/engelsystem/engelsystem/issues">Bugs / Features</a>
                         · <a href="https://github.com/engelsystem/engelsystem/">Development Platform</a>
-                        · <a href="{{ credits_url }}">Credits</a>
+                        · <a href="{{ url('credits') }}">Credits</a>
                     </div>
                 </div>
             {% endblock %}
@@ -69,7 +76,7 @@
     <script type="text/javascript" src="vendor/moment-with-locales.min.js"></script>
     <script type="text/javascript">
         $(function () {
-            moment.locale("{{ locale|escape('js') }}");
+            moment.locale("{{ session_get('locale')|escape('js') }}");
         });
     </script>
     <script type="text/javascript" src="js/moment-countdown.js"></script>

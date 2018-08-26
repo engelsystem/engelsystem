@@ -284,21 +284,11 @@ class LegacyMiddleware implements MiddlewareInterface
         }
 
         return response(view('layouts/app', [
-            'theme'          => isset($user) ? $user['color'] : config('theme'),
             'title'          => $title,
-            'atom_link'      => ($page == 'news' || $page == 'user_meetings')
-                ? ' <link href="'
-                . page_link_to('atom', $parameters)
-                . '" type = "application/atom+xml" rel = "alternate" title = "Atom Feed">'
-                : '',
-            'start_page_url' => page_link_to('/'),
-            'credits_url'    => page_link_to('credits'),
+            'atom_feed'      => ($page == 'news' || $page == 'user_meetings') ? $parameters : [],
             'menu'           => make_menu(),
             'content'        => msg() . $content,
             'header_toolbar' => header_toolbar(),
-            'faq_url'        => config('faq_url'),
-            'contact_email'  => config('contact_email'),
-            'locale'         => locale(),
             'event_info'     => EventConfig_info($event_config) . ' <br />'
         ]), $status);
     }

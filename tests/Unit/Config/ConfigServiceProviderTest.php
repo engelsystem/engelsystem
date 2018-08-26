@@ -23,8 +23,13 @@ class ConfigServiceProviderTest extends ServiceProviderTest
         Application::setInstance($app);
 
         $this->setExpects($app, 'make', [Config::class], $config);
-        $this->setExpects($app, 'instance', ['config', $config]);
         $this->setExpects($app, 'get', ['path.config'], __DIR__ . '/../../../config', $this->atLeastOnce());
+        $app->expects($this->exactly(2))
+            ->method('instance')
+            ->withConsecutive(
+                [Config::class, $config],
+                ['config', $config]
+            );
 
         $this->setExpects($config, 'set', null, null, $this->exactly(2));
         $this->setExpects($config, 'get', [null], []);

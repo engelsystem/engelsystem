@@ -17,6 +17,7 @@ class SessionServiceProvider extends ServiceProvider
         $this->app->bind(SessionStorageInterface::class, 'session.storage');
 
         $session = $this->app->make(Session::class);
+        $this->app->instance(Session::class, $session);
         $this->app->instance('session', $session);
 
         /** @var Request $request */

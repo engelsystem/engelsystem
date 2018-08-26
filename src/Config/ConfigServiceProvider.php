@@ -12,6 +12,7 @@ class ConfigServiceProvider extends ServiceProvider
         $configFile = config_path('config.php');
 
         $config = $this->app->make(Config::class);
+        $this->app->instance(Config::class, $config);
         $this->app->instance('config', $config);
 
         $config->set(require $defaultConfigFile);
