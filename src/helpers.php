@@ -5,8 +5,8 @@ use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
-use Engelsystem\Renderer\Renderer;
 use Engelsystem\Http\UrlGenerator;
+use Engelsystem\Renderer\Renderer;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -139,7 +139,7 @@ function url($path = null, $parameters = [])
  * @param mixed[] $data
  * @return Renderer|string
  */
-function view($template = null, $data = null)
+function view($template = null, $data = [])
 {
     $renderer = app('renderer');
 

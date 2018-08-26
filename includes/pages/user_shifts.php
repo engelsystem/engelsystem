@@ -224,7 +224,7 @@ function view_user_shifts()
     return page([
         div('col-md-12', [
             msg(),
-            view(__DIR__ . '/../../templates/user_shifts.html', [
+            view(__DIR__ . '/../../templates/pages/user-shifts.html', [
                 'title'         => shifts_title(),
                 'room_select'   => make_select($rooms, $shiftsFilter->getRooms(), 'rooms', _('Rooms')),
                 'start_select'  => html_select_key(

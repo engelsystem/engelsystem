@@ -107,6 +107,7 @@ class Application extends Container
         $this->instance('path', $appPath);
         $this->instance('path.config', $appPath . DIRECTORY_SEPARATOR . 'config');
         $this->instance('path.lang', $appPath . DIRECTORY_SEPARATOR . 'locale');
+        $this->instance('path.views', $appPath . DIRECTORY_SEPARATOR . 'templates');
     }
 
     /**

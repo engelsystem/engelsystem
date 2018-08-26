@@ -29,6 +29,7 @@
         "symfony/http-foundation": "^3.3",
         "symfony/psr-http-message-bridge": "^1.0",
         "twbs/bootstrap": "^3.3",
+        "twig/twig": "^2.5",
         "zendframework/zend-diactoros": "^1.7"
     },
     "require-dev": {

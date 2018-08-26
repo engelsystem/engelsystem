@@ -10,6 +10,7 @@ return [
         \Engelsystem\Config\ConfigServiceProvider::class,
         \Engelsystem\Http\UrlGeneratorServiceProvider::class,
         \Engelsystem\Renderer\RendererServiceProvider::class,
+        \Engelsystem\Renderer\TwigServiceProvider::class,
         \Engelsystem\Database\DatabaseServiceProvider::class,
         \Engelsystem\Http\RequestServiceProvider::class,
         \Engelsystem\Http\SessionServiceProvider::class,

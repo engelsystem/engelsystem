@@ -283,7 +283,7 @@ class LegacyMiddleware implements MiddlewareInterface
             $content = info($content, true);
         }
 
-        return response(view(__DIR__ . '/../../templates/layout.html', [
+        return response(view('layouts/app', [
             'theme'          => isset($user) ? $user['color'] : config('theme'),
             'title'          => $title,
             'atom_link'      => ($page == 'news' || $page == 'user_meetings')
