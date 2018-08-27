@@ -68,7 +68,7 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
     $end_date = is_numeric($end_date) ? date('Y-m-d', $end_date) : '';
     return form_element($label, '
     <div class="input-group date" id="' . $dom_id . '">
-      <input name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '">'
+      <input type="date" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '">'
         . '<span class="input-group-addon">' . glyph('th') . '</span>
     </div>
     <script type="text/javascript">
