@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2017-12-29 19:01+0100\n"
-"PO-Revision-Date: 2017-12-29 19:03+0100\n"
+"PO-Revision-Date: 2018-08-27 22:26+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -110,6 +110,7 @@ msgstr "löschen"
 msgid "leave"
 msgstr "verlassen"
 
+# As already mentioned in Issue #312 : I'd suggest "join angel" and the German translation "Engel hinzufügen" for this button.
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/angeltypes_controller.php:322
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:151
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:540
@@ -165,7 +166,7 @@ msgstr "Einstellungen gespeichert."
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_shifts.php:274
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/PublicDashboard_view.php:55
 msgid "Public Dashboard"
-msgstr "Public Dashboard"
+msgstr "Öffentliches Dashboard"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:109
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/shift_entries_controller.php:181
@@ -589,17 +590,17 @@ msgstr "%s löschen"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:160
 msgid "Please enter a valid number of vouchers."
-msgstr "Bitte gib eine korrekte Anzahl von Vouchern ein."
+msgstr "Bitte gib eine korrekte Anzahl von Gutscheinen ein."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:168
 msgid "Saved the number of vouchers."
-msgstr "Anzahl der Voucher gespeichert."
+msgstr "Anzahl der Gutscheine gespeichert."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:177
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:170
 #, php-format
 msgid "%s's vouchers"
-msgstr "Voucher von %s"
+msgstr "Gutschein von %s"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/controller/users_controller.php:194
 msgid "User not found."
@@ -1599,7 +1600,7 @@ msgstr ""
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:321
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:60
 msgid "Humans are allowed to send me an email (e.g. for ticket vouchers)"
-msgstr "Menschen dürfen mir eine E-Mail senden (z.B. für Ticket Voucher)"
+msgstr "Menschen dürfen mir eine E-Mail senden (z.B. für Ticket Gutscheine)"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:330
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:36
@@ -2341,6 +2342,7 @@ msgstr "Eintragen"
 msgid "ended"
 msgstr "vorbei"
 
+# Wie ist dies zu verstehen bitte?
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/ShiftCalendarShiftRenderer.php:205
 msgid "please arrive for signup"
 msgstr "Ankommen zum Eintragen"
@@ -2639,11 +2641,11 @@ msgstr "Dein Passwort"
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:176
 #, php-format
 msgid "Angel should receive at least  %d vouchers."
-msgstr "Engel sollte mindestens %d Voucher bekommen."
+msgstr "Engel sollte mindestens %d Gutscheine bekommen."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:181
 msgid "Number of vouchers given out"
-msgstr "Anzahl Voucher bekommen"
+msgstr "Anzahl Gutscheine bekommen"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:216
 msgid "m/d/Y h:i a"
@@ -2664,7 +2666,7 @@ msgstr "Angekommen"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:243
 msgid "Voucher"
-msgstr "Voucher"
+msgstr "Gutschein"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:244
 msgid "Freeloads"
@@ -2727,7 +2729,7 @@ msgstr "Erstellt von %s am %s"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:524
 msgid "Day &amp; time"
-msgstr "Day &amp; time"
+msgstr "Tag &amp; Zeit"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:525
 msgid "Duration"
@@ -2751,7 +2753,7 @@ msgstr "Führerschein"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:562
 msgid "Edit vouchers"
-msgstr "Voucher bearbeiten"
+msgstr "Gutschein bearbeiten"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:566
 msgid "Add work log"
@@ -2808,12 +2810,12 @@ msgstr "Nicht angekommen (Geplant: %s)"
 #, php-format
 msgid "Got %s voucher"
 msgid_plural "Got %s vouchers"
-msgstr[0] "Einen Voucher bekommen"
-msgstr[1] "%s Voucher bekommen"
+msgstr[0] "Einen Gutschein bekommen"
+msgstr[1] "%s Gutscheine bekommen"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:701
 msgid "Got no vouchers"
-msgstr "Voucher nicht bekommen"
+msgstr "Gutschein nicht bekommen"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:716
 msgid ""
