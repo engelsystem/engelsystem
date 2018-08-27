@@ -59,12 +59,12 @@ function admin_user()
             . '</p></td></tr>' . "\n";
         $html .= '  <tr><td>Name</td><td>' . '<input size="40" name="eName" value="' . $user_source['Name'] . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Vorname</td><td>' . '<input size="40" name="eVorname" value="' . $user_source['Vorname'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Alter</td><td>' . '<input size="5" name="eAlter" value="' . $user_source['Alter'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Telefon</td><td>' . '<input size="40" name="eTelefon" value="' . $user_source['Telefon'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Handy</td><td>' . '<input size="40" name="eHandy" value="' . $user_source['Handy'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Alter</td><td>' . '<input  type="value" size="5" name="eAlter" value="' . $user_source['Alter'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Telefon</td><td>' . '<input  type="tel" size="40" name="eTelefon" value="' . $user_source['Telefon'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Handy</td><td>' . '<input  type="tel" size="40" name="eHandy" value="' . $user_source['Handy'] . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>DECT</td><td>' . '<input size="4" name="eDECT" value="' . $user_source['DECT'] . '" class="form-control"></td></tr>' . "\n";
         if ($user_source['email_by_human_allowed']) {
-            $html .= "  <tr><td>email</td><td>" . '<input size="40" name="eemail" value="' . $user_source['email'] . '" class="form-control"></td></tr>' . "\n";
+            $html .= "  <tr><td>email</td><td>" . '<input type="email" size="40" name="eemail" value="' . $user_source['email'] . '" class="form-control"></td></tr>' . "\n";
         }
         $html .= "  <tr><td>jabber</td><td>" . '<input size="40" name="ejabber" value="' . $user_source['jabber'] . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Size</td><td>'
