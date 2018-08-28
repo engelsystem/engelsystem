@@ -5,10 +5,11 @@ namespace Engelsystem\Test\Unit;
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\Container;
+use Engelsystem\Helpers\Translator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
-use Engelsystem\Renderer\Renderer;
 use Engelsystem\Http\UrlGenerator;
+use Engelsystem\Renderer\Renderer;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -192,6 +193,29 @@ class HelpersTest extends TestCase
             ->willReturn('rendered template');
 
         $this->assertEquals('rendered template', view('template.name', ['template' => 'data']));
+    }
+
+    /**
+     * @covers \__
+     * @covers \trans
+     */
+    public function testTrans()
+    {
+        /** @var Translator|MockObject $translator */
+        $translator = $this->getMockBuilder(Translator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->getAppMock('translator', $translator);
+
+        $translator->expects($this->exactly(2))
+            ->method('translate')
+            ->with('Lorem %s Ipsum', ['foo'])
+            ->willReturn('Lorem foo Ipsum');
+
+        $this->assertEquals($translator, trans());
+        $this->assertEquals('Lorem foo Ipsum', trans('Lorem %s Ipsum', ['foo']));
+        $this->assertEquals('Lorem foo Ipsum', __('Lorem %s Ipsum', ['foo']));
     }
 
     /**

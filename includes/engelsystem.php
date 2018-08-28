@@ -22,12 +22,6 @@ if ($app->get('config')->get('maintenance')) {
 
 
 /**
- * Init translations
- */
-gettext_init();
-
-
-/**
  * Init authorization
  */
 load_auth();

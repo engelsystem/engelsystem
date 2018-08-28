@@ -3,6 +3,7 @@
 
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
+use Engelsystem\Helpers\Translator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGenerator;
@@ -116,6 +117,40 @@ function session($key = null, $default = null)
     }
 
     return $session->get($key, $default);
+}
+
+/**
+ * Translate the given message
+ *
+ * @param  string $key
+ * @param  array  $replace
+ * @return string|Translator
+ */
+function trans($key = null, $replace = [])
+{
+    /** @var Translator $translator */
+    $translator = app('translator');
+
+    if (is_null($key)) {
+        return $translator;
+    }
+
+    return $translator->translate($key, $replace);
+}
+
+/**
+ * Translate the given message
+ *
+ * @param  string $key
+ * @param  array  $replace
+ * @return string
+ */
+function __($key, $replace = [])
+{
+    /** @var Translator $translator */
+    $translator = app('translator');
+
+    return $translator->translate($key, $replace);
 }
 
 /**
