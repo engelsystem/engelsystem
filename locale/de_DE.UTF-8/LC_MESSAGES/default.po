@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2017-12-29 19:01+0100\n"
-"PO-Revision-Date: 2017-12-29 19:03+0100\n"
+"PO-Revision-Date: 2018-08-27 22:16+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -110,7 +110,6 @@ msgstr "löschen"
 msgid "leave"
 msgstr "verlassen"
 
-# As already mentioned in Issue #312 : I'd suggest "join angel" and the German translation "Engel hinzufügen" for this button.
 #: engelsystem/includes/controller/angeltypes_controller.php:322
 #: engelsystem/includes/view/AngelTypes_view.php:151
 #: engelsystem/includes/view/AngelTypes_view.php:540
