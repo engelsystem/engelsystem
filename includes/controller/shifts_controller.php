@@ -277,6 +277,10 @@ function shift_controller()
     $shift_signup_state = new ShiftSignupState(ShiftSignupState::OCCUPIED, 0);
     foreach ($angeltypes as &$angeltype) {
         $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
+        if(empty($needed_angeltype)) {
+            continue;
+        }
+        
         $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['id']);
 
         $angeltype_signup_state = Shift_signup_allowed(
@@ -288,11 +292,7 @@ function shift_controller()
             $needed_angeltype,
             $shift_entries
         );
-        if (empty($shift_signup_state)) {
-            $shift_signup_state = $angeltype_signup_state;
-        } else {
-            $shift_signup_state->combineWith($angeltype_signup_state);
-        }
+        $shift_signup_state->combineWith($angeltype_signup_state);
         $angeltype['shift_signup_state'] = $angeltype_signup_state;
     }
 
