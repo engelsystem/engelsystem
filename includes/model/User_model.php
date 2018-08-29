@@ -39,6 +39,10 @@ function User_tshirt_score($user)
         $user['UID'],
         time()
     ]);
+    if (!isset($result_shifts['tshirt_score'])) {
+        $result_shifts = ['tshirt_score' => 0];
+    }
+
     $result_worklog = DB::selectOne('
         SELECT SUM(`work_hours`) AS `tshirt_score`
         FROM `User` 
@@ -49,6 +53,9 @@ function User_tshirt_score($user)
         $user['UID'],
         time()
     ]);
+    if (!isset($result_worklog['tshirt_score'])) {
+        $result_worklog = ['tshirt_score' => 0];
+    }
 
     return $result_shifts['tshirt_score'] + $result_worklog['tshirt_score'];
 }
