@@ -182,7 +182,7 @@ function NeededAngeltypes_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 /**
  * @param array $shift
  * @param array $angeltype
- * @return array
+ * @return array|null
  */
 function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
 {

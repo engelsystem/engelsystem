@@ -71,7 +71,7 @@ function user_myshifts()
                 $shifts_user['UID'],
             ]
         );
-        if (count($shift) > 0) {
+        if (!empty($shift)) {
             $freeloaded = $shift['freeloaded'];
             $freeload_comment = $shift['freeload_comment'];
 

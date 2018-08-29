@@ -45,14 +45,19 @@ class Db
      *
      * @param string $query
      * @param array  $bindings
-     * @return array
+     * @return array|null
      */
     public static function selectOne($query, array $bindings = [])
     {
         $result = self::connection()->selectOne($query, $bindings);
 
         // @TODO: remove typecast
-        return (array)$result;
+        $result = (array)$result;
+        if (empty($result)) {
+            return null;
+        }
+
+        return $result;
     }
 
     /**
