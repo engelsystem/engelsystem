@@ -8,6 +8,27 @@ use Twig_Function as TwigFunction;
 abstract class ExtensionTest extends TestCase
 {
     /**
+     * Assert that a twig filter was registered
+     *
+     * @param string         $name
+     * @param callable       $callback
+     * @param TwigFunction[] $functions
+     */
+    protected function assertFilterExists($name, $callback, $functions)
+    {
+        foreach ($functions as $function) {
+            if ($function->getName() != $name) {
+                continue;
+            }
+
+            $this->assertEquals($callback, $function->getCallable());
+            return;
+        }
+
+        $this->fail(sprintf('Filter %s not found', $name));
+    }
+
+    /**
      * Assert that a twig function was registered
      *
      * @param string         $name
@@ -44,5 +65,20 @@ abstract class ExtensionTest extends TestCase
         }
 
         $this->fail(sprintf('Global %s not found', $name));
+    }
+
+    /**
+     * Assert that a token parser was set
+     *
+     * @param $tokenParser
+     * @param $tokenParsers
+     */
+    protected function assertTokenParserExists($tokenParser, $tokenParsers)
+    {
+        $this->assertArraySubset(
+            [$tokenParser],
+            $tokenParsers,
+            sprintf('Token parser %s not found', get_class($tokenParser))
+        );
     }
 }

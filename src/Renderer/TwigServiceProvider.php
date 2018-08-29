@@ -6,6 +6,7 @@ use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Renderer\Twig\Extensions\Config;
 use Engelsystem\Renderer\Twig\Extensions\Globals;
 use Engelsystem\Renderer\Twig\Extensions\Session;
+use Engelsystem\Renderer\Twig\Extensions\Translation;
 use Engelsystem\Renderer\Twig\Extensions\Url;
 use Twig_Environment as Twig;
 use Twig_LoaderInterface as TwigLoaderInterface;
@@ -14,10 +15,11 @@ class TwigServiceProvider extends ServiceProvider
 {
     /** @var array */
     protected $extensions = [
-        'config'  => Config::class,
-        'globals' => Globals::class,
-        'session' => Session::class,
-        'url'     => Url::class,
+        'config'      => Config::class,
+        'globals'     => Globals::class,
+        'session'     => Session::class,
+        'url'         => Url::class,
+        'translation' => Translation::class,
     ];
 
     public function register()
