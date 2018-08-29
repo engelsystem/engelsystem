@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Middleware;
 
+use Engelsystem\Helpers\Translator;
 use Engelsystem\Http\Request;
 use Engelsystem\Middleware\LegacyMiddleware;
 use PHPUnit\Framework\TestCase;
@@ -37,6 +38,10 @@ class LegacyMiddlewareTest extends TestCase
         $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
+        /** @var Translator|MockObject $translator */
+        $translator = $this->getMockBuilder(Translator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $middleware->expects($this->exactly(2))
             ->method('loadPage')
@@ -50,15 +55,27 @@ class LegacyMiddlewareTest extends TestCase
             ->method('renderPage')
             ->withConsecutive(
                 ['user_worklog', 'title', 'content'],
-                ['404', 'Page not found'],
+                ['404', 'Page not found', 'It\'s not available!'],
                 ['login', 'title2', 'content2']
             )
             ->willReturn($response);
 
-        $container->expects($this->atLeastOnce())
+        $container->expects($this->exactly(4))
             ->method('get')
-            ->with('request')
-            ->willReturn($defaultRequest);
+            ->withConsecutive(['request'], ['request'], ['translator'], ['request'])
+            ->willReturnOnConsecutiveCalls(
+                $defaultRequest,
+                $defaultRequest,
+                $translator,
+                $defaultRequest
+            );
+
+        $translator->expects($this->exactly(2))
+            ->method('translate')
+            ->willReturnOnConsecutiveCalls(
+                'Page not found',
+                'It\'s not available!'
+            );
 
         $defaultRequest->query = $parameters;
         $defaultRequest->expects($this->once())

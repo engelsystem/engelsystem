@@ -83,9 +83,12 @@ class LegacyMiddleware implements MiddlewareInterface
         }
 
         if (empty($title) and empty($content)) {
+            /** @var Translator $translator */
+            $translator = $this->container->get('translator');
+
             $page = 404;
-            $title = _('Page not found');
-            $content = _('This page could not be found or you don\'t have permission to view it. You probably have to sign in or register in order to gain access!');
+            $title = $translator->translate('Page not found');
+            $content = $translator->translate('This page could not be found or you don\'t have permission to view it. You probably have to sign in or register in order to gain access!');
         }
 
         return $this->renderPage($page, $title, $content);
