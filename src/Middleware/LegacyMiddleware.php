@@ -83,7 +83,7 @@ class LegacyMiddleware implements MiddlewareInterface
         }
 
         if (empty($title) and empty($content)) {
-            $page = '404';
+            $page = 404;
             $title = _('Page not found');
             $content = _('This page could not be found or you don\'t have permission to view it. You probably have to sign in or register in order to gain access!');
         }
@@ -277,10 +277,8 @@ class LegacyMiddleware implements MiddlewareInterface
             $parameters['meetings'] = 1;
         }
 
-        $status = 200;
-        if ($page == '404') {
-            $status = 404;
-            $content = info($content, true);
+        if (!empty($page) && is_int($page)) {
+            return response($content, (int)$page);
         }
 
         return response(view('layouts/app', [
@@ -290,6 +288,6 @@ class LegacyMiddleware implements MiddlewareInterface
             'content'        => msg() . $content,
             'header_toolbar' => header_toolbar(),
             'event_info'     => EventConfig_info($event_config) . ' <br />'
-        ]), $status);
+        ]), 200);
     }
 }

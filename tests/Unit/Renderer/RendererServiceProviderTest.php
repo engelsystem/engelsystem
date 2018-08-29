@@ -37,10 +37,12 @@ class RendererServiceProviderTest extends ServiceProviderTest
                 $htmlEngine
             );
 
-        $app->expects($this->exactly(2))
+        $app->expects($this->exactly(4))
             ->method('instance')
             ->withConsecutive(
+                [Renderer::class, $renderer],
                 ['renderer', $renderer],
+                [HtmlEngine::class, $htmlEngine],
                 ['renderer.htmlEngine', $htmlEngine]
             );
 

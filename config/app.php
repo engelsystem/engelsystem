@@ -26,6 +26,7 @@ return [
         \Engelsystem\Middleware\SendResponseHandler::class,
         \Engelsystem\Middleware\ExceptionHandler::class,
         \Engelsystem\Middleware\SetLocale::class,
+        \Engelsystem\Middleware\ErrorHandler::class,
         \Engelsystem\Middleware\RouteDispatcher::class,
         \Engelsystem\Middleware\RequestHandler::class,
     ],

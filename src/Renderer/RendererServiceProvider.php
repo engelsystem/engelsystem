@@ -24,12 +24,14 @@ class RendererServiceProvider extends ServiceProvider
     protected function registerRenderer()
     {
         $renderer = $this->app->make(Renderer::class);
+        $this->app->instance(Renderer::class, $renderer);
         $this->app->instance('renderer', $renderer);
     }
 
     protected function registerHtmlEngine()
     {
         $htmlEngine = $this->app->make(HtmlEngine::class);
+        $this->app->instance(HtmlEngine::class, $htmlEngine);
         $this->app->instance('renderer.htmlEngine', $htmlEngine);
         $this->app->tag('renderer.htmlEngine', ['renderer.engine']);
     }

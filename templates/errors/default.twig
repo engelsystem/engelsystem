@@ -1,0 +1,7 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Error {{ status }}{% endblock %}
+
+{% block content %}
+    <div class="alert alert-info">{{ content }}</div>
+{% endblock %}
