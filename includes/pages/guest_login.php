@@ -69,12 +69,6 @@ function guest_register()
         }
     }
 
-    foreach ($tshirt_sizes as $key => $size) {
-        if (empty($size)) {
-            unset($tshirt_sizes[$key]);
-        }
-    }
-
     if (!in_array('register', $privileges) || (!isset($user) && !config('registration_enabled'))) {
         error(_('Registration is disabled.'));
 
@@ -334,7 +328,7 @@ function guest_register()
                         div('col-sm-6', [
                             $enable_tshirt_size ? form_select('tshirt_size',
                                 _('Shirt size') . ' ' . entry_required(),
-                                $tshirt_sizes, $tshirt_size) : ''
+                                $tshirt_sizes, $tshirt_size, _('Please select...')) : ''
                         ])
                     ]),
                     div('row', [

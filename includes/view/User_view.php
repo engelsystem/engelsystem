@@ -66,7 +66,8 @@ function User_settings_view(
                         'tshirt_size',
                         _('Shirt size'),
                         $tshirt_sizes,
-                        $user_source['Size']
+                        $user_source['Size'],
+                        _('Please select...')
                     ) : '',
                     form_info('', _('Please visit the angeltypes page to manage your angeltypes.')),
                     form_submit('submit', _('Save'))

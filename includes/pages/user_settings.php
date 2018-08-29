@@ -224,12 +224,6 @@ function user_settings()
         }
     }
 
-    foreach ($tshirt_sizes as $key => $size) {
-        if (empty($size)) {
-            unset($tshirt_sizes[$key]);
-        }
-    }
-
     $user_source = $user;
 
     if ($request->has('submit')) {

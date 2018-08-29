@@ -18,13 +18,6 @@ function admin_user()
     global $user, $privileges;
     $tshirt_sizes = config('tshirt_sizes');
     $request = request();
-
-    foreach ($tshirt_sizes as $key => $size) {
-        if (empty($size)) {
-            unset($tshirt_sizes[$key]);
-        }
-    }
-
     $html = '';
 
     if (!$request->has('id')) {
@@ -68,7 +61,7 @@ function admin_user()
         }
         $html .= "  <tr><td>jabber</td><td>" . '<input size="40" name="ejabber" value="' . $user_source['jabber'] . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Size</td><td>'
-            . html_select_key('size', 'eSize', $tshirt_sizes, $user_source['Size']) . '</td></tr>' . "\n";
+            . html_select_key('size', 'eSize', $tshirt_sizes, $user_source['Size'], _('Please select...')) . '</td></tr>' . "\n";
 
         $options = [
             '1' => _('Yes'),
