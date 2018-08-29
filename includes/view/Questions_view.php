@@ -12,7 +12,7 @@ function Questions_view($open_questions, $answered_questions, $ask_action)
         $question['actions'] = '<a href="'
             . page_link_to('user_questions', ['action' => 'delete', 'id' => $question['QID']])
             . '">'
-            . _('delete')
+            . __('delete')
             . '</a>';
         $question['Question'] = str_replace("\n", '<br />', $question['Question']);
     }
@@ -23,28 +23,28 @@ function Questions_view($open_questions, $answered_questions, $ask_action)
         $question['actions'] = '<a href="'
             . page_link_to('user_questions', ['action' => 'delete', 'id' => $question['QID']])
             . '">'
-            . _('delete')
+            . __('delete')
             . '</a>';
     }
 
     return page_with_title(questions_title(), [
         msg(),
-        heading(_('Open questions'), 2),
+        heading(__('Open questions'), 2),
         table([
-            'Question' => _('Question'),
+            'Question' => __('Question'),
             'actions'  => ''
         ], $open_questions),
-        heading(_('Answered questions'), 2),
+        heading(__('Answered questions'), 2),
         table([
-            'Question'    => _('Question'),
-            'answer_user' => _('Answered by'),
-            'Answer'      => _('Answer'),
+            'Question'    => __('Question'),
+            'answer_user' => __('Answered by'),
+            'Answer'      => __('Answer'),
             'actions'     => ''
         ], $answered_questions),
-        heading(_('Ask the Heaven'), 2),
+        heading(__('Ask the Heaven'), 2),
         form([
-            form_textarea('question', _('Your Question:'), ''),
-            form_submit('submit', _('Save'))
+            form_textarea('question', __('Your Question:'), ''),
+            form_submit('submit', __('Save'))
         ], $ask_action)
     ]);
 }

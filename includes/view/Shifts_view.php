@@ -13,7 +13,7 @@ function Shift_view_header($shift, $room)
 {
     return div('row', [
         div('col-sm-3 col-xs-6', [
-            '<h4>' . _('Title') . '</h4>',
+            '<h4>' . __('Title') . '</h4>',
             '<p class="lead">'
             . ($shift['URL'] != ''
                 ? '<a href="' . $shift['URL'] . '">' . $shift['title'] . '</a>'
@@ -21,23 +21,23 @@ function Shift_view_header($shift, $room)
             . '</p>'
         ]),
         div('col-sm-3 col-xs-6', [
-            '<h4>' . _('Start') . '</h4>',
+            '<h4>' . __('Start') . '</h4>',
             '<p class="lead' . (time() >= $shift['start'] ? ' text-success' : '') . '">',
-            glyph('calendar') . date(_('Y-m-d'), $shift['start']),
+            glyph('calendar') . date(__('Y-m-d'), $shift['start']),
             '<br />',
             glyph('time') . date('H:i', $shift['start']),
             '</p>'
         ]),
         div('col-sm-3 col-xs-6', [
-            '<h4>' . _('End') . '</h4>',
+            '<h4>' . __('End') . '</h4>',
             '<p class="lead' . (time() >= $shift['end'] ? ' text-success' : '') . '">',
-            glyph('calendar') . date(_('Y-m-d'), $shift['end']),
+            glyph('calendar') . date(__('Y-m-d'), $shift['end']),
             '<br />',
             glyph('time') . date('H:i', $shift['end']),
             '</p>'
         ]),
         div('col-sm-3 col-xs-6', [
-            '<h4>' . _('Location') . '</h4>',
+            '<h4>' . __('Location') . '</h4>',
             '<p class="lead">' . Room_name_render($room) . '</p>'
         ])
     ]);
@@ -52,14 +52,14 @@ function Shift_editor_info_render($shift)
     $info = [];
     if (!empty($shift['created_by_user_id'])) {
         $info[] = sprintf(
-            glyph('plus') . _('created at %s by %s'),
+            glyph('plus') . __('created at %s by %s'),
             date('Y-m-d H:i', $shift['created_at_timestamp']),
             User_Nick_render(User($shift['created_by_user_id']))
         );
     }
     if (!empty($shift['edited_by_user_id'])) {
         $info[] = sprintf(
-            glyph('pencil') . _('edited at %s by %s'),
+            glyph('pencil') . __('edited at %s by %s'),
             date('Y-m-d H:i', $shift['edited_at_timestamp']),
             User_Nick_render(User($shift['edited_by_user_id']))
         );
@@ -82,11 +82,11 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
     }
 
     if ($angeltype['shift_signup_state']->isSignupAllowed()) {
-        return button(shift_entry_create_link($shift, $angeltype), _('Sign up'));
+        return button(shift_entry_create_link($shift, $angeltype), __('Sign up'));
     } elseif (empty($user_angeltype)) {
         return button(
             page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
-            sprintf(_('Become %s'),
+            sprintf(__('Become %s'),
                 $angeltype['name'])
         );
     }
@@ -125,33 +125,33 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
     $content = [msg()];
 
     if ($shift_signup_state->getState() == ShiftSignupState::COLLIDES) {
-        $content[] = info(_('This shift collides with one of your shifts.'), true);
+        $content[] = info(__('This shift collides with one of your shifts.'), true);
     }
 
     if ($shift_signup_state->getState() == ShiftSignupState::SIGNED_UP) {
-        $content[] = info(_('You are signed up for this shift.'), true);
+        $content[] = info(__('You are signed up for this shift.'), true);
     }
 
     $buttons = [];
     if ($shift_admin || $admin_shifttypes || $admin_rooms) {
         $buttons = [
-            $shift_admin ? button(shift_edit_link($shift), glyph('pencil') . _('edit')) : '',
-            $shift_admin ? button(shift_delete_link($shift), glyph('trash') . _('delete')) : '',
+            $shift_admin ? button(shift_edit_link($shift), glyph('pencil') . __('edit')) : '',
+            $shift_admin ? button(shift_delete_link($shift), glyph('trash') . __('delete')) : '',
             $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype['name']) : '',
             $admin_rooms ? button(room_link($room), glyph('map-marker') . $room['Name']) : '',
         ];
     }
-    $buttons[] = button(user_link($user), '<span class="icon-icon_angel"></span> ' . _('My shifts'));
+    $buttons[] = button(user_link($user), '<span class="icon-icon_angel"></span> ' . __('My shifts'));
     $content[] = buttons($buttons);
 
     $content[] = Shift_view_header($shift, $room);
     $content[] = div('row', [
         div('col-sm-6', [
-            '<h2>' . _('Needed angels') . '</h2>',
+            '<h2>' . __('Needed angels') . '</h2>',
             '<div class="list-group">' . $needed_angels . '</div>'
         ]),
         div('col-sm-6', [
-            '<h2>' . _('Description') . '</h2>',
+            '<h2>' . __('Description') . '</h2>',
             $parsedown->parse($shifttype['description'])
         ])
     ]);

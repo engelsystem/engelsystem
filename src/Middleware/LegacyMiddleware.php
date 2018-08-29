@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Middleware;
 
+use Engelsystem\Helpers\Translator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Psr\Container\ContainerInterface;

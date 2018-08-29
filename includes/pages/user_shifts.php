@@ -8,7 +8,7 @@ use Engelsystem\ShiftsFilter;
  */
 function shifts_title()
 {
-    return _('Shifts');
+    return __('Shifts');
 }
 
 /**
@@ -99,7 +99,7 @@ function load_rooms()
         'SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` ORDER BY `Name`'
     );
     if (empty($rooms)) {
-        error(_('The administration has not configured any rooms yet.'));
+        error(__('The administration has not configured any rooms yet.'));
         redirect(page_link_to('/'));
     }
     return $rooms;
@@ -118,7 +118,7 @@ function load_days()
     $days = array_map('array_shift', $days);
 
     if (empty($days)) {
-        error(_('The administration has not configured any shifts yet.'));
+        error(__('The administration has not configured any shifts yet.'));
         redirect(page_link_to('/'));
     }
     return $days;
@@ -132,7 +132,7 @@ function load_types()
     global $user;
 
     if (!count(DB::select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0'))) {
-        error(_('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
+        error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
         redirect(page_link_to('/'));
     }
     $types = DB::select('
@@ -200,11 +200,11 @@ function view_user_shifts()
     $filled = [
         [
             'id'   => '1',
-            'name' => _('occupied')
+            'name' => __('occupied')
         ],
         [
             'id'   => '0',
-            'name' => _('free')
+            'name' => __('free')
         ]
     ];
     $start_day = date('Y-m-d', $shiftsFilter->getStartTime());
@@ -226,7 +226,7 @@ function view_user_shifts()
             msg(),
             view(__DIR__ . '/../../templates/pages/user-shifts.html', [
                 'title'         => shifts_title(),
-                'room_select'   => make_select($rooms, $shiftsFilter->getRooms(), 'rooms', _('Rooms')),
+                'room_select'   => make_select($rooms, $shiftsFilter->getRooms(), 'rooms', __('Rooms')),
                 'start_select'  => html_select_key(
                     'start_day',
                     'start_day',
@@ -245,34 +245,34 @@ function view_user_shifts()
                     $types,
                     $shiftsFilter->getTypes(),
                     'types',
-                    _('Angeltypes') . '<sup>1</sup>',
+                    __('Angeltypes') . '<sup>1</sup>',
                     [
                         button(
                             'javascript: checkOwnTypes(\'selection_types\', ' . json_encode($ownTypes) . ')',
-                            _('Own')
+                            __('Own')
                         ),
                     ]
                 ),
-                'filled_select' => make_select($filled, $shiftsFilter->getFilled(), 'filled', _('Occupancy')),
+                'filled_select' => make_select($filled, $shiftsFilter->getFilled(), 'filled', __('Occupancy')),
                 'task_notice'   =>
                     '<sup>1</sup>'
-                    . _('The tasks shown here are influenced by the angeltypes you joined already!')
+                    . __('The tasks shown here are influenced by the angeltypes you joined already!')
                     . ' <a href="' . page_link_to('angeltypes', ['action' => 'about']) . '">'
-                    . _('Description of the jobs.')
+                    . __('Description of the jobs.')
                     . '</a>',
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
                 'ical_text'     => ical_hint(),
-                'filter'        => _('Filter'),
-                'set_yesterday' => _('Yesterday'),
-                'set_today'     => _('Today'),
-                'set_tomorrow'  => _('Tomorrow'),
-                'set_last_8h'   => _('last 8h'),
-                'set_last_4h'   => _('last 4h'),
-                'set_next_4h'   => _('next 4h'),
-                'set_next_8h'   => _('next 8h'),
+                'filter'        => __('Filter'),
+                'set_yesterday' => __('Yesterday'),
+                'set_today'     => __('Today'),
+                'set_tomorrow'  => __('Tomorrow'),
+                'set_last_8h'   => __('last 8h'),
+                'set_last_4h'   => __('last 4h'),
+                'set_next_4h'   => __('next 4h'),
+                'set_next_8h'   => __('next 8h'),
                 'buttons'       => button(
                     public_dashboard_link(),
-                    glyph('dashboard') . _('Public Dashboard')
+                    glyph('dashboard') . __('Public Dashboard')
                 )
             ])
         ])
@@ -286,9 +286,9 @@ function ical_hint()
 {
     global $user;
 
-    return heading(_('iCal export'), 2)
+    return heading(__('iCal export'), 2)
         . '<p>' . sprintf(
-            _('Export your own shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
+            __('Export your own shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
             page_link_to('ical', ['key' => $user['api_key']]),
             page_link_to('shifts_json_export', ['key' => $user['api_key']]),
             page_link_to('user_myshifts', ['reset' => 1])
@@ -321,8 +321,8 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
     }
 
     $buttons = [];
-    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', true)', _('All'));
-    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', false)', _('None'));
+    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', true)', __('All'));
+    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', false)', __('None'));
     $buttons = array_merge($buttons, $additionalButtons);
 
     $html .= buttons($buttons);

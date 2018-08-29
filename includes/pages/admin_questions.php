@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function admin_questions_title()
 {
-    return _('Answer questions');
+    return __('Answer questions');
 }
 
 /**
@@ -25,7 +25,7 @@ function admin_new_questions()
 
             if ($new_messages > 0) {
                 return '<a href="' . page_link_to('admin_questions') . '">'
-                    . _('There are unanswered questions!')
+                    . __('There are unanswered questions!')
                     . '</a>';
             }
         }
@@ -53,11 +53,11 @@ function admin_questions()
                 'question' => str_replace("\n", '<br />', $question['Question']),
                 'answer'   => form([
                     form_textarea('answer', '', ''),
-                    form_submit('submit', _('Save'))
+                    form_submit('submit', __('Save'))
                 ], page_link_to('admin_questions', ['action' => 'answer', 'id' => $question['QID']])),
                 'actions'  => button(
                     page_link_to('admin_questions', ['action' => 'delete', 'id' => $question['QID']]),
-                    _('delete'),
+                    __('delete'),
                     'btn-xs'
                 )
             ];
@@ -75,26 +75,26 @@ function admin_questions()
                 'answer'      => str_replace("\n", '<br />', $question['Answer']),
                 'actions'     => button(
                     page_link_to('admin_questions', ['action' => 'delete', 'id' => $question['QID']]),
-                    _('delete'),
+                    __('delete'),
                     'btn-xs'
                 )
             ];
         }
 
         return page_with_title(admin_questions_title(), [
-            '<h2>' . _('Unanswered questions') . '</h2>',
+            '<h2>' . __('Unanswered questions') . '</h2>',
             table([
-                'from'     => _('From'),
-                'question' => _('Question'),
-                'answer'   => _('Answer'),
+                'from'     => __('From'),
+                'question' => __('Question'),
+                'answer'   => __('Answer'),
                 'actions'  => ''
             ], $unanswered_questions_table),
-            '<h2>' . _('Answered questions') . '</h2>',
+            '<h2>' . __('Answered questions') . '</h2>',
             table([
-                'from'        => _('From'),
-                'question'    => _('Question'),
-                'answered_by' => _('Answered by'),
-                'answer'      => _('Answer'),
+                'from'        => __('From'),
+                'question'    => __('Question'),
+                'answered_by' => __('Answered by'),
+                'answer'      => __('Answer'),
                 'actions'     => ''
             ], $answered_questions_table)
         ]);

@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function questions_title()
 {
-    return _('Ask the Heaven');
+    return __('Ask the Heaven');
 }
 
 /**
@@ -50,11 +50,11 @@ function user_questions()
                         [$user['UID'], $question]
                     );
 
-                    success(_('You question was saved.'));
+                    success(__('You question was saved.'));
                     redirect(page_link_to('user_questions'));
                 } else {
                     return page_with_title(questions_title(), [
-                        error(_('Please enter a question!'), true)
+                        error(__('Please enter a question!'), true)
                     ]);
                 }
                 break;
@@ -62,7 +62,7 @@ function user_questions()
                 if ($request->has('id') && preg_match('/^\d{1,11}$/', $request->input('id'))) {
                     $question_id = $request->input('id');
                 } else {
-                    return error(_('Incomplete call, missing Question ID.'), true);
+                    return error(__('Incomplete call, missing Question ID.'), true);
                 }
 
                 $question = DB::selectOne(
@@ -77,7 +77,7 @@ function user_questions()
                     redirect(page_link_to('user_questions'));
                 } else {
                     return page_with_title(questions_title(), [
-                        error(_('No question found.'), true)
+                        error(__('No question found.'), true)
                     ]);
                 }
                 break;

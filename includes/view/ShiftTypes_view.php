@@ -19,16 +19,16 @@ function ShiftType_name_render($shifttype)
  */
 function ShiftType_delete_view($shifttype)
 {
-    return page_with_title(sprintf(_('Delete shifttype %s'), $shifttype['name']), [
-        info(sprintf(_('Do you want to delete shifttype %s?'), $shifttype['name']), true),
+    return page_with_title(sprintf(__('Delete shifttype %s'), $shifttype['name']), [
+        info(sprintf(__('Do you want to delete shifttype %s?'), $shifttype['name']), true),
         buttons([
-            button(page_link_to('shifttypes'), glyph('remove') . _('cancel')),
+            button(page_link_to('shifttypes'), glyph('remove') . __('cancel')),
             button(
                 page_link_to(
                     'shifttypes',
                     ['action' => 'delete', 'shifttype_id' => $shifttype['id'], 'confirmed' => 1]
                 ),
-                glyph('ok') . _('delete'),
+                glyph('ok') . __('delete'),
                 'btn-danger'
             )
         ])
@@ -46,23 +46,23 @@ function ShiftType_delete_view($shifttype)
 function ShiftType_edit_view($name, $angeltype_id, $angeltypes, $description, $shifttype_id)
 {
     $angeltypes_select = [
-        '' => _('All')
+        '' => __('All')
     ];
     foreach ($angeltypes as $angeltype) {
         $angeltypes_select[$angeltype['id']] = $angeltype['name'];
     }
 
-    return page_with_title($shifttype_id ? _('Edit shifttype') : _('Create shifttype'), [
+    return page_with_title($shifttype_id ? __('Edit shifttype') : __('Create shifttype'), [
         msg(),
         buttons([
             button(page_link_to('shifttypes'), shifttypes_title(), 'back')
         ]),
         form([
-            form_text('name', _('Name'), $name),
-            form_select('angeltype_id', _('Angeltype'), $angeltypes_select, $angeltype_id),
-            form_textarea('description', _('Description'), $description),
-            form_info('', _('Please use markdown for the description.')),
-            form_submit('submit', _('Save'))
+            form_text('name', __('Name'), $name),
+            form_select('angeltype_id', __('Angeltype'), $angeltypes_select, $angeltype_id),
+            form_textarea('description', __('Description'), $description),
+            form_info('', __('Please use markdown for the description.')),
+            form_submit('submit', __('Save'))
         ])
     ]);
 }
@@ -77,7 +77,7 @@ function ShiftType_view($shifttype, $angeltype)
     $parsedown = new Parsedown();
     $title = $shifttype['name'];
     if ($angeltype) {
-        $title .= ' <small>' . sprintf(_('for team %s'), $angeltype['name']) . '</small>';
+        $title .= ' <small>' . sprintf(__('for team %s'), $angeltype['name']) . '</small>';
     }
     return page_with_title($title, [
         msg(),
@@ -89,16 +89,16 @@ function ShiftType_view($shifttype, $angeltype)
             ) : '',
             button(
                 page_link_to('shifttypes', ['action' => 'edit', 'shifttype_id' => $shifttype['id']]),
-                _('edit'),
+                __('edit'),
                 'edit'
             ),
             button(
                 page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype['id']]),
-                _('delete'),
+                __('delete'),
                 'delete'
             )
         ]),
-        heading(_('Description'), 2),
+        heading(__('Description'), 2),
         $parsedown->parse($shifttype['description'])
     ]);
 }
@@ -121,12 +121,12 @@ function ShiftTypes_list_view($shifttypes)
                     'shifttypes',
                     ['action' => 'edit', 'shifttype_id' => $shifttype['id']]
                 ),
-                _('edit'),
+                __('edit'),
                 'btn-xs'
             ),
             button(
                 page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype['id']]),
-                _('delete'),
+                __('delete'),
                 'btn-xs'
             )
         ]);
@@ -135,10 +135,10 @@ function ShiftTypes_list_view($shifttypes)
     return page_with_title(shifttypes_title(), [
         msg(),
         buttons([
-            button(page_link_to('shifttypes', ['action' => 'edit']), _('New shifttype'), 'add')
+            button(page_link_to('shifttypes', ['action' => 'edit']), __('New shifttype'), 'add')
         ]),
         table([
-            'name'    => _('Name'),
+            'name'    => __('Name'),
             'actions' => ''
         ], $shifttypes)
     ]);

@@ -21,14 +21,14 @@ function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalen
 
     $description = '';
     if (!empty($room['description'])) {
-        $description = '<h3>' . _('Description') . '</h3>';
+        $description = '<h3>' . __('Description') . '</h3>';
         $parsedown = new Parsedown();
         $description .= '<div class="well">' . $parsedown->parse($room['description']) . '</div>';
     }
 
     $tabs = [];
     if (!empty($room['map_url'])) {
-        $tabs[_('Map')] = sprintf(
+        $tabs[__('Map')] = sprintf(
             '<div class="map">'
             . '<iframe style="width: 100%%; min-height: 400px; border: 0 none;" src="%s"></iframe>'
             . '</div>',
@@ -36,7 +36,7 @@ function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalen
         );
     }
 
-    $tabs[_('Shifts')] = div('first', [
+    $tabs[__('Shifts')] = div('first', [
         $shiftsFilterRenderer->render(page_link_to('rooms', [
             'action'  => 'view',
             'room_id' => $room['RID']

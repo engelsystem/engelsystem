@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function admin_groups_title()
 {
-    return _('Grouprights');
+    return __('Grouprights');
 }
 
 /**
@@ -40,7 +40,7 @@ function admin_groups()
                 'actions'    => button(
                     page_link_to('admin_groups',
                         ['action' => 'edit', 'id' => $group['UID']]),
-                    _('edit'),
+                    __('edit'),
                     'btn-xs'
                 )
             ];
@@ -48,8 +48,8 @@ function admin_groups()
 
         return page_with_title(admin_groups_title(), [
             table([
-                'name'       => _('Name'),
-                'privileges' => _('Privileges'),
+                'name'       => __('Name'),
+                'privileges' => __('Privileges'),
                 'actions'    => ''
             ], $groups_table)
         ]);
@@ -97,8 +97,8 @@ function admin_groups()
                         );
                     }
 
-                    $privileges_form[] = form_submit('submit', _('Save'));
-                    $html .= page_with_title(_('Edit group'), [
+                    $privileges_form[] = form_submit('submit', __('Save'));
+                    $html .= page_with_title(__('Edit group'), [
                         form(
                             $privileges_form,
                             page_link_to('admin_groups', ['action' => 'save', 'id' => $group_id])

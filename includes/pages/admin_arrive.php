@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function admin_arrive_title()
 {
-    return _('Arrived angels');
+    return __('Arrived angels');
 }
 
 /**
@@ -34,10 +34,10 @@ function admin_arrive()
                 LIMIT 1
             ', [$user_id]);
             engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source));
-            success(_('Reset done. Angel has not arrived.'));
+            success(__('Reset done. Angel has not arrived.'));
             redirect(user_link($user_source));
         } else {
-            $msg = error(_('Angel not found.'), true);
+            $msg = error(__('Angel not found.'), true);
         }
     } elseif ($request->has('arrived') && preg_match('/^\d+$/', $request->input('arrived'))) {
         $user_id = $request->input('arrived');
@@ -50,10 +50,10 @@ function admin_arrive()
                 LIMIT 1
             ', [time(), $user_id]);
             engelsystem_log('User set has arrived: ' . User_Nick_render($user_source));
-            success(_('Angel has been marked as arrived.'));
+            success(__('Angel has been marked as arrived.'));
             redirect(user_link($user_source));
         } else {
-            $msg = error(_('Angel not found.'), true);
+            $msg = error(__('Angel not found.'), true);
         }
     }
 
@@ -90,16 +90,16 @@ function admin_arrive()
         }
         $usr['rendered_planned_arrival_date'] = date('Y-m-d', $usr['planned_arrival_date']);
         $usr['rendered_arrival_date'] = $usr['arrival_date'] > 0 ? date('Y-m-d', $usr['arrival_date']) : '-';
-        $usr['arrived'] = $usr['Gekommen'] == 1 ? _('yes') : '';
+        $usr['arrived'] = $usr['Gekommen'] == 1 ? __('yes') : '';
         $usr['actions'] = $usr['Gekommen'] == 1
             ? '<a href="' . page_link_to(
                 'admin_arrive',
                 ['reset' => $usr['UID'], 'search' => $search]
-            ) . '">' . _('reset') . '</a>'
+            ) . '">' . __('reset') . '</a>'
             : '<a href="' . page_link_to(
                 'admin_arrive',
                 ['arrived' => $usr['UID'], 'search' => $search]
-            ) . '">' . _('arrived') . '</a>';
+            ) . '">' . __('arrived') . '</a>';
 
         if ($usr['arrival_date'] > 0) {
             $day = date('Y-m-d', $usr['arrival_date']);
@@ -168,61 +168,61 @@ function admin_arrive()
     return page_with_title(admin_arrive_title(), [
         $msg . msg(),
         form([
-            form_text('search', _('Search'), $search),
-            form_submit('submit', _('Search'))
+            form_text('search', __('Search'), $search),
+            form_submit('submit', __('Search'))
         ]),
         table([
-            'nick'                            => _('Nickname'),
-            'rendered_planned_arrival_date'   => _('Planned arrival'),
-            'arrived'                         => _('Arrived?'),
-            'rendered_arrival_date'           => _('Arrival date'),
-            'rendered_planned_departure_date' => _('Planned departure'),
+            'nick'                            => __('Nickname'),
+            'rendered_planned_arrival_date'   => __('Planned arrival'),
+            'arrived'                         => __('Arrived?'),
+            'rendered_arrival_date'           => __('Arrival date'),
+            'rendered_planned_departure_date' => __('Planned departure'),
             'actions'                         => ''
         ], $users_matched),
         div('row', [
             div('col-md-4', [
-                heading(_('Planned arrival statistics'), 2),
+                heading(__('Planned arrival statistics'), 2),
                 bargraph('planned_arrives', 'day', [
-                    'count' => _('arrived'),
-                    'sum'   => _('arrived sum')
+                    'count' => __('arrived'),
+                    'sum'   => __('arrived sum')
                 ], [
                     'count' => '#090',
                     'sum'   => '#888'
                 ], $planned_arrival_at_day),
                 table([
-                    'day'   => _('Date'),
-                    'count' => _('Count'),
-                    'sum'   => _('Sum')
+                    'day'   => __('Date'),
+                    'count' => __('Count'),
+                    'sum'   => __('Sum')
                 ], $planned_arrival_at_day)
             ]),
             div('col-md-4', [
-                heading(_('Arrival statistics'), 2),
+                heading(__('Arrival statistics'), 2),
                 bargraph('arrives', 'day', [
-                    'count' => _('arrived'),
-                    'sum'   => _('arrived sum')
+                    'count' => __('arrived'),
+                    'sum'   => __('arrived sum')
                 ], [
                     'count' => '#090',
                     'sum'   => '#888'
                 ], $arrival_at_day),
                 table([
-                    'day'   => _('Date'),
-                    'count' => _('Count'),
-                    'sum'   => _('Sum')
+                    'day'   => __('Date'),
+                    'count' => __('Count'),
+                    'sum'   => __('Sum')
                 ], $arrival_at_day)
             ]),
             div('col-md-4', [
-                heading(_('Planned departure statistics'), 2),
+                heading(__('Planned departure statistics'), 2),
                 bargraph('planned_departures', 'day', [
-                    'count' => _('arrived'),
-                    'sum'   => _('arrived sum')
+                    'count' => __('arrived'),
+                    'sum'   => __('arrived sum')
                 ], [
                     'count' => '#090',
                     'sum'   => '#888'
                 ], $planned_departure_at_day),
                 table([
-                    'day'   => _('Date'),
-                    'count' => _('Count'),
-                    'sum'   => _('Sum')
+                    'day'   => __('Date'),
+                    'count' => __('Count'),
+                    'sum'   => __('Sum')
                 ], $planned_departure_at_day)
             ])
         ])

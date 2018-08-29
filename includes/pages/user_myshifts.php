@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function myshifts_title()
 {
-    return _('My shifts');
+    return __('My shifts');
 }
 
 /**
@@ -35,15 +35,15 @@ function user_myshifts()
     if ($request->has('reset')) {
         if ($request->input('reset') == 'ack') {
             User_reset_api_key($user);
-            success(_('Key changed.'));
+            success(__('Key changed.'));
             redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user['UID']]));
         }
-        return page_with_title(_('Reset API key'), [
+        return page_with_title(__('Reset API key'), [
             error(
-                _('If you reset the key, the url to your iCal- and JSON-export and your atom feed changes! You have to update it in every application using one of these exports.'),
+                __('If you reset the key, the url to your iCal- and JSON-export and your atom feed changes! You have to update it in every application using one of these exports.'),
                 true
             ),
-            button(page_link_to('user_myshifts', ['reset' => 'ack']), _('Continue'), 'btn-danger')
+            button(page_link_to('user_myshifts', ['reset' => 'ack']), __('Continue'), 'btn-danger')
         ]);
     } elseif ($request->has('edit') && preg_match('/^\d+$/', $request->input('edit'))) {
         $shift_entry_id = $request->input('edit');
@@ -82,7 +82,7 @@ function user_myshifts()
                     $freeload_comment = strip_request_item_nl('freeload_comment');
                     if ($freeloaded && $freeload_comment == '') {
                         $valid = false;
-                        error(_('Please enter a freeload comment!'));
+                        error(__('Please enter a freeload comment!'));
                     }
                 }
 
@@ -104,7 +104,7 @@ function user_myshifts()
                         . ' with comment ' . $comment
                         . '. Freeloaded: ' . ($freeloaded ? 'YES Comment: ' . $freeload_comment : 'NO')
                     );
-                    success(_('Shift saved.'));
+                    success(__('Shift saved.'));
                     redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user['UID']]));
                 }
             }

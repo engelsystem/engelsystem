@@ -24,7 +24,7 @@ function public_dashboard_controller()
     }
 
     return [
-        _('Public Dashboard'),
+        __('Public Dashboard'),
         public_dashboard_view($stats, $free_shifts)
     ];
 }

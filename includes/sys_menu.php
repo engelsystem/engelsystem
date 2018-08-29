@@ -189,7 +189,7 @@ function make_navigation()
     }
 
     if (count($admin_menu) > 0) {
-        $menu[] = toolbar_dropdown('', _('Admin'), $admin_menu);
+        $menu[] = toolbar_dropdown('', __('Admin'), $admin_menu);
     }
 
     return toolbar($menu);
@@ -213,7 +213,7 @@ function make_room_navigation($menu)
     $rooms = Rooms();
     $room_menu = [];
     if (in_array('admin_rooms', $privileges)) {
-        $room_menu[] = toolbar_item_link(page_link_to('admin_rooms'), 'list', _('Manage rooms'));
+        $room_menu[] = toolbar_item_link(page_link_to('admin_rooms'), 'list', __('Manage rooms'));
     }
     if (count($room_menu) > 0) {
         $room_menu[] = toolbar_item_divider();
@@ -222,7 +222,7 @@ function make_room_navigation($menu)
         $room_menu[] = toolbar_item_link(room_link($room), 'map-marker', $room['Name']);
     }
     if (count($room_menu) > 0) {
-        $menu[] = toolbar_dropdown('map-marker', _('Rooms'), $room_menu);
+        $menu[] = toolbar_dropdown('map-marker', __('Rooms'), $room_menu);
     }
     return $menu;
 }

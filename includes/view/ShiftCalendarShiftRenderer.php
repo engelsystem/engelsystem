@@ -131,7 +131,7 @@ class ShiftCalendarShiftRenderer
         if (in_array('user_shifts_admin', $privileges)) {
             $html .= '<li class="list-group-item">';
             $html .= button(shift_entry_create_link_admin($shift),
-                glyph('plus') . _('Add more angels'),
+                glyph('plus') . __('Add more angels'),
                 'btn-xs'
             );
             $html .= '</li>';
@@ -191,18 +191,18 @@ class ShiftCalendarShiftRenderer
                     . '</a> '
                     . button(
                         shift_entry_create_link($shift, $angeltype),
-                        _('Sign up'), 'btn-xs btn-primary'
+                        __('Sign up'), 'btn-xs btn-primary'
                     );
                 break;
 
             case ShiftSignupState::SHIFT_ENDED:
                 // No link and add a text hint, when the shift ended
-                $entry_list[] = $inner_text . ' (' . _('ended') . ')';
+                $entry_list[] = $inner_text . ' (' . __('ended') . ')';
                 break;
 
             case ShiftSignupState::NOT_ARRIVED:
                 // No link and add a text hint, when the shift ended
-                $entry_list[] = $inner_text . ' (' . _('please arrive for signup') . ')';
+                $entry_list[] = $inner_text . ' (' . __('please arrive for signup') . ')';
                 break;
 
             case ShiftSignupState::ANGELTYPE:
@@ -217,7 +217,7 @@ class ShiftCalendarShiftRenderer
                                 'user_angeltypes',
                                 ['action' => 'add', 'angeltype_id' => $angeltype['id']]
                             ),
-                            sprintf(_('Become %s'), $angeltype['name']),
+                            sprintf(__('Become %s'), $angeltype['name']),
                             'btn-xs'
                         );
                 }

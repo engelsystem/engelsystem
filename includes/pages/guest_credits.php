@@ -5,7 +5,7 @@
  */
 function credits_title()
 {
-    return _('Credits');
+    return __('Credits');
 }
 
 /**

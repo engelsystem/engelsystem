@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function login_title()
 {
-    return _('Login');
+    return __('Login');
 }
 
 /**
@@ -15,7 +15,7 @@ function login_title()
  */
 function register_title()
 {
-    return _('Register');
+    return __('Register');
 }
 
 /**
@@ -23,7 +23,7 @@ function register_title()
  */
 function logout_title()
 {
-    return _('Logout');
+    return __('Logout');
 }
 
 /**
@@ -70,7 +70,7 @@ function guest_register()
     }
 
     if (!in_array('register', $privileges) || (!isset($user) && !config('registration_enabled'))) {
-        error(_('Registration is disabled.'));
+        error(__('Registration is disabled.'));
 
         return page_with_title(register_title(), [
             msg(),
@@ -84,12 +84,12 @@ function guest_register()
             $nick = User_validate_Nick($request->input('nick'));
             if (count(DB::select('SELECT `UID` FROM `User` WHERE `Nick`=? LIMIT 1', [$nick])) > 0) {
                 $valid = false;
-                $msg .= error(sprintf(_('Your nick &quot;%s&quot; already exists.'), $nick), true);
+                $msg .= error(sprintf(__('Your nick &quot;%s&quot; already exists.'), $nick), true);
             }
         } else {
             $valid = false;
             $msg .= error(sprintf(
-                _('Your nick &quot;%s&quot; is too short (min. 2 characters).'),
+                __('Your nick &quot;%s&quot; is too short (min. 2 characters).'),
                 User_validate_Nick($request->input('nick'))
             ), true);
         }
@@ -98,11 +98,11 @@ function guest_register()
             $mail = strip_request_item('mail');
             if (!check_email($mail)) {
                 $valid = false;
-                $msg .= error(_('E-mail address is not correct.'), true);
+                $msg .= error(__('E-mail address is not correct.'), true);
             }
         } else {
             $valid = false;
-            $msg .= error(_('Please enter your e-mail.'), true);
+            $msg .= error(__('Please enter your e-mail.'), true);
         }
 
         if ($request->has('email_shiftinfo')) {
@@ -117,7 +117,7 @@ function guest_register()
             $jabber = strip_request_item('jabber');
             if (!check_email($jabber)) {
                 $valid = false;
-                $msg .= error(_('Please check your jabber account information.'), true);
+                $msg .= error(__('Please check your jabber account information.'), true);
             }
         }
 
@@ -126,19 +126,19 @@ function guest_register()
                 $tshirt_size = $request->input('tshirt_size');
             } else {
                 $valid = false;
-                $msg .= error(_('Please select your shirt size.'), true);
+                $msg .= error(__('Please select your shirt size.'), true);
             }
         }
 
         if ($request->has('password') && strlen($request->postData('password')) >= $min_password_length) {
             if ($request->postData('password') != $request->postData('password2')) {
                 $valid = false;
-                $msg .= error(_('Your passwords don\'t match.'), true);
+                $msg .= error(__('Your passwords don\'t match.'), true);
             }
         } else {
             $valid = false;
             $msg .= error(sprintf(
-                _('Your password is too short (please use at least %s characters).'),
+                __('Your password is too short (please use at least %s characters).'),
                 $min_password_length
             ), true);
         }
@@ -149,11 +149,11 @@ function guest_register()
             $planned_arrival_date = $result->getValue();
             if (!$result->isValid()) {
                 $valid = false;
-                error(_('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
+                error(__('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
             }
         } else {
             $valid = false;
-            error(_('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
+            error(__('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
         }
 
         $selected_angel_types = [];
@@ -181,7 +181,7 @@ function guest_register()
                 $dect = strip_request_item('dect');
             } else {
                 $valid = false;
-                error(_('For dect numbers are only 5 digits allowed.'));
+                error(__('For dect numbers are only 5 digits allowed.'));
             }
         }
         if ($request->has('mobile')) {
@@ -265,7 +265,7 @@ function guest_register()
                 'User ' . User_Nick_render(User($user_id))
                 . ' signed up as: ' . join(', ', $user_angel_types_info)
             );
-            success(_('Angel registration successful!'));
+            success(__('Angel registration successful!'));
 
             // User is already logged in - that means a supporter has registered an angel. Return to register page.
             if (isset($user)) {
@@ -293,7 +293,7 @@ function guest_register()
     }
 
     return page_with_title(register_title(), [
-        _('By completing this form you\'re registering as a Chaos-Angel. This script will create you an account in the angel task scheduler.'),
+        __('By completing this form you\'re registering as a Chaos-Angel. This script will create you an account in the angel task scheduler.'),
         $msg,
         msg(),
         form([
@@ -301,18 +301,18 @@ function guest_register()
                 div('col-md-6', [
                     div('row', [
                         div('col-sm-4', [
-                            form_text('nick', _('Nick') . ' ' . entry_required(), $nick)
+                            form_text('nick', __('Nick') . ' ' . entry_required(), $nick)
                         ]),
                         div('col-sm-8', [
-                            form_email('mail', _('E-Mail') . ' ' . entry_required(), $mail),
+                            form_email('mail', __('E-Mail') . ' ' . entry_required(), $mail),
                             form_checkbox(
                                 'email_shiftinfo',
-                                _('The engelsystem is allowed to send me an email (e.g. when my shifts change)'),
+                                __('The engelsystem is allowed to send me an email (e.g. when my shifts change)'),
                                 $email_shiftinfo
                             ),
                             form_checkbox(
                                 'email_by_human_allowed',
-                                _('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
+                                __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
                                 $email_by_human_allowed
                             )
                         ])
@@ -321,72 +321,72 @@ function guest_register()
                         div('col-sm-6', [
                             form_date(
                                 'planned_arrival_date',
-                                _('Planned date of arrival') . ' ' . entry_required(),
+                                __('Planned date of arrival') . ' ' . entry_required(),
                                 $planned_arrival_date, $buildup_start_date, $teardown_end_date
                             )
                         ]),
                         div('col-sm-6', [
                             $enable_tshirt_size ? form_select('tshirt_size',
-                                _('Shirt size') . ' ' . entry_required(),
-                                $tshirt_sizes, $tshirt_size, _('Please select...')) : ''
+                                __('Shirt size') . ' ' . entry_required(),
+                                $tshirt_sizes, $tshirt_size, __('Please select...')) : ''
                         ])
                     ]),
                     div('row', [
                         div('col-sm-6', [
-                            form_password('password', _('Password') . ' ' . entry_required())
+                            form_password('password', __('Password') . ' ' . entry_required())
                         ]),
                         div('col-sm-6', [
-                            form_password('password2', _('Confirm password') . ' ' . entry_required())
+                            form_password('password2', __('Confirm password') . ' ' . entry_required())
                         ])
                     ]),
                     form_checkboxes(
                         'angel_types',
-                        _('What do you want to do?') . sprintf(
+                        __('What do you want to do?') . sprintf(
                             ' (<a href="%s">%s</a>)',
                             page_link_to('angeltypes', ['action' => 'about']),
-                            _('Description of job types')
+                            __('Description of job types')
                         ),
                         $angel_types,
                         $selected_angel_types
                     ),
                     form_info(
                         '',
-                        _('Restricted angel types need will be confirmed later by a supporter. You can change your selection in the options section.')
+                        __('Restricted angel types need will be confirmed later by a supporter. You can change your selection in the options section.')
                     )
                 ]),
                 div('col-md-6', [
                     div('row', [
                         div('col-sm-4', [
-                            form_text('dect', _('DECT'), $dect)
+                            form_text('dect', __('DECT'), $dect)
                         ]),
                         div('col-sm-4', [
-                            form_text('mobile', _('Mobile'), $mobile)
+                            form_text('mobile', __('Mobile'), $mobile)
                         ]),
                         div('col-sm-4', [
-                            form_text('tel', _('Phone'), $tel)
+                            form_text('tel', __('Phone'), $tel)
                         ])
                     ]),
-                    form_text('jabber', _('Jabber'), $jabber),
+                    form_text('jabber', __('Jabber'), $jabber),
                     div('row', [
                         div('col-sm-6', [
-                            form_text('prename', _('First name'), $preName)
+                            form_text('prename', __('First name'), $preName)
                         ]),
                         div('col-sm-6', [
-                            form_text('lastname', _('Last name'), $lastName)
+                            form_text('lastname', __('Last name'), $lastName)
                         ])
                     ]),
                     div('row', [
                         div('col-sm-3', [
-                            form_text('age', _('Age'), $age)
+                            form_text('age', __('Age'), $age)
                         ]),
                         div('col-sm-9', [
-                            form_text('hometown', _('Hometown'), $hometown)
+                            form_text('hometown', __('Hometown'), $hometown)
                         ])
                     ]),
-                    form_info(entry_required() . ' = ' . _('Entry required!'))
+                    form_info(entry_required() . ' = ' . __('Entry required!'))
                 ])
             ]),
-            form_submit('submit', _('Register'))
+            form_submit('submit', __('Register'))
         ])
     ]);
 }
@@ -429,19 +429,19 @@ function guest_login()
                 if ($request->has('password')) {
                     if (!verify_password($request->postData('password'), $login_user['Passwort'], $login_user['UID'])) {
                         $valid = false;
-                        error(_('Your password is incorrect.  Please try it again.'));
+                        error(__('Your password is incorrect.  Please try it again.'));
                     }
                 } else {
                     $valid = false;
-                    error(_('Please enter a password.'));
+                    error(__('Please enter a password.'));
                 }
             } else {
                 $valid = false;
-                error(_('No user was found with that Nickname. Please try again. If you are still having problems, ask a Dispatcher.'));
+                error(__('No user was found with that Nickname. Please try again. If you are still having problems, ask a Dispatcher.'));
             }
         } else {
             $valid = false;
-            error(_('Please enter a nickname.'));
+            error(__('Please enter a nickname.'));
         }
 
         if ($valid && !empty($login_user)) {
@@ -463,21 +463,21 @@ function guest_login()
                 div('col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4', [
                     div('panel panel-primary first', [
                         div('panel-heading', [
-                            '<span class="icon-icon_angel"></span> ' . _('Login')
+                            '<span class="icon-icon_angel"></span> ' . __('Login')
                         ]),
                         div('panel-body', [
                             msg(),
                             form([
-                                form_text_placeholder('nick', _('Nick'), $nick),
-                                form_password_placeholder('password', _('Password')),
-                                form_submit('submit', _('Login')),
+                                form_text_placeholder('nick', __('Nick'), $nick),
+                                form_password_placeholder('password', __('Password')),
+                                form_submit('submit', __('Login')),
                                 !$valid ? buttons([
-                                    button(page_link_to('user_password_recovery'), _('I forgot my password'))
+                                    button(page_link_to('user_password_recovery'), __('I forgot my password'))
                                 ]) : ''
                             ])
                         ]),
                         div('panel-footer', [
-                            glyph('info-sign') . _('Please note: You have to activate cookies!')
+                            glyph('info-sign') . __('Please note: You have to activate cookies!')
                         ])
                     ])
                 ])
@@ -488,12 +488,12 @@ function guest_login()
                     get_register_hint()
                 ]),
                 div('col-sm-6 text-center', [
-                    heading(_('What can I do?'), 2),
-                    '<p>' . _('Please read about the jobs you can do to help us.') . '</p>',
+                    heading(__('What can I do?'), 2),
+                    '<p>' . __('Please read about the jobs you can do to help us.') . '</p>',
                     buttons([
                         button(
                             page_link_to('angeltypes', ['action' => 'about']),
-                            _('Teams/Job description') . ' &raquo;'
+                            __('Teams/Job description') . ' &raquo;'
                         )
                     ])
                 ])
@@ -511,12 +511,12 @@ function get_register_hint()
 
     if (in_array('register', $privileges) && config('registration_enabled')) {
         return join('', [
-            '<p>' . _('Please sign up, if you want to help us!') . '</p>',
+            '<p>' . __('Please sign up, if you want to help us!') . '</p>',
             buttons([
                 button(page_link_to('register'), register_title() . ' &raquo;')
             ])
         ]);
     }
 
-    return error(_('Registration is disabled.'), true);
+    return error(__('Registration is disabled.'), true);
 }

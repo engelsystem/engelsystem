@@ -19,7 +19,7 @@ function user_worklog_delete_controller()
     if ($request->has('confirmed')) {
         UserWorkLog_delete($userWorkLog);
 
-        success(_('Work log entry deleted.'));
+        success(__('Work log entry deleted.'));
         redirect(user_link($user_source));
     }
 
@@ -51,7 +51,7 @@ function user_worklog_edit_controller()
         if ($valid) {
             UserWorkLog_update($userWorkLog);
 
-            success(_('Work log entry updated.'));
+            success(__('Work log entry updated.'));
             redirect(user_link($user_source));
         }
     }
@@ -80,19 +80,19 @@ function user_worklog_from_request($userWorkLog)
     );
     if (is_null($userWorkLog['work_timestamp'])) {
         $valid = false;
-        error(_('Please enter work date.'));
+        error(__('Please enter work date.'));
     }
 
     $userWorkLog['work_hours'] = $request->input('work_hours');
     if (!preg_match("/[0-9]+(\.[0-9]+)?/", $userWorkLog['work_hours'])) {
         $valid = false;
-        error(_('Please enter work hours in format ##[.##].'));
+        error(__('Please enter work hours in format ##[.##].'));
     }
 
     $userWorkLog['comment'] = $request->input('comment');
     if (empty($userWorkLog['comment'])) {
         $valid = false;
-        error(_('Please enter a comment.'));
+        error(__('Please enter a comment.'));
     }
 
     return [
@@ -124,7 +124,7 @@ function user_worklog_add_controller()
         if ($valid) {
             UserWorkLog_create($userWorkLog);
 
-            success(_('Work log entry created.'));
+            success(__('Work log entry created.'));
             redirect(user_link($user_source));
         }
     }
