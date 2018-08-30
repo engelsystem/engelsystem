@@ -32,8 +32,8 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
 
  * Recommended: Directory Listing should be disabled.
  * There must a be MySQL database created with a user who has full rights to that database.
- * It must be created by the db/install.sql and db/update.sql files.
  * If necessary, create a config/config.php to override values from config/config.default.php.
+ * To import the database the `bin/migrate` script has to be called.
  * In the browser, login with credentials admin:asdfasdf and change the password.
 
 Engelsystem can now be used.
@@ -78,6 +78,11 @@ PRODUCTION_REMOTE_PATH  # Same as STAGING_REMOTE_PATH but for the production env
 The `bin/deploy.sh` script can be used to deploy the engelsystem. It uses rsync to deploy the application to a server over ssh.
 
 For usage see `./bin/deploy.sh -h`
+
+##### bin/migrate
+The `bin/migrate` script can be used to import and update the database of the engelsystem.
+
+For more information on how to use it call `bin/migrate help`
 
 ### Codestyle
 Please ensure that your pull requests follow [PSR-2](http://www.php-fig.org/psr/psr-2/) and [PSR-4](http://www.php-fig.org/psr/psr-4/).

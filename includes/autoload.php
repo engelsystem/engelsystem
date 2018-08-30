@@ -2,7 +2,8 @@
 
 // Check for autoloader
 if (!is_readable(__DIR__ . '/../vendor/autoload.php')) {
-    die('Please run composer.phar install');
+    echo 'Please run composer.phar install';
+    exit(1);
 }
 
 // Include composer autoloader
