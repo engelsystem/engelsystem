@@ -29,15 +29,14 @@ before_script:
   - &before_install_xdebug |-
     pecl install xdebug
     docker-php-ext-enable xdebug
-  # MySQL DB
-  - &before_setup_mysql |-
-    apt install -yqq mariadb-client
-    mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < db/install.sql
-    mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < db/update.sql
   # Install Composer
   - &before_install_composer |-
     curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
     composer --no-ansi install
+  # MySQL DB
+  - &before_setup_mysql |-
+    chmod +x ./bin/migrate
+    ./bin/migrate
   # Install Node.js and Yarn
   - &before_install_yarn |-
     apt -yqq install gnupg2 apt-transport-https
