@@ -48,6 +48,7 @@ test:
   artifacts:
     name: "${CI_JOB_NAME}_${CI_JOB_ID}"
     expire_in: 1 week
+    when: always
     paths:
       - ./coverage/
   coverage: '/^\s*Lines:\s*(\d+(?:\.\d+)?%)/'
