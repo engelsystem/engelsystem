@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Logger;
 
+use Engelsystem\Models\LogEntry;
 use Psr\Log\AbstractLogger;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
@@ -19,6 +20,14 @@ class EngelsystemLogger extends AbstractLogger
         LogLevel::WARNING,
     ];
 
+    /** @var LogEntry */
+    protected $log;
+
+    public function __construct(LogEntry $log)
+    {
+        $this->log = $log;
+    }
+
     /**
      * Logs with an arbitrary level.
      *
@@ -33,12 +42,12 @@ class EngelsystemLogger extends AbstractLogger
     public function log($level, $message, array $context = [])
     {
         if (!$this->checkLevel($level)) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException('Unknown log level: ' . $level);
         }
 
         $message = $this->interpolate($message, $context);
 
-        LogEntry_create($level, $message);
+        $this->log->create(['level' => $level, 'message' => $message]);
     }
 
     /**

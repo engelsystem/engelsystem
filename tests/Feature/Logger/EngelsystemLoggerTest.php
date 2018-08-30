@@ -3,6 +3,7 @@
 namespace Engelsystem\Test\Feature\Logger;
 
 use Engelsystem\Logger\EngelsystemLogger;
+use Engelsystem\Models\LogEntry;
 use Engelsystem\Test\Feature\ApplicationFeatureTest;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
@@ -15,12 +16,13 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
      */
     public function getLogger()
     {
-        return new EngelsystemLogger();
+        $logEntry = new LogEntry();
+        return new EngelsystemLogger($logEntry);
     }
 
     public function testImplements()
     {
-        $this->assertInstanceOf('Psr\Log\LoggerInterface', $this->getLogger());
+        $this->assertInstanceOf(LoggerInterface::class, $this->getLogger());
     }
 
     /**
@@ -46,21 +48,20 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
      */
     public function testAllLevels($level)
     {
+        LogEntry::query()->truncate();
         $logger = $this->getLogger();
-
-        LogEntries_clear_all();
 
         $logger->log($level, 'First log message');
         $logger->{$level}('Second log message');
 
-        $entries = LogEntries();
+        $entries = LogEntry::all();
         $this->assertCount(2, $entries);
     }
 
     public function testContextReplacement()
     {
+        LogEntry::query()->truncate();
         $logger = $this->getLogger();
-        LogEntries_clear_all();
 
         $logger->log(LogLevel::INFO, 'My username is {username}', ['username' => 'Foo']);
 
@@ -100,8 +101,8 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
 
     public function testContextToString()
     {
+        LogEntry::query()->truncate();
         $logger = $this->getLogger();
-        LogEntries_clear_all();
 
         $mock = $this->getMockBuilder('someDataProvider')
             ->setMethods(['__toString'])
@@ -132,14 +133,14 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
      */
     public function getLastEntry()
     {
-        $entries = LogEntries();
-        $entry = array_pop($entries);
+        $entries = LogEntry::all();
+        $entry = $entries->last();
 
         return $entry;
     }
 
     public function tearDown()
     {
-        LogEntries_clear_all();
+        LogEntry::query()->truncate();
     }
 }
