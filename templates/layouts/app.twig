@@ -11,59 +11,29 @@
         <link rel="stylesheet" type="text/css" href="vendor/bootstrap-datepicker-1.7.1/css/bootstrap-datepicker3.min.css"/>
         <script type="text/javascript" src="vendor/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="vendor/jquery-ui.min.js"></script>
-        {% if atom_feed -%}
-            <link href="{{ url('atom', atom_feed) }}" type="application/atom+xml" rel="alternate" title="Atom Feed">
+        {% if page() in ['news', 'user-meetings', '/'] and is_user() -%}
+            {% set parameters = {'key': user.api_key} -%}
+            {% if page() == 'user-meetings' -%}
+                {% set parameters = parameters|merge({'meetings': 1}) -%}
+            {% endif %}
+            <link href="{{ url('atom', parameters) }}" type="application/atom+xml" rel="alternate" title="Atom Feed">
         {% endif %}
     {% endblock %}
 </head>
 <body>
 
 {% block body %}
-    <div class="navbar navbar-default navbar-fixed-top">
-        {% block header %}
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed"
-                            data-toggle="collapse" data-target="#navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        <span class="icon-icon_angel"></span> <strong class="visible-lg-inline">ENGELSYSTEM</strong>
-                    </a>
-                </div>
-
-                {% block navbar %}
-                    <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                        {{ menu|raw }}
-                        {{ header_toolbar|raw }}
-                    </div>
-                {% endblock %}
-            </div>
-        {% endblock %}
-    </div>
+    {% block header %}
+        {% include "layouts/parts/navbar.twig" %}
+    {% endblock %}
 
     <div class="container-fluid">
-        <div class="row">{% block content %}{{ content|raw }}{% endblock %}</div>
+        <div class="row">
+            {% block content %}{{ content|raw }}{% endblock %}
+        </div>
         <div class="row" id="footer">
             {% block footer %}
-                <div class="col-md-12">
-                    <hr/>
-                    <div class="text-center footer" style="margin-bottom: 10px;">
-                        {% block eventinfo %}
-                            {{ event_info|raw }}
-                        {% endblock %}
-                        <a href="{{ config('faq_url') }}">FAQ</a>
-                        · <a href="{{ config('contact_email') }}">
-                            <span class="glyphicon glyphicon-envelope"></span>Contact
-                          </a>
-                        · <a href="https://github.com/engelsystem/engelsystem/issues">Bugs / Features</a>
-                        · <a href="https://github.com/engelsystem/engelsystem/">Development Platform</a>
-                        · <a href="{{ url('credits') }}">Credits</a>
-                    </div>
-                </div>
+                {%  include "layouts/parts/footer.twig" %}
             {% endblock %}
         </div>
     </div>

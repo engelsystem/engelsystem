@@ -61,57 +61,6 @@ function EventConfig_countdown_page($event_config)
 }
 
 /**
- * Converts event name and start+end date into a line of text.
- *
- * @param array $event_config
- * @return string
- */
-function EventConfig_info($event_config)
-{
-    if (empty($event_config)) {
-        return '';
-    }
-
-    // Event name, start+end date are set
-    if (
-        !is_null($event_config['event_name'])
-        && !is_null($event_config['event_start_date'])
-        && !is_null($event_config['event_end_date'])
-    ) {
-        return sprintf(
-            __('%s, from %s to %s'),
-            $event_config['event_name'],
-            date(__('Y-m-d'), $event_config['event_start_date']),
-            date(__('Y-m-d'), $event_config['event_end_date'])
-        );
-    }
-
-    // Event name, start date are set
-    if (!is_null($event_config['event_name']) && !is_null($event_config['event_start_date'])) {
-        return sprintf(
-            __('%s, starting %s'), $event_config['event_name'],
-            date(__('Y-m-d'), $event_config['event_start_date'])
-        );
-    }
-
-    // Event start+end date are set
-    if (!is_null($event_config['event_start_date']) && !is_null($event_config['event_end_date'])) {
-        return sprintf(
-            __('Event from %s to %s'),
-            date(__('Y-m-d'), $event_config['event_start_date']),
-            date(__('Y-m-d'), $event_config['event_end_date'])
-        );
-    }
-
-    // Only event name is set
-    if (!is_null($event_config['event_name'])) {
-        return sprintf($event_config['event_name']);
-    }
-
-    return '';
-}
-
-/**
  * Render edit page for event config.
  *
  * @param string $event_name         The event name

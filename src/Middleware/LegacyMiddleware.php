@@ -60,6 +60,7 @@ class LegacyMiddleware implements MiddlewareInterface
     ): ResponseInterface {
         global $user;
         global $privileges;
+        global $page;
 
         /** @var Request $appRequest */
         $appRequest = $this->container->get('request');
@@ -271,27 +272,13 @@ class LegacyMiddleware implements MiddlewareInterface
      */
     protected function renderPage($page, $title, $content)
     {
-        global $user;
-        $event_config = EventConfig();
-        $parameters = [
-            'key' => (isset($user) ? $user['api_key'] : ''),
-        ];
-
-        if ($page == 'user_meetings') {
-            $parameters['meetings'] = 1;
-        }
-
         if (!empty($page) && is_int($page)) {
             return response($content, (int)$page);
         }
 
         return response(view('layouts/app', [
-            'title'          => $title,
-            'atom_feed'      => ($page == 'news' || $page == 'user_meetings') ? $parameters : [],
-            'menu'           => make_menu(),
-            'content'        => msg() . $content,
-            'header_toolbar' => header_toolbar(),
-            'event_info'     => EventConfig_info($event_config) . ' <br />'
+            'title'   => $title,
+            'content' => msg() . $content,
         ]), 200);
     }
 }

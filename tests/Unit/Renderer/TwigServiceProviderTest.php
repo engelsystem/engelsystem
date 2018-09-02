@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Renderer;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Renderer\TwigEngine;
 use Engelsystem\Renderer\TwigLoader;
 use Engelsystem\Renderer\TwigServiceProvider;
@@ -10,6 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionClass as Reflection;
 use stdClass;
 use Twig_Environment as Twig;
+use Twig_Extension_Core as TwigCore;
 use Twig_ExtensionInterface as ExtensionInterface;
 use Twig_LoaderInterface as TwigLoaderInterface;
 
@@ -97,6 +99,12 @@ class TwigServiceProviderTest extends ServiceProviderTest
         $twigLoader = $this->createMock(TwigLoader::class);
         /** @var Twig|MockObject $twig */
         $twig = $this->createMock(Twig::class);
+        /** @var Config|MockObject $config */
+        $config = $this->createMock(Config::class);
+        /** @var TwigCore|MockObject $twigCore */
+        $twigCore = $this->getMockBuilder(stdClass::class)
+            ->setMethods(['setTimezone'])
+            ->getMock();
 
         $app = $this->getApp(['make', 'instance', 'tag', 'get']);
 
@@ -125,12 +133,26 @@ class TwigServiceProviderTest extends ServiceProviderTest
                 ['renderer.twigEngine', $twigEngine]
             );
 
-        $app->expects($this->once())
+        $app->expects($this->exactly(2))
             ->method('get')
-            ->with('path.views')
-            ->willReturn($viewsPath);
+            ->withConsecutive(['path.views'], ['config'])
+            ->willReturnOnConsecutiveCalls($viewsPath, $config);
 
         $this->setExpects($app, 'tag', ['renderer.twigEngine', ['renderer.engine']]);
+
+        $config->expects($this->once())
+            ->method('get')
+            ->with('timezone')
+            ->willReturn('The/World');
+
+        $twig->expects($this->once())
+            ->method('getExtension')
+            ->with(TwigCore::class)
+            ->willReturn($twigCore);
+
+        $twigCore->expects($this->once())
+            ->method('setTimezone')
+            ->with('The/World');
 
         $serviceProvider = new TwigServiceProvider($app);
         $this->setExtensionsTo($serviceProvider, []);

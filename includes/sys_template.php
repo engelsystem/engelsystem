@@ -148,18 +148,6 @@ function heading($content, $number = 1)
 }
 
 /**
- * Render a toolbar.
- *
- * @param array $items
- * @param bool  $right
- * @return string
- */
-function toolbar($items = [], $right = false)
-{
-    return '<ul class="nav navbar-nav' . ($right ? ' navbar-right' : '') . '">' . join("\n", $items) . '</ul>';
-}
-
-/**
  * @param string[] $items
  * @return string
  */
