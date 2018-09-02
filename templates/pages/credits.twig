@@ -1,0 +1,42 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ __('Credits') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Credits</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Source code</h2>
+                <p>
+                    The original system was written by <a href="https://github.com/cookieBerlin/engelsystem">cookie</a>.
+                    It was then completely rewritten and enhanced by
+                    <a href="https://notrademark.de">msquare</a> (maintainer),
+                    <a href="https://myigel.name">MyIgel</a>,
+                    <a href="https://mortzu.de">mortzu</a>,
+                    <a href="https://jplitza.de">jplitza</a> and
+                    <a href="https://github.com/gnomus">gnomus</a>.
+                </p>
+                <p>
+                    Please look at the <a href="https://github.com/engelsystem/engelsystem/graphs/contributors">
+                        contributor list on github</a> for a more complete version.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h2>Hosting</h2>
+                <p>
+                    Webspace, development platform and domain on <a href="https://engelsystem.de">engelsystem.de</a>
+                    is currently provided by <a href="https://www.wybt.net/">would you buy this?</a> (ichdasich)
+                    and adminstrated by <a href="https://mortzu.de">mortzu</a>,
+                    <a href="http://derf.homelinux.org">derf</a> and ichdasich.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h2>Translation</h2>
+                <p>
+                    Many thanks for the german translation: <a href="http://e7p.de">e7p</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

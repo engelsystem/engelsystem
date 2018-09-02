@@ -18,7 +18,6 @@ class LegacyMiddleware implements MiddlewareInterface
         'angeltypes',
         'api',
         'atom',
-        'credits',
         'ical',
         'login',
         'public_dashboard',
@@ -248,11 +247,6 @@ class LegacyMiddleware implements MiddlewareInterface
             case 'admin_log':
                 $title = admin_log_title();
                 $content = admin_log();
-                return [$title, $content];
-            case 'credits':
-                require_once realpath(__DIR__ . '/../../includes/pages/guest_credits.php');
-                $title = credits_title();
-                $content = guest_credits();
                 return [$title, $content];
         }
 

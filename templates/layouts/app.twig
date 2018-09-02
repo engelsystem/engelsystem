@@ -28,8 +28,10 @@
     {% endblock %}
 
     <div class="container-fluid">
-        <div class="row">
-            {% block content %}{{ content|raw }}{% endblock %}
+        <div class="row" id="content">
+            {% block content %}
+                {{ content|raw }}
+            {% endblock %}
         </div>
         <div class="row" id="footer">
             {% block footer %}
@@ -38,19 +40,21 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="vendor/bootstrap-datepicker-1.7.1/js/bootstrap-datepicker.min.js"></script>
-    <script type="text/javascript" src="vendor/bootstrap-datepicker-1.7.1/locales/bootstrap-datepicker.de.min.js"></script>
-    <script type="text/javascript" src="vendor/Chart.min.js"></script>
-    <script type="text/javascript" src="js/forms.js"></script>
-    <script type="text/javascript" src="vendor/moment-with-locales.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            moment.locale("{{ session_get('locale')|escape('js') }}");
-        });
-    </script>
-    <script type="text/javascript" src="js/moment-countdown.js"></script>
-    <script type="text/javascript" src="js/sticky-headers.js"></script>
+    {% block scripts %}
+        <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="vendor/bootstrap-datepicker-1.7.1/js/bootstrap-datepicker.min.js"></script>
+        <script type="text/javascript" src="vendor/bootstrap-datepicker-1.7.1/locales/bootstrap-datepicker.de.min.js"></script>
+        <script type="text/javascript" src="vendor/Chart.min.js"></script>
+        <script type="text/javascript" src="js/forms.js"></script>
+        <script type="text/javascript" src="vendor/moment-with-locales.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                moment.locale("{{ session_get('locale')|escape('js') }}");
+            });
+        </script>
+        <script type="text/javascript" src="js/moment-countdown.js"></script>
+        <script type="text/javascript" src="js/sticky-headers.js"></script>
+    {% endblock %}
 {% endblock %}
 
 </body>
