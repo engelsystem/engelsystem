@@ -1,7 +1,7 @@
 FROM composer AS composer
 COPY composer.json /app/
-RUN composer install --no-dev
-RUN composer dump-autoload --optimize
+RUN composer --no-ansi install --no-dev
+RUN composer --no-ansi dump-autoload --optimize
 
 FROM node:8-alpine as themes
 WORKDIR /app
@@ -13,26 +13,31 @@ RUN yarn build
 
 # Intermediate container for less layers
 FROM alpine as data
+COPY bin/ /app/bin
 COPY config/ /app/config
 COPY db/ /app/db
 COPY includes/ /app/includes
 COPY locale/ /app/locale
-COPY public/ /app/html
+COPY public/ /app/public
 COPY src/ /app/src
 COPY templates/ /app/templates
+
+COPY composer.json LICENSE package.json README.md /app/
 
 COPY --from=composer /app/vendor/ /app/vendor
 COPY --from=composer /app/composer.lock /app/
 
-COPY --from=themes /app/public/assets /app/html/assets
+COPY --from=themes /app/public/assets /app/public/assets
 COPY --from=themes /app/yarn.lock /app/
 
 RUN rm -f /app/config/config.php
 
 FROM php:7-fpm-alpine
+WORKDIR /var/www
 COPY --from=data /app/ /var/www
 RUN apk add --no-cache icu-dev gettext-dev && \
-    docker-php-ext-install intl gettext pdo_mysql
+    docker-php-ext-install intl gettext pdo_mysql && \
+    rm -r /var/www/html
 
 ENV TRUSTED_PROXIES 10.0.0.0/8,::ffff:10.0.0.0/8,\
                     127.0.0.0/8,::ffff:127.0.0.0/8,\

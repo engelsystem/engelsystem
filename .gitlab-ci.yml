@@ -1,110 +1,120 @@
 image: php
 
-cache:
-  paths:
-    - .composer
-
-services:
-  - mariadb:10.2
-
 variables:
+  DOCKER_DRIVER: overlay2
+  TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
   MYSQL_DATABASE: engelsystem
   MYSQL_USER: engel
   MYSQL_PASSWORD: engelsystem
   MYSQL_HOST: mariadb
   MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-  COMPOSER_HOME: .composer
+  DOCROOT: /var/www/
 
-before_script:
-  # Fix permissions after gitlab messed them up
-  - &before_fix_permissions |-
-    find . -type f -exec chmod 644 {} \;
-    find . -type d -exec chmod 755 {} \;
-  # Install required Packages
-  - &before_install_packages |-
-    apt update -yqq
-    apt install -yqq git unzip
-    docker-php-ext-install pdo pdo_mysql gettext
-  # Install xdebug
-  - &before_install_xdebug |-
-    pecl install xdebug
-    docker-php-ext-enable xdebug
-  # Install Composer
-  - &before_install_composer |-
-    curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
-    composer --no-ansi install
-  # MySQL DB
-  - &before_setup_mysql |-
-    chmod +x ./bin/migrate
-    ./bin/migrate
-  # Install Node.js and Yarn
-  - &before_install_yarn |-
-    apt -yqq install gnupg2 apt-transport-https
-    curl -sL https://deb.nodesource.com/setup_8.x | bash -
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
-    apt -yqq update && apt -yqq install nodejs yarn
-    yarn install
-    yarn build
+stages:
+  - build
+  - test
+  - release
+  - deploy
 
-.test_template: &test_definition
+.docker_template: &docker_definition
+  image: docker:latest
+  services:
+    - docker:dind
+  tags:
+    - dind
+  before_script:
+    - docker login -u gitlab-ci-token -p "$CI_JOB_TOKEN" "$CI_REGISTRY"
+
+build-image:
+  <<: *docker_definition
+  stage: build
+  script:
+    - docker build --pull -t "$TEST_IMAGE" -f contrib/Dockerfile .
+    - docker push "$TEST_IMAGE"
+
+build-image.nginx:
+  <<: *docker_definition
+  stage: build
+  script:
+    - docker build --pull -t "$TEST_IMAGE.nginx" -f contrib/nginx/Dockerfile .
+    - docker push "$TEST_IMAGE.nginx"
+
+test:
+  image: $TEST_IMAGE
   stage: test
+  services:
+    - mariadb:10.2
   artifacts:
     name: "${CI_JOB_NAME}_${CI_JOB_ID}"
     expire_in: 1 week
+    when: always
     paths:
       - ./coverage/
   coverage: '/^\s*Lines:\s*(\d+(?:\.\d+)?%)/'
-  script: vendor/bin/phpunit --colors=never --coverage-text --coverage-html ./coverage/
+  before_script:
+    - apk add $PHPIZE_DEPS && pecl install xdebug && docker-php-ext-enable xdebug
+    - curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
+    - cp -R tests/ phpunit.xml "${DOCROOT}"
+    - HOMEDIR=$(pwd)
+    - cd "${DOCROOT}"
+    - composer --no-ansi install --dev
+    - ./bin/migrate
+  script:
+    - vendor/bin/phpunit -v --colors=never --coverage-text --coverage-html "${HOMEDIR}/coverage/"
+    - ./bin/migrate down
 
-test:7.0:
-  <<: *test_definition
-  image: php:7.0
-
-test:7.1:
-  <<: *test_definition
-  image: php:7.1
-
-.deploy_template: &deploy_definition
-  services: []
-  stage: deploy
+release-image:
+  <<: *docker_definition
+  stage: release
+  script:
+    - docker pull "$TEST_IMAGE"
+    - docker tag "$TEST_IMAGE" "$RELEASE_IMAGE"
+    - docker push "$RELEASE_IMAGE"
   only:
     - master
+
+release-image.nginx:
+  <<: *docker_definition
+  stage: release
+  script:
+    - docker pull "$TEST_IMAGE.nginx"
+    - docker tag "$TEST_IMAGE.nginx" "$RELEASE_IMAGE.nginx"
+    - docker push "$RELEASE_IMAGE.nginx"
+  only:
+    - master
+
+.deploy_template: &deploy_definition
+  stage: deploy
+  image: $TEST_IMAGE
   before_script:
-    - *before_fix_permissions
-    - *before_install_packages
-    - *before_install_composer
-    - *before_install_yarn
+    - apk add bash rsync openssh-client
 
 .deploy_template_script:
   # Configure SSH
-  - &deployment_ssh |-
+  - &deploy_template_script |-
     mkdir -p ~/.ssh
     echo "$SSH_PRIVATE_KEY" | sed -e 's/\r//g' > ~/.ssh/id_ed25519
     chmod 600 ~/.ssh/id_ed25519
+    cd "${DOCROOT}"
 
-  # Install project and dependencies
-  - &deployment_dependencies |-
-    chmod +x ./bin/deploy.sh
-    apt update && apt install -yqq rsync openssh-client
-    composer --no-ansi install --no-dev
-    composer --no-ansi dump-autoload --optimize
-
-build_release_file:
+build-release-file:
   <<: *deploy_definition
+  stage: deploy
   artifacts:
     name: "release_${CI_COMMIT_REF_SLUG}_${CI_JOB_ID}_${CI_COMMIT_SHA}"
     expire_in: 1 week
     paths:
       - ./release/
   script:
-    - *deployment_dependencies
-    - rsync -vAax --exclude '.git*' --exclude .composer/ --exclude coverage/ --exclude node_modules/ --exclude release/ ./ release/
+    - rsync -vAax "${DOCROOT}" release/
 
-deploy_staging:
+deploy-staging:
   <<: *deploy_definition
   environment:
     name: staging
+  only:
+    - master
   script:
     # Check if deployment variables where set
     - |-
@@ -112,16 +122,17 @@ deploy_staging:
         echo "Skipping deployment";
         exit
       fi
-    - *deployment_ssh
-    - *deployment_dependencies
+    - *deploy_template_script
     # Deploy to server
     - ./bin/deploy.sh -r "${STAGING_REMOTE}" -p "${STAGING_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"
 
-deploy_production:
+deploy-production:
   <<: *deploy_definition
   environment:
     name: production
   when: manual
+  only:
+    - master
   script:
     # Check if deployment variables where set
     - |-
@@ -129,7 +140,6 @@ deploy_production:
         echo "Skipping deployment";
         exit
       fi
-    - *deployment_ssh
-    - *deployment_dependencies
+    - *deploy_template_script
     # Deploy to server
     - ./bin/deploy.sh -r "${PRODUCTION_REMOTE}" -p "${PRODUCTION_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"
