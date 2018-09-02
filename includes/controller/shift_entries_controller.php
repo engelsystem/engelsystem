@@ -16,7 +16,7 @@ function shift_entries_controller()
     }
 
     $action = strip_request_item('action');
-    if ($action == null) {
+    if (empty($action)) {
         redirect(user_link($user));
     }
 
@@ -43,7 +43,7 @@ function shift_entry_create_controller()
     }
 
     $shift = Shift($request->input('shift_id'));
-    if ($shift == null) {
+    if (empty($shift)) {
         redirect(user_link($user));
     }
 
@@ -53,7 +53,7 @@ function shift_entry_create_controller()
         return shift_entry_create_controller_admin($shift, $angeltype);
     }
 
-    if ($angeltype == null) {
+    if (empty($angeltype)) {
         redirect(user_link($user));
     }
 
@@ -81,7 +81,7 @@ function shift_entry_create_controller_admin($shift, $angeltype)
     if ($request->has('user_id')) {
         $signup_user = User($request->input('user_id'));
     }
-    if ($signup_user == null) {
+    if (empty($signup_user)) {
         redirect(shift_link($shift));
     }
 
@@ -89,7 +89,7 @@ function shift_entry_create_controller_admin($shift, $angeltype)
     if ($request->has('angeltype_id')) {
         $angeltype = AngelType($request->input('angeltype_id'));
     }
-    if ($angeltype == null) {
+    if (empty($angeltype)) {
         if (count($angeltypes) == 0) {
             redirect(shift_link($shift));
         }
@@ -321,7 +321,7 @@ function shift_entry_load()
         redirect(page_link_to('user_shifts'));
     }
     $shiftEntry = ShiftEntry($request->input('shift_entry_id'));
-    if ($shiftEntry == null) {
+    if (empty($shiftEntry)) {
         error(_('Shift entry not found.'));
         redirect(page_link_to('user_shifts'));
     }

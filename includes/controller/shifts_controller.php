@@ -217,7 +217,7 @@ function shift_delete_controller()
     $shift_id = $request->input('delete_shift');
 
     $shift = Shift($shift_id);
-    if ($shift == null) {
+    if (empty($shift)) {
         redirect(page_link_to('user_shifts'));
     }
 
@@ -264,7 +264,7 @@ function shift_controller()
     }
 
     $shift = Shift($request->input('shift_id'));
-    if ($shift == null) {
+    if (empty($shift)) {
         error(_('Shift could not be found.'));
         redirect(page_link_to('user_shifts'));
     }
@@ -277,6 +277,10 @@ function shift_controller()
     $shift_signup_state = new ShiftSignupState(ShiftSignupState::OCCUPIED, 0);
     foreach ($angeltypes as &$angeltype) {
         $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
+        if(empty($needed_angeltype)) {
+            continue;
+        }
+        
         $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['id']);
 
         $angeltype_signup_state = Shift_signup_allowed(
@@ -288,11 +292,7 @@ function shift_controller()
             $needed_angeltype,
             $shift_entries
         );
-        if ($shift_signup_state == null) {
-            $shift_signup_state = $angeltype_signup_state;
-        } else {
-            $shift_signup_state->combineWith($angeltype_signup_state);
-        }
+        $shift_signup_state->combineWith($angeltype_signup_state);
         $angeltype['shift_signup_state'] = $angeltype_signup_state;
     }
 
@@ -361,7 +361,7 @@ function shifts_json_export_controller()
     $key = $request->input('key');
 
     $user = User_by_api_key($key);
-    if ($user == null) {
+    if (empty($user)) {
         engelsystem_error('Key invalid.');
     }
     if (!in_array('shifts_json_export', privileges_for_user($user['UID']))) {

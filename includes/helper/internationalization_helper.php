@@ -48,7 +48,7 @@ function gettext_init()
  */
 function gettext_locale($locale = null)
 {
-    if ($locale == null) {
+    if (empty($locale)) {
         $locale = session()->get('locale');
     }
 

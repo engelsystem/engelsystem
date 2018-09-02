@@ -27,7 +27,7 @@ function admin_arrive()
     if ($request->has('reset') && preg_match('/^\d+$/', $request->input('reset'))) {
         $user_id = $request->input('reset');
         $user_source = User($user_id);
-        if ($user_source != null) {
+        if (!empty($user_source)) {
             DB::update('
                 UPDATE `User`
                 SET `Gekommen`=0, `arrival_date` = NULL
@@ -43,7 +43,7 @@ function admin_arrive()
     } elseif ($request->has('arrived') && preg_match('/^\d+$/', $request->input('arrived'))) {
         $user_id = $request->input('arrived');
         $user_source = User($user_id);
-        if ($user_source != null) {
+        if (!empty($user_source)) {
             DB::update('
                 UPDATE `User`
                 SET `Gekommen`=1, `arrival_date`=?
@@ -84,7 +84,7 @@ function admin_arrive()
         }
 
         $usr['nick'] = User_Nick_render($usr);
-        if ($usr['planned_departure_date'] != null) {
+        if (!is_null($usr['planned_departure_date'])) {
             $usr['rendered_planned_departure_date'] = date('Y-m-d', $usr['planned_departure_date']);
         } else {
             $usr['rendered_planned_departure_date'] = '-';
@@ -110,7 +110,7 @@ function admin_arrive()
             $arrival_count_at_day[$day]++;
         }
 
-        if ($usr['planned_arrival_date'] != null) {
+        if (!is_null($usr['planned_arrival_date'])) {
             $day = date('Y-m-d', $usr['planned_arrival_date']);
             if (!isset($planned_arrival_count_at_day[$day])) {
                 $planned_arrival_count_at_day[$day] = 0;
@@ -118,7 +118,7 @@ function admin_arrive()
             $planned_arrival_count_at_day[$day]++;
         }
 
-        if ($usr['planned_departure_date'] != null && $usr['Gekommen'] == 1) {
+        if (!is_null($usr['planned_departure_date']) && $usr['Gekommen'] == 1) {
             $day = date('Y-m-d', $usr['planned_departure_date']);
             if (!isset($planned_departure_count_at_day[$day])) {
                 $planned_departure_count_at_day[$day] = 0;

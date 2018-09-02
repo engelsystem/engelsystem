@@ -53,7 +53,7 @@ function admin_shifts()
     if ($request->has('preview') || $request->has('back')) {
         if ($request->has('shifttype_id')) {
             $shifttype = ShiftType($request->input('shifttype_id'));
-            if ($shifttype == null) {
+            if (empty($shifttype)) {
                 $valid = false;
                 error(_('Please select a shift type.'));
             } else {

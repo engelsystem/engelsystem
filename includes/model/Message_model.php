@@ -20,7 +20,9 @@ function Message_ids()
  */
 function Message($message_id)
 {
-    return DB::selectOne('SELECT * FROM `Messages` WHERE `id`=? LIMIT 1', [$message_id]);
+    $message = DB::selectOne('SELECT * FROM `Messages` WHERE `id`=? LIMIT 1', [$message_id]);
+
+    return empty($message) ? null : $message;
 }
 
 /**

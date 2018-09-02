@@ -127,7 +127,7 @@ if (
             $content = user_shifts();
             break;
         case 'user_worklog':
-            list($title, $content) = user_worklogs_controller();
+            list($title, $content) = user_worklog_controller();
             break;
         case 'user_messages':
             $title = messages_title();

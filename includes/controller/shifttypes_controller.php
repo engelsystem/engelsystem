@@ -22,8 +22,7 @@ function shifttype_delete_controller()
     }
 
     $shifttype = ShiftType($request->input('shifttype_id'));
-
-    if ($shifttype == null) {
+    if (empty($shifttype)) {
         redirect(page_link_to('shifttypes'));
     }
 
@@ -58,7 +57,7 @@ function shifttype_edit_controller()
 
     if ($request->has('shifttype_id')) {
         $shifttype = ShiftType($request->input('shifttype_id'));
-        if ($shifttype == null) {
+        if (empty($shifttype)) {
             error(_('Shifttype not found.'));
             redirect(page_link_to('shifttypes'));
         }
@@ -120,12 +119,12 @@ function shifttype_controller()
         redirect(page_link_to('shifttypes'));
     }
     $shifttype = ShiftType($request->input('shifttype_id'));
-    if ($shifttype == null) {
+    if (empty($shifttype)) {
         redirect(page_link_to('shifttypes'));
     }
 
-    $angeltype = null;
-    if ($shifttype['angeltype_id'] != null) {
+    $angeltype = [];
+    if (!empty($shifttype['angeltype_id'])) {
         $angeltype = AngelType($shifttype['angeltype_id']);
     }
 

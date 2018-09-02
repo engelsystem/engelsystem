@@ -111,7 +111,7 @@ function admin_questions()
                     'SELECT * FROM `Questions` WHERE `QID`=? LIMIT 1',
                     [$question_id]
                 );
-                if (!empty($question) && $question['AID'] == null) {
+                if (!empty($question) && empty($question['AID'])) {
                     $answer = trim(
                         preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui",
                             '',

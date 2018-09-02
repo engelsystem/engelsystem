@@ -55,7 +55,7 @@ function admin_rooms()
 
         if (test_request_int('id')) {
             $room = Room($request->input('id'));
-            if ($room == null) {
+            if (empty($room)) {
                 redirect(page_link_to('admin_rooms'));
             }
 
@@ -127,7 +127,7 @@ function admin_rooms()
                     $needed_angeltype_info = [];
                     foreach ($angeltypes_count as $angeltype_id => $angeltype_count) {
                         $angeltype = AngelType($angeltype_id);
-                        if ($angeltype != null) {
+                        if (!empty($angeltype)) {
                             NeededAngelType_add(null, $angeltype_id, $room_id, $angeltype_count);
                             if ($angeltype_count > 0) {
                                 $needed_angeltype_info[] = $angeltype['name'] . ': ' . $angeltype_count;

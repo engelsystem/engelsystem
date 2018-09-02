@@ -215,7 +215,7 @@ function user_settings()
     $buildup_start_date = null;
     $teardown_end_date = null;
     $event_config = EventConfig();
-    if ($event_config != null) {
+    if (!empty($event_config)) {
         if (isset($event_config['buildup_start_date'])) {
             $buildup_start_date = $event_config['buildup_start_date'];
         }

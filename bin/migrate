@@ -1,0 +1,38 @@
+#!/usr/bin/env php
+<?php
+
+use Composer\Autoload\ClassLoader;
+use Engelsystem\Application;
+use Engelsystem\Database\Migration\Migrate;
+use Engelsystem\Database\Migration\MigrationServiceProvider;
+
+require_once __DIR__ . '/../includes/application.php';
+
+/** @var $loader ClassLoader */
+$baseDir = __DIR__ . '/../db/migrations';
+
+/** @var Application $app */
+$app = app();
+$app->register(MigrationServiceProvider::class);
+
+/** @var Migrate $migration */
+$migration = $app->get('db.migration');
+$migration->setOutput(function ($text) { echo $text . PHP_EOL; });
+
+if (isset($argv[1]) && strtolower($argv[1]) == 'help') {
+    echo PHP_EOL . 'Usage: ' . $argv[1] . ' [up|down] [one-step]' . PHP_EOL . PHP_EOL;
+    exit;
+}
+
+$method = Migrate::UP;
+if (isset($argv[1]) && strtolower($argv[1]) == 'down') {
+    $argv = array_values($argv);
+    $method = Migrate::DOWN;
+}
+
+$oneStep = false;
+if (isset($argv[2]) && strtolower($argv[2]) == 'one-step') {
+    $oneStep = true;
+}
+
+$migration->run($baseDir, $method, $oneStep);

@@ -70,7 +70,9 @@ function ShiftType_create($name, $angeltype_id, $description)
  */
 function ShiftType($shifttype_id)
 {
-    return DB::selectOne('SELECT * FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
+    $shiftType = DB::selectOne('SELECT * FROM `ShiftTypes` WHERE `id`=?', [$shifttype_id]);
+
+    return empty($shiftType) ? null : $shiftType;
 }
 
 /**
