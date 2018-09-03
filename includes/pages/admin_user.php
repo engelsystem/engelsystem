@@ -44,6 +44,7 @@ function admin_user()
         $html .= '<form action="'
             . page_link_to('admin_user', ['action' => 'save', 'id' => $user_id])
             . '" method="post">' . "\n";
+        $html .= form_csrf();
         $html .= '<table border="0">' . "\n";
         $html .= '<input type="hidden" name="Type" value="Normal">' . "\n";
         $html .= '<tr><td>' . "\n";
@@ -105,6 +106,7 @@ function admin_user()
         $html .= 'Hier kannst Du das Passwort dieses Engels neu setzen:<form action="'
             . page_link_to('admin_user', ['action' => 'change_pw', 'id' => $user_id])
             . '" method="post">' . "\n";
+        $html .= form_csrf();
         $html .= '<table>' . "\n";
         $html .= '  <tr><td>Passwort</td><td>' . '<input type="password" size="40" name="new_pw" value="" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Wiederholung</td><td>' . '<input type="password" size="40" name="new_pw2" value="" class="form-control"></td></tr>' . "\n";
@@ -135,6 +137,7 @@ function admin_user()
             $html .= 'Hier kannst Du die Benutzergruppen des Engels festlegen:<form action="'
                 . page_link_to('admin_user', ['action' => 'save_groups', 'id' => $user_id])
                 . '" method="post">' . "\n";
+            $html .= form_csrf();
             $html .= '<table>';
 
             $groups = DB::select('

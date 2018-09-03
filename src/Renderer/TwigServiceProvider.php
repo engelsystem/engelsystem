@@ -7,6 +7,7 @@ use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Renderer\Twig\Extensions\Assets;
 use Engelsystem\Renderer\Twig\Extensions\Authentication;
 use Engelsystem\Renderer\Twig\Extensions\Config;
+use Engelsystem\Renderer\Twig\Extensions\Csrf;
 use Engelsystem\Renderer\Twig\Extensions\Globals;
 use Engelsystem\Renderer\Twig\Extensions\Legacy;
 use Engelsystem\Renderer\Twig\Extensions\Session;
@@ -23,6 +24,7 @@ class TwigServiceProvider extends ServiceProvider
         'assets'         => Assets::class,
         'authentication' => Authentication::class,
         'config'         => Config::class,
+        'csrf'           => Csrf::class,
         'globals'        => Globals::class,
         'session'        => Session::class,
         'legacy'         => Legacy::class,

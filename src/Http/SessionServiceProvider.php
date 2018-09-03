@@ -5,7 +5,9 @@ namespace Engelsystem\Http;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Http\SessionHandlers\DatabaseHandler;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
@@ -21,6 +23,11 @@ class SessionServiceProvider extends ServiceProvider
         $session = $this->app->make(Session::class);
         $this->app->instance(Session::class, $session);
         $this->app->instance('session', $session);
+        $this->app->bind(SessionInterface::class, Session::class);
+
+        if (!$session->has('_token')) {
+            $session->set('_token', Str::random(42));
+        }
 
         /** @var Request $request */
         $request = $this->app->get('request');

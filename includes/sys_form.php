@@ -407,7 +407,18 @@ function form_element($label, $input, $for = '')
  */
 function form($elements, $action = '')
 {
-    return '<form action="' . $action . '" enctype="multipart/form-data" method="post">' . join($elements) . '</form>';
+    return '<form action="' . $action . '" enctype="multipart/form-data" method="post">'
+        . form_csrf()
+        . join($elements)
+        . '</form>';
+}
+
+/**
+ * @return string
+ */
+function form_csrf()
+{
+    return form_hidden('_token', session()->get('_token'));
 }
 
 /**
