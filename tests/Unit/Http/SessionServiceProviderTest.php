@@ -9,6 +9,7 @@ use Engelsystem\Http\SessionServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface as StorageInterface;
@@ -104,8 +105,16 @@ class SessionServiceProviderTest extends ServiceProviderTest
                 ['driver' => 'pdo', 'name' => 'foobar']
             );
 
-        $this->setExpects($app, 'bind', [StorageInterface::class, 'session.storage'], null, $this->atLeastOnce());
+        $app->expects($this->atLeastOnce())
+            ->method('bind')
+            ->withConsecutive(
+                [StorageInterface::class, 'session.storage'],
+                [SessionInterface::class, Session::class]
+            );
+
         $this->setExpects($request, 'setSession', [$session], null, $this->atLeastOnce());
+        $this->setExpects($session, 'has', ['_token'], false, $this->atLeastOnce());
+        $this->setExpects($session, 'set', ['_token'], null, $this->atLeastOnce());
         $this->setExpects($session, 'start', null, null, $this->atLeastOnce());
 
         $serviceProvider->register();
@@ -142,10 +151,16 @@ class SessionServiceProviderTest extends ServiceProviderTest
                 [Session::class, $session],
                 ['session', $session]
             );
+        $app->expects($this->atLeastOnce())
+            ->method('bind')
+            ->withConsecutive(
+                [StorageInterface::class, 'session.storage'],
+                [SessionInterface::class, Session::class]
+            );
 
-        $this->setExpects($app, 'bind', [StorageInterface::class, 'session.storage']);
         $this->setExpects($app, 'get', ['request'], $request);
         $this->setExpects($request, 'setSession', [$session]);
+        $this->setExpects($session, 'has', ['_token'], true);
         $this->setExpects($session, 'start');
 
         $serviceProvider = new SessionServiceProvider($app);
@@ -160,7 +175,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
         $sessionStorage = $this->getMockForAbstractClass(StorageInterface::class);
         return $this->getMockBuilder(Session::class)
             ->setConstructorArgs([$sessionStorage])
-            ->setMethods(['start'])
+            ->setMethods(['start', 'has', 'set'])
             ->getMock();
     }
 
