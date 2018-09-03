@@ -7,6 +7,7 @@
 
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme' ~ theme ~ '.css') }}"/>
         <script type="text/javascript" src="{{ asset('assets/vendor.js') }}"></script>

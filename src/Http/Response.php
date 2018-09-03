@@ -96,7 +96,7 @@ class Response extends SymfonyResponse implements ResponseInterface
     /**
      * Return an instance with the rendered content.
      *
-     * THis method retains the immutability of the message and returns
+     * This method retains the immutability of the message and returns
      * an instance with the updated status and headers
      *
      * @param string              $view
@@ -111,6 +111,14 @@ class Response extends SymfonyResponse implements ResponseInterface
             throw new \InvalidArgumentException('Renderer not defined');
         }
 
-        return $this->create($this->view->render($view, $data), $status, $headers);
+        $new = clone $this;
+        $new->setContent($this->view->render($view, $data));
+        $new->setStatusCode($status, ($status == $this->getStatusCode() ? $this->statusText : null));
+
+        foreach ($headers as $key => $values) {
+            $new = $new->withAddedHeader($key, $values);
+        }
+
+        return $new;
     }
 }

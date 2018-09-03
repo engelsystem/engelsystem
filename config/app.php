@@ -40,6 +40,7 @@ return [
 
         // The application code
         \Engelsystem\Middleware\ErrorHandler::class,
+        \Engelsystem\Middleware\VerifyCsrfToken::class,
         \Engelsystem\Middleware\RouteDispatcher::class,
 
         // Handle request
