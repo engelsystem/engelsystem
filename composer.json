@@ -15,13 +15,20 @@
     ],
     "require": {
         "php": ">=7.0.0",
+        "ext-gettext": "*",
+        "ext-json": "*",
+        "ext-PDO": "*",
         "erusev/parsedown": "^1.6",
         "illuminate/container": "5.5.*",
         "illuminate/database": "5.5.*",
         "illuminate/support": "^5.5",
         "psr/container": "^1.0",
+        "psr/http-server-middleware": "^1.0",
         "psr/log": "^1.0",
-        "symfony/http-foundation": "^3.3"
+        "symfony/http-foundation": "^3.3",
+        "symfony/psr-http-message-bridge": "^1.0",
+        "twbs/bootstrap": "^3.3",
+        "zendframework/zend-diactoros": "^1.7"
     },
     "require-dev": {
         "filp/whoops": "^2.1",

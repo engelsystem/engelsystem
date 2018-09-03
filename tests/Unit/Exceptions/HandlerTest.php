@@ -49,15 +49,19 @@ class HandlerTest extends TestCase
     public function testExceptionHandler()
     {
         $exception = new Exception();
+        $errorMessage = 'Oh noes, an error!';
 
         /** @var HandlerInterface|Mock $handlerMock */
         $handlerMock = $this->getMockForAbstractClass(HandlerInterface::class);
-        $handlerMock->expects($this->once())
+        $handlerMock->expects($this->atLeastOnce())
             ->method('report')
             ->with($exception);
-        $handlerMock->expects($this->once())
+        $handlerMock->expects($this->atLeastOnce())
             ->method('render')
-            ->with($this->isInstanceOf(Request::class), $exception);
+            ->with($this->isInstanceOf(Request::class), $exception)
+            ->willReturnCallback(function () use ($errorMessage) {
+                echo $errorMessage;
+            });
 
         /** @var Handler|Mock $handler */
         $handler = $this->getMockBuilder(Handler::class)
@@ -68,7 +72,11 @@ class HandlerTest extends TestCase
 
         $handler->setHandler(Handler::ENV_PRODUCTION, $handlerMock);
 
+        $this->expectOutputString($errorMessage);
         $handler->exceptionHandler($exception);
+
+        $return = $handler->exceptionHandler($exception, true);
+        $this->assertEquals($errorMessage, $return);
     }
 
     /**

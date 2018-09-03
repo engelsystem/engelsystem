@@ -74,6 +74,14 @@ class WhoopsTest extends TestCase
             );
         $whoopsRunner
             ->expects($this->once())
+            ->method('writeToOutput')
+            ->with(false);
+        $whoopsRunner
+            ->expects($this->once())
+            ->method('allowQuit')
+            ->with(false);
+        $whoopsRunner
+            ->expects($this->once())
             ->method('handleException')
             ->with($exception);
 

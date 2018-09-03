@@ -4,6 +4,7 @@
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
+use Engelsystem\Http\Response;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Routing\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  * Get the global app instance
  *
  * @param string $id
- * @return mixed
+ * @return mixed|Application
  */
 function app($instance_id = null)
 {
@@ -78,6 +79,27 @@ function request($key = null, $default = null)
     }
 
     return $request->input($key, $default);
+}
+
+/**
+ * @param string $content
+ * @param int    $status
+ * @param array  $headers
+ * @return Response
+ */
+function response($content = '', $status = 200, $headers = [])
+{
+    /** @var Response $response */
+    $response = app('psr7.response');
+    $response = $response
+        ->withContent($content)
+        ->withStatus($status);
+
+    foreach ($headers as $key => $value) {
+        $response = $response->withAddedHeader($key, $value);
+    }
+
+    return $response;
 }
 
 /**
