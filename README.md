@@ -112,7 +112,7 @@ For usage see `./bin/deploy.sh -h`
 ##### bin/migrate
 The `bin/migrate` script can be used to import and update the database of the engelsystem.
 
-For more information on how to use it call `bin/migrate help`
+For more information on how to use it call `./bin/migrate help`
 
 ### Codestyle
 Please ensure that your pull requests follow [PSR-2](http://www.php-fig.org/psr/psr-2/) and [PSR-4](http://www.php-fig.org/psr/psr-4/).

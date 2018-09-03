@@ -51,10 +51,6 @@ test:
     when: always
     paths:
       - ./coverage/
-      - ./unittests.xml
-    when: always
-    reports:
-      junit: ./unittests.xml
   coverage: '/^\s*Lines:\s*(\d+(?:\.\d+)?%)/'
   before_script:
     - apk add $PHPIZE_DEPS && pecl install xdebug && docker-php-ext-enable xdebug
@@ -63,15 +59,10 @@ test:
     - HOMEDIR=$(pwd)
     - cd "${DOCROOT}"
     - composer --no-ansi install --dev
-    - chmod +x ./bin/migrate
     - ./bin/migrate
   script:
-    - set +e
-    - vendor/bin/phpunit -v --colors=never --coverage-text --coverage-html "${HOMEDIR}/coverage/" --log-junit "${HOMEDIR}/unittests.xml"
-    - status=$?
-    - set -e
-    - sed -i "s~${DOCROOT}~${HOMEDIR}/~g" "${HOMEDIR}/unittests.xml"
-    - exit $status
+    - vendor/bin/phpunit -v --colors=never --coverage-text --coverage-html "${HOMEDIR}/coverage/"
+    - ./bin/migrate down
 
 release-image:
   <<: *docker_definition
@@ -102,7 +93,6 @@ release-image.nginx:
 .deploy_template_script:
   # Configure SSH
   - &deploy_template_script |-
-    apt update && apt install -yqq rsync openssh-client
     mkdir -p ~/.ssh
     echo "$SSH_PRIVATE_KEY" | sed -e 's/\r//g' > ~/.ssh/id_ed25519
     chmod 600 ~/.ssh/id_ed25519

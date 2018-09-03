@@ -13,6 +13,7 @@ RUN yarn build
 
 # Intermediate container for less layers
 FROM alpine as data
+COPY bin/ /app/bin
 COPY config/ /app/config
 COPY db/ /app/db
 COPY includes/ /app/includes
