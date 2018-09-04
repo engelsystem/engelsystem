@@ -136,6 +136,6 @@ class CallableHandlerTest extends TestCase
         $callable = $this->getMockBuilder(stdClass::class)
             ->setMethods(['__invoke'])
             ->getMock();
-        return array($request, $response, $callable, $handler);
+        return [$request, $response, $callable, $handler];
     }
 }

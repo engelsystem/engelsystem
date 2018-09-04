@@ -143,6 +143,6 @@ class RouteDispatcherTest extends TestCase
             ->method('getPath')
             ->willReturn('/foo%21bar');
 
-        return array($dispatcher, $response, $request, $handler);
+        return [$dispatcher, $response, $request, $handler];
     }
 }
