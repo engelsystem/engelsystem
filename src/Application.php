@@ -7,6 +7,7 @@ use Engelsystem\Container\Container;
 use Engelsystem\Container\ServiceProvider;
 use Illuminate\Container\Container as IlluminateContainer;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Server\MiddlewareInterface;
 
 class Application extends Container
 {
@@ -15,6 +16,9 @@ class Application extends Container
 
     /** @var bool */
     protected $isBootstrapped = false;
+
+    /** @var MiddlewareInterface[]|string[] */
+    protected $middleware;
 
     /**
      * Registered service providers
@@ -85,6 +89,8 @@ class Application extends Container
             foreach ($config->get('providers', []) as $provider) {
                 $this->register($provider);
             }
+
+            $this->middleware = $config->get('middleware', []);
         }
 
         foreach ($this->serviceProviders as $provider) {
@@ -135,5 +141,13 @@ class Application extends Container
     public function isBooted()
     {
         return $this->isBootstrapped;
+    }
+
+    /**
+     * @return MiddlewareInterface[]|string[]
+     */
+    public function getMiddleware()
+    {
+        return $this->middleware;
     }
 }

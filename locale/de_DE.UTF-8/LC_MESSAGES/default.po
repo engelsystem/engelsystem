@@ -2876,13 +2876,13 @@ msgstr ""
 "keine Nummer hast, bitte einfach \"-\" angeben."
 
 #: /Users/msquare/workspace/projects/engelsystem/public/index.php:218
-msgid "No Access"
-msgstr "Kein Zugriff"
+msgid "Page not found"
+msgstr "Seite nicht gefunden"
 
 #: /Users/msquare/workspace/projects/engelsystem/public/index.php:219
 msgid ""
-"You don't have permission to view this page . You probably have to sign in "
-"or register in order to gain access!"
+"This page could not be found or you don't have permission to view it. You "
+"probably have to sign in or register in order to gain access!"
 msgstr ""
-"Du hast keinen Zugriff auf diese Seite. Registriere Dich und logge Dich "
-"bitte ein, um Zugriff zu erhalten!"
+"Diese Seite existiert nicht oder Du hast keinen Zugriff. Melde Dich an um Zugriff "
+"zu erhalten!"

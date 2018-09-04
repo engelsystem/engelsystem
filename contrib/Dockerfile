@@ -1,6 +1,6 @@
 FROM composer AS composer
 COPY composer.json /app/
-RUN composer --no-ansi install --no-dev
+RUN composer --no-ansi install --no-dev --ignore-platform-reqs
 RUN composer --no-ansi dump-autoload --optimize
 
 FROM node:8-alpine as themes

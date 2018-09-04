@@ -8,11 +8,6 @@ class RoomModelTest extends TestCase
 {
     private $room_id = null;
 
-    public static function setUpBeforeClass()
-    {
-        require_once __DIR__ . '/../../../includes/engelsystem.php';
-    }
-
     public function createRoom()
     {
         $this->room_id = Room_create('test', false, null, null);

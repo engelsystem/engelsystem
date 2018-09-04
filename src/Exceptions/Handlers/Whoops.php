@@ -34,6 +34,8 @@ class Whoops extends Legacy implements HandlerInterface
         $whoops = $this->app->make(WhoopsRunner::class);
         $handler = $this->getPrettyPageHandler($e);
         $whoops->pushHandler($handler);
+        $whoops->writeToOutput(false);
+        $whoops->allowQuit(false);
 
         if ($request->isXmlHttpRequest()) {
             $handler = $this->getJsonResponseHandler();

@@ -6,6 +6,7 @@ use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\Container;
 use Engelsystem\Http\Request;
+use Engelsystem\Http\Response;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Routing\UrlGeneratorInterface;
 use PHPUnit\Framework\TestCase;
@@ -124,6 +125,33 @@ class HelpersTest extends TestCase
             ->willReturn('requestValue');
 
         $this->assertEquals('requestValue', request('requestKey'));
+    }
+
+    /**
+     * @covers \response
+     */
+    public function testResponse()
+    {
+        /** @var MockObject|Response $response */
+        $response = $this->getMockBuilder(Response::class)->getMock();
+        $this->getAppMock('psr7.response', $response);
+
+        $response->expects($this->once())
+            ->method('withContent')
+            ->with('Lorem Ipsum?')
+            ->willReturn($response);
+
+        $response->expects($this->once())
+            ->method('withStatus')
+            ->with(501)
+            ->willReturn($response);
+
+        $response->expects($this->exactly(2))
+            ->method('withAddedHeader')
+            ->withConsecutive(['lor', 'em'], ['foo', 'bar'])
+            ->willReturn($response);
+
+        $this->assertEquals($response, response('Lorem Ipsum?', 501, ['lor' => 'em', 'foo' => 'bar',]));
     }
 
     /**

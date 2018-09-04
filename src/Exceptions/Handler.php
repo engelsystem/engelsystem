@@ -54,8 +54,10 @@ class Handler
 
     /**
      * @param Throwable $e
+     * @param bool      $return
+     * @return string
      */
-    public function exceptionHandler($e)
+    public function exceptionHandler($e, $return = false)
     {
         if (!$this->request instanceof Request) {
             $this->request = new Request();
@@ -63,8 +65,21 @@ class Handler
 
         $handler = $this->handler[$this->environment];
         $handler->report($e);
+        ob_start();
         $handler->render($this->request, $e);
+
+        if ($return) {
+            $output = ob_get_contents();
+            ob_end_clean();
+            return $output;
+        }
+
+        http_response_code(500);
+        ob_end_flush();
+
         $this->terminateApplicationImmediately();
+
+        return '';
     }
 
     /**
