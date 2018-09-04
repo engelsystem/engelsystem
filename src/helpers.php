@@ -6,7 +6,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Renderer\Renderer;
-use Engelsystem\Routing\UrlGeneratorInterface;
+use Engelsystem\Http\UrlGenerator;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -125,13 +125,13 @@ function session($key = null, $default = null)
  */
 function url($path = null, $parameters = [])
 {
-    $urlGenerator = app('routing.urlGenerator');
+    $urlGenerator = app('http.urlGenerator');
 
     if (is_null($path)) {
         return $urlGenerator;
     }
 
-    return $urlGenerator->linkTo($path, $parameters);
+    return $urlGenerator->to($path, $parameters);
 }
 
 /**

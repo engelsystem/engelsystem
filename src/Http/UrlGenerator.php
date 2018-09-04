@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Routing;
+namespace Engelsystem\Http;
 
 /**
  * Provides urls when rewriting on the webserver is enabled. (default)
@@ -14,7 +14,7 @@ class UrlGenerator implements UrlGeneratorInterface
      * @param array  $parameters
      * @return string url in the form [app url]/[path]?[parameters]
      */
-    public function linkTo($path, $parameters = [])
+    public function to($path, $parameters = [])
     {
         $path = '/' . ltrim($path, '/');
         $request = app('request');

@@ -46,10 +46,11 @@ class LegacyMiddlewareTest extends TestCase
                 ['title2', 'content2']
             );
 
-        $middleware->expects($this->exactly(2))
+        $middleware->expects($this->exactly(3))
             ->method('renderPage')
             ->withConsecutive(
                 ['user_worklog', 'title', 'content'],
+                ['404', 'Page not found'],
                 ['login', 'title2', 'content2']
             )
             ->willReturn($response);
@@ -72,11 +73,6 @@ class LegacyMiddlewareTest extends TestCase
                 'foo',
                 '/'
             );
-
-        $handler->expects($this->once())
-            ->method('handle')
-            ->with($request)
-            ->willReturn($response);
 
         $middleware->process($request, $handler);
         $middleware->process($request, $handler);
