@@ -26,8 +26,24 @@ return [
     // Contact email address, linked on every page
     'contact_email'           => 'mailto:ticket@c3heaven.de',
 
-    // From address of all emails
-    'no_reply_email'          => 'noreply@engelsystem.de',
+    // Email config
+    'email'                   => [
+        // Can be mail, smtp, sendmail or log
+        'driver' => env('MAIL_DRIVER', 'smtp'),
+        'from'   => [
+            // From address of all emails
+            'address' => env('MAIL_FROM_ADDRESS', 'noreply@engelsystem.de'),
+            'name'    => env('MAIL_FROM_NAME', 'Engelsystem')
+        ],
+
+        'host'       => env('MAIL_HOST', 'localhost'),
+        'port'       => env('MAIL_PORT', 587),
+        // Transport encryption like tls
+        'encryption' => env('MAIL_ENCRYPTION', null),
+        'username'   => env('MAIL_USERNAME'),
+        'password'   => env('MAIL_PASSWORD'),
+        'sendmail'   => '/usr/sbin/sendmail -bs',
+    ],
 
     // Default theme, 1=style1.css
     'theme'                   => 1,
