@@ -68,13 +68,11 @@ return [
     // Only arrived angels can sign up for shifts
     'signup_requires_arrival' => false,
 
-    // Anzahl Stunden bis zum Austragen eigener Schichten
+    // Number of hours that an angel has to sign out own shifts
     'last_unsubscribe'        => 3,
 
-    // Setzt den zu verwendenden Crypto-Algorithmus (entsprechend der Dokumentation von crypt()).
-    // Falls ein Benutzerpasswort in einem anderen Format gespeichert ist,
-    // wird es bei der ersten Benutzung des Klartext-Passworts in das neue Format
-    // konvertiert.
+    // Define the algorithm to use for `crypt()` of passwords
+    // If the user uses an old algorithm the password will be converted to the new format
     //  MD5         '$1'
     //  Blowfish    '$2y$13'
     //  SHA-256     '$5$rounds=5000'
@@ -83,16 +81,16 @@ return [
 
     'min_password_length'     => 8,
 
-    // Wenn Engel beim Registrieren oder in ihrem Profil eine T-Shirt Größe angeben sollen, auf true setzen:
+    // Enables the T-Shirt configuration on signup and profile
     'enable_tshirt_size'      => true,
 
     // Number of shifts to freeload until angel is locked for shift signup.
     'max_freeloadable_shifts' => 2,
 
-    // local timezone
+    // Local timezone
     'timezone'                => 'Europe/Berlin',
 
-    // weigh every shift the same
+    // Weigh every shift the same
     //'shift_sum_formula'       => 'SUM(`end` - `start`)',
 
     // Multiply 'night shifts' and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
@@ -122,10 +120,11 @@ return [
         'en_US.UTF-8' => 'English',
     ],
 
-    'default_locale' => 'en_US.UTF-8',
+    // The default locale to use
+    'default_locale'          => 'en_US.UTF-8',
 
     // Available T-Shirt sizes, set value to null if not available
-    'tshirt_sizes'   => [
+    'tshirt_sizes'            => [
         'S'    => 'S',
         'S-G'  => 'S Girl',
         'M'    => 'M',
