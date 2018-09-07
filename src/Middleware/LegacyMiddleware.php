@@ -83,7 +83,9 @@ class LegacyMiddleware implements MiddlewareInterface
         }
 
         if (empty($title) and empty($content)) {
-            return $handler->handle($request);
+            $page = '404';
+            $title = _('Page not found');
+            $content = _('This page could not be found or you don\'t have permission to view it. You probably have to sign in or register in order to gain access!');
         }
 
         return $this->renderPage($page, $title, $content);
@@ -270,8 +272,15 @@ class LegacyMiddleware implements MiddlewareInterface
         $parameters = [
             'key' => (isset($user) ? $user['api_key'] : ''),
         ];
+
         if ($page == 'user_meetings') {
             $parameters['meetings'] = 1;
+        }
+
+        $status = 200;
+        if ($page == '404') {
+            $status = 404;
+            $content = info($content, true);
         }
 
         return response(view(__DIR__ . '/../../templates/layout.html', [
@@ -291,6 +300,6 @@ class LegacyMiddleware implements MiddlewareInterface
             'contact_email'  => config('contact_email'),
             'locale'         => locale(),
             'event_info'     => EventConfig_info($event_config) . ' <br />'
-        ]));
+        ]), $status);
     }
 }

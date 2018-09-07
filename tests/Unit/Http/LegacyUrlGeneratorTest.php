@@ -1,12 +1,12 @@
 <?php
 
-namespace Engelsystem\Test\Unit\Routing;
+namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Application;
 use Engelsystem\Container\Container;
 use Engelsystem\Http\Request;
-use Engelsystem\Routing\LegacyUrlGenerator;
-use Engelsystem\Routing\UrlGeneratorInterface;
+use Engelsystem\Http\LegacyUrlGenerator;
+use Engelsystem\Http\UrlGeneratorInterface;
 use PHPUnit\Framework\TestCase;
 
 class LegacyUrlGeneratorTest extends TestCase
@@ -23,14 +23,14 @@ class LegacyUrlGeneratorTest extends TestCase
 
     /**
      * @dataProvider provideLinksTo
-     * @covers       \Engelsystem\Routing\LegacyUrlGenerator::linkTo
+     * @covers       \Engelsystem\Http\LegacyUrlGenerator::to
      *
      * @param string   $urlToPath
      * @param string   $willReturn
      * @param string[] $arguments
      * @param string   $expectedUrl
      */
-    public function testLinkTo($urlToPath, $willReturn, $arguments, $expectedUrl)
+    public function testTo($urlToPath, $willReturn, $arguments, $expectedUrl)
     {
         $app = new Container();
         Application::setInstance($app);
@@ -48,7 +48,7 @@ class LegacyUrlGeneratorTest extends TestCase
         $urlGenerator = new LegacyUrlGenerator();
         $this->assertInstanceOf(UrlGeneratorInterface::class, $urlGenerator);
 
-        $url = $urlGenerator->linkTo($urlToPath, $arguments);
+        $url = $urlGenerator->to($urlToPath, $arguments);
         $this->assertEquals($expectedUrl, $url);
     }
 }

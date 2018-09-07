@@ -8,7 +8,8 @@ use Engelsystem\Container\Container;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Renderer\Renderer;
-use Engelsystem\Routing\UrlGeneratorInterface;
+use Engelsystem\Http\UrlGenerator;
+use Engelsystem\Http\UrlGeneratorInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -201,11 +202,11 @@ class HelpersTest extends TestCase
     {
         $urlGeneratorMock = $this->getMockForAbstractClass(UrlGeneratorInterface::class);
 
-        $this->getAppMock('routing.urlGenerator', $urlGeneratorMock);
+        $this->getAppMock('http.urlGenerator', $urlGeneratorMock);
         $this->assertEquals($urlGeneratorMock, url());
 
         $urlGeneratorMock->expects($this->once())
-            ->method('linkTo')
+            ->method('to')
             ->with('foo/bar', ['param' => 'value'])
             ->willReturn('http://lorem.ipsum/foo/bar?param=value');
 

@@ -5,7 +5,6 @@ namespace Engelsystem\Test\Unit\Middleware;
 use Engelsystem\Application;
 use Engelsystem\Middleware\Dispatcher;
 use Engelsystem\Test\Unit\Middleware\Stub\NotARealMiddleware;
-use Engelsystem\Test\Unit\Middleware\Stub\ReturnResponseMiddleware;
 use InvalidArgumentException;
 use LogicException;
 use PHPUnit\Framework\TestCase;
@@ -158,14 +157,14 @@ class DispatcherTest extends TestCase
 
         /** @var Dispatcher|MockObject $dispatcher */
         $dispatcher = $this->getMockBuilder(Dispatcher::class)
-            ->setConstructorArgs([[MiddlewareInterface::class]])
+            ->setConstructorArgs([[MiddlewareInterface::class, MiddlewareInterface::class]])
             ->setMethods(['resolveMiddleware'])
             ->getMock();
 
-        $dispatcher->expects($this->once())
+        $dispatcher->expects($this->exactly(2))
             ->method('resolveMiddleware')
             ->with(MiddlewareInterface::class)
-            ->willReturn($middleware);
+            ->willReturnOnConsecutiveCalls($middleware, null);
 
         $middleware->expects($this->once())
             ->method('process')
@@ -174,57 +173,26 @@ class DispatcherTest extends TestCase
 
         $return = $dispatcher->handle($request);
         $this->assertEquals($response, $return);
+
+        $this->expectException(InvalidArgumentException::class);
+        $dispatcher->handle($request);
     }
 
     /**
-     * @covers \Engelsystem\Middleware\Dispatcher::resolveMiddleware
      * @covers \Engelsystem\Middleware\Dispatcher::setContainer
      */
-    public function testResolveMiddleware()
+    public function testSetContainer()
     {
         /** @var Application|MockObject $container */
         $container = $this->createMock(Application::class);
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->createMock(ServerRequestInterface::class);
-        /** @var ResponseInterface|MockObject $response */
-        $response = $this->createMock(ResponseInterface::class);
 
-        $returnResponseMiddleware = new ReturnResponseMiddleware($response);
+        $middleware = new Dispatcher();
+        $middleware->setContainer($container);
 
-        $container->expects($this->exactly(2))
-            ->method('has')
-            ->withConsecutive([ReturnResponseMiddleware::class], ['middleware'])
-            ->willReturnOnConsecutiveCalls(false, true);
+        $reflection = new Reflection(get_class($middleware));
+        $property = $reflection->getProperty('container');
+        $property->setAccessible(true);
 
-        $container->expects($this->once())
-            ->method('make')
-            ->with(ReturnResponseMiddleware::class)
-            ->willReturn($returnResponseMiddleware);
-
-        $container->expects($this->once())
-            ->method('get')
-            ->with('middleware')
-            ->willReturn($returnResponseMiddleware);
-
-        $dispatcher = new Dispatcher([ReturnResponseMiddleware::class]);
-        $dispatcher->setContainer($container);
-        $dispatcher->handle($request);
-
-        $dispatcher = new Dispatcher(['middleware'], $container);
-        $dispatcher->handle($request);
-    }
-
-    /**
-     * @covers \Engelsystem\Middleware\Dispatcher::resolveMiddleware
-     */
-    public function testResolveMiddlewareNoContainer()
-    {
-        /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->createMock(ServerRequestInterface::class);
-
-        $this->expectException(InvalidArgumentException::class);
-
-        $dispatcher = new Dispatcher([ReturnResponseMiddleware::class]);
-        $dispatcher->handle($request);
+        $this->assertEquals($container, $property->getValue($middleware));
     }
 }
