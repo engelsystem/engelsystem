@@ -2,12 +2,32 @@
 
 namespace Engelsystem\Http;
 
+use Engelsystem\Renderer\Renderer;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class Response extends SymfonyResponse implements ResponseInterface
 {
     use MessageTrait;
+
+    /** @var Renderer */
+    protected $view;
+
+    /**
+     * @param string   $content
+     * @param int      $status
+     * @param array    $headers
+     * @param Renderer $view
+     */
+    public function __construct(
+        $content = '',
+        int $status = 200,
+        array $headers = array(),
+        Renderer $view = null
+    ) {
+        $this->view = $view;
+        parent::__construct($content, $status, $headers);
+    }
 
     /**
      * Return an instance with the specified status code and, optionally, reason phrase.
@@ -71,5 +91,26 @@ class Response extends SymfonyResponse implements ResponseInterface
         $new->setContent($content);
 
         return $new;
+    }
+
+    /**
+     * Return an instance with the rendered content.
+     *
+     * THis method retains the immutability of the message and returns
+     * an instance with the updated status and headers
+     *
+     * @param string              $view
+     * @param array               $data
+     * @param int                 $status
+     * @param string[]|string[][] $headers
+     * @return Response
+     */
+    public function withView($view, $data = [], $status = 200, $headers = [])
+    {
+        if (!$this->view instanceof Renderer) {
+            throw new \InvalidArgumentException('Renderer not defined');
+        }
+
+        return $this->create($this->view->render($view, $data), $status, $headers);
     }
 }

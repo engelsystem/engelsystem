@@ -21,7 +21,12 @@ class UrlGeneratorServiceProviderTest extends ServiceProviderTest
         $app = $this->getApp();
 
         $this->setExpects($app, 'make', [UrlGenerator::class], $urlGenerator);
-        $this->setExpects($app, 'instance', ['http.urlGenerator', $urlGenerator]);
+        $app->expects($this->exactly(2))
+            ->method('instance')
+            ->withConsecutive(
+                [UrlGenerator::class, $urlGenerator],
+                ['http.urlGenerator', $urlGenerator]
+            );
 
         $serviceProvider = new UrlGeneratorServiceProvider($app);
         $serviceProvider->register();

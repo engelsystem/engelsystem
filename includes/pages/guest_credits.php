@@ -13,5 +13,5 @@ function credits_title()
  */
 function guest_credits()
 {
-    return view(__DIR__ . '/../../templates/guest_credits.html');
+    return view(__DIR__ . '/../../templates/pages/credits.html');
 }

@@ -27,4 +27,14 @@ class ReturnResponseMiddlewareHandler implements RequestHandlerInterface
     {
         return $this->response;
     }
+
+    /**
+     * Set the response
+     *
+     * @param ResponseInterface $response
+     */
+    public function setResponse(ResponseInterface $response)
+    {
+        $this->response = $response;
+    }
 }

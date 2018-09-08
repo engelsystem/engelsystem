@@ -3,10 +3,11 @@
 
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
+use Engelsystem\Helpers\Translator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
-use Engelsystem\Renderer\Renderer;
 use Engelsystem\Http\UrlGenerator;
+use Engelsystem\Renderer\Renderer;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -119,6 +120,40 @@ function session($key = null, $default = null)
 }
 
 /**
+ * Translate the given message
+ *
+ * @param  string $key
+ * @param  array  $replace
+ * @return string|Translator
+ */
+function trans($key = null, $replace = [])
+{
+    /** @var Translator $translator */
+    $translator = app('translator');
+
+    if (is_null($key)) {
+        return $translator;
+    }
+
+    return $translator->translate($key, $replace);
+}
+
+/**
+ * Translate the given message
+ *
+ * @param  string $key
+ * @param  array  $replace
+ * @return string
+ */
+function __($key, $replace = [])
+{
+    /** @var Translator $translator */
+    $translator = app('translator');
+
+    return $translator->translate($key, $replace);
+}
+
+/**
  * @param string $path
  * @param array  $parameters
  * @return UrlGeneratorInterface|string
@@ -139,7 +174,7 @@ function url($path = null, $parameters = [])
  * @param mixed[] $data
  * @return Renderer|string
  */
-function view($template = null, $data = null)
+function view($template = null, $data = [])
 {
     $renderer = app('renderer');
 

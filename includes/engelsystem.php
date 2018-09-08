@@ -16,15 +16,9 @@ require __DIR__ . '/includes.php';
  * Check for maintenance
  */
 if ($app->get('config')->get('maintenance')) {
-    echo file_get_contents(__DIR__ . '/../templates/maintenance.html');
+    echo file_get_contents(__DIR__ . '/../templates/layouts/maintenance.html');
     die();
 }
-
-
-/**
- * Init translations
- */
-gettext_init();
 
 
 /**

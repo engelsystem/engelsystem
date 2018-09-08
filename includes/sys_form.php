@@ -66,6 +66,9 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
     $value = is_numeric($value) ? date('Y-m-d', $value) : '';
     $start_date = is_numeric($start_date) ? date('Y-m-d', $start_date) : '';
     $end_date = is_numeric($end_date) ? date('Y-m-d', $end_date) : '';
+    $locale = $locale = session()->get('locale');
+    $shortLocale = substr($locale, 0, 2);
+
     return form_element($label, '
     <div class="input-group date" id="' . $dom_id . '">
       <input name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '">'
@@ -73,13 +76,13 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
     </div>
     <script type="text/javascript">
 			$(function(){
-        $(\'#' . $dom_id . '\').datepicker({
-				  language: \'' . locale_short() . '\',
-          todayBtn: \'linked\',
-          format: \'yyyy-mm-dd\',
-          startDate: \'' . $start_date . '\',
-          endDate: \'' . $end_date . '\',
-          orientation: \'bottom\'
+        $("#' . $dom_id . '").datepicker({
+				  language: "' . $shortLocale . '",
+          todayBtn: "linked",
+          format: "yyyy-mm-dd",
+          startDate: "' . $start_date . '",
+          endDate: "' . $end_date . '",
+          orientation: "bottom"
 			  });
       });
     </script>

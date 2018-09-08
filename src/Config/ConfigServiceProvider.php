@@ -13,6 +13,7 @@ class ConfigServiceProvider extends ServiceProvider
     public function register()
     {
         $config = $this->app->make(Config::class);
+        $this->app->instance(Config::class, $config);
         $this->app->instance('config', $config);
 
         foreach ($this->configFiles as $file) {

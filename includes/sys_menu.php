@@ -110,7 +110,7 @@ function make_user_submenu()
 {
     global $privileges, $page;
 
-    $user_submenu = make_langselect();
+    $user_submenu = make_language_select();
 
     if (in_array('user_settings', $privileges) || in_array('logout', $privileges)) {
         $user_submenu[] = toolbar_item_divider();
@@ -225,6 +225,30 @@ function make_room_navigation($menu)
         $menu[] = toolbar_dropdown('map-marker', _('Rooms'), $room_menu);
     }
     return $menu;
+}
+
+/**
+ * Renders language selection.
+ *
+ * @return array
+ */
+function make_language_select()
+{
+    $request = app('request');
+    $activeLocale = session()->get('locale');
+
+    $items = [];
+    foreach (config('locales') as $locale => $name) {
+        $url = url($request->getPathInfo(), ['set-locale' => $locale]);
+
+        $items[] = toolbar_item_link(
+            htmlspecialchars($url),
+            '',
+            $name,
+            $locale == $activeLocale
+        );
+    }
+    return $items;
 }
 
 /**

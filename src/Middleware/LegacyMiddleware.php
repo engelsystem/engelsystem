@@ -83,7 +83,7 @@ class LegacyMiddleware implements MiddlewareInterface
         }
 
         if (empty($title) and empty($content)) {
-            $page = '404';
+            $page = 404;
             $title = _('Page not found');
             $content = _('This page could not be found or you don\'t have permission to view it. You probably have to sign in or register in order to gain access!');
         }
@@ -277,29 +277,17 @@ class LegacyMiddleware implements MiddlewareInterface
             $parameters['meetings'] = 1;
         }
 
-        $status = 200;
-        if ($page == '404') {
-            $status = 404;
-            $content = info($content, true);
+        if (!empty($page) && is_int($page)) {
+            return response($content, (int)$page);
         }
 
-        return response(view(__DIR__ . '/../../templates/layout.html', [
-            'theme'          => isset($user) ? $user['color'] : config('theme'),
+        return response(view('layouts/app', [
             'title'          => $title,
-            'atom_link'      => ($page == 'news' || $page == 'user_meetings')
-                ? ' <link href="'
-                . page_link_to('atom', $parameters)
-                . '" type = "application/atom+xml" rel = "alternate" title = "Atom Feed">'
-                : '',
-            'start_page_url' => page_link_to('/'),
-            'credits_url'    => page_link_to('credits'),
+            'atom_feed'      => ($page == 'news' || $page == 'user_meetings') ? $parameters : [],
             'menu'           => make_menu(),
             'content'        => msg() . $content,
             'header_toolbar' => header_toolbar(),
-            'faq_url'        => config('faq_url'),
-            'contact_email'  => config('contact_email'),
-            'locale'         => locale(),
             'event_info'     => EventConfig_info($event_config) . ' <br />'
-        ]), $status);
+        ]), 200);
     }
 }

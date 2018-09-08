@@ -24,8 +24,13 @@ class ConfigServiceProviderTest extends ServiceProviderTest
         Application::setInstance($app);
 
         $this->setExpects($app, 'make', [Config::class], $config);
-        $this->setExpects($app, 'instance', ['config', $config]);
         $this->setExpects($app, 'get', ['path.config'], __DIR__ . '/../../../config', $this->atLeastOnce());
+        $app->expects($this->exactly(2))
+            ->method('instance')
+            ->withConsecutive(
+                [Config::class, $config],
+                ['config', $config]
+            );
 
         $this->setExpects($config, 'set', null, null, $this->exactly(2));
         $config->expects($this->exactly(3))
@@ -60,7 +65,12 @@ class ConfigServiceProviderTest extends ServiceProviderTest
         Application::setInstance($app);
 
         $this->setExpects($app, 'make', [Config::class], $config);
-        $this->setExpects($app, 'instance', ['config', $config]);
+        $app->expects($this->exactly(2))
+            ->method('instance')
+            ->withConsecutive(
+              [Config::class, $config],
+              ['config', $config]
+            );
         $this->setExpects($app, 'get', ['path.config'], __DIR__ . '/not_existing', $this->atLeastOnce());
 
         $this->setExpects($config, 'set', null, null, $this->never());

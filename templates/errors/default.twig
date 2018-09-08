@@ -1,0 +1,7 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{% if status == 404 %}{{ __("Page not found") }}{% else %}Error {{ status }}{% endif %}{% endblock %}
+
+{% block content %}
+    <div class="alert alert-info">{{ content }}</div>
+{% endblock %}

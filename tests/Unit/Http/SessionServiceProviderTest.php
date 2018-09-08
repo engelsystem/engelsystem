@@ -54,6 +54,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
             ->method('instance')
             ->withConsecutive(
                 ['session.storage', $sessionStorage],
+                [Session::class, $session],
                 ['session', $session]
             );
 
@@ -88,10 +89,11 @@ class SessionServiceProviderTest extends ServiceProviderTest
                 $sessionStorage,
                 $session
             );
-        $app->expects($this->exactly(2))
+        $app->expects($this->exactly(3))
             ->method('instance')
             ->withConsecutive(
                 ['session.storage', $sessionStorage],
+                [Session::class, $session],
                 ['session', $session]
             );
 
