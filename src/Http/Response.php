@@ -22,7 +22,7 @@ class Response extends SymfonyResponse implements ResponseInterface
     public function __construct(
         $content = '',
         int $status = 200,
-        array $headers = array(),
+        array $headers = [],
         Renderer $view = null
     ) {
         $this->view = $view;

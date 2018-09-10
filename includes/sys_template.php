@@ -482,7 +482,7 @@ function ReplaceSmilies($msg)
     ) {
         $msg = str_ireplace($search, sprintf(
             '<img src="%s">',
-            sprintf($assets->getAsset('emojis/%s.gif'), $replace)
+            sprintf($assets->getAsset('assets/emojis/%s.gif'), $replace)
         ), $msg);
     }
 
