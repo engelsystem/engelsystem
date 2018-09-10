@@ -23,11 +23,6 @@ for (let i = 0; i < 7; i++) {
   themeEntries[`theme${i}`] = `./resources/assets/themes/theme${i}.less`;
 }
 
-const emojis = {};
-for (let emoji of ['redface', 'wind', 'smile', 'sad', 'lol', 'cry', 'rolleyes', 'evil', 'mad', 'question']){
-    emojis[`${emoji}`] = `./resources/assets/emojis/${emoji}.gif`;
-}
-
 module.exports = {
   context: __dirname,
   resolve: {
@@ -36,7 +31,6 @@ module.exports = {
   entry: {
     ...themeEntries,
     vendor: './resources/assets/js/vendor.js',
-    ...emojis,
   },
   output: {
     path: path.resolve('public/assets'),
@@ -52,7 +46,6 @@ module.exports = {
         query: { cacheDirectory: true },
       },
       { test: /\.(eot|ttf|otf|svg|woff2?)(\?.*)?$/, loader: 'file-loader' },
-      { test: /\.gif$/, loader: 'file-loader?name=emojis/[name].[ext]' },
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.css$/, loader: 'style-loader!css-loader' },
       { test: /\.less$/, use: ExtractTextPlugin.extract({
