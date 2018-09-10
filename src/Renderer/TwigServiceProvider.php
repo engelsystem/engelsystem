@@ -3,6 +3,7 @@
 namespace Engelsystem\Renderer;
 
 use Engelsystem\Container\ServiceProvider;
+use Engelsystem\Renderer\Twig\Extensions\Assets;
 use Engelsystem\Renderer\Twig\Extensions\Config;
 use Engelsystem\Renderer\Twig\Extensions\Globals;
 use Engelsystem\Renderer\Twig\Extensions\Session;
@@ -15,6 +16,7 @@ class TwigServiceProvider extends ServiceProvider
 {
     /** @var array */
     protected $extensions = [
+        'assets'      => Assets::class,
         'config'      => Config::class,
         'globals'     => Globals::class,
         'session'     => Session::class,

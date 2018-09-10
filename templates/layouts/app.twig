@@ -1,19 +1,20 @@
 {% set theme = user.color|default(config('theme')) %}
 <!DOCTYPE html>
-<html>
+<html lang="{{ session_get('locale')|split('_')[0]|escape('html_attr') }}">
 <head>
     {% block head %}
         <title>{% block title %}{{ title }}{% endblock %} - Engelsystem</title>
+
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="css/theme{{ theme }}.css"/>
-        <link rel="stylesheet" type="text/css" href="vendor/icomoon/style.css"/>
-        <link rel="stylesheet" type="text/css" href="vendor/bootstrap-datepicker-1.7.1/css/bootstrap-datepicker3.min.css"/>
-        <script type="text/javascript" src="vendor/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="vendor/jquery-ui.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme' ~ theme ~ '.css') }}"/>
+        <script type="text/javascript" src="{{ asset('assets/vendor.js') }}"></script>
+
         {% if atom_feed -%}
             <link href="{{ url('atom', atom_feed) }}" type="application/atom+xml" rel="alternate" title="Atom Feed">
         {% endif %}
+
     {% endblock %}
 </head>
 <body>
@@ -67,20 +68,6 @@
             {% endblock %}
         </div>
     </div>
-
-    <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="vendor/bootstrap-datepicker-1.7.1/js/bootstrap-datepicker.min.js"></script>
-    <script type="text/javascript" src="vendor/bootstrap-datepicker-1.7.1/locales/bootstrap-datepicker.de.min.js"></script>
-    <script type="text/javascript" src="vendor/Chart.min.js"></script>
-    <script type="text/javascript" src="js/forms.js"></script>
-    <script type="text/javascript" src="vendor/moment-with-locales.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            moment.locale("{{ session_get('locale')|escape('js') }}");
-        });
-    </script>
-    <script type="text/javascript" src="js/moment-countdown.js"></script>
-    <script type="text/javascript" src="js/sticky-headers.js"></script>
 {% endblock %}
 
 </body>
