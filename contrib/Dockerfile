@@ -5,7 +5,7 @@ RUN composer --no-ansi dump-autoload --optimize
 
 FROM node:8-alpine as themes
 WORKDIR /app
-COPY frontend/ /app/frontend
+COPY resources/assets/ /app/resources/assets
 COPY .babelrc package.json webpack.config.js /app/
 RUN apk add --no-cache yarn
 RUN yarn install
@@ -17,10 +17,9 @@ COPY bin/ /app/bin
 COPY config/ /app/config
 COPY db/ /app/db
 COPY includes/ /app/includes
-COPY locale/ /app/locale
 COPY public/ /app/public
+COPY resources/ /app/resources
 COPY src/ /app/src
-COPY templates/ /app/templates
 
 COPY composer.json LICENSE package.json README.md /app/
 

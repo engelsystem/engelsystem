@@ -1,4 +1,4 @@
-@import "../../node_modules/bootstrap/less/variables";
+@import "../../../node_modules/bootstrap/less/variables";
 
 /*
 The MIT License (MIT)
@@ -38,11 +38,11 @@ THE SOFTWARE.
 @gray-light:             #888;   // #999
 @gray-lighter:           #ADAFAE; // #eee
 
-@brand-primary:         rgb(0, 156, 139);
-@brand-success:         rgb(141, 193, 35);
-@brand-info:            rgb(70, 71, 73);
-@brand-warning:         rgb(255, 244, 95);
-@brand-danger:          rgb(277, 38, 60);
+@brand-primary:         #428bca;
+@brand-success:         #5cb85c;
+@brand-info:            #5bc0de;
+@brand-warning:         #f0ad4e;
+@brand-danger:          #d9534f;
 
 
 //== Scaffolding
@@ -50,7 +50,7 @@ THE SOFTWARE.
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-@body-bg:               #1d1d1b;
+@body-bg:               #060606;
 //** Global text color on `<body>`.
 @text-color:            @gray-light;
 
@@ -1042,10 +1042,4 @@ a.thumbnail.active {
   h1, h2, h3, h4, h5, h6 {
     color: #fff;
   }
-}
-
-.label-warning, .label-success, .progress-bar-warning, .progress-bar-success,
-.panel-warning .panel-heading, .panel-warning .panel-heading a,
-.panel-success .panel-heading, .panel-success .panel-heading a {
-	color: @gray-darker;
 }

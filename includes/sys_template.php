@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Renderer\Twig\Extensions\Assets;
+
 /**
  * Render a stat for dashborad (big number with label).
  * If no style given, style is danger if number > 0, and success if number == 0.
@@ -450,26 +452,39 @@ function table_body($array)
  */
 function ReplaceSmilies($msg)
 {
-    $msg = str_replace(';o))', '<img src="pic/smiles/icon_redface.gif">', $msg);
-    $msg = str_replace(':-))', '<img src="pic/smiles/icon_redface.gif">', $msg);
-    $msg = str_replace(';o)', '<img src="pic/smiles/icon_wind.gif">', $msg);
-    $msg = str_replace(':)', '<img src="pic/smiles/icon_smile.gif">', $msg);
-    $msg = str_replace(':-)', '<img src="pic/smiles/icon_smile.gif">', $msg);
-    $msg = str_replace(':(', '<img src="pic/smiles/icon_sad.gif">', $msg);
-    $msg = str_replace(':-(', '<img src="pic/smiles/icon_sad.gif">', $msg);
-    $msg = str_replace(':o(', '<img src="pic/smiles/icon_sad.gif">', $msg);
-    $msg = str_replace(':o)', '<img src="pic/smiles/icon_lol.gif">', $msg);
-    $msg = str_replace(';o(', '<img src="pic/smiles/icon_cry.gif">', $msg);
-    $msg = str_replace(';(', '<img src="pic/smiles/icon_cry.gif">', $msg);
-    $msg = str_replace(';-(', '<img src="pic/smiles/icon_cry.gif">', $msg);
-    $msg = str_replace('8)', '<img src="pic/smiles/icon_rolleyes.gif">', $msg);
-    $msg = str_replace('8o)', '<img src="pic/smiles/icon_rolleyes.gif">', $msg);
-    $msg = str_replace(':P', '<img src="pic/smiles/icon_evil.gif">', $msg);
-    $msg = str_replace(':-P', '<img src="pic/smiles/icon_evil.gif">', $msg);
-    $msg = str_replace(':oP', '<img src="pic/smiles/icon_evil.gif">', $msg);
-    $msg = str_replace(';P', '<img src="pic/smiles/icon_mad.gif">', $msg);
-    $msg = str_replace(';oP', '<img src="pic/smiles/icon_mad.gif">', $msg);
-    $msg = str_replace('?)', '<img src="pic/smiles/icon_question.gif">', $msg);
+    /** @var Assets $assets */
+    $assets = app('twig.extension.assets');
+
+    foreach (
+        [
+            ';o))' => 'redface',
+            ':-))' => 'redface',
+            ';o)'  => 'wind',
+            ':)'   => 'smile',
+            ':-)'  => 'smile',
+            ':('   => 'sad',
+            ':-('  => 'sad',
+            ':o('  => 'sad',
+            ':o)'  => 'lol',
+            ':D'   => 'lol',
+            ';o('  => 'cry',
+            ';('   => 'cry',
+            ';-('  => 'cry',
+            '8)'   => 'rolleyes',
+            '8o)'  => 'rolleyes',
+            ':P'   => 'evil',
+            ':-P'  => 'evil',
+            ':oP'  => 'evil',
+            ';P'   => 'mad',
+            ';oP'  => 'mad',
+            '?)'   => 'question',
+        ] as $search => $replace
+    ) {
+        $msg = str_ireplace($search, sprintf(
+            '<img src="%s">',
+            sprintf($assets->getAsset('emojis/%s.gif'), $replace)
+        ), $msg);
+    }
 
     return $msg;
 }

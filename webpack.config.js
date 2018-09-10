@@ -20,7 +20,7 @@ const plugins = [
 
 const themeEntries = {};
 for (let i = 0; i < 7; i++) {
-  themeEntries[`theme${i}`] = `./frontend/themes/theme${i}.less`;
+  themeEntries[`theme${i}`] = `./resources/assets/themes/theme${i}.less`;
 }
 
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
   },
   entry: {
     ...themeEntries,
-      vendor: './frontend/js/vendor.js',
+    vendor: './resources/assets/js/vendor.js',
   },
   output: {
     path: path.resolve('public/assets'),
