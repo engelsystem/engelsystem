@@ -1,6 +1,6 @@
 {
   "name": "engelsystem",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "repository": "https://github.com/engelsystem/engelsystem.git",
   "author": "marudor <marudor@marudor.de>",
@@ -8,7 +8,7 @@
   "scripts": {
     "build": "npm run -s build:clean && NODE_ENV=production run-p build:assets build:webpack",
     "build:clean": "rimraf public/assets",
-    "build:assets": "node scripts/copyAssets.js",
+    "build:assets": "node resources/assets/scripts/copyAssets.js",
     "build:webpack": "webpack",
     "build:watch": "webpack --watch"
   },
