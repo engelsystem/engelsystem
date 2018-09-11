@@ -68,9 +68,12 @@ class MailerServiceProvider extends ServiceProvider
     {
         /** @var SmtpTransport $transport */
         $transport = $this->app->make(SmtpTransport::class, [
-            'host'     => $config['host'],
-            'port'     => $config['port'],
-            'security' => $config['encryption'],
+            'host'       => $config['host'],
+            'port'       => $config['port'],
+            'encryption' => $config['encryption'],
+            // TODO: The security variable should be removed in the future
+            // https://github.com/swiftmailer/swiftmailer/commit/d3d6a98ab7dc155a04eb08273db7cd34606e7b5e#commitcomment-30462876
+            'security'   => $config['encryption'],
         ]);
 
         if ($config['username']) {
