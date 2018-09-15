@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function admin_user_title()
 {
-    return _('All Angels');
+    return __('All Angels');
 }
 
 /**
@@ -18,13 +18,6 @@ function admin_user()
     global $user, $privileges;
     $tshirt_sizes = config('tshirt_sizes');
     $request = request();
-
-    foreach ($tshirt_sizes as $key => $size) {
-        if (empty($size)) {
-            unset($tshirt_sizes[$key]);
-        }
-    }
-
     $html = '';
 
     if (!$request->has('id')) {
@@ -35,7 +28,7 @@ function admin_user()
     if (!$request->has('action')) {
         $user_source = User($user_id);
         if (empty($user_source)) {
-            error(_('This user does not exist.'));
+            error(__('This user does not exist.'));
             redirect(users_link());
         }
 
@@ -68,11 +61,11 @@ function admin_user()
         }
         $html .= "  <tr><td>jabber</td><td>" . '<input size="40" name="ejabber" value="' . $user_source['jabber'] . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Size</td><td>'
-            . html_select_key('size', 'eSize', $tshirt_sizes, $user_source['Size']) . '</td></tr>' . "\n";
+            . html_select_key('size', 'eSize', $tshirt_sizes, $user_source['Size'], __('Please select...')) . '</td></tr>' . "\n";
 
         $options = [
-            '1' => _('Yes'),
-            '0' => _('No')
+            '1' => __('Yes'),
+            '0' => __('No')
         ];
 
         // Gekommen?
@@ -85,7 +78,7 @@ function admin_user()
 
         // Aktiv erzwingen
         if (in_array('admin_active', $privileges)) {
-            $html .= '  <tr><td>' . _('Force active') . '</td><td>' . "\n";
+            $html .= '  <tr><td>' . __('Force active') . '</td><td>' . "\n";
             $html .= html_options('force_active', $options, $user_source['force_active']) . '</td></tr>' . "\n";
         }
 
@@ -104,7 +97,7 @@ function admin_user()
 
         $html .= '<hr />';
 
-        $html .= form_info('', _('Please visit the angeltypes page or the users profile to manage users angeltypes.'));
+        $html .= form_info('', __('Please visit the angeltypes page or the users profile to manage users angeltypes.'));
 
         $html .= 'Hier kannst Du das Passwort dieses Engels neu setzen:<form action="'
             . page_link_to('admin_user', ['action' => 'change_pw', 'id' => $user_id])
@@ -171,7 +164,7 @@ function admin_user()
         }
 
         $html .= buttons([
-            button(user_delete_link($user_source), glyph('lock') . _('delete'), 'btn-danger')
+            button(user_delete_link($user_source), glyph('lock') . __('delete'), 'btn-danger')
         ]);
 
         $html .= "<hr />";
@@ -319,7 +312,7 @@ function admin_user()
         }
     }
 
-    return page_with_title(_('Edit user'), [
+    return page_with_title(__('Edit user'), [
         $html
     ]);
 }

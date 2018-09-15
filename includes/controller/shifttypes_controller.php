@@ -30,12 +30,12 @@ function shifttype_delete_controller()
         ShiftType_delete($shifttype['id']);
 
         engelsystem_log('Deleted shifttype ' . $shifttype['name']);
-        success(sprintf(_('Shifttype %s deleted.'), $shifttype['name']));
+        success(sprintf(__('Shifttype %s deleted.'), $shifttype['name']));
         redirect(page_link_to('shifttypes'));
     }
 
     return [
-        sprintf(_('Delete shifttype %s'), $shifttype['name']),
+        sprintf(__('Delete shifttype %s'), $shifttype['name']),
         ShiftType_delete_view($shifttype)
     ];
 }
@@ -58,7 +58,7 @@ function shifttype_edit_controller()
     if ($request->has('shifttype_id')) {
         $shifttype = ShiftType($request->input('shifttype_id'));
         if (empty($shifttype)) {
-            error(_('Shifttype not found.'));
+            error(__('Shifttype not found.'));
             redirect(page_link_to('shifttypes'));
         }
         $shifttype_id = $shifttype['id'];
@@ -74,7 +74,7 @@ function shifttype_edit_controller()
             $name = strip_request_item('name');
         } else {
             $valid = false;
-            error(_('Please enter a name.'));
+            error(__('Please enter a name.'));
         }
 
         if ($request->has('angeltype_id') && preg_match('/^\d+$/', $request->input('angeltype_id'))) {
@@ -92,12 +92,12 @@ function shifttype_edit_controller()
                 ShiftType_update($shifttype_id, $name, $angeltype_id, $description);
 
                 engelsystem_log('Updated shifttype ' . $name);
-                success(_('Updated shifttype.'));
+                success(__('Updated shifttype.'));
             } else {
                 $shifttype_id = ShiftType_create($name, $angeltype_id, $description);
 
                 engelsystem_log('Created shifttype ' . $name);
-                success(_('Created shifttype.'));
+                success(__('Created shifttype.'));
             }
             redirect(page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype_id]));
         }
@@ -156,7 +156,7 @@ function shifttypes_list_controller()
  */
 function shifttypes_title()
 {
-    return _('Shifttypes');
+    return __('Shifttypes');
 }
 
 /**

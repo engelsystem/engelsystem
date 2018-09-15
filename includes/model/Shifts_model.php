@@ -293,7 +293,9 @@ function Shift_free_entries($needed_angeltype, $shift_entries)
             $taken++;
         }
     }
-    return max(0, $needed_angeltype['count'] - $taken);
+
+    $neededAngels = !empty($needed_angeltype) ? $needed_angeltype['count'] : 0;
+    return max(0, $neededAngels - $taken);
 }
 
 /**

@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function settings_title()
 {
-    return _('Settings');
+    return __('Settings');
 }
 
 /**
@@ -28,11 +28,11 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         $user_source['email'] = $result->getValue();
         if (!$result->isValid()) {
             $valid = false;
-            error(_('E-mail address is not correct.'));
+            error(__('E-mail address is not correct.'));
         }
     } else {
         $valid = false;
-        error(_('Please enter your e-mail.'));
+        error(__('Please enter your e-mail.'));
     }
 
     $user_source['email_shiftinfo'] = $request->has('email_shiftinfo');
@@ -43,7 +43,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         $user_source['jabber'] = $result->getValue();
         if (!$result->isValid()) {
             $valid = false;
-            error(_('Please check your jabber account information.'));
+            error(__('Please check your jabber account information.'));
         }
     }
 
@@ -59,7 +59,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         $user_source['planned_arrival_date'] = $result->getValue();
         if (!$result->isValid()) {
             $valid = false;
-            error(_('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
+            error(__('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
         }
     }
 
@@ -69,7 +69,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         $user_source['planned_departure_date'] = $result->getValue();
         if (!$result->isValid()) {
             $valid = false;
-            error(_('Please enter your planned date of departure. It should be after your planned arrival date and after buildup start date and before teardown end date.'));
+            error(__('Please enter your planned date of departure. It should be after your planned arrival date and after buildup start date and before teardown end date.'));
         }
     }
 
@@ -82,7 +82,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         $user_source['DECT'] = strip_request_item('dect', $user_source['DECT']);
     } else {
         $valid = false;
-        error(_('For dect numbers are only 5 digits allowed.'));
+        error(__('For dect numbers are only 5 digits allowed.'));
     }
     $user_source['Handy'] = strip_request_item('mobile', $user_source['Handy']);
     $user_source['Hometown'] = strip_request_item('hometown', $user_source['Hometown']);
@@ -90,7 +90,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
     if ($valid) {
         User_update($user_source);
 
-        success(_('Settings saved.'));
+        success(__('Settings saved.'));
         redirect(page_link_to('user_settings'));
     }
 
@@ -109,14 +109,14 @@ function user_settings_password($user_source)
         !$request->has('password')
         || !verify_password($request->postData('password'), $user_source['Passwort'], $user_source['UID'])
     ) {
-        error(_('-> not OK. Please try again.'));
+        error(__('-> not OK. Please try again.'));
     } elseif (strlen($request->postData('new_password')) < config('min_password_length')) {
-        error(_('Your password is to short (please use at least 6 characters).'));
+        error(__('Your password is to short (please use at least 6 characters).'));
     } elseif ($request->postData('new_password') != $request->postData('new_password2')) {
-        error(_('Your passwords don\'t match.'));
+        error(__('Your passwords don\'t match.'));
     } else {
         set_password($user_source['UID'], $request->postData('new_password'));
-        success(_('Password saved.'));
+        success(__('Password saved.'));
     }
     redirect(page_link_to('user_settings'));
 }
@@ -151,7 +151,7 @@ function user_settings_theme($user_source, $themes)
             ]
         );
 
-        success(_('Theme changed.'));
+        success(__('Theme changed.'));
         redirect(page_link_to('user_settings'));
     }
 
@@ -221,12 +221,6 @@ function user_settings()
         }
         if (isset($event_config['teardown_end_date'])) {
             $teardown_end_date = $event_config['teardown_end_date'];
-        }
-    }
-
-    foreach ($tshirt_sizes as $key => $size) {
-        if (empty($size)) {
-            unset($tshirt_sizes[$key]);
         }
     }
 

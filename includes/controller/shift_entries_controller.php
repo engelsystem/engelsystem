@@ -106,7 +106,7 @@ function shift_entry_create_controller_admin($shift, $angeltype)
             'freeload_comment' => ''
         ]);
 
-        success(sprintf(_('%s has been subscribed to the shift.'), User_Nick_render($signup_user)));
+        success(sprintf(__('%s has been subscribed to the shift.'), User_Nick_render($signup_user)));
         redirect(shift_link($shift));
     }
 
@@ -146,7 +146,7 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
         $signup_user = User($request->input('user_id'));
     }
     if (!UserAngelType_exists($signup_user, $angeltype)) {
-        error(_('User is not in angeltype.'));
+        error(__('User is not in angeltype.'));
         redirect(shift_link($shift));
     }
 
@@ -163,7 +163,7 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
     );
     if (!$shift_signup_state->isSignupAllowed()) {
         if ($shift_signup_state->getState() == ShiftSignupState::OCCUPIED) {
-            error(_('This shift is already occupied.'));
+            error(__('This shift is already occupied.'));
         }
         redirect(shift_link($shift));
     }
@@ -178,7 +178,7 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
             'freeload_comment' => ''
         ]);
 
-        success(sprintf(_('%s has been subscribed to the shift.'), User_Nick_render($signup_user)));
+        success(sprintf(__('%s has been subscribed to the shift.'), User_Nick_render($signup_user)));
         redirect(shift_link($shift));
     }
 
@@ -203,17 +203,17 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
 function shift_entry_error_message(ShiftSignupState $shift_signup_state)
 {
     if ($shift_signup_state->getState() == ShiftSignupState::ANGELTYPE) {
-        error(_('You need be accepted member of the angeltype.'));
+        error(__('You need be accepted member of the angeltype.'));
     } elseif ($shift_signup_state->getState() == ShiftSignupState::COLLIDES) {
-        error(_('This shift collides with one of your shifts.'));
+        error(__('This shift collides with one of your shifts.'));
     } elseif ($shift_signup_state->getState() == ShiftSignupState::OCCUPIED) {
-        error(_('This shift is already occupied.'));
+        error(__('This shift is already occupied.'));
     } elseif ($shift_signup_state->getState() == ShiftSignupState::SHIFT_ENDED) {
-        error(_('This shift ended already.'));
+        error(__('This shift ended already.'));
     } elseif ($shift_signup_state->getState() == ShiftSignupState::NOT_ARRIVED) {
-        error(_('You are not marked as arrived.'));
+        error(__('You are not marked as arrived.'));
     } elseif ($shift_signup_state->getState() == ShiftSignupState::SIGNED_UP) {
-        error(_('You are signed up for this shift.'));
+        error(__('You are signed up for this shift.'));
     }
 }
 
@@ -263,7 +263,7 @@ function shift_entry_create_controller_user($shift, $angeltype)
             UserAngelType_create($signup_user, $angeltype);
         }
 
-        success(_('You are subscribed. Thank you!'));
+        success(__('You are subscribed. Thank you!'));
         redirect(shift_link($shift));
     }
 
@@ -322,7 +322,7 @@ function shift_entry_load()
     }
     $shiftEntry = ShiftEntry($request->input('shift_entry_id'));
     if (empty($shiftEntry)) {
-        error(_('Shift entry not found.'));
+        error(__('Shift entry not found.'));
         redirect(page_link_to('user_shifts'));
     }
 
@@ -344,13 +344,13 @@ function shift_entry_delete_controller()
     $angeltype = AngelType($shiftEntry['TID']);
     $signout_user = User($shiftEntry['UID']);
     if (!Shift_signout_allowed($shift, $angeltype, $signout_user)) {
-        error(_('You are not allowed to remove this shift entry. If necessary, ask your supporter or heaven to do so.'));
+        error(__('You are not allowed to remove this shift entry. If necessary, ask your supporter or heaven to do so.'));
         redirect(user_link($signout_user));
     }
 
     if ($request->has('continue')) {
         ShiftEntry_delete($shiftEntry);
-        success(_('Shift entry removed.'));
+        success(__('Shift entry removed.'));
         redirect(shift_link($shift));
     }
 

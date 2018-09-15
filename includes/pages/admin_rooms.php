@@ -4,7 +4,7 @@
  */
 function admin_rooms_title()
 {
-    return _('Rooms');
+    return __('Rooms');
 }
 
 /**
@@ -24,12 +24,12 @@ function admin_rooms()
             'actions'   => table_buttons([
                 button(
                     page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room['RID']]),
-                    _('edit'),
+                    __('edit'),
                     'btn-xs'
                 ),
                 button(
                     page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room['RID']]),
-                    _('delete'),
+                    __('delete'),
                     'btn-xs'
                 )
             ])
@@ -79,13 +79,13 @@ function admin_rooms()
                     $result = Room_validate_name(strip_request_item('name'), $room_id);
                     if (!$result->isValid()) {
                         $valid = false;
-                        $msg .= error(_('This name is already in use.'), true);
+                        $msg .= error(__('This name is already in use.'), true);
                     } else {
                         $name = $result->getValue();
                     }
                 } else {
                     $valid = false;
-                    $msg .= error(_('Please enter a name.'), true);
+                    $msg .= error(__('Please enter a name.'), true);
                 }
 
                 $from_frab = $request->has('from_frab');
@@ -110,7 +110,7 @@ function admin_rooms()
                     } else {
                         $valid = false;
                         $msg .= error(sprintf(
-                            _('Please enter needed angels for type %s.'),
+                            __('Please enter needed angels for type %s.'),
                             $angeltype
                         ), true);
                     }
@@ -139,7 +139,7 @@ function admin_rooms()
                         'Set needed angeltypes of room ' . $name
                         . ' to: ' . join(', ', $needed_angeltype_info)
                     );
-                    success(_('Room saved.'));
+                    success(__('Room saved.'));
                     redirect(page_link_to('admin_rooms'));
                 }
             }
@@ -152,29 +152,29 @@ function admin_rooms()
 
             return page_with_title(admin_rooms_title(), [
                 buttons([
-                    button(page_link_to('admin_rooms'), _('back'), 'back')
+                    button(page_link_to('admin_rooms'), __('back'), 'back')
                 ]),
                 $msg,
                 form([
                     div('row', [
                         div('col-md-6', [
-                            form_text('name', _('Name'), $name),
-                            form_checkbox('from_frab', _('Frab import'), $from_frab),
-                            form_text('map_url', _('Map URL'), $map_url),
-                            form_info('', _('The map url is used to display an iframe on the room page.')),
-                            form_textarea('description', _('Description'), $description),
-                            form_info('', _('Please use markdown for the description.')),
+                            form_text('name', __('Name'), $name),
+                            form_checkbox('from_frab', __('Frab import'), $from_frab),
+                            form_text('map_url', __('Map URL'), $map_url),
+                            form_info('', __('The map url is used to display an iframe on the room page.')),
+                            form_textarea('description', __('Description'), $description),
+                            form_info('', __('Please use markdown for the description.')),
                         ]),
                         div('col-md-6', [
                             div('row', [
                                 div('col-md-12', [
-                                    form_info(_('Needed angels:'))
+                                    form_info(__('Needed angels:'))
                                 ]),
                                 join($angeltypes_count_form)
                             ])
                         ])
                     ]),
-                    form_submit('submit', _('Save'))
+                    form_submit('submit', __('Save'))
                 ])
             ]);
         } elseif ($request->input('show') == 'delete') {
@@ -182,19 +182,19 @@ function admin_rooms()
                 Room_delete($room_id);
 
                 engelsystem_log('Room deleted: ' . $name);
-                success(sprintf(_('Room %s deleted.'), $name));
+                success(sprintf(__('Room %s deleted.'), $name));
                 redirect(page_link_to('admin_rooms'));
             }
 
             return page_with_title(admin_rooms_title(), [
                 buttons([
-                    button(page_link_to('admin_rooms'), _('back'), 'back')
+                    button(page_link_to('admin_rooms'), __('back'), 'back')
                 ]),
-                sprintf(_('Do you want to delete room %s?'), $name),
+                sprintf(__('Do you want to delete room %s?'), $name),
                 buttons([
                     button(
                         page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room_id, 'ack' => 1]),
-                        _('Delete'),
+                        __('Delete'),
                         'delete btn-danger'
                     )
                 ])
@@ -204,13 +204,13 @@ function admin_rooms()
 
     return page_with_title(admin_rooms_title(), [
         buttons([
-            button(page_link_to('admin_rooms', ['show' => 'edit']), _('add'))
+            button(page_link_to('admin_rooms', ['show' => 'edit']), __('add'))
         ]),
         msg(),
         table([
-            'name'      => _('Name'),
-            'from_frab' => _('Frab import'),
-            'map_url'   => _('Map'),
+            'name'      => __('Name'),
+            'from_frab' => __('Frab import'),
+            'map_url'   => __('Map'),
             'actions'   => ''
         ], $rooms)
     ]);

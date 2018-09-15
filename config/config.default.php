@@ -113,7 +113,6 @@ return [
 
     // Available T-Shirt sizes, set value to null if not available
     'tshirt_sizes'   => [
-        ''     => _('Please select...'),
         'S'    => 'S',
         'S-G'  => 'S Girl',
         'M'    => 'M',

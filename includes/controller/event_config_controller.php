@@ -5,7 +5,7 @@
  */
 function event_config_title()
 {
-    return _('Event config');
+    return __('Event config');
 }
 
 /**
@@ -54,40 +54,40 @@ function event_config_edit_controller()
             $event_welcome_msg = null;
         }
 
-        $result = check_request_date('buildup_start_date', _('Please enter buildup start date.'), true);
+        $result = check_request_date('buildup_start_date', __('Please enter buildup start date.'), true);
         $buildup_start_date = $result->getValue();
         $valid &= $result->isValid();
 
-        $result = check_request_date('event_start_date', _('Please enter event start date.'), true);
+        $result = check_request_date('event_start_date', __('Please enter event start date.'), true);
         $event_start_date = $result->getValue();
         $valid &= $result->isValid();
 
-        $result = check_request_date('event_end_date', _('Please enter event end date.'), true);
+        $result = check_request_date('event_end_date', __('Please enter event end date.'), true);
         $event_end_date = $result->getValue();
         $valid &= $result->isValid();
 
-        $result = check_request_date('teardown_end_date', _('Please enter teardown end date.'), true);
+        $result = check_request_date('teardown_end_date', __('Please enter teardown end date.'), true);
         $teardown_end_date = $result->getValue();
         $valid &= $result->isValid();
 
         if (!is_null($buildup_start_date) && !is_null($event_start_date) && $buildup_start_date > $event_start_date) {
             $valid = false;
-            error(_('The buildup start date has to be before the event start date.'));
+            error(__('The buildup start date has to be before the event start date.'));
         }
 
         if (!is_null($event_start_date) && !is_null($event_end_date) && $event_start_date > $event_end_date) {
             $valid = false;
-            error(_('The event start date has to be before the event end date.'));
+            error(__('The event start date has to be before the event end date.'));
         }
 
         if (!is_null($event_end_date) && !is_null($teardown_end_date) && $event_end_date > $teardown_end_date) {
             $valid = false;
-            error(_('The event end date has to be before the teardown end date.'));
+            error(__('The event end date has to be before the teardown end date.'));
         }
 
         if (!is_null($buildup_start_date) && !is_null($teardown_end_date) && $buildup_start_date > $teardown_end_date) {
             $valid = false;
-            error(_('The buildup start date has to be before the teardown end date.'));
+            error(__('The buildup start date has to be before the teardown end date.'));
         }
 
         if ($valid) {
@@ -111,7 +111,7 @@ function event_config_edit_controller()
                     date('Y-m-d', $teardown_end_date)
                 )
             );
-            success(_('Settings saved.'));
+            success(__('Settings saved.'));
             redirect(page_link_to('admin_event_config'));
         }
     }

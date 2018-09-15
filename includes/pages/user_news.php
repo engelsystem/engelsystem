@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function user_news_comments_title()
 {
-    return _('News comments');
+    return __('News comments');
 }
 
 /**
@@ -15,7 +15,7 @@ function user_news_comments_title()
  */
 function news_title()
 {
-    return _('News');
+    return __('News');
 }
 
 /**
@@ -23,7 +23,7 @@ function news_title()
  */
 function meetings_title()
 {
-    return _('Meetings');
+    return __('Meetings');
 }
 
 /**
@@ -117,7 +117,7 @@ function display_news($news)
     if ($page != 'news_comments') {
         $html .= '&emsp;<a href="' . page_link_to('news_comments', ['nid' => $news['ID']]) . '">'
             . '<span class="glyphicon glyphicon-comment"></span> '
-            . _('Comments') . ' &raquo;</a> '
+            . __('Comments') . ' &raquo;</a> '
             . '<span class="badge">'
             . count(DB::select('SELECT `ID` FROM `NewsComments` WHERE `Refid`=?', [$news['ID']]))
             . '</span>';
@@ -162,7 +162,7 @@ function user_news_comments()
                 ]
             );
             engelsystem_log('Created news_comment: ' . $text);
-            $html .= success(_('Entry saved.'), true);
+            $html .= success(__('Entry saved.'), true);
         }
 
         $html .= display_news($news);
@@ -183,13 +183,13 @@ function user_news_comments()
             $html .= '</div>';
         }
 
-        $html .= '<hr /><h2>' . _('New Comment:') . '</h2>';
+        $html .= '<hr /><h2>' . __('New Comment:') . '</h2>';
         $html .= form([
-            form_textarea('text', _('Message'), ''),
-            form_submit('submit', _('Save'))
+            form_textarea('text', __('Message'), ''),
+            form_submit('submit', __('Save'))
         ], page_link_to('news_comments', ['nid' => $news['ID']]));
     } else {
-        $html .= _('Invalid request.');
+        $html .= __('Invalid request.');
     }
 
     return $html . '</div>';
@@ -230,7 +230,7 @@ function user_news()
             ]
         );
         engelsystem_log('Created news: ' . $request->postData('betreff') . ', treffen: ' . $isMeeting);
-        success(_('Entry saved.'));
+        success(__('Entry saved.'));
         redirect(page_link_to('news'));
     }
 
@@ -269,13 +269,13 @@ function user_news()
 
     if (in_array('admin_news', $privileges)) {
         $html .= '<hr />';
-        $html .= '<h2>' . _('Create news:') . '</h2>';
+        $html .= '<h2>' . __('Create news:') . '</h2>';
 
         $html .= form([
-            form_text('betreff', _('Subject'), ''),
-            form_textarea('text', _('Message'), ''),
-            form_checkbox('treffen', _('Meeting'), false, 1),
-            form_submit('submit', _('Save'))
+            form_text('betreff', __('Subject'), ''),
+            form_textarea('text', __('Message'), ''),
+            form_checkbox('treffen', __('Meeting'), false, 1),
+            form_submit('submit', __('Save'))
         ]);
     }
     return $html . '</div>';

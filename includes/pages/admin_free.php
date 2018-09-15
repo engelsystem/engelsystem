@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function admin_free_title()
 {
-    return _('Free angels');
+    return __('Free angels');
 }
 
 /**
@@ -94,7 +94,7 @@ function admin_free()
             'email'       => $usr['email_by_human_allowed'] ? $usr['email'] : glyph('eye-close'),
             'actions'     =>
                 in_array('admin_user', $privileges)
-                    ? button(page_link_to('admin_user', ['id' => $usr['UID']]), _('edit'), 'btn-xs')
+                    ? button(page_link_to('admin_user', ['id' => $usr['UID']]), __('edit'), 'btn-xs')
                     : ''
         ];
     }
@@ -102,25 +102,25 @@ function admin_free()
         form([
             div('row', [
                 div('col-md-4', [
-                    form_text('search', _('Search'), $search)
+                    form_text('search', __('Search'), $search)
                 ]),
                 div('col-md-4', [
-                    form_select('angeltype', _('Angeltype'), $angel_types, $angelType)
+                    form_select('angeltype', __('Angeltype'), $angel_types, $angelType)
                 ]),
                 div('col-md-2', [
-                    form_checkbox('confirmed_only', _('Only confirmed'), $request->has('confirmed_only'))
+                    form_checkbox('confirmed_only', __('Only confirmed'), $request->has('confirmed_only'))
                 ]),
                 div('col-md-2', [
-                    form_submit('submit', _('Search'))
+                    form_submit('submit', __('Search'))
                 ])
             ])
         ]),
         table([
-            'name'        => _('Nick'),
+            'name'        => __('Nick'),
             'shift_state' => '',
-            'dect'        => _('DECT'),
-            'jabber'      => _('Jabber'),
-            'email'       => _('E-Mail'),
+            'dect'        => __('DECT'),
+            'jabber'      => __('Jabber'),
+            'email'       => __('E-Mail'),
             'actions'     => ''
         ], $free_users_table)
     ]);

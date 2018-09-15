@@ -143,7 +143,7 @@ class ShiftCalendarRenderer
     public function render()
     {
         if (count($this->lanes) == 0) {
-            return info(_('No shifts found.'), true);
+            return info(__('No shifts found.'), true);
         }
         return div('shift-calendar', [
                 $this->renderTimeLane(),
@@ -245,7 +245,7 @@ class ShiftCalendarRenderer
     {
         $time_slot = [
             div('header', [
-                _('Time')
+                __('Time')
             ])
         ];
         for ($block = 0; $block < $this->getBlocksPerSlot(); $block++) {
@@ -311,11 +311,11 @@ class ShiftCalendarRenderer
     private function renderLegend()
     {
         return div('legend', [
-            label(_('Your shift'), 'primary'),
-            label(_('Help needed'), 'danger'),
-            label(_('Other angeltype needed / collides with my shifts'), 'warning'),
-            label(_('Shift is full'), 'success'),
-            label(_('Shift running/ended or user not arrived'), 'default')
+            label(__('Your shift'), 'primary'),
+            label(__('Help needed'), 'danger'),
+            label(__('Other angeltype needed / collides with my shifts'), 'warning'),
+            label(__('Shift is full'), 'success'),
+            label(__('Shift running/ended or user not arrived'), 'default')
         ]);
     }
 }

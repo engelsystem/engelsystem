@@ -5,7 +5,7 @@
  */
 function admin_import_title()
 {
-    return _('Frab import');
+    return __('Frab import');
 }
 
 /**
@@ -35,7 +35,7 @@ function admin_import()
         fclose($test_handle);
         @unlink($import_dir . '/tmp');
     } catch (Exception $e) {
-        error(_('Webserver has no write-permission on import directory.'));
+        error(__('Webserver has no write-permission on import directory.'));
     }
 
     $import_file = $import_dir . '/import_' . $user['UID'] . '.xml';
@@ -60,7 +60,7 @@ function admin_import()
                     $shifttype_id = $request->input('shifttype_id');
                 } else {
                     $valid = false;
-                    error(_('Please select a shift type.'));
+                    error(__('Please select a shift type.'));
                 }
 
                 $minutes_start = trim($request->input('add_minutes_start'));
@@ -68,14 +68,14 @@ function admin_import()
                     $add_minutes_start = $minutes_start;
                 } else {
                     $valid = false;
-                    error(_('Please enter an amount of minutes to add to a talk\'s begin.'));
+                    error(__('Please enter an amount of minutes to add to a talk\'s begin.'));
                 }
 
                 if ($request->has('add_minutes_end') && is_numeric(trim($request->input('add_minutes_end')))) {
                     $add_minutes_end = trim($request->input('add_minutes_end'));
                 } else {
                     $valid = false;
-                    error(_('Please enter an amount of minutes to add to a talk\'s end.'));
+                    error(__('Please enter an amount of minutes to add to a talk\'s end.'));
                 }
 
                 if (isset($_FILES['xcal_file']) && ($_FILES['xcal_file']['error'] == 0)) {
@@ -83,16 +83,16 @@ function admin_import()
                         libxml_use_internal_errors(true);
                         if (simplexml_load_file($import_file) === false) {
                             $valid = false;
-                            error(_('No valid xml/xcal file provided.'));
+                            error(__('No valid xml/xcal file provided.'));
                             unlink($import_file);
                         }
                     } else {
                         $valid = false;
-                        error(_('File upload went wrong.'));
+                        error(__('File upload went wrong.'));
                     }
                 } else {
                     $valid = false;
-                    error(_('Please provide some data.'));
+                    error(__('Please provide some data.'));
                 }
             }
 
@@ -107,23 +107,23 @@ function admin_import()
                 );
             } else {
                 $html .= div('well well-sm text-center', [
-                        _('File Upload')
+                        __('File Upload')
                         . mute(glyph('arrow-right'))
-                        . mute(_('Validation'))
+                        . mute(__('Validation'))
                         . mute(glyph('arrow-right'))
-                        . mute(_('Import'))
+                        . mute(__('Import'))
                     ]) . div('row', [
                         div('col-md-offset-3 col-md-6', [
                             form([
                                 form_info(
                                     '',
-                                    _('This import will create/update/delete rooms and shifts by given FRAB-export file. The needed file format is xcal.')
+                                    __('This import will create/update/delete rooms and shifts by given FRAB-export file. The needed file format is xcal.')
                                 ),
-                                form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
-                                form_spinner('add_minutes_start', _('Add minutes to start'), $add_minutes_start),
-                                form_spinner('add_minutes_end', _('Add minutes to end'), $add_minutes_end),
-                                form_file('xcal_file', _('xcal-File (.xcal)')),
-                                form_submit('submit', _('Import'))
+                                form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
+                                form_spinner('add_minutes_start', __('Add minutes to start'), $add_minutes_start),
+                                form_spinner('add_minutes_end', __('Add minutes to end'), $add_minutes_end),
+                                form_file('xcal_file', __('xcal-File (.xcal)')),
+                                form_submit('submit', __('Import'))
                             ])
                         ])
                     ]);
@@ -132,28 +132,28 @@ function admin_import()
 
         case 'check':
             if (!file_exists($import_file)) {
-                error(_('Missing import file.'));
+                error(__('Missing import file.'));
                 redirect(page_link_to('admin_import'));
             }
 
             if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
                 $shifttype_id = $request->input('shifttype_id');
             } else {
-                error(_('Please select a shift type.'));
+                error(__('Please select a shift type.'));
                 redirect(page_link_to('admin_import'));
             }
 
             if ($request->has('add_minutes_start') && is_numeric(trim($request->input('add_minutes_start')))) {
                 $add_minutes_start = trim($request->input('add_minutes_start'));
             } else {
-                error(_('Please enter an amount of minutes to add to a talk\'s begin.'));
+                error(__('Please enter an amount of minutes to add to a talk\'s begin.'));
                 redirect(page_link_to('admin_import'));
             }
 
             if ($request->has('add_minutes_end') && is_numeric(trim($request->input(('add_minutes_end'))))) {
                 $add_minutes_end = trim($request->input('add_minutes_end'));
             } else {
-                error(_('Please enter an amount of minutes to add to a talk\'s end.'));
+                error(__('Please enter an amount of minutes to add to a talk\'s end.'));
                 redirect(page_link_to('admin_import'));
             }
 
@@ -168,53 +168,53 @@ function admin_import()
             $html .= div(
                     'well well-sm text-center',
                     [
-                        '<span class="text-success">' . _('File Upload') . glyph('ok-circle') . '</span>'
+                        '<span class="text-success">' . __('File Upload') . glyph('ok-circle') . '</span>'
                         . mute(glyph('arrow-right'))
-                        . _('Validation')
+                        . __('Validation')
                         . mute(glyph('arrow-right'))
-                        . mute(_('Import'))
+                        . mute(__('Import'))
                     ]
                 )
                 . form(
                     [
                         div('row', [
                             div('col-sm-6', [
-                                '<h3>' . _('Rooms to create') . '</h3>',
-                                table(_('Name'), $rooms_new)
+                                '<h3>' . __('Rooms to create') . '</h3>',
+                                table(__('Name'), $rooms_new)
                             ]),
                             div('col-sm-6', [
-                                '<h3>' . _('Rooms to delete') . '</h3>',
-                                table(_('Name'), $rooms_deleted)
+                                '<h3>' . __('Rooms to delete') . '</h3>',
+                                table(__('Name'), $rooms_deleted)
                             ])
                         ]),
-                        '<h3>' . _('Shifts to create') . '</h3>',
+                        '<h3>' . __('Shifts to create') . '</h3>',
                         table([
-                            'day'       => _('Day'),
-                            'start'     => _('Start'),
-                            'end'       => _('End'),
-                            'shifttype' => _('Shift type'),
-                            'title'     => _('Title'),
-                            'room'      => _('Room')
+                            'day'       => __('Day'),
+                            'start'     => __('Start'),
+                            'end'       => __('End'),
+                            'shifttype' => __('Shift type'),
+                            'title'     => __('Title'),
+                            'room'      => __('Room')
                         ], shifts_printable($events_new, $shifttypes)),
-                        '<h3>' . _('Shifts to update') . '</h3>',
+                        '<h3>' . __('Shifts to update') . '</h3>',
                         table([
-                            'day'       => _('Day'),
-                            'start'     => _('Start'),
-                            'end'       => _('End'),
-                            'shifttype' => _('Shift type'),
-                            'title'     => _('Title'),
-                            'room'      => _('Room')
+                            'day'       => __('Day'),
+                            'start'     => __('Start'),
+                            'end'       => __('End'),
+                            'shifttype' => __('Shift type'),
+                            'title'     => __('Title'),
+                            'room'      => __('Room')
                         ], shifts_printable($events_updated, $shifttypes)),
-                        '<h3>' . _('Shifts to delete') . '</h3>',
+                        '<h3>' . __('Shifts to delete') . '</h3>',
                         table([
-                            'day'       => _('Day'),
-                            'start'     => _('Start'),
-                            'end'       => _('End'),
-                            'shifttype' => _('Shift type'),
-                            'title'     => _('Title'),
-                            'room'      => _('Room')
+                            'day'       => __('Day'),
+                            'start'     => __('Start'),
+                            'end'       => __('End'),
+                            'shifttype' => __('Shift type'),
+                            'title'     => __('Title'),
+                            'room'      => __('Room')
                         ], shifts_printable($events_deleted, $shifttypes)),
-                        form_submit('submit', _('Import'))
+                        form_submit('submit', __('Import'))
                     ],
                     page_link_to('admin_import', [
                         'step'              => 'import',
@@ -227,7 +227,7 @@ function admin_import()
 
         case 'import':
             if (!file_exists($import_file)) {
-                error(_('Missing import file.'));
+                error(__('Missing import file.'));
                 redirect(page_link_to('admin_import'));
             }
 
@@ -238,21 +238,21 @@ function admin_import()
             if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
                 $shifttype_id = $request->input('shifttype_id');
             } else {
-                error(_('Please select a shift type.'));
+                error(__('Please select a shift type.'));
                 redirect(page_link_to('admin_import'));
             }
 
             if ($request->has('add_minutes_start') && is_numeric(trim($request->input('add_minutes_start')))) {
                 $add_minutes_start = trim($request->input('add_minutes_start'));
             } else {
-                error(_('Please enter an amount of minutes to add to a talk\'s begin.'));
+                error(__('Please enter an amount of minutes to add to a talk\'s begin.'));
                 redirect(page_link_to('admin_import'));
             }
 
             if ($request->has('add_minutes_end') && is_numeric(trim($request->input('add_minutes_end')))) {
                 $add_minutes_end = trim($request->input('add_minutes_end'));
             } else {
-                error(_('Please enter an amount of minutes to add to a talk\'s end.'));
+                error(__('Please enter an amount of minutes to add to a talk\'s end.'));
                 redirect(page_link_to('admin_import'));
             }
 
@@ -288,12 +288,12 @@ function admin_import()
             unlink($import_file);
 
             $html .= div('well well-sm text-center', [
-                    '<span class="text-success">' . _('File Upload') . glyph('ok-circle') . '</span>'
+                    '<span class="text-success">' . __('File Upload') . glyph('ok-circle') . '</span>'
                     . mute(glyph('arrow-right'))
-                    . '<span class="text-success">' . _('Validation') . glyph('ok-circle') . '</span>'
+                    . '<span class="text-success">' . __('Validation') . glyph('ok-circle') . '</span>'
                     . mute(glyph('arrow-right'))
-                    . '<span class="text-success">' . _('Import') . glyph('ok-circle') . '</span>'
-                ]) . success(_('It\'s done!'), true);
+                    . '<span class="text-success">' . __('Import') . glyph('ok-circle') . '</span>'
+                ]) . success(__('It\'s done!'), true);
             break;
         default:
             redirect(page_link_to('admin_import'));

@@ -21,8 +21,8 @@ function user_driver_license_required_hint()
     foreach ($angeltypes as $angeltype) {
         if ($angeltype['requires_driver_license']) {
             return sprintf(
-                _('You joined an angeltype which requires a driving license. Please edit your driving license information here: %s.'),
-                '<a href="' . user_driver_license_edit_link() . '">' . _('driving license information') . '</a>'
+                __('You joined an angeltype which requires a driving license. Please edit your driving license information here: %s.'),
+                '<a href="' . user_driver_license_edit_link() . '">' . __('driving license information') . '</a>'
             );
         }
     }
@@ -128,21 +128,21 @@ function user_driver_license_edit_controller()
                     UserDriverLicenses_update($user_driver_license);
                 }
                 engelsystem_log('Driver license information updated.');
-                success(_('Your driver license information has been saved.'));
+                success(__('Your driver license information has been saved.'));
                 redirect(user_link($user_source));
             } else {
-                error(_('Please select at least one driving license.'));
+                error(__('Please select at least one driving license.'));
             }
         } elseif (!empty($user_driver_license['user_id'])) {
             UserDriverLicenses_delete($user_source['UID']);
             engelsystem_log('Driver license information removed.');
-            success(_('Your driver license information has been removed.'));
+            success(__('Your driver license information has been removed.'));
             redirect(user_link($user_source));
         }
     }
 
     return [
-        sprintf(_('Edit %s driving license information'), $user_source['Nick']),
+        sprintf(__('Edit %s driving license information'), $user_source['Nick']),
         UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver_license)
     ];
 }

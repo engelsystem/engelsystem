@@ -94,33 +94,33 @@ function shift_edit_controller()
             $rid = $request->input('rid');
         } else {
             $valid = false;
-            $msg .= error(_('Please select a room.'), true);
+            $msg .= error(__('Please select a room.'), true);
         }
 
         if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
             $shifttype_id = $request->input('shifttype_id');
         } else {
             $valid = false;
-            $msg .= error(_('Please select a shifttype.'), true);
+            $msg .= error(__('Please select a shifttype.'), true);
         }
 
         if ($request->has('start') && $tmp = parse_date('Y-m-d H:i', $request->input('start'))) {
             $start = $tmp;
         } else {
             $valid = false;
-            $msg .= error(_('Please enter a valid starting time for the shifts.'), true);
+            $msg .= error(__('Please enter a valid starting time for the shifts.'), true);
         }
 
         if ($request->has('end') && $tmp = parse_date('Y-m-d H:i', $request->input('end'))) {
             $end = $tmp;
         } else {
             $valid = false;
-            $msg .= error(_('Please enter a valid ending time for the shifts.'), true);
+            $msg .= error(__('Please enter a valid ending time for the shifts.'), true);
         }
 
         if ($start >= $end) {
             $valid = false;
-            $msg .= error(_('The ending time has to be after the starting time.'), true);
+            $msg .= error(__('The ending time has to be after the starting time.'), true);
         }
 
         foreach ($needed_angel_types as $needed_angeltype_id => $count) {
@@ -133,7 +133,7 @@ function shift_edit_controller()
                 } else {
                     $valid = false;
                     $msg .= error(sprintf(
-                        _('Please check your input for needed angels of type %s.'),
+                        __('Please check your input for needed angels of type %s.'),
                         $angeltypes[$needed_angeltype_id]
                     ), true);
                 }
@@ -163,7 +163,7 @@ function shift_edit_controller()
                 . ' to ' . date('Y-m-d H:i', $end)
                 . ' with angel types ' . join(', ', $needed_angel_types_info)
             );
-            success(_('Shift updated.'));
+            success(__('Shift updated.'));
 
             redirect(shift_link([
                 'SID' => $shift_id
@@ -182,17 +182,17 @@ function shift_edit_controller()
         [
             msg(),
             '<noscript>'
-            . info(_('This page is much more comfortable with javascript.'), true)
+            . info(__('This page is much more comfortable with javascript.'), true)
             . '</noscript>',
             form([
-                form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
-                form_text('title', _('Title'), $title),
-                form_select('rid', _('Room:'), $room, $rid),
-                form_text('start', _('Start:'), date('Y-m-d H:i', $start)),
-                form_text('end', _('End:'), date('Y-m-d H:i', $end)),
-                '<h2>' . _('Needed angels') . '</h2>',
+                form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
+                form_text('title', __('Title'), $title),
+                form_select('rid', __('Room:'), $room, $rid),
+                form_text('start', __('Start:'), date('Y-m-d H:i', $start)),
+                form_text('end', __('End:'), date('Y-m-d H:i', $end)),
+                '<h2>' . __('Needed angels') . '</h2>',
                 $angel_types_spinner,
-                form_submit('submit', _('Save'))
+                form_submit('submit', __('Save'))
             ])
         ]
     );
@@ -230,20 +230,20 @@ function shift_delete_controller()
             . ' from ' . date('Y-m-d H:i', $shift['start'])
             . ' to ' . date('Y-m-d H:i', $shift['end'])
         );
-        success(_('Shift deleted.'));
+        success(__('Shift deleted.'));
         redirect(page_link_to('user_shifts'));
     }
 
     return page_with_title(shifts_title(), [
         error(sprintf(
-            _('Do you want to delete the shift %s from %s to %s?'),
+            __('Do you want to delete the shift %s from %s to %s?'),
             $shift['name'],
             date('Y-m-d H:i', $shift['start']),
             date('H:i', $shift['end'])
         ), true),
         '<a class="button" href="'
         . page_link_to('user_shifts', ['delete_shift' => $shift_id, 'delete' => 1]) .
-        '">' . _('delete') . '</a>'
+        '">' . __('delete') . '</a>'
     ]);
 }
 
@@ -265,7 +265,7 @@ function shift_controller()
 
     $shift = Shift($request->input('shift_id'));
     if (empty($shift)) {
-        error(_('Shift could not be found.'));
+        error(__('Shift could not be found.'));
         redirect(page_link_to('user_shifts'));
     }
 

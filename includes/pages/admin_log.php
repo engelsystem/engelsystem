@@ -5,7 +5,7 @@
  */
 function admin_log_title()
 {
-    return _('Log');
+    return __('Log');
 }
 
 /**
@@ -26,8 +26,8 @@ function admin_log()
     return page_with_title(admin_log_title(), [
         msg(),
         form([
-            form_text('keyword', _('Search'), $filter),
-            form_submit(_('Search'), 'Go')
+            form_text('keyword', __('Search'), $filter),
+            form_submit(__('Search'), 'Go')
         ]),
         table([
             'date'    => 'Time',

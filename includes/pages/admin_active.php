@@ -7,7 +7,7 @@ use Engelsystem\Database\DB;
  */
 function admin_active_title()
 {
-    return _('Active angels');
+    return __('Active angels');
 }
 
 /**
@@ -39,14 +39,14 @@ function admin_active()
             $count = strip_request_item('count');
             if ($count < $forced_count) {
                 error(sprintf(
-                    _('At least %s angels are forced to be active. The number has to be greater.'),
+                    __('At least %s angels are forced to be active. The number has to be greater.'),
                     $forced_count
                 ));
                 redirect(page_link_to('admin_active'));
             }
         } else {
             $valid = false;
-            $msg .= error(_('Please enter a number of angels to be marked as active.'), true);
+            $msg .= error(__('Please enter a number of angels to be marked as active.'), true);
         }
 
         if ($valid) {
@@ -84,16 +84,16 @@ function admin_active()
             engelsystem_log('These angels are active now: ' . join(', ', $user_nicks));
 
             $limit = '';
-            $msg = success(_('Marked angels.'), true);
+            $msg = success(__('Marked angels.'), true);
         } else {
             $set_active = '<a href="' . page_link_to('admin_active', ['search' => $search]) . '">&laquo; '
-                . _('back')
+                . __('back')
                 . '</a> | <a href="'
                 . page_link_to(
                     'admin_active',
                     ['search' => $search, 'count' => $count, 'set_active' => 1, 'ack' => 1]
                 ) . '">'
-                . _('apply')
+                . __('apply')
                 . '</a>';
         }
     }
@@ -104,9 +104,9 @@ function admin_active()
         if (!empty($user_source)) {
             DB::update('UPDATE `User` SET `Aktiv`=1 WHERE `UID`=? LIMIT 1', [$user_id]);
             engelsystem_log('User ' . User_Nick_render($user_source) . ' is active now.');
-            $msg = success(_('Angel has been marked as active.'), true);
+            $msg = success(__('Angel has been marked as active.'), true);
         } else {
-            $msg = error(_('Angel not found.'), true);
+            $msg = error(__('Angel not found.'), true);
         }
     } elseif ($request->has('not_active') && preg_match('/^\d+$/', $request->input('not_active'))) {
         $user_id = $request->input('not_active');
@@ -114,9 +114,9 @@ function admin_active()
         if (!empty($user_source)) {
             DB::update('UPDATE `User` SET `Aktiv`=0 WHERE `UID`=? LIMIT 1', [$user_id]);
             engelsystem_log('User ' . User_Nick_render($user_source) . ' is NOT active now.');
-            $msg = success(_('Angel has been marked as not active.'), true);
+            $msg = success(__('Angel has been marked as not active.'), true);
         } else {
-            $msg = error(_('Angel not found.'), true);
+            $msg = error(__('Angel not found.'), true);
         }
     } elseif ($request->has('tshirt') && preg_match('/^\d+$/', $request->input('tshirt'))) {
         $user_id = $request->input('tshirt');
@@ -124,7 +124,7 @@ function admin_active()
         if (!empty($user_source)) {
             DB::update('UPDATE `User` SET `Tshirt`=1 WHERE `UID`=? LIMIT 1', [$user_id]);
             engelsystem_log('User ' . User_Nick_render($user_source) . ' has tshirt now.');
-            $msg = success(_('Angel has got a t-shirt.'), true);
+            $msg = success(__('Angel has got a t-shirt.'), true);
         } else {
             $msg = error('Angel not found.', true);
         }
@@ -134,9 +134,9 @@ function admin_active()
         if (!empty($user_source)) {
             DB::update('UPDATE `User` SET `Tshirt`=0 WHERE `UID`=? LIMIT 1', [$user_id]);
             engelsystem_log('User ' . User_Nick_render($user_source) . ' has NO tshirt.');
-            $msg = success(_('Angel has got no t-shirt.'), true);
+            $msg = success(__('Angel has got no t-shirt.'), true);
         } else {
-            $msg = error(_('Angel not found.'), true);
+            $msg = error(__('Angel not found.'), true);
         }
     }
 
@@ -197,7 +197,7 @@ function admin_active()
                 $parameters['show_all_shifts'] = 1;
             }
             $actions[] = '<a href="' . page_link_to('admin_active', $parameters) . '">'
-                . _('set active')
+                . __('set active')
                 . '</a>';
         }
         if ($usr['Aktiv'] == 1) {
@@ -209,7 +209,7 @@ function admin_active()
                 $parametersRemove['show_all_shifts'] = 1;
             }
             $actions[] = '<a href="' . page_link_to('admin_active', $parametersRemove) . '">'
-                . _('remove active')
+                . __('remove active')
                 . '</a>';
         }
         if ($usr['Tshirt'] == 0) {
@@ -221,7 +221,7 @@ function admin_active()
                 $parametersShirt['show_all_shifts'] = 1;
             }
             $actions[] = '<a href="' . page_link_to('admin_active', $parametersShirt) . '">'
-                . _('got t-shirt')
+                . __('got t-shirt')
                 . '</a>';
         }
         if ($usr['Tshirt'] == 1) {
@@ -233,7 +233,7 @@ function admin_active()
                 $parameters['show_all_shifts'] = 1;
             }
             $actions[] = '<a href="' . page_link_to('admin_active', $parameters) . '">'
-                . _('remove t-shirt')
+                . __('remove t-shirt')
                 . '</a>';
         }
 
@@ -244,52 +244,50 @@ function admin_active()
 
     $shirt_statistics = [];
     foreach (array_keys($tshirt_sizes) as $size) {
-        if (!empty($size)) {
-            $gc = DB::selectOne(
-                'SELECT count(*) FROM `User` WHERE `Size`=? AND `Tshirt`=1',
-                [$size]
-            );
-            $gc = array_shift($gc);
+        $gc = DB::selectOne(
+            'SELECT count(*) FROM `User` WHERE `Size`=? AND `Tshirt`=1',
+            [$size]
+        );
+        $gc = array_shift($gc);
 
-            $shirt_statistics[] = [
-                'size'  => $size,
-                'given' => (int)$gc
-            ];
-        }
+        $shirt_statistics[] = [
+            'size'  => $size,
+            'given' => (int)$gc
+        ];
     }
 
     $shirtCount = User_tshirts_count();
 
     $shirt_statistics[] = [
-        'size'  => '<b>' . _('Sum') . '</b>',
+        'size'  => '<b>' . __('Sum') . '</b>',
         'given' => '<b>' . $shirtCount . '</b>'
     ];
 
     return page_with_title(admin_active_title(), [
         form([
-            form_text('search', _('Search angel:'), $search),
-            form_checkbox('show_all_shifts', _('Show all shifts'), $show_all_shifts),
-            form_submit('submit', _('Search'))
+            form_text('search', __('Search angel:'), $search),
+            form_checkbox('show_all_shifts', __('Show all shifts'), $show_all_shifts),
+            form_submit('submit', __('Search'))
         ], page_link_to('admin_active')),
         $set_active == '' ? form([
-            form_text('count', _('How much angels should be active?'), $count),
-            form_submit('set_active', _('Preview'))
+            form_text('count', __('How much angels should be active?'), $count),
+            form_submit('set_active', __('Preview'))
         ]) : $set_active,
         $msg . msg(),
         table([
-            'nick'         => _('Nickname'),
-            'shirt_size'   => _('Size'),
-            'shift_count'  => _('Shifts'),
-            'work_time'    => _('Length'),
-            'active'       => _('Active?'),
-            'force_active' => _('Forced'),
-            'tshirt'       => _('T-shirt?'),
+            'nick'         => __('Nickname'),
+            'shirt_size'   => __('Size'),
+            'shift_count'  => __('Shifts'),
+            'work_time'    => __('Length'),
+            'active'       => __('Active?'),
+            'force_active' => __('Forced'),
+            'tshirt'       => __('T-shirt?'),
             'actions'      => ''
         ], $matched_users),
-        '<h2>' . _('Shirt statistics') . '</h2>',
+        '<h2>' . __('Shirt statistics') . '</h2>',
         table([
-            'size'  => _('Size'),
-            'given' => _('Given shirts')
+            'size'  => __('Size'),
+            'given' => __('Given shirts')
         ], $shirt_statistics)
     ]);
 }

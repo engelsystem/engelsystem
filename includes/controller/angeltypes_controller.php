@@ -10,7 +10,7 @@ use Engelsystem\ShiftsFilterRenderer;
  */
 function angeltypes_title()
 {
-    return _('Angeltypes');
+    return __('Angeltypes');
 }
 
 /**
@@ -66,7 +66,7 @@ function angeltypes_about_controller()
     }
 
     return [
-        _('Teams/Job description'),
+        __('Teams/Job description'),
         AngelTypes_about_view($angeltypes, isset($user))
     ];
 }
@@ -88,12 +88,12 @@ function angeltype_delete_controller()
 
     if (request()->has('confirmed')) {
         AngelType_delete($angeltype);
-        success(sprintf(_('Angeltype %s deleted.'), AngelType_name_render($angeltype)));
+        success(sprintf(__('Angeltype %s deleted.'), AngelType_name_render($angeltype)));
         redirect(page_link_to('angeltypes'));
     }
 
     return [
-        sprintf(_('Delete angeltype %s'), $angeltype['name']),
+        sprintf(__('Delete angeltype %s'), $angeltype['name']),
         AngelType_delete_view($angeltype)
     ];
 }
@@ -136,7 +136,7 @@ function angeltype_edit_controller()
                 $angeltype['name'] = $result->getValue();
                 if (!$result->isValid()) {
                     $valid = false;
-                    error(_('Please check the name. Maybe it already exists.'));
+                    error(__('Please check the name. Maybe it already exists.'));
                 }
             }
 
@@ -166,7 +166,7 @@ function angeltype_edit_controller()
     }
 
     return [
-        sprintf(_('Edit %s'), $angeltype['name']),
+        sprintf(__('Edit %s'), $angeltype['name']),
         AngelType_edit_view($angeltype, $supporter_mode)
     ];
 }
@@ -204,7 +204,7 @@ function angeltype_controller()
     }
 
     return [
-        sprintf(_('Team %s'), $angeltype['name']),
+        sprintf(__('Team %s'), $angeltype['name']),
         AngelType_view(
             $angeltype,
             $members,
@@ -289,7 +289,7 @@ function angeltypes_list_controller()
         $actions = [
             button(
                 page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
-                _('view'),
+                __('view'),
                 'btn-xs'
             )
         ];
@@ -297,12 +297,12 @@ function angeltypes_list_controller()
         if (in_array('admin_angel_types', $privileges)) {
             $actions[] = button(
                 page_link_to('angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype['id']]),
-                _('edit'),
+                __('edit'),
                 'btn-xs'
             );
             $actions[] = button(
                 page_link_to('angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype['id']]),
-                _('delete'),
+                __('delete'),
                 'btn-xs'
             );
         }
@@ -313,13 +313,13 @@ function angeltypes_list_controller()
                 page_link_to('user_angeltypes',
                     ['action' => 'delete', 'user_angeltype_id' => $angeltype['user_angeltype_id']]
                 ),
-                _('leave'),
+                __('leave'),
                 'btn-xs'
             );
         } else {
             $actions[] = button(
                 page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype['id']]),
-                _('join'),
+                __('join'),
                 'btn-xs'
             );
         }
@@ -356,7 +356,7 @@ function load_angeltype()
 
     $angeltype = AngelType($request->input('angeltype_id'));
     if (empty($angeltype)) {
-        error(_('Angeltype doesn\'t exist . '));
+        error(__('Angeltype doesn\'t exist . '));
         redirect(page_link_to('angeltypes'));
     }
 
