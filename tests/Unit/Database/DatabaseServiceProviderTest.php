@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Database;
 
+use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Database\Database;
 use Engelsystem\Database\DatabaseServiceProvider;
@@ -10,6 +11,7 @@ use Engelsystem\Test\Unit\ServiceProviderTest;
 use Exception;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use Illuminate\Database\Connection;
+use PDO;
 use PDOException;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
@@ -117,12 +119,12 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
         $this->setExpects($connection, 'useDefaultSchemaGrammar');
         $connection->expects($this->once())
             ->method('getPdo')
-            ->willReturnCallback(function () use ($getPdoThrowException) {
+            ->willReturnCallback(function () use ($getPdoThrowException, $pdo) {
                 if ($getPdoThrowException) {
                     throw new PDOException();
                 }
 
-                return '';
+                return $pdo;
             });
         $this->setExpects($dbManager, 'getConnection', [], $connection, $this->atLeastOnce());
 

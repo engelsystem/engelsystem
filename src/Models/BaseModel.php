@@ -2,6 +2,8 @@
 
 namespace Engelsystem\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseModel extends Model
@@ -10,6 +12,8 @@ abstract class BaseModel extends Model
     public $timestamps = false;
 
     /**
+     * Create a new model
+     *
      * @param array $attributes
      * @return BaseModel
      */
@@ -19,5 +23,17 @@ abstract class BaseModel extends Model
         $instance->save();
 
         return $instance;
+    }
+
+    /**
+     * Find a model by its primary key
+     *
+     * @param mixed $id
+     * @param array $columns
+     * @return Builder|Builder[]|Collection|Model|null
+     */
+    public static function find($id, $columns = ['*'])
+    {
+        return static::query()->find($id, $columns);
     }
 }

@@ -2,8 +2,10 @@
 
 namespace Engelsystem\Http;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
@@ -38,7 +40,35 @@ class SessionServiceProvider extends ServiceProvider
             return $this->app->make(MockArraySessionStorage::class);
         }
 
-        return $this->app->make(NativeSessionStorage::class, ['options' => ['cookie_httponly' => true]]);
+        /** @var Config $config */
+        $config = $this->app->get('config');
+        $sessionConfig = $config->get('session');
+
+        $handler = null;
+        $driver = $sessionConfig['driver'];
+
+        switch ($driver) {
+            case 'pdo':
+                $handler = $this->app->make(PdoSessionHandler::class, [
+                    'pdoOrDsn' => $this->app->get('db.pdo'),
+                    'options'  => [
+                        'db_table'        => 'sessions',
+                        'db_id_col'       => 'id',
+                        'db_data_col'     => 'payload',
+                        'db_lifetime_col' => 'lifetime',
+                        'db_time_col'     => 'last_activity',
+                    ],
+                ]);
+                break;
+        }
+
+        return $this->app->make(NativeSessionStorage::class, [
+            'options' => [
+                'cookie_httponly' => true,
+                'name'            => $sessionConfig['name'],
+            ],
+            'handler' => $handler,
+        ]);
     }
 
     /**

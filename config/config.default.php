@@ -137,4 +137,13 @@ return [
         '3XL'  => '3XL',
         '4XL'  => '4XL'
     ],
+
+    // Session config
+    'session'                 => [
+        // Supported: pdo or native
+        'driver' => env('SESSION_DRIVER', 'pdo'),
+
+        // Cookie name
+        'name'   => 'session',
+    ],
 ];

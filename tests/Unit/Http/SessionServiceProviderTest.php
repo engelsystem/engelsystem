@@ -2,11 +2,14 @@
 
 namespace Engelsystem\Test\Unit\Http;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\SessionServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
+use PDO;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface as StorageInterface;
@@ -23,6 +26,9 @@ class SessionServiceProviderTest extends ServiceProviderTest
 
         $sessionStorage = $this->getMockForAbstractClass(StorageInterface::class);
         $sessionStorage2 = $this->getMockForAbstractClass(StorageInterface::class);
+        $pdoSessionHandler = $this->getMockBuilder(PdoSessionHandler::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $session = $this->getSessionMock();
         $request = $this->getRequestMock();
@@ -32,21 +38,53 @@ class SessionServiceProviderTest extends ServiceProviderTest
             ->setConstructorArgs([$app])
             ->setMethods(['isCli'])
             ->getMock();
-        $serviceProvider->expects($this->exactly(2))
-            ->method('isCli')
-            ->willReturnOnConsecutiveCalls(true, false);
 
-        $app->expects($this->exactly(4))
+        /** @var Config|MockObject $config */
+        $config = $this->createMock(Config::class);
+        /** @var PDO|MockObject $pdo */
+        $pdo = $this->getMockBuilder(PDO::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $serviceProvider->expects($this->exactly(3))
+            ->method('isCli')
+            ->willReturnOnConsecutiveCalls(true, false, false);
+
+        $app->expects($this->exactly(7))
             ->method('make')
             ->withConsecutive(
                 [MockArraySessionStorage::class],
                 [Session::class],
-                [NativeSessionStorage::class, ['options' => ['cookie_httponly' => true]]],
+                [
+                    NativeSessionStorage::class,
+                    ['options' => ['cookie_httponly' => true, 'name' => 'session'], 'handler' => null]
+                ],
+                [Session::class],
+                [
+                    PdoSessionHandler::class,
+                    [
+                        'pdoOrDsn' => $pdo,
+                        'options'  => [
+                            'db_table'        => 'sessions',
+                            'db_id_col'       => 'id',
+                            'db_data_col'     => 'payload',
+                            'db_lifetime_col' => 'lifetime',
+                            'db_time_col'     => 'last_activity',
+                        ],
+                    ]
+                ],
+                [
+                    NativeSessionStorage::class,
+                    ['options' => ['cookie_httponly' => true, 'name' => 'foobar'], 'handler' => $pdoSessionHandler]
+                ],
                 [Session::class]
             )
             ->willReturnOnConsecutiveCalls(
                 $sessionStorage,
                 $session,
+                $sessionStorage2,
+                $session,
+                $pdoSessionHandler,
                 $sessionStorage2,
                 $session
             );
@@ -58,11 +96,38 @@ class SessionServiceProviderTest extends ServiceProviderTest
                 ['session', $session]
             );
 
+        $app->expects($this->exactly(6))
+            ->method('get')
+            ->withConsecutive(
+                ['request'],
+                ['config'],
+                ['request'],
+                ['config'],
+                ['db.pdo'],
+                ['request']
+            )
+            ->willReturnOnConsecutiveCalls(
+                $request,
+                $config,
+                $request,
+                $config,
+                $pdo,
+                $request
+            );
+
+        $config->expects($this->exactly(2))
+            ->method('get')
+            ->with('session')
+            ->willReturnOnConsecutiveCalls(
+                ['driver' => 'native', 'name' => 'session'],
+                ['driver' => 'pdo', 'name' => 'foobar']
+            );
+
         $this->setExpects($app, 'bind', [StorageInterface::class, 'session.storage'], null, $this->atLeastOnce());
-        $this->setExpects($app, 'get', ['request'], $request, $this->atLeastOnce());
         $this->setExpects($request, 'setSession', [$session], null, $this->atLeastOnce());
         $this->setExpects($session, 'start', null, null, $this->atLeastOnce());
 
+        $serviceProvider->register();
         $serviceProvider->register();
         $serviceProvider->register();
     }

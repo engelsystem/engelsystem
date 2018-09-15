@@ -31,8 +31,9 @@ class DatabaseServiceProvider extends ServiceProvider
         $capsule->bootEloquent();
         $capsule->getConnection()->useDefaultSchemaGrammar();
 
+        $pdo = null;
         try {
-            $capsule->getConnection()->getPdo();
+            $pdo = $capsule->getConnection()->getPdo();
         } catch (PDOException $e) {
             $this->exitOnError();
         }
