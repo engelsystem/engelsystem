@@ -18,7 +18,7 @@ class Migrate
     protected $app;
 
     /** @var SchemaBuilder */
-    protected $scheme;
+    protected $schema;
 
     /** @var callable */
     protected $output;
@@ -29,13 +29,13 @@ class Migrate
     /**
      * Migrate constructor
      *
-     * @param SchemaBuilder $scheme
+     * @param SchemaBuilder $schema
      * @param Application   $app
      */
-    public function __construct(SchemaBuilder $scheme, Application $app)
+    public function __construct(SchemaBuilder $schema, Application $app)
     {
         $this->app = $app;
-        $this->scheme = $scheme;
+        $this->schema = $schema;
         $this->output = function () { };
     }
 
@@ -160,11 +160,11 @@ class Migrate
      */
     protected function initMigration()
     {
-        if ($this->scheme->hasTable($this->table)) {
+        if ($this->schema->hasTable($this->table)) {
             return;
         }
 
-        $this->scheme->create($this->table, function (Blueprint $table) {
+        $this->schema->create($this->table, function (Blueprint $table) {
             $table->increments('id');
             $table->string('migration');
         });
@@ -177,7 +177,7 @@ class Migrate
      */
     protected function getTableQuery()
     {
-        return $this->scheme->getConnection()->table($this->table);
+        return $this->schema->getConnection()->table($this->table);
     }
 
     /**

@@ -6,6 +6,7 @@ use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use Illuminate\Database\Connection as DatabaseConnection;
 use PDO;
 
+/** @deprecated */
 class Db
 {
     /** @var CapsuleManager */
