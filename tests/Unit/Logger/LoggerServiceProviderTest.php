@@ -17,6 +17,7 @@ class LoggerServiceProviderTest extends ServiceProviderTest
     {
         /** @var PHPUnit_Framework_MockObject_MockObject|EngelsystemLogger $logger */
         $logger = $this->getMockBuilder(EngelsystemLogger::class)
+            ->disableOriginalConstructor()
             ->getMock();
 
         $app = $this->getApp(['make', 'instance', 'bind']);

@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Models\LogEntry;
+
 /**
  * @return string
  */
@@ -17,10 +19,14 @@ function admin_log()
     if (request()->has('keyword')) {
         $filter = strip_request_item('keyword');
     }
-    $log_entries = LogEntries_filter($filter);
 
-    foreach ($log_entries as &$log_entry) {
-        $log_entry['date'] = date('d.m.Y H:i', $log_entry['timestamp']);
+    $log_entries = LogEntry::filter($filter);
+
+    $entries = [];
+    foreach ($log_entries as $entry) {
+        $data = $entry->toArray();
+        $data['created_at'] = date_format($entry->created_at, 'd.m.Y H:i');
+        $entries[] = $data;
     }
 
     return page_with_title(admin_log_title(), [
@@ -30,9 +36,9 @@ function admin_log()
             form_submit(__('Search'), 'Go')
         ]),
         table([
-            'date'    => 'Time',
-            'level'   => 'Type',
-            'message' => 'Log Entry'
-        ], $log_entries)
+            'created_at' => 'Time',
+            'level'      => 'Type',
+            'message'    => 'Log Entry'
+        ], $entries)
     ]);
 }
