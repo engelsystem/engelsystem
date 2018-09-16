@@ -4,12 +4,11 @@ namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Request;
+use Engelsystem\Http\SessionHandlers\DatabaseHandler;
 use Engelsystem\Http\SessionServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
-use PDO;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface as StorageInterface;
@@ -26,7 +25,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
 
         $sessionStorage = $this->getMockForAbstractClass(StorageInterface::class);
         $sessionStorage2 = $this->getMockForAbstractClass(StorageInterface::class);
-        $pdoSessionHandler = $this->getMockBuilder(PdoSessionHandler::class)
+        $databaseHandler = $this->getMockBuilder(DatabaseHandler::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -41,10 +40,6 @@ class SessionServiceProviderTest extends ServiceProviderTest
 
         /** @var Config|MockObject $config */
         $config = $this->createMock(Config::class);
-        /** @var PDO|MockObject $pdo */
-        $pdo = $this->getMockBuilder(PDO::class)
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $serviceProvider->expects($this->exactly(3))
             ->method('isCli')
@@ -60,22 +55,10 @@ class SessionServiceProviderTest extends ServiceProviderTest
                     ['options' => ['cookie_httponly' => true, 'name' => 'session'], 'handler' => null]
                 ],
                 [Session::class],
-                [
-                    PdoSessionHandler::class,
-                    [
-                        'pdoOrDsn' => $pdo,
-                        'options'  => [
-                            'db_table'        => 'sessions',
-                            'db_id_col'       => 'id',
-                            'db_data_col'     => 'payload',
-                            'db_lifetime_col' => 'lifetime',
-                            'db_time_col'     => 'last_activity',
-                        ],
-                    ]
-                ],
+                [DatabaseHandler::class],
                 [
                     NativeSessionStorage::class,
-                    ['options' => ['cookie_httponly' => true, 'name' => 'foobar'], 'handler' => $pdoSessionHandler]
+                    ['options' => ['cookie_httponly' => true, 'name' => 'foobar'], 'handler' => $databaseHandler]
                 ],
                 [Session::class]
             )
@@ -84,7 +67,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
                 $session,
                 $sessionStorage2,
                 $session,
-                $pdoSessionHandler,
+                $databaseHandler,
                 $sessionStorage2,
                 $session
             );
@@ -96,14 +79,13 @@ class SessionServiceProviderTest extends ServiceProviderTest
                 ['session', $session]
             );
 
-        $app->expects($this->exactly(6))
+        $app->expects($this->exactly(5))
             ->method('get')
             ->withConsecutive(
                 ['request'],
                 ['config'],
                 ['request'],
                 ['config'],
-                ['db.pdo'],
                 ['request']
             )
             ->willReturnOnConsecutiveCalls(
@@ -111,7 +93,6 @@ class SessionServiceProviderTest extends ServiceProviderTest
                 $config,
                 $request,
                 $config,
-                $pdo,
                 $request
             );
 

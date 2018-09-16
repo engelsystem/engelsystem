@@ -77,6 +77,21 @@ class Migrate
     }
 
     /**
+     * Setup migration tables
+     */
+    public function initMigration()
+    {
+        if ($this->schema->hasTable($this->table)) {
+            return;
+        }
+
+        $this->schema->create($this->table, function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('migration');
+        });
+    }
+
+    /**
      * Get all migrated migrations
      *
      * @return Collection
@@ -153,21 +168,6 @@ class Migrate
     protected function getMigrationFiles($dir)
     {
         return glob($dir . '/*_*.php');
-    }
-
-    /**
-     * Setup migration tables
-     */
-    protected function initMigration()
-    {
-        if ($this->schema->hasTable($this->table)) {
-            return;
-        }
-
-        $this->schema->create($this->table, function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('migration');
-        });
     }
 
     /**

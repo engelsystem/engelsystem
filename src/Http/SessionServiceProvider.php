@@ -4,8 +4,8 @@ namespace Engelsystem\Http;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
+use Engelsystem\Http\SessionHandlers\DatabaseHandler;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
@@ -45,20 +45,9 @@ class SessionServiceProvider extends ServiceProvider
         $sessionConfig = $config->get('session');
 
         $handler = null;
-        $driver = $sessionConfig['driver'];
-
-        switch ($driver) {
+        switch ($sessionConfig['driver']) {
             case 'pdo':
-                $handler = $this->app->make(PdoSessionHandler::class, [
-                    'pdoOrDsn' => $this->app->get('db.pdo'),
-                    'options'  => [
-                        'db_table'        => 'sessions',
-                        'db_id_col'       => 'id',
-                        'db_data_col'     => 'payload',
-                        'db_lifetime_col' => 'lifetime',
-                        'db_time_col'     => 'last_activity',
-                    ],
-                ]);
+                $handler = $this->app->make(DatabaseHandler::class);
                 break;
         }
 

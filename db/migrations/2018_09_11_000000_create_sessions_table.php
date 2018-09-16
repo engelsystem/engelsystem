@@ -13,8 +13,7 @@ class CreateSessionsTable extends Migration
         $this->schema->create('sessions', function (Blueprint $table) {
             $table->string('id')->unique();
             $table->text('payload');
-            $table->integer('last_activity');
-            $table->integer('lifetime');
+            $table->dateTime('last_activity')->useCurrent();
         });
     }
 
