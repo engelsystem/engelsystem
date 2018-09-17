@@ -26,8 +26,7 @@ function User_delete($user_id)
  */
 function User_tshirt_score($user)
 {
-    $shift_sum_formula = config('shift_sum_formula');
-
+    $shift_sum_formula = User_get_shifts_sum_query();
     $result_shifts = DB::selectOne('
         SELECT ROUND((' . $shift_sum_formula . ') / 3600, 2) AS `tshirt_score`
         FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
@@ -529,4 +528,35 @@ function User_get_eligable_voucher_count(&$user)
     }
 
     return $eligable_vouchers;
+}
+
+/**
+ * Generates the query to sum night shifts
+ *
+ * @return string
+ */
+function User_get_shifts_sum_query()
+{
+    $nightShifts = config('night_shifts');
+    if (!$nightShifts['enabled']) {
+        return 'SUM(`end` - `start`)';
+    }
+
+    return sprintf('
+            SUM(
+                (1 +
+                    (
+                      (HOUR(FROM_UNIXTIME(`Shifts`.`end`)) > %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) < %2$d)
+                      OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) > %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`start`)) < %2$d)
+                      OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) <= %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) >= %2$d)
+                    )
+                )
+                * (`Shifts`.`end` - `Shifts`.`start`)
+                * (1 - (%3$d + 1) * `ShiftEntry`.`freeloaded`)
+            )
+        ',
+        $nightShifts['start'],
+        $nightShifts['end'],
+        $nightShifts['multiplier']
+    );
 }

@@ -16,7 +16,7 @@ function admin_active_title()
 function admin_active()
 {
     $tshirt_sizes = config('tshirt_sizes');
-    $shift_sum_formula = config('shift_sum_formula');
+    $shift_sum_formula = User_get_shifts_sum_query();
     $request = request();
 
     $msg = '';

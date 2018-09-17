@@ -79,23 +79,13 @@ return [
     // local timezone
     'timezone'                => env('TIMEZONE', 'Europe/Berlin'),
 
-    // weigh every shift the same
-    //'shift_sum_formula'       => 'SUM(`end` - `start`)',
-
     // Multiply 'night shifts' and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
-    'shift_sum_formula'       => '
-        SUM(
-            (1 +
-                (
-                  (HOUR(FROM_UNIXTIME(`Shifts`.`end`)) > 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) < 6)
-                  OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) > 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`start`)) < 6)
-                  OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) <= 2 AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) >= 6)
-                )
-            )
-            * (`Shifts`.`end` - `Shifts`.`start`)
-            * (1 - 3 * `ShiftEntry`.`freeloaded`)
-        )
-    ',
+    'night_shifts'            => [
+        'enabled'    => true, // Disable to weigh every shift the same
+        'start'      => 2,
+        'end'        => 6,
+        'multiplier' => 2,
+    ],
 
     // Voucher calculation
     'voucher_settings'        => [
@@ -109,10 +99,10 @@ return [
         'en_US.UTF-8' => 'English',
     ],
 
-    'default_locale' => env('DEFAULT_LOCALE', 'en_US.UTF-8'),
+    'default_locale'  => env('DEFAULT_LOCALE', 'en_US.UTF-8'),
 
     // Available T-Shirt sizes, set value to null if not available
-    'tshirt_sizes'   => [
+    'tshirt_sizes'    => [
         'S'    => 'S',
         'S-G'  => 'S Girl',
         'M'    => 'M',

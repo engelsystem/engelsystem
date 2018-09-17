@@ -532,6 +532,7 @@ function User_view(
     $admin_user_worklog_privilege,
     $user_worklogs
 ) {
+    $nightShiftsConfig = config('night_shifts');
     $user_name = htmlspecialchars($user_source['Vorname']) . ' ' . htmlspecialchars($user_source['Name']);
     $myshifts_table = '';
     if ($its_me || $admin_user_privilege) {
@@ -619,8 +620,12 @@ function User_view(
             ]),
             ($its_me || $admin_user_privilege) ? '<h2>' . __('Shifts') . '</h2>' : '',
             $myshifts_table,
-            $its_me ? info(
-                glyph('info-sign') . __('Your night shifts between 2 and 8 am count twice.'),
+            ($its_me && $nightShiftsConfig['enabled']) ? info(
+                glyph('info-sign') . sprintf(
+                    __('Your night shifts between %d and %d am count twice.'),
+                    $nightShiftsConfig['start'],
+                    $nightShiftsConfig['end']
+                ),
                 true
             ) : '',
             $its_me && count($shifts) == 0
