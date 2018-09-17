@@ -128,17 +128,21 @@ function stats_angels_needed_three_hours()
 }
 
 /**
- * Returns the number of needed angels for nightshifts (between 2 and 8)
+ * Returns the number of needed angels for nightshifts (see config)
  *
  * @return int|string
  */
 function stats_angels_needed_for_nightshifts()
 {
+    $nightShiftsConfig = config('night_shifts');
+    $nightStartTime = $nightShiftsConfig['start'];
+    $nightEndTime = $nightShiftsConfig['end'];
+
     $night_start = parse_date(
         'Y-m-d H:i',
-        date('Y-m-d', time() + 12 * 60 * 60) . ' 02:00'
+        date('Y-m-d', time() + 12 * 60 * 60) . ' ' . $nightStartTime . ':00'
     );
-    $night_end = $night_start + 6 * 60 * 60;
+    $night_end = $night_start + ($nightEndTime - $nightStartTime) * 60 * 60;
     $result = Db::selectOne("
         SELECT SUM(`count`) AS `count` FROM (
             SELECT

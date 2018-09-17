@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2017-04-25 05:23+0200\n"
-"PO-Revision-Date: 2017-04-25 05:23+0200\n"
+"PO-Revision-Date: 2018-09-17 12:11+0200\n"
 "Last-Translator: samba <samba@autistici.org>\n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -2385,8 +2385,9 @@ msgid "Action"
 msgstr "Ação"
 
 #: includes/view/User_view.php:373
-msgid "Your night shifts between 2 and 8 am count twice."
-msgstr "Os seus turnos noturnos entre 2h e 8h contam como dois."
+#, php-format
+msgid "Your night shifts between %d and %d am count twice."
+msgstr "Os seus turnos noturnos entre %dh e %dh contam como dois."
 
 #: includes/view/User_view.php:374
 #, php-format

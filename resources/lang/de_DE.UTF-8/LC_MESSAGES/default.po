@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2017-12-29 19:01+0100\n"
-"PO-Revision-Date: 2018-08-27 22:26+0200\n"
+"PO-Revision-Date: 2018-09-17 12:10+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -2768,8 +2768,9 @@ msgid "JSON Export"
 msgstr "JSON Export"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:598
-msgid "Your night shifts between 2 and 8 am count twice."
-msgstr "Deine Nachtschichten zwischen 2 und 8 Uhr zählen doppelt."
+#, php-format
+msgid "Your night shifts between %d and %d am count twice."
+msgstr "Deine Nachtschichten zwischen %d und %d Uhr zählen doppelt."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/User_view.php:603
 #, php-format
