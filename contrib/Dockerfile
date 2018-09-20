@@ -26,7 +26,8 @@ FROM php:7-fpm-alpine
 WORKDIR /var/www
 COPY --from=data /app/ /var/www
 RUN apk add --no-cache icu-dev gettext-dev && \
-    docker-php-ext-install intl gettext pdo_mysql
+    docker-php-ext-install intl gettext pdo_mysql && \
+    rm -r /var/www/html
 
 ENV TRUSTED_PROXIES 10.0.0.0/8,::ffff:10.0.0.0/8,\
                     127.0.0.0/8,::ffff:127.0.0.0/8,\
