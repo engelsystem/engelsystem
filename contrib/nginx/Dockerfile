@@ -10,4 +10,4 @@ FROM nginx:alpine
 COPY contrib/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY --from=themes /app/public/assets /var/www/public/assets/
 COPY public/.htaccess /var/www/public/
-COPY public/index.php /var/www/public/
+RUN touch /var/www/public/index.php
