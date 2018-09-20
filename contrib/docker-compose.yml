@@ -7,8 +7,6 @@ services:
       dockerfile: contrib/nginx/Dockerfile
     ports:
       - 5000:80
-    volumes:
-      - static:/var/www/html
     networks:
       - internal
     depends_on:
@@ -23,8 +21,6 @@ services:
       MYSQL_USER: engelsystem
       MYSQL_PASSWORD: engelsystem
       MYSQL_DATABASE: engelsystem
-    volumes:
-      - static:/var/www/html
     networks:
       - internal
       - database
