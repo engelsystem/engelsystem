@@ -52,6 +52,9 @@ test:
     when: always
     paths:
       - ./coverage/
+      - ./unittests.xml
+    reports:
+      junit: ./unittests.xml
   coverage: '/^\s*Lines:\s*(\d+(?:\.\d+)?%)/'
   before_script:
     - apk add ${PHPIZE_DEPS} && pecl install xdebug && docker-php-ext-enable xdebug
@@ -62,8 +65,8 @@ test:
     - composer --no-ansi install --dev
     - ./bin/migrate
   script:
-    - vendor/bin/phpunit -v --colors=never --coverage-text --coverage-html "${HOMEDIR}/coverage/"
-    - ./bin/migrate down
+    - vendor/bin/phpunit -v --colors=never --coverage-text --coverage-html "${HOMEDIR}/coverage/" --log-junit "${HOMEDIR}/unittests.xml"
+    - bin/migrate down
 
 release-image:
   <<: *docker_definition
