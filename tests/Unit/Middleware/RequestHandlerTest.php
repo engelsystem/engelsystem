@@ -38,15 +38,12 @@ class RequestHandlerTest extends TestCase
     public function testProcess()
     {
         /** @var Application|MockObject $container */
-        $container = $this->createMock(Application::class);
         /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
         /** @var RequestHandlerInterface|MockObject $handler */
-        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
         /** @var ResponseInterface|MockObject $response */
-        $response = $this->getMockForAbstractClass(ResponseInterface::class);
+        /** @var MiddlewareInterface|MockObject $middlewareInterface */
+        list($container, $request, $handler, $response, $middlewareInterface) = $this->getMocks();
 
-        $middlewareInterface = $this->getMockForAbstractClass(MiddlewareInterface::class);
         $requestHandlerInterface = $this->getMockForAbstractClass(RequestHandlerInterface::class);
 
         $request->expects($this->exactly(3))
@@ -57,10 +54,10 @@ class RequestHandlerTest extends TestCase
         /** @var RequestHandler|MockObject $middleware */
         $middleware = $this->getMockBuilder(RequestHandler::class)
             ->setConstructorArgs([$container])
-            ->setMethods(['resolveMiddleware'])
+            ->setMethods(['resolveRequestHandler'])
             ->getMock();
         $middleware->expects($this->exactly(3))
-            ->method('resolveMiddleware')
+            ->method('resolveRequestHandler')
             ->with('FooBarClass')
             ->willReturnOnConsecutiveCalls(
                 $middlewareInterface,
@@ -85,5 +82,71 @@ class RequestHandlerTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $middleware->process($request, $handler);
+    }
+
+    /**
+     * @covers \Engelsystem\Middleware\RequestHandler::resolveRequestHandler
+     */
+    public function testResolveRequestHandler()
+    {
+        /** @var Application|MockObject $container */
+        /** @var ServerRequestInterface|MockObject $request */
+        /** @var RequestHandlerInterface|MockObject $handler */
+        /** @var ResponseInterface|MockObject $response */
+        /** @var MiddlewareInterface|MockObject $middlewareInterface */
+        list($container, $request, $handler, $response, $middlewareInterface) = $this->getMocks();
+
+        $className = 'Engelsystem\\Controllers\\FooBarTestController';
+
+        $request->expects($this->exactly(1))
+            ->method('getAttribute')
+            ->with('route-request-handler')
+            ->willReturn('FooBarTestController@showStuff');
+
+        /** @var RequestHandler|MockObject $middleware */
+        $middleware = $this->getMockBuilder(RequestHandler::class)
+            ->setConstructorArgs([$container])
+            ->setMethods(['resolveMiddleware'])
+            ->getMock();
+        $middleware->expects($this->once())
+            ->method('resolveMiddleware')
+            ->with([$middlewareInterface, 'showStuff'])
+            ->willReturn($middlewareInterface);
+
+        $middlewareInterface->expects($this->once())
+            ->method('process')
+            ->with($request, $handler)
+            ->willReturn($response);
+
+        $container->expects($this->exactly(2))
+            ->method('has')
+            ->withConsecutive(['FooBarTestController'], [$className])
+            ->willReturnOnConsecutiveCalls(false, true);
+        $container->expects($this->once())
+            ->method('make')
+            ->with($className)
+            ->willReturn($middlewareInterface);
+
+        $return = $middleware->process($request, $handler);
+        $this->assertEquals($return, $response);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getMocks(): array
+    {
+        /** @var Application|MockObject $container */
+        $container = $this->createMock(Application::class);
+        /** @var ServerRequestInterface|MockObject $request */
+        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
+        /** @var RequestHandlerInterface|MockObject $handler */
+        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        /** @var ResponseInterface|MockObject $response */
+        $response = $this->getMockForAbstractClass(ResponseInterface::class);
+        /** @var MiddlewareInterface $middlewareInterface */
+        $middlewareInterface = $this->getMockForAbstractClass(MiddlewareInterface::class);
+
+        return [$container, $request, $handler, $response, $middlewareInterface];
     }
 }

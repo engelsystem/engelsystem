@@ -3,6 +3,7 @@
 namespace Engelsystem\Http;
 
 use Engelsystem\Container\ServiceProvider;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class RequestServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,9 @@ class RequestServiceProvider extends ServiceProvider
         /** @var Request $request */
         $request = $this->app->call([Request::class, 'createFromGlobals']);
         $this->setTrustedProxies($request, $trustedProxies);
+
+        $this->app->instance(Request::class, $request);
+        $this->app->instance(SymfonyRequest::class, $request);
         $this->app->instance('request', $request);
     }
 

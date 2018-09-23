@@ -8,6 +8,7 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\RequestServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class RequestServiceProviderTest extends ServiceProviderTest
 {
@@ -45,8 +46,15 @@ class RequestServiceProviderTest extends ServiceProviderTest
 
         $this->setExpects($app, 'call', [[Request::class, 'createFromGlobals']], $request);
         $this->setExpects($app, 'get', ['config'], $config);
-        $this->setExpects($app, 'instance', ['request', $request]);
         $this->setExpects($config, 'get', ['trusted_proxies'], $configuredProxies);
+
+        $app->expects($this->exactly(3))
+            ->method('instance')
+            ->withConsecutive(
+                [Request::class, $request],
+                [SymfonyRequest::class, $request],
+                ['request', $request]
+            );
 
         /** @var ServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(RequestServiceProvider::class)

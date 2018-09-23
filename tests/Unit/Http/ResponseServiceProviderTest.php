@@ -6,6 +6,7 @@ use Engelsystem\Http\Response;
 use Engelsystem\Http\ResponseServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class ResponseServiceProviderTest extends ServiceProviderTest
 {
@@ -21,7 +22,13 @@ class ResponseServiceProviderTest extends ServiceProviderTest
         $app = $this->getApp();
 
         $this->setExpects($app, 'make', [Response::class], $response);
-        $this->setExpects($app, 'instance', ['response', $response]);
+        $app->expects($this->exactly(3))
+            ->method('instance')
+            ->withConsecutive(
+                [Response::class, $response],
+                [SymfonyResponse::class, $response],
+                ['response', $response]
+            );
 
         $serviceProvider = new ResponseServiceProvider($app);
         $serviceProvider->register();

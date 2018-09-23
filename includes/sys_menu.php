@@ -41,69 +41,6 @@ function header_render_hints()
 }
 
 /**
- * Renders the header toolbar containing search, login/logout, user and settings links.
- *
- * @return string
- */
-function header_toolbar()
-{
-    global $page, $privileges, $user;
-
-    $toolbar_items = [];
-
-    if (isset($user)) {
-        $toolbar_items[] = toolbar_item_link(
-            page_link_to('shifts', ['action' => 'next']),
-            'time',
-            User_shift_state_render($user)
-        );
-    }
-
-    if (!isset($user) && in_array('register', $privileges) && config('registration_enabled')) {
-        $toolbar_items[] = toolbar_item_link(
-            page_link_to('register'),
-            'plus',
-            register_title(),
-            $page == 'register'
-        );
-    }
-
-    if (in_array('login', $privileges)) {
-        $toolbar_items[] = toolbar_item_link(
-            page_link_to('login'),
-            'log-in',
-            login_title(),
-            $page == 'login'
-        );
-    }
-
-    if (isset($user) && in_array('user_messages', $privileges)) {
-        $toolbar_items[] = toolbar_item_link(
-            page_link_to('user_messages'),
-            'envelope',
-            user_unread_messages()
-        );
-    }
-
-    $toolbar_items[] = header_render_hints();
-    if (in_array('user_myshifts', $privileges)) {
-        $toolbar_items[] = toolbar_item_link(
-            page_link_to('users', ['action' => 'view']),
-            '',
-            '<span class="icon-icon_angel"></span> ' . $user['Nick'],
-            $page == 'users'
-        );
-    }
-
-    $user_submenu = make_user_submenu();
-    if (count($user_submenu) > 0) {
-        $toolbar_items[] = toolbar_dropdown('', '', $user_submenu);
-    }
-
-    return toolbar($toolbar_items, true);
-}
-
-/**
  * @return array
  */
 function make_user_submenu()
@@ -120,7 +57,7 @@ function make_user_submenu()
         $user_submenu[] = toolbar_item_link(
             page_link_to('user_settings'),
             'list-alt',
-            settings_title(),
+            __('Settings'),
             $page == 'user_settings'
         );
     }
@@ -129,7 +66,7 @@ function make_user_submenu()
         $user_submenu[] = toolbar_item_link(
             page_link_to('logout'),
             'log-out',
-            logout_title(),
+            __('Logout'),
             $page == 'logout'
         );
     }
@@ -146,11 +83,11 @@ function make_navigation()
 
     $menu = [];
     $pages = [
-        'news'           => news_title(),
-        'user_meetings'  => meetings_title(),
-        'user_shifts'    => shifts_title(),
-        'angeltypes'     => angeltypes_title(),
-        'user_questions' => questions_title()
+        'news'           => __('News'),
+        'user_meetings'  => __('Meetings'),
+        'user_shifts'    => __('Shifts'),
+        'angeltypes'     => __('Angeltypes'),
+        'user_questions' => __('Ask the Heaven'),
     ];
 
     foreach ($pages as $menu_page => $title) {
@@ -163,18 +100,18 @@ function make_navigation()
 
     $admin_menu = [];
     $admin_pages = [
-        'admin_arrive'       => admin_arrive_title(),
-        'admin_active'       => admin_active_title(),
-        'admin_user'         => admin_user_title(),
-        'admin_free'         => admin_free_title(),
-        'admin_questions'    => admin_questions_title(),
-        'shifttypes'         => shifttypes_title(),
-        'admin_shifts'       => admin_shifts_title(),
-        'admin_rooms'        => admin_rooms_title(),
-        'admin_groups'       => admin_groups_title(),
-        'admin_import'       => admin_import_title(),
-        'admin_log'          => admin_log_title(),
-        'admin_event_config' => event_config_title()
+        'admin_arrive'       => __('Arrived angels'),
+        'admin_active'       => __('Active angels'),
+        'admin_user'         => __('All Angels'),
+        'admin_free'         => __('Free angels'),
+        'admin_questions'    => __('Answer questions'),
+        'shifttypes'         => __('Shifttypes'),
+        'admin_shifts'       => __('Create shifts'),
+        'admin_rooms'        => __('Rooms'),
+        'admin_groups'       => __('Grouprights'),
+        'admin_import'       => __('Frab import'),
+        'admin_log'          => __('Log'),
+        'admin_event_config' => __('Event config'),
     ];
 
     foreach ($admin_pages as $menu_page => $title) {
@@ -192,7 +129,7 @@ function make_navigation()
         $menu[] = toolbar_dropdown('', __('Admin'), $admin_menu);
     }
 
-    return toolbar($menu);
+    return '<ul class="nav navbar-nav">' . join("\n", $menu) . '</ul>';
 }
 
 /**
@@ -249,12 +186,4 @@ function make_language_select()
         );
     }
     return $items;
-}
-
-/**
- * @return string
- */
-function make_menu()
-{
-    return make_navigation();
 }

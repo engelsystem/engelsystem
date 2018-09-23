@@ -2,26 +2,32 @@
 
 namespace Engelsystem\Renderer;
 
+use Engelsystem\Config\Config as EngelsystemConfig;
 use Engelsystem\Container\ServiceProvider;
+use Engelsystem\Renderer\Twig\Extensions\Authentication;
 use Engelsystem\Renderer\Twig\Extensions\Assets;
 use Engelsystem\Renderer\Twig\Extensions\Config;
 use Engelsystem\Renderer\Twig\Extensions\Globals;
+use Engelsystem\Renderer\Twig\Extensions\Legacy;
 use Engelsystem\Renderer\Twig\Extensions\Session;
 use Engelsystem\Renderer\Twig\Extensions\Translation;
 use Engelsystem\Renderer\Twig\Extensions\Url;
 use Twig_Environment as Twig;
+use Twig_Extension_Core as TwigCore;
 use Twig_LoaderInterface as TwigLoaderInterface;
 
 class TwigServiceProvider extends ServiceProvider
 {
     /** @var array */
     protected $extensions = [
-        'assets'      => Assets::class,
-        'config'      => Config::class,
-        'globals'     => Globals::class,
-        'session'     => Session::class,
-        'url'         => Url::class,
-        'translation' => Translation::class,
+        'assets'         => Assets::class,
+        'authentication' => Authentication::class,
+        'config'         => Config::class,
+        'globals'        => Globals::class,
+        'session'        => Session::class,
+        'legacy'         => Legacy::class,
+        'translation'    => Translation::class,
+        'url'            => Url::class,
     ];
 
     public function register()
@@ -46,6 +52,8 @@ class TwigServiceProvider extends ServiceProvider
     protected function registerTwigEngine()
     {
         $viewsPath = $this->app->get('path.views');
+        /** @var EngelsystemConfig $config */
+        $config = $this->app->get('config');
 
         $twigLoader = $this->app->make(TwigLoader::class, ['paths' => $viewsPath]);
         $this->app->instance(TwigLoader::class, $twigLoader);
@@ -55,6 +63,10 @@ class TwigServiceProvider extends ServiceProvider
         $twig = $this->app->make(Twig::class);
         $this->app->instance(Twig::class, $twig);
         $this->app->instance('twig.environment', $twig);
+
+        /** @var TwigCore $twigCore */
+        $twigCore = $twig->getExtension(TwigCore::class);
+        $twigCore->setTimezone($config->get('timezone'));
 
         $twigEngine = $this->app->make(TwigEngine::class);
         $this->app->instance('renderer.twigEngine', $twigEngine);

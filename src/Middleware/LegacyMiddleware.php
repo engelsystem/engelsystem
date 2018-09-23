@@ -18,7 +18,6 @@ class LegacyMiddleware implements MiddlewareInterface
         'angeltypes',
         'api',
         'atom',
-        'credits',
         'ical',
         'login',
         'public_dashboard',
@@ -60,6 +59,7 @@ class LegacyMiddleware implements MiddlewareInterface
     ): ResponseInterface {
         global $user;
         global $privileges;
+        global $page;
 
         /** @var Request $appRequest */
         $appRequest = $this->container->get('request');
@@ -248,11 +248,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 $title = admin_log_title();
                 $content = admin_log();
                 return [$title, $content];
-            case 'credits':
-                require_once realpath(__DIR__ . '/../../includes/pages/guest_credits.php');
-                $title = credits_title();
-                $content = guest_credits();
-                return [$title, $content];
         }
 
         require_once realpath(__DIR__ . '/../../includes/pages/guest_start.php');
@@ -271,27 +266,13 @@ class LegacyMiddleware implements MiddlewareInterface
      */
     protected function renderPage($page, $title, $content)
     {
-        global $user;
-        $event_config = EventConfig();
-        $parameters = [
-            'key' => (isset($user) ? $user['api_key'] : ''),
-        ];
-
-        if ($page == 'user_meetings') {
-            $parameters['meetings'] = 1;
-        }
-
         if (!empty($page) && is_int($page)) {
             return response($content, (int)$page);
         }
 
         return response(view('layouts/app', [
-            'title'          => $title,
-            'atom_feed'      => ($page == 'news' || $page == 'user_meetings') ? $parameters : [],
-            'menu'           => make_menu(),
-            'content'        => msg() . $content,
-            'header_toolbar' => header_toolbar(),
-            'event_info'     => EventConfig_info($event_config) . ' <br />'
+            'title'   => $title,
+            'content' => msg() . $content,
         ]), 200);
     }
 }

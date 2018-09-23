@@ -2,8 +2,10 @@
 
 namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Twig_Function as TwigFunction;
+use Twig_Node as TwigNode;
 
 abstract class ExtensionTest extends TestCase
 {
@@ -35,7 +37,7 @@ abstract class ExtensionTest extends TestCase
      * @param callable       $callback
      * @param TwigFunction[] $functions
      */
-    protected function assertExtensionExists($name, $callback, $functions)
+    protected function assertExtensionExists($name, $callback, $functions, $options = [])
     {
         foreach ($functions as $function) {
             if ($function->getName() != $name) {
@@ -43,6 +45,14 @@ abstract class ExtensionTest extends TestCase
             }
 
             $this->assertEquals($callback, $function->getCallable());
+
+            if (isset($options['is_save'])) {
+                /** @var TwigNode|MockObject $twigNode */
+                $twigNode = $this->createMock(TwigNode::class);
+
+                $this->assertArraySubset($options['is_save'], $function->getSafe($twigNode));
+            }
+
             return;
         }
 
