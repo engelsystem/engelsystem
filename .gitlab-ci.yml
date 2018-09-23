@@ -2,8 +2,8 @@ image: php
 
 variables:
   DOCKER_DRIVER: overlay2
-  TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-  RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+  TEST_IMAGE: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
+  RELEASE_IMAGE: ${CI_REGISTRY_IMAGE}:latest
   MYSQL_DATABASE: engelsystem
   MYSQL_USER: engel
   MYSQL_PASSWORD: engelsystem
@@ -24,24 +24,24 @@ stages:
   tags:
     - dind
   before_script:
-    - docker login -u gitlab-ci-token -p "$CI_JOB_TOKEN" "$CI_REGISTRY"
+    - docker login -u gitlab-ci-token -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
 
 build-image:
   <<: *docker_definition
   stage: build
   script:
-    - docker build --pull -t "$TEST_IMAGE" -f contrib/Dockerfile .
-    - docker push "$TEST_IMAGE"
+    - docker build --pull -t "${TEST_IMAGE}" -f contrib/Dockerfile .
+    - docker push "${TEST_IMAGE}"
 
 build-image.nginx:
   <<: *docker_definition
   stage: build
   script:
-    - docker build --pull -t "$TEST_IMAGE.nginx" -f contrib/nginx/Dockerfile .
-    - docker push "$TEST_IMAGE.nginx"
+    - docker build --pull -t "${TEST_IMAGE}.nginx" -f contrib/nginx/Dockerfile .
+    - docker push "${TEST_IMAGE}.nginx"
 
 test:
-  image: $TEST_IMAGE
+  image: ${TEST_IMAGE}
   stage: test
   services:
     - mariadb:10.2
@@ -53,7 +53,7 @@ test:
       - ./coverage/
   coverage: '/^\s*Lines:\s*(\d+(?:\.\d+)?%)/'
   before_script:
-    - apk add $PHPIZE_DEPS && pecl install xdebug && docker-php-ext-enable xdebug
+    - apk add ${PHPIZE_DEPS} && pecl install xdebug && docker-php-ext-enable xdebug
     - curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
     - cp -R tests/ phpunit.xml "${DOCROOT}"
     - HOMEDIR=$(pwd)
@@ -68,9 +68,9 @@ release-image:
   <<: *docker_definition
   stage: release
   script:
-    - docker pull "$TEST_IMAGE"
-    - docker tag "$TEST_IMAGE" "$RELEASE_IMAGE"
-    - docker push "$RELEASE_IMAGE"
+    - docker pull "${TEST_IMAGE}"
+    - docker tag "${TEST_IMAGE}" "${RELEASE_IMAGE}"
+    - docker push "${RELEASE_IMAGE}"
   only:
     - master
 
@@ -78,15 +78,15 @@ release-image.nginx:
   <<: *docker_definition
   stage: release
   script:
-    - docker pull "$TEST_IMAGE.nginx"
-    - docker tag "$TEST_IMAGE.nginx" "$RELEASE_IMAGE.nginx"
-    - docker push "$RELEASE_IMAGE.nginx"
+    - docker pull "${TEST_IMAGE}.nginx"
+    - docker tag "${TEST_IMAGE}.nginx" "${RELEASE_IMAGE}.nginx"
+    - docker push "${RELEASE_IMAGE}.nginx"
   only:
     - master
 
 .deploy_template: &deploy_definition
   stage: deploy
-  image: $TEST_IMAGE
+  image: ${TEST_IMAGE}
   before_script:
     - apk add bash rsync openssh-client
 
@@ -94,7 +94,7 @@ release-image.nginx:
   # Configure SSH
   - &deploy_template_script |-
     mkdir -p ~/.ssh
-    echo "$SSH_PRIVATE_KEY" | sed -e 's/\r//g' > ~/.ssh/id_ed25519
+    echo "${SSH_PRIVATE_KEY}" | sed -e 's/\r//g' > ~/.ssh/id_ed25519
     chmod 600 ~/.ssh/id_ed25519
     cd "${DOCROOT}"
 
