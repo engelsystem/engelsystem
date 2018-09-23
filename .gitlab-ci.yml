@@ -12,6 +12,7 @@ variables:
   DOCROOT: /var/www/
 
 stages:
+  - build-frontend
   - build
   - test
   - release
@@ -26,19 +27,19 @@ stages:
   before_script:
     - docker login -u gitlab-ci-token -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
 
+build-image.nginx:
+  <<: *docker_definition
+  stage: build-frontend
+  script:
+    - docker build --pull -t "${TEST_IMAGE}-nginx" -f contrib/nginx/Dockerfile .
+    - docker push "${TEST_IMAGE}-nginx"
+
 build-image:
   <<: *docker_definition
   stage: build
   script:
-    - docker build --pull -t "${TEST_IMAGE}" -f contrib/Dockerfile .
+    - docker build --pull --build-arg NGINX_IMAGE="${TEST_IMAGE}-nginx" -t "${TEST_IMAGE}" -f contrib/Dockerfile .
     - docker push "${TEST_IMAGE}"
-
-build-image.nginx:
-  <<: *docker_definition
-  stage: build
-  script:
-    - docker build --pull -t "${TEST_IMAGE}.nginx" -f contrib/nginx/Dockerfile .
-    - docker push "${TEST_IMAGE}.nginx"
 
 test:
   image: ${TEST_IMAGE}

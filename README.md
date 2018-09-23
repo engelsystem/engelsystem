@@ -91,8 +91,8 @@ docker-compose build
 
 or to build the containers separately
 ```bash
-docker build -f contrib/Dockerfile . -t engelsystem
 docker build -f contrib/nginx/Dockerfile . -t engelsystem-nginx
+docker build -f contrib/Dockerfile . -t engelsystem
 ```
 
 Import database
