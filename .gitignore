@@ -23,6 +23,7 @@ _vimrc_local.vim
 /test/coverage
 /public/coverage
 /coverage
+/unittests.xml
 
 # Composer files
 /vendor/
