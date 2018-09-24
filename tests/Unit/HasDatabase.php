@@ -21,6 +21,7 @@ trait HasDatabase
     {
         $dbManager = new CapsuleManager();
         $dbManager->addConnection(['driver' => 'sqlite', 'database' => ':memory:']);
+        $dbManager->bootEloquent();
 
         $connection = $dbManager->getConnection();
         $connection->getPdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
