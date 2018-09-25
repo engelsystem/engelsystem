@@ -1,5 +1,8 @@
 <?php
 
+use Carbon\Carbon;
+use Engelsystem\Models\EventConfig;
+
 /**
  * @return string
  */
@@ -20,22 +23,17 @@ function event_config_edit_controller()
     }
 
     $request = request();
-    $event_name = null;
-    $event_welcome_msg = null;
-    $buildup_start_date = null;
-    $event_start_date = null;
-    $event_end_date = null;
-    $teardown_end_date = null;
-
-    $event_config = EventConfig();
-    if (!empty($event_config)) {
-        $event_name = $event_config['event_name'];
-        $buildup_start_date = $event_config['buildup_start_date'];
-        $event_start_date = $event_config['event_start_date'];
-        $event_end_date = $event_config['event_end_date'];
-        $teardown_end_date = $event_config['teardown_end_date'];
-        $event_welcome_msg = $event_config['event_welcome_msg'];
-    }
+    $config = config();
+    $event_name = $config->get('name');
+    $event_welcome_msg = $config->get('welcome_msg');
+    /** @var Carbon $buildup_start_date */
+    $buildup_start_date = $config->get('buildup_start');
+    /** @var Carbon $event_start_date */
+    $event_start_date = $config->get('event_start');
+    /** @var Carbon $event_end_date */
+    $event_end_date = $config->get('event_end');
+    /** @var Carbon $teardown_end_date */
+    $teardown_end_date = $config->get('teardown_end');
 
     if ($request->has('submit')) {
         $valid = true;
@@ -91,24 +89,34 @@ function event_config_edit_controller()
         }
 
         if ($valid) {
-            EventConfig_update(
-                $event_name,
-                $buildup_start_date,
-                $event_start_date,
-                $event_end_date,
-                $teardown_end_date,
-                $event_welcome_msg
-            );
+            $eventConfig = new EventConfig();
+
+            foreach (
+                [
+                    'name'          => $event_name,
+                    'welcome_msg'   => $event_welcome_msg,
+                    'buildup_start' => $buildup_start_date,
+                    'event_start'   => $event_start_date,
+                    'event_end'     => $event_end_date,
+                    'teardown_end'  => $teardown_end_date,
+                ] as $key => $value
+            ) {
+                $eventConfig
+                    ->findOrNew($key)
+                    ->setAttribute('name', $key)
+                    ->setAttribute('value', $value)
+                    ->save();
+            }
 
             engelsystem_log(
                 sprintf(
                     'Changed event config: %s, %s, %s, %s, %s, %s',
                     $event_name,
                     $event_welcome_msg,
-                    date('Y-m-d', $buildup_start_date),
-                    date('Y-m-d', $event_start_date),
-                    date('Y-m-d', $event_end_date),
-                    date('Y-m-d', $teardown_end_date)
+                    $buildup_start_date ? $buildup_start_date->format('Y-m-d') : '',
+                    $event_start_date ? $event_start_date->format('Y-m-d') : '',
+                    $event_end_date ? $event_end_date->format('Y-m-d') : '',
+                    $teardown_end_date ? $teardown_end_date->format('Y-m-d') : ''
                 )
             );
             success(__('Settings saved.'));

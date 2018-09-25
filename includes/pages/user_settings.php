@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Database\DB;
 
 /**
@@ -206,6 +207,7 @@ function user_settings()
 {
     global $user;
     $request = request();
+    $config = config();
     $themes = config('available_themes');
 
     $enable_tshirt_size = config('enable_tshirt_size');
@@ -214,14 +216,15 @@ function user_settings()
 
     $buildup_start_date = null;
     $teardown_end_date = null;
-    $event_config = EventConfig();
-    if (!empty($event_config)) {
-        if (isset($event_config['buildup_start_date'])) {
-            $buildup_start_date = $event_config['buildup_start_date'];
-        }
-        if (isset($event_config['teardown_end_date'])) {
-            $teardown_end_date = $event_config['teardown_end_date'];
-        }
+
+    if ($buildup = $config->get('buildup_start')) {
+        /** @var Carbon $buildup */
+        $buildup_start_date = $buildup->getTimestamp();
+    }
+
+    if ($teardown = $config->get('teardown_end')) {
+        /** @var Carbon $teardown */
+        $teardown_end_date = $teardown->getTimestamp();
     }
 
     $user_source = $user;

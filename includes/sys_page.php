@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\ValidationResult;
 
 /**
@@ -134,9 +135,16 @@ function check_request_date($name, $error_message = null, $null_allowed = false)
  */
 function check_date($input, $error_message = null, $null_allowed = false)
 {
-    if ($tmp = parse_date('Y-m-d H:i', trim($input) . ' 00:00')) {
-        return new ValidationResult(true, $tmp);
+    try {
+        $time = Carbon::createFromFormat('Y-m-d', trim($input));
+    } catch (InvalidArgumentException $e) {
+        $time = null;
     }
+
+    if ($time) {
+        return new ValidationResult(true, $time);
+    }
+
     if ($null_allowed) {
         return new ValidationResult(true, null);
     }
