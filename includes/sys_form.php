@@ -1,5 +1,6 @@
 <?php
 // Methods to build a html form.
+use Carbon\Carbon;
 
 /**
  * Renders a hidden input
@@ -63,6 +64,7 @@ function form_spinner($name, $label, $value)
 function form_date($name, $label, $value, $start_date = '', $end_date = '')
 {
     $dom_id = $name . '-date';
+    $value = ($value instanceof Carbon) ? $value->getTimestamp() : $value;
     $value = is_numeric($value) ? date('Y-m-d', $value) : '';
     $start_date = is_numeric($start_date) ? date('Y-m-d', $start_date) : '';
     $end_date = is_numeric($end_date) ? date('Y-m-d', $end_date) : '';

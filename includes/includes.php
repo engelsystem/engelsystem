@@ -12,7 +12,6 @@ $includeFiles = [
     __DIR__ . '/../includes/sys_template.php',
 
     __DIR__ . '/../includes/model/AngelType_model.php',
-    __DIR__ . '/../includes/model/EventConfig_model.php',
     __DIR__ . '/../includes/model/Message_model.php',
     __DIR__ . '/../includes/model/NeededAngelTypes_model.php',
     __DIR__ . '/../includes/model/Room_model.php',

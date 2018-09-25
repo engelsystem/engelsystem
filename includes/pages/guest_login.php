@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Database\DB;
 
 /**
@@ -37,7 +38,7 @@ function guest_register()
     $tshirt_sizes = config('tshirt_sizes');
     $enable_tshirt_size = config('enable_tshirt_size');
     $min_password_length = config('min_password_length');
-    $event_config = EventConfig();
+    $config = config();
     $request = request();
     $session = session();
 
@@ -273,8 +274,8 @@ function guest_register()
             }
 
             // If a welcome message is present, display registration success page.
-            if (!empty($event_config) && !empty($event_config['event_welcome_msg'])) {
-                return User_registration_success_view($event_config['event_welcome_msg']);
+            if ($message = $config->get('welcome_msg')) {
+                return User_registration_success_view($message);
             }
 
             redirect(page_link_to('/'));
@@ -283,13 +284,14 @@ function guest_register()
 
     $buildup_start_date = time();
     $teardown_end_date = null;
-    if (!empty($event_config)) {
-        if (isset($event_config['buildup_start_date'])) {
-            $buildup_start_date = $event_config['buildup_start_date'];
-        }
-        if (isset($event_config['teardown_end_date'])) {
-            $teardown_end_date = $event_config['teardown_end_date'];
-        }
+    if ($buildup = $config->get('buildup_start')) {
+        /** @var Carbon $buildup */
+        $buildup_start_date = $buildup->getTimestamp();
+    }
+
+    if ($teardown = $config->get('teardown_end')) {
+        /** @var Carbon $teardown */
+        $teardown_end_date = $teardown->getTimestamp();
     }
 
     return page_with_title(register_title(), [
@@ -452,12 +454,10 @@ function guest_login()
         }
     }
 
-    $event_config = EventConfig();
-
     return page([
         div('col-md-12', [
             div('row', [
-                EventConfig_countdown_page($event_config)
+                EventConfig_countdown_page()
             ]),
             div('row', [
                 div('col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4', [

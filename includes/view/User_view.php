@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 /**
  * Renders user settings page
  *
@@ -887,10 +889,9 @@ function render_user_arrived_hint()
     global $user;
 
     if ($user['Gekommen'] == 0) {
-        $event_config = EventConfig();
-        if (!empty($event_config)
-            && !is_null($event_config['buildup_start_date'])
-            && time() > $event_config['buildup_start_date']) {
+        /** @var Carbon $buildup */
+        $buildup = config('buildup_start');
+        if (!empty($buildup) && $buildup->lessThan(new Carbon())) {
             return __('You are not marked as arrived. Please go to heaven\'s desk, get your angel badge and/or tell them that you arrived already.');
         }
     }

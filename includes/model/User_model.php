@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Database\DB;
 use Engelsystem\ValidationResult;
 
@@ -359,19 +360,23 @@ function User_validate_planned_arrival_date($planned_arrival_date)
         // null is not okay
         return new ValidationResult(false, time());
     }
-    $event_config = EventConfig();
-    if (empty($event_config)) {
-        // Nothing to validate against
-        return new ValidationResult(true, $planned_arrival_date);
-    }
-    if (isset($event_config['buildup_start_date']) && $planned_arrival_date < $event_config['buildup_start_date']) {
+
+    $config = config();
+    $buildup = $config->get('buildup_start');
+    $teardown = $config->get('teardown_end');
+
+    /** @var Carbon $buildup */
+    if (!empty($buildup) && $buildup->greaterThan(Carbon::createFromTimestamp($planned_arrival_date))) {
         // Planned arrival can not be before buildup start date
-        return new ValidationResult(false, $event_config['buildup_start_date']);
+        return new ValidationResult(false, $buildup->getTimestamp());
     }
-    if (isset($event_config['teardown_end_date']) && $planned_arrival_date > $event_config['teardown_end_date']) {
+
+    /** @var Carbon $teardown */
+    if (!empty($teardown) && $teardown->lessThan(Carbon::createFromTimestamp($planned_arrival_date))) {
         // Planned arrival can not be after teardown end date
-        return new ValidationResult(false, $event_config['teardown_end_date']);
+        return new ValidationResult(false, $teardown->getTimestamp());
     }
+
     return new ValidationResult(true, $planned_arrival_date);
 }
 
@@ -388,23 +393,28 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
         // null is okay
         return new ValidationResult(true, null);
     }
+
     if ($planned_arrival_date > $planned_departure_date) {
         // departure cannot be before arrival
         return new ValidationResult(false, $planned_arrival_date);
     }
-    $event_config = EventConfig();
-    if (empty($event_config)) {
-        // Nothing to validate against
-        return new ValidationResult(true, $planned_departure_date);
-    }
-    if (isset($event_config['buildup_start_date']) && $planned_departure_date < $event_config['buildup_start_date']) {
+
+    $config = config();
+    $buildup = $config->get('buildup_start');
+    $teardown = $config->get('teardown_end');
+
+    /** @var Carbon $buildup */
+    if (!empty($buildup) && $buildup->greaterThan(Carbon::createFromTimestamp($planned_departure_date))) {
         // Planned arrival can not be before buildup start date
-        return new ValidationResult(false, $event_config['buildup_start_date']);
+        return new ValidationResult(false, $buildup->getTimestamp());
     }
-    if (isset($event_config['teardown_end_date']) && $planned_departure_date > $event_config['teardown_end_date']) {
+
+    /** @var Carbon $teardown */
+    if (!empty($teardown) && $teardown->lessThan(Carbon::createFromTimestamp($planned_departure_date))) {
         // Planned arrival can not be after teardown end date
-        return new ValidationResult(false, $event_config['teardown_end_date']);
+        return new ValidationResult(false, $teardown->getTimestamp());
     }
+
     return new ValidationResult(true, $planned_departure_date);
 }
 

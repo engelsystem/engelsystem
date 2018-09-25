@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Database\Db;
 
 /**
@@ -128,10 +129,13 @@ function UserWorkLog_create($userWorkLog)
 function UserWorkLog_new($user)
 {
     $work_date = parse_date('Y-m-d H:i', date('Y-m-d 00:00', time()));
-    $event_config = EventConfig();
-    if (!empty($event_config['buildup_start_date'])) {
-        $work_date = parse_date('Y-m-d H:i', date('Y-m-d 00:00', $event_config['buildup_start_date']));
+
+    /** @var Carbon $buildup */
+    $buildup = $buildup = config('buildup_start');
+    if (!empty($buildup)) {
+        $work_date = $buildup->format('Y-m-d H:i');
     }
+
     return [
         'user_id'        => $user['UID'],
         'work_timestamp' => $work_date,

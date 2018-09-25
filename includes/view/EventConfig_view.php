@@ -1,59 +1,62 @@
 <?php
 
+use Carbon\Carbon;
+
 /**
  * Shows basic event infos and countdowns.
  *
- * @param array $event_config The event configuration
  * @return string
  */
-function EventConfig_countdown_page($event_config)
+function EventConfig_countdown_page()
 {
-    if (empty($event_config)) {
-        return div('col-md-12 text-center', [
-            heading(sprintf(__('Welcome to the %s!'), '<span class="icon-icon_angel"></span> ENGELSYSTEM'), 2)
-        ]);
-    }
-
+    $config = config();
+    $name = $config->get('name', '');
+    /** @var Carbon $buildup */
+    $buildup = $config->get('buildup_start');
+    /** @var Carbon $start */
+    $start = $config->get('event_start');
+    /** @var Carbon $end */
+    $end = $config->get('event_end');
+    /** @var Carbon $teardown */
+    $teardown = $config->get('teardown_end');
     $elements = [];
 
-    if (!is_null($event_config['event_name'])) {
-        $elements[] = div('col-sm-12 text-center', [
-            heading(sprintf(
-                __('Welcome to the %s!'),
-                $event_config['event_name'] . ' <span class="icon-icon_angel"></span> ENGELSYSTEM'
-            ), 2)
-        ]);
-    }
+    $elements[] = div('col-sm-12 text-center', [
+        heading(sprintf(
+            __('Welcome to the %s!'),
+            $name . ' <span class="icon-icon_angel"></span> ENGELSYSTEM'
+        ), 2)
+    ]);
 
-    if (!is_null($event_config['buildup_start_date']) && time() < $event_config['buildup_start_date']) {
+    if (!empty($buildup) && $buildup->greaterThan(new Carbon())) {
         $elements[] = div('col-sm-3 text-center hidden-xs', [
             heading(__('Buildup starts'), 4),
-            '<span class="moment-countdown text-big" data-timestamp="' . $event_config['buildup_start_date'] . '">%c</span>',
-            '<small>' . date(__('Y-m-d'), $event_config['buildup_start_date']) . '</small>'
+            '<span class="moment-countdown text-big" data-timestamp="' . $buildup->getTimestamp() . '">%c</span>',
+            '<small>' . $buildup->format(__('Y-m-d')) . '</small>'
         ]);
     }
 
-    if (!is_null($event_config['event_start_date']) && time() < $event_config['event_start_date']) {
+    if (!empty($start) && $start->greaterThan(new Carbon())) {
         $elements[] = div('col-sm-3 text-center hidden-xs', [
             heading(__('Event starts'), 4),
-            '<span class="moment-countdown text-big" data-timestamp="' . $event_config['event_start_date'] . '">%c</span>',
-            '<small>' . date(__('Y-m-d'), $event_config['event_start_date']) . '</small>'
+            '<span class="moment-countdown text-big" data-timestamp="' . $start->getTimestamp() . '">%c</span>',
+            '<small>' . $start->format(__('Y-m-d')) . '</small>'
         ]);
     }
 
-    if (!is_null($event_config['event_end_date']) && time() < $event_config['event_end_date']) {
+    if (!empty($end) && $end->greaterThan(new Carbon())) {
         $elements[] = div('col-sm-3 text-center hidden-xs', [
             heading(__('Event ends'), 4),
-            '<span class="moment-countdown text-big" data-timestamp="' . $event_config['event_end_date'] . '">%c</span>',
-            '<small>' . date(__('Y-m-d'), $event_config['event_end_date']) . '</small>'
+            '<span class="moment-countdown text-big" data-timestamp="' . $end->getTimestamp() . '">%c</span>',
+            '<small>' . $end->format(__('Y-m-d')) . '</small>'
         ]);
     }
 
-    if (!is_null($event_config['teardown_end_date']) && time() < $event_config['teardown_end_date']) {
+    if (!empty($teardown) && $teardown->greaterThan(new Carbon())) {
         $elements[] = div('col-sm-3 text-center hidden-xs', [
             heading(__('Teardown ends'), 4),
-            '<span class="moment-countdown text-big" data-timestamp="' . $event_config['teardown_end_date'] . '">%c</span>',
-            '<small>' . date(__('Y-m-d'), $event_config['teardown_end_date']) . '</small>'
+            '<span class="moment-countdown text-big" data-timestamp="' . $teardown->getTimestamp() . '">%c</span>',
+            '<small>' . $teardown->format(__('Y-m-d')) . '</small>'
         ]);
     }
 

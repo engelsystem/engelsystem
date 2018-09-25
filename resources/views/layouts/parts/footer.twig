@@ -2,25 +2,25 @@
     <hr/>
     <div class="text-center footer" style="margin-bottom: 10px;">
         {% block eventinfo %}
-            {% if event_config.event_name %}
-                {% if event_config.event_start_date and event_config.event_end_date %}
+            {% if config('name') %}
+                {% if config('event_start') and config('event_end') %}
                     {{ __('%s, from %s to %s', [
-                        event_config.event_name,
-                        date(event_config.event_start_date).format(__('Y-m-d')),
-                        date(event_config.event_end_date).format(__('Y-m-d'))
+                        config('name'),
+                        config('event_start').format(__('Y-m-d')),
+                        config('event_end').format(__('Y-m-d'))
                     ]) }}
-                {% elseif event_config.event_start_date %}
+                {% elseif config('event_start') %}
                     {{ __('%s, starting %s', [
-                        event_config.event_name,
-                        date(event_config.event_start_date).format(__('Y-m-d'))
+                        config('name'),
+                        config('event_start').format(__('Y-m-d'))
                     ]) }}
                 {% else %}
-                    {{ event_config.event_name }}
+                    {{ config('name') }}
                 {% endif %} <br>
-            {% elseif event_config.event_start_date and event_config.event_end_date %}
+            {% elseif config('event_start') and config('event_end') %}
                 {{ __('Event from %s to %s', [
-                    date(event_config.event_start_date).format(__('Y-m-d')),
-                    date(event_config.event_end_date).format(__('Y-m-d'))
+                    config('event_start').format(__('Y-m-d')),
+                    config('event_end').format(__('Y-m-d'))
                 ]) }} <br>
             {% endif %}
         {% endblock %}
