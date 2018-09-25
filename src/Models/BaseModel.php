@@ -36,4 +36,16 @@ abstract class BaseModel extends Model
     {
         return static::query()->find($id, $columns);
     }
+
+    /**
+     * Find a model by its attributes or create a new one
+     *
+     * @param mixed $id
+     * @param array $columns
+     * @return static|Model
+     */
+    public static function findOrNew($id, $columns = ['*'])
+    {
+        return static::query()->findOrNew($id, $columns);
+    }
 }

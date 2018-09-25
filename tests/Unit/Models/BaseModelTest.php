@@ -43,4 +43,26 @@ class BaseModelTest extends TestCase
 
         $this->assertEquals($anotherModel, $newModel);
     }
+
+    /**
+     * @covers \Engelsystem\Models\BaseModel::findOrNew
+     */
+    public function testFindOrNew()
+    {
+        /** @var QueryBuilder|MockObject $queryBuilder */
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        BaseModelImplementation::$queryBuilder = $queryBuilder;
+
+        $anotherModel = new BaseModelImplementation();
+
+        $queryBuilder->expects($this->once())
+            ->method('findOrNew')
+            ->with(31337, ['lorem', 'ipsum'])
+            ->willReturn($anotherModel);
+
+        $model = new BaseModelImplementation();
+        $newModel = $model->findOrNew(31337, ['lorem', 'ipsum']);
+
+        $this->assertEquals($anotherModel, $newModel);
+    }
 }
