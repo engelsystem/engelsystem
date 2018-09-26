@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Middleware;
 
+use Engelsystem\Http\Request;
 use Engelsystem\Middleware\RouteDispatcher;
 use FastRoute\Dispatcher as FastRouteDispatcher;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -127,7 +128,7 @@ class RouteDispatcherTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockForAbstractClass(ResponseInterface::class);
         /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
+        $request = $this->createMock(Request::class);
         /** @var RequestHandlerInterface|MockObject $handler */
         $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
         /** @var UriInterface|MockObject $uriInterface */
@@ -139,9 +140,12 @@ class RouteDispatcherTest extends TestCase
         $request->expects($this->atLeastOnce())
             ->method('getUri')
             ->willReturn($uriInterface);
+        $request->expects($this->atLeastOnce())
+            ->method('getPathInfo')
+            ->willReturn('/foo%21bar');
         $uriInterface->expects($this->atLeastOnce())
             ->method('getPath')
-            ->willReturn('/foo%21bar');
+            ->willReturn('/lorem/foo%21bar');
 
         return [$dispatcher, $response, $request, $handler];
     }

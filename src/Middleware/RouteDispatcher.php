@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Middleware;
 
+use Engelsystem\Http\Request;
 use FastRoute\Dispatcher as FastRouteDispatcher;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -44,7 +45,12 @@ class RouteDispatcher implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $route = $this->dispatcher->dispatch($request->getMethod(), urldecode($request->getUri()->getPath()));
+        $path = $request->getUri()->getPath();
+        if ($request instanceof Request) {
+            $path = $request->getPathInfo();
+        }
+
+        $route = $this->dispatcher->dispatch($request->getMethod(), urldecode($path));
 
         $status = $route[0];
         if ($status == FastRouteDispatcher::NOT_FOUND) {
