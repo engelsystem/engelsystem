@@ -5,9 +5,13 @@
 return [
     // Service providers
     'providers'  => [
+
+        // Application bootstrap
         \Engelsystem\Logger\LoggerServiceProvider::class,
         \Engelsystem\Exceptions\ExceptionsServiceProvider::class,
         \Engelsystem\Config\ConfigServiceProvider::class,
+
+        // Request handling
         \Engelsystem\Http\UrlGeneratorServiceProvider::class,
         \Engelsystem\Renderer\RendererServiceProvider::class,
         \Engelsystem\Database\DatabaseServiceProvider::class,
@@ -19,13 +23,22 @@ return [
         \Engelsystem\Renderer\TwigServiceProvider::class,
         \Engelsystem\Middleware\RouteDispatcherServiceProvider::class,
         \Engelsystem\Middleware\RequestHandlerServiceProvider::class,
+
+        // Additional services
+        \Engelsystem\Mail\MailerServiceProvider::class,
     ],
 
     // Application middleware
     'middleware' => [
+
+        // Basic initialization
         \Engelsystem\Middleware\SendResponseHandler::class,
         \Engelsystem\Middleware\ExceptionHandler::class,
+
+        // Changes of request/response parameters
         \Engelsystem\Middleware\SetLocale::class,
+
+        // The application code
         \Engelsystem\Middleware\ErrorHandler::class,
         \Engelsystem\Middleware\RouteDispatcher::class,
         \Engelsystem\Middleware\RequestHandler::class,
