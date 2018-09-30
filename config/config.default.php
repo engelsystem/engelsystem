@@ -132,6 +132,15 @@ return [
         '4XL'  => '4XL'
     ],
 
+    // Session config
+    'session'                 => [
+        // Supported: pdo or native
+        'driver' => env('SESSION_DRIVER', 'pdo'),
+
+        // Cookie name
+        'name'   => 'session',
+    ],
+
     // IP addresses of reverse proxies that are trusted, can be an array or a comma separated list
     'trusted_proxies'         => env('TRUSTED_PROXIES', ['127.0.0.0/8', '::ffff:127.0.0.0/8', '::1/128']),
 ];

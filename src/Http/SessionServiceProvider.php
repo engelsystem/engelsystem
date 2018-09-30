@@ -2,7 +2,9 @@
 
 namespace Engelsystem\Http;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
+use Engelsystem\Http\SessionHandlers\DatabaseHandler;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
@@ -38,7 +40,24 @@ class SessionServiceProvider extends ServiceProvider
             return $this->app->make(MockArraySessionStorage::class);
         }
 
-        return $this->app->make(NativeSessionStorage::class, ['options' => ['cookie_httponly' => true]]);
+        /** @var Config $config */
+        $config = $this->app->get('config');
+        $sessionConfig = $config->get('session');
+
+        $handler = null;
+        switch ($sessionConfig['driver']) {
+            case 'pdo':
+                $handler = $this->app->make(DatabaseHandler::class);
+                break;
+        }
+
+        return $this->app->make(NativeSessionStorage::class, [
+            'options' => [
+                'cookie_httponly' => true,
+                'name'            => $sessionConfig['name'],
+            ],
+            'handler' => $handler,
+        ]);
     }
 
     /**

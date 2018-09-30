@@ -2,11 +2,10 @@
 
 namespace Engelsystem\Test\Unit\Database\Migration;
 
-use Engelsystem\Database\Db;
+use Engelsystem\Database\Database;
 use Engelsystem\Database\Migration\Migrate;
 use Engelsystem\Database\Migration\MigrationServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
-use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -22,8 +21,8 @@ class MigrationServiceProviderTest extends ServiceProviderTest
         $migration = $this->getMockBuilder(Migrate::class)
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var MockObject|CapsuleManager $dbManager */
-        $dbManager = $this->getMockBuilder(CapsuleManager::class)
+        /** @var Database|MockObject $database */
+        $database = $this->getMockBuilder(Database::class)
             ->disableOriginalConstructor()
             ->getMock();
         /** @var MockObject|Connection $dbConnection */
@@ -35,19 +34,19 @@ class MigrationServiceProviderTest extends ServiceProviderTest
             ->disableOriginalConstructor()
             ->getMock();
 
-        $app = $this->getApp(['make', 'instance', 'bind']);
+        $app = $this->getApp(['make', 'instance', 'bind', 'get']);
 
         $app->expects($this->atLeastOnce())
             ->method('instance')
-            ->withConsecutive(['db.scheme'], ['db.migration'])
+            ->withConsecutive(['db.schema'], ['db.migration'])
             ->willReturnOnConsecutiveCalls($schemaBuilder, $migration);
 
-        $this->setExpects($app, 'bind', [SchemaBuilder::class, 'db.scheme']);
+        $this->setExpects($app, 'bind', [SchemaBuilder::class, 'db.schema']);
         $this->setExpects($app, 'make', [Migrate::class], $migration);
+        $this->setExpects($app, 'get', [Database::class], $database);
 
         $this->setExpects($dbConnection, 'getSchemaBuilder', null, $schemaBuilder);
-        $this->setExpects($dbManager, 'getConnection', null, $dbConnection);
-        Db::setDbManager($dbManager);
+        $this->setExpects($database, 'getConnection', null, $dbConnection);
 
         $serviceProvider = new MigrationServiceProvider($app);
         $serviceProvider->register();

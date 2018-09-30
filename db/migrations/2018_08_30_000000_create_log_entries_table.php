@@ -17,12 +17,14 @@ class CreateLogEntriesTable extends Migration
             $table->timestamp('created_at')->nullable();
         });
 
-        $this->schema->getConnection()->unprepared('
-            INSERT INTO log_entries (`id`, `level`, `message`, `created_at`)
-            SELECT `id`, `level`, `message`, FROM_UNIXTIME(`timestamp`) FROM LogEntries
-        ');
+        if ($this->schema->hasTable('LogEntries')) {
+            $this->schema->getConnection()->unprepared('
+                INSERT INTO log_entries (`id`, `level`, `message`, `created_at`)
+                SELECT `id`, `level`, `message`, FROM_UNIXTIME(`timestamp`) FROM LogEntries
+            ');
 
-        $this->schema->dropIfExists('LogEntries');
+            $this->schema->drop('LogEntries');
+        }
     }
 
     /**

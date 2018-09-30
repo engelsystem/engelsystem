@@ -120,12 +120,12 @@ class MigrateTest extends TestCase
         $dbManager->bootEloquent();
         $db = $dbManager->getConnection();
         $db->useDefaultSchemaGrammar();
-        $scheme = $db->getSchemaBuilder();
+        $schema = $db->getSchemaBuilder();
 
-        $app->instance('scheme', $scheme);
-        $app->bind(SchemaBuilder::class, 'scheme');
+        $app->instance('schema', $schema);
+        $app->bind(SchemaBuilder::class, 'schema');
 
-        $migration = new Migrate($scheme, $app);
+        $migration = new Migrate($schema, $app);
 
         $messages = [];
         $migration->setOutput(function ($msg) use (&$messages) {
@@ -134,7 +134,7 @@ class MigrateTest extends TestCase
 
         $migration->run(__DIR__ . '/Stub', Migrate::UP);
 
-        $this->assertTrue($scheme->hasTable('migrations'));
+        $this->assertTrue($schema->hasTable('migrations'));
 
         $migrations = $db->table('migrations')->get();
         $this->assertCount(3, $migrations);
@@ -143,7 +143,7 @@ class MigrateTest extends TestCase
         $this->assertTrue($migrations->contains('migration', '2017_12_24_053300_another_stuff'));
         $this->assertTrue($migrations->contains('migration', '2022_12_22_221222_add_some_feature'));
 
-        $this->assertTrue($scheme->hasTable('lorem_ipsum'));
+        $this->assertTrue($schema->hasTable('lorem_ipsum'));
 
         $migration->run(__DIR__ . '/Stub', Migrate::DOWN, true);
 
@@ -155,6 +155,6 @@ class MigrateTest extends TestCase
         $migrations = $db->table('migrations')->get();
         $this->assertCount(0, $migrations);
 
-        $this->assertFalse($scheme->hasTable('lorem_ipsum'));
+        $this->assertFalse($schema->hasTable('lorem_ipsum'));
     }
 }

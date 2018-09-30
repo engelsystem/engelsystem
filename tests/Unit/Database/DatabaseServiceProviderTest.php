@@ -2,12 +2,16 @@
 
 namespace Engelsystem\Test\Unit\Database;
 
+use Engelsystem\Application;
 use Engelsystem\Config\Config;
+use Engelsystem\Database\Database;
 use Engelsystem\Database\DatabaseServiceProvider;
+use Engelsystem\Database\Db;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use Exception;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use Illuminate\Database\Connection;
+use PDO;
 use PDOException;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
@@ -18,9 +22,29 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
      */
     public function testRegister()
     {
-        list($app, $dbManager) = $this->prepare(['driver' => 'sqlite', 'database' => ':memory:']);
+        /** @var Application|MockObject $app */
+        /** @var CapsuleManager|MockObject $dbManager */
+        /** @var PDO|MockObject $pdo */
+        /** @var Database|MockObject $database */
+        /** @var Connection|MockObject $connection */
+        list($app, $dbManager, $pdo, $database, $connection) = $this->prepare(
+            [
+                'driver'   => 'sqlite',
+                'database' => ':memory:'
+            ]
+        );
 
-        $this->setExpects($app, 'instance', ['db', $dbManager]);
+        $app->expects($this->exactly(7))
+            ->method('instance')
+            ->withConsecutive(
+                [CapsuleManager::class, $dbManager],
+                [Db::class, $dbManager],
+                [Connection::class, $connection],
+                [Database::class, $database],
+                ['db', $database],
+                ['db.pdo', $pdo],
+                ['db.connection', $connection]
+            );
 
         $serviceProvider = new DatabaseServiceProvider($app);
         $serviceProvider->register();
@@ -64,12 +88,30 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
         $connection = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->getMock();
+        /** @var PDO|MockObject $pdo */
+        $pdo = $this->getMockBuilder(PDO::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        /** @var Database|MockObject $database */
+        $database = $this->getMockBuilder(Database::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $app = $this->getApp(['get', 'make', 'instance']);
 
         $this->setExpects($app, 'get', ['config'], $config);
-        $this->setExpects($app, 'make', [CapsuleManager::class], $dbManager);
         $this->setExpects($config, 'get', ['database'], $dbConfigData, $this->atLeastOnce());
+
+        $app->expects($this->atLeastOnce())
+            ->method('make')
+            ->withConsecutive(
+                [CapsuleManager::class],
+                [Database::class]
+            )
+            ->willReturn(
+                $dbManager,
+                $database
+            );
 
         $this->setExpects($dbManager, 'setAsGlobal');
         $this->setExpects($dbManager, 'bootEloquent');
@@ -77,15 +119,15 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
         $this->setExpects($connection, 'useDefaultSchemaGrammar');
         $connection->expects($this->once())
             ->method('getPdo')
-            ->willReturnCallback(function () use ($getPdoThrowException) {
+            ->willReturnCallback(function () use ($getPdoThrowException, $pdo) {
                 if ($getPdoThrowException) {
                     throw new PDOException();
                 }
 
-                return '';
+                return $pdo;
             });
         $this->setExpects($dbManager, 'getConnection', [], $connection, $this->atLeastOnce());
 
-        return [$app, $dbManager];
+        return [$app, $dbManager, $pdo, $database, $connection];
     }
 }
