@@ -2,16 +2,14 @@
 [![GPL](https://img.shields.io/github/license/engelsystem/engelsystem.svg?maxAge=2592000)]()
 
 # Engelsystem
-
 Please visit https://engelsystem.de for a feature list.
 
 To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsystem/issues)
 
 ## Installation
-
 ### Requirements:
- * PHP >= 7.0
- * MySQL-Server >= 5.5 or MariaDB-Server >= 5.5 
+ * PHP >= 7.1
+ * MySQL-Server >= 5.7.8 or MariaDB-Server >= 10.2.2
  * Webserver, i.e. lighttpd, nginx, or Apache
  * Node >= 8 (Development/Building only)
  * Yarn (Development/Building only)
@@ -62,7 +60,8 @@ To run the unit tests use
 vendor/bin/phpunit --testsuite Unit
 ``` 
 
-If a database is configured and the engelsystem is allowed to mess around with some files, you can run feature tests. The tests can potentially delete some database entries, so they should never be run on a production system!
+If a database is configured and the engelsystem is allowed to mess around with some files, you can run feature tests.
+The tests can potentially delete some database entries, so they should never be run on a production system!
 ```bash
 vendor/bin/phpunit --testsuite Feature
 # or for unit- and feature tests:
@@ -97,11 +96,8 @@ docker build -f contrib/Dockerfile . -t engelsystem
 
 Import database
 ```bash
-docker exec -i db_container mysql -u engelsystem -pengelsystem engelsystem < db/install.sql
-docker exec -i db_container mysql -u engelsystem -pengelsystem engelsystem < db/update.sql
+docker exec -it engelsystem bin/migrate
 ```
-
-To be able to send mails a relay is needed. Set `SMTPHOST=[mail container]` to configure it.
 
 #### Scripts
 ##### bin/deploy.sh
