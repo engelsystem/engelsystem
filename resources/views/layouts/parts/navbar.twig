@@ -3,7 +3,7 @@
 {% macro toolbar_item(label, link, active_page, icon) %}
     <li{% if page() == active_page %} class="active"{% endif %}>
         <a href="{{ link }}">
-            {% if icon %}<span class="glyphicon {{ icon }}"></span>{% endif %}
+            {% if icon %}<span class="{% if 'glyphicon-' in icon %}glyphicon {% endif %}{{ icon }}"></span>{% endif %}
             {{ label|raw }}
         </a>
     </li>
@@ -51,7 +51,7 @@
                             {{ menuUserHints() }}
 
                             {% if has_permission_to('user_myshifts') %}
-                                {{ elements.toolbar_item(user.Nick, url('users', {'action': 'view'}), 'users', 'icon-icon_angel') }}
+                                {{ elements.toolbar_item(user.Nick, url('users', {'action': 'view'}), 'users', 'icon icon-icon_angel') }}
                             {% endif %}
 
                             {% if has_permission_to('user_settings') or has_permission_to('logout') %}
