@@ -5,6 +5,7 @@ namespace Engelsystem\Migrations;
 use Carbon\Carbon;
 use Engelsystem\Database\Migration\Migration;
 use Engelsystem\Models\EventConfig;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
 
 class CreateEventConfigTable extends Migration
@@ -21,11 +22,23 @@ class CreateEventConfigTable extends Migration
      */
     public function up()
     {
-        $this->schema->create('event_config', function (Blueprint $table) {
-            $table->string('name')->index()->unique();
-            $table->json('value');
-            $table->timestamps();
-        });
+        foreach (['json', 'text'] as $type) {
+            try {
+                $this->schema->create('event_config', function (Blueprint $table) use ($type) {
+                    $table->string('name')->index()->unique();
+                    $table->{$type}('value');
+                    $table->timestamps();
+                });
+            } catch (QueryException $e) {
+                if ($type != 'json') {
+                    throw $e;
+                }
+
+                continue;
+            }
+
+            break;
+        }
 
         if ($this->schema->hasTable('EventConfig')) {
             $config = $this->schema->getConnection()
