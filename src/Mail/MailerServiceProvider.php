@@ -28,9 +28,10 @@ class MailerServiceProvider extends ServiceProvider
         $this->app->instance(SwiftMailer::class, $swiftMailer);
         $this->app->instance('mailer.swift', $swiftMailer);
 
-        /** @var Mailer $mailer */
+        /** @var EngelsystemMailer $mailer */
         $mailer = $this->app->make(EngelsystemMailer::class);
         $mailer->setFromAddress($mailConfig['from']['address']);
+        $mailer->setSubjectPrefix($config->get('app_name'));
         if (!empty($mailConfig['from']['name'])) {
             $mailer->setFromName($mailConfig['from']['name']);
         }

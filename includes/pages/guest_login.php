@@ -309,7 +309,10 @@ function guest_register()
                             form_email('mail', __('E-Mail') . ' ' . entry_required(), $mail),
                             form_checkbox(
                                 'email_shiftinfo',
-                                __('The engelsystem is allowed to send me an email (e.g. when my shifts change)'),
+                                __(
+                                    'The %s is allowed to send me an email (e.g. when my shifts change)',
+                                    [config('app_name')]
+                                ),
                                 $email_shiftinfo
                             ),
                             form_checkbox(

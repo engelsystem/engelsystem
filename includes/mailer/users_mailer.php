@@ -8,7 +8,10 @@ function mail_user_delete($user)
 {
     return engelsystem_email_to_user(
         $user,
-        '[engelsystem] ' . __('Your account has been deleted'),
-        __('Your angelsystem account has been deleted. If you have any questions regarding your account deletion, please contact heaven.')
+        __('Your account has been deleted'),
+        __(
+            'Your %s account has been deleted. If you have any questions regarding your account deletion, please contact heaven.',
+            [config('app_name')]
+        )
     );
 }

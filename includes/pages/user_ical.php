@@ -36,7 +36,7 @@ function send_ical_from_shifts($shifts)
 {
     header('Content-Type: text/calendar; charset=utf-8');
     header('Content-Disposition: attachment; filename=shifts.ics');
-    $output = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//-//Engelsystem//DE\r\nCALSCALE:GREGORIAN\r\n";
+    $output = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//-//" . config('app_name') . "//DE\r\nCALSCALE:GREGORIAN\r\n";
     foreach ($shifts as $shift) {
         $output .= make_ical_entry_from_shift($shift);
     }

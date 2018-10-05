@@ -20,7 +20,8 @@ class MailerServiceProviderTest extends ServiceProviderTest
 {
     /** @var array */
     protected $defaultConfig = [
-        'email' => [
+        'app_name' => 'Engelsystem App',
+        'email'    => [
             'driver'   => 'mail',
             'from'     => [
                 'name'    => 'Engelsystem',
@@ -58,6 +59,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
 
         /** @var EngelsystemMailer $mailer */
         $mailer = $app->get('mailer');
+        $this->assertEquals('Engelsystem App', $mailer->getSubjectPrefix());
         $this->assertEquals('Engelsystem', $mailer->getFromName());
         $this->assertEquals('foo@bar.batz', $mailer->getFromAddress());
 

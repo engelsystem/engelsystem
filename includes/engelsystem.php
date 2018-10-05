@@ -16,7 +16,9 @@ require __DIR__ . '/includes.php';
  * Check for maintenance
  */
 if ($app->get('config')->get('maintenance')) {
-    echo file_get_contents(__DIR__ . '/../resources/views/layouts/maintenance.html');
+    $maintenance = file_get_contents(__DIR__ . '/../resources/views/layouts/maintenance.html');
+    $maintenance = str_replace('%APP_NAME%', $app->get('config')->get('app_name'), $maintenance);
+    echo $maintenance;
     die();
 }
 
