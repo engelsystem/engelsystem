@@ -1,5 +1,4 @@
 @import "../../../node_modules/bootstrap/less/bootstrap";
-@import "../angelFont/angelFont.css";
 
 body {
   padding-top: 50px;
@@ -19,6 +18,35 @@ body {
   font-size: 30px;
   line-height: 30px;
   margin: 0px;
+}
+
+.icon-icon_angel {
+  background-color: @text-color;
+
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+
+  -webkit-mask: url(../icons/angel.svg) no-repeat 50% 50%;
+  mask: url(../icons/angel.svg) no-repeat 50% 50%;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+}
+
+a .icon-icon_angel {
+  background-color: @link-color;
+}
+
+.navbar .icon-icon_angel {
+  background-color: @navbar-default-link-disabled-color;
+}
+
+.navbar-brand .icon-icon_angel {
+  background-color: @navbar-default-brand-color;
+}
+
+table a > .icon-icon_angel {
+  background-color: @text-color;
 }
 
 .stats {
