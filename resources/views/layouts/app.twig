@@ -3,7 +3,7 @@
 <html lang="{{ session_get('locale')|split('_')[0]|escape('html_attr') }}">
 <head>
     {% block head %}
-        <title>{% block title %}{{ title }}{% endblock %} - Engelsystem</title>
+        <title>{% block title %}{{ title }}{% endblock %} - {{ config('app_name') }}</title>
 
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">

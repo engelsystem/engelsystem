@@ -54,7 +54,10 @@ function User_settings_view(
                     form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source['email']),
                     form_checkbox(
                         'email_shiftinfo',
-                        __('The engelsystem is allowed to send me an email (e.g. when my shifts change)'),
+                        __(
+                            'The %s is allowed to send me an email (e.g. when my shifts change)',
+                            [config('app_name')]
+                        ),
                         $user_source['email_shiftinfo']
                     ),
                     form_checkbox(

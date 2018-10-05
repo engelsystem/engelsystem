@@ -47,7 +47,7 @@ function make_atom_entries_from_news($news_entries)
     $request = app('request');
     $html = '<?xml version="1.0" encoding="utf-8"?>
   <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Engelsystem</title>
+  <title>' . config('app_name') . '</title>
   <id>' . $request->getHttpHost()
         . htmlspecialchars(preg_replace(
             '#[&?]key=[a-f\d]{32}#',
