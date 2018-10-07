@@ -21,6 +21,7 @@
         "ext-PDO": "*",
         "ext-SimpleXML": "*",
         "ext-xml": "*",
+        "doctrine/dbal": "^2.8",
         "erusev/parsedown": "^1.6",
         "illuminate/container": "5.5.*",
         "illuminate/database": "5.5.*",
