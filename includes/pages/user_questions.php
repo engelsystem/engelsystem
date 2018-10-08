@@ -15,18 +15,18 @@ function questions_title()
  */
 function user_questions()
 {
-    global $user;
+    $user = Auth()->user();
     $request = request();
 
     if (!$request->has('action')) {
         $open_questions = DB::select(
             'SELECT * FROM `Questions` WHERE `AID` IS NULL AND `UID`=?',
-            [$user['UID']]
+            [$user->id]
         );
 
         $answered_questions = DB::select(
             'SELECT * FROM `Questions` WHERE NOT `AID` IS NULL AND `UID`=?',
-            [$user['UID']]
+            [$user->id]
         );
         foreach ($answered_questions as &$question) {
             $answer_user_source = User($question['AID']);
@@ -47,7 +47,7 @@ function user_questions()
                         INSERT INTO `Questions` (`UID`, `Question`)
                         VALUES (?, ?)
                         ',
-                        [$user['UID'], $question]
+                        [$user->id, $question]
                     );
 
                     success(__('You question was saved.'));
@@ -69,7 +69,7 @@ function user_questions()
                     'SELECT `UID` FROM `Questions` WHERE `QID`=? LIMIT 1',
                     [$question_id]
                 );
-                if (!empty($question) && $question['UID'] == $user['UID']) {
+                if (!empty($question) && $question['UID'] == $user->id) {
                     DB::delete(
                         'DELETE FROM `Questions` WHERE `QID`=? LIMIT 1',
                         [$question_id]

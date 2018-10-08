@@ -93,7 +93,7 @@ function UserWorkLog_update($userWorkLog)
  */
 function UserWorkLog_create($userWorkLog)
 {
-    global $user;
+    $user = Auth()->user();
 
     $user_source = User($userWorkLog['user_id']);
 
@@ -110,7 +110,7 @@ function UserWorkLog_create($userWorkLog)
         $userWorkLog['work_timestamp'],
         $userWorkLog['work_hours'],
         $userWorkLog['comment'],
-        $user['UID'],
+        $user->id,
         time()
     ]);
 

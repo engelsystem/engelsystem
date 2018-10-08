@@ -11,9 +11,9 @@ use Engelsystem\Mail\EngelsystemMailer;
  */
 function engelsystem_email_to_user($recipient_user, $title, $message, $not_if_its_me = false)
 {
-    global $user;
+    $user = Auth()->user();
 
-    if ($not_if_its_me && $user['UID'] == $recipient_user['UID']) {
+    if ($not_if_its_me && $user->id == $recipient_user['UID']) {
         return true;
     }
 

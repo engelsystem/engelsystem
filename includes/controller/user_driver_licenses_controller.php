@@ -37,9 +37,9 @@ function user_driver_license_required_hint()
  */
 function user_driver_licenses_controller()
 {
-    global $user;
+    $user = Auth()->user();
 
-    if (!isset($user)) {
+    if (!$user) {
         redirect(page_link_to(''));
     }
 
@@ -94,12 +94,13 @@ function user_driver_license_load_user()
  */
 function user_driver_license_edit_controller()
 {
-    global $privileges, $user;
+    global $privileges;
+    $user = Auth()->user();
     $request = request();
     $user_source = user_driver_license_load_user();
 
     // only privilege admin_user can edit other users driver license information
-    if ($user['UID'] != $user_source['UID'] && !in_array('admin_user', $privileges)) {
+    if ($user->id != $user_source['UID'] && !in_array('admin_user', $privileges)) {
         redirect(user_driver_license_edit_link());
     }
 

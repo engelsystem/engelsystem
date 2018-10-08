@@ -12,10 +12,10 @@ use Engelsystem\ShiftsFilterRenderer;
  */
 function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalendarRenderer $shiftCalendarRenderer)
 {
-    global $user;
+    $user = Auth()->user();
 
     $assignNotice = '';
-    if (config('signup_requires_arrival') && !$user['Gekommen']) {
+    if (config('signup_requires_arrival') && !$user->state->arrived) {
         $assignNotice = info(render_user_arrived_hint(), true);
     }
 

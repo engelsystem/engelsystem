@@ -13,7 +13,8 @@ function admin_import_title()
  */
 function admin_import()
 {
-    global $rooms_import, $user;
+    global $rooms_import;
+    $user = Auth()->user();
     $html = '';
     $import_dir = __DIR__ . '/../../import';
     $request = request();
@@ -38,7 +39,7 @@ function admin_import()
         error(__('Webserver has no write-permission on import directory.'));
     }
 
-    $import_file = $import_dir . '/import_' . $user['UID'] . '.xml';
+    $import_file = $import_dir . '/import_' . $user->id . '.xml';
     $shifttype_id = null;
     $add_minutes_start = 15;
     $add_minutes_end = 15;

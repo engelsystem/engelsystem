@@ -3,10 +3,11 @@
 
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Translator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
-use Engelsystem\Http\UrlGenerator;
+use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Renderer\Renderer;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -16,13 +17,21 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  * @param string $id
  * @return mixed|Application
  */
-function app($instance_id = null)
+function app($id = null)
 {
-    if (is_null($instance_id)) {
+    if (is_null($id)) {
         return Application::getInstance();
     }
 
-    return Application::getInstance()->get($instance_id);
+    return Application::getInstance()->get($id);
+}
+
+/**
+ * @return Authenticator
+ */
+function auth()
+{
+    return app('authenticator');
 }
 
 /**

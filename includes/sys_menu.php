@@ -20,11 +20,11 @@ function page_link_to($page = '', $parameters = [])
  */
 function header_render_hints()
 {
-    global $user;
+    $user = Auth()->user();
 
     $hints_renderer = new UserHintsRenderer();
 
-    if (isset($user)) {
+    if ($user) {
         $hints_renderer->addHint(admin_new_questions());
         $hints_renderer->addHint(user_angeltypes_unconfirmed_hint());
         $hints_renderer->addHint(render_user_departure_date_hint());

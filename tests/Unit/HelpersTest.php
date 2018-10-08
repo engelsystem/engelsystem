@@ -5,11 +5,12 @@ namespace Engelsystem\Test\Unit;
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\Container;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Translator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
-use Engelsystem\Renderer\Renderer;
 use Engelsystem\Http\UrlGeneratorInterface;
+use Engelsystem\Renderer\Renderer;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -30,6 +31,27 @@ class HelpersTest extends TestCase
 
         $this->assertEquals($appMock, app());
         $this->assertEquals($class, app('some.name'));
+    }
+
+    /**
+     * @covers \auth
+     */
+    public function testAuth()
+    {
+        /** @var Application|MockObject $app */
+        $app = $this->createMock(Container::class);
+        Application::setInstance($app);
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->getMockBuilder(Authenticator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $app->expects($this->once())
+            ->method('get')
+            ->with('authenticator')
+            ->willReturn($auth);
+
+        $this->assertEquals($auth, auth());
     }
 
     /**

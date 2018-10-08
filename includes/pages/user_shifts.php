@@ -129,7 +129,7 @@ function load_days()
  */
 function load_types()
 {
-    global $user;
+    $user = Auth()->user();
 
     if (!count(DB::select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0'))) {
         error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
@@ -155,7 +155,7 @@ function load_types()
             ORDER BY `AngelTypes`.`name`
         ',
         [
-            $user['UID'],
+            $user->id,
         ]
     );
     if (empty($types)) {
@@ -284,13 +284,13 @@ function view_user_shifts()
  */
 function ical_hint()
 {
-    global $user;
+    $user = Auth()->user();
 
     return heading(__('iCal export'), 2)
         . '<p>' . sprintf(
             __('Export your own shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
-            page_link_to('ical', ['key' => $user['api_key']]),
-            page_link_to('shifts_json_export', ['key' => $user['api_key']]),
+            page_link_to('ical', ['key' => $user->api_key]),
+            page_link_to('shifts_json_export', ['key' => $user->api_key]),
             page_link_to('user_myshifts', ['reset' => 1])
         ) . '</p>';
 }
