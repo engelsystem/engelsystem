@@ -27,7 +27,7 @@ function Message($message_id)
 
 /**
  * TODO: use validation functions, return new message id
- * TODO: global $user con not be used in model!
+ * TODO: global $user can't be used in model!
  * send message
  *
  * @param int    $receiver_user_id User ID of Receiver
@@ -36,7 +36,7 @@ function Message($message_id)
  */
 function Message_send($receiver_user_id, $text)
 {
-    global $user;
+    $user = Auth()->user();
 
     $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($text));
     $receiver_user_id = preg_replace('/([^\d]{1,})/ui', '', strip_tags($receiver_user_id));
@@ -49,7 +49,7 @@ function Message_send($receiver_user_id, $text)
             WHERE `UID` = ?
             AND NOT `UID` = ?
             LIMIT 1
-        ', [$receiver_user_id, $user['UID']])) > 0
+        ', [$receiver_user_id, $user->id])) > 0
     ) {
         return DB::insert('
             INSERT INTO `Messages` (`Datum`, `SUID`, `RUID`, `Text`)
@@ -57,7 +57,7 @@ function Message_send($receiver_user_id, $text)
             ',
             [
                 time(),
-                $user['UID'],
+                $user->id,
                 $receiver_user_id,
                 $text
             ]

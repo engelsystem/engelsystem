@@ -34,7 +34,8 @@ function logout_title()
  */
 function guest_register()
 {
-    global $user, $privileges;
+    global $privileges;
+    $user = Auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
     $enable_tshirt_size = config('enable_tshirt_size');
     $min_password_length = config('min_password_length');
@@ -70,7 +71,7 @@ function guest_register()
         }
     }
 
-    if (!in_array('register', $privileges) || (!isset($user) && !config('registration_enabled'))) {
+    if (!in_array('register', $privileges) || (!$user && !config('registration_enabled'))) {
         error(__('Registration is disabled.'));
 
         return page_with_title(register_title(), [
@@ -269,7 +270,7 @@ function guest_register()
             success(__('Angel registration successful!'));
 
             // User is already logged in - that means a supporter has registered an angel. Return to register page.
-            if (isset($user)) {
+            if ($user) {
                 redirect(page_link_to('register'));
             }
 

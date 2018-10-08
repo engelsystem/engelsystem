@@ -132,8 +132,7 @@ function display_news($news)
  */
 function user_news_comments()
 {
-    global $user;
-
+    $user = Auth()->user();
     $request = request();
 
     $html = '<div class="col-md-12"><h1>' . user_news_comments_title() . '</h1>';
@@ -158,7 +157,7 @@ function user_news_comments()
                     $nid,
                     date('Y-m-d H:i:s'),
                     $text,
-                    $user["UID"],
+                    $user->id,
                 ]
             );
             engelsystem_log('Created news_comment: ' . $text);
@@ -200,7 +199,8 @@ function user_news_comments()
  */
 function user_news()
 {
-    global $privileges, $user;
+    global $privileges;
+    $user = Auth()->user();
     $display_news = config('display_news');
     $request = request();
 
@@ -225,7 +225,7 @@ function user_news()
                 time(),
                 strip_tags($request->postData('betreff')),
                 $text,
-                $user['UID'],
+                $user->id,
                 $isMeeting,
             ]
         );

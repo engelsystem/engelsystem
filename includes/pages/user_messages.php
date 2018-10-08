@@ -15,12 +15,12 @@ function messages_title()
  */
 function user_unread_messages()
 {
-    global $user;
+    $user = Auth()->user();
 
-    if (isset($user)) {
+    if ($user) {
         $new_messages = count(DB::select(
             'SELECT `id` FROM `Messages` WHERE isRead=\'N\' AND `RUID`=?',
-            [$user['UID']]
+            [$user->id]
         ));
         if ($new_messages > 0) {
             return ' <span class="badge danger">' . $new_messages . '</span>';

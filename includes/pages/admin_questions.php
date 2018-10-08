@@ -39,7 +39,7 @@ function admin_new_questions()
  */
 function admin_questions()
 {
-    global $user;
+    $user = Auth()->user();
     $request = request();
 
     if (!$request->has('action')) {
@@ -126,7 +126,7 @@ function admin_questions()
                                 LIMIT 1
                             ',
                             [
-                                $user['UID'],
+                                $user->id,
                                 $answer,
                                 $question_id,
                             ]

@@ -11,10 +11,10 @@ use Engelsystem\ShiftsFilter;
  */
 function users_controller()
 {
-    global $user;
+    $user = Auth()->user();
     $request = request();
 
-    if (!isset($user)) {
+    if (!$user) {
         redirect(page_link_to(''));
     }
 

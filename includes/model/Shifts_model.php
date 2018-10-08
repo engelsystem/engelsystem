@@ -518,7 +518,7 @@ function Shift_delete($shift_id)
  */
 function Shift_update($shift)
 {
-    global $user;
+    $user = Auth()->user();
     $shift['name'] = ShiftType($shift['shifttype_id'])['name'];
     mail_shift_change(Shift($shift['SID']), $shift);
 
@@ -543,7 +543,7 @@ function Shift_update($shift)
             $shift['title'],
             $shift['URL'],
             $shift['PSID'],
-            $user['UID'],
+            $user->id,
             time(),
             $shift['SID']
         ]

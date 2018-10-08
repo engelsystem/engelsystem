@@ -7,7 +7,8 @@ use Engelsystem\Database\DB;
  */
 function admin_news()
 {
-    global $user, $privileges;
+    global $privileges;
+    $user = Auth()->user();
     $request = request();
 
     if (!$request->has('action')) {
@@ -77,7 +78,7 @@ function admin_news()
                     time(),
                     strip_tags($request->postData('eBetreff')),
                     $text,
-                    $user['UID'],
+                    $user->id,
                     $request->has('eTreffen') ? 1 : 0,
                     $news_id
                 ]

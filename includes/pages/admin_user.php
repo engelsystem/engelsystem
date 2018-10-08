@@ -15,7 +15,8 @@ function admin_user_title()
  */
 function admin_user()
 {
-    global $user, $privileges;
+    global $privileges;
+    $user = Auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
     $request = request();
     $html = '';
@@ -52,7 +53,7 @@ function admin_user()
             . '</p></td></tr>' . "\n";
         $html .= '  <tr><td>Name</td><td>' . '<input size="40" name="eName" value="' . $user_source['Name'] . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Vorname</td><td>' . '<input size="40" name="eVorname" value="' . $user_source['Vorname'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Alter</td><td>' . '<input type="value" size="5" name="eAlter" value="' . $user_source['Alter'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Alter</td><td>' . '<input size="5" name="eAlter" value="' . $user_source['Alter'] . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Telefon</td><td>' . '<input type="tel" size="40" name="eTelefon" value="' . $user_source['Telefon'] . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Handy</td><td>' . '<input type= "tel" size="40" name="eHandy" value="' . $user_source['Handy'] . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>DECT</td><td>' . '<input size="4" name="eDECT" value="' . $user_source['DECT'] . '" class="form-control"></td></tr>' . "\n";
@@ -114,7 +115,7 @@ function admin_user()
 
         $my_highest_group = DB::selectOne(
             'SELECT group_id FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` LIMIT 1',
-            [$user['UID']]
+            [$user->id]
         );
         if (!empty($my_highest_group)) {
             $my_highest_group = $my_highest_group['group_id'];
@@ -128,7 +129,7 @@ function admin_user()
             $his_highest_group = $his_highest_group['group_id'];
         }
 
-        if ($user_id != $user['UID'] && $my_highest_group <= $his_highest_group) {
+        if ($user_id != $user->id && $my_highest_group <= $his_highest_group) {
             $html .= 'Hier kannst Du die Benutzergruppen des Engels festlegen:<form action="'
                 . page_link_to('admin_user', ['action' => 'save_groups', 'id' => $user_id])
                 . '" method="post">' . "\n";
@@ -171,10 +172,10 @@ function admin_user()
     } else {
         switch ($request->input('action')) {
             case 'save_groups':
-                if ($user_id != $user['UID']) {
+                if ($user_id != $user->id) {
                     $my_highest_group = DB::selectOne(
                         'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id`',
-                        [$user['UID']]
+                        [$user->id]
                     );
                     $his_highest_group = DB::selectOne(
                         'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id`',
@@ -241,7 +242,7 @@ function admin_user()
                 break;
 
             case 'save':
-                $force_active = $user['force_active'];
+                $force_active = $user->state->force_active;
                 $user_source = User($user_id);
                 if (in_array('admin_active', $privileges)) {
                     $force_active = $request->input('force_active');

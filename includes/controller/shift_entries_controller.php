@@ -336,7 +336,7 @@ function shift_entry_load()
  */
 function shift_entry_delete_controller()
 {
-    global $user;
+    $user = Auth()->user();
     $request = request();
     $shiftEntry = shift_entry_load();
 
@@ -354,7 +354,7 @@ function shift_entry_delete_controller()
         redirect(shift_link($shift));
     }
 
-    if ($user['UID'] == $signout_user['UID']) {
+    if ($user->id == $signout_user['UID']) {
         return [
             ShiftEntry_delete_title(),
             ShiftEntry_delete_view($shiftEntry, $shift, $angeltype, $signout_user)
