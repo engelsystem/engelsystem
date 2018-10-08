@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Middleware;
 
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Translator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -35,12 +36,17 @@ class LegacyMiddleware implements MiddlewareInterface
     /** @var ContainerInterface */
     protected $container;
 
+    /** @var Authenticator */
+    protected $auth;
+
     /**
      * @param ContainerInterface $container
+     * @param Authenticator      $auth
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, Authenticator $auth)
     {
         $this->container = $container;
+        $this->auth = $auth;
     }
 
     /**
@@ -56,7 +62,6 @@ class LegacyMiddleware implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
-        global $user;
         global $privileges;
         global $page;
 
@@ -68,7 +73,7 @@ class LegacyMiddleware implements MiddlewareInterface
             $page = str_replace('-', '_', $page);
         }
         if ($page == '/') {
-            $page = isset($user) ? 'news' : 'login';
+            $page = $this->auth->user() ? 'news' : 'login';
         }
 
         $title = $content = '';

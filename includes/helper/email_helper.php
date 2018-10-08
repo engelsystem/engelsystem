@@ -28,7 +28,7 @@ function engelsystem_email_to_user($recipient_user, $title, $message, $not_if_it
         $recipient_user['email'],
         $title,
         'emails/mail',
-        ['user' => $recipient_user['Nick'], 'message' => $message]
+        ['username' => $recipient_user['Nick'], 'message' => $message]
     );
     $translator->setLocale($locale);
 

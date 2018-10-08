@@ -4,6 +4,7 @@ namespace Engelsystem\Exceptions\Handlers;
 
 use Engelsystem\Application;
 use Engelsystem\Container\Container;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
 use Throwable;
 use Whoops\Handler\JsonResponseHandler;
@@ -81,9 +82,15 @@ class Whoops extends Legacy implements HandlerInterface
      */
     protected function getData()
     {
-        global $user;
-
         $data = [];
+        $user = null;
+
+        if ($this->app->has('authenticator')) {
+            /** @var Authenticator $authenticator */
+            $authenticator = $this->app->get('authenticator');
+            $user = $authenticator->user();
+        }
+
         $data['user'] = $user;
         $data['Booted'] = $this->app->isBooted();
 

@@ -20,6 +20,7 @@ return [
         \Engelsystem\Helpers\TranslationServiceProvider::class,
         \Engelsystem\Http\ResponseServiceProvider::class,
         \Engelsystem\Http\Psr7ServiceProvider::class,
+        \Engelsystem\Helpers\AuthenticatorServiceProvider::class,
         \Engelsystem\Renderer\TwigServiceProvider::class,
         \Engelsystem\Middleware\RouteDispatcherServiceProvider::class,
         \Engelsystem\Middleware\RequestHandlerServiceProvider::class,
@@ -30,7 +31,6 @@ return [
 
     // Application middleware
     'middleware' => [
-
         // Basic initialization
         \Engelsystem\Middleware\SendResponseHandler::class,
         \Engelsystem\Middleware\ExceptionHandler::class,
@@ -41,6 +41,8 @@ return [
         // The application code
         \Engelsystem\Middleware\ErrorHandler::class,
         \Engelsystem\Middleware\RouteDispatcher::class,
+
+        // Handle request
         \Engelsystem\Middleware\RequestHandler::class,
     ],
 ];
