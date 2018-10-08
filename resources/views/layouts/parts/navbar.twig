@@ -21,7 +21,8 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <span class="icon-icon_angel"></span> <strong class="visible-lg-inline">{{ config('app_name')|upper }}</strong>
+                    <span class="icon-icon_angel"></span>
+                    <strong class="visible-lg-inline">{{ config('app_name')|upper }}</strong>
                 </a>
             </div>
 
@@ -51,7 +52,7 @@
                             {{ menuUserHints() }}
 
                             {% if has_permission_to('user_myshifts') %}
-                                {{ elements.toolbar_item(user.Nick, url('users', {'action': 'view'}), 'users', 'icon icon-icon_angel') }}
+                                {{ elements.toolbar_item(user.name, url('users', {'action': 'view'}), 'users', 'icon icon-icon_angel') }}
                             {% endif %}
 
                             {% if has_permission_to('user_settings') or has_permission_to('logout') %}

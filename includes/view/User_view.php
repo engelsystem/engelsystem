@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Engelsystem\Models\User\User;
 
 /**
  * Renders user settings page
@@ -279,6 +280,14 @@ function Users_table_header_link($column, $label, $order_by)
  */
 function User_shift_state_render($user)
 {
+    if ($user instanceof User) {
+        $userModel = $user;
+        $user = [
+            'Gekommen' => $userModel->state->arrived,
+            'UID'      => $user->id,
+        ];
+    }
+
     if (!$user['Gekommen']) {
         return '';
     }

@@ -2,16 +2,23 @@
 
 namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
+use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Models\User\User;
 use Engelsystem\Renderer\Twig\Extensions\Authentication;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class AuthenticationTest extends ExtensionTest
 {
     /**
+     * @covers \Engelsystem\Renderer\Twig\Extensions\Authentication::__construct
      * @covers \Engelsystem\Renderer\Twig\Extensions\Authentication::getFunctions
      */
     public function testGetFunctions()
     {
-        $extension = new Authentication();
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+
+        $extension = new Authentication($auth);
         $functions = $extension->getFunctions();
 
         $this->assertExtensionExists('is_user', [$extension, 'isAuthenticated'], $functions);
@@ -25,15 +32,24 @@ class AuthenticationTest extends ExtensionTest
      */
     public function testIsAuthenticated()
     {
-        global $user;
-        $user = [];
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+        $user = new User();
 
-        $extension = new Authentication();
+        $auth->expects($this->exactly(4))
+            ->method('user')
+            ->willReturnOnConsecutiveCalls(
+                null,
+                null,
+                $user,
+                $user
+            );
+
+        $extension = new Authentication($auth);
 
         $this->assertFalse($extension->isAuthenticated());
         $this->assertTrue($extension->isGuest());
 
-        $user = ['lorem' => 'ipsum'];
         $this->assertTrue($extension->isAuthenticated());
         $this->assertFalse($extension->isGuest());
     }
@@ -46,7 +62,10 @@ class AuthenticationTest extends ExtensionTest
         global $privileges;
         $privileges = [];
 
-        $extension = new Authentication();
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
+
+        $extension = new Authentication($auth);
 
         $this->assertFalse($extension->checkAuth('foo.bar'));
 

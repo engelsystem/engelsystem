@@ -2,11 +2,23 @@
 
 namespace Engelsystem\Renderer\Twig\Extensions;
 
+use Engelsystem\Helpers\Authenticator;
 use Twig_Extension as TwigExtension;
 use Twig_Function as TwigFunction;
 
 class Authentication extends TwigExtension
 {
+    /** @var Authenticator */
+    protected $auth;
+
+    /**
+     * @param Authenticator $auth
+     */
+    public function __construct(Authenticator $auth)
+    {
+        $this->auth = $auth;
+    }
+
     /**
      * @return TwigFunction[]
      */
@@ -19,18 +31,26 @@ class Authentication extends TwigExtension
         ];
     }
 
+    /**
+     * @return bool
+     */
     public function isAuthenticated()
     {
-        global $user;
-
-        return !empty($user);
+        return (bool)$this->auth->user();
     }
 
+    /**
+     * @return bool
+     */
     public function isGuest()
     {
         return !$this->isAuthenticated();
     }
 
+    /**
+     * @param $privilege
+     * @return bool
+     */
     public function checkAuth($privilege)
     {
         global $privileges;

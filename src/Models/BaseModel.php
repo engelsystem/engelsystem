@@ -30,7 +30,7 @@ abstract class BaseModel extends Model
      *
      * @param mixed $id
      * @param array $columns
-     * @return Builder|Builder[]|Collection|Model|null
+     * @return Builder|Builder[]|Collection|static|null
      */
     public static function find($id, $columns = ['*'])
     {

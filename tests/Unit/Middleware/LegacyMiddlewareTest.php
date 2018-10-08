@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Middleware;
 
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Translator;
 use Engelsystem\Http\Request;
 use Engelsystem\Middleware\LegacyMiddleware;
@@ -23,9 +24,11 @@ class LegacyMiddlewareTest extends TestCase
     {
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->createMock(Authenticator::class);
         /** @var LegacyMiddleware|MockObject $middleware */
         $middleware = $this->getMockBuilder(LegacyMiddleware::class)
-            ->setConstructorArgs([$container])
+            ->setConstructorArgs([$container, $auth])
             ->setMethods(['loadPage', 'renderPage'])
             ->getMock();
         /** @var Request|MockObject $defaultRequest */
@@ -69,6 +72,10 @@ class LegacyMiddlewareTest extends TestCase
                 $translator,
                 $defaultRequest
             );
+
+        $auth->expects($this->atLeastOnce())
+            ->method('user')
+            ->willReturn(false);
 
         $translator->expects($this->exactly(2))
             ->method('translate')
