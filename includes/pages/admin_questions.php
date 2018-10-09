@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  * @return string
@@ -46,7 +47,7 @@ function admin_questions()
         $unanswered_questions_table = [];
         $questions = DB::select('SELECT * FROM `Questions` WHERE `AID` IS NULL');
         foreach ($questions as $question) {
-            $user_source = User($question['UID']);
+            $user_source = User::find($question['UID']);
 
             $unanswered_questions_table[] = [
                 'from'     => User_Nick_render($user_source),
@@ -66,7 +67,7 @@ function admin_questions()
         $answered_questions_table = [];
         $questions = DB::select('SELECT * FROM `Questions` WHERE NOT `AID` IS NULL');
         foreach ($questions as $question) {
-            $user_source = User($question['UID']);
+            $user_source = User::find($question['UID']);
             $answer_user_source = User($question['AID']);
             $answered_questions_table[] = [
                 'from'        => User_Nick_render($user_source),

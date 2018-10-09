@@ -145,7 +145,7 @@ function User_registration_success_view($event_welcome_message)
 /**
  * Gui for deleting user with password field.
  *
- * @param array $user
+ * @param User $user
  * @return string
  */
 function User_delete_view($user)
@@ -153,7 +153,7 @@ function User_delete_view($user)
     return page_with_title(sprintf(__('Delete %s'), User_Nick_render($user)), [
         msg(),
         buttons([
-            button(user_edit_link($user['UID']), glyph('chevron-left') . __('back'))
+            button(user_edit_link($user->id), glyph('chevron-left') . __('back'))
         ]),
         error(
             __('Do you really want to delete the user including all his shifts and every other piece of his data?'),
@@ -292,7 +292,7 @@ function User_shift_state_render($user)
         return '';
     }
 
-    $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
+    $upcoming_shifts = ShiftEntries_upcoming_for_user($user['UID']);
 
     if (empty($upcoming_shifts)) {
         return '<span class="text-success">' . __('Free') . '</span>';
@@ -823,15 +823,25 @@ function User_groups_render($user_groups)
 /**
  * Render a user nickname.
  *
- * @param array $user_source
+ * @param array|User $user
  * @return string
  */
-function User_Nick_render($user_source)
+function User_Nick_render($user)
 {
+    if ($user instanceof User) {
+        $id = $user->id;
+        $name = $user->name;
+        $arrived = $user->state->arrived;
+    } else {
+        $id = $user['UID'];
+        $name = $user['Nick'];
+        $arrived = $user['Gekommen'];
+    }
+
     return render_profile_link(
-        '<span class="icon-icon_angel"></span> ' . htmlspecialchars($user_source['Nick']) . '</a>',
-        $user_source['UID'],
-        ($user_source['Gekommen'] ? '' : 'text-muted')
+        '<span class="icon-icon_angel"></span> ' . htmlspecialchars($name) . '</a>',
+        $id,
+        ($arrived ? '' : 'text-muted')
     );
 }
 
@@ -861,9 +871,7 @@ function render_profile_link($text, $user_id = null, $class = '')
  */
 function render_user_departure_date_hint()
 {
-    global $user;
-
-    if (!isset($user['planned_departure_date']) || empty($user['planned_departure_date'])) {
+    if (!auth()->user()->personalData->planned_departure_date) {
         $text = __('Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities.');
         return render_profile_link($text, null, 'alert-link');
     }
@@ -895,9 +903,9 @@ function render_user_freeloader_hint()
  */
 function render_user_arrived_hint()
 {
-    global $user;
+    $user = auth()->user();
 
-    if ($user['Gekommen'] == 0) {
+    if (!$user->state->arrived) {
         /** @var Carbon $buildup */
         $buildup = config('buildup_start');
         if (!empty($buildup) && $buildup->lessThan(new Carbon())) {
@@ -913,9 +921,9 @@ function render_user_arrived_hint()
  */
 function render_user_tshirt_hint()
 {
-    global $user;
+    $user = auth()->user();
 
-    if (config('enable_tshirt_size') && $user['Size'] == '') {
+    if (config('enable_tshirt_size') && !$user->personalData->shirt_size) {
         $text = __('You need to specify a tshirt size in your settings!');
         return render_profile_link($text, null, 'alert-link');
     }
@@ -928,9 +936,9 @@ function render_user_tshirt_hint()
  */
 function render_user_dect_hint()
 {
-    global $user;
+    $user = auth()->user();
 
-    if ($user['Gekommen'] == 1 && $user['DECT'] == '') {
+    if ($user->state->arrived && !$user->contact->dect) {
         $text = __('You need to specify a DECT phone number in your settings! If you don\'t have a DECT phone, just enter \'-\'.');
         return render_profile_link($text, null, 'alert-link');
     }

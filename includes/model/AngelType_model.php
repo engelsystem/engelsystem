@@ -181,10 +181,10 @@ function AngelType_validate_name($name, $angeltype)
 /**
  * Returns all angeltypes and subscription state to each of them for given user.
  *
- * @param array $user
+ * @param int $userId
  * @return array
  */
-function AngelTypes_with_user($user)
+function AngelTypes_with_user($userId)
 {
     return DB::select('
       SELECT `AngelTypes`.*,
@@ -194,7 +194,7 @@ function AngelTypes_with_user($user)
       FROM `AngelTypes`
       LEFT JOIN `UserAngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id`
       AND `UserAngelTypes`.`user_id` = ?
-      ORDER BY `name`', [$user['UID']]);
+      ORDER BY `name`', [$userId]);
 }
 
 /**

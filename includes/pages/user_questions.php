@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  * @return string
@@ -29,7 +30,7 @@ function user_questions()
             [$user->id]
         );
         foreach ($answered_questions as &$question) {
-            $answer_user_source = User($question['AID']);
+            $answer_user_source = User::find($question['AID']);
             $question['answer_user'] = User_Nick_render($answer_user_source);
         }
 

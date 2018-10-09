@@ -1,9 +1,11 @@
 <?php
 
+use Engelsystem\Models\User\User;
+
 /**
  * Delete work log entry.
  *
- * @param array $user_source
+ * @param User $user_source
  * @param array $userWorkLog
  * @return string
  */
@@ -15,7 +17,7 @@ function UserWorkLog_delete_view($user_source, $userWorkLog)
             User_Nick_render($user_source)
         ), true),
         buttons([
-            button(user_link($user_source['UID']), glyph('remove') . __('cancel')),
+            button(user_link($user_source->id), glyph('remove') . __('cancel')),
             button(user_worklog_delete_link($userWorkLog, [
                 'confirmed' => 1
             ]), glyph('ok') . __('delete'), 'btn-danger')

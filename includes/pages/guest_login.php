@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  * @return string
@@ -264,7 +265,7 @@ function guest_register()
             }
 
             engelsystem_log(
-                'User ' . User_Nick_render(User($user_id))
+                'User ' . User_Nick_render(User::find($user_id))
                 . ' signed up as: ' . join(', ', $user_angel_types_info)
             );
             success(__('Angel registration successful!'));
@@ -430,10 +431,10 @@ function guest_login()
     if ($request->has('submit')) {
         if ($request->has('nick') && strlen(User_validate_Nick($request->input('nick'))) > 0) {
             $nick = User_validate_Nick($request->input('nick'));
-            $login_user = DB::selectOne('SELECT * FROM `User` WHERE `Nick`=?', [$nick]);
-            if (!empty($login_user)) {
+            $login_user = User::whereName($nick);
+            if ($login_user) {
                 if ($request->has('password')) {
-                    if (!verify_password($request->postData('password'), $login_user['Passwort'], $login_user['UID'])) {
+                    if (!verify_password($request->postData('password'), $login_user->password, $login_user->id)) {
                         $valid = false;
                         error(__('Your password is incorrect.  Please try it again.'));
                     }
@@ -450,9 +451,9 @@ function guest_login()
             error(__('Please enter a nickname.'));
         }
 
-        if ($valid && !empty($login_user)) {
-            $session->set('uid', $login_user['UID']);
-            $session->set('locale', $login_user['Sprache']);
+        if ($valid && $login_user) {
+            $session->set('uid', $login_user->id);
+            $session->set('locale', $login_user->settings->language);
 
             redirect(page_link_to('news'));
         }

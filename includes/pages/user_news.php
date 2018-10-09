@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  * @return string
@@ -111,9 +112,7 @@ function display_news($news)
     }
     $html .= '<span class="glyphicon glyphicon-time"></span> ' . date('Y-m-d H:i', $news['Datum']) . '&emsp;';
 
-    $user_source = User($news['UID']);
-
-    $html .= User_Nick_render($user_source);
+    $html .= User_Nick_render(User::find($news['UID']));
     if ($page != 'news_comments') {
         $html .= '&emsp;<a href="' . page_link_to('news_comments', ['nid' => $news['ID']]) . '">'
             . '<span class="glyphicon glyphicon-comment"></span> '
@@ -171,7 +170,7 @@ function user_news_comments()
             [$nid]
         );
         foreach ($comments as $comment) {
-            $user_source = User($comment['UID']);
+            $user_source = User::find($comment['UID']);
 
             $html .= '<div class="panel panel-default">';
             $html .= '<div class="panel-body">' . nl2br(htmlspecialchars($comment['Text'])) . '</div>';

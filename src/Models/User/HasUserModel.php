@@ -6,7 +6,9 @@ use Engelsystem\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property integer $user_id
+ * @property integer                                                               $user_id
+ *
+ * @property-read \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User $user
  *
  * @method static \Illuminate\Database\Query\Builder|static whereUserId($value)
  */

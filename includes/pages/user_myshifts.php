@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  * @return string
@@ -31,12 +32,12 @@ function user_myshifts()
         $shift_entry_id = $user['UID'];
     }
 
-    $shifts_user = DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$shift_entry_id]);
+    $shifts_user = User::find($shift_entry_id);
     if ($request->has('reset')) {
         if ($request->input('reset') == 'ack') {
             User_reset_api_key($user);
             success(__('Key changed.'));
-            redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user['UID']]));
+            redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
         }
         return page_with_title(__('Reset API key'), [
             error(
@@ -68,7 +69,7 @@ function user_myshifts()
             ',
             [
                 $shift_entry_id,
-                $shifts_user['UID'],
+                $shifts_user->id,
             ]
         );
         if (!empty($shift)) {
@@ -87,7 +88,7 @@ function user_myshifts()
                 }
 
                 $comment = strip_request_item_nl('comment');
-                $user_source = User($shift['UID']);
+                $user_source = User::find($shift['UID']);
 
                 if ($valid) {
                     ShiftEntry_update([
@@ -105,7 +106,7 @@ function user_myshifts()
                         . '. Freeloaded: ' . ($freeloaded ? 'YES Comment: ' . $freeload_comment : 'NO')
                     );
                     success(__('Shift saved.'));
-                    redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user['UID']]));
+                    redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
                 }
             }
 
@@ -125,6 +126,6 @@ function user_myshifts()
         }
     }
 
-    redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user['UID']]));
+    redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
     return '';
 }

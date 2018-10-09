@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  * @return string
@@ -26,8 +27,8 @@ function admin_arrive()
 
     if ($request->has('reset') && preg_match('/^\d+$/', $request->input('reset'))) {
         $user_id = $request->input('reset');
-        $user_source = User($user_id);
-        if (!empty($user_source)) {
+        $user_source = User::find($user_id);
+        if ($user_source) {
             DB::update('
                 UPDATE `User`
                 SET `Gekommen`=0, `arrival_date` = NULL
@@ -36,14 +37,14 @@ function admin_arrive()
             ', [$user_id]);
             engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source));
             success(__('Reset done. Angel has not arrived.'));
-            redirect(user_link($user_source['UID']));
+            redirect(user_link($user_source->id));
         } else {
             $msg = error(__('Angel not found.'), true);
         }
     } elseif ($request->has('arrived') && preg_match('/^\d+$/', $request->input('arrived'))) {
         $user_id = $request->input('arrived');
-        $user_source = User($user_id);
-        if (!empty($user_source)) {
+        $user_source = User::find($user_id);
+        if ($user_source) {
             DB::update('
                 UPDATE `User`
                 SET `Gekommen`=1, `arrival_date`=?
@@ -52,7 +53,7 @@ function admin_arrive()
             ', [time(), $user_id]);
             engelsystem_log('User set has arrived: ' . User_Nick_render($user_source));
             success(__('Angel has been marked as arrived.'));
-            redirect(user_link($user_source['UID']));
+            redirect(user_link($user_source->id));
         } else {
             $msg = error(__('Angel not found.'), true);
         }

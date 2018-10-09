@@ -57,12 +57,12 @@ function UserDriverLicense($user_id)
  * Create a user's driver license entry
  *
  * @param array $user_driver_license The UserDriverLicense to create
- * @param array $user
+ * @param int   $userId
  * @return array
  */
-function UserDriverLicenses_create($user_driver_license, $user)
+function UserDriverLicenses_create($user_driver_license, $userId)
 {
-    $user_driver_license['user_id'] = $user['UID'];
+    $user_driver_license['user_id'] = $userId;
     DB::insert('
           INSERT INTO `UserDriverLicenses` (
               `user_id`,

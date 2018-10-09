@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  * @return string
@@ -27,8 +28,8 @@ function admin_user()
 
     $user_id = $request->input('id');
     if (!$request->has('action')) {
-        $user_source = User($user_id);
-        if (empty($user_source)) {
+        $user_source = User::find($user_id);
+        if (!$user_source) {
             error(__('This user does not exist.'));
             redirect(users_link());
         }
@@ -47,22 +48,20 @@ function admin_user()
         $html .= '<input type="hidden" name="Type" value="Normal">' . "\n";
         $html .= '<tr><td>' . "\n";
         $html .= '<table>' . "\n";
-        $html .= '  <tr><td>Nick</td><td>' . '<input size="40" name="eNick" value="' . $user_source['Nick'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Nick</td><td>' . '<input size="40" name="eNick" value="' . $user_source->name . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Last login</td><td><p class="help-block">'
-            . date('Y-m-d H:i', $user_source['lastLogIn'])
+            . $user_source->last_login_at->format('Y-m-d H:i')
             . '</p></td></tr>' . "\n";
-        $html .= '  <tr><td>Name</td><td>' . '<input size="40" name="eName" value="' . $user_source['Name'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Vorname</td><td>' . '<input size="40" name="eVorname" value="' . $user_source['Vorname'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Alter</td><td>' . '<input size="5" name="eAlter" value="' . $user_source['Alter'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Telefon</td><td>' . '<input type="tel" size="40" name="eTelefon" value="' . $user_source['Telefon'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Handy</td><td>' . '<input type= "tel" size="40" name="eHandy" value="' . $user_source['Handy'] . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>DECT</td><td>' . '<input size="4" name="eDECT" value="' . $user_source['DECT'] . '" class="form-control"></td></tr>' . "\n";
-        if ($user_source['email_by_human_allowed']) {
-            $html .= "  <tr><td>email</td><td>" . '<input type="email" size="40" name="eemail" value="' . $user_source['email'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Name</td><td>' . '<input size="40" name="eName" value="' . $user_source->personalData->last_name . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Vorname</td><td>' . '<input size="40" name="eVorname" value="' . $user_source->personalData->first_name . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>Handy</td><td>' . '<input type= "tel" size="40" name="eHandy" value="' . $user_source->contact->mobile . '" class="form-control"></td></tr>' . "\n";
+        $html .= '  <tr><td>DECT</td><td>' . '<input size="4" name="eDECT" value="' . $user_source->contact->dect . '" class="form-control"></td></tr>' . "\n";
+        if ($user_source->settings->email_human) {
+            $html .= "  <tr><td>email</td><td>" . '<input type="email" size="40" name="eemail" value="' . $user_source->email . '" class="form-control"></td></tr>' . "\n";
         }
-        $html .= "  <tr><td>jabber</td><td>" . '<input type="email" size="40" name="ejabber" value="' . $user_source['jabber'] . '" class="form-control"></td></tr>' . "\n";
         $html .= '  <tr><td>Size</td><td>'
-            . html_select_key('size', 'eSize', $tshirt_sizes, $user_source['Size'], __('Please select...')) . '</td></tr>' . "\n";
+            . html_select_key('size', 'eSize', $tshirt_sizes, $user_source->personalData->shirt_size,
+                __('Please select...')) . '</td></tr>' . "\n";
 
         $options = [
             '1' => __('Yes'),
@@ -71,23 +70,21 @@ function admin_user()
 
         // Gekommen?
         $html .= '  <tr><td>Gekommen</td><td>' . "\n";
-        $html .= html_options('eGekommen', $options, $user_source['Gekommen']) . '</td></tr>' . "\n";
+        $html .= html_options('eGekommen', $options, $user_source->state->arrived) . '</td></tr>' . "\n";
 
         // Aktiv?
         $html .= '  <tr><td>Aktiv</td><td>' . "\n";
-        $html .= html_options('eAktiv', $options, $user_source['Aktiv']) . '</td></tr>' . "\n";
+        $html .= html_options('eAktiv', $options, $user_source->state->active) . '</td></tr>' . "\n";
 
         // Aktiv erzwingen
         if (in_array('admin_active', $privileges)) {
             $html .= '  <tr><td>' . __('Force active') . '</td><td>' . "\n";
-            $html .= html_options('force_active', $options, $user_source['force_active']) . '</td></tr>' . "\n";
+            $html .= html_options('force_active', $options, $user_source->state->force_active) . '</td></tr>' . "\n";
         }
 
         // T-Shirt bekommen?
         $html .= '  <tr><td>T-Shirt</td><td>' . "\n";
-        $html .= html_options('eTshirt', $options, $user_source['Tshirt']) . '</td></tr>' . "\n";
-
-        $html .= '  <tr><td>Hometown</td><td>' . '<input size="40" name="Hometown" value="' . $user_source['Hometown'] . '" class="form-control"></td></tr>' . "\n";
+        $html .= html_options('eTshirt', $options, $user_source->personalData->shirt_size) . '</td></tr>' . "\n";
 
         $html .= '</table>' . "\n" . '</td><td valign="top"></td></tr>';
 
@@ -165,7 +162,7 @@ function admin_user()
         }
 
         $html .= buttons([
-            button(user_delete_link($user_source['UID']), glyph('lock') . __('delete'), 'btn-danger')
+            button(user_delete_link($user_source->id), glyph('lock') . __('delete'), 'btn-danger')
         ]);
 
         $html .= "<hr />";
@@ -227,7 +224,7 @@ function admin_user()
                                 $user_groups_info[] = $groups[$group]['Name'];
                             }
                         }
-                        $user_source = User($user_id);
+                        $user_source = User::find($user_id);
                         engelsystem_log(
                             'Set groups of ' . User_Nick_render($user_source) . ' to: '
                             . join(', ', $user_groups_info)
@@ -243,7 +240,7 @@ function admin_user()
 
             case 'save':
                 $force_active = $user->state->force_active;
-                $user_source = User($user_id);
+                $user_source = User::find($user_id);
                 if (in_array('admin_active', $privileges)) {
                     $force_active = $request->input('force_active');
                 }
@@ -252,37 +249,29 @@ function admin_user()
                       `Nick` = ?,
                       `Name` = ?,
                       `Vorname` = ?,
-                      `Telefon` = ?,
                       `Handy` = ?,
-                      `Alter` =?,
                       `DECT` = ?,
-                      ' . ($user_source['email_by_human_allowed']
+                      ' . ($user_source->settings->email_human
                         ? '`email` = ' . DB::getPdo()->quote($request->postData('eemail')) . ','
                         : '') . '
-                      `jabber` = ?,
                       `Size` = ?,
                       `Gekommen`= ?,
                       `Aktiv`= ?,
                       `force_active`= ?,
-                      `Tshirt` = ?,
-                      `Hometown` = ?
+                      `Tshirt` = ?
                       WHERE `UID` = ?
                       LIMIT 1';
                 DB::update($sql, [
                     User_validate_Nick($request->postData('eNick')),
                     $request->postData('eName'),
                     $request->postData('eVorname'),
-                    $request->postData('eTelefon'),
                     $request->postData('eHandy'),
-                    $request->postData('eAlter'),
                     $request->postData('eDECT'),
-                    $request->postData('ejabber'),
                     $request->postData('eSize'),
                     $request->postData('eGekommen'),
                     $request->postData('eAktiv'),
                     $force_active,
                     $request->postData('eTshirt'),
-                    $request->postData('Hometown'),
                     $user_id,
                 ]);
                 engelsystem_log(
@@ -300,7 +289,7 @@ function admin_user()
                     && $request->postData('new_pw') == $request->postData('new_pw2')
                 ) {
                     set_password($user_id, $request->postData('new_pw'));
-                    $user_source = User($user_id);
+                    $user_source = User::find($user_id);
                     engelsystem_log('Set new password for ' . User_Nick_render($user_source));
                     $html .= success('Passwort neu gesetzt.', true);
                 } else {

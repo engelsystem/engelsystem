@@ -21,13 +21,13 @@ function UserWorkLog($user_worklog_id)
 /**
  * Returns all work log entries for a user.
  *
- * @param array $user
+ * @param int $userId
  * @return array[]
  */
-function UserWorkLogsForUser($user)
+function UserWorkLogsForUser($userId)
 {
     return Db::select("SELECT * FROM `UserWorkLog` WHERE `user_id`=? ORDER BY `created_timestamp`", [
-        $user['UID']
+        $userId
     ]);
 }
 
@@ -123,10 +123,10 @@ function UserWorkLog_create($userWorkLog)
 /**
  * New user work log entry
  *
- * @param array[] $user
+ * @param int $userId
  * @return array
  */
-function UserWorkLog_new($user)
+function UserWorkLog_new($userId)
 {
     $work_date = parse_date('Y-m-d H:i', date('Y-m-d 00:00', time()));
 
@@ -137,7 +137,7 @@ function UserWorkLog_new($user)
     }
 
     return [
-        'user_id'        => $user['UID'],
+        'user_id'        => $userId,
         'work_timestamp' => $work_date,
         'work_hours'     => 0,
         'comment'        => ''

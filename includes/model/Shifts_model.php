@@ -326,7 +326,7 @@ function Shift_signup_allowed_angel(
     }
 
     if (empty($user_shifts)) {
-        $user_shifts = Shifts_by_user($user);
+        $user_shifts = Shifts_by_user($user['UID']);
     }
 
     $signed_up = false;
@@ -352,7 +352,7 @@ function Shift_signup_allowed_angel(
     }
 
     if (empty($user_angeltype)) {
-        $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
+        $user_angeltype = UserAngelType_by_User_and_AngelType($user['UID'], $angeltype);
     }
 
     if (
@@ -577,7 +577,7 @@ function Shift_update_by_psid($shift)
  */
 function Shift_create($shift)
 {
-    global $user;
+    $user = auth()->user();
     DB::insert('
           INSERT INTO `Shifts` (
               `shifttype_id`,
@@ -601,7 +601,7 @@ function Shift_create($shift)
             $shift['title'],
             $shift['URL'],
             $shift['PSID'],
-            $user['UID'],
+            $user->id,
             time(),
             time(),
         ]
@@ -613,11 +613,11 @@ function Shift_create($shift)
 /**
  * Return users shifts.
  *
- * @param array $user
+ * @param int $userId
  * @param bool  $include_freeload_comments
  * @return array[]
  */
-function Shifts_by_user($user, $include_freeload_comments = false)
+function Shifts_by_user($userId, $include_freeload_comments = false)
 {
     return DB::select('
           SELECT 
@@ -640,7 +640,7 @@ function Shifts_by_user($user, $include_freeload_comments = false)
           ORDER BY `start`
       ',
         [
-            $user['UID']
+            $userId
         ]
     );
 }

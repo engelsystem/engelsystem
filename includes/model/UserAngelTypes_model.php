@@ -9,43 +9,43 @@ use Engelsystem\Database\DB;
 /**
  * Checks if a user joined an angeltype.
  *
- * @param array $user      The user to be checked
+ * @param int   $userId    The user to be checked
  * @param array $angeltype The angeltype to be checked
  * @return boolean
  */
-function UserAngelType_exists($user, $angeltype)
+function UserAngelType_exists($userId, $angeltype)
 {
     return count(DB::select('
       SELECT `id`
       FROM `UserAngelTypes`
       WHERE `UserAngelTypes`.`user_id`=?
       AND `angeltype_id`=?
-      ', [$user['UID'], $angeltype['id']])) > 0;
+      ', [$userId, $angeltype['id']])) > 0;
 }
 
 /**
  * List users angeltypes.
  *
- * @param array $user
+ * @param int $userId
  * @return array[]
  */
-function User_angeltypes($user)
+function User_angeltypes($userId)
 {
     return DB::select('
       SELECT `AngelTypes`.*, `UserAngelTypes`.`confirm_user_id`, `UserAngelTypes`.`supporter`
       FROM `UserAngelTypes`
       JOIN `AngelTypes` ON `UserAngelTypes`.`angeltype_id` = `AngelTypes`.`id`
       WHERE `UserAngelTypes`.`user_id`=?
-      ', [$user['UID']]);
+      ', [$userId]);
 }
 
 /**
  * Gets unconfirmed user angeltypes for angeltypes of which the given user is a supporter.
  *
- * @param array $user
+ * @param int $userId
  * @return array[]
  */
-function User_unconfirmed_AngelTypes($user)
+function User_unconfirmed_AngelTypes($userId)
 {
     return DB::select('
         SELECT
@@ -61,7 +61,7 @@ function User_unconfirmed_AngelTypes($user)
           AND `UnconfirmedMembers`.`confirm_user_id` IS NULL
         GROUP BY `UserAngelTypes`.`angeltype_id`, `UserAngelTypes`.`id`
         ORDER BY `AngelTypes`.`name`
-    ', [$user['UID']]);
+    ', [$userId]);
 }
 
 /**
@@ -126,32 +126,32 @@ function UserAngelTypes_delete_all($angeltype_id)
 /**
  * Confirm all unconfirmed UserAngelTypes for given Angeltype.
  *
- * @param int   $angeltype_id
- * @param array $confirm_user
+ * @param int $angeltype_id
+ * @param int $confirm_user_id
  */
-function UserAngelTypes_confirm_all($angeltype_id, $confirm_user)
+function UserAngelTypes_confirm_all($angeltype_id, $confirm_user_id)
 {
     DB::update('
       UPDATE `UserAngelTypes`
       SET `confirm_user_id`=?
       WHERE `angeltype_id`=?
       AND `confirm_user_id` IS NULL
-    ', [$confirm_user['UID'], $angeltype_id]);
+    ', [$confirm_user_id, $angeltype_id]);
 }
 
 /**
  * Confirm an UserAngelType with confirming user.
  *
- * @param int   $user_angeltype_id
- * @param array $confirm_user
+ * @param int $user_angeltype_id
+ * @param int $confirm_user_id
  */
-function UserAngelType_confirm($user_angeltype_id, $confirm_user)
+function UserAngelType_confirm($user_angeltype_id, $confirm_user_id)
 {
     DB::update('
       UPDATE `UserAngelTypes`
       SET `confirm_user_id`=?
       WHERE `id`=?
-      LIMIT 1', [$confirm_user['UID'], $user_angeltype_id]);
+      LIMIT 1', [$confirm_user_id, $user_angeltype_id]);
 }
 
 /**
@@ -170,18 +170,18 @@ function UserAngelType_delete($user_angeltype)
 /**
  * Create an UserAngelType.
  *
- * @param array $user
+ * @param int   $userId
  * @param array $angeltype
  * @return int
  */
-function UserAngelType_create($user, $angeltype)
+function UserAngelType_create($userId, $angeltype)
 {
     DB::insert('
             INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`, `supporter`)
             VALUES (?, ?, FALSE)
         ',
         [
-            $user['UID'],
+            $userId,
             $angeltype['id']
         ]
     );
@@ -209,11 +209,11 @@ function UserAngelType($user_angeltype_id)
 /**
  * Get an UserAngelType by user and angeltype.
  *
- * @param array $user
+ * @param int   $userId
  * @param array $angeltype
  * @return array|null
  */
-function UserAngelType_by_User_and_AngelType($user, $angeltype)
+function UserAngelType_by_User_and_AngelType($userId, $angeltype)
 {
     $angelType = DB::selectOne('
           SELECT *
@@ -223,7 +223,7 @@ function UserAngelType_by_User_and_AngelType($user, $angeltype)
           LIMIT 1
         ',
         [
-            $user['UID'],
+            $userId,
             $angeltype['id']
         ]
     );
@@ -234,16 +234,16 @@ function UserAngelType_by_User_and_AngelType($user, $angeltype)
 /**
  * Get an UserAngelTypes by user
  *
- * @param array $user
+ * @param int $userId
  * @return array[]|null
  */
-function UserAngelTypes_by_User($user)
+function UserAngelTypes_by_User($userId)
 {
     return DB::select('
           SELECT *
           FROM `UserAngelTypes`
           WHERE `user_id`=?
         ',
-        [$user['UID']]
+        [$userId]
     );
 }

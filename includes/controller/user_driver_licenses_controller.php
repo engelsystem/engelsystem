@@ -8,10 +8,10 @@
  */
 function user_driver_license_required_hint()
 {
-    global $user;
+    $user = auth()->user();
 
-    $angeltypes = User_angeltypes($user);
-    $user_driver_license = UserDriverLicense($user['UID']);
+    $angeltypes = User_angeltypes($user->id);
+    $user_driver_license = UserDriverLicense($user->id);
 
     // User has already entered data, no hint needed.
     if (!empty($user_driver_license)) {
@@ -124,7 +124,7 @@ function user_driver_license_edit_controller()
 
             if (UserDriverLicense_valid($user_driver_license)) {
                 if (empty($user_driver_license['user_id'])) {
-                    $user_driver_license = UserDriverLicenses_create($user_driver_license, $user_source);
+                    $user_driver_license = UserDriverLicenses_create($user_driver_license, $user_source['UID']);
                 } else {
                     UserDriverLicenses_update($user_driver_license);
                 }

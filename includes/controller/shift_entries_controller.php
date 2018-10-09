@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\User\User;
 use Engelsystem\ShiftSignupState;
 
 /**
@@ -9,15 +10,14 @@ use Engelsystem\ShiftSignupState;
  */
 function shift_entries_controller()
 {
-    global $user;
-
-    if (!isset($user)) {
+    $user = auth()->user();
+    if ($user) {
         redirect(page_link_to('login'));
     }
 
     $action = strip_request_item('action');
     if (empty($action)) {
-        redirect(user_link($user['UID']));
+        redirect(user_link($user->id));
     }
 
     switch ($action) {
@@ -74,14 +74,14 @@ function shift_entry_create_controller()
  */
 function shift_entry_create_controller_admin($shift, $angeltype)
 {
-    global $user;
+    $user = auth()->user();
     $request = request();
 
     $signup_user = $user;
     if ($request->has('user_id')) {
-        $signup_user = User($request->input('user_id'));
+        $signup_user = User::find($request->input('user_id'));
     }
-    if (empty($signup_user)) {
+    if (!$signup_user) {
         redirect(shift_link($shift));
     }
 
@@ -100,7 +100,7 @@ function shift_entry_create_controller_admin($shift, $angeltype)
         ShiftEntry_create([
             'SID'              => $shift['SID'],
             'TID'              => $angeltype['id'],
-            'UID'              => $signup_user['UID'],
+            'UID'              => $signup_user->id,
             'Comment'          => '',
             'freeloaded'       => false,
             'freeload_comment' => ''
@@ -145,7 +145,7 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
     if ($request->has('user_id')) {
         $signup_user = User($request->input('user_id'));
     }
-    if (!UserAngelType_exists($signup_user, $angeltype)) {
+    if (!UserAngelType_exists($signup_user['UID'], $angeltype)) {
         error(__('User is not in angeltype.'));
         redirect(shift_link($shift));
     }
@@ -259,8 +259,8 @@ function shift_entry_create_controller_user($shift, $angeltype)
             'freeload_comment' => ''
         ]);
 
-        if ($angeltype['restricted'] == false && !UserAngelType_exists($signup_user, $angeltype)) {
-            UserAngelType_create($signup_user, $angeltype);
+        if ($angeltype['restricted'] == false && !UserAngelType_exists($signup_user['UID'], $angeltype)) {
+            UserAngelType_create($signup_user['UID'], $angeltype);
         }
 
         success(__('You are subscribed. Thank you!'));
