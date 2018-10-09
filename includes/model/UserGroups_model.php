@@ -5,10 +5,10 @@ use Engelsystem\Database\DB;
 /**
  * Returns users groups
  *
- * @param array $user
+ * @param int $userId
  * @return array[]
  */
-function User_groups($user)
+function User_groups($userId)
 {
     return DB::select('
           SELECT `Groups`.*
@@ -17,6 +17,6 @@ function User_groups($user)
           WHERE `UserGroups`.`uid`=?
           ORDER BY `UserGroups`.`group_id`
        ',
-        [$user['UID']]
+        [$userId]
     );
 }

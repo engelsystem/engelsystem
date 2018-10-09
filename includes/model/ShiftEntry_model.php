@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  * Returns an array with the attributes of shift entries.
@@ -74,7 +75,7 @@ function ShiftEntries_by_shift($shift_id)
  */
 function ShiftEntry_create($shift_entry)
 {
-    $user = User($shift_entry['UID']);
+    $user = User::find($shift_entry['UID']);
     $shift = Shift($shift_entry['SID']);
     mail_shift_assign($user, $shift);
     $result = DB::insert('
@@ -150,10 +151,10 @@ function ShiftEntry($shift_entry_id)
  */
 function ShiftEntry_delete($shiftEntry)
 {
-    mail_shift_removed(User($shiftEntry['UID']), Shift($shiftEntry['SID']));
+    mail_shift_removed(User::find($shiftEntry['UID']), Shift($shiftEntry['SID']));
     DB::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shiftEntry['id']]);
 
-    $signout_user = User($shiftEntry['UID']);
+    $signout_user = User::find($shiftEntry['UID']);
     $shift = Shift($shiftEntry['SID']);
     $shifttype = ShiftType($shift['shifttype_id']);
     $room = Room($shift['RID']);
@@ -171,10 +172,10 @@ function ShiftEntry_delete($shiftEntry)
 /**
  * Returns next (or current) shifts of given user.
  *
- * @param array $user
+ * @param int $userId
  * @return array
  */
-function ShiftEntries_upcoming_for_user($user)
+function ShiftEntries_upcoming_for_user($userId)
 {
     return DB::select('
         SELECT *
@@ -186,7 +187,7 @@ function ShiftEntries_upcoming_for_user($user)
         ORDER BY `Shifts`.`end`
       ',
         [
-            $user['UID'],
+            $userId,
             time(),
         ]
     );
@@ -195,10 +196,10 @@ function ShiftEntries_upcoming_for_user($user)
 /**
  * Returns shifts completed by the given user.
  *
- * @param array $user
+ * @param int $userId
  * @return array
  */
-function ShiftEntries_finished_by_user($user)
+function ShiftEntries_finished_by_user($userId)
 {
     return DB::select('
           SELECT *
@@ -211,7 +212,7 @@ function ShiftEntries_finished_by_user($user)
           ORDER BY `Shifts`.`end`
       ',
         [
-            $user['UID'],
+            $userId,
             time(),
         ]
     );
@@ -242,10 +243,10 @@ function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
 /**
  * Returns all freeloaded shifts for given user.
  *
- * @param array $user
+ * @param int $userId
  * @return array
  */
-function ShiftEntries_freeloaded_by_user($user)
+function ShiftEntries_freeloaded_by_user($userId)
 {
     return DB::select('
           SELECT *
@@ -254,7 +255,7 @@ function ShiftEntries_freeloaded_by_user($user)
           AND `UID` = ?
           ',
         [
-            $user['UID']
+            $userId
         ]
     );
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Models\User\User;
+
 /**
  * Delete a work log entry.
  *
@@ -7,20 +9,20 @@
  */
 function user_worklog_delete_controller()
 {
-    global $user;
+    $user = auth()->user();
 
     $request = request();
     $userWorkLog = UserWorkLog($request->input('user_worklog_id'));
     if (empty($userWorkLog)) {
-        redirect(user_link($user['UID']));
+        redirect(user_link($user->id));
     }
-    $user_source = User($userWorkLog['user_id']);
+    $user_source = User::find($userWorkLog['user_id']);
 
     if ($request->has('confirmed')) {
         UserWorkLog_delete($userWorkLog);
 
         success(__('Work log entry deleted.'));
-        redirect(user_link($user_source['UID']));
+        redirect(user_link($user_source->id));
     }
 
     return [
@@ -36,12 +38,12 @@ function user_worklog_delete_controller()
  */
 function user_worklog_edit_controller()
 {
-    global $user;
+    $user = auth()->user();
 
     $request = request();
     $userWorkLog = UserWorkLog($request->input('user_worklog_id'));
     if (empty($userWorkLog)) {
-        redirect(user_link($user['UID']));
+        redirect(user_link($user->id));
     }
     $user_source = User($userWorkLog['user_id']);
 
@@ -108,15 +110,15 @@ function user_worklog_from_request($userWorkLog)
  */
 function user_worklog_add_controller()
 {
-    global $user;
+    $user = auth()->user();
 
     $request = request();
     $user_source = User($request->input('user_id'));
     if (empty($user_source)) {
-        redirect(user_link($user['UID']));
+        redirect(user_link($user->id));
     }
 
-    $userWorkLog = UserWorkLog_new($user_source);
+    $userWorkLog = UserWorkLog_new($user_source['UID']);
 
     if ($request->has('submit')) {
         list ($valid, $userWorkLog) = user_worklog_from_request($userWorkLog);
@@ -186,16 +188,17 @@ function user_worklog_delete_link($userWorkLog, $parameters = [])
  */
 function user_worklog_controller()
 {
-    global $user, $privileges;
+    global $privileges;
+    $user = auth()->user();
 
     if (!in_array('admin_user_worklog', $privileges)) {
-        redirect(user_link($user['UID']));
+        redirect(user_link($user->id));
     }
 
     $request = request();
     $action = $request->input('action');
     if (!$request->has('action')) {
-        redirect(user_link($user['UID']));
+        redirect(user_link($user->id));
     }
 
     switch ($action) {

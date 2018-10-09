@@ -1,19 +1,32 @@
 <?php
 
 use Engelsystem\Mail\EngelsystemMailer;
+use Engelsystem\Models\User\User;
 
 /**
- * @param array  $recipient_user
- * @param string $title
- * @param string $message
- * @param bool   $not_if_its_me
+ * @param array|User $recipientUser
+ * @param string     $title
+ * @param string     $message
+ * @param bool       $notIfItsMe
  * @return bool
  */
-function engelsystem_email_to_user($recipient_user, $title, $message, $not_if_its_me = false)
+function engelsystem_email_to_user($recipientUser, $title, $message, $notIfItsMe = false)
 {
     $user = Auth()->user();
 
-    if ($not_if_its_me && $user->id == $recipient_user['UID']) {
+    if ($recipientUser instanceof User) {
+        $id = $user->id;
+        $lang = $user->settings->language;
+        $email = $user->contact->email ? $user->contact->email : $user->email;
+        $username = $user->name;
+    } else {
+        $id = $recipientUser['UID'];
+        $lang = $recipientUser['Sprache'];
+        $email = $recipientUser['email'];
+        $username = $recipientUser['Nick'];
+    }
+
+    if ($notIfItsMe && $user->id == $id) {
         return true;
     }
 
@@ -23,12 +36,12 @@ function engelsystem_email_to_user($recipient_user, $title, $message, $not_if_it
     /** @var EngelsystemMailer $mailer */
     $mailer = app('mailer');
 
-    $translator->setLocale($recipient_user['Sprache']);
+    $translator->setLocale($lang);
     $status = $mailer->sendView(
-        $recipient_user['email'],
+        $email,
         $title,
         'emails/mail',
-        ['username' => $recipient_user['Nick'], 'message' => $message]
+        ['username' => $username, 'message' => $message]
     );
     $translator->setLocale($locale);
 

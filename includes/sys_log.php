@@ -8,11 +8,11 @@
  */
 function engelsystem_log($message)
 {
-    global $user;
     $nick = "Guest";
     $logger = app('logger');
+    $user = auth()->user();
 
-    if (isset($user)) {
+    if ($user) {
         $nick = User_Nick_render($user);
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  * @return string
@@ -34,13 +35,13 @@ function user_unread_messages()
  */
 function user_messages()
 {
-    global $user;
+    $user = auth()->user();
     $request = request();
 
     if (!$request->has('action')) {
         $users = DB::select(
             'SELECT `UID`, `Nick` FROM `User` WHERE NOT `UID`=? ORDER BY `Nick`',
-            [$user['UID']]
+            [$user->id]
         );
 
         $to_select_data = [
@@ -61,8 +62,8 @@ function user_messages()
             ORDER BY `isRead`,`Datum` DESC
         ',
             [
-                $user['UID'],
-                $user['UID'],
+                $user->id,
+                $user->id,
             ]
         );
 
@@ -78,8 +79,8 @@ function user_messages()
         ];
 
         foreach ($messages as $message) {
-            $sender_user_source = User($message['SUID']);
-            $receiver_user_source = User($message['RUID']);
+            $sender_user_source = User::find($message['SUID']);
+            $receiver_user_source = User::find($message['RUID']);
 
             $messages_table_entry = [
                 'new'       => $message['isRead'] == 'N' ? '<span class="glyphicon glyphicon-envelope"></span>' : '',
@@ -89,7 +90,7 @@ function user_messages()
                 'text'      => str_replace("\n", '<br />', $message['Text'])
             ];
 
-            if ($message['RUID'] == $user['UID']) {
+            if ($message['RUID'] == $user->id) {
                 if ($message['isRead'] == 'N') {
                     $messages_table_entry['actions'] = button(
                         page_link_to('user_messages', ['action' => 'read', 'id' => $message['id']]),
@@ -134,7 +135,7 @@ function user_messages()
                     'SELECT `RUID` FROM `Messages` WHERE `id`=? LIMIT 1',
                     [$message_id]
                 );
-                if (!empty($message) && $message['RUID'] == $user['UID']) {
+                if (!empty($message) && $message['RUID'] == $user->id) {
                     DB::update(
                         'UPDATE `Messages` SET `isRead`=\'Y\' WHERE `id`=? LIMIT 1',
                         [$message_id]
@@ -156,7 +157,7 @@ function user_messages()
                     'SELECT `SUID` FROM `Messages` WHERE `id`=? LIMIT 1',
                     [$message_id]
                 );
-                if (!empty($message) && $message['SUID'] == $user['UID']) {
+                if (!empty($message) && $message['SUID'] == $user->id) {
                     DB::delete('DELETE FROM `Messages` WHERE `id`=? LIMIT 1', [$message_id]);
                     redirect(page_link_to('user_messages'));
                 } else {

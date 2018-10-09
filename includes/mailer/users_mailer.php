@@ -1,7 +1,9 @@
 <?php
 
+use Engelsystem\Models\User\User;
+
 /**
- * @param array $user
+ * @param User $user
  * @return bool
  */
 function mail_user_delete($user)

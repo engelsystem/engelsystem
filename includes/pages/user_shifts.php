@@ -217,7 +217,7 @@ function view_user_shifts()
     }
 
     $ownTypes = [];
-    foreach (UserAngelTypes_by_User($user) as $type) {
+    foreach (UserAngelTypes_by_User($user['UID']) as $type) {
         $ownTypes[] = (int)$type['angeltype_id'];
     }
 

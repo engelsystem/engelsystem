@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Models\User\User;
+
 /**
  * @param array $old_shift
  * @param array $new_shift
@@ -96,12 +98,12 @@ function mail_shift_delete($shift)
 }
 
 /**
- * @param array $user
+ * @param User  $user
  * @param array $shift
  */
 function mail_shift_assign($user, $shift)
 {
-    if (!$user['email_shiftinfo']) {
+    if (!$user->settings->email_shiftinfo) {
         return;
     }
 
@@ -117,12 +119,12 @@ function mail_shift_assign($user, $shift)
 }
 
 /**
- * @param array $user
+ * @param User  $user
  * @param array $shift
  */
 function mail_shift_removed($user, $shift)
 {
-    if (!$user['email_shiftinfo']) {
+    if (!$user->settings->email_shiftinfo) {
         return;
     }
 

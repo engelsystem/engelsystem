@@ -272,15 +272,15 @@ function shift_controller()
     $shifttype = ShiftType($shift['shifttype_id']);
     $room = Room($shift['RID']);
     $angeltypes = AngelTypes();
-    $user_shifts = Shifts_by_user($user);
+    $user_shifts = Shifts_by_user($user['UID']);
 
     $shift_signup_state = new ShiftSignupState(ShiftSignupState::OCCUPIED, 0);
     foreach ($angeltypes as &$angeltype) {
         $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
-        if(empty($needed_angeltype)) {
+        if (empty($needed_angeltype)) {
             continue;
         }
-        
+
         $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['id']);
 
         $angeltype_signup_state = Shift_signup_allowed(
@@ -330,13 +330,14 @@ function shifts_controller()
  */
 function shift_next_controller()
 {
-    global $user, $privileges;
+    global $privileges;
+    $user = auth()->user();
 
     if (!in_array('user_shifts', $privileges)) {
         redirect(page_link_to('/'));
     }
 
-    $upcoming_shifts = ShiftEntries_upcoming_for_user($user);
+    $upcoming_shifts = ShiftEntries_upcoming_for_user($user->id);
 
     if (!empty($upcoming_shifts)) {
         redirect(shift_link($upcoming_shifts[0]));
@@ -381,7 +382,5 @@ function shifts_json_export_controller()
  */
 function load_ical_shifts()
 {
-    global $user;
-
-    return Shifts_by_user($user);
+    return Shifts_by_user(auth()->user()->id);
 }

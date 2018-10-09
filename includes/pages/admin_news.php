@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  * @return string
@@ -29,7 +30,7 @@ function admin_news()
 
     switch ($request->input('action')) {
         case 'edit':
-            $user_source = User($news['UID']);
+            $user_source = User::find($news['UID']);
             if (
                 !in_array('admin_news_html', $privileges)
                 && strip_tags($news['Text']) != $news['Text']

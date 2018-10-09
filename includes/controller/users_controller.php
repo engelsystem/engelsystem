@@ -1,6 +1,8 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\PasswordReset;
+use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilter;
 
@@ -43,11 +45,12 @@ function users_controller()
  */
 function user_delete_controller()
 {
-    global $privileges, $user;
+    global $privileges;
+    $user = auth()->user();
     $request = request();
 
     if ($request->has('user_id')) {
-        $user_source = User($request->query->get('user_id'));
+        $user_source = User::find($request->query->get('user_id'));
     } else {
         $user_source = $user;
     }
@@ -57,9 +60,9 @@ function user_delete_controller()
     }
 
     // You cannot delete yourself
-    if ($user['UID'] == $user_source['UID']) {
+    if ($user->id == $user_source->id) {
         error(__('You cannot delete yourself.'));
-        redirect(user_link($user['UID']));
+        redirect(user_link($user->id));
     }
 
     if ($request->has('submit')) {
@@ -68,7 +71,7 @@ function user_delete_controller()
         if (
         !(
             $request->has('password')
-            && verify_password($request->postData('password'), $user['Passwort'], $user['UID'])
+            && verify_password($request->postData('password'), $user->password, $user->id)
         )
         ) {
             $valid = false;
@@ -76,7 +79,7 @@ function user_delete_controller()
         }
 
         if ($valid) {
-            User_delete($user_source['UID']);
+            User_delete($user_source->id);
 
             mail_user_delete($user_source);
             success(__('User deleted.'));
@@ -87,7 +90,7 @@ function user_delete_controller()
     }
 
     return [
-        sprintf(__('Delete %s'), $user_source['Nick']),
+        sprintf(__('Delete %s'), $user_source->name),
         User_delete_view($user_source)
     ];
 }
@@ -196,7 +199,7 @@ function user_controller()
         }
     }
 
-    $shifts = Shifts_by_user($user_source, in_array('user_shifts_admin', $privileges));
+    $shifts = Shifts_by_user($user_source['UID'], in_array('user_shifts_admin', $privileges));
     foreach ($shifts as &$shift) {
         // TODO: Move queries to model
         $shift['needed_angeltypes'] = DB::select('
@@ -228,7 +231,7 @@ function user_controller()
     if ($user_source['force_active']) {
         $tshirt_score = __('Enough');
     } else {
-        $tshirt_score = sprintf('%.2f', User_tshirt_score($user_source)) . '&nbsp;h';
+        $tshirt_score = sprintf('%.2f', User_tshirt_score($user_source['UID'])) . '&nbsp;h';
     }
 
     return [
@@ -237,14 +240,14 @@ function user_controller()
             $user_source,
             in_array('admin_user', $privileges),
             User_is_freeloader($user_source),
-            User_angeltypes($user_source),
-            User_groups($user_source),
+            User_angeltypes($user_source['UID']),
+            User_groups($user_source['UID']),
             $shifts,
             $user['UID'] == $user_source['UID'],
             $tshirt_score,
             in_array('admin_active', $privileges),
             in_array('admin_user_worklog', $privileges),
-            UserWorkLogsForUser($user_source)
+            UserWorkLogsForUser($user_source['UID'])
         )
     ];
 }
@@ -270,7 +273,7 @@ function users_list_controller()
 
     $users = Users($order_by);
     foreach ($users as &$user) {
-        $user['freeloads'] = count(ShiftEntries_freeloaded_by_user($user));
+        $user['freeloads'] = count(ShiftEntries_freeloaded_by_user($user['UID']));
     }
 
     return [
@@ -296,8 +299,8 @@ function users_list_controller()
 function user_password_recovery_set_new_controller()
 {
     $request = request();
-    $user_source = User_by_password_recovery_token($request->input('token'));
-    if (empty($user_source)) {
+    $passwordReset = PasswordReset::whereToken($request->input('token'));
+    if (!$passwordReset) {
         error(__('Token is not correct.'));
         redirect(page_link_to('login'));
     }
@@ -319,8 +322,9 @@ function user_password_recovery_set_new_controller()
         }
 
         if ($valid) {
-            set_password($user_source['UID'], $request->postData('password'));
+            set_password($passwordReset->user->id, $request->postData('password'));
             success(__('Password saved.'));
+            $passwordReset->delete();
             redirect(page_link_to('login'));
         }
     }

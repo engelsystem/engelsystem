@@ -22,10 +22,10 @@ function User_delete($user_id)
  * Returns the tshirt score (number of hours counted for tshirt).
  * Accounts only ended shifts.
  *
- * @param array[] $user
+ * @param int $userId
  * @return int
  */
-function User_tshirt_score($user)
+function User_tshirt_score($userId)
 {
     $shift_sum_formula = User_get_shifts_sum_query();
     $result_shifts = DB::selectOne('
@@ -36,7 +36,7 @@ function User_tshirt_score($user)
         AND `Shifts`.`end` < ?
         GROUP BY `User`.`UID`
     ', [
-        $user['UID'],
+        $userId,
         time()
     ]);
     if (!isset($result_shifts['tshirt_score'])) {
@@ -50,7 +50,7 @@ function User_tshirt_score($user)
         WHERE `User`.`UID` = ?
         AND `UserWorkLog`.`work_timestamp` < ?
     ', [
-        $user['UID'],
+        $userId,
         time()
     ]);
     if (!isset($result_worklog['tshirt_score'])) {
@@ -245,7 +245,7 @@ function User_is_freeloader($user)
 {
     global $user;
 
-    return count(ShiftEntries_freeloaded_by_user($user)) >= config('max_freeloadable_shifts');
+    return count(ShiftEntries_freeloaded_by_user($user['UID'])) >= config('max_freeloadable_shifts');
 }
 
 /**
@@ -526,10 +526,10 @@ function User_generate_password_recovery_token(&$user)
  * @param array $user
  * @return float
  */
-function User_get_eligable_voucher_count(&$user)
+function User_get_eligable_voucher_count($user)
 {
     $voucher_settings = config('voucher_settings');
-    $shifts_done = count(ShiftEntries_finished_by_user($user));
+    $shifts_done = count(ShiftEntries_finished_by_user($user['UID']));
 
     $earned_vouchers = $user['got_voucher'] - $voucher_settings['initial_vouchers'];
     $eligable_vouchers = $shifts_done / $voucher_settings['shifts_per_voucher'] - $earned_vouchers;

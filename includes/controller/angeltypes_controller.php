@@ -57,17 +57,17 @@ function angeltype_link($angeltype_id, $params = [])
  */
 function angeltypes_about_controller()
 {
-    global $user;
+    $user = auth()->user();
 
-    if (isset($user)) {
-        $angeltypes = AngelTypes_with_user($user);
+    if ($user) {
+        $angeltypes = AngelTypes_with_user($user->id);
     } else {
         $angeltypes = AngelTypes();
     }
 
     return [
         __('Teams/Job description'),
-        AngelTypes_about_view($angeltypes, isset($user))
+        AngelTypes_about_view($angeltypes, (bool)$user)
     ];
 }
 
@@ -185,7 +185,7 @@ function angeltype_controller()
     }
 
     $angeltype = load_angeltype();
-    $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
+    $user_angeltype = UserAngelType_by_User_and_AngelType($user['UID'], $angeltype);
     $user_driver_license = UserDriverLicense($user['UID']);
     $members = Users_by_angeltype($angeltype);
 
@@ -277,13 +277,14 @@ function angeltype_controller_shiftsFilter($angeltype, $days)
  */
 function angeltypes_list_controller()
 {
-    global $privileges, $user;
+    global $privileges;
+    $user = auth()->user();
 
     if (!in_array('angeltypes', $privileges)) {
         redirect(page_link_to('/'));
     }
 
-    $angeltypes = AngelTypes_with_user($user);
+    $angeltypes = AngelTypes_with_user($user->id);
 
     foreach ($angeltypes as &$angeltype) {
         $actions = [

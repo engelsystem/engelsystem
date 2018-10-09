@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Models\User\User;
+
 /**
  * Display a hint for team/angeltype supporters if there are unconfirmed users for his angeltype.
  *
@@ -7,9 +9,9 @@
  */
 function user_angeltypes_unconfirmed_hint()
 {
-    global $user;
+    $user = auth()->user();
 
-    $unconfirmed_user_angeltypes = User_unconfirmed_AngelTypes($user);
+    $unconfirmed_user_angeltypes = User_unconfirmed_AngelTypes($user->id);
     if (count($unconfirmed_user_angeltypes) == 0) {
         return null;
     }
@@ -101,7 +103,7 @@ function user_angeltypes_confirm_all_controller()
     }
 
     if ($request->has('confirmed')) {
-        UserAngelTypes_confirm_all($angeltype['id'], $user);
+        UserAngelTypes_confirm_all($angeltype['id'], $user['UID']);
 
         engelsystem_log(sprintf('Confirmed all users for angeltype %s', AngelType_name_render($angeltype)));
         success(sprintf(__('Confirmed all users for angeltype %s.'), AngelType_name_render($angeltype)));
@@ -146,14 +148,14 @@ function user_angeltype_confirm_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    $user_source = User($user_angeltype['user_id']);
-    if (empty($user_source)) {
+    $user_source = User::find($user_angeltype['user_id']);
+    if (!$user_source) {
         error(__('User doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
 
     if ($request->has('confirmed')) {
-        UserAngelType_confirm($user_angeltype['id'], $user);
+        UserAngelType_confirm($user_angeltype['id'], $user['UID']);
 
         engelsystem_log(sprintf(
             '%s confirmed for angeltype %s',
@@ -201,8 +203,8 @@ function user_angeltype_delete_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    $user_source = User($user_angeltype['user_id']);
-    if (empty($user_source)) {
+    $user_source = User::find($user_angeltype['user_id']);
+    if (!$user_source) {
         error(__('User doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
@@ -268,8 +270,8 @@ function user_angeltype_update_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    $user_source = User($user_angeltype['user_id']);
-    if (empty($user_source)) {
+    $user_source = User::find($user_angeltype['user_id']);
+    if (!$user_source) {
         error(__('User doesn\'t exist.'));
         redirect(page_link_to('angeltypes'));
     }
@@ -322,8 +324,8 @@ function user_angeltype_add_controller()
     if (request()->has('submit')) {
         $user_source = load_user();
 
-        if (!UserAngelType_exists($user_source, $angeltype)) {
-            $user_angeltype_id = UserAngelType_create($user_source, $angeltype);
+        if (!UserAngelType_exists($user_source['UID'], $angeltype)) {
+            $user_angeltype_id = UserAngelType_create($user_source['UID'], $angeltype);
 
             engelsystem_log(sprintf(
                 'User %s added to %s.',
@@ -336,7 +338,7 @@ function user_angeltype_add_controller()
                 AngelType_name_render($angeltype)
             ));
 
-            UserAngelType_confirm($user_angeltype_id, $user_source);
+            UserAngelType_confirm($user_angeltype_id, $user_source['UID']);
             engelsystem_log(sprintf(
                 'User %s confirmed as %s.',
                 User_Nick_render($user_source),
@@ -363,14 +365,14 @@ function user_angeltype_join_controller($angeltype)
 {
     global $user, $privileges;
 
-    $user_angeltype = UserAngelType_by_User_and_AngelType($user, $angeltype);
+    $user_angeltype = UserAngelType_by_User_and_AngelType($user['UID'], $angeltype);
     if (!empty($user_angeltype)) {
         error(sprintf(__('You are already a %s.'), $angeltype['name']));
         redirect(page_link_to('angeltypes'));
     }
 
     if (request()->has('confirmed')) {
-        $user_angeltype_id = UserAngelType_create($user, $angeltype);
+        $user_angeltype_id = UserAngelType_create($user['UID'], $angeltype);
 
         $success_message = sprintf(__('You joined %s.'), $angeltype['name']);
         engelsystem_log(sprintf(
@@ -381,7 +383,7 @@ function user_angeltype_join_controller($angeltype)
         success($success_message);
 
         if (in_array('admin_user_angeltypes', $privileges)) {
-            UserAngelType_confirm($user_angeltype_id, $user);
+            UserAngelType_confirm($user_angeltype_id, $user['UID']);
             engelsystem_log(sprintf(
                 'User %s confirmed as %s.',
                 User_Nick_render($user),
