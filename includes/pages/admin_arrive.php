@@ -36,7 +36,7 @@ function admin_arrive()
             ', [$user_id]);
             engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source));
             success(__('Reset done. Angel has not arrived.'));
-            redirect(user_link($user_source));
+            redirect(user_link($user_source['UID']));
         } else {
             $msg = error(__('Angel not found.'), true);
         }
@@ -52,7 +52,7 @@ function admin_arrive()
             ', [time(), $user_id]);
             engelsystem_log('User set has arrived: ' . User_Nick_render($user_source));
             success(__('Angel has been marked as arrived.'));
-            redirect(user_link($user_source));
+            redirect(user_link($user_source['UID']));
         } else {
             $msg = error(__('Angel not found.'), true);
         }

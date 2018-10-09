@@ -17,7 +17,7 @@ function shift_entries_controller()
 
     $action = strip_request_item('action');
     if (empty($action)) {
-        redirect(user_link($user));
+        redirect(user_link($user['UID']));
     }
 
     switch ($action) {
@@ -44,7 +44,7 @@ function shift_entry_create_controller()
 
     $shift = Shift($request->input('shift_id'));
     if (empty($shift)) {
-        redirect(user_link($user));
+        redirect(user_link($user['UID']));
     }
 
     $angeltype = AngelType($request->input('angeltype_id'));
@@ -54,7 +54,7 @@ function shift_entry_create_controller()
     }
 
     if (empty($angeltype)) {
-        redirect(user_link($user));
+        redirect(user_link($user['UID']));
     }
 
     if (User_is_AngelType_supporter($user, $angeltype)) {
@@ -345,7 +345,7 @@ function shift_entry_delete_controller()
     $signout_user = User($shiftEntry['UID']);
     if (!Shift_signout_allowed($shift, $angeltype, $signout_user)) {
         error(__('You are not allowed to remove this shift entry. If necessary, ask your supporter or heaven to do so.'));
-        redirect(user_link($signout_user));
+        redirect(user_link($signout_user['UID']));
     }
 
     if ($request->has('continue')) {

@@ -165,7 +165,7 @@ function admin_user()
         }
 
         $html .= buttons([
-            button(user_delete_link($user_source), glyph('lock') . __('delete'), 'btn-danger')
+            button(user_delete_link($user_source['UID']), glyph('lock') . __('delete'), 'btn-danger')
         ]);
 
         $html .= "<hr />";

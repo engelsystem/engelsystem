@@ -12,7 +12,7 @@ function UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver
 {
     return page_with_title(sprintf(__('Edit %s driving license information'), User_Nick_render($user_source)), [
         buttons([
-            button(user_link($user_source), __('Back to profile'), 'back')
+            button(user_link($user_source['UID']), __('Back to profile'), 'back')
         ]),
         msg(),
         form([
