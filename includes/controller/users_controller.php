@@ -59,7 +59,7 @@ function user_delete_controller()
     // You cannot delete yourself
     if ($user['UID'] == $user_source['UID']) {
         error(__('You cannot delete yourself.'));
-        redirect(user_link($user));
+        redirect(user_link($user['UID']));
     }
 
     if ($request->has('submit')) {
@@ -101,30 +101,30 @@ function users_link()
 }
 
 /**
- * @param array $user
+ * @param int $userId
  * @return string
  */
-function user_edit_link($user)
+function user_edit_link($userId)
 {
-    return page_link_to('admin_user', ['user_id' => $user['UID']]);
+    return page_link_to('admin_user', ['user_id' => $userId]);
 }
 
 /**
- * @param array $user
+ * @param int $userId
  * @return string
  */
-function user_delete_link($user)
+function user_delete_link($userId)
 {
-    return page_link_to('users', ['action' => 'delete', 'user_id' => $user['UID']]);
+    return page_link_to('users', ['action' => 'delete', 'user_id' => $userId]);
 }
 
 /**
- * @param array $user
+ * @param int $userId
  * @return string
  */
-function user_link($user)
+function user_link($userId)
 {
-    return page_link_to('users', ['action' => 'view', 'user_id' => $user['UID']]);
+    return page_link_to('users', ['action' => 'view', 'user_id' => $userId]);
 }
 
 /**
@@ -169,7 +169,7 @@ function user_edit_vouchers_controller()
             engelsystem_log(User_Nick_render($user_source) . ': ' . sprintf('Got %s vouchers',
                     $user_source['got_voucher']));
 
-            redirect(user_link($user_source));
+            redirect(user_link($user_source['UID']));
         }
     }
 

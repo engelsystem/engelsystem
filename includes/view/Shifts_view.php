@@ -141,7 +141,7 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
             $admin_rooms ? button(room_link($room), glyph('map-marker') . $room['Name']) : '',
         ];
     }
-    $buttons[] = button(user_link($user), '<span class="icon-icon_angel"></span> ' . __('My shifts'));
+    $buttons[] = button(user_link($user['UID']), '<span class="icon-icon_angel"></span> ' . __('My shifts'));
     $content[] = buttons($buttons);
 
     $content[] = Shift_view_header($shift, $room);

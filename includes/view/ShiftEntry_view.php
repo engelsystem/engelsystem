@@ -22,7 +22,7 @@ function ShiftEntry_delete_view_admin($shiftEntry, $shift, $angeltype, $signoff_
             $angeltype['name']
         ), true),
         buttons([
-            button(user_link($signoff_user), glyph('remove') . __('cancel')),
+            button(user_link($signoff_user['UID']), glyph('remove') . __('cancel')),
             button(shift_entry_delete_link($shiftEntry, [
                 'continue' => 1
             ]), glyph('ok') . __('delete'), 'btn-danger')
@@ -51,7 +51,7 @@ function ShiftEntry_delete_view($shiftEntry, $shift, $angeltype, $signoff_user)
             $angeltype['name']
         ), true),
         buttons([
-            button(user_link($signoff_user), glyph('remove') . __('cancel')),
+            button(user_link($signoff_user['UID']), glyph('remove') . __('cancel')),
             button(shift_entry_delete_link($shiftEntry, [
                 'continue' => 1
             ]), glyph('ok') . __('delete'), 'btn-danger')

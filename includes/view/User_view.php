@@ -153,7 +153,7 @@ function User_delete_view($user)
     return page_with_title(sprintf(__('Delete %s'), User_Nick_render($user)), [
         msg(),
         buttons([
-            button(user_edit_link($user), glyph('chevron-left') . __('back'))
+            button(user_edit_link($user['UID']), glyph('chevron-left') . __('back'))
         ]),
         error(
             __('Do you really want to delete the user including all his shifts and every other piece of his data?'),
@@ -177,7 +177,7 @@ function User_edit_vouchers_view($user)
     return page_with_title(sprintf(__('%s\'s vouchers'), User_Nick_render($user)), [
         msg(),
         buttons([
-            button(user_link($user), glyph('chevron-left') . __('back'))
+            button(user_link($user['UID']), glyph('chevron-left') . __('back'))
         ]),
         info(sprintf(
             __('Angel should receive at least  %d vouchers.'),

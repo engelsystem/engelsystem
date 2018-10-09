@@ -130,7 +130,7 @@ function user_driver_license_edit_controller()
                 }
                 engelsystem_log('Driver license information updated.');
                 success(__('Your driver license information has been saved.'));
-                redirect(user_link($user_source));
+                redirect(user_link($user_source['UID']));
             } else {
                 error(__('Please select at least one driving license.'));
             }
@@ -138,7 +138,7 @@ function user_driver_license_edit_controller()
             UserDriverLicenses_delete($user_source['UID']);
             engelsystem_log('Driver license information removed.');
             success(__('Your driver license information has been removed.'));
-            redirect(user_link($user_source));
+            redirect(user_link($user_source['UID']));
         }
     }
 

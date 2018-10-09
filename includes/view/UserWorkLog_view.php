@@ -15,7 +15,7 @@ function UserWorkLog_delete_view($user_source, $userWorkLog)
             User_Nick_render($user_source)
         ), true),
         buttons([
-            button(user_link($user_source), glyph('remove') . __('cancel')),
+            button(user_link($user_source['UID']), glyph('remove') . __('cancel')),
             button(user_worklog_delete_link($userWorkLog, [
                 'confirmed' => 1
             ]), glyph('ok') . __('delete'), 'btn-danger')
@@ -60,7 +60,7 @@ function UserWorkLog_edit_view($user_source, $userWorkLog)
 {
     return page_with_title(UserWorkLog_edit_title(), [
         buttons([
-            button(user_link($user_source), __('back'))
+            button(user_link($user_source['UID']), __('back'))
         ]),
         msg(),
         UserWorkLog_edit_form($user_source, $userWorkLog)
@@ -78,7 +78,7 @@ function UserWorkLog_add_view($user_source, $userWorkLog)
 {
     return page_with_title(UserWorkLog_add_title(), [
         buttons([
-            button(user_link($user_source), __('back'))
+            button(user_link($user_source['UID']), __('back'))
         ]),
         msg(),
         UserWorkLog_edit_form($user_source, $userWorkLog)
