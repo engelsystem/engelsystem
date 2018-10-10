@@ -77,7 +77,6 @@ function ShiftEntry_create($shift_entry)
 {
     $user = User::find($shift_entry['UID']);
     $shift = Shift($shift_entry['SID']);
-    mail_shift_assign($user, $shift);
     $result = DB::insert('
           INSERT INTO `ShiftEntry` (
               `SID`,
@@ -104,6 +103,7 @@ function ShiftEntry_create($shift_entry)
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
     );
+    mail_shift_assign($user, $shift);
 
     return $result;
 }
@@ -151,7 +151,6 @@ function ShiftEntry($shift_entry_id)
  */
 function ShiftEntry_delete($shiftEntry)
 {
-    mail_shift_removed(User::find($shiftEntry['UID']), Shift($shiftEntry['SID']));
     DB::delete('DELETE FROM `ShiftEntry` WHERE `id` = ?', [$shiftEntry['id']]);
 
     $signout_user = User::find($shiftEntry['UID']);
@@ -167,6 +166,8 @@ function ShiftEntry_delete($shiftEntry)
         . ' to ' . date('Y-m-d H:i', $shift['end'])
         . ' as ' . $angeltype['name']
     );
+
+    mail_shift_removed(User::find($shiftEntry['UID']), Shift($shiftEntry['SID']));
 }
 
 /**

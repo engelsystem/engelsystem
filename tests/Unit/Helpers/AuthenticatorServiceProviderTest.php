@@ -5,7 +5,9 @@ namespace Engelsystem\Test\Unit\Helpers;
 use Engelsystem\Application;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\AuthenticatorServiceProvider;
+use Engelsystem\Http\Request;
 use Engelsystem\Test\Unit\ServiceProviderTest;
+use Psr\Http\Message\ServerRequestInterface;
 
 class AuthenticatorServiceProviderTest extends ServiceProviderTest
 {
@@ -15,6 +17,7 @@ class AuthenticatorServiceProviderTest extends ServiceProviderTest
     public function testRegister()
     {
         $app = new Application();
+        $app->bind(ServerRequestInterface::class, Request::class);
 
         $serviceProvider = new AuthenticatorServiceProvider($app);
         $serviceProvider->register();

@@ -111,10 +111,10 @@ function shift_entry_create_controller_admin($shift, $angeltype)
         redirect(shift_link($shift));
     }
 
-    $users = Users();
+    $users = User::all();
     $users_select = [];
     foreach ($users as $u) {
-        $users_select[$u['UID']] = $u['Nick'];
+        $users_select[$u->id] = $u->name;
     }
 
     $angeltypes_select = [];
@@ -185,7 +185,7 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
     $users = Users_by_angeltype($angeltype);
     $users_select = [];
     foreach ($users as $u) {
-        $users_select[$u['UID']] = $u['Nick'];
+        $users_select[$u->id] = $u->name;
     }
 
     $room = Room($shift['RID']);

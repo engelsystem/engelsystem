@@ -190,10 +190,10 @@ function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, 
 /**
  * Renders and sorts the members of an angeltype into supporters, members and unconfirmed members.
  *
- * @param array $angeltype
- * @param array $members
- * @param bool  $admin_user_angeltypes
- * @param bool  $admin_angeltypes
+ * @param array  $angeltype
+ * @param User[] $members
+ * @param bool   $admin_user_angeltypes
+ * @param bool   $admin_angeltypes
  * @return array [supporters, members, unconfirmed members]
  */
 function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $admin_angeltypes)
@@ -202,7 +202,7 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
     $members_confirmed = [];
     $members_unconfirmed = [];
     foreach ($members as $member) {
-        $member['Nick'] = User_Nick_render($member);
+        $member->name = User_Nick_render($member);
         if ($angeltype['requires_driver_license']) {
             $member['wants_to_drive'] = glyph_bool($member['wants_to_drive']);
             $member['has_car'] = glyph_bool($member['has_car']);
@@ -317,7 +317,7 @@ function AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes)
  * Render an angeltype page containing the member lists.
  *
  * @param array                 $angeltype
- * @param array[]               $members
+ * @param User[]                $members
  * @param array                 $user_angeltype
  * @param bool                  $admin_user_angeltypes
  * @param bool                  $admin_angeltypes
@@ -380,11 +380,11 @@ function AngelType_view_shifts($angeltype, $shiftsFilterRenderer, $shiftCalendar
 }
 
 /**
- * @param array $angeltype
- * @param array $members
- * @param bool  $admin_user_angeltypes
- * @param bool  $admin_angeltypes
- * @param bool  $supporter
+ * @param array  $angeltype
+ * @param User[] $members
+ * @param bool   $admin_user_angeltypes
+ * @param bool   $admin_angeltypes
+ * @param bool   $supporter
  * @return string HTML
  */
 function AngelType_view_info(

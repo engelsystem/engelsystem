@@ -1,31 +1,25 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  *  Testet ob ein User eingeloggt ist und lädt die entsprechenden Privilegien
  */
 function load_auth()
 {
-    global $user, $privileges;
-
-    $user = null;
+    global $privileges;
     $session = session();
 
     if ($session->has('uid')) {
-        $user = DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$session->get('uid')]);
-        if (!empty($user)) {
-            // User ist eingeloggt, Datensatz zur Verfügung stellen und Timestamp updaten
-            DB::update('
-                UPDATE `User`
-                SET `lastLogIn` = ?
-                WHERE `UID` = ?
-                LIMIT 1
-            ', [
-                time(),
-                $session->get('uid'),
-            ]);
-            $privileges = privileges_for_user($user['UID']);
+        $user = auth()->user();
+
+        if ($user) {
+            $user->last_login_at = new Carbon();
+            $user->save();
+
+            $privileges = privileges_for_user($user->id);
             return;
         }
 
@@ -60,18 +54,9 @@ function generate_salt($length = 16)
  */
 function set_password($uid, $password)
 {
-    DB::update('
-        UPDATE `User`
-        SET `Passwort` = ?,
-        `password_recovery_token`=NULL
-        WHERE `UID` = ?
-        LIMIT 1
-        ',
-        [
-            crypt($password, config('crypt_alg') . '$' . generate_salt(16) . '$'),
-            $uid
-        ]
-    );
+    $user = User::find($uid);
+    $user->password = crypt($password, config('crypt_alg') . '$' . generate_salt(16) . '$');
+    $user->save();
 }
 
 /**
@@ -103,19 +88,11 @@ function verify_password($password, $salt, $uid = null)
         // let's update it!
         // we duplicate the query from the above set_password() function to have the extra safety of checking
         // the old hash
-        DB::update('
-                UPDATE `User`
-                SET `Passwort` = ?
-                WHERE `UID` = ?
-                AND `Passwort` = ?
-                LIMIT 1
-            ',
-            [
-                crypt($password, $crypt_alg . '$' . generate_salt() . '$'),
-                $uid,
-                $salt,
-            ]
-        );
+        $user = User::find($uid);
+        if ($user->password == $salt) {
+            $user->password = crypt($password, $crypt_alg . '$' . generate_salt() . '$');
+            $user->save();
+        }
     }
     return $correct;
 }
@@ -129,11 +106,11 @@ function privileges_for_user($user_id)
     $privileges = [];
     $user_privileges = DB::select('
         SELECT `Privileges`.`name`
-        FROM `User`
-        JOIN `UserGroups` ON (`User`.`UID` = `UserGroups`.`uid`)
+        FROM `users`
+        JOIN `UserGroups` ON (`users`.`id` = `UserGroups`.`uid`)
         JOIN `GroupPrivileges` ON (`UserGroups`.`group_id` = `GroupPrivileges`.`group_id`)
         JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`)
-        WHERE `User`.`UID`=?
+        WHERE `users`.`id`=?
     ', [$user_id]);
     foreach ($user_privileges as $user_privilege) {
         $privileges[] = $user_privilege['name'];

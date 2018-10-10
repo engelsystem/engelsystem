@@ -1,6 +1,5 @@
 <?php
 
-use Engelsystem\Database\DB;
 use Engelsystem\Models\User\User;
 
 /**
@@ -29,12 +28,11 @@ function admin_arrive()
         $user_id = $request->input('reset');
         $user_source = User::find($user_id);
         if ($user_source) {
-            DB::update('
-                UPDATE `User`
-                SET `Gekommen`=0, `arrival_date` = NULL
-                WHERE `UID`=?
-                LIMIT 1
-            ', [$user_id]);
+            $user_source->state->arrived = false;
+            $user_source->state->save();
+            $user_source->personalData->arrival_date = null;
+            $user_source->personalData->save();
+
             engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source));
             success(__('Reset done. Angel has not arrived.'));
             redirect(user_link($user_source->id));
@@ -45,12 +43,11 @@ function admin_arrive()
         $user_id = $request->input('arrived');
         $user_source = User::find($user_id);
         if ($user_source) {
-            DB::update('
-                UPDATE `User`
-                SET `Gekommen`=1, `arrival_date`=?
-                WHERE `UID`=?
-                LIMIT 1
-            ', [time(), $user_id]);
+            $user_source->state->arrived = true;
+            $user_source->state->save();
+            $user_source->personalData->arrival_date = new Carbon\Carbon();
+            $user_source->personalData->save();
+
             engelsystem_log('User set has arrived: ' . User_Nick_render($user_source));
             success(__('Angel has been marked as arrived.'));
             redirect(user_link($user_source->id));
@@ -59,7 +56,8 @@ function admin_arrive()
         }
     }
 
-    $users = DB::select('SELECT * FROM `User` ORDER BY `Nick`');
+    /** @var User[] $users */
+    $users = User::query()->orderBy('name')->get();
     $arrival_count_at_day = [];
     $planned_arrival_count_at_day = [];
     $planned_departure_count_at_day = [];
@@ -72,7 +70,7 @@ function admin_arrive()
     foreach ($users as $usr) {
         if (count($tokens) > 0) {
             $match = false;
-            $index = join(' ', $usr);
+            $index = join(' ', $usr->toArray());
             foreach ($tokens as $t) {
                 if (stristr($index, trim($t))) {
                     $match = true;
@@ -84,43 +82,43 @@ function admin_arrive()
             }
         }
 
-        $usr['nick'] = User_Nick_render($usr);
-        if (!is_null($usr['planned_departure_date'])) {
-            $usr['rendered_planned_departure_date'] = date('Y-m-d', $usr['planned_departure_date']);
+        $usr->name = User_Nick_render($usr);
+        if ($usr->personalData->planned_departure_date) {
+            $usr['rendered_planned_departure_date'] = $usr->personalData->planned_departure_date->format('Y-m-d');
         } else {
             $usr['rendered_planned_departure_date'] = '-';
         }
-        $usr['rendered_planned_arrival_date'] = date('Y-m-d', $usr['planned_arrival_date']);
-        $usr['rendered_arrival_date'] = $usr['arrival_date'] > 0 ? date('Y-m-d', $usr['arrival_date']) : '-';
-        $usr['arrived'] = $usr['Gekommen'] == 1 ? __('yes') : '';
-        $usr['actions'] = $usr['Gekommen'] == 1
+        $usr['rendered_planned_arrival_date'] = $usr->personalData->planned_arrival_date->format('Y-m-d');
+        $usr['rendered_arrival_date'] = $usr->personalData->arrival_date ? $usr->personalData->arrival_date->format('Y-m-d') : '-';
+        $usr['arrived'] = $usr->state->arrived ? __('yes') : '';
+        $usr['actions'] = $usr->state->arrived == 1
             ? '<a href="' . page_link_to(
                 'admin_arrive',
-                ['reset' => $usr['UID'], 'search' => $search]
+                ['reset' => $usr->id, 'search' => $search]
             ) . '">' . __('reset') . '</a>'
             : '<a href="' . page_link_to(
                 'admin_arrive',
-                ['arrived' => $usr['UID'], 'search' => $search]
+                ['arrived' => $usr->id, 'search' => $search]
             ) . '">' . __('arrived') . '</a>';
 
-        if ($usr['arrival_date'] > 0) {
-            $day = date('Y-m-d', $usr['arrival_date']);
+        if ($usr->personalData->arrival_date) {
+            $day = $usr->personalData->arrival_date->format('Y-m-d');
             if (!isset($arrival_count_at_day[$day])) {
                 $arrival_count_at_day[$day] = 0;
             }
             $arrival_count_at_day[$day]++;
         }
 
-        if (!is_null($usr['planned_arrival_date'])) {
-            $day = date('Y-m-d', $usr['planned_arrival_date']);
+        if ($usr->personalData->planned_arrival_date) {
+            $day = $usr->personalData->planned_arrival_date->format('Y-m-d');
             if (!isset($planned_arrival_count_at_day[$day])) {
                 $planned_arrival_count_at_day[$day] = 0;
             }
             $planned_arrival_count_at_day[$day]++;
         }
 
-        if (!is_null($usr['planned_departure_date']) && $usr['Gekommen'] == 1) {
-            $day = date('Y-m-d', $usr['planned_departure_date']);
+        if ($usr->personalData->planned_departure_date && $usr->state->arrived) {
+            $day = $usr->personalData->planned_departure_date->format('Y-m-d');
             if (!isset($planned_departure_count_at_day[$day])) {
                 $planned_departure_count_at_day[$day] = 0;
             }

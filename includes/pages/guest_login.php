@@ -431,7 +431,7 @@ function guest_login()
     if ($request->has('submit')) {
         if ($request->has('nick') && strlen(User_validate_Nick($request->input('nick'))) > 0) {
             $nick = User_validate_Nick($request->input('nick'));
-            $login_user = User::whereName($nick);
+            $login_user = User::whereName($nick)->first();
             if ($login_user) {
                 if ($request->has('password')) {
                     if (!verify_password($request->postData('password'), $login_user->password, $login_user->id)) {

@@ -2,6 +2,7 @@
 
 use Engelsystem\Database\DB;
 use Engelsystem\Models\User\PasswordReset;
+use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilter;
@@ -79,7 +80,7 @@ function user_delete_controller()
         }
 
         if ($valid) {
-            User_delete($user_source->id);
+            $user_source->delete();
 
             mail_user_delete($user_source);
             success(__('User deleted.'));
@@ -268,13 +269,28 @@ function users_list_controller()
     }
 
     $order_by = 'Nick';
-    if ($request->has('OrderBy') && in_array($request->input('OrderBy'), User_sortable_columns())) {
+    if ($request->has('OrderBy') && in_array($request->input('OrderBy'), [
+            'Nick',
+            'Name',
+            'Vorname',
+            'DECT',
+            'email',
+            'Size',
+            'Gekommen',
+            'Aktiv',
+            'force_active',
+            'Tshirt',
+            'lastLogIn'
+        ])) {
         $order_by = $request->input('OrderBy');
     }
 
-    $users = Users($order_by);
-    foreach ($users as &$user) {
-        $user['freeloads'] = count(ShiftEntries_freeloaded_by_user($user['UID']));
+    /** @var User[] $users */
+    $users = User::query()
+        ->orderBy($order_by)
+        ->get();
+    foreach ($users as $user) {
+        $user->setAttribute('freeloads', count(ShiftEntries_freeloaded_by_user($user->id)));
     }
 
     return [
@@ -282,12 +298,12 @@ function users_list_controller()
         Users_view(
             $users,
             $order_by,
-            User_arrived_count(),
-            User_active_count(),
-            User_force_active_count(),
+            State::whereArrived(true)->count(),
+            State::whereActive(true)->count(),
+            State::whereForceActive(true)->count(),
             ShiftEntries_freeloaded_count(),
-            User_tshirts_count(),
-            User_got_voucher_count()
+            State::whereGotShirt(true)->count(),
+            State::query()->sum('got_voucher')
         )
     ];
 }
@@ -300,7 +316,7 @@ function users_list_controller()
 function user_password_recovery_set_new_controller()
 {
     $request = request();
-    $passwordReset = PasswordReset::whereToken($request->input('token'));
+    $passwordReset = PasswordReset::whereToken($request->input('token'))->first();
     if (!$passwordReset) {
         error(__('Token is not correct.'));
         redirect(page_link_to('login'));
@@ -344,11 +360,13 @@ function user_password_recovery_start_controller()
     if ($request->has('submit')) {
         $valid = true;
 
+        $user_source = null;
         if ($request->has('email') && strlen(strip_request_item('email')) > 0) {
             $email = strip_request_item('email');
             if (check_email($email)) {
-                $user_source = User_by_email($email);
-                if (empty($user_source)) {
+                /** @var User $user_source */
+                $user_source = User::whereEmail($email)->first();
+                if (!$user_source) {
                     $valid = false;
                     error(__('E-mail address is not correct.'));
                 }

@@ -39,17 +39,18 @@ function user_messages()
     $request = request();
 
     if (!$request->has('action')) {
-        $users = DB::select(
-            'SELECT `UID`, `Nick` FROM `User` WHERE NOT `UID`=? ORDER BY `Nick`',
-            [$user->id]
-        );
+        /** @var User[] $users */
+        $users = User::query()
+            ->whereKeyNot($user->id)
+            ->orderBy('name')
+            ->get(['id', 'name']);
 
         $to_select_data = [
             '' => __('Select recipient...')
         ];
 
         foreach ($users as $u) {
-            $to_select_data[$u['UID']] = $u['Nick'];
+            $to_select_data[$u->id] = $u->name;
         }
 
         $to_select = html_select_key('to', 'to', $to_select_data, '');

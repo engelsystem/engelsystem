@@ -6,7 +6,7 @@ use Engelsystem\Models\User\User;
 /**
  * Renders user settings page
  *
- * @param array $user_source        The user
+ * @param User  $user_source        The user
  * @param array $locales            Available languages
  * @param array $themes             Available themes
  * @param int   $buildup_start_date Unix timestamp
@@ -24,6 +24,7 @@ function User_settings_view(
     $enable_tshirt_size,
     $tshirt_sizes
 ) {
+    $personalData = $user_source->personalData;
     return page_with_title(settings_title(), [
         msg(),
         div('row', [
@@ -31,48 +32,44 @@ function User_settings_view(
                 form([
                     form_info('', __('Here you can change your user details.')),
                     form_info(entry_required() . ' = ' . __('Entry required!')),
-                    form_text('nick', __('Nick'), $user_source['Nick'], true),
-                    form_text('lastname', __('Last name'), $user_source['Name']),
-                    form_text('prename', __('First name'), $user_source['Vorname']),
+                    form_text('nick', __('Nick'), $user_source->name, true),
+                    form_text('lastname', __('Last name'), $user_source->personalData->last_name),
+                    form_text('prename', __('First name'), $user_source->personalData->first_name),
                     form_date(
                         'planned_arrival_date',
                         __('Planned date of arrival') . ' ' . entry_required(),
-                        $user_source['planned_arrival_date'],
+                        $personalData->arrival_date ? $personalData->arrival_date->getTimestamp() : '',
                         $buildup_start_date,
                         $teardown_end_date
                     ),
                     form_date(
                         'planned_departure_date',
                         __('Planned date of departure'),
-                        $user_source['planned_departure_date'],
+                        $personalData->planned_departure_date ? $personalData->planned_departure_date->getTimestamp() : '',
                         $buildup_start_date,
                         $teardown_end_date
                     ),
-                    form_text('age', __('Age'), $user_source['Alter']),
-                    form_text('tel', __('Phone'), $user_source['Telefon']),
-                    form_text('dect', __('DECT'), $user_source['DECT']),
-                    form_text('mobile', __('Mobile'), $user_source['Handy']),
-                    form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source['email']),
+                    form_text('dect', __('DECT'), $user_source->contact->dect),
+                    form_text('mobile', __('Mobile'), $user_source->contact->mobile),
+                    form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->contact->email),
                     form_checkbox(
                         'email_shiftinfo',
                         __(
                             'The %s is allowed to send me an email (e.g. when my shifts change)',
                             [config('app_name')]
                         ),
-                        $user_source['email_shiftinfo']
+                        $user_source->settings->email_shiftinfo
                     ),
                     form_checkbox(
                         'email_by_human_allowed',
                         __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
-                        $user_source['email_by_human_allowed']
+                        $user_source->settings->email_human
                     ),
-                    form_text('jabber', __('Jabber'), $user_source['jabber']),
-                    form_text('hometown', __('Hometown'), $user_source['Hometown']),
                     $enable_tshirt_size ? form_select(
                         'tshirt_size',
                         __('Shirt size'),
                         $tshirt_sizes,
-                        $user_source['Size'],
+                        $user_source->personalData->shirt_size,
                         __('Please select...')
                     ) : '',
                     form_info('', __('Please visit the angeltypes page to manage your angeltypes.')),
@@ -89,12 +86,12 @@ function User_settings_view(
                 ]),
                 form([
                     form_info(__('Here you can choose your color settings:')),
-                    form_select('theme', __('Color settings:'), $themes, $user_source['color']),
+                    form_select('theme', __('Color settings:'), $themes, $user_source->settings->theme),
                     form_submit('submit_theme', __('Save'))
                 ]),
                 form([
                     form_info(__('Here you can choose your language:')),
-                    form_select('language', __('Language:'), $locales, $user_source['Sprache']),
+                    form_select('language', __('Language:'), $locales, $user_source->settings->language),
                     form_submit('submit_language', __('Save'))
                 ])
             ])
@@ -194,14 +191,14 @@ function User_edit_vouchers_view($user)
 }
 
 /**
- * @param array[] $users
- * @param string  $order_by
- * @param int     $arrived_count
- * @param int     $active_count
- * @param int     $force_active_count
- * @param int     $freeloads_count
- * @param int     $tshirts_count
- * @param int     $voucher_count
+ * @param User[] $users
+ * @param string $order_by
+ * @param int    $arrived_count
+ * @param int    $active_count
+ * @param int    $force_active_count
+ * @param int    $freeloads_count
+ * @param int    $tshirts_count
+ * @param int    $voucher_count
  * @return string
  */
 function Users_view(
@@ -214,18 +211,28 @@ function Users_view(
     $tshirts_count,
     $voucher_count
 ) {
-    foreach ($users as &$user) {
-        $user['Nick'] = User_Nick_render($user);
-        $user['Gekommen'] = glyph_bool($user['Gekommen']);
-        $user['Aktiv'] = glyph_bool($user['Aktiv']);
-        $user['force_active'] = glyph_bool($user['force_active']);
-        $user['Tshirt'] = glyph_bool($user['Tshirt']);
-        $user['lastLogIn'] = date(__('m/d/Y h:i a'), $user['lastLogIn']);
-        $user['actions'] = table_buttons([
-            button_glyph(page_link_to('admin_user', ['id' => $user['UID']]), 'edit', 'btn-xs')
+
+    $usersList = [];
+    foreach ($users as $user) {
+        $u = [];
+        $u['Nick'] = User_Nick_render($user);
+        $u['Vorname'] = $user->personalData->first_name;
+        $u['Name'] = $user->personalData->last_name;
+        $u['DECT'] = $user->contact->dect;
+        $u['Gekommen'] = glyph_bool($user->state->arrived);
+        $u['got_voucher'] = glyph_bool($user->state->got_voucher);
+        $u['freeloads'] = $user->getAttribute('freeloads');
+        $u['Aktiv'] = glyph_bool($user->state->active);
+        $u['force_active'] = glyph_bool($user->state->force_active);
+        $u['Tshirt'] = glyph_bool($user->state->got_shirt);
+        $u['Size'] = $user->personalData->shirt_size;
+        $u['lastLogIn'] = $user->last_login_at ? $user->last_login_at->format(__('m/d/Y h:i a')) : '';
+        $u['actions'] = table_buttons([
+            button_glyph(page_link_to('admin_user', ['id' => $user->id]), 'edit', 'btn-xs')
         ]);
+        $usersList[] = $u;
     }
-    $users[] = [
+    $usersList[] = [
         'Nick'         => '<strong>' . __('Sum') . '</strong>',
         'Gekommen'     => $arrived_count,
         'got_voucher'  => $voucher_count,
@@ -233,7 +240,7 @@ function Users_view(
         'force_active' => $force_active_count,
         'freeloads'    => $freeloads_count,
         'Tshirt'       => $tshirts_count,
-        'actions'      => '<strong>' . count($users) . '</strong>'
+        'actions'      => '<strong>' . count($usersList) . '</strong>'
     ];
 
     return page_with_title(__('All users'), [
@@ -255,7 +262,7 @@ function Users_view(
             'Size'         => Users_table_header_link('Size', __('Size'), $order_by),
             'lastLogIn'    => Users_table_header_link('lastLogIn', __('Last login'), $order_by),
             'actions'      => ''
-        ], $users)
+        ], $usersList)
     ]);
 }
 
@@ -281,19 +288,18 @@ function Users_table_header_link($column, $label, $order_by)
 function User_shift_state_render($user)
 {
     if ($user instanceof User) {
-        $userModel = $user;
-        $user = [
-            'Gekommen' => $userModel->state->arrived,
-            'UID'      => $user->id,
-        ];
+        $id = $user->id;
+        $arrived = $user->state->arrived;
+    } else {
+        $arrived = $user['Gekommen'];
+        $id = $user['UID'];
     }
 
-    if (!$user['Gekommen']) {
+    if (!$arrived) {
         return '';
     }
 
-    $upcoming_shifts = ShiftEntries_upcoming_for_user($user['UID']);
-
+    $upcoming_shifts = ShiftEntries_upcoming_for_user($id);
     if (empty($upcoming_shifts)) {
         return '<span class="text-success">' . __('Free') . '</span>';
     }
@@ -424,7 +430,7 @@ function User_view_myshift($shift, $user_source, $its_me)
  * @param int     $tshirt_score
  * @param bool    $tshirt_admin
  * @param array[] $user_worklogs
- * @param         $admin_user_worklog_privilege
+ * @param bool    $admin_user_worklog_privilege
  * @return array
  */
 function User_view_myshifts(
@@ -437,19 +443,19 @@ function User_view_myshifts(
     $admin_user_worklog_privilege
 ) {
     $myshifts_table = [];
-    $timesum = 0;
+    $timeSum = 0;
     foreach ($shifts as $shift) {
         $myshifts_table[$shift['start']] = User_view_myshift($shift, $user_source, $its_me);
 
         if (!$shift['freeloaded']) {
-            $timesum += ($shift['end'] - $shift['start']);
+            $timeSum += ($shift['end'] - $shift['start']);
         }
     }
 
     if ($its_me || $admin_user_worklog_privilege) {
         foreach ($user_worklogs as $worklog) {
             $myshifts_table[$worklog['work_timestamp']] = User_view_worklog($worklog, $admin_user_worklog_privilege);
-            $timesum += $worklog['work_hours'] * 3600;
+            $timeSum += $worklog['work_hours'] * 3600;
         }
     }
 
@@ -457,7 +463,7 @@ function User_view_myshifts(
         ksort($myshifts_table);
         $myshifts_table[] = [
             'date'       => '<b>' . __('Sum:') . '</b>',
-            'duration'   => '<b>' . sprintf('%.2f', round($timesum / 3600, 2)) . '&nbsp;h</b>',
+            'duration'   => '<b>' . sprintf('%.2f', round($timeSum / 3600, 2)) . '&nbsp;h</b>',
             'room'       => '',
             'shift_info' => '',
             'comment'    => '',

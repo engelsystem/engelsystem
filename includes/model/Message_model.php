@@ -27,7 +27,6 @@ function Message($message_id)
 
 /**
  * TODO: use validation functions, return new message id
- * TODO: global $user can't be used in model!
  * send message
  *
  * @param int    $receiver_user_id User ID of Receiver
