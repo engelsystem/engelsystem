@@ -1,9 +1,11 @@
 <?php
 
+use Engelsystem\Models\User\User;
+
 /**
  * Edit a user's driving license information.
  *
- * @param array $user_source         The user
+ * @param User  $user_source         The user
  * @param bool  $wants_to_drive      true, if the user wants to drive
  * @param array $user_driver_license The user driver license
  * @return string
@@ -12,7 +14,7 @@ function UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver
 {
     return page_with_title(sprintf(__('Edit %s driving license information'), User_Nick_render($user_source)), [
         buttons([
-            button(user_link($user_source['UID']), __('Back to profile'), 'back')
+            button(user_link($user_source->id), __('Back to profile'), 'back')
         ]),
         msg(),
         form([

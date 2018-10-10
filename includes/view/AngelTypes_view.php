@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilterRenderer;
 
@@ -129,7 +130,7 @@ function AngelType_edit_view($angeltype, $supporter_mode)
  * @param bool       $admin_angeltypes
  * @param bool       $supporter
  * @param array|null $user_driver_license
- * @param array|null $user
+ * @param User|null  $user
  * @return string
  */
 function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, $supporter, $user_driver_license, $user)
@@ -322,7 +323,7 @@ function AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes)
  * @param bool                  $admin_angeltypes
  * @param bool                  $supporter
  * @param array                 $user_driver_license
- * @param array                 $user
+ * @param User                  $user
  * @param ShiftsFilterRenderer  $shiftsFilterRenderer
  * @param ShiftCalendarRenderer $shiftCalendarRenderer
  * @param int                   $tab The selected tab

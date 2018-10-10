@@ -252,7 +252,8 @@ function shift_delete_controller()
  */
 function shift_controller()
 {
-    global $user, $privileges;
+    global $privileges;
+    $user = auth()->user();
     $request = request();
 
     if (!in_array('user_shifts', $privileges)) {
@@ -272,7 +273,7 @@ function shift_controller()
     $shifttype = ShiftType($shift['shifttype_id']);
     $room = Room($shift['RID']);
     $angeltypes = AngelTypes();
-    $user_shifts = Shifts_by_user($user['UID']);
+    $user_shifts = Shifts_by_user($user->id);
 
     $shift_signup_state = new ShiftSignupState(ShiftSignupState::OCCUPIED, 0);
     foreach ($angeltypes as &$angeltype) {

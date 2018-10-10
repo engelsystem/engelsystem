@@ -105,7 +105,7 @@ function angeltype_delete_controller()
  */
 function angeltype_edit_controller()
 {
-    global $privileges, $user;
+    global $privileges;
 
     // In supporter mode only allow to modify description
     $supporter_mode = !in_array('admin_angel_types', $privileges);
@@ -115,7 +115,7 @@ function angeltype_edit_controller()
         // Edit existing angeltype
         $angeltype = load_angeltype();
 
-        if (!User_is_AngelType_supporter($user, $angeltype)) {
+        if (!User_is_AngelType_supporter(auth()->user(), $angeltype)) {
             redirect(page_link_to('angeltypes'));
         }
     } else {
@@ -178,15 +178,16 @@ function angeltype_edit_controller()
  */
 function angeltype_controller()
 {
-    global $privileges, $user;
+    global $privileges;
+    $user = auth()->user();
 
     if (!in_array('angeltypes', $privileges)) {
         redirect(page_link_to('/'));
     }
 
     $angeltype = load_angeltype();
-    $user_angeltype = UserAngelType_by_User_and_AngelType($user['UID'], $angeltype);
-    $user_driver_license = UserDriverLicense($user['UID']);
+    $user_angeltype = UserAngelType_by_User_and_AngelType($user->id, $angeltype);
+    $user_driver_license = UserDriverLicense($user->id);
     $members = Users_by_angeltype($angeltype);
 
     $days = angeltype_controller_shiftsFilterDays($angeltype);

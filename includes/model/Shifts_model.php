@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftSignupState;
 
@@ -301,7 +302,7 @@ function Shift_free_entries($needed_angeltype, $shift_entries)
 /**
  * Check if shift signup is allowed from the end users point of view (no admin like privileges)
  *
- * @param array      $user
+ * @param User      $user
  * @param array      $shift       The shift
  * @param array      $angeltype   The angeltype to which the user wants to sign up
  * @param array|null $user_angeltype
@@ -321,12 +322,12 @@ function Shift_signup_allowed_angel(
 ) {
     $free_entries = Shift_free_entries($needed_angeltype, $shift_entries);
 
-    if (config('signup_requires_arrival') && !$user['Gekommen']) {
+    if (config('signup_requires_arrival') && !$user->state->arrived) {
         return new ShiftSignupState(ShiftSignupState::NOT_ARRIVED, $free_entries);
     }
 
     if (empty($user_shifts)) {
-        $user_shifts = Shifts_by_user($user['UID']);
+        $user_shifts = Shifts_by_user($user->id);
     }
 
     $signed_up = false;
@@ -352,7 +353,7 @@ function Shift_signup_allowed_angel(
     }
 
     if (empty($user_angeltype)) {
-        $user_angeltype = UserAngelType_by_User_and_AngelType($user['UID'], $angeltype);
+        $user_angeltype = UserAngelType_by_User_and_AngelType($user->id, $angeltype);
     }
 
     if (
@@ -415,14 +416,15 @@ function Shift_signup_allowed_admin($needed_angeltype, $shift_entries)
 /**
  * Check if an angel can signout from a shift.
  *
- * @param array $shift        The shift
- * @param array $angeltype    The angeltype
- * @param array $signout_user The user that was signed up for the shift
+ * @param array $shift           The shift
+ * @param array $angeltype       The angeltype
+ * @param int   $signout_user_id The user that was signed up for the shift
  * @return bool
  */
-function Shift_signout_allowed($shift, $angeltype, $signout_user)
+function Shift_signout_allowed($shift, $angeltype, $signout_user_id)
 {
-    global $user, $privileges;
+    global $privileges;
+    $user = auth()->user();
 
     // user shifts admin can sign out any user at any time
     if (in_array('user_shifts_admin', $privileges)) {
@@ -437,7 +439,7 @@ function Shift_signout_allowed($shift, $angeltype, $signout_user)
         return true;
     }
 
-    if ($signout_user['UID'] == $user['UID'] && $shift['start'] > time() + config('last_unsubscribe') * 3600) {
+    if ($signout_user_id == $user->id && $shift['start'] > time() + config('last_unsubscribe') * 3600) {
         return true;
     }
 
@@ -447,7 +449,7 @@ function Shift_signout_allowed($shift, $angeltype, $signout_user)
 /**
  * Check if an angel can sign up for given shift.
  *
- * @param array      $signup_user
+ * @param User       $signup_user
  * @param array      $shift       The shift
  * @param array      $angeltype   The angeltype to which the user wants to sign up
  * @param array|null $user_angeltype
@@ -465,7 +467,7 @@ function Shift_signup_allowed(
     $needed_angeltype,
     $shift_entries
 ) {
-    global $user, $privileges;
+    global $privileges;
 
     if (in_array('user_shifts_admin', $privileges)) {
         return Shift_signup_allowed_admin($needed_angeltype, $shift_entries);
@@ -473,7 +475,7 @@ function Shift_signup_allowed(
 
     if (
         in_array('shiftentry_edit_angeltype_supporter', $privileges)
-        && User_is_AngelType_supporter($user, $angeltype)
+        && User_is_AngelType_supporter(auth()->user(), $angeltype)
     ) {
         return Shift_signup_allowed_angeltype_supporter($needed_angeltype, $shift_entries);
     }
@@ -613,8 +615,8 @@ function Shift_create($shift)
 /**
  * Return users shifts.
  *
- * @param int $userId
- * @param bool  $include_freeload_comments
+ * @param int  $userId
+ * @param bool $include_freeload_comments
  * @return array[]
  */
 function Shifts_by_user($userId, $include_freeload_comments = false)

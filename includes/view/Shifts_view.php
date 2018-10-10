@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\User\User;
 use Engelsystem\ShiftSignupState;
 
 /**
@@ -54,14 +55,14 @@ function Shift_editor_info_render($shift)
         $info[] = sprintf(
             glyph('plus') . __('created at %s by %s'),
             date('Y-m-d H:i', $shift['created_at_timestamp']),
-            User_Nick_render(User($shift['created_by_user_id']))
+            User_Nick_render(User::find($shift['created_by_user_id']))
         );
     }
     if (!empty($shift['edited_by_user_id'])) {
         $info[] = sprintf(
             glyph('pencil') . __('edited at %s by %s'),
             date('Y-m-d H:i', $shift['edited_at_timestamp']),
-            User_Nick_render(User($shift['edited_by_user_id']))
+            User_Nick_render(User::find($shift['edited_by_user_id']))
         );
     }
     return join('<br />', $info);
@@ -176,10 +177,8 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
  */
 function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin)
 {
-    global $user;
-
     $angeltype = $angeltypes[$needed_angeltype['TID']];
-    $angeltype_supporter = User_is_AngelType_supporter($user, $angeltype);
+    $angeltype_supporter = User_is_AngelType_supporter(auth()->user(), $angeltype);
 
     $needed_angels = '';
 
@@ -226,7 +225,7 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shi
  */
 function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angeltype_supporter)
 {
-    $entry = User_Nick_render(User($shift_entry['UID']));
+    $entry = User_Nick_render(User::find($shift_entry['UID']));
     if ($shift_entry['freeloaded']) {
         $entry = '<del>' . $entry . '</del>';
     }

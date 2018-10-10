@@ -36,7 +36,7 @@ function UserWorkLog_delete_title()
 /**
  * Render edit table.
  *
- * @param array $user_source
+ * @param User $user_source
  * @param array $userWorkLog
  * @return string
  */
@@ -54,7 +54,7 @@ function UserWorkLog_edit_form($user_source, $userWorkLog)
 /**
  * Form for edit a user work log entry.
  *
- * @param array $user_source
+ * @param User $user_source
  * @param array $userWorkLog
  * @return string
  */
@@ -62,7 +62,7 @@ function UserWorkLog_edit_view($user_source, $userWorkLog)
 {
     return page_with_title(UserWorkLog_edit_title(), [
         buttons([
-            button(user_link($user_source['UID']), __('back'))
+            button(user_link($user_source->id), __('back'))
         ]),
         msg(),
         UserWorkLog_edit_form($user_source, $userWorkLog)
@@ -72,7 +72,7 @@ function UserWorkLog_edit_view($user_source, $userWorkLog)
 /**
  * Form for adding a user work log entry.
  *
- * @param array $user_source
+ * @param User $user_source
  * @param array $userWorkLog
  * @return string
  */
@@ -80,7 +80,7 @@ function UserWorkLog_add_view($user_source, $userWorkLog)
 {
     return page_with_title(UserWorkLog_add_title(), [
         buttons([
-            button(user_link($user_source['UID']), __('back'))
+            button(user_link($user_source->id), __('back'))
         ]),
         msg(),
         UserWorkLog_edit_form($user_source, $userWorkLog)

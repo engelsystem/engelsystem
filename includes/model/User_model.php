@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 use Engelsystem\ValidationResult;
 
 /**
@@ -238,14 +239,12 @@ function Users($order_by = 'Nick')
 /**
  * Returns true if user is freeloader
  *
- * @param array $user
+ * @param User $user
  * @return bool
  */
 function User_is_freeloader($user)
 {
-    global $user;
-
-    return count(ShiftEntries_freeloaded_by_user($user['UID'])) >= config('max_freeloadable_shifts');
+    return count(ShiftEntries_freeloaded_by_user($user->id)) >= config('max_freeloadable_shifts');
 }
 
 /**
@@ -419,19 +418,6 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
 }
 
 /**
- * Returns user by id.
- *
- * @param int $user_id UID
- * @return array|null
- */
-function User($user_id)
-{
-    $user = DB::selectOne('SELECT * FROM `User` WHERE `UID`=? LIMIT 1', [$user_id]);
-
-    return empty($user) ? null : $user;
-}
-
-/**
  * Returns User by api_key.
  *
  * @param string $api_key User api key
@@ -473,23 +459,13 @@ function User_by_password_recovery_token($token)
 /**
  * Generates a new api key for given user.
  *
- * @param array $user
- * @param bool  $log
+ * @param User $user
+ * @param bool $log
  */
-function User_reset_api_key(&$user, $log = true)
+function User_reset_api_key($user, $log = true)
 {
-    $user['api_key'] = md5($user['Nick'] . time() . rand());
-    DB::update('
-            UPDATE `User`
-            SET `api_key`=?
-            WHERE `UID`=?
-            LIMIT 1
-        ',
-        [
-            $user['api_key'],
-            $user['UID']
-        ]
-    );
+    $user->api_key = md5($user->name . time() . rand());
+    $user->save();
 
     if ($log) {
         engelsystem_log(sprintf('API key resetted (%s).', User_Nick_render($user)));
@@ -523,15 +499,15 @@ function User_generate_password_recovery_token(&$user)
 }
 
 /**
- * @param array $user
+ * @param User $user
  * @return float
  */
 function User_get_eligable_voucher_count($user)
 {
     $voucher_settings = config('voucher_settings');
-    $shifts_done = count(ShiftEntries_finished_by_user($user['UID']));
+    $shifts_done = count(ShiftEntries_finished_by_user($user->id));
 
-    $earned_vouchers = $user['got_voucher'] - $voucher_settings['initial_vouchers'];
+    $earned_vouchers = $user->state->got_voucher - $voucher_settings['initial_vouchers'];
     $eligable_vouchers = $shifts_done / $voucher_settings['shifts_per_voucher'] - $earned_vouchers;
     if ($eligable_vouchers < 0) {
         return 0;
