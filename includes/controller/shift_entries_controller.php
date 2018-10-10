@@ -35,7 +35,8 @@ function shift_entries_controller()
  */
 function shift_entry_create_controller()
 {
-    global $privileges, $user;
+    global $privileges;
+    $user = auth()->user();
     $request = request();
 
     if (User_is_freeloader($user)) {
@@ -44,7 +45,7 @@ function shift_entry_create_controller()
 
     $shift = Shift($request->input('shift_id'));
     if (empty($shift)) {
-        redirect(user_link($user['UID']));
+        redirect(user_link($user->id));
     }
 
     $angeltype = AngelType($request->input('angeltype_id'));
@@ -54,7 +55,7 @@ function shift_entry_create_controller()
     }
 
     if (empty($angeltype)) {
-        redirect(user_link($user['UID']));
+        redirect(user_link($user->id));
     }
 
     if (User_is_AngelType_supporter($user, $angeltype)) {
@@ -138,14 +139,13 @@ function shift_entry_create_controller_admin($shift, $angeltype)
  */
 function shift_entry_create_controller_supporter($shift, $angeltype)
 {
-    global $user;
     $request = request();
+    $signup_user = auth()->user();
 
-    $signup_user = $user;
     if ($request->has('user_id')) {
-        $signup_user = User($request->input('user_id'));
+        $signup_user = User::find($request->input('user_id'));
     }
-    if (!UserAngelType_exists($signup_user['UID'], $angeltype)) {
+    if (!UserAngelType_exists($signup_user->id, $angeltype)) {
         error(__('User is not in angeltype.'));
         redirect(shift_link($shift));
     }
@@ -172,7 +172,7 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
         ShiftEntry_create([
             'SID'              => $shift['SID'],
             'TID'              => $angeltype['id'],
-            'UID'              => $signup_user['UID'],
+            'UID'              => $signup_user->id,
             'Comment'          => '',
             'freeloaded'       => false,
             'freeload_comment' => ''
@@ -227,10 +227,9 @@ function shift_entry_error_message(ShiftSignupState $shift_signup_state)
  */
 function shift_entry_create_controller_user($shift, $angeltype)
 {
-    global $user;
     $request = request();
 
-    $signup_user = $user;
+    $signup_user = auth()->user();
     $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
     $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['id']);
     $shift_signup_state = Shift_signup_allowed(
@@ -253,14 +252,14 @@ function shift_entry_create_controller_user($shift, $angeltype)
         ShiftEntry_create([
             'SID'              => $shift['SID'],
             'TID'              => $angeltype['id'],
-            'UID'              => $signup_user['UID'],
+            'UID'              => $signup_user->id,
             'Comment'          => $comment,
             'freeloaded'       => false,
             'freeload_comment' => ''
         ]);
 
-        if ($angeltype['restricted'] == false && !UserAngelType_exists($signup_user['UID'], $angeltype)) {
-            UserAngelType_create($signup_user['UID'], $angeltype);
+        if ($angeltype['restricted'] == false && !UserAngelType_exists($signup_user->id, $angeltype)) {
+            UserAngelType_create($signup_user->id, $angeltype);
         }
 
         success(__('You are subscribed. Thank you!'));
@@ -342,10 +341,10 @@ function shift_entry_delete_controller()
 
     $shift = Shift($shiftEntry['SID']);
     $angeltype = AngelType($shiftEntry['TID']);
-    $signout_user = User($shiftEntry['UID']);
-    if (!Shift_signout_allowed($shift, $angeltype, $signout_user)) {
+    $signout_user = User::find($shiftEntry['UID']);
+    if (!Shift_signout_allowed($shift, $angeltype, $signout_user->id)) {
         error(__('You are not allowed to remove this shift entry. If necessary, ask your supporter or heaven to do so.'));
-        redirect(user_link($signout_user['UID']));
+        redirect(user_link($signout_user->id));
     }
 
     if ($request->has('continue')) {
@@ -354,10 +353,10 @@ function shift_entry_delete_controller()
         redirect(shift_link($shift));
     }
 
-    if ($user->id == $signout_user['UID']) {
+    if ($user->id == $signout_user->id) {
         return [
             ShiftEntry_delete_title(),
-            ShiftEntry_delete_view($shiftEntry, $shift, $angeltype, $signout_user)
+            ShiftEntry_delete_view($shiftEntry, $shift, $angeltype, $signout_user->id)
         ];
     }
 

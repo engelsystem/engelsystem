@@ -18,7 +18,8 @@ function myshifts_title()
  */
 function user_myshifts()
 {
-    global $user, $privileges;
+    global $privileges;
+    $user = auth()->user();
     $request = request();
 
     if (
@@ -29,7 +30,7 @@ function user_myshifts()
     ) {
         $shift_entry_id = $request->input('id');
     } else {
-        $shift_entry_id = $user['UID'];
+        $shift_entry_id = $user->id;
     }
 
     $shifts_user = User::find($shift_entry_id);

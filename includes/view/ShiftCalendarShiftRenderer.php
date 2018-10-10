@@ -2,6 +2,8 @@
 
 namespace Engelsystem;
 
+use Engelsystem\Models\User\User;
+
 /**
  * Renders a single shift for the shift calendar
  */
@@ -13,7 +15,7 @@ class ShiftCalendarShiftRenderer
      * @param array $shift The shift to render
      * @param array $needed_angeltypes
      * @param array $shift_entries
-     * @param array $user  The user who is viewing the shift calendar
+     * @param User  $user  The user who is viewing the shift calendar
      * @return array
      */
     public function render($shift, $needed_angeltypes, $shift_entries, $user)
@@ -90,7 +92,7 @@ class ShiftCalendarShiftRenderer
      * @param array   $shift
      * @param array[] $needed_angeltypes
      * @param array[] $shift_entries
-     * @param array   $user
+     * @param User    $user
      * @return array
      */
     private function renderShiftNeededAngeltypes($shift, $needed_angeltypes, $shift_entries, $user)
@@ -156,7 +158,7 @@ class ShiftCalendarShiftRenderer
      * @param array[] $shift_entries
      * @param array[] $angeltype The angeltype, containing information about needed angeltypes
      *                           and already signed up angels
-     * @param array   $user      The user who is viewing the shift calendar
+     * @param User    $user      The user who is viewing the shift calendar
      * @return array
      */
     private function renderShiftNeededAngeltype($shift, $shift_entries, $angeltype, $user)

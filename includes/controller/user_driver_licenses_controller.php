@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Models\User\User;
+
 /**
  * Generates a hint, if user joined angeltypes that require a driving license and the user has no driver license
  * information provided.
@@ -55,30 +57,31 @@ function user_driver_licenses_controller()
 /**
  * Link to user driver license edit page for given user.
  *
- * @param array $user
+ * @param User $user
  * @return string
  */
 function user_driver_license_edit_link($user = null)
 {
-    if (empty($user)) {
+    if (!$user) {
         return page_link_to('user_driver_licenses');
     }
-    return page_link_to('user_driver_licenses', ['user_id' => $user['UID']]);
+
+    return page_link_to('user_driver_licenses', ['user_id' => $user->id]);
 }
 
 /**
  * Loads the user for the driver license.
  *
- * @return array
+ * @return User
  */
 function user_driver_license_load_user()
 {
-    global $user;
+    $user = auth()->user();
     $request = request();
     $user_source = $user;
 
     if ($request->has('user_id')) {
-        $user_source = User($request->input('user_id'));
+        $user_source = User::find($request->input('user_id'));
         if (empty($user_source)) {
             redirect(user_driver_license_edit_link());
         }
@@ -100,11 +103,11 @@ function user_driver_license_edit_controller()
     $user_source = user_driver_license_load_user();
 
     // only privilege admin_user can edit other users driver license information
-    if ($user->id != $user_source['UID'] && !in_array('admin_user', $privileges)) {
+    if ($user->id != $user_source->id && !in_array('admin_user', $privileges)) {
         redirect(user_driver_license_edit_link());
     }
 
-    $user_driver_license = UserDriverLicense($user_source['UID']);
+    $user_driver_license = UserDriverLicense($user_source->id);
     if (empty($user_driver_license)) {
         $wants_to_drive = false;
         $user_driver_license = UserDriverLicense_new();
@@ -124,26 +127,26 @@ function user_driver_license_edit_controller()
 
             if (UserDriverLicense_valid($user_driver_license)) {
                 if (empty($user_driver_license['user_id'])) {
-                    $user_driver_license = UserDriverLicenses_create($user_driver_license, $user_source['UID']);
+                    $user_driver_license = UserDriverLicenses_create($user_driver_license, $user_source->id);
                 } else {
                     UserDriverLicenses_update($user_driver_license);
                 }
                 engelsystem_log('Driver license information updated.');
                 success(__('Your driver license information has been saved.'));
-                redirect(user_link($user_source['UID']));
+                redirect(user_link($user_source->id));
             } else {
                 error(__('Please select at least one driving license.'));
             }
         } elseif (!empty($user_driver_license['user_id'])) {
-            UserDriverLicenses_delete($user_source['UID']);
+            UserDriverLicenses_delete($user_source->id);
             engelsystem_log('Driver license information removed.');
             success(__('Your driver license information has been removed.'));
-            redirect(user_link($user_source['UID']));
+            redirect(user_link($user_source->id));
         }
     }
 
     return [
-        sprintf(__('Edit %s driving license information'), $user_source['Nick']),
+        sprintf(__('Edit %s driving license information'), $user_source->name),
         UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver_license)
     ];
 }

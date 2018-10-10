@@ -43,7 +43,6 @@ function user_angeltypes_unconfirmed_hint()
  */
 function user_angeltypes_delete_all_controller()
 {
-    global $user;
     $request = request();
 
     if (!$request->has('angeltype_id')) {
@@ -57,7 +56,7 @@ function user_angeltypes_delete_all_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if (!User_is_AngelType_supporter($user, $angeltype)) {
+    if (!User_is_AngelType_supporter(auth()->user(), $angeltype)) {
         error(__('You are not allowed to delete all users for this angeltype.'));
         redirect(page_link_to('angeltypes'));
     }
@@ -83,7 +82,8 @@ function user_angeltypes_delete_all_controller()
  */
 function user_angeltypes_confirm_all_controller()
 {
-    global $user, $privileges;
+    global $privileges;
+    $user = auth()->user();
     $request = request();
 
     if (!$request->has('angeltype_id')) {
@@ -103,7 +103,7 @@ function user_angeltypes_confirm_all_controller()
     }
 
     if ($request->has('confirmed')) {
-        UserAngelTypes_confirm_all($angeltype['id'], $user['UID']);
+        UserAngelTypes_confirm_all($angeltype['id'], $user->id);
 
         engelsystem_log(sprintf('Confirmed all users for angeltype %s', AngelType_name_render($angeltype)));
         success(sprintf(__('Confirmed all users for angeltype %s.'), AngelType_name_render($angeltype)));
@@ -123,7 +123,7 @@ function user_angeltypes_confirm_all_controller()
  */
 function user_angeltype_confirm_controller()
 {
-    global $user;
+    $user = auth()->user();
     $request = request();
 
     if (!$request->has('user_angeltype_id')) {
@@ -155,7 +155,7 @@ function user_angeltype_confirm_controller()
     }
 
     if ($request->has('confirmed')) {
-        UserAngelType_confirm($user_angeltype['id'], $user['UID']);
+        UserAngelType_confirm($user_angeltype['id'], $user->id);
 
         engelsystem_log(sprintf(
             '%s confirmed for angeltype %s',
@@ -183,8 +183,8 @@ function user_angeltype_confirm_controller()
  */
 function user_angeltype_delete_controller()
 {
-    global $user;
     $request = request();
+    $user = auth()->user();
 
     if (!$request->has('user_angeltype_id')) {
         error(__('User angeltype doesn\'t exist.'));
@@ -209,7 +209,7 @@ function user_angeltype_delete_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if ($user['UID'] != $user_angeltype['user_id'] && !User_is_AngelType_supporter($user, $angeltype)) {
+    if ($user->id != $user_angeltype['user_id'] && !User_is_AngelType_supporter($user, $angeltype)) {
         error(__('You are not allowed to delete this users angeltype.'));
         redirect(page_link_to('angeltypes'));
     }
@@ -305,18 +305,17 @@ function user_angeltype_update_controller()
  */
 function user_angeltype_add_controller()
 {
-    global $user;
     $angeltype = load_angeltype();
 
     // User is joining by itself
-    if (!User_is_AngelType_supporter($user, $angeltype)) {
+    if (!User_is_AngelType_supporter(auth()->user(), $angeltype)) {
         return user_angeltype_join_controller($angeltype);
     }
 
     // Allow to add any user
 
     // Default selection
-    $user_source = $user;
+    $user_source = auth()->user();
 
     // Load possible users, that are not in the angeltype already
     $users_source = Users_by_angeltype_inverted($angeltype);
@@ -324,8 +323,8 @@ function user_angeltype_add_controller()
     if (request()->has('submit')) {
         $user_source = load_user();
 
-        if (!UserAngelType_exists($user_source['UID'], $angeltype)) {
-            $user_angeltype_id = UserAngelType_create($user_source['UID'], $angeltype);
+        if (!UserAngelType_exists($user_source->id, $angeltype)) {
+            $user_angeltype_id = UserAngelType_create($user_source->id, $angeltype);
 
             engelsystem_log(sprintf(
                 'User %s added to %s.',
@@ -338,7 +337,7 @@ function user_angeltype_add_controller()
                 AngelType_name_render($angeltype)
             ));
 
-            UserAngelType_confirm($user_angeltype_id, $user_source['UID']);
+            UserAngelType_confirm($user_angeltype_id, $user_source->id);
             engelsystem_log(sprintf(
                 'User %s confirmed as %s.',
                 User_Nick_render($user_source),
@@ -351,7 +350,7 @@ function user_angeltype_add_controller()
 
     return [
         __('Add user to angeltype'),
-        UserAngelType_add_view($angeltype, $users_source, $user_source['UID'])
+        UserAngelType_add_view($angeltype, $users_source, $user_source->id)
     ];
 }
 

@@ -1,12 +1,14 @@
 <?php
 
+use Engelsystem\Models\User\User;
+
 /**
  * Sign off from an user from a shift with admin permissions, asking for ack.
  *
  * @param array $shiftEntry
  * @param array $shift
  * @param array $angeltype
- * @param array $signoff_user
+ * @param User  $signoff_user
  *
  * @return string HTML
  */
@@ -22,7 +24,7 @@ function ShiftEntry_delete_view_admin($shiftEntry, $shift, $angeltype, $signoff_
             $angeltype['name']
         ), true),
         buttons([
-            button(user_link($signoff_user['UID']), glyph('remove') . __('cancel')),
+            button(user_link($signoff_user->id), glyph('remove') . __('cancel')),
             button(shift_entry_delete_link($shiftEntry, [
                 'continue' => 1
             ]), glyph('ok') . __('delete'), 'btn-danger')
@@ -36,11 +38,11 @@ function ShiftEntry_delete_view_admin($shiftEntry, $shift, $angeltype, $signoff_
  * @param array $shiftEntry
  * @param array $shift
  * @param array $angeltype
- * @param array $signoff_user
+ * @param int   $signoff_user_id
  *
  * @return string HTML
  */
-function ShiftEntry_delete_view($shiftEntry, $shift, $angeltype, $signoff_user)
+function ShiftEntry_delete_view($shiftEntry, $shift, $angeltype, $signoff_user_id)
 {
     return page_with_title(ShiftEntry_delete_title(), [
         info(sprintf(
@@ -51,7 +53,7 @@ function ShiftEntry_delete_view($shiftEntry, $shift, $angeltype, $signoff_user)
             $angeltype['name']
         ), true),
         buttons([
-            button(user_link($signoff_user['UID']), glyph('remove') . __('cancel')),
+            button(user_link($signoff_user_id), glyph('remove') . __('cancel')),
             button(shift_entry_delete_link($shiftEntry, [
                 'continue' => 1
             ]), glyph('ok') . __('delete'), 'btn-danger')
@@ -100,7 +102,7 @@ function ShiftEntry_create_view_admin($shift, $room, $angeltype, $angeltypes_sel
  * @param array $shift
  * @param array $room
  * @param array $angeltype
- * @param array $signup_user
+ * @param User  $signup_user
  * @param array $users_select
  * @return string
  */
@@ -113,7 +115,7 @@ function ShiftEntry_create_view_supporter($shift, $room, $angeltype, $signup_use
             info(sprintf(__('Do you want to sign up the following user for this shift as %s?'),
                 AngelType_name_render($angeltype)), true),
             form([
-                form_select('user_id', __('User'), $users_select, $signup_user['UID']),
+                form_select('user_id', __('User'), $users_select, $signup_user->id),
                 form_submit('submit', glyph('ok') . __('Save'))
             ])
         ]);

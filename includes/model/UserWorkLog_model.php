@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\Db;
+use Engelsystem\Models\User\User;
 
 /**
  * Load a single work log entry.
@@ -39,7 +40,7 @@ function UserWorkLogsForUser($userId)
  */
 function UserWorkLog_delete($userWorkLog)
 {
-    $user_source = User($userWorkLog['user_id']);
+    $user_source = User::find($userWorkLog['user_id']);
     $result = Db::delete("DELETE FROM `UserWorkLog` WHERE `id`=?", [
         $userWorkLog['id']
     ]);
@@ -62,7 +63,7 @@ function UserWorkLog_delete($userWorkLog)
  */
 function UserWorkLog_update($userWorkLog)
 {
-    $user_source = User($userWorkLog['user_id']);
+    $user_source = User::find($userWorkLog['user_id']);
 
     $result = Db::update("UPDATE `UserWorkLog` SET
         `work_timestamp`=?,
@@ -95,7 +96,7 @@ function UserWorkLog_create($userWorkLog)
 {
     $user = Auth()->user();
 
-    $user_source = User($userWorkLog['user_id']);
+    $user_source = User::find($userWorkLog['user_id']);
 
     $result = Db::insert("INSERT INTO `UserWorkLog` (
             `user_id`,

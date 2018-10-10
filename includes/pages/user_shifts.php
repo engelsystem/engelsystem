@@ -22,10 +22,9 @@ function shifts_title()
  */
 function user_shifts()
 {
-    global $user;
     $request = request();
 
-    if (User_is_freeloader($user)) {
+    if (User_is_freeloader(auth()->user())) {
         redirect(page_link_to('user_myshifts'));
     }
 
@@ -169,7 +168,8 @@ function load_types()
  */
 function view_user_shifts()
 {
-    global $user, $privileges, $ical_shifts;
+    global $privileges, $ical_shifts;
+    $user = auth()->user();
 
     $session = session();
     $ical_shifts = [];
@@ -193,7 +193,7 @@ function view_user_shifts()
 
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
 
-    if ($user['api_key'] == '') {
+    if (empty($user->api_key)) {
         User_reset_api_key($user, false);
     }
 
@@ -212,12 +212,12 @@ function view_user_shifts()
     $end_day = date('Y-m-d', $shiftsFilter->getEndTime());
     $end_time = date('H:i', $shiftsFilter->getEndTime());
 
-    if (config('signup_requires_arrival') && !$user['Gekommen']) {
+    if (config('signup_requires_arrival') && !$user->state->arrived) {
         info(render_user_arrived_hint());
     }
 
     $ownTypes = [];
-    foreach (UserAngelTypes_by_User($user['UID']) as $type) {
+    foreach (UserAngelTypes_by_User($user->id) as $type) {
         $ownTypes[] = (int)$type['angeltype_id'];
     }
 

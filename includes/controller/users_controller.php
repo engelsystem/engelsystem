@@ -135,11 +135,12 @@ function user_link($userId)
  */
 function user_edit_vouchers_controller()
 {
-    global $privileges, $user;
+    global $privileges;
+    $user = auth()->user();
     $request = request();
 
     if ($request->has('user_id')) {
-        $user_source = User($request->input('user_id'));
+        $user_source = User::find($request->input('user_id'));
     } else {
         $user_source = $user;
     }
@@ -164,20 +165,19 @@ function user_edit_vouchers_controller()
         }
 
         if ($valid) {
-            $user_source['got_voucher'] = $vouchers;
-
-            User_update($user_source);
+            $user_source->state->got_voucher = $vouchers;
+            $user->state->save();
 
             success(__('Saved the number of vouchers.'));
             engelsystem_log(User_Nick_render($user_source) . ': ' . sprintf('Got %s vouchers',
-                    $user_source['got_voucher']));
+                    $user_source->state->got_voucher));
 
-            redirect(user_link($user_source['UID']));
+            redirect(user_link($user_source->id));
         }
     }
 
     return [
-        sprintf(__('%s\'s vouchers'), $user_source['Nick']),
+        sprintf(__('%s\'s vouchers'), $user_source->name),
         User_edit_vouchers_view($user_source)
     ];
 }
@@ -187,19 +187,20 @@ function user_edit_vouchers_controller()
  */
 function user_controller()
 {
-    global $privileges, $user;
+    global $privileges;
+    $user = auth()->user();
     $request = request();
 
     $user_source = $user;
     if ($request->has('user_id')) {
-        $user_source = User($request->input('user_id'));
-        if (empty($user_source)) {
+        $user_source = User::find($request->input('user_id'));
+        if (!$user_source) {
             error(__('User not found.'));
             redirect(page_link_to('/'));
         }
     }
 
-    $shifts = Shifts_by_user($user_source['UID'], in_array('user_shifts_admin', $privileges));
+    $shifts = Shifts_by_user($user_source->id, in_array('user_shifts_admin', $privileges));
     foreach ($shifts as &$shift) {
         // TODO: Move queries to model
         $shift['needed_angeltypes'] = DB::select('
@@ -224,30 +225,30 @@ function user_controller()
         }
     }
 
-    if ($user_source['api_key'] == '') {
+    if (empty($user_source->api_key)) {
         User_reset_api_key($user_source, false);
     }
 
-    if ($user_source['force_active']) {
+    if ($user_source->state->force_active) {
         $tshirt_score = __('Enough');
     } else {
-        $tshirt_score = sprintf('%.2f', User_tshirt_score($user_source['UID'])) . '&nbsp;h';
+        $tshirt_score = sprintf('%.2f', User_tshirt_score($user_source->id)) . '&nbsp;h';
     }
 
     return [
-        $user_source['Nick'],
+        $user_source->name,
         User_view(
             $user_source,
             in_array('admin_user', $privileges),
             User_is_freeloader($user_source),
-            User_angeltypes($user_source['UID']),
-            User_groups($user_source['UID']),
+            User_angeltypes($user_source->id),
+            User_groups($user_source->id),
             $shifts,
-            $user['UID'] == $user_source['UID'],
+            $user->id == $user_source->id,
             $tshirt_score,
             in_array('admin_active', $privileges),
             in_array('admin_user_worklog', $privileges),
-            UserWorkLogsForUser($user_source['UID'])
+            UserWorkLogsForUser($user_source->id)
         )
     ];
 }
@@ -406,7 +407,7 @@ function user_password_recovery_title()
 /**
  * Loads a user from param user_id.
  *
- * return array
+ * @return User
  */
 function load_user()
 {
@@ -415,8 +416,8 @@ function load_user()
         redirect(page_link_to());
     }
 
-    $user = User($request->input('user_id'));
-    if (empty($user)) {
+    $user = User::find($request->input('user_id'));
+    if (!$user) {
         error(__('User doesn\'t exist.'));
         redirect(page_link_to());
     }

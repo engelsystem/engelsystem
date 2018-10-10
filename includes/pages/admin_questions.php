@@ -68,7 +68,7 @@ function admin_questions()
         $questions = DB::select('SELECT * FROM `Questions` WHERE NOT `AID` IS NULL');
         foreach ($questions as $question) {
             $user_source = User::find($question['UID']);
-            $answer_user_source = User($question['AID']);
+            $answer_user_source = User::find($question['AID']);
             $answered_questions_table[] = [
                 'from'        => User_Nick_render($user_source),
                 'question'    => str_replace("\n", '<br />', $question['Question']),

@@ -45,7 +45,7 @@ function user_worklog_edit_controller()
     if (empty($userWorkLog)) {
         redirect(user_link($user->id));
     }
-    $user_source = User($userWorkLog['user_id']);
+    $user_source = User::find($userWorkLog['user_id']);
 
     if ($request->has('submit')) {
         list ($valid, $userWorkLog) = user_worklog_from_request($userWorkLog);
@@ -54,7 +54,7 @@ function user_worklog_edit_controller()
             UserWorkLog_update($userWorkLog);
 
             success(__('Work log entry updated.'));
-            redirect(user_link($user_source['UID']));
+            redirect(user_link($user_source->id));
         }
     }
 
@@ -113,12 +113,12 @@ function user_worklog_add_controller()
     $user = auth()->user();
 
     $request = request();
-    $user_source = User($request->input('user_id'));
-    if (empty($user_source)) {
+    $user_source = User::find($request->input('user_id'));
+    if (!$user_source) {
         redirect(user_link($user->id));
     }
 
-    $userWorkLog = UserWorkLog_new($user_source['UID']);
+    $userWorkLog = UserWorkLog_new($user_source->id);
 
     if ($request->has('submit')) {
         list ($valid, $userWorkLog) = user_worklog_from_request($userWorkLog);
@@ -127,7 +127,7 @@ function user_worklog_add_controller()
             UserWorkLog_create($userWorkLog);
 
             success(__('Work log entry created.'));
-            redirect(user_link($user_source['UID']));
+            redirect(user_link($user_source->id));
         }
     }
 
@@ -140,7 +140,7 @@ function user_worklog_add_controller()
 /**
  * Link to work log entry add for given user.
  *
- * @param array $user
+ * @param User $user
  *
  * @return string
  */
@@ -148,7 +148,7 @@ function user_worklog_add_link($user)
 {
     return page_link_to('user_worklog', [
         'action'  => 'add',
-        'user_id' => $user['UID']
+        'user_id' => $user->id,
     ]);
 }
 

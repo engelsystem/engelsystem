@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  * User angeltypes model
@@ -67,15 +68,13 @@ function User_unconfirmed_AngelTypes($userId)
 /**
  * Returns true if user is angeltype supporter or has privilege admin_user_angeltypes.
  *
- * @param array $user
+ * @param User  $user
  * @param array $angeltype
  * @return bool
  */
-function User_is_AngelType_supporter(&$user, $angeltype)
+function User_is_AngelType_supporter($user, $angeltype)
 {
-    if (!isset($user['privileges'])) {
-        $user['privileges'] = privileges_for_user($user['UID']);
-    }
+    $privileges = privileges_for_user($user->id);
 
     return (count(DB::select('
                       SELECT `id`
@@ -86,11 +85,11 @@ function User_is_AngelType_supporter(&$user, $angeltype)
                       LIMIT 1
                 ',
                 [
-                    $user['UID'],
+                    $user->id,
                     $angeltype['id']
                 ]
             )) > 0)
-        || in_array('admin_user_angeltypes', $user['privileges']);
+        || in_array('admin_user_angeltypes', $privileges);
 }
 
 /**
