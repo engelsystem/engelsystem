@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
+use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 
 /**
@@ -22,7 +22,7 @@ function admin_active()
 
     $msg = '';
     $search = '';
-    $forced_count = count(DB::select('SELECT `UID` FROM `User` WHERE `force_active`=1'));
+    $forced_count = State::whereForceActive(true)->count();
     $count = $forced_count;
     $limit = '';
     $set_active = '';
@@ -54,21 +54,26 @@ function admin_active()
             $limit = ' LIMIT ' . $count;
         }
         if ($request->has('ack')) {
-            DB::update('UPDATE `User` SET `Aktiv` = 0 WHERE `Tshirt` = 0');
-            $users = DB::select(sprintf('
+            State::query()
+                ->where('got_shirt', '=', false)
+                ->update(['active' => false]);
+
+            /** @var User[] $users */
+            $users = User::query()->raw(sprintf('
                   SELECT
-                      `User`.*,
+                      `users`.*,
                       COUNT(`ShiftEntry`.`id`) AS `shift_count`,
                       (%s + (
-                          SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`User`.`UID`
+                          SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`users`.`id`
                           AND `work_timestamp` < %s
                       )) AS `shift_length`
-                  FROM `User`
-                  LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
+                  FROM `users`
+                  LEFT JOIN `ShiftEntry` ON `users`.`id` = `ShiftEntry`.`UID`
                   LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID`
-                  WHERE `User`.`Gekommen` = 1
-                  AND `User`.`force_active`=0
-                  GROUP BY `User`.`UID`
+                  LEFT JOIN `users_state` ON `users`.`id` = `users_state`.`user_id`
+                  WHERE `users_state`.`arrived` = 1
+                  AND `users_state`.`force_active` = 0
+                  GROUP BY `users`.`id`
                   ORDER BY `force_active` DESC, `shift_length` DESC
                   %s
                 ',
@@ -78,10 +83,12 @@ function admin_active()
             ));
             $user_nicks = [];
             foreach ($users as $usr) {
-                DB::update('UPDATE `User` SET `Aktiv` = 1 WHERE `UID`=?', [$usr['UID']]);
+                $usr->state->active = true;
+                $usr->state->save();
                 $user_nicks[] = User_Nick_render($usr);
             }
-            DB::update('UPDATE `User` SET `Aktiv`=1 WHERE `force_active`=TRUE');
+
+            State::whereForceActive(true)->update(['active' => 'true']);
             engelsystem_log('These angels are active now: ' . join(', ', $user_nicks));
 
             $limit = '';
@@ -103,7 +110,8 @@ function admin_active()
         $user_id = $request->input('active');
         $user_source = User::find($user_id);
         if ($user_source) {
-            DB::update('UPDATE `User` SET `Aktiv`=1 WHERE `UID`=? LIMIT 1', [$user_id]);
+            $user_source->state->active = true;
+            $user_source->state->save();
             engelsystem_log('User ' . User_Nick_render($user_source) . ' is active now.');
             $msg = success(__('Angel has been marked as active.'), true);
         } else {
@@ -113,7 +121,8 @@ function admin_active()
         $user_id = $request->input('not_active');
         $user_source = User::find($user_id);
         if (!$user_source) {
-            DB::update('UPDATE `User` SET `Aktiv`=0 WHERE `UID`=? LIMIT 1', [$user_id]);
+            $user_source->state->active = false;
+            $user_source->state->save();
             engelsystem_log('User ' . User_Nick_render($user_source) . ' is NOT active now.');
             $msg = success(__('Angel has been marked as not active.'), true);
         } else {
@@ -123,7 +132,8 @@ function admin_active()
         $user_id = $request->input('tshirt');
         $user_source = User::find($user_id);
         if (!$user_source) {
-            DB::update('UPDATE `User` SET `Tshirt`=1 WHERE `UID`=? LIMIT 1', [$user_id]);
+            $user_source->state->got_shirt = true;
+            $user_source->state->save();
             engelsystem_log('User ' . User_Nick_render($user_source) . ' has tshirt now.');
             $msg = success(__('Angel has got a t-shirt.'), true);
         } else {
@@ -133,7 +143,8 @@ function admin_active()
         $user_id = $request->input('not_tshirt');
         $user_source = User::find($user_id);
         if (!$user_source) {
-            DB::update('UPDATE `User` SET `Tshirt`=0 WHERE `UID`=? LIMIT 1', [$user_id]);
+            $user_source->state->got_shirt = false;
+            $user_source->state->save();
             engelsystem_log('User ' . User_Nick_render($user_source) . ' has NO tshirt.');
             $msg = success(__('Angel has got no t-shirt.'), true);
         } else {
@@ -141,20 +152,22 @@ function admin_active()
         }
     }
 
-    $users = DB::select(sprintf('
+    $users = User::query()->raw(sprintf('
             SELECT
-                `User`.*,
+                `users`.*,
                 COUNT(`ShiftEntry`.`id`) AS `shift_count`,
                 (%s + (
-                    SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`User`.`UID`
+                    SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`users`.`id`
                     AND `work_timestamp` < %s
                 )) AS `shift_length`
-            FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
+            FROM `users`
+            LEFT JOIN `users_state` ON `users`.`id` = `users_state`.`user_id`
+            LEFT JOIN `ShiftEntry` ON `users`.`id` = `ShiftEntry`.`UID`
             LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` '
         . ($show_all_shifts ? '' : 'AND (`Shifts`.`end` < ' . time() . " OR `Shifts`.`end` IS NULL)") . '
-            WHERE `User`.`Gekommen` = 1
-            GROUP BY `User`.`UID`
-            ORDER BY `force_active` DESC, `shift_length` DESC
+            WHERE `users_state`.`arrived` = 1
+            GROUP BY `users`.`id`
+            ORDER BY `users_state`.`force_active` DESC, `shift_length` DESC
             %s
         ',
         $shift_sum_formula,
@@ -167,11 +180,11 @@ function admin_active()
     } else {
         $tokens = explode(' ', $search);
     }
-    foreach ($users as &$usr) {
+    foreach ($users as $usr) {
         if (count($tokens) > 0) {
             $match = false;
             foreach ($tokens as $t) {
-                if (stristr($usr['Nick'], trim($t))) {
+                if (stristr($usr->name, trim($t))) {
                     $match = true;
                     break;
                 }
@@ -180,18 +193,20 @@ function admin_active()
                 continue;
             }
         }
-        $usr['nick'] = User_Nick_render($usr);
-        $usr['shirt_size'] = $tshirt_sizes[$usr['Size']];
-        $usr['work_time'] = round($usr['shift_length'] / 60)
+
+        $userData = [];
+        $userData['nick'] = User_Nick_render($usr);
+        $userData['shirt_size'] = $tshirt_sizes[$usr->personalData->shirt_size];
+        $userData['work_time'] = round($usr['shift_length'] / 60)
             . ' min (' . sprintf('%.2f', $usr['shift_length'] / 3600) . '&nbsp;h)';
-        $usr['active'] = glyph_bool($usr['Aktiv'] == 1);
-        $usr['force_active'] = glyph_bool($usr['force_active'] == 1);
-        $usr['tshirt'] = glyph_bool($usr['Tshirt'] == 1);
+        $userData['active'] = glyph_bool($usr->state->active == 1);
+        $userData['force_active'] = glyph_bool($usr->state->force_active == 1);
+        $userData['tshirt'] = glyph_bool($usr->state->got_shirt == 1);
 
         $actions = [];
-        if ($usr['Aktiv'] == 0) {
+        if (!$usr->state->active) {
             $parameters = [
-                'active' => $usr['UID'],
+                'active' => $usr->id,
                 'search' => $search,
             ];
             if ($show_all_shifts) {
@@ -201,9 +216,9 @@ function admin_active()
                 . __('set active')
                 . '</a>';
         }
-        if ($usr['Aktiv'] == 1) {
+        if ($usr->state->active) {
             $parametersRemove = [
-                'not_active' => $usr['UID'],
+                'not_active' => $usr->id,
                 'search'     => $search,
             ];
             if ($show_all_shifts) {
@@ -213,9 +228,9 @@ function admin_active()
                 . __('remove active')
                 . '</a>';
         }
-        if ($usr['Tshirt'] == 0) {
+        if (!$usr->state->got_shirt) {
             $parametersShirt = [
-                'tshirt' => $usr['UID'],
+                'tshirt' => $usr->id,
                 'search' => $search,
             ];
             if ($show_all_shifts) {
@@ -225,9 +240,9 @@ function admin_active()
                 . __('got t-shirt')
                 . '</a>';
         }
-        if ($usr['Tshirt'] == 1) {
+        if ($usr->state->got_shirt) {
             $parameters = [
-                'not_tshirt' => $usr['UID'],
+                'not_tshirt' => $usr->id,
                 'search'     => $search,
             ];
             if ($show_all_shifts) {
@@ -238,30 +253,27 @@ function admin_active()
                 . '</a>';
         }
 
-        $usr['actions'] = join(' ', $actions);
+        $userData['actions'] = join(' ', $actions);
 
-        $matched_users[] = $usr;
+        $matched_users[] = $userData;
     }
 
     $shirt_statistics = [];
     foreach (array_keys($tshirt_sizes) as $size) {
-        $gc = DB::selectOne(
-            'SELECT count(*) FROM `User` WHERE `Size`=? AND `Tshirt`=1',
-            [$size]
-        );
-        $gc = array_shift($gc);
-
+        $gc = State::query()
+            ->leftJoin('users_settings', 'users_state.user_id', '=', 'users_settings.user_id')
+            ->where('users_state.got_shirt', '=', true)
+            ->where('users_personal_data.shirt_size', '=', $size)
+            ->count();
         $shirt_statistics[] = [
             'size'  => $size,
-            'given' => (int)$gc
+            'given' => $gc
         ];
     }
 
-    $shirtCount = User_tshirts_count();
-
     $shirt_statistics[] = [
         'size'  => '<b>' . __('Sum') . '</b>',
-        'given' => '<b>' . $shirtCount . '</b>'
+        'given' => '<b>' . State::whereGotShirt(true)->count() . '</b>'
     ];
 
     return page_with_title(admin_active_title(), [

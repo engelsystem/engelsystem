@@ -5,20 +5,17 @@
  */
 function user_ical()
 {
-    global $user;
     $request = request();
 
     if (!$request->has('key') || !preg_match('/^[\da-f]{32}$/', $request->input('key'))) {
         engelsystem_error('Missing key.');
     }
-    $key = $request->input('key');
 
-    $user = User_by_api_key($key);
-    if (empty($user)) {
+    $user = auth()->apiUser('key');
+    if (!$user) {
         engelsystem_error('Key invalid.');
     }
-
-    if (!in_array('ical', privileges_for_user($user['UID']))) {
+    if (!in_array('ical', privileges_for_user($user->id))) {
         engelsystem_error('No privilege for ical.');
     }
 

@@ -362,16 +362,17 @@ function user_angeltype_add_controller()
  */
 function user_angeltype_join_controller($angeltype)
 {
-    global $user, $privileges;
+    global $privileges;
+    $user = auth()->user();
 
-    $user_angeltype = UserAngelType_by_User_and_AngelType($user['UID'], $angeltype);
+    $user_angeltype = UserAngelType_by_User_and_AngelType($user->id, $angeltype);
     if (!empty($user_angeltype)) {
         error(sprintf(__('You are already a %s.'), $angeltype['name']));
         redirect(page_link_to('angeltypes'));
     }
 
     if (request()->has('confirmed')) {
-        $user_angeltype_id = UserAngelType_create($user['UID'], $angeltype);
+        $user_angeltype_id = UserAngelType_create($user->id, $angeltype);
 
         $success_message = sprintf(__('You joined %s.'), $angeltype['name']);
         engelsystem_log(sprintf(
@@ -382,7 +383,7 @@ function user_angeltype_join_controller($angeltype)
         success($success_message);
 
         if (in_array('admin_user_angeltypes', $privileges)) {
-            UserAngelType_confirm($user_angeltype_id, $user['UID']);
+            UserAngelType_confirm($user_angeltype_id, $user->id);
             engelsystem_log(sprintf(
                 'User %s confirmed as %s.',
                 User_Nick_render($user),

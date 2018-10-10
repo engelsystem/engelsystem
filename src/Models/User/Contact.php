@@ -7,9 +7,9 @@ namespace Engelsystem\Models\User;
  * @property string  $email
  * @property string  $mobile
  *
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Contact whereDect($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Contact whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Contact whereMobile($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Contact[] whereDect($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Contact[] whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Contact[] whereMobile($value)
  */
 class Contact extends HasUserModel
 {

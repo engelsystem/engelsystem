@@ -21,13 +21,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\State        $state
  *
  * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User wherePassword($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User whereApiKey($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User whereLastLoginAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] wherePassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] whereApiKey($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] whereLastLoginAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] whereUpdatedAt($value)
  */
 class User extends BaseModel
 {

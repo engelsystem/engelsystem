@@ -2,22 +2,14 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\User;
 use Engelsystem\ValidationResult;
+use Illuminate\Database\Query\JoinClause;
 
 /**
  * User model
  */
-
-/**
- * Delete a user
- *
- * @param int $user_id
- */
-function User_delete($user_id)
-{
-    DB::delete('DELETE FROM `User` WHERE `UID`=?', [$user_id]);
-}
 
 /**
  * Returns the tshirt score (number of hours counted for tshirt).
@@ -29,14 +21,14 @@ function User_delete($user_id)
 function User_tshirt_score($userId)
 {
     $shift_sum_formula = User_get_shifts_sum_query();
-    $result_shifts = DB::selectOne('
-        SELECT ROUND((' . $shift_sum_formula . ') / 3600, 2) AS `tshirt_score`
-        FROM `User` LEFT JOIN `ShiftEntry` ON `User`.`UID` = `ShiftEntry`.`UID`
+    $result_shifts = DB::selectOne(sprintf('
+        SELECT ROUND((%s) / 3600, 2) AS `tshirt_score`
+        FROM `users` LEFT JOIN `ShiftEntry` ON `users`.`id` = `ShiftEntry`.`UID`
         LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` 
-        WHERE `User`.`UID` = ?
+        WHERE `users`.`id` = ?
         AND `Shifts`.`end` < ?
-        GROUP BY `User`.`UID`
-    ', [
+        GROUP BY `users`.`id`
+    ', $shift_sum_formula), [
         $userId,
         time()
     ]);
@@ -46,9 +38,9 @@ function User_tshirt_score($userId)
 
     $result_worklog = DB::selectOne('
         SELECT SUM(`work_hours`) AS `tshirt_score`
-        FROM `User` 
-        LEFT JOIN `UserWorkLog` ON `User`.`UID` = `UserWorkLog`.`user_id`
-        WHERE `User`.`UID` = ?
+        FROM `users` 
+        LEFT JOIN `UserWorkLog` ON `users`.`id` = `UserWorkLog`.`user_id`
+        WHERE `users`.`id` = ?
         AND `UserWorkLog`.`work_timestamp` < ?
     ', [
         $userId,
@@ -59,181 +51,6 @@ function User_tshirt_score($userId)
     }
 
     return $result_shifts['tshirt_score'] + $result_worklog['tshirt_score'];
-}
-
-/**
- * Update user.
- *
- * @param array $user
- */
-function User_update($user)
-{
-    DB::update('
-          UPDATE `User` SET
-          `Nick`=?,
-          `Name`=?,
-          `Vorname`=?,
-          `Alter`=?,
-          `Telefon`=?,
-          `DECT`=?,
-          `Handy`=?,
-          `email`=?,
-          `email_shiftinfo`=?,
-          `email_by_human_allowed`=?,
-          `jabber`=?,
-          `Size`=?,
-          `Gekommen`=?,
-          `Aktiv`=?,
-          `force_active`=?,
-          `Tshirt`=?,
-          `color`=?,
-          `Sprache`=?,
-          `Hometown`=?,
-          `got_voucher`=?,
-          `arrival_date`=?,
-          `planned_arrival_date`=?,
-          `planned_departure_date`=?
-          WHERE `UID`=?
-        ',
-        [
-            $user['Nick'],
-            $user['Name'],
-            $user['Vorname'],
-            $user['Alter'],
-            $user['Telefon'],
-            $user['DECT'],
-            $user['Handy'],
-            $user['email'],
-            (int)$user['email_shiftinfo'],
-            (int)$user['email_by_human_allowed'],
-            $user['jabber'],
-            $user['Size'],
-            $user['Gekommen'],
-            $user['Aktiv'],
-            (int)$user['force_active'],
-            $user['Tshirt'],
-            $user['color'],
-            $user['Sprache'],
-            $user['Hometown'],
-            $user['got_voucher'],
-            $user['arrival_date'],
-            $user['planned_arrival_date'],
-            $user['planned_departure_date'],
-            $user['UID'],
-        ]
-    );
-}
-
-/**
- * Counts all forced active users.
- *
- * @return int
- */
-function User_force_active_count()
-{
-    $result = DB::selectOne('SELECT COUNT(*) FROM `User` WHERE `force_active` = 1');
-
-    if (empty($result)) {
-        return 0;
-    }
-
-    return (int)array_shift($result);
-}
-
-/**
- * @return int
- */
-function User_active_count()
-{
-    $result = DB::selectOne('SELECT COUNT(*) FROM `User` WHERE `Aktiv` = 1');
-
-    if (empty($result)) {
-        return 0;
-    }
-
-    return (int)array_shift($result);
-}
-
-/**
- * @return int
- */
-function User_got_voucher_count()
-{
-    $result = DB::selectOne('SELECT SUM(`got_voucher`) FROM `User`');
-
-    if (empty($result)) {
-        return 0;
-    }
-
-    return (int)array_shift($result);
-}
-
-/**
- * @return int
- */
-function User_arrived_count()
-{
-    $result = DB::selectOne('SELECT COUNT(*) FROM `User` WHERE `Gekommen` = 1');
-
-    if (empty($result)) {
-        return 0;
-    }
-
-    return (int)array_shift($result);
-}
-
-/**
- * @return int
- */
-function User_tshirts_count()
-{
-    $result = DB::selectOne('SELECT COUNT(*) FROM `User` WHERE `Tshirt` = 1');
-
-    if (empty($result)) {
-        return 0;
-    }
-
-    return (int)array_shift($result);
-}
-
-/**
- * Returns all column names for sorting in an array.
- *
- * @return array
- */
-function User_sortable_columns()
-{
-    return [
-        'Nick',
-        'Name',
-        'Vorname',
-        'Alter',
-        'DECT',
-        'email',
-        'Size',
-        'Gekommen',
-        'Aktiv',
-        'force_active',
-        'Tshirt',
-        'lastLogIn'
-    ];
-}
-
-/**
- * Get all users, ordered by Nick by default or by given param.
- *
- * @param string $order_by
- * @return array
- */
-function Users($order_by = 'Nick')
-{
-    return DB::select(sprintf('
-            SELECT *
-            FROM `User`
-            ORDER BY `%s` ASC
-        ',
-        trim(DB::getPdo()->quote($order_by), '\'')
-    ));
 }
 
 /**
@@ -251,60 +68,43 @@ function User_is_freeloader($user)
  * Returns all users that are not member of given angeltype.
  *
  * @param array $angeltype Angeltype
- * @return array[]
+ * @return User[]
  */
 function Users_by_angeltype_inverted($angeltype)
 {
-    return DB::select('
-            SELECT `User`.*
-            FROM `User`
-            LEFT JOIN `UserAngelTypes`
-            ON (`User`.`UID`=`UserAngelTypes`.`user_id` AND `angeltype_id`=?)
-            WHERE `UserAngelTypes`.`id` IS NULL
-            ORDER BY `Nick`
-        ',
-        [
-            $angeltype['id']
-        ]
-    );
+    return User::query()
+        ->leftJoin('UserAngelTypes', 'users.id', '=', 'UserAngelTypes.user_id')
+        ->leftJoin('UserAngelTypes', function ($query) use ($angeltype) {
+            /** @var JoinClause $query */
+            $query
+                ->on('users.id', '=', 'UserAngelTypes.user_id')
+                ->on('UserAngelTypes.angeltype_id', '=', $angeltype['id']);
+        })
+        ->whereNull('UserAngelTypes.id')
+        ->orderBy('users.name')
+        ->get('users.*');
 }
 
 /**
  * Returns all members of given angeltype.
  *
  * @param array $angeltype
- * @return array[]
+ * @return User[]
  */
 function Users_by_angeltype($angeltype)
 {
-    return DB::select('
-            SELECT
-            `User`.*,
-            `UserAngelTypes`.`id` AS `user_angeltype_id`,
-            `UserAngelTypes`.`confirm_user_id`,
-            `UserAngelTypes`.`supporter`,
-            (`UserDriverLicenses`.`user_id` IS NOT NULL) AS `wants_to_drive`,
-            `UserDriverLicenses`.*
-            FROM `User`
-            JOIN `UserAngelTypes` ON `User`.`UID`=`UserAngelTypes`.`user_id`
-            LEFT JOIN `UserDriverLicenses` ON `User`.`UID`=`UserDriverLicenses`.`user_id`
-            WHERE `UserAngelTypes`.`angeltype_id`=?
-            ORDER BY `Nick`
-        ',
-        [
-            $angeltype['id']
-        ]
-    );
-}
-
-/**
- * Returns User id array
- *
- * @return array[]
- */
-function User_ids()
-{
-    return DB::select('SELECT `UID` FROM `User`');
+    return User::query()
+        ->join('UserAngelTypes', 'users.id', '=', 'UserAngelTypes.user_id')
+        ->leftJoin('UserDriverLicenses', 'users.id', '=', 'UserDriverLicenses.user_id')
+        ->where('UserAngelTypes.angeltype_id', '=', $angeltype['id'])
+        ->get([
+            'users.*',
+            '`UserAngelTypes`.`id` AS `user_angeltype_id`',
+            '`UserAngelTypes`.`confirm_user_id`',
+            '`UserAngelTypes`.`supporter`',
+            '(`UserDriverLicenses`.`user_id` IS NOT NULL) AS `wants_to_drive`',
+            '`UserDriverLicenses`.*',
+        ]);
 }
 
 /**
@@ -329,22 +129,6 @@ function User_validate_mail($mail)
 {
     $mail = strip_item($mail);
     return new ValidationResult(check_email($mail), $mail);
-}
-
-/**
- * Validate user jabber address
- *
- * @param string $jabber Jabber-ID to validate
- * @return ValidationResult
- */
-function User_validate_jabber($jabber)
-{
-    $jabber = strip_item($jabber);
-    if ($jabber == '') {
-        // Empty is ok
-        return new ValidationResult(true, '');
-    }
-    return new ValidationResult(check_email($jabber), $jabber);
 }
 
 /**
@@ -418,45 +202,6 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
 }
 
 /**
- * Returns User by api_key.
- *
- * @param string $api_key User api key
- * @return array|null Matching user, null if not found
- */
-function User_by_api_key($api_key)
-{
-    $user = DB::selectOne('SELECT * FROM `User` WHERE `api_key`=? LIMIT 1', [$api_key]);
-
-    return empty($user) ? null : $user;
-}
-
-/**
- * Returns User by email.
- *
- * @param string $email
- * @return array|null Matching user, null when not found
- */
-function User_by_email($email)
-{
-    $user = DB::selectOne('SELECT * FROM `User` WHERE `email`=? LIMIT 1', [$email]);
-
-    return empty($user) ? null : $user;
-}
-
-/**
- * Returns User by password token.
- *
- * @param string $token
- * @return array|null Matching user, null when not found
- */
-function User_by_password_recovery_token($token)
-{
-    $user = DB::selectOne('SELECT * FROM `User` WHERE `password_recovery_token`=? LIMIT 1', [$token]);
-
-    return empty($user) ? null : $user;
-}
-
-/**
  * Generates a new api key for given user.
  *
  * @param User $user
@@ -475,27 +220,18 @@ function User_reset_api_key($user, $log = true)
 /**
  * Generates a new password recovery token for given user.
  *
- * @param array $user
+ * @param User $user
  * @return string
  */
-function User_generate_password_recovery_token(&$user)
+function User_generate_password_recovery_token($user)
 {
-    $user['password_recovery_token'] = md5($user['Nick'] . time() . rand());
-    DB::update('
-            UPDATE `User`
-            SET `password_recovery_token`=?
-            WHERE `UID`=?
-            LIMIT 1
-        ',
-        [
-            $user['password_recovery_token'],
-            $user['UID'],
-        ]
-    );
+    $reset = PasswordReset::findOrNew($user->id);
+    $reset->token = md5($user->name . time() . rand());
+    $reset->save();
 
     engelsystem_log('Password recovery for ' . User_Nick_render($user) . ' started.');
 
-    return $user['password_recovery_token'];
+    return $reset->token;
 }
 
 /**

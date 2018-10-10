@@ -147,7 +147,7 @@ function UserAngelType_delete_view($user_angeltype, $user, $angeltype)
 
 /**
  * @param array   $angeltype
- * @param array[] $users_source
+ * @param User[] $users_source
  * @param int     $user_id
  * @return string
  */
@@ -155,7 +155,7 @@ function UserAngelType_add_view($angeltype, $users_source, $user_id)
 {
     $users = [];
     foreach ($users_source as $user_source) {
-        $users[$user_source['UID']] = User_Nick_render($user_source);
+        $users[$user_source->id] = User_Nick_render($user_source);
     }
 
     return page_with_title(__('Add user to angeltype'), [
@@ -176,7 +176,7 @@ function UserAngelType_add_view($angeltype, $users_source, $user_id)
 }
 
 /**
- * @param array $user
+ * @param User $user
  * @param array $angeltype
  * @return string
  */
@@ -194,7 +194,7 @@ function UserAngelType_join_view($user, $angeltype)
             button(
                 page_link_to(
                     'user_angeltypes',
-                    ['action' => 'add', 'angeltype_id' => $angeltype['id'], 'user_id' => $user['UID'], 'confirmed' => 1]
+                    ['action' => 'add', 'angeltype_id' => $angeltype['id'], 'user_id' => $user->id, 'confirmed' => 1]
                 ),
                 glyph('ok') . __('save'),
                 'btn-primary'

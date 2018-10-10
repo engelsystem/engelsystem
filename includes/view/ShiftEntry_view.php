@@ -76,7 +76,7 @@ function ShiftEntry_delete_title()
  * @param array $room
  * @param array $angeltype
  * @param array $angeltypes_select
- * @param array $signup_user
+ * @param User $signup_user
  * @param array $users_select
  * @return string
  */
@@ -90,7 +90,7 @@ function ShiftEntry_create_view_admin($shift, $room, $angeltype, $angeltypes_sel
             info(__('Do you want to sign up the following user for this shift?'), true),
             form([
                 form_select('angeltype_id', __('Angeltype'), $angeltypes_select, $angeltype['id']),
-                form_select('user_id', __('User'), $users_select, $signup_user['UID']),
+                form_select('user_id', __('User'), $users_select, $signup_user->id),
                 form_submit('submit', glyph('ok') . __('Save'))
             ])
         ]);
