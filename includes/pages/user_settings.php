@@ -57,7 +57,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 
     if ($request->has('planned_departure_date')) {
         $tmp = parse_date('Y-m-d H:i', $request->input('planned_departure_date') . ' 00:00');
-        $result = User_validate_planned_departure_date($user_source->personalData->arrival_date->getTimestamp(), $tmp);
+        $result = User_validate_planned_departure_date($user_source->state->arrival_date->getTimestamp(), $tmp);
         $user_source->personalData->planned_departure_date = Carbon::createFromTimestamp($result->getValue());
         if (!$result->isValid()) {
             $valid = false;
