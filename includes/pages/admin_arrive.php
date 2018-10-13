@@ -29,9 +29,8 @@ function admin_arrive()
         $user_source = User::find($user_id);
         if ($user_source) {
             $user_source->state->arrived = false;
+            $user_source->state->arrival_date = null;
             $user_source->state->save();
-            $user_source->personalData->arrival_date = null;
-            $user_source->personalData->save();
 
             engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source));
             success(__('Reset done. Angel has not arrived.'));
@@ -44,8 +43,7 @@ function admin_arrive()
         $user_source = User::find($user_id);
         if ($user_source) {
             $user_source->state->arrived = true;
-            $user_source->state->save();
-            $user_source->personalData->arrival_date = new Carbon\Carbon();
+            $user_source->state->arrival_date = new Carbon\Carbon();
             $user_source->personalData->save();
 
             engelsystem_log('User set has arrived: ' . User_Nick_render($user_source));
@@ -89,7 +87,7 @@ function admin_arrive()
             $usr['rendered_planned_departure_date'] = '-';
         }
         $usr['rendered_planned_arrival_date'] = $usr->personalData->planned_arrival_date->format('Y-m-d');
-        $usr['rendered_arrival_date'] = $usr->personalData->arrival_date ? $usr->personalData->arrival_date->format('Y-m-d') : '-';
+        $usr['rendered_arrival_date'] = $usr->state->arrival_date ? $usr->state->arrival_date->format('Y-m-d') : '-';
         $usr['arrived'] = $usr->state->arrived ? __('yes') : '';
         $usr['actions'] = $usr->state->arrived == 1
             ? '<a href="' . page_link_to(
@@ -101,8 +99,8 @@ function admin_arrive()
                 ['arrived' => $usr->id, 'search' => $search]
             ) . '">' . __('arrived') . '</a>';
 
-        if ($usr->personalData->arrival_date) {
-            $day = $usr->personalData->arrival_date->format('Y-m-d');
+        if ($usr->state->arrival_date) {
+            $day = $usr->state->arrival_date->format('Y-m-d');
             if (!isset($arrival_count_at_day[$day])) {
                 $arrival_count_at_day[$day] = 0;
             }

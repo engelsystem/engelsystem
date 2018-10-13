@@ -25,6 +25,7 @@ function User_settings_view(
     $tshirt_sizes
 ) {
     $personalData = $user_source->personalData;
+    $state = $user_source->state;
     return page_with_title(settings_title(), [
         msg(),
         div('row', [
@@ -38,7 +39,7 @@ function User_settings_view(
                     form_date(
                         'planned_arrival_date',
                         __('Planned date of arrival') . ' ' . entry_required(),
-                        $personalData->arrival_date ? $personalData->arrival_date->getTimestamp() : '',
+                        $state->arrival_date ? $state->arrival_date->getTimestamp() : '',
                         $buildup_start_date,
                         $teardown_end_date
                     ),
@@ -726,7 +727,7 @@ function User_view_state_admin($freeloader, $user_source)
         $state[] = '<span class="text-success">' . glyph('home')
             . sprintf(
                 __('Arrived at %s'),
-                $user_source->personalData->arrival_date ? $user_source->personalData->arrival_date->format('Y-m-d') : ''
+                $user_source->state->arrival_date ? $user_source->state->arrival_date->format('Y-m-d') : ''
             )
             . '</span>';
 

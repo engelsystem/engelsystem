@@ -42,7 +42,6 @@ class CreateUsersTables extends Migration
             $table->string('shirt_size', 4)->nullable();
 
             $table->date('planned_arrival_date')->nullable();
-            $table->dateTime('arrival_date')->nullable();
             $table->date('planned_departure_date')->nullable();
         });
 
@@ -67,6 +66,7 @@ class CreateUsersTables extends Migration
             $this->referencesUser($table);
 
             $table->boolean('arrived')->default(false);
+            $table->dateTime('arrival_date')->nullable();
             $table->boolean('active')->default(false);
             $table->boolean('force_active')->default(false);
             $table->boolean('got_shirt')->default(false);
@@ -114,7 +114,6 @@ class CreateUsersTables extends Migration
                     'last_name'              => $data->Name ?: null,
                     'shirt_size'             => $data->Size ?: null,
                     'planned_arrival_date'   => $data->planned_arrival_date ? Carbon::createFromTimestamp($data->planned_arrival_date) : null,
-                    'arrival_date'           => $data->arrival_date ? Carbon::createFromTimestamp($data->arrival_date) : null,
                     'planned_departure_date' => $data->planned_departure_date ? Carbon::createFromTimestamp($data->planned_departure_date) : null,
                 ]);
                 $personalData->user()
@@ -133,6 +132,7 @@ class CreateUsersTables extends Migration
 
                 $state = new State([
                     'arrived'      => $data->Gekommen,
+                    'arrival_date' => $data->arrival_date ? Carbon::createFromTimestamp($data->arrival_date) : null,
                     'active'       => $data->Aktiv,
                     'force_active' => $data->force_active,
                     'got_shirt'    => $data->Tshirt,
@@ -242,7 +242,7 @@ class CreateUsersTables extends Migration
                     'CreateDate'             => $user->created_at ? $user->created_at->toDateTimeString() : null,
                     'api_key'                => $user->api_key,
                     'got_voucher'            => $state->got_voucher,
-                    'arrival_date'           => $personal->arrival_date ? $personal->arrival_date->getTimestamp() : null,
+                    'arrival_date'           => $state->arrival_date ? $state->arrival_date->getTimestamp() : null,
                     'planned_arrival_date'   => $personal->planned_arrival_date ? $personal->planned_arrival_date->getTimestamp() : null,
                     'planned_departure_date' => $personal->planned_departure_date ? $personal->planned_departure_date->getTimestamp() : null,
                     'email_by_human_allowed' => $settings->email_human,
