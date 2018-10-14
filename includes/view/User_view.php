@@ -212,7 +212,6 @@ function Users_view(
     $tshirts_count,
     $voucher_count
 ) {
-
     $usersList = [];
     foreach ($users as $user) {
         $u = [];

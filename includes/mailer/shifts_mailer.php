@@ -64,7 +64,8 @@ function mail_shift_change($old_shift, $new_shift)
     $message .= $new_room['Name'] . "\n";
 
     foreach ($users as $user) {
-        if ($user['email_shiftinfo']) {
+        $user = User::find($user->id);
+        if ($user->settings->email_shiftinfo) {
             engelsystem_email_to_user(
                 $user,
                 __('Your Shift has changed'),
@@ -91,7 +92,8 @@ function mail_shift_delete($shift)
     $message .= $room['Name'] . "\n";
 
     foreach ($users as $user) {
-        if ($user['email_shiftinfo']) {
+        $user = User::find($user->id);
+        if ($user->settings->email_shiftinfo) {
             engelsystem_email_to_user($user, __('Your Shift was deleted'), $message, true);
         }
     }

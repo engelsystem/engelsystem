@@ -43,10 +43,10 @@ function Message_send($receiver_user_id, $text)
     if (
         ($text != '' && is_numeric($receiver_user_id))
         && count(DB::select('
-            SELECT `UID`
-            FROM `User`
-            WHERE `UID` = ?
-            AND NOT `UID` = ?
+            SELECT `id`
+            FROM `users`
+            WHERE `id` = ?
+            AND NOT `id` = ?
             LIMIT 1
         ', [$receiver_user_id, $user->id])) > 0
     ) {

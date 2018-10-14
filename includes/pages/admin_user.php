@@ -244,36 +244,24 @@ function admin_user()
                 if (in_array('admin_active', $privileges)) {
                     $force_active = $request->input('force_active');
                 }
-                $sql = '
-                    UPDATE `User` SET
-                      `Nick` = ?,
-                      `Name` = ?,
-                      `Vorname` = ?,
-                      `Handy` = ?,
-                      `DECT` = ?,
-                      ' . ($user_source->settings->email_human
-                        ? '`email` = ' . DB::getPdo()->quote($request->postData('eemail')) . ','
-                        : '') . '
-                      `Size` = ?,
-                      `Gekommen`= ?,
-                      `Aktiv`= ?,
-                      `force_active`= ?,
-                      `Tshirt` = ?
-                      WHERE `UID` = ?
-                      LIMIT 1';
-                DB::update($sql, [
-                    User_validate_Nick($request->postData('eNick')),
-                    $request->postData('eName'),
-                    $request->postData('eVorname'),
-                    $request->postData('eHandy'),
-                    $request->postData('eDECT'),
-                    $request->postData('eSize'),
-                    $request->postData('eGekommen'),
-                    $request->postData('eAktiv'),
-                    $force_active,
-                    $request->postData('eTshirt'),
-                    $user_id,
-                ]);
+                if($user_source->settings->email_human){
+                    $user_source->email = $request->postData('eemail');
+                }
+                $user_source->name = User_validate_Nick($request->postData('eNick'));
+                $user_source->save();
+                $user_source->personalData->first_name = $request->postData('eVorname');
+                $user_source->personalData->last_name = $request->postData('eName');
+                $user_source->personalData->shirt_size = $request->postData('eSize');
+                $user_source->personalData->save();
+                $user_source->contact->mobile = $request->postData('eHandy');
+                $user_source->contact->dect = $request->postData('eDECT');
+                $user_source->contact->save();
+                $user_source->state->arrived = $request->postData('eGekommen');
+                $user_source->state->active = $request->postData('eAktiv');
+                $user_source->state->force_active = $force_active;
+                $user_source->state->got_shirt = $request->postData('eTshirt');
+                $user_source->state->save();
+
                 engelsystem_log(
                     'Updated user: ' . $request->postData('eNick') . ', ' . $request->postData('eSize')
                     . ', arrived: ' . $request->postData('eVorname')

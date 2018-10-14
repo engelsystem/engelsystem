@@ -26,7 +26,7 @@ function user_myshifts()
         $request->has('id')
         && in_array('user_shifts_admin', $privileges)
         && preg_match('/^\d{1,}$/', $request->input('id'))
-        && count(DB::select('SELECT `UID` FROM `User` WHERE `UID`=?', [$request->input('id')])) > 0
+        && User::find($request->input('id'))
     ) {
         $shift_entry_id = $request->input('id');
     } else {

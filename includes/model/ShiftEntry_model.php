@@ -48,11 +48,7 @@ function ShiftEntries_by_shift($shift_id)
 {
     return DB::select('
           SELECT
-              `User`.`Nick`,
-              `User`.`email`,
-              `User`.`email_shiftinfo`,
-              `User`.`Sprache`,
-              `User`.`Gekommen`,
+              `users`.*,
               `ShiftEntry`.`UID`,
               `ShiftEntry`.`TID`,
               `ShiftEntry`.`SID`,
@@ -60,7 +56,7 @@ function ShiftEntries_by_shift($shift_id)
               `ShiftEntry`.`Comment`,
               `ShiftEntry`.`freeloaded`
           FROM `ShiftEntry`
-          JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
+          JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`
           JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
           WHERE `ShiftEntry`.`SID` = ?',
         [$shift_id]
