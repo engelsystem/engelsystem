@@ -235,11 +235,7 @@ function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
     $sql = '
       SELECT
-          `User`.`Nick`,
-          `User`.`email`,
-          `User`.`email_shiftinfo`,
-          `User`.`Sprache`,
-          `User`.`Gekommen`,
+          users.*
           `ShiftEntry`.`UID`,
           `ShiftEntry`.`TID`,
           `ShiftEntry`.`SID`,
@@ -247,7 +243,7 @@ function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
           `ShiftEntry`.`freeloaded`
       FROM `Shifts`
       JOIN `ShiftEntry` ON `ShiftEntry`.`SID`=`Shifts`.`SID`
-      JOIN `User` ON `ShiftEntry`.`UID`=`User`.`UID`
+      JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`
       WHERE `Shifts`.`RID` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
       AND `start` BETWEEN ? AND ?
       ORDER BY `Shifts`.`start`';
@@ -684,26 +680,4 @@ function Shift($shift_id)
     }
 
     return $result;
-}
-
-/**
- * Returns all shifts with needed angeltypes and count of subscribed jobs.
- *
- * @return array
- */
-function Shifts()
-{
-    $shifts_source = DB::select('
-        SELECT `ShiftTypes`.`name`, `Shifts`.*, `Room`.`RID`, `Room`.`Name` AS `room_name`
-        FROM `Shifts`
-        JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-        JOIN `Room` ON `Room`.`RID` = `Shifts`.`RID`
-    ');
-
-    foreach ($shifts_source as &$shift) {
-        $needed_angeltypes = NeededAngelTypes_by_shift($shift['SID']);
-        $shift['angeltypes'] = $needed_angeltypes;
-    }
-
-    return $shifts_source;
 }

@@ -2,6 +2,10 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\Contact;
+use Engelsystem\Models\User\PersonalData;
+use Engelsystem\Models\User\Settings;
+use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 
 /**
@@ -36,7 +40,7 @@ function logout_title()
 function guest_register()
 {
     global $privileges;
-    $user = Auth()->user();
+    $authUser = Auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
     $enable_tshirt_size = config('enable_tshirt_size');
     $min_password_length = config('min_password_length');
@@ -48,16 +52,11 @@ function guest_register()
     $nick = '';
     $lastName = '';
     $preName = '';
-    $age = 0;
-    $tel = '';
     $dect = '';
     $mobile = '';
     $mail = '';
     $email_shiftinfo = false;
     $email_by_human_allowed = false;
-    $jabber = '';
-    $hometown = '';
-    $comment = '';
     $tshirt_size = '';
     $password_hash = '';
     $selected_angel_types = [];
@@ -72,7 +71,7 @@ function guest_register()
         }
     }
 
-    if (!in_array('register', $privileges) || (!$user && !config('registration_enabled'))) {
+    if (!in_array('register', $privileges) || (!$authUser && !config('registration_enabled'))) {
         error(__('Registration is disabled.'));
 
         return page_with_title(register_title(), [
@@ -85,7 +84,7 @@ function guest_register()
 
         if ($request->has('nick') && strlen(User_validate_Nick($request->input('nick'))) > 1) {
             $nick = User_validate_Nick($request->input('nick'));
-            if (count(DB::select('SELECT `UID` FROM `User` WHERE `Nick`=? LIMIT 1', [$nick])) > 0) {
+            if (User::whereName($nick)->count() > 0) {
                 $valid = false;
                 $msg .= error(sprintf(__('Your nick &quot;%s&quot; already exists.'), $nick), true);
             }
@@ -114,14 +113,6 @@ function guest_register()
 
         if ($request->has('email_by_human_allowed')) {
             $email_by_human_allowed = true;
-        }
-
-        if ($request->has('jabber') && strlen(strip_request_item('jabber')) > 0) {
-            $jabber = strip_request_item('jabber');
-            if (!check_email($jabber)) {
-                $valid = false;
-                $msg .= error(__('Please check your jabber account information.'), true);
-            }
         }
 
         if ($enable_tshirt_size) {
@@ -173,12 +164,6 @@ function guest_register()
         if ($request->has('prename')) {
             $preName = strip_request_item('prename');
         }
-        if ($request->has('age') && preg_match('/^\d{1,4}$/', $request->input('age'))) {
-            $age = strip_request_item('age');
-        }
-        if ($request->has('tel')) {
-            $tel = strip_request_item('tel');
-        }
         if ($request->has('dect')) {
             if (strlen(strip_request_item('dect')) <= 5) {
                 $dect = strip_request_item('dect');
@@ -190,88 +175,71 @@ function guest_register()
         if ($request->has('mobile')) {
             $mobile = strip_request_item('mobile');
         }
-        if ($request->has('hometown')) {
-            $hometown = strip_request_item('hometown');
-        }
-        if ($request->has('comment')) {
-            $comment = strip_request_item_nl('comment');
-        }
 
         if ($valid) {
-            DB::insert('
-                    INSERT INTO `User` (
-                        `color`,
-                        `Nick`,
-                        `Vorname`,
-                        `Name`,
-                        `Alter`,
-                        `Telefon`,
-                        `DECT`,
-                        `Handy`,
-                        `email`,
-                        `email_shiftinfo`,
-                        `email_by_human_allowed`,
-                        `jabber`,
-                        `Size`,
-                        `Passwort`,
-                        `kommentar`,
-                        `Hometown`,
-                        `CreateDate`,
-                        `Sprache`,
-                        `arrival_date`,
-                        `planned_arrival_date`,
-                        `force_active`,
-                        `lastLogIn`,
-                        `api_key`,
-                        `got_voucher`
-                    )
-                    VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NULL, ?, FALSE, 0, "", 0)
-                ',
-                [
-                    config('theme'),
-                    $nick,
-                    $preName,
-                    $lastName,
-                    $age,
-                    $tel,
-                    $dect,
-                    $mobile,
-                    $mail,
-                    (int)$email_shiftinfo,
-                    (int)$email_by_human_allowed,
-                    $jabber,
-                    $tshirt_size,
-                    $password_hash,
-                    $comment,
-                    $hometown,
-                    $session->get('locale'),
-                    $planned_arrival_date,
-                ]
-            );
+            $user = new User([
+                'name'          => $nick,
+                'password'      => $password_hash,
+                'email'         => $mail,
+                'api_key'       => '',
+                'last_login_at' => null,
+            ]);
+            $user->save();
+
+            $contact = new Contact([
+                'dect'   => $dect,
+                'mobile' => $mobile,
+            ]);
+            $contact->user()
+                ->associate($user)
+                ->save();
+
+            $personalData = new PersonalData([
+                'first_name'           => $preName,
+                'last_name'            => $lastName,
+                'shirt_size'           => $tshirt_size,
+                'planned_arrival_date' => Carbon::createFromTimestamp($planned_arrival_date),
+            ]);
+            $personalData->user()
+                ->associate($user)
+                ->save();
+
+            $settings = new Settings([
+                'language'        => $session->get('locale'),
+                'theme'           => config('theme'),
+                'email_human'     => $email_by_human_allowed,
+                'email_shiftinfo' => $email_shiftinfo,
+            ]);
+            $settings->user()
+                ->associate($user)
+                ->save();
+
+            (new State())->user()
+                ->associate($user)
+                ->save();
 
             // Assign user-group and set password
-            $user_id = DB::getPdo()->lastInsertId();
-            DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -20)', [$user_id]);
-            set_password($user_id, $request->postData('password'));
+            DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -20)', [$user->id]);
+            set_password($user->id, $request->postData('password'));
 
             // Assign angel-types
             $user_angel_types_info = [];
             foreach ($selected_angel_types as $selected_angel_type_id) {
                 DB::insert(
                     'INSERT INTO `UserAngelTypes` (`user_id`, `angeltype_id`, `supporter`) VALUES (?, ?, FALSE)',
-                    [$user_id, $selected_angel_type_id]
+                    [$user->id, $selected_angel_type_id]
                 );
                 $user_angel_types_info[] = $angel_types[$selected_angel_type_id];
             }
 
             engelsystem_log(
-                'User ' . User_Nick_render(User::find($user_id))
+                'User ' . User_Nick_render($user)
                 . ' signed up as: ' . join(', ', $user_angel_types_info)
             );
             success(__('Angel registration successful!'));
 
             // User is already logged in - that means a supporter has registered an angel. Return to register page.
-            if ($user) {
+            if ($authUser) {
                 redirect(page_link_to('register'));
             }
 
@@ -369,25 +337,13 @@ function guest_register()
                         div('col-sm-4', [
                             form_text('mobile', __('Mobile'), $mobile)
                         ]),
-                        div('col-sm-4', [
-                            form_text('tel', __('Phone'), $tel)
-                        ])
                     ]),
-                    form_text('jabber', __('Jabber'), $jabber),
                     div('row', [
                         div('col-sm-6', [
                             form_text('prename', __('First name'), $preName)
                         ]),
                         div('col-sm-6', [
                             form_text('lastname', __('Last name'), $lastName)
-                        ])
-                    ]),
-                    div('row', [
-                        div('col-sm-3', [
-                            form_text('age', __('Age'), $age)
-                        ]),
-                        div('col-sm-9', [
-                            form_text('hometown', __('Hometown'), $hometown)
                         ])
                     ]),
                     form_info(entry_required() . ' = ' . __('Entry required!'))

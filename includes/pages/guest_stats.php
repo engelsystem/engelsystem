@@ -1,6 +1,8 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\State;
+use Engelsystem\Models\User\User;
 
 function guest_stats()
 {
@@ -11,15 +13,8 @@ function guest_stats()
         if (!empty($apiKey) && $request->input('api_key') == $apiKey) {
             $stats = [];
 
-            list($user_count) = DB::select('SELECT count(*) AS `user_count` FROM `User`');
-            $stats['user_count'] = $user_count['user_count'];
-
-            list($arrived_user_count) = DB::select('
-                SELECT count(*) AS `user_count`
-                FROM `User`
-                WHERE `Gekommen`=1
-            ');
-            $stats['arrived_user_count'] = $arrived_user_count['user_count'];
+            $stats['user_count'] = User::all()->count();
+            $stats['arrived_user_count'] = State::whereArrived(true)->count();
 
             $done_shifts_seconds = DB::selectOne('
                 SELECT SUM(`Shifts`.`end` - `Shifts`.`start`)
