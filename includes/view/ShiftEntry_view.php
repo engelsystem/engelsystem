@@ -76,7 +76,7 @@ function ShiftEntry_delete_title()
  * @param array $room
  * @param array $angeltype
  * @param array $angeltypes_select
- * @param User $signup_user
+ * @param User  $signup_user
  * @param array $users_select
  * @return string
  */

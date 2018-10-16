@@ -332,13 +332,12 @@ function shifts_controller()
 function shift_next_controller()
 {
     global $privileges;
-    $user = auth()->user();
 
     if (!in_array('user_shifts', $privileges)) {
         redirect(page_link_to('/'));
     }
 
-    $upcoming_shifts = ShiftEntries_upcoming_for_user($user->id);
+    $upcoming_shifts = ShiftEntries_upcoming_for_user(auth()->user()->id);
 
     if (!empty($upcoming_shifts)) {
         redirect(shift_link($upcoming_shifts[0]));

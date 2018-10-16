@@ -2,6 +2,7 @@
 
 use Engelsystem\Database\DB;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Query\JoinClause;
 
 /**
  * @return string
@@ -24,18 +25,6 @@ function admin_free()
         $search = strip_request_item('search');
     }
 
-    $angelTypeSearch = '';
-    $angelType = $request->input('angeltype', '');
-    if (!empty($angelType)) {
-        $angelTypeSearch = ' INNER JOIN `UserAngelTypes` ON (`UserAngelTypes`.`angeltype_id` = '
-            . DB::getPdo()->quote($angelType)
-            . ' AND `UserAngelTypes`.`user_id` = `users`.`id`';
-        if ($request->has('confirmed_only')) {
-            $angelTypeSearch .= ' AND `UserAngelTypes`.`confirm_user_id`';
-        }
-        $angelTypeSearch .= ') ';
-    }
-
     $angel_types_source = DB::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
     $angel_types = [
         '' => 'alle Typen'
@@ -44,27 +33,34 @@ function admin_free()
         $angel_types[$angel_type['id']] = $angel_type['name'];
     }
 
-    /** @var User[] $users */
-    $users = User::query()->raw(sprintf('
-          SELECT `users`.*
-          FROM `users`
-          %s
-          LEFT JOIN `ShiftEntry` ON `users`.`id` = `ShiftEntry`.`UID`
-          LEFT JOIN `users_state` ON `users`.`id` = `users_state`.`user_id`
-          LEFT JOIN `Shifts`
-              ON (
-                  `ShiftEntry`.`SID` = `Shifts`.`SID`
-                  AND `Shifts`.`start` < %u
-                  AND `Shifts`.`end` > %u
-              )
-          WHERE `users_state`.`arrived` = 1
-          AND `Shifts`.`SID` IS NULL
-          GROUP BY `users`.`id`
-          ORDER BY `users`
-        ', $angelTypeSearch, time(), time()
-        )
-    );
+    $angelType = $request->input('angeltype', '');
+    $query = User::query()
+        ->select('users.*')
+        ->leftJoin('ShiftEntry', 'users.id', 'ShiftEntry.UID')
+        ->leftJoin('users_state', 'users.id', 'users_state.user_id')
+        ->leftJoin('Shifts', function ($join) {
+            /** @var JoinClause $join */
+            $join->on('ShiftEntry.SID', '=', 'Shifts.SID')
+                ->where('Shifts.start', '<', time())
+                ->where('Shifts.end', '>', time());
+        })
+        ->where('users_state.arrived', '=', 1)
+        ->whereNull('Shifts.SID')
+        ->groupBy('users.id');
 
+    if (!empty($angelType)) {
+        $query->join('UserAngelTypes', function ($join) use ($angelType, $request, $query) {
+            /** @var JoinClause $join */
+            $join->on('UserAngelTypes.user_id', '=', 'users.id')
+                ->where('UserAngelTypes.angeltype_id', '=', $angelType);
+
+            if ($request->has('confirmed_only')) {
+                $join->whereNotNull('UserAngelTypes.confirm_user_id');
+            }
+        });
+    }
+
+    $users = $query->get();
     $free_users_table = [];
     if ($search == '') {
         $tokens = [];

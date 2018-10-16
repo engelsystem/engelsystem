@@ -60,8 +60,13 @@ function admin_user()
             $html .= "  <tr><td>email</td><td>" . '<input type="email" size="40" name="eemail" value="' . $user_source->email . '" class="form-control"></td></tr>' . "\n";
         }
         $html .= '  <tr><td>Size</td><td>'
-            . html_select_key('size', 'eSize', $tshirt_sizes, $user_source->personalData->shirt_size,
-                __('Please select...')) . '</td></tr>' . "\n";
+            . html_select_key(
+                'size',
+                'eSize',
+                $tshirt_sizes, $user_source->personalData->shirt_size,
+                __('Please select...')
+            )
+            . '</td></tr>' . "\n";
 
         $options = [
             '1' => __('Yes'),
@@ -84,7 +89,7 @@ function admin_user()
 
         // T-Shirt bekommen?
         $html .= '  <tr><td>T-Shirt</td><td>' . "\n";
-        $html .= html_options('eTshirt', $options, $user_source->personalData->shirt_size) . '</td></tr>' . "\n";
+        $html .= html_options('eTshirt', $options, $user_source->state->got_shirt) . '</td></tr>' . "\n";
 
         $html .= '</table>' . "\n" . '</td><td valign="top"></td></tr>';
 
@@ -244,7 +249,7 @@ function admin_user()
                 if (in_array('admin_active', $privileges)) {
                     $force_active = $request->input('force_active');
                 }
-                if($user_source->settings->email_human){
+                if ($user_source->settings->email_human) {
                     $user_source->email = $request->postData('eemail');
                 }
                 $user_source->name = User_validate_Nick($request->postData('eNick'));

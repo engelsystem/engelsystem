@@ -22,6 +22,11 @@ class State extends HasUserModel
     /** @var string The table associated with the model */
     protected $table = 'users_state';
 
+    /** @var array The attributes that should be mutated to dates */
+    protected $dates = [
+        'arrival_date',
+    ];
+
     /** The attributes that are mass assignable */
     protected $fillable = [
         'user_id',

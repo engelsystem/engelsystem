@@ -9,12 +9,10 @@ use Engelsystem\Models\User\User;
  */
 function user_worklog_delete_controller()
 {
-    $user = auth()->user();
-
     $request = request();
     $userWorkLog = UserWorkLog($request->input('user_worklog_id'));
     if (empty($userWorkLog)) {
-        redirect(user_link($user->id));
+        redirect(user_link(auth()->user()->id));
     }
     $user_source = User::find($userWorkLog['user_id']);
 
@@ -38,12 +36,10 @@ function user_worklog_delete_controller()
  */
 function user_worklog_edit_controller()
 {
-    $user = auth()->user();
-
     $request = request();
     $userWorkLog = UserWorkLog($request->input('user_worklog_id'));
     if (empty($userWorkLog)) {
-        redirect(user_link($user->id));
+        redirect(user_link(auth()->user()->id));
     }
     $user_source = User::find($userWorkLog['user_id']);
 
@@ -110,12 +106,10 @@ function user_worklog_from_request($userWorkLog)
  */
 function user_worklog_add_controller()
 {
-    $user = auth()->user();
-
     $request = request();
     $user_source = User::find($request->input('user_id'));
     if (!$user_source) {
-        redirect(user_link($user->id));
+        redirect(user_link(auth()->user()->id));
     }
 
     $userWorkLog = UserWorkLog_new($user_source->id);

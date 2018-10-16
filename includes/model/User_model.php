@@ -73,16 +73,16 @@ function User_is_freeloader($user)
 function Users_by_angeltype_inverted($angeltype)
 {
     return User::query()
-        ->leftJoin('UserAngelTypes', 'users.id', '=', 'UserAngelTypes.user_id')
+        ->select('users.*')
         ->leftJoin('UserAngelTypes', function ($query) use ($angeltype) {
             /** @var JoinClause $query */
             $query
                 ->on('users.id', '=', 'UserAngelTypes.user_id')
-                ->on('UserAngelTypes.angeltype_id', '=', $angeltype['id']);
+                ->where('UserAngelTypes.angeltype_id', '=', $angeltype['id']);
         })
         ->whereNull('UserAngelTypes.id')
         ->orderBy('users.name')
-        ->get('users.*');
+        ->get();
 }
 
 /**
@@ -94,17 +94,17 @@ function Users_by_angeltype_inverted($angeltype)
 function Users_by_angeltype($angeltype)
 {
     return User::query()
+        ->select('users.*',
+            'UserAngelTypes.id AS user_angeltype_id',
+            'UserAngelTypes.confirm_user_id',
+            'UserAngelTypes.supporter',
+            'UserDriverLicenses.user_id AS wants_to_drive',
+            'UserDriverLicenses.*'
+        )
         ->join('UserAngelTypes', 'users.id', '=', 'UserAngelTypes.user_id')
         ->leftJoin('UserDriverLicenses', 'users.id', '=', 'UserDriverLicenses.user_id')
         ->where('UserAngelTypes.angeltype_id', '=', $angeltype['id'])
-        ->get([
-            'users.*',
-            '`UserAngelTypes`.`id` AS `user_angeltype_id`',
-            '`UserAngelTypes`.`confirm_user_id`',
-            '`UserAngelTypes`.`supporter`',
-            '(`UserDriverLicenses`.`user_id` IS NOT NULL) AS `wants_to_drive`',
-            '`UserDriverLicenses`.*',
-        ]);
+        ->get();
 }
 
 /**
@@ -226,6 +226,7 @@ function User_reset_api_key($user, $log = true)
 function User_generate_password_recovery_token($user)
 {
     $reset = PasswordReset::findOrNew($user->id);
+    $reset->user_id = $user->id;
     $reset->token = md5($user->name . time() . rand());
     $reset->save();
 

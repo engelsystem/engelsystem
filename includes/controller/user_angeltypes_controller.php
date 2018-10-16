@@ -9,9 +9,7 @@ use Engelsystem\Models\User\User;
  */
 function user_angeltypes_unconfirmed_hint()
 {
-    $user = auth()->user();
-
-    $unconfirmed_user_angeltypes = User_unconfirmed_AngelTypes($user->id);
+    $unconfirmed_user_angeltypes = User_unconfirmed_AngelTypes(auth()->user()->id);
     if (count($unconfirmed_user_angeltypes) == 0) {
         return null;
     }

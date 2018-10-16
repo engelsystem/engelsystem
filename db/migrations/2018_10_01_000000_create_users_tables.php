@@ -102,7 +102,7 @@ class CreateUsersTables extends Migration
                 $user->save();
 
                 $contact = new Contact([
-                    'dect'   => ($data->DECT && $data->DECT != '-') ? $data->DECT : null,
+                    'dect'   => $data->DECT ? $data->DECT : null,
                     'mobile' => $data->Handy ?: ($data->Telefon ?: null),
                 ]);
                 $contact->user()
@@ -170,7 +170,7 @@ class CreateUsersTables extends Migration
     public function down()
     {
         $this->schema->create('User', function (Blueprint $table) {
-            $table->increments('UID');
+            $table->integer('UID', true, false);
 
             $table->string('Nick', 23)->unique()->default('');
             $table->string('Name', 23)->nullable();

@@ -167,7 +167,7 @@ function user_edit_vouchers_controller()
 
         if ($valid) {
             $user_source->state->got_voucher = $vouchers;
-            $user->state->save();
+            $user_source->state->save();
 
             success(__('Saved the number of vouchers.'));
             engelsystem_log(User_Nick_render($user_source) . ': ' . sprintf('Got %s vouchers',
@@ -268,26 +268,30 @@ function users_list_controller()
         redirect(page_link_to(''));
     }
 
-    $order_by = 'Nick';
+    $order_by = 'name';
     if ($request->has('OrderBy') && in_array($request->input('OrderBy'), [
-            'Nick',
-            'Name',
-            'Vorname',
-            'DECT',
+            'name',
+            'last_name',
+            'first_name',
+            'dect',
             'email',
-            'Size',
-            'Gekommen',
-            'Aktiv',
+            'shirt_size',
+            'arrived',
+            'active',
             'force_active',
-            'Tshirt',
-            'lastLogIn'
+            'got_shirt',
+            'last_login_at',
         ])) {
         $order_by = $request->input('OrderBy');
     }
 
     /** @var User[] $users */
     $users = User::query()
+        ->leftJoin('users_contact', 'users.id', '=', 'users_contact.user_id')
+        ->leftJoin('users_personal_data', 'users.id', '=', 'users_personal_data.user_id')
+        ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
         ->orderBy($order_by)
+        ->orderBy('name')
         ->get();
     foreach ($users as $user) {
         $user->setAttribute('freeloads', count(ShiftEntries_freeloaded_by_user($user->id)));

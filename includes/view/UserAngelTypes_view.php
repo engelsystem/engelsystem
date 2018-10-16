@@ -4,7 +4,7 @@ use Engelsystem\Models\User\User;
 
 /**
  * @param array $user_angeltype
- * @param User $user
+ * @param User  $user
  * @param array $angeltype
  * @param bool  $supporter
  * @return string
@@ -91,7 +91,7 @@ function UserAngelTypes_confirm_all_view($angeltype)
 
 /**
  * @param array $user_angeltype
- * @param User $user
+ * @param User  $user
  * @param array $angeltype
  * @return string
  */
@@ -120,7 +120,7 @@ function UserAngelType_confirm_view($user_angeltype, $user, $angeltype)
 
 /**
  * @param array $user_angeltype
- * @param User $user
+ * @param User  $user
  * @param array $angeltype
  * @return string
  */
@@ -146,9 +146,9 @@ function UserAngelType_delete_view($user_angeltype, $user, $angeltype)
 }
 
 /**
- * @param array   $angeltype
+ * @param array  $angeltype
  * @param User[] $users_source
- * @param int     $user_id
+ * @param int    $user_id
  * @return string
  */
 function UserAngelType_add_view($angeltype, $users_source, $user_id)
@@ -176,7 +176,7 @@ function UserAngelType_add_view($angeltype, $users_source, $user_id)
 }
 
 /**
- * @param User $user
+ * @param User  $user
  * @param array $angeltype
  * @return string
  */

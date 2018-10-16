@@ -76,10 +76,8 @@ function Shift_editor_info_render($shift)
  */
 function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
 {
-    $user = auth()->user();
-
     if (empty($user_angeltype)) {
-        $user_angeltype = UserAngelType_by_User_and_AngelType($user->id, $angeltype);
+        $user_angeltype = UserAngelType_by_User_and_AngelType(auth()->user()->id, $angeltype);
     }
 
     if ($angeltype['shift_signup_state']->isSignupAllowed()) {
@@ -105,7 +103,6 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
 function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupState $shift_signup_state)
 {
     global $privileges;
-    $user = auth()->user();
 
     $shift_admin = in_array('admin_shifts', $privileges);
     $user_shift_admin = in_array('user_shifts_admin', $privileges);
@@ -143,7 +140,7 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
             $admin_rooms ? button(room_link($room), glyph('map-marker') . $room['Name']) : '',
         ];
     }
-    $buttons[] = button(user_link($user->id), '<span class="icon-icon_angel"></span> ' . __('My shifts'));
+    $buttons[] = button(user_link(auth()->user()->id), '<span class="icon-icon_angel"></span> ' . __('My shifts'));
     $content[] = buttons($buttons);
 
     $content[] = Shift_view_header($shift, $room);
