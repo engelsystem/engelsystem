@@ -25,7 +25,6 @@ function User_settings_view(
     $tshirt_sizes
 ) {
     $personalData = $user_source->personalData;
-    $state = $user_source->state;
     return page_with_title(settings_title(), [
         msg(),
         div('row', [
@@ -34,12 +33,12 @@ function User_settings_view(
                     form_info('', __('Here you can change your user details.')),
                     form_info(entry_required() . ' = ' . __('Entry required!')),
                     form_text('nick', __('Nick'), $user_source->name, true),
-                    form_text('lastname', __('Last name'), $user_source->personalData->last_name),
-                    form_text('prename', __('First name'), $user_source->personalData->first_name),
+                    form_text('lastname', __('Last name'), $personalData->last_name),
+                    form_text('prename', __('First name'), $personalData->first_name),
                     form_date(
                         'planned_arrival_date',
                         __('Planned date of arrival') . ' ' . entry_required(),
-                        $state->arrival_date ? $state->arrival_date->getTimestamp() : '',
+                        $personalData->planned_arrival_date ? $personalData->planned_arrival_date->getTimestamp() : '',
                         $buildup_start_date,
                         $teardown_end_date
                     ),
@@ -52,7 +51,7 @@ function User_settings_view(
                     ),
                     form_text('dect', __('DECT'), $user_source->contact->dect),
                     form_text('mobile', __('Mobile'), $user_source->contact->mobile),
-                    form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->contact->email),
+                    form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->email),
                     form_checkbox(
                         'email_shiftinfo',
                         __(
@@ -70,7 +69,7 @@ function User_settings_view(
                         'tshirt_size',
                         __('Shirt size'),
                         $tshirt_sizes,
-                        $user_source->personalData->shirt_size,
+                        $personalData->shirt_size,
                         __('Please select...')
                     ) : '',
                     form_info('', __('Please visit the angeltypes page to manage your angeltypes.')),
@@ -215,31 +214,31 @@ function Users_view(
     $usersList = [];
     foreach ($users as $user) {
         $u = [];
-        $u['Nick'] = User_Nick_render($user);
-        $u['Vorname'] = $user->personalData->first_name;
-        $u['Name'] = $user->personalData->last_name;
-        $u['DECT'] = $user->contact->dect;
-        $u['Gekommen'] = glyph_bool($user->state->arrived);
-        $u['got_voucher'] = glyph_bool($user->state->got_voucher);
+        $u['name'] = User_Nick_render($user);
+        $u['first_name'] = $user->personalData->first_name;
+        $u['last_name'] = $user->personalData->last_name;
+        $u['dect'] = $user->contact->dect;
+        $u['arrived'] = glyph_bool($user->state->arrived);
+        $u['got_voucher'] = $user->state->got_voucher;
         $u['freeloads'] = $user->getAttribute('freeloads');
-        $u['Aktiv'] = glyph_bool($user->state->active);
+        $u['active'] = glyph_bool($user->state->active);
         $u['force_active'] = glyph_bool($user->state->force_active);
-        $u['Tshirt'] = glyph_bool($user->state->got_shirt);
-        $u['Size'] = $user->personalData->shirt_size;
-        $u['lastLogIn'] = $user->last_login_at ? $user->last_login_at->format(__('m/d/Y h:i a')) : '';
+        $u['got_shirt'] = glyph_bool($user->state->got_shirt);
+        $u['shirt_size'] = $user->personalData->shirt_size;
+        $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('m/d/Y h:i a')) : '';
         $u['actions'] = table_buttons([
             button_glyph(page_link_to('admin_user', ['id' => $user->id]), 'edit', 'btn-xs')
         ]);
         $usersList[] = $u;
     }
     $usersList[] = [
-        'Nick'         => '<strong>' . __('Sum') . '</strong>',
-        'Gekommen'     => $arrived_count,
+        'name'         => '<strong>' . __('Sum') . '</strong>',
+        'arrived'      => $arrived_count,
         'got_voucher'  => $voucher_count,
-        'Aktiv'        => $active_count,
+        'active'       => $active_count,
         'force_active' => $force_active_count,
         'freeloads'    => $freeloads_count,
-        'Tshirt'       => $tshirts_count,
+        'got_shirt'    => $tshirts_count,
         'actions'      => '<strong>' . count($usersList) . '</strong>'
     ];
 
@@ -249,19 +248,19 @@ function Users_view(
             button(page_link_to('register'), glyph('plus') . __('New user'))
         ]),
         table([
-            'Nick'         => Users_table_header_link('Nick', __('Nick'), $order_by),
-            'Vorname'      => Users_table_header_link('Vorname', __('Prename'), $order_by),
-            'Name'         => Users_table_header_link('Name', __('Name'), $order_by),
-            'DECT'         => Users_table_header_link('DECT', __('DECT'), $order_by),
-            'Gekommen'     => Users_table_header_link('Gekommen', __('Arrived'), $order_by),
-            'got_voucher'  => Users_table_header_link('got_voucher', __('Voucher'), $order_by),
-            'freeloads'    => __('Freeloads'),
-            'Aktiv'        => Users_table_header_link('Aktiv', __('Active'), $order_by),
-            'force_active' => Users_table_header_link('force_active', __('Forced'), $order_by),
-            'Tshirt'       => Users_table_header_link('Tshirt', __('T-Shirt'), $order_by),
-            'Size'         => Users_table_header_link('Size', __('Size'), $order_by),
-            'lastLogIn'    => Users_table_header_link('lastLogIn', __('Last login'), $order_by),
-            'actions'      => ''
+            'name'          => Users_table_header_link('name', __('Nick'), $order_by),
+            'first_name'    => Users_table_header_link('first_name', __('Prename'), $order_by),
+            'last_name'     => Users_table_header_link('last_name', __('Name'), $order_by),
+            'dect'          => Users_table_header_link('dect', __('DECT'), $order_by),
+            'arrived'       => Users_table_header_link('arrived', __('Arrived'), $order_by),
+            'got_voucher'   => Users_table_header_link('got_voucher', __('Voucher'), $order_by),
+            'freeloads'     => __('Freeloads'),
+            'active'        => Users_table_header_link('active', __('Active'), $order_by),
+            'force_active'  => Users_table_header_link('force_active', __('Forced'), $order_by),
+            'got_shirt'     => Users_table_header_link('got_shirt', __('T-Shirt'), $order_by),
+            'shirt_size'    => Users_table_header_link('shirt_size', __('Size'), $order_by),
+            'last_login_at' => Users_table_header_link('last_login_at', __('Last login'), $order_by),
+            'actions'       => ''
         ], $usersList)
     ]);
 }
@@ -282,24 +281,16 @@ function Users_table_header_link($column, $label, $order_by)
 }
 
 /**
- * @param User|array $user
+ * @param User $user
  * @return string|false
  */
 function User_shift_state_render($user)
 {
-    if ($user instanceof User) {
-        $id = $user->id;
-        $arrived = $user->state->arrived;
-    } else {
-        $arrived = $user['Gekommen'];
-        $id = $user['UID'];
-    }
-
-    if (!$arrived) {
+    if (!$user->state->arrived) {
         return '';
     }
 
-    $upcoming_shifts = ShiftEntries_upcoming_for_user($id);
+    $upcoming_shifts = ShiftEntries_upcoming_for_user($user->id);
     if (empty($upcoming_shifts)) {
         return '<span class="text-success">' . __('Free') . '</span>';
     }
@@ -735,7 +726,7 @@ function User_view_state_admin($freeloader, $user_source)
         } elseif ($user_source->state->active) {
             $state[] = '<span class="text-success">' . __('Active') . '</span>';
         }
-        if ($user_source->personalData->shirt_size) {
+        if ($user_source->state->got_shirt) {
             $state[] = '<span class="text-success">' . __('T-Shirt') . '</span>';
         }
     } else {
@@ -844,20 +835,14 @@ function User_groups_render($user_groups)
  */
 function User_Nick_render($user)
 {
-    if ($user instanceof User) {
-        $id = $user->id;
-        $name = $user->name;
-        $arrived = $user->state->arrived;
-    } else {
-        $id = $user['UID'];
-        $name = $user['Nick'];
-        $arrived = $user['Gekommen'];
+    if (is_array($user)) {
+        $user = (new User())->forceFill($user);
     }
 
     return render_profile_link(
-        '<span class="icon-icon_angel"></span> ' . htmlspecialchars($name) . '</a>',
-        $id,
-        ($arrived ? '' : 'text-muted')
+        '<span class="icon-icon_angel"></span> ' . htmlspecialchars($user->name) . '</a>',
+        $user->id,
+        ($user->state->arrived ? '' : 'text-muted')
     );
 }
 
@@ -917,9 +902,7 @@ function render_user_freeloader_hint()
  */
 function render_user_arrived_hint()
 {
-    $user = auth()->user();
-
-    if (!$user->state->arrived) {
+    if (!auth()->user()->state->arrived) {
         /** @var Carbon $buildup */
         $buildup = config('buildup_start');
         if (!empty($buildup) && $buildup->lessThan(new Carbon())) {
@@ -935,9 +918,7 @@ function render_user_arrived_hint()
  */
 function render_user_tshirt_hint()
 {
-    $user = auth()->user();
-
-    if (config('enable_tshirt_size') && !$user->personalData->shirt_size) {
+    if (config('enable_tshirt_size') && !auth()->user()->personalData->shirt_size) {
         $text = __('You need to specify a tshirt size in your settings!');
         return render_profile_link($text, null, 'alert-link');
     }
@@ -951,7 +932,6 @@ function render_user_tshirt_hint()
 function render_user_dect_hint()
 {
     $user = auth()->user();
-
     if ($user->state->arrived && !$user->contact->dect) {
         $text = __('You need to specify a DECT phone number in your settings! If you don\'t have a DECT phone, just enter \'-\'.');
         return render_profile_link($text, null, 'alert-link');

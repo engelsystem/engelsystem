@@ -76,9 +76,8 @@ function user_driver_license_edit_link($user = null)
  */
 function user_driver_license_load_user()
 {
-    $user = auth()->user();
     $request = request();
-    $user_source = $user;
+    $user_source = auth()->user();
 
     if ($request->has('user_id')) {
         $user_source = User::find($request->input('user_id'));

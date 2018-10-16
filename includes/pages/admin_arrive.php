@@ -44,7 +44,7 @@ function admin_arrive()
         if ($user_source) {
             $user_source->state->arrived = true;
             $user_source->state->arrival_date = new Carbon\Carbon();
-            $user_source->personalData->save();
+            $user_source->state->save();
 
             engelsystem_log('User set has arrived: ' . User_Nick_render($user_source));
             success(__('Angel has been marked as arrived.'));
@@ -170,7 +170,7 @@ function admin_arrive()
             form_submit('submit', __('Search'))
         ]),
         table([
-            'nick'                            => __('Nickname'),
+            'name'                            => __('Nickname'),
             'rendered_planned_arrival_date'   => __('Planned arrival'),
             'arrived'                         => __('Arrived?'),
             'rendered_arrival_date'           => __('Arrival date'),

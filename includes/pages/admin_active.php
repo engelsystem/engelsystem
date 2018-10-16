@@ -2,6 +2,8 @@
 
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Query\JoinClause;
 
 /**
  * @return string
@@ -23,8 +25,7 @@ function admin_active()
     $msg = '';
     $search = '';
     $forced_count = State::whereForceActive(true)->count();
-    $count = $forced_count;
-    $limit = '';
+    $count = null;
     $set_active = '';
 
     if ($request->has('search')) {
@@ -34,8 +35,6 @@ function admin_active()
     $show_all_shifts = $request->has('show_all_shifts');
 
     if ($request->has('set_active')) {
-        $valid = true;
-
         if ($request->has('count') && preg_match('/^\d+$/', $request->input('count'))) {
             $count = strip_request_item('count');
             if ($count < $forced_count) {
@@ -46,41 +45,43 @@ function admin_active()
                 redirect(page_link_to('admin_active'));
             }
         } else {
-            $valid = false;
-            $msg .= error(__('Please enter a number of angels to be marked as active.'), true);
+            $msg .= error(__('Please enter a number of angels to be marked as active.'));
+            redirect(page_link_to('admin_active'));
         }
 
-        if ($valid) {
-            $limit = ' LIMIT ' . $count;
-        }
         if ($request->has('ack')) {
             State::query()
                 ->where('got_shirt', '=', false)
+                ->where('got_shirt', '=', false)
                 ->update(['active' => false]);
 
-            /** @var User[] $users */
-            $users = User::query()->raw(sprintf('
-                  SELECT
-                      `users`.*,
-                      COUNT(`ShiftEntry`.`id`) AS `shift_count`,
-                      (%s + (
-                          SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`users`.`id`
-                          AND `work_timestamp` < %s
-                      )) AS `shift_length`
-                  FROM `users`
-                  LEFT JOIN `ShiftEntry` ON `users`.`id` = `ShiftEntry`.`UID`
-                  LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID`
-                  LEFT JOIN `users_state` ON `users`.`id` = `users_state`.`user_id`
-                  WHERE `users_state`.`arrived` = 1
-                  AND `users_state`.`force_active` = 0
-                  GROUP BY `users`.`id`
-                  ORDER BY `force_active` DESC, `shift_length` DESC
-                  %s
-                ',
-                $shift_sum_formula,
-                time(),
-                $limit
-            ));
+            $query = User::query()
+                ->selectRaw(
+                    sprintf(
+                        '
+                            users.*,
+                            COUNT(ShiftEntry.id) AS shift_count,
+                                (%s + (
+                                      SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`users`.`id`
+                                      AND `work_timestamp` < ?
+                                )) AS `shift_length`
+                        ',
+                        $shift_sum_formula
+                    ),
+                    [time()]
+                )
+                ->leftJoin('ShiftEntry', 'users.id', '=', 'ShiftEntry.UID')
+                ->leftJoin('Shifts', 'ShiftEntry.SID', '=', 'Shifts.SID')
+                ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
+                ->where('users_state.arrived', '=', true)
+                ->where('users_state.force_active', '=', false)
+                ->groupBy('users.id')
+                ->orderByDesc('force_active')
+                ->orderByDesc('shift_length')
+                ->orderByDesc('name')
+                ->limit($count);
+
+            $users = $query->get();
             $user_nicks = [];
             foreach ($users as $usr) {
                 $usr->state->active = true;
@@ -88,10 +89,9 @@ function admin_active()
                 $user_nicks[] = User_Nick_render($usr);
             }
 
-            State::whereForceActive(true)->update(['active' => 'true']);
+            State::whereForceActive(true)->update(['active' => true]);
             engelsystem_log('These angels are active now: ' . join(', ', $user_nicks));
 
-            $limit = '';
             $msg = success(__('Marked angels.'), true);
         } else {
             $set_active = '<a href="' . page_link_to('admin_active', ['search' => $search]) . '">&laquo; '
@@ -120,7 +120,7 @@ function admin_active()
     } elseif ($request->has('not_active') && preg_match('/^\d+$/', $request->input('not_active'))) {
         $user_id = $request->input('not_active');
         $user_source = User::find($user_id);
-        if (!$user_source) {
+        if ($user_source) {
             $user_source->state->active = false;
             $user_source->state->save();
             engelsystem_log('User ' . User_Nick_render($user_source) . ' is NOT active now.');
@@ -131,7 +131,7 @@ function admin_active()
     } elseif ($request->has('tshirt') && preg_match('/^\d+$/', $request->input('tshirt'))) {
         $user_id = $request->input('tshirt');
         $user_source = User::find($user_id);
-        if (!$user_source) {
+        if ($user_source) {
             $user_source->state->got_shirt = true;
             $user_source->state->save();
             engelsystem_log('User ' . User_Nick_render($user_source) . ' has tshirt now.');
@@ -142,7 +142,7 @@ function admin_active()
     } elseif ($request->has('not_tshirt') && preg_match('/^\d+$/', $request->input('not_tshirt'))) {
         $user_id = $request->input('not_tshirt');
         $user_source = User::find($user_id);
-        if (!$user_source) {
+        if ($user_source) {
             $user_source->state->got_shirt = false;
             $user_source->state->save();
             engelsystem_log('User ' . User_Nick_render($user_source) . ' has NO tshirt.');
@@ -152,28 +152,45 @@ function admin_active()
         }
     }
 
-    $users = User::query()->raw(sprintf('
-            SELECT
-                `users`.*,
-                COUNT(`ShiftEntry`.`id`) AS `shift_count`,
-                (%s + (
-                    SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`users`.`id`
-                    AND `work_timestamp` < %s
-                )) AS `shift_length`
-            FROM `users`
-            LEFT JOIN `users_state` ON `users`.`id` = `users_state`.`user_id`
-            LEFT JOIN `ShiftEntry` ON `users`.`id` = `ShiftEntry`.`UID`
-            LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` '
-        . ($show_all_shifts ? '' : 'AND (`Shifts`.`end` < ' . time() . " OR `Shifts`.`end` IS NULL)") . '
-            WHERE `users_state`.`arrived` = 1
-            GROUP BY `users`.`id`
-            ORDER BY `users_state`.`force_active` DESC, `shift_length` DESC
-            %s
-        ',
-        $shift_sum_formula,
-        time(),
-        $limit
-    ));
+    $query = User::query()
+        ->selectRaw(
+            sprintf(
+                '
+                    users.*,
+                    COUNT(ShiftEntry.id) AS shift_count,
+                        (%s + (
+                              SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`users`.`id`
+                              AND `work_timestamp` < ?
+                        )) AS `shift_length`
+                ',
+                $shift_sum_formula
+            ),
+            [time()]
+        )
+        ->leftJoin('ShiftEntry', 'users.id', '=', 'ShiftEntry.UID')
+        ->leftJoin('Shifts', function ($join) use ($show_all_shifts) {
+            /** @var JoinClause $join */
+            $join->on('ShiftEntry.SID', '=', 'Shifts.SID');
+            if ($show_all_shifts) {
+                $join->where(function ($query) {
+                    /** @var Builder $query */
+                    $query->where('Shifts.end', '<', time())
+                        ->orWhereNull('Shifts.end');
+                });
+            }
+        })
+        ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
+        ->where('users_state.arrived', '=', true)
+        ->groupBy('users.id')
+        ->orderByDesc('force_active')
+        ->orderByDesc('shift_length')
+        ->orderByDesc('name');
+
+    if (!is_null($count)) {
+        $query->limit($count);
+    }
+
+    $users = $query->get();
     $matched_users = [];
     if ($search == '') {
         $tokens = [];
@@ -202,6 +219,7 @@ function admin_active()
         $userData['active'] = glyph_bool($usr->state->active == 1);
         $userData['force_active'] = glyph_bool($usr->state->force_active == 1);
         $userData['tshirt'] = glyph_bool($usr->state->got_shirt == 1);
+        $userData['shift_count'] = $usr['shift_count'];
 
         $actions = [];
         if (!$usr->state->active) {
@@ -262,6 +280,7 @@ function admin_active()
     foreach (array_keys($tshirt_sizes) as $size) {
         $gc = State::query()
             ->leftJoin('users_settings', 'users_state.user_id', '=', 'users_settings.user_id')
+            ->leftJoin('users_personal_data', 'users_state.user_id', '=', 'users_personal_data.user_id')
             ->where('users_state.got_shirt', '=', true)
             ->where('users_personal_data.shirt_size', '=', $size)
             ->count();
@@ -283,7 +302,7 @@ function admin_active()
             form_submit('submit', __('Search'))
         ], page_link_to('admin_active')),
         $set_active == '' ? form([
-            form_text('count', __('How much angels should be active?'), $count),
+            form_text('count', __('How much angels should be active?'), $count ? $count : $forced_count),
             form_submit('set_active', __('Preview'))
         ]) : $set_active,
         $msg . msg(),

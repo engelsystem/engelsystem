@@ -203,6 +203,7 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
     $members_unconfirmed = [];
     foreach ($members as $member) {
         $member->name = User_Nick_render($member);
+        $member['dect'] = $member->contact->dect;
         if ($angeltype['requires_driver_license']) {
             $member['wants_to_drive'] = glyph_bool($member['wants_to_drive']);
             $member['has_car'] = glyph_bool($member['has_car']);
@@ -294,8 +295,8 @@ function AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes)
 {
     if ($angeltype['requires_driver_license'] && ($supporter || $admin_angeltypes)) {
         return [
-            'Nick'                         => __('Nick'),
-            'DECT'                         => __('DECT'),
+            'name'                         => __('Nick'),
+            'dect'                         => __('DECT'),
             'wants_to_drive'               => __('Driver'),
             'has_car'                      => __('Has car'),
             'has_license_car'              => __('Car'),
@@ -307,8 +308,8 @@ function AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes)
         ];
     }
     return [
-        'Nick'    => __('Nick'),
-        'DECT'    => __('DECT'),
+        'name'    => __('Nick'),
+        'dect'    => __('DECT'),
         'actions' => ''
     ];
 }
@@ -420,16 +421,16 @@ function AngelType_view_info(
 
     if (count($members_confirmed) > 0) {
         $members_confirmed[] = [
-            'Nick'    => __('Sum'),
-            'DECT'    => count($members_confirmed),
+            'name'    => __('Sum'),
+            'dect'    => count($members_confirmed),
             'actions' => ''
         ];
     }
 
     if (count($members_unconfirmed) > 0) {
         $members_unconfirmed[] = [
-            'Nick'    => __('Sum'),
-            'DECT'    => count($members_unconfirmed),
+            'name'    => __('Sum'),
+            'dect'    => count($members_unconfirmed),
             'actions' => ''
         ];
     }

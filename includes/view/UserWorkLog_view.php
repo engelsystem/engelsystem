@@ -5,7 +5,7 @@ use Engelsystem\Models\User\User;
 /**
  * Delete work log entry.
  *
- * @param User $user_source
+ * @param User  $user_source
  * @param array $userWorkLog
  * @return string
  */
@@ -36,7 +36,7 @@ function UserWorkLog_delete_title()
 /**
  * Render edit table.
  *
- * @param User $user_source
+ * @param User  $user_source
  * @param array $userWorkLog
  * @return string
  */
@@ -54,7 +54,7 @@ function UserWorkLog_edit_form($user_source, $userWorkLog)
 /**
  * Form for edit a user work log entry.
  *
- * @param User $user_source
+ * @param User  $user_source
  * @param array $userWorkLog
  * @return string
  */
@@ -72,7 +72,7 @@ function UserWorkLog_edit_view($user_source, $userWorkLog)
 /**
  * Form for adding a user work log entry.
  *
- * @param User $user_source
+ * @param User  $user_source
  * @param array $userWorkLog
  * @return string
  */

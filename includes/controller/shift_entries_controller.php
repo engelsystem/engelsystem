@@ -11,7 +11,7 @@ use Engelsystem\ShiftSignupState;
 function shift_entries_controller()
 {
     $user = auth()->user();
-    if ($user) {
+    if (!$user) {
         redirect(page_link_to('login'));
     }
 
@@ -75,10 +75,9 @@ function shift_entry_create_controller()
  */
 function shift_entry_create_controller_admin($shift, $angeltype)
 {
-    $user = auth()->user();
+    $signup_user = auth()->user();
     $request = request();
 
-    $signup_user = $user;
     if ($request->has('user_id')) {
         $signup_user = User::find($request->input('user_id'));
     }
@@ -113,8 +112,8 @@ function shift_entry_create_controller_admin($shift, $angeltype)
 
     $users = User::all();
     $users_select = [];
-    foreach ($users as $u) {
-        $users_select[$u->id] = $u->name;
+    foreach ($users as $user) {
+        $users_select[$user->id] = $user->name;
     }
 
     $angeltypes_select = [];

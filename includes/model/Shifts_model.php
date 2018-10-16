@@ -233,20 +233,23 @@ function NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype)
  */
 function ShiftEntries_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
-    $sql = '
-      SELECT
-          users.*
-          `ShiftEntry`.`UID`,
-          `ShiftEntry`.`TID`,
-          `ShiftEntry`.`SID`,
-          `ShiftEntry`.`Comment`,
-          `ShiftEntry`.`freeloaded`
-      FROM `Shifts`
-      JOIN `ShiftEntry` ON `ShiftEntry`.`SID`=`Shifts`.`SID`
-      JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`
-      WHERE `Shifts`.`RID` IN (' . implode(',', $shiftsFilter->getRooms()) . ')
-      AND `start` BETWEEN ? AND ?
-      ORDER BY `Shifts`.`start`';
+    $sql = sprintf('
+          SELECT
+              users.*,
+              `ShiftEntry`.`UID`,
+              `ShiftEntry`.`TID`,
+              `ShiftEntry`.`SID`,
+              `ShiftEntry`.`Comment`,
+              `ShiftEntry`.`freeloaded`
+          FROM `Shifts`
+          JOIN `ShiftEntry` ON `ShiftEntry`.`SID`=`Shifts`.`SID`
+          JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`
+          WHERE `Shifts`.`RID` IN (%s)
+          AND `start` BETWEEN ? AND ?
+          ORDER BY `Shifts`.`start`
+        ',
+        implode(',', $shiftsFilter->getRooms())
+    );
     return DB::select(
         $sql,
         [
@@ -298,7 +301,7 @@ function Shift_free_entries($needed_angeltype, $shift_entries)
 /**
  * Check if shift signup is allowed from the end users point of view (no admin like privileges)
  *
- * @param User      $user
+ * @param User       $user
  * @param array      $shift       The shift
  * @param array      $angeltype   The angeltype to which the user wants to sign up
  * @param array|null $user_angeltype
@@ -575,7 +578,6 @@ function Shift_update_by_psid($shift)
  */
 function Shift_create($shift)
 {
-    $user = auth()->user();
     DB::insert('
           INSERT INTO `Shifts` (
               `shifttype_id`,
@@ -599,7 +601,7 @@ function Shift_create($shift)
             $shift['title'],
             $shift['URL'],
             $shift['PSID'],
-            $user->id,
+            auth()->user()->id,
             time(),
             time(),
         ]

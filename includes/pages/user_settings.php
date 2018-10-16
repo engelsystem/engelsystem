@@ -57,7 +57,11 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 
     if ($request->has('planned_departure_date')) {
         $tmp = parse_date('Y-m-d H:i', $request->input('planned_departure_date') . ' 00:00');
-        $result = User_validate_planned_departure_date($user_source->state->arrival_date->getTimestamp(), $tmp);
+        $plannedArrivalDate = $user_source->personalData->planned_arrival_date;
+        $result = User_validate_planned_departure_date(
+            $plannedArrivalDate ? $plannedArrivalDate->getTimestamp() : 0,
+            $tmp
+        );
         $user_source->personalData->planned_departure_date = Carbon::createFromTimestamp($result->getValue());
         if (!$result->isValid()) {
             $valid = false;
@@ -66,7 +70,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
     }
 
     // Trivia
-    $user_source->name = strip_request_item('lastname', $user_source['Name']);
+    $user_source->personalData->last_name = strip_request_item('lastname', $user_source['Name']);
     $user_source->personalData->first_name = strip_request_item('prename', $user_source['Vorname']);
     if (strlen(strip_request_item('dect')) <= 5) {
         $user_source->contact->dect = strip_request_item('dect', $user_source['DECT']);

@@ -3,6 +3,7 @@
 namespace Engelsystem\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
+use stdClass;
 
 trait ChangesReferences
 {

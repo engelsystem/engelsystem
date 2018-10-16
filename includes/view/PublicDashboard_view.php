@@ -16,7 +16,7 @@ function public_dashboard_view($stats, $free_shifts)
         ];
         foreach ($free_shifts as $i => $shift) {
             $shift_panels[] = public_dashboard_shift_render($shift);
-            if($i % 4 == 3) {
+            if ($i % 4 == 3) {
                 $shift_panels[] = '</div><div class="row">';
             }
         }
