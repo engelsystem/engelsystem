@@ -727,10 +727,7 @@ function User_view_state_admin($freeloader, $user_source)
     if ($user_source['got_voucher'] > 0) {
         $state[] = '<span class="text-success">'
             . glyph('cutlery')
-            . sprintf(
-                ngettext('Got %s voucher', 'Got %s vouchers', $user_source['got_voucher']),
-                $user_source['got_voucher']
-            )
+            . _e('Got %s voucher', 'Got %s vouchers', $user_source['got_voucher'], [$user_source['got_voucher']])
             . '</span>';
     } else {
         $state[] = '<span class="text-danger">' . __('Got no vouchers') . '</span>';
