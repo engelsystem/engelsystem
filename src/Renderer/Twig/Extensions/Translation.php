@@ -44,6 +44,7 @@ class Translation extends TwigExtension
     {
         return [
             new TwigFunction('__', [$this->translator, 'translate']),
+            new TwigFunction('_e', [$this->translator, 'translatePlural']),
         ];
     }
 

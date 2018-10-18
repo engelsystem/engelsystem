@@ -23,10 +23,15 @@ function user_angeltypes_unconfirmed_hint()
             . '</a>';
     }
 
-    return sprintf(ngettext('There is %d unconfirmed angeltype.', 'There are %d unconfirmed angeltypes.',
-            count($unconfirmed_user_angeltypes)),
-            count($unconfirmed_user_angeltypes)) . ' ' . __('Angel types which need approvals:') . ' ' . join(', ',
-            $unconfirmed_links);
+    $count = count($unconfirmed_user_angeltypes);
+    return _e(
+            'There is %d unconfirmed angeltype.',
+            'There are %d unconfirmed angeltypes.',
+            $count,
+            [$count]
+        )
+        . ' ' . __('Angel types which need approvals:')
+        . ' ' . join(', ', $unconfirmed_links);
 }
 
 /**

@@ -10,12 +10,12 @@ use stdClass;
 class TranslatorTest extends ServiceProviderTest
 {
     /**
-     * @covers \Engelsystem\Helpers\Translator::__construct()
-     * @covers \Engelsystem\Helpers\Translator::setLocale()
-     * @covers \Engelsystem\Helpers\Translator::setLocales()
-     * @covers \Engelsystem\Helpers\Translator::getLocale()
-     * @covers \Engelsystem\Helpers\Translator::getLocales()
-     * @covers \Engelsystem\Helpers\Translator::hasLocale()
+     * @covers \Engelsystem\Helpers\Translator::__construct
+     * @covers \Engelsystem\Helpers\Translator::setLocale
+     * @covers \Engelsystem\Helpers\Translator::setLocales
+     * @covers \Engelsystem\Helpers\Translator::getLocale
+     * @covers \Engelsystem\Helpers\Translator::getLocales
+     * @covers \Engelsystem\Helpers\Translator::hasLocale
      */
     public function testInit()
     {
@@ -47,7 +47,8 @@ class TranslatorTest extends ServiceProviderTest
     }
 
     /**
-     * @covers \Engelsystem\Helpers\Translator::translate()
+     * @covers \Engelsystem\Helpers\Translator::translate
+     * @covers \Engelsystem\Helpers\Translator::replaceText
      */
     public function testTranslate()
     {
@@ -56,13 +57,35 @@ class TranslatorTest extends ServiceProviderTest
             ->setConstructorArgs(['de_DE.UTF-8', ['de_DE.UTF-8' => 'Deutsch']])
             ->setMethods(['translateGettext'])
             ->getMock();
-        $translator->expects($this->once())
+        $translator->expects($this->exactly(2))
             ->method('translateGettext')
-            ->with('My favourite number is %u!')
-            ->willReturn('Meine Lieblingszahl ist die %u!');
+            ->withConsecutive(['Hello!'], ['My favourite number is %u!'])
+            ->willReturnOnConsecutiveCalls('Hallo!', 'Meine Lieblingszahl ist die %u!');
+
+        $return = $translator->translate('Hello!');
+        $this->assertEquals('Hallo!', $return);
 
         $return = $translator->translate('My favourite number is %u!', [3]);
         $this->assertEquals('Meine Lieblingszahl ist die 3!', $return);
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Translator::translatePlural
+     */
+    public function testTranslatePlural()
+    {
+        /** @var Translator|MockObject $translator */
+        $translator = $this->getMockBuilder(Translator::class)
+            ->setConstructorArgs(['de_DE.UTF-8', ['de_DE.UTF-8' => 'Deutsch']])
+            ->setMethods(['translateGettextPlural'])
+            ->getMock();
+        $translator->expects($this->once())
+            ->method('translateGettextPlural')
+            ->with('%s apple', '%s apples', 2)
+            ->willReturn('2 Äpfel');
+
+        $return = $translator->translatePlural('%s apple', '%s apples', 2, [2]);
+        $this->assertEquals('2 Äpfel', $return);
     }
 }
 

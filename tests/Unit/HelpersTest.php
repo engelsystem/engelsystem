@@ -219,6 +219,26 @@ class HelpersTest extends TestCase
     }
 
     /**
+     * @covers \_e
+     */
+    public function testTranslatePlural()
+    {
+        /** @var Translator|MockObject $translator */
+        $translator = $this->getMockBuilder(Translator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->getAppMock('translator', $translator);
+
+        $translator->expects($this->once())
+            ->method('translatePlural')
+            ->with('One: %u', 'Multiple: %u', 4, [4])
+            ->willReturn('Multiple: 4');
+
+        $this->assertEquals('Multiple: 4', _e('One: %u', 'Multiple: %u', 4, [4]));
+    }
+
+    /**
      * @covers \url
      */
     public function testUrl()

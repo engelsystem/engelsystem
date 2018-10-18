@@ -39,11 +39,39 @@ class Translator
     {
         $translated = $this->translateGettext($key);
 
-        if (!empty($replace)) {
-            $translated = call_user_func_array('sprintf', array_merge([$translated], $replace));
+        return $this->replaceText($translated, $replace);
+    }
+
+    /**
+     * Get the translation for a given key
+     *
+     * @param string $key
+     * @param string $pluralKey
+     * @param int    $number
+     * @param array  $replace
+     * @return string
+     */
+    public function translatePlural(string $key, string $pluralKey, int $number, array $replace = []): string
+    {
+        $translated = $this->translateGettextPlural($key, $pluralKey, $number);
+
+        return $this->replaceText($translated, $replace);
+    }
+
+    /**
+     * Replace placeholders
+     *
+     * @param string $key
+     * @param array  $replace
+     * @return mixed|string
+     */
+    protected function replaceText(string $key, array $replace = [])
+    {
+        if (empty($replace)) {
+            return $key;
         }
 
-        return $translated;
+        return call_user_func_array('sprintf', array_merge([$key], $replace));
     }
 
     /**
@@ -55,7 +83,21 @@ class Translator
      */
     protected function translateGettext(string $key): string
     {
-        return _($key);
+        return gettext($key);
+    }
+
+    /**
+     * Translate the key via gettext
+     *
+     * @param string $key
+     * @param string $keyPlural
+     * @param int    $number
+     * @return string
+     * @codeCoverageIgnore
+     */
+    protected function translateGettextPlural(string $key, string $keyPlural, int $number): string
+    {
+        return ngettext($key, $keyPlural, $number);
     }
 
     /**

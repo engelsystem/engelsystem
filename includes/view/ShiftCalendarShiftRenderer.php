@@ -175,10 +175,8 @@ class ShiftCalendarShiftRenderer
             $angeltype,
             $shift_entries
         );
-        $inner_text = sprintf(
-            ngettext('%d helper needed', '%d helpers needed', $shift_signup_state->getFreeEntries()),
-            $shift_signup_state->getFreeEntries()
-        );
+        $freeEntriesCount = $shift_signup_state->getFreeEntries();
+        $inner_text = _e('%d helper needed', '%d helpers needed', $freeEntriesCount, [$freeEntriesCount]);
 
         switch ($shift_signup_state->getState()) {
             case ShiftSignupState::ADMIN:

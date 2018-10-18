@@ -40,6 +40,7 @@ class TranslationTest extends ExtensionTest
         $functions = $extension->getFunctions();
 
         $this->assertExtensionExists('__', [$translator, 'translate'], $functions);
+        $this->assertExtensionExists('_e', [$translator, 'translatePlural'], $functions);
     }
 
     /**

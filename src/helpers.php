@@ -154,6 +154,23 @@ function __($key, $replace = [])
 }
 
 /**
+ * Translate the given message
+ *
+ * @param  string $key
+ * @param  string $keyPlural
+ * @param  int    $number
+ * @param  array  $replace
+ * @return string
+ */
+function _e($key, $keyPlural, $number, $replace = [])
+{
+    /** @var Translator $translator */
+    $translator = app('translator');
+
+    return $translator->translatePlural($key, $keyPlural, $number, $replace);
+}
+
+/**
  * @param string $path
  * @param array  $parameters
  * @return UrlGeneratorInterface|string
