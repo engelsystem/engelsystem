@@ -9,6 +9,11 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
 ## Installation
 ### Requirements:
  * PHP >= 7.1
+   * Required modules:
+     * gettext
+     * json
+     * PDO
+     * xml/libxml/SimpleXML
  * MySQL-Server >= 5.7.8 or MariaDB-Server >= 10.2.2
  * Webserver, i.e. lighttpd, nginx, or Apache
  * Node >= 8 (Development/Building only)
