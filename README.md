@@ -40,6 +40,7 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
  * Recommended: Directory Listing should be disabled.
  * There must a be MySQL database created with a user who has full rights to that database.
  * If necessary, create a ```config/config.php``` to override values from ```config/config.default.php```.
+   * To remove values from the `available_themes`, `locales` or `tshirt_sizes` lists the config file has to be renamed.
  * To import the database the ```bin/migrate``` script has to be called.
  * In the browser, login with credentials ```admin```:```asdfasdf``` and change the password.
 
