@@ -799,7 +799,8 @@ function User_groups_render($user_groups)
 {
     $output = [];
     foreach ($user_groups as $group) {
-        $output[] = substr($group['Name'], 2);
+        $groupName = preg_replace('/(^\d+-)/', '', $group['Name']);
+        $output[] = __($groupName);
     }
 
     return div('col-md-3', [
