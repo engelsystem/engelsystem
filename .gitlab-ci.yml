@@ -82,9 +82,9 @@ release-image.nginx:
   <<: *docker_definition
   stage: release
   script:
-    - docker pull "${TEST_IMAGE}.nginx"
-    - docker tag "${TEST_IMAGE}.nginx" "${RELEASE_IMAGE}.nginx"
-    - docker push "${RELEASE_IMAGE}.nginx"
+    - docker pull "${TEST_IMAGE}-nginx"
+    - docker tag "${TEST_IMAGE}-nginx" "${RELEASE_IMAGE}-nginx"
+    - docker push "${RELEASE_IMAGE}-nginx"
   only:
     - master
 
