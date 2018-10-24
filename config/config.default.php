@@ -20,11 +20,14 @@ return [
     // Set to development to enable debugging messages
     'environment'             => env('ENVIRONMENT', 'production'),
 
-    // URL to the angel faq and job description
-    'faq_url'                 => env('FAQ_URL', 'https://events.ccc.de/congress/2013/wiki/Static:Volunteers'),
+    // Footer links
+    'footer_items'            => [
+        // URL to the angel faq and job description
+        'FAQ'     => env('FAQ_URL', 'https://events.ccc.de/congress/2013/wiki/Static:Volunteers'),
 
-    // Contact email address, linked on every page
-    'contact_email'           => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
+        // Contact email address, linked on every page
+        'Contact' => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
+    ],
 
     // Email config
     'email'                   => [
