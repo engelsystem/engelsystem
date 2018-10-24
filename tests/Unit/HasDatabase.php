@@ -41,6 +41,7 @@ trait HasDatabase
                 ['migration' => '2018_01_01_000001_import_install_sql'],
                 ['migration' => '2018_01_01_000002_import_update_sql'],
                 ['migration' => '2018_01_01_000003_fix_old_tables'],
+                ['migration' => '2018_01_01_000004_cleanup_group_privileges'],
             ]);
 
         $migration->run(__DIR__ . '/../../db/migrations');
