@@ -29,7 +29,7 @@ return [
     // Email config
     'email'                   => [
         // Can be mail, smtp, sendmail or log
-        'driver' => env('MAIL_DRIVER', 'smtp'),
+        'driver' => env('MAIL_DRIVER', 'mail'),
         'from'   => [
             // From address of all emails
             'address' => env('MAIL_FROM_ADDRESS', 'noreply@engelsystem.de'),
