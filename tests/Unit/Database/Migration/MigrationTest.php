@@ -2,7 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Database;
 
-use AnotherStuff;
+use Engelsystem\Migrations\AnotherStuff;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
