@@ -1,5 +1,7 @@
 <?php
 
+namespace Engelsystem\Migrations;
+
 use Engelsystem\Database\Migration\Migration;
 
 class AddSomeFeature extends Migration

@@ -1,5 +1,7 @@
 <?php
 
+namespace Engelsystem\Migrations;
+
 use Engelsystem\Database\Migration\Migration;
 
 class ImportUpdateSql extends Migration

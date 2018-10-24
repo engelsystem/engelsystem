@@ -114,7 +114,7 @@ class Migrate
 
         $className = Str::studly(preg_replace('/\d+_/', '', $migration));
         /** @var Migration $class */
-        $class = $this->app->make($className);
+        $class = $this->app->make('Engelsystem\\Migrations\\' . $className);
 
         if (method_exists($class, $type)) {
             $class->{$type}();
