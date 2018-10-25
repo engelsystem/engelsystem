@@ -25,14 +25,6 @@ function register_title()
 }
 
 /**
- * @return string
- */
-function logout_title()
-{
-    return __('Logout');
-}
-
-/**
  * Engel registrieren
  *
  * @return string
@@ -376,16 +368,6 @@ function guest_register()
 function entry_required()
 {
     return '<span class="text-info glyphicon glyphicon-warning-sign"></span>';
-}
-
-/**
- * @return bool
- */
-function guest_logout()
-{
-    session()->invalidate();
-    redirect(page_link_to('start'));
-    return true;
 }
 
 /**

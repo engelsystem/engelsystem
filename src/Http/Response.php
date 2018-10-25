@@ -121,4 +121,27 @@ class Response extends SymfonyResponse implements ResponseInterface
 
         return $new;
     }
+
+    /**
+     * Return an redirect instance
+     *
+     * This method retains the immutability of the message and returns
+     * an instance with the updated status and headers
+     *
+     * @param string $path
+     * @param int    $status
+     * @param array  $headers
+     * @return Response
+     */
+    public function redirectTo($path, $status = 302, $headers = [])
+    {
+        $response = $this->withStatus($status);
+        $response = $response->withHeader('location', $path);
+
+        foreach ($headers as $name => $value) {
+            $response = $response->withAddedHeader($name, $value);
+        }
+
+        return $response;
+    }
 }

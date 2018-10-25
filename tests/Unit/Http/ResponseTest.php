@@ -85,4 +85,23 @@ class ResponseTest extends TestCase
         $response = new Response();
         $response->withView('foo');
     }
+
+    /**
+     * @covers \Engelsystem\Http\Response::redirectTo
+     */
+    public function testRedirectTo()
+    {
+        $response = new Response();
+        $newResponse = $response->redirectTo('http://foo.bar/lorem', 301, ['test' => 'ing']);
+
+        $this->assertNotEquals($response, $newResponse);
+        $this->assertEquals(301, $newResponse->getStatusCode());
+        $this->assertArraySubset(
+            [
+                'location' => ['http://foo.bar/lorem'],
+                'test'     => ['ing'],
+            ],
+            $newResponse->getHeaders()
+        );
+    }
 }

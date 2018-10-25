@@ -11,5 +11,6 @@ class UrlGeneratorServiceProvider extends ServiceProvider
         $urlGenerator = $this->app->make(UrlGenerator::class);
         $this->app->instance(UrlGenerator::class, $urlGenerator);
         $this->app->instance('http.urlGenerator', $urlGenerator);
+        $this->app->bind(UrlGeneratorInterface::class, UrlGenerator::class);
     }
 }

@@ -3,6 +3,7 @@
 namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Http\UrlGenerator;
+use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Http\UrlGeneratorServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -25,7 +26,8 @@ class UrlGeneratorServiceProviderTest extends ServiceProviderTest
             ->method('instance')
             ->withConsecutive(
                 [UrlGenerator::class, $urlGenerator],
-                ['http.urlGenerator', $urlGenerator]
+                ['http.urlGenerator', $urlGenerator],
+                [UrlGeneratorInterface::class, $urlGenerator]
             );
 
         $serviceProvider = new UrlGeneratorServiceProvider($app);
