@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\Controllers;
+namespace Engelsystem\Test\Unit\Controllers;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\CreditsController;
