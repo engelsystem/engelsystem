@@ -150,4 +150,17 @@ return [
 
     // IP addresses of reverse proxies that are trusted, can be an array or a comma separated list
     'trusted_proxies'         => env('TRUSTED_PROXIES', ['127.0.0.0/8', '::ffff:127.0.0.0/8', '::1/128']),
+
+    // Add additional headers
+    'add_headers'             => (bool)env('ADD_HEADERS', true),
+    'headers'                 => [
+        'X-Content-Type-Options'  => 'nosniff',
+        'X-Frame-Options'         => 'sameorigin',
+        'Referrer-Policy'         => 'strict-origin-when-cross-origin',
+        'Content-Security-Policy' => 'default-src \'self\' \'unsafe-inline\' \'unsafe-eval\'',
+        'X-XSS-Protection'        => '1; mode=block',
+        'Feature-Policy'          => 'autoplay \'none\'',
+        //'Strict-Transport-Security' => 'max-age=7776000',
+        //'Expect-CT' => 'max-age=7776000,enforce,report-uri="[uri]"',
+    ],
 ];

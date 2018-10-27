@@ -37,6 +37,7 @@ return [
 
         // Changes of request/response parameters
         \Engelsystem\Middleware\SetLocale::class,
+        \Engelsystem\Middleware\AddHeaders::class,
 
         // The application code
         \Engelsystem\Middleware\ErrorHandler::class,
