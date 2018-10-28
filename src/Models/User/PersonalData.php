@@ -3,17 +3,17 @@
 namespace Engelsystem\Models\User;
 
 /**
- * @property string         $first_name
- * @property string         $last_name
- * @property string         $shirt_size
- * @property \Carbon\Carbon $planned_arrival_date
- * @property \Carbon\Carbon $planned_departure_date
+ * @property string|null         $first_name
+ * @property string|null         $last_name
+ * @property string|null         $shirt_size
+ * @property \Carbon\Carbon|null $planned_arrival_date
+ * @property \Carbon\Carbon|null $planned_departure_date
  *
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData whereFirstName($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData whereLastName($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData whereShirtSize($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData wherePlannedArrivalDate($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData wherePlannedDepartureDate($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData[] whereFirstName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData[] whereLastName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData[] whereShirtSize($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData[] wherePlannedArrivalDate($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData[] wherePlannedDepartureDate($value)
  */
 class PersonalData extends HasUserModel
 {

@@ -5,6 +5,17 @@ namespace Engelsystem\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * @property int                 $id
+ * @property string              $level
+ * @property string              $message
+ * @property \Carbon\Carbon|null $created_at
+ *
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\LogEntry[] whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\LogEntry[] whereLevel($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\LogEntry[] whereMessage($value)
+ * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\LogEntry[] whereCreatedAt($value)
+ */
 class LogEntry extends BaseModel
 {
     /** @var bool enable timestamps for created_at */

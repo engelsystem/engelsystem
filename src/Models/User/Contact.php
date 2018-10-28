@@ -3,9 +3,9 @@
 namespace Engelsystem\Models\User;
 
 /**
- * @property string  $dect
- * @property string  $email
- * @property string  $mobile
+ * @property string|null $dect
+ * @property string|null $email
+ * @property string|null $mobile
  *
  * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Contact[] whereDect($value)
  * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Contact[] whereEmail($value)

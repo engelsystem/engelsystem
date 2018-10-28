@@ -22,6 +22,9 @@ abstract class HasUserModel extends BaseModel
         'user_id',
     ];
 
+    /** The relationships that should be touched on save */
+    protected $touches = ['user'];
+
     /**
      * @return BelongsTo
      */

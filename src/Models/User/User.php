@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string                                                                        $email
  * @property string                                                                        $password
  * @property string                                                                        $api_key
- * @property \Carbon\Carbon                                                                $last_login_at
+ * @property \Carbon\Carbon|null                                                           $last_login_at
  * @property \Carbon\Carbon                                                                $created_at
  * @property \Carbon\Carbon                                                                $updated_at
  *
