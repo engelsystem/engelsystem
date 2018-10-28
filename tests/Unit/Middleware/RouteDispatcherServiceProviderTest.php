@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Middleware;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Middleware\LegacyMiddleware;
 use Engelsystem\Middleware\RouteDispatcher;
 use Engelsystem\Middleware\RouteDispatcherServiceProvider;
@@ -18,10 +19,18 @@ class RouteDispatcherServiceProviderTest extends ServiceProviderTest
      */
     public function testRegister()
     {
+        /** @var ContextualBindingBuilder|MockObject $bindingBuilder */
         $bindingBuilder = $this->createMock(ContextualBindingBuilder::class);
+        /** @var FastRouteDispatcher|MockObject $routeDispatcher */
         $routeDispatcher = $this->getMockForAbstractClass(FastRouteDispatcher::class);
+        $config = new Config(['environment' => 'development']);
 
-        $app = $this->getApp(['alias', 'when']);
+        $app = $this->getApp(['alias', 'when', 'get']);
+
+        $app->expects($this->exactly(2))
+            ->method('get')
+            ->withConsecutive(['config'], ['path.cache.routes'])
+            ->willReturn($config, '/foo/routes.cache');
 
         $app->expects($this->once())
             ->method('alias')

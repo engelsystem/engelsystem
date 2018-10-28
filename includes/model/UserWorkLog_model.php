@@ -132,7 +132,7 @@ function UserWorkLog_new($userId)
     $work_date = parse_date('Y-m-d H:i', date('Y-m-d 00:00', time()));
 
     /** @var Carbon $buildup */
-    $buildup = $buildup = config('buildup_start');
+    $buildup = config('buildup_start');
     if (!empty($buildup)) {
         $work_date = $buildup->format('Y-m-d H:i');
     }

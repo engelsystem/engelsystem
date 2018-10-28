@@ -51,6 +51,10 @@ class ApplicationTest extends TestCase
         $this->assertTrue($app->has('path.lang'));
         $this->assertTrue($app->has('path.resources'));
         $this->assertTrue($app->has('path.views'));
+        $this->assertTrue($app->has('path.storage'));
+        $this->assertTrue($app->has('path.cache'));
+        $this->assertTrue($app->has('path.cache.routes'));
+        $this->assertTrue($app->has('path.cache.views'));
 
         $this->assertEquals(realpath('.'), $app->path());
         $this->assertEquals(realpath('.') . '/config', $app->get('path.config'));

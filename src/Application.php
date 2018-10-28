@@ -108,8 +108,12 @@ class Application extends Container
         $this->instance('path.config', $appPath . DIRECTORY_SEPARATOR . 'config');
         $this->instance('path.resources', $appPath . DIRECTORY_SEPARATOR . 'resources');
         $this->instance('path.assets', $this->get('path.resources') . DIRECTORY_SEPARATOR . 'assets');
-        $this->instance('path.views', $this->get('path.resources') . DIRECTORY_SEPARATOR . 'views');
         $this->instance('path.lang', $this->get('path.resources') . DIRECTORY_SEPARATOR . 'lang');
+        $this->instance('path.views', $this->get('path.resources') . DIRECTORY_SEPARATOR . 'views');
+        $this->instance('path.storage', $appPath . DIRECTORY_SEPARATOR . 'storage');
+        $this->instance('path.cache', $this->get('path.storage') . DIRECTORY_SEPARATOR . 'cache');
+        $this->instance('path.cache.routes', $this->get('path.cache') . DIRECTORY_SEPARATOR . 'routes.cache.php');
+        $this->instance('path.cache.views', $this->get('path.cache') . DIRECTORY_SEPARATOR . 'views');
     }
 
     /**

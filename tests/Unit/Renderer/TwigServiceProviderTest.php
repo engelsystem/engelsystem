@@ -91,7 +91,7 @@ class TwigServiceProviderTest extends ServiceProviderTest
     /**
      * @covers \Engelsystem\Renderer\TwigServiceProvider::registerTwigEngine
      */
-    public function testRegisterTWigEngine()
+    public function testRegisterTwigEngine()
     {
         /** @var TwigEngine|MockObject $htmlEngine */
         $twigEngine = $this->createMock(TwigEngine::class);
@@ -114,7 +114,7 @@ class TwigServiceProviderTest extends ServiceProviderTest
             ->method('make')
             ->withConsecutive(
                 [TwigLoader::class, ['paths' => $viewsPath]],
-                [Twig::class],
+                [Twig::class, ['options' => ['cache' => false, 'auto_reload' => true, 'strict_variables' => true]]],
                 [TwigEngine::class]
             )->willReturnOnConsecutiveCalls(
                 $twigLoader,
@@ -133,17 +133,17 @@ class TwigServiceProviderTest extends ServiceProviderTest
                 ['renderer.twigEngine', $twigEngine]
             );
 
-        $app->expects($this->exactly(2))
+        $app->expects($this->exactly(3))
             ->method('get')
-            ->withConsecutive(['path.views'], ['config'])
-            ->willReturnOnConsecutiveCalls($viewsPath, $config);
+            ->withConsecutive(['path.views'], ['config'], ['path.cache.views'])
+            ->willReturnOnConsecutiveCalls($viewsPath, $config, 'cache/views');
 
         $this->setExpects($app, 'tag', ['renderer.twigEngine', ['renderer.engine']]);
 
-        $config->expects($this->once())
+        $config->expects($this->exactly(3))
             ->method('get')
-            ->with('timezone')
-            ->willReturn('The/World');
+            ->withConsecutive(['environment'], ['environment'], ['timezone'])
+            ->willReturnOnConsecutiveCalls('development', 'development', 'The/World');
 
         $twig->expects($this->once())
             ->method('getExtension')

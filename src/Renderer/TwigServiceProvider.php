@@ -4,8 +4,8 @@ namespace Engelsystem\Renderer;
 
 use Engelsystem\Config\Config as EngelsystemConfig;
 use Engelsystem\Container\ServiceProvider;
-use Engelsystem\Renderer\Twig\Extensions\Authentication;
 use Engelsystem\Renderer\Twig\Extensions\Assets;
+use Engelsystem\Renderer\Twig\Extensions\Authentication;
 use Engelsystem\Renderer\Twig\Extensions\Config;
 use Engelsystem\Renderer\Twig\Extensions\Globals;
 use Engelsystem\Renderer\Twig\Extensions\Legacy;
@@ -60,7 +60,21 @@ class TwigServiceProvider extends ServiceProvider
         $this->app->instance(TwigLoaderInterface::class, $twigLoader);
         $this->app->instance('twig.loader', $twigLoader);
 
-        $twig = $this->app->make(Twig::class);
+        $cache = $this->app->get('path.cache.views');
+        if ($config->get('environment') == 'development') {
+            $cache = false;
+        }
+
+        $twig = $this->app->make(
+            Twig::class,
+            [
+                'options' => [
+                    'cache'            => $cache,
+                    'auto_reload'      => true,
+                    'strict_variables' => ($config->get('environment') == 'development'),
+                ],
+            ]
+        );
         $this->app->instance(Twig::class, $twig);
         $this->app->instance('twig.environment', $twig);
 
