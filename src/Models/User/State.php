@@ -3,12 +3,12 @@
 namespace Engelsystem\Models\User;
 
 /**
- * @property bool           $arrived
- * @property \Carbon\Carbon $arrival_date
- * @property bool           $active
- * @property bool           $force_active
- * @property bool           $got_shirt
- * @property int            $got_voucher
+ * @property bool                $arrived
+ * @property \Carbon\Carbon|null $arrival_date
+ * @property bool                $active
+ * @property bool                $force_active
+ * @property bool                $got_shirt
+ * @property int                 $got_voucher
  *
  * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\State[] whereArrived($value)
  * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\State[] whereArrivalDate($value)
