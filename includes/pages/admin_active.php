@@ -211,9 +211,11 @@ function admin_active()
             }
         }
 
+        $shirtSize = $usr->personalData->shirt_size;
+
         $userData = [];
         $userData['nick'] = User_Nick_render($usr);
-        $userData['shirt_size'] = $tshirt_sizes[$usr->personalData->shirt_size];
+        $userData['shirt_size'] = (isset($tshirt_sizes[$shirtSize]) ? $tshirt_sizes[$shirtSize] : '');
         $userData['work_time'] = round($usr['shift_length'] / 60)
             . ' min (' . sprintf('%.2f', $usr['shift_length'] / 3600) . '&nbsp;h)';
         $userData['active'] = glyph_bool($usr->state->active == 1);
