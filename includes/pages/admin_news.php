@@ -9,7 +9,7 @@ use Engelsystem\Models\User\User;
 function admin_news()
 {
     global $privileges;
-    $user = Auth()->user();
+    $user = auth()->user();
     $request = request();
 
     if (!$request->has('action')) {

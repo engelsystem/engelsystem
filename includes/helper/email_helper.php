@@ -12,7 +12,7 @@ use Engelsystem\Models\User\User;
  */
 function engelsystem_email_to_user($recipientUser, $title, $message, $notIfItsMe = false)
 {
-    if ($notIfItsMe && Auth()->user()->id == $recipientUser->id) {
+    if ($notIfItsMe && auth()->user()->id == $recipientUser->id) {
         return true;
     }
 

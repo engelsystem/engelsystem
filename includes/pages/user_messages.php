@@ -16,7 +16,7 @@ function messages_title()
  */
 function user_unread_messages()
 {
-    $user = Auth()->user();
+    $user = auth()->user();
 
     if ($user) {
         $new_messages = count(DB::select(

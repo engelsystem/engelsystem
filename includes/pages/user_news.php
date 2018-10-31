@@ -131,7 +131,7 @@ function display_news($news)
  */
 function user_news_comments()
 {
-    $user = Auth()->user();
+    $user = auth()->user();
     $request = request();
 
     $html = '<div class="col-md-12"><h1>' . user_news_comments_title() . '</h1>';
@@ -199,7 +199,7 @@ function user_news_comments()
 function user_news()
 {
     global $privileges;
-    $user = Auth()->user();
+    $user = auth()->user();
     $display_news = config('display_news');
     $request = request();
 

@@ -39,7 +39,7 @@ function user_driver_license_required_hint()
  */
 function user_driver_licenses_controller()
 {
-    $user = Auth()->user();
+    $user = auth()->user();
 
     if (!$user) {
         redirect(page_link_to(''));
@@ -97,7 +97,7 @@ function user_driver_license_load_user()
 function user_driver_license_edit_controller()
 {
     global $privileges;
-    $user = Auth()->user();
+    $user = auth()->user();
     $request = request();
     $user_source = user_driver_license_load_user();
 
