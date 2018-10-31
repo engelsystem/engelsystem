@@ -35,7 +35,7 @@ function Message($message_id)
  */
 function Message_send($receiver_user_id, $text)
 {
-    $user = Auth()->user();
+    $user = auth()->user();
 
     $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($text));
     $receiver_user_id = preg_replace('/([^\d]{1,})/ui', '', strip_tags($receiver_user_id));

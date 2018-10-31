@@ -40,7 +40,7 @@ function logout_title()
 function guest_register()
 {
     global $privileges;
-    $authUser = Auth()->user();
+    $authUser = auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
     $enable_tshirt_size = config('enable_tshirt_size');
     $min_password_length = config('min_password_length');

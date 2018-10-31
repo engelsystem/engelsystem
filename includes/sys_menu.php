@@ -20,7 +20,7 @@ function page_link_to($page = '', $parameters = [])
  */
 function header_render_hints()
 {
-    $user = Auth()->user();
+    $user = auth()->user();
 
     $hints_renderer = new UserHintsRenderer();
 

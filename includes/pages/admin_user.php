@@ -17,7 +17,7 @@ function admin_user_title()
 function admin_user()
 {
     global $privileges;
-    $user = Auth()->user();
+    $user = auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
     $request = request();
     $html = '';

@@ -94,7 +94,7 @@ function UserWorkLog_update($userWorkLog)
  */
 function UserWorkLog_create($userWorkLog)
 {
-    $user = Auth()->user();
+    $user = auth()->user();
 
     $user_source = User::find($userWorkLog['user_id']);
 

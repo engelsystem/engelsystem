@@ -128,7 +128,7 @@ function load_days()
  */
 function load_types()
 {
-    $user = Auth()->user();
+    $user = auth()->user();
 
     if (!count(DB::select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0'))) {
         error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
@@ -284,7 +284,7 @@ function view_user_shifts()
  */
 function ical_hint()
 {
-    $user = Auth()->user();
+    $user = auth()->user();
 
     return heading(__('iCal export'), 2)
         . '<p>' . sprintf(

@@ -14,7 +14,7 @@ function admin_import_title()
 function admin_import()
 {
     global $rooms_import;
-    $user = Auth()->user();
+    $user = auth()->user();
     $html = '';
     $import_dir = __DIR__ . '/../../import';
     $request = request();

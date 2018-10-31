@@ -14,7 +14,7 @@ use Engelsystem\ShiftsFilter;
  */
 function users_controller()
 {
-    $user = Auth()->user();
+    $user = auth()->user();
     $request = request();
 
     if (!$user) {

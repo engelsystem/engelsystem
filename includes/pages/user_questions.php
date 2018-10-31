@@ -16,7 +16,7 @@ function questions_title()
  */
 function user_questions()
 {
-    $user = Auth()->user();
+    $user = auth()->user();
     $request = request();
 
     if (!$request->has('action')) {

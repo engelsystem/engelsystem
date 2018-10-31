@@ -334,7 +334,7 @@ function shift_entry_load()
  */
 function shift_entry_delete_controller()
 {
-    $user = Auth()->user();
+    $user = auth()->user();
     $request = request();
     $shiftEntry = shift_entry_load();
 

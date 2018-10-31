@@ -40,7 +40,7 @@ function admin_new_questions()
  */
 function admin_questions()
 {
-    $user = Auth()->user();
+    $user = auth()->user();
     $request = request();
 
     if (!$request->has('action')) {
