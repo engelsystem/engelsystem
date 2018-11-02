@@ -81,13 +81,12 @@ function admin_arrive()
         }
 
         $usr->name = User_Nick_render($usr);
-        if ($usr->personalData->planned_departure_date) {
-            $usr['rendered_planned_departure_date'] = $usr->personalData->planned_departure_date->format('Y-m-d');
-        } else {
-            $usr['rendered_planned_departure_date'] = '-';
-        }
-        $usr['rendered_planned_arrival_date'] = $usr->personalData->planned_arrival_date->format('Y-m-d');
-        $usr['rendered_arrival_date'] = $usr->state->arrival_date ? $usr->state->arrival_date->format('Y-m-d') : '-';
+        $plannedDepartureDate = $usr->personalData->planned_departure_date;
+        $arrivalDate = $usr->state->arrival_date;
+        $plannedArrivalDate = $usr->personalData->planned_arrival_date;
+        $usr['rendered_planned_departure_date'] = $plannedDepartureDate ? $plannedDepartureDate->format('Y-m-d') : '-';
+        $usr['rendered_planned_arrival_date'] = $plannedArrivalDate ? $plannedArrivalDate->format('Y-m-d') : '-';
+        $usr['rendered_arrival_date'] = $arrivalDate ? $arrivalDate->format('Y-m-d') : '-';
         $usr['arrived'] = $usr->state->arrived ? __('yes') : '';
         $usr['actions'] = $usr->state->arrived == 1
             ? '<a href="' . page_link_to(
