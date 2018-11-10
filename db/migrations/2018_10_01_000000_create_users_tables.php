@@ -16,6 +16,7 @@ use stdClass;
 class CreateUsersTables extends Migration
 {
     use ChangesReferences;
+    use Reference;
 
     /**
      * Run the migration
@@ -272,18 +273,5 @@ class CreateUsersTables extends Migration
         );
 
         $this->schema->drop('users');
-    }
-
-    /**
-     * @param Blueprint $table
-     */
-    protected function referencesUser(Blueprint $table)
-    {
-        $table->unsignedInteger('user_id');
-
-        $table->primary('user_id');
-        $table->foreign('user_id')
-            ->references('id')->on('users')
-            ->onDelete('cascade');
     }
 }
