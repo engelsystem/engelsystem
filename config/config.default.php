@@ -56,6 +56,7 @@ return [
 
     // Available themes
     'available_themes'        => [
+        '7' => 'Engelsystem 35c3 dark (2018)',
         '6' => 'Engelsystem 34c3 dark (2017)',
         '5' => 'Engelsystem 34c3 light (2017)',
         '4' => 'Engelsystem 33c3 (2016)',
