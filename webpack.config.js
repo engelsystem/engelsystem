@@ -19,7 +19,7 @@ const plugins = [
 
 
 const themeEntries = {};
-for (let i = 0; i < 7; i++) {
+for (let i = 0; i < 8; i++) {
   themeEntries[`theme${i}`] = `./resources/assets/themes/theme${i}.less`;
 }
 
