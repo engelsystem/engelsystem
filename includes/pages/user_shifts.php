@@ -168,7 +168,7 @@ function load_types()
  */
 function view_user_shifts()
 {
-    global $privileges, $ical_shifts;
+    global $ical_shifts;
     $user = auth()->user();
 
     $session = session();
@@ -182,13 +182,13 @@ function view_user_shifts()
             $rooms[0]['id']
         ];
         $type_ids = array_map('get_ids_from_array', $types);
-        $shiftsFilter = new ShiftsFilter(in_array('user_shifts_admin', $privileges), $room_ids, $type_ids);
+        $shiftsFilter = new ShiftsFilter(auth()->can('user_shifts_admin'), $room_ids, $type_ids);
         $session->set('shifts-filter', $shiftsFilter->sessionExport());
     }
 
     $shiftsFilter = new ShiftsFilter();
     $shiftsFilter->sessionImport($session->get('shifts-filter'));
-    update_ShiftsFilter($shiftsFilter, in_array('user_shifts_admin', $privileges), $days);
+    update_ShiftsFilter($shiftsFilter, auth()->can('user_shifts_admin'), $days);
     $session->set('shifts-filter', $shiftsFilter->sessionExport());
 
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);

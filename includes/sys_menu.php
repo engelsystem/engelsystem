@@ -45,15 +45,15 @@ function header_render_hints()
  */
 function make_user_submenu()
 {
-    global $privileges, $page;
+    global $page;
 
     $user_submenu = make_language_select();
 
-    if (in_array('user_settings', $privileges) || in_array('logout', $privileges)) {
+    if (auth()->can('user_settings') || auth()->can('logout')) {
         $user_submenu[] = toolbar_item_divider();
     }
 
-    if (in_array('user_settings', $privileges)) {
+    if (auth()->can('user_settings')) {
         $user_submenu[] = toolbar_item_link(
             page_link_to('user_settings'),
             'list-alt',
@@ -62,7 +62,7 @@ function make_user_submenu()
         );
     }
 
-    if (in_array('logout', $privileges)) {
+    if (auth()->can('logout')) {
         $user_submenu[] = toolbar_item_link(
             page_link_to('logout'),
             'log-out',
@@ -79,7 +79,7 @@ function make_user_submenu()
  */
 function make_navigation()
 {
-    global $page, $privileges;
+    global $page;
 
     $menu = [];
     $pages = [
@@ -91,7 +91,7 @@ function make_navigation()
     ];
 
     foreach ($pages as $menu_page => $title) {
-        if (in_array($menu_page, $privileges)) {
+        if (auth()->can($menu_page)) {
             $menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
         }
     }
@@ -115,7 +115,7 @@ function make_navigation()
     ];
 
     foreach ($admin_pages as $menu_page => $title) {
-        if (in_array($menu_page, $privileges)) {
+        if (auth()->can($menu_page)) {
             $admin_menu[] = toolbar_item_link(
                 page_link_to($menu_page),
                 '',
@@ -140,16 +140,14 @@ function make_navigation()
  */
 function make_room_navigation($menu)
 {
-    global $privileges;
-
-    if (!in_array('view_rooms', $privileges)) {
+    if (!auth()->can('view_rooms')) {
         return $menu;
     }
 
     // Get a list of all rooms
     $rooms = Rooms();
     $room_menu = [];
-    if (in_array('admin_rooms', $privileges)) {
+    if (auth()->can('admin_rooms')) {
         $room_menu[] = toolbar_item_link(page_link_to('admin_rooms'), 'list', __('Manage rooms'));
     }
     if (count($room_menu) > 0) {

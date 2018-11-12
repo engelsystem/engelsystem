@@ -46,7 +46,6 @@ function users_controller()
  */
 function user_delete_controller()
 {
-    global $privileges;
     $user = auth()->user();
     $request = request();
 
@@ -56,7 +55,7 @@ function user_delete_controller()
         $user_source = $user;
     }
 
-    if (!in_array('admin_user', $privileges)) {
+    if (!auth()->can('admin_user')) {
         redirect(page_link_to(''));
     }
 
@@ -138,7 +137,6 @@ function user_link($userId)
  */
 function user_edit_vouchers_controller()
 {
-    global $privileges;
     $user = auth()->user();
     $request = request();
 
@@ -148,7 +146,7 @@ function user_edit_vouchers_controller()
         $user_source = $user;
     }
 
-    if (!in_array('admin_user', $privileges)) {
+    if (!auth()->can('admin_user')) {
         redirect(page_link_to(''));
     }
 
@@ -190,7 +188,6 @@ function user_edit_vouchers_controller()
  */
 function user_controller()
 {
-    global $privileges;
     $user = auth()->user();
     $request = request();
 
@@ -203,7 +200,7 @@ function user_controller()
         }
     }
 
-    $shifts = Shifts_by_user($user_source->id, in_array('user_shifts_admin', $privileges));
+    $shifts = Shifts_by_user($user_source->id, auth()->can('user_shifts_admin'));
     foreach ($shifts as &$shift) {
         // TODO: Move queries to model
         $shift['needed_angeltypes'] = DB::select('
@@ -242,15 +239,15 @@ function user_controller()
         $user_source->name,
         User_view(
             $user_source,
-            in_array('admin_user', $privileges),
+            auth()->can('admin_user'),
             User_is_freeloader($user_source),
             User_angeltypes($user_source->id),
             User_groups($user_source->id),
             $shifts,
             $user->id == $user_source->id,
             $tshirt_score,
-            in_array('admin_active', $privileges),
-            in_array('admin_user_worklog', $privileges),
+            auth()->can('admin_active'),
+            auth()->can('admin_user_worklog'),
             UserWorkLogsForUser($user_source->id)
         )
     ];
@@ -263,10 +260,9 @@ function user_controller()
  */
 function users_list_controller()
 {
-    global $privileges;
     $request = request();
 
-    if (!in_array('admin_user', $privileges)) {
+    if (!auth()->can('admin_user')) {
         redirect(page_link_to(''));
     }
 

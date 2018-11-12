@@ -35,7 +35,6 @@ function shift_entries_controller()
  */
 function shift_entry_create_controller()
 {
-    global $privileges;
     $user = auth()->user();
     $request = request();
 
@@ -50,7 +49,7 @@ function shift_entry_create_controller()
 
     $angeltype = AngelType($request->input('angeltype_id'));
 
-    if (in_array('user_shifts_admin', $privileges)) {
+    if (auth()->can('user_shifts_admin')) {
         return shift_entry_create_controller_admin($shift, $angeltype);
     }
 

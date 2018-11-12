@@ -27,7 +27,7 @@ class Authentication extends TwigExtension
         return [
             new TwigFunction('is_user', [$this, 'isAuthenticated']),
             new TwigFunction('is_guest', [$this, 'isGuest']),
-            new TwigFunction('has_permission_to', [$this, 'checkAuth']),
+            new TwigFunction('has_permission_to', [$this->auth, 'can']),
         ];
     }
 
@@ -45,16 +45,5 @@ class Authentication extends TwigExtension
     public function isGuest()
     {
         return !$this->isAuthenticated();
-    }
-
-    /**
-     * @param $privilege
-     * @return bool
-     */
-    public function checkAuth($privilege)
-    {
-        global $privileges;
-
-        return in_array($privilege, $privileges);
     }
 }

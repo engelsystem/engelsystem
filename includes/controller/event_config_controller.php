@@ -16,9 +16,7 @@ function event_config_title()
  */
 function event_config_edit_controller()
 {
-    global $privileges;
-
-    if (!in_array('admin_event_config', $privileges)) {
+    if (!auth()->can('admin_event_config')) {
         redirect(page_link_to('/'));
     }
 

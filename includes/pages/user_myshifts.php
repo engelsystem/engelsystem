@@ -18,13 +18,12 @@ function myshifts_title()
  */
 function user_myshifts()
 {
-    global $privileges;
     $user = auth()->user();
     $request = request();
 
     if (
         $request->has('id')
-        && in_array('user_shifts_admin', $privileges)
+        && auth()->can('user_shifts_admin')
         && preg_match('/^\d{1,}$/', $request->input('id'))
         && User::find($request->input('id'))
     ) {
@@ -79,7 +78,7 @@ function user_myshifts()
 
             if ($request->hasPostData('submit')) {
                 $valid = true;
-                if (in_array('user_shifts_admin', $privileges)) {
+                if (auth()->can('user_shifts_admin')) {
                     $freeloaded = $request->has('freeloaded');
                     $freeload_comment = strip_request_item_nl('freeload_comment');
                     if ($freeloaded && $freeload_comment == '') {
@@ -120,7 +119,7 @@ function user_myshifts()
                 $shift['Comment'],
                 $shift['freeloaded'],
                 $shift['freeload_comment'],
-                in_array('user_shifts_admin', $privileges)
+                auth()->can('user_shifts_admin')
             );
         } else {
             redirect(page_link_to('user_myshifts'));

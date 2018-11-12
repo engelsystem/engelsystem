@@ -43,13 +43,11 @@ function shift_edit_link($shift)
  */
 function shift_edit_controller()
 {
-    global $privileges;
-
     $msg = '';
     $valid = true;
     $request = request();
 
-    if (!in_array('admin_shifts', $privileges)) {
+    if (!auth()->can('admin_shifts')) {
         redirect(page_link_to('user_shifts'));
     }
 
@@ -203,10 +201,9 @@ function shift_edit_controller()
  */
 function shift_delete_controller()
 {
-    global $privileges;
     $request = request();
 
-    if (!in_array('user_shifts_admin', $privileges)) {
+    if (!auth()->can('user_shifts_admin')) {
         redirect(page_link_to('user_shifts'));
     }
 
@@ -253,11 +250,10 @@ function shift_delete_controller()
  */
 function shift_controller()
 {
-    global $privileges;
     $user = auth()->user();
     $request = request();
 
-    if (!in_array('user_shifts', $privileges)) {
+    if (!auth()->can('user_shifts')) {
         redirect(page_link_to('/'));
     }
 
@@ -332,9 +328,7 @@ function shifts_controller()
  */
 function shift_next_controller()
 {
-    global $privileges;
-
-    if (!in_array('user_shifts', $privileges)) {
+    if (!auth()->can('user_shifts')) {
         redirect(page_link_to('/'));
     }
 
@@ -363,7 +357,7 @@ function shifts_json_export_controller()
     if (!$user) {
         engelsystem_error('Key invalid.');
     }
-    if (!in_array('shifts_json_export', privileges_for_user($user->id))) {
+    if (!auth()->can('shifts_json_export')) {
         engelsystem_error('No privilege for shifts_json_export.');
     }
 

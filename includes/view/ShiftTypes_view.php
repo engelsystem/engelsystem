@@ -6,8 +6,7 @@
  */
 function ShiftType_name_render($shifttype)
 {
-    global $privileges;
-    if (in_array('shifttypes', $privileges)) {
+    if (auth()->can('shifttypes')) {
         return '<a href="' . shifttype_link($shifttype) . '">' . $shifttype['name'] . '</a>';
     }
     return $shifttype['name'];

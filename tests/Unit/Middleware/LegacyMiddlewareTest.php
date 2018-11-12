@@ -76,6 +76,9 @@ class LegacyMiddlewareTest extends TestCase
         $auth->expects($this->atLeastOnce())
             ->method('user')
             ->willReturn(false);
+        $auth->expects($this->atLeastOnce())
+            ->method('can')
+            ->willReturn(false);
 
         $translator->expects($this->exactly(2))
             ->method('translate')

@@ -352,8 +352,6 @@ function User_view_shiftentries($needed_angel_type)
  */
 function User_view_myshift($shift, $user_source, $its_me)
 {
-    global $privileges;
-
     $shift_info = '<a href="' . shift_link($shift) . '">' . $shift['name'] . '</a>';
     if ($shift['title']) {
         $shift_info .= '<br /><a href="' . shift_link($shift) . '">' . $shift['title'] . '</a>';
@@ -382,7 +380,7 @@ function User_view_myshift($shift, $user_source, $its_me)
         $myshift['duration'] = '<p class="text-danger">'
             . round(-($shift['end'] - $shift['start']) / 3600 * 2, 2) . '&nbsp;h'
             . '</p>';
-        if (in_array('user_shifts_admin', $privileges)) {
+        if (auth()->can('user_shifts_admin')) {
             $myshift['comment'] .= '<br />'
                 . '<p class="text-danger">' . __('Freeloaded') . ': ' . $shift['freeload_comment'] . '</p>';
         } else {
@@ -393,7 +391,7 @@ function User_view_myshift($shift, $user_source, $its_me)
     $myshift['actions'] = [
         button(shift_link($shift), glyph('eye-open') . __('view'), 'btn-xs')
     ];
-    if ($its_me || in_array('user_shifts_admin', $privileges)) {
+    if ($its_me || auth()->can('user_shifts_admin')) {
         $myshift['actions'][] = button(
             page_link_to('user_myshifts', ['edit' => $shift['id'], 'id' => $user_source->id]),
             glyph('edit') . __('edit'),

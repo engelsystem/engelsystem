@@ -39,7 +39,6 @@ function logout_title()
  */
 function guest_register()
 {
-    global $privileges;
     $authUser = auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
     $enable_tshirt_size = config('enable_tshirt_size');
@@ -71,7 +70,7 @@ function guest_register()
         }
     }
 
-    if (!in_array('register', $privileges) || (!$authUser && !config('registration_enabled'))) {
+    if (!auth()->can('register') || (!$authUser && !config('registration_enabled'))) {
         error(__('Registration is disabled.'));
 
         return page_with_title(register_title(), [
@@ -472,9 +471,7 @@ function guest_login()
  */
 function get_register_hint()
 {
-    global $privileges;
-
-    if (in_array('register', $privileges) && config('registration_enabled')) {
+    if (auth()->can('register') && config('registration_enabled')) {
         return join('', [
             '<p>' . __('Please sign up, if you want to help us!') . '</p>',
             buttons([

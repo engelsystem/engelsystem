@@ -97,8 +97,6 @@ class ShiftCalendarShiftRenderer
      */
     private function renderShiftNeededAngeltypes($shift, $needed_angeltypes, $shift_entries, $user)
     {
-        global $privileges;
-
         $shift_entries_filtered = [];
         foreach ($needed_angeltypes as $needed_angeltype) {
             $shift_entries_filtered[$needed_angeltype['id']] = [];
@@ -130,7 +128,7 @@ class ShiftCalendarShiftRenderer
             $shift_signup_state = new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, 0);
         }
 
-        if (in_array('user_shifts_admin', $privileges)) {
+        if (auth()->can('user_shifts_admin')) {
             $html .= '<li class="list-group-item">';
             $html .= button(shift_entry_create_link_admin($shift),
                 glyph('plus') . __('Add more angels'),
@@ -253,10 +251,8 @@ class ShiftCalendarShiftRenderer
      */
     private function renderShiftHead($shift, $class)
     {
-        global $privileges;
-
         $header_buttons = '';
-        if (in_array('admin_shifts', $privileges)) {
+        if (auth()->can('admin_shifts')) {
             $header_buttons = '<div class="pull-right">' . table_buttons([
                     button(
                         page_link_to('user_shifts', ['edit_shift' => $shift['SID']]),

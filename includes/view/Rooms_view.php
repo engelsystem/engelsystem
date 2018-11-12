@@ -64,9 +64,7 @@ function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalen
  */
 function Room_name_render($room)
 {
-    global $privileges;
-
-    if (in_array('view_rooms', $privileges)) {
+    if (auth()->can('view_rooms')) {
         return '<a href="' . room_link($room) . '">' . glyph('map-marker') . $room['Name'] . '</a>';
     }
 

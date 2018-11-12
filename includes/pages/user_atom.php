@@ -17,7 +17,7 @@ function user_atom()
     if (empty($user)) {
         engelsystem_error('Key invalid.');
     }
-    if (!in_array('atom', privileges_for_user($user->id))) {
+    if (!auth()->can('atom')) {
         engelsystem_error('No privilege for atom.');
     }
 

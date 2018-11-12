@@ -99,4 +99,56 @@ class AuthenticatorTest extends ServiceProviderTest
         UserModelImplementation::$user = null;
         $this->assertEquals($user, $auth->apiUser());
     }
+
+    /**
+     * @covers \Engelsystem\Helpers\Authenticator::can
+     */
+    public function testCan()
+    {
+        /** @var ServerRequestInterface|MockObject $request */
+        $request = $this->getMockForAbstractClass(ServerRequestInterface::class);
+        /** @var Session|MockObject $session */
+        $session = $this->createMock(Session::class);
+        /** @var UserModelImplementation|MockObject $userRepository */
+        $userRepository = new UserModelImplementation();
+        /** @var User|MockObject $user */
+        $user = $this->createMock(User::class);
+
+        $user->expects($this->once())
+            ->method('save');
+
+        $session->expects($this->exactly(2))
+            ->method('get')
+            ->with('uid')
+            ->willReturn(42);
+        $session->expects($this->once())
+            ->method('remove')
+            ->with('uid');
+
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->getMockBuilder(Authenticator::class)
+            ->setConstructorArgs([$request, $session, $userRepository])
+            ->setMethods(['getPermissionsByGroup', 'getPermissionsByUser', 'user'])
+            ->getMock();
+        $auth->expects($this->exactly(1))
+            ->method('getPermissionsByGroup')
+            ->with(-10)
+            ->willReturn([]);
+        $auth->expects($this->exactly(1))
+            ->method('getPermissionsByUser')
+            ->with($user)
+            ->willReturn(['bar']);
+        $auth->expects($this->exactly(2))
+            ->method('user')
+            ->willReturnOnConsecutiveCalls(null, $user);
+
+        // No user, no permissions
+        $this->assertFalse($auth->can('foo'));
+
+        // User exists, has permissions
+        $this->assertTrue($auth->can('bar'));
+
+        // Permissions cached
+        $this->assertTrue($auth->can('bar'));
+    }
 }

@@ -14,9 +14,7 @@ use Engelsystem\ShiftsFilterRenderer;
  */
 function room_controller()
 {
-    global $privileges;
-
-    if (!in_array('view_rooms', $privileges)) {
+    if (!auth()->can('view_rooms')) {
         redirect(page_link_to());
     }
 

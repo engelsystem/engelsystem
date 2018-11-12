@@ -91,7 +91,7 @@ function news_text($news)
  */
 function display_news($news)
 {
-    global $privileges, $page;
+    global $page;
 
     $html = '';
     $html .= '<div class="panel' . ($news['Treffen'] == 1 ? ' panel-info' : ' panel-default') . '">';
@@ -101,7 +101,7 @@ function display_news($news)
     $html .= '<div class="panel-body">' . news_text($news) . '</div>';
 
     $html .= '<div class="panel-footer text-muted">';
-    if (in_array('admin_news', $privileges)) {
+    if (auth()->can('admin_news')) {
         $html .= '<div class="pull-right">'
             . button_glyph(
                 page_link_to('admin_news', ['action' => 'edit', 'id' => $news['ID']]),
@@ -198,7 +198,6 @@ function user_news_comments()
  */
 function user_news()
 {
-    global $privileges;
     $user = auth()->user();
     $display_news = config('display_news');
     $request = request();
@@ -206,13 +205,13 @@ function user_news()
     $html = '<div class="col-md-12"><h1>' . news_title() . '</h1>' . msg();
 
     $isMeeting = $request->postData('treffen');
-    if ($request->has('text') && $request->has('betreff') && in_array('admin_news', $privileges)) {
+    if ($request->has('text') && $request->has('betreff') && auth()->can('admin_news')) {
         if (!$request->has('treffen')) {
             $isMeeting = 0;
         }
 
         $text = $request->postData('text');
-        if (!in_array('admin_news_html', $privileges)) {
+        if (!auth()->can('admin_news_html')) {
             $text = strip_tags($text);
         }
 
@@ -266,7 +265,7 @@ function user_news()
     }
     $html .= '</ul></div>';
 
-    if (in_array('admin_news', $privileges)) {
+    if (auth()->can('admin_news')) {
         $html .= '<hr />';
         $html .= '<h2>' . __('Create news:') . '</h2>';
 
