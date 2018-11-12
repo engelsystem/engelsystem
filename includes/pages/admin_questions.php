@@ -18,10 +18,10 @@ function admin_questions_title()
  */
 function admin_new_questions()
 {
-    global $privileges, $page;
+    global $page;
 
     if ($page != 'admin_questions') {
-        if (in_array('admin_questions', $privileges)) {
+        if (auth()->can('admin_questions')) {
             $new_messages = count(DB::select('SELECT `QID` FROM `Questions` WHERE `AID` IS NULL'));
 
             if ($new_messages > 0) {

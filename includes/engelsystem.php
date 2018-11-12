@@ -21,9 +21,3 @@ if ($app->get('config')->get('maintenance')) {
     echo $maintenance;
     die();
 }
-
-
-/**
- * Init authorization
- */
-load_auth();

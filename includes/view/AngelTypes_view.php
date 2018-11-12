@@ -564,14 +564,12 @@ function AngelTypes_about_view_angeltype($angeltype)
  */
 function AngelTypes_about_view($angeltypes, $user_logged_in)
 {
-    global $privileges;
-
     $buttons = [];
 
     if ($user_logged_in) {
         $buttons[] = button(page_link_to('angeltypes'), angeltypes_title(), 'back');
     } else {
-        if (in_array('register', $privileges) && config('registration_enabled')) {
+        if (auth()->can('register') && config('registration_enabled')) {
             $buttons[] = button(page_link_to('register'), register_title());
         }
 

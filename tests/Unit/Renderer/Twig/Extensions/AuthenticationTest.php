@@ -23,7 +23,7 @@ class AuthenticationTest extends ExtensionTest
 
         $this->assertExtensionExists('is_user', [$extension, 'isAuthenticated'], $functions);
         $this->assertExtensionExists('is_guest', [$extension, 'isGuest'], $functions);
-        $this->assertExtensionExists('has_permission_to', [$extension, 'checkAuth'], $functions);
+        $this->assertExtensionExists('has_permission_to', [$auth, 'can'], $functions);
     }
 
     /**
@@ -52,24 +52,5 @@ class AuthenticationTest extends ExtensionTest
 
         $this->assertTrue($extension->isAuthenticated());
         $this->assertFalse($extension->isGuest());
-    }
-
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Authentication::checkAuth
-     */
-    public function testCheckAuth()
-    {
-        global $privileges;
-        $privileges = [];
-
-        /** @var Authenticator|MockObject $auth */
-        $auth = $this->createMock(Authenticator::class);
-
-        $extension = new Authentication($auth);
-
-        $this->assertFalse($extension->checkAuth('foo.bar'));
-
-        $privileges = ['foo.bar'];
-        $this->assertTrue($extension->checkAuth('foo.bar'));
     }
 }

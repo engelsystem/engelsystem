@@ -16,7 +16,6 @@ function admin_user_title()
  */
 function admin_user()
 {
-    global $privileges;
     $user = auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
     $request = request();
@@ -83,7 +82,7 @@ function admin_user()
         $html .= html_options('eAktiv', $options, $user_source->state->active) . '</td></tr>' . "\n";
 
         // Aktiv erzwingen
-        if (in_array('admin_active', $privileges)) {
+        if (auth()->can('admin_active')) {
             $html .= '  <tr><td>' . __('Force active') . '</td><td>' . "\n";
             $html .= html_options('force_active', $options, $user_source->state->force_active) . '</td></tr>' . "\n";
         }
@@ -249,7 +248,7 @@ function admin_user()
             case 'save':
                 $force_active = $user->state->force_active;
                 $user_source = User::find($user_id);
-                if (in_array('admin_active', $privileges)) {
+                if (auth()->can('admin_active')) {
                     $force_active = $request->input('force_active');
                 }
                 if ($user_source->settings->email_human) {

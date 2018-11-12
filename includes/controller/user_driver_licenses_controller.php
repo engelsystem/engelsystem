@@ -96,13 +96,12 @@ function user_driver_license_load_user()
  */
 function user_driver_license_edit_controller()
 {
-    global $privileges;
     $user = auth()->user();
     $request = request();
     $user_source = user_driver_license_load_user();
 
     // only privilege admin_user can edit other users driver license information
-    if ($user->id != $user_source->id && !in_array('admin_user', $privileges)) {
+    if ($user->id != $user_source->id && !auth()->can('admin_user')) {
         redirect(user_driver_license_edit_link());
     }
 

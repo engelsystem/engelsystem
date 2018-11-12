@@ -80,7 +80,6 @@ function user_angeltypes_delete_all_controller()
  */
 function user_angeltypes_confirm_all_controller()
 {
-    global $privileges;
     $user = auth()->user();
     $request = request();
 
@@ -95,7 +94,7 @@ function user_angeltypes_confirm_all_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if (!in_array('admin_user_angeltypes', $privileges) && !User_is_AngelType_supporter($user, $angeltype)) {
+    if (!auth()->can('admin_user_angeltypes') && !User_is_AngelType_supporter($user, $angeltype)) {
         error(__('You are not allowed to confirm all users for this angeltype.'));
         redirect(page_link_to('angeltypes'));
     }
@@ -235,11 +234,10 @@ function user_angeltype_delete_controller()
  */
 function user_angeltype_update_controller()
 {
-    global $privileges;
     $supporter = false;
     $request = request();
 
-    if (!in_array('admin_angel_types', $privileges)) {
+    if (!auth()->can('admin_angel_types')) {
         error(__('You are not allowed to set supporter rights.'));
         redirect(page_link_to('angeltypes'));
     }
@@ -360,7 +358,6 @@ function user_angeltype_add_controller()
  */
 function user_angeltype_join_controller($angeltype)
 {
-    global $privileges;
     $user = auth()->user();
 
     $user_angeltype = UserAngelType_by_User_and_AngelType($user->id, $angeltype);
@@ -380,7 +377,7 @@ function user_angeltype_join_controller($angeltype)
         ));
         success($success_message);
 
-        if (in_array('admin_user_angeltypes', $privileges)) {
+        if (auth()->can('admin_user_angeltypes')) {
             UserAngelType_confirm($user_angeltype_id, $user->id);
             engelsystem_log(sprintf(
                 'User %s confirmed as %s.',

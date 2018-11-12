@@ -102,12 +102,10 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
  */
 function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupState $shift_signup_state)
 {
-    global $privileges;
-
-    $shift_admin = in_array('admin_shifts', $privileges);
-    $user_shift_admin = in_array('user_shifts_admin', $privileges);
-    $admin_rooms = in_array('admin_rooms', $privileges);
-    $admin_shifttypes = in_array('shifttypes', $privileges);
+    $shift_admin = auth()->can('admin_shifts');
+    $user_shift_admin = auth()->can('user_shifts_admin');
+    $admin_rooms = auth()->can('admin_rooms');
+    $admin_shifttypes = auth()->can('shifttypes');
 
     $parsedown = new Parsedown();
 

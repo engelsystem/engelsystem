@@ -182,10 +182,9 @@ function user_worklog_delete_link($userWorkLog, $parameters = [])
  */
 function user_worklog_controller()
 {
-    global $privileges;
     $user = auth()->user();
 
-    if (!in_array('admin_user_worklog', $privileges)) {
+    if (!auth()->can('admin_user_worklog')) {
         redirect(user_link($user->id));
     }
 

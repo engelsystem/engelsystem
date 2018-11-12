@@ -62,7 +62,6 @@ class LegacyMiddleware implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
-        global $privileges;
         global $page;
 
         /** @var Request $appRequest */
@@ -79,10 +78,7 @@ class LegacyMiddleware implements MiddlewareInterface
         $title = $content = '';
         if (
             preg_match('~^\w+$~i', $page)
-            && (
-                in_array($page, $this->free_pages)
-                || (isset($privileges) && in_array($page, $privileges))
-            )
+            && (in_array($page, $this->free_pages) || $this->auth->can($page))
         ) {
             list($title, $content) = $this->loadPage($page);
         }

@@ -17,7 +17,6 @@ function admin_free_title()
  */
 function admin_free()
 {
-    global $privileges;
     $request = request();
 
     $search = '';
@@ -88,7 +87,7 @@ function admin_free()
             'dect'        => $usr->contact->dect,
             'email'       => $usr->settings->email_human ? ($usr->contact->email ? $usr->contact->email : $usr->email) : glyph('eye-close'),
             'actions'     =>
-                in_array('admin_user', $privileges)
+                auth()->can('admin_user')
                     ? button(page_link_to('admin_user', ['id' => $usr->id]), __('edit'), 'btn-xs')
                     : ''
         ];

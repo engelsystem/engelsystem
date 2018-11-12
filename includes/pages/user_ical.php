@@ -15,7 +15,7 @@ function user_ical()
     if (!$user) {
         engelsystem_error('Key invalid.');
     }
-    if (!in_array('ical', privileges_for_user($user->id))) {
+    if (!auth()->can('ical')) {
         engelsystem_error('No privilege for ical.');
     }
 

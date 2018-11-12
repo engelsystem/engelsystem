@@ -78,9 +78,7 @@ function angeltypes_about_controller()
  */
 function angeltype_delete_controller()
 {
-    global $privileges;
-
-    if (!in_array('admin_angel_types', $privileges)) {
+    if (!auth()->can('admin_angel_types')) {
         redirect(page_link_to('angeltypes'));
     }
 
@@ -105,10 +103,8 @@ function angeltype_delete_controller()
  */
 function angeltype_edit_controller()
 {
-    global $privileges;
-
     // In supporter mode only allow to modify description
-    $supporter_mode = !in_array('admin_angel_types', $privileges);
+    $supporter_mode = !auth()->can('admin_angel_types');
     $request = request();
 
     if ($request->has('angeltype_id')) {
@@ -178,10 +174,9 @@ function angeltype_edit_controller()
  */
 function angeltype_controller()
 {
-    global $privileges;
     $user = auth()->user();
 
-    if (!in_array('angeltypes', $privileges)) {
+    if (!auth()->can('angeltypes')) {
         redirect(page_link_to('/'));
     }
 
@@ -210,8 +205,8 @@ function angeltype_controller()
             $angeltype,
             $members,
             $user_angeltype,
-            in_array('admin_user_angeltypes', $privileges) || $user_angeltype['supporter'],
-            in_array('admin_angel_types', $privileges),
+            auth()->can('admin_user_angeltypes') || $user_angeltype['supporter'],
+            auth()->can('admin_angel_types'),
             $user_angeltype['supporter'],
             $user_driver_license,
             $user,
@@ -250,11 +245,9 @@ function angeltype_controller_shiftsFilterDays($angeltype)
  */
 function angeltype_controller_shiftsFilter($angeltype, $days)
 {
-    global $privileges;
-
     $request = request();
     $shiftsFilter = new ShiftsFilter(
-        in_array('user_shifts_admin', $privileges),
+        auth()->can('user_shifts_admin'),
         Room_ids(),
         [$angeltype['id']]
     );
@@ -278,10 +271,9 @@ function angeltype_controller_shiftsFilter($angeltype, $days)
  */
 function angeltypes_list_controller()
 {
-    global $privileges;
     $user = auth()->user();
 
-    if (!in_array('angeltypes', $privileges)) {
+    if (!auth()->can('angeltypes')) {
         redirect(page_link_to('/'));
     }
 
@@ -296,7 +288,7 @@ function angeltypes_list_controller()
             )
         ];
 
-        if (in_array('admin_angel_types', $privileges)) {
+        if (auth()->can('admin_angel_types')) {
             $actions[] = button(
                 page_link_to('angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype['id']]),
                 __('edit'),
@@ -340,7 +332,7 @@ function angeltypes_list_controller()
 
     return [
         angeltypes_title(),
-        AngelTypes_list_view($angeltypes, in_array('admin_angel_types', $privileges))
+        AngelTypes_list_view($angeltypes, auth()->can('admin_angel_types'))
     ];
 }
 

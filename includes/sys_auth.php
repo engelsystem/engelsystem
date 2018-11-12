@@ -1,34 +1,7 @@
 <?php
 
-use Carbon\Carbon;
 use Engelsystem\Database\DB;
 use Engelsystem\Models\User\User;
-
-/**
- *  Testet ob ein User eingeloggt ist und lädt die entsprechenden Privilegien
- */
-function load_auth()
-{
-    global $privileges;
-    $session = session();
-
-    if ($session->has('uid')) {
-        $user = auth()->user();
-
-        if ($user) {
-            $user->last_login_at = new Carbon();
-            $user->save();
-
-            $privileges = privileges_for_user($user->id);
-            return;
-        }
-
-        $session->remove('uid');
-    }
-
-    // guest privileges
-    $privileges = privileges_for_group(-10);
-}
 
 /**
  * generate a salt (random string) of arbitrary length suitable for the use with crypt()

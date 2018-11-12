@@ -8,7 +8,6 @@ use Engelsystem\Models\User\User;
  */
 function admin_news()
 {
-    global $privileges;
     $user = auth()->user();
     $request = request();
 
@@ -32,7 +31,7 @@ function admin_news()
         case 'edit':
             $user_source = User::find($news['UID']);
             if (
-                !in_array('admin_news_html', $privileges)
+                !auth()->can('admin_news_html')
                 && strip_tags($news['Text']) != $news['Text']
             ) {
                 $html .= warning(
@@ -62,7 +61,7 @@ function admin_news()
 
         case 'save':
             $text = $request->postData('eText');
-            if (!in_array('admin_news_html', $privileges)) {
+            if (!auth()->can('admin_news_html')) {
                 $text = strip_tags($text);
             }
 
