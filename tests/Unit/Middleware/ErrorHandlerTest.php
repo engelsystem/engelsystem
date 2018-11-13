@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Middleware;
 
+use Engelsystem\Http\Exceptions\HttpException;
 use Engelsystem\Http\Response;
 use Engelsystem\Middleware\ErrorHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\ReturnResponseMiddlewareHandler;
@@ -84,5 +85,44 @@ class ErrorHandlerTest extends TestCase
 
         $errorHandler->process($request, $returnResponseHandler);
         $errorHandler->process($request, $returnResponseHandler);
+    }
+
+    /**
+     * @covers \Engelsystem\Middleware\ErrorHandler::process
+     */
+    public function testProcessException()
+    {
+        /** @var ServerRequestInterface|MockObject $request */
+        $request = $this->createMock(ServerRequestInterface::class);
+        /** @var ResponseInterface|MockObject $psrResponse */
+        $psrResponse = $this->getMockForAbstractClass(ResponseInterface::class);
+        /** @var ReturnResponseMiddlewareHandler|MockObject $returnResponseHandler */
+        $returnResponseHandler = $this->getMockBuilder(ReturnResponseMiddlewareHandler::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $psrResponse->expects($this->once())
+            ->method('getStatusCode')
+            ->willReturn(300);
+
+        $returnResponseHandler->expects($this->once())
+            ->method('handle')
+            ->willReturnCallback(function () {
+                throw new HttpException(300, 'Some response', ['lor' => 'em']);
+            });
+
+        /** @var ErrorHandler|MockObject $errorHandler */
+        $errorHandler = $this->getMockBuilder(ErrorHandler::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['createResponse'])
+            ->getMock();
+
+        $errorHandler->expects($this->once())
+            ->method('createResponse')
+            ->with('Some response', 300, ['lor' => 'em'])
+            ->willReturn($psrResponse);
+
+        $return = $errorHandler->process($request, $returnResponseHandler);
+        $this->assertEquals($psrResponse, $return);
     }
 }

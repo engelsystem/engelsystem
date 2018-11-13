@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Middleware;
 
+use Engelsystem\Http\Exceptions\HttpException;
 use Engelsystem\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -38,7 +39,11 @@ class ErrorHandler implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
-        $response = $handler->handle($request);
+        try {
+            $response = $handler->handle($request);
+        } catch (HttpException $e) {
+            $response = $this->createResponse($e->getMessage(), $e->getStatusCode(), $e->getHeaders());
+        }
 
         $statusCode = $response->getStatusCode();
         if ($statusCode < 400 || !$response instanceof Response) {
@@ -76,5 +81,19 @@ class ErrorHandler implements MiddlewareInterface
         }
 
         return 'default';
+    }
+
+    /**
+     * Create a new response
+     *
+     * @param string $content
+     * @param int    $status
+     * @param array  $headers
+     * @return Response
+     * @codeCoverageIgnore
+     */
+    protected function createResponse(string $content = '', int $status = 200, array $headers = [])
+    {
+        return response($content, $status, $headers);
     }
 }
