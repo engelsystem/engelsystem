@@ -1,0 +1,33 @@
+/* =============================================================
+	Error page
+   ============================================================= */
+
+.error-big {
+  text-align: center;
+
+  h2 {
+    font-size: 10em;
+    font-weight: bold;
+
+    small {
+      display: block;
+      font-size: 0.3em;
+    }
+
+    @keyframes error-page-pulse {
+      from {
+        opacity: 0.3;
+      }
+      to {
+        opacity: 1.0;
+      }
+    }
+    .pulse {
+      animation-name: error-page-pulse;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+      animation-direction: alternate;
+    }
+  }
+}
