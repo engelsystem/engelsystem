@@ -363,7 +363,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
         foreach ($uploadedFiles as $file) {
             /** @var UploadedFileInterface $file */
             $filename = tempnam(sys_get_temp_dir(), 'upload');
-            $handle = fopen($filename, "w");
+            $handle = fopen($filename, 'w');
             fwrite($handle, $file->getStream()->getContents());
             fclose($handle);
 

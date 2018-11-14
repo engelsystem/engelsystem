@@ -24,5 +24,6 @@ class AuthenticatorServiceProviderTest extends ServiceProviderTest
 
         $this->assertInstanceOf(Authenticator::class, $app->get(Authenticator::class));
         $this->assertInstanceOf(Authenticator::class, $app->get('authenticator'));
+        $this->assertInstanceOf(Authenticator::class, $app->get('auth'));
     }
 }

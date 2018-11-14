@@ -13,5 +13,6 @@ class AuthenticatorServiceProvider extends ServiceProvider
 
         $this->app->instance(Authenticator::class, $authenticator);
         $this->app->instance('authenticator', $authenticator);
+        $this->app->instance('auth', $authenticator);
     }
 }
