@@ -74,4 +74,12 @@ class CallableHandler implements MiddlewareInterface, RequestHandlerInterface
         $response = $this->container->get('response');
         return $response->withContent($return);
     }
+
+    /**
+     * @return callable
+     */
+    public function getCallable()
+    {
+        return $this->callable;
+    }
 }

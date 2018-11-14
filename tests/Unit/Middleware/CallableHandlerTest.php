@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use ReflectionClass as Reflection;
 use stdClass;
 
 class CallableHandlerTest extends TestCase
@@ -28,17 +27,14 @@ class CallableHandlerTest extends TestCase
     /**
      * @dataProvider provideCallable
      * @covers       \Engelsystem\Middleware\CallableHandler::__construct
+     * @covers       \Engelsystem\Middleware\CallableHandler::getCallable
      * @param callable $callable
      */
     public function testInit($callable)
     {
         $handler = new CallableHandler($callable);
 
-        $reflection = new Reflection(get_class($handler));
-        $property = $reflection->getProperty('callable');
-        $property->setAccessible(true);
-
-        $this->assertEquals($callable, $property->getValue($handler));
+        $this->assertEquals($callable, $handler->getCallable());
     }
 
     /**

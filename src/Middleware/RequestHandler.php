@@ -3,6 +3,9 @@
 namespace Engelsystem\Middleware;
 
 use Engelsystem\Application;
+use Engelsystem\Controllers\BaseController;
+use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -37,6 +40,14 @@ class RequestHandler implements MiddlewareInterface
         $requestHandler = $request->getAttribute('route-request-handler');
         $requestHandler = $this->resolveRequestHandler($requestHandler);
 
+        if ($requestHandler instanceof CallableHandler) {
+            $callable = $requestHandler->getCallable();
+
+            if (is_array($callable) && $callable[0] instanceof BaseController) {
+                $this->checkPermissions($callable[0], $callable[1]);
+            }
+        }
+
         if ($requestHandler instanceof MiddlewareInterface) {
             return $requestHandler->process($request, $handler);
         }
@@ -49,6 +60,8 @@ class RequestHandler implements MiddlewareInterface
     }
 
     /**
+     * Resolve the given class
+     *
      * @param string|callable|MiddlewareInterface|RequestHandlerInterface $handler
      * @return MiddlewareInterface|RequestHandlerInterface
      */
@@ -75,5 +88,37 @@ class RequestHandler implements MiddlewareInterface
         }
 
         return $this->resolveMiddleware($handler);
+    }
+
+    /**
+     * Check required page permissions
+     *
+     * @param BaseController $controller
+     * @param string         $method
+     * @return bool
+     */
+    protected function checkPermissions(BaseController $controller, string $method): bool
+    {
+        /** @var Authenticator $auth */
+        $auth = $this->container->get('auth');
+        $permissions = $controller->getPermissions();
+
+        // Merge action permissions
+        if (isset($permissions[$method])) {
+            $permissions = array_merge($permissions, (array)$permissions[$method]);
+        }
+
+        foreach ($permissions as $key => $permission) {
+            // Skip all action permission entries
+            if (!is_int($key)) {
+                continue;
+            }
+
+            if (!$auth->can($permission)) {
+                throw new HttpForbidden();
+            }
+        }
+
+        return true;
     }
 }
