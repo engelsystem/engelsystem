@@ -102,6 +102,10 @@ function guest_register()
                 $valid = false;
                 $msg .= error(__('E-mail address is not correct.'), true);
             }
+            if (User::whereEmail($mail)->first()) {
+                $valid = false;
+                $msg .= error(__('E-mail address is already used by another user.'), true);
+            }
         } else {
             $valid = false;
             $msg .= error(__('Please enter your e-mail.'), true);
