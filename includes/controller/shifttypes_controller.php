@@ -26,7 +26,7 @@ function shifttype_delete_controller()
         redirect(page_link_to('shifttypes'));
     }
 
-    if ($request->has('confirmed')) {
+    if ($request->hasPostData('delete')) {
         ShiftType_delete($shifttype['id']);
 
         engelsystem_log('Deleted shifttype ' . $shifttype['name']);
@@ -67,7 +67,7 @@ function shifttype_edit_controller()
         $description = $shifttype['description'];
     }
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         $valid = true;
 
         if ($request->has('name') && $request->input('name') != '') {

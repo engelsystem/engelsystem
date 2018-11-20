@@ -142,7 +142,7 @@ function user_news_comments()
     ) {
         $nid = $request->input('nid');
         $news = DB::selectOne('SELECT * FROM `News` WHERE `ID`=? LIMIT 1', [$nid]);
-        if ($request->has('text')) {
+        if ($request->hasPostData('submit') && $request->has('text')) {
             $text = preg_replace(
                 "/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui",
                 '',

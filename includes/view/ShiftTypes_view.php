@@ -21,17 +21,17 @@ function ShiftType_delete_view($shifttype)
 {
     return page_with_title(sprintf(__('Delete shifttype %s'), $shifttype['name']), [
         info(sprintf(__('Do you want to delete shifttype %s?'), $shifttype['name']), true),
-        buttons([
-            button(page_link_to('shifttypes'), glyph('remove') . __('cancel')),
-            button(
-                page_link_to(
-                    'shifttypes',
-                    ['action' => 'delete', 'shifttype_id' => $shifttype['id'], 'confirmed' => 1]
+        form([
+            buttons([
+                button(page_link_to('shifttypes'), glyph('remove') . __('cancel')),
+                form_submit(
+                    'delete',
+                    glyph('ok') . __('delete'),
+                    'btn-danger',
+                    false
                 ),
-                glyph('ok') . __('delete'),
-                'btn-danger'
-            )
-        ])
+            ]),
+        ]),
     ]);
 }
 

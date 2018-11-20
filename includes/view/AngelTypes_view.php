@@ -53,17 +53,12 @@ function AngelType_delete_view($angeltype)
 {
     return page_with_title(sprintf(__('Delete angeltype %s'), $angeltype['name']), [
         info(sprintf(__('Do you want to delete angeltype %s?'), $angeltype['name']), true),
-        buttons([
-            button(page_link_to('angeltypes'), glyph('remove') . __('cancel')),
-            button(
-                page_link_to(
-                    'angeltypes',
-                    ['action' => 'delete', 'angeltype_id' => $angeltype['id'], 'confirmed' => 1]
-                ),
-                glyph('ok') . __('delete'),
-                'btn-danger'
-            )
-        ])
+        form([
+            buttons([
+                button(page_link_to('angeltypes'), glyph('remove') . __('cancel')),
+                form_submit('delete', glyph('ok') . __('delete'), 'btn-danger', false),
+            ])
+        ]),
     ]);
 }
 

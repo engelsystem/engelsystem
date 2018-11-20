@@ -20,22 +20,19 @@ function UserAngelType_update_view($user_angeltype, $user, $angeltype, $supporte
             $angeltype['name'],
             User_Nick_render($user)
         ), true),
-        buttons([
-            button(
-                page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
-                glyph('remove') . __('cancel')
-            ),
-            button(
-                page_link_to('user_angeltypes', [
-                    'action'            => 'update',
-                    'user_angeltype_id' => $user_angeltype['id'],
-                    'supporter'         => ($supporter ? '1' : '0'),
-                    'confirmed'         => 1,
-                ]),
-                glyph('ok') . __('yes'),
-                'btn-primary'
-            )
-        ])
+        form([
+            buttons([
+                button(
+                    page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
+                    glyph('remove') . __('cancel')
+                ),
+                form_submit('submit', glyph('ok') . __('yes'), 'btn-primary', false),
+            ]),
+        ], page_link_to('user_angeltypes', [
+            'action'            => 'update',
+            'user_angeltype_id' => $user_angeltype['id'],
+            'supporter'         => ($supporter ? '1' : '0'),
+        ])),
     ]);
 }
 
@@ -48,23 +45,18 @@ function UserAngelTypes_delete_all_view($angeltype)
     return page_with_title(__('Deny all users'), [
         msg(),
         info(sprintf(__('Do you really want to deny all users for %s?'), $angeltype['name']), true),
-        buttons([
-            button(
-                page_link_to(
-                    'angeltypes',
-                    ['action' => 'view', 'angeltype_id' => $angeltype['id']]
+        form([
+            buttons([
+                button(
+                    page_link_to(
+                        'angeltypes',
+                        ['action' => 'view', 'angeltype_id' => $angeltype['id']]
+                    ),
+                    glyph('remove') . __('cancel')
                 ),
-                glyph('remove') . __('cancel')
-            ),
-            button(
-                page_link_to(
-                    'user_angeltypes',
-                    ['action' => 'delete_all', 'angeltype_id' => $angeltype['id'], 'confirmed' => 1]
-                ),
-                glyph('ok') . __('yes'),
-                'btn-primary'
-            )
-        ])
+                form_submit('deny_all', glyph('ok') . __('yes'), 'btn-primary', false)
+            ]),
+        ], page_link_to('user_angeltypes', ['action' => 'delete_all', 'angeltype_id' => $angeltype['id']])),
     ]);
 }
 
@@ -77,15 +69,12 @@ function UserAngelTypes_confirm_all_view($angeltype)
     return page_with_title(__('Confirm all users'), [
         msg(),
         info(sprintf(__('Do you really want to confirm all users for %s?'), $angeltype['name']), true),
-        buttons([
-            button(angeltype_link($angeltype['id']), glyph('remove') . __('cancel')),
-            button(
-                page_link_to('user_angeltypes',
-                    ['action' => 'confirm_all', 'angeltype_id' => $angeltype['id'], 'confirmed' => 1]),
-                glyph('ok') . __('yes'),
-                'btn-primary'
-            )
-        ])
+        form([
+            buttons([
+                button(angeltype_link($angeltype['id']), glyph('remove') . __('cancel')),
+                form_submit('confirm_all', glyph('ok') . __('yes'), 'btn-primary', false),
+            ]),
+        ], page_link_to('user_angeltypes', ['action' => 'confirm_all', 'angeltype_id' => $angeltype['id']])),
     ]);
 }
 
@@ -104,17 +93,12 @@ function UserAngelType_confirm_view($user_angeltype, $user, $angeltype)
             User_Nick_render($user),
             $angeltype['name']
         ), true),
-        buttons([
-            button(angeltype_link($angeltype['id']), glyph('remove') . __('cancel')),
-            button(
-                page_link_to(
-                    'user_angeltypes',
-                    ['action' => 'confirm', 'user_angeltype_id' => $user_angeltype['id'], 'confirmed' => 1]
-                ),
-                glyph('ok') . __('yes'),
-                'btn-primary'
-            )
-        ])
+        form([
+            buttons([
+                button(angeltype_link($angeltype['id']), glyph('remove') . __('cancel')),
+                form_submit('confirm_user', glyph('ok') . __('yes'), 'btn-primary', false),
+            ]),
+        ], page_link_to('user_angeltypes', ['action' => 'confirm', 'user_angeltype_id' => $user_angeltype['id']])),
     ]);
 }
 
@@ -133,15 +117,12 @@ function UserAngelType_delete_view($user_angeltype, $user, $angeltype)
             User_Nick_render($user),
             $angeltype['name']
         ), true),
-        buttons([
-            button(angeltype_link($angeltype['id']), glyph('remove') . __('cancel')),
-            button(
-                page_link_to('user_angeltypes',
-                    ['action' => 'delete', 'user_angeltype_id' => $user_angeltype['id'], 'confirmed' => 1]),
-                glyph('ok') . __('yes'),
-                'btn-primary'
-            )
-        ])
+        form([
+            buttons([
+                button(angeltype_link($angeltype['id']), glyph('remove') . __('cancel')),
+                form_submit('delete', glyph('ok') . __('yes'), 'btn-primary', false),
+            ]),
+        ], page_link_to('user_angeltypes', ['action' => 'delete', 'user_angeltype_id' => $user_angeltype['id']])),
     ]);
 }
 
@@ -189,16 +170,14 @@ function UserAngelType_join_view($user, $angeltype)
             User_Nick_render($user),
             $angeltype['name']
         ), true),
-        buttons([
-            button(angeltype_link($angeltype['id']), glyph('remove') . __('cancel')),
-            button(
-                page_link_to(
-                    'user_angeltypes',
-                    ['action' => 'add', 'angeltype_id' => $angeltype['id'], 'user_id' => $user->id, 'confirmed' => 1]
-                ),
-                glyph('ok') . __('save'),
-                'btn-primary'
-            )
-        ])
+        form([
+            buttons([
+                button(angeltype_link($angeltype['id']), glyph('remove') . __('cancel')),
+                form_submit('submit', glyph('ok') . __('save'), 'btn-primary', false)
+            ]),
+        ], page_link_to(
+            'user_angeltypes',
+            ['action' => 'add', 'angeltype_id' => $angeltype['id'], 'user_id' => $user->id]
+        )),
     ]);
 }

@@ -81,7 +81,7 @@ function shift_edit_controller()
     $start = $shift['start'];
     $end = $shift['end'];
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         // Name/Bezeichnung der Schicht, darf leer sein
         $title = strip_request_item('title');
 
@@ -222,7 +222,7 @@ function shift_delete_controller()
     }
 
     // Schicht löschen bestätigt
-    if ($request->has('delete')) {
+    if ($request->hasPostData('delete')) {
         Shift_delete($shift_id);
 
         engelsystem_log(
@@ -241,9 +241,10 @@ function shift_delete_controller()
             date('Y-m-d H:i', $shift['start']),
             date('H:i', $shift['end'])
         ), true),
-        '<a class="button" href="'
-        . page_link_to('user_shifts', ['delete_shift' => $shift_id, 'delete' => 1]) .
-        '">' . __('delete') . '</a>'
+        form([
+            form_hidden('delete_shift', $shift_id),
+            form_submit('delete', __('delete')),
+        ]),
     ]);
 }
 

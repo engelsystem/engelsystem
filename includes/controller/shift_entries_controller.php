@@ -96,7 +96,7 @@ function shift_entry_create_controller_admin($shift, $angeltype)
         $angeltype = $angeltypes[0];
     }
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         ShiftEntry_create([
             'SID'              => $shift['SID'],
             'TID'              => $angeltype['id'],
@@ -167,7 +167,7 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
         redirect(shift_link($shift));
     }
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         ShiftEntry_create([
             'SID'              => $shift['SID'],
             'TID'              => $angeltype['id'],
@@ -246,7 +246,7 @@ function shift_entry_create_controller_user($shift, $angeltype)
     }
 
     $comment = '';
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         $comment = strip_request_item_nl('comment');
         ShiftEntry_create([
             'SID'              => $shift['SID'],
@@ -346,7 +346,7 @@ function shift_entry_delete_controller()
         redirect(user_link($signout_user->id));
     }
 
-    if ($request->has('continue')) {
+    if ($request->hasPostData('delete')) {
         ShiftEntry_delete($shiftEntry);
         success(__('Shift entry removed.'));
         redirect(shift_link($shift));
@@ -355,13 +355,13 @@ function shift_entry_delete_controller()
     if ($user->id == $signout_user->id) {
         return [
             ShiftEntry_delete_title(),
-            ShiftEntry_delete_view($shiftEntry, $shift, $angeltype, $signout_user->id)
+            ShiftEntry_delete_view($shift, $angeltype, $signout_user->id)
         ];
     }
 
     return [
         ShiftEntry_delete_title(),
-        ShiftEntry_delete_view_admin($shiftEntry, $shift, $angeltype, $signout_user)
+        ShiftEntry_delete_view_admin($shift, $angeltype, $signout_user)
     ];
 }
 

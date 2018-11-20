@@ -67,6 +67,24 @@ class RequestTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Http\Request::hasPostData
+     */
+    public function testHasPostData()
+    {
+        $request = new Request([
+            'foo' => 'bar',
+        ], [
+            'lorem' => 'ipsum',
+        ]);
+
+        $this->assertTrue($request->has('foo'));
+        $this->assertFalse($request->hasPostData('foo'));
+
+        $this->assertTrue($request->has('lorem'));
+        $this->assertTrue($request->hasPostData('lorem'));
+    }
+
+    /**
      * @covers \Engelsystem\Http\Request::path
      */
     public function testPath()
