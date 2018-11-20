@@ -17,7 +17,6 @@ class LegacyMiddleware implements MiddlewareInterface
     protected $free_pages = [
         'admin_event_config',
         'angeltypes',
-        'api',
         'atom',
         'ical',
         'login',
@@ -105,10 +104,6 @@ class LegacyMiddleware implements MiddlewareInterface
     {
         $title = ucfirst($page);
         switch ($page) {
-            /** @noinspection PhpMissingBreakStatementInspection */
-            case 'api':
-                error('Api disabled temporarily.');
-                redirect(page_link_to());
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'ical':
                 require_once realpath(__DIR__ . '/../../includes/pages/user_ical.php');
