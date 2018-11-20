@@ -143,4 +143,23 @@ class ErrorHandlerTest extends TestCase
         $return = $errorHandler->process($request, $returnResponseHandler);
         $this->assertEquals($psrResponse, $return);
     }
+
+    /**
+     * @covers \Engelsystem\Middleware\ErrorHandler::process
+     */
+    public function testProcessContentTypeSniffer()
+    {
+        /** @var ServerRequestInterface|MockObject $request */
+        $request = $this->createMock(ServerRequestInterface::class);
+        /** @var TwigLoader|MockObject $twigLoader */
+        $twigLoader = $this->createMock(TwigLoader::class);
+        $response = new Response('<!DOCTYPE html><html><body><h1>Hi!</h1></body></html>', 500);
+        $returnResponseHandler = new ReturnResponseMiddlewareHandler($response);
+
+        /** @var ErrorHandler|MockObject $errorHandler */
+        $errorHandler = new ErrorHandler($twigLoader);
+
+        $return = $errorHandler->process($request, $returnResponseHandler);
+        $this->assertEquals($response, $return);
+    }
 }
