@@ -216,13 +216,23 @@ function form_info($label, $text = '')
  *
  * @param string $name
  * @param string $label
+ * @param string $class
+ * @param bool   $wrapForm
  * @return string
  */
-function form_submit($name, $label)
+function form_submit($name, $label, $class = '', $wrapForm = true)
 {
+    $button = '<button class="btn btn-primary' . ($class ? ' ' . $class : '') . '" type="submit" name="' . $name . '">'
+        . $label
+        . '</button>';
+
+    if (!$wrapForm) {
+        return $button;
+    }
+
     return form_element(
-        '<button class="btn btn-primary" type="submit" name="' . $name . '">' . $label . '</button>',
-        ''
+        null,
+        $button
     );
 }
 
@@ -391,7 +401,7 @@ function form_select($name, $label, $values, $selected, $selectText = '')
  */
 function form_element($label, $input, $for = '')
 {
-    if ($label == '') {
+    if (empty($label)) {
         return '<div class="form-group">' . $input . '</div>';
     }
 

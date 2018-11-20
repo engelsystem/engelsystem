@@ -43,7 +43,7 @@ function user_questions()
         switch ($request->input('action')) {
             case 'ask':
                 $question = strip_request_item_nl('question');
-                if ($question != '') {
+                if ($question != '' && $request->hasPostData('submit')) {
                     DB::insert('
                         INSERT INTO `Questions` (`UID`, `Question`)
                         VALUES (?, ?)
@@ -60,7 +60,11 @@ function user_questions()
                 }
                 break;
             case 'delete':
-                if ($request->has('id') && preg_match('/^\d{1,11}$/', $request->input('id'))) {
+                if (
+                    $request->has('id')
+                    && preg_match('/^\d{1,11}$/', $request->input('id'))
+                    && $request->hasPostData('submit')
+                ) {
                     $question_id = $request->input('id');
                 } else {
                     return error(__('Incomplete call, missing Question ID.'), true);

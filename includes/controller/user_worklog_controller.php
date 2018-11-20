@@ -16,7 +16,7 @@ function user_worklog_delete_controller()
     }
     $user_source = User::find($userWorkLog['user_id']);
 
-    if ($request->has('confirmed')) {
+    if ($request->hasPostData('submit')) {
         UserWorkLog_delete($userWorkLog);
 
         success(__('Work log entry deleted.'));
@@ -25,7 +25,7 @@ function user_worklog_delete_controller()
 
     return [
         UserWorkLog_delete_title(),
-        UserWorkLog_delete_view($user_source, $userWorkLog)
+        UserWorkLog_delete_view($user_source)
     ];
 }
 
@@ -43,7 +43,7 @@ function user_worklog_edit_controller()
     }
     $user_source = User::find($userWorkLog['user_id']);
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         list ($valid, $userWorkLog) = user_worklog_from_request($userWorkLog);
 
         if ($valid) {
@@ -114,7 +114,7 @@ function user_worklog_add_controller()
 
     $userWorkLog = UserWorkLog_new($user_source->id);
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         list ($valid, $userWorkLog) = user_worklog_from_request($userWorkLog);
 
         if ($valid) {

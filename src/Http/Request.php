@@ -52,6 +52,19 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     }
 
     /**
+     * Checks if the POST data exists
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function hasPostData($key)
+    {
+        $value = $this->postData($key);
+
+        return !is_null($value);
+    }
+
+    /**
      * Get the requested path
      *
      * @return string

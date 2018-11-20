@@ -9,22 +9,18 @@
 function Questions_view($open_questions, $answered_questions, $ask_action)
 {
     foreach ($open_questions as &$question) {
-        $question['actions'] = '<a href="'
-            . page_link_to('user_questions', ['action' => 'delete', 'id' => $question['QID']])
-            . '">'
-            . __('delete')
-            . '</a>';
+        $question['actions'] = form([
+            form_submit('submit', __('delete'), 'btn-default btn-xs')
+        ], page_link_to('user_questions', ['action' => 'delete', 'id' => $question['QID']]));
         $question['Question'] = str_replace("\n", '<br />', $question['Question']);
     }
 
     foreach ($answered_questions as &$question) {
         $question['Question'] = str_replace("\n", '<br />', $question['Question']);
         $question['Answer'] = str_replace("\n", '<br />', $question['Answer']);
-        $question['actions'] = '<a href="'
-            . page_link_to('user_questions', ['action' => 'delete', 'id' => $question['QID']])
-            . '">'
-            . __('delete')
-            . '</a>';
+        $question['actions'] = form([
+            form_submit('submit', __('delete'), 'btn-default btn-xs')
+        ], page_link_to('user_questions', ['action' => 'delete', 'id' => $question['QID']]));
     }
 
     return page_with_title(questions_title(), [

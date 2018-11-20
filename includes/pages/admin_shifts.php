@@ -307,7 +307,7 @@ function admin_shifts()
                 ])
             ]);
         }
-    } elseif ($request->has('submit')) {
+    } elseif ($request->hasPostData('submit')) {
         if (
             !is_array($session->get('admin_shifts_shifts'))
             || !is_array($session->get('admin_shifts_types'))

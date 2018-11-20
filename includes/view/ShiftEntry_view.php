@@ -5,14 +5,13 @@ use Engelsystem\Models\User\User;
 /**
  * Sign off from an user from a shift with admin permissions, asking for ack.
  *
- * @param array $shiftEntry
  * @param array $shift
  * @param array $angeltype
  * @param User  $signoff_user
  *
  * @return string HTML
  */
-function ShiftEntry_delete_view_admin($shiftEntry, $shift, $angeltype, $signoff_user)
+function ShiftEntry_delete_view_admin($shift, $angeltype, $signoff_user)
 {
     return page_with_title(ShiftEntry_delete_title(), [
         info(sprintf(
@@ -23,26 +22,25 @@ function ShiftEntry_delete_view_admin($shiftEntry, $shift, $angeltype, $signoff_
             date('Y-m-d H:i', $shift['end']),
             $angeltype['name']
         ), true),
-        buttons([
-            button(user_link($signoff_user->id), glyph('remove') . __('cancel')),
-            button(shift_entry_delete_link($shiftEntry, [
-                'continue' => 1
-            ]), glyph('ok') . __('delete'), 'btn-danger')
-        ])
+        form([
+            buttons([
+                button(user_link($signoff_user->id), glyph('remove') . __('cancel')),
+                form_submit('delete', glyph('ok') . __('delete'), 'btn-danger', false)
+            ]),
+        ]),
     ]);
 }
 
 /**
  * Sign off from a shift, asking for ack.
  *
- * @param array $shiftEntry
  * @param array $shift
  * @param array $angeltype
  * @param int   $signoff_user_id
  *
  * @return string HTML
  */
-function ShiftEntry_delete_view($shiftEntry, $shift, $angeltype, $signoff_user_id)
+function ShiftEntry_delete_view($shift, $angeltype, $signoff_user_id)
 {
     return page_with_title(ShiftEntry_delete_title(), [
         info(sprintf(
@@ -52,12 +50,13 @@ function ShiftEntry_delete_view($shiftEntry, $shift, $angeltype, $signoff_user_i
             date('Y-m-d H:i', $shift['end']),
             $angeltype['name']
         ), true),
-        buttons([
-            button(user_link($signoff_user_id), glyph('remove') . __('cancel')),
-            button(shift_entry_delete_link($shiftEntry, [
-                'continue' => 1
-            ]), glyph('ok') . __('delete'), 'btn-danger')
-        ])
+
+        form([
+            buttons([
+                button(user_link($signoff_user_id), glyph('remove') . __('cancel')),
+                form_submit('delete', glyph('ok') . __('delete'), 'btn-danger', false),
+            ]),
+        ]),
     ]);
 }
 

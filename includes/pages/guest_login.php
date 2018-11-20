@@ -79,7 +79,7 @@ function guest_register()
         ]);
     }
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         $valid = true;
 
         if ($request->has('nick') && strlen(User_validate_Nick($request->input('nick'))) > 1) {
@@ -384,7 +384,7 @@ function guest_login()
 
     $session->remove('uid');
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         if ($request->has('nick') && strlen(User_validate_Nick($request->input('nick'))) > 0) {
             $nick = User_validate_Nick($request->input('nick'));
             $login_user = User::whereName($nick)->first();

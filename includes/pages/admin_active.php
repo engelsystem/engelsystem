@@ -49,7 +49,7 @@ function admin_active()
             redirect(page_link_to('admin_active'));
         }
 
-        if ($request->has('ack')) {
+        if ($request->hasPostData('ack')) {
             State::query()
                 ->where('got_shirt', '=', false)
                 ->where('got_shirt', '=', false)
@@ -94,61 +94,58 @@ function admin_active()
 
             $msg = success(__('Marked angels.'), true);
         } else {
-            $set_active = '<a href="' . page_link_to('admin_active', ['search' => $search]) . '">&laquo; '
-                . __('back')
-                . '</a> | <a href="'
-                . page_link_to(
-                    'admin_active',
-                    ['search' => $search, 'count' => $count, 'set_active' => 1, 'ack' => 1]
-                ) . '">'
-                . __('apply')
-                . '</a>';
+            $set_active = form([
+                button(page_link_to('admin_active', ['search' => $search]), '&laquo; ' . __('back')),
+                form_submit('ack', '&raquo; ' . __('apply')),
+            ], page_link_to('admin_active', ['search' => $search, 'count' => $count, 'set_active' => 1]));
         }
     }
 
-    if ($request->has('active') && preg_match('/^\d+$/', $request->input('active'))) {
-        $user_id = $request->input('active');
-        $user_source = User::find($user_id);
-        if ($user_source) {
-            $user_source->state->active = true;
-            $user_source->state->save();
-            engelsystem_log('User ' . User_Nick_render($user_source) . ' is active now.');
-            $msg = success(__('Angel has been marked as active.'), true);
-        } else {
-            $msg = error(__('Angel not found.'), true);
-        }
-    } elseif ($request->has('not_active') && preg_match('/^\d+$/', $request->input('not_active'))) {
-        $user_id = $request->input('not_active');
-        $user_source = User::find($user_id);
-        if ($user_source) {
-            $user_source->state->active = false;
-            $user_source->state->save();
-            engelsystem_log('User ' . User_Nick_render($user_source) . ' is NOT active now.');
-            $msg = success(__('Angel has been marked as not active.'), true);
-        } else {
-            $msg = error(__('Angel not found.'), true);
-        }
-    } elseif ($request->has('tshirt') && preg_match('/^\d+$/', $request->input('tshirt'))) {
-        $user_id = $request->input('tshirt');
-        $user_source = User::find($user_id);
-        if ($user_source) {
-            $user_source->state->got_shirt = true;
-            $user_source->state->save();
-            engelsystem_log('User ' . User_Nick_render($user_source) . ' has tshirt now.');
-            $msg = success(__('Angel has got a t-shirt.'), true);
-        } else {
-            $msg = error('Angel not found.', true);
-        }
-    } elseif ($request->has('not_tshirt') && preg_match('/^\d+$/', $request->input('not_tshirt'))) {
-        $user_id = $request->input('not_tshirt');
-        $user_source = User::find($user_id);
-        if ($user_source) {
-            $user_source->state->got_shirt = false;
-            $user_source->state->save();
-            engelsystem_log('User ' . User_Nick_render($user_source) . ' has NO tshirt.');
-            $msg = success(__('Angel has got no t-shirt.'), true);
-        } else {
-            $msg = error(__('Angel not found.'), true);
+    if ($request->hasPostData('submit')) {
+        if ($request->has('active') && preg_match('/^\d+$/', $request->input('active'))) {
+            $user_id = $request->input('active');
+            $user_source = User::find($user_id);
+            if ($user_source) {
+                $user_source->state->active = true;
+                $user_source->state->save();
+                engelsystem_log('User ' . User_Nick_render($user_source) . ' is active now.');
+                $msg = success(__('Angel has been marked as active.'), true);
+            } else {
+                $msg = error(__('Angel not found.'), true);
+            }
+        } elseif ($request->has('not_active') && preg_match('/^\d+$/', $request->input('not_active'))) {
+            $user_id = $request->input('not_active');
+            $user_source = User::find($user_id);
+            if ($user_source) {
+                $user_source->state->active = false;
+                $user_source->state->save();
+                engelsystem_log('User ' . User_Nick_render($user_source) . ' is NOT active now.');
+                $msg = success(__('Angel has been marked as not active.'), true);
+            } else {
+                $msg = error(__('Angel not found.'), true);
+            }
+        } elseif ($request->has('tshirt') && preg_match('/^\d+$/', $request->input('tshirt'))) {
+            $user_id = $request->input('tshirt');
+            $user_source = User::find($user_id);
+            if ($user_source) {
+                $user_source->state->got_shirt = true;
+                $user_source->state->save();
+                engelsystem_log('User ' . User_Nick_render($user_source) . ' has tshirt now.');
+                $msg = success(__('Angel has got a t-shirt.'), true);
+            } else {
+                $msg = error('Angel not found.', true);
+            }
+        } elseif ($request->has('not_tshirt') && preg_match('/^\d+$/', $request->input('not_tshirt'))) {
+            $user_id = $request->input('not_tshirt');
+            $user_source = User::find($user_id);
+            if ($user_source) {
+                $user_source->state->got_shirt = false;
+                $user_source->state->save();
+                engelsystem_log('User ' . User_Nick_render($user_source) . ' has NO tshirt.');
+                $msg = success(__('Angel has got no t-shirt.'), true);
+            } else {
+                $msg = error(__('Angel not found.'), true);
+            }
         }
     }
 
@@ -232,9 +229,10 @@ function admin_active()
             if ($show_all_shifts) {
                 $parameters['show_all_shifts'] = 1;
             }
-            $actions[] = '<a href="' . page_link_to('admin_active', $parameters) . '">'
-                . __('set active')
-                . '</a>';
+            $actions[] = form(
+                [form_submit('submit', __('set active'), 'btn-xs', false)],
+                page_link_to('admin_active', $parameters)
+            );
         }
         if ($usr->state->active) {
             $parametersRemove = [
@@ -244,9 +242,10 @@ function admin_active()
             if ($show_all_shifts) {
                 $parametersRemove['show_all_shifts'] = 1;
             }
-            $actions[] = '<a href="' . page_link_to('admin_active', $parametersRemove) . '">'
-                . __('remove active')
-                . '</a>';
+            $actions[] = form(
+                [form_submit('submit', __('remove active'), 'btn-xs', false)],
+                page_link_to('admin_active', $parametersRemove)
+            );
         }
         if (!$usr->state->got_shirt) {
             $parametersShirt = [
@@ -256,9 +255,10 @@ function admin_active()
             if ($show_all_shifts) {
                 $parametersShirt['show_all_shifts'] = 1;
             }
-            $actions[] = '<a href="' . page_link_to('admin_active', $parametersShirt) . '">'
-                . __('got t-shirt')
-                . '</a>';
+            $actions[] = form(
+                [form_submit('submit', __('got t-shirt'), 'btn-xs', false)],
+                page_link_to('admin_active', $parametersShirt)
+            );
         }
         if ($usr->state->got_shirt) {
             $parameters = [
@@ -268,12 +268,13 @@ function admin_active()
             if ($show_all_shifts) {
                 $parameters['show_all_shifts'] = 1;
             }
-            $actions[] = '<a href="' . page_link_to('admin_active', $parameters) . '">'
-                . __('remove t-shirt')
-                . '</a>';
+            $actions[] = form(
+                [form_submit('submit', __('remove t-shirt'), 'btn-xs', false)],
+                page_link_to('admin_active', $parameters)
+            );
         }
 
-        $userData['actions'] = join(' ', $actions);
+        $userData['actions'] = buttons($actions);
 
         $matched_users[] = $userData;
     }

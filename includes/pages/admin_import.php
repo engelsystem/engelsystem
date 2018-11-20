@@ -54,7 +54,7 @@ function admin_import()
         case 'input':
             $valid = false;
 
-            if ($request->has('submit')) {
+            if ($request->hasPostData('submit')) {
                 $valid = true;
 
                 if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
