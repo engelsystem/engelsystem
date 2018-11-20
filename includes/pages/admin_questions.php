@@ -56,11 +56,9 @@ function admin_questions()
                     form_textarea('answer', '', ''),
                     form_submit('submit', __('Save'))
                 ], page_link_to('admin_questions', ['action' => 'answer', 'id' => $question['QID']])),
-                'actions'  => button(
-                    page_link_to('admin_questions', ['action' => 'delete', 'id' => $question['QID']]),
-                    __('delete'),
-                    'btn-xs'
-                )
+                'actions'  => form([
+                    form_submit('submit', __('delete'), 'btn-xs'),
+                ], page_link_to('admin_questions', ['action' => 'delete', 'id' => $question['QID']])),
             ];
         }
 
@@ -74,11 +72,9 @@ function admin_questions()
                 'question'    => str_replace("\n", '<br />', $question['Question']),
                 'answered_by' => User_Nick_render($answer_user_source),
                 'answer'      => str_replace("\n", '<br />', $question['Answer']),
-                'actions'     => button(
-                    page_link_to('admin_questions', ['action' => 'delete', 'id' => $question['QID']]),
-                    __('delete'),
-                    'btn-xs'
-                )
+                'actions'     => form([
+                    form_submit('submit', __('delete'), 'btn-xs')
+                ], page_link_to('admin_questions', ['action' => 'delete', 'id' => $question['QID']]))
             ];
         }
 
@@ -102,7 +98,11 @@ function admin_questions()
     } else {
         switch ($request->input('action')) {
             case 'answer':
-                if ($request->has('id') && preg_match('/^\d{1,11}$/', $request->input('id'))) {
+                if (
+                    $request->has('id')
+                    && preg_match('/^\d{1,11}$/', $request->input('id'))
+                    && $request->hasPostData('submit')
+                ) {
                     $question_id = $request->input('id');
                 } else {
                     return error('Incomplete call, missing Question ID.', true);
@@ -142,7 +142,11 @@ function admin_questions()
                 }
                 break;
             case 'delete':
-                if ($request->has('id') && preg_match('/^\d{1,11}$/', $request->input('id'))) {
+                if (
+                    $request->has('id')
+                    && preg_match('/^\d{1,11}$/', $request->input('id'))
+                    && $request->hasPostData('submit')
+                ) {
                     $question_id = $request->input('id');
                 } else {
                     return error('Incomplete call, missing Question ID.', true);

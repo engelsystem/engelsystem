@@ -5,23 +5,22 @@ use Engelsystem\Models\User\User;
 /**
  * Delete work log entry.
  *
- * @param User  $user_source
- * @param array $userWorkLog
+ * @param User $user_source
  * @return string
  */
-function UserWorkLog_delete_view($user_source, $userWorkLog)
+function UserWorkLog_delete_view($user_source)
 {
     return page_with_title(UserWorkLog_delete_title(), [
         info(sprintf(
             __('Do you want to delete the worklog entry for %s?'),
             User_Nick_render($user_source)
         ), true),
-        buttons([
-            button(user_link($user_source->id), glyph('remove') . __('cancel')),
-            button(user_worklog_delete_link($userWorkLog, [
-                'confirmed' => 1
-            ]), glyph('ok') . __('delete'), 'btn-danger')
-        ])
+        form([
+            buttons([
+                button(user_link($user_source->id), glyph('remove') . __('cancel')),
+                form_submit('submit', glyph('ok') . __('delete'), 'btn-danger', false),
+            ]),
+        ]),
     ]);
 }
 

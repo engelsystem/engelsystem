@@ -86,7 +86,7 @@ function angeltype_delete_controller()
 
     $angeltype = load_angeltype();
 
-    if (request()->has('confirmed')) {
+    if (request()->hasPostData('delete')) {
         AngelType_delete($angeltype);
         success(sprintf(__('Angeltype %s deleted.'), AngelType_name_render($angeltype)));
         redirect(page_link_to('angeltypes'));
@@ -127,7 +127,7 @@ function angeltype_edit_controller()
         $angeltype = AngelType_new();
     }
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         $valid = true;
 
         if (!$supporter_mode) {

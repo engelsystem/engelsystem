@@ -77,7 +77,7 @@ function user_myshifts()
             $freeloaded = $shift['freeloaded'];
             $freeload_comment = $shift['freeload_comment'];
 
-            if ($request->has('submit')) {
+            if ($request->hasPostData('submit')) {
                 $valid = true;
                 if (in_array('user_shifts_admin', $privileges)) {
                     $freeloaded = $request->has('freeloaded');

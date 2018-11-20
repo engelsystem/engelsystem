@@ -72,7 +72,7 @@ function admin_rooms()
         }
 
         if ($request->input('show') == 'edit') {
-            if ($request->has('submit')) {
+            if ($request->hasPostData('submit')) {
                 $valid = true;
 
                 if ($request->has('name') && strlen(strip_request_item('name')) > 0) {
@@ -178,7 +178,7 @@ function admin_rooms()
                 ])
             ]);
         } elseif ($request->input('show') == 'delete') {
-            if ($request->has('ack')) {
+            if ($request->hasPostData('ack')) {
                 Room_delete($room_id);
 
                 engelsystem_log('Room deleted: ' . $name);
@@ -191,13 +191,9 @@ function admin_rooms()
                     button(page_link_to('admin_rooms'), __('back'), 'back')
                 ]),
                 sprintf(__('Do you want to delete room %s?'), $name),
-                buttons([
-                    button(
-                        page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room_id, 'ack' => 1]),
-                        __('Delete'),
-                        'delete btn-danger'
-                    )
-                ])
+                form([
+                    form_submit('ack', __('Delete'), 'delete btn-danger'),
+                ], page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room_id])),
             ]);
         }
     }

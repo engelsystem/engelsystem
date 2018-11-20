@@ -35,7 +35,7 @@ function event_config_edit_controller()
     /** @var Carbon $teardown_end_date */
     $teardown_end_date = $config->get('teardown_end');
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         $valid = true;
 
         if ($request->has('event_name')) {

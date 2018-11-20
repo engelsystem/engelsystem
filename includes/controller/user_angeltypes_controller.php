@@ -59,7 +59,7 @@ function user_angeltypes_delete_all_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if ($request->has('confirmed')) {
+    if ($request->hasPostData('deny_all')) {
         UserAngelTypes_delete_all($angeltype['id']);
 
         engelsystem_log(sprintf('Denied all users for angeltype %s', AngelType_name_render($angeltype)));
@@ -100,7 +100,7 @@ function user_angeltypes_confirm_all_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if ($request->has('confirmed')) {
+    if ($request->hasPostData('confirm_all')) {
         UserAngelTypes_confirm_all($angeltype['id'], $user->id);
 
         engelsystem_log(sprintf('Confirmed all users for angeltype %s', AngelType_name_render($angeltype)));
@@ -152,7 +152,7 @@ function user_angeltype_confirm_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if ($request->has('confirmed')) {
+    if ($request->hasPostData('confirm_user')) {
         UserAngelType_confirm($user_angeltype['id'], $user->id);
 
         engelsystem_log(sprintf(
@@ -212,7 +212,7 @@ function user_angeltype_delete_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if ($request->has('confirmed')) {
+    if ($request->hasPostData('delete')) {
         UserAngelType_delete($user_angeltype);
 
         $success_message = sprintf(__('User %s removed from %s.'), User_Nick_render($user_source), $angeltype['name']);
@@ -274,7 +274,7 @@ function user_angeltype_update_controller()
         redirect(page_link_to('angeltypes'));
     }
 
-    if ($request->has('confirmed')) {
+    if ($request->hasPostData('submit')) {
         UserAngelType_update($user_angeltype['id'], $supporter);
 
         $success_message = sprintf(
@@ -318,7 +318,7 @@ function user_angeltype_add_controller()
     // Load possible users, that are not in the angeltype already
     $users_source = Users_by_angeltype_inverted($angeltype);
 
-    if (request()->has('submit')) {
+    if (request()->hasPostData('submit')) {
         $user_source = load_user();
 
         if (!UserAngelType_exists($user_source->id, $angeltype)) {
@@ -369,7 +369,7 @@ function user_angeltype_join_controller($angeltype)
         redirect(page_link_to('angeltypes'));
     }
 
-    if (request()->has('confirmed')) {
+    if (request()->hasPostData('submit')) {
         $user_angeltype_id = UserAngelType_create($user->id, $angeltype);
 
         $success_message = sprintf(__('You joined %s.'), $angeltype['name']);

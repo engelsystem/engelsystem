@@ -24,8 +24,13 @@ function admin_arrive()
         $search = trim($search);
     }
 
-    if ($request->has('reset') && preg_match('/^\d+$/', $request->input('reset'))) {
-        $user_id = $request->input('reset');
+    $action = $request->get('action');
+    if (
+        $action == 'reset'
+        && preg_match('/^\d+$/', $request->input('user'))
+        && $request->hasPostData('submit')
+    ) {
+        $user_id = $request->input('user');
         $user_source = User::find($user_id);
         if ($user_source) {
             $user_source->state->arrived = false;
@@ -38,8 +43,12 @@ function admin_arrive()
         } else {
             $msg = error(__('Angel not found.'), true);
         }
-    } elseif ($request->has('arrived') && preg_match('/^\d+$/', $request->input('arrived'))) {
-        $user_id = $request->input('arrived');
+    } elseif (
+        $action == 'arrived'
+        && preg_match('/^\d+$/', $request->input('user'))
+        && $request->hasPostData('submit')
+    ) {
+        $user_id = $request->input('user');
         $user_source = User::find($user_id);
         if ($user_source) {
             $user_source->state->arrived = true;
@@ -88,15 +97,11 @@ function admin_arrive()
         $usr['rendered_planned_arrival_date'] = $plannedArrivalDate ? $plannedArrivalDate->format('Y-m-d') : '-';
         $usr['rendered_arrival_date'] = $arrivalDate ? $arrivalDate->format('Y-m-d') : '-';
         $usr['arrived'] = $usr->state->arrived ? __('yes') : '';
-        $usr['actions'] = $usr->state->arrived == 1
-            ? '<a href="' . page_link_to(
-                'admin_arrive',
-                ['reset' => $usr->id, 'search' => $search]
-            ) . '">' . __('reset') . '</a>'
-            : '<a href="' . page_link_to(
-                'admin_arrive',
-                ['arrived' => $usr->id, 'search' => $search]
-            ) . '">' . __('arrived') . '</a>';
+        $usr['actions'] = form([
+            form_hidden('action', $usr->state->arrived ? 'reset' : 'arrived'),
+            form_hidden('user', $usr->id),
+            form_submit('submit', $usr->state->arrived ? __('reset') : __('arrived'), 'btn-xs'),
+        ]);
 
         if ($usr->state->arrival_date) {
             $day = $usr->state->arrival_date->format('Y-m-d');
@@ -167,7 +172,7 @@ function admin_arrive()
         form([
             form_text('search', __('Search'), $search),
             form_submit('submit', __('Search'))
-        ]),
+        ], page_link_to('admin_arrive')),
         table([
             'name'                            => __('Nickname'),
             'rendered_planned_arrival_date'   => __('Planned arrival'),

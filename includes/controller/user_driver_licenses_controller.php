@@ -114,7 +114,7 @@ function user_driver_license_edit_controller()
         $wants_to_drive = true;
     }
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         $wants_to_drive = $request->has('wants_to_drive');
         if ($wants_to_drive) {
             $user_driver_license['has_car'] = $request->has('has_car');

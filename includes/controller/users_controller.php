@@ -66,7 +66,7 @@ function user_delete_controller()
         redirect(user_link($user->id));
     }
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         $valid = true;
 
         if (
@@ -80,6 +80,8 @@ function user_delete_controller()
         }
 
         if ($valid) {
+            // Load data before user deletion to prevent errors when displaying
+            $user_source->load(['contact', 'personalData', 'settings', 'state']);
             $user_source->delete();
 
             mail_user_delete($user_source);
@@ -150,7 +152,7 @@ function user_edit_vouchers_controller()
         redirect(page_link_to(''));
     }
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         $valid = true;
 
         $vouchers = '';
@@ -326,7 +328,7 @@ function user_password_recovery_set_new_controller()
         redirect(page_link_to('login'));
     }
 
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         $valid = true;
 
         if (
@@ -361,7 +363,7 @@ function user_password_recovery_set_new_controller()
 function user_password_recovery_start_controller()
 {
     $request = request();
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         $valid = true;
 
         $user_source = null;

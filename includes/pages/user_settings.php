@@ -204,13 +204,13 @@ function user_settings()
     }
 
     $user_source = auth()->user();
-    if ($request->has('submit')) {
+    if ($request->hasPostData('submit')) {
         $user_source = user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes);
-    } elseif ($request->has('submit_password')) {
+    } elseif ($request->hasPostData('submit_password')) {
         user_settings_password($user_source);
-    } elseif ($request->has('submit_theme')) {
+    } elseif ($request->hasPostData('submit_theme')) {
         $user_source = user_settings_theme($user_source, $themes);
-    } elseif ($request->has('submit_language')) {
+    } elseif ($request->hasPostData('submit_language')) {
         $user_source = user_settings_locale($user_source, $locales);
     }
 
