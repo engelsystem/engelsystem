@@ -32,17 +32,17 @@ THE SOFTWARE.
 //
 //## Gray and brand colors for use across Bootstrap.
 
-@gray-darker:            #222; // #222
-@gray-dark:              #282828;   // #333
-@gray:                   rgb(77, 77, 76); // #555
-@gray-light:             rgb(97, 97, 96);   // #999
-@gray-lighter:           #ADAFAE; // #eee
+@gray-darker:            darken(@gray-dark, 20%);
+@gray-dark:              darken(@gray, 20%);
+@gray:                   #4d4d4c; // BEBOOT
+@gray-light:             lighten(@gray, 20%);
+@gray-lighter:           lighten(@gray-light, 20%);
 
-@brand-primary:         rgb(0, 132, 176);
-@brand-success:         rgb(0, 163, 86);
-@brand-info:            #5bc0de;
-@brand-warning:         #f0ad4e;
-@brand-danger:          #d9534f;
+@brand-primary:         #0084b0; // FRESH
+@brand-success:         #00a356; // HOPE
+@brand-info:            #18386b; // BASE
+@brand-warning:         #f9b000; // GLINT
+@brand-danger:          #e40429; // BEAT
 
 
 //== Scaffolding
@@ -50,12 +50,12 @@ THE SOFTWARE.
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-@body-bg:               #060606;
+@body-bg:               #000;
 //** Global text color on `<body>`.
-@text-color:            @gray-light;
+@text-color:            @gray-lighter;
 
 //** Global textual link color.
-@link-color:            @brand-primary;
+@link-color:            @brand-success;
 //** Link hover color set via `darken()` function.
 @link-hover-color:      @link-color;
 
@@ -1046,4 +1046,12 @@ a.thumbnail.active {
 
 .btn-primary {
 	background-image: linear-gradient(to right, rgb(0, 132, 176) , rgb(0, 163, 86));
+}
+
+.label-warning {
+  color: #000;
+}
+
+#content a:not(.btn) {
+  text-decoration: underline;
 }
