@@ -32,15 +32,23 @@ THE SOFTWARE.
 //
 //## Gray and brand colors for use across Bootstrap.
 
-@gray-darker:            darken(@gray-dark, 20%);
-@gray-dark:              darken(@gray, 20%);
+// gray BEBOOT: #4d4d4c
+// blue FRESH: #0084b0
+// green HOPE: #00a356
+// dark blue BASE: #18386b
+// orange GLINT: #f9b000
+// rot BEAT: #e40429
+// violet TENACY: #44357e
+
+@gray-darker:            #000;
+@gray-dark:              #000;
 @gray:                   #4d4d4c; // BEBOOT
-@gray-light:             lighten(@gray, 20%);
-@gray-lighter:           lighten(@gray-light, 20%);
+@gray-light:             #4d4d4c;
+@gray-lighter:           #4d4d4c;
 
 @brand-primary:         #0084b0; // FRESH
 @brand-success:         #00a356; // HOPE
-@brand-info:            #18386b; // BASE
+@brand-info:            @brand-primary;
 @brand-warning:         #f9b000; // GLINT
 @brand-danger:          #e40429; // BEAT
 
@@ -52,12 +60,12 @@ THE SOFTWARE.
 //** Background color for `<body>`.
 @body-bg:               #000;
 //** Global text color on `<body>`.
-@text-color:            @gray-lighter;
+@text-color:            @gray;
 
 //** Global textual link color.
-@link-color:            @brand-success;
+@link-color:            @brand-primary;
 //** Link hover color set via `darken()` function.
-@link-hover-color:      @link-color;
+@link-hover-color:      lighten(@link-color, 10%);
 
 
 //== Typography
@@ -89,7 +97,7 @@ THE SOFTWARE.
 @headings-font-family:    @font-family-base;
 @headings-font-weight:    500;
 @headings-line-height:    1.1;
-@headings-color:          #fff;
+@headings-color:          @brand-primary;
 
 
 //== Iconography
@@ -146,15 +154,15 @@ THE SOFTWARE.
 @table-condensed-cell-padding:  5px;
 
 //** Default background color used for all tables.
-@table-bg:                      darken(@gray-darker, 4%);
+@table-bg:                      @gray-darker;
 //** Background color used for `.table-striped`.
-@table-bg-accent:               darken(@table-bg, 6%);
+@table-bg-accent:               #111;
 //** Background color used for `.table-hover`.
 @table-bg-hover:                @gray-dark;
 @table-bg-active:               @table-bg-hover;
 
 //** Border color for table and cell borders.
-@table-border-color:            @gray-dark;
+@table-border-color:            @gray;
 
 
 //== Buttons
@@ -163,20 +171,20 @@ THE SOFTWARE.
 
 @btn-font-weight:                normal;
 
-@btn-default-color:              #fff;
-@btn-default-bg:                 lighten(@gray-dark, 10%);
+@btn-default-color:              @link-color;
+@btn-default-bg:                 @gray-darker;
 
-@btn-default-border:             darken(@btn-default-bg, 10%);
+@btn-default-border:             @brand-primary;
 
-@btn-primary-color:              @btn-default-color;
+@btn-primary-color:              @gray-darker;
 @btn-primary-bg:                 @brand-primary;
-@btn-primary-border:             darken(@btn-default-bg, 10%);
+@btn-primary-border:             @brand-primary;
 
 @btn-success-color:              @btn-default-color;
 @btn-success-bg:                 @brand-success;
 @btn-success-border:             darken(@btn-default-bg, 10%);
 
-@btn-info-color:                 @btn-default-color;
+@btn-info-color:                 @gray-darker;
 @btn-info-bg:                    @brand-info;
 @btn-info-border:                darken(@btn-default-bg, 10%);
 
@@ -198,12 +206,12 @@ THE SOFTWARE.
 //** `<input>` background color
 @input-bg:                       @gray-darker;
 //** `<input disabled>` background color
-@input-bg-disabled:              @gray-lighter;
+@input-bg-disabled:              @gray-darker;
 
 //** Text color for `<input>`s
-@input-color:                    @text-color;
+@input-color:                    @link-color;
 //** `<input>` border color
-@input-border:                   @gray-dark;
+@input-border:                   @brand-primary;
 //** `<input>` border radius
 @input-border-radius:            @border-radius-base;
 //** Border color for inputs on focus
@@ -235,18 +243,18 @@ THE SOFTWARE.
 //** Background for the dropdown menu.
 @dropdown-bg:                    @gray-darker;
 //** Dropdown menu `border-color`.
-@dropdown-border:                rgba(255,255,255,0.1);
+@dropdown-border:                @brand-primary;
 //** Dropdown menu `border-color` **for IE8**.
-@dropdown-fallback-border:       #444;
+@dropdown-fallback-border:       @brand-primary;
 //** Divider color for between dropdown items.
-@dropdown-divider-bg:            rgba(255,255,255,0.1);
+@dropdown-divider-bg:            @dropdown-border;
 
 //** Dropdown link text color.
-@dropdown-link-color:            #fff;
+@dropdown-link-color:            @link-color;
 //** Hover color for dropdown links.
-@dropdown-link-hover-color:      #fff;
+@dropdown-link-hover-color:      @link-hover-color;
 //** Hover background for dropdown links.
-@dropdown-link-hover-bg:         @dropdown-link-active-bg;
+@dropdown-link-hover-bg:         @dropdown-bg;
 
 //** Active dropdown menu item text color.
 @dropdown-link-active-color:     #fff;
@@ -367,20 +375,20 @@ THE SOFTWARE.
 
 @navbar-default-color:             @text-color;
 @navbar-default-bg:                @body-bg;
-@navbar-default-border:            @gray-dark;
+@navbar-default-border:            @brand-primary;
 
 // Navbar links
 @navbar-default-link-color:                @text-color;
-@navbar-default-link-hover-color:          #fff;
+@navbar-default-link-hover-color:          @link-hover-color;
 @navbar-default-link-hover-bg:             transparent;
-@navbar-default-link-active-color:         #fff;
+@navbar-default-link-active-color:         @brand-primary;
 @navbar-default-link-active-bg:            transparent;
 @navbar-default-link-disabled-color:       @gray-light;
 @navbar-default-link-disabled-bg:          transparent;
 
 // Navbar brand label
-@navbar-default-brand-color:               #fff;
-@navbar-default-brand-hover-color:         #fff;
+@navbar-default-brand-color:               @brand-primary;
+@navbar-default-brand-hover-color:         lighten(@brand-primary, 10%);
 @navbar-default-brand-hover-bg:            transparent;
 
 // Navbar toggle
@@ -450,17 +458,17 @@ THE SOFTWARE.
 //
 //##
 
-@pagination-color:                     #fff;
+@pagination-color:                     @brand-primary;
 @pagination-bg:                        @gray-darker;
-@pagination-border:                    @gray-dark;
+@pagination-border:                    @brand-primary;
 
-@pagination-hover-color:               #fff;
+@pagination-hover-color:               @gray-darker;
 @pagination-hover-bg:                  @component-active-bg;
-@pagination-hover-border:              transparent;
+@pagination-hover-border:              @pagination-border;
 
-@pagination-active-color:              #fff;
-@pagination-active-bg:                 @brand-primary;
-@pagination-active-border:             transparent;
+@pagination-active-color:              @pagination-hover-color;
+@pagination-active-bg:                 @pagination-hover-bg;
+@pagination-active-border:             @pagination-hover-border;
 
 @pagination-disabled-color:            @gray-light;
 @pagination-disabled-bg:               @gray-darker;
@@ -498,19 +506,19 @@ THE SOFTWARE.
 //
 //## Define colors for form feedback states and, by default, alerts.
 
-@state-success-text:             #fff;
+@state-success-text:             @gray-darker;
 @state-success-bg:               @brand-success;
 @state-success-border:           darken(@state-success-bg, 5%);
 
-@state-info-text:                #fff;
+@state-info-text:                @gray-darker;
 @state-info-bg:                  @brand-info;
 @state-info-border:              darken(@state-info-bg, 7%);
 
-@state-warning-text:             #fff;
+@state-warning-text:             @gray-darker;
 @state-warning-bg:               @brand-warning;
 @state-warning-border:           darken(@state-warning-bg, 3%);
 
-@state-danger-text:              #fff;
+@state-danger-text:              @gray-darker;
 @state-danger-bg:                @brand-danger;
 @state-danger-border:            darken(@state-danger-bg, 3%);
 
@@ -580,9 +588,9 @@ THE SOFTWARE.
 @label-danger-bg:             @brand-danger;
 
 //** Default label text color
-@label-color:                 #fff;
+@label-color:                 @gray-darker;
 //** Default text color of a linked label
-@label-link-hover-color:      #fff;
+@label-link-hover-color:      @brand-primary;
 
 
 //== Modals
@@ -712,12 +720,12 @@ THE SOFTWARE.
 @panel-inner-border:          @gray-dark;
 
 @panel-default-text:          @text-color;
-@panel-default-border:        @panel-inner-border;
-@panel-default-heading-bg:    lighten(@gray-darker, 10%);
+@panel-default-border:        @brand-primary;
+@panel-default-heading-bg:    @gray-darker;
 
 @panel-footer-bg:             @panel-default-heading-bg;
 
-@panel-primary-text:          #fff;
+@panel-primary-text:          @gray-darker;
 @panel-primary-border:        @brand-primary;
 @panel-primary-heading-bg:    @brand-primary;
 
@@ -870,15 +878,15 @@ THE SOFTWARE.
 @import "base";
 
 .messages .text-danger {
-  color: #fff;
+  color: @gray-darker;
 }
 
 .messages .text-info {
-  color: #fff;
+  color: @gray-darker;
 }
 
 .messages .caret {
-  color: #fff;
+  color: @gray-darker;
 }
 
 // Cyborg 3.2.0
@@ -920,10 +928,10 @@ THE SOFTWARE.
 
 table,
 .table {
-  color: #fff;
+  color: @text-color;
 
   a:not(.btn) {
-    color: #fff;
+    color: @brand-primary;
     text-decoration: underline;
   }
 
@@ -981,7 +989,7 @@ table,
 }
 
 legend {
-  color: #fff;
+  color: @gray-darker;
 }
 
 .input-group-addon {
@@ -1044,14 +1052,10 @@ a.thumbnail.active {
   }
 }
 
-.btn-primary {
+.btn-primary, .panel-info .panel-heading {
 	background-image: linear-gradient(to right, rgb(0, 132, 176) , rgb(0, 163, 86));
 }
 
 .label-warning {
   color: #000;
-}
-
-#content a:not(.btn) {
-  text-decoration: underline;
 }

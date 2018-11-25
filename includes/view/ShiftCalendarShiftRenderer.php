@@ -44,7 +44,7 @@ class ShiftCalendarShiftRenderer
                 . ($blocks * ShiftCalendarRenderer::BLOCK_HEIGHT - ShiftCalendarRenderer::MARGIN)
                 . 'px"',
                 [
-                    $this->renderShiftHead($shift),
+                    $this->renderShiftHead($shift, $class),
                     div('panel-body', [
                         $info_text,
                         Room_name_render([
@@ -248,9 +248,10 @@ class ShiftCalendarShiftRenderer
      * Renders the shift header
      *
      * @param array $shift The shift
+     * @param string $class The shift state class
      * @return string
      */
-    private function renderShiftHead($shift)
+    private function renderShiftHead($shift, $class)
     {
         global $privileges;
 
@@ -260,12 +261,12 @@ class ShiftCalendarShiftRenderer
                     button(
                         page_link_to('user_shifts', ['edit_shift' => $shift['SID']]),
                         glyph('edit'),
-                        'btn-xs'
+                        "btn-$class btn-xs"
                     ),
                     button(
                         page_link_to('user_shifts', ['delete_shift' => $shift['SID']]),
                         glyph('trash'),
-                        'btn-xs'
+                        "btn-$class btn-xs"
                     )
                 ]) . '</div>';
         }
