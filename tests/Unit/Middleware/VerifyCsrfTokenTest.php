@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Middleware;
 
+use Engelsystem\Http\Exceptions\HttpAuthExpired;
 use Engelsystem\Middleware\VerifyCsrfToken;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -33,12 +34,8 @@ class VerifyCsrfTokenTest extends TestCase
         /** @var VerifyCsrfToken|MockObject $middleware */
         $middleware = $this->getMockBuilder(VerifyCsrfToken::class)
             ->disableOriginalConstructor()
-            ->setMethods(['notAuthorizedResponse', 'tokensMatch'])
+            ->setMethods(['tokensMatch'])
             ->getMock();
-
-        $middleware->expects($this->exactly(1))
-            ->method('notAuthorizedResponse')
-            ->willReturn($response);
 
         $middleware->expects($this->exactly(2))
             ->method('tokensMatch')
@@ -47,10 +44,15 @@ class VerifyCsrfTokenTest extends TestCase
         // Results in true, false, false
         $request->expects($this->exactly(3))
             ->method('getMethod')
-            ->willReturnOnConsecutiveCalls('GET', 'POST', 'DELETE');
+            ->willReturnOnConsecutiveCalls('GET', 'DELETE', 'POST');
 
+        // Is reading
         $middleware->process($request, $handler);
+        // Tokens match
         $middleware->process($request, $handler);
+
+        // No match
+        $this->expectException(HttpAuthExpired::class);
         $middleware->process($request, $handler);
     }
 
@@ -66,23 +68,18 @@ class VerifyCsrfTokenTest extends TestCase
         $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockForAbstractClass(ResponseInterface::class);
-        /** @var ResponseInterface|MockObject $noAuthResponse */
-        $noAuthResponse = $this->getMockForAbstractClass(ResponseInterface::class);
         /** @var SessionInterface|MockObject $session */
         $session = $this->getMockForAbstractClass(SessionInterface::class);
 
         /** @var VerifyCsrfToken|MockObject $middleware */
         $middleware = $this->getMockBuilder(VerifyCsrfToken::class)
             ->setConstructorArgs([$session])
-            ->setMethods(['isReading', 'notAuthorizedResponse'])
+            ->setMethods(['isReading'])
             ->getMock();
 
         $middleware->expects($this->atLeastOnce())
             ->method('isReading')
             ->willReturn(false);
-        $middleware->expects($this->exactly(1))
-            ->method('notAuthorizedResponse')
-            ->willReturn($noAuthResponse);
 
         $handler->expects($this->exactly(3))
             ->method('handle')
@@ -92,37 +89,38 @@ class VerifyCsrfTokenTest extends TestCase
             ->method('getParsedBody')
             ->willReturnOnConsecutiveCalls(
                 null,
-                null,
                 ['_token' => 'PostFooToken'],
-                ['_token' => 'PostBarToken']
+                ['_token' => 'PostBarToken'],
+                null
             );
         $request->expects($this->exactly(4))
             ->method('getHeader')
             ->with('X-CSRF-TOKEN')
             ->willReturnOnConsecutiveCalls(
-                [],
                 ['HeaderFooToken'],
                 [],
-                ['HeaderBarToken']
+                ['HeaderBarToken'],
+                []
             );
 
         $session->expects($this->exactly(4))
             ->method('get')
             ->with('_token')
             ->willReturnOnConsecutiveCalls(
-                'NotAvailableToken',
                 'HeaderFooToken',
                 'PostFooToken',
-                'PostBarToken'
+                'PostBarToken',
+                'NotAvailableToken'
             );
 
-        // Not tokens
-        $this->assertEquals($noAuthResponse, $middleware->process($request, $handler));
         // Header token
-        $this->assertEquals($response, $middleware->process($request, $handler));
+        $middleware->process($request, $handler);
         // POST token
-        $this->assertEquals($response, $middleware->process($request, $handler));
+        $middleware->process($request, $handler);
         // Header and POST tokens
-        $this->assertEquals($response, $middleware->process($request, $handler));
+        $middleware->process($request, $handler);
+        // No tokens
+        $this->expectException(HttpAuthExpired::class);
+        $middleware->process($request, $handler);
     }
 }

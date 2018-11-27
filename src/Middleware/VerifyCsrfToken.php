@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Middleware;
 
+use Engelsystem\Http\Exceptions\HttpAuthExpired;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -37,7 +38,7 @@ class VerifyCsrfToken implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        return $this->notAuthorizedResponse();
+        throw new HttpAuthExpired('Authentication Token Mismatch');
     }
 
     /**
@@ -76,15 +77,5 @@ class VerifyCsrfToken implements MiddlewareInterface
         return is_string($token)
             && is_string($sessionToken)
             && hash_equals($sessionToken, $token);
-    }
-
-    /**
-     * @return ResponseInterface
-     * @codeCoverageIgnore
-     */
-    protected function notAuthorizedResponse(): ResponseInterface
-    {
-        // The 419 code is used as "Page Expired" to differentiate from a 401 (not authorized)
-        return response()->withStatus(419, 'Authentication Token Mismatch');
     }
 }
