@@ -1,5 +1,5 @@
 {
-  "presets": [["env", {
+  "presets": [["@babel/preset-env", {
       "targets": {
         "chrome": 45,
         "firefox": 42,
@@ -8,8 +8,8 @@
         "edge": 12,
         "iOS": 9
       },
-      "loose": true,
-      "useBuiltIns": true
+      "loose": false,
+      "useBuiltIns": "entry"
       }]
     ],
   "plugins": [
