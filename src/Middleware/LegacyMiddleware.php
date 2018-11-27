@@ -19,7 +19,6 @@ class LegacyMiddleware implements MiddlewareInterface
         'angeltypes',
         'atom',
         'ical',
-        'login',
         'public_dashboard',
         'rooms',
         'shift_entries',
@@ -174,10 +173,6 @@ class LegacyMiddleware implements MiddlewareInterface
             case 'user_settings':
                 $title = settings_title();
                 $content = user_settings();
-                return [$title, $content];
-            case 'login':
-                $title = login_title();
-                $content = guest_login();
                 return [$title, $content];
             case 'register':
                 $title = register_title();

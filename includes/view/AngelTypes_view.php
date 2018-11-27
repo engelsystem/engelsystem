@@ -578,7 +578,7 @@ function AngelTypes_about_view($angeltypes, $user_logged_in)
             $buttons[] = button(page_link_to('register'), register_title());
         }
 
-        $buttons[] = button(page_link_to('login'), login_title());
+        $buttons[] = button(page_link_to('login'), __('Login'));
     }
 
     $faqUrl = config('faq_url');

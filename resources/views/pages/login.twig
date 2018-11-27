@@ -1,0 +1,104 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
+
+{% block title %}{{ __('Login') }}{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <h2>{{ __('Welcome to the %s!', [config('name') ~ m.angel() ~ (config('app_name')|upper) ])|raw }}</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for name,date in {
+                (__('Buildup starts')): config('buildup_start'),
+                (__('Event starts')): config('event_start'),
+                (__('Event ends')): config('event_end'),
+                (__('Teardown ends')): config('teardown_end')
+            } if date %}
+                {% if date > date() %}
+                    <div class="col-sm-3 text-center hidden-xs">
+                        <h4>{{ name }}</h4>
+                        <span class="moment-countdown text-big" data-timestamp="{{ date.getTimestamp }}">%c</span>
+                        <small>{{ date.format(__('Y-m-d')) }}</small>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                <div class="panel panel-primary first">
+
+                    <div class="panel-heading">{{ m.angel }} {{ __('Login') }}</div>
+
+                    <div class="panel-body">
+                        {% for message in errors|default([]) %}
+                            {{ m.alert(__(message), 'danger') }}
+                        {% endfor %}
+
+                        <form action="" enctype="multipart/form-data" method="post">
+                            {{ csrf() }}
+                            <div class="form-group">
+                                <input class="form-control" id="form_nick"
+                                       type="text" name="login" value="" placeholder="{{ __('Nick') }}">
+                            </div>
+
+                            <div class="form-group">
+                                <input class="form-control" id="form_password"
+                                       type="password" name="password" value="" placeholder="{{ __('Password') }}">
+                            </div>
+
+                            <div class="form-group">
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" type="submit" name="submit">
+                                        {{ __('Login') }}
+                                    </button>
+
+                                    {% if show_password_recovery|default(false) %}
+                                        <a href="{{ url('user-password-recovery') }}" class="btn btn-default ">
+                                            {{ __('I forgot my password') }}
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="panel-footer">
+                        {{ m.glyphicon('info-sign') }} {{ __('Please note: You have to activate cookies!') }}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 text-center">
+                <h2>{{ __('Register') }}</h2>
+                {% if has_permission_to('register') and config('registration_enabled') %}
+                    <p>{{ __('Please sign up, if you want to help us!') }}</p>
+                    <div class="form-group">
+                        <a href="{{ url('register') }}" class="btn btn-default">{{ __('Register') }} &raquo;</a>
+                    </div>
+                {% else %}
+                    {{ m.alert(__('Registration is disabled.'), 'danger') }}
+                {% endif %}
+            </div>
+
+            <div class="col-sm-6 text-center">
+                <h2>{{ __('What can I do?') }}</h2>
+                <p>{{ __('Please read about the jobs you can do to help us.') }}</p>
+                <div class="form-group">
+                    <a href="{{ url('angeltypes', {'action': 'about'}) }}" class="btn btn-default">
+                        {{ __('Teams/Job description') }} &raquo;
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

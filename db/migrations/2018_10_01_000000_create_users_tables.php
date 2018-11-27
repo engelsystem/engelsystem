@@ -28,7 +28,7 @@ class CreateUsersTables extends Migration
 
             $table->string('name', 24)->unique();
             $table->string('email', 254)->unique();
-            $table->string('password', 128);
+            $table->string('password', 255);
             $table->string('api_key', 32);
 
             $table->dateTime('last_login_at')->nullable();

@@ -95,13 +95,10 @@ return [
     // Number of hours that an angel has to sign out own shifts
     'last_unsubscribe'        => 3,
 
-    // Define the algorithm to use for `crypt()` of passwords
+    // Define the algorithm to use for `password_verify()`
     // If the user uses an old algorithm the password will be converted to the new format
-    //  MD5         '$1'
-    //  Blowfish    '$2y$13'
-    //  SHA-256     '$5$rounds=5000'
-    //  SHA-512     '$6$rounds=5000'
-    'crypt_alg'               => '$6$rounds=5000',
+    // See https://secure.php.net/manual/en/password.constants.php for a complete list
+    'password_algorithm'      => PASSWORD_DEFAULT,
 
     // The minimum length for passwords
     'min_password_length'     => 8,

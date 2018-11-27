@@ -541,7 +541,7 @@ msgstr "Du kannst Dich nicht selber löschen."
 
 #: includes/controller/users_controller.php:78
 #: includes/pages/guest_login.php:410
-msgid "Your password is incorrect.  Please try it again."
+msgid "Your password is incorrect. Please try it again."
 msgstr "Dein Passwort stimmt nicht. Bitte probiere es nochmal."
 
 #: includes/controller/users_controller.php:87
@@ -1530,18 +1530,21 @@ msgid "Entry required!"
 msgstr "Pflichtfeld!"
 
 #: includes/pages/guest_login.php:414
-msgid "Please enter a password."
+msgid "auth.no-password"
 msgstr "Gib bitte ein Passwort ein."
 
 #: includes/pages/guest_login.php:418
-msgid ""
-"No user was found with that Nickname. Please try again. If you are still "
-"having problems, ask a Dispatcher."
+msgid "auth.not-found"
 msgstr ""
-"Es wurde kein Engel mit diesem Namen gefunden. Probiere es bitte noch "
-"einmal. Wenn das Problem weiterhin besteht, frage einen Dispatcher."
+"Es wurde kein Engel gefunden. Probiere es bitte noch einmal. Wenn das Problem "
+"weiterhin besteht, melde dich im Himmel."
 
 #: includes/pages/guest_login.php:451 includes/view/User_view.php:130
+msgid "auth.no-nickname"
+msgstr "Gib bitte einen Nick an."
+
+#: includes/pages/guest_login.php:481
+#: includes/view/User_view.php:122
 msgid "I forgot my password"
 msgstr "Passwort vergessen"
 
@@ -2357,7 +2360,7 @@ msgid ""
 "I have my own car with me and am willing to use it for the event (You'll get "
 "reimbursed for fuel)"
 msgstr ""
-"Ich habe mein eigenes Auto dabei und möchte würde es zum Fahren für das "
+"Ich habe mein eigenes Auto dabei und möchte es zum Fahren für das "
 "Event verwenden (Du wirst für Spritkosten entschädigt)"
 
 #: includes/view/UserDriverLicenses_view.php:30

@@ -14,12 +14,4 @@ class ControllerImplementation extends BaseController
             'dolor',
         ],
     ];
-
-    /**
-     * @param array $permissions
-     */
-    public function setPermissions(array $permissions)
-    {
-        $this->permissions = $permissions;
-    }
 }

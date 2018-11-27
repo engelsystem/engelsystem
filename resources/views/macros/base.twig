@@ -1,0 +1,11 @@
+{% macro angel() %}
+    <span class="icon-icon_angel"></span>
+{% endmacro %}
+
+{% macro glyphicon(glyph) %}
+    <span class="glyphicon glyphicon-{{ glyph }}"></span>
+{% endmacro %}
+
+{% macro alert(message, type) %}
+    <div class="alert alert-{{ type|default('info') }}">{{ message }}</div>
+{% endmacro %}
