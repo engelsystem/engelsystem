@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const nodeEnv = (process.env.NODE_ENV || 'development').trim();
 
 // eslint-disable-next-line
@@ -14,7 +15,10 @@ const plugins = [
       NODE_ENV: JSON.stringify(nodeEnv),
     },
   }),
-  new ExtractTextPlugin('[name].css'),
+  new MiniCssExtractPlugin({
+    filename: '[name].css',
+    chunkFilename: '[id]-[hash].css',
+  }),
 ];
 
 
@@ -24,6 +28,7 @@ for (let i = 0; i < 8; i++) {
 }
 
 module.exports = {
+  mode: __DEV__ ? 'development' : 'production',
   context: __dirname,
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -37,6 +42,9 @@ module.exports = {
     filename: '[name].js',
     publicPath: '',
   },
+  optimization: {
+    minimizer: __DEV__ ? [] : [new OptimizeCSSAssetsPlugin({})],
+  },
   module: {
     rules: [
       {
@@ -47,11 +55,16 @@ module.exports = {
       },
       { test: /\.(eot|ttf|otf|svg|woff2?)(\?.*)?$/, loader: 'file-loader' },
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.css$/, loader: 'style-loader!css-loader' },
-      { test: /\.less$/, use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader!less-loader'
-        })}
+      {
+        test: /\.(less|css)$/,
+        use: [
+          {
+            loader: __DEV__ ? 'style-loader' : MiniCssExtractPlugin.loader,
+          },
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          { loader: 'less-loader' },
+        ]
+      }
     ],
   },
   plugins,
