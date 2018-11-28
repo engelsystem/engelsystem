@@ -15,19 +15,22 @@ FROM alpine as data
 COPY bin/ /app/bin
 COPY config/ /app/config
 COPY db/ /app/db
+COPY import/ /app/import
 COPY includes/ /app/includes
 COPY public/ /app/public
 COPY --from=frontend /var/www/public/assets/ /app/public/assets
 COPY resources/lang /app/resources/lang
 COPY resources/views /app/resources/views
 COPY src/ /app/src
+COPY storage/ /app/storage
 
 COPY composer.json LICENSE package.json README.md /app/
 
 COPY --from=composer /app/vendor/ /app/vendor
 COPY --from=composer /app/composer.lock /app/
 
-RUN rm -f /app/config/config.php
+RUN find /app/storage/ -type f -not -name .gitignore -exec rm {} \;
+RUN rm -f /app/import/* /app/config/config.php
 
 # Build the PHP container
 FROM php:7-fpm-alpine
@@ -35,6 +38,7 @@ WORKDIR /var/www
 COPY --from=data /app/ /var/www
 RUN apk add --no-cache icu-dev gettext-dev && \
     docker-php-ext-install intl gettext pdo_mysql && \
+    chown -R www-data:www-data /var/www/import/ /var/www/storage/ && \
     rm -r /var/www/html
 
 ENV TRUSTED_PROXIES 10.0.0.0/8,::ffff:10.0.0.0/8,\
