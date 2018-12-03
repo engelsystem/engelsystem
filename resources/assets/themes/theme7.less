@@ -43,8 +43,8 @@ THE SOFTWARE.
 @gray-darker:            #000;
 @gray-dark:              #000;
 @gray:                   #4d4d4c; // BEBOOT
-@gray-light:             #4d4d4c;
-@gray-lighter:           #4d4d4c;
+@gray-light:             @gray;
+@gray-lighter:           lighten(@gray, 15%);
 
 @brand-primary:         #0084b0; // FRESH
 @brand-success:         #00a356; // HOPE
@@ -60,7 +60,7 @@ THE SOFTWARE.
 //** Background color for `<body>`.
 @body-bg:               #000;
 //** Global text color on `<body>`.
-@text-color:            @gray;
+@text-color:            @gray-lighter;
 
 //** Global textual link color.
 @link-color:            @brand-primary;
