@@ -126,17 +126,17 @@ return [
 
     // Available T-Shirt sizes, set value to null if not available
     'tshirt_sizes'            => [
-        'S'    => 'S',
-        'S-G'  => 'S Girl',
-        'M'    => 'M',
-        'M-G'  => 'M Girl',
-        'L'    => 'L',
-        'L-G'  => 'L Girl',
-        'XL'   => 'XL',
-        'XL-G' => 'XL Girl',
-        '2XL'  => '2XL',
-        '3XL'  => '3XL',
-        '4XL'  => '4XL',
+        'S'    => 'Small Straight-Cut',
+        'S-G'  => 'Small Fitted-Cut',
+        'M'    => 'Medium Straight-Cut',
+        'M-G'  => 'Medium Fitted-Cut',
+        'L'    => 'Large Straight-Cut',
+        'L-G'  => 'Large Fitted-Cut',
+        'XL'   => 'XLarge Straight-Cut',
+        'XL-G' => 'XLarge Fitted-Cut',
+        '2XL'  => '2XLarge Straight-Cut',
+        '3XL'  => '3XLarge Straight-Cut',
+        '4XL'  => '4XLarge Straight-Cut',
     ],
 
     // Session config
