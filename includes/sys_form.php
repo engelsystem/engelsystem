@@ -73,11 +73,12 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
 
     return form_element($label, '
     <div class="input-group date" id="' . $dom_id . '">
-      <input type="date" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '">'
+      <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '">'
         . '<span class="input-group-addon">' . glyph('th') . '</span>
     </div>
     <script type="text/javascript">
 			$(function(){
+        $("#' . $dom_id . '").children("input").attr("type", "text");
         $("#' . $dom_id . '").datepicker({
 				  language: "' . $shortLocale . '",
           todayBtn: "linked",
