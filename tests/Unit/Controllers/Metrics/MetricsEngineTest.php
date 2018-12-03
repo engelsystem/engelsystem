@@ -66,4 +66,15 @@ class MetricsEngineTest extends TestCase
         $this->assertFalse($engine->canRender('/metrics.foo'));
         $this->assertTrue($engine->canRender('/metrics'));
     }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::share
+     */
+    public function testShare()
+    {
+        $engine = new MetricsEngine();
+
+        $engine->share('foo', 42);
+        $this->assertEquals('', $engine->get('/metrics'));
+    }
 }
