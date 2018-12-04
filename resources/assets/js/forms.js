@@ -92,3 +92,36 @@ $(function () {
         return ($(window).height() - 50) + 'px';
     }).css('overflow-y', 'scroll');
 });
+
+/*
+ * Add a datepicker to all date input fields.
+ */
+$(function () {
+    $('.input-group.date').each(function () {
+        var elem = $(this);
+        var opts = {
+            minDate: '',
+            maxDate: '',
+            locale: 'en',
+            format: 'YYYY-MM-DD',
+            widgetPositioning: {horizontal: 'auto', vertical: 'bottom'}
+        };
+        $.extend(opts, elem.data());
+        if (opts.minDate.length === 0) {
+            delete opts.minDate;
+        }
+        if (opts.maxDate.length === 0) {
+            delete opts.maxDate;
+        }
+        elem.children('input').attr('type', 'text');
+        elem.children().on('click', function (ev) {
+            ev.stopImmediatePropagation();
+            if (elem.data('DateTimePicker') === undefined) {
+                elem.datetimepicker(opts);
+                elem.data('DateTimePicker').show();
+            } else {
+                elem.data('DateTimePicker').toggle();
+            }
+        });
+    });
+});

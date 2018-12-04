@@ -72,23 +72,10 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
     $shortLocale = substr($locale, 0, 2);
 
     return form_element($label, '
-    <div class="input-group date" id="' . $dom_id . '">
+    <div class="input-group date" id="' . $dom_id . '" data-locale="' . $shortLocale . '" data-min-date="' . $start_date . '" data-max-date="' . $end_date . '">
       <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '">'
         . '<span class="input-group-addon">' . glyph('th') . '</span>
     </div>
-    <script type="text/javascript">
-			$(function(){
-        $("#' . $dom_id . '").children("input").attr("type", "text");
-        $("#' . $dom_id . '").datepicker({
-				  language: "' . $shortLocale . '",
-          todayBtn: "linked",
-          format: "yyyy-mm-dd",
-          startDate: "' . $start_date . '",
-          endDate: "' . $end_date . '",
-          orientation: "bottom"
-			  });
-      });
-    </script>
     ', $dom_id);
 }
 
