@@ -1,9 +1,9 @@
 FROM node:8-alpine as themes
 WORKDIR /app
 RUN apk add --no-cache yarn
-COPY resources/assets/ /app/resources/assets
 COPY .babelrc package.json webpack.config.js /app/
 RUN yarn install
+COPY resources/assets/ /app/resources/assets
 RUN yarn build
 
 FROM nginx:alpine
