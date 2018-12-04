@@ -1,8 +1,8 @@
 FROM node:8-alpine as themes
 WORKDIR /app
+RUN apk add --no-cache yarn
 COPY resources/assets/ /app/resources/assets
 COPY .babelrc package.json webpack.config.js /app/
-RUN apk add --no-cache yarn
 RUN yarn install
 RUN yarn build
 
