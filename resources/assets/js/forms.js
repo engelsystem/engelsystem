@@ -125,3 +125,45 @@ $(function () {
         });
     });
 });
+
+/*
+ * Add a timepicker to all time input fields.
+ */
+$(function () {
+    $('.input-group.time').each(function () {
+        var elem = $(this);
+        var opts = {
+            locale: 'en',
+            format: 'HH:mm',
+            widgetPositioning: {horizontal: 'auto', vertical: 'bottom'}
+        };
+        $.extend(opts, elem.data());
+        elem.children('input').attr('type', 'text');
+        elem.datetimepicker(opts);
+        elem.children('input').on('click', function (ev) {
+            ev.stopImmediatePropagation();
+            elem.data('DateTimePicker').toggle();
+        });
+    });
+});
+
+/*
+ * Button to set current time in time input fields.
+ */
+$(function () {
+    $('.input-group.time').each(function () {
+        var elem = $(this);
+        elem.find('button').on('click', function () {
+            var input = elem.children('input').first();
+            input.val(moment().format('HH:mm'));
+            var day_selector = $('#' + input.attr('id').replace('time', 'day'));
+            var days = day_selector.children('option');
+            days.each(function (i) {
+                if ($(days[i]).val() === moment().format('YYYY-MM-DD')) {
+                    day_selector.val($(days[i]).val());
+                    return false;
+                }
+            });
+        });
+    });
+});
