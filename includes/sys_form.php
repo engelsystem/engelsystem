@@ -221,9 +221,9 @@ function form_info($label, $text = '')
  * @param bool   $wrapForm
  * @return string
  */
-function form_submit($name, $label, $class = '', $wrapForm = true)
+function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType = 'primary')
 {
-    $button = '<button class="btn btn-primary' . ($class ? ' ' . $class : '') . '" type="submit" name="' . $name . '">'
+    $button = '<button class="btn btn-' . $buttonType . ($class ? ' ' . $class : '') . '" type="submit" name="' . $name . '">'
         . $label
         . '</button>';
 
