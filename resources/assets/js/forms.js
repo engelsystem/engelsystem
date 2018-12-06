@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 /**
  * Sets all checkboxes to the wanted state
  *
@@ -116,7 +118,7 @@ $(function () {
         elem.children('input').attr('type', 'text');
         elem.children().on('click', function (ev) {
             ev.stopImmediatePropagation();
-            if (elem.data('DateTimePicker') === undefined) {
+            if (typeof elem.data('DateTimePicker') === "undefined") {
                 elem.datetimepicker(opts);
                 elem.data('DateTimePicker').show();
             } else {
@@ -156,11 +158,11 @@ $(function () {
         elem.find('button').on('click', function () {
             var input = elem.children('input').first();
             input.val(moment().format('HH:mm'));
-            var day_selector = $('#' + input.attr('id').replace('time', 'day'));
-            var days = day_selector.children('option');
+            var daySelector = $('#' + input.attr('id').replace('time', 'day'));
+            var days = daySelector.children('option');
             days.each(function (i) {
                 if ($(days[i]).val() === moment().format('YYYY-MM-DD')) {
-                    day_selector.val($(days[i]).val());
+                    daySelector.val($(days[i]).val());
                     return false;
                 }
             });
