@@ -100,7 +100,10 @@ function admin_arrive()
         $usr['actions'] = form([
             form_hidden('action', $usr->state->arrived ? 'reset' : 'arrived'),
             form_hidden('user', $usr->id),
-            form_submit('submit', $usr->state->arrived ? __('reset') : __('arrived'), 'btn-xs'),
+            form_submit(
+                'submit', $usr->state->arrived ? __('reset') : __('arrived'), 'btn-xs', true,
+                $usr->state->arrived ? 'danger' : 'primary'
+            ),
         ]);
 
         if ($usr->state->arrival_date) {
