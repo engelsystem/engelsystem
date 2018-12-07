@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 /**
  * Sets all checkboxes to the wanted state
  *
@@ -91,4 +93,79 @@ $(function () {
     $('.dropdown-menu').css('max-height', function () {
         return ($(window).height() - 50) + 'px';
     }).css('overflow-y', 'scroll');
+});
+
+/*
+ * Add a datepicker to all date input fields.
+ */
+$(function () {
+    $('.input-group.date').each(function () {
+        var elem = $(this);
+        var opts = {
+            minDate: '',
+            maxDate: '',
+            locale: 'en',
+            format: 'YYYY-MM-DD',
+            widgetPositioning: {horizontal: 'auto', vertical: 'bottom'}
+        };
+        $.extend(opts, elem.data());
+        if (opts.minDate.length === 0) {
+            delete opts.minDate;
+        }
+        if (opts.maxDate.length === 0) {
+            delete opts.maxDate;
+        }
+        elem.children('input').attr('type', 'text');
+        elem.children().on('click', function (ev) {
+            ev.stopImmediatePropagation();
+            if (typeof elem.data('DateTimePicker') === "undefined") {
+                elem.datetimepicker(opts);
+                elem.data('DateTimePicker').show();
+            } else {
+                elem.data('DateTimePicker').toggle();
+            }
+        });
+    });
+});
+
+/*
+ * Add a timepicker to all time input fields.
+ */
+$(function () {
+    $('.input-group.time').each(function () {
+        var elem = $(this);
+        var opts = {
+            locale: 'en',
+            format: 'HH:mm',
+            widgetPositioning: {horizontal: 'auto', vertical: 'bottom'}
+        };
+        $.extend(opts, elem.data());
+        elem.children('input').attr('type', 'text');
+        elem.datetimepicker(opts);
+        elem.children('input').on('click', function (ev) {
+            ev.stopImmediatePropagation();
+            elem.data('DateTimePicker').toggle();
+        });
+    });
+});
+
+/*
+ * Button to set current time in time input fields.
+ */
+$(function () {
+    $('.input-group.time').each(function () {
+        var elem = $(this);
+        elem.find('button').on('click', function () {
+            var input = elem.children('input').first();
+            input.val(moment().format('HH:mm'));
+            var daySelector = $('#' + input.attr('id').replace('time', 'day'));
+            var days = daySelector.children('option');
+            days.each(function (i) {
+                if ($(days[i]).val() === moment().format('YYYY-MM-DD')) {
+                    daySelector.val($(days[i]).val());
+                    return false;
+                }
+            });
+        });
+    });
 });
