@@ -118,7 +118,7 @@ $(function () {
         elem.children('input').attr('type', 'text');
         elem.children().on('click', function (ev) {
             ev.stopImmediatePropagation();
-            if (typeof elem.data('DateTimePicker') === "undefined") {
+            if (typeof elem.data('DateTimePicker') === 'undefined') {
                 elem.datetimepicker(opts);
                 elem.data('DateTimePicker').show();
             } else {
@@ -133,16 +133,16 @@ $(function () {
  */
 $(function () {
     $('.input-group.time').each(function () {
-        var elem = $(this);
+        var elem = $(this).children('input').first();
         var opts = {
             locale: 'en',
             format: 'HH:mm',
             widgetPositioning: {horizontal: 'auto', vertical: 'bottom'}
         };
         $.extend(opts, elem.data());
-        elem.children('input').attr('type', 'text');
+        elem.attr('type', 'text');
         elem.datetimepicker(opts);
-        elem.children('input').on('click', function (ev) {
+        elem.on('click', function (ev) {
             ev.stopImmediatePropagation();
             elem.data('DateTimePicker').toggle();
         });
