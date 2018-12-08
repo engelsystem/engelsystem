@@ -4,7 +4,6 @@ require('bootstrap');
 require('imports-loader?this=>window&define=>false&exports=>false!moment');
 require('imports-loader?this=>window&define=>false&exports=>false!moment/locale/de');
 require('imports-loader?define=>false&exports=>false!eonasdan-bootstrap-datetimepicker');
-require('eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css');
 require('imports-loader?this=>window!chart.js');
 require('./forms');
 require('./sticky-headers');

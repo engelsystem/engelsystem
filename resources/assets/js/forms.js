@@ -104,7 +104,7 @@ $(function () {
         var opts = {
             minDate: '',
             maxDate: '',
-            locale: 'en',
+            locale: $('html').attr('lang'),
             format: 'YYYY-MM-DD',
             widgetPositioning: {horizontal: 'auto', vertical: 'bottom'}
         };
@@ -133,18 +133,22 @@ $(function () {
  */
 $(function () {
     $('.input-group.time').each(function () {
-        var elem = $(this).children('input').first();
+        var elem = $(this);
         var opts = {
-            locale: 'en',
+            locale: $('html').attr('lang'),
             format: 'HH:mm',
             widgetPositioning: {horizontal: 'auto', vertical: 'bottom'}
         };
         $.extend(opts, elem.data());
-        elem.attr('type', 'text');
-        elem.datetimepicker(opts);
-        elem.on('click', function (ev) {
+        elem.children('input').attr('type', 'text');
+        elem.children('input').on('click', function (ev) {
             ev.stopImmediatePropagation();
-            elem.data('DateTimePicker').toggle();
+            if (typeof elem.data('DateTimePicker') === 'undefined') {
+              elem.datetimepicker(opts);
+              elem.data('DateTimePicker').show();
+            } else {
+              elem.data('DateTimePicker').toggle();
+            }
         });
     });
 });
