@@ -68,11 +68,9 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
     $value = is_numeric($value) ? date('Y-m-d', $value) : '';
     $start_date = is_numeric($start_date) ? date('Y-m-d', $start_date) : '';
     $end_date = is_numeric($end_date) ? date('Y-m-d', $end_date) : '';
-    $locale = $locale = session()->get('locale');
-    $shortLocale = substr($locale, 0, 2);
 
     return form_element($label, '
-    <div class="input-group date" id="' . $dom_id . '" data-locale="' . $shortLocale . '" data-min-date="' . $start_date . '" data-max-date="' . $end_date . '">
+    <div class="input-group date" id="' . $dom_id . '" data-min-date="' . $start_date . '" data-max-date="' . $end_date . '">
       <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '">'
         . '<span class="input-group-addon">' . glyph('th') . '</span>
     </div>

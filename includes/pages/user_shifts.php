@@ -176,9 +176,6 @@ function view_user_shifts()
     $days = load_days();
     $rooms = load_rooms();
     $types = load_types();
-    $locale = $session->get('locale');
-    $shortLocale = substr($locale, 0, 2);
-
 
     if (!$session->has('shifts-filter')) {
         $room_ids = [
@@ -256,7 +253,6 @@ function view_user_shifts()
                         ),
                     ]
                 ),
-                'short_locale'   => $shortLocale,
                 'filled_select' => make_select($filled, $shiftsFilter->getFilled(), 'filled', __('Occupancy')),
                 'task_notice'   =>
                     '<sup>1</sup>'
