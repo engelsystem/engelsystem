@@ -102,7 +102,7 @@ function admin_arrive()
             form_hidden('user', $usr->id),
             form_submit(
                 'submit', $usr->state->arrived ? __('reset') : __('arrived'), 'btn-xs', true,
-                $usr->state->arrived ? 'danger' : 'primary'
+                $usr->state->arrived ? 'default' : 'primary'
             ),
         ]);
 
