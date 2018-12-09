@@ -25,7 +25,7 @@ function bargraph($dom_id, $key, $row_names, $colors, $data)
         }
         $datasets[] = [
             'label'     => $name,
-            'fillColor' => $colors[$row_key],
+            'backgroundColor' => $colors[$row_key],
             'data'      => $values
         ];
     }
@@ -34,9 +34,12 @@ function bargraph($dom_id, $key, $row_names, $colors, $data)
       <script type="text/javascript">
       $(function(){
         var ctx = $(\'#' . $dom_id . '\').get(0).getContext(\'2d\');
-        var chart = new Chart(ctx).Bar(' . json_encode([
-            'labels'   => $labels,
-            'datasets' => $datasets
+        var chart = new Chart(ctx, ' . json_encode([
+            'type'     => 'bar',
+            'data'     => [
+                'labels'   => $labels,
+                'datasets' => $datasets
+            ]
         ]) . ');
       });
       </script>';
