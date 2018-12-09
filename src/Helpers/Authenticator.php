@@ -104,7 +104,7 @@ class Authenticator
         $abilities = (array)$abilities;
 
         if (empty($this->permissions)) {
-            $userId = $this->session->get('uid');
+            $userId = $this->user ? $this->user->id : $this->session->get('uid');
 
             if ($userId) {
                 if ($user = $this->user()) {
