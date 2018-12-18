@@ -52,7 +52,12 @@ class TranslationServiceProvider extends ServiceProvider
      */
     public function setLocale($locale)
     {
+        // Set the users locale
         putenv('LC_ALL=' . $locale);
         setlocale(LC_ALL, $locale);
+
+        // Reset numeric formatting to allow output of floats
+        putenv('LC_NUMERIC=C');
+        setlocale(LC_NUMERIC, 'C');
     }
 }
