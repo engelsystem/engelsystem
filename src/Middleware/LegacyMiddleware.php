@@ -26,7 +26,6 @@ class LegacyMiddleware implements MiddlewareInterface
         'shift_entries',
         'shifts',
         'shifts_json_export',
-        'stats',
         'users',
         'user_driver_licenses',
         'user_password_recovery',
@@ -122,10 +121,6 @@ class LegacyMiddleware implements MiddlewareInterface
             case 'shifts_json_export':
                 require_once realpath(__DIR__ . '/../../includes/controller/shifts_controller.php');
                 shifts_json_export_controller();
-            /** @noinspection PhpMissingBreakStatementInspection */
-            case 'stats':
-                require_once realpath(__DIR__ . '/../../includes/pages/guest_stats.php');
-                guest_stats();
             case 'user_password_recovery':
                 require_once realpath(__DIR__ . '/../../includes/controller/users_controller.php');
                 $title = user_password_recovery_title();
