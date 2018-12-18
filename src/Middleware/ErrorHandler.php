@@ -46,7 +46,13 @@ class ErrorHandler implements MiddlewareInterface
         }
 
         $statusCode = $response->getStatusCode();
-        if ($statusCode < 400 || !$response instanceof Response) {
+        $contentType = $response->getHeader('content-type');
+        $contentType = array_shift($contentType);
+        if (
+            $statusCode < 400
+            || !$response instanceof Response
+            || !empty($contentType)
+        ) {
             return $response;
         }
 
