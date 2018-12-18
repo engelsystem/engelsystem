@@ -116,7 +116,7 @@ function Users_by_angeltype($angeltype)
  */
 function User_validate_Nick($nick)
 {
-    return preg_replace('/([^\p{L}\p{N}-_. ]+)/ui', '', trim($nick));
+    return preg_replace('/([^\p{L}\p{N}\-_. ]+)/ui', '', trim($nick));
 }
 
 /**
