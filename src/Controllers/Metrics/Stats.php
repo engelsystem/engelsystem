@@ -97,6 +97,31 @@ class Stats
     }
 
     /**
+     * @param string $vehicle
+     * @return int
+     * @codeCoverageIgnore
+     */
+    public function licenses($vehicle = null)
+    {
+        $mapping = [
+            'forklift' => 'has_license_forklift',
+            'car'      => 'has_license_car',
+            '3.5t'     => 'has_license_3_5t_transporter',
+            '7.5t'     => 'has_license_7_5t_truck',
+            '12.5t'    => 'has_license_12_5t_truck',
+        ];
+
+        $query = $this
+            ->getQuery('UserDriverLicenses');
+
+        if (!is_null($vehicle)) {
+            $query->where($mapping[$vehicle], '=', true);
+        }
+
+        return $query->count();
+    }
+
+    /**
      * The number of worked shifts
      *
      * @param bool|null $done
@@ -119,6 +144,113 @@ class Stats
         }
 
         return $query->sum($this->raw('end - start'));
+    }
+
+    /**
+     * @return int
+     * @codeCoverageIgnore
+     */
+    public function worklogSeconds()
+    {
+        return round($this
+            ->getQuery('UserWorkLog')
+            ->sum($this->raw('work_hours * 60*60')));
+    }
+
+    /**
+     * @return int
+     * @codeCoverageIgnore
+     */
+    public function shifts()
+    {
+        return $this
+            ->getQuery('Shifts')
+            ->count();
+    }
+
+    /**
+     * @param bool $meeting
+     * @return int
+     * @codeCoverageIgnore
+     */
+    public function announcements($meeting = null)
+    {
+        $query = $this
+            ->getQuery('News');
+
+        if (!is_null($meeting)) {
+            $query->where('Treffen', '=', $meeting);
+        }
+
+        return $query->count();
+    }
+
+    /**
+     * @param bool $answered
+     * @return int
+     * @codeCoverageIgnore
+     */
+    public function questions($answered = null)
+    {
+        $query = $this
+            ->getQuery('Questions');
+
+        if (!is_null($answered)) {
+            if ($answered) {
+                $query->whereNotNull('AID');
+            } else {
+                $query->whereNull('AID');
+            }
+        }
+
+        return $query->count();
+    }
+
+    /**
+     * @return int
+     * @codeCoverageIgnore
+     */
+    public function messages()
+    {
+        return $this
+            ->getQuery('Messages')
+            ->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function sessions()
+    {
+        return $this
+            ->getQuery('sessions')
+            ->count();
+    }
+
+    /**
+     * @param string $level
+     * @return int
+     */
+    public function logEntries($level = null)
+    {
+        $query = $this
+            ->getQuery('log_entries');
+
+        if (!is_null($level)) {
+            $query->where('level', '=', $level);
+        }
+
+        return $query->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function passwordResets()
+    {
+        return $this
+            ->getQuery('password_resets')
+            ->count();
     }
 
     /**

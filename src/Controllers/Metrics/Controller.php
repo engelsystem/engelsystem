@@ -7,6 +7,7 @@ use Engelsystem\Controllers\BaseController;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Psr\Log\LogLevel;
 
 class Controller extends BaseController
 {
@@ -62,6 +63,15 @@ class Controller extends BaseController
                 ['labels' => ['state' => 'arrived', 'working' => 'no'], 'value' => $this->stats->arrivedUsers(false)],
                 ['labels' => ['state' => 'arrived', 'working' => 'yes'], 'value' => $this->stats->arrivedUsers(true)],
             ],
+            'licenses'             => [
+                'type' => 'gauge',
+                'help' => 'The total number of licenses',
+                ['labels' => ['type' => 'forklift'], 'value' => $this->stats->licenses('forklift')],
+                ['labels' => ['type' => 'car'], 'value' => $this->stats->licenses('car')],
+                ['labels' => ['type' => '3.5t'], 'value' => $this->stats->licenses('3.5t')],
+                ['labels' => ['type' => '7.5t'], 'value' => $this->stats->licenses('7.5t')],
+                ['labels' => ['type' => '12.5t'], 'value' => $this->stats->licenses('12.5t')],
+            ],
             'users_working'        => [
                 'type' => 'gauge',
                 ['labels' => ['freeloader' => false], $this->stats->currentlyWorkingUsers(false)],
@@ -73,7 +83,36 @@ class Controller extends BaseController
                 ['labels' => ['state' => 'planned'], 'value' => $this->stats->workSeconds(false, false)],
                 ['labels' => ['state' => 'freeloaded'], 'value' => $this->stats->workSeconds(null, true)],
             ],
+            'worklog_seconds'      => ['type' => 'gauge', $this->stats->worklogSeconds()],
+            'shifts'               => ['type' => 'gauge', $this->stats->shifts()],
+            'announcements'        => [
+                'type' => 'gauge',
+                ['labels' => ['type' => 'news'], 'value' => $this->stats->announcements(false)],
+                ['labels' => ['type' => 'meeting'], 'value' => $this->stats->announcements(true)],
+            ],
+            'questions'            => [
+                'type' => 'gauge',
+                ['labels' => ['answered' => true], 'value' => $this->stats->questions(true)],
+                ['labels' => ['answered' => false], 'value' => $this->stats->questions(false)],
+            ],
+            'messages'             => ['type' => 'gauge', $this->stats->messages()],
+            'password_resets'      => ['type' => 'gauge', $this->stats->passwordResets()],
             'registration_enabled' => ['type' => 'gauge', $this->config->get('registration_enabled')],
+            'sessions'             => ['type' => 'gauge', $this->stats->sessions()],
+            'log_entries'          => [
+                'type' => 'counter',
+                [
+                    'labels' => ['level' => LogLevel::EMERGENCY],
+                    'value'  => $this->stats->logEntries(LogLevel::EMERGENCY)
+                ],
+                ['labels' => ['level' => LogLevel::ALERT], 'value' => $this->stats->logEntries(LogLevel::ALERT)],
+                ['labels' => ['level' => LogLevel::CRITICAL], 'value' => $this->stats->logEntries(LogLevel::CRITICAL)],
+                ['labels' => ['level' => LogLevel::ERROR], 'value' => $this->stats->logEntries(LogLevel::ERROR)],
+                ['labels' => ['level' => LogLevel::WARNING], 'value' => $this->stats->logEntries(LogLevel::WARNING)],
+                ['labels' => ['level' => LogLevel::NOTICE], 'value' => $this->stats->logEntries(LogLevel::NOTICE)],
+                ['labels' => ['level' => LogLevel::INFO], 'value' => $this->stats->logEntries(LogLevel::INFO)],
+                ['labels' => ['level' => LogLevel::DEBUG], 'value' => $this->stats->logEntries(LogLevel::DEBUG)],
+            ],
         ];
 
         $data['scrape_duration_seconds'] = [
