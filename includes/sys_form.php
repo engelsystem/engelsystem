@@ -229,15 +229,18 @@ function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType =
  * @param string $label
  * @param string $value
  * @param bool   $disabled
+ * @param int    $maxlength
  * @return string
  */
-function form_text($name, $label, $value, $disabled = false)
+function form_text($name, $label, $value, $disabled = false, $maxlength = null)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
+    $maxlength = $maxlength ? ' maxlength=' . (int)$maxlength : '';
+
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars($value) . '" ' . $disabled . '/>',
+        . '" value="' . htmlspecialchars($value) . '"' . $maxlength . $disabled . '/>',
         'form_' . $name
     );
 }

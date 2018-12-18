@@ -158,7 +158,7 @@ function admin_rooms()
                 form([
                     div('row', [
                         div('col-md-6', [
-                            form_text('name', __('Name'), $name),
+                            form_text('name', __('Name'), $name, false, 35),
                             form_checkbox('from_frab', __('Frab import'), $from_frab),
                             form_text('map_url', __('Map URL'), $map_url),
                             form_info('', __('The map url is used to display an iframe on the room page.')),
