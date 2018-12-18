@@ -32,6 +32,10 @@ class ErrorHandlerTest extends TestCase
         $psrResponse->expects($this->once())
             ->method('getStatusCode')
             ->willReturn(505);
+        $psrResponse->expects($this->once())
+            ->method('getHeader')
+            ->with('content-type')
+            ->willReturn([]);
 
         $errorHandler = new ErrorHandler($twigLoader);
 
@@ -41,12 +45,21 @@ class ErrorHandlerTest extends TestCase
         /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
 
-        $response->expects($this->exactly(3))
+        $response->expects($this->exactly(4))
             ->method('getStatusCode')
             ->willReturnOnConsecutiveCalls(
                 200,
                 418,
+                505,
                 505
+            );
+        $response->expects($this->exactly(4))
+            ->method('getHeader')
+            ->willReturnOnConsecutiveCalls(
+                [],
+                [],
+                [],
+                ['application/json']
             );
 
         $returnResponseHandler->setResponse($response);
@@ -85,6 +98,7 @@ class ErrorHandlerTest extends TestCase
 
         $errorHandler->process($request, $returnResponseHandler);
         $errorHandler->process($request, $returnResponseHandler);
+        $errorHandler->process($request, $returnResponseHandler);
     }
 
     /**
@@ -104,6 +118,10 @@ class ErrorHandlerTest extends TestCase
         $psrResponse->expects($this->once())
             ->method('getStatusCode')
             ->willReturn(300);
+        $psrResponse->expects($this->once())
+            ->method('getHeader')
+            ->with('content-type')
+            ->willReturn([]);
 
         $returnResponseHandler->expects($this->once())
             ->method('handle')
