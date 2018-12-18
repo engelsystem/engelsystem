@@ -11,6 +11,7 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\ServerBag;
 
 class ControllerTest extends TestCase
@@ -36,9 +37,18 @@ class ControllerTest extends TestCase
             ->willReturnCallback(function ($path, $data) use ($response) {
                 $this->assertEquals('/metrics', $path);
                 $this->assertArrayHasKey('users', $data);
+                $this->assertArrayHasKey('licenses', $data);
                 $this->assertArrayHasKey('users_working', $data);
                 $this->assertArrayHasKey('work_seconds', $data);
+                $this->assertArrayHasKey('worklog_seconds', $data);
+                $this->assertArrayHasKey('shifts', $data);
+                $this->assertArrayHasKey('announcements', $data);
+                $this->assertArrayHasKey('questions', $data);
+                $this->assertArrayHasKey('messages', $data);
+                $this->assertArrayHasKey('password_resets', $data);
                 $this->assertArrayHasKey('registration_enabled', $data);
+                $this->assertArrayHasKey('sessions', $data);
+                $this->assertArrayHasKey('log_entries', $data);
                 $this->assertArrayHasKey('scrape_duration_seconds', $data);
 
                 return 'metrics return';
@@ -53,6 +63,10 @@ class ControllerTest extends TestCase
             ->with('metrics return')
             ->willReturn($response);
 
+        $stats->expects($this->exactly(5))
+            ->method('licenses')
+            ->withConsecutive(['forklift'], ['car'], ['3.5t'], ['7.5t'], ['12.5t'])
+            ->willReturnOnConsecutiveCalls(3, 15, 9, 7, 1);
         $stats->expects($this->exactly(2))
             ->method('arrivedUsers')
             ->withConsecutive([false], [true])
@@ -65,7 +79,33 @@ class ControllerTest extends TestCase
             ->method('workSeconds')
             ->withConsecutive([true, false], [false, false], [null, true])
             ->willReturnOnConsecutiveCalls(60 * 37, 60 * 251, 60 * 3);
+        $stats->expects($this->exactly(2))
+            ->method('announcements')
+            ->withConsecutive([false], [true])
+            ->willReturnOnConsecutiveCalls(18, 7);
+        $stats->expects($this->exactly(2))
+            ->method('questions')
+            ->withConsecutive([true], [false])
+            ->willReturnOnConsecutiveCalls(5, 0);
+        $stats->expects($this->exactly(8))
+            ->method('logEntries')
+            ->withConsecutive(
+                [LogLevel::EMERGENCY],
+                [LogLevel::ALERT],
+                [LogLevel::CRITICAL],
+                [LogLevel::ERROR],
+                [LogLevel::WARNING],
+                [LogLevel::NOTICE],
+                [LogLevel::INFO],
+                [LogLevel::DEBUG]
+            )
+            ->willReturnOnConsecutiveCalls(0, 1, 0, 5, 999, 4, 55, 3);
         $this->setExpects($stats, 'newUsers', null, 9);
+        $this->setExpects($stats, 'worklogSeconds', null, 39 * 60 * 60);
+        $this->setExpects($stats, 'shifts', null, 142);
+        $this->setExpects($stats, 'messages', null, 3);
+        $this->setExpects($stats, 'passwordResets', null, 1);
+        $this->setExpects($stats, 'sessions', null, 1234);
 
         $config->set('registration_enabled', 1);
 
