@@ -168,11 +168,11 @@ function guest_register()
             $preName = strip_request_item('prename');
         }
         if ($request->has('dect')) {
-            if (strlen(strip_request_item('dect')) <= 5) {
+            if (strlen(strip_request_item('dect')) <= 40) {
                 $dect = strip_request_item('dect');
             } else {
                 $valid = false;
-                error(__('For dect numbers are only 5 digits allowed.'));
+                error(__('For dect numbers are only 40 digits allowed.'));
             }
         }
         if ($request->has('mobile')) {

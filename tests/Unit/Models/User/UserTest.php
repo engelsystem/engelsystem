@@ -32,7 +32,7 @@ class UserTest extends TestCase
                 Contact::class,
                 'contact',
                 [
-                    'dect'   => '1234',
+                    'dect'   => '1234567',
                     'email'  => 'foo@bar.batz',
                     'mobile' => '1234/12341234',
                 ]
