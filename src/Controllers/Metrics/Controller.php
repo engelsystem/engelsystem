@@ -55,6 +55,17 @@ class Controller extends BaseController
         $now = microtime(true);
         $this->checkAuth();
 
+        $tshirtSizes = [];
+        $userSizes = $this->stats->tshirtSizes();
+
+        foreach ($this->config->get('tshirt_sizes') as $name => $description) {
+            $size = $userSizes->where('shirt_size', '=', $name)->sum('count');
+            $tshirtSizes[] = [
+                'labels' => ['size' => $name],
+                $size,
+            ];
+        }
+
         $data = [
             $this->config->get('app_name') . ' stats',
             'users'                => [
@@ -84,6 +95,9 @@ class Controller extends BaseController
                 ['labels' => ['state' => 'freeloaded'], 'value' => $this->stats->workSeconds(null, true)],
             ],
             'worklog_seconds'      => ['type' => 'gauge', $this->stats->worklogSeconds()],
+            'vouchers'             => ['type' => 'counter', $this->stats->vouchers()],
+            'tshirts_issued'       => ['type' => 'counter', 'help' => 'Issued T-Shirts', $this->stats->tshirts()],
+            'tshirt_sizes'         => ['type' => 'gauge', 'help' => 'The sizes users have configured'] + $tshirtSizes,
             'shifts'               => ['type' => 'gauge', $this->stats->shifts()],
             'announcements'        => [
                 'type' => 'gauge',
@@ -92,8 +106,8 @@ class Controller extends BaseController
             ],
             'questions'            => [
                 'type' => 'gauge',
-                ['labels' => ['answered' => true], 'value' => $this->stats->questions(true)],
-                ['labels' => ['answered' => false], 'value' => $this->stats->questions(false)],
+                ['labels' => ['state' => 'answered'], 'value' => $this->stats->questions(true)],
+                ['labels' => ['state' => 'pending'], 'value' => $this->stats->questions(false)],
             ],
             'messages'             => ['type' => 'gauge', $this->stats->messages()],
             'password_resets'      => ['type' => 'gauge', $this->stats->passwordResets()],
