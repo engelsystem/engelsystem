@@ -442,7 +442,13 @@ function User_view_myshifts(
     }
 
     if ($its_me || $admin_user_worklog_privilege) {
+        $day_counter = 1;
         foreach ($user_worklogs as $worklog) {
+            // Check if more than one worklog per day
+            if (isset($myshifts_table[$worklog['work_timestamp']])) {
+                $worklog['work_timestamp'] += $day_counter++;
+            }
+
             $myshifts_table[$worklog['work_timestamp']] = User_view_worklog($worklog, $admin_user_worklog_privilege);
             $timeSum += $worklog['work_hours'] * 3600;
         }
