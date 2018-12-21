@@ -189,10 +189,22 @@ table a > .icon-icon_angel {
     width: 50px;
     flex-shrink: 0;
   }
-
+  .shift-card {
+	  z-index:0;
+	  overflow:hidden;
+	  position:relative;
+  }
+  .shift-card:hover {
+	  overflow:visible;
+	  z-index:100;
+  }
+  .shift-card:hover .shift {
+  	 z-index:100;
+  }
   .shift {
     margin: 0 5px 5px 0;
-    overflow: hidden;
+    position: absolute;
+    width: 99%;
   }
 }
 
