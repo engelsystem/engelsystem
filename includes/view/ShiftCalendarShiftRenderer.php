@@ -38,24 +38,25 @@ class ShiftCalendarShiftRenderer
 
         return [
             $blocks,
-            div(
-                'shift panel panel-' . $class . '" '
-                . 'style="height: '
+            div( 'shift-card "style="height: '
                 . ($blocks * ShiftCalendarRenderer::BLOCK_HEIGHT - ShiftCalendarRenderer::MARGIN)
-                . 'px"',
-                [
-                    $this->renderShiftHead($shift, $class),
-                    div('panel-body', [
-                        $info_text,
-                        Room_name_render([
-                            'RID'  => $shift['RID'],
-                            'Name' => $shift['room_name']
-                        ])
-                    ]),
-                    $shifts_row,
-                    div('shift-spacer')
-                ]
-            )
+                . 'px;}"',
+                div(
+                    'shift panel panel-' . $class. '" style="position: absolute; width:99%;',
+                    [
+                        $this->renderShiftHead($shift, $class),
+                        div('panel-body', [
+                            $info_text,
+                            Room_name_render([
+                                'RID'  => $shift['RID'],
+                                'Name' => $shift['room_name']
+                            ])
+                        ]),
+                        $shifts_row,
+                        div('shift-spacer')
+                    ]
+                )
+            )        
         ];
     }
 
