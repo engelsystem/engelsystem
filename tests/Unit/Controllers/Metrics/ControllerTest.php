@@ -10,6 +10,7 @@ use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Test\Unit\TestCase;
+use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\ServerBag;
@@ -41,6 +42,9 @@ class ControllerTest extends TestCase
                 $this->assertArrayHasKey('users_working', $data);
                 $this->assertArrayHasKey('work_seconds', $data);
                 $this->assertArrayHasKey('worklog_seconds', $data);
+                $this->assertArrayHasKey('vouchers', $data);
+                $this->assertArrayHasKey('tshirts_issued', $data);
+                $this->assertArrayHasKey('tshirt_sizes', $data);
                 $this->assertArrayHasKey('shifts', $data);
                 $this->assertArrayHasKey('announcements', $data);
                 $this->assertArrayHasKey('questions', $data);
@@ -102,12 +106,21 @@ class ControllerTest extends TestCase
             ->willReturnOnConsecutiveCalls(0, 1, 0, 5, 999, 4, 55, 3);
         $this->setExpects($stats, 'newUsers', null, 9);
         $this->setExpects($stats, 'worklogSeconds', null, 39 * 60 * 60);
+        $this->setExpects($stats, 'vouchers', null, 17);
+        $this->setExpects($stats, 'tshirts', null, 3);
+        $this->setExpects($stats, 'tshirtSizes', null, new Collection([
+            (object)['shirt_size' => 'L', 'count' => 2],
+        ]));
         $this->setExpects($stats, 'shifts', null, 142);
         $this->setExpects($stats, 'messages', null, 3);
         $this->setExpects($stats, 'passwordResets', null, 1);
         $this->setExpects($stats, 'sessions', null, 1234);
 
         $config->set('registration_enabled', 1);
+        $config->set('tshirt_sizes', [
+            'L'  => 'Large',
+            'XL' => 'X Large',
+        ]);
 
         $controller = new Controller($response, $engine, $config, $request, $stats);
         $controller->metrics();

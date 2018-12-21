@@ -6,10 +6,12 @@ use Carbon\Carbon;
 use Engelsystem\Controllers\Metrics\Stats;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\User\PasswordReset;
+use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Psr\Log\LogLevel;
 
@@ -32,6 +34,48 @@ class StatsTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::vouchers
+     */
+    public function testVouchers()
+    {
+        $this->initDatabase();
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(14, $stats->vouchers());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::tshirts
+     */
+    public function testTshirts()
+    {
+        $this->initDatabase();
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(2, $stats->tshirts());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::tshirtSizes
+     * @covers \Engelsystem\Controllers\Metrics\Stats::raw
+     */
+    public function testTshirtSizes()
+    {
+        $this->initDatabase();
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $sizes = $stats->tshirtSizes();
+        $this->assertCount(2, $sizes);
+        $this->assertEquals(new Collection([
+            (object)['shirt_size' => 'L', 'count' => 2],
+            (object)['shirt_size' => 'XXL', 'count' => 1],
+        ]), $sizes);
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::arrivedUsers
      */
     public function testArrivedUsers()
@@ -40,7 +84,7 @@ class StatsTest extends TestCase
         $this->addUsers();
 
         $stats = new Stats($this->database);
-        $this->assertEquals(3, $stats->arrivedUsers());
+        $this->assertEquals(6, $stats->arrivedUsers());
     }
 
     /**
@@ -105,16 +149,20 @@ class StatsTest extends TestCase
     protected function addUsers()
     {
         $this->addUser();
-        $this->addUser();
+        $this->addUser([], ['shirt_size' => 'L']);
         $this->addUser(['arrived' => 1]);
-        $this->addUser(['arrived' => 1, 'active' => 1]);
-        $this->addUser(['arrived' => 1, 'active' => 1]);
+        $this->addUser(['arrived' => 1, 'got_voucher' => 2], ['shirt_size' => 'XXL']);
+        $this->addUser(['arrived' => 1, 'got_voucher' => 9]);
+        $this->addUser(['arrived' => 1, 'got_voucher' => 3]);
+        $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true]);
+        $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true], ['shirt_size' => 'L']);
     }
 
     /**
      * @param array $state
+     * @param array $personalData
      */
-    protected function addUser(array $state = [])
+    protected function addUser(array $state = [], $personalData = [])
     {
         $name = 'user_' . Str::random(5);
 
@@ -128,6 +176,11 @@ class StatsTest extends TestCase
 
         $state = new State($state);
         $state->user()
+            ->associate($user)
+            ->save();
+
+        $personalData = new PersonalData($personalData);
+        $personalData->user()
             ->associate($user)
             ->save();
     }

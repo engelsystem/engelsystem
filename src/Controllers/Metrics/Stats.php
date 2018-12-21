@@ -97,6 +97,40 @@ class Stats
     }
 
     /**
+     * @return int
+     */
+    public function vouchers(): int
+    {
+        return $this
+            ->getQuery('users_state')
+            ->sum('got_voucher');
+    }
+
+    /**
+     * @return int
+     */
+    public function tshirts(): int
+    {
+        return $this
+            ->getQuery('users_state')
+            ->where('got_shirt', '=', true)
+            ->count();
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function tshirtSizes()
+    {
+        return $this
+            ->getQuery('users_personal_data')
+            ->select(['shirt_size', $this->raw('COUNT(shirt_size) AS count')])
+            ->whereNotNull('shirt_size')
+            ->groupBy('shirt_size')
+            ->get();
+    }
+
+    /**
      * @param string $vehicle
      * @return int
      * @codeCoverageIgnore
@@ -267,7 +301,6 @@ class Stats
     /**
      * @param mixed $value
      * @return QueryExpression
-     * @codeCoverageIgnore
      */
     protected function raw($value)
     {
