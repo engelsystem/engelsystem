@@ -1577,8 +1577,8 @@ msgstr ""
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:190
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/user_settings.php:85
-msgid "For dect numbers are only 5 digits allowed."
-msgstr "Die DECT Nummer darf nur 5 Zeichen lang sein."
+msgid "For dect numbers are only 40 digits allowed."
+msgstr "Die DECT Nummer darf nur 40 Zeichen lang sein."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:274
 msgid "Angel registration successful!"
