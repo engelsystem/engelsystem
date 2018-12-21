@@ -10,6 +10,7 @@ use Engelsystem\Renderer\Twig\Extensions\Config;
 use Engelsystem\Renderer\Twig\Extensions\Csrf;
 use Engelsystem\Renderer\Twig\Extensions\Globals;
 use Engelsystem\Renderer\Twig\Extensions\Legacy;
+use Engelsystem\Renderer\Twig\Extensions\Markdown;
 use Engelsystem\Renderer\Twig\Extensions\Session;
 use Engelsystem\Renderer\Twig\Extensions\Translation;
 use Engelsystem\Renderer\Twig\Extensions\Url;
@@ -28,6 +29,7 @@ class TwigServiceProvider extends ServiceProvider
         'globals'        => Globals::class,
         'session'        => Session::class,
         'legacy'         => Legacy::class,
+        'markdown'       => Markdown::class,
         'translation'    => Translation::class,
         'url'            => Url::class,
     ];
