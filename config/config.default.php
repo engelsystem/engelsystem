@@ -163,4 +163,11 @@ return [
         //'Strict-Transport-Security' => 'max-age=7776000',
         //'Expect-CT' => 'max-age=7776000,enforce,report-uri="[uri]"',
     ],
+
+    // A list of credits
+    'credits'                 => [
+        'Contribution' => 'Please visit [engelsystem/engelsystem](https://github.com/engelsystem/engelsystem) if '
+            . 'you want to to contribute, have found any [bugs](https://github.com/engelsystem/engelsystem/issues) '
+            . 'or need help.'
+    ]
 ];
