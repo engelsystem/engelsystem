@@ -132,7 +132,7 @@ function admin_user()
             $his_highest_group = $his_highest_group['group_id'];
         }
 
-        if ($user_id != $user->id && $my_highest_group <= $his_highest_group) {
+        if ($user_id != $user->id && ($my_highest_group <= $his_highest_group || is_null($his_highest_group))) {
             $html .= 'Hier kannst Du die Benutzergruppen des Engels festlegen:<form action="'
                 . page_link_to('admin_user', ['action' => 'save_groups', 'id' => $user_id])
                 . '" method="post">' . "\n";
