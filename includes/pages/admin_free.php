@@ -45,6 +45,7 @@ function admin_free()
         })
         ->where('users_state.arrived', '=', 1)
         ->whereNull('Shifts.SID')
+        ->orderBy('users.name')
         ->groupBy('users.id');
 
     if (!empty($angelType)) {

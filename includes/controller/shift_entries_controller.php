@@ -2,6 +2,7 @@
 
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftSignupState;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Route shift entry actions.
@@ -109,7 +110,8 @@ function shift_entry_create_controller_admin($shift, $angeltype)
         redirect(shift_link($shift));
     }
 
-    $users = User::all();
+    /** @var User[]|Collection $users */
+    $users = User::query()->orderBy('name')->get();
     $users_select = [];
     foreach ($users as $user) {
         $users_select[$user->id] = $user->name;

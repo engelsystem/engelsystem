@@ -27,6 +27,7 @@ function admin_groups()
                 FROM `GroupPrivileges`
                 JOIN `Privileges` ON (`GroupPrivileges`.`privilege_id` = `Privileges`.`id`)
                 WHERE `group_id`=?
+                ORDER BY `name`
             ', [$group['UID']]);
             $privileges_html = [];
 
