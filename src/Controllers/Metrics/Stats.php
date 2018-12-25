@@ -37,7 +37,7 @@ class Stats
             $query
                 ->leftJoin('UserWorkLog', 'UserWorkLog.user_id', '=', 'users.id')
                 ->leftJoin('ShiftEntry', 'ShiftEntry.UID', '=', 'users.id')
-                ->groupBy('users.id');
+                ->distinct();
 
             $query->where(function ($query) use ($working) {
                 /** @var QueryBuilder $query */
@@ -48,6 +48,7 @@ class Stats
 
                     return;
                 }
+
                 $query
                     ->whereNull('ShiftEntry.SID')
                     ->whereNull('UserWorkLog.work_hours');
@@ -56,7 +57,7 @@ class Stats
         }
 
         return $query
-            ->count();
+            ->count('users.id');
     }
 
     /**
