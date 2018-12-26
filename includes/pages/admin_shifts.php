@@ -114,7 +114,7 @@ function admin_shifts()
                 if (
                     $request->has('change_hours')
                     && preg_match(
-                        '/^((\d{2}(:\d{2})?(,|$))*)/',
+                        '/^(\d{1,2}(:\d{2})?(,|$))+$/',
                         trim(str_replace(' ', '', $request->input('change_hours')))
                     )
                 ) {
@@ -180,6 +180,7 @@ function admin_shifts()
                     $needed_angel_types[$type['angel_type_id']] = $type['count'];
                 }
             }
+
             $shifts = [];
             if ($mode == 'single') {
                 $shifts[] = [
@@ -212,22 +213,28 @@ function admin_shifts()
                     $shift_start = $shift_end;
                 } while ($shift_end < $end);
             } elseif ($mode == 'variable') {
-                rsort($change_hours);
+                array_walk($change_hours, function (&$value) {
+                    if (!preg_match('/^\d{1,2}:\d{2}$/', $value)) {
+                        $value .= ':00';
+                    }
+                });
+
+                usort($change_hours, function ($a, $b) {
+                    return str_replace(':', '', $a) > str_replace(':', '', $b) ? -1 : 1;
+                });
+
                 $day = parse_date('Y-m-d H:i', date('Y-m-d', $start) . ' 00:00');
                 $change_index = 0;
                 // Ersten/nächsten passenden Schichtwechsel suchen
                 foreach ($change_hours as $i => $change_time) {
-                    if (!preg_match('/\d{2}:\d{2}/', $change_time)) {
-                        $change_time = $change_time . ":00";
-                    }
-
                     $change_time = explode(':', $change_time);
                     $change_hour = $change_time[0];
                     $change_minute = $change_time[1];
 
-                    if ($start < $day + $change_hour * 60 * 60 + $change_minute * 60) {
+                    $shift_end = $day + $change_hour * 60 * 60 + $change_minute * 60;
+                    if ($start < $shift_end) {
                         $change_index = $i;
-                    } elseif ($start == $day + $change_hour * 60 * 60 + $change_minute * 60) {
+                    } elseif ($start == $shift_end) {
                         // Start trifft Schichtwechsel
                         $change_index = ($i + count($change_hours) - 1) % count($change_hours);
                         break;
@@ -241,17 +248,11 @@ function admin_shifts()
                     $day = parse_date('Y-m-d H:i', date('Y-m-d', $shift_start) . ' 00:00');
 
                     $change_time = $change_hours[$change_index];
-                    if (!preg_match('/\d{2}:\d{2}/', $change_time)) {
-                        $change_time = $change_time . ":00";
-                    }
-
                     $change_time = explode(':', $change_time);
                     $change_hour = $change_time[0];
                     $change_minute = $change_time[1];
 
-
                     $shift_end = $day + $change_hour * 60 * 60 + $change_minute * 60;
-
 
                     if ($shift_end > $end) {
                         $shift_end = $end;
