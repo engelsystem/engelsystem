@@ -183,10 +183,10 @@ function admin_shifts()
             $shifts = [];
             if ($mode == 'single') {
                 $shifts[] = [
-                    'start' => $start,
-                    'end' => $end,
-                    'RID' => $rid,
-                    'title' => $title,
+                    'start'        => $start,
+                    'end'          => $end,
+                    'RID'          => $rid,
+                    'title'        => $title,
                     'shifttype_id' => $shifttype_id
                 ];
             } elseif ($mode == 'multi') {
@@ -202,10 +202,10 @@ function admin_shifts()
                     }
 
                     $shifts[] = [
-                        'start' => $shift_start,
-                        'end' => $shift_end,
-                        'RID' => $rid,
-                        'title' => $title,
+                        'start'        => $shift_start,
+                        'end'          => $shift_end,
+                        'RID'          => $rid,
+                        'title'        => $title,
                         'shifttype_id' => $shifttype_id
                     ];
 
@@ -261,10 +261,10 @@ function admin_shifts()
                     }
 
                     $shifts[] = [
-                        'start' => $shift_start,
-                        'end' => $shift_end,
-                        'RID' => $rid,
-                        'title' => $title,
+                        'start'        => $shift_start,
+                        'end'          => $shift_end,
+                        'RID'          => $rid,
+                        'title'        => $title,
                         'shifttype_id' => $shifttype_id
                     ];
 
@@ -276,14 +276,14 @@ function admin_shifts()
             $shifts_table = [];
             foreach ($shifts as $shift) {
                 $shifts_table_entry = [
-                    'timeslot' =>
+                    'timeslot'      =>
                         '<span class="glyphicon glyphicon-time"></span> '
                         . date('Y-m-d H:i', $shift['start'])
                         . ' - '
                         . date('H:i', $shift['end'])
                         . '<br />'
                         . Room_name_render(Room($shift['RID'])),
-                    'title' =>
+                    'title'         =>
                         ShiftType_name_render(ShiftType($shifttype_id))
                         . ($shift['title'] ? '<br />' . $shift['title'] : ''),
                     'needed_angels' => ''
@@ -319,8 +319,8 @@ function admin_shifts()
                     form_hidden('angelmode', $angelmode),
                     form_submit('back', __('back')),
                     table([
-                        'timeslot' => __('Time and location'),
-                        'title' => __('Type and title'),
+                        'timeslot'      => __('Time and location'),
+                        'title'         => __('Type and title'),
                         'needed_angels' => __('Needed angels')
                     ], $shifts_table),
                     form_submit('submit', __('Save'))
