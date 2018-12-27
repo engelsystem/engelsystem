@@ -38,11 +38,11 @@ class ShiftCalendarShiftRenderer
 
         return [
             $blocks,
-            div( 'shift-card "style="height: '
+            div( 'panel-' . $class. ' shift-card" style="height: '
                 . ($blocks * ShiftCalendarRenderer::BLOCK_HEIGHT - ShiftCalendarRenderer::MARGIN)
-                . 'px;}"',
+                . 'px;',
                 div(
-                    'shift panel panel-' . $class. '" style="position: absolute; width:99%;',
+                    'shift panel panel-' . $class. '" style="position: absolute; width:100%;',
                     [
                         $this->renderShiftHead($shift, $class),
                         div('panel-body', [
