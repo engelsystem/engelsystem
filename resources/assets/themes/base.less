@@ -11,7 +11,7 @@ body {
 }
 
 .first {
-	clear: both;
+  clear: both;
   margin-top: 30px;
 }
 
@@ -52,7 +52,7 @@ table a > .icon-icon_angel {
 }
 
 .table .form-group {
-	margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .stats {
@@ -60,17 +60,18 @@ table a > .icon-icon_angel {
   .make-xs-column(6);
   font-size: 20px;
   height: 150px;
-	text-align: center;
+  text-align: center;
 
-	.number {
-	  font-size: 80px;
-	  font-weight: 200;
-	}
-	@media (max-width: @screen-md) {
-	  font-size: inherit;
-	  .number {
-	    font-size: 40px;
-	  }
+  .number {
+    font-size: 80px;
+    font-weight: 200;
+  }
+
+  @media (max-width: @screen-md) {
+    font-size: inherit;
+    .number {
+      font-size: 40px;
+    }
   }
 }
 
@@ -88,12 +89,12 @@ table a > .icon-icon_angel {
 }
 
 .dashboard-panel {
-	position: relative;
-	font-size: 20px;
+  position: relative;
+  font-size: 20px;
   color: @headings-color;
 
-	.panel-link {
-	  position: absolute;
+  .panel-link {
+    position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
@@ -103,11 +104,11 @@ table a > .icon-icon_angel {
     background-color: @brand-primary; /* Fix to make div clickable in IE */
     opacity: 0; /* Fix to make div clickable in IE */
     filter: alpha(opacity=1); /* Fix to make div clickable in IE */
-	}
+  }
 
-	.panel-link:hover {
+  .panel-link:hover {
     opacity: 0.3;
-	}
+  }
 }
 
 .panel-primary .panel-heading a {
@@ -141,7 +142,7 @@ table a > .icon-icon_angel {
 }
 
 .selection .checkbox {
-	display: block;
+  display: block;
 }
 
 .shift-calendar {
@@ -190,31 +191,35 @@ table a > .icon-icon_angel {
     width: 50px;
     flex-shrink: 0;
   }
+
   .shift-card {
-	  z-index:0;
-	  overflow:hidden;
-	  position:relative;
-	  border-bottom-width: 1px;
-	  border-bottom-style: dashed;
+    z-index: 0;
+    overflow: hidden;
+    position: relative;
+    border-bottom-width: 1px;
+    border-bottom-style: dashed;
+
+    &:hover {
+      overflow: visible;
+      z-index: 100;
+      border: none;
+
+      .shift {
+        z-index: 100;
+      }
+    }
   }
-  .shift-card:hover {
-	  overflow:visible;
-	  z-index:100;
-	  border: none;
-  }
-  .shift-card:hover .shift {
-  	 z-index:100;
-  }
+
   .shift {
     margin: 0 5px 5px 0;
     position: absolute;
     width: 100%;
-  }
-  .shift:hover {
-    margin: 0 5px 5px 0;
-    position: absolute;
-    width: 100%;
-    /*border: 1px solid;*/
+
+    &:hover {
+      margin: 0 5px 5px 0;
+      position: absolute;
+      width: 100%;
+    }
   }
 }
 
@@ -223,13 +228,14 @@ table a > .icon-icon_angel {
 }
 
 .column_duration {
-	text-align: right;
+  text-align: right;
 }
 
 .messages {
   &:focus {
     outline: none;
   }
+
   a:focus {
     outline: none;
   }
@@ -318,7 +324,9 @@ table a > .icon-icon_angel {
     float: none;
     width: 100%;
 
-    position: relative; left: 0; right: 0;
+    position: relative;
+    left: 0;
+    right: 0;
     min-height: 1px;
     padding-right: 15px;
     padding-left: 15px;
