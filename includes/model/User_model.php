@@ -104,6 +104,7 @@ function Users_by_angeltype($angeltype)
         ->join('UserAngelTypes', 'users.id', '=', 'UserAngelTypes.user_id')
         ->leftJoin('UserDriverLicenses', 'users.id', '=', 'UserDriverLicenses.user_id')
         ->where('UserAngelTypes.angeltype_id', '=', $angeltype['id'])
+        ->orderBy('users.name')
         ->get();
 }
 
