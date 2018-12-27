@@ -5,7 +5,6 @@ use Engelsystem\Database\DB;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\User;
 use Engelsystem\ValidationResult;
-use Illuminate\Database\Query\JoinClause;
 
 /**
  * User model

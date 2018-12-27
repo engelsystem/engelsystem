@@ -75,7 +75,12 @@ function admin_user()
 
         // Gekommen?
         $html .= '  <tr><td>Gekommen</td><td>' . "\n";
-        $html .= html_options('eGekommen', $options, $user_source->state->arrived) . '</td></tr>' . "\n";
+        if($user_source->state->arrived) {
+            $html .= _('Yes');
+        } else {
+            $html .= _('No');
+        }
+        $html .= '</td></tr>' . "\n";
 
         // Aktiv?
         $html .= '  <tr><td>Aktiv</td><td>' . "\n";
@@ -263,7 +268,6 @@ function admin_user()
                 $user_source->contact->mobile = $request->postData('eHandy');
                 $user_source->contact->dect = $request->postData('eDECT');
                 $user_source->contact->save();
-                $user_source->state->arrived = $request->postData('eGekommen');
                 $user_source->state->active = $request->postData('eAktiv');
                 $user_source->state->force_active = $force_active;
                 $user_source->state->got_shirt = $request->postData('eTshirt');
@@ -271,7 +275,6 @@ function admin_user()
 
                 engelsystem_log(
                     'Updated user: ' . $request->postData('eNick') . ', ' . $request->postData('eSize')
-                    . ', arrived: ' . $request->postData('eVorname')
                     . ', active: ' . $request->postData('eAktiv')
                     . ', tshirt: ' . $request->postData('eTshirt')
                 );

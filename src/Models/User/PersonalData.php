@@ -32,7 +32,6 @@ class PersonalData extends HasUserModel
         'first_name',
         'last_name',
         'shirt_size',
-        'arrival_date',
         'planned_arrival_date',
         'planned_departure_date',
     ];
