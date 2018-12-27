@@ -262,11 +262,11 @@ function User_get_shifts_sum_query()
 {
     $nightShifts = config('night_shifts');
     if (!$nightShifts['enabled']) {
-        return 'SUM(`end` - `start`)';
+        return 'COALESCE(SUM(`end` - `start`), 0)';
     }
 
     return sprintf('
-            SUM(
+            COALESCE(SUM(
                 (1 +
                     (
                       (HOUR(FROM_UNIXTIME(`Shifts`.`end`)) > %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) < %2$d)
@@ -276,7 +276,7 @@ function User_get_shifts_sum_query()
                 )
                 * (`Shifts`.`end` - `Shifts`.`start`)
                 * (1 - (%3$d + 1) * `ShiftEntry`.`freeloaded`)
-            )
+            ), 0)
         ',
         $nightShifts['start'],
         $nightShifts['end'],
