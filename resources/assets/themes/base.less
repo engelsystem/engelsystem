@@ -74,6 +74,7 @@ table a > .icon-icon_angel {
   }
 }
 
+
 .stats-danger {
   color: @brand-danger;
 }
@@ -193,10 +194,13 @@ table a > .icon-icon_angel {
 	  z-index:0;
 	  overflow:hidden;
 	  position:relative;
+	  border-bottom-width: 1px;
+	  border-bottom-style: dashed;
   }
   .shift-card:hover {
 	  overflow:visible;
 	  z-index:100;
+	  border: none;
   }
   .shift-card:hover .shift {
   	 z-index:100;
@@ -204,7 +208,13 @@ table a > .icon-icon_angel {
   .shift {
     margin: 0 5px 5px 0;
     position: absolute;
-    width: 99%;
+    width: 100%;
+  }
+  .shift:hover {
+    margin: 0 5px 5px 0;
+    position: absolute;
+    width: 100%;
+    /*border: 1px solid;*/
   }
 }
 
