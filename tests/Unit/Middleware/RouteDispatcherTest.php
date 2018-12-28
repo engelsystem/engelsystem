@@ -32,10 +32,11 @@ class RouteDispatcherTest extends TestCase
             ->with('HEAD', '/foo!bar')
             ->willReturn([FastRouteDispatcher::FOUND, $handler, ['foo' => 'bar', 'lorem' => 'ipsum']]);
 
-        $request->expects($this->exactly(3))
+        $request->expects($this->exactly(4))
             ->method('withAttribute')
             ->withConsecutive(
                 ['route-request-handler', $handler],
+                ['route-request-path', '/foo!bar'],
                 ['foo', 'bar'],
                 ['lorem', 'ipsum']
             )
