@@ -197,6 +197,7 @@ function strip_request_item_nl($name, $default_value = null)
 {
     $request = request();
     if ($request->has($name)) {
+        // Only allow letters, symbols, punctuation, separators, numbers and newlines without html tags
         return preg_replace(
             "/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+\n]{1,})/ui",
             '',
@@ -214,6 +215,7 @@ function strip_request_item_nl($name, $default_value = null)
  */
 function strip_item($item)
 {
+    // Only allow letters, symbols, punctuation, separators and numbers without html tags
     return preg_replace("/([^\p{L}\p{S}\p{P}\p{Z}\p{N}+]{1,})/ui", '', strip_tags($item));
 }
 
