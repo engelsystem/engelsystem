@@ -119,7 +119,7 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
       AND `NeededAngelTypes`.`count` > 0
       AND NOT `Shifts`.`PSID` IS NULL) AS tmp_shifts
 
-      ORDER BY `start`';
+      ORDER BY `room_name`, `start`';
 
     return DB::select(
         $sql,
