@@ -72,7 +72,8 @@ function admin_free()
             $match = false;
             $index = join('', $usr->toArray());
             foreach ($tokens as $t) {
-                if (stristr($index, trim($t))) {
+                $t = trim($t);
+                if (!empty($t) && stristr($index, $t)) {
                     $match = true;
                     break;
                 }

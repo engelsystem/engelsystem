@@ -168,7 +168,7 @@ function admin_active()
         ->leftJoin('Shifts', function ($join) use ($show_all_shifts) {
             /** @var JoinClause $join */
             $join->on('ShiftEntry.SID', '=', 'Shifts.SID');
-            if ($show_all_shifts) {
+            if (!$show_all_shifts) {
                 $join->where(function ($query) {
                     /** @var Builder $query */
                     $query->where('Shifts.end', '<', time())
@@ -187,6 +187,7 @@ function admin_active()
         $query->limit($count);
     }
 
+    /** @var User[] $users */
     $users = $query->get();
     $matched_users = [];
     if ($search == '') {
@@ -198,7 +199,8 @@ function admin_active()
         if (count($tokens) > 0) {
             $match = false;
             foreach ($tokens as $t) {
-                if (stristr($usr->name, trim($t))) {
+                $t = trim($t);
+                if (!empty($t) && stristr($usr->name, $t)) {
                     $match = true;
                     break;
                 }
