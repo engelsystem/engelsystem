@@ -51,7 +51,7 @@ function admin_questions()
 
             $unanswered_questions_table[] = [
                 'from'     => User_Nick_render($user_source),
-                'question' => str_replace("\n", '<br />', $question['Question']),
+                'question' => nl2br(htmlspecialchars($question['Question'])),
                 'answer'   => form([
                     form_textarea('answer', '', ''),
                     form_submit('submit', __('Save'))
@@ -69,9 +69,9 @@ function admin_questions()
             $answer_user_source = User::find($question['AID']);
             $answered_questions_table[] = [
                 'from'        => User_Nick_render($user_source),
-                'question'    => str_replace("\n", '<br />', $question['Question']),
+                'question'    => nl2br(htmlspecialchars($question['Question'])),
                 'answered_by' => User_Nick_render($answer_user_source),
-                'answer'      => str_replace("\n", '<br />', $question['Answer']),
+                'answer'      => nl2br(htmlspecialchars($question['Answer'])),
                 'actions'     => form([
                     form_submit('submit', __('delete'), 'btn-xs')
                 ], page_link_to('admin_questions', ['action' => 'delete', 'id' => $question['QID']]))
@@ -113,13 +113,9 @@ function admin_questions()
                     [$question_id]
                 );
                 if (!empty($question) && empty($question['AID'])) {
-                    $answer = trim(
-                        preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui",
-                            '',
-                            strip_tags($request->input('answer'))
-                        ));
+                    $answer = trim($request->input('answer'));
 
-                    if ($answer != '') {
+                    if (!empty($answer)) {
                         DB::update('
                                 UPDATE `Questions`
                                 SET `AID`=?, `Answer`=?
@@ -132,7 +128,12 @@ function admin_questions()
                                 $question_id,
                             ]
                         );
-                        engelsystem_log('Question ' . $question['Question'] . ' answered: ' . $answer);
+                        engelsystem_log(
+                            'Question '
+                            . htmlspecialchars($question['Question'])
+                            . ' answered: '
+                            . htmlspecialchars($answer)
+                        );
                         redirect(page_link_to('admin_questions'));
                     } else {
                         return error('Enter an answer!', true);
@@ -158,7 +159,7 @@ function admin_questions()
                 );
                 if (!empty($question)) {
                     DB::delete('DELETE FROM `Questions` WHERE `QID`=? LIMIT 1', [$question_id]);
-                    engelsystem_log('Question deleted: ' . $question['Question']);
+                    engelsystem_log('Question deleted: ' . htmlspecialchars($question['Question']));
                     redirect(page_link_to('admin_questions'));
                 } else {
                     return error('No question found.', true);

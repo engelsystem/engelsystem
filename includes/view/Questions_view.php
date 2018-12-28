@@ -12,12 +12,12 @@ function Questions_view($open_questions, $answered_questions, $ask_action)
         $question['actions'] = form([
             form_submit('submit', __('delete'), 'btn-default btn-xs')
         ], page_link_to('user_questions', ['action' => 'delete', 'id' => $question['QID']]));
-        $question['Question'] = str_replace("\n", '<br />', $question['Question']);
+        $question['Question'] = nl2br(htmlspecialchars($question['Question']));
     }
 
     foreach ($answered_questions as &$question) {
-        $question['Question'] = str_replace("\n", '<br />', $question['Question']);
-        $question['Answer'] = str_replace("\n", '<br />', $question['Answer']);
+        $question['Question'] = nl2br(htmlspecialchars($question['Question']));
+        $question['Answer'] = nl2br(htmlspecialchars($question['Answer']));
         $question['actions'] = form([
             form_submit('submit', __('delete'), 'btn-default btn-xs')
         ], page_link_to('user_questions', ['action' => 'delete', 'id' => $question['QID']]));

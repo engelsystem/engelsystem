@@ -29,6 +29,7 @@ function user_questions()
             'SELECT * FROM `Questions` WHERE NOT `AID` IS NULL AND `UID`=?',
             [$user->id]
         );
+
         foreach ($answered_questions as &$question) {
             $answer_user_source = User::find($question['AID']);
             $question['answer_user'] = User_Nick_render($answer_user_source);
@@ -42,8 +43,8 @@ function user_questions()
     } else {
         switch ($request->input('action')) {
             case 'ask':
-                $question = strip_request_item_nl('question');
-                if ($question != '' && $request->hasPostData('submit')) {
+                $question = request()->get('question');
+                if (!empty($question) && $request->hasPostData('submit')) {
                     DB::insert('
                         INSERT INTO `Questions` (`UID`, `Question`)
                         VALUES (?, ?)
