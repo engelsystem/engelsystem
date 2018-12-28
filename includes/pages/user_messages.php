@@ -88,7 +88,7 @@ function user_messages()
                 'timestamp' => date('Y-m-d H:i', $message['Datum']),
                 'from'      => User_Nick_render($sender_user_source),
                 'to'        => User_Nick_render($receiver_user_source),
-                'text'      => str_replace("\n", '<br />', $message['Text'])
+                'text'      => nl2br(htmlspecialchars($message['Text']))
             ];
 
             if ($message['RUID'] == $user->id) {
@@ -167,7 +167,6 @@ function user_messages()
                 break;
 
             case 'send':
-                // @TODO: Validation?
                 if (Message_send($request->input('to'), $request->input('text'))) {
                     redirect(page_link_to('user_messages'));
                 } else {

@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\User\User;
 
 /**
  * Returns Message id array
@@ -26,7 +27,6 @@ function Message($message_id)
 }
 
 /**
- * TODO: use validation functions, return new message id
  * send message
  *
  * @param int    $receiver_user_id User ID of Receiver
@@ -36,32 +36,21 @@ function Message($message_id)
 function Message_send($receiver_user_id, $text)
 {
     $user = auth()->user();
+    $receiver = User::find($receiver_user_id);
 
-    $text = preg_replace("/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui", '', strip_tags($text));
-    $receiver_user_id = preg_replace('/([^\d]{1,})/ui', '', strip_tags($receiver_user_id));
+    if (empty($text) || !$receiver || $receiver->id == $user->id) {
+        return false;
+    }
 
-    if (
-        ($text != '' && is_numeric($receiver_user_id))
-        && count(DB::select('
-            SELECT `id`
-            FROM `users`
-            WHERE `id` = ?
-            AND NOT `id` = ?
-            LIMIT 1
-        ', [$receiver_user_id, $user->id])) > 0
-    ) {
-        return DB::insert('
+    return DB::insert('
             INSERT INTO `Messages` (`Datum`, `SUID`, `RUID`, `Text`)
             VALUES(?, ?, ?, ?)
             ',
-            [
-                time(),
-                $user->id,
-                $receiver_user_id,
-                $text
-            ]
-        );
-    }
-
-    return false;
+        [
+            time(),
+            $user->id,
+            $receiver->id,
+            $text
+        ]
+    );
 }
