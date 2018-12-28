@@ -143,11 +143,7 @@ function user_news_comments()
         $nid = $request->input('nid');
         $news = DB::selectOne('SELECT * FROM `News` WHERE `ID`=? LIMIT 1', [$nid]);
         if ($request->hasPostData('submit') && $request->has('text')) {
-            $text = preg_replace(
-                "/([^\p{L}\p{P}\p{Z}\p{N}\n]{1,})/ui",
-                '',
-                strip_tags($request->input('text'))
-            );
+            $text = $request->input('text');
             DB::insert('
                     INSERT INTO `NewsComments` (`Refid`, `Datum`, `Text`, `UID`)
                     VALUES (?, ?, ?, ?)
@@ -159,7 +155,8 @@ function user_news_comments()
                     $user->id,
                 ]
             );
-            engelsystem_log('Created news_comment: ' . $text);
+
+            engelsystem_log('Created news_comment: ' . htmlspecialchars($text));
             $html .= success(__('Entry saved.'), true);
         }
 
@@ -227,6 +224,7 @@ function user_news()
                 $isMeeting,
             ]
         );
+
         engelsystem_log('Created news: ' . $request->postData('betreff') . ', treffen: ' . $isMeeting);
         success(__('Entry saved.'));
         redirect(page_link_to('news'));
