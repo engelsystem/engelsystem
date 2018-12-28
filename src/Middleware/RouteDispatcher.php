@@ -50,7 +50,8 @@ class RouteDispatcher implements MiddlewareInterface
             $path = $request->getPathInfo();
         }
 
-        $route = $this->dispatcher->dispatch($request->getMethod(), urldecode($path));
+        $path = urldecode($path);
+        $route = $this->dispatcher->dispatch($request->getMethod(), $path);
 
         $status = $route[0];
         if ($status == FastRouteDispatcher::NOT_FOUND) {
@@ -70,6 +71,7 @@ class RouteDispatcher implements MiddlewareInterface
 
         $routeHandler = $route[1];
         $request = $request->withAttribute('route-request-handler', $routeHandler);
+        $request = $request->withAttribute('route-request-path', $path);
 
         $vars = $route[2];
         foreach ($vars as $name => $value) {

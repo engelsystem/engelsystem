@@ -24,6 +24,7 @@ return [
         \Engelsystem\Renderer\TwigServiceProvider::class,
         \Engelsystem\Middleware\RouteDispatcherServiceProvider::class,
         \Engelsystem\Middleware\RequestHandlerServiceProvider::class,
+        \Engelsystem\Middleware\SessionHandlerServiceProvider::class,
 
         // Additional services
         \Engelsystem\Mail\MailerServiceProvider::class,
@@ -43,6 +44,7 @@ return [
         \Engelsystem\Middleware\ErrorHandler::class,
         \Engelsystem\Middleware\VerifyCsrfToken::class,
         \Engelsystem\Middleware\RouteDispatcher::class,
+        \Engelsystem\Middleware\SessionHandler::class,
 
         // Handle request
         \Engelsystem\Middleware\RequestHandler::class,
