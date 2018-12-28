@@ -5,6 +5,8 @@
  */
 $(document).ready(function () {
     if (typeof moment !== 'undefined') {
+        moment.locale($('html').attr('lang'));
+
         $.each($('.moment-countdown'), function (i, e) {
             var span = $(e);
             var text = span.html();

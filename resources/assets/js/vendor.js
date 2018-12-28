@@ -9,10 +9,6 @@ require('./forms');
 require('./sticky-headers');
 require('./moment-countdown');
 
-$(function () {
-    moment.locale($('html').attr('lang'));
-});
-
 $.ajaxSetup({
     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
 });
