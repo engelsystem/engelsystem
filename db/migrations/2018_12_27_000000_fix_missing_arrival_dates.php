@@ -13,7 +13,7 @@ class FixMissingArrivalDates extends Migration
     public function up()
     {
         $states = State::whereArrived(true)->whereArrivalDate(null)->get();
-        foreach($states as $state) {
+        foreach ($states as $state) {
             $state->arrival_date = $state->user->personalData->planned_arrival_date;
             $state->save();
         }
@@ -23,5 +23,6 @@ class FixMissingArrivalDates extends Migration
      * Down is not possible and not needed since this is a bugfix.
      */
     public function down()
-    {}
+    {
+    }
 }

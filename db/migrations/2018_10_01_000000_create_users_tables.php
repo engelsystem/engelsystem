@@ -193,7 +193,7 @@ class CreateUsersTables extends Migration
             $table->tinyInteger('color')->default(10)->nullable();
             $table->char('Sprache', 64)->nullable();
             $table->char('Menu', 1)->default('L');
-            $table->integer('lastLogIn');
+            $table->integer('lastLogIn')->nullable();
             $table->dateTime('CreateDate')->default('0001-01-01 00:00:00');
             $table->char('Art', 30)->nullable();
             $table->text('kommentar')->nullable();
