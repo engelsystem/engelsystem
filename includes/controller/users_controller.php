@@ -461,16 +461,19 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
         $needed_angeltypes[$shift['SID']] = [];
         $shift_entries[$shift['SID']] = [];
     }
+
     foreach ($shift_entries_source as $shift_entry) {
         if (isset($shift_entries[$shift_entry['SID']])) {
             $shift_entries[$shift_entry['SID']][] = $shift_entry;
         }
     }
+
     foreach ($needed_angeltypes_source as $needed_angeltype) {
         if (isset($needed_angeltypes[$needed_angeltype['SID']])) {
             $needed_angeltypes[$needed_angeltype['SID']][] = $needed_angeltype;
         }
     }
+
     unset($needed_angeltypes_source);
     unset($shift_entries_source);
 
@@ -485,19 +488,29 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
     foreach ($shifts as $shift) {
         $needed_angels_count = 0;
         $taken = 0;
+
         foreach ($needed_angeltypes[$shift['SID']] as $needed_angeltype) {
             $taken = 0;
+
             foreach ($shift_entries[$shift['SID']] as $shift_entry) {
-                if ($needed_angeltype['angel_type_id'] == $shift_entry['TID'] && $shift_entry['freeloaded'] == 0) {
+                if (
+                    $needed_angeltype['angel_type_id'] == $shift_entry['TID']
+                    && $shift_entry['freeloaded'] == 0
+                ) {
                     $taken++;
                 }
             }
 
             $needed_angels_count += max(0, $needed_angeltype['count'] - $taken);
         }
-        if (in_array(ShiftsFilter::FILLED_FREE, $shiftsFilter->getFilled()) && $taken < $needed_angels_count) {
+
+        if (
+            in_array(ShiftsFilter::FILLED_FREE, $shiftsFilter->getFilled())
+            && $taken < $needed_angels_count
+        ) {
             $filtered_shifts[] = $shift;
         }
+
         if (
             in_array(ShiftsFilter::FILLED_FILLED, $shiftsFilter->getFilled())
             && $taken >= $needed_angels_count
