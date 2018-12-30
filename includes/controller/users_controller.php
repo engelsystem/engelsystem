@@ -492,6 +492,13 @@ function shiftCalendarRendererByShiftFilter(ShiftsFilter $shiftsFilter)
         foreach ($needed_angeltypes[$shift['SID']] as $needed_angeltype) {
             $taken = 0;
 
+            if (
+                !in_array(ShiftsFilter::FILLED_FILLED, $shiftsFilter->getFilled())
+                && !in_array($needed_angeltype['angel_type_id'], $shiftsFilter->getTypes())
+            ) {
+                continue;
+            }
+
             foreach ($shift_entries[$shift['SID']] as $shift_entry) {
                 if (
                     $needed_angeltype['angel_type_id'] == $shift_entry['TID']
