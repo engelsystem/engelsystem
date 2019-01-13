@@ -320,6 +320,23 @@ function User_shift_state_render($user)
         . '</span>';
 }
 
+function User_last_shift_render($user)
+{
+    if (!$user->state->arrived) {
+        return '';
+    }
+
+    $last_shifts = ShiftEntries_finished_by_user($user->id);
+    if (empty($last_shifts)) {
+        return '';
+    }
+
+    $lastShift = array_shift($last_shifts);
+    return '<span class="moment-countdown" data-timestamp="' . $lastShift['end'] . '">'
+        . __('Shift ended %c')
+        . '</span>';
+}
+
 /**
  * @param array $needed_angel_type
  * @return string

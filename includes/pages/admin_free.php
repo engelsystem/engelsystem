@@ -26,7 +26,7 @@ function admin_free()
 
     $angel_types_source = DB::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
     $angel_types = [
-        '' => 'alle Typen'
+        '' => __('Alle')
     ];
     foreach ($angel_types_source as $angel_type) {
         $angel_types[$angel_type['id']] = $angel_type['name'];
@@ -49,18 +49,21 @@ function admin_free()
         ->groupBy('users.id');
 
     if (!empty($angelType)) {
-        $query->join('UserAngelTypes', function ($join) use ($angelType, $request, $query) {
+        $query->join('UserAngelTypes', function ($join) use ($angelType) {
             /** @var JoinClause $join */
             $join->on('UserAngelTypes.user_id', '=', 'users.id')
                 ->where('UserAngelTypes.angeltype_id', '=', $angelType);
-
-            if ($request->has('confirmed_only')) {
-                $join->whereNotNull('UserAngelTypes.confirm_user_id');
-            }
         });
+        $query->join('AngelTypes', 'UserAngelTypes.angeltype_id', 'AngelTypes.id')
+            ->whereNotNull('UserAngelTypes.confirm_user_id')
+            ->orWhere('AngelTypes.restricted', '=', '0');
     }
 
-    $users = $query->get();
+    if($request->has('submit')) {
+        $users = $query->get();
+    } else {
+        $users = [];
+    }
     $free_users_table = [];
     if ($search == '') {
         $tokens = [];
@@ -86,6 +89,7 @@ function admin_free()
         $free_users_table[] = [
             'name'        => User_Nick_render($usr),
             'shift_state' => User_shift_state_render($usr),
+            'last_shift'  => User_last_shift_render($usr),
             'dect'        => $usr->contact->dect,
             'email'       => $usr->settings->email_human ? ($usr->contact->email ? $usr->contact->email : $usr->email) : glyph('eye-close'),
             'actions'     =>
@@ -96,24 +100,16 @@ function admin_free()
     }
     return page_with_title(admin_free_title(), [
         form([
-            div('row', [
-                div('col-md-4', [
-                    form_text('search', __('Search'), $search)
-                ]),
-                div('col-md-4', [
-                    form_select('angeltype', __('Angeltype'), $angel_types, $angelType)
-                ]),
-                div('col-md-2', [
-                    form_checkbox('confirmed_only', __('Only confirmed'), $request->has('confirmed_only'))
-                ]),
-                div('col-md-2', [
+            div('col-md12 form-inline', [
+                    form_text('search', __('Search'), $search),
+                    form_select('angeltype', __('Angeltype'), $angel_types, $angelType),
                     form_submit('submit', __('Search'))
-                ])
             ])
         ]),
         table([
             'name'        => __('Nick'),
-            'shift_state' => '',
+            'shift_state' => __('Next shift'),
+            'last_shift'  => __('Last shift'),
             'dect'        => __('DECT'),
             'email'       => __('E-Mail'),
             'actions'     => ''

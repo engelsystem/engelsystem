@@ -206,7 +206,7 @@ function ShiftEntries_finished_by_user($userId)
           WHERE `ShiftEntry`.`UID` = ?
           AND `Shifts`.`end` < ?
           AND `ShiftEntry`.`freeloaded` = 0
-          ORDER BY `Shifts`.`end`
+          ORDER BY `Shifts`.`end` desc
       ',
         [
             $userId,
