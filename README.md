@@ -30,7 +30,7 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
  * Go to the [Releases](https://github.com/engelsystem/engelsystem/releases) page and download the latest stable release file.
  * Extract the files to your webroot and continue with the directions for configurations and setup.
 
-### Latest unstable
+#### Latest unstable
 The following instructions explain how to get, build and run the latest engelsystem version directly from the git master branch (may be unstable!).
 
  * Clone the master branch: `git clone https://github.com/engelsystem/engelsystem.git`
