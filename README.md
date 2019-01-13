@@ -1,3 +1,5 @@
+[![pipeline status](https://chaos.expert/engelsystem/engelsystem/badges/master/pipeline.svg)](https://chaos.expert/engelsystem/engelsystem/commits/master)
+[![coverage report](https://chaos.expert/engelsystem/engelsystem/badges/master/coverage.svg)](https://chaos.expert/engelsystem/engelsystem/commits/master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/20b3b0b4e93344a29da6bec77f329e7a)](https://www.codacy.com/app/engelsystem/engelsystem)
 [![GPL](https://img.shields.io/github/license/engelsystem/engelsystem.svg?maxAge=2592000)]()
 
@@ -7,7 +9,8 @@ Please visit https://engelsystem.de for a feature list.
 To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsystem/issues)
 
 ## Installation
-### Requirements:
+
+### Requirements
  * PHP >= 7.1
    * Required modules:
      * gettext
@@ -16,10 +19,20 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
      * xml/libxml/SimpleXML
  * MySQL-Server >= 5.7.8 or MariaDB-Server >= 10.2.2
  * Webserver, i.e. lighttpd, nginx, or Apache
+
+### Additional requirements if you want to build the project by yourself
  * Node >= 8 (Development/Building only)
  * Yarn (Development/Building only)
 
-### Directions:
+### Download
+
+#### Stable
+ * Go to the [Releases](https://github.com/engelsystem/engelsystem/releases) page and download the latest stable release file.
+ * Extract the files to your webroot and continue with the directions for configurations and setup.
+
+### Latest unstable
+The following instructions explain how to get, build and run the latest engelsystem version directly from the git master branch (may be unstable!).
+
  * Clone the master branch: `git clone https://github.com/engelsystem/engelsystem.git`
  * Install [Composer](https://getcomposer.org/download/) and [Yarn](https://yarnpkg.com/en/docs/install) (which requires [Node.js](https://nodejs.org/en/download/package-manager/))
  * Install project dependencies:
@@ -38,6 +51,7 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
     yarn build
     ```
 
+### Configuration and Setup
  * The webserver must have write access to the ```import``` and ```storage``` directories and read access for all other directories
  * The webserver must point to the ```public``` directory.
  * The webserver must read the ```.htaccess``` file and ```mod_rewrite``` must be enabled
