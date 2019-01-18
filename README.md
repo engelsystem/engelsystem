@@ -16,6 +16,7 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
      * gettext
      * json
      * PDO
+       * mysql
      * xml/libxml/SimpleXML
  * MySQL-Server >= 5.7.8 or MariaDB-Server >= 10.2.2
  * Webserver, i.e. lighttpd, nginx, or Apache
