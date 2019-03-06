@@ -114,6 +114,10 @@ function make_navigation()
         'admin_event_config' => __('Event config'),
     ];
 
+    if (config('autoarrive')) {
+        unset($admin_pages['admin_arrive']);
+    }
+
     foreach ($admin_pages as $menu_page => $title) {
         if (auth()->can($menu_page)) {
             $admin_menu[] = toolbar_item_link(

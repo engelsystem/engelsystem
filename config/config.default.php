@@ -82,6 +82,9 @@ return [
     // Only arrived angels can sign up for shifts
     'signup_requires_arrival' => false,
 
+    // Whether newly-registered user should automatically be marked as arrived
+    'autoarrive'              => false,
+
     // Number of hours that an angel has to sign out own shifts
     'last_unsubscribe'        => 3,
 
