@@ -217,7 +217,12 @@ function guest_register()
                 ->associate($user)
                 ->save();
 
-            (new State())->user()
+            $state = new State([]);
+            if (config('autoarrive')) {
+                $state->arrived = true;
+                $state->arrival_date = new Carbon();
+            }
+            $state->user()
                 ->associate($user)
                 ->save();
 
