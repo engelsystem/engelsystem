@@ -69,6 +69,10 @@ return [
     // Rewrite URLs with mod_rewrite
     'rewrite_urls'            => true,
 
+    // Redirect to this site after logging in or when pressing the top-left button
+    // Must be one of news, user_meetings, user_shifts, angeltypes, user_questions
+    'home_site'               => 'news',
+
     // Number of News shown on one site
     'display_news'            => 6,
 
