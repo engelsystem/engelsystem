@@ -414,7 +414,7 @@ function guest_login()
             $session->set('uid', $login_user->id);
             $session->set('locale', $login_user->settings->language);
 
-            redirect(page_link_to('news'));
+            redirect(page_link_to(config('home_site')));
         }
     }
 

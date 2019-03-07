@@ -118,7 +118,10 @@ function load_days()
 
     if (empty($days)) {
         error(__('The administration has not configured any shifts yet.'));
-        redirect(page_link_to('/'));
+        // Do not try to redirect to the current page
+        if (config('home_site') != 'user_shifts') {
+            redirect(page_link_to('/'));
+        }
     }
     return $days;
 }

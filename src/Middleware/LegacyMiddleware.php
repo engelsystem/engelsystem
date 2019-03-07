@@ -71,7 +71,7 @@ class LegacyMiddleware implements MiddlewareInterface
             $page = str_replace('-', '_', $page);
         }
         if ($page == '/') {
-            $page = $this->auth->user() ? 'news' : 'login';
+            $page = $this->auth->user() ? config('home_site') : 'login';
         }
 
         $title = $content = '';
