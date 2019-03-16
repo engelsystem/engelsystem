@@ -15,6 +15,7 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
    * Required modules:
      * gettext
      * json
+     * mbstring
      * PDO
        * mysql
      * xml/libxml/SimpleXML

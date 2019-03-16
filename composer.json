@@ -18,6 +18,7 @@
         "ext-gettext": "*",
         "ext-json": "*",
         "ext-libxml": "*",
+        "ext-mbstring": "*",
         "ext-PDO": "*",
         "ext-SimpleXML": "*",
         "ext-xml": "*",
