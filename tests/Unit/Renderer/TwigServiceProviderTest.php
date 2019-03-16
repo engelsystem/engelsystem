@@ -11,10 +11,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionClass as Reflection;
 use ReflectionException;
 use stdClass;
-use Twig_Environment as Twig;
-use Twig_Extension_Core as TwigCore;
-use Twig_ExtensionInterface as ExtensionInterface;
-use Twig_LoaderInterface as TwigLoaderInterface;
+use Twig\Environment as Twig;
+use Twig\Extension\CoreExtension as TwigCore;
+use Twig\Extension\ExtensionInterface as ExtensionInterface;
+use Twig\Loader\LoaderInterface as TwigLoaderInterface;
 
 class TwigServiceProviderTest extends ServiceProviderTest
 {

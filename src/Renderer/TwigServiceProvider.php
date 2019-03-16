@@ -14,9 +14,9 @@ use Engelsystem\Renderer\Twig\Extensions\Markdown;
 use Engelsystem\Renderer\Twig\Extensions\Session;
 use Engelsystem\Renderer\Twig\Extensions\Translation;
 use Engelsystem\Renderer\Twig\Extensions\Url;
-use Twig_Environment as Twig;
-use Twig_Extension_Core as TwigCore;
-use Twig_LoaderInterface as TwigLoaderInterface;
+use Twig\Environment as Twig;
+use Twig\Extension\CoreExtension as TwigCore;
+use Twig\Loader\LoaderInterface as TwigLoaderInterface;
 
 class TwigServiceProvider extends ServiceProvider
 {

@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Twig_LoaderInterface as TwigLoader;
+use Twig\Loader\LoaderInterface as TwigLoader;
 
 class ErrorHandler implements MiddlewareInterface
 {

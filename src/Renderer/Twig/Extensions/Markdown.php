@@ -3,8 +3,8 @@
 namespace Engelsystem\Renderer\Twig\Extensions;
 
 use Parsedown;
-use Twig_Extension as TwigExtension;
-use Twig_Filter as TwigFilter;
+use Twig\Extension\AbstractExtension as TwigExtension;
+use Twig\TwigFilter;
 
 class Markdown extends TwigExtension
 {

@@ -3,8 +3,8 @@
 namespace Engelsystem\Renderer\Twig\Extensions;
 
 use Engelsystem\Helpers\Authenticator;
-use Twig_Extension as TwigExtension;
-use Twig_Extension_GlobalsInterface as GlobalsInterface;
+use Twig\Extension\AbstractExtension as TwigExtension;
+use Twig\Extension\GlobalsInterface as GlobalsInterface;
 
 class Globals extends TwigExtension implements GlobalsInterface
 {

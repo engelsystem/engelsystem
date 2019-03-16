@@ -1,5 +1,3 @@
-{% import _self as elements %}
-
 {% macro toolbar_item(label, link, active_page, icon) %}
     <li{% if page() == active_page %} class="active"{% endif %}>
         <a href="{{ link }}">
@@ -36,23 +34,23 @@
                         <ul class="nav navbar-nav navbar-right">
 
                             {% if is_user() %}
-                                {{ elements.toolbar_item(menuUserShiftState(user), url('shifts', {'action': 'next'}), '', 'glyphicon-time') }}
+                                {{ _self.toolbar_item(menuUserShiftState(user), url('shifts', {'action': 'next'}), '', 'glyphicon-time') }}
                             {% elseif has_permission_to('register') and config('registration_enabled') %}
-                                {{ elements.toolbar_item(__('Register'), url('register'), 'register', 'glyphicon-plus') }}
+                                {{ _self.toolbar_item(__('Register'), url('register'), 'register', 'glyphicon-plus') }}
                             {% endif %}
 
                             {% if has_permission_to('login') %}
-                                {{ elements.toolbar_item(__('Login'), url('login'), 'login', 'glyphicon-log-in') }}
+                                {{ _self.toolbar_item(__('Login'), url('login'), 'login', 'glyphicon-log-in') }}
                             {% endif %}
 
                             {% if is_user() and has_permission_to('user_messages') %}
-                                {{ elements.toolbar_item(menuUserMessages(), url('user-messages'), 'user-messages', 'glyphicon-envelope') }}
+                                {{ _self.toolbar_item(menuUserMessages(), url('user-messages'), 'user-messages', 'glyphicon-envelope') }}
                             {% endif %}
 
                             {{ menuUserHints() }}
 
                             {% if has_permission_to('user_myshifts') %}
-                                {{ elements.toolbar_item(user.name, url('users', {'action': 'view'}), 'users', 'icon icon-icon_angel') }}
+                                {{ _self.toolbar_item(user.name, url('users', {'action': 'view'}), 'users', 'icon icon-icon_angel') }}
                             {% endif %}
 
                             <li class="dropdown">

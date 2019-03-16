@@ -3,8 +3,8 @@
 namespace Engelsystem\Renderer\Twig\Extensions;
 
 use Engelsystem\Http\UrlGenerator;
-use Twig_Extension as TwigExtension;
-use Twig_Function as TwigFunction;
+use Twig\Extension\AbstractExtension as TwigExtension;
+use Twig\TwigFunction;
 
 class Url extends TwigExtension
 {

@@ -2,10 +2,10 @@
 
 namespace Engelsystem\Renderer;
 
-use Twig_Environment as Twig;
-use Twig_Error_Loader as LoaderError;
-use Twig_Error_Runtime as RuntimeError;
-use Twig_Error_Syntax as SyntaxError;
+use Twig\Environment as Twig;
+use Twig\Error\LoaderError as LoaderError;
+use Twig\Error\RuntimeError as RuntimeError;
+use Twig\Error\SyntaxError as SyntaxError;
 
 class TwigEngine extends Engine
 {

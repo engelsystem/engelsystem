@@ -40,7 +40,7 @@
         "swiftmailer/swiftmailer": "^6.2",
         "symfony/http-foundation": "^4.3",
         "symfony/psr-http-message-bridge": "^1.2",
-        "twig/twig": "~2.6.0",
+        "twig/twig": "^2.11",
         "vlucas/phpdotenv": "^3.3"
     },
     "require-dev": {

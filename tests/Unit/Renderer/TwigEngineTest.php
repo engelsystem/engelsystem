@@ -5,8 +5,8 @@ namespace Engelsystem\Test\Unit\Renderer;
 use Engelsystem\Renderer\TwigEngine;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Twig_Environment as Twig;
-use Twig_LoaderInterface as LoaderInterface;
+use Twig\Environment as Twig;
+use Twig\Loader\LoaderInterface as LoaderInterface;
 
 class TwigEngineTest extends TestCase
 {

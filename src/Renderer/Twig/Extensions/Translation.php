@@ -3,9 +3,9 @@
 namespace Engelsystem\Renderer\Twig\Extensions;
 
 use Engelsystem\Helpers\Translation\Translator;
-use Twig_Extension as TwigExtension;
-use Twig_Filter as TwigFilter;
-use Twig_Function as TwigFunction;
+use Twig\Extension\AbstractExtension as TwigExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class Translation extends TwigExtension
 {

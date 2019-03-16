@@ -19,7 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Twig_LoaderInterface as TwigLoader;
+use Twig\Loader\LoaderInterface as TwigLoader;
 
 class ErrorHandlerTest extends TestCase
 {

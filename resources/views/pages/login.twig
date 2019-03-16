@@ -17,7 +17,7 @@
                 (__('Event starts')): config('event_start'),
                 (__('Event ends')): config('event_end'),
                 (__('Teardown ends')): config('teardown_end')
-            } if date %}
+            } | filter(date => date) %}
                 {% if date > date() %}
                     <div class="col-sm-3 text-center hidden-xs">
                         <h4>{{ name }}</h4>
