@@ -3,8 +3,8 @@
 namespace Engelsystem\Http;
 
 
+use PhpExtended\HttpMessage\StringStream;
 use Psr\Http\Message\StreamInterface;
-use Zend\Diactoros\Stream;
 
 /**
  * @implements \Psr\Http\Message\MessageInterface
@@ -213,9 +213,7 @@ trait MessageTrait
      */
     public function getBody()
     {
-        $stream = new Stream('php://memory', 'wb+');
-        $stream->write($this->getContent());
-        $stream->rewind();
+        $stream = new StringStream($this->getContent());
 
         return $stream;
     }

@@ -2,14 +2,16 @@
 
 namespace Engelsystem\Test\Unit\Http;
 
+use Engelsystem\Application;
 use Engelsystem\Http\Psr7ServiceProvider;
-use Engelsystem\Http\Request;
-use Engelsystem\Http\Response;
 use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface as RequestInterface;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\UploadedFileFactoryInterface;
+use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 
 class Psr7ServiceProviderTest extends ServiceProviderTest
 {
@@ -18,39 +20,33 @@ class Psr7ServiceProviderTest extends ServiceProviderTest
      */
     public function testRegister()
     {
-        /** @var MockObject|DiactorosFactory $psr7Factory */
-        $psr7Factory = $this->createMock(DiactorosFactory::class);
-        /** @var MockObject|Request $request */
-        $request = $this->createMock(Request::class);
-        /** @var MockObject|Response $response */
-        $response = $this->createMock(Response::class);
-        /** @var MockObject|RequestInterface $psr7request */
-        $psr7request = $this->createMock(Request::class);
-        /** @var MockObject|ResponseInterface $psr7response */
-        $psr7response = $this->createMock(Response::class);
-
-        $app = $this->getApp(['make', 'instance', 'get', 'bind']);
-        $this->setExpects($app, 'make', [DiactorosFactory::class], $psr7Factory);
-
-        $app->expects($this->atLeastOnce())
-            ->method('get')
-            ->withConsecutive(['request'], ['response'])
-            ->willReturnOnConsecutiveCalls($request, $response);
-        $app->expects($this->atLeastOnce())
-            ->method('instance')
-            ->withConsecutive(
-                ['psr7.factory', $psr7Factory],
-                ['psr7.request', $psr7request],
-                ['psr7.response', $psr7response]
-            );
-        $app->expects($this->atLeastOnce())
-            ->method('bind')
-            ->withConsecutive(
-                [RequestInterface::class, 'psr7.request'],
-                [ResponseInterface::class, 'psr7.response']
-            );
+        $app = new Application;
 
         $serviceProvider = new Psr7ServiceProvider($app);
         $serviceProvider->register();
+
+        foreach (
+            [
+                'psr7.factory.request',
+                'psr7.factory.response',
+                'psr7.factory.upload',
+                'psr7.factory.stream',
+                'psr7.factory',
+                'psr7.request',
+                'psr7.response',
+                ServerRequestFactoryInterface::class,
+                ResponseFactoryInterface::class,
+                UploadedFileFactoryInterface::class,
+                StreamFactoryInterface::class,
+                HttpMessageFactoryInterface::class,
+                ServerRequestInterface::class,
+                ResponseInterface::class,
+            ] as $id
+        ) {
+            $this->assertTrue(
+                $app->has($id),
+                sprintf('"%s" is not registered', $id)
+            );
+        }
     }
 }

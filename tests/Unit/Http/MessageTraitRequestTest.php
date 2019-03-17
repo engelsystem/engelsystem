@@ -3,8 +3,8 @@
 namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Test\Unit\Http\Stub\MessageTraitRequestImplementation;
+use PhpExtended\HttpMessage\StringStream;
 use PHPUnit\Framework\TestCase;
-use Zend\Diactoros\Stream;
 
 class MessageTraitRequestTest extends TestCase
 {
@@ -36,11 +36,7 @@ class MessageTraitRequestTest extends TestCase
      */
     public function testWithBody()
     {
-        /** @var Stream $stream */
-        $stream = new Stream('php://memory', 'wb+');
-        $stream->write('Test content');
-        $stream->rewind();
-
+        $stream = new StringStream('Test content');
         $message = new MessageTraitRequestImplementation();
         $newMessage = $message->withBody($stream);
 
