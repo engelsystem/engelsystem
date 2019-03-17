@@ -19,6 +19,7 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
      * mbstring
      * PDO
        * mysql
+     * tokenizer
      * xml/libxml/SimpleXML
      * xmlwriter
  * MySQL-Server >= 5.7.8 or MariaDB-Server >= 10.2.2
