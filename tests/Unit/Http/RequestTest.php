@@ -3,6 +3,7 @@
 namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Http\Request;
+use PhpExtended\HttpMessage\UploadedFile;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Psr\Http\Message\RequestInterface;
@@ -285,7 +286,7 @@ class RequestTest extends TestCase
     {
         $filename = tempnam(sys_get_temp_dir(), 'test');
         file_put_contents($filename, 'LoremIpsum!');
-        $files = [new SymfonyFile($filename, 'foo.html', 'text/html', 11)];
+        $files = [new SymfonyFile($filename, 'foo.txt', 'text/plain', 11)];
         $request = new Request([], [], [], [], $files);
 
         $uploadedFiles = $request->getUploadedFiles();
@@ -294,8 +295,8 @@ class RequestTest extends TestCase
         /** @var UploadedFileInterface $file */
         $file = $uploadedFiles[0];
         $this->assertInstanceOf(UploadedFileInterface::class, $file);
-        $this->assertEquals('foo.html', $file->getClientFilename());
-        $this->assertEquals('text/html', $file->getClientMediaType());
+        $this->assertEquals('foo.txt', $file->getClientFilename());
+        $this->assertEquals('text/plain', $file->getClientMediaType());
         $this->assertEquals(11, $file->getSize());
     }
 
@@ -306,7 +307,7 @@ class RequestTest extends TestCase
     {
         $filename = tempnam(sys_get_temp_dir(), 'test');
         file_put_contents($filename, 'LoremIpsum!');
-        $file = new \Zend\Diactoros\UploadedFile($filename, 11, UPLOAD_ERR_OK, 'test.txt', 'text/plain');
+        $file = new UploadedFile('test.txt', $filename, 'text/plain', 11, UPLOAD_ERR_OK);
 
         $request = new Request();
         $new = $request->withUploadedFiles([$file]);

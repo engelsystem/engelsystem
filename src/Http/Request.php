@@ -2,13 +2,13 @@
 
 namespace Engelsystem\Http;
 
+use PhpExtended\HttpMessage\UploadedFile;
+use PhpExtended\HttpMessage\Uri;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyFile;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Zend\Diactoros\UploadedFile;
-use Zend\Diactoros\Uri;
 
 class Request extends SymfonyRequest implements ServerRequestInterface
 {
@@ -207,7 +207,7 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     {
         $uri = parent::getUri();
 
-        return new Uri($uri);
+        return Uri::parseFromString($uri);
     }
 
     /**
@@ -332,11 +332,11 @@ class Request extends SymfonyRequest implements ServerRequestInterface
             /** @var SymfonyFile $file */
 
             $files[] = new UploadedFile(
-                $file->getPath(),
-                $file->getSize(),
-                $file->getError(),
                 $file->getClientOriginalName(),
-                $file->getClientMimeType()
+                $file->getRealPath(),
+                $file->getMimeType(),
+                $file->getSize(),
+                $file->getError()
             );
         }
 

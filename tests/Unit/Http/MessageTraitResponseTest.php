@@ -3,11 +3,11 @@
 namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Test\Unit\Http\Stub\MessageTraitResponseImplementation;
+use PhpExtended\HttpMessage\StringStream;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
-use Zend\Diactoros\Stream;
 
 class MessageTraitResponseTest extends TestCase
 {
@@ -145,11 +145,7 @@ class MessageTraitResponseTest extends TestCase
      */
     public function testWithBody()
     {
-        /** @var Stream $stream */
-        $stream = new Stream('php://memory', 'wb+');
-        $stream->write('Test content');
-        $stream->rewind();
-
+        $stream = new StringStream('Test content');
         $message = new MessageTraitResponseImplementation();
         $newMessage = $message->withBody($stream);
 
