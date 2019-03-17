@@ -24,6 +24,7 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
 ### Additional requirements if you want to build the project by yourself
  * Node >= 8 (Development/Building only)
  * Yarn (Development/Building only)
+ * PHP Composer (Development/Building only)
 
 ### Download
 
