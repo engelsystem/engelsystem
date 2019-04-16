@@ -6,7 +6,7 @@
         "safari": 9,
         "opera": 32,
         "edge": 12,
-        "iOS": 9
+        "ios": 9
       },
       "loose": false,
       "useBuiltIns": "entry"
