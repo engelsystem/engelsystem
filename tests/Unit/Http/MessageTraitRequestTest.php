@@ -3,7 +3,7 @@
 namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Test\Unit\Http\Stub\MessageTraitRequestImplementation;
-use PhpExtended\HttpMessage\StringStream;
+use Nyholm\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
 
 class MessageTraitRequestTest extends TestCase
@@ -36,7 +36,7 @@ class MessageTraitRequestTest extends TestCase
      */
     public function testWithBody()
     {
-        $stream = new StringStream('Test content');
+        $stream = Stream::create('Test content');
         $message = new MessageTraitRequestImplementation();
         $newMessage = $message->withBody($stream);
 
