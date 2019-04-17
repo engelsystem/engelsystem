@@ -3,7 +3,7 @@
 namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Test\Unit\Http\Stub\MessageTraitResponseImplementation;
-use PhpExtended\HttpMessage\StringStream;
+use Nyholm\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
@@ -145,7 +145,7 @@ class MessageTraitResponseTest extends TestCase
      */
     public function testWithBody()
     {
-        $stream = new StringStream('Test content');
+        $stream = Stream::create('Test content');
         $message = new MessageTraitResponseImplementation();
         $newMessage = $message->withBody($stream);
 

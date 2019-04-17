@@ -3,10 +3,7 @@
 namespace Engelsystem\Http;
 
 use Engelsystem\Container\ServiceProvider;
-use PhpExtended\HttpMessage\ResponseFactory;
-use PhpExtended\HttpMessage\ServerRequestFactory;
-use PhpExtended\HttpMessage\StreamFactory;
-use PhpExtended\HttpMessage\UploadedFileFactory;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
@@ -21,19 +18,25 @@ class Psr7ServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        $psr17Factory = Psr17Factory::class;
+
         foreach (
             [
-                ServerRequestFactory::class => ['psr7.factory.request', ServerRequestFactoryInterface::class],
-                ResponseFactory::class      => ['psr7.factory.response', ResponseFactoryInterface::class],
-                UploadedFileFactory::class  => ['psr7.factory.upload', UploadedFileFactoryInterface::class],
-                StreamFactory::class        => ['psr7.factory.stream', StreamFactoryInterface::class],
-                PsrHttpFactory::class       => ['psr7.factory', HttpMessageFactoryInterface::class],
-            ] as $class => $aliases
+                'psr7.factory.request',
+                ServerRequestFactoryInterface::class,
+                'psr7.factory.response',
+                ResponseFactoryInterface::class,
+                'psr7.factory.upload',
+                UploadedFileFactoryInterface::class,
+                'psr7.factory.stream',
+                StreamFactoryInterface::class,
+            ] as $alias
         ) {
-            foreach ($aliases as $alias) {
-                $this->app->bind($alias, $class);
-            }
+            $this->app->bind($alias, $psr17Factory);
         }
+
+        $this->app->bind('psr7.factory', PsrHttpFactory::class);
+        $this->app->bind(HttpMessageFactoryInterface::class, PsrHttpFactory::class);
 
         $this->app->bind('psr7.request', 'request');
         $this->app->bind(ServerRequestInterface::class, 'psr7.request');

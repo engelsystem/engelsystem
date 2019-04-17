@@ -3,7 +3,7 @@
 namespace Engelsystem\Http;
 
 
-use PhpExtended\HttpMessage\StringStream;
+use Nyholm\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -213,7 +213,8 @@ trait MessageTrait
      */
     public function getBody()
     {
-        $stream = new StringStream($this->getContent());
+        $stream = Stream::create($this->getContent());
+        $stream->rewind();
 
         return $stream;
     }

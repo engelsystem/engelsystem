@@ -3,7 +3,7 @@
 namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Http\Request;
-use PhpExtended\HttpMessage\UploadedFile;
+use Nyholm\Psr7\UploadedFile;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Psr\Http\Message\RequestInterface;
@@ -307,7 +307,7 @@ class RequestTest extends TestCase
     {
         $filename = tempnam(sys_get_temp_dir(), 'test');
         file_put_contents($filename, 'LoremIpsum!');
-        $file = new UploadedFile('test.txt', $filename, 'text/plain', 11, UPLOAD_ERR_OK);
+        $file = new UploadedFile($filename, 11, UPLOAD_ERR_OK, 'test.txt', 'text/plain');
 
         $request = new Request();
         $new = $request->withUploadedFiles([$file]);
