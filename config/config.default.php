@@ -39,12 +39,12 @@ return [
         'from'   => [
             // From address of all emails
             'address' => env('MAIL_FROM_ADDRESS', 'noreply@engelsystem.de'),
-            'name'    => env('MAIL_FROM_NAME', env('APP_NAME', 'Engelsystem'))
+            'name'    => env('MAIL_FROM_NAME', env('APP_NAME', 'Engelsystem')),
         ],
 
         'host'       => env('MAIL_HOST', 'localhost'),
         'port'       => env('MAIL_PORT', 587),
-        // Transport encryption like tls
+        // Transport encryption like tls (for starttls) or ssl
         'encryption' => env('MAIL_ENCRYPTION', null),
         'username'   => env('MAIL_USERNAME'),
         'password'   => env('MAIL_PASSWORD'),
