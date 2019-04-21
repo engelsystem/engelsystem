@@ -59,7 +59,7 @@ function admin_free()
             ->orWhere('AngelTypes.restricted', '=', '0');
     }
 
-    if($request->has('submit')) {
+    if ($request->has('submit')) {
         $users = $query->get();
     } else {
         $users = [];
@@ -100,11 +100,13 @@ function admin_free()
     }
     return page_with_title(admin_free_title(), [
         form([
-            div('col-md12 form-inline', [
+            div('row', [
+                div('col-md-12 form-inline', [
                     form_text('search', __('Search'), $search),
                     form_select('angeltype', __('Angeltype'), $angel_types, $angelType),
                     form_submit('submit', __('Search'))
-            ])
+                ]),
+            ]),
         ]),
         table([
             'name'        => __('Nick'),
@@ -113,6 +115,6 @@ function admin_free()
             'dect'        => __('DECT'),
             'email'       => __('E-Mail'),
             'actions'     => ''
-        ], $free_users_table)
+        ], $free_users_table),
     ]);
 }
