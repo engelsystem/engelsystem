@@ -102,6 +102,9 @@ return [
     // Whether the DECT field should be enabled
     'enable_dect'             => true,
 
+		// Enables the planned arrival/leave date
+    'enable_planned_arrival'  => true,
+
     // Enables the T-Shirt configuration on signup and profile
     'enable_tshirt_size'      => true,
 

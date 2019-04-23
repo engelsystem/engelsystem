@@ -26,7 +26,9 @@ function User_settings_view(
 ) {
     $personalData = $user_source->personalData;
     $enable_dect = config('enable_dect');
-    return page_with_title(settings_title(), [
+    $enable_planned_arrival = config('enable_planned_arrival');
+
+		return page_with_title(settings_title(), [
         msg(),
         div('row', [
             div('col-md-6', [
@@ -36,20 +38,20 @@ function User_settings_view(
                     form_text('nick', __('Nick'), $user_source->name, true),
                     form_text('lastname', __('Last name'), $personalData->last_name),
                     form_text('prename', __('First name'), $personalData->first_name),
-                    form_date(
+                    $enable_planned_arrival ? form_date(
                         'planned_arrival_date',
                         __('Planned date of arrival') . ' ' . entry_required(),
                         $personalData->planned_arrival_date ? $personalData->planned_arrival_date->getTimestamp() : '',
                         $buildup_start_date,
                         $teardown_end_date
-                    ),
-                    form_date(
+                    ) : '',
+                    $enable_planned_arrival ? form_date(
                         'planned_departure_date',
                         __('Planned date of departure'),
                         $personalData->planned_departure_date ? $personalData->planned_departure_date->getTimestamp() : '',
                         $buildup_start_date,
                         $teardown_end_date
-                    ),
+                    ) : '',
                     $enable_dect ? form_text('dect', __('DECT'), $user_source->contact->dect) : '',
                     form_text('mobile', __('Mobile'), $user_source->contact->mobile),
                     form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->email),
@@ -894,7 +896,7 @@ function render_profile_link($text, $user_id = null, $class = '')
  */
 function render_user_departure_date_hint()
 {
-    if (!auth()->user()->personalData->planned_departure_date) {
+    if (config('enable_planned_arrival') && !auth()->user()->personalData->planned_departure_date) {
         $text = __('Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities.');
         return render_profile_link($text, null, 'alert-link');
     }
