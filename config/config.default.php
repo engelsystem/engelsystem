@@ -99,6 +99,9 @@ return [
     // The minimum length for passwords
     'min_password_length'     => 8,
 
+    // Whether the DECT field should be enabled
+    'enable_dect'             => true,
+
     // Enables the T-Shirt configuration on signup and profile
     'enable_tshirt_size'      => true,
 
