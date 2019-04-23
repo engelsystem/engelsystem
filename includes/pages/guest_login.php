@@ -42,6 +42,7 @@ function guest_register()
     $authUser = auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
     $enable_tshirt_size = config('enable_tshirt_size');
+    $enable_planned_arrival = config('enable_planned_arrival');
     $min_password_length = config('min_password_length');
     $config = config();
     $request = request();
@@ -140,7 +141,7 @@ function guest_register()
             ), true);
         }
 
-        if ($request->has('planned_arrival_date')) {
+        if ($request->has('planned_arrival_date') && $enable_planned_arrival) {
             $tmp = parse_date('Y-m-d H:i', $request->input('planned_arrival_date') . ' 00:00');
             $result = User_validate_planned_arrival_date($tmp);
             $planned_arrival_date = $result->getValue();
@@ -148,7 +149,7 @@ function guest_register()
                 $valid = false;
                 error(__('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
             }
-        } else {
+        } else if ($enable_planned_arrival) {
             $valid = false;
             error(__('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
         }
@@ -302,11 +303,11 @@ function guest_register()
                     ]),
                     div('row', [
                         div('col-sm-6', [
-                            form_date(
+                            $enable_planned_arrival ? form_date(
                                 'planned_arrival_date',
                                 __('Planned date of arrival') . ' ' . entry_required(),
                                 $planned_arrival_date, $buildup_start_date, $teardown_end_date
-                            )
+                            ) : ''
                         ]),
                         div('col-sm-6', [
                             $enable_tshirt_size ? form_select('tshirt_size',
