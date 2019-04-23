@@ -42,6 +42,7 @@ function guest_register()
     $authUser = auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
     $enable_tshirt_size = config('enable_tshirt_size');
+    $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
     $min_password_length = config('min_password_length');
     $config = config();
@@ -168,7 +169,7 @@ function guest_register()
         if ($request->has('prename')) {
             $preName = strip_request_item('prename');
         }
-        if ($request->has('dect')) {
+        if ($enable_dect && $request->has('dect')) {
             if (strlen(strip_request_item('dect')) <= 40) {
                 $dect = strip_request_item('dect');
             } else {
@@ -340,10 +341,10 @@ function guest_register()
                 ]),
                 div('col-md-6', [
                     div('row', [
-                        div('col-sm-4', [
+                        $enable_dect ? div('col-sm-4', [
                             form_text('dect', __('DECT'), $dect)
-                        ]),
-                        div('col-sm-4', [
+                        ]) : '',
+                        div($enable_dect ? 'col-sm-4' : 'col-sm-12', [
                             form_text('mobile', __('Mobile'), $mobile)
                         ]),
                     ]),

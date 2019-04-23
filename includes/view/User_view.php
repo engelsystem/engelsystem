@@ -25,8 +25,10 @@ function User_settings_view(
     $tshirt_sizes
 ) {
     $personalData = $user_source->personalData;
+    $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
-    return page_with_title(settings_title(), [
+
+		return page_with_title(settings_title(), [
         msg(),
         div('row', [
             div('col-md-6', [
@@ -50,7 +52,7 @@ function User_settings_view(
                         $buildup_start_date,
                         $teardown_end_date
                     ) : '',
-                    form_text('dect', __('DECT'), $user_source->contact->dect),
+                    $enable_dect ? form_text('dect', __('DECT'), $user_source->contact->dect) : '',
                     form_text('mobile', __('Mobile'), $user_source->contact->mobile),
                     form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->email),
                     form_checkbox(
@@ -954,7 +956,7 @@ function render_user_tshirt_hint()
 function render_user_dect_hint()
 {
     $user = auth()->user();
-    if ($user->state->arrived && !$user->contact->dect) {
+    if ($user->state->arrived && config('enable_dect') && !$user->contact->dect) {
         $text = __('You need to specify a DECT phone number in your settings! If you don\'t have a DECT phone, just enter \'-\'.');
         return render_profile_link($text, null, 'alert-link');
     }
