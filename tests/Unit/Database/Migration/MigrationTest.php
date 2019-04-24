@@ -19,6 +19,6 @@ class MigrationTest extends TestCase
             ->getMock();
 
         $instance = new AnotherStuff($schemaBuilder);
-        $this->assertAttributeEquals($schemaBuilder, 'schema', $instance);
+        $this->assertEquals($schemaBuilder, $instance->getSchema());
     }
 }

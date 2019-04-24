@@ -2,8 +2,10 @@
 
 namespace Engelsystem\Test\Unit\Http;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Http\Response;
 use Engelsystem\Renderer\Renderer;
+use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -11,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class ResponseTest extends TestCase
 {
+    use ArraySubsetAsserts;
+
     /**
      * @covers \Engelsystem\Http\Response
      */
@@ -76,7 +80,7 @@ class ResponseTest extends TestCase
      */
     public function testWithViewNoRenderer()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $response = new Response();
         $response->withView('foo');

@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Config;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Config\ConfigServiceProvider;
@@ -14,13 +15,15 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class ConfigServiceProviderTest extends ServiceProviderTest
 {
+    use ArraySubsetAsserts;
+
     /**
      * @covers \Engelsystem\Config\ConfigServiceProvider::register
      * @covers \Engelsystem\Config\ConfigServiceProvider::getConfigPath
      */
     public function testRegister()
     {
-        /** @var MockObject|Config $config */
+        /** @var Config|MockObject $config */
         $config = $this->getMockBuilder(Config::class)
             ->getMock();
 
@@ -61,7 +64,7 @@ class ConfigServiceProviderTest extends ServiceProviderTest
      */
     public function testRegisterException()
     {
-        /** @var MockObject|Config $config */
+        /** @var Config|MockObject $config */
         $config = $this->getMockBuilder(Config::class)
             ->getMock();
 

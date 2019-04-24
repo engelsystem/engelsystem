@@ -121,7 +121,7 @@ class EventConfigTest extends TestCase
     /**
      * Prepare test
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initDatabase();
     }

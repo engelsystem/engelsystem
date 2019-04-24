@@ -5,7 +5,7 @@ namespace Engelsystem\Test\Unit\Logger;
 use Engelsystem\Logger\EngelsystemLogger;
 use Engelsystem\Logger\LoggerServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 
 class LoggerServiceProviderTest extends ServiceProviderTest
@@ -15,7 +15,7 @@ class LoggerServiceProviderTest extends ServiceProviderTest
      */
     public function testRegister()
     {
-        /** @var PHPUnit_Framework_MockObject_MockObject|EngelsystemLogger $logger */
+        /** @var EngelsystemLogger|MockObject $logger */
         $logger = $this->getMockBuilder(EngelsystemLogger::class)
             ->disableOriginalConstructor()
             ->getMock();

@@ -3,7 +3,7 @@
 namespace Engelsystem\Test\Unit;
 
 use Engelsystem\Application;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 abstract class ServiceProviderTest extends TestCase
 {
@@ -13,7 +13,7 @@ abstract class ServiceProviderTest extends TestCase
      */
     protected function getApp($methods = ['make', 'instance'])
     {
-        /** @var MockObject|Application $app */
+        /** @var Application|MockObject $app */
         return $this->getMockBuilder(Application::class)
             ->setMethods($methods)
             ->getMock();

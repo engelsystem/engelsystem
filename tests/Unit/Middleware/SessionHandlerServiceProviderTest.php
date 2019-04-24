@@ -34,7 +34,7 @@ class SessionHandlerServiceProviderTest extends ServiceProviderTest
             ->willReturnCallback(function (callable $callable) {
                 $paths = $callable();
 
-                $this->assertTrue(is_array($paths));
+                $this->assertIsArray($paths);
                 $this->assertTrue(in_array('/metrics', $paths));
             });
 

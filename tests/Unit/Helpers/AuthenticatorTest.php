@@ -39,11 +39,11 @@ class AuthenticatorTest extends ServiceProviderTest
         $auth = new Authenticator($request, $session, $userRepository);
 
         // Not in session
-        $this->assertEquals(null, $auth->user());
+        $this->assertNull($auth->user());
 
         // Unknown user
         UserModelImplementation::$id = 42;
-        $this->assertEquals(null, $auth->user());
+        $this->assertNull($auth->user());
 
         // User found
         UserModelImplementation::$id = 1337;
@@ -83,11 +83,11 @@ class AuthenticatorTest extends ServiceProviderTest
         $auth = new Authenticator($request, $session, $userRepository);
 
         // No key
-        $this->assertEquals(null, $auth->apiUser());
+        $this->assertNull($auth->apiUser());
 
         // Unknown user
         UserModelImplementation::$apiKey = 'iMaNot3xiSt1nGAp1Key!';
-        $this->assertEquals(null, $auth->apiUser());
+        $this->assertNull($auth->apiUser());
 
         // User found
         UserModelImplementation::$apiKey = 'SomeSecretApiKey';

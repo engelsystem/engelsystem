@@ -7,7 +7,7 @@ use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\RequestServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class RequestServiceProviderTest extends ServiceProviderTest

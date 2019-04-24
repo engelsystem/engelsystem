@@ -4,8 +4,8 @@ namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Http\Request;
 use Nyholm\Psr7\UploadedFile;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
@@ -90,7 +90,7 @@ class RequestTest extends TestCase
      */
     public function testPath()
     {
-        /** @var MockObject|Request $request */
+        /** @var Request|MockObject $request */
         $request = $this
             ->getMockBuilder(Request::class)
             ->setMethods(['getPathInfo'])
@@ -113,7 +113,7 @@ class RequestTest extends TestCase
      */
     public function testUrl()
     {
-        /** @var MockObject|Request $request */
+        /** @var Request|MockObject $request */
         $request = $this
             ->getMockBuilder(Request::class)
             ->setMethods(['getUri'])
@@ -368,7 +368,7 @@ class RequestTest extends TestCase
         $request = new Request([], [], $attributes);
 
         $this->assertEquals($attributes['ipsum'], $request->getAttribute('ipsum'));
-        $this->assertEquals(null, $request->getAttribute('dolor'));
+        $this->assertNull($request->getAttribute('dolor'));
         $this->assertEquals(1234, $request->getAttribute('test', 1234));
     }
 

@@ -3,6 +3,7 @@
 namespace Engelsystem\Migrations;
 
 use Engelsystem\Database\Migration\Migration;
+use Illuminate\Database\Schema\Builder as SchemaBuilder;
 
 class AnotherStuff extends Migration
 {
@@ -20,5 +21,13 @@ class AnotherStuff extends Migration
     public function down()
     {
         // nope
+    }
+
+    /**
+     * @return SchemaBuilder
+     */
+    public function getSchema()
+    {
+        return $this->schema;
     }
 }

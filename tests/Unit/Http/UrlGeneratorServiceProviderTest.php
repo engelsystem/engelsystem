@@ -5,7 +5,7 @@ namespace Engelsystem\Test\Unit\Http;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Http\UrlGeneratorServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class UrlGeneratorServiceProviderTest extends ServiceProviderTest
 {
@@ -14,7 +14,7 @@ class UrlGeneratorServiceProviderTest extends ServiceProviderTest
      */
     public function testRegister()
     {
-        /** @var PHPUnit_Framework_MockObject_MockObject|UrlGenerator $urlGenerator */
+        /** @var UrlGenerator|MockObject $urlGenerator */
         $urlGenerator = $this->getMockBuilder(UrlGenerator::class)
             ->getMock();
 

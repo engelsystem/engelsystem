@@ -9,8 +9,8 @@ use Engelsystem\Middleware\ExceptionHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\ExceptionMiddlewareHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\ReturnResponseMiddlewareHandler;
 use Illuminate\Contracts\Container\Container as ContainerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -22,13 +22,13 @@ class ExceptionHandlerTest extends TestCase
      */
     public function testRegister()
     {
-        /** @var MockObject|ContainerInterface $container */
+        /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        /** @var MockObject|ServerRequestInterface $request */
+        /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
-        /** @var MockObject|ResponseInterface $response */
+        /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockBuilder(Response::class)->getMock();
-        /** @var MockObject|Handler $errorHandler */
+        /** @var Handler|MockObject $errorHandler */
         $errorHandler = $this->getMockBuilder(Handler::class)->getMock();
         $returnResponseHandler = new ReturnResponseMiddlewareHandler($response);
         $throwExceptionHandler = new ExceptionMiddlewareHandler();

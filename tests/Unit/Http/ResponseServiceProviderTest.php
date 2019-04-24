@@ -5,7 +5,7 @@ namespace Engelsystem\Test\Unit\Http;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\ResponseServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class ResponseServiceProviderTest extends ServiceProviderTest
@@ -15,7 +15,7 @@ class ResponseServiceProviderTest extends ServiceProviderTest
      */
     public function testRegister()
     {
-        /** @var MockObject|Response $response */
+        /** @var Response|MockObject $response */
         $response = $this->getMockBuilder(Response::class)
             ->getMock();
 

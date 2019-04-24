@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Http;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Test\Unit\Http\Stub\MessageTraitResponseImplementation;
 use Nyholm\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
@@ -11,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class MessageTraitResponseTest extends TestCase
 {
+    use ArraySubsetAsserts;
+
     /**
      * @covers \Engelsystem\Http\MessageTrait
      */

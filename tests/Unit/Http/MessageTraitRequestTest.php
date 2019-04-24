@@ -2,12 +2,15 @@
 
 namespace Engelsystem\Test\Unit\Http;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Test\Unit\Http\Stub\MessageTraitRequestImplementation;
 use Nyholm\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
 
 class MessageTraitRequestTest extends TestCase
 {
+    use ArraySubsetAsserts;
+
     /**
      * @covers \Engelsystem\Http\MessageTrait::withProtocolVersion
      */

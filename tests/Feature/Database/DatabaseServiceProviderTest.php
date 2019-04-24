@@ -5,7 +5,7 @@ namespace Engelsystem\Test\Feature\Database;
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Database\DatabaseServiceProvider;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class DatabaseServiceProviderTest extends DatabaseTest
 {
@@ -14,11 +14,11 @@ class DatabaseServiceProviderTest extends DatabaseTest
      */
     public function testRegister()
     {
-        /** @var MockObject|Config $config */
+        /** @var Config|MockObject $config */
         $config = $this->getMockBuilder(Config::class)
             ->getMock();
 
-        /** @var MockObject|Application $app */
+        /** @var Application|MockObject $app */
         $app = $this->getMockBuilder(Application::class)
             ->setMethods(['get'])
             ->getMock();

@@ -8,11 +8,17 @@ class RoomModelTest extends TestCase
 {
     private $room_id = null;
 
+    /**
+     * @covers \Room_create
+     */
     public function createRoom()
     {
         $this->room_id = Room_create('test', false, null, null);
     }
 
+    /**
+     * @covers \Room
+     */
     public function testRoom()
     {
         $this->createRoom();
@@ -26,7 +32,10 @@ class RoomModelTest extends TestCase
         $this->assertEmpty(Room(-1));
     }
 
-    public function tearDown()
+    /**
+     * Cleanup
+     */
+    protected function tearDown(): void
     {
         if ($this->room_id != null) {
             Room_delete($this->room_id);

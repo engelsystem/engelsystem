@@ -8,7 +8,7 @@ use Engelsystem\Database\Migration\MigrationServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class MigrationServiceProviderTest extends ServiceProviderTest
 {
@@ -17,7 +17,7 @@ class MigrationServiceProviderTest extends ServiceProviderTest
      */
     public function testRegister()
     {
-        /** @var MockObject|Migrate $migration */
+        /** @var Migrate|MockObject $migration */
         $migration = $this->getMockBuilder(Migrate::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -25,11 +25,11 @@ class MigrationServiceProviderTest extends ServiceProviderTest
         $database = $this->getMockBuilder(Database::class)
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var MockObject|Connection $dbConnection */
+        /** @var Connection|MockObject $dbConnection */
         $dbConnection = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var MockObject|SchemaBuilder $schemaBuilder */
+        /** @var SchemaBuilder|MockObject $schemaBuilder */
         $schemaBuilder = $this->getMockBuilder(SchemaBuilder::class)
             ->disableOriginalConstructor()
             ->getMock();
