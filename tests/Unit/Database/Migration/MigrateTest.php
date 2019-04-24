@@ -57,6 +57,8 @@ class MigrateTest extends TestCase
                 ['foo/9876_03_22_210000_random_hack.php', '9876_03_22_210000_random_hack', Migrate::UP],
                 ['foo/9999_99_99_999999_another_foo.php', '9999_99_99_999999_another_foo', Migrate::UP],
                 ['foo/9876_03_22_210000_random_hack.php', '9876_03_22_210000_random_hack', Migrate::UP],
+                ['foo/9999_99_99_999999_another_foo.php', '9999_99_99_999999_another_foo', Migrate::UP],
+                ['foo/9876_03_22_210000_random_hack.php', '9876_03_22_210000_random_hack', Migrate::UP],
                 ['foo/4567_11_01_000000_do_stuff.php', '4567_11_01_000000_do_stuff', Migrate::DOWN]
             );
         $migration->expects($this->atLeastOnce())
@@ -65,8 +67,12 @@ class MigrateTest extends TestCase
                 ['9876_03_22_210000_random_hack', Migrate::UP],
                 ['9999_99_99_999999_another_foo', Migrate::UP],
                 ['9876_03_22_210000_random_hack', Migrate::UP],
+                ['9999_99_99_999999_another_foo', Migrate::UP],
+                ['9876_03_22_210000_random_hack', Migrate::UP],
                 ['4567_11_01_000000_do_stuff', Migrate::DOWN]
             );
+
+        $migration->run('foo', Migrate::UP);
 
         $messages = [];
         $migration->setOutput(function ($text) use (&$messages) {

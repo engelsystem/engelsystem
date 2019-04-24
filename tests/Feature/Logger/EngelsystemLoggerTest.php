@@ -93,6 +93,7 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
     }
 
     /**
+     * @covers       \Engelsystem\Logger\EngelsystemLogger::interpolate
      * @covers       \Engelsystem\Logger\EngelsystemLogger::log
      * @dataProvider provideContextReplaceValues
      *
@@ -132,6 +133,7 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
     }
 
     /**
+     * @covers \Engelsystem\Logger\EngelsystemLogger::checkLevel
      * @covers \Engelsystem\Logger\EngelsystemLogger::log
      */
     public function testThrowExceptionOnInvalidLevel()
