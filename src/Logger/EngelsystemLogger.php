@@ -23,6 +23,11 @@ class EngelsystemLogger extends AbstractLogger
     /** @var LogEntry */
     protected $log;
 
+    /**
+     * EngelsystemLogger constructor.
+     *
+     * @param LogEntry $log
+     */
     public function __construct(LogEntry $log)
     {
         $this->log = $log;

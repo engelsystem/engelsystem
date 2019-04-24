@@ -18,8 +18,8 @@ class ConfigServiceProviderTest extends ServiceProviderTest
     use ArraySubsetAsserts;
 
     /**
-     * @covers \Engelsystem\Config\ConfigServiceProvider::register
      * @covers \Engelsystem\Config\ConfigServiceProvider::getConfigPath
+     * @covers \Engelsystem\Config\ConfigServiceProvider::register
      */
     public function testRegister()
     {

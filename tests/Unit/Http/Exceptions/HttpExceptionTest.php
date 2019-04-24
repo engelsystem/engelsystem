@@ -9,8 +9,8 @@ class HttpExceptionTest extends TestCase
 {
     /**
      * @covers \Engelsystem\Http\Exceptions\HttpException::__construct
-     * @covers \Engelsystem\Http\Exceptions\HttpException::getStatusCode
      * @covers \Engelsystem\Http\Exceptions\HttpException::getHeaders
+     * @covers \Engelsystem\Http\Exceptions\HttpException::getStatusCode
      */
     public function testConstruct()
     {

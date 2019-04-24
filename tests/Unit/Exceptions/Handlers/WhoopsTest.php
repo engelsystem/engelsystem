@@ -2,7 +2,6 @@
 
 namespace Engelsystem\Test\Unit\Exceptions\handlers;
 
-
 use Engelsystem\Application;
 use Engelsystem\Exceptions\Handlers\Whoops;
 use Engelsystem\Helpers\Authenticator;

@@ -30,7 +30,7 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
         list($app, $dbManager, $pdo, $database, $connection) = $this->prepare(
             [
                 'driver'   => 'sqlite',
-                'database' => ':memory:'
+                'database' => ':memory:',
             ]
         );
 
@@ -51,8 +51,8 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
     }
 
     /**
-     * @covers \Engelsystem\Database\DatabaseServiceProvider::register()
      * @covers \Engelsystem\Database\DatabaseServiceProvider::exitOnError()
+     * @covers \Engelsystem\Database\DatabaseServiceProvider::register()
      */
     public function testRegisterError()
     {

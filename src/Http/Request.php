@@ -328,9 +328,8 @@ class Request extends SymfonyRequest implements ServerRequestInterface
     public function getUploadedFiles()
     {
         $files = [];
+        /** @var SymfonyFile $file */
         foreach ($this->files as $file) {
-            /** @var SymfonyFile $file */
-
             $files[] = new UploadedFile(
                 $file->getRealPath(),
                 $file->getSize(),

@@ -15,9 +15,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 class ExceptionsServiceProviderTest extends ServiceProviderTest
 {
     /**
-     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::register()
-     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::addProductionHandler()
      * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::addDevelopmentHandler()
+     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::addProductionHandler()
+     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::register()
      */
     public function testRegister()
     {

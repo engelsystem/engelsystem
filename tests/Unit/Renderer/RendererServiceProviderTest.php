@@ -13,8 +13,8 @@ class RendererServiceProviderTest extends ServiceProviderTest
 {
     /**
      * @covers \Engelsystem\Renderer\RendererServiceProvider::register()
-     * @covers \Engelsystem\Renderer\RendererServiceProvider::registerRenderer()
      * @covers \Engelsystem\Renderer\RendererServiceProvider::registerHtmlEngine()
+     * @covers \Engelsystem\Renderer\RendererServiceProvider::registerRenderer()
      */
     public function testRegister()
     {

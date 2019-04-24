@@ -21,12 +21,16 @@ abstract class Transport implements SwiftTransport
     /**
      * Start this Transport mechanism.
      */
-    public function start() { }
+    public function start()
+    {
+    }
 
     /**
      * Stop this Transport mechanism.
      */
-    public function stop() { }
+    public function stop()
+    {
+    }
 
     /**
      * Check if this Transport mechanism is alive.
@@ -59,7 +63,9 @@ abstract class Transport implements SwiftTransport
      *
      * @param Swift_Events_EventListener $plugin
      */
-    public function registerPlugin(Swift_Events_EventListener $plugin) { }
+    public function registerPlugin(Swift_Events_EventListener $plugin)
+    {
+    }
 
     /**
      * Returns a unified list of all recipients

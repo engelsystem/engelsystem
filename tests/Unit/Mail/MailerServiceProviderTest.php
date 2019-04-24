@@ -79,7 +79,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
             [SendmailTransport::class, ['email' => ['driver' => 'sendmail']]],
             [
                 SmtpTransport::class,
-                $this->smtpConfig
+                $this->smtpConfig,
             ],
         ];
     }

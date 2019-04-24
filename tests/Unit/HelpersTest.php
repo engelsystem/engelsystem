@@ -174,7 +174,7 @@ class HelpersTest extends TestCase
             ->withConsecutive(['lor', 'em'], ['foo', 'bar'])
             ->willReturn($response);
 
-        $this->assertEquals($response, response('Lorem Ipsum?', 501, ['lor' => 'em', 'foo' => 'bar',]));
+        $this->assertEquals($response, response('Lorem Ipsum?', 501, ['lor' => 'em', 'foo' => 'bar']));
     }
 
     /**
@@ -285,6 +285,7 @@ class HelpersTest extends TestCase
      */
     protected function getAppMock($alias, $object)
     {
+        /** @var Application|MockObject $appMock */
         $appMock = $this->getMockBuilder(Container::class)
             ->getMock();
 
@@ -293,7 +294,6 @@ class HelpersTest extends TestCase
             ->with($alias)
             ->willReturn($object);
 
-        /** @var $appMock Application */
         Application::setInstance($appMock);
 
         return $appMock;

@@ -16,8 +16,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 class RouteDispatcherTest extends TestCase
 {
     /**
-     * @covers \Engelsystem\Middleware\RouteDispatcher::process
      * @covers \Engelsystem\Middleware\RouteDispatcher::__construct
+     * @covers \Engelsystem\Middleware\RouteDispatcher::process
      */
     public function testProcess()
     {

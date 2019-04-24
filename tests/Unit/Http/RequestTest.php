@@ -163,7 +163,7 @@ class RequestTest extends TestCase
             [
                 '*',
                 '/foo/bar',
-                'https://lorem.ipsum/test?lor=em'
+                'https://lorem.ipsum/test?lor=em',
             ] as $target
         ) {
             $new = $request->withRequestTarget($target);

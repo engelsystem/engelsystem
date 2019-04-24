@@ -99,8 +99,8 @@ class HandlerTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Exceptions\Handler::setEnvironment()
      * @covers \Engelsystem\Exceptions\Handler::getEnvironment()
+     * @covers \Engelsystem\Exceptions\Handler::setEnvironment()
      */
     public function testEnvironment()
     {
@@ -114,8 +114,8 @@ class HandlerTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Exceptions\Handler::setHandler()
      * @covers \Engelsystem\Exceptions\Handler::getHandler()
+     * @covers \Engelsystem\Exceptions\Handler::setHandler()
      */
     public function testHandler()
     {
@@ -133,8 +133,8 @@ class HandlerTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Exceptions\Handler::setRequest()
      * @covers \Engelsystem\Exceptions\Handler::getRequest()
+     * @covers \Engelsystem\Exceptions\Handler::setRequest()
      */
     public function testRequest()
     {

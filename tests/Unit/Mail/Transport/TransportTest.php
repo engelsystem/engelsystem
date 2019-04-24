@@ -70,8 +70,8 @@ class TransportTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Mail\Transport\Transport::getTo
      * @covers \Engelsystem\Mail\Transport\Transport::formatTo
+     * @covers \Engelsystem\Mail\Transport\Transport::getTo
      */
     public function testGetTo()
     {

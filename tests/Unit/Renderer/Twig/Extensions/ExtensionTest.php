@@ -39,6 +39,7 @@ abstract class ExtensionTest extends TestCase
      * @param string         $name
      * @param callable       $callback
      * @param TwigFunction[] $functions
+     * @param array $options
      */
     protected function assertExtensionExists($name, $callback, $functions, $options = [])
     {

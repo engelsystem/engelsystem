@@ -21,7 +21,8 @@ class Legacy implements HandlerInterface
      */
     public function report(Throwable $e)
     {
-        error_log(sprintf('Exception: Code: %s, Message: %s, File: %s:%u, Trace: %s',
+        error_log(sprintf(
+            'Exception: Code: %s, Message: %s, File: %s:%u, Trace: %s',
             $e->getCode(),
             $e->getMessage(),
             $this->stripBasePath($e->getFile()),

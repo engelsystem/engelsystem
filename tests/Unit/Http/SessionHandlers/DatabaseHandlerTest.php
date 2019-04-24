@@ -12,8 +12,8 @@ class DatabaseHandlerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::__construct
-     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::read
      * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::getQuery
+     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::read
      */
     public function testRead()
     {
@@ -25,8 +25,8 @@ class DatabaseHandlerTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::write
      * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::getCurrentTimestamp
+     * @covers \Engelsystem\Http\SessionHandlers\DatabaseHandler::write
      */
     public function testWrite()
     {

@@ -48,7 +48,7 @@ class LegacyDevelopment extends Legacy
 
             $return[] = [
                 'file'        => $path . ':' . $line,
-                $functionName => isset($trace['args']) ? $trace['args'] : null,
+                $functionName => $trace['args'] ?? null,
             ];
         }
 

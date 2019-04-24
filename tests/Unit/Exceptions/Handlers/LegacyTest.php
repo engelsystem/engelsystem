@@ -2,7 +2,6 @@
 
 namespace Engelsystem\Test\Unit\Exceptions\handlers;
 
-
 use Engelsystem\Exceptions\Handlers\Legacy;
 use Engelsystem\Http\Request;
 use Exception;

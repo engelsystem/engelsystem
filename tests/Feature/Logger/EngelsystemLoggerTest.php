@@ -13,7 +13,6 @@ use stdClass;
 class EngelsystemLoggerTest extends ApplicationFeatureTest
 {
     /**
-     * @covers \Engelsystem\Logger\EngelsystemLogger::__construct
      * @return LoggerInterface
      */
     public function getLogger()

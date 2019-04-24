@@ -6,6 +6,7 @@ use Engelsystem\Container\Container;
 use Engelsystem\Http\Response;
 use Engelsystem\Middleware\CallableHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\HasStaticMethod;
+use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -18,7 +19,8 @@ class CallableHandlerTest extends TestCase
     public function provideCallable()
     {
         return [
-            [function () { }],
+            [function () {
+            }],
             [[$this, 'provideCallable']],
             [[HasStaticMethod::class, 'foo']],
         ];
@@ -113,7 +115,7 @@ class CallableHandlerTest extends TestCase
         $this->assertEquals($response, $return);
 
         $middleware = new CallableHandler($callable);
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $middleware->handle($request);
     }
 

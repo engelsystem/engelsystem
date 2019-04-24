@@ -69,7 +69,8 @@ class MetricsEngine implements EngineInterface
             '%s%s %s',
             $name,
             $this->renderLabels($row),
-            $this->renderValue($row));
+            $this->renderValue($row)
+        );
     }
 
     /**

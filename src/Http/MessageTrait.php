@@ -2,7 +2,6 @@
 
 namespace Engelsystem\Http;
 
-
 use Nyholm\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
 
