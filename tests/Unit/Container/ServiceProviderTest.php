@@ -10,6 +10,8 @@ class ConfigServiceProviderTest extends ServiceProviderTest
 {
     /**
      * @covers \Engelsystem\Container\ServiceProvider::__construct
+     * @covers \Engelsystem\Container\ServiceProvider::register
+     * @covers \Engelsystem\Container\ServiceProvider::boot
      */
     public function testRegister()
     {
@@ -18,5 +20,8 @@ class ConfigServiceProviderTest extends ServiceProviderTest
         $serviceProvider = new ServiceProviderImplementation($app);
 
         $this->assertInstanceOf(ServiceProvider::class, $serviceProvider);
+
+        $serviceProvider->register();
+        $serviceProvider->boot();
     }
 }
