@@ -16,8 +16,8 @@ class TwigLoader extends FilesystemLoader
     public function findTemplate($name, $throw = true)
     {
         $extension = '.twig';
-        $extensionLength = strlen($extension);
-        if (substr($name, -$extensionLength, $extensionLength) !== $extension) {
+        $extensionLength = mb_strlen($extension);
+        if (mb_substr($name, -$extensionLength, $extensionLength) !== $extension) {
             $name .= $extension;
         }
 

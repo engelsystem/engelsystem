@@ -92,7 +92,7 @@ class MigrateTest extends TestCase
         ) {
             $contains = false;
             foreach ($messages as $message) {
-                if (!Str::contains(strtolower($message), $type) || !Str::contains(strtolower($message), $value)) {
+                if (!Str::contains(mb_strtolower($message), $type) || !Str::contains(mb_strtolower($message), $value)) {
                     continue;
                 }
 
