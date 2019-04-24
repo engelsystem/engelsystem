@@ -4,9 +4,9 @@ namespace Engelsystem\Test\Unit\Container;
 
 use Engelsystem\Container\ServiceProvider;
 use Engelsystem\Test\Unit\Container\Stub\ServiceProviderImplementation;
-use Engelsystem\Test\Unit\ServiceProviderTest;
+use Engelsystem\Test\Unit\ServiceProviderTest as ServiceProviderTestCase;
 
-class ConfigServiceProviderTest extends ServiceProviderTest
+class ServiceProviderTest extends ServiceProviderTestCase
 {
     /**
      * @covers \Engelsystem\Container\ServiceProvider::__construct

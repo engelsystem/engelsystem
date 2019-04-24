@@ -40,7 +40,7 @@ class LogEntry extends BaseModel
      */
     public static function filter($keyword = null)
     {
-        $query = LogEntry::query()
+        $query = self::query()
             ->select()
             ->orderByDesc('created_at')
             ->orderByDesc('id')

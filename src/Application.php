@@ -50,7 +50,7 @@ class Application extends Container
         $this->instance(Container::class, $this);
         $this->instance(Application::class, $this);
         $this->instance(IlluminateContainer::class, $this);
-        $this->bind(ContainerInterface::class, Application::class);
+        $this->bind(ContainerInterface::class, self::class);
     }
 
     /**
