@@ -2,16 +2,19 @@
 
 namespace Engelsystem\Test\Unit\Middleware;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Config\Config;
 use Engelsystem\Http\Response;
 use Engelsystem\Middleware\AddHeaders;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class AddHeadersTest extends TestCase
 {
+    use ArraySubsetAsserts;
+
     /**
      * @covers \Engelsystem\Middleware\AddHeaders::__construct
      * @covers \Engelsystem\Middleware\AddHeaders::process

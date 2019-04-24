@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Models;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\HasUserModel;
 use Engelsystem\Models\User\PersonalData;
@@ -13,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
 {
+    use ArraySubsetAsserts;
     use HasDatabase;
 
     protected $data = [
@@ -91,7 +93,7 @@ class UserTest extends TestCase
     /**
      * Prepare test
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initDatabase();
     }

@@ -88,7 +88,7 @@ class DatabaseHandlerTest extends TestCase
     /**
      * Prepare tests
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initDatabase();
     }

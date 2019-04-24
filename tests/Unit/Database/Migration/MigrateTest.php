@@ -21,15 +21,15 @@ class MigrateTest extends TestCase
      */
     public function testRun()
     {
-        /** @var MockObject|Application $app */
+        /** @var Application|MockObject $app */
         $app = $this->getMockBuilder(Application::class)
             ->setMethods(['instance'])
             ->getMock();
-        /** @var MockObject|SchemaBuilder $builder */
+        /** @var SchemaBuilder|MockObject $builder */
         $builder = $this->getMockBuilder(SchemaBuilder::class)
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var MockObject|Migrate $migration */
+        /** @var Migrate|MockObject $migration */
         $migration = $this->getMockBuilder(Migrate::class)
             ->setConstructorArgs([$builder, $app])
             ->setMethods(['initMigration', 'getMigrationFiles', 'getMigrated', 'migrate', 'setMigrated'])

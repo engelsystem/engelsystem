@@ -7,8 +7,8 @@ use Engelsystem\Exceptions\Handlers\HandlerInterface;
 use Engelsystem\Http\Request;
 use ErrorException;
 use Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as Mock;
 
 class HandlerTest extends TestCase
 {
@@ -17,7 +17,7 @@ class HandlerTest extends TestCase
      */
     public function testCreate()
     {
-        /** @var Handler|Mock $handler */
+        /** @var Handler|MockObject $handler */
         $handler = new Handler();
         $this->assertInstanceOf(Handler::class, $handler);
         $this->assertEquals(Handler::ENV_PRODUCTION, $handler->getEnvironment());
@@ -31,7 +31,7 @@ class HandlerTest extends TestCase
      */
     public function testErrorHandler()
     {
-        /** @var Handler|Mock $handler */
+        /** @var Handler|MockObject $handler */
         $handler = $this->getMockBuilder(Handler::class)
             ->setMethods(['exceptionHandler'])
             ->getMock();
@@ -51,7 +51,7 @@ class HandlerTest extends TestCase
         $exception = new Exception();
         $errorMessage = 'Oh noes, an error!';
 
-        /** @var HandlerInterface|Mock $handlerMock */
+        /** @var HandlerInterface|MockObject $handlerMock */
         $handlerMock = $this->getMockForAbstractClass(HandlerInterface::class);
         $handlerMock->expects($this->atLeastOnce())
             ->method('report')
@@ -63,7 +63,7 @@ class HandlerTest extends TestCase
                 echo $errorMessage;
             });
 
-        /** @var Handler|Mock $handler */
+        /** @var Handler|MockObject $handler */
         $handler = $this->getMockBuilder(Handler::class)
             ->setMethods(['terminateApplicationImmediately'])
             ->getMock();
@@ -84,7 +84,7 @@ class HandlerTest extends TestCase
      */
     public function testRegister()
     {
-        /** @var Handler|Mock $handler */
+        /** @var Handler|MockObject $handler */
         $handler = $this->getMockForAbstractClass(Handler::class);
         $handler->register();
 
@@ -120,9 +120,9 @@ class HandlerTest extends TestCase
     public function testHandler()
     {
         $handler = new Handler();
-        /** @var HandlerInterface|Mock $devHandler */
+        /** @var HandlerInterface|MockObject $devHandler */
         $devHandler = $this->getMockForAbstractClass(HandlerInterface::class);
-        /** @var HandlerInterface|Mock $prodHandler */
+        /** @var HandlerInterface|MockObject $prodHandler */
         $prodHandler = $this->getMockForAbstractClass(HandlerInterface::class);
 
         $handler->setHandler(Handler::ENV_DEVELOPMENT, $devHandler);
@@ -139,7 +139,7 @@ class HandlerTest extends TestCase
     public function testRequest()
     {
         $handler = new Handler();
-        /** @var Request|Mock $request */
+        /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
 
         $handler->setRequest($request);

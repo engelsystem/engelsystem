@@ -11,8 +11,8 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Renderer\Renderer;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface as StorageInterface;
 
@@ -59,7 +59,7 @@ class HelpersTest extends TestCase
      */
     public function testBasePath()
     {
-        /** @var MockObject|Application $app */
+        /** @var Application|MockObject $app */
         $app = $this->getMockBuilder(Container::class)
             ->getMock();
         Application::setInstance($app);
@@ -103,7 +103,7 @@ class HelpersTest extends TestCase
      */
     public function testConfigPath()
     {
-        /** @var MockObject|Application $app */
+        /** @var Application|MockObject $app */
         $app = $this->getMockBuilder(Container::class)
             ->getMock();
         Application::setInstance($app);
@@ -155,7 +155,7 @@ class HelpersTest extends TestCase
      */
     public function testResponse()
     {
-        /** @var MockObject|Response $response */
+        /** @var Response|MockObject $response */
         $response = $this->getMockBuilder(Response::class)->getMock();
         $this->getAppMock('psr7.response', $response);
 

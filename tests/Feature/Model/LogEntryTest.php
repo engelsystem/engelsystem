@@ -49,7 +49,7 @@ class LogEntryTest extends TestCase
     /**
      * This method is called before a test is executed.
      */
-    public function setUp()
+    protected function setUp(): void
     {
         LogEntry::query()->truncate();
     }

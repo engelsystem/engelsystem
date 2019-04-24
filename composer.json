@@ -39,8 +39,9 @@
         "twig/twig": "~2.6.0"
     },
     "require-dev": {
+        "dms/phpunit-arraysubset-asserts": "^0.1.0",
         "filp/whoops": "^2.1",
-        "phpunit/phpunit": "^6.3",
+        "phpunit/phpunit": "^8.1",
         "symfony/var-dumper": "^3.3"
     },
     "autoload": {

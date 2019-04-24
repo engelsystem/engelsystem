@@ -6,8 +6,8 @@ use Engelsystem\Database\Database;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use Illuminate\Database\Connection as DatabaseConnection;
 use PDO;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 class DatabaseTest extends TestCase
 {
@@ -69,7 +69,7 @@ class DatabaseTest extends TestCase
         $this->assertEmpty($return);
 
         $return = $db->selectOne('SELECT * FROM test_data WHERE id = ?', [3]);
-        $this->assertTrue(!is_array($return));
+        $this->assertIsNotArray($return);
     }
 
     /**
@@ -114,7 +114,7 @@ class DatabaseTest extends TestCase
     /**
      * Setup in memory database
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $dbManager = new CapsuleManager();
         $dbManager->addConnection(['driver' => 'sqlite', 'database' => ':memory:']);

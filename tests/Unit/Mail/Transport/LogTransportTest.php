@@ -35,13 +35,13 @@ class LogTransportTest extends TestCase
             ->method('debug')
             ->willReturnCallback(function ($message, $context = []) {
                 foreach (array_keys($context) as $key) {
-                    $this->assertContains(sprintf('{%s}', $key), $message);
+                    $this->assertStringContainsString(sprintf('{%s}', $key), $message);
                 }
 
                 $this->assertEquals('Some subject', $context['title']);
                 $this->assertEquals('foo@bar.batz,Lorem Ipsum <lor@em.ips>', $context['recipients']);
-                $this->assertContains('Head: er', $context['content']);
-                $this->assertContains('Message body', $context['content']);
+                $this->assertStringContainsString('Head: er', $context['content']);
+                $this->assertStringContainsString('Message body', $context['content']);
             });
 
         /** @var LogTransport|MockObject $transport */

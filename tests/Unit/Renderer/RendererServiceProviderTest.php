@@ -7,7 +7,7 @@ use Engelsystem\Renderer\HtmlEngine;
 use Engelsystem\Renderer\Renderer;
 use Engelsystem\Renderer\RendererServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class RendererServiceProviderTest extends ServiceProviderTest
 {
@@ -18,10 +18,10 @@ class RendererServiceProviderTest extends ServiceProviderTest
      */
     public function testRegister()
     {
-        /** @var PHPUnit_Framework_MockObject_MockObject|Renderer $renderer */
+        /** @var Renderer|MockObject $renderer */
         $renderer = $this->getMockBuilder(Renderer::class)
             ->getMock();
-        /** @var PHPUnit_Framework_MockObject_MockObject|HtmlEngine $htmlEngine */
+        /** @var HtmlEngine|MockObject $htmlEngine */
         $htmlEngine = $this->getMockBuilder(HtmlEngine::class)
             ->getMock();
 
@@ -57,12 +57,12 @@ class RendererServiceProviderTest extends ServiceProviderTest
      */
     public function testBoot()
     {
-        /** @var PHPUnit_Framework_MockObject_MockObject|Renderer $renderer */
+        /** @var Renderer|MockObject $renderer */
         $renderer = $this->getMockBuilder(Renderer::class)
             ->getMock();
-        /** @var PHPUnit_Framework_MockObject_MockObject|EngineInterface $engine1 */
+        /** @var EngineInterface|MockObject $engine1 */
         $engine1 = $this->getMockForAbstractClass(EngineInterface::class);
-        /** @var PHPUnit_Framework_MockObject_MockObject|EngineInterface $engine2 */
+        /** @var EngineInterface|MockObject $engine2 */
         $engine2 = $this->getMockForAbstractClass(EngineInterface::class);
 
         $app = $this->getApp(['get', 'tagged']);

@@ -4,8 +4,8 @@ namespace Engelsystem\Test\Unit\Middleware;
 
 use Engelsystem\Helpers\Translator;
 use Engelsystem\Middleware\SetLocale;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;

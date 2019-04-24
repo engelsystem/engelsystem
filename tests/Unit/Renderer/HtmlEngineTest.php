@@ -58,7 +58,10 @@ class HtmlEngineTest extends TestCase
         return $fileName;
     }
 
-    public function tearDown()
+    /**
+     * Remove files
+     */
+    protected function tearDown(): void
     {
         foreach ($this->tmpFileNames as $fileName) {
             unlink($fileName);

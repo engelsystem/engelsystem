@@ -13,7 +13,7 @@ use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use Illuminate\Database\Connection;
 use PDO;
 use PDOException;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class DatabaseServiceProviderTest extends ServiceProviderTest
 {
@@ -78,13 +78,13 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
      */
     protected function prepare($dbConfigData, $getPdoThrowException = false)
     {
-        /** @var MockObject|Config $config */
+        /** @var Config|MockObject $config */
         $config = $this->getMockBuilder(Config::class)
             ->getMock();
-        /** @var MockObject|CapsuleManager $config */
+        /** @var CapsuleManager|MockObject $config */
         $dbManager = $this->getMockBuilder(CapsuleManager::class)
             ->getMock();
-        /** @var MockObject|Connection $connection */
+        /** @var Connection|MockObject $connection */
         $connection = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->getMock();

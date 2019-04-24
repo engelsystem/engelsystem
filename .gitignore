@@ -7,6 +7,7 @@
 *.DS_Store
 .*.swp
 *.out
+*.cache
 Thumbs.db
 .project
 .buildpath

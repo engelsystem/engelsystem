@@ -8,8 +8,8 @@ use Engelsystem\Exceptions\Handlers\Whoops;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
 use Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as Mock;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run as WhoopsRunner;
@@ -22,19 +22,19 @@ class WhoopsTest extends TestCase
      */
     public function testRender()
     {
-        /** @var Application|Mock $app */
+        /** @var Application|MockObject $app */
         $app = $this->createMock(Application::class);
-        /** @var Authenticator|Mock $auth */
+        /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
-        /** @var Request|Mock $request */
+        /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
-        /** @var WhoopsRunnerInterface|Mock $whoopsRunner */
+        /** @var WhoopsRunnerInterface|MockObject $whoopsRunner */
         $whoopsRunner = $this->getMockForAbstractClass(WhoopsRunnerInterface::class);
-        /** @var PrettyPageHandler|Mock $prettyPageHandler */
+        /** @var PrettyPageHandler|MockObject $prettyPageHandler */
         $prettyPageHandler = $this->createMock(PrettyPageHandler::class);
-        /** @var JsonResponseHandler|Mock $jsonResponseHandler */
+        /** @var JsonResponseHandler|MockObject $jsonResponseHandler */
         $jsonResponseHandler = $this->createMock(JsonResponseHandler::class);
-        /** @var Exception|Mock $exception */
+        /** @var Exception|MockObject $exception */
         $exception = $this->createMock(Exception::class);
 
         $request->expects($this->once())

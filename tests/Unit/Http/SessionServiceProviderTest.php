@@ -7,7 +7,7 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\SessionHandlers\DatabaseHandler;
 use Engelsystem\Http\SessionServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -33,7 +33,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
         $session = $this->getSessionMock();
         $request = $this->getRequestMock();
 
-        /** @var MockObject|SessionServiceProvider $serviceProvider */
+        /** @var SessionServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(SessionServiceProvider::class)
             ->setConstructorArgs([$app])
             ->setMethods(['isCli'])

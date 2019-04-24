@@ -6,8 +6,8 @@ namespace Engelsystem\Test\Unit\Exceptions\handlers;
 use Engelsystem\Exceptions\Handlers\LegacyDevelopment;
 use Engelsystem\Http\Request;
 use ErrorException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as Mock;
 
 class LegacyDevelopmentTest extends TestCase
 {
@@ -18,7 +18,7 @@ class LegacyDevelopmentTest extends TestCase
     public function testRender()
     {
         $handler = new LegacyDevelopment();
-        /** @var Request|Mock $request */
+        /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
         $exception = new ErrorException('Lorem Ipsum', 4242, 1, 'foo.php', 9999);
 

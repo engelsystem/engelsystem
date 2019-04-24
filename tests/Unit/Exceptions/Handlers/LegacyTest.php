@@ -6,8 +6,8 @@ namespace Engelsystem\Test\Unit\Exceptions\handlers;
 use Engelsystem\Exceptions\Handlers\Legacy;
 use Engelsystem\Http\Request;
 use Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as Mock;
 
 class LegacyTest extends TestCase
 {
@@ -17,9 +17,9 @@ class LegacyTest extends TestCase
     public function testRender()
     {
         $handler = new Legacy();
-        /** @var Request|Mock $request */
+        /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
-        /** @var Exception|Mock $exception */
+        /** @var Exception|MockObject $exception */
         $exception = $this->createMock(Exception::class);
 
         $this->expectOutputRegex('/.*error occurred.*/i');
@@ -45,11 +45,11 @@ class LegacyTest extends TestCase
         $logContent = file_get_contents($log);
         unset($log);
 
-        $this->assertContains('4242', $logContent);
-        $this->assertContains('Lorem Ipsum', $logContent);
-        $this->assertContains(basename(__FILE__), $logContent);
-        $this->assertContains((string)$line, $logContent);
-        $this->assertContains(__FUNCTION__, $logContent);
-        $this->assertContains(json_encode(__CLASS__), $logContent);
+        $this->assertStringContainsString('4242', $logContent);
+        $this->assertStringContainsString('Lorem Ipsum', $logContent);
+        $this->assertStringContainsString(basename(__FILE__), $logContent);
+        $this->assertStringContainsString((string)$line, $logContent);
+        $this->assertStringContainsString(__FUNCTION__, $logContent);
+        $this->assertStringContainsString(json_encode(__CLASS__), $logContent);
     }
 }
