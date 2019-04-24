@@ -34,9 +34,9 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Application::setAppPath
-     * @covers \Engelsystem\Application::registerPaths
      * @covers \Engelsystem\Application::path
+     * @covers \Engelsystem\Application::registerPaths
+     * @covers \Engelsystem\Application::setAppPath
      */
     public function testAppPath()
     {
@@ -125,8 +125,8 @@ class ApplicationTest extends TestCase
 
     /**
      * @covers \Engelsystem\Application::bootstrap
-     * @covers \Engelsystem\Application::isBooted
      * @covers \Engelsystem\Application::getMiddleware
+     * @covers \Engelsystem\Application::isBooted
      */
     public function testBootstrap()
     {

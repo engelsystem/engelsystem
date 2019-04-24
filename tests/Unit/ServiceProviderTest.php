@@ -13,7 +13,6 @@ abstract class ServiceProviderTest extends TestCase
      */
     protected function getApp($methods = ['make', 'instance'])
     {
-        /** @var Application|MockObject $app */
         return $this->getMockBuilder(Application::class)
             ->setMethods($methods)
             ->getMock();

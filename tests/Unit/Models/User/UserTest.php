@@ -37,14 +37,14 @@ class UserTest extends TestCase
                     'dect'   => '1234567',
                     'email'  => 'foo@bar.batz',
                     'mobile' => '1234/12341234',
-                ]
+                ],
             ],
             [
                 PersonalData::class,
                 'personalData',
                 [
-                    'first_name' => 'Foo'
-                ]
+                    'first_name' => 'Foo',
+                ],
             ],
             [
                 Settings::class,
@@ -52,14 +52,14 @@ class UserTest extends TestCase
                 [
                     'language' => 'de_DE',
                     'theme'    => 4,
-                ]
+                ],
             ],
             [
                 State::class,
                 'state',
                 [
                     'force_active' => true,
-                ]
+                ],
             ],
         ];
     }

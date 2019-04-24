@@ -36,7 +36,8 @@ class Migrate
     {
         $this->app = $app;
         $this->schema = $schema;
-        $this->output = function () { };
+        $this->output = function () {
+        };
     }
 
     /**

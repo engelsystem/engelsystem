@@ -14,8 +14,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class VerifyCsrfTokenTest extends TestCase
 {
     /**
-     * @covers \Engelsystem\Middleware\VerifyCsrfToken::process
      * @covers \Engelsystem\Middleware\VerifyCsrfToken::isReading
+     * @covers \Engelsystem\Middleware\VerifyCsrfToken::process
      */
     public function testProcess()
     {

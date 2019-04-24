@@ -29,7 +29,7 @@ class LegacyMiddleware implements MiddlewareInterface
         'users',
         'user_driver_licenses',
         'user_password_recovery',
-        'user_worklog'
+        'user_worklog',
     ];
 
     /** @var ContainerInterface */

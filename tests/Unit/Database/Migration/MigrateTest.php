@@ -15,8 +15,8 @@ class MigrateTest extends TestCase
 {
     /**
      * @covers \Engelsystem\Database\Migration\Migrate::__construct
-     * @covers \Engelsystem\Database\Migration\Migrate::run
      * @covers \Engelsystem\Database\Migration\Migrate::getMigrations
+     * @covers \Engelsystem\Database\Migration\Migrate::run
      * @covers \Engelsystem\Database\Migration\Migrate::setOutput
      */
     public function testRun()
@@ -112,11 +112,11 @@ class MigrateTest extends TestCase
 
     /**
      * @covers \Engelsystem\Database\Migration\Migrate::getMigrated
+     * @covers \Engelsystem\Database\Migration\Migrate::getMigrationFiles
+     * @covers \Engelsystem\Database\Migration\Migrate::getTableQuery
+     * @covers \Engelsystem\Database\Migration\Migrate::initMigration
      * @covers \Engelsystem\Database\Migration\Migrate::migrate
      * @covers \Engelsystem\Database\Migration\Migrate::setMigrated
-     * @covers \Engelsystem\Database\Migration\Migrate::getMigrationFiles
-     * @covers \Engelsystem\Database\Migration\Migrate::initMigration
-     * @covers \Engelsystem\Database\Migration\Migrate::getTableQuery
      */
     public function testRunIntegration()
     {

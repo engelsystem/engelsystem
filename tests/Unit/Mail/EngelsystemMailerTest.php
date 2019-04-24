@@ -40,9 +40,9 @@ class EngelsystemMailerTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Mail\EngelsystemMailer::getSubjectPrefix
      * @covers \Engelsystem\Mail\EngelsystemMailer::send
      * @covers \Engelsystem\Mail\EngelsystemMailer::setSubjectPrefix
-     * @covers \Engelsystem\Mail\EngelsystemMailer::getSubjectPrefix
      */
     public function testSend()
     {

@@ -16,8 +16,8 @@ class DatabaseTest extends TestCase
 
     /**
      * @covers \Engelsystem\Database\Database::__construct()
-     * @covers \Engelsystem\Database\Database::getPdo()
      * @covers \Engelsystem\Database\Database::getConnection()
+     * @covers \Engelsystem\Database\Database::getPdo()
      */
     public function testInit()
     {
@@ -129,7 +129,8 @@ class DatabaseTest extends TestCase
                 id INT PRIMARY KEY NOT NULL,
                 data TEXT NOT NULL
             );
-        ');
+            '
+        );
         $connection->statement('CREATE UNIQUE INDEX test_data_id_uindex ON test_data (id);');
         $connection->insert("
             INSERT INTO test_data (id, data)

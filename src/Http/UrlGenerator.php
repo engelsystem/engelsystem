@@ -4,7 +4,7 @@ namespace Engelsystem\Http;
 
 /**
  * Provides urls when rewriting on the webserver is enabled. (default)
- * 
+ *
  * The urls have the form <app url>/<path>?<parameters>
  */
 class UrlGenerator implements UrlGeneratorInterface

@@ -29,8 +29,8 @@ class LegacyTest extends ExtensionTest
     }
 
     /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Legacy::getPage
      * @covers \Engelsystem\Renderer\Twig\Extensions\Legacy::__construct
+     * @covers \Engelsystem\Renderer\Twig\Extensions\Legacy::getPage
      */
     public function testIsAuthenticated()
     {

@@ -4,8 +4,8 @@ namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Application;
 use Engelsystem\Container\Container;
-use Engelsystem\Http\Request;
 use Engelsystem\Http\LegacyUrlGenerator;
+use Engelsystem\Http\Request;
 use Engelsystem\Http\UrlGeneratorInterface;
 use PHPUnit\Framework\TestCase;
 

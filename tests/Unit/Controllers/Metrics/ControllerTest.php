@@ -127,8 +127,8 @@ class ControllerTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Metrics\Controller::stats
      * @covers \Engelsystem\Controllers\Metrics\Controller::checkAuth
+     * @covers \Engelsystem\Controllers\Metrics\Controller::stats
      */
     public function testStats()
     {
@@ -149,7 +149,7 @@ class ControllerTest extends TestCase
                 'user_count'         => 13,
                 'arrived_user_count' => 10,
                 'done_work_hours'    => 99,
-                'users_in_action'    => 5
+                'users_in_action'    => 5,
             ]))
             ->willReturn($response);
 
@@ -213,6 +213,6 @@ class ControllerTest extends TestCase
         $stats = $this->createMock(Stats::class);
         $config = new Config();
 
-        return array($response, $request, $engine, $stats, $config);
+        return [$response, $request, $engine, $stats, $config];
     }
 }

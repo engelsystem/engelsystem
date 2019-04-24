@@ -8,12 +8,12 @@ use Engelsystem\Test\Unit\TestCase;
 class MetricsEngineTest extends TestCase
 {
     /**
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::get
+     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::escape
      * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::formatData
+     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::formatValue
+     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::get
      * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::renderLabels
      * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::renderValue
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::formatValue
-     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::escape
      */
     public function testGet()
     {
@@ -30,13 +30,13 @@ class MetricsEngineTest extends TestCase
         $this->assertEquals(
             'engelsystem_foo{lorem="ip\\\\sum"} \\"lorem\\n\\\\ipsum\\"',
             $engine->get('/metrics', [
-                'foo' => ['labels' => ['lorem' => 'ip\\sum'], 'value' => "\"lorem\n\\ipsum\""]
+                'foo' => ['labels' => ['lorem' => 'ip\\sum'], 'value' => "\"lorem\n\\ipsum\""],
             ])
         );
 
         $this->assertEquals(
             'engelsystem_foo_count{bar="14"} 42',
-            $engine->get('/metrics', ['foo_count' => ['labels' => ['bar' => 14], 'value' => 42],])
+            $engine->get('/metrics', ['foo_count' => ['labels' => ['bar' => 14], 'value' => 42]])
         );
 
         $this->assertEquals(

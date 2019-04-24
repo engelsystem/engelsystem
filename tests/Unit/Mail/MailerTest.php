@@ -13,8 +13,8 @@ class MailerTest extends TestCase
     /**
      * @covers \Engelsystem\Mail\Mailer::__construct
      * @covers \Engelsystem\Mail\Mailer::getFromAddress
-     * @covers \Engelsystem\Mail\Mailer::setFromAddress
      * @covers \Engelsystem\Mail\Mailer::getFromName
+     * @covers \Engelsystem\Mail\Mailer::setFromAddress
      * @covers \Engelsystem\Mail\Mailer::setFromName
      */
     public function testInitAndSettersAndGetters()

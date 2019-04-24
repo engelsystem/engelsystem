@@ -12,8 +12,8 @@ use PHPUnit\Framework\TestCase;
 class DbTest extends TestCase
 {
     /**
-     * @covers \Engelsystem\Database\Db::setDbManager()
      * @covers \Engelsystem\Database\Db::connection()
+     * @covers \Engelsystem\Database\Db::setDbManager()
      */
     public function testSetDbManager()
     {
@@ -132,7 +132,8 @@ class DbTest extends TestCase
                 id INT PRIMARY KEY NOT NULL,
                 data TEXT NOT NULL
             );
-        ');
+            '
+        );
         Db::connection()->statement('CREATE UNIQUE INDEX test_data_id_uindex ON test_data (id);');
         Db::insert("
             INSERT INTO test_data (id, data)

@@ -67,7 +67,7 @@ class TranslationServiceProviderTest extends ServiceProviderTest
                 [
                     'locale'               => $locale,
                     'locales'              => $locales,
-                    'localeChangeCallback' => [$serviceProvider, 'setLocale']
+                    'localeChangeCallback' => [$serviceProvider, 'setLocale'],
                 ]
             )
             ->willReturn($translator);
@@ -82,5 +82,3 @@ class TranslationServiceProviderTest extends ServiceProviderTest
         $serviceProvider->register();
     }
 }
-
-

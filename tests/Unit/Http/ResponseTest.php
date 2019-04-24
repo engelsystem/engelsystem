@@ -26,8 +26,8 @@ class ResponseTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Http\Response::withStatus
      * @covers \Engelsystem\Http\Response::getReasonPhrase
+     * @covers \Engelsystem\Http\Response::withStatus
      */
     public function testWithStatus()
     {

@@ -2,7 +2,6 @@
 
 namespace Engelsystem\Test\Unit\Exceptions\handlers;
 
-
 use Engelsystem\Exceptions\Handlers\LegacyDevelopment;
 use Engelsystem\Http\Request;
 use ErrorException;
@@ -12,8 +11,8 @@ use PHPUnit\Framework\TestCase;
 class LegacyDevelopmentTest extends TestCase
 {
     /**
-     * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::render()
      * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::formatStackTrace()
+     * @covers \Engelsystem\Exceptions\Handlers\LegacyDevelopment::render()
      */
     public function testRender()
     {

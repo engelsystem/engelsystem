@@ -11,11 +11,11 @@ class TranslatorTest extends ServiceProviderTest
 {
     /**
      * @covers \Engelsystem\Helpers\Translator::__construct
-     * @covers \Engelsystem\Helpers\Translator::setLocale
-     * @covers \Engelsystem\Helpers\Translator::setLocales
      * @covers \Engelsystem\Helpers\Translator::getLocale
      * @covers \Engelsystem\Helpers\Translator::getLocales
      * @covers \Engelsystem\Helpers\Translator::hasLocale
+     * @covers \Engelsystem\Helpers\Translator::setLocale
+     * @covers \Engelsystem\Helpers\Translator::setLocales
      */
     public function testInit()
     {
@@ -47,8 +47,8 @@ class TranslatorTest extends ServiceProviderTest
     }
 
     /**
-     * @covers \Engelsystem\Helpers\Translator::translate
      * @covers \Engelsystem\Helpers\Translator::replaceText
+     * @covers \Engelsystem\Helpers\Translator::translate
      */
     public function testTranslate()
     {
@@ -88,5 +88,3 @@ class TranslatorTest extends ServiceProviderTest
         $this->assertEquals('2 Äpfel', $return);
     }
 }
-
-

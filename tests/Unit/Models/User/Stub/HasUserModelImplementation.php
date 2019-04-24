@@ -6,5 +6,4 @@ use Engelsystem\Models\User\HasUserModel;
 
 class HasUserModelImplementation extends HasUserModel
 {
-
 }

@@ -77,7 +77,7 @@ function admin_user()
 
         // Gekommen?
         $html .= '  <tr><td>Gekommen</td><td>' . "\n";
-        if($user_source->state->arrived) {
+        if ($user_source->state->arrived) {
             $html .= _('Yes');
         } else {
             $html .= _('No');

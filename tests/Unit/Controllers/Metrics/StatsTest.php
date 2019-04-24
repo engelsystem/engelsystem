@@ -20,9 +20,9 @@ class StatsTest extends TestCase
     use HasDatabase;
 
     /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::newUsers
-     * @covers \Engelsystem\Controllers\Metrics\Stats::getQuery
      * @covers \Engelsystem\Controllers\Metrics\Stats::__construct
+     * @covers \Engelsystem\Controllers\Metrics\Stats::getQuery
+     * @covers \Engelsystem\Controllers\Metrics\Stats::newUsers
      */
     public function testNewUsers()
     {
@@ -58,8 +58,8 @@ class StatsTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::tshirtSizes
      * @covers \Engelsystem\Controllers\Metrics\Stats::raw
+     * @covers \Engelsystem\Controllers\Metrics\Stats::tshirtSizes
      */
     public function testTshirtSizes()
     {

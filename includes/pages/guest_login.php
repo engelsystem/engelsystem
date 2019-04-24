@@ -150,7 +150,7 @@ function guest_register()
                 $valid = false;
                 error(__('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
             }
-        } else if ($enable_planned_arrival) {
+        } elseif ($enable_planned_arrival) {
             $valid = false;
             error(__('Please enter your planned date of arrival. It should be after the buildup start date and before teardown end date.'));
         }

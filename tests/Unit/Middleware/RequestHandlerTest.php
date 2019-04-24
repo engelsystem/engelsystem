@@ -136,8 +136,8 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Middleware\RequestHandler::process
      * @covers \Engelsystem\Middleware\RequestHandler::checkPermissions
+     * @covers \Engelsystem\Middleware\RequestHandler::process
      */
     public function testCheckPermissions()
     {

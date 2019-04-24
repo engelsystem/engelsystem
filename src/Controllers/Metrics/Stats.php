@@ -27,6 +27,7 @@ class Stats
      */
     public function arrivedUsers($working = null): int
     {
+        /** @var QueryBuilder $query */
         $query = $this
             ->getQuery('users')
             ->join('users_state', 'user_id', '=', 'id')
@@ -40,7 +41,6 @@ class Stats
                 ->distinct();
 
             $query->where(function ($query) use ($working) {
-                /** @var QueryBuilder $query */
                 if ($working) {
                     $query
                         ->whereNotNull('ShiftEntry.SID')

@@ -6,5 +6,4 @@ use Engelsystem\Container\ServiceProvider;
 
 class ServiceProviderImplementation extends ServiceProvider
 {
-
 }

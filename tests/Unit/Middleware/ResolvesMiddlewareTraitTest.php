@@ -14,8 +14,8 @@ use Psr\Http\Server\MiddlewareInterface;
 class ResolvesMiddlewareTraitTest extends TestCase
 {
     /**
-     * @covers \Engelsystem\Middleware\ResolvesMiddlewareTrait::resolveMiddleware
      * @covers \Engelsystem\Middleware\ResolvesMiddlewareTrait::isMiddleware
+     * @covers \Engelsystem\Middleware\ResolvesMiddlewareTrait::resolveMiddleware
      */
     public function testResolveMiddleware()
     {

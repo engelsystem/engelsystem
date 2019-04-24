@@ -13,7 +13,6 @@ use Psr\Http\Message\UploadedFileFactoryInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 
-
 class Psr7ServiceProvider extends ServiceProvider
 {
     public function register()

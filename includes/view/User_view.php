@@ -28,7 +28,7 @@ function User_settings_view(
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
 
-		return page_with_title(settings_title(), [
+    return page_with_title(settings_title(), [
         msg(),
         div('row', [
             div('col-md-6', [
