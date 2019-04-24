@@ -67,7 +67,7 @@ class RequestHandler implements MiddlewareInterface
      */
     protected function resolveRequestHandler($handler)
     {
-        if (is_string($handler) && strpos($handler, '@') !== false) {
+        if (is_string($handler) && mb_strpos($handler, '@') !== false) {
             list($class, $method) = explode('@', $handler, 2);
             if (!class_exists($class) && !$this->container->has($class)) {
                 $class = sprintf('Engelsystem\\Controllers\\%s', $class);
