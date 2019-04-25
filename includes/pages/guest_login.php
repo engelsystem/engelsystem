@@ -203,7 +203,7 @@ function guest_register()
                 'first_name'           => $preName,
                 'last_name'            => $lastName,
                 'shirt_size'           => $tshirt_size,
-                'planned_arrival_date' => Carbon::createFromTimestamp($planned_arrival_date),
+                'planned_arrival_date' => $enable_planned_arrival ? Carbon::createFromTimestamp($planned_arrival_date) : null,
             ]);
             $personalData->user()
                 ->associate($user)
@@ -303,13 +303,13 @@ function guest_register()
                         ])
                     ]),
                     div('row', [
-                        div('col-sm-6', [
-                            $enable_planned_arrival ? form_date(
+                        $enable_planned_arrival ? div('col-sm-6', [
+                            form_date(
                                 'planned_arrival_date',
                                 __('Planned date of arrival') . ' ' . entry_required(),
                                 $planned_arrival_date, $buildup_start_date, $teardown_end_date
-                            ) : ''
-                        ]),
+                            )
+                        ]) : '',
                         div('col-sm-6', [
                             $enable_tshirt_size ? form_select('tshirt_size',
                                 __('Shirt size') . ' ' . entry_required(),
