@@ -70,15 +70,15 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
     }
 
     // Trivia
-    $user_source->personalData->last_name = strip_request_item('lastname', $user_source['Name']);
-    $user_source->personalData->first_name = strip_request_item('prename', $user_source['Vorname']);
+    $user_source->personalData->last_name = strip_request_item('lastname', $user_source->personalData->last_name);
+    $user_source->personalData->first_name = strip_request_item('prename', $user_source->personalData->first_name);
     if (strlen(strip_request_item('dect')) <= 40) {
-        $user_source->contact->dect = strip_request_item('dect', $user_source['DECT']);
+        $user_source->contact->dect = strip_request_item('dect', $user_source->contact->dect);
     } else {
         $valid = false;
         error(__('For dect numbers are only 40 digits allowed.'));
     }
-    $user_source->contact->mobile = strip_request_item('mobile', $user_source['Handy']);
+    $user_source->contact->mobile = strip_request_item('mobile', $user_source->contact->mobile);
 
     if ($valid) {
         $user_source->save();
