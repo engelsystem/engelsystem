@@ -526,7 +526,7 @@ function User_view_worklog($worklog, $admin_user_worklog_privilege)
 
     return [
         'date'       => glyph('calendar') . date('Y-m-d', $worklog['work_timestamp']),
-        'duration'   => '<b>' . sprintf('%.2f', $worklog['work_hours']) . '</b>',
+        'duration'   => sprintf('%.2f', $worklog['work_hours']) . ' h',
         'room'       => '',
         'shift_info' => __('Work log entry'),
         'comment'    => $worklog['comment'] . '<br>'
