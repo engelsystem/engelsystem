@@ -83,18 +83,21 @@ function guest_register()
     if ($request->hasPostData('submit')) {
         $valid = true;
 
-        if ($request->has('nick') && strlen(User_validate_Nick($request->input('nick'))) > 1) {
-            $nick = User_validate_Nick($request->input('nick'));
+        if ($request->has('nick')) {
+            $nickValidation = User_validate_Nick($request->input('nick'));
+            $nick = $nickValidation->getValue();
+            
+            if(!$nickValidation->isValid()) {
+                $valid = false;
+                $msg .= error(sprintf(__('Please enter a valid nick.') . ' ' . __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.'), $nick), true);
+            }
             if (User::whereName($nick)->count() > 0) {
                 $valid = false;
                 $msg .= error(sprintf(__('Your nick &quot;%s&quot; already exists.'), $nick), true);
             }
         } else {
             $valid = false;
-            $msg .= error(sprintf(
-                __('Your nick &quot;%s&quot; is too short (min. 2 characters).'),
-                User_validate_Nick($request->input('nick'))
-            ), true);
+            $msg .= error(__('Please enter a nickname.'), true);
         }
 
         if ($request->has('mail') && strlen(strip_request_item('mail')) > 0) {
@@ -283,7 +286,8 @@ function guest_register()
                 div('col-md-6', [
                     div('row', [
                         div('col-sm-4', [
-                            form_text('nick', __('Nick') . ' ' . entry_required(), $nick)
+                            form_text('nick', __('Nick') . ' ' . entry_required(), $nick),
+                            form_info('', __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.'))
                         ]),
                         div('col-sm-8', [
                             form_email('mail', __('E-Mail') . ' ' . entry_required(), $mail),
@@ -395,9 +399,10 @@ function guest_login()
     $session->remove('uid');
 
     if ($request->hasPostData('submit')) {
-        if ($request->has('nick') && strlen(User_validate_Nick($request->input('nick'))) > 0) {
-            $nick = User_validate_Nick($request->input('nick'));
-            $login_user = User::whereName($nick)->first();
+        if ($request->has('nick') && !empty($request->input('nick'))) {
+            $nickValidation = User_validate_Nick($request->input('nick'));
+            $nick = $nickValidation->getValue();
+            $login_user = User::whereName($nickValidation->getValue())->first();
             if ($login_user) {
                 if ($request->has('password')) {
                     if (!verify_password($request->postData('password'), $login_user->password, $login_user->id)) {

@@ -261,7 +261,10 @@ function admin_user()
                 if ($user_source->settings->email_human) {
                     $user_source->email = $request->postData('eemail');
                 }
-                $user_source->name = User_validate_Nick($request->postData('eNick'));
+                $nickValidation = User_validate_Nick($request->postData('eNick'));
+                if($nickValidation->isValid()) {
+                    $user_source->name = $nickValidation->getValue();
+                }
                 $user_source->save();
                 $user_source->personalData->first_name = $request->postData('eVorname');
                 $user_source->personalData->last_name = $request->postData('eName');

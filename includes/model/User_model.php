@@ -112,11 +112,20 @@ function Users_by_angeltype($angeltype)
  * Nick is trimmed.
  *
  * @param string $nick
- * @return string
+ * @return ValidationResult
  */
 function User_validate_Nick($nick)
 {
-    return preg_replace('/([^\p{L}\p{N}\-_. ]+)/ui', '', trim($nick));
+    $nick = trim($nick);
+    
+    if(strlen($nick) == 0 || strlen($nick) > 23) {
+        return new ValidationResult(false, $nick);
+    }
+    if(preg_match('/([^\p{L}\p{N}\-_. ]+)/ui', $nick)) {
+        return new ValidationResult(false, $nick);
+    }
+    
+    return new ValidationResult(true, $nick);
 }
 
 /**
