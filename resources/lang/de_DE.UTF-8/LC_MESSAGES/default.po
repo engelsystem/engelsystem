@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem\n"
-"POT-Creation-Date: 2019-04-28 14:34+0200\n"
-"PO-Revision-Date: 2019-04-28 14:35+0200\n"
+"POT-Creation-Date: 2019-04-28 14:54+0200\n"
+"PO-Revision-Date: 2019-04-28 14:55+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -656,6 +656,12 @@ msgstr "Bitte besuche %s, um Dein Passwort zurückzusetzen"
 msgid "We sent an email containing your password recovery link."
 msgstr ""
 "Wir haben eine eMail mit einem Link zum Passwort-zurücksetzen geschickt."
+
+#: /Users/msquare/workspace/projects/engelsystem/includes/helper/email_helper.php:41
+#, php-format
+msgid "User %s could not be notified by email due to an error."
+msgstr ""
+"Aufgrund eines Fehlers konnte dem User %s keine E-Mail gesendet werden."
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/mailer/shifts_mailer.php:17
 msgid "A Shift you are registered on has changed:"
