@@ -25,6 +25,7 @@ function admin_log()
     $entries = [];
     foreach ($log_entries as $entry) {
         $data = $entry->toArray();
+        $data['message'] = nl2br(htmlspecialchars($data['message']));
         $data['created_at'] = date_format($entry->created_at, 'd.m.Y H:i');
         $entries[] = $data;
     }
