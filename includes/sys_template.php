@@ -379,6 +379,17 @@ function button_glyph($href, $glyph, $class = '')
 }
 
 /**
+ * Rendert einen Knopf, der zur Hilfe eines bestimmten Themas führt.
+ * 
+ * @param string $topic documentation resource (like user/), is appended to documentation url.
+ * @return string
+ */
+function button_help($topic = '')
+{
+    return button(config('documentation_url') . $topic, glyph('question-sign'), 'btn-sm');
+}
+
+/**
  * Rendert eine Toolbar mit Knöpfen
  *
  * @param array $buttons

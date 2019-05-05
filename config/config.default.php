@@ -31,6 +31,9 @@ return [
         // Contact email address, linked on every page
         'Contact' => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
     ],
+    
+    // Link to documentation/help
+    'documentation_url' => 'https://engelsystem.de/doc/',
 
     // Email config
     'email'                   => [
@@ -74,7 +77,7 @@ return [
     'home_site'               => 'news',
 
     // Number of News shown on one site
-    'display_news'            => 6,
+    'display_news'            => 10,
 
     // Users are able to sign up
     'registration_enabled'    => (bool)env('REGISTRATION_ENABLED', true),
