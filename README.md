@@ -139,5 +139,8 @@ The `bin/migrate` script can be used to import and update the database of the en
 
 For more information on how to use it call `./bin/migrate help`
 
+### Translation
+We use gettext. You may use POEdit to extract new texts from the sourcecode. Please config POEdit to extract also the twig template files using the following settings: https://gist.github.com/jlambe/a868d9b63d70902a12254ce47069d0e6
+
 ### Codestyle
 Please ensure that your pull requests follow [PSR-2](http://www.php-fig.org/psr/psr-2/) and [PSR-4](http://www.php-fig.org/psr/psr-4/).
