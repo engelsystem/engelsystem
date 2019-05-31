@@ -130,9 +130,9 @@ function admin_questions()
                         );
                         engelsystem_log(
                             'Question '
-                            . htmlspecialchars($question['Question'])
+                            . $question['Question']
                             . ' answered: '
-                            . htmlspecialchars($answer)
+                            . $answer
                         );
                         redirect(page_link_to('admin_questions'));
                     } else {
@@ -159,7 +159,7 @@ function admin_questions()
                 );
                 if (!empty($question)) {
                     DB::delete('DELETE FROM `Questions` WHERE `QID`=? LIMIT 1', [$question_id]);
-                    engelsystem_log('Question deleted: ' . htmlspecialchars($question['Question']));
+                    engelsystem_log('Question deleted: ' . $question['Question']);
                     redirect(page_link_to('admin_questions'));
                 } else {
                     return error('No question found.', true);

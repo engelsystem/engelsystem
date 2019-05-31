@@ -18,7 +18,7 @@ function engelsystem_log($message, $level = LogLevel::INFO)
     $user = auth()->user();
 
     if ($user) {
-        $nick = User_Nick_render($user);
+        $nick = User_Nick_render($user, true);
     }
 
     $logger->log($level, '{nick}: {message}', ['nick' => $nick, 'message' => $message]);

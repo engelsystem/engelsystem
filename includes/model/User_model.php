@@ -5,6 +5,7 @@ use Engelsystem\Database\DB;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\User;
 use Engelsystem\ValidationResult;
+use Illuminate\Database\Query\JoinClause;
 
 /**
  * User model
@@ -117,14 +118,14 @@ function Users_by_angeltype($angeltype)
 function User_validate_Nick($nick)
 {
     $nick = trim($nick);
-    
-    if(strlen($nick) == 0 || strlen($nick) > 23) {
+
+    if (strlen($nick) == 0 || strlen($nick) > 23) {
         return new ValidationResult(false, $nick);
     }
-    if(preg_match('/([^\p{L}\p{N}\-_. ]+)/ui', $nick)) {
+    if (preg_match('/([^\p{L}\p{N}\-_. ]+)/ui', $nick)) {
         return new ValidationResult(false, $nick);
     }
-    
+
     return new ValidationResult(true, $nick);
 }
 
@@ -222,7 +223,7 @@ function User_reset_api_key($user, $log = true)
     $user->save();
 
     if ($log) {
-        engelsystem_log(sprintf('API key resetted (%s).', User_Nick_render($user)));
+        engelsystem_log(sprintf('API key resetted (%s).', User_Nick_render($user, true)));
     }
 }
 
@@ -239,7 +240,7 @@ function User_generate_password_recovery_token($user)
     $reset->token = md5($user->name . time() . rand());
     $reset->save();
 
-    engelsystem_log('Password recovery for ' . User_Nick_render($user) . ' started.');
+    engelsystem_log('Password recovery for ' . User_Nick_render($user, true) . ' started.');
 
     return $reset->token;
 }

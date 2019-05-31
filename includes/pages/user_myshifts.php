@@ -99,7 +99,7 @@ function user_myshifts()
                     ]);
 
                     engelsystem_log(
-                        'Updated ' . User_Nick_render($user_source) . '\'s shift ' . $shift['name']
+                        'Updated ' . User_Nick_render($user_source, true) . '\'s shift ' . $shift['name']
                         . ' from ' . date('Y-m-d H:i', $shift['start'])
                         . ' to ' . date('Y-m-d H:i', $shift['end'])
                         . ' with comment ' . $comment

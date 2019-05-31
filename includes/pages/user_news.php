@@ -156,7 +156,7 @@ function user_news_comments()
                 ]
             );
 
-            engelsystem_log('Created news_comment: ' . htmlspecialchars($text));
+            engelsystem_log('Created news_comment: ' . $text);
             $html .= success(__('Entry saved.'), true);
         }
 

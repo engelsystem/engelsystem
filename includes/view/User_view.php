@@ -36,7 +36,10 @@ function User_settings_view(
                     form_info('', __('Here you can change your user details.')),
                     form_info(entry_required() . ' = ' . __('Entry required!')),
                     form_text('nick', __('Nick'), $user_source->name, true),
-                    form_info('', __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.')),
+                    form_info(
+                        '',
+                        __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.')
+                    ),
                     form_text('lastname', __('Last name'), $personalData->last_name),
                     form_text('prename', __('First name'), $personalData->first_name),
                     $enable_planned_arrival ? form_date(
@@ -856,12 +859,17 @@ function User_groups_render($user_groups)
  * Render a user nickname.
  *
  * @param array|User $user
+ * @param bool       $plain
  * @return string
  */
-function User_Nick_render($user)
+function User_Nick_render($user, $plain = false)
 {
     if (is_array($user)) {
         $user = (new User())->forceFill($user);
+    }
+
+    if ($plain) {
+        return sprintf('%s (%u)', $user->name, $user->id);
     }
 
     return render_profile_link(
