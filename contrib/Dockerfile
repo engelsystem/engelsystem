@@ -3,7 +3,7 @@ ARG NGINX_IMAGE=engelsystem-nginx:latest
 
 # composer install
 FROM composer AS composer
-COPY composer.json /app/
+COPY ./ /app/
 RUN composer --no-ansi install --no-dev --ignore-platform-reqs
 RUN composer --no-ansi dump-autoload --optimize
 
