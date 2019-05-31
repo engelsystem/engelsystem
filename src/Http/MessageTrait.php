@@ -18,7 +18,7 @@ trait MessageTrait
      *
      * @return string HTTP protocol version.
      */
-    public function getProtocolVersion()
+    public function getProtocolVersion(): string
     {
         return parent::getProtocolVersion();
     }

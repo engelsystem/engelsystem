@@ -62,7 +62,7 @@ test:
     - cp -R tests/ phpunit.xml "${DOCROOT}"
     - HOMEDIR=$(pwd)
     - cd "${DOCROOT}"
-    - composer --no-ansi install --dev
+    - composer --no-ansi install
     - ./bin/migrate
   script:
     - vendor/bin/phpunit -v --colors=never --coverage-text --coverage-html "${HOMEDIR}/coverage/" --log-junit "${HOMEDIR}/unittests.xml"
