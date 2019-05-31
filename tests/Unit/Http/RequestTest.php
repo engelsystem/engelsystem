@@ -286,7 +286,7 @@ class RequestTest extends TestCase
     {
         $filename = tempnam(sys_get_temp_dir(), 'test');
         file_put_contents($filename, 'LoremIpsum!');
-        $files = [new SymfonyFile($filename, 'foo.txt', 'text/plain', 11)];
+        $files = [new SymfonyFile($filename, 'foo.txt', 'text/plain', UPLOAD_ERR_PARTIAL)];
         $request = new Request([], [], [], [], $files);
 
         $uploadedFiles = $request->getUploadedFiles();
@@ -298,6 +298,7 @@ class RequestTest extends TestCase
         $this->assertEquals('foo.txt', $file->getClientFilename());
         $this->assertEquals('text/plain', $file->getClientMediaType());
         $this->assertEquals(11, $file->getSize());
+        $this->assertEquals(UPLOAD_ERR_PARTIAL, $file->getError());
     }
 
     /**

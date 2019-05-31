@@ -370,7 +370,6 @@ class Request extends SymfonyRequest implements ServerRequestInterface
                 $filename,
                 $file->getClientFilename(),
                 $file->getClientMediaType(),
-                $file->getSize(),
                 $file->getError()
             );
         }
