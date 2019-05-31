@@ -12,10 +12,15 @@ use Engelsystem\ShiftsFilterRenderer;
  * Renders the angeltypes name as link.
  *
  * @param array $angeltype
+ * @param bool  $plain
  * @return string
  */
-function AngelType_name_render($angeltype)
+function AngelType_name_render($angeltype, $plain = false)
 {
+    if ($plain) {
+        return sprintf('%s (%u)', $angeltype['name'], $angeltype['id']);
+    }
+
     return '<a href="' . angeltype_link($angeltype['id']) . '">'
         . ($angeltype['restricted'] ? glyph('lock') : '') . $angeltype['name']
         . '</a>';

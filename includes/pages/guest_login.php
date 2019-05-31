@@ -86,10 +86,11 @@ function guest_register()
         if ($request->has('nick')) {
             $nickValidation = User_validate_Nick($request->input('nick'));
             $nick = $nickValidation->getValue();
-            
-            if(!$nickValidation->isValid()) {
+
+            if (!$nickValidation->isValid()) {
                 $valid = false;
-                $msg .= error(sprintf(__('Please enter a valid nick.') . ' ' . __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.'), $nick), true);
+                $msg .= error(sprintf(__('Please enter a valid nick.') . ' ' . __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.'),
+                    $nick), true);
             }
             if (User::whereName($nick)->count() > 0) {
                 $valid = false;
@@ -246,7 +247,7 @@ function guest_register()
             }
 
             engelsystem_log(
-                'User ' . User_Nick_render($user)
+                'User ' . User_Nick_render($user, true)
                 . ' signed up as: ' . join(', ', $user_angel_types_info)
             );
             success(__('Angel registration successful!'));
@@ -287,7 +288,8 @@ function guest_register()
                     div('row', [
                         div('col-sm-4', [
                             form_text('nick', __('Nick') . ' ' . entry_required(), $nick),
-                            form_info('', __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.'))
+                            form_info('',
+                                __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.'))
                         ]),
                         div('col-sm-8', [
                             form_email('mail', __('E-Mail') . ' ' . entry_required(), $mail),

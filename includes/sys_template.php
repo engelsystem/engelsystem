@@ -380,7 +380,7 @@ function button_glyph($href, $glyph, $class = '')
 
 /**
  * Rendert einen Knopf, der zur Hilfe eines bestimmten Themas führt.
- * 
+ *
  * @param string $topic documentation resource (like user/), is appended to documentation url.
  * @return string
  */

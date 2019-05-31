@@ -62,7 +62,7 @@ function user_angeltypes_delete_all_controller()
     if ($request->hasPostData('deny_all')) {
         UserAngelTypes_delete_all($angeltype['id']);
 
-        engelsystem_log(sprintf('Denied all users for angeltype %s', AngelType_name_render($angeltype)));
+        engelsystem_log(sprintf('Denied all users for angeltype %s', AngelType_name_render($angeltype, true)));
         success(sprintf(__('Denied all users for angeltype %s.'), AngelType_name_render($angeltype)));
         redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
@@ -102,7 +102,7 @@ function user_angeltypes_confirm_all_controller()
     if ($request->hasPostData('confirm_all')) {
         UserAngelTypes_confirm_all($angeltype['id'], $user->id);
 
-        engelsystem_log(sprintf('Confirmed all users for angeltype %s', AngelType_name_render($angeltype)));
+        engelsystem_log(sprintf('Confirmed all users for angeltype %s', AngelType_name_render($angeltype, true)));
         success(sprintf(__('Confirmed all users for angeltype %s.'), AngelType_name_render($angeltype)));
         redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
@@ -156,8 +156,8 @@ function user_angeltype_confirm_controller()
 
         engelsystem_log(sprintf(
             '%s confirmed for angeltype %s',
-            User_Nick_render($user_source),
-            AngelType_name_render($angeltype)
+            User_Nick_render($user_source, true),
+            AngelType_name_render($angeltype, true)
         ));
         success(sprintf(
             __('%s confirmed for angeltype %s.'),
@@ -214,9 +214,8 @@ function user_angeltype_delete_controller()
     if ($request->hasPostData('delete')) {
         UserAngelType_delete($user_angeltype);
 
-        $success_message = sprintf(__('User %s removed from %s.'), User_Nick_render($user_source), $angeltype['name']);
-        engelsystem_log($success_message);
-        success($success_message);
+        engelsystem_log(sprintf('User %s removed from %s.', User_Nick_render($user_source, true), $angeltype['name']));
+        success(sprintf(__('User %s removed from %s.'), User_Nick_render($user_source), $angeltype['name']));
 
         redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
@@ -275,15 +274,19 @@ function user_angeltype_update_controller()
     if ($request->hasPostData('submit')) {
         UserAngelType_update($user_angeltype['id'], $supporter);
 
-        $success_message = sprintf(
-            $supporter
-                ? __('Added supporter rights for %s to %s.')
-                : __('Removed supporter rights for %s from %s.'),
+        $msg = $supporter
+            ? __('Added supporter rights for %s to %s.')
+            : __('Removed supporter rights for %s from %s.');
+        engelsystem_log(sprintf(
+            $msg,
+            AngelType_name_render($angeltype, true),
+            User_Nick_render($user_source, true)
+        ));
+        success(sprintf(
+            $msg,
             AngelType_name_render($angeltype),
             User_Nick_render($user_source)
-        );
-        engelsystem_log($success_message);
-        success($success_message);
+        ));
 
         redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
@@ -324,8 +327,8 @@ function user_angeltype_add_controller()
 
             engelsystem_log(sprintf(
                 'User %s added to %s.',
-                User_Nick_render($user_source),
-                AngelType_name_render($angeltype)
+                User_Nick_render($user_source, true),
+                AngelType_name_render($angeltype, true)
             ));
             success(sprintf(
                 __('User %s added to %s.'),
@@ -336,8 +339,8 @@ function user_angeltype_add_controller()
             UserAngelType_confirm($user_angeltype_id, $user_source->id);
             engelsystem_log(sprintf(
                 'User %s confirmed as %s.',
-                User_Nick_render($user_source),
-                AngelType_name_render($angeltype)
+                User_Nick_render($user_source, true),
+                AngelType_name_render($angeltype, true)
             ));
 
             redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
@@ -372,8 +375,8 @@ function user_angeltype_join_controller($angeltype)
         $success_message = sprintf(__('You joined %s.'), $angeltype['name']);
         engelsystem_log(sprintf(
             'User %s joined %s.',
-            User_Nick_render($user),
-            AngelType_name_render($angeltype)
+            User_Nick_render($user, true),
+            AngelType_name_render($angeltype, true)
         ));
         success($success_message);
 
@@ -381,8 +384,8 @@ function user_angeltype_join_controller($angeltype)
             UserAngelType_confirm($user_angeltype_id, $user->id);
             engelsystem_log(sprintf(
                 'User %s confirmed as %s.',
-                User_Nick_render($user),
-                AngelType_name_render($angeltype)
+                User_Nick_render($user, true),
+                AngelType_name_render($angeltype, true)
             ));
         }
 

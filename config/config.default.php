@@ -31,9 +31,9 @@ return [
         // Contact email address, linked on every page
         'Contact' => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
     ],
-    
+
     // Link to documentation/help
-    'documentation_url' => 'https://engelsystem.de/doc/',
+    'documentation_url'       => 'https://engelsystem.de/doc/',
 
     // Email config
     'email'                   => [

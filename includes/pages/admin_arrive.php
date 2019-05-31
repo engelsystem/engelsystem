@@ -37,7 +37,7 @@ function admin_arrive()
             $user_source->state->arrival_date = null;
             $user_source->state->save();
 
-            engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source));
+            engelsystem_log('User set to not arrived: ' . User_Nick_render($user_source, true));
             success(__('Reset done. Angel has not arrived.'));
             redirect(user_link($user_source->id));
         } else {
@@ -55,7 +55,7 @@ function admin_arrive()
             $user_source->state->arrival_date = new Carbon\Carbon();
             $user_source->state->save();
 
-            engelsystem_log('User set has arrived: ' . User_Nick_render($user_source));
+            engelsystem_log('User set has arrived: ' . User_Nick_render($user_source, true));
             success(__('Angel has been marked as arrived.'));
             redirect(user_link($user_source->id));
         } else {

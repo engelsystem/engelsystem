@@ -86,7 +86,7 @@ function admin_active()
             foreach ($users as $usr) {
                 $usr->state->active = true;
                 $usr->state->save();
-                $user_nicks[] = User_Nick_render($usr);
+                $user_nicks[] = User_Nick_render($usr, true);
             }
 
             State::whereForceActive(true)->update(['active' => true]);
@@ -108,7 +108,7 @@ function admin_active()
             if ($user_source) {
                 $user_source->state->active = true;
                 $user_source->state->save();
-                engelsystem_log('User ' . User_Nick_render($user_source) . ' is active now.');
+                engelsystem_log('User ' . User_Nick_render($user_source, true) . ' is active now.');
                 $msg = success(__('Angel has been marked as active.'), true);
             } else {
                 $msg = error(__('Angel not found.'), true);
@@ -119,7 +119,7 @@ function admin_active()
             if ($user_source) {
                 $user_source->state->active = false;
                 $user_source->state->save();
-                engelsystem_log('User ' . User_Nick_render($user_source) . ' is NOT active now.');
+                engelsystem_log('User ' . User_Nick_render($user_source, true) . ' is NOT active now.');
                 $msg = success(__('Angel has been marked as not active.'), true);
             } else {
                 $msg = error(__('Angel not found.'), true);
@@ -130,7 +130,7 @@ function admin_active()
             if ($user_source) {
                 $user_source->state->got_shirt = true;
                 $user_source->state->save();
-                engelsystem_log('User ' . User_Nick_render($user_source) . ' has tshirt now.');
+                engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has tshirt now.');
                 $msg = success(__('Angel has got a t-shirt.'), true);
             } else {
                 $msg = error('Angel not found.', true);
@@ -141,7 +141,7 @@ function admin_active()
             if ($user_source) {
                 $user_source->state->got_shirt = false;
                 $user_source->state->save();
-                engelsystem_log('User ' . User_Nick_render($user_source) . ' has NO tshirt.');
+                engelsystem_log('User ' . User_Nick_render($user_source, true) . ' has NO tshirt.');
                 $msg = success(__('Angel has got no t-shirt.'), true);
             } else {
                 $msg = error(__('Angel not found.'), true);

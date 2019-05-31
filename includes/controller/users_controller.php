@@ -85,7 +85,7 @@ function user_delete_controller()
 
             mail_user_delete($user_source);
             success(__('User deleted.'));
-            engelsystem_log(sprintf('Deleted %s', User_Nick_render($user_source)));
+            engelsystem_log(sprintf('Deleted %s', User_Nick_render($user_source, true)));
 
             redirect(users_link());
         }
@@ -170,7 +170,7 @@ function user_edit_vouchers_controller()
             $user_source->state->save();
 
             success(__('Saved the number of vouchers.'));
-            engelsystem_log(User_Nick_render($user_source) . ': ' . sprintf('Got %s vouchers',
+            engelsystem_log(User_Nick_render($user_source, true) . ': ' . sprintf('Got %s vouchers',
                     $user_source->state->got_voucher));
 
             redirect(user_link($user_source->id));

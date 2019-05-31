@@ -240,7 +240,7 @@ function admin_user()
                         }
                         $user_source = User::find($user_id);
                         engelsystem_log(
-                            'Set groups of ' . User_Nick_render($user_source) . ' to: '
+                            'Set groups of ' . User_Nick_render($user_source, true) . ' to: '
                             . join(', ', $user_groups_info)
                         );
                         $html .= success('Benutzergruppen gespeichert.', true);
@@ -293,7 +293,7 @@ function admin_user()
                 ) {
                     set_password($user_id, $request->postData('new_pw'));
                     $user_source = User::find($user_id);
-                    engelsystem_log('Set new password for ' . User_Nick_render($user_source));
+                    engelsystem_log('Set new password for ' . User_Nick_render($user_source, true));
                     $html .= success('Passwort neu gesetzt.', true);
                 } else {
                     $html .= error(

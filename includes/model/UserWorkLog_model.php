@@ -47,7 +47,7 @@ function UserWorkLog_delete($userWorkLog)
 
     engelsystem_log(sprintf(
         'Delete work log for %s, %s hours, %s',
-        User_Nick_render($user_source),
+        User_Nick_render($user_source, true),
         $userWorkLog['work_hours'],
         $userWorkLog['comment']
     ));
@@ -78,7 +78,7 @@ function UserWorkLog_update($userWorkLog)
 
     engelsystem_log(sprintf(
             'Updated work log for %s, %s hours, %s',
-            User_Nick_render($user_source),
+            User_Nick_render($user_source, true),
             $userWorkLog['work_hours'],
             $userWorkLog['comment'])
     );
@@ -115,7 +115,7 @@ function UserWorkLog_create($userWorkLog)
         time()
     ]);
 
-    engelsystem_log(sprintf('Added work log entry for %s, %s hours, %s', User_Nick_render($user_source),
+    engelsystem_log(sprintf('Added work log entry for %s, %s hours, %s', User_Nick_render($user_source, true),
         $userWorkLog['work_hours'], $userWorkLog['comment']));
 
     return $result;

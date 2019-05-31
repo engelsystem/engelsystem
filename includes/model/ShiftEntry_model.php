@@ -94,7 +94,7 @@ function ShiftEntry_create($shift_entry)
         ]
     );
     engelsystem_log(
-        'User ' . User_Nick_render($user)
+        'User ' . User_Nick_render($user, true)
         . ' signed up for shift ' . $shift['name']
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
@@ -156,7 +156,7 @@ function ShiftEntry_delete($shiftEntry)
     $angeltype = AngelType($shiftEntry['TID']);
 
     engelsystem_log(
-        'Shift signout: ' . User_Nick_render($signout_user) . ' from shift ' . $shifttype['name']
+        'Shift signout: ' . User_Nick_render($signout_user, true) . ' from shift ' . $shifttype['name']
         . ' at ' . $room['Name']
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
