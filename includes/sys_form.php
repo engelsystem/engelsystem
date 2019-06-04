@@ -204,6 +204,7 @@ function form_info($label, $text = '')
  * @param string $label
  * @param string $class
  * @param bool   $wrapForm
+ * @param string $buttonType
  * @return string
  */
 function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType = 'primary')
@@ -402,11 +403,12 @@ function form_element($label, $input, $for = '')
  *
  * @param string[] $elements
  * @param string   $action
+ * @param bool     $inline
  * @return string
  */
-function form($elements, $action = '')
+function form($elements, $action = '', $inline = false)
 {
-    return '<form action="' . $action . '" enctype="multipart/form-data" method="post">'
+    return '<form action="' . $action . '" enctype="multipart/form-data" method="post"' . ($inline ? ' style="float:left"' : '') . '>'
         . form_csrf()
         . join($elements)
         . '</form>';
