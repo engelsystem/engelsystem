@@ -24,7 +24,8 @@ $app->bootstrap($appConfig);
 /**
  * Configure application
  */
-date_default_timezone_set($app->get('config')->get('timezone'));
+$timezone = $app->get('config')->get('timezone');
+ini_set('date.timezone', $timezone);
 
 if (config('environment') == 'development') {
     $errorHandler = $app->get('error.handler');
