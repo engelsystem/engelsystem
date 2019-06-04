@@ -212,6 +212,8 @@ function shift_entry_error_message(ShiftSignupState $shift_signup_state)
         error(__('This shift ended already.'));
     } elseif ($shift_signup_state->getState() == ShiftSignupState::NOT_ARRIVED) {
         error(__('You are not marked as arrived.'));
+    } elseif ($shift_signup_state->getState() == ShiftSignupState::NOT_YET) {
+        error(__('You are not allowed to sign up yet.'));
     } elseif ($shift_signup_state->getState() == ShiftSignupState::SIGNED_UP) {
         error(__('You are signed up for this shift.'));
     }

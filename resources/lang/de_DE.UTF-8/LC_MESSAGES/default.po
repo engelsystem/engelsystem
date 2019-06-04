@@ -178,6 +178,9 @@ msgstr "Die Schicht ist schon vorbei."
 msgid "You are not marked as arrived."
 msgstr "Du bist nicht als angekommen markiert."
 
+msgid "You are not allowed to sign up yet."
+msgstr "Du darfst dich noch nicht anmelden."
+
 #: includes/controller/shift_entries_controller.php:216
 #: includes/view/Shifts_view.php:129
 msgid "You are signed up for this shift."
@@ -2108,8 +2111,8 @@ msgid "Shift is full"
 msgstr "Schicht ist voll"
 
 #: includes/view/ShiftCalendarRenderer.php:316
-msgid "Shift running/ended or user not arrived"
-msgstr "Schicht läuft/vorbei oder du bist noch nicht angekommen"
+msgid "Shift running/ended or user not arrived/allowed"
+msgstr "Schicht läuft/vorbei oder du bist noch nicht angekommen/darfst dich noch nicht anmelden"
 
 #: includes/view/ShiftCalendarShiftRenderer.php:134
 msgid "Add more angels"
