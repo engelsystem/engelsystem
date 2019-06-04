@@ -87,8 +87,11 @@ function user_myshifts()
                     }
                 }
 
-                $comment = strip_request_item_nl('comment');
+                $comment = $shift['Comment'];
                 $user_source = User::find($shift['UID']);
+                if (auth()->user()->id == $user_source->id) {
+                    $comment = strip_request_item_nl('comment');
+                }
 
                 if ($valid) {
                     ShiftEntry_update([
@@ -111,7 +114,7 @@ function user_myshifts()
             }
 
             return ShiftEntry_edit_view(
-                User_Nick_render($shifts_user),
+                $shifts_user,
                 date('Y-m-d H:i', $shift['start']) . ', ' . shift_length($shift),
                 $shift['Name'],
                 $shift['name'],
