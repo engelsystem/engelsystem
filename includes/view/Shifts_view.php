@@ -224,9 +224,10 @@ function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angelty
     if ($shift_entry['freeloaded']) {
         $entry = '<del>' . $entry . '</del>';
     }
-    if ($user_shift_admin || $angeltype_supporter) {
+    $isUser = $shift_entry['UID'] == auth()->user()->id;
+    if ($user_shift_admin || $angeltype_supporter || $isUser) {
         $entry .= ' <div class="btn-group">';
-        if ($user_shift_admin) {
+        if ($user_shift_admin || $isUser) {
             $entry .= button_glyph(
                 page_link_to('user_myshifts', ['edit' => $shift_entry['id'], 'id' => $shift_entry['UID']]),
                 'pencil',

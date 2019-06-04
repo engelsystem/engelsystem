@@ -154,7 +154,7 @@ function ShiftEntry_create_title()
 /**
  * Display form for adding/editing a shift entry.
  *
- * @param string $angel
+ * @param User   $angel
  * @param string $date
  * @param string $location
  * @param string $title
@@ -187,15 +187,22 @@ function ShiftEntry_edit_view(
             )
         ];
     }
+
+    if ($angel->id == auth()->user()->id) {
+        $comment = form_textarea('comment', __('Comment (for your eyes only):'), $comment);
+    } else {
+        $comment = '';
+    }
+
     return page_with_title(__('Edit shift entry'), [
         msg(),
         form([
-            form_info(__('Angel:'), $angel),
+            form_info(__('Angel:'), User_Nick_render($angel)),
             form_info(__('Date, Duration:'), $date),
             form_info(__('Location:'), $location),
             form_info(__('Title:'), $title),
             form_info(__('Type:'), $type),
-            form_textarea('comment', __('Comment (for your eyes only):'), $comment),
+            $comment,
             join('', $freeload_form),
             form_submit('submit', __('Save'))
         ])
