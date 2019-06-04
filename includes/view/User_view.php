@@ -617,10 +617,12 @@ function User_view(
                             user_driver_license_edit_link($user_source),
                             glyph('road') . __('driving license')
                         ) : '',
-                        ($admin_user_privilege && !$user_source->state->arrived) ? button(
-                            page_link_to('admin_arrive', ['arrived' => $user_source->id]),
-                            __('arrived')
-                        ) : '',
+                        ($admin_user_privilege && !$user_source->state->arrived) ?
+                            form([
+                                form_hidden('action', 'arrived'),
+                                form_hidden('user', $user_source->id),
+                                form_submit('submit', __('arrived'), '', false, 'default')
+                            ], page_link_to('admin_arrive'), true) : '',
                         $admin_user_privilege ? button(
                             page_link_to(
                                 'users',
