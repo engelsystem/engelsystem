@@ -13,3 +13,4 @@ engelsystem_footer_items:
 engelsystem_theme: 7
 engelsystem_default_locale: de_DE.UTF-8
 
+certbot_mail: admin@example.com

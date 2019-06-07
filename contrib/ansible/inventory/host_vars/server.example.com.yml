@@ -1,5 +1,8 @@
 ---
 
+# engelsystem
+#
+
 engelsystem_version: v3.0.0
 engelsystem_servername: engel.example.com
 engelsystem_mysql_root_password: password
@@ -12,3 +15,8 @@ engelsystem_footer_items:
 
 engelsystem_theme: 7
 engelsystem_default_locale: de_DE.UTF-8
+
+# certbot
+#
+
+certbot_mail: admin@example.com

@@ -1,0 +1,17 @@
+---
+
+- name: validate_passwords
+  assert:
+    that: "{{ item }} != 'password'"
+    fail_msg: "Please set a password for {{ item }}."
+    success_msg: "Thanks for setting a password ❤️."
+  loop:
+    - engelsystem_mysql_root_password
+    - engelsystem_mysql_user_password
+    - engelsystem_api_key
+
+- name: validate_certbotmail
+  assert:
+    that: "certbot_mail != 'admin@example.com'"
+    fail_msg: "Please set an email adress for certbot."
+    success_msg: "Thanks for setting a email address ❤️."

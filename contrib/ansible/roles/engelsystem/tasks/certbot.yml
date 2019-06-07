@@ -1,0 +1,11 @@
+---
+
+- name: certbot_install
+  apt:
+    pkg:
+      - certbot
+      - python-certbot-nginx
+
+- name: certbot_run
+  shell: |
+    certbot --non-interactive --nginx --agree-tos -m "{{ certbot_mail }}" --domains "{{ engelsystem_servername }}" certonly

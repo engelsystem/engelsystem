@@ -1,14 +1,7 @@
 ---
 
-- name: engelsystem_validatepws
-  assert:
-    that: "{{ item }} != 'password'"
-    fail_msg: "Please set a password for {{ item }}."
-    success_msg: "Thanks for setting a password ❤️."
-  loop:
-    - engelsystem_mysql_root_password
-    - engelsystem_mysql_user_password
-    - engelsystem_api_key
+- name: engelsystem_validate
+  include: validate.yml
 
 - name: engelsystem_packages
   apt:
@@ -71,9 +64,26 @@
     src: config.php.j2
     dest: "/opt/engelsystem/{{ engelsystem_version }}/release/config/config.php"
 
+- name: engelsystem_checkcert
+  stat:
+    path: "/etc/letsencrypt/live/{{ engelsystem_servername}}/fullchain.pem"
+  register: engelsystem_ssl
+
 - name: engelsystem_nginxconfig
   template:
     src: nginx_vhost.conf.j2
+    dest: /etc/nginx/sites-enabled/engelsystem.conf
+  when: engelsystem_ssl.stat.exists == False
+  notify:
+    - engelsystem_nginxreload
+
+- name: engelsystem_certbot
+  include: certbot.yml
+  when: engelsystem_ssl.stat.exists == False
+
+- name: engelsystem_nginxconfig
+  template:
+    src: nginx_vhost_ssl.conf.j2
     dest: /etc/nginx/sites-enabled/engelsystem.conf
   notify:
     - engelsystem_nginxreload
