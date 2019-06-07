@@ -1,0 +1,15 @@
+---
+
+engelsystem_version: v3.0.0
+engelsystem_servername: engel.example.com
+engelsystem_mysql_root_password: password
+engelsystem_mysql_user_password: password
+engelsystem_api_key: password
+engelsystem_app_name: Engelsystem
+engelsystem_footer_items:
+  FAQ: https://faq.example.com
+  Contact: mailto:help@example.com
+
+engelsystem_theme: 7
+engelsystem_default_locale: de_DE.UTF-8
+

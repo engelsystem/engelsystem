@@ -1,0 +1,109 @@
+---
+
+- name: engelsystem_validatepws
+  assert:
+    that: "{{ item }} != 'password'"
+    fail_msg: "Please set a password for {{ item }}."
+    success_msg: "Thanks for setting a password ❤️."
+  loop:
+    - engelsystem_mysql_root_password
+    - engelsystem_mysql_user_password
+    - engelsystem_api_key
+
+- name: engelsystem_packages
+  apt:
+    pkg:
+      - nginx
+      - php-fpm
+      - php-gettext
+      - php-json
+      - php-mbstring
+      - php-mysql
+      - php-tokenizer
+      - php-xml
+      - mariadb-server
+      - mariadb-client
+      - python3-mysqldb
+      - unzip
+    update_cache: yes
+
+- name: engelsystem_user
+  user:
+    name: engelsystem
+    home: /opt/engelsystem
+    system: yes
+
+- name: engelsystem_versiondir
+  file:
+    state: directory
+    dest: "/opt/engelsystem/{{ engelsystem_version }}"
+    owner: engelsystem
+    group: www-data
+
+- name: engelsystem_download
+  unarchive:
+    src: "https://github.com/engelsystem/engelsystem/releases/download/{{ engelsystem_version }}/engelsystem-{{ engelsystem_version }}.zip"
+    dest: "/opt/engelsystem/{{ engelsystem_version }}"
+    creates: "/opt/engelsystem/{{ engelsystem_version }}/release"
+    owner: engelsystem
+    group: www-data
+    remote_src: yes
+  notify:
+    - engelsystem_migratedb
+
+- name: engelsystem_writables
+  file:
+    dest: "/opt/engelsystem/{{ engelsystem_version }}/release/{{ item }}"
+    state: directory
+    mode: "0770"
+  loop:
+    - import
+    - storage
+
+- name: engelsystem_latest
+  file:
+    state: link
+    src: "/opt/engelsystem/{{ engelsystem_version }}/release"
+    dest: /opt/engelsystem/latest
+
+- name: engelsystem_config
+  template:
+    src: config.php.j2
+    dest: "/opt/engelsystem/{{ engelsystem_version }}/release/config/config.php"
+
+- name: engelsystem_nginxconfig
+  template:
+    src: nginx_vhost.conf.j2
+    dest: /etc/nginx/sites-enabled/engelsystem.conf
+  notify:
+    - engelsystem_nginxreload
+
+- name: engelsystem_mysqlroot
+  mysql_user:
+    name: root
+    password: "{{ engelsystem_mysql_root_password }}"
+
+- name: engelsystem_mycnf
+  template:
+    src: my.cnf.j2
+    dest: /root/.my.cnf
+
+- name: engelsystem_mysqldb
+  mysql_db:
+    name: engelsystem
+
+- name: engelsystem_mysqluserpass
+  mysql_user:
+    name: engelsystem
+    password: "{{ engelsystem_mysql_user_password }}"
+    priv: 'engelsystem.*:ALL'
+
+- name: engelsystem_services
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - nginx
+    - php7.3-fpm
+    - mariadb

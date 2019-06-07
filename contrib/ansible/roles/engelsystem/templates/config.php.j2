@@ -1,0 +1,21 @@
+<?php
+
+return [
+    'database'                => [
+        'host'     => env('MYSQL_HOST', 'localhost'),
+        'database' => env('MYSQL_DATABASE', 'engelsystem'),
+        'username' => env('MYSQL_USER', 'engelsystem'),
+        'password' => env('MYSQL_PASSWORD', '{{ engelsystem_mysql_user_password }}'),
+    ],
+
+    'api_key'                 => '{{ engelsystem_api_key }}',
+    'app_name'                => '{{ engelsystem_app_name }}',
+    'theme'                   => '{{ engelsystem_theme }}',
+    'default_locale'          => '{{ engelsystem_default_locale }}',
+
+    'footer_items'            => [
+{% for k, v in engelsystem_footer_items.items() %}
+        '{{ k }}' => '{{ v }}',
+{% endfor %}
+    ],
+];

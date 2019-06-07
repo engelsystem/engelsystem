@@ -1,0 +1,11 @@
+---
+
+- name: engelsystem_nginxreload
+  systemd:
+    name: nginx
+    state: reloaded
+
+- name: engelsystem_migratedb
+  shell: |
+    cd ~engelsystem/latest
+    ./bin/migrate

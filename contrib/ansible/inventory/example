@@ -1,0 +1,5 @@
+[engelsystem]
+engel.example.com
+
+[engelsystem:vars]
+ansible_python_interpreter=/usr/bin/python3

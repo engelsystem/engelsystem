@@ -1,0 +1,9 @@
+env/
+
+facts/*
+inventory/*
+inventory/host_vars/*
+
+!inventory/example
+!inventory/host_vars
+!inventory/host_vars/server.example.com.yml
