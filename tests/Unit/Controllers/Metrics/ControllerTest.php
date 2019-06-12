@@ -163,7 +163,7 @@ class ControllerTest extends TestCase
         $stats->expects($this->once())
             ->method('workSeconds')
             ->with(true)
-            ->willReturn(60 * 60 * 99.47);
+            ->willReturn((int)(60 * 60 * 99.47));
         $this->setExpects($stats, 'newUsers', null, 3);
         $this->setExpects($stats, 'arrivedUsers', null, 10, $this->exactly(2));
         $this->setExpects($stats, 'currentlyWorkingUsers', null, 5);
