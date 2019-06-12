@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem\n"
 "POT-Creation-Date: 2019-04-28 15:23+0200\n"
-"PO-Revision-Date: 2019-04-28 15:24+0200\n"
+"PO-Revision-Date: 2019-06-12 16:07+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.11\n"
-"X-Poedit-KeywordsList: __;gettext;gettext_noop\n"
+"X-Poedit-KeywordsList: __;_e;translate;translatePlural;gettext;gettext_noop\n"
 "X-Poedit-Basepath: ../../../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -330,6 +330,13 @@ msgstr "Schichttyp erstellt."
 #: includes/controller/shifttypes_controller.php:159 includes/sys_menu.php:108
 msgid "Shifttypes"
 msgstr "Schichttypen"
+
+#: includes/controller/user_angeltypes_controller.php:26
+#, php-format
+msgid "There is %d unconfirmed angeltype."
+msgid_plural "There are %d unconfirmed angeltypes."
+msgstr[0] "Es gibt %d nicht freigeschalteten Engeltypen!"
+msgstr[1] "Es gibt %d nicht freigeschaltete Engeltypen!"
 
 #: includes/controller/user_angeltypes_controller.php:33
 msgid "Angel types which need approvals:"
@@ -834,6 +841,10 @@ msgid "Shirt statistics"
 msgstr "T-Shirt Statistik"
 
 #: includes/pages/admin_active.php:327
+msgid "Needed shirts"
+msgstr "Benötigte T-Shirts"
+
+#: includes/pages/admin_active.php:298
 msgid "Given shirts"
 msgstr "Ausgegebene T-Shirts"
 
@@ -924,6 +935,10 @@ msgstr "All"
 #: includes/view/UserAngelTypes_view.php:152
 msgid "Angeltype"
 msgstr "Engeltyp"
+
+#: includes/pages/admin_free.php:111
+msgid "Only confirmed"
+msgstr "Nur bestätigte"
 
 #: includes/pages/admin_free.php:112 includes/pages/guest_login.php:289
 #: includes/pages/guest_login.php:447 includes/view/AngelTypes_view.php:293
@@ -1372,6 +1387,10 @@ msgstr ""
 #: includes/pages/admin_user.php:308
 msgid "Edit user"
 msgstr "User bearbeiten"
+
+#: includes/pages/guest_credits.php:8
+msgid "Credits"
+msgstr "Credits"
 
 #: includes/pages/guest_login.php:16 includes/pages/guest_login.php:442
 #: includes/pages/guest_login.php:449 includes/view/User_view.php:124
@@ -2023,6 +2042,21 @@ msgstr "Event endet"
 msgid "Teardown ends"
 msgstr "Abbau endet"
 
+#: includes/view/EventConfig_view.php:82
+#, php-format
+msgid "%s, from %s to %s"
+msgstr "%s, vom %s bis %s"
+
+#: includes/view/EventConfig_view.php:92
+#, php-format
+msgid "%s, starting %s"
+msgstr "%s, ab dem %s"
+
+#: includes/view/EventConfig_view.php:100
+#, php-format
+msgid "Event from %s to %s"
+msgstr "Event von %s bis %s"
+
 #: includes/view/EventConfig_view.php:91
 msgid "Event Name"
 msgstr "Event Name"
@@ -2117,6 +2151,13 @@ msgstr "Schicht läuft/vorbei oder du bist noch nicht angekommen/darfst dich noc
 #: includes/view/ShiftCalendarShiftRenderer.php:134
 msgid "Add more angels"
 msgstr "Neue Engel hinzufügen"
+
+#: includes/view/ShiftCalendarShiftRenderer.php:179
+#, php-format
+msgid "%d helper needed"
+msgid_plural "%d helpers needed"
+msgstr[0] "%d Helfer benötigt"
+msgstr[1] "%d Helfer benötigt"
 
 #: includes/view/ShiftCalendarShiftRenderer.php:192
 #: includes/view/Shifts_view.php:84
@@ -2594,6 +2635,13 @@ msgstr "Aktiv (gezwungen)"
 msgid "Not arrived (Planned: %s)"
 msgstr "Nicht angekommen (Geplant: %s)"
 
+#: includes/view/User_view.php:696
+#, php-format
+msgid "Got %s voucher"
+msgid_plural "Got %s vouchers"
+msgstr[0] "Einen Gutschein bekommen"
+msgstr[1] "%s Gutscheine bekommen"
+
 #: includes/view/User_view.php:774
 msgid "Got no vouchers"
 msgstr "Gutschein nicht bekommen"
@@ -2699,21 +2747,6 @@ msgstr "Autorisierung ist abgelaufen"
 msgid "The provided CSRF token is invalid or has expired"
 msgstr "Das angegebene CSRF Token ist ungültig oder abgelaufen"
 
-#: resources/views/layouts/parts/footer.twig:7
-#, python-format
-msgid "%s, from %s to %s"
-msgstr "%s, vom %s bis %s"
-
-#: resources/views/layouts/parts/footer.twig:13
-#, python-format
-msgid "%s, starting %s"
-msgstr "%s, ab dem %s"
-
-#: resources/views/layouts/parts/footer.twig:21
-#, python-format
-msgid "Event from %s to %s"
-msgstr "Event von %s bis %s"
-
 #: resources/views/layouts/parts/footer.twig:34
 msgid "Bugs / Features"
 msgstr "Bugs / Features"
@@ -2722,53 +2755,10 @@ msgstr "Bugs / Features"
 msgid "Development Platform"
 msgstr "Entwicklerplattform"
 
-#: resources/views/layouts/parts/footer.twig:36
-#: resources/views/pages/credits.twig:3
-msgid "Credits"
-msgstr "Credits"
-
-#~ msgid "Your nick &quot;%s&quot; is too short (min. 2 characters)."
-#~ msgstr "Der Nick &quot;%s&quot; ist zu kurz (Mindestens 2 Zeichen)."
-
-#~ msgid "There is %d unconfirmed angeltype."
-#~ msgid_plural "There are %d unconfirmed angeltypes."
-#~ msgstr[0] "Es gibt %d nicht freigeschalteten Engeltypen!"
-#~ msgstr[1] "Es gibt %d nicht freigeschaltete Engeltypen!"
-
-#~ msgid "Needed shirts"
-#~ msgstr "Benötigte T-Shirts"
-
-#~ msgid "Only confirmed"
-#~ msgstr "Nur bestätigte"
-
-#~ msgid "Jabber"
-#~ msgstr "Jabber"
-
-#~ msgid "Please check your jabber account information."
-#~ msgstr "Bitte überprüfe deine Jabber Account Eingabe."
-
-#~ msgid "Phone"
-#~ msgstr "Telefon"
-
-#~ msgid "Age"
-#~ msgstr "Alter"
-
-#~ msgid "Hometown"
-#~ msgstr "Wohnort"
-
-#~ msgid "%d helper needed"
-#~ msgid_plural "%d helpers needed"
-#~ msgstr[0] "%d Helfer benötigt"
-#~ msgstr[1] "%d Helfer benötigt"
-
-#~ msgid "Got %s voucher"
-#~ msgid_plural "Got %s vouchers"
-#~ msgstr[0] "Einen Gutschein bekommen"
-#~ msgstr[1] "%s Gutscheine bekommen"
-
-#~ msgid ""
-#~ "This page could not be found or you don't have permission to view it. You "
-#~ "probably have to sign in or register in order to gain access!"
-#~ msgstr ""
-#~ "Diese Seite existiert nicht oder Du hast keinen Zugriff. Melde Dich an um "
-#~ "Zugriff zu erhalten!"
+#: src/Middleware/LegacyMiddleware.php
+msgid ""
+"This page could not be found or you don't have permission to view it. You "
+"probably have to sign in or register in order to gain access!"
+msgstr ""
+"Diese Seite existiert nicht oder Du hast keinen Zugriff. Melde Dich an um "
+"Zugriff zu erhalten!"
