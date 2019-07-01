@@ -442,22 +442,22 @@ function guest_login()
                     ])
                 ])
             ]),
-            div('row', [
-                div('col-sm-6 text-center', [
-                    heading(register_title(), 2),
-                    get_register_hint()
-                ]),
-                div('col-sm-6 text-center', [
-                    heading(__('What can I do?'), 2),
-                    '<p>' . __('Please read about the jobs you can do to help us.') . '</p>',
-                    buttons([
-                        button(
-                            page_link_to('angeltypes', ['action' => 'about']),
-                            __('Teams/Job description') . ' &raquo;'
-                        )
-                    ])
-                ])
-            ])
+            // div('row', [
+            //     div('col-sm-6 text-center', [
+            //         heading(register_title(), 2),
+            //         get_register_hint()
+            //     ]),
+            //     div('col-sm-6 text-center', [
+            //         heading(__('What can I do?'), 2),
+            //         '<p>' . __('Please read about the jobs you can do to help us.') . '</p>',
+            //         buttons([
+            //             button(
+            //                 page_link_to('angeltypes', ['action' => 'about']),
+            //                 __('Teams/Job description') . ' &raquo;'
+            //             )
+            //         ])
+            //     ])
+            //])
         ])
     ]);
 }
