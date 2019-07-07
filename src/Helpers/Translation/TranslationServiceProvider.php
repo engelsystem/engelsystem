@@ -4,11 +4,15 @@ namespace Engelsystem\Helpers\Translation;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
+use Gettext\Translations;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class TranslationServiceProvider extends ServiceProvider
 {
-    public function register()
+    /** @var GettextTranslator */
+    protected $translators = [];
+
+    public function register(): void
     {
         /** @var Config $config */
         $config = $this->app->get('config');
@@ -17,41 +21,36 @@ class TranslationServiceProvider extends ServiceProvider
 
         $locales = $config->get('locales');
         $locale = $config->get('default_locale');
+        $fallbackLocale = $config->get('fallback_locale', 'en_US');
 
         $sessionLocale = $session->get('locale', $locale);
         if (isset($locales[$sessionLocale])) {
             $locale = $sessionLocale;
         }
 
-        $this->initGettext();
         $session->set('locale', $locale);
 
         $translator = $this->app->make(
             Translator::class,
-            ['locale' => $locale, 'locales' => $locales, 'localeChangeCallback' => [$this, 'setLocale']]
+            [
+                'locale'                => $locale,
+                'locales'               => $locales,
+                'fallbackLocale'        => $fallbackLocale,
+                'getTranslatorCallback' => [$this, 'getTranslator'],
+                'localeChangeCallback'  => [$this, 'setLocale'],
+            ]
         );
         $this->app->instance(Translator::class, $translator);
         $this->app->instance('translator', $translator);
     }
 
     /**
-     * @param string $textDomain
-     * @param string $encoding
-     * @codeCoverageIgnore
-     */
-    protected function initGettext($textDomain = 'default', $encoding = 'UTF-8')
-    {
-        bindtextdomain($textDomain, $this->app->get('path.lang'));
-        bind_textdomain_codeset($textDomain, $encoding);
-        textdomain($textDomain);
-    }
-
-    /**
      * @param string $locale
      * @codeCoverageIgnore
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): void
     {
+        $locale .= '.UTF-8';
         // Set the users locale
         putenv('LC_ALL=' . $locale);
         setlocale(LC_ALL, $locale);
@@ -59,5 +58,29 @@ class TranslationServiceProvider extends ServiceProvider
         // Reset numeric formatting to allow output of floats
         putenv('LC_NUMERIC=C');
         setlocale(LC_NUMERIC, 'C');
+    }
+
+    /**
+     * @param string $locale
+     * @return GettextTranslator
+     */
+    public function getTranslator(string $locale): GettextTranslator
+    {
+        if (!isset($this->translators[$locale])) {
+            $file = $this->app->get('path.lang') . '/' . $locale . '/default.mo';
+
+            /** @var GettextTranslator $translator */
+            $translator = $this->app->make(GettextTranslator::class);
+
+            /** @var Translations $translations */
+            $translations = $this->app->make(Translations::class);
+            $translations->addFromMoFile($file);
+
+            $translator->loadTranslations($translations);
+
+            $this->translators[$locale] = $translator;
+        }
+
+        return $this->translators[$locale];
     }
 }

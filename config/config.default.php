@@ -134,12 +134,12 @@ return [
 
     // Available locales in /locale/
     'locales'                 => [
-        'de_DE.UTF-8' => 'Deutsch',
-        'en_US.UTF-8' => 'English',
+        'de_DE' => 'Deutsch',
+        'en_US' => 'English',
     ],
 
     // The default locale to use
-    'default_locale'          => env('DEFAULT_LOCALE', 'en_US.UTF-8'),
+    'default_locale'          => env('DEFAULT_LOCALE', 'en_US'),
 
     // Available T-Shirt sizes, set value to null if not available
     'tshirt_sizes'            => [
