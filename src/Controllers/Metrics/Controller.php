@@ -135,6 +135,12 @@ class Controller extends BaseController
             microtime(true) - $this->request->server->get('REQUEST_TIME_FLOAT', $now),
         ];
 
+        $data['scrape_memory_bytes'] = [
+            'type' => 'gauge',
+            'help' => 'Memory usage of the current request',
+            memory_get_usage(false),
+        ];
+
         return $this->response
             ->withHeader('Content-Type', 'text/plain; version=0.0.4')
             ->withContent($this->engine->get('/metrics', $data));
