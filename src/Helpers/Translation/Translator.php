@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Helpers;
+namespace Engelsystem\Helpers\Translation;
 
 class Translator
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Engelsystem\Test\Unit\Helpers;
+namespace Engelsystem\Test\Unit\Helpers\Translation;
 
-use Engelsystem\Helpers\Translator;
+use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
@@ -10,12 +10,12 @@ use stdClass;
 class TranslatorTest extends ServiceProviderTest
 {
     /**
-     * @covers \Engelsystem\Helpers\Translator::__construct
-     * @covers \Engelsystem\Helpers\Translator::getLocale
-     * @covers \Engelsystem\Helpers\Translator::getLocales
-     * @covers \Engelsystem\Helpers\Translator::hasLocale
-     * @covers \Engelsystem\Helpers\Translator::setLocale
-     * @covers \Engelsystem\Helpers\Translator::setLocales
+     * @covers \Engelsystem\Helpers\Translation\Translator::__construct
+     * @covers \Engelsystem\Helpers\Translation\Translator::getLocale
+     * @covers \Engelsystem\Helpers\Translation\Translator::getLocales
+     * @covers \Engelsystem\Helpers\Translation\Translator::hasLocale
+     * @covers \Engelsystem\Helpers\Translation\Translator::setLocale
+     * @covers \Engelsystem\Helpers\Translation\Translator::setLocales
      */
     public function testInit()
     {
@@ -47,8 +47,8 @@ class TranslatorTest extends ServiceProviderTest
     }
 
     /**
-     * @covers \Engelsystem\Helpers\Translator::replaceText
-     * @covers \Engelsystem\Helpers\Translator::translate
+     * @covers \Engelsystem\Helpers\Translation\Translator::replaceText
+     * @covers \Engelsystem\Helpers\Translation\Translator::translate
      */
     public function testTranslate()
     {
@@ -70,7 +70,7 @@ class TranslatorTest extends ServiceProviderTest
     }
 
     /**
-     * @covers \Engelsystem\Helpers\Translator::translatePlural
+     * @covers \Engelsystem\Helpers\Translation\Translator::translatePlural
      */
     public function testTranslatePlural()
     {

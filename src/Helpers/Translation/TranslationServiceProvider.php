@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Helpers;
+namespace Engelsystem\Helpers\Translation;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
