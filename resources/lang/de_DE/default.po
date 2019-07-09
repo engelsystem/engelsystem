@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem\n"
 "POT-Creation-Date: 2019-04-28 15:23+0200\n"
-"PO-Revision-Date: 2019-06-12 16:07+0200\n"
+"PO-Revision-Date: 2019-06-13 11:54+0200\n"
 "Last-Translator: msquare <msquare@notrademark.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1529,9 +1529,8 @@ msgstr "Nachname"
 msgid "Entry required!"
 msgstr "Pflichtfeld!"
 
-#: includes/pages/guest_login.php:414
-msgid "auth.no-password"
-msgstr "Gib bitte ein Passwort ein."
+#~ msgid "auth.no-password"
+#~ msgstr "Gib bitte ein Passwort ein."
 
 #: includes/pages/guest_login.php:418
 msgid "auth.not-found"
@@ -1539,9 +1538,8 @@ msgstr ""
 "Es wurde kein Engel gefunden. Probiere es bitte noch einmal. Wenn das Problem "
 "weiterhin besteht, melde dich im Himmel."
 
-#: includes/pages/guest_login.php:451 includes/view/User_view.php:130
-msgid "auth.no-nickname"
-msgstr "Gib bitte einen Nick an."
+#~ msgid "auth.no-nickname"
+#~ msgstr "Gib bitte einen Nick an."
 
 #: includes/pages/guest_login.php:481
 #: includes/view/User_view.php:122
@@ -2765,3 +2763,9 @@ msgid ""
 msgstr ""
 "Diese Seite existiert nicht oder Du hast keinen Zugriff. Melde Dich an um "
 "Zugriff zu erhalten!"
+
+msgid "validation.password.required"
+msgstr "Bitte gib ein Passwort an."
+
+msgid "validation.login.required"
+msgstr "Bitte gib einen Loginnamen an."

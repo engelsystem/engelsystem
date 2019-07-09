@@ -8,6 +8,8 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Models\User\User;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AuthController extends BaseController
@@ -53,7 +55,22 @@ class AuthController extends BaseController
      */
     public function login()
     {
-        return $this->response->withView('pages/login');
+        return $this->showLogin();
+    }
+
+    /**
+     * @param bool $showRecovery
+     * @return Response
+     */
+    protected function showLogin($showRecovery = false)
+    {
+        $errors = Collection::make(Arr::flatten($this->session->get('errors', [])));
+        $this->session->remove('errors');
+
+        return $this->response->withView(
+            'pages/login',
+            ['errors' => $errors, 'show_password_recovery' => $showRecovery]
+        );
     }
 
     /**
@@ -64,15 +81,18 @@ class AuthController extends BaseController
      */
     public function postLogin(Request $request): Response
     {
-        $return = $this->authenticateUser($request->get('login', ''), $request->get('password', ''));
-        if (!$return instanceof User) {
-            return $this->response->withView(
-                'pages/login',
-                ['errors' => [$return], 'show_password_recovery' => true]
-            );
-        }
+        $data = $this->validate($request, [
+            'login'    => 'required',
+            'password' => 'required',
+        ]);
 
-        $user = $return;
+        $user = $this->auth->authenticate($data['login'], $data['password']);
+
+        if (!$user instanceof User) {
+            $this->session->set('errors', $this->session->get('errors', []) + ['auth.not-found']);
+
+            return $this->showLogin(true);
+        }
 
         $this->session->invalidate();
         $this->session->set('user_id', $user->id);
@@ -92,29 +112,5 @@ class AuthController extends BaseController
         $this->session->invalidate();
 
         return $this->response->redirectTo($this->url->to('/'));
-    }
-
-    /**
-     * Verify the user and password
-     *
-     * @param $login
-     * @param $password
-     * @return User|string
-     */
-    protected function authenticateUser(string $login, string $password)
-    {
-        if (!$login) {
-            return 'auth.no-nickname';
-        }
-
-        if (!$password) {
-            return 'auth.no-password';
-        }
-
-        if (!$user = $this->auth->authenticate($login, $password)) {
-            return 'auth.not-found';
-        }
-
-        return $user;
     }
 }
