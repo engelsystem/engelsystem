@@ -25,6 +25,7 @@ return [
         \Engelsystem\Middleware\RouteDispatcherServiceProvider::class,
         \Engelsystem\Middleware\RequestHandlerServiceProvider::class,
         \Engelsystem\Middleware\SessionHandlerServiceProvider::class,
+        \Engelsystem\Http\Validation\ValidationServiceProvider::class,
 
         // Additional services
         \Engelsystem\Mail\MailerServiceProvider::class,

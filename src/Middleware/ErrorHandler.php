@@ -3,6 +3,8 @@
 namespace Engelsystem\Middleware;
 
 use Engelsystem\Http\Exceptions\HttpException;
+use Engelsystem\Http\Exceptions\ValidationException;
+use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -43,6 +45,21 @@ class ErrorHandler implements MiddlewareInterface
             $response = $handler->handle($request);
         } catch (HttpException $e) {
             $response = $this->createResponse($e->getMessage(), $e->getStatusCode(), $e->getHeaders());
+        } catch (ValidationException $e) {
+            $response = $this->createResponse('', 302, ['Location' => $this->getPreviousUrl($request)]);
+
+            if ($request instanceof Request) {
+                $session = $request->getSession();
+                $session->set(
+                    'errors',
+                    array_merge_recursive(
+                        $session->get('errors', []),
+                        ['validation' => $e->getValidator()->getErrors()]
+                    )
+                );
+
+                $session->set('form-data', $request->request->all());
+            }
         }
 
         $statusCode = $response->getStatusCode();
@@ -105,5 +122,18 @@ class ErrorHandler implements MiddlewareInterface
     protected function createResponse(string $content = '', int $status = 200, array $headers = [])
     {
         return response($content, $status, $headers);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return string
+     */
+    protected function getPreviousUrl(ServerRequestInterface $request)
+    {
+        if ($header = $request->getHeader('referer')) {
+            return array_pop($header);
+        }
+
+        return '/';
     }
 }

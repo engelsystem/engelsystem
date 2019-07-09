@@ -21,5 +21,7 @@ class BaseControllerTest extends TestCase
                 'dolor',
             ],
         ], $controller->getPermissions());
+
+        $this->assertTrue(method_exists($controller, 'setValidator'));
     }
 }
