@@ -2,7 +2,6 @@
 
 namespace Engelsystem\Test\Unit\Http\Validation;
 
-use Engelsystem\Http\Validation\Validates;
 use Engelsystem\Http\Validation\Validator;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -10,19 +9,18 @@ use PHPUnit\Framework\TestCase;
 class ValidatorTest extends TestCase
 {
     /**
-     * @covers \Engelsystem\Http\Validation\Validator::__construct
      * @covers \Engelsystem\Http\Validation\Validator::validate
      * @covers \Engelsystem\Http\Validation\Validator::getData
      * @covers \Engelsystem\Http\Validation\Validator::getErrors
      */
     public function testValidate()
     {
-        $val = new Validator(new Validates);
+        $val = new Validator();
         $this->assertTrue($val->validate(
-            ['foo' => 'bar', 'lorem' => 'on'],
-            ['foo' => 'required|not_in:lorem,ipsum,dolor', 'lorem' => 'accepted']
+            ['foo' => 'bar', 'lorem' => 'on', 'dolor' => 'bla'],
+            ['lorem' => 'accepted']
         ));
-        $this->assertEquals(['foo' => 'bar', 'lorem' => 'on'], $val->getData());
+        $this->assertEquals(['lorem' => 'on'], $val->getData());
 
         $this->assertFalse($val->validate(
             [],
@@ -39,12 +37,42 @@ class ValidatorTest extends TestCase
      */
     public function testValidateNotImplemented()
     {
-        $val = new Validator(new Validates);
+        $val = new Validator();
         $this->expectException(InvalidArgumentException::class);
 
         $val->validate(
             ['lorem' => 'bar'],
             ['foo' => 'never_implemented']
+        );
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Validation\Validator::map
+     * @covers \Engelsystem\Http\Validation\Validator::mapBack
+     */
+    public function testValidateMapping()
+    {
+        $val = new Validator();
+        $this->assertTrue($val->validate(
+            ['foo' => 'bar'],
+            ['foo' => 'required']
+        ));
+        $this->assertTrue($val->validate(
+            ['foo' => '0'],
+            ['foo' => 'int']
+        ));
+        $this->assertTrue($val->validate(
+            ['foo' => 'on'],
+            ['foo' => 'accepted']
+        ));
+
+        $this->assertFalse($val->validate(
+            [],
+            ['lorem' => 'required']
+        ));
+        $this->assertEquals(
+            ['lorem' => ['validation.lorem.required']],
+            $val->getErrors()
         );
     }
 }

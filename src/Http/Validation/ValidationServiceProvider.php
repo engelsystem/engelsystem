@@ -10,9 +10,6 @@ class ValidationServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $validates = $this->app->make(Validates::class);
-        $this->app->instance(Validates::class, $validates);
-
         $validator = $this->app->make(Validator::class);
         $this->app->instance(Validator::class, $validator);
         $this->app->instance('validator', $validator);

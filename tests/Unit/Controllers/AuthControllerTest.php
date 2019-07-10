@@ -8,7 +8,6 @@ use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGeneratorInterface;
-use Engelsystem\Http\Validation\Validates;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
@@ -66,7 +65,7 @@ class AuthControllerTest extends TestCase
         list(, , $url, $auth) = $this->getMocks();
         $session = new Session(new MockArraySessionStorage());
         /** @var Validator|MockObject $validator */
-        $validator = new Validator(new Validates());
+        $validator = new Validator();
 
         $user = new User([
             'name'          => 'foo',

@@ -4,25 +4,23 @@ namespace Engelsystem\Http\Validation;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Respect\Validation\Exceptions\ComponentException;
+use Respect\Validation\Validator as RespectValidator;
 
 class Validator
 {
-    /** @var Validates */
-    protected $validate;
-
     /** @var string[] */
     protected $errors = [];
 
     /** @var array */
     protected $data = [];
 
-    /**
-     * @param Validates $validate
-     */
-    public function __construct(Validates $validate)
-    {
-        $this->validate = $validate;
-    }
+    /** @var array */
+    protected $mapping = [
+        'accepted' => 'TrueVal',
+        'int'      => 'IntVal',
+        'required' => 'NotEmpty',
+    ];
 
     /**
      * @param array $data
@@ -35,27 +33,54 @@ class Validator
         $this->data = [];
 
         foreach ($rules as $key => $values) {
+            $v = new RespectValidator();
+            $v->with('\\Engelsystem\\Http\\Validation\\Rules', true);
+
+            $value = isset($data[$key]) ? $data[$key] : null;
+
             foreach (explode('|', $values) as $parameters) {
                 $parameters = explode(':', $parameters);
                 $rule = array_shift($parameters);
                 $rule = Str::camel($rule);
+                $rule = $this->map($rule);
 
-                if (!method_exists($this->validate, $rule)) {
-                    throw new InvalidArgumentException('Unknown validation rule: ' . $rule);
+                try {
+                    call_user_func_array([$v, $rule], $parameters);
+                } catch (ComponentException $e) {
+                    throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
                 }
 
-                $value = isset($data[$key]) ? $data[$key] : null;
-                if (!$this->validate->{$rule}($value, $parameters, $data)) {
-                    $this->errors[$key][] = implode('.', ['validation', $key, $rule]);
-
-                    continue;
+                if ($v->validate($value)) {
+                    $this->data[$key] = $value;
+                } else {
+                    $this->errors[$key][] = implode('.', ['validation', $key, $this->mapBack($rule)]);
                 }
 
-                $this->data[$key] = $value;
+                $v->removeRules();
             }
         }
 
         return empty($this->errors);
+    }
+
+    /**
+     * @param string $rule
+     * @return string
+     */
+    protected function map($rule)
+    {
+        return $this->mapping[$rule] ?? $rule;
+    }
+
+    /**
+     * @param string $rule
+     * @return string
+     */
+    protected function mapBack($rule)
+    {
+        $mapping = array_flip($this->mapping);
+
+        return $mapping[$rule] ?? $rule;
     }
 
     /**
