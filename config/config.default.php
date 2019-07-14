@@ -59,13 +59,16 @@ return [
 
     // Available themes
     'available_themes'        => [
-        '8' => 'Engelsystem cccamp19 dark (2019)',
+        '10' => 'Engelsystem cccamp19 green (2019)',
+        '9' => 'Engelsystem cccamp19 yellow (2019)',
+        '8' => 'Engelsystem cccamp19 blue (2019)',
         '7' => 'Engelsystem 35c3 dark (2018)',
         '6' => 'Engelsystem 34c3 dark (2017)',
         '5' => 'Engelsystem 34c3 light (2017)',
         '4' => 'Engelsystem 33c3 (2016)',
         '3' => 'Engelsystem 32c3 (2015)',
         '2' => 'Engelsystem cccamp15',
+        '11' => 'Engelsystem high contrast',
         '0' => 'Engelsystem light',
         '1' => 'Engelsystem dark',
     ],
