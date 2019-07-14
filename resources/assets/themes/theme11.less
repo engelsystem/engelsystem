@@ -38,10 +38,10 @@ THE SOFTWARE.
 @gray-light:             #888;   // #999
 @gray-lighter:           #ADAFAE; // #eee
 
-@brand-primary:         #0076ba;
-@brand-success:         #99ba00;
-@brand-info:            #0076ba;
-@brand-warning:         #ffc600;
+@brand-primary:         #72abfa;
+@brand-success:         #5cb85c;
+@brand-info:            #5bc0de;
+@brand-warning:         #f0ad4e;
 @brand-danger:          #d9534f;
 
 
@@ -50,9 +50,9 @@ THE SOFTWARE.
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-@body-bg:               #060606;
+@body-bg:               #000;
 //** Global text color on `<body>`.
-@text-color:            @gray-light;
+@text-color:            #fff;
 
 //** Global textual link color.
 @link-color:            @brand-primary;
@@ -163,28 +163,28 @@ THE SOFTWARE.
 
 @btn-font-weight:                normal;
 
-@btn-default-color:              #000;
-@btn-default-bg:                 @gray-light;
+@btn-default-color:              #fff;
+@btn-default-bg:                 lighten(@gray-dark, 10%);
 
 @btn-default-border:             darken(@btn-default-bg, 10%);
 
-@btn-primary-color:              @btn-default-color;
+@btn-primary-color:              #000;
 @btn-primary-bg:                 @brand-primary;
 @btn-primary-border:             darken(@btn-default-bg, 10%);
 
-@btn-success-color:              @btn-default-color;
+@btn-success-color:              #000;
 @btn-success-bg:                 @brand-success;
 @btn-success-border:             darken(@btn-default-bg, 10%);
 
-@btn-info-color:                 @btn-default-color;
+@btn-info-color:                 #000;
 @btn-info-bg:                    @brand-info;
 @btn-info-border:                darken(@btn-default-bg, 10%);
 
-@btn-warning-color:              @btn-default-color;
+@btn-warning-color:              #000;
 @btn-warning-bg:                 @brand-warning;
 @btn-warning-border:             darken(@btn-default-bg, 10%);
 
-@btn-danger-color:               @btn-default-color;
+@btn-danger-color:               #000;
 @btn-danger-bg:                  @brand-danger;
 @btn-danger-border:              darken(@btn-default-bg, 10%);
 
@@ -198,7 +198,7 @@ THE SOFTWARE.
 //** `<input>` background color
 @input-bg:                       @gray-darker;
 //** `<input disabled>` background color
-@input-bg-disabled:              @gray-dark;
+@input-bg-disabled:              @gray-lighter;
 
 //** Text color for `<input>`s
 @input-color:                    @text-color;
@@ -454,7 +454,7 @@ THE SOFTWARE.
 @pagination-bg:                        @gray-darker;
 @pagination-border:                    @gray-dark;
 
-@pagination-hover-color:               #000;
+@pagination-hover-color:               #fff;
 @pagination-hover-bg:                  @component-active-bg;
 @pagination-hover-border:              transparent;
 
@@ -567,7 +567,7 @@ THE SOFTWARE.
 //##
 
 //** Default label background color
-@label-default-bg:            @btn-default-bg;
+@label-default-bg:            lighten(@btn-default-bg, 20%);
 //** Primary label background color
 @label-primary-bg:            @brand-primary;
 //** Success label background color
@@ -580,9 +580,9 @@ THE SOFTWARE.
 @label-danger-bg:             @brand-danger;
 
 //** Default label text color
-@label-color:                 #fff;
+@label-color:                 #000;
 //** Default text color of a linked label
-@label-link-hover-color:      #fff;
+@label-link-hover-color:      #000;
 
 
 //== Modals
@@ -771,7 +771,7 @@ THE SOFTWARE.
 
 @badge-color:                 #000;
 //** Linked badge text color on hover
-@badge-link-hover-color:      #000;
+@badge-link-hover-color:      #fff;
 @badge-bg:                    @brand-primary;
 
 //** Badge text color in active nav link
@@ -849,11 +849,11 @@ THE SOFTWARE.
 //** Horizontal offset for forms and lists.
 @component-offset-horizontal: 180px;
 //** Text muted color
-@text-muted:                  @gray-light;
+@text-muted:                  @gray-lighter;
 //** Abbreviations and acronyms border color
-@abbr-border-color:           @gray-light;
+@abbr-border-color:           @gray-lighter;
 //** Headings small color
-@headings-small-color:        @brand-primary;
+@headings-small-color:        @gray-lighter;
 //** Blockquote small color
 @blockquote-small-color:      @gray;
 //** Blockquote font size
@@ -903,7 +903,7 @@ THE SOFTWARE.
 
 .text-danger,
 .text-danger:hover {
-  color: @brand-danger;
+  color: lighten(@brand-danger, 10%);
 }
 
 .text-warning,
@@ -980,6 +980,10 @@ table,
   }
 }
 
+.legend {
+  margin-top: 20px;
+}
+
 .input-group-addon {
   background-color: @btn-default-bg;
 }
@@ -1040,37 +1044,6 @@ a.thumbnail.active {
   }
 }
 
-
-// Specials for cccamp19 design
-
-.navbar-brand {
-	.icon-icon_angel {
-	  background-color: @brand-primary;
-  }
-  
-  strong {
-    font-weight: lighter;
-    color: @brand-primary;  
-    text-shadow:
-      0 0 10px @brand-primary,
-      0 0 20px @brand-primary,
-      0 0 30px @brand-primary,
-      0 0 40px @brand-primary,
-      0 0 70px @brand-primary,
-      0 0 80px @brand-primary;
-  }
-}
-
-h1 {
-  font-weight: lighter;
-  color: @brand-primary;
-  text-shadow: 0 0 10px @brand-primary;
-  
-  .icon-icon_angel {
-    background-color: @brand-primary;
-  }
-}
-
-.panel-title {
-	color: #fff;
+.panel-info .panel-title {
+	color: #000;
 }
