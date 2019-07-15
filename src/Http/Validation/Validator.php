@@ -22,6 +22,9 @@ class Validator
         'required' => 'NotEmpty',
     ];
 
+    /** @var array */
+    protected $nestedRules = ['optional', 'not'];
+
     /**
      * @param array $data
      * @param array $rules
@@ -37,20 +40,38 @@ class Validator
             $v->with('\\Engelsystem\\Http\\Validation\\Rules', true);
 
             $value = isset($data[$key]) ? $data[$key] : null;
+            $values = explode('|', $values);
 
-            foreach (explode('|', $values) as $parameters) {
+            $packing = [];
+            foreach ($this->nestedRules as $rule) {
+                if (in_array($rule, $values)) {
+                    $packing[] = $rule;
+                }
+            }
+
+            $values = array_diff($values, $this->nestedRules);
+            foreach ($values as $parameters) {
                 $parameters = explode(':', $parameters);
                 $rule = array_shift($parameters);
                 $rule = Str::camel($rule);
                 $rule = $this->map($rule);
 
+                // To allow rules nesting
+                $w = $v;
                 try {
-                    call_user_func_array([$v, $rule], $parameters);
+                    foreach (array_reverse(array_merge($packing, [$rule])) as $rule) {
+                        if (!in_array($rule, $this->nestedRules)) {
+                            call_user_func_array([$w, $rule], $parameters);
+                            continue;
+                        }
+
+                        $w = call_user_func_array([new RespectValidator(), $rule], [$w]);
+                    }
                 } catch (ComponentException $e) {
                     throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
                 }
 
-                if ($v->validate($value)) {
+                if ($w->validate($value)) {
                     $this->data[$key] = $value;
                 } else {
                     $this->errors[$key][] = implode('.', ['validation', $key, $this->mapBack($rule)]);

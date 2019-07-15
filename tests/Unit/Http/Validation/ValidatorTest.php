@@ -16,6 +16,7 @@ class ValidatorTest extends TestCase
     public function testValidate()
     {
         $val = new Validator();
+
         $this->assertTrue($val->validate(
             ['foo' => 'bar', 'lorem' => 'on', 'dolor' => 'bla'],
             ['lorem' => 'accepted']
@@ -35,9 +36,36 @@ class ValidatorTest extends TestCase
     /**
      * @covers \Engelsystem\Http\Validation\Validator::validate
      */
+    public function testValidateChaining()
+    {
+        $val = new Validator();
+
+        $this->assertTrue($val->validate(
+            ['lorem' => 10],
+            ['lorem' => 'required|min:3|max:10']
+        ));
+        $this->assertTrue($val->validate(
+            ['lorem' => 3],
+            ['lorem' => 'required|min:3|max:10']
+        ));
+
+        $this->assertFalse($val->validate(
+            ['lorem' => 2],
+            ['lorem' => 'required|min:3|max:10']
+        ));
+        $this->assertFalse($val->validate(
+            ['lorem' => 42],
+            ['lorem' => 'required|min:3|max:10']
+        ));
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Validation\Validator::validate
+     */
     public function testValidateNotImplemented()
     {
         $val = new Validator();
+
         $this->expectException(InvalidArgumentException::class);
 
         $val->validate(
@@ -53,6 +81,7 @@ class ValidatorTest extends TestCase
     public function testValidateMapping()
     {
         $val = new Validator();
+
         $this->assertTrue($val->validate(
             ['foo' => 'bar'],
             ['foo' => 'required']
@@ -74,5 +103,40 @@ class ValidatorTest extends TestCase
             ['lorem' => ['validation.lorem.required']],
             $val->getErrors()
         );
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Validation\Validator::validate
+     */
+    public function testValidateNesting()
+    {
+        $val = new Validator();
+
+        $this->assertTrue($val->validate(
+            [],
+            ['foo' => 'not|required']
+        ));
+
+        $this->assertTrue($val->validate(
+            ['foo' => 'foo'],
+            ['foo' => 'not|int']
+        ));
+        $this->assertFalse($val->validate(
+            ['foo' => 1],
+            ['foo' => 'not|int']
+        ));
+
+        $this->assertTrue($val->validate(
+            [],
+            ['foo' => 'optional|int']
+        ));
+        $this->assertTrue($val->validate(
+            ['foo' => '33'],
+            ['foo' => 'optional|int']
+        ));
+        $this->assertFalse($val->validate(
+            ['foo' => 'T'],
+            ['foo' => 'optional|int']
+        ));
     }
 }
