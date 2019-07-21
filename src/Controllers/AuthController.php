@@ -53,7 +53,7 @@ class AuthController extends BaseController
     /**
      * @return Response
      */
-    public function login()
+    public function login(): Response
     {
         return $this->showLogin();
     }
@@ -62,7 +62,7 @@ class AuthController extends BaseController
      * @param bool $showRecovery
      * @return Response
      */
-    protected function showLogin($showRecovery = false)
+    protected function showLogin($showRecovery = false): Response
     {
         $errors = Collection::make(Arr::flatten($this->session->get('errors', [])));
         $this->session->remove('errors');
