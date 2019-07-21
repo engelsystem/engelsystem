@@ -122,7 +122,6 @@ deploy-staging:
   script:
     # Check if deployment variables where set
     - |-
-    - |-
       if [ -z "${SSH_PRIVATE_KEY}" ] || [ -z "${STAGING_REMOTE}" ] || [ -z "${STAGING_REMOTE_PATH}" ]; then
         echo "Skipping deployment";
         exit
