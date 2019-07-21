@@ -6,6 +6,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Metrics\Controller;
 use Engelsystem\Controllers\Metrics\MetricsEngine;
 use Engelsystem\Controllers\Metrics\Stats;
+use Engelsystem\Helpers\Version;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -28,7 +29,8 @@ class ControllerTest extends TestCase
         /** @var MetricsEngine|MockObject $engine */
         /** @var Stats|MockObject $stats */
         /** @var Config $config */
-        list($response, $request, $engine, $stats, $config) = $this->getMocks();
+        /** @var Version|MockObject $version */
+        list($response, $request, $engine, $stats, $config, $version) = $this->getMocks();
 
         $request->server = new ServerBag();
         $request->server->set('REQUEST_TIME_FLOAT', 0.0123456789);
@@ -37,6 +39,7 @@ class ControllerTest extends TestCase
             ->method('get')
             ->willReturnCallback(function ($path, $data) use ($response) {
                 $this->assertEquals('/metrics', $path);
+                $this->assertArrayHasKey('info', $data);
                 $this->assertArrayHasKey('users', $data);
                 $this->assertArrayHasKey('licenses', $data);
                 $this->assertArrayHasKey('users_working', $data);
@@ -122,7 +125,9 @@ class ControllerTest extends TestCase
             'XL' => 'X Large',
         ]);
 
-        $controller = new Controller($response, $engine, $config, $request, $stats);
+        $this->setExpects($version, 'getVersion', [], '0.42.42');
+
+        $controller = new Controller($response, $engine, $config, $request, $stats, $version);
         $controller->metrics();
     }
 
@@ -137,7 +142,8 @@ class ControllerTest extends TestCase
         /** @var MetricsEngine|MockObject $engine */
         /** @var Stats|MockObject $stats */
         /** @var Config $config */
-        list($response, $request, $engine, $stats, $config) = $this->getMocks();
+        /** @var Version|MockObject $version */
+        list($response, $request, $engine, $stats, $config, $version) = $this->getMocks();
 
         $response->expects($this->once())
             ->method('withHeader')
@@ -168,7 +174,7 @@ class ControllerTest extends TestCase
         $this->setExpects($stats, 'arrivedUsers', null, 10, $this->exactly(2));
         $this->setExpects($stats, 'currentlyWorkingUsers', null, 5);
 
-        $controller = new Controller($response, $engine, $config, $request, $stats);
+        $controller = new Controller($response, $engine, $config, $request, $stats, $version);
         $controller->stats();
     }
 
@@ -182,7 +188,8 @@ class ControllerTest extends TestCase
         /** @var MetricsEngine|MockObject $engine */
         /** @var Stats|MockObject $stats */
         /** @var Config $config */
-        list($response, $request, $engine, $stats, $config) = $this->getMocks();
+        /** @var Version|MockObject $version */
+        list($response, $request, $engine, $stats, $config, $version) = $this->getMocks();
 
         $request->expects($this->once())
             ->method('get')
@@ -191,7 +198,7 @@ class ControllerTest extends TestCase
 
         $config->set('api_key', 'fooBar!');
 
-        $controller = new Controller($response, $engine, $config, $request, $stats);
+        $controller = new Controller($response, $engine, $config, $request, $stats, $version);
 
         $this->expectException(HttpForbidden::class);
         $this->expectExceptionMessage(json_encode(['error' => 'The api_key is invalid']));
@@ -212,7 +219,8 @@ class ControllerTest extends TestCase
         /** @var Stats|MockObject $stats */
         $stats = $this->createMock(Stats::class);
         $config = new Config();
+        $version = $this->createMock(Version::class);
 
-        return [$response, $request, $engine, $stats, $config];
+        return [$response, $request, $engine, $stats, $config, $version];
     }
 }

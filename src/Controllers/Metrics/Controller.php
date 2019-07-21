@@ -4,6 +4,7 @@ namespace Engelsystem\Controllers\Metrics;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\BaseController;
+use Engelsystem\Helpers\Version;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -26,25 +27,31 @@ class Controller extends BaseController
     /** @var Stats */
     protected $stats;
 
+    /** @var Version */
+    protected $version;
+
     /**
      * @param Response      $response
      * @param MetricsEngine $engine
      * @param Config        $config
      * @param Request       $request
      * @param Stats         $stats
+     * @param Version       $version
      */
     public function __construct(
         Response $response,
         MetricsEngine $engine,
         Config $config,
         Request $request,
-        Stats $stats
+        Stats $stats,
+        Version $version
     ) {
         $this->config = $config;
         $this->engine = $engine;
         $this->request = $request;
         $this->response = $response;
         $this->stats = $stats;
+        $this->version = $version;
     }
 
     /**
@@ -68,6 +75,18 @@ class Controller extends BaseController
 
         $data = [
             $this->config->get('app_name') . ' stats',
+            'info'                 => [
+                'type' => 'gauge',
+                'help' => 'About the environment',
+                [
+                    'labels' => [
+                        'os'      => PHP_OS_FAMILY,
+                        'php'     => implode('.', [PHP_MAJOR_VERSION, PHP_MINOR_VERSION]),
+                        'version' => $this->version->getVersion(),
+                    ],
+                    'value'  => 1,
+                ],
+            ],
             'users'                => [
                 'type' => 'gauge',
                 ['labels' => ['state' => 'incoming'], 'value' => $this->stats->newUsers()],

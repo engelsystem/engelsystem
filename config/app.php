@@ -27,6 +27,7 @@ return [
         \Engelsystem\Middleware\SessionHandlerServiceProvider::class,
 
         // Additional services
+        \Engelsystem\Helpers\VersionServiceProvider::class,
         \Engelsystem\Mail\MailerServiceProvider::class,
     ],
 
