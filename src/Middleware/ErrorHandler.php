@@ -29,6 +29,12 @@ class ErrorHandler implements MiddlewareInterface
     protected $formIgnore = [
         'password',
         'password_confirmation',
+        'password2',
+        'new_password',
+        'new_password2',
+        'new_pw',
+        'new_pw2',
+        '_token',
     ];
 
     /**
