@@ -6,6 +6,7 @@ use Engelsystem\Http\Exceptions\HttpException;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -19,6 +20,16 @@ class ErrorHandler implements MiddlewareInterface
 
     /** @var string */
     protected $viewPrefix = 'errors/';
+
+    /**
+     * A list of inputs that are not saved from form input
+     *
+     * @var array
+     */
+    protected $formIgnore = [
+        'password',
+        'password_confirmation',
+    ];
 
     /**
      * @param TwigLoader $loader
@@ -58,7 +69,7 @@ class ErrorHandler implements MiddlewareInterface
                     )
                 );
 
-                $session->set('form-data', $request->request->all());
+                $session->set('form-data', Arr::except($request->request->all(), $this->formIgnore));
             }
         }
 

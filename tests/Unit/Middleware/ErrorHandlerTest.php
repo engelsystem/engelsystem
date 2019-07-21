@@ -176,7 +176,11 @@ class ErrorHandlerTest extends TestCase
 
         $session = new Session(new MockArraySessionStorage());
         $session->set('errors', ['validation' => ['foo' => ['validation.foo.required']]]);
-        $request = Request::create('/foo/bar', 'POST', ['foo' => 'bar']);
+        $request = Request::create(
+            '/foo/bar',
+            'POST',
+            ['foo' => 'bar', 'password' => 'Test123', 'password_confirmation' => 'Test1234']
+        );
         $request->setSession($session);
 
         /** @var Application $app */
