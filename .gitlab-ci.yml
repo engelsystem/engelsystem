@@ -57,7 +57,7 @@ test:
       junit: ./unittests.xml
   coverage: '/^\s*Lines:\s*(\d+(?:\.\d+)?%)/'
   before_script:
-    - apk add ${PHPIZE_DEPS} && pecl install xdebug-beta && docker-php-ext-enable xdebug
+    - apk add ${PHPIZE_DEPS} && pecl install xdebug && docker-php-ext-enable xdebug
     - curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
     - cp -R tests/ phpunit.xml "${DOCROOT}"
     - HOMEDIR=$(pwd)
@@ -121,6 +121,7 @@ deploy-staging:
     - master
   script:
     # Check if deployment variables where set
+    - |-
     - |-
       if [ -z "${SSH_PRIVATE_KEY}" ] || [ -z "${STAGING_REMOTE}" ] || [ -z "${STAGING_REMOTE_PATH}" ]; then
         echo "Skipping deployment";
