@@ -28,6 +28,7 @@ return [
         \Engelsystem\Http\Validation\ValidationServiceProvider::class,
 
         // Additional services
+        \Engelsystem\Helpers\VersionServiceProvider::class,
         \Engelsystem\Mail\MailerServiceProvider::class,
     ],
 

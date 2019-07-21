@@ -38,7 +38,9 @@ build-image:
   <<: *docker_definition
   stage: build
   script:
-    - docker build --pull --build-arg NGINX_IMAGE="${TEST_IMAGE}-nginx" -t "${TEST_IMAGE}" -f contrib/Dockerfile .
+    - apk -q add git
+    - VERSION="$(git describe --abbrev=0 --tags)-${CI_COMMIT_REF_NAME}+${CI_PIPELINE_ID}.${CI_COMMIT_SHORT_SHA}"
+    - docker build --pull --build-arg NGINX_IMAGE="${TEST_IMAGE}-nginx" --build-arg VERSION="${VERSION}" -t "${TEST_IMAGE}" -f contrib/Dockerfile .
     - docker push "${TEST_IMAGE}"
 
 test:

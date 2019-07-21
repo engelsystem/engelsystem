@@ -32,6 +32,9 @@ COPY --from=composer /app/composer.lock /app/
 RUN find /app/storage/ -type f -not -name .gitignore -exec rm {} \;
 RUN rm -f /app/import/* /app/config/config.php
 
+ARG VERSION
+RUN if [[ ! -f /app/storage/app/VERSION ]] && [[ ! -z "${VERSION}" ]]; then echo -n "${VERSION}" > /app/storage/app/VERSION; fi
+
 # Build the PHP container
 FROM php:7-fpm-alpine
 WORKDIR /var/www
