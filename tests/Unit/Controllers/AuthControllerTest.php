@@ -89,7 +89,7 @@ class AuthControllerTest extends TestCase
 
         $response->expects($this->once())
             ->method('withView')
-            ->with('pages/login', ['errors' => Collection::make(['auth.not-found']), 'show_password_recovery' => true])
+            ->with('pages/login', ['errors' => Collection::make(['auth.not-found'])])
             ->willReturn($response);
         $response->expects($this->once())
             ->method('redirectTo')
