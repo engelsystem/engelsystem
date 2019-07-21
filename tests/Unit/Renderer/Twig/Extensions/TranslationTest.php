@@ -2,7 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
-use Engelsystem\Helpers\Translator;
+use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Renderer\Twig\Extensions\Translation;
 use PHPUnit\Framework\MockObject\MockObject;
 use Twig_Extensions_TokenParser_Trans as TranslationTokenParser;

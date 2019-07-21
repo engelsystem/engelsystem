@@ -35,8 +35,8 @@ RUN rm -f /app/import/* /app/config/config.php
 # Build the PHP container
 FROM php:7-fpm-alpine
 WORKDIR /var/www
-RUN apk add --no-cache icu-dev gettext-dev && \
-    docker-php-ext-install intl gettext pdo_mysql
+RUN apk add --no-cache icu-dev && \
+    docker-php-ext-install intl pdo_mysql
 COPY --from=data /app/ /var/www
 RUN chown -R www-data:www-data /var/www/import/ /var/www/storage/ && \
     rm -r /var/www/html

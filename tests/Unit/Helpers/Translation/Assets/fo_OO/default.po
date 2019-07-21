@@ -1,0 +1,3 @@
+# Testing content
+msgid "foo.bar"
+msgstr "Foo Bar!"

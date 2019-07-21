@@ -7,7 +7,7 @@ use Twig_Error_Loader as LoaderError;
 use Twig_Error_Runtime as RuntimeError;
 use Twig_Error_Syntax as SyntaxError;
 
-class TwigEngine implements EngineInterface
+class TwigEngine extends Engine
 {
     /** @var Twig */
     protected $twig;
@@ -25,8 +25,10 @@ class TwigEngine implements EngineInterface
      * @return string
      * @throws LoaderError|RuntimeError|SyntaxError
      */
-    public function get($path, $data = [])
+    public function get(string $path, array $data = []): string
     {
+        $data = array_replace_recursive($this->sharedData, $data);
+
         return $this->twig->render($path, $data);
     }
 
@@ -34,7 +36,7 @@ class TwigEngine implements EngineInterface
      * @param string $path
      * @return bool
      */
-    public function canRender($path)
+    public function canRender(string $path): bool
     {
         return $this->twig->getLoader()->exists($path);
     }

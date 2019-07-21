@@ -9,13 +9,13 @@ class MetricsEngine implements EngineInterface
     /**
      * Render metrics
      *
-     * @example $data = ['foo' => [['labels' => ['foo'=>'bar'], 'value'=>42]], 'bar'=>123]
-     *
      * @param string  $path
      * @param mixed[] $data
      * @return string
+     *
+     * @example $data = ['foo' => [['labels' => ['foo'=>'bar'], 'value'=>42]], 'bar'=>123]
      */
-    public function get($path, $data = []): string
+    public function get(string $path, array $data = []): string
     {
         $return = [];
         foreach ($data as $name => $list) {
@@ -52,7 +52,7 @@ class MetricsEngine implements EngineInterface
      * @param string $path
      * @return bool
      */
-    public function canRender($path): bool
+    public function canRender(string $path): bool
     {
         return $path == '/metrics';
     }
@@ -60,8 +60,8 @@ class MetricsEngine implements EngineInterface
     /**
      * @param string      $name
      * @param array|mixed $row
-     * @see https://prometheus.io/docs/instrumenting/exposition_formats/
      * @return string
+     * @see https://prometheus.io/docs/instrumenting/exposition_formats/
      */
     protected function formatData($name, $row): string
     {
@@ -135,4 +135,12 @@ class MetricsEngine implements EngineInterface
             $value
         );
     }
+
+    /**
+     * Does nothing as shared data will onyly result in unexpected behaviour
+     *
+     * @param string|mixed[] $key
+     * @param mixed          $value
+     */
+    public function share($key, $value = null) { }
 }

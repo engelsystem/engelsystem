@@ -20,16 +20,16 @@ class TwigEngineTest extends TestCase
         $twig = $this->createMock(Twig::class);
 
         $path = 'foo.twig';
-        $data = ['lorem' => 'ipsum'];
-
         $twig->expects($this->once())
             ->method('render')
-            ->with($path, $data)
-            ->willReturn('LoremIpsum!');
+            ->with($path, ['lorem' => 'ipsum', 'shared' => 'data'])
+            ->willReturn('LoremIpsum data!');
 
         $engine = new TwigEngine($twig);
-        $return = $engine->get($path, $data);
-        $this->assertEquals('LoremIpsum!', $return);
+        $engine->share('shared', 'data');
+
+        $return = $engine->get($path, ['lorem' => 'ipsum']);
+        $this->assertEquals('LoremIpsum data!', $return);
     }
 
 

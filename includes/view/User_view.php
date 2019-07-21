@@ -126,7 +126,7 @@ function User_registration_success_view($event_welcome_message)
             div('col-md-4', [
                 '<h2>' . __('Login') . '</h2>',
                 form([
-                    form_text('nick', __('Nick'), ''),
+                    form_text('login', __('Nick'), ''),
                     form_password('password', __('Password')),
                     form_submit('submit', __('Login')),
                     buttons([

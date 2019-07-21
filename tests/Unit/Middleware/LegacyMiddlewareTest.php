@@ -3,7 +3,7 @@
 namespace Engelsystem\Test\Unit\Middleware;
 
 use Engelsystem\Helpers\Authenticator;
-use Engelsystem\Helpers\Translator;
+use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Http\Request;
 use Engelsystem\Middleware\LegacyMiddleware;
 use PHPUnit\Framework\MockObject\MockObject;

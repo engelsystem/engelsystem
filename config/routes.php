@@ -9,6 +9,8 @@ $route->get('/', 'HomeController@index');
 $route->get('/credits', 'CreditsController@index');
 
 // Authentication
+$route->get('/login', 'AuthController@login');
+$route->post('/login', 'AuthController@postLogin');
 $route->get('/logout', 'AuthController@logout');
 
 // Stats

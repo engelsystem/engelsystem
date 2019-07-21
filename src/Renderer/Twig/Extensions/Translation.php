@@ -2,7 +2,7 @@
 
 namespace Engelsystem\Renderer\Twig\Extensions;
 
-use Engelsystem\Helpers\Translator;
+use Engelsystem\Helpers\Translation\Translator;
 use Twig_Extension as TwigExtension;
 use Twig_Extensions_TokenParser_Trans as TranslationTokenParser;
 use Twig_Filter as TwigFilter;

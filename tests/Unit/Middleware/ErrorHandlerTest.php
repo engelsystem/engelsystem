@@ -2,14 +2,23 @@
 
 namespace Engelsystem\Test\Unit\Middleware;
 
+use Engelsystem\Application;
 use Engelsystem\Http\Exceptions\HttpException;
+use Engelsystem\Http\Exceptions\ValidationException;
+use Engelsystem\Http\Psr7ServiceProvider;
+use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Engelsystem\Http\ResponseServiceProvider;
+use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Middleware\ErrorHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\ReturnResponseMiddlewareHandler;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Twig_LoaderInterface as TwigLoader;
 
 class ErrorHandlerTest extends TestCase
@@ -104,7 +113,7 @@ class ErrorHandlerTest extends TestCase
     /**
      * @covers \Engelsystem\Middleware\ErrorHandler::process
      */
-    public function testProcessException()
+    public function testProcessHttpException()
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->createMock(ServerRequestInterface::class);
@@ -146,6 +155,67 @@ class ErrorHandlerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Middleware\ErrorHandler::process
+     * @covers \Engelsystem\Middleware\ErrorHandler::getPreviousUrl
+     */
+    public function testProcessValidationException()
+    {
+        /** @var TwigLoader|MockObject $twigLoader */
+        $twigLoader = $this->createMock(TwigLoader::class);
+        $handler = $this->getMockForAbstractClass(RequestHandlerInterface::class);
+        $validator = $this->createMock(Validator::class);
+
+        $handler->expects($this->exactly(2))
+            ->method('handle')
+            ->willReturnCallback(function () use ($validator) {
+                throw new ValidationException($validator);
+            });
+
+        $validator->expects($this->exactly(2))
+            ->method('getErrors')
+            ->willReturn(['foo' => ['validation.foo.numeric']]);
+
+        $session = new Session(new MockArraySessionStorage());
+        $session->set('errors', ['validation' => ['foo' => ['validation.foo.required']]]);
+        $request = Request::create(
+            '/foo/bar',
+            'POST',
+            ['foo' => 'bar', 'password' => 'Test123', 'password_confirmation' => 'Test1234']
+        );
+        $request->setSession($session);
+
+        /** @var Application $app */
+        $app = app();
+        (new ResponseServiceProvider($app))->register();
+        (new Psr7ServiceProvider($app))->register();
+
+        $errorHandler = new ErrorHandler($twigLoader);
+
+        $return = $errorHandler->process($request, $handler);
+
+        $this->assertEquals(302, $return->getStatusCode());
+        $this->assertEquals('/', $return->getHeaderLine('location'));
+        $this->assertEquals([
+            'errors'    => [
+                'validation' => [
+                    'foo' => [
+                        'validation.foo.required',
+                        'validation.foo.numeric',
+                    ],
+                ],
+            ],
+            'form-data' => [
+                'foo' => 'bar',
+            ],
+        ], $session->all());
+
+        $request = $request->withAddedHeader('referer', '/foo/batz');
+        $return = $errorHandler->process($request, $handler);
+
+        $this->assertEquals('/foo/batz', $return->getHeaderLine('location'));
+    }
+
+    /**
+     * @covers \Engelsystem\Middleware\ErrorHandler::process
      */
     public function testProcessContentTypeSniffer()
     {
@@ -153,7 +223,7 @@ class ErrorHandlerTest extends TestCase
         $request = $this->createMock(ServerRequestInterface::class);
         /** @var TwigLoader|MockObject $twigLoader */
         $twigLoader = $this->createMock(TwigLoader::class);
-        $response = new Response('<!DOCTYPE html><html><body><h1>Hi!</h1></body></html>', 500);
+        $response = new Response('<!DOCTYPE html><html lang="en"><body><h1>Hi!</h1></body></html>', 500);
         $returnResponseHandler = new ReturnResponseMiddlewareHandler($response);
 
         /** @var ErrorHandler|MockObject $errorHandler */

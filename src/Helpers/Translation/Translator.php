@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Helpers;
+namespace Engelsystem\Helpers\Translation;
 
 class Translator
 {
@@ -10,6 +10,12 @@ class Translator
     /** @var string */
     protected $locale;
 
+    /** @var string */
+    protected $fallbackLocale;
+
+    /** @var callable */
+    protected $getTranslatorCallback;
+
     /** @var callable */
     protected $localeChangeCallback;
 
@@ -17,15 +23,24 @@ class Translator
      * Translator constructor.
      *
      * @param string   $locale
+     * @param string   $fallbackLocale
+     * @param callable $getTranslatorCallback
      * @param string[] $locales
      * @param callable $localeChangeCallback
      */
-    public function __construct(string $locale, array $locales = [], callable $localeChangeCallback = null)
-    {
+    public function __construct(
+        string $locale,
+        string $fallbackLocale,
+        callable $getTranslatorCallback,
+        array $locales = [],
+        callable $localeChangeCallback = null
+    ) {
         $this->localeChangeCallback = $localeChangeCallback;
+        $this->getTranslatorCallback = $getTranslatorCallback;
 
         $this->setLocale($locale);
-        $this->setLocales($locales);
+        $this->fallbackLocale = $fallbackLocale;
+        $this->locales = $locales;
     }
 
     /**
@@ -37,9 +52,7 @@ class Translator
      */
     public function translate(string $key, array $replace = []): string
     {
-        $translated = $this->translateGettext($key);
-
-        return $this->replaceText($translated, $replace);
+        return $this->translateText('gettext', [$key], $replace);
     }
 
     /**
@@ -53,7 +66,29 @@ class Translator
      */
     public function translatePlural(string $key, string $pluralKey, int $number, array $replace = []): string
     {
-        $translated = $this->translateGettextPlural($key, $pluralKey, $number);
+        return $this->translateText('ngettext', [$key, $pluralKey, $number], $replace);
+    }
+
+    /**
+     * @param string $type
+     * @param array  $parameters
+     * @param array  $replace
+     * @return mixed|string
+     */
+    protected function translateText(string $type, array $parameters, array $replace = [])
+    {
+        $translated = $parameters[0];
+
+        foreach ([$this->locale, $this->fallbackLocale] as $lang) {
+            /** @var GettextTranslator $translator */
+            $translator = call_user_func($this->getTranslatorCallback, $lang);
+
+            try {
+                $translated = call_user_func_array([$translator, $type], $parameters);
+                break;
+            } catch (TranslationNotFound $e) {
+            }
+        }
 
         return $this->replaceText($translated, $replace);
     }
@@ -72,32 +107,6 @@ class Translator
         }
 
         return call_user_func_array('sprintf', array_merge([$key], $replace));
-    }
-
-    /**
-     * Translate the key via gettext
-     *
-     * @param string $key
-     * @return string
-     * @codeCoverageIgnore
-     */
-    protected function translateGettext(string $key): string
-    {
-        return gettext($key);
-    }
-
-    /**
-     * Translate the key via gettext
-     *
-     * @param string $key
-     * @param string $keyPlural
-     * @param int    $number
-     * @return string
-     * @codeCoverageIgnore
-     */
-    protected function translateGettextPlural(string $key, string $keyPlural, int $number): string
-    {
-        return ngettext($key, $keyPlural, $number);
     }
 
     /**

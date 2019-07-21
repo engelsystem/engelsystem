@@ -16,11 +16,12 @@ class HtmlEngineTest extends TestCase
     public function testGet()
     {
         $engine = new HtmlEngine();
+        $engine->share('shared_data', 'tester');
 
-        $file = $this->createTempFile('<div>%main_content%</div>');
+        $file = $this->createTempFile('<div>%main_content% is a %shared_data%</div>');
 
         $data = $engine->get($file, ['main_content' => 'Lorem ipsum dolor sit']);
-        $this->assertEquals('<div>Lorem ipsum dolor sit</div>', $data);
+        $this->assertEquals('<div>Lorem ipsum dolor sit is a tester</div>', $data);
     }
 
     /**
