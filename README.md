@@ -98,7 +98,7 @@ vendor/bin/phpunit
 
 ### CI & Build Pipeline
 The engelsystem can be tested and automatically deployed to a testing/staging/production environment.
-This functionality requires a [GitLab](https://about.gitlab.com/) server with a running docker minion.
+This functionality requires a [GitLab](https://about.gitlab.com/) server with a working docker runner.
 
 To use the deployment features the following secret variables need to be defined (if undefined the step will be skipped):
 ```bash
