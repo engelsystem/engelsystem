@@ -18,6 +18,7 @@ class MigrateTest extends TestCase
      * @covers \Engelsystem\Database\Migration\Migrate::getMigrations
      * @covers \Engelsystem\Database\Migration\Migrate::run
      * @covers \Engelsystem\Database\Migration\Migrate::setOutput
+     * @covers \Engelsystem\Database\Migration\Migrate::mergeMigrations
      */
     public function testRun()
     {
