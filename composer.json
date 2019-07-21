@@ -15,7 +15,6 @@
     ],
     "require": {
         "php": ">=7.1.0",
-        "ext-gettext": "*",
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
@@ -24,6 +23,7 @@
         "ext-xml": "*",
         "doctrine/dbal": "^2.9",
         "erusev/parsedown": "^1.7",
+        "gettext/gettext": "^4.6",
         "illuminate/container": "5.8.*",
         "illuminate/database": "5.8.*",
         "illuminate/support": "5.8.*",
@@ -32,6 +32,7 @@
         "psr/container": "^1.0",
         "psr/http-server-middleware": "^1.0",
         "psr/log": "^1.1",
+        "respect/validation": "^1.1",
         "swiftmailer/swiftmailer": "^6.2",
         "symfony/http-foundation": "^4.3",
         "symfony/psr-http-message-bridge": "^1.2",

@@ -14,7 +14,6 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
  * PHP >= 7.1
    * Required modules:
      * dom
-     * gettext
      * json
      * mbstring
      * PDO

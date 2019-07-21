@@ -1,10 +1,10 @@
 <?php
 
-namespace Engelsystem\Test\Unit\Helpers;
+namespace Engelsystem\Test\Unit\Helpers\Translation;
 
 use Engelsystem\Config\Config;
-use Engelsystem\Helpers\TranslationServiceProvider;
-use Engelsystem\Helpers\Translator;
+use Engelsystem\Helpers\Translation\TranslationServiceProvider;
+use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -12,13 +12,16 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class TranslationServiceProviderTest extends ServiceProviderTest
 {
     /**
-     * @covers \Engelsystem\Helpers\TranslationServiceProvider::register()
+     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::register()
      */
-    public function testRegister()
+    public function testRegister(): void
     {
+        $defaultLocale = 'fo_OO';
+        $locale = 'te_ST.WTF-9';
+        $locales = ['fo_OO' => 'Foo', 'fo_OO.BAR' => 'Foo (Bar)', 'te_ST.WTF-9' => 'WTF\'s Testing?'];
+        $config = new Config(['locales' => $locales, 'default_locale' => $defaultLocale]);
+
         $app = $this->getApp(['make', 'instance', 'get']);
-        /** @var Config|MockObject $config */
-        $config = $this->createMock(Config::class);
         /** @var Session|MockObject $session */
         $session = $this->createMock(Session::class);
         /** @var Translator|MockObject $translator */
@@ -27,30 +30,13 @@ class TranslationServiceProviderTest extends ServiceProviderTest
         /** @var TranslationServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(TranslationServiceProvider::class)
             ->setConstructorArgs([$app])
-            ->setMethods(['initGettext', 'setLocale'])
+            ->setMethods(['setLocale'])
             ->getMock();
-
-        $serviceProvider->expects($this->once())
-            ->method('initGettext');
 
         $app->expects($this->exactly(2))
             ->method('get')
             ->withConsecutive(['config'], ['session'])
             ->willReturnOnConsecutiveCalls($config, $session);
-
-        $defaultLocale = 'fo_OO';
-        $locale = 'te_ST.WTF-9';
-        $locales = ['fo_OO' => 'Foo', 'fo_OO.BAR' => 'Foo (Bar)', 'te_ST.WTF-9' => 'WTF\'s Testing?'];
-        $config->expects($this->exactly(2))
-            ->method('get')
-            ->withConsecutive(
-                ['locales'],
-                ['default_locale']
-            )
-            ->willReturnOnConsecutiveCalls(
-                $locales,
-                $defaultLocale
-            );
 
         $session->expects($this->once())
             ->method('get')
@@ -65,9 +51,11 @@ class TranslationServiceProviderTest extends ServiceProviderTest
             ->with(
                 Translator::class,
                 [
-                    'locale'               => $locale,
-                    'locales'              => $locales,
-                    'localeChangeCallback' => [$serviceProvider, 'setLocale'],
+                    'locale'                => $locale,
+                    'locales'               => $locales,
+                    'fallbackLocale'        => 'en_US',
+                    'getTranslatorCallback' => [$serviceProvider, 'getTranslator'],
+                    'localeChangeCallback'  => [$serviceProvider, 'setLocale'],
                 ]
             )
             ->willReturn($translator);
@@ -80,5 +68,23 @@ class TranslationServiceProviderTest extends ServiceProviderTest
             );
 
         $serviceProvider->register();
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getTranslator()
+     */
+    public function testGetTranslator(): void
+    {
+        $app = $this->getApp(['get']);
+        $serviceProvider = new TranslationServiceProvider($app);
+
+        $this->setExpects($app, 'get', ['path.lang'], __DIR__ . '/Assets');
+
+        // Get translator
+        $translator = $serviceProvider->getTranslator('fo_OO');
+        $this->assertEquals('Foo Bar!', $translator->gettext('foo.bar'));
+
+        // Retry from cache
+        $serviceProvider->getTranslator('fo_OO');
     }
 }

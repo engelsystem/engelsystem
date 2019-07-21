@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\User\User;
 use Psr\Log\LogLevel;
@@ -17,7 +18,7 @@ function engelsystem_email_to_user($recipientUser, $title, $message, $notIfItsMe
         return true;
     }
 
-    /** @var \Engelsystem\Helpers\Translator $translator */
+    /** @var Translator $translator */
     $translator = app()->get('translator');
     $locale = $translator->getLocale();
 

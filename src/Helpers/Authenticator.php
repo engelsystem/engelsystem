@@ -25,6 +25,9 @@ class Authenticator
     /** @var string[] */
     protected $permissions;
 
+    /** @var int */
+    protected $passwordAlgorithm = PASSWORD_DEFAULT;
+
     /**
      * @param ServerRequestInterface $request
      * @param Session                $session
@@ -48,7 +51,7 @@ class Authenticator
             return $this->user;
         }
 
-        $userId = $this->session->get('uid');
+        $userId = $this->session->get('user_id');
         if (!$userId) {
             return null;
         }
@@ -104,17 +107,15 @@ class Authenticator
         $abilities = (array)$abilities;
 
         if (empty($this->permissions)) {
-            $userId = $this->user ? $this->user->id : $this->session->get('uid');
+            $user = $this->user();
 
-            if ($userId) {
-                if ($user = $this->user()) {
-                    $this->permissions = $this->getPermissionsByUser($user);
+            if ($user) {
+                $this->permissions = $this->getPermissionsByUser($user);
 
-                    $user->last_login_at = new Carbon();
-                    $user->save();
-                } else {
-                    $this->session->remove('uid');
-                }
+                $user->last_login_at = new Carbon();
+                $user->save();
+            } elseif ($this->session->get('user_id')) {
+                $this->session->remove('user_id');
             }
 
             if (empty($this->permissions)) {
@@ -129,6 +130,78 @@ class Authenticator
         }
 
         return true;
+    }
+
+    /**
+     * @param string $login
+     * @param string $password
+     * @return User|null
+     */
+    public function authenticate(string $login, string $password)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->whereName($login)->first();
+        if (!$user) {
+            $user = $this->userRepository->whereEmail($login)->first();
+        }
+
+        if (!$user) {
+            return null;
+        }
+
+        if (!$this->verifyPassword($user, $password)) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    /**
+     * @param User   $user
+     * @param string $password
+     * @return bool
+     */
+    public function verifyPassword(User $user, string $password)
+    {
+        $algorithm = $this->passwordAlgorithm;
+
+        if (!password_verify($password, $user->password)) {
+            return false;
+        }
+
+        if (password_needs_rehash($user->password, $algorithm)) {
+            $this->setPassword($user, $password);
+        }
+
+        return true;
+    }
+
+    /**
+     * @param UserRepository $user
+     * @param string         $password
+     */
+    public function setPassword(User $user, string $password)
+    {
+        $algorithm = $this->passwordAlgorithm;
+
+        $user->password = password_hash($password, $algorithm);
+        $user->save();
+    }
+
+    /**
+     * @return int
+     */
+    public function getPasswordAlgorithm()
+    {
+        return $this->passwordAlgorithm;
+    }
+
+    /**
+     * @param int $passwordAlgorithm
+     */
+    public function setPasswordAlgorithm(int $passwordAlgorithm)
+    {
+        $this->passwordAlgorithm = $passwordAlgorithm;
     }
 
     /**

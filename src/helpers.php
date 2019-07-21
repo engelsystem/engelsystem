@@ -4,7 +4,7 @@
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Authenticator;
-use Engelsystem\Helpers\Translator;
+use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGeneratorInterface;

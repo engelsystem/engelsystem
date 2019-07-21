@@ -2,7 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Middleware;
 
-use Engelsystem\Helpers\Translator;
+use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Middleware\SetLocale;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

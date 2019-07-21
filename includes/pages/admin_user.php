@@ -291,8 +291,8 @@ function admin_user()
                     $request->postData('new_pw') != ''
                     && $request->postData('new_pw') == $request->postData('new_pw2')
                 ) {
-                    set_password($user_id, $request->postData('new_pw'));
                     $user_source = User::find($user_id);
+                    auth()->setPassword($user_source, $request->postData('new_pw'));
                     engelsystem_log('Set new password for ' . User_Nick_render($user_source, true));
                     $html .= success('Passwort neu gesetzt.', true);
                 } else {

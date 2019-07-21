@@ -11,11 +11,17 @@ interface EngineInterface
      * @param mixed[] $data
      * @return string
      */
-    public function get($path, $data = []);
+    public function get(string $path, array $data = []): string;
 
     /**
      * @param string $path
      * @return bool
      */
-    public function canRender($path);
+    public function canRender(string $path): bool;
+
+    /**
+     * @param string|mixed[] $key
+     * @param mixed          $value
+     */
+    public function share($key, $value = null);
 }

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem 2.0\n"
 "POT-Creation-Date: 2017-04-25 05:23+0200\n"
-"PO-Revision-Date: 2018-10-05 15:35+0200\n"
+"PO-Revision-Date: 2018-11-27 00:29+0100\n"
 "Last-Translator: samba <samba@autistici.org>\n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -477,7 +477,7 @@ msgstr "Você não pode se deletar."
 
 #: includes/controller/users_controller.php:61
 #: includes/pages/guest_login.php:315
-msgid "Your password is incorrect.  Please try it again."
+msgid "Your password is incorrect. Please try it again."
 msgstr "Sua senha está incorreta. Por favor, tente novamente."
 
 #: includes/controller/users_controller.php:71
@@ -1420,19 +1420,17 @@ msgid "Entry required!"
 msgstr "Campo necessário!"
 
 #: includes/pages/guest_login.php:319
-msgid "Please enter a password."
+msgid "auth.no-password"
 msgstr "Por favor digite uma senha."
 
 #: includes/pages/guest_login.php:323
-msgid ""
-"No user was found with that Nickname. Please try again. If you are still "
-"having problems, ask a Dispatcher."
+msgid "auth.not-found"
 msgstr ""
-"Nenhum usuário com esse apelido foi encontrado. Por favor tente novamente. \n"
+"Nenhum usuário foi encontrado. Por favor tente novamente. \n"
 "Se você continuar com problemas, pergunte a um Dispatcher."
 
 #: includes/pages/guest_login.php:327
-msgid "Please enter a nickname."
+msgid "auth.no-nickname"
 msgstr "Por favor digite um apelido."
 
 #: includes/pages/guest_login.php:358 includes/view/User_view.php:101

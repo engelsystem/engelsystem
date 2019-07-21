@@ -101,9 +101,10 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 function user_settings_password($user_source)
 {
     $request = request();
+    $auth = auth();
     if (
         !$request->has('password')
-        || !verify_password($request->postData('password'), $user_source->password, $user_source->id)
+        || !$auth->verifyPassword($user_source, $request->postData('password'))
     ) {
         error(__('-> not OK. Please try again.'));
     } elseif (strlen($request->postData('new_password')) < config('min_password_length')) {
@@ -111,7 +112,7 @@ function user_settings_password($user_source)
     } elseif ($request->postData('new_password') != $request->postData('new_password2')) {
         error(__('Your passwords don\'t match.'));
     } else {
-        set_password($user_source->id, $request->postData('new_password'));
+        $auth->setPassword($user_source, $request->postData('new_password'));
         success(__('Password saved.'));
     }
     redirect(page_link_to('user_settings'));

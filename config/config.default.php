@@ -99,13 +99,10 @@ return [
     // Number of hours that an angel has to sign out own shifts
     'last_unsubscribe'        => 3,
 
-    // Define the algorithm to use for `crypt()` of passwords
+    // Define the algorithm to use for `password_verify()`
     // If the user uses an old algorithm the password will be converted to the new format
-    //  MD5         '$1'
-    //  Blowfish    '$2y$13'
-    //  SHA-256     '$5$rounds=5000'
-    //  SHA-512     '$6$rounds=5000'
-    'crypt_alg'               => '$6$rounds=5000',
+    // See https://secure.php.net/manual/en/password.constants.php for a complete list
+    'password_algorithm'      => PASSWORD_DEFAULT,
 
     // The minimum length for passwords
     'min_password_length'     => 8,
@@ -141,12 +138,12 @@ return [
 
     // Available locales in /locale/
     'locales'                 => [
-        'de_DE.UTF-8' => 'Deutsch',
-        'en_US.UTF-8' => 'English',
+        'de_DE' => 'Deutsch',
+        'en_US' => 'English',
     ],
 
     // The default locale to use
-    'default_locale'          => env('DEFAULT_LOCALE', 'en_US.UTF-8'),
+    'default_locale'          => env('DEFAULT_LOCALE', 'en_US'),
 
     // Available T-Shirt sizes, set value to null if not available
     'tshirt_sizes'            => [

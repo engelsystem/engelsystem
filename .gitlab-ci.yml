@@ -46,7 +46,9 @@ build-image:
   <<: *docker_definition
   stage: build
   script:
-    - docker build --pull -t "${TEST_IMAGE}" -f contrib/Dockerfile .
+    - apk -q add git
+    - VERSION="$(git describe --abbrev=0 --tags)-${CI_COMMIT_REF_NAME}+${CI_PIPELINE_ID}.${CI_COMMIT_SHORT_SHA}"
+    - docker build --pull --build-arg VERSION="${VERSION}" -t "${TEST_IMAGE}" -f contrib/Dockerfile .
     - docker push "${TEST_IMAGE}"
 
 test:
@@ -65,7 +67,7 @@ test:
       junit: ./unittests.xml
   coverage: '/^\s*Lines:\s*(\d+(?:\.\d+)?%)/'
   before_script:
-    - apk add ${PHPIZE_DEPS} && pecl install xdebug-beta && docker-php-ext-enable xdebug
+    - apk add ${PHPIZE_DEPS} && pecl install xdebug && docker-php-ext-enable xdebug
     - curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
     - cp -R tests/ phpunit.xml "${DOCROOT}"
     - HOMEDIR=$(pwd)

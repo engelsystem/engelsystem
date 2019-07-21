@@ -47,6 +47,7 @@ function users_controller()
 function user_delete_controller()
 {
     $user = auth()->user();
+    $auth = auth();
     $request = request();
 
     if ($request->has('user_id')) {
@@ -68,14 +69,12 @@ function user_delete_controller()
     if ($request->hasPostData('submit')) {
         $valid = true;
 
-        if (
-        !(
+        if (!(
             $request->has('password')
-            && verify_password($request->postData('password'), $user->password, $user->id)
-        )
-        ) {
+            && $auth->verifyPassword($user, $request->postData('password'))
+        )) {
             $valid = false;
-            error(__('Your password is incorrect.  Please try it again.'));
+            error(__('Your password is incorrect. Please try it again.'));
         }
 
         if ($valid) {
@@ -341,7 +340,7 @@ function user_password_recovery_set_new_controller()
         }
 
         if ($valid) {
-            set_password($passwordReset->user->id, $request->postData('password'));
+            auth()->setPassword($passwordReset->user, $request->postData('password'));
             success(__('Password saved.'));
             $passwordReset->delete();
             redirect(page_link_to('login'));
