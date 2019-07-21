@@ -19,8 +19,8 @@ $app->register(MigrationServiceProvider::class);
 $migration = $app->get('db.migration');
 $migration->setOutput(function ($text) { echo $text . PHP_EOL; });
 
-if (isset($argv[1]) && strtolower($argv[1]) == 'help') {
-    echo PHP_EOL . 'Usage: ' . $argv[1] . ' [up|down] [one-step]' . PHP_EOL . PHP_EOL;
+if (isset($argv[1]) && in_array(strtolower($argv[1]), ['help', '--help', '-h'])) {
+    echo PHP_EOL . 'Usage: ' . $argv[0] . ' [up|down] [one-step]' . PHP_EOL . PHP_EOL;
     exit;
 }
 

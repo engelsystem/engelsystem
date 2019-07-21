@@ -50,26 +50,33 @@ class Migrate
     public function run($path, $type = self::UP, $oneStep = false)
     {
         $this->initMigration();
-        $migrations = $this->getMigrations($path);
-        $migrated = $this->getMigrated();
+        $migrations = $this->mergeMigrations(
+            $this->getMigrations($path),
+            $this->getMigrated()
+        );
 
         if ($type == self::DOWN) {
-            $migrations = array_reverse($migrations, true);
+            $migrations = $migrations->reverse();
         }
 
-        foreach ($migrations as $file => $migration) {
+        foreach ($migrations as $migration) {
+            /** @var array $migration */
+            $name = $migration['migration'];
+
             if (
-                ($type == self::UP && $migrated->contains('migration', $migration))
-                || ($type == self::DOWN && !$migrated->contains('migration', $migration))
+                ($type == self::UP && isset($migration['id']))
+                || ($type == self::DOWN && !isset($migration['id']))
             ) {
-                call_user_func($this->output, 'Skipping ' . $migration);
+                ($this->output)('Skipping ' . $name);
                 continue;
             }
 
-            call_user_func($this->output, 'Migrating ' . $migration . ' (' . $type . ')');
+            ($this->output)('Migrating ' . $name . ' (' . $type . ')');
 
-            $this->migrate($file, $migration, $type);
-            $this->setMigrated($migration, $type);
+            if (isset($migration['path'])) {
+                $this->migrate($migration['path'], $name, $type);
+            }
+            $this->setMigrated($name, $type);
 
             if ($oneStep) {
                 return;
@@ -93,13 +100,47 @@ class Migrate
     }
 
     /**
+     * Merge file migrations with already migrated tables
+     *
+     * @param Collection $migrations
+     * @param Collection $migrated
+     * @return Collection
+     */
+    protected function mergeMigrations(Collection $migrations, Collection $migrated)
+    {
+        $return = $migrated;
+        $return->transform(function ($migration) use ($migrations) {
+            $migration = (array)$migration;
+            if ($migrations->contains('migration', $migration['migration'])) {
+                $migration += $migrations
+                    ->where('migration', $migration['migration'])
+                    ->first();
+            }
+
+            return $migration;
+        });
+
+        $migrations->each(function ($migration) use ($return) {
+            if ($return->contains('migration', $migration['migration'])) {
+                return;
+            }
+
+            $return->add($migration);
+        });
+
+        return $return;
+    }
+
+    /**
      * Get all migrated migrations
      *
      * @return Collection
      */
     protected function getMigrated()
     {
-        return $this->getTableQuery()->get();
+        return $this->getTableQuery()
+            ->orderBy('id')
+            ->get();
     }
 
     /**
@@ -144,20 +185,24 @@ class Migrate
      * Get a list of migration files
      *
      * @param string $dir
-     * @return array
+     * @return Collection
      */
     protected function getMigrations($dir)
     {
         $files = $this->getMigrationFiles($dir);
 
-        $migrations = [];
+        $migrations = new Collection();
         foreach ($files as $dir) {
             $name = str_replace('.php', '', basename($dir));
-            $migrations[$dir] = $name;
+            $migrations[] = [
+                'migration' => $name,
+                'path'      => $dir,
+            ];
         }
 
-        asort($migrations);
-        return $migrations;
+        return $migrations->sortBy(function ($value) {
+            return $value['migration'];
+        });
     }
 
     /**
