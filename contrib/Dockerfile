@@ -1,14 +1,8 @@
-# Setup
-ARG NGINX_IMAGE=engelsystem-nginx:latest
-
 # composer install
 FROM composer AS composer
 COPY ./ /app/
 RUN composer --no-ansi install --no-dev --ignore-platform-reqs
 RUN composer --no-ansi dump-autoload --optimize
-
-# Use frontend container for assets
-FROM ${NGINX_IMAGE} AS frontend
 
 # Intermediate container for less layers
 FROM alpine as data
@@ -18,7 +12,6 @@ COPY db/ /app/db
 COPY import/ /app/import
 COPY includes/ /app/includes
 COPY public/ /app/public
-COPY --from=frontend /var/www/public/assets/ /app/public/assets
 COPY resources/lang /app/resources/lang
 COPY resources/views /app/resources/views
 COPY src/ /app/src

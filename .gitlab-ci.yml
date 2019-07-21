@@ -30,15 +30,23 @@ stages:
 build-image.nginx:
   <<: *docker_definition
   stage: build-frontend
+  artifacts:
+    name: "${CI_JOB_NAME}_${CI_JOB_ID}_assets"
+    expire_in: 1 day
+    paths:
+      - ./public/assets
   script:
     - docker build --pull -t "${TEST_IMAGE}-nginx" -f contrib/nginx/Dockerfile .
     - docker push "${TEST_IMAGE}-nginx"
+    - instance=$(docker create "${TEST_IMAGE}-nginx")
+    - docker cp "${instance}:/var/www/public/assets" public/
+    - docker rm "${instance}"
 
 build-image:
   <<: *docker_definition
   stage: build
   script:
-    - docker build --pull --build-arg NGINX_IMAGE="${TEST_IMAGE}-nginx" -t "${TEST_IMAGE}" -f contrib/Dockerfile .
+    - docker build --pull -t "${TEST_IMAGE}" -f contrib/Dockerfile .
     - docker push "${TEST_IMAGE}"
 
 test:
@@ -112,6 +120,7 @@ build-release-file:
       - ./release/
   script:
     - rsync -vAax "${DOCROOT}" release/
+    - rsync -vAax public/assets release/public/
 
 deploy-staging:
   <<: *deploy_definition
