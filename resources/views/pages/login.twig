@@ -31,9 +31,6 @@
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
                 <div class="panel panel-primary first">
-
-                    <div class="panel-heading">{{ m.angel }} {{ __('Login') }}</div>
-
                     <div class="panel-body">
                         {% for message in errors|default([]) %}
                             {{ m.alert(__(message), 'danger') }}
@@ -42,36 +39,34 @@
                         <form action="" enctype="multipart/form-data" method="post">
                             {{ csrf() }}
                             <div class="form-group">
-                                <input class="form-control" id="form_nick"
-                                       type="text" name="login" value="" placeholder="{{ __('Nick') }}">
-                            </div>
-
-                            <div class="form-group">
-                                <input class="form-control" id="form_password"
-                                       type="password" name="password" value="" placeholder="{{ __('Password') }}">
-                            </div>
-
-                            <div class="form-group">
-                                <div class="btn-group">
-                                    <button class="btn btn-primary" type="submit" name="submit">
-                                        {{ __('Login') }}
-                                    </button>
-
-                                    {% if show_password_recovery|default(false) %}
-                                        <a href="{{ url('user-password-recovery') }}" class="btn btn-default ">
-                                            {{ __('I forgot my password') }}
-                                        </a>
-                                    {% endif %}
+                                <div class="input-group">
+                                    <span class="input-group-addon">{{ m.angel }}</span>
+                                    <input class="form-control input-lg" id="form_nick"
+                                           type="text" name="login" value="" placeholder="{{ __('Nick') }}">
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">{{ m.glyphicon('lock') }}</span>
+                                    <input class="form-control input-lg" id="form_password"
+                                          type="password" name="password" value="" placeholder="{{ __('Password') }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-lg btn-block" type="submit" name="submit">
+                                    {{ __('Login') }}
+                                </button>
+                            </div>
+
+                            <div class="text-center">
+                                <a href="{{ url('user-password-recovery') }}" class="">
+                                    {{ __('I forgot my password') }}
+                                </a>
+                            </div>
                         </form>
                     </div>
-
-                    <div class="panel-footer">
-                        {{ m.glyphicon('info-sign') }} {{ __('Please note: You have to activate cookies!') }}
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -100,5 +95,6 @@
             </div>
         </div>
 
+        {{ m.glyphicon('info-sign') }} {{ __('Please note: You have to activate cookies!') }}
     </div>
 {% endblock %}

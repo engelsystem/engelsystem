@@ -59,17 +59,16 @@ class AuthController extends BaseController
     }
 
     /**
-     * @param bool $showRecovery
      * @return Response
      */
-    protected function showLogin($showRecovery = false): Response
+    protected function showLogin(): Response
     {
         $errors = Collection::make(Arr::flatten($this->session->get('errors', [])));
         $this->session->remove('errors');
 
         return $this->response->withView(
             'pages/login',
-            ['errors' => $errors, 'show_password_recovery' => $showRecovery]
+            ['errors' => $errors]
         );
     }
 
@@ -91,7 +90,7 @@ class AuthController extends BaseController
         if (!$user instanceof User) {
             $this->session->set('errors', $this->session->get('errors', []) + ['auth.not-found']);
 
-            return $this->showLogin(true);
+            return $this->showLogin();
         }
 
         $this->session->invalidate();
