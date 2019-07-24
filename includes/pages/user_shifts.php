@@ -252,7 +252,8 @@ function view_user_shifts()
                     [
                         button(
                             'javascript: checkOwnTypes(\'selection_types\', ' . json_encode($ownTypes) . ')',
-                            __('Own')
+                            __('Own'),
+                            'hidden-print'
                         ),
                     ]
                 ),
@@ -324,8 +325,8 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
     }
 
     $buttons = [];
-    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', true)', __('All'));
-    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', false)', __('None'));
+    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', true)', __('All'), 'hidden-print');
+    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', false)', __('None'), 'hidden-print');
     $buttons = array_merge($buttons, $additionalButtons);
 
     $html .= buttons($buttons);

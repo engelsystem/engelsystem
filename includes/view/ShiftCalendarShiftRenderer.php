@@ -190,7 +190,7 @@ class ShiftCalendarShiftRenderer
                     . '</a> '
                     . button(
                         shift_entry_create_link($shift, $angeltype),
-                        __('Sign up'), 'btn-xs btn-primary'
+                        __('Sign up'), 'btn-xs btn-primary hidden-print'
                     );
                 break;
 
@@ -258,7 +258,7 @@ class ShiftCalendarShiftRenderer
     {
         $header_buttons = '';
         if (auth()->can('admin_shifts')) {
-            $header_buttons = '<div class="pull-right">' . table_buttons([
+            $header_buttons = '<div class="pull-right hidden-print">' . table_buttons([
                     button(
                         page_link_to('user_shifts', ['edit_shift' => $shift['SID']]),
                         glyph('edit'),
