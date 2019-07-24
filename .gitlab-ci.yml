@@ -19,9 +19,9 @@ stages:
   - deploy
 
 .docker_template: &docker_definition
-  image: docker:latest
+  image: docker:18
   services:
-    - docker:dind
+    - docker:18-dind
   tags:
     - dind
   before_script:
