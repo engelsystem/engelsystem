@@ -233,9 +233,9 @@ function Users_view(
         $u['got_shirt'] = glyph_bool($user->state->got_shirt);
         $u['shirt_size'] = $user->personalData->shirt_size;
         $u['arrival_date'] = $user->personalData->planned_arrival_date
-            ? $user->personalData->planned_arrival_date->format(__('m/d/Y h:i a')) : '';
+            ? $user->personalData->planned_arrival_date->format(__('Y-m-d')) : '';
         $u['departure_date'] = $user->personalData->planned_departure_date
-            ? $user->personalData->planned_departure_date->format(__('m/d/Y h:i a')) : '';
+            ? $user->personalData->planned_departure_date->format(__('Y-m-d')) : '';
         $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('m/d/Y h:i a')) : '';
         $u['actions'] = table_buttons([
             button_glyph(page_link_to('admin_user', ['id' => $user->id]), 'edit', 'btn-xs')
