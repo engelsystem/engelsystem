@@ -277,6 +277,8 @@ function users_list_controller()
             'active',
             'force_active',
             'got_shirt',
+            'planned_arrival_date',
+            'planned_departure_date',
             'last_login_at',
         ])) {
         $order_by = $request->input('OrderBy');

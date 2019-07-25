@@ -232,6 +232,10 @@ function Users_view(
         $u['force_active'] = glyph_bool($user->state->force_active);
         $u['got_shirt'] = glyph_bool($user->state->got_shirt);
         $u['shirt_size'] = $user->personalData->shirt_size;
+        $u['arrival_date'] = $user->personalData->planned_arrival_date
+            ? $user->personalData->planned_arrival_date->format(__('Y-m-d')) : '';
+        $u['departure_date'] = $user->personalData->planned_departure_date
+            ? $user->personalData->planned_departure_date->format(__('Y-m-d')) : '';
         $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('m/d/Y h:i a')) : '';
         $u['actions'] = table_buttons([
             button_glyph(page_link_to('admin_user', ['id' => $user->id]), 'edit', 'btn-xs')
@@ -255,19 +259,21 @@ function Users_view(
             button(page_link_to('register'), glyph('plus') . __('New user'))
         ]),
         table([
-            'name'          => Users_table_header_link('name', __('Nick'), $order_by),
-            'first_name'    => Users_table_header_link('first_name', __('Prename'), $order_by),
-            'last_name'     => Users_table_header_link('last_name', __('Name'), $order_by),
-            'dect'          => Users_table_header_link('dect', __('DECT'), $order_by),
-            'arrived'       => Users_table_header_link('arrived', __('Arrived'), $order_by),
-            'got_voucher'   => Users_table_header_link('got_voucher', __('Voucher'), $order_by),
-            'freeloads'     => __('Freeloads'),
-            'active'        => Users_table_header_link('active', __('Active'), $order_by),
-            'force_active'  => Users_table_header_link('force_active', __('Forced'), $order_by),
-            'got_shirt'     => Users_table_header_link('got_shirt', __('T-Shirt'), $order_by),
-            'shirt_size'    => Users_table_header_link('shirt_size', __('Size'), $order_by),
-            'last_login_at' => Users_table_header_link('last_login_at', __('Last login'), $order_by),
-            'actions'       => ''
+            'name'           => Users_table_header_link('name', __('Nick'), $order_by),
+            'first_name'     => Users_table_header_link('first_name', __('Prename'), $order_by),
+            'last_name'      => Users_table_header_link('last_name', __('Name'), $order_by),
+            'dect'           => Users_table_header_link('dect', __('DECT'), $order_by),
+            'arrived'        => Users_table_header_link('arrived', __('Arrived'), $order_by),
+            'got_voucher'    => Users_table_header_link('got_voucher', __('Voucher'), $order_by),
+            'freeloads'      => __('Freeloads'),
+            'active'         => Users_table_header_link('active', __('Active'), $order_by),
+            'force_active'   => Users_table_header_link('force_active', __('Forced'), $order_by),
+            'got_shirt'      => Users_table_header_link('got_shirt', __('T-Shirt'), $order_by),
+            'shirt_size'     => Users_table_header_link('shirt_size', __('Size'), $order_by),
+            'arrival_date'   => Users_table_header_link('planned_arrival_date', __('Planned arrival'), $order_by),
+            'departure_date' => Users_table_header_link('planned_departure_date', __('Planned departure'), $order_by),
+            'last_login_at'  => Users_table_header_link('last_login_at', __('Last login'), $order_by),
+            'actions'        => ''
         ], $usersList)
     ]);
 }
