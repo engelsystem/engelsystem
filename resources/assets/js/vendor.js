@@ -1,3 +1,4 @@
+require('core-js/stable');
 window.$ = window.jQuery = require('jquery');
 require('imports-loader?define=>false!jquery-ui');
 require('bootstrap');
