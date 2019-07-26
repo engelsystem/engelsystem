@@ -6,10 +6,11 @@ RUN composer --no-ansi dump-autoload --optimize
 
 # Intermediate container for less layers
 FROM alpine as data
+COPY .babelrc .browserslistrc composer.json LICENSE package.json README.md webpack.config.js /app/
 COPY bin/ /app/bin
 COPY config/ /app/config
 COPY db/ /app/db
-COPY import/ /app/import
+RUN mkdir /app/import/
 COPY includes/ /app/includes
 COPY public/ /app/public
 COPY resources/lang /app/resources/lang
@@ -17,16 +18,11 @@ COPY resources/views /app/resources/views
 COPY src/ /app/src
 COPY storage/ /app/storage
 
-COPY composer.json LICENSE package.json README.md /app/
-
 COPY --from=composer /app/vendor/ /app/vendor
 COPY --from=composer /app/composer.lock /app/
 
 RUN find /app/storage/ -type f -not -name .gitignore -exec rm {} \;
-RUN rm -f /app/import/* /app/config/config.php
-
-ARG VERSION
-RUN if [[ ! -f /app/storage/app/VERSION ]] && [[ ! -z "${VERSION}" ]]; then echo -n "${VERSION}" > /app/storage/app/VERSION; fi
+RUN rm -f /app/config/config.php
 
 # Build the PHP container
 FROM php:7-fpm-alpine
@@ -36,6 +32,9 @@ RUN apk add --no-cache icu-dev && \
 COPY --from=data /app/ /var/www
 RUN chown -R www-data:www-data /var/www/import/ /var/www/storage/ && \
     rm -r /var/www/html
+
+ARG VERSION
+RUN if [[ ! -f /var/www/storage/app/VERSION ]] && [[ ! -z "${VERSION}" ]]; then echo -n "${VERSION}" > /var/www/storage/app/VERSION; fi
 
 ENV TRUSTED_PROXIES 10.0.0.0/8,::ffff:10.0.0.0/8,\
                     127.0.0.0/8,::ffff:127.0.0.0/8,\
