@@ -28,6 +28,9 @@ class Authenticator
     /** @var int|string|null */
     protected $passwordAlgorithm = PASSWORD_DEFAULT;
 
+    /** @var int */
+    protected $guestRole = 10;
+
     /**
      * @param ServerRequestInterface $request
      * @param Session                $session
@@ -119,7 +122,7 @@ class Authenticator
             }
 
             if (empty($this->permissions)) {
-                $this->permissions = $this->getPermissionsByGroup(-10);
+                $this->permissions = $this->getPermissionsByGroup($this->guestRole);
             }
         }
 
@@ -198,6 +201,22 @@ class Authenticator
     public function setPasswordAlgorithm($passwordAlgorithm)
     {
         $this->passwordAlgorithm = $passwordAlgorithm;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGuestRole()
+    {
+        return $this->guestRole;
+    }
+
+    /**
+     * @param int $guestRole
+     */
+    public function setGuestRole(int $guestRole)
+    {
+        $this->guestRole = $guestRole;
     }
 
     /**

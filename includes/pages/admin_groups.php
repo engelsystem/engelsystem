@@ -59,8 +59,8 @@ function admin_groups()
     } else {
         switch ($request->input('action')) {
             case 'edit':
-                if ($request->has('id') && preg_match('/^-\d{1,11}$/', $request->input('id'))) {
-                    $group_id = $request->input('id');
+                if ($request->has('id')) {
+                    $group_id = (int)$request->input('id');
                 } else {
                     return error('Incomplete call, missing Groups ID.', true);
                 }
@@ -103,10 +103,9 @@ function admin_groups()
             case 'save':
                 if (
                     $request->has('id')
-                    && preg_match('/^-\d{1,11}$/', $request->input('id'))
                     && $request->hasPostData('submit')
                 ) {
-                    $group_id = $request->input('id');
+                    $group_id = (int)$request->input('id');
                 } else {
                     return error('Incomplete call, missing Groups ID.', true);
                 }
@@ -117,7 +116,8 @@ function admin_groups()
                     Db::delete('DELETE FROM `GroupPrivileges` WHERE `group_id`=?', [$group_id]);
                     $privilege_names = [];
                     foreach ($privileges as $privilege) {
-                        if (preg_match('/^\d+$/', $privilege)) {
+                        $privilege = (int)$privilege;
+                        if ($privilege) {
                             $group_privileges_source = Db::selectOne(
                                 'SELECT `name` FROM `Privileges` WHERE `id`=? LIMIT 1',
                                 [$privilege]

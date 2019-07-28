@@ -127,24 +127,24 @@ function admin_user()
         $html .= '<hr />';
 
         $my_highest_group = DB::selectOne(
-            'SELECT group_id FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` LIMIT 1',
+            'SELECT group_id FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` DESC LIMIT 1',
             [$user->id]
         );
         if (!empty($my_highest_group)) {
             $my_highest_group = $my_highest_group['group_id'];
         }
 
-        $his_highest_group = DB::selectOne(
+        $angel_highest_group = DB::selectOne(
             'SELECT `group_id` FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` LIMIT 1',
             [$user_id]
         );
-        if (!empty($his_highest_group)) {
-            $his_highest_group = $his_highest_group['group_id'];
+        if (!empty($angel_highest_group)) {
+            $angel_highest_group = $angel_highest_group['group_id'];
         }
 
         if (
             ($user_id != $user->id || auth()->can('admin_groups'))
-            && ($my_highest_group <= $his_highest_group || is_null($his_highest_group))
+            && ($my_highest_group >= $angel_highest_group || is_null($angel_highest_group))
         ) {
             $html .= 'Hier kannst Du die Benutzergruppen des Engels festlegen:<form action="'
                 . page_link_to('admin_user', ['action' => 'save_groups', 'id' => $user_id])
@@ -160,7 +160,7 @@ function admin_user()
                         `UserGroups`.`group_id` = `Groups`.`UID`
                         AND `UserGroups`.`uid` = ?
                     )
-                    WHERE `Groups`.`UID` >= ?
+                    WHERE `Groups`.`UID` <= ?
                     ORDER BY `Groups`.`Name`
                 ',
                 [
@@ -192,19 +192,19 @@ function admin_user()
             case 'save_groups':
                 if ($user_id != $user->id || auth()->can('admin_groups')) {
                     $my_highest_group = DB::selectOne(
-                        'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id`',
+                        'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` DESC LIMIT 1',
                         [$user->id]
                     );
-                    $his_highest_group = DB::selectOne(
-                        'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id`',
+                    $angel_highest_group = DB::selectOne(
+                        'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id` DESC LIMIT 1',
                         [$user_id]
                     );
 
                     if (
-                        count($my_highest_group) > 0
+                        $my_highest_group
                         && (
-                            empty($his_highest_group)
-                            || ($my_highest_group['group_id'] <= $his_highest_group['group_id'])
+                            empty($angel_highest_group)
+                            || ($my_highest_group['group_id'] >= $angel_highest_group['group_id'])
                         )
                     ) {
                         $groups_source = DB::select(
@@ -215,7 +215,7 @@ function admin_user()
                                     `UserGroups`.`group_id` = `Groups`.`UID`
                                     AND `UserGroups`.`uid` = ?
                                 )
-                                WHERE `Groups`.`UID` >= ?
+                                WHERE `Groups`.`UID` <= ?
                                 ORDER BY `Groups`.`Name`
                             ',
                             [

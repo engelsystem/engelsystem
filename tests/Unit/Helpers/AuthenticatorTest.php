@@ -132,7 +132,7 @@ class AuthenticatorTest extends ServiceProviderTest
             ->getMock();
         $auth->expects($this->exactly(1))
             ->method('getPermissionsByGroup')
-            ->with(-10)
+            ->with(10)
             ->willReturn([]);
         $auth->expects($this->exactly(1))
             ->method('getPermissionsByUser')
@@ -243,6 +243,18 @@ class AuthenticatorTest extends ServiceProviderTest
 
         $auth->setPasswordAlgorithm(PASSWORD_ARGON2I);
         $this->assertEquals(PASSWORD_ARGON2I, $auth->getPasswordAlgorithm());
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Authenticator::setGuestRole
+     * @covers \Engelsystem\Helpers\Authenticator::getGuestRole
+     */
+    public function testGuestRole()
+    {
+        $auth = $this->getAuthenticator();
+
+        $auth->setGuestRole(42);
+        $this->assertEquals(42, $auth->getGuestRole());
     }
 
     /**
