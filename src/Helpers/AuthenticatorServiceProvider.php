@@ -14,6 +14,7 @@ class AuthenticatorServiceProvider extends ServiceProvider
         /** @var Authenticator $authenticator */
         $authenticator = $this->app->make(Authenticator::class);
         $authenticator->setPasswordAlgorithm($config->get('password_algorithm'));
+        $authenticator->setGuestRole($config->get('auth_guest_role', $authenticator->getGuestRole()));
 
         $this->app->instance(Authenticator::class, $authenticator);
         $this->app->instance('authenticator', $authenticator);

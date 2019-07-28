@@ -22,6 +22,7 @@ class AuthenticatorServiceProviderTest extends ServiceProviderTest
 
         $config = new Config();
         $config->set('password_algorithm', PASSWORD_DEFAULT);
+        $config->set('auth_guest_role', 42);
         $app->instance('config', $config);
 
         $serviceProvider = new AuthenticatorServiceProvider($app);
@@ -34,5 +35,6 @@ class AuthenticatorServiceProviderTest extends ServiceProviderTest
         /** @var Authenticator $auth */
         $auth = $app->get(Authenticator::class);
         $this->assertEquals(PASSWORD_DEFAULT, $auth->getPasswordAlgorithm());
+        $this->assertEquals(42, $auth->getGuestRole());
     }
 }
