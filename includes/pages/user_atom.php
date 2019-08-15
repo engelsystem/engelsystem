@@ -77,6 +77,6 @@ function make_atom_entry_from_news($news_entry)
             page_link_to('news_comments', ['nid' => $news_entry['ID']])
         ) . '</id>
     <updated>' . date('Y-m-d\TH:i:sP', $news_entry['Datum']) . '</updated>
-    <summary>' . htmlspecialchars($news_entry['Text']) . '</summary>
+    <summary type="html">' . htmlspecialchars($news_entry['Text']) . '</summary>
   </entry>' . "\n";
 }
