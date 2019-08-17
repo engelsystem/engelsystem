@@ -28,6 +28,8 @@ function admin_shifts()
     $change_hours = [];
     $title = '';
     $shifttype_id = null;
+    // When true: creates a shift beginning at the last shift change hour and ending at the first shift change hour
+    $shift_over_midnight = true;
 
     // Locations laden
     $rooms = Rooms();
@@ -127,6 +129,7 @@ function admin_shifts()
                     $valid = false;
                     error(__('Please split the shift-change hours by colons.'));
                 }
+                $shift_over_midnight = $request->has('shift_over_midnight');
             }
         } else {
             $valid = false;
@@ -220,7 +223,7 @@ function admin_shifts()
                     }
                 });
 
-                // Chronologisch absteigend sortieren
+                // Chronologisch absteigend sortieren (WHY???)
                 usort($change_hours, function ($a, $b) {
                     return str_replace(':', '', $a) > str_replace(':', '', $b) ? -1 : 1;
                 });
@@ -263,16 +266,21 @@ function admin_shifts()
                         }
                     }
 
-                    $shifts[] = [
-                        'start'        => $shift_start,
-                        'end'          => $shift_end,
-                        'RID'          => $rid,
-                        'title'        => $title,
-                        'shifttype_id' => $shifttype_id
-                    ];
+                    if($shift_over_midnight || $day == parse_date('Y-m-d H:i', date('Y-m-d', $shift_end) . ' 00:00')) {
+                        $shifts[] = [
+                            'start'        => $shift_start,
+                            'end'          => $shift_end,
+                            'RID'          => $rid,
+                            'title'        => $title,
+                            'shifttype_id' => $shifttype_id
+                        ];
+                    }
 
                     $shift_start = $shift_end;
-                    $change_index = ($change_index + count($change_hours) - 1) % count($change_hours);
+                    $change_index--;
+                    if($change_index < 0) {
+                        $change_index = count($change_hours) - 1;
+                    }
                 } while ($shift_end < $end);
             }
 
@@ -431,6 +439,11 @@ function admin_shifts()
                         $request->has('change_hours')
                             ? $request->input('input')
                             : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22'
+                    ),
+                    form_checkbox(
+                        'shift_over_midnight', 
+                        __('Create a shift over midnight.'), 
+                        $shift_over_midnight
                     )
                 ]),
                 div('col-md-6', [
