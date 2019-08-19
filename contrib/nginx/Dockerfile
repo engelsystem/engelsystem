@@ -1,7 +1,6 @@
-FROM node:8-alpine as themes
+FROM node:10-alpine as themes
 WORKDIR /app
-RUN apk add --no-cache yarn
-COPY .babelrc .browserslistrc package.json webpack.config.js /app/
+COPY .babelrc .browserslistrc package.json webpack.config.js yarn.lock /app/
 RUN yarn install
 COPY resources/assets/ /app/resources/assets
 RUN yarn build
