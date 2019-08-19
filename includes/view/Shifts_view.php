@@ -197,7 +197,7 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shi
 
     $needed_angels .= '<h3>' . AngelType_name_render($angeltype) . '</h3>';
     $bar_max = max($needed_angeltype['count'] * 10, $needed_angeltype['taken'] * 10, 10);
-    $bar_value = max(1, $needed_angeltype['taken'] * 10);
+    $bar_value = max(bar_max/5, $needed_angeltype['taken'] * 10);
     $needed_angels .= progress_bar(
         0,
         $bar_max,
