@@ -6,7 +6,7 @@ RUN composer --no-ansi dump-autoload --optimize
 
 # Intermediate container for less layers
 FROM alpine as data
-COPY .babelrc .browserslistrc composer.json LICENSE package.json README.md webpack.config.js /app/
+COPY .babelrc .browserslistrc composer.json LICENSE package.json README.md webpack.config.js yarn.lock /app/
 COPY bin/ /app/bin
 COPY config/ /app/config
 COPY db/ /app/db

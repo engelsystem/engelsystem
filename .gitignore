@@ -3,7 +3,6 @@
 .~*
 *.tmp
 *.temp
-*.lock
 *.DS_Store
 .*.swp
 *.out

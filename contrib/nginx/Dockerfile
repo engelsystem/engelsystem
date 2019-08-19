@@ -9,4 +9,3 @@ FROM nginx:alpine
 RUN mkdir -p /var/www/public/ && touch /var/www/public/index.php
 COPY contrib/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY --from=themes /app/public/assets /var/www/public/assets/
-COPY --from=themes /app/yarn.lock /var/www/

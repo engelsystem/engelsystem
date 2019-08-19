@@ -34,13 +34,11 @@ build-image.nginx:
     expire_in: 1 day
     paths:
       - ./public/assets
-      - ./yarn.lock
   script:
     - docker build --pull -t "${TEST_IMAGE}-nginx" -f contrib/nginx/Dockerfile .
     - docker push "${TEST_IMAGE}-nginx"
     - instance=$(docker create "${TEST_IMAGE}-nginx")
     - docker cp "${instance}:/var/www/public/assets" public/
-    - docker cp "${instance}:/var/www/yarn.lock" .
     - docker rm "${instance}"
 
 build-image:
@@ -124,7 +122,6 @@ build-release-file:
   script:
     - rsync -vAax "${DOCROOT}" "${DOCROOT}/.babelrc" "${DOCROOT}/.browserslistrc" release/
     - rsync -vAax public/assets release/public/
-    - rsync -vAax yarn.lock release/
 
 deploy-staging:
   <<: *deploy_definition
