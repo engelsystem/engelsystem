@@ -129,7 +129,8 @@ function admin_shifts()
                     $valid = false;
                     error(__('Please split the shift-change hours by colons.'));
                 }
-                $shift_over_midnight = $request->has('shift_over_midnight');
+                $shift_over_midnight = $request->has('shift_over_midnight') 
+                    && $request->input('shift_over_midnight') != 'false';
             }
         } else {
             $valid = false;
@@ -328,13 +329,14 @@ function admin_shifts()
                     form_hidden('length', $length),
                     form_hidden('change_hours', implode(', ', $change_hours)),
                     form_hidden('angelmode', $angelmode),
-                    form_submit('back', __('back')),
+                    form_hidden('shift_over_midnight', $shift_over_midnight ? 'true' : 'false'),
+                    form_submit('back', glyph('menu-left') . __('back')),
                     table([
                         'timeslot'      => __('Time and location'),
                         'title'         => __('Type and title'),
                         'needed_angels' => __('Needed angels')
                     ], $shifts_table),
-                    form_submit('submit', __('Save'))
+                    form_submit('submit', glyph('floppy-disk') . __('Save'))
                 ])
             ]);
         }
@@ -437,7 +439,7 @@ function admin_shifts()
                         'change_hours',
                         __('Shift change hours'),
                         $request->has('change_hours')
-                            ? $request->input('input')
+                            ? $request->input('change_hours')
                             : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22'
                     ),
                     form_checkbox(
@@ -465,7 +467,7 @@ function admin_shifts()
                     ])
                 ])
             ]),
-            form_submit('preview', __('Preview'))
+            form_submit('preview', glyph('search') . __('Preview'))
         ])
     ]);
 }
