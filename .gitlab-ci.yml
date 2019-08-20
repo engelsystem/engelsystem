@@ -109,6 +109,7 @@ release-image.nginx:
     mkdir -p ~/.ssh
     echo "${SSH_PRIVATE_KEY}" | sed -e 's/\r//g' > ~/.ssh/id_ed25519
     chmod 600 ~/.ssh/id_ed25519
+    rsync -vAax public/assets ${DOCROOT}/public/
     cd "${DOCROOT}"
 
 build-release-file:
