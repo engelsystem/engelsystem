@@ -269,11 +269,12 @@ function shift_controller()
 
     $shifttype = ShiftType($shift['shifttype_id']);
     $room = Room($shift['RID']);
-    $angeltypes = AngelTypes();
+    $angeltypes_source = AngelTypes();
+    $angeltypes = [];
     $user_shifts = Shifts_by_user($user->id);
 
     $shift_signup_state = new ShiftSignupState(ShiftSignupState::OCCUPIED, 0);
-    foreach ($angeltypes as &$angeltype) {
+    foreach ($angeltypes_source as &$angeltype) {
         $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
         if (empty($needed_angeltype)) {
             continue;
@@ -292,6 +293,7 @@ function shift_controller()
         );
         $shift_signup_state->combineWith($angeltype_signup_state);
         $angeltype['shift_signup_state'] = $angeltype_signup_state;
+        $angeltypes[] = $angeltype;
     }
 
     return [
