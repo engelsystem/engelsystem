@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Database;
 
+use Carbon\Carbon;
 use Engelsystem\Container\ServiceProvider;
 use Exception;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
@@ -24,6 +25,7 @@ class DatabaseServiceProvider extends ServiceProvider
             'password'  => '',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
+            'timezone'  => Carbon::now()->format('P'),
             'prefix'    => '',
         ], $dbConfig));
 
