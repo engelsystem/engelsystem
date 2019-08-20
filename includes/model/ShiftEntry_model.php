@@ -73,6 +73,9 @@ function ShiftEntry_create($shift_entry)
 {
     $user = User::find($shift_entry['UID']);
     $shift = Shift($shift_entry['SID']);
+    $shifttype = ShiftType($shift['shifttype_id']);
+    $room = Room($shift['RID']);
+    $angeltype = AngelType($shift_entry['TID']);
     $result = DB::insert('
           INSERT INTO `ShiftEntry` (
               `SID`,
@@ -96,8 +99,11 @@ function ShiftEntry_create($shift_entry)
     engelsystem_log(
         'User ' . User_Nick_render($user, true)
         . ' signed up for shift ' . $shift['name']
+        . ' (' . $shifttype['name'] . ')'
+        . ' at ' . $room['Name']
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
+        . ' as ' . $angeltype['name']
     );
     mail_shift_assign($user, $shift);
 
@@ -156,7 +162,9 @@ function ShiftEntry_delete($shiftEntry)
     $angeltype = AngelType($shiftEntry['TID']);
 
     engelsystem_log(
-        'Shift signout: ' . User_Nick_render($signout_user, true) . ' from shift ' . $shifttype['name']
+        'Shift signout: ' . User_Nick_render($signout_user, true)
+        . ' from shift ' . $shift['name']
+        . ' (' . $shifttype['name'] . ')'
         . ' at ' . $room['Name']
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
