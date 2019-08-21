@@ -2,7 +2,9 @@
 
 namespace Engelsystem\Controllers\Metrics;
 
+use Carbon\Carbon;
 use Engelsystem\Database\Database;
+use Engelsystem\Models\EventConfig;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression as QueryExpression;
 
@@ -260,6 +262,35 @@ class Stats
         return $this
             ->getQuery('sessions')
             ->count();
+    }
+
+    /**
+     * @return float
+     */
+    public function databaseRead()
+    {
+        $start = microtime(true);
+
+        EventConfig::findOrNew('last_metrics');
+
+        return microtime(true) - $start;
+    }
+
+    /**
+     * @return float
+     */
+    public function databaseWrite()
+    {
+        $config = EventConfig::findOrNew('last_metrics');
+        $config
+            ->setAttribute('name', 'last_metrics')
+            ->setAttribute('value', new Carbon());
+
+        $start = microtime(true);
+
+        $config->save();
+
+        return microtime(true) - $start;
     }
 
     /**

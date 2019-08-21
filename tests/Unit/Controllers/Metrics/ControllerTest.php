@@ -54,6 +54,7 @@ class ControllerTest extends TestCase
                 $this->assertArrayHasKey('messages', $data);
                 $this->assertArrayHasKey('password_resets', $data);
                 $this->assertArrayHasKey('registration_enabled', $data);
+                $this->assertArrayHasKey('database', $data);
                 $this->assertArrayHasKey('sessions', $data);
                 $this->assertArrayHasKey('log_entries', $data);
                 $this->assertArrayHasKey('scrape_duration_seconds', $data);

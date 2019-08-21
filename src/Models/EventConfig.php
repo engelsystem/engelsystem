@@ -35,6 +35,7 @@ class EventConfig extends BaseModel
         'event_start'   => 'date',
         'event_end'     => 'date',
         'teardown_end'  => 'date',
+        'last_metrics'  => 'datetime',
     ];
 
     /** @var bool It could be interesting to know when a value changed the last time */
