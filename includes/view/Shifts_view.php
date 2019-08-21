@@ -2,6 +2,7 @@
 
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftSignupState;
+use Illuminate\Support\Collection;
 
 /**
  * Renders the basic shift view header.
@@ -115,8 +116,20 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
     }
 
     $needed_angels = '';
-    foreach ($shift['NeedAngels'] as $needed_angeltype) {
+    $neededAngels = new Collection($shift['NeedAngels']);
+    foreach ($neededAngels as $needed_angeltype) {
         $needed_angels .= Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin);
+    }
+
+    foreach ($shift['ShiftEntry'] as $shiftEntry) {
+        if (!$neededAngels->where('TID', $shiftEntry['TID'])->first()) {
+            $needed_angels .= Shift_view_render_needed_angeltype([
+                'TID'        => $shiftEntry['TID'],
+                'count'      => 0,
+                'restricted' => true,
+                'taken'      => true,
+            ], $angeltypes, $shift, $user_shift_admin);
+        }
     }
 
     $content = [msg()];
