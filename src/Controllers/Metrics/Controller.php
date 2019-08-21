@@ -131,6 +131,11 @@ class Controller extends BaseController
             'messages'             => ['type' => 'gauge', $this->stats->messages()],
             'password_resets'      => ['type' => 'gauge', $this->stats->passwordResets()],
             'registration_enabled' => ['type' => 'gauge', $this->config->get('registration_enabled')],
+            'database'             => [
+                'type' => 'gauge',
+                ['labels' => ['type' => 'read'], 'value' => $this->stats->databaseRead()],
+                ['labels' => ['type' => 'write'], 'value' => $this->stats->databaseWrite()],
+            ],
             'sessions'             => ['type' => 'gauge', $this->stats->sessions()],
             'log_entries'          => [
                 'type' => 'counter',

@@ -109,6 +109,25 @@ class StatsTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::databaseRead
+     * @covers \Engelsystem\Controllers\Metrics\Stats::databaseWrite
+     */
+    public function testDatabase()
+    {
+        $this->initDatabase();
+
+        $stats = new Stats($this->database);
+
+        $read = $stats->databaseRead();
+        $write = $stats->databaseWrite();
+
+        $this->assertIsFloat($read);
+        $this->assertNotEmpty($read);
+        $this->assertIsFloat($write);
+        $this->assertNotEmpty($write);
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::logEntries
      */
     public function testLogEntries()
