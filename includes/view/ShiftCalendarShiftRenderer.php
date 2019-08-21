@@ -205,7 +205,7 @@ class ShiftCalendarShiftRenderer
                 break;
 
             case ShiftSignupState::NOT_YET:
-                $entry_list[] = $inner_text . ' (' . _('not yet') . ')';
+                $entry_list[] = $inner_text . ' (' . __('not yet') . ')';
                 break;
 
             case ShiftSignupState::ANGELTYPE:
@@ -250,7 +250,7 @@ class ShiftCalendarShiftRenderer
     /**
      * Renders the shift header
      *
-     * @param array $shift The shift
+     * @param array  $shift The shift
      * @param string $class The shift state class
      * @return string
      */

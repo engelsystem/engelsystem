@@ -131,8 +131,8 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
 
     if (config('signup_advance_hours') && $shift['start'] > time() + config('signup_advance_hours') * 3600) {
         $content[] = info(sprintf(
-            _('This shift is in the far future and becomes available for signup at %s.'),
-            date(_('Y-m-d') . ' H:i', $shift['start'] - config('signup_advance_hours') * 3600)
+            __('This shift is in the far future and becomes available for signup at %s.'),
+            date(__('Y-m-d') . ' H:i', $shift['start'] - config('signup_advance_hours') * 3600)
         ), true);
     }
 
@@ -197,7 +197,7 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shi
 
     $needed_angels .= '<h3>' . AngelType_name_render($angeltype) . '</h3>';
     $bar_max = max($needed_angeltype['count'] * 10, $needed_angeltype['taken'] * 10, 10);
-    $bar_value = max($bar_max/10, $needed_angeltype['taken'] * 10);
+    $bar_value = max($bar_max / 10, $needed_angeltype['taken'] * 10);
     $needed_angels .= progress_bar(
         0,
         $bar_max,
