@@ -262,7 +262,7 @@ function admin_user()
                     $user_source->email = $request->postData('eemail');
                 }
                 $nickValidation = User_validate_Nick($request->postData('eNick'));
-                if($nickValidation->isValid()) {
+                if ($nickValidation->isValid()) {
                     $user_source->name = $nickValidation->getValue();
                 }
                 $user_source->save();
@@ -279,9 +279,11 @@ function admin_user()
                 $user_source->state->save();
 
                 engelsystem_log(
-                    'Updated user: ' . $request->postData('eNick') . ', ' . $request->postData('eSize')
-                    . ', active: ' . $request->postData('eAktiv')
-                    . ', tshirt: ' . $request->postData('eTshirt')
+                    'Updated user: ' . $user_source->name . ' (' . $user_source->id . ')'
+                    . ', t-shirt: ' . $user_source->personalData->shirt_size
+                    . ', active: ' . $user_source->state->active
+                    . ', force-active: ' . $user_source->state->force_active
+                    . ', tshirt: ' . $user_source->state->got_shirt
                 );
                 $html .= success('Änderung wurde gespeichert...' . "\n", true);
                 break;
