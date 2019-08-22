@@ -233,6 +233,7 @@ function angeltype_controller_shiftsFilterDays($angeltype)
             $days[] = $day;
         }
     }
+    sort($days);
     return $days;
 }
 
