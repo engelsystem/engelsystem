@@ -464,7 +464,7 @@ function User_view_myshifts(
     $myshifts_table = [];
     $timeSum = 0;
     foreach ($shifts as $shift) {
-        $myshifts_table[$shift['start']] = User_view_myshift($shift, $user_source, $its_me);
+        $myshifts_table[$shift['start'] . $shift['SID']] = User_view_myshift($shift, $user_source, $its_me);
 
         if (!$shift['freeloaded']) {
             $timeSum += ($shift['end'] - $shift['start']);
