@@ -408,7 +408,7 @@ function User_view_myshift($shift, $user_source, $its_me)
 
     if ($shift['freeloaded']) {
         $myshift['duration'] = '<p class="text-danger">'
-            . round(-($shift['end'] - $shift['start']) / 3600 * 2, 2) . '&nbsp;h'
+            . printf('%.2f', -($shift['end'] - $shift['start']) / 3600 * 2) . '&nbsp;h'
             . '</p>';
         if (auth()->can('user_shifts_admin')) {
             $myshift['comment'] .= '<br />'
