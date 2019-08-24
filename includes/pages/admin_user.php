@@ -268,8 +268,10 @@ function admin_user()
                     $user_source->name = $nickValidation->getValue();
                 }
                 $user_source->save();
-                $user_source->personalData->first_name = $request->postData('eVorname');
-                $user_source->personalData->last_name = $request->postData('eName');
+                if (config('enable_user_name')) {
+                    $user_source->personalData->first_name = $request->postData('eVorname');
+                    $user_source->personalData->last_name = $request->postData('eName');
+                }
                 $user_source->personalData->shirt_size = $request->postData('eSize');
                 $user_source->personalData->save();
                 $user_source->contact->mobile = $request->postData('eHandy');
