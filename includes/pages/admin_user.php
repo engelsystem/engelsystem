@@ -198,7 +198,7 @@ function admin_user()
                     if (
                         count($my_highest_group) > 0
                         && (
-                            count($his_highest_group) == 0
+                            empty($his_highest_group)
                             || ($my_highest_group['group_id'] <= $his_highest_group['group_id'])
                         )
                     ) {
