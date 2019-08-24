@@ -471,7 +471,8 @@ function User_view_myshifts(
     $myshifts_table = [];
     $timeSum = 0;
     foreach ($shifts as $shift) {
-        $myshifts_table[$shift['start'] . $shift['SID']] = User_view_myshift($shift, $user_source, $its_me);
+        $key = $shift['start'] . '-shift-' . $shift['SID'];
+        $myshifts_table[$key] = User_view_myshift($shift, $user_source, $its_me);
 
         if (!$shift['freeloaded']) {
             $timeSum += ($shift['end'] - $shift['start']);
@@ -479,14 +480,9 @@ function User_view_myshifts(
     }
 
     if ($its_me || $admin_user_worklog_privilege) {
-        $day_counter = 1;
         foreach ($user_worklogs as $worklog) {
-            // Check if more than one worklog per day
-            if (isset($myshifts_table[$worklog['work_timestamp']])) {
-                $worklog['work_timestamp'] += $day_counter++;
-            }
-
-            $myshifts_table[$worklog['work_timestamp']] = User_view_worklog($worklog, $admin_user_worklog_privilege);
+            $key = $worklog['work_timestamp'] . '-worklog-' . $worklog['id'];
+            $myshifts_table[$key] = User_view_worklog($worklog, $admin_user_worklog_privilege);
             $timeSum += $worklog['work_hours'] * 3600;
         }
     }
