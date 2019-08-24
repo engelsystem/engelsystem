@@ -26,6 +26,7 @@ function guest_register()
     $authUser = auth()->user();
     $tshirt_sizes = config('tshirt_sizes');
     $enable_tshirt_size = config('enable_tshirt_size');
+    $enable_user_name = config('enable_user_name');
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
     $min_password_length = config('min_password_length');
@@ -151,10 +152,10 @@ function guest_register()
         }
 
         // Trivia
-        if ($request->has('lastname')) {
+        if ($enable_user_name && $request->has('lastname')) {
             $lastName = strip_request_item('lastname');
         }
-        if ($request->has('prename')) {
+        if ($enable_user_name && $request->has('prename')) {
             $preName = strip_request_item('prename');
         }
         if ($enable_dect && $request->has('dect')) {
@@ -338,14 +339,14 @@ function guest_register()
                             form_text('mobile', __('Mobile'), $mobile)
                         ]),
                     ]),
-                    div('row', [
+                    $enable_user_name ? div('row', [
                         div('col-sm-6', [
                             form_text('prename', __('First name'), $preName)
                         ]),
                         div('col-sm-6', [
                             form_text('lastname', __('Last name'), $lastName)
                         ])
-                    ]),
+                    ]) : '',
                     form_info(entry_required() . ' = ' . __('Entry required!'))
                 ])
             ]),

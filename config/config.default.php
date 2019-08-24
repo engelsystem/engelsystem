@@ -110,6 +110,9 @@ return [
     // Whether the DECT field should be enabled
     'enable_dect'             => true,
 
+    // Enables prename and lastname
+    'enable_user_name'        => false,
+
     // Enables the planned arrival/leave date
     'enable_planned_arrival'  => true,
 

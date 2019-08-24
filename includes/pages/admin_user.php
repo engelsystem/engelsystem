@@ -52,8 +52,10 @@ function admin_user()
         $html .= '  <tr><td>Last login</td><td><p class="help-block">'
             . ($user_source->last_login_at ? $user_source->last_login_at->format('Y-m-d H:i') : '-')
             . '</p></td></tr>' . "\n";
-        $html .= '  <tr><td>Name</td><td>' . '<input size="40" name="eName" value="' . $user_source->personalData->last_name . '" class="form-control"></td></tr>' . "\n";
-        $html .= '  <tr><td>Vorname</td><td>' . '<input size="40" name="eVorname" value="' . $user_source->personalData->first_name . '" class="form-control"></td></tr>' . "\n";
+        if (config('enable_user_name')) {
+            $html .= '  <tr><td>Name</td><td>' . '<input size="40" name="eName" value="' . $user_source->personalData->last_name . '" class="form-control"></td></tr>' . "\n";
+            $html .= '  <tr><td>Vorname</td><td>' . '<input size="40" name="eVorname" value="' . $user_source->personalData->first_name . '" class="form-control"></td></tr>' . "\n";
+        }
         $html .= '  <tr><td>Handy</td><td>' . '<input type= "tel" size="40" name="eHandy" value="' . $user_source->contact->mobile . '" class="form-control"></td></tr>' . "\n";
         if (config('enable_dect')) {
             $html .= '  <tr><td>DECT</td><td>' . '<input size="40" name="eDECT" value="' . $user_source->contact->dect . '" class="form-control"></td></tr>' . "\n";

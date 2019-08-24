@@ -25,6 +25,7 @@ function User_settings_view(
     $tshirt_sizes
 ) {
     $personalData = $user_source->personalData;
+    $enable_user_name = config('enable_user_name');
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
 
@@ -40,8 +41,8 @@ function User_settings_view(
                         '',
                         __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.')
                     ),
-                    form_text('lastname', __('Last name'), $personalData->last_name),
-                    form_text('prename', __('First name'), $personalData->first_name),
+                    $enable_user_name ? form_text('lastname', __('Last name'), $personalData->last_name) : '',
+                    $enable_user_name ? form_text('prename', __('First name'), $personalData->first_name) : '',
                     $enable_planned_arrival ? form_date(
                         'planned_arrival_date',
                         __('Planned date of arrival') . ' ' . entry_required(),
@@ -253,28 +254,34 @@ function Users_view(
         'actions'      => '<strong>' . count($usersList) . '</strong>'
     ];
 
+    $user_table_headers = [
+        'name'           => Users_table_header_link('name', __('Nick'), $order_by)
+    ];
+    if(config('enable_user_name')) {
+        $user_table_headers['first_name'] = Users_table_header_link('first_name', __('Prename'), $order_by);
+        $user_table_headers['last_name'] = Users_table_header_link('last_name', __('Name'), $order_by);
+    }
+    if(config('enable_dect')) {
+        $user_table_headers['dect'] = Users_table_header_link('dect', __('DECT'), $order_by);
+    }
+    $user_table_headers['arrived'] = Users_table_header_link('arrived', __('Arrived'), $order_by);
+    $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Voucher'), $order_by);
+    $user_table_headers['freeloads'] = __('Freeloads');
+    $user_table_headers['active'] = Users_table_header_link('active', __('Active'), $order_by);
+    $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
+    $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('T-Shirt'), $order_by);
+    $user_table_headers['shirt_size'] = Users_table_header_link('shirt_size', __('Size'), $order_by);
+    $user_table_headers['arrival_date'] = Users_table_header_link('planned_arrival_date', __('Planned arrival'), $order_by);
+    $user_table_headers['departure_date'] = Users_table_header_link('planned_departure_date', __('Planned departure'), $order_by);
+    $user_table_headers['last_login_at'] = Users_table_header_link('last_login_at', __('Last login'), $order_by);
+    $user_table_headers['actions'] = '';
+
     return page_with_title(__('All users'), [
         msg(),
         buttons([
             button(page_link_to('register'), glyph('plus') . __('New user'))
         ]),
-        table([
-            'name'           => Users_table_header_link('name', __('Nick'), $order_by),
-            'first_name'     => Users_table_header_link('first_name', __('Prename'), $order_by),
-            'last_name'      => Users_table_header_link('last_name', __('Name'), $order_by),
-            'dect'           => Users_table_header_link('dect', __('DECT'), $order_by),
-            'arrived'        => Users_table_header_link('arrived', __('Arrived'), $order_by),
-            'got_voucher'    => Users_table_header_link('got_voucher', __('Voucher'), $order_by),
-            'freeloads'      => __('Freeloads'),
-            'active'         => Users_table_header_link('active', __('Active'), $order_by),
-            'force_active'   => Users_table_header_link('force_active', __('Forced'), $order_by),
-            'got_shirt'      => Users_table_header_link('got_shirt', __('T-Shirt'), $order_by),
-            'shirt_size'     => Users_table_header_link('shirt_size', __('Size'), $order_by),
-            'arrival_date'   => Users_table_header_link('planned_arrival_date', __('Planned arrival'), $order_by),
-            'departure_date' => Users_table_header_link('planned_departure_date', __('Planned departure'), $order_by),
-            'last_login_at'  => Users_table_header_link('last_login_at', __('Last login'), $order_by),
-            'actions'        => ''
-        ], $usersList)
+        table($user_table_headers, $usersList)
     ]);
 }
 
@@ -609,7 +616,7 @@ function User_view(
     return page_with_title(
         '<span class="icon-icon_angel"></span> '
         . htmlspecialchars($user_source->name)
-        . ' <small>' . $user_name . '</small>',
+        . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : ''),
         [
             msg(),
             div('row space-top', [
