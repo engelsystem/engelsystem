@@ -80,12 +80,15 @@ function Shifts_from_frab()
 }
 
 /**
- * @param array $room
+ * @param array|int $room
  * @return array[]
  */
 function Shifts_by_room($room)
 {
-    return DB::select('SELECT * FROM `Shifts` WHERE `RID`=? ORDER BY `start`', [$room['RID']]);
+    return DB::select(
+        'SELECT * FROM `Shifts` WHERE `RID`=? ORDER BY `start`',
+        [is_array($room) ? $room['RID'] : $room]
+    );
 }
 
 /**
