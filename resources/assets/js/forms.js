@@ -16,7 +16,7 @@ global.checkAll = (id, checked) => {
  * Sets the checkboxes according to the given type
  *
  * @param {string} id The elements ID
- * @param {list} shifts_list A list of numbers
+ * @param {list} shiftsList A list of numbers
  */
 global.checkOwnTypes = (id, shiftsList) => {
     $('#' + id + ' input[type="checkbox"]').each(function () {
@@ -144,10 +144,10 @@ $(function () {
         elem.children('input').on('click', function (ev) {
             ev.stopImmediatePropagation();
             if (typeof elem.data('DateTimePicker') === 'undefined') {
-              elem.datetimepicker(opts);
-              elem.data('DateTimePicker').show();
+                elem.datetimepicker(opts);
+                elem.data('DateTimePicker').show();
             } else {
-              elem.data('DateTimePicker').toggle();
+                elem.data('DateTimePicker').toggle();
             }
         });
     });
@@ -172,4 +172,31 @@ $(function () {
             });
         });
     });
+});
+
+/**
+ * Set the filter selects to latest state
+ *
+ * Uses DOMContentLoaded to prevent flickering
+ */
+window.addEventListener('DOMContentLoaded', () => {
+    const filter = document.getElementById('collapseShiftsFilterSelect');
+    if (!filter || localStorage.getItem('collapseShiftsFilterSelect') !== 'hidden') {
+        return;
+    }
+
+    filter.classList.remove('in');
+});
+$(() => {
+    if (typeof (localStorage) === 'undefined') {
+        return;
+    }
+
+    const onChange = (e) => {
+        localStorage.setItem('collapseShiftsFilterSelect', e.type);
+    };
+
+    $('#collapseShiftsFilterSelect')
+        .on('hidden.bs.collapse', onChange)
+        .on('shown.bs.collapse', onChange);
 });
