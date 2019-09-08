@@ -37,7 +37,7 @@ function user_myshifts()
         if ($request->input('reset') == 'ack') {
             User_reset_api_key($user);
             success(__('Key changed.'));
-            redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
+            throw_redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
         }
         return page_with_title(__('Reset API key'), [
             error(
@@ -109,7 +109,7 @@ function user_myshifts()
                         . '. Freeloaded: ' . ($freeloaded ? 'YES Comment: ' . $freeload_comment : 'NO')
                     );
                     success(__('Shift saved.'));
-                    redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
+                    throw_redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
                 }
             }
 
@@ -125,10 +125,10 @@ function user_myshifts()
                 auth()->can('user_shifts_admin')
             );
         } else {
-            redirect(page_link_to('user_myshifts'));
+            throw_redirect(page_link_to('user_myshifts'));
         }
     }
 
-    redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
+    throw_redirect(page_link_to('users', ['action' => 'view', 'user_id' => $shifts_user->id]));
     return '';
 }

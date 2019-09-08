@@ -91,7 +91,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         $user_source->settings->save();
 
         success(__('Settings saved.'));
-        redirect(page_link_to('user_settings'));
+        throw_redirect(page_link_to('user_settings'));
     }
 
     return $user_source;
@@ -119,7 +119,7 @@ function user_settings_password($user_source)
         $auth->setPassword($user_source, $request->postData('new_password'));
         success(__('Password saved.'));
     }
-    redirect(page_link_to('user_settings'));
+    throw_redirect(page_link_to('user_settings'));
 }
 
 /**
@@ -144,7 +144,7 @@ function user_settings_theme($user_source, $themes)
         $user_source->settings->save();
 
         success(__('Theme changed.'));
-        redirect(page_link_to('user_settings'));
+        throw_redirect(page_link_to('user_settings'));
     }
 
     return $user_source;
@@ -174,7 +174,7 @@ function user_settings_locale($user_source, $locales)
         $session->set('locale', $user_source->settings->language);
 
         success('Language changed.');
-        redirect(page_link_to('user_settings'));
+        throw_redirect(page_link_to('user_settings'));
     }
 
     return $user_source;

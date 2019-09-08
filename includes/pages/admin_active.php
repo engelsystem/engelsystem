@@ -42,11 +42,11 @@ function admin_active()
                     __('At least %s angels are forced to be active. The number has to be greater.'),
                     $forced_count
                 ));
-                redirect(page_link_to('admin_active'));
+                throw_redirect(page_link_to('admin_active'));
             }
         } else {
             $msg .= error(__('Please enter a number of angels to be marked as active.'));
-            redirect(page_link_to('admin_active'));
+            throw_redirect(page_link_to('admin_active'));
         }
 
         if ($request->hasPostData('ack')) {

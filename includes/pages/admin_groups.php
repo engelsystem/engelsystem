@@ -148,7 +148,7 @@ function admin_groups()
                         'Group privileges of group ' . $group['Name']
                         . ' edited: ' . join(', ', $privilege_names)
                     );
-                    redirect(page_link_to('admin_groups'));
+                    throw_redirect(page_link_to('admin_groups'));
                 } else {
                     return error('No Group found.', true);
                 }

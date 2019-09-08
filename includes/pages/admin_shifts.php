@@ -345,7 +345,7 @@ function admin_shifts()
             !is_array($session->get('admin_shifts_shifts'))
             || !is_array($session->get('admin_shifts_types'))
         ) {
-            redirect(page_link_to('admin_shifts'));
+            throw_redirect(page_link_to('admin_shifts'));
         }
 
         foreach ($session->get('admin_shifts_shifts', []) as $shift) {
@@ -389,7 +389,7 @@ function admin_shifts()
         }
 
         success('Schichten angelegt.');
-        redirect(page_link_to('admin_shifts'));
+        throw_redirect(page_link_to('admin_shifts'));
     } else {
         $session->remove('admin_shifts_shifts');
         $session->remove('admin_shifts_types');

@@ -219,7 +219,7 @@ class LegacyMiddleware implements MiddlewareInterface
                 return [$title, $content];
         }
 
-        redirect(page_link_to('login'));
+        throw_redirect(page_link_to('login'));
 
         return [];
     }

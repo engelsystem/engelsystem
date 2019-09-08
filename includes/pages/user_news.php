@@ -197,7 +197,7 @@ function user_news()
 
         engelsystem_log('Created news: ' . $news->title . ', is meeting: ' . ($news->is_meeting ? 'yes' : 'no'));
         success(__('Entry saved.'));
-        redirect(page_link_to('news'));
+        throw_redirect(page_link_to('news'));
     }
 
     if (preg_match('/^\d{1,}$/', $request->input('page', 0))) {

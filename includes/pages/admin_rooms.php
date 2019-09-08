@@ -56,7 +56,7 @@ function admin_rooms()
         if (test_request_int('id')) {
             $room = Room($request->input('id'));
             if (empty($room)) {
-                redirect(page_link_to('admin_rooms'));
+                throw_redirect(page_link_to('admin_rooms'));
             }
 
             $room_id = $request->input('id');
@@ -140,7 +140,7 @@ function admin_rooms()
                         . ' to: ' . join(', ', $needed_angeltype_info)
                     );
                     success(__('Room saved.'));
-                    redirect(page_link_to('admin_rooms'));
+                    throw_redirect(page_link_to('admin_rooms'));
                 }
             }
             $angeltypes_count_form = [];
@@ -190,7 +190,7 @@ function admin_rooms()
                 Room_delete($room_id);
 
                 success(sprintf(__('Room %s deleted.'), $name));
-                redirect(page_link_to('admin_rooms'));
+                throw_redirect(page_link_to('admin_rooms'));
             }
 
             return page_with_title(admin_rooms_title(), [

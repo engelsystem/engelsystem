@@ -239,7 +239,7 @@ function guest_register()
 
             // User is already logged in - that means a supporter has registered an angel. Return to register page.
             if ($authUser) {
-                redirect(page_link_to('register'));
+                throw_redirect(page_link_to('register'));
             }
 
             // If a welcome message is present, display it on the next page
@@ -247,7 +247,7 @@ function guest_register()
                 info((new Parsedown())->text($message));
             }
 
-            redirect(page_link_to('/'));
+            throw_redirect(page_link_to('/'));
         }
     }
 

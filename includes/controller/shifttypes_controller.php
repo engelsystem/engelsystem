@@ -18,12 +18,12 @@ function shifttype_delete_controller()
 {
     $request = request();
     if (!$request->has('shifttype_id')) {
-        redirect(page_link_to('shifttypes'));
+        throw_redirect(page_link_to('shifttypes'));
     }
 
     $shifttype = ShiftType($request->input('shifttype_id'));
     if (empty($shifttype)) {
-        redirect(page_link_to('shifttypes'));
+        throw_redirect(page_link_to('shifttypes'));
     }
 
     if ($request->hasPostData('delete')) {
@@ -31,7 +31,7 @@ function shifttype_delete_controller()
 
         engelsystem_log('Deleted shifttype ' . $shifttype['name']);
         success(sprintf(__('Shifttype %s deleted.'), $shifttype['name']));
-        redirect(page_link_to('shifttypes'));
+        throw_redirect(page_link_to('shifttypes'));
     }
 
     return [
@@ -59,7 +59,7 @@ function shifttype_edit_controller()
         $shifttype = ShiftType($request->input('shifttype_id'));
         if (empty($shifttype)) {
             error(__('Shifttype not found.'));
-            redirect(page_link_to('shifttypes'));
+            throw_redirect(page_link_to('shifttypes'));
         }
         $shifttype_id = $shifttype['id'];
         $name = $shifttype['name'];
@@ -99,7 +99,7 @@ function shifttype_edit_controller()
                 engelsystem_log('Created shifttype ' . $name);
                 success(__('Created shifttype.'));
             }
-            redirect(page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype_id]));
+            throw_redirect(page_link_to('shifttypes', ['action' => 'view', 'shifttype_id' => $shifttype_id]));
         }
     }
 
@@ -116,11 +116,11 @@ function shifttype_controller()
 {
     $request = request();
     if (!$request->has('shifttype_id')) {
-        redirect(page_link_to('shifttypes'));
+        throw_redirect(page_link_to('shifttypes'));
     }
     $shifttype = ShiftType($request->input('shifttype_id'));
     if (empty($shifttype)) {
-        redirect(page_link_to('shifttypes'));
+        throw_redirect(page_link_to('shifttypes'));
     }
 
     $angeltype = [];

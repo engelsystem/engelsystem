@@ -17,7 +17,7 @@ function event_config_title()
 function event_config_edit_controller()
 {
     if (!auth()->can('admin_event_config')) {
-        redirect(page_link_to('/'));
+        throw_redirect(page_link_to('/'));
     }
 
     $request = request();
@@ -118,7 +118,7 @@ function event_config_edit_controller()
                 )
             );
             success(__('Settings saved.'));
-            redirect(page_link_to('admin_event_config'));
+            throw_redirect(page_link_to('admin_event_config'));
         }
     }
 

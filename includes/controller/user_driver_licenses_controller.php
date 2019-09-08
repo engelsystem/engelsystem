@@ -42,7 +42,7 @@ function user_driver_licenses_controller()
     $user = auth()->user();
 
     if (!$user) {
-        redirect(page_link_to(''));
+        throw_redirect(page_link_to(''));
     }
 
     $action = strip_request_item('action', 'edit');
@@ -82,7 +82,7 @@ function user_driver_license_load_user()
     if ($request->has('user_id')) {
         $user_source = User::find($request->input('user_id'));
         if (empty($user_source)) {
-            redirect(user_driver_license_edit_link());
+            throw_redirect(user_driver_license_edit_link());
         }
     }
 
@@ -102,7 +102,7 @@ function user_driver_license_edit_controller()
 
     // only privilege admin_user can edit other users driver license information
     if ($user->id != $user_source->id && !auth()->can('admin_user')) {
-        redirect(user_driver_license_edit_link());
+        throw_redirect(user_driver_license_edit_link());
     }
 
     $user_driver_license = UserDriverLicense($user_source->id);
@@ -131,7 +131,7 @@ function user_driver_license_edit_controller()
                 }
                 engelsystem_log('Driver license information updated.');
                 success(__('Your driver license information has been saved.'));
-                redirect(user_link($user_source->id));
+                throw_redirect(user_link($user_source->id));
             } else {
                 error(__('Please select at least one driving license.'));
             }
@@ -139,7 +139,7 @@ function user_driver_license_edit_controller()
             UserDriverLicenses_delete($user_source->id);
             engelsystem_log('Driver license information removed.');
             success(__('Your driver license information has been removed.'));
-            redirect(user_link($user_source->id));
+            throw_redirect(user_link($user_source->id));
         }
     }
 

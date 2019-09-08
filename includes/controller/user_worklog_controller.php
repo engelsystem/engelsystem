@@ -12,7 +12,7 @@ function user_worklog_delete_controller()
     $request = request();
     $userWorkLog = UserWorkLog($request->input('user_worklog_id'));
     if (empty($userWorkLog)) {
-        redirect(user_link(auth()->user()->id));
+        throw_redirect(user_link(auth()->user()->id));
     }
     $user_source = User::find($userWorkLog['user_id']);
 
@@ -20,7 +20,7 @@ function user_worklog_delete_controller()
         UserWorkLog_delete($userWorkLog);
 
         success(__('Work log entry deleted.'));
-        redirect(user_link($user_source->id));
+        throw_redirect(user_link($user_source->id));
     }
 
     return [
@@ -39,7 +39,7 @@ function user_worklog_edit_controller()
     $request = request();
     $userWorkLog = UserWorkLog($request->input('user_worklog_id'));
     if (empty($userWorkLog)) {
-        redirect(user_link(auth()->user()->id));
+        throw_redirect(user_link(auth()->user()->id));
     }
     $user_source = User::find($userWorkLog['user_id']);
 
@@ -50,7 +50,7 @@ function user_worklog_edit_controller()
             UserWorkLog_update($userWorkLog);
 
             success(__('Work log entry updated.'));
-            redirect(user_link($user_source->id));
+            throw_redirect(user_link($user_source->id));
         }
     }
 
@@ -109,7 +109,7 @@ function user_worklog_add_controller()
     $request = request();
     $user_source = User::find($request->input('user_id'));
     if (!$user_source) {
-        redirect(user_link(auth()->user()->id));
+        throw_redirect(user_link(auth()->user()->id));
     }
 
     $userWorkLog = UserWorkLog_new($user_source->id);
@@ -121,7 +121,7 @@ function user_worklog_add_controller()
             UserWorkLog_create($userWorkLog);
 
             success(__('Work log entry created.'));
-            redirect(user_link($user_source->id));
+            throw_redirect(user_link($user_source->id));
         }
     }
 
@@ -185,13 +185,13 @@ function user_worklog_controller()
     $user = auth()->user();
 
     if (!auth()->can('admin_user_worklog')) {
-        redirect(user_link($user->id));
+        throw_redirect(user_link($user->id));
     }
 
     $request = request();
     $action = $request->input('action');
     if (!$request->has('action')) {
-        redirect(user_link($user->id));
+        throw_redirect(user_link($user->id));
     }
 
     switch ($action) {

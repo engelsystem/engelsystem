@@ -98,7 +98,7 @@ function admin_import()
             }
 
             if ($valid) {
-                redirect(
+                throw_redirect(
                     page_link_to('admin_import', [
                         'step'              => 'check',
                         'shifttype_id'      => $shifttype_id,
@@ -134,28 +134,28 @@ function admin_import()
         case 'check':
             if (!file_exists($import_file)) {
                 error(__('Missing import file.'));
-                redirect(page_link_to('admin_import'));
+                throw_redirect(page_link_to('admin_import'));
             }
 
             if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
                 $shifttype_id = $request->input('shifttype_id');
             } else {
                 error(__('Please select a shift type.'));
-                redirect(page_link_to('admin_import'));
+                throw_redirect(page_link_to('admin_import'));
             }
 
             if ($request->has('add_minutes_start') && is_numeric(trim($request->input('add_minutes_start')))) {
                 $add_minutes_start = trim($request->input('add_minutes_start'));
             } else {
                 error(__('Please enter an amount of minutes to add to a talk\'s begin.'));
-                redirect(page_link_to('admin_import'));
+                throw_redirect(page_link_to('admin_import'));
             }
 
             if ($request->has('add_minutes_end') && is_numeric(trim($request->input(('add_minutes_end'))))) {
                 $add_minutes_end = trim($request->input('add_minutes_end'));
             } else {
                 error(__('Please enter an amount of minutes to add to a talk\'s end.'));
-                redirect(page_link_to('admin_import'));
+                throw_redirect(page_link_to('admin_import'));
             }
 
             list($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
@@ -229,32 +229,32 @@ function admin_import()
         case 'import':
             if (!file_exists($import_file)) {
                 error(__('Missing import file.'));
-                redirect(page_link_to('admin_import'));
+                throw_redirect(page_link_to('admin_import'));
             }
 
             if (!file_exists($import_file)) {
-                redirect(page_link_to('admin_import'));
+                throw_redirect(page_link_to('admin_import'));
             }
 
             if ($request->has('shifttype_id') && isset($shifttypes[$request->input('shifttype_id')])) {
                 $shifttype_id = $request->input('shifttype_id');
             } else {
                 error(__('Please select a shift type.'));
-                redirect(page_link_to('admin_import'));
+                throw_redirect(page_link_to('admin_import'));
             }
 
             if ($request->has('add_minutes_start') && is_numeric(trim($request->input('add_minutes_start')))) {
                 $add_minutes_start = trim($request->input('add_minutes_start'));
             } else {
                 error(__('Please enter an amount of minutes to add to a talk\'s begin.'));
-                redirect(page_link_to('admin_import'));
+                throw_redirect(page_link_to('admin_import'));
             }
 
             if ($request->has('add_minutes_end') && is_numeric(trim($request->input('add_minutes_end')))) {
                 $add_minutes_end = trim($request->input('add_minutes_end'));
             } else {
                 error(__('Please enter an amount of minutes to add to a talk\'s end.'));
-                redirect(page_link_to('admin_import'));
+                throw_redirect(page_link_to('admin_import'));
             }
 
             list($rooms_new, $rooms_deleted) = prepare_rooms($import_file);
@@ -297,7 +297,7 @@ function admin_import()
                 ]) . success(__('It\'s done!'), true);
             break;
         default:
-            redirect(page_link_to('admin_import'));
+            throw_redirect(page_link_to('admin_import'));
     }
 
     return page_with_title(admin_import_title(), [

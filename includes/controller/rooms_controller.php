@@ -15,7 +15,7 @@ use Engelsystem\ShiftsFilterRenderer;
 function room_controller()
 {
     if (!auth()->can('view_rooms')) {
-        redirect(page_link_to());
+        throw_redirect(page_link_to());
     }
 
     $request = request();
@@ -74,7 +74,7 @@ function rooms_controller()
             return room_controller();
         case 'list':
         default:
-            redirect(page_link_to('admin_rooms'));
+            throw_redirect(page_link_to('admin_rooms'));
     }
 }
 
@@ -104,12 +104,12 @@ function room_edit_link($room)
 function load_room()
 {
     if (!test_request_int('room_id')) {
-        redirect(page_link_to());
+        throw_redirect(page_link_to());
     }
 
     $room = Room(request()->input('room_id'));
     if (empty($room)) {
-        redirect(page_link_to());
+        throw_redirect(page_link_to());
     }
 
     return $room;

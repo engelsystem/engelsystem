@@ -25,7 +25,7 @@ function user_shifts()
     $request = request();
 
     if (User_is_freeloader(auth()->user())) {
-        redirect(page_link_to('user_myshifts'));
+        throw_redirect(page_link_to('user_myshifts'));
     }
 
     if ($request->has('edit_shift')) {
@@ -99,7 +99,7 @@ function load_rooms()
     );
     if (empty($rooms)) {
         error(__('The administration has not configured any rooms yet.'));
-        redirect(page_link_to('/'));
+        throw_redirect(page_link_to('/'));
     }
     return $rooms;
 }
@@ -120,7 +120,7 @@ function load_days()
         error(__('The administration has not configured any shifts yet.'));
         // Do not try to redirect to the current page
         if (config('home_site') != 'user_shifts') {
-            redirect(page_link_to('/'));
+            throw_redirect(page_link_to('/'));
         }
     }
     return $days;
@@ -135,7 +135,7 @@ function load_types()
 
     if (!count(DB::select('SELECT `id`, `name` FROM `AngelTypes`'))) {
         error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
-        redirect(page_link_to('/'));
+        throw_redirect(page_link_to('/'));
     }
     $types = DB::select('
             SELECT
