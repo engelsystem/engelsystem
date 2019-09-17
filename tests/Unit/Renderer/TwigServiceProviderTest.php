@@ -82,7 +82,7 @@ class TwigServiceProviderTest extends ServiceProviderTest
 
         $twig->expects($this->exactly(2))
             ->method('addExtension')
-            ->withConsecutive($firsExtension, $secondExtension);
+            ->withConsecutive([$firsExtension], [$secondExtension]);
 
         $serviceProvider = new TwigServiceProvider($app);
         $serviceProvider->boot();

@@ -67,15 +67,13 @@ class RendererServiceProviderTest extends ServiceProviderTest
 
         $app = $this->getApp(['get', 'tagged']);
 
-        $engines = [$engine1, $engine2];
-
         $this->setExpects($app, 'get', ['renderer'], $renderer);
-        $this->setExpects($app, 'tagged', ['renderer.engine'], $engines);
+        $this->setExpects($app, 'tagged', ['renderer.engine'], [$engine1, $engine2]);
 
-        $invocation = $renderer
-            ->expects($this->exactly(count($engines)))
-            ->method('addRenderer');
-        call_user_func_array([$invocation, 'withConsecutive'], $engines);
+        $renderer
+            ->expects($this->exactly(2))
+            ->method('addRenderer')
+            ->withConsecutive([$engine1], [$engine2]);
 
         $serviceProvider = new RendererServiceProvider($app);
         $serviceProvider->boot();
