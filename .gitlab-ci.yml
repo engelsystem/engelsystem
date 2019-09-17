@@ -9,6 +9,7 @@ variables:
   MYSQL_PASSWORD: engelsystem
   MYSQL_HOST: mariadb
   MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+  MYSQL_INITDB_SKIP_TZINFO: "yes"
   DOCROOT: /var/www/
 
 stages:
