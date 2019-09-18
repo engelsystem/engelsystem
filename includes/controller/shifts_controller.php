@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\ShiftSignupState;
 
 /**
@@ -348,17 +349,18 @@ function shift_next_controller()
 function shifts_json_export_controller()
 {
     $request = request();
-
-    if (!$request->has('key') || !preg_match('/^[\da-f]{32}$/', $request->input('key'))) {
-        engelsystem_error('Missing key.');
-    }
-
     $user = auth()->apiUser('key');
-    if (!$user) {
-        engelsystem_error('Key invalid.');
+
+    if (
+        !$request->has('key')
+        || !preg_match('/^[\da-f]{32}$/', $request->input('key'))
+        || !$user
+    ) {
+        throw new HttpForbidden('{"error":"Missing or invalid key"}', ['content-type' => 'application/json']);
     }
+
     if (!auth()->can('shifts_json_export')) {
-        engelsystem_error('No privilege for shifts_json_export.');
+        throw new HttpForbidden('{"error":"Not allowed"}', ['content-type' => 'application/json']);
     }
 
     $shifts = load_ical_shifts();
