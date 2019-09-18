@@ -1,22 +1,25 @@
 <?php
 
+use Engelsystem\Http\Exceptions\HttpForbidden;
+
 /**
  * Controller for ical output of users own shifts or any user_shifts filter.
  */
 function user_ical()
 {
     $request = request();
-
-    if (!$request->has('key') || !preg_match('/^[\da-f]{32}$/', $request->input('key'))) {
-        engelsystem_error('Missing key.');
-    }
-
     $user = auth()->apiUser('key');
-    if (!$user) {
-        engelsystem_error('Key invalid.');
+
+    if (
+        !$request->has('key')
+        || !preg_match('/^[\da-f]{32}$/', $request->input('key'))
+        || !$user
+    ) {
+        throw new HttpForbidden('Missing or invalid key', ['content-type' => 'text/text']);
     }
+
     if (!auth()->can('ical')) {
-        engelsystem_error('No privilege for ical.');
+        throw new HttpForbidden('Not allowed', ['content-type' => 'text/text']);
     }
 
     $ical_shifts = load_ical_shifts();

@@ -60,7 +60,6 @@ $includeFiles = [
 
     __DIR__ . '/../includes/helper/graph_helper.php',
     __DIR__ . '/../includes/helper/message_helper.php',
-    __DIR__ . '/../includes/helper/error_helper.php',
     __DIR__ . '/../includes/helper/email_helper.php',
 
     __DIR__ . '/../includes/mailer/shifts_mailer.php',

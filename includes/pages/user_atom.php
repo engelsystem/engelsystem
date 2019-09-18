@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 
 /**
  * Publically available page to feed the news to feed readers
@@ -8,17 +9,18 @@ use Engelsystem\Database\DB;
 function user_atom()
 {
     $request = request();
-
-    if (!$request->has('key') || !preg_match('/^[\da-f]{32}$/', $request->input('key'))) {
-        engelsystem_error('Missing key.');
-    }
-
     $user = auth()->apiUser('key');
-    if (empty($user)) {
-        engelsystem_error('Key invalid.');
+
+    if (
+        !$request->has('key')
+        || !preg_match('/^[\da-f]{32}$/', $request->input('key'))
+        || empty($user)
+    ) {
+        throw new HttpForbidden('Missing or invalid key', ['content-type' => 'text/text']);
     }
+
     if (!auth()->can('atom')) {
-        engelsystem_error('No privilege for atom.');
+        throw new HttpForbidden('Not allowed', ['content-type' => 'text/text']);
     }
 
     $news = DB::select('
