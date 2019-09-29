@@ -31,6 +31,7 @@ trait Reference
 
         $table->foreign($fromColumn)
             ->references('id')->on($targetTable)
+            ->onUpdate('cascade')
             ->onDelete('cascade');
     }
 }
