@@ -50,7 +50,7 @@
                                 <div class="input-group">
                                     <span class="input-group-addon input-lg">{{ m.glyphicon('lock') }}</span>
                                     <input class="form-control input-lg" id="form_password"
-                                          type="password" name="password" value="" placeholder="{{ __('Password') }}">
+                                           type="password" name="password" value="" placeholder="{{ __('Password') }}">
                                 </div>
                             </div>
 
@@ -93,8 +93,10 @@
                     </a>
                 </div>
             </div>
-        </div>
 
-        {{ m.glyphicon('info-sign') }} {{ __('Please note: You have to activate cookies!') }}
+            <div class="col-md-12 text-center">
+                {{ m.glyphicon('info-sign') }} {{ __('Please note: You have to activate cookies!') }}
+            </div>
+        </div>
     </div>
 {% endblock %}
