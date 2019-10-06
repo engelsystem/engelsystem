@@ -21,7 +21,7 @@ class TranslationServiceProviderTest extends ServiceProviderTest
         $locales = ['fo_OO' => 'Foo', 'fo_OO.BAR' => 'Foo (Bar)', 'te_ST.WTF-9' => 'WTF\'s Testing?'];
         $config = new Config(['locales' => $locales, 'default_locale' => $defaultLocale]);
 
-        $app = $this->getApp(['make', 'instance', 'get']);
+        $app = $this->getApp(['make', 'singleton', 'alias', 'get']);
         /** @var Session|MockObject $session */
         $session = $this->createMock(Session::class);
         /** @var Translator|MockObject $translator */
@@ -60,12 +60,16 @@ class TranslationServiceProviderTest extends ServiceProviderTest
             )
             ->willReturn($translator);
 
-        $app->expects($this->exactly(2))
-            ->method('instance')
-            ->withConsecutive(
-                [Translator::class, $translator],
-                ['translator', $translator]
-            );
+        $app->expects($this->once())
+            ->method('singleton')
+            ->willReturnCallback(function (string $abstract, callable $callback) use ($translator) {
+                $this->assertEquals(Translator::class, $abstract);
+                $this->assertEquals($translator, $callback());
+            });
+
+        $app->expects($this->once())
+            ->method('alias')
+            ->with(Translator::class, 'translator');
 
         $serviceProvider->register();
     }
