@@ -39,7 +39,6 @@ services:
       - database
 volumes:
   db: {}
-  static: {}
 
 networks:
   internal:
