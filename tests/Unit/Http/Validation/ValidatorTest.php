@@ -50,9 +50,10 @@ class ValidatorTest extends TestCase
         ));
 
         $this->assertFalse($val->validate(
-            ['lorem' => 2],
-            ['lorem' => 'required|min:3|max:10']
+            ['lorem' => 'OMG'],
+            ['lorem' => 'required|min:4|max:10']
         ));
+        $this->assertEquals(['lorem' => ['validation.lorem.min']], $val->getErrors());
         $this->assertFalse($val->validate(
             ['lorem' => 42],
             ['lorem' => 'required|min:3|max:10']
