@@ -13,7 +13,6 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
-use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -66,6 +65,7 @@ class AuthControllerTest extends TestCase
         $session = new Session(new MockArraySessionStorage());
         /** @var Validator|MockObject $validator */
         $validator = new Validator();
+        $session->set('errors', [['bar' => 'some.bar.error']]);
 
         $user = new User([
             'name'          => 'foo',
@@ -89,7 +89,7 @@ class AuthControllerTest extends TestCase
 
         $response->expects($this->once())
             ->method('withView')
-            ->with('pages/login', ['errors' => Collection::make(['auth.not-found'])])
+            ->with('pages/login', ['errors' => collect(['some.bar.error', 'auth.not-found'])])
             ->willReturn($response);
         $response->expects($this->once())
             ->method('redirectTo')

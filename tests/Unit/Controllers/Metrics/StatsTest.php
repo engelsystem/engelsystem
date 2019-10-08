@@ -155,8 +155,8 @@ class StatsTest extends TestCase
         $this->initDatabase();
         $this->addUsers();
 
-        (new PasswordReset(['use_id' => 1, 'token' => 'loremIpsum123']))->save();
-        (new PasswordReset(['use_id' => 3, 'token' => '5omeR4nd0mTok3N']))->save();
+        (new PasswordReset(['user_id' => 1, 'token' => 'loremIpsum123']))->save();
+        (new PasswordReset(['user_id' => 3, 'token' => '5omeR4nd0mTok3N']))->save();
 
         $stats = new Stats($this->database);
         $this->assertEquals(2, $stats->passwordResets());

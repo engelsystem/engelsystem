@@ -88,7 +88,7 @@ class AuthController extends BaseController
         $user = $this->auth->authenticate($data['login'], $data['password']);
 
         if (!$user instanceof User) {
-            $this->session->set('errors', $this->session->get('errors', []) + ['auth.not-found']);
+            $this->session->set('errors', array_merge($this->session->get('errors', []), ['auth.not-found']));
 
             return $this->showLogin();
         }
