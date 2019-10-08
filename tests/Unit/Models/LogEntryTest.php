@@ -4,7 +4,7 @@ namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Test\Unit\HasDatabase;
-use PHPUnit\Framework\TestCase;
+use Engelsystem\Test\Unit\TestCase;
 use Psr\Log\LogLevel;
 
 class LogEntryTest extends TestCase
@@ -38,6 +38,7 @@ class LogEntryTest extends TestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->initDatabase();
     }
 }

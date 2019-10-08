@@ -10,7 +10,7 @@ use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
-use PHPUnit\Framework\TestCase;
+use Engelsystem\Test\Unit\TestCase;
 
 class UserTest extends TestCase
 {
@@ -95,6 +95,7 @@ class UserTest extends TestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->initDatabase();
     }
 }
