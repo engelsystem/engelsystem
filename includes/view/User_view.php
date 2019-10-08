@@ -108,46 +108,6 @@ function User_settings_view(
 }
 
 /**
- * Displays the welcome message to the user and shows a login form.
- *
- * @param string $event_welcome_message
- * @return string
- */
-function User_registration_success_view($event_welcome_message)
-{
-    $parsedown = new Parsedown();
-    $event_welcome_message = $parsedown->text($event_welcome_message);
-
-    return page_with_title(__('Registration successful'), [
-        msg(),
-        div('row', [
-            div('col-md-4', [
-                $event_welcome_message
-            ]),
-            div('col-md-4', [
-                '<h2>' . __('Login') . '</h2>',
-                form([
-                    form_text('login', __('Nick'), ''),
-                    form_password('password', __('Password')),
-                    form_submit('submit', __('Login')),
-                    buttons([
-                        button(page_link_to('user_password_recovery'), __('I forgot my password'))
-                    ]),
-                    info(__('Please note: You have to activate cookies!'), true)
-                ], page_link_to('login'))
-            ]),
-            div('col-md-4', [
-                '<h2>' . __('What can I do?') . '</h2>',
-                '<p>' . __('Please read about the jobs you can do to help us.') . '</p>',
-                buttons([
-                    button(page_link_to('angeltypes', ['action' => 'about']), __('Teams/Job description') . ' &raquo;')
-                ])
-            ])
-        ])
-    ]);
-}
-
-/**
  * Gui for deleting user with password field.
  *
  * @param User $user
@@ -255,13 +215,13 @@ function Users_view(
     ];
 
     $user_table_headers = [
-        'name'           => Users_table_header_link('name', __('Nick'), $order_by)
+        'name' => Users_table_header_link('name', __('Nick'), $order_by)
     ];
-    if(config('enable_user_name')) {
+    if (config('enable_user_name')) {
         $user_table_headers['first_name'] = Users_table_header_link('first_name', __('Prename'), $order_by);
         $user_table_headers['last_name'] = Users_table_header_link('last_name', __('Name'), $order_by);
     }
-    if(config('enable_dect')) {
+    if (config('enable_dect')) {
         $user_table_headers['dect'] = Users_table_header_link('dect', __('DECT'), $order_by);
     }
     $user_table_headers['arrived'] = Users_table_header_link('arrived', __('Arrived'), $order_by);
@@ -271,8 +231,16 @@ function Users_view(
     $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
     $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('T-Shirt'), $order_by);
     $user_table_headers['shirt_size'] = Users_table_header_link('shirt_size', __('Size'), $order_by);
-    $user_table_headers['arrival_date'] = Users_table_header_link('planned_arrival_date', __('Planned arrival'), $order_by);
-    $user_table_headers['departure_date'] = Users_table_header_link('planned_departure_date', __('Planned departure'), $order_by);
+    $user_table_headers['arrival_date'] = Users_table_header_link(
+        'planned_arrival_date',
+        __('Planned arrival'),
+        $order_by
+    );
+    $user_table_headers['departure_date'] = Users_table_header_link(
+        'planned_departure_date',
+        __('Planned departure'),
+        $order_by
+    );
     $user_table_headers['last_login_at'] = Users_table_header_link('last_login_at', __('Last login'), $order_by);
     $user_table_headers['actions'] = '';
 

@@ -32,6 +32,7 @@ class Legacy extends TwigExtension
             new TwigFunction('menuUserHints', 'header_render_hints', $isSafeHtml),
             new TwigFunction('menuUserSubmenu', 'make_user_submenu', $isSafeHtml),
             new TwigFunction('page', [$this, 'getPage']),
+            new TwigFunction('msg', 'msg', $isSafeHtml),
         ];
     }
 

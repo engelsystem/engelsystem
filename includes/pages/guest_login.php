@@ -242,9 +242,9 @@ function guest_register()
                 redirect(page_link_to('register'));
             }
 
-            // If a welcome message is present, display registration success page.
+            // If a welcome message is present, display it on the next page
             if ($message = $config->get('welcome_msg')) {
-                return User_registration_success_view($message);
+                info((new Parsedown())->text($message));
             }
 
             redirect(page_link_to('/'));
