@@ -1,0 +1,18 @@
+{% macro input(name, label, type, required) %}
+    <div class="form-group">
+        {% if label %}
+            <label for="{{ name }}">{{ label }}</label>
+        {% endif %}
+        <input type="{{ type|default('text') }}" class="form-control" id="{{ name }}" name="{{ name }}"
+                {%- if required|default(false) %} required="required"{% endif -%}
+        >
+    </div>
+{% endmacro %}
+
+{% macro hidden(name, value) %}
+    <input type="hidden" id="{{ name }}" name="{{ name }}" value="{{ value }}">
+{% endmacro %}
+
+{% macro submit(label) %}
+    <button type="submit" class="btn btn-default">{{ label|default(__('form.submit')) }}</button>
+{% endmacro %}

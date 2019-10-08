@@ -2,7 +2,6 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\DB;
-use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\User;
 use Engelsystem\ValidationResult;
 use Illuminate\Database\Query\JoinClause;
@@ -225,24 +224,6 @@ function User_reset_api_key($user, $log = true)
     if ($log) {
         engelsystem_log(sprintf('API key resetted (%s).', User_Nick_render($user, true)));
     }
-}
-
-/**
- * Generates a new password recovery token for given user.
- *
- * @param User $user
- * @return string
- */
-function User_generate_password_recovery_token($user)
-{
-    $reset = PasswordReset::findOrNew($user->id);
-    $reset->user_id = $user->id;
-    $reset->token = md5($user->name . time() . rand());
-    $reset->save();
-
-    engelsystem_log('Password recovery for ' . User_Nick_render($user, true) . ' started.');
-
-    return $reset->token;
 }
 
 /**

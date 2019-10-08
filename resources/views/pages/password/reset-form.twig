@@ -1,0 +1,18 @@
+{% extends "pages/password/reset.twig" %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block row_content %}
+    <div class="col-md-8">
+        <form action="" enctype="multipart/form-data" method="post">
+            {{ csrf() }}
+
+            {{ f.input('password', __('Password'), 'password', true) }}
+            {{ f.input('password_confirmation', __('Confirm password'), 'password', true) }}
+
+            <div class="form-group">
+                {{ f.submit(__('Save')) }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

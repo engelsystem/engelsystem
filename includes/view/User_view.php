@@ -760,41 +760,6 @@ function User_view_state_admin($freeloader, $user_source)
 }
 
 /**
- * View for password recovery step 1: E-Mail
- *
- * @return string
- */
-function User_password_recovery_view()
-{
-    return page_with_title(user_password_recovery_title(), [
-        msg(),
-        __('We will send you an e-mail with a password recovery link. Please use the email address you used for registration.'),
-        form([
-            form_text('email', __('E-Mail'), ''),
-            form_submit('submit', __('Recover'))
-        ])
-    ]);
-}
-
-/**
- * View for password recovery step 2: New password
- *
- * @return string
- */
-function User_password_set_view()
-{
-    return page_with_title(user_password_recovery_title(), [
-        msg(),
-        __('Please enter a new password.'),
-        form([
-            form_password('password', __('Password')),
-            form_password('password2', __('Confirm password')),
-            form_submit('submit', __('Save'))
-        ])
-    ]);
-}
-
-/**
  * @param array[] $user_angeltypes
  * @return string
  */

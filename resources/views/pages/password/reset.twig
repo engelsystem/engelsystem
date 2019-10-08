@@ -1,0 +1,32 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('Password recovery') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ __('Password recovery') }}</h1>
+
+        {% for message in errors|default([]) %}
+            {{ m.alert(__(message), 'danger') }}
+        {% endfor %}
+
+        <div class="row">
+            {% block row_content %}
+                <div class="col-md-8">
+                    <form action="" enctype="multipart/form-data" method="post">
+                        {{ csrf() }}
+
+                        {{ __('We will send you an e-mail with a password recovery link. Please use the email address you used for registration.') }}
+                        {{ f.input('email', __('E-Mail'), 'email', true) }}
+
+                        <div class="form-group">
+                            {{ f.submit(__('Recover')) }}
+                        </div>
+                    </form>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

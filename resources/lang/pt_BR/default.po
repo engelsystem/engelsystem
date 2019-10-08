@@ -551,7 +551,7 @@ msgid "Please visit %s to recover your password."
 msgstr "Por favor visite %s para recuperar sua senha"
 
 #: includes/controller/users_controller.php:271
-msgid "We sent an email containing your password recovery link."
+msgid "We sent you an email containing your password recovery link."
 msgstr "Nós enviamos um email com o link para recuperação da sua senha."
 
 #: includes/helper/email_helper.php:12
