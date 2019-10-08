@@ -3,6 +3,7 @@
 namespace Engelsystem\Http;
 
 use Engelsystem\Renderer\Renderer;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
@@ -11,21 +12,21 @@ class Response extends SymfonyResponse implements ResponseInterface
     use MessageTrait;
 
     /** @var Renderer */
-    protected $view;
+    protected $renderer;
 
     /**
      * @param string   $content
      * @param int      $status
      * @param array    $headers
-     * @param Renderer $view
+     * @param Renderer $renderer
      */
     public function __construct(
         $content = '',
         int $status = 200,
         array $headers = [],
-        Renderer $view = null
+        Renderer $renderer = null
     ) {
-        $this->view = $view;
+        $this->renderer = $renderer;
         parent::__construct($content, $status, $headers);
     }
 
@@ -47,7 +48,7 @@ class Response extends SymfonyResponse implements ResponseInterface
      *                             provided status code; if none is provided, implementations MAY
      *                             use the defaults as suggested in the HTTP specification.
      * @return static
-     * @throws \InvalidArgumentException For invalid status code arguments.
+     * @throws InvalidArgumentException For invalid status code arguments.
      */
     public function withStatus($code, $reasonPhrase = '')
     {
@@ -107,12 +108,12 @@ class Response extends SymfonyResponse implements ResponseInterface
      */
     public function withView($view, $data = [], $status = 200, $headers = [])
     {
-        if (!$this->view instanceof Renderer) {
-            throw new \InvalidArgumentException('Renderer not defined');
+        if (!$this->renderer instanceof Renderer) {
+            throw new InvalidArgumentException('Renderer not defined');
         }
 
         $new = clone $this;
-        $new->setContent($this->view->render($view, $data));
+        $new->setContent($this->renderer->render($view, $data));
         $new->setStatusCode($status, ($status == $this->getStatusCode() ? $this->statusText : null));
 
         foreach ($headers as $key => $values) {
@@ -143,5 +144,15 @@ class Response extends SymfonyResponse implements ResponseInterface
         }
 
         return $response;
+    }
+
+    /**
+     * Set the renderer to use
+     *
+     * @param Renderer $renderer
+     */
+    public function setRenderer(Renderer $renderer)
+    {
+        $this->renderer = $renderer;
     }
 }
