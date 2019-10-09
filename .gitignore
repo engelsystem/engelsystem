@@ -24,6 +24,7 @@ _vimrc_local.vim
 /public/coverage
 /coverage
 /unittests.xml
+/resources/lang/*/*.mo
 
 # Composer files
 /vendor/

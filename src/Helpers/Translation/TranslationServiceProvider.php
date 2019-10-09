@@ -5,6 +5,7 @@ namespace Engelsystem\Helpers\Translation;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
 use Gettext\Translations;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class TranslationServiceProvider extends ServiceProvider
@@ -67,14 +68,18 @@ class TranslationServiceProvider extends ServiceProvider
     public function getTranslator(string $locale): GettextTranslator
     {
         if (!isset($this->translators[$locale])) {
-            $file = $this->app->get('path.lang') . '/' . $locale . '/default.mo';
+            $file = $this->getFile($locale);
 
             /** @var GettextTranslator $translator */
             $translator = $this->app->make(GettextTranslator::class);
 
             /** @var Translations $translations */
             $translations = $this->app->make(Translations::class);
-            $translations->addFromMoFile($file);
+            if (Str::endsWith($file, '.mo')) {
+                $translations->addFromMoFile($file);
+            } else {
+                $translations->addFromPoFile($file);
+            }
 
             $translator->loadTranslations($translations);
 
@@ -82,5 +87,21 @@ class TranslationServiceProvider extends ServiceProvider
         }
 
         return $this->translators[$locale];
+    }
+
+    /**
+     * @param string $locale
+     * @return string
+     */
+    protected function getFile(string $locale): string
+    {
+        $filepath = $file = $this->app->get('path.lang') . '/' . $locale . '/default';
+        $file = $filepath . '.mo';
+
+        if (!file_exists($file)) {
+            $file = $filepath . '.po';
+        }
+
+        return $file;
     }
 }
