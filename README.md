@@ -127,6 +127,20 @@ Import database
 docker exec -it engelsystem bin/migrate
 ```
 
+#### Local development
+To use the working directory in the container the docker-compose file has to be changed:
+```yaml
+[...]
+  nginx:
+    volumes:
+      - ../public/assets:/var/www/public/assets
+[...]
+  engelsystem:
+    volumes:
+      - ../:/var/www
+[...]
+```
+
 #### Scripts
 ##### bin/deploy.sh
 The `bin/deploy.sh` script can be used to deploy the engelsystem. It uses rsync to deploy the application to a server over ssh.
