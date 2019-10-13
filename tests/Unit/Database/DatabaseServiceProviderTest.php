@@ -100,7 +100,10 @@ class DatabaseServiceProviderTest extends ServiceProviderTest
         $app = $this->getApp(['get', 'make', 'instance']);
 
         $this->setExpects($app, 'get', ['config'], $config);
-        $this->setExpects($config, 'get', ['database'], $dbConfigData, $this->atLeastOnce());
+        $config->expects($this->exactly(2))
+            ->method('get')
+            ->withConsecutive(['timezone'], ['database'])
+            ->willReturnOnConsecutiveCalls('UTC', $dbConfigData);
 
         $app->expects($this->atLeastOnce())
             ->method('make')

@@ -2,7 +2,7 @@
 
 namespace Engelsystem\Test\Feature\Database;
 
-use PHPUnit\Framework\TestCase;
+use Engelsystem\Test\Unit\TestCase;
 
 abstract class DatabaseTest extends TestCase
 {
