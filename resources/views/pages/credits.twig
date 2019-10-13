@@ -4,28 +4,28 @@
 
 {% block content %}
     <div class="container">
-        <h1>Credits</h1>
+        <h1>{{ __('Credits') }}</h1>
         <div class="row">
             {% for title, credit in credits %}
                 <div class="col-md-4">
-                    <h2>{{ title }}</h2>
-                    {{ credit|markdown }}
+                    <h2>{{ __(title) }}</h2>
+                    {{ __(credit)|markdown }}
                 </div>
             {% endfor %}
 
             <div class="col-md-4">
-                <h2>Source code</h2>
-                <p>Version: <i>{{ version }}</i></p>
+                <h2>{{ __('Source code') }}</h2>
+                <p>{{ __('Version: _%s_', [version])|markdown }}</i></p>
                 <p>
-                    The original engelsystem was written by
-                    <a href="https://github.com/cookieBerlin/engelsystem">cookie</a>.
-                    It was then completely rewritten and enhanced by
-                    <a href="https://notrademark.de">msquare</a> (maintainer) and
-                    <a href="https://myigel.name">MyIgel</a>.
+                    {{ __('The original engelsystem was written by
+[cookie](https://github.com/cookieBerlin/engelsystem).
+It was then completely rewritten and enhanced by [msquare](https://notrademark.de) (maintainer) and
+[MyIgel](https://myigel.name).')|markdown }}
                 </p>
                 <p>
-                    Please look at the <a href="https://github.com/engelsystem/engelsystem/graphs/contributors">
-                        contributor list on GitHub</a> for a complete list.
+                    {{ __('Please have a look at the
+[contributors list on GitHub](https://github.com/engelsystem/engelsystem/graphs/contributors)
+for a complete list.')|markdown }}
                 </p>
             </div>
         </div>
