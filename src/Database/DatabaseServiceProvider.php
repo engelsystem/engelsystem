@@ -15,6 +15,7 @@ class DatabaseServiceProvider extends ServiceProvider
     {
         $config = $this->app->get('config');
         $capsule = $this->app->make(CapsuleManager::class);
+        $now = Carbon::now($config->get('timezone'));
 
         $dbConfig = $config->get('database');
         $capsule->addConnection(array_merge([
@@ -25,7 +26,7 @@ class DatabaseServiceProvider extends ServiceProvider
             'password'  => '',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
-            'timezone'  => Carbon::now()->format('P'),
+            'timezone'  => $now->format('P'),
             'prefix'    => '',
         ], $dbConfig));
 
