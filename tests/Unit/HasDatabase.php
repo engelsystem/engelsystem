@@ -2,7 +2,6 @@
 
 namespace Engelsystem\Test\Unit;
 
-use Engelsystem\Application;
 use Engelsystem\Database\Database;
 use Engelsystem\Database\Migration\Migrate;
 use Engelsystem\Database\Migration\MigrationServiceProvider;
@@ -27,12 +26,11 @@ trait HasDatabase
         $connection->getPdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->database = new Database($connection);
 
-        $app = new Application();
-        $app->instance(Database::class, $this->database);
-        $app->register(MigrationServiceProvider::class);
+        $this->app->instance(Database::class, $this->database);
+        $this->app->register(MigrationServiceProvider::class);
 
         /** @var Migrate $migration */
-        $migration = $app->get('db.migration');
+        $migration = $this->app->get('db.migration');
         $migration->initMigration();
 
         $this->database

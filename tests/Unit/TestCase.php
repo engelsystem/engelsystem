@@ -2,18 +2,22 @@
 
 namespace Engelsystem\Test\Unit;
 
-use PHPUnit\Framework\MockObject\Matcher\InvokedRecorder;
+use Engelsystem\Application;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 abstract class TestCase extends PHPUnitTestCase
 {
+    /** @var Application */
+    protected $app;
+
     /**
      * @param MockObject      $object
      * @param string          $method
      * @param array           $arguments
      * @param mixed           $return
-     * @param InvokedRecorder $times
+     * @param InvocationOrder $times
      */
     protected function setExpects($object, $method, $arguments = null, $return = null, $times = null)
     {
@@ -33,5 +37,13 @@ abstract class TestCase extends PHPUnitTestCase
         if (!is_null($return)) {
             $invocation->willReturn($return);
         }
+    }
+
+    /**
+     * Called before each test run
+     */
+    protected function setUp(): void
+    {
+        $this->app = new Application(__DIR__ . '/../../');
     }
 }

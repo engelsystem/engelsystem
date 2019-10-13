@@ -4,7 +4,7 @@ namespace Engelsystem\Test\Unit\Http\SessionHandlers;
 
 use Engelsystem\Http\SessionHandlers\DatabaseHandler;
 use Engelsystem\Test\Unit\HasDatabase;
-use PHPUnit\Framework\TestCase;
+use Engelsystem\Test\Unit\TestCase;
 
 class DatabaseHandlerTest extends TestCase
 {
@@ -90,6 +90,7 @@ class DatabaseHandlerTest extends TestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->initDatabase();
     }
 }

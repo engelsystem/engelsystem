@@ -41,8 +41,10 @@ class TranslationServiceProvider extends ServiceProvider
                 'localeChangeCallback'  => [$this, 'setLocale'],
             ]
         );
-        $this->app->instance(Translator::class, $translator);
-        $this->app->instance('translator', $translator);
+        $this->app->singleton(Translator::class, function () use ($translator) {
+            return $translator;
+        });
+        $this->app->alias(Translator::class, 'translator');
     }
 
     /**

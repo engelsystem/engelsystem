@@ -55,6 +55,7 @@ class ResponseTest extends TestCase
 
     /**
      * @covers \Engelsystem\Http\Response::withView
+     * @covers \Engelsystem\Http\Response::setRenderer
      */
     public function testWithView()
     {
@@ -73,6 +74,17 @@ class ResponseTest extends TestCase
         $this->assertEquals('Foo ipsum!', $newResponse->getContent());
         $this->assertEquals(505, $newResponse->getStatusCode());
         $this->assertArraySubset(['test' => ['er']], $newResponse->getHeaders());
+
+        /** @var REnderer|MockObject $renderer */
+        $anotherRenderer = $this->createMock(Renderer::class);
+        $anotherRenderer->expects($this->once())
+            ->method('render')
+            ->with('bar')
+            ->willReturn('Stuff');
+
+        $response->setRenderer($anotherRenderer);
+        $response = $response->withView('bar');
+        $this->assertEquals('Stuff', $response->getContent());
     }
 
     /**

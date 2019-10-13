@@ -1,7 +1,6 @@
 <?php
 
 use Engelsystem\Database\DB;
-use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
@@ -309,120 +308,6 @@ function users_list_controller()
             State::query()->sum('got_voucher')
         )
     ];
-}
-
-/**
- * Second step of password recovery: set a new password using the token link from email
- *
- * @return string
- */
-function user_password_recovery_set_new_controller()
-{
-    $request = request();
-    $passwordReset = PasswordReset::whereToken($request->input('token'))->first();
-    if (!$passwordReset) {
-        error(__('Token is not correct.'));
-        redirect(page_link_to('login'));
-    }
-
-    if ($request->hasPostData('submit')) {
-        $valid = true;
-
-        if (
-            $request->has('password')
-            && strlen($request->postData('password')) >= config('min_password_length')
-        ) {
-            if ($request->postData('password') != $request->postData('password2')) {
-                $valid = false;
-                error(__('Your passwords don\'t match.'));
-            }
-        } else {
-            $valid = false;
-            error(__('Your password is to short (please use at least 6 characters).'));
-        }
-
-        if ($valid) {
-            auth()->setPassword($passwordReset->user, $request->postData('password'));
-            success(__('Password saved.'));
-            $passwordReset->delete();
-            redirect(page_link_to('login'));
-        }
-    }
-
-    return User_password_set_view();
-}
-
-/**
- * First step of password recovery: display a form that asks for your email and send email with recovery link
- *
- * @return string
- */
-function user_password_recovery_start_controller()
-{
-    $request = request();
-    if ($request->hasPostData('submit')) {
-        $valid = true;
-
-        $user_source = null;
-        if ($request->has('email') && strlen(strip_request_item('email')) > 0) {
-            $email = strip_request_item('email');
-            if (check_email($email)) {
-                /** @var User $user_source */
-                $user_source = User::whereEmail($email)->first();
-                if (!$user_source) {
-                    $valid = false;
-                    error(__('E-mail address is not correct.'));
-                }
-            } else {
-                $valid = false;
-                error(__('E-mail address is not correct.'));
-            }
-        } else {
-            $valid = false;
-            error(__('Please enter your e-mail.'));
-        }
-
-        if ($valid) {
-            $token = User_generate_password_recovery_token($user_source);
-            engelsystem_email_to_user(
-                $user_source,
-                __('Password recovery'),
-                sprintf(
-                    __('Please visit %s to recover your password.'),
-                    page_link_to('user_password_recovery', ['token' => $token])
-                )
-            );
-            success(__('We sent an email containing your password recovery link.'));
-            redirect(page_link_to('login'));
-        }
-    }
-
-    return User_password_recovery_view();
-}
-
-/**
- * User password recovery in 2 steps.
- * (By email)
- *
- * @return string
- */
-function user_password_recovery_controller()
-{
-    if (request()->has('token')) {
-        return user_password_recovery_set_new_controller();
-    }
-
-    return user_password_recovery_start_controller();
-}
-
-/**
- * Menu title for password recovery.
- *
- * @return string
- */
-function user_password_recovery_title()
-{
-    return __('Password recovery');
 }
 
 /**

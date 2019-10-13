@@ -32,6 +32,7 @@
             <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
                 <div class="panel panel-primary first">
                     <div class="panel-body">
+                        {{ msg() }}
                         {% for message in errors|default([]) %}
                             {{ m.alert(__(message), 'danger') }}
                         {% endfor %}
@@ -61,7 +62,7 @@
                             </div>
 
                             <div class="text-center">
-                                <a href="{{ url('user-password-recovery') }}" class="">
+                                <a href="{{ url('/password/reset') }}" class="">
                                     {{ __('I forgot my password') }}
                                 </a>
                             </div>
