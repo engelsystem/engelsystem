@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class TranslationServiceProviderTest extends ServiceProviderTest
 {
     /**
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::register()
+     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::register
      */
     public function testRegister(): void
     {
@@ -30,7 +30,7 @@ class TranslationServiceProviderTest extends ServiceProviderTest
         /** @var TranslationServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(TranslationServiceProvider::class)
             ->setConstructorArgs([$app])
-            ->setMethods(['setLocale'])
+            ->onlyMethods(['setLocale'])
             ->getMock();
 
         $app->expects($this->exactly(2))
@@ -71,7 +71,7 @@ class TranslationServiceProviderTest extends ServiceProviderTest
     }
 
     /**
-     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getTranslator()
+     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getTranslator
      */
     public function testGetTranslator(): void
     {
@@ -86,5 +86,21 @@ class TranslationServiceProviderTest extends ServiceProviderTest
 
         // Retry from cache
         $serviceProvider->getTranslator('fo_OO');
+    }
+
+    /**
+     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getTranslator
+     * @covers \Engelsystem\Helpers\Translation\TranslationServiceProvider::getFile
+     */
+    public function testGetTranslatorFromPo(): void
+    {
+        $app = $this->getApp(['get']);
+        $this->setExpects($app, 'get', ['path.lang'], __DIR__ . '/Assets');
+
+        $serviceProvider = new TranslationServiceProvider($app);
+
+        // Get translator using a .po file
+        $translator = $serviceProvider->getTranslator('ba_RR');
+        $this->assertEquals('B Arr!', $translator->gettext('foo.bar'));
     }
 }

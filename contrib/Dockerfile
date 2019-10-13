@@ -4,7 +4,12 @@ COPY ./ /app/
 RUN composer --no-ansi install --no-dev --ignore-platform-reqs
 RUN composer --no-ansi dump-autoload --optimize
 
-# Intermediate container for less layers
+# Intermediate containers for less layers
+FROM alpine as translation
+RUN apk add gettext
+COPY resources/lang/ /data
+RUN find /data -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
+
 FROM alpine as data
 COPY .babelrc .browserslistrc composer.json LICENSE package.json README.md webpack.config.js yarn.lock /app/
 COPY bin/ /app/bin
@@ -13,11 +18,11 @@ COPY db/ /app/db
 RUN mkdir /app/import/
 COPY includes/ /app/includes
 COPY public/ /app/public
-COPY resources/lang /app/resources/lang
 COPY resources/views /app/resources/views
 COPY src/ /app/src
 COPY storage/ /app/storage
 
+COPY --from=translation /data/ /app/resources/lang
 COPY --from=composer /app/vendor/ /app/vendor
 COPY --from=composer /app/composer.lock /app/
 

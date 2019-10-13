@@ -58,6 +58,11 @@ The following instructions explain how to get, build and run the latest engelsys
     ```bash
     yarn build
     ```
+ * Optionally (for better performance)
+   * Generate translation files
+      ```bash
+      find resources/lang/ -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
+      ```
 
 ### Configuration and Setup
  * The webserver must have write access to the ```import``` and ```storage``` directories and read access for all other directories
