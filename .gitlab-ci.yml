@@ -36,7 +36,7 @@ build-image.nginx:
     paths:
       - ./public/assets
   script:
-    - docker build --pull -t "${TEST_IMAGE}-nginx" -f contrib/nginx/Dockerfile .
+    - docker build --pull -t "${TEST_IMAGE}-nginx" -f docker/nginx/Dockerfile .
     - docker push "${TEST_IMAGE}-nginx"
     - instance=$(docker create "${TEST_IMAGE}-nginx")
     - docker cp "${instance}:/var/www/public/assets" public/
@@ -48,7 +48,7 @@ build-image:
   script:
     - apk -q add git
     - VERSION="$(git describe --abbrev=0 --tags)-${CI_COMMIT_REF_NAME}+${CI_PIPELINE_ID}.${CI_COMMIT_SHORT_SHA}"
-    - docker build --pull --build-arg VERSION="${VERSION}" -t "${TEST_IMAGE}" -f contrib/Dockerfile .
+    - docker build --pull --build-arg VERSION="${VERSION}" -t "${TEST_IMAGE}" -f docker/Dockerfile .
     - docker push "${TEST_IMAGE}"
 
 test:

@@ -1,0 +1,80 @@
+version: "3.6"
+services:
+  es_nginx:
+    image: es_dev_nginx
+    build:
+      context: ./../..
+      dockerfile: docker/nginx/Dockerfile
+      target: es_nginx
+    volumes:
+      - ./../..:/var/www
+    ports:
+      - 5000:80
+    networks:
+      - internal
+    depends_on:
+      - es_php_fpm
+  es_php_fpm:
+    image: es_dev_php_fpm
+    build:
+      context: ./../..
+      dockerfile: docker/dev/Dockerfile
+      target: es_php_fpm
+    user: "${UID}:${GID}"
+    volumes:
+      - ./../..:/var/www
+    environment:
+      MYSQL_HOST: es_database
+      MYSQL_USER: engelsystem
+      MYSQL_PASSWORD: engelsystem
+      MYSQL_DATABASE: engelsystem
+      PHP_IDE_CONFIG: serverName=engelsystem
+      ENVIRONMENT: development
+      MAIL_DRIVER: log
+      APP_NAME: Engelsystem DEV
+    networks:
+      - internal
+      - database
+    depends_on:
+      - es_database
+  es_workspace:
+    image: es_dev_workspace
+    build:
+      context: ./../..
+      dockerfile: docker/dev/Dockerfile
+      target: es_workspace
+    user: "${UID}:${GID}"
+    volumes:
+      - ./../..:/var/www
+    environment:
+      HOME: /tmp
+      MYSQL_HOST: es_database
+      MYSQL_USER: engelsystem
+      MYSQL_PASSWORD: engelsystem
+      MYSQL_DATABASE: engelsystem
+      ENVIRONMENT: development
+      MAIL_DRIVER: log
+      APP_NAME: Engelsystem DEV
+    networks:
+      - internal
+      - database
+    depends_on:
+      - es_database
+  es_database:
+    image: mariadb:10.2
+    environment:
+      MYSQL_DATABASE: engelsystem
+      MYSQL_USER: engelsystem
+      MYSQL_PASSWORD: engelsystem
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_INITDB_SKIP_TZINFO: "yes"
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - database
+volumes:
+  db: {}
+
+networks:
+  internal:
+  database:

@@ -1,23 +1,23 @@
 version: "3.6"
 services:
-  nginx:
-    image: engelsystem-nginx
+  es_nginx:
+    image: es_nginx
     build:
       context: ..
-      dockerfile: ""
+      dockerfile: docker/nginx/Dockerfile
     ports:
       - 5000:80
     networks:
       - internal
     depends_on:
-      - engelsystem
-  engelsystem:
-    image: engelsystem
+      - es_php_fpm
+  es_php_fpm:
+    image: es_php_fpm
     build:
       context: ..
-      dockerfile: ""
+      dockerfile: docker/Dockerfile
     environment:
-      MYSQL_HOST: database
+      MYSQL_HOST: es_database
       MYSQL_USER: engelsystem
       MYSQL_PASSWORD: engelsystem
       MYSQL_DATABASE: engelsystem
@@ -25,8 +25,8 @@ services:
       - internal
       - database
     depends_on:
-      - database
-  database:
+      - es_database
+  es_database:
     image: mariadb:10.2
     environment:
       MYSQL_DATABASE: engelsystem

@@ -114,8 +114,11 @@ PRODUCTION_REMOTE       # Same as STAGING_REMOTE but for the production environm
 PRODUCTION_REMOTE_PATH  # Same as STAGING_REMOTE_PATH but for the production environment
 ```
 
-### Docker container
-To build the `engelsystem` and the `engelsystem-nginx` container:
+### Docker
+
+#### Production
+
+To build the `es_nginx` and the `es_php_fpm` containers:
 ```bash
 cd docker
 docker-compose build
@@ -123,30 +126,63 @@ docker-compose build
 
 or to build the containers separately
 ```bash
-docker build -f docker/nginx/Dockerfile . -t engelsystem-nginx
-docker build -f docker/Dockerfile . -t engelsystem
+docker build -f docker/nginx/Dockerfile . -t es_nginx
+docker build -f docker/Dockerfile . -t es_php_fpm
 ```
 
 Import database
 ```bash
-docker exec -it engelsystem bin/migrate
+docker exec -it engelsystem_es_php_fpm_1 bin/migrate
 ```
 
-#### Local development
-To use the working directory in the container the docker-compose file has to be changed:
-```yaml
-[...]
-  nginx:
-    volumes:
-      - ../public/assets:/var/www/public/assets
-[...]
-  engelsystem:
-    volumes:
-      - ../:/var/www
-[...]
+#### Development
+
+This repo [ships a docker setup](docker/dev) for a quick development start.
+
+If you use another uid/gid than 1000 on your machine you have to adjust it in [docker/dev/.env](docker/dev/.env).
+
+Run this once
+
+```bash
+cd docker/dev
+docker-compose up
 ```
+
+Run these commands once initially and then as required after changes
+
+```
+# Install composer dependencies
+docker exec -it engelsystem_dev_es_workspace_1 composer i
+
+# Install node packages
+docker exec -it engelsystem_dev_es_workspace_1 yarn install
+
+# Run a front-end build
+docker exec -it engelsystem_dev_es_workspace_1 yarn build
+
+# Update the translation files
+docker exec -it engelsystem_dev_es_workspace_1 find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
+
+# Run the migrations
+docker exec -it engelsystem_dev_es_workspace_1 bin/migrate
+```
+
+While developing you may use the watch mode to rebuild the system on changes
+
+```
+# Run a front-end build
+docker exec -it engelsystem_dev_es_workspace_1 yarn build:watch
+```
+
+##### Hint for using Xdebug with *PhpStorm*
+
+For some reason *PhpStorm* is unable to detect the server name.
+But without a server name it's impossible to set up path mappings.
+Because of that the docker setup sets the server name *engelsystem*.
+To get Xdebug working you have to create a server with the name *engelsystem* manually. 
 
 #### Scripts
+
 ##### bin/deploy.sh
 The `bin/deploy.sh` script can be used to deploy the engelsystem. It uses rsync to deploy the application to a server over ssh.
 
