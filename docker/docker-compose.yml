@@ -4,7 +4,7 @@ services:
     image: engelsystem-nginx
     build:
       context: ..
-      dockerfile: contrib/nginx/Dockerfile
+      dockerfile: ""
     ports:
       - 5000:80
     networks:
@@ -15,7 +15,7 @@ services:
     image: engelsystem
     build:
       context: ..
-      dockerfile: contrib/Dockerfile
+      dockerfile: ""
     environment:
       MYSQL_HOST: database
       MYSQL_USER: engelsystem

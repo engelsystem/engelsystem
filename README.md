@@ -117,14 +117,14 @@ PRODUCTION_REMOTE_PATH  # Same as STAGING_REMOTE_PATH but for the production env
 ### Docker container
 To build the `engelsystem` and the `engelsystem-nginx` container:
 ```bash
-cd contrib
+cd docker
 docker-compose build
 ```
 
 or to build the containers separately
 ```bash
-docker build -f contrib/nginx/Dockerfile . -t engelsystem-nginx
-docker build -f contrib/Dockerfile . -t engelsystem
+docker build -f docker/nginx/Dockerfile . -t engelsystem-nginx
+docker build -f docker/Dockerfile . -t engelsystem
 ```
 
 Import database
