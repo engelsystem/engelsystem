@@ -196,27 +196,15 @@ table a > .icon-icon_angel {
     z-index: 0;
     overflow: hidden;
     position: relative;
+    margin: 0 5px 5px 0;
 
     &:hover {
       overflow: visible;
       z-index: 100;
-      border: none;
-
-      .shift {
-        z-index: 100;
-      }
     }
-  }
 
-  .shift {
-    margin: 0 5px 5px 0;
-    position: absolute;
-    width: 100%;
-
-    &:hover {
-      margin: 0 5px 5px 0;
-      position: absolute;
-      width: 100%;
+    .shift {
+      min-height: 100%;
     }
   }
 }

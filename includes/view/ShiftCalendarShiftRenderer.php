@@ -38,11 +38,11 @@ class ShiftCalendarShiftRenderer
 
         return [
             $blocks,
-            div( 'panel-' . $class. ' shift-card" style="height: '
+            div('shift-card" style="height: '
                 . ($blocks * ShiftCalendarRenderer::BLOCK_HEIGHT - ShiftCalendarRenderer::MARGIN)
                 . 'px;',
                 div(
-                    'shift panel panel-' . $class. '" style="position: absolute; width:100%;',
+                    'shift panel panel-' . $class,
                     [
                         $this->renderShiftHead($shift, $class),
                         div('panel-body', [
@@ -52,11 +52,10 @@ class ShiftCalendarShiftRenderer
                                 'Name' => $shift['room_name']
                             ])
                         ]),
-                        $shifts_row,
-                        div('shift-spacer')
+                        $shifts_row
                     ]
                 )
-            )        
+            )
         ];
     }
 
