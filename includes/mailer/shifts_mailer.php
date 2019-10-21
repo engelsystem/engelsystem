@@ -94,7 +94,12 @@ function mail_shift_delete($shift)
     foreach ($users as $user) {
         $user = (new User())->forceFill($user);
         if ($user->settings->email_shiftinfo) {
-            engelsystem_email_to_user($user, __('Your Shift was deleted'), $message, true);
+            $userMessage = $message;
+            if ($shift['start'] < time() && !$user['freeloaded']) {
+                $userMessage .= "\n" . __('Since the deleted shift was already done, we added a worklog entry instead, to keep your work hours correct.') . "\n";
+            }
+
+            engelsystem_email_to_user($user, __('Your Shift was deleted'), $userMessage, true);
         }
     }
 }

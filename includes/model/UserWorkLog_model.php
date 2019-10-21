@@ -122,6 +122,56 @@ function UserWorkLog_create($userWorkLog)
 }
 
 /**
+ * @param array|int $shift
+ */
+function UserWorkLog_from_shift($shift)
+{
+    $shift = is_array($shift) ? $shift : Shift($shift);
+    $nightShifts = config('night_shifts');
+
+    if ($shift['start'] > time()) {
+        return;
+    }
+
+    $room = Room($shift['RID']);
+    foreach ($shift['ShiftEntry'] as $entry) {
+        if ($entry['freeloaded']) {
+            continue;
+        }
+
+        $type = AngelType($entry['TID']);
+
+        $nightShiftMultiplier = 1;
+        $shiftStart = Carbon::createFromTimestamp($shift['start']);
+        $shiftEnd = Carbon::createFromTimestamp($shift['end']);
+        if (
+            $nightShifts['enabled']
+            && (
+                $shiftStart->hour >= $nightShifts['start'] && $shiftStart->hour < $nightShifts['end']
+                || $shiftEnd->hour >= $nightShifts['start'] && $shiftEnd->hour < $nightShifts['end']
+            )
+        ) {
+            $nightShiftMultiplier = $nightShifts['multiplier'];
+        }
+
+        UserWorkLog_create([
+            'user_id'        => $entry['UID'],
+            'work_timestamp' => $shift['start'],
+            'work_hours'     => (($shift['end'] - $shift['start']) / 60 / 60) * $nightShiftMultiplier,
+            'comment'        => sprintf(
+                '%s (%s as %s) in %s, %s-%s',
+                $shift['name'],
+                $shift['title'],
+                $type['name'],
+                $room['Name'],
+                Carbon::createFromTimestamp($shift['start'])->format(__('m/d/Y h:i a')),
+                Carbon::createFromTimestamp($shift['end'])->format(__('m/d/Y h:i a'))
+            ),
+        ]);
+    }
+}
+
+/**
  * New user work log entry
  *
  * @param int $userId

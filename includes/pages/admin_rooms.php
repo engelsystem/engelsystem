@@ -179,9 +179,16 @@ function admin_rooms()
             ]);
         } elseif ($request->input('show') == 'delete') {
             if ($request->hasPostData('ack')) {
+                $shifts = Shifts_by_room($room_id);
+                foreach ($shifts as $shift) {
+                    $shift = Shift($shift['SID']);
+
+                    UserWorkLog_from_shift($shift);
+                    mail_shift_delete($shift);
+                }
+
                 Room_delete($room_id);
 
-                engelsystem_log('Room deleted: ' . $name);
                 success(sprintf(__('Room %s deleted.'), $name));
                 redirect(page_link_to('admin_rooms'));
             }

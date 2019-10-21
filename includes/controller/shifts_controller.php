@@ -221,6 +221,7 @@ function shift_delete_controller()
 
     // Schicht löschen bestätigt
     if ($request->hasPostData('delete')) {
+        UserWorkLog_from_shift($shift_id);
         Shift_delete($shift_id);
 
         engelsystem_log(

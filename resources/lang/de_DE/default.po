@@ -674,6 +674,9 @@ msgstr "Eine deiner Schichten wurde gelöscht:"
 msgid "Your Shift was deleted"
 msgstr "Deine Schicht wurde gelöscht"
 
+msgid "Since the deleted shift was already done, we added a worklog entry instead, to keep your work hours correct."
+msgstr "Da die gelöschte Schicht bereits vergangen ist, haben wir einen entsprechenden Arbeitseinsatz hinzugefügt."
+
 #: includes/mailer/shifts_mailer.php:114
 msgid "You have been assigned to a Shift:"
 msgstr "Du wurdest in eine Schicht eingetragen:"

@@ -80,12 +80,15 @@ function Shifts_from_frab()
 }
 
 /**
- * @param array $room
+ * @param array|int $room
  * @return array[]
  */
 function Shifts_by_room($room)
 {
-    return DB::select('SELECT * FROM `Shifts` WHERE `RID`=? ORDER BY `start`', [$room['RID']]);
+    return DB::select(
+        'SELECT * FROM `Shifts` WHERE `RID`=? ORDER BY `start`',
+        [is_array($room) ? $room['RID'] : $room]
+    );
 }
 
 /**
@@ -508,8 +511,8 @@ function Shift_delete_by_psid($shift_psid)
  */
 function Shift_delete($shift_id)
 {
-    DB::delete('DELETE FROM `Shifts` WHERE `SID`=?', [$shift_id]);
     mail_shift_delete(Shift($shift_id));
+    DB::delete('DELETE FROM `Shifts` WHERE `SID`=?', [$shift_id]);
 }
 
 /**
