@@ -70,17 +70,20 @@ class TranslationServiceProvider extends ServiceProvider
     public function getTranslator(string $locale): GettextTranslator
     {
         if (!isset($this->translators[$locale])) {
-            $file = $this->getFile($locale);
+            $names = ['default', 'additional'];
 
             /** @var GettextTranslator $translator */
             $translator = $this->app->make(GettextTranslator::class);
 
             /** @var Translations $translations */
             $translations = $this->app->make(Translations::class);
-            if (Str::endsWith($file, '.mo')) {
-                $translations->addFromMoFile($file);
-            } else {
-                $translations->addFromPoFile($file);
+            foreach ($names as $name) {
+                $file = $this->getFile($locale, $name);
+                if (Str::endsWith($file, '.mo')) {
+                    $translations->addFromMoFile($file);
+                } else {
+                    $translations->addFromPoFile($file);
+                }
             }
 
             $translator->loadTranslations($translations);
@@ -93,11 +96,12 @@ class TranslationServiceProvider extends ServiceProvider
 
     /**
      * @param string $locale
+     * @param string $name
      * @return string
      */
-    protected function getFile(string $locale): string
+    protected function getFile(string $locale, string $name = 'default'): string
     {
-        $filepath = $file = $this->app->get('path.lang') . '/' . $locale . '/default';
+        $filepath = $file = $this->app->get('path.lang') . '/' . $locale . '/' . $name;
         $file = $filepath . '.mo';
 
         if (!file_exists($file)) {

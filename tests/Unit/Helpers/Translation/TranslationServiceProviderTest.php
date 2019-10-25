@@ -7,6 +7,7 @@ use Engelsystem\Helpers\Translation\TranslationServiceProvider;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class TranslationServiceProviderTest extends ServiceProviderTest
@@ -82,11 +83,12 @@ class TranslationServiceProviderTest extends ServiceProviderTest
         $app = $this->getApp(['get']);
         $serviceProvider = new TranslationServiceProvider($app);
 
-        $this->setExpects($app, 'get', ['path.lang'], __DIR__ . '/Assets');
+        $this->setExpects($app, 'get', ['path.lang'], __DIR__ . '/Assets', new InvokedCount(2));
 
         // Get translator
         $translator = $serviceProvider->getTranslator('fo_OO');
         $this->assertEquals('Foo Bar!', $translator->gettext('foo.bar'));
+        $this->assertEquals('Foo Bar required!', $translator->gettext('validation.foo.bar'));
 
         // Retry from cache
         $serviceProvider->getTranslator('fo_OO');
@@ -99,12 +101,13 @@ class TranslationServiceProviderTest extends ServiceProviderTest
     public function testGetTranslatorFromPo(): void
     {
         $app = $this->getApp(['get']);
-        $this->setExpects($app, 'get', ['path.lang'], __DIR__ . '/Assets');
+        $this->setExpects($app, 'get', ['path.lang'], __DIR__ . '/Assets', new InvokedCount(2));
 
         $serviceProvider = new TranslationServiceProvider($app);
 
         // Get translator using a .po file
         $translator = $serviceProvider->getTranslator('ba_RR');
         $this->assertEquals('B Arr!', $translator->gettext('foo.bar'));
+        $this->assertEquals('B Arr required!', $translator->gettext('validation.foo.bar'));
     }
 }

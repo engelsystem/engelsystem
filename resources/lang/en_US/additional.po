@@ -1,0 +1,34 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Engelsystem 2.0\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: \n"
+"Language: en_US\n"
+
+msgid "auth.not-found"
+msgstr "No user was found or password is wrong. Please try again. If you are still having problems, ask Heaven."
+
+msgid "validation.password.required"
+msgstr "The password is required."
+
+msgid "validation.login.required"
+msgstr "The login name is required."
+
+msgid "validation.email.required"
+msgstr "The email address is required."
+
+msgid "validation.email.email"
+msgstr "This email address is not valid."
+
+msgid "validation.password.min"
+msgstr "Your password is too short."
+
+msgid "validation.password.confirmed"
+msgstr "Your passwords are not equal."
+
+msgid "validation.password_confirmation.required"
+msgstr "You have to confirm your password."

@@ -1536,10 +1536,10 @@ msgstr "Pflichtfeld!"
 #~ msgstr "Gib bitte ein Passwort ein."
 
 #: includes/pages/guest_login.php:418
-msgid "auth.not-found"
-msgstr ""
-"Es wurde kein User gefunden oder das Passwort ist falsch. Probiere es bitte noch einmal. Wenn das Problem "
-"weiterhin besteht, melde dich im Himmel."
+#~ msgid "auth.not-found"
+#~ msgstr ""
+#~ "Es wurde kein User gefunden oder das Passwort ist falsch. Probiere es bitte noch einmal. Wenn das Problem "
+#~ "weiterhin besteht, melde dich im Himmel."
 
 #~ msgid "auth.no-nickname"
 #~ msgstr "Gib bitte einen Nick an."
@@ -2767,26 +2767,5 @@ msgstr ""
 "Diese Seite existiert nicht oder Du hast keinen Zugriff. Melde Dich an um "
 "Zugriff zu erhalten!"
 
-msgid "validation.password.required"
-msgstr "Bitte gib ein Passwort an."
-
-msgid "validation.login.required"
-msgstr "Bitte gib einen Loginnamen an."
-
 msgid "form.submit"
 msgstr "Absenden"
-
-msgid "validation.email.required"
-msgstr "Bitte gib eine E-Mail-Adresse an."
-
-msgid "validation.email.email"
-msgstr "Die E-Mail-Adresse ist nicht gültig."
-
-msgid "validation.password.min"
-msgstr "Dein angegebenes Passwort ist zu kurz."
-
-msgid "validation.password.confirmed"
-msgstr "Deine Passwörter stimmen nicht überein."
-
-msgid "validation.password_confirmation.required"
-msgstr "Du musst dein Passwort bestätigen."
