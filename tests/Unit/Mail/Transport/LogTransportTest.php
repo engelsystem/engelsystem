@@ -25,11 +25,8 @@ class LogTransportTest extends TestCase
             ->method('getSubject')
             ->willReturn('Some subject');
         $message->expects($this->once())
-            ->method('getHeaders')
-            ->willReturn('Head: er');
-        $message->expects($this->once())
             ->method('toString')
-            ->willReturn('Message body');
+            ->willReturn("Head: er\n\nMessage body");
 
         $logger->expects($this->once())
             ->method('debug')

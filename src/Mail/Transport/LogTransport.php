@@ -31,11 +31,11 @@ class LogTransport extends Transport
         &$failedRecipients = null
     ): int {
         $this->logger->debug(
-            'Mail: Send mail "{title}" to "{recipients}":' . PHP_EOL . '{content}',
+            'Mail: Send mail "{title}" to "{recipients}":' . PHP_EOL . PHP_EOL . '{content}',
             [
                 'title'      => $message->getSubject(),
                 'recipients' => $this->getTo($message),
-                'content'    => (string)$message->getHeaders() . PHP_EOL . PHP_EOL . $message->toString(),
+                'content'    => $message->toString(),
             ]
         );
 
