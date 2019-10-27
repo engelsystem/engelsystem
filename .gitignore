@@ -18,6 +18,10 @@ _vimrc_local.vim
 /.idea/
 /.phpstorm.meta.php
 
+# Docker .env files
+/docker/.env
+/docker/dev/.env
+
 # Project files
 /config/config.php
 /test/coverage
