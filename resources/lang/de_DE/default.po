@@ -1535,12 +1535,6 @@ msgstr "Pflichtfeld!"
 #~ msgid "auth.no-password"
 #~ msgstr "Gib bitte ein Passwort ein."
 
-#: includes/pages/guest_login.php:418
-#~ msgid "auth.not-found"
-#~ msgstr ""
-#~ "Es wurde kein User gefunden oder das Passwort ist falsch. Probiere es bitte noch einmal. Wenn das Problem "
-#~ "weiterhin besteht, melde dich im Himmel."
-
 #~ msgid "auth.no-nickname"
 #~ msgstr "Gib bitte einen Nick an."
 
