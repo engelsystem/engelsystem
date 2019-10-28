@@ -74,7 +74,7 @@ The following instructions explain how to get, build and run the latest engelsys
  * If necessary, create a ```config/config.php``` to override values from ```config/config.default.php```.
    * To remove values from the `footer_items`, `available_themes`, `locales`, `tshirt_sizes` or `headers` lists the config file has to be renamed.
  * To import the database the ```bin/migrate``` script has to be called. If you are not allowed to execute scripts, then execute the ```install-<version>.sql``` script. Download at [Releases](https://github.com/engelsystem/engelsystem/releases) page.
- * In the browser, login with credentials ```admin```:```asdfasdf``` and change the password.
+ * In the browser, login with credentials ```admin``` : ```asdfasdf``` and change the password.
 
 Engelsystem can now be used.
 
