@@ -22,29 +22,21 @@ msgstr ""
 #~ msgid "auth.no-password"
 #~ msgstr "Please enter a password."
 
-msgid "auth.not-found"
-msgstr "No user was found or password is wrong. Please try again. If you are still having problems, ask Heaven."
-
-msgid "validation.password.required"
-msgstr "The password is required."
-
-msgid "validation.login.required"
-msgstr "The login name is required."
-
 msgid "form.submit"
 msgstr "Submit"
 
-msgid "validation.email.required"
-msgstr "The email address is required."
+msgid "credits.credit"
+msgstr ""
+"The original engelsystem was written by "
+"[cookie](https://github.com/cookieBerlin/engelsystem)"
+". It was then completely rewritten and enhanced by "
+"[msquare](https://notrademark.de)"
+" (maintainer) and "
+"[MyIgel](https://myigel.name)"
+"."
 
-msgid "validation.email.email"
-msgstr "This email address is not valid."
-
-msgid "validation.password.min"
-msgstr "Your password is too short."
-
-msgid "validation.password.confirmed"
-msgstr "Your passwords are not equal."
-
-msgid "validation.password_confirmation.required"
-msgstr "You have to confirm your password."
+msgid "credits.contributors"
+msgstr ""
+"Please have a look at the "
+"[contributors list on GitHub](https://github.com/engelsystem/engelsystem/graphs/contributors)"
+" for a complete list."
