@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Controllers;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Controllers\AuthController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -45,7 +46,7 @@ class AuthControllerTest extends TestCase
             ->with('pages/login')
             ->willReturn($response);
 
-        $controller = new AuthController($response, $session, $url, $auth);
+        $controller = new AuthController($response, $session, $url, $auth, new Config([]));
         $controller->login();
     }
 
@@ -97,7 +98,7 @@ class AuthControllerTest extends TestCase
             ->willReturn($response);
 
         // No credentials
-        $controller = new AuthController($response, $session, $url, $auth);
+        $controller = new AuthController($response, $session, $url, $auth, new Config(['home_site' => 'news']));
         $controller->setValidator($validator);
         try {
             $controller->postLogin($request);
@@ -144,7 +145,7 @@ class AuthControllerTest extends TestCase
             ->with('/')
             ->willReturn('https://foo.bar/');
 
-        $controller = new AuthController($response, $session, $url, $auth);
+        $controller = new AuthController($response, $session, $url, $auth, new Config([]));
         $return = $controller->logout();
 
         $this->assertEquals(['https://foo.bar/'], $return->getHeader('location'));
