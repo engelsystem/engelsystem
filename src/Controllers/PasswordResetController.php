@@ -80,13 +80,13 @@ class PasswordResetController extends BaseController
             $reset->save();
 
             $this->log->info(
-                sprintf('Password recovery for %s (%u)', $user->name, $user->id),
+                sprintf('Password reset for %s (%u)', $user->name, $user->id),
                 ['user' => $user->toJson()]
             );
 
             $this->mail->sendViewTranslated(
                 $user,
-                'Password recovery',
+                'Password reset',
                 'emails/password-reset',
                 ['username' => $user->name, 'reset' => $reset]
             );

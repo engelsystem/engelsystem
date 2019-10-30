@@ -608,14 +608,9 @@ msgstr "Die E-Mail Adresse ist nicht in Ordnung."
 msgid "Please enter your e-mail."
 msgstr "Bitte gib Deine E-Mail-Adresse ein."
 
-#: includes/controller/users_controller.php:388
-#: includes/controller/users_controller.php:424
-msgid "Password recovery"
-msgstr "Passwort wiederherstellen"
-
 #: includes/controller/users_controller.php:390
 #, php-format
-msgid "Please visit %s to recover your password."
+msgid "Please visit %s to reset your password."
 msgstr "Bitte besuche %s, um Dein Passwort zurückzusetzen"
 
 #: includes/controller/users_controller.php:394
@@ -2779,3 +2774,12 @@ msgstr ""
 "Eine vollständige Liste der Mitwirkenden findest Du "
 "[auf GitHub](https://github.com/engelsystem/engelsystem/graphs/contributors)"
 "."
+
+msgid "registration.disabled"
+msgstr "Die Registrierung ist aktuell abgeschaltet."
+
+msgid "registration.success"
+msgstr "Deine Registrierung war erfolgreich."
+
+msgid "Password reset"
+msgstr "Passwort zurücksetzen"
