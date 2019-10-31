@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\News\News;
 use Engelsystem\Models\User\User;
 
 /**
@@ -42,20 +43,17 @@ function user_meetings()
         $page = 0;
     }
 
-    $news = DB::select(sprintf('
-        SELECT *
-        FROM `News`
-        WHERE `Treffen`=1
-        ORDER BY `Datum`DESC
-        LIMIT %u, %u',
-        $page * $display_news,
-        $display_news
-    ));
+    $news = News::where('is_meeting', true)
+        ->orderBy('created_at', 'DESC')
+        ->limit($display_news)
+        ->offset($page * $display_news)
+        ->get();
+
     foreach ($news as $entry) {
         $html .= display_news($entry);
     }
 
-    $dis_rows = ceil(count(DB::select('SELECT `ID` FROM `News`')) / $display_news);
+    $dis_rows = ceil(News::where('is_meeting', true)->count() / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
         if ($request->has('page') && $i == $request->input('page', 0)) {
@@ -75,28 +73,28 @@ function user_meetings()
 /**
  * Renders the text content of a news entry
  *
- * @param array $news
+ * @param News $news
  * @return string HTML
  */
-function news_text($news)
+function news_text(News $news): string
 {
-    $text = ReplaceSmilies($news['Text']);
+    $text = ReplaceSmilies($news->text);
     $text = preg_replace("/\r\n\r\n/m", '<br><br>', $text);
     return $text;
 }
 
 /**
- * @param array $news
+ * @param News $news
  * @return string
  */
-function display_news($news)
+function display_news(News $news): string
 {
     global $page;
 
     $html = '';
-    $html .= '<div class="panel' . ($news['Treffen'] == 1 ? ' panel-info' : ' panel-default') . '">';
+    $html .= '<div class="panel' . ($news->is_meeting ? ' panel-info' : ' panel-default') . '">';
     $html .= '<div class="panel-heading">';
-    $html .= '<h3 class="panel-title">' . ($news['Treffen'] == 1 ? '[Meeting] ' : '') . ReplaceSmilies($news['Betreff']) . '</h3>';
+    $html .= '<h3 class="panel-title">' . ($news->is_meeting ? '[Meeting] ' : '') . ReplaceSmilies($news->title) . '</h3>';
     $html .= '</div>';
     $html .= '<div class="panel-body">' . news_text($news) . '</div>';
 
@@ -104,21 +102,21 @@ function display_news($news)
     if (auth()->can('admin_news')) {
         $html .= '<div class="pull-right">'
             . button_glyph(
-                page_link_to('admin_news', ['action' => 'edit', 'id' => $news['ID']]),
+                page_link_to('admin_news', ['action' => 'edit', 'id' => $news->id]),
                 'edit',
                 'btn-xs'
             )
             . '</div>';
     }
-    $html .= '<span class="glyphicon glyphicon-time"></span> ' . date('Y-m-d H:i', $news['Datum']) . '&emsp;';
+    $html .= '<span class="glyphicon glyphicon-time"></span> ' . $news->created_at->format('Y-m-d H:i') . '&emsp;';
 
-    $html .= User_Nick_render(User::find($news['UID']));
+    $html .= User_Nick_render(User::find($news->user_id));
     if ($page != 'news_comments') {
-        $html .= '&emsp;<a href="' . page_link_to('news_comments', ['nid' => $news['ID']]) . '">'
+        $html .= '&emsp;<a href="' . page_link_to('news_comments', ['nid' => $news->id]) . '">'
             . '<span class="glyphicon glyphicon-comment"></span> '
             . __('Comments') . ' &raquo;</a> '
             . '<span class="badge">'
-            . count(DB::select('SELECT `ID` FROM `NewsComments` WHERE `Refid`=?', [$news['ID']]))
+            . count(DB::select('SELECT `ID` FROM `NewsComments` WHERE `Refid`=?', [$news->id]))
             . '</span>';
     }
     $html .= '</div>';
@@ -135,13 +133,13 @@ function user_news_comments()
     $request = request();
 
     $html = '<div class="col-md-12"><h1>' . user_news_comments_title() . '</h1>';
+    $nid = $request->input('nid');
     if (
         $request->has('nid')
-        && preg_match('/^\d{1,}$/', $request->input('nid'))
-        && count(DB::select('SELECT `ID` FROM `News` WHERE `ID`=? LIMIT 1', [$request->input('nid')])) > 0
+        && preg_match('/^\d{1,}$/', $nid)
+        && News::where('id', $request->input('nid'))->count() > 0
     ) {
-        $nid = $request->input('nid');
-        $news = DB::selectOne('SELECT * FROM `News` WHERE `ID`=? LIMIT 1', [$nid]);
+        $news = News::find('id');
         if ($request->hasPostData('submit') && $request->has('text')) {
             $text = $request->input('text');
             DB::insert('
@@ -212,18 +210,12 @@ function user_news()
             $text = strip_tags($text);
         }
 
-        DB::insert('
-            INSERT INTO `News` (`Datum`, `Betreff`, `Text`, `UID`, `Treffen`)
-            VALUES (?, ?, ?, ?, ?)
-            ',
-            [
-                time(),
-                strip_tags($request->postData('betreff')),
-                $text,
-                $user->id,
-                $isMeeting,
-            ]
-        );
+        News::create([
+            'title'      => strip_tags($request->postData('betreff')),
+            'text'       => $text,
+            'user_id'    => $user->id,
+            'is_meeting' => !!$isMeeting,
+        ]);
 
         engelsystem_log('Created news: ' . $request->postData('betreff') . ', treffen: ' . $isMeeting);
         success(__('Entry saved.'));
@@ -236,20 +228,17 @@ function user_news()
         $page = 0;
     }
 
-    $news = DB::select(sprintf('
-            SELECT *
-            FROM `News`
-            ORDER BY `Datum`
-            DESC LIMIT %u, %u
-        ',
-        $page * $display_news,
-        $display_news
-    ));
+    $news = News::query()
+        ->orderBy('created_at', 'DESC')
+        ->limit($display_news)
+        ->offset($page * $display_news)
+        ->get();
+
     foreach ($news as $entry) {
         $html .= display_news($entry);
     }
 
-    $dis_rows = ceil(count(DB::select('SELECT `ID` FROM `News`')) / $display_news);
+    $dis_rows = ceil(News::query()->count() / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
         if ($request->has('page') && $i == $request->input('page', 0)) {

@@ -4,6 +4,8 @@ namespace Engelsystem\Models\User;
 
 use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
+use Engelsystem\Models\News\News;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
@@ -94,5 +96,13 @@ class User extends BaseModel
         return $this
             ->hasOne(State::class)
             ->withDefault();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function news(): HasMany
+    {
+        return $this->hasMany(News::class);
     }
 }
