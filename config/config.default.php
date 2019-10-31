@@ -263,4 +263,11 @@ return [
             . 'you want to to contribute, have found any [bugs](https://github.com/engelsystem/engelsystem/issues) '
             . 'or need help.'
     ],
+
+    // var dump server
+    'var_dump_server' => [
+        'host' => '127.0.0.1',
+        'port' => '9912',
+        'enable' => false,
+    ],
 ];
