@@ -1336,6 +1336,14 @@ msgstr "Beantwortete Fragen"
 msgid "Answered by"
 msgstr "Antwort von"
 
+#: includes/pages/admin_questions.php:102 includes/view/Questions_view.php:40
+msgid "Answered at"
+msgstr "Beantwortet am"
+
+#: includes/pages/admin_questions.php:91 includes/view/Questions_view.php:37
+msgid "Asked at"
+msgstr "Gefragt am"
+
 #: includes/pages/admin_rooms.php:7 includes/pages/user_shifts.php:230
 #: includes/sys_menu.php:118 includes/sys_menu.php:172
 msgid "Rooms"

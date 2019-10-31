@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Models\Question;
 
 /**
@@ -48,13 +49,14 @@ function admin_questions()
             $user_source = $question->user;
 
             $unanswered_questions_table[] = [
-                'from'     => User_Nick_render($user_source) . User_Pronoun_render($user_source),
-                'question' => nl2br(htmlspecialchars($question->text)),
-                'answer'   => form([
+                'from'       => User_Nick_render($user_source) . User_Pronoun_render($user_source),
+                'question'   => nl2br(htmlspecialchars($question->text)),
+                'created_at' => $question->created_at,
+                'answer'     => form([
                     form_textarea('answer', '', ''),
                     form_submit('submit', __('Send'))
                 ], page_link_to('admin_questions', ['action' => 'answer', 'id' => $question->id])),
-                'actions'  => form([
+                'actions'    => form([
                     form_submit('submit', __('delete'), 'btn-xs'),
                 ], page_link_to('admin_questions', ['action' => 'delete', 'id' => $question->id])),
             ];
@@ -70,8 +72,10 @@ function admin_questions()
             $answered_questions_table[] = [
                 'from'        => User_Nick_render($user_source),
                 'question'    => nl2br(htmlspecialchars($question->text)),
+                'created_at'  => $question->created_at,
                 'answered_by' => User_Nick_render($answer_user_source),
                 'answer'      => nl2br(htmlspecialchars($question->answer)),
+                'answered_at' => $question->answered_at,
                 'actions'     => form([
                     form_submit('submit', __('delete'), 'btn-xs')
                 ], page_link_to('admin_questions', ['action' => 'delete', 'id' => $question->id]))
@@ -81,17 +85,20 @@ function admin_questions()
         return page_with_title(admin_questions_title(), [
             '<h2>' . __('Unanswered questions') . '</h2>',
             table([
-                'from'     => __('From'),
-                'question' => __('Question'),
-                'answer'   => __('Answer'),
-                'actions'  => ''
+                'from'       => __('From'),
+                'question'   => __('Question'),
+                'created_at' => __('Asked at'),
+                'answer'     => __('Answer'),
+                'actions'    => ''
             ], $unanswered_questions_table),
             '<h2>' . __('Answered questions') . '</h2>',
             table([
                 'from'        => __('From'),
                 'question'    => __('Question'),
+                'created_at'  => __('Asked at'),
                 'answered_by' => __('Answered by'),
                 'answer'      => __('Answer'),
+                'answered_at' => __('Answered at'),
                 'actions'     => ''
             ], $answered_questions_table)
         ]);
@@ -115,10 +122,12 @@ function admin_questions()
                     if (!empty($answer)) {
                         $question->answerer_id = $user->id;
                         $question->answer = $answer;
+                        $question->answered_at = Carbon::now();
                         $question->save();
                         engelsystem_log(
                             'Question '
-                            . $question['Question']
+                            . $question->text
+                            . ' (' . $question->id . ')'
                             . ' answered: '
                             . $answer
                         );
@@ -144,7 +153,7 @@ function admin_questions()
                 $question = Question::find($question_id);
                 if (!empty($question)) {
                     $question->delete();
-                    engelsystem_log('Question deleted: ' . $question['Question']);
+                    engelsystem_log('Question deleted: ' . $question->text);
                     throw_redirect(page_link_to('admin_questions'));
                 } else {
                     return error('No question found.', true);
