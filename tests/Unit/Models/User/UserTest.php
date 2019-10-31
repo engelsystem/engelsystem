@@ -3,6 +3,7 @@
 namespace Engelsystem\Test\Unit\Models;
 
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
+use Engelsystem\Models\News\News;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\HasUserModel;
 use Engelsystem\Models\User\PersonalData;
@@ -24,6 +25,15 @@ class UserTest extends TestCase
         'email'    => 'foo@bar.batz',
         'api_key'  => '',
     ];
+
+    /**
+     * Prepare test
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->initDatabase();
+    }
 
     /**
      * @return array
@@ -93,11 +103,51 @@ class UserTest extends TestCase
     }
 
     /**
-     * Prepare test
+     * @covers User::news()
+     *
+     * @dataProvider hasManyRelationsProvider
+     *
+     * @param string $class Class name of the related models
+     * @param string $name Name of the accessor for the related models
+     * @param array  $data List of the related models
      */
-    protected function setUp(): void
+    public function testHasManyRelations(string $class, string $name, array $data): void
     {
-        parent::setUp();
-        $this->initDatabase();
+        $user = new User($this->data);
+        $user->save();
+
+        $relatedModelIds = [];
+
+        foreach ($data as $d) {
+            $stored = $class::create($d + ['user_id' => $user->id]);
+            $relatedModelIds[] = $stored->id;
+        }
+
+        $this->assertEquals($relatedModelIds, $user->{$name}->modelKeys());
+    }
+
+    /**
+     * @return array
+     */
+    public function hasManyRelationsProvider(): array
+    {
+        return [
+            'news' => [
+                News::class,
+                'news',
+                [
+                    [
+                        'title'      => 'Hey hoo',
+                        'text'       => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+                        'is_meeting' => false,
+                    ],
+                    [
+                        'title'      => 'Huuhuuu',
+                        'text'       => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+                        'is_meeting' => true,
+                    ],
+                ]
+            ]
+        ];
     }
 }

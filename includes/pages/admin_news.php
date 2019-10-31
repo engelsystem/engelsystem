@@ -1,7 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
-use Engelsystem\Models\User\User;
+use Engelsystem\Models\News\News;
 
 /**
  * @return string
@@ -22,17 +21,17 @@ function admin_news()
         return error('Incomplete call, missing News ID.', true);
     }
 
-    $news = DB::selectOne('SELECT * FROM `News` WHERE `ID`=? LIMIT 1', [$news_id]);
+    $news = News::find($news_id);
     if (empty($news)) {
         return error('No News found.', true);
     }
 
     switch ($request->input('action')) {
         case 'edit':
-            $user_source = User::find($news['UID']);
+            $user_source = $news->user;
             if (
                 !auth()->can('admin_news_html')
-                && strip_tags($news['Text']) != $news['Text']
+                && strip_tags($news->text) != $news->text
             ) {
                 $html .= warning(
                     __('This message contains HTML. After saving the post some formatting will be lost!'),
@@ -42,11 +41,11 @@ function admin_news()
 
             $html .= form(
                 [
-                    form_info(__('Date'), date('Y-m-d H:i', $news['Datum'])),
+                    form_info(__('Date'), $news->created_at->format('Y-m-d H:i')),
                     form_info(__('Author'), User_Nick_render($user_source)),
-                    form_text('eBetreff', __('Subject'), $news['Betreff']),
-                    form_textarea('eText', __('Message'), $news['Text']),
-                    form_checkbox('eTreffen', __('Meeting'), $news['Treffen'] == 1, 1),
+                    form_text('eBetreff', __('Subject'), $news->title),
+                    form_textarea('eText', __('Message'), $news->text),
+                    form_checkbox('eTreffen', __('Meeting'), $news->is_meeting === true, 1),
                     form_submit('submit', __('Save'))
                 ],
                 page_link_to('admin_news', ['action' => 'save', 'id' => $news_id])
@@ -65,24 +64,10 @@ function admin_news()
                 $text = strip_tags($text);
             }
 
-            DB::update('
-                UPDATE `News` SET
-                    `Datum`=?,
-                    `Betreff`=?,
-                    `Text`=?,
-                    `UID`=?,
-                    `Treffen`=?
-                WHERE `ID`=?
-                ',
-                [
-                    time(),
-                    strip_tags($request->postData('eBetreff')),
-                    $text,
-                    $user->id,
-                    $request->has('eTreffen') ? 1 : 0,
-                    $news_id
-                ]
-            );
+            $news->title = strip_tags($request->postData('eBetreff'));
+            $news->text = $text;
+            $news->is_meeting = $request->has('eTreffen');
+            $news->save();
 
             engelsystem_log('News updated: ' . $request->postData('eBetreff'));
             success(__('News entry updated.'));
@@ -90,8 +75,8 @@ function admin_news()
             break;
 
         case 'delete':
-            DB::delete('DELETE FROM `News` WHERE `ID`=? LIMIT 1', [$news_id]);
-            engelsystem_log('News deleted: ' . $news['Betreff']);
+            $news->delete();
+            engelsystem_log('News deleted: ' . $news->title);
             success(__('News entry deleted.'));
             redirect(page_link_to('news'));
             break;
