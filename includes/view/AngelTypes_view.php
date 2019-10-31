@@ -575,7 +575,7 @@ function AngelTypes_about_view($angeltypes, $user_logged_in)
         $buttons[] = button(page_link_to('angeltypes'), angeltypes_title(), 'back');
     } else {
         if (auth()->can('register') && config('registration_enabled')) {
-            $buttons[] = button(page_link_to('register'), register_title());
+            $buttons[] = button(page_link_to('register'), __('Register'));
         }
 
         $buttons[] = button(page_link_to('login'), __('Login'));

@@ -168,10 +168,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 $title = settings_title();
                 $content = user_settings();
                 return [$title, $content];
-            case 'register':
-                $title = register_title();
-                $content = guest_register();
-                return [$title, $content];
             case 'admin_questions':
                 $title = admin_questions_title();
                 $content = admin_questions();

@@ -75,7 +75,6 @@ $includeFiles = [
     __DIR__ . '/../includes/pages/admin_rooms.php',
     __DIR__ . '/../includes/pages/admin_shifts.php',
     __DIR__ . '/../includes/pages/admin_user.php',
-    __DIR__ . '/../includes/pages/guest_login.php',
     __DIR__ . '/../includes/pages/user_messages.php',
     __DIR__ . '/../includes/pages/user_myshifts.php',
     __DIR__ . '/../includes/pages/user_news.php',
