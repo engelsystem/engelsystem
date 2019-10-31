@@ -40,3 +40,20 @@ msgstr ""
 "Please have a look at the "
 "[contributors list on GitHub](https://github.com/engelsystem/engelsystem/graphs/contributors)"
 " for a complete list."
+
+msgid "registration.disabled"
+msgstr "Registration is currently disabled."
+
+msgid "registration.success"
+msgstr "Your registration has been successful."
+
+msgid "registration.info.general"
+msgstr "Please fill out this form to create an account in the %s."
+
+msgid "registration.info.angel-types"
+msgstr ""
+"Restricted angel types need to be confirmed later by a supporter. "
+"You can change your selection in the options section."
+
+msgid "auth.password-reset"
+msgstr "Password reset"

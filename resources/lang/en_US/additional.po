@@ -12,11 +12,23 @@ msgstr ""
 msgid "auth.not-found"
 msgstr "No user was found or password is wrong. Please try again. If you are still having problems, ask Heaven."
 
+msgid "registration.exists.login"
+msgstr "A user with that name already exists."
+
+msgid "registration.exists.email"
+msgstr "A user with that e-mail address already exists."
+
 msgid "validation.password.required"
 msgstr "The password is required."
 
 msgid "validation.login.required"
 msgstr "The login name is required."
+
+msgid "validation.login.between"
+msgstr "The login name must be between one and 23 characters long."
+
+msgid "validation.login.regex"
+msgstr "The login name must not contain any characters other than letters, numbers, punctuation (-_.) and spaces."
 
 msgid "validation.email.required"
 msgstr "The email address is required."
@@ -32,3 +44,36 @@ msgstr "Your passwords are not equal."
 
 msgid "validation.password_confirmation.required"
 msgstr "You have to confirm your password."
+
+msgid "validation.mobile.phone"
+msgstr "The phone number you have entered is invalid."
+
+msgid "validation.tshirt_size.required"
+msgstr "Please select your shirt size."
+
+msgid "validation.tshirt_size.in"
+msgstr "The selected shirt size is not available."
+
+msgid "validation.planned_arrival_date.required"
+msgstr "Please tell us your planned date of arrival."
+
+msgid "validation.planned_arrival_date.date"
+msgstr "Your planned date of arrival has to be in the format YYYY-MM-DD."
+
+msgid "validation.planned_arrival_date.between"
+msgstr "Your planned arrival has to be sometime during the event."
+
+msgid "validation.planned_arrival_date.min"
+msgstr "Please enter a date after buildup start."
+
+msgid "validation.planned_arrival_date.max"
+msgstr "Please enter a date before teardown end."
+
+msgid "validation.dect.length"
+msgstr "For DECT numbers only 40 characters are allowed."
+
+msgid "validation.firstname.alpha"
+msgstr "Your first name must not contain any non-alphabetic characters."
+
+msgid "validation.lastname.alpha"
+msgstr "Your last name must not contain any non-alphabetic characters."

@@ -27,6 +27,7 @@ class LegacyTest extends ExtensionTest
         $this->assertExtensionExists('menuUserSubmenu', 'make_user_submenu', $functions, $isSafeHtml);
         $this->assertExtensionExists('page', [$extension, 'getPage'], $functions);
         $this->assertExtensionExists('msg', 'msg', $functions, $isSafeHtml);
+        $this->assertExtensionExists('angel_types', 'AngelTypes', $functions);
     }
 
     /**

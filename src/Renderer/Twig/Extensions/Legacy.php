@@ -33,6 +33,7 @@ class Legacy extends TwigExtension
             new TwigFunction('menuUserSubmenu', 'make_user_submenu', $isSafeHtml),
             new TwigFunction('page', [$this, 'getPage']),
             new TwigFunction('msg', 'msg', $isSafeHtml),
+            new TwigFunction('angel_types', 'AngelTypes'),
         ];
     }
 

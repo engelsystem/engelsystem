@@ -86,7 +86,7 @@ class PasswordResetController extends BaseController
 
             $this->mail->sendViewTranslated(
                 $user,
-                'Password reset',
+                'auth.password-reset',
                 'emails/password-reset',
                 ['username' => $user->name, 'reset' => $reset]
             );

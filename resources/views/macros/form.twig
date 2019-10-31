@@ -16,3 +16,14 @@
 {% macro submit(label) %}
     <button type="submit" class="btn btn-default">{{ label|default(__('form.submit')) }}</button>
 {% endmacro %}
+
+{% macro checkbox(name, label, selected) %}
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" id="{{ name }}" name="{{ name }}" value="checked"
+                    {%- if selected %} checked="checked"{% endif -%}
+            >
+            {{ label }}
+        </label>
+    </div>
+{% endmacro %}

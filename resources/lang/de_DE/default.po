@@ -1461,14 +1461,6 @@ msgstr "Die DECT Nummer darf nur 40 Zeichen lang sein."
 msgid "Angel registration successful!"
 msgstr "Engel-Registrierung erfolgreich!"
 
-#: includes/pages/guest_login.php:281
-msgid ""
-"By completing this form you're registering as a Chaos-Angel. This script "
-"will create you an account in the angel task scheduler."
-msgstr ""
-"Mit diesem Formular registrierst Du Dich als Engel. Du bekommst ein Konto in "
-"der Engel-Aufgabenverwaltung."
-
 #: includes/pages/guest_login.php:297 includes/view/User_view.php:62
 #, php-format
 msgid "The %s is allowed to send me an email (e.g. when my shifts change)"
@@ -1502,14 +1494,6 @@ msgstr "Was möchtest Du machen?"
 #: includes/pages/guest_login.php:336
 msgid "Description of job types"
 msgstr "Beschreibung der Aufgaben"
-
-#: includes/pages/guest_login.php:343
-msgid ""
-"Restricted angel types need will be confirmed later by a supporter. You can "
-"change your selection in the options section."
-msgstr ""
-"Beschränkte Engeltypen müssen später von einem Supporter freigeschaltet "
-"werden. Du kannst Deine Auswahl später in den Einstellungen ändern."
 
 #: includes/pages/guest_login.php:352 includes/view/User_view.php:57
 msgid "Mobile"
@@ -2781,5 +2765,13 @@ msgstr "Die Registrierung ist aktuell abgeschaltet."
 msgid "registration.success"
 msgstr "Deine Registrierung war erfolgreich."
 
-msgid "Password reset"
+msgid "auth.password-reset"
 msgstr "Passwort zurücksetzen"
+
+msgid "registration.info.general"
+msgstr "Bitte trag die geforderten Daten in das folgende Formular ein, um Dich im %s zu registrieren."
+
+msgid "registration.info.angel-types"
+msgstr ""
+"Beschränkte Engeltypen müssen später von einem Supporter freigeschaltet "
+"werden. Du kannst Deine Auswahl in den Einstellungen ändern."

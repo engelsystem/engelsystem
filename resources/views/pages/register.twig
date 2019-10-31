@@ -1,0 +1,130 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('Register') }}{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <h1>{{ __('Register') }}</h1>
+        {{ __('registration.info.general', [config('app_name')]) }}
+
+        {{ msg() }}
+        {% for message in errors|default([]) %}
+            {{ m.alert(__(message), 'danger') }}
+        {% endfor %}
+
+        <form action="" enctype="multipart/form-data" method="post">
+            {{ csrf() }}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            {{ f.input('login', __('Nick') ~ '*', 'text', true) }}
+                            <span class="help-block">
+                                {{ m.glyphicon('info-sign') }}
+                                {{ __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.') }}
+                            </span>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ f.input('email', __('E-Mail') ~ '*', 'email', true) }}
+                            {{ f.checkbox('email_shiftinfo', __('The %s is allowed to send me an email (e.g. when my shifts change)', [config('app_name')]), false) }}
+                            {{ f.checkbox('email_human', __('Humans are allowed to send me an email (e.g. for ticket vouchers)'), false) }}
+                        </div>
+                    </div>
+                    {% if config('enable_planned_arrival') or config('enable_tshirt_size') %}
+                    <div class="row">
+                        {% if config('enable_planned_arrival') %}
+                            <div class="{{ config('enable_tshirt_size') ? 'col-sm-6' : 'col-sm-12' }}">
+                                <div class="form-group">
+                                    <label for="planned_arrival_date-date">
+                                        {{ __('Planned date of arrival') }}*
+                                    </label>
+                                    <div class="input-group date"
+                                         id="planned_arrival_date-date"
+                                         data-min-date="{{ config('buildup_start') ?: 'now'|date('Y-m-d') }}"
+                                         data-max-date="{{ config('teardown_end') ?: '' }}"
+                                    >
+                                        <input type="date" placeholder="YYYY-MM-DD" name="planned_arrival_date" class="form-control">
+                                        <span class="input-group-addon">
+                                            {{ m.glyphicon('th') }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if config('enable_tshirt_size') %}
+                            <div class="{{ config('enable_planned_arrival') ? 'col-sm-6' : 'col-sm-12' }}">
+                                <div class="form-group">
+                                    <label for="tshirt_size">
+                                        {{ __('Shirt size') }}*
+                                    </label>
+                                    <select class="form-control" id="tshirt_size" name="tshirt_size">
+                                        <option value="">{{ __('Please select...') }}</option>
+                                        {% for size, desc in config('tshirt_sizes') %}
+                                            <option value="{{ size }}">{{ desc }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% if not (config('enable_pending_registrations') and is_user()) %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                {{ f.input('password', __('Password') ~ '*', 'password', true) }}
+                            </div>
+                            <div class="col-sm-6">
+                                {{ f.input('password_confirmation', __('Confirm password') ~ '*', 'password', true) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <label>
+                            {{ __('What do you want to do?') }}
+                            (<a href="">{{ __('Description of job types') }}</a>)
+                        </label>
+                    </div>
+                    {% for type in angel_types() %}
+                        {{ f.checkbox('angel_types_' ~ type.id, type.name ~ (type.restricted ? ' (restricted)'), not type.restricted) }}
+                    {% endfor %}
+                    <span class="help-block">
+                        {{ m.glyphicon('info-sign') }}
+                        {{ __('registration.info.angel-types') }}
+                    </span>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        {% if config('enable_dect') %}
+                            <div class="col-sm-6">
+                                {{ f.input('dect', __('DECT'), 'text') }}
+                            </div>
+                        {% endif %}
+                        <div class="{{ config('enable_dect') ? 'col-sm-6' : 'col-sm-12' }}">
+                            {{ f.input('mobile', __('Mobile'), 'text') }}
+                        </div>
+                    </div>
+                    {% if config('enable_user_name') %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                {{ f.input('firstname', __('First name'), 'text') }}
+                            </div>
+                            <div class="col-sm-6">
+                                {{ f.input('lastname', __('Last name'), 'text') }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <h4>
+                        * = {{ __('Entry required!') }}
+                    </h4>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit" name="submit">
+                    {{ __('Register') }}
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

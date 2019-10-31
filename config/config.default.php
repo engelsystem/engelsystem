@@ -119,6 +119,10 @@ return [
     // Enables the T-Shirt configuration on signup and profile
     'enable_tshirt_size'      => true,
 
+    // Enables pending registrations
+    // (authenticated users can register new users without having to set a password for them)
+    'enable_pending_registrations'  => false,
+
     // Number of shifts to freeload until angel is locked for shift signup.
     'max_freeloadable_shifts' => 2,
 

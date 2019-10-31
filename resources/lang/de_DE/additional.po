@@ -14,11 +14,23 @@ msgstr ""
 "Es wurde kein User gefunden oder das Passwort ist falsch. Probiere es bitte noch einmal. Wenn das Problem "
 "weiterhin besteht, melde dich im Himmel."
 
+msgid "registration.exists.login"
+msgstr "Es gibt bereits einen Benutzer mit diesem Namen."
+
+msgid "registration.exists.email"
+msgstr "Es gibt bereits einen Benutzer mit dieser E-Mail-Adresse."
+
 msgid "validation.password.required"
 msgstr "Bitte gib ein Passwort an."
 
 msgid "validation.login.required"
 msgstr "Bitte gib einen Loginnamen an."
+
+msgid "validation.login.between"
+msgstr "Der Loginname muss zwischen einem und 23 Zeichen lang sein."
+
+msgid "validation.login.regex"
+msgstr "Der Loginname darf keine Zeichen außer Buchstaben, Ziffern, Trennzeichen (-_.) und Leerzeichen enthalten."
 
 msgid "validation.email.required"
 msgstr "Bitte gib eine E-Mail-Adresse an."
@@ -34,3 +46,36 @@ msgstr "Deine Passwörter stimmen nicht überein."
 
 msgid "validation.password_confirmation.required"
 msgstr "Du musst dein Passwort bestätigen."
+
+msgid "validation.mobile.phone"
+msgstr "Die eingegebene Handynummer ist ungültig."
+
+msgid "validation.tshirt_size.required"
+msgstr "Bitte wähle deine T-Shirt-Größe aus."
+
+msgid "validation.tshirt_size.in"
+msgstr "Die ausgewählte Größe ist nicht verfügbar."
+
+msgid "validation.planned_arrival_date.required"
+msgstr "Bitte gib an, wann du zum Event kommen wirst."
+
+msgid "validation.planned_arrival_date.date"
+msgstr "Das Datum muss im Format YYYY-MM-DD vorliegen."
+
+msgid "validation.planned_arrival_date.between"
+msgstr "Das Datum muss im Zeitraum des Events liegen."
+
+msgid "validation.planned_arrival_date.min"
+msgstr "Bitte gib ein Datum nach Aufbaubeginn an."
+
+msgid "validation.planned_arrival_date.max"
+msgstr "Bitte gib ein Datum vor Abbauende an."
+
+msgid "validation.dect.length"
+msgstr "DECT-Nummern dürfen maximal 40 Zeichen lang sein."
+
+msgid "validation.firstname.alpha"
+msgstr "Dein Vorname darf keine nicht-alphabetischen Zeichen enthalten."
+
+msgid "validation.lastname.alpha"
+msgstr "Dein Nachname darf keine nicht-alphabetischen Zeichen enthalten."

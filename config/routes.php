@@ -8,6 +8,10 @@ use FastRoute\RouteCollector;
 $route->get('/', 'HomeController@index');
 $route->get('/credits', 'CreditsController@index');
 
+// Registration
+$route->get('/register', 'RegistrationController@register');
+$route->post('/register', 'RegistrationController@postRegister');
+
 // Authentication
 $route->get('/login', 'AuthController@login');
 $route->post('/login', 'AuthController@postLogin');
