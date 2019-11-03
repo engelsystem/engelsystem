@@ -218,9 +218,7 @@ class LegacyMiddleware implements MiddlewareInterface
                 return [$title, $content];
         }
 
-        require_once realpath(__DIR__ . '/../../includes/pages/guest_start.php');
-        $content = guest_start();
-        return [$title, $content];
+        redirect(page_link_to('login'));
     }
 
     /**
