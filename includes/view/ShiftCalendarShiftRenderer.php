@@ -44,7 +44,7 @@ class ShiftCalendarShiftRenderer
                 div(
                     'shift panel panel-' . $class,
                     [
-                        $this->renderShiftHead($shift, $class),
+                        $this->renderShiftHead($shift, $class, $shift_signup_state->getFreeEntries()),
                         div('panel-body', [
                             $info_text,
                             Room_name_render([
@@ -254,7 +254,7 @@ class ShiftCalendarShiftRenderer
      * @param string $class The shift state class
      * @return string
      */
-    private function renderShiftHead($shift, $class)
+    private function renderShiftHead($shift, $class, $needed_angeltypes_count)
     {
         $header_buttons = '';
         if (auth()->can('admin_shifts')) {
@@ -274,6 +274,11 @@ class ShiftCalendarShiftRenderer
         $shift_heading = date('H:i', $shift['start']) . ' &dash; '
             . date('H:i', $shift['end']) . ' &mdash; '
             . $shift['name'];
+
+        if($needed_angeltypes_count > 0) {
+            $shift_heading = '<span class="badge">' . $needed_angeltypes_count . '</span> ' . $shift_heading;
+        }
+
         return div('panel-heading', [
             '<a href="' . shift_link($shift) . '">' . $shift_heading . '</a>',
             $header_buttons
