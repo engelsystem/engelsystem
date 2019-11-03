@@ -133,7 +133,7 @@ function load_types()
 {
     $user = auth()->user();
 
-    if (!count(DB::select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0'))) {
+    if (!count(DB::select('SELECT `id`, `name` FROM `AngelTypes`'))) {
         error(__('The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype.'));
         redirect(page_link_to('/'));
     }
