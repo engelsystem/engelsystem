@@ -220,12 +220,18 @@ function strip_item($item)
 }
 
 /**
- * Überprüft eine E-Mail-Adresse.
+ * Validates an email address with support for IDN domain names.
  *
  * @param string $email
  * @return bool
  */
 function check_email($email)
 {
+    // Convert the domain part from idn to ascii
+    if(substr_count($email, '@') == 1) {
+        list($name, $domain) = explode('@', $email);
+        $domain = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+        $email = $name . '@' . $domain;
+    }
     return (bool)filter_var($email, FILTER_VALIDATE_EMAIL);
 }
