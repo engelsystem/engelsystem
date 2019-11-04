@@ -12,7 +12,7 @@ msgstr ""
 msgid "auth.not-found"
 msgstr ""
 "Es wurde kein User gefunden oder das Passwort ist falsch. Probiere es bitte noch einmal. Wenn das Problem "
-"weiterhin besteht, melde dich im Himmel."
+"weiterhin besteht, melde Dich im Himmel."
 
 msgid "registration.exists.login"
 msgstr "Es gibt bereits einen Benutzer mit diesem Namen."
@@ -45,19 +45,19 @@ msgid "validation.password.confirmed"
 msgstr "Deine Passwörter stimmen nicht überein."
 
 msgid "validation.password_confirmation.required"
-msgstr "Du musst dein Passwort bestätigen."
+msgstr "Du musst Dein Passwort bestätigen."
 
 msgid "validation.mobile.phone"
 msgstr "Die eingegebene Handynummer ist ungültig."
 
 msgid "validation.tshirt_size.required"
-msgstr "Bitte wähle deine T-Shirt-Größe aus."
+msgstr "Bitte wähle Deine T-Shirt-Größe aus."
 
 msgid "validation.tshirt_size.in"
 msgstr "Die ausgewählte Größe ist nicht verfügbar."
 
 msgid "validation.planned_arrival_date.required"
-msgstr "Bitte gib an, wann du zum Event kommen wirst."
+msgstr "Bitte gib an, wann Du zum Event kommen wirst."
 
 msgid "validation.planned_arrival_date.date"
 msgstr "Das Datum muss im Format YYYY-MM-DD vorliegen."

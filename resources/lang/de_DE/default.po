@@ -1420,7 +1420,7 @@ msgid ""
 "nickname."
 msgstr ""
 "Verwende bis zu 23 Buchstaben, Zahlen, verbindende Schriftzeichen (.-_) oder "
-"Leerzeichen für deinen Nick."
+"Leerzeichen für Deinen Nick."
 
 #: includes/pages/guest_login.php:96
 #, php-format
