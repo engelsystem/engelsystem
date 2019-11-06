@@ -2,32 +2,34 @@
 
 namespace Engelsystem\Models\User;
 
+use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
- * @property integer                                                                       $id
- * @property string                                                                        $name
- * @property string                                                                        $email
- * @property string                                                                        $password
- * @property string                                                                        $api_key
- * @property \Carbon\Carbon|null                                                           $last_login_at
- * @property \Carbon\Carbon                                                                $created_at
- * @property \Carbon\Carbon                                                                $updated_at
+ * @property integer                        $id
+ * @property string                         $name
+ * @property string                         $email
+ * @property string                         $password
+ * @property string                         $api_key
+ * @property Carbon|null                    $last_login_at
+ * @property Carbon                         $created_at
+ * @property Carbon                         $updated_at
  *
- * @property-read \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Contact      $contact
- * @property-read \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData $personalData
- * @property-read \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Settings     $settings
- * @property-read \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\State        $state
+ * @property-read QueryBuilder|Contact      $contact
+ * @property-read QueryBuilder|PersonalData $personalData
+ * @property-read QueryBuilder|Settings     $settings
+ * @property-read QueryBuilder|State        $state
  *
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] wherePassword($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] whereApiKey($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] whereLastLoginAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\User[] whereUpdatedAt($value)
+ * @method static QueryBuilder|User whereId($value)
+ * @method static QueryBuilder|User[] whereName($value)
+ * @method static QueryBuilder|User[] whereEmail($value)
+ * @method static QueryBuilder|User[] wherePassword($value)
+ * @method static QueryBuilder|User[] whereApiKey($value)
+ * @method static QueryBuilder|User[] whereLastLoginAt($value)
+ * @method static QueryBuilder|User[] whereCreatedAt($value)
+ * @method static QueryBuilder|User[] whereUpdatedAt($value)
  */
 class User extends BaseModel
 {

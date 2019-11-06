@@ -2,19 +2,21 @@
 
 namespace Engelsystem\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
- * @property int                 $id
- * @property string              $level
- * @property string              $message
- * @property \Carbon\Carbon|null $created_at
+ * @property int         $id
+ * @property string      $level
+ * @property string      $message
+ * @property Carbon|null $created_at
  *
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\LogEntry[] whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\LogEntry[] whereLevel($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\LogEntry[] whereMessage($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\LogEntry[] whereCreatedAt($value)
+ * @method static QueryBuilder|LogEntry[] whereId($value)
+ * @method static QueryBuilder|LogEntry[] whereLevel($value)
+ * @method static QueryBuilder|LogEntry[] whereMessage($value)
+ * @method static QueryBuilder|LogEntry[] whereCreatedAt($value)
  */
 class LogEntry extends BaseModel
 {

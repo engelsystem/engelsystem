@@ -219,6 +219,8 @@ class LegacyMiddleware implements MiddlewareInterface
         }
 
         redirect(page_link_to('login'));
+
+        return [];
     }
 
     /**

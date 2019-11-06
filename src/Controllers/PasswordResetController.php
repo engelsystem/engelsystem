@@ -74,7 +74,7 @@ class PasswordResetController extends BaseController
         /** @var User $user */
         $user = User::whereEmail($data['email'])->first();
         if ($user) {
-            $reset = PasswordReset::findOrNew($user->id);
+            $reset = (new PasswordReset)->findOrNew($user->id);
             $reset->user_id = $user->id;
             $reset->token = md5(random_bytes(64));
             $reset->save();

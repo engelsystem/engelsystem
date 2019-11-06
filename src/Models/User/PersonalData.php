@@ -2,18 +2,21 @@
 
 namespace Engelsystem\Models\User;
 
+use Carbon\Carbon;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+
 /**
- * @property string|null         $first_name
- * @property string|null         $last_name
- * @property string|null         $shirt_size
- * @property \Carbon\Carbon|null $planned_arrival_date
- * @property \Carbon\Carbon|null $planned_departure_date
+ * @property string|null $first_name
+ * @property string|null $last_name
+ * @property string|null $shirt_size
+ * @property Carbon|null $planned_arrival_date
+ * @property Carbon|null $planned_departure_date
  *
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData[] whereFirstName($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData[] whereLastName($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData[] whereShirtSize($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData[] wherePlannedArrivalDate($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\PersonalData[] wherePlannedDepartureDate($value)
+ * @method static QueryBuilder|PersonalData[] whereFirstName($value)
+ * @method static QueryBuilder|PersonalData[] whereLastName($value)
+ * @method static QueryBuilder|PersonalData[] whereShirtSize($value)
+ * @method static QueryBuilder|PersonalData[] wherePlannedArrivalDate($value)
+ * @method static QueryBuilder|PersonalData[] wherePlannedDepartureDate($value)
  */
 class PersonalData extends HasUserModel
 {

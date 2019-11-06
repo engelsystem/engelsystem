@@ -43,6 +43,7 @@ class Stats
                 ->distinct();
 
             $query->where(function ($query) use ($working) {
+                /** @var QueryBuilder $query */
                 if ($working) {
                     $query
                         ->whereNotNull('ShiftEntry.SID')
@@ -271,7 +272,7 @@ class Stats
     {
         $start = microtime(true);
 
-        EventConfig::findOrNew('last_metrics');
+        (new EventConfig())->findOrNew('last_metrics');
 
         return microtime(true) - $start;
     }
@@ -281,7 +282,7 @@ class Stats
      */
     public function databaseWrite()
     {
-        $config = EventConfig::findOrNew('last_metrics');
+        $config = (new EventConfig())->findOrNew('last_metrics');
         $config
             ->setAttribute('name', 'last_metrics')
             ->setAttribute('value', new Carbon());

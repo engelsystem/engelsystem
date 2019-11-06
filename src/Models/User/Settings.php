@@ -2,16 +2,18 @@
 
 namespace Engelsystem\Models\User;
 
+use Illuminate\Database\Query\Builder as QueryBuilder;
+
 /**
  * @property string $language
  * @property int    $theme
  * @property bool   $email_human
  * @property bool   $email_shiftinfo
  *
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Settings[] whereLanguage($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Settings[] whereTheme($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Settings[] whereEmailHuman($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Settings[] whereEmailShiftinfo($value)
+ * @method static QueryBuilder|Settings[] whereLanguage($value)
+ * @method static QueryBuilder|Settings[] whereTheme($value)
+ * @method static QueryBuilder|Settings[] whereEmailHuman($value)
+ * @method static QueryBuilder|Settings[] whereEmailShiftinfo($value)
  */
 class Settings extends HasUserModel
 {

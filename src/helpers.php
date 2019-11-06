@@ -52,6 +52,7 @@ function base_path($path = '')
  */
 function config($key = null, $default = null)
 {
+    /** @var Config $config */
     $config = app('config');
 
     if (empty($key)) {
@@ -119,6 +120,7 @@ function response($content = '', $status = 200, $headers = [])
  */
 function session($key = null, $default = null)
 {
+    /** @var SessionInterface $session */
     $session = app('session');
 
     if (is_null($key)) {
@@ -131,8 +133,8 @@ function session($key = null, $default = null)
 /**
  * Translate the given message
  *
- * @param  string $key
- * @param  array  $replace
+ * @param string $key
+ * @param array  $replace
  * @return string|Translator
  */
 function trans($key = null, $replace = [])
@@ -150,8 +152,8 @@ function trans($key = null, $replace = [])
 /**
  * Translate the given message
  *
- * @param  string $key
- * @param  array  $replace
+ * @param string $key
+ * @param array  $replace
  * @return string
  */
 function __($key, $replace = [])
@@ -165,10 +167,10 @@ function __($key, $replace = [])
 /**
  * Translate the given message
  *
- * @param  string $key
- * @param  string $keyPlural
- * @param  int    $number
- * @param  array  $replace
+ * @param string $key
+ * @param string $keyPlural
+ * @param int    $number
+ * @param array  $replace
  * @return string
  */
 function _e($key, $keyPlural, $number, $replace = [])

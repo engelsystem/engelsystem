@@ -2,14 +2,16 @@
 
 namespace Engelsystem\Models\User;
 
+use Illuminate\Database\Query\Builder as QueryBuilder;
+
 /**
  * @property string|null $dect
  * @property string|null $email
  * @property string|null $mobile
  *
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Contact[] whereDect($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Contact[] whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\User\Contact[] whereMobile($value)
+ * @method static QueryBuilder|Contact[] whereDect($value)
+ * @method static QueryBuilder|Contact[] whereEmail($value)
+ * @method static QueryBuilder|Contact[] whereMobile($value)
  */
 class Contact extends HasUserModel
 {

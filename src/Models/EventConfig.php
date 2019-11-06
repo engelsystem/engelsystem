@@ -3,17 +3,18 @@
 namespace Engelsystem\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
- * @property string         $name
- * @property string         $value
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
+ * @property string $name
+ * @property string $value
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  *
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\EventConfig[] whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\EventConfig[] whereValue($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\EventConfig[] whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Engelsystem\Models\EventConfig[] whereUpdatedAt($value)
+ * @method static QueryBuilder|EventConfig[] whereName($value)
+ * @method static QueryBuilder|EventConfig[] whereValue($value)
+ * @method static QueryBuilder|EventConfig[] whereCreatedAt($value)
+ * @method static QueryBuilder|EventConfig[] whereUpdatedAt($value)
  */
 class EventConfig extends BaseModel
 {
