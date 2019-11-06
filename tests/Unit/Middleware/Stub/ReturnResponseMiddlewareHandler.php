@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Middleware\Stub;
 
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -21,7 +22,7 @@ class ReturnResponseMiddlewareHandler implements RequestHandlerInterface
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Exception
+     * @throws Exception
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

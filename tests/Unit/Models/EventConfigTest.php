@@ -65,7 +65,7 @@ class EventConfigTest extends TestCase
             ->save();
         $this->assertEquals(
             '2001-02-03 00:00',
-            EventConfig::find('buildup_start')
+            (new EventConfig())->find('buildup_start')
                 ->value
                 ->format('Y-m-d H:i')
         );

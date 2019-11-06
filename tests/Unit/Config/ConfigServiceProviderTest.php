@@ -23,21 +23,9 @@ class ConfigServiceProviderTest extends ServiceProviderTest
      */
     public function testRegister()
     {
+        /** @var Application|MockObject $app */
         /** @var Config|MockObject $config */
-        $config = $this->getMockBuilder(Config::class)
-            ->getMock();
-
-        $app = $this->getApp(['make', 'instance', 'get']);
-        Application::setInstance($app);
-
-        $this->setExpects($app, 'make', [Config::class], $config);
-        $this->setExpects($app, 'get', ['path.config'], __DIR__ . '/../../../config', $this->atLeastOnce());
-        $app->expects($this->exactly(2))
-            ->method('instance')
-            ->withConsecutive(
-                [Config::class, $config],
-                ['config', $config]
-            );
+        list($app, $config) = $this->getConfiguredApp(__DIR__ . '/../../../config');
 
         $this->setExpects($config, 'set', null, null, $this->exactly(2));
         $config->expects($this->exactly(3))
@@ -64,21 +52,9 @@ class ConfigServiceProviderTest extends ServiceProviderTest
      */
     public function testRegisterException()
     {
+        /** @var Application|MockObject $app */
         /** @var Config|MockObject $config */
-        $config = $this->getMockBuilder(Config::class)
-            ->getMock();
-
-        $app = $this->getApp(['make', 'instance', 'get']);
-        Application::setInstance($app);
-
-        $this->setExpects($app, 'make', [Config::class], $config);
-        $app->expects($this->exactly(2))
-            ->method('instance')
-            ->withConsecutive(
-                [Config::class, $config],
-                ['config', $config]
-            );
-        $this->setExpects($app, 'get', ['path.config'], __DIR__ . '/not_existing', $this->atLeastOnce());
+        list($app, $config) = $this->getConfiguredApp(__DIR__ . '/not_existing');
 
         $this->setExpects($config, 'set', null, null, $this->never());
         $this->setExpects($config, 'get', [null], []);
@@ -150,5 +126,30 @@ class ConfigServiceProviderTest extends ServiceProviderTest
             ],
             $config->get(null)
         );
+    }
+
+    /**
+     * @param string $configPath
+     * @return Application[]|Config[]
+     */
+    protected function getConfiguredApp(string $configPath)
+    {
+        /** @var Config|MockObject $config */
+        $config = $this->getMockBuilder(Config::class)
+            ->getMock();
+
+        $app = $this->getApp(['make', 'instance', 'get']);
+        Application::setInstance($app);
+
+        $this->setExpects($app, 'make', [Config::class], $config);
+        $this->setExpects($app, 'get', ['path.config'], $configPath, $this->atLeastOnce());
+        $app->expects($this->exactly(2))
+            ->method('instance')
+            ->withConsecutive(
+                [Config::class, $config],
+                ['config', $config]
+            );
+
+        return [$app, $config];
     }
 }

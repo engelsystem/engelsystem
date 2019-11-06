@@ -11,6 +11,7 @@ use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
+use Exception;
 
 class UserTest extends TestCase
 {
@@ -75,6 +76,7 @@ class UserTest extends TestCase
      * @param string $class
      * @param string $name
      * @param array  $data
+     * @throws Exception
      */
     public function testHasOneRelations($class, $name, $data)
     {

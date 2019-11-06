@@ -4,6 +4,7 @@ namespace Engelsystem\Test\Unit\Helpers\Stub;
 
 use Engelsystem\Models\User\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use InvalidArgumentException;
 
 class UserModelImplementation extends User
@@ -22,7 +23,7 @@ class UserModelImplementation extends User
      * @param array $columns
      * @return User|null
      */
-    public static function find($id, $columns = ['*'])
+    public function find($id, $columns = ['*'])
     {
         if ($id != static::$id) {
             throw new InvalidArgumentException('Wrong user ID searched');
@@ -33,7 +34,7 @@ class UserModelImplementation extends User
 
     /**
      * @param string $apiKey
-     * @return User[]|Collection|\Illuminate\Database\Query\Builder
+     * @return User[]|Collection|QueryBuilder
      */
     public static function whereApiKey($apiKey)
     {

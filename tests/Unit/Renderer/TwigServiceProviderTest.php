@@ -9,6 +9,7 @@ use Engelsystem\Renderer\TwigServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionClass as Reflection;
+use ReflectionException;
 use stdClass;
 use Twig_Environment as Twig;
 use Twig_Extension_Core as TwigCore;
@@ -163,7 +164,7 @@ class TwigServiceProviderTest extends ServiceProviderTest
     /**
      * @param TwigServiceProvider $serviceProvider
      * @param array               $extensions
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function setExtensionsTo($serviceProvider, $extensions)
     {

@@ -3,6 +3,7 @@
 namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
+use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Twig_Function as TwigFunction;
@@ -39,7 +40,8 @@ abstract class ExtensionTest extends TestCase
      * @param string         $name
      * @param callable       $callback
      * @param TwigFunction[] $functions
-     * @param array $options
+     * @param array          $options
+     * @throws Exception
      */
     protected function assertExtensionExists($name, $callback, $functions, $options = [])
     {
@@ -69,6 +71,7 @@ abstract class ExtensionTest extends TestCase
      * @param string  $name
      * @param mixed   $value
      * @param mixed[] $globals
+     * @throws Exception
      */
     protected function assertGlobalsExists($name, $value, $globals)
     {
@@ -86,6 +89,7 @@ abstract class ExtensionTest extends TestCase
      *
      * @param $tokenParser
      * @param $tokenParsers
+     * @throws Exception
      */
     protected function assertTokenParserExists($tokenParser, $tokenParsers)
     {

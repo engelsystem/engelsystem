@@ -61,7 +61,7 @@ class PasswordResetControllerTest extends TestCase
 
         $controller->postReset($request);
 
-        $this->assertNotEmpty(PasswordReset::find($user->id)->first());
+        $this->assertNotEmpty((new PasswordReset())->find($user->id)->first());
         $this->assertTrue($log->hasInfoThatContains($user->name));
     }
 
@@ -152,7 +152,7 @@ class PasswordResetControllerTest extends TestCase
         $response = $controller->postResetPassword($request);
         $this->assertEquals(200, $response->getStatusCode());
 
-        $this->assertEmpty(PasswordReset::find($user->id));
+        $this->assertEmpty((new PasswordReset)->find($user->id));
         $this->assertNotNull(auth()->authenticate($user->name, $password));
     }
 
