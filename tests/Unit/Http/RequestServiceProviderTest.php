@@ -59,7 +59,7 @@ class RequestServiceProviderTest extends ServiceProviderTest
         /** @var ServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(RequestServiceProvider::class)
             ->setConstructorArgs([$app])
-            ->setMethods(['setTrustedProxies'])
+            ->onlyMethods(['setTrustedProxies'])
             ->getMock();
         $serviceProvider->expects($this->once())
             ->method('setTrustedProxies')

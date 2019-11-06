@@ -62,7 +62,7 @@ class RouteDispatcherServiceProviderTest extends ServiceProviderTest
         /** @var RouteDispatcherServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(RouteDispatcherServiceProvider::class)
             ->setConstructorArgs([$app])
-            ->setMethods(['generateRouting'])
+            ->onlyMethods(['generateRouting'])
             ->getMock();
 
         $serviceProvider->expects($this->once())

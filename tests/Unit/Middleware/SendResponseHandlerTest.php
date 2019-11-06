@@ -18,7 +18,7 @@ class SendResponseHandlerTest extends TestCase
     {
         /** @var SendResponseHandler|MockObject $middleware */
         $middleware = $this->getMockBuilder(SendResponseHandler::class)
-            ->setMethods(['headersSent', 'sendHeader'])
+            ->onlyMethods(['headersSent', 'sendHeader'])
             ->getMock();
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockForAbstractClass(ServerRequestInterface::class);

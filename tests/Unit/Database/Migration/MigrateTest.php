@@ -24,7 +24,7 @@ class MigrateTest extends TestCase
     {
         /** @var Application|MockObject $app */
         $app = $this->getMockBuilder(Application::class)
-            ->setMethods(['instance'])
+            ->onlyMethods(['instance'])
             ->getMock();
         /** @var SchemaBuilder|MockObject $builder */
         $builder = $this->getMockBuilder(SchemaBuilder::class)
@@ -33,7 +33,7 @@ class MigrateTest extends TestCase
         /** @var Migrate|MockObject $migration */
         $migration = $this->getMockBuilder(Migrate::class)
             ->setConstructorArgs([$builder, $app])
-            ->setMethods(['initMigration', 'getMigrationFiles', 'getMigrated', 'migrate', 'setMigrated'])
+            ->onlyMethods(['initMigration', 'getMigrationFiles', 'getMigrated', 'migrate', 'setMigrated'])
             ->getMock();
 
         $migration->expects($this->atLeastOnce())

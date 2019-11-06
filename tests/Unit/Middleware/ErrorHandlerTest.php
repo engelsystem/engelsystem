@@ -141,7 +141,7 @@ class ErrorHandlerTest extends TestCase
         /** @var ErrorHandler|MockObject $errorHandler */
         $errorHandler = $this->getMockBuilder(ErrorHandler::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createResponse'])
+            ->onlyMethods(['createResponse'])
             ->getMock();
 
         $errorHandler->expects($this->once())

@@ -79,7 +79,7 @@ class TransportTest extends TestCase
         $message = $this->createMock(SimpleMessage::class);
         /** @var TransportImplementation|MockObject $transport */
         $transport = $this->getMockBuilder(TransportImplementation::class)
-            ->setMethods(['allRecipients'])
+            ->onlyMethods(['allRecipients'])
             ->getMock();
         $transport->expects($this->once())
             ->method('allRecipients')

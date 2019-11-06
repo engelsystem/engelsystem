@@ -26,7 +26,7 @@ class TranslatorTest extends ServiceProviderTest
 
         /** @var callable|MockObject $localeChange */
         $localeChange = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['__invoke'])
+            ->addMethods(['__invoke'])
             ->getMock();
         $localeChange->expects($this->exactly(2))
             ->method('__invoke')
@@ -56,7 +56,7 @@ class TranslatorTest extends ServiceProviderTest
         /** @var Translator|MockObject $translator */
         $translator = $this->getMockBuilder(Translator::class)
             ->setConstructorArgs(['de_DE', 'en_US', function () { }, ['de_DE' => 'Deutsch']])
-            ->setMethods(['translateText'])
+            ->onlyMethods(['translateText'])
             ->getMock();
         $translator->expects($this->exactly(2))
             ->method('translateText')
@@ -78,7 +78,7 @@ class TranslatorTest extends ServiceProviderTest
         /** @var Translator|MockObject $translator */
         $translator = $this->getMockBuilder(Translator::class)
             ->setConstructorArgs(['de_DE', 'en_US', function () { }, ['de_DE' => 'Deutsch']])
-            ->setMethods(['translateText'])
+            ->onlyMethods(['translateText'])
             ->getMock();
         $translator->expects($this->once())
             ->method('translateText')
@@ -100,7 +100,7 @@ class TranslatorTest extends ServiceProviderTest
         $gtt = $this->createMock(GettextTranslator::class);
         /** @var callable|MockObject $getTranslator */
         $getTranslator = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['__invoke'])
+            ->addMethods(['__invoke'])
             ->getMock();
         $getTranslator->expects($this->exactly(5))
             ->method('__invoke')

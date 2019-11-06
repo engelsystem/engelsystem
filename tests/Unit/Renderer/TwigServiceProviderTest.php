@@ -48,7 +48,7 @@ class TwigServiceProviderTest extends ServiceProviderTest
         /** @var TwigServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(TwigServiceProvider::class)
             ->setConstructorArgs([$app])
-            ->setMethods(['registerTwigEngine'])
+            ->onlyMethods(['registerTwigEngine'])
             ->getMock();
         $serviceProvider->expects($this->once())
             ->method('registerTwigEngine');
@@ -103,7 +103,7 @@ class TwigServiceProviderTest extends ServiceProviderTest
         $config = $this->createMock(Config::class);
         /** @var TwigCore|MockObject $twigCore */
         $twigCore = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['setTimezone'])
+            ->addMethods(['setTimezone'])
             ->getMock();
 
         $app = $this->getApp(['make', 'instance', 'tag', 'get']);

@@ -117,8 +117,8 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
         LogEntry::query()->truncate();
         $logger = $this->getLogger();
 
-        $mock = $this->getMockBuilder('someDataProvider')
-            ->setMethods(['__toString'])
+        $mock = $this->getMockBuilder(stdClass::class)
+            ->addMethods(['__toString'])
             ->getMock();
 
         $mock->expects($this->atLeastOnce())

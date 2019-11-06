@@ -49,7 +49,7 @@ class DispatcherTest extends TestCase
 
         /** @var Dispatcher|MockObject $dispatcher */
         $dispatcher = $this->getMockBuilder(Dispatcher::class)
-            ->setMethods(['handle'])
+            ->onlyMethods(['handle'])
             ->getMock();
 
         $dispatcher->expects($this->once())
@@ -158,7 +158,7 @@ class DispatcherTest extends TestCase
         /** @var Dispatcher|MockObject $dispatcher */
         $dispatcher = $this->getMockBuilder(Dispatcher::class)
             ->setConstructorArgs([[MiddlewareInterface::class, MiddlewareInterface::class]])
-            ->setMethods(['resolveMiddleware'])
+            ->onlyMethods(['resolveMiddleware'])
             ->getMock();
 
         $dispatcher->expects($this->exactly(2))

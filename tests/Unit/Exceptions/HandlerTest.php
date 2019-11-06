@@ -33,7 +33,7 @@ class HandlerTest extends TestCase
     {
         /** @var Handler|MockObject $handler */
         $handler = $this->getMockBuilder(Handler::class)
-            ->setMethods(['exceptionHandler'])
+            ->onlyMethods(['exceptionHandler'])
             ->getMock();
 
         $handler->expects($this->once())
@@ -65,7 +65,7 @@ class HandlerTest extends TestCase
 
         /** @var Handler|MockObject $handler */
         $handler = $this->getMockBuilder(Handler::class)
-            ->setMethods(['terminateApplicationImmediately'])
+            ->onlyMethods(['terminateApplicationImmediately'])
             ->getMock();
         $handler->expects($this->once())
             ->method('terminateApplicationImmediately');

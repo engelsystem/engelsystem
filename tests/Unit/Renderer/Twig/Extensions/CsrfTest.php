@@ -31,7 +31,7 @@ class CsrfTest extends ExtensionTest
         /** @var Csrf|MockObject $extension */
         $extension = $this->getMockBuilder(Csrf::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getCsrfToken'])
+            ->onlyMethods(['getCsrfToken'])
             ->getMock();
 
         $extension->expects($this->once())

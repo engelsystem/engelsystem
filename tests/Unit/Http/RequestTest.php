@@ -93,7 +93,7 @@ class RequestTest extends TestCase
         /** @var Request|MockObject $request */
         $request = $this
             ->getMockBuilder(Request::class)
-            ->setMethods(['getPathInfo'])
+            ->onlyMethods(['getPathInfo'])
             ->getMock();
 
         $request
@@ -116,7 +116,7 @@ class RequestTest extends TestCase
         /** @var Request|MockObject $request */
         $request = $this
             ->getMockBuilder(Request::class)
-            ->setMethods(['getUri'])
+            ->onlyMethods(['getUri'])
             ->getMock();
 
         $request
@@ -139,7 +139,7 @@ class RequestTest extends TestCase
         /** @var Request|MockObject $request */
         $request = $this
             ->getMockBuilder(Request::class)
-            ->setMethods(['getQueryString', 'path'])
+            ->onlyMethods(['getQueryString', 'path'])
             ->getMock();
 
         $request->expects($this->exactly(2))

@@ -113,7 +113,7 @@ class ApplicationTest extends TestCase
         $mockClassName = $this->getMockClass(ServiceProvider::class);
         $serviceProvider = $this->getMockBuilder($mockClassName)
             ->setConstructorArgs([$app])
-            ->setMethods(['register'])
+            ->onlyMethods(['register'])
             ->getMock();
 
         $serviceProvider->expects($this->once())
@@ -132,7 +132,7 @@ class ApplicationTest extends TestCase
     {
         /** @var Application|MockObject $app */
         $app = $this->getMockBuilder(Application::class)
-            ->setMethods(['register'])
+            ->onlyMethods(['register'])
             ->getMock();
 
         $serviceProvider = $this->mockServiceProvider($app, ['boot']);
@@ -175,7 +175,7 @@ class ApplicationTest extends TestCase
     {
         $serviceProvider = $this->getMockBuilder(ServiceProvider::class)
             ->setConstructorArgs([$app])
-            ->setMethods($methods)
+            ->onlyMethods($methods)
             ->getMockForAbstractClass();
 
         return $serviceProvider;

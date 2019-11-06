@@ -34,7 +34,7 @@ class VerifyCsrfTokenTest extends TestCase
         /** @var VerifyCsrfToken|MockObject $middleware */
         $middleware = $this->getMockBuilder(VerifyCsrfToken::class)
             ->disableOriginalConstructor()
-            ->setMethods(['tokensMatch'])
+            ->onlyMethods(['tokensMatch'])
             ->getMock();
 
         $middleware->expects($this->exactly(2))
@@ -74,7 +74,7 @@ class VerifyCsrfTokenTest extends TestCase
         /** @var VerifyCsrfToken|MockObject $middleware */
         $middleware = $this->getMockBuilder(VerifyCsrfToken::class)
             ->setConstructorArgs([$session])
-            ->setMethods(['isReading'])
+            ->onlyMethods(['isReading'])
             ->getMock();
 
         $middleware->expects($this->atLeastOnce())

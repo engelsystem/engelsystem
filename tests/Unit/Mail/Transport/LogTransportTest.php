@@ -44,7 +44,7 @@ class LogTransportTest extends TestCase
         /** @var LogTransport|MockObject $transport */
         $transport = $this->getMockBuilder(LogTransport::class)
             ->setConstructorArgs(['logger' => $logger])
-            ->setMethods(['allRecipients'])
+            ->onlyMethods(['allRecipients'])
             ->getMock();
         $transport->expects($this->exactly(2))
             ->method('allRecipients')

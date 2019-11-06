@@ -58,7 +58,7 @@ class RequestHandlerTest extends TestCase
         /** @var RequestHandler|MockObject $middleware */
         $middleware = $this->getMockBuilder(RequestHandler::class)
             ->setConstructorArgs([$container])
-            ->setMethods(['resolveRequestHandler'])
+            ->onlyMethods(['resolveRequestHandler'])
             ->getMock();
         $middleware->expects($this->exactly(3))
             ->method('resolveRequestHandler')
@@ -110,7 +110,7 @@ class RequestHandlerTest extends TestCase
         /** @var RequestHandler|MockObject $middleware */
         $middleware = $this->getMockBuilder(RequestHandler::class)
             ->setConstructorArgs([$container])
-            ->setMethods(['resolveMiddleware'])
+            ->onlyMethods(['resolveMiddleware'])
             ->getMock();
         $middleware->expects($this->once())
             ->method('resolveMiddleware')
@@ -174,7 +174,7 @@ class RequestHandlerTest extends TestCase
         /** @var RequestHandler|MockObject $middleware */
         $middleware = $this->getMockBuilder(RequestHandler::class)
             ->setConstructorArgs([$container])
-            ->setMethods(['resolveRequestHandler'])
+            ->onlyMethods(['resolveRequestHandler'])
             ->getMock();
 
         $middleware->expects($this->exactly(2))

@@ -29,7 +29,7 @@ class LegacyMiddlewareTest extends TestCase
         /** @var LegacyMiddleware|MockObject $middleware */
         $middleware = $this->getMockBuilder(LegacyMiddleware::class)
             ->setConstructorArgs([$container, $auth])
-            ->setMethods(['loadPage', 'renderPage'])
+            ->onlyMethods(['loadPage', 'renderPage'])
             ->getMock();
         /** @var Request|MockObject $defaultRequest */
         $defaultRequest = $this->createMock(Request::class);

@@ -36,7 +36,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
         /** @var SessionServiceProvider|MockObject $serviceProvider */
         $serviceProvider = $this->getMockBuilder(SessionServiceProvider::class)
             ->setConstructorArgs([$app])
-            ->setMethods(['isCli'])
+            ->onlyMethods(['isCli'])
             ->getMock();
 
         /** @var Config|MockObject $config */
@@ -175,7 +175,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
         $sessionStorage = $this->getMockForAbstractClass(StorageInterface::class);
         return $this->getMockBuilder(Session::class)
             ->setConstructorArgs([$sessionStorage])
-            ->setMethods(['start', 'has', 'set'])
+            ->onlyMethods(['start', 'has', 'set'])
             ->getMock();
     }
 
@@ -185,7 +185,7 @@ class SessionServiceProviderTest extends ServiceProviderTest
     private function getRequestMock()
     {
         return $this->getMockBuilder(Request::class)
-            ->setMethods(['setSession'])
+            ->onlyMethods(['setSession'])
             ->getMock();
     }
 }

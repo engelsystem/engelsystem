@@ -128,7 +128,7 @@ class AuthenticatorTest extends ServiceProviderTest
         /** @var Authenticator|MockObject $auth */
         $auth = $this->getMockBuilder(Authenticator::class)
             ->setConstructorArgs([$request, $session, $userRepository])
-            ->setMethods(['getPermissionsByGroup', 'getPermissionsByUser', 'user'])
+            ->onlyMethods(['getPermissionsByGroup', 'getPermissionsByUser', 'user'])
             ->getMock();
         $auth->expects($this->exactly(1))
             ->method('getPermissionsByGroup')
@@ -203,7 +203,7 @@ class AuthenticatorTest extends ServiceProviderTest
         /** @var Authenticator|MockObject $auth */
         $auth = $this->getMockBuilder(Authenticator::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setPassword'])
+            ->onlyMethods(['setPassword'])
             ->getMock();
 
         $auth->expects($this->once())

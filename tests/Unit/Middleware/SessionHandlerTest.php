@@ -48,7 +48,7 @@ class SessionHandlerTest extends TestCase
         /** @var SessionHandler|MockObject $middleware */
         $middleware = $this->getMockBuilder(SessionHandler::class)
             ->setConstructorArgs([$sessionStorage, ['/foo']])
-            ->setMethods(['destroyNative'])
+            ->onlyMethods(['destroyNative'])
             ->getMock();
 
         $middleware->expects($this->once())
