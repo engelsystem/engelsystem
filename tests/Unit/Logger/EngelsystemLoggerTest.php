@@ -18,7 +18,9 @@ class EngelsystemLoggerTest extends ServiceProviderTest
     public function testLog()
     {
         /** @var LogEntry|MockObject $logEntry */
-        $logEntry = $this->createMock(LogEntry::class);
+        $logEntry = $this->getMockBuilder(LogEntry::class)
+            ->addMethods(['create'])
+            ->getMock();
         $logEntry->expects($this->once())
             ->method('create')
             ->with(['level' => LogLevel::INFO, 'message' => 'I\'m an information!']);
@@ -48,7 +50,9 @@ class EngelsystemLoggerTest extends ServiceProviderTest
     public function testInterpolate()
     {
         /** @var LogEntry|MockObject $logEntry */
-        $logEntry = $this->createMock(LogEntry::class);
+        $logEntry = $this->getMockBuilder(LogEntry::class)
+            ->addMethods(['create'])
+            ->getMock();
         $logEntry->expects($this->exactly(3))
             ->method('create')
             ->withConsecutive(
