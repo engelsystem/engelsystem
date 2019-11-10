@@ -74,7 +74,7 @@ class PasswordResetController extends BaseController
         /** @var User $user */
         $user = User::whereEmail($data['email'])->first();
         if ($user) {
-            $reset = (new PasswordReset)->findOrNew($user->id);
+            $reset = (new PasswordReset())->findOrNew($user->id);
             $reset->user_id = $user->id;
             $reset->token = md5(random_bytes(64));
             $reset->save();
@@ -120,8 +120,10 @@ class PasswordResetController extends BaseController
         ]);
 
         if ($data['password'] !== $data['password_confirmation']) {
-            $this->session->set('errors',
-                array_merge($this->session->get('errors', []), ['validation.password.confirmed']));
+            $this->session->set(
+                'errors',
+                array_merge($this->session->get('errors', []), ['validation.password.confirmed'])
+            );
 
             return $this->showView('pages/password/reset-form');
         }

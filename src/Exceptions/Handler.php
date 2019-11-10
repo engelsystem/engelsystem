@@ -18,8 +18,11 @@ class Handler
     /** @var Request */
     protected $request;
 
-    const ENV_PRODUCTION = 'prod';
-    const ENV_DEVELOPMENT = 'dev';
+    /** @var string */
+    public const ENV_PRODUCTION = 'prod';
+
+    /** @var string */
+    public const ENV_DEVELOPMENT = 'dev';
 
     /**
      * Handler constructor.

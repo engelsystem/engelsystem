@@ -20,7 +20,7 @@ class Psr7ServiceProviderTest extends ServiceProviderTest
      */
     public function testRegister()
     {
-        $app = new Application;
+        $app = new Application();
 
         $serviceProvider = new Psr7ServiceProvider($app);
         $serviceProvider->register();

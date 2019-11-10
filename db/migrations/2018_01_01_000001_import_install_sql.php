@@ -47,8 +47,7 @@ class ImportInstallSql extends Migration
     /**
      * Reverse the migration
      */
-    public
-    function down()
+    public function down()
     {
         $this->schema->getConnection()->statement('SET FOREIGN_KEY_CHECKS=0;');
 

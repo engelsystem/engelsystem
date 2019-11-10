@@ -25,6 +25,11 @@ msgstr ""
 msgid "form.submit"
 msgstr "Submit"
 
+msgid "page.404.text"
+msgstr ""
+"This page could not be found or you don't have permission to view it. "
+"You probably have to sign in or register in order to gain access!"
+
 msgid "credits.credit"
 msgstr ""
 "The original engelsystem was written by "

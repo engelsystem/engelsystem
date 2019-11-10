@@ -1,5 +1,4 @@
 <?php
-// Some useful functions
 
 use Engelsystem\Application;
 use Engelsystem\Config\Config;

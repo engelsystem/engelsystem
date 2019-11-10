@@ -24,7 +24,7 @@ class LogEntry extends BaseModel
     public $timestamps = true;
 
     /** @var null Disable updated_at */
-    const UPDATED_AT = null;
+    public const UPDATED_AT = null;
 
     /**
      * The attributes that are mass assignable.

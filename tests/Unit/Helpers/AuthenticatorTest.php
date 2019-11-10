@@ -259,7 +259,9 @@ class AuthenticatorTest extends ServiceProviderTest
         return new class extends Authenticator
         {
             /** @noinspection PhpMissingParentConstructorInspection */
-            public function __construct() { }
+            public function __construct()
+            {
+            }
         };
     }
 }

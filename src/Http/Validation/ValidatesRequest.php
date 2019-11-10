@@ -17,10 +17,12 @@ trait ValidatesRequest
      */
     protected function validate(Request $request, array $rules)
     {
-        if (!$this->validator->validate(
+        $isValid = $this->validator->validate(
             (array)$request->getParsedBody(),
             $rules
-        )) {
+        );
+
+        if (!$isValid) {
             throw new ValidationException($this->validator);
         }
 

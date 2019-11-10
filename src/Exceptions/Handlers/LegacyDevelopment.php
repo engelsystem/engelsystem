@@ -15,7 +15,11 @@ class LegacyDevelopment extends Legacy
     {
         $file = $this->stripBasePath($e->getFile());
 
-        echo '<pre style="background-color:#333;color:#ccc;z-index:1000;position:fixed;bottom:1em;padding:1em;width:97%;max-height: 90%;overflow-y:auto;">';
+        echo sprintf(
+            '<pre style="%s">',
+            'background-color:#333;color:#ccc;z-index:1000;position:fixed;'
+            . 'bottom:1em;padding:1em;width:97%;max-height:90%;overflow-y:auto;'
+        );
         echo sprintf('%s: (%s)' . PHP_EOL, get_class($e), $e->getCode());
         $data = [
             'string'     => $e->getMessage(),

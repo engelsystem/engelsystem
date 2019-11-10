@@ -13,15 +13,17 @@ class LogEntryTest extends TestCase
      */
     public function testFilter()
     {
-        foreach ([
-                     'Lorem Ipsum'            => LogLevel::INFO,
-                     'Some test content'      => LogLevel::ERROR,
-                     'Foo bar bartz!'         => LogLevel::INFO,
-                     'Someone did something?' => LogLevel::NOTICE,
-                     'This is a Test!'        => LogLevel::INFO,
-                     'I\'m verbose notice!'   => LogLevel::DEBUG,
-                     'The newest stuff!!'     => LogLevel::ERROR,
-                 ] as $message => $level) {
+        foreach (
+            [
+                'Lorem Ipsum'            => LogLevel::INFO,
+                'Some test content'      => LogLevel::ERROR,
+                'Foo bar bartz!'         => LogLevel::INFO,
+                'Someone did something?' => LogLevel::NOTICE,
+                'This is a Test!'        => LogLevel::INFO,
+                'I\'m verbose notice!'   => LogLevel::DEBUG,
+                'The newest stuff!!'     => LogLevel::ERROR,
+            ] as $message => $level
+        ) {
             $entry = new LogEntry(['level' => $level, 'message' => $message]);
             $entry->save();
         }

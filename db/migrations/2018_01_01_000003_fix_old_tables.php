@@ -18,7 +18,8 @@ class FixOldTables extends Migration
             [
                 'User'         => 'CreateDate',
                 'NewsComments' => 'Datum',
-            ] as $table => $column) {
+            ] as $table => $column
+        ) {
             if (!$this->schema->hasTable($table)) {
                 continue;
             }

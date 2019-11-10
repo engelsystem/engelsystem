@@ -83,8 +83,10 @@ class CreateUsersTables extends Migration
         });
 
         if ($this->schema->hasTable('User')) {
+            $emptyDates = ['0000-00-00 00:00:00', '0001-01-01 00:00:00', '1000-01-01 00:00:00'];
             /** @var stdClass[] $users */
             $users = $this->schema->getConnection()->table('User')->get();
+
             foreach ($users as $data) {
                 $user = new User([
                     'name'          => $data->Nick,
@@ -94,10 +96,7 @@ class CreateUsersTables extends Migration
                     'last_login_at' => Carbon::createFromTimestamp($data->lastLogIn),
                 ]);
                 $user->setAttribute('id', $data->UID);
-                if (!in_array(
-                    $data->CreateDate,
-                    ['0000-00-00 00:00:00', '0001-01-01 00:00:00', '1000-01-01 00:00:00']
-                )) {
+                if (!in_array($data->CreateDate, $emptyDates)) {
                     $user->setAttribute('created_at', new Carbon($data->CreateDate));
                 }
                 $user->save();
@@ -114,8 +113,12 @@ class CreateUsersTables extends Migration
                     'first_name'             => $data->Vorname ?: null,
                     'last_name'              => $data->Name ?: null,
                     'shirt_size'             => $data->Size ?: null,
-                    'planned_arrival_date'   => $data->planned_arrival_date ? Carbon::createFromTimestamp($data->planned_arrival_date) : null,
-                    'planned_departure_date' => $data->planned_departure_date ? Carbon::createFromTimestamp($data->planned_departure_date) : null,
+                    'planned_arrival_date'   => $data->planned_arrival_date
+                        ? Carbon::createFromTimestamp($data->planned_arrival_date)
+                        : null,
+                    'planned_departure_date' => $data->planned_departure_date
+                        ? Carbon::createFromTimestamp($data->planned_departure_date)
+                        : null,
                 ]);
                 $personalData->user()
                     ->associate($user)
@@ -181,7 +184,7 @@ class CreateUsersTables extends Migration
             $table->string('DECT', 5)->nullable();
             $table->string('Handy', 40)->nullable();
             $table->string('email', 123)->nullable();
-            $table->boolean('email_shiftinfo')->default(false)->comment('User wants to be informed by mail about changes in his shifts');
+            $table->boolean('email_shiftinfo')->default(false);
             $table->string('jabber', 200)->nullable();
             $table->string('Size', 4)->nullable();
             $table->string('Passwort', 128)->nullable();
@@ -244,8 +247,12 @@ class CreateUsersTables extends Migration
                     'api_key'                => $user->api_key,
                     'got_voucher'            => $state->got_voucher,
                     'arrival_date'           => $state->arrival_date ? $state->arrival_date->getTimestamp() : null,
-                    'planned_arrival_date'   => $personal->planned_arrival_date ? $personal->planned_arrival_date->getTimestamp() : null,
-                    'planned_departure_date' => $personal->planned_departure_date ? $personal->planned_departure_date->getTimestamp() : null,
+                    'planned_arrival_date'   => $personal->planned_arrival_date
+                        ? $personal->planned_arrival_date->getTimestamp()
+                        : null,
+                    'planned_departure_date' => $personal->planned_departure_date
+                        ? $personal->planned_departure_date->getTimestamp()
+                        : null,
                     'email_by_human_allowed' => $settings->email_human,
                 ]);
         }

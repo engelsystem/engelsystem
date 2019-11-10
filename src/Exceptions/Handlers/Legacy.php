@@ -13,7 +13,7 @@ class Legacy implements HandlerInterface
      */
     public function render($request, Throwable $e)
     {
-        echo 'An <del>un</del>expected error occurred, a team of untrained monkeys has been dispatched to deal with it.';
+        echo 'An <del>un</del>expected error occurred. A team of untrained monkeys has been dispatched to fix it.';
     }
 
     /**

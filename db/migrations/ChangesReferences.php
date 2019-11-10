@@ -24,14 +24,16 @@ trait ChangesReferences
                 $table->dropForeign($reference->constraint);
             });
 
-            $this->schema->table($reference->table,
+            $this->schema->table(
+                $reference->table,
                 function (Blueprint $table) use ($reference, $targetTable, $targetColumn, $type) {
                     $table->{$type}($reference->column)->change();
 
                     $table->foreign($reference->column)
                         ->references($targetColumn)->on($targetTable)
                         ->onDelete('cascade');
-                });
+                }
+            );
         }
     }
 

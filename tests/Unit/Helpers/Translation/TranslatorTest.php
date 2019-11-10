@@ -32,7 +32,7 @@ class TranslatorTest extends ServiceProviderTest
             ->method('__invoke')
             ->withConsecutive(['te_ST'], ['fo_OO']);
 
-        $translator = new Translator($locale, 'fo_OO', function () { }, $locales, $localeChange);
+        $translator = new Translator($locale, 'fo_OO', [$this, 'doNothing'], $locales, $localeChange);
 
         $this->assertEquals($locales, $translator->getLocales());
         $this->assertEquals($locale, $translator->getLocale());
@@ -55,7 +55,7 @@ class TranslatorTest extends ServiceProviderTest
     {
         /** @var Translator|MockObject $translator */
         $translator = $this->getMockBuilder(Translator::class)
-            ->setConstructorArgs(['de_DE', 'en_US', function () { }, ['de_DE' => 'Deutsch']])
+            ->setConstructorArgs(['de_DE', 'en_US', [$this, 'doNothing'], ['de_DE' => 'Deutsch']])
             ->onlyMethods(['translateText'])
             ->getMock();
         $translator->expects($this->exactly(2))
@@ -77,7 +77,7 @@ class TranslatorTest extends ServiceProviderTest
     {
         /** @var Translator|MockObject $translator */
         $translator = $this->getMockBuilder(Translator::class)
-            ->setConstructorArgs(['de_DE', 'en_US', function () { }, ['de_DE' => 'Deutsch']])
+            ->setConstructorArgs(['de_DE', 'en_US', [$this, 'doNothing'], ['de_DE' => 'Deutsch']])
             ->onlyMethods(['translateText'])
             ->getMock();
         $translator->expects($this->once())
@@ -130,5 +130,12 @@ class TranslatorTest extends ServiceProviderTest
 
         // Successful translation
         $this->assertEquals('Lorem test3!', $translator->translatePlural('foo.barf', 'foo.bar2', 3, ['test3']));
+    }
+
+    /**
+     * Does nothing
+     */
+    public function doNothing()
+    {
     }
 }

@@ -2754,9 +2754,7 @@ msgid "Development Platform"
 msgstr "Entwicklerplattform"
 
 #: src/Middleware/LegacyMiddleware.php
-msgid ""
-"This page could not be found or you don't have permission to view it. You "
-"probably have to sign in or register in order to gain access!"
+msgid "page.404.text"
 msgstr ""
 "Diese Seite existiert nicht oder Du hast keinen Zugriff. Melde Dich an um "
 "Zugriff zu erhalten!"

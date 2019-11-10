@@ -113,7 +113,7 @@ class UserTest extends TestCase
 
         foreach ($modelData as $data) {
             /** @var BaseModel $model */
-            $model = (new $class);
+            $model = $this->app->make($class);
             $stored = $model->create($data + ['user_id' => $user->id]);
             $relatedModelIds[] = $stored->id;
         }

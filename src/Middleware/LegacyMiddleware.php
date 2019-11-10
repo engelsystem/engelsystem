@@ -82,7 +82,7 @@ class LegacyMiddleware implements MiddlewareInterface
 
             $page = 404;
             $title = $translator->translate('Page not found');
-            $content = $translator->translate('This page could not be found or you don\'t have permission to view it. You probably have to sign in or register in order to gain access!');
+            $content = $translator->translate('page.404.text');
         }
 
         return $this->renderPage($page, $title, $content);
@@ -103,14 +103,17 @@ class LegacyMiddleware implements MiddlewareInterface
             case 'ical':
                 require_once realpath(__DIR__ . '/../../includes/pages/user_ical.php');
                 user_ical();
+                break;
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'atom':
                 require_once realpath(__DIR__ . '/../../includes/pages/user_atom.php');
                 user_atom();
+                break;
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'shifts_json_export':
                 require_once realpath(__DIR__ . '/../../includes/controller/shifts_controller.php');
                 shifts_json_export_controller();
+                break;
             case 'public_dashboard':
                 return public_dashboard_controller();
             case 'angeltypes':

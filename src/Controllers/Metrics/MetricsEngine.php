@@ -137,10 +137,12 @@ class MetricsEngine implements EngineInterface
     }
 
     /**
-     * Does nothing as shared data will onyly result in unexpected behaviour
+     * Does nothing as shared data will only result in unexpected behaviour
      *
      * @param string|mixed[] $key
      * @param mixed          $value
      */
-    public function share($key, $value = null) { }
+    public function share($key, $value = null)
+    {
+    }
 }

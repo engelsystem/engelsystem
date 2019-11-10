@@ -11,8 +11,11 @@ use Illuminate\Support\Str;
 
 class Migrate
 {
-    const UP = 'up';
-    const DOWN = 'down';
+    /** @var string */
+    public const UP = 'up';
+
+    /** @var string */
+    public const DOWN = 'down';
 
     /** @var Application */
     protected $app;

@@ -69,7 +69,10 @@ class EngelsystemLoggerTest extends ServiceProviderTest
             'user' =>
                 new class
                 {
-                    public function __toString() { return 'Bar'; }
+                    public function __toString()
+                    {
+                        return 'Bar';
+                    }
                 }
         ]);
     }
