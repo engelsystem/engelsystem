@@ -1,13 +1,12 @@
 <?php
 
-use Engelsystem\Models\News\News;
+use Engelsystem\Models\News;
 
 /**
  * @return string
  */
 function admin_news()
 {
-    $user = auth()->user();
     $request = request();
 
     if (!$request->has('action')) {
@@ -45,7 +44,7 @@ function admin_news()
                     form_info(__('Author'), User_Nick_render($user_source)),
                     form_text('eBetreff', __('Subject'), $news->title),
                     form_textarea('eText', __('Message'), $news->text),
-                    form_checkbox('eTreffen', __('Meeting'), $news->is_meeting === true, 1),
+                    form_checkbox('eTreffen', __('Meeting'), $news->is_meeting, 1),
                     form_submit('submit', __('Save'))
                 ],
                 page_link_to('admin_news', ['action' => 'save', 'id' => $news_id])

@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Engelsystem\Migrations;
 
 use Carbon\Carbon;
 use Engelsystem\Database\Migration\Migration;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Schema\Blueprint;
 use stdClass;
 
@@ -13,7 +15,8 @@ use stdClass;
  */
 class CreateNewsTable extends Migration
 {
-    use ChangesReferences, Reference;
+    use ChangesReferences;
+    use Reference;
 
     /**
      * Creates the news table, copies the data and drops the News table.
@@ -23,7 +26,7 @@ class CreateNewsTable extends Migration
         $hasPreviousNewsTable = $this->schema->hasTable('News');
 
         if ($hasPreviousNewsTable) {
-            // rename because some SQL DBMS handle identifiers case insensitive
+            // Rename because some SQL DBMS handle identifiers case insensitive
             $this->schema->rename('News', 'PreviousNews');
         }
 
@@ -47,7 +50,7 @@ class CreateNewsTable extends Migration
      */
     public function down(): void
     {
-        // rename because some SQL DBMS handle identifiers case insensitive
+        // Rename as some SQL DBMS handle identifiers case insensitive
         $this->schema->rename('news', 'new_news');
 
         $this->createPreviousNewsTable();
@@ -59,9 +62,13 @@ class CreateNewsTable extends Migration
             'ID',
             'unsignedInteger'
         );
+
         $this->schema->drop('new_news');
     }
 
+    /**
+     * @return void
+     */
     private function createNewNewsTable(): void
     {
         $this->schema->create('news', function (Blueprint $table) {
@@ -74,17 +81,20 @@ class CreateNewsTable extends Migration
         });
     }
 
+    /**
+     * @return void
+     */
     private function copyPreviousToNewNewsTable(): void
     {
+        $connection = $this->schema->getConnection();
         /** @var stdClass[] $previousNewsRecords */
-        $previousNewsRecords = $this->schema
-            ->getConnection()
+        $previousNewsRecords = $connection
             ->table('PreviousNews')
             ->get();
 
         foreach ($previousNewsRecords as $previousNews) {
             $date = Carbon::createFromTimestamp($previousNews->Datum);
-            $this->schema->getConnection()->table('news')->insert([
+            $connection->table('news')->insert([
                 'id'         => $previousNews->ID,
                 'title'      => $previousNews->Betreff,
                 'text'       => $previousNews->Text,
@@ -96,6 +106,9 @@ class CreateNewsTable extends Migration
         }
     }
 
+    /**
+     * @return void
+     */
     private function createPreviousNewsTable(): void
     {
         $this->schema->create('News', function (Blueprint $table) {
@@ -104,19 +117,19 @@ class CreateNewsTable extends Migration
             $table->string('Betreff', 150)
                 ->default('');
             $table->text('Text');
-            $table->boolean('Treffen');
-            $table->unsignedInteger('UID');
-            $table->foreign('UID')
-                ->references('id')
-                ->on('users');
+            $this->references($table, 'users', 'UID');
+            $table->boolean('Treffen')->default(false);
         });
     }
 
+    /**
+     * @return void
+     */
     private function copyNewToPreviousNewsTable(): void
     {
-        /** @var stdClass[] $newsRecords */
-        $newsRecords = $this->schema
-            ->getConnection()
+        $connection = $this->schema->getConnection();
+        /** @var Collection[]|stdClass[] $newsRecords */
+        $newsRecords = $connection
             ->table('new_news')
             ->get();
 
@@ -124,7 +137,7 @@ class CreateNewsTable extends Migration
             $date = Carbon::createFromFormat('Y-m-d H:i:s', $newsRecord->created_at)
                 ->getTimestamp();
 
-            $this->schema->getConnection()->table('News')->insert([
+            $connection->table('News')->insert([
                 'ID'      => $newsRecord->id,
                 'Datum'   => $date,
                 'Betreff' => $newsRecord->title,

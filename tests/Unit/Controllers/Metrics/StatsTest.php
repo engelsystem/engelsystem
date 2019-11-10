@@ -5,6 +5,7 @@ namespace Engelsystem\Test\Unit\Controllers\Metrics;
 use Carbon\Carbon;
 use Engelsystem\Controllers\Metrics\Stats;
 use Engelsystem\Models\LogEntry;
+use Engelsystem\Models\News;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\State;
@@ -26,7 +27,6 @@ class StatsTest extends TestCase
      */
     public function testNewUsers()
     {
-        $this->initDatabase();
         $this->addUsers();
 
         $stats = new Stats($this->database);
@@ -38,7 +38,6 @@ class StatsTest extends TestCase
      */
     public function testVouchers()
     {
-        $this->initDatabase();
         $this->addUsers();
 
         $stats = new Stats($this->database);
@@ -50,7 +49,6 @@ class StatsTest extends TestCase
      */
     public function testTshirts()
     {
-        $this->initDatabase();
         $this->addUsers();
 
         $stats = new Stats($this->database);
@@ -63,7 +61,6 @@ class StatsTest extends TestCase
      */
     public function testTshirtSizes()
     {
-        $this->initDatabase();
         $this->addUsers();
 
         $stats = new Stats($this->database);
@@ -75,12 +72,30 @@ class StatsTest extends TestCase
         ]), $sizes);
     }
 
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::announcements
+     */
+    public function testAnnouncements()
+    {
+        $this->addUsers();
+        $newsData = ['title' => 'Test', 'text' => 'Foo Bar', 'user_id' => 1];
+
+        (new News($newsData))->save();
+        (new News($newsData))->save();
+        (new News($newsData + ['is_meeting' => true]))->save();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(3, $stats->announcements());
+        $this->assertEquals(2, $stats->announcements(false));
+        $this->assertEquals(1, $stats->announcements(true));
+    }
+
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::arrivedUsers
      */
     public function testArrivedUsers()
     {
-        $this->initDatabase();
         $this->addUsers();
 
         $stats = new Stats($this->database);
@@ -92,8 +107,6 @@ class StatsTest extends TestCase
      */
     public function testSessions()
     {
-        $this->initDatabase();
-
         $this->database
             ->getConnection()
             ->table('sessions')
@@ -114,8 +127,6 @@ class StatsTest extends TestCase
      */
     public function testDatabase()
     {
-        $this->initDatabase();
-
         $stats = new Stats($this->database);
 
         $read = $stats->databaseRead();
@@ -132,8 +143,6 @@ class StatsTest extends TestCase
      */
     public function testLogEntries()
     {
-        $this->initDatabase();
-
         (new LogEntry(['level' => LogLevel::INFO, 'message' => 'Some info']))->save();
         (new LogEntry(['level' => LogLevel::INFO, 'message' => 'Another info']))->save();
         (new LogEntry(['level' => LogLevel::CRITICAL, 'message' => 'A critical error!']))->save();
@@ -152,7 +161,6 @@ class StatsTest extends TestCase
      */
     public function testPasswordResets()
     {
-        $this->initDatabase();
         $this->addUsers();
 
         (new PasswordReset(['user_id' => 1, 'token' => 'loremIpsum123']))->save();
@@ -202,5 +210,15 @@ class StatsTest extends TestCase
         $personalData->user()
             ->associate($user)
             ->save();
+    }
+
+    /**
+     * Set up the environment
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->initDatabase();
     }
 }
