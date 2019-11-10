@@ -5,6 +5,7 @@ namespace Engelsystem\Controllers\Metrics;
 use Carbon\Carbon;
 use Engelsystem\Database\Database;
 use Engelsystem\Models\EventConfig;
+use Engelsystem\Models\News;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression as QueryExpression;
 
@@ -209,16 +210,10 @@ class Stats
     /**
      * @param bool $meeting
      * @return int
-     * @codeCoverageIgnore
      */
     public function announcements($meeting = null)
     {
-        $query = $this
-            ->getQuery('News');
-
-        if (!is_null($meeting)) {
-            $query->where('Treffen', '=', $meeting);
-        }
+        $query = is_null($meeting) ? News::query() : News::whereIsMeeting($meeting);
 
         return $query->count();
     }

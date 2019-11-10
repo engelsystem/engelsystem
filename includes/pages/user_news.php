@@ -1,7 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
-use Engelsystem\Models\News\News;
+use Engelsystem\Models\News;
 use Engelsystem\Models\User\User;
 
 /**
@@ -43,7 +43,7 @@ function user_meetings()
         $page = 0;
     }
 
-    $news = News::where('is_meeting', true)
+    $news = News::whereIsMeeting(true)
         ->orderBy('created_at', 'DESC')
         ->limit($display_news)
         ->offset($page * $display_news)
@@ -53,7 +53,7 @@ function user_meetings()
         $html .= display_news($entry);
     }
 
-    $dis_rows = ceil(News::where('is_meeting', true)->count() / $display_news);
+    $dis_rows = ceil(News::whereIsMeeting(true)->count() / $display_news);
     $html .= '<div class="text-center">' . '<ul class="pagination">';
     for ($i = 0; $i < $dis_rows; $i++) {
         if ($request->has('page') && $i == $request->input('page', 0)) {
@@ -110,7 +110,7 @@ function display_news(News $news): string
     }
     $html .= '<span class="glyphicon glyphicon-time"></span> ' . $news->created_at->format('Y-m-d H:i') . '&emsp;';
 
-    $html .= User_Nick_render(User::find($news->user_id));
+    $html .= User_Nick_render($news->user);
     if ($page != 'news_comments') {
         $html .= '&emsp;<a href="' . page_link_to('news_comments', ['nid' => $news->id]) . '">'
             . '<span class="glyphicon glyphicon-comment"></span> '
@@ -137,9 +137,8 @@ function user_news_comments()
     if (
         $request->has('nid')
         && preg_match('/^\d{1,}$/', $nid)
-        && News::where('id', $request->input('nid'))->count() > 0
+        && $news = News::find($nid)
     ) {
-        $news = News::find('id');
         if ($request->hasPostData('submit') && $request->has('text')) {
             $text = $request->input('text');
             DB::insert('
@@ -180,7 +179,7 @@ function user_news_comments()
         $html .= form([
             form_textarea('text', __('Message'), ''),
             form_submit('submit', __('Save'))
-        ], page_link_to('news_comments', ['nid' => $news['ID']]));
+        ], page_link_to('news_comments', ['nid' => $news->id]));
     } else {
         $html .= __('Invalid request.');
     }
@@ -199,25 +198,21 @@ function user_news()
 
     $html = '<div class="col-md-12"><h1>' . news_title() . '</h1>' . msg();
 
-    $isMeeting = $request->postData('treffen');
+    $isMeeting = $request->postData('treffen', false);
     if ($request->has('text') && $request->has('betreff') && auth()->can('admin_news')) {
-        if (!$request->has('treffen')) {
-            $isMeeting = 0;
-        }
-
         $text = $request->postData('text');
         if (!auth()->can('admin_news_html')) {
             $text = strip_tags($text);
         }
 
-        News::create([
+        $news = News::create([
             'title'      => strip_tags($request->postData('betreff')),
             'text'       => $text,
             'user_id'    => $user->id,
-            'is_meeting' => !!$isMeeting,
+            'is_meeting' => (bool)$isMeeting,
         ]);
 
-        engelsystem_log('Created news: ' . $request->postData('betreff') . ', treffen: ' . $isMeeting);
+        engelsystem_log('Created news: ' . $news->title . ', is meeting: ' . ($news->is_meeting ? 'yes' : 'no'));
         success(__('Entry saved.'));
         redirect(page_link_to('news'));
     }

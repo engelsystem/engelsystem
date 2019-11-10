@@ -4,7 +4,7 @@ namespace Engelsystem\Models\User;
 
 use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
-use Engelsystem\Models\News\News;
+use Engelsystem\Models\News;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Query\Builder as QueryBuilder;

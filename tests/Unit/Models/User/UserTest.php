@@ -3,7 +3,8 @@
 namespace Engelsystem\Test\Unit\Models;
 
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
-use Engelsystem\Models\News\News;
+use Engelsystem\Models\BaseModel;
+use Engelsystem\Models\News;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\HasUserModel;
 use Engelsystem\Models\User\PersonalData;
@@ -19,21 +20,13 @@ class UserTest extends TestCase
     use ArraySubsetAsserts;
     use HasDatabase;
 
+    /** @var string[] */
     protected $data = [
         'name'     => 'lorem',
         'password' => '',
         'email'    => 'foo@bar.batz',
         'api_key'  => '',
     ];
-
-    /**
-     * Prepare test
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->initDatabase();
-    }
 
     /**
      * @return array
@@ -103,23 +96,25 @@ class UserTest extends TestCase
     }
 
     /**
-     * @covers User::news()
+     * @covers       \Engelsystem\Models\User\User::news()
      *
      * @dataProvider hasManyRelationsProvider
      *
-     * @param string $class Class name of the related models
-     * @param string $name Name of the accessor for the related models
-     * @param array  $data List of the related models
+     * @param string $class     Class name of the related models
+     * @param string $name      Name of the accessor for the related models
+     * @param array  $modelData List of the related models
      */
-    public function testHasManyRelations(string $class, string $name, array $data): void
+    public function testHasManyRelations(string $class, string $name, array $modelData): void
     {
         $user = new User($this->data);
         $user->save();
 
         $relatedModelIds = [];
 
-        foreach ($data as $d) {
-            $stored = $class::create($d + ['user_id' => $user->id]);
+        foreach ($modelData as $data) {
+            /** @var BaseModel $model */
+            $model = (new $class);
+            $stored = $model->create($data + ['user_id' => $user->id]);
             $relatedModelIds[] = $stored->id;
         }
 
@@ -127,7 +122,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function hasManyRelationsProvider(): array
     {
@@ -149,5 +144,14 @@ class UserTest extends TestCase
                 ]
             ]
         ];
+    }
+
+    /**
+     * Prepare test
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->initDatabase();
     }
 }

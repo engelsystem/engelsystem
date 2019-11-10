@@ -1,7 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
-use Engelsystem\Models\News\News;
+namespace Engelsystem\Test\Unit\Models;
+
+use Engelsystem\Models\News;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
@@ -13,14 +16,10 @@ class NewsTest extends TestCase
 {
     use HasDatabase;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $newsData;
 
-    /**
-     * @var User
-     */
+    /** @var User */
     private $user;
 
     /**
@@ -31,13 +30,12 @@ class NewsTest extends TestCase
         parent::setUp();
         $this->initDatabase();
 
-        $this->user = User::make([
+        $this->user = (new User())->create([
             'name'     => 'lorem',
             'password' => '',
             'email'    => 'foo@bar.batz',
             'api_key'  => '',
         ]);
-        $this->user->save();
 
         $this->newsData = [
             'title'   => 'test title',
@@ -53,7 +51,8 @@ class NewsTest extends TestCase
      */
     public function testCreateDefault(): void
     {
-        $news = News::create($this->newsData);
+        $news = (new News())->create($this->newsData);
+        $news = $news->find($news->id);
 
         $this->assertSame(1, $news->id);
         $this->assertSame($this->newsData['title'], $news->title);
@@ -68,9 +67,10 @@ class NewsTest extends TestCase
      */
     public function testCreate(): void
     {
-        $news = News::create(
-            $this->newsData + ['is_meeting' => true,]
+        $news = (new News())->create(
+            $this->newsData + ['is_meeting' => true]
         );
+        $news = $news->find($news->id);
 
         $this->assertSame(1, $news->id);
         $this->assertSame($this->newsData['title'], $news->title);
