@@ -1,8 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
 use Engelsystem\Models\News;
-use Engelsystem\Models\User\User;
 
 /**
  * @return string
@@ -116,7 +114,7 @@ function display_news(News $news): string
             . '<span class="glyphicon glyphicon-comment"></span> '
             . __('Comments') . ' &raquo;</a> '
             . '<span class="badge">'
-            . count(DB::select('SELECT `ID` FROM `NewsComments` WHERE `Refid`=?', [$news->id]))
+            . $news->comments()->count()
             . '</span>';
     }
     $html .= '</div>';
@@ -141,17 +139,10 @@ function user_news_comments()
     ) {
         if ($request->hasPostData('submit') && $request->has('text')) {
             $text = $request->input('text');
-            DB::insert('
-                    INSERT INTO `NewsComments` (`Refid`, `Datum`, `Text`, `UID`)
-                    VALUES (?, ?, ?, ?)
-                ',
-                [
-                    $nid,
-                    date('Y-m-d H:i:s'),
-                    $text,
-                    $user->id,
-                ]
-            );
+            $news->comments()->create([
+                'text' => $text,
+                'user_id' => $user->id,
+            ]);
 
             engelsystem_log('Created news_comment: ' . $text);
             $html .= success(__('Entry saved.'), true);
@@ -159,18 +150,12 @@ function user_news_comments()
 
         $html .= display_news($news);
 
-        $comments = DB::select(
-            'SELECT * FROM `NewsComments` WHERE `Refid`=? ORDER BY \'ID\'',
-            [$nid]
-        );
-        foreach ($comments as $comment) {
-            $user_source = User::find($comment['UID']);
-
+        foreach ($news->comments as $comment) {
             $html .= '<div class="panel panel-default">';
-            $html .= '<div class="panel-body">' . nl2br(htmlspecialchars($comment['Text'])) . '</div>';
+            $html .= '<div class="panel-body">' . nl2br(htmlspecialchars($comment->text)) . '</div>';
             $html .= '<div class="panel-footer text-muted">';
-            $html .= '<span class="glyphicon glyphicon-time"></span> ' . $comment['Datum'] . '&emsp;';
-            $html .= User_Nick_render($user_source);
+            $html .= '<span class="glyphicon glyphicon-time"></span> ' . $comment->created_at->format('Y-m-d H:i') . '&emsp;';
+            $html .= User_Nick_render($comment->user);
             $html .= '</div>';
             $html .= '</div>';
         }
