@@ -128,7 +128,7 @@ class CreateNewsTable extends Migration
     private function copyNewToPreviousNewsTable(): void
     {
         $connection = $this->schema->getConnection();
-        /** @var Collection[]|stdClass[] $newsRecords */
+        /** @var Collection|stdClass[] $newsRecords */
         $newsRecords = $connection
             ->table('new_news')
             ->get();
