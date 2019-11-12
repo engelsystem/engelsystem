@@ -197,8 +197,12 @@ For more information on how to use it call `./bin/migrate help`
 We use gettext. You may use POEdit to extract new texts from the sourcecode. Please config POEdit to extract also the twig template files using the following settings: https://gist.github.com/jlambe/a868d9b63d70902a12254ce47069d0e6
 
 ### Code style
-Please ensure that your pull requests follows the [PSR-12](http://www.php-fig.org/psr/psr-12/) coding style guide.
+Please ensure that your pull requests follow the [PSR-12](https://www.php-fig.org/psr/psr-12/) coding style guide.
 You can check that by running
 ```php
-vendor/bin/phpcs --standard=PSR12 config/ db/ public/index.php src/ tests/
+composer run phpcs
+```
+You may auto fix reported issues by running
+```php
+composer run phpcbf
 ```
