@@ -13,6 +13,10 @@
             "email": "igor.scheller@igorshp.de"
         }
     ],
+    "scripts": {
+        "phpcs": "phpcs -p",
+        "phpcbf": "phpcbf -p"
+    },
     "require": {
         "php": ">=7.1.0",
         "ext-json": "*",
