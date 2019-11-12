@@ -5,6 +5,8 @@ namespace Engelsystem\Models\User;
 use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\News;
+use Engelsystem\Models\NewsComment;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -23,6 +25,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property-read QueryBuilder|PersonalData $personalData
  * @property-read QueryBuilder|Settings     $settings
  * @property-read QueryBuilder|State        $state
+ * @property-read Collection|NewsComment[]  $newsComments
  *
  * @method static QueryBuilder|User whereId($value)
  * @method static QueryBuilder|User[] whereName($value)
@@ -104,5 +107,13 @@ class User extends BaseModel
     public function news(): HasMany
     {
         return $this->hasMany(News::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function newsComments(): HasMany
+    {
+        return $this->hasMany(NewsComment::class);
     }
 }

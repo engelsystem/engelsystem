@@ -1,20 +1,23 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Engelsystem\Models;
 
 use Carbon\Carbon;
 use Engelsystem\Models\User\UsesUserModel;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
- * @property int         $id
- * @property string      $title
- * @property string      $text
- * @property bool        $is_meeting
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
+ * @property int                           $id
+ * @property string                        $title
+ * @property string                        $text
+ * @property bool                          $is_meeting
+ * @property Carbon|null                   $created_at
+ * @property Carbon|null                   $updated_at
+ *
+ * @property-read Collection|NewsComment[] $comments
  *
  * @method static QueryBuilder|LogEntry[] whereId($value)
  * @method static QueryBuilder|LogEntry[] whereTitle($value)
@@ -42,4 +45,13 @@ class News extends BaseModel
         'is_meeting',
         'user_id',
     ];
+
+    /**
+     * @return HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(NewsComment::class)
+            ->orderBy('created_at');
+    }
 }
