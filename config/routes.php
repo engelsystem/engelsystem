@@ -24,4 +24,9 @@ $route->get('/metrics', 'Metrics\\Controller@metrics');
 $route->get('/stats', 'Metrics\\Controller@stats');
 
 // API
+$route->get('/api/angeltypes/my', 'ApiController@getMyAngelTypes');
+$route->get('/api/angeltypes', 'ApiController@getAngelTypes');
+$route->get('/api/shifts/my', 'ApiController@getMyShifts');
+$route->get('/api/shifts/free/{start:.+}/until/{stop:.+}', 'ApiController@getShiftsFree');
+$route->get('/api/shifts/by/angeltype/{angeltypeid:.+}', 'ApiController@getShiftsByAngelType');
 $route->get('/api[/{resource:.+}]', 'ApiController@index');
