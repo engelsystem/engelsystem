@@ -290,14 +290,32 @@ function ical_hint()
 {
     $user = auth()->user();
 
-    return heading(__('iCal export') . ' ' . button_help('user/ical'), 2)
+    return heading(__('iCal export and API') . ' ' . button_help('user/ical'), 2)
         . '<p>' . sprintf(
             __('Export your own shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
             page_link_to('ical', ['key' => $user->api_key]),
             page_link_to('shifts_json_export', ['key' => $user->api_key]),
             page_link_to('user_myshifts', ['reset' => 1])
-        ) . '</p>';
+        ) .
+        sprintf(__('<div class="card border-danger mb-3">
+                <div class="card-header" id="apiHeader">
+                    <h2 class="mb-0">
+                        <button class="btn btn-danger btn-smbtn-danger " data-toggle="collapse" data-target="#collapseApi" aria-expanded="false" aria-controls="collapseApi">
+                        ' . __('Show API Key') .'
+                    </button>
+                    </h2>
+                </div>
+        
+                <div id="collapseApi" class="collapse" aria-labelledby="apiHeader">
+                    <div class="card-body"><code>%s</code> <a href="%s">' . __('Reset API key') . '</a></div>
+                </div>
+            </div>'),
+            $user->api_key,
+            page_link_to('user_myshifts', ['reset' => 1])
+        ) .
+        '</p>';
 }
+
 
 /**
  * @param array $array
