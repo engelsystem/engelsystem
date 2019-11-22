@@ -74,6 +74,11 @@ class MessageTraitResponseTest extends TestCase
 
         $this->assertEquals(['bar'], $newMessage->getHeader('Foo'));
         $this->assertEquals([], $newMessage->getHeader('LoremIpsum'));
+
+        $newMessage = $message
+            ->withHeader('foo', 'bar')
+            ->withAddedHeader('foo', 'batz');
+        $this->assertEquals(['bar', 'batz'], $newMessage->getHeader('foo'));
     }
 
     /**

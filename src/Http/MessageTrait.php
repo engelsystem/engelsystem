@@ -111,7 +111,7 @@ trait MessageTrait
      */
     public function getHeader($name)
     {
-        return $this->headers->get($name, null, false);
+        return $this->headers->all($name);
     }
 
     /**
