@@ -59,6 +59,7 @@ return [
 
     // Available themes
     'available_themes'        => [
+        '12' => 'Engelsystem 36c3 (2019)',
         '10' => 'Engelsystem cccamp19 green (2019)',
         '9' => 'Engelsystem cccamp19 yellow (2019)',
         '8' => 'Engelsystem cccamp19 blue (2019)',
