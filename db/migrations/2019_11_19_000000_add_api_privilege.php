@@ -12,15 +12,11 @@ class AddApiPrivilege extends Migration
     public function up()
     {
         $connection = $this->schema->getConnection();
-
         // Add api permissions
-        $connection->insert(
-            '
-                INSERT INTO `Privileges` (`id`, `name`, `desc`) VALUES (NULL, \'view_api\', \'API accessible.\');
-            ',
+        $connection->table('Privileges')->insert(
             [
-                -40, // Shift Coordinator
-                43,  // admin_user_worklog
+                'name' => 'view_api',
+                'desc' => 'API accessible.'
             ]
         );
     }
@@ -30,11 +26,8 @@ class AddApiPrivilege extends Migration
      */
     public function down()
     {
+        $connection = $this->schema->getConnection();
         // Remove view_api permission
-        $this->schema->getConnection()->delete(
-            'DELETE FROM `Privileges`
-                WHERE `name` = \'view_api\'
-                )'
-        );
+        $connection->table('Privileges')->where('name', '=', 'view_api')->delete();
     }
 }
