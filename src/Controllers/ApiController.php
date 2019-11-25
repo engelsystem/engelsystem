@@ -44,18 +44,12 @@ class ApiController extends BaseController
     /**
      * @return User
      *
-     * Warning: I am no php coder. This code isnt intended for eternity but making our lives @36c3 a bit easier.
+     * Warning: I am still no php coder. This quickly implemented api may be abandoned at any time.
      * Code is mostly harvested from /includes/controller/shifts_controller.php/shifts_json_export_controller()
      */
     protected function doApiAuth($key)
     {
         $user = auth()->apiUser('key');
-        if (
-            !preg_match('/^[\da-f]{32}$/', $key)
-            || !$user
-        ) {
-            throw new HttpForbidden('{"error":"Missing or invalid key"}', ['content-type' => 'application/json']);
-        }
 
         if (!auth()->can('view_api')) {
             throw new HttpForbidden('{"error":"Not allowed"}', ['content-type' => 'application/json']);
@@ -65,7 +59,7 @@ class ApiController extends BaseController
     }
 
     /**
-     * @Route(“/api/shifts/my”)
+     * @Route("/api/v2019-alpha/shifts/my")
      */
     public function getMyShifts(Request $request)
     {
@@ -81,8 +75,7 @@ class ApiController extends BaseController
     }
 
     /**
-     * @Route(“/api/shifts/my”)
-     * doesnt work? dunno why result is empty.
+     * @Route("/api/v2019-alpha/shifts/by/angeltype/{angeltypeid:.+}")
      */
     public function getShiftsByAngelType(Request $request)
     {
@@ -101,7 +94,7 @@ class ApiController extends BaseController
     }
 
     /**
-     * @Route(“/api/shifts/free”)
+     * @Route("/api/v2019-alpha/shifts/free")
      */
     public function getShiftsFree(Request $request)
     {
@@ -119,7 +112,7 @@ class ApiController extends BaseController
     }
 
     /**
-     * @Route(“/api/angeltypes/my”)
+     * @Route("/api/v2019-alpha/angeltypes/my")
      */
     public function getMyAngelTypes(Request $request)
     {
@@ -135,7 +128,7 @@ class ApiController extends BaseController
     }
 
     /**
-     * @Route(“/api/angeltypes”)
+     * @Route("/api/v2019-alpha/angeltypes")
      */
     public function getAngelTypes(Request $request)
     {
