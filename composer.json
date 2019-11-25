@@ -45,6 +45,7 @@
         "vlucas/phpdotenv": "^3.3"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.6",
         "dms/phpunit-arraysubset-asserts": "^0.1.0",
         "filp/whoops": "^2.3",
         "phpunit/phpunit": "^8.1",

@@ -23,6 +23,7 @@ _vimrc_local.vim
 /docker/dev/.env
 
 # Project files
+/_ide_helper_models.php
 /config/config.php
 /test/coverage
 /public/coverage

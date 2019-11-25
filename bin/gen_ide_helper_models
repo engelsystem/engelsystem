@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Barryvdh\LaravelIdeHelper\Console\ModelsCommand;
+use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+
+require_once __DIR__ . '/../includes/application.php';
+
+/**
+ * This script generates the models helper file "_ide_helper_models.php" into the project root.
+ */
+
+$config = $app->get('config');
+$config['ide-helper.model_locations'] = ['src/Models'];
+
+$fileSystem = new Filesystem();
+$command = new ModelsCommand($fileSystem);
+$command->setLaravel($app);
+$command->run(
+    new ArrayInput([
+        '--nowrite' => true,
+    ]),
+    new ConsoleOutput()
+);
