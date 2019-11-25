@@ -165,4 +165,22 @@ class MessageTest extends TestCase
         $this->assertCount(1, $receivedUnreadByUser2);
         $this->assertSame($this->message1->id, $receivedUnreadByUser2[0]->id);
     }
+
+    /**
+     * Tests that the user have the correct Messages.
+     */
+    public function testUserMessages(): void
+    {
+        $user1Messages = $this->user1->messages->all();
+        $this->assertCount(3, $user1Messages);
+        $this->assertSame($this->message3->id, $user1Messages[0]->id);
+        $this->assertSame($this->message1->id, $user1Messages[1]->id);
+        $this->assertSame($this->message2->id, $user1Messages[2]->id);
+
+        $user2Messages = $this->user2->messages->all();
+        $this->assertCount(3, $user2Messages);
+        $this->assertSame($this->message3->id, $user2Messages[0]->id);
+        $this->assertSame($this->message1->id, $user2Messages[1]->id);
+        $this->assertSame($this->message2->id, $user2Messages[2]->id);
+    }
 }

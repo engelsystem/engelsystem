@@ -40,6 +40,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property-read \Illuminate\Database\Eloquent\Collection|\Engelsystem\Models\Message[] $receivedMessages
  * @property-read \Illuminate\Database\Eloquent\Collection|\Engelsystem\Models\Message[] $receivedUnreadMessages
  * @property-read \Illuminate\Database\Eloquent\Collection|\Engelsystem\Models\Message[] $sentMessages
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Engelsystem\Models\Message[] $messages
  */
 class User extends BaseModel
 {
@@ -132,6 +133,9 @@ class User extends BaseModel
             ->orderBy('id', 'DESC');
     }
 
+    /**
+     * @return HasMany
+     */
     public function receivedMessages(): HasMany
     {
         return $this->hasMany(Message::class, 'receiver_id')
@@ -140,10 +144,25 @@ class User extends BaseModel
             ->orderBy('id', 'DESC');
     }
 
+    /**
+     * @return HasMany
+     */
     public function receivedUnreadMessages(): HasMany
     {
         return $this->hasMany(Message::class, 'receiver_id')
             ->where('read', false)
+            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function messages(): HasMany
+    {
+        return $this->sentMessages()
+            ->union($this->receivedMessages())
+            ->orderBy('read')
             ->orderBy('created_at', 'DESC')
             ->orderBy('id', 'DESC');
     }
