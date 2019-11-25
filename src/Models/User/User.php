@@ -4,6 +4,7 @@ namespace Engelsystem\Models\User;
 
 use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
+use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Illuminate\Database\Eloquent\Collection;
@@ -35,6 +36,9 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|User[] whereLastLoginAt($value)
  * @method static QueryBuilder|User[] whereCreatedAt($value)
  * @method static QueryBuilder|User[] whereUpdatedAt($value)
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Engelsystem\Models\Message[] $receivedMessages
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Engelsystem\Models\Message[] $sentMessages
  */
 class User extends BaseModel
 {
@@ -115,5 +119,22 @@ class User extends BaseModel
     public function newsComments(): HasMany
     {
         return $this->hasMany(NewsComment::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function sentMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'sender_id')
+            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC');
+    }
+
+    public function receivedMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'receiver_id')
+            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC');
     }
 }
