@@ -75,7 +75,7 @@ class ApiController extends BaseController
     }
 
     /**
-     * @Route("/api/v2019-alpha/shifts/by/angeltype/{angeltypeid:.+}")
+     * @Route("/api/v2019-alpha/shifts/by/angeltype/{angeltypeid:\d+}")
      */
     public function getShiftsByAngelType(Request $request)
     {
