@@ -193,6 +193,10 @@ The `bin/migrate` script can be used to import and update the database of the en
 
 For more information on how to use it call `./bin/migrate help`
 
+##### [bin/gen_ide_helper_models](bin/gen_ide_helper_models)
+
+This script dumps the ide helper model docs to [_ide_helper_models](./_ide_helper_models).
+
 ### Translation
 We use gettext. You may use POEdit to extract new texts from the sourcecode. Please config POEdit to extract also the twig template files using the following settings: https://gist.github.com/jlambe/a868d9b63d70902a12254ce47069d0e6
 
