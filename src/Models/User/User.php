@@ -135,6 +135,7 @@ class User extends BaseModel
     public function receivedMessages(): HasMany
     {
         return $this->hasMany(Message::class, 'receiver_id')
+            ->orderBy('read')
             ->orderBy('created_at', 'DESC')
             ->orderBy('id', 'DESC');
     }

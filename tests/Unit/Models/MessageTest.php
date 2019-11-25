@@ -146,8 +146,8 @@ class MessageTest extends TestCase
 
         $receivedByUser2 = $this->user2->receivedMessages->all();
         $this->assertCount(2, $receivedByUser2);
-        $this->assertSame($this->message2->id, $receivedByUser2[0]->id);
-        $this->assertSame($this->message1->id, $receivedByUser2[1]->id);
+        $this->assertSame($this->message1->id, $receivedByUser2[0]->id);
+        $this->assertSame($this->message2->id, $receivedByUser2[1]->id);
     }
 
     /**
