@@ -121,7 +121,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testSentMessages(): void
+    public function testUserSentMessages(): void
     {
         $sentByUser1 = $this->user1->sentMessages->all();
         $this->assertCount(2, $sentByUser1);
@@ -138,7 +138,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testReceivedMessages(): void
+    public function testUserReceivedMessages(): void
     {
         $receivedByUser1 = $this->user1->receivedMessages->all();
         $this->assertCount(1, $receivedByUser1);
@@ -148,5 +148,21 @@ class MessageTest extends TestCase
         $this->assertCount(2, $receivedByUser2);
         $this->assertSame($this->message2->id, $receivedByUser2[0]->id);
         $this->assertSame($this->message1->id, $receivedByUser2[1]->id);
+    }
+
+    /**
+     * Tests that the user have the correct received and unread Messages.
+     *
+     * @return void
+     */
+    public function testUserReceivedUnreadMessages(): void
+    {
+        $receivedUnreadByUser1 = $this->user1->receivedUnreadMessages->all();
+        $this->assertCount(1, $receivedUnreadByUser1);
+        $this->assertSame($this->message3->id, $receivedUnreadByUser1[0]->id);
+
+        $receivedUnreadByUser2 = $this->user2->receivedUnreadMessages->all();
+        $this->assertCount(1, $receivedUnreadByUser2);
+        $this->assertSame($this->message1->id, $receivedUnreadByUser2[0]->id);
     }
 }

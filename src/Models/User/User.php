@@ -38,6 +38,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|User[] whereUpdatedAt($value)
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\Engelsystem\Models\Message[] $receivedMessages
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Engelsystem\Models\Message[] $receivedUnreadMessages
  * @property-read \Illuminate\Database\Eloquent\Collection|\Engelsystem\Models\Message[] $sentMessages
  */
 class User extends BaseModel
@@ -134,6 +135,14 @@ class User extends BaseModel
     public function receivedMessages(): HasMany
     {
         return $this->hasMany(Message::class, 'receiver_id')
+            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC');
+    }
+
+    public function receivedUnreadMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'receiver_id')
+            ->where('read', false)
             ->orderBy('created_at', 'DESC')
             ->orderBy('id', 'DESC');
     }
