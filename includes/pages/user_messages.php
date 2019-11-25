@@ -58,7 +58,7 @@ function user_messages()
         $messages_table = [
             [
                 'news'      => '',
-                'timestamp' => date('Y-m-d H:i'),
+                'timestamp' => date(__('Y-m-d H:i')),
                 'from'      => User_Nick_render($user),
                 'to'        => $to_select,
                 'text'      => form_textarea('text', '', ''),
@@ -72,7 +72,7 @@ function user_messages()
 
             $messages_table_entry = [
                 'new'       => !$message->read ? '<span class="glyphicon glyphicon-envelope"></span>' : '',
-                'timestamp' => $message->created_at->format('Y-m-d H:i'),
+                'timestamp' => $message->created_at->format(__('Y-m-d H:i')),
                 'from'      => User_Nick_render($sender_user_source),
                 'to'        => User_Nick_render($receiver_user_source),
                 'text'      => nl2br(htmlspecialchars($message->text))
