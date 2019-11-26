@@ -71,9 +71,7 @@ class ApiController extends BaseController
         $user = $this->doApiAuth();
         $shifts = Shifts_by_user($user->id);
 
-        return $this->response
-            ->setStatusCode(200)
-            ->withContent(json_encode($shifts));
+        return $this->response->withContent(json_encode($shifts));
     }
 
     /**
@@ -86,9 +84,7 @@ class ApiController extends BaseController
         $angelType = AngelType($angelTypeId);
         $shifts = Shifts_by_angeltype($angelType);
 
-        return $this->response
-            ->setStatusCode(200)
-            ->withContent(json_encode($shifts));
+        return $this->response->withContent(json_encode($shifts));
     }
 
     /**
@@ -101,9 +97,7 @@ class ApiController extends BaseController
         $stop = (int)$request->getAttribute('stop');
         $shifts = Shifts_free($start, $stop);
 
-        return $this->response
-            ->setStatusCode(200)
-            ->withContent(json_encode($shifts));
+        return $this->response->withContent(json_encode($shifts));
     }
 
     /**
@@ -114,9 +108,7 @@ class ApiController extends BaseController
         $user = $this->doApiAuth();
         $angelTypes = User_angeltypes($user->id);
 
-        return $this->response
-            ->setStatusCode(200)
-            ->withContent(json_encode($angelTypes));
+        return $this->response->withContent(json_encode($angelTypes));
     }
 
     /**
@@ -126,8 +118,6 @@ class ApiController extends BaseController
     {
         $angelTypes = AngelTypes();
 
-        return $this->response
-            ->setStatusCode(200)
-            ->withContent(json_encode($angelTypes));
+        return $this->response->withContent(json_encode($angelTypes));
     }
 }
