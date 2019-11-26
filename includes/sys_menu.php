@@ -41,12 +41,21 @@ function header_render_hints()
 }
 
 /**
+ * Returns the path of the current path with underscores instead of hyphens
+ *
+ * @return string
+ */
+function current_page()
+{
+    return request()->query->get('p') ?: str_replace('-', '_', request()->path());
+}
+
+/**
  * @return array
  */
 function make_user_submenu()
 {
-    global $page;
-
+    $page = current_page();
     $user_submenu = make_language_select();
 
     if (auth()->can('user_settings') || auth()->can('logout')) {
@@ -79,8 +88,7 @@ function make_user_submenu()
  */
 function make_navigation()
 {
-    global $page;
-
+    $page = current_page();
     $menu = [];
     $pages = [
         'news'           => __('News'),

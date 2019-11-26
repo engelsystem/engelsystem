@@ -87,8 +87,6 @@ function news_text(News $news): string
  */
 function display_news(News $news): string
 {
-    global $page;
-
     $html = '';
     $html .= '<div class="panel' . ($news->is_meeting ? ' panel-info' : ' panel-default') . '">';
     $html .= '<div class="panel-heading">';
@@ -109,7 +107,7 @@ function display_news(News $news): string
     $html .= '<span class="glyphicon glyphicon-time"></span> ' . $news->created_at->format('Y-m-d H:i') . '&emsp;';
 
     $html .= User_Nick_render($news->user);
-    if ($page != 'news_comments') {
+    if (current_page() != 'news_comments') {
         $html .= '&emsp;<a href="' . page_link_to('news_comments', ['nid' => $news->id]) . '">'
             . '<span class="glyphicon glyphicon-comment"></span> '
             . __('Comments') . ' &raquo;</a> '

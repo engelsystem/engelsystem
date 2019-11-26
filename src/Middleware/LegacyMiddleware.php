@@ -58,8 +58,6 @@ class LegacyMiddleware implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
-        global $page;
-
         /** @var Request $appRequest */
         $appRequest = $this->container->get('request');
         $page = $appRequest->query->get('p');
