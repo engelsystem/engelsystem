@@ -20,13 +20,15 @@ class ApiController extends BaseController
 {
     /** @var Response */
     protected $response;
-
+    protected $user;
     /**
      * @param Response $response
      */
     public function __construct(Response $response)
     {
-        $this->response = $response;
+        $this->response = $response->withHeader('content-type', 'application/json');
+        $this->user = auth()->apiUser('key');
+        $this->permissions = ['view_api'];
     }
 
     /**
@@ -46,8 +48,11 @@ class ApiController extends BaseController
      *
      * Warning: I am still no php coder. This quickly implemented api may be abandoned at any time.
      * Code is mostly harvested from /includes/controller/shifts_controller.php/shifts_json_export_controller()
+     * may or may not be unnecessary
+     * currently used by both getMy[Shifts|AngelTypes] because $this->user is NULL if no api_key provided
+     * (while session based auth is working fine) .
      */
-    protected function doApiAuth($key)
+    protected function doApiAuth()
     {
         $user = auth()->apiUser('key');
 
@@ -63,14 +68,11 @@ class ApiController extends BaseController
      */
     public function getMyShifts(Request $request)
     {
-        $key = $request->input('key');
-        $user = $this->doApiAuth($key);
-
+        $user = $this->doApiAuth();
         $shifts = Shifts_by_user($user->id);
 
         return $this->response
             ->setStatusCode(200)
-            ->withHeader('content-type', 'application/json')
             ->withContent(json_encode($shifts));
     }
 
@@ -79,9 +81,6 @@ class ApiController extends BaseController
      */
     public function getShiftsByAngelType(Request $request)
     {
-        $key = $request->input('key');
-        $user = $this->doApiAuth($key);
-
         // Shifts_by_angeltype uses only the id, required a AngelType though.
         $angelTypeId = (int)$request->getAttribute('angeltypeid');
         $angelType = AngelType($angelTypeId);
@@ -89,7 +88,6 @@ class ApiController extends BaseController
 
         return $this->response
             ->setStatusCode(200)
-            ->withHeader('content-type', 'application/json')
             ->withContent(json_encode($shifts));
     }
 
@@ -98,8 +96,6 @@ class ApiController extends BaseController
      */
     public function getShiftsFree(Request $request)
     {
-        $key = $request->input('key');
-        $user = $this->doApiAuth($key);
         // Shifts_by_angeltype uses only the id, required a AngelType though.
         $start = (int)$request->getAttribute('start');
         $stop = (int)$request->getAttribute('stop');
@@ -107,7 +103,6 @@ class ApiController extends BaseController
 
         return $this->response
             ->setStatusCode(200)
-            ->withHeader('content-type', 'application/json')
             ->withContent(json_encode($shifts));
     }
 
@@ -116,14 +111,11 @@ class ApiController extends BaseController
      */
     public function getMyAngelTypes(Request $request)
     {
-        $key = $request->input('key');
-        $user = $this->doApiAuth($key);
-
+        $user = $this->doApiAuth();
         $angelTypes = User_angeltypes($user->id);
 
         return $this->response
             ->setStatusCode(200)
-            ->withHeader('content-type', 'application/json')
             ->withContent(json_encode($angelTypes));
     }
 
@@ -132,14 +124,10 @@ class ApiController extends BaseController
      */
     public function getAngelTypes(Request $request)
     {
-        $key = $request->input('key');
-        $user = $this->doApiAuth($key);
-
         $angelTypes = AngelTypes();
 
         return $this->response
             ->setStatusCode(200)
-            ->withHeader('content-type', 'application/json')
             ->withContent(json_encode($angelTypes));
     }
 }
