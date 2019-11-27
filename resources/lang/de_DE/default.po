@@ -2806,3 +2806,60 @@ msgstr ""
 
 #~ msgid "auth.no-nickname"
 #~ msgstr "Gib bitte einen Nick an."
+
+msgid "form.load_schedule"
+msgstr "Programm laden"
+
+msgid "form.import"
+msgstr "Importieren"
+
+msgid "schedule.import.title"
+msgstr "Programm importieren"
+
+msgid "schedule.import.text"
+msgstr "Dieser Import erstellt Räume and erstellt, aktualisiert und löscht Schichten anhand des schedule.xml exportes."
+
+msgid "schedule.import.load.title"
+msgstr "Programm importieren: Vorschau"
+
+msgid "schedule.import.load.info"
+msgstr "Importiere \"%s\" (Version \"%s\")"
+
+msgid "schedule.url"
+msgstr "Programm URL (schedule.xml)"
+
+msgid "schedule.shift-type"
+msgstr "Schichttyp"
+
+msgid "schedule.minutes-before"
+msgstr "Minuten vor Talk beginn hinzufügen"
+
+msgid "schedule.minutes-after"
+msgstr "Minuten nach Talk ende hinzufügen"
+
+msgid "schedule.import.rooms.add"
+msgstr "Neue Räume"
+
+msgid "schedule.import.shifts.add"
+msgstr "Neue Schichten"
+
+msgid "schedule.import.shifts.update"
+msgstr "Zu aktualisierende Schichten"
+
+msgid "schedule.import.shifts.delete"
+msgstr "Zu löschende Schichten"
+
+msgid "schedule.import.rooms.name"
+msgstr "Name"
+
+msgid "schedule.import.shift.dates"
+msgstr "Zeit"
+
+msgid "schedule.import.shift.type"
+msgstr "Typ"
+
+msgid "schedule.import.shift.title"
+msgstr "Titel"
+
+msgid "schedule.import.shift.room"
+msgstr "Raum"

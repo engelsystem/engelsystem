@@ -350,7 +350,6 @@ function admin_shifts()
 
         foreach ($session->get('admin_shifts_shifts', []) as $shift) {
             $shift['URL'] = null;
-            $shift['PSID'] = null;
             $shift_id = Shift_create($shift);
 
             engelsystem_log(

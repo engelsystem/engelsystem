@@ -13,6 +13,19 @@
     </div>
 {%- endmacro %}
 
+{% macro select(name, data, label, selected) %}
+    <div class="form-group">
+        {% if label -%}
+            <label for="{{ name }}">{{ label }}</label>
+        {% endif %}
+        <select id="{{ name }}" name="{{ name }}" class="form-control">
+            {% for value,decription in data -%}
+                <option value="{{ value }}" {% if name == selected %} selected{% endif %}>{{ decription }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{%- endmacro %}
+
 {% macro hidden(name, value) %}
     <input type="hidden" id="{{ name }}" name="{{ name }}" value="{{ value }}">
 {%- endmacro %}

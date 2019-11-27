@@ -39,8 +39,9 @@ function stats_hours_to_work()
                 (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`)
                 * (`Shifts`.`end` - `Shifts`.`start`)/3600 AS `count`
             FROM `Shifts`
+            LEFT JOIN schedule_shift AS s on Shifts.SID = s.shift_id
             WHERE `end` >= ?
-            AND `Shifts`.`PSID` IS NULL
+            AND s.shift_id IS NULL
         
             UNION ALL
         
@@ -48,8 +49,9 @@ function stats_hours_to_work()
                 (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID`)
                 * (`Shifts`.`end` - `Shifts`.`start`)/3600 AS `count`
             FROM `Shifts`
+            LEFT JOIN schedule_shift AS s on Shifts.SID = s.shift_id
             WHERE `end` >= ?
-            AND NOT `Shifts`.`PSID` IS NULL
+            AND NOT s.shift_id IS NULL
         ) AS `tmp`
         ", [
         time(),
@@ -90,8 +92,9 @@ function stats_angels_needed_three_hours()
                 )
                 AS `count`
             FROM `Shifts`
+            LEFT JOIN schedule_shift AS s on Shifts.SID = s.shift_id
             WHERE `end` > ? AND `start` < ?
-            AND `Shifts`.`PSID` IS NULL
+            AND s.shift_id IS NULL
         
             UNION ALL
         
@@ -113,8 +116,9 @@ function stats_angels_needed_three_hours()
                 )
                 AS `count`
             FROM `Shifts`
+            LEFT JOIN schedule_shift AS s on Shifts.SID = s.shift_id
             WHERE `end` > ? AND `start` < ?
-            AND NOT `Shifts`.`PSID` IS NULL
+            AND NOT s.shift_id IS NULL
         ) AS `tmp`", [
         $now,
         $in3hours,
@@ -163,8 +167,9 @@ function stats_angels_needed_for_nightshifts()
                 )
                 AS `count`
             FROM `Shifts`
+            LEFT JOIN schedule_shift AS s on Shifts.SID = s.shift_id
             WHERE `end` > ? AND `start` < ?
-            AND `Shifts`.`PSID` IS NULL
+            AND s.shift_id IS NULL
         
             UNION ALL
         
@@ -186,8 +191,9 @@ function stats_angels_needed_for_nightshifts()
                 )
                 AS `count`
             FROM `Shifts`
+            LEFT JOIN schedule_shift AS s on Shifts.SID = s.shift_id
             WHERE `end` > ? AND `start` < ?
-            AND NOT `Shifts`.`PSID` IS NULL
+            AND NOT s.shift_id IS NULL
         ) AS `tmp`", [
         $night_start,
         $night_end,

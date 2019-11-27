@@ -45,3 +45,63 @@ msgstr ""
 "Please have a look at the "
 "[contributors list on GitHub](https://github.com/engelsystem/engelsystem/graphs/contributors)"
 " for a complete list."
+
+msgid "form.load_schedule"
+msgstr "Load schedule"
+
+msgid "form.import"
+msgstr "Import"
+
+msgid "schedule.import.title"
+msgstr "Import schedule"
+
+msgid "schedule.import.text"
+msgstr "This import creates rooms and creates, updates and deletes shifts according to the schedule.xml export."
+
+msgid "schedule.import.load.title"
+msgstr "Import schedule: Preview"
+
+msgid "schedule.import.load.info"
+msgstr "Import \"%s\" (version \"%s\")"
+
+msgid "schedule.url"
+msgstr "Schedule URL (schedule.xml)"
+
+msgid "schedule.shift-type"
+msgstr "Shift type"
+
+msgid "schedule.minutes-before"
+msgstr "Add minutes before talk begins"
+
+msgid "schedule.minutes-after"
+msgstr "Add minutes after talk ends"
+
+msgid "schedule.import.request_error"
+msgstr "Unable to load schedule."
+
+msgid "schedule.import.rooms.add"
+msgstr "Rooms to create"
+
+msgid "schedule.import.shifts.add"
+msgstr "Shifts to create"
+
+msgid "schedule.import.shifts.update"
+msgstr "Shifts to update"
+
+msgid "schedule.import.shifts.delete"
+msgstr "Shifts to delete"
+
+msgid "schedule.import.rooms.name"
+msgstr "Name"
+
+msgid "schedule.import.shift.dates"
+msgstr "Times"
+
+msgid "schedule.import.shift.type"
+msgstr "Type"
+
+msgid "schedule.import.shift.title"
+msgstr "Title"
+
+msgid "schedule.import.shift.room"
+msgstr "Room"

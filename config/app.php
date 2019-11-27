@@ -31,6 +31,7 @@ return [
         // Additional services
         \Engelsystem\Helpers\VersionServiceProvider::class,
         \Engelsystem\Mail\MailerServiceProvider::class,
+        \Engelsystem\Http\GuzzleServiceProvider::class,
     ],
 
     // Application middleware

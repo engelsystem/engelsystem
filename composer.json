@@ -28,6 +28,7 @@
         "doctrine/dbal": "^2.9",
         "erusev/parsedown": "^1.7",
         "gettext/gettext": "^4.6",
+        "guzzlehttp/guzzle": "^6.3",
         "illuminate/container": "5.8.*",
         "illuminate/database": "5.8.*",
         "illuminate/support": "5.8.*",

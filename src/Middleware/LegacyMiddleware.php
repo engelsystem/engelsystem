@@ -205,10 +205,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 $title = admin_groups_title();
                 $content = admin_groups();
                 return [$title, $content];
-            case 'admin_import':
-                $title = admin_import_title();
-                $content = admin_import();
-                return [$title, $content];
             case 'admin_shifts':
                 $title = admin_shifts_title();
                 $content = admin_shifts();
@@ -239,9 +235,15 @@ class LegacyMiddleware implements MiddlewareInterface
             return response($content, (int)$page);
         }
 
-        return response(view('layouts/app', [
-            'title'   => $title,
-            'content' => msg() . $content,
-        ]), 200);
+        return response(
+            view(
+                'layouts/app',
+                [
+                    'title'   => $title,
+                    'content' => msg() . $content,
+                ]
+            ),
+            200
+        );
     }
 }

@@ -108,30 +108,38 @@ function make_navigation()
 
     $admin_menu = [];
     $admin_pages = [
-        'admin_arrive'       => __('Arrived angels'),
-        'admin_active'       => __('Active angels'),
-        'admin_user'         => __('All Angels'),
-        'admin_free'         => __('Free angels'),
-        'admin_questions'    => __('Answer questions'),
-        'shifttypes'         => __('Shifttypes'),
-        'admin_shifts'       => __('Create shifts'),
-        'admin_rooms'        => __('Rooms'),
-        'admin_groups'       => __('Grouprights'),
-        'admin_import'       => __('Frab import'),
-        'admin_log'          => __('Log'),
-        'admin_event_config' => __('Event config'),
+        'admin_arrive'       => 'Arrived angels',
+        'admin_active'       => 'Active angels',
+        'admin_user'         => 'All Angels',
+        'admin_free'         => 'Free angels',
+        'admin_questions'    => 'Answer questions',
+        'shifttypes'         => 'Shifttypes',
+        'admin_shifts'       => 'Create shifts',
+        'admin_rooms'        => 'Rooms',
+        'admin_groups'       => 'Grouprights',
+        'admin/schedule'     => ['schedule.import', 'schedule.import'],
+        'admin_log'          => 'Log',
+        'admin_event_config' => 'Event config',
     ];
 
     if (config('autoarrive')) {
         unset($admin_pages['admin_arrive']);
     }
 
-    foreach ($admin_pages as $menu_page => $title) {
-        if (auth()->can($menu_page)) {
+    foreach ($admin_pages as $menu_page => $options) {
+        $options = (array)$options;
+        $permissions = $menu_page;
+        $title = $options[0];
+
+        if (isset($options[1])) {
+            $permissions = $options[1];
+        }
+
+        if (auth()->can($permissions)) {
             $admin_menu[] = toolbar_item_link(
                 page_link_to($menu_page),
                 '',
-                $title,
+                __($title),
                 $menu_page == $page
             );
         }

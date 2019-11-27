@@ -13,7 +13,7 @@ class RoomModelTest extends TestCase
      */
     public function createRoom()
     {
-        $this->room_id = Room_create('test', false, null, null);
+        $this->room_id = Room_create('test', null, null);
     }
 
     /**
