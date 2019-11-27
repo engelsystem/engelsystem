@@ -6,6 +6,7 @@ use Engelsystem\Application;
 use Engelsystem\Http\Exceptions\HttpException;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Psr7ServiceProvider;
+use Engelsystem\Http\RedirectServiceProvider;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\ResponseServiceProvider;
@@ -18,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Twig\Loader\LoaderInterface as TwigLoader;
 
@@ -155,7 +157,7 @@ class ErrorHandlerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Middleware\ErrorHandler::process
-     * @covers \Engelsystem\Middleware\ErrorHandler::getPreviousUrl
+     * @covers \Engelsystem\Middleware\ErrorHandler::redirectBack
      */
     public function testProcessValidationException()
     {
@@ -185,11 +187,13 @@ class ErrorHandlerTest extends TestCase
 
         /** @var Application $app */
         $app = app();
+        $app->instance(Session::class, $session);
+        $app->bind(SessionInterface::class, Session::class);
         (new ResponseServiceProvider($app))->register();
         (new Psr7ServiceProvider($app))->register();
+        (new RedirectServiceProvider($app))->register();
 
         $errorHandler = new ErrorHandler($twigLoader);
-
         $return = $errorHandler->process($request, $handler);
 
         $this->assertEquals(302, $return->getStatusCode());
@@ -209,6 +213,7 @@ class ErrorHandlerTest extends TestCase
         ], $session->all());
 
         $request = $request->withAddedHeader('referer', '/foo/batz');
+        $app->instance(Request::class, $request);
         $return = $errorHandler->process($request, $handler);
 
         $this->assertEquals('/foo/batz', $return->getHeaderLine('location'));

@@ -26,6 +26,7 @@ return [
         \Engelsystem\Middleware\RequestHandlerServiceProvider::class,
         \Engelsystem\Middleware\SessionHandlerServiceProvider::class,
         \Engelsystem\Http\Validation\ValidationServiceProvider::class,
+        \Engelsystem\Http\RedirectServiceProvider::class,
 
         // Additional services
         \Engelsystem\Helpers\VersionServiceProvider::class,

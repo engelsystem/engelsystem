@@ -7,6 +7,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Container\Container;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Translation\Translator;
+use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGeneratorInterface;
@@ -99,6 +100,29 @@ class HelpersTest extends TestCase
     }
 
     /**
+     * @covers \back
+     */
+    public function testBack()
+    {
+        $response = new Response();
+        /** @var Redirector|MockObject $redirect */
+        $redirect = $this->createMock(Redirector::class);
+        $redirect->expects($this->exactly(2))
+            ->method('back')
+            ->withConsecutive([302, []], [303, ['test' => 'ing']])
+            ->willReturn($response);
+
+        $app = new Application();
+        $app->instance('redirect', $redirect);
+
+        $return = back();
+        $this->assertEquals($response, $return);
+
+        $return = back(303, ['test' => 'ing']);
+        $this->assertEquals($response, $return);
+    }
+
+    /**
      * @covers \config_path
      */
     public function testConfigPath()
@@ -115,6 +139,29 @@ class HelpersTest extends TestCase
 
         $this->assertEquals('/foo/conf', config_path());
         $this->assertEquals('/foo/conf/bar.php', config_path('bar.php'));
+    }
+
+    /**
+     * @covers \redirect
+     */
+    public function testRedirect()
+    {
+        $response = new Response();
+        /** @var Redirector|MockObject $redirect */
+        $redirect = $this->createMock(Redirector::class);
+        $redirect->expects($this->exactly(2))
+            ->method('to')
+            ->withConsecutive(['/lorem', 302, []], ['/ipsum', 303, ['test' => 'er']])
+            ->willReturn($response);
+
+        $app = new Application();
+        $app->instance('redirect', $redirect);
+
+        $return = redirect('/lorem');
+        $this->assertEquals($response, $return);
+
+        $return = redirect('/ipsum', 303, ['test' => 'er']);
+        $this->assertEquals($response, $return);
     }
 
     /**

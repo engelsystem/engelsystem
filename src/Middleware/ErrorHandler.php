@@ -63,17 +63,11 @@ class ErrorHandler implements MiddlewareInterface
         } catch (HttpException $e) {
             $response = $this->createResponse($e->getMessage(), $e->getStatusCode(), $e->getHeaders());
         } catch (ValidationException $e) {
-            $response = $this->createResponse('', 302, ['Location' => $this->getPreviousUrl($request)]);
+            $response = $this->redirectBack();
+            $response->with('errors', ['validation' => $e->getValidator()->getErrors()]);
 
             if ($request instanceof Request) {
-                $session = $request->getSession();
-                $errors = array_merge_recursive(
-                    $session->get('errors', []),
-                    ['validation' => $e->getValidator()->getErrors()]
-                );
-                $session->set('errors', $errors);
-
-                $session->set('form-data', Arr::except($request->request->all(), $this->formIgnore));
+                $response->withInput(Arr::except($request->request->all(), $this->formIgnore));
             }
         }
 
@@ -140,15 +134,12 @@ class ErrorHandler implements MiddlewareInterface
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @return string
+     * Create a redirect back response
+     *
+     * @return Response
      */
-    protected function getPreviousUrl(ServerRequestInterface $request)
+    protected function redirectBack()
     {
-        if ($header = $request->getHeader('referer')) {
-            return array_pop($header);
-        }
-
-        return '/';
+        return back();
     }
 }
