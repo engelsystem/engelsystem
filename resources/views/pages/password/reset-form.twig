@@ -7,8 +7,8 @@
         <form action="" enctype="multipart/form-data" method="post">
             {{ csrf() }}
 
-            {{ f.input('password', __('Password'), 'password', true) }}
-            {{ f.input('password_confirmation', __('Confirm password'), 'password', true) }}
+            {{ f.input('password', __('Password'), 'password', {'required': true}) }}
+            {{ f.input('password_confirmation', __('Confirm password'), 'password', {'required': true}) }}
 
             <div class="form-group">
                 {{ f.submit(__('Save')) }}

@@ -1,18 +1,22 @@
-{% macro input(name, label, type, required) %}
+{% macro input(name, label, type, opt) %}
     <div class="form-group">
-        {% if label %}
+        {% if label -%}
             <label for="{{ name }}">{{ label }}</label>
-        {% endif %}
-        <input type="{{ type|default('text') }}" class="form-control" id="{{ name }}" name="{{ name }}"
-                {%- if required|default(false) %} required="required"{% endif -%}
+        {%- endif %}
+        <input type="{{ type|default('text') }}" class="form-control"
+               id="{{ name }}" name="{{ name }}"
+               value="{{ opt.value|default('') }}"
+                {%- if opt.required|default(false) %}
+                    required="required"
+                {%- endif -%}
         >
     </div>
-{% endmacro %}
+{%- endmacro %}
 
 {% macro hidden(name, value) %}
     <input type="hidden" id="{{ name }}" name="{{ name }}" value="{{ value }}">
-{% endmacro %}
+{%- endmacro %}
 
 {% macro submit(label) %}
-    <button type="submit" class="btn btn-default">{{ label|default(__('form.submit')) }}</button>
-{% endmacro %}
+    <button type="submit" class="btn btn-primary">{{ label|default(__('form.submit')) }}</button>
+{%- endmacro %}
