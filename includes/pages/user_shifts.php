@@ -171,11 +171,9 @@ function load_types()
  */
 function view_user_shifts()
 {
-    global $ical_shifts;
     $user = auth()->user();
 
     $session = session();
-    $ical_shifts = [];
     $days = load_days();
     $rooms = load_rooms();
     $types = load_types();
