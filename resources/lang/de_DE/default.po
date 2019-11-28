@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Engelsystem\n"
-"POT-Creation-Date: 2019-11-28 19:40+0100\n"
-"PO-Revision-Date: 2019-11-28 19:41+0100\n"
+"POT-Creation-Date: 2019-11-28 19:41+0100\n"
+"PO-Revision-Date: 2019-11-28 19:42+0100\n"
 "Last-Translator: Michael Weimann / weeman <mail@michael-weimann.eu>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1693,6 +1693,10 @@ msgstr "Nachrichten"
 msgid "Select recipient..."
 msgstr "Empfänger auswählen..."
 
+#: includes/pages/user_messages.php:61 includes/pages/user_messages.php:75
+msgid "Y-m-d H:i"
+msgstr "d.m.Y H:i"
+
 #: includes/pages/user_messages.php:85
 msgid "mark as read"
 msgstr "als gelesen markieren"
@@ -2782,11 +2786,6 @@ msgid "page.404.text"
 msgstr ""
 "Diese Seite existiert nicht oder Du hast keinen Zugriff. Melde Dich an um "
 "Zugriff zu erhalten!"
-
-#, fuzzy
-#~| msgid "Y-m-d"
-#~ msgid "Y-m-d H:i"
-#~ msgstr "d.m.Y"
 
 #~ msgid "Token is not correct."
 #~ msgstr "Der Token ist nicht in Ordnung."
