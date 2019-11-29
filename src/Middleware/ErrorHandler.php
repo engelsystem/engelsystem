@@ -67,13 +67,11 @@ class ErrorHandler implements MiddlewareInterface
 
             if ($request instanceof Request) {
                 $session = $request->getSession();
-                $session->set(
-                    'errors',
-                    array_merge_recursive(
-                        $session->get('errors', []),
-                        ['validation' => $e->getValidator()->getErrors()]
-                    )
+                $errors = array_merge_recursive(
+                    $session->get('errors', []),
+                    ['validation' => $e->getValidator()->getErrors()]
                 );
+                $session->set('errors', $errors);
 
                 $session->set('form-data', Arr::except($request->request->all(), $this->formIgnore));
             }
