@@ -4,27 +4,20 @@ namespace Engelsystem\Renderer\Twig\Extensions;
 
 use Engelsystem\Helpers\Translation\Translator;
 use Twig_Extension as TwigExtension;
-use Twig_Extensions_TokenParser_Trans as TranslationTokenParser;
 use Twig_Filter as TwigFilter;
 use Twig_Function as TwigFunction;
-use Twig_TokenParserInterface as TwigTokenParser;
 
 class Translation extends TwigExtension
 {
     /** @var Translator */
     protected $translator;
 
-    /** @var TranslationTokenParser */
-    protected $tokenParser;
-
     /**
-     * @param Translator             $translator
-     * @param TranslationTokenParser $tokenParser
+     * @param Translator $translator
      */
-    public function __construct(Translator $translator, TranslationTokenParser $tokenParser)
+    public function __construct(Translator $translator)
     {
         $this->translator = $translator;
-        $this->tokenParser = $tokenParser;
     }
 
     /**
@@ -46,13 +39,5 @@ class Translation extends TwigExtension
             new TwigFunction('__', [$this->translator, 'translate']),
             new TwigFunction('_e', [$this->translator, 'translatePlural']),
         ];
-    }
-
-    /**
-     * @return TwigTokenParser[]
-     */
-    public function getTokenParsers()
-    {
-        return [$this->tokenParser];
     }
 }
