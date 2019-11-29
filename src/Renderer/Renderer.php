@@ -18,7 +18,7 @@ class Renderer
      * @param mixed[] $data
      * @return string
      */
-    public function render($template, $data = [])
+    public function render(string $template, array $data = []): string
     {
         foreach ($this->renderer as $renderer) {
             if (!$renderer->canRender($template)) {
@@ -40,7 +40,7 @@ class Renderer
      *
      * @param EngineInterface $renderer
      */
-    public function addRenderer(EngineInterface $renderer)
+    public function addRenderer(EngineInterface $renderer): void
     {
         $this->renderer[] = $renderer;
     }

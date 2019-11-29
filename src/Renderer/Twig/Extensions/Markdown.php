@@ -36,7 +36,7 @@ class Markdown extends TwigExtension
      * @param string $text
      * @return string
      */
-    public function render($text): string
+    public function render(string $text): string
     {
         return $this->renderer->text(htmlspecialchars($text));
     }

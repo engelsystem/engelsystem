@@ -22,7 +22,7 @@ class Url extends TwigExtension
     /**
      * @return TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('url', [$this, 'getUrl']),
@@ -32,9 +32,9 @@ class Url extends TwigExtension
     /**
      * @param string $path
      * @param array  $parameters
-     * @return UrlGenerator|string
+     * @return string
      */
-    public function getUrl($path, $parameters = [])
+    public function getUrl(string $path, array $parameters = []): string
     {
         $path = str_replace('_', '-', $path);
 

@@ -22,7 +22,7 @@ class Authentication extends TwigExtension
     /**
      * @return TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('is_user', [$this, 'isAuthenticated']),
@@ -34,7 +34,7 @@ class Authentication extends TwigExtension
     /**
      * @return bool
      */
-    public function isAuthenticated()
+    public function isAuthenticated(): bool
     {
         return (bool)$this->auth->user();
     }
@@ -42,7 +42,7 @@ class Authentication extends TwigExtension
     /**
      * @return bool
      */
-    public function isGuest()
+    public function isGuest(): bool
     {
         return !$this->isAuthenticated();
     }

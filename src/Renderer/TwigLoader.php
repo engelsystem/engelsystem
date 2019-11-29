@@ -10,10 +10,10 @@ class TwigLoader extends FilesystemLoader
     /**
      * @param string $name
      * @param bool   $throw
-     * @return string|false|null
+     * @return string|null
      * @throws ErrorLoader
      */
-    public function findTemplate($name, $throw = true)
+    public function findTemplate(string $name, bool $throw = true): ?string
     {
         $extension = '.twig';
         $extensionLength = mb_strlen($extension);

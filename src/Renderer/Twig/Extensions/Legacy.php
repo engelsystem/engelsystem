@@ -22,7 +22,7 @@ class Legacy extends TwigExtension
     /**
      * @return TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         $isSafeHtml = ['is_safe' => ['html']];
         return [
@@ -39,7 +39,7 @@ class Legacy extends TwigExtension
     /**
      * @return string
      */
-    public function getPage()
+    public function getPage(): string
     {
         if ($this->request->has('p')) {
             return $this->request->get('p');

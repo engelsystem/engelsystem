@@ -22,7 +22,7 @@ class Session extends TwigExtension
     /**
      * @return TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('session_get', [$this->session, 'get']),

@@ -22,7 +22,7 @@ class Assets extends TwigExtension
     /**
      * @return TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('asset', [$this, 'getAsset']),
@@ -31,9 +31,9 @@ class Assets extends TwigExtension
 
     /**
      * @param string $path
-     * @return UrlGenerator|string
+     * @return string
      */
-    public function getAsset($path)
+    public function getAsset(string $path): string
     {
         $path = ltrim($path, '/');
 

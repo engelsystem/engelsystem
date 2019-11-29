@@ -12,6 +12,7 @@ use ReflectionClass as Reflection;
 use ReflectionException;
 use stdClass;
 use Twig\Environment as Twig;
+use Twig\Extension\AbstractExtension;
 use Twig\Extension\CoreExtension as TwigCore;
 use Twig\Extension\ExtensionInterface as ExtensionInterface;
 use Twig\Loader\LoaderInterface as TwigLoaderInterface;
@@ -103,9 +104,15 @@ class TwigServiceProviderTest extends ServiceProviderTest
         /** @var Config|MockObject $config */
         $config = $this->createMock(Config::class);
         /** @var TwigCore|MockObject $twigCore */
-        $twigCore = $this->getMockBuilder(stdClass::class)
-            ->addMethods(['setTimezone'])
-            ->getMock();
+        $twigCore = $this->getMockForAbstractClass(
+            AbstractExtension::class,
+            [],
+            '',
+            true,
+            true,
+            true,
+            ['setTimezone']
+        );
 
         $app = $this->getApp(['make', 'instance', 'tag', 'get']);
 

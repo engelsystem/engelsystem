@@ -23,7 +23,7 @@ class Translation extends TwigExtension
     /**
      * @return array
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('trans', [$this->translator, 'translate']),
@@ -33,7 +33,7 @@ class Translation extends TwigExtension
     /**
      * @return TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('__', [$this->translator, 'translate']),

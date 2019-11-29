@@ -95,7 +95,7 @@ class TwigServiceProvider extends ServiceProvider
      * @param string $class
      * @param string $alias
      */
-    protected function registerTwigExtensions($class, $alias)
+    protected function registerTwigExtensions(string $class, string $alias)
     {
         $alias = 'twig.extension.' . $alias;
 

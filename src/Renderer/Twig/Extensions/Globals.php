@@ -24,7 +24,7 @@ class Globals extends TwigExtension implements GlobalsInterface
      *
      * @return array An array of global variables
      */
-    public function getGlobals()
+    public function getGlobals(): array
     {
         $user = $this->auth->user();
 
