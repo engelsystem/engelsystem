@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Twig_LoaderInterface as TwigLoader;
+use Twig\Loader\LoaderInterface as TwigLoader;
 
 class ErrorHandler implements MiddlewareInterface
 {
@@ -67,13 +67,11 @@ class ErrorHandler implements MiddlewareInterface
 
             if ($request instanceof Request) {
                 $session = $request->getSession();
-                $session->set(
-                    'errors',
-                    array_merge_recursive(
-                        $session->get('errors', []),
-                        ['validation' => $e->getValidator()->getErrors()]
-                    )
+                $errors = array_merge_recursive(
+                    $session->get('errors', []),
+                    ['validation' => $e->getValidator()->getErrors()]
                 );
+                $session->set('errors', $errors);
 
                 $session->set('form-data', Arr::except($request->request->all(), $this->formIgnore));
             }

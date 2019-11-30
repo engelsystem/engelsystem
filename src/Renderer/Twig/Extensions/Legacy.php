@@ -3,8 +3,8 @@
 namespace Engelsystem\Renderer\Twig\Extensions;
 
 use Engelsystem\Http\Request;
-use Twig_Extension as TwigExtension;
-use Twig_Function as TwigFunction;
+use Twig\Extension\AbstractExtension as TwigExtension;
+use Twig\TwigFunction;
 
 class Legacy extends TwigExtension
 {
@@ -22,7 +22,7 @@ class Legacy extends TwigExtension
     /**
      * @return TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         $isSafeHtml = ['is_safe' => ['html']];
         return [
@@ -39,7 +39,7 @@ class Legacy extends TwigExtension
     /**
      * @return string
      */
-    public function getPage()
+    public function getPage(): string
     {
         if ($this->request->has('p')) {
             return $this->request->get('p');

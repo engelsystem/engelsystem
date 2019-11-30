@@ -11,7 +11,7 @@ abstract class Engine implements EngineInterface
      * @param mixed[]|string $key
      * @param null           $value
      */
-    public function share($key, $value = null)
+    public function share($key, $value = null): void
     {
         if (!is_array($key)) {
             $key = [$key => $value];

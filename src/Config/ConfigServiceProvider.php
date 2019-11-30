@@ -40,10 +40,11 @@ class ConfigServiceProvider extends ServiceProvider
                 continue;
             }
 
-            $config->set(array_replace_recursive(
+            $configuration = array_replace_recursive(
                 $config->get(null),
                 require $file
-            ));
+            );
+            $config->set($configuration);
         }
 
         if (empty($config->get(null))) {

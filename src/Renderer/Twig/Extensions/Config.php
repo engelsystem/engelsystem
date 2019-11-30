@@ -3,8 +3,8 @@
 namespace Engelsystem\Renderer\Twig\Extensions;
 
 use Engelsystem\Config\Config as EngelsystemConfig;
-use Twig_Extension as TwigExtension;
-use Twig_Function as TwigFunction;
+use Twig\Extension\AbstractExtension as TwigExtension;
+use Twig\TwigFunction;
 
 class Config extends TwigExtension
 {
@@ -22,7 +22,7 @@ class Config extends TwigExtension
     /**
      * @return TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('config', [$this->config, 'get']),

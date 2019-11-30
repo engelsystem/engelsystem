@@ -3,8 +3,8 @@
 namespace Engelsystem\Renderer\Twig\Extensions;
 
 use Engelsystem\Http\UrlGenerator;
-use Twig_Extension as TwigExtension;
-use Twig_Function as TwigFunction;
+use Twig\Extension\AbstractExtension as TwigExtension;
+use Twig\TwigFunction;
 
 class Assets extends TwigExtension
 {
@@ -22,7 +22,7 @@ class Assets extends TwigExtension
     /**
      * @return TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('asset', [$this, 'getAsset']),
@@ -31,9 +31,9 @@ class Assets extends TwigExtension
 
     /**
      * @param string $path
-     * @return UrlGenerator|string
+     * @return string
      */
-    public function getAsset($path)
+    public function getAsset(string $path): string
     {
         $path = ltrim($path, '/');
 

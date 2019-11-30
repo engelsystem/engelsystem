@@ -25,7 +25,7 @@ class Authenticator
     /** @var string[] */
     protected $permissions;
 
-    /** @var int */
+    /** @var int|string|null */
     protected $passwordAlgorithm = PASSWORD_DEFAULT;
 
     /**
@@ -163,13 +163,11 @@ class Authenticator
      */
     public function verifyPassword(User $user, string $password)
     {
-        $algorithm = $this->passwordAlgorithm;
-
         if (!password_verify($password, $user->password)) {
             return false;
         }
 
-        if (password_needs_rehash($user->password, $algorithm)) {
+        if (password_needs_rehash($user->password, $this->passwordAlgorithm)) {
             $this->setPassword($user, $password);
         }
 
@@ -182,14 +180,12 @@ class Authenticator
      */
     public function setPassword(User $user, string $password)
     {
-        $algorithm = $this->passwordAlgorithm;
-
-        $user->password = password_hash($password, $algorithm);
+        $user->password = password_hash($password, $this->passwordAlgorithm);
         $user->save();
     }
 
     /**
-     * @return int
+     * @return int|string|null
      */
     public function getPasswordAlgorithm()
     {
@@ -197,9 +193,9 @@ class Authenticator
     }
 
     /**
-     * @param int $passwordAlgorithm
+     * @param int|string|null $passwordAlgorithm
      */
-    public function setPasswordAlgorithm(int $passwordAlgorithm)
+    public function setPasswordAlgorithm($passwordAlgorithm)
     {
         $this->passwordAlgorithm = $passwordAlgorithm;
     }

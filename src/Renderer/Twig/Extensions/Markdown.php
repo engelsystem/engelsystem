@@ -3,8 +3,8 @@
 namespace Engelsystem\Renderer\Twig\Extensions;
 
 use Parsedown;
-use Twig_Extension as TwigExtension;
-use Twig_Filter as TwigFilter;
+use Twig\Extension\AbstractExtension as TwigExtension;
+use Twig\TwigFilter;
 
 class Markdown extends TwigExtension
 {
@@ -36,7 +36,7 @@ class Markdown extends TwigExtension
      * @param string $text
      * @return string
      */
-    public function render($text): string
+    public function render(string $text): string
     {
         return $this->renderer->text(htmlspecialchars($text));
     }

@@ -11,10 +11,11 @@ use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionClass as Reflection;
 use ReflectionException;
 use stdClass;
-use Twig_Environment as Twig;
-use Twig_Extension_Core as TwigCore;
-use Twig_ExtensionInterface as ExtensionInterface;
-use Twig_LoaderInterface as TwigLoaderInterface;
+use Twig\Environment as Twig;
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\CoreExtension as TwigCore;
+use Twig\Extension\ExtensionInterface as ExtensionInterface;
+use Twig\Loader\LoaderInterface as TwigLoaderInterface;
 
 class TwigServiceProviderTest extends ServiceProviderTest
 {
@@ -103,9 +104,15 @@ class TwigServiceProviderTest extends ServiceProviderTest
         /** @var Config|MockObject $config */
         $config = $this->createMock(Config::class);
         /** @var TwigCore|MockObject $twigCore */
-        $twigCore = $this->getMockBuilder(stdClass::class)
-            ->addMethods(['setTimezone'])
-            ->getMock();
+        $twigCore = $this->getMockForAbstractClass(
+            AbstractExtension::class,
+            [],
+            '',
+            true,
+            true,
+            true,
+            ['setTimezone']
+        );
 
         $app = $this->getApp(['make', 'instance', 'tag', 'get']);
 

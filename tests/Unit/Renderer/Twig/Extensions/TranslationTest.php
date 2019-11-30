@@ -5,7 +5,6 @@ namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Renderer\Twig\Extensions\Translation;
 use PHPUnit\Framework\MockObject\MockObject;
-use Twig_Extensions_TokenParser_Trans as TranslationTokenParser;
 
 class TranslationTest extends ExtensionTest
 {
@@ -17,10 +16,8 @@ class TranslationTest extends ExtensionTest
     {
         /** @var Translator|MockObject $translator */
         $translator = $this->createMock(Translator::class);
-        /** @var TranslationTokenParser|MockObject $parser */
-        $parser = $this->createMock(TranslationTokenParser::class);
 
-        $extension = new Translation($translator, $parser);
+        $extension = new Translation($translator);
         $filters = $extension->getFilters();
 
         $this->assertExtensionExists('trans', [$translator, 'translate'], $filters);
@@ -33,29 +30,11 @@ class TranslationTest extends ExtensionTest
     {
         /** @var Translator|MockObject $translator */
         $translator = $this->createMock(Translator::class);
-        /** @var TranslationTokenParser|MockObject $parser */
-        $parser = $this->createMock(TranslationTokenParser::class);
 
-        $extension = new Translation($translator, $parser);
+        $extension = new Translation($translator);
         $functions = $extension->getFunctions();
 
         $this->assertExtensionExists('__', [$translator, 'translate'], $functions);
         $this->assertExtensionExists('_e', [$translator, 'translatePlural'], $functions);
-    }
-
-    /**
-     * @covers \Engelsystem\Renderer\Twig\Extensions\Translation::getTokenParsers
-     */
-    public function testGetTokenParsers()
-    {
-        /** @var Translator|MockObject $translator */
-        $translator = $this->createMock(Translator::class);
-        /** @var TranslationTokenParser|MockObject $parser */
-        $parser = $this->createMock(TranslationTokenParser::class);
-
-        $extension = new Translation($translator, $parser);
-        $tokenParsers = $extension->getTokenParsers();
-
-        $this->assertTokenParserExists($parser, $tokenParsers);
     }
 }

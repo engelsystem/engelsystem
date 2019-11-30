@@ -2,18 +2,18 @@
 
 namespace Engelsystem\Renderer;
 
-use Twig_Error_Loader;
-use Twig_Loader_Filesystem as FilesystemLoader;
+use Twig\Error\LoaderError as ErrorLoader;
+use Twig\Loader\FilesystemLoader as FilesystemLoader;
 
 class TwigLoader extends FilesystemLoader
 {
     /**
      * @param string $name
      * @param bool   $throw
-     * @return false|string
-     * @throws Twig_Error_Loader
+     * @return string|null
+     * @throws ErrorLoader
      */
-    public function findTemplate($name, $throw = true)
+    public function findTemplate(string $name, bool $throw = true): ?string
     {
         $extension = '.twig';
         $extensionLength = mb_strlen($extension);

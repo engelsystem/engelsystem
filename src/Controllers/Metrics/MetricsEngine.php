@@ -142,7 +142,7 @@ class MetricsEngine implements EngineInterface
      * @param string|mixed[] $key
      * @param mixed          $value
      */
-    public function share($key, $value = null)
+    public function share($key, $value = null): void
     {
     }
 }
