@@ -50,9 +50,33 @@ class LegacyDevelopment extends Legacy
 
             $functionName = $trace['function'];
 
+            $args = [];
+            foreach (($trace['args'] ?? []) as $arg) {
+                // @codeCoverageIgnoreStart
+                switch (gettype($arg)) {
+                    case 'string':
+                    case 'integer':
+                    case 'double':
+                        $args[] = $arg;
+                        break;
+                    case 'boolean':
+                        $args[] = $arg ? 'true' : 'false';
+                        break;
+                    case 'object':
+                        $args[] = get_class($arg);
+                        break;
+                    case 'resource':
+                        $args[] = get_resource_type($arg);
+                        break;
+                    default:
+                        $args[] = gettype($arg);
+                    // @codeCoverageIgnoreEnd
+                }
+            }
+
             $return[] = [
                 'file'        => $path . ':' . $line,
-                $functionName => $trace['args'] ?? null,
+                $functionName => $args ?? null,
             ];
         }
 
