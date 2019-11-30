@@ -84,6 +84,7 @@ class EventTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\Event::getId
      * @covers \Engelsystem\Helpers\Schedule\Event::getRoom
      * @covers \Engelsystem\Helpers\Schedule\Event::getTitle
+     * @covers \Engelsystem\Helpers\Schedule\Event::setTitle
      * @covers \Engelsystem\Helpers\Schedule\Event::getSubtitle
      * @covers \Engelsystem\Helpers\Schedule\Event::getType
      * @covers \Engelsystem\Helpers\Schedule\Event::getDate
@@ -141,5 +142,8 @@ class EventTest extends TestCase
         $this->assertEquals($attachments, $event->getAttachments());
         $this->assertEquals('https://foo.bar/2-lorem', $event->getUrl());
         $this->assertEquals('https://videos.orem.ipsum/2-lorem.mp4', $event->getVideoDownloadUrl());
+
+        $event->setTitle('Event title');
+        $this->assertEquals('Event title', $event->getTitle());
     }
 }

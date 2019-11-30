@@ -440,6 +440,7 @@ class ImportSchedule extends BaseController
 
                     $event->getDate()->subMinutes($minutesBefore);
                     $event->getEndDate()->addMinutes($minutesAfter);
+                    $event->setTitle(sprintf('%s [%s]', $event->getTitle(), $event->getLanguage()));
                 }
             }
         }
