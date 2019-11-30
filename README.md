@@ -11,7 +11,7 @@ To report bugs use [engelsystem/issues](https://github.com/engelsystem/engelsyst
 ## Installation
 
 ### Requirements
- * PHP >= 7.1
+ * PHP >= 7.2
    * Required modules:
      * dom
      * json
@@ -150,7 +150,7 @@ docker-compose up
 
 Run these commands once initially and then as required after changes
 
-```
+```bash
 # Install composer dependencies
 docker exec -it engelsystem_dev_es_workspace_1 composer i
 
@@ -169,7 +169,7 @@ docker exec -it engelsystem_dev_es_workspace_1 bin/migrate
 
 While developing you may use the watch mode to rebuild the system on changes
 
-```
+```bash
 # Run a front-end build
 docker exec -it engelsystem_dev_es_workspace_1 yarn build:watch
 ```
@@ -199,10 +199,10 @@ We use gettext. You may use POEdit to extract new texts from the sourcecode. Ple
 ### Code style
 Please ensure that your pull requests follow the [PSR-12](https://www.php-fig.org/psr/psr-12/) coding style guide.
 You can check that by running
-```php
+```bash
 composer run phpcs
 ```
 You may auto fix reported issues by running
-```php
+```bash
 composer run phpcbf
 ```
