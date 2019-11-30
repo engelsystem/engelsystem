@@ -4,13 +4,13 @@
         {% block eventinfo %}
             {% if config('name') %}
                 {% if config('event_start') and config('event_end') %}
-                    {{ __('%s, from %s to %s', [
+                    {{ __('%1$s, from %2$s to %3$s', [
                         config('name'),
                         config('event_start').format(__('Y-m-d')),
                         config('event_end').format(__('Y-m-d'))
                     ]) }}
                 {% elseif config('event_start') %}
-                    {{ __('%s, starting %s', [
+                    {{ __('%1$s, starting %2$s', [
                         config('name'),
                         config('event_start').format(__('Y-m-d'))
                     ]) }}
@@ -18,7 +18,7 @@
                     {{ config('name') }}
                 {% endif %} <br>
             {% elseif config('event_start') and config('event_end') %}
-                {{ __('Event from %s to %s', [
+                {{ __('Event from %1$s to %2$s', [
                     config('event_start').format(__('Y-m-d')),
                     config('event_end').format(__('Y-m-d'))
                 ]) }} <br>
