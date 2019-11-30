@@ -2,9 +2,9 @@
 FROM php:7-fpm-alpine AS es_php_fpm
 WORKDIR /var/www
 RUN apk add --no-cache icu-dev $PHPIZE_DEPS && \
-    pecl install xdebug && \
+    pecl install pcov xdebug && \
     docker-php-ext-install intl pdo_mysql && \
-    docker-php-ext-enable xdebug
+    docker-php-ext-enable pcov xdebug
 RUN  echo -e "xdebug.remote_enable=1\nxdebug.remote_connect_back=1\n" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 ENV TRUSTED_PROXIES 10.0.0.0/8,::ffff:10.0.0.0/8,\

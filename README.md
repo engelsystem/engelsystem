@@ -101,6 +101,11 @@ vendor/bin/phpunit --testsuite Feature
 vendor/bin/phpunit
 ``` 
 
+To run code coverage reports its highly recommended to use [`pcov`](https://github.com/krakjoe/pcov) or at least `phpdbg -qrr`(which has problems with switch case statements) as using Xdebug slows down execution.
+```bash
+php -d pcov.enabled=1 vendor/bin/phpunit --testsuite Unit --coverage-text
+```
+
 ### CI & Build Pipeline
 The engelsystem can be tested and automatically deployed to a testing/staging/production environment.
 This functionality requires a [GitLab](https://about.gitlab.com/) server with a working docker runner.

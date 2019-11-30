@@ -74,6 +74,6 @@ class SessionServiceProvider extends ServiceProvider
      */
     protected function isCli()
     {
-        return PHP_SAPI == 'cli';
+        return PHP_SAPI == 'cli' || PHP_SAPI == 'phpdbg';
     }
 }

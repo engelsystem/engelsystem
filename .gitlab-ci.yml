@@ -67,7 +67,7 @@ test:
       junit: ./unittests.xml
   coverage: '/^\s*Lines:\s*(\d+(?:\.\d+)?%)/'
   before_script:
-    - apk add ${PHPIZE_DEPS} && pecl install xdebug && docker-php-ext-enable xdebug
+    - apk add -q ${PHPIZE_DEPS} && pecl install pcov > /dev/null && docker-php-ext-enable pcov
     - curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
     - cp -R tests/ phpunit.xml "${DOCROOT}"
     - HOMEDIR=$PWD
@@ -75,7 +75,7 @@ test:
     - composer --no-ansi install
     - ./bin/migrate
   script:
-    - ./vendor/bin/phpunit -v --colors=never --coverage-text --coverage-html "${HOMEDIR}/coverage/" --log-junit "${HOMEDIR}/unittests.xml"
+    - php -d pcov.enabled=1 vendor/bin/phpunit -vvv --colors=never --coverage-text --coverage-html "${HOMEDIR}/coverage/" --log-junit "${HOMEDIR}/unittests.xml"
     - ./bin/migrate down
 
 check-style:
