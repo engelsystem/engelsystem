@@ -19,6 +19,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon|null                   $updated_at
  *
  * @property-read Collection|NewsComment[] $comments
+ * @property-read int|null $comments_count
  *
  * @method static QueryBuilder|LogEntry[] whereId($value)
  * @method static QueryBuilder|LogEntry[] whereTitle($value)

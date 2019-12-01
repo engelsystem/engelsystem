@@ -10,7 +10,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  *
  * @property-read QueryBuilder|User $user
  *
- * @method static QueryBuilder|static whereUserId($value)
+ * @method static QueryBuilder|static[] whereUserId($value)
  */
 trait UsesUserModel
 {

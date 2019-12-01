@@ -19,10 +19,11 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
- * @method static QueryBuilder|LogEntry[] whereId($value)
- * @method static QueryBuilder|LogEntry[] whereText($value)
- * @method static QueryBuilder|LogEntry[] whereCreatedAt($value)
- * @method static QueryBuilder|LogEntry[] whereUpdatedAt($value)
+ * @method static QueryBuilder|NewsComment[] whereId($value)
+ * @method static QueryBuilder|NewsComment[] whereNewsId($value)
+ * @method static QueryBuilder|NewsComment[] whereText($value)
+ * @method static QueryBuilder|NewsComment[] whereCreatedAt($value)
+ * @method static QueryBuilder|NewsComment[] whereUpdatedAt($value)
  */
 class NewsComment extends BaseModel
 {

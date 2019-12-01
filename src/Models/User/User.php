@@ -25,9 +25,12 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property-read QueryBuilder|PersonalData $personalData
  * @property-read QueryBuilder|Settings     $settings
  * @property-read QueryBuilder|State        $state
+ * @property-read Collection|News[]         $news
  * @property-read Collection|NewsComment[]  $newsComments
+ * @property-read int|null                  $news_count
+ * @property-read int|null                  $news_comments_count
  *
- * @method static QueryBuilder|User whereId($value)
+ * @method static QueryBuilder|User[] whereId($value)
  * @method static QueryBuilder|User[] whereName($value)
  * @method static QueryBuilder|User[] whereEmail($value)
  * @method static QueryBuilder|User[] wherePassword($value)
