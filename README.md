@@ -87,6 +87,8 @@ Since the engelsystem is open source, you can help to improve the system. We rea
 
 Please create single pull requests for every feature instead of creating one big monster of pull request containing a complete rewrite.
 
+Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) before you start.
+
 ### Testing
 To run the unit tests use
 ```bash
