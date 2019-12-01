@@ -2817,7 +2817,7 @@ msgid "schedule.import.title"
 msgstr "Programm importieren"
 
 msgid "schedule.import.text"
-msgstr "Dieser Import erstellt Räume and erstellt, aktualisiert und löscht Schichten anhand des schedule.xml exportes."
+msgstr "Dieser Import erstellt Räume und erstellt, aktualisiert und löscht Schichten anhand des schedule.xml exportes."
 
 msgid "schedule.import.load.title"
 msgstr "Programm importieren: Vorschau"

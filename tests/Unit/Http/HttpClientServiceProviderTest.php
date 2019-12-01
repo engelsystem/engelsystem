@@ -3,20 +3,20 @@
 namespace Engelsystem\Test\Unit\Http;
 
 use Engelsystem\Application;
-use Engelsystem\Http\GuzzleServiceProvider;
+use Engelsystem\Http\HttpClientServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use GuzzleHttp\Client as GuzzleClient;
 
-class GuzzleServiceProviderTest extends ServiceProviderTest
+class HttpClientServiceProviderTest extends ServiceProviderTest
 {
     /**
-     * @covers \Engelsystem\Http\GuzzleServiceProvider::register
+     * @covers \Engelsystem\Http\HttpClientServiceProvider::register
      */
     public function testRegister()
     {
         $app = new Application();
 
-        $serviceProvider = new GuzzleServiceProvider($app);
+        $serviceProvider = new HttpClientServiceProvider($app);
         $serviceProvider->register();
 
         /** @var GuzzleClient $guzzle */

@@ -5,7 +5,7 @@ namespace Engelsystem\Http;
 use Engelsystem\Container\ServiceProvider;
 use GuzzleHttp\Client as GuzzleClient;
 
-class GuzzleServiceProvider extends ServiceProvider
+class HttpClientServiceProvider extends ServiceProvider
 {
     public function register()
     {

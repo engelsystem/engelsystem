@@ -451,13 +451,14 @@ class ImportSchedule extends BaseController
             $guid = $shift->guid;
             $shift = $this->loadShift($shift->shift_id);
             $event = $scheduleEvents[$guid];
+            $room = $rooms->where('name', $event->getRoom()->getName())->first();
 
             if (
                 $shift->title != $event->getTitle()
                 || $shift->shift_type_id != $shiftType
                 || Carbon::createFromTimestamp($shift->start) != $event->getDate()
                 || Carbon::createFromTimestamp($shift->end) != $event->getEndDate()
-                || $shift->room_id != $rooms->where('name', $event->getRoom()->getName())->first()->id
+                || $shift->room_id != ($room->id ?? '')
                 || $shift->url != $event->getUrl()
             ) {
                 $changeEvents[$guid] = $event;
