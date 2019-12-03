@@ -4,7 +4,7 @@ namespace Engelsystem\Controllers;
 
 use Engelsystem\Http\Response;
 use Engelsystem\Http\Exceptions\HttpForbidden;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Engelsystem\Models\User\User;
 use Symfony\Component\HttpFoundation\Request;
 
 # Legacy functions
@@ -16,6 +16,14 @@ use function AngelType;
 use function AngelTypes;
 use function User_angeltypes;
 
+/**
+ * Class ApiController
+ * @package Engelsystem\Controllers
+ *
+ * Warning: I am still no php coder. This quickly implemented api may be abandoned at any time.
+ * Code is mostly harvested from /includes/controller/shifts_controller.php/shifts_json_export_controller()
+ * may or may not be unnecessary
+ */
 class ApiController extends BaseController
 {
     /** @var Response */
@@ -44,11 +52,8 @@ class ApiController extends BaseController
 
 
     /**
-     * @return User
+     * @return User|null
      *
-     * Warning: I am still no php coder. This quickly implemented api may be abandoned at any time.
-     * Code is mostly harvested from /includes/controller/shifts_controller.php/shifts_json_export_controller()
-     * may or may not be unnecessary
      * currently used by both getMy[Shifts|AngelTypes] because $this->user is NULL if no api_key provided
      * (while session based auth is working fine) .
      */
