@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
+use Engelsystem\Models\Question;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -38,6 +39,9 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|User[] whereLastLoginAt($value)
  * @method static QueryBuilder|User[] whereCreatedAt($value)
  * @method static QueryBuilder|User[] whereUpdatedAt($value)
+ *
+ * @property-read Collection|Question[] $questionsAsked
+ * @property-read Collection|Question[] $questionsAnswered
  */
 class User extends BaseModel
 {
@@ -118,5 +122,23 @@ class User extends BaseModel
     public function newsComments(): HasMany
     {
         return $this->hasMany(NewsComment::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function questionsAsked(): HasMany
+    {
+        return $this->hasMany(Question::class, 'user_id')
+            ->where('user_id', $this->id);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function questionsAnswered(): HasMany
+    {
+        return $this->hasMany(Question::class, 'answerer_id')
+            ->where('answerer_id', $this->id);
     }
 }
