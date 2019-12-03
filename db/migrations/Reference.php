@@ -3,6 +3,7 @@
 namespace Engelsystem\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\ColumnDefinition;
 
 trait Reference
 {
@@ -20,10 +21,11 @@ trait Reference
      * @param string    $targetTable
      * @param string    $fromColumn
      * @param bool      $setPrimary
+     * @return ColumnDefinition
      */
-    protected function references(Blueprint $table, $targetTable, $fromColumn, $setPrimary = false)
+    protected function references(Blueprint $table, $targetTable, $fromColumn, $setPrimary = false): ColumnDefinition
     {
-        $table->unsignedInteger($fromColumn);
+        $col = $table->unsignedInteger($fromColumn);
 
         if ($setPrimary) {
             $table->primary($fromColumn);
@@ -33,5 +35,7 @@ trait Reference
             ->references('id')->on($targetTable)
             ->onUpdate('cascade')
             ->onDelete('cascade');
+
+        return $col;
     }
 }
