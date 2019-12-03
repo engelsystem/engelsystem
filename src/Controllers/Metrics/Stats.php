@@ -226,13 +226,13 @@ class Stats
     public function questions($answered = null)
     {
         $query = $this
-            ->getQuery('Questions');
+            ->getQuery('questions');
 
         if (!is_null($answered)) {
             if ($answered) {
-                $query->whereNotNull('AID');
+                $query->whereNotNull('answerer_id');
             } else {
-                $query->whereNull('AID');
+                $query->whereNull('answerer_id');
             }
         }
 

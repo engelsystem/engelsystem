@@ -1,27 +1,46 @@
 <?php
 
+use Engelsystem\Models\Question;
+
 /**
- * @param array[] $open_questions
- * @param array[] $answered_questions
+ * @param Question[] $open_questions
+ * @param Question[] $answered_questions
  * @param string  $ask_action
  * @return string
  */
-function Questions_view($open_questions, $answered_questions, $ask_action)
+function Questions_view(array $open_questions, array $answered_questions, $ask_action)
 {
-    foreach ($open_questions as &$question) {
-        $question['actions'] = form([
-            form_submit('submit', __('delete'), 'btn-default btn-xs')
-        ], page_link_to('user_questions', ['action' => 'delete', 'id' => $question['QID']]));
-        $question['Question'] = nl2br(htmlspecialchars($question['Question']));
-    }
+    $open_questions = array_map(
+        static function (Question $question): array {
+            return [
+                'actions'  => form(
+                    [
+                        form_submit('submit', __('delete'), 'btn-default btn-xs')
+                    ],
+                    page_link_to('user_questions', ['action' => 'delete', 'id' => $question->id])
+                ),
+                'Question' => nl2br(htmlspecialchars($question->text)),
+            ];
+        },
+        $open_questions
+    );
 
-    foreach ($answered_questions as &$question) {
-        $question['Question'] = nl2br(htmlspecialchars($question['Question']));
-        $question['Answer'] = nl2br(htmlspecialchars($question['Answer']));
-        $question['actions'] = form([
-            form_submit('submit', __('delete'), 'btn-default btn-xs')
-        ], page_link_to('user_questions', ['action' => 'delete', 'id' => $question['QID']]));
-    }
+    $answered_questions = array_map(
+        static function (Question $question): array {
+            return [
+                'Question' => nl2br(htmlspecialchars($question->text)),
+                'Answer'   => nl2br(htmlspecialchars($question->answer)),
+                'answer_user' => User_Nick_render($question->answerer),
+                'actions'  => form(
+                    [
+                        form_submit('submit', __('delete'), 'btn-default btn-xs')
+                    ],
+                    page_link_to('user_questions', ['action' => 'delete', 'id' => $question->id])
+                ),
+            ];
+        },
+        $answered_questions
+    );
 
     return page_with_title(questions_title(), [
         msg(),
