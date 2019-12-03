@@ -1,7 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
-use Engelsystem\Models\User\User;
+use Engelsystem\Models\Question;
 
 /**
  * @return string
@@ -20,9 +19,8 @@ function admin_new_questions()
 {
     if (current_page() != 'admin_questions') {
         if (auth()->can('admin_questions')) {
-            $new_messages = count(DB::select('SELECT `QID` FROM `Questions` WHERE `AID` IS NULL'));
-
-            if ($new_messages > 0) {
+            $unanswered_questions = Question::unanswered()->count();
+            if ($unanswered_questions > 0) {
                 return '<a href="' . page_link_to('admin_questions') . '">'
                     . __('There are unanswered questions!')
                     . '</a>';
@@ -43,36 +41,40 @@ function admin_questions()
 
     if (!$request->has('action')) {
         $unanswered_questions_table = [];
-        $questions = DB::select('SELECT * FROM `Questions` WHERE `AID` IS NULL');
-        foreach ($questions as $question) {
-            $user_source = User::find($question['UID']);
+        $unanswered_questions = Question::unanswered()->get();
+
+        foreach ($unanswered_questions as $question) {
+            /* @var Question $question */
+            $user_source = $question->user;
 
             $unanswered_questions_table[] = [
                 'from'     => User_Nick_render($user_source),
-                'question' => nl2br(htmlspecialchars($question['Question'])),
+                'question' => nl2br(htmlspecialchars($question->text)),
                 'answer'   => form([
                     form_textarea('answer', '', ''),
                     form_submit('submit', __('Save'))
-                ], page_link_to('admin_questions', ['action' => 'answer', 'id' => $question['QID']])),
+                ], page_link_to('admin_questions', ['action' => 'answer', 'id' => $question->id])),
                 'actions'  => form([
                     form_submit('submit', __('delete'), 'btn-xs'),
-                ], page_link_to('admin_questions', ['action' => 'delete', 'id' => $question['QID']])),
+                ], page_link_to('admin_questions', ['action' => 'delete', 'id' => $question->id])),
             ];
         }
 
         $answered_questions_table = [];
-        $questions = DB::select('SELECT * FROM `Questions` WHERE NOT `AID` IS NULL');
-        foreach ($questions as $question) {
-            $user_source = User::find($question['UID']);
-            $answer_user_source = User::find($question['AID']);
+        $answered_questions = Question::answered()->get();
+
+        foreach ($answered_questions as $question) {
+            /* @var Question $question */
+            $user_source = $question->user;
+            $answer_user_source = $question->answerer;
             $answered_questions_table[] = [
                 'from'        => User_Nick_render($user_source),
-                'question'    => nl2br(htmlspecialchars($question['Question'])),
+                'question'    => nl2br(htmlspecialchars($question->text)),
                 'answered_by' => User_Nick_render($answer_user_source),
-                'answer'      => nl2br(htmlspecialchars($question['Answer'])),
+                'answer'      => nl2br(htmlspecialchars($question->answer)),
                 'actions'     => form([
                     form_submit('submit', __('delete'), 'btn-xs')
-                ], page_link_to('admin_questions', ['action' => 'delete', 'id' => $question['QID']]))
+                ], page_link_to('admin_questions', ['action' => 'delete', 'id' => $question->id]))
             ];
         }
 
@@ -106,26 +108,14 @@ function admin_questions()
                     return error('Incomplete call, missing Question ID.', true);
                 }
 
-                $question = DB::selectOne(
-                    'SELECT * FROM `Questions` WHERE `QID`=? LIMIT 1',
-                    [$question_id]
-                );
-                if (!empty($question) && empty($question['AID'])) {
+                $question = Question::find($question_id);
+                if (!empty($question) && empty($question->answerer_id)) {
                     $answer = trim($request->input('answer'));
 
                     if (!empty($answer)) {
-                        DB::update('
-                                UPDATE `Questions`
-                                SET `AID`=?, `Answer`=?
-                                WHERE `QID`=?
-                                LIMIT 1
-                            ',
-                            [
-                                $user->id,
-                                $answer,
-                                $question_id,
-                            ]
-                        );
+                        $question->answerer_id = $user->id;
+                        $question->answer = $answer;
+                        $question->save();
                         engelsystem_log(
                             'Question '
                             . $question['Question']
@@ -151,12 +141,9 @@ function admin_questions()
                     return error('Incomplete call, missing Question ID.', true);
                 }
 
-                $question = DB::selectOne(
-                    'SELECT * FROM `Questions` WHERE `QID`=? LIMIT 1',
-                    [$question_id]
-                );
+                $question = Question::find($question_id);
                 if (!empty($question)) {
-                    DB::delete('DELETE FROM `Questions` WHERE `QID`=? LIMIT 1', [$question_id]);
+                    $question->delete();
                     engelsystem_log('Question deleted: ' . $question['Question']);
                     redirect(page_link_to('admin_questions'));
                 } else {

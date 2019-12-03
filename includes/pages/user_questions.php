@@ -1,7 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
-use Engelsystem\Models\User\User;
+use Engelsystem\Models\Question;
 
 /**
  * @return string
@@ -20,24 +19,12 @@ function user_questions()
     $request = request();
 
     if (!$request->has('action')) {
-        $open_questions = DB::select(
-            'SELECT * FROM `Questions` WHERE `AID` IS NULL AND `UID`=?',
-            [$user->id]
-        );
-
-        $answered_questions = DB::select(
-            'SELECT * FROM `Questions` WHERE NOT `AID` IS NULL AND `UID`=?',
-            [$user->id]
-        );
-
-        foreach ($answered_questions as &$question) {
-            $answer_user_source = User::find($question['AID']);
-            $question['answer_user'] = User_Nick_render($answer_user_source);
-        }
+        $open_questions = $user->questionsAsked()->whereNull('answerer_id')->get();
+        $answered_questions = $user->questionsAsked()->whereNotNull('answerer_id')->get();
 
         return Questions_view(
-            $open_questions,
-            $answered_questions,
+            $open_questions->all(),
+            $answered_questions->all(),
             page_link_to('user_questions', ['action' => 'ask'])
         );
     } else {
@@ -45,12 +32,10 @@ function user_questions()
             case 'ask':
                 $question = request()->get('question');
                 if (!empty($question) && $request->hasPostData('submit')) {
-                    DB::insert('
-                        INSERT INTO `Questions` (`UID`, `Question`)
-                        VALUES (?, ?)
-                        ',
-                        [$user->id, $question]
-                    );
+                    Question::create([
+                        'enquirer_id' => $user->id,
+                        'question' => $question,
+                    ]);
 
                     success(__('You question was saved.'));
                     redirect(page_link_to('user_questions'));
@@ -71,15 +56,9 @@ function user_questions()
                     return error(__('Incomplete call, missing Question ID.'), true);
                 }
 
-                $question = DB::selectOne(
-                    'SELECT `UID` FROM `Questions` WHERE `QID`=? LIMIT 1',
-                    [$question_id]
-                );
-                if (!empty($question) && $question['UID'] == $user->id) {
-                    DB::delete(
-                        'DELETE FROM `Questions` WHERE `QID`=? LIMIT 1',
-                        [$question_id]
-                    );
+                $question = Question::find($question_id);
+                if (!empty($question) && $question->user_id == $user->id) {
+                    $question->delete();
                     redirect(page_link_to('user_questions'));
                 } else {
                     return page_with_title(questions_title(), [
