@@ -22,7 +22,6 @@ use function User_angeltypes;
  *
  * Warning: I am still no php coder. This quickly implemented api may be abandoned at any time.
  * Code is mostly harvested from /includes/controller/shifts_controller.php/shifts_json_export_controller()
- * may or may not be unnecessary
  */
 class ApiController extends BaseController
 {
@@ -55,7 +54,8 @@ class ApiController extends BaseController
      * @return User|null
      *
      * currently used by both getMy[Shifts|AngelTypes] because $this->user is NULL if no api_key provided
-     * (while session based auth is working fine) .
+     * (while session based auth is still working fine) .
+     * may or may not be unnecessary and removed.
      */
     protected function doApiAuth()
     {
