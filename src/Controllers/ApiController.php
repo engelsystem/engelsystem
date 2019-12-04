@@ -2,8 +2,10 @@
 
 namespace Engelsystem\Controllers;
 
+use DateTime;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\Exceptions\HttpForbidden;
+use Engelsystem\Http\Exceptions\HttpException;
 use Engelsystem\Models\User\User;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -97,9 +99,32 @@ class ApiController extends BaseController
      */
     public function getShiftsFree(Request $request)
     {
-        // Shifts_by_angeltype uses only the id, required a AngelType though.
-        $start = (int)$request->getAttribute('start');
-        $stop = (int)$request->getAttribute('stop');
+        /*
+         * @return  Integer
+         * Check if the given attribute is already an unix timestamp, otherwise try to convert it to a unix timestamp.
+         */
+        function getTimestamp(string $attribute, Request $request)
+        {
+            $rawValue = $request->getAttribute($attribute);
+            if (is_numeric($rawValue)) {
+                return (int)$rawValue;
+            } else {
+                /*
+                 * Parse the attribute as RFC3339 / Y-m-d\TH:i:sP formatted string instead of a raw unix timestamp
+                 */
+                $parsedValue = DateTime::createFromFormat("Y-m-d\TH:i:sP", $rawValue);
+                if ($parsedValue === false) {
+                    throw new HttpException(
+                        400,
+                        '{"error":"Not a valid timestamp or RFC3339 formatted string"}',
+                        ['content-type' => 'application/json']
+                    );
+                }
+                return $parsedValue->getTimestamp();
+            }
+        }
+        $start = getTimestamp('start', $request);
+        $stop = getTimestamp('stop', $request);
         $shifts = Shifts_free($start, $stop);
 
         return $this->response->withContent(json_encode($shifts));
