@@ -30,5 +30,6 @@ $route->addGroup('/api/v2019-alpha', function (RouteCollector $route) {
     $route->get('/shifts/my', 'ApiController@getMyShifts');
     $route->get('/shifts/free/{start:.+}/until/{stop:.+}', 'ApiController@getShiftsFree');
     $route->get('/shifts/by/angeltype/{angeltypeid:\d+}', 'ApiController@getShiftsByAngelType');
+    $route->get('/shift/{shiftid:\d+}', 'ApiController@getShiftById');
     $route->get('[/{resource:.+}]', 'ApiController@index');
 });

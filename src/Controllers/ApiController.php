@@ -9,8 +9,10 @@ use Engelsystem\Http\Exceptions\HttpException;
 use Engelsystem\Models\User\User;
 use Symfony\Component\HttpFoundation\Request;
 
-# Legacy functions
-/* Doing their job, but adding a proper namespaces breaks legacy code :( */
+/* Legacy functions
+ * Doing their job, but adding a proper namespaces breaks legacy code :(
+ */
+use function Shift;
 use function Shifts_by_user;
 use function Shifts_by_angeltype;
 use function Shifts_free;
@@ -92,6 +94,19 @@ class ApiController extends BaseController
         $shifts = Shifts_by_angeltype($angelType);
 
         return $this->response->withContent(json_encode($shifts));
+    }
+
+    /**
+     * @Route("/api/v2019-alpha/shift/{shiftid:\d+}")
+     */
+    public function getShiftById(Request $request)
+    {
+        // Shifts_by_angeltype uses only the id, required a AngelType though.
+        $shiftId = (int)$request->getAttribute('shiftid');
+
+        $shift = Shift($shiftId);
+
+        return $this->response->withContent(json_encode($shift));
     }
 
     /**
