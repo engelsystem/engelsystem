@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Engelsystem\Database\Database;
 use Engelsystem\Models\EventConfig;
 use Engelsystem\Models\News;
+use Engelsystem\Models\Question;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression as QueryExpression;
 
@@ -221,13 +222,10 @@ class Stats
     /**
      * @param bool $answered
      * @return int
-     * @codeCoverageIgnore
      */
     public function questions($answered = null)
     {
-        $query = $this
-            ->getQuery('questions');
-
+        $query = Question::query();
         if (!is_null($answered)) {
             if ($answered) {
                 $query->whereNotNull('answerer_id');
