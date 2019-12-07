@@ -52,22 +52,9 @@ class QuestionTest extends TestCase
     }
 
     /**
-     * @return void
+     * @covers \Engelsystem\Models\Question::answerer
      */
-    public function testStoreLoadUnAnsweredQuestion(): void
-    {
-        $question = $this->createQuestion($this->user1);
-        $loadedQuestion = Question::find($question->id);
-
-        $this->assertSame($this->user1->id, $loadedQuestion->user->id);
-        $this->assertSame($this->user1->id, $loadedQuestion->user_id);
-        $this->assertSame($question->text, $loadedQuestion->text);
-    }
-
-    /**
-     * @return void
-     */
-    public function testStoreLoadAnsweredQuestion(): void
+    public function testAnswerer(): void
     {
         $question = $this->createQuestion($this->user1, $this->user2);
         $loadedQuestion = Question::find($question->id);
@@ -81,41 +68,7 @@ class QuestionTest extends TestCase
     }
 
     /**
-     * @return void
-     */
-    public function testUserQuestionsAsked(): void
-    {
-        $question1 = $this->createQuestion($this->user1);
-        $question2 = $this->createQuestion($this->user1);
-        // create some questions asked by user 2 to test the correct assignment
-        $this->createQuestion($this->user2);
-        $this->createQuestion($this->user2);
-
-        $user1QuestionIds = $this->user1->questionsAsked()->pluck('id')->toArray();
-        $this->assertCount(2, $user1QuestionIds);
-        $this->assertContains($question1->id, $user1QuestionIds);
-        $this->assertContains($question2->id, $user1QuestionIds);
-    }
-
-    /**
-     * @return void
-     */
-    public function testUserQuestionsAnswered(): void
-    {
-        $question1 = $this->createQuestion($this->user1, $this->user2);
-        $question2 = $this->createQuestion($this->user1, $this->user2);
-        // create some questions answered by user 1 to test the correct assignment
-        $this->createQuestion($this->user2, $this->user1);
-        $this->createQuestion($this->user2, $this->user1);
-
-        $user2Answers = $this->user2->questionsAnswered()->pluck('id')->toArray();
-        $this->assertCount(2, $user2Answers);
-        $this->assertContains($question1->id, $user2Answers);
-        $this->assertContains($question2->id, $user2Answers);
-    }
-
-    /**
-     * @return void
+     * @covers \Engelsystem\Models\Question::unanswered
      */
     public function testUnanswered(): void
     {
@@ -132,7 +85,7 @@ class QuestionTest extends TestCase
     }
 
     /**
-     * @return void
+     * @covers \Engelsystem\Models\Question::answered
      */
     public function testAnswered(): void
     {
@@ -149,14 +102,14 @@ class QuestionTest extends TestCase
     }
 
     /**
-     * @param User      $enquirer
+     * @param User      $user
      * @param User|null $answerer
      * @return Question
      */
-    private function createQuestion(User $enquirer, ?User $answerer = null): Question
+    private function createQuestion(User $user, ?User $answerer = null): Question
     {
         $data = [
-            'user_id' => $enquirer->id,
+            'user_id' => $user->id,
             'text'    => Str::random(),
         ];
 
