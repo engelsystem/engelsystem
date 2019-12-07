@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Engelsystem\Controllers\Metrics\Stats;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\News;
+use Engelsystem\Models\Question;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\State;
@@ -89,6 +90,24 @@ class StatsTest extends TestCase
         $this->assertEquals(3, $stats->announcements());
         $this->assertEquals(2, $stats->announcements(false));
         $this->assertEquals(1, $stats->announcements(true));
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::questions
+     */
+    public function testQuestions()
+    {
+        $this->addUsers();
+        $questionsData = ['text' => 'Lorem Ipsum', 'user_id' => 1];
+
+        (new Question($questionsData))->save();
+        (new Question($questionsData))->save();
+        (new Question($questionsData + ['answerer_id' => 2, 'answer' => 'Dolor sit!']))->save();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(3, $stats->questions());
+        $this->assertEquals(2, $stats->questions(false));
+        $this->assertEquals(1, $stats->questions(true));
     }
 
     /**
