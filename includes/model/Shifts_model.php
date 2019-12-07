@@ -636,8 +636,9 @@ function Shift($shift_id)
     }
 
     $shiftsEntry_source = DB::select('
-        SELECT `id`, `TID` , `UID` , `freeloaded`
+        SELECT `ShiftEntry`.`id`, `ShiftEntry`.`TID` , `ShiftEntry`.`UID` , `ShiftEntry`.`freeloaded`, `users`.`name` AS `username`
         FROM `ShiftEntry`
+        LEFT JOIN `users` ON (`users`.`id` = `ShiftEntry`.`UID`)
         WHERE `SID`=?', [$shift_id]);
 
     $result['ShiftEntry'] = $shiftsEntry_source;
