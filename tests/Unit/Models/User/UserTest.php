@@ -5,6 +5,7 @@ namespace Engelsystem\Test\Unit\Models;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\News;
+use Engelsystem\Models\Question;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\HasUserModel;
 use Engelsystem\Models\User\PersonalData;
@@ -14,6 +15,7 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use Exception;
+use Illuminate\Support\Str;
 
 class UserTest extends TestCase
 {
@@ -144,6 +146,49 @@ class UserTest extends TestCase
                 ]
             ]
         ];
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::questionsAsked
+     */
+    public function testQuestionsAsked(): void
+    {
+        ($user = new User($this->data))->save();
+        ($user2 = new User(array_merge($this->data, ['name' => 'dolor', 'email' => 'dolor@bar.batz'])))->save();
+
+        ($question1 = new Question(['user_id' => $user->id, 'text' => Str::random()]))->save();
+        ($question2 = new Question(['user_id' => $user->id, 'text' => Str::random()]))->save();
+        // create some questions asked by user 2 to test the correct assignment
+        (new Question(['user_id' => $user2->id, 'text' => Str::random()]))->save();
+        (new Question(['user_id' => $user2->id, 'text' => Str::random()]))->save();
+
+        $questionIds = $user->questionsAsked()->pluck('id')->toArray();
+        $this->assertCount(2, $questionIds);
+        $this->assertContains($question1->id, $questionIds);
+        $this->assertContains($question2->id, $questionIds);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::questionsAnswered
+     */
+    public function testQuestionsAnswered(): void
+    {
+        ($user = new User($this->data))->save();
+        ($user2 = new User(array_merge($this->data, ['name' => 'dolor', 'email' => 'dolor@bar.batz'])))->save();
+
+        $questionData = ['user_id' => $user->id, 'text' => Str::random()];
+        $answerData = ['answerer_id' => $user2->id, 'answer' => Str::random()];
+        ($question1 = new Question(array_merge($questionData, $answerData)))->save();
+        ($question2 = new Question(array_merge($questionData, $answerData)))->save();
+        // Create some questions asked by user 2 to test the correct assignment
+        (new Question(array_merge($questionData, $answerData, ['answerer_id' => $user->id])))->save();
+        (new Question($questionData))->save();
+        (new Question($questionData))->save();
+
+        $answers = $user2->questionsAnswered()->pluck('id')->toArray();
+        $this->assertCount(2, $answers);
+        $this->assertContains($question1->id, $answers);
+        $this->assertContains($question2->id, $answers);
     }
 
     /**

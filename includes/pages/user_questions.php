@@ -33,8 +33,8 @@ function user_questions()
                 $question = request()->get('question');
                 if (!empty($question) && $request->hasPostData('submit')) {
                     Question::create([
-                        'enquirer_id' => $user->id,
-                        'question' => $question,
+                        'user_id' => $user->id,
+                        'text' => $question,
                     ]);
 
                     success(__('You question was saved.'));
