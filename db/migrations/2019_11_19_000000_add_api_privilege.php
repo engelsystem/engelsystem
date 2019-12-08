@@ -11,6 +11,9 @@ class AddApiPrivilege extends Migration
      */
     public function up()
     {
+        if (!$this->schema->hasTable('Privileges')) {
+            return;
+        }
         $connection = $this->schema->getConnection();
         // Add api permissions
         $connection->table('Privileges')->insert(
@@ -26,6 +29,9 @@ class AddApiPrivilege extends Migration
      */
     public function down()
     {
+        if (!$this->schema->hasTable('Privileges')) {
+            return;
+        }
         $connection = $this->schema->getConnection();
         // Remove view_api permission
         $connection->table('Privileges')->where('name', '=', 'view_api')->delete();
