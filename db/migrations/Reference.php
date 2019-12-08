@@ -11,7 +11,7 @@ trait Reference
      * @param Blueprint $table
      * @param bool      $setPrimary
      */
-    protected function referencesUser(Blueprint $table, $setPrimary = true)
+    protected function referencesUser(Blueprint $table, $setPrimary = false)
     {
         $this->references($table, 'users', 'user_id', $setPrimary);
     }

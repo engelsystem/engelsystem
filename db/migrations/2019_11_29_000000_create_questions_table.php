@@ -74,7 +74,7 @@ class CreateQuestionsTable extends Migration
             'questions',
             function (Blueprint $table) {
                 $table->increments('id');
-                $this->referencesUser($table, false);
+                $this->referencesUser($table);
                 $table->text('text');
                 $table->text('answer')
                     ->nullable();

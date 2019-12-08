@@ -76,7 +76,7 @@ class CreateNewsTable extends Migration
             $table->string('title', 150);
             $table->text('text');
             $table->boolean('is_meeting')->default(0);
-            $this->referencesUser($table, false);
+            $this->referencesUser($table);
             $table->timestamps();
         });
     }

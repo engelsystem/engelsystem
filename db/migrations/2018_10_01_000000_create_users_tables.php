@@ -36,7 +36,7 @@ class CreateUsersTables extends Migration
         });
 
         $this->schema->create('users_personal_data', function (Blueprint $table) {
-            $this->referencesUser($table);
+            $this->referencesUser($table, true);
 
             $table->string('first_name', 64)->nullable();
             $table->string('last_name', 64)->nullable();
@@ -47,7 +47,7 @@ class CreateUsersTables extends Migration
         });
 
         $this->schema->create('users_contact', function (Blueprint $table) {
-            $this->referencesUser($table);
+            $this->referencesUser($table, true);
 
             $table->string('dect', 5)->nullable();
             $table->string('mobile', 40)->nullable();
@@ -55,7 +55,7 @@ class CreateUsersTables extends Migration
         });
 
         $this->schema->create('users_settings', function (Blueprint $table) {
-            $this->referencesUser($table);
+            $this->referencesUser($table, true);
 
             $table->string('language', 64);
             $table->tinyInteger('theme');
@@ -64,7 +64,7 @@ class CreateUsersTables extends Migration
         });
 
         $this->schema->create('users_state', function (Blueprint $table) {
-            $this->referencesUser($table);
+            $this->referencesUser($table, true);
 
             $table->boolean('arrived')->default(false);
             $table->dateTime('arrival_date')->nullable();
@@ -75,7 +75,7 @@ class CreateUsersTables extends Migration
         });
 
         $this->schema->create('password_resets', function (Blueprint $table) {
-            $this->referencesUser($table);
+            $this->referencesUser($table, true);
 
             $table->text('token');
 

@@ -64,7 +64,7 @@ class CreateNewsCommentsTable extends Migration
             $table->increments('id');
             $this->references($table, 'news', 'news_id');
             $table->text('text');
-            $this->referencesUser($table, false);
+            $this->referencesUser($table);
             $table->timestamps();
         });
     }
