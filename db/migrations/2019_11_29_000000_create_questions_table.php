@@ -70,7 +70,8 @@ class CreateQuestionsTable extends Migration
      */
     private function createNewQuestionsTable(): void
     {
-        $this->schema->create('questions',
+        $this->schema->create(
+            'questions',
             function (Blueprint $table) {
                 $table->increments('id');
                 $this->referencesUser($table, false);
@@ -79,7 +80,8 @@ class CreateQuestionsTable extends Migration
                     ->nullable();
                 $this->references($table, 'users', 'answerer_id')
                     ->nullable();
-            });
+            }
+        );
     }
 
     /**
@@ -109,7 +111,8 @@ class CreateQuestionsTable extends Migration
      */
     private function createPreviousQuestionsTable(): void
     {
-        $this->schema->create('Questions',
+        $this->schema->create(
+            'Questions',
             function (Blueprint $table) {
                 $table->increments('QID');
                 $this->references($table, 'users', 'UID');
@@ -118,7 +121,8 @@ class CreateQuestionsTable extends Migration
                     ->nullable();
                 $table->text('Answer')
                     ->nullable();
-            });
+            }
+        );
     }
 
     /**
