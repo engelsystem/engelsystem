@@ -635,6 +635,7 @@ function Shifts_by_user($userId, $include_freeload_comments = false)
               `ShiftEntry`.`Comment`,
               ' . ($include_freeload_comments ? '`ShiftEntry`.`freeload_comment`, ' : '') . '
               `Shifts`.*,
+              @@session.time_zone AS timezone,
               `Room`.*
           FROM `ShiftEntry`
           JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
