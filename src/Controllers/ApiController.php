@@ -3,6 +3,7 @@
 namespace Engelsystem\Controllers;
 
 use DateTime;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Exceptions\HttpException;
@@ -32,13 +33,18 @@ class ApiController extends BaseController
     /** @var Response */
     protected $response;
     protected $user;
+
+    /** @var Authenticator */
+    protected $auth;
     /**
-     * @param Response $response
+     * @param Response              $response
+     * @param Authenticator         $auth
      */
-    public function __construct(Response $response)
+    public function __construct(Response $response, Authenticator $auth)
     {
         $this->response = $response->withHeader('content-type', 'application/json');
-        $this->user = auth()->apiUser('key');
+        $this->auth = $auth;
+        $this->user = $this->auth->apiUser('key');
         $this->permissions = ['view_api'];
     }
 
@@ -63,9 +69,9 @@ class ApiController extends BaseController
      */
     protected function doApiAuth()
     {
-        $user = auth()->apiUser('key');
+        $user = $this->auth->apiUser('key');
 
-        if (!auth()->can('view_api')) {
+        if (!$this->auth > can('view_api')) {
             throw new HttpForbidden('{"error":"Not allowed"}', ['content-type' => 'application/json']);
         }
 

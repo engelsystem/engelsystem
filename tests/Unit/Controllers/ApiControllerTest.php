@@ -3,6 +3,7 @@
 namespace Engelsystem\Test\Unit\Controllers;
 
 use Engelsystem\Controllers\ApiController;
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Response;
 use PHPUnit\Framework\TestCase;
 
@@ -14,7 +15,9 @@ class ApiControllerTest extends TestCase
      */
     public function testIndex()
     {
-        $controller = new ApiController(new Response());
+        $auth = $this->createMock(Authenticator::class);
+        $response = new Response();
+        $controller = new ApiController($response, $auth);
 
         $response = $controller->index();
 
