@@ -4,6 +4,7 @@ use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Translation\Translator;
+use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGeneratorInterface;
@@ -28,7 +29,7 @@ function app($id = null)
 /**
  * @return Authenticator
  */
-function auth()
+function auth(): Authenticator
 {
     return app('authenticator');
 }
@@ -37,9 +38,22 @@ function auth()
  * @param string $path
  * @return string
  */
-function base_path($path = '')
+function base_path($path = ''): string
 {
     return app('path') . (empty($path) ? '' : DIRECTORY_SEPARATOR . $path);
+}
+
+/**
+ * @param int   $status
+ * @param array $headers
+ * @return Response
+ */
+function back($status = 302, $headers = []): Response
+{
+    /** @var Redirector $redirect */
+    $redirect = app('redirect');
+
+    return $redirect->back($status, $headers);
 }
 
 /**
@@ -70,9 +84,23 @@ function config($key = null, $default = null)
  * @param string $path
  * @return string
  */
-function config_path($path = '')
+function config_path($path = ''): string
 {
     return app('path.config') . (empty($path) ? '' : DIRECTORY_SEPARATOR . $path);
+}
+
+/**
+ * @param string $path
+ * @param int    $status
+ * @param array  $headers
+ * @return Response
+ */
+function redirect(string $path, $status = 302, $headers = []): Response
+{
+    /** @var Redirector $redirect */
+    $redirect = app('redirect');
+
+    return $redirect->to($path, $status, $headers);
 }
 
 /**
@@ -97,7 +125,7 @@ function request($key = null, $default = null)
  * @param array  $headers
  * @return Response
  */
-function response($content = '', $status = 200, $headers = [])
+function response($content = '', $status = 200, $headers = []): Response
 {
     /** @var Response $response */
     $response = app('psr7.response');
@@ -155,7 +183,7 @@ function trans($key = null, $replace = [])
  * @param array  $replace
  * @return string
  */
-function __($key, $replace = [])
+function __($key, $replace = []): string
 {
     /** @var Translator $translator */
     $translator = app('translator');
@@ -172,7 +200,7 @@ function __($key, $replace = [])
  * @param array  $replace
  * @return string
  */
-function _e($key, $keyPlural, $number, $replace = [])
+function _e($key, $keyPlural, $number, $replace = []): string
 {
     /** @var Translator $translator */
     $translator = app('translator');

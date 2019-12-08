@@ -17,7 +17,7 @@ function users_controller()
     $request = request();
 
     if (!$user) {
-        redirect(page_link_to(''));
+        throw_redirect(page_link_to(''));
     }
 
     $action = 'list';
@@ -56,13 +56,13 @@ function user_delete_controller()
     }
 
     if (!auth()->can('admin_user')) {
-        redirect(page_link_to(''));
+        throw_redirect(page_link_to(''));
     }
 
     // You cannot delete yourself
     if ($user->id == $user_source->id) {
         error(__('You cannot delete yourself.'));
-        redirect(user_link($user->id));
+        throw_redirect(user_link($user->id));
     }
 
     if ($request->hasPostData('submit')) {
@@ -85,7 +85,7 @@ function user_delete_controller()
             success(__('User deleted.'));
             engelsystem_log(sprintf('Deleted %s', User_Nick_render($user_source, true)));
 
-            redirect(users_link());
+            throw_redirect(users_link());
         }
     }
 
@@ -145,7 +145,7 @@ function user_edit_vouchers_controller()
     }
 
     if (!auth()->can('admin_user')) {
-        redirect(page_link_to(''));
+        throw_redirect(page_link_to(''));
     }
 
     if ($request->hasPostData('submit')) {
@@ -171,7 +171,7 @@ function user_edit_vouchers_controller()
             engelsystem_log(User_Nick_render($user_source, true) . ': ' . sprintf('Got %s vouchers',
                     $user_source->state->got_voucher));
 
-            redirect(user_link($user_source->id));
+            throw_redirect(user_link($user_source->id));
         }
     }
 
@@ -194,7 +194,7 @@ function user_controller()
         $user_source = User::find($request->input('user_id'));
         if (!$user_source) {
             error(__('User not found.'));
-            redirect(page_link_to('/'));
+            throw_redirect(page_link_to('/'));
         }
     }
 
@@ -261,7 +261,7 @@ function users_list_controller()
     $request = request();
 
     if (!auth()->can('admin_user')) {
-        redirect(page_link_to(''));
+        throw_redirect(page_link_to(''));
     }
 
     $order_by = 'name';
@@ -319,13 +319,13 @@ function load_user()
 {
     $request = request();
     if (!$request->has('user_id')) {
-        redirect(page_link_to());
+        throw_redirect(page_link_to());
     }
 
     $user = User::find($request->input('user_id'));
     if (!$user) {
         error(__('User doesn\'t exist.'));
-        redirect(page_link_to());
+        throw_redirect(page_link_to());
     }
 
     return $user;

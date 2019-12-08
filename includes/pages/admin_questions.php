@@ -122,7 +122,7 @@ function admin_questions()
                             . ' answered: '
                             . $answer
                         );
-                        redirect(page_link_to('admin_questions'));
+                        throw_redirect(page_link_to('admin_questions'));
                     } else {
                         return error('Enter an answer!', true);
                     }
@@ -145,7 +145,7 @@ function admin_questions()
                 if (!empty($question)) {
                     $question->delete();
                     engelsystem_log('Question deleted: ' . $question['Question']);
-                    redirect(page_link_to('admin_questions'));
+                    throw_redirect(page_link_to('admin_questions'));
                 } else {
                     return error('No question found.', true);
                 }

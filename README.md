@@ -65,7 +65,7 @@ The following instructions explain how to get, build and run the latest engelsys
       ```
 
 ### Configuration and Setup
- * The webserver must have write access to the ```import``` and ```storage``` directories and read access for all other directories
+ * The webserver must have write access to the ```storage``` directory and read access for all other directories
  * The webserver must point to the ```public``` directory.
  * The webserver must read the ```.htaccess``` file and ```mod_rewrite``` must be enabled
 

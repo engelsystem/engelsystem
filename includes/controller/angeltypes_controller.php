@@ -79,7 +79,7 @@ function angeltypes_about_controller()
 function angeltype_delete_controller()
 {
     if (!auth()->can('admin_angel_types')) {
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $angeltype = load_angeltype();
@@ -87,7 +87,7 @@ function angeltype_delete_controller()
     if (request()->hasPostData('delete')) {
         AngelType_delete($angeltype);
         success(sprintf(__('Angeltype %s deleted.'), AngelType_name_render($angeltype)));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     return [
@@ -112,13 +112,13 @@ function angeltype_edit_controller()
         $angeltype = load_angeltype();
 
         if (!User_is_AngelType_supporter(auth()->user(), $angeltype)) {
-            redirect(page_link_to('angeltypes'));
+            throw_redirect(page_link_to('angeltypes'));
         }
     } else {
         // New angeltype
         if ($supporter_mode) {
             // Supporters aren't allowed to create new angeltypes.
-            redirect(page_link_to('angeltypes'));
+            throw_redirect(page_link_to('angeltypes'));
         }
         $angeltype = AngelType_new();
     }
@@ -157,7 +157,7 @@ function angeltype_edit_controller()
             }
 
             success('Angel type saved.');
-            redirect(angeltype_link($angeltype['id']));
+            throw_redirect(angeltype_link($angeltype['id']));
         }
     }
 
@@ -177,7 +177,7 @@ function angeltype_controller()
     $user = auth()->user();
 
     if (!auth()->can('angeltypes')) {
-        redirect(page_link_to('/'));
+        throw_redirect(page_link_to('/'));
     }
 
     $angeltype = load_angeltype();
@@ -275,7 +275,7 @@ function angeltypes_list_controller()
     $user = auth()->user();
 
     if (!auth()->can('angeltypes')) {
-        redirect(page_link_to('/'));
+        throw_redirect(page_link_to('/'));
     }
 
     $angeltypes = AngelTypes_with_user($user->id);
@@ -346,13 +346,13 @@ function load_angeltype()
 {
     $request = request();
     if (!$request->has('angeltype_id')) {
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $angeltype = AngelType($request->input('angeltype_id'));
     if (empty($angeltype)) {
         error(__('Angeltype doesn\'t exist . '));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     return $angeltype;

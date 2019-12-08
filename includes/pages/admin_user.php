@@ -22,7 +22,7 @@ function admin_user()
     $html = '';
 
     if (!$request->has('id')) {
-        redirect(users_link());
+        throw_redirect(users_link());
     }
 
     $user_id = $request->input('id');
@@ -30,7 +30,7 @@ function admin_user()
         $user_source = User::find($user_id);
         if (!$user_source) {
             error(__('This user does not exist.'));
-            redirect(users_link());
+            throw_redirect(users_link());
         }
 
         $html .= 'Hallo,<br />'

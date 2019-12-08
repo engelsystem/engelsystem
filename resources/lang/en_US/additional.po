@@ -32,3 +32,36 @@ msgstr "Your passwords are not equal."
 
 msgid "validation.password_confirmation.required"
 msgstr "You have to confirm your password."
+
+msgid "schedule.import"
+msgstr "Import schedule"
+
+msgid "schedule.import.request-error"
+msgstr "The schedule could not be requested."
+
+msgid "schedule.import.read-error"
+msgstr "Unable to parse schedule."
+
+msgid "schedule.import.invalid-shift-type"
+msgstr "The shift type can't not be found."
+
+msgid "schedule.import.success"
+msgstr "Schedule import successful."
+
+msgid "validation.schedule-url.required"
+msgstr "The schedule URL is required."
+
+msgid "validation.schedule-url.url"
+msgstr "The schedule URL needs to be of type URL."
+
+msgid "validation.shift-type.required"
+msgstr "The shift type is required."
+
+msgid "validation.shift-type.int"
+msgstr "The shift type has to ba a number."
+
+msgid "validation.minutes-before.int"
+msgstr "The minutes before the talk have to be an integer."
+
+msgid "validation.minutes-after.int"
+msgstr "The minutes after the talk have to be an integer."

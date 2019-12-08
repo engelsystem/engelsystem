@@ -13,12 +13,12 @@ function shift_entries_controller()
 {
     $user = auth()->user();
     if (!$user) {
-        redirect(page_link_to('login'));
+        throw_redirect(page_link_to('login'));
     }
 
     $action = strip_request_item('action');
     if (empty($action)) {
-        redirect(user_link($user->id));
+        throw_redirect(user_link($user->id));
     }
 
     switch ($action) {
@@ -40,12 +40,12 @@ function shift_entry_create_controller()
     $request = request();
 
     if (User_is_freeloader($user)) {
-        redirect(page_link_to('user_myshifts'));
+        throw_redirect(page_link_to('user_myshifts'));
     }
 
     $shift = Shift($request->input('shift_id'));
     if (empty($shift)) {
-        redirect(user_link($user->id));
+        throw_redirect(user_link($user->id));
     }
 
     $angeltype = AngelType($request->input('angeltype_id'));
@@ -55,7 +55,7 @@ function shift_entry_create_controller()
     }
 
     if (empty($angeltype)) {
-        redirect(user_link($user->id));
+        throw_redirect(user_link($user->id));
     }
 
     if (User_is_AngelType_supporter($user, $angeltype)) {
@@ -82,7 +82,7 @@ function shift_entry_create_controller_admin($shift, $angeltype)
         $signup_user = User::find($request->input('user_id'));
     }
     if (!$signup_user) {
-        redirect(shift_link($shift));
+        throw_redirect(shift_link($shift));
     }
 
     $angeltypes = AngelTypes();
@@ -91,7 +91,7 @@ function shift_entry_create_controller_admin($shift, $angeltype)
     }
     if (empty($angeltype)) {
         if (count($angeltypes) == 0) {
-            redirect(shift_link($shift));
+            throw_redirect(shift_link($shift));
         }
         $angeltype = $angeltypes[0];
     }
@@ -107,7 +107,7 @@ function shift_entry_create_controller_admin($shift, $angeltype)
         ]);
 
         success(sprintf(__('%s has been subscribed to the shift.'), User_Nick_render($signup_user)));
-        redirect(shift_link($shift));
+        throw_redirect(shift_link($shift));
     }
 
     /** @var User[]|Collection $users */
@@ -147,7 +147,7 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
     }
     if (!UserAngelType_exists($signup_user->id, $angeltype)) {
         error(__('User is not in angeltype.'));
-        redirect(shift_link($shift));
+        throw_redirect(shift_link($shift));
     }
 
     $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
@@ -165,7 +165,7 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
         if ($shift_signup_state->getState() == ShiftSignupState::OCCUPIED) {
             error(__('This shift is already occupied.'));
         }
-        redirect(shift_link($shift));
+        throw_redirect(shift_link($shift));
     }
 
     if ($request->hasPostData('submit')) {
@@ -179,7 +179,7 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
         ]);
 
         success(sprintf(__('%s has been subscribed to the shift.'), User_Nick_render($signup_user)));
-        redirect(shift_link($shift));
+        throw_redirect(shift_link($shift));
     }
 
     $users = Users_by_angeltype($angeltype);
@@ -245,7 +245,7 @@ function shift_entry_create_controller_user($shift, $angeltype)
     );
     if (!$shift_signup_state->isSignupAllowed()) {
         shift_entry_error_message($shift_signup_state);
-        redirect(shift_link($shift));
+        throw_redirect(shift_link($shift));
     }
 
     $comment = '';
@@ -265,7 +265,7 @@ function shift_entry_create_controller_user($shift, $angeltype)
         }
 
         success(__('You are subscribed. Thank you!'));
-        redirect(shift_link($shift));
+        throw_redirect(shift_link($shift));
     }
 
     $room = Room($shift['RID']);
@@ -319,12 +319,12 @@ function shift_entry_load()
     $request = request();
 
     if (!$request->has('shift_entry_id') || !test_request_int('shift_entry_id')) {
-        redirect(page_link_to('user_shifts'));
+        throw_redirect(page_link_to('user_shifts'));
     }
     $shiftEntry = ShiftEntry($request->input('shift_entry_id'));
     if (empty($shiftEntry)) {
         error(__('Shift entry not found.'));
-        redirect(page_link_to('user_shifts'));
+        throw_redirect(page_link_to('user_shifts'));
     }
 
     return $shiftEntry;
@@ -346,13 +346,13 @@ function shift_entry_delete_controller()
     $signout_user = User::find($shiftEntry['UID']);
     if (!Shift_signout_allowed($shift, $angeltype, $signout_user->id)) {
         error(__('You are not allowed to remove this shift entry. If necessary, ask your supporter or heaven to do so.'));
-        redirect(user_link($signout_user->id));
+        throw_redirect(user_link($signout_user->id));
     }
 
     if ($request->hasPostData('delete')) {
         ShiftEntry_delete($shiftEntry);
         success(__('Shift entry removed.'));
-        redirect(shift_link($shift));
+        throw_redirect(shift_link($shift));
     }
 
     if ($user->id == $signout_user->id) {

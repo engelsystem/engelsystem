@@ -36,14 +36,17 @@ trait HasDatabase
         $this->database
             ->getConnection()
             ->table('migrations')
-            ->insert([
-                ['migration' => '2018_01_01_000001_import_install_sql'],
-                ['migration' => '2018_01_01_000002_import_update_sql'],
-                ['migration' => '2018_01_01_000003_fix_old_tables'],
-                ['migration' => '2018_01_01_000004_cleanup_group_privileges'],
-                ['migration' => '2018_01_01_000005_add_angel_supporter_permissions'],
-                ['migration' => '2018_12_27_000000_fix_missing_arrival_dates'],
-            ]);
+            ->insert(
+                [
+                    ['migration' => '2018_01_01_000001_import_install_sql'],
+                    ['migration' => '2018_01_01_000002_import_update_sql'],
+                    ['migration' => '2018_01_01_000003_fix_old_tables'],
+                    ['migration' => '2018_01_01_000004_cleanup_group_privileges'],
+                    ['migration' => '2018_01_01_000005_add_angel_supporter_permissions'],
+                    ['migration' => '2018_12_27_000000_fix_missing_arrival_dates'],
+                    ['migration' => '2019_09_07_000000_migrate_admin_schedule_permissions'],
+                ]
+            );
 
         $migration->run(__DIR__ . '/../../db/migrations');
     }

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<schedule>
+    <version>Some version string</version>
+    <conference>
+        <title>Test Event</title>
+        <acronym>Test1</acronym>
+        <start>2042-01-01</start>
+        <end>2042-01-01</end>
+        <days>1</days>
+        <timeslot_duration>00:15</timeslot_duration>
+        <base_url>https://foo.bar/baz/schedule/</base_url>
+    </conference>
+    <day index='1' date='2042-01-01' start='2042-01-01T01:00:00+02:00' end='2042-01-01T22:59:00+02:00'>
+        <room name='Rooming'>
+            <event guid='e427cfa9-9ba1-4b14-a99f-bce83ffe5a1c' id='1337'>
+                <date>2042-01-01T12:30:00+02:00</date>
+                <title>Foo Bar Test</title>
+                <subtitle>Some sub</subtitle>
+                <start>12:30</start>
+                <duration>00:30</duration>
+                <room>Rooming</room>
+                <slug>foo-bar-test</slug>
+                <recording>
+                    <license>WTFPL</license>
+                    <optout>false</optout>
+                </recording>
+                <track>Testing</track>
+                <type>Talk</type>
+                <language>de</language>
+                <abstract>Foo bar is da best</abstract>
+                <description>Any describing stuff?</description>
+                <url>https://foo.bar/baz/schedule/ipsum</url>
+                <logo>https://lorem.ipsum/foo/bar.png</logo>
+                <persons>
+                    <person id='1234'>Some Person</person>
+                </persons>
+                <links>
+                    <link href="https://foo.bar">Some Foo Bar</link>
+                </links>
+                <attachments>
+                    <attachment href="https://foo.bar/stuff.pdf">A PDF File</attachment>
+                </attachments>
+            </event>
+        </room>
+    </day>
+</schedule>

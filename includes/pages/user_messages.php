@@ -141,7 +141,7 @@ function user_messages()
                         'UPDATE `Messages` SET `isRead`=\'Y\' WHERE `id`=? LIMIT 1',
                         [$message_id]
                     );
-                    redirect(page_link_to('user_messages'));
+                    throw_redirect(page_link_to('user_messages'));
                 } else {
                     return error(__('No Message found.'), true);
                 }
@@ -160,7 +160,7 @@ function user_messages()
                 );
                 if (!empty($message) && $message['SUID'] == $user->id) {
                     DB::delete('DELETE FROM `Messages` WHERE `id`=? LIMIT 1', [$message_id]);
-                    redirect(page_link_to('user_messages'));
+                    throw_redirect(page_link_to('user_messages'));
                 } else {
                     return error(__('No Message found.'), true);
                 }
@@ -168,7 +168,7 @@ function user_messages()
 
             case 'send':
                 if (Message_send($request->input('to'), $request->input('text'))) {
-                    redirect(page_link_to('user_messages'));
+                    throw_redirect(page_link_to('user_messages'));
                 } else {
                     return error(__('Transmitting was terminated with an Error.'), true);
                 }

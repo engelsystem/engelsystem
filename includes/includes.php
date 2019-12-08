@@ -69,7 +69,6 @@ $includeFiles = [
     __DIR__ . '/../includes/pages/admin_arrive.php',
     __DIR__ . '/../includes/pages/admin_free.php',
     __DIR__ . '/../includes/pages/admin_groups.php',
-    __DIR__ . '/../includes/pages/admin_import.php',
     __DIR__ . '/../includes/pages/admin_log.php',
     __DIR__ . '/../includes/pages/admin_questions.php',
     __DIR__ . '/../includes/pages/admin_rooms.php',
@@ -82,6 +81,8 @@ $includeFiles = [
     __DIR__ . '/../includes/pages/user_questions.php',
     __DIR__ . '/../includes/pages/user_settings.php',
     __DIR__ . '/../includes/pages/user_shifts.php',
+
+    __DIR__ . '/../includes/pages/schedule/ImportSchedule.php',
 ];
 
 foreach ($includeFiles as $file) {

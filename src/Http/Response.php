@@ -6,27 +6,37 @@ use Engelsystem\Renderer\Renderer;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Response extends SymfonyResponse implements ResponseInterface
 {
     use MessageTrait;
 
+    /**
+     * @var SessionInterface
+     */
+    protected $session;
+
     /** @var Renderer */
     protected $renderer;
 
     /**
-     * @param string   $content
-     * @param int      $status
-     * @param array    $headers
-     * @param Renderer $renderer
+     * @param string           $content
+     * @param int              $status
+     * @param array            $headers
+     * @param Renderer         $renderer
+     * @param SessionInterface $session
      */
     public function __construct(
         $content = '',
         int $status = 200,
         array $headers = [],
-        Renderer $renderer = null
+        Renderer $renderer = null,
+        SessionInterface $session = null
     ) {
         $this->renderer = $renderer;
+        $this->session = $session;
+
         parent::__construct($content, $status, $headers);
     }
 
@@ -154,5 +164,45 @@ class Response extends SymfonyResponse implements ResponseInterface
     public function setRenderer(Renderer $renderer)
     {
         $this->renderer = $renderer;
+    }
+
+    /**
+     * Sets a session attribute (which is mutable)
+     *
+     * @param string        $key
+     * @param mixed|mixed[] $value
+     * @return Response
+     */
+    public function with(string $key, $value)
+    {
+        if (!$this->session instanceof SessionInterface) {
+            throw new InvalidArgumentException('Session not defined');
+        }
+
+        $data = $this->session->get($key);
+        if (is_array($data) && is_array($value)) {
+            $value = array_merge_recursive($data, $value);
+        }
+
+        $this->session->set($key, $value);
+
+        return $this;
+    }
+
+    /**
+     * Sets form data to the mutable session
+     *
+     * @param array $input
+     * @return Response
+     */
+    public function withInput(array $input)
+    {
+        if (!$this->session instanceof SessionInterface) {
+            throw new InvalidArgumentException('Session not defined');
+        }
+
+        $this->session->set('form-data', $input);
+
+        return $this;
     }
 }

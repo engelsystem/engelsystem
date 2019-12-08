@@ -10,6 +10,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class ResponseTest extends TestCase
 {
@@ -115,5 +117,60 @@ class ResponseTest extends TestCase
             ],
             $newResponse->getHeaders()
         );
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Response::with
+     */
+    public function testWith()
+    {
+        $session = new Session(new MockArraySessionStorage());
+        $response = new Response('', 200, [], null, $session);
+
+        $response->with('foo', 'bar');
+        $this->assertEquals('bar', $session->get('foo'));
+
+        $response->with('lorem', ['ipsum', 'dolor' => ['foo' => 'bar']]);
+        $this->assertEquals(['ipsum', 'dolor' => ['foo' => 'bar']], $session->get('lorem'));
+
+        $response->with('lorem', ['dolor' => ['test' => 'er']]);
+        $this->assertEquals(['ipsum', 'dolor' => ['foo' => 'bar', 'test' => 'er']], $session->get('lorem'));
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Response::with
+     */
+    public function testWithNoSession()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $response = new Response();
+        $response->with('foo', 'bar');
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Response::withInput
+     */
+    public function testWithInput()
+    {
+        $session = new Session(new MockArraySessionStorage());
+        $response = new Response('', 200, [], null, $session);
+
+        $response->withInput(['some' => 'value']);
+        $this->assertEquals(['some' => 'value'], $session->get('form-data'));
+
+        $response->withInput(['lorem' => 'ipsum']);
+        $this->assertEquals(['lorem' => 'ipsum'], $session->get('form-data'));
+    }
+
+    /**
+     * @covers \Engelsystem\Http\Response::withInput
+     */
+    public function testWithInputNoSession()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $response = new Response();
+        $response->withInput(['some' => 'value']);
     }
 }

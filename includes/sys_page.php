@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Engelsystem\Http\Exceptions\HttpTemporaryRedirect;
 use Engelsystem\ValidationResult;
 
 /**
@@ -55,10 +56,9 @@ function parse_date($pattern, $value)
  *
  * @param string $url
  */
-function redirect($url)
+function throw_redirect($url)
 {
-    header('Location: ' . $url, true, 302);
-    raw_output('');
+    throw new HttpTemporaryRedirect($url);
 }
 
 /**

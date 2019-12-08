@@ -34,3 +34,36 @@ msgstr "Deine Passwörter stimmen nicht überein."
 
 msgid "validation.password_confirmation.required"
 msgstr "Du musst dein Passwort bestätigen."
+
+msgid "schedule.import"
+msgstr "Programm importieren"
+
+msgid "schedule.import.request-error"
+msgstr "Das Programm konnte nicht abgerufen werden."
+
+msgid "schedule.import.read-error"
+msgstr "Das Programm konnte nicht gelesen werden."
+
+msgid "schedule.import.invalid-shift-type"
+msgstr "Der Schichttyp konnte nicht gefunden werden."
+
+msgid "schedule.import.success"
+msgstr "Das Programm wurde erfolgreich importiert."
+
+msgid "validation.schedule-url.required"
+msgstr "Bitte gib eine Programm URL an."
+
+msgid "validation.schedule-url.url"
+msgstr "Die Programm URL muss eine URL sein."
+
+msgid "validation.shift-type.required"
+msgstr "Der Schichttyp ist erforderlich."
+
+msgid "validation.shift-type.int"
+msgstr "Der Schichttyp muss eine Zahl sein."
+
+msgid "validation.minutes-before.int"
+msgstr "Die Minuten vor dem Talk müssen eine Zahl sein."
+
+msgid "validation.minutes-after.int"
+msgstr "Die Minuten nach dem Talk müssen eine Zahl sein."

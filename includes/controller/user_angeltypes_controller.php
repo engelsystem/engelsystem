@@ -45,18 +45,18 @@ function user_angeltypes_delete_all_controller()
 
     if (!$request->has('angeltype_id')) {
         error(__('Angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $angeltype = AngelType($request->input('angeltype_id'));
     if (empty($angeltype)) {
         error(__('Angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     if (!User_is_AngelType_supporter(auth()->user(), $angeltype)) {
         error(__('You are not allowed to delete all users for this angeltype.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     if ($request->hasPostData('deny_all')) {
@@ -64,7 +64,7 @@ function user_angeltypes_delete_all_controller()
 
         engelsystem_log(sprintf('Denied all users for angeltype %s', AngelType_name_render($angeltype, true)));
         success(sprintf(__('Denied all users for angeltype %s.'), AngelType_name_render($angeltype)));
-        redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
+        throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
     return [
@@ -85,18 +85,18 @@ function user_angeltypes_confirm_all_controller()
 
     if (!$request->has('angeltype_id')) {
         error(__('Angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $angeltype = AngelType($request->input('angeltype_id'));
     if (empty($angeltype)) {
         error(__('Angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     if (!auth()->can('admin_user_angeltypes') && !User_is_AngelType_supporter($user, $angeltype)) {
         error(__('You are not allowed to confirm all users for this angeltype.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     if ($request->hasPostData('confirm_all')) {
@@ -104,7 +104,7 @@ function user_angeltypes_confirm_all_controller()
 
         engelsystem_log(sprintf('Confirmed all users for angeltype %s', AngelType_name_render($angeltype, true)));
         success(sprintf(__('Confirmed all users for angeltype %s.'), AngelType_name_render($angeltype)));
-        redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
+        throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
     return [
@@ -125,30 +125,30 @@ function user_angeltype_confirm_controller()
 
     if (!$request->has('user_angeltype_id')) {
         error(__('User angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $user_angeltype = UserAngelType($request->input('user_angeltype_id'));
     if (empty($user_angeltype)) {
         error(__('User angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $angeltype = AngelType($user_angeltype['angeltype_id']);
     if (empty($angeltype)) {
         error(__('Angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     if (!User_is_AngelType_supporter($user, $angeltype)) {
         error(__('You are not allowed to confirm this users angeltype.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $user_source = User::find($user_angeltype['user_id']);
     if (!$user_source) {
         error(__('User doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     if ($request->hasPostData('confirm_user')) {
@@ -164,7 +164,7 @@ function user_angeltype_confirm_controller()
             User_Nick_render($user_source),
             AngelType_name_render($angeltype)
         ));
-        redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
+        throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
     return [
@@ -185,30 +185,30 @@ function user_angeltype_delete_controller()
 
     if (!$request->has('user_angeltype_id')) {
         error(__('User angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $user_angeltype = UserAngelType($request->input('user_angeltype_id'));
     if (empty($user_angeltype)) {
         error(__('User angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $angeltype = AngelType($user_angeltype['angeltype_id']);
     if (empty($angeltype)) {
         error(__('Angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $user_source = User::find($user_angeltype['user_id']);
     if (!$user_source) {
         error(__('User doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     if ($user->id != $user_angeltype['user_id'] && !User_is_AngelType_supporter($user, $angeltype)) {
         error(__('You are not allowed to delete this users angeltype.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     if ($request->hasPostData('delete')) {
@@ -217,7 +217,7 @@ function user_angeltype_delete_controller()
         engelsystem_log(sprintf('User %s removed from %s.', User_Nick_render($user_source, true), $angeltype['name']));
         success(sprintf(__('User %s removed from %s.'), User_Nick_render($user_source), $angeltype['name']));
 
-        redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
+        throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
     return [
@@ -238,37 +238,37 @@ function user_angeltype_update_controller()
 
     if (!auth()->can('admin_angel_types')) {
         error(__('You are not allowed to set supporter rights.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     if (!$request->has('user_angeltype_id')) {
         error(__('User angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     if ($request->has('supporter') && preg_match('/^[01]$/', $request->input('supporter'))) {
         $supporter = $request->input('supporter') == '1';
     } else {
         error(__('No supporter update given.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $user_angeltype = UserAngelType($request->input('user_angeltype_id'));
     if (empty($user_angeltype)) {
         error(__('User angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $angeltype = AngelType($user_angeltype['angeltype_id']);
     if (empty($angeltype)) {
         error(__('Angeltype doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     $user_source = User::find($user_angeltype['user_id']);
     if (!$user_source) {
         error(__('User doesn\'t exist.'));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     if ($request->hasPostData('submit')) {
@@ -288,7 +288,7 @@ function user_angeltype_update_controller()
             User_Nick_render($user_source)
         ));
 
-        redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
+        throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
     return [
@@ -343,7 +343,7 @@ function user_angeltype_add_controller()
                 AngelType_name_render($angeltype, true)
             ));
 
-            redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
+            throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
         }
     }
 
@@ -366,7 +366,7 @@ function user_angeltype_join_controller($angeltype)
     $user_angeltype = UserAngelType_by_User_and_AngelType($user->id, $angeltype);
     if (!empty($user_angeltype)) {
         error(sprintf(__('You are already a %s.'), $angeltype['name']));
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     if (request()->hasPostData('submit')) {
@@ -389,7 +389,7 @@ function user_angeltype_join_controller($angeltype)
             ));
         }
 
-        redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
+        throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
     return [
@@ -407,7 +407,7 @@ function user_angeltypes_controller()
 {
     $request = request();
     if (!$request->has('action')) {
-        redirect(page_link_to('angeltypes'));
+        throw_redirect(page_link_to('angeltypes'));
     }
 
     switch ($request->input('action')) {
@@ -424,6 +424,6 @@ function user_angeltypes_controller()
         case 'add':
             return user_angeltype_add_controller();
         default:
-            redirect(page_link_to('angeltypes'));
+            throw_redirect(page_link_to('angeltypes'));
     }
 }

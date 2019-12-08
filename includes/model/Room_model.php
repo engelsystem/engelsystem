@@ -62,35 +62,20 @@ function Room_delete($room_id)
 }
 
 /**
- * Delete a room by its name
- *
- * @param string $name
- */
-function Room_delete_by_name($name)
-{
-    DB::delete('DELETE FROM `Room` WHERE `Name` = ?', [
-        $name
-    ]);
-    engelsystem_log('Room deleted: ' . $name);
-}
-
-/**
  * Create a new room
  *
  * @param string  $name      Name of the room
- * @param boolean $from_frab Is this a frab imported room?
  * @param string  $map_url   URL to a map tha can be displayed in an iframe
  * @param string description Markdown description
  * @return false|int
  */
-function Room_create($name, $from_frab, $map_url, $description)
+function Room_create($name, $map_url, $description)
 {
     DB::insert('
-          INSERT INTO `Room` (`Name`, `from_frab`, `map_url`, `description`)
-           VALUES (?, ?, ?, ?)
+          INSERT INTO `Room` (`Name`, `map_url`, `description`)
+           VALUES (?, ?, ?)
         ', [
         $name,
-        (int)$from_frab,
         $map_url,
         $description
     ]);
@@ -98,7 +83,6 @@ function Room_create($name, $from_frab, $map_url, $description)
 
     engelsystem_log(
         'Room created: ' . $name
-        . ', frab import: ' . ($from_frab ? 'Yes' : '')
         . ', map_url: ' . $map_url
         . ', description: ' . $description
     );
@@ -107,28 +91,25 @@ function Room_create($name, $from_frab, $map_url, $description)
 }
 
 /**
- * update a room
+ * Update a room
  *
  * @param int     $room_id     The rooms id
  * @param string  $name        Name of the room
- * @param boolean $from_frab   Is this a frab imported room?
  * @param string  $map_url     URL to a map tha can be displayed in an iframe
  * @param string  $description Markdown description
  * @return int
  */
-function Room_update($room_id, $name, $from_frab, $map_url, $description)
+function Room_update($room_id, $name, $map_url, $description)
 {
     $result = DB::update('
         UPDATE `Room`
         SET
             `Name`=?,
-            `from_frab`=?,
             `map_url`=?,
             `description`=?
         WHERE `RID`=?
         LIMIT 1', [
         $name,
-        (int)$from_frab,
         $map_url,
         $description,
         $room_id
@@ -136,7 +117,6 @@ function Room_update($room_id, $name, $from_frab, $map_url, $description)
 
     engelsystem_log(
         'Room updated: ' . $name .
-        ', frab import: ' . ($from_frab ? 'Yes' : '') .
         ', map_url: ' . $map_url .
         ', description: ' . $description
     );

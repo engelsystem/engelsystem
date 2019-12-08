@@ -410,42 +410,6 @@ function table_buttons($buttons = [])
 }
 
 /**
- * @param string $str
- * @param int    $length
- * @return string
- */
-function shorten($str, $length = 50)
-{
-    if (strlen($str) < $length) {
-        return $str;
-    }
-    return '<span title="' . htmlentities($str, ENT_COMPAT, 'UTF-8') . '">'
-        . substr($str, 0, $length - 3)
-        . '...</span>';
-}
-
-/**
- * @param array[] $array
- * @return string
- */
-function table_body($array)
-{
-    $html = '';
-    foreach ($array as $line) {
-        $html .= '<tr>';
-        if (is_array($line)) {
-            foreach ($line as $td) {
-                $html .= '<td>' . $td . '</td>';
-            }
-        } else {
-            $html .= '<td>' . $line . '</td>';
-        }
-        $html .= '</tr>';
-    }
-    return $html;
-}
-
-/**
  * @param string $msg
  * @return mixed
  */

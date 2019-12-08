@@ -15,7 +15,6 @@ COPY .babelrc .browserslistrc composer.json LICENSE package.json README.md webpa
 COPY bin/ /app/bin
 COPY config/ /app/config
 COPY db/ /app/db
-RUN mkdir /app/import/
 COPY includes/ /app/includes
 COPY public/ /app/public
 COPY resources/views /app/resources/views
@@ -35,7 +34,7 @@ WORKDIR /var/www
 RUN apk add --no-cache icu-dev && \
     docker-php-ext-install intl pdo_mysql
 COPY --from=data /app/ /var/www
-RUN chown -R www-data:www-data /var/www/import/ /var/www/storage/ && \
+RUN chown -R www-data:www-data /var/www/storage/ && \
     rm -r /var/www/html
 
 ARG VERSION

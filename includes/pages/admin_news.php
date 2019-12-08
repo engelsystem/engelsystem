@@ -10,7 +10,7 @@ function admin_news()
     $request = request();
 
     if (!$request->has('action')) {
-        redirect(page_link_to('news'));
+        throw_redirect(page_link_to('news'));
     }
 
     $html = '<div class="col-md-12"><h1>' . __('Edit news entry') . '</h1>' . msg();
@@ -70,17 +70,17 @@ function admin_news()
 
             engelsystem_log('News updated: ' . $request->postData('eBetreff'));
             success(__('News entry updated.'));
-            redirect(page_link_to('news'));
+            throw_redirect(page_link_to('news'));
             break;
 
         case 'delete':
             $news->delete();
             engelsystem_log('News deleted: ' . $news->title);
             success(__('News entry deleted.'));
-            redirect(page_link_to('news'));
+            throw_redirect(page_link_to('news'));
             break;
         default:
-            redirect(page_link_to('news'));
+            throw_redirect(page_link_to('news'));
     }
     return $html . '</div>';
 }

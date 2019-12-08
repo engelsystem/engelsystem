@@ -49,11 +49,11 @@ function shift_edit_controller()
     $request = request();
 
     if (!auth()->can('admin_shifts')) {
-        redirect(page_link_to('user_shifts'));
+        throw_redirect(page_link_to('user_shifts'));
     }
 
     if (!$request->has('edit_shift') || !test_request_int('edit_shift')) {
-        redirect(page_link_to('user_shifts'));
+        throw_redirect(page_link_to('user_shifts'));
     }
     $shift_id = $request->input('edit_shift');
 
@@ -164,7 +164,7 @@ function shift_edit_controller()
             );
             success(__('Shift updated.'));
 
-            redirect(shift_link([
+            throw_redirect(shift_link([
                 'SID' => $shift_id
             ]));
         }
@@ -205,18 +205,18 @@ function shift_delete_controller()
     $request = request();
 
     if (!auth()->can('user_shifts_admin')) {
-        redirect(page_link_to('user_shifts'));
+        throw_redirect(page_link_to('user_shifts'));
     }
 
     // Schicht komplett löschen (nur für admins/user mit user_shifts_admin privileg)
     if (!$request->has('delete_shift') || !preg_match('/^\d+$/', $request->input('delete_shift'))) {
-        redirect(page_link_to('user_shifts'));
+        throw_redirect(page_link_to('user_shifts'));
     }
     $shift_id = $request->input('delete_shift');
 
     $shift = Shift($shift_id);
     if (empty($shift)) {
-        redirect(page_link_to('user_shifts'));
+        throw_redirect(page_link_to('user_shifts'));
     }
 
     // Schicht löschen bestätigt
@@ -230,7 +230,7 @@ function shift_delete_controller()
             . ' to ' . date('Y-m-d H:i', $shift['end'])
         );
         success(__('Shift deleted.'));
-        redirect(page_link_to('user_shifts'));
+        throw_redirect(page_link_to('user_shifts'));
     }
 
     return page_with_title(shifts_title(), [
@@ -256,17 +256,17 @@ function shift_controller()
     $request = request();
 
     if (!auth()->can('user_shifts')) {
-        redirect(page_link_to('/'));
+        throw_redirect(page_link_to('/'));
     }
 
     if (!$request->has('shift_id')) {
-        redirect(page_link_to('user_shifts'));
+        throw_redirect(page_link_to('user_shifts'));
     }
 
     $shift = Shift($request->input('shift_id'));
     if (empty($shift)) {
         error(__('Shift could not be found.'));
-        redirect(page_link_to('user_shifts'));
+        throw_redirect(page_link_to('user_shifts'));
     }
 
     $shifttype = ShiftType($shift['shifttype_id']);
@@ -309,7 +309,7 @@ function shifts_controller()
 {
     $request = request();
     if (!$request->has('action')) {
-        redirect(page_link_to('user_shifts'));
+        throw_redirect(page_link_to('user_shifts'));
     }
 
     switch ($request->input('action')) {
@@ -319,7 +319,7 @@ function shifts_controller()
         case 'next':
             shift_next_controller();
         default:
-            redirect(page_link_to('/'));
+            throw_redirect(page_link_to('/'));
     }
 
     return false;
@@ -331,16 +331,16 @@ function shifts_controller()
 function shift_next_controller()
 {
     if (!auth()->can('user_shifts')) {
-        redirect(page_link_to('/'));
+        throw_redirect(page_link_to('/'));
     }
 
     $upcoming_shifts = ShiftEntries_upcoming_for_user(auth()->user()->id);
 
     if (!empty($upcoming_shifts)) {
-        redirect(shift_link($upcoming_shifts[0]));
+        throw_redirect(shift_link($upcoming_shifts[0]));
     }
 
-    redirect(page_link_to('user_shifts'));
+    throw_redirect(page_link_to('user_shifts'));
 }
 
 /**

@@ -38,7 +38,7 @@ function user_questions()
                     ]);
 
                     success(__('You question was saved.'));
-                    redirect(page_link_to('user_questions'));
+                    throw_redirect(page_link_to('user_questions'));
                 } else {
                     return page_with_title(questions_title(), [
                         error(__('Please enter a question!'), true)
@@ -59,7 +59,7 @@ function user_questions()
                 $question = Question::find($question_id);
                 if (!empty($question) && $question->user_id == $user->id) {
                     $question->delete();
-                    redirect(page_link_to('user_questions'));
+                    throw_redirect(page_link_to('user_questions'));
                 } else {
                     return page_with_title(questions_title(), [
                         error(__('No question found.'), true)

@@ -19,7 +19,6 @@ function admin_rooms()
     foreach ($rooms_source as $room) {
         $rooms[] = [
             'name'      => Room_name_render($room),
-            'from_frab' => glyph_bool($room['from_frab']),
             'map_url'   => glyph_bool(!empty($room['map_url'])),
             'actions'   => table_buttons([
                 button(
@@ -40,7 +39,6 @@ function admin_rooms()
     if ($request->has('show')) {
         $msg = '';
         $name = '';
-        $from_frab = false;
         $map_url = null;
         $description = null;
         $room_id = 0;
@@ -56,12 +54,11 @@ function admin_rooms()
         if (test_request_int('id')) {
             $room = Room($request->input('id'));
             if (empty($room)) {
-                redirect(page_link_to('admin_rooms'));
+                throw_redirect(page_link_to('admin_rooms'));
             }
 
             $room_id = $request->input('id');
             $name = $room['Name'];
-            $from_frab = $room['from_frab'];
             $map_url = $room['map_url'];
             $description = $room['description'];
 
@@ -87,8 +84,6 @@ function admin_rooms()
                     $valid = false;
                     $msg .= error(__('Please enter a name.'), true);
                 }
-
-                $from_frab = $request->has('from_frab');
 
                 if ($request->has('map_url')) {
                     $map_url = strip_request_item('map_url');
@@ -118,9 +113,9 @@ function admin_rooms()
 
                 if ($valid) {
                     if (empty($room_id)) {
-                        $room_id = Room_create($name, $from_frab, $map_url, $description);
+                        $room_id = Room_create($name, $map_url, $description);
                     } else {
-                        Room_update($room_id, $name, $from_frab, $map_url, $description);
+                        Room_update($room_id, $name, $map_url, $description);
                     }
 
                     NeededAngelTypes_delete_by_room($room_id);
@@ -140,7 +135,7 @@ function admin_rooms()
                         . ' to: ' . join(', ', $needed_angeltype_info)
                     );
                     success(__('Room saved.'));
-                    redirect(page_link_to('admin_rooms'));
+                    throw_redirect(page_link_to('admin_rooms'));
                 }
             }
             $angeltypes_count_form = [];
@@ -159,7 +154,6 @@ function admin_rooms()
                     div('row', [
                         div('col-md-6', [
                             form_text('name', __('Name'), $name, false, 35),
-                            form_checkbox('from_frab', __('Frab import'), $from_frab),
                             form_text('map_url', __('Map URL'), $map_url),
                             form_info('', __('The map url is used to display an iframe on the room page.')),
                             form_textarea('description', __('Description'), $description),
@@ -190,7 +184,7 @@ function admin_rooms()
                 Room_delete($room_id);
 
                 success(sprintf(__('Room %s deleted.'), $name));
-                redirect(page_link_to('admin_rooms'));
+                throw_redirect(page_link_to('admin_rooms'));
             }
 
             return page_with_title(admin_rooms_title(), [
@@ -212,7 +206,6 @@ function admin_rooms()
         msg(),
         table([
             'name'      => __('Name'),
-            'from_frab' => __('Frab import'),
             'map_url'   => __('Map'),
             'actions'   => ''
         ], $rooms)
