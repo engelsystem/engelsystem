@@ -32,11 +32,11 @@ $route->addGroup(
     function (RouteCollector $route) {
         // Schedule
         $route->addGroup(
-            '/schedule',
+            '-schedule',
             function (RouteCollector $route) {
                 $route->get('', 'Admin\\Schedule\\ImportSchedule@index');
-                $route->post('/load', 'Admin\\Schedule\\ImportSchedule@loadSchedule');
-                $route->post('/import', 'Admin\\Schedule\\ImportSchedule@importSchedule');
+                $route->post('-load', 'Admin\\Schedule\\ImportSchedule@loadSchedule');
+                $route->post('-import', 'Admin\\Schedule\\ImportSchedule@importSchedule');
             }
         );
     }

@@ -4,7 +4,7 @@
 {% block title %}{{ __('schedule.import.load.title') }}{% endblock %}
 
 {% block row_content %}
-    <form method="POST" action="{{ url('/admin/schedule/import') }}">
+    <form method="POST" action="{{ url('/admin-schedule-import') }}">
         {{ csrf() }}
         {{ f.hidden('schedule-url', schedule_url) }}
         {{ f.hidden('shift-type', shift_type) }}

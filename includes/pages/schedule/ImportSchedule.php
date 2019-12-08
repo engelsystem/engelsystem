@@ -48,7 +48,7 @@ class ImportSchedule extends BaseController
     protected $session;
 
     /** @var string */
-    protected $url = '/admin/schedule';
+    protected $url = 'admin-schedule';
 
     /** @var GuzzleClient */
     protected $guzzle;
