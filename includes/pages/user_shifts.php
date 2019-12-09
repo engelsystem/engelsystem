@@ -288,13 +288,18 @@ function ical_hint()
 {
     $user = auth()->user();
 
-    return heading(__('iCal export') . ' ' . button_help('user/ical'), 2)
+    return heading(__('iCal export and API') . ' ' . button_help('user/ical'), 2)
         . '<p>' . sprintf(
             __('Export your own shifts. <a href="%s">iCal format</a> or <a href="%s">JSON format</a> available (please keep secret, otherwise <a href="%s">reset the api key</a>).'),
             page_link_to('ical', ['key' => $user->api_key]),
             page_link_to('shifts_json_export', ['key' => $user->api_key]),
             page_link_to('user_myshifts', ['reset' => 1])
-        ) . '</p>';
+        )
+        . ' <button class="btn btn-xs btn-danger" data-toggle="collapse" data-target="#collapseApiKey" aria-expanded="false" aria-controls="collapseApiKey">
+             ' . __('Show API Key') . '
+           </button>'
+        . '</p>'
+        . '<p id="collapseApiKey" class="collapse"><code>' . $user->api_key . '</code></p>';
 }
 
 /**

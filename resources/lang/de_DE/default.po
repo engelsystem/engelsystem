@@ -1745,7 +1745,8 @@ msgstr "Meine Schichten"
 msgid "Key changed."
 msgstr "Key geändert."
 
-#: includes/pages/user_myshifts.php:42 includes/view/User_view.php:628
+#: includes/pages/user_myshifts.php:42 includes/view/User_view.php:646
+#: includes/pages/user_myshifts.php:42 includes/pages/user_shifts.php:310
 msgid "Reset API key"
 msgstr "API-Key zurücksetzen"
 
@@ -1923,9 +1924,9 @@ msgstr "nächste 4h"
 msgid "next 8h"
 msgstr "nächste 8h"
 
-#: includes/pages/user_shifts.php:291
-msgid "iCal export"
-msgstr "iCal Export"
+#: includes/pages/user_shifts.php:292
+msgid "iCal export and API"
+msgstr "iCal Export und API"
 
 #: includes/pages/user_shifts.php:293
 #, php-format
@@ -1938,7 +1939,11 @@ msgstr ""
 "\">JSON Format</a> verfügbar (Link bitte geheimhalten, sonst <a href=\"%s"
 "\">API-Key zurücksetzen</a>)."
 
-#: includes/pages/user_shifts.php:326 includes/view/ShiftTypes_view.php:48
+#: includes/pages/user_shifts.php:304
+msgid "Show API Key"
+msgstr "API Key anzeigen"
+
+#: includes/pages/user_shifts.php:327 includes/view/ShiftTypes_view.php:48
 msgid "All"
 msgstr "Alle"
 
