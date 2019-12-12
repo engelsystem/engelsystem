@@ -4,6 +4,7 @@ namespace Engelsystem\Models\User;
 
 use Carbon\Carbon;
 use Engelsystem\Models\BaseModel;
+use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\Question;
@@ -42,6 +43,9 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  *
  * @property-read Collection|Question[] $questionsAsked
  * @property-read Collection|Question[] $questionsAnswered
+ * @property-read Collection|Message[]  $messagesReceived
+ * @property-read Collection|Message[]  $messagesSent
+ * @property-read Collection|Message[]  $messages
  */
 class User extends BaseModel
 {
@@ -140,5 +144,39 @@ class User extends BaseModel
     {
         return $this->hasMany(Question::class, 'answerer_id')
             ->where('answerer_id', $this->id);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function messagesSent(): HasMany
+    {
+        return $this->hasMany(Message::class, 'user_id')
+            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function messagesReceived(): HasMany
+    {
+        return $this->hasMany(Message::class, 'receiver_id')
+            ->orderBy('read')
+            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC');
+    }
+
+    /**
+     * Returns a HasMany relation for all messages sent or received by the user.
+     *
+     * @return HasMany
+     */
+    public function messages(): HasMany
+    {
+        return $this->messagesSent()
+            ->union($this->messagesReceived())
+            ->orderBy('read')
+            ->orderBy('id', 'DESC');
     }
 }
