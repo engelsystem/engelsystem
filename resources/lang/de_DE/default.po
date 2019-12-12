@@ -1696,6 +1696,10 @@ msgstr "Nachrichten"
 msgid "Select recipient..."
 msgstr "Empfänger auswählen..."
 
+#: includes/pages/user_messages.php:61 includes/pages/user_messages.php:75
+msgid "Y-m-d H:i"
+msgstr "d.m.Y H:i"
+
 #: includes/pages/user_messages.php:98
 msgid "mark as read"
 msgstr "als gelesen markieren"
