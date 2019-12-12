@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
+use Engelsystem\Models\Message;
 use Engelsystem\Models\User\User;
 
 /**
@@ -19,10 +19,10 @@ function user_unread_messages()
     $user = auth()->user();
 
     if ($user) {
-        $new_messages = count(DB::select(
-            'SELECT `id` FROM `Messages` WHERE isRead=\'N\' AND `RUID`=?',
-            [$user->id]
-        ));
+        $new_messages = $user->messagesReceived()
+            ->where('read', false)
+            ->count();
+
         if ($new_messages > 0) {
             return ' <span class="badge danger">' . $new_messages . '</span>';
         }
@@ -57,23 +57,12 @@ function user_messages()
 
         $to_select = html_select_key('to', 'to', $to_select_data, '');
 
-        $messages = DB::select('
-            SELECT *
-            FROM `Messages`
-            WHERE `SUID`=?
-            OR `RUID`=?
-            ORDER BY `isRead`,`Datum` DESC
-        ',
-            [
-                $user->id,
-                $user->id,
-            ]
-        );
+        $messages = $user->messages;
 
         $messages_table = [
             [
                 'news'      => '',
-                'timestamp' => date('Y-m-d H:i'),
+                'timestamp' => date(__('Y-m-d H:i')),
                 'from'      => User_Nick_render($user),
                 'to'        => $to_select,
                 'text'      => form_textarea('text', '', ''),
@@ -82,28 +71,28 @@ function user_messages()
         ];
 
         foreach ($messages as $message) {
-            $sender_user_source = User::find($message['SUID']);
-            $receiver_user_source = User::find($message['RUID']);
+            $sender_user_source = $message->user;
+            $receiver_user_source = $message->receiver;
 
             $messages_table_entry = [
-                'new'       => $message['isRead'] == 'N' ? '<span class="glyphicon glyphicon-envelope"></span>' : '',
-                'timestamp' => date('Y-m-d H:i', $message['Datum']),
+                'new'       => !$message->read ? '<span class="glyphicon glyphicon-envelope"></span>' : '',
+                'timestamp' => $message->created_at->format(__('Y-m-d H:i')),
                 'from'      => User_Nick_render($sender_user_source),
                 'to'        => User_Nick_render($receiver_user_source),
-                'text'      => nl2br(htmlspecialchars($message['Text']))
+                'text'      => nl2br(htmlspecialchars($message->text))
             ];
 
-            if ($message['RUID'] == $user->id) {
-                if ($message['isRead'] == 'N') {
+            if ($message->receiver_id == $user->id) {
+                if (!$message->read) {
                     $messages_table_entry['actions'] = button(
-                        page_link_to('user_messages', ['action' => 'read', 'id' => $message['id']]),
+                        page_link_to('user_messages', ['action' => 'read', 'id' => $message->id]),
                         __('mark as read'),
                         'btn-xs'
                     );
                 }
             } else {
                 $messages_table_entry['actions'] = button(
-                    page_link_to('user_messages', ['action' => 'delete', 'id' => $message['id']]),
+                    page_link_to('user_messages', ['action' => 'delete', 'id' => $message->id]),
                     __('delete message'),
                     'btn-xs'
                 );
@@ -134,15 +123,10 @@ function user_messages()
                     return error(__('Incomplete call, missing Message ID.'), true);
                 }
 
-                $message = DB::selectOne(
-                    'SELECT `RUID` FROM `Messages` WHERE `id`=? LIMIT 1',
-                    [$message_id]
-                );
-                if (!empty($message) && $message['RUID'] == $user->id) {
-                    DB::update(
-                        'UPDATE `Messages` SET `isRead`=\'Y\' WHERE `id`=? LIMIT 1',
-                        [$message_id]
-                    );
+                $message = Message::find($message_id);
+                if ($message !== null && $message->receiver_id == $user->id) {
+                    $message->read = true;
+                    $message->save();
                     throw_redirect(page_link_to('user_messages'));
                 } else {
                     return error(__('No Message found.'), true);
@@ -156,12 +140,9 @@ function user_messages()
                     return error(__('Incomplete call, missing Message ID.'), true);
                 }
 
-                $message = DB::selectOne(
-                    'SELECT `SUID` FROM `Messages` WHERE `id`=? LIMIT 1',
-                    [$message_id]
-                );
-                if (!empty($message) && $message['SUID'] == $user->id) {
-                    DB::delete('DELETE FROM `Messages` WHERE `id`=? LIMIT 1', [$message_id]);
+                $message = Message::find($message_id);
+                if ($message !== null && $message->user_id == $user->id) {
+                    $message->delete();
                     throw_redirect(page_link_to('user_messages'));
                 } else {
                     return error(__('No Message found.'), true);
@@ -169,7 +150,15 @@ function user_messages()
                 break;
 
             case 'send':
-                if (Message_send($request->input('to'), $request->input('text'))) {
+                $receiver = User::find($request->input('to'));
+                $text = $request->input('text');
+
+                if ($receiver !== null && !empty($text)) {
+                    Message::create([
+                        'user_id'     => $user->id,
+                        'receiver_id' => $request->input('to'),
+                        'text'        => $request->input('text')
+                    ]);
                     throw_redirect(page_link_to('user_messages'));
                 } else {
                     return error(__('Transmitting was terminated with an Error.'), true);
