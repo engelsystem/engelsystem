@@ -32,7 +32,8 @@ function meetings_title()
 function user_meetings()
 {
     $display_news = config('display_news');
-    $html = '<div class="col-md-12"><h1>' . meetings_title() . '</h1>' . msg();
+    $html = '<div class="container">';
+    $html .= '<h1>' . meetings_title() . '</h1>' . msg();
     $request = request();
 
     if (preg_match('/^\d{1,}$/', $request->input('page', 0))) {
@@ -128,7 +129,8 @@ function user_news_comments()
     $user = auth()->user();
     $request = request();
 
-    $html = '<div class="col-md-12"><h1>' . user_news_comments_title() . '</h1>';
+    $html = '<div class="container">';
+    $html .= '<h1>' . user_news_comments_title() . '</h1>';
     $nid = $request->input('nid');
     if (
         $request->has('nid')
@@ -179,7 +181,8 @@ function user_news()
     $display_news = config('display_news');
     $request = request();
 
-    $html = '<div class="col-md-12"><h1>' . news_title() . '</h1>' . msg();
+    $html = '<div class="container">';
+    $html .= '<h1>' . news_title() . '</h1>' . msg();
 
     $isMeeting = $request->postData('treffen', false);
     if ($request->has('text') && $request->has('betreff') && auth()->can('admin_news')) {

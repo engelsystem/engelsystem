@@ -123,7 +123,7 @@ function UserAngelType_delete_view($user_angeltype, $user, $angeltype)
                 form_submit('delete', glyph('ok') . __('yes'), 'btn-primary', false),
             ]),
         ], page_link_to('user_angeltypes', ['action' => 'delete', 'user_angeltype_id' => $user_angeltype['id']])),
-    ]);
+    ], true);
 }
 
 /**

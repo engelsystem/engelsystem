@@ -64,7 +64,7 @@ function AngelType_delete_view($angeltype)
                 form_submit('delete', glyph('ok') . __('delete'), 'btn-danger', false),
             ])
         ]),
-    ]);
+    ], true);
 }
 
 /**
@@ -360,7 +360,7 @@ function AngelType_view(
                 $shiftCalendarRenderer
             )
         ], $tab)
-    ]);
+    ], true);
 }
 
 /**
@@ -507,7 +507,7 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes)
             'membership'     => __('Membership'),
             'actions'        => ''
         ], $angeltypes)
-    ]);
+    ], true);
 }
 
 /**
@@ -595,5 +595,5 @@ function AngelTypes_about_view($angeltypes, $user_logged_in)
         $content[] = AngelTypes_about_view_angeltype($angeltype);
     }
 
-    return page_with_title(__('Teams/Job description'), $content);
+    return page_with_title(__('Teams/Job description'), $content, true);
 }
