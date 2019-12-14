@@ -61,5 +61,5 @@ function Questions_view(array $open_questions, array $answered_questions, $ask_a
             form_textarea('question', __('Your Question:'), ''),
             form_submit('submit', __('Save'))
         ], $ask_action)
-    ]);
+    ], true);
 }

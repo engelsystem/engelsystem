@@ -54,7 +54,7 @@ function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalen
         $assignNotice,
         $description,
         tabs($tabs, $selected_tab)
-    ]);
+    ], true);
 }
 
 /**

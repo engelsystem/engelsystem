@@ -251,11 +251,17 @@ function page($elements)
  *
  * @param string   $title
  * @param string[] $elements
+ * @param bool     $container
  * @return string
  */
-function page_with_title($title, $elements)
+function page_with_title($title, $elements, bool $container = false)
 {
-    return '<div class="col-md-12"><h1>' . $title . '</h1>' . join($elements) . '</div>';
+    if ($container) {
+        $html = '<div class="container">';
+    } else {
+        $html = '<div class="col-md-12">';
+    }
+    return $html . '<h1>' . $title . '</h1>' . join($elements) . '</div>';
 }
 
 /**

@@ -170,7 +170,7 @@ function admin_rooms()
                     ]),
                     form_submit('submit', __('Save'))
                 ])
-            ]);
+            ], true);
         } elseif ($request->input('show') == 'delete') {
             if ($request->hasPostData('ack')) {
                 $shifts = Shifts_by_room($room_id);
@@ -195,7 +195,7 @@ function admin_rooms()
                 form([
                     form_submit('ack', __('Delete'), 'delete btn-danger'),
                 ], page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room_id])),
-            ]);
+            ], true);
         }
     }
 
@@ -209,5 +209,5 @@ function admin_rooms()
             'map_url'   => __('Map'),
             'actions'   => ''
         ], $rooms)
-    ]);
+    ], true);
 }

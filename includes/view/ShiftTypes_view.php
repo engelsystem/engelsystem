@@ -31,7 +31,7 @@ function ShiftType_delete_view($shifttype)
                 ),
             ]),
         ]),
-    ]);
+    ], true);
 }
 
 /**
@@ -63,7 +63,7 @@ function ShiftType_edit_view($name, $angeltype_id, $angeltypes, $description, $s
             form_info('', __('Please use markdown for the description.')),
             form_submit('submit', __('Save'))
         ])
-    ]);
+    ], true);
 }
 
 /**
@@ -99,7 +99,7 @@ function ShiftType_view($shifttype, $angeltype)
         ]),
         heading(__('Description'), 2),
         $parsedown->parse($shifttype['description'])
-    ]);
+    ], true);
 }
 
 /**
@@ -140,5 +140,5 @@ function ShiftTypes_list_view($shifttypes)
             'name'    => __('Name'),
             'actions' => ''
         ], $shifttypes)
-    ]);
+    ], true);
 }
