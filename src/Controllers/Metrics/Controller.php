@@ -93,6 +93,7 @@ class Controller extends BaseController
                 ['labels' => ['state' => 'arrived', 'working' => 'no'], 'value' => $this->stats->arrivedUsers(false)],
                 ['labels' => ['state' => 'arrived', 'working' => 'yes'], 'value' => $this->stats->arrivedUsers(true)],
             ],
+            'users_force_active'   => ['type' => 'gauge', $this->stats->forceActiveUsers()],
             'licenses'             => [
                 'type' => 'gauge',
                 'help' => 'The total number of licenses',

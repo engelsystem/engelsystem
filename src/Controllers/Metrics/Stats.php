@@ -7,6 +7,7 @@ use Engelsystem\Database\Database;
 use Engelsystem\Models\EventConfig;
 use Engelsystem\Models\News;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\User\State;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression as QueryExpression;
 
@@ -77,6 +78,14 @@ class Stats
             ->join('users_state', 'user_id', '=', 'id')
             ->where('arrived', '=', 0)
             ->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function forceActiveUsers(): int
+    {
+        return State::whereForceActive(true)->count();
     }
 
     /**

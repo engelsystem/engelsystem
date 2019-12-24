@@ -122,6 +122,17 @@ class StatsTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::forceActiveUsers
+     */
+    public function testForceActiveUsers()
+    {
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(2, $stats->forceActiveUsers());
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::sessions
      */
     public function testSessions()
@@ -199,8 +210,8 @@ class StatsTest extends TestCase
         $this->addUser(['arrived' => 1]);
         $this->addUser(['arrived' => 1, 'got_voucher' => 2], ['shirt_size' => 'XXL']);
         $this->addUser(['arrived' => 1, 'got_voucher' => 9]);
-        $this->addUser(['arrived' => 1, 'got_voucher' => 3]);
-        $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true]);
+        $this->addUser(['arrived' => 1, 'got_voucher' => 3, 'force_active' => true]);
+        $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true, 'force_active' => true]);
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true], ['shirt_size' => 'L']);
     }
 
