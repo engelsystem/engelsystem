@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Database\DB;
 use Engelsystem\Models\User\User;
 
@@ -201,10 +202,11 @@ function ShiftEntries_upcoming_for_user($userId)
 /**
  * Returns shifts completed by the given user.
  *
- * @param int $userId
+ * @param int         $userId
+ * @param Carbon|null $sinceTime
  * @return array
  */
-function ShiftEntries_finished_by_user($userId)
+function ShiftEntries_finished_by_user($userId, Carbon $sinceTime = null)
 {
     return DB::select('
           SELECT *
@@ -214,6 +216,7 @@ function ShiftEntries_finished_by_user($userId)
           WHERE `ShiftEntry`.`UID` = ?
           AND `Shifts`.`end` < ?
           AND `ShiftEntry`.`freeloaded` = 0
+          ' . ($sinceTime ? 'AND Shifts.start >= ' . $sinceTime->getTimestamp() : '') . '
           ORDER BY `Shifts`.`end` desc
       ',
         [

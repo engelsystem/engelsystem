@@ -138,6 +138,8 @@ return [
     'voucher_settings'        => [
         'initial_vouchers'   => 0,
         'shifts_per_voucher' => 1,
+        // 'Y-m-d' formatted
+        'voucher_start'      => null,
     ],
 
     // Available locales in /locale/
