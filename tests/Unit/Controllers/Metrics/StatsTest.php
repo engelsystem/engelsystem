@@ -13,7 +13,6 @@ use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Psr\Log\LogLevel;
 
@@ -23,7 +22,6 @@ class StatsTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::__construct
-     * @covers \Engelsystem\Controllers\Metrics\Stats::getQuery
      * @covers \Engelsystem\Controllers\Metrics\Stats::newUsers
      */
     public function testNewUsers()
@@ -57,8 +55,9 @@ class StatsTest extends TestCase
     }
 
     /**
-     * @covers \Engelsystem\Controllers\Metrics\Stats::raw
      * @covers \Engelsystem\Controllers\Metrics\Stats::tshirtSizes
+     * @covers \Engelsystem\Controllers\Metrics\Stats::raw
+     * @covers \Engelsystem\Controllers\Metrics\Stats::getQuery
      */
     public function testTshirtSizes()
     {
@@ -67,10 +66,10 @@ class StatsTest extends TestCase
         $stats = new Stats($this->database);
         $sizes = $stats->tshirtSizes();
         $this->assertCount(2, $sizes);
-        $this->assertEquals(new Collection([
+        $this->assertEquals([
             (object)['shirt_size' => 'L', 'count' => 2],
             (object)['shirt_size' => 'XXL', 'count' => 1],
-        ]), $sizes);
+        ], $sizes->toArray());
     }
 
 

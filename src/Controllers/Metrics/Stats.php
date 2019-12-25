@@ -1,15 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Engelsystem\Controllers\Metrics;
 
 use Carbon\Carbon;
 use Engelsystem\Database\Database;
 use Engelsystem\Models\EventConfig;
+use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\News;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\State;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression as QueryExpression;
+use Illuminate\Support\Collection;
 
 class Stats
 {
@@ -27,22 +32,18 @@ class Stats
     /**
      * The number of not arrived users
      *
-     * @param null $working
+     * @param bool|null $working
      * @return int
      */
-    public function arrivedUsers($working = null): int
+    public function arrivedUsers(bool $working = null): int
     {
-        /** @var QueryBuilder $query */
-        $query = $this
-            ->getQuery('users')
-            ->join('users_state', 'user_id', '=', 'id')
-            ->where('arrived', '=', 1);
+        $query = State::whereArrived(true);
 
         if (!is_null($working)) {
             // @codeCoverageIgnoreStart
             $query
-                ->leftJoin('UserWorkLog', 'UserWorkLog.user_id', '=', 'users.id')
-                ->leftJoin('ShiftEntry', 'ShiftEntry.UID', '=', 'users.id')
+                ->leftJoin('UserWorkLog', 'UserWorkLog.user_id', '=', 'users_state.user_id')
+                ->leftJoin('ShiftEntry', 'ShiftEntry.UID', '=', 'users_state.user_id')
                 ->distinct();
 
             $query->where(function ($query) use ($working) {
@@ -62,8 +63,7 @@ class Stats
             // @codeCoverageIgnoreEnd
         }
 
-        return $query
-            ->count('users.id');
+        return $query->count('users_state.user_id');
     }
 
     /**
@@ -73,11 +73,7 @@ class Stats
      */
     public function newUsers(): int
     {
-        return $this
-            ->getQuery('users')
-            ->join('users_state', 'user_id', '=', 'id')
-            ->where('arrived', '=', 0)
-            ->count();
+        return State::whereArrived(false)->count();
     }
 
     /**
@@ -91,11 +87,11 @@ class Stats
     /**
      * The number of currently working users
      *
-     * @param null $freeloaded
+     * @param bool|null $freeloaded
      * @return int
      * @codeCoverageIgnore
      */
-    public function currentlyWorkingUsers($freeloaded = null): int
+    public function currentlyWorkingUsers(bool $freeloaded = null): int
     {
         $query = $this
             ->getQuery('users')
@@ -116,9 +112,7 @@ class Stats
      */
     public function vouchers(): int
     {
-        return $this
-            ->getQuery('users_state')
-            ->sum('got_voucher');
+        return (int)State::query()->sum('got_voucher');
     }
 
     /**
@@ -126,16 +120,13 @@ class Stats
      */
     public function tshirts(): int
     {
-        return $this
-            ->getQuery('users_state')
-            ->where('got_shirt', '=', true)
-            ->count();
+        return State::whereGotShirt(true)->count();
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public function tshirtSizes()
+    public function tshirtSizes(): Collection
     {
         return $this
             ->getQuery('users_personal_data')
@@ -150,7 +141,7 @@ class Stats
      * @return int
      * @codeCoverageIgnore
      */
-    public function licenses($vehicle = null)
+    public function licenses(string $vehicle = null): int
     {
         $mapping = [
             'forklift' => 'has_license_forklift',
@@ -178,7 +169,7 @@ class Stats
      * @return int
      * @codeCoverageIgnore
      */
-    public function workSeconds($done = null, $freeloaded = null): int
+    public function workSeconds(bool $done = null, bool $freeloaded = null): int
     {
         $query = $this
             ->getQuery('ShiftEntry')
@@ -192,25 +183,25 @@ class Stats
             $query->where('end', ($done == true ? '<' : '>='), time());
         }
 
-        return $query->sum($this->raw('end - start'));
+        return (int)$query->sum($this->raw('end - start'));
     }
 
     /**
      * @return int
      * @codeCoverageIgnore
      */
-    public function worklogSeconds()
+    public function worklogSeconds(): int
     {
-        return round($this
+        return (int)$this
             ->getQuery('UserWorkLog')
-            ->sum($this->raw('work_hours * 60*60')));
+            ->sum($this->raw('work_hours * 60*60'));
     }
 
     /**
      * @return int
      * @codeCoverageIgnore
      */
-    public function shifts()
+    public function shifts(): int
     {
         return $this
             ->getQuery('Shifts')
@@ -218,10 +209,10 @@ class Stats
     }
 
     /**
-     * @param bool $meeting
+     * @param bool|null $meeting
      * @return int
      */
-    public function announcements($meeting = null)
+    public function announcements(bool $meeting = null): int
     {
         $query = is_null($meeting) ? News::query() : News::whereIsMeeting($meeting);
 
@@ -229,10 +220,10 @@ class Stats
     }
 
     /**
-     * @param bool $answered
+     * @param bool|null $answered
      * @return int
      */
-    public function questions($answered = null)
+    public function questions(bool $answered = null): int
     {
         $query = Question::query();
         if (!is_null($answered)) {
@@ -250,7 +241,7 @@ class Stats
      * @return int
      * @codeCoverageIgnore
      */
-    public function messages()
+    public function messages(): int
     {
         return $this
             ->getQuery('Messages')
@@ -260,7 +251,7 @@ class Stats
     /**
      * @return int
      */
-    public function sessions()
+    public function sessions(): int
     {
         return $this
             ->getQuery('sessions')
@@ -270,7 +261,7 @@ class Stats
     /**
      * @return float
      */
-    public function databaseRead()
+    public function databaseRead(): float
     {
         $start = microtime(true);
 
@@ -282,7 +273,7 @@ class Stats
     /**
      * @return float
      */
-    public function databaseWrite()
+    public function databaseWrite(): float
     {
         $config = (new EventConfig())->findOrNew('last_metrics');
         $config
@@ -297,17 +288,12 @@ class Stats
     }
 
     /**
-     * @param string $level
+     * @param string|null $level
      * @return int
      */
-    public function logEntries($level = null)
+    public function logEntries(string $level = null): int
     {
-        $query = $this
-            ->getQuery('log_entries');
-
-        if (!is_null($level)) {
-            $query->where('level', '=', $level);
-        }
+        $query = is_null($level) ? LogEntry::query() : LogEntry::whereLevel($level);
 
         return $query->count();
     }
@@ -315,11 +301,9 @@ class Stats
     /**
      * @return int
      */
-    public function passwordResets()
+    public function passwordResets(): int
     {
-        return $this
-            ->getQuery('password_resets')
-            ->count();
+        return PasswordReset::query()->count();
     }
 
     /**
@@ -337,7 +321,7 @@ class Stats
      * @param mixed $value
      * @return QueryExpression
      */
-    protected function raw($value)
+    protected function raw($value): QueryExpression
     {
         return $this->db->getConnection()->raw($value);
     }
