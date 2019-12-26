@@ -33,7 +33,7 @@ function admin_free()
     }
 
     $angelType = $request->input('angeltype', '');
-    $query = User::query()
+    $query = User::with('personalData')
         ->select('users.*')
         ->leftJoin('ShiftEntry', 'users.id', 'ShiftEntry.UID')
         ->leftJoin('users_state', 'users.id', 'users_state.user_id')
@@ -73,10 +73,10 @@ function admin_free()
     foreach ($users as $usr) {
         if (count($tokens) > 0) {
             $match = false;
-            $index = join('', $usr->toArray());
-            foreach ($tokens as $t) {
-                $t = trim($t);
-                if (!empty($t) && stristr($index, $t)) {
+            $index = join('', $usr->attributesToArray());
+            foreach ($tokens as $token) {
+                $token = trim($token);
+                if (!empty($token) && stristr($index, $token)) {
                     $match = true;
                     break;
                 }
@@ -87,7 +87,7 @@ function admin_free()
         }
 
         $free_users_table[] = [
-            'name'        => User_Nick_render($usr),
+            'name'        => User_Nick_render($usr) . User_Pronoun_render($usr),
             'shift_state' => User_shift_state_render($usr),
             'last_shift'  => User_last_shift_render($usr),
             'dect'        => $usr->contact->dect,

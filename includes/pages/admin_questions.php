@@ -48,7 +48,7 @@ function admin_questions()
             $user_source = $question->user;
 
             $unanswered_questions_table[] = [
-                'from'     => User_Nick_render($user_source),
+                'from'     => User_Nick_render($user_source) . User_Pronoun_render($user_source),
                 'question' => nl2br(htmlspecialchars($question->text)),
                 'answer'   => form([
                     form_textarea('answer', '', ''),
