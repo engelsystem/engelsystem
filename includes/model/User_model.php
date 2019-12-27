@@ -236,7 +236,10 @@ function User_get_eligable_voucher_count($user)
     $start = $voucher_settings['voucher_start']
         ? Carbon::createFromFormat('Y-m-d', $voucher_settings['voucher_start'])->setTime(0, 0)
         : null;
-    $shifts_done = count(ShiftEntries_finished_by_user($user->id, $start));
+
+    $shifts_done =
+        count(ShiftEntries_finished_by_user($user->id, $start))
+        + count(UserWorkLogsForUser($user->id, $start));
 
     $earned_vouchers = $user->state->got_voucher - $voucher_settings['initial_vouchers'];
     $eligable_vouchers = $shifts_done / $voucher_settings['shifts_per_voucher'] - $earned_vouchers;

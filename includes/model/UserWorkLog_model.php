@@ -22,14 +22,24 @@ function UserWorkLog($user_worklog_id)
 /**
  * Returns all work log entries for a user.
  *
- * @param int $userId
+ * @param int         $userId
+ * @param Carbon|null $sinceTime
  * @return array[]
  */
-function UserWorkLogsForUser($userId)
+function UserWorkLogsForUser($userId, Carbon $sinceTime = null)
 {
-    return Db::select("SELECT * FROM `UserWorkLog` WHERE `user_id`=? ORDER BY `created_timestamp`", [
-        $userId
-    ]);
+    return Db::select(
+        '
+                SELECT *
+                FROM `UserWorkLog`
+                WHERE `user_id`=?
+                ' . ($sinceTime ? 'AND work_timestamp >= ' . $sinceTime->getTimestamp() : '') . '
+                ORDER BY `created_timestamp`
+              ',
+        [
+            $userId
+        ]
+    );
 }
 
 /**
