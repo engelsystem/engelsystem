@@ -137,7 +137,8 @@ return [
     // Voucher calculation
     'voucher_settings'        => [
         'initial_vouchers'   => 0,
-        'shifts_per_voucher' => 1,
+        'shifts_per_voucher' => 0,
+        'hours_per_voucher'  => 2,
         // 'Y-m-d' formatted
         'voucher_start'      => null,
     ],

@@ -237,17 +237,34 @@ function User_get_eligable_voucher_count($user)
         ? Carbon::createFromFormat('Y-m-d', $voucher_settings['voucher_start'])->setTime(0, 0)
         : null;
 
+    $shifts = ShiftEntries_finished_by_user($user->id, $start);
+    $worklog = UserWorkLogsForUser($user->id, $start);
     $shifts_done =
-        count(ShiftEntries_finished_by_user($user->id, $start))
-        + count(UserWorkLogsForUser($user->id, $start));
+        count($shifts)
+        + count($worklog);
 
-    $earned_vouchers = $user->state->got_voucher - $voucher_settings['initial_vouchers'];
-    $eligable_vouchers = $shifts_done / $voucher_settings['shifts_per_voucher'] - $earned_vouchers;
-    if ($eligable_vouchers < 0) {
+    $shiftsTime = 0;
+    foreach ($shifts as $shift){
+        $shiftsTime += ($shift['end'] - $shift['start']) / 60 / 60;
+    }
+    foreach ($worklog as $entry){
+        $shiftsTime += $entry['work_hours'];
+    }
+
+    $vouchers = $voucher_settings['initial_vouchers'];
+    if($voucher_settings['shifts_per_voucher']){
+        $vouchers +=  $shifts_done / $voucher_settings['shifts_per_voucher'];
+    }
+    if($voucher_settings['hours_per_voucher']){
+        $vouchers +=  $shiftsTime / $voucher_settings['hours_per_voucher'];
+    }
+
+    $vouchers -= $user->state->got_voucher;
+    if ($vouchers < 0) {
         return 0;
     }
 
-    return $eligable_vouchers;
+    return $vouchers;
 }
 
 /**
