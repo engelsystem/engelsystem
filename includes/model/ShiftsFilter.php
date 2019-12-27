@@ -119,6 +119,11 @@ class ShiftsFilter
      */
     public function setEndTime($endTime)
     {
+        $filterMaxDuration = config('filter_max_duration') * 60 * 60;
+        if ($filterMaxDuration && ($endTime - $this->startTime > $filterMaxDuration)) {
+            $endTime = $this->startTime + $filterMaxDuration;
+        }
+
         $this->endTime = $endTime;
     }
 

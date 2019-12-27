@@ -167,6 +167,10 @@ return [
         '4XL'  => '4XLarge Straight-Cut',
     ],
 
+    // Shifts overview
+    // Set max number of hours that can be shown at once
+    'filter_max_duration' => 0,
+
     // Session config
     'session'                 => [
         // Supported: pdo or native
