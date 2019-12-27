@@ -2511,6 +2511,12 @@ msgstr "Arbeitseinsatz bearbeiten"
 msgid "Add work log entry"
 msgstr "Arbeitseinsatz hinzufügen"
 
+msgid "Pronoun"
+msgstr "Pronomen"
+
+msgid "Will be shown on your profile page and in angel lists."
+msgstr "Wird auf deiner Profilseite und in Engellisten angezeigt."
+
 #: includes/view/User_view.php:37
 msgid "Here you can change your user details."
 msgstr "Hier kannst Du Deine Details ändern."

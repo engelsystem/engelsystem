@@ -284,10 +284,7 @@ function users_list_controller()
     }
 
     /** @var User[] $users */
-    $users = User::query()
-        ->leftJoin('users_contact', 'users.id', '=', 'users_contact.user_id')
-        ->leftJoin('users_personal_data', 'users.id', '=', 'users_personal_data.user_id')
-        ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
+    $users = User::with(['contact', 'personalData', 'state'])
         ->orderBy($order_by)
         ->orderBy('name')
         ->get();

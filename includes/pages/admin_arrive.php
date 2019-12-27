@@ -64,7 +64,7 @@ function admin_arrive()
     }
 
     /** @var User[] $users */
-    $users = User::query()->orderBy('name')->get();
+    $users = User::with('personalData')->orderBy('name')->get();
     $arrival_count_at_day = [];
     $planned_arrival_count_at_day = [];
     $planned_departure_count_at_day = [];
@@ -91,7 +91,7 @@ function admin_arrive()
             }
         }
 
-        $usr->name = User_Nick_render($usr);
+        $usr->name = User_Nick_render($usr) . User_Pronoun_render($usr);
         $plannedDepartureDate = $usr->personalData->planned_departure_date;
         $arrivalDate = $usr->state->arrival_date;
         $plannedArrivalDate = $usr->personalData->planned_arrival_date;

@@ -41,16 +41,18 @@ function user_messages()
     if (!$request->has('action')) {
         /** @var User[] $users */
         $users = User::query()
-            ->whereKeyNot($user->id)
+            ->where('user_id', '!=', $user->id)
+            ->leftJoin('users_personal_data', 'users.id', '=', 'users_personal_data.user_id')
             ->orderBy('name')
-            ->get(['id', 'name']);
+            ->get(['id', 'name', 'pronoun']);
 
         $to_select_data = [
             '' => __('Select recipient...')
         ];
 
         foreach ($users as $u) {
-            $to_select_data[$u->id] = $u->name;
+            $pronoun = ((config('enable_pronoun') && $u->pronoun) ? ' (' . htmlspecialchars($u->pronoun) . ')' : '');
+            $to_select_data[$u->id] = $u->name . $pronoun;
         }
 
         $to_select = html_select_key('to', 'to', $to_select_data, '');

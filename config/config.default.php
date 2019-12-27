@@ -114,6 +114,9 @@ return [
     // Enables prename and lastname
     'enable_user_name'        => false,
 
+    // Enable displaying the pronoun fields
+    'enable_pronoun'          => false,
+
     // Enables the planned arrival/leave date
     'enable_planned_arrival'  => true,
 

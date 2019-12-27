@@ -26,6 +26,7 @@ function User_settings_view(
 ) {
     $personalData = $user_source->personalData;
     $enable_user_name = config('enable_user_name');
+    $enable_pronoun = config('enable_pronoun');
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
 
@@ -41,6 +42,10 @@ function User_settings_view(
                         '',
                         __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.')
                     ),
+                    $enable_pronoun
+                        ? form_text('pronoun', __('Pronoun'), $personalData->pronoun, false, 15)
+                        . form_info('', __('Will be shown on your profile page and in angel lists.'))
+                        : '',
                     $enable_user_name ? form_text('lastname', __('Last name'), $personalData->last_name) : '',
                     $enable_user_name ? form_text('prename', __('First name'), $personalData->first_name) : '',
                     $enable_planned_arrival ? form_date(
@@ -182,7 +187,7 @@ function Users_view(
     $usersList = [];
     foreach ($users as $user) {
         $u = [];
-        $u['name'] = User_Nick_render($user);
+        $u['name'] = User_Nick_render($user) . User_Pronoun_render($user);
         $u['first_name'] = $user->personalData->first_name;
         $u['last_name'] = $user->personalData->last_name;
         $u['dect'] = $user->contact->dect;
@@ -579,6 +584,11 @@ function User_view(
 
     return page_with_title(
         '<span class="icon-icon_angel"></span> '
+        . (
+            (config('enable_pronoun') && $user_source->personalData->pronoun)
+            ? '<small>' . htmlspecialchars($user_source->personalData->pronoun) . '</small> '
+            : ''
+          )
         . htmlspecialchars($user_source->name)
         . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : ''),
         [
@@ -821,6 +831,21 @@ function User_Nick_render($user, $plain = false)
         $user->id,
         ($user->state->arrived ? '' : 'text-muted')
     );
+}
+
+/**
+ * Format the user pronoun
+ *
+ * @param User $user
+ * @return string
+ */
+function User_Pronoun_render(User $user): string
+{
+    if (!config('enable_pronoun') || !$user->personalData->pronoun) {
+        return '';
+    }
+
+    return ' (' . htmlspecialchars($user->personalData->pronoun) . ')';
 }
 
 /**

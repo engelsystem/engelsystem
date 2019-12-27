@@ -70,7 +70,11 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
     }
 
     // Trivia
-    if(config('enable_user_name')) {
+    $pronoun = strip_request_item('pronoun', $user_source->personalData->pronoun);
+    if (config('enable_pronoun') && mb_strlen($pronoun) <= 15) {
+        $user_source->personalData->pronoun = $pronoun;
+    }
+    if (config('enable_user_name')) {
         $user_source->personalData->last_name = strip_request_item('lastname', $user_source->personalData->last_name);
         $user_source->personalData->first_name = strip_request_item('prename', $user_source->personalData->first_name);
     }
