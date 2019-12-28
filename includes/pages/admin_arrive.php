@@ -77,10 +77,10 @@ function admin_arrive()
     foreach ($users as $usr) {
         if (count($tokens) > 0) {
             $match = false;
-            $index = join(' ', $usr->toArray());
-            foreach ($tokens as $t) {
-                $t = trim($t);
-                if (!empty($t) && stristr($index, $t)) {
+            $index = join(' ', $usr->attributesToArray());
+            foreach ($tokens as $token) {
+                $token = trim($token);
+                if (!empty($token) && stristr($index, $token)) {
                     $match = true;
                     break;
                 }
