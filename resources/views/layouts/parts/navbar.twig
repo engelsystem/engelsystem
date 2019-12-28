@@ -28,6 +28,18 @@
                 <div class="collapse navbar-collapse" id="navbar-collapse-1">
                     {% block menu_items %}
                         {{ menu() }}
+
+                        {% if config('header_items') %}
+                            <ul class="nav navbar-nav">
+                                {% for text,link in config('header_items', {}) %}
+                                    <li>
+                                        <a href="{{ link|replace({'%lang%': session_get('locale')|split('_')[0]})|escape('html_attr') }}">
+                                            {{ text }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     {% endblock %}
 
                     {% block menu_toolbar %}

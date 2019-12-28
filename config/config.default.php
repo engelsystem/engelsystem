@@ -23,6 +23,12 @@ return [
     // Set to development to enable debugging messages
     'environment'             => env('ENVIRONMENT', 'production'),
 
+    // Header links
+    // Available link placeholders: %lang%
+    'header_items'            => [
+        //'Foo' => 'https://foo.bar/batz-%lang%.html',
+    ],
+
     // Footer links
     'footer_items'            => [
         // URL to the angel faq and job description
