@@ -199,15 +199,16 @@ function angeltype_controller()
         $tab = 1;
     }
 
+    $isSupporter = !is_null($user_angeltype) && $user_angeltype['supporter'];
     return [
         sprintf(__('Team %s'), $angeltype['name']),
         AngelType_view(
             $angeltype,
             $members,
             $user_angeltype,
-            auth()->can('admin_user_angeltypes') || $user_angeltype['supporter'],
+            auth()->can('admin_user_angeltypes') || $isSupporter,
             auth()->can('admin_angel_types'),
-            $user_angeltype['supporter'],
+            $isSupporter,
             $user_driver_license,
             $user,
             $shiftsFilterRenderer,
