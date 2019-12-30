@@ -333,3 +333,71 @@ table a > .icon-icon_angel {
     content: "";
   }
 }
+
+.navbar-toggle {
+  transform: scale(1.25, 0.96);
+  padding: 2px 6px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+  max-height: @navbar-height;
+
+  .icon {
+    border-color: @brand-primary;
+    font-weight: bold;
+    color: @brand-primary;
+    font-size: 25px;
+    &-close {
+      padding: 0 3px;
+      display: none;
+    }
+  }
+  &.is-open .icon {
+    &-open {
+      display: none;
+    }
+    &-close {
+      display: block;
+    }
+  }
+}
+
+
+@media screen and (max-width: @grid-float-breakpoint-max) {
+  #navbar-offcanvas {
+    display: block;
+    position: absolute;
+    width: 90%;
+    height: calc( 100vh - @navbar-height);
+    max-height: unset;
+    left: 101%;
+    top: @navbar-height + 1;
+
+    transition: left .3s ease-in-out;
+    -webkit-transition: left .3s ease-in-out;
+
+    background: @navbar-default-bg;
+    margin: 0 !important;   // Overridden in theme with high specifity:
+    // .container > .navbar-header,
+    // .container-fluid > .navbar-header,
+    // .container > .navbar-collapse,
+    // .container-fluid > .navbar-collapse
+
+    // Is open
+    &.collapse.in {
+      left: 10%;
+      display: block;
+      overflow-y: auto;
+      box-shadow: -5px 20px 20px 0px rgba(0, 0, 0, 0.5), 5px 0 5px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    // Hide current page in nav.
+    .nav > li.active {
+      display: none;
+    }
+    .caret {
+      float: right;
+      margin-top: 7px;
+    }
+  }
+}
+

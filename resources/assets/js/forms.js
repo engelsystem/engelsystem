@@ -90,9 +90,6 @@ $(function () {
         return true;
     });
 
-    $('.dropdown-menu').css('max-height', function () {
-        return ($(window).height() - 50) + 'px';
-    }).css('overflow-y', 'scroll');
 });
 
 /*
