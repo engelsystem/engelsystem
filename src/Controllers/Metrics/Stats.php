@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Engelsystem\Database\Database;
 use Engelsystem\Models\EventConfig;
 use Engelsystem\Models\LogEntry;
+use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\PasswordReset;
@@ -239,13 +240,10 @@ class Stats
 
     /**
      * @return int
-     * @codeCoverageIgnore
      */
     public function messages(): int
     {
-        return $this
-            ->getQuery('Messages')
-            ->count();
+        return Message::query()->count();
     }
 
     /**

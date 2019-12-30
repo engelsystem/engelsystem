@@ -5,6 +5,7 @@ namespace Engelsystem\Test\Unit\Controllers\Metrics;
 use Carbon\Carbon;
 use Engelsystem\Controllers\Metrics\Stats;
 use Engelsystem\Models\LogEntry;
+use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\PasswordReset;
@@ -129,6 +130,21 @@ class StatsTest extends TestCase
 
         $stats = new Stats($this->database);
         $this->assertEquals(2, $stats->forceActiveUsers());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::messages
+     */
+    public function testMessages()
+    {
+        $this->addUsers();
+
+        (new Message(['user_id' => 1, 'receiver_id' => 2, 'text' => 'Ohi?']))->save();
+        (new Message(['user_id' => 4, 'receiver_id' => 1, 'text' => 'Testing stuff?']))->save();
+        (new Message(['user_id' => 2, 'receiver_id' => 3, 'text' => 'Nope!', 'read' => true]))->save();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(3, $stats->messages());
     }
 
     /**
