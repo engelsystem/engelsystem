@@ -76,6 +76,8 @@ class MessageTest extends TestCase
     /**
      * Tests that loading Messages works.
      *
+     * @covers \Engelsystem\Models\Message::__construct
+     *
      * @return void
      */
     public function testLoad(): void
@@ -96,6 +98,8 @@ class MessageTest extends TestCase
     /**
      * Tests that the Messages have the correct senders.
      *
+     * @covers \Engelsystem\Models\Message::user
+     *
      * @return void
      */
     public function testSenders(): void
@@ -108,6 +112,8 @@ class MessageTest extends TestCase
     /**
      * Tests that the Messages have the correct receivers.
      *
+     * @covers \Engelsystem\Models\Message::receiver
+     *
      * @return void
      */
     public function testReceivers(): void
@@ -119,6 +125,8 @@ class MessageTest extends TestCase
 
     /**
      * Tests that the Users have the correct sent Messages.
+     *
+     * @covers \Engelsystem\Models\User\User::messagesSent
      *
      * @return void
      */
@@ -137,6 +145,8 @@ class MessageTest extends TestCase
     /**
      * Tests that the Users have the correct received Messages.
      *
+     * @covers \Engelsystem\Models\User\User::messagesReceived
+     *
      * @return void
      */
     public function testUserReceivedMessages(): void
@@ -153,6 +163,8 @@ class MessageTest extends TestCase
 
     /**
      * Tests that the user have the correct Messages.
+     *
+     * @covers \Engelsystem\Models\User\User::messages
      */
     public function testUserMessages(): void
     {

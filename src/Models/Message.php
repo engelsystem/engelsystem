@@ -20,15 +20,11 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User   $receiver
- * @method static Builder|Message newModelQuery()
- * @method static Builder|Message newQuery()
- * @method static Builder|Message query()
- * @method static Builder|Message whereCreatedAt($value)
  * @method static Builder|Message whereId($value)
- * @method static Builder|Message whereRead($value)
  * @method static Builder|Message whereReceiverId($value)
- * @method static Builder|Message whereSenderId($value)
+ * @method static Builder|Message whereRead($value)
  * @method static Builder|Message whereText($value)
+ * @method static Builder|Message whereCreatedAt($value)
  * @method static Builder|Message whereUpdatedAt($value)
  */
 class Message extends BaseModel

@@ -75,7 +75,7 @@ class CreateMessagesTable extends Migration
             'messages',
             function (Blueprint $table) {
                 $table->increments('id');
-                $this->references($table, 'users', 'user_id');
+                $this->referencesUser($table);
                 $this->references($table, 'users', 'receiver_id');
                 $table->boolean('read')->default(0);
                 $table->text('text');
