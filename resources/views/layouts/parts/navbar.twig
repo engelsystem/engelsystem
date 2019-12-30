@@ -12,11 +12,12 @@
         {% block navbar %}
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed"
-                        data-toggle="collapse" data-target="#navbar-collapse-1">
+                        data-toggle="offcanvas" data-target="#navbar-offcanvas">
                     <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    <span class="icon icon-open">☰</span>
+                    <span class="icon icon-close">×</span>
+
+
                 </button>
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <span class="icon-icon_angel"></span>
@@ -25,7 +26,7 @@
             </div>
 
             {% block menu %}
-                <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                <div class="collapse navbar-collapse" id="navbar-offcanvas">
                     {% block menu_items %}
                         {{ menu() }}
 
@@ -65,7 +66,7 @@
                                 {{ _self.toolbar_item(user.name, url('users', {'action': 'view'}), 'users', 'icon icon-icon_angel') }}
                             {% endif %}
 
-                            <li class="dropdown">
+                            <li class="hidden-xs">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <span class="caret"></span>
                                 </a>
@@ -73,7 +74,9 @@
                                     {{ menuUserSubmenu()|join(" ")|raw }}
                                 </ul>
                             </li>
-
+                        </ul>
+                        <ul class="nav navbar-nav navbar-mobile hidden-sm hidden-md hidden-lg">
+                            {{ menuUserSubmenu()|join(" ")|raw }}
                         </ul>
                     {% endblock %}
                 </div>
