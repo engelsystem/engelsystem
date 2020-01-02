@@ -28,8 +28,6 @@ class NewsCommentsTest extends TestCase
 
     /**
      * Sets up some test objects and test data.
-     *
-     * @return void
      */
     protected function setUp(): void
     {
@@ -59,7 +57,7 @@ class NewsCommentsTest extends TestCase
     /**
      * Tests that a NewsComment can be created and loaded.
      *
-     * @return void
+     * @covers \Engelsystem\Models\NewsComment
      */
     public function testCreate(): void
     {
@@ -75,7 +73,7 @@ class NewsCommentsTest extends TestCase
     /**
      * Tests that accessing the User of a NewsComment works.
      *
-     * @return void
+     * @covers \Engelsystem\Models\NewsComment::user
      */
     public function testUser(): void
     {
@@ -87,40 +85,12 @@ class NewsCommentsTest extends TestCase
     /**
      * Tests that accessing the News of a NewsComment works.
      *
-     * @return void
+     * @covers \Engelsystem\Models\NewsComment::news
      */
     public function testNews(): void
     {
         $newsComment = NewsComment::create($this->newsCommentData);
         $this->assertInstanceOf(News::class, $newsComment->news);
         $this->assertSame($this->news->id, $newsComment->news->id);
-    }
-
-    /**
-     * Tests that accessing the NewsComments of a News works.
-     *
-     * @return void
-     */
-    public function testNewsComments(): void
-    {
-        $newsComment = NewsComment::create($this->newsCommentData);
-        $comments = $this->news->comments;
-        $this->assertCount(1, $comments);
-        $comment = $comments->first();
-        $this->assertSame($newsComment->id, $comment->id);
-    }
-
-    /**
-     * Tests that accessing the NewsComments of an User works.
-     *
-     * @return void
-     */
-    public function testUserNewsComments(): void
-    {
-        $newsComment = NewsComment::create($this->newsCommentData);
-        $comments = $this->user->newsComments;
-        $this->assertCount(1, $comments);
-        $comment = $comments->first();
-        $this->assertSame($newsComment->id, $comment->id);
     }
 }

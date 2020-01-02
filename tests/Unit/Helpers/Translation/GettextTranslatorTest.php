@@ -54,6 +54,9 @@ class GettextTranslatorTest extends ServiceProviderTest
         $this->assertEquals('Translations!', $translator->dnpgettext(null, null, 'test.value', 'test.values', 2));
     }
 
+    /**
+     * @return Translations
+     */
     protected function getTranslations(): Translations
     {
         $translations = new Translations();

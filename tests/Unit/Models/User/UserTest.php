@@ -5,6 +5,7 @@ namespace Engelsystem\Test\Unit\Models;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\News;
+use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\HasUserModel;
@@ -146,6 +147,22 @@ class UserTest extends TestCase
                 ]
             ]
         ];
+    }
+
+    /**
+     * Tests that accessing the NewsComments of an User works.
+     *
+     * @covers \Engelsystem\Models\User\User::newsComments
+     */
+    public function testNewsComments(): void
+    {
+        ($user = new User($this->data))->save();
+        $newsComment = NewsComment::create(['news_id' => 0, 'text' => 'test comment', 'user_id' => $user->id]);
+        $comments = $user->newsComments;
+
+        $this->assertCount(1, $comments);
+        $comment = $comments->first();
+        $this->assertSame($newsComment->id, $comment->id);
     }
 
     /**

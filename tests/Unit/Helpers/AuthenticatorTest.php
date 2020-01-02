@@ -16,7 +16,7 @@ class AuthenticatorTest extends ServiceProviderTest
     use HasDatabase;
 
     /**
-     * @covers \Engelsystem\Helpers\Authenticator::__construct(
+     * @covers \Engelsystem\Helpers\Authenticator::__construct
      * @covers \Engelsystem\Helpers\Authenticator::user
      */
     public function testUser()

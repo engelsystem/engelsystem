@@ -17,7 +17,11 @@ use Whoops\RunInterface as WhoopsRunnerInterface;
 class WhoopsTest extends TestCase
 {
     /**
-     * @covers \Engelsystem\Exceptions\Handlers\Whoops
+     * @covers \Engelsystem\Exceptions\Handlers\Whoops::__construct
+     * @covers \Engelsystem\Exceptions\Handlers\Whoops::render
+     * @covers \Engelsystem\Exceptions\Handlers\Whoops::getPrettyPageHandler
+     * @covers \Engelsystem\Exceptions\Handlers\Whoops::getJsonResponseHandler
+     * @covers \Engelsystem\Exceptions\Handlers\Whoops::getData
      */
     public function testRender()
     {

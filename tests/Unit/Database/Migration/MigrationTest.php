@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 class MigrationTest extends TestCase
 {
+    /**
+     * @covers \Engelsystem\Database\Migration\Migration::__construct
+     */
     public function testConstructor()
     {
         require_once __DIR__ . '/Stub/2017_12_24_053300_another_stuff.php';

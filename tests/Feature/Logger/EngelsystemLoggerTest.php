@@ -13,6 +13,7 @@ use stdClass;
 class EngelsystemLoggerTest extends ApplicationFeatureTest
 {
     /**
+     * @covers \Engelsystem\Logger\EngelsystemLogger::__construct
      * @return LoggerInterface
      */
     public function getLogger()
@@ -47,7 +48,7 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
     }
 
     /**
-     * @covers       \Engelsystem\Models\LogEntry
+     * @covers       \Engelsystem\Logger\EngelsystemLogger::log
      * @dataProvider provideLogLevels
      * @param string $level
      */
@@ -148,10 +149,7 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
      */
     protected function getLastEntry()
     {
-        $entries = LogEntry::all();
-        $entry = $entries->last();
-
-        return $entry;
+        return LogEntry::all()->last();
     }
 
     /**

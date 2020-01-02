@@ -47,7 +47,7 @@ class NewsTest extends TestCase
     /**
      * Tests that creating a News item with default values works.
      *
-     * @return void
+     * @covers \Engelsystem\Models\News
      */
     public function testCreateDefault(): void
     {
@@ -61,9 +61,24 @@ class NewsTest extends TestCase
     }
 
     /**
+     * Tests that accessing the NewsComments of a News works.
+     *
+     * @covers \Engelsystem\Models\News::comments
+     */
+    public function testNewsComments(): void
+    {
+        $news = (new News())->create($this->newsData);
+        $comment = $news->comments()->create(['text' => 'test comment', 'user_id' => $this->user->id]);
+
+        $comments = $news->comments;
+        $this->assertCount(1, $comments);
+        $this->assertEquals($comment->toArray(), $news->comments->first()->toArray());
+    }
+
+    /**
      * Tests that creating a News item with all fill values works.
      *
-     * @return void
+     * @covers \Engelsystem\Models\News
      */
     public function testCreate(): void
     {

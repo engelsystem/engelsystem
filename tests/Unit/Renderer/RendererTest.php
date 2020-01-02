@@ -10,6 +10,10 @@ use Psr\Log\LoggerInterface;
 
 class RendererTest extends TestCase
 {
+    /**
+     * @covers \Engelsystem\Renderer\Renderer::render
+     * @covers \Engelsystem\Renderer\Renderer::addRenderer
+     */
     public function testGet()
     {
         $renderer = new Renderer();
@@ -41,6 +45,9 @@ class RendererTest extends TestCase
         $this->assertEquals('Rendered content', $data);
     }
 
+    /**
+     * @covers \Engelsystem\Renderer\Renderer::render
+     */
     public function testError()
     {
         $renderer = new Renderer();
