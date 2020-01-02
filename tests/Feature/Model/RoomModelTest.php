@@ -2,10 +2,11 @@
 
 namespace Engelsystem\Test\Feature\Model;
 
-use PHPUnit\Framework\TestCase;
+use Engelsystem\Test\Feature\ApplicationFeatureTest;
 
-class RoomModelTest extends TestCase
+class RoomModelTest extends ApplicationFeatureTest
 {
+    /** @var int */
     private $room_id = null;
 
     /**

@@ -9,6 +9,6 @@ abstract class ApplicationFeatureTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         $_SERVER['HTTP_HOST'] = 'foo.bar';
-        require_once __DIR__ . '/../../includes/engelsystem.php';
+        require __DIR__ . '/../../includes/engelsystem.php';
     }
 }
