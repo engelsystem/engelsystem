@@ -93,6 +93,11 @@ function user_worklog_from_request($userWorkLog)
         error(__('Please enter a comment.'));
     }
 
+    if (mb_strlen($userWorkLog['comment']) > 200) {
+        $valid = false;
+        error(__('Comment too long.'));
+    }
+
     return [
         $valid,
         $userWorkLog
