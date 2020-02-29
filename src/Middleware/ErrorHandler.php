@@ -6,6 +6,7 @@ use Engelsystem\Http\Exceptions\HttpException;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -69,6 +70,8 @@ class ErrorHandler implements MiddlewareInterface
             if ($request instanceof Request) {
                 $response->withInput(Arr::except($request->request->all(), $this->formIgnore));
             }
+        } catch (ModelNotFoundException $e) {
+            $response = $this->createResponse('', 404);
         }
 
         $statusCode = $response->getStatusCode();

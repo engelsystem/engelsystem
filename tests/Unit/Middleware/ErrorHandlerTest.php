@@ -13,6 +13,7 @@ use Engelsystem\Http\ResponseServiceProvider;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Middleware\ErrorHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\ReturnResponseMiddlewareHandler;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -217,6 +218,50 @@ class ErrorHandlerTest extends TestCase
         $return = $errorHandler->process($request, $handler);
 
         $this->assertEquals('/foo/batz', $return->getHeaderLine('location'));
+    }
+
+    /**
+     * @covers \Engelsystem\Middleware\ErrorHandler::process
+     */
+    public function testProcessModelNotFoundException()
+    {
+        /** @var ServerRequestInterface|MockObject $request */
+        $request = $this->createMock(ServerRequestInterface::class);
+        /** @var ResponseInterface|MockObject $psrResponse */
+        $psrResponse = $this->getMockForAbstractClass(ResponseInterface::class);
+        /** @var ReturnResponseMiddlewareHandler|MockObject $returnResponseHandler */
+        $returnResponseHandler = $this->getMockBuilder(ReturnResponseMiddlewareHandler::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $psrResponse->expects($this->once())
+            ->method('getStatusCode')
+            ->willReturn(404);
+
+        $psrResponse->expects($this->once())
+            ->method('getHeader')
+            ->with('content-type')
+            ->willReturn([]);
+
+        $returnResponseHandler->expects($this->once())
+            ->method('handle')
+            ->willReturnCallback(function () {
+                throw new ModelNotFoundException('Some model could not be found');
+            });
+
+        /** @var ErrorHandler|MockObject $errorHandler */
+        $errorHandler = $this->getMockBuilder(ErrorHandler::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['createResponse'])
+            ->getMock();
+
+        $errorHandler->expects($this->once())
+            ->method('createResponse')
+            ->with('', 404)
+            ->willReturn($psrResponse);
+
+        $return = $errorHandler->process($request, $returnResponseHandler);
+        $this->assertEquals($psrResponse, $return);
     }
 
     /**
