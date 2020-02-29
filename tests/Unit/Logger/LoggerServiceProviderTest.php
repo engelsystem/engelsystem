@@ -2,7 +2,9 @@
 
 namespace Engelsystem\Test\Unit\Logger;
 
-use Engelsystem\Logger\EngelsystemLogger;
+use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Logger\Logger;
+use Engelsystem\Logger\UserAwareLogger;
 use Engelsystem\Logger\LoggerServiceProvider;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -11,28 +13,41 @@ use Psr\Log\LoggerInterface;
 class LoggerServiceProviderTest extends ServiceProviderTest
 {
     /**
-     * @covers \Engelsystem\Logger\LoggerServiceProvider::register()
+     * @covers \Engelsystem\Logger\LoggerServiceProvider::register
      */
     public function testRegister()
     {
-        /** @var EngelsystemLogger|MockObject $logger */
-        $logger = $this->getMockBuilder(EngelsystemLogger::class)
+        $serviceProvider = new LoggerServiceProvider($this->app);
+        $serviceProvider->register();
+
+        $this->assertInstanceOf(UserAwareLogger::class, $this->app->get('logger'));
+        $this->assertInstanceOf(UserAwareLogger::class, $this->app->get(LoggerInterface::class));
+        $this->assertInstanceOf(UserAwareLogger::class, $this->app->get(Logger::class));
+        $this->assertInstanceOf(UserAwareLogger::class, $this->app->get(UserAwareLogger::class));
+    }
+
+    /**
+     * @covers \Engelsystem\Logger\LoggerServiceProvider::boot
+     */
+    public function testBoot()
+    {
+        /** @var Authenticator|MockObject $auth */
+        $auth = $this->getMockBuilder(Authenticator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        /** @var UserAwareLogger|MockObject $log */
+        $log = $this->getMockBuilder(UserAwareLogger::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $app = $this->getApp(['make', 'instance', 'bind']);
+        $this->app->instance(Authenticator::class, $auth);
+        $this->app->instance(UserAwareLogger::class, $log);
 
-        $this->setExpects($app, 'make', [EngelsystemLogger::class], $logger);
-        $this->setExpects($app, 'instance', ['logger', $logger]);
+        $log->expects($this->once())
+            ->method('setAuth')
+            ->with($auth);
 
-        $app->expects($this->atLeastOnce())
-            ->method('bind')
-            ->withConsecutive(
-                [LoggerInterface::class, 'logger'],
-                [EngelsystemLogger::class, 'logger']
-            );
-
-        $serviceProvider = new LoggerServiceProvider($app);
-        $serviceProvider->register();
+        $serviceProvider = new LoggerServiceProvider($this->app);
+        $serviceProvider->boot();
     }
 }

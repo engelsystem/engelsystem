@@ -12,14 +12,7 @@ use Psr\Log\LogLevel;
  */
 function engelsystem_log($message, $level = LogLevel::INFO)
 {
-    $nick = "Guest";
     /** @var LoggerInterface $logger */
     $logger = app('logger');
-    $user = auth()->user();
-
-    if ($user) {
-        $nick = User_Nick_render($user, true);
-    }
-
-    $logger->log($level, '{nick}: {message}', ['nick' => $nick, 'message' => $message]);
+    $logger->log($level, $message);
 }

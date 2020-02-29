@@ -554,7 +554,7 @@ class ImportSchedule extends BaseController
                     SELECT
                            s.SID AS id,
                            s.title,
-                           s.start, 
+                           s.start,
                            s.end,
                            s.shifttype_id AS shift_type_id,
                            s.RID AS room_id,
@@ -606,9 +606,6 @@ class ImportSchedule extends BaseController
      */
     protected function log(string $message, array $context = []): void
     {
-        $user = auth()->user();
-        $message = sprintf('%s (%u): %s', $user->name, $user->id, $message);
-
         $this->log->info($message, $context);
     }
 }

@@ -2,18 +2,18 @@
 
 namespace Engelsystem\Test\Unit\Logger;
 
-use Engelsystem\Logger\EngelsystemLogger;
+use Engelsystem\Logger\Logger;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LogLevel;
 
-class EngelsystemLoggerTest extends ServiceProviderTest
+class LoggerTest extends ServiceProviderTest
 {
     /**
-     * @covers \Engelsystem\Logger\EngelsystemLogger::__construct
-     * @covers \Engelsystem\Logger\EngelsystemLogger::log
+     * @covers \Engelsystem\Logger\Logger::__construct
+     * @covers \Engelsystem\Logger\Logger::log
      */
     public function testLog()
     {
@@ -25,27 +25,27 @@ class EngelsystemLoggerTest extends ServiceProviderTest
             ->method('create')
             ->with(['level' => LogLevel::INFO, 'message' => 'I\'m an information!']);
 
-        $logger = new EngelsystemLogger($logEntry);
+        $logger = new Logger($logEntry);
 
         $logger->log(LogLevel::INFO, 'I\'m an information!');
     }
 
     /**
-     * @covers \Engelsystem\Logger\EngelsystemLogger::log
-     * @covers \Engelsystem\Logger\EngelsystemLogger::checkLevel
+     * @covers \Engelsystem\Logger\Logger::log
+     * @covers \Engelsystem\Logger\Logger::checkLevel
      */
     public function testCheckLevel()
     {
         /** @var LogEntry|MockObject $logEntry */
         $logEntry = $this->createMock(LogEntry::class);
-        $logger = new EngelsystemLogger($logEntry);
+        $logger = new Logger($logEntry);
 
         $this->expectException(InvalidArgumentException::class);
         $logger->log('FooBar', 'Random Stuff');
     }
 
     /**
-     * @covers \Engelsystem\Logger\EngelsystemLogger::interpolate
+     * @covers \Engelsystem\Logger\Logger::interpolate
      */
     public function testInterpolate()
     {
@@ -61,7 +61,7 @@ class EngelsystemLoggerTest extends ServiceProviderTest
                 [['level' => LogLevel::NOTICE, 'message' => 'User: Bar']]
             );
 
-        $logger = new EngelsystemLogger($logEntry);
+        $logger = new Logger($logEntry);
 
         $logger->log(LogLevel::DEBUG, 'User: {user}', ['user' => 'Foo']);
         $logger->log(LogLevel::NOTICE, 'User: {user}', ['user' => ['name' => 'Lorem']]);
