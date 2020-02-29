@@ -8,12 +8,14 @@ use Engelsystem\Renderer\Twig\Extensions\Assets;
 use Engelsystem\Renderer\Twig\Extensions\Authentication;
 use Engelsystem\Renderer\Twig\Extensions\Config;
 use Engelsystem\Renderer\Twig\Extensions\Csrf;
+use Engelsystem\Renderer\Twig\Extensions\Develop;
 use Engelsystem\Renderer\Twig\Extensions\Globals;
 use Engelsystem\Renderer\Twig\Extensions\Legacy;
 use Engelsystem\Renderer\Twig\Extensions\Markdown;
 use Engelsystem\Renderer\Twig\Extensions\Session;
 use Engelsystem\Renderer\Twig\Extensions\Translation;
 use Engelsystem\Renderer\Twig\Extensions\Url;
+use Symfony\Component\VarDumper\VarDumper;
 use Twig\Environment as Twig;
 use Twig\Extension\CoreExtension as TwigCore;
 use Twig\Loader\LoaderInterface as TwigLoaderInterface;
@@ -26,6 +28,7 @@ class TwigServiceProvider extends ServiceProvider
         'authentication' => Authentication::class,
         'config'         => Config::class,
         'csrf'           => Csrf::class,
+        'develop'        => Develop::class,
         'globals'        => Globals::class,
         'session'        => Session::class,
         'legacy'         => Legacy::class,
@@ -50,6 +53,12 @@ class TwigServiceProvider extends ServiceProvider
 
         foreach ($this->app->tagged('twig.extension') as $extension) {
             $renderer->addExtension($extension);
+        }
+
+        if (class_exists(VarDumper::class)) {
+            /** @var Develop $dev */
+            $dev = $this->app->get('twig.extension.develop');
+            $dev->setDumper($this->app->make(VarDumper::class));
         }
     }
 
