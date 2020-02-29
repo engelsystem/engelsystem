@@ -3,6 +3,7 @@
 namespace Engelsystem\Test\Unit\Renderer;
 
 use Engelsystem\Config\Config;
+use Engelsystem\Renderer\Twig\Extensions\Develop;
 use Engelsystem\Renderer\TwigEngine;
 use Engelsystem\Renderer\TwigLoader;
 use Engelsystem\Renderer\TwigServiceProvider;
@@ -11,6 +12,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionClass as Reflection;
 use ReflectionException;
 use stdClass;
+use Symfony\Component\VarDumper\VarDumper;
 use Twig\Environment as Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\CoreExtension as TwigCore;
@@ -70,21 +72,33 @@ class TwigServiceProviderTest extends ServiceProviderTest
         $firsExtension = $this->getMockForAbstractClass(ExtensionInterface::class);
         /** @var ExtensionInterface|MockObject $secondExtension */
         $secondExtension = $this->getMockForAbstractClass(ExtensionInterface::class);
+        /** @var Develop|MockObject $devExtension */
+        $devExtension = $this->createMock(Develop::class);
+        /** @var VarDumper|MockObject $dumper */
+        $dumper = $this->createMock(VarDumper::class);
 
-        $app = $this->getApp(['get', 'tagged']);
+        $app = $this->getApp(['get', 'tagged', 'make']);
 
-        $app->expects($this->once())
+        $app->expects($this->exactly(2))
             ->method('get')
-            ->with('twig.environment')
-            ->willReturn($twig);
+            ->withConsecutive(['twig.environment'], ['twig.extension.develop'])
+            ->willReturnOnConsecutiveCalls($twig, $devExtension);
         $app->expects($this->once())
             ->method('tagged')
             ->with('twig.extension')
             ->willReturn([$firsExtension, $secondExtension]);
+        $app->expects($this->once())
+            ->method('make')
+            ->with(VarDumper::class)
+            ->willReturn($dumper);
 
         $twig->expects($this->exactly(2))
             ->method('addExtension')
             ->withConsecutive([$firsExtension], [$secondExtension]);
+
+        $devExtension->expects($this->once())
+            ->method('setDumper')
+            ->with($dumper);
 
         $serviceProvider = new TwigServiceProvider($app);
         $serviceProvider->boot();
