@@ -7,7 +7,7 @@ use Psr\Log\AbstractLogger;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
 
-class EngelsystemLogger extends AbstractLogger
+class Logger extends AbstractLogger
 {
     protected $allowedLevels = [
         LogLevel::ALERT,
@@ -24,8 +24,6 @@ class EngelsystemLogger extends AbstractLogger
     protected $log;
 
     /**
-     * EngelsystemLogger constructor.
-     *
      * @param LogEntry $log
      */
     public function __construct(LogEntry $log)

@@ -2,7 +2,7 @@
 
 namespace Engelsystem\Test\Feature\Logger;
 
-use Engelsystem\Logger\EngelsystemLogger;
+use Engelsystem\Logger\Logger;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Test\Feature\ApplicationFeatureTest;
 use Psr\Log\InvalidArgumentException;
@@ -10,20 +10,20 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use stdClass;
 
-class EngelsystemLoggerTest extends ApplicationFeatureTest
+class LoggerTest extends ApplicationFeatureTest
 {
     /**
-     * @covers \Engelsystem\Logger\EngelsystemLogger::__construct
+     * @covers \Engelsystem\Logger\Logger::__construct
      * @return LoggerInterface
      */
     public function getLogger()
     {
         $logEntry = new LogEntry();
-        return new EngelsystemLogger($logEntry);
+        return new Logger($logEntry);
     }
 
     /**
-     * @covers \Engelsystem\Logger\EngelsystemLogger::__construct
+     * @covers \Engelsystem\Logger\Logger::__construct
      */
     public function testImplements()
     {
@@ -48,7 +48,7 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
     }
 
     /**
-     * @covers       \Engelsystem\Logger\EngelsystemLogger::log
+     * @covers       \Engelsystem\Logger\Logger::log
      * @dataProvider provideLogLevels
      * @param string $level
      */
@@ -65,7 +65,7 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
     }
 
     /**
-     * @covers \Engelsystem\Logger\EngelsystemLogger::log
+     * @covers \Engelsystem\Logger\Logger::log
      */
     public function testContextReplacement()
     {
@@ -93,8 +93,8 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
     }
 
     /**
-     * @covers       \Engelsystem\Logger\EngelsystemLogger::interpolate
-     * @covers       \Engelsystem\Logger\EngelsystemLogger::log
+     * @covers       \Engelsystem\Logger\Logger::interpolate
+     * @covers       \Engelsystem\Logger\Logger::log
      * @dataProvider provideContextReplaceValues
      *
      * @param string   $message
@@ -111,7 +111,7 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
     }
 
     /**
-     * @covers \Engelsystem\Logger\EngelsystemLogger::log
+     * @covers \Engelsystem\Logger\Logger::log
      */
     public function testContextToString()
     {
@@ -133,8 +133,8 @@ class EngelsystemLoggerTest extends ApplicationFeatureTest
     }
 
     /**
-     * @covers \Engelsystem\Logger\EngelsystemLogger::checkLevel
-     * @covers \Engelsystem\Logger\EngelsystemLogger::log
+     * @covers \Engelsystem\Logger\Logger::checkLevel
+     * @covers \Engelsystem\Logger\Logger::log
      */
     public function testThrowExceptionOnInvalidLevel()
     {
