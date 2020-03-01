@@ -77,8 +77,7 @@ function user_meetings()
  */
 function news_text(News $news): string
 {
-    $text = ReplaceSmilies($news->text);
-    $text = preg_replace("/\r\n\r\n/m", '<br><br>', $text);
+    $text = preg_replace("/\r\n\r\n/m", '<br><br>', $news->text);
     return $text;
 }
 
@@ -91,7 +90,7 @@ function display_news(News $news): string
     $html = '';
     $html .= '<div class="panel' . ($news->is_meeting ? ' panel-info' : ' panel-default') . '">';
     $html .= '<div class="panel-heading">';
-    $html .= '<h3 class="panel-title">' . ($news->is_meeting ? '[Meeting] ' : '') . ReplaceSmilies($news->title) . '</h3>';
+    $html .= '<h3 class="panel-title">' . ($news->is_meeting ? '[Meeting] ' : '') . $news->title . '</h3>';
     $html .= '</div>';
     $html .= '<div class="panel-body">' . news_text($news) . '</div>';
 
