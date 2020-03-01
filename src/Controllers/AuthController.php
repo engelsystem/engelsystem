@@ -9,12 +9,12 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Models\User\User;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AuthController extends BaseController
 {
+    use HasUserNotifications;
+
     /** @var Response */
     protected $response;
 
@@ -70,12 +70,9 @@ class AuthController extends BaseController
      */
     protected function showLogin(): Response
     {
-        $errors = Collection::make(Arr::flatten($this->session->get('errors', [])));
-        $this->session->remove('errors');
-
         return $this->response->withView(
             'pages/login',
-            ['errors' => $errors]
+            $this->getNotifications()
         );
     }
 
@@ -95,7 +92,7 @@ class AuthController extends BaseController
         $user = $this->auth->authenticate($data['login'], $data['password']);
 
         if (!$user instanceof User) {
-            $this->session->set('errors', array_merge($this->session->get('errors', []), ['auth.not-found']));
+            $this->addNotification('auth.not-found', 'errors');
 
             return $this->showLogin();
         }

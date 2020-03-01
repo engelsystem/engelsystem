@@ -8,9 +8,7 @@
     <div class="container">
         <h1>{{ __('Password recovery') }}</h1>
 
-        {% for message in errors|default([]) %}
-            {{ m.alert(__(message), 'danger') }}
-        {% endfor %}
+        {% include 'layouts/parts/messages.twig' %}
 
         <div class="row">
             {% block row_content %}

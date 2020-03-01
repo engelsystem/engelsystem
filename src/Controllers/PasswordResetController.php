@@ -8,13 +8,13 @@ use Engelsystem\Http\Response;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\User;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class PasswordResetController extends BaseController
 {
+    use HasUserNotifications;
+
     /** @var LoggerInterface */
     protected $log;
 
@@ -120,10 +120,7 @@ class PasswordResetController extends BaseController
         ]);
 
         if ($data['password'] !== $data['password_confirmation']) {
-            $this->session->set(
-                'errors',
-                array_merge($this->session->get('errors', []), ['validation.password.confirmed'])
-            );
+            $this->addNotification('validation.password.confirmed', 'errors');
 
             return $this->showView('pages/password/reset-form');
         }
@@ -141,12 +138,9 @@ class PasswordResetController extends BaseController
      */
     protected function showView($view = 'pages/password/reset', $data = []): Response
     {
-        $errors = Collection::make(Arr::flatten($this->session->get('errors', [])));
-        $this->session->remove('errors');
-
         return $this->response->withView(
             $view,
-            array_merge_recursive(['errors' => $errors], $data)
+            array_merge_recursive($this->getNotifications(), $data)
         );
     }
 

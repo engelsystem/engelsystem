@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Controllers;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\AuthController;
 use Engelsystem\Helpers\Authenticator;
@@ -21,6 +22,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class AuthControllerTest extends TestCase
 {
+    use ArraySubsetAsserts;
     use HasDatabase;
 
     /**
@@ -38,10 +40,11 @@ class AuthControllerTest extends TestCase
         /** @var Authenticator|MockObject $auth */
         list(, $session, $url, $config, $auth) = $this->getMocks();
 
-        $session->expects($this->once())
+        $session->expects($this->atLeastOnce())
             ->method('get')
-            ->with('errors', [])
-            ->willReturn(['foo' => 'bar']);
+            ->willReturnCallback(function ($type) {
+                return $type == 'errors' ? ['foo' => 'bar'] : [];
+            });
         $response->expects($this->once())
             ->method('withView')
             ->with('pages/login')
@@ -69,6 +72,7 @@ class AuthControllerTest extends TestCase
         /** @var Validator|MockObject $validator */
         $validator = new Validator();
         $session->set('errors', [['bar' => 'some.bar.error']]);
+        $this->app->instance('session', $session);
 
         $user = new User([
             'name'          => 'foo',
@@ -92,8 +96,11 @@ class AuthControllerTest extends TestCase
 
         $response->expects($this->once())
             ->method('withView')
-            ->with('pages/login', ['errors' => collect(['some.bar.error', 'auth.not-found'])])
-            ->willReturn($response);
+            ->willReturnCallback(function ($view, $data = []) use ($response) {
+                $this->assertEquals('pages/login', $view);
+                $this->assertArraySubset(['errors' => collect(['some.bar.error', 'auth.not-found'])], $data);
+                return $response;
+            });
         $response->expects($this->once())
             ->method('redirectTo')
             ->with('news')
@@ -167,6 +174,8 @@ class AuthControllerTest extends TestCase
         $config = new Config(['home_site' => 'news']);
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
+
+        $this->app->instance('session', $session);
 
         return [$response, $session, $url, $config, $auth];
     }
