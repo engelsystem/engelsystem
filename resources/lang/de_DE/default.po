@@ -134,9 +134,8 @@ msgstr "Absenden"
 
 #: resources/views/pages/credits.twig:17
 #, fuzzy
-#| msgid "Force active"
 msgid "Source code"
-msgstr "Aktiv erzwingen"
+msgstr "Quellcode"
 
 #: resources/views/pages/credits.twig:18
 #, python-format
