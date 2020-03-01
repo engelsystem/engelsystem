@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Controllers;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\PasswordResetController;
 use Engelsystem\Helpers\Authenticator;
@@ -23,6 +24,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class PasswordResetControllerTest extends TestCase
 {
+    use ArraySubsetAsserts;
     use HasDatabase;
 
     /** @var array */
@@ -199,6 +201,8 @@ class PasswordResetControllerTest extends TestCase
         $renderer = $this->createMock(Renderer::class);
         $response->setRenderer($renderer);
 
+        $this->app->instance('session', $session);
+
         return $this->args = [
             'response' => $response,
             'session'  => $session,
@@ -230,7 +234,16 @@ class PasswordResetControllerTest extends TestCase
                 $args[] = $data;
             }
 
-            $this->setExpects($renderer, 'render', $args, 'Foo');
+            $renderer->expects($this->atLeastOnce())
+                ->method('render')
+                ->willReturnCallback(function ($template, $data = []) use ($args) {
+                    $this->assertEquals($args[0], $template);
+                    if (isset($args[1])) {
+                        $this->assertArraySubset($args[1], $data);
+                    }
+
+                    return 'Foo';
+                });
         }
 
         return $controller;

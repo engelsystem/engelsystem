@@ -32,10 +32,7 @@
             <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
                 <div class="panel panel-primary first">
                     <div class="panel-body">
-                        {{ msg() }}
-                        {% for message in errors|default([]) %}
-                            {{ m.alert(__(message), 'danger') }}
-                        {% endfor %}
+                        {% include 'layouts/parts/messages.twig' %}
 
                         <form action="" enctype="multipart/form-data" method="post">
                             {{ csrf() }}

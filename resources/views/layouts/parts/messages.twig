@@ -1,0 +1,19 @@
+{% import 'macros/base.twig' as m %}
+
+{{ msg() }}
+
+{% for message in errors|default([]) %}
+    {{ m.alert(__(message), 'danger') }}
+{% endfor %}
+
+{% for message in warnings|default([]) %}
+    {{ m.alert(__(message), 'warning') }}
+{% endfor %}
+
+{% for message in information|default([]) %}
+    {{ m.alert(__(message), 'info') }}
+{% endfor %}
+
+{% for message in messages|default([]) %}
+    {{ m.alert(__(message), 'success') }}
+{% endfor %}
