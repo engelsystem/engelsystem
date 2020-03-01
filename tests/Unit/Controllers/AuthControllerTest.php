@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Controllers;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Controllers\AuthController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
@@ -33,8 +34,9 @@ class AuthControllerTest extends TestCase
         $response = $this->createMock(Response::class);
         /** @var SessionInterface|MockObject $session */
         /** @var UrlGeneratorInterface|MockObject $url */
+        /** @var Config $config */
         /** @var Authenticator|MockObject $auth */
-        list(, $session, $url, $auth) = $this->getMocks();
+        list(, $session, $url, $config, $auth) = $this->getMocks();
 
         $session->expects($this->once())
             ->method('get')
@@ -45,7 +47,7 @@ class AuthControllerTest extends TestCase
             ->with('pages/login')
             ->willReturn($response);
 
-        $controller = new AuthController($response, $session, $url, $auth);
+        $controller = new AuthController($response, $session, $url, $config, $auth);
         $controller->login();
     }
 
@@ -60,8 +62,9 @@ class AuthControllerTest extends TestCase
         /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
         /** @var UrlGeneratorInterface|MockObject $url */
+        /** @var Config $config */
         /** @var Authenticator|MockObject $auth */
-        list(, , $url, $auth) = $this->getMocks();
+        list(, , $url, $config, $auth) = $this->getMocks();
         $session = new Session(new MockArraySessionStorage());
         /** @var Validator|MockObject $validator */
         $validator = new Validator();
@@ -97,7 +100,7 @@ class AuthControllerTest extends TestCase
             ->willReturn($response);
 
         // No credentials
-        $controller = new AuthController($response, $session, $url, $auth);
+        $controller = new AuthController($response, $session, $url, $config, $auth);
         $controller->setValidator($validator);
         try {
             $controller->postLogin($request);
@@ -133,8 +136,9 @@ class AuthControllerTest extends TestCase
         /** @var Response $response */
         /** @var SessionInterface|MockObject $session */
         /** @var UrlGeneratorInterface|MockObject $url */
+        /** @var Config $config */
         /** @var Authenticator|MockObject $auth */
-        list($response, $session, $url, $auth) = $this->getMocks();
+        list($response, $session, $url, $config, $auth) = $this->getMocks();
 
         $session->expects($this->once())
             ->method('invalidate');
@@ -144,7 +148,7 @@ class AuthControllerTest extends TestCase
             ->with('/')
             ->willReturn('https://foo.bar/');
 
-        $controller = new AuthController($response, $session, $url, $auth);
+        $controller = new AuthController($response, $session, $url, $config, $auth);
         $return = $controller->logout();
 
         $this->assertEquals(['https://foo.bar/'], $return->getHeader('location'));
@@ -160,9 +164,10 @@ class AuthControllerTest extends TestCase
         $session = $this->getMockForAbstractClass(SessionInterface::class);
         /** @var UrlGeneratorInterface|MockObject $url */
         $url = $this->getMockForAbstractClass(UrlGeneratorInterface::class);
+        $config = new Config(['home_site' => 'news']);
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
 
-        return [$response, $session, $url, $auth];
+        return [$response, $session, $url, $config, $auth];
     }
 }
