@@ -40,7 +40,7 @@ function admin_news()
 
             $html .= form(
                 [
-                    form_info(__('Date'), $news->created_at->format('Y-m-d H:i')),
+                    form_info(__('Date'), $news->created_at->format(__('Y-m-d H:i'))),
                     form_info(__('Author'), User_Nick_render($user_source)),
                     form_text('eBetreff', __('Subject'), $news->title),
                     form_textarea('eText', __('Message'), $news->text),

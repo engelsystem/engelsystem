@@ -105,7 +105,7 @@ function display_news(News $news): string
             )
             . '</div>';
     }
-    $html .= '<span class="glyphicon glyphicon-time"></span> ' . $news->created_at->format('Y-m-d H:i') . '&emsp;';
+    $html .= '<span class="glyphicon glyphicon-time"></span> ' . $news->created_at->format(__('Y-m-d H:i')) . '&emsp;';
 
     $html .= User_Nick_render($news->user);
     if (current_page() != 'news_comments') {
@@ -154,7 +154,7 @@ function user_news_comments()
             $html .= '<div class="panel panel-default">';
             $html .= '<div class="panel-body">' . nl2br(htmlspecialchars($comment->text)) . '</div>';
             $html .= '<div class="panel-footer text-muted">';
-            $html .= '<span class="glyphicon glyphicon-time"></span> ' . $comment->created_at->format('Y-m-d H:i') . '&emsp;';
+            $html .= '<span class="glyphicon glyphicon-time"></span> ' . $comment->created_at->format(__('Y-m-d H:i')) . '&emsp;';
             $html .= User_Nick_render($comment->user);
             $html .= '</div>';
             $html .= '</div>';
