@@ -47,7 +47,12 @@ function update_ShiftsFilter_timerange(ShiftsFilter $shiftsFilter, $days)
 {
     $start_time = $shiftsFilter->getStartTime();
     if (is_null($start_time)) {
-        $start_time = time();
+        $first_day = DateTime::createFromFormat('Y-m-d', $days[0])->getTimestamp();
+        if(time() < $first_day) {
+            $start_time = $first_day;
+        } else {
+            $start_time = time();
+        }
     }
 
     $end_time = $shiftsFilter->getEndTime();
