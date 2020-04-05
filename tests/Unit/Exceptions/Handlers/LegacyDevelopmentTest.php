@@ -19,10 +19,10 @@ class LegacyDevelopmentTest extends TestCase
         $handler = new LegacyDevelopment();
         /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
-        $exception = new ErrorException('Lorem Ipsum', 4242, 1, 'foo.php', 9999);
+        $exception = new ErrorException('Lorem <b>Ipsum</b>', 4242, 1, 'foo.php', 9999);
 
         $regex = sprintf(
-            '%%<pre.*>.*ErrorException.*4242.*Lorem Ipsum.*%s.*%s.*%s.*</pre>%%is',
+            '%%<pre.*>.*ErrorException.*4242.*Lorem &lt;b&gt;Ipsum&lt;/b&gt;.*%s.*%s.*%s.*</pre>%%is',
             'foo.php',
             9999,
             __FUNCTION__

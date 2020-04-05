@@ -3,6 +3,7 @@
 namespace Engelsystem\Controllers;
 
 use Carbon\Carbon;
+use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -23,6 +24,9 @@ class AuthController extends BaseController
     /** @var UrlGeneratorInterface */
     protected $url;
 
+    /** @var Config */
+    protected $config;
+
     /** @var Authenticator */
     protected $auth;
 
@@ -36,17 +40,20 @@ class AuthController extends BaseController
      * @param Response              $response
      * @param SessionInterface      $session
      * @param UrlGeneratorInterface $url
+     * @param Config                $config
      * @param Authenticator         $auth
      */
     public function __construct(
         Response $response,
         SessionInterface $session,
         UrlGeneratorInterface $url,
+        Config $config,
         Authenticator $auth
     ) {
         $this->response = $response;
         $this->session = $session;
         $this->url = $url;
+        $this->config = $config;
         $this->auth = $auth;
     }
 
@@ -100,7 +107,7 @@ class AuthController extends BaseController
         $user->last_login_at = new Carbon();
         $user->save(['touch' => false]);
 
-        return $this->response->redirectTo('news');
+        return $this->response->redirectTo($this->config->get('home_site'));
     }
 
     /**
