@@ -13,6 +13,22 @@
     </div>
 {%- endmacro %}
 
+{% macro textarea(name, label, opt) %}
+    <div class="form-group">
+        {% if label -%}
+            <label for="{{ name }}">{{ label }}</label>
+        {%- endif %}
+        <textarea class="form-control" id="{{ name }}" name="{{ name }}"
+                {%- if opt.required|default(false) %}
+                    required="required"
+                {%- endif -%}
+                {%- if opt.rows|default(0) %}
+                    rows="{{ opt.rows }}"
+                {%- endif -%}
+        >{{ opt.value|default('') }}</textarea>
+    </div>
+{%- endmacro %}
+
 {% macro select(name, data, label, selected) %}
     <div class="form-group">
         {% if label -%}
@@ -26,10 +42,30 @@
     </div>
 {%- endmacro %}
 
+{% macro checkbox(name, label, checked, value) %}
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ value|default('1') }}"
+                    {%- if checked|default(false) %} checked="checked"{% endif %}>
+            {{ label }}
+        </label>
+    </div>
+{%- endmacro %}
+
 {% macro hidden(name, value) %}
     <input type="hidden" id="{{ name }}" name="{{ name }}" value="{{ value }}">
 {%- endmacro %}
 
-{% macro submit(label) %}
-    <button type="submit" class="btn btn-primary">{{ label|default(__('form.submit')) }}</button>
+{% macro button(label, opt) %}
+    <button class="btn btn-{{ opt.btn_type|default('primary') }}"
+            {%- if opt.type is defined %} type="{{ opt.type }}"{% endif %}
+            {%- if opt.name is defined %} name="{{ opt.name }}"{% endif %}
+            {%- if opt.value is defined or opt.name is defined %} value="{{ opt.value|default('1') }}"{% endif -%}
+    >
+        {{ label }}
+    </button>
+{%- endmacro %}
+
+{% macro submit(label, opt) %}
+    {{ _self.button(label|default(__('form.submit')), opt|default({})|merge({'type': 'submit'})) }}
 {%- endmacro %}

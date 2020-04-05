@@ -105,3 +105,42 @@ msgstr "Title"
 
 msgid "schedule.import.shift.room"
 msgstr "Room"
+
+msgid "news.title"
+msgstr "News"
+
+msgid "news.title.meetings"
+msgstr "Meetings"
+
+msgid "news.add"
+msgstr "+"
+
+msgid "news.is_meeting"
+msgstr "[Meeting]"
+
+msgid "news.updated"
+msgstr "Updated"
+
+msgid "news.comments"
+msgstr "Comments"
+
+msgid "news.comments.new"
+msgstr "New comment"
+
+msgid "news.comments.message"
+msgstr "Message"
+
+msgid "news.edit.edit"
+msgstr "Edit news"
+
+msgid "news.edit.add"
+msgstr "Add news"
+
+msgid "news.edit.subject"
+msgstr "Subject"
+
+msgid "news.edit.is_meeting"
+msgstr "Meeting"
+
+msgid "news.edit.message"
+msgstr "Message"

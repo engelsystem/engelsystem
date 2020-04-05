@@ -1,0 +1,62 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ news ? __('news.edit.edit') : __('news.edit.add') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ block('title') }}</h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        {% if news %}
+            <div class="row">
+                <div class="col-md-6">
+                    <p>
+                        {{ m.glyphicon('time') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
+
+                        {% if news.updated_at != news.created_at %}
+                            &emsp;{{ __('news.updated') }}
+                            <br>
+                            {{ m.glyphicon('time') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
+                        {% endif %}
+
+                        &emsp;{{ m.user(news.user) }}
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        <form action="" enctype="multipart/form-data" method="post">
+            {{ csrf() }}
+
+            <div class="row">
+                <div class="col-md-6">
+                    {{ f.input(
+                        'title',
+                        __('news.edit.subject'),
+                        null,
+                        {'required': true, 'value': news ? news.title : ''}
+                    ) }}
+                </div>
+                <div class="col-md-6">
+                    {{ f.checkbox('is_meeting', __('news.edit.is_meeting'), news ? news.is_meeting : false) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    {{ f.textarea('text', __('news.edit.message'), {'required': true, 'rows': 10, 'value': news ? news.text : ''}) }}
+
+                    {{ f.submit() }}
+
+                    {% if news %}
+                        {{ f.submit(m.glyphicon('trash'), {'name': 'delete', 'btn_type': 'danger'}) }}
+                    {% endif %}
+                </div>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}

@@ -3,6 +3,7 @@
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\News;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 
 /**
  * Publically available page to feed the news to feed readers
@@ -36,7 +37,7 @@ function user_atom()
 }
 
 /**
- * @param News[]|Collection $news_entries
+ * @param News[]|Collection|SupportCollection $news_entries
  * @return string
  */
 function make_atom_entries_from_news($news_entries)
@@ -71,11 +72,11 @@ function make_atom_entry_from_news(News $news)
     return '
   <entry>
     <title>' . htmlspecialchars($news->title) . '</title>
-    <link href="' . page_link_to('news_comments', ['nid' => $news->id]) . '"/>
+    <link href="' . page_link_to('news/' . $news->id) . '"/>
     <id>' . preg_replace(
             '#^https?://#',
             '',
-            page_link_to('news_comments', ['nid' => $news->id])
+            page_link_to('news/' . $news->id)
         ) . '</id>
     <updated>' . $news->updated_at->format('Y-m-d\TH:i:sP') . '</updated>
     <summary type="html">' . htmlspecialchars($news->text) . '</summary>

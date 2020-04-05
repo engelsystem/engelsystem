@@ -220,10 +220,8 @@ msgstr "Passwort wiederholen"
 
 #: resources/views/pages/password/reset-form.twig:14
 #: includes/controller/shifts_controller.php:194
-#: includes/pages/admin_groups.php:101 includes/pages/admin_news.php:48
 #: includes/pages/admin_questions.php:55 includes/pages/admin_rooms.php:177
 #: includes/pages/admin_shifts.php:339 includes/pages/user_messages.php:78
-#: includes/pages/user_news.php:164 includes/pages/user_news.php:241
 #: includes/view/AngelTypes_view.php:120 includes/view/EventConfig_view.php:110
 #: includes/view/Questions_view.php:43 includes/view/ShiftEntry_view.php:93
 #: includes/view/ShiftEntry_view.php:118 includes/view/ShiftEntry_view.php:141
@@ -1089,7 +1087,7 @@ msgid "arrived sum"
 msgstr "Summe angekommen"
 
 #: includes/pages/admin_arrive.php:200 includes/pages/admin_arrive.php:215
-#: includes/pages/admin_arrive.php:230 includes/pages/admin_news.php:43
+#: includes/pages/admin_arrive.php:230
 #: includes/pages/user_messages.php:118
 msgid "Date"
 msgstr "Datum"
@@ -1300,47 +1298,14 @@ msgstr "Erledigt!"
 msgid "Log"
 msgstr "Log"
 
-#: includes/pages/admin_news.php:16
-msgid "Edit news entry"
-msgstr "News-Eintrag bearbeiten"
-
-#: includes/pages/admin_news.php:36
-msgid ""
-"This message contains HTML. After saving the post some formatting will be "
-"lost!"
-msgstr ""
-"Diese Nachricht beinhaltet HTML. Wenn du sie speicherst gehen diese "
-"Formatierungen verloren!"
-
-#: includes/pages/admin_news.php:44
-msgid "Author"
-msgstr "Autor"
-
-#: includes/pages/admin_news.php:45 includes/pages/user_news.php:238
-msgid "Subject"
-msgstr "Betreff"
-
-#: includes/pages/admin_news.php:46 includes/pages/user_messages.php:121
-#: includes/pages/user_news.php:163 includes/pages/user_news.php:239
+#: includes/pages/user_messages.php:121
 msgid "Message"
 msgstr "Nachricht"
 
-#: includes/pages/admin_news.php:47 includes/pages/user_news.php:240
-msgid "Meeting"
-msgstr "Treffen"
-
-#: includes/pages/admin_news.php:56 includes/pages/admin_rooms.php:202
+#: includes/pages/admin_rooms.php:202
 #: includes/view/User_view.php:129
 msgid "Delete"
 msgstr "löschen"
-
-#: includes/pages/admin_news.php:72
-msgid "News entry updated."
-msgstr "News-Eintrag gespeichert."
-
-#: includes/pages/admin_news.php:79
-msgid "News entry deleted."
-msgstr "News-Eintrag gelöscht."
 
 #: includes/pages/admin_questions.php:11 includes/sys_menu.php:115
 msgid "Answer questions"
@@ -1778,37 +1743,13 @@ msgstr "Gib bitte einen Schwänz-Kommentar ein!"
 msgid "Shift saved."
 msgstr "Schicht gespeichert."
 
-#: includes/pages/user_news.php:10
-msgid "News comments"
-msgstr "News Kommentare"
-
-#: includes/pages/user_news.php:18 includes/sys_menu.php:94
+#: includes/sys_menu.php:94
 msgid "News"
 msgstr "News"
 
-#: includes/pages/user_news.php:26 includes/sys_menu.php:95
+#: includes/sys_menu.php:95
 msgid "Meetings"
 msgstr "Treffen"
-
-#: includes/pages/user_news.php:113
-msgid "Comments"
-msgstr "Kommentare"
-
-#: includes/pages/user_news.php:146 includes/pages/user_news.php:199
-msgid "Entry saved."
-msgstr "Eintrag gespeichert."
-
-#: includes/pages/user_news.php:161
-msgid "New Comment:"
-msgstr "Neuer Kommentar:"
-
-#: includes/pages/user_news.php:167
-msgid "Invalid request."
-msgstr "Ungültige Abfrage."
-
-#: includes/pages/user_news.php:235
-msgid "Create news:"
-msgstr "News anlegen:"
 
 #: includes/pages/user_questions.php:11 includes/sys_menu.php:98
 #: includes/view/Questions_view.php:40
@@ -2886,3 +2827,42 @@ msgstr "Titel"
 
 msgid "schedule.import.shift.room"
 msgstr "Raum"
+
+msgid "news.title"
+msgstr "News"
+
+msgid "news.title.meetings"
+msgstr "Treffen"
+
+msgid "news.add"
+msgstr "+"
+
+msgid "news.is_meeting"
+msgstr "[Treffen]"
+
+msgid "news.updated"
+msgstr "Aktualisiert"
+
+msgid "news.comments"
+msgstr "Kommentare"
+
+msgid "news.comments.new"
+msgstr "Neuer Kommentar"
+
+msgid "news.comments.message"
+msgstr "Nachricht"
+
+msgid "news.edit.edit"
+msgstr "News bearbeiten"
+
+msgid "news.edit.add"
+msgstr "News erstellen"
+
+msgid "news.edit.subject"
+msgstr "Betreff"
+
+msgid "news.edit.is_meeting"
+msgstr "Treffen"
+
+msgid "news.edit.message"
+msgstr "Nachricht"

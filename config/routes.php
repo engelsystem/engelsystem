@@ -23,6 +23,12 @@ $route->post('/password/reset/{token:.+}', 'PasswordResetController@postResetPas
 $route->get('/metrics', 'Metrics\\Controller@metrics');
 $route->get('/stats', 'Metrics\\Controller@stats');
 
+// News
+$route->get('/news', 'NewsController@index');
+$route->get('/meetings', 'NewsController@meetings');
+$route->get('/news/{id:\d+}', 'NewsController@show');
+$route->post('/news/{id:\d+}', 'NewsController@comment');
+
 // API
 $route->get('/api[/{resource:.+}]', 'ApiController@index');
 
@@ -37,6 +43,13 @@ $route->addGroup(
                 $route->get('', 'Admin\\Schedule\\ImportSchedule@index');
                 $route->post('-load', 'Admin\\Schedule\\ImportSchedule@loadSchedule');
                 $route->post('-import', 'Admin\\Schedule\\ImportSchedule@importSchedule');
+            }
+        );
+        $route->addGroup(
+            '/news',
+            function (RouteCollector $route) {
+                $route->get('[/{id:\d+}]', 'Admin\\NewsController@edit');
+                $route->post('[/{id:\d+}]', 'Admin\\NewsController@save');
             }
         );
     }
