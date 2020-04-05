@@ -26,7 +26,13 @@ class LegacyDevelopment extends Legacy
             'file'       => $file . ':' . $e->getLine(),
             'stacktrace' => $this->formatStackTrace($e->getTrace()),
         ];
+
+        ob_start(function (string $buffer) {
+            return htmlspecialchars($buffer);
+        });
         var_dump($data);
+        ob_end_flush();
+
         echo '</pre>';
     }
 
