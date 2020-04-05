@@ -95,19 +95,15 @@ class LegacyMiddleware implements MiddlewareInterface
      */
     protected function loadPage($page)
     {
-        $title = ucfirst($page);
         switch ($page) {
-            /** @noinspection PhpMissingBreakStatementInspection */
             case 'ical':
                 require_once realpath(__DIR__ . '/../../includes/pages/user_ical.php');
                 user_ical();
                 break;
-            /** @noinspection PhpMissingBreakStatementInspection */
             case 'atom':
                 require_once realpath(__DIR__ . '/../../includes/pages/user_atom.php');
                 user_atom();
                 break;
-            /** @noinspection PhpMissingBreakStatementInspection */
             case 'shifts_json_export':
                 require_once realpath(__DIR__ . '/../../includes/controller/shifts_controller.php');
                 shifts_json_export_controller();
@@ -134,19 +130,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 return [$title, $content];
             case 'rooms':
                 return rooms_controller();
-            case 'news':
-                $title = news_title();
-                $content = user_news();
-                return [$title, $content];
-            case 'news_comments':
-                require_once realpath(__DIR__ . '/../../includes/pages/user_news.php');
-                $title = user_news_comments_title();
-                $content = user_news_comments();
-                return [$title, $content];
-            case 'user_meetings':
-                $title = meetings_title();
-                $content = user_meetings();
-                return [$title, $content];
             case 'user_myshifts':
                 $title = myshifts_title();
                 $content = user_myshifts();
@@ -192,10 +175,6 @@ class LegacyMiddleware implements MiddlewareInterface
             case 'admin_free':
                 $title = admin_free_title();
                 $content = admin_free();
-                return [$title, $content];
-            case 'admin_news':
-                require_once realpath(__DIR__ . '/../../includes/pages/admin_news.php');
-                $content = admin_news();
                 return [$title, $content];
             case 'admin_rooms':
                 $title = admin_rooms_title();

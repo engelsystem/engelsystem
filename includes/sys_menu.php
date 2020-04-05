@@ -92,14 +92,14 @@ function make_navigation()
     $menu = [];
     $pages = [
         'news'           => __('News'),
-        'user_meetings'  => __('Meetings'),
+        'meetings'       => __('Meetings'),
         'user_shifts'    => __('Shifts'),
         'angeltypes'     => __('Angeltypes'),
         'user_questions' => __('Ask the Heaven'),
     ];
 
     foreach ($pages as $menu_page => $title) {
-        if (auth()->can($menu_page)) {
+        if (auth()->can($menu_page) || ($menu_page == 'meetings' && auth()->can('user_meetings'))) {
             $menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
         }
     }

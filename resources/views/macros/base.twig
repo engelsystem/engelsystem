@@ -9,3 +9,17 @@
 {% macro alert(message, type) %}
     <div class="alert alert-{{ type|default('info') }}">{{ message }}</div>
 {% endmacro %}
+
+{% macro user(user) %}
+    <a href="{{ url('users', {'action': 'view', 'user_id': user.id}) }}"
+            {%- if not user.state.arrived %} class="text-muted"{% endif -%}
+    >
+        {{ _self.angel() }} {{ user.name }}
+    </a>
+{% endmacro %}
+
+{% macro button(label, url, type, size) %}
+    <a href="{{ url }}" class="btn btn-{{ type|default('default') }}{% if size %} btn-{{ size }}{% endif %}">
+        {{ label }}
+    </a>
+{% endmacro %}

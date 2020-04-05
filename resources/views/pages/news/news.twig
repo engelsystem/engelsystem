@@ -1,0 +1,45 @@
+{% extends 'pages/news/overview.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ news.title }}{% endblock %}
+
+{% block news %}
+    {{ _self.news(news) }}
+{% endblock %}
+
+{% block comments %}
+    <div class="col-md-12">
+        <h2>{{ __('news.comments') }}</h2>
+
+        {% for comment in news.comments %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ comment.text|nl2br }}
+                </div>
+                <div class="panel-footer text-muted">
+                    {{ m.glyphicon('time') }}
+                    {{ comment.created_at.format(__('Y-m-d H:i')) }}
+
+                    {{ m.user(comment.user) }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block write_comment %}
+    {% if has_permission_to('news_comments') %}
+        <div class="col-md-12">
+            <h3>{{ __('news.comments.new') }}</h3>
+
+            <form action="" enctype="multipart/form-data" method="post">
+                {{ csrf() }}
+
+                {{ f.textarea('comment', __('news.comments.message'), {'required': true}) }}
+
+                {{ f.submit() }}
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

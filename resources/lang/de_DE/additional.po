@@ -67,3 +67,17 @@ msgstr "Die Minuten vor dem Talk müssen eine Zahl sein."
 
 msgid "validation.minutes-after.int"
 msgstr "Die Minuten nach dem Talk müssen eine Zahl sein."
+
+msgid "news.comment.success"
+msgstr "Kommentar gespeichert."
+
+msgid "news.edit.success"
+msgstr "News erfolgreich aktualisiert."
+
+msgid "news.delete.success"
+msgstr "News erfolgreich gelöscht."
+
+msgid "news.edit.contains-html"
+msgstr ""
+"Diese Nachricht beinhaltet HTML. Wenn du sie speicherst gehen diese "
+"Formatierungen verloren!"

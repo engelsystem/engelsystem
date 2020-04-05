@@ -1,0 +1,93 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+
+{% block title %}{{ not only_meetings|default(false) ? __('news.title') : __('news.title.meetings') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {{ block('title') }}
+            {%- if has_permission_to('admin_news') and is_overview|default(false) -%}
+                {{ m.button(__('news.add'), url('admin/news')) }}
+            {%- endif %}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        <div class="row">
+            <div class="col-md-12">
+                {% block news %}
+                    {% for news in news %}
+                        {{ _self.news(news, true, is_overview) }}
+                    {% endfor %}
+                {% endblock %}
+            </div>
+
+            {% block comments %}
+            {% endblock %}
+
+            {% block pagination %}
+                {% if pages|default(0) > 1 %}
+                    <div class="col-md-12 text-center">
+                        <ul class="pagination">
+                            {% for p in range(1, pages) %}
+                                <li{% if p == page %} class="active"{% endif %}>
+                                    <a href="{{ url('news', p == 1 ? {} : {'page': p}) }}">{{ p }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endblock %}
+
+            {% block write_comment %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
+
+{% macro news(news, show_comments_link, is_overview) %}
+    <div class="panel {% if not news.is_meeting %}panel-default{% else %}panel-info{% endif %}">
+        {% if is_overview|default(false) %}
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a href="{{ url('news/' ~ news.id) }}">
+                        {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
+                        {{ news.title }}
+                    </a>
+                </h3>
+            </div>
+        {% endif %}
+
+        <div class="panel-body">
+            {{ news.text|raw|nl2br }}
+        </div>
+
+        <div class="panel-footer text-muted">
+            {{ m.glyphicon('time') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
+
+            {% if news.updated_at != news.created_at and not is_overview %}
+                &emsp;{{ __('news.updated') }}
+
+                <br>
+                {{ m.glyphicon('time') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
+            {% endif %}
+
+            &emsp;{{ m.user(news.user) }}
+
+            {% if show_comments_link|default(false) %}
+                &ensp;
+                <a href="{{ url('news/' ~ news.id) }}">
+                    {{ m.glyphicon('comment') }} {{ __('news.comments') }} &raquo;
+                </a>
+                <span class="badge">{{ news.comments.count() }}</span>
+            {% endif %}
+
+            {% if has_permission_to('admin_news') %}
+                <div class="pull-right">
+                    {{ m.button(m.glyphicon('edit'), url('admin/news/' ~ news.id), null, 'xs') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}

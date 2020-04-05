@@ -12,9 +12,9 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme' ~ theme ~ '.css') }}"/>
         <script type="text/javascript" src="{{ asset('assets/vendor.js') }}"></script>
 
-        {% if page() in ['news', 'user-meetings', '/'] and is_user() -%}
+        {% if page() in ['news', 'meetings'] and is_user() -%}
             {% set parameters = {'key': user.api_key} -%}
-            {% if page() == 'user-meetings' -%}
+            {% if page() == 'meetings' -%}
                 {% set parameters = parameters|merge({'meetings': 1}) -%}
             {% endif %}
             <link href="{{ url('atom', parameters) }}" type="application/atom+xml" rel="alternate" title="Atom Feed">

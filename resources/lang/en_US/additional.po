@@ -65,3 +65,15 @@ msgstr "The minutes before the talk have to be an integer."
 
 msgid "validation.minutes-after.int"
 msgstr "The minutes after the talk have to be an integer."
+
+msgid "news.comment.success"
+msgstr "Comment saved."
+
+msgid "news.edit.success"
+msgstr "News successfully updated."
+
+msgid "news.delete.success"
+msgstr "News successfully deleted."
+
+msgid "news.edit.contains-html"
+msgstr "This message contains HTML. After saving the post some formatting will be lost!"
