@@ -110,6 +110,7 @@ function redirect(string $path, $status = 302, $headers = []): Response
  */
 function request($key = null, $default = null)
 {
+    /** @var Request $request */
     $request = app('request');
 
     if (is_null($key)) {
@@ -215,6 +216,7 @@ function _e($key, $keyPlural, $number, $replace = []): string
  */
 function url($path = null, $parameters = [])
 {
+    /** @var UrlGeneratorInterface $urlGenerator */
     $urlGenerator = app('http.urlGenerator');
 
     if (is_null($path)) {
@@ -231,6 +233,7 @@ function url($path = null, $parameters = [])
  */
 function view($template = null, $data = [])
 {
+    /** @var Renderer $renderer */
     $renderer = app('renderer');
 
     if (is_null($template)) {
