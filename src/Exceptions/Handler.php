@@ -3,6 +3,7 @@
 namespace Engelsystem\Exceptions;
 
 use Engelsystem\Exceptions\Handlers\HandlerInterface;
+use Engelsystem\Exceptions\Handlers\Legacy;
 use Engelsystem\Http\Request;
 use ErrorException;
 use Throwable;
@@ -66,7 +67,7 @@ class Handler
             $this->request = new Request();
         }
 
-        $handler = $this->handler[$this->environment];
+        $handler = isset($this->handler[$this->environment]) ? $this->handler[$this->environment] : new Legacy();
         $handler->report($e);
         ob_start();
         $handler->render($this->request, $e);
