@@ -34,6 +34,8 @@ class XmlParser
 
     /**
      * Parse the predefined XML content
+     *
+     * According to https://github.com/voc/voctosched/blob/master/schema/basic.xsd
      */
     protected function parseXml(): void
     {
@@ -93,9 +95,9 @@ class XmlParser
             $attachments = $this->getListFromSequence($event, 'attachments', 'attachment', 'href');
 
             $recording = '';
-            $recordingElement = $event->xpath('recording')[0];
-            if ($this->getFirstXpathContent('optout', $recordingElement) == 'false') {
-                $recording = $this->getFirstXpathContent('license', $recordingElement);
+            $recordingElement = $event->xpath('recording');
+            if ($recordingElement && $this->getFirstXpathContent('optout', $recordingElement[0]) == 'false') {
+                $recording = $this->getFirstXpathContent('license', $recordingElement[0]);
             }
 
             $events[] = new Event(
@@ -155,8 +157,10 @@ class XmlParser
     ): array {
         $items = [];
 
-        foreach ($element->xpath($firstElement)[0]->xpath($secondElement) as $item) {
-            $items[(string)$item->attributes()[$idAttribute]] = (string)$item;
+        foreach ($element->xpath($firstElement) as $element) {
+            foreach ($element->xpath($secondElement) as $item) {
+                $items[(string)$item->attributes()[$idAttribute]] = (string)$item;
+            }
         }
 
         return $items;

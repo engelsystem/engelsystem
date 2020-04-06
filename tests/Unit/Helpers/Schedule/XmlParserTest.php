@@ -24,8 +24,15 @@ class XmlParserTest extends TestCase
         libxml_use_internal_errors(true);
 
         $parser = new XmlParser();
+
+        // Invalid XML
         $this->assertFalse($parser->load('foo'));
-        $this->assertTrue($parser->load(file_get_contents(__DIR__ . '/Assets/schedule.xml')));
+        // Minimal import
+        $this->assertTrue($parser->load(file_get_contents(__DIR__ . '/Assets/schedule-minimal.xml')));
+        // Basic import
+        $this->assertTrue($parser->load(file_get_contents(__DIR__ . '/Assets/schedule-basic.xml')));
+        // Extended import
+        $this->assertTrue($parser->load(file_get_contents(__DIR__ . '/Assets/schedule-extended.xml')));
 
         $schedule = $parser->getSchedule();
         $this->assertEquals('Some version string', $schedule->getVersion());
@@ -50,5 +57,6 @@ class XmlParserTest extends TestCase
         $this->assertEquals('de', $event->getLanguage());
         $this->assertEquals('12:30', $event->getStart());
         $this->assertEquals([1234 => 'Some Person'], $event->getPersons());
+        $this->assertEquals('https://foo.bar/baz/schedule/ipsum/recording.mp4', $event->getVideoDownloadUrl());
     }
 }
