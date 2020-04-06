@@ -1,9 +1,12 @@
 <?xml version='1.0' encoding='utf-8' ?>
-<schedule>
+<schedule
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/voc/voctosched/master/schema/extended.xsd"
+>
     <version>Some version string</version>
     <conference>
         <title>Test Event</title>
-        <acronym>Test1</acronym>
+        <acronym>Test3</acronym>
         <start>2042-01-01</start>
         <end>2042-01-01</end>
         <days>1</days>
@@ -24,6 +27,7 @@
                     <license>WTFPL</license>
                     <optout>false</optout>
                 </recording>
+                <video_download_url>https://foo.bar/baz/schedule/ipsum/recording.mp4</video_download_url>
                 <track>Testing</track>
                 <type>Talk</type>
                 <language>de</language>

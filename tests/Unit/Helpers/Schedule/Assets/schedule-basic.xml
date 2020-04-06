@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<schedule
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/voc/voctosched/master/schema/basic.xsd"
+>
+    <version>dolor</version>
+    <conference>
+        <title>Basic Test Event</title>
+        <acronym>Test2</acronym>
+        <start>2042-01-03</start>
+        <end>2042-01-03</end>
+        <days>1</days>
+        <timeslot_duration>00:30</timeslot_duration>
+    </conference>
+    <day index='1' date='2042-01-03' start='2042-01-03T01:00:00+02:00' end='2042-01-03T22:59:00+02:00'>
+        <room name='Some Room'>
+            <event guid='7b1327a5-049b-4411-8421-163743755933' id='1234'>
+                <date>2042-01-03T14:15:00+02:00</date>
+                <title>Lorem Ipsum</title>
+                <subtitle>Some sub</subtitle>
+                <start>14:15</start>
+                <duration>00:45</duration>
+                <room>Some Room</room>
+                <slug>lorem/ipsum</slug>
+                <recording>
+                    <license>WTFPL</license>
+                    <optout>true</optout>
+                </recording>
+                <track>Tests</track>
+                <type>Talk</type>
+                <language>en</language>
+                <abstract>45 minutes of awesome lorem ipsum</abstract>
+                <description>Be prepared for the best lorem ipsum of the entire day!</description>
+                <logo>https://lorem.ipsum/foo/bar.png</logo>
+                <persons>
+                    <person id='42'>Some Person</person>
+                </persons>
+                <links>
+                    <link href="https://foo.bar">Some Foo Bar</link>
+                </links>
+                <attachments>
+                    <attachment href="https://foo.bar/stuff.pdf">A PDF File</attachment>
+                </attachments>
+            </event>
+        </room>
+    </day>
+</schedule>
