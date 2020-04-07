@@ -664,7 +664,7 @@ function User_view(
                 page_link_to('user_shifts')
             ), true)
                 : '',
-            ical_hint()
+            $its_me ? ical_hint() : ''
         ]
     );
 }
