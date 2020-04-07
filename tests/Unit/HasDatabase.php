@@ -45,6 +45,7 @@ trait HasDatabase
                     ['migration' => '2018_01_01_000005_add_angel_supporter_permissions'],
                     ['migration' => '2018_12_27_000000_fix_missing_arrival_dates'],
                     ['migration' => '2019_09_07_000000_migrate_admin_schedule_permissions'],
+                    ['migration' => '2020_04_07_000000_change_mysql_database_encoding_to_utf8mb4'],
                 ]
             );
 
