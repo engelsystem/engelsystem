@@ -10,17 +10,24 @@ class Redirector
     /** @var Response */
     protected $response;
 
+    /** @var UrlGeneratorInterface */
+    protected $url;
+
     /**
-     * @param Request  $request
-     * @param Response $response
+     * @param Request               $request
+     * @param Response              $response
+     * @param UrlGeneratorInterface $url
      */
-    public function __construct(Request $request, Response $response)
+    public function __construct(Request $request, Response $response, UrlGeneratorInterface $url)
     {
         $this->request = $request;
         $this->response = $response;
+        $this->url = $url;
     }
 
     /**
+     * Redirects to a path, generating a full URL
+     *
      * @param string $path
      * @param int    $status
      * @param array  $headers
@@ -28,7 +35,7 @@ class Redirector
      */
     public function to(string $path, int $status = 302, array $headers = []): Response
     {
-        return $this->response->redirectTo($path, $status, $headers);
+        return $this->response->redirectTo($this->url->to($path), $status, $headers);
     }
 
     /**

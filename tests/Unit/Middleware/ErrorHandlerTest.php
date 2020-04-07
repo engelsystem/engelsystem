@@ -2,7 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Middleware;
 
-use Engelsystem\Application;
+use Engelsystem\Config\Config;
 use Engelsystem\Http\Exceptions\HttpException;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Psr7ServiceProvider;
@@ -10,12 +10,13 @@ use Engelsystem\Http\RedirectServiceProvider;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\ResponseServiceProvider;
+use Engelsystem\Http\UrlGeneratorServiceProvider;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Middleware\ErrorHandler;
 use Engelsystem\Test\Unit\Middleware\Stub\ReturnResponseMiddlewareHandler;
+use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -186,19 +187,20 @@ class ErrorHandlerTest extends TestCase
         );
         $request->setSession($session);
 
-        /** @var Application $app */
-        $app = app();
-        $app->instance(Session::class, $session);
-        $app->bind(SessionInterface::class, Session::class);
-        (new ResponseServiceProvider($app))->register();
-        (new Psr7ServiceProvider($app))->register();
-        (new RedirectServiceProvider($app))->register();
+        $this->app->instance(Session::class, $session);
+        $this->app->bind(SessionInterface::class, Session::class);
+        $this->app->instance('request', $request);
+        $this->app->instance('config', new Config());
+        (new ResponseServiceProvider($this->app))->register();
+        (new Psr7ServiceProvider($this->app))->register();
+        (new RedirectServiceProvider($this->app))->register();
+        (new UrlGeneratorServiceProvider($this->app))->register();
 
         $errorHandler = new ErrorHandler($twigLoader);
         $return = $errorHandler->process($request, $handler);
 
         $this->assertEquals(302, $return->getStatusCode());
-        $this->assertEquals('/', $return->getHeaderLine('location'));
+        $this->assertEquals('http://localhost/', $return->getHeaderLine('location'));
         $this->assertEquals([
             'errors'    => [
                 'validation' => [
@@ -214,10 +216,10 @@ class ErrorHandlerTest extends TestCase
         ], $session->all());
 
         $request = $request->withAddedHeader('referer', '/foo/batz');
-        $app->instance(Request::class, $request);
+        $this->app->instance(Request::class, $request);
         $return = $errorHandler->process($request, $handler);
 
-        $this->assertEquals('/foo/batz', $return->getHeaderLine('location'));
+        $this->assertEquals('http://localhost/foo/batz', $return->getHeaderLine('location'));
     }
 
     /**

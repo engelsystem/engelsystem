@@ -2,17 +2,19 @@
 
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
+use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Admin\NewsController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Engelsystem\Http\UrlGenerator;
+use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\News;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
@@ -161,7 +163,7 @@ class NewsControllerTest extends TestCase
             ->willReturn($canEditHtml);
         $this->response->expects($this->once())
             ->method('redirectTo')
-            ->with('/news/' . $id)
+            ->with('http://localhost/news/' . $id)
             ->willReturn($this->response);
 
         /** @var NewsController $controller */
@@ -195,7 +197,7 @@ class NewsControllerTest extends TestCase
         ]);
         $this->response->expects($this->once())
             ->method('redirectTo')
-            ->with('/news')
+            ->with('http://localhost/news')
             ->willReturn($this->response);
 
         /** @var NewsController $controller */
@@ -220,7 +222,8 @@ class NewsControllerTest extends TestCase
         parent::setUp();
         $this->initDatabase();
 
-        $this->request = new Request();
+        $this->request = Request::create('http://localhost');
+        $this->app->instance('request', $this->request);
         $this->app->instance(Request::class, $this->request);
         $this->app->instance(ServerRequestInterface::class, $this->request);
 
@@ -234,6 +237,10 @@ class NewsControllerTest extends TestCase
 
         $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
+
+        $this->app->bind(UrlGeneratorInterface::class, UrlGenerator::class);
+
+        $this->app->instance('config', new Config());
 
         (new News([
             'title'      => 'Foo',

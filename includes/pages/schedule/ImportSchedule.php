@@ -48,7 +48,7 @@ class ImportSchedule extends BaseController
     protected $session;
 
     /** @var string */
-    protected $url = 'admin-schedule';
+    protected $url = '/admin/schedule';
 
     /** @var GuzzleClient */
     protected $guzzle;
@@ -520,7 +520,7 @@ class ImportSchedule extends BaseController
     /**
      * @param ScheduleUrl $scheduleUrl
      * @param string[]    $events
-     * @return QueryBuilder[]|DatabaseCollection|ScheduleShift[]
+     * @return QueryBuilder[]|DatabaseCollection|Collection|ScheduleShift[]
      */
     protected function getScheduleShiftsByGuid(ScheduleUrl $scheduleUrl, array $events)
     {
@@ -533,7 +533,7 @@ class ImportSchedule extends BaseController
     /**
      * @param ScheduleUrl $scheduleUrl
      * @param string[]    $events
-     * @return QueryBuilder[]|DatabaseCollection|ScheduleShift[]
+     * @return QueryBuilder[]|DatabaseCollection|Collection|ScheduleShift[]
      */
     protected function getScheduleShiftsWhereNotGuid(ScheduleUrl $scheduleUrl, array $events)
     {

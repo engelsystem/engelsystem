@@ -23,6 +23,9 @@ return [
     // Set to development to enable debugging messages
     'environment'             => env('ENVIRONMENT', 'production'),
 
+    // Application URL and base path to use instead of the auto detected one
+    'url'                     => env('APP_URL', null),
+
     // Header links
     // Available link placeholders: %lang%
     'header_items'            => [
