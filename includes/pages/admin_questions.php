@@ -52,7 +52,7 @@ function admin_questions()
                 'question' => nl2br(htmlspecialchars($question->text)),
                 'answer'   => form([
                     form_textarea('answer', '', ''),
-                    form_submit('submit', __('Save'))
+                    form_submit('submit', __('Send'))
                 ], page_link_to('admin_questions', ['action' => 'answer', 'id' => $question->id])),
                 'actions'  => form([
                     form_submit('submit', __('delete'), 'btn-xs'),

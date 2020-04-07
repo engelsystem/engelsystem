@@ -66,7 +66,7 @@ function user_messages()
                 'from'      => User_Nick_render($user),
                 'to'        => $to_select,
                 'text'      => form_textarea('text', '', ''),
-                'actions'   => form_submit('submit', __('Save'))
+                'actions'   => form_submit('submit', __('Send'))
             ]
         ];
 

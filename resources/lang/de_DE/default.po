@@ -1695,6 +1695,10 @@ msgstr "Nachrichten"
 msgid "Select recipient..."
 msgstr "Empfänger auswählen..."
 
+#: includes/pages/user_messages.php:49
+msgid "Send"
+msgstr "Senden"
+
 #: includes/pages/user_messages.php:61 includes/pages/user_messages.php:75
 msgid "Y-m-d H:i"
 msgstr "d.m.Y H:i"

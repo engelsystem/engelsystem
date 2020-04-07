@@ -59,7 +59,7 @@ function Questions_view(array $open_questions, array $answered_questions, $ask_a
         heading(__('Ask the Heaven'), 2),
         form([
             form_textarea('question', __('Your Question:'), ''),
-            form_submit('submit', __('Save'))
+            form_submit('submit', __('Send'))
         ], $ask_action)
     ], true);
 }
