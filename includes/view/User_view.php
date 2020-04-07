@@ -444,7 +444,7 @@ function User_view_myshifts(
     $myshifts_table = [];
     $timeSum = 0;
     foreach ($shifts as $shift) {
-        $key = $shift['start'] . '-shift-' . $shift['SID'];
+        $key = $shift['start'] . '-shift-' . $shift['SID'] . '-' . $shift['id'];
         $myshifts_table[$key] = User_view_myshift($shift, $user_source, $its_me);
 
         if (!$shift['freeloaded']) {
