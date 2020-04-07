@@ -5,9 +5,9 @@ namespace Engelsystem\Controllers;
 use Carbon\Carbon;
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
-use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Models\User\User;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -21,8 +21,8 @@ class AuthController extends BaseController
     /** @var SessionInterface */
     protected $session;
 
-    /** @var UrlGeneratorInterface */
-    protected $url;
+    /** @var Redirector */
+    protected $redirect;
 
     /** @var Config */
     protected $config;
@@ -37,22 +37,22 @@ class AuthController extends BaseController
     ];
 
     /**
-     * @param Response              $response
-     * @param SessionInterface      $session
-     * @param UrlGeneratorInterface $url
-     * @param Config                $config
-     * @param Authenticator         $auth
+     * @param Response         $response
+     * @param SessionInterface $session
+     * @param Redirector       $redirect
+     * @param Config           $config
+     * @param Authenticator    $auth
      */
     public function __construct(
         Response $response,
         SessionInterface $session,
-        UrlGeneratorInterface $url,
+        Redirector $redirect,
         Config $config,
         Authenticator $auth
     ) {
         $this->response = $response;
         $this->session = $session;
-        $this->url = $url;
+        $this->redirect = $redirect;
         $this->config = $config;
         $this->auth = $auth;
     }
@@ -104,7 +104,7 @@ class AuthController extends BaseController
         $user->last_login_at = new Carbon();
         $user->save(['touch' => false]);
 
-        return $this->response->redirectTo($this->config->get('home_site'));
+        return $this->redirect->to($this->config->get('home_site'));
     }
 
     /**
@@ -114,6 +114,6 @@ class AuthController extends BaseController
     {
         $this->session->invalidate();
 
-        return $this->response->redirectTo($this->url->to('/'));
+        return $this->redirect->to('/');
     }
 }

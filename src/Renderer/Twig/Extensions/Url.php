@@ -2,19 +2,19 @@
 
 namespace Engelsystem\Renderer\Twig\Extensions;
 
-use Engelsystem\Http\UrlGenerator;
+use Engelsystem\Http\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension as TwigExtension;
 use Twig\TwigFunction;
 
 class Url extends TwigExtension
 {
-    /** @var UrlGenerator */
+    /** @var UrlGeneratorInterface */
     protected $urlGenerator;
 
     /**
-     * @param UrlGenerator $urlGenerator
+     * @param UrlGeneratorInterface $urlGenerator
      */
-    public function __construct(UrlGenerator $urlGenerator)
+    public function __construct(UrlGeneratorInterface $urlGenerator)
     {
         $this->urlGenerator = $urlGenerator;
     }

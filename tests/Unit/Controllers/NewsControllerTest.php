@@ -8,6 +8,8 @@ use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Engelsystem\Http\UrlGenerator;
+use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
@@ -231,6 +233,7 @@ class NewsControllerTest extends TestCase
         $this->initDatabase();
 
         $this->request = new Request();
+        $this->app->instance('request', $this->request);
         $this->app->instance(Request::class, $this->request);
         $this->app->instance(ServerRequestInterface::class, $this->request);
 
@@ -246,6 +249,10 @@ class NewsControllerTest extends TestCase
 
         $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
+
+        $this->app->bind(UrlGeneratorInterface::class, UrlGenerator::class);
+
+        $this->app->instance('config', new Config());
 
         foreach ($this->data as $news) {
             (new News($news))->save();
