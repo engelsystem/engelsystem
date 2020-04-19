@@ -28,7 +28,7 @@ class RoomModelTest extends ApplicationFeatureTest
 
         $this->assertNotEmpty($room);
         $this->assertNotNull($room);
-        $this->assertEquals($room['Name'], 'test');
+        $this->assertEquals('test', $room['Name']);
 
         $this->assertEmpty(Room(-1));
     }

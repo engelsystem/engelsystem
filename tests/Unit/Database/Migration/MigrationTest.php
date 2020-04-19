@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Unit\Database;
+namespace Engelsystem\Test\Unit\Database\Migration;
 
 use Engelsystem\Migrations\AnotherStuff;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;

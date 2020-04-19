@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Models;
+namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\User;

@@ -8,12 +8,13 @@ use Engelsystem\Models\User\User;
 use Engelsystem\Models\User\UsesUserModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
- * @property integer   $id
+ * @property int       $id
  * @property string    $text
  * @property string    $answer
- * @property integer   $answerer_id
+ * @property int       $answerer_id
  * @property-read User $answerer
  * @method static Builder|Question whereAnswer($value)
  * @method static Builder|Question whereAnswererId($value)
@@ -55,7 +56,7 @@ class Question extends BaseModel
     }
 
     /**
-     * @return Builder
+     * @return Builder|QueryBuilder
      */
     public static function answered(): Builder
     {

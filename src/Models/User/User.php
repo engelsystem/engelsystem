@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
- * @property integer                        $id
+ * @property int                            $id
  * @property string                         $name
  * @property string                         $email
  * @property string                         $password
@@ -157,7 +157,7 @@ class User extends BaseModel
     }
 
     /**
-     * @return HasMany
+     * @return HasMany|QueryBuilder
      */
     public function messagesReceived(): HasMany
     {

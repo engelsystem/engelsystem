@@ -13,9 +13,9 @@ use Illuminate\Support\Carbon;
 /**
  * This class represents a message send trough the system.
  *
- * @property integer     $id
- * @property integer     $receiver_id
- * @property boolean     $read
+ * @property int         $id
+ * @property int         $receiver_id
+ * @property bool        $read
  * @property string      $text
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at

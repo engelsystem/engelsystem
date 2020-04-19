@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Unit\Http;
+namespace Engelsystem\Test\Unit\Http\Exceptions;
 
 use Engelsystem\Http\Exceptions\HttpPermanentRedirect;
 use Engelsystem\Http\Exceptions\HttpRedirect;

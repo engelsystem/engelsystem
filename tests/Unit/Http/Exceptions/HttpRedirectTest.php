@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Unit\Http;
+namespace Engelsystem\Test\Unit\Http\Exceptions;
 
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Http\Exceptions\HttpRedirect;
