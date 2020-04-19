@@ -6,6 +6,7 @@ use Engelsystem\Models\LogEntry;
 use Psr\Log\AbstractLogger;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
+use Throwable;
 
 class Logger extends AbstractLogger
 {
@@ -34,21 +35,23 @@ class Logger extends AbstractLogger
     /**
      * Logs with an arbitrary level.
      *
-     * @TODO: Implement $context['exception']
-     *
      * @param mixed  $level
      * @param string $message
      * @param array  $context
      *
      * @throws InvalidArgumentException
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         if (!$this->checkLevel($level)) {
             throw new InvalidArgumentException('Unknown log level: ' . $level);
         }
 
         $message = $this->interpolate($message, $context);
+
+        if (isset($context['exception']) && $context['exception'] instanceof Throwable) {
+            $message .= $this->formatException($context['exception']);
+        }
 
         $this->log->create(['level' => $level, 'message' => $message]);
     }
@@ -60,7 +63,7 @@ class Logger extends AbstractLogger
      * @param array  $context
      * @return string
      */
-    protected function interpolate($message, array $context = [])
+    protected function interpolate($message, array $context = []): string
     {
         foreach ($context as $key => $val) {
             // check that the value can be casted to string
@@ -76,10 +79,26 @@ class Logger extends AbstractLogger
     }
 
     /**
+     * @param Throwable $e
+     * @return string
+     */
+    protected function formatException(Throwable $e): string
+    {
+        return sprintf(
+            implode(PHP_EOL, ['', 'Exception: %s', 'File: %s:%u', 'Code: %s', 'Trace:', '%s']),
+            $e->getMessage(),
+            $e->getFile(),
+            $e->getLine(),
+            $e->getCode(),
+            $e->getTraceAsString()
+        );
+    }
+
+    /**
      * @param string $level
      * @return bool
      */
-    protected function checkLevel($level)
+    protected function checkLevel($level): bool
     {
         return in_array($level, $this->allowedLevels);
     }

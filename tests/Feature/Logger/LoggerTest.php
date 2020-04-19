@@ -5,6 +5,7 @@ namespace Engelsystem\Test\Feature\Logger;
 use Engelsystem\Logger\Logger;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Test\Feature\ApplicationFeatureTest;
+use Exception;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -142,6 +143,26 @@ class LoggerTest extends ApplicationFeatureTest
 
         $this->expectException(InvalidArgumentException::class);
         $logger->log('This log level should never be defined', 'Some message');
+    }
+
+    /**
+     * @covers \Engelsystem\Logger\Logger::formatException
+     * @covers \Engelsystem\Logger\Logger::log
+     */
+    public function testWithException()
+    {
+        $logger = $this->getLogger();
+
+        $logger->log(LogLevel::CRITICAL, 'Some random message', ['exception' => new Exception('Oops', 42)]);
+        $line = __LINE__ - 1;
+
+        $entry = $this->getLastEntry();
+        $this->assertStringContainsString('Some random message', $entry['message']);
+        $this->assertStringContainsString('Oops', $entry['message']);
+        $this->assertStringContainsString('42', $entry['message']);
+        $this->assertStringContainsString(__FILE__, $entry['message']);
+        $this->assertStringContainsString((string)$line, $entry['message']);
+        $this->assertStringContainsString(__FUNCTION__, $entry['message']);
     }
 
     /**

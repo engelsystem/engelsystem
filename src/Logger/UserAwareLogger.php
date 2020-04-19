@@ -19,7 +19,7 @@ class UserAwareLogger extends Logger
      *
      * @throws InvalidArgumentException
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         if ($this->auth && ($user = $this->auth->user())) {
             $message = sprintf('%s (%u): %s', $user->name, $user->id, $message);
@@ -31,7 +31,7 @@ class UserAwareLogger extends Logger
     /**
      * @param Authenticator $auth
      */
-    public function setAuth(Authenticator $auth)
+    public function setAuth(Authenticator $auth): void
     {
         $this->auth = $auth;
     }

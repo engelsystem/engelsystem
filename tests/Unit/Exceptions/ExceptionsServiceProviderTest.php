@@ -11,13 +11,14 @@ use Engelsystem\Exceptions\Handlers\Whoops;
 use Engelsystem\Http\Request;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 
 class ExceptionsServiceProviderTest extends ServiceProviderTest
 {
     /**
-     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::addDevelopmentHandler()
-     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::addProductionHandler()
-     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::register()
+     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::addDevelopmentHandler
+     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::addProductionHandler
+     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::register
      */
     public function testRegister()
     {
@@ -77,33 +78,57 @@ class ExceptionsServiceProviderTest extends ServiceProviderTest
     }
 
     /**
-     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::boot()
+     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::boot
+     * @covers \Engelsystem\Exceptions\ExceptionsServiceProvider::addLogger
      */
     public function testBoot()
     {
+        /** @var HandlerInterface|MockObject $handlerImpl */
+        $handlerImpl = $this->getMockForAbstractClass(HandlerInterface::class);
+
+        /** @var Legacy|MockObject $loggingHandler */
+        $loggingHandler = $this->createMock(Legacy::class);
+
         /** @var Handler|MockObject $handler */
         $handler = $this->createMock(Handler::class);
 
         /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
 
-        $handler->expects($this->once())
+        /** @var LoggerInterface|MockObject $log */
+        $log = $this->getMockForAbstractClass(LoggerInterface::class);
+
+        $handler->expects($this->exactly(2))
             ->method('setRequest')
             ->with($request);
+        $handler->expects($this->exactly(2))
+            ->method('getHandler')
+            ->willReturnOnConsecutiveCalls([$handlerImpl], [$loggingHandler]);
+
+        $loggingHandler->expects($this->once())
+            ->method('setLogger')
+            ->with($log);
 
         $app = $this->getApp(['get']);
-        $app->expects($this->exactly(2))
+        $app->expects($this->exactly(5))
             ->method('get')
             ->withConsecutive(
                 ['error.handler'],
-                ['request']
+                ['request'],
+                ['error.handler'],
+                ['request'],
+                [LoggerInterface::class]
             )
             ->willReturnOnConsecutiveCalls(
                 $handler,
-                $request
+                $request,
+                $handler,
+                $request,
+                $log
             );
 
         $provider = new ExceptionsServiceProvider($app);
+        $provider->boot();
         $provider->boot();
     }
 }

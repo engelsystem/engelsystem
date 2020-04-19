@@ -19,7 +19,7 @@ class DevelopTest extends ExtensionTest
         $extension = new Develop($config);
 
         $functions = $extension->getFunctions();
-        $this->assertEquals($functions, []);
+        $this->assertEquals([], $functions);
 
         $config->set('environment', 'development');
         $functions = $extension->getFunctions();

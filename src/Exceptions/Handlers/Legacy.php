@@ -3,10 +3,14 @@
 namespace Engelsystem\Exceptions\Handlers;
 
 use Engelsystem\Http\Request;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 class Legacy implements HandlerInterface
 {
+    /** @var LoggerInterface */
+    protected $log;
+
     /**
      * @param Request   $request
      * @param Throwable $e
@@ -29,6 +33,23 @@ class Legacy implements HandlerInterface
             $e->getLine(),
             json_encode($e->getTrace())
         ));
+
+        if (is_null($this->log)) {
+            return;
+        }
+
+        try {
+            $this->log->critical('', ['exception' => $e]);
+        } catch (Throwable $e) {
+        }
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->log = $logger;
     }
 
     /**
