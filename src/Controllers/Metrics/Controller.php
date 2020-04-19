@@ -8,6 +8,7 @@ use Engelsystem\Helpers\Version;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Illuminate\Support\Collection;
 use Psr\Log\LogLevel;
 
 class Controller extends BaseController
@@ -62,16 +63,9 @@ class Controller extends BaseController
         $now = microtime(true);
         $this->checkAuth();
 
-        $tshirtSizes = [];
-        $userSizes = $this->stats->tshirtSizes();
-
-        foreach ($this->config->get('tshirt_sizes') as $name => $description) {
-            $size = $userSizes->where('shirt_size', '=', $name)->sum('count');
-            $tshirtSizes[] = [
-                'labels' => ['size' => $name],
-                $size,
-            ];
-        }
+        $userTshirtSizes = $this->formatStats($this->stats->tshirtSizes(), 'tshirt_sizes', 'shirt_size', 'size');
+        $userLocales = $this->formatStats($this->stats->languages(), 'locales', 'language', 'locale');
+        $userThemes = $this->formatStats($this->stats->themes(), 'available_themes', 'theme');
 
         $data = [
             $this->config->get('app_name') . ' stats',
@@ -117,7 +111,12 @@ class Controller extends BaseController
             'worklog_seconds'      => ['type' => 'gauge', $this->stats->worklogSeconds()],
             'vouchers'             => ['type' => 'counter', $this->stats->vouchers()],
             'tshirts_issued'       => ['type' => 'counter', 'help' => 'Issued T-Shirts', $this->stats->tshirts()],
-            'tshirt_sizes'         => ['type' => 'gauge', 'help' => 'The sizes users have configured'] + $tshirtSizes,
+            'tshirt_sizes'         => [
+                'type' => 'gauge',
+                'help' => 'The sizes users have configured'
+            ] + $userTshirtSizes,
+            'locales'              => ['type' => 'gauge', 'help' => 'The locales users have configured'] + $userLocales,
+            'themes'               => ['type' => 'gauge', 'help' => 'The themes users have configured'] + $userThemes,
             'shifts'               => ['type' => 'gauge', $this->stats->shifts()],
             'announcements'        => [
                 'type' => 'gauge',
@@ -211,5 +210,28 @@ class Controller extends BaseController
         }
 
         throw new HttpForbidden($message, $headers);
+    }
+
+    /**
+     * Formats the stats collection as stats data
+     *
+     * @param Collection  $data
+     * @param string      $config
+     * @param string      $dataField
+     * @param string|null $label
+     * @return array
+     */
+    protected function formatStats(Collection $data, string $config, string $dataField, ?string $label = null): array
+    {
+        $return = [];
+        foreach ($this->config->get($config) as $name => $description) {
+            $count = $data->where($dataField, '=', $name)->sum('count');
+            $return[] = [
+                'labels' => [($label ?: $dataField) => $name],
+                $count,
+            ];
+        }
+
+        return $return;
     }
 }

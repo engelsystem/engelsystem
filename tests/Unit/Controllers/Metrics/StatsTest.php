@@ -10,6 +10,7 @@ use Engelsystem\Models\News;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
+use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\Test\Unit\HasDatabase;
@@ -58,7 +59,6 @@ class StatsTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::tshirtSizes
      * @covers \Engelsystem\Controllers\Metrics\Stats::raw
-     * @covers \Engelsystem\Controllers\Metrics\Stats::getQuery
      */
     public function testTshirtSizes()
     {
@@ -68,9 +68,42 @@ class StatsTest extends TestCase
         $sizes = $stats->tshirtSizes();
         $this->assertCount(2, $sizes);
         $this->assertEquals([
-            (object)['shirt_size' => 'L', 'count' => 2],
-            (object)['shirt_size' => 'XXL', 'count' => 1],
+            ['shirt_size' => 'L', 'count' => 2],
+            ['shirt_size' => 'XXL', 'count' => 1],
         ], $sizes->toArray());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::languages
+     */
+    public function testLanguages()
+    {
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $languages = $stats->languages();
+        $this->assertCount(2, $languages);
+        $this->assertEquals([
+            ['language' => 'lo_RM', 'count' => 2],
+            ['language' => 'te_ST', 'count' => 7],
+        ], $languages->toArray());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::themes
+     */
+    public function testThemes()
+    {
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $themes = $stats->themes();
+        $this->assertCount(3, $themes);
+        $this->assertEquals([
+            ['theme' => 0, 'count' => 7],
+            ['theme' => 1, 'count' => 1],
+            ['theme' => 4, 'count' => 1],
+        ], $themes->toArray());
     }
 
 
@@ -118,7 +151,7 @@ class StatsTest extends TestCase
         $this->addUsers();
 
         $stats = new Stats($this->database);
-        $this->assertEquals(6, $stats->arrivedUsers());
+        $this->assertEquals(7, $stats->arrivedUsers());
     }
 
     /**
@@ -149,6 +182,7 @@ class StatsTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::sessions
+     * @covers \Engelsystem\Controllers\Metrics\Stats::getQuery
      */
     public function testSessions()
     {
@@ -223,18 +257,20 @@ class StatsTest extends TestCase
         $this->addUser();
         $this->addUser([], ['shirt_size' => 'L']);
         $this->addUser(['arrived' => 1]);
-        $this->addUser(['arrived' => 1, 'got_voucher' => 2], ['shirt_size' => 'XXL']);
-        $this->addUser(['arrived' => 1, 'got_voucher' => 9]);
-        $this->addUser(['arrived' => 1, 'got_voucher' => 3, 'force_active' => true]);
+        $this->addUser(['arrived' => 1], [], ['language' => 'lo_RM']);
+        $this->addUser(['arrived' => 1, 'got_voucher' => 2], ['shirt_size' => 'XXL'], ['language' => 'lo_RM']);
+        $this->addUser(['arrived' => 1, 'got_voucher' => 9, 'force_active' => true], [], ['theme' => 1]);
+        $this->addUser(['arrived' => 1, 'got_voucher' => 3], ['theme' => 10]);
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true, 'force_active' => true]);
-        $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true], ['shirt_size' => 'L']);
+        $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true], ['shirt_size' => 'L'], ['theme' => 4]);
     }
 
     /**
      * @param array $state
      * @param array $personalData
+     * @param array $settings
      */
-    protected function addUser(array $state = [], $personalData = [])
+    protected function addUser(array $state = [], $personalData = [], $settings = [])
     {
         $name = 'user_' . Str::random(5);
 
@@ -253,6 +289,16 @@ class StatsTest extends TestCase
 
         $personalData = new PersonalData($personalData);
         $personalData->user()
+            ->associate($user)
+            ->save();
+
+        $settings = new Settings(array_merge([
+            'language'        => 'te_ST',
+            'theme'           => 0,
+            'email_human'     => '',
+            'email_shiftinfo' => '',
+        ], $settings));
+        $settings->user()
             ->associate($user)
             ->save();
     }

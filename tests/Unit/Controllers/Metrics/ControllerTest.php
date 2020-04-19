@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Controllers\Metrics;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Metrics\Controller;
 use Engelsystem\Controllers\Metrics\MetricsEngine;
@@ -18,9 +19,12 @@ use Symfony\Component\HttpFoundation\ServerBag;
 
 class ControllerTest extends TestCase
 {
+    use ArraySubsetAsserts;
+
     /**
      * @covers \Engelsystem\Controllers\Metrics\Controller::__construct
      * @covers \Engelsystem\Controllers\Metrics\Controller::metrics
+     * @covers \Engelsystem\Controllers\Metrics\Controller::formatStats
      */
     public function testMetrics()
     {
@@ -48,6 +52,8 @@ class ControllerTest extends TestCase
                 $this->assertArrayHasKey('vouchers', $data);
                 $this->assertArrayHasKey('tshirts_issued', $data);
                 $this->assertArrayHasKey('tshirt_sizes', $data);
+                $this->assertArrayHasKey('locales', $data);
+                $this->assertArrayHasKey('themes', $data);
                 $this->assertArrayHasKey('shifts', $data);
                 $this->assertArrayHasKey('announcements', $data);
                 $this->assertArrayHasKey('questions', $data);
@@ -58,6 +64,12 @@ class ControllerTest extends TestCase
                 $this->assertArrayHasKey('sessions', $data);
                 $this->assertArrayHasKey('log_entries', $data);
                 $this->assertArrayHasKey('scrape_duration_seconds', $data);
+
+                $this->assertArraySubset(['tshirt_sizes' => [
+                    'type' => 'gauge',
+                    ['labels' => ['size' => 'L'], 2],
+                    ['labels' => ['size' => 'XL'], 0]
+                ]], $data);
 
                 return 'metrics return';
             });
@@ -113,7 +125,13 @@ class ControllerTest extends TestCase
         $this->setExpects($stats, 'vouchers', null, 17);
         $this->setExpects($stats, 'tshirts', null, 3);
         $this->setExpects($stats, 'tshirtSizes', null, new Collection([
-            (object)['shirt_size' => 'L', 'count' => 2],
+            ['shirt_size' => 'L', 'count' => 2],
+        ]));
+        $this->setExpects($stats, 'languages', null, new Collection([
+            ['language' => 'en_US', 'count' => 5],
+        ]));
+        $this->setExpects($stats, 'themes', null, new Collection([
+            ['theme' => '1', 'count' => 3],
         ]));
         $this->setExpects($stats, 'shifts', null, 142);
         $this->setExpects($stats, 'messages', null, 3);
@@ -124,6 +142,14 @@ class ControllerTest extends TestCase
         $config->set('tshirt_sizes', [
             'L'  => 'Large',
             'XL' => 'X Large',
+        ]);
+        $config->set('locales', [
+            'de_DE' => 'German',
+            'en_US' => 'US English',
+        ]);
+        $config->set('available_themes', [
+            '0' => 'Nothing',
+            '1' => 'Testing',
         ]);
 
         $this->setExpects($version, 'getVersion', [], '0.42.42');

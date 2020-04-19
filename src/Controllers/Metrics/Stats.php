@@ -12,7 +12,10 @@ use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\PasswordReset;
+use Engelsystem\Models\User\PersonalData;
+use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
+use Engelsystem\Models\User\User;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression as QueryExpression;
 use Illuminate\Support\Collection;
@@ -94,8 +97,7 @@ class Stats
      */
     public function currentlyWorkingUsers(bool $freeloaded = null): int
     {
-        $query = $this
-            ->getQuery('users')
+        $query = User::query()
             ->join('ShiftEntry', 'ShiftEntry.UID', '=', 'users.id')
             ->join('Shifts', 'Shifts.SID', '=', 'ShiftEntry.SID')
             ->where('Shifts.start', '<=', time())
@@ -129,11 +131,32 @@ class Stats
      */
     public function tshirtSizes(): Collection
     {
-        return $this
-            ->getQuery('users_personal_data')
+        return PersonalData::query()
             ->select(['shirt_size', $this->raw('COUNT(shirt_size) AS count')])
             ->whereNotNull('shirt_size')
-            ->groupBy('shirt_size')
+            ->groupBy(['shirt_size'])
+            ->get();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function languages(): Collection
+    {
+        return Settings::query()
+            ->select(['language', $this->raw('COUNT(language) AS count')])
+            ->groupBy(['language'])
+            ->get();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function themes(): Collection
+    {
+        return Settings::query()
+            ->select(['theme', $this->raw('COUNT(theme) AS count')])
+            ->groupBy(['theme'])
             ->get();
     }
 
