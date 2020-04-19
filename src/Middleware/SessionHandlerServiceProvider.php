@@ -14,6 +14,7 @@ class SessionHandlerServiceProvider extends ServiceProvider
             ->give(function () {
                 return [
                     '/api',
+                    '/atom',
                     '/ical',
                     '/metrics',
                     '/shifts-json-export',
