@@ -72,6 +72,6 @@ class MailerTest extends TestCase
         $mailer->setFromName('Lorem Ipsum');
 
         $return = $mailer->send('to@xam.pel', 'Foo Bar', 'Lorem Ipsum!');
-        $this->equalTo(1, $return);
+        $this->assertEquals(1, $return);
     }
 }

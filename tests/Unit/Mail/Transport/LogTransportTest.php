@@ -52,6 +52,6 @@ class LogTransportTest extends TestCase
             ->willReturn(['foo@bar.batz' => null, 'lor@em.ips' => 'Lorem Ipsum']);
 
         $return = $transport->send($message);
-        $this->equalTo(2, $return);
+        $this->assertEquals(2, $return);
     }
 }

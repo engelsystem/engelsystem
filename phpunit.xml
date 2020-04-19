@@ -1,6 +1,6 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         bootstrap="./tests/autoload.php"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.3/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/9.1/phpunit.xsd"
+         bootstrap="./includes/autoload.php"
          colors="true"
 >
     <testsuites>

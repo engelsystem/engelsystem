@@ -65,7 +65,7 @@ class HtmlEngineTest extends TestCase
     protected function tearDown(): void
     {
         foreach ($this->tmpFileNames as $fileName) {
-            unlink($fileName);
+            file_exists($fileName) && unlink($fileName);
         }
     }
 }
