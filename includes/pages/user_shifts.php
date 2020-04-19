@@ -288,10 +288,15 @@ function view_user_shifts()
 
 /**
  * Returns a hint for the user how the ical feature works.
+ *
+ * @return string
  */
 function ical_hint()
 {
     $user = auth()->user();
+    if(!auth()->can('ical')) {
+        return '';
+    }
 
     return heading(__('iCal export and API') . ' ' . button_help('user/ical'), 2)
         . '<p>' . sprintf(

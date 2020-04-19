@@ -553,6 +553,7 @@ function User_view(
     $admin_user_worklog_privilege,
     $user_worklogs
 ) {
+    $auth = auth();
     $nightShiftsConfig = config('night_shifts');
     $user_name = htmlspecialchars(
             $user_source->personalData->first_name) . ' ' . htmlspecialchars($user_source->personalData->last_name
@@ -625,15 +626,19 @@ function User_view(
                             page_link_to('user_settings'),
                             glyph('list-alt') . __('Settings')
                         ) : '',
-                        $its_me ? button(
+                        ($its_me && $auth->can('ical')) ? button(
                             page_link_to('ical', ['key' => $user_source->api_key]),
                             glyph('calendar') . __('iCal Export')
                         ) : '',
-                        $its_me ? button(
+                        ($its_me && $auth->can('shifts_json_export')) ? button(
                             page_link_to('shifts_json_export', ['key' => $user_source->api_key]),
                             glyph('export') . __('JSON Export')
                         ) : '',
-                        $its_me ? button(
+                        ($its_me && (
+                            $auth->can('shifts_json_export')
+                            || $auth->can('ical')
+                            || $auth->can('atom')
+                        )) ? button(
                             page_link_to('user_myshifts', ['reset' => 1]),
                             glyph('repeat') . __('Reset API key')
                         ) : ''
