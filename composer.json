@@ -53,11 +53,16 @@
     },
     "autoload": {
         "psr-4": {
-            "Engelsystem\\": "src/",
-            "Engelsystem\\Migrations\\": "db/migrations"
+            "Engelsystem\\": "src/"
         },
+        "classmap": ["db/migrations"],
         "files": [
             "src/helpers.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Engelsystem\\Test\\": "tests/"
+        }
     }
 }
