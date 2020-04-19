@@ -37,7 +37,7 @@ class EngelsystemMailerTest extends TestCase
         $this->setExpects($view, 'render', ['test/template.tpl', ['dev' => true]], 'Rendered Stuff!');
 
         $return = $mailer->sendView('foo@bar.baz', 'Lorem dolor', 'test/template.tpl', ['dev' => true]);
-        $this->equalTo(1, $return);
+        $this->assertEquals(1, $return);
     }
 
     /**
@@ -91,7 +91,7 @@ class EngelsystemMailerTest extends TestCase
             ['dev' => true],
             'de_DE'
         );
-        $this->equalTo(1, $return);
+        $this->assertEquals(1, $return);
     }
 
     /**
@@ -120,6 +120,6 @@ class EngelsystemMailerTest extends TestCase
         $this->assertEquals('Mail test', $mailer->getSubjectPrefix());
 
         $return = $mailer->send('to@xam.pel', 'Foo Bar', 'Lorem Ipsum!');
-        $this->equalTo(1, $return);
+        $this->assertEquals(1, $return);
     }
 }
