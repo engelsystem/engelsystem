@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Unit\Models;
+namespace Engelsystem\Test\Unit\Models\User;
 
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Models\BaseModel;

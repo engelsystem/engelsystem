@@ -83,11 +83,11 @@ check-style:
   stage: test
   before_script:
     - curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
-    - cp -R tests/ "${DOCROOT}"
+    - cp -R tests/ .phpcs.xml "${DOCROOT}"
     - cd "${DOCROOT}"
     - composer --no-ansi install
   script:
-    - ./vendor/bin/phpcs --no-colors --basepath="$PWD" -p --standard=PSR12 config/ db/ public/index.php src/ tests/
+    - composer phpcs -- --no-colors --basepath="$PWD"
 
 release-image:
   <<: *docker_definition

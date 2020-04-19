@@ -2,7 +2,6 @@
 
 namespace Engelsystem\Mail;
 
-use Engelsystem\Renderer\Renderer;
 use Swift_Mailer as SwiftMailer;
 use Swift_Message as SwiftMessage;
 
@@ -10,9 +9,6 @@ class Mailer
 {
     /** @var SwiftMailer */
     protected $mailer;
-
-    /** @var Renderer|null */
-    protected $view;
 
     /** @var string */
     protected $fromAddress = '';

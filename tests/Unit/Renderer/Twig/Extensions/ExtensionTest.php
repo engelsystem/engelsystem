@@ -6,8 +6,8 @@ use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Twig\TwigFunction;
 use Twig\Node\Node as TwigNode;
+use Twig\TwigFunction;
 
 abstract class ExtensionTest extends TestCase
 {

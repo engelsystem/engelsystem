@@ -31,7 +31,7 @@ class LoggerTest extends ApplicationFeatureTest
     }
 
     /**
-     * @return string[]
+     * @return string[][]
      */
     public function provideLogLevels()
     {
@@ -80,7 +80,7 @@ class LoggerTest extends ApplicationFeatureTest
     }
 
     /**
-     * @return string[]
+     * @return mixed[][]
      */
     public function provideContextReplaceValues()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Unit\Middleware;
+namespace Engelsystem\Test\Unit\Mail;
 
 use Engelsystem\Application;
 use Engelsystem\Config\Config;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Unit\Database;
+namespace Engelsystem\Test\Unit\Database\Migration;
 
 use Engelsystem\Application;
 use Engelsystem\Database\Migration\Migrate;

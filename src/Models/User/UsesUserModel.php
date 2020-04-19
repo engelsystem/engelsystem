@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
- * @property integer                $user_id
+ * @property int                    $user_id
  *
  * @property-read QueryBuilder|User $user
  *

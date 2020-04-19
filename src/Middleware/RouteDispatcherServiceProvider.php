@@ -8,6 +8,8 @@ use FastRoute\Dispatcher as FastRouteDispatcher;
 use FastRoute\RouteCollector;
 use Psr\Http\Server\MiddlewareInterface;
 
+use function FastRoute\cachedDispatcher as FRCashedDispatcher;
+
 class RouteDispatcherServiceProvider extends ServiceProvider
 {
     public function register()
@@ -57,7 +59,7 @@ class RouteDispatcherServiceProvider extends ServiceProvider
             unlink($routesCacheFile);
         }
 
-        return \FastRoute\cachedDispatcher(function (RouteCollector $route) {
+        return FRCashedDispatcher(function (RouteCollector $route) {
             require config_path('routes.php');
         }, $options);
     }

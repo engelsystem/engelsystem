@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Throwable;
 
 class ExceptionHandler implements MiddlewareInterface
 {
@@ -37,7 +38,7 @@ class ExceptionHandler implements MiddlewareInterface
     ): ResponseInterface {
         try {
             return $handler->handle($request);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             /** @var ExceptionsHandler $handler */
             $handler = $this->container->get('error.handler');
             $content = $handler->exceptionHandler($e, true);

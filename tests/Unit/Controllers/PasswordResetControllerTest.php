@@ -229,6 +229,7 @@ class PasswordResetControllerTest extends TestCase
         $controller->setValidator(new Validator());
 
         if ($view) {
+            /** @var array|mixed[] $args */
             $args = [$view];
             if ($data) {
                 $args[] = $data;

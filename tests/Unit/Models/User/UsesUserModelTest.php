@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Unit\Models;
+namespace Engelsystem\Test\Unit\Models\User;
 
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\User\UsesUserModel;

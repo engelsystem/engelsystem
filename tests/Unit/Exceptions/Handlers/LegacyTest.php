@@ -1,6 +1,6 @@
 <?php
 
-namespace Engelsystem\Test\Unit\Exceptions\handlers;
+namespace Engelsystem\Test\Unit\Exceptions\Handlers;
 
 use Engelsystem\Exceptions\Handlers\Legacy;
 use Engelsystem\Http\Request;

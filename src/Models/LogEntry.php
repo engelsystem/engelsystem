@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Collection as SupportCollection;
 
 /**
  * @property int         $id
@@ -38,7 +39,7 @@ class LogEntry extends BaseModel
 
     /**
      * @param $keyword
-     * @return Builder[]|Collection|LogEntry[]
+     * @return Builder[]|Collection|SupportCollection|LogEntry[]
      */
     public static function filter($keyword = null)
     {

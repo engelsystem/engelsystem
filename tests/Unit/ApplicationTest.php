@@ -173,11 +173,9 @@ class ApplicationTest extends TestCase
      */
     protected function mockServiceProvider(Application $app, $methods = [])
     {
-        $serviceProvider = $this->getMockBuilder(ServiceProvider::class)
+        return $this->getMockBuilder(ServiceProvider::class)
             ->setConstructorArgs([$app])
             ->onlyMethods($methods)
             ->getMockForAbstractClass();
-
-        return $serviceProvider;
     }
 }
