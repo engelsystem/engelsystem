@@ -4,8 +4,8 @@ namespace Engelsystem\Test\Unit\Logger;
 
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Logger\Logger;
-use Engelsystem\Logger\UserAwareLogger;
 use Engelsystem\Logger\LoggerServiceProvider;
+use Engelsystem\Logger\UserAwareLogger;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;

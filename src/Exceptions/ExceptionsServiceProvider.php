@@ -7,6 +7,7 @@ use Engelsystem\Exceptions\Handlers\HandlerInterface;
 use Engelsystem\Exceptions\Handlers\Legacy;
 use Engelsystem\Exceptions\Handlers\LegacyDevelopment;
 use Engelsystem\Exceptions\Handlers\Whoops;
+use Psr\Log\LoggerInterface;
 use Whoops\Run as WhoopsRunner;
 
 class ExceptionsServiceProvider extends ServiceProvider
@@ -28,6 +29,7 @@ class ExceptionsServiceProvider extends ServiceProvider
         $request = $this->app->get('request');
 
         $handler->setRequest($request);
+        $this->addLogger($handler);
     }
 
     /**
@@ -54,5 +56,20 @@ class ExceptionsServiceProvider extends ServiceProvider
 
         $this->app->instance('error.handler.development', $handler);
         $errorHandler->setHandler(Handler::ENV_DEVELOPMENT, $handler);
+    }
+
+    /**
+     * @param Handler $handler
+     */
+    protected function addLogger(Handler $handler)
+    {
+        foreach ($handler->getHandler() as $h) {
+            if (!method_exists($h, 'setLogger')) {
+                continue;
+            }
+
+            $log = $this->app->get(LoggerInterface::class);
+            $h->setLogger($log);
+        }
     }
 }
