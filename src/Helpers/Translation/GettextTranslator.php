@@ -7,33 +7,38 @@ use Gettext\Translator;
 class GettextTranslator extends Translator
 {
     /**
-     * @param string $domain
-     * @param string $context
-     * @param string $original
+     * @param string|null $domain
+     * @param string|null $context
+     * @param string      $original
      * @return string
      * @throws TranslationNotFound
      */
-    public function dpgettext($domain, $context, $original)
+    protected function translate(?string $domain, ?string $context, string $original): string
     {
         $this->assertHasTranslation($domain, $context, $original);
 
-        return parent::dpgettext($domain, $context, $original);
+        return parent::translate($domain, $context, $original);
     }
 
     /**
-     * @param string $domain
-     * @param string $context
-     * @param string $original
-     * @param string $plural
-     * @param string $value
+     * @param string|null $domain
+     * @param string|null $context
+     * @param string      $original
+     * @param string      $plural
+     * @param int         $value
      * @return string
      * @throws TranslationNotFound
      */
-    public function dnpgettext($domain, $context, $original, $plural, $value)
-    {
+    protected function translatePlural(
+        ?string $domain,
+        ?string $context,
+        string $original,
+        string $plural,
+        int $value
+    ): string {
         $this->assertHasTranslation($domain, $context, $original);
 
-        return parent::dnpgettext($domain, $context, $original, $plural, $value);
+        return parent::translatePlural($domain, $context, $original, $plural, $value);
     }
 
     /**

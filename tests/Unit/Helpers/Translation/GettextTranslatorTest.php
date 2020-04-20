@@ -16,9 +16,7 @@ class GettextTranslatorTest extends ServiceProviderTest
     public function testNoTranslation()
     {
         $translations = $this->getTranslations();
-
-        $translator = new GettextTranslator();
-        $translator->loadTranslations($translations);
+        $translator = GettextTranslator::createFromTranslations($translations);
 
         $this->assertEquals('Translation!', $translator->gettext('test.value'));
 
@@ -29,29 +27,25 @@ class GettextTranslatorTest extends ServiceProviderTest
     }
 
     /**
-     * @covers \Engelsystem\Helpers\Translation\GettextTranslator::dpgettext()
+     * @covers \Engelsystem\Helpers\Translation\GettextTranslator::translate()
      */
-    public function testDpgettext()
+    public function testTranslate()
     {
         $translations = $this->getTranslations();
+        $translator = GettextTranslator::createFromTranslations($translations);
 
-        $translator = new GettextTranslator();
-        $translator->loadTranslations($translations);
-
-        $this->assertEquals('Translation!', $translator->dpgettext(null, null, 'test.value'));
+        $this->assertEquals('Translation!', $translator->gettext('test.value'));
     }
 
     /**
-     * @covers \Engelsystem\Helpers\Translation\GettextTranslator::dnpgettext()
+     * @covers \Engelsystem\Helpers\Translation\GettextTranslator::translatePlural
      */
-    public function testDnpgettext()
+    public function testTranslatePlural()
     {
         $translations = $this->getTranslations();
+        $translator = GettextTranslator::createFromTranslations($translations);
 
-        $translator = new GettextTranslator();
-        $translator->loadTranslations($translations);
-
-        $this->assertEquals('Translations!', $translator->dnpgettext(null, null, 'test.value', 'test.values', 2));
+        $this->assertEquals('Translations!', $translator->ngettext('test.value', 'test.value', 2));
     }
 
     /**
@@ -59,11 +53,12 @@ class GettextTranslatorTest extends ServiceProviderTest
      */
     protected function getTranslations(): Translations
     {
-        $translations = new Translations();
-        $translations[] =
-            (new Translation(null, 'test.value', 'test.values'))
-                ->setTranslation('Translation!')
-                ->setPluralTranslations(['Translations!']);
+        $translation = Translation::create(null, 'test.value')
+            ->translate('Translation!')
+            ->translatePlural('Translations!');
+
+        $translations = Translations::create();
+        $translations->add($translation);
 
         return $translations;
     }
