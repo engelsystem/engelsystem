@@ -4,6 +4,8 @@ namespace Engelsystem\Helpers\Translation;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
+use Gettext\Loader\MoLoader;
+use Gettext\Loader\PoLoader;
 use Gettext\Translations;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -72,22 +74,22 @@ class TranslationServiceProvider extends ServiceProvider
         if (!isset($this->translators[$locale])) {
             $names = ['default', 'additional'];
 
-            /** @var GettextTranslator $translator */
-            $translator = $this->app->make(GettextTranslator::class);
-
             /** @var Translations $translations */
-            $translations = $this->app->make(Translations::class);
+            $translations = $this->app->call([Translations::class, 'create']);
             foreach ($names as $name) {
                 $file = $this->getFile($locale, $name);
                 if (Str::endsWith($file, '.mo')) {
-                    $translations->addFromMoFile($file);
+                    /** @var MoLoader $loader */
+                    $loader = $this->app->make(MoLoader::class);
                 } else {
-                    $translations->addFromPoFile($file);
+                    /** @var PoLoader $loader */
+                    $loader = $this->app->make(PoLoader::class);
                 }
+
+                $translations = $loader->loadFile($file, $translations);
             }
 
-            $translator->loadTranslations($translations);
-
+            $translator = GettextTranslator::createFromTranslations($translations);
             $this->translators[$locale] = $translator;
         }
 
