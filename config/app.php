@@ -10,6 +10,7 @@ return [
         \Engelsystem\Logger\LoggerServiceProvider::class,
         \Engelsystem\Exceptions\ExceptionsServiceProvider::class,
         \Engelsystem\Config\ConfigServiceProvider::class,
+        \Engelsystem\Helpers\ConfigureEnvironmentServiceProvider::class,
 
         // Request handling
         \Engelsystem\Http\UrlGeneratorServiceProvider::class,
