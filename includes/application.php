@@ -22,11 +22,8 @@ $app->bootstrap($appConfig);
 
 
 /**
- * Configure application
+ * Configure environment
  */
-$timezone = $app->get('config')->get('timezone');
-ini_set('date.timezone', $timezone);
-
 if (config('environment') == 'development') {
     $errorHandler = $app->get('error.handler');
     $errorHandler->setEnvironment(Handler::ENV_DEVELOPMENT);
