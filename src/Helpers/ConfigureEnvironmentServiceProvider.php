@@ -15,6 +15,12 @@ class ConfigureEnvironmentServiceProvider extends ServiceProvider
 
         $timezone = new CarbonTimeZone($config->get('timezone'));
         $this->setTimeZone($timezone);
+
+        $this->displayErrors(false);
+        if ($config->get('environment') == 'development') {
+            $this->displayErrors(true);
+            $this->errorReporting(E_ALL);
+        }
     }
 
     /**
@@ -25,5 +31,23 @@ class ConfigureEnvironmentServiceProvider extends ServiceProvider
     {
         ini_set('date.timezone', $timeZone);
         date_default_timezone_set($timeZone);
+    }
+
+    /**
+     * @param bool $displayErrors
+     * @codeCoverageIgnore
+     */
+    protected function displayErrors(bool $displayErrors)
+    {
+        ini_set('display_errors', $displayErrors);
+    }
+
+    /**
+     * @param int $errorReporting
+     * @codeCoverageIgnore
+     */
+    protected function errorReporting(int $errorReporting)
+    {
+        error_reporting($errorReporting);
     }
 }

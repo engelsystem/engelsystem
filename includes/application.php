@@ -28,8 +28,4 @@ if (config('environment') == 'development') {
     $errorHandler = $app->get('error.handler');
     $errorHandler->setEnvironment(Handler::ENV_DEVELOPMENT);
     $app->bind(HandlerInterface::class, 'error.handler.development');
-    ini_set('display_errors', true);
-    error_reporting(E_ALL);
-} else {
-    ini_set('display_errors', false);
 }
