@@ -2280,6 +2280,11 @@ msgstr "noch nicht"
 msgid "Become %s"
 msgstr "Werde ein %s"
 
+#: includes/view/ShiftCalenderRenderer.php:225
+#: includes/view/ShiftCalenderRenderer.php:232
+msgid "m-d"
+msgstr "d.m."
+
 #: includes/view/ShiftEntry_view.php:18
 #, php-format
 msgid "Do you want to sign off %s from shift %s from %s to %s as %s?"
