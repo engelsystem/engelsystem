@@ -1,0 +1,226 @@
+{% extends "layouts/app.twig" %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('Design') }}{% endblock %}
+
+{% set colors=['success', 'info', 'warning', 'danger'] %}
+{% set types=['default', 'primary', 'success', 'info', 'warning', 'danger'] %}
+{% set types_buttons=types|merge(['link']) %}
+{% set lipsum='Lorem ipsum dolor sit amet, consectetur adipisici elit…' %}
+{% set linksum='Lorem ipsum dolor <a href="#">link</a> amet, consectetur adipisici elit!' %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ block('title') }}</h1>
+
+
+        <h2>Elements</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Headings</h3>
+                <h4>H4</h4>
+                <h5>H5</h5>
+                <h6>H6</h6>
+            </div>
+            <div class="col-md-6">
+                <h3>Tables</h3>
+                <table class="table table-striped">
+                    <tr>
+                        <th>Header 1</th>
+                        <th>Header 2</th>
+                        <th>Header 3</th>
+                    </tr>
+                    <tr>
+                        <td>Table content</td>
+                        <td>{{ lipsum }}</td>
+                        <td><span class="text-success">{{ m.glyphicon('ok') }}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Another content</td>
+                        <td></td>
+                        <td><span class="text-danger">{{ m.glyphicon('remove') }}</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Texts</h3>
+                <p>
+                    {{ linksum|raw }}<br>
+                    {{ lipsum }} {{ lipsum|replace({'…': '.'}) }} {{ lipsum|replace({'…': '.'}) }} {{ lipsum }}
+                </p>
+
+                <div class="row">
+                    {% for color in types %}
+                        <div class="col-md-3">
+                            <p class="text-{{ color }}">{{ color|capitalize }}: {{ linksum|raw }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Labels</h3>
+                <p>
+                    {% for type in types %}
+                        <span class="label label-{{ type }}">{{ type|capitalize }}</span>
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <h3>Buttons</h3>
+                <p>
+                    {% for type in types_buttons %}
+                        {{ f.button(type|capitalize, {'btn_type': type, 'name': 'button-' ~ type}) }}
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Alerts</h3>
+
+                <div class="row">
+                    {% for color in colors %}
+                        <div class="col-md-3">
+                            <h4>{{ color|capitalize }}</h4>
+                            {{ m.alert(lipsum, color) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Forms</h3>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        {{ f.input('form-input-text', 'Text', 'text', {'value': 'Value'}) }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ f.input('form-input-text-disabled', 'Disabled', 'text', {'disabled': true, 'value': 'Value'}) }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ f.input('form-input-text-readonly', 'Readonly', 'text', {'readonly': true, 'value': 'Value'}) }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ f.input('form-input-password', 'Password', 'password', {'value': 'Value'}) }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ f.input('form-input-number', 'Number', 'number', {'value': 42}) }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ f.textarea('form-input-textarea', 'Textarea', {'rows': 2, 'value': lipsum}) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        {{ f.select('form-input-select', {'lorem': 'Ipsum', 'dolor': 'Sit'}, 'Select', 'dolor') }}
+                    </div>
+                    <div class="col-md-2">
+                        Button<br>
+                        {{ f.button('Button', {'btn_type': 'default'}) }}
+                    </div>
+                    <div class="col-md-2">
+                        Submit button<br>
+                        {{ f.submit() }}
+                    </div>
+                    <div class="col-md-2">
+                        Checkbox<br>
+                        {{ f.checkbox('form-input-checkbox', 'Checkbox', true) }}
+                        {{ f.checkbox('form-input-checkbox-2', 'Checkbox 2') }}
+                    </div>
+                    <div class="col-md-2 checkbox-inline">
+                        Radio<br>
+                        <label>
+                            <input type="radio" checked="checked" name="form-input-radio" value="1"> Yey
+                        </label>
+                        <label>
+                            <input type="radio" name="form-input-radio"> Nay
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <h2>Macros</h2>
+        <h3>base.twig</h3>
+        <div class="row">
+            <div class="col-md-3">
+                <h4><code>angel()</code></h4>
+                <p>{{ m.angel() }}</p>
+            </div>
+            <div class="col-md-3">
+                <h4><code>glyphicon(glyph)</code></h4>
+                <p>{{ m.glyphicon('star') }}</p>
+            </div>
+            <div class="col-md-3">
+                <h4><code>alert(message, type)</code></h4>
+                <p>{{ m.alert('Test content', 'info') }}</p>
+            </div>
+            <div class="col-md-3">
+                <h4><code>user(user)</code></h4>
+                <p>{{ m.user(demo_user) }}<br>{{ m.user(demo_user_2) }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <h4><code>button(label, url, type, size)</code></h4>
+                <p>{{ m.button('Label', '#', 'info', 'sm') }}</p>
+            </div>
+        </div>
+
+        <h3>form.twig</h3>
+        <div class="row">
+            <div class="col-md-3">
+                <h4><code>input(name, label, type, opt)</code></h4>
+                <p>{{ f.input('input-name', 'Label', 'text', {'required': true, 'value': 'Value'}) }}</p>
+            </div>
+
+            <div class="col-md-3">
+                <h4><code>textarea(name, label, opt)</code></h4>
+                <p>{{ f.textarea('textarea-name', 'Label', {'required': true, 'rows': 2, 'value': lipsum}) }}</p>
+            </div>
+
+            <div class="col-md-3">
+                <h4><code>select(name, data, label, selected)</code></h4>
+                <p>{{ f.select('select-name', {'foo': 'Foo', 'bar': 'Bar'}, 'Label', 'bar') }}</p>
+            </div>
+
+            <div class="col-md-3">
+                <h4><code>checkbox(name, label, checked, value)</code></h4>
+                <p>
+                    {{ f.checkbox('checkbox-name', 'Label', false) }}<br>
+                    {{ f.checkbox('checkbox-name', 'Label', true, 'on') }}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <h4><code>hidden(name, value)</code></h4>
+                <p>
+                    {{ f.hidden('hidden-name', 'hidden value') | escape }}
+                </p>
+            </div>
+
+            <div class="col-md-3">
+                <h4><code>button(label, opt)</code></h4>
+                <p>
+                    {{ f.button('Label', {'btn_type': 'default', 'name': 'button-name', 'value': 'buton-value'}) }}
+                </p>
+            </div>
+
+            <div class="col-md-3">
+                <h4><code>submit(label, opt)</code></h4>
+                <p>
+                    {{ f.submit() }}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
