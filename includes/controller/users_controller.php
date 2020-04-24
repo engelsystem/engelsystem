@@ -5,6 +5,7 @@ use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilter;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Route user actions.
@@ -267,15 +268,16 @@ function users_list_controller()
     $order_by = 'name';
     if ($request->has('OrderBy') && in_array($request->input('OrderBy'), [
             'name',
-            'last_name',
             'first_name',
+            'last_name',
             'dect',
-            'email',
-            'shirt_size',
             'arrived',
+            'got_voucher',
+            'freeloads',
             'active',
             'force_active',
             'got_shirt',
+            'shirt_size',
             'planned_arrival_date',
             'planned_departure_date',
             'last_login_at',
@@ -283,14 +285,23 @@ function users_list_controller()
         $order_by = $request->input('OrderBy');
     }
 
-    /** @var User[] $users */
+    /** @var User[]|Collection $users */
     $users = User::with(['contact', 'personalData', 'state'])
-        ->orderBy($order_by)
         ->orderBy('name')
         ->get();
     foreach ($users as $user) {
         $user->setAttribute('freeloads', count(ShiftEntries_freeloaded_by_user($user->id)));
     }
+
+    $users = $users->sortBy(function (User $user) use ($order_by) {
+        $userData = $user->toArray();
+        $data = [];
+        array_walk_recursive($userData, function ($value, $key) use (&$data) {
+            $data[$key] = $value;
+        });
+
+        return isset($data[$order_by]) ? $data[$order_by] : null;
+    });
 
     return [
         __('All users'),
