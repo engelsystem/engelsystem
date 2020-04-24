@@ -231,7 +231,7 @@ function Users_view(
     }
     $user_table_headers['arrived'] = Users_table_header_link('arrived', __('Arrived'), $order_by);
     $user_table_headers['got_voucher'] = Users_table_header_link('got_voucher', __('Voucher'), $order_by);
-    $user_table_headers['freeloads'] = __('Freeloads');
+    $user_table_headers['freeloads'] = Users_table_header_link('freeloads', __('Freeloads'), $order_by);
     $user_table_headers['active'] = Users_table_header_link('active', __('Active'), $order_by);
     $user_table_headers['force_active'] = Users_table_header_link('force_active', __('Forced'), $order_by);
     $user_table_headers['got_shirt'] = Users_table_header_link('got_shirt', __('T-Shirt'), $order_by);
