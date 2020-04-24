@@ -7,7 +7,13 @@
                id="{{ name }}" name="{{ name }}"
                value="{{ opt.value|default('') }}"
                 {%- if opt.required|default(false) %}
-                    required="required"
+                    required
+                {%- endif -%}
+                {%- if opt.disabled|default(false) %}
+                    disabled
+                {%- endif -%}
+                {%- if opt.readonly|default(false) %}
+                    readonly
                 {%- endif -%}
         >
     </div>
@@ -20,7 +26,7 @@
         {%- endif %}
         <textarea class="form-control" id="{{ name }}" name="{{ name }}"
                 {%- if opt.required|default(false) %}
-                    required="required"
+                    required
                 {%- endif -%}
                 {%- if opt.rows|default(0) %}
                     rows="{{ opt.rows }}"
@@ -46,7 +52,7 @@
     <div class="checkbox">
         <label>
             <input type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ value|default('1') }}"
-                    {%- if checked|default(false) %} checked="checked"{% endif %}>
+                    {%- if checked|default(false) %} checked{% endif %}>
             {{ label }}
         </label>
     </div>

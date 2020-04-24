@@ -32,6 +32,9 @@ $route->post('/news/{id:\d+}', 'NewsController@comment');
 // API
 $route->get('/api[/{resource:.+}]', 'ApiController@index');
 
+// Design
+$route->get('/design', 'DesignController@index');
+
 // Administration
 $route->addGroup(
     '/admin',
