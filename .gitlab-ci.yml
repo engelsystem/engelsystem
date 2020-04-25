@@ -13,10 +13,35 @@ variables:
   DOCROOT: /var/www/
 
 stages:
+  - validate
   - build
   - test
   - release
   - deploy
+
+check-style:
+  image: composer:latest
+  stage: validate
+  before_script:
+    - composer --no-ansi global require squizlabs/php_codesniffer
+    - export PATH=$PATH:$COMPOSER_HOME/vendor/bin
+  script:
+    - phpcs -p --no-colors --basepath="$PWD"
+
+validate-composer:
+  image: composer:latest
+  stage: validate
+  script:
+    - composer --no-ansi validate --strict
+
+validate-yarn:
+  image: node:alpine
+  stage: validate
+  before_script:
+    - yarn global add package-json-validator
+    - export PATH=$PATH:~/.yarn/bin
+  script:
+    - pjv
 
 .docker_template: &docker_definition
   image: docker:18
@@ -46,10 +71,26 @@ build-image:
   <<: *docker_definition
   stage: build
   script:
-    - apk -q add git
+    - apk add -q git
     - VERSION="$(git describe --abbrev=0 --tags)-${CI_COMMIT_REF_NAME}+${CI_PIPELINE_ID}.${CI_COMMIT_SHORT_SHA}"
     - docker build --pull --build-arg VERSION="${VERSION}" -t "${TEST_IMAGE}" -f docker/Dockerfile .
     - docker push "${TEST_IMAGE}"
+
+audit-composer:
+  image: ${TEST_IMAGE}
+  stage: test
+  before_script:
+    - curl -sSo /usr/local/bin/security-checker https://get.sensiolabs.org/security-checker.phar
+    - chmod +x /usr/local/bin/security-checker
+    - cd "${DOCROOT}"
+  script:
+    - security-checker --no-ansi security:check
+
+audit-yarn:
+  image: node:10-alpine
+  stage: test
+  script:
+    - yarn audit
 
 test:
   image: ${TEST_IMAGE}
@@ -78,17 +119,6 @@ test:
     - php -d pcov.enabled=1 vendor/bin/phpunit -vvv --colors=never --coverage-text --coverage-html "${HOMEDIR}/coverage/" --log-junit "${HOMEDIR}/unittests.xml"
     - ./bin/migrate down
 
-check-style:
-  image: ${TEST_IMAGE}
-  stage: test
-  before_script:
-    - curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir /usr/local/bin/ --filename composer
-    - cp -R tests/ .phpcs.xml "${DOCROOT}"
-    - cd "${DOCROOT}"
-    - composer --no-ansi install
-  script:
-    - composer phpcs -- --no-colors --basepath="$PWD"
-
 release-image:
   <<: *docker_definition
   stage: release
@@ -113,14 +143,12 @@ release-image.nginx:
   stage: deploy
   image: ${TEST_IMAGE}
   before_script:
-    - apk add bash rsync openssh-client
+    - apk add -q bash rsync openssh-client
 
 .deploy_template_script:
   # Configure SSH
   - &deploy_template_script |-
-    mkdir -p ~/.ssh
-    echo "${SSH_PRIVATE_KEY}" | sed -e 's/\r//g' > ~/.ssh/id_ed25519
-    chmod 600 ~/.ssh/id_ed25519
+    eval $(ssh-agent -s) && echo "${SSH_PRIVATE_KEY}" | ssh-add -
     rsync -vAax public/assets ${DOCROOT}/public/
     cd "${DOCROOT}"
 
