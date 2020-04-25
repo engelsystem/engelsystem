@@ -4,7 +4,7 @@
   "main": "index.js",
   "repository": "https://github.com/engelsystem/engelsystem.git",
   "author": "https://github.com/engelsystem/engelsystem/contributors",
-  "license": "GPL-2.0-only",
+  "license": "GPL-2.0-or-later",
   "scripts": {
     "build": "npm run -s build:clean && NODE_ENV=production run-p build:webpack",
     "build:clean": "rimraf public/assets",

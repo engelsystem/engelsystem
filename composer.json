@@ -2,7 +2,7 @@
     "name": "engelsystem/engelsystem",
     "description": "Shift planning system for chaos events",
     "type": "project",
-    "license": "GPL-2.0",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "msquare",
