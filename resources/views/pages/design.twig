@@ -102,6 +102,9 @@
                         {{ f.input('form-input-text', 'Text', 'text', {'value': 'Value'}) }}
                     </div>
                     <div class="col-md-2">
+                        {{ f.input('form-input-text-hidden-label', 'Hidden label', 'text', {'value': 'Hidden label', 'hide_label': true}) }}
+                    </div>
+                    <div class="col-md-2">
                         {{ f.input('form-input-text-disabled', 'Disabled', 'text', {'disabled': true, 'value': 'Value'}) }}
                     </div>
                     <div class="col-md-2">
@@ -113,11 +116,11 @@
                     <div class="col-md-2">
                         {{ f.input('form-input-number', 'Number', 'number', {'value': 42}) }}
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-2">
                         {{ f.textarea('form-input-textarea', 'Textarea', {'rows': 2, 'value': lipsum}) }}
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-2">
                         {{ f.select('form-input-select', {'lorem': 'Ipsum', 'dolor': 'Sit'}, 'Select', 'dolor') }}
                     </div>

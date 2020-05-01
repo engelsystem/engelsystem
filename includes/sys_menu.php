@@ -108,6 +108,8 @@ function make_navigation()
 
     $admin_menu = [];
     $admin_pages = [
+        // path              => name
+        // path              => [name, permission]
         'admin_arrive'       => 'Arrived angels',
         'admin_active'       => 'Active angels',
         'admin_user'         => 'All Angels',
@@ -118,7 +120,7 @@ function make_navigation()
         'admin_rooms'        => 'Rooms',
         'admin_groups'       => 'Grouprights',
         'admin/schedule'     => ['schedule.import', 'schedule.import'],
-        'admin_log'          => 'Log',
+        'admin/logs'         => ['log.log', 'admin_log'],
         'admin_event_config' => 'Event config',
     ];
 

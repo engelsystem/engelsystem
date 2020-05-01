@@ -1,11 +1,11 @@
 {% macro input(name, label, type, opt) %}
     <div class="form-group">
         {% if label -%}
-            <label for="{{ name }}">{{ label }}</label>
+            <label for="{{ name }}"{% if opt.hide_label|default(false) %} class="sr-only"{% endif %}>{{ label }}</label>
         {%- endif %}
         <input type="{{ type|default('text') }}" class="form-control"
                id="{{ name }}" name="{{ name }}"
-               value="{{ opt.value|default('') }}"
+               value="{{ opt.value|default('')|escape('html_attr') }}"
                 {%- if opt.required|default(false) %}
                     required
                 {%- endif -%}
@@ -59,7 +59,7 @@
 {%- endmacro %}
 
 {% macro hidden(name, value) %}
-    <input type="hidden" id="{{ name }}" name="{{ name }}" value="{{ value }}">
+    <input type="hidden" id="{{ name }}" name="{{ name }}" value="{{ value|escape('html_attr') }}">
 {%- endmacro %}
 
 {% macro button(label, opt) %}

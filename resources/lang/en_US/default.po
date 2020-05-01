@@ -144,3 +144,18 @@ msgstr "Meeting"
 
 msgid "news.edit.message"
 msgstr "Message"
+
+msgid "form.search"
+msgstr "Search"
+
+msgid "log.log"
+msgstr "Logs"
+
+msgid "log.time"
+msgstr "Time"
+
+msgid "log.level"
+msgstr "Level"
+
+msgid "log.message"
+msgstr "Message"
