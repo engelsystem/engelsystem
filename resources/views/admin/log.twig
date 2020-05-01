@@ -1,0 +1,58 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% set title %}{% block title %}{{ __('log.log') }}{% endblock %}{% endset %}
+
+{% block content %}
+    <div class="col-md-12">
+        <h1>{{ block('title') }}</h1>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="inline-form-spacing">
+                    <form method="POST" action="{{ url('/admin/logs') }}" class="form-inline">
+                        {{ csrf() }}
+
+                        {{ f.input('search', __('form.search'), 'text', {'value': search, 'hide_label': true}) }}
+
+                        {{ f.submit(__('form.search')) }}
+                    </form>
+                </div>
+
+                <table class="table table-striped">
+                    <tr>
+                        <th>{{ __('log.time') }}</th>
+                        <th>{{ __('log.level') }}</th>
+                        <th>{{ __('log.message') }}</th>
+                    </tr>
+                    {% for entry in entries %}
+                        {%- set type = 'default' %}
+                        {%- if entry.level in ['notice', 'info'] %}
+                            {%- set type = 'info' %}
+                        {%- endif %}
+                        {%- if entry.level in ['error', 'warning'] %}
+                            {%- set type = 'warning' %}
+                        {%- endif %}
+                        {%- if entry.level in ['emergency', 'alert', 'critical'] %}
+                            {%- set type = 'danger' %}
+                        {%- endif %}
+
+                        {%- set td_type = '' %}
+                        {%- if type in ['warning', 'danger'] %}
+                            {%- set td_type = type %}
+                        {%- endif %}
+
+                        <tr>
+                            <td class="{{ td_type }}">{{ entry.created_at.format(__('Y-m-d H:i')) }}</td>
+                            <td class="{{ td_type }}">
+                                <span class="label label-{{ type }}">{{ entry.level|capitalize }}</span>
+                            </td>
+                            <td>{{ entry.message|nl2br }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

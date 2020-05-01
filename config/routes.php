@@ -39,6 +39,10 @@ $route->get('/design', 'DesignController@index');
 $route->addGroup(
     '/admin',
     function (RouteCollector $route) {
+        // Log
+        $route->get('/logs', 'Admin\\LogsController@index');
+        $route->post('/logs', 'Admin\\LogsController@index');
+
         // Schedule
         $route->addGroup(
             '/schedule',
@@ -48,6 +52,8 @@ $route->addGroup(
                 $route->post('/import', 'Admin\\Schedule\\ImportSchedule@importSchedule');
             }
         );
+
+        // News
         $route->addGroup(
             '/news',
             function (RouteCollector $route) {

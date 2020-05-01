@@ -188,10 +188,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 $title = admin_shifts_title();
                 $content = admin_shifts();
                 return [$title, $content];
-            case 'admin_log':
-                $title = admin_log_title();
-                $content = admin_log();
-                return [$title, $content];
         }
 
         throw_redirect(page_link_to('login'));

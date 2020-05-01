@@ -986,8 +986,6 @@ msgstr "Alle Schichten anzeigen"
 
 #: includes/pages/admin_active.php:307 includes/pages/admin_arrive.php:178
 #: includes/pages/admin_arrive.php:179 includes/pages/admin_free.php:105
-#: includes/pages/admin_free.php:107 includes/pages/admin_log.php:36
-#: includes/pages/admin_log.php:37
 msgid "Search"
 msgstr "Suche"
 
@@ -1293,10 +1291,6 @@ msgstr "Zu löschende Schichten"
 #: includes/pages/admin_import.php:297
 msgid "It's done!"
 msgstr "Erledigt!"
-
-#: includes/pages/admin_log.php:10 includes/sys_menu.php:121
-msgid "Log"
-msgstr "Log"
 
 #: includes/pages/user_messages.php:121
 msgid "Message"
@@ -2865,4 +2859,19 @@ msgid "news.edit.is_meeting"
 msgstr "Treffen"
 
 msgid "news.edit.message"
+msgstr "Nachricht"
+
+msgid "form.search"
+msgstr "Suchen"
+
+msgid "log.log"
+msgstr "Logs"
+
+msgid "log.time"
+msgstr "Zeit"
+
+msgid "log.level"
+msgstr "Level"
+
+msgid "log.message"
 msgstr "Nachricht"
