@@ -26,6 +26,7 @@
         "ext-SimpleXML": "*",
         "ext-xml": "*",
         "doctrine/dbal": "^2.9",
+        "doctrine/inflector": "1.3.*",
         "erusev/parsedown": "^1.7",
         "gettext/gettext": "^5.4",
         "gettext/translator": "^1.0",
