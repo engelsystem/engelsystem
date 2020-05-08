@@ -2,8 +2,10 @@ image: php
 
 variables:
   DOCKER_DRIVER: overlay2
-  TEST_IMAGE: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
-  RELEASE_IMAGE: ${CI_REGISTRY_IMAGE}:latest
+  TEST_IMAGE: ${CI_REGISTRY_IMAGE}/engelsystem:${CI_COMMIT_REF_SLUG}
+  TEST_IMAGE_NGINX: ${CI_REGISTRY_IMAGE}/nginx:${CI_COMMIT_REF_SLUG}
+  RELEASE_IMAGE: ${CI_REGISTRY_IMAGE}/engelsystem:latest
+  RELEASE_IMAGE_NGINX: ${CI_REGISTRY_IMAGE}/nginx:latest
   MYSQL_DATABASE: engelsystem
   MYSQL_USER: engel
   MYSQL_PASSWORD: engelsystem
@@ -52,7 +54,7 @@ validate-yarn:
   before_script:
     - docker login -u gitlab-ci-token -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
 
-build-image.nginx:
+build-image-nginx:
   <<: *docker_definition
   stage: build
   artifacts:
@@ -61,9 +63,9 @@ build-image.nginx:
     paths:
       - ./public/assets
   script:
-    - docker build --pull -t "${TEST_IMAGE}-nginx" -f docker/nginx/Dockerfile .
-    - docker push "${TEST_IMAGE}-nginx"
-    - instance=$(docker create "${TEST_IMAGE}-nginx")
+    - docker build --pull -t "${TEST_IMAGE_NGINX}" -f docker/nginx/Dockerfile .
+    - docker push "${TEST_IMAGE_NGINX}"
+    - instance=$(docker create "${TEST_IMAGE_NGINX}")
     - docker cp "${instance}:/var/www/public/assets" public/
     - docker rm "${instance}"
 
@@ -116,8 +118,12 @@ test:
     - composer --no-ansi install
     - ./bin/migrate
   script:
-    - php -d pcov.enabled=1 vendor/bin/phpunit -vvv --colors=never --coverage-text --coverage-html "${HOMEDIR}/coverage/" --log-junit "${HOMEDIR}/unittests.xml"
-    - ./bin/migrate down
+    - >-
+      php -d pcov.enabled=1 vendor/bin/phpunit -vvv --colors=never
+      --coverage-text --coverage-html "${HOMEDIR}/coverage/"
+      --log-junit "${HOMEDIR}/unittests.xml"
+  after_script:
+    - '"${DOCROOT}/bin/migrate" down'
 
 release-image:
   <<: *docker_definition
@@ -129,13 +135,13 @@ release-image:
   only:
     - master
 
-release-image.nginx:
+release-image-nginx:
   <<: *docker_definition
   stage: release
   script:
-    - docker pull "${TEST_IMAGE}-nginx"
-    - docker tag "${TEST_IMAGE}-nginx" "${RELEASE_IMAGE}-nginx"
-    - docker push "${RELEASE_IMAGE}-nginx"
+    - docker pull "${TEST_IMAGE_NGINX}"
+    - docker tag "${TEST_IMAGE_NGINX}" "${RELEASE_IMAGE_NGINX}"
+    - docker push "${RELEASE_IMAGE_NGINX}"
   only:
     - master
 
@@ -174,7 +180,7 @@ deploy-staging:
     # Check if deployment variables where set
     - |-
       if [ -z "${SSH_PRIVATE_KEY}" ] || [ -z "${STAGING_REMOTE}" ] || [ -z "${STAGING_REMOTE_PATH}" ]; then
-        echo "Skipping deployment";
+        echo "Skipping deployment"
         exit
       fi
     - *deploy_template_script
@@ -192,7 +198,7 @@ deploy-production:
     # Check if deployment variables where set
     - |-
       if [ -z "${SSH_PRIVATE_KEY}" ] || [ -z "${PRODUCTION_REMOTE}" ] || [ -z "${PRODUCTION_REMOTE_PATH}" ]; then
-        echo "Skipping deployment";
+        echo "Skipping deployment"
         exit
       fi
     - *deploy_template_script
