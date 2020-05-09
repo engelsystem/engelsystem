@@ -1,0 +1,199 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: engelsystem-db
+  labels:
+    app: <CI_PROJECT_PATH_SLUG>
+    environment: <CI_ENVIRONMENT_SLUG>
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: <CI_PVC_SC>
+  resources:
+    requests:
+      storage: 2Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+  labels:
+    app: <CI_PROJECT_PATH_SLUG>
+    environment: <CI_ENVIRONMENT_SLUG>
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <CI_PROJECT_PATH_SLUG>
+      environment: <CI_ENVIRONMENT_SLUG>
+  template:
+    metadata:
+      labels:
+        app: <CI_PROJECT_PATH_SLUG>
+        environment: <CI_ENVIRONMENT_SLUG>
+        tier: database
+    spec:
+      containers:
+        - image: mariadb:10.2
+          name: database
+          imagePullPolicy: Always
+          env:
+            - name: MYSQL_DATABASE
+              value: engelsystem
+            - name: MYSQL_USER
+              value: engelsystem
+            - name: MYSQL_PASSWORD
+              value: engelsystem
+            - name: MYSQL_RANDOM_ROOT_PASSWORD
+              value: '1'
+            - name: MYSQL_INITDB_SKIP_TZINFO
+              value: 'yes'
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: engelsystem-db
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database
+  labels:
+    app: <CI_PROJECT_PATH_SLUG>
+    environment: <CI_ENVIRONMENT_SLUG>
+    commit: <CI_COMMIT_SHORT_SHA>
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
+      targetPort: 3306
+      name: database
+  selector:
+    app: <CI_PROJECT_PATH_SLUG>
+    environment: <CI_ENVIRONMENT_SLUG>
+    tier: database
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: engelsystem
+  labels:
+    app: <CI_PROJECT_PATH_SLUG>
+    environment: <CI_ENVIRONMENT_SLUG>
+    commit: <CI_COMMIT_SHORT_SHA>
+spec:
+  replicas: <CI_REPLICAS>
+  selector:
+    matchLabels:
+      app: <CI_PROJECT_PATH_SLUG>
+      environment: <CI_ENVIRONMENT_SLUG>
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: <CI_PROJECT_PATH_SLUG>
+        environment: <CI_ENVIRONMENT_SLUG>
+        tier: application
+        commit: <CI_COMMIT_SHORT_SHA>
+      annotations:
+        app.gitlab.com/app: <CI_PROJECT_PATH_SLUG>
+        app.gitlab.com/env: <CI_ENVIRONMENT_SLUG>
+        commit: <CI_COMMIT_SHORT_SHA>
+    spec:
+      initContainers:
+        - image: <CI_IMAGE>
+          name: engelsystem-migrate
+          imagePullPolicy: Always
+          command:
+            - sh
+            - -c
+            - while ! bin/migrate up; do sleep 1; done
+          env:
+            - name: MYSQL_HOST
+              value: database
+            - name: MYSQL_DATABASE
+              value: engelsystem
+            - name: MYSQL_USER
+              value: engelsystem
+            - name: MYSQL_PASSWORD
+              value: engelsystem
+      containers:
+        - image: <CI_IMAGE>
+          name: engelsystem-fpm
+          imagePullPolicy: Always
+          env:
+            - name: MYSQL_HOST
+              value: database
+            - name: MYSQL_DATABASE
+              value: engelsystem
+            - name: MYSQL_USER
+              value: engelsystem
+            - name: MYSQL_PASSWORD
+              value: engelsystem
+            - name: APP_URL
+              value: <CI_ENVIRONMENT_URL>
+            - name: APP_NAME
+              value: '<CI_APP_NAME>'
+        - image: <CI_IMAGE_NGINX>
+          name: engelsystem-nginx
+          imagePullPolicy: Always
+          env:
+            - name: PHP_FPM_HOST
+              value: localhost
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: engelsystem
+  labels:
+    app: <CI_PROJECT_PATH_SLUG>
+    environment: <CI_ENVIRONMENT_SLUG>
+    commit: <CI_COMMIT_SHORT_SHA>
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+      name: engelsystem
+  selector:
+    app: <CI_PROJECT_PATH_SLUG>
+    environment: <CI_ENVIRONMENT_SLUG>
+    tier: application
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: engelsystem-ingress
+  annotations:
+    kubernetes.io/tls-acme: 'true'
+    kubernetes.io/ingress.class: 'nginx'
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  labels:
+    app: <CI_PROJECT_PATH_SLUG>
+    environment: <CI_ENVIRONMENT_SLUG>
+    commit: <CI_COMMIT_SHORT_SHA>
+spec:
+  tls:
+    - hosts:
+        - <CI_INGRESS_DOMAIN>
+      secretName: <CI_INGRESS_DOMAIN>
+  rules:
+    - host: <CI_INGRESS_DOMAIN>
+      http:
+        paths:
+          - path: '<CI_INGRESS_PATH>/?(.*)'
+            backend:
+              serviceName: engelsystem
+              servicePort: 80

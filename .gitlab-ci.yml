@@ -20,6 +20,11 @@ stages:
   - test
   - release
   - deploy
+  - deploy-production
+
+#
+# Validation
+#
 
 check-style:
   image: composer:latest
@@ -44,6 +49,10 @@ validate-yarn:
     - export PATH=$PATH:~/.yarn/bin
   script:
     - pjv
+
+#
+# Build
+#
 
 .docker_template: &docker_definition
   image: docker:18
@@ -77,6 +86,10 @@ build-image:
     - VERSION="$(git describe --abbrev=0 --tags)-${CI_COMMIT_REF_NAME}+${CI_PIPELINE_ID}.${CI_COMMIT_SHORT_SHA}"
     - docker build --pull --build-arg VERSION="${VERSION}" -t "${TEST_IMAGE}" -f docker/Dockerfile .
     - docker push "${TEST_IMAGE}"
+
+#
+# Test
+#
 
 audit-composer:
   image: ${TEST_IMAGE}
@@ -125,6 +138,10 @@ test:
   after_script:
     - '"${DOCROOT}/bin/migrate" down'
 
+#
+# Release
+#
+
 release-image:
   <<: *docker_definition
   stage: release
@@ -146,10 +163,26 @@ release-image-nginx:
     - master
 
 .deploy_template: &deploy_definition
-  stage: deploy
+  stage: release
   image: ${TEST_IMAGE}
   before_script:
     - apk add -q bash rsync openssh-client
+
+build-release-file:
+  <<: *deploy_definition
+  stage: release
+  artifacts:
+    name: release_${CI_COMMIT_REF_SLUG}_${CI_JOB_ID}_${CI_COMMIT_SHA}
+    expire_in: 1 week
+    paths:
+      - ./release/
+  script:
+    - rsync -vAax "${DOCROOT}" "${DOCROOT}/.babelrc" "${DOCROOT}/.browserslistrc" release/
+    - rsync -vAax public/assets release/public/
+
+#
+# Deploy staging
+#
 
 .deploy_template_script:
   # Configure SSH
@@ -158,20 +191,9 @@ release-image-nginx:
     rsync -vAax public/assets ${DOCROOT}/public/
     cd "${DOCROOT}"
 
-build-release-file:
+deploy:
   <<: *deploy_definition
   stage: deploy
-  artifacts:
-    name: "release_${CI_COMMIT_REF_SLUG}_${CI_JOB_ID}_${CI_COMMIT_SHA}"
-    expire_in: 1 week
-    paths:
-      - ./release/
-  script:
-    - rsync -vAax "${DOCROOT}" "${DOCROOT}/.babelrc" "${DOCROOT}/.browserslistrc" release/
-    - rsync -vAax public/assets release/public/
-
-deploy-staging:
-  <<: *deploy_definition
   environment:
     name: staging
   only:
@@ -187,8 +209,84 @@ deploy-staging:
     # Deploy to server
     - ./bin/deploy.sh -r "${STAGING_REMOTE}" -p "${STAGING_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"
 
+.kubectl_deployment: &kubectl_deployment
+  stage: deploy
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
+  before_script:
+    - &kubectl_deployment_script if [[ -z "${KUBE_INGRESS_BASE_DOMAIN}" ]]; then echo "Skipping deployment"; exit; fi
+
+.deploy_k8s: &deploy_k8s
+  <<: *kubectl_deployment
+  artifacts:
+    name: deployment.yaml
+    expire_in: 1 day
+    when: always
+    paths:
+      - deployment.yaml
+  script:
+    # CI_ENVIRONMENT_URL is the URL configured in the GitLab environment
+    - export CI_ENVIRONMENT_URL="${CI_ENVIRONMENT_URL:-https://${CI_PROJECT_PATH_SLUG}.${KUBE_INGRESS_BASE_DOMAIN}/}"
+    - export CI_IMAGE=$RELEASE_IMAGE
+    - export CI_IMAGE_NGINX=$RELEASE_IMAGE_NGINX
+    - export CI_INGRESS_DOMAIN=$(echo "$CI_ENVIRONMENT_URL" | grep -oP '(?:https?://)?\K([^/]+)' | head -n1)
+    - export CI_INGRESS_PATH=$(echo "$CI_ENVIRONMENT_URL" | grep -oP '(?:https?://)?(?:[^/])+\K(.*)')
+    - export CI_KUBE_NAMESPACE=$KUBE_NAMESPACE
+    # Any available storage class like longhorn
+    - export CI_PVC_SC=${CI_PVC_SC:-"${CI_PVC_SC_LOCAL:-local-path}"}
+    - export CI_REPLICAS=${CI_REPLICAS_REVIEW:-${CI_REPLICAS:-2}}
+    - export CI_APP_NAME=${CI_APP_NAME:-Engelsystem}
+
+    - cp deployment.tpl.yaml deployment.yaml
+    - for env in ${!CI_*}; do sed -i "s#<${env}>#$(echo "${!env}"|head -n1)#g" deployment.yaml; done
+
+    - echo "Deploying to ${CI_ENVIRONMENT_URL}"
+    - kubectl apply -f deployment.yaml
+    - >-
+      kubectl -n $CI_KUBE_NAMESPACE wait --for=condition=Ready pods --timeout=${CI_WAIT_TIMEOUT:-5}m
+      -l app=$CI_PROJECT_PATH_SLUG -l tier=database
+    - >-
+      kubectl -n $CI_KUBE_NAMESPACE wait --for=condition=Ready pods --timeout=${CI_WAIT_TIMEOUT:-5}m
+      -l app=$CI_PROJECT_PATH_SLUG -l tier=application -l commit=$CI_COMMIT_SHORT_SHA
+
+.deploy_k8s_stop: &deploy_k8s_stop
+  <<: *kubectl_deployment
+  variables:
+    GIT_STRATEGY: none
+  dependencies: []
+  when: manual
+  script:
+    - kubectl delete all,ingress,pvc -l app=$CI_PROJECT_PATH_SLUG -l environment=$CI_ENVIRONMENT_SLUG
+
+deploy-k8s-review:
+  <<: *deploy_k8s
+  environment:
+    name: review/${CI_COMMIT_REF_NAME}
+    on_stop: stop-k8s-review
+    auto_stop_in: 1 week
+    url: https://${CI_PROJECT_PATH_SLUG}-review.${KUBE_INGRESS_BASE_DOMAIN}/${CI_COMMIT_REF_SLUG}
+  variables:
+    CI_REPLICAS_REVIEW: 1
+    CI_APP_NAME: review/${CI_COMMIT_REF_NAME}
+  before_script:
+    - *kubectl_deployment_script
+    - RELEASE_IMAGE=$TEST_IMAGE
+    - RELEASE_IMAGE_NGINX=$TEST_IMAGE_NGINX
+
+stop-k8s-review:
+  <<: *deploy_k8s_stop
+  environment:
+    name: review/${CI_COMMIT_REF_NAME}
+    action: stop
+
+#
+# Deploy production
+#
+
 deploy-production:
   <<: *deploy_definition
+  stage: deploy-production
   environment:
     name: production
   when: manual
@@ -204,3 +302,22 @@ deploy-production:
     - *deploy_template_script
     # Deploy to server
     - ./bin/deploy.sh -r "${PRODUCTION_REMOTE}" -p "${PRODUCTION_REMOTE_PATH}" -i "${CI_JOB_ID}-${CI_COMMIT_SHA}"
+
+deploy-k8s-production:
+  <<: *deploy_k8s
+  stage: deploy-production
+  environment:
+    name: production
+    on_stop: stop-k8s-production
+  when: manual
+  only:
+    - master
+
+stop-k8s-production:
+  <<: *deploy_k8s_stop
+  stage: deploy-production
+  only:
+    - master
+  environment:
+    name: production
+    action: stop
