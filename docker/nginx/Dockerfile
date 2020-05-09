@@ -1,4 +1,6 @@
 FROM nginx:alpine as es_nginx
+COPY docker/nginx/entrypoint.sh /
+ENTRYPOINT /entrypoint.sh
 RUN mkdir -p /var/www/public/ && touch /var/www/public/index.php
 COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
 
