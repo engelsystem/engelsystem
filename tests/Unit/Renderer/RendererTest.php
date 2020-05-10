@@ -56,7 +56,7 @@ class RendererTest extends TestCase
         $loggerMock = $this->getMockForAbstractClass(LoggerInterface::class);
         $loggerMock
             ->expects($this->once())
-            ->method('error');
+            ->method('critical');
 
         $renderer->setLogger($loggerMock);
 
