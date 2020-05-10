@@ -180,6 +180,24 @@ build-release-file:
     - rsync -vAax "${DOCROOT}" "${DOCROOT}/.babelrc" "${DOCROOT}/.browserslistrc" release/
     - rsync -vAax public/assets release/public/
 
+pages:
+  image: node:alpine
+  stage: release
+  dependencies:
+    - test
+  script:
+    - rm -rf public
+    - mv coverage public
+    - cp unittests.xml public/
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - public
+  only:
+    - master
+  variables:
+    GIT_STRATEGY: none
+
 #
 # Deploy staging
 #
