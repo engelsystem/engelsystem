@@ -5,6 +5,8 @@ use Composer\Autoload\ClassLoader;
 use Engelsystem\Application;
 use Engelsystem\Database\Migration\Migrate;
 use Engelsystem\Database\Migration\MigrationServiceProvider;
+use Engelsystem\Exceptions\Handler;
+use Engelsystem\Exceptions\Handlers\NullHandler;
 
 require_once __DIR__ . '/../includes/application.php';
 
@@ -14,6 +16,10 @@ $baseDir = __DIR__ . '/../db/migrations';
 /** @var Application $app */
 $app = app();
 $app->register(MigrationServiceProvider::class);
+
+/** @var Handler $errorHandler */
+$errorHandler = $app->get(Handler::class);
+$errorHandler->setHandler(Handler::ENV_PRODUCTION, new NullHandler());
 
 /** @var Migrate $migration */
 $migration = $app->get('db.migration');
