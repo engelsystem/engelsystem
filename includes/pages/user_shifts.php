@@ -182,13 +182,14 @@ function view_user_shifts()
     $days = load_days();
     $rooms = load_rooms();
     $types = load_types();
+    $ownTypes = [];
+    foreach (UserAngelTypes_by_User($user->id) as $type) {
+        $ownTypes[] = (int)$type['angeltype_id'];
+    }
 
     if (!$session->has('shifts-filter')) {
-        $room_ids = [
-            $rooms[0]['id']
-        ];
-        $type_ids = array_map('get_ids_from_array', $types);
-        $shiftsFilter = new ShiftsFilter(auth()->can('user_shifts_admin'), $room_ids, $type_ids);
+        $room_ids = collect($rooms)->pluck('id')->toArray();
+        $shiftsFilter = new ShiftsFilter(auth()->can('user_shifts_admin'), $room_ids, $ownTypes);
         $session->set('shifts-filter', $shiftsFilter->sessionExport());
     }
 
@@ -220,11 +221,6 @@ function view_user_shifts()
 
     if (config('signup_requires_arrival') && !$user->state->arrived) {
         info(render_user_arrived_hint());
-    }
-
-    $ownTypes = [];
-    foreach (UserAngelTypes_by_User($user->id) as $type) {
-        $ownTypes[] = (int)$type['angeltype_id'];
     }
 
     return page([
