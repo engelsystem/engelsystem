@@ -1,14 +1,15 @@
 {% extends 'layouts/app.twig' %}
 {% import 'macros/base.twig' as m %}
 
-{% block title %}{{ not only_meetings|default(false) ? __('news.title') : __('news.title.meetings') }}{% endblock %}
+{% set only_meetings = only_meetings|default(false) %}
+{% block title %}{{ not only_meetings ? __('news.title') : __('news.title.meetings') }}{% endblock %}
 
 {% block content %}
     <div class="container">
         <h1>
             {{ block('title') }}
             {%- if has_permission_to('admin_news') and is_overview|default(false) -%}
-                {{ m.button(__('news.add'), url('admin/news')) }}
+                {{ m.button(__('news.add'), url('admin/news', only_meetings ? {'meeting': 1} : {})) }}
             {%- endif %}
         </h1>
 
