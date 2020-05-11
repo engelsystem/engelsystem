@@ -107,6 +107,42 @@ class NewsControllerTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Admin\NewsController::edit
+     */
+    public function testEditIsMeeting()
+    {
+        $isMeeting = false;
+        $this->response->expects($this->exactly(3))
+            ->method('withView')
+            ->willReturnCallback(
+                function ($view, $data) use (&$isMeeting) {
+                    $this->assertEquals($isMeeting, $data['is_meeting']);
+                    $isMeeting = !$isMeeting;
+
+                    return $this->response;
+                }
+            );
+        $this->auth->expects($this->once())
+            ->method('can')
+            ->with('admin_news_html')
+            ->willReturn(true);
+
+        /** @var NewsController $controller */
+        $controller = $this->app->make(NewsController::class);
+
+        // Is no meeting
+        $controller->edit($this->request);
+
+        // Is meeting
+        $this->request->query->set('meeting', 1);
+        $controller->edit($this->request);
+
+        // Should stay no meeting
+        $this->request->attributes->set('id', 1);
+        $controller->edit($this->request);
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Admin\NewsController::save
      */
     public function testSaveCreateInvalid()

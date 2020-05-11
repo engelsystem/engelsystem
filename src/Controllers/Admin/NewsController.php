@@ -64,6 +64,7 @@ class NewsController extends BaseController
     {
         $id = $request->getAttribute('id');
         $news = $this->news->find($id);
+        $isMeeting = $request->get('meeting', false);
 
         if (
             $news
@@ -75,7 +76,7 @@ class NewsController extends BaseController
 
         return $this->response->withView(
             'pages/news/edit.twig',
-            ['news' => $news] + $this->getNotifications()
+            ['news' => $news, 'is_meeting' => $news ? $news->is_meeting : $isMeeting] + $this->getNotifications(),
         );
     }
 
