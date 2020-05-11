@@ -4,13 +4,9 @@ namespace Engelsystem\Test\Unit\Models;
 
 use Carbon\Carbon;
 use Engelsystem\Models\EventConfig;
-use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\TestCase;
 
-class EventConfigTest extends TestCase
+class EventConfigTest extends ModelTest
 {
-    use HasDatabase;
-
     /**
      * @covers \Engelsystem\Models\EventConfig::setValueAttribute
      */
@@ -116,14 +112,5 @@ class EventConfigTest extends TestCase
                 return $this;
             }
         };
-    }
-
-    /**
-     * Prepare test
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->initDatabase();
     }
 }

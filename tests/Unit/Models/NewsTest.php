@@ -6,16 +6,12 @@ namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\News;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\TestCase;
 
 /**
  * This class provides tests for the News model.
  */
-class NewsTest extends TestCase
+class NewsTest extends ModelTest
 {
-    use HasDatabase;
-
     /** @var array */
     private $newsData;
 
@@ -28,7 +24,6 @@ class NewsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->initDatabase();
 
         $this->user = (new User())->create([
             'name'     => 'lorem',
