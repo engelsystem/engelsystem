@@ -4,13 +4,10 @@ namespace Engelsystem\Test\Unit\Models\Shifts;
 
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\ScheduleShift;
-use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\TestCase;
+use Engelsystem\Test\Unit\Models\ModelTest;
 
-class ScheduleTest extends TestCase
+class ScheduleTest extends ModelTest
 {
-    use HasDatabase;
-
     /**
      * @covers \Engelsystem\Models\Shifts\Schedule::scheduleShifts
      */
@@ -24,14 +21,5 @@ class ScheduleTest extends TestCase
         (new ScheduleShift(['shift_id' => 3, 'schedule_id' => $schedule->id, 'guid' => 'c']))->save();
 
         $this->assertCount(3, $schedule->scheduleShifts);
-    }
-
-    /**
-     * Prepare test
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->initDatabase();
     }
 }

@@ -6,16 +6,12 @@ namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\Message;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\TestCase;
 
 /**
  * This class provides tests covering the Message model and its relations.
  */
-class MessageTest extends TestCase
+class MessageTest extends ModelTest
 {
-    use HasDatabase;
-
     /** @var User */
     private $user1;
 
@@ -37,7 +33,6 @@ class MessageTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->initDatabase();
 
         $this->user1 = User::create([
             'name'     => 'user1',

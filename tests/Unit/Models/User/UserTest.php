@@ -13,15 +13,13 @@ use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\TestCase;
+use Engelsystem\Test\Unit\Models\ModelTest;
 use Exception;
 use Illuminate\Support\Str;
 
-class UserTest extends TestCase
+class UserTest extends ModelTest
 {
     use ArraySubsetAsserts;
-    use HasDatabase;
 
     /** @var string[] */
     protected $data = [
@@ -206,14 +204,5 @@ class UserTest extends TestCase
         $this->assertCount(2, $answers);
         $this->assertContains($question1->id, $answers);
         $this->assertContains($question2->id, $answers);
-    }
-
-    /**
-     * Prepare test
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->initDatabase();
     }
 }

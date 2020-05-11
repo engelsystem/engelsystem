@@ -4,14 +4,11 @@ namespace Engelsystem\Test\Unit\Models\User;
 
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\User\UsesUserModel;
-use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\TestCase;
+use Engelsystem\Test\Unit\Models\ModelTest;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UsesUserModelTest extends TestCase
+class UsesUserModelTest extends ModelTest
 {
-    use HasDatabase;
-
     /**
      * @covers \Engelsystem\Models\User\UsesUserModel::user
      */
@@ -24,14 +21,5 @@ class UsesUserModelTest extends TestCase
         };
 
         $this->assertInstanceOf(BelongsTo::class, $model->user());
-    }
-
-    /**
-     * Prepare test
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->initDatabase();
     }
 }

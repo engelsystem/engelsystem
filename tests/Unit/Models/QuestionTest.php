@@ -6,14 +6,10 @@ namespace Engelsystem\Test\Unit\Models;
 
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Support\Str;
 
-class QuestionTest extends TestCase
+class QuestionTest extends ModelTest
 {
-    use HasDatabase;
-
     /**
      * @var User
      */
@@ -30,7 +26,6 @@ class QuestionTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->initDatabase();
 
         $this->user1 = User::create(
             [

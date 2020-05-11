@@ -4,14 +4,11 @@ namespace Engelsystem\Test\Unit\Models\Shifts;
 
 use Engelsystem\Models\Shifts\Schedule;
 use Engelsystem\Models\Shifts\ScheduleShift;
-use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\TestCase;
+use Engelsystem\Test\Unit\Models\ModelTest;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ScheduleShiftTest extends TestCase
+class ScheduleShiftTest extends ModelTest
 {
-    use HasDatabase;
-
     /**
      * @covers \Engelsystem\Models\Shifts\ScheduleShift::schedule
      */
@@ -28,14 +25,5 @@ class ScheduleShiftTest extends TestCase
         $scheduleShift = (new ScheduleShift())->find(1);
         $this->assertInstanceOf(BelongsTo::class, $scheduleShift->schedule());
         $this->assertEquals($schedule->id, $scheduleShift->schedule->id);
-    }
-
-    /**
-     * Prepare test
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->initDatabase();
     }
 }
