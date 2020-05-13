@@ -129,7 +129,7 @@ function admin_shifts()
                     $valid = false;
                     error(__('Please split the shift-change hours by colons.'));
                 }
-                $shift_over_midnight = $request->has('shift_over_midnight') 
+                $shift_over_midnight = $request->has('shift_over_midnight')
                     && $request->input('shift_over_midnight') != 'false';
             }
         } else {
@@ -362,16 +362,16 @@ function admin_shifts()
             $needed_angel_types_info = [];
             foreach ($session->get('admin_shifts_types', []) as $type_id => $count) {
                 $angel_type_source = DB::selectOne('
-                      SELECT *
-                      FROM `AngelTypes`
-                      WHERE `id` = ?
-                      LIMIT 1', [$type_id]);
+                    SELECT *
+                    FROM `AngelTypes`
+                    WHERE `id` = ?
+                    LIMIT 1', [$type_id]);
 
                 if (!empty($angel_type_source)) {
                     DB::insert('
                         INSERT INTO `NeededAngelTypes` (`shift_id`, `angel_type_id`, `count`)
                         VALUES (?, ?, ?)
-                      ',
+                        ',
                         [
                             $shift_id,
                             $type_id,
@@ -442,8 +442,8 @@ function admin_shifts()
                             : '00, 04, 08, 10, 12, 14, 16, 18, 20, 22'
                     ),
                     form_checkbox(
-                        'shift_over_midnight', 
-                        __('Create a shift over midnight.'), 
+                        'shift_over_midnight',
+                        __('Create a shift over midnight.'),
                         $shift_over_midnight
                     )
                 ]),

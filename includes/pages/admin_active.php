@@ -62,8 +62,8 @@ function admin_active()
                             users.*,
                             COUNT(ShiftEntry.id) AS shift_count,
                                 (%s + (
-                                      SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`users`.`id`
-                                      AND `work_timestamp` < ?
+                                    SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`users`.`id`
+                                    AND `work_timestamp` < ?
                                 )) AS `shift_length`
                         ',
                         $shift_sum_formula
@@ -156,8 +156,8 @@ function admin_active()
                     users.*,
                     COUNT(ShiftEntry.id) AS shift_count,
                         (%s + (
-                              SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`users`.`id`
-                              AND `work_timestamp` < ?
+                            SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`users`.`id`
+                            AND `work_timestamp` < ?
                         )) AS `shift_length`
                 ',
                 $shift_sum_formula

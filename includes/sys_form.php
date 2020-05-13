@@ -27,28 +27,28 @@ function form_spinner($name, $label, $value)
     $value = htmlspecialchars($value);
 
     return form_element($label, '
-      <div class="input-group">
-        <input id="spinner-' . $name . '" class="form-control" name="' . $name . '" value="' . $value . '" />
-        <div class="input-group-btn">
-          <button id="spinner-' . $name . '-down" class="btn btn-default" type="button">
-            <span class="glyphicon glyphicon-minus"></span>
-          </button>
-          <button id="spinner-' . $name . '-up" class="btn btn-default" type="button">
-            <span class="glyphicon glyphicon-plus"></span>
-          </button>
+        <div class="input-group">
+            <input id="spinner-' . $name . '" class="form-control" name="' . $name . '" value="' . $value . '" />
+            <div class="input-group-btn">
+                <button id="spinner-' . $name . '-down" class="btn btn-default" type="button">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </button>
+                <button id="spinner-' . $name . '-up" class="btn btn-default" type="button">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </div>
         </div>
-      </div>
-      <script type="text/javascript">
-        $(\'#spinner-' . $name . '-down\').click(function() {
-          var spinner = $(\'#spinner-' . $name . '\');
-          spinner.val(parseInt(spinner.val()) - 1);
-        });
-        $(\'#spinner-' . $name . '-up\').click(function() {
-          var spinner = $(\'#spinner-' . $name . '\');
-          spinner.val(parseInt(spinner.val()) + 1);
-        });
-      </script>
-      ');
+        <script type="text/javascript">
+            $(\'#spinner-' . $name . '-down\').click(function() {
+                var spinner = $(\'#spinner-' . $name . '\');
+                spinner.val(parseInt(spinner.val()) - 1);
+            });
+            $(\'#spinner-' . $name . '-up\').click(function() {
+                var spinner = $(\'#spinner-' . $name . '\');
+                spinner.val(parseInt(spinner.val()) + 1);
+            });
+        </script>
+        ');
 }
 
 /**
@@ -71,7 +71,7 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
 
     return form_element($label, '
     <div class="input-group date" id="' . $dom_id . '" data-min-date="' . $start_date . '" data-max-date="' . $end_date . '">
-      <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '">'
+        <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '">'
         . '<span class="input-group-addon">' . glyph('th') . '</span>
     </div>
     ', $dom_id);

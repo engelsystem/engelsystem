@@ -54,8 +54,8 @@ class CleanupGroupPrivileges extends Migration
             '
                 DELETE FROM `GroupPrivileges`
                 WHERE
-                  group_id = ?
-                  AND privilege_id = ?
+                    group_id = ?
+                    AND privilege_id = ?
             ',
             [
                 -40, // Shift Coordinator

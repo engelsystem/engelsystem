@@ -64,16 +64,16 @@ function UserDriverLicenses_create($user_driver_license, $userId)
 {
     $user_driver_license['user_id'] = $userId;
     DB::insert('
-          INSERT INTO `UserDriverLicenses` (
-              `user_id`,
-              `has_car`,
-              `has_license_car`,
-              `has_license_3_5t_transporter`,
-              `has_license_7_5t_truck`,
-              `has_license_12_5t_truck`,
-              `has_license_forklift`
-          )
-          VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO `UserDriverLicenses` (
+            `user_id`,
+            `has_car`,
+            `has_license_car`,
+            `has_license_3_5t_transporter`,
+            `has_license_7_5t_truck`,
+            `has_license_12_5t_truck`,
+            `has_license_forklift`
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $user_driver_license['user_id'],
@@ -97,16 +97,16 @@ function UserDriverLicenses_create($user_driver_license, $userId)
 function UserDriverLicenses_update($user_driver_license)
 {
     DB::update('
-          UPDATE `UserDriverLicenses`
-          SET
-              `has_car`=?,
-              `has_license_car`=?,
-              `has_license_3_5t_transporter`=?,
-              `has_license_7_5t_truck`=?,
-              `has_license_12_5t_truck`=?,
-              `has_license_forklift`=?
-          WHERE `user_id`=?
-       ',
+        UPDATE `UserDriverLicenses`
+        SET
+            `has_car`=?,
+            `has_license_car`=?,
+            `has_license_3_5t_transporter`=?,
+            `has_license_7_5t_truck`=?,
+            `has_license_12_5t_truck`=?,
+            `has_license_forklift`=?
+        WHERE `user_id`=?
+        ',
         [
             (int)$user_driver_license['has_car'],
             (int)$user_driver_license['has_license_car'],

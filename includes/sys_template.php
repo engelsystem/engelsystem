@@ -1,7 +1,5 @@
 <?php
 
-use Engelsystem\Renderer\Twig\Extensions\Assets;
-
 /**
  * Render a stat for dashborad (big number with label).
  * If no style given, style is danger if number > 0, and success if number == 0.
@@ -194,12 +192,12 @@ function toolbar_item_divider()
  */
 function toolbar_dropdown($glyphicon, $label, $submenu, $class = '')
 {
-    return '<li class="dropdown ' . $class . '">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">'
+    return '<li class="dropdown ' . $class . '">'
+        . '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'
         . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '')
         . $label
-        . ' <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">'
+        . '<span class="caret"></span></a>'
+        . '<ul class="dropdown-menu" role="menu">'
         . join("\n", $submenu)
         . '</ul></li>';
 }
@@ -214,22 +212,22 @@ function toolbar_dropdown($glyphicon, $label, $submenu, $class = '')
 function toolbar_popover($glyphicon, $label, $content, $class = '')
 {
     $dom_id = md5(microtime() . $glyphicon . $label);
-    return '<li class="dropdown messages ' . $class . '">
-          <a id="' . $dom_id . '" href="#" tabindex="0">'
+    return '<li class="dropdown messages ' . $class . '">'
+        . '<a id="' . $dom_id . '" href="#" tabindex="0">'
         . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '')
         . $label
-        . ' <span class="caret"></span></a>
-          <script type="text/javascript">
-          $(function(){
-              $(\'#' . $dom_id . '\').popover({
-                  trigger: \'click\',
-                  html: true,
-                  content: \'' . addslashes(join('', $content)) . '\',
-                  placement: \'bottom\',
-                  container: \'#navbar-offcanvas\'
-              })
-          });
-          </script></li>';
+        . ' <span class="caret"></span></a>'
+        . '<script type="text/javascript">
+                $(function(){
+                    $(\'#' . $dom_id . '\').popover({
+                        trigger: \'click\',
+                        html: true,
+                        content: \'' . addslashes(join('', $content)) . '\',
+                        placement: \'bottom\',
+                        container: \'#navbar-offcanvas\'
+                    })
+                });
+            </script></li>';
 }
 
 

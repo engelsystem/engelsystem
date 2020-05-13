@@ -48,18 +48,19 @@ function ShiftEntries_freeloaded_count()
 function ShiftEntries_by_shift($shift_id)
 {
     return DB::select('
-          SELECT
-              `users`.*,
-              `ShiftEntry`.`UID`,
-              `ShiftEntry`.`TID`,
-              `ShiftEntry`.`SID`,
-              `AngelTypes`.`name` AS `angel_type_name`,
-              `ShiftEntry`.`Comment`,
-              `ShiftEntry`.`freeloaded`
-          FROM `ShiftEntry`
-          JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`
-          JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
-          WHERE `ShiftEntry`.`SID` = ?',
+            SELECT
+                `users`.*,
+                `ShiftEntry`.`UID`,
+                `ShiftEntry`.`TID`,
+                `ShiftEntry`.`SID`,
+                `AngelTypes`.`name` AS `angel_type_name`,
+                `ShiftEntry`.`Comment`,
+                `ShiftEntry`.`freeloaded`
+            FROM `ShiftEntry`
+            JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`
+            JOIN `AngelTypes` ON `ShiftEntry`.`TID`=`AngelTypes`.`id`
+            WHERE `ShiftEntry`.`SID` = ?
+        ',
         [$shift_id]
     );
 }
@@ -78,15 +79,15 @@ function ShiftEntry_create($shift_entry)
     $room = Room($shift['RID']);
     $angeltype = AngelType($shift_entry['TID']);
     $result = DB::insert('
-          INSERT INTO `ShiftEntry` (
-              `SID`,
-              `TID`,
-              `UID`,
-              `Comment`,
-              `freeload_comment`,
-              `freeloaded`
-          )
-          VALUES(?, ?, ?, ?, ?, ?)
+            INSERT INTO `ShiftEntry` (
+                `SID`,
+                `TID`,
+                `UID`,
+                `Comment`,
+                `freeload_comment`,
+                `freeloaded`
+            )
+            VALUES(?, ?, ?, ?, ?, ?)
         ',
         [
             $shift_entry['SID'],
@@ -119,12 +120,13 @@ function ShiftEntry_create($shift_entry)
 function ShiftEntry_update($shift_entry)
 {
     DB::update('
-      UPDATE `ShiftEntry`
-      SET
-          `Comment` = ?,
-          `freeload_comment` = ?,
-          `freeloaded` = ?
-      WHERE `id` = ?',
+            UPDATE `ShiftEntry`
+            SET
+                `Comment` = ?,
+                `freeload_comment` = ?,
+                `freeloaded` = ?
+            WHERE `id` = ?
+        ',
         [
             $shift_entry['Comment'],
             $shift_entry['freeload_comment'],
@@ -191,7 +193,7 @@ function ShiftEntries_upcoming_for_user($userId)
         WHERE `ShiftEntry`.`UID` = ?
         AND `Shifts`.`end` > ?
         ORDER BY `Shifts`.`end`
-      ',
+        ',
         [
             $userId,
             time(),
@@ -209,16 +211,16 @@ function ShiftEntries_upcoming_for_user($userId)
 function ShiftEntries_finished_by_user($userId, Carbon $sinceTime = null)
 {
     return DB::select('
-          SELECT *
-          FROM `ShiftEntry`
-          JOIN `Shifts` ON (`Shifts`.`SID` = `ShiftEntry`.`SID`)
-          JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
-          WHERE `ShiftEntry`.`UID` = ?
-          AND `Shifts`.`end` < ?
-          AND `ShiftEntry`.`freeloaded` = 0
-          ' . ($sinceTime ? 'AND Shifts.start >= ' . $sinceTime->getTimestamp() : '') . '
-          ORDER BY `Shifts`.`end` desc
-      ',
+            SELECT *
+            FROM `ShiftEntry`
+            JOIN `Shifts` ON (`Shifts`.`SID` = `ShiftEntry`.`SID`)
+            JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
+            WHERE `ShiftEntry`.`UID` = ?
+            AND `Shifts`.`end` < ?
+            AND `ShiftEntry`.`freeloaded` = 0
+            ' . ($sinceTime ? 'AND Shifts.start >= ' . $sinceTime->getTimestamp() : '') . '
+            ORDER BY `Shifts`.`end` desc
+        ',
         [
             $userId,
             time(),
@@ -257,11 +259,11 @@ function ShiftEntries_by_shift_and_angeltype($shift_id, $angeltype_id)
 function ShiftEntries_freeloaded_by_user($userId)
 {
     return DB::select('
-          SELECT *
-          FROM `ShiftEntry`
-          WHERE `freeloaded` = 1
-          AND `UID` = ?
-          ',
+            SELECT *
+            FROM `ShiftEntry`
+            WHERE `freeloaded` = 1
+            AND `UID` = ?
+        ',
         [
             $userId
         ]

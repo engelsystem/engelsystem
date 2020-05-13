@@ -23,7 +23,7 @@ function User_tshirt_score($userId)
     $result_shifts = DB::selectOne(sprintf('
         SELECT ROUND((%s) / 3600, 2) AS `tshirt_score`
         FROM `users` LEFT JOIN `ShiftEntry` ON `users`.`id` = `ShiftEntry`.`UID`
-        LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID` 
+        LEFT JOIN `Shifts` ON `ShiftEntry`.`SID` = `Shifts`.`SID`
         WHERE `users`.`id` = ?
         AND `Shifts`.`end` < ?
         GROUP BY `users`.`id`
@@ -37,7 +37,7 @@ function User_tshirt_score($userId)
 
     $result_worklog = DB::selectOne('
         SELECT SUM(`work_hours`) AS `tshirt_score`
-        FROM `users` 
+        FROM `users`
         LEFT JOIN `UserWorkLog` ON `users`.`id` = `UserWorkLog`.`user_id`
         WHERE `users`.`id` = ?
         AND `UserWorkLog`.`work_timestamp` < ?
@@ -281,13 +281,11 @@ function User_get_shifts_sum_query()
 
     return sprintf('
             COALESCE(SUM(
-                (1 +
-                    (
-                      (HOUR(FROM_UNIXTIME(`Shifts`.`end`)) > %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) < %2$d)
-                      OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) > %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`start`)) < %2$d)
-                      OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) <= %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) >= %2$d)
-                    )
-                )
+                (1 + (
+                    (HOUR(FROM_UNIXTIME(`Shifts`.`end`)) > %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) < %2$d)
+                    OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) > %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`start`)) < %2$d)
+                    OR (HOUR(FROM_UNIXTIME(`Shifts`.`start`)) <= %1$d AND HOUR(FROM_UNIXTIME(`Shifts`.`end`)) >= %2$d)
+                ))
                 * (`Shifts`.`end` - `Shifts`.`start`)
                 * (1 - (%3$d + 1) * `ShiftEntry`.`freeloaded`)
             ), 0)

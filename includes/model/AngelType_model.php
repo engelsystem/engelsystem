@@ -44,9 +44,9 @@ function AngelType_has_contact_info($angeltype)
 function AngelType_delete($angeltype)
 {
     DB::delete('
-      DELETE FROM `AngelTypes`
-      WHERE `id`=?
-      LIMIT 1
+        DELETE FROM `AngelTypes`
+        WHERE `id`=?
+        LIMIT 1
     ', [$angeltype['id']]);
     engelsystem_log('Deleted angeltype: ' . AngelType_name_render($angeltype, true));
 }
@@ -59,17 +59,18 @@ function AngelType_delete($angeltype)
 function AngelType_update($angeltype)
 {
     DB::update('
-          UPDATE `AngelTypes` SET
-          `name` = ?,
-          `restricted` = ?,
-          `description` = ?,
-          `requires_driver_license` = ?,
-          `no_self_signup` = ?,
-          `contact_name` = ?,
-          `contact_dect` = ?,
-          `contact_email` = ?,
-          `show_on_dashboard` = ?
-          WHERE `id` = ?',
+            UPDATE `AngelTypes` SET
+            `name` = ?,
+            `restricted` = ?,
+            `description` = ?,
+            `requires_driver_license` = ?,
+            `no_self_signup` = ?,
+            `contact_name` = ?,
+            `contact_dect` = ?,
+            `contact_email` = ?,
+            `show_on_dashboard` = ?
+            WHERE `id` = ?
+        ',
         [
             $angeltype['name'],
             (int)$angeltype['restricted'],
@@ -104,18 +105,18 @@ function AngelType_update($angeltype)
 function AngelType_create($angeltype)
 {
     DB::insert('
-          INSERT INTO `AngelTypes` (
-              `name`,
-              `restricted`,
-              `description`,
-              `requires_driver_license`,
-              `no_self_signup`,
-              `contact_name`,
-              `contact_dect`,
-              `contact_email`,
-              `show_on_dashboard`
-          )
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO `AngelTypes` (
+                `name`,
+                `restricted`,
+                `description`,
+                `requires_driver_license`,
+                `no_self_signup`,
+                `contact_name`,
+                `contact_dect`,
+                `contact_email`,
+                `show_on_dashboard`
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $angeltype['name'],
@@ -187,14 +188,14 @@ function AngelType_validate_name($name, $angeltype)
 function AngelTypes_with_user($userId)
 {
     return DB::select('
-      SELECT `AngelTypes`.*,
-      `UserAngelTypes`.`id` AS `user_angeltype_id`,
-      `UserAngelTypes`.`confirm_user_id`,
-      `UserAngelTypes`.`supporter`
-      FROM `AngelTypes`
-      LEFT JOIN `UserAngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id`
-      AND `UserAngelTypes`.`user_id` = ?
-      ORDER BY `name`', [$userId]);
+        SELECT `AngelTypes`.*,
+        `UserAngelTypes`.`id` AS `user_angeltype_id`,
+        `UserAngelTypes`.`confirm_user_id`,
+        `UserAngelTypes`.`supporter`
+        FROM `AngelTypes`
+        LEFT JOIN `UserAngelTypes` ON `AngelTypes`.`id`=`UserAngelTypes`.`angeltype_id`
+        AND `UserAngelTypes`.`user_id` = ?
+        ORDER BY `name`', [$userId]);
 }
 
 /**
@@ -205,9 +206,10 @@ function AngelTypes_with_user($userId)
 function AngelTypes()
 {
     return DB::select('
-      SELECT *
-      FROM `AngelTypes`
-      ORDER BY `name`');
+        SELECT *
+        FROM `AngelTypes`
+        ORDER BY `name`
+    ');
 }
 
 /**

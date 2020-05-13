@@ -72,8 +72,8 @@ function Room_delete($room_id)
 function Room_create($name, $map_url, $description)
 {
     DB::insert('
-          INSERT INTO `Room` (`Name`, `map_url`, `description`)
-           VALUES (?, ?, ?)
+            INSERT INTO `Room` (`Name`, `map_url`, `description`)
+            VALUES (?, ?, ?)
         ', [
         $name,
         $map_url,
