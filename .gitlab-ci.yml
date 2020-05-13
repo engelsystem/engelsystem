@@ -35,6 +35,12 @@ check-style:
   script:
     - phpcs -p --no-colors --basepath="$PWD"
 
+check-editorconfig:
+  image: mstruebing/editorconfig-checker
+  stage: validate
+  script:
+    - ec -v
+
 validate-composer:
   image: composer:latest
   stage: validate
