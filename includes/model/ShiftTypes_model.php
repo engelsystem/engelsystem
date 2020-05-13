@@ -23,11 +23,11 @@ function ShiftType_delete($shifttype_id)
 function ShiftType_update($shifttype_id, $name, $angeltype_id, $description)
 {
     DB::update('
-      UPDATE `ShiftTypes` SET
-      `name`=?,
-      `angeltype_id`=?,
-      `description`=?
-      WHERE `id`=?
+        UPDATE `ShiftTypes` SET
+            `name`=?,
+            `angeltype_id`=?,
+            `description`=?
+        WHERE `id`=?
     ',
         [
             $name,

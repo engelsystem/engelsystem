@@ -551,19 +551,19 @@ class ImportSchedule extends BaseController
     {
         return $this->db->selectOne(
             '
-                    SELECT
-                           s.SID AS id,
-                           s.title,
-                           s.start,
-                           s.end,
-                           s.shifttype_id AS shift_type_id,
-                           s.RID AS room_id,
-                           r.Name AS room_name,
-                           s.URL as url
-                    FROM Shifts AS s
-                    LEFT JOIN Room r on s.RID = r.RID
-                    WHERE SID = ?
-                  ',
+            SELECT
+                s.SID AS id,
+                s.title,
+                s.start,
+                s.end,
+                s.shifttype_id AS shift_type_id,
+                s.RID AS room_id,
+                r.Name AS room_name,
+                s.URL as url
+            FROM Shifts AS s
+            LEFT JOIN Room r on s.RID = r.RID
+            WHERE SID = ?
+            ',
             [$id]
         );
     }

@@ -46,16 +46,16 @@ function make_atom_entries_from_news($news_entries)
     $updatedAt = isset($news_entries[0]) ? $news_entries[0]->updated_at->format('Y-m-d\TH:i:sP') : '0000:00:00T00:00:00+00:00';
 
     $html = '<?xml version="1.0" encoding="utf-8"?>
-  <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>' . config('app_name') . '</title>
-  <id>' . $request->getHttpHost()
-        . htmlspecialchars(preg_replace(
-            '#[&?]key=[a-f\d]{32}#',
-            '',
-            $request->getRequestUri()
-        ))
-        . '</id>
-  <updated>' . $updatedAt . '</updated>' . "\n";
+<feed xmlns="http://www.w3.org/2005/Atom">
+<title>' . config('app_name') . '</title>
+<id>' . $request->getHttpHost()
+    . htmlspecialchars(preg_replace(
+        '#[&?]key=[a-f\d]{32}#',
+        '',
+        $request->getRequestUri()
+    ))
+    . '</id>
+<updated>' . $updatedAt . '</updated>' . "\n";
     foreach ($news_entries as $news_entry) {
         $html .= make_atom_entry_from_news($news_entry);
     }
@@ -70,7 +70,7 @@ function make_atom_entries_from_news($news_entries)
 function make_atom_entry_from_news(News $news)
 {
     return '
-  <entry>
+<entry>
     <title>' . htmlspecialchars($news->title) . '</title>
     <link href="' . page_link_to('news/' . $news->id) . '"/>
     <id>' . preg_replace(
@@ -80,5 +80,5 @@ function make_atom_entry_from_news(News $news)
         ) . '</id>
     <updated>' . $news->updated_at->format('Y-m-d\TH:i:sP') . '</updated>
     <summary type="html">' . htmlspecialchars($news->text) . '</summary>
-  </entry>' . "\n";
+</entry>' . "\n";
 }

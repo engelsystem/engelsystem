@@ -61,7 +61,7 @@ class AddAngelSupporterPermissions extends Migration
         return sprintf('
                 %s FROM GroupPrivileges
                 WHERE group_id = (SELECT UID FROM `Groups` WHERE `name` = ?)
-                AND privilege_id = (SELECT id FROM `Privileges` WHERE `name` = ?)        
+                AND privilege_id = (SELECT id FROM `Privileges` WHERE `name` = ?)
         ', $type);
     }
 }

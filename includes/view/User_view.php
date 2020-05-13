@@ -589,7 +589,7 @@ function User_view(
             (config('enable_pronoun') && $user_source->personalData->pronoun)
             ? '<small>' . htmlspecialchars($user_source->personalData->pronoun) . '</small> '
             : ''
-          )
+        )
         . htmlspecialchars($user_source->name)
         . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : ''),
         [

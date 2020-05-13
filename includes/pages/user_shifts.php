@@ -115,9 +115,9 @@ function load_rooms()
 function load_days()
 {
     $days = DB::select('
-      SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name`
-      FROM `Shifts`
-      ORDER BY `id`, `name`
+        SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name`
+        FROM `Shifts`
+        ORDER BY `id`, `name`
     ');
     $days = array_map('array_shift', $days);
 
@@ -302,8 +302,8 @@ function ical_hint()
             page_link_to('user_myshifts', ['reset' => 1])
         )
         . ' <button class="btn btn-xs btn-danger" data-toggle="collapse" data-target="#collapseApiKey" aria-expanded="false" aria-controls="collapseApiKey">
-             ' . __('Show API Key') . '
-           </button>'
+            ' . __('Show API Key') . '
+            </button>'
         . '</p>'
         . '<p id="collapseApiKey" class="collapse"><code>' . $user->api_key . '</code></p>';
 }

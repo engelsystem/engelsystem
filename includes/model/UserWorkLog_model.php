@@ -30,12 +30,12 @@ function UserWorkLogsForUser($userId, Carbon $sinceTime = null)
 {
     return Db::select(
         '
-                SELECT *
-                FROM `UserWorkLog`
-                WHERE `user_id`=?
-                ' . ($sinceTime ? 'AND work_timestamp >= ' . $sinceTime->getTimestamp() : '') . '
-                ORDER BY `created_timestamp`
-              ',
+            SELECT *
+            FROM `UserWorkLog`
+            WHERE `user_id`=?
+            ' . ($sinceTime ? 'AND work_timestamp >= ' . $sinceTime->getTimestamp() : '') . '
+            ORDER BY `created_timestamp`
+        ',
         [
             $userId
         ]

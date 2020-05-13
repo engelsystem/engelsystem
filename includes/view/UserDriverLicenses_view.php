@@ -53,23 +53,23 @@ function UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver
             ], 'driving_license'),
             form_submit('submit', __('Save'))
         ]),
-        '<script type="text/javascript">
-        $(function() {
-          var checkbox = $(\'#wants_to_drive\');
-          if(checkbox.is(\':checked\'))
-            $(\'#driving_license\').show();
-          else
-            $(\'#driving_license\').hide();
+        '
+        <script type="text/javascript">
+            $(function() {
+                var checkbox = $(\'#wants_to_drive\');
+                if(checkbox.is(\':checked\'))
+                    $(\'#driving_license\').show();
+                else
+                    $(\'#driving_license\').hide();
 
-          checkbox.click(
-            function() {
-              if($(\'#wants_to_drive\').is(\':checked\'))
-                $(\'#driving_license\').show();
-              else
-                $(\'#driving_license\').hide();
-            }
-          );
-        });
-      </script>'
+                checkbox.click(function() {
+                if($(\'#wants_to_drive\').is(\':checked\'))
+                    $(\'#driving_license\').show();
+                else
+                    $(\'#driving_license\').hide();
+                });
+            });
+        </script>
+        '
     ]);
 }

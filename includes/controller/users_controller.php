@@ -213,11 +213,11 @@ function user_controller()
         );
         foreach ($shift['needed_angeltypes'] as &$needed_angeltype) {
             $needed_angeltype['users'] = DB::select('
-                  SELECT `ShiftEntry`.`freeloaded`, `users`.*
-                  FROM `ShiftEntry`
-                  JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`
-                  WHERE `ShiftEntry`.`SID` = ?
-                  AND `ShiftEntry`.`TID` = ?
+                    SELECT `ShiftEntry`.`freeloaded`, `users`.*
+                    FROM `ShiftEntry`
+                    JOIN `users` ON `ShiftEntry`.`UID`=`users`.`id`
+                    WHERE `ShiftEntry`.`SID` = ?
+                    AND `ShiftEntry`.`TID` = ?
                 ',
                 [$shift['SID'], $needed_angeltype['id']]
             );
