@@ -11,28 +11,28 @@ Please also read the [CONTRIBUTING.md](CONTRIBUTING.md).
 ## Local build
 The following instructions explain how to get, build and run the latest Engelsystem version directly from the git master branch (may be unstable!).
 
- * Clone the master branch: `git clone https://github.com/engelsystem/engelsystem.git`
- * Install [Composer](https://getcomposer.org/download/) and [Yarn](https://yarnpkg.com/en/docs/install) (which requires [Node.js](https://nodejs.org/en/download/package-manager/))
- * Install project dependencies:
-     ```bash
-     composer install
-     yarn
-     ```
-    On production systems it is recommended to use
-    ```bash
-    composer install --no-dev
-    composer dump-autoload --optimize
-    ```
-    to install the Engelsystem
- * Build the frontend assets
-    ```bash
-    yarn build
-    ```
- * Optionally (for better performance)
-   * Generate translation files
-      ```bash
-      find resources/lang/ -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
-      ```
+* Clone the master branch: `git clone https://github.com/engelsystem/engelsystem.git`
+* Install [Composer](https://getcomposer.org/download/) and [Yarn](https://yarnpkg.com/en/docs/install) (which requires [Node.js](https://nodejs.org/en/download/package-manager/))
+* Install project dependencies:
+  ```bash
+  composer install
+  yarn
+  ```
+  On production systems it is recommended to use
+  ```bash
+  composer install --no-dev
+  composer dump-autoload --optimize
+  ```
+  to install the Engelsystem
+* Build the frontend assets
+```bash
+yarn build
+```
+* Optionally (for better performance)
+* Generate translation files
+  ```bash
+  find resources/lang/ -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
+  ```
 
 ## Testing
 To run the unit tests use
