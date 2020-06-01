@@ -151,11 +151,15 @@ class NewsControllerTest extends TestCase
     ) {
         $this->request->attributes->set('id', $id);
         $id = $id ?: 2;
-        $this->request = $this->request->withParsedBody([
+        $body = [
             'title'      => 'Some Title',
             'text'       => $text,
-            'is_meeting' => $isMeeting ? '1' : null,
-        ]);
+        ];
+        if ($isMeeting) {
+            $body['is_meeting'] = '1';
+        }
+
+        $this->request = $this->request->withParsedBody($body);
         $this->addUser();
         $this->auth->expects($this->once())
             ->method('can')
