@@ -3,11 +3,13 @@
 namespace Engelsystem\Database\Migration;
 
 use Engelsystem\Application;
+use Exception;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Throwable;
 
 class Migrate
 {
@@ -49,10 +51,13 @@ class Migrate
      * @param string $path
      * @param string $type (up|down)
      * @param bool   $oneStep
+     * @param bool   $forceMigration
      */
-    public function run($path, $type = self::UP, $oneStep = false)
+    public function run($path, $type = self::UP, $oneStep = false, $forceMigration = false)
     {
         $this->initMigration();
+
+        $this->lockTable($forceMigration);
         $migrations = $this->mergeMigrations(
             $this->getMigrations($path),
             $this->getMigrated()
@@ -62,29 +67,37 @@ class Migrate
             $migrations = $migrations->reverse();
         }
 
-        foreach ($migrations as $migration) {
-            /** @var array $migration */
-            $name = $migration['migration'];
+        try {
+            foreach ($migrations as $migration) {
+                /** @var array $migration */
+                $name = $migration['migration'];
 
-            if (
-                ($type == self::UP && isset($migration['id']))
-                || ($type == self::DOWN && !isset($migration['id']))
-            ) {
-                ($this->output)('Skipping ' . $name);
-                continue;
+                if (
+                    ($type == self::UP && isset($migration['id']))
+                    || ($type == self::DOWN && !isset($migration['id']))
+                ) {
+                    ($this->output)('Skipping ' . $name);
+                    continue;
+                }
+
+                ($this->output)('Migrating ' . $name . ' (' . $type . ')');
+
+                if (isset($migration['path'])) {
+                    $this->migrate($migration['path'], $name, $type);
+                }
+                $this->setMigrated($name, $type);
+
+                if ($oneStep) {
+                    break;
+                }
             }
+        } catch (Throwable $e) {
+            $this->unlockTable();
 
-            ($this->output)('Migrating ' . $name . ' (' . $type . ')');
-
-            if (isset($migration['path'])) {
-                $this->migrate($migration['path'], $name, $type);
-            }
-            $this->setMigrated($name, $type);
-
-            if ($oneStep) {
-                return;
-            }
+            throw $e;
         }
+
+        $this->unlockTable();
     }
 
     /**
@@ -143,6 +156,7 @@ class Migrate
     {
         return $this->getTableQuery()
             ->orderBy('id')
+            ->where('migration', '!=', 'lock')
             ->get();
     }
 
@@ -185,9 +199,44 @@ class Migrate
     }
 
     /**
+     * Lock the migrations table
+     *
+     * @param bool $forceMigration
+     *
+     * @throws Throwable
+     */
+    protected function lockTable($forceMigration = false)
+    {
+        $this->schema->getConnection()->transaction(function () use ($forceMigration) {
+            $lock = $this->getTableQuery()
+                ->where('migration', 'lock')
+                ->lockForUpdate()
+                ->first();
+
+            if ($lock && !$forceMigration) {
+                throw new Exception('Unable to acquire migration table lock');
+            }
+
+            $this->getTableQuery()
+                ->insert(['migration' => 'lock']);
+        });
+    }
+
+    /**
+     * Unlock a previously locked table
+     */
+    protected function unlockTable()
+    {
+        $this->getTableQuery()
+            ->where('migration', 'lock')
+            ->delete();
+    }
+
+    /**
      * Get a list of migration files
      *
      * @param string $dir
+     *
      * @return Collection
      */
     protected function getMigrations($dir)
@@ -212,6 +261,7 @@ class Migrate
      * List all migration files from the given directory
      *
      * @param string $dir
+     *
      * @return array
      */
     protected function getMigrationFiles($dir)

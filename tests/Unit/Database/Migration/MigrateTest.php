@@ -4,12 +4,13 @@ namespace Engelsystem\Test\Unit\Database\Migration;
 
 use Engelsystem\Application;
 use Engelsystem\Database\Migration\Migrate;
+use Engelsystem\Test\Unit\TestCase;
+use Exception;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
 class MigrateTest extends TestCase
 {
@@ -33,11 +34,18 @@ class MigrateTest extends TestCase
         /** @var Migrate|MockObject $migration */
         $migration = $this->getMockBuilder(Migrate::class)
             ->setConstructorArgs([$builder, $app])
-            ->onlyMethods(['initMigration', 'getMigrationFiles', 'getMigrated', 'migrate', 'setMigrated'])
+            ->onlyMethods([
+                'initMigration',
+                'getMigrationFiles',
+                'getMigrated',
+                'migrate',
+                'setMigrated',
+                'lockTable',
+                'unlockTable',
+            ])
             ->getMock();
 
-        $migration->expects($this->atLeastOnce())
-            ->method('initMigration');
+        $this->setExpects($migration, 'initMigration', null, null, $this->atLeastOnce());
         $migration->expects($this->atLeastOnce())
             ->method('getMigrationFiles')
             ->willReturn([
@@ -46,12 +54,10 @@ class MigrateTest extends TestCase
                 'foo/4567_11_01_000000_do_stuff.php',
                 'foo/9999_99_99_999999_another_foo.php',
             ]);
-        $migration->expects($this->atLeastOnce())
-            ->method('getMigrated')
-            ->willReturn(new Collection([
-                ['id' => 1, 'migration' => '1234_01_23_123456_init_foo'],
-                ['id' => 2, 'migration' => '4567_11_01_000000_do_stuff'],
-            ]));
+        $this->setExpects($migration, 'getMigrated', null, new Collection([
+            ['id' => 1, 'migration' => '1234_01_23_123456_init_foo'],
+            ['id' => 2, 'migration' => '4567_11_01_000000_do_stuff'],
+        ]), $this->atLeastOnce());
         $migration->expects($this->atLeastOnce())
             ->method('migrate')
             ->withConsecutive(
@@ -72,6 +78,8 @@ class MigrateTest extends TestCase
                 ['9876_03_22_210000_random_hack', Migrate::UP],
                 ['4567_11_01_000000_do_stuff', Migrate::DOWN]
             );
+        $this->setExpects($migration, 'lockTable', null, null, $this->atLeastOnce());
+        $this->setExpects($migration, 'unlockTable', null, null, $this->atLeastOnce());
 
         $migration->run('foo', Migrate::UP);
 
@@ -112,12 +120,57 @@ class MigrateTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Database\Migration\Migrate::run
+     */
+    public function testRunExceptionUnlockTable()
+    {
+        /** @var Application|MockObject $app */
+        $app = $this->getMockBuilder(Application::class)
+            ->onlyMethods(['instance'])
+            ->getMock();
+        /** @var SchemaBuilder|MockObject $builder */
+        $builder = $this->getMockBuilder(SchemaBuilder::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        /** @var Migrate|MockObject $migration */
+        $migration = $this->getMockBuilder(Migrate::class)
+            ->setConstructorArgs([$builder, $app])
+            ->onlyMethods([
+                'initMigration',
+                'lockTable',
+                'getMigrations',
+                'getMigrated',
+                'migrate',
+                'unlockTable',
+            ])
+            ->getMock();
+
+        $this->setExpects($migration, 'initMigration');
+        $this->setExpects($migration, 'lockTable');
+        $this->setExpects($migration, 'unlockTable');
+        $this->setExpects($migration, 'getMigrations', null, collect([
+            ['migration' => '1234_01_23_123456_init_foo', 'path' => '/foo']
+        ]));
+        $this->setExpects($migration, 'getMigrated', null, collect([]));
+        $migration->expects($this->once())
+            ->method('migrate')
+            ->willReturnCallback(function () {
+                throw new Exception();
+            });
+
+        $this->expectException(Exception::class);
+        $migration->run('');
+    }
+
+    /**
      * @covers \Engelsystem\Database\Migration\Migrate::getMigrated
      * @covers \Engelsystem\Database\Migration\Migrate::getMigrationFiles
      * @covers \Engelsystem\Database\Migration\Migrate::getTableQuery
      * @covers \Engelsystem\Database\Migration\Migrate::initMigration
      * @covers \Engelsystem\Database\Migration\Migrate::migrate
      * @covers \Engelsystem\Database\Migration\Migrate::setMigrated
+     * @covers \Engelsystem\Database\Migration\Migrate::lockTable
+     * @covers \Engelsystem\Database\Migration\Migrate::unlockTable
      */
     public function testRunIntegration()
     {
@@ -145,6 +198,7 @@ class MigrateTest extends TestCase
 
         $migrations = $db->table('migrations')->get();
         $this->assertCount(3, $migrations);
+        $this->assertFalse($migrations->contains('migration', 'lock'));
 
         $this->assertTrue($migrations->contains('migration', '2001_04_11_123456_create_lorem_ipsum_table'));
         $this->assertTrue($migrations->contains('migration', '2017_12_24_053300_another_stuff'));
@@ -163,5 +217,9 @@ class MigrateTest extends TestCase
         $this->assertCount(0, $migrations);
 
         $this->assertFalse($schema->hasTable('lorem_ipsum'));
+
+        $db->table('migrations')->insert(['migration' => 'lock']);
+        $this->expectException(Exception::class);
+        $migration->run(__DIR__ . '/Stub', Migrate::UP);
     }
 }
