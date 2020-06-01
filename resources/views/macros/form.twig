@@ -3,18 +3,19 @@
         {% if label -%}
             <label for="{{ name }}"{% if opt.hide_label|default(false) %} class="sr-only"{% endif %}>{{ label }}</label>
         {%- endif %}
-        <input type="{{ type|default('text') }}" class="form-control"
-               id="{{ name }}" name="{{ name }}"
-               value="{{ opt.value|default('')|escape('html_attr') }}"
-                {%- if opt.required|default(false) %}
-                    required
-                {%- endif -%}
-                {%- if opt.disabled|default(false) %}
-                    disabled
-                {%- endif -%}
-                {%- if opt.readonly|default(false) %}
-                    readonly
-                {%- endif -%}
+        <input
+            type="{{ type|default('text') }}" class="form-control"
+            id="{{ name }}" name="{{ name }}"
+            value="{{ opt.value|default('')|escape('html_attr') }}"
+            {%- if opt.required|default(false) %}
+                required
+            {%- endif -%}
+            {%- if opt.disabled|default(false) %}
+                disabled
+            {%- endif -%}
+            {%- if opt.readonly|default(false) %}
+                readonly
+            {%- endif -%}
         >
     </div>
 {%- endmacro %}
@@ -25,12 +26,12 @@
             <label for="{{ name }}">{{ label }}</label>
         {%- endif %}
         <textarea class="form-control" id="{{ name }}" name="{{ name }}"
-                {%- if opt.required|default(false) %}
-                    required
-                {%- endif -%}
-                {%- if opt.rows|default(0) %}
-                    rows="{{ opt.rows }}"
-                {%- endif -%}
+            {%- if opt.required|default(false) %}
+                required
+            {%- endif -%}
+            {%- if opt.rows|default(0) %}
+                rows="{{ opt.rows }}"
+            {%- endif -%}
         >{{ opt.value|default('') }}</textarea>
     </div>
 {%- endmacro %}
@@ -52,7 +53,8 @@
     <div class="checkbox">
         <label>
             <input type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ value|default('1') }}"
-                    {%- if checked|default(false) %} checked{% endif %}>
+                {%- if checked|default(false) %} checked{% endif %}
+            >
             {{ label }}
         </label>
     </div>
@@ -64,9 +66,9 @@
 
 {% macro button(label, opt) %}
     <button class="btn btn-{{ opt.btn_type|default('primary') }}"
-            {%- if opt.type is defined %} type="{{ opt.type }}"{% endif %}
-            {%- if opt.name is defined %} name="{{ opt.name }}"{% endif %}
-            {%- if opt.value is defined or opt.name is defined %} value="{{ opt.value|default('1') }}"{% endif -%}
+        {%- if opt.type is defined %} type="{{ opt.type }}"{% endif %}
+        {%- if opt.name is defined %} name="{{ opt.name }}"{% endif %}
+        {%- if opt.value is defined or opt.name is defined %} value="{{ opt.value|default('1') }}"{% endif -%}
     >
         {{ label }}
     </button>

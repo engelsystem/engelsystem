@@ -1,7 +1,8 @@
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/9.1/phpunit.xsd"
-         bootstrap="./includes/autoload.php"
-         colors="true"
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/9.1/phpunit.xsd"
+    bootstrap="./includes/autoload.php"
+    colors="true"
 >
     <testsuites>
         <testsuite name="Feature">

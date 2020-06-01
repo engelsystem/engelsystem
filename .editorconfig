@@ -8,17 +8,34 @@ root = true
 charset = utf-8
 end_of_line = lf
 indent_style = space
+indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
 max_line_length = 120
 
+[{.babelrc,package.json}]
+indent_size = 2
+
+[docker/**.conf]
+indent_size = 2
+
+[*.{htm,html,twig}]
+indent_size = 4
+
+[*.{js,css,less,sass,scss}]
+indent_size = 2
+
+[{LICENSE,db/*.sql}]
+indent_size = unset
+
 [*.md]
 trim_trailing_whitespace = false
+indent_size = 2
 
 [*.php]
 indent_size = 4
 
-[*.{js,css,less,sass,scss}]
+[*.sh]
 indent_size = 2
 
 [*.{yml,yaml}]
