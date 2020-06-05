@@ -56,6 +56,85 @@ class MetricsEngineTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::expandData
+     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::formatHistogram
+     * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::get
+     */
+    public function testGetHistogram()
+    {
+        $engine = new MetricsEngine();
+
+        $this->assertEquals(
+            <<<'EOD'
+# TYPE engelsystem_test_minimum_histogram histogram
+engelsystem_test_minimum_histogram_bucket{le="3"} 4
+engelsystem_test_minimum_histogram_bucket{le="+Inf"} 4
+engelsystem_test_minimum_histogram_sum 1.337
+engelsystem_test_minimum_histogram_count 4
+EOD,
+            $engine->get('/metrics', [
+                'test_minimum_histogram' => [
+                    'type'  => 'histogram', [3 => 4, 'sum' => 1.337]
+                ],
+            ])
+        );
+
+        $this->assertEquals(
+            <<<'EOD'
+# TYPE engelsystem_test_short_histogram histogram
+engelsystem_test_short_histogram_bucket{le="0"} 0
+engelsystem_test_short_histogram_bucket{le="60"} 10
+engelsystem_test_short_histogram_bucket{le="120"} 19
+engelsystem_test_short_histogram_bucket{le="+Inf"} 300
+engelsystem_test_short_histogram_sum 123.456
+engelsystem_test_short_histogram_count 300
+EOD,
+            $engine->get('/metrics', [
+                'test_short_histogram' => [
+                    'type'  => 'histogram',
+                    'value' => [120 => 19, '+Inf' => 300, 60 => 10, 0 => 0, 'sum' => 123.456]
+                ],
+            ])
+        );
+
+        $this->assertEquals(
+            <<<'EOD'
+# TYPE engelsystem_test_multiple_histogram histogram
+engelsystem_test_multiple_histogram_bucket{handler="foo",le="0.1"} 32
+engelsystem_test_multiple_histogram_bucket{handler="foo",le="3"} 99
+engelsystem_test_multiple_histogram_bucket{handler="foo",le="+Inf"} 99
+engelsystem_test_multiple_histogram_sum{handler="foo"} 42
+engelsystem_test_multiple_histogram_count{handler="foo"} 99
+engelsystem_test_multiple_histogram_bucket{handler="bar",le="0.2"} 0
+engelsystem_test_multiple_histogram_bucket{handler="bar",le="+Inf"} 3
+engelsystem_test_multiple_histogram_sum{handler="bar"} 3
+engelsystem_test_multiple_histogram_count{handler="bar"} 3
+EOD,
+            $engine->get('/metrics', [
+                'test_multiple_histogram' => [
+                    'type' => 'histogram',
+                    ['labels' => ['handler' => 'foo'], 'sum' => '42', 'value' => ['0.1' => 32, 3 => 99]],
+                    ['labels' => ['handler' => 'bar'], 'sum' => '3', 'value' => ['0.2' => 0, '+Inf' => 3]],
+                ],
+            ])
+        );
+
+        $this->assertEquals(
+            <<<'EOD'
+# TYPE engelsystem_test_minimum_histogram histogram
+engelsystem_test_minimum_histogram_bucket{le="+Inf"} NaN
+engelsystem_test_minimum_histogram_sum NaN
+engelsystem_test_minimum_histogram_count NaN
+EOD,
+            $engine->get('/metrics', [
+                'test_minimum_histogram' => [
+                    'type'  => 'histogram', []
+                ],
+            ])
+        );
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Metrics\MetricsEngine::canRender
      */
     public function testCanRender()
