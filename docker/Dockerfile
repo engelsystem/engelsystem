@@ -38,7 +38,8 @@ RUN chown -R www-data:www-data /var/www/storage/ && \
     rm -r /var/www/html
 
 ARG VERSION
-RUN if [[ ! -f /var/www/storage/app/VERSION ]] && [[ ! -z "${VERSION}" ]]; then echo -n "${VERSION}" > /var/www/storage/app/VERSION; fi
+RUN if [[ ! -f /var/www/storage/app/VERSION ]] && [[ ! -z "${VERSION}" ]]; then \
+        echo -n "${VERSION}" > /var/www/storage/app/VERSION; fi
 
 ENV TRUSTED_PROXIES 10.0.0.0/8,::ffff:10.0.0.0/8,\
                     127.0.0.0/8,::ffff:127.0.0.0/8,\

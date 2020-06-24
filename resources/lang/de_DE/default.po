@@ -334,7 +334,8 @@ msgstr "löschen"
 msgid "leave"
 msgstr "verlassen"
 
-# As already mentioned in Issue #312 : I'd suggest "join angel" and the German translation "Engel hinzufügen" for this button.
+# As already mentioned in Issue #312 : I'd suggest "join angel" and the German translation
+# "Engel hinzufügen" for this button.
 #: includes/controller/angeltypes_controller.php:317
 #: includes/view/AngelTypes_view.php:152 includes/view/AngelTypes_view.php:542
 msgid "join"
@@ -2775,7 +2776,8 @@ msgid "schedule.import.title"
 msgstr "Programm importieren"
 
 msgid "schedule.import.text"
-msgstr "Dieser Import erstellt Räume und erstellt, aktualisiert und löscht Schichten anhand des schedule.xml exportes."
+msgstr ""
+"Dieser Import erstellt Räume und erstellt, aktualisiert und löscht Schichten anhand des schedule.xml exportes."
 
 msgid "schedule.import.load.title"
 msgstr "Programm importieren: Vorschau"
