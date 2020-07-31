@@ -81,7 +81,7 @@
             <div class="col-sm-6 text-center">
                 <h2>{{ __('Register') }}</h2>
                 {% if has_permission_to('register') and config('registration_enabled') %}
-                    <p>{{ __('Please sign up, if you want to help us!') }}</p>
+                    <p>{{ __('Please sign up, if you want to book workplaces!') }}</p>
                     <div class="form-group">
                         <a href="{{ url('register') }}" class="btn btn-default">{{ __('Register') }} &raquo;</a>
                     </div>
@@ -91,11 +91,11 @@
             </div>
 
             <div class="col-sm-6 text-center">
-                <h2>{{ __('What can I do?') }}</h2>
-                <p>{{ __('Please read about the jobs you can do to help us.') }}</p>
+                <h2>{{ __('Which workplaces can I book?') }}</h2>
+                <p>{{ __('That depends on your angeltypes.') }}</p>
                 <div class="form-group">
                     <a href="{{ url('angeltypes', {'action': 'about'}) }}" class="btn btn-default">
-                        {{ __('Teams/Job description') }} &raquo;
+                        {{ __('Description of angeltypes') }} &raquo;
                     </a>
                 </div>
             </div>

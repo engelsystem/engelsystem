@@ -164,7 +164,7 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
     $content[] = Shift_view_header($shift, $room);
     $content[] = div('row', [
         div('col-sm-6', [
-            '<h2>' . __('Needed angels') . '</h2>',
+            '<h2>' . __('Allowed users') . '</h2>',
             '<div class="list-group">' . $needed_angels . '</div>'
         ]),
         div('col-sm-6', [

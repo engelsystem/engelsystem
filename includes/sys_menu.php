@@ -95,7 +95,7 @@ function make_navigation()
         'meetings'       => __('Meetings'),
         'user_shifts'    => __('Shifts'),
         'angeltypes'     => __('Angeltypes'),
-        'user_questions' => __('Ask the Heaven'),
+        'user_questions' => __('Ask a supporter'),
     ];
 
     foreach ($pages as $menu_page => $title) {

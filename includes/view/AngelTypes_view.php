@@ -149,7 +149,7 @@ function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, 
     if (is_null($user_angeltype)) {
         $buttons[] = button(
             page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype['id']]),
-            __('join'),
+            __('book'),
             'add'
         );
     } else {
@@ -498,7 +498,7 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes)
             $admin_angeltypes
                 ? button(page_link_to('angeltypes', ['action' => 'edit']), __('New angeltype'), 'add')
                 : '',
-            button(page_link_to('angeltypes', ['action' => 'about']), __('Teams/Job description'))
+            button(page_link_to('angeltypes', ['action' => 'about']), __('Description of angeltypes'))
         ]),
         table([
             'name'           => __('Name'),
@@ -539,7 +539,7 @@ function AngelTypes_about_view_angeltype($angeltype)
         } else {
             $buttons[] = button(
                 page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype['id']]),
-                __('join'),
+                __('book'),
                 'add'
             );
         }
@@ -588,12 +588,12 @@ function AngelTypes_about_view($angeltypes, $user_logged_in)
 
     $content = [
         buttons($buttons),
-        '<p>' . __('Here is the list of teams and their tasks. If you have questions, read the FAQ.') . '</p>',
+        '<p>' . __('Here is the list of angeltypes and their rights. If you have questions, read the FAQ.') . '</p>',
         '<hr />'
     ];
     foreach ($angeltypes as $angeltype) {
         $content[] = AngelTypes_about_view_angeltype($angeltype);
     }
 
-    return page_with_title(__('Teams/Job description'), $content, true);
+    return page_with_title(__('Description of angeltypes'), $content, true);
 }

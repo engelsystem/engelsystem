@@ -75,7 +75,7 @@ function User_settings_view(
                     ),
                     form_checkbox(
                         'email_by_human_allowed',
-                        __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
+                        __('Humans are allowed to send me an email'),
                         $user_source->settings->email_human
                     ),
                     $enable_tshirt_size ? form_select(

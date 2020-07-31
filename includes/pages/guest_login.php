@@ -264,7 +264,7 @@ function guest_register()
     }
 
     return page_with_title(register_title(), [
-        __('By completing this form you\'re registering as a Chaos-Angel. This script will create you an account in the angel task scheduler.'),
+        __('By completing this form you\'re registering as a stuvus-Angel. This script will create you an account in the angel workplace scheduler.'),
         $msg,
         msg(),
         form([
@@ -288,7 +288,7 @@ function guest_register()
                             ),
                             form_checkbox(
                                 'email_by_human_allowed',
-                                __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
+                                __('Humans are allowed to send me an email'),
                                 $email_by_human_allowed
                             )
                         ])
@@ -317,17 +317,17 @@ function guest_register()
                     ]),
                     form_checkboxes(
                         'angel_types',
-                        __('What do you want to do?') . sprintf(
+                        __('Which workplaces can I book then?') . sprintf(
                             ' (<a href="%s">%s</a>)',
                             page_link_to('angeltypes', ['action' => 'about']),
-                            __('Description of job types')
+                            __('Description of angeltypes')
                         ),
                         $angel_types,
                         $selected_angel_types
                     ),
                     form_info(
                         '',
-                        __('Restricted angel types need will be confirmed later by a supporter. You can change your selection in the options section.')
+                        __('Restricted angel types will be confirmed later by a supporter. You can change your selection in the options section.')
                     )
                 ]),
                 div('col-md-6', [

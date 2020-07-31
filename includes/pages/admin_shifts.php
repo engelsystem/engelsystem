@@ -334,7 +334,7 @@ function admin_shifts()
                     table([
                         'timeslot'      => __('Time and location'),
                         'title'         => __('Type and title'),
-                        'needed_angels' => __('Needed angels')
+                        'needed_angels' => __('Allowed users')
                     ], $shifts_table),
                     form_submit('submit', glyph('floppy-disk') . __('Save'))
                 ])
@@ -448,16 +448,16 @@ function admin_shifts()
                     )
                 ]),
                 div('col-md-6', [
-                    form_info(__('Needed angels'), ''),
+                    form_info(__('Allowed users'), ''),
                     form_radio(
                         'angelmode',
-                        __('Take needed angels from room settings'),
+                        __('Take allowed users from room settings'),
                         $angelmode == 'location',
                         'location'
                     ),
                     form_radio(
                         'angelmode',
-                        __('The following angels are needed'),
+                        __('The following users are allowed'),
                         $angelmode == 'manually',
                         'manually'
                     ),

@@ -261,7 +261,7 @@ function view_user_shifts()
                     '<sup>1</sup>'
                     . __('The tasks shown here are influenced by the angeltypes you joined already!')
                     . ' <a href="' . page_link_to('angeltypes', ['action' => 'about']) . '">'
-                    . __('Description of the jobs.')
+                    . __('Description of the workplaces.')
                     . '</a>',
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
                 'ical_text'     => ical_hint(),

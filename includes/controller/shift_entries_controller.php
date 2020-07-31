@@ -345,7 +345,7 @@ function shift_entry_delete_controller()
     $angeltype = AngelType($shiftEntry['TID']);
     $signout_user = User::find($shiftEntry['UID']);
     if (!Shift_signout_allowed($shift, $angeltype, $signout_user->id)) {
-        error(__('You are not allowed to remove this shift entry. If necessary, ask your supporter or heaven to do so.'));
+        error(__('You are not allowed to remove this shift entry. If necessary, ask a supporter to do so.'));
         throw_redirect(user_link($signout_user->id));
     }
 

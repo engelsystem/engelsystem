@@ -66,7 +66,7 @@ function angeltypes_about_controller()
     }
 
     return [
-        __('Teams/Job description'),
+        __('Description of angeltypes'),
         AngelTypes_about_view($angeltypes, (bool)$user)
     ];
 }
@@ -315,7 +315,7 @@ function angeltypes_list_controller()
         } else {
             $actions[] = button(
                 page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype['id']]),
-                __('join'),
+                __('book'),
                 'btn-xs'
             );
         }

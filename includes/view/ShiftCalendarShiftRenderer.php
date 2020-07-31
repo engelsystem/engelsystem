@@ -177,7 +177,7 @@ class ShiftCalendarShiftRenderer
             $shift_entries
         );
         $freeEntriesCount = $shift_signup_state->getFreeEntries();
-        $inner_text = _e('%d helper needed', '%d helpers needed', $freeEntriesCount, [$freeEntriesCount]);
+        $inner_text = _e('%d user allowed', '%d users allowed', $freeEntriesCount, [$freeEntriesCount]);
 
         switch ($shift_signup_state->getState()) {
             case ShiftSignupState::ADMIN:

@@ -197,7 +197,7 @@ function ShiftEntry_edit_view(
     return page_with_title(__('Edit shift entry'), [
         msg(),
         form([
-            form_info(__('Angel:'), User_Nick_render($angel)),
+            form_info(__('User:'), User_Nick_render($angel)),
             form_info(__('Date, Duration:'), $date),
             form_info(__('Location:'), $location),
             form_info(__('Title:'), $title),

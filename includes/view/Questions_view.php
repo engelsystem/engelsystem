@@ -56,7 +56,7 @@ function Questions_view(array $open_questions, array $answered_questions, $ask_a
             'Answer'      => __('Answer'),
             'actions'     => ''
         ], $answered_questions),
-        heading(__('Ask the Heaven'), 2),
+        heading(__('Ask a supporter'), 2),
         form([
             form_textarea('question', __('Your Question:'), ''),
             form_submit('submit', __('Send'))

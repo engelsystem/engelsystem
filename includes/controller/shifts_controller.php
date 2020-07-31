@@ -132,7 +132,7 @@ function shift_edit_controller()
                 } else {
                     $valid = false;
                     $msg .= error(sprintf(
-                        __('Please check your input for needed angels of type %s.'),
+                        __('Please check your input for allowed users of angeltype %s.'),
                         $angeltypes[$needed_angeltype_id]
                     ), true);
                 }
@@ -189,7 +189,7 @@ function shift_edit_controller()
                 form_select('rid', __('Room:'), $room, $rid),
                 form_text('start', __('Start:'), date('Y-m-d H:i', $start)),
                 form_text('end', __('End:'), date('Y-m-d H:i', $end)),
-                '<h2>' . __('Needed angels') . '</h2>',
+                '<h2>' . __('Allowed users') . '</h2>',
                 $angel_types_spinner,
                 form_submit('submit', __('Save'))
             ])
