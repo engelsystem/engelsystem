@@ -60,7 +60,7 @@ msgstr "No sleep found"
 
 #: resources/views/errors/405.twig:3 resources/views/errors/405.twig:5
 msgid "405: Method not allowed"
-msgstr ""
+msgstr "405: Method not allowed"
 
 #: resources/views/errors/419.twig:3
 msgid "Authentication expired"
@@ -140,7 +140,7 @@ msgstr "Quellcode"
 #: resources/views/pages/credits.twig:18
 #, python-format
 msgid "Version: _%s_"
-msgstr ""
+msgstr "Version: _%s_"
 
 #: resources/views/pages/credits.twig:20
 msgid "credits.credit"
