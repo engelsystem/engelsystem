@@ -52,6 +52,7 @@ The Engelsystem can now be used.
  * Both Apache and Nginx allow for different VirtualHost configurations.
 
 ### Docker
+#### Build
 To build the `es_nginx` and the `es_php_fpm` containers:
 ```bash
 cd docker
@@ -64,7 +65,15 @@ docker build -f docker/nginx/Dockerfile . -t es_nginx
 docker build -f docker/Dockerfile . -t es_php_fpm
 ```
 
-Import database
+#### Run
+Start the Engelsystem
+```bash
+cd docker
+docker-compose up -d
+```
+
+#### Migrate
+Import database changes to migrate it to the newest version
 ```bash
 docker exec -it engelsystem_es_php_fpm_1 bin/migrate
 ```
