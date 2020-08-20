@@ -62,6 +62,11 @@ class Controller extends BaseController
     {
         $now = microtime(true);
         $this->checkAuth();
+        $metrics = $this->config->get('metrics');
+        foreach (['work', 'voucher'] as $type) {
+            sort($metrics[$type]);
+            $metrics[$type] = array_merge($metrics[$type], ['+Inf']);
+        }
 
         $userTshirtSizes = $this->formatStats($this->stats->tshirtSizes(), 'tshirt_sizes', 'shirt_size', 'size');
         $userLocales = $this->formatStats($this->stats->languages(), 'locales', 'language', 'locale');
@@ -103,13 +108,32 @@ class Controller extends BaseController
                 ['labels' => ['freeloader' => true], $this->stats->currentlyWorkingUsers(true)],
             ],
             'work_seconds'         => [
-                'type' => 'gauge',
-                ['labels' => ['state' => 'done'], 'value' => $this->stats->workSeconds(true, false)],
-                ['labels' => ['state' => 'planned'], 'value' => $this->stats->workSeconds(false, false)],
-                ['labels' => ['state' => 'freeloaded'], 'value' => $this->stats->workSeconds(null, true)],
+                'help' => 'Working users',
+                'type' => 'histogram',
+                [
+                    'labels' => ['state' => 'done'],
+                    'value'  => $this->stats->workBuckets($metrics['work'], true, false),
+                    'sum' => $this->stats->workSeconds(true, false),
+                ],
+                [
+                    'labels' => ['state' => 'planned'],
+                    'value'  => $this->stats->workBuckets($metrics['work'], false, false),
+                    'sum' => $this->stats->workSeconds(false, false),
+                ],
+                [
+                    'labels' => ['state' => 'freeloaded'],
+                    'value'  => $this->stats->workBuckets($metrics['work'], null, true),
+                    'sum' => $this->stats->workSeconds(null, true),
+                ],
             ],
-            'worklog_seconds'      => ['type' => 'gauge', $this->stats->worklogSeconds()],
-            'vouchers'             => ['type' => 'counter', $this->stats->vouchers()],
+            'worklog_seconds'      => [
+                'type' => 'histogram',
+                $this->stats->worklogBuckets($metrics['work']) + ['sum' => $this->stats->worklogSeconds()],
+            ],
+            'vouchers'             => [
+                'type' => 'histogram',
+                $this->stats->vouchersBuckets($metrics['voucher']) + ['sum' => $this->stats->vouchers()],
+            ],
             'tshirts_issued'       => ['type' => 'counter', 'help' => 'Issued T-Shirts', $this->stats->tshirts()],
             'tshirt_sizes'         => [
                 'type' => 'gauge',

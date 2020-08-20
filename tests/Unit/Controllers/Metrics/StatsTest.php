@@ -36,6 +36,7 @@ class StatsTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::vouchers
+     * @covers \Engelsystem\Controllers\Metrics\Stats::vouchersQuery
      */
     public function testVouchers()
     {
@@ -43,6 +44,17 @@ class StatsTest extends TestCase
 
         $stats = new Stats($this->database);
         $this->assertEquals(14, $stats->vouchers());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::vouchersBuckets
+     */
+    public function testVouchersBuckets()
+    {
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals([1 => 6, 3 => 8, '+Inf' => 9], $stats->vouchersBuckets([1, 3, '+Inf']));
     }
 
     /**

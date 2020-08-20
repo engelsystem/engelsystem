@@ -12,7 +12,7 @@ class ControllerTest extends ApplicationFeatureTest
      */
     public function testMetrics()
     {
-        config(['api_key' => null]);
+        config(['api_key' => null, 'metrics' => ['work' => [60 * 60], 'voucher' => [1]]]);
 
         /** @var Controller $controller */
         $controller = app()->make(Controller::class);
