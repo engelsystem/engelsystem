@@ -179,6 +179,12 @@ return [
         '4XL'  => '4XLarge Straight-Cut',
     ],
 
+    'metrics'                 => [
+        // User work buckets in seconds
+        'work'    => [1 * 60 * 60, 1.5 * 60 * 60, 2 * 60 * 60, 3 * 60 * 60, 5 * 60 * 60, 10 * 60 * 60, 20 * 60 * 60],
+        'voucher' => [0, 1, 2, 3, 5, 10, 15, 20],
+    ],
+
     // Shifts overview
     // Set max number of hours that can be shown at once
     'filter_max_duration' => 0,

@@ -111,11 +111,40 @@ class Stats
     }
 
     /**
+     * @return QueryBuilder
+     */
+    protected function vouchersQuery()
+    {
+        return State::query();
+    }
+
+    /**
      * @return int
      */
     public function vouchers(): int
     {
-        return (int)State::query()->sum('got_voucher');
+        return (int)$this->vouchersQuery()->sum('got_voucher');
+    }
+
+    /**
+     * @param array $buckets
+     *
+     * @return array
+     */
+    public function vouchersBuckets(array $buckets): array
+    {
+        $return = [];
+        foreach ($buckets as $bucket) {
+            $query = $this->vouchersQuery();
+
+            if ($bucket !== '+Inf') {
+                $query->where('got_voucher', '<=', $bucket);
+            }
+
+            $return[$bucket] = $query->count('got_voucher');
+        }
+
+        return $return;
     }
 
     /**
@@ -190,10 +219,11 @@ class Stats
      *
      * @param bool|null $done
      * @param bool|null $freeloaded
-     * @return int
+     *
      * @codeCoverageIgnore
+     * @return QueryBuilder
      */
-    public function workSeconds(bool $done = null, bool $freeloaded = null): int
+    protected function workSecondsQuery(bool $done = null, bool $freeloaded = null): QueryBuilder
     {
         $query = $this
             ->getQuery('ShiftEntry')
@@ -207,7 +237,82 @@ class Stats
             $query->where('end', ($done == true ? '<' : '>='), time());
         }
 
+        return $query;
+    }
+
+    /**
+     * The number of worked shifts
+     *
+     * @param bool|null $done
+     * @param bool|null $freeloaded
+     *
+     * @return int
+     * @codeCoverageIgnore
+     */
+    public function workSeconds(bool $done = null, bool $freeloaded = null): int
+    {
+        $query = $this->workSecondsQuery($done, $freeloaded);
+
         return (int)$query->sum($this->raw('end - start'));
+    }
+
+    /**
+     * The number of worked shifts
+     *
+     * @param array     $buckets
+     * @param bool|null $done
+     * @param bool|null $freeloaded
+     *
+     * @return array
+     * @codeCoverageIgnore
+     */
+    public function workBuckets(array $buckets, bool $done = null, bool $freeloaded = null): array
+    {
+        return $this->getBuckets(
+            $buckets,
+            $this->workSecondsQuery($done, $freeloaded),
+            'UID',
+            'SUM(end - start)',
+            'end - start'
+        );
+    }
+
+    /**
+     * @param array        $buckets
+     * @param QueryBuilder $basicQuery
+     * @param string       $groupBy
+     * @param string       $having
+     * @param string       $count
+     *
+     * @return array
+     * @codeCoverageIgnore As long as its only used for old tables
+     */
+    protected function getBuckets(array $buckets, $basicQuery, string $groupBy, string $having, string $count): array
+    {
+        $return = [];
+
+        foreach ($buckets as $bucket) {
+            $query = clone $basicQuery;
+            $query->groupBy($groupBy);
+
+            if ($bucket !== '+Inf') {
+                $query->having($this->raw($having), '<=', $bucket);
+            }
+
+            $return[$bucket] = $query->count($this->raw($count));
+        }
+
+        return $return;
+    }
+
+    /**
+     * @return QueryBuilder
+     * @codeCoverageIgnore
+     */
+    protected function worklogSecondsQuery()
+    {
+        return $this
+            ->getQuery('UserWorkLog');
     }
 
     /**
@@ -216,9 +321,25 @@ class Stats
      */
     public function worklogSeconds(): int
     {
-        return (int)$this
-            ->getQuery('UserWorkLog')
-            ->sum($this->raw('work_hours * 60*60'));
+        return (int)$this->worklogSecondsQuery()
+            ->sum($this->raw('work_hours * 60 * 60'));
+    }
+
+    /**
+     * @param array $buckets
+     *
+     * @return array
+     * @codeCoverageIgnore
+     */
+    public function worklogBuckets(array $buckets): array
+    {
+        return $this->getBuckets(
+            $buckets,
+            $this->worklogSecondsQuery(),
+            'user_id',
+            'SUM(work_hours * 60 * 60)',
+            'work_hours * 60 * 60'
+        );
     }
 
     /**
