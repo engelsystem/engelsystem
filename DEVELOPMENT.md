@@ -3,7 +3,7 @@
 Please also read the [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Dev requirements
- * Node >= 8 (Development/Building only)
+ * Node >= 14 (Development/Building only)
    * Including npm
  * Yarn (Development/Building only)
  * PHP Composer (Development/Building only)
