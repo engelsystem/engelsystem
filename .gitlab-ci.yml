@@ -155,6 +155,26 @@ test:
   after_script:
     - '"${DOCROOT}/bin/migrate" down'
 
+dump-database:
+  image: ${TEST_IMAGE}
+  stage: test
+  needs: [ build-image ]
+  services:
+    - mariadb:10.2
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - initial-install.sql
+  before_script:
+    - apk add -q mariadb-client
+    - HOMEDIR=$PWD
+    - cd "${DOCROOT}"
+    - ./bin/migrate
+  script:
+    - >-
+      mysqldump -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" "${MYSQL_DATABASE}"
+      > "${HOMEDIR}/initial-install.sql"
+
 #
 # Release
 #
@@ -200,16 +220,18 @@ build-release-file:
     - audit-yarn
     - audit-composer
     - test
+    - dump-database
   dependencies:
     - build-image
     - build-image-nginx
+    - dump-database
   artifacts:
     name: release_${CI_COMMIT_REF_SLUG}_${CI_JOB_ID}_${CI_COMMIT_SHA}
     expire_in: 1 week
     paths:
       - ./release/
   script:
-    - rsync -vAax "${DOCROOT}" "${DOCROOT}/.babelrc" "${DOCROOT}/.browserslistrc" release/
+    - rsync -vAax "${DOCROOT}" "${DOCROOT}/.babelrc" "${DOCROOT}/.browserslistrc" "initial-install.sql" release/
     - rsync -vAax public/assets release/public/
 
 pages:
