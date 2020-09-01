@@ -1,11 +1,11 @@
 require('core-js/stable');
 window.$ = window.jQuery = require('jquery');
-require('imports-loader?define=>false!jquery-ui');
+require('jquery-ui');
 require('bootstrap');
-require('imports-loader?this=>window&define=>false&exports=>false!moment');
-require('imports-loader?this=>window&define=>false&exports=>false!moment/locale/de');
-require('imports-loader?define=>false&exports=>false!eonasdan-bootstrap-datetimepicker');
-require('imports-loader?this=>window!chart.js');
+window.moment = require('moment');
+require('moment/locale/de');
+require('eonasdan-bootstrap-datetimepicker');
+require('chart.js');
 require('./offcanvas');
 require('./forms');
 require('./sticky-headers');
