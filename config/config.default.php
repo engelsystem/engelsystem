@@ -103,6 +103,9 @@ return [
     // Setting this to 0 disables the feature
     'signup_advance_hours'    => 0,
 
+    // Allow signup this many minutes after the start of the shift
+    'signup_post_minutes'     => 0,
+
     // Number of hours that an angel has to sign out own shifts
     'last_unsubscribe'        => 3,
 
