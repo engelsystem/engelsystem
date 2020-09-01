@@ -4,10 +4,10 @@ ENTRYPOINT /entrypoint.sh
 RUN mkdir -p /var/www/public/ && touch /var/www/public/index.php
 COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
 
-FROM node:10-alpine as themes
+FROM node:14-alpine as themes
 WORKDIR /app
 COPY .babelrc .browserslistrc package.json webpack.config.js yarn.lock /app/
-RUN yarn install
+RUN yarn --frozen-lockfile
 COPY resources/assets/ /app/resources/assets
 RUN yarn build
 
