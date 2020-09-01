@@ -21,6 +21,7 @@ stages:
   - release
   - deploy
   - deploy-production
+  - stop
 
 #
 # Validation
@@ -72,6 +73,9 @@ validate-yarn:
 build-image-nginx:
   <<: *docker_definition
   stage: build
+  needs:
+    - check-editorconfig
+    - validate-yarn
   artifacts:
     name: "${CI_JOB_NAME}_${CI_JOB_ID}_assets"
     expire_in: 1 day
@@ -87,6 +91,10 @@ build-image-nginx:
 build-image:
   <<: *docker_definition
   stage: build
+  needs:
+    - check-editorconfig
+    - validate-composer
+    - check-style
   script:
     - apk add -q git
     - VERSION="$(git describe --abbrev=0 --tags)-${CI_COMMIT_REF_NAME}+${CI_PIPELINE_ID}.${CI_COMMIT_SHORT_SHA}"
@@ -100,6 +108,7 @@ build-image:
 audit-composer:
   image: ${TEST_IMAGE}
   stage: test
+  needs: [ build-image ]
   before_script:
     - curl -sSo /usr/local/bin/security-checker https://get.sensiolabs.org/security-checker.phar
     - chmod +x /usr/local/bin/security-checker
@@ -108,14 +117,16 @@ audit-composer:
     - security-checker --no-ansi security:check
 
 audit-yarn:
-  image: node:10-alpine
+  image: node:alpine
   stage: test
+  needs: [ ]
   script:
     - yarn audit
 
 test:
   image: ${TEST_IMAGE}
   stage: test
+  needs: [ build-image ]
   services:
     - mariadb:10.2
   artifacts:
@@ -151,6 +162,8 @@ test:
 release-image:
   <<: *docker_definition
   stage: release
+  needs: [ test ]
+  dependencies: [ ]
   script:
     - docker pull "${TEST_IMAGE}"
     - docker tag "${TEST_IMAGE}" "${RELEASE_IMAGE}"
@@ -161,6 +174,10 @@ release-image:
 release-image-nginx:
   <<: *docker_definition
   stage: release
+  needs:
+    - test
+    - build-image-nginx
+  dependencies: [ ]
   script:
     - docker pull "${TEST_IMAGE_NGINX}"
     - docker tag "${TEST_IMAGE_NGINX}" "${RELEASE_IMAGE_NGINX}"
@@ -177,6 +194,15 @@ release-image-nginx:
 build-release-file:
   <<: *deploy_definition
   stage: release
+  needs:
+    - build-image
+    - build-image-nginx
+    - audit-yarn
+    - audit-composer
+    - test
+  dependencies:
+    - build-image
+    - build-image-nginx
   artifacts:
     name: release_${CI_COMMIT_REF_SLUG}_${CI_JOB_ID}_${CI_COMMIT_SHA}
     expire_in: 1 week
@@ -189,8 +215,8 @@ build-release-file:
 pages:
   image: node:alpine
   stage: release
-  dependencies:
-    - test
+  needs: [ test ]
+  dependencies: [ test ]
   script:
     - rm -rf public
     - mv coverage public
@@ -218,6 +244,10 @@ pages:
 deploy:
   <<: *deploy_definition
   stage: deploy
+  needs: &deploy_needs
+    - release-image
+    - build-image-nginx
+  dependencies: *deploy_needs
   environment:
     name: staging
   only:
@@ -237,12 +267,17 @@ deploy:
   stage: deploy
   image:
     name: bitnami/kubectl:latest
-    entrypoint: ['']
+    entrypoint: [ '' ]
+  needs:
+    - test
+    - build-image
+    - build-image-nginx
   before_script:
     - &kubectl_deployment_script if [[ -z "${KUBE_INGRESS_BASE_DOMAIN}" ]]; then echo "Skipping deployment"; exit; fi
 
 .deploy_k8s: &deploy_k8s
   <<: *kubectl_deployment
+  dependencies: [ ]
   artifacts:
     name: deployment.yaml
     expire_in: 1 day
@@ -276,9 +311,10 @@ deploy:
 
 .deploy_k8s_stop: &deploy_k8s_stop
   <<: *kubectl_deployment
+  stage: stop
+  dependencies: [ ]
   variables:
     GIT_STRATEGY: none
-  dependencies: []
   when: manual
   script:
     - kubectl delete all,ingress,pvc -l app=$CI_PROJECT_PATH_SLUG -l environment=$CI_ENVIRONMENT_SLUG
@@ -300,6 +336,7 @@ deploy-k8s-review:
 
 stop-k8s-review:
   <<: *deploy_k8s_stop
+  needs: [ deploy-k8s-review ]
   environment:
     name: review/${CI_COMMIT_REF_NAME}
     action: stop
@@ -311,6 +348,15 @@ stop-k8s-review:
 deploy-production:
   <<: *deploy_definition
   stage: deploy-production
+  needs:
+    - test
+    - audit-yarn
+    - audit-composer
+    - build-image
+    - build-image-nginx
+  dependencies:
+    - build-image
+    - build-image-nginx
   environment:
     name: production
   when: manual
@@ -330,6 +376,11 @@ deploy-production:
 deploy-k8s-production:
   <<: *deploy_k8s
   stage: deploy-production
+  needs:
+    - release-image
+    - release-image-nginx
+    - audit-yarn
+    - audit-composer
   environment:
     name: production
     on_stop: stop-k8s-production
@@ -339,7 +390,7 @@ deploy-k8s-production:
 
 stop-k8s-production:
   <<: *deploy_k8s_stop
-  stage: deploy-production
+  needs: [ deploy-k8s-production ]
   only:
     - master
   environment:
