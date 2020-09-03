@@ -14,8 +14,13 @@ trait ChangesReferences
      * @param string $targetColumn
      * @param string $type
      */
-    protected function changeReferences($fromTable, $fromColumn, $targetTable, $targetColumn, $type)
-    {
+    protected function changeReferences(
+        string $fromTable,
+        string $fromColumn,
+        string $targetTable,
+        string $targetColumn,
+        string $type = 'unsignedInteger'
+    ) {
         $references = $this->getReferencingTables($fromTable, $fromColumn);
 
         foreach ($references as $reference) {
@@ -41,9 +46,10 @@ trait ChangesReferences
     /**
      * @param string $table
      * @param string $column
+     *
      * @return array
      */
-    protected function getReferencingTables($table, $column): array
+    protected function getReferencingTables(string $table, string $column): array
     {
         return $this->schema
             ->getConnection()
