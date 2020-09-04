@@ -605,7 +605,7 @@ function User_view(
                             user_driver_license_edit_link($user_source),
                             glyph('road') . __('driving license')
                         ) : '',
-                        ($admin_user_privilege && !$user_source->state->arrived) ?
+                        (($admin_user_privilege || $auth->can('admin_arrive')) && !$user_source->state->arrived) ?
                             form([
                                 form_hidden('action', 'arrived'),
                                 form_hidden('user', $user_source->id),
