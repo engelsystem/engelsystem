@@ -2172,7 +2172,7 @@ msgstr "Meine Schicht"
 
 #: includes/view/ShiftCalendarRenderer.php:313
 msgid "Help needed"
-msgstr "Hilfe benötigt"
+msgstr "Arbeitsplatz verfügbar"
 
 #: includes/view/ShiftCalendarRenderer.php:314
 msgid "Other angeltype needed / collides with my shifts"

@@ -2162,7 +2162,7 @@ msgstr "Your shift"
 
 #: includes/view/ShiftCalendarRenderer.php:313
 msgid "Help needed"
-msgstr "Help needed"
+msgstr "Workplace available"
 
 #: includes/view/ShiftCalendarRenderer.php:314
 msgid "Other angeltype needed / collides with my shifts"
