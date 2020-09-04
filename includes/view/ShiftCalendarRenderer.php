@@ -311,9 +311,9 @@ class ShiftCalendarRenderer
     {
         return div('legend', [
             label(__('Your shift'), 'primary'),
-            label(__('Help needed'), 'danger'),
+            label(__('Help needed'), 'success'),
             label(__('Other angeltype needed / collides with my shifts'), 'warning'),
-            label(__('Shift is full'), 'success'),
+            label(__('Shift is full'), 'danger'),
             label(__('Shift running/ended or user not arrived/allowed'), 'default')
         ]);
     }

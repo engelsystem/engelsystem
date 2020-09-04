@@ -68,7 +68,7 @@ class ShiftCalendarShiftRenderer
         switch ($shiftSignupState->getState()) {
             case ShiftSignupState::ADMIN:
             case ShiftSignupState::OCCUPIED:
-                return 'success';
+                return 'danger';
 
             case ShiftSignupState::SIGNED_UP:
                 return 'primary';
@@ -83,7 +83,7 @@ class ShiftCalendarShiftRenderer
                 return 'warning';
 
             case ShiftSignupState::FREE:
-                return 'danger';
+                return 'success';
             default:
                 return '';
         }
