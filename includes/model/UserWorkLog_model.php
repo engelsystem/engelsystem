@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\Db;
+use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 
 /**
@@ -143,7 +144,7 @@ function UserWorkLog_from_shift($shift)
         return;
     }
 
-    $room = Room($shift['RID']);
+    $room = Room::find($shift['RID']);
     foreach ($shift['ShiftEntry'] as $entry) {
         if ($entry['freeloaded']) {
             continue;
@@ -173,7 +174,7 @@ function UserWorkLog_from_shift($shift)
                 $shift['name'],
                 $shift['title'],
                 $type['name'],
-                $room['Name'],
+                $room->name,
                 Carbon::createFromTimestamp($shift['start'])->format(__('m/d/Y h:i a')),
                 Carbon::createFromTimestamp($shift['end'])->format(__('m/d/Y h:i a'))
             ),

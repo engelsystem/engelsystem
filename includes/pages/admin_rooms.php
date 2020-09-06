@@ -1,4 +1,7 @@
 <?php
+
+use Engelsystem\Models\Room;
+
 /**
  * @return string
  */
@@ -19,15 +22,15 @@ function admin_rooms()
     foreach ($rooms_source as $room) {
         $rooms[] = [
             'name'      => Room_name_render($room),
-            'map_url'   => glyph_bool(!empty($room['map_url'])),
+            'map_url'   => glyph_bool($room->map_url),
             'actions'   => table_buttons([
                 button(
-                    page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room['RID']]),
+                    page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room->id]),
                     __('edit'),
                     'btn-xs'
                 ),
                 button(
-                    page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room['RID']]),
+                    page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room->id]),
                     __('delete'),
                     'btn-xs'
                 )
@@ -52,15 +55,15 @@ function admin_rooms()
         }
 
         if (test_request_int('id')) {
-            $room = Room($request->input('id'));
-            if (empty($room)) {
+            $room = Room::find($request->input('id'));
+            if (!$room) {
                 throw_redirect(page_link_to('admin_rooms'));
             }
 
-            $room_id = $request->input('id');
-            $name = $room['Name'];
-            $map_url = $room['map_url'];
-            $description = $room['description'];
+            $room_id = $room->id;
+            $name = $room->name;
+            $map_url = $room->map_url;
+            $description = $room->description;
 
             $needed_angeltypes = NeededAngelTypes_by_room($room_id);
             foreach ($needed_angeltypes as $needed_angeltype) {
@@ -173,7 +176,8 @@ function admin_rooms()
             ], true);
         } elseif ($request->input('show') == 'delete') {
             if ($request->hasPostData('ack')) {
-                $shifts = Shifts_by_room($room_id);
+                $room = Room::find($room_id);
+                $shifts = Shifts_by_room($room);
                 foreach ($shifts as $shift) {
                     $shift = Shift($shift['SID']);
 
@@ -181,7 +185,7 @@ function admin_rooms()
                     mail_shift_delete($shift);
                 }
 
-                Room_delete($room_id);
+                Room_delete($room);
 
                 success(sprintf(__('Room %s deleted.'), $name));
                 throw_redirect(page_link_to('admin_rooms'));
