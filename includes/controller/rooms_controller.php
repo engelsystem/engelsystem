@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\Room;
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftsFilterRenderer;
 
@@ -32,7 +33,7 @@ function room_controller()
 
     $shiftsFilter = new ShiftsFilter(
         true,
-        [$room['RID']],
+        [$room->id],
         AngelType_ids()
     );
     $selected_day = date('Y-m-d');
@@ -51,7 +52,7 @@ function room_controller()
     $shiftCalendarRenderer = shiftCalendarRendererByShiftFilter($shiftsFilter);
 
     return [
-        $room['Name'],
+        $room->name,
         Room_view($room, $shiftsFilterRenderer, $shiftCalendarRenderer)
     ];
 }
@@ -79,27 +80,18 @@ function rooms_controller()
 }
 
 /**
- * @param array $room
+ * @param Room $room
  * @return string
  */
-function room_link($room)
+function room_link(Room $room)
 {
-    return page_link_to('rooms', ['action' => 'view', 'room_id' => $room['RID']]);
-}
-
-/**
- * @param array $room
- * @return string
- */
-function room_edit_link($room)
-{
-    return page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room['RID']]);
+    return page_link_to('rooms', ['action' => 'view', 'room_id' => $room->id]);
 }
 
 /**
  * Loads room by request param room_id
  *
- * @return array
+ * @return Room
  */
 function load_room()
 {
@@ -107,8 +99,8 @@ function load_room()
         throw_redirect(page_link_to());
     }
 
-    $room = Room(request()->input('room_id'));
-    if (empty($room)) {
+    $room = Room::find(request()->input('room_id'));
+    if (!$room) {
         throw_redirect(page_link_to());
     }
 

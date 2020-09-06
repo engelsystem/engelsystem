@@ -176,7 +176,7 @@ function make_room_navigation($menu)
         $room_menu[] = toolbar_item_divider();
     }
     foreach ($rooms as $room) {
-        $room_menu[] = toolbar_item_link(room_link($room), 'map-marker', $room['Name']);
+        $room_menu[] = toolbar_item_link(room_link($room), 'map-marker', $room->name);
     }
     if (count($room_menu) > 0) {
         $menu[] = toolbar_dropdown('map-marker', __('Rooms'), $room_menu);

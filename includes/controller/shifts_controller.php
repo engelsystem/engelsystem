@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Http\Exceptions\HttpForbidden;
+use Engelsystem\Models\Room;
 use Engelsystem\ShiftSignupState;
 
 /**
@@ -59,7 +60,10 @@ function shift_edit_controller()
 
     $shift = Shift($shift_id);
 
-    $room = select_array(Rooms(), 'RID', 'Name');
+    $rooms = [];
+    foreach (Rooms() as $room) {
+        $rooms[$room->id] = $room->name;
+    }
     $angeltypes = select_array(AngelTypes(), 'id', 'name');
     $shifttypes = select_array(ShiftTypes(), 'id', 'name');
 
@@ -88,7 +92,7 @@ function shift_edit_controller()
         if (
             $request->has('rid')
             && preg_match('/^\d+$/', $request->input('rid'))
-            && isset($room[$request->input('rid')])
+            && isset($rooms[$request->input('rid')])
         ) {
             $rid = $request->input('rid');
         } else {
@@ -186,7 +190,7 @@ function shift_edit_controller()
             form([
                 form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
                 form_text('title', __('Title'), $title),
-                form_select('rid', __('Room:'), $room, $rid),
+                form_select('rid', __('Room:'), $rooms, $rid),
                 form_text('start', __('Start:'), date('Y-m-d H:i', $start)),
                 form_text('end', __('End:'), date('Y-m-d H:i', $end)),
                 '<h2>' . __('Needed angels') . '</h2>',
@@ -270,7 +274,7 @@ function shift_controller()
     }
 
     $shifttype = ShiftType($shift['shifttype_id']);
-    $room = Room($shift['RID']);
+    $room = Room::find($shift['RID']);
     $angeltypes = AngelTypes();
     $user_shifts = Shifts_by_user($user->id);
 

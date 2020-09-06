@@ -1,7 +1,9 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\Room;
 use Engelsystem\ShiftsFilter;
+use Illuminate\Support\Collection;
 
 /**
  * @return string
@@ -95,17 +97,16 @@ function update_ShiftsFilter(ShiftsFilter $shiftsFilter, $user_shifts_admin, $da
 }
 
 /**
- * @return array
+ * @return Room[]|Collection
  */
 function load_rooms()
 {
-    $rooms = DB::select(
-        'SELECT `RID` AS `id`, `Name` AS `name` FROM `Room` ORDER BY `Name`'
-    );
-    if (empty($rooms)) {
+    $rooms = Rooms();
+    if ($rooms->isEmpty()) {
         error(__('The administration has not configured any rooms yet.'));
         throw_redirect(page_link_to('/'));
     }
+
     return $rooms;
 }
 
@@ -188,7 +189,7 @@ function view_user_shifts()
     }
 
     if (!$session->has('shifts-filter')) {
-        $room_ids = collect($rooms)->pluck('id')->toArray();
+        $room_ids = $rooms->pluck('id')->toArray();
         $shiftsFilter = new ShiftsFilter(auth()->can('user_shifts_admin'), $room_ids, $ownTypes);
         $session->set('shifts-filter', $shiftsFilter->sessionExport());
     }

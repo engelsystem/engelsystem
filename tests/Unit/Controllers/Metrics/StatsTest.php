@@ -9,6 +9,7 @@ use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\Room;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
@@ -117,6 +118,20 @@ class StatsTest extends TestCase
             ['theme' => 1, 'count' => 2],
             ['theme' => 4, 'count' => 1],
         ], $themes->toArray());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::rooms
+     */
+    public function testRooms()
+    {
+        (new Room(['name' => 'Room 1']))->save();
+        (new Room(['name' => 'Second room']))->save();
+        (new Room(['name' => 'Another room']))->save();
+        (new Room(['name' => 'Old room']))->save();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(4, $stats->rooms());
     }
 
     /**

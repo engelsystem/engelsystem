@@ -2,6 +2,7 @@
 
 namespace Engelsystem;
 
+use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 
 /**
@@ -36,9 +37,14 @@ class ShiftCalendarShiftRenderer
         $blocks = ceil(($shift['end'] - $shift['start']) / ShiftCalendarRenderer::SECONDS_PER_ROW);
         $blocks = max(1, $blocks);
 
+        $room = new Room();
+        $room->name = $shift['room_name'];
+        $room->setAttribute('id', $shift['RID']);
+
         return [
             $blocks,
-            div('shift-card" style="height: '
+            div(
+                'shift-card" style="height: '
                 . ($blocks * ShiftCalendarRenderer::BLOCK_HEIGHT - ShiftCalendarRenderer::MARGIN)
                 . 'px;',
                 div(
@@ -47,10 +53,7 @@ class ShiftCalendarShiftRenderer
                         $this->renderShiftHead($shift, $class, $shift_signup_state->getFreeEntries()),
                         div('panel-body', [
                             $info_text,
-                            Room_name_render([
-                                'RID'  => $shift['RID'],
-                                'Name' => $shift['room_name']
-                            ])
+                            Room_name_render($room)
                         ]),
                         $shifts_row
                     ]

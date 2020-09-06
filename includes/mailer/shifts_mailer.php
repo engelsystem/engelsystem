@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 
 /**
@@ -9,8 +10,8 @@ use Engelsystem\Models\User\User;
 function mail_shift_change($old_shift, $new_shift)
 {
     $users = ShiftEntries_by_shift($old_shift['SID']);
-    $old_room = Room($old_shift['RID']);
-    $new_room = Room($new_shift['RID']);
+    $old_room = Room::find($old_shift['RID']);
+    $new_room = Room::find($new_shift['RID']);
 
     $noticeable_changes = false;
 
@@ -46,7 +47,7 @@ function mail_shift_change($old_shift, $new_shift)
     }
 
     if ($old_shift['RID'] != $new_shift['RID']) {
-        $message .= sprintf(__('* Shift Location changed from %s to %s'), $old_room['Name'], $new_room['Name']) . "\n";
+        $message .= sprintf(__('* Shift Location changed from %s to %s'), $old_room->name, $new_room->name) . "\n";
         $noticeable_changes = true;
     }
 
@@ -61,7 +62,7 @@ function mail_shift_change($old_shift, $new_shift)
     $message .= $new_shift['name'] . "\n";
     $message .= $new_shift['title'] . "\n";
     $message .= date('Y-m-d H:i', $new_shift['start']) . ' - ' . date('H:i', $new_shift['end']) . "\n";
-    $message .= $new_room['Name'] . "\n";
+    $message .= $new_room->name . "\n";
 
     foreach ($users as $user) {
         $user = (new User())->forceFill($user);
@@ -82,14 +83,14 @@ function mail_shift_change($old_shift, $new_shift)
 function mail_shift_delete($shift)
 {
     $users = ShiftEntries_by_shift($shift['SID']);
-    $room = Room($shift['RID']);
+    $room = Room::find($shift['RID']);
 
     $message = __('A Shift you are registered on was deleted:') . "\n";
 
     $message .= $shift['name'] . "\n";
     $message .= $shift['title'] . "\n";
     $message .= date('Y-m-d H:i', $shift['start']) . ' - ' . date('H:i', $shift['end']) . "\n";
-    $message .= $room['Name'] . "\n";
+    $message .= $room->name . "\n";
 
     foreach ($users as $user) {
         $user = (new User())->forceFill($user);
@@ -114,13 +115,13 @@ function mail_shift_assign($user, $shift)
         return;
     }
 
-    $room = Room($shift['RID']);
+    $room = Room::find($shift['RID']);
 
     $message = __('You have been assigned to a Shift:') . "\n";
     $message .= $shift['name'] . "\n";
     $message .= $shift['title'] . "\n";
     $message .= date('Y-m-d H:i', $shift['start']) . ' - ' . date('H:i', $shift['end']) . "\n";
-    $message .= $room['Name'] . "\n";
+    $message .= $room->name . "\n";
 
     engelsystem_email_to_user($user, __('Assigned to Shift'), $message, true);
 }
@@ -135,13 +136,13 @@ function mail_shift_removed($user, $shift)
         return;
     }
 
-    $room = Room($shift['RID']);
+    $room = Room::find($shift['RID']);
 
     $message = __('You have been removed from a Shift:') . "\n";
     $message .= $shift['name'] . "\n";
     $message .= $shift['title'] . "\n";
     $message .= date('Y-m-d H:i', $shift['start']) . ' - ' . date('H:i', $shift['end']) . "\n";
-    $message .= $room['Name'] . "\n";
+    $message .= $room->name . "\n";
 
     engelsystem_email_to_user($user, __('Removed from Shift'), $message, true);
 }

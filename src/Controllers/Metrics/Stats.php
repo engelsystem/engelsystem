@@ -12,6 +12,7 @@ use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\Room;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
@@ -362,6 +363,15 @@ class Stats
             'SUM(work_hours * 60 * 60)',
             'work_hours * 60 * 60'
         );
+    }
+
+    /**
+     * @return int
+     */
+    public function rooms(): int
+    {
+        return Room::query()
+            ->count();
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 
 /**
@@ -377,7 +378,7 @@ function User_view_myshift($shift, $user_source, $its_me)
             . ' - '
             . date('H:i', $shift['end']),
         'duration'   => sprintf('%.2f', ($shift['end'] - $shift['start']) / 3600) . '&nbsp;h',
-        'room'       => Room_name_render($shift),
+        'room'       => Room_name_render(Room::find($shift['RID'])),
         'shift_info' => $shift_info,
         'comment'    => ''
     ];

@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftsFilter;
 use Engelsystem\ShiftSignupState;
@@ -74,14 +75,14 @@ function Shifts_free($start, $end)
 }
 
 /**
- * @param array|int $room
+ * @param Room $room
  * @return array[]
  */
-function Shifts_by_room($room)
+function Shifts_by_room(Room $room)
 {
     return DB::select(
         'SELECT * FROM `Shifts` WHERE `RID`=? ORDER BY `start`',
-        [is_array($room) ? $room['RID'] : $room]
+        [$room->id]
     );
 }
 
@@ -93,9 +94,9 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 {
     $sql = '
     SELECT * FROM (
-        SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` AS `room_name`
+        SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `rooms`.`name` AS `room_name`
         FROM `Shifts`
-        JOIN `Room` USING (`RID`)
+        JOIN `rooms` ON `Shifts`.`RID` = `rooms`.`id`
         JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
         JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`shift_id` = `Shifts`.`SID`
         LEFT JOIN schedule_shift AS s on Shifts.SID = s.shift_id
@@ -107,9 +108,9 @@ function Shifts_by_ShiftsFilter(ShiftsFilter $shiftsFilter)
 
         UNION
 
-        SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `Room`.`Name` AS `room_name`
+        SELECT DISTINCT `Shifts`.*, `ShiftTypes`.`name`, `rooms`.`name` AS `room_name`
         FROM `Shifts`
-        JOIN `Room` USING (`RID`)
+        JOIN `rooms` ON `Shifts`.`RID` = `rooms`.`id`
         JOIN `ShiftTypes` ON `ShiftTypes`.`id` = `Shifts`.`shifttype_id`
         JOIN `NeededAngelTypes` ON `NeededAngelTypes`.`room_id`=`Shifts`.`RID`
         LEFT JOIN schedule_shift AS s on Shifts.SID = s.shift_id
@@ -596,6 +597,8 @@ function Shifts_by_user($userId, $include_freeload_comments = false)
 {
     return DB::select('
         SELECT
+            `rooms`.*,
+            `rooms`.name AS Name,
             `ShiftTypes`.`id` AS `shifttype_id`,
             `ShiftTypes`.`name`,
             `ShiftEntry`.`id`,
@@ -606,12 +609,11 @@ function Shifts_by_user($userId, $include_freeload_comments = false)
             `ShiftEntry`.`Comment`,
             ' . ($include_freeload_comments ? '`ShiftEntry`.`freeload_comment`, ' : '') . '
             `Shifts`.*,
-            @@session.time_zone AS timezone,
-            `Room`.*
+            @@session.time_zone AS timezone
         FROM `ShiftEntry`
         JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
         JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-        JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`)
+        JOIN `rooms` ON (`Shifts`.`RID` = `rooms`.`id`)
         WHERE `UID` = ?
         ORDER BY `start`
         ',

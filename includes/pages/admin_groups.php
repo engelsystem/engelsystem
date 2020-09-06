@@ -122,7 +122,7 @@ function admin_groups()
                 }
 
                 $group = DB::selectOne('SELECT * FROM `Groups` WHERE `UID`=? LIMIT 1', [$group_id]);
-                $privileges = $request->postData('privileges');
+                $privileges = $request->request->all('privileges');
                 if (!is_array($privileges)) {
                     $privileges = [];
                 }

@@ -2,7 +2,9 @@
 
 use Carbon\Carbon;
 use Engelsystem\Http\Exceptions\HttpTemporaryRedirect;
+use Engelsystem\Models\BaseModel;
 use Engelsystem\ValidationResult;
+use Illuminate\Support\Collection;
 
 /**
  * Provide page/request helper functions
@@ -75,14 +77,20 @@ function raw_output($output = '')
 /**
  * Helper function for transforming list of entities into array for select boxes.
  *
- * @param array  $data       The data array
- * @param string $key_name   name of the column to use as id/key
- * @param string $value_name name of the column to use as displayed value
+ * @param array|Collection $data       The data array
+ * @param string           $key_name   name of the column to use as id/key
+ * @param string           $value_name name of the column to use as displayed value
  *
- * @return array
+ * @return array|Collection
  */
 function select_array($data, $key_name, $value_name)
 {
+    if ($data instanceof Collection) {
+        return $data->mapToDictionary(function (BaseModel $model) use ($key_name, $value_name) {
+            return [$model->{$key_name} => $model->{$value_name}];
+        });
+    }
+
     $return = [];
     foreach ($data as $value) {
         $return[$value[$key_name]] = $value[$value_name];
