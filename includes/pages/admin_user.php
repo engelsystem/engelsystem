@@ -141,7 +141,10 @@ function admin_user()
             $his_highest_group = $his_highest_group['group_id'];
         }
 
-        if ($user_id != $user->id && ($my_highest_group <= $his_highest_group || is_null($his_highest_group))) {
+        if (
+            ($user_id != $user->id || auth()->can('admin_groups'))
+            && ($my_highest_group <= $his_highest_group || is_null($his_highest_group))
+        ) {
             $html .= 'Hier kannst Du die Benutzergruppen des Engels festlegen:<form action="'
                 . page_link_to('admin_user', ['action' => 'save_groups', 'id' => $user_id])
                 . '" method="post">' . "\n";
@@ -185,7 +188,7 @@ function admin_user()
     } else {
         switch ($request->input('action')) {
             case 'save_groups':
-                if ($user_id != $user->id) {
+                if ($user_id != $user->id || auth()->can('admin_groups')) {
                     $my_highest_group = DB::selectOne(
                         'SELECT * FROM `UserGroups` WHERE `uid`=? ORDER BY `group_id`',
                         [$user->id]
