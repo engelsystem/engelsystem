@@ -53,7 +53,19 @@ function Room_view($room, ShiftsFilterRenderer $shiftsFilterRenderer, ShiftCalen
     return page_with_title(glyph('map-marker') . $room['Name'], [
         $assignNotice,
         $description,
-        tabs($tabs, $selected_tab)
+        auth()->can('admin_rooms') ? buttons([
+            button(
+                page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room->id]),
+                __('edit'),
+                'btn'
+            ),
+            button(
+                page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room->id]),
+                __('delete'),
+                'btn'
+            )
+        ]) : '',
+        tabs($tabs, $selected_tab),
     ], true);
 }
 
