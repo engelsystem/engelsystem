@@ -10,6 +10,7 @@ use Engelsystem\Models\EventConfig;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
+use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
@@ -86,6 +87,27 @@ class Stats
     public function forceActiveUsers(): int
     {
         return State::whereForceActive(true)->count();
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return int
+     */
+    public function email(string $type): int
+    {
+        switch ($type) {
+            case 'system':
+                $query = Settings::whereEmailShiftinfo(true);
+                break;
+            case 'humans':
+                $query = Settings::whereEmailHuman(true);
+                break;
+            default:
+                return 0;
+        }
+
+        return $query->count();
     }
 
     /**
@@ -362,6 +384,15 @@ class Stats
         $query = is_null($meeting) ? News::query() : News::whereIsMeeting($meeting);
 
         return $query->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function comments(): int
+    {
+        return NewsComment::query()
+            ->count();
     }
 
     /**
