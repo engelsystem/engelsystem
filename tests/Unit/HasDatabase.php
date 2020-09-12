@@ -38,6 +38,7 @@ trait HasDatabase
             ->table('migrations')
             ->insert(
                 [
+                    // Migrations that can be skipped as they only use legacy tables
                     ['migration' => '2018_01_01_000001_import_install_sql'],
                     ['migration' => '2018_01_01_000002_import_update_sql'],
                     ['migration' => '2018_01_01_000003_fix_old_tables'],
@@ -46,6 +47,7 @@ trait HasDatabase
                     ['migration' => '2018_12_27_000000_fix_missing_arrival_dates'],
                     ['migration' => '2019_09_07_000000_migrate_admin_schedule_permissions'],
                     ['migration' => '2020_04_07_000000_change_mysql_database_encoding_to_utf8mb4'],
+                    ['migration' => '2020_09_12_000000_create_welcome_angel_permissions_group'],
                 ]
             );
 
