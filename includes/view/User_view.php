@@ -3,6 +3,8 @@
 use Carbon\Carbon;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\Worklog;
+use Illuminate\Support\Collection;
 
 /**
  * Renders user settings page
@@ -424,13 +426,14 @@ function User_view_myshift($shift, $user_source, $its_me)
 /**
  * Helper that prepares the shift table for user view
  *
- * @param array[] $shifts
- * @param User    $user_source
- * @param bool    $its_me
- * @param int     $tshirt_score
- * @param bool    $tshirt_admin
- * @param array[] $user_worklogs
- * @param bool    $admin_user_worklog_privilege
+ * @param array[]              $shifts
+ * @param User                 $user_source
+ * @param bool                 $its_me
+ * @param int                  $tshirt_score
+ * @param bool                 $tshirt_admin
+ * @param Worklog[]|Collection $user_worklogs
+ * @param bool                 $admin_user_worklog_privilege
+ *
  * @return array
  */
 function User_view_myshifts(
@@ -455,9 +458,9 @@ function User_view_myshifts(
 
     if ($its_me || $admin_user_worklog_privilege) {
         foreach ($user_worklogs as $worklog) {
-            $key = $worklog['work_timestamp'] . '-worklog-' . $worklog['id'];
+            $key = $worklog->worked_at->timestamp . '-worklog-' . $worklog->id;
             $myshifts_table[$key] = User_view_worklog($worklog, $admin_user_worklog_privilege);
-            $timeSum += $worklog['work_hours'] * 3600;
+            $timeSum += $worklog->hours * 3600;
         }
     }
 
@@ -488,11 +491,11 @@ function User_view_myshifts(
 /**
  * Renders table entry for user work log
  *
- * @param array $worklog
- * @param bool  $admin_user_worklog_privilege
+ * @param Worklog $worklog
+ * @param bool    $admin_user_worklog_privilege
  * @return array
  */
-function User_view_worklog($worklog, $admin_user_worklog_privilege)
+function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
 {
     $actions = '';
     if ($admin_user_worklog_privilege) {
@@ -511,15 +514,15 @@ function User_view_worklog($worklog, $admin_user_worklog_privilege)
     }
 
     return [
-        'date'       => glyph('calendar') . date('Y-m-d', $worklog['work_timestamp']),
-        'duration'   => sprintf('%.2f', $worklog['work_hours']) . ' h',
+        'date'       => glyph('calendar') . date('Y-m-d', $worklog->worked_at->timestamp),
+        'duration'   => sprintf('%.2f', $worklog->hours) . ' h',
         'room'       => '',
         'shift_info' => __('Work log entry'),
-        'comment'    => $worklog['comment'] . '<br>'
+        'comment'    => $worklog->comment . '<br>'
             . sprintf(
                 __('Added by %s at %s'),
-                User_Nick_render(User::find($worklog['created_user_id'])),
-                date('Y-m-d H:i', $worklog['created_timestamp'])
+                User_Nick_render($worklog->creator),
+                $worklog->created_at->format('Y-m-d H:i')
             ),
         'actions'    => $actions
     ];
@@ -528,17 +531,18 @@ function User_view_worklog($worklog, $admin_user_worklog_privilege)
 /**
  * Renders view for a single user
  *
- * @param User    $user_source
- * @param bool    $admin_user_privilege
- * @param bool    $freeloader
- * @param array[] $user_angeltypes
- * @param array[] $user_groups
- * @param array[] $shifts
- * @param bool    $its_me
- * @param int     $tshirt_score
- * @param bool    $tshirt_admin
- * @param bool    $admin_user_worklog_privilege
- * @param array[] $user_worklogs
+ * @param User                 $user_source
+ * @param bool                 $admin_user_privilege
+ * @param bool                 $freeloader
+ * @param array[]              $user_angeltypes
+ * @param array[]              $user_groups
+ * @param array[]              $shifts
+ * @param bool                 $its_me
+ * @param int                  $tshirt_score
+ * @param bool                 $tshirt_admin
+ * @param bool                 $admin_user_worklog_privilege
+ * @param Worklog[]|Collection $user_worklogs
+ *
  * @return string
  */
 function User_view(
