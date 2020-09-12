@@ -15,6 +15,7 @@ use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\Worklog;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Support\Str;
@@ -118,6 +119,28 @@ class StatsTest extends TestCase
             ['theme' => 1, 'count' => 2],
             ['theme' => 4, 'count' => 1],
         ], $themes->toArray());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::worklogSeconds
+     */
+    public function testWorklogSeconds()
+    {
+        $this->addUsers();
+        $worklogData = [
+            'user_id'    => 1,
+            'creator_id' => 1,
+            'hours'      => 2.4,
+            'comment'    => '',
+            'worked_at'  => new Carbon()
+        ];
+        (new Worklog($worklogData))->save();
+        (new Worklog(['hours' => 1.2, 'user_id' => 3] + $worklogData))->save();
+
+        $stats = new Stats($this->database);
+        $seconds = $stats->worklogSeconds();
+
+        $this->assertEquals(2.4 * 60 * 60 + 1.2 * 60 * 60, $seconds);
     }
 
     /**

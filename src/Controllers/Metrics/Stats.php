@@ -18,6 +18,7 @@ use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\Worklog;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression as QueryExpression;
 use Illuminate\Support\Collection;
@@ -48,7 +49,7 @@ class Stats
         if (!is_null($working)) {
             // @codeCoverageIgnoreStart
             $query
-                ->leftJoin('UserWorkLog', 'UserWorkLog.user_id', '=', 'users_state.user_id')
+                ->leftJoin('worklogs', 'worklogs.user_id', '=', 'users_state.user_id')
                 ->leftJoin('ShiftEntry', 'ShiftEntry.UID', '=', 'users_state.user_id')
                 ->distinct();
 
@@ -57,14 +58,14 @@ class Stats
                 if ($working) {
                     $query
                         ->whereNotNull('ShiftEntry.SID')
-                        ->orWhereNotNull('UserWorkLog.work_hours');
+                        ->orWhereNotNull('worklogs.hours');
 
                     return;
                 }
 
                 $query
                     ->whereNull('ShiftEntry.SID')
-                    ->whereNull('UserWorkLog.work_hours');
+                    ->whereNull('worklogs.hours');
             });
             // @codeCoverageIgnoreEnd
         }
@@ -213,7 +214,7 @@ class Stats
     }
 
     /**
-     * @param string $vehicle
+     * @param string|null $vehicle
      * @return int
      * @codeCoverageIgnore
      */
@@ -238,8 +239,6 @@ class Stats
     }
 
     /**
-     * The number of worked shifts
-     *
      * @param bool|null $done
      * @param bool|null $freeloaded
      *
@@ -264,7 +263,7 @@ class Stats
     }
 
     /**
-     * The number of worked shifts
+     * The amount of worked seconds
      *
      * @param bool|null $done
      * @param bool|null $freeloaded
@@ -329,23 +328,13 @@ class Stats
     }
 
     /**
-     * @return QueryBuilder
-     * @codeCoverageIgnore
-     */
-    protected function worklogSecondsQuery()
-    {
-        return $this
-            ->getQuery('UserWorkLog');
-    }
-
-    /**
      * @return int
      * @codeCoverageIgnore
      */
     public function worklogSeconds(): int
     {
-        return (int)$this->worklogSecondsQuery()
-            ->sum($this->raw('work_hours * 60 * 60'));
+        return (int)Worklog::query()
+            ->sum($this->raw('hours * 60 * 60'));
     }
 
     /**
@@ -358,10 +347,10 @@ class Stats
     {
         return $this->getBuckets(
             $buckets,
-            $this->worklogSecondsQuery(),
+            Worklog::query(),
             'user_id',
-            'SUM(work_hours * 60 * 60)',
-            'work_hours * 60 * 60'
+            'SUM(hours * 60 * 60)',
+            'hours * 60 * 60'
         );
     }
 

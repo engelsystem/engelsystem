@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\Worklog;
 
 /**
  * Delete work log entry.
@@ -36,16 +37,16 @@ function UserWorkLog_delete_title()
  * Render edit table.
  *
  * @param User  $user_source
- * @param array $userWorkLog
+ * @param Worklog $userWorkLog
  * @return string
  */
-function UserWorkLog_edit_form($user_source, $userWorkLog)
+function UserWorkLog_edit_form($user_source, Worklog $userWorkLog)
 {
     return form([
         form_info(__('User'), User_Nick_render($user_source)),
-        form_date('work_timestamp', __('Work date'), $userWorkLog['work_timestamp'], null, time()),
-        form_text('work_hours', __('Work hours'), $userWorkLog['work_hours']),
-        form_text('comment', __('Comment'), $userWorkLog['comment'], false, 200),
+        form_date('work_timestamp', __('Work date'), $userWorkLog->worked_at->timestamp, null, time()),
+        form_text('work_hours', __('Work hours'), $userWorkLog->hours),
+        form_text('comment', __('Comment'), $userWorkLog->comment, false, 200),
         form_submit('submit', __('Save'))
     ]);
 }
@@ -54,10 +55,10 @@ function UserWorkLog_edit_form($user_source, $userWorkLog)
  * Form for edit a user work log entry.
  *
  * @param User  $user_source
- * @param array $userWorkLog
+ * @param Worklog $userWorkLog
  * @return string
  */
-function UserWorkLog_edit_view($user_source, $userWorkLog)
+function UserWorkLog_edit_view($user_source, Worklog $userWorkLog)
 {
     return page_with_title(UserWorkLog_edit_title(), [
         buttons([
@@ -72,10 +73,10 @@ function UserWorkLog_edit_view($user_source, $userWorkLog)
  * Form for adding a user work log entry.
  *
  * @param User  $user_source
- * @param array $userWorkLog
+ * @param Worklog  $userWorkLog
  * @return string
  */
-function UserWorkLog_add_view($user_source, $userWorkLog)
+function UserWorkLog_add_view($user_source, Worklog $userWorkLog)
 {
     return page_with_title(UserWorkLog_add_title(), [
         buttons([

@@ -3,8 +3,10 @@
 use Carbon\Carbon;
 use Engelsystem\Database\DB;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\Worklog;
 use Engelsystem\ValidationResult;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Collection;
 
 /**
  * User model
@@ -35,21 +37,12 @@ function User_tshirt_score($userId)
         $result_shifts = ['tshirt_score' => 0];
     }
 
-    $result_worklog = DB::selectOne('
-        SELECT SUM(`work_hours`) AS `tshirt_score`
-        FROM `users`
-        LEFT JOIN `UserWorkLog` ON `users`.`id` = `UserWorkLog`.`user_id`
-        WHERE `users`.`id` = ?
-        AND `UserWorkLog`.`work_timestamp` < ?
-    ', [
-        $userId,
-        time()
-    ]);
-    if (!isset($result_worklog['tshirt_score'])) {
-        $result_worklog = ['tshirt_score' => 0];
-    }
+    $worklogHours = Worklog::query()
+        ->where('user_id', $userId)
+        ->where('worked_at', '<=', Carbon::Now())
+        ->sum('hours');
 
-    return $result_shifts['tshirt_score'] + $result_worklog['tshirt_score'];
+    return $result_shifts['tshirt_score'] + $worklogHours;
 }
 
 /**
@@ -67,7 +60,8 @@ function User_is_freeloader($user)
  * Returns all users that are not member of given angeltype.
  *
  * @param array $angeltype Angeltype
- * @return User[]
+ *
+ * @return User[]|Collection
  */
 function Users_by_angeltype_inverted($angeltype)
 {
@@ -88,7 +82,7 @@ function Users_by_angeltype_inverted($angeltype)
  * Returns all members of given angeltype.
  *
  * @param array $angeltype
- * @return User[]
+ * @return User[]|Collection
  */
 function Users_by_angeltype($angeltype)
 {
@@ -241,14 +235,14 @@ function User_get_eligable_voucher_count($user)
     $worklog = UserWorkLogsForUser($user->id, $start);
     $shifts_done =
         count($shifts)
-        + count($worklog);
+        + $worklog->count();
 
     $shiftsTime = 0;
     foreach ($shifts as $shift){
         $shiftsTime += ($shift['end'] - $shift['start']) / 60 / 60;
     }
     foreach ($worklog as $entry){
-        $shiftsTime += $entry['work_hours'];
+        $shiftsTime += $entry->hours;
     }
 
     $vouchers = $voucher_settings['initial_vouchers'];

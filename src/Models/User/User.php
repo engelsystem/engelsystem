@@ -8,6 +8,7 @@ use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\Worklog;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -29,8 +30,12 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property-read QueryBuilder|State        $state
  * @property-read Collection|News[]         $news
  * @property-read Collection|NewsComment[]  $newsComments
+ * @property-read Collection|Worklog[]      $worklogs
+ * @property-read Collection|Worklog[]      $worklogsCreated
  * @property-read int|null                  $news_count
  * @property-read int|null                  $news_comments_count
+ * @property-read int|null                  $worklogs_count
+ * @property-read int|null                  $worklogs_created_count
  *
  * @method static QueryBuilder|User[] whereId($value)
  * @method static QueryBuilder|User[] whereName($value)
@@ -126,6 +131,22 @@ class User extends BaseModel
     public function newsComments(): HasMany
     {
         return $this->hasMany(NewsComment::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function worklogs(): HasMany
+    {
+        return $this->hasMany(Worklog::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function worklogsCreated(): HasMany
+    {
+        return $this->hasMany(Worklog::class, 'creator_id');
     }
 
     /**

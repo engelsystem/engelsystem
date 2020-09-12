@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\Worklog;
 
 /**
  * Delete a work log entry.
@@ -10,11 +11,11 @@ use Engelsystem\Models\User\User;
 function user_worklog_delete_controller()
 {
     $request = request();
-    $userWorkLog = UserWorkLog($request->input('user_worklog_id'));
+    $userWorkLog = Worklog::find($request->input('user_worklog_id'));
     if (empty($userWorkLog)) {
         throw_redirect(user_link(auth()->user()->id));
     }
-    $user_source = User::find($userWorkLog['user_id']);
+    $user_source = $userWorkLog->user;
 
     if ($request->hasPostData('submit')) {
         UserWorkLog_delete($userWorkLog);
@@ -37,17 +38,24 @@ function user_worklog_delete_controller()
 function user_worklog_edit_controller()
 {
     $request = request();
-    $userWorkLog = UserWorkLog($request->input('user_worklog_id'));
+    $userWorkLog = Worklog::find($request->input('user_worklog_id'));
     if (empty($userWorkLog)) {
         throw_redirect(user_link(auth()->user()->id));
     }
-    $user_source = User::find($userWorkLog['user_id']);
+    $user_source = $userWorkLog->user;
 
     if ($request->hasPostData('submit')) {
         list ($valid, $userWorkLog) = user_worklog_from_request($userWorkLog);
 
         if ($valid) {
-            UserWorkLog_update($userWorkLog);
+            $userWorkLog->save();
+
+            engelsystem_log(sprintf(
+                'Updated work log for %s, %s hours, %s',
+                User_Nick_render($userWorkLog->user, true),
+                $userWorkLog->hours,
+                $userWorkLog->comment
+            ));
 
             success(__('Work log entry updated.'));
             throw_redirect(user_link($user_source->id));
@@ -63,44 +71,41 @@ function user_worklog_edit_controller()
 /**
  * Handle form
  *
- * @param array $userWorkLog
- * @return array [bool $valid, UserWorkLog $userWorkLog]
+ * @param Worklog $worklog
+ * @return bool[]|Worklog[] [bool $valid, Worklog $userWorkLog]
  */
-function user_worklog_from_request($userWorkLog)
+function user_worklog_from_request(Worklog $worklog)
 {
     $request = request();
 
     $valid = true;
 
-    $userWorkLog['work_timestamp'] = parse_date(
-        'Y-m-d H:i',
-        $request->input('work_timestamp') . ' 00:00'
-    );
-    if (is_null($userWorkLog['work_timestamp'])) {
+    $worklog->worked_at = DateTime::createFromFormat('Y-m-d H:i', $request->input('work_timestamp') . ' 00:00');
+    if (!$worklog->worked_at) {
         $valid = false;
         error(__('Please enter work date.'));
     }
 
-    $userWorkLog['work_hours'] = $request->input('work_hours');
-    if (!preg_match("/^[0-9]+(\.[0-9]+)?$/", $userWorkLog['work_hours'])) {
+    $worklog->hours = $request->input('work_hours');
+    if (!preg_match("/^[0-9]+(\.[0-9]{0,2})?$/", $worklog->hours)) {
         $valid = false;
         error(__('Please enter work hours in format ##[.##].'));
     }
 
-    $userWorkLog['comment'] = $request->input('comment');
-    if (empty($userWorkLog['comment'])) {
+    $worklog->comment = $request->input('comment');
+    if (empty($worklog->comment)) {
         $valid = false;
         error(__('Please enter a comment.'));
     }
 
-    if (mb_strlen($userWorkLog['comment']) > 200) {
+    if (mb_strlen($worklog->comment) > 200) {
         $valid = false;
         error(__('Comment too long.'));
     }
 
     return [
         $valid,
-        $userWorkLog
+        $worklog
     ];
 }
 
@@ -143,7 +148,7 @@ function user_worklog_add_controller()
  *
  * @return string
  */
-function user_worklog_add_link($user)
+function user_worklog_add_link(User $user)
 {
     return page_link_to('user_worklog', [
         'action'  => 'add',
@@ -154,29 +159,29 @@ function user_worklog_add_link($user)
 /**
  * Link to work log entry edit.
  *
- * @param array $userWorkLog
+ * @param Worklog $userWorkLog
  * @return string
  */
-function user_worklog_edit_link($userWorkLog)
+function user_worklog_edit_link(Worklog $userWorkLog)
 {
     return page_link_to('user_worklog', [
         'action'          => 'edit',
-        'user_worklog_id' => $userWorkLog['id']
+        'user_worklog_id' => $userWorkLog->id
     ]);
 }
 
 /**
  * Link to work log entry delete.
  *
- * @param array   $userWorkLog
+ * @param Worklog $userWorkLog
  * @param array[] $parameters
  * @return string
  */
-function user_worklog_delete_link($userWorkLog, $parameters = [])
+function user_worklog_delete_link(Worklog $userWorkLog, $parameters = [])
 {
     return page_link_to('user_worklog', array_merge([
         'action'          => 'delete',
-        'user_worklog_id' => $userWorkLog['id']
+        'user_worklog_id' => $userWorkLog->id
     ], $parameters));
 }
 
@@ -207,4 +212,6 @@ function user_worklog_controller()
         case 'delete':
             return user_worklog_delete_controller();
     }
+
+    return ['', ''];
 }
