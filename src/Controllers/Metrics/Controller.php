@@ -107,6 +107,11 @@ class Controller extends BaseController
                 ['labels' => ['type' => '7.5t'], 'value' => $this->stats->licenses('7.5t')],
                 ['labels' => ['type' => '12.5t'], 'value' => $this->stats->licenses('12.5t')],
             ],
+            'users_email'          => [
+                'type' => 'gauge',
+                ['labels' => ['type' => 'system'], 'value' => $this->stats->email('system')],
+                ['labels' => ['type' => 'humans'], 'value' => $this->stats->email('humans')],
+            ],
             'users_working'        => [
                 'type' => 'gauge',
                 ['labels' => ['freeloader' => false], $this->stats->currentlyWorkingUsers(false)],
@@ -152,6 +157,7 @@ class Controller extends BaseController
                 ['labels' => ['type' => 'news'], 'value' => $this->stats->announcements(false)],
                 ['labels' => ['type' => 'meeting'], 'value' => $this->stats->announcements(true)],
             ],
+            'comments'             => ['type' => 'gauge', $this->stats->comments()],
             'questions'            => [
                 'type' => 'gauge',
                 ['labels' => ['state' => 'answered'], 'value' => $this->stats->questions(true)],
