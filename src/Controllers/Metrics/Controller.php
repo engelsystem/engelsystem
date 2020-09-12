@@ -72,6 +72,11 @@ class Controller extends BaseController
         $userLocales = $this->formatStats($this->stats->languages(), 'locales', 'language', 'locale');
         $userThemes = $this->formatStats($this->stats->themes(), 'available_themes', 'theme');
 
+        $themes = $this->config->get('available_themes');
+        foreach ($userThemes as $key => $theme) {
+            $userThemes[$key]['labels']['name'] = $themes[$theme['labels']['theme']];
+        }
+
         $data = [
             $this->config->get('app_name') . ' stats',
             'info'                 => [
