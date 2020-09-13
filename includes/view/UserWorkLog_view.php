@@ -6,19 +6,19 @@ use Engelsystem\Models\Worklog;
 /**
  * Delete work log entry.
  *
- * @param User $user_source
+ * @param User $user
  * @return string
  */
-function UserWorkLog_delete_view($user_source)
+function UserWorkLog_delete_view(User $user)
 {
     return page_with_title(UserWorkLog_delete_title(), [
         info(sprintf(
             __('Do you want to delete the worklog entry for %s?'),
-            User_Nick_render($user_source)
+            User_Nick_render($user)
         ), true),
         form([
             buttons([
-                button(user_link($user_source->id), glyph('remove') . __('cancel')),
+                button(user_link($user->id), glyph('remove') . __('cancel')),
                 form_submit('submit', glyph('ok') . __('delete'), 'btn-danger', false),
             ]),
         ]),
@@ -36,17 +36,17 @@ function UserWorkLog_delete_title()
 /**
  * Render edit table.
  *
- * @param User  $user_source
- * @param Worklog $userWorkLog
+ * @param User  $user
+ * @param Worklog $worklog
  * @return string
  */
-function UserWorkLog_edit_form($user_source, Worklog $userWorkLog)
+function UserWorkLog_edit_form(User $user, Worklog $worklog)
 {
     return form([
-        form_info(__('User'), User_Nick_render($user_source)),
-        form_date('work_timestamp', __('Work date'), $userWorkLog->worked_at->timestamp, null, time()),
-        form_text('work_hours', __('Work hours'), $userWorkLog->hours),
-        form_text('comment', __('Comment'), $userWorkLog->comment, false, 200),
+        form_info(__('User'), User_Nick_render($user)),
+        form_date('work_timestamp', __('Work date'), $worklog->worked_at->timestamp, null, time()),
+        form_text('work_hours', __('Work hours'), $worklog->hours),
+        form_text('comment', __('Comment'), $worklog->comment, false, 200),
         form_submit('submit', __('Save'))
     ]);
 }
@@ -54,36 +54,36 @@ function UserWorkLog_edit_form($user_source, Worklog $userWorkLog)
 /**
  * Form for edit a user work log entry.
  *
- * @param User  $user_source
- * @param Worklog $userWorkLog
+ * @param User  $user
+ * @param Worklog $worklog
  * @return string
  */
-function UserWorkLog_edit_view($user_source, Worklog $userWorkLog)
+function UserWorkLog_edit_view(User $user, Worklog $worklog)
 {
     return page_with_title(UserWorkLog_edit_title(), [
         buttons([
-            button(user_link($user_source->id), __('back'))
+            button(user_link($user->id), __('back'))
         ]),
         msg(),
-        UserWorkLog_edit_form($user_source, $userWorkLog)
+        UserWorkLog_edit_form($user, $worklog)
     ]);
 }
 
 /**
  * Form for adding a user work log entry.
  *
- * @param User  $user_source
- * @param Worklog  $userWorkLog
+ * @param User  $user
+ * @param Worklog  $worklog
  * @return string
  */
-function UserWorkLog_add_view($user_source, Worklog $userWorkLog)
+function UserWorkLog_add_view(User $user, Worklog $worklog)
 {
     return page_with_title(UserWorkLog_add_title(), [
         buttons([
-            button(user_link($user_source->id), __('back'))
+            button(user_link($user->id), __('back'))
         ]),
         msg(),
-        UserWorkLog_edit_form($user_source, $userWorkLog)
+        UserWorkLog_edit_form($user, $worklog)
     ]);
 }
 
