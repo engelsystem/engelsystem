@@ -27,18 +27,18 @@ function UserWorkLogsForUser($userId, Carbon $sinceTime = null)
 /**
  * Delete a work log entry.
  *
- * @param Worklog $userWorkLog
+ * @param Worklog $worklog
  * @return int
  */
-function UserWorkLog_delete(Worklog $userWorkLog)
+function UserWorkLog_delete(Worklog $worklog)
 {
-    $result = $userWorkLog->delete();
+    $result = $worklog->delete();
 
     engelsystem_log(sprintf(
         'Delete work log for %s, %s hours, %s',
-        User_Nick_render($userWorkLog->user, true),
-        $userWorkLog->hours,
-        $userWorkLog->comment
+        User_Nick_render($worklog->user, true),
+        $worklog->hours,
+        $worklog->comment
     ));
 
     return $result;
@@ -47,20 +47,20 @@ function UserWorkLog_delete(Worklog $userWorkLog)
 /**
  * Create a new work log entry
  *
- * @param Worklog $userWorkLog
+ * @param Worklog $worklog
  * @return bool
  */
-function UserWorkLog_create(Worklog $userWorkLog)
+function UserWorkLog_create(Worklog $worklog)
 {
     $user = auth()->user();
-    $userWorkLog->creator()->associate($user);
-    $result = $userWorkLog->save();
+    $worklog->creator()->associate($user);
+    $result = $worklog->save();
 
     engelsystem_log(sprintf(
         'Added work log entry for %s, %s hours, %s',
-        User_Nick_render($userWorkLog->user, true),
-        $userWorkLog->hours,
-        $userWorkLog->comment
+        User_Nick_render($worklog->user, true),
+        $worklog->hours,
+        $worklog->comment
     ));
 
     return $result;
