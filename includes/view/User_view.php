@@ -759,10 +759,10 @@ function User_view_state_admin($freeloader, $user_source)
     } else {
         $arrivalDate = $user_source->personalData->planned_arrival_date;
         $state[] = '<span class="text-danger">'
-            . sprintf(
+            . ($arrivalDate ? sprintf(
                 __('Not arrived (Planned: %s)'),
-                $arrivalDate ? $arrivalDate->format('Y-m-d') : ''
-            )
+                $arrivalDate->format('Y-m-d')
+            ) : __('Not arrived'))
             . '</span>';
     }
 
