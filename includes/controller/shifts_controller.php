@@ -2,6 +2,7 @@
 
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\Shifts\ScheduleShift;
 use Engelsystem\ShiftSignupState;
 
 /**
@@ -59,6 +60,11 @@ function shift_edit_controller()
     $shift_id = $request->input('edit_shift');
 
     $shift = Shift($shift_id);
+    if (ScheduleShift::whereShiftId($shift['SID'])->first()) {
+        warning(__(
+            'This shift was imported from a schedule so some changes will be overwritten with the next import.'
+        ));
+    }
 
     $rooms = [];
     foreach (Rooms() as $room) {

@@ -452,6 +452,12 @@ msgstr ""
 msgid "Shift entry removed."
 msgstr "Schichteintrag gelöscht."
 
+#: includes/controller/shifts_controller.php:65
+msgid "This shift was imported from a schedule so some changes will be overwritten with the next import."
+msgstr ""
+"Diese Schicht wurde aus einem Fahrplan importiert. "
+"Dadurch werden einige Änderungen beim nächsten Import überschrieben."
+
 #: includes/controller/shifts_controller.php:96
 msgid "Please select a room."
 msgstr "Bitte einen Raum auswählen."
