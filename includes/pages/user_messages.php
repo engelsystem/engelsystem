@@ -50,12 +50,22 @@ function user_messages()
             '' => __('Select recipient...')
         ];
 
+        $to_angel_type_data = [
+            '' => __('Select angeltype...')
+        ];
+
         foreach ($users as $u) {
             $pronoun = ((config('enable_pronoun') && $u->pronoun) ? ' (' . htmlspecialchars($u->pronoun) . ')' : '');
             $to_select_data[$u->id] = $u->name . $pronoun;
         }
 
+        $angelTypes = AngelTypes();
+        foreach ($angelTypes as $angel_type) {
+            $to_angel_type_data[$angel_type['id']] = $angel_type['name'];
+        }
+
         $to_select = html_select_key('to', 'to', $to_select_data, '');
+        $to_angel_type_select = html_select_key('to_type', 'to_type', $to_angel_type_data, '');
 
         $messages = $user->messages;
 
@@ -65,6 +75,7 @@ function user_messages()
                 'timestamp' => date(__('Y-m-d H:i')),
                 'from'      => User_Nick_render($user),
                 'to'        => $to_select,
+                'to_type'   => $to_angel_type_select,
                 'text'      => form_textarea('text', '', ''),
                 'actions'   => form_submit('submit', __('Send'))
             ]
@@ -109,6 +120,7 @@ function user_messages()
                     'timestamp' => __('Date'),
                     'from'      => __('Transmitted'),
                     'to'        => __('Recipient'),
+                    'to_type'   => __('Angeltypes'),
                     'text'      => __('Message'),
                     'actions'   => ''
                 ], $messages_table)
@@ -153,12 +165,29 @@ function user_messages()
                 $receiver = User::find($request->input('to'));
                 $text = $request->input('text');
 
-                if ($receiver !== null && !empty($text)) {
-                    Message::create([
-                        'user_id'     => $user->id,
-                        'receiver_id' => $request->input('to'),
-                        'text'        => $request->input('text')
-                    ]);
+                // if type is sent then we send to all members of type otherwise we send to the selected user
+                if ($request->input('to_type') !== '') {
+                    $users = DB::select(
+                        'SELECT user_id FROM UserAngelTypes WHERE angeltype_id = ? AND engeltype_id != ?',
+                        [$request->input('to_type'), $user->id]
+                    );
+
+                    if (empty($users)) {
+                        return error(__('There are no users subscribed to this type'), true);
+                    }
+
+                    foreach ($users as $user) {
+                        Message_send($user['user_id'], $request->input('text'));
+                    }
+                    redirect(page_link_to('user_messages'));
+                } elseif ($receiver !== null && !empty($text)) {
+                    Message::create(
+                        [
+                            'user_id' => $user->id,
+                            'receiver_id' => $request->input('to'),
+                            'text' => $request->input('text')
+                        ]
+                    );
                     throw_redirect(page_link_to('user_messages'));
                 } else {
                     return error(__('Transmitting was terminated with an Error.'), true);

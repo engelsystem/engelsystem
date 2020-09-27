@@ -1671,6 +1671,10 @@ msgstr "Senden"
 msgid "Y-m-d H:i"
 msgstr "d.m.Y H:i"
 
+#: includes/pages/user_messages.php:53
+msgid "Select angeltype..."
+msgstr "Engeltyp auswählen..."
+
 #: includes/pages/user_messages.php:98
 msgid "mark as read"
 msgstr "als gelesen markieren"
