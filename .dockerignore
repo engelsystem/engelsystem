@@ -1,0 +1,4 @@
+**/docker-compose.yml
+**/Dockerfile
+docker/deployment.env
+.dockerignore
