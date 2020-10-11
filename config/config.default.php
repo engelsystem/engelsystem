@@ -85,10 +85,10 @@ return [
 
     // Redirect to this site after logging in or when pressing the top-left button
     // Must be one of news, meetings, user_shifts, angeltypes, user_questions
-    'home_site'               => 'news',
+    'home_site'               => env('HOME_SITE', 'news'),
 
     // Number of News shown on one site
-    'display_news'            => 10,
+    'display_news'            => env('DISPLAY_NEWS', 10),
 
     // Users are able to sign up
     'registration_enabled'    => (bool)env('REGISTRATION_ENABLED', true),
@@ -97,7 +97,7 @@ return [
     'signup_requires_arrival' => false,
 
     // Whether newly-registered user should automatically be marked as arrived
-    'autoarrive'              => false,
+    'autoarrive'              => (bool)env('ANGEL_AUTOARRIVE', false),
 
     // Only allow shift signup this number of hours in advance
     // Setting this to 0 disables the feature
@@ -115,22 +115,22 @@ return [
     'password_algorithm'      => PASSWORD_DEFAULT,
 
     // The minimum length for passwords
-    'min_password_length'     => 8,
+    'min_password_length'     => env('PASSWORD_MINIMUM_LENGTH', 8),
 
     // Whether the DECT field should be enabled
-    'enable_dect'             => true,
+    'enable_dect'             => (bool)env('REGISTRATION_ENABLE_DECT', true),
 
     // Enables prename and lastname
-    'enable_user_name'        => false,
+    'enable_user_name'        => (bool)env('REGISTRATION_ENABLE_USERNAME', false),
 
     // Enable displaying the pronoun fields
-    'enable_pronoun'          => false,
+    'enable_pronoun'          => (bool)env('REGISTRATION_ENABLE_DECT', false),
 
     // Enables the planned arrival/leave date
-    'enable_planned_arrival'  => true,
+    'enable_planned_arrival'  => (bool)env('REGISTRATION_ENABLE_PLANNED_ARRIVAL', true),
 
     // Enables the T-Shirt configuration on signup and profile
-    'enable_tshirt_size'      => true,
+    'enable_tshirt_size'      => (bool)env('REGISTRATION_ENABLE_TSHIRT', true),
 
     // Number of shifts to freeload until angel is locked for shift signup.
     'max_freeloadable_shifts' => 2,
