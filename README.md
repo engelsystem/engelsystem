@@ -75,7 +75,8 @@ docker-compose up -d
 #### Migrate
 Import database changes to migrate it to the newest version
 ```bash
-docker exec -it engelsystem_es_php_fpm_1 bin/migrate
+cd docker
+docker-compose exec es_php_fpm bin/migrate
 ```
 
 ### Scripts
