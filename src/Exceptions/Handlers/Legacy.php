@@ -25,12 +25,14 @@ class Legacy implements HandlerInterface
      */
     public function report(Throwable $e)
     {
+        $previous = $e->getPrevious();
         error_log(sprintf(
-            'Exception: Code: %s, Message: %s, File: %s:%u, Trace: %s',
+            'Exception: Code: %s, Message: %s, File: %s:%u, Previous: %s, Trace: %s',
             $e->getCode(),
             $e->getMessage(),
             $this->stripBasePath($e->getFile()),
             $e->getLine(),
+            $previous ? $previous->getMessage() : 'None',
             json_encode($e->getTrace())
         ));
 

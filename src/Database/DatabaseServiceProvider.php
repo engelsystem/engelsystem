@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use Illuminate\Database\Connection as DatabaseConnection;
 use PDOException;
+use Throwable;
 
 class DatabaseServiceProvider extends ServiceProvider
 {
@@ -38,7 +39,7 @@ class DatabaseServiceProvider extends ServiceProvider
         try {
             $pdo = $capsule->getConnection()->getPdo();
         } catch (PDOException $e) {
-            $this->exitOnError();
+            $this->exitOnError($e);
         }
 
         $this->app->instance(CapsuleManager::class, $capsule);
@@ -56,10 +57,12 @@ class DatabaseServiceProvider extends ServiceProvider
     }
 
     /**
+     * @param Throwable $exception
+     *
      * @throws Exception
      */
-    protected function exitOnError()
+    protected function exitOnError(Throwable $exception)
     {
-        throw new Exception('Error: Unable to connect to database');
+        throw new Exception('Error: Unable to connect to database', 0, $exception);
     }
 }
