@@ -8,7 +8,8 @@ services:
     ports:
       - 5000:80
     networks:
-      - internal
+      - fpm
+      - internet
     depends_on:
       - es_php_fpm
   es_php_fpm:
@@ -22,8 +23,9 @@ services:
       MYSQL_PASSWORD: engelsystem
       MYSQL_DATABASE: engelsystem
     networks:
-      - internal
       - database
+      - fpm
+      - internet
     depends_on:
       - es_database
   es_database:
@@ -42,5 +44,8 @@ volumes:
   db: {}
 
 networks:
-  internal:
   database:
+    internal: true
+  fpm:
+    internal: true
+  internet:
