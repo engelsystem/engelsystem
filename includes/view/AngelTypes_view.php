@@ -22,7 +22,7 @@ function AngelType_name_render($angeltype, $plain = false)
     }
 
     return '<a href="' . angeltype_link($angeltype['id']) . '">'
-        . ($angeltype['restricted'] ? glyph('lock') : '') . $angeltype['name']
+        . ($angeltype['restricted'] ? glyph('book') : '') . $angeltype['name']
         . '</a>';
 }
 
@@ -37,7 +37,7 @@ function AngelType_render_membership($user_angeltype)
     if (!empty($user_angeltype['user_angeltype_id'])) {
         if ($user_angeltype['restricted']) {
             if (empty($user_angeltype['confirm_user_id'])) {
-                return glyph('lock') . __('Unconfirmed');
+                return glyph('book') . __('Unconfirmed');
             } elseif ($user_angeltype['supporter']) {
                 return glyph_bool(true) . __('Supporter');
             }
@@ -86,11 +86,11 @@ function AngelType_edit_view($angeltype, $supporter_mode)
                 ? form_info(__('Name'), $angeltype['name'])
                 : form_text('name', __('Name'), $angeltype['name']),
             $supporter_mode
-                ? form_info(__('Restricted'), $angeltype['restricted'] ? __('Yes') : __('No'))
-                : form_checkbox('restricted', __('Restricted'), $angeltype['restricted']),
+                ? form_info(__('Requires introduction'), $angeltype['restricted'] ? __('Yes') : __('No'))
+                : form_checkbox('restricted', __('Requires introduction'), $angeltype['restricted']),
             form_info(
                 '',
-                __('Restricted angel types can only be used by an angel if enabled by a supporter (double opt-in).')
+                __('Angel types which require introduction can only be used by an angel if enabled by a supporter (double opt-in).')
             ),
             $supporter_mode
                 ? form_info(__('No Self Sign Up'), $angeltype['no_self_signup'] ? __('Yes') : __('No'))
@@ -502,7 +502,7 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes)
         ]),
         table([
             'name'           => __('Name'),
-            'restricted'     => glyph('lock') . __('Restricted'),
+            'restricted'     => glyph('book') . __('Requires introduction'),
             'no_self_signup' => glyph('share') . __('Self Sign Up Allowed'),
             'membership'     => __('Membership'),
             'actions'        => ''
@@ -548,7 +548,7 @@ function AngelTypes_about_view_angeltype($angeltype)
 
     if ($angeltype['restricted']) {
         $html .= info(
-            __('This angeltype is restricted by double-opt-in by a team supporter. Please show up at the according introduction meetings.'),
+            __('This angeltype requires the attendance at an introduction meeting. You might find additional information in the description.'),
             true
         );
     }

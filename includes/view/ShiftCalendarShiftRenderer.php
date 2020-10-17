@@ -214,7 +214,7 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::ANGELTYPE:
                 if ($angeltype['restricted'] == 1) {
                     // User has to be confirmed on the angeltype first
-                    $entry_list[] = $inner_text . glyph('lock');
+                    $entry_list[] = $inner_text . glyph('book');
                 } else {
                     // Add link to join the angeltype first
                     $entry_list[] = $inner_text . '<br />'
