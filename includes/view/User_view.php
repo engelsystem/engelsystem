@@ -339,7 +339,9 @@ function User_last_shift_render($user)
  */
 function User_view_shiftentries($needed_angel_type)
 {
-    $shift_info = '<br><b>' . $needed_angel_type['name'] . ':</b> ';
+    $shift_info = '<br><a href="'
+        . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $needed_angel_type['id']])
+        .'"><b>' . $needed_angel_type['name'] . '</a>:</b> ';
 
     $shift_entries = [];
     foreach ($needed_angel_type['users'] as $user_shift) {
