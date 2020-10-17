@@ -254,6 +254,7 @@ function User_get_eligable_voucher_count($user)
     }
 
     $vouchers -= $user->state->got_voucher;
+    $vouchers = floor($vouchers);
     if ($vouchers < 0) {
         return 0;
     }

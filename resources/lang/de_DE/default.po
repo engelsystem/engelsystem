@@ -2703,14 +2703,15 @@ msgstr "Nicht angekommen (Geplant: %s)"
 
 #: includes/view/User_view.php:753
 #, php-format
-msgid "Got %s voucher"
-msgid_plural "Got %s vouchers"
-msgstr[0] "Einen Gutschein bekommen"
-msgstr[1] "%s Gutscheine bekommen"
+msgid "Got %s of %s vouchers"
+msgstr "%s von %s Gutscheinen bekommen"
 
 #: includes/view/User_view.php:756
 msgid "Got no vouchers"
-msgstr "Gutschein nicht bekommen"
+msgstr "Keine Gutscheine bekommen"
+
+msgid "out of %s"
+msgstr "von %s"
 
 #: includes/view/User_view.php:797
 msgid "Rights"

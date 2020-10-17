@@ -766,14 +766,19 @@ function User_view_state_admin($freeloader, $user_source)
             . '</span>';
     }
 
+    $voucherCount = $user_source->state->got_voucher;
+    $availableCount = $voucherCount + User_get_eligable_voucher_count($user_source);
+    $availableCount = max($voucherCount, $availableCount);
     if ($user_source->state->got_voucher > 0) {
-        $voucherCount = $user_source->state->got_voucher;
         $state[] = '<span class="text-success">'
             . glyph('cutlery')
-            . _e('Got %s voucher', 'Got %s vouchers', $voucherCount, [$voucherCount])
+            . __('Got %s of %s vouchers', [$voucherCount, $availableCount])
             . '</span>';
     } else {
-        $state[] = '<span class="text-danger">' . __('Got no vouchers') . '</span>';
+        $state[] = '<span class="text-danger">'
+            . __('Got no vouchers')
+            . ($availableCount ? ' (' . __('out of %s', [$availableCount]) . ')' : '')
+            . '</span>';
     }
 
     return $state;
