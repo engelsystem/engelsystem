@@ -1957,7 +1957,7 @@ msgid ""
 "Angel types which require introduction can only be used by an angel if "
 "enabled by a supporter (double opt-in)."
 msgstr ""
-"Engeltypen welche eine Einführung benötigen müssen von einem Supporter freigeschaltet werden "
+"Engeltypen, welche eine Einführung benötigen, müssen von einem Supporter freigeschaltet werden "
 "(double-opt-in)."
 
 #: includes/view/AngelTypes_view.php:96 includes/view/AngelTypes_view.php:97
