@@ -1636,8 +1636,8 @@ msgid ""
 "Some angel types have to be confirmed later by a supporter at an "
 "introduction meeting. You can change your selection in the options section."
 msgstr ""
-"Engeltypen welche eine Einführung benötigen werden bei einem Einführungstreffen von "
-"einem Supporter freigeschaltet werden. Du kannst Deine Auswahl später in den Einstellungen ändern."
+"Engeltypen welche eine Einführung benötigen, werden bei einem Einführungstreffen von "
+"einem Supporter freigeschaltet. Du kannst Deine Auswahl später in den Einstellungen ändern."
 
 #: includes/pages/guest_login.php:339 includes/view/User_view.php:61
 msgid "Mobile"
