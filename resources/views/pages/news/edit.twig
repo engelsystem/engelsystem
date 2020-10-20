@@ -73,7 +73,7 @@
                             </div>
 
                             <div class="panel-body">
-                                {{ news.text|raw|nl2br }}
+                                {{ news.text|raw|markdown(false) }}
                             </div>
                         </div>
                     </div>
