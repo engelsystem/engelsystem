@@ -61,7 +61,7 @@
         {% endif %}
 
         <div class="panel-body">
-            {{ news.text|raw|nl2br }}
+            {{ news.text|raw|markdown(false) }}
         </div>
 
         <div class="panel-footer text-muted">
