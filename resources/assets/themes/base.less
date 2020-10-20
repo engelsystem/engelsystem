@@ -1,5 +1,7 @@
 @import "../../../node_modules/bootstrap/less/bootstrap";
 @import "../../../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css";
+@import "../../../node_modules/select2/dist/css/select2.min.css";
+@import "../../../node_modules/select2-bootstrap-theme/src/select2-bootstrap.less";
 @import "error";
 
 body {
@@ -139,6 +141,10 @@ table a > .icon-icon_angel {
 .panel-danger .panel-heading a {
   color: @panel-danger-text;
   background-color: @panel-danger-heading-bg;
+}
+
+.select2-dropdown {
+  background-color: @brand-primary;
 }
 
 .selection .checkbox {
