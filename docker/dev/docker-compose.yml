@@ -33,6 +33,7 @@ services:
       ENVIRONMENT: development
       MAIL_DRIVER: log
       APP_NAME: Engelsystem DEV
+    env_file: deployment.env
     networks:
       - database
       - fpm

@@ -1,4 +1,16 @@
-**/docker-compose.yml
-**/Dockerfile
-docker/deployment.env
+# Docker config
+docker/
+!docker/nginx/entrypoint.sh
+!docker/nginx/nginx.conf
+
+# Configuration
+config/config.php
+
+# Files
 .dockerignore
+*.git*
+.editorconfig
+deployment.tpl.yaml
+storage/cache/
+!storage/cache/.gitignore
+!storage/cache/views/.gitignore

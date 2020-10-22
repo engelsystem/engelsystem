@@ -20,7 +20,9 @@ _vimrc_local.vim
 
 # Docker .env files
 /docker/.env
+/docker/deployment.env
 /docker/dev/.env
+/docker/dev/deployment.env
 
 # Project files
 /config/config.php

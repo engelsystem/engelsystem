@@ -25,8 +25,7 @@ COPY --from=translation /data/ /app/resources/lang
 COPY --from=composer /app/vendor/ /app/vendor
 COPY --from=composer /app/composer.lock /app/
 
-RUN find /app/storage/ -type f -not -name .gitignore -exec rm {} \;
-RUN rm -f /app/config/config.php
+RUN find /app/storage/ -type f -not -name VERSION -exec rm {} \;
 
 # Build the PHP container
 FROM php:7-fpm-alpine

@@ -23,8 +23,6 @@ services:
       MYSQL_USER: engelsystem
       MYSQL_PASSWORD: engelsystem
       MYSQL_DATABASE: engelsystem
-    # some optional env vars and their defaults can be seen in the env file
-    # for exact information have a look at config/config.default.php
     env_file: deployment.env
     networks:
       - database
