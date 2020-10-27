@@ -31,6 +31,7 @@ function public_dashboard_view($stats, $free_shifts)
         ]);
     }
 
+    $isFiltered = request()->get('filtered');
     return page([
         div('public-dashboard', [
             div('first', [
@@ -41,21 +42,26 @@ function public_dashboard_view($stats, $free_shifts)
                 '<script>
                 $(function() {
                     setInterval(function() {
-                        $(\'#public-dashboard\').parent().load(window.location.href + \' #public-dashboard\');
+                        $(\'#public-dashboard\').load(window.location.href + \' #public-dashboard\');
                     }, 60000);
                 })
             </script>'
             ], 'statistics'),
             $needed_angels
         ], 'public-dashboard'),
-        div('first col-md-12 text-center', [
-            buttons([
-                button_js('
-                        $(\'#navbar-collapse-1,#footer,#fullscreen-button\').remove();
-                        $(\'.navbar-brand\').append(\' ' . __('Public Dashboard') . '\');
-                        ', glyph('fullscreen') . __('Fullscreen'))
-            ])
-        ], 'fullscreen-button')
+        div('first col-md-12 text-center', [buttons([
+            button_js(
+                '
+                $(\'#navbar-collapse-1,.navbar-nav,.navbar-toggle,#footer,#fullscreen-button\').remove();
+                $(\'.navbar-brand\').append(\' ' . __('Public Dashboard') . '\');
+                ',
+                glyph('fullscreen') . __('Fullscreen')
+            ),
+            auth()->user() ? button(
+                public_dashboard_link($isFiltered ? [] : ['filtered' => 1]),
+                glyph('filter') . ($isFiltered ? __('All') : __('Filtered'))
+            ) : ''
+        ])], 'fullscreen-button'),
     ]);
 }
 
