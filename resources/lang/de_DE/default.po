@@ -2157,6 +2157,9 @@ msgstr "Noch zu schaffende Stunden"
 msgid "Fullscreen"
 msgstr "Vollbild"
 
+msgid "Filtered"
+msgstr "Filtern"
+
 #: includes/view/Questions_view.php:28
 msgid "Open questions"
 msgstr "Offene Fragen"
