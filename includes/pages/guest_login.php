@@ -51,7 +51,8 @@ function guest_register()
     $angel_types_source = AngelTypes();
     $angel_types = [];
     foreach ($angel_types_source as $angel_type) {
-        $angel_types[$angel_type['id']] = $angel_type['name'] . ($angel_type['restricted'] ? ' (restricted)' : '');
+        $angel_types[$angel_type['id']] = $angel_type['name']
+            . ($angel_type['restricted'] ? ' (' . __('Requires introduction') . ')' : '');
         if (!$angel_type['restricted']) {
             $selected_angel_types[] = $angel_type['id'];
         }
@@ -327,7 +328,7 @@ function guest_register()
                     ),
                     form_info(
                         '',
-                        __('Restricted angel types need will be confirmed later by a supporter. You can change your selection in the options section.')
+                        __('Some angel types have to be confirmed later by a supporter at an introduction meeting. You can change your selection in the options section.')
                     )
                 ]),
                 div('col-md-6', [

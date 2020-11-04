@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Engelsystem\Test\Unit\Models;
 
+use Carbon\Carbon;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\User;
 use Illuminate\Support\Str;
@@ -77,6 +78,8 @@ class QuestionTest extends ModelTest
         $this->assertCount(2, $unAnsweredQuestionIds);
         $this->assertContains($question1->id, $unAnsweredQuestionIds);
         $this->assertContains($question2->id, $unAnsweredQuestionIds);
+
+        $this->assertNull(Question::find($question1->id)->answered_at);
     }
 
     /**
@@ -94,6 +97,8 @@ class QuestionTest extends ModelTest
         $this->assertCount(2, $answeredQuestionIds);
         $this->assertContains($question1->id, $answeredQuestionIds);
         $this->assertContains($question2->id, $answeredQuestionIds);
+
+        $this->assertInstanceOf(Carbon::class, Question::find($question1->id)->answered_at);
     }
 
     /**
@@ -112,6 +117,7 @@ class QuestionTest extends ModelTest
             $data += [
                 'answerer_id' => $answerer->id,
                 'answer'      => Str::random(),
+                'answered_at' => Carbon::now(),
             ];
         }
 

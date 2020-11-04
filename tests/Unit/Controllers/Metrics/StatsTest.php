@@ -7,12 +7,15 @@ use Engelsystem\Controllers\Metrics\Stats;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
+use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\Room;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\Worklog;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use Illuminate\Support\Str;
@@ -36,6 +39,7 @@ class StatsTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::vouchers
+     * @covers \Engelsystem\Controllers\Metrics\Stats::vouchersQuery
      */
     public function testVouchers()
     {
@@ -43,6 +47,17 @@ class StatsTest extends TestCase
 
         $stats = new Stats($this->database);
         $this->assertEquals(14, $stats->vouchers());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::vouchersBuckets
+     */
+    public function testVouchersBuckets()
+    {
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals([1 => 6, 3 => 8, '+Inf' => 9], $stats->vouchersBuckets([1, 3, '+Inf']));
     }
 
     /**
@@ -100,12 +115,47 @@ class StatsTest extends TestCase
         $themes = $stats->themes();
         $this->assertCount(3, $themes);
         $this->assertEquals([
-            ['theme' => 0, 'count' => 7],
-            ['theme' => 1, 'count' => 1],
+            ['theme' => 0, 'count' => 6],
+            ['theme' => 1, 'count' => 2],
             ['theme' => 4, 'count' => 1],
         ], $themes->toArray());
     }
 
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::worklogSeconds
+     */
+    public function testWorklogSeconds()
+    {
+        $this->addUsers();
+        $worklogData = [
+            'user_id'    => 1,
+            'creator_id' => 1,
+            'hours'      => 2.4,
+            'comment'    => '',
+            'worked_at'  => new Carbon()
+        ];
+        (new Worklog($worklogData))->save();
+        (new Worklog(['hours' => 1.2, 'user_id' => 3] + $worklogData))->save();
+
+        $stats = new Stats($this->database);
+        $seconds = $stats->worklogSeconds();
+
+        $this->assertEquals(2.4 * 60 * 60 + 1.2 * 60 * 60, $seconds);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::rooms
+     */
+    public function testRooms()
+    {
+        (new Room(['name' => 'Room 1']))->save();
+        (new Room(['name' => 'Second room']))->save();
+        (new Room(['name' => 'Another room']))->save();
+        (new Room(['name' => 'Old room']))->save();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(4, $stats->rooms());
+    }
 
     /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::announcements
@@ -123,6 +173,27 @@ class StatsTest extends TestCase
         $this->assertEquals(3, $stats->announcements());
         $this->assertEquals(2, $stats->announcements(false));
         $this->assertEquals(1, $stats->announcements(true));
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::comments
+     */
+    public function testComments()
+    {
+        $user = $this->addUser();
+
+        $news = new News(['title' => 'Test', 'text' => 'Foo Bar', 'user_id' => $user->id]);
+        $news->save();
+
+        foreach (['Test', 'Another text!'] as $text) {
+            $comment = new NewsComment(['text' => $text]);
+            $comment->news()->associate($news);
+            $comment->user()->associate($user);
+            $comment->save();
+        }
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(2, $stats->comments());
     }
 
     /**
@@ -163,6 +234,19 @@ class StatsTest extends TestCase
 
         $stats = new Stats($this->database);
         $this->assertEquals(2, $stats->forceActiveUsers());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::email
+     */
+    public function testEmail()
+    {
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(0, $stats->email('not-available-option'));
+        $this->assertEquals(2, $stats->email('system'));
+        $this->assertEquals(3, $stats->email('humans'));
     }
 
     /**
@@ -255,12 +339,12 @@ class StatsTest extends TestCase
     protected function addUsers()
     {
         $this->addUser();
-        $this->addUser([], ['shirt_size' => 'L']);
-        $this->addUser(['arrived' => 1]);
-        $this->addUser(['arrived' => 1], [], ['language' => 'lo_RM']);
+        $this->addUser([], ['shirt_size' => 'L'], ['email_human' => true, 'email_shiftinfo' => true]);
+        $this->addUser(['arrived' => 1], [], ['email_human' => true]);
+        $this->addUser(['arrived' => 1], [], ['language' => 'lo_RM', 'email_shiftinfo' => true]);
         $this->addUser(['arrived' => 1, 'got_voucher' => 2], ['shirt_size' => 'XXL'], ['language' => 'lo_RM']);
         $this->addUser(['arrived' => 1, 'got_voucher' => 9, 'force_active' => true], [], ['theme' => 1]);
-        $this->addUser(['arrived' => 1, 'got_voucher' => 3], ['theme' => 10]);
+        $this->addUser(['arrived' => 1, 'got_voucher' => 3], [], ['theme' => 1, 'email_human' => true]);
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true, 'force_active' => true]);
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true], ['shirt_size' => 'L'], ['theme' => 4]);
     }
@@ -269,8 +353,10 @@ class StatsTest extends TestCase
      * @param array $state
      * @param array $personalData
      * @param array $settings
+     *
+     * @return User
      */
-    protected function addUser(array $state = [], $personalData = [], $settings = [])
+    protected function addUser(array $state = [], $personalData = [], $settings = []): User
     {
         $name = 'user_' . Str::random(5);
 
@@ -295,12 +381,14 @@ class StatsTest extends TestCase
         $settings = new Settings(array_merge([
             'language'        => 'te_ST',
             'theme'           => 0,
-            'email_human'     => '',
-            'email_shiftinfo' => '',
+            'email_human'     => false,
+            'email_shiftinfo' => false,
         ], $settings));
         $settings->user()
             ->associate($user)
             ->save();
+
+        return $user;
     }
 
     /**

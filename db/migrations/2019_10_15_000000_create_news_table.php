@@ -38,8 +38,7 @@ class CreateNewsTable extends Migration
                 'PreviousNews',
                 'ID',
                 'news',
-                'id',
-                'unsignedInteger'
+                'id'
             );
             $this->schema->drop('PreviousNews');
         }
@@ -59,8 +58,7 @@ class CreateNewsTable extends Migration
             'new_news',
             'id',
             'News',
-            'ID',
-            'unsignedInteger'
+            'ID'
         );
 
         $this->schema->drop('new_news');

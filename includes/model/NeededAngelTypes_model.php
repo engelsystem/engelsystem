@@ -9,10 +9,11 @@ use Engelsystem\Database\DB;
 /**
  * Insert a new needed angel type.
  *
- * @param int $shift_id     The shift. Can be null, but then a room_id must be given.
- * @param int $angeltype_id The angeltype
- * @param int $room_id      The room. Can be null, but then a shift_id must be given.
- * @param int $count        How many angels are needed?
+ * @param int      $shift_id     The shift. Can be null, but then a room_id must be given.
+ * @param int      $angeltype_id The angeltype
+ * @param int|null $room_id      The room. Can be null, but then a shift_id must be given.
+ * @param int      $count        How many angels are needed?
+ *
  * @return int|false
  */
 function NeededAngelType_add($shift_id, $angeltype_id, $room_id, $count)

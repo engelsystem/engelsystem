@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 
 /**
@@ -72,14 +73,14 @@ function ShiftEntry_delete_title()
  * Admin puts user into shift.
  *
  * @param array $shift
- * @param array $room
+ * @param Room  $room
  * @param array $angeltype
  * @param array $angeltypes_select
  * @param User  $signup_user
  * @param array $users_select
  * @return string
  */
-function ShiftEntry_create_view_admin($shift, $room, $angeltype, $angeltypes_select, $signup_user, $users_select)
+function ShiftEntry_create_view_admin($shift, Room $room, $angeltype, $angeltypes_select, $signup_user, $users_select)
 {
     return page_with_title(
         ShiftEntry_create_title() . ': ' . $shift['name']
@@ -99,13 +100,13 @@ function ShiftEntry_create_view_admin($shift, $room, $angeltype, $angeltypes_sel
  * Supporter puts user into shift.
  *
  * @param array $shift
- * @param array $room
+ * @param Room  $room
  * @param array $angeltype
  * @param User  $signup_user
  * @param array $users_select
  * @return string
  */
-function ShiftEntry_create_view_supporter($shift, $room, $angeltype, $signup_user, $users_select)
+function ShiftEntry_create_view_supporter($shift, Room $room, $angeltype, $signup_user, $users_select)
 {
     return page_with_title(ShiftEntry_create_title() . ': ' . $shift['name']
         . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>',
@@ -124,12 +125,12 @@ function ShiftEntry_create_view_supporter($shift, $room, $angeltype, $signup_use
  * User joining a shift.
  *
  * @param array  $shift
- * @param array  $room
+ * @param Room   $room
  * @param array  $angeltype
  * @param string $comment
  * @return string
  */
-function ShiftEntry_create_view_user($shift, $room, $angeltype, $comment)
+function ShiftEntry_create_view_user($shift, Room $room, $angeltype, $comment)
 {
     return page_with_title(ShiftEntry_create_title() . ': ' . $shift['name']
         . ' <small class="moment-countdown" data-timestamp="' . $shift['start'] . '">%c</small>',

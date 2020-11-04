@@ -1,6 +1,7 @@
 <?php
 
 use Engelsystem\Database\DB;
+use Engelsystem\Models\Room;
 
 /**
  * @return string
@@ -35,7 +36,7 @@ function admin_shifts()
     $rooms = Rooms();
     $room_array = [];
     foreach ($rooms as $room) {
-        $room_array[$room['RID']] = $room['Name'];
+        $room_array[$room->id] = $room->name;
     }
 
     // Engeltypen laden
@@ -78,7 +79,7 @@ function admin_shifts()
             $rid = $request->input('rid');
         } else {
             $valid = false;
-            $rid = $rooms[0]['RID'];
+            $rid = $rooms->first()->id;
             error(__('Please select a location.'));
         }
 
@@ -173,7 +174,8 @@ function admin_shifts()
         if ($valid) {
             if ($angelmode == 'location') {
                 $needed_angel_types = [];
-                $needed_angel_types_location = DB::select('
+                $needed_angel_types_location = DB::select(
+                    '
                         SELECT `angel_type_id`, `count`
                         FROM `NeededAngelTypes`
                         WHERE `room_id`=?
@@ -294,7 +296,7 @@ function admin_shifts()
                         . ' - '
                         . date('H:i', $shift['end'])
                         . '<br />'
-                        . Room_name_render(Room($shift['RID'])),
+                        . Room_name_render(Room::find($shift['RID'])),
                     'title'         =>
                         ShiftType_name_render(ShiftType($shifttype_id))
                         . ($shift['title'] ? '<br />' . $shift['title'] : ''),

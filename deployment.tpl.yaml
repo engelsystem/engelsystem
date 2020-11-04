@@ -150,6 +150,10 @@ spec:
           env:
             - name: PHP_FPM_HOST
               value: localhost
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
 
 ---
 apiVersion: v1
@@ -160,6 +164,9 @@ metadata:
     app: <CI_PROJECT_PATH_SLUG>
     environment: <CI_ENVIRONMENT_SLUG>
     commit: <CI_COMMIT_SHORT_SHA>
+  annotations:
+    prometheus.io/port: '80'
+    prometheus.io/scrape: 'true'
 spec:
   type: ClusterIP
   ports:

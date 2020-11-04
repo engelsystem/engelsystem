@@ -13,13 +13,14 @@ function Questions_view(array $open_questions, array $answered_questions, $ask_a
     $open_questions = array_map(
         static function (Question $question): array {
             return [
-                'actions'  => form(
+                'actions'    => form(
                     [
                         form_submit('submit', __('delete'), 'btn-default btn-xs')
                     ],
                     page_link_to('user_questions', ['action' => 'delete', 'id' => $question->id])
                 ),
-                'Question' => nl2br(htmlspecialchars($question->text)),
+                'Question'   => nl2br(htmlspecialchars($question->text)),
+                'created_at' => $question->created_at,
             ];
         },
         $open_questions
@@ -28,10 +29,12 @@ function Questions_view(array $open_questions, array $answered_questions, $ask_a
     $answered_questions = array_map(
         static function (Question $question): array {
             return [
-                'Question' => nl2br(htmlspecialchars($question->text)),
-                'Answer'   => nl2br(htmlspecialchars($question->answer)),
+                'Question'    => nl2br(htmlspecialchars($question->text)),
+                'created_at'  => $question->created_at,
+                'Answer'      => nl2br(htmlspecialchars($question->answer)),
                 'answer_user' => User_Nick_render($question->answerer),
-                'actions'  => form(
+                'answered_at' => $question->answered_at,
+                'actions'     => form(
                     [
                         form_submit('submit', __('delete'), 'btn-default btn-xs')
                     ],
@@ -46,14 +49,17 @@ function Questions_view(array $open_questions, array $answered_questions, $ask_a
         msg(),
         heading(__('Open questions'), 2),
         table([
-            'Question' => __('Question'),
-            'actions'  => ''
+            'Question'   => __('Question'),
+            'created_at' => __('Asked at'),
+            'actions'    => ''
         ], $open_questions),
         heading(__('Answered questions'), 2),
         table([
             'Question'    => __('Question'),
+            'created_at'  => __('Asked at'),
             'answer_user' => __('Answered by'),
             'Answer'      => __('Answer'),
+            'answered_at' => __('Answered at'),
             'actions'     => ''
         ], $answered_questions),
         heading(__('Ask the Heaven'), 2),

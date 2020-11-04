@@ -51,6 +51,7 @@ class NewsControllerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\Admin\NewsController::edit
+     * @covers \Engelsystem\Controllers\Admin\NewsController::showEdit
      */
     public function testEditHtmlWarning()
     {
@@ -222,6 +223,46 @@ class NewsControllerTest extends TestCase
         $news = (new News())->find($id);
         $this->assertEquals($result, $news->text);
         $this->assertEquals($isMeeting, (bool)$news->is_meeting);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Admin\NewsController::save
+     */
+    public function testSavePreview()
+    {
+        $this->request->attributes->set('id', 1);
+        $this->request = $this->request->withParsedBody([
+            'title'      => 'New title',
+            'text'       => 'New text',
+            'is_meeting' => '1',
+            'preview'    => '1',
+        ]);
+        $this->response->expects($this->once())
+            ->method('withView')
+            ->willReturnCallback(function ($view, $data) {
+                $this->assertEquals('pages/news/edit.twig', $view);
+
+                /** @var News $news */
+                $news = $data['news'];
+                // Contains new text
+                $this->assertTrue($news->is_meeting);
+                $this->assertEquals('New title', $news->title);
+                $this->assertEquals('New text', $news->text);
+
+                return $this->response;
+            });
+
+        /** @var NewsController $controller */
+        $controller = $this->app->make(NewsController::class);
+        $controller->setValidator(new Validator());
+
+        $controller->save($this->request);
+
+        // Assert no changes
+        $news = News::find(1);
+        $this->assertEquals('Foo', $news->title);
+        $this->assertEquals('<b>foo</b>', $news->text);
+        $this->assertFalse($news->is_meeting);
     }
 
     /**

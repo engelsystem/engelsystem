@@ -2,26 +2,8 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\DB;
+use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
-
-/**
- * Returns an array with the attributes of shift entries.
- * FIXME! Needs entity object.
- *
- * @return array
- */
-function ShiftEntry_new()
-{
-    return [
-        'id'                 => null,
-        'SID'                => null,
-        'TID'                => null,
-        'UID'                => null,
-        'Comment'            => null,
-        'freeloaded_comment' => null,
-        'freeloaded'         => false
-    ];
-}
 
 /**
  * Counts all freeloaded shifts.
@@ -76,7 +58,7 @@ function ShiftEntry_create($shift_entry)
     $user = User::find($shift_entry['UID']);
     $shift = Shift($shift_entry['SID']);
     $shifttype = ShiftType($shift['shifttype_id']);
-    $room = Room($shift['RID']);
+    $room = Room::find($shift['RID']);
     $angeltype = AngelType($shift_entry['TID']);
     $result = DB::insert('
             INSERT INTO `ShiftEntry` (
@@ -102,7 +84,7 @@ function ShiftEntry_create($shift_entry)
         'User ' . User_Nick_render($user, true)
         . ' signed up for shift ' . $shift['name']
         . ' (' . $shifttype['name'] . ')'
-        . ' at ' . $room['Name']
+        . ' at ' . $room->name
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
         . ' as ' . $angeltype['name']
@@ -161,14 +143,14 @@ function ShiftEntry_delete($shiftEntry)
     $signout_user = User::find($shiftEntry['UID']);
     $shift = Shift($shiftEntry['SID']);
     $shifttype = ShiftType($shift['shifttype_id']);
-    $room = Room($shift['RID']);
+    $room = Room::find($shift['RID']);
     $angeltype = AngelType($shiftEntry['TID']);
 
     engelsystem_log(
         'Shift signout: ' . User_Nick_render($signout_user, true)
         . ' from shift ' . $shift['name']
         . ' (' . $shifttype['name'] . ')'
-        . ' at ' . $room['Name']
+        . ' at ' . $room->name
         . ' from ' . date('Y-m-d H:i', $shift['start'])
         . ' to ' . date('Y-m-d H:i', $shift['end'])
         . ' as ' . $angeltype['name']

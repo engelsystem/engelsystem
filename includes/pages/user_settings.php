@@ -45,7 +45,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         $valid = false;
     }
 
-    if ($request->has('planned_arrival_date')) {
+    if ($request->has('planned_arrival_date') && $request->input('planned_arrival_date')) {
         $tmp = parse_date('Y-m-d H:i', $request->input('planned_arrival_date') . ' 00:00');
         $result = User_validate_planned_arrival_date($tmp);
         $user_source->personalData->planned_arrival_date = Carbon::createFromTimestamp($result->getValue());
@@ -55,7 +55,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
         }
     }
 
-    if ($request->has('planned_departure_date')) {
+    if ($request->has('planned_departure_date') && $request->input('planned_departure_date')) {
         $tmp = parse_date('Y-m-d H:i', $request->input('planned_departure_date') . ' 00:00');
         $plannedArrivalDate = $user_source->personalData->planned_arrival_date;
         $result = User_validate_planned_departure_date(

@@ -56,13 +56,13 @@ function user_myshifts()
                     `ShiftEntry`.`UID`,
                     `ShiftTypes`.`name`,
                     `Shifts`.*,
-                    `Room`.`Name`,
+                    `rooms`.`name` as room_name,
                     `AngelTypes`.`name` AS `angel_type`
                 FROM `ShiftEntry`
                 JOIN `AngelTypes` ON (`ShiftEntry`.`TID` = `AngelTypes`.`id`)
                 JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
                 JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
-                JOIN `Room` ON (`Shifts`.`RID` = `Room`.`RID`)
+                JOIN `rooms` ON (`Shifts`.`RID` = `rooms`.`id`)
                 WHERE `ShiftEntry`.`id`=?
                 AND `UID`=?
                 LIMIT 1
@@ -116,7 +116,7 @@ function user_myshifts()
             return ShiftEntry_edit_view(
                 $shifts_user,
                 date('Y-m-d H:i', $shift['start']) . ', ' . shift_length($shift),
-                $shift['Name'],
+                $shift['room_name'],
                 $shift['name'],
                 $shift['angel_type'],
                 $shift['Comment'],

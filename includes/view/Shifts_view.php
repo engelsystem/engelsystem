@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftSignupState;
 use Illuminate\Support\Collection;
@@ -8,10 +9,10 @@ use Illuminate\Support\Collection;
  * Renders the basic shift view header.
  *
  * @param array $shift
- * @param array $room
+ * @param Room  $room
  * @return string HTML
  */
-function Shift_view_header($shift, $room)
+function Shift_view_header($shift, Room $room)
 {
     return div('row', [
         div('col-sm-3 col-xs-6', [
@@ -96,12 +97,12 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
 /**
  * @param array            $shift
  * @param array            $shifttype
- * @param array            $room
+ * @param Room             $room
  * @param array[]          $angeltypes_source
  * @param ShiftSignupState $shift_signup_state
  * @return string
  */
-function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupState $shift_signup_state)
+function Shift_view($shift, $shifttype, Room $room, $angeltypes_source, ShiftSignupState $shift_signup_state)
 {
     $shift_admin = auth()->can('admin_shifts');
     $user_shift_admin = auth()->can('user_shifts_admin');
@@ -155,7 +156,7 @@ function Shift_view($shift, $shifttype, $room, $angeltypes_source, ShiftSignupSt
             $shift_admin ? button(shift_edit_link($shift), glyph('pencil') . __('edit')) : '',
             $shift_admin ? button(shift_delete_link($shift), glyph('trash') . __('delete')) : '',
             $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype['name']) : '',
-            $admin_rooms ? button(room_link($room), glyph('map-marker') . $room['Name']) : '',
+            $admin_rooms ? button(room_link($room), glyph('map-marker') . $room->name) : '',
         ];
     }
     $buttons[] = button(user_link(auth()->user()->id), '<span class="icon-icon_angel"></span> ' . __('My shifts'));

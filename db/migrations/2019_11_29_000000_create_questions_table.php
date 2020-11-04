@@ -37,8 +37,7 @@ class CreateQuestionsTable extends Migration
                 'PreviousQuestions',
                 'QID',
                 'questions',
-                'id',
-                'unsignedInteger'
+                'id'
             );
             $this->schema->drop('PreviousQuestions');
         }
@@ -58,8 +57,7 @@ class CreateQuestionsTable extends Migration
             'new_questions',
             'id',
             'Questions',
-            'QID',
-            'unsignedInteger'
+            'QID'
         );
 
         $this->schema->drop('new_questions');

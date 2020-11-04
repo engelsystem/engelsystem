@@ -1,3 +1,4 @@
+---
 version: "3.6"
 services:
   es_nginx:
@@ -8,7 +9,8 @@ services:
     ports:
       - 5000:80
     networks:
-      - internal
+      - fpm
+      - internet
     depends_on:
       - es_php_fpm
   es_php_fpm:
@@ -21,9 +23,11 @@ services:
       MYSQL_USER: engelsystem
       MYSQL_PASSWORD: engelsystem
       MYSQL_DATABASE: engelsystem
+    env_file: deployment.env
     networks:
-      - internal
       - database
+      - fpm
+      - internet
     depends_on:
       - es_database
   es_database:
@@ -42,5 +46,8 @@ volumes:
   db: {}
 
 networks:
-  internal:
   database:
+    internal: true
+  fpm:
+    internal: true
+  internet:

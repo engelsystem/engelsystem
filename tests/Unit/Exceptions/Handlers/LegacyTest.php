@@ -39,7 +39,7 @@ class LegacyTest extends TestCase
         $exception = new Exception('Lorem Ipsum', 4242);
         $line = __LINE__ - 1;
         $exception2 = new Exception('Test Exception');
-        $exception3 = new Exception('Mor Exceptions!');
+        $exception3 = new Exception('Moar Exceptions!', 42, new Exception('Another Exception'));
         $logger = new TestLogger();
         $logger2 = $this->createMock(TestLogger::class);
         $logger2->expects($this->once())
@@ -66,6 +66,9 @@ class LegacyTest extends TestCase
         $this->assertStringContainsString((string)$line, $logContent);
         $this->assertStringContainsString(__FUNCTION__, $logContent);
         $this->assertStringContainsString(json_encode(__CLASS__), $logContent);
+        $this->assertStringContainsString('Test Exception', $logContent);
+        $this->assertStringContainsString('Moar Exceptions!', $logContent);
+        $this->assertStringContainsString('Another Exception', $logContent);
 
         $this->assertTrue($logger->hasRecordThatPasses(function (array $record) use ($exception2) {
             $context = $record['context'];

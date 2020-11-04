@@ -41,4 +41,23 @@ class MarkdownTest extends ExtensionTest
         $extension = new Markdown($renderer);
         $this->assertEquals($return, $extension->render('Lorem *"Ipsum"*'));
     }
+
+    /**
+     * @covers \Engelsystem\Renderer\Twig\Extensions\Markdown::render
+     */
+    public function testRenderHtml()
+    {
+        /** @var Parsedown|MockObject $renderer */
+        $renderer = $this->createMock(Parsedown::class);
+
+        $input = '<i>**test**</i>';
+        $return = '<p><strong><i>**test**</i></strong></p>';
+        $renderer->expects($this->once())
+            ->method('text')
+            ->with($input)
+            ->willReturn($return);
+
+        $extension = new Markdown($renderer);
+        $this->assertEquals($return, $extension->render($input, false));
+    }
 }
