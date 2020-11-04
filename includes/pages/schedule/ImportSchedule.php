@@ -12,6 +12,7 @@ use Engelsystem\Helpers\Schedule\Schedule;
 use Engelsystem\Helpers\Schedule\XmlParser;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
+use Engelsystem\Models\Room as RoomModel;
 use Engelsystem\Models\Shifts\Schedule as ScheduleUrl;
 use Engelsystem\Models\Shifts\ScheduleShift;
 use ErrorException;
@@ -217,13 +218,9 @@ class ImportSchedule extends BaseController
      */
     protected function createRoom(Room $room): void
     {
-        $this->db
-            ->table('Room')
-            ->insert(
-                [
-                    'Name' => $room->getName(),
-                ]
-            );
+        $roomModel = new RoomModel();
+        $roomModel->name = $room->getName();
+        $roomModel->save();
 
         $this->log('Created schedule room "{room}"', ['room' => $room->getName()]);
     }
@@ -231,10 +228,10 @@ class ImportSchedule extends BaseController
     /**
      * @param Event       $shift
      * @param int         $shiftTypeId
-     * @param stdClass    $room
+     * @param RoomModel   $room
      * @param ScheduleUrl $scheduleUrl
      */
-    protected function createEvent(Event $shift, int $shiftTypeId, stdClass $room, ScheduleUrl $scheduleUrl): void
+    protected function createEvent(Event $shift, int $shiftTypeId, RoomModel $room, ScheduleUrl $scheduleUrl): void
     {
         $user = auth()->user();
 
@@ -274,11 +271,11 @@ class ImportSchedule extends BaseController
     }
 
     /**
-     * @param Event    $shift
-     * @param int      $shiftTypeId
-     * @param stdClass $room
+     * @param Event     $shift
+     * @param int       $shiftTypeId
+     * @param RoomModel $room
      */
-    protected function updateEvent(Event $shift, int $shiftTypeId, stdClass $room): void
+    protected function updateEvent(Event $shift, int $shiftTypeId, RoomModel $room): void
     {
         $user = auth()->user();
 
@@ -335,7 +332,7 @@ class ImportSchedule extends BaseController
 
     /**
      * @param Request $request
-     * @return Event[]|Room[]|ScheduleUrl|Schedule|string
+     * @return Event[]|Room[]|RoomModel[]|ScheduleUrl|Schedule|string
      * @throws ErrorException
      */
     protected function getScheduleData(Request $request)
@@ -510,11 +507,11 @@ class ImportSchedule extends BaseController
     }
 
     /**
-     * @return Collection
+     * @return RoomModel[]|Collection
      */
     protected function getAllRooms(): Collection
     {
-        return new Collection($this->db->select('SELECT RID as id, Name as name FROM Room'));
+        return RoomModel::all();
     }
 
     /**
@@ -561,7 +558,7 @@ class ImportSchedule extends BaseController
                 r.Name AS room_name,
                 s.URL as url
             FROM Shifts AS s
-            LEFT JOIN Room r on s.RID = r.RID
+            LEFT JOIN rooms r on s.RID = r.id
             WHERE SID = ?
             ',
             [$id]

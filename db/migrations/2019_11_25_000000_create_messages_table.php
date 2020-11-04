@@ -38,8 +38,7 @@ class CreateMessagesTable extends Migration
                 'PreviousMessages',
                 'ID',
                 'messages',
-                'id',
-                'unsignedInteger'
+                'id'
             );
             $this->schema->drop('PreviousMessages');
         }
@@ -59,8 +58,7 @@ class CreateMessagesTable extends Migration
             'new_messages',
             'id',
             'Messages',
-            'ID',
-            'unsignedInteger'
+            'ID'
         );
 
         $this->schema->drop('new_messages');

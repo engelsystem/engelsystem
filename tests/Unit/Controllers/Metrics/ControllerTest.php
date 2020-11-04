@@ -151,6 +151,10 @@ class ControllerTest extends TestCase
             '0' => 'Nothing',
             '1' => 'Testing',
         ]);
+        $config->set('metrics', [
+            'work'    => [60 * 60],
+            'voucher' => [1]
+        ]);
 
         $this->setExpects($version, 'getVersion', [], '0.42.42');
 

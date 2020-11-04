@@ -1,7 +1,8 @@
 <?php
 
-use Engelsystem\Database\DB;
+use Engelsystem\Models\Room;
 use Engelsystem\ValidationResult;
+use Illuminate\Support\Collection;
 
 /**
  * Validate a name for a room.
@@ -10,76 +11,74 @@ use Engelsystem\ValidationResult;
  * @param int    $room_id The room id
  * @return ValidationResult
  */
-function Room_validate_name($name, $room_id)
+function Room_validate_name(string $name, int $room_id)
 {
     $valid = true;
     if (empty($name)) {
         $valid = false;
     }
 
-    if (count(DB::select('SELECT RID FROM `Room` WHERE `Name`=? AND NOT `RID`=?', [
-            $name,
-            $room_id
-        ])) > 0) {
+    $roomCount = Room::query()
+        ->where('name', $name)
+        ->where('id', '!=', $room_id)
+        ->count();
+    if ($roomCount) {
         $valid = false;
     }
+
     return new ValidationResult($valid, $name);
 }
 
 /**
  * returns a list of rooms.
  *
- * @return array
+ * @return Room[]|Collection
  */
 function Rooms()
 {
-    return DB::select('SELECT * FROM `Room` ORDER BY `Name`');
+    return Room::all()->sortBy('name');
 }
 
 /**
  * Returns Room id array
  *
- * @return array
+ * @return int[]
  */
 function Room_ids()
 {
-    $result = DB::select('SELECT `RID` FROM `Room`');
-    return select_array($result, 'RID', 'RID');
+    return Room::query()
+        ->select('id')
+        ->pluck('id')
+        ->toArray();
 }
 
 /**
  * Delete a room
  *
- * @param int $room_id
+ * @param Room $room
  */
-function Room_delete($room_id)
+function Room_delete(Room $room)
 {
-    $room = Room($room_id);
-    DB::delete('DELETE FROM `Room` WHERE `RID` = ?', [
-        $room_id
-    ]);
-    engelsystem_log('Room deleted: ' . $room['Name']);
+    $room->delete();
+    engelsystem_log('Room deleted: ' . $room->name);
 }
 
 /**
  * Create a new room
  *
- * @param string  $name      Name of the room
- * @param string  $map_url   URL to a map tha can be displayed in an iframe
- * @param string description Markdown description
- * @return false|int
+ * @param string      $name    Name of the room
+ * @param string|null $map_url URL to a map tha can be displayed in an iframe
+ * @param string|null $description
+ *
+ * @return null|int
  */
-function Room_create($name, $map_url, $description)
+function Room_create(string $name, string $map_url = null, string $description = null)
 {
-    DB::insert('
-            INSERT INTO `Room` (`Name`, `map_url`, `description`)
-            VALUES (?, ?, ?)
-        ', [
-        $name,
-        $map_url,
-        $description
-    ]);
-    $result = DB::getPdo()->lastInsertId();
+    $room = new Room();
+    $room->name = $name;
+    $room->description = $description;
+    $room->map_url = $map_url;
+    $room->save();
 
     engelsystem_log(
         'Room created: ' . $name
@@ -87,57 +86,28 @@ function Room_create($name, $map_url, $description)
         . ', description: ' . $description
     );
 
-    return $result;
+    return $room->id;
 }
 
 /**
  * Update a room
  *
- * @param int     $room_id     The rooms id
- * @param string  $name        Name of the room
- * @param string  $map_url     URL to a map tha can be displayed in an iframe
- * @param string  $description Markdown description
- * @return int
+ * @param int         $room_id     The rooms id
+ * @param string      $name        Name of the room
+ * @param string|null $map_url     URL to a map tha can be displayed in an iframe
+ * @param string|null $description Markdown description
  */
-function Room_update($room_id, $name, $map_url, $description)
+function Room_update(int $room_id, string $name, string $map_url = null, string $description = null)
 {
-    $result = DB::update('
-        UPDATE `Room`
-        SET
-            `Name`=?,
-            `map_url`=?,
-            `description`=?
-        WHERE `RID`=?
-        LIMIT 1', [
-        $name,
-        $map_url,
-        $description,
-        $room_id
-    ]);
+    $room = Room::find($room_id);
+    $room->name = $name;
+    $room->description = $description ?: null;
+    $room->map_url = $map_url ?: null;
+    $room->save();
 
     engelsystem_log(
         'Room updated: ' . $name .
         ', map_url: ' . $map_url .
         ', description: ' . $description
     );
-
-    return $result;
-}
-
-/**
- * Returns room by id.
- *
- * @param int $room_id RID
- * @return array|null
- */
-function Room($room_id)
-{
-    $room = DB::selectOne('
-        SELECT *
-        FROM `Room`
-        WHERE `RID` = ?', [
-        $room_id
-    ]);
-
-    return empty($room) ? null : $room;
 }

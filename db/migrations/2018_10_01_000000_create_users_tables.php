@@ -160,8 +160,7 @@ class CreateUsersTables extends Migration
                 'User',
                 'UID',
                 'users',
-                'id',
-                'unsignedInteger'
+                'id'
             );
         }
 

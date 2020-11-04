@@ -30,8 +30,7 @@ class CreateNewsCommentsTable extends Migration
                 'NewsComments',
                 'ID',
                 'news_comments',
-                'id',
-                'unsignedInteger'
+                'id'
             );
             $this->schema->drop('NewsComments');
         }
@@ -48,8 +47,7 @@ class CreateNewsCommentsTable extends Migration
             'news_comments',
             'id',
             'NewsComments',
-            'ID',
-            'unsignedInteger'
+            'ID'
         );
 
         $this->schema->drop('news_comments');

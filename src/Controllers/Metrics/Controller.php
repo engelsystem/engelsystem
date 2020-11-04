@@ -62,10 +62,20 @@ class Controller extends BaseController
     {
         $now = microtime(true);
         $this->checkAuth();
+        $metrics = $this->config->get('metrics');
+        foreach (['work', 'voucher'] as $type) {
+            sort($metrics[$type]);
+            $metrics[$type] = array_merge($metrics[$type], ['+Inf']);
+        }
 
         $userTshirtSizes = $this->formatStats($this->stats->tshirtSizes(), 'tshirt_sizes', 'shirt_size', 'size');
         $userLocales = $this->formatStats($this->stats->languages(), 'locales', 'language', 'locale');
         $userThemes = $this->formatStats($this->stats->themes(), 'available_themes', 'theme');
+
+        $themes = $this->config->get('available_themes');
+        foreach ($userThemes as $key => $theme) {
+            $userThemes[$key]['labels']['name'] = $themes[$theme['labels']['theme']];
+        }
 
         $data = [
             $this->config->get('app_name') . ' stats',
@@ -97,19 +107,43 @@ class Controller extends BaseController
                 ['labels' => ['type' => '7.5t'], 'value' => $this->stats->licenses('7.5t')],
                 ['labels' => ['type' => '12.5t'], 'value' => $this->stats->licenses('12.5t')],
             ],
+            'users_email'          => [
+                'type' => 'gauge',
+                ['labels' => ['type' => 'system'], 'value' => $this->stats->email('system')],
+                ['labels' => ['type' => 'humans'], 'value' => $this->stats->email('humans')],
+            ],
             'users_working'        => [
                 'type' => 'gauge',
                 ['labels' => ['freeloader' => false], $this->stats->currentlyWorkingUsers(false)],
                 ['labels' => ['freeloader' => true], $this->stats->currentlyWorkingUsers(true)],
             ],
             'work_seconds'         => [
-                'type' => 'gauge',
-                ['labels' => ['state' => 'done'], 'value' => $this->stats->workSeconds(true, false)],
-                ['labels' => ['state' => 'planned'], 'value' => $this->stats->workSeconds(false, false)],
-                ['labels' => ['state' => 'freeloaded'], 'value' => $this->stats->workSeconds(null, true)],
+                'help' => 'Working users',
+                'type' => 'histogram',
+                [
+                    'labels' => ['state' => 'done'],
+                    'value'  => $this->stats->workBuckets($metrics['work'], true, false),
+                    'sum' => $this->stats->workSeconds(true, false),
+                ],
+                [
+                    'labels' => ['state' => 'planned'],
+                    'value'  => $this->stats->workBuckets($metrics['work'], false, false),
+                    'sum' => $this->stats->workSeconds(false, false),
+                ],
+                [
+                    'labels' => ['state' => 'freeloaded'],
+                    'value'  => $this->stats->workBuckets($metrics['work'], null, true),
+                    'sum' => $this->stats->workSeconds(null, true),
+                ],
             ],
-            'worklog_seconds'      => ['type' => 'gauge', $this->stats->worklogSeconds()],
-            'vouchers'             => ['type' => 'counter', $this->stats->vouchers()],
+            'worklog_seconds'      => [
+                'type' => 'histogram',
+                $this->stats->worklogBuckets($metrics['work']) + ['sum' => $this->stats->worklogSeconds()],
+            ],
+            'vouchers'             => [
+                'type' => 'histogram',
+                $this->stats->vouchersBuckets($metrics['voucher']) + ['sum' => $this->stats->vouchers()],
+            ],
             'tshirts_issued'       => ['type' => 'counter', 'help' => 'Issued T-Shirts', $this->stats->tshirts()],
             'tshirt_sizes'         => [
                 'type' => 'gauge',
@@ -117,12 +151,14 @@ class Controller extends BaseController
             ] + $userTshirtSizes,
             'locales'              => ['type' => 'gauge', 'help' => 'The locales users have configured'] + $userLocales,
             'themes'               => ['type' => 'gauge', 'help' => 'The themes users have configured'] + $userThemes,
+            'rooms'                => ['type' => 'gauge', $this->stats->rooms()],
             'shifts'               => ['type' => 'gauge', $this->stats->shifts()],
             'announcements'        => [
                 'type' => 'gauge',
                 ['labels' => ['type' => 'news'], 'value' => $this->stats->announcements(false)],
                 ['labels' => ['type' => 'meeting'], 'value' => $this->stats->announcements(true)],
             ],
+            'comments'             => ['type' => 'gauge', $this->stats->comments()],
             'questions'            => [
                 'type' => 'gauge',
                 ['labels' => ['state' => 'answered'], 'value' => $this->stats->questions(true)],

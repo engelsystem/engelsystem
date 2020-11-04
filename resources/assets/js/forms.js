@@ -1,4 +1,5 @@
 const moment = require('moment');
+require('select2')
 
 /**
  * Sets all checkboxes to the wanted state
@@ -169,6 +170,15 @@ $(function () {
             });
         });
     });
+});
+
+/**
+ * Enable select2
+ */
+$(function () {
+    $.fn.select2.defaults.set('theme', 'bootstrap');
+
+    $('select').select2();
 });
 
 /**

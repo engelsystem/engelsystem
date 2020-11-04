@@ -455,6 +455,12 @@ msgstr ""
 msgid "Shift entry removed."
 msgstr "Schichteintrag gelöscht."
 
+#: includes/controller/shifts_controller.php:65
+msgid "This shift was imported from a schedule so some changes will be overwritten with the next import."
+msgstr ""
+"Diese Schicht wurde aus einem Fahrplan importiert. "
+"Dadurch werden einige Änderungen beim nächsten Import überschrieben."
+
 #: includes/controller/shifts_controller.php:96
 msgid "Please select a room."
 msgstr "Bitte einen Raum auswählen."
@@ -1339,6 +1345,14 @@ msgstr "Beantwortete Fragen"
 msgid "Answered by"
 msgstr "Antwort von"
 
+#: includes/pages/admin_questions.php:102 includes/view/Questions_view.php:40
+msgid "Answered at"
+msgstr "Beantwortet am"
+
+#: includes/pages/admin_questions.php:91 includes/view/Questions_view.php:37
+msgid "Asked at"
+msgstr "Gefragt am"
+
 #: includes/pages/admin_rooms.php:7 includes/pages/user_shifts.php:230
 #: includes/sys_menu.php:118 includes/sys_menu.php:172
 msgid "Rooms"
@@ -1628,11 +1642,11 @@ msgstr "Beschreibung der Engeltypen"
 
 #: includes/pages/guest_login.php:330
 msgid ""
-"Restricted angel types need will be confirmed later by a supporter. You can "
-"change your selection in the options section."
+"Some angel types have to be confirmed later by a supporter at an "
+"introduction meeting. You can change your selection in the options section."
 msgstr ""
-"Beschränkte Engeltypen müssen später von einem Supporter freigeschaltet "
-"werden. Du kannst Deine Auswahl später in den Einstellungen ändern."
+"Engeltypen welche eine Einführung benötigen, werden bei einem Einführungstreffen von "
+"einem Supporter freigeschaltet. Du kannst Deine Auswahl später in den Einstellungen ändern."
 
 #: includes/pages/guest_login.php:339 includes/view/User_view.php:61
 msgid "Mobile"
@@ -1944,15 +1958,15 @@ msgstr "abbrechen"
 
 #: includes/view/AngelTypes_view.php:89 includes/view/AngelTypes_view.php:90
 #: includes/view/AngelTypes_view.php:505
-msgid "Restricted"
-msgstr "Beschränkt"
+msgid "Requires introduction"
+msgstr "Benötigt Einführung"
 
 #: includes/view/AngelTypes_view.php:93
 msgid ""
-"Restricted angel types can only be used by an angel if enabled by a "
-"supporter (double opt-in)."
+"Angel types which require introduction can only be used by an angel if "
+"enabled by a supporter (double opt-in)."
 msgstr ""
-"Beschränkte Engeltypen müssen von einem Supporter freigeschaltet werden "
+"Engeltypen, welche eine Einführung benötigen, müssen von einem Supporter freigeschaltet werden "
 "(double-opt-in)."
 
 #: includes/view/AngelTypes_view.php:96 includes/view/AngelTypes_view.php:97
@@ -2077,11 +2091,11 @@ msgstr "Mitgliedschaft"
 
 #: includes/view/AngelTypes_view.php:551
 msgid ""
-"This angeltype is restricted by double-opt-in by a team supporter. Please "
-"show up at the according introduction meetings."
+"This angeltype requires the attendance at an introduction meeting. "
+"You might find additional information in the description."
 msgstr ""
-"Dieser Engeltyp muss zusätzlich von einem Team-Supporter freigeschaltet "
-"werden. Bitte komme zu den entsprechenden Einführungstreffen."
+"Dieser Engeltyp benötigt eine Einweisung bei einem Einführungstreffen."
+"Weitere Informationen findest du möglicherweise in der Beschreibung."
 
 #: includes/view/AngelTypes_view.php:586
 msgid "FAQ"
@@ -2692,14 +2706,15 @@ msgstr "Nicht angekommen (Geplant: %s)"
 
 #: includes/view/User_view.php:753
 #, php-format
-msgid "Got %s voucher"
-msgid_plural "Got %s vouchers"
-msgstr[0] "Einen Gutschein bekommen"
-msgstr[1] "%s Gutscheine bekommen"
+msgid "Got %s of %s vouchers"
+msgstr "%s von %s Gutscheinen bekommen"
 
 #: includes/view/User_view.php:756
 msgid "Got no vouchers"
-msgstr "Gutschein nicht bekommen"
+msgstr "Keine Gutscheine bekommen"
+
+msgid "out of %s"
+msgstr "von %s"
 
 #: includes/view/User_view.php:797
 msgid "Rights"

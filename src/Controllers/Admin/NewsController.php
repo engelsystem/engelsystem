@@ -3,6 +3,7 @@
 namespace Engelsystem\Controllers\Admin;
 
 use Engelsystem\Controllers\BaseController;
+use Engelsystem\Controllers\CleanupModel;
 use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Redirector;
@@ -14,6 +15,7 @@ use Psr\Log\LoggerInterface;
 class NewsController extends BaseController
 {
     use HasUserNotifications;
+    use CleanupModel;
 
     /** @var Authenticator */
     protected $auth;
@@ -58,6 +60,7 @@ class NewsController extends BaseController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function edit(Request $request): Response
@@ -66,6 +69,17 @@ class NewsController extends BaseController
         $news = $this->news->find($id);
         $isMeeting = $request->get('meeting', false);
 
+        return $this->showEdit($news, $isMeeting);
+    }
+
+    /**
+     * @param News|null $news
+     * @param bool      $isMeetingDefault
+     *
+     * @return Response
+     */
+    protected function showEdit(?News $news, bool $isMeetingDefault = false): Response
+    {
         if (
             $news
             && !$this->auth->can('admin_news_html')
@@ -74,14 +88,22 @@ class NewsController extends BaseController
             $this->addNotification('news.edit.contains-html', 'warnings');
         }
 
+        if ($news) {
+            $this->cleanupModelNullValues($news);
+        }
+
         return $this->response->withView(
             'pages/news/edit.twig',
-            ['news' => $news, 'is_meeting' => $news ? $news->is_meeting : $isMeeting] + $this->getNotifications(),
+            [
+                'news'       => $news,
+                'is_meeting' => $news ? $news->is_meeting : $isMeetingDefault
+            ] + $this->getNotifications(),
         );
     }
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function save(Request $request): Response
@@ -95,6 +117,7 @@ class NewsController extends BaseController
             'text'       => 'required',
             'is_meeting' => 'optional|checked',
             'delete'     => 'optional|checked',
+            'preview'    => 'optional|checked',
         ]);
 
         if (!is_null($data['delete'])) {
@@ -123,6 +146,11 @@ class NewsController extends BaseController
         $news->title = $data['title'];
         $news->text = $data['text'];
         $news->is_meeting = !is_null($data['is_meeting']);
+
+        if (!is_null($data['preview'])) {
+            return $this->showEdit($news);
+        }
+
         $news->save();
 
         $this->log->info(

@@ -62,13 +62,13 @@ function admin_active()
                             users.*,
                             COUNT(ShiftEntry.id) AS shift_count,
                                 (%s + (
-                                    SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`users`.`id`
-                                    AND `work_timestamp` < ?
+                                    SELECT COALESCE(SUM(`hours`) * 3600, 0)
+                                    FROM `worklogs` WHERE `user_id`=`users`.`id`
+                                    AND `worked_at` <= NOW()
                                 )) AS `shift_length`
                         ',
                         $shift_sum_formula
-                    ),
-                    [time()]
+                    )
                 )
                 ->leftJoin('ShiftEntry', 'users.id', '=', 'ShiftEntry.UID')
                 ->leftJoin('Shifts', 'ShiftEntry.SID', '=', 'Shifts.SID')
@@ -156,13 +156,13 @@ function admin_active()
                     users.*,
                     COUNT(ShiftEntry.id) AS shift_count,
                         (%s + (
-                            SELECT COALESCE(SUM(`work_hours`) * 3600, 0) FROM `UserWorkLog` WHERE `user_id`=`users`.`id`
-                            AND `work_timestamp` < ?
+                            SELECT COALESCE(SUM(`hours`) * 3600, 0)
+                            FROM `worklogs` WHERE `user_id`=`users`.`id`
+                            AND `worked_at` <= NOW()
                         )) AS `shift_length`
                 ',
                 $shift_sum_formula
-            ),
-            [time()]
+            )
         )
         ->leftJoin('ShiftEntry', 'users.id', '=', 'ShiftEntry.UID')
         ->leftJoin('Shifts', function ($join) use ($show_all_shifts) {

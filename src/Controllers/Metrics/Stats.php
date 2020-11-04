@@ -10,12 +10,15 @@ use Engelsystem\Models\EventConfig;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
+use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\Question;
+use Engelsystem\Models\Room;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\Worklog;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression as QueryExpression;
 use Illuminate\Support\Collection;
@@ -46,7 +49,7 @@ class Stats
         if (!is_null($working)) {
             // @codeCoverageIgnoreStart
             $query
-                ->leftJoin('UserWorkLog', 'UserWorkLog.user_id', '=', 'users_state.user_id')
+                ->leftJoin('worklogs', 'worklogs.user_id', '=', 'users_state.user_id')
                 ->leftJoin('ShiftEntry', 'ShiftEntry.UID', '=', 'users_state.user_id')
                 ->distinct();
 
@@ -55,14 +58,14 @@ class Stats
                 if ($working) {
                     $query
                         ->whereNotNull('ShiftEntry.SID')
-                        ->orWhereNotNull('UserWorkLog.work_hours');
+                        ->orWhereNotNull('worklogs.hours');
 
                     return;
                 }
 
                 $query
                     ->whereNull('ShiftEntry.SID')
-                    ->whereNull('UserWorkLog.work_hours');
+                    ->whereNull('worklogs.hours');
             });
             // @codeCoverageIgnoreEnd
         }
@@ -89,6 +92,27 @@ class Stats
     }
 
     /**
+     * @param string $type
+     *
+     * @return int
+     */
+    public function email(string $type): int
+    {
+        switch ($type) {
+            case 'system':
+                $query = Settings::whereEmailShiftinfo(true);
+                break;
+            case 'humans':
+                $query = Settings::whereEmailHuman(true);
+                break;
+            default:
+                return 0;
+        }
+
+        return $query->count();
+    }
+
+    /**
      * The number of currently working users
      *
      * @param bool|null $freeloaded
@@ -111,11 +135,40 @@ class Stats
     }
 
     /**
+     * @return QueryBuilder
+     */
+    protected function vouchersQuery()
+    {
+        return State::query();
+    }
+
+    /**
      * @return int
      */
     public function vouchers(): int
     {
-        return (int)State::query()->sum('got_voucher');
+        return (int)$this->vouchersQuery()->sum('got_voucher');
+    }
+
+    /**
+     * @param array $buckets
+     *
+     * @return array
+     */
+    public function vouchersBuckets(array $buckets): array
+    {
+        $return = [];
+        foreach ($buckets as $bucket) {
+            $query = $this->vouchersQuery();
+
+            if ($bucket !== '+Inf') {
+                $query->where('got_voucher', '<=', $bucket);
+            }
+
+            $return[$bucket] = $query->count('got_voucher');
+        }
+
+        return $return;
     }
 
     /**
@@ -161,7 +214,7 @@ class Stats
     }
 
     /**
-     * @param string $vehicle
+     * @param string|null $vehicle
      * @return int
      * @codeCoverageIgnore
      */
@@ -186,14 +239,13 @@ class Stats
     }
 
     /**
-     * The number of worked shifts
-     *
      * @param bool|null $done
      * @param bool|null $freeloaded
-     * @return int
+     *
      * @codeCoverageIgnore
+     * @return QueryBuilder
      */
-    public function workSeconds(bool $done = null, bool $freeloaded = null): int
+    protected function workSecondsQuery(bool $done = null, bool $freeloaded = null): QueryBuilder
     {
         $query = $this
             ->getQuery('ShiftEntry')
@@ -207,7 +259,72 @@ class Stats
             $query->where('end', ($done == true ? '<' : '>='), time());
         }
 
+        return $query;
+    }
+
+    /**
+     * The amount of worked seconds
+     *
+     * @param bool|null $done
+     * @param bool|null $freeloaded
+     *
+     * @return int
+     * @codeCoverageIgnore
+     */
+    public function workSeconds(bool $done = null, bool $freeloaded = null): int
+    {
+        $query = $this->workSecondsQuery($done, $freeloaded);
+
         return (int)$query->sum($this->raw('end - start'));
+    }
+
+    /**
+     * The number of worked shifts
+     *
+     * @param array     $buckets
+     * @param bool|null $done
+     * @param bool|null $freeloaded
+     *
+     * @return array
+     * @codeCoverageIgnore
+     */
+    public function workBuckets(array $buckets, bool $done = null, bool $freeloaded = null): array
+    {
+        return $this->getBuckets(
+            $buckets,
+            $this->workSecondsQuery($done, $freeloaded),
+            'UID',
+            'SUM(end - start)',
+            'end - start'
+        );
+    }
+
+    /**
+     * @param array        $buckets
+     * @param QueryBuilder $basicQuery
+     * @param string       $groupBy
+     * @param string       $having
+     * @param string       $count
+     *
+     * @return array
+     * @codeCoverageIgnore As long as its only used for old tables
+     */
+    protected function getBuckets(array $buckets, $basicQuery, string $groupBy, string $having, string $count): array
+    {
+        $return = [];
+
+        foreach ($buckets as $bucket) {
+            $query = clone $basicQuery;
+            $query->groupBy($groupBy);
+
+            if ($bucket !== '+Inf') {
+                $query->having($this->raw($having), '<=', $bucket);
+            }
+
+            $return[$bucket] = $query->count($this->raw($count));
+        }
+
+        return $return;
     }
 
     /**
@@ -216,9 +333,34 @@ class Stats
      */
     public function worklogSeconds(): int
     {
-        return (int)$this
-            ->getQuery('UserWorkLog')
-            ->sum($this->raw('work_hours * 60*60'));
+        return (int)Worklog::query()
+            ->sum($this->raw('hours * 60 * 60'));
+    }
+
+    /**
+     * @param array $buckets
+     *
+     * @return array
+     * @codeCoverageIgnore
+     */
+    public function worklogBuckets(array $buckets): array
+    {
+        return $this->getBuckets(
+            $buckets,
+            Worklog::query(),
+            'user_id',
+            'SUM(hours * 60 * 60)',
+            'hours * 60 * 60'
+        );
+    }
+
+    /**
+     * @return int
+     */
+    public function rooms(): int
+    {
+        return Room::query()
+            ->count();
     }
 
     /**
@@ -241,6 +383,15 @@ class Stats
         $query = is_null($meeting) ? News::query() : News::whereIsMeeting($meeting);
 
         return $query->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function comments(): int
+    {
+        return NewsComment::query()
+            ->count();
     }
 
     /**

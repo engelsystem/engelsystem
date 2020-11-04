@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Models\User;
 
+use Carbon\Carbon;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\News;
@@ -13,6 +14,7 @@ use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
+use Engelsystem\Models\Worklog;
 use Engelsystem\Test\Unit\Models\ModelTest;
 use Exception;
 use Illuminate\Support\Str;
@@ -161,6 +163,46 @@ class UserTest extends ModelTest
         $this->assertCount(1, $comments);
         $comment = $comments->first();
         $this->assertSame($newsComment->id, $comment->id);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::worklogs
+     */
+    public function testWorklogs(): void
+    {
+        ($user = new User($this->data))->save();
+        $worklogEntry = Worklog::create([
+            'user_id'    => $user->id,
+            'creator_id' => $user->id,
+            'hours'      => 1,
+            'comment'    => '',
+            'worked_at'  => Carbon::now(),
+        ]);
+
+        $worklogs = $user->worklogs;
+        $this->assertCount(1, $worklogs);
+        $worklog = $worklogs->first();
+        $this->assertSame($worklogEntry->id, $worklog->id);
+    }
+
+    /**
+     * @covers \Engelsystem\Models\User\User::worklogsCreated
+     */
+    public function testWorklogsCreated(): void
+    {
+        ($user = new User($this->data))->save();
+        $worklogEntry = Worklog::create([
+            'user_id'    => $user->id,
+            'creator_id' => $user->id,
+            'hours'      => 1,
+            'comment'    => '',
+            'worked_at'  => Carbon::now(),
+        ]);
+
+        $worklogs = $user->worklogsCreated;
+        $this->assertCount(1, $worklogs);
+        $worklog = $worklogs->first();
+        $this->assertSame($worklogEntry->id, $worklog->id);
     }
 
     /**

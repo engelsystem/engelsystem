@@ -7,6 +7,7 @@ use FastRoute\RouteCollector;
 // Pages
 $route->get('/', 'HomeController@index');
 $route->get('/credits', 'CreditsController@index');
+$route->get('/health', 'HealthController@index');
 
 // Authentication
 $route->get('/login', 'AuthController@login');

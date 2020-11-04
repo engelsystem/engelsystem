@@ -34,10 +34,16 @@ class Markdown extends TwigExtension
 
     /**
      * @param string $text
+     * @param bool   $escapeHtml
+     *
      * @return string
      */
-    public function render(string $text): string
+    public function render(string $text, bool $escapeHtml = true): string
     {
-        return $this->renderer->text(htmlspecialchars($text));
+        if ($escapeHtml) {
+            $text = htmlspecialchars($text);
+        }
+
+        return $this->renderer->text($text);
     }
 }

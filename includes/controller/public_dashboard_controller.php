@@ -1,5 +1,7 @@
 <?php
 
+use Engelsystem\Models\Room;
+
 /**
  * Loads all data for the public dashboard
  *
@@ -38,7 +40,7 @@ function public_dashboard_controller()
 function public_dashboard_controller_free_shift($shift)
 {
     $shifttype = ShiftType($shift['shifttype_id']);
-    $room = Room($shift['RID']);
+    $room = Room::find($shift['RID']);
 
     $free_shift = [
         'SID'            => $shift['SID'],
@@ -48,7 +50,7 @@ function public_dashboard_controller_free_shift($shift)
         'duration'       => round(($shift['end'] - $shift['start']) / 3600),
         'shifttype_name' => $shifttype['name'],
         'title'          => $shift['title'],
-        'room_name'      => $room['Name'],
+        'room_name'      => $room->name,
         'needed_angels'  => []
     ];
 

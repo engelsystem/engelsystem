@@ -15,6 +15,7 @@ class SessionHandlerServiceProvider extends ServiceProvider
                 return [
                     '/api',
                     '/atom',
+                    '/health',
                     '/ical',
                     '/metrics',
                     '/shifts-json-export',
