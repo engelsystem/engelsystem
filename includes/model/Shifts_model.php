@@ -358,7 +358,9 @@ function Shift_signup_allowed_angel(
         return new ShiftSignupState(ShiftSignupState::SIGNED_UP, $free_entries);
     }
 
-    if (time() > $shift['start'] + config('signup_post_minutes') * 60) {
+    $shift_post_signup_total_allowed_seconds = (config('signup_post_fraction') * ($shift['end'] - $shift['start'])) + (config('signup_post_minutes') * 60);
+
+    if (time() > $shift['start'] + $shift_post_signup_total_allowed_seconds) {
         // you can only join if the shift is in future
         return new ShiftSignupState(ShiftSignupState::SHIFT_ENDED, $free_entries);
     }
