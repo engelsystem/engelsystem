@@ -146,8 +146,15 @@ return [
     // Setting this to 0 disables the feature
     'signup_advance_hours'    => env('SIGNUP_ADVANCE_HOURS', 0),
 
-    // Allow signup this many minutes after the start of the shift
+    // Allow signup this many minutes after the start of the shift.
+    // If signup_post_fraction is set, first applies that before adding the number of minutes specified by this.
     'signup_post_minutes'     => env('SIGNUP_POST_MINUTES', 0),
+
+    // Allow signup this fraction of the shift length after the start of the shift.
+    // Example: If this is set to 1, signup is allowed until the end of a shift
+    //          If this is set to 0.5, signup is allowd for the first half of a shift
+    // If signup_post_minutes is set, first applies this and then adds the signup_post_minutes on top.
+    'signup_post_fraction'    => env('SIGNUP_POST_FRACTION', 0),
 
     // Number of hours that an angel has to sign out own shifts
     'last_unsubscribe'        => env('LAST_UNSUBSCRIBE', 3),
