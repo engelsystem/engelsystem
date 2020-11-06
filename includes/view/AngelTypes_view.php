@@ -202,7 +202,7 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
     $members_confirmed = [];
     $members_unconfirmed = [];
     foreach ($members as $member) {
-        $member->name = User_Nick_render($member);
+        $member->name = User_Nick_render($member) . User_Pronoun_render($member);
         $member['dect'] = $member->contact->dect;
         if ($angeltype['requires_driver_license']) {
             $member['wants_to_drive'] = glyph_bool($member['wants_to_drive']);
