@@ -106,9 +106,6 @@ return [
     // Allow signup this many minutes after the start of the shift
     'signup_post_minutes'     => env('SIGNUP_POST_MINUTES', 0),
 
-    // Allow signup this many minutes after the start of the shift
-    'signup_post_minutes'     => 0,
-
     // Number of hours that an angel has to sign out own shifts
     'last_unsubscribe'        => env('LAST_UNSUBSCRIBE', 3),
 
