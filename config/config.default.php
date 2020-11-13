@@ -64,7 +64,7 @@ return [
     ],
 
     // Default theme, 1=style1.css
-    'theme'                   => env('THEME', 13),
+    'theme'                   => env('THEME', 1),
 
     // Available themes
     'available_themes'        => [

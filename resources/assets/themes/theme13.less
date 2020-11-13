@@ -57,7 +57,7 @@ THE SOFTWARE.
 @text-color:            @gray-lighter;
 
 //** Global textual link color.
-@link-color:            @brand-primary;
+@link-color:            #fff;
 //** Link hover color set via `darken()` function.
 @link-hover-color:      @link-color;
 
@@ -65,8 +65,27 @@ THE SOFTWARE.
 //== Typography
 //
 //## Font, line-height, and color for body text, headings, and more.
+@font-face {
+    font-family: 'Montserrat';
+    src: url('theme13/Montserrat-Regular.woff2') format('woff2'),
+        url('theme13/Montserrat-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
-@font-family-serif:       Georgia, "Times New Roman", Times, serif;
+@font-face {
+    font-family: 'Orbitron';
+    src: url('theme13/Orbitron-Regular.woff2') format('woff2'),
+        url('theme13/Orbitron-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+@font-family-sans-serif: 'Montserrat', Helvetica Neue, Helvetica, Arial, sans-serif;
+@font-family-serif:       'Orbitron', Georgia, "Times New Roman", Times, serif;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 @font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
 @font-family-base:        @font-family-sans-serif;
@@ -88,7 +107,7 @@ THE SOFTWARE.
 @line-height-computed:    floor((@font-size-base * @line-height-base)); // ~20px
 
 //** By default, this inherits from the `<body>`.
-@headings-font-family:    @font-family-base;
+@headings-font-family:    @font-family-serif;
 @headings-font-weight:    500;
 @headings-line-height:    1.1;
 @headings-color:          #fff;
@@ -167,27 +186,27 @@ THE SOFTWARE.
 
 @btn-font-weight:                normal;
 
-@btn-default-color:              @gray-lighter;
+@btn-default-color:              #fff;
 @btn-default-bg:                 lighten(@gray-dark, 10%);
 @btn-default-border:             darken(@btn-default-bg, 10%);
 
-@btn-primary-color:              @black;
+@btn-primary-color:              #fff;
 @btn-primary-bg:                 @brand-primary;
 @btn-primary-border:             darken(@btn-default-bg, 10%);
 
-@btn-success-color:              @black;
+@btn-success-color:              #fff;
 @btn-success-bg:                 @brand-success;
 @btn-success-border:             darken(@btn-default-bg, 10%);
 
-@btn-info-color:                 @black;
+@btn-info-color:                 #fff;
 @btn-info-bg:                    @brand-info;
 @btn-info-border:                darken(@btn-default-bg, 10%);
 
-@btn-warning-color:              @black;
+@btn-warning-color:              #fff;
 @btn-warning-bg:                 @brand-warning;
 @btn-warning-border:             darken(@btn-default-bg, 10%);
 
-@btn-danger-color:               @btn-default-color;
+@btn-danger-color:               #fff;
 @btn-danger-bg:                  @brand-danger;
 @btn-danger-border:              darken(@btn-default-bg, 10%);
 
@@ -501,19 +520,19 @@ THE SOFTWARE.
 //
 //## Define colors for form feedback states and, by default, alerts.
 
-@state-success-text:             @brand-success;
+@state-success-text:             #fff;
 @state-success-bg:               darken(@brand-success, 40%);
 @state-success-border:           @brand-success;
 
-@state-info-text:                @brand-info;
+@state-info-text:                #fff;
 @state-info-bg:                  darken(@brand-info, 40%);
 @state-info-border:              @brand-info;
 
-@state-warning-text:             @brand-warning;
+@state-warning-text:             #fff;
 @state-warning-bg:               darken(@brand-warning, 40%);
 @state-warning-border:           @brand-warning;
 
-@state-danger-text:              @brand-danger;
+@state-danger-text:              #fff;
 @state-danger-bg:                darken(@brand-danger, 40%);
 @state-danger-border:            @brand-danger;
 
@@ -724,19 +743,19 @@ THE SOFTWARE.
 @panel-primary-border:        @brand-primary;
 @panel-primary-heading-bg:    @brand-primary;
 
-@panel-success-text:          @state-success-text;
+@panel-success-text:          #fff;
 @panel-success-border:        @state-success-border;
 @panel-success-heading-bg:    @state-success-bg;
 
-@panel-info-text:             @state-info-text;
+@panel-info-text:             #fff;
 @panel-info-border:           @state-info-border;
 @panel-info-heading-bg:       @state-info-bg;
 
-@panel-warning-text:          @state-warning-text;
+@panel-warning-text:          #fff;
 @panel-warning-border:        @state-warning-border;
 @panel-warning-heading-bg:    @state-warning-bg;
 
-@panel-danger-text:           @state-danger-text;
+@panel-danger-text:           #fff;
 @panel-danger-border:         @state-danger-border;
 @panel-danger-heading-bg:     @state-danger-bg;
 
@@ -1066,8 +1085,6 @@ a.thumbnail.active {
 // Specials ===================================================================
 body {
   background: #000 url('theme13/background.jpg') no-repeat top left;
-  background-attachment: fixed;
-  background-size: 500px 500px;
 }
 
 .navbar.navbar-default {
