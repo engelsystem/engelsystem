@@ -64,10 +64,11 @@ return [
     ],
 
     // Default theme, 1=style1.css
-    'theme'                   => env('THEME', 1),
+    'theme'                   => env('THEME', 13),
 
     // Available themes
     'available_themes'        => [
+        '13' => 'Engelsystem rC3 (2020)',
         '12' => 'Engelsystem 36c3 (2019)',
         '10' => 'Engelsystem cccamp19 green (2019)',
         '9'  => 'Engelsystem cccamp19 yellow (2019)',
