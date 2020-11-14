@@ -71,7 +71,7 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
 
     return form_element($label, '
     <div class="input-group date" id="' . $dom_id . '" data-min-date="' . $start_date . '" data-max-date="' . $end_date . '">
-        <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '">'
+        <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '" autocomplete="off">'
         . '<span class="input-group-addon">' . glyph('th') . '</span>
     </div>
     ', $dom_id);
@@ -226,22 +226,25 @@ function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType =
 /**
  * Rendert ein Formular-Textfeld
  *
- * @param string $name
- * @param string $label
- * @param string $value
- * @param bool   $disabled
- * @param int    $maxlength
+ * @param string      $name
+ * @param string      $label
+ * @param string      $value
+ * @param bool        $disabled
+ * @param int|null    $maxlength
+ * @param string|null $autocomplete
+ *
  * @return string
  */
-function form_text($name, $label, $value, $disabled = false, $maxlength = null)
+function form_text($name, $label, $value, $disabled = false, $maxlength = null, $autocomplete = null)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
     $maxlength = $maxlength ? ' maxlength=' . (int)$maxlength : '';
+    $autocomplete = $autocomplete ? ' autocomplete="' . $autocomplete . '"' : '';
 
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars($value) . '"' . $maxlength . $disabled . '/>',
+        . '" value="' . htmlspecialchars($value) . '"' . $maxlength . $disabled . $autocomplete . '/>',
         'form_' . $name
     );
 }
@@ -268,19 +271,22 @@ function form_text_placeholder($name, $placeholder, $value, $disabled = false)
 /**
  * Rendert ein Formular-Emailfeld
  *
- * @param string $name
- * @param string $label
- * @param string $value
- * @param bool   $disabled
+ * @param string      $name
+ * @param string      $label
+ * @param string      $value
+ * @param bool        $disabled
+ * @param string|null $autocomplete
+ *
  * @return string
  */
-function form_email($name, $label, $value, $disabled = false)
+function form_email($name, $label, $value, $disabled = false, $autocomplete = null)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
+    $autocomplete = $autocomplete ? ' autocomplete="' . $autocomplete . '"' : '';
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="email" name="' . $name . '" value="'
-        . htmlspecialchars($value) . '" ' . $disabled . '/>',
+        . htmlspecialchars($value) . '" ' . $disabled . $autocomplete . '/>',
         'form_' . $name
     );
 }

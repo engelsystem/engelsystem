@@ -41,7 +41,7 @@ function guest_register()
     $preName = '';
     $dect = '';
     $mobile = '';
-    $mail = '';
+    $email = '';
     $pronoun = '';
     $email_shiftinfo = false;
     $email_by_human_allowed = false;
@@ -71,8 +71,8 @@ function guest_register()
     if ($request->hasPostData('submit')) {
         $valid = true;
 
-        if ($request->has('nick')) {
-            $nickValidation = User_validate_Nick($request->input('nick'));
+        if ($request->has('username')) {
+            $nickValidation = User_validate_Nick($request->input('username'));
             $nick = $nickValidation->getValue();
 
             if (!$nickValidation->isValid()) {
@@ -89,13 +89,13 @@ function guest_register()
             $msg .= error(__('Please enter a nickname.'), true);
         }
 
-        if ($request->has('mail') && strlen(strip_request_item('mail')) > 0) {
-            $mail = strip_request_item('mail');
-            if (!check_email($mail)) {
+        if ($request->has('email') && strlen(strip_request_item('email')) > 0) {
+            $email = strip_request_item('email');
+            if (!check_email($email)) {
                 $valid = false;
                 $msg .= error(__('E-mail address is not correct.'), true);
             }
-            if (User::whereEmail($mail)->first()) {
+            if (User::whereEmail($email)->first()) {
                 $valid = false;
                 $msg .= error(__('E-mail address is already used by another user.'), true);
             }
@@ -180,7 +180,7 @@ function guest_register()
             $user = new User([
                 'name'          => $nick,
                 'password'      => $password_hash,
-                'email'         => $mail,
+                'email'         => $email,
                 'api_key'       => '',
                 'last_login_at' => null,
             ]);
@@ -279,12 +279,25 @@ function guest_register()
                 div('col-md-6', [
                     div('row', [
                         div('col-sm-4', [
-                            form_text('nick', __('Nick') . ' ' . entry_required(), $nick),
+                            form_text(
+                                'username',
+                                __('Nick') . ' ' . entry_required(),
+                                $nick,
+                                false,
+                                23,
+                                'nickname'
+                            ),
                             form_info('',
                                 __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.'))
                         ]),
                         div('col-sm-8', [
-                            form_email('mail', __('E-Mail') . ' ' . entry_required(), $mail),
+                            form_email(
+                                'email',
+                                __('E-Mail') . ' ' . entry_required(),
+                                $email,
+                                false,
+                                'email'
+                            ),
                             form_checkbox(
                                 'email_shiftinfo',
                                 __(
@@ -301,6 +314,14 @@ function guest_register()
                         ])
                     ]),
                     div('row', [
+                        div('col-sm-6', [
+                            form_password('password', __('Password') . ' ' . entry_required())
+                        ]),
+                        div('col-sm-6', [
+                            form_password('password2', __('Confirm password') . ' ' . entry_required())
+                        ])
+                    ]),
+                    div('row', [
                         $enable_planned_arrival ? div('col-sm-6', [
                             form_date(
                                 'planned_arrival_date',
@@ -312,14 +333,6 @@ function guest_register()
                             $enable_tshirt_size ? form_select('tshirt_size',
                                 __('Shirt size') . ' ' . entry_required(),
                                 $tshirt_sizes, $tshirt_size, __('Please select...')) : ''
-                        ])
-                    ]),
-                    div('row', [
-                        div('col-sm-6', [
-                            form_password('password', __('Password') . ' ' . entry_required())
-                        ]),
-                        div('col-sm-6', [
-                            form_password('password2', __('Confirm password') . ' ' . entry_required())
                         ])
                     ]),
                     form_checkboxes(
@@ -340,10 +353,10 @@ function guest_register()
                 div('col-md-6', [
                     div('row', [
                         $enable_dect ? div('col-sm-4', [
-                            form_text('dect', __('DECT'), $dect)
+                            form_text('dect', __('DECT'), $dect, false, 40, 'tel-local')
                         ]) : '',
                         div($enable_dect ? 'col-sm-4' : 'col-sm-12', [
-                            form_text('mobile', __('Mobile'), $mobile)
+                            form_text('mobile', __('Mobile'), $mobile, false, null, 'tel-national')
                         ]),
                         $enable_pronoun ? div('col-sm-4', [
                             form_text('pronoun', __('Pronoun'), $pronoun)
@@ -351,10 +364,10 @@ function guest_register()
                     ]),
                     $enable_user_name ? div('row', [
                         div('col-sm-6', [
-                            form_text('prename', __('First name'), $preName)
+                            form_text('prename', __('First name'), $preName, false, null, 'given-name')
                         ]),
                         div('col-sm-6', [
-                            form_text('lastname', __('Last name'), $lastName)
+                            form_text('lastname', __('Last name'), $lastName, false, null, 'family-name')
                         ])
                     ]) : '',
                     form_info(entry_required() . ' = ' . __('Entry required!'))
