@@ -30,6 +30,7 @@ function guest_register()
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
     $min_password_length = config('min_password_length');
+    $enable_pronoun = config('enable_pronoun');
     $config = config();
     $request = request();
     $session = session();
@@ -41,6 +42,7 @@ function guest_register()
     $dect = '';
     $mobile = '';
     $mail = '';
+    $pronoun = '';
     $email_shiftinfo = false;
     $email_by_human_allowed = false;
     $tshirt_size = '';
@@ -159,6 +161,9 @@ function guest_register()
         if ($enable_user_name && $request->has('prename')) {
             $preName = strip_request_item('prename');
         }
+        if ($enable_pronoun && $request->has('pronoun')) {
+            $pronoun = strip_request_item('pronoun');
+        }
         if ($enable_dect && $request->has('dect')) {
             if (strlen(strip_request_item('dect')) <= 40) {
                 $dect = strip_request_item('dect');
@@ -192,6 +197,7 @@ function guest_register()
             $personalData = new PersonalData([
                 'first_name'           => $preName,
                 'last_name'            => $lastName,
+                'pronoun'              => $pronoun,
                 'shirt_size'           => $tshirt_size,
                 'planned_arrival_date' => $enable_planned_arrival ? Carbon::createFromTimestamp($planned_arrival_date) : null,
             ]);
@@ -339,6 +345,9 @@ function guest_register()
                         div($enable_dect ? 'col-sm-4' : 'col-sm-12', [
                             form_text('mobile', __('Mobile'), $mobile)
                         ]),
+                        $enable_pronoun ? div('col-sm-4', [
+                            form_text('pronoun', __('Pronoun'), $pronoun)
+                        ]) : '',
                     ]),
                     $enable_user_name ? div('row', [
                         div('col-sm-6', [
