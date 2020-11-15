@@ -73,21 +73,7 @@ class AuthControllerTest extends TestCase
         $validator = new Validator();
         $session->set('errors', [['bar' => 'some.bar.error']]);
         $this->app->instance('session', $session);
-
-        $user = new User([
-            'name'          => 'foo',
-            'password'      => '',
-            'email'         => '',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $user->forceFill(['id' => 42]);
-        $user->save();
-
-        $settings = new Settings(['language' => 'de_DE', 'theme' => '']);
-        $settings->user()
-            ->associate($user)
-            ->save();
+        $user = $this->createUser();
 
         $auth->expects($this->exactly(2))
             ->method('authenticate')
@@ -101,14 +87,20 @@ class AuthControllerTest extends TestCase
                 $this->assertArraySubset(['errors' => collect(['some.bar.error', 'auth.not-found'])], $data);
                 return $response;
             });
-        $redirect->expects($this->once())
-            ->method('to')
-            ->with('news')
+
+        /** @var AuthController|MockObject $controller */
+        $controller = $this->getMockBuilder(AuthController::class)
+            ->setConstructorArgs([$response, $session, $redirect, $config, $auth])
+            ->onlyMethods(['loginUser'])
+            ->getMock();
+        $controller->setValidator($validator);
+
+        $controller->expects($this->once())
+            ->method('loginUser')
+            ->with($user)
             ->willReturn($response);
 
         // No credentials
-        $controller = new AuthController($response, $session, $redirect, $config, $auth);
-        $controller->setValidator($validator);
         try {
             $controller->postLogin($request);
             $this->fail('Login without credentials possible');
@@ -130,7 +122,34 @@ class AuthControllerTest extends TestCase
 
         // Authenticated user
         $controller->postLogin($request);
+    }
 
+    /**
+     * @covers \Engelsystem\Controllers\AuthController::loginUser
+     */
+    public function testLoginUser()
+    {
+        $this->initDatabase();
+
+        /** @var Response|MockObject $response */
+        $response = $this->createMock(Response::class);
+        /** @var Redirector|MockObject $redirect */
+        /** @var Config $config */
+        /** @var Authenticator|MockObject $auth */
+        list(, , $redirect, $config, $auth) = $this->getMocks();
+        $session = new Session(new MockArraySessionStorage());
+        $session->set('foo', 'bar');
+        $user = $this->createUser();
+
+        $redirect->expects($this->once())
+            ->method('to')
+            ->with('news')
+            ->willReturn($response);
+
+        $controller = new AuthController($response, $session, $redirect, $config, $auth);
+        $controller->loginUser($user);
+
+        $this->assertFalse($session->has('foo'));
         $this->assertNotNull($user->last_login_at);
         $this->assertEquals(['user_id' => 42, 'locale' => 'de_DE'], $session->all());
     }
@@ -159,6 +178,29 @@ class AuthControllerTest extends TestCase
         $return = $controller->logout();
 
         $this->assertEquals($response, $return);
+    }
+
+    /**
+     * @return User
+     */
+    protected function createUser(): User
+    {
+        $user = new User([
+            'name'          => 'foo',
+            'password'      => '',
+            'email'         => '',
+            'api_key'       => '',
+            'last_login_at' => null,
+        ]);
+        $user->forceFill(['id' => 42]);
+        $user->save();
+
+        $settings = new Settings(['language' => 'de_DE', 'theme' => '']);
+        $settings->user()
+            ->associate($user)
+            ->save();
+
+        return $user;
     }
 
     /**

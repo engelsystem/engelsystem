@@ -16,6 +16,8 @@ use Illuminate\Support\Collection;
  * @param int   $teardown_end_date  Unix timestamp
  * @param bool  $enable_tshirt_size
  * @param array $tshirt_sizes
+ * @param array $oauth2_providers
+ *
  * @return string
  */
 function User_settings_view(
@@ -25,13 +27,19 @@ function User_settings_view(
     $buildup_start_date,
     $teardown_end_date,
     $enable_tshirt_size,
-    $tshirt_sizes
+    $tshirt_sizes,
+    $oauth2_providers
 ) {
     $personalData = $user_source->personalData;
     $enable_user_name = config('enable_user_name');
     $enable_pronoun = config('enable_pronoun');
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
+
+    $showOauth = false;
+    foreach ($oauth2_providers as $name => $config) {
+        $showOauth = $showOauth || !isset($config['hidden']) || !$config['hidden'];
+    }
 
     return page_with_title(settings_title(), [
         msg(),
@@ -93,6 +101,11 @@ function User_settings_view(
                 ])
             ]),
             div('col-md-6', [
+                ($showOauth ?
+                    form_info(__('oauth.login'))
+                    . button(url('/settings/oauth'), __('settings.oauth'), 'btn-primary')
+                    : ''
+                ),
                 form([
                     form_info(__('Here you can change your password.')),
                     form_password('password', __('Old password:')),
@@ -109,7 +122,7 @@ function User_settings_view(
                     form_info(__('Here you can choose your language:')),
                     form_select('language', __('Language:'), $locales, $user_source->settings->language),
                     form_submit('submit_language', __('Save'))
-                ])
+                ]),
             ])
         ])
     ]);

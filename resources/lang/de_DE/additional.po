@@ -81,3 +81,24 @@ msgid "news.edit.contains-html"
 msgstr ""
 "Diese Nachricht beinhaltet HTML. Wenn du sie speicherst gehen diese "
 "Formatierungen verloren!"
+
+msgid "oauth.invalid-state"
+msgstr "Ungültiger OAuth state"
+
+msgid "oauth.provider-error"
+msgstr "OAuth provider fehler"
+
+msgid "oauth.already-connected"
+msgstr "Dieser Account wurde bereits mit einem anderen Account verbunden!"
+
+msgid "oauth.connected"
+msgstr "Login provider verbunden!"
+
+msgid "oauth.disconnected"
+msgstr "Login provider getrennt!"
+
+msgid "oauth.not-found"
+msgstr "Account nicht gefunden"
+
+msgid "oauth.provider-not-found"
+msgstr "OAuth provider nicht gefunden"

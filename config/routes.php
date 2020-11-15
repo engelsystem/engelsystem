@@ -14,6 +14,14 @@ $route->get('/login', 'AuthController@login');
 $route->post('/login', 'AuthController@postLogin');
 $route->get('/logout', 'AuthController@logout');
 
+// OAuth
+$route->get('/oauth/{provider:\w+}', 'OAuthController@index');
+$route->post('/oauth/{provider:\w+}/connect', 'OAuthController@connect');
+$route->post('/oauth/{provider:\w+}/disconnect', 'OAuthController@disconnect');
+
+// User settings
+$route->get('/settings/oauth', 'SettingsController@oauth');
+
 // Password recovery
 $route->get('/password/reset', 'PasswordResetController@reset');
 $route->post('/password/reset', 'PasswordResetController@postReset');

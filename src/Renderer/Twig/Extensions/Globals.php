@@ -3,6 +3,7 @@
 namespace Engelsystem\Renderer\Twig\Extensions;
 
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Request;
 use Twig\Extension\AbstractExtension as TwigExtension;
 use Twig\Extension\GlobalsInterface as GlobalsInterface;
 
@@ -11,12 +12,17 @@ class Globals extends TwigExtension implements GlobalsInterface
     /** @var Authenticator */
     protected $auth;
 
+    /** @var Request */
+    protected $request;
+
     /**
      * @param Authenticator $auth
+     * @param Request       $request
      */
-    public function __construct(Authenticator $auth)
+    public function __construct(Authenticator $auth, Request $request)
     {
         $this->auth = $auth;
+        $this->request = $request;
     }
 
     /**
@@ -29,7 +35,8 @@ class Globals extends TwigExtension implements GlobalsInterface
         $user = $this->auth->user();
 
         return [
-            'user' => $user ? $user : [],
+            'user'    => $user ? $user : [],
+            'request' => $this->request,
         ];
     }
 }
