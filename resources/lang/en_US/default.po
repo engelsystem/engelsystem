@@ -159,3 +159,21 @@ msgstr "Level"
 
 msgid "log.message"
 msgstr "Message"
+
+msgid "settings.settings"
+msgstr "Settings"
+
+msgid "settings.oauth"
+msgstr "OAuth Settings"
+
+msgid "oauth.login"
+msgstr "Login using OAuth"
+
+msgid "oauth.login-using-provider"
+msgstr "Login using %s"
+
+msgid "form.connect"
+msgstr "Connect"
+
+msgid "form.disconnect"
+msgstr "Disconnect"

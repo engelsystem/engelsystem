@@ -182,6 +182,18 @@ $(function () {
 });
 
 /**
+ * Show oauth buttons on welcome title click
+ */
+$(function () {
+    $('#welcome-title').on('click', function () {
+        $('.form-group.btn-group .btn.hidden').removeClass('hidden');
+    });
+    $('#oauth-settings-title').on('click', function () {
+        $('table tr.hidden').removeClass('hidden');
+    });
+});
+
+/**
  * Set the filter selects to latest state
  *
  * Uses DOMContentLoaded to prevent flickering

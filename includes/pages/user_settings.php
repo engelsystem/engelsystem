@@ -198,6 +198,7 @@ function user_settings()
     $enable_tshirt_size = config('enable_tshirt_size');
     $tshirt_sizes = config('tshirt_sizes');
     $locales = config('locales');
+    $oauth2_providers = config('oauth');
 
     $buildup_start_date = null;
     $teardown_end_date = null;
@@ -230,6 +231,7 @@ function user_settings()
         $buildup_start_date,
         $teardown_end_date,
         $enable_tshirt_size,
-        $tshirt_sizes
+        $tshirt_sizes,
+        $oauth2_providers
     );
 }

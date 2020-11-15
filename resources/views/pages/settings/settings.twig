@@ -1,0 +1,35 @@
+{% extends 'layouts/app.twig' %}
+
+{% block title %}{{ __('settings') }}{% endblock %}
+
+{% block content %}
+    <div class="container user-settings">
+        <div class="row">
+            <div class="col-md-2 settings-menu">
+                <ul class="nav nav-pills nav-stacked">
+                    {% for url,title in {
+                        (url('/user-settings')): __('settings.settings'),
+                        (url('/settings/oauth')): __('settings.oauth'),
+                    } %}
+                        <li{% if url == request.url() %} class="active"{% endif %}>
+                            <a href="{{ url }}">{{ title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-10">
+                {% block container_title %}
+                    <h1>{{ block('title') }}</h1>
+                {% endblock %}
+
+                {% include 'layouts/parts/messages.twig' %}
+
+                <div class="row">
+                    {% block row_content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

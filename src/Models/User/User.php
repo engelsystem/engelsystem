@@ -7,6 +7,7 @@ use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
+use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Worklog;
 use Illuminate\Database\Eloquent\Collection;
@@ -30,10 +31,12 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property-read QueryBuilder|State        $state
  * @property-read Collection|News[]         $news
  * @property-read Collection|NewsComment[]  $newsComments
+ * @property-read Collection|OAuth[]        $oauth
  * @property-read Collection|Worklog[]      $worklogs
  * @property-read Collection|Worklog[]      $worklogsCreated
  * @property-read int|null                  $news_count
  * @property-read int|null                  $news_comments_count
+ * @property-read int|null                  $oauth_count
  * @property-read int|null                  $worklogs_count
  * @property-read int|null                  $worklogs_created_count
  *
@@ -131,6 +134,14 @@ class User extends BaseModel
     public function newsComments(): HasMany
     {
         return $this->hasMany(NewsComment::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function oauth(): HasMany
+    {
+        return $this->hasMany(OAuth::class);
     }
 
     /**

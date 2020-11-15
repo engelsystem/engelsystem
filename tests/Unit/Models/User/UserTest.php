@@ -7,6 +7,7 @@ use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Engelsystem\Models\BaseModel;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
+use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\HasUserModel;
@@ -163,6 +164,24 @@ class UserTest extends ModelTest
         $this->assertCount(1, $comments);
         $comment = $comments->first();
         $this->assertSame($newsComment->id, $comment->id);
+    }
+
+    /**
+     * Tests that accessing OAuth of an User works
+     *
+     * @covers \Engelsystem\Models\User\User::oauth
+     */
+    public function testOauth(): void
+    {
+        ($user = new User($this->data))->save();
+        (new OAuth(['provider' => 'test', 'identifier' => 'LoremIpsumDolor123']))
+            ->user()
+            ->associate($user)
+            ->save();
+
+        $oauth = $user->oauth;
+
+        $this->assertCount(1, $oauth);
     }
 
     /**

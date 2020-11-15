@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\DB;
+use Engelsystem\Models\OAuth;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
@@ -224,6 +225,19 @@ function guest_register()
                 ->associate($user)
                 ->save();
 
+            if ($session->has('oauth2_connect_provider') && $session->has('oauth2_user_id')) {
+                $oauth = new OAuth([
+                    'provider'   => $session->get('oauth2_connect_provider'),
+                    'identifier' => $session->get('oauth2_user_id'),
+                ]);
+                $oauth->user()
+                    ->associate($user)
+                    ->save();
+
+                $session->remove('oauth2_connect_provider');
+                $session->remove('oauth2_user_id');
+            }
+
             // Assign user-group and set password
             DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -20)', [$user->id]);
             auth()->setPassword($user, $request->postData('password'));
@@ -254,6 +268,13 @@ function guest_register()
                 info((new Parsedown())->text($message));
             }
 
+            // Login the user
+            if ($user->oauth->count()) {
+                /** @var OAuth $provider */
+                $provider = $user->oauth->first();
+                throw_redirect(url('/oauth/' . $provider->provider));
+            }
+
             throw_redirect(page_link_to('/'));
         }
     }
@@ -268,6 +289,24 @@ function guest_register()
     if ($teardown = $config->get('teardown_end')) {
         /** @var Carbon $teardown */
         $teardown_end_date = $teardown->getTimestamp();
+    }
+
+    $form_data = $session->get('form_data');
+    $session->remove('form_data');
+    if (!$nick && !empty($form_data['name'])) {
+        $nick = $form_data['name'];
+    }
+
+    if (!$email && !empty($form_data['email'])) {
+        $email = $form_data['email'];
+    }
+
+    if (!$preName && !empty($form_data['first_name'])) {
+        $preName = $form_data['first_name'];
+    }
+
+    if (!$lastName && !empty($form_data['last_name'])) {
+        $lastName = $form_data['last_name'];
     }
 
     return page_with_title(register_title(), [
