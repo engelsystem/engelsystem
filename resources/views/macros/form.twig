@@ -43,7 +43,7 @@
         {% endif %}
         <select id="{{ name }}" name="{{ name }}" class="form-control">
             {% for value,decription in data -%}
-                <option value="{{ value }}" {% if name == selected %} selected{% endif %}>{{ decription }}</option>
+                <option value="{{ value }}" {% if value == selected %} selected{% endif %}>{{ decription }}</option>
             {% endfor %}
         </select>
     </div>

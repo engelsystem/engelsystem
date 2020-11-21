@@ -2787,18 +2787,36 @@ msgstr "Programm laden"
 msgid "form.import"
 msgstr "Importieren"
 
+msgid "form.edit"
+msgstr "Bearbeiten"
+
+msgid "form.save"
+msgstr "Speichern"
+
+msgid "schedule.import"
+msgstr "Programm importieren"
+
+msgid "schedule.edit.title"
+msgstr "Programm bearbeiten"
+
 msgid "schedule.import.title"
 msgstr "Programm importieren"
 
+msgid "schedule.last_update"
+msgstr "Aktualisiert am: %s"
+
 msgid "schedule.import.text"
 msgstr ""
-"Dieser Import erstellt Räume und erstellt, aktualisiert und löscht Schichten anhand des schedule.xml exportes."
+"Importe erstellen Räume und erstellen, aktualisieren und löschen Schichten anhand eines schedule.xml exportes."
 
 msgid "schedule.import.load.title"
 msgstr "Programm importieren: Vorschau"
 
 msgid "schedule.import.load.info"
 msgstr "Importiere \"%s\" (Version \"%s\")"
+
+msgid "schedule.name"
+msgstr "Programm Name"
 
 msgid "schedule.url"
 msgstr "Programm URL (schedule.xml)"

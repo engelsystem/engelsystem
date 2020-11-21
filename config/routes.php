@@ -57,8 +57,10 @@ $route->addGroup(
             '/schedule',
             function (RouteCollector $route) {
                 $route->get('', 'Admin\\Schedule\\ImportSchedule@index');
-                $route->post('/load', 'Admin\\Schedule\\ImportSchedule@loadSchedule');
-                $route->post('/import', 'Admin\\Schedule\\ImportSchedule@importSchedule');
+                $route->get('/edit[/{id:\d+}]', 'Admin\\Schedule\\ImportSchedule@edit');
+                $route->post('/edit[/{id:\d+}]', 'Admin\\Schedule\\ImportSchedule@save');
+                $route->get('/load/{id:\d+}', 'Admin\\Schedule\\ImportSchedule@loadSchedule');
+                $route->post('/import/{id:\d+}', 'Admin\\Schedule\\ImportSchedule@importSchedule');
             }
         );
 
