@@ -22,6 +22,7 @@ trait Reference
      * @param string      $targetTable
      * @param string|null $fromColumn
      * @param bool        $setPrimary
+     *
      * @return ColumnDefinition
      */
     protected function references(
@@ -37,11 +38,21 @@ trait Reference
             $table->primary($fromColumn);
         }
 
+        $this->addReference($table, $fromColumn, $targetTable);
+
+        return $col;
+    }
+
+    /**
+     * @param Blueprint $table
+     * @param string    $fromColumn
+     * @param string    $targetTable
+     */
+    protected function addReference(Blueprint $table, string $fromColumn, string $targetTable)
+    {
         $table->foreign($fromColumn)
             ->references('id')->on($targetTable)
             ->onUpdate('cascade')
             ->onDelete('cascade');
-
-        return $col;
     }
 }

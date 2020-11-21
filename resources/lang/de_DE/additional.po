@@ -35,8 +35,8 @@ msgstr "Deine Passwörter stimmen nicht überein."
 msgid "validation.password_confirmation.required"
 msgstr "Du musst dein Passwort bestätigen."
 
-msgid "schedule.import"
-msgstr "Programm importieren"
+msgid "schedule.edit.success"
+msgstr "Das Programm wurde erfolgreich konfiguriert."
 
 msgid "schedule.import.request-error"
 msgstr "Das Programm konnte nicht abgerufen werden."

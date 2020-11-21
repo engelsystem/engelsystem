@@ -52,17 +52,35 @@ msgstr "Load schedule"
 msgid "form.import"
 msgstr "Import"
 
+msgid "form.save"
+msgstr "Save"
+
+msgid "form.edit"
+msgstr "Bearbeiten"
+
+msgid "schedule.import"
+msgstr "Import schedule"
+
+msgid "schedule.edit.title"
+msgstr "Edit schedule"
+
 msgid "schedule.import.title"
 msgstr "Import schedule"
 
+msgid "schedule.last_update"
+msgstr "Last updated: %s"
+
 msgid "schedule.import.text"
-msgstr "This import creates rooms and creates, updates and deletes shifts according to the schedule.xml export."
+msgstr "Imports create rooms and create, update and delete shifts according to a schedule.xml export."
 
 msgid "schedule.import.load.title"
 msgstr "Import schedule: Preview"
 
 msgid "schedule.import.load.info"
 msgstr "Import \"%s\" (version \"%s\")"
+
+msgid "schedule.name"
+msgstr "Programm name"
 
 msgid "schedule.url"
 msgstr "Schedule URL (schedule.xml)"
