@@ -71,10 +71,18 @@ class Controller extends BaseController
         $userTshirtSizes = $this->formatStats($this->stats->tshirtSizes(), 'tshirt_sizes', 'shirt_size', 'size');
         $userLocales = $this->formatStats($this->stats->languages(), 'locales', 'language', 'locale');
         $userThemes = $this->formatStats($this->stats->themes(), 'available_themes', 'theme');
+        $userOauth = $this->formatStats($this->stats->oauth(), 'oauth', 'provider');
 
         $themes = $this->config->get('available_themes');
         foreach ($userThemes as $key => $theme) {
             $userThemes[$key]['labels']['name'] = $themes[$theme['labels']['theme']];
+        }
+
+        $oauthProviders = $this->config->get('oauth');
+        foreach ($userOauth as $key => $oauth) {
+            $provider = $oauth['labels']['provider'];
+            $name = isset($oauthProviders[$provider]['name']) ? $oauthProviders[$provider]['name'] : $provider;
+            $userOauth[$key]['labels']['name'] = $name;
         }
 
         $data = [
@@ -173,6 +181,7 @@ class Controller extends BaseController
                 ['labels' => ['type' => 'write'], 'value' => $this->stats->databaseWrite()],
             ],
             'sessions'             => ['type' => 'gauge', $this->stats->sessions()],
+            'oauth'                => ['type' => 'gauge', 'help' => 'The configured OAuth providers'] + $userOauth,
             'log_entries'          => [
                 'type' => 'counter',
                 [

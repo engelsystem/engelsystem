@@ -66,7 +66,9 @@ return [
     'oauth'                   => [
         // '[name]' => [config]
         /*
-        'name' => [
+        '[name]' => [
+            // Name shown to the user (optional)
+            'name' => 'Some Provider',
             // Auth client ID
             'client_id' => 'engelsystem',
             // Auth client secret

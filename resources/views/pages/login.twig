@@ -67,9 +67,12 @@
                             </div>
 
                             <div class="form-group btn-group btn-group-justified">
-                                {% for type,config in config('oauth') %}
-                                    <a href="{{ url('oauth/' ~ type) }}" class="btn btn-primary btn-lg{% if config.hidden|default(false) %} hidden{% endif %}">
-                                        {{ __('oauth.login-using-provider', [type|capitalize]) }}
+                                {% for name,config in config('oauth') %}
+                                    <a href="{{ url('oauth/' ~ name) }}" class="btn btn-primary btn-lg{% if config.hidden|default(false) %} hidden{% endif %}">
+                                        {{ __(
+                                            'oauth.login-using-provider',
+                                            [__(config.name|default(name|capitalize))]
+                                        ) }}
                                     </a>
                                 {% endfor %}
                             </div>

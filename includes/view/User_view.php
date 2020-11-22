@@ -5,6 +5,7 @@ use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * Renders user settings page
@@ -666,12 +667,13 @@ function User_view(
                 ])
             ]),
             div('row', [
-                div('col-md-3', [
+                div('col-md-2', [
                     heading(glyph('phone') . $user_source->contact->dect, 1)
                 ]),
                 User_view_state($admin_user_privilege, $freeloader, $user_source),
                 User_angeltypes_render($user_angeltypes),
-                User_groups_render($user_groups)
+                User_groups_render($user_groups),
+                $admin_user_privilege ? User_oauth_render($user_source) : '',
             ]),
             ($its_me || $admin_user_privilege) ? '<h2>' . __('Shifts') . '</h2>' : '',
             $myshifts_table,
@@ -710,7 +712,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
         $state = User_view_state_user($user_source);
     }
 
-    return div('col-md-3', [
+    return div('col-md-2', [
         heading(__('User state'), 4),
         join('<br>', $state)
     ]);
@@ -815,7 +817,7 @@ function User_angeltypes_render($user_angeltypes)
             . ($angeltype['supporter'] ? glyph('education') : '') . $angeltype['name']
             . '</a>';
     }
-    return div('col-md-3', [
+    return div('col-md-2', [
         heading(__('Angeltypes'), 4),
         join('<br>', $output)
     ]);
@@ -833,9 +835,32 @@ function User_groups_render($user_groups)
         $output[] = __($groupName);
     }
 
-    return div('col-md-3', [
+    return div('col-md-2', [
         '<h4>' . __('Rights') . '</h4>',
         join('<br>', $output)
+    ]);
+}
+
+/**
+ * @param User $user
+ * @return string
+ */
+function User_oauth_render(User $user)
+{
+    $config = config('oauth');
+
+    $output = [];
+    foreach ($user->oauth as $oauth) {
+        $output[] = __(
+            isset($config[$oauth->provider]['name'])
+            ? $config[$oauth->provider]['name']
+            : Str::ucfirst($oauth->provider)
+        );
+    }
+
+    return div('col-md-2', [
+        heading(__('OAuth'), 4),
+        join('<br>', $output),
     ]);
 }
 

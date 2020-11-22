@@ -8,6 +8,7 @@ use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
+use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\PasswordReset;
@@ -282,6 +283,30 @@ class StatsTest extends TestCase
 
         $stats = new Stats($this->database);
         $this->assertEquals(4, $stats->sessions());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::oauth
+     */
+    public function testOauth()
+    {
+        $this->addUsers();
+        $user1 = User::find(1);
+        $user2 = User::find(2);
+        $user3 = User::find(3);
+
+        (new OAuth(['provider' => 'test', 'identifier' => '1']))->user()->associate($user1)->save();
+        (new OAuth(['provider' => 'test', 'identifier' => '2']))->user()->associate($user2)->save();
+        (new OAuth(['provider' => 'another-provider', 'identifier' => 'usr3']))->user()->associate($user3)->save();
+
+        $stats = new Stats($this->database);
+        $oauth = $stats->oauth();
+
+        $this->assertCount(2, $oauth);
+        $this->assertEquals([
+            ['provider' => 'another-provider', 'count' => 1],
+            ['provider' => 'test', 'count' => 2],
+        ], $oauth->toArray());
     }
 
     /**

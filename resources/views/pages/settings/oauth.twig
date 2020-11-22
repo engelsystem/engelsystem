@@ -14,9 +14,11 @@
         <tr{% if config.hidden|default(false) %} class="hidden"{% endif %}>
             <th>
                 {% if config.url|default %}
-                    <a href="{{ config.url }}" target="_blank" rel="noopener">{{ name|capitalize }}</a>
+                    <a href="{{ config.url }}" target="_blank" rel="noopener">
+                        {{ __(config.name|default(name|capitalize)) }}
+                    </a>
                 {% else %}
-                    {{ name|capitalize }}
+                    {{ __(config.name|default(name|capitalize)) }}
                 {% endif %}
             </th>
             <td>
