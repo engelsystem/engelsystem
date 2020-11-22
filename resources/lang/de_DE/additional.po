@@ -83,22 +83,22 @@ msgstr ""
 "Formatierungen verloren!"
 
 msgid "oauth.invalid-state"
-msgstr "Ungültiger OAuth state"
+msgstr "Ungültiger OAuth-Status"
 
 msgid "oauth.provider-error"
-msgstr "OAuth provider fehler"
+msgstr "Login-Provider-Fehler"
 
 msgid "oauth.already-connected"
-msgstr "Dieser Account wurde bereits mit einem anderen Account verbunden!"
+msgstr "Dieser Account wurde bereits mit einem anderen Engelsystem-User verbunden!"
 
 msgid "oauth.connected"
-msgstr "Login provider verbunden!"
+msgstr "Login-Provider verbunden!"
 
 msgid "oauth.disconnected"
-msgstr "Login provider getrennt!"
+msgstr "Login-Provider getrennt!"
 
 msgid "oauth.not-found"
 msgstr "Account nicht gefunden"
 
 msgid "oauth.provider-not-found"
-msgstr "OAuth provider nicht gefunden"
+msgstr "OAuth-Provider nicht gefunden"
