@@ -62,6 +62,7 @@ class ControllerTest extends TestCase
                 $this->assertArrayHasKey('registration_enabled', $data);
                 $this->assertArrayHasKey('database', $data);
                 $this->assertArrayHasKey('sessions', $data);
+                $this->assertArrayHasKey('oauth', $data);
                 $this->assertArrayHasKey('log_entries', $data);
                 $this->assertArrayHasKey('scrape_duration_seconds', $data);
 
@@ -133,6 +134,9 @@ class ControllerTest extends TestCase
         $this->setExpects($stats, 'themes', null, new Collection([
             ['theme' => '1', 'count' => 3],
         ]));
+        $this->setExpects($stats, 'oauth', null, new Collection([
+            ['provider' => 'test', 'count' => 2],
+        ]));
         $this->setExpects($stats, 'shifts', null, 142);
         $this->setExpects($stats, 'messages', null, 3);
         $this->setExpects($stats, 'passwordResets', null, 1);
@@ -153,7 +157,10 @@ class ControllerTest extends TestCase
         ]);
         $config->set('metrics', [
             'work'    => [60 * 60],
-            'voucher' => [1]
+            'voucher' => [1],
+        ]);
+        $config->set('oauth', [
+            'test' => ['name' => 'Test'],
         ]);
 
         $this->setExpects($version, 'getVersion', [], '0.42.42');

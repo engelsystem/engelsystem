@@ -11,6 +11,7 @@ use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
+use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\PasswordReset;
@@ -428,6 +429,17 @@ class Stats
         return $this
             ->getQuery('sessions')
             ->count();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function oauth(): Collection
+    {
+        return OAuth::query()
+            ->select(['provider', $this->raw('COUNT(provider) AS count')])
+            ->groupBy(['provider'])
+            ->get();
     }
 
     /**
