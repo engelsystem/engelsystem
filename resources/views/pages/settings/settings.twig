@@ -1,14 +1,17 @@
 {% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
 
 {% block title %}{{ __('settings') }}{% endblock %}
 
 {% block content %}
     <div class="container user-settings">
+        <h1>{{ __('settings.settings') }}</h1>
         <div class="row">
-            <div class="col-md-2 settings-menu">
+            <div class="col-md-3 settings-menu">
                 <ul class="nav nav-pills nav-stacked">
                     {% for url,title in {
-                        (url('/user-settings')): __('settings.settings'),
+                        (url('/user-settings')): __('settings.profile'),
+                        (url('/settings/password')): __('settings.password'),
                         (url('/settings/oauth')): __('settings.oauth'),
                     } %}
                         <li{% if url == request.url() %} class="active"{% endif %}>
@@ -18,17 +21,15 @@
                 </ul>
             </div>
 
-            <div class="col-md-10">
+            <div class="col-md-9">
                 {% block container_title %}
-                    <h1>{{ block('title') }}</h1>
+                    <h2>{{ block('title') }}</h2>
                 {% endblock %}
 
                 {% include 'layouts/parts/messages.twig' %}
 
-                <div class="row">
-                    {% block row_content %}
-                    {% endblock %}
-                </div>
+                {% block row_content %}
+                {% endblock %}
             </div>
         </div>
     </div>

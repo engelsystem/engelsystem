@@ -65,7 +65,7 @@
 {%- endmacro %}
 
 {% macro button(label, opt) %}
-    <button class="btn btn-{{ opt.btn_type|default('primary') }}"
+    <button class="btn btn-{{ opt.btn_type|default('primary') }} btn-{{ opt.btn_size|default('m') }}"
         {%- if opt.type is defined %} type="{{ opt.type }}"{% endif %}
         {%- if opt.name is defined %} name="{{ opt.name }}"{% endif %}
         {%- if opt.value is defined or opt.name is defined %} value="{{ opt.value|default('1') }}"{% endif -%}

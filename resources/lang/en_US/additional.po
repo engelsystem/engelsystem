@@ -98,3 +98,6 @@ msgstr "Unable to find account"
 
 msgid "oauth.provider-not-found"
 msgstr "Unable to find OAuth provider"
+
+msgid "settings.profile"
+msgstr "Profile"

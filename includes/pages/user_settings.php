@@ -102,31 +102,6 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 }
 
 /**
- * Change user password.
- *
- * @param User $user_source The user
- */
-function user_settings_password($user_source)
-{
-    $request = request();
-    $auth = auth();
-    if (
-        !$request->has('password')
-        || !$auth->verifyPassword($user_source, $request->postData('password'))
-    ) {
-        error(__('-> not OK. Please try again.'));
-    } elseif (strlen($request->postData('new_password')) < config('min_password_length')) {
-        error(__('Your password is to short (please use at least 6 characters).'));
-    } elseif ($request->postData('new_password') != $request->postData('new_password2')) {
-        error(__('Your passwords don\'t match.'));
-    } else {
-        $auth->setPassword($user_source, $request->postData('new_password'));
-        success(__('Password saved.'));
-    }
-    throw_redirect(page_link_to('user_settings'));
-}
-
-/**
  * Change user theme
  *
  * @param User  $user_source The user
@@ -216,8 +191,6 @@ function user_settings()
     $user_source = auth()->user();
     if ($request->hasPostData('submit')) {
         $user_source = user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes);
-    } elseif ($request->hasPostData('submit_password')) {
-        user_settings_password($user_source);
     } elseif ($request->hasPostData('submit_theme')) {
         $user_source = user_settings_theme($user_source, $themes);
     } elseif ($request->hasPostData('submit_language')) {
