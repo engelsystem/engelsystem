@@ -20,6 +20,8 @@ $route->post('/oauth/{provider:\w+}/connect', 'OAuthController@connect');
 $route->post('/oauth/{provider:\w+}/disconnect', 'OAuthController@disconnect');
 
 // User settings
+$route->get('/settings/password', 'SettingsController@password');
+$route->post('/settings/password', 'SettingsController@savePassword');
 $route->get('/settings/oauth', 'SettingsController@oauth');
 
 // Password recovery

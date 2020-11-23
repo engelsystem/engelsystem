@@ -102,3 +102,6 @@ msgstr "Account nicht gefunden"
 
 msgid "oauth.provider-not-found"
 msgstr "OAuth-Provider nicht gefunden"
+
+msgid "settings.profile"
+msgstr "Profil"

@@ -108,13 +108,6 @@ function User_settings_view(
                     : ''
                 ),
                 form([
-                    form_info(__('Here you can change your password.')),
-                    form_password('password', __('Old password:')),
-                    form_password('new_password', __('New password:')),
-                    form_password('new_password2', __('Password confirmation:')),
-                    form_submit('submit_password', __('Save'))
-                ]),
-                form([
                     form_info(__('Here you can choose your color settings:')),
                     form_select('theme', __('Color settings:'), $themes, $user_source->settings->theme),
                     form_submit('submit_theme', __('Save'))
