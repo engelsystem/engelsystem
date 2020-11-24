@@ -23,3 +23,7 @@
         {{ label }}
     </a>
 {% endmacro %}
+
+{% macro info(text) %}
+    <span class="help-block">{{ _self.glyphicon('info-sign') }}{{ text }}</span>
+{%- endmacro %}

@@ -321,8 +321,9 @@ function form_password($name, $label, $disabled = false)
     return form_element(
         $label,
         sprintf(
-            '<input class="form-control" id="form_%1$s" type="password" name="%1$s" value=""%s/>',
+            '<input class="form-control" id="form_%1$s" type="password" name="%1$s" minlength="%2$s" value=""%3$s/>',
             $name,
+            config('min_password_length'),
             $disabled
         ),
         'form_' . $name

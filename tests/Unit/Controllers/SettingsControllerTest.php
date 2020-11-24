@@ -19,6 +19,8 @@ use Psr\Log\Test\TestLogger;
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Models\User\User;
+use Engelsystem\Http\Validation\Validator;
+use Engelsystem\Http\Exceptions\ValidationException;
 
 class SettingsControllerTest extends TestCase
 {
@@ -51,7 +53,7 @@ class SettingsControllerTest extends TestCase
         $this->response->expects($this->once())
         ->method('withView')
         ->willReturnCallback(function ($view, $data) {
-            $this->assertEquals('pages/settings/password.twig', $view);
+            $this->assertEquals('pages/settings/password', $view);
 
             return $this->response;
         });
@@ -73,26 +75,20 @@ class SettingsControllerTest extends TestCase
         ];
         $this->request = $this->request->withParsedBody($body);
 
-        $this->auth->expects($this->once())
-        ->method('user')
-        ->willReturn($this->user);
-
-        $this->auth->expects($this->once())
-        ->method('verifyPassword')
-        ->with($this->user, 'password')
-        ->willReturn(true);
-
-        $this->auth->expects($this->once())
-        ->method('setPassword')
-        ->with($this->user, 'newpassword');
-
-        $this->response->expects($this->once())
-        ->method('redirectTo')
-        ->with('http://localhost/settings/password')
-        ->willReturn($this->response);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'verifyPassword', [$this->user, 'password'], true, $this->once());
+        $this->setExpects($this->auth, 'setPassword', [$this->user, 'newpassword'], null, $this->once());
+        $this->setExpects(
+            $this->response,
+            'redirectTo',
+            ['http://localhost/settings/password'],
+            $this->response,
+            $this->once()
+        );
 
         /** @var SettingsController $controller */
         $controller = $this->app->make(SettingsController::class);
+        $controller->setValidator(new Validator());
         $controller->savePassword($this->request);
 
         $this->assertTrue($this->log->hasInfoThatContains('User set new password.'));
@@ -100,7 +96,7 @@ class SettingsControllerTest extends TestCase
         /** @var Session $session */
         $session = $this->app->get('session');
         $messages = $session->get('messages');
-        $this->assertEquals('Password saved.', $messages[0]);
+        $this->assertEquals('settings.password.success', $messages[0]);
     }
 
     /**
@@ -115,31 +111,26 @@ class SettingsControllerTest extends TestCase
         ];
         $this->request = $this->request->withParsedBody($body);
 
-        $this->auth->expects($this->once())
-        ->method('user')
-        ->willReturn($this->user);
-
-        $this->auth->expects($this->once())
-        ->method('verifyPassword')
-        ->with($this->user, 'wrongpassword')
-        ->willReturn(false);
-
-        $this->auth->expects($this->never())
-        ->method('setPassword');
-
-        $this->response->expects($this->once())
-        ->method('redirectTo')
-        ->with('http://localhost/settings/password')
-        ->willReturn($this->response);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'verifyPassword', [$this->user, 'wrongpassword'], false, $this->once());
+        $this->setExpects($this->auth, 'setPassword', null, null, $this->never());
+        $this->setExpects(
+            $this->response,
+            'redirectTo',
+            ['http://localhost/settings/password'],
+            $this->response,
+            $this->once()
+        );
 
         /** @var SettingsController $controller */
         $controller = $this->app->make(SettingsController::class);
+        $controller->setValidator(new Validator());
         $controller->savePassword($this->request);
 
         /** @var Session $session */
         $session = $this->app->get('session');
         $errors = $session->get('errors');
-        $this->assertEquals('-> not OK. Please try again.', $errors[0]);
+        $this->assertEquals('auth.password.error', $errors[0]);
     }
 
     /**
@@ -154,70 +145,69 @@ class SettingsControllerTest extends TestCase
         ];
         $this->request = $this->request->withParsedBody($body);
 
-        $this->auth->expects($this->once())
-        ->method('user')
-        ->willReturn($this->user);
-
-        $this->auth->expects($this->once())
-        ->method('verifyPassword')
-        ->with($this->user, 'password')
-        ->willReturn(true);
-
-        $this->auth->expects($this->never())
-        ->method('setPassword');
-
-        $this->response->expects($this->once())
-        ->method('redirectTo')
-        ->with('http://localhost/settings/password')
-        ->willReturn($this->response);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'verifyPassword', [$this->user, 'password'], true, $this->once());
+        $this->setExpects($this->auth, 'setPassword', null, null, $this->never());
+        $this->setExpects(
+            $this->response,
+            'redirectTo',
+            ['http://localhost/settings/password'],
+            $this->response,
+            $this->once()
+        );
 
         /** @var SettingsController $controller */
         $controller = $this->app->make(SettingsController::class);
+        $controller->setValidator(new Validator());
         $controller->savePassword($this->request);
 
         /** @var Session $session */
         $session = $this->app->get('session');
         $errors = $session->get('errors');
-        $this->assertEquals('Your passwords don\'t match.', $errors[0]);
+        $this->assertEquals('validation.password.confirmed', $errors[0]);
+    }
+
+    /**
+     * @return array
+     */
+    public function savePasswordValidationProvider(): array
+    {
+        return [
+            [null, 'newpassword', 'newpassword'],
+            ['password', null, 'newpassword'],
+            ['password', 'newpassword', null],
+            ['password', 'short', 'short']
+        ];
     }
 
     /**
      * @covers \Engelsystem\Controllers\SettingsController::savePassword
+     * @dataProvider savePasswordValidationProvider
+     * @param string $password
+     * @param string $new_password
+     * @param string $new_password2
      */
-    public function testSavePasswordInvalidNewPassword()
-    {
+    public function testSavePasswordValidation(
+        ?string $password,
+        ?string $newPassword,
+        ?string $newPassword2
+    ) {
         $body = [
-            'password' => 'password',
-            'new_password' => 'short',
-            'new_password2' => 'short'
+            'password' => $password,
+            'new_password' => $newPassword,
+            'new_password2' => $newPassword2
         ];
         $this->request = $this->request->withParsedBody($body);
 
-        $this->auth->expects($this->once())
-        ->method('user')
-        ->willReturn($this->user);
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'setPassword', null, null, $this->never());
 
-        $this->auth->expects($this->once())
-        ->method('verifyPassword')
-        ->with($this->user, 'password')
-        ->willReturn(true);
-
-        $this->auth->expects($this->never())
-        ->method('setPassword');
-
-        $this->response->expects($this->once())
-        ->method('redirectTo')
-        ->with('http://localhost/settings/password')
-        ->willReturn($this->response);
+        $this->expectException(ValidationException::class);
 
         /** @var SettingsController $controller */
         $controller = $this->app->make(SettingsController::class);
+        $controller->setValidator(new Validator());
         $controller->savePassword($this->request);
-
-        /** @var Session $session */
-        $session = $this->app->get('session');
-        $errors = $session->get('errors');
-        $this->assertEquals('Your password is to short (please use at least 6 characters).', $errors[0]);
     }
 
     /**
@@ -231,7 +221,7 @@ class SettingsControllerTest extends TestCase
         $this->response->expects($this->once())
             ->method('withView')
             ->willReturnCallback(function ($view, $data) use ($providers) {
-                $this->assertEquals('pages/settings/oauth.twig', $view);
+                $this->assertEquals('pages/settings/oauth', $view);
                 $this->assertArrayHasKey('information', $data);
                 $this->assertArrayHasKey('providers', $data);
                 $this->assertEquals($providers, $data['providers']);
@@ -259,6 +249,40 @@ class SettingsControllerTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
+     */
+    public function testSettingsMenuWithOAuth()
+    {
+        $providers = ['foo' => ['lorem' => 'ipsum']];
+        config(['oauth' => $providers]);
+
+        /** @var SettingsController $controller */
+        $controller = $this->app->make(SettingsController::class);
+
+        $this->assertEquals([
+            'http://localhost/user-settings' => 'settings.profile',
+            'http://localhost/settings/password' => 'settings.password',
+            'http://localhost/settings/oauth' => 'settings.oauth'
+        ], $controller->settingsMenu());
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
+     */
+    public function testSettingsMenuWithoutOAuth()
+    {
+        config(['oauth' => []]);
+
+        /** @var SettingsController $controller */
+        $controller = $this->app->make(SettingsController::class);
+
+        $this->assertEquals([
+            'http://localhost/user-settings' => 'settings.profile',
+            'http://localhost/settings/password' => 'settings.password'
+        ], $controller->settingsMenu());
+    }
+
+    /**
      * Setup environment
      */
     public function setUp(): void
@@ -279,6 +303,7 @@ class SettingsControllerTest extends TestCase
         $this->app->instance(Response::class, $this->response);
 
         $this->app->bind(UrlGeneratorInterface::class, UrlGenerator::class);
+        $this->app->bind('http.urlGenerator', UrlGenerator::class);
 
         $this->log = new TestLogger();
         $this->app->instance(LoggerInterface::class, $this->log);

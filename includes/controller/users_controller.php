@@ -75,7 +75,7 @@ function user_delete_controller()
             && $auth->verifyPassword($user, $request->postData('password'))
         )) {
             $valid = false;
-            error(__('Your password is incorrect. Please try it again.'));
+            error(__('auth.password.error'));
         }
 
         if ($valid) {

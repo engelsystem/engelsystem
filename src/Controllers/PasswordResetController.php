@@ -103,7 +103,10 @@ class PasswordResetController extends BaseController
     {
         $this->requireToken($request);
 
-        return $this->showView('pages/password/reset-form');
+        return $this->showView(
+            'pages/password/reset-form',
+            ['min_length' => config('min_password_length')]
+        );
     }
 
     /**
