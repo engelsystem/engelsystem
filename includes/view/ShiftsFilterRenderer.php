@@ -40,9 +40,11 @@ class ShiftsFilterRenderer
      * Renders the filter.
      *
      * @param string $page_link Link pointing to the actual page.
+     * @param array  $dashboardFilter
+     *
      * @return string Generated HTML
      */
-    public function render($page_link)
+    public function render($page_link, $dashboardFilter = [])
     {
         $toolbar = [];
         if ($this->daySelectionEnabled && !empty($this->days)) {
@@ -53,6 +55,14 @@ class ShiftsFilterRenderer
                 $day_dropdown_items[] = toolbar_item_link($link, '', $day);
             }
             $toolbar[] = toolbar_dropdown('', $selected_day, $day_dropdown_items, 'active');
+
+            if ($dashboardFilter) {
+                $toolbar[] = sprintf(
+                    '<li role="presentation"><a href="%s">%s</a></li>',
+                    url('/public-dashboard', ['filtered' => true] + $dashboardFilter),
+                    glyph('dashboard') . __('Dashboard')
+                );
+            }
         }
         return div('form-group', [
             toolbar_pills($toolbar)

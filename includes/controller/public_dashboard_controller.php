@@ -11,9 +11,30 @@ use Engelsystem\ShiftsFilter;
 function public_dashboard_controller()
 {
     $filter = null;
-    if (request()->get('filtered') && auth()->user()) {
+    if (request()->get('filtered')) {
+        $requestRooms = check_request_int_array('rooms');
+        $requestAngelTypes = check_request_int_array('types');
+
+        if (!$requestRooms && !$requestAngelTypes) {
+            $sessionFilter = collect(session()->get('shifts-filter', []));
+            $requestRooms = $sessionFilter->get('rooms', []);
+            $requestAngelTypes = $sessionFilter->get('types', []);
+        }
+
+        $angelTypes = collect(unrestricted_angeltypes());
+        $rooms = $requestRooms ?: Rooms()->pluck('id')->toArray();
+        $angelTypes = $requestAngelTypes ?: $angelTypes->pluck('id')->toArray();
+        $filterValues = [
+            'userShiftsAdmin' => false,
+            'filled'          => [],
+            'rooms'           => $rooms,
+            'types'           => $angelTypes,
+            'startTime'       => null,
+            'endTime'         => null,
+        ];
+
         $filter = new ShiftsFilter();
-        $filter->sessionImport(session()->get('shifts-filter'));
+        $filter->sessionImport($filterValues);
     }
 
     $stats = [

@@ -39,15 +39,24 @@ function tabs($tabs, $selected = 0)
     $tab_content = [];
     foreach ($tabs as $header => $content) {
         $class = '';
+        $id = $header;
+        $href = '#' . $id;
         if (count($tab_header) == $selected) {
             $class = 'active';
         }
+        if (is_array($content)) {
+            $href = $content['href'];
+            $content = null;
+            $id = null;
+        }
         $tab_header[] = '<li role="presentation" class="' . $class . '">
-                <a href="#' . $header . '" aria-controls="' . $header . '" role="tab" data-toggle="tab">'
+                <a href="'. $href . '"'
+            . ($id ? ' aria-controls="' . $id . '" role="tab" data-toggle="tab"' : '')
+            . '>'
             . $header . '</a></li>';
-        $tab_content[] = '<div role="tabpanel" class="tab-pane ' . $class . '" id="' . $header . '">'
+        $tab_content[] = $content ? '<div role="tabpanel" class="tab-pane ' . $class . '" id="' . $id . '">'
             . $content
-            . '</div>';
+            . '</div>' : '';
     }
     return div('', [
         '<ul class="nav nav-tabs" role="tablist">' . join($tab_header) . '</ul>',
