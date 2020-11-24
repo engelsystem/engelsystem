@@ -77,3 +77,8 @@
 {% macro submit(label, opt) %}
     {{ _self.button(label|default(__('form.submit')), opt|default({})|merge({'type': 'submit'})) }}
 {%- endmacro %}
+
+{% macro info(text) %}
+{% import 'macros/base.twig' as m %}
+    <span class="help-block">{{ m.glyphicon('info-sign') }}{{ text }}</span>
+{%- endmacro %}

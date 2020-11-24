@@ -37,23 +37,22 @@ function User_settings_view(
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
 
-    $showOauth = false;
-    foreach ($oauth2_providers as $name => $config) {
-        $showOauth = $showOauth || !isset($config['hidden']) || !$config['hidden'];
-    }
-
     return page_with_title(settings_title(), [
         msg(),
         div('row', [
-            div('col-md-6', [
+            div('col-md-3 settings-menu', [
+                '<ul class="nav nav-pills nav-stacked">',
+                '<li class="active"><a href="' . url('/user-settings') . '">' . __('settings.profile') . '</a></li>',
+                '<li><a href="' . url('/settings/password') . '">' . __('settings.password') . '</a></li>',
+                '<li><a href="' . url('/settings/oauth') . '">' . __('settings.oauth') . '</a></li>',
+                '</ul>'
+            ]),
+            div('col-md-9', [
+                heading(__('settings.profile'), 2),
                 form([
                     form_info('', __('Here you can change your user details.')),
                     form_info(entry_required() . ' = ' . __('Entry required!')),
                     form_text('nick', __('Nick'), $user_source->name, true),
-                    form_info(
-                        '',
-                        __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.')
-                    ),
                     $enable_pronoun
                         ? form_text('pronoun', __('Pronoun'), $personalData->pronoun, false, 15)
                         . form_info('', __('Will be shown on your profile page and in angel lists.'))
@@ -99,14 +98,7 @@ function User_settings_view(
                     ) : '',
                     form_info('', __('Please visit the angeltypes page to manage your angeltypes.')),
                     form_submit('submit', __('Save'))
-                ])
-            ]),
-            div('col-md-6', [
-                ($showOauth ?
-                    form_info(__('oauth.login'))
-                    . button(url('/settings/oauth'), __('settings.oauth'), 'btn-primary')
-                    : ''
-                ),
+                ]),
                 form([
                     form_info(__('Here you can choose your color settings:')),
                     form_select('theme', __('Color settings:'), $themes, $user_source->settings->theme),
@@ -119,7 +111,7 @@ function User_settings_view(
                 ]),
             ])
         ])
-    ]);
+    ], true);
 }
 
 /**

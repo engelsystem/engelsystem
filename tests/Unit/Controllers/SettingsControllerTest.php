@@ -11,7 +11,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Psr\Log\LoggerInterface;
-use Engelsystem\Http\Redirector;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Http\Request;
