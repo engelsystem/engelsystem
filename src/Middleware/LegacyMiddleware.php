@@ -210,6 +210,10 @@ class LegacyMiddleware implements MiddlewareInterface
             return response($content, (int)$page);
         }
 
+        if (strpos($content, '<html') !== false) {
+            return response($content);
+        }
+
         return response(
             view(
                 'layouts/app',
