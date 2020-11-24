@@ -25,7 +25,10 @@ msgid "validation.email.email"
 msgstr "This email address is not valid."
 
 msgid "validation.password.min"
-msgstr "Your password is too short."
+msgstr "Your new password is too short."
+
+msgid "validation.new_password.min"
+msgstr "Your new password is too short."
 
 msgid "validation.password.confirmed"
 msgstr "Your passwords are not equal."

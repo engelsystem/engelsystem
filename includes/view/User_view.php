@@ -7,6 +7,7 @@ use Engelsystem\Models\Worklog;
 use Engelsystem\Renderer\Renderer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Engelsystem\Controllers\SettingsController;
 
 /**
  * Renders user settings page
@@ -44,6 +45,7 @@ function User_settings_view(
         'pages/settings/settings.twig',
         [
             'title' => 'settings.profile',
+            'settings_menu' => app()->make(SettingsController::class)->settingsMenu(),
             'content' =>
                 msg()
                 . div('row', [

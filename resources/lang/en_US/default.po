@@ -21,6 +21,8 @@ msgstr ""
 
 #~ msgid "auth.no-password"
 #~ msgstr "Please enter a password."
+msgid "auth.password.error"
+msgstr "Your password is incorrect. Please try it again."
 
 msgid "form.submit"
 msgstr "Submit"
@@ -163,6 +165,9 @@ msgstr "Meeting"
 msgid "news.edit.message"
 msgstr "Message"
 
+msgid "news.preview"
+msgstr "Preview"
+
 msgid "form.search"
 msgstr "Search"
 
@@ -184,8 +189,23 @@ msgstr "Settings"
 msgid "settings.password"
 msgstr "Password"
 
+msgid "settings.password.info"
+msgstr "Here you can change your password."
+
+msgid "settings.password.password"
+msgstr "Old password"
+
+msgid "settings.password.new_password"
+msgstr "New passwort"
+
+msgid "settings.password.new_password2"
+msgstr "Password confirmation"
+
+msgid "settings.password.success"
+msgstr "Password was changed successfully."
+
 msgid "settings.oauth"
-msgstr "Single-Sign-On"
+msgstr "Single Sign-On"
 
 msgid "settings.oauth.identity-provider"
 msgstr "Identity provider"

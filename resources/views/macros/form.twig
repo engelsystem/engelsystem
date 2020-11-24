@@ -7,6 +7,7 @@
             type="{{ type|default('text') }}" class="form-control"
             id="{{ name }}" name="{{ name }}"
             value="{{ opt.value|default('')|escape('html_attr') }}"
+            {%- if opt.min is defined %} minlength="{{ opt.min }}"{% endif %}
             {%- if opt.required|default(false) %}
                 required
             {%- endif -%}
@@ -76,9 +77,4 @@
 
 {% macro submit(label, opt) %}
     {{ _self.button(label|default(__('form.submit')), opt|default({})|merge({'type': 'submit'})) }}
-{%- endmacro %}
-
-{% macro info(text) %}
-{% import 'macros/base.twig' as m %}
-    <span class="help-block">{{ m.glyphicon('info-sign') }}{{ text }}</span>
 {%- endmacro %}

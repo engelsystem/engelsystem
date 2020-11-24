@@ -27,7 +27,10 @@ msgid "validation.email.email"
 msgstr "Die E-Mail-Adresse ist nicht gültig."
 
 msgid "validation.password.min"
-msgstr "Dein angegebenes Passwort ist zu kurz."
+msgstr "Dein neues Passwort ist zu kurz."
+
+msgid "validation.new_password.min"
+msgstr "Dein neues Passwort ist zu kurz."
 
 msgid "validation.password.confirmed"
 msgstr "Deine Passwörter stimmen nicht überein."
