@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
+use Engelsystem\Renderer\Renderer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -37,81 +38,84 @@ function User_settings_view(
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
 
-    return page_with_title(settings_title(), [
-        msg(),
-        div('row', [
-            div('col-md-3 settings-menu', [
-                '<ul class="nav nav-pills nav-stacked">',
-                '<li class="active"><a href="' . url('/user-settings') . '">' . __('settings.profile') . '</a></li>',
-                '<li><a href="' . url('/settings/password') . '">' . __('settings.password') . '</a></li>',
-                '<li><a href="' . url('/settings/oauth') . '">' . __('settings.oauth') . '</a></li>',
-                '</ul>'
-            ]),
-            div('col-md-9', [
-                heading(__('settings.profile'), 2),
-                form([
-                    form_info('', __('Here you can change your user details.')),
-                    form_info(entry_required() . ' = ' . __('Entry required!')),
-                    form_text('nick', __('Nick'), $user_source->name, true),
-                    $enable_pronoun
-                        ? form_text('pronoun', __('Pronoun'), $personalData->pronoun, false, 15)
-                        . form_info('', __('Will be shown on your profile page and in angel lists.'))
-                        : '',
-                    $enable_user_name ? form_text('lastname', __('Last name'), $personalData->last_name) : '',
-                    $enable_user_name ? form_text('prename', __('First name'), $personalData->first_name) : '',
-                    $enable_planned_arrival ? form_date(
-                        'planned_arrival_date',
-                        __('Planned date of arrival') . ' ' . entry_required(),
-                        $personalData->planned_arrival_date ? $personalData->planned_arrival_date->getTimestamp() : '',
-                        $buildup_start_date,
-                        $teardown_end_date
-                    ) : '',
-                    $enable_planned_arrival ? form_date(
-                        'planned_departure_date',
-                        __('Planned date of departure'),
-                        $personalData->planned_departure_date ? $personalData->planned_departure_date->getTimestamp() : '',
-                        $buildup_start_date,
-                        $teardown_end_date
-                    ) : '',
-                    $enable_dect ? form_text('dect', __('DECT'), $user_source->contact->dect) : '',
-                    form_text('mobile', __('Mobile'), $user_source->contact->mobile),
-                    form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->email),
-                    form_checkbox(
-                        'email_shiftinfo',
-                        __(
-                            'The %s is allowed to send me an email (e.g. when my shifts change)',
-                            [config('app_name')]
-                        ),
-                        $user_source->settings->email_shiftinfo
-                    ),
-                    form_checkbox(
-                        'email_by_human_allowed',
-                        __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
-                        $user_source->settings->email_human
-                    ),
-                    $enable_tshirt_size ? form_select(
-                        'tshirt_size',
-                        __('Shirt size'),
-                        $tshirt_sizes,
-                        $personalData->shirt_size,
-                        __('Please select...')
-                    ) : '',
-                    form_info('', __('Please visit the angeltypes page to manage your angeltypes.')),
-                    form_submit('submit', __('Save'))
-                ]),
-                form([
-                    form_info(__('Here you can choose your color settings:')),
-                    form_select('theme', __('Color settings:'), $themes, $user_source->settings->theme),
-                    form_submit('submit_theme', __('Save'))
-                ]),
-                form([
-                    form_info(__('Here you can choose your language:')),
-                    form_select('language', __('Language:'), $locales, $user_source->settings->language),
-                    form_submit('submit_language', __('Save'))
-                ]),
-            ])
-        ])
-    ], true);
+    /** @var Renderer $renderer */
+    $renderer = app(Renderer::class);
+    return $renderer->render(
+        'pages/settings/settings.twig',
+        [
+            'title' => 'settings.profile',
+            'content' =>
+                msg()
+                . div('row', [
+                    div('col-md-9', [
+                        form([
+                            form_info('', __('Here you can change your user details.')),
+                            form_info(entry_required() . ' = ' . __('Entry required!')),
+                            form_text('nick', __('Nick'), $user_source->name, true),
+                            $enable_pronoun
+                                ? form_text('pronoun', __('Pronoun'), $personalData->pronoun, false, 15)
+                                . form_info('', __('Will be shown on your profile page and in angel lists.'))
+                                : '',
+                            $enable_user_name ? form_text('lastname', __('Last name'), $personalData->last_name) : '',
+                            $enable_user_name ? form_text('prename', __('First name'), $personalData->first_name) : '',
+                            $enable_planned_arrival ? form_date(
+                                'planned_arrival_date',
+                                __('Planned date of arrival') . ' ' . entry_required(),
+                                $personalData->planned_arrival_date
+                                    ? $personalData->planned_arrival_date->getTimestamp()
+                                    : '',
+                                $buildup_start_date,
+                                $teardown_end_date
+                            ) : '',
+                            $enable_planned_arrival ? form_date(
+                                'planned_departure_date',
+                                __('Planned date of departure'),
+                                $personalData->planned_departure_date
+                                    ? $personalData->planned_departure_date->getTimestamp()
+                                    : '',
+                                $buildup_start_date,
+                                $teardown_end_date
+                            ) : '',
+                            $enable_dect ? form_text('dect', __('DECT'), $user_source->contact->dect) : '',
+                            form_text('mobile', __('Mobile'), $user_source->contact->mobile),
+                            form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->email),
+                            form_checkbox(
+                                'email_shiftinfo',
+                                __(
+                                    'The %s is allowed to send me an email (e.g. when my shifts change)',
+                                    [config('app_name')]
+                                ),
+                                $user_source->settings->email_shiftinfo
+                            ),
+                            form_checkbox(
+                                'email_by_human_allowed',
+                                __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
+                                $user_source->settings->email_human
+                            ),
+                            $enable_tshirt_size ? form_select(
+                                'tshirt_size',
+                                __('Shirt size'),
+                                $tshirt_sizes,
+                                $personalData->shirt_size,
+                                __('Please select...')
+                            ) : '',
+                            form_info('', __('Please visit the angeltypes page to manage your angeltypes.')),
+                            form_submit('submit', __('Save'))
+                        ]),
+                        form([
+                            form_info(__('Here you can choose your color settings:')),
+                            form_select('theme', __('Color settings:'), $themes, $user_source->settings->theme),
+                            form_submit('submit_theme', __('Save'))
+                        ]),
+                        form([
+                            form_info(__('Here you can choose your language:')),
+                            form_select('language', __('Language:'), $locales, $user_source->settings->language),
+                            form_submit('submit_language', __('Save'))
+                        ]),
+                    ])
+                ])
+        ]
+    );
 }
 
 /**
