@@ -32,6 +32,7 @@ function public_dashboard_view($stats, $free_shifts)
     }
 
     $isFiltered = request()->get('filtered');
+    $filter = collect(session()->get('shifts-filter'))->only(['rooms', 'types'])->toArray();
     return page([
         div('public-dashboard', [
             div('first', [
@@ -58,7 +59,7 @@ function public_dashboard_view($stats, $free_shifts)
                 glyph('fullscreen') . __('Fullscreen')
             ),
             auth()->user() ? button(
-                public_dashboard_link($isFiltered ? [] : ['filtered' => 1]),
+                public_dashboard_link($isFiltered ? [] : ['filtered' => 1] + $filter),
                 glyph('filter') . ($isFiltered ? __('All') : __('Filtered'))
             ) : ''
         ])], 'fullscreen-button'),
