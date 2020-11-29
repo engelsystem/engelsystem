@@ -19,8 +19,14 @@ function user_questions()
     $request = request();
 
     if (!$request->has('action')) {
-        $open_questions = $user->questionsAsked()->whereNull('answerer_id')->get();
-        $answered_questions = $user->questionsAsked()->whereNotNull('answerer_id')->get();
+        $open_questions = $user->questionsAsked()
+            ->whereNull('answerer_id')
+            ->orderByDesc('created_at')
+            ->get();
+        $answered_questions = $user->questionsAsked()
+            ->whereNotNull('answerer_id')
+            ->orderByDesc('answered_at')
+            ->get();
 
         return Questions_view(
             $open_questions->all(),

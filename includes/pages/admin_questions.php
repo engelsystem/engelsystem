@@ -42,7 +42,7 @@ function admin_questions()
 
     if (!$request->has('action')) {
         $unanswered_questions_table = [];
-        $unanswered_questions = Question::unanswered()->get();
+        $unanswered_questions = Question::unanswered()->orderByDesc('created_at')->get();
 
         foreach ($unanswered_questions as $question) {
             /* @var Question $question */
@@ -63,7 +63,7 @@ function admin_questions()
         }
 
         $answered_questions_table = [];
-        $answered_questions = Question::answered()->get();
+        $answered_questions = Question::answered()->orderByDesc('answered_at')->get();
 
         foreach ($answered_questions as $question) {
             /* @var Question $question */
