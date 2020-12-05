@@ -4,6 +4,7 @@ namespace Engelsystem\Test\Unit\Controllers\Metrics;
 
 use Carbon\Carbon;
 use Engelsystem\Controllers\Metrics\Stats;
+use Engelsystem\Models\Faq;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
@@ -248,6 +249,18 @@ class StatsTest extends TestCase
         $this->assertEquals(0, $stats->email('not-available-option'));
         $this->assertEquals(2, $stats->email('system'));
         $this->assertEquals(3, $stats->email('humans'));
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::faq
+     */
+    public function testFaq()
+    {
+        (new Faq(['question' => 'Foo?', 'text' => 'Bar!']))->save();
+        (new Faq(['question' => 'Lorem??', 'text' => 'Ipsum!!!']))->save();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(2, $stats->faq());
     }
 
     /**

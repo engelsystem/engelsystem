@@ -2773,6 +2773,15 @@ msgstr "Bearbeiten"
 msgid "form.save"
 msgstr "Speichern"
 
+msgid "form.preview"
+msgstr "Vorschau"
+
+msgid "form.delete"
+msgstr "Löschen"
+
+msgid "form.updated"
+msgstr "Aktualisiert"
+
 msgid "schedule.import"
 msgstr "Programm importieren"
 
@@ -2876,9 +2885,6 @@ msgstr "Treffen"
 msgid "news.edit.message"
 msgstr "Nachricht"
 
-msgid "news.preview"
-msgstr "Vorschau"
-
 msgid "form.search"
 msgstr "Suchen"
 
@@ -2933,3 +2939,18 @@ msgstr "Verbinden"
 
 msgid "form.disconnect"
 msgstr "Trennen"
+
+msgid "faq.faq"
+msgstr "FAQ"
+
+msgid "faq.edit"
+msgstr "FAQ Eintrag bearbeiten"
+
+msgid "faq.add"
+msgstr "FAQ Eintrag erstellen"
+
+msgid "faq.question"
+msgstr "Frage"
+
+msgid "faq.message"
+msgstr "Antwort"

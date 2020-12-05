@@ -35,11 +35,14 @@ return [
     // Footer links
     'footer_items'            => [
         // URL to the angel faq and job description
-        'FAQ'     => env('FAQ_URL', 'https://events.ccc.de/congress/2013/wiki/Static:Volunteers'),
+        'FAQ'     => env('FAQ_URL', '/faq'),
 
         // Contact email address, linked on every page
         'Contact' => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
     ],
+
+    // Text displayed on the FAQ page, rendered as markdown
+    'faq_text'                => env('FAQ_TEXT', null),
 
     // Link to documentation/help
     'documentation_url'       => 'https://engelsystem.de/doc/',

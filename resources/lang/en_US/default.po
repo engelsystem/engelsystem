@@ -60,6 +60,15 @@ msgstr "Save"
 msgid "form.edit"
 msgstr "Bearbeiten"
 
+msgid "form.preview"
+msgstr "Preview"
+
+msgid "form.delete"
+msgstr "Delete"
+
+msgid "form.updated"
+msgstr "Updated"
+
 msgid "schedule.import"
 msgstr "Import schedule"
 
@@ -165,9 +174,6 @@ msgstr "Meeting"
 msgid "news.edit.message"
 msgstr "Message"
 
-msgid "news.preview"
-msgstr "Preview"
-
 msgid "form.search"
 msgstr "Search"
 
@@ -221,3 +227,18 @@ msgstr "Connect"
 
 msgid "form.disconnect"
 msgstr "Disconnect"
+
+msgid "faq.faq"
+msgstr "FAQ"
+
+msgid "faq.edit"
+msgstr "Edit FAQ entry"
+
+msgid "faq.add"
+msgstr "Add FAQ entry"
+
+msgid "faq.question"
+msgstr "Question"
+
+msgid "faq.message"
+msgstr "Answer"
