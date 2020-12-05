@@ -108,3 +108,9 @@ msgstr "OAuth-Provider nicht gefunden"
 
 msgid "settings.profile"
 msgstr "Profil"
+
+msgid "faq.delete.success"
+msgstr "FAQ Eintrag erfolgreich gelöscht."
+
+msgid "faq.edit.success"
+msgstr "FAQ Eintrag erfolgreich aktualisiert."

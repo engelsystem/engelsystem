@@ -104,3 +104,9 @@ msgstr "Unable to find OAuth provider"
 
 msgid "settings.profile"
 msgstr "Profile"
+
+msgid "faq.delete.success"
+msgstr "FAQ entry successfully deleted."
+
+msgid "faq.edit.success"
+msgstr "FAQ entry successfully updated."

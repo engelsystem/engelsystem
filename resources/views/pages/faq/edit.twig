@@ -1,0 +1,69 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ faq and faq.id ? __('faq.edit') : __('faq.add') }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ block('title') }}</h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        {% if faq and faq.id %}
+            <div class="row">
+                <div class="col-md-6">
+                    <p>
+                        {{ m.glyphicon('time') }} {{ faq.updated_at.format(__('Y-m-d H:i')) }}
+
+                        {% if faq.updated_at != faq.created_at %}
+                            &emsp;{{ __('form.updated') }}
+                            <br>
+                            {{ m.glyphicon('time') }} {{ faq.created_at.format(__('Y-m-d H:i')) }}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        <form action="" enctype="multipart/form-data" method="post">
+            {{ csrf() }}
+
+            <div class="row">
+                <div class="col-md-12">
+                    {{ f.input('question', __('faq.question'), null, {'required': true, 'value': faq ? faq.question : ''}) }}
+                </div>
+                <div class="col-md-12">
+                    {{ f.textarea('text', __('faq.message'), {'required': true, 'rows': 10, 'value': faq ? faq.text : ''}) }}
+
+                    {{ f.submit() }}
+
+                    {{ f.submit(m.glyphicon('eye-close'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
+
+                    {% if faq and faq.id %}
+                        {{ f.submit(m.glyphicon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if faq %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>{{ __('form.preview') }}</h2>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                {{ faq.question }}
+                            </div>
+
+                            <div class="panel-body">
+                                {{ faq.text|markdown }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        </form>
+    </div>
+{% endblock %}

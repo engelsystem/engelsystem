@@ -40,6 +40,9 @@ $route->get('/meetings', 'NewsController@meetings');
 $route->get('/news/{id:\d+}', 'NewsController@show');
 $route->post('/news/{id:\d+}', 'NewsController@comment');
 
+// FAQ
+$route->get('/faq', 'FaqController@index');
+
 // API
 $route->get('/api[/{resource:.+}]', 'ApiController@index');
 
@@ -50,6 +53,15 @@ $route->get('/design', 'DesignController@index');
 $route->addGroup(
     '/admin',
     function (RouteCollector $route) {
+        // FAQ
+        $route->addGroup(
+            '/faq',
+            function (RouteCollector $route) {
+                $route->get('[/{id:\d+}]', 'Admin\\FaqController@edit');
+                $route->post('[/{id:\d+}]', 'Admin\\FaqController@save');
+            }
+        );
+
         // Log
         $route->get('/logs', 'Admin\\LogsController@index');
         $route->post('/logs', 'Admin\\LogsController@index');

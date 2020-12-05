@@ -26,7 +26,7 @@
         {% endblock %}
 
         {% for name,url in config('footer_items') %}
-            <a href="{{ url }}">
+            <a href="{% if url starts with '/' %}{{ url(url) }}{% else %}{{ url }}{% endif %}">
                 {% if '@' in url %}<span class="glyphicon glyphicon-envelope"></span>{% endif %}
                 {{ __(name) }}
             </a> ·
