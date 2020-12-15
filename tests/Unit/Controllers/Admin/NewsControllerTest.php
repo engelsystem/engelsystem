@@ -2,31 +2,19 @@
 
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
-use Engelsystem\Config\Config;
 use Engelsystem\Controllers\Admin\NewsController;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
-use Engelsystem\Http\Request;
-use Engelsystem\Http\Response;
-use Engelsystem\Http\UrlGenerator;
-use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Http\Validation\Validator;
 use Engelsystem\Models\News;
 use Engelsystem\Models\User\User;
-use Engelsystem\Test\Unit\HasDatabase;
-use Engelsystem\Test\Unit\TestCase;
+use Engelsystem\Test\Unit\Controllers\ControllerTest;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-class NewsControllerTest extends TestCase
+class NewsControllerTest extends ControllerTest
 {
-    use HasDatabase;
-
     /** @var Authenticator|MockObject */
     protected $auth;
 
@@ -39,15 +27,6 @@ class NewsControllerTest extends TestCase
             'user_id'    => 1,
         ]
     ];
-
-    /** @var TestLogger */
-    protected $log;
-
-    /** @var Response|MockObject */
-    protected $response;
-
-    /** @var Request */
-    protected $request;
 
     /**
      * @covers \Engelsystem\Controllers\Admin\NewsController::edit
@@ -296,42 +275,6 @@ class NewsControllerTest extends TestCase
     }
 
     /**
-     * Setup environment
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->initDatabase();
-
-        $this->request = Request::create('http://localhost');
-        $this->app->instance('request', $this->request);
-        $this->app->instance(Request::class, $this->request);
-        $this->app->instance(ServerRequestInterface::class, $this->request);
-
-        $this->response = $this->createMock(Response::class);
-        $this->app->instance(Response::class, $this->response);
-
-        $this->log = new TestLogger();
-        $this->app->instance(LoggerInterface::class, $this->log);
-
-        $this->app->instance('session', new Session(new MockArraySessionStorage()));
-
-        $this->auth = $this->createMock(Authenticator::class);
-        $this->app->instance(Authenticator::class, $this->auth);
-
-        $this->app->bind(UrlGeneratorInterface::class, UrlGenerator::class);
-
-        $this->app->instance('config', new Config());
-
-        (new News([
-            'title'      => 'Foo',
-            'text'       => '<b>foo</b>',
-            'is_meeting' => false,
-            'user_id'    => 1,
-        ]))->save();
-    }
-
-    /**
      * Creates a new user
      */
     protected function addUser()
@@ -349,5 +292,23 @@ class NewsControllerTest extends TestCase
         $this->auth->expects($this->any())
             ->method('user')
             ->willReturn($user);
+    }
+
+    /**
+     * Setup environment
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->auth = $this->createMock(Authenticator::class);
+        $this->app->instance(Authenticator::class, $this->auth);
+
+        (new News([
+            'title'      => 'Foo',
+            'text'       => '<b>foo</b>',
+            'is_meeting' => false,
+            'user_id'    => 1,
+        ]))->save();
     }
 }
