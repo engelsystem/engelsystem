@@ -2957,3 +2957,18 @@ msgstr "Frage"
 
 msgid "faq.message"
 msgstr "Antwort"
+
+msgid "question.questions"
+msgstr "Fragen"
+
+msgid "question.add"
+msgstr "Fragen"
+
+msgid "question.edit"
+msgstr "Frage bearbeiten"
+
+msgid "question.question"
+msgstr "Frage"
+
+msgid "question.answer"
+msgstr "Antwort"

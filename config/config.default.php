@@ -126,7 +126,7 @@ return [
     ],
 
     // Redirect to this site after logging in or when pressing the top-left button
-    // Must be one of news, meetings, user_shifts, angeltypes, user_questions
+    // Must be one of news, meetings, user_shifts, angeltypes, questions
     'home_site'               => env('HOME_SITE', 'news'),
 
     // Number of News shown on one site

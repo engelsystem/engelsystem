@@ -242,3 +242,18 @@ msgstr "Question"
 
 msgid "faq.message"
 msgstr "Answer"
+
+msgid "question.questions"
+msgstr "Fragen"
+
+msgid "question.add"
+msgstr "Ask"
+
+msgid "question.edit"
+msgstr "Edit question"
+
+msgid "question.question"
+msgstr "Question"
+
+msgid "question.answer"
+msgstr "Answer"

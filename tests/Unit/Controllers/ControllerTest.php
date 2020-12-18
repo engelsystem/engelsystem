@@ -36,6 +36,16 @@ abstract class ControllerTest extends TestCase
     protected $session;
 
     /**
+     * @param string      $value
+     * @param string|null $message
+     */
+    protected function assertHasNotification(string $value, string $message = null)
+    {
+        $messages = $this->session->get('messages', []);
+        $this->assertTrue(in_array($value, $messages), $message ?: 'Session does not contain message "' . $value . '"');
+    }
+
+    /**
      * Setup environment
      */
     public function setUp(): void
@@ -56,6 +66,7 @@ abstract class ControllerTest extends TestCase
 
         $this->session = new Session(new MockArraySessionStorage());
         $this->app->instance('session', $this->session);
+        $this->app->instance(Session::class, $this->session);
 
         $this->app->bind(UrlGeneratorInterface::class, UrlGenerator::class);
 
