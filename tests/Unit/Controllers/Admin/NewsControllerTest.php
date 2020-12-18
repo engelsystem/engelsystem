@@ -204,7 +204,7 @@ class NewsControllerTest extends TestCase
             ->willReturn($canEditHtml);
         $this->response->expects($this->once())
             ->method('redirectTo')
-            ->with('http://localhost/news/' . $id)
+            ->with('http://localhost/news')
             ->willReturn($this->response);
 
         /** @var NewsController $controller */

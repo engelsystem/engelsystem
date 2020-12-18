@@ -164,6 +164,6 @@ class NewsController extends BaseController
 
         $this->addNotification('news.edit.success');
 
-        return $this->redirect->to('/news/' . $news->id);
+        return $this->redirect->to('/news');
     }
 }
