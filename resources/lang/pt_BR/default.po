@@ -785,7 +785,7 @@ msgid "Given shirts"
 msgstr "Camisetas entregues"
 
 #: includes/pages/admin_arrive.php:4
-msgid "Arrived angels"
+msgid "Arrive angels"
 msgstr "Anjos que chegaram"
 
 #: includes/pages/admin_arrive.php:20
