@@ -1,0 +1,83 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}
+    {{ __('question.questions') }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                {{ block('title') }}
+
+                {% if not is_admin|default(false) %}
+                    {{ m.button(m.glyphicon('plus'), url('questions/new')) }}
+                {% endif %}
+            </h1>
+        </div>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        <div class="row">
+            {% block row %}
+                <div class="col-md-12">
+                    {% block questions %}
+                        {% for question in questions %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            {{ question.text|nl2br }}
+                                        </div>
+
+                                        <div class="panel-footer">
+                                            {{ m.glyphicon('time') }} {{ question.created_at.format(__('Y-m-d H:i')) }}
+
+                                            {% if has_permission_to('question.edit') %}
+                                                &nbsp;{{ m.user(question.user) }}
+                                            {% endif %}
+
+                                            {% if question.user.id == user.id or has_permission_to('question.edit') %}
+                                                <form
+                                                    action=""
+                                                    enctype="multipart/form-data"
+                                                    method="post"
+                                                    class="pull-right"
+                                                >
+                                                    {{ csrf() }}
+                                                    {{ f.hidden('id', question.id) }}
+                                                    {{ f.submit(m.glyphicon('trash'), {'name': 'delete', 'btn_type': 'danger', 'btn_size': 'xs', 'title': __('form.delete')}) }}
+                                                </form>
+                                            {% endif %}
+
+                                            {% if has_permission_to('question.edit') %}
+                                                <span class="pull-right">
+                                                    {{ m.button(m.glyphicon('edit'), url('admin/questions/' ~ question.id), null, 'xs') }}
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if question.answer %}
+                                    <div class="col-md-11 col-md-offset-1">
+                                        <div class="panel panel-info">
+                                            <div class="panel-body">
+                                                {{ question.answer|markdown }}
+                                            </div>
+                                            <div class="panel-footer">
+                                                {{ m.glyphicon('time') }} {{ question.updated_at.format(__('Y-m-d H:i')) }}
+                                                &nbsp;{{ m.user(question.answerer) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

@@ -110,3 +110,12 @@ msgstr "FAQ entry successfully deleted."
 
 msgid "faq.edit.success"
 msgstr "FAQ entry successfully updated."
+
+msgid "question.delete.success"
+msgstr "Question deleted successfully."
+
+msgid "question.add.success"
+msgstr "Question added successfully."
+
+msgid "question.edit.success"
+msgstr "Question updated successfully."

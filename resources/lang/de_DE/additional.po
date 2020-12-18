@@ -114,3 +114,12 @@ msgstr "FAQ Eintrag erfolgreich gelöscht."
 
 msgid "faq.edit.success"
 msgstr "FAQ Eintrag erfolgreich aktualisiert."
+
+msgid "question.delete.success"
+msgstr "Frage erfolgreich gelöscht."
+
+msgid "question.add.success"
+msgstr "Frage erstellt."
+
+msgid "question.edit.success"
+msgstr "Frage erfolgreich bearbeitet."
