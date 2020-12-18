@@ -110,7 +110,7 @@ function make_navigation()
     $admin_pages = [
         // path              => name
         // path              => [name, permission]
-        'admin_arrive'       => 'Arrived angels',
+        'admin_arrive'       => 'Arrive angels',
         'admin_active'       => 'Active angels',
         'admin_user'         => 'All Angels',
         'admin_free'         => 'Free angels',

@@ -1045,8 +1045,8 @@ msgid "Given shirts"
 msgstr "Ausgegebene T-Shirts"
 
 #: includes/pages/admin_arrive.php:10 includes/sys_menu.php:111
-msgid "Arrived angels"
-msgstr "Angekommene Engel"
+msgid "Arrive angels"
+msgstr "Ankommende Engel"
 
 #: includes/pages/admin_arrive.php:41
 msgid "Reset done. Angel has not arrived."
