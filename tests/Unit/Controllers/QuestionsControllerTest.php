@@ -35,7 +35,7 @@ class QuestionsControllerTest extends ControllerTest
                 $this->assertEquals('pages/questions/overview.twig', $view);
                 $this->assertArrayHasKey('questions', $data);
 
-                $this->assertEquals('Lorem?', $data['questions'][0]->text);
+                $this->assertEquals('Foo?', $data['questions'][0]->text);
 
                 return $this->response;
             });

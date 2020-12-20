@@ -63,7 +63,8 @@ class QuestionsController extends BaseController
     {
         $questions = $this->question
             ->whereUserId($this->auth->user()->id)
-            ->orderByDesc('created_at')
+            ->orderByDesc('answered_at')
+            ->orderBy('created_at')
             ->get();
         $this->cleanupModelNullValues($questions);
 

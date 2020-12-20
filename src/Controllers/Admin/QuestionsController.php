@@ -66,7 +66,7 @@ class QuestionsController extends BaseController
     public function index(): Response
     {
         $questions = $this->question
-            ->orderBy('answer')
+            ->orderBy('answered_at')
             ->orderByDesc('created_at')
             ->get();
         $this->cleanupModelNullValues($questions);
