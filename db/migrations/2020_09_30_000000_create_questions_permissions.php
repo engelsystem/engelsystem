@@ -19,7 +19,7 @@ class CreateQuestionsPermissions extends Migration
             ]);
 
             $userGroup = -20;
-            $shiftCoordinatorGroup = -60;
+            $shiftCoordinatorGroup = -40;
             $addId = $db->table('Privileges')->where('name', 'question.add')->first()->id;
             $editId = $db->table('Privileges')->where('name', 'question.edit')->first()->id;
             $db->table('GroupPrivileges')->insert([
@@ -52,8 +52,8 @@ class CreateQuestionsPermissions extends Migration
             ['name' => 'admin_questions', 'desc' => 'Answer user\'s questions'],
         ]);
         $userGroup = -20;
-        $shiftCoordinatorGroup = -60;
-        $bureaucratGroup = -40;
+        $shiftCoordinatorGroup = -40;
+        $bureaucratGroup = -60;
         $userQuestionsId = $db->table('Privileges')->where('name', 'user_questions')->first()->id;
         $adminQuestionsId = $db->table('Privileges')->where('name', 'admin_questions')->first()->id;
         $db->table('GroupPrivileges')->insert([
