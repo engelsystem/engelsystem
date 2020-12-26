@@ -151,24 +151,6 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
         throw_redirect(shift_link($shift));
     }
 
-    $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
-    $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['id']);
-    $shift_signup_state = Shift_signup_allowed(
-        $signup_user,
-        $shift,
-        $angeltype,
-        null,
-        null,
-        $needed_angeltype,
-        $shift_entries
-    );
-    if (!$shift_signup_state->isSignupAllowed()) {
-        if ($shift_signup_state->getState() == ShiftSignupState::OCCUPIED) {
-            error(__('This shift is already occupied.'));
-        }
-        throw_redirect(shift_link($shift));
-    }
-
     if ($request->hasPostData('submit')) {
         ShiftEntry_create([
             'SID'              => $shift['SID'],
