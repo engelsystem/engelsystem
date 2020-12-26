@@ -36,7 +36,7 @@ function Room_validate_name(string $name, int $room_id)
  */
 function Rooms()
 {
-    return Room::all()->sortBy('name');
+    return Room::orderBy('name')->get();
 }
 
 /**

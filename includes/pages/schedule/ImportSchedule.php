@@ -130,8 +130,8 @@ class ImportSchedule extends BaseController
             'name'           => 'required',
             'url'            => 'required',
             'shift_type'     => 'required|int',
-            'minutes_before' => 'required|int',
-            'minutes_after'  => 'required|int',
+            'minutes_before' => 'int',
+            'minutes_after'  => 'int',
         ]);
 
         if (!isset($this->getShiftTypes()[$data['shift_type']])) {
