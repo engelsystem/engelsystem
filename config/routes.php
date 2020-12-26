@@ -15,9 +15,9 @@ $route->post('/login', 'AuthController@postLogin');
 $route->get('/logout', 'AuthController@logout');
 
 // OAuth
-$route->get('/oauth/{provider:\w+}', 'OAuthController@index');
-$route->post('/oauth/{provider:\w+}/connect', 'OAuthController@connect');
-$route->post('/oauth/{provider:\w+}/disconnect', 'OAuthController@disconnect');
+$route->get('/oauth/{provider}', 'OAuthController@index');
+$route->post('/oauth/{provider}/connect', 'OAuthController@connect');
+$route->post('/oauth/{provider}/disconnect', 'OAuthController@disconnect');
 
 // User settings
 $route->get('/settings/password', 'SettingsController@password');

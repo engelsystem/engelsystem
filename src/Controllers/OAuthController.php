@@ -113,12 +113,14 @@ class OAuthController extends BaseController
                 ]
             );
         } catch (IdentityProviderException $e) {
+            $response = $e->getResponseBody();
+            $response = is_array($response) ? json_encode($response) : $response;
             $this->log->error(
                 '{provider} identity provider error: {error} {description}',
                 [
                     'provider'    => $providerName,
                     'error'       => $e->getMessage(),
-                    'description' => $e->getResponseBody()['error_description'] ?: '',
+                    'description' => $response,
                 ]
             );
 
@@ -297,6 +299,10 @@ class OAuthController extends BaseController
             throw new HttpNotFound('oauth.not-found');
         }
 
+        $config = array_merge(
+            ['username' => null, 'email' => null, 'first_name' => null, 'last_name' => null],
+            $config
+        );
         $this->session->set(
             'form_data',
             [
