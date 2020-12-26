@@ -227,8 +227,11 @@ function guest_register()
 
             if ($session->has('oauth2_connect_provider') && $session->has('oauth2_user_id')) {
                 $oauth = new OAuth([
-                    'provider'   => $session->get('oauth2_connect_provider'),
-                    'identifier' => $session->get('oauth2_user_id'),
+                    'provider'      => $session->get('oauth2_connect_provider'),
+                    'identifier'    => $session->get('oauth2_user_id'),
+                    'access_token'  => $session->get('oauth2_access_token'),
+                    'refresh_token' => $session->get('oauth2_refresh_token'),
+                    'expires_at'    => $session->get('oauth2_expires_at'),
                 ]);
                 $oauth->user()
                     ->associate($user)
@@ -236,6 +239,9 @@ function guest_register()
 
                 $session->remove('oauth2_connect_provider');
                 $session->remove('oauth2_user_id');
+                $session->remove('oauth2_access_token');
+                $session->remove('oauth2_refresh_token');
+                $session->remove('oauth2_expires_at');
             }
 
             // Assign user-group and set password

@@ -94,6 +94,9 @@ class OAuthControllerTest extends TestCase
         $this->session->set('oauth2_connect_provider', 'testprovider');
 
         $accessToken = $this->createMock(AccessToken::class);
+        $this->setExpects($accessToken, 'getToken', null, 'test-token', $this->atLeastOnce());
+        $this->setExpects($accessToken, 'getRefreshToken', null, 'test-refresh-token', $this->atLeastOnce());
+        $this->setExpects($accessToken, 'getExpires', null, 4242424242, $this->atLeastOnce());
 
         /** @var ResourceOwnerInterface|MockObject $resourceOwner */
         $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
@@ -153,7 +156,13 @@ class OAuthControllerTest extends TestCase
         // Login using provider
         $controller->index($request);
         $this->assertFalse($this->session->has('oauth2_connect_provider'));
-        $this->assertFalse((bool)User::find(1)->state->arrived);
+        $this->assertFalse((bool)$this->otherUser->state->arrived);
+
+        // Tokens updated
+        $oauth = $this->otherUser->oauth[0];
+        $this->assertEquals('test-token', $oauth->access_token);
+        $this->assertEquals('test-refresh-token', $oauth->refresh_token);
+        $this->assertEquals(4242424242, $oauth->expires_at->unix());
 
         // Mark as arrived
         $oauthConfig = $this->config->get('oauth');
@@ -321,6 +330,9 @@ class OAuthControllerTest extends TestCase
     public function testIndexRedirectRegister()
     {
         $accessToken = $this->createMock(AccessToken::class);
+        $this->setExpects($accessToken, 'getToken', null, 'test-token', $this->atLeastOnce());
+        $this->setExpects($accessToken, 'getRefreshToken', null, 'test-refresh-token', $this->atLeastOnce());
+        $this->setExpects($accessToken, 'getExpires', null, 4242424242, $this->atLeastOnce());
 
         /** @var ResourceOwnerInterface|MockObject $resourceOwner */
         $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
@@ -374,6 +386,9 @@ class OAuthControllerTest extends TestCase
         $controller->index($request);
         $this->assertEquals('testprovider', $this->session->get('oauth2_connect_provider'));
         $this->assertEquals('provider-not-connected-identifier', $this->session->get('oauth2_user_id'));
+        $this->assertEquals('test-token', $this->session->get('oauth2_access_token'));
+        $this->assertEquals('test-refresh-token', $this->session->get('oauth2_refresh_token'));
+        $this->assertEquals(4242424242, $this->session->get('oauth2_expires_at')->unix());
         $this->assertEquals(
             [
                 'name' => 'username',
