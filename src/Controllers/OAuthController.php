@@ -16,6 +16,7 @@ use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface as ResourceOwner;
+use League\OAuth2\Client\Token\AccessTokenInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\Session as Session;
 
@@ -136,6 +137,16 @@ class OAuthController extends BaseController
             ->where('identifier', $resourceOwner->getId())
             ->first();
 
+        $expirationTime = $accessToken->getExpires();
+        $expirationTime = $expirationTime ? Carbon::createFromTimestamp($expirationTime) : null;
+        if ($oauth) {
+            $oauth->access_token = $accessToken->getToken();
+            $oauth->refresh_token = $accessToken->getRefreshToken();
+            $oauth->expires_at = $expirationTime;
+
+            $oauth->save();
+        }
+
         $user = $this->auth->user();
         if ($oauth && $user && $user->id != $oauth->user_id) {
             throw new HttpNotFound('oauth.already-connected');
@@ -144,7 +155,13 @@ class OAuthController extends BaseController
         $connectProvider = $this->session->get('oauth2_connect_provider');
         $this->session->remove('oauth2_connect_provider');
         if (!$oauth && $user && $connectProvider && $connectProvider == $providerName) {
-            $oauth = new OAuth(['provider' => $providerName, 'identifier' => $resourceOwner->getId()]);
+            $oauth = new OAuth([
+                'provider'      => $providerName,
+                'identifier'    => $resourceOwner->getId(),
+                'access_token'  => $accessToken->getToken(),
+                'refresh_token' => $accessToken->getRefreshToken(),
+                'expires_at'    => $expirationTime,
+            ]);
             $oauth->user()
                 ->associate($user)
                 ->save();
@@ -156,10 +173,16 @@ class OAuthController extends BaseController
             $this->addNotification('oauth.connected');
         }
 
-        $config = ($this->config->get('oauth')[$providerName]);
+        $config = $this->config->get('oauth')[$providerName];
         $userdata = new Collection($resourceOwner->toArray());
         if (!$oauth) {
-            return $this->redirectRegisterOrThrowNotFound($providerName, $resourceOwner->getId(), $config, $userdata);
+            return $this->redirectRegisterOrThrowNotFound(
+                $providerName,
+                $resourceOwner->getId(),
+                $accessToken,
+                $config,
+                $userdata
+            );
         }
 
         if (isset($config['mark_arrived']) && $config['mark_arrived']) {
@@ -282,16 +305,18 @@ class OAuthController extends BaseController
     }
 
     /**
-     * @param string     $providerName
-     * @param string     $providerUserIdentifier
-     * @param array      $config
-     * @param Collection $userdata
+     * @param string               $providerName
+     * @param string               $providerUserIdentifier
+     * @param AccessTokenInterface $accessToken
+     * @param array                $config
+     * @param Collection           $userdata
      *
      * @return Response
      */
     protected function redirectRegisterOrThrowNotFound(
         string $providerName,
         string $providerUserIdentifier,
+        AccessTokenInterface $accessToken,
         array $config,
         Collection $userdata
     ): Response {
@@ -314,6 +339,12 @@ class OAuthController extends BaseController
         );
         $this->session->set('oauth2_connect_provider', $providerName);
         $this->session->set('oauth2_user_id', $providerUserIdentifier);
+
+        $expirationTime = $accessToken->getExpires();
+        $expirationTime = $expirationTime ? Carbon::createFromTimestamp($expirationTime) : null;
+        $this->session->set('oauth2_access_token', $accessToken->getToken());
+        $this->session->set('oauth2_refresh_token', $accessToken->getRefreshToken());
+        $this->session->set('oauth2_expires_at', $expirationTime);
 
         return $this->redirector->to('/register');
     }
