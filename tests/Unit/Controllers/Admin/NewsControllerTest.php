@@ -214,6 +214,7 @@ class NewsControllerTest extends ControllerTest
             'title'      => 'New title',
             'text'       => 'New text',
             'is_meeting' => '1',
+            'is_pinned'  => '1',
             'preview'    => '1',
         ]);
         $this->response->expects($this->once())
@@ -225,6 +226,7 @@ class NewsControllerTest extends ControllerTest
                 $news = $data['news'];
                 // Contains new text
                 $this->assertTrue($news->is_meeting);
+                $this->assertTrue($news->is_pinned);
                 $this->assertEquals('New title', $news->title);
                 $this->assertEquals('New text', $news->text);
 
@@ -242,6 +244,7 @@ class NewsControllerTest extends ControllerTest
         $this->assertEquals('Foo', $news->title);
         $this->assertEquals('<b>foo</b>', $news->text);
         $this->assertFalse($news->is_meeting);
+        $this->assertFalse($news->is_pinned);
     }
 
     /**

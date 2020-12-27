@@ -2885,6 +2885,9 @@ msgstr "Betreff"
 msgid "news.edit.is_meeting"
 msgstr "Treffen"
 
+msgid "news.edit.is_pinned"
+msgstr "Oben anpinnen"
+
 msgid "news.edit.message"
 msgstr "Nachricht"
 

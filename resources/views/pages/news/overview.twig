@@ -53,6 +53,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <a href="{{ url('news/' ~ news.id) }}">
+                        {% if news.is_pinned %}{{ m.glyphicon('pushpin') }}{% endif %}
                         {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
                         {{ news.title }}
                     </a>
