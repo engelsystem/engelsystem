@@ -171,6 +171,9 @@ msgstr "Subject"
 msgid "news.edit.is_meeting"
 msgstr "Meeting"
 
+msgid "news.edit.is_pinned"
+msgstr "Pin to top"
+
 msgid "news.edit.message"
 msgstr "Message"
 

@@ -44,12 +44,14 @@ class NewsControllerTest extends TestCase
             'title'      => 'Bar',
             'text'       => 'bar',
             'is_meeting' => false,
+            'is_pinned'  => true,
             'user_id'    => 1,
         ],
         [
             'title'      => 'baz',
             'text'       => 'baz',
             'is_meeting' => true,
+            'is_pinned'  => true,
             'user_id'    => 1,
         ],
         [
@@ -62,6 +64,7 @@ class NewsControllerTest extends TestCase
             'title'      => 'Ipsum',
             'text'       => 'ipsum',
             'is_meeting' => true,
+            'is_pinned'  => true,
             'user_id'    => 1,
         ],
         [
@@ -111,6 +114,8 @@ class NewsControllerTest extends TestCase
                             $this->assertTrue($news->isNotEmpty());
                             $this->assertEquals(3, $data['pages']);
                             $this->assertEquals(2, $data['page']);
+                            $this->assertTrue($news[0]->is_pinned);
+                            $this->assertEquals('Ipsum', $news[0]->title);
                             break;
                         case 2:
                             // Show meetings
