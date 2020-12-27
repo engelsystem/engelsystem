@@ -28,10 +28,14 @@
 
             {% block row %}
                 {% for item in items %}
-                    <div class="col-md-12" id="faq-{{ item.id }}">
+                    <div class="col-md-12 faq">
+                        <span id="faq-{{ item.id }}" class="ref-id"></span>
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                {{ item.question }}
+                                <h3>
+                                    {{ item.question }}
+                                    <small><a class="ref-link" href="#faq-{{ item.id }}">{{ m.glyphicon('link') }}</a></small>
+                                </h3>
                             </div>
 
                             <div class="panel-body">

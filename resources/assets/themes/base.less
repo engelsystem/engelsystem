@@ -262,6 +262,26 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-top: @line-height-computed;
 }
 
+span.ref-id[id] {
+  padding-top: 50px;
+}
+
+.faq {
+  .panel-heading h3 {
+    margin: 0;
+
+    small a.ref-link {
+      display: none;
+    }
+
+    &:hover {
+      small a.ref-link {
+        display: inherit;
+      }
+    }
+  }
+}
+
 @keyframes pulse {
   0% {
     transform: rotate(0deg);
