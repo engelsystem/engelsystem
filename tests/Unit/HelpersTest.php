@@ -5,6 +5,7 @@ namespace Engelsystem\Test\Unit;
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
 use Engelsystem\Container\Container;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Http\Redirector;
@@ -13,7 +14,6 @@ use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGeneratorInterface;
 use Engelsystem\Renderer\Renderer;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface as StorageInterface;
 
@@ -139,6 +139,28 @@ class HelpersTest extends TestCase
 
         $this->assertEquals('/foo/conf', config_path());
         $this->assertEquals('/foo/conf/bar.php', config_path('bar.php'));
+    }
+
+    /**
+     * @covers \event
+     */
+    public function testEvent()
+    {
+        /** @var Application|MockObject $app */
+        $app = $this->createMock(Container::class);
+        Application::setInstance($app);
+
+        /** @var EventDispatcher|MockObject $dispatcher */
+        $dispatcher = $this->createMock(EventDispatcher::class);
+        $this->setExpects($dispatcher, 'dispatch', ['testevent', ['some' => 'thing']], ['test']);
+
+        $app->expects($this->atLeastOnce())
+            ->method('get')
+            ->with('events.dispatcher')
+            ->willReturn($dispatcher);
+
+        $this->assertEquals($dispatcher, event());
+        $this->assertEquals(['test'], event('testevent', ['some' => 'thing']));
     }
 
     /**

@@ -1613,6 +1613,9 @@ msgstr ""
 msgid "The %s is allowed to send me an email (e.g. when my shifts change)"
 msgstr "Das %s darf mir E-Mails senden (z.B. wenn sich meine Schichten ändern)"
 
+msgid "Notify me of new news"
+msgstr "Benachrichtige mich bei neuen News"
+
 #: includes/pages/guest_login.php:291 includes/view/User_view.php:73
 msgid "Humans are allowed to send me an email (e.g. for ticket vouchers)"
 msgstr "Menschen dürfen mir eine E-Mail senden (z.B. für Ticket Gutscheine)"

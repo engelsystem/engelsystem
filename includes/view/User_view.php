@@ -94,6 +94,11 @@ function User_settings_view(
                                 $user_source->settings->email_shiftinfo
                             ),
                             form_checkbox(
+                                'email_news',
+                                __('Notify me of new news'),
+                                $user_source->settings->email_news
+                            ),
+                            form_checkbox(
                                 'email_by_human_allowed',
                                 __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
                                 $user_source->settings->email_human

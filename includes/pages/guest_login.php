@@ -46,6 +46,7 @@ function guest_register()
     $pronoun = '';
     $email_shiftinfo = false;
     $email_by_human_allowed = false;
+    $email_news = false;
     $tshirt_size = '';
     $password_hash = '';
     $selected_angel_types = [];
@@ -111,6 +112,10 @@ function guest_register()
 
         if ($request->has('email_by_human_allowed')) {
             $email_by_human_allowed = true;
+        }
+
+        if ($request->has('email_news')) {
+            $email_news = true;
         }
 
         if ($enable_tshirt_size) {
@@ -211,6 +216,7 @@ function guest_register()
                 'theme'           => config('theme'),
                 'email_human'     => $email_by_human_allowed,
                 'email_shiftinfo' => $email_shiftinfo,
+                'email_news'      => $email_news,
             ]);
             $settings->user()
                 ->associate($user)
@@ -353,10 +359,15 @@ function guest_register()
                                 $email_shiftinfo
                             ),
                             form_checkbox(
+                                'email_news',
+                                __('Notify me of new news'),
+                                $email_news
+                            ),
+                            form_checkbox(
                                 'email_by_human_allowed',
                                 __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
                                 $email_by_human_allowed
-                            )
+                            ),
                         ])
                     ]),
                     div('row', [

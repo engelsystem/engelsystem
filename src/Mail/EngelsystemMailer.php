@@ -61,7 +61,7 @@ class EngelsystemMailer extends Mailer
             $this->translation->setLocale($locale);
         }
 
-        $subject = $this->translation ? $this->translation->translate($subject) : $subject;
+        $subject = $this->translation ? $this->translation->translate($subject, $data) : $subject;
         $sentMails = $this->sendView($to, $subject, $template, $data);
 
         if ($activeLocale) {

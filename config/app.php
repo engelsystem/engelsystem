@@ -64,5 +64,6 @@ return [
         //      callable like [$instance, 'method] or 'function'
         //      or $function
         // ]
+        'news.created' => \Engelsystem\Events\Listener\News::class . '@created',
     ],
 ];

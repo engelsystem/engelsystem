@@ -2,6 +2,7 @@
 
 use Engelsystem\Application;
 use Engelsystem\Config\Config;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Translation\Translator;
 use Engelsystem\Http\Redirector;
@@ -87,6 +88,24 @@ function config($key = null, $default = null)
 function config_path($path = ''): string
 {
     return app('path.config') . (empty($path) ? '' : DIRECTORY_SEPARATOR . $path);
+}
+
+/**
+ * @param string|object|null $event
+ * @param array              $payload
+ *
+ * @return EventDispatcher
+ */
+function event($event = null, $payload = [])
+{
+    /** @var EventDispatcher $dispatcher */
+    $dispatcher = app('events.dispatcher');
+
+    if (!is_null($event)) {
+        return $dispatcher->dispatch($event, $payload);
+    }
+
+    return $dispatcher;
 }
 
 /**

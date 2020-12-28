@@ -154,7 +154,12 @@ class NewsController extends BaseController
             return $this->showEdit($news);
         }
 
+        $isNewNews = !$news->id;
         $news->save();
+
+        if ($isNewNews) {
+            event('news.created', ['news' => $news]);
+        }
 
         $this->log->info(
             'Updated {pinned}{type} "{news}": {text}',

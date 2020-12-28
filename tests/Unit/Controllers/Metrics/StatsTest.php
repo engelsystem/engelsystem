@@ -249,6 +249,7 @@ class StatsTest extends TestCase
         $this->assertEquals(0, $stats->email('not-available-option'));
         $this->assertEquals(2, $stats->email('system'));
         $this->assertEquals(3, $stats->email('humans'));
+        $this->assertEquals(1, $stats->email('news'));
     }
 
     /**
@@ -378,7 +379,7 @@ class StatsTest extends TestCase
     {
         $this->addUser();
         $this->addUser([], ['shirt_size' => 'L'], ['email_human' => true, 'email_shiftinfo' => true]);
-        $this->addUser(['arrived' => 1], [], ['email_human' => true]);
+        $this->addUser(['arrived' => 1], [], ['email_human' => true, 'email_news' => true]);
         $this->addUser(['arrived' => 1], [], ['language' => 'lo_RM', 'email_shiftinfo' => true]);
         $this->addUser(['arrived' => 1, 'got_voucher' => 2], ['shirt_size' => 'XXL'], ['language' => 'lo_RM']);
         $this->addUser(['arrived' => 1, 'got_voucher' => 9, 'force_active' => true], [], ['theme' => 1]);
