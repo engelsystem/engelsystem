@@ -3,6 +3,7 @@
 namespace Engelsystem\Test\Unit\Controllers\Admin;
 
 use Engelsystem\Controllers\Admin\NewsController;
+use Engelsystem\Events\EventDispatcher;
 use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Exceptions\ValidationException;
 use Engelsystem\Http\Validation\Validator;
@@ -306,6 +307,9 @@ class NewsControllerTest extends ControllerTest
 
         $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
+
+        $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $this->app->instance('events.dispatcher', $eventDispatcher);
 
         (new News([
             'title'      => 'Foo',

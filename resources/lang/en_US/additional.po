@@ -119,3 +119,12 @@ msgstr "Question added successfully."
 
 msgid "question.edit.success"
 msgstr "Question updated successfully."
+
+msgid "notification.news.new"
+msgstr "New news: %s"
+
+msgid "notification.news.new.introduction"
+msgstr "A new news is available: %1$s"
+
+msgid "notification.news.new.text"
+msgstr "You can watch it at %3$s"

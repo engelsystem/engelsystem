@@ -123,3 +123,12 @@ msgstr "Frage erstellt."
 
 msgid "question.edit.success"
 msgstr "Frage erfolgreich bearbeitet."
+
+msgid "notification.news.new"
+msgstr "Neue News: %s"
+
+msgid "notification.news.new.introduction"
+msgstr "Es gibt eine neue News: %1$s"
+
+msgid "notification.news.new.text"
+msgstr "Du kannst sie dir unter %3$s anschauen."
