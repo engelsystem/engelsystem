@@ -33,7 +33,7 @@ class Legacy implements HandlerInterface
             $this->stripBasePath($e->getFile()),
             $e->getLine(),
             $previous ? $previous->getMessage() : 'None',
-            json_encode($e->getTrace())
+            json_encode($e->getTrace(), PHP_SAPI == 'cli' ? JSON_PRETTY_PRINT : 0)
         ));
 
         if (is_null($this->log)) {
