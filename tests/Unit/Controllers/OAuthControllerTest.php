@@ -340,7 +340,7 @@ class OAuthControllerTest extends TestCase
             $resourceOwner,
             'getId',
             null,
-            'provider-not-connected-identifier',
+            'ProVIdeR-User-IdenTifIer', // Case sensitive variation of existing entry
             $this->atLeastOnce()
         );
         $this->setExpects(
@@ -348,7 +348,7 @@ class OAuthControllerTest extends TestCase
             'toArray',
             null,
             [
-                'uid'        => 'provider-not-connected-identifier',
+                'uid'        => 'ProVIdeR-User-IdenTifIer',
                 'user'       => 'username',
                 'email'      => 'foo.bar@localhost',
                 'given-name' => 'Foo',
@@ -385,7 +385,7 @@ class OAuthControllerTest extends TestCase
         $this->config->set('registration_enabled', true);
         $controller->index($request);
         $this->assertEquals('testprovider', $this->session->get('oauth2_connect_provider'));
-        $this->assertEquals('provider-not-connected-identifier', $this->session->get('oauth2_user_id'));
+        $this->assertEquals('ProVIdeR-User-IdenTifIer', $this->session->get('oauth2_user_id'));
         $this->assertEquals('test-token', $this->session->get('oauth2_access_token'));
         $this->assertEquals('test-refresh-token', $this->session->get('oauth2_refresh_token'));
         $this->assertEquals(4242424242, $this->session->get('oauth2_expires_at')->unix());

@@ -129,12 +129,16 @@ class OAuthController extends BaseController
         }
 
         $resourceOwner = $provider->getResourceOwner($accessToken);
+        $resourceId = $resourceOwner->getId();
 
         /** @var OAuth|null $oauth */
         $oauth = $this->oauth
             ->query()
             ->where('provider', $providerName)
-            ->where('identifier', $resourceOwner->getId())
+            ->where('identifier', $resourceId)
+            ->get()
+            // Explicit case sensitive comparison using PHP as some DBMS collations are case sensitive and some arent
+            ->where('identifier', '===', $resourceId)
             ->first();
 
         $expirationTime = $accessToken->getExpires();
