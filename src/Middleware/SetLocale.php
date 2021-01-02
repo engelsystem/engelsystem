@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Middleware;
 
+use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Helpers\Translation\Translator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -11,6 +12,9 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class SetLocale implements MiddlewareInterface
 {
+    /** @var Authenticator */
+    protected $auth;
+
     /** @var Translator */
     protected $translator;
 
@@ -18,11 +22,13 @@ class SetLocale implements MiddlewareInterface
     protected $session;
 
     /**
-     * @param Translator $translator
-     * @param Session    $session
+     * @param Translator    $translator
+     * @param Session       $session
+     * @param Authenticator $auth
      */
-    public function __construct(Translator $translator, Session $session)
+    public function __construct(Translator $translator, Session $session, Authenticator $auth)
     {
+        $this->auth = $auth;
         $this->translator = $translator;
         $this->session = $session;
     }
@@ -42,6 +48,12 @@ class SetLocale implements MiddlewareInterface
 
             $this->translator->setLocale($locale);
             $this->session->set('locale', $locale);
+
+            $user = $this->auth->user();
+            if ($user) {
+                $user->settings->language = $locale;
+                $user->settings->save();
+            }
         }
 
         return $handler->handle($request);
