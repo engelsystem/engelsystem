@@ -5,6 +5,7 @@ namespace Engelsystem\Test\Unit\Helpers\Translation;
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Translation\TranslationServiceProvider;
 use Engelsystem\Helpers\Translation\Translator;
+use Engelsystem\Http\Request;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount;
@@ -17,10 +18,9 @@ class TranslationServiceProviderTest extends ServiceProviderTest
      */
     public function testRegister(): void
     {
-        $defaultLocale = 'fo_OO';
-        $locale = 'te_ST.WTF-9';
-        $locales = ['fo_OO' => 'Foo', 'fo_OO.BAR' => 'Foo (Bar)', 'te_ST.WTF-9' => 'WTF\'s Testing?'];
-        $config = new Config(['locales' => $locales, 'default_locale' => $defaultLocale]);
+        $locale = 'te_ST';
+        $locales = ['fo_OO' => 'Foo', 'fo_OO.BAR' => 'Foo (Bar)', 'te_ST' => 'WTF\'s Testing?'];
+        $config = new Config(['locales' => $locales, 'default_locale' => 'fo_OO']);
 
         $app = $this->getApp(['make', 'singleton', 'alias', 'get']);
         /** @var Session|MockObject $session */
@@ -34,14 +34,16 @@ class TranslationServiceProviderTest extends ServiceProviderTest
             ->onlyMethods(['setLocale'])
             ->getMock();
 
-        $app->expects($this->exactly(2))
+        $request = (new Request())->withAddedHeader('Accept-Language', 'te_ST');
+
+        $app->expects($this->exactly(3))
             ->method('get')
-            ->withConsecutive(['config'], ['session'])
-            ->willReturnOnConsecutiveCalls($config, $session);
+            ->withConsecutive(['config'], ['session'], ['request'])
+            ->willReturnOnConsecutiveCalls($config, $session, $request);
 
         $session->expects($this->once())
             ->method('get')
-            ->with('locale', $defaultLocale)
+            ->with('locale', 'te_ST')
             ->willReturn($locale);
         $session->expects($this->once())
             ->method('set')
