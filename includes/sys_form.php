@@ -78,6 +78,31 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
 }
 
 /**
+ * Render a bootstrap datepicker
+ *
+ * @param string $name  Name of the parameter
+ * @param string $label
+ * @param mixed $value
+ *
+ * @return string HTML
+ */
+function form_datetime(string $name, string $label, $value)
+{
+    $dom_id = $name . '-datetime';
+    if ($value) {
+        $value = ($value instanceof Carbon) ? $value : Carbon::createFromTimestamp($value);
+    }
+
+    return form_element($label, sprintf('
+    <div class="input-group datetime" id="%s">
+        <input type="datetime-local" placeholder="YYYY-MM-DD HH:MM" name="%s"
+            class="form-control" value="%s" autocomplete="off">'
+        . '<span class="input-group-addon">' . glyph('th') . '</span>
+    </div>
+    ', $dom_id, $name, htmlspecialchars($value ? $value->format('Y-m-d H:i') : '')), $dom_id);
+}
+
+/**
  * Rendert eine Liste von Checkboxen für ein Formular
  *
  * @param string $name     Die Namen der Checkboxen werden aus name_key gebildet

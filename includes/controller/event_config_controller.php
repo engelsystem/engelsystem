@@ -50,19 +50,19 @@ function event_config_edit_controller()
             $event_welcome_msg = null;
         }
 
-        $result = check_request_date('buildup_start_date', __('Please enter buildup start date.'), true);
+        $result = check_request_date('buildup_start_date', __('Please enter buildup start date.'), true, true);
         $buildup_start_date = $result->getValue();
         $valid &= $result->isValid();
 
-        $result = check_request_date('event_start_date', __('Please enter event start date.'), true);
+        $result = check_request_date('event_start_date', __('Please enter event start date.'), true, true);
         $event_start_date = $result->getValue();
         $valid &= $result->isValid();
 
-        $result = check_request_date('event_end_date', __('Please enter event end date.'), true);
+        $result = check_request_date('event_end_date', __('Please enter event end date.'), true, true);
         $event_end_date = $result->getValue();
         $valid &= $result->isValid();
 
-        $result = check_request_date('teardown_end_date', __('Please enter teardown end date.'), true);
+        $result = check_request_date('teardown_end_date', __('Please enter teardown end date.'), true, true);
         $teardown_end_date = $result->getValue();
         $valid &= $result->isValid();
 
@@ -111,10 +111,10 @@ function event_config_edit_controller()
                     'Changed event config: %s, %s, %s, %s, %s, %s',
                     $event_name,
                     $event_welcome_msg,
-                    $buildup_start_date ? $buildup_start_date->format('Y-m-d') : '',
-                    $event_start_date ? $event_start_date->format('Y-m-d') : '',
-                    $event_end_date ? $event_end_date->format('Y-m-d') : '',
-                    $teardown_end_date ? $teardown_end_date->format('Y-m-d') : ''
+                    $buildup_start_date ? $buildup_start_date->format('Y-m-d H:i') : '',
+                    $event_start_date ? $event_start_date->format('Y-m-d H:i') : '',
+                    $event_end_date ? $event_end_date->format('Y-m-d H:i') : '',
+                    $teardown_end_date ? $teardown_end_date->format('Y-m-d H:i') : ''
                 )
             );
             success(__('Settings saved.'));

@@ -118,33 +118,36 @@ function check_request_int_array($name, $default = [])
  * Checks if given request item (name) can be parsed to a date.
  * If not parsable, given error message is put into msg() and null is returned.
  *
- * @param string  $name          to be parsed into a date.
- * @param string  $error_message the error message displayed if $input is not parsable
- * @param boolean $null_allowed  is a null value allowed?
+ * @param string $name          to be parsed into a date.
+ * @param string $error_message the error message displayed if $input is not parsable
+ * @param bool   $null_allowed  is a null value allowed?
+ * @param bool   $time_allowed  is time allowed?
  * @return ValidationResult containing the parsed date
  */
-function check_request_date($name, $error_message = null, $null_allowed = false)
+function check_request_date($name, $error_message = null, $null_allowed = false, $time_allowed = false)
 {
     $request = request();
     if (!$request->has($name)) {
         return new ValidationResult($null_allowed, null);
     }
-    return check_date($request->input($name), $error_message, $null_allowed);
+    return check_date($request->input($name), $error_message, $null_allowed, $time_allowed);
 }
 
 /**
  * Checks if given string can be parsed to a date.
  * If not parsable, given error message is put into msg() and null is returned.
  *
- * @param string  $input         String to be parsed into a date.
- * @param string  $error_message the error message displayed if $input is not parsable
- * @param boolean $null_allowed  is a null value allowed?
+ * @param string $input         String to be parsed into a date.
+ * @param string $error_message the error message displayed if $input is not parsable
+ * @param bool   $null_allowed  is a null value allowed?
+ * @param bool   $time_allowed  is time allowed?
  * @return ValidationResult containing the parsed date
  */
-function check_date($input, $error_message = null, $null_allowed = false)
+function check_date($input, $error_message = null, $null_allowed = false, $time_allowed = false)
 {
     try {
-        $time = Carbon::createFromFormat('Y-m-d', trim($input));
+        $format = $time_allowed ? 'Y-m-d H:i' : 'Y-m-d';
+        $time = Carbon::createFromFormat($format, trim($input));
     } catch (InvalidArgumentException $e) {
         $time = null;
     }
