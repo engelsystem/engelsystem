@@ -97,31 +97,36 @@ $(function () {
  * Add a datepicker to all date input fields.
  */
 $(function () {
-    $('.input-group.date').each(function () {
-        var elem = $(this);
-        var opts = {
-            minDate: '',
-            maxDate: '',
-            locale: $('html').attr('lang'),
-            format: 'YYYY-MM-DD',
-            widgetPositioning: {horizontal: 'auto', vertical: 'bottom'}
-        };
-        $.extend(opts, elem.data());
-        if (opts.minDate.length === 0) {
-            delete opts.minDate;
-        }
-        if (opts.maxDate.length === 0) {
-            delete opts.maxDate;
-        }
-        elem.children('input').attr('type', 'text');
-        elem.children().on('click', function (ev) {
-            ev.stopImmediatePropagation();
-            if (typeof elem.data('DateTimePicker') === 'undefined') {
-                elem.datetimepicker(opts);
-                elem.data('DateTimePicker').show();
-            } else {
-                elem.data('DateTimePicker').toggle();
+    $([
+        {'select': $('.input-group.date'), 'format': 'YYYY-MM-DD'},
+        {'select': $('.input-group.datetime'), 'format': 'YYYY-MM-DD HH:mm'},
+    ]).each(function (_, element) {
+        element.select.each(function () {
+            var elem = $(this);
+            var opts = {
+                minDate: '',
+                maxDate: '',
+                locale: $('html').attr('lang'),
+                format: element.format,
+                widgetPositioning: {horizontal: 'auto', vertical: 'bottom'}
+            };
+            $.extend(opts, elem.data());
+            if (opts.minDate.length === 0) {
+                delete opts.minDate;
             }
+            if (opts.maxDate.length === 0) {
+                delete opts.maxDate;
+            }
+            elem.children('input').attr('type', 'text');
+            elem.children().on('click', function (ev) {
+                ev.stopImmediatePropagation();
+                if (typeof elem.data('DateTimePicker') === 'undefined') {
+                    elem.datetimepicker(opts);
+                    elem.data('DateTimePicker').show();
+                } else {
+                    elem.data('DateTimePicker').toggle();
+                }
+            });
         });
     });
 });
