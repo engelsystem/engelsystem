@@ -115,12 +115,15 @@ function load_rooms()
  */
 function load_days()
 {
-    $days = DB::select('
-        SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name`
-        FROM `Shifts`
-        ORDER BY `id`, `name`
-    ');
-    $days = array_map('array_shift', $days);
+    $days = (new Collection(DB::select(
+        '
+                SELECT DISTINCT DATE(FROM_UNIXTIME(`start`)) AS `id`, DATE(FROM_UNIXTIME(`start`)) AS `name`
+                FROM `Shifts`
+                ORDER BY `id`, `name`
+            '
+    )))
+        ->pluck('id')
+        ->toArray();
 
     if (empty($days)) {
         error(__('The administration has not configured any shifts yet.'));
