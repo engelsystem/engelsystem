@@ -86,12 +86,15 @@ function admin_free()
             }
         }
 
+        $email = ($usr->contact->email ? $usr->contact->email : $usr->email);
         $free_users_table[] = [
             'name'        => User_Nick_render($usr) . User_Pronoun_render($usr),
             'shift_state' => User_shift_state_render($usr),
             'last_shift'  => User_last_shift_render($usr),
-            'dect'        => $usr->contact->dect,
-            'email'       => $usr->settings->email_human ? ($usr->contact->email ? $usr->contact->email : $usr->email) : glyph('eye-close'),
+            'dect'        => sprintf('<a href="tel:%s">%1$s</a>', $usr->contact->dect),
+            'email'       => $usr->settings->email_human
+                ? sprintf('<a href="email:%s">%1$s</a>', $email)
+                : glyph('eye-close'),
             'actions'     =>
                 auth()->can('admin_user')
                     ? button(page_link_to('admin_user', ['id' => $usr->id]), __('edit'), 'btn-xs')

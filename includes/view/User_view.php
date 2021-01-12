@@ -207,7 +207,7 @@ function Users_view(
         $u['name'] = User_Nick_render($user) . User_Pronoun_render($user);
         $u['first_name'] = $user->personalData->first_name;
         $u['last_name'] = $user->personalData->last_name;
-        $u['dect'] = $user->contact->dect;
+        $u['dect'] = sprintf('<a href="tel:%s">%1$s</a>', $user->contact->dect);
         $u['arrived'] = glyph_bool($user->state->arrived);
         $u['got_voucher'] = $user->state->got_voucher;
         $u['freeloads'] = $user->getAttribute('freeloads');
@@ -668,7 +668,10 @@ function User_view(
             ]),
             div('row', [
                 div('col-md-2', [
-                    heading(glyph('phone') . $user_source->contact->dect, 1)
+                    heading(glyph('phone')
+                        . '<a href="tel:' . $user_source->contact->dect . '">'
+                        . $user_source->contact->dect, 1)
+                        . '</a>'
                 ]),
                 User_view_state($admin_user_privilege, $freeloader, $user_source),
                 User_angeltypes_render($user_angeltypes),
