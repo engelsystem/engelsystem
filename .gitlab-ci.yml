@@ -110,11 +110,10 @@ audit-composer:
   stage: test
   needs: [ build-image ]
   before_script:
-    - curl -sSo /usr/local/bin/security-checker https://get.sensiolabs.org/security-checker.phar
-    - chmod +x /usr/local/bin/security-checker
-    - cd "${DOCROOT}"
+    - wget -qO - https://github.com/symfony/cli/releases/latest/download/symfony_linux_amd64.gz | gzip -d > /bin/symfony
+    - chmod +x /bin/symfony
   script:
-    - security-checker --no-ansi security:check
+    - symfony check:security --no-ansi --dir "${DOCROOT}"
 
 audit-yarn:
   image: node:alpine
