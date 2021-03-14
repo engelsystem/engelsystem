@@ -188,7 +188,7 @@ release-image:
     - docker tag "${TEST_IMAGE}" "${RELEASE_IMAGE}"
     - docker push "${RELEASE_IMAGE}"
   only:
-    - master
+    - main
 
 release-image-nginx:
   <<: *docker_definition
@@ -202,7 +202,7 @@ release-image-nginx:
     - docker tag "${TEST_IMAGE_NGINX}" "${RELEASE_IMAGE_NGINX}"
     - docker push "${RELEASE_IMAGE_NGINX}"
   only:
-    - master
+    - main
 
 .deploy_template: &deploy_definition
   stage: release
@@ -247,7 +247,7 @@ pages:
     paths:
       - public
   only:
-    - master
+    - main
   variables:
     GIT_STRATEGY: none
 
@@ -272,7 +272,7 @@ deploy:
   environment:
     name: staging
   only:
-    - master
+    - main
   script:
     # Check if deployment variables where set
     - |-
@@ -382,7 +382,7 @@ deploy-production:
     name: production
   when: manual
   only:
-    - master
+    - main
   script:
     # Check if deployment variables where set
     - |-
@@ -407,13 +407,13 @@ deploy-k8s-production:
     on_stop: stop-k8s-production
   when: manual
   only:
-    - master
+    - main
 
 stop-k8s-production:
   <<: *deploy_k8s_stop
   needs: [ deploy-k8s-production ]
   only:
-    - master
+    - main
   environment:
     name: production
     action: stop
