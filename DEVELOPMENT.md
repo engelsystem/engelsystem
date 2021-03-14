@@ -9,9 +9,9 @@ Please also read the [CONTRIBUTING.md](CONTRIBUTING.md).
  * PHP Composer (Development/Building only)
 
 ## Local build
-The following instructions explain how to get, build and run the latest Engelsystem version directly from the git master branch (may be unstable!).
+The following instructions explain how to get, build and run the latest Engelsystem version directly from the git main branch (may be unstable!).
 
-* Clone the master branch: `git clone https://github.com/engelsystem/engelsystem.git`
+* Clone the main branch: `git clone https://github.com/engelsystem/engelsystem.git`
 * Install [Composer](https://getcomposer.org/download/) and [Yarn](https://yarnpkg.com/en/docs/install) (which requires [Node.js](https://nodejs.org/en/download/package-manager/))
 * Install project dependencies:
   ```bash
