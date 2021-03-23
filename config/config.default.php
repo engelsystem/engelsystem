@@ -108,6 +108,7 @@ return [
 
     // Available themes
     'available_themes'        => [
+        '15' => 'DiVOC R2R (2021)',
         '14' => 'Engelsystem rC3 teal (2020)',
         '13' => 'Engelsystem rC3 violet (2020)',
         '12' => 'Engelsystem 36c3 (2019)',
@@ -166,7 +167,7 @@ return [
     'enable_user_name'        => (bool)env('ENABLE_USER_NAME', false),
 
     // Enable displaying the pronoun fields
-    'enable_pronoun'          => (bool)env('ENABLE_PRONOUN', false),
+    'enable_pronoun'          => (bool)env('ENABLE_PRONOUN', true),
 
     // Enables the planned arrival/leave date
     'enable_planned_arrival'  => (bool)env('ENABLE_PLANNED_ARRIVAL', true),
