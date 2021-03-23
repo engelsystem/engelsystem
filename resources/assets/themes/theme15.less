@@ -46,6 +46,7 @@ THE SOFTWARE.
 @brand-danger: #d10069;
 
 @plum: #1f0229;
+@dark-green: #00292d;
 
 .label.label-warning,
 .progress-bar.progress-bar-warning {
@@ -95,7 +96,7 @@ THE SOFTWARE.
 @headings-font-family: @font-family-base;
 @headings-font-weight: 500;
 @headings-line-height: 1.1;
-@headings-color: #00c466;
+@headings-color: @brand-info;
 
 //== Iconography
 //
@@ -134,7 +135,7 @@ THE SOFTWARE.
 //** Global color for active items (e.g., navs or dropdowns).
 @component-active-color: #fff;
 //** Global background color for active items (e.g., navs or dropdowns).
-@component-active-bg: #00292d;
+@component-active-bg: @dark-green;
 
 //** Width of the `border` for generating carets that indicator dropdowns.
 @caret-width-base: 4px;
@@ -369,7 +370,7 @@ THE SOFTWARE.
 @navbar-collapse-max-height: 340px;
 
 @navbar-default-color: @text-color;
-@navbar-default-bg: #00292d;
+@navbar-default-bg: @dark-green;
 @navbar-default-border: @gray-dark;
 
 // Navbar links
@@ -434,7 +435,7 @@ THE SOFTWARE.
 
 @nav-tabs-link-hover-border-color: transparent;
 
-@nav-tabs-active-link-hover-bg: #00292d;
+@nav-tabs-active-link-hover-bg: @dark-green;
 @nav-tabs-active-link-hover-color: #fff;
 @nav-tabs-active-link-hover-border-color: @gray-dark;
 
@@ -662,7 +663,7 @@ THE SOFTWARE.
 //##
 
 //** Background color on `.list-group-item`
-@list-group-bg: #00292d;
+@list-group-bg: @dark-green;
 //** `.list-group-item` border color
 @list-group-border: @gray-dark;
 //** List group border radius
@@ -694,18 +695,18 @@ THE SOFTWARE.
 //
 //##
 
-@panel-bg: #00292d;
+@panel-bg: @dark-green;
 @panel-body-padding: 15px;
 @panel-heading-padding: 10px 15px;
 @panel-footer-padding: @panel-heading-padding;
 @panel-border-radius: @border-radius-base;
 
 //** Border color for elements within panels
-@panel-inner-border: lighten(#00292d, 3%);
+@panel-inner-border: lighten(@dark-green, 3%);
 
 @panel-default-text: @text-color;
 @panel-default-border: @panel-inner-border;
-@panel-default-heading-bg: lighten(#00292d, 3%);
+@panel-default-heading-bg: lighten(@dark-green, 3%);
 
 @panel-footer-bg: @panel-default-heading-bg;
 
@@ -719,7 +720,7 @@ THE SOFTWARE.
 
 @panel-info-text: @state-info-text;
 @panel-info-border: @panel-inner-border;
-@panel-info-heading-bg: lighten(#00292d, 3%);
+@panel-info-heading-bg: lighten(@dark-green, 3%);
 
 @panel-warning-text: @state-warning-text;
 @panel-warning-border: @state-warning-border;
@@ -1032,7 +1033,7 @@ a.thumbnail.active {
   h4,
   h5,
   h6 {
-    color: #00c466;
+    color: @brand-info;
   }
 }
 
