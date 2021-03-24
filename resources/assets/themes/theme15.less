@@ -47,10 +47,11 @@ THE SOFTWARE.
 
 @plum: #1f0229;
 @dark-green: #00292d;
+@blue: blue;
 
 .label.label-warning,
 .progress-bar.progress-bar-warning {
-  color: #000;
+  color:white;
 }
 
 //== Scaffolding
@@ -565,7 +566,7 @@ THE SOFTWARE.
 //##
 
 //** Default label background color
-@label-default-bg: @btn-default-bg;
+@label-default-bg: @dark-green;
 //** Primary label background color
 @label-primary-bg: @brand-primary;
 //** Success label background color
@@ -573,7 +574,7 @@ THE SOFTWARE.
 //** Info label background color
 @label-info-bg: @brand-info;
 //** Warning label background color
-@label-warning-bg: @brand-warning;
+@label-warning-bg: @blue;
 //** Danger label background color
 @label-danger-bg: @brand-danger;
 
@@ -722,9 +723,9 @@ THE SOFTWARE.
 @panel-info-border: @panel-inner-border;
 @panel-info-heading-bg: lighten(@dark-green, 3%);
 
-@panel-warning-text: @state-warning-text;
-@panel-warning-border: @state-warning-border;
-@panel-warning-heading-bg: @state-warning-bg;
+@panel-warning-text: white;
+@panel-warning-border: @blue;
+@panel-warning-heading-bg: @blue;
 
 @panel-danger-text: @state-danger-text;
 @panel-danger-border: @state-danger-border;
