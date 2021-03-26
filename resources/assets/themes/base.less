@@ -411,6 +411,8 @@ span.ref-id[id] {
     max-height: unset;
     left: 101%;
     top: @navbar-height + 1;
+    // extra padding because mobile Safari displays a bottom bar hiding parts of the menu
+    padding-bottom: 75px;
 
     transition: left .3s ease-in-out;
     -webkit-transition: left .3s ease-in-out;
@@ -434,6 +436,7 @@ span.ref-id[id] {
     .nav > li.active {
       display: none;
     }
+
     .caret {
       float: right;
       margin-top: 7px;
