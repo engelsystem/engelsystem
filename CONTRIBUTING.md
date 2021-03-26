@@ -6,6 +6,8 @@
 * Order the composer/npm dependencies alphabetically.
 * Do not use code from the [includes](./includes) directory anywhere else.
 * Please cover your code by unit tests. Code under `includes` does not require tests.
+* Do not use vendor prefixes like `-webkit` in styles.
+  This is done by PostCSS + Autoprefixer according to the [`.browserslistrc`](./.browserslistrc).
 
 ## Pull requests
 Please create single pull requests for every feature instead of creating one big monster of pull request containing a complete rewrite.

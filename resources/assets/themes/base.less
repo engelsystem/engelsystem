@@ -31,9 +31,7 @@ body {
   width: 1em;
   height: 1em;
 
-  -webkit-mask: url(../icons/angel.svg) no-repeat 50% 50%;
   mask: url(../icons/angel.svg) no-repeat 50% 50%;
-  -webkit-mask-size: cover;
   mask-size: cover;
 }
 
@@ -241,8 +239,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .messages span.text-danger {
   animation: pulse 1s infinite;
-  -webkit-animation: pulse 1s infinite;
-  -moz-animation: pulse 1s infinite;
 }
 
 .legend .label {
@@ -294,54 +290,6 @@ span.ref-id[id] {
   }
   30% {
     transform: rotate(5deg) translateY(-2px);;
-  }
-  40% {
-    transform: rotate(-5deg);
-  }
-  50% {
-    transform: rotate(0deg) translateY(-2px);
-  }
-  75% {
-    transform: rotate(0deg) translateY(0px);
-  }
-}
-
-@-webkit-keyframes pulse {
-  0% {
-    transform: rotate(0deg);
-  }
-  10% {
-    transform: rotate(5deg) translateY(-2px);
-  }
-  20% {
-    transform: rotate(-5deg);
-  }
-  30% {
-    transform: rotate(5deg) translateY(-2px);
-  }
-  40% {
-    transform: rotate(-5deg);
-  }
-  50% {
-    transform: rotate(0deg) translateY(-2px);
-  }
-  75% {
-    transform: rotate(0deg) translateY(0px);
-  }
-}
-
-@-moz-keyframes pulse {
-  0% {
-    transform: rotate(0deg);
-  }
-  10% {
-    transform: rotate(5deg) translateY(-2px);
-  }
-  20% {
-    transform: rotate(-5deg);
-  }
-  30% {
-    transform: rotate(5deg) translateY(-2px);
   }
   40% {
     transform: rotate(-5deg);
@@ -415,7 +363,6 @@ span.ref-id[id] {
     padding-bottom: 75px;
 
     transition: left .3s ease-in-out;
-    -webkit-transition: left .3s ease-in-out;
 
     background: @navbar-default-bg;
     margin: 0 !important;   // Overridden in theme with high specifity:
