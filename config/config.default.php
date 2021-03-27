@@ -104,11 +104,11 @@ return [
     ],
 
     // Default theme, 1=style1.css
-    'theme'                   => env('THEME', 15),
+    'theme'                   => env('THEME', 1),
 
     // Available themes
     'available_themes'        => [
-        '15' => 'Engelsystem DiVOC R2R (2021)',
+        '15' => 'Engelsystem DiVOC R2R',
         '14' => 'Engelsystem rC3 teal (2020)',
         '13' => 'Engelsystem rC3 violet (2020)',
         '12' => 'Engelsystem 36c3 (2019)',
@@ -167,13 +167,13 @@ return [
     'enable_user_name'        => (bool)env('ENABLE_USER_NAME', false),
 
     // Enable displaying the pronoun fields
-    'enable_pronoun'          => (bool)env('ENABLE_PRONOUN', true),
+    'enable_pronoun'          => (bool)env('ENABLE_PRONOUN', false),
 
     // Enables the planned arrival/leave date
     'enable_planned_arrival'  => (bool)env('ENABLE_PLANNED_ARRIVAL', true),
 
     // Enables the T-Shirt configuration on signup and profile
-    'enable_tshirt_size'      => (bool)env('ENABLE_TSHIRT_SIZE', false),
+    'enable_tshirt_size'      => (bool)env('ENABLE_TSHIRT_SIZE', true),
 
     // Number of shifts to freeload until angel is locked for shift signup.
     'max_freeloadable_shifts' => env('MAX_FREELOADABLE_SHIFTS', 2),
@@ -183,7 +183,7 @@ return [
 
     // Multiply 'night shifts' and freeloaded shifts (start or end between 2 and 6 exclusive) by 2
     'night_shifts'            => [
-        'enabled'    => (bool)env('NIGHT_SHIFTS', false), // Disable to weigh every shift the same
+        'enabled'    => (bool)env('NIGHT_SHIFTS', true), // Disable to weigh every shift the same
         'start'      => env('NIGHT_SHIFTS_START', 2),
         'end'        => env('NIGHT_SHIFTS_END', 6),
         'multiplier' => env('NIGHT_SHIFTS_MULTIPLIER', 2),
