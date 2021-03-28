@@ -1,0 +1,60 @@
+{% extends 'layouts/app.twig' %}
+{% import 'macros/base.twig' as m %}
+
+{% block title %}
+    {{ __('faq.faq') }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {{ block('title') }}
+
+            {%- if has_permission_to('faq.edit') -%}
+                {{ m.button(m.glyphicon('plus'), url('admin/faq')) }}
+            {%- endif %}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
+
+        <div class="row">
+            {% block text %}
+                {% if text|default(null) %}
+                    <div class="col-md-12">
+                        {{ text|markdown }}
+                    </div>
+                {% endif %}
+            {% endblock %}
+
+            {% block row %}
+                {% for item in items %}
+                    <div class="col-md-12 faq">
+                        <span id="faq-{{ item.id }}" class="ref-id"></span>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3>
+                                    {{ item.question }}
+                                    <small><a class="ref-link" href="#faq-{{ item.id }}">{{ m.glyphicon('link') }}</a></small>
+                                </h3>
+                            </div>
+
+                            <div class="panel-body">
+                                {{ item.text|markdown }}
+                            </div>
+
+                            <div class="panel-footer">
+                                {{ m.glyphicon('time') }} {{ item.updated_at.format(__('Y-m-d H:i')) }}
+
+                                {% if has_permission_to('faq.edit') %}
+                                    <span class="pull-right">
+                                        {{ m.button(m.glyphicon('edit'), url('admin/faq/' ~ item.id), null, 'xs') }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

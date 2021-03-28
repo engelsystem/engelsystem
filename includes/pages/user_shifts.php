@@ -167,9 +167,17 @@ function load_types()
         ]
     );
     if (empty($types)) {
-        return DB::select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0');
+        return unrestricted_angeltypes();
     }
     return $types;
+}
+
+/**
+ * @return array[]
+ */
+function unrestricted_angeltypes()
+{
+    return DB::select('SELECT `id`, `name` FROM `AngelTypes` WHERE `restricted` = 0');
 }
 
 /**

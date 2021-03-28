@@ -34,21 +34,24 @@ function Shifts_by_angeltype($angeltype)
 /**
  * Returns every shift with needed angels in the given time range.
  *
- * @param int $start timestamp
- * @param int $end   timestamp
+ * @param int               $start timestamp
+ * @param int               $end   timestamp
+ * @param ShiftsFilter|null $filter
+ *
  * @return array
  */
-function Shifts_free($start, $end)
+function Shifts_free($start, $end, ShiftsFilter $filter = null)
 {
-    $shifts = Db::select("
+    $shifts = Db::select('
         SELECT * FROM (
             SELECT *
             FROM `Shifts`
             LEFT JOIN schedule_shift AS s on Shifts.SID = s.shift_id
             WHERE (`end` > ? AND `start` < ?)
-            AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`)
-            > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
+            AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`shift_id`=`Shifts`.`SID`' . ($filter ? ' AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
+            > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0' . ($filter ? ' AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
             AND s.shift_id IS NULL
+            ' . ($filter ? 'AND Shifts.RID IN (' . implode(',', $filter->getRooms()) . ')' : '') . '
 
             UNION
 
@@ -56,12 +59,13 @@ function Shifts_free($start, $end)
             FROM `Shifts`
             LEFT JOIN schedule_shift AS s on Shifts.SID = s.shift_id
             WHERE (`end` > ? AND `start` < ?)
-            AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID`)
-            > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0)
+            AND (SELECT SUM(`count`) FROM `NeededAngelTypes` WHERE `NeededAngelTypes`.`room_id`=`Shifts`.`RID`' . ($filter ? ' AND NeededAngelTypes.angel_type_id IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
+            > (SELECT COUNT(*) FROM `ShiftEntry` WHERE `ShiftEntry`.`SID`=`Shifts`.`SID` AND `freeloaded`=0' . ($filter ? ' AND ShiftEntry.TID IN (' . implode(',', $filter->getTypes()) . ')' : '') . ')
             AND NOT s.shift_id IS NULL
+            ' . ($filter ? 'AND Shifts.RID IN (' . implode(',', $filter->getRooms()) . ')' : '') . '
         ) AS `tmp`
         ORDER BY `tmp`.`start`
-        ", [
+        ', [
         $start,
         $end,
         $start,

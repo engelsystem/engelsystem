@@ -172,6 +172,7 @@ class Controller extends BaseController
                 ['labels' => ['state' => 'answered'], 'value' => $this->stats->questions(true)],
                 ['labels' => ['state' => 'pending'], 'value' => $this->stats->questions(false)],
             ],
+            'faq'                  => ['type' => 'gauge', $this->stats->faq()],
             'messages'             => ['type' => 'gauge', $this->stats->messages()],
             'password_resets'      => ['type' => 'gauge', $this->stats->passwordResets()],
             'registration_enabled' => ['type' => 'gauge', $this->config->get('registration_enabled')],

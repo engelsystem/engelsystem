@@ -9,9 +9,9 @@ Please also read the [CONTRIBUTING.md](CONTRIBUTING.md).
  * PHP Composer (Development/Building only)
 
 ## Local build
-The following instructions explain how to get, build and run the latest Engelsystem version directly from the git master branch (may be unstable!).
+The following instructions explain how to get, build and run the latest Engelsystem version directly from the git main branch (may be unstable!).
 
-* Clone the master branch: `git clone https://github.com/engelsystem/engelsystem.git`
+* Clone the main branch: `git clone https://github.com/engelsystem/engelsystem.git`
 * Install [Composer](https://getcomposer.org/download/) and [Yarn](https://yarnpkg.com/en/docs/install) (which requires [Node.js](https://nodejs.org/en/download/package-manager/))
 * Install project dependencies:
   ```bash
@@ -53,6 +53,27 @@ at least `phpdbg -qrr`(which has problems with switch case statements) as using 
 ```bash
 php -d pcov.enabled=1 vendor/bin/phpunit --testsuite Unit --coverage-text
 ```
+
+### Var Dump server
+Symfony Var Dump server is configured to allow for easier debugging. It is not meant as a replacement for xdebug but can actually be used together with xdebug.
+This Var Dump Server is especially useful for when you want to debug a request without messing up the output e.g API calls ot HTML layout.
+
+To use simply call the method `dump` and pass the arguments in exactly the same way you would when using `var_dump`.
+
+This will send the output to the Var Dump server which can be viewed in the terminal. 
+This does however require that you start the var-dump-server otherwise the output will be printed in your browser
+
+You can also `dump` and `die` if you wish to not let your code continue any further by calling the `dd` method
+
+To view the output of `dump` call the following commands:
+
+```bash
+vendor/bin/var-dump-server
+# or for running in docker
+docker exec -it engelsystem_dev_es_php_fpm_1 vendor/bin/var-dump-server
+```
+
+For more information check out the Var Dump Server documentation: [Symfony VarDumper](https://symfony.com/components/VarDumper)
 
 ## Translation
 We use gettext. You may use POEdit to extract new texts from the sourcecode.

@@ -201,7 +201,7 @@ THE SOFTWARE.
 //** `<input>` background color
 @input-bg:                       @gray-darker;
 //** `<input disabled>` background color
-@input-bg-disabled:              @gray-lighter;
+@input-bg-disabled:              lighten(@gray-lighter,15%);
 
 //** Text color for `<input>`s
 @input-color:                    @text-color;
@@ -1041,4 +1041,10 @@ a.thumbnail.active {
   h1, h2, h3, h4, h5, h6 {
     color: #fff;
   }
+}
+
+// code tag
+code {
+  background-color: @state-info-bg;
+  color: @state-info-text;
 }

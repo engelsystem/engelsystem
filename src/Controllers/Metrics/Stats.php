@@ -7,6 +7,7 @@ namespace Engelsystem\Controllers\Metrics;
 use Carbon\Carbon;
 use Engelsystem\Database\Database;
 use Engelsystem\Models\EventConfig;
+use Engelsystem\Models\Faq;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
@@ -411,6 +412,14 @@ class Stats
         }
 
         return $query->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function faq(): int
+    {
+        return Faq::query()->count();
     }
 
     /**

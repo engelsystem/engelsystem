@@ -15,9 +15,9 @@ $route->post('/login', 'AuthController@postLogin');
 $route->get('/logout', 'AuthController@logout');
 
 // OAuth
-$route->get('/oauth/{provider:\w+}', 'OAuthController@index');
-$route->post('/oauth/{provider:\w+}/connect', 'OAuthController@connect');
-$route->post('/oauth/{provider:\w+}/disconnect', 'OAuthController@disconnect');
+$route->get('/oauth/{provider}', 'OAuthController@index');
+$route->post('/oauth/{provider}/connect', 'OAuthController@connect');
+$route->post('/oauth/{provider}/disconnect', 'OAuthController@disconnect');
 
 // User settings
 $route->get('/settings/password', 'SettingsController@password');
@@ -40,6 +40,15 @@ $route->get('/meetings', 'NewsController@meetings');
 $route->get('/news/{id:\d+}', 'NewsController@show');
 $route->post('/news/{id:\d+}', 'NewsController@comment');
 
+// FAQ
+$route->get('/faq', 'FaqController@index');
+
+// Questions
+$route->get('/questions', 'QuestionsController@index');
+$route->post('/questions', 'QuestionsController@delete');
+$route->get('/questions/new', 'QuestionsController@add');
+$route->post('/questions/new', 'QuestionsController@save');
+
 // API
 $route->get('/api[/{resource:.+}]', 'ApiController@index');
 
@@ -50,6 +59,15 @@ $route->get('/design', 'DesignController@index');
 $route->addGroup(
     '/admin',
     function (RouteCollector $route) {
+        // FAQ
+        $route->addGroup(
+            '/faq',
+            function (RouteCollector $route) {
+                $route->get('[/{id:\d+}]', 'Admin\\FaqController@edit');
+                $route->post('[/{id:\d+}]', 'Admin\\FaqController@save');
+            }
+        );
+
         // Log
         $route->get('/logs', 'Admin\\LogsController@index');
         $route->post('/logs', 'Admin\\LogsController@index');
@@ -63,6 +81,17 @@ $route->addGroup(
                 $route->post('/edit[/{id:\d+}]', 'Admin\\Schedule\\ImportSchedule@save');
                 $route->get('/load/{id:\d+}', 'Admin\\Schedule\\ImportSchedule@loadSchedule');
                 $route->post('/import/{id:\d+}', 'Admin\\Schedule\\ImportSchedule@importSchedule');
+            }
+        );
+
+        // Questions
+        $route->addGroup(
+            '/questions',
+            function (RouteCollector $route) {
+                $route->get('', 'Admin\\QuestionsController@index');
+                $route->post('', 'Admin\\QuestionsController@delete');
+                $route->get('/{id:\d+}', 'Admin\\QuestionsController@edit');
+                $route->post('/{id:\d+}', 'Admin\\QuestionsController@save');
             }
         );
 

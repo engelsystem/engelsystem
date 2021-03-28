@@ -58,8 +58,12 @@ function User_settings_view(
                                 ? form_text('pronoun', __('Pronoun'), $personalData->pronoun, false, 15)
                                 . form_info('', __('Will be shown on your profile page and in angel lists.'))
                                 : '',
-                            $enable_user_name ? form_text('lastname', __('Last name'), $personalData->last_name) : '',
-                            $enable_user_name ? form_text('prename', __('First name'), $personalData->first_name) : '',
+                            $enable_user_name
+                                ? form_text('lastname', __('Last name'), $personalData->last_name, false, 64)
+                                : '',
+                            $enable_user_name
+                                ? form_text('prename', __('First name'), $personalData->first_name, false, 64)
+                                : '',
                             $enable_planned_arrival ? form_date(
                                 'planned_arrival_date',
                                 __('Planned date of arrival') . ' ' . entry_required(),
@@ -78,9 +82,9 @@ function User_settings_view(
                                 $buildup_start_date,
                                 $teardown_end_date
                             ) : '',
-                            $enable_dect ? form_text('dect', __('DECT'), $user_source->contact->dect) : '',
-                            form_text('mobile', __('Mobile'), $user_source->contact->mobile),
-                            form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->email),
+                            $enable_dect ? form_text('dect', __('DECT'), $user_source->contact->dect, false, 40) : '',
+                            form_text('mobile', __('Mobile'), $user_source->contact->mobile, false, 40),
+                            form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->email, false, 254),
                             form_checkbox(
                                 'email_shiftinfo',
                                 __(

@@ -276,17 +276,19 @@ function form_text_placeholder($name, $placeholder, $value, $disabled = false)
  * @param string      $value
  * @param bool        $disabled
  * @param string|null $autocomplete
+ * @param int|null    $maxlength
  *
  * @return string
  */
-function form_email($name, $label, $value, $disabled = false, $autocomplete = null)
+function form_email($name, $label, $value, $disabled = false, $autocomplete = null, $maxlength = null)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
     $autocomplete = $autocomplete ? ' autocomplete="' . $autocomplete . '"' : '';
+    $maxlength = $maxlength ? ' maxlength=' . (int)$maxlength : '';
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="email" name="' . $name . '" value="'
-        . htmlspecialchars($value) . '" ' . $disabled . $autocomplete . '/>',
+        . htmlspecialchars($value) . '" ' . $disabled . $autocomplete . $maxlength . '/>',
         'form_' . $name
     );
 }

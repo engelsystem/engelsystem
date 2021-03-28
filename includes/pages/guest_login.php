@@ -78,7 +78,7 @@ function guest_register()
 
             if (!$nickValidation->isValid()) {
                 $valid = false;
-                $msg .= error(sprintf(__('Please enter a valid nick.') . ' ' . __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.'),
+                $msg .= error(sprintf(__('Please enter a valid nick.') . ' ' . __('Use up to 24 letters, numbers, connecting punctuations or spaces for your nickname.'),
                     $nick), true);
             }
             if (User::whereName($nick)->count() > 0) {
@@ -227,8 +227,11 @@ function guest_register()
 
             if ($session->has('oauth2_connect_provider') && $session->has('oauth2_user_id')) {
                 $oauth = new OAuth([
-                    'provider'   => $session->get('oauth2_connect_provider'),
-                    'identifier' => $session->get('oauth2_user_id'),
+                    'provider'      => $session->get('oauth2_connect_provider'),
+                    'identifier'    => $session->get('oauth2_user_id'),
+                    'access_token'  => $session->get('oauth2_access_token'),
+                    'refresh_token' => $session->get('oauth2_refresh_token'),
+                    'expires_at'    => $session->get('oauth2_expires_at'),
                 ]);
                 $oauth->user()
                     ->associate($user)
@@ -236,6 +239,9 @@ function guest_register()
 
                 $session->remove('oauth2_connect_provider');
                 $session->remove('oauth2_user_id');
+                $session->remove('oauth2_access_token');
+                $session->remove('oauth2_refresh_token');
+                $session->remove('oauth2_expires_at');
             }
 
             // Assign user-group and set password
@@ -323,11 +329,11 @@ function guest_register()
                                 __('Nick') . ' ' . entry_required(),
                                 $nick,
                                 false,
-                                23,
+                                24,
                                 'nickname'
                             ),
                             form_info('',
-                                __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.'))
+                                __('Use up to 24 letters, numbers, connecting punctuations or spaces for your nickname.'))
                         ]),
                         div('col-sm-8', [
                             form_email(
@@ -335,7 +341,8 @@ function guest_register()
                                 __('E-Mail') . ' ' . entry_required(),
                                 $email,
                                 false,
-                                'email'
+                                'email',
+                                254
                             ),
                             form_checkbox(
                                 'email_shiftinfo',
@@ -395,18 +402,18 @@ function guest_register()
                             form_text('dect', __('DECT'), $dect, false, 40, 'tel-local')
                         ]) : '',
                         div($enable_dect ? 'col-sm-4' : 'col-sm-12', [
-                            form_text('mobile', __('Mobile'), $mobile, false, null, 'tel-national')
+                            form_text('mobile', __('Mobile'), $mobile, false, 40, 'tel-national')
                         ]),
                         $enable_pronoun ? div('col-sm-4', [
-                            form_text('pronoun', __('Pronoun'), $pronoun)
+                            form_text('pronoun', __('Pronoun'), $pronoun, false, 15)
                         ]) : '',
                     ]),
                     $enable_user_name ? div('row', [
                         div('col-sm-6', [
-                            form_text('prename', __('First name'), $preName, false, null, 'given-name')
+                            form_text('prename', __('First name'), $preName, false, 64, 'given-name')
                         ]),
                         div('col-sm-6', [
-                            form_text('lastname', __('Last name'), $lastName, false, null, 'family-name')
+                            form_text('lastname', __('Last name'), $lastName, false, 64, 'family-name')
                         ])
                     ]) : '',
                     form_info(entry_required() . ' = ' . __('Entry required!'))

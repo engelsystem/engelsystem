@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\Question;
 use Engelsystem\UserHintsRenderer;
 
 /**
@@ -92,16 +93,19 @@ function make_navigation()
     $menu = [];
     $pages = [
         'news'           => __('News'),
-        'meetings'       => __('Meetings'),
+        'meetings'       => [__('Meetings'), 'user_meetings'],
         'user_shifts'    => __('Shifts'),
         'angeltypes'     => __('Angeltypes'),
-        'user_questions' => __('Ask the Heaven'),
+        'questions'      => [__('Ask the Heaven'), 'question.add'],
     ];
 
-    foreach ($pages as $menu_page => $title) {
-        if (auth()->can($menu_page) || ($menu_page == 'meetings' && auth()->can('user_meetings'))) {
-            $menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
+    foreach ($pages as $menu_page => $options) {
+        if (!menu_is_allowed($menu_page, $options)) {
+            continue;
         }
+
+        $title = ((array)$options)[0];
+        $menu[] = toolbar_item_link(page_link_to($menu_page), '', $title, $menu_page == $page);
     }
 
     $menu = make_room_navigation($menu);
@@ -110,11 +114,11 @@ function make_navigation()
     $admin_pages = [
         // path              => name
         // path              => [name, permission]
-        'admin_arrive'       => 'Arrived angels',
+        'admin_arrive'       => 'Arrive angels',
         'admin_active'       => 'Active angels',
         'admin_user'         => 'All Angels',
         'admin_free'         => 'Free angels',
-        'admin_questions'    => 'Answer questions',
+        'admin/questions'    => ['Answer questions', 'question.edit'],
         'shifttypes'         => 'Shifttypes',
         'admin_shifts'       => 'Create shifts',
         'admin_rooms'        => 'Rooms',
@@ -129,22 +133,17 @@ function make_navigation()
     }
 
     foreach ($admin_pages as $menu_page => $options) {
-        $options = (array)$options;
-        $permissions = $menu_page;
-        $title = $options[0];
-
-        if (isset($options[1])) {
-            $permissions = $options[1];
+        if (!menu_is_allowed($menu_page, $options)) {
+            continue;
         }
 
-        if (auth()->can($permissions)) {
-            $admin_menu[] = toolbar_item_link(
-                page_link_to($menu_page),
-                '',
-                __($title),
-                $menu_page == $page
-            );
-        }
+        $title = ((array)$options)[0];
+        $admin_menu[] = toolbar_item_link(
+            page_link_to($menu_page),
+            '',
+            __($title),
+            $menu_page == $page
+        );
     }
 
     if (count($admin_menu) > 0) {
@@ -152,6 +151,24 @@ function make_navigation()
     }
 
     return '<ul class="nav navbar-nav">' . join("\n", $menu) . '</ul>';
+}
+
+/**
+ * @param string          $page
+ * @param string|string[] $options
+ *
+ * @return bool
+ */
+function menu_is_allowed(string $page, $options)
+{
+    $options = (array)$options;
+    $permissions = $page;
+
+    if (isset($options[1])) {
+        $permissions = $options[1];
+    }
+
+    return auth()->can($permissions);
 }
 
 /**
@@ -206,4 +223,25 @@ function make_language_select()
         );
     }
     return $items;
+}
+
+/**
+ * Renders a hint for new questions to answer.
+ *
+ * @return string|null
+ */
+function admin_new_questions()
+{
+    if (!auth()->can('question.edit') || current_page() == 'admin/questions') {
+        return null;
+    }
+
+    $unanswered_questions = Question::unanswered()->count();
+    if (!$unanswered_questions) {
+        return null;
+    }
+
+    return '<a href="' . page_link_to('/admin/questions') . '">'
+        . __('There are unanswered questions!')
+        . '</a>';
 }

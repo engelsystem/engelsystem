@@ -74,6 +74,10 @@ function User_unconfirmed_AngelTypes($userId)
  */
 function User_is_AngelType_supporter($user, $angeltype)
 {
+    if (!$user) {
+        return false;
+    }
+
     $privileges = privileges_for_user($user->id);
 
     return (count(DB::select('

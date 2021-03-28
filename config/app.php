@@ -33,6 +33,7 @@ return [
         \Engelsystem\Helpers\VersionServiceProvider::class,
         \Engelsystem\Mail\MailerServiceProvider::class,
         \Engelsystem\Http\HttpClientServiceProvider::class,
+        \Engelsystem\Helpers\DumpServerServiceProvider::class
     ],
 
     // Application middleware

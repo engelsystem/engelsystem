@@ -35,11 +35,14 @@ return [
     // Footer links
     'footer_items'            => [
         // URL to the angel faq and job description
-        'FAQ'     => env('FAQ_URL', 'https://events.ccc.de/congress/2013/wiki/Static:Volunteers'),
+        'FAQ'     => env('FAQ_URL', '/faq'),
 
         // Contact email address, linked on every page
         'Contact' => env('CONTACT_EMAIL', 'mailto:ticket@c3heaven.de'),
     ],
+
+    // Text displayed on the FAQ page, rendered as markdown
+    'faq_text'                => env('FAQ_TEXT', null),
 
     // Link to documentation/help
     'documentation_url'       => 'https://engelsystem.de/doc/',
@@ -123,7 +126,7 @@ return [
     ],
 
     // Redirect to this site after logging in or when pressing the top-left button
-    // Must be one of news, meetings, user_shifts, angeltypes, user_questions
+    // Must be one of news, meetings, user_shifts, angeltypes, questions
     'home_site'               => env('HOME_SITE', 'news'),
 
     // Number of News shown on one site
@@ -259,5 +262,12 @@ return [
         'Contribution' => 'Please visit [engelsystem/engelsystem](https://github.com/engelsystem/engelsystem) if '
             . 'you want to to contribute, have found any [bugs](https://github.com/engelsystem/engelsystem/issues) '
             . 'or need help.'
+    ],
+
+    // var dump server
+    'var_dump_server' => [
+        'host' => '127.0.0.1',
+        'port' => '9912',
+        'enable' => false,
     ],
 ];
