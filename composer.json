@@ -18,7 +18,7 @@
         "phpcbf": "phpcbf -p"
     },
     "require": {
-        "php": ">=7.3.0",
+        "php": ">=8.0.0",
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
