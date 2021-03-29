@@ -47,7 +47,7 @@ THE SOFTWARE.
 
 @plum: #1f0229;
 @dark-green: #00292d;
-@blue: blue;
+@blue: darken(#009951, 10%);
 
 .label.label-warning,
 .progress-bar.progress-bar-warning {
@@ -59,7 +59,7 @@ THE SOFTWARE.
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-@body-bg: @plum;
+@body-bg: @dark-green;
 //** Global text color on `<body>`.
 @text-color: white;
 
@@ -136,7 +136,7 @@ THE SOFTWARE.
 //** Global color for active items (e.g., navs or dropdowns).
 @component-active-color: #fff;
 //** Global background color for active items (e.g., navs or dropdowns).
-@component-active-bg: @dark-green;
+@component-active-bg: @plum;
 
 //** Width of the `border` for generating carets that indicator dropdowns.
 @caret-width-base: 4px;
@@ -169,7 +169,7 @@ THE SOFTWARE.
 
 @btn-font-weight: normal;
 
-@btn-default-color: @plum;
+@btn-default-color: @dark-green;
 @btn-default-bg: @brand-primary;
 
 @btn-default-border: @brand-primary;
@@ -178,15 +178,15 @@ THE SOFTWARE.
 @btn-primary-bg: @btn-default-bg;
 @btn-primary-border: @btn-default-border;
 
-@btn-success-color: @plum;
+@btn-success-color: @dark-green;
 @btn-success-bg: @brand-success;
 @btn-success-border: darken(@btn-default-bg, 10%);
 
-@btn-info-color: @plum;
+@btn-info-color: @dark-green;
 @btn-info-bg: @brand-info;
 @btn-info-border: @brand-info;
 
-@btn-warning-color: @plum;
+@btn-warning-color: @dark-green;
 @btn-warning-bg: @brand-warning;
 @btn-warning-border: darken(@btn-default-bg, 10%);
 
@@ -371,7 +371,7 @@ THE SOFTWARE.
 @navbar-collapse-max-height: 340px;
 
 @navbar-default-color: @text-color;
-@navbar-default-bg: @dark-green;
+@navbar-default-bg: @plum;
 @navbar-default-border: @gray-dark;
 
 // Navbar links
@@ -436,7 +436,7 @@ THE SOFTWARE.
 
 @nav-tabs-link-hover-border-color: transparent;
 
-@nav-tabs-active-link-hover-bg: @dark-green;
+@nav-tabs-active-link-hover-bg: @plum;
 @nav-tabs-active-link-hover-color: #fff;
 @nav-tabs-active-link-hover-border-color: @gray-dark;
 
@@ -566,7 +566,7 @@ THE SOFTWARE.
 //##
 
 //** Default label background color
-@label-default-bg: @dark-green;
+@label-default-bg: @plum;
 //** Primary label background color
 @label-primary-bg: @brand-primary;
 //** Success label background color
@@ -624,11 +624,11 @@ THE SOFTWARE.
 @alert-link-font-weight: bold;
 
 @alert-success-bg: @state-success-bg;
-@alert-success-text: @plum;
+@alert-success-text: @dark-green;
 @alert-success-border: @state-success-border;
 
 @alert-info-bg: @state-info-bg;
-@alert-info-text: @plum;
+@alert-info-text: @dark-green;
 @alert-info-border: @state-info-border;
 
 @alert-warning-bg: @state-warning-bg;
@@ -664,7 +664,7 @@ THE SOFTWARE.
 //##
 
 //** Background color on `.list-group-item`
-@list-group-bg: @dark-green;
+@list-group-bg: @plum;
 //** `.list-group-item` border color
 @list-group-border: @gray-dark;
 //** List group border radius
@@ -696,18 +696,18 @@ THE SOFTWARE.
 //
 //##
 
-@panel-bg: @dark-green;
+@panel-bg: @plum;
 @panel-body-padding: 15px;
 @panel-heading-padding: 10px 15px;
 @panel-footer-padding: @panel-heading-padding;
 @panel-border-radius: @border-radius-base;
 
 //** Border color for elements within panels
-@panel-inner-border: lighten(@dark-green, 3%);
+@panel-inner-border: lighten(@plum, 3%);
 
 @panel-default-text: @text-color;
 @panel-default-border: @panel-inner-border;
-@panel-default-heading-bg: lighten(@dark-green, 3%);
+@panel-default-heading-bg: lighten(@plum, 3%);
 
 @panel-footer-bg: @panel-default-heading-bg;
 
@@ -721,7 +721,7 @@ THE SOFTWARE.
 
 @panel-info-text: @state-info-text;
 @panel-info-border: @panel-inner-border;
-@panel-info-heading-bg: lighten(@dark-green, 3%);
+@panel-info-heading-bg: lighten(@plum, 3%);
 
 @panel-warning-text: white;
 @panel-warning-border: @blue;
@@ -760,9 +760,9 @@ THE SOFTWARE.
 //
 //##
 
-@badge-color: @plum;
+@badge-color: @dark-green;
 //** Linked badge text color on hover
-@badge-link-hover-color: @plum;
+@badge-link-hover-color: @dark-green;
 @badge-bg: @brand-primary;
 
 //** Badge text color in active nav link
