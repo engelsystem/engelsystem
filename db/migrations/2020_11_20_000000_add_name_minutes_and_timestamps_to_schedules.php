@@ -19,10 +19,10 @@ class AddNameMinutesAndTimestampsToSchedules extends Migration
         $this->schema->table(
             'schedules',
             function (Blueprint $table) {
-                $table->string('name')->after('id');
-                $table->integer('shift_type')->after('name');
-                $table->integer('minutes_before')->after('shift_type');
-                $table->integer('minutes_after')->after('minutes_before');
+                $table->string('name')->after('id')->default('');
+                $table->integer('shift_type')->after('name')->default(0);
+                $table->integer('minutes_before')->after('shift_type')->default(0);
+                $table->integer('minutes_after')->after('minutes_before')->default(0);
                 $table->timestamps();
             }
         );
