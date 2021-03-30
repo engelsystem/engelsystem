@@ -316,8 +316,10 @@ function User_shift_state_render($user)
             . '</span>';
     }
 
+    $hasShiftEndPassed = $nextShift['end'] < time();
+
     return '<span class="text-danger moment-countdown" data-timestamp="' . $nextShift['end'] . '">'
-        . __('Shift ends %c')
+        .  $hasShiftEndPassed ? __('Shift ended %c') : __('Shift ends %c')
         . '</span>';
 }
 
