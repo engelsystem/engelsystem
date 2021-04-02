@@ -108,6 +108,7 @@ return [
 
     // Available themes
     'available_themes'        => [
+        '15' => 'Engelsystem DiVOC R2R',
         '14' => 'Engelsystem rC3 teal (2020)',
         '13' => 'Engelsystem rC3 violet (2020)',
         '12' => 'Engelsystem 36c3 (2019)',
