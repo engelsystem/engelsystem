@@ -317,6 +317,7 @@ deploy:
     - export CI_PVC_SC=${CI_PVC_SC:-"${CI_PVC_SC_LOCAL:-local-path}"}
     - export CI_REPLICAS=${CI_REPLICAS_REVIEW:-${CI_REPLICAS:-2}}
     - export CI_APP_NAME=${CI_APP_NAME:-Engelsystem}
+    - export CI_CLUSTER_ISSUER=${CI_CLUSTER_ISSUER:-letsencrypt}
 
     - cp deployment.tpl.yaml deployment.yaml
     - for env in ${!CI_*}; do sed -i "s#<${env}>#$(echo "${!env}"|head -n1)#g" deployment.yaml; done
