@@ -106,14 +106,14 @@ build-image:
 #
 
 audit-composer:
-  image: ${TEST_IMAGE}
+  image: php:latest
   stage: test
-  needs: [ build-image ]
+  needs: [ ]
   before_script:
-    - wget -qO - https://github.com/symfony/cli/releases/latest/download/symfony_linux_amd64.gz | gzip -d > /bin/symfony
+    - curl -Ls https://github.com/symfony/cli/releases/latest/download/symfony_linux_amd64.gz | gzip -d > /bin/symfony
     - chmod +x /bin/symfony
   script:
-    - symfony check:security --no-ansi --dir "${DOCROOT}"
+    - symfony check:security --no-ansi
 
 audit-yarn:
   image: node:alpine
