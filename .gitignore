@@ -34,7 +34,6 @@ _vimrc_local.vim
 
 # Composer files
 /vendor/
-/composer.lock
 
 # Frontend files
 /node_modules
