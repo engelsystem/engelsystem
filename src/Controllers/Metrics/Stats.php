@@ -94,6 +94,14 @@ class Stats
     }
 
     /**
+     * @return int
+     */
+    public function usersPronouns(): int
+    {
+        return PersonalData::where('pronoun', '!=', '')->count();
+    }
+
+    /**
      * @param string $type
      *
      * @return int

@@ -239,6 +239,17 @@ class StatsTest extends TestCase
     }
 
     /**
+     * @covers \Engelsystem\Controllers\Metrics\Stats::usersPronouns
+     */
+    public function testUsersPronouns()
+    {
+        $this->addUsers();
+
+        $stats = new Stats($this->database);
+        $this->assertEquals(2, $stats->usersPronouns());
+    }
+
+    /**
      * @covers \Engelsystem\Controllers\Metrics\Stats::email
      */
     public function testEmail()
@@ -380,10 +391,14 @@ class StatsTest extends TestCase
         $this->addUser();
         $this->addUser([], ['shirt_size' => 'L'], ['email_human' => true, 'email_shiftinfo' => true]);
         $this->addUser(['arrived' => 1], [], ['email_human' => true, 'email_news' => true]);
-        $this->addUser(['arrived' => 1], [], ['language' => 'lo_RM', 'email_shiftinfo' => true]);
+        $this->addUser(['arrived' => 1], ['pronoun' => 'unicorn'], ['language' => 'lo_RM', 'email_shiftinfo' => true]);
         $this->addUser(['arrived' => 1, 'got_voucher' => 2], ['shirt_size' => 'XXL'], ['language' => 'lo_RM']);
         $this->addUser(['arrived' => 1, 'got_voucher' => 9, 'force_active' => true], [], ['theme' => 1]);
-        $this->addUser(['arrived' => 1, 'got_voucher' => 3], [], ['theme' => 1, 'email_human' => true]);
+        $this->addUser(
+            ['arrived' => 1, 'got_voucher' => 3],
+            ['pronoun' => 'per'],
+            ['theme' => 1, 'email_human' => true]
+        );
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true, 'force_active' => true]);
         $this->addUser(['arrived' => 1, 'active' => 1, 'got_shirt' => true], ['shirt_size' => 'L'], ['theme' => 4]);
     }
