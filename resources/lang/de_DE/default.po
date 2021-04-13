@@ -1966,8 +1966,8 @@ msgstr ""
 "(double-opt-in)."
 
 #: includes/view/AngelTypes_view.php:96 includes/view/AngelTypes_view.php:97
-msgid "No Self Sign Up"
-msgstr "Kein Selbst-Eintragen"
+msgid "No Self Sign Up allowed"
+msgstr "Kein Selbst-Eintragen erlaubt"
 
 #: includes/view/AngelTypes_view.php:99 includes/view/AngelTypes_view.php:105
 msgid "Requires driver license"

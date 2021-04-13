@@ -93,8 +93,8 @@ function AngelType_edit_view($angeltype, $supporter_mode)
                 __('Angel types which require introduction can only be used by an angel if enabled by a supporter (double opt-in).')
             ),
             $supporter_mode
-                ? form_info(__('No Self Sign Up'), $angeltype['no_self_signup'] ? __('Yes') : __('No'))
-                : form_checkbox('no_self_signup', __('No Self Sign Up'), $angeltype['no_self_signup']),
+                ? form_info(__('No Self Sign Up allowed'), $angeltype['no_self_signup'] ? __('Yes') : __('No'))
+                : form_checkbox('no_self_signup', __('No Self Sign Up allowed'), $angeltype['no_self_signup']),
             $supporter_mode
                 ? form_info(__('Requires driver license'),
                 $angeltype['requires_driver_license']
