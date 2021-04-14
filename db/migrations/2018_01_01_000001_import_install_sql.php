@@ -41,6 +41,15 @@ class ImportInstallSql extends Migration
 
         $sql = file_get_contents(__DIR__ . '/../install.sql');
         $this->schema->getConnection()->unprepared($sql);
+
+        $initial_admin_pw_hash = getenv("INITIAL_ADMIN_PASSWORD_HASH");
+        // Update initial admin password if env var exists
+        if ($initial_admin_pw_hash !== false) {
+            echo("Setting initial admin password.\n");
+            // Admin password in the crypt(3) format
+            $query = 'UPDATE `User` SET `Passwort` = ? WHERE `Nick` = "admin"';
+            $this->schema->getConnection()->update($query, [$initial_admin_pw_hash]);
+        }
     }
 
 
