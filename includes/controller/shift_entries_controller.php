@@ -87,8 +87,8 @@ function shift_entry_create_controller_admin($shift, $angeltype)
     }
 
     $angeltypes = AngelTypes();
-    if ($request->has('angeltype_id')) {
-        $angeltype = AngelType($request->input('angeltype_id'));
+    if ($request->hasPostData('angeltype_id')) {
+        $angeltype = AngelType($request->postData('angeltype_id'));
     }
     if (empty($angeltype)) {
         if (count($angeltypes) == 0) {
