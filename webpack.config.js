@@ -1,14 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const nodeEnv = (process.env.NODE_ENV || 'development').trim();
 
 // eslint-disable-next-line
 const __DEV__ = nodeEnv !== 'production';
 
-const devtool = __DEV__ ? '#source-map' : '';
+const devtool = __DEV__ ? 'source-map' : '';
 
 const plugins = [
   new webpack.DefinePlugin({
@@ -44,7 +44,7 @@ module.exports = {
     publicPath: '',
   },
   optimization: {
-    minimizer: __DEV__ ? [] : [new OptimizeCSSAssetsPlugin({}), new TerserPlugin()],
+    minimizer: __DEV__ ? [] : [new CssMinimizerPlugin(), new TerserPlugin()],
   },
   module: {
     rules: [
@@ -52,7 +52,6 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /(node_modules)/,
         loader: 'babel-loader',
-        query: { cacheDirectory: true },
       },
       { test: /\.(jpg|eot|ttf|otf|svg|woff2?)(\?.*)?$/, loader: 'file-loader' },
       { test: /\.json$/, loader: 'json-loader' },
