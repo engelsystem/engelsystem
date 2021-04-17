@@ -1,0 +1,28 @@
+// cccamp15
+@import "~bootstrap/scss/variables";
+
+$brand-primary:         #758499;
+$brand-success:         #7b9c41;
+$brand-info:            #9c7357;
+$brand-warning:         #e3a14d;
+$brand-danger:          #7f528b;
+
+$link-color:            #58585a;
+
+$state-success-text:             #638232;
+$state-success-bg:               lighten($brand-success,50%);
+$state-success-border:           $brand-success;
+
+$state-info-text:                #826045;
+$state-info-bg:                  lighten($brand-info,50%);
+$state-info-border:              $brand-info;
+
+$state-warning-text:             #bc8640;
+$state-warning-bg:               lighten($brand-warning,50%);
+$state-warning-border:           $brand-warning;
+
+$state-danger-text:              #694374;
+$state-danger-bg:                lighten($brand-danger,50%);
+$state-danger-border:            $brand-danger;
+
+@import "base.scss";

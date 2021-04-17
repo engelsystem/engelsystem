@@ -11,11 +11,11 @@
 {% set linksum='Lorem ipsum! Dolor <a href="#">link</a> amet, consectetur adipisici elit!' %}
 
 {% block content %}
-    <div class="container">
+    <div class="col-12">
+        <div class="container">
         <h1>{{ block('title') }} <small>{{ themes[theme] }}</small></h1>
 
-
-        <h2>Elements <small>small</small></h2>
+        <h2>Elements <small class="text-muted">small</small></h2>
         <div class="row">
             <div class="col-md-2">
                 <h3>Headings <small>small</small></h3>
@@ -287,5 +287,6 @@
                 </p>
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}

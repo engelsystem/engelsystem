@@ -1,7 +1,9 @@
-@import "../../../node_modules/bootstrap/less/bootstrap";
-@import "../../../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css";
-@import "../../../node_modules/select2/dist/css/select2.min.css";
-@import "../../../node_modules/select2-bootstrap-theme/src/select2-bootstrap.less";
+// select 2 variables
+$cursor-disabled: false;
+
+@import "~bootstrap/scss/bootstrap";
+@import "~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css";
+@import "~select2/dist/css/select2.css";
 @import "error";
 
 body {
@@ -9,7 +11,7 @@ body {
 }
 
 .footer a {
-  color: @text-muted;
+  color: $text-muted;
 }
 
 .first {
@@ -25,7 +27,7 @@ body {
 }
 
 .icon-icon_angel {
-  background-color: @text-color;
+  background-color: $text-color;
 
   display: inline-block;
   width: 1em;
@@ -36,19 +38,19 @@ body {
 }
 
 a .icon-icon_angel {
-  background-color: @link-color;
+  background-color: $link-color;
 }
 
 .navbar .icon-icon_angel {
-  background-color: @navbar-default-link-disabled-color;
+  background-color: $navbar-default-link-disabled-color;
 }
 
 .navbar-brand .icon-icon_angel {
-  background-color: @navbar-default-brand-color;
+  background-color: $navbar-default-brand-color;
 }
 
 table a > .icon-icon_angel {
-  background-color: @text-color;
+  background-color: $text-color;
 }
 
 .table .form-group {
@@ -56,8 +58,6 @@ table a > .icon-icon_angel {
 }
 
 .stats {
-  .make-md-column(3);
-  .make-xs-column(6);
   font-size: 20px;
   height: 150px;
   text-align: center;
@@ -67,7 +67,7 @@ table a > .icon-icon_angel {
     font-weight: 200;
   }
 
-  @media (max-width: @screen-md) {
+  @media (max-width: $screen-md) {
     font-size: inherit;
     .number {
       font-size: 40px;
@@ -77,21 +77,21 @@ table a > .icon-icon_angel {
 
 
 .stats-danger {
-  color: @brand-danger;
+  color: $brand-danger;
 }
 
 .stats-warning {
-  color: @brand-warning;
+  color: $brand-warning;
 }
 
 .stats-success {
-  color: @brand-success;
+  color: $brand-success;
 }
 
 .dashboard-panel {
   position: relative;
   font-size: 20px;
-  color: @headings-color;
+  color: $headings-color;
 
   .panel-link {
     position: absolute;
@@ -101,7 +101,7 @@ table a > .icon-icon_angel {
     left: 0;
     text-decoration: none; /* No underlines on the link */
     z-index: 10; /* Places the link above everything else in the div */
-    background-color: @brand-primary; /* Fix to make div clickable in IE */
+    background-color: $brand-primary; /* Fix to make div clickable in IE */
     opacity: 0; /* Fix to make div clickable in IE */
     filter: alpha(opacity=1); /* Fix to make div clickable in IE */
   }
@@ -112,37 +112,37 @@ table a > .icon-icon_angel {
 }
 
 .panel-primary .panel-heading a {
-  color: @panel-primary-text;
-  background-color: @panel-primary-heading-bg;
+  color: $panel-primary-text;
+  background-color: $panel-primary-heading-bg;
 }
 
 .panel-default .panel-heading a {
-  color: @panel-default-text;
-  background-color: @panel-default-heading-bg;
+  color: $panel-default-text;
+  background-color: $panel-default-heading-bg;
 }
 
 .panel-info .panel-heading a {
-  color: @panel-info-text;
-  background-color: @panel-info-heading-bg;
+  color: $panel-info-text;
+  background-color: $panel-info-heading-bg;
 }
 
 .panel-success .panel-heading a {
-  color: @panel-success-text;
-  background-color: @panel-success-heading-bg;
+  color: $panel-success-text;
+  background-color: $panel-success-heading-bg;
 }
 
 .panel-warning .panel-heading a {
-  color: @panel-warning-text;
-  background-color: @panel-warning-heading-bg;
+  color: $panel-warning-text;
+  background-color: $panel-warning-heading-bg;
 }
 
 .panel-danger .panel-heading a {
-  color: @panel-danger-text;
-  background-color: @panel-danger-heading-bg;
+  color: $panel-danger-text;
+  background-color: $panel-danger-heading-bg;
 }
 
 .select2-dropdown {
-  background-color: @input-bg;
+  background-color: $input-bg;
 }
 
 .selection .checkbox {
@@ -157,39 +157,39 @@ table a > .icon-icon_angel {
   width: 100%;
 
   .lane {
-    background: @table-bg-accent;
+    background: $table-bg-accent;
     flex-grow: 1;
     min-width: 280px;
     width: 280px;
     flex-shrink: 1;
 
     .header {
-      background: @panel-bg;
-      border-bottom: 1px solid @table-border-color;
+      background: $panel-bg;
+      border-bottom: 1px solid $table-border-color;
       height: 30px;
       padding: 5px 5px 5px 16px;
     }
 
     .tick {
       height: 30px;
-      border-top: 1px solid darken(@table-bg-accent, 2%);
+      border-top: 1px solid darken($table-bg-accent, 2%);
     }
 
     .tick.hour {
-      border-top: 2px solid @table-border-color;
+      border-top: 2px solid $table-border-color;
       font-size: 0.9em;
       padding-left: 5px;
     }
 
     .tick.day {
-      border-top: 2px solid @brand-primary;
+      border-top: 2px solid $brand-primary;
       font-size: 0.9em;
       padding-left: 5px;
     }
   }
 
   .lane.time {
-    border-right: 1px solid @table-border-color;
+    border-right: 1px solid $table-border-color;
     flex-grow: 0;
     min-width: 50px;
     width: 50px;
@@ -251,11 +251,11 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .inline-form-spacing {
-  margin-bottom: @form-group-margin-bottom;
+  margin-bottom: map-get($spacers, 3);
 }
 
 .user-settings .settings-menu ul {
-  margin-top: @line-height-computed;
+  margin-top: $line-height-computed;
 }
 
 span.ref-id[id] {
@@ -327,12 +327,12 @@ span.ref-id[id] {
   padding: 2px 6px;
   margin-top: 6px;
   margin-bottom: 4px;
-  max-height: @navbar-height;
+  max-height: $navbar-height;
 
   .icon {
-    border-color: @brand-primary;
+    border-color: $brand-primary;
     font-weight: bold;
-    color: @brand-primary;
+    color: $brand-primary;
     font-size: 25px;
     &-close {
       padding: 0 3px;
@@ -350,21 +350,21 @@ span.ref-id[id] {
 }
 
 
-@media screen and (max-width: @grid-float-breakpoint-max) {
+@media screen and (max-width: $grid-float-breakpoint-max) {
   #navbar-offcanvas {
     display: block;
     position: absolute;
     width: 90%;
-    height: calc( 100vh - @navbar-height);
+    height: calc(100vh - $navbar-height);
     max-height: unset;
     left: 101%;
-    top: @navbar-height + 1;
+    top: $navbar-height + 1;
     // extra padding because mobile Safari displays a bottom bar hiding parts of the menu
     padding-bottom: 75px;
 
     transition: left .3s ease-in-out;
 
-    background: @navbar-default-bg;
+    background: $navbar-default-bg;
     margin: 0 !important;   // Overridden in theme with high specifity:
     // .container > .navbar-header,
     // .container-fluid > .navbar-header,

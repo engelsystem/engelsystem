@@ -1,0 +1,57 @@
+// cccamp19 blue (2019)
+@import "cyborg_variables.scss";
+
+// Variables
+// --------------------------------------------------
+
+//== changed Colors
+
+$gray-dark:              #282828;   // #333
+$gray-light:             #888;   // #999
+$gray-lighter:           #ADAFAE; // #eee
+
+$brand-primary:         #0076ba;
+
+@import "cyborg_styles.scss";
+
+// Specials for cccamp19 design
+
+.navbar-brand {
+  .icon-icon_angel {
+    background-color: $brand-primary;
+  }
+
+  strong {
+    font-weight: lighter;
+    color: $brand-primary;
+    text-shadow:
+      0 0 10px $brand-primary,
+      0 0 20px $brand-primary,
+      0 0 30px $brand-primary,
+      0 0 40px $brand-primary,
+      0 0 70px $brand-primary,
+      0 0 80px $brand-primary;
+  }
+}
+
+h1 {
+  font-weight: lighter;
+  color: $brand-primary;
+  text-shadow: 0 0 10px $brand-primary;
+
+  .icon-icon_angel {
+    background-color: $brand-primary;
+  }
+}
+
+.panel-title {
+  color: #fff;
+}
+
+.input-group-addon {
+  color: #000;
+
+  .icon-icon_angel {
+    background-color: #000;
+  }
+}
