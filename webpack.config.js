@@ -24,7 +24,7 @@ const plugins = [
 
 
 const themeEntries = {};
-for (let i = 1; i < 2; i++) {
+for (let i = 0; i < 2; i++) {
   themeEntries[`theme${i}`] = `./resources/assets/themes/theme${i}.scss`;
 }
 

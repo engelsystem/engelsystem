@@ -6,6 +6,16 @@
 
 {% set colors=['success', 'info', 'warning', 'danger'] %}
 {% set types=['default', 'primary', 'success', 'info', 'warning', 'danger'] %}
+{% set types_color=[
+    ['primary', 'light'],
+    ['secondary', 'light'],
+    ['success', 'light'],
+    ['danger', 'light'],
+    ['warning', 'dark'],
+    ['info', 'dark'],
+    ['light', 'dark'],
+    ['dark', 'light'],
+] %}
 {% set types_buttons=types|merge(['link']) %}
 {% set lipsum='Lorem ipsum dolor sit amet, consectetur adipisici elit…' %}
 {% set linksum='Lorem ipsum! Dolor <a href="#">link</a> amet, consectetur adipisici elit!' %}
@@ -13,15 +23,15 @@
 {% block content %}
     <div class="col-12">
         <div class="container">
-        <h1>{{ block('title') }} <small>{{ themes[theme] }}</small></h1>
+        <h1>{{ block('title') }} <small class="text-muted">{{ themes[theme] }}</small></h1>
 
         <h2>Elements <small class="text-muted">small</small></h2>
         <div class="row">
             <div class="col-md-2">
-                <h3>Headings <small>small</small></h3>
-                <h4>H4 <small>small</small></h4>
-                <h5>H5 <small>small</small></h5>
-                <h6>H6 <small>small</small></h6>
+                <h3>Headings <small class="text-muted">small</small></h3>
+                <h4>H4 <small class="text-muted">small</small></h4>
+                <h5>H5 <small class="text-muted">small</small></h5>
+                <h6>H6 <small class="text-muted">small</small></h6>
             </div>
             <div class="col-md-6">
                 <h3>Lists</h3>
@@ -78,17 +88,29 @@
             <div class="col-md-3">
                 <h3>Navigation Tabs</h3>
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#">Lorem</a></li>
-                    <li><a href="#">Ipsum</a></li>
-                    <li><a href="#">Dolor</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Lorem</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Ipsum</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Dolor</a>
+                    </li>
                 </ul>
             </div>
             <div class="col-md-3 settings-menu">
                 <h3>Navigation Pills</h3>
-                <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="#">Some</a></li>
-                    <li><a href="#">Test</a></li>
-                    <li><a href="#">Menu</a></li>
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Some</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Test</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Menu</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -113,10 +135,10 @@
 
         <div class="row">
             <div class="col-md-6">
-                <h3>Labels</h3>
+                <h3>Badges</h3>
                 <p>
-                    {% for type in types %}
-                        <span class="label label-{{ type }}">{{ type|capitalize }}</span>
+                    {% for type in types_color %}
+                        <span class="badge bg-{{ type[0] }} text-{{ type[1] }}">{{ type[0]|capitalize }}</span>
                     {% endfor %}
                 </p>
             </div>

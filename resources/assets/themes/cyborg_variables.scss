@@ -38,25 +38,25 @@ $gray:                   #555; // #555
 $gray-light:             #999;   // #999
 $gray-lighter:           #eee; // #eee
 
-$brand-primary:         #99ba00;
-$brand-success:         #99ba00;
-$brand-info:            #0076ba;
-$brand-warning:         #ffc600;
-$brand-danger:          #d9534f;
-
+$primary:         #99ba00;
+$success:         #99ba00;
+$info:            #0076ba;
+$warning:         #ffc600;
+$danger:          #d9534f;
 
 //== Scaffolding
 //
 //## Settings for some of the most global styles.
 
-//** Background color for `<body>`.
-$body-bg:               #060606;
+$body-bg:    #060606;
+$body-color: $gray-light;
+
 //** Global text color on `<body>`.
 $text-color:            $gray-light;
 $text-muted: $gray-light;
 
 //** Global textual link color.
-$link-color:            $brand-primary;
+$link-color:            $primary;
 //** Link hover color set via `darken()` function.
 $link-hover-color:      $link-color;
 
@@ -132,7 +132,7 @@ $border-radius-small:       3px;
 //** Global color for active items (e.g., navs or dropdowns).
 $component-active-color:    #fff;
 //** Global background color for active items (e.g., navs or dropdowns).
-$component-active-bg:       $brand-primary;
+$component-active-bg:       $primary;
 
 //** Width of the `border` for generating carets that indicator dropdowns.
 $caret-width-base:          4px;
@@ -172,23 +172,23 @@ $btn-default-bg:                 $gray-light;
 $btn-default-border:             darken($btn-default-bg, 10%);
 
 $btn-primary-color:              $btn-default-color;
-$btn-primary-bg:                 $brand-primary;
+$btn-primary-bg:                 $primary;
 $btn-primary-border:             darken($btn-primary-bg, 10%);
 
 $btn-success-color:              $btn-default-color;
-$btn-success-bg:                 $brand-success;
+$btn-success-bg:                 $success;
 $btn-success-border:             darken($btn-success-bg, 10%);
 
 $btn-info-color:                 $btn-default-color;
-$btn-info-bg:                    $brand-info;
+$btn-info-bg:                    $info;
 $btn-info-border:                darken($btn-info-bg, 10%);
 
 $btn-warning-color:              $btn-default-color;
-$btn-warning-bg:                 $brand-warning;
+$btn-warning-bg:                 $warning;
 $btn-warning-border:             darken($btn-warning-bg, 10%);
 
 $btn-danger-color:               $btn-default-color;
-$btn-danger-bg:                  $brand-danger;
+$btn-danger-bg:                  $danger;
 $btn-danger-border:              darken($btn-danger-bg, 10%);
 
 $btn-link-disabled-color:        $gray-light;
@@ -436,7 +436,7 @@ $nav-tabs-border-color:                     $gray-dark;
 
 $nav-tabs-link-hover-border-color:          transparent;
 
-$nav-tabs-active-link-hover-bg:             $brand-primary;
+$nav-tabs-active-link-hover-bg:             $primary;
 $nav-tabs-active-link-hover-color:          #fff;
 $nav-tabs-active-link-hover-border-color:   $gray-dark;
 
@@ -462,7 +462,7 @@ $pagination-hover-bg:                  $component-active-bg;
 $pagination-hover-border:              transparent;
 
 $pagination-active-color:              #000;
-$pagination-active-bg:                 $brand-primary;
+$pagination-active-bg:                 $primary;
 $pagination-active-border:             transparent;
 
 $pagination-disabled-color:            $gray-light;
@@ -501,21 +501,21 @@ $jumbotron-font-size:            ceil(($font-size-base * 1.5));
 //
 //## Define colors for form feedback states and, by default, alerts.
 
-$state-success-text:             $brand-success;
-$state-success-bg:               darken($brand-success, 40%);
-$state-success-border:           $brand-success;
+$state-success-text:             $success;
+$state-success-bg:               darken($success, 40%);
+$state-success-border:           $success;
 
-$state-info-text:                $brand-info;
-$state-info-bg:                  darken($brand-info, 40%);
-$state-info-border:              $brand-info;
+$state-info-text:                $info;
+$state-info-bg:                  darken($info, 40%);
+$state-info-border:              $info;
 
-$state-warning-text:             $brand-warning;
-$state-warning-bg:               darken($brand-warning, 40%);
-$state-warning-border:           $brand-warning;
+$state-warning-text:             $warning;
+$state-warning-bg:               darken($warning, 40%);
+$state-warning-border:           $warning;
 
-$state-danger-text:              $brand-danger;
-$state-danger-bg:                darken($brand-danger, 40%);
-$state-danger-border:            $brand-danger;
+$state-danger-text:              $danger;
+$state-danger-bg:                darken($danger, 40%);
+$state-danger-border:            $danger;
 
 
 //== Tooltips
@@ -569,18 +569,12 @@ $popover-arrow-outer-fallback-color:  darken($popover-fallback-border-color, 20%
 //
 //##
 
-//** Default label background color
 $label-default-bg:            $btn-default-bg;
-//** Primary label background color
-$label-primary-bg:            $brand-primary;
-//** Success label background color
-$label-success-bg:            $brand-success;
-//** Info label background color
-$label-info-bg:               $brand-info;
-//** Warning label background color
-$label-warning-bg:            $brand-warning;
-//** Danger label background color
-$label-danger-bg:             $brand-danger;
+$label-primary-bg:            $primary;
+$label-success-bg:            $success;
+$label-info-bg:               $info;
+$label-warning-bg:            $warning;
+$label-danger-bg:             $danger;
 
 //** Default label text color
 $label-color:                 #fff;
@@ -656,15 +650,15 @@ $progress-bg:                 $gray-darker;
 $progress-bar-color:          #fff;
 
 //** Default progress bar color
-$progress-bar-bg:             $brand-primary;
+$progress-bar-bg:             $primary;
 //** Success progress bar color
-$progress-bar-success-bg:     $brand-success;
+$progress-bar-success-bg:     $success;
 //** Warning progress bar color
-$progress-bar-warning-bg:     $brand-warning;
+$progress-bar-warning-bg:     $warning;
 //** Danger progress bar color
-$progress-bar-danger-bg:      $brand-danger;
+$progress-bar-danger-bg:      $danger;
 //** Info progress bar color
-$progress-bar-info-bg:        $brand-info;
+$progress-bar-info-bg:        $info;
 
 
 //== List group
@@ -721,8 +715,8 @@ $panel-default-heading-bg:    lighten($gray-darker, 10%);
 $panel-footer-bg:             $panel-default-heading-bg;
 
 $panel-primary-text:          #fff;
-$panel-primary-border:        $brand-primary;
-$panel-primary-heading-bg:    $brand-primary;
+$panel-primary-border:        $primary;
+$panel-primary-heading-bg:    $primary;
 
 $panel-success-text:          $state-success-text;
 $panel-success-border:        $state-success-border;
@@ -775,10 +769,10 @@ $well-border:                 darken($well-bg, 7%);
 $badge-color:                 #000;
 //** Linked badge text color on hover
 $badge-link-hover-color:      #000;
-$badge-bg:                    $brand-primary;
+$badge-bg:                    $primary;
 
 //** Badge text color in active nav link
-$badge-active-color:          $brand-primary;
+$badge-active-color:          $primary;
 //** Badge background color in active nav link
 $badge-active-bg:             #fff;
 
@@ -855,7 +849,7 @@ $component-offset-horizontal: 180px;
 //** Abbreviations and acronyms border color
 $abbr-border-color:           $gray-light;
 //** Headings small color
-$headings-small-color:        $brand-primary;
+$headings-small-color:        $primary;
 //** Blockquote small color
 $blockquote-small-color:      $gray;
 //** Blockquote font size

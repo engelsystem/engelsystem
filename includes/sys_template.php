@@ -169,46 +169,68 @@ function toolbar_pills($items)
  * Render a link for a toolbar.
  *
  * @param string $href
- * @param string $glyphicon
+ * @param string $icon
  * @param string $label
- * @param bool   $selected
+ * @param bool   $active
  * @return string
  */
-function toolbar_item_link($href, $glyphicon, $label, $selected = false)
+function toolbar_item_link($href, $icon, $label, $active = false)
 {
-    return '<li class="' . ($selected ? 'active' : '') . '">'
-        . '<a href="' . $href . '">'
-        . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '')
+    return '<li class="nav-item">'
+        . '<a class="nav-link ' . ($active ? 'active' : '') . '" href="' . $href . '">'
+        . ($icon != '' ? '<span class="bi bi-' . $icon . '"></span> ' : '')
         . $label
         . '</a>'
         . '</li>';
 }
 
-/**
- * @return string
- */
-function toolbar_item_divider()
+function toolbar_dropdown_item(string $href, string $label, bool $active, string $icon = null): string
 {
-    return '<li class="divider"></li>';
+    return strtr(
+        '<li><a class="dropdown-item{active}" href="{href}">{icon}{label}</a></li>',
+        [
+            '{href}'   => $href,
+            '{icon}'   => $icon === null ? '' : '<i class="bi ' . $icon . '"></i>',
+            '{label}'  => $label,
+            '{active}' => $active ? ' active' : ''
+        ]
+    );
+}
+
+function toolbar_dropdown_item_divider(): string
+{
+    return '<li><hr class="dropdown-divider"></li>';
 }
 
 /**
- * @param string $glyphicon
+ * @param string $icon
  * @param string $label
  * @param array  $submenu
  * @param string $class
  * @return string
  */
-function toolbar_dropdown($glyphicon, $label, $submenu, $class = '')
+function toolbar_dropdown($icon, $label, $submenu, $class = ''): string
 {
-    return '<li class="dropdown ' . $class . '">'
-        . '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'
-        . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '')
-        . $label
-        . '<span class="caret"></span></a>'
-        . '<ul class="dropdown-menu" role="menu">'
-        . join("\n", $submenu)
-        . '</ul></li>';
+    $template =<<<EOT
+<li class="nav-item dropdown {class}">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {icon} {label}
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+    {submenu}
+  </ul>
+</li>
+EOT;
+
+    return strtr(
+        $template,
+        [
+            '{class}'   => $class,
+            '{label}'   => $label,
+            '{icon}'    => empty($icon) ? '' : '<i class="bi ' . $icon . '"></i>',
+            '{submenu}' => join("\n", $submenu)
+        ]
+    );
 }
 
 /**
@@ -238,7 +260,6 @@ function toolbar_popover($glyphicon, $label, $content, $class = '')
                 });
             </script></li>';
 }
-
 
 /**
  * Generiert HTML Code für eine "Seite".

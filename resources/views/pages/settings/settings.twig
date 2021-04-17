@@ -6,15 +6,18 @@
 {% block content %}
     <div class="container user-settings">
         {% block container_title %}
-            <h1>{{ __('settings.settings') }} <small>{{ block('title') }}</small></h1>
+            <h1>
+                {{ __('settings.settings') }}
+                <small class="text-muted">{{ block('title') }}</small>
+            </h1>
         {% endblock %}
 
         <div class="row">
             <div class="col-md-3 settings-menu">
-                <ul class="nav nav-pills nav-stacked">
+                <ul class="nav nav-pills flex-column">
                     {% for url,title in settings_menu %}
-                        <li{% if url == request.url() %} class="active"{% endif %}>
-                            <a href="{{ url }}">{{ __(title) }}</a>
+                        <li class="nav-item">
+                            <a class="nav-link {% if url == request.url() %}active{% endif %}" href="{{ url }}">{{ __(title) }}</a>
                         </li>
                     {% endfor %}
                 </ul>

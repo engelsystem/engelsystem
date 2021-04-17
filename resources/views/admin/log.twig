@@ -46,7 +46,7 @@
                         <tr>
                             <td class="{{ td_type }}">{{ entry.created_at.format(__('Y-m-d H:i')) }}</td>
                             <td class="{{ td_type }}">
-                                <span class="label label-{{ type }}">{{ entry.level|capitalize }}</span>
+                                <span class="badge bg-{{ type }}">{{ entry.level|capitalize }}</span> <!-- //todo bs5 -->
                             </td>
                             <td>{{ entry.message|nl2br }}</td>
                         </tr>

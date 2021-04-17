@@ -60,24 +60,24 @@ function make_user_submenu()
     $user_submenu = make_language_select();
 
     if (auth()->can('user_settings') || auth()->can('logout')) {
-        $user_submenu[] = toolbar_item_divider();
+        $user_submenu[] = toolbar_dropdown_item_divider();
     }
 
     if (auth()->can('user_settings')) {
-        $user_submenu[] = toolbar_item_link(
+        $user_submenu[] = toolbar_dropdown_item(
             page_link_to('user_settings'),
-            'list-alt',
             __('Settings'),
-            $page == 'user_settings'
+            $page == 'user_settings',
+            'bi-gear'
         );
     }
 
     if (auth()->can('logout')) {
-        $user_submenu[] = toolbar_item_link(
+        $user_submenu[] = toolbar_dropdown_item(
             page_link_to('logout'),
-            'log-out',
             __('Logout'),
-            $page == 'logout'
+            $page == 'logout',
+            'bi-box-arrow-left',
         );
     }
 
@@ -138,9 +138,8 @@ function make_navigation()
         }
 
         $title = ((array)$options)[0];
-        $admin_menu[] = toolbar_item_link(
+        $admin_menu[] = toolbar_dropdown_item(
             page_link_to($menu_page),
-            '',
             __($title),
             $menu_page == $page
         );
@@ -150,7 +149,7 @@ function make_navigation()
         $menu[] = toolbar_dropdown('', __('Admin'), $admin_menu);
     }
 
-    return '<ul class="nav navbar-nav">' . join("\n", $menu) . '</ul>';
+    return '<ul class="navbar-nav mb-2 mb-lg-0">' . join("\n", $menu) . '</ul>';
 }
 
 /**
@@ -187,13 +186,13 @@ function make_room_navigation($menu)
     $rooms = Rooms();
     $room_menu = [];
     if (auth()->can('admin_rooms')) {
-        $room_menu[] = toolbar_item_link(page_link_to('admin_rooms'), 'list', __('Manage rooms'));
+        $room_menu[] = toolbar_dropdown_item(page_link_to('admin_rooms'), __('Manage rooms'), false, 'list');
     }
     if (count($room_menu) > 0) {
-        $room_menu[] = toolbar_item_divider();
+        $room_menu[] = toolbar_dropdown_item_divider();
     }
     foreach ($rooms as $room) {
-        $room_menu[] = toolbar_item_link(room_link($room), 'map-marker', $room->name);
+        $room_menu[] = toolbar_dropdown_item(room_link($room), $room->name, false, 'map-marker');
     }
     if (count($room_menu) > 0) {
         $menu[] = toolbar_dropdown('map-marker', __('Rooms'), $room_menu);
@@ -215,9 +214,8 @@ function make_language_select()
     foreach (config('locales') as $locale => $name) {
         $url = url($request->getPathInfo(), ['set-locale' => $locale]);
 
-        $items[] = toolbar_item_link(
+        $items[] = toolbar_dropdown_item(
             htmlspecialchars($url),
-            '',
             $name,
             $locale == $activeLocale
         );

@@ -4,7 +4,10 @@
 {% block title %}{{ __('settings.oauth') }}{% endblock %}
 
 {% block container_title %}
-    <h1 id="oauth-settings-title">{{ __('settings.settings') }} <small>{{ block('title') }}</small></h1>
+    <h1 id="oauth-settings-title">
+        {{ __('settings.settings') }}
+        <small class="text-muted">{{ block('title') }}</small>
+    </h1>
 {% endblock %}
 
 {% block row_content %}

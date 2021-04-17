@@ -28,6 +28,7 @@
     "@babel/preset-env": "^7.11.5",
     "autoprefixer": "^10.2.5",
     "babel-loader": "^8.1.0",
+    "bootstrap-icons": "^1.4.1",
     "css-loader": "^5.2.2",
     "css-minimizer-webpack-plugin": "^2.0.0",
     "file-loader": "^6.1.0",

@@ -5,13 +5,13 @@
 
 {% block content %}
     <div class="col-md-12">
-        <div class="row">
+        <div class="row mb-3 mt-5">
             <div class="col-sm-12 text-center" id="welcome-title">
                 <h2>{{ __('Welcome to the %s!', [config('name') ~ m.angel() ~ (config('app_name')|upper) ])|raw }}</h2>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-3">
             {% for name,date in {
                 (__('Buildup starts')): config('buildup_start'),
                 (__('Event starts')): config('event_start'),
@@ -28,19 +28,21 @@
             {% endfor %}
         </div>
 
-        <div class="row">
-            <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-                <div class="panel panel-primary first">
-                    <div class="panel-body">
+        <div class="row mb-5">
+            <div class="col-sm-6 offset-sm-6 col-md-4 offset-md-4">
+                <div class="card bg-dark">
+                    <div class="card-body">
                         {% include 'layouts/parts/messages.twig' %}
 
                         <form action="" enctype="multipart/form-data" method="post">
                             {{ csrf() }}
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon input-lg">{{ m.angel }}</span>
+                            <div class="mb-3">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text text-light">
+                                        {{ m.angel }}
+                                    </span>
                                     <input
-                                        class="form-control input-lg"
+                                        class="form-control"
                                         id="form_nick"
                                         type="text"
                                         name="login"
@@ -50,32 +52,36 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon input-lg">{{ m.glyphicon('lock') }}</span>
+                            <div class="mb-3">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text text-light">
+                                        <i class="bi bi-key"></i>
+                                    </span>
                                     <input
-                                        class="form-control input-lg" id="form_password"
+                                        class="form-control" id="form_password"
                                         type="password" name="password" value="" placeholder="{{ __('Password') }}"
                                     >
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="mb-3 text-center">
                                 <button class="btn btn-primary btn-lg btn-block" type="submit" name="submit">
                                     {{ __('Login') }}
                                 </button>
                             </div>
 
-                            <div class="form-group btn-group btn-group-justified">
-                                {% for name,config in config('oauth') %}
-                                    <a href="{{ url('oauth/' ~ name) }}" class="btn btn-primary btn-lg{% if config.hidden|default(false) %} hidden{% endif %}">
-                                        {{ __(
-                                            'oauth.login-using-provider',
-                                            [__(config.name|default(name|capitalize))]
-                                        ) }}
-                                    </a>
-                                {% endfor %}
-                            </div>
+                            {%  if config('oauth') is not empty %}
+                                <div class="mb-3 btn-group btn-group-justified">
+                                    {% for name,config in config('oauth') %}
+                                        <a href="{{ url('oauth/' ~ name) }}" class="btn btn-primary btn-lg{% if config.hidden|default(false) %} hidden{% endif %}">
+                                            {{ __(
+                                                'oauth.login-using-provider',
+                                                [__(config.name|default(name|capitalize))]
+                                            ) }}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
 
                             <div class="text-center">
                                 <a href="{{ url('/password/reset') }}" class="">
@@ -88,7 +94,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-5">
             <div class="col-sm-6 text-center">
                 <h2>{{ __('Register') }}</h2>
                 {% if has_permission_to('register') and config('registration_enabled') %}
