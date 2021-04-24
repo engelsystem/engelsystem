@@ -7,7 +7,7 @@ use Engelsystem\Models\User\User;
  */
 function admin_arrive_title()
 {
-    return __('Arrived angels');
+    return __('Arrive angels');
 }
 
 /**

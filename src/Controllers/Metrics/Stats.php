@@ -7,10 +7,12 @@ namespace Engelsystem\Controllers\Metrics;
 use Carbon\Carbon;
 use Engelsystem\Database\Database;
 use Engelsystem\Models\EventConfig;
+use Engelsystem\Models\Faq;
 use Engelsystem\Models\LogEntry;
 use Engelsystem\Models\Message;
 use Engelsystem\Models\News;
 use Engelsystem\Models\NewsComment;
+use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\PasswordReset;
@@ -92,6 +94,14 @@ class Stats
     }
 
     /**
+     * @return int
+     */
+    public function usersPronouns(): int
+    {
+        return PersonalData::where('pronoun', '!=', '')->count();
+    }
+
+    /**
      * @param string $type
      *
      * @return int
@@ -104,6 +114,9 @@ class Stats
                 break;
             case 'humans':
                 $query = Settings::whereEmailHuman(true);
+                break;
+            case 'news':
+                $query = Settings::whereEmailNews(true);
                 break;
             default:
                 return 0;
@@ -415,6 +428,14 @@ class Stats
     /**
      * @return int
      */
+    public function faq(): int
+    {
+        return Faq::query()->count();
+    }
+
+    /**
+     * @return int
+     */
     public function messages(): int
     {
         return Message::query()->count();
@@ -428,6 +449,17 @@ class Stats
         return $this
             ->getQuery('sessions')
             ->count();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function oauth(): Collection
+    {
+        return OAuth::query()
+            ->select(['provider', $this->raw('COUNT(provider) AS count')])
+            ->groupBy(['provider'])
+            ->get();
     }
 
     /**

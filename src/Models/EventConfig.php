@@ -32,10 +32,10 @@ class EventConfig extends BaseModel
 
     /** @var array The configuration values that should be cast to native types */
     protected $valueCasts = [
-        'buildup_start' => 'date',
-        'event_start'   => 'date',
-        'event_end'     => 'date',
-        'teardown_end'  => 'date',
+        'buildup_start' => 'datetime_human',
+        'event_start'   => 'datetime_human',
+        'event_end'     => 'datetime_human',
+        'teardown_end'  => 'datetime_human',
         'last_metrics'  => 'datetime',
     ];
 
@@ -55,9 +55,8 @@ class EventConfig extends BaseModel
         /** @see \Illuminate\Database\Eloquent\Concerns\HasAttributes::castAttribute */
         if (!empty($value)) {
             switch ($this->getValueCast($this->name)) {
-                case 'date':
-                    return Carbon::createFromFormat('Y-m-d', $value)
-                        ->setTime(0, 0);
+                case 'datetime_human':
+                    return Carbon::make($value);
                 case 'datetime':
                     return Carbon::createFromFormat(Carbon::ISO8601, $value);
             }
@@ -76,9 +75,9 @@ class EventConfig extends BaseModel
     {
         if (!empty($value)) {
             switch ($this->getValueCast($this->name)) {
-                case 'date':
+                case 'datetime_human':
                     /** @var Carbon $value */
-                    $value = $value->toDateString();
+                    $value = $value->toDateTimeString('minute');
                     break;
                 case 'datetime':
                     /** @var Carbon $value */

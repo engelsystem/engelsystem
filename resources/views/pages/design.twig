@@ -8,21 +8,53 @@
 {% set types=['default', 'primary', 'success', 'info', 'warning', 'danger'] %}
 {% set types_buttons=types|merge(['link']) %}
 {% set lipsum='Lorem ipsum dolor sit amet, consectetur adipisici elit…' %}
-{% set linksum='Lorem ipsum dolor <a href="#">link</a> amet, consectetur adipisici elit!' %}
+{% set linksum='Lorem ipsum! Dolor <a href="#">link</a> amet, consectetur adipisici elit!' %}
 
 {% block content %}
     <div class="container">
-        <h1>{{ block('title') }}</h1>
+        <h1>{{ block('title') }} <small>{{ themes[theme] }}</small></h1>
 
 
-        <h2>Elements</h2>
+        <h2>Elements <small>small</small></h2>
         <div class="row">
-            <div class="col-md-6">
-                <h3>Headings</h3>
-                <h4>H4</h4>
-                <h5>H5</h5>
-                <h6>H6</h6>
+            <div class="col-md-2">
+                <h3>Headings <small>small</small></h3>
+                <h4>H4 <small>small</small></h4>
+                <h5>H5 <small>small</small></h5>
+                <h6>H6 <small>small</small></h6>
             </div>
+            <div class="col-md-6">
+                <h3>Lists</h3>
+                <p>
+                    This page should be used when creating and testing new designs to find usability and/or design issues.
+                    {{ lipsum|replace({'…': '.'}) }}
+                </p>
+                <ul>
+                    <li>Unordered</li>
+                    <li>List</li>
+                    <li>Items</li>
+                </ul>
+                <ol>
+                    <li>Ordered</li>
+                    <li>List</li>
+                    <li>Items</li>
+                </ol>
+                <p>{{ linksum|raw }} {{ lipsum }}</p>
+            </div>
+            <div class="col-md-4">
+                <h3>Themes</h3>
+                <ul>
+                    {% for id,theme in themes|sort %}
+                        <li>
+                            <a href="{{ url('design', {'theme': id}) }}">
+                                {{ theme }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-6">
                 <h3>Tables</h3>
                 <table class="table table-striped">
@@ -43,7 +75,24 @@
                     </tr>
                 </table>
             </div>
+            <div class="col-md-3">
+                <h3>Navigation Tabs</h3>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#">Lorem</a></li>
+                    <li><a href="#">Ipsum</a></li>
+                    <li><a href="#">Dolor</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 settings-menu">
+                <h3>Navigation Pills</h3>
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="#">Some</a></li>
+                    <li><a href="#">Test</a></li>
+                    <li><a href="#">Menu</a></li>
+                </ul>
+            </div>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <h3>Texts</h3>
@@ -61,6 +110,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-6">
                 <h3>Labels</h3>
@@ -79,6 +129,7 @@
                 </p>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <h3>Alerts</h3>
@@ -93,6 +144,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <h3>Forms</h3>
@@ -147,6 +199,16 @@
                         </label>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <h3>Other</h3>
+        <div class="row">
+            <div class="col-md-3">
+                <h4>Code</h4>
+                <p>
+                    <code>3.1415926535897932384626433832795028841971693993751058209749445923</code>
+                </p>
             </div>
         </div>
 

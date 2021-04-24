@@ -27,11 +27,11 @@ class ConfigServiceProviderTest extends ServiceProviderTest
         /** @var Config|MockObject $config */
         list($app, $config) = $this->getConfiguredApp(__DIR__ . '/../../../config');
 
-        $this->setExpects($config, 'set', null, null, $this->exactly(2));
-        $config->expects($this->exactly(3))
+        $this->setExpects($config, 'set', null, null, $this->exactly(3));
+        $config->expects($this->exactly(4))
             ->method('get')
             ->with(null)
-            ->willReturnOnConsecutiveCalls([], [], ['lor' => 'em']);
+            ->willReturnOnConsecutiveCalls([], [], [], ['lor' => 'em']);
 
         $configFile = __DIR__ . '/../../../config/config.php';
         $configExists = file_exists($configFile);

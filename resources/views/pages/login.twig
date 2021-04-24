@@ -6,7 +6,7 @@
 {% block content %}
     <div class="col-md-12">
         <div class="row">
-            <div class="col-sm-12 text-center">
+            <div class="col-sm-12 text-center" id="welcome-title">
                 <h2>{{ __('Welcome to the %s!', [config('name') ~ m.angel() ~ (config('app_name')|upper) ])|raw }}</h2>
             </div>
         </div>
@@ -64,6 +64,17 @@
                                 <button class="btn btn-primary btn-lg btn-block" type="submit" name="submit">
                                     {{ __('Login') }}
                                 </button>
+                            </div>
+
+                            <div class="form-group btn-group btn-group-justified">
+                                {% for name,config in config('oauth') %}
+                                    <a href="{{ url('oauth/' ~ name) }}" class="btn btn-primary btn-lg{% if config.hidden|default(false) %} hidden{% endif %}">
+                                        {{ __(
+                                            'oauth.login-using-provider',
+                                            [__(config.name|default(name|capitalize))]
+                                        ) }}
+                                    </a>
+                                {% endfor %}
                             </div>
 
                             <div class="text-center">

@@ -71,10 +71,18 @@ class Controller extends BaseController
         $userTshirtSizes = $this->formatStats($this->stats->tshirtSizes(), 'tshirt_sizes', 'shirt_size', 'size');
         $userLocales = $this->formatStats($this->stats->languages(), 'locales', 'language', 'locale');
         $userThemes = $this->formatStats($this->stats->themes(), 'available_themes', 'theme');
+        $userOauth = $this->formatStats($this->stats->oauth(), 'oauth', 'provider');
 
         $themes = $this->config->get('available_themes');
         foreach ($userThemes as $key => $theme) {
             $userThemes[$key]['labels']['name'] = $themes[$theme['labels']['theme']];
+        }
+
+        $oauthProviders = $this->config->get('oauth');
+        foreach ($userOauth as $key => $oauth) {
+            $provider = $oauth['labels']['provider'];
+            $name = isset($oauthProviders[$provider]['name']) ? $oauthProviders[$provider]['name'] : $provider;
+            $userOauth[$key]['labels']['name'] = $name;
         }
 
         $data = [
@@ -98,6 +106,7 @@ class Controller extends BaseController
                 ['labels' => ['state' => 'arrived', 'working' => 'yes'], 'value' => $this->stats->arrivedUsers(true)],
             ],
             'users_force_active'   => ['type' => 'gauge', $this->stats->forceActiveUsers()],
+            'users_pronouns'     => ['type' => 'gauge', $this->stats->usersPronouns()],
             'licenses'             => [
                 'type' => 'gauge',
                 'help' => 'The total number of licenses',
@@ -111,6 +120,7 @@ class Controller extends BaseController
                 'type' => 'gauge',
                 ['labels' => ['type' => 'system'], 'value' => $this->stats->email('system')],
                 ['labels' => ['type' => 'humans'], 'value' => $this->stats->email('humans')],
+                ['labels' => ['type' => 'news'], 'value' => $this->stats->email('news')],
             ],
             'users_working'        => [
                 'type' => 'gauge',
@@ -164,6 +174,7 @@ class Controller extends BaseController
                 ['labels' => ['state' => 'answered'], 'value' => $this->stats->questions(true)],
                 ['labels' => ['state' => 'pending'], 'value' => $this->stats->questions(false)],
             ],
+            'faq'                  => ['type' => 'gauge', $this->stats->faq()],
             'messages'             => ['type' => 'gauge', $this->stats->messages()],
             'password_resets'      => ['type' => 'gauge', $this->stats->passwordResets()],
             'registration_enabled' => ['type' => 'gauge', $this->config->get('registration_enabled')],
@@ -173,6 +184,7 @@ class Controller extends BaseController
                 ['labels' => ['type' => 'write'], 'value' => $this->stats->databaseWrite()],
             ],
             'sessions'             => ['type' => 'gauge', $this->stats->sessions()],
+            'oauth'                => ['type' => 'gauge', 'help' => 'The configured OAuth providers'] + $userOauth,
             'log_entries'          => [
                 'type' => 'counter',
                 [

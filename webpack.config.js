@@ -24,7 +24,7 @@ const plugins = [
 
 
 const themeEntries = {};
-for (let i = 0; i < 13; i++) {
+for (let i = 0; i < 16; i++) {
   themeEntries[`theme${i}`] = `./resources/assets/themes/theme${i}.less`;
 }
 
@@ -54,13 +54,21 @@ module.exports = {
         loader: 'babel-loader',
         query: { cacheDirectory: true },
       },
-      { test: /\.(eot|ttf|otf|svg|woff2?)(\?.*)?$/, loader: 'file-loader' },
+      { test: /\.(jpg|eot|ttf|otf|svg|woff2?)(\?.*)?$/, loader: 'file-loader' },
       { test: /\.json$/, loader: 'json-loader' },
       {
         test: /\.(less|css)$/,
         use: [
           { loader: MiniCssExtractPlugin.loader },
           { loader: 'css-loader', options: { importLoaders: 1 } },
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: [ [ "postcss-preset-env", ], ],
+              },
+            },
+          },
           { loader: 'less-loader' },
         ]
       }

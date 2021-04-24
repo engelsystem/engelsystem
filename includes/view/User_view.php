@@ -4,7 +4,10 @@ use Carbon\Carbon;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\Worklog;
+use Engelsystem\Renderer\Renderer;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use Engelsystem\Controllers\SettingsController;
 
 /**
  * Renders user settings page
@@ -16,6 +19,8 @@ use Illuminate\Support\Collection;
  * @param int   $teardown_end_date  Unix timestamp
  * @param bool  $enable_tshirt_size
  * @param array $tshirt_sizes
+ * @param array $oauth2_providers
+ *
  * @return string
  */
 function User_settings_view(
@@ -25,7 +30,8 @@ function User_settings_view(
     $buildup_start_date,
     $teardown_end_date,
     $enable_tshirt_size,
-    $tshirt_sizes
+    $tshirt_sizes,
+    $oauth2_providers
 ) {
     $personalData = $user_source->personalData;
     $enable_user_name = config('enable_user_name');
@@ -33,86 +39,94 @@ function User_settings_view(
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
 
-    return page_with_title(settings_title(), [
-        msg(),
-        div('row', [
-            div('col-md-6', [
-                form([
-                    form_info('', __('Here you can change your user details.')),
-                    form_info(entry_required() . ' = ' . __('Entry required!')),
-                    form_text('nick', __('Nick'), $user_source->name, true),
-                    form_info(
-                        '',
-                        __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.')
-                    ),
-                    $enable_pronoun
-                        ? form_text('pronoun', __('Pronoun'), $personalData->pronoun, false, 15)
-                        . form_info('', __('Will be shown on your profile page and in angel lists.'))
-                        : '',
-                    $enable_user_name ? form_text('lastname', __('Last name'), $personalData->last_name) : '',
-                    $enable_user_name ? form_text('prename', __('First name'), $personalData->first_name) : '',
-                    $enable_planned_arrival ? form_date(
-                        'planned_arrival_date',
-                        __('Planned date of arrival') . ' ' . entry_required(),
-                        $personalData->planned_arrival_date ? $personalData->planned_arrival_date->getTimestamp() : '',
-                        $buildup_start_date,
-                        $teardown_end_date
-                    ) : '',
-                    $enable_planned_arrival ? form_date(
-                        'planned_departure_date',
-                        __('Planned date of departure'),
-                        $personalData->planned_departure_date ? $personalData->planned_departure_date->getTimestamp() : '',
-                        $buildup_start_date,
-                        $teardown_end_date
-                    ) : '',
-                    $enable_dect ? form_text('dect', __('DECT'), $user_source->contact->dect) : '',
-                    form_text('mobile', __('Mobile'), $user_source->contact->mobile),
-                    form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->email),
-                    form_checkbox(
-                        'email_shiftinfo',
-                        __(
-                            'The %s is allowed to send me an email (e.g. when my shifts change)',
-                            [config('app_name')]
-                        ),
-                        $user_source->settings->email_shiftinfo
-                    ),
-                    form_checkbox(
-                        'email_by_human_allowed',
-                        __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
-                        $user_source->settings->email_human
-                    ),
-                    $enable_tshirt_size ? form_select(
-                        'tshirt_size',
-                        __('Shirt size'),
-                        $tshirt_sizes,
-                        $personalData->shirt_size,
-                        __('Please select...')
-                    ) : '',
-                    form_info('', __('Please visit the angeltypes page to manage your angeltypes.')),
-                    form_submit('submit', __('Save'))
+    /** @var Renderer $renderer */
+    $renderer = app(Renderer::class);
+    return $renderer->render(
+        'pages/settings/settings.twig',
+        [
+            'title' => 'settings.profile',
+            'settings_menu' => app()->make(SettingsController::class)->settingsMenu(),
+            'content' =>
+                msg()
+                . div('row', [
+                    div('col-md-9', [
+                        form([
+                            form_info('', __('Here you can change your user details.')),
+                            form_info(entry_required() . ' = ' . __('Entry required!')),
+                            form_text('nick', __('Nick'), $user_source->name, true),
+                            $enable_pronoun
+                                ? form_text('pronoun', __('Pronoun'), $personalData->pronoun, false, 15)
+                                . form_info('', __('Will be shown on your profile page and in angel lists.'))
+                                : '',
+                            $enable_user_name
+                                ? form_text('lastname', __('Last name'), $personalData->last_name, false, 64)
+                                : '',
+                            $enable_user_name
+                                ? form_text('prename', __('First name'), $personalData->first_name, false, 64)
+                                : '',
+                            $enable_planned_arrival ? form_date(
+                                'planned_arrival_date',
+                                __('Planned date of arrival') . ' ' . entry_required(),
+                                $personalData->planned_arrival_date
+                                    ? $personalData->planned_arrival_date->getTimestamp()
+                                    : '',
+                                $buildup_start_date,
+                                $teardown_end_date
+                            ) : '',
+                            $enable_planned_arrival ? form_date(
+                                'planned_departure_date',
+                                __('Planned date of departure'),
+                                $personalData->planned_departure_date
+                                    ? $personalData->planned_departure_date->getTimestamp()
+                                    : '',
+                                $buildup_start_date,
+                                $teardown_end_date
+                            ) : '',
+                            $enable_dect ? form_text('dect', __('DECT'), $user_source->contact->dect, false, 40) : '',
+                            form_text('mobile', __('Mobile'), $user_source->contact->mobile, false, 40),
+                            form_text('mail', __('E-Mail') . ' ' . entry_required(), $user_source->email, false, 254),
+                            form_checkbox(
+                                'email_shiftinfo',
+                                __(
+                                    'The %s is allowed to send me an email (e.g. when my shifts change)',
+                                    [config('app_name')]
+                                ),
+                                $user_source->settings->email_shiftinfo
+                            ),
+                            form_checkbox(
+                                'email_news',
+                                __('Notify me of new news'),
+                                $user_source->settings->email_news
+                            ),
+                            form_checkbox(
+                                'email_by_human_allowed',
+                                __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
+                                $user_source->settings->email_human
+                            ),
+                            $enable_tshirt_size ? form_select(
+                                'tshirt_size',
+                                __('Shirt size'),
+                                $tshirt_sizes,
+                                $personalData->shirt_size,
+                                __('Please select...')
+                            ) : '',
+                            form_info('', __('Please visit the angeltypes page to manage your angeltypes.')),
+                            form_submit('submit', __('Save'))
+                        ]),
+                        form([
+                            form_info(__('Here you can choose your color settings:')),
+                            form_select('theme', __('Color settings:'), $themes, $user_source->settings->theme),
+                            form_submit('submit_theme', __('Save'))
+                        ]),
+                        form([
+                            form_info(__('Here you can choose your language:')),
+                            form_select('language', __('Language:'), $locales, $user_source->settings->language),
+                            form_submit('submit_language', __('Save'))
+                        ]),
+                    ])
                 ])
-            ]),
-            div('col-md-6', [
-                form([
-                    form_info(__('Here you can change your password.')),
-                    form_password('password', __('Old password:')),
-                    form_password('new_password', __('New password:')),
-                    form_password('new_password2', __('Password confirmation:')),
-                    form_submit('submit_password', __('Save'))
-                ]),
-                form([
-                    form_info(__('Here you can choose your color settings:')),
-                    form_select('theme', __('Color settings:'), $themes, $user_source->settings->theme),
-                    form_submit('submit_theme', __('Save'))
-                ]),
-                form([
-                    form_info(__('Here you can choose your language:')),
-                    form_select('language', __('Language:'), $locales, $user_source->settings->language),
-                    form_submit('submit_language', __('Save'))
-                ])
-            ])
-        ])
-    ]);
+        ]
+    );
 }
 
 /**
@@ -193,7 +207,7 @@ function Users_view(
         $u['name'] = User_Nick_render($user) . User_Pronoun_render($user);
         $u['first_name'] = $user->personalData->first_name;
         $u['last_name'] = $user->personalData->last_name;
-        $u['dect'] = $user->contact->dect;
+        $u['dect'] = sprintf('<a href="tel:%s">%1$s</a>', $user->contact->dect);
         $u['arrived'] = glyph_bool($user->state->arrived);
         $u['got_voucher'] = $user->state->got_voucher;
         $u['freeloads'] = $user->getAttribute('freeloads');
@@ -653,12 +667,16 @@ function User_view(
                 ])
             ]),
             div('row', [
-                div('col-md-3', [
-                    heading(glyph('phone') . $user_source->contact->dect, 1)
+                div('col-md-2', [
+                    heading(glyph('phone')
+                        . '<a href="tel:' . $user_source->contact->dect . '">'
+                        . $user_source->contact->dect, 1)
+                        . '</a>'
                 ]),
                 User_view_state($admin_user_privilege, $freeloader, $user_source),
                 User_angeltypes_render($user_angeltypes),
-                User_groups_render($user_groups)
+                User_groups_render($user_groups),
+                $admin_user_privilege ? User_oauth_render($user_source) : '',
             ]),
             ($its_me || $admin_user_privilege) ? '<h2>' . __('Shifts') . '</h2>' : '',
             $myshifts_table,
@@ -697,7 +715,7 @@ function User_view_state($admin_user_privilege, $freeloader, $user_source)
         $state = User_view_state_user($user_source);
     }
 
-    return div('col-md-3', [
+    return div('col-md-2', [
         heading(__('User state'), 4),
         join('<br>', $state)
     ]);
@@ -802,7 +820,7 @@ function User_angeltypes_render($user_angeltypes)
             . ($angeltype['supporter'] ? glyph('education') : '') . $angeltype['name']
             . '</a>';
     }
-    return div('col-md-3', [
+    return div('col-md-2', [
         heading(__('Angeltypes'), 4),
         join('<br>', $output)
     ]);
@@ -820,9 +838,32 @@ function User_groups_render($user_groups)
         $output[] = __($groupName);
     }
 
-    return div('col-md-3', [
+    return div('col-md-2', [
         '<h4>' . __('Rights') . '</h4>',
         join('<br>', $output)
+    ]);
+}
+
+/**
+ * @param User $user
+ * @return string
+ */
+function User_oauth_render(User $user)
+{
+    $config = config('oauth');
+
+    $output = [];
+    foreach ($user->oauth as $oauth) {
+        $output[] = __(
+            isset($config[$oauth->provider]['name'])
+            ? $config[$oauth->provider]['name']
+            : Str::ucfirst($oauth->provider)
+        );
+    }
+
+    return div('col-md-2', [
+        heading(__('OAuth'), 4),
+        join('<br>', $output),
     ]);
 }
 

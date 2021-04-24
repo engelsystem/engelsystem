@@ -6,35 +6,56 @@
 
 {% block content %}
     <div class="container">
-        <h1>{% block content_title %}{{ title }}{% endblock %}</h1>
+        <h1>
+            {% block content_title %}{{ title }}{% endblock %}
 
-        {% for message in errors|default([]) %}
-            {{ m.alert(__(message), 'danger') }}
-        {% endfor %}
-        {% for message in success|default([]) %}
-            {{ m.alert(__(message), 'success') }}
-        {% endfor %}
+            {% if is_index|default(false) %}
+                {{ m.button(m.glyphicon('plus'), url('/admin/schedule/edit')) }}
+            {% endif %}
+        </h1>
+
+        {% include 'layouts/parts/messages.twig' %}
 
         <div class="row">
             {% block row_content %}
-                <form method="POST" action="{{ url('/admin/schedule/load') }}">
-                    {{ csrf() }}
+                <div class="col-md-12">
+                    <p>{{ __('schedule.import.text') }}</p>
 
-                    <div class="col-md-12">
-                        <p>{{ __('schedule.import.text') }}</p>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>{{ __('schedule.name') }}</th>
+                                <th>{{ __('schedule.url') }}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for schedule in schedules %}
+                                <tr>
+                                    <td>{{ schedule.name }}</td>
+                                    <td>{{ schedule.url }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a
+                                                href="{{ url('/admin/schedule/load/' ~ schedule.id) }}"
+                                                class="btn btn-xs btn-default">
+                                                {{ __('form.import') }}
+                                            </a>
+                                            <a
+                                                href="{{ url('/admin/schedule/edit/' ~ schedule.id) }}"
+                                                class="btn btn-xs btn-default">
+                                                {{ __('form.edit') }}
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-
-                    <div class="col-lg-6">
-                        {{ f.input('schedule-url', __('schedule.url'), 'url', {'required': true}) }}
-
-                        {{ f.select('shift-type', shift_types|default([]), __('schedule.shift-type')) }}
-
-                        {{ f.input('minutes-before', __('schedule.minutes-before'), 'number', {'value': 15, 'required': true}) }}
-                        {{ f.input('minutes-after', __('schedule.minutes-after'), 'number', {'value': 15, 'required': true}) }}
-
-                        {{ f.submit(__('form.load_schedule')) }}
-                    </div>
-                </form>
+                </div>
             {% endblock %}
         </div>
     </div>

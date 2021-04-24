@@ -144,10 +144,6 @@ class LegacyMiddleware implements MiddlewareInterface
                 $title = messages_title();
                 $content = user_messages();
                 return [$title, $content];
-            case 'user_questions':
-                $title = questions_title();
-                $content = user_questions();
-                return [$title, $content];
             case 'user_settings':
                 $title = settings_title();
                 $content = user_settings();
@@ -155,10 +151,6 @@ class LegacyMiddleware implements MiddlewareInterface
             case 'register':
                 $title = register_title();
                 $content = guest_register();
-                return [$title, $content];
-            case 'admin_questions':
-                $title = admin_questions_title();
-                $content = admin_questions();
                 return [$title, $content];
             case 'admin_user':
                 $title = admin_user_title();
@@ -208,6 +200,10 @@ class LegacyMiddleware implements MiddlewareInterface
     {
         if (!empty($page) && is_int($page)) {
             return response($content, (int)$page);
+        }
+
+        if (strpos($content, '<html') !== false) {
+            return response($content);
         }
 
         return response(

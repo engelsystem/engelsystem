@@ -97,6 +97,16 @@ class AuthController extends BaseController
             return $this->showLogin();
         }
 
+        return $this->loginUser($user);
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return Response
+     */
+    public function loginUser(User $user): Response
+    {
         $this->session->invalidate();
         $this->session->set('user_id', $user->id);
         $this->session->set('locale', $user->settings->language);

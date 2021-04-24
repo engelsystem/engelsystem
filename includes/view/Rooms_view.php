@@ -41,7 +41,7 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
         $shiftsFilterRenderer->render(page_link_to('rooms', [
             'action'  => 'view',
             'room_id' => $room->id
-        ])),
+        ]), ['rooms' => [$room->id]]),
         $shiftCalendarRenderer->render()
     ]);
 

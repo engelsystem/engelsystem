@@ -38,6 +38,7 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
 
     $user_source->settings->email_shiftinfo = $request->has('email_shiftinfo');
     $user_source->settings->email_human = $request->has('email_by_human_allowed');
+    $user_source->settings->email_news = $request->has('email_news');
 
     if ($request->has('tshirt_size') && isset($tshirt_sizes[$request->input('tshirt_size')])) {
         $user_source->personalData->shirt_size = $request->input('tshirt_size');
@@ -99,31 +100,6 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
     }
 
     return $user_source;
-}
-
-/**
- * Change user password.
- *
- * @param User $user_source The user
- */
-function user_settings_password($user_source)
-{
-    $request = request();
-    $auth = auth();
-    if (
-        !$request->has('password')
-        || !$auth->verifyPassword($user_source, $request->postData('password'))
-    ) {
-        error(__('-> not OK. Please try again.'));
-    } elseif (strlen($request->postData('new_password')) < config('min_password_length')) {
-        error(__('Your password is to short (please use at least 6 characters).'));
-    } elseif ($request->postData('new_password') != $request->postData('new_password2')) {
-        error(__('Your passwords don\'t match.'));
-    } else {
-        $auth->setPassword($user_source, $request->postData('new_password'));
-        success(__('Password saved.'));
-    }
-    throw_redirect(page_link_to('user_settings'));
 }
 
 /**
@@ -198,6 +174,7 @@ function user_settings()
     $enable_tshirt_size = config('enable_tshirt_size');
     $tshirt_sizes = config('tshirt_sizes');
     $locales = config('locales');
+    $oauth2_providers = config('oauth');
 
     $buildup_start_date = null;
     $teardown_end_date = null;
@@ -215,8 +192,6 @@ function user_settings()
     $user_source = auth()->user();
     if ($request->hasPostData('submit')) {
         $user_source = user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes);
-    } elseif ($request->hasPostData('submit_password')) {
-        user_settings_password($user_source);
     } elseif ($request->hasPostData('submit_theme')) {
         $user_source = user_settings_theme($user_source, $themes);
     } elseif ($request->hasPostData('submit_language')) {
@@ -230,6 +205,7 @@ function user_settings()
         $buildup_start_date,
         $teardown_end_date,
         $enable_tshirt_size,
-        $tshirt_sizes
+        $tshirt_sizes,
+        $oauth2_providers
     );
 }

@@ -1,5 +1,5 @@
-[![pipeline status](https://chaos.expert/engelsystem/engelsystem/badges/master/pipeline.svg)](https://chaos.expert/engelsystem/engelsystem/commits/master)
-[![coverage report](https://chaos.expert/engelsystem/engelsystem/badges/master/coverage.svg)](https://chaos.expert/engelsystem/engelsystem/commits/master)
+[![pipeline status](https://chaos.expert/engelsystem/engelsystem/badges/main/pipeline.svg)](https://chaos.expert/engelsystem/engelsystem/commits/main)
+[![coverage report](https://chaos.expert/engelsystem/engelsystem/badges/main/coverage.svg)](https://chaos.expert/engelsystem/engelsystem/commits/main)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/20b3b0b4e93344a29da6bec77f329e7a)](https://www.codacy.com/app/engelsystem/engelsystem)
 [![GPL](https://img.shields.io/github/license/engelsystem/engelsystem.svg?maxAge=2592000)](LICENSE)
 

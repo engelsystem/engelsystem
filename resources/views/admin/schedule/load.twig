@@ -4,12 +4,8 @@
 {% block title %}{{ __('schedule.import.load.title') }}{% endblock %}
 
 {% block row_content %}
-    <form method="POST" action="{{ url('/admin/schedule/import') }}">
+    <form method="POST" action="{{ url('/admin/schedule/import/' ~ schedule_id) }}">
         {{ csrf() }}
-        {{ f.hidden('schedule-url', schedule_url) }}
-        {{ f.hidden('shift-type', shift_type) }}
-        {{ f.hidden('minutes-before', minutes_before) }}
-        {{ f.hidden('minutes-after', minutes_after) }}
 
         <div class="col-lg-12">
             <p>{{ __('schedule.import.load.info', [schedule.conference.title, schedule.version]) }}</p>

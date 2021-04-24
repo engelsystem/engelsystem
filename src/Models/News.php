@@ -15,6 +15,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property string                        $title
  * @property string                        $text
  * @property bool                          $is_meeting
+ * @property bool                          $is_pinned
  * @property Carbon|null                   $created_at
  * @property Carbon|null                   $updated_at
  *
@@ -25,6 +26,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|LogEntry[] whereTitle($value)
  * @method static QueryBuilder|LogEntry[] whereText($value)
  * @method static QueryBuilder|LogEntry[] whereIsMeeting($value)
+ * @method static QueryBuilder|LogEntry[] whereIsPinned($value)
  * @method static QueryBuilder|LogEntry[] whereCreatedAt($value)
  * @method static QueryBuilder|LogEntry[] whereUpdatedAt($value)
  */
@@ -38,6 +40,7 @@ class News extends BaseModel
     /** @var array */
     protected $casts = [
         'is_meeting' => 'boolean',
+        'is_pinned' => 'boolean',
     ];
 
     /** @var array */
@@ -45,6 +48,7 @@ class News extends BaseModel
         'title',
         'text',
         'is_meeting',
+        'is_pinned',
         'user_id',
     ];
 

@@ -4,6 +4,7 @@ namespace Engelsystem\Helpers\Translation;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Container\ServiceProvider;
+use Engelsystem\Http\Request;
 use Gettext\Loader\MoLoader;
 use Gettext\Loader\PoLoader;
 use Gettext\Translations;
@@ -21,10 +22,13 @@ class TranslationServiceProvider extends ServiceProvider
         $config = $this->app->get('config');
         /** @var Session $session */
         $session = $this->app->get('session');
+        /** @var Request $request */
+        $request = $this->app->get('request');
 
         $locales = $config->get('locales');
-        $locale = $config->get('default_locale');
+        $defaultLocale = $config->get('default_locale');
         $fallbackLocale = $config->get('fallback_locale', 'en_US');
+        $locale = $request->getPreferredLanguage(array_merge([$defaultLocale], array_keys($locales)));
 
         $sessionLocale = $session->get('locale', $locale);
         if (isset($locales[$sessionLocale])) {

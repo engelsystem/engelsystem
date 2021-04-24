@@ -14,7 +14,13 @@ class ScheduleShiftTest extends ModelTest
      */
     public function testScheduleShifts()
     {
-        $schedule = new Schedule(['url' => 'https://lorem.ipsum/schedule.xml']);
+        $schedule = new Schedule([
+            'url' => 'https://lorem.ipsum/schedule.xml',
+            'name' => 'Test',
+            'shift_type' => 0,
+            'minutes_before' => 15,
+            'minutes_after' => 15,
+        ]);
         $schedule->save();
 
         $scheduleShift = new ScheduleShift(['shift_id' => 1, 'guid' => 'a']);

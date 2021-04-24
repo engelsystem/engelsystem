@@ -778,7 +778,7 @@ msgid "You cannot delete yourself."
 msgstr "Du kannst Dich nicht selber löschen."
 
 #: includes/controller/users_controller.php:76
-msgid "Your password is incorrect. Please try it again."
+msgid "auth.password.error"
 msgstr "Dein Passwort stimmt nicht. Bitte probiere es nochmal."
 
 #: includes/controller/users_controller.php:85
@@ -1048,8 +1048,8 @@ msgid "Given shirts"
 msgstr "Ausgegebene T-Shirts"
 
 #: includes/pages/admin_arrive.php:10 includes/sys_menu.php:111
-msgid "Arrived angels"
-msgstr "Angekommene Engel"
+msgid "Arrive angels"
+msgstr "Ankommende Engel"
 
 #: includes/pages/admin_arrive.php:41
 msgid "Reset done. Angel has not arrived."
@@ -1550,10 +1550,10 @@ msgstr "Gib bitte einen erlaubten Nick an."
 #: includes/pages/guest_login.php:77 includes/pages/guest_login.php:277
 #: includes/view/User_view.php:42
 msgid ""
-"Use up to 23 letters, numbers, connecting punctuations or spaces for your "
+"Use up to 24 letters, numbers, connecting punctuations or spaces for your "
 "nickname."
 msgstr ""
-"Verwende bis zu 23 Buchstaben, Zahlen, verbindende Schriftzeichen (.-_) oder "
+"Verwende bis zu 24 Buchstaben, Zahlen, verbindende Schriftzeichen (.-_) oder "
 "Leerzeichen für deinen Nick."
 
 #: includes/pages/guest_login.php:82
@@ -1580,10 +1580,6 @@ msgstr "Bitte gib Deine E-Mail-Adresse ein."
 #: includes/pages/guest_login.php:117
 msgid "Please select your shirt size."
 msgstr "Bitte wähle Deine T-Shirt Größe."
-
-#: includes/pages/guest_login.php:124 includes/pages/user_settings.php:117
-msgid "Your passwords don't match."
-msgstr "Deine Passwörter stimmen nicht überein."
 
 #: includes/pages/guest_login.php:129
 #, php-format
@@ -1619,6 +1615,9 @@ msgstr ""
 #, php-format
 msgid "The %s is allowed to send me an email (e.g. when my shifts change)"
 msgstr "Das %s darf mir E-Mails senden (z. B. wenn sich meine Schichten ändern)"
+
+msgid "Notify me of new news"
+msgstr "Benachrichtige mich bei neuen News"
 
 #: includes/pages/guest_login.php:291 includes/view/User_view.php:73
 msgid "Humans are allowed to send me an email (e.g. for ticket vouchers)"
@@ -1970,8 +1969,8 @@ msgstr ""
 "(double-opt-in)."
 
 #: includes/view/AngelTypes_view.php:96 includes/view/AngelTypes_view.php:97
-msgid "No Self Sign Up"
-msgstr "Kein Selbst-Eintragen"
+msgid "No Self Sign Up allowed"
+msgstr "Kein Selbst-Eintragen erlaubt"
 
 #: includes/view/AngelTypes_view.php:99 includes/view/AngelTypes_view.php:105
 msgid "Requires driver license"
@@ -2163,6 +2162,9 @@ msgstr "Noch zu schaffende Stunden"
 #: includes/view/PublicDashboard_view.php:56
 msgid "Fullscreen"
 msgstr "Vollbild"
+
+msgid "Filtered"
+msgstr "Filtern"
 
 #: includes/view/Questions_view.php:28
 msgid "Open questions"
@@ -2494,22 +2496,6 @@ msgstr "Geplanter Abreisetag"
 msgid "Please visit the angeltypes page to manage your angeltypes."
 msgstr "Bitte benutze die Engeltypen-Seite um deine Engeltypen zu verwalten."
 
-#: includes/view/User_view.php:89
-msgid "Here you can change your password."
-msgstr "Hier kannst Du Dein Passwort ändern."
-
-#: includes/view/User_view.php:90
-msgid "Old password:"
-msgstr "Altes Passwort:"
-
-#: includes/view/User_view.php:91
-msgid "New password:"
-msgstr "Neues Passwort:"
-
-#: includes/view/User_view.php:92
-msgid "Password confirmation:"
-msgstr "Passwort wiederholen:"
-
 #: includes/view/User_view.php:96
 msgid "Here you can choose your color settings:"
 msgstr "Hier kannst Du das Aussehen auswählen:"
@@ -2790,18 +2776,45 @@ msgstr "Programm laden"
 msgid "form.import"
 msgstr "Importieren"
 
+msgid "form.edit"
+msgstr "Bearbeiten"
+
+msgid "form.save"
+msgstr "Speichern"
+
+msgid "form.preview"
+msgstr "Vorschau"
+
+msgid "form.delete"
+msgstr "Löschen"
+
+msgid "form.updated"
+msgstr "Aktualisiert"
+
+msgid "schedule.import"
+msgstr "Programm importieren"
+
+msgid "schedule.edit.title"
+msgstr "Programm bearbeiten"
+
 msgid "schedule.import.title"
 msgstr "Programm importieren"
 
+msgid "schedule.last_update"
+msgstr "Aktualisiert am: %s"
+
 msgid "schedule.import.text"
 msgstr ""
-"Dieser Import erstellt Räume und erstellt, aktualisiert und löscht Schichten anhand des schedule.xml exportes."
+"Importe erstellen Räume und erstellen, aktualisieren und löschen Schichten anhand eines schedule.xml exportes."
 
 msgid "schedule.import.load.title"
 msgstr "Programm importieren: Vorschau"
 
 msgid "schedule.import.load.info"
 msgstr "Importiere \"%s\" (Version \"%s\")"
+
+msgid "schedule.name"
+msgstr "Programm Name"
 
 msgid "schedule.url"
 msgstr "Programm URL (schedule.xml)"
@@ -2878,6 +2891,9 @@ msgstr "Betreff"
 msgid "news.edit.is_meeting"
 msgstr "Treffen"
 
+msgid "news.edit.is_pinned"
+msgstr "Oben anpinnen"
+
 msgid "news.edit.message"
 msgstr "Nachricht"
 
@@ -2895,3 +2911,73 @@ msgstr "Level"
 
 msgid "log.message"
 msgstr "Nachricht"
+
+
+msgid "settings.settings"
+msgstr "Einstellungen"
+
+msgid "settings.password"
+msgstr "Passwort"
+
+msgid "settings.password.info"
+msgstr "Hier kannst Du Dein Passwort ändern."
+
+msgid "settings.password.password"
+msgstr "Altes Passwort"
+
+msgid "settings.password.new_password"
+msgstr "Neues Passwort"
+
+msgid "settings.password.new_password2"
+msgstr "Passwort wiederholen"
+
+msgid "settings.password.success"
+msgstr "Passwort wurde erfolgreich geändert."
+
+msgid "settings.oauth"
+msgstr "Single Sign-On"
+
+msgid "settings.oauth.identity-provider"
+msgstr "Login-Dienst"
+
+msgid "oauth.login"
+msgstr "Login mit OAuth"
+
+msgid "oauth.login-using-provider"
+msgstr "Login mit %s"
+
+msgid "form.connect"
+msgstr "Verbinden"
+
+msgid "form.disconnect"
+msgstr "Trennen"
+
+msgid "faq.faq"
+msgstr "FAQ"
+
+msgid "faq.edit"
+msgstr "FAQ Eintrag bearbeiten"
+
+msgid "faq.add"
+msgstr "FAQ Eintrag erstellen"
+
+msgid "faq.question"
+msgstr "Frage"
+
+msgid "faq.message"
+msgstr "Antwort"
+
+msgid "question.questions"
+msgstr "Fragen"
+
+msgid "question.add"
+msgstr "Fragen"
+
+msgid "question.edit"
+msgstr "Frage bearbeiten"
+
+msgid "question.question"
+msgstr "Frage"
+
+msgid "question.answer"
+msgstr "Antwort"

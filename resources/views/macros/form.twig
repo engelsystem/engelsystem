@@ -7,6 +7,7 @@
             type="{{ type|default('text') }}" class="form-control"
             id="{{ name }}" name="{{ name }}"
             value="{{ opt.value|default('')|escape('html_attr') }}"
+            {%- if opt.min is defined %} minlength="{{ opt.min }}"{% endif %}
             {%- if opt.required|default(false) %}
                 required
             {%- endif -%}
@@ -43,7 +44,7 @@
         {% endif %}
         <select id="{{ name }}" name="{{ name }}" class="form-control">
             {% for value,decription in data -%}
-                <option value="{{ value }}" {% if name == selected %} selected{% endif %}>{{ decription }}</option>
+                <option value="{{ value }}" {% if value == selected %} selected{% endif %}>{{ decription }}</option>
             {% endfor %}
         </select>
     </div>
@@ -65,9 +66,10 @@
 {%- endmacro %}
 
 {% macro button(label, opt) %}
-    <button class="btn btn-{{ opt.btn_type|default('primary') }}"
+    <button class="btn btn-{{ opt.btn_type|default('primary') }} btn-{{ opt.btn_size|default('m') }}"
         {%- if opt.type is defined %} type="{{ opt.type }}"{% endif %}
         {%- if opt.name is defined %} name="{{ opt.name }}"{% endif %}
+        {%- if opt.title is defined %} title="{{ opt.title }}"{% endif %}
         {%- if opt.value is defined or opt.name is defined %} value="{{ opt.value|default('1') }}"{% endif -%}
     >
         {{ label }}

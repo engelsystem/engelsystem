@@ -87,8 +87,8 @@ function shift_entry_create_controller_admin($shift, $angeltype)
     }
 
     $angeltypes = AngelTypes();
-    if ($request->has('angeltype_id')) {
-        $angeltype = AngelType($request->input('angeltype_id'));
+    if ($request->hasPostData('angeltype_id')) {
+        $angeltype = AngelType($request->postData('angeltype_id'));
     }
     if (empty($angeltype)) {
         if (count($angeltypes) == 0) {
@@ -148,24 +148,6 @@ function shift_entry_create_controller_supporter($shift, $angeltype)
     }
     if (!UserAngelType_exists($signup_user->id, $angeltype)) {
         error(__('User is not in angeltype.'));
-        throw_redirect(shift_link($shift));
-    }
-
-    $needed_angeltype = NeededAngeltype_by_Shift_and_Angeltype($shift, $angeltype);
-    $shift_entries = ShiftEntries_by_shift_and_angeltype($shift['SID'], $angeltype['id']);
-    $shift_signup_state = Shift_signup_allowed(
-        $signup_user,
-        $shift,
-        $angeltype,
-        null,
-        null,
-        $needed_angeltype,
-        $shift_entries
-    );
-    if (!$shift_signup_state->isSignupAllowed()) {
-        if ($shift_signup_state->getState() == ShiftSignupState::OCCUPIED) {
-            error(__('This shift is already occupied.'));
-        }
         throw_redirect(shift_link($shift));
     }
 

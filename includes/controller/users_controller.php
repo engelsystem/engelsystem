@@ -6,6 +6,7 @@ use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilter;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 
 /**
  * Route user actions.
@@ -74,7 +75,7 @@ function user_delete_controller()
             && $auth->verifyPassword($user, $request->postData('password'))
         )) {
             $valid = false;
-            error(__('Your password is incorrect. Please try it again.'));
+            error(__('auth.password.error'));
         }
 
         if ($valid) {
@@ -300,7 +301,7 @@ function users_list_controller()
             $data[$key] = $value;
         });
 
-        return isset($data[$order_by]) ? $data[$order_by] : null;
+        return isset($data[$order_by]) ? Str::lower($data[$order_by]) : null;
     });
 
     return [

@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\DB;
+use Engelsystem\Models\OAuth;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
@@ -30,6 +31,7 @@ function guest_register()
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
     $min_password_length = config('min_password_length');
+    $enable_pronoun = config('enable_pronoun');
     $config = config();
     $request = request();
     $session = session();
@@ -40,9 +42,11 @@ function guest_register()
     $preName = '';
     $dect = '';
     $mobile = '';
-    $mail = '';
+    $email = '';
+    $pronoun = '';
     $email_shiftinfo = false;
     $email_by_human_allowed = false;
+    $email_news = false;
     $tshirt_size = '';
     $password_hash = '';
     $selected_angel_types = [];
@@ -69,13 +73,13 @@ function guest_register()
     if ($request->hasPostData('submit')) {
         $valid = true;
 
-        if ($request->has('nick')) {
-            $nickValidation = User_validate_Nick($request->input('nick'));
+        if ($request->has('username')) {
+            $nickValidation = User_validate_Nick($request->input('username'));
             $nick = $nickValidation->getValue();
 
             if (!$nickValidation->isValid()) {
                 $valid = false;
-                $msg .= error(sprintf(__('Please enter a valid nick.') . ' ' . __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.'),
+                $msg .= error(sprintf(__('Please enter a valid nick.') . ' ' . __('Use up to 24 letters, numbers, connecting punctuations or spaces for your nickname.'),
                     $nick), true);
             }
             if (User::whereName($nick)->count() > 0) {
@@ -87,13 +91,13 @@ function guest_register()
             $msg .= error(__('Please enter a nickname.'), true);
         }
 
-        if ($request->has('mail') && strlen(strip_request_item('mail')) > 0) {
-            $mail = strip_request_item('mail');
-            if (!check_email($mail)) {
+        if ($request->has('email') && strlen(strip_request_item('email')) > 0) {
+            $email = strip_request_item('email');
+            if (!check_email($email)) {
                 $valid = false;
                 $msg .= error(__('E-mail address is not correct.'), true);
             }
-            if (User::whereEmail($mail)->first()) {
+            if (User::whereEmail($email)->first()) {
                 $valid = false;
                 $msg .= error(__('E-mail address is already used by another user.'), true);
             }
@@ -108,6 +112,10 @@ function guest_register()
 
         if ($request->has('email_by_human_allowed')) {
             $email_by_human_allowed = true;
+        }
+
+        if ($request->has('email_news')) {
+            $email_news = true;
         }
 
         if ($enable_tshirt_size) {
@@ -159,6 +167,9 @@ function guest_register()
         if ($enable_user_name && $request->has('prename')) {
             $preName = strip_request_item('prename');
         }
+        if ($enable_pronoun && $request->has('pronoun')) {
+            $pronoun = strip_request_item('pronoun');
+        }
         if ($enable_dect && $request->has('dect')) {
             if (strlen(strip_request_item('dect')) <= 40) {
                 $dect = strip_request_item('dect');
@@ -175,7 +186,7 @@ function guest_register()
             $user = new User([
                 'name'          => $nick,
                 'password'      => $password_hash,
-                'email'         => $mail,
+                'email'         => $email,
                 'api_key'       => '',
                 'last_login_at' => null,
             ]);
@@ -192,6 +203,7 @@ function guest_register()
             $personalData = new PersonalData([
                 'first_name'           => $preName,
                 'last_name'            => $lastName,
+                'pronoun'              => $pronoun,
                 'shirt_size'           => $tshirt_size,
                 'planned_arrival_date' => $enable_planned_arrival ? Carbon::createFromTimestamp($planned_arrival_date) : null,
             ]);
@@ -204,6 +216,7 @@ function guest_register()
                 'theme'           => config('theme'),
                 'email_human'     => $email_by_human_allowed,
                 'email_shiftinfo' => $email_shiftinfo,
+                'email_news'      => $email_news,
             ]);
             $settings->user()
                 ->associate($user)
@@ -217,6 +230,25 @@ function guest_register()
             $state->user()
                 ->associate($user)
                 ->save();
+
+            if ($session->has('oauth2_connect_provider') && $session->has('oauth2_user_id')) {
+                $oauth = new OAuth([
+                    'provider'      => $session->get('oauth2_connect_provider'),
+                    'identifier'    => $session->get('oauth2_user_id'),
+                    'access_token'  => $session->get('oauth2_access_token'),
+                    'refresh_token' => $session->get('oauth2_refresh_token'),
+                    'expires_at'    => $session->get('oauth2_expires_at'),
+                ]);
+                $oauth->user()
+                    ->associate($user)
+                    ->save();
+
+                $session->remove('oauth2_connect_provider');
+                $session->remove('oauth2_user_id');
+                $session->remove('oauth2_access_token');
+                $session->remove('oauth2_refresh_token');
+                $session->remove('oauth2_expires_at');
+            }
 
             // Assign user-group and set password
             DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -20)', [$user->id]);
@@ -248,6 +280,13 @@ function guest_register()
                 info((new Parsedown())->text($message));
             }
 
+            // Login the user
+            if ($user->oauth->count()) {
+                /** @var OAuth $provider */
+                $provider = $user->oauth->first();
+                throw_redirect(url('/oauth/' . $provider->provider));
+            }
+
             throw_redirect(page_link_to('/'));
         }
     }
@@ -264,6 +303,24 @@ function guest_register()
         $teardown_end_date = $teardown->getTimestamp();
     }
 
+    $form_data = $session->get('form_data');
+    $session->remove('form_data');
+    if (!$nick && !empty($form_data['name'])) {
+        $nick = $form_data['name'];
+    }
+
+    if (!$email && !empty($form_data['email'])) {
+        $email = $form_data['email'];
+    }
+
+    if (!$preName && !empty($form_data['first_name'])) {
+        $preName = $form_data['first_name'];
+    }
+
+    if (!$lastName && !empty($form_data['last_name'])) {
+        $lastName = $form_data['last_name'];
+    }
+
     return page_with_title(register_title(), [
         __('By completing this form you\'re registering as a Chaos-Angel. This script will create you an account in the angel task scheduler.'),
         $msg,
@@ -273,12 +330,26 @@ function guest_register()
                 div('col-md-6', [
                     div('row', [
                         div('col-sm-4', [
-                            form_text('nick', __('Nick') . ' ' . entry_required(), $nick),
+                            form_text(
+                                'username',
+                                __('Nick') . ' ' . entry_required(),
+                                $nick,
+                                false,
+                                24,
+                                'nickname'
+                            ),
                             form_info('',
-                                __('Use up to 23 letters, numbers, connecting punctuations or spaces for your nickname.'))
+                                __('Use up to 24 letters, numbers, connecting punctuations or spaces for your nickname.'))
                         ]),
                         div('col-sm-8', [
-                            form_email('mail', __('E-Mail') . ' ' . entry_required(), $mail),
+                            form_email(
+                                'email',
+                                __('E-Mail') . ' ' . entry_required(),
+                                $email,
+                                false,
+                                'email',
+                                254
+                            ),
                             form_checkbox(
                                 'email_shiftinfo',
                                 __(
@@ -288,10 +359,23 @@ function guest_register()
                                 $email_shiftinfo
                             ),
                             form_checkbox(
+                                'email_news',
+                                __('Notify me of new news'),
+                                $email_news
+                            ),
+                            form_checkbox(
                                 'email_by_human_allowed',
                                 __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
                                 $email_by_human_allowed
-                            )
+                            ),
+                        ])
+                    ]),
+                    div('row', [
+                        div('col-sm-6', [
+                            form_password('password', __('Password') . ' ' . entry_required())
+                        ]),
+                        div('col-sm-6', [
+                            form_password('password2', __('Confirm password') . ' ' . entry_required())
                         ])
                     ]),
                     div('row', [
@@ -306,14 +390,6 @@ function guest_register()
                             $enable_tshirt_size ? form_select('tshirt_size',
                                 __('Shirt size') . ' ' . entry_required(),
                                 $tshirt_sizes, $tshirt_size, __('Please select...')) : ''
-                        ])
-                    ]),
-                    div('row', [
-                        div('col-sm-6', [
-                            form_password('password', __('Password') . ' ' . entry_required())
-                        ]),
-                        div('col-sm-6', [
-                            form_password('password2', __('Confirm password') . ' ' . entry_required())
                         ])
                     ]),
                     form_checkboxes(
@@ -334,18 +410,21 @@ function guest_register()
                 div('col-md-6', [
                     div('row', [
                         $enable_dect ? div('col-sm-4', [
-                            form_text('dect', __('DECT'), $dect)
+                            form_text('dect', __('DECT'), $dect, false, 40, 'tel-local')
                         ]) : '',
                         div($enable_dect ? 'col-sm-4' : 'col-sm-12', [
-                            form_text('mobile', __('Mobile'), $mobile)
+                            form_text('mobile', __('Mobile'), $mobile, false, 40, 'tel-national')
                         ]),
+                        $enable_pronoun ? div('col-sm-4', [
+                            form_text('pronoun', __('Pronoun'), $pronoun, false, 15)
+                        ]) : '',
                     ]),
                     $enable_user_name ? div('row', [
                         div('col-sm-6', [
-                            form_text('prename', __('First name'), $preName)
+                            form_text('prename', __('First name'), $preName, false, 64, 'given-name')
                         ]),
                         div('col-sm-6', [
-                            form_text('lastname', __('Last name'), $lastName)
+                            form_text('lastname', __('Last name'), $lastName, false, 64, 'family-name')
                         ])
                     ]) : '',
                     form_info(entry_required() . ' = ' . __('Entry required!'))
