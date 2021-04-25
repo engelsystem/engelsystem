@@ -28,7 +28,7 @@ COPY --from=composer /app/composer.lock /app/
 RUN find /app/storage/ -type f -not -name VERSION -exec rm {} \;
 
 # Build the PHP container
-FROM php:7-fpm-alpine
+FROM php:8-fpm-alpine
 WORKDIR /var/www
 RUN apk add --no-cache icu-dev && \
     docker-php-ext-install intl pdo_mysql

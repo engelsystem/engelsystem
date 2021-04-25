@@ -17,6 +17,10 @@ trait CleanupModel
      */
     protected function cleanupModelNullValues($models, array $attributes = [])
     {
+        if (!$models) {
+            return;
+        }
+
         $models = $models instanceof Model ? [$models] : $models;
         foreach ($models as $model) {
             /** @var Model $model */

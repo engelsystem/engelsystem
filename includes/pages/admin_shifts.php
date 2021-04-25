@@ -418,8 +418,8 @@ function admin_shifts()
             form_select('rid', __('Room'), $room_array, $rid),
             div('row', [
                 div('col-md-6', [
-                    form_text('start', __('Start'), date('Y-m-d H:i', $start)),
-                    form_text('end', __('End'), date('Y-m-d H:i', $end)),
+                    form_datetime('start', __('Start'), $start),
+                    form_datetime('end', __('End'), $end),
                     form_info(__('Mode'), ''),
                     form_radio('mode', __('Create one shift'), $mode == 'single', 'single'),
                     form_radio('mode', __('Create multiple shifts'), $mode == 'multi', 'multi'),

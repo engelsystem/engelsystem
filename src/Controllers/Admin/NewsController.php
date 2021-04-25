@@ -96,7 +96,8 @@ class NewsController extends BaseController
             'pages/news/edit.twig',
             [
                 'news'       => $news,
-                'is_meeting' => $news ? $news->is_meeting : $isMeetingDefault
+                'is_meeting' => $news ? $news->is_meeting : $isMeetingDefault,
+                'is_pinned'  => $news ? $news->is_pinned : false,
             ] + $this->getNotifications(),
         );
     }
@@ -116,6 +117,7 @@ class NewsController extends BaseController
             'title'      => 'required',
             'text'       => 'required',
             'is_meeting' => 'optional|checked',
+            'is_pinned'  => 'optional|checked',
             'delete'     => 'optional|checked',
             'preview'    => 'optional|checked',
         ]);
@@ -146,24 +148,31 @@ class NewsController extends BaseController
         $news->title = $data['title'];
         $news->text = $data['text'];
         $news->is_meeting = !is_null($data['is_meeting']);
+        $news->is_pinned = !is_null($data['is_pinned']);
 
         if (!is_null($data['preview'])) {
             return $this->showEdit($news);
         }
 
+        $isNewNews = !$news->id;
         $news->save();
 
+        if ($isNewNews) {
+            event('news.created', ['news' => $news]);
+        }
+
         $this->log->info(
-            'Updated {type} "{news}": {text}',
+            'Updated {pinned}{type} "{news}": {text}',
             [
-                'type' => $news->is_meeting ? 'meeting' : 'news',
-                'news' => $news->title,
-                'text' => $news->text,
+                'pinned' => $news->is_pinned ? 'pinned ' : '',
+                'type'   => $news->is_meeting ? 'meeting' : 'news',
+                'news'   => $news->title,
+                'text'   => $news->text,
             ]
         );
 
         $this->addNotification('news.edit.success');
 
-        return $this->redirect->to('/news/' . $news->id);
+        return $this->redirect->to('/news');
     }
 }

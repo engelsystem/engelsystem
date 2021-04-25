@@ -27,7 +27,10 @@ msgid "validation.email.email"
 msgstr "Die E-Mail-Adresse ist nicht gültig."
 
 msgid "validation.password.min"
-msgstr "Dein angegebenes Passwort ist zu kurz."
+msgstr "Dein neues Passwort ist zu kurz."
+
+msgid "validation.new_password.min"
+msgstr "Dein neues Passwort ist zu kurz."
 
 msgid "validation.password.confirmed"
 msgstr "Deine Passwörter stimmen nicht überein."
@@ -35,8 +38,8 @@ msgstr "Deine Passwörter stimmen nicht überein."
 msgid "validation.password_confirmation.required"
 msgstr "Du musst dein Passwort bestätigen."
 
-msgid "schedule.import"
-msgstr "Programm importieren"
+msgid "schedule.edit.success"
+msgstr "Das Programm wurde erfolgreich konfiguriert."
 
 msgid "schedule.import.request-error"
 msgstr "Das Programm konnte nicht abgerufen werden."
@@ -81,3 +84,51 @@ msgid "news.edit.contains-html"
 msgstr ""
 "Diese Nachricht beinhaltet HTML. Wenn du sie speicherst gehen diese "
 "Formatierungen verloren!"
+
+msgid "oauth.invalid-state"
+msgstr "Ungültiger OAuth-Status"
+
+msgid "oauth.provider-error"
+msgstr "Login-Provider-Fehler"
+
+msgid "oauth.already-connected"
+msgstr "Dieser Account wurde bereits mit einem anderen Engelsystem-User verbunden!"
+
+msgid "oauth.connected"
+msgstr "Login-Provider verbunden!"
+
+msgid "oauth.disconnected"
+msgstr "Login-Provider getrennt!"
+
+msgid "oauth.not-found"
+msgstr "Account nicht gefunden"
+
+msgid "oauth.provider-not-found"
+msgstr "OAuth-Provider nicht gefunden"
+
+msgid "settings.profile"
+msgstr "Profil"
+
+msgid "faq.delete.success"
+msgstr "FAQ Eintrag erfolgreich gelöscht."
+
+msgid "faq.edit.success"
+msgstr "FAQ Eintrag erfolgreich aktualisiert."
+
+msgid "question.delete.success"
+msgstr "Frage erfolgreich gelöscht."
+
+msgid "question.add.success"
+msgstr "Frage erstellt."
+
+msgid "question.edit.success"
+msgstr "Frage erfolgreich bearbeitet."
+
+msgid "notification.news.new"
+msgstr "Neue News: %s"
+
+msgid "notification.news.new.introduction"
+msgstr "Es gibt eine neue News: %1$s"
+
+msgid "notification.news.new.text"
+msgstr "Du kannst sie dir unter %3$s anschauen."

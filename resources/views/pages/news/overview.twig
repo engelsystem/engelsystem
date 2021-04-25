@@ -9,7 +9,7 @@
         <h1>
             {{ block('title') }}
             {%- if has_permission_to('admin_news') and is_overview|default(false) -%}
-                {{ m.button(__('news.add'), url('admin/news', only_meetings ? {'meeting': 1} : {})) }}
+                {{ m.button(m.glyphicon('plus'), url('admin/news', only_meetings ? {'meeting': 1} : {})) }}
             {%- endif %}
         </h1>
 
@@ -53,6 +53,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <a href="{{ url('news/' ~ news.id) }}">
+                        {% if news.is_pinned %}{{ m.glyphicon('pushpin') }}{% endif %}
                         {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
                         {{ news.title }}
                     </a>

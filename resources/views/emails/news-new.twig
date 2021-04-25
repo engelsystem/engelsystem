@@ -1,0 +1,9 @@
+{% extends "emails/mail.twig" %}
+
+{% block introduction %}
+{{ __('notification.news.new.introduction', [news.title, news.text, url('/news/' ~ news.id)]) }}
+{% endblock %}
+
+{% block message %}
+{{ __('notification.news.new.text', [news.title, news.text, url('/news/' ~ news.id)]) }}
+{% endblock %}

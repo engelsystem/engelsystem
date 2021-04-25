@@ -93,8 +93,8 @@ function AngelType_edit_view($angeltype, $supporter_mode)
                 __('Angel types which require introduction can only be used by an angel if enabled by a supporter (double opt-in).')
             ),
             $supporter_mode
-                ? form_info(__('No Self Sign Up'), $angeltype['no_self_signup'] ? __('Yes') : __('No'))
-                : form_checkbox('no_self_signup', __('No Self Sign Up'), $angeltype['no_self_signup']),
+                ? form_info(__('No Self Sign Up allowed'), $angeltype['no_self_signup'] ? __('Yes') : __('No'))
+                : form_checkbox('no_self_signup', __('No Self Sign Up allowed'), $angeltype['no_self_signup']),
             $supporter_mode
                 ? form_info(__('Requires driver license'),
                 $angeltype['requires_driver_license']
@@ -358,7 +358,7 @@ function AngelType_view(
                 $angeltype,
                 $shiftsFilterRenderer,
                 $shiftCalendarRenderer
-            )
+            ),
         ], $tab)
     ], true);
 }
@@ -374,7 +374,7 @@ function AngelType_view_shifts($angeltype, $shiftsFilterRenderer, $shiftCalendar
     $shifts = $shiftsFilterRenderer->render(page_link_to('angeltypes', [
         'action'       => 'view',
         'angeltype_id' => $angeltype['id']
-    ]));
+    ]), ['type' => $angeltype['id']]);
     $shifts .= $shiftCalendarRenderer->render();
 
     return div('first', $shifts);
@@ -478,8 +478,8 @@ function AngelTypes_render_contact_info($angeltype)
 {
     return heading(__('Contact'), 3) . description([
             __('Name')   => $angeltype['contact_name'],
-            __('DECT')   => $angeltype['contact_dect'],
-            __('E-Mail') => $angeltype['contact_email']
+            __('DECT')   => sprintf('<a href="tel:%s">%1$s</a>', $angeltype['contact_dect']),
+            __('E-Mail') => sprintf('<a href="mailto:%s">%1$s</a>', $angeltype['contact_email']),
         ]);
 }
 

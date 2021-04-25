@@ -1,0 +1,49 @@
+{% extends 'pages/settings/settings.twig' %}
+{% import 'macros/form.twig' as f %}
+
+{% block title %}{{ __('settings.oauth') }}{% endblock %}
+
+{% block container_title %}
+    <h1 id="oauth-settings-title">{{ __('settings.settings') }} <small>{{ block('title') }}</small></h1>
+{% endblock %}
+
+{% block row_content %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>{{ __('settings.oauth.identity-provider') }}</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for name,config in providers %}
+        <tr{% if config.hidden|default(false) %} class="hidden"{% endif %}>
+            <td>
+                {% if config.url|default %}
+                    <a href="{{ config.url }}" target="_blank" rel="noopener">
+                        {{ __(config.name|default(name|capitalize)) }}
+                    </a>
+                {% else %}
+                    {{ __(config.name|default(name|capitalize)) }}
+                {% endif %}
+            </td>
+            <td>
+                {% if not user.oauth.contains('provider', name) %}
+                    <form method="POST" action="{{ url('/oauth/' ~ name ~ '/connect') }}">
+                        {{ csrf() }}
+
+                        {{ f.submit(__('form.connect'), {'btn_size' : 'xs'}) }}
+                    </form>
+                {% else %}
+                    <form method="POST" action="{{ url('/oauth/' ~ name ~ '/disconnect') }}">
+                        {{ csrf() }}
+
+                        {{ f.submit(__('form.disconnect'), {'btn_type': 'danger', 'btn_size' : 'xs'}) }}
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

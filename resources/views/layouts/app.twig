@@ -1,4 +1,4 @@
-{% set theme = user.settings.theme|default(config('theme')) %}
+{% set theme = theme|default(user.settings.theme|default(config('theme'))) %}
 <!DOCTYPE html>
 <html lang="{{ session_get('locale')|split('_')[0]|escape('html_attr') }}">
 <head>

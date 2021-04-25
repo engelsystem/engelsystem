@@ -6,6 +6,8 @@ namespace Engelsystem\Controllers\Admin\Schedule;
 
 use Carbon\Carbon;
 use Engelsystem\Controllers\BaseController;
+use Engelsystem\Controllers\CleanupModel;
+use Engelsystem\Controllers\HasUserNotifications;
 use Engelsystem\Helpers\Schedule\Event;
 use Engelsystem\Helpers\Schedule\Room;
 use Engelsystem\Helpers\Schedule\Schedule;
@@ -20,7 +22,6 @@ use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
 use stdClass;
@@ -28,6 +29,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ImportSchedule extends BaseController
 {
+    use CleanupModel;
+    use HasUserNotifications;
+
     /** @var DatabaseConnection */
     protected $db;
 
@@ -86,11 +90,76 @@ class ImportSchedule extends BaseController
         return $this->response->withView(
             'admin/schedule/index.twig',
             [
-                'errors'      => $this->getFromSession('errors'),
-                'success'     => $this->getFromSession('success'),
+                'is_index'  => true,
+                'schedules' => ScheduleUrl::all(),
+            ] + $this->getNotifications()
+        );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function edit(Request $request): Response
+    {
+        $schedule = ScheduleUrl::find($request->getAttribute('id'));
+        $this->cleanupModelNullValues($schedule);
+
+        return $this->response->withView(
+            'admin/schedule/edit.twig',
+            [
+                'schedule'    => $schedule,
                 'shift_types' => $this->getShiftTypes(),
+            ] + $this->getNotifications()
+        );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function save(Request $request): Response
+    {
+        $id = $request->getAttribute('id');
+        /** @var ScheduleUrl $schedule */
+        $schedule = ScheduleUrl::findOrNew($id);
+
+        $data = $this->validate($request, [
+            'name'           => 'required',
+            'url'            => 'required',
+            'shift_type'     => 'required|int',
+            'minutes_before' => 'int',
+            'minutes_after'  => 'int',
+        ]);
+
+        if (!isset($this->getShiftTypes()[$data['shift_type']])) {
+            throw new ErrorException('schedule.import.invalid-shift-type');
+        }
+
+        $schedule->name = $data['name'];
+        $schedule->url = $data['url'];
+        $schedule->shift_type = $data['shift_type'];
+        $schedule->minutes_before = $data['minutes_before'];
+        $schedule->minutes_after = $data['minutes_after'];
+
+        $schedule->save();
+
+        $this->log->info(
+            'Schedule {name}: Url {url}, Shift Type {shift_type}, minutes before/after {before}/{after}',
+            [
+                'name'       => $schedule->name,
+                'url'        => $schedule->name,
+                'shift_type' => $schedule->shift_type,
+                'before'     => $schedule->minutes_before,
+                'after'      => $schedule->minutes_after,
             ]
         );
+
+        $this->addNotification('schedule.edit.success');
+
+        return redirect('/admin/schedule/load/' . $schedule->id);
     }
 
     /**
@@ -116,24 +185,19 @@ class ImportSchedule extends BaseController
                 $changeEvents,
                 $deleteEvents,
                 $newRooms,
-                $shiftType,
+                ,
                 $scheduleUrl,
-                $schedule,
-                $minutesBefore,
-                $minutesAfter
+                $schedule
                 ) = $this->getScheduleData($request);
         } catch (ErrorException $e) {
-            return back()->with('errors', [$e->getMessage()]);
+            $this->addNotification($e->getMessage(), 'errors');
+            return back();
         }
 
         return $this->response->withView(
             'admin/schedule/load.twig',
             [
-                'errors'         => $this->getFromSession('errors'),
-                'schedule_url'   => $scheduleUrl->url,
-                'shift_type'     => $shiftType,
-                'minutes_before' => $minutesBefore,
-                'minutes_after'  => $minutesAfter,
+                'schedule_id'    => $scheduleUrl->id,
                 'schedule'       => $schedule,
                 'rooms'          => [
                     'add' => $newRooms,
@@ -143,7 +207,7 @@ class ImportSchedule extends BaseController
                     'update' => $changeEvents,
                     'delete' => $deleteEvents,
                 ],
-            ]
+            ] + $this->getNotifications()
         );
     }
 
@@ -172,10 +236,11 @@ class ImportSchedule extends BaseController
                 $scheduleUrl
                 ) = $this->getScheduleData($request);
         } catch (ErrorException $e) {
-            return back()->with('errors', [$e->getMessage()]);
+            $this->addNotification($e->getMessage(), 'errors');
+            return back();
         }
 
-        $this->log('Started schedule "{schedule}" import', ['schedule' => $scheduleUrl->url]);
+        $this->log('Started schedule "{name}" import', ['name' => $scheduleUrl->name]);
 
         foreach ($newRooms as $room) {
             $this->createRoom($room);
@@ -207,10 +272,11 @@ class ImportSchedule extends BaseController
             $this->deleteEvent($event);
         }
 
-        $this->log('Ended schedule "{schedule}" import', ['schedule' => $scheduleUrl->url]);
+        $scheduleUrl->touch();
+        $this->log('Ended schedule "{name}" import', ['name' => $scheduleUrl->name]);
 
         return redirect($this->url, 303)
-            ->with('success', ['schedule.import.success']);
+            ->with('messages', ['schedule.import.success']);
     }
 
     /**
@@ -337,17 +403,11 @@ class ImportSchedule extends BaseController
      */
     protected function getScheduleData(Request $request)
     {
-        $data = $this->validate(
-            $request,
-            [
-                'schedule-url'   => 'required|url',
-                'shift-type'     => 'required|int',
-                'minutes-before' => 'optional|int',
-                'minutes-after'  => 'optional|int',
-            ]
-        );
+        $id = $request->getAttribute('id');
+        /** @var ScheduleUrl $scheduleUrl */
+        $scheduleUrl = ScheduleUrl::findOrFail($id);
 
-        $scheduleResponse = $this->guzzle->get($data['schedule-url']);
+        $scheduleResponse = $this->guzzle->get($scheduleUrl->url);
         if ($scheduleResponse->getStatusCode() != 200) {
             throw new ErrorException('schedule.import.request-error');
         }
@@ -357,32 +417,15 @@ class ImportSchedule extends BaseController
             throw new ErrorException('schedule.import.read-error');
         }
 
-        $shiftType = (int)$data['shift-type'];
-        if (!isset($this->getShiftTypes()[$shiftType])) {
-            throw new ErrorException('schedule.import.invalid-shift-type');
-        }
-
-        $scheduleUrl = $this->getScheduleUrl($data['schedule-url']);
+        $shiftType = $scheduleUrl->shift_type;
         $schedule = $this->parser->getSchedule();
-        $minutesBefore = isset($data['minutes-before']) ? (int)$data['minutes-before'] : 15;
-        $minutesAfter = isset($data['minutes-after']) ? (int)$data['minutes-after'] : 15;
+        $minutesBefore = $scheduleUrl->minutes_before;
+        $minutesAfter = $scheduleUrl->minutes_after;
         $newRooms = $this->newRooms($schedule->getRooms());
         return array_merge(
             $this->shiftsDiff($schedule, $scheduleUrl, $shiftType, $minutesBefore, $minutesAfter),
             [$newRooms, $shiftType, $scheduleUrl, $schedule, $minutesBefore, $minutesAfter]
         );
-    }
-
-    /**
-     * @param string $name
-     * @return Collection
-     */
-    protected function getFromSession(string $name): Collection
-    {
-        $data = Collection::make(Arr::flatten($this->session->get($name, [])));
-        $this->session->remove($name);
-
-        return $data;
     }
 
     /**
@@ -579,22 +622,6 @@ class ImportSchedule extends BaseController
         }
 
         return $return;
-    }
-
-    /**
-     * @param string $scheduleUrl
-     * @return ScheduleUrl
-     */
-    protected function getScheduleUrl(string $scheduleUrl): ScheduleUrl
-    {
-        if (!$schedule = ScheduleUrl::whereUrl($scheduleUrl)->first()) {
-            $schedule = new ScheduleUrl(['url' => $scheduleUrl]);
-            $schedule->save();
-
-            $this->log('Created schedule "{schedule}"', ['schedule' => $schedule->url]);
-        }
-
-        return $schedule;
     }
 
     /**

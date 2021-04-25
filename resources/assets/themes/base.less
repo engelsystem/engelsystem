@@ -31,9 +31,7 @@ body {
   width: 1em;
   height: 1em;
 
-  -webkit-mask: url(../icons/angel.svg) no-repeat 50% 50%;
   mask: url(../icons/angel.svg) no-repeat 50% 50%;
-  -webkit-mask-size: cover;
   mask-size: cover;
 }
 
@@ -144,7 +142,7 @@ table a > .icon-icon_angel {
 }
 
 .select2-dropdown {
-  background-color: @brand-primary;
+  background-color: @input-bg;
 }
 
 .selection .checkbox {
@@ -241,8 +239,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .messages span.text-danger {
   animation: pulse 1s infinite;
-  -webkit-animation: pulse 1s infinite;
-  -moz-animation: pulse 1s infinite;
 }
 
 .legend .label {
@@ -258,6 +254,30 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-bottom: @form-group-margin-bottom;
 }
 
+.user-settings .settings-menu ul {
+  margin-top: @line-height-computed;
+}
+
+span.ref-id[id] {
+  padding-top: 50px;
+}
+
+.faq {
+  .panel-heading h3 {
+    margin: 0;
+
+    small a.ref-link {
+      display: none;
+    }
+
+    &:hover {
+      small a.ref-link {
+        display: inherit;
+      }
+    }
+  }
+}
+
 @keyframes pulse {
   0% {
     transform: rotate(0deg);
@@ -270,54 +290,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   }
   30% {
     transform: rotate(5deg) translateY(-2px);;
-  }
-  40% {
-    transform: rotate(-5deg);
-  }
-  50% {
-    transform: rotate(0deg) translateY(-2px);
-  }
-  75% {
-    transform: rotate(0deg) translateY(0px);
-  }
-}
-
-@-webkit-keyframes pulse {
-  0% {
-    transform: rotate(0deg);
-  }
-  10% {
-    transform: rotate(5deg) translateY(-2px);
-  }
-  20% {
-    transform: rotate(-5deg);
-  }
-  30% {
-    transform: rotate(5deg) translateY(-2px);
-  }
-  40% {
-    transform: rotate(-5deg);
-  }
-  50% {
-    transform: rotate(0deg) translateY(-2px);
-  }
-  75% {
-    transform: rotate(0deg) translateY(0px);
-  }
-}
-
-@-moz-keyframes pulse {
-  0% {
-    transform: rotate(0deg);
-  }
-  10% {
-    transform: rotate(5deg) translateY(-2px);
-  }
-  20% {
-    transform: rotate(-5deg);
-  }
-  30% {
-    transform: rotate(5deg) translateY(-2px);
   }
   40% {
     transform: rotate(-5deg);
@@ -387,9 +359,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     max-height: unset;
     left: 101%;
     top: @navbar-height + 1;
+    // extra padding because mobile Safari displays a bottom bar hiding parts of the menu
+    padding-bottom: 75px;
 
     transition: left .3s ease-in-out;
-    -webkit-transition: left .3s ease-in-out;
 
     background: @navbar-default-bg;
     margin: 0 !important;   // Overridden in theme with high specifity:
@@ -410,10 +383,25 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     .nav > li.active {
       display: none;
     }
+
     .caret {
       float: right;
       margin-top: 7px;
     }
   }
-}
 
+  .navbar-toggle {
+    align-items: center;
+    font-size: 18px;
+    display: flex;
+    height: 38px;
+    justify-content: center;
+    padding: 0;
+    transform: none;
+    width: 38px;
+
+    .icon-close {
+      padding: 0;
+    }
+  }
+}

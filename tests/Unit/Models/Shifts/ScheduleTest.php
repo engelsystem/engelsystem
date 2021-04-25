@@ -13,7 +13,13 @@ class ScheduleTest extends ModelTest
      */
     public function testScheduleShifts()
     {
-        $schedule = new Schedule(['url' => 'https://foo.bar/schedule.xml']);
+        $schedule = new Schedule([
+            'url' => 'https://foo.bar/schedule.xml',
+            'name' => 'Testing',
+            'shift_type' => 0,
+            'minutes_before' => 10,
+            'minutes_after' => 10,
+        ]);
         $schedule->save();
 
         (new ScheduleShift(['shift_id' => 1, 'schedule_id' => $schedule->id, 'guid' => 'a']))->save();

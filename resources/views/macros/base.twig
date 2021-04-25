@@ -18,8 +18,12 @@
     </a>
 {% endmacro %}
 
-{% macro button(label, url, type, size) %}
-    <a href="{{ url }}" class="btn btn-{{ type|default('default') }}{% if size %} btn-{{ size }}{% endif %}">
+{% macro button(label, url, type, size, title) %}
+    <a href="{{ url }}" class="btn btn-{{ type|default('default') }}{% if size %} btn-{{ size }}{% endif %}"{% if title %} title="{{ title }}"{% endif %}>
         {{ label }}
     </a>
 {% endmacro %}
+
+{% macro info(text) %}
+    <span class="help-block">{{ _self.glyphicon('info-sign') }}{{ text }}</span>
+{%- endmacro %}

@@ -5,12 +5,12 @@
 return [
     // Service providers
     'providers'  => [
-
         // Application bootstrap
         \Engelsystem\Logger\LoggerServiceProvider::class,
         \Engelsystem\Exceptions\ExceptionsServiceProvider::class,
         \Engelsystem\Config\ConfigServiceProvider::class,
         \Engelsystem\Helpers\ConfigureEnvironmentServiceProvider::class,
+        \Engelsystem\Events\EventsServiceProvider::class,
 
         // Request handling
         \Engelsystem\Http\UrlGeneratorServiceProvider::class,
@@ -33,6 +33,7 @@ return [
         \Engelsystem\Helpers\VersionServiceProvider::class,
         \Engelsystem\Mail\MailerServiceProvider::class,
         \Engelsystem\Http\HttpClientServiceProvider::class,
+        \Engelsystem\Helpers\DumpServerServiceProvider::class
     ],
 
     // Application middleware
@@ -53,5 +54,17 @@ return [
 
         // Handle request
         \Engelsystem\Middleware\RequestHandler::class,
+    ],
+
+    // Event handlers
+    'event-handlers' => [
+        // 'event' => [
+        //      a list of
+        //      'Class@method' or 'Class' (which uses @handle),
+        //      ['Class', 'method'],
+        //      callable like [$instance, 'method] or 'function'
+        //      or $function
+        // ]
+        'news.created' => \Engelsystem\Events\Listener\News::class . '@created',
     ],
 ];

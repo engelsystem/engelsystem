@@ -106,15 +106,14 @@ build-image:
 #
 
 audit-composer:
-  image: ${TEST_IMAGE}
+  image: php:latest
   stage: test
-  needs: [ build-image ]
+  needs: [ ]
   before_script:
-    - curl -sSo /usr/local/bin/security-checker https://get.sensiolabs.org/security-checker.phar
-    - chmod +x /usr/local/bin/security-checker
-    - cd "${DOCROOT}"
+    - curl -Ls https://github.com/symfony/cli/releases/latest/download/symfony_linux_amd64.gz | gzip -d > /bin/symfony
+    - chmod +x /bin/symfony
   script:
-    - security-checker --no-ansi security:check
+    - symfony check:security --no-ansi
 
 audit-yarn:
   image: node:alpine
@@ -189,7 +188,7 @@ release-image:
     - docker tag "${TEST_IMAGE}" "${RELEASE_IMAGE}"
     - docker push "${RELEASE_IMAGE}"
   only:
-    - master
+    - main
 
 release-image-nginx:
   <<: *docker_definition
@@ -203,7 +202,7 @@ release-image-nginx:
     - docker tag "${TEST_IMAGE_NGINX}" "${RELEASE_IMAGE_NGINX}"
     - docker push "${RELEASE_IMAGE_NGINX}"
   only:
-    - master
+    - main
 
 .deploy_template: &deploy_definition
   stage: release
@@ -248,7 +247,7 @@ pages:
     paths:
       - public
   only:
-    - master
+    - main
   variables:
     GIT_STRATEGY: none
 
@@ -273,7 +272,7 @@ deploy:
   environment:
     name: staging
   only:
-    - master
+    - main
   script:
     # Check if deployment variables where set
     - |-
@@ -318,6 +317,7 @@ deploy:
     - export CI_PVC_SC=${CI_PVC_SC:-"${CI_PVC_SC_LOCAL:-local-path}"}
     - export CI_REPLICAS=${CI_REPLICAS_REVIEW:-${CI_REPLICAS:-2}}
     - export CI_APP_NAME=${CI_APP_NAME:-Engelsystem}
+    - export CI_CLUSTER_ISSUER=${CI_CLUSTER_ISSUER:-letsencrypt}
 
     - cp deployment.tpl.yaml deployment.yaml
     - for env in ${!CI_*}; do sed -i "s#<${env}>#$(echo "${!env}"|head -n1)#g" deployment.yaml; done
@@ -383,7 +383,7 @@ deploy-production:
     name: production
   when: manual
   only:
-    - master
+    - main
   script:
     # Check if deployment variables where set
     - |-
@@ -408,13 +408,13 @@ deploy-k8s-production:
     on_stop: stop-k8s-production
   when: manual
   only:
-    - master
+    - main
 
 stop-k8s-production:
   <<: *deploy_k8s_stop
   needs: [ deploy-k8s-production ]
   only:
-    - master
+    - main
   environment:
     name: production
     action: stop

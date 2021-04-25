@@ -25,7 +25,10 @@ msgid "validation.email.email"
 msgstr "This email address is not valid."
 
 msgid "validation.password.min"
-msgstr "Your password is too short."
+msgstr "Your new password is too short."
+
+msgid "validation.new_password.min"
+msgstr "Your new password is too short."
 
 msgid "validation.password.confirmed"
 msgstr "Your passwords are not equal."
@@ -33,8 +36,8 @@ msgstr "Your passwords are not equal."
 msgid "validation.password_confirmation.required"
 msgstr "You have to confirm your password."
 
-msgid "schedule.import"
-msgstr "Import schedule"
+msgid "schedule.edit.success"
+msgstr "The schedule was configured successfully."
 
 msgid "schedule.import.request-error"
 msgstr "The schedule could not be requested."
@@ -77,3 +80,51 @@ msgstr "News successfully deleted."
 
 msgid "news.edit.contains-html"
 msgstr "This message contains HTML. After saving the post some formatting will be lost!"
+
+msgid "oauth.invalid-state"
+msgstr "Invalid OAuth state"
+
+msgid "oauth.provider-error"
+msgstr "OAuth provider error"
+
+msgid "oauth.already-connected"
+msgstr "This account is already connected to another account!"
+
+msgid "oauth.connected"
+msgstr "Connected login provider!"
+
+msgid "oauth.disconnected"
+msgstr "Disconnected login provider!"
+
+msgid "oauth.not-found"
+msgstr "Unable to find account"
+
+msgid "oauth.provider-not-found"
+msgstr "Unable to find OAuth provider"
+
+msgid "settings.profile"
+msgstr "Profile"
+
+msgid "faq.delete.success"
+msgstr "FAQ entry successfully deleted."
+
+msgid "faq.edit.success"
+msgstr "FAQ entry successfully updated."
+
+msgid "question.delete.success"
+msgstr "Question deleted successfully."
+
+msgid "question.add.success"
+msgstr "Question added successfully."
+
+msgid "question.edit.success"
+msgstr "Question updated successfully."
+
+msgid "notification.news.new"
+msgstr "New news: %s"
+
+msgid "notification.news.new.introduction"
+msgstr "A new news is available: %1$s"
+
+msgid "notification.news.new.text"
+msgstr "You can watch it at %3$s"

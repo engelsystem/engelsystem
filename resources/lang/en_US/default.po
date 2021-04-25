@@ -126,10 +126,6 @@ msgstr "Register"
 msgid "Login"
 msgstr "Login"
 
-#: resources/views/macros/form.twig:17
-msgid "form.submit"
-msgstr "form.submit"
-
 #: resources/views/pages/credits.twig:17
 #, fuzzy
 msgid "Source code"
@@ -139,26 +135,6 @@ msgstr "Source code"
 #, python-format
 msgid "Version: _%s_"
 msgstr "Version: _%s_"
-
-#: resources/views/pages/credits.twig:20
-msgid "credits.credit"
-msgstr ""
-"The original engelsystem was written by "
-"[cookie](https://github.com/cookieBerlin/engelsystem)"
-". It was then completely rewritten and enhanced by "
-"[msquare](https://notrademark.de)"
-" (maintainer) and "
-"[MyIgel](https://myigel.name)"
-". Lastly it was forked by [stuvus](https://github.com/stuvusIT) and changed "
-"to be a system (called Handtuchsystem) for booking workplaces during the "
-"COVID-19 pandemic"
-
-#: resources/views/pages/credits.twig:23
-msgid "credits.contributors"
-msgstr ""
-"Please have a look at the "
-"[contributors list on GitHub](https://github.com/engelsystem/engelsystem/graphs/contributors)"
-" for a complete list."
 
 #: resources/views/pages/login.twig:10 includes/view/EventConfig_view.php:27
 #, python-format, php-format
@@ -2730,12 +2706,6 @@ msgstr ""
 "You need to specify a DECT phone number in your settings! If you don't have "
 "a DECT phone, just enter '-'."
 
-#: src/Middleware/LegacyMiddleware.php:83
-msgid "page.404.text"
-msgstr ""
-"This page could not be found or you don't have permission to view it. "
-"You probably have to sign in or register in order to gain access!"
-
 #~ msgid "Token is not correct."
 #~ msgstr "Token is not correct."
 
@@ -2751,11 +2721,39 @@ msgstr ""
 #~ msgid "Please enter a new password."
 #~ msgstr "Please enter a new password."
 
-#~ msgid "auth.no-password"
-#~ msgstr "Please enter a password."
-
 #~ msgid "auth.no-nickname"
 #~ msgstr "Please enter a nickname."
+
+#~ msgid "auth.no-password"
+#~ msgstr "Please enter a password."
+msgid "auth.password.error"
+msgstr "Your password is incorrect. Please try it again."
+
+msgid "form.submit"
+msgstr "Submit"
+
+msgid "page.404.text"
+msgstr ""
+"This page could not be found or you don't have permission to view it. "
+"You probably have to sign in or register in order to gain access!"
+
+msgid "credits.credit"
+msgstr ""
+"The original engelsystem was written by "
+"[cookie](https://github.com/cookieBerlin/engelsystem)"
+". It was then completely rewritten and enhanced by "
+"[msquare](https://notrademark.de)"
+" (maintainer) and "
+"[MyIgel](https://myigel.name)"
+". Lastly it was forked by [stuvus](https://github.com/stuvusIT) and changed "
+"to be a system (called Handtuchsystem) for booking workplaces during the "
+"COVID-19 pandemic"
+
+msgid "credits.contributors"
+msgstr ""
+"Please have a look at the "
+"[contributors list on GitHub](https://github.com/engelsystem/engelsystem/graphs/contributors)"
+" for a complete list."
 
 msgid "form.load_schedule"
 msgstr "Load schedule"
@@ -2763,19 +2761,44 @@ msgstr "Load schedule"
 msgid "form.import"
 msgstr "Import"
 
+msgid "form.save"
+msgstr "Save"
+
+msgid "form.edit"
+msgstr "Bearbeiten"
+
+msgid "form.preview"
+msgstr "Preview"
+
+msgid "form.delete"
+msgstr "Delete"
+
+msgid "form.updated"
+msgstr "Updated"
+
+msgid "schedule.import"
+msgstr "Import schedule"
+
+msgid "schedule.edit.title"
+msgstr "Edit schedule"
+
 msgid "schedule.import.title"
 msgstr "Import schedule"
 
+msgid "schedule.last_update"
+msgstr "Last updated: %s"
+
 msgid "schedule.import.text"
-msgstr ""
-"This import creates rooms and creates, updates and deletes shifts according "
-"to the schedule.xml export."
+msgstr "Imports create rooms and create, update and delete shifts according to a schedule.xml export."
 
 msgid "schedule.import.load.title"
 msgstr "Import schedule: Preview"
 
 msgid "schedule.import.load.info"
 msgstr "Import \"%s\" (version \"%s\")"
+
+msgid "schedule.name"
+msgstr "Programm name"
 
 msgid "schedule.url"
 msgstr "Schedule URL (schedule.xml)"
@@ -2788,6 +2811,9 @@ msgstr "Add minutes before talk begins"
 
 msgid "schedule.minutes-after"
 msgstr "Add minutes after talk ends"
+
+msgid "schedule.import.request_error"
+msgstr "Unable to load schedule."
 
 msgid "schedule.import.rooms.add"
 msgstr "Rooms to create"
@@ -2852,6 +2878,9 @@ msgstr "Subject"
 msgid "news.edit.is_meeting"
 msgstr "Meeting"
 
+msgid "news.edit.is_pinned"
+msgstr "Pin to top"
+
 msgid "news.edit.message"
 msgstr "Message"
 
@@ -2869,3 +2898,72 @@ msgstr "Level"
 
 msgid "log.message"
 msgstr "Message"
+
+msgid "settings.settings"
+msgstr "Settings"
+
+msgid "settings.password"
+msgstr "Password"
+
+msgid "settings.password.info"
+msgstr "Here you can change your password."
+
+msgid "settings.password.password"
+msgstr "Old password"
+
+msgid "settings.password.new_password"
+msgstr "New passwort"
+
+msgid "settings.password.new_password2"
+msgstr "Password confirmation"
+
+msgid "settings.password.success"
+msgstr "Password was changed successfully."
+
+msgid "settings.oauth"
+msgstr "Single Sign-On"
+
+msgid "settings.oauth.identity-provider"
+msgstr "Identity provider"
+
+msgid "oauth.login"
+msgstr "Login using OAuth"
+
+msgid "oauth.login-using-provider"
+msgstr "Login using %s"
+
+msgid "form.connect"
+msgstr "Connect"
+
+msgid "form.disconnect"
+msgstr "Disconnect"
+
+msgid "faq.faq"
+msgstr "FAQ"
+
+msgid "faq.edit"
+msgstr "Edit FAQ entry"
+
+msgid "faq.add"
+msgstr "Add FAQ entry"
+
+msgid "faq.question"
+msgstr "Question"
+
+msgid "faq.message"
+msgstr "Answer"
+
+msgid "question.questions"
+msgstr "Fragen"
+
+msgid "question.add"
+msgstr "Ask"
+
+msgid "question.edit"
+msgstr "Edit question"
+
+msgid "question.question"
+msgstr "Question"
+
+msgid "question.answer"
+msgstr "Answer"

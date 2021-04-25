@@ -149,6 +149,7 @@ class NewsController extends BaseController
         $news = $query
             ->with('user')
             ->withCount('comments')
+            ->orderByDesc('is_pinned')
             ->orderByDesc('updated_at')
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)

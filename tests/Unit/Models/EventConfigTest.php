@@ -28,7 +28,7 @@ class EventConfigTest extends ModelTest
             ->setAttribute('value', new Carbon('2000-01-01 10:20'))
             ->save();
         $this->assertEquals(
-            '"2000-01-01"',
+            '"2000-01-01 10:20"',
             $this->database
                 ->selectOne("SELECT `value` FROM event_config WHERE name='buildup_start'")
                 ->value
@@ -60,7 +60,7 @@ class EventConfigTest extends ModelTest
             ->setAttribute('value', new Carbon('2001-02-03 11:12'))
             ->save();
         $this->assertEquals(
-            '2001-02-03 00:00',
+            '2001-02-03 11:12',
             (new EventConfig())->find('buildup_start')
                 ->value
                 ->format('Y-m-d H:i')

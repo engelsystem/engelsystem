@@ -11,7 +11,7 @@ use Illuminate\Database\QueryException;
 class ConfigServiceProvider extends ServiceProvider
 {
     /** @var array */
-    protected $configFiles = ['config.default.php', 'config.php'];
+    protected $configFiles = ['app.php', 'config.default.php', 'config.php'];
 
     /** @var EventConfig */
     protected $eventConfig;

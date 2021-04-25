@@ -82,7 +82,13 @@ function Shift_signup_button_render($shift, $angeltype, $user_angeltype = null)
         $user_angeltype = UserAngelType_by_User_and_AngelType(auth()->user()->id, $angeltype);
     }
 
-    if (isset($angeltype['shift_signup_state']) && $angeltype['shift_signup_state']->isSignupAllowed()) {
+    if (
+        isset($angeltype['shift_signup_state'])
+        && (
+            $angeltype['shift_signup_state']->isSignupAllowed()
+            || User_is_AngelType_supporter(auth()->user(), $angeltype)
+        )
+    ) {
         return button(shift_entry_create_link($shift, $angeltype), __('Sign up'));
     } elseif (empty($user_angeltype)) {
         return button(

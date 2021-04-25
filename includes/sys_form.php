@@ -71,10 +71,35 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
 
     return form_element($label, '
     <div class="input-group date" id="' . $dom_id . '" data-min-date="' . $start_date . '" data-max-date="' . $end_date . '">
-        <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '">'
+        <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '" autocomplete="off">'
         . '<span class="input-group-addon">' . glyph('th') . '</span>
     </div>
     ', $dom_id);
+}
+
+/**
+ * Render a bootstrap datepicker
+ *
+ * @param string $name  Name of the parameter
+ * @param string $label
+ * @param mixed $value
+ *
+ * @return string HTML
+ */
+function form_datetime(string $name, string $label, $value)
+{
+    $dom_id = $name . '-datetime';
+    if ($value) {
+        $value = ($value instanceof Carbon) ? $value : Carbon::createFromTimestamp($value);
+    }
+
+    return form_element($label, sprintf('
+    <div class="input-group datetime" id="%s">
+        <input type="datetime-local" placeholder="YYYY-MM-DD HH:MM" name="%s"
+            class="form-control" value="%s" autocomplete="off">'
+        . '<span class="input-group-addon">' . glyph('th') . '</span>
+    </div>
+    ', $dom_id, $name, htmlspecialchars($value ? $value->format('Y-m-d H:i') : '')), $dom_id);
 }
 
 /**
@@ -226,22 +251,25 @@ function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType =
 /**
  * Rendert ein Formular-Textfeld
  *
- * @param string $name
- * @param string $label
- * @param string $value
- * @param bool   $disabled
- * @param int    $maxlength
+ * @param string      $name
+ * @param string      $label
+ * @param string      $value
+ * @param bool        $disabled
+ * @param int|null    $maxlength
+ * @param string|null $autocomplete
+ *
  * @return string
  */
-function form_text($name, $label, $value, $disabled = false, $maxlength = null)
+function form_text($name, $label, $value, $disabled = false, $maxlength = null, $autocomplete = null)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
     $maxlength = $maxlength ? ' maxlength=' . (int)$maxlength : '';
+    $autocomplete = $autocomplete ? ' autocomplete="' . $autocomplete . '"' : '';
 
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars($value) . '"' . $maxlength . $disabled . '/>',
+        . '" value="' . htmlspecialchars($value) . '"' . $maxlength . $disabled . $autocomplete . '/>',
         'form_' . $name
     );
 }
@@ -268,19 +296,24 @@ function form_text_placeholder($name, $placeholder, $value, $disabled = false)
 /**
  * Rendert ein Formular-Emailfeld
  *
- * @param string $name
- * @param string $label
- * @param string $value
- * @param bool   $disabled
+ * @param string      $name
+ * @param string      $label
+ * @param string      $value
+ * @param bool        $disabled
+ * @param string|null $autocomplete
+ * @param int|null    $maxlength
+ *
  * @return string
  */
-function form_email($name, $label, $value, $disabled = false)
+function form_email($name, $label, $value, $disabled = false, $autocomplete = null, $maxlength = null)
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
+    $autocomplete = $autocomplete ? ' autocomplete="' . $autocomplete . '"' : '';
+    $maxlength = $maxlength ? ' maxlength=' . (int)$maxlength : '';
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="email" name="' . $name . '" value="'
-        . htmlspecialchars($value) . '" ' . $disabled . '/>',
+        . htmlspecialchars($value) . '" ' . $disabled . $autocomplete . $maxlength . '/>',
         'form_' . $name
     );
 }
@@ -315,8 +348,9 @@ function form_password($name, $label, $disabled = false)
     return form_element(
         $label,
         sprintf(
-            '<input class="form-control" id="form_%1$s" type="password" name="%1$s" value=""%s/>',
+            '<input class="form-control" id="form_%1$s" type="password" name="%1$s" minlength="%2$s" value=""%3$s/>',
             $name,
+            config('min_password_length'),
             $disabled
         ),
         'form_' . $name

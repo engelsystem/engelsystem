@@ -11,13 +11,13 @@
     <div class="container-fluid">
         {% block navbar %}
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed"
-                        data-toggle="offcanvas" data-target="#navbar-offcanvas">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon icon-open">☰</span>
-                    <span class="icon icon-close">×</span>
-
-
+                <button type="button"
+                        class="navbar-toggle collapsed"
+                        data-toggle="offcanvas"
+                        data-target="#navbar-offcanvas"
+                        aria-label="Toggle navigation">
+                    <span class="text-primary glyphicon glyphicon-menu-hamburger icon-open"></span>
+                    <span class="text-primary glyphicon glyphicon-remove icon-close"></span>
                 </button>
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <span class="icon-icon_angel"></span>

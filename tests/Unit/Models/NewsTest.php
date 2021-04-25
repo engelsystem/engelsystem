@@ -78,7 +78,7 @@ class NewsTest extends ModelTest
     public function testCreate(): void
     {
         $news = (new News())->create(
-            $this->newsData + ['is_meeting' => true]
+            $this->newsData + ['is_meeting' => true, 'is_pinned' => true]
         );
         $news = $news->find($news->id);
 
@@ -86,5 +86,6 @@ class NewsTest extends ModelTest
         $this->assertSame($this->newsData['title'], $news->title);
         $this->assertSame($this->newsData['text'], $news->text);
         $this->assertTrue($news->is_meeting);
+        $this->assertTrue($news->is_pinned);
     }
 }

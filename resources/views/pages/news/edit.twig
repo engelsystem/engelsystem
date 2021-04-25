@@ -2,7 +2,7 @@
 {% import 'macros/base.twig' as m %}
 {% import 'macros/form.twig' as f %}
 
-{% block title %}{{ news ? __('news.edit.edit') : __('news.edit.add') }}{% endblock %}
+{% block title %}{{ news and news.id ? __('news.edit.edit') : __('news.edit.add') }}{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -10,7 +10,7 @@
 
         {% include 'layouts/parts/messages.twig' %}
 
-        {% if news %}
+        {% if news and news.id %}
             <div class="row">
                 <div class="col-md-6">
                     <p>
@@ -42,6 +42,7 @@
                 </div>
                 <div class="col-md-6">
                     {{ f.checkbox('is_meeting', __('news.edit.is_meeting'), is_meeting) }}
+                    {{ f.checkbox('is_pinned', __('news.edit.is_pinned'), is_pinned) }}
                 </div>
             </div>
 
@@ -51,10 +52,10 @@
 
                     {{ f.submit() }}
 
-                    {{ f.submit(m.glyphicon('eye-close'), {'name': 'preview', 'btn_type': 'info'}) }}
+                    {{ f.submit(m.glyphicon('eye-close'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
 
-                    {% if news %}
-                        {{ f.submit(m.glyphicon('trash'), {'name': 'delete', 'btn_type': 'danger'}) }}
+                    {% if news and news.id %}
+                        {{ f.submit(m.glyphicon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
                     {% endif %}
                 </div>
             </div>
@@ -62,7 +63,7 @@
             {% if news %}
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Preview</h2>
+                        <h2>{{ __('form.preview') }}</h2>
 
                         <div class="panel {% if not news.is_meeting %}panel-default{% else %}panel-info{% endif %}">
                             <div class="panel-heading">

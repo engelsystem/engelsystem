@@ -79,7 +79,7 @@ class EngelsystemMailerTest extends TestCase
         $this->setExpects($mailer, 'sendView', ['foo@bar.baz', 'Lorem dolor', 'test/template.tpl', ['dev' => true]], 1);
         $this->setExpects($translator, 'getLocales', null, ['de_DE' => 'de_DE', 'en_US' => 'en_US']);
         $this->setExpects($translator, 'getLocale', null, 'en_US');
-        $this->setExpects($translator, 'translate', ['translatable.text'], 'Lorem dolor');
+        $this->setExpects($translator, 'translate', ['translatable.text', ['dev' => true]], 'Lorem dolor');
         $translator->expects($this->exactly(2))
             ->method('setLocale')
             ->withConsecutive(['de_DE'], ['en_US']);
