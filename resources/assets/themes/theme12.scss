@@ -1,18 +1,23 @@
 // 36c3
-@import "cyborg_variables.scss";
 
 //== Colors
 
-$gray-dark:              #282828;   // #333
-$gray-light:             #888;   // #999
-$gray-lighter:           #D0D0CE; // #eee
-$black:                  #000;
+$gray-dark:    #282828;
+$gray-darker:  #222;
+$gray-light:   #888;
+$gray-lighter: #D0D0CE;
+$black:        #000;
 
-$brand-primary:         #fe5000;
-$brand-success:         #00bb31;
-$brand-info:            #5bc0de;
-$brand-warning:         #febb00;
-$brand-danger:          #bb3100;
+$brand-primary: #fe5000;
+$primary:       $brand-primary;
+$brand-success: #00bb31;
+$success:       $brand-success;
+$brand-info:    #5bc0de;
+$info:          $brand-info;
+$brand-warning: #febb00;
+$warning:       $brand-warning;
+$brand-danger:  #bb3100;
+$danger:        $brand-danger;
 
 //== Scaffolding
 
@@ -21,7 +26,7 @@ $text-color:            $gray-lighter;
 
 //== Buttons
 
-$btn-default-color:              $gray-lighter;
+$btn-color:                      $gray-lighter;
 $btn-default-bg:                 lighten($gray-dark, 10%);
 
 $btn-primary-color:              $black;
@@ -63,7 +68,6 @@ $panel-primary-text:          #000;
 //== Badges
 
 $badge-color:                 $black;
-$badge-link-hover-color:      $black;
 
 //== Type
 
@@ -71,6 +75,7 @@ $headings-small-color:        $gray-light;
 
 // Bootswatch
 // -----------------------------------------------------
+@import "cyborg_variables.scss";
 @import "cyborg_styles.scss";
 // Forms ======================================================================
 

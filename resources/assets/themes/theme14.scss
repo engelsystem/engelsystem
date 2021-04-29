@@ -1,5 +1,4 @@
 // rc3 teal
-@import "cyborg_variables.scss";
 
 //== Colors
 
@@ -10,11 +9,16 @@ $gray-light:             lighten($gray, 15%);
 $gray-lighter:           lighten($gray-light, 15%);
 $black:                  #000;
 
-$brand-primary:         #05b9ec;
-$brand-success:         #02fae0;
-$brand-info:            #025d83;
-$brand-warning:         #6800e7;
-$brand-danger:          #b239ff;
+$brand-primary: #05b9ec;
+$primary:       $brand-primary;
+$brand-success: #02fae0;
+$success:       $brand-success;
+$brand-info:    #025d83;
+$info:          $brand-info;
+$brand-warning: #6800e7;
+$warning:       $brand-warning;
+$brand-danger:  #b239ff;
+$danger:        $brand-danger;
 
 
 //== Scaffolding
@@ -25,7 +29,7 @@ $link-color:            #fff;
 
 //== Typography
 
-$font-face {
+@font-face {
     font-family: 'Montserrat';
     src: url('theme13/Montserrat-Regular.woff2') format('woff2'),
         url('theme13/Montserrat-Regular.woff') format('woff');
@@ -34,7 +38,7 @@ $font-face {
     font-display: swap;
 }
 
-$font-face {
+@font-face {
     font-family: 'Orbitron';
     src: url('theme13/Orbitron-Regular.woff2') format('woff2'),
         url('theme13/Orbitron-Regular.woff') format('woff');
@@ -44,12 +48,12 @@ $font-face {
 }
 
 $font-family-sans-serif: 'Montserrat', Helvetica Neue, Helvetica, Arial, sans-serif;
-$font-family-serif:       'Orbitron', Georgia, "Times New Roman", Times, serif;
-$headings-font-family:    $font-family-serif;
+$font-family-serif:      'Orbitron', Georgia, "Times New Roman", Times, serif;
+$headings-font-family:   $font-family-serif;
 
 //== Buttons
 
-$btn-default-color:              #fff;
+$btn-color:                      #fff;
 $btn-default-bg:                 lighten($gray-dark, 10%);
 
 $btn-primary-color:              #fff;
@@ -111,7 +115,6 @@ $panel-danger-text:           #fff;
 //== Badges
 
 $badge-color:                 $black;
-$badge-link-hover-color:      $black;
 
 //== Type
 
@@ -119,6 +122,7 @@ $headings-small-color:        $gray-light;
 
 // Bootswatch
 // -----------------------------------------------------
+@import "cyborg_variables.scss";
 @import "cyborg_styles.scss";
 // Forms ======================================================================
 

@@ -52,7 +52,7 @@ class DesignController extends BaseController
             'arrived' => false,
         ]));
 
-        $themes = $this->config->get('available_themes');
+        $themes = $this->config->get('themes');
 
         $data = [
             'demo_user'   => $demoUser,
@@ -60,9 +60,12 @@ class DesignController extends BaseController
             'themes'      => $themes,
         ];
 
-        $theme = $request->get('theme');
-        if (isset($themes[$theme])) {
-            $data['theme'] = $theme;
+        $themeId = $request->get('theme');
+        $this->config->set('theme', (int) $themeId);
+
+        if (isset($themes[$themeId])) {
+            $data['theme'] = $themes[$themeId];
+            $data['themeId'] = $themeId;
         }
 
         return $this->response->withView(

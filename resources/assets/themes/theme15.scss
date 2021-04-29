@@ -24,6 +24,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+@use "sass:math";
+
 // Cyborg 3.2.0
 // Variables
 // --------------------------------------------------
@@ -39,10 +41,15 @@ $gray-light: #888; // #999
 $gray-lighter: #adafae; // #eee
 
 $brand-primary: #fe7900;
+$primary:       $brand-primary;
 $brand-success: #00c466;
-$brand-info: #00c466;
+$success:       $brand-success;
+$brand-info:    #00c466;
+$info:          $brand-info;
 $brand-warning: #d10069;
-$brand-danger: #d10069;
+$warning:       $brand-warning;
+$brand-danger:  #d10069;
+$danger:        $brand-danger;
 
 $plum: #1f0229;
 $dark-green: #00292d;
@@ -170,12 +177,12 @@ $table-border-color: $gray-dark;
 
 $btn-font-weight: normal;
 
-$btn-default-color: $dark-green;
+$btn-color: $dark-green;
 $btn-default-bg: $brand-primary;
 
 $btn-default-border: $brand-primary;
 
-$btn-primary-color: $btn-default-color;
+$btn-primary-color: $btn-color;
 $btn-primary-bg: $btn-default-bg;
 $btn-primary-border: $btn-default-border;
 
@@ -209,7 +216,7 @@ $input-bg-disabled: $gray-darker;
 //** Text color for `<input>`s
 $input-color: $text-color;
 //** `<input>` border color
-$input-border: $gray-dark;
+$input-border-color: $gray-dark;
 //** `<input>` border radius
 $input-border-radius: $border-radius-base;
 //** Border color for inputs on focus
@@ -236,7 +243,7 @@ $legend-border-color: $gray-dark;
 //** Background color for textual input addons
 $input-group-addon-bg: $gray-lighter;
 //** Border color for textual input addons
-$input-group-addon-border-color: $input-border;
+$input-group-addon-border-color: $input-border-color;
 
 //== Dropdowns
 //
@@ -366,8 +373,8 @@ $container-lg: $container-large-desktop;
 $navbar-height: 3.125rem;
 $navbar-margin-bottom: $line-height-computed;
 $navbar-border-radius: $border-radius-base;
-$navbar-padding-horizontal: floor(($grid-gutter-width / 2));
-$navbar-padding-vertical: (($navbar-height - $line-height-computed) / 2);
+$navbar-padding-horizontal: floor(math.div($grid-gutter-width, 2));
+$navbar-padding-vertical: math.div($navbar-height - $line-height-computed, 2);
 $navbar-collapse-max-height: 340px;
 
 $navbar-default-color: $text-color;
@@ -762,7 +769,6 @@ $well-border: darken($well-bg, 7%);
 
 $badge-color: $dark-green;
 //** Linked badge text color on hover
-$badge-link-hover-color: $dark-green;
 $badge-bg: $brand-primary;
 
 //** Badge text color in active nav link

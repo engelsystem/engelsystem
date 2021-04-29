@@ -1,11 +1,15 @@
 // 32c3 (2015)
-@import "~bootstrap/scss/variables";
 
 $brand-primary:         #f19224;
+$primary:         #f19224;
 $brand-success:         #39AB50;
+$success:         #39AB50;
 $brand-info:            #6618F9;
+$info:            #6618F9;
 $brand-warning:         #DAD216;
+$warning:         #DAD216;
 $brand-danger:          #DA1639;
+$danger:          #DA1639;
 
 $state-success-text:             $brand-success;
 $state-success-bg:               lighten($brand-success,40%);

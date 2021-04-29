@@ -5,7 +5,17 @@
 {% block title %}{{ __('Design') }}{% endblock %}
 
 {% set colors=['success', 'info', 'warning', 'danger'] %}
-{% set types=['default', 'primary', 'success', 'info', 'warning', 'danger'] %}
+{% set types=[
+    'primary',
+    'secondary',
+    'success',
+    'danger',
+    'warning',
+    'info',
+    'light',
+    'dark'
+]
+%}
 {% set types_color=[
     ['primary', 'light'],
     ['secondary', 'light'],
@@ -23,7 +33,7 @@
 {% block content %}
     <div class="col-12">
         <div class="container">
-        <h1>{{ block('title') }} <small class="text-muted">{{ themes[theme] }}</small></h1>
+        <h1>{{ block('title') }} <small class="text-muted">{{ themes[themeId]['name'] }}</small></h1>
 
         <h2>Elements <small class="text-muted">small</small></h2>
         <div class="row">
@@ -54,10 +64,10 @@
             <div class="col-md-4">
                 <h3>Themes</h3>
                 <ul>
-                    {% for id,theme in themes|sort %}
+                    {% for id,theme in themes %}
                         <li>
                             <a href="{{ url('design', {'theme': id}) }}">
-                                {{ theme }}
+                                {{ theme['name'] }}
                             </a>
                         </li>
                     {% endfor %}
@@ -199,8 +209,10 @@
                         {{ f.select('form-input-select', {'lorem': 'Ipsum', 'dolor': 'Sit'}, 'Select', 'dolor') }}
                     </div>
                     <div class="col-md-2">
-                        Button<br>
-                        {{ f.button('Button', {'btn_type': 'default'}) }}
+                        <label class="form-label">Button</label>
+                        <div>
+                            {{ f.button('Button', {'btn_type': 'default'}) }}
+                        </div>
                     </div>
                     <div class="col-md-2">
                         Submit button<br>

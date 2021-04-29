@@ -1,7 +1,7 @@
 {% macro input(name, label, type, opt) %}
-    <div class="form-group">
+    <div class="mb-3">
         {% if label -%}
-            <label for="{{ name }}"{% if opt.hide_label|default(false) %} class="sr-only"{% endif %}>{{ label }}</label>
+            <label for="{{ name }}" class="form-label {% if opt.hide_label|default(false) %}sr-only{% endif %}">{{ label }}</label>
         {%- endif %}
         <input
             type="{{ type|default('text') }}" class="form-control"
@@ -22,9 +22,9 @@
 {%- endmacro %}
 
 {% macro textarea(name, label, opt) %}
-    <div class="form-group">
+    <div class="mb-3">
         {% if label -%}
-            <label for="{{ name }}">{{ label }}</label>
+            <label class="form-label" for="{{ name }}">{{ label }}</label>
         {%- endif %}
         <textarea class="form-control" id="{{ name }}" name="{{ name }}"
             {%- if opt.required|default(false) %}
@@ -38,9 +38,9 @@
 {%- endmacro %}
 
 {% macro select(name, data, label, selected) %}
-    <div class="form-group">
+    <div class="mb-3">
         {% if label -%}
-            <label for="{{ name }}">{{ label }}</label>
+            <label class="form-label" for="{{ name }}">{{ label }}</label>
         {% endif %}
         <select id="{{ name }}" name="{{ name }}" class="form-control">
             {% for value,decription in data -%}

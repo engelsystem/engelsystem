@@ -8,7 +8,7 @@ const nodeEnv = (process.env.NODE_ENV || 'development').trim();
 // eslint-disable-next-line
 const __DEV__ = nodeEnv !== 'production';
 
-const devtool = __DEV__ ? 'source-map' : '';
+const devtool = __DEV__ ? 'source-map' : undefined 
 
 const plugins = [
   new webpack.DefinePlugin({
@@ -24,7 +24,7 @@ const plugins = [
 
 
 const themeEntries = {};
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i <= 15; i++) {
   themeEntries[`theme${i}`] = `./resources/assets/themes/theme${i}.scss`;
 }
 
@@ -61,14 +61,21 @@ module.exports = {
           { loader: MiniCssExtractPlugin.loader },
           { loader: 'css-loader', options: { importLoaders: 1 } },
           {
-            loader: "postcss-loader",
+            loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: [ [ "postcss-preset-env", ], ],
+                plugins: [ [ 'autoprefixer', ], ],
               },
             },
           },
-          { loader: 'sass-loader' },
+          { 
+              loader: 'sass-loader',
+              options: {
+                  sassOptions: {
+                      quietDeps: true
+                  }
+              }
+          },
         ]
       }
     ],

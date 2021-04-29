@@ -426,10 +426,10 @@ function form_select($name, $label, $values, $selected, $selectText = '')
 function form_element($label, $input, $for = '')
 {
     if (empty($label)) {
-        return '<div class="form-group">' . $input . '</div>';
+        return '<div class="mb-3">' . $input . '</div>';
     }
 
-    return '<div class="form-group">' . '<label for="' . $for . '">' . $label . '</label>' . $input . '</div>';
+    return '<div class="mb-3">' . '<label class="form-label" for="' . $for . '">' . $label . '</label>' . $input . '</div>';
 }
 
 /**

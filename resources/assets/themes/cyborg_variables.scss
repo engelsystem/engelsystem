@@ -24,36 +24,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+@use "sass:math";
+
 // Cyborg 3.2.0
 // Variables
 // --------------------------------------------------
 
 //== Colors
-//
+
 //## Gray and brand colors for use across Bootstrap.
-  // needs change
 $gray-darker:            #222; // #222
 $gray-dark:              #333;   // #333
 $gray:                   #555; // #555
 $gray-light:             #999;   // #999
 $gray-lighter:           #eee; // #eee
 
-$primary:         #99ba00;
-$success:         #99ba00;
-$info:            #0076ba;
-$warning:         #ffc600;
-$danger:          #d9534f;
+$primary:         #437aca !default;
+$success:         #99ba00 !default;
+$info:            #0076ba !default;
+$warning:         #ffc600 !default;
+$danger:          #d9534f !default;
 
 //== Scaffolding
 //
 //## Settings for some of the most global styles.
 
-$body-bg:    #060606;
+$body-bg:    #060606 !default;
 $body-color: $gray-light;
 
 //** Global text color on `<body>`.
-$text-color:            $gray-light;
-$text-muted: $gray-light;
+$text-color: $gray-light;
+$text-muted: $gray-light !default;
 
 //** Global textual link color.
 $link-color:            $primary;
@@ -65,8 +66,8 @@ $link-hover-color:      $link-color;
 //
 //## Font, line-height, and color for body text, headings, and more.
 
-$font-family-serif:       Georgia, "Times New Roman", Times, serif;
-$font-family-sans-serif: 'Montserrat', Helvetica Neue, Helvetica, Arial, sans-serif;
+$font-family-serif:       Georgia, "Times New Roman", Times, serif !default;
+$font-family-sans-serif: 'Montserrat', Helvetica Neue, Helvetica, Arial, sans-serif !default;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 $font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
 $font-family-base:        $font-family-sans-serif;
@@ -88,7 +89,7 @@ $line-height-base:        1.428571429; // 20/14
 $line-height-computed:    floor(($font-size-base * $line-height-base)); // ~20px
 
 //** By default, this inherits from the `<body>`.
-$headings-font-family:    $font-family-base;
+$headings-font-family:    $font-family-base !default;
 $headings-font-weight:    500;
 $headings-line-height:    1.1;
 $headings-color:          #fff;
@@ -160,53 +161,19 @@ $table-bg-active:               $table-bg-hover;
 //** Border color for table and cell borders.
 $table-border-color:            $gray-dark;
 
-
-//== Buttons
-//
-//## For each of Bootstrap's buttons, define text, background and border color.
-
-$btn-font-weight:                normal;
-
-$btn-default-color:              #000;
-$btn-default-bg:                 $gray-light;
-$btn-default-border:             darken($btn-default-bg, 10%);
-
-$btn-primary-color:              $btn-default-color;
-$btn-primary-bg:                 $primary;
-$btn-primary-border:             darken($btn-primary-bg, 10%);
-
-$btn-success-color:              $btn-default-color;
-$btn-success-bg:                 $success;
-$btn-success-border:             darken($btn-success-bg, 10%);
-
-$btn-info-color:                 $btn-default-color;
-$btn-info-bg:                    $info;
-$btn-info-border:                darken($btn-info-bg, 10%);
-
-$btn-warning-color:              $btn-default-color;
-$btn-warning-bg:                 $warning;
-$btn-warning-border:             darken($btn-warning-bg, 10%);
-
-$btn-danger-color:               $btn-default-color;
-$btn-danger-bg:                  $danger;
-$btn-danger-border:              darken($btn-danger-bg, 10%);
-
-$btn-link-disabled-color:        $gray-light;
-
-
 //== Forms
 //
 //##
 
 //** `<input>` background color
-$input-bg:                       #000;
+$input-bg:                       $gray-darker;
 //** `<input disabled>` background color
 $input-bg-disabled:              $gray-darker;
 
 //** Text color for `<input>`s
 $input-color:                    $text-color;
 //** `<input>` border color
-$input-border:                   $gray-dark;
+$input-border-color:             $gray-dark;
 //** `<input>` border radius
 $input-border-radius:            $border-radius-base;
 //** Border color for inputs on focus
@@ -228,8 +195,9 @@ $legend-border-color:            $gray-dark;
 //** Background color for textual input addons
 $input-group-addon-bg:           $gray-light;
 //** Border color for textual input addons
-$input-group-addon-border-color: $input-border;
+$input-group-addon-border-color: $input-border-color;
 
+$form-label-font-weight: bold;
 
 //== Dropdowns
 //
@@ -364,8 +332,8 @@ $container-lg:                 $container-large-desktop;
 $navbar-height:                    3.125rem;
 $navbar-margin-bottom:             $line-height-computed;
 $navbar-border-radius:             $border-radius-base;
-$navbar-padding-horizontal:        floor(($grid-gutter-width / 2));
-$navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2);
+$navbar-padding-horizontal:        floor(math.div($grid-gutter-width, 2));
+$navbar-padding-vertical:          math.div($navbar-height - $line-height-computed, 2);
 $navbar-collapse-max-height:       340px;
 
 $navbar-default-color:             $text-color;
@@ -569,7 +537,6 @@ $popover-arrow-outer-fallback-color:  darken($popover-fallback-border-color, 20%
 //
 //##
 
-$label-default-bg:            $btn-default-bg;
 $label-primary-bg:            $primary;
 $label-success-bg:            $success;
 $label-info-bg:               $info;
@@ -760,26 +727,6 @@ $thumbnail-caption-padding:   9px;
 
 $well-bg:                     darken($gray-darker, 5%);
 $well-border:                 darken($well-bg, 7%);
-
-
-//== Badges
-//
-//##
-
-$badge-color:                 #000;
-//** Linked badge text color on hover
-$badge-link-hover-color:      #000;
-$badge-bg:                    $primary;
-
-//** Badge text color in active nav link
-$badge-active-color:          $primary;
-//** Badge background color in active nav link
-$badge-active-bg:             #fff;
-
-$badge-font-weight:           bold;
-$badge-line-height:           1;
-$badge-border-radius:         10px;
-
 
 //== Breadcrumbs
 //

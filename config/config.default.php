@@ -106,24 +106,71 @@ return [
     // Default theme, 1=style1.css
     'theme'                   => env('THEME', 1),
 
-    // Available themes
-    'available_themes'        => [
-        '15' => 'Engelsystem DiVOC R2R',
-        '14' => 'Engelsystem rC3 teal (2020)',
-        '13' => 'Engelsystem rC3 violet (2020)',
-        '12' => 'Engelsystem 36c3 (2019)',
-        '10' => 'Engelsystem cccamp19 green (2019)',
-        '9'  => 'Engelsystem cccamp19 yellow (2019)',
-        '8'  => 'Engelsystem cccamp19 blue (2019)',
-        '7'  => 'Engelsystem 35c3 dark (2018)',
-        '6'  => 'Engelsystem 34c3 dark (2017)',
-        '5'  => 'Engelsystem 34c3 light (2017)',
-        '4'  => 'Engelsystem 33c3 (2016)',
-        '3'  => 'Engelsystem 32c3 (2015)',
-        '2'  => 'Engelsystem cccamp15',
-        '11' => 'Engelsystem high contrast',
-        '0'  => 'Engelsystem light',
-        '1'  => 'Engelsystem dark',
+    'themes' => [
+        15 => [
+            'name' => 'Engelsystem DiVOC R2R',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        14 => [
+            'name' => 'Engelsystem rC3 teal (2020)',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        13 => [
+            'name' => 'Engelsystem rC3 violet (2020)',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        12 => [
+            'name' => 'Engelsystem 36c3 (2019)',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        10 => [
+            'name' => 'Engelsystem cccamp19 green (2019)',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        9 => [
+            'name' => 'Engelsystem cccamp19 yellow (2019)',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        8 => [
+            'name' => 'Engelsystem cccamp19 blue (2019)',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        7 => [
+            'name' => 'Engelsystem 35c3 dark (2018)',
+            'navbar_classes' => 'navbar-primary bg-black border-primary',
+        ],
+        6 => [
+            'name' => 'Engelsystem 34c3 dark (2017)',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        5 => [
+            'name' => 'Engelsystem 34c3 light (2017)',
+            'navbar_classes' => 'navbar-light bg-light',
+        ],
+        4 => [
+            'name' => 'Engelsystem 33c3 (2016)',
+            'navbar_classes' => 'navbar-dark bg-darker border-dark',
+        ],
+        3 => [
+            'name' => 'Engelsystem 32c3 (2015)',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        2 => [
+            'name' => 'Engelsystem cccamp15',
+            'navbar_classes' => 'navbar-light bg-light',
+        ],
+        11 => [
+            'name' => 'Engelsystem high contrast',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
+        0 => [
+            'name' => 'Engelsystem light',
+            'navbar_classes' => 'navbar-light bg-light',
+        ],
+        1 => [
+            'name' => 'Engelsystem dark',
+            'navbar_classes' => 'navbar-dark bg-black border-dark',
+        ],
     ],
 
     // Redirect to this site after logging in or when pressing the top-left button

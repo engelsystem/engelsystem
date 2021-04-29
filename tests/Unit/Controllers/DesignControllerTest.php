@@ -49,7 +49,7 @@ class DesignControllerTest extends TestCase
             });
         $request = new Request();
         $request->attributes->set('theme', '42');
-        $config = new Config(['available_themes' => ['42' => 'Meaning of Live']]);
+        $config = new Config(['themes' => [42 => [ 'name' => 'Meaning of Live']]]);
 
         $controller = new DesignController($response, $config);
         $controller->index($request);

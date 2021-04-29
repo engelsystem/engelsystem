@@ -1,17 +1,20 @@
 // cccamp19 yellow (2019)
-@import "cyborg_variables.scss";
 
 // Variables
 // --------------------------------------------------
 
 //== changed Colors
 
-$gray-dark:              #282828;   // #333
-$gray-light:             #888;   // #999
-$gray-lighter:           #ADAFAE; // #eee
+$gray-dark:              #282828;
+$gray-light:             #888;
+$gray-lighter:           #ADAFAE;
 
-$brand-primary:         #ffc600;
+$brand-primary: #ffc600;
+$primary:       $brand-primary;
 
+$text-muted: $primary;
+
+@import "cyborg_variables.scss";
 @import "cyborg_styles.scss";
 
 // Specials for cccamp19 design

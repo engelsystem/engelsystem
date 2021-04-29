@@ -34,9 +34,19 @@ class Globals extends TwigExtension implements GlobalsInterface
     {
         $user = $this->auth->user();
 
+        if ($user === null) {
+            $themeId = config('theme');
+        } else {
+            $themeId = $user->settings->theme;
+        }
+
+        $theme = config('themes')[$themeId];
+
         return [
-            'user'    => $user ? $user : [],
-            'request' => $this->request,
+            'user'       => $user ?? [],
+            'request'    => $this->request,
+            'themeId'      => $themeId,
+            'theme'      => $theme,
         ];
     }
 }

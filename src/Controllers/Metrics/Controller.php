@@ -70,12 +70,12 @@ class Controller extends BaseController
 
         $userTshirtSizes = $this->formatStats($this->stats->tshirtSizes(), 'tshirt_sizes', 'shirt_size', 'size');
         $userLocales = $this->formatStats($this->stats->languages(), 'locales', 'language', 'locale');
-        $userThemes = $this->formatStats($this->stats->themes(), 'available_themes', 'theme');
+        $userThemes = $this->formatStats($this->stats->themes(), 'themes', 'theme');
         $userOauth = $this->formatStats($this->stats->oauth(), 'oauth', 'provider');
 
-        $themes = $this->config->get('available_themes');
+        $themes = $this->config->get('themes');
         foreach ($userThemes as $key => $theme) {
-            $userThemes[$key]['labels']['name'] = $themes[$theme['labels']['theme']];
+            $userThemes[$key]['labels']['name'] = $themes[$theme['labels']['theme']]['name'];
         }
 
         $oauthProviders = $this->config->get('oauth');

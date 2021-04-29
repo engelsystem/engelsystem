@@ -4,7 +4,18 @@ $cursor-disabled: false;
 $link-decoration: none !default;
 $link-hover-decoration: underline !default;
 
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+$custom-colors: (
+  black: #000
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
 @import "~bootstrap/scss/bootstrap";
+
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 @import "~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css";
 @import "~select2/dist/css/select2.css";
@@ -13,7 +24,7 @@ $link-hover-decoration: underline !default;
 $navbar-height: 3.125rem;
 
 body {
-  padding-top: 50px;
+  padding-top: 70px;
 }
 
 .footer a {
@@ -47,7 +58,7 @@ a .icon-icon_angel {
 }
 
 .navbar-brand .icon-icon_angel {
-  background-color: $navbar-dark-brand-color;
+  background-color: $body-color;
 }
 
 table a > .icon-icon_angel {
