@@ -195,7 +195,7 @@ function view_user_shifts()
     $rooms = load_rooms();
     $types = load_types();
     $ownTypes = [];
-    foreach (UserAngelTypes_by_User($user->id, FALSE) as $type) {
+    foreach (UserAngelTypes_by_User($user->id, true) as $type) {
         $ownTypes[] = (int)$type['angeltype_id'];
     }
 

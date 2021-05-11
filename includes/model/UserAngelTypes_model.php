@@ -238,18 +238,20 @@ function UserAngelType_by_User_and_AngelType($userId, $angeltype)
  * Get an UserAngelTypes by user
  *
  * @param int $userId
+ * @param bool $onlyConfirmed
  * @return array[]|null
  */
 function UserAngelTypes_by_User($userId, $onlyConfirmed=false)
 {
-    return DB::select('
+    return DB::select(
+        '
             SELECT *
             FROM `UserAngelTypes`
-            '.($onlyConfirmed ? 'LEFT JOIN AngelTypes AS a ON a.id=UserAngelTypes.angeltype_id' : '').'
+            ' . ($onlyConfirmed ? 'LEFT JOIN AngelTypes AS a ON a.id=UserAngelTypes.angeltype_id' : '') . '
             WHERE `user_id`=?
         '
         . (
-          $onlyConfirmed ? 'AND (
+        $onlyConfirmed ? 'AND (
                 a.`restricted`=0
                 OR (
                     NOT `UserAngelTypes`.`confirm_user_id` IS NULL
