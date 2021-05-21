@@ -52,7 +52,6 @@ function admin_active()
         if ($request->hasPostData('ack')) {
             State::query()
                 ->where('got_shirt', '=', false)
-                ->where('got_shirt', '=', false)
                 ->update(['active' => false]);
 
             $query = User::query()
@@ -74,7 +73,6 @@ function admin_active()
                 ->leftJoin('Shifts', 'ShiftEntry.SID', '=', 'Shifts.SID')
                 ->leftJoin('users_state', 'users.id', '=', 'users_state.user_id')
                 ->where('users_state.arrived', '=', true)
-                ->where('users_state.force_active', '=', false)
                 ->groupBy('users.id')
                 ->orderByDesc('force_active')
                 ->orderByDesc('shift_length')
@@ -89,7 +87,6 @@ function admin_active()
                 $user_nicks[] = User_Nick_render($usr, true);
             }
 
-            State::whereForceActive(true)->update(['active' => true]);
             engelsystem_log('These angels are active now: ' . join(', ', $user_nicks));
 
             $msg = success(__('Marked angels.'), true);
