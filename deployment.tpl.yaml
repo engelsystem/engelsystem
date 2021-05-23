@@ -127,6 +127,8 @@ spec:
               value: engelsystem
             - name: MYSQL_PASSWORD
               value: engelsystem
+            - name: SETUP_ADMIN_PASSWORD
+              value: '<CI_SETUP_ADMIN_PASSWORD>'
       containers:
         - image: <CI_IMAGE>
           name: engelsystem-fpm

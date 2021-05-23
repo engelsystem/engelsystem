@@ -5,8 +5,10 @@ namespace Engelsystem\Test\Unit;
 use Engelsystem\Database\Database;
 use Engelsystem\Database\Migration\Migrate;
 use Engelsystem\Database\Migration\MigrationServiceProvider;
+use Engelsystem\Http\Request;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
 use PDO;
+use Psr\Http\Message\ServerRequestInterface;
 
 trait HasDatabase
 {
@@ -28,6 +30,8 @@ trait HasDatabase
 
         $this->app->instance(Database::class, $this->database);
         $this->app->register(MigrationServiceProvider::class);
+
+        $this->app->instance(ServerRequestInterface::class, new Request());
 
         /** @var Migrate $migration */
         $migration = $this->app->get('db.migration');

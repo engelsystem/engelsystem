@@ -66,6 +66,9 @@ return [
         'sendmail'   => env('MAIL_SENDMAIL', '/usr/sbin/sendmail -bs'),
     ],
 
+    // Initial admin password
+    'setup_admin_password'    => env('SETUP_ADMIN_PASSWORD', null),
+
     'oauth'                   => [
         // '[name]' => [config]
         /*
@@ -231,7 +234,7 @@ return [
     // Shifts overview
     // Set max number of hours that can be shown at once
     // 0 means no limit
-    'filter_max_duration' => env('FILTER_MAX_DURATION', 0),
+    'filter_max_duration'     => env('FILTER_MAX_DURATION', 0),
 
     // Session config
     'session'                 => [
@@ -266,7 +269,7 @@ return [
     ],
 
     // var dump server
-    'var_dump_server' => [
+    'var_dump_server'         => [
         'host' => '127.0.0.1',
         'port' => '9912',
         'enable' => false,

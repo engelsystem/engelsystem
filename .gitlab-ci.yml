@@ -313,11 +313,12 @@ deploy:
     - export CI_INGRESS_DOMAIN=$(echo "$CI_ENVIRONMENT_URL" | grep -oP '(?:https?://)?\K([^/]+)' | head -n1)
     - export CI_INGRESS_PATH=$(echo "$CI_ENVIRONMENT_URL" | grep -oP '(?:https?://)?(?:[^/])+\K(.*)')
     - export CI_KUBE_NAMESPACE=$KUBE_NAMESPACE
-    # Any available storage class like longhorn
+    # Any available storage class like default, local-path (if you know what you are doing ;), longhorn etc.
     - export CI_PVC_SC=${CI_PVC_SC:-"${CI_PVC_SC_LOCAL:-local-path}"}
     - export CI_REPLICAS=${CI_REPLICAS_REVIEW:-${CI_REPLICAS:-2}}
     - export CI_APP_NAME=${CI_APP_NAME:-Engelsystem}
     - export CI_CLUSTER_ISSUER=${CI_CLUSTER_ISSUER:-letsencrypt}
+    - export CI_SETUP_ADMIN_PASSWORD=${CI_SETUP_ADMIN_PASSWORD}
 
     - cp deployment.tpl.yaml deployment.yaml
     - for env in ${!CI_*}; do sed -i "s#<${env}>#$(echo "${!env}"|head -n1)#g" deployment.yaml; done
