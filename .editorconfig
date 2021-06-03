@@ -26,6 +26,9 @@ max_line_length = unset
 [*.{js,css,less,sass,scss}]
 indent_size = 2
 
+[*.js]
+quote_type = single
+
 [{LICENSE,db/*.sql}]
 indent_size = unset
 
