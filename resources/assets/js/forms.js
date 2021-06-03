@@ -46,10 +46,10 @@ global.formatTime = (date) => {
 global.setInput = (from, to) => {
     var fromDay = $('#start_day'), fromTime = $('#start_time'), toDay = $('#end_day'), toTime = $('#end_time');
 
-    fromDay.val(formatDay(from));
+    fromDay.val(formatDay(from)).trigger('change');
     fromTime.val(formatTime(from));
 
-    toDay.val(formatDay(to));
+    toDay.val(formatDay(to)).trigger('change');
     toTime.val(formatTime(to));
 };
 
