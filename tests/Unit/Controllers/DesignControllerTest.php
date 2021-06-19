@@ -37,19 +37,20 @@ class DesignControllerTest extends TestCase
      */
     public function testIndexSetTheme()
     {
+        $theme = ['name' => 'Meaning of Live'];
         /** @var Response|MockObject $response */
         $response = $this->createMock(Response::class);
         $response->expects($this->once())
             ->method('withView')
-            ->willReturnCallback(function (string $view, array $data) use ($response) {
+            ->willReturnCallback(function (string $view, array $data) use ($response, $theme) {
                 $this->assertTrue(isset($data['theme']));
-                $this->assertEquals('42', $data['theme']);
+                $this->assertEquals($theme, $data['theme']);
 
                 return $response;
             });
         $request = new Request();
         $request->attributes->set('theme', '42');
-        $config = new Config(['themes' => [42 => [ 'name' => 'Meaning of Live']]]);
+        $config = new Config(['themes' => [42 => $theme]]);
 
         $controller = new DesignController($response, $config);
         $controller->index($request);
