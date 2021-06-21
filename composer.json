@@ -45,7 +45,8 @@
         "symfony/mime": "^5.2",
         "symfony/psr-http-message-bridge": "^2.1",
         "twig/twig": "^3.3",
-        "vlucas/phpdotenv": "^5.3"
+        "vlucas/phpdotenv": "^5.3",
+        "bahuma/oauth2-nextcloud": "^1.1"
     },
     "require-dev": {
         "dms/phpunit-arraysubset-asserts": "^0.3.0",

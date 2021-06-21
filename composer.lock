@@ -4,8 +4,49 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd34e2ff922af485d95930ce692d1549",
+    "content-hash": "f95a9483e38c48f55f45899ab781de01",
     "packages": [
+        {
+            "name": "bahuma/oauth2-nextcloud",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bahuma/oauth2-nextcloud.git",
+                "reference": "91fc6f15f7d5785cfe3d3f341add34b2f29752f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bahuma/oauth2-nextcloud/zipball/91fc6f15f7d5785cfe3d3f341add34b2f29752f3",
+                "reference": "91fc6f15f7d5785cfe3d3f341add34b2f29752f3",
+                "shasum": ""
+            },
+            "require": {
+                "league/oauth2-client": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bahuma\\OAuth2\\Client\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Max Bachhuber",
+                    "email": "max.bachhuber@bahuma.io",
+                    "homepage": "https://bahuma.io"
+                }
+            ],
+            "description": "Nextcloud OAuth 2.0 Client Provider for The PHP League OAuth2-Client",
+            "support": {
+                "issues": "https://github.com/bahuma/oauth2-nextcloud/issues",
+                "source": "https://github.com/bahuma/oauth2-nextcloud/tree/1.1.0"
+            },
+            "time": "2021-05-25T20:53:33+00:00"
+        },
         {
             "name": "composer/package-versions-deprecated",
             "version": "1.11.99.1",
@@ -6597,5 +6638,5 @@
         "ext-xml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }

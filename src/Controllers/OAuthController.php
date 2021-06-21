@@ -15,6 +15,7 @@ use Illuminate\Support\Collection;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GenericProvider;
+use Bahuma\OAuth2\Client\Provider\Nextcloud;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface as ResourceOwner;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 use Psr\Log\LoggerInterface;
@@ -177,8 +178,16 @@ class OAuthController extends BaseController
             $this->addNotification('oauth.connected');
         }
 
-        $config = $this->config->get('oauth')[$providerName];
-        $userdata = new Collection($resourceOwner->toArray());
+        if (str_contains($providerName, 'nextcloud')) {
+            $userdata = new Collection([
+                'email' => $resourceOwner->getEmail(),
+            ]);
+            $config = [];
+        } else {
+            $userdata = new Collection($resourceOwner->toArray());
+            $config = $this->config->get('oauth')[$providerName];
+        }
+
         if (!$oauth) {
             return $this->redirectRegisterOrThrowNotFound(
                 $providerName,
@@ -241,17 +250,28 @@ class OAuthController extends BaseController
         $this->requireProvider($name);
         $config = $this->config->get('oauth')[$name];
 
-        return new GenericProvider(
-            [
-                'clientId'                => $config['client_id'],
-                'clientSecret'            => $config['client_secret'],
-                'redirectUri'             => $this->url->to('oauth/' . $name),
-                'urlAuthorize'            => $config['url_auth'],
-                'urlAccessToken'          => $config['url_token'],
-                'urlResourceOwnerDetails' => $config['url_info'],
-                'responseResourceOwnerId' => $config['id'],
-            ]
-        );
+        if (str_contains($name, "nextcloud")) {
+            return new Nextcloud(
+                [
+                    'clientId'     => $config['client_id'],
+                    'clientSecret' => $config['client_secret'],
+                    'redirectUri'  => $this->url->to('oauth/' . $name),
+                    'nextcloudUrl' => $config['url_nextcloud'],
+                ]
+            );
+        } else {
+            return new GenericProvider(
+                [
+                    'clientId'                => $config['client_id'],
+                    'clientSecret'            => $config['client_secret'],
+                    'redirectUri'             => $this->url->to('oauth/' . $name),
+                    'urlAuthorize'            => $config['url_auth'],
+                    'urlAccessToken'          => $config['url_token'],
+                    'urlResourceOwnerDetails' => $config['url_info'],
+                    'responseResourceOwnerId' => $config['id'],
+                ]
+            );
+        }
     }
 
     /**
@@ -328,19 +348,29 @@ class OAuthController extends BaseController
             throw new HttpNotFound('oauth.not-found');
         }
 
-        $config = array_merge(
-            ['username' => null, 'email' => null, 'first_name' => null, 'last_name' => null],
-            $config
-        );
-        $this->session->set(
-            'form_data',
-            [
-                'name'       => $userdata->get($config['username']),
-                'email'      => $userdata->get($config['email']),
-                'first_name' => $userdata->get($config['first_name']),
-                'last_name'  => $userdata->get($config['last_name']),
-            ],
-        );
+        if (str_contains($providerName, 'nextcloud')) {
+            $this->session->set(
+                'form_data',
+                [
+                    'name'          => $providerUserIdentifier,
+                    'email'         => $userdata->get('email'),
+                ],
+            );
+        } else {
+            $config = array_merge(
+                ['username' => null, 'email' => null, 'first_name' => null, 'last_name' => null],
+                $config
+            );
+            $this->session->set(
+                'form_data',
+                [
+                    'name'       => $userdata->get($config['username']),
+                    'email'      => $userdata->get($config['email']),
+                    'first_name' => $userdata->get($config['first_name']),
+                    'last_name'  => $userdata->get($config['last_name']),
+                ],
+            );
+        }
         $this->session->set('oauth2_connect_provider', $providerName);
         $this->session->set('oauth2_user_id', $providerUserIdentifier);
 
