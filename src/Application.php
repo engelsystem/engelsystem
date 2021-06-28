@@ -6,6 +6,7 @@ use Engelsystem\Config\Config;
 use Engelsystem\Container\Container;
 use Engelsystem\Container\ServiceProvider;
 use Illuminate\Container\Container as IlluminateContainer;
+use Illuminate\Contracts\Container\Container as IlluminateContainerContract;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
@@ -50,6 +51,7 @@ class Application extends Container
         $this->instance(Container::class, $this);
         $this->instance(Application::class, $this);
         $this->instance(IlluminateContainer::class, $this);
+        $this->instance(IlluminateContainerContract::class, $this);
         $this->bind(ContainerInterface::class, self::class);
     }
 

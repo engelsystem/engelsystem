@@ -313,12 +313,6 @@ class SettingsControllerTest extends TestCase
         $this->auth = $this->createMock(Authenticator::class);
         $this->app->instance(Authenticator::class, $this->auth);
 
-        $this->user = new User([
-            'name'      => 'testuser',
-            'email' => 'test@engelsystem.de',
-            'password' => 'xxx',
-            'api_key' => 'xxx'
-        ]);
-        $this->user->save();
+        $this->user = User::factory()->create();
     }
 }

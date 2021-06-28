@@ -20,7 +20,7 @@ class GlobalsTest extends ExtensionTest
         $auth = $this->createMock(Authenticator::class);
         /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
-        $user = new User();
+        $user = User::factory()->make();
 
         $auth->expects($this->exactly(2))
             ->method('user')

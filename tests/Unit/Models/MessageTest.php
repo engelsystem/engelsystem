@@ -34,19 +34,8 @@ class MessageTest extends ModelTest
     {
         parent::setUp();
 
-        $this->user1 = User::create([
-            'name'     => 'user1',
-            'password' => '',
-            'email'    => 'user1@example.com',
-            'api_key'  => '',
-        ]);
-
-        $this->user2 = User::create([
-            'name'     => 'user2',
-            'password' => '',
-            'email'    => 'user2@example.com',
-            'api_key'  => '',
-        ]);
+        $this->user1 = User::factory()->create();
+        $this->user2 = User::factory()->create();
 
         $this->message1 = Message::create([
             'user_id'     => $this->user1->id,

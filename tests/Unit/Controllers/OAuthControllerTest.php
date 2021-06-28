@@ -494,36 +494,15 @@ class OAuthControllerTest extends TestCase
 
         $this->app->instance('session', $this->session);
 
-        $this->authenticatedUser = new User([
-            'name'          => 'foo',
-            'password'      => '',
-            'email'         => 'foo@localhost',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $this->authenticatedUser->save();
+        $this->authenticatedUser = User::factory()->create();
         (new OAuth(['provider' => 'testprovider', 'identifier' => 'provider-user-identifier']))
             ->user()
             ->associate($this->authenticatedUser)
             ->save();
 
-        $this->otherUser = new User([
-            'name'          => 'bar',
-            'password'      => '',
-            'email'         => 'bar@localhost',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $this->otherUser->save();
+        $this->otherUser = User::factory()->create();
 
-        $this->otherAuthenticatedUser = new User([
-            'name'          => 'baz',
-            'password'      => '',
-            'email'         => 'baz@localhost',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $this->otherAuthenticatedUser->save();
+        $this->otherAuthenticatedUser = User::factory()->create();
         (new OAuth(['provider' => 'testprovider', 'identifier' => 'provider-baz-identifier']))
             ->user()
             ->associate($this->otherAuthenticatedUser)

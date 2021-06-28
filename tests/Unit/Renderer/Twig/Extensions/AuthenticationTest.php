@@ -34,7 +34,7 @@ class AuthenticationTest extends ExtensionTest
     {
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
-        $user = new User();
+        $user = User::factory()->make();
 
         $auth->expects($this->exactly(4))
             ->method('user')

@@ -3,9 +3,9 @@
 namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
+use Engelsystem\Test\Unit\TestCase;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Twig\Node\Node as TwigNode;
 use Twig\TwigFunction;
 

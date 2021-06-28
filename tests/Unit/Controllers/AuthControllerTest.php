@@ -185,22 +185,9 @@ class AuthControllerTest extends TestCase
      */
     protected function createUser(): User
     {
-        $user = new User([
-            'name'          => 'foo',
-            'password'      => '',
-            'email'         => '',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $user->forceFill(['id' => 42]);
-        $user->save();
-
-        $settings = new Settings(['language' => 'de_DE', 'theme' => '']);
-        $settings->user()
-            ->associate($user)
-            ->save();
-
-        return $user;
+        return User::factory(['id' => 42])
+            ->has(Settings::factory(['language' => 'de_DE']))
+            ->create();
     }
 
     /**

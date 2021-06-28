@@ -15,18 +15,8 @@ class WorklogTest extends ModelTest
      */
     public function testCreator(): void
     {
-        $user1 = User::create([
-            'name'     => 'user1',
-            'password' => '',
-            'email'    => 'user1@example.com',
-            'api_key'  => '',
-        ]);
-        $user2 = User::create([
-            'name'     => 'user2',
-            'password' => '',
-            'email'    => 'user2@example.com',
-            'api_key'  => '',
-        ]);
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
 
         $worklog = new Worklog();
         $worklog->user()->associate($user1);

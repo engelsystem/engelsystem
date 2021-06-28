@@ -283,15 +283,7 @@ class NewsControllerTest extends ControllerTest
      */
     protected function addUser()
     {
-        $user = new User([
-            'name'          => 'foo',
-            'password'      => '',
-            'email'         => '',
-            'api_key'       => '',
-            'last_login_at' => null,
-        ]);
-        $user->forceFill(['id' => 42]);
-        $user->save();
+        $user = User::factory(['id' => 42])->create();
 
         $this->auth->expects($this->any())
             ->method('user')

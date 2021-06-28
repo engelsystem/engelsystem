@@ -3,7 +3,6 @@
 namespace Engelsystem\Test\Unit\Events\Listener;
 
 use Engelsystem\Events\Listener\News;
-use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\News as NewsModel;
 use Engelsystem\Models\User\Settings;
@@ -80,22 +79,12 @@ class NewsTest extends TestCase
         $this->mailer = $this->createMock(EngelsystemMailer::class);
         $this->app->instance(EngelsystemMailer::class, $this->mailer);
 
-        $this->user = new User([
-            'name'     => 'test',
-            'password' => '',
-            'email'    => 'foo@bar.baz',
-            'api_key'  => '',
-        ]);
-
-        $this->user->save();
-
-        $settings = new Settings([
-            'language' => '',
-            'theme' => 1,
-            'email_news' => true,
-        ]);
-        $settings->user()
-            ->associate($this->user)
-            ->save();
+        $this->user = User::factory()
+            ->has(Settings::factory([
+                'language' => '',
+                'theme' => 1,
+                'email_news' => true,
+            ]))
+            ->create();
     }
 }

@@ -18,7 +18,7 @@ class UserAwareLoggerTest extends ServiceProviderTest
      */
     public function testLog()
     {
-        $user = (new User())->forceFill(['id' => 1, 'name' => 'admin']);
+        $user = User::factory(['id' => 1, 'name' => 'admin'])->make();
 
         /** @var LogEntry|MockObject $logEntry */
         $logEntry = $this->getMockBuilder(LogEntry::class)
