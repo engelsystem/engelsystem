@@ -3,6 +3,7 @@
 namespace Engelsystem\Models\User;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
@@ -14,6 +15,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  */
 class PasswordReset extends HasUserModel
 {
+    use HasFactory;
+
     /** @var bool enable timestamps for created_at */
     public $timestamps = true;
 

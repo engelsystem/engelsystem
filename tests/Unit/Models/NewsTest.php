@@ -25,13 +25,7 @@ class NewsTest extends ModelTest
     {
         parent::setUp();
 
-        $this->user = (new User())->create([
-            'name'     => 'lorem',
-            'password' => '',
-            'email'    => 'foo@bar.batz',
-            'api_key'  => '',
-        ]);
-
+        $this->user = User::factory()->create();
         $this->newsData = [
             'title'   => 'test title',
             'text'    => 'test text',

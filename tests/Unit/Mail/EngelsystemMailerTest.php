@@ -47,21 +47,10 @@ class EngelsystemMailerTest extends TestCase
     {
         $this->initDatabase();
 
-        $settings = new Settings([
-            'language' => 'de_DE',
-            'theme'    => '',
-        ]);
-        $contact = new Contact(['email' => null]);
-        $user = new User([
-            'id'       => 42,
-            'name'     => 'username',
-            'email'    => 'foo@bar.baz',
-            'password' => '',
-            'api_key'  => '',
-        ]);
-        $user->save();
-        $settings->user()->associate($user)->save();
-        $contact->user()->associate($user)->save();
+        $user = User::factory(['email' => 'foo@bar.baz'])
+            ->has(Settings::factory(['language' => 'de_DE']))
+            ->has(Contact::factory(['email' => null]))
+            ->create();
 
         /** @var Renderer|MockObject $view */
         $view = $this->createMock(Renderer::class);

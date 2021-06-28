@@ -11,6 +11,7 @@ use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Worklog;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -57,6 +58,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  */
 class User extends BaseModel
 {
+    use HasFactory;
+
     /** @var bool enable timestamps */
     public $timestamps = true;
 

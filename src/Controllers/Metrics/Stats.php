@@ -334,7 +334,7 @@ class Stats
                 $query->having($this->raw($having), '<=', $bucket);
             }
 
-            $return[$bucket] = $query->count($this->raw($count));
+            $return[$bucket] = count($query->get($this->raw($count)));
         }
 
         return $return;
