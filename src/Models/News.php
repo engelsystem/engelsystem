@@ -7,6 +7,7 @@ namespace Engelsystem\Models;
 use Carbon\Carbon;
 use Engelsystem\Models\User\UsesUserModel;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
@@ -32,6 +33,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  */
 class News extends BaseModel
 {
+    use HasFactory;
     use UsesUserModel;
 
     /** @var bool Enable timestamps */
