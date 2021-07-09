@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Engelsystem\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
@@ -24,6 +25,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  */
 class Room extends BaseModel
 {
+    use HasFactory;
+
     /** @var bool Enable timestamps */
     public $timestamps = true;
 

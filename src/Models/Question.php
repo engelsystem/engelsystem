@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\User\UsesUserModel;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
@@ -29,6 +30,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  */
 class Question extends BaseModel
 {
+    use HasFactory;
     use UsesUserModel;
 
     /** @var bool Enable timestamps */

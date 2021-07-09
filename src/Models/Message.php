@@ -7,6 +7,7 @@ namespace Engelsystem\Models;
 use Engelsystem\Models\User\User;
 use Engelsystem\Models\User\UsesUserModel;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
@@ -29,6 +30,7 @@ use Illuminate\Support\Carbon;
  */
 class Message extends BaseModel
 {
+    use HasFactory;
     use UsesUserModel;
 
     /** @var bool enable timestamps */

@@ -34,12 +34,8 @@ class NewsTest extends TestCase
      */
     public function testCreated()
     {
-        $news = new NewsModel([
-            'title'      => 'Foo',
-            'text'       => 'Bar',
-            'user_id'    => 1,
-        ]);
-        $news->save();
+        /** @var NewsModel $news */
+        $news = NewsModel::factory(['title' => 'Foo'])->create();
 
         $i = 0;
         $this->mailer->expects($this->exactly(2))
