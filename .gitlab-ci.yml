@@ -62,9 +62,9 @@ validate-yarn:
 #
 
 .docker_template: &docker_definition
-  image: docker:18
+  image: docker
   services:
-    - docker:18-dind
+    - docker:dind
   tags:
     - dind
   before_script:
