@@ -1,7 +1,6 @@
 image: php
 
 variables:
-  DOCKER_DRIVER: overlay2
   TEST_IMAGE: ${CI_REGISTRY_IMAGE}/engelsystem:${CI_COMMIT_REF_SLUG}
   TEST_IMAGE_NGINX: ${CI_REGISTRY_IMAGE}/nginx:${CI_COMMIT_REF_SLUG}
   RELEASE_IMAGE: ${CI_REGISTRY_IMAGE}/engelsystem:latest
@@ -57,49 +56,59 @@ validate-yarn:
   script:
     - pjv
 
+generate-version:
+  image: alpine
+  stage: validate
+  artifacts:
+    name: "${CI_JOB_NAME}_${CI_JOB_ID}_version"
+    expire_in: 1 day
+    paths:
+      - ./storage/app/VERSION
+  before_script:
+    - apk add -q git
+  script:
+    - VERSION="$(git describe --abbrev=0 --tags)-${CI_COMMIT_REF_NAME}+${CI_PIPELINE_ID}.${CI_COMMIT_SHORT_SHA}"
+    - echo "${VERSION}"
+    - echo -n "${VERSION}" > storage/app/VERSION
+
 #
 # Build
 #
 
-.docker_template: &docker_definition
-  image: docker
-  services:
-    - docker:dind
-  tags:
-    - dind
+.container_template: &container_definition
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
   before_script:
-    - docker login -u gitlab-ci-token -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}"
+      > /kaniko/.docker/config.json
 
 build-image-nginx:
-  <<: *docker_definition
+  <<: *container_definition
   stage: build
   needs:
     - check-editorconfig
     - validate-yarn
-  artifacts:
-    name: "${CI_JOB_NAME}_${CI_JOB_ID}_assets"
-    expire_in: 1 day
-    paths:
-      - ./public/assets
   script:
-    - docker build --pull -t "${TEST_IMAGE_NGINX}" -f docker/nginx/Dockerfile .
-    - docker push "${TEST_IMAGE_NGINX}"
-    - instance=$(docker create "${TEST_IMAGE_NGINX}")
-    - docker cp "${instance}:/var/www/public/assets" public/
-    - docker rm "${instance}"
+    - /kaniko/executor --context ${CI_PROJECT_DIR}
+      --dockerfile ${CI_PROJECT_DIR}/docker/nginx/Dockerfile
+      --destination "${TEST_IMAGE_NGINX}"
 
 build-image:
-  <<: *docker_definition
+  <<: *container_definition
   stage: build
   needs:
     - check-editorconfig
-    - validate-composer
     - check-style
+    - generate-version
+    - validate-composer
+  dependencies:
+    - generate-version
   script:
-    - apk add -q git
-    - VERSION="$(git describe --abbrev=0 --tags)-${CI_COMMIT_REF_NAME}+${CI_PIPELINE_ID}.${CI_COMMIT_SHORT_SHA}"
-    - docker build --pull --build-arg VERSION="${VERSION}" -t "${TEST_IMAGE}" -f docker/Dockerfile .
-    - docker push "${TEST_IMAGE}"
+    - /kaniko/executor --context ${CI_PROJECT_DIR}
+      --dockerfile ${CI_PROJECT_DIR}/docker/Dockerfile
+      --destination "${TEST_IMAGE}"
 
 #
 # Test
@@ -174,33 +183,43 @@ dump-database:
       mysqldump -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" "${MYSQL_DATABASE}"
       > "${HOMEDIR}/initial-install.sql"
 
+generate-assets:
+  image:
+    name: $TEST_IMAGE_NGINX
+    entrypoint: [ "" ]
+  stage: test
+  needs: [ build-image-nginx ]
+  artifacts:
+    name: "${CI_JOB_NAME}_${CI_JOB_ID}_assets"
+    expire_in: 1 day
+    paths:
+      - ./public/assets
+  script:
+    - mv /var/www/public/assets/ public/
+
 #
 # Release
 #
 
 release-image:
-  <<: *docker_definition
+  <<: *container_definition
   stage: release
   needs: [ test ]
   dependencies: [ ]
   script:
-    - docker pull "${TEST_IMAGE}"
-    - docker tag "${TEST_IMAGE}" "${RELEASE_IMAGE}"
-    - docker push "${RELEASE_IMAGE}"
+    - echo -e "FROM ${TEST_IMAGE}" | executor --dockerfile /dev/stdin --destination "${RELEASE_IMAGE}"
   only:
     - main
 
 release-image-nginx:
-  <<: *docker_definition
+  <<: *container_definition
   stage: release
   needs:
     - test
     - build-image-nginx
   dependencies: [ ]
   script:
-    - docker pull "${TEST_IMAGE_NGINX}"
-    - docker tag "${TEST_IMAGE_NGINX}" "${RELEASE_IMAGE_NGINX}"
-    - docker push "${RELEASE_IMAGE_NGINX}"
+    - echo -e "FROM ${TEST_IMAGE_NGINX}" | executor --dockerfile /dev/stdin --destination "${RELEASE_IMAGE_NGINX}"
   only:
     - main
 
@@ -220,10 +239,11 @@ build-release-file:
     - audit-composer
     - test
     - dump-database
+    - generate-assets
   dependencies:
     - build-image
-    - build-image-nginx
     - dump-database
+    - generate-assets
   artifacts:
     name: release_${CI_COMMIT_REF_SLUG}_${CI_JOB_ID}_${CI_COMMIT_SHA}
     expire_in: 1 week
@@ -267,7 +287,7 @@ deploy:
   stage: deploy
   needs: &deploy_needs
     - release-image
-    - build-image-nginx
+    - generate-assets
   dependencies: *deploy_needs
   environment:
     name: staging
@@ -376,10 +396,10 @@ deploy-production:
     - audit-yarn
     - audit-composer
     - build-image
-    - build-image-nginx
+    - generate-assets
   dependencies:
     - build-image
-    - build-image-nginx
+    - generate-assets
   environment:
     name: production
   when: manual
