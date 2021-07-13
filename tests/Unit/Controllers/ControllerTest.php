@@ -72,5 +72,6 @@ abstract class ControllerTest extends TestCase
 
         $this->config = new Config();
         $this->app->instance('config', $this->config);
+        $this->app->instance(Config::class, $this->config);
     }
 }

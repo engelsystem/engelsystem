@@ -4,6 +4,7 @@ namespace Engelsystem\Controllers;
 
 use Engelsystem\Config\Config;
 use Engelsystem\Helpers\Authenticator;
+use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Http\Redirector;
 use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
@@ -17,6 +18,9 @@ class NewsController extends BaseController
 
     /** @var Authenticator */
     protected $auth;
+
+    /** @var NewsComment */
+    protected $comment;
 
     /** @var Config */
     protected $config;
@@ -39,13 +43,15 @@ class NewsController extends BaseController
     /** @var array */
     protected $permissions = [
         'news',
-        'meetings' => 'user_meetings',
-        'comment'  => 'news_comments',
+        'meetings'      => 'user_meetings',
+        'comment'       => 'news_comments',
+        'deleteComment' => 'news_comments',
     ];
 
     /**
      * @param Authenticator   $auth
      * @param Config          $config
+     * @param NewsComment     $comment
      * @param LoggerInterface $log
      * @param News            $news
      * @param Redirector      $redirector
@@ -54,6 +60,7 @@ class NewsController extends BaseController
      */
     public function __construct(
         Authenticator $auth,
+        NewsComment $comment,
         Config $config,
         LoggerInterface $log,
         News $news,
@@ -62,6 +69,7 @@ class NewsController extends BaseController
         Request $request
     ) {
         $this->auth = $auth;
+        $this->comment = $comment;
         $this->config = $config;
         $this->log = $log;
         $this->news = $news;
@@ -130,6 +138,41 @@ class NewsController extends BaseController
         $this->addNotification('news.comment.success');
 
         return $this->redirect->back();
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function deleteComment(Request $request): Response
+    {
+        $id = $request->getAttribute('id');
+        $this->validate(
+            $request,
+            [
+                'delete' => 'checked',
+            ]
+        );
+
+        $comment = $this->comment->findOrFail($id);
+        if (
+            $comment->user->id != $this->auth->user()->id
+            && !$this->auth->can('admin_news')
+            && !$this->auth->can('comment.delete')
+        ) {
+            throw new HttpForbidden();
+        }
+
+        $comment->delete();
+
+        $this->log->info(
+            'Deleted comment "{comment}" of news "{news}"',
+            ['comment' => $comment->text, 'news' => $comment->news->title]
+        );
+        $this->addNotification('news.comment-delete.success');
+
+        return $this->redirect->to('/news/' . $comment->news->id);
     }
 
     /**

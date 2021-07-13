@@ -72,6 +72,9 @@ msgstr "The minutes after the talk have to be an integer."
 msgid "news.comment.success"
 msgstr "Comment saved."
 
+msgid "news.comment-delete.success"
+msgstr "Comment successfully deleted."
+
 msgid "news.edit.success"
 msgstr "News successfully updated."
 

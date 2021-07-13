@@ -39,6 +39,7 @@ $route->get('/news', 'NewsController@index');
 $route->get('/meetings', 'NewsController@meetings');
 $route->get('/news/{id:\d+}', 'NewsController@show');
 $route->post('/news/{id:\d+}', 'NewsController@comment');
+$route->post('/news/comment/{id:\d+}', 'NewsController@deleteComment');
 
 // FAQ
 $route->get('/faq', 'FaqController@index');
