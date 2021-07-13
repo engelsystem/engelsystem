@@ -74,6 +74,9 @@ msgstr "Die Minuten nach dem Talk müssen eine Zahl sein."
 msgid "news.comment.success"
 msgstr "Kommentar gespeichert."
 
+msgid "news.comment-delete.success"
+msgstr "Kommentar erfolgreich gelöscht."
+
 msgid "news.edit.success"
 msgstr "News erfolgreich aktualisiert."
 
