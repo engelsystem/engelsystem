@@ -195,7 +195,12 @@ function view_user_shifts()
     $rooms = load_rooms();
     $types = load_types();
     $ownTypes = [];
+
     foreach (UserAngelTypes_by_User($user->id, true) as $type) {
+        if (!$type['confirm_user_id'] && $type['restricted']) {
+            continue;
+        }
+
         $ownTypes[] = (int)$type['angeltype_id'];
     }
 
