@@ -18,7 +18,8 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 @import "~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css";
-@import "~select2/dist/css/select2.css";
+@import "~select2/src/scss/core";
+@import "~select2-bootstrap-5-theme/src/include-all";
 @import "error";
 
 $navbar-height: 3.125rem;

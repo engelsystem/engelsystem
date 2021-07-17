@@ -177,13 +177,8 @@ $(function () {
     });
 });
 
-/**
- * Enable select2
- */
-$(function () {
-    $.fn.select2.defaults.set('theme', 'bootstrap');
-
-    $('select').select2();
+$('select').select2({
+    theme: 'bootstrap-5',
 });
 
 /**
