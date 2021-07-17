@@ -9,7 +9,7 @@
         <h1>
             {{ block('title') }}
             {%- if has_permission_to('admin_news') and is_overview|default(false) -%}
-                {{ m.button(m.glyphicon('plus'), url('admin/news', only_meetings ? {'meeting': 1} : {})) }}
+                {{ m.button(m.icon('plus-lg'), url('admin/news', only_meetings ? {'meeting': 1} : {}), 'secondary') }}
             {%- endif %}
         </h1>
 

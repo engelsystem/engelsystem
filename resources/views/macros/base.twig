@@ -6,6 +6,10 @@
     <span class="glyphicon glyphicon-{{ glyph }}"></span>
 {% endmacro %}
 
+{% macro icon(icon) %}
+    <span class="bi bi-{{ icon }}"></span>
+{% endmacro %}
+
 {% macro alert(message, type) %}
     <div class="alert alert-{{ type|default('info') }}">{{ message }}</div>
 {% endmacro %}
@@ -19,7 +23,7 @@
 {% endmacro %}
 
 {% macro button(label, url, type, size, title) %}
-    <a href="{{ url }}" class="btn btn-{{ type|default('default') }}{% if size %} btn-{{ size }}{% endif %}"{% if title %} title="{{ title }}"{% endif %}>
+    <a href="{{ url }}" class="btn btn-{{ type|default('primary') }}{% if size %} btn-{{ size }}{% endif %}"{% if title %} title="{{ title }}"{% endif %}>
         {{ label }}
     </a>
 {% endmacro %}
