@@ -361,13 +361,12 @@ span.ref-id[id] {
   }
 }
 
-
 @media screen and (max-width: map-get($grid-breakpoints, 'xxl')) {
   #navbar-offcanvas {
     display: block;
     position: absolute;
     width: 90%;
-    height: calc(100vh - $navbar-height);
+    height: calc(100vh - #{$navbar-height});
     max-height: unset;
     left: 101%;
     top: $navbar-height + 1;
