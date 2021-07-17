@@ -1,7 +1,7 @@
 {% macro toolbar_item(label, link, active_page, icon) %}
     <li class="nav-item">
         <a class="nav-link{% if page() == active_page %} active{% endif %}" href="{{ link }}">
-            {% if icon %}<span class="{% if 'bi-' in icon %}bi {% endif %}{{ icon }}"></span>{% endif %}
+            {% if icon %}<span class="bi {{ icon }}"></span>{% endif %}
             {{ label|raw }}
         </a>
     </li>
@@ -32,17 +32,17 @@
             {% endif %}
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 {% if is_user() %}
-                    {{ _self.toolbar_item(menuUserShiftState(user), url('shifts', {'action': 'next'}), '', 'glyphicon-time') }}
+                    {{ _self.toolbar_item(menuUserShiftState(user), url('shifts', {'action': 'next'}), '', 'bi-clock') }}
                 {% elseif has_permission_to('register') and config('registration_enabled') %}
-                    {{ _self.toolbar_item(__('Register'), url('register'), 'register', 'glyphicon-plus') }}
+                    {{ _self.toolbar_item(__('Register'), url('register'), 'register', 'bi-plus') }}
                 {% endif %}
 
                 {% if has_permission_to('login') %}
-                    {{ _self.toolbar_item(__('Login'), url('login'), 'login', 'glyphicon-log-in') }}
+                    {{ _self.toolbar_item(__('Login'), url('login'), 'login', 'bi-box-arrow-in-right') }}
                 {% endif %}
 
                 {% if is_user() and has_permission_to('user_messages') %}
-                    {{ _self.toolbar_item(menuUserMessages(), url('user-messages'), 'user-messages', 'glyphicon-envelope') }}
+                    {{ _self.toolbar_item(menuUserMessages(), url('user-messages'), 'user-messages', 'bi-envelope') }}
                 {% endif %}
 
                 {{ menuUserHints() }}
