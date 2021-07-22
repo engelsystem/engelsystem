@@ -87,7 +87,7 @@
 
             {% if has_permission_to('admin_news') %}
                 <div class="pull-right">
-                    {{ m.button(m.icon('pencil-square'), url('admin/news/' ~ news.id), null, 'xs') }}
+                    {{ m.button(m.icon('pencil-square'), url('admin/news/' ~ news.id), null, 'sm') }}
                 </div>
             {% endif %}
         </div>

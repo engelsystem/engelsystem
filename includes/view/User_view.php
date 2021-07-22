@@ -221,7 +221,7 @@ function Users_view(
             ? $user->personalData->planned_departure_date->format(__('Y-m-d')) : '';
         $u['last_login_at'] = $user->last_login_at ? $user->last_login_at->format(__('m/d/Y h:i a')) : '';
         $u['actions'] = table_buttons([
-            button_icon(page_link_to('admin_user', ['id' => $user->id]), 'pencil-square', 'btn-xs')
+            button_icon(page_link_to('admin_user', ['id' => $user->id]), 'pencil-square', 'btn-sm')
         ]);
         $usersList[] = $u;
     }
@@ -418,20 +418,20 @@ function User_view_myshift($shift, $user_source, $its_me)
     }
 
     $myshift['actions'] = [
-        button(shift_link($shift), icon('eye') . __('view'), 'btn-xs')
+        button(shift_link($shift), icon('eye') . __('view'), 'btn-sm')
     ];
     if ($its_me || auth()->can('user_shifts_admin')) {
         $myshift['actions'][] = button(
             page_link_to('user_myshifts', ['edit' => $shift['id'], 'id' => $user_source->id]),
             icon('pencil-square') . __('edit'),
-            'btn-xs'
+            'btn-sm'
         );
     }
     if (Shift_signout_allowed($shift, ['id' => $shift['TID']], $user_source->id)) {
         $myshift['actions'][] = button(
             shift_entry_delete_link($shift),
             icon('trash') . __('sign off'),
-            'btn-xs'
+            'btn-sm'
         );
     }
     $myshift['actions'] = table_buttons($myshift['actions']);
@@ -519,12 +519,12 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
             button(
                 user_worklog_edit_link($worklog),
                 icon('pencil-square') . __('edit'),
-                'btn-xs'
+                'btn-sm'
             ),
             button(
                 user_worklog_delete_link($worklog),
                 icon('trash') . __('delete'),
-                'btn-xs'
+                'btn-sm'
             )
         ]);
     }
@@ -630,7 +630,7 @@ function User_view(
                             form([
                                 form_hidden('action', 'arrived'),
                                 form_hidden('user', $user_source->id),
-                                form_submit('submit', __('arrived'), '', false, 'default')
+                                form_submit('submit', __('arrived'), '', false, 'primary')
                             ], page_link_to('admin_arrive'), true) : '',
                         $admin_user_privilege ? button(
                             page_link_to(

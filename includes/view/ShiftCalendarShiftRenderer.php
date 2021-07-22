@@ -136,7 +136,7 @@ class ShiftCalendarShiftRenderer
             $html .= '<li class="list-group-item">';
             $html .= button(shift_entry_create_link_admin($shift),
                 icon('plus-lg') . __('Add more angels'),
-                'btn-xs'
+                'btn-sm'
             );
             $html .= '</li>';
         }
@@ -193,7 +193,7 @@ class ShiftCalendarShiftRenderer
                     . '</a> '
                     . button(
                         shift_entry_create_link($shift, $angeltype),
-                        __('Sign up'), 'btn-xs btn-primary hidden-print'
+                        __('Sign up'), 'btn-sm btn-primary hidden-print'
                     );
                 break;
 
@@ -224,7 +224,7 @@ class ShiftCalendarShiftRenderer
                                 ['action' => 'add', 'angeltype_id' => $angeltype['id']]
                             ),
                             sprintf(__('Become %s'), $angeltype['name']),
-                            'btn-xs'
+                            'btn-sm'
                         );
                 }
                 break;
@@ -265,12 +265,12 @@ class ShiftCalendarShiftRenderer
                     button(
                         page_link_to('user_shifts', ['edit_shift' => $shift['SID']]),
                         icon('pencil'),
-                        "btn-$class btn-xs"
+                        "btn-$class btn-sm"
                     ),
                     button(
                         page_link_to('user_shifts', ['delete_shift' => $shift['SID']]),
                         icon('trash'),
-                        "btn-$class btn-xs"
+                        "btn-$class btn-sm"
                     )
                 ]) . '</div>';
         }

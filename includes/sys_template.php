@@ -386,7 +386,7 @@ function render_table($columns, $rows, $data = true)
  */
 function button($href, $label, $class = '')
 {
-    return '<a href="' . $href . '" class="btn btn-default ' . $class . '">' . $label . '</a>';
+    return '<a href="' . $href . '" class="btn btn-primary ' . $class . '">' . $label . '</a>';
 }
 
 /**
@@ -399,7 +399,7 @@ function button($href, $label, $class = '')
  */
 function button_js($javascript, $label, $class = '')
 {
-    return '<a onclick="' . $javascript . '" href="#" class="btn btn-default ' . $class . '">' . $label . '</a>';
+    return '<a onclick="' . $javascript . '" href="#" class="btn btn-primary ' . $class . '">' . $label . '</a>';
 }
 
 /**

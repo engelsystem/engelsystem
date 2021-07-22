@@ -121,12 +121,12 @@ function ShiftTypes_list_view($shifttypes)
                     ['action' => 'edit', 'shifttype_id' => $shifttype['id']]
                 ),
                 __('edit'),
-                'btn-xs'
+                'btn-sm'
             ),
             button(
                 page_link_to('shifttypes', ['action' => 'delete', 'shifttype_id' => $shifttype['id']]),
                 __('delete'),
-                'btn-xs'
+                'btn-sm'
             )
         ]);
     }

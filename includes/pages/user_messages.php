@@ -87,14 +87,14 @@ function user_messages()
                     $messages_table_entry['actions'] = button(
                         page_link_to('user_messages', ['action' => 'read', 'id' => $message->id]),
                         __('mark as read'),
-                        'btn-xs'
+                        'btn-sm'
                     );
                 }
             } else {
                 $messages_table_entry['actions'] = button(
                     page_link_to('user_messages', ['action' => 'delete', 'id' => $message->id]),
                     __('delete message'),
-                    'btn-xs'
+                    'btn-sm'
                 );
             }
             $messages_table[] = $messages_table_entry;

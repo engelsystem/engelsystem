@@ -35,13 +35,13 @@
                     <form method="POST" action="{{ url('/oauth/' ~ name ~ '/connect') }}">
                         {{ csrf() }}
 
-                        {{ f.submit(__('form.connect'), {'btn_size' : 'xs'}) }}
+                        {{ f.submit(__('form.connect'), {'btn_size' : 'sm'}) }}
                     </form>
                 {% else %}
                     <form method="POST" action="{{ url('/oauth/' ~ name ~ '/disconnect') }}">
                         {{ csrf() }}
 
-                        {{ f.submit(__('form.disconnect'), {'btn_type': 'danger', 'btn_size' : 'xs'}) }}
+                        {{ f.submit(__('form.disconnect'), {'btn_type': 'danger', 'btn_size' : 'sm'}) }}
                     </form>
                 {% endif %}
             </td>

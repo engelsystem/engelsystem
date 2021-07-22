@@ -222,7 +222,7 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
                         ['action' => 'confirm', 'user_angeltype_id' => $member['user_angeltype_id']]
                     ),
                     __('confirm'),
-                    'btn-xs'
+                    'btn-sm'
                 ),
                 button(
                     page_link_to(
@@ -230,7 +230,7 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
                         ['action' => 'delete', 'user_angeltype_id' => $member['user_angeltype_id']]
                     ),
                     __('deny'),
-                    'btn-xs'
+                    'btn-sm'
                 )
             ]);
             $members_unconfirmed[] = $member;
@@ -244,7 +244,7 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
                             'supporter'         => 0
                         ]),
                         __('Remove supporter rights'),
-                        'btn-xs'
+                        'btn-sm'
                     )
                 ]);
             } else {
@@ -260,7 +260,7 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
                         'user_angeltype_id' => $member['user_angeltype_id'],
                         'supporter'         => 1
                     ]),
-                        __('Add supporter rights'), 'btn-xs')
+                        __('Add supporter rights'), 'btn-sm')
                         : '',
                     button(
                         page_link_to('user_angeltypes', [
@@ -268,7 +268,7 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
                             'user_angeltype_id' => $member['user_angeltype_id']
                         ]),
                         __('remove'),
-                        'btn-xs'
+                        'btn-sm'
                     )
                 ]);
             }

@@ -48,13 +48,13 @@
                                                 >
                                                     {{ csrf() }}
                                                     {{ f.hidden('id', question.id) }}
-                                                    {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'btn_size': 'xs', 'title': __('form.delete')}) }}
+                                                    {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'btn_size': 'sm', 'title': __('form.delete')}) }}
                                                 </form>
                                             {% endif %}
 
                                             {% if has_permission_to('question.edit') %}
                                                 <span class="pull-right">
-                                                    {{ m.button(m.icon('pencil-square'), url('admin/questions/' ~ question.id), null, 'xs') }}
+                                                    {{ m.button(m.icon('pencil-square'), url('admin/questions/' ~ question.id), null, 'sm') }}
                                                 </span>
                                             {% endif %}
                                         </div>

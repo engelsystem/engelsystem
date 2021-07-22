@@ -27,12 +27,12 @@ function admin_rooms()
                 button(
                     page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room->id]),
                     __('edit'),
-                    'btn-xs'
+                    'btn-sm'
                 ),
                 button(
                     page_link_to('admin_rooms', ['show' => 'delete', 'id' => $room->id]),
                     __('delete'),
-                    'btn-xs'
+                    'btn-sm'
                 )
             ])
         ];

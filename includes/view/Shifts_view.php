@@ -258,10 +258,10 @@ function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angelty
             $entry .= button_icon(
                 page_link_to('user_myshifts', ['edit' => $shift_entry['id'], 'id' => $shift_entry['UID']]),
                 'pencil',
-                'btn-xs'
+                'btn-sm'
             );
         }
-        $entry .= button_icon(shift_entry_delete_link($shift_entry), 'trash', 'btn-xs');
+        $entry .= button_icon(shift_entry_delete_link($shift_entry), 'trash', 'btn-sm');
         $entry .= '</div>';
     }
     return $entry;

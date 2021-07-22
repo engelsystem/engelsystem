@@ -313,7 +313,7 @@ function ical_hint()
             page_link_to('shifts_json_export', ['key' => $user->api_key]),
             page_link_to('user_myshifts', ['reset' => 1])
         )
-        . ' <button class="btn btn-xs btn-danger" data-toggle="collapse" data-target="#collapseApiKey" aria-expanded="false" aria-controls="collapseApiKey">
+        . ' <button class="btn btn-sm btn-danger" data-toggle="collapse" data-target="#collapseApiKey" aria-expanded="false" aria-controls="collapseApiKey">
             ' . __('Show API Key') . '
             </button>'
         . '</p>'

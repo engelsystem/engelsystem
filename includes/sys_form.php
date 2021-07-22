@@ -30,10 +30,10 @@ function form_spinner($name, $label, $value)
         <div class="input-group">
             <input id="spinner-' . $name . '" class="form-control" name="' . $name . '" value="' . $value . '" />
             <div class="input-group-btn">
-                <button id="spinner-' . $name . '-down" class="btn btn-default" type="button">
+                <button id="spinner-' . $name . '-down" class="btn btn-primary" type="button">
                    ' . icon('dash-lg') . '
                 </button>
-                <button id="spinner-' . $name . '-up" class="btn btn-default" type="button">
+                <button id="spinner-' . $name . '-up" class="btn btn-primary" type="button">
                     ' . icon('plus-lg') . '
                 </button>
             </div>
