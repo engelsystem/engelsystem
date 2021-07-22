@@ -98,7 +98,7 @@ function admin_arrive()
         $usr['rendered_planned_departure_date'] = $plannedDepartureDate ? $plannedDepartureDate->format(__('Y-m-d')) : '-';
         $usr['rendered_planned_arrival_date'] = $plannedArrivalDate ? $plannedArrivalDate->format(__('Y-m-d')) : '-';
         $usr['rendered_arrival_date'] = $arrivalDate ? $arrivalDate->format(__('Y-m-d')) : '-';
-        $usr['arrived'] = glyph_bool($usr->state->arrived);
+        $usr['arrived'] = icon_bool($usr->state->arrived);
         $usr['actions'] = form([
             form_hidden('action', $usr->state->arrived ? 'reset' : 'arrived'),
             form_hidden('user', $usr->id),

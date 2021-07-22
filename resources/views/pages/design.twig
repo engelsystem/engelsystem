@@ -86,12 +86,12 @@
                     <tr>
                         <td>Table content</td>
                         <td>{{ lipsum }}</td>
-                        <td><span class="text-success">{{ m.glyphicon('ok') }}</span></td>
+                        <td><span class="text-success">{{ m.icon('check-lg') }}</span></td>
                     </tr>
                     <tr>
                         <td>Another content</td>
                         <td></td>
-                        <td><span class="text-danger">{{ m.glyphicon('remove') }}</span></td>
+                        <td><span class="text-danger">{{ m.icon('x-lg') }}</span></td>
                     </tr>
                 </table>
             </div>
@@ -255,8 +255,8 @@
                 <p>{{ m.angel() }}</p>
             </div>
             <div class="col-md-3">
-                <h4><code>glyphicon(glyph)</code></h4>
-                <p>{{ m.glyphicon('star') }}</p>
+                <h4><code>icon(icon_name)</code></h4>
+                <p>{{ m.icon('star') }}</p>
             </div>
             <div class="col-md-3">
                 <h4><code>alert(message, type)</code></h4>

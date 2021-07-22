@@ -60,7 +60,7 @@ class ShiftsFilterRenderer
                 $toolbar[] = sprintf(
                     '<li role="presentation"><a href="%s">%s</a></li>',
                     url('/public-dashboard', ['filtered' => true] + $dashboardFilter),
-                    glyph('dashboard') . __('Dashboard')
+                    icon('speedometer2') . __('Dashboard')
                 );
             }
         }

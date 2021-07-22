@@ -216,9 +216,9 @@ function admin_active()
         $userData['shirt_size'] = (isset($tshirt_sizes[$shirtSize]) ? $tshirt_sizes[$shirtSize] : '');
         $userData['work_time'] = round($usr['shift_length'] / 60)
             . ' min (' . sprintf('%.2f', $usr['shift_length'] / 3600) . '&nbsp;h)';
-        $userData['active'] = glyph_bool($usr->state->active == 1);
-        $userData['force_active'] = glyph_bool($usr->state->force_active == 1);
-        $userData['tshirt'] = glyph_bool($usr->state->got_shirt == 1);
+        $userData['active'] = icon_bool($usr->state->active == 1);
+        $userData['force_active'] = icon_bool($usr->state->force_active == 1);
+        $userData['tshirt'] = icon_bool($usr->state->got_shirt == 1);
         $userData['shift_count'] = $usr['shift_count'];
 
         $actions = [];

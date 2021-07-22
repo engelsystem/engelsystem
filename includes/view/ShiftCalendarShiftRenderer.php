@@ -23,7 +23,7 @@ class ShiftCalendarShiftRenderer
     {
         $info_text = '';
         if ($shift['title'] != '') {
-            $info_text = glyph('info-sign') . $shift['title'] . '<br>';
+            $info_text = icon('info') . $shift['title'] . '<br>';
         }
         list($shift_signup_state, $shifts_row) = $this->renderShiftNeededAngeltypes(
             $shift,
@@ -135,7 +135,7 @@ class ShiftCalendarShiftRenderer
         if (auth()->can('user_shifts_admin')) {
             $html .= '<li class="list-group-item">';
             $html .= button(shift_entry_create_link_admin($shift),
-                glyph('plus') . __('Add more angels'),
+                icon('plus-lg') . __('Add more angels'),
                 'btn-xs'
             );
             $html .= '</li>';
@@ -214,7 +214,7 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::ANGELTYPE:
                 if ($angeltype['restricted'] == 1) {
                     // User has to be confirmed on the angeltype first
-                    $entry_list[] = $inner_text . glyph('book');
+                    $entry_list[] = $inner_text . icon('book');
                 } else {
                     // Add link to join the angeltype first
                     $entry_list[] = $inner_text . '<br />'
@@ -264,12 +264,12 @@ class ShiftCalendarShiftRenderer
             $header_buttons = '<div class="pull-right hidden-print">' . table_buttons([
                     button(
                         page_link_to('user_shifts', ['edit_shift' => $shift['SID']]),
-                        glyph('edit'),
+                        icon('pencil'),
                         "btn-$class btn-xs"
                     ),
                     button(
                         page_link_to('user_shifts', ['delete_shift' => $shift['SID']]),
-                        glyph('trash'),
+                        icon('trash'),
                         "btn-$class btn-xs"
                     )
                 ]) . '</div>';

@@ -75,7 +75,7 @@ function user_messages()
             $receiver_user_source = $message->receiver;
 
             $messages_table_entry = [
-                'new'       => !$message->read ? '<span class="glyphicon glyphicon-envelope"></span>' : '',
+                'new'       => !$message->read ? icon('envelope') : '',
                 'timestamp' => $message->created_at->format(__('Y-m-d H:i')),
                 'from'      => User_Nick_render($sender_user_source),
                 'to'        => User_Nick_render($receiver_user_source),

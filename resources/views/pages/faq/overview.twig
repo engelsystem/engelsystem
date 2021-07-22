@@ -11,7 +11,7 @@
             {{ block('title') }}
 
             {%- if has_permission_to('faq.edit') -%}
-                {{ m.button(m.glyphicon('plus'), url('admin/faq')) }}
+                {{ m.button(m.icon('plus-lg'), url('admin/faq'), 'secondary') }}
             {%- endif %}
         </h1>
 
@@ -35,7 +35,7 @@
                                 <h3>
                                     {{ item.question }}
                                     <small class="text-muted">
-                                        <a class="ref-link" href="#faq-{{ item.id }}">{{ m.glyphicon('link') }}</a>
+                                        <a class="ref-link" href="#faq-{{ item.id }}">{{ m.icon('link') }}</a>
                                     </small>
                                 </h3>
                             </div>
@@ -45,11 +45,11 @@
                             </div>
 
                             <div class="panel-footer">
-                                {{ m.glyphicon('time') }} {{ item.updated_at.format(__('Y-m-d H:i')) }}
+                                {{ m.icon('clock') }} {{ item.updated_at.format(__('Y-m-d H:i')) }}
 
                                 {% if has_permission_to('faq.edit') %}
                                     <span class="pull-right">
-                                        {{ m.button(m.glyphicon('edit'), url('admin/faq/' ~ item.id), null, 'xs') }}
+                                        {{ m.button(m.icon('pencil-square'), url('admin/faq/' ~ item.id), null, 'xs') }}
                                     </span>
                                 {% endif %}
                             </div>

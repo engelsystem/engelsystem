@@ -25,8 +25,8 @@ function ShiftEntry_delete_view_admin($shift, $angeltype, $signoff_user)
         ), true),
         form([
             buttons([
-                button(user_link($signoff_user->id), glyph('remove') . __('cancel')),
-                form_submit('delete', glyph('ok') . __('delete'), 'btn-danger', false)
+                button(user_link($signoff_user->id), icon('x-lg') . __('cancel')),
+                form_submit('delete', icon('trash') . __('delete'), 'btn-danger', false)
             ]),
         ]),
     ]);
@@ -54,8 +54,8 @@ function ShiftEntry_delete_view($shift, $angeltype, $signoff_user_id)
 
         form([
             buttons([
-                button(user_link($signoff_user_id), glyph('remove') . __('cancel')),
-                form_submit('delete', glyph('ok') . __('delete'), 'btn-danger', false),
+                button(user_link($signoff_user_id), icon('x-lg') . __('cancel')),
+                form_submit('delete', icon('trash') . __('delete'), 'btn-danger', false),
             ]),
         ]),
     ]);
@@ -91,7 +91,7 @@ function ShiftEntry_create_view_admin($shift, Room $room, $angeltype, $angeltype
             form([
                 form_select('angeltype_id', __('Angeltype'), $angeltypes_select, $angeltype['id']),
                 form_select('user_id', __('User'), $users_select, $signup_user->id),
-                form_submit('submit', glyph('ok') . __('Save'))
+                form_submit('submit', icon('check-lg') . __('Save'))
             ])
         ]);
 }
@@ -116,7 +116,7 @@ function ShiftEntry_create_view_supporter($shift, Room $room, $angeltype, $signu
                 AngelType_name_render($angeltype)), true),
             form([
                 form_select('user_id', __('User'), $users_select, $signup_user->id),
-                form_submit('submit', glyph('ok') . __('Save'))
+                form_submit('submit', icon('check-lg') . __('Save'))
             ])
         ]);
 }
@@ -139,7 +139,7 @@ function ShiftEntry_create_view_user($shift, Room $room, $angeltype, $comment)
             info(sprintf(__('Do you want to sign up for this shift as %s?'), AngelType_name_render($angeltype)), true),
             form([
                 form_textarea('comment', __('Comment (for your eyes only):'), $comment),
-                form_submit('submit', glyph('ok') . __('Save'))
+                form_submit('submit', icon('check-lg') . __('Save'))
             ])
         ]);
 }

@@ -1,3 +1,5 @@
+{% import 'macros/base.twig' as m %}
+
 <div class="col-md-12">
     <hr/>
     <div class="text-center footer" style="margin-bottom: 10px;">
@@ -27,7 +29,7 @@
 
         {% for name,url in config('footer_items') %}
             <a href="{% if url starts with '/' %}{{ url(url) }}{% else %}{{ url }}{% endif %}">
-                {% if '@' in url %}<span class="glyphicon glyphicon-envelope"></span>{% endif %}
+                {% if '@' in url %}{{ m.icon('envelope') }}{% endif %}
                 {{ __(name) }}
             </a> ·
         {% endfor %}

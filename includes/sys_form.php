@@ -31,10 +31,10 @@ function form_spinner($name, $label, $value)
             <input id="spinner-' . $name . '" class="form-control" name="' . $name . '" value="' . $value . '" />
             <div class="input-group-btn">
                 <button id="spinner-' . $name . '-down" class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-minus"></span>
+                   ' . icon('dash-lg') . '
                 </button>
                 <button id="spinner-' . $name . '-up" class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-plus"></span>
+                    ' . icon('plus-lg') . '
                 </button>
             </div>
         </div>
@@ -72,7 +72,7 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
     return form_element($label, '
     <div class="input-group date" id="' . $dom_id . '" data-min-date="' . $start_date . '" data-max-date="' . $end_date . '">
         <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '" autocomplete="off">'
-        . '<span class="input-group-addon">' . glyph('th') . '</span>
+        . '<span class="input-group-addon">' . icon('grid-3x3-gap-fill') . '</span>
     </div>
     ', $dom_id);
 }
@@ -97,7 +97,7 @@ function form_datetime(string $name, string $label, $value)
     <div class="input-group datetime" id="%s">
         <input type="datetime-local" placeholder="YYYY-MM-DD HH:MM" name="%s"
             class="form-control" value="%s" autocomplete="off">'
-        . '<span class="input-group-addon">' . glyph('th') . '</span>
+        . '<span class="input-group-addon">' . icon('grid-3x3-gap-fill') . '</span>
     </div>
     ', $dom_id, $name, htmlspecialchars($value ? $value->format('Y-m-d H:i') : '')), $dom_id);
 }
@@ -214,7 +214,7 @@ function form_radio($name, $label, $selected, $value)
 function form_info($label, $text = '')
 {
     if ($label == '') {
-        return '<span class="help-block">' . glyph('info-sign') . $text . '</span>';
+        return '<span class="help-block">' . icon('info-lg') . $text . '</span>';
     }
     if ($text == '') {
         return '<h4>' . $label . '</h4>';

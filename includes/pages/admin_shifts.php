@@ -291,7 +291,7 @@ function admin_shifts()
             foreach ($shifts as $shift) {
                 $shifts_table_entry = [
                     'timeslot'      =>
-                        '<span class="glyphicon glyphicon-time"></span> '
+                        icon('clock') . ' '
                         . date('Y-m-d H:i', $shift['start'])
                         . ' - '
                         . date('H:i', $shift['end'])
@@ -332,13 +332,13 @@ function admin_shifts()
                     form_hidden('change_hours', implode(', ', $change_hours)),
                     form_hidden('angelmode', $angelmode),
                     form_hidden('shift_over_midnight', $shift_over_midnight ? 'true' : 'false'),
-                    form_submit('back', glyph('menu-left') . __('back')),
+                    form_submit('back', icon('chevron-left') . __('back')),
                     table([
                         'timeslot'      => __('Time and location'),
                         'title'         => __('Type and title'),
                         'needed_angels' => __('Needed angels')
                     ], $shifts_table),
-                    form_submit('submit', glyph('floppy-disk') . __('Save'))
+                    form_submit('submit', icon('save') . __('Save'))
                 ])
             ]);
         }
@@ -468,7 +468,7 @@ function admin_shifts()
                     ])
                 ])
             ]),
-            form_submit('preview', glyph('search') . __('Preview'))
+            form_submit('preview', icon('search') . __('Preview'))
         ])
     ]);
 }

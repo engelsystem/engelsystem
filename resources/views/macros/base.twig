@@ -2,10 +2,6 @@
     <span class="icon-icon_angel bg-light"></span>
 {% endmacro %}
 
-{% macro glyphicon(glyph) %}
-    <span class="glyphicon glyphicon-{{ glyph }}"></span>
-{% endmacro %}
-
 {% macro icon(icon) %}
     <span class="bi bi-{{ icon }}"></span>
 {% endmacro %}
@@ -29,5 +25,5 @@
 {% endmacro %}
 
 {% macro info(text) %}
-    <span class="help-block">{{ _self.glyphicon('info-sign') }}{{ text }}</span>
+    <span class="help-block">{{ _self.icon('info-lg') }}{{ text }}</span>
 {%- endmacro %}

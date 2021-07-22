@@ -53,7 +53,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <a href="{{ url('news/' ~ news.id) }}">
-                        {% if news.is_pinned %}{{ m.glyphicon('pushpin') }}{% endif %}
+                        {% if news.is_pinned %}{{ m.icon('pin-angle') }}{% endif %}
                         {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
                         {{ news.title }}
                     </a>
@@ -66,13 +66,13 @@
         </div>
 
         <div class="panel-footer text-muted">
-            {{ m.glyphicon('time') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
+            {{ m.icon('clock') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
 
             {% if news.updated_at != news.created_at and not is_overview %}
                 &emsp;{{ __('news.updated') }}
 
                 <br>
-                {{ m.glyphicon('time') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
+                {{ m.icon('clock') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
             {% endif %}
 
             &emsp;{{ m.user(news.user) }}
@@ -80,14 +80,14 @@
             {% if show_comments_link|default(false) %}
                 &ensp;
                 <a href="{{ url('news/' ~ news.id) }}">
-                    {{ m.glyphicon('comment') }} {{ __('news.comments') }} &raquo;
+                    {{ m.icon('chat-left-text') }} {{ __('news.comments') }} &raquo;
                 </a>
                 <span class="badge">{{ news.comments.count() }}</span>
             {% endif %}
 
             {% if has_permission_to('admin_news') %}
                 <div class="pull-right">
-                    {{ m.button(m.glyphicon('edit'), url('admin/news/' ~ news.id), null, 'xs') }}
+                    {{ m.button(m.icon('pencil-square'), url('admin/news/' ~ news.id), null, 'xs') }}
                 </div>
             {% endif %}
         </div>

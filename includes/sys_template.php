@@ -108,14 +108,16 @@ function progress_bar($valuemin, $valuemax, $valuenow, $class = '', $content = '
 }
 
 /**
- * Render glyphicon
+ * Render bootstrap icon
  *
- * @param string $glyph_name
+ * @param string $icon_name
+ * @param string $class
+ *
  * @return string
  */
-function glyph($glyph_name)
+function icon(string $icon_name, string $class = ''): string
 {
-    return ' <span class="glyphicon glyphicon-' . $glyph_name . '"></span> ';
+    return ' <span class="bi bi-' . $icon_name . ($class ? ' ' . $class : '') . '"></span> ';
 }
 
 /**
@@ -124,10 +126,10 @@ function glyph($glyph_name)
  * @param boolean $boolean
  * @return string
  */
-function glyph_bool($boolean)
+function icon_bool($boolean)
 {
     return '<span class="text-' . ($boolean ? 'success' : 'danger') . '">'
-        . glyph($boolean ? 'ok' : 'remove')
+        . icon($boolean ? 'check-lg' : 'x-lg')
         . '</span>';
 }
 
@@ -187,10 +189,10 @@ function toolbar_item_link($href, $icon, $label, $active = false)
 function toolbar_dropdown_item(string $href, string $label, bool $active, string $icon = null): string
 {
     return strtr(
-        '<li><a class="dropdown-item{active}" href="{href}">{icon}{label}</a></li>',
+        '<li><a class="dropdown-item{active}" href="{href}">{icon} {label}</a></li>',
         [
             '{href}'   => $href,
-            '{icon}'   => $icon === null ? '' : '<i class="bi ' . $icon . '"></i>',
+            '{icon}'   => $icon === null ? '' : '<i class="bi bi-' . $icon . '"></i>',
             '{label}'  => $label,
             '{active}' => $active ? ' active' : ''
         ]
@@ -234,18 +236,19 @@ EOT;
 }
 
 /**
- * @param string   $glyphicon
+ * @param string   $icon
  * @param string   $label
  * @param string[] $content
  * @param string   $class
+ *
  * @return string
  */
-function toolbar_popover($glyphicon, $label, $content, $class = '')
+function toolbar_popover($icon, $label, $content, $class = '')
 {
-    $dom_id = md5(microtime() . $glyphicon . $label);
+    $dom_id = md5(microtime() . $icon . $label);
     return '<li class="dropdown messages ' . $class . '">'
         . '<a id="' . $dom_id . '" href="#" tabindex="0">'
-        . ($glyphicon != '' ? '<span class="glyphicon glyphicon-' . $glyphicon . '"></span> ' : '')
+        . ($icon ? icon($icon) : '')
         . $label
         . ' <span class="caret"></span></a>'
         . '<script type="text/javascript">
@@ -400,16 +403,17 @@ function button_js($javascript, $label, $class = '')
 }
 
 /**
- * Rendert einen Knopf mit Glyph
+ * Renders a button with an icon
  *
  * @param string $href
- * @param string $glyph
+ * @param string $icon
  * @param string $class
+ *
  * @return string
  */
-function button_glyph($href, $glyph, $class = '')
+function button_icon($href, $icon, $class = '')
 {
-    return button($href, glyph($glyph), $class);
+    return button($href, icon($icon), $class);
 }
 
 /**
@@ -420,7 +424,7 @@ function button_glyph($href, $glyph, $class = '')
  */
 function button_help($topic = '')
 {
-    return button(config('documentation_url') . $topic, glyph('question-sign'), 'btn-sm');
+    return button(config('documentation_url') . $topic, icon('question-circle'), 'btn-sm');
 }
 
 /**

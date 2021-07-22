@@ -56,11 +56,11 @@ function public_dashboard_view($stats, $free_shifts)
                 $(\'#navbar-collapse-1,.navbar-nav,.navbar-toggle,#footer,#fullscreen-button\').remove();
                 $(\'.navbar-brand\').append(\' ' . __('Public Dashboard') . '\');
                 ',
-                glyph('fullscreen') . __('Fullscreen')
+                icon('fullscreen') . __('Fullscreen')
             ),
             auth()->user() ? button(
                 public_dashboard_link($isFiltered ? [] : ['filtered' => 1] + $filter),
-                glyph('filter') . ($isFiltered ? __('All') : __('Filtered'))
+                icon('filter') . ($isFiltered ? __('All') : __('Filtered'))
             ) : ''
         ])], 'fullscreen-button'),
     ]);
@@ -74,18 +74,18 @@ function public_dashboard_view($stats, $free_shifts)
  */
 function public_dashboard_shift_render($shift)
 {
-    $panel_body = glyph('time') . $shift['start'] . ' - ' . $shift['end'];
+    $panel_body = icon('clock') . $shift['start'] . ' - ' . $shift['end'];
     $panel_body .= ' (' . $shift['duration'] . '&nbsp;h)';
 
-    $panel_body .= '<br>' . glyph('tasks') . $shift['shifttype_name'];
+    $panel_body .= '<br>' . icon('list-task') . $shift['shifttype_name'];
     if (!empty($shift['title'])) {
         $panel_body .= ' (' . $shift['title'] . ')';
     }
 
-    $panel_body .= '<br>' . glyph('map-marker') . $shift['room_name'];
+    $panel_body .= '<br>' . icon('geo-alt') . $shift['room_name'];
 
     foreach ($shift['needed_angels'] as $needed_angels) {
-        $panel_body .= '<br>' . glyph('user')
+        $panel_body .= '<br>' . icon('person')
             . '<span class="text-' . $shift['style'] . '">'
             . $needed_angels['need'] . ' &times; ' . $needed_angels['angeltype_name']
             . '</span>';

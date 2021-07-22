@@ -320,8 +320,8 @@ function angeltypes_list_controller()
             );
         }
 
-        $angeltype['restricted'] = $angeltype['restricted'] ? glyph('book') : '';
-        $angeltype['no_self_signup'] = $angeltype['no_self_signup'] ? '' : glyph('share');
+        $angeltype['restricted'] = $angeltype['restricted'] ? icon('book') : '';
+        $angeltype['no_self_signup'] = $angeltype['no_self_signup'] ? '' : icon('share');
 
         $angeltype['name'] = '<a href="'
             . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']])

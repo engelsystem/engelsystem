@@ -13,7 +13,7 @@
                 {{ block('title') }}
 
                 {% if not is_admin|default(false) %}
-                    {{ m.button(m.glyphicon('plus'), url('questions/new')) }}
+                    {{ m.button(m.icon('plus-lg'), url('questions/new'), 'secondary') }}
                 {% endif %}
             </h1>
         </div>
@@ -33,7 +33,7 @@
                                         </div>
 
                                         <div class="panel-footer">
-                                            {{ m.glyphicon('time') }} {{ question.created_at.format(__('Y-m-d H:i')) }}
+                                            {{ m.icon('clock') }} {{ question.created_at.format(__('Y-m-d H:i')) }}
 
                                             {% if has_permission_to('question.edit') %}
                                                 &nbsp;{{ m.user(question.user) }}
@@ -48,13 +48,13 @@
                                                 >
                                                     {{ csrf() }}
                                                     {{ f.hidden('id', question.id) }}
-                                                    {{ f.submit(m.glyphicon('trash'), {'name': 'delete', 'btn_type': 'danger', 'btn_size': 'xs', 'title': __('form.delete')}) }}
+                                                    {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'btn_size': 'xs', 'title': __('form.delete')}) }}
                                                 </form>
                                             {% endif %}
 
                                             {% if has_permission_to('question.edit') %}
                                                 <span class="pull-right">
-                                                    {{ m.button(m.glyphicon('edit'), url('admin/questions/' ~ question.id), null, 'xs') }}
+                                                    {{ m.button(m.icon('pencil-square'), url('admin/questions/' ~ question.id), null, 'xs') }}
                                                 </span>
                                             {% endif %}
                                         </div>
@@ -67,7 +67,7 @@
                                                 {{ question.answer|markdown }}
                                             </div>
                                             <div class="panel-footer">
-                                                {{ m.glyphicon('time') }} {{ question.updated_at.format(__('Y-m-d H:i')) }}
+                                                {{ m.icon('clock') }} {{ question.updated_at.format(__('Y-m-d H:i')) }}
                                                 &nbsp;{{ m.user(question.answerer) }}
                                             </div>
                                         </div>

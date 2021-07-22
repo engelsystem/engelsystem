@@ -94,7 +94,7 @@ function admin_free()
             'dect'        => sprintf('<a href="tel:%s">%1$s</a>', $usr->contact->dect),
             'email'       => $usr->settings->email_human
                 ? sprintf('<a href="email:%s">%1$s</a>', $email)
-                : glyph('eye-close'),
+                : icon('eye-slash'),
             'actions'     =>
                 auth()->can('admin_user')
                     ? button(page_link_to('admin_user', ['id' => $usr->id]), __('edit'), 'btn-xs')

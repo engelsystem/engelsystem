@@ -68,7 +68,7 @@ function make_user_submenu()
             page_link_to('user_settings'),
             __('Settings'),
             $page == 'user_settings',
-            'bi-gear'
+            'gear'
         );
     }
 
@@ -77,7 +77,7 @@ function make_user_submenu()
             page_link_to('logout'),
             __('Logout'),
             $page == 'logout',
-            'bi-box-arrow-left',
+            'box-arrow-left',
         );
     }
 
@@ -116,7 +116,7 @@ function make_navigation()
         // path              => [name, permission]
         'admin_arrive'       => 'Arrive angels',
         'admin_active'       => 'Active angels',
-        'admin_user'         => 'All Angels',
+        'users'              => ['All Angels', 'admin_user'],
         'admin_free'         => 'Free angels',
         'admin/questions'    => ['Answer questions', 'question.edit'],
         'shifttypes'         => 'Shifttypes',
@@ -192,7 +192,7 @@ function make_room_navigation($menu)
         $room_menu[] = toolbar_dropdown_item_divider();
     }
     foreach ($rooms as $room) {
-        $room_menu[] = toolbar_dropdown_item(room_link($room), $room->name, false, 'map-marker');
+        $room_menu[] = toolbar_dropdown_item(room_link($room), $room->name, false, 'geo-alt');
     }
     if (count($room_menu) > 0) {
         $menu[] = toolbar_dropdown('map-marker', __('Rooms'), $room_menu);

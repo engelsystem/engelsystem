@@ -51,7 +51,7 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
         $selected_tab = count($tabs) - 1;
     }
 
-    return page_with_title(glyph('map-marker') . $room->name, [
+    return page_with_title(icon('geo-alt') . $room->name, [
         $assignNotice,
         $description,
         auth()->can('admin_rooms') ? buttons([
@@ -78,8 +78,8 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
 function Room_name_render(Room $room)
 {
     if (auth()->can('view_rooms')) {
-        return '<a href="' . room_link($room) . '">' . glyph('map-marker') . $room->name . '</a>';
+        return '<a href="' . room_link($room) . '">' . icon('geo-alt') . $room->name . '</a>';
     }
 
-    return glyph('map-marker') . $room->name;
+    return icon('geo-alt') . $room->name;
 }

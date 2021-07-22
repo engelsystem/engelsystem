@@ -14,12 +14,12 @@
             <div class="row">
                 <div class="col-md-6">
                     <p>
-                        {{ m.glyphicon('time') }} {{ faq.updated_at.format(__('Y-m-d H:i')) }}
+                        {{ m.icon('clock') }} {{ faq.updated_at.format(__('Y-m-d H:i')) }}
 
                         {% if faq.updated_at != faq.created_at %}
                             &emsp;{{ __('form.updated') }}
                             <br>
-                            {{ m.glyphicon('time') }} {{ faq.created_at.format(__('Y-m-d H:i')) }}
+                            {{ m.icon('clock') }} {{ faq.created_at.format(__('Y-m-d H:i')) }}
                         {% endif %}
                     </p>
                 </div>
@@ -38,10 +38,10 @@
 
                     {{ f.submit() }}
 
-                    {{ f.submit(m.glyphicon('eye-close'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
+                    {{ f.submit(m.icon('eye-slash'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
 
                     {% if faq and faq.id %}
-                        {{ f.submit(m.glyphicon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
+                        {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
                     {% endif %}
                 </div>
             </div>
