@@ -29,12 +29,12 @@
     {% endblock %}
 
     <div class="container-fluid">
-        <div class="row" id="content">
+        <div id="content">
             {% block content %}
                 {{ content|raw }}
             {% endblock %}
         </div>
-        <div class="row" id="footer">
+        <div id="footer">
             {% block footer %}
                 {% include "layouts/parts/footer.twig" %}
             {% endblock %}
