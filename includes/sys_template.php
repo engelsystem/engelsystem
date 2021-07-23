@@ -38,25 +38,31 @@ function tabs($tabs, $selected = 0)
     $tab_header = [];
     $tab_content = [];
     foreach ($tabs as $header => $content) {
-        $class = '';
+        $active = false;
         $id = $header;
         $href = '#' . $id;
         if (count($tab_header) == $selected) {
-            $class = 'active';
+            $active = true;
         }
         if (is_array($content)) {
             $href = $content['href'];
             $content = null;
             $id = null;
         }
-        $tab_header[] = '<li role="presentation" class="' . $class . '">
-                <a href="'. $href . '"'
-            . ($id ? ' aria-controls="' . $id . '" role="tab" data-toggle="tab"' : '')
+        $tab_header[] = '<li role="presentation" class="nav-item">
+                <a href="'. $href . '" class="nav-link' . ($active ? ' active' : '') . '" role="tab"'
+            . ($id ? ' id="' . $id . '-tab"' : '')
+            . ($id ? ' aria-controls="' . $id . '" data-bs-target="#' . $id . '" data-bs-toggle="tab" role="tab"' : '')
+            . ($id && $active ? ' aria-selected="true"' : ' aria-selected="false"')
             . '>'
             . $header . '</a></li>';
-        $tab_content[] = $content ? '<div role="tabpanel" class="tab-pane ' . $class . '" id="' . $id . '">'
+        $tab_content[] = $content
+            ? '<div role="tabpanel" class="tab-pane' . ($active ? ' show active' : '') . '" id="' . $id . '"'
+            . ' aria-labelledby="' . $id . '-tab"'
+            . '>'
             . $content
-            . '</div>' : '';
+            . '</div>'
+            : '';
     }
     return div('', [
         '<ul class="nav nav-tabs" role="tablist">' . join($tab_header) . '</ul>',
