@@ -82,9 +82,9 @@ function mute($text)
  * @param string $class   default, primary, info, success, warning, danger
  * @return string
  */
-function label($content, $class = 'default')
+function badge($content, $class = 'default')
 {
-    return '<span class="label label-' . $class . '">' . $content . '</span>';
+    return '<span class="badge rounded-pill bg-' . $class . '">' . $content . '</span>';
 }
 
 /**
