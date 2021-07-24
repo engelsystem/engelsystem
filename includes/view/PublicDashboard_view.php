@@ -34,22 +34,24 @@ function public_dashboard_view($stats, $free_shifts)
     $isFiltered = request()->get('filtered');
     $filter = collect(session()->get('shifts-filter'))->only(['rooms', 'types'])->toArray();
     return page([
-        div('public-dashboard', [
-            div('first', [
-                stats(__('Angels needed in the next 3 hrs'), $stats['needed-3-hours']),
-                stats(__('Angels needed for nightshifts'), $stats['needed-night']),
-                stats(__('Angels currently working'), $stats['angels-working'], 'default'),
-                stats(__('Hours to be worked'), $stats['hours-to-work'], 'default'),
-                '<script>
-                $(function() {
-                    setInterval(function() {
-                        $(\'#public-dashboard\').load(window.location.href + \' #public-dashboard\');
-                    }, 60000);
-                })
-            </script>'
-            ], 'statistics'),
-            $needed_angels
-        ], 'public-dashboard'),
+        div('wrapper', [
+            div('public-dashboard', [
+                div('first row', [
+                    stats(__('Angels needed in the next 3 hrs'), $stats['needed-3-hours']),
+                    stats(__('Angels needed for nightshifts'), $stats['needed-night']),
+                    stats(__('Angels currently working'), $stats['angels-working'], 'default'),
+                    stats(__('Hours to be worked'), $stats['hours-to-work'], 'default'),
+                    '<script>
+                    $(function() {
+                        setInterval(function() {
+                            $(\'#content .wrapper\').load(window.location.href + \' #public-dashboard\');
+                        }, 60000);
+                    })
+                    </script>'
+                ], 'statistics'),
+                $needed_angels
+            ], 'public-dashboard'),
+        ]),
         div('first col-md-12 text-center', [buttons([
             button_js(
                 '
@@ -91,9 +93,14 @@ function public_dashboard_shift_render($shift)
             . '</span>';
     }
 
-    return div('col-md-3', [
-        div('dashboard-panel panel panel-' . $shift['style'], [
-            div('panel-body', [
+    $type = 'bg-dark';
+    if (theme_type() == 'light') {
+        $type = 'bg-light';
+    }
+
+    return div('col-md-3 mb-3', [
+        div('dashboard-card card card-' . $shift['style'] . ' ' . $type, [
+            div('card-body', [
                 '<a class="panel-link" href="' . shift_link($shift) . '"></a>',
                 $panel_body
             ])

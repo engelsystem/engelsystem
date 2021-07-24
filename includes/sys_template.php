@@ -18,7 +18,7 @@ function stats($label, $number, $style = null)
             $style = 'success';
         }
     }
-    return div('stats stats-' . $style, [
+    return div('col stats stats-' . $style, [
         $label,
         div('number', [
             $number

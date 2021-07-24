@@ -164,7 +164,7 @@ return [
         ],
         3 => [
             'name' => 'Engelsystem 32c3 (2015)',
-            'type' => 'dark',
+            'type' => 'light',
             'navbar_classes' => 'navbar-dark bg-black border-dark',
         ],
         2 => [

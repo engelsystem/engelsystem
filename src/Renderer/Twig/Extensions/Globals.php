@@ -42,8 +42,8 @@ class Globals extends TwigExtension implements GlobalsInterface
         }
 
         $query = $this->request->query->get('theme');
-        if (!is_null($query) && isset($themes[$query])) {
-            $themeId = $query;
+        if (!is_null($query) && isset($themes[(int)$query])) {
+            $themeId = (int)$query;
         }
 
         $theme = $themes[$themeId];
