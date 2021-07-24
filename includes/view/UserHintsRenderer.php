@@ -21,7 +21,7 @@ class UserHintsRenderer
             $icon = $this->important ? 'exclamation-triangle' : 'info-circle';
 
             return toolbar_popover(
-                $icon . ' text-' . $hint_class, '', $this->hints, 'bg-' . $hint_class
+                $icon . ' text-white', '', $this->hints, 'bg-' . $hint_class
             );
         }
 

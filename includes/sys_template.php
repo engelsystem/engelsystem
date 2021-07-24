@@ -252,21 +252,20 @@ EOT;
 function toolbar_popover($icon, $label, $content, $class = '')
 {
     $dom_id = md5(microtime() . $icon . $label);
-    return '<li class="dropdown messages ' . $class . '">'
-        . '<a id="' . $dom_id . '" href="#" tabindex="0">'
+    return '<li class="nav-item nav-item--userhints d-flex align-items-center ' . $class . '">'
+        . '<a id="' . $dom_id . '" href="#" tabindex="0" class="nav-link">'
         . ($icon ? icon($icon) : '')
         . $label
-        . ' <span class="caret"></span></a>'
+        . '<small class="bi bi-caret-down-fill"></small>'
+        . '</a>'
         . '<script type="text/javascript">
-                $(function(){
-                    $(\'#' . $dom_id . '\').popover({
-                        trigger: \'click\',
-                        html: true,
-                        content: \'' . addslashes(join('', $content)) . '\',
-                        placement: \'bottom\',
-                        container: \'#navbar-offcanvas\'
-                    })
-                });
+               new bootstrap.Popover(document.getElementById(\'' . $dom_id . '\'), {
+                   container: \'body\',
+                   html: true,
+                   content: \'' . addslashes(join('', $content)) . '\',
+                   placement: \'bottom\',
+                   customClass: \'popover--userhints\'
+               })
             </script></li>';
 }
 

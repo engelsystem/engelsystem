@@ -2,8 +2,8 @@
     <span class="icon-icon_angel bg-light"></span>
 {% endmacro %}
 
-{% macro icon(icon) %}
-    <span class="bi bi-{{ icon }}"></span>
+{% macro icon(icon, color) %}
+    <span class="bi bi-{{ icon }} {% if color %} text-{{ color }} {% endif %}"></span>
 {% endmacro %}
 
 {% macro alert(message, type) %}
@@ -26,4 +26,8 @@
 
 {% macro info(text) %}
     <span class="help-block">{{ _self.icon('info-lg') }}{{ text }}</span>
+{%- endmacro %}
+
+{% macro type_bg_class() -%}
+    {% if theme.type == 'light' %}bg-white{% else %}bg-dark{% endif %}
 {%- endmacro %}

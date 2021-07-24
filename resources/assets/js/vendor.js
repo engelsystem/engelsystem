@@ -1,7 +1,7 @@
 require('core-js/stable');
 window.$ = window.jQuery = require('jquery');
 require('jquery-ui');
-require('bootstrap');
+window.bootstrap = require('bootstrap');
 window.moment = require('moment');
 require('moment/locale/de');
 require('eonasdan-bootstrap-datetimepicker');

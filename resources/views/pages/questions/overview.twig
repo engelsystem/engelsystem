@@ -25,26 +25,29 @@
                 <div class="col-md-12">
                     {% block questions %}
                         {% for question in questions %}
-                            <div class="row">
+                            <div class="row mb-4">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card {% if theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %}">
+                                        <div class="card-body {{ m.type_bg_class() }}">
                                             {{ question.text|nl2br }}
                                         </div>
 
-                                        <div class="panel-footer">
-                                            {{ m.icon('clock') }} {{ question.created_at.format(__('Y-m-d H:i')) }}
+                                        <div class="card-footer d-flex align-items-center">
+                                            <div class="me-3">
+                                                {{ m.icon('clock') }} {{ question.created_at.format(__('Y-m-d H:i')) }}
+                                            </div>
 
                                             {% if has_permission_to('question.edit') %}
-                                                &nbsp;{{ m.user(question.user) }}
+                                                {{ m.user(question.user) }}
+                                                <div class="d-flex ms-auto">
                                             {% endif %}
 
                                             {% if question.user.id == user.id or has_permission_to('question.edit') %}
                                                 <form
+                                                    class="pe-1"
                                                     action=""
                                                     enctype="multipart/form-data"
                                                     method="post"
-                                                    class="pull-right"
                                                 >
                                                     {{ csrf() }}
                                                     {{ f.hidden('id', question.id) }}
@@ -53,27 +56,28 @@
                                             {% endif %}
 
                                             {% if has_permission_to('question.edit') %}
-                                                <span class="pull-right">
-                                                    {{ m.button(m.icon('pencil-square'), url('admin/questions/' ~ question.id), null, 'sm') }}
-                                                </span>
+                                                {{ m.button(m.icon('pencil-square'), url('admin/questions/' ~ question.id), null, 'sm') }}
+                                                </div>
                                             {% endif %}
                                         </div>
                                     </div>
                                 </div>
                                 {% if question.answer %}
-                                    <div class="col-md-11 col-md-offset-1">
-                                        <div class="panel panel-info">
-                                            <div class="panel-body">
+                                    <div class="col-md-11 offset-md-1 mt-3">
+                                        <div class="card bg-info">
+                                            <div class="card-body {{ m.type_bg_class() }}">
                                                 {{ question.answer|markdown }}
                                             </div>
-                                            <div class="panel-footer">
-                                                {{ m.icon('clock') }} {{ question.updated_at.format(__('Y-m-d H:i')) }}
-                                                &nbsp;{{ m.user(question.answerer) }}
+                                            <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %} d-flex align-items-center">
+                                                <div class="me-3">
+                                                    {{ m.icon('clock') }} {{ question.updated_at.format(__('Y-m-d H:i')) }}
+                                                </div>
+                                                {{ m.user(question.answerer) }}
                                             </div>
                                         </div>
                                     </div>
                                 {% endif %}
-                            </div>
+                            </div> <!-- row -->
                         {% endfor %}
                     {% endblock %}
                 </div>

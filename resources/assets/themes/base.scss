@@ -32,6 +32,14 @@ body {
   color: $text-muted;
 }
 
+.text-inherit {
+    color: inherit;
+
+    &:hover {
+        color: inherit;
+    }
+}
+
 .text-big {
   display: block;
   font-size: 30px;
@@ -60,6 +68,14 @@ a .icon-icon_angel {
 
 .navbar-brand .icon-icon_angel {
   background-color: $body-color;
+}
+
+.nav-item--userhints {
+    margin: -$navbar-padding-y 0;
+}
+
+.popover--userhints .alert:last-of-type {
+    margin-bottom: 0;
 }
 
 table a > .icon-icon_angel {
@@ -289,6 +305,10 @@ span.ref-id[id] {
       }
     }
   }
+}
+
+.card-body > *:last-child {
+    margin-bottom: 0;
 }
 
 @keyframes pulse {

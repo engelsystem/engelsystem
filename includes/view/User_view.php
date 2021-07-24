@@ -934,7 +934,7 @@ function render_user_departure_date_hint()
 {
     if (config('enable_planned_arrival') && !auth()->user()->personalData->planned_departure_date) {
         $text = __('Please enter your planned date of departure on your settings page to give us a feeling for teardown capacities.');
-        return render_profile_link($text, null, 'alert-link');
+        return render_profile_link($text, null, 'text-danger');
     }
 
     return null;
@@ -980,7 +980,7 @@ function render_user_tshirt_hint()
 {
     if (config('enable_tshirt_size') && !auth()->user()->personalData->shirt_size) {
         $text = __('You need to specify a tshirt size in your settings!');
-        return render_profile_link($text, null, 'alert-link');
+        return render_profile_link($text, null, 'text-danger');
     }
 
     return null;
@@ -994,7 +994,7 @@ function render_user_dect_hint()
     $user = auth()->user();
     if ($user->state->arrived && config('enable_dect') && !$user->contact->dect) {
         $text = __('You need to specify a DECT phone number in your settings! If you don\'t have a DECT phone, just enter \'-\'.');
-        return render_profile_link($text, null, 'alert-link');
+        return render_profile_link($text, null, 'text-danger');
     }
 
     return null;

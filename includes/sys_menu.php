@@ -239,7 +239,7 @@ function admin_new_questions()
         return null;
     }
 
-    return '<a href="' . page_link_to('/admin/questions') . '">'
+    return '<a class="text-info" href="' . page_link_to('/admin/questions') . '">'
         . __('There are unanswered questions!')
         . '</a>';
 }
