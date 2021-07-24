@@ -53,6 +53,9 @@ msgstr "Der Schichttyp konnte nicht gefunden werden."
 msgid "schedule.import.success"
 msgstr "Das Programm wurde erfolgreich importiert."
 
+msgid "shifts.filter.toggle"
+msgstr "Filter verstecken/anzeigen"
+
 msgid "validation.schedule-url.required"
 msgstr "Bitte gib eine Programm URL an."
 

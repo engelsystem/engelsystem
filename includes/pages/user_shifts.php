@@ -264,7 +264,7 @@ function view_user_shifts()
                         button(
                             'javascript: checkOwnTypes(\'selection_types\', ' . json_encode($ownTypes) . ')',
                             __('Own'),
-                            'hidden-print'
+                            'd-print-none'
                         ),
                     ]
                 ),
@@ -278,6 +278,7 @@ function view_user_shifts()
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
                 'ical_text'     => ical_hint(),
                 'filter'        => __('Filter'),
+                'filter_toggle' => __('shifts.filter.toggle'),
                 'set_yesterday' => __('Yesterday'),
                 'set_today'     => __('Today'),
                 'set_tomorrow'  => __('Tomorrow'),
@@ -346,8 +347,8 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
     }
 
     $buttons = [];
-    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', true)', __('All'), 'hidden-print');
-    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', false)', __('None'), 'hidden-print');
+    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', true)', __('All'), 'd-print-none');
+    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', false)', __('None'), 'd-print-none');
     $buttons = array_merge($buttons, $additionalButtons);
 
     $html .= buttons($buttons);

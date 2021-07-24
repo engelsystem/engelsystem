@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group hidden-print" style="margin-top: .5em">
+            <div class="form-group d-print-none" style="margin-top: .5em">
                 <div class="btn-group">
                     <a href="javascript:setDay(-1)" class="btn btn-secondary ">%set_yesterday%</a>
                     <a href="javascript:setDay()" class="btn btn-secondary ">%set_today%</a>
@@ -45,33 +45,33 @@
                     <a href="javascript:setHours(8)" class="btn btn-secondary ">%set_next_8h%</a>
                 </div>
             </div>
-            <div class="form-group hidden-print" style="margin-top: .5em">
+            <div class="form-group d-print-none" style="margin-top: .5em">
                 <div class="btn-group">
                     %buttons%
                 </div>
             </div>
-            <div class="row hidden-print">
+            <div class="row d-print-none">
                 <div class="col-md-12">
                     <input class="btn btn-primary" type="submit" style="width:100%; margin: 1em 0" value="%filter%">
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <button class="btn btn-info btn-sm hidden-print" style="margin-top: 20px; margin-bottom:10px" type="button"
-                    data-toggle="collapse"
-                    data-target="#collapseShiftsFilterSelect" aria-expanded="true"
-                    aria-controls="collapseShiftsFilterSelect"
+            <button class="btn btn-info btn-sm mb-3 d-print-none" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapseShiftsFilterSelect"
+                    aria-expanded="true" aria-controls="collapseShiftsFilterSelect"
             >
-                collapse/show filters
+                %filter_toggle%
             </button>
-            <div class="collapse in" id="collapseShiftsFilterSelect">
+
+            <div class="collapse show d-print-none" id="collapseShiftsFilterSelect">
                 <div class="row">
-                    <div class="col-xs-4 col-xxs-12">%room_select%</div>
-                    <div class="col-xs-4 col-xxs-12">%type_select%</div>
-                    <div class="col-xs-4 col-xxs-12">%filled_select%</div>
+                    <div class="col col-xs-4 col-xxs-12">%room_select%</div>
+                    <div class="col col-xs-4 col-xxs-12">%type_select%</div>
+                    <div class="col col-xs-4 col-xxs-12">%filled_select%</div>
                 </div>
-                <div class="row hidden-print">
-                    <div class="col-md-12" style="margin: 1em 0">
+                <div class="row">
+                    <div class="col col-md-12 m-1">
                         <p>%task_notice%</p>
                     </div>
                 </div>
@@ -82,6 +82,6 @@
 
 %shifts_table%
 
-<div class="hidden-print">
+<div class="d-print-none">
     %ical_text%
 </div>

@@ -204,7 +204,7 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    filter.classList.remove('in');
+    filter.classList.remove('show');
 });
 $(() => {
     if (typeof (localStorage) === 'undefined') {
