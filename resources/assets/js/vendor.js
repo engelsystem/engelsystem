@@ -4,7 +4,7 @@ require('jquery-ui');
 window.bootstrap = require('bootstrap');
 window.moment = require('moment');
 require('moment/locale/de');
-require('eonasdan-bootstrap-datetimepicker');
+require('tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4');
 require('chart.js');
 require('./offcanvas');
 require('./forms');

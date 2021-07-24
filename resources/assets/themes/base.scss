@@ -17,7 +17,7 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 @import "~bootstrap/scss/bootstrap";
 
 @import "~bootstrap-icons/font/bootstrap-icons.css";
-@import "~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css";
+@import "~tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4";
 @import "~select2/src/scss/core";
 @import "~select2-bootstrap-5-theme/src/include-all";
 @import "error";
@@ -80,6 +80,17 @@ a .icon-icon_angel {
 
 table a > .icon-icon_angel {
   background-color: $body-color;
+}
+
+.table .form-group {
+  margin-bottom: 0;
+}
+
+.input-group.datetime,
+.input-group.time {
+    .bootstrap-datetimepicker-widget {
+        inset: 42px auto auto 0 !important;
+    }
 }
 
 .stats {

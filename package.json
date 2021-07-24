@@ -16,13 +16,13 @@
     "bootstrap": "^5.0.0",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
-    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "jquery": "^3.5.1",
     "jquery-ui": "^1.11.2",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
     "select2": "^4.0.13",
-    "select2-bootstrap-5-theme": "^1.1.1"
+    "select2-bootstrap-5-theme": "^1.1.1",
+    "tempusdominus-bootstrap-4": "^5.39.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.5",

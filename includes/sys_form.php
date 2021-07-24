@@ -94,12 +94,12 @@ function form_datetime(string $name, string $label, $value)
     }
 
     return form_element($label, sprintf('
-    <div class="input-group datetime" id="%s">
+    <div class="input-group datetime" id="%s" data-target-input="nearest">
         <input type="datetime-local" placeholder="YYYY-MM-DD HH:MM" name="%s"
-            class="form-control" value="%s" autocomplete="off">'
-        . '<span class="input-group-addon">' . icon('grid-3x3-gap-fill') . '</span>
+            class="form-control" value="%s" autocomplete="off" data-target="#%s">'
+        . '<span class="input-group-text">' . icon('grid-3x3-gap-fill') . '</span>
     </div>
-    ', $dom_id, $name, htmlspecialchars($value ? $value->format('Y-m-d H:i') : '')), $dom_id);
+    ', $dom_id, $name, htmlspecialchars($value ? $value->format('Y-m-d H:i') : ''), $dom_id), $dom_id);
 }
 
 /**
