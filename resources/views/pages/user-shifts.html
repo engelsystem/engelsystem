@@ -4,32 +4,36 @@
         <div class="col-md-6">
             <h1>%title%</h1>
             <div class="row align-items-center">
-                <div class="col-2">%start_select%</div>
-                <div class="col-2">
-                    <div class="input-group time" data-target-input="nearest">
-                        <input
-                            type="time" class="form-control" id="start_time" name="start_time" size="5"
-                            pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%"
-                        >
-                        <div class="input-group-btn">
-                            <button class="btn btn-secondary" title="Now" type="button">
-                                <span class="bi bi-clock"></span>
-                            </button>
+                <div class="col-12 col-xxl-5 row pe-xxl-0">
+                    <div class="col-6 pe-xxl-0">%start_select%</div>
+                    <div class="col-6">
+                        <div class="input-group time" data-target-input="nearest">
+                            <input
+                                type="time" class="form-control" id="start_time" name="start_time" size="5"
+                                pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%start_time%"
+                            >
+                            <div class="input-group-btn">
+                                <button class="btn btn-secondary" title="Now" type="button">
+                                    <span class="bi bi-clock"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                &#8211;
-                <div class="col-2">%end_select%</div>
-                <div class="col-2">
-                    <div class="input-group time" data-target-input="nearest">
-                        <input
-                            type="time" class="form-control" id="end_time" name="end_time" size="5"
-                            pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%"
-                        >
-                        <div class="input-group-btn">
-                            <button class="btn btn-secondary" title="Now" type="button">
-                                <span class="bi bi-clock"></span>
-                            </button>
+                <div class="col-12 col-xxl-1 text-center px-xxl-0">&#8211;</div>
+                <div class="col-12 col-xxl-5 row px-xxl-0">
+                    <div class="col-6 pe-xxl-0">%end_select%</div>
+                    <div class="col-6">
+                        <div class="input-group time" data-target-input="nearest">
+                            <input
+                                type="time" class="form-control" id="end_time" name="end_time" size="5"
+                                pattern="^\d{1,2}:\d{2}$" placeholder="HH:MM" maxlength="5" value="%end_time%"
+                            >
+                            <div class="input-group-btn">
+                                <button class="btn btn-secondary" title="Now" type="button">
+                                    <span class="bi bi-clock"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

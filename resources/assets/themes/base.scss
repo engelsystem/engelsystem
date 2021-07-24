@@ -170,7 +170,6 @@ table a > .icon-icon_angel {
     flex-shrink: 1;
 
     .header {
-      background: $dark; //@todo bs5
       border-bottom: 1px solid $table-border-color;
       height: 30px;
       padding: 5px 5px 5px 16px;
@@ -250,14 +249,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .shift-calendar.table-responsive {
   overflow-x: inherit;
-}
-
-.inline-form-spacing {
-  margin-bottom: map-get($spacers, 3);
-}
-
-.user-settings .settings-menu ul {
-  margin-top: map-get($spacers, 3); //@todo bs5
 }
 
 span.ref-id[id] {
@@ -349,62 +340,6 @@ span.ref-id[id] {
     }
     &-close {
       display: block;
-    }
-  }
-}
-
-@media screen and (max-width: map-get($grid-breakpoints, 'xxl')) {
-  #navbar-offcanvas {
-    display: block;
-    position: absolute;
-    width: 90%;
-    height: calc(100vh - #{$navbar-height});
-    max-height: unset;
-    left: 101%;
-    top: $navbar-height + 1;
-    // extra padding because mobile Safari displays a bottom bar hiding parts of the menu
-    padding-bottom: 75px;
-
-    transition: left .3s ease-in-out;
-
-    background: $light; // @todo bs5
-    margin: 0 !important;   // Overridden in theme with high specifity:
-    // .container > .navbar-header,
-    // .container-fluid > .navbar-header,
-    // .container > .navbar-collapse,
-    // .container-fluid > .navbar-collapse
-
-    // Is open
-    &.collapse.in {
-      left: 10%;
-      display: block;
-      overflow-y: auto;
-      box-shadow: -5px 20px 20px 0 rgba(0, 0, 0, 0.5), 5px 0 5px -5px rgba(0, 0, 0, 0.5);
-    }
-
-    // Hide current page in nav.
-    .nav > li.active {
-      display: none;
-    }
-
-    .caret {
-      float: right;
-      margin-top: 7px;
-    }
-  }
-
-  .navbar-toggle {
-    align-items: center;
-    font-size: 18px;
-    display: flex;
-    height: 38px;
-    justify-content: center;
-    padding: 0;
-    transform: none;
-    width: 38px;
-
-    .icon-close {
-      padding: 0;
     }
   }
 }

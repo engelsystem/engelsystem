@@ -276,7 +276,7 @@ function view_user_shifts()
                     . __('Description of the jobs.')
                     . '</a>',
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
-                'ical_text'     => ical_hint(),
+                'ical_text'     => div('mt-3', ical_hint()),
                 'filter'        => __('Filter'),
                 'filter_toggle' => __('shifts.filter.toggle'),
                 'set_yesterday' => __('Yesterday'),
