@@ -390,7 +390,7 @@ function User_view_myshift($shift, $user_source, $its_me)
     }
 
     $myshift = [
-        'date'       => icon('calendar')
+        'date'       => icon('calendar3')
             . date('Y-m-d', $shift['start']) . '<br>'
             . icon('clock') . date('H:i', $shift['start'])
             . ' - '
@@ -530,7 +530,7 @@ function User_view_worklog(Worklog $worklog, $admin_user_worklog_privilege)
     }
 
     return [
-        'date'       => icon('calendar') . date('Y-m-d', $worklog->worked_at->timestamp),
+        'date'       => icon('calendar3') . date('Y-m-d', $worklog->worked_at->timestamp),
         'duration'   => sprintf('%.2f', $worklog->hours) . ' h',
         'room'       => '',
         'shift_info' => __('Work log entry'),
@@ -649,7 +649,7 @@ function User_view(
                         ) : '',
                         ($its_me && $auth->can('ical')) ? button(
                             page_link_to('ical', ['key' => $user_source->api_key]),
-                            icon('calendar') . __('iCal Export')
+                            icon('calendar3') . __('iCal Export')
                         ) : '',
                         ($its_me && $auth->can('shifts_json_export')) ? button(
                             page_link_to('shifts_json_export', ['key' => $user_source->api_key]),
@@ -681,7 +681,7 @@ function User_view(
             ($its_me || $admin_user_privilege) ? '<h2>' . __('Shifts') . '</h2>' : '',
             $myshifts_table,
             ($its_me && $nightShiftsConfig['enabled']) ? info(
-                icon('info-lg') . sprintf(
+                icon('info-circle') . sprintf(
                     __('Your night shifts between %d and %d am count twice.'),
                     $nightShiftsConfig['start'],
                     $nightShiftsConfig['end']

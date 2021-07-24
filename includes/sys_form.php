@@ -214,7 +214,7 @@ function form_radio($name, $label, $selected, $value)
 function form_info($label, $text = '')
 {
     if ($label == '') {
-        return '<span class="help-block">' . icon('info-lg') . $text . '</span>';
+        return '<span class="help-block">' . icon('info-circle') . $text . '</span>';
     }
     if ($text == '') {
         return '<h4>' . $label . '</h4>';

@@ -26,7 +26,7 @@ function Shift_view_header($shift, Room $room)
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('Start') . '</h4>',
             '<p class="lead' . (time() >= $shift['start'] ? ' text-success' : '') . '">',
-            icon('calendar') . date(__('Y-m-d'), $shift['start']),
+            icon('calendar3') . date(__('Y-m-d'), $shift['start']),
             '<br />',
             icon('clock') . date('H:i', $shift['start']),
             '</p>'
@@ -34,7 +34,7 @@ function Shift_view_header($shift, Room $room)
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('End') . '</h4>',
             '<p class="lead' . (time() >= $shift['end'] ? ' text-success' : '') . '">',
-            icon('calendar') . date(__('Y-m-d'), $shift['end']),
+            icon('calendar3') . date(__('Y-m-d'), $shift['end']),
             '<br />',
             icon('clock') . date('H:i', $shift['end']),
             '</p>'
