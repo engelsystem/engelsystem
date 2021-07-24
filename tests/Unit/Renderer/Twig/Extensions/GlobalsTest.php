@@ -25,19 +25,20 @@ class GlobalsTest extends ExtensionTest
 
         /** @var Authenticator|MockObject $auth */
         $auth = $this->createMock(Authenticator::class);
-        /** @var Request|MockObject $request */
-        $request = $this->createMock(Request::class);
+        $request = new Request();
         $theme = ['name' => 'Testtheme', 'navbar_classes' => 'something'];
         $theme2 = ['name' => 'Bar'];
+        $theme3 = ['name' => 'Lorem'];
         $user = new User(['name' => '', 'email' => '', 'password' => '', 'api_key' => '']);
         $userSettings = new Settings(['theme' => 42, 'language' => '']);
-        $config = new Config(['theme' => 23, 'themes' => [42 => $theme, 23 => $theme2]]);
+        $config = new Config(['theme' => 23, 'themes' => [42 => $theme, 23 => $theme2, 1337 => $theme3]]);
 
-        $auth->expects($this->exactly(2))
+        $auth->expects($this->exactly(3))
             ->method('user')
             ->willReturnOnConsecutiveCalls(
                 null,
-                $user
+                $user,
+                null
             );
 
         $user->save();
@@ -60,5 +61,11 @@ class GlobalsTest extends ExtensionTest
         $this->assertGlobalsExists('user', $user, $globals);
         $this->assertGlobalsExists('themeId', 42, $globals);
         $this->assertGlobalsExists('theme', $theme, $globals);
+
+        $request->query->set('theme', 1337);
+        $globals = $extension->getGlobals();
+        $this->assertGlobalsExists('user', [], $globals);
+        $this->assertGlobalsExists('themeId', 1337, $globals);
+        $this->assertGlobalsExists('theme', $theme3, $globals);
     }
 }

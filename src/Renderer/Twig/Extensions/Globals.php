@@ -33,6 +33,7 @@ class Globals extends TwigExtension implements GlobalsInterface
     public function getGlobals(): array
     {
         $user = $this->auth->user();
+        $themes = config('themes');
 
         if ($user === null) {
             $themeId = config('theme');
@@ -40,13 +41,18 @@ class Globals extends TwigExtension implements GlobalsInterface
             $themeId = $user->settings->theme;
         }
 
-        $theme = config('themes')[$themeId];
+        $query = $this->request->query->get('theme');
+        if (!is_null($query) && isset($themes[$query])) {
+            $themeId = $query;
+        }
+
+        $theme = $themes[$themeId];
 
         return [
-            'user'       => $user ?? [],
-            'request'    => $this->request,
-            'themeId'      => $themeId,
-            'theme'      => $theme,
+            'user'    => $user ?? [],
+            'request' => $this->request,
+            'themeId' => $themeId,
+            'theme'   => $theme,
         ];
     }
 }
