@@ -440,7 +440,7 @@ function button_help($topic = '')
  */
 function buttons($buttons = [])
 {
-    return '<div class="form-group">' . table_buttons($buttons) . '</div>';
+    return '<div class="mb-3">' . table_buttons($buttons) . '</div>';
 }
 
 /**

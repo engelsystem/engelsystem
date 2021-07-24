@@ -261,7 +261,7 @@ class ShiftCalendarShiftRenderer
     {
         $header_buttons = '';
         if (auth()->can('admin_shifts')) {
-            $header_buttons = '<div class="pull-right d-print-none">' . table_buttons([
+            $header_buttons = '<div class="float-end d-print-none">' . table_buttons([
                     button(
                         page_link_to('user_shifts', ['edit_shift' => $shift['SID']]),
                         icon('pencil'),

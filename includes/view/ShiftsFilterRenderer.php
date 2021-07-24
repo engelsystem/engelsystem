@@ -64,7 +64,7 @@ class ShiftsFilterRenderer
                 );
             }
         }
-        return div('form-group', [
+        return div('mb-3', [
             toolbar_pills($toolbar)
         ]);
     }

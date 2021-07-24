@@ -186,10 +186,10 @@ $('select').select2({
  */
 $(function () {
     $('#welcome-title').on('click', function () {
-        $('.form-group.btn-group .btn.hidden').removeClass('hidden');
+        $('.btn-group.btn-group .btn.d-none').removeClass('d-none');
     });
     $('#oauth-settings-title').on('click', function () {
-        $('table tr.hidden').removeClass('hidden');
+        $('table tr.d-none').removeClass('d-none');
     });
 });
 

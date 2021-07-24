@@ -615,7 +615,7 @@ function User_view(
         . (config('enable_user_name') ? ' <small>' . $user_name . '</small>' : ''),
         [
             msg(),
-            div('row space-top', [
+            div('row m-3', [
                 div('col-md-12', [
                     buttons([
                         $admin_user_privilege ? button(

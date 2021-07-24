@@ -213,7 +213,7 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shi
     }
     $needed_angels .= '<div class="list-group-item">';
 
-    $needed_angels .= '<div class="pull-right">' . Shift_signup_button_render($shift, $angeltype) . '</div>';
+    $needed_angels .= '<div class="float-end m-3">' . Shift_signup_button_render($shift, $angeltype) . '</div>';
 
     $needed_angels .= '<h3>' . AngelType_name_render($angeltype) . '</h3>';
     $bar_max = max($needed_angeltype['count'] * 10, $needed_angeltype['taken'] * 10, 10);
@@ -253,7 +253,7 @@ function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angelty
     }
     $isUser = $shift_entry['UID'] == auth()->user()->id;
     if ($user_shift_admin || $angeltype_supporter || $isUser) {
-        $entry .= ' <div class="btn-group">';
+        $entry .= ' <div class="btn-group m-1">';
         if ($user_shift_admin || $isUser) {
             $entry .= button_icon(
                 page_link_to('user_myshifts', ['edit' => $shift_entry['id'], 'id' => $shift_entry['UID']]),

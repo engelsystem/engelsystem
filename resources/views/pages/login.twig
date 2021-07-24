@@ -19,7 +19,7 @@
                 (__('Teardown ends')): config('teardown_end')
             } | filter(date => date) %}
                 {% if date > date() %}
-                    <div class="col-sm-3 text-center hidden-xs">
+                    <div class="col-sm-3 text-center d-none d-sm-block">
                         <h4>{{ name }}</h4>
                         <span class="moment-countdown text-big" data-timestamp="{{ date.getTimestamp }}">%c</span>
                         <small>{{ date.format(__('Y-m-d')) }}</small>
@@ -73,7 +73,7 @@
                             {%  if config('oauth') is not empty %}
                                 <div class="mb-3 btn-group btn-group-justified">
                                     {% for name,config in config('oauth') %}
-                                        <a href="{{ url('oauth/' ~ name) }}" class="btn btn-primary btn-lg{% if config.hidden|default(false) %} hidden{% endif %}">
+                                        <a href="{{ url('oauth/' ~ name) }}" class="btn btn-primary btn-lg{% if config.hidden|default(false) %} d-none{% endif %}">
                                             {{ __(
                                                 'oauth.login-using-provider',
                                                 [__(config.name|default(name|capitalize))]
@@ -99,9 +99,7 @@
                 <h2>{{ __('Register') }}</h2>
                 {% if has_permission_to('register') and config('registration_enabled') %}
                     <p>{{ __('Please sign up, if you want to help us!') }}</p>
-                    <div class="form-group">
-                        <a href="{{ url('register') }}" class="btn btn-primary">{{ __('Register') }} &raquo;</a>
-                    </div>
+                    <a href="{{ url('register') }}" class="btn btn-primary">{{ __('Register') }} &raquo;</a>
                 {% else %}
                     {{ m.alert(__('Registration is disabled.'), 'danger') }}
                 {% endif %}
@@ -110,11 +108,9 @@
             <div class="col-sm-6 text-center">
                 <h2>{{ __('What can I do?') }}</h2>
                 <p>{{ __('Please read about the jobs you can do to help us.') }}</p>
-                <div class="form-group">
-                    <a href="{{ url('angeltypes', {'action': 'about'}) }}" class="btn btn-primary">
-                        {{ __('Teams/Job description') }} &raquo;
-                    </a>
-                </div>
+                <a href="{{ url('angeltypes', {'action': 'about'}) }}" class="btn btn-primary">
+                    {{ __('Teams/Job description') }} &raquo;
+                </a>
             </div>
 
             <div class="col-md-12 text-center">

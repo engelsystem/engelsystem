@@ -19,9 +19,7 @@
                         {{ __('We will send you an e-mail with a password recovery link. Please use the email address you used for registration.') }}
                         {{ f.input('email', __('E-Mail'), 'email', {'required': true}) }}
 
-                        <div class="form-group">
-                            {{ f.submit(__('Recover')) }}
-                        </div>
+                        {{ f.submit(__('Recover')) }}
                     </form>
                 </div>
             {% endblock %}
