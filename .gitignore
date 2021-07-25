@@ -39,3 +39,4 @@ _vimrc_local.vim
 /node_modules
 /public/assets
 /package-lock.json
+/yarn-error.log

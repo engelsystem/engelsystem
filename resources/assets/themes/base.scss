@@ -124,12 +124,12 @@ table a > .icon-icon_angel {
   color: map-get($theme-colors, 'success');
 }
 
-.dashboard-panel {
+.dashboard-card {
   position: relative;
   font-size: 20px;
   color: $headings-color;
 
-  .panel-link {
+  .card-link {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -142,40 +142,10 @@ table a > .icon-icon_angel {
     filter: alpha(opacity=1); /* Fix to make div clickable in IE */
   }
 
-  .panel-link:hover {
+  .card-link:hover {
     opacity: 0.3;
   }
 }
-
-//.panel-primary .panel-heading a {
-//  color: $panel-primary-text;
-//  background-color: $panel-primary-heading-bg;
-//}
-//
-//.panel-default .panel-heading a {
-//  color: $panel-default-text;
-//  background-color: $panel-default-heading-bg;
-//}
-//
-//.panel-info .panel-heading a {
-//  color: $panel-info-text;
-//  background-color: $panel-info-heading-bg;
-//}
-//
-//.panel-success .panel-heading a {
-//  color: $panel-success-text;
-//  background-color: $panel-success-heading-bg;
-//}
-//
-//.panel-warning .panel-heading a {
-//  color: $panel-warning-text;
-//  background-color: $panel-warning-heading-bg;
-//}
-//
-//.panel-danger .panel-heading a {
-//  color: $panel-danger-text;
-//  background-color: $panel-danger-heading-bg;
-//}
 
 .select2-dropdown {
   background-color: $input-bg;
@@ -295,9 +265,7 @@ span.ref-id[id] {
 }
 
 .faq {
-  .panel-heading h3 {
-    margin: 0;
-
+  .card-header {
     small a.ref-link {
       display: none;
     }

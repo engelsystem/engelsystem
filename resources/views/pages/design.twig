@@ -27,6 +27,7 @@
     ['dark', 'light'],
 ] %}
 {% set types_buttons=types|merge(['link']) %}
+{% set shortsum='Lorem ipsum dolor…' %}
 {% set lipsum='Lorem ipsum dolor sit amet, consectetur adipisici elit…' %}
 {% set linksum='Lorem ipsum! Dolor <a href="#">link</a> amet, consectetur adipisici elit!' %}
 
@@ -144,7 +145,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col">
                 <h3>Badges</h3>
                 <p>
                     {% for type in types_color %}
@@ -152,7 +153,7 @@
                     {% endfor %}
                 </p>
             </div>
-            <div class="col-md-6">
+            <div class="col">
                 <h3>Buttons</h3>
                 <p>
                     {% for type in types_buttons %}
@@ -163,14 +164,37 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col">
                 <h3>Alerts</h3>
 
                 <div class="row">
                     {% for color in colors %}
-                        <div class="col-md-3">
+                        <div class="col">
                             <h4>{{ color|capitalize }}</h4>
                             {{ m.alert(lipsum, color) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <h3>Cards</h3>
+
+                <div class="row">
+                    {% for type in types %}
+                        <div class="col">
+                            <div class="card border-{{ type }} {{ m.type_bg_class() }}">
+                                <h4 class="card-header bg-{{ type }}">{{ type|capitalize }}</h4>
+                                <div class="card-body">
+                                    <p class="card-text">{{ shortsum }}</p>
+                                    <p class="card-text"><a href="#" class="card-link">Some link</a></p>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Footer
+                                </div>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
@@ -182,48 +206,48 @@
                 <h3>Forms</h3>
 
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col">
                         {{ f.input('form-input-text', 'Text', 'text', {'value': 'Value'}) }}
                     </div>
-                    <div class="col-md-2">
+                    <div class="col">
                         {{ f.input('form-input-text-hidden-label', 'Hidden label', 'text', {'value': 'Hidden label', 'hide_label': true}) }}
                     </div>
-                    <div class="col-md-2">
+                    <div class="col">
                         {{ f.input('form-input-text-disabled', 'Disabled', 'text', {'disabled': true, 'value': 'Value'}) }}
                     </div>
-                    <div class="col-md-2">
+                    <div class="col">
                         {{ f.input('form-input-text-readonly', 'Readonly', 'text', {'readonly': true, 'value': 'Value'}) }}
                     </div>
-                    <div class="col-md-2">
+                    <div class="col">
                         {{ f.input('form-input-password', 'Password', 'password', {'value': 'Value'}) }}
                     </div>
-                    <div class="col-md-2">
+                    <div class="col">
                         {{ f.input('form-input-number', 'Number', 'number', {'value': 42}) }}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col">
                         {{ f.textarea('form-input-textarea', 'Textarea', {'rows': 2, 'value': lipsum}) }}
                     </div>
-                    <div class="col-md-2">
+                    <div class="col">
                         {{ f.select('form-input-select', {'lorem': 'Ipsum', 'dolor': 'Sit'}, 'Select', 'dolor') }}
                     </div>
-                    <div class="col-md-2">
+                    <div class="col">
                         <label class="form-label">Button</label>
                         <div>
                             {{ f.button('Button', {'btn_type': 'primary'}) }}
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col">
                         Submit button<br>
                         {{ f.submit() }}
                     </div>
-                    <div class="col-md-2">
+                    <div class="col">
                         Checkbox<br>
                         {{ f.checkbox('form-input-checkbox', 'Checkbox', true) }}
                         {{ f.checkbox('form-input-checkbox-2', 'Checkbox 2') }}
                     </div>
-                    <div class="col-md-2 checkbox-inline">
+                    <div class="col checkbox-inline">
                         Radio<br>
                         <label>
                             <input type="radio" checked="checked" name="form-input-radio" value="1"> Yey
@@ -238,10 +262,10 @@
 
         <h3>Other</h3>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col">
                 <h4>Code</h4>
                 <p>
-                    <code>3.1415926535897932384626433832795028841971693993751058209749445923</code>
+                    <code>3.1415926535897932384626433832795</code>
                 </p>
             </div>
         </div>

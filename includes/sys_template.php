@@ -65,7 +65,7 @@ function tabs($tabs, $selected = 0)
             : '';
     }
     return div('', [
-        '<ul class="nav nav-tabs" role="tablist">' . join($tab_header) . '</ul>',
+        '<ul class="nav nav-tabs mb-3" role="tablist">' . join($tab_header) . '</ul>',
         '<div class="tab-content">' . join($tab_content) . '</div>'
     ]);
 }
@@ -311,10 +311,10 @@ function description($data)
     $elements = [];
     foreach ($data as $label => $description) {
         if (!empty($label) && !empty($description)) {
-            $elements[] = '<dt>' . $label . '</dt><dd>' . $description . '</dd>';
+            $elements[] = '<dt class="col-sm-1">' . $label . '</dt><dd class="col-sm-11">' . $description . '</dd>';
         }
     }
-    return '<dl class="dl-horizontal">' . join($elements) . '</dl>';
+    return '<dl class="row">' . join($elements) . '</dl>';
 }
 
 /**
@@ -391,7 +391,7 @@ function render_table($columns, $rows, $data = true)
  */
 function button($href, $label, $class = '')
 {
-    return '<a href="' . $href . '" class="btn btn-primary ' . $class . '">' . $label . '</a>';
+    return '<a href="' . $href . '" class="btn btn-secondary ' . $class . '">' . $label . '</a>';
 }
 
 /**
@@ -404,7 +404,7 @@ function button($href, $label, $class = '')
  */
 function button_js($javascript, $label, $class = '')
 {
-    return '<a onclick="' . $javascript . '" href="#" class="btn btn-primary ' . $class . '">' . $label . '</a>';
+    return '<a onclick="' . $javascript . '" href="#" class="btn btn-secondary ' . $class . '">' . $label . '</a>';
 }
 
 /**

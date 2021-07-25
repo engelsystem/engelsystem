@@ -148,14 +148,6 @@ $label-color:                 $gray-darker;
 
 $label-link-hover-color:      $brand-primary;
 
-//== changed Panels
-
-$panel-default-border:        $brand-primary;
-$panel-default-heading-bg:    $gray-darker;
-
-$panel-primary-text:          $gray-darker;
-
-
 //== changed Badges
 
 $badge-color:                 #fff;
@@ -259,7 +251,7 @@ table,
 
 // changed Containers =================================================================
 
-.btn-primary, .panel-info .panel-heading {
+.btn-primary, .card-info .card-heading {
   background-image: linear-gradient(to right, rgb(0, 132, 176) , rgb(0, 163, 86));
 }
 

@@ -97,16 +97,6 @@ $headings-small-color:        $gray-light;
   background-color: $btn-default-bg;
 }
 
-
-// added Containers =================================================================
-
-.label-warning, .label-success, .progress-bar-warning, .progress-bar-success,
-.panel-warning .panel-heading, .panel-warning .panel-heading a,
-.panel-success .panel-heading, .panel-success .panel-heading a {
-  color: $gray-darker;
-}
-
-
 // different code tag
 code {
   background-color: $state-info-bg;

@@ -31,12 +31,12 @@
                     <div class="col-md-12 faq">
                         <span id="faq-{{ item.id }}" class="ref-id"></span>
                         <div class="card {% if theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %} mb-4">
-                            <div class="card-header">
+                            <h4 class="card-header">
                                 {{ item.question }}
                                 <small class="text-muted">
                                     <a class="ref-link" href="#faq-{{ item.id }}">{{ m.icon('link') }}</a>
                                 </small>
-                            </div>
+                            </h4>
 
                             <div class="card-body {{ m.type_bg_class() }}">
                                 {{ item.text|markdown }}

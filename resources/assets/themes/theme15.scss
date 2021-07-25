@@ -689,70 +689,6 @@ $list-group-link-color: $text-color;
 $list-group-link-hover-color: $list-group-link-color;
 $list-group-link-heading-color: #fff;
 
-//== Panels
-//
-//##
-
-$panel-bg: $plum;
-$panel-body-padding: 15px;
-$panel-heading-padding: 10px 15px;
-$panel-footer-padding: $panel-heading-padding;
-$panel-border-radius: $border-radius-base;
-
-//** Border color for elements within panels
-$panel-inner-border: lighten($plum, 3%);
-
-$panel-default-text: $text-color;
-$panel-default-border: $panel-inner-border;
-$panel-default-heading-bg: lighten($plum, 3%);
-
-$panel-footer-bg: $panel-default-heading-bg;
-
-$panel-primary-text: #fff;
-$panel-primary-border: $brand-primary;
-$panel-primary-heading-bg: $brand-primary;
-
-$panel-success-text: $state-success-text;
-$panel-success-border: $state-success-border;
-$panel-success-heading-bg: $state-success-bg;
-
-$panel-info-text: $state-info-text;
-$panel-info-border: $panel-inner-border;
-$panel-info-heading-bg: lighten($plum, 3%);
-
-$panel-warning-text: white;
-$panel-warning-border: $blue;
-$panel-warning-heading-bg: $blue;
-
-$panel-danger-text: $state-danger-text;
-$panel-danger-border: $state-danger-border;
-$panel-danger-heading-bg: $state-danger-bg;
-
-//== Thumbnails
-//
-//##
-
-//** Padding around the thumbnail image
-$thumbnail-padding: 4px;
-//** Thumbnail background color
-$thumbnail-bg: $gray-dark;
-//** Thumbnail border color
-$thumbnail-border: $gray-dark;
-//** Thumbnail border radius
-$thumbnail-border-radius: $border-radius-base;
-
-//** Custom text color for thumbnail captions
-$thumbnail-caption-color: $text-color;
-//** Padding around the thumbnail caption
-$thumbnail-caption-padding: 9px;
-
-//== Wells
-//
-//##
-
-$well-bg: darken($gray-darker, 5%);
-$well-border: darken($well-bg, 7%);
-
 //== Badges
 //
 //##
@@ -1012,12 +948,6 @@ table,
 // Progress bars ==============================================================
 
 // Containers =================================================================
-
-a.thumbnail:hover,
-a.thumbnail:focus,
-a.thumbnail.active {
-  border-color: $thumbnail-border;
-}
 
 .jumbotron {
   h1,

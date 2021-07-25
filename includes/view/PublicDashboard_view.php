@@ -99,9 +99,9 @@ function public_dashboard_shift_render($shift)
     }
 
     return div('col-md-3 mb-3', [
-        div('dashboard-card card card-' . $shift['style'] . ' ' . $type, [
+        div('dashboard-card card border-' . $shift['style'] . ' ' . $type, [
             div('card-body', [
-                '<a class="panel-link" href="' . shift_link($shift) . '"></a>',
+                '<a class="card-link" href="' . shift_link($shift) . '"></a>',
                 $panel_body
             ])
         ])
