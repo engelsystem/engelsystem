@@ -58,7 +58,7 @@ class ShiftsFilterRenderer
 
             if ($dashboardFilter) {
                 $toolbar[] = sprintf(
-                    '<li role="presentation"><a href="%s">%s</a></li>',
+                    '<li role="presentation"><a class="nav-link" href="%s">%s</a></li>',
                     url('/public-dashboard', ['filtered' => true] + $dashboardFilter),
                     icon('speedometer2') . __('Dashboard')
                 );

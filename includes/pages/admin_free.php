@@ -105,9 +105,9 @@ function admin_free()
         form([
             div('row', [
                 div('col-md-12 form-inline', [
-                    div('inline-form-spacing', [
-                        form_text('search', __('Search'), $search),
-                        form_select('angeltype', __('Angeltype'), $angel_types, $angelType),
+                    div('row', [
+                        form_text('search', __('Search'), $search, null, null, null, 'col'),
+                        form_select('angeltype', __('Angeltype'), $angel_types, $angelType, '', 'col'),
                         form_submit('submit', __('Search'))
                     ]),
                 ]),

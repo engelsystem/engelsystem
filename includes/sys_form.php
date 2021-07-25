@@ -257,10 +257,11 @@ function form_submit($name, $label, $class = '', $wrapForm = true, $buttonType =
  * @param bool        $disabled
  * @param int|null    $maxlength
  * @param string|null $autocomplete
+ * @param string|null $class
  *
  * @return string
  */
-function form_text($name, $label, $value, $disabled = false, $maxlength = null, $autocomplete = null)
+function form_text($name, $label, $value, $disabled = false, $maxlength = null, $autocomplete = null, $class = '')
 {
     $disabled = $disabled ? ' disabled="disabled"' : '';
     $maxlength = $maxlength ? ' maxlength=' . (int)$maxlength : '';
@@ -270,7 +271,8 @@ function form_text($name, $label, $value, $disabled = false, $maxlength = null, 
         $label,
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
         . '" value="' . htmlspecialchars($value) . '"' . $maxlength . $disabled . $autocomplete . '/>',
-        'form_' . $name
+        'form_' . $name,
+        $class
     );
 }
 
@@ -404,14 +406,16 @@ function form_textarea($name, $label, $value, $disabled = false)
  * @param string[] $values
  * @param string   $selected
  * @param string   $selectText
+ * @param string   $class
  * @return string
  */
-function form_select($name, $label, $values, $selected, $selectText = '')
+function form_select($name, $label, $values, $selected, $selectText = '', $class = '')
 {
     return form_element(
         $label,
         html_select_key('form_' . $name, $name, $values, $selected, $selectText),
-        'form_' . $name
+        'form_' . $name,
+        $class
     );
 }
 
@@ -421,15 +425,21 @@ function form_select($name, $label, $values, $selected, $selectText = '')
  * @param string $label
  * @param string $input
  * @param string $for
+ * @param string $class
  * @return string
  */
-function form_element($label, $input, $for = '')
+function form_element($label, $input, $for = '', $class = '')
 {
+    $class = $class ? ' ' . $class : '';
+
     if (empty($label)) {
-        return '<div class="mb-3">' . $input . '</div>';
+        return '<div class="mb-3' . $class . '">' . $input . '</div>';
     }
 
-    return '<div class="mb-3">' . '<label class="form-label" for="' . $for . '">' . $label . '</label>' . $input . '</div>';
+    return '<div class="mb-3' . $class . '">'
+        . '<label class="form-label" for="' . $for . '">' . $label . '</label>'
+        . $input
+        . '</div>';
 }
 
 /**
