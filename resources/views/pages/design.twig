@@ -34,17 +34,19 @@
 {% block content %}
     <div class="col-12">
         <div class="container">
-        <h1>{{ block('title') }} <small class="text-muted">{{ themes[themeId]['name'] }}</small></h1>
+        <h1 class="mb-4">
+            {{ block('title') }} <small class="text-muted">{{ themes[themeId]['name'] }}</small>
+        </h1>
 
         <h2>Elements <small class="text-muted">small</small></h2>
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-6 col-lg-2 mb-4">
                 <h3>Headings <small class="text-muted">small</small></h3>
                 <h4>H4 <small class="text-muted">small</small></h4>
                 <h5>H5 <small class="text-muted">small</small></h5>
                 <h6>H6 <small class="text-muted">small</small></h6>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mb-4">
                 <h3>Lists</h3>
                 <p>
                     This page should be used when creating and testing new designs to find usability and/or design issues.
@@ -62,7 +64,7 @@
                 </ol>
                 <p>{{ linksum|raw }} {{ lipsum }}</p>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4 mb-4">
                 <h3>Themes</h3>
                 <ul>
                     {% for id,theme in themes %}
@@ -76,7 +78,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 col-lg-4 mb-4">
                 <h3>Tables</h3>
                 <table class="table table-striped">
                     <tr>
@@ -96,7 +98,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6 col-lg-4 mb-4">
                 <h3>Navigation Tabs</h3>
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
@@ -110,7 +112,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-md-3 settings-menu">
+            <div class="col-md-6 col-lg-4 mb-4">
                 <h3>Navigation Pills</h3>
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
@@ -127,16 +129,16 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-6 col-md-12 mb-4">
                 <h3>Texts</h3>
                 <p>
                     {{ linksum|raw }}<br>
                     {{ lipsum }} {{ lipsum|replace({'…': '.'}) }} {{ lipsum|replace({'…': '.'}) }} {{ lipsum }}
                 </p>
 
-                <div class="row">
+                <div class="row mb-4">
                     {% for color in types %}
-                        <div class="col-md-3">
+                        <div class="col-12 col-md-3">
                             <p class="text-{{ color }}">{{ color|capitalize }}: {{ linksum|raw }}</p>
                         </div>
                     {% endfor %}
@@ -145,7 +147,7 @@
         </div>
 
         <div class="row">
-            <div class="col">
+            <div class="col-6 col-md-12 mb-4">
                 <h3>Badges</h3>
                 <p>
                     {% for type in types_color %}
@@ -153,7 +155,7 @@
                     {% endfor %}
                 </p>
             </div>
-            <div class="col">
+            <div class="col-6 col-md-12 mb-4">
                 <h3>Buttons</h3>
                 <p>
                     {% for type in types_buttons %}
@@ -163,7 +165,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-4">
             <div class="col">
                 <h3>Alerts</h3>
 
@@ -178,13 +180,13 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-md-12 mb-3">
                 <h3>Cards</h3>
 
                 <div class="row">
                     {% for type in types %}
-                        <div class="col">
+                        <div class="col mb-3">
                             <div class="card border-{{ type }} {{ m.type_bg_class() }}">
                                 <h4 class="card-header bg-{{ type }}">{{ type|capitalize }}</h4>
                                 <div class="card-body">
@@ -201,53 +203,53 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-md-12">
                 <h3>Forms</h3>
 
                 <div class="row">
-                    <div class="col">
+                    <div class="col-md-3 col-lg-2">
                         {{ f.input('form-input-text', 'Text', 'text', {'value': 'Value'}) }}
                     </div>
-                    <div class="col">
+                    <div class="col-md-3 col-lg-2">
                         {{ f.input('form-input-text-hidden-label', 'Hidden label', 'text', {'value': 'Hidden label', 'hide_label': true}) }}
                     </div>
-                    <div class="col">
+                    <div class="col-md-3 col-lg-2">
                         {{ f.input('form-input-text-disabled', 'Disabled', 'text', {'disabled': true, 'value': 'Value'}) }}
                     </div>
-                    <div class="col">
+                    <div class="col-md-3 col-lg-2">
                         {{ f.input('form-input-text-readonly', 'Readonly', 'text', {'readonly': true, 'value': 'Value'}) }}
                     </div>
-                    <div class="col">
+                    <div class="col-md-3 col-lg-2">
                         {{ f.input('form-input-password', 'Password', 'password', {'value': 'Value'}) }}
                     </div>
-                    <div class="col">
+                    <div class="col-md-3 col-lg-2">
                         {{ f.input('form-input-number', 'Number', 'number', {'value': 42}) }}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">
+                    <div class="col-md-3 col-lg-2">
                         {{ f.textarea('form-input-textarea', 'Textarea', {'rows': 2, 'value': lipsum}) }}
                     </div>
-                    <div class="col">
+                    <div class="col-md-3 col-lg-2">
                         {{ f.select('form-input-select', {'lorem': 'Ipsum', 'dolor': 'Sit'}, 'Select', 'dolor') }}
                     </div>
-                    <div class="col">
+                    <div class="col-md-3 col-lg-2">
                         <label class="form-label">Button</label>
                         <div>
                             {{ f.button('Button') }}
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-md-3 col-lg-2">
                         Submit button<br>
                         {{ f.submit() }}
                     </div>
-                    <div class="col">
+                    <div class="col-md-3 col-lg-2">
                         Checkbox<br>
                         {{ f.checkbox('form-input-checkbox', 'Checkbox', true) }}
                         {{ f.checkbox('form-input-checkbox-2', 'Checkbox 2') }}
                     </div>
-                    <div class="col checkbox-inline">
+                    <div class="col-md-3 col-lg-2 checkbox-inline">
                         Radio<br>
                         <label>
                             <input type="radio" checked="checked" name="form-input-radio" value="1"> Yey
@@ -261,7 +263,7 @@
         </div>
 
         <h3>Other</h3>
-        <div class="row">
+        <div class="row mb-4">
             <div class="col">
                 <h4>Code</h4>
                 <p>
@@ -273,7 +275,7 @@
 
         <h2>Macros</h2>
         <h3>base.twig</h3>
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-md-3">
                 <h4><code>angel()</code></h4>
                 <p>{{ m.angel() }}</p>
@@ -290,8 +292,6 @@
                 <h4><code>user(user)</code></h4>
                 <p>{{ m.user(demo_user) }}<br>{{ m.user(demo_user_2) }}</p>
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-3">
                 <h4><code>button(label, url, type, size)</code></h4>
                 <p>{{ m.button('Label', '#', 'info', 'sm') }}</p>
@@ -299,7 +299,7 @@
         </div>
 
         <h3>form.twig</h3>
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-md-3">
                 <h4><code>input(name, label, type, opt)</code></h4>
                 <p>{{ f.input('input-name', 'Label', 'text', {'required': true, 'value': 'Value'}) }}</p>
@@ -322,8 +322,6 @@
                     {{ f.checkbox('checkbox-name', 'Label', true, 'on') }}
                 </p>
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-3">
                 <h4><code>hidden(name, value)</code></h4>
                 <p>
