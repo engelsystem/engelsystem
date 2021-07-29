@@ -199,9 +199,11 @@ $(function () {
     });
 });
 
-$('select').select2({
-    theme: 'bootstrap-5',
-});
+$(function () {
+    $('select').select2({
+        theme: 'bootstrap-5',
+    });
+})
 
 /**
  * Show oauth buttons on welcome title click
