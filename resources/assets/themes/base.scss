@@ -1,9 +1,11 @@
-// select 2 variables
-$cursor-disabled: false;
+// Basic variables
+@use "sass:map";
 
+// select 2 variables
 $link-decoration: none !default;
 $link-hover-decoration: underline !default;
 
+// Imports
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
@@ -269,8 +271,25 @@ span.ref-id[id] {
   }
 }
 
+// Cards
 .card-body > *:last-child {
     margin-bottom: 0;
+}
+
+.card-header {
+  &.bg-dark {
+    color: map.get($theme-colors, "light");;
+  }
+
+  &.bg-light {
+    color: map.get($theme-colors, "dark");;
+  }
+}
+
+// code tag
+code {
+  background-color: $input-disabled-bg;
+  @include border-radius($input-border-radius);
 }
 
 @keyframes pulse {
@@ -342,4 +361,9 @@ span.ref-id[id] {
       display: block;
     }
   }
+}
+
+// Forms
+.form-label {
+  font-weight: $font-weight-bold;
 }

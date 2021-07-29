@@ -67,7 +67,7 @@
 
 {% macro button(label, opt) %}
     <button
-        class="btn btn-{{ opt.btn_type|default('primary') }}
+        class="btn btn-{{ opt.btn_type|default('secondary') }}
             {%- if 'btn_size' in opt %} btn-{{ opt.btn_size }}{% endif %}"
         {%- if opt.type is defined %} type="{{ opt.type }}"{% endif %}
         {%- if opt.name is defined %} name="{{ opt.name }}"{% endif %}
@@ -79,5 +79,5 @@
 {%- endmacro %}
 
 {% macro submit(label, opt) %}
-    {{ _self.button(label|default(__('form.submit')), opt|default({})|merge({'type': 'submit'})) }}
+    {{ _self.button(label|default(__('form.submit')), opt|default({})|merge({'type': 'submit', 'btn_type': 'primary'})) }}
 {%- endmacro %}
