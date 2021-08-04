@@ -223,12 +223,12 @@ function toolbar_dropdown($icon, $label, $submenu, $class = ''): string
 {
     $template =<<<EOT
 <li class="nav-item dropdown {class}">
-  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    {icon} {label}
-  </a>
-  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-    {submenu}
-  </ul>
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {icon} {label}
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        {submenu}
+    </ul>
 </li>
 EOT;
 
@@ -261,13 +261,13 @@ function toolbar_popover($icon, $label, $content, $class = '')
         . '<small class="bi bi-caret-down-fill"></small>'
         . '</a>'
         . '<script type="text/javascript">
-               new bootstrap.Popover(document.getElementById(\'' . $dom_id . '\'), {
-                   container: \'body\',
-                   html: true,
-                   content: \'' . addslashes(join('', $content)) . '\',
-                   placement: \'bottom\',
-                   customClass: \'popover--userhints\'
-               })
+                new bootstrap.Popover(document.getElementById(\'' . $dom_id . '\'), {
+                    container: \'body\',
+                    html: true,
+                    content: \'' . addslashes(join('', $content)) . '\',
+                    placement: \'bottom\',
+                    customClass: \'popover--userhints\'
+                })
             </script></li>';
 }
 
