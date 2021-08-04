@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 /**
  * Render a stat for dashborad (big number with label).
  * If no style given, style is danger if number > 0, and success if number == 0.
@@ -391,7 +393,11 @@ function render_table($columns, $rows, $data = true)
  */
 function button($href, $label, $class = '')
 {
-    return '<a href="' . $href . '" class="btn btn-secondary ' . $class . '">' . $label . '</a>';
+    if (!Str::contains(Str::remove(['btn-sm', 'btn-xl'], $class), 'btn-')) {
+        $class = 'btn-secondary' . ($class ? ' ' . $class : '');
+    }
+
+    return '<a href="' . $href . '" class="btn ' . $class . '">' . $label . '</a>';
 }
 
 /**

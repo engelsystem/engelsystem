@@ -1,6 +1,7 @@
 // high contrast
 // Variables
 // --------------------------------------------------
+@import "dark";
 
 //== Colors
 
@@ -23,7 +24,7 @@ $warning:       $brand-warning;
 //== Scaffolding
 
 $body-bg:               #000;
-$text-color:            #fff;
+$body-color:            #fff;
 
 //== Buttons
 
@@ -45,6 +46,8 @@ $btn-warning-border:             darken($btn-default-bg, 10%);
 $btn-danger-color:               #000;
 $btn-danger-border:              darken($btn-default-bg, 10%);
 
+//= Navigation
+$nav-tabs-link-active-color: $gray-lighter;
 
 
 //== Forms
@@ -98,5 +101,17 @@ $headings-small-color:        $gray-lighter;
 // code tag
 code {
   background-color: $btn-default-bg;
-  color: $input-color;
+  color: #fff;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #fff;
+}
+
+.badge {
+  color: #000 !important;
+
+  &.bg-dark {
+    color: #fff !important;
+  }
 }

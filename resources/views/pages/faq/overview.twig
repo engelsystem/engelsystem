@@ -30,7 +30,7 @@
                 {% for item in items %}
                     <div class="col-md-12 faq">
                         <span id="faq-{{ item.id }}" class="ref-id"></span>
-                        <div class="card {% if theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %} mb-4">
+                        <div class="card {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} mb-4">
                             <h4 class="card-header">
                                 {{ item.question }}
                                 <small class="text-muted">
@@ -38,11 +38,11 @@
                                 </small>
                             </h4>
 
-                            <div class="card-body {{ m.type_bg_class() }}">
+                            <div class="card-body bg-body">
                                 {{ item.text|markdown }}
                             </div>
 
-                            <div class="card-footer d-flex align-items-center">
+                            <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} d-flex align-items-center">
                                 <div class="me-3">
                                     {{ m.icon('clock') }} {{ item.updated_at.format(__('Y-m-d H:i')) }}
                                 </div>

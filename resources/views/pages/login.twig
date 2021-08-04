@@ -29,8 +29,8 @@
         </div>
 
         <div class="row mb-5">
-            <div class="col-sm-6 offset-sm-6 col-md-4 offset-md-4">
-                <div class="card bg-dark">
+            <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                <div class="card {{ m.type_bg_class() }}">
                     <div class="card-body">
                         {% include 'layouts/parts/messages.twig' %}
 
@@ -38,7 +38,7 @@
                             {{ csrf() }}
                             <div class="mb-3">
                                 <div class="input-group input-group-lg">
-                                    <span class="input-group-text text-light">
+                                    <span class="input-group-text {{ m.type_text_class() }}">
                                         {{ m.angel }}
                                     </span>
                                     <input
@@ -54,7 +54,7 @@
 
                             <div class="mb-3">
                                 <div class="input-group input-group-lg">
-                                    <span class="input-group-text text-light">
+                                    <span class="input-group-text {{ m.type_text_class() }}">
                                         <i class="bi bi-key"></i>
                                     </span>
                                     <input
@@ -71,15 +71,17 @@
                             </div>
 
                             {%  if config('oauth') is not empty %}
-                                <div class="mb-3 btn-group btn-group-justified">
-                                    {% for name,config in config('oauth') %}
-                                        <a href="{{ url('oauth/' ~ name) }}" class="btn btn-primary btn-lg{% if config.hidden|default(false) %} d-none{% endif %}">
-                                            {{ __(
-                                                'oauth.login-using-provider',
-                                                [__(config.name|default(name|capitalize))]
-                                            ) }}
-                                        </a>
-                                    {% endfor %}
+                                <div class="row">
+                                    <div class="mb-3 btn-group">
+                                        {% for name,config in config('oauth') %}
+                                            <a href="{{ url('oauth/' ~ name) }}" class="btn btn-primary btn-lg{% if config.hidden|default(false) %} d-none{% endif %}">
+                                                {{ __(
+                                                    'oauth.login-using-provider',
+                                                    [__(config.name|default(name|capitalize))]
+                                                ) }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             {% endif %}
 

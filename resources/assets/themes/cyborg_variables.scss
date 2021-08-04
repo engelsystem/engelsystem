@@ -50,10 +50,10 @@ $danger:          #d9534f !default;
 //## Settings for some of the most global styles.
 
 $body-bg:    #060606 !default;
-$body-color: $gray-light;
+$body-color: $gray-light !default;
 
 //** Global text color on `<body>`.
-$text-color: $gray-light;
+$text-color: $gray-light !default;
 $text-muted: $gray-light !default;
 
 //** Global textual link color.

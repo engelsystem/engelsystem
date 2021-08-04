@@ -1,6 +1,7 @@
-// rc3
+// rc3 violet
 
 //== Colors
+@import "dark";
 
 $gray-darker:            #100e23;
 $gray-dark:              lighten($gray-darker, 15%);
@@ -12,6 +13,7 @@ $black:                  #000;
 $brand-primary: #6800e7;
 $primary:       $brand-primary;
 $brand-success: #05b9ec;
+$secondary:     #3a327e;
 $success:       $brand-success;
 $brand-info:    #670295;
 $info:          $brand-info;

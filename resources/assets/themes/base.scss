@@ -60,6 +60,14 @@ body {
   mask-size: cover;
 }
 
+.text-light .icon-icon_angel {
+  background-color: map.get($theme-colors, "light");
+}
+
+.dark .icon-icon_angel {
+  background-color: map.get($theme-colors, "dark");
+}
+
 a .icon-icon_angel {
   background-color: $link-color;
 }
@@ -278,11 +286,11 @@ span.ref-id[id] {
 
 .card-header {
   &.bg-dark {
-    color: map.get($theme-colors, "light");;
+    color: map.get($theme-colors, "light");
   }
 
   &.bg-light {
-    color: map.get($theme-colors, "dark");;
+    color: map.get($theme-colors, "dark");
   }
 }
 

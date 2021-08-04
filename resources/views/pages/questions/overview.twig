@@ -28,11 +28,11 @@
                             <div class="row mb-4">
                                 <div class="col-md-12">
                                     <div class="card {% if theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %}">
-                                        <div class="card-body {{ m.type_bg_class() }}">
+                                        <div class="card-body bg-body">
                                             {{ question.text|nl2br }}
                                         </div>
 
-                                        <div class="card-footer d-flex align-items-center">
+                                        <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} d-flex align-items-center">
                                             <div class="me-3">
                                                 {{ m.icon('clock') }} {{ question.created_at.format(__('Y-m-d H:i')) }}
                                             </div>
@@ -65,10 +65,10 @@
                                 {% if question.answer %}
                                     <div class="col-md-11 offset-md-1 mt-3">
                                         <div class="card bg-info">
-                                            <div class="card-body {{ m.type_bg_class() }}">
+                                            <div class="card-body bg-body">
                                                 {{ question.answer|markdown }}
                                             </div>
-                                            <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %} d-flex align-items-center">
+                                            <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} d-flex align-items-center">
                                                 <div class="me-3">
                                                     {{ m.icon('clock') }} {{ question.updated_at.format(__('Y-m-d H:i')) }}
                                                 </div>

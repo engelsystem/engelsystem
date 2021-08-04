@@ -160,7 +160,7 @@ return [
         4 => [
             'name' => 'Engelsystem 33c3 (2016)',
             'type' => 'dark',
-            'navbar_classes' => 'navbar-dark bg-darker border-dark',
+            'navbar_classes' => 'navbar-dark bg-body border-dark',
         ],
         3 => [
             'name' => 'Engelsystem 32c3 (2015)',

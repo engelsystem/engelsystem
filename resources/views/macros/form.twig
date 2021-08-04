@@ -79,5 +79,5 @@
 {%- endmacro %}
 
 {% macro submit(label, opt) %}
-    {{ _self.button(label|default(__('form.submit')), opt|default({})|merge({'type': 'submit', 'btn_type': 'primary'})) }}
+    {{ _self.button(label|default(__('form.submit')), {'type': 'submit', 'btn_type': 'primary'}|merge(opt|default({}))) }}
 {%- endmacro %}

@@ -14,7 +14,7 @@
         {% if page() in ['news', 'meetings'] and is_user() and has_permission_to('atom') -%}
             {% set parameters = {'key': user.api_key} -%}
             {% if page() == 'meetings' -%}
-                {% set parameters = parameters|merge({'meetings': 1}) -%}
+                {% set parameters = {'meetings': 1}|merge(parameters) -%}
             {% endif %}
             <link href="{{ url('atom', parameters) }}" type="application/atom+xml" rel="alternate" title="Atom Feed">
         {% endif %}

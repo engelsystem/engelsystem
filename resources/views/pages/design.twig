@@ -26,7 +26,7 @@
     ['light', 'dark'],
     ['dark', 'light'],
 ] %}
-{% set types_buttons=types|merge(['link']) %}
+{% set types_buttons=['link']|merge(types) %}
 {% set shortsum='Lorem ipsum dolor…' %}
 {% set lipsum='Lorem ipsum dolor sit amet, consectetur adipisici elit…' %}
 {% set linksum='Lorem ipsum! Dolor <a href="#">link</a> amet, consectetur adipisici elit!' %}

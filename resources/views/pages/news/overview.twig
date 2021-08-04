@@ -48,7 +48,7 @@
 {% endblock %}
 
 {% macro news(news, show_comments_link, is_overview) %}
-    <div class="card {% if news.is_meeting %}bg-info{% else %}{% if theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %}{% endif %} mb-4">
+    <div class="card {% if news.is_meeting %}bg-info{% else %}{% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %}{% endif %} mb-4">
         {% if is_overview|default(false) %}
         <div class="card-header {% if news.is_meeting and theme.type == 'dark' %}text-white{% endif %}">
                 <a href="{{ url('news/' ~ news.id) }}" class="text-inherit">
@@ -59,11 +59,11 @@
             </div>
         {% endif %}
 
-        <div class="card-body {{ m.type_bg_class() }}">
+        <div class="card-body bg-body">
             {{ news.text|raw|markdown(false) }}
         </div>
 
-        <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %} text-muted">
+        <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} text-muted">
             {% if news.updated_at != news.created_at and not is_overview %}
                 <div class="d-flex align-items-center">
                     <div class="me-3">

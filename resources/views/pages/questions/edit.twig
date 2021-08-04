@@ -56,7 +56,7 @@
                         <h2>{{ __('form.preview') }}</h2>
 
                         <div class="card {% if theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %} mb-4">
-                            <div class="card-body {{ m.type_bg_class() }}">
+                            <div class="card-body bg-body">
                                 {{ question.text|nl2br }}
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                     {% if question.answer %}
                         <div class="col-md-11 offset-md-1">
                             <div class="card bg-info">
-                                <div class="card-body {{ m.type_bg_class() }}">
+                                <div class="card-body bg-body">
                                     {{ question.answer|markdown }}
                                 </div>
                             </div>

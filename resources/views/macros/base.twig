@@ -31,3 +31,7 @@
 {% macro type_bg_class() -%}
     {% if theme.type == 'light' %}bg-white{% else %}bg-dark{% endif %}
 {%- endmacro %}
+
+{% macro type_text_class() -%}
+    {% if theme.type == 'light' %}text-dark{% else %}text-light{% endif %}
+{%- endmacro %}

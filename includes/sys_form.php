@@ -29,14 +29,12 @@ function form_spinner($name, $label, $value)
     return form_element($label, '
         <div class="input-group">
             <input id="spinner-' . $name . '" class="form-control" name="' . $name . '" value="' . $value . '" />
-            <div class="input-group-btn">
-                <button id="spinner-' . $name . '-down" class="btn btn-primary" type="button">
-                   ' . icon('dash-lg') . '
-                </button>
-                <button id="spinner-' . $name . '-up" class="btn btn-primary" type="button">
-                    ' . icon('plus-lg') . '
-                </button>
-            </div>
+            <button id="spinner-' . $name . '-down" class="btn btn-secondary" type="button">
+               ' . icon('dash-lg') . '
+            </button>
+            <button id="spinner-' . $name . '-up" class="btn btn-secondary" type="button">
+                ' . icon('plus-lg') . '
+            </button>
         </div>
         <script type="text/javascript">
             $(\'#spinner-' . $name . '-down\').click(function() {
@@ -72,7 +70,7 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
     return form_element($label, '
     <div class="input-group date" id="' . $dom_id . '" data-min-date="' . $start_date . '" data-max-date="' . $end_date . '">
         <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '" autocomplete="off">'
-        . '<span class="input-group-addon">' . icon('grid-3x3-gap-fill') . '</span>
+        . '<span class="input-group-text">' . icon('grid-3x3-gap-fill') . '</span>
     </div>
     ', $dom_id);
 }

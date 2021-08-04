@@ -1,4 +1,5 @@
 // 34c3 light (2017)
+@import "light";
 
 $brand-primary: rgb(164, 28, 49);
 $primary: rgb(164, 28, 49);
@@ -29,7 +30,7 @@ $state-danger-text:              darken($brand-danger,40%);
 $state-danger-bg:                lighten($brand-danger,40%);
 $state-danger-border:            $brand-danger;
 
-.label.label-warning {
+.badge.bg-warning {
   color: #000;
 }
 

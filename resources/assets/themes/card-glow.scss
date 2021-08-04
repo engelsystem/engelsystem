@@ -1,0 +1,33 @@
+// Used for shift overview cards headers
+@each $state, $value in $theme-colors {
+  $card-background: darken($value, 35%);
+  $card-border: $value;
+  $card-color: $value;
+
+  @if (contrast-ratio($card-background, $card-color) < $min-contrast-ratio*.7) {
+    $card-color: mix($value, color-contrast($card-background), 40%);
+  }
+
+  .card.bg-#{"" + $state} .card-header {
+    background-color: $card-background;
+    border-color: $card-border;
+
+    .badge.bg-light {
+      background-color: $card-color !important;
+    }
+
+    .badge.text-#{"" + $state} {
+      color: $card-background !important;
+    }
+
+    a.text-white {
+      color: $card-color !important;
+    }
+
+    .btn-#{"" + $state} {
+      background-color: $card-background;
+      border-color: $card-border !important;
+      color: $card-color;
+    }
+  }
+}

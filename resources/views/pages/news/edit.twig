@@ -70,7 +70,7 @@
                                 {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
                                 {{ news.title }}
                             </div>
-                            <div class="card-body {{ m.type_bg_class() }}">
+                            <div class="card-body bg-body">
                                 {{ news.text|raw|markdown(false) }}
                             </div>
                         </div>

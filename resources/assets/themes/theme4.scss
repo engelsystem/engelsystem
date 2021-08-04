@@ -1,4 +1,5 @@
 // 33c3 (2016)
+@import "dark";
 
 // Variables
 
@@ -19,6 +20,8 @@ $brand-warning: rgb(255, 244, 95);
 $warning: rgb(255, 244, 95);
 $brand-danger:  rgb(277, 38, 60);
 $danger:  rgb(277, 38, 60);
+
+$text-muted: lighten($gray-light, 25%);
 
 //== changed Scaffolding
 
@@ -86,6 +89,9 @@ $badge-color:                 #fff;
 $headings-small-color:        $gray-light;
 
 
+// Navigation tabs
+$nav-tabs-link-active-color: $gray-light;
+
 // Bootswatch
 // -----------------------------------------------------
 @import "cyborg_variables.scss";
@@ -95,6 +101,15 @@ $headings-small-color:        $gray-light;
 
 .input-group-addon {
   background-color: $btn-default-bg;
+}
+
+.badge.bg-warning {
+  color: #000;
+}
+
+.card.bg-secondary .card-header,
+.card.bg-secondary .card-footer {
+  color: $gray-lighter;
 }
 
 // different code tag

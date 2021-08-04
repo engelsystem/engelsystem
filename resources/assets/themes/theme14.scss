@@ -1,6 +1,7 @@
 // rc3 teal
 
 //== Colors
+@import "dark";
 
 $gray-darker:            #0e1c23;
 $gray-dark:              lighten($gray-darker, 15%);
@@ -11,6 +12,7 @@ $black:                  #000;
 
 $brand-primary: #05b9ec;
 $primary:       $brand-primary;
+$secondary:     #32657e;
 $brand-success: #02fae0;
 $success:       $brand-success;
 $brand-info:    #025d83;
@@ -19,7 +21,6 @@ $brand-warning: #6800e7;
 $warning:       $brand-warning;
 $brand-danger:  #b239ff;
 $danger:        $brand-danger;
-
 
 //== Scaffolding
 

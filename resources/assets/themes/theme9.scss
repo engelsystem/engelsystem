@@ -2,6 +2,7 @@
 
 // Variables
 // --------------------------------------------------
+@import "dark";
 
 //== changed Colors
 
@@ -18,6 +19,7 @@ $text-muted: $primary;
 @import "cyborg_styles.scss";
 
 // Specials for cccamp19 design
+@import "card-glow";
 
 .navbar-brand {
   .icon-icon_angel {
