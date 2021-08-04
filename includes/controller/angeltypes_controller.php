@@ -321,7 +321,7 @@ function angeltypes_list_controller()
         }
 
         $angeltype['restricted'] = $angeltype['restricted'] ? icon('book') : '';
-        $angeltype['no_self_signup'] = $angeltype['no_self_signup'] ? '' : icon('share');
+        $angeltype['no_self_signup'] = $angeltype['no_self_signup'] ? '' : icon('pencil-square');
 
         $angeltype['name'] = '<a href="'
             . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']])

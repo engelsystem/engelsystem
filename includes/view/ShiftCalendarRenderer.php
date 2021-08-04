@@ -326,7 +326,7 @@ class ShiftCalendarRenderer
             badge(__('Help needed'), 'danger'),
             badge(__('Other angeltype needed / collides with my shifts'), 'warning'),
             badge(__('Shift is full'), 'success'),
-            badge(__('Shift running/ended or user not arrived/allowed'), 'default')
+            badge(__('Shift running/ended or user not arrived/allowed'), 'secondary')
         ]);
     }
 }

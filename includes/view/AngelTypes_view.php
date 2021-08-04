@@ -503,7 +503,7 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes)
         table([
             'name'           => __('Name'),
             'restricted'     => icon('book') . __('Requires introduction'),
-            'no_self_signup' => icon('share') . __('Self Sign Up Allowed'),
+            'no_self_signup' => icon('pencil-square') . __('Self Sign Up Allowed'),
             'membership'     => __('Membership'),
             'actions'        => ''
         ], $angeltypes)
@@ -581,9 +581,9 @@ function AngelTypes_about_view($angeltypes, $user_logged_in)
         $buttons[] = button(page_link_to('login'), __('Login'));
     }
 
-    $faqUrl = config('faq_url');
-    if (!empty($faqUrl)) {
-        $buttons[] = button($faqUrl, __('FAQ'), 'btn-primary');
+    $footerConfig = config('footer_items');
+    if (!empty($footerConfig['FAQ'])) {
+        $buttons[] = button($footerConfig['FAQ'], __('FAQ'), 'btn-primary');
     }
 
     $content = [

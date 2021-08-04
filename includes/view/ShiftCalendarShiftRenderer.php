@@ -91,7 +91,7 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::FREE:
                 return 'danger';
             default:
-                return '';
+                return 'secondary';
         }
     }
 
