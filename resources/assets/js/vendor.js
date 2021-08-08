@@ -6,7 +6,6 @@ window.moment = require('moment');
 require('moment/locale/de');
 require('tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4');
 require('chart.js');
-require('./offcanvas');
 require('./forms');
 require('./sticky-headers');
 require('./moment-countdown');
