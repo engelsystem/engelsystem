@@ -107,11 +107,6 @@ return [
     'theme'                   => env('THEME', 1),
 
     'themes' => [
-        15 => [
-            'name' => 'Engelsystem DiVOC R2R',
-            'type' => 'dark',
-            'navbar_classes' => 'navbar-dark bg-black border-dark',
-        ],
         14 => [
             'name' => 'Engelsystem rC3 teal (2020)',
             'type' => 'dark',
