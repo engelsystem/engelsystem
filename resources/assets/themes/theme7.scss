@@ -4,11 +4,11 @@
 // --------------------------------------------------
 @import "dark";
 
-$gray-darker:            #000;
-$gray-dark:              #000;
-$gray:                   #4d4d4c; // BEBOOT
-$gray-light:             $gray;
-$gray-lighter:           lighten($gray, 15%);
+$gray-darker:  #000;
+$gray-dark:    #000;
+$gray:         #4d4d4c; // BEBOOT
+$gray-light:   $gray;
+$gray-lighter: lighten($gray, 15%);
 
 $brand-primary: #0084b0; // FRESH
 $primary:       #0084b0;
@@ -24,9 +24,10 @@ $danger:        #e40429; // BEAT
 
 //== changed Scaffolding
 
-$body-bg:               #000;
+$text-color: $gray-lighter;
 
-$text-color:            $gray-lighter;
+$body-bg:    #000;
+$body-color: $text-color;
 
 $link-color:       $brand-primary;
 $link-hover-color: lighten($link-color, 10%);
@@ -34,129 +35,121 @@ $link-hover-color: lighten($link-color, 10%);
 
 //== changed Typography
 
-$headings-color:          $brand-primary;
+$headings-color: $brand-primary;
 
 
 //== changed Tables
 
-$table-bg:                      $gray-darker;
-$table-bg-accent:               #111;
-$table-border-color:            $gray;
+$table-bg:           $gray-darker;
+$table-bg-accent:    #111;
+$table-border-color: $gray;
 
 
 // component
 
-$component-active-color:    #fff;
-$component-active-bg:       $primary;
+$component-active-color: #fff;
+$component-active-bg:    $primary;
 
 
 //== changed Buttons
 
-$btn-color:              $link-color;
-$btn-default-bg:                 $gray-darker;
+$btn-color:      $link-color;
+$btn-default-bg: $gray-darker;
 
-$btn-default-border:             $brand-primary;
+$btn-default-border: $brand-primary;
 
-$btn-primary-color:              $gray-darker;
-$btn-primary-border:             $brand-primary;
+$btn-primary-color:  $gray-darker;
+$btn-primary-border: $brand-primary;
 
-$btn-success-border:             darken($btn-default-bg, 10%);
+$btn-success-border: darken($btn-default-bg, 10%);
 
-$btn-info-color:                 $gray-darker;
-$btn-info-border:                darken($btn-default-bg, 10%);
+$btn-info-color:  $gray-darker;
+$btn-info-border: darken($btn-default-bg, 10%);
 
-$btn-warning-color:              $gray-darker;
-$btn-warning-border:             darken($btn-default-bg, 10%);
+$btn-warning-color:  $gray-darker;
+$btn-warning-border: darken($btn-default-bg, 9%);
 
-$btn-danger-color:               $gray-darker;
-$btn-danger-border:              darken($btn-default-bg, 10%);
+$btn-danger-color:  $gray-darker;
+$btn-danger-border: darken($btn-default-bg, 10%);
 
 
 //== changed Forms
 
-$input-bg:                       $gray-darker;
-
-$input-color:                    $link-color;
-
-$input-border-color:             $brand-primary;
-
-$input-group-addon-bg:           $gray-lighter;
+$input-bg:             $gray-darker;
+$input-color:          $link-color;
+$input-border-color:   $brand-primary;
+$input-group-addon-bg: $gray-lighter;
 
 
 //== changed Dropdowns
 
 $dropdown-border:                $brand-primary;
-
 $dropdown-fallback-border:       $brand-primary;
-
 $dropdown-divider-bg:            $dropdown-border;
-
-$dropdown-link-color: $link-color;
-
+$dropdown-link-color:            $link-color;
 $dropdown-link-hover-color:      $link-hover-color;
-
 $dropdown-bg:                    $gray-darker;
 $dropdown-link-hover-bg:         $dropdown-bg;
 
 
 //== changed Navbar
 
-$navbar-default-border:            $brand-primary;
+$navbar-default-border:             $brand-primary;
+$navbar-default-link-hover-color:   $link-hover-color;
+$navbar-default-link-active-color:  $brand-primary;
+$navbar-default-brand-color:        $brand-primary;
+$navbar-default-brand-hover-color:  lighten($brand-primary, 10%);
+$nav-tabs-link-active-color:        #fff;
+$nav-tabs-link-active-bg:           $brand-primary;
+$nav-tabs-link-active-border-color: none;
 
-$navbar-default-link-hover-color:          $link-hover-color;
-
-$navbar-default-link-active-color:         $brand-primary;
-
-$navbar-default-brand-color:               $brand-primary;
-$navbar-default-brand-hover-color:         lighten($brand-primary, 10%);
 
 //== changed Pagination
 
-$pagination-color:                     $brand-primary;
-$pagination-border:                    $brand-primary;
+$pagination-color:         $brand-primary;
+$pagination-border:        $brand-primary;
 
-$pagination-hover-color:               $gray-darker;
-$pagination-hover-bg:                  $component-active-bg;
-$pagination-hover-border:              $pagination-border;
+$pagination-hover-color:   $gray-darker;
+$pagination-hover-bg:      $component-active-bg;
+$pagination-hover-border:  $pagination-border;
 
-$pagination-active-color:              $pagination-hover-color;
-$pagination-active-bg:                 $pagination-hover-bg;
-$pagination-active-border:             $pagination-hover-border;
+$pagination-active-color:  $pagination-hover-color;
+$pagination-active-bg:     $pagination-hover-bg;
+$pagination-active-border: $pagination-hover-border;
 
 
 //== changed Form states and alerts
 
-$state-success-text:             $gray-darker;
-$state-success-bg:               $brand-success;
-$state-success-border:           darken($state-success-bg, 5%);
+$state-success-text:   $gray-darker;
+$state-success-bg:     $brand-success;
+$state-success-border: darken($state-success-bg, 5%);
 
-$state-info-text:                $gray-darker;
-$state-info-bg:                  $brand-info;
-$state-info-border:              darken($state-info-bg, 7%);
+$state-info-text:      $gray-darker;
+$state-info-bg:        $brand-info;
+$state-info-border:    darken($state-info-bg, 7%);
 
-$state-warning-text:             $gray-darker;
-$state-warning-bg:               $brand-warning;
-$state-warning-border:           darken($state-warning-bg, 3%);
+$state-warning-text:   $gray-darker;
+$state-warning-bg:     $brand-warning;
+$state-warning-border: darken($state-warning-bg, 3%);
 
-$state-danger-text:              $gray-darker;
-$state-danger-bg:                $brand-danger;
-$state-danger-border:            darken($state-danger-bg, 3%);
+$state-danger-text:    $gray-darker;
+$state-danger-bg:      $brand-danger;
+$state-danger-border:  darken($state-danger-bg, 3%);
 
 
 //== changed Labels
 
-$label-color:                 $gray-darker;
-
-$label-link-hover-color:      $brand-primary;
-
-//== changed Badges
-
-$badge-color:                 #fff;
+$label-color:            $gray-darker;
+$label-link-hover-color: $brand-primary;
 
 
 //== changed Type
 
 $headings-small-color:        $gray-light;
+
+$alert-bg-scale: 0;
+$alert-border-scale: 0;
+$alert-color-scale: 0;
 
 @import "cyborg_variables.scss";
 @import "cyborg_styles.scss";
@@ -265,6 +258,7 @@ code {
   background-color: $state-info-bg;
   color: $state-info-text;
 }
+
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   code {
     color: $headings-color;
