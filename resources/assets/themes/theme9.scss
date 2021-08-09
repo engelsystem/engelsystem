@@ -27,7 +27,7 @@ $text-muted: $primary;
   }
 
   strong {
-    font-weight: lighter;
+    font-weight: normal;
     color: $brand-primary;
     text-shadow:
       0 0 10px $brand-primary,
@@ -40,7 +40,7 @@ $text-muted: $primary;
 }
 
 h1 {
-  font-weight: lighter;
+  font-weight: normal;
   color: $brand-primary;
   text-shadow: 0 0 10px $brand-primary;
 

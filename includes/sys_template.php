@@ -393,7 +393,7 @@ function render_table($columns, $rows, $data = true)
  */
 function button($href, $label, $class = '')
 {
-    if (!Str::contains(Str::remove(['btn-sm', 'btn-xl'], $class), 'btn-')) {
+    if (!Str::contains(str_replace(['btn-sm', 'btn-xl'], '', $class), 'btn-')) {
         $class = 'btn-secondary' . ($class ? ' ' . $class : '');
     }
 

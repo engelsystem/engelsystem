@@ -69,7 +69,8 @@
                 <ul>
                     {% for id,theme in themes %}
                         <li>
-                            <a href="{{ url('design', {'theme': id}) }}">
+                            <a href="{{ url('design', {'theme': id}) }}"
+                                {%- if id == themeId %} class="text-info"{% endif %}>
                                 {{ theme['name'] }}
                             </a>
                         </li>
