@@ -22,6 +22,7 @@ return [
         \Engelsystem\Http\ResponseServiceProvider::class,
         \Engelsystem\Http\Psr7ServiceProvider::class,
         \Engelsystem\Helpers\AuthenticatorServiceProvider::class,
+        \Engelsystem\Helpers\AssetsServiceProvider::class,
         \Engelsystem\Renderer\TwigServiceProvider::class,
         \Engelsystem\Middleware\RouteDispatcherServiceProvider::class,
         \Engelsystem\Middleware\RequestHandlerServiceProvider::class,
@@ -33,7 +34,7 @@ return [
         \Engelsystem\Helpers\VersionServiceProvider::class,
         \Engelsystem\Mail\MailerServiceProvider::class,
         \Engelsystem\Http\HttpClientServiceProvider::class,
-        \Engelsystem\Helpers\DumpServerServiceProvider::class
+        \Engelsystem\Helpers\DumpServerServiceProvider::class,
     ],
 
     // Application middleware

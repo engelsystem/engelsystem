@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Test\Unit\Renderer\Twig\Extensions;
 
+use Engelsystem\Helpers\Assets as AssetsProvider;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Renderer\Twig\Extensions\Assets;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -14,10 +15,12 @@ class AssetsTest extends ExtensionTest
      */
     public function testGetFunctions()
     {
-        /** @var UrlGenerator|MockObject $urlGenerator */
+        /** @var UrlGenerator&MockObject $urlGenerator */
         $urlGenerator = $this->createMock(UrlGenerator::class);
+        /** @var AssetsProvider&MockObject $assets */
+        $assets = $this->createMock(AssetsProvider::class);
 
-        $extension = new Assets($urlGenerator);
+        $extension = new Assets($assets, $urlGenerator);
         $functions = $extension->getFunctions();
 
         $this->assertExtensionExists('asset', [$extension, 'getAsset'], $functions);
@@ -28,20 +31,35 @@ class AssetsTest extends ExtensionTest
      */
     public function testGetAsset()
     {
-        /** @var UrlGenerator|MockObject $urlGenerator */
+        /** @var UrlGenerator&MockObject $urlGenerator */
         $urlGenerator = $this->createMock(UrlGenerator::class);
+        /** @var AssetsProvider&MockObject $assets */
+        $assets = $this->createMock(AssetsProvider::class);
 
-        $urlGenerator->expects($this->exactly(2))
+        $urlGenerator->expects($this->exactly(4))
             ->method('to')
-            ->with('/assets/foo.css')
-            ->willReturn('https://foo.bar/project/assets/foo.css');
+            ->withConsecutive(['/test.png'], ['/assets/foo.css'], ['/assets/bar.css'], ['/assets/lorem-hashed.js'])
+            ->willReturnCallback(function ($path) {
+                return 'https://foo.bar/project' . $path;
+            });
 
-        $extension = new Assets($urlGenerator);
+        $assets->expects($this->exactly(3))
+            ->method('getAssetPath')
+            ->withConsecutive(['foo.css'], ['bar.css'], ['lorem.js'])
+            ->willReturnOnConsecutiveCalls('foo.css', 'bar.css', 'lorem-hashed.js');
+
+        $extension = new Assets($assets, $urlGenerator);
+
+        $return = $extension->getAsset('test.png');
+        $this->assertEquals('https://foo.bar/project/test.png', $return);
 
         $return = $extension->getAsset('assets/foo.css');
         $this->assertEquals('https://foo.bar/project/assets/foo.css', $return);
 
-        $return = $extension->getAsset('/assets/foo.css');
-        $this->assertEquals('https://foo.bar/project/assets/foo.css', $return);
+        $return = $extension->getAsset('/assets/bar.css');
+        $this->assertEquals('https://foo.bar/project/assets/bar.css', $return);
+
+        $return = $extension->getAsset('assets/lorem.js');
+        $this->assertEquals('https://foo.bar/project/assets/lorem-hashed.js', $return);
     }
 }
