@@ -99,9 +99,6 @@ $navbar-default-link-hover-color:   $link-hover-color;
 $navbar-default-link-active-color:  $brand-primary;
 $navbar-default-brand-color:        $brand-primary;
 $navbar-default-brand-hover-color:  lighten($brand-primary, 10%);
-$nav-tabs-link-active-color:        #fff;
-$nav-tabs-link-active-bg:           $brand-primary;
-$nav-tabs-link-active-border-color: none;
 
 
 //== changed Pagination
@@ -262,5 +259,13 @@ code {
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   code {
     color: $headings-color;
+  }
+
+  &.bg-primary,
+  &.bg-secondary,
+  &.bg-success,
+  &.bg-danger,
+  &.bg-info {
+      color: #fff;
   }
 }

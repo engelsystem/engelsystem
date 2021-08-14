@@ -55,8 +55,6 @@ $state-danger-border:            darken($state-danger-bg, 3%);
 
 $headings-small-color:        $gray-light;
 
-$nav-tabs-link-active-color:     $gray-light;
-
 code {
   background-color: $state-info-bg;
   color: $state-info-text;
@@ -78,3 +76,10 @@ $alert-color-scale: 0%;
 // dark
 @import "cyborg_variables";
 @import "cyborg_styles";
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  &.bg-warning,
+  &.bg-info {
+      color: #000;
+  }
+}

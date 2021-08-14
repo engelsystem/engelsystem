@@ -5,6 +5,10 @@
 $link-decoration: none !default;
 $link-hover-decoration: underline !default;
 
+$nav-tabs-link-active-color:        #fff !default;
+$nav-tabs-link-active-bg:           $primary !default;
+$nav-tabs-link-active-border-color: none !default;
+
 // Imports
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";

@@ -91,9 +91,6 @@ $badge-color:                 #fff;
 $headings-small-color:        $gray-light;
 
 
-// Navigation tabs
-$nav-tabs-link-active-color: $gray-light;
-
 // Bootswatch
 // -----------------------------------------------------
 @import "cyborg_variables.scss";
@@ -118,4 +115,10 @@ $nav-tabs-link-active-color: $gray-light;
 code {
   background-color: $state-info-bg;
   color: $state-info-text;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    &.bg-warning {
+        color: #000;
+    }
 }
