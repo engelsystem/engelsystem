@@ -6,6 +6,7 @@ use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
 use Twig\Extension\AbstractExtension as TwigExtension;
 use Twig\Extension\GlobalsInterface as GlobalsInterface;
+use function array_key_exists;
 
 class Globals extends TwigExtension implements GlobalsInterface
 {
@@ -44,6 +45,10 @@ class Globals extends TwigExtension implements GlobalsInterface
         $query = $this->request->query->get('theme');
         if (!is_null($query) && isset($themes[(int)$query])) {
             $themeId = (int)$query;
+        }
+
+        if (array_key_exists($themeId, $themes) === false) {
+            $themeId = 1;
         }
 
         $theme = $themes[$themeId];
