@@ -6,6 +6,7 @@ use Engelsystem\Helpers\Authenticator;
 use Engelsystem\Http\Request;
 use Twig\Extension\AbstractExtension as TwigExtension;
 use Twig\Extension\GlobalsInterface as GlobalsInterface;
+
 use function array_key_exists;
 
 class Globals extends TwigExtension implements GlobalsInterface

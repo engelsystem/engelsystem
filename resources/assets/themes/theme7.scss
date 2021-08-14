@@ -246,6 +246,18 @@ table,
   background-image: linear-gradient(to right, rgb(0, 132, 176) , rgb(0, 163, 86));
 }
 
+.btn-secondary {
+  color: $primary;
+  background-color: #000;
+  border-color: $primary;
+
+  &:hover {
+    color: $primary;
+    background-color: #000;
+    border-color: darken($primary, 10%);
+  }
+}
+
 .bg-warning {
   color: #000;
 }
