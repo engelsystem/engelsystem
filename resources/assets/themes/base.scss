@@ -24,6 +24,12 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 @import "~select2-bootstrap-5-theme/src/include-all";
 @import "error";
 
+// temporary bg-body fix (remove once Bootstrap 5.1.1 has been released)
+.bg-body {
+    --bs-bg-opacity: 1;
+    background-color: $body-bg !important;
+}
+
 $navbar-height: 3.125rem;
 
 body {
