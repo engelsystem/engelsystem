@@ -24,7 +24,7 @@ function user_unread_messages()
             ->count();
 
         if ($new_messages > 0) {
-            return ' <span class="badge danger">' . $new_messages . '</span>';
+            return ' <span class="badge bg-danger">' . $new_messages . '</span>';
         }
     }
     return '';
