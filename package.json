@@ -6,8 +6,7 @@
   "author": "https://github.com/engelsystem/engelsystem/contributors",
   "license": "GPL-2.0-or-later",
   "scripts": {
-    "build": "(export NODE_ENV=production && yarn build:clean && yarn build:webpack)",
-    "build:clean": "rimraf public/assets",
+    "build": "NODE_ENV=production yarn build:webpack",
     "build:webpack": "webpack",
     "build:watch": "webpack --watch"
   },
@@ -36,7 +35,6 @@
     "mini-css-extract-plugin": "^1.6.0",
     "postcss": "^8.2.8",
     "postcss-loader": "^5.2.0",
-    "rimraf": "^3.0.2",
     "sass": "^1.35.1",
     "sass-loader": "^12.0.0",
     "style-loader": "^2.0.0",

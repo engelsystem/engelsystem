@@ -47,6 +47,7 @@ module.exports = {
     path: path.resolve('public/assets'),
     filename: '[name].js',
     publicPath: '',
+    clean: true,
   },
   optimization: {
     minimizer: __DEV__ ? [] : [new CssMinimizerPlugin(), new TerserPlugin()],
