@@ -51,6 +51,9 @@ msgstr "The shift type can't not be found."
 msgid "schedule.import.success"
 msgstr "Schedule import successful."
 
+msgid "shifts.filter.toggle"
+msgstr "collapse/show filters"
+
 msgid "validation.schedule-url.required"
 msgstr "The schedule URL is required."
 

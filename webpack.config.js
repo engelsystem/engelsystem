@@ -9,7 +9,7 @@ const fs = require('fs');
 // eslint-disable-next-line
 const __DEV__ = nodeEnv !== 'production';
 
-const devtool = __DEV__ ? 'eval-cheap-module-source-map' : undefined;
+const devtool = __DEV__ ? 'source-map' : undefined
 
 const plugins = [
   new webpack.DefinePlugin({
@@ -57,12 +57,11 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /(node_modules)/,
         loader: 'babel-loader',
-        options: { cacheDirectory: true },
       },
       { test: /\.(jpg|eot|ttf|otf|svg|woff2?)(\?.*)?$/, loader: 'file-loader' },
       { test: /\.json$/, loader: 'json-loader' },
       {
-        test: /\.(less|css)$/,
+        test: /\.(scss|css)$/,
         use: [
           { loader: MiniCssExtractPlugin.loader },
           { loader: 'css-loader', options: { importLoaders: 1 } },
@@ -70,13 +69,20 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: [ [ 'autoprefixer' ] ],
+                plugins: [ [ 'autoprefixer', ], ],
               },
             },
           },
-          { loader: 'less-loader' },
-        ],
-      },
+          {
+            loader: 'sass-loader',
+            options: {
+              sassOptions: {
+                quietDeps: true
+              }
+            }
+          },
+        ]
+      }
     ],
   },
   plugins,

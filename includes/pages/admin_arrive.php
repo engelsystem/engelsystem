@@ -95,16 +95,21 @@ function admin_arrive()
         $plannedDepartureDate = $usr->personalData->planned_departure_date;
         $arrivalDate = $usr->state->arrival_date;
         $plannedArrivalDate = $usr->personalData->planned_arrival_date;
-        $usr['rendered_planned_departure_date'] = $plannedDepartureDate ? $plannedDepartureDate->format(__('Y-m-d')) : '-';
+        $usr['rendered_planned_departure_date'] = $plannedDepartureDate
+            ? $plannedDepartureDate->format(__('Y-m-d'))
+            : '-';
         $usr['rendered_planned_arrival_date'] = $plannedArrivalDate ? $plannedArrivalDate->format(__('Y-m-d')) : '-';
         $usr['rendered_arrival_date'] = $arrivalDate ? $arrivalDate->format(__('Y-m-d')) : '-';
-        $usr['arrived'] = glyph_bool($usr->state->arrived);
+        $usr['arrived'] = icon_bool($usr->state->arrived);
         $usr['actions'] = form([
             form_hidden('action', $usr->state->arrived ? 'reset' : 'arrived'),
             form_hidden('user', $usr->id),
             form_submit(
-                'submit', $usr->state->arrived ? __('reset') : __('arrived'), 'btn-xs', true,
-                $usr->state->arrived ? 'default' : 'primary'
+                'submit',
+                $usr->state->arrived ? __('reset') : __('arrived'),
+                'btn-sm',
+                true,
+                $usr->state->arrived ? 'secondary' : 'primary'
             ),
         ]);
 

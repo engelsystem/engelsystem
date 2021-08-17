@@ -151,9 +151,9 @@ class ControllerTest extends TestCase
             'de_DE' => 'German',
             'en_US' => 'US English',
         ]);
-        $config->set('available_themes', [
-            '0' => 'Nothing',
-            '1' => 'Testing',
+        $config->set('themes', [
+            0 => ['name' => 'Nothing'],
+            1 => ['name' => 'Testing'],
         ]);
         $config->set('metrics', [
             'work'    => [60 * 60],

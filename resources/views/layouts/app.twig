@@ -1,4 +1,3 @@
-{% set theme = theme|default(user.settings.theme|default(config('theme'))) %}
 <!DOCTYPE html>
 <html lang="{{ session_get('locale')|split('_')[0]|escape('html_attr') }}">
 <head>
@@ -9,13 +8,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme' ~ theme ~ '.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme' ~ themeId ~ '.css') }}"/>
         <script type="text/javascript" src="{{ asset('assets/vendor.js') }}"></script>
 
         {% if page() in ['news', 'meetings'] and is_user() and has_permission_to('atom') -%}
             {% set parameters = {'key': user.api_key} -%}
             {% if page() == 'meetings' -%}
-                {% set parameters = parameters|merge({'meetings': 1}) -%}
+                {% set parameters = {'meetings': 1}|merge(parameters) -%}
             {% endif %}
             <link href="{{ url('atom', parameters) }}" type="application/atom+xml" rel="alternate" title="Atom Feed">
         {% endif %}
@@ -30,12 +29,12 @@
     {% endblock %}
 
     <div class="container-fluid">
-        <div class="row" id="content">
+        <div id="content">
             {% block content %}
                 {{ content|raw }}
             {% endblock %}
         </div>
-        <div class="row" id="footer">
+        <div id="footer">
             {% block footer %}
                 {% include "layouts/parts/footer.twig" %}
             {% endblock %}

@@ -1,0 +1,124 @@
+// 33c3 (2016)
+@import "dark";
+
+// Variables
+
+//== changed Colors
+
+$gray-dark:    #282828;
+$gray-darker:  #222;
+$gray-light:   #888;
+$gray-lighter: #ADAFAE;
+
+$brand-primary: rgb(0, 156, 139);
+$primary: rgb(0, 156, 139);
+$secondary: #424242;
+$brand-success: rgb(141, 193, 35);
+$success: rgb(141, 193, 35);
+$brand-info:    rgb(70, 71, 73);
+$info:    rgb(70, 71, 73);
+$brand-warning: rgb(255, 244, 95);
+$warning: rgb(255, 244, 95);
+$brand-danger:  rgb(277, 38, 60);
+$danger:  rgb(277, 38, 60);
+
+$text-muted: lighten($gray-light, 25%);
+
+//== changed Scaffolding
+
+$body-bg:  #1d1d1b;
+$alert-bg-scale: 0%;
+
+
+//== changed Buttons
+
+$btn-color:                      #fff;
+$btn-default-bg:                 lighten($gray-dark, 10%);
+
+$btn-primary-border:             darken($btn-default-bg, 10%);
+
+$btn-success-border:             darken($btn-default-bg, 10%);
+
+$btn-info-border:                darken($btn-default-bg, 10%);
+
+$btn-warning-border:             darken($btn-default-bg, 10%);
+
+$btn-danger-border:              darken($btn-default-bg, 10%);
+
+
+//== changed Forms
+
+$input-bg:                       $gray-darker;
+
+$input-bg-disabled:              $gray-lighter;
+
+$input-group-addon-bg:           $gray-lighter;
+
+
+//== Pagination
+
+$pagination-hover-color:               #fff;
+
+$pagination-active-color:              #fff;
+
+
+//== changed Form states and alerts
+
+$state-success-text:             #fff;
+$state-success-bg:               $brand-success;
+$state-success-border:           darken($state-success-bg, 5%);
+
+$state-info-text:                #fff;
+$state-info-bg:                  $brand-info;
+$state-info-border:              darken($state-info-bg, 7%);
+
+$state-warning-text:             darken($brand-warning, 40%);
+$state-warning-bg:               $brand-warning;
+$state-warning-border:           darken($state-warning-bg, 3%);
+
+$state-danger-text:              #fff;
+$state-danger-bg:                $brand-danger;
+$state-danger-border:            darken($state-danger-bg, 3%);
+
+
+//== changed Badges
+
+$badge-color:                 #fff;
+
+
+//== changed Type
+
+$headings-small-color:        $gray-light;
+
+
+// Bootswatch
+// -----------------------------------------------------
+@import "cyborg_variables.scss";
+@import "cyborg_styles.scss";
+
+// added Forms ======================================================================
+
+.input-group-addon {
+  background-color: $btn-default-bg;
+}
+
+.badge.bg-warning {
+  color: #000;
+}
+
+.card.bg-secondary .card-header,
+.card.bg-secondary .card-footer {
+  color: $gray-lighter;
+}
+
+// different code tag
+code {
+  background-color: $state-info-bg;
+  color: $state-info-text;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    &.bg-warning {
+        color: #000;
+    }
+}

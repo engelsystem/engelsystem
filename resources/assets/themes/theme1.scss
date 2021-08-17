@@ -1,0 +1,85 @@
+// Variables
+// --------------------------------------------------
+
+@import "dark";
+
+//== changed Colors
+
+$gray-darker:  #222;
+$gray-dark:    #282828;
+$gray-light:   #888;
+$gray-lighter: #ADAFAE;
+
+$primary:   #437aca;
+$secondary: #424242;
+$success:   #00c960;
+$info:      #3dbddf;
+$warning:   #f6b345;
+$danger:    #e93a44;
+
+$text-muted: $gray-light;
+
+$btn-link-disabled-color:        $gray-light;
+
+
+//== changed Forms
+
+$input-bg:                       $gray-darker;
+$input-bg-disabled:              lighten($gray-lighter,15%);
+$input-group-addon-bg:           $gray-lighter;
+
+
+//== changed Pagination
+
+$pagination-hover-color:               #fff;
+$pagination-active-color:              #fff;
+
+
+//== changed Form states and alerts
+
+$state-success-text:             #fff;
+$state-success-bg:               $success;
+$state-success-border:           darken($state-success-bg, 5%);
+
+$state-info-text:                #fff;
+$state-info-bg:                  $info;
+$state-info-border:              darken($state-info-bg, 7%);
+
+$state-warning-text:             #fff;
+$state-warning-bg:               $warning;
+$state-warning-border:           darken($state-warning-bg, 3%);
+
+$state-danger-text:              #fff;
+$state-danger-bg:                $danger;
+$state-danger-border:            darken($state-danger-bg, 3%);
+
+$headings-small-color:        $gray-light;
+
+code {
+  background-color: $state-info-bg;
+  color: $state-info-text;
+}
+
+$alert-bg-scale: 0%;
+$alert-border-scale: 0%;
+$alert-color-scale: 0%;
+
+.alert {
+  color: #fff !important;
+
+  .text-danger,
+  .text-info {
+      color: #fff !important;
+  }
+}
+
+// dark
+@import "cyborg_variables";
+@import "cyborg_styles";
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  &.bg-warning,
+  &.bg-info {
+      color: #000;
+  }
+}

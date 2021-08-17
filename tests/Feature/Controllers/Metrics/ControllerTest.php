@@ -15,7 +15,7 @@ class ControllerTest extends ApplicationFeatureTest
         config([
             'api_key' => null,
             'metrics' => ['work' => [60 * 60], 'voucher' => [1]],
-            'available_themes' => ['1' => 'Test'],
+            'themes' => [1 => ['name' => 'Test']],
         ]);
 
         /** @var Controller $controller */

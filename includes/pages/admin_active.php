@@ -213,9 +213,9 @@ function admin_active()
         $userData['shirt_size'] = (isset($tshirt_sizes[$shirtSize]) ? $tshirt_sizes[$shirtSize] : '');
         $userData['work_time'] = round($usr['shift_length'] / 60)
             . ' min (' . sprintf('%.2f', $usr['shift_length'] / 3600) . '&nbsp;h)';
-        $userData['active'] = glyph_bool($usr->state->active == 1);
-        $userData['force_active'] = glyph_bool($usr->state->force_active == 1);
-        $userData['tshirt'] = glyph_bool($usr->state->got_shirt == 1);
+        $userData['active'] = icon_bool($usr->state->active == 1);
+        $userData['force_active'] = icon_bool($usr->state->force_active == 1);
+        $userData['tshirt'] = icon_bool($usr->state->got_shirt == 1);
         $userData['shift_count'] = $usr['shift_count'];
 
         $actions = [];
@@ -228,7 +228,7 @@ function admin_active()
                 $parameters['show_all_shifts'] = 1;
             }
             $actions[] = form(
-                [form_submit('submit', __('set active'), 'btn-xs', false)],
+                [form_submit('submit', __('set active'), 'btn-sm', false)],
                 page_link_to('admin_active', $parameters)
             );
         }
@@ -241,7 +241,7 @@ function admin_active()
                 $parametersRemove['show_all_shifts'] = 1;
             }
             $actions[] = form(
-                [form_submit('submit', __('remove active'), 'btn-xs', false)],
+                [form_submit('submit', __('remove active'), 'btn-sm', false)],
                 page_link_to('admin_active', $parametersRemove)
             );
         }
@@ -254,7 +254,7 @@ function admin_active()
                 $parametersShirt['show_all_shifts'] = 1;
             }
             $actions[] = form(
-                [form_submit('submit', __('got t-shirt'), 'btn-xs', false)],
+                [form_submit('submit', __('got t-shirt'), 'btn-sm', false)],
                 page_link_to('admin_active', $parametersShirt)
             );
         }
@@ -267,7 +267,7 @@ function admin_active()
                 $parameters['show_all_shifts'] = 1;
             }
             $actions[] = form(
-                [form_submit('submit', __('remove t-shirt'), 'btn-xs', false)],
+                [form_submit('submit', __('remove t-shirt'), 'btn-sm', false)],
                 page_link_to('admin_active', $parameters)
             );
         }

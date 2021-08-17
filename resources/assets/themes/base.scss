@@ -1,20 +1,55 @@
-@import "../../../node_modules/bootstrap/less/bootstrap";
-@import "../../../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css";
-@import "../../../node_modules/select2/dist/css/select2.min.css";
-@import "../../../node_modules/select2-bootstrap-theme/src/select2-bootstrap.less";
+// Basic variables
+@use "sass:map";
+
+// select 2 variables
+$link-decoration: none !default;
+$link-hover-decoration: underline !default;
+
+$nav-tabs-link-active-color:        #fff !default;
+$nav-tabs-link-active-bg:           $primary !default;
+$nav-tabs-link-active-border-color: none !default;
+
+// Imports
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+$custom-colors: (
+  black: #000
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+@import "~bootstrap/scss/bootstrap";
+
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "~tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4";
+@import "~select2/src/scss/core";
+@import "~select2-bootstrap-5-theme/src/include-all";
 @import "error";
 
+// temporary bg-body fix (remove once Bootstrap 5.1.1 has been released)
+.bg-body {
+    --bs-bg-opacity: 1;
+    background-color: $body-bg !important;
+}
+
+$navbar-height: 3.125rem;
+
 body {
-  padding-top: 50px;
+  padding-top: 70px;
 }
 
 .footer a {
-  color: @text-muted;
+  color: $text-muted;
 }
 
-.first {
-  clear: both;
-  margin-top: 30px;
+.text-inherit {
+    color: inherit;
+
+    &:hover {
+        color: inherit;
+    }
 }
 
 .text-big {
@@ -25,7 +60,7 @@ body {
 }
 
 .icon-icon_angel {
-  background-color: @text-color;
+  background-color: $body-color;
 
   display: inline-block;
   width: 1em;
@@ -35,29 +70,50 @@ body {
   mask-size: cover;
 }
 
+.text-light .icon-icon_angel {
+  background-color: map.get($theme-colors, "light");
+}
+
+.dark .icon-icon_angel {
+  background-color: map.get($theme-colors, "dark");
+}
+
 a .icon-icon_angel {
-  background-color: @link-color;
+  background-color: $link-color;
 }
 
 .navbar .icon-icon_angel {
-  background-color: @navbar-default-link-disabled-color;
+  background-color: $nav-link-disabled-color;
 }
 
 .navbar-brand .icon-icon_angel {
-  background-color: @navbar-default-brand-color;
+  background-color: $body-color;
+}
+
+.nav-item--userhints {
+    margin: -$navbar-padding-y 0;
+}
+
+.popover--userhints .alert:last-of-type {
+    margin-bottom: 0;
 }
 
 table a > .icon-icon_angel {
-  background-color: @text-color;
+  background-color: $body-color;
 }
 
 .table .form-group {
   margin-bottom: 0;
 }
 
+.input-group.datetime,
+.input-group.time {
+    .bootstrap-datetimepicker-widget {
+        inset: 42px auto auto 0 !important;
+    }
+}
+
 .stats {
-  .make-md-column(3);
-  .make-xs-column(6);
   font-size: 20px;
   height: 150px;
   text-align: center;
@@ -67,7 +123,7 @@ table a > .icon-icon_angel {
     font-weight: 200;
   }
 
-  @media (max-width: @screen-md) {
+  @media (max-width: map-get($grid-breakpoints, 'md')) {
     font-size: inherit;
     .number {
       font-size: 40px;
@@ -77,23 +133,23 @@ table a > .icon-icon_angel {
 
 
 .stats-danger {
-  color: @brand-danger;
+  color: map-get($theme-colors, 'danger');
 }
 
 .stats-warning {
-  color: @brand-warning;
+  color: map-get($theme-colors, 'warning');
 }
 
 .stats-success {
-  color: @brand-success;
+  color: map-get($theme-colors, 'success');
 }
 
-.dashboard-panel {
+.dashboard-card {
   position: relative;
   font-size: 20px;
-  color: @headings-color;
+  color: $headings-color;
 
-  .panel-link {
+  .card-link {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -101,48 +157,18 @@ table a > .icon-icon_angel {
     left: 0;
     text-decoration: none; /* No underlines on the link */
     z-index: 10; /* Places the link above everything else in the div */
-    background-color: @brand-primary; /* Fix to make div clickable in IE */
+    background-color: $primary; /* Fix to make div clickable in IE */
     opacity: 0; /* Fix to make div clickable in IE */
     filter: alpha(opacity=1); /* Fix to make div clickable in IE */
   }
 
-  .panel-link:hover {
+  .card-link:hover {
     opacity: 0.3;
   }
 }
 
-.panel-primary .panel-heading a {
-  color: @panel-primary-text;
-  background-color: @panel-primary-heading-bg;
-}
-
-.panel-default .panel-heading a {
-  color: @panel-default-text;
-  background-color: @panel-default-heading-bg;
-}
-
-.panel-info .panel-heading a {
-  color: @panel-info-text;
-  background-color: @panel-info-heading-bg;
-}
-
-.panel-success .panel-heading a {
-  color: @panel-success-text;
-  background-color: @panel-success-heading-bg;
-}
-
-.panel-warning .panel-heading a {
-  color: @panel-warning-text;
-  background-color: @panel-warning-heading-bg;
-}
-
-.panel-danger .panel-heading a {
-  color: @panel-danger-text;
-  background-color: @panel-danger-heading-bg;
-}
-
 .select2-dropdown {
-  background-color: @input-bg;
+  background-color: $input-bg;
 }
 
 .selection .checkbox {
@@ -157,39 +183,38 @@ table a > .icon-icon_angel {
   width: 100%;
 
   .lane {
-    background: @table-bg-accent;
+    background: $table-striped-bg;
     flex-grow: 1;
     min-width: 280px;
     width: 280px;
     flex-shrink: 1;
 
     .header {
-      background: @panel-bg;
-      border-bottom: 1px solid @table-border-color;
+      border-bottom: 1px solid $table-border-color;
       height: 30px;
       padding: 5px 5px 5px 16px;
     }
 
     .tick {
       height: 30px;
-      border-top: 1px solid darken(@table-bg-accent, 2%);
+      border-top: 1px solid darken($table-striped-bg, 2%);
     }
 
     .tick.hour {
-      border-top: 2px solid @table-border-color;
+      border-top: 2px solid $table-border-color;
       font-size: 0.9em;
       padding-left: 5px;
     }
 
     .tick.day {
-      border-top: 2px solid @brand-primary;
+      border-top: 2px solid $primary;
       font-size: 0.9em;
       padding-left: 5px;
     }
   }
 
   .lane.time {
-    border-right: 1px solid @table-border-color;
+    border-right: 1px solid $table-border-color;
     flex-grow: 0;
     min-width: 50px;
     width: 50px;
@@ -211,10 +236,6 @@ table a > .icon-icon_angel {
       min-height: 100%;
     }
   }
-}
-
-.space-top {
-  margin-top: 15px;
 }
 
 .column_duration {
@@ -250,22 +271,12 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   overflow-x: inherit;
 }
 
-.inline-form-spacing {
-  margin-bottom: @form-group-margin-bottom;
-}
-
-.user-settings .settings-menu ul {
-  margin-top: @line-height-computed;
-}
-
 span.ref-id[id] {
   padding-top: 50px;
 }
 
 .faq {
-  .panel-heading h3 {
-    margin: 0;
-
+  .card-header {
     small a.ref-link {
       display: none;
     }
@@ -276,6 +287,27 @@ span.ref-id[id] {
       }
     }
   }
+}
+
+// Cards
+.card-body > *:last-child {
+    margin-bottom: 0;
+}
+
+.card-header {
+  &.bg-dark {
+    color: map.get($theme-colors, "light");
+  }
+
+  &.bg-light {
+    color: map.get($theme-colors, "dark");
+  }
+}
+
+// code tag
+code {
+  background-color: $input-disabled-bg;
+  @include border-radius($input-border-radius);
 }
 
 @keyframes pulse {
@@ -327,12 +359,12 @@ span.ref-id[id] {
   padding: 2px 6px;
   margin-top: 6px;
   margin-bottom: 4px;
-  max-height: @navbar-height;
+  max-height: $navbar-height;
 
   .icon {
-    border-color: @brand-primary;
+    border-color: $primary;
     font-weight: bold;
-    color: @brand-primary;
+    color: $primary;
     font-size: 25px;
     &-close {
       padding: 0 3px;
@@ -349,59 +381,7 @@ span.ref-id[id] {
   }
 }
 
-
-@media screen and (max-width: @grid-float-breakpoint-max) {
-  #navbar-offcanvas {
-    display: block;
-    position: absolute;
-    width: 90%;
-    height: calc( 100vh - @navbar-height);
-    max-height: unset;
-    left: 101%;
-    top: @navbar-height + 1;
-    // extra padding because mobile Safari displays a bottom bar hiding parts of the menu
-    padding-bottom: 75px;
-
-    transition: left .3s ease-in-out;
-
-    background: @navbar-default-bg;
-    margin: 0 !important;   // Overridden in theme with high specifity:
-    // .container > .navbar-header,
-    // .container-fluid > .navbar-header,
-    // .container > .navbar-collapse,
-    // .container-fluid > .navbar-collapse
-
-    // Is open
-    &.collapse.in {
-      left: 10%;
-      display: block;
-      overflow-y: auto;
-      box-shadow: -5px 20px 20px 0 rgba(0, 0, 0, 0.5), 5px 0 5px -5px rgba(0, 0, 0, 0.5);
-    }
-
-    // Hide current page in nav.
-    .nav > li.active {
-      display: none;
-    }
-
-    .caret {
-      float: right;
-      margin-top: 7px;
-    }
-  }
-
-  .navbar-toggle {
-    align-items: center;
-    font-size: 18px;
-    display: flex;
-    height: 38px;
-    justify-content: center;
-    padding: 0;
-    transform: none;
-    width: 38px;
-
-    .icon-close {
-      padding: 0;
-    }
-  }
+// Forms
+.form-label {
+  font-weight: $font-weight-bold;
 }

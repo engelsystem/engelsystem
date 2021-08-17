@@ -57,6 +57,7 @@ $includeFiles = [
     __DIR__ . '/../includes/controller/user_worklog_controller.php',
 
     __DIR__ . '/../includes/helper/graph_helper.php',
+    __DIR__ . '/../includes/helper/legacy_helper.php',
     __DIR__ . '/../includes/helper/message_helper.php',
     __DIR__ . '/../includes/helper/email_helper.php',
 

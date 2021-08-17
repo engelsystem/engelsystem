@@ -169,7 +169,13 @@ function user_settings()
 {
     $request = request();
     $config = config();
-    $themes = config('available_themes');
+    $themesConfig = config('themes');
+
+    $themes = [];
+
+    foreach ($themesConfig as $themeIndex => $themeConfig) {
+        $themes[$themeIndex] = $themeConfig['name'];
+    }
 
     $enable_tshirt_size = config('enable_tshirt_size');
     $tshirt_sizes = config('tshirt_sizes');

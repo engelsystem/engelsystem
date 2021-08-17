@@ -29,11 +29,9 @@ class DesignController extends BaseController
     /**
      * Show the design overview page
      *
-     * @param Request $request
-     *
      * @return Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $demoUser = (new User())->forceFill([
             'id'   => 42,
@@ -52,18 +50,12 @@ class DesignController extends BaseController
             'arrived' => false,
         ]));
 
-        $themes = $this->config->get('available_themes');
-
+        $themes = $this->config->get('themes');
         $data = [
             'demo_user'   => $demoUser,
             'demo_user_2' => $demoUser2,
             'themes'      => $themes,
         ];
-
-        $theme = $request->get('theme');
-        if (isset($themes[$theme])) {
-            $data['theme'] = $theme;
-        }
 
         return $this->response->withView(
             'pages/design',

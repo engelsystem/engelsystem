@@ -2,8 +2,8 @@
     <span class="icon-icon_angel"></span>
 {% endmacro %}
 
-{% macro glyphicon(glyph) %}
-    <span class="glyphicon glyphicon-{{ glyph }}"></span>
+{% macro icon(icon, color) %}
+    <span class="bi bi-{{ icon }} {% if color %} text-{{ color }} {% endif %}"></span>
 {% endmacro %}
 
 {% macro alert(message, type) %}
@@ -19,11 +19,19 @@
 {% endmacro %}
 
 {% macro button(label, url, type, size, title) %}
-    <a href="{{ url }}" class="btn btn-{{ type|default('default') }}{% if size %} btn-{{ size }}{% endif %}"{% if title %} title="{{ title }}"{% endif %}>
+    <a href="{{ url }}" class="btn btn-{{ type|default('secondary') }}{% if size %} btn-{{ size }}{% endif %}"{% if title %} title="{{ title }}"{% endif %}>
         {{ label }}
     </a>
 {% endmacro %}
 
 {% macro info(text) %}
-    <span class="help-block">{{ _self.glyphicon('info-sign') }}{{ text }}</span>
+    <span class="help-block">{{ _self.icon('info-circle') }}{{ text }}</span>
+{%- endmacro %}
+
+{% macro type_bg_class() -%}
+    {% if theme.type == 'light' %}bg-white{% else %}bg-dark{% endif %}
+{%- endmacro %}
+
+{% macro type_text_class() -%}
+    {% if theme.type == 'light' %}text-dark{% else %}text-light{% endif %}
 {%- endmacro %}

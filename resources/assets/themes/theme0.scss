@@ -1,0 +1,16 @@
+// light theme
+@import "light";
+
+$primary: #337ab7;
+$light: #f5f5f5;
+
+@import "base.scss";
+
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  &.bg-primary,
+  &.bg-success,
+  &.bg-danger {
+      color: #fff;
+  }
+}

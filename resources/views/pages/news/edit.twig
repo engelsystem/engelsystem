@@ -14,12 +14,12 @@
             <div class="row">
                 <div class="col-md-6">
                     <p>
-                        {{ m.glyphicon('time') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
+                        {{ m.icon('clock') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
 
                         {% if news.updated_at != news.created_at %}
                             &emsp;{{ __('news.updated') }}
                             <br>
-                            {{ m.glyphicon('time') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
+                            {{ m.icon('clock') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
                         {% endif %}
 
                         &emsp;{{ m.user(news.user) }}
@@ -46,16 +46,16 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col-md-12">
                     {{ f.textarea('text', __('news.edit.message'), {'required': true, 'rows': 10, 'value': news ? news.text : ''}) }}
 
                     {{ f.submit() }}
 
-                    {{ f.submit(m.glyphicon('eye-close'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
+                    {{ f.submit(m.icon('eye'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
 
                     {% if news and news.id %}
-                        {{ f.submit(m.glyphicon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
+                        {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
                     {% endif %}
                 </div>
             </div>
@@ -65,15 +65,12 @@
                     <div class="col-md-12">
                         <h2>{{ __('form.preview') }}</h2>
 
-                        <div class="panel {% if not news.is_meeting %}panel-default{% else %}panel-info{% endif %}">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">
-                                    {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
-                                    {{ news.title }}
-                                </h3>
+                        <div class="card {% if news.is_meeting %}bg-info{% else %}{% if theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %}{% endif %} mb-4">
+                            <div class="card-header {% if news.is_meeting and theme.type == 'dark' %}text-white{% endif %}">
+                                {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
+                                {{ news.title }}
                             </div>
-
-                            <div class="panel-body">
+                            <div class="card-body bg-body">
                                 {{ news.text|raw|markdown(false) }}
                             </div>
                         </div>

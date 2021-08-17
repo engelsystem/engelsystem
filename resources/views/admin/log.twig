@@ -10,7 +10,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="inline-form-spacing">
+                <div class="mb-3">
                     <form method="POST" action="{{ url('/admin/logs') }}" class="form-inline">
                         {{ csrf() }}
 
@@ -44,9 +44,9 @@
                         {%- endif %}
 
                         <tr>
-                            <td class="{{ td_type }}">{{ entry.created_at.format(__('Y-m-d H:i')) }}</td>
-                            <td class="{{ td_type }}">
-                                <span class="label label-{{ type }}">{{ entry.level|capitalize }}</span>
+                            <td class="table-{{ td_type }}">{{ entry.created_at.format(__('Y-m-d H:i')) }}</td>
+                            <td class="table-{{ td_type }}">
+                                <span class="badge bg-{{ type }}">{{ entry.level|capitalize }}</span> <!-- //todo bs5 -->
                             </td>
                             <td>{{ entry.message|nl2br }}</td>
                         </tr>

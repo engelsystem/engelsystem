@@ -440,5 +440,5 @@ function guest_register()
  */
 function entry_required()
 {
-    return '<span class="text-info glyphicon glyphicon-warning-sign"></span>';
+    return icon('exclamation-triangle', 'text-info');
 }

@@ -1,86 +1,66 @@
+{% import 'macros/base.twig' as m %}
+
 {% macro toolbar_item(label, link, active_page, icon) %}
-    <li{% if page() == active_page %} class="active"{% endif %}>
-        <a href="{{ link }}">
-            {% if icon %}<span class="{% if 'glyphicon-' in icon %}glyphicon {% endif %}{{ icon }}"></span>{% endif %}
+    <li class="nav-item">
+        <a class="nav-link{% if page() == active_page %} active{% endif %}" href="{{ link }}">
+            {% if icon %}{{ m.icon(icon) }}{% endif %}
             {{ label|raw }}
         </a>
     </li>
 {% endmacro %}
 
-<div class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar fixed-top navbar-expand-lg border-bottom {{ theme['navbar_classes'] }}">
     <div class="container-fluid">
-        {% block navbar %}
-            <div class="navbar-header">
-                <button type="button"
-                        class="navbar-toggle collapsed"
-                        data-toggle="offcanvas"
-                        data-target="#navbar-offcanvas"
-                        aria-label="Toggle navigation">
-                    <span class="text-primary glyphicon glyphicon-menu-hamburger icon-open"></span>
-                    <span class="text-primary glyphicon glyphicon-remove icon-close"></span>
-                </button>
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <span class="icon-icon_angel"></span>
-                    <strong class="visible-lg-inline">{{ config('app_name')|upper }}</strong>
-                </a>
-            </div>
+        <a class="navbar-brand" href="{{ url('/') }}">
+            <span class="icon-icon_angel"></span>
+            <strong class="visible-lg-inline">{{ config('app_name')|upper }}</strong>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            {{ menu() }}
 
-            {% block menu %}
-                <div class="collapse navbar-collapse" id="navbar-offcanvas">
-                    {% block menu_items %}
-                        {{ menu() }}
+            {% if config('header_items') %}
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    {% for text,link in config('header_items', {}) %}
+                        <li class="nav-item">
+                            <a href="{{ link|replace({'%lang%': session_get('locale')|split('_')[0]})|escape('html_attr') }}">
+                                {{ text }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {% if is_user() %}
+                    {{ _self.toolbar_item(menuUserShiftState(user), url('shifts', {'action': 'next'}), '', 'clock') }}
+                {% elseif has_permission_to('register') and config('registration_enabled') %}
+                    {{ _self.toolbar_item(__('Register'), url('register'), 'register', 'plus') }}
+                {% endif %}
 
-                        {% if config('header_items') %}
-                            <ul class="nav navbar-nav">
-                                {% for text,link in config('header_items', {}) %}
-                                    <li>
-                                        <a href="{{ link|replace({'%lang%': session_get('locale')|split('_')[0]})|escape('html_attr') }}">
-                                            {{ text }}
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    {% endblock %}
+                {% if has_permission_to('login') %}
+                    {{ _self.toolbar_item(__('Login'), url('login'), 'login', 'box-arrow-in-right') }}
+                {% endif %}
 
-                    {% block menu_toolbar %}
-                        <ul class="nav navbar-nav navbar-right">
+                {% if is_user() and has_permission_to('user_messages') %}
+                    {{ _self.toolbar_item(menuUserMessages(), url('user-messages'), 'user-messages', 'envelope') }}
+                {% endif %}
 
-                            {% if is_user() %}
-                                {{ _self.toolbar_item(menuUserShiftState(user), url('shifts', {'action': 'next'}), '', 'glyphicon-time') }}
-                            {% elseif has_permission_to('register') and config('registration_enabled') %}
-                                {{ _self.toolbar_item(__('Register'), url('register'), 'register', 'glyphicon-plus') }}
-                            {% endif %}
+                {{ menuUserHints() }}
 
-                            {% if has_permission_to('login') %}
-                                {{ _self.toolbar_item(__('Login'), url('login'), 'login', 'glyphicon-log-in') }}
-                            {% endif %}
+                {% if has_permission_to('user_myshifts') %}
+                    {{ _self.toolbar_item(user.name, url('users', {'action': 'view'}), 'users', 'icon icon-icon_angel') }}
+                {% endif %}
 
-                            {% if is_user() and has_permission_to('user_messages') %}
-                                {{ _self.toolbar_item(menuUserMessages(), url('user-messages'), 'user-messages', 'glyphicon-envelope') }}
-                            {% endif %}
-
-                            {{ menuUserHints() }}
-
-                            {% if has_permission_to('user_myshifts') %}
-                                {{ _self.toolbar_item(user.name, url('users', {'action': 'view'}), 'users', 'icon icon-icon_angel') }}
-                            {% endif %}
-
-                            <li class="hidden-xs">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    {{ menuUserSubmenu()|join(" ")|raw }}
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-mobile hidden-sm hidden-md hidden-lg">
-                            {{ menuUserSubmenu()|join(" ")|raw }}
-                        </ul>
-                    {% endblock %}
-                </div>
-            {% endblock %}
-        {% endblock %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        {{ menuUserSubmenu()|join(" ")|raw }}
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
+</nav>

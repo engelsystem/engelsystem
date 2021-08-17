@@ -26,17 +26,17 @@ function Shift_view_header($shift, Room $room)
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('Start') . '</h4>',
             '<p class="lead' . (time() >= $shift['start'] ? ' text-success' : '') . '">',
-            glyph('calendar') . date(__('Y-m-d'), $shift['start']),
+            icon('calendar3') . date(__('Y-m-d'), $shift['start']),
             '<br />',
-            glyph('time') . date('H:i', $shift['start']),
+            icon('clock') . date('H:i', $shift['start']),
             '</p>'
         ]),
         div('col-sm-3 col-xs-6', [
             '<h4>' . __('End') . '</h4>',
             '<p class="lead' . (time() >= $shift['end'] ? ' text-success' : '') . '">',
-            glyph('calendar') . date(__('Y-m-d'), $shift['end']),
+            icon('calendar3') . date(__('Y-m-d'), $shift['end']),
             '<br />',
-            glyph('time') . date('H:i', $shift['end']),
+            icon('clock') . date('H:i', $shift['end']),
             '</p>'
         ]),
         div('col-sm-3 col-xs-6', [
@@ -55,14 +55,14 @@ function Shift_editor_info_render($shift)
     $info = [];
     if (!empty($shift['created_by_user_id'])) {
         $info[] = sprintf(
-            glyph('plus') . __('created at %s by %s'),
+            icon('plus-lg') . __('created at %s by %s'),
             date('Y-m-d H:i', $shift['created_at_timestamp']),
             User_Nick_render(User::find($shift['created_by_user_id']))
         );
     }
     if (!empty($shift['edited_by_user_id'])) {
         $info[] = sprintf(
-            glyph('pencil') . __('edited at %s by %s'),
+            icon('pencil') . __('edited at %s by %s'),
             date('Y-m-d H:i', $shift['edited_at_timestamp']),
             User_Nick_render(User::find($shift['edited_by_user_id']))
         );
@@ -159,10 +159,10 @@ function Shift_view($shift, $shifttype, Room $room, $angeltypes_source, ShiftSig
     $buttons = [];
     if ($shift_admin || $admin_shifttypes || $admin_rooms) {
         $buttons = [
-            $shift_admin ? button(shift_edit_link($shift), glyph('pencil') . __('edit')) : '',
-            $shift_admin ? button(shift_delete_link($shift), glyph('trash') . __('delete')) : '',
+            $shift_admin ? button(shift_edit_link($shift), icon('pencil') . __('edit')) : '',
+            $shift_admin ? button(shift_delete_link($shift), icon('trash') . __('delete')) : '',
             $admin_shifttypes ? button(shifttype_link($shifttype), $shifttype['name']) : '',
-            $admin_rooms ? button(room_link($room), glyph('map-marker') . $room->name) : '',
+            $admin_rooms ? button(room_link($room), icon('geo-alt') . $room->name) : '',
         ];
     }
     $buttons[] = button(user_link(auth()->user()->id), '<span class="icon-icon_angel"></span> ' . __('My shifts'));
@@ -213,7 +213,7 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shi
     }
     $needed_angels .= '<div class="list-group-item">';
 
-    $needed_angels .= '<div class="pull-right">' . Shift_signup_button_render($shift, $angeltype) . '</div>';
+    $needed_angels .= '<div class="float-end m-3">' . Shift_signup_button_render($shift, $angeltype) . '</div>';
 
     $needed_angels .= '<h3>' . AngelType_name_render($angeltype) . '</h3>';
     $bar_max = max($needed_angeltype['count'] * 10, $needed_angeltype['taken'] * 10, 10);
@@ -253,15 +253,15 @@ function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angelty
     }
     $isUser = $shift_entry['UID'] == auth()->user()->id;
     if ($user_shift_admin || $angeltype_supporter || $isUser) {
-        $entry .= ' <div class="btn-group">';
+        $entry .= ' <div class="btn-group m-1">';
         if ($user_shift_admin || $isUser) {
-            $entry .= button_glyph(
+            $entry .= button_icon(
                 page_link_to('user_myshifts', ['edit' => $shift_entry['id'], 'id' => $shift_entry['UID']]),
                 'pencil',
-                'btn-xs'
+                'btn-sm'
             );
         }
-        $entry .= button_glyph(shift_entry_delete_link($shift_entry), 'trash', 'btn-xs');
+        $entry .= button_icon(shift_entry_delete_link($shift_entry), 'trash', 'btn-sm');
         $entry .= '</div>';
     }
     return $entry;

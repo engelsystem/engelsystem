@@ -204,8 +204,13 @@ class ShiftCalendarRenderer
             $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
         }
 
+        $bg = '';
+        if (theme_type() === 'light') {
+            $bg = 'bg-light';
+        }
+
         return div('lane', [
-            div('header', $lane->getHeader()),
+            div('header ' . $bg, $lane->getHeader()),
             $html
         ]);
     }
@@ -244,8 +249,13 @@ class ShiftCalendarRenderer
      */
     private function renderTimeLane()
     {
+        $bg = '';
+        if (theme_type() === 'light') {
+            $bg = 'bg-light';
+        }
+
         $time_slot = [
-            div('header', [
+            div('header ' . $bg, [
                 __('Time')
             ])
         ];
@@ -311,12 +321,12 @@ class ShiftCalendarRenderer
      */
     private function renderLegend()
     {
-        return div('legend', [
-            label(__('Your shift'), 'primary'),
-            label(__('Help needed'), 'danger'),
-            label(__('Other angeltype needed / collides with my shifts'), 'warning'),
-            label(__('Shift is full'), 'success'),
-            label(__('Shift running/ended or user not arrived/allowed'), 'default')
+        return div('legend mt-3', [
+            badge(__('Your shift'), 'primary'),
+            badge(__('Help needed'), 'danger'),
+            badge(__('Other angeltype needed / collides with my shifts'), 'warning'),
+            badge(__('Shift is full'), 'success'),
+            badge(__('Shift running/ended or user not arrived/allowed'), 'secondary')
         ]);
     }
 }

@@ -269,7 +269,7 @@ function view_user_shifts()
                         button(
                             'javascript: checkOwnTypes(\'selection_types\', ' . json_encode($ownTypes) . ')',
                             __('Own'),
-                            'hidden-print'
+                            'd-print-none'
                         ),
                     ]
                 ),
@@ -281,8 +281,9 @@ function view_user_shifts()
                     . __('Description of the jobs.')
                     . '</a>',
                 'shifts_table'  => msg() . $shiftCalendarRenderer->render(),
-                'ical_text'     => ical_hint(),
+                'ical_text'     => div('mt-3', ical_hint()),
                 'filter'        => __('Filter'),
+                'filter_toggle' => __('shifts.filter.toggle'),
                 'set_yesterday' => __('Yesterday'),
                 'set_today'     => __('Today'),
                 'set_tomorrow'  => __('Tomorrow'),
@@ -292,7 +293,7 @@ function view_user_shifts()
                 'set_next_8h'   => __('next 8h'),
                 'buttons'       => button(
                     public_dashboard_link(),
-                    glyph('dashboard') . __('Public Dashboard')
+                    icon('speedometer2') . __('Public Dashboard')
                 )
             ])
         ])
@@ -318,7 +319,9 @@ function ical_hint()
             page_link_to('shifts_json_export', ['key' => $user->api_key]),
             page_link_to('user_myshifts', ['reset' => 1])
         )
-        . ' <button class="btn btn-xs btn-danger" data-toggle="collapse" data-target="#collapseApiKey" aria-expanded="false" aria-controls="collapseApiKey">
+        . ' <button class="btn btn-sm btn-danger" type="button"
+            data-bs-toggle="collapse" data-bs-target="#collapseApiKey"
+            aria-expanded="false" aria-controls="collapseApiKey">
             ' . __('Show API Key') . '
             </button>'
         . '</p>'
@@ -351,8 +354,8 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
     }
 
     $buttons = [];
-    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', true)', __('All'), 'hidden-print');
-    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', false)', __('None'), 'hidden-print');
+    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', true)', __('All'), 'd-print-none');
+    $buttons[] = button('javascript: checkAll(\'selection_' . $name . '\', false)', __('None'), 'd-print-none');
     $buttons = array_merge($buttons, $additionalButtons);
 
     $html .= buttons($buttons);
@@ -362,7 +365,7 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
             . '<label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '" '
             . (in_array($i['id'], $selected) ? ' checked="checked"' : '')
             . ' > ' . $i['name'] . '</label>'
-            . (!isset($i['enabled']) || $i['enabled'] ? '' : glyph('lock'))
+            . (!isset($i['enabled']) || $i['enabled'] ? '' : icon('lock'))
             . '</div>';
     }
     $html .= '<div id="selection_' . $name . '" class="selection ' . $name . '">' . "\n";

@@ -18,8 +18,8 @@ function UserWorkLog_delete_view(User $user)
         ), true),
         form([
             buttons([
-                button(user_link($user->id), glyph('remove') . __('cancel')),
-                form_submit('submit', glyph('ok') . __('delete'), 'btn-danger', false),
+                button(user_link($user->id), icon('x-lg') . __('cancel')),
+                form_submit('submit', icon('check-lg') . __('delete'), 'btn-danger', false),
             ]),
         ]),
     ]);

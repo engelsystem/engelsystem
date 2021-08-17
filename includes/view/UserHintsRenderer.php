@@ -18,10 +18,10 @@ class UserHintsRenderer
     {
         if (count($this->hints) > 0) {
             $hint_class = $this->important ? 'danger' : 'info';
-            $glyphicon = $this->important ? 'warning-sign' : 'info-sign';
+            $icon = $this->important ? 'exclamation-triangle' : 'info-circle';
 
             return toolbar_popover(
-                $glyphicon . ' text-' . $hint_class, '', $this->hints, 'bg-' . $hint_class
+                $icon . ' text-white', '', $this->hints, 'bg-' . $hint_class
             );
         }
 

@@ -286,7 +286,7 @@ function angeltypes_list_controller()
             button(
                 page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]),
                 __('view'),
-                'btn-xs'
+                'btn-sm'
             )
         ];
 
@@ -294,12 +294,12 @@ function angeltypes_list_controller()
             $actions[] = button(
                 page_link_to('angeltypes', ['action' => 'edit', 'angeltype_id' => $angeltype['id']]),
                 __('edit'),
-                'btn-xs'
+                'btn-sm'
             );
             $actions[] = button(
                 page_link_to('angeltypes', ['action' => 'delete', 'angeltype_id' => $angeltype['id']]),
                 __('delete'),
-                'btn-xs'
+                'btn-sm'
             );
         }
 
@@ -310,18 +310,18 @@ function angeltypes_list_controller()
                     ['action' => 'delete', 'user_angeltype_id' => $angeltype['user_angeltype_id']]
                 ),
                 __('leave'),
-                'btn-xs'
+                'btn-sm'
             );
         } else {
             $actions[] = button(
                 page_link_to('user_angeltypes', ['action' => 'add', 'angeltype_id' => $angeltype['id']]),
                 __('join'),
-                'btn-xs'
+                'btn-sm'
             );
         }
 
-        $angeltype['restricted'] = $angeltype['restricted'] ? glyph('book') : '';
-        $angeltype['no_self_signup'] = $angeltype['no_self_signup'] ? '' : glyph('share');
+        $angeltype['restricted'] = $angeltype['restricted'] ? icon('book') : '';
+        $angeltype['no_self_signup'] = $angeltype['no_self_signup'] ? '' : icon('pencil-square');
 
         $angeltype['name'] = '<a href="'
             . page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']])

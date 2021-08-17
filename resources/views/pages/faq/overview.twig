@@ -11,7 +11,7 @@
             {{ block('title') }}
 
             {%- if has_permission_to('faq.edit') -%}
-                {{ m.button(m.glyphicon('plus'), url('admin/faq')) }}
+                {{ m.button(m.icon('plus-lg'), url('admin/faq'), 'secondary') }}
             {%- endif %}
         </h1>
 
@@ -30,24 +30,26 @@
                 {% for item in items %}
                     <div class="col-md-12 faq">
                         <span id="faq-{{ item.id }}" class="ref-id"></span>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3>
-                                    {{ item.question }}
-                                    <small><a class="ref-link" href="#faq-{{ item.id }}">{{ m.glyphicon('link') }}</a></small>
-                                </h3>
-                            </div>
+                        <div class="card {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} mb-4">
+                            <h4 class="card-header">
+                                {{ item.question }}
+                                <small class="text-muted">
+                                    <a class="ref-link" href="#faq-{{ item.id }}">{{ m.icon('link') }}</a>
+                                </small>
+                            </h4>
 
-                            <div class="panel-body">
+                            <div class="card-body bg-body">
                                 {{ item.text|markdown }}
                             </div>
 
-                            <div class="panel-footer">
-                                {{ m.glyphicon('time') }} {{ item.updated_at.format(__('Y-m-d H:i')) }}
+                            <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} d-flex align-items-center">
+                                <div class="me-3">
+                                    {{ m.icon('clock') }} {{ item.updated_at.format(__('Y-m-d H:i')) }}
+                                </div>
 
                                 {% if has_permission_to('faq.edit') %}
-                                    <span class="pull-right">
-                                        {{ m.button(m.glyphicon('edit'), url('admin/faq/' ~ item.id), null, 'xs') }}
+                                    <span class="ms-auto">
+                                        {{ m.button(m.icon('pencil-square'), url('admin/faq/' ~ item.id), 'secondary', 'sm') }}
                                     </span>
                                 {% endif %}
                             </div>

@@ -1,0 +1,64 @@
+// cccamp19 green (2019)
+
+// Variables
+// --------------------------------------------------
+@import "dark";
+
+//== changed Colors
+
+$gray-dark:    #282828;
+$gray-light:   #888;
+$gray-lighter: #ADAFAE;
+
+$brand-primary: #99ba00;
+$primary:       $brand-primary;
+
+$text-muted: $primary;
+
+@import "cyborg_variables.scss";
+@import "cyborg_styles.scss";
+
+// Specials for cccamp19 design
+@import "card-glow";
+
+.navbar-brand {
+  .icon-icon_angel {
+    background-color: $brand-primary;
+  }
+
+  strong {
+    font-weight: normal;
+    color: $brand-primary;
+    text-shadow:
+      0 0 10px $brand-primary,
+      0 0 20px $brand-primary,
+      0 0 30px $brand-primary,
+      0 0 40px $brand-primary,
+      0 0 70px $brand-primary,
+      0 0 80px $brand-primary;
+  }
+}
+
+h1 {
+  font-weight: normal;
+  color: $brand-primary;
+  text-shadow: 0 0 10px $brand-primary;
+
+  .icon-icon_angel {
+    background-color: $brand-primary;
+  }
+}
+
+.input-group-addon {
+  color: #000;
+
+  .icon-icon_angel {
+    background-color: #000;
+  }
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    &.bg-warning {
+        color: #000;
+    }
+}

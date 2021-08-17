@@ -94,10 +94,10 @@ function admin_free()
             'dect'        => sprintf('<a href="tel:%s">%1$s</a>', $usr->contact->dect),
             'email'       => $usr->settings->email_human
                 ? sprintf('<a href="email:%s">%1$s</a>', $email)
-                : glyph('eye-close'),
+                : icon('eye-slash'),
             'actions'     =>
                 auth()->can('admin_user')
-                    ? button(page_link_to('admin_user', ['id' => $usr->id]), __('edit'), 'btn-xs')
+                    ? button(page_link_to('admin_user', ['id' => $usr->id]), __('edit'), 'btn-sm')
                     : ''
         ];
     }
@@ -105,9 +105,9 @@ function admin_free()
         form([
             div('row', [
                 div('col-md-12 form-inline', [
-                    div('inline-form-spacing', [
-                        form_text('search', __('Search'), $search),
-                        form_select('angeltype', __('Angeltype'), $angel_types, $angelType),
+                    div('row', [
+                        form_text('search', __('Search'), $search, null, null, null, 'col'),
+                        form_select('angeltype', __('Angeltype'), $angel_types, $angelType, '', 'col'),
                         form_submit('submit', __('Search'))
                     ]),
                 ]),

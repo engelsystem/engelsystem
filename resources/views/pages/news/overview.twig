@@ -9,7 +9,7 @@
         <h1>
             {{ block('title') }}
             {%- if has_permission_to('admin_news') and is_overview|default(false) -%}
-                {{ m.button(m.glyphicon('plus'), url('admin/news', only_meetings ? {'meeting': 1} : {})) }}
+                {{ m.button(m.icon('plus-lg'), url('admin/news', only_meetings ? {'meeting': 1} : {}), 'secondary') }}
             {%- endif %}
         </h1>
 
@@ -48,48 +48,53 @@
 {% endblock %}
 
 {% macro news(news, show_comments_link, is_overview) %}
-    <div class="panel {% if not news.is_meeting %}panel-default{% else %}panel-info{% endif %}">
+    <div class="card {% if news.is_meeting %}bg-info{% else %}{% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %}{% endif %} mb-4">
         {% if is_overview|default(false) %}
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a href="{{ url('news/' ~ news.id) }}">
-                        {% if news.is_pinned %}{{ m.glyphicon('pushpin') }}{% endif %}
-                        {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
-                        {{ news.title }}
-                    </a>
-                </h3>
+        <div class="card-header {% if news.is_meeting and theme.type == 'dark' %}text-white{% endif %}">
+                <a href="{{ url('news/' ~ news.id) }}" class="text-inherit">
+                    {% if news.is_pinned %}{{ m.icon('pin-angle') }}{% endif %}
+                    {% if news.is_meeting %}{{ __('news.is_meeting') }}{% endif %}
+                    {{ news.title }}
+                </a>
             </div>
         {% endif %}
 
-        <div class="panel-body">
+        <div class="card-body bg-body">
             {{ news.text|raw|markdown(false) }}
         </div>
 
-        <div class="panel-footer text-muted">
-            {{ m.glyphicon('time') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
-
+        <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} text-muted">
             {% if news.updated_at != news.created_at and not is_overview %}
-                &emsp;{{ __('news.updated') }}
-
-                <br>
-                {{ m.glyphicon('time') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
-            {% endif %}
-
-            &emsp;{{ m.user(news.user) }}
-
-            {% if show_comments_link|default(false) %}
-                &ensp;
-                <a href="{{ url('news/' ~ news.id) }}">
-                    {{ m.glyphicon('comment') }} {{ __('news.comments') }} &raquo;
-                </a>
-                <span class="badge">{{ news.comments.count() }}</span>
-            {% endif %}
-
-            {% if has_permission_to('admin_news') %}
-                <div class="pull-right">
-                    {{ m.button(m.glyphicon('edit'), url('admin/news/' ~ news.id), null, 'xs') }}
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        {{ m.icon('clock') }} {{ news.created_at.format(__('Y-m-d H:i')) }}
+                    </div>
+                    {{ __('news.updated') }}
                 </div>
             {% endif %}
+            <div class="d-flex align-items-center">
+                <div class="me-3">
+                    {{ m.icon('clock') }} {{ news.updated_at.format(__('Y-m-d H:i')) }}
+                </div>
+
+                <div class="me-3">
+                    {{ m.user(news.user) }}
+                </div>
+
+                {% if show_comments_link|default(false) %}
+                    <a href="{{ url('news/' ~ news.id) }}" class="me-1">
+                        {{ m.icon('chat-left-text') }} {{ __('news.comments') }}
+                    </a>
+                    <span class="badge bg-primary">{{ news.comments.count() }}</span>
+                    {{ m.icon('chevron-double-right', 'primary') }}
+                {% endif %}
+
+                {% if has_permission_to('admin_news') %}
+                    <div class="ms-auto">
+                        {{ m.button(m.icon('pencil-square'), url('admin/news/' ~ news.id), 'secondary', 'sm') }}
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endmacro %}

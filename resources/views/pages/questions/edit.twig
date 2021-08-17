@@ -14,12 +14,12 @@
             <div class="row">
                 <div class="col-md-6">
                     <p>
-                        {{ m.glyphicon('time') }} {{ question.updated_at.format(__('Y-m-d H:i')) }}
+                        {{ m.icon('clock') }} {{ question.updated_at.format(__('Y-m-d H:i')) }}
 
                         {% if question.updated_at != question.created_at %}
                             &emsp;{{ __('form.updated') }}
                             <br>
-                            {{ m.glyphicon('time') }} {{ question.created_at.format(__('Y-m-d H:i')) }}
+                            {{ m.icon('clock') }} {{ question.created_at.format(__('Y-m-d H:i')) }}
                         {% endif %}
                     </p>
                 </div>
@@ -41,31 +41,31 @@
                     {{ f.submit() }}
 
                     {% if is_admin|default(false) %}
-                        {{ f.submit(m.glyphicon('eye-close'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
+                        {{ f.submit(m.icon('eye'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}
 
                         {% if question and question.id %}
-                            {{ f.submit(m.glyphicon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
+                            {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'title': __('form.delete')}) }}
                         {% endif %}
                     {% endif %}
                 </div>
             </div>
 
             {% if question %}
-                <div class="row">
+                <div class="row mt-3">
                     <div class="col-md-12">
                         <h2>{{ __('form.preview') }}</h2>
 
-                        <div class="panel panel-default">
-                            <div class="panel-body">
+                        <div class="card {% if theme.type =='light' %}bg-light{% else %}bg-secondary{% endif %} mb-4">
+                            <div class="card-body bg-body">
                                 {{ question.text|nl2br }}
                             </div>
                         </div>
                     </div>
 
                     {% if question.answer %}
-                        <div class="col-md-11 col-md-offset-1">
-                            <div class="panel panel-info">
-                                <div class="panel-body">
+                        <div class="col-md-11 offset-md-1">
+                            <div class="card bg-info">
+                                <div class="card-body bg-body">
                                     {{ question.answer|markdown }}
                                 </div>
                             </div>
