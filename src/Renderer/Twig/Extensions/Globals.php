@@ -49,7 +49,7 @@ class Globals extends TwigExtension implements GlobalsInterface
         }
 
         if (array_key_exists($themeId, $themes) === false) {
-            $themeId = 1;
+            $themeId = array_key_first($themes);
         }
 
         $theme = $themes[$themeId];
