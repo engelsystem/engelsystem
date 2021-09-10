@@ -68,7 +68,7 @@
 {% macro button(label, opt) %}
     <button
         class="btn btn-{{ opt.btn_type|default('secondary') }}
-            {%- if 'btn_size' in opt %} btn-{{ opt.btn_size }}{% endif %}"
+        {%- if opt.size is defined %} btn-{{ opt.size }}{% endif %}"
         {%- if opt.type is defined %} type="{{ opt.type }}"{% endif %}
         {%- if opt.name is defined %} name="{{ opt.name }}"{% endif %}
         {%- if opt.title is defined %} title="{{ opt.title }}"{% endif %}

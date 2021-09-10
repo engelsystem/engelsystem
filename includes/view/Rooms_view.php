@@ -53,7 +53,6 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
 
     return page_with_title(icon('geo-alt') . $room->name, [
         $assignNotice,
-        $description,
         auth()->can('admin_rooms') ? buttons([
             button(
                 page_link_to('admin_rooms', ['show' => 'edit', 'id' => $room->id]),
@@ -66,6 +65,7 @@ function Room_view(Room $room, ShiftsFilterRenderer $shiftsFilterRenderer, Shift
                 'btn'
             )
         ]) : '',
+        $description,
         tabs($tabs, $selected_tab),
     ], true);
 }

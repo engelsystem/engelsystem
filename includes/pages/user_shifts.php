@@ -365,7 +365,7 @@ function make_select($items, $selected, $name, $title = null, $additionalButtons
             . '<label><input type="checkbox" name="' . $name . '[]" value="' . $i['id'] . '" '
             . (in_array($i['id'], $selected) ? ' checked="checked"' : '')
             . ' > ' . $i['name'] . '</label>'
-            . (!isset($i['enabled']) || $i['enabled'] ? '' : icon('lock'))
+            . (!isset($i['enabled']) || $i['enabled'] ? '' : icon('book'))
             . '</div>';
     }
     $html .= '<div id="selection_' . $name . '" class="selection ' . $name . '">' . "\n";

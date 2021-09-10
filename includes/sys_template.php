@@ -222,8 +222,8 @@ function toolbar_dropdown_item_divider(): string
 function toolbar_dropdown($icon, $label, $submenu, $class = ''): string
 {
     $template =<<<EOT
-<li class="nav-item dropdown {class}">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle {class}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         {icon} {label}
     </a>
     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">

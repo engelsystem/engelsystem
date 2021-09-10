@@ -25,12 +25,12 @@
                     {{ m.user(comment.user) }}
 
                     {% if comment.user.id == user.id or has_permission_to('admin_news') or has_permission_to('comment.delete') %}
-                        <div class="pull-right">
+                        <div class="ms-auto">
                             <form
                                 action="{{ url('/news/comment/' ~ comment.id) }}" enctype="multipart/form-data"
                                 method="post">
                                 {{ csrf() }}
-                                {{ f.submit(m.glyphicon('trash'), {'name': 'delete', 'btn_type': 'danger', 'btn_size': 'xs', 'title': __('form.delete')}) }}
+                                {{ f.submit(m.icon('trash'), {'name': 'delete', 'btn_type': 'danger', 'size': 'sm', 'title': __('form.delete')}) }}
                             </form>
                         </div>
                     {% endif %}

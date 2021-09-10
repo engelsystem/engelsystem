@@ -82,7 +82,7 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::NOT_ARRIVED:
             case ShiftSignupState::NOT_YET:
             case ShiftSignupState::SHIFT_ENDED:
-                return 'light';
+                return 'secondary';
 
             case ShiftSignupState::ANGELTYPE:
             case ShiftSignupState::COLLIDES:
@@ -91,7 +91,7 @@ class ShiftCalendarShiftRenderer
             case ShiftSignupState::FREE:
                 return 'danger';
             default:
-                return 'secondary';
+                return 'light';
         }
     }
 
@@ -282,12 +282,12 @@ class ShiftCalendarShiftRenderer
                     button(
                         page_link_to('user_shifts', ['edit_shift' => $shift['SID']]),
                         icon('pencil'),
-                        "btn-$class btn-sm border-light"
+                        "btn-$class btn-sm border-light text-white"
                     ),
                     button(
                         page_link_to('user_shifts', ['delete_shift' => $shift['SID']]),
                         icon('trash'),
-                        "btn-$class btn-sm border-light"
+                        "btn-$class btn-sm border-light text-white"
                     )
                 ]) . '</div>';
         }

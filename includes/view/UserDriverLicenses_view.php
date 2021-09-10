@@ -69,5 +69,5 @@ function UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver
             });
         </script>
         '
-    ]);
+    ], true);
 }
