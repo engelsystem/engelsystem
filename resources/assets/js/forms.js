@@ -99,7 +99,7 @@ $(function () {
 $(function () {
     $([
         {
-            'select': $('.input-group.date'), 
+            'select': $('.input-group.date'),
             'format': 'YYYY-MM-DD',
             'extraFormats': []
         },
