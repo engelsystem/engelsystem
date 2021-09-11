@@ -122,7 +122,9 @@ $(function () {
                     time: 'bi bi-clock',
                     date: 'bi bi-calendar',
                     up: 'bi bi-arrow-up',
-                    down: 'bi bi-arrow-down'
+                    down: 'bi bi-arrow-down',
+                    previous: 'bi bi-arrow-left',
+                    next: 'bi bi-arrow-right'
                 }
             };
 
