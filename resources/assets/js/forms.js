@@ -98,8 +98,16 @@ $(function () {
  */
 $(function () {
     $([
-        {'select': $('.input-group.date'), 'format': 'YYYY-MM-DD'},
-        {'select': $('.input-group.datetime'), 'format': 'YYYY-MM-DD HH:mm'},
+        {
+            'select': $('.input-group.date'), 
+            'format': 'YYYY-MM-DD',
+            'extraFormats': []
+        },
+        {
+            'select': $('.input-group.datetime'),
+            'format': 'YYYY-MM-DD HH:mm',
+            'extraFormats': ['YYYY-MM-DDTHH:mm']
+        },
     ]).each(function (_, element) {
         element.select.each(function () {
             var elem = $(this);
@@ -108,6 +116,7 @@ $(function () {
                 maxDate: '',
                 locale: $('html').attr('lang'),
                 format: element.format,
+                extraFormats: element.extraFormats,
                 widgetPositioning: {horizontal: 'auto', vertical: 'bottom'},
                 icons: {
                     time: 'bi bi-clock',
@@ -116,29 +125,29 @@ $(function () {
                     down: 'bi bi-arrow-down'
                 }
             };
+
             $.extend(opts, elem.data());
+
             if (opts.minDate.length === 0) {
                 delete opts.minDate;
             }
+
             if (opts.maxDate.length === 0) {
                 delete opts.maxDate;
             }
+
             elem.children('input').attr('type', 'text');
-            elem.children().on('click', function (ev) {
+            elem.datetimepicker(opts);
+
+            // close on click anywhere outside
+            $(document).on('click', () => {
+                elem.data('datetimepicker').hide()
+            })
+
+            elem.children().on('click', (ev) => {
                 ev.stopImmediatePropagation();
-                if (typeof elem.data('datetimepicker') === 'undefined') {
-                    elem.datetimepicker(opts);
-                    elem.data('datetimepicker').show();
-
-                    // close on click anywhere outside
-                    $(document).on('click', () => {
-                        elem.data('datetimepicker').hide()
-                    })
-                } else {
-                    elem.data('datetimepicker').toggle();
-                }
+                elem.data('datetimepicker').toggle();
             });
-
         });
     });
 });

@@ -23,6 +23,7 @@ $(document).ready(function () {
                 });
                 headers.css({
                     'top': Math.max(0, $(window).scrollTop() - top
+                        - 13
                         + topReference.offset().top)
                         + 'px'
                 });

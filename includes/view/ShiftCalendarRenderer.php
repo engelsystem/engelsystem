@@ -204,10 +204,7 @@ class ShiftCalendarRenderer
             $rendered_until += ShiftCalendarRenderer::SECONDS_PER_ROW;
         }
 
-        $bg = '';
-        if (theme_type() === 'light') {
-            $bg = 'bg-light';
-        }
+        $bg = 'bg-' . theme_type();
 
         return div('lane', [
             div('header ' . $bg, $lane->getHeader()),
