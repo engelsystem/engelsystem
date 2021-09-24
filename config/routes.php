@@ -96,6 +96,16 @@ $route->addGroup(
             }
         );
 
+        // User
+        $route->addGroup(
+            '/user/{id:\d+}',
+            // Shirts
+            function (RouteCollector $route) {
+                $route->get('/shirt', 'Admin\\UserShirtController@editShirt');
+                $route->post('/shirt', 'Admin\\UserShirtController@saveShirt');
+            }
+        );
+
         // News
         $route->addGroup(
             '/news',

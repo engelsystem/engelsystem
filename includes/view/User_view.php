@@ -618,6 +618,10 @@ function User_view(
             div('row', [
                 div('col-md-12', [
                     buttons([
+                        $auth->can('user.edit.shirt') ? button(
+                            url('/admin/user/' . $user_source->id . '/shirt'),
+                            icon('person') . __('Shirt')
+                        ) : '',
                         $admin_user_privilege ? button(
                             page_link_to('admin_user', ['id' => $user_source->id]),
                             icon('pencil-square') . __('edit')

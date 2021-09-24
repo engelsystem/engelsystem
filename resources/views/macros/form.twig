@@ -44,17 +44,18 @@
         {% endif %}
         <select id="{{ name }}" name="{{ name }}" class="form-control">
             {% for value,decription in data -%}
-                <option value="{{ value }}" {% if value == selected %} selected{% endif %}>{{ decription }}</option>
+                <option value="{{ value }}"{% if value == selected %} selected{% endif %}>{{ decription }}</option>
             {% endfor %}
         </select>
     </div>
 {%- endmacro %}
 
-{% macro checkbox(name, label, checked, value) %}
-    <div class="checkbox">
+{% macro checkbox(name, label, checked, value, disabled) %}
+    <div class="form-check">
         <label>
-            <input type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ value|default('1') }}"
+            <input type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ value|default('1') }}" class="form-check-input"
                 {%- if checked|default(false) %} checked{% endif %}
+                {%- if disabled|default(false) %} disabled{% endif %}
             >
             {{ label }}
         </label>
@@ -80,4 +81,14 @@
 
 {% macro submit(label, opt) %}
     {{ _self.button(label|default(__('form.submit')), {'type': 'submit', 'btn_type': 'primary'}|merge(opt|default({}))) }}
+{%- endmacro %}
+
+{% macro switch(name, label, checked, opt) %}
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ opt.value|default('1') }}"
+            {%- if checked|default(false) %} checked{% endif %}
+            {%- if opt.disabled|default(false) %} disabled{% endif %}
+        >
+        <label class="form-check-label" for="{{ name }}">{{ label }}</label>
+    </div>
 {%- endmacro %}
