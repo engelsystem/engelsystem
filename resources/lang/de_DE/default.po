@@ -2909,7 +2909,6 @@ msgstr "Level"
 msgid "log.message"
 msgstr "Nachricht"
 
-
 msgid "settings.settings"
 msgstr "Einstellungen"
 
@@ -2978,3 +2977,24 @@ msgstr "Frage"
 
 msgid "question.answer"
 msgstr "Antwort"
+
+msgid "user.edit.shirt"
+msgstr "Shirt bearbeiten"
+
+msgid "form.shirt"
+msgstr "Shirt"
+
+msgid "user.shirt_size"
+msgstr "Shirt größe"
+
+msgid "user.active"
+msgstr "Aktiv"
+
+msgid "user.force_active"
+msgstr "Aktiv (erzwungen)"
+
+msgid "user.arrived"
+msgstr "Angekommen"
+
+msgid "user.got_shirt"
+msgstr "Shirt bekommen"

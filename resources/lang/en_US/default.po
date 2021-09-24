@@ -260,3 +260,24 @@ msgstr "Question"
 
 msgid "question.answer"
 msgstr "Answer"
+
+msgid "user.edit.shirt"
+msgstr "Edit shirt"
+
+msgid "form.shirt"
+msgstr "Shirt"
+
+msgid "user.shirt_size"
+msgstr "Shirt size"
+
+msgid "user.active"
+msgstr "Active"
+
+msgid "user.force_active"
+msgstr "Active (forced)"
+
+msgid "user.arrived"
+msgstr "Arrived"
+
+msgid "user.got_shirt"
+msgstr "Got shirt"

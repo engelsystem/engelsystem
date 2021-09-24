@@ -33,6 +33,15 @@ class State extends HasUserModel
         'arrival_date',
     ];
 
+    /** @var array */
+    protected $casts = [
+        'arrived'      => 'boolean',
+        'active'       => 'boolean',
+        'force_active' => 'boolean',
+        'got_shirt'    => 'boolean',
+        'got_voucher'  => 'integer',
+    ];
+
     /** The attributes that are mass assignable */
     protected $fillable = [
         'user_id',

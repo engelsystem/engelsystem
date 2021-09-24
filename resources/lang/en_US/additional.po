@@ -134,3 +134,6 @@ msgstr "A new news is available: %1$s"
 
 msgid "notification.news.new.text"
 msgstr "You can watch it at %3$s"
+
+msgid "user.edit.success"
+msgstr "User edited successfully."

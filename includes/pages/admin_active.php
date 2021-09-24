@@ -272,6 +272,8 @@ function admin_active()
             );
         }
 
+        $actions[] = button(url('/admin/user/' . $usr->id . '/shirt'), __('form.edit'), 'btn-primary btn-sm');
+
         $userData['actions'] = buttons($actions);
 
         $matched_users[] = $userData;
