@@ -33,37 +33,38 @@ function admin_free()
     }
 
     $angelType = $request->input('angeltype', '');
-    $query = User::with('personalData')
-        ->select('users.*')
-        ->leftJoin('ShiftEntry', 'users.id', 'ShiftEntry.UID')
-        ->leftJoin('users_state', 'users.id', 'users_state.user_id')
-        ->leftJoin('Shifts', function ($join) {
-            /** @var JoinClause $join */
-            $join->on('ShiftEntry.SID', '=', 'Shifts.SID')
-                ->where('Shifts.start', '<', time())
-                ->where('Shifts.end', '>', time());
-        })
-        ->where('users_state.arrived', '=', 1)
-        ->whereNull('Shifts.SID')
-        ->orderBy('users.name')
-        ->groupBy('users.id');
 
-    if (!empty($angelType)) {
-        $query->join('UserAngelTypes', function ($join) use ($angelType) {
-            /** @var JoinClause $join */
-            $join->on('UserAngelTypes.user_id', '=', 'users.id')
-                ->where('UserAngelTypes.angeltype_id', '=', $angelType);
-        });
-        $query->join('AngelTypes', 'UserAngelTypes.angeltype_id', 'AngelTypes.id')
-            ->whereNotNull('UserAngelTypes.confirm_user_id')
-            ->orWhere('AngelTypes.restricted', '=', '0');
-    }
-
+    $users = [];
     if ($request->has('submit')) {
+        $query = User::with('personalData')
+            ->select('users.*')
+            ->leftJoin('ShiftEntry', 'users.id', 'ShiftEntry.UID')
+            ->leftJoin('users_state', 'users.id', 'users_state.user_id')
+            ->leftJoin('Shifts', function ($join) {
+                /** @var JoinClause $join */
+                $join->on('ShiftEntry.SID', '=', 'Shifts.SID')
+                    ->where('Shifts.start', '<', time())
+                    ->where('Shifts.end', '>', time());
+            })
+            ->where('users_state.arrived', '=', 1)
+            ->whereNull('Shifts.SID')
+            ->orderBy('users.name')
+            ->groupBy('users.id');
+
+        if (!empty($angelType)) {
+            $query->join('UserAngelTypes', function ($join) use ($angelType) {
+                /** @var JoinClause $join */
+                $join->on('UserAngelTypes.user_id', '=', 'users.id')
+                    ->where('UserAngelTypes.angeltype_id', '=', $angelType);
+            });
+            $query->join('AngelTypes', 'UserAngelTypes.angeltype_id', 'AngelTypes.id')
+                ->whereNotNull('UserAngelTypes.confirm_user_id')
+                ->orWhere('AngelTypes.restricted', '=', '0');
+        }
+
         $users = $query->get();
-    } else {
-        $users = [];
     }
+
     $free_users_table = [];
     if ($search == '') {
         $tokens = [];
