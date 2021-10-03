@@ -57,9 +57,13 @@ function admin_free()
                 $join->on('UserAngelTypes.user_id', '=', 'users.id')
                     ->where('UserAngelTypes.angeltype_id', '=', $angelType);
             });
-            $query->join('AngelTypes', 'UserAngelTypes.angeltype_id', 'AngelTypes.id')
-                ->whereNotNull('UserAngelTypes.confirm_user_id')
-                ->orWhere('AngelTypes.restricted', '=', '0');
+
+            $query->join('AngelTypes', function ($join) {
+                /** @var JoinClause $join */
+                $join->on('UserAngelTypes.angeltype_id', '=', 'AngelTypes.id')
+                    ->whereNotNull('UserAngelTypes.confirm_user_id')
+                    ->orWhere('AngelTypes.restricted', '=', '0');
+            });
         }
 
         $users = $query->get();
