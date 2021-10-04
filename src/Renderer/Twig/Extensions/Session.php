@@ -26,6 +26,7 @@ class Session extends TwigExtension
     {
         return [
             new TwigFunction('session_get', [$this->session, 'get']),
+            new TwigFunction('session_set', [$this->session, 'set']),
         ];
     }
 }

@@ -40,7 +40,7 @@
                 {% endif %}
 
                 {% if has_permission_to('login') %}
-                    {{ _self.toolbar_item(__('Login'), url('login'), 'login', 'box-arrow-in-right') }}
+                    {{ _self.toolbar_item(__('login.login'), url('login'), 'login', 'box-arrow-in-right') }}
                 {% endif %}
 
                 {% if is_user() and has_permission_to('user_messages') %}

@@ -125,8 +125,11 @@ msgstr "Registrieren"
 #: resources/views/layouts/parts/navbar.twig:43
 #: resources/views/pages/login.twig:4 resources/views/pages/login.twig:66
 #: includes/view/AngelTypes_view.php:581
-msgid "Login"
+msgid "login.login"
 msgstr "Login"
+
+msgid "page.403.login"
+msgstr "Bitte melde dich an."
 
 #: resources/views/macros/form.twig:17
 msgid "form.submit"

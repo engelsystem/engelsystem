@@ -107,6 +107,8 @@ class AuthController extends BaseController
      */
     public function loginUser(User $user): Response
     {
+        $previousPage = $this->session->get('previous_page');
+
         $this->session->invalidate();
         $this->session->set('user_id', $user->id);
         $this->session->set('locale', $user->settings->language);
@@ -114,7 +116,7 @@ class AuthController extends BaseController
         $user->last_login_at = new Carbon();
         $user->save(['touch' => false]);
 
-        return $this->redirect->to($this->config->get('home_site'));
+        return $this->redirect->to($previousPage ?: $this->config->get('home_site'));
     }
 
     /**
