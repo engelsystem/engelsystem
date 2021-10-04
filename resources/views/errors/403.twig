@@ -1,5 +1,15 @@
 {% extends "errors/default.twig" %}
+{% import 'macros/base.twig' as m %}
 
 {% block title %}{{ __("Forbidden") }}{% endblock %}
 
 {% block content_headline_text %}{{ __("You are not allowed to access this page") }}{% endblock %}
+
+{% block content_text %}
+    {% if is_guest() %}
+        {% do session_set('previous_page', request.url) %}
+
+        <p>{{ __('page.403.login') }}</p>
+        <p>{{ m.button(__('login.login'), url('login')) }}</p>
+    {% endif %}
+{% endblock %}

@@ -27,6 +27,12 @@ msgstr "Your password is incorrect. Please try it again."
 msgid "form.submit"
 msgstr "Submit"
 
+msgid "login.login"
+msgstr "Login"
+
+msgid "page.403.login"
+msgstr "Please log in."
+
 msgid "page.404.text"
 msgstr ""
 "This page could not be found or you don't have permission to view it. "
