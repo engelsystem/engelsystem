@@ -229,7 +229,7 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shi
     $angels = [];
     foreach ($shift['ShiftEntry'] as $shift_entry) {
         if ($shift_entry['TID'] == $needed_angeltype['TID']) {
-            $angels[] = Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angeltype_supporter);
+            $angels[] = Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angeltype_supporter, $shift);
         }
     }
 
@@ -243,9 +243,10 @@ function Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shi
  * @param array $shift_entry
  * @param bool  $user_shift_admin
  * @param bool  $angeltype_supporter
+ * @param array $shift
  * @return string
  */
-function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angeltype_supporter)
+function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angeltype_supporter, $shift)
 {
     $entry = User_Nick_render(User::find($shift_entry['UID']));
     if ($shift_entry['freeloaded']) {
@@ -261,7 +262,9 @@ function Shift_view_render_shift_entry($shift_entry, $user_shift_admin, $angelty
                 'btn-sm'
             );
         }
-        $entry .= button_icon(shift_entry_delete_link($shift_entry), 'trash', 'btn-sm');
+        $angeltype = AngelType($shift_entry['TID']);
+        $disabled = Shift_signout_allowed($shift, $angeltype, $shift_entry['UID']) ? '' : ' btn-disabled';
+        $entry .= button_icon(shift_entry_delete_link($shift_entry), 'trash', 'btn-sm' . $disabled);
         $entry .= '</div>';
     }
     return $entry;
