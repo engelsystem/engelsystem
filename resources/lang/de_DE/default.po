@@ -1627,8 +1627,8 @@ msgid "Notify me of new news"
 msgstr "Benachrichtige mich bei neuen News"
 
 #: includes/pages/guest_login.php:291 includes/view/User_view.php:73
-msgid "Humans are allowed to send me an email (e.g. for ticket vouchers)"
-msgstr "Menschen dürfen mir eine E-Mail senden (z.B. für Ticket Gutscheine)"
+msgid "Allow orga and heaven angels to contact you by mail (for example this is necessary for distributing vouchers)"
+msgstr "Erlaube Orga- und Himmel-Engeln dich per Mail zu kontaktieren (zum Beispiel ist die notwendig zum Verteilen von Gutscheinen)"
 
 #: includes/pages/guest_login.php:300 includes/view/User_view.php:48
 msgid "Planned date of arrival"

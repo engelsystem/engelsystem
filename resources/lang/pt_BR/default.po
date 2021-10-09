@@ -1354,7 +1354,7 @@ msgstr ""
 "mudam)"
 
 #: includes/pages/guest_login.php:230 includes/view/User_view.php:51
-msgid "Humans are allowed to send me an email (e.g. for ticket vouchers)"
+msgid "Allow orga and heaven angels to contact you by mail (for example this is necessary for distributing vouchers)"
 msgstr "Permito que humanos me enviem emails (por exemplo, para um voucher)"
 
 #: includes/pages/guest_login.php:235 includes/view/User_view.php:43
