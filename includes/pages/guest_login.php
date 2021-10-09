@@ -365,7 +365,7 @@ function guest_register()
                             ),
                             form_checkbox(
                                 'email_by_human_allowed',
-                                __('Humans are allowed to send me an email (e.g. for ticket vouchers)'),
+                                __('Allow orga and heaven angels to contact you by mail (for example this is necessary for distributing vouchers)'),
                                 $email_by_human_allowed
                             ),
                         ])
