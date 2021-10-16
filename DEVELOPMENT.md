@@ -121,26 +121,26 @@ Run these commands once initially and then as required after changes
 
 ```bash
 # Install composer dependencies
-docker exec -it engelsystem_dev_es_workspace_1 composer i
+docker exec -it engelsystem_dev-es_workspace-1 composer i
 
 # Install node packages
-docker exec -it engelsystem_dev_es_workspace_1 yarn install
+docker exec -it engelsystem_dev-es_workspace-1 yarn install
 
 # Run a front-end build
-docker exec -it engelsystem_dev_es_workspace_1 yarn build
+docker exec -it engelsystem_dev-es_workspace-1 yarn build
 
 # Update the translation files
-docker exec -it engelsystem_dev_es_workspace_1 find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
+docker exec -it engelsystem_dev-es_workspace-1 find /var/www/resources/lang -type f -name '*.po' -exec sh -c 'file="{}"; msgfmt "${file%.*}.po" -o "${file%.*}.mo"' \;
 
 # Run the migrations
-docker exec -it engelsystem_dev_es_workspace_1 bin/migrate
+docker exec -it engelsystem_dev-es_workspace-1 bin/migrate
 ```
 
 While developing you may use the watch mode to rebuild the system on changes
 
 ```bash
 # Run a front-end build
-docker exec -it engelsystem_dev_es_workspace_1 yarn build:watch
+docker exec -it engelsystem_dev-es_workspace-1 yarn build:watch
 ```
 
 **Hint for using Xdebug with *PhpStorm***
