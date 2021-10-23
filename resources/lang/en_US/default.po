@@ -253,7 +253,7 @@ msgid "faq.message"
 msgstr "Answer"
 
 msgid "question.questions"
-msgstr "Fragen"
+msgstr "Questions"
 
 msgid "question.add"
 msgstr "Ask"
