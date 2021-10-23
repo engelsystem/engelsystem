@@ -112,7 +112,8 @@ class UserShirtController extends BaseController
         $user->state->save();
 
         $this->log->info(
-            'Updated user shirt state "{user}" ({id}): {size}, arrived: {arrived}, active: {active}, got shirt: {got_shirt}',
+            'Updated user shirt state "{user}" ({id}): '
+            . '{size}, arrived: {arrived}, active: {active}, got shirt: {got_shirt}',
             [
                 'id'        => $user->id,
                 'user'      => $user->name,

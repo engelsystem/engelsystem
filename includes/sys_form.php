@@ -450,7 +450,7 @@ function form_element($label, $input, $for = '', $class = '')
  */
 function form($elements, $action = '', $inline = false, $btnGroup = false)
 {
-    return '<form action="' . $action . '" enctype="multipart/form-data" method="post"' 
+    return '<form action="' . $action . '" enctype="multipart/form-data" method="post"'
         . ($btnGroup ? ' class="btn-group"' : '')
         . ($inline ? ' style="float:left"' : '') . '>'
         . join($elements)
