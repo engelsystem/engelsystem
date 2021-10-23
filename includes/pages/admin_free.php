@@ -26,7 +26,7 @@ function admin_free()
 
     $angel_types_source = DB::select('SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`');
     $angel_types = [
-        '' => __('Alle')
+        '' => __('All')
     ];
     foreach ($angel_types_source as $angel_type) {
         $angel_types[$angel_type['id']] = $angel_type['name'];
