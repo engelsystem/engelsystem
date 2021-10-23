@@ -14,19 +14,17 @@
             {{ csrf() }}
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-12">
                     {{ f.select('shirt_size', config('tshirt_sizes'), __('user.shirt_size'), userdata.personalData.shirt_size) }}
                 </div>
-                <div class="col-md-8">
-                    {% if has_permission_to('admin_arrive') %}
-                        {{ f.switch('arrived', __('user.arrived'), userdata.state.arrived) }}
-                    {% endif %}
+                <div class="col-md-12">
+                    {{ f.switch('arrived', __('user.arrived'), userdata.state.arrived, {'disabled': not has_permission_to('admin_arrive')}) }}
 
                     {% if userdata.state.force_active %}
                         {{ f.switch('force_active', __('user.force_active'), true, {'disabled': true}) }}
+                    {% else %}
+                        {{ f.switch('active', __('user.active'), userdata.state.active) }}
                     {% endif %}
-
-                    {{ f.switch('active', __('user.active'), userdata.state.active) }}
 
                     {{ f.switch('got_shirt', __('user.got_shirt'), userdata.state.got_shirt) }}
                 </div>

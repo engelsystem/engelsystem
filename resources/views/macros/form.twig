@@ -51,7 +51,7 @@
 {%- endmacro %}
 
 {% macro checkbox(name, label, checked, value, disabled) %}
-    <div class="form-check">
+    <div class="form-check mb-3">
         <label>
             <input type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ value|default('1') }}" class="form-check-input"
                 {%- if checked|default(false) %} checked{% endif %}
@@ -84,7 +84,7 @@
 {%- endmacro %}
 
 {% macro switch(name, label, checked, opt) %}
-    <div class="form-check form-switch">
+    <div class="form-check form-switch mb-3">
         <input class="form-check-input" type="checkbox" id="{{ name }}" name="{{ name }}" value="{{ opt.value|default('1') }}"
             {%- if checked|default(false) %} checked{% endif %}
             {%- if opt.disabled|default(false) %} disabled{% endif %}

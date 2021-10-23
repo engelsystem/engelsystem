@@ -448,11 +448,13 @@ function form_element($label, $input, $for = '', $class = '')
  * @param bool     $inline
  * @return string
  */
-function form($elements, $action = '', $inline = false)
+function form($elements, $action = '', $inline = false, $btnGroup = false)
 {
-    return '<form action="' . $action . '" enctype="multipart/form-data" method="post"' . ($inline ? ' style="float:left"' : '') . '>'
-        . form_csrf()
+    return '<form action="' . $action . '" enctype="multipart/form-data" method="post"' 
+        . ($btnGroup ? ' class="btn-group"' : '')
+        . ($inline ? ' style="float:left"' : '') . '>'
         . join($elements)
+        . form_csrf()
         . '</form>';
 }
 
