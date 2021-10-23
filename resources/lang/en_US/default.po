@@ -58,7 +58,7 @@ msgid "form.save"
 msgstr "Save"
 
 msgid "form.edit"
-msgstr "Bearbeiten"
+msgstr "Edit"
 
 msgid "form.preview"
 msgstr "Preview"

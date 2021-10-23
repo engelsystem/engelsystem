@@ -228,8 +228,8 @@ function admin_active()
                 $parameters['show_all_shifts'] = 1;
             }
             $actions[] = form(
-                [form_submit('submit', __('set active'), 'btn-sm', false)],
-                page_link_to('admin_active', $parameters)
+                [form_submit('submit', __('set active'), 'btn-sm', false, 'secondary')],
+                page_link_to('admin_active', $parameters), false, true
             );
         }
         if ($usr->state->active) {
@@ -241,8 +241,8 @@ function admin_active()
                 $parametersRemove['show_all_shifts'] = 1;
             }
             $actions[] = form(
-                [form_submit('submit', __('remove active'), 'btn-sm', false)],
-                page_link_to('admin_active', $parametersRemove)
+                [form_submit('submit', __('remove active'), 'btn-sm', false, 'secondary')],
+                page_link_to('admin_active', $parametersRemove), false, true
             );
         }
         if (!$usr->state->got_shirt) {
@@ -254,8 +254,8 @@ function admin_active()
                 $parametersShirt['show_all_shifts'] = 1;
             }
             $actions[] = form(
-                [form_submit('submit', __('got t-shirt'), 'btn-sm', false)],
-                page_link_to('admin_active', $parametersShirt)
+                [form_submit('submit', __('got t-shirt'), 'btn-sm', false, 'secondary')],
+                page_link_to('admin_active', $parametersShirt), false, true
             );
         }
         if ($usr->state->got_shirt) {
@@ -267,12 +267,12 @@ function admin_active()
                 $parameters['show_all_shifts'] = 1;
             }
             $actions[] = form(
-                [form_submit('submit', __('remove t-shirt'), 'btn-sm', false)],
-                page_link_to('admin_active', $parameters)
+                [form_submit('submit', __('remove t-shirt'), 'btn-sm', false, 'secondary')],
+                page_link_to('admin_active', $parameters), false, true
             );
         }
 
-        $actions[] = button(url('/admin/user/' . $usr->id . '/shirt'), __('form.edit'), 'btn-primary btn-sm');
+        $actions[] = button(url('/admin/user/' . $usr->id . '/shirt'), __('form.edit'), 'btn-secondary btn-sm');
 
         $userData['actions'] = buttons($actions);
 
