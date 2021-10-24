@@ -249,6 +249,11 @@ return [
     // The minimum length for passwords
     'min_password_length'     => env('PASSWORD_MINIMUM_LENGTH', 8),
 
+    // Whether the Password field should be enabled.
+    // If this is disabled, it means that no password can be set and the user will
+    // not be able to log in unless linked to an oauth provider.
+    'enable_password'         => (bool)env('ENABLE_PASSWORD', true),
+
     // Whether the DECT field should be enabled
     'enable_dect'             => (bool)env('ENABLE_DECT', true),
 

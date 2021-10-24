@@ -32,6 +32,7 @@ function guest_register()
     $enable_dect = config('enable_dect');
     $enable_planned_arrival = config('enable_planned_arrival');
     $min_password_length = config('min_password_length');
+    $enable_password = config('enable_password');
     $enable_pronoun = config('enable_pronoun');
     $config = config();
     $request = request();
@@ -146,12 +147,12 @@ function guest_register()
             }
         }
 
-        if ($request->has('password') && strlen($request->postData('password')) >= $min_password_length) {
+        if ($enable_password && $request->has('password') && strlen($request->postData('password')) >= $min_password_length) {
             if ($request->postData('password') != $request->postData('password2')) {
                 $valid = false;
                 $msg .= error(__('Your passwords don\'t match.'), true);
             }
-        } else {
+        } else if ($enable_password) {
             $valid = false;
             $msg .= error(sprintf(
                 __('Your password is too short (please use at least %s characters).'),
@@ -272,7 +273,9 @@ function guest_register()
 
             // Assign user-group and set password
             DB::insert('INSERT INTO `UserGroups` (`uid`, `group_id`) VALUES (?, -20)', [$user->id]);
-            auth()->setPassword($user, $request->postData('password'));
+            if ($enable_password) {
+                auth()->setPassword($user, $request->postData('password'));
+            }
 
             // Assign angel-types
             $user_angel_types_info = [];
@@ -422,9 +425,9 @@ function guest_register()
             ]),
 
             div('row', [
-                div('col', [
+                $enable_password ? div('col', [
                     form_password('password', __('Password') . ' ' . entry_required())
-                ]),
+                ]) : '',
 
                 $enable_planned_arrival ? div('col', [
                     form_date(
@@ -436,9 +439,9 @@ function guest_register()
             ]),
 
             div('row', [
-                div('col', [
+                $enable_password ? div('col', [
                     form_password('password2', __('Confirm password') . ' ' . entry_required())
-                ]),
+                ]) : '',
 
                 div('col', [
                     $enable_tshirt_size ? form_select('tshirt_size',
