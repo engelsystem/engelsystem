@@ -16,7 +16,7 @@
     "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
     "jquery": "^3.5.1",
-    "jquery-ui": "^1.11.2",
+    "jquery-ui": "^1.13.0",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
     "select2": "^4.0.13",
