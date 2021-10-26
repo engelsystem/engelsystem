@@ -429,6 +429,7 @@ function admin_shifts()
                 ]),
                 div('col-md-6', [
                     form_textarea('description', __('Additional description'), $description),
+                    __('This description is for single shifts, otherwise please use the description in shift type.'),
                 ]),
             ]),
             div('row', [
