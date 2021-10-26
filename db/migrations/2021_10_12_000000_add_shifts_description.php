@@ -17,7 +17,7 @@ class AddShiftsDescription extends Migration
         $this->schema->table(
             'Shifts',
             function (Blueprint $table) {
-                $table->text('description')->after('shifttype_id');
+                $table->text('description')->nullable()->after('shifttype_id');
             }
         );
     }

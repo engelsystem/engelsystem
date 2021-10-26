@@ -1415,6 +1415,10 @@ msgstr "Karte"
 msgid "Create shifts"
 msgstr "Schichten erstellen"
 
+#: includes/pages/admin_shifts.php
+msgid "Additional description"
+msgstr "Zusätzliche Beschreibung"
+
 #: includes/pages/admin_shifts.php:82
 msgid "Please select a location."
 msgstr "Bitte einen Ort auswählen."

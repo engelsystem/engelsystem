@@ -198,8 +198,8 @@ function admin_shifts()
                     'end'          => $end,
                     'RID'          => $rid,
                     'title'        => $title,
-                    'shifttype_id' => $shifttype_id
-                    'description'  => $description
+                    'shifttype_id' => $shifttype_id,
+                    'description'  => $description,
                 ];
             } elseif ($mode == 'multi') {
                 $shift_start = (int)$start;
@@ -218,8 +218,8 @@ function admin_shifts()
                         'end'          => $shift_end,
                         'RID'          => $rid,
                         'title'        => $title,
-                        'shifttype_id' => $shifttype_id
-                        'description'  => $description
+                        'shifttype_id' => $shifttype_id,
+                        'description'  => $description,
                     ];
 
                     $shift_start = $shift_end;
@@ -428,9 +428,9 @@ function admin_shifts()
                     form_select('rid', __('Room'), $room_array, $rid),
                 ]),
                 div('col-md-6', [
-                    form_textarea('description', __('Descriptiom'), $description),
+                    form_textarea('description', __('Additional description'), $description),
                 ]),
-            ])
+            ]),
             div('row', [
                 div('col-md-6', [
                     form_datetime('start', __('Start'), $start),
