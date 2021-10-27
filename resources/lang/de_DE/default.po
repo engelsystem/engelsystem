@@ -815,9 +815,6 @@ msgstr "Genug"
 msgid "All users"
 msgstr "Alle Benutzer"
 
-msgid "All"
-msgstr "Alle"
-
 #: includes/helper/email_helper.php:50
 #, php-format
 msgid "User %s could not be notified by email due to an error."
