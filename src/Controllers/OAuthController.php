@@ -106,6 +106,7 @@ class OAuthController extends BaseController
             throw new HttpNotFound('oauth.invalid-state');
         }
 
+        $accessToken = null;
         try {
             $accessToken = $provider->getAccessToken(
                 'authorization_code',
@@ -114,21 +115,15 @@ class OAuthController extends BaseController
                 ]
             );
         } catch (IdentityProviderException $e) {
-            $response = $e->getResponseBody();
-            $response = is_array($response) ? json_encode($response) : $response;
-            $this->log->error(
-                '{provider} identity provider error: {error} {description}',
-                [
-                    'provider'    => $providerName,
-                    'error'       => $e->getMessage(),
-                    'description' => $response,
-                ]
-            );
-
-            throw new HttpNotFound('oauth.provider-error');
+            $this->handleOAuthError($e, $providerName);
         }
 
-        $resourceOwner = $provider->getResourceOwner($accessToken);
+        $resourceOwner = null;
+        try {
+            $resourceOwner = $provider->getResourceOwner($accessToken);
+        } catch (IdentityProviderException $e) {
+            $this->handleOAuthError($e, $providerName);
+        }
         $resourceId = $resourceOwner->getId();
 
         /** @var OAuth|null $oauth */
@@ -180,7 +175,11 @@ class OAuthController extends BaseController
         $config = $this->config->get('oauth')[$providerName];
         $userdata = new Collection($resourceOwner->toArray());
         if (!$oauth) {
-            return $this->redirectRegisterOrThrowNotFound(
+            if (!$this->config->get('registration_enabled')) {
+                throw new HttpNotFound('oauth.not-found');
+            }
+
+            return $this->redirectRegister(
                 $providerName,
                 $resourceOwner->getId(),
                 $accessToken,
@@ -193,7 +192,10 @@ class OAuthController extends BaseController
             $this->handleArrive($providerName, $oauth, $resourceOwner);
         }
 
-        return $this->authController->loginUser($oauth->user);
+        $response = $this->authController->loginUser($oauth->user);
+        event('oauth2.login', ['provider' => $providerName, 'data' => $userdata]);
+
+        return $response;
     }
 
     /**
@@ -309,6 +311,28 @@ class OAuthController extends BaseController
     }
 
     /**
+     * @param IdentityProviderException $e
+     * @param string                    $providerName
+     *
+     * @throws HttpNotFound
+     */
+    protected function handleOAuthError(IdentityProviderException $e, string $providerName): void
+    {
+        $response = $e->getResponseBody();
+        $response = is_array($response) ? json_encode($response) : $response;
+        $this->log->error(
+            '{provider} identity provider error: {error} {description}',
+            [
+                'provider'    => $providerName,
+                'error'       => $e->getMessage(),
+                'description' => $response,
+            ]
+        );
+
+        throw new HttpNotFound('oauth.provider-error');
+    }
+
+    /**
      * @param string               $providerName
      * @param string               $providerUserIdentifier
      * @param AccessTokenInterface $accessToken
@@ -317,19 +341,15 @@ class OAuthController extends BaseController
      *
      * @return Response
      */
-    protected function redirectRegisterOrThrowNotFound(
+    protected function redirectRegister(
         string $providerName,
         string $providerUserIdentifier,
         AccessTokenInterface $accessToken,
         array $config,
         Collection $userdata
     ): Response {
-        if (!$this->config->get('registration_enabled')) {
-            throw new HttpNotFound('oauth.not-found');
-        }
-
         $config = array_merge(
-            ['username' => null, 'email' => null, 'first_name' => null, 'last_name' => null],
+            ['username' => null, 'email' => null, 'first_name' => null, 'last_name' => null, 'groups' => null],
             $config
         );
         $this->session->set(
@@ -341,6 +361,7 @@ class OAuthController extends BaseController
                 'last_name'  => $userdata->get($config['last_name']),
             ],
         );
+        $this->session->set('oauth2_groups', $userdata->get($config['groups'], []));
         $this->session->set('oauth2_connect_provider', $providerName);
         $this->session->set('oauth2_user_id', $providerUserIdentifier);
 

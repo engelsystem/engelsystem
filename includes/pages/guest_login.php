@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Engelsystem\Database\DB;
+use Engelsystem\Events\Listener\OAuth2;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\PersonalData;
@@ -55,6 +56,16 @@ function guest_register()
 
     $angel_types_source = AngelTypes();
     $angel_types = [];
+    if (!empty($session->get('oauth2_groups'))) {
+        /** @var OAuth2 $oauth */
+        $oauth = app()->get(OAuth2::class);
+        $ssoTeams = $oauth->getSsoTeams($session->get('oauth2_connect_provider'));
+        foreach ($ssoTeams as $name => $team) {
+            if (in_array($name, $session->get('oauth2_groups'))) {
+                $selected_angel_types[] = $team['id'];
+            }
+        }
+    }
     foreach ($angel_types_source as $angel_type) {
         $angel_types[$angel_type['id']] = $angel_type['name']
             . ($angel_type['restricted'] ? ' (' . __('Requires introduction') . ')' : '');

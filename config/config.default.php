@@ -105,6 +105,14 @@ return [
             'hidden' => false,
             // Mark user as arrived when using this provider (optional)
             'mark_arrived' => false,
+            // Auto join teams
+            // Info groups field (optional)
+            'groups' => 'groups',
+            // Groups to team (angeltype) mapping (optional)
+            'teams' => [
+                '/Lorem' => 4, // 4 being the ID of the angeltype
+                '/Foo Mod' => ['id' => 5, 'supporter' => true], // 5 being the ID of the angeltype
+            ],
         ],
         */
     ],
