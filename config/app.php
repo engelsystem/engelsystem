@@ -66,5 +66,7 @@ return [
         //      or $function
         // ]
         'news.created' => \Engelsystem\Events\Listener\News::class . '@created',
+
+        'oauth2.login' => \Engelsystem\Events\Listener\OAuth2::class . '@login',
     ],
 ];

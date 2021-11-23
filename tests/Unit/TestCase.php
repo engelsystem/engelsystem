@@ -27,6 +27,10 @@ abstract class TestCase extends PHPUnitTestCase
             $times = $this->once();
         }
 
+        if (is_int($times)) {
+            $times = $this->exactly($times);
+        }
+
         $invocation = $object->expects($times)
             ->method($method);
 
