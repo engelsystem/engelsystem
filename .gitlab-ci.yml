@@ -290,7 +290,7 @@ deploy:
     - generate-assets
   dependencies: *deploy_needs
   environment:
-    name: staging
+    name: rsync-staging
   only:
     - main
   script:
@@ -401,7 +401,7 @@ deploy-production:
     - build-image
     - generate-assets
   environment:
-    name: production
+    name: rsync-production
   when: manual
   only:
     - main
