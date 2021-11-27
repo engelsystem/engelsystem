@@ -535,6 +535,7 @@ function Shift_update($shift)
         `end` = ?,
         `RID` = ?,
         `title` = ?,
+        `description` = ?,
         `URL` = ?,
         `edited_by_user_id` = ?,
         `edited_at_timestamp` = ?
@@ -546,6 +547,7 @@ function Shift_update($shift)
             $shift['end'],
             $shift['RID'],
             $shift['title'],
+            $shift['description'],
             $shift['URL'],
             $user->id,
             time(),
@@ -569,12 +571,13 @@ function Shift_create($shift)
             `end`,
             `RID`,
             `title`,
+            `description`,
             `URL`,
             `created_by_user_id`,
             `edited_at_timestamp`,
             `created_at_timestamp`
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ',
         [
             $shift['shifttype_id'],
@@ -582,6 +585,7 @@ function Shift_create($shift)
             $shift['end'],
             $shift['RID'],
             $shift['title'],
+            $shift['description'],
             $shift['URL'],
             auth()->user()->id,
             time(),

@@ -29,6 +29,7 @@ function admin_shifts()
     $change_hours = [];
     $title = '';
     $shifttype_id = null;
+    $description = null;
     // When true: creates a shift beginning at the last shift change hour and ending at the first shift change hour
     $shift_over_midnight = true;
 
@@ -69,6 +70,9 @@ function admin_shifts()
 
         // Name/Bezeichnung der Schicht, darf leer sein
         $title = strip_request_item('title');
+
+        // Beschreibung der Schicht, darf leer sein
+        $description = strip_request_item('description');
 
         // Auswahl der sichtbaren Locations für die Schichten
         if (
@@ -194,7 +198,8 @@ function admin_shifts()
                     'end'          => $end,
                     'RID'          => $rid,
                     'title'        => $title,
-                    'shifttype_id' => $shifttype_id
+                    'shifttype_id' => $shifttype_id,
+                    'description'  => $description,
                 ];
             } elseif ($mode == 'multi') {
                 $shift_start = (int)$start;
@@ -213,7 +218,8 @@ function admin_shifts()
                         'end'          => $shift_end,
                         'RID'          => $rid,
                         'title'        => $title,
-                        'shifttype_id' => $shifttype_id
+                        'shifttype_id' => $shifttype_id,
+                        'description'  => $description,
                     ];
 
                     $shift_start = $shift_end;
@@ -323,6 +329,7 @@ function admin_shifts()
                 form([
                     $hidden_types,
                     form_hidden('shifttype_id', $shifttype_id),
+                    form_hidden('description', $description),
                     form_hidden('title', $title),
                     form_hidden('rid', $rid),
                     form_hidden('start', date('Y-m-d H:i', $start)),
@@ -357,6 +364,7 @@ function admin_shifts()
             engelsystem_log(
                 'Shift created: ' . $shifttypes[$shift['shifttype_id']]
                 . ' with title ' . $shift['title']
+                . ' with description ' . $shift['description']
                 . ' from ' . date('Y-m-d H:i', $shift['start'])
                 . ' to ' . date('Y-m-d H:i', $shift['end'])
             );
@@ -413,9 +421,17 @@ function admin_shifts()
     return page_with_title(admin_shifts_title(), [
         msg(),
         form([
-            form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
-            form_text('title', __('Title'), $title),
-            form_select('rid', __('Room'), $room_array, $rid),
+            div('row',[
+                div('col-md-6', [
+                    form_select('shifttype_id', __('Shifttype'), $shifttypes, $shifttype_id),
+                    form_text('title', __('Title'), $title),
+                    form_select('rid', __('Room'), $room_array, $rid),
+                ]),
+                div('col-md-6', [
+                    form_textarea('description', __('Additional description'), $description),
+                    __('This description is for single shifts, otherwise please use the description in shift type.'),
+                ]),
+            ]),
             div('row', [
                 div('col-md-6', [
                     form_datetime('start', __('Start'), $start),

@@ -176,7 +176,8 @@ function Shift_view($shift, $shifttype, Room $room, $angeltypes_source, ShiftSig
         ]),
         div('col-sm-6', [
             '<h2>' . __('Description') . '</h2>',
-            $parsedown->parse($shifttype['description'])
+            $parsedown->parse($shifttype['description']),
+            $parsedown->parse($shift['description']),
         ])
     ]);
 
