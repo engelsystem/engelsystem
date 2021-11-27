@@ -14,6 +14,10 @@ class AddShiftsDescription extends Migration
      */
     public function up()
     {
+        if (!$this->schema->hasTable('Shifts')) {
+            return;
+        }
+
         $this->schema->table(
             'Shifts',
             function (Blueprint $table) {
@@ -27,6 +31,10 @@ class AddShiftsDescription extends Migration
      */
     public function down()
     {
+        if (!$this->schema->hasTable('Shifts')) {
+            return;
+        }
+
         $this->schema->table(
             'Shifts',
             function (Blueprint $table) {
