@@ -47,6 +47,7 @@ function guest_register()
     $email_shiftinfo = false;
     $email_by_human_allowed = false;
     $email_news = false;
+    $email_goody = false;
     $tshirt_size = '';
     $password_hash = '';
     $selected_angel_types = [];
@@ -116,6 +117,10 @@ function guest_register()
 
         if ($request->has('email_news')) {
             $email_news = true;
+        }
+
+        if ($request->has('email_goody')) {
+            $email_goody = true;
         }
 
         if ($enable_tshirt_size) {
@@ -215,6 +220,7 @@ function guest_register()
                 'language'        => $session->get('locale'),
                 'theme'           => config('theme'),
                 'email_human'     => $email_by_human_allowed,
+                'email_goody'     => $email_goody,
                 'email_shiftinfo' => $email_shiftinfo,
                 'email_news'      => $email_news,
             ]);
@@ -365,9 +371,16 @@ function guest_register()
                             ),
                             form_checkbox(
                                 'email_by_human_allowed',
-                                __('To receive vouchers, agree that nick, email address, worked hours and shirt size will be stored until the next similar event. To withdraw your approval, send an email to <a href="mailto:%s">%1$s</a>.', [config('privacy_email')]),
+                                __('Allow heaven angels to contact you by e-mail.'),
                                 $email_by_human_allowed
                             ),
+                            config('enable_goody') ?
+                                form_checkbox(
+                                    'email_goody',
+                                    __('To receive vouchers, give consent that nick, email address, worked hours and shirt size will be stored until the next similar event.')
+                                    . (config('privacy_email') ? ' ' . __('To withdraw your approval, send an email to <a href="mailto:%s">%1$s</a>.', [config('privacy_email')]) : ''),
+                                    $email_goody
+                                ) : '',
                         ])
                     ]),
                     div('row', [

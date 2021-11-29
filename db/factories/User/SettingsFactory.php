@@ -19,6 +19,7 @@ class SettingsFactory extends Factory
             'language'        => $this->faker->locale(),
             'theme'           => $this->faker->numberBetween(1, 20),
             'email_human'     => $this->faker->boolean(),
+            'email_goody'     => $this->faker->boolean(),
             'email_shiftinfo' => $this->faker->boolean(),
             'email_news'      => $this->faker->boolean(),
         ];

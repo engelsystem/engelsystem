@@ -115,6 +115,9 @@ class Stats
             case 'humans':
                 $query = Settings::whereEmailHuman(true);
                 break;
+            case 'goody':
+                $query = Settings::whereEmailGoody(true);
+                break;
             case 'news':
                 $query = Settings::whereEmailNews(true);
                 break;

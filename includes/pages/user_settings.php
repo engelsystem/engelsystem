@@ -39,6 +39,9 @@ function user_settings_main($user_source, $enable_tshirt_size, $tshirt_sizes)
     $user_source->settings->email_shiftinfo = $request->has('email_shiftinfo');
     $user_source->settings->email_human = $request->has('email_by_human_allowed');
     $user_source->settings->email_news = $request->has('email_news');
+    if (config('enable_goody')) {
+        $user_source->settings->email_goody = $request->has('email_goody');
+    }
 
     if ($request->has('tshirt_size') && isset($tshirt_sizes[$request->input('tshirt_size')])) {
         $user_source->personalData->shirt_size = $request->input('tshirt_size');
@@ -180,7 +183,6 @@ function user_settings()
     $enable_tshirt_size = config('enable_tshirt_size');
     $tshirt_sizes = config('tshirt_sizes');
     $locales = config('locales');
-    $oauth2_providers = config('oauth');
 
     $buildup_start_date = null;
     $teardown_end_date = null;
@@ -211,7 +213,6 @@ function user_settings()
         $buildup_start_date,
         $teardown_end_date,
         $enable_tshirt_size,
-        $tshirt_sizes,
-        $oauth2_providers
+        $tshirt_sizes
     );
 }
