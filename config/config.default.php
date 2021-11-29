@@ -66,6 +66,9 @@ return [
         'sendmail'   => env('MAIL_SENDMAIL', '/usr/sbin/sendmail -bs'),
     ],
 
+    # Your privacy@ contact address
+    'privacy_email' => '',
+
     // Initial admin password
     'setup_admin_password'    => env('SETUP_ADMIN_PASSWORD', null),
 
