@@ -120,6 +120,7 @@ class Controller extends BaseController
                 'type' => 'gauge',
                 ['labels' => ['type' => 'system'], 'value' => $this->stats->email('system')],
                 ['labels' => ['type' => 'humans'], 'value' => $this->stats->email('humans')],
+                ['labels' => ['type' => 'goody'], 'value' => $this->stats->email('goody')],
                 ['labels' => ['type' => 'news'], 'value' => $this->stats->email('news')],
             ],
             'users_working'        => [

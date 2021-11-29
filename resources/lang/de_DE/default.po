@@ -1627,8 +1627,14 @@ msgid "Notify me of new news"
 msgstr "Benachrichtige mich bei neuen News"
 
 #: includes/pages/guest_login.php:291 includes/view/User_view.php:73
-msgid "To receive vouchers, agree that nick, email address, worked hours and shirt size will be stored until the next similar event. To withdraw your approval, send an email to <a href=\"mailto:%s\">%1$s</a>."
-msgstr "Um Voucher zu erhalten, stimme zu, dass Nick, E-Mail-Adresse, geleistete Arbeit und Shirtgröße bis zum nächsten gleichartigen Event gespeichert werden. Dies kann jederzeit durch eine Email an <a href=\"mailto:%s\">%1$s</a> widerrufen werden."
+msgid "Allow heaven angels to contact you by e-mail."
+msgstr "Erlaube Himmel-Engeln dich per Mail zu kontaktieren."
+
+msgid "To receive vouchers, give consent that nick, email address, worked hours and shirt size will be stored until the next similar event."
+msgstr "Um Voucher zu erhalten, stimme zu, dass Nick, E-Mail-Adresse, geleistete Arbeit und Shirtgröße bis zum nächsten gleichartigen Event gespeichert werden."
+
+msgid "To withdraw your approval, send an email to <a href=\"mailto:%s\">%1$s</a>."
+msgstr "Dies kann jederzeit durch eine E-Mail an <a href=\"mailto:%s\">%1$s</a> widerrufen werden."
 
 #: includes/pages/guest_login.php:300 includes/view/User_view.php:48
 msgid "Planned date of arrival"
