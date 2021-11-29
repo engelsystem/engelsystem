@@ -365,7 +365,7 @@ function guest_register()
                             ),
                             form_checkbox(
                                 'email_by_human_allowed',
-                                __('Allow orga and heaven angels to contact you by mail (for example this is necessary for distributing vouchers)'),
+                                __('To receive vouchers, agree that nick, email address, worked hours and shirt size will be stored until the next similar event. To withdraw your approval, send an email to <a href="mailto:%s">%1$s</a>.', [config('privacy_email')]),
                                 $email_by_human_allowed
                             ),
                         ])
