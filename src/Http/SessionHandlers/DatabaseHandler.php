@@ -74,7 +74,7 @@ class DatabaseHandler extends AbstractHandler
     /**
      * {@inheritdoc}
      */
-    public function gc($maxLifetime): bool
+    public function gc($maxLifetime)
     {
         $timestamp = $this->getCurrentTimestamp(-$maxLifetime);
 

@@ -64,6 +64,10 @@ class SendResponseHandler implements MiddlewareInterface
      */
     protected function sendHeader($content, $replace = true, $code = null)
     {
-        header($content, $replace, $code);
+        if (is_null($code)) {
+            header($content, $replace);
+        } else {
+            header($content, $replace, $code);
+        }
     }
 }

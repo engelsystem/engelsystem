@@ -403,7 +403,7 @@ function AngelType_view_info(
     $info[] = '<h3>' . __('Description') . '</h3>';
     $parsedown = new Parsedown();
     if ($angeltype['description'] != '') {
-        $info[] = $parsedown->parse($angeltype['description']);
+        $info[] = $parsedown->parse((string)$angeltype['description']);
     }
 
     list($supporters, $members_confirmed, $members_unconfirmed) = AngelType_view_members(
@@ -561,7 +561,7 @@ function AngelTypes_about_view_angeltype($angeltype)
         );
     }
     if ($angeltype['description'] != '') {
-        $html .= $parsedown->parse($angeltype['description']);
+        $html .= $parsedown->parse((string)$angeltype['description']);
     }
     $html .= '<hr />';
 

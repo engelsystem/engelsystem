@@ -78,6 +78,10 @@ class EventConfigTest extends ModelTest
                 ->value
                 ->format('Y-m-d H:i')
         );
+        $this->assertEquals(
+            null,
+            ($this->getEventConfig())->getValueAttribute(null)
+        );
     }
 
     /**
