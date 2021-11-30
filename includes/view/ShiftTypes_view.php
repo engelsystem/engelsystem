@@ -98,7 +98,7 @@ function ShiftType_view($shifttype, $angeltype)
             )
         ]),
         heading(__('Description'), 2),
-        $parsedown->parse($shifttype['description'])
+        $parsedown->parse((string)$shifttype['description'])
     ], true);
 }
 

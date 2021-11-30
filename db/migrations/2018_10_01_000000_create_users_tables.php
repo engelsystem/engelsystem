@@ -93,7 +93,7 @@ class CreateUsersTables extends Migration
                     'password'      => $data->Passwort,
                     'email'         => $data->email,
                     'api_key'       => $data->api_key,
-                    'last_login_at' => Carbon::createFromTimestamp($data->lastLogIn),
+                    'last_login_at' => $data->lastLogIn ? Carbon::createFromTimestamp($data->lastLogIn) : null,
                 ]);
                 $user->setAttribute('id', $data->UID);
                 if (!in_array($data->CreateDate, $emptyDates)) {

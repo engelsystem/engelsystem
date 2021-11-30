@@ -11,7 +11,7 @@ use Carbon\Carbon;
  */
 function form_hidden($name, $value)
 {
-    return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
+    return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" />';
 }
 
 /**
@@ -24,7 +24,7 @@ function form_hidden($name, $value)
  */
 function form_spinner($name, $label, $value)
 {
-    $value = htmlspecialchars($value);
+    $value = htmlspecialchars((string)$value);
 
     return form_element($label, '
         <div class="input-group">
@@ -69,7 +69,7 @@ function form_date($name, $label, $value, $start_date = '', $end_date = '')
 
     return form_element($label, '
     <div class="input-group date" id="' . $dom_id . '" data-min-date="' . $start_date . '" data-max-date="' . $end_date . '" data-target-input="nearest">
-        <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars($value) . '" autocomplete="off">'
+        <input type="date" placeholder="YYYY-MM-DD" name="' . $name . '" class="form-control" value="' . htmlspecialchars((string)$value) . '" autocomplete="off">'
         . '<span class="input-group-text">' . icon('grid-3x3-gap-fill') . '</span>
     </div>
     ', $dom_id);
@@ -178,7 +178,7 @@ function form_checkbox($name, $label, $selected, $value = 'checked', $html_id = 
     }
 
     return '<div class="checkbox"><label>'
-        . '<input type="checkbox" id="' . $html_id . '" name="' . $name . '" value="' . htmlspecialchars($value) . '" '
+        . '<input type="checkbox" id="' . $html_id . '" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" '
         . ($selected ? ' checked="checked"' : '') . ' /> '
         . $label
         . '</label></div>';
@@ -196,7 +196,7 @@ function form_checkbox($name, $label, $selected, $value = 'checked', $html_id = 
 function form_radio($name, $label, $selected, $value)
 {
     return '<div class="radio">'
-        . '<label><input type="radio" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars($value) . '" '
+        . '<label><input type="radio" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars((string)$value) . '" '
         . ($selected ? ' checked="checked"' : '') . ' /> '
         . $label
         . '</label></div>';
@@ -268,7 +268,7 @@ function form_text($name, $label, $value, $disabled = false, $maxlength = null, 
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars($value) . '"' . $maxlength . $disabled . $autocomplete . '/>',
+        . '" value="' . htmlspecialchars((string)$value) . '"' . $maxlength . $disabled . $autocomplete . '/>',
         'form_' . $name,
         $class
     );
@@ -288,7 +288,7 @@ function form_text_placeholder($name, $placeholder, $value, $disabled = false)
     $disabled = $disabled ? ' disabled="disabled"' : '';
     return form_element('',
         '<input class="form-control" id="form_' . $name . '" type="text" name="' . $name
-        . '" value="' . htmlspecialchars($value) . '" placeholder="' . $placeholder
+        . '" value="' . htmlspecialchars((string)$value) . '" placeholder="' . $placeholder
         . '" ' . $disabled . '/>'
     );
 }
@@ -313,7 +313,7 @@ function form_email($name, $label, $value, $disabled = false, $autocomplete = nu
     return form_element(
         $label,
         '<input class="form-control" id="form_' . $name . '" type="email" name="' . $name . '" value="'
-        . htmlspecialchars($value) . '" ' . $disabled . $autocomplete . $maxlength . '/>',
+        . htmlspecialchars((string)$value) . '" ' . $disabled . $autocomplete . $maxlength . '/>',
         'form_' . $name
     );
 }
@@ -391,7 +391,7 @@ function form_textarea($name, $label, $value, $disabled = false)
     return form_element(
         $label,
         '<textarea rows="5" class="form-control" id="form_' . $name . '" name="'
-        . $name . '" ' . $disabled . '>' . htmlspecialchars($value) . '</textarea>',
+        . $name . '" ' . $disabled . '>' . htmlspecialchars((string)$value) . '</textarea>',
         'form_' . $name
     );
 }

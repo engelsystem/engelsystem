@@ -77,7 +77,7 @@ class ErrorHandler implements MiddlewareInterface
         $statusCode = $response->getStatusCode();
         $contentType = $response->getHeader('content-type');
         $contentType = array_shift($contentType);
-        if (!$contentType && strpos($response->getBody(), '<html') !== false) {
+        if (!$contentType && strpos($response->getBody() ?? '', '<html') !== false) {
             $contentType = 'text/html';
         }
 
