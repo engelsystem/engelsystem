@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
+use Engelsystem\Database\Db;
 use Engelsystem\Models\User\State;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;

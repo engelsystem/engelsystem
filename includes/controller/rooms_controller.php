@@ -13,7 +13,7 @@ use Engelsystem\ShiftsFilterRenderer;
  *
  * @return array
  */
-function room_controller()
+function room_controller(): array
 {
     if (!auth()->can('view_rooms')) {
         throw_redirect(page_link_to());
@@ -62,7 +62,7 @@ function room_controller()
  *
  * @return array
  */
-function rooms_controller()
+function rooms_controller(): array
 {
     $request = request();
     $action = $request->input('action');
@@ -77,6 +77,8 @@ function rooms_controller()
         default:
             throw_redirect(page_link_to('admin_rooms'));
     }
+
+    return ['', ''];
 }
 
 /**

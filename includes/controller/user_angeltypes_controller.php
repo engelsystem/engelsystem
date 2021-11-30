@@ -39,7 +39,7 @@ function user_angeltypes_unconfirmed_hint()
  *
  * @return array
  */
-function user_angeltypes_delete_all_controller()
+function user_angeltypes_delete_all_controller(): array
 {
     $request = request();
 
@@ -78,7 +78,7 @@ function user_angeltypes_delete_all_controller()
  *
  * @return array
  */
-function user_angeltypes_confirm_all_controller()
+function user_angeltypes_confirm_all_controller(): array
 {
     $user = auth()->user();
     $request = request();
@@ -118,7 +118,7 @@ function user_angeltypes_confirm_all_controller()
  *
  * @return array
  */
-function user_angeltype_confirm_controller()
+function user_angeltype_confirm_controller(): array
 {
     $user = auth()->user();
     $request = request();
@@ -178,7 +178,7 @@ function user_angeltype_confirm_controller()
  *
  * @return array
  */
-function user_angeltype_delete_controller()
+function user_angeltype_delete_controller(): array
 {
     $request = request();
     $user = auth()->user();
@@ -231,7 +231,7 @@ function user_angeltype_delete_controller()
  *
  * @return array
  */
-function user_angeltype_update_controller()
+function user_angeltype_update_controller(): array
 {
     $supporter = false;
     $request = request();
@@ -302,7 +302,7 @@ function user_angeltype_update_controller()
  *
  * @return array
  */
-function user_angeltype_add_controller()
+function user_angeltype_add_controller(): array
 {
     $angeltype = load_angeltype();
 
@@ -403,7 +403,7 @@ function user_angeltype_join_controller($angeltype)
  *
  * @return array
  */
-function user_angeltypes_controller()
+function user_angeltypes_controller(): array
 {
     $request = request();
     if (!$request->has('action')) {
@@ -426,4 +426,6 @@ function user_angeltypes_controller()
         default:
             throw_redirect(page_link_to('angeltypes'));
     }
+
+    return ['', ''];
 }

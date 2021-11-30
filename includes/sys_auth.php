@@ -1,6 +1,6 @@
 <?php
 
-use Engelsystem\Database\DB;
+use Engelsystem\Database\Db;
 
 /**
  * @param int $user_id
