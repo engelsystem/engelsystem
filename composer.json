@@ -69,5 +69,10 @@
             "Database\\Factories\\Engelsystem\\Models\\": "db/factories/",
             "Engelsystem\\Test\\": "tests/"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
     }
 }

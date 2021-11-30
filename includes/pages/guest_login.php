@@ -1,7 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-use Engelsystem\Database\DB;
+use Engelsystem\Database\Db;
 use Engelsystem\Events\Listener\OAuth2;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\User\Contact;
