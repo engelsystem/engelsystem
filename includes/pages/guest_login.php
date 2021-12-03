@@ -74,7 +74,10 @@ function guest_register()
         }
     }
 
-    if (!auth()->can('register') || (!$authUser && !config('registration_enabled'))) {
+    if (
+        !auth()->can('register')
+        || (!$authUser && !config('registration_enabled') && !$session->get('oauth2_allow_registration'))
+    ) {
         error(__('Registration is disabled.'));
 
         return page_with_title(register_title(), [

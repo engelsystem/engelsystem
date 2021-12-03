@@ -99,12 +99,14 @@ return [
             'first_name' => 'first-name',
             // Info last name field (optional)
             'last_name' => 'last-name',
-            // User URL to provider, shown on provider settings page (optional)
+            // User URL to provider, linked on provider settings page (optional)
             'url' => '[provider page]',
             // Only show after clicking the page title (optional)
             'hidden' => false,
             // Mark user as arrived when using this provider (optional)
             'mark_arrived' => false,
+            // Allow registration even if disabled in config (optional)
+            'allow_registration' => null,
             // Auto join teams
             // Info groups field (optional)
             'groups' => 'groups',
