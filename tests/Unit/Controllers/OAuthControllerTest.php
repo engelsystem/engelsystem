@@ -428,6 +428,7 @@ class OAuthControllerTest extends TestCase
         $this->assertEquals('test-token', $this->session->get('oauth2_access_token'));
         $this->assertEquals('test-refresh-token', $this->session->get('oauth2_refresh_token'));
         $this->assertEquals(4242424242, $this->session->get('oauth2_expires_at')->unix());
+        $this->assertEquals(null, $this->session->get('oauth2_allow_registration'));
         $this->assertEquals(
             [
                 'name' => 'username',

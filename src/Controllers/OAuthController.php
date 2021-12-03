@@ -175,10 +175,6 @@ class OAuthController extends BaseController
         $config = $this->config->get('oauth')[$providerName];
         $userdata = new Collection($resourceOwner->toArray());
         if (!$oauth) {
-            if (!$this->config->get('registration_enabled')) {
-                throw new HttpNotFound('oauth.not-found');
-            }
-
             return $this->redirectRegister(
                 $providerName,
                 $resourceOwner->getId(),
@@ -349,9 +345,21 @@ class OAuthController extends BaseController
         Collection $userdata
     ): Response {
         $config = array_merge(
-            ['username' => null, 'email' => null, 'first_name' => null, 'last_name' => null, 'groups' => null],
+            [
+                'username'           => null,
+                'email'              => null,
+                'first_name'         => null,
+                'last_name'          => null,
+                'allow_registration' => null,
+                'groups'             => null,
+            ],
             $config
         );
+
+        if (!$this->config->get('registration_enabled') && !$config['allow_registration']) {
+            throw new HttpNotFound('oauth.not-found');
+        }
+
         $this->session->set(
             'form_data',
             [
@@ -370,6 +378,7 @@ class OAuthController extends BaseController
         $this->session->set('oauth2_access_token', $accessToken->getToken());
         $this->session->set('oauth2_refresh_token', $accessToken->getRefreshToken());
         $this->session->set('oauth2_expires_at', $expirationTime);
+        $this->session->set('oauth2_allow_registration', $config['allow_registration']);
 
         return $this->redirector->to('/register');
     }
