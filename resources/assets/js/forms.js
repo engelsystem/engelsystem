@@ -223,6 +223,9 @@ $(function () {
     $('#welcome-title').on('click', function () {
         $('.btn-group.btn-group .btn.d-none').removeClass('d-none');
     });
+    $('#settings-title').on('click', function () {
+        $('.user-settings .nav-item').removeClass('d-none');
+    });
     $('#oauth-settings-title').on('click', function () {
         $('table tr.d-none').removeClass('d-none');
     });
