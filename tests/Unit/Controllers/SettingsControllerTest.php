@@ -250,10 +250,12 @@ class SettingsControllerTest extends TestCase
 
     /**
      * @covers \Engelsystem\Controllers\SettingsController::settingsMenu
+     * @covers \Engelsystem\Controllers\SettingsController::checkOauthHidden
      */
     public function testSettingsMenuWithOAuth()
     {
         $providers = ['foo' => ['lorem' => 'ipsum']];
+        $providersHidden = ['foo' => ['lorem' => 'ipsum', 'hidden' => true]];
         config(['oauth' => $providers]);
 
         /** @var SettingsController $controller */
@@ -262,7 +264,14 @@ class SettingsControllerTest extends TestCase
         $this->assertEquals([
             'http://localhost/user-settings' => 'settings.profile',
             'http://localhost/settings/password' => 'settings.password',
-            'http://localhost/settings/oauth' => 'settings.oauth'
+            'http://localhost/settings/oauth' => ['title' => 'settings.oauth', 'hidden' => false]
+        ], $controller->settingsMenu());
+
+        config(['oauth' => $providersHidden]);
+        $this->assertEquals([
+            'http://localhost/user-settings' => 'settings.profile',
+            'http://localhost/settings/password' => 'settings.password',
+            'http://localhost/settings/oauth' => ['title' => 'settings.oauth', 'hidden' => true]
         ], $controller->settingsMenu());
     }
 

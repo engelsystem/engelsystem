@@ -61,7 +61,7 @@ class SettingsController extends BaseController
             'pages/settings/password',
             [
                 'settings_menu' => $this->settingsMenu(),
-                'min_length' => config('min_password_length')
+                'min_length'    => config('min_password_length')
 
             ] + $this->getNotifications()
         );
@@ -77,8 +77,8 @@ class SettingsController extends BaseController
 
         $minLength = config('min_password_length');
         $data = $this->validate($request, [
-            'password' => 'required',
-            'new_password' => 'required|min:' . $minLength,
+            'password'      => 'required',
+            'new_password'  => 'required|min:' . $minLength,
             'new_password2' => 'required'
         ]);
 
@@ -110,7 +110,7 @@ class SettingsController extends BaseController
             'pages/settings/oauth',
             [
                 'settings_menu' => $this->settingsMenu(),
-                'providers' => $providers,
+                'providers'     => $providers,
             ] + $this->getNotifications(),
         );
     }
@@ -121,13 +121,28 @@ class SettingsController extends BaseController
     public function settingsMenu(): array
     {
         $menu = [
-            url('/user-settings') => 'settings.profile',
+            url('/user-settings')     => 'settings.profile',
             url('/settings/password') => 'settings.password'
         ];
+
         if (!empty(config('oauth'))) {
-            $menu[url('/settings/oauth')] = 'settings.oauth';
+            $menu[url('/settings/oauth')] = ['title' => 'settings.oauth', 'hidden' => $this->checkOauthHidden()];
         }
 
         return $menu;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function checkOauthHidden(): bool
+    {
+        foreach (config('oauth') as $config) {
+            if (empty($config['hidden']) || !$config['hidden']) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -870,6 +870,10 @@ function User_oauth_render(User $user)
         );
     }
 
+    if (!$output) {
+        return '';
+    }
+
     return div('col-md-2', [
         heading(__('OAuth'), 4),
         join('<br>', $output),
