@@ -16,6 +16,11 @@ abstract class HasUserModel extends BaseModel
         'user_id',
     ];
 
+    /** @var string[] */
+    protected $casts = [
+        'user_id' => 'integer',
+    ];
+
     /** The relationships that should be touched on save */
     protected $touches = ['user'];
 }

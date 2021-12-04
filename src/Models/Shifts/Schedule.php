@@ -37,6 +37,13 @@ class Schedule extends BaseModel
     /** @var bool enable timestamps */
     public $timestamps = true;
 
+    /** @var string[] */
+    protected $casts = [
+        'shift_type'     => 'integer',
+        'minutes_before' => 'integer',
+        'minutes_after'  => 'integer',
+    ];
+
     /** @var array Values that are mass assignable */
     protected $fillable = [
         'name',
