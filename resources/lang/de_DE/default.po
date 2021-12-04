@@ -1630,8 +1630,11 @@ msgstr "Benachrichtige mich bei neuen News"
 msgid "Allow heaven angels to contact you by e-mail."
 msgstr "Erlaube Himmel-Engeln dich per Mail zu kontaktieren."
 
-msgid "To receive vouchers, give consent that nick, email address, worked hours and shirt size will be stored until the next similar event."
-msgstr "Um Voucher zu erhalten, stimme zu, dass Nick, E-Mail-Adresse, geleistete Arbeit und Shirtgröße bis zum nächsten gleichartigen Event gespeichert werden."
+msgid ""
+"To receive vouchers, give consent that nick, email address, worked hours and shirt size "
+"will be stored until the next similar event."
+msgstr "Um Voucher zu erhalten, stimme zu, dass Nick, E-Mail-Adresse, geleistete Arbeit und Shirtgröße "
+"bis zum nächsten gleichartigen Event gespeichert werden."
 
 msgid "To withdraw your approval, send an email to <a href=\"mailto:%s\">%1$s</a>."
 msgstr "Dies kann jederzeit durch eine E-Mail an <a href=\"mailto:%s\">%1$s</a> widerrufen werden."
