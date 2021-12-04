@@ -28,6 +28,12 @@ class ScheduleShift extends BaseModel
     /** @var array Values that are mass assignable */
     protected $fillable = ['shift_id', 'schedule_id', 'guid'];
 
+    /** @var array */
+    protected $casts = [
+        'shift_id'    => 'integer',
+        'schedule_id' => 'integer',
+    ];
+
     /**
      * @return BelongsTo
      */

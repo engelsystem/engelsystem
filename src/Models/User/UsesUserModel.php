@@ -15,6 +15,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 trait UsesUserModel
 {
     // protected $fillable = ['user_id'];
+    // protected $casts = ['user_id' => 'integer];
 
     /**
      * @return BelongsTo

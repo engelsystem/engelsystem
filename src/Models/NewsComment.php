@@ -35,6 +35,12 @@ class NewsComment extends BaseModel
     public $timestamps = true;
 
     /** @var string[] */
+    protected $casts = [
+        'user_id' => 'integer',
+        'news_id' => 'integer',
+    ];
+
+    /** @var string[] */
     protected $fillable = [
         'news_id',
         'text',

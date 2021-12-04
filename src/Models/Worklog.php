@@ -43,6 +43,7 @@ class Worklog extends BaseModel
     protected $casts = [
         'user_id'    => 'integer',
         'creator_id' => 'integer',
+        'hours'      => 'float',
     ];
 
     /** The attributes that are mass assignable. */

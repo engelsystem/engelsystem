@@ -42,8 +42,15 @@ class News extends BaseModel
 
     /** @var array */
     protected $casts = [
+        'user_id'    => 'integer',
         'is_meeting' => 'boolean',
         'is_pinned'  => 'boolean',
+    ];
+
+    /** @var array Default attributes */
+    protected $attributes = [
+        'is_meeting' => false,
+        'is_pinned'  => false,
     ];
 
     /** @var array */
