@@ -130,6 +130,9 @@ class CreateUsersTables extends Migration
                     'email_human'     => $data->email_by_human_allowed,
                     'email_shiftinfo' => $data->email_shiftinfo,
                 ]);
+                unset($settings->email_news);
+                unset($settings->email_goody);
+
                 $settings->user()
                     ->associate($user)
                     ->save();
