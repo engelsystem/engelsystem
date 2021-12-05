@@ -204,7 +204,7 @@ function shift_edit_controller()
                 form_text('start', __('Start:'), date('Y-m-d H:i', $start)),
                 form_text('end', __('End:'), date('Y-m-d H:i', $end)),
                 form_textarea('description', __('Additional description'), $description),
-                __('This description is for single shifts, otherwise please use the description in shift type.'),
+                form_info('', __('This description is for single shifts, otherwise please use the description in shift type.')),
                 '<h2>' . __('Needed angels') . '</h2>',
                 $angel_types_spinner,
                 form_submit('submit', __('Save'))
