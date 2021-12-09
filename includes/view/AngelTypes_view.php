@@ -476,11 +476,19 @@ function AngelType_view_info(
  */
 function AngelTypes_render_contact_info($angeltype)
 {
-    return heading(__('Contact'), 3) . description([
-            __('Name')   => $angeltype['contact_name'],
-            __('DECT')   => sprintf('<a href="tel:%s">%1$s</a>', $angeltype['contact_dect']),
-            __('E-Mail') => sprintf('<a href="mailto:%s">%1$s</a>', $angeltype['contact_email']),
-        ]);
+    $info = [
+        __('Name')   => [$angeltype['contact_name'], $angeltype['contact_name']],
+        __('DECT')   => [sprintf('<a href="tel:%s">%1$s</a>', $angeltype['contact_dect']), $angeltype['contact_dect']],
+        __('E-Mail') => [sprintf('<a href="mailto:%s">%1$s</a>', $angeltype['contact_email']), $angeltype['contact_email']],
+    ];
+    $contactInfo = [];
+    foreach ($info as $name => $data) {
+        if (!empty($data[1])) {
+            $contactInfo[$name] = $data[0];
+        }
+    }
+
+    return heading(__('Contact'), 3) . description($contactInfo);
 }
 
 /**
