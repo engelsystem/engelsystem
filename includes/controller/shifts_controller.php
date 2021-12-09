@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Engelsystem\Http\Exceptions\HttpForbidden;
 use Engelsystem\Models\Room;
 use Engelsystem\Models\Shifts\ScheduleShift;
@@ -381,6 +382,10 @@ function shifts_json_export_controller()
     }
 
     $shifts = load_ical_shifts();
+    foreach ($shifts as $row => $shift) {
+        $shifts[$row]['start_date'] = Carbon::createFromTimestamp($shift['start'])->toRfc3339String();
+        $shifts[$row]['end_date'] = Carbon::createFromTimestamp($shift['end'])->toRfc3339String();
+    }
 
     header('Content-Type: application/json; charset=utf-8');
     raw_output(json_encode($shifts));
