@@ -619,7 +619,8 @@ function Shifts_by_user($userId, $include_freeload_comments = false)
             `ShiftEntry`.`Comment`,
             ' . ($include_freeload_comments ? '`ShiftEntry`.`freeload_comment`, ' : '') . '
             `Shifts`.*,
-            @@session.time_zone AS timezone
+            @@session.time_zone AS timezone,
+            ? AS event_timezone
         FROM `ShiftEntry`
         JOIN `Shifts` ON (`ShiftEntry`.`SID` = `Shifts`.`SID`)
         JOIN `ShiftTypes` ON (`ShiftTypes`.`id` = `Shifts`.`shifttype_id`)
@@ -628,7 +629,8 @@ function Shifts_by_user($userId, $include_freeload_comments = false)
         ORDER BY `start`
         ',
         [
-            $userId
+            config('timezone'),
+            $userId,
         ]
     );
 }
