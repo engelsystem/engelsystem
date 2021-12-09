@@ -102,6 +102,36 @@ class SettingsControllerTest extends TestCase
     /**
      * @covers \Engelsystem\Controllers\SettingsController::savePassword
      */
+    public function testSavePasswordWhenEmpty()
+    {
+        $this->user->password = '';
+        $this->user->save();
+
+        $body = [
+            'new_password'  => 'anotherpassword',
+            'new_password2' => 'anotherpassword'
+        ];
+        $this->request = $this->request->withParsedBody($body);
+
+        $this->setExpects($this->auth, 'user', null, $this->user, $this->once());
+        $this->setExpects($this->auth, 'setPassword', [$this->user, 'anotherpassword'], null, $this->once());
+        $this->setExpects(
+            $this->response,
+            'redirectTo',
+            ['http://localhost/settings/password'],
+            $this->response,
+            $this->once()
+        );
+
+        /** @var SettingsController $controller */
+        $controller = $this->app->make(SettingsController::class);
+        $controller->setValidator(new Validator());
+        $controller->savePassword($this->request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\SettingsController::savePassword
+     */
     public function testSavePasswordWrongOldPassword()
     {
         $body = [
