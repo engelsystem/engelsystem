@@ -77,12 +77,12 @@ class SettingsController extends BaseController
 
         $minLength = config('min_password_length');
         $data = $this->validate($request, [
-            'password'      => 'required',
+            'password'      => 'required' . (empty($user->password) ? '|optional' : ''),
             'new_password'  => 'required|min:' . $minLength,
-            'new_password2' => 'required'
+            'new_password2' => 'required',
         ]);
 
-        if (!$this->auth->verifyPassword($user, $data['password'])) {
+        if (!empty($user->password) && !$this->auth->verifyPassword($user, $data['password'])) {
             $this->addNotification('auth.password.error', 'errors');
         } elseif ($data['new_password'] != $data['new_password2']) {
             $this->addNotification('validation.password.confirmed', 'errors');

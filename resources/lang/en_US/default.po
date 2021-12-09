@@ -21,6 +21,7 @@ msgstr ""
 
 #~ msgid "auth.no-password"
 #~ msgstr "Please enter a password."
+
 msgid "auth.password.error"
 msgstr "Your password is incorrect. Please try it again."
 
