@@ -188,6 +188,9 @@ msgstr "Passwort vergessen"
 msgid "Please sign up, if you want to help us!"
 msgstr "Bitte registriere Dich, wenn Du helfen möchtest!"
 
+msgid "Registration is only available via external login."
+msgstr "Die Registrierung ist nur über einen externen Login möglich."
+
 #: resources/views/pages/login.twig:90 includes/pages/guest_login.php:61
 msgid "Registration is disabled."
 msgstr "Registrierung ist abgeschaltet."

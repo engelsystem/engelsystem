@@ -100,8 +100,12 @@
             <div class="col-sm-6 text-center">
                 <h2>{{ __('Register') }}</h2>
                 {% if has_permission_to('register') and config('registration_enabled') %}
-                    <p>{{ __('Please sign up, if you want to help us!') }}</p>
-                    <a href="{{ url('register') }}" class="btn btn-primary">{{ __('Register') }} &raquo;</a>
+                    {% if config('enable_password') %}
+                        <p>{{ __('Please sign up, if you want to help us!') }}</p>
+                        <a href="{{ url('register') }}" class="btn btn-primary">{{ __('Register') }} &raquo;</a>
+                    {% else %}
+                        <p>{{ __('Registration is only available via external login.') }}</p>
+                    {% endif %}
                 {% else %}
                     {{ m.alert(__('Registration is disabled.'), 'danger') }}
                 {% endif %}
