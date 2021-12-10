@@ -240,6 +240,9 @@ msgstr "Disconnect"
 msgid "faq.faq"
 msgstr "FAQ"
 
+msgid "faq.questions_link"
+msgstr "If you don't find an answer, you can <a href=\"%s\">ask the heaven</a>."
+
 msgid "faq.edit"
 msgstr "Edit FAQ entry"
 
@@ -255,8 +258,11 @@ msgstr "Answer"
 msgid "question.questions"
 msgstr "Questions"
 
+msgid "question.faq_link"
+msgstr "For general questions, have a look at our <a href=\"%s\">FAQ</a>."
+
 msgid "question.add"
-msgstr "Ask"
+msgstr "Ask a question"
 
 msgid "question.edit"
 msgstr "Edit question"
