@@ -1,5 +1,6 @@
 {% extends 'layouts/app.twig' %}
 {% import 'macros/base.twig' as m %}
+{% import 'macros/form.twig' as f %}
 
 {% block title %}
     {{ __('faq.faq') }}
@@ -18,6 +19,12 @@
         {% include 'layouts/parts/messages.twig' %}
 
         <div class="row">
+            {% block questions_text %}
+                {% if has_permission_to('question.add') %}
+                    <p>{{ __('faq.questions_link', [url('/questions')]) | raw }}</p>
+                {% endif %}
+            {% endblock %}
+
             {% block text %}
                 {% if text|default(null) %}
                     <div class="col-md-12">
@@ -56,6 +63,19 @@
                         </div>
                     </div>
                 {% endfor %}
+            {% endblock %}
+
+            {% block ask_question %}
+                {% if has_permission_to('question.add') %}
+                    <form action="{{ url('/questions/new') }}" enctype="multipart/form-data" method="post">
+                        {{ csrf() }}
+                        <div class="col-md-12">
+                            <h4>{{ __('question.add') }}</h4>
+                            {{ f.textarea('text', __('question.question'), {'required': true, 'rows': 5}) }}
+                            {{ f.submit() }}
+                        </div>
+                    </form>
+                {% endif %}
             {% endblock %}
         </div>
     </div>

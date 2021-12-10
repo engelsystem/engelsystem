@@ -24,6 +24,12 @@
             {% block row %}
                 <div class="col-md-12">
                     {% block questions %}
+                        {% block faq_text %}
+                            {% if has_permission_to('faq.view') %}
+                                <p>{{ __('question.faq_link', [url('/faq')]) | raw }}</p>
+                            {% endif %}
+                        {% endblock %}
+
                         {% for question in questions %}
                             <div class="row mb-4">
                                 <div class="col-md-12">
