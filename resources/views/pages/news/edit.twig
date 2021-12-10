@@ -50,6 +50,8 @@
                 <div class="col-md-12">
                     {{ f.textarea('text', __('news.edit.message'), {'required': true, 'rows': 10, 'value': news ? news.text : ''}) }}
 
+                    <p>{{ m.info(__('news.edit.hint')) }}</p>
+
                     {{ f.submit() }}
 
                     {{ f.submit(m.icon('eye'), {'name': 'preview', 'btn_type': 'info', 'title': __('form.preview')}) }}

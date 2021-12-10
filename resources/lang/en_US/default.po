@@ -153,6 +153,9 @@ msgstr "+"
 msgid "news.is_meeting"
 msgstr "[Meeting]"
 
+msgid "news.read_more"
+msgstr "Continue reading »"
+
 msgid "news.updated"
 msgstr "Updated"
 
@@ -182,6 +185,9 @@ msgstr "Pin to top"
 
 msgid "news.edit.message"
 msgstr "Message"
+
+msgid "news.edit.hint"
+msgstr "You can use Markdown and the [more] tag"
 
 msgid "form.search"
 msgstr "Search"

@@ -2883,6 +2883,9 @@ msgstr "+"
 msgid "news.is_meeting"
 msgstr "[Treffen]"
 
+msgid "news.read_more"
+msgstr "Weiterlesen »"
+
 msgid "news.updated"
 msgstr "Aktualisiert"
 
@@ -2912,6 +2915,9 @@ msgstr "Oben anpinnen"
 
 msgid "news.edit.message"
 msgstr "Nachricht"
+
+msgid "news.edit.hint"
+msgstr "Du kannst Markdown und den [more] Tag benutzen"
 
 msgid "form.search"
 msgstr "Suchen"

@@ -65,6 +65,26 @@ class NewsTest extends ModelTest
     }
 
     /**
+     * Tests that text more tags work
+     *
+     * @covers \Engelsystem\Models\News::text
+     */
+    public function testTextMore(): void
+    {
+        $news = new News($this->newsData);
+
+        $news->text = "Foo\n\n\nBar";
+        $this->assertEquals("Foo\n\n\nBar", $news->text);
+        $this->assertEquals("Foo\n\n\nBar", $news->text());
+        $this->assertEquals("Foo\n\n\nBar", $news->text(false));
+
+        $news->text = "Foo\n[more]\nBar";
+        $this->assertEquals("Foo\n[more]\nBar", $news->text);
+        $this->assertEquals("Foo\n\nBar", $news->text());
+        $this->assertEquals('Foo', $news->text(false));
+    }
+
+    /**
      * Tests that creating a News item with all fill values works.
      *
      * @covers \Engelsystem\Models\News
