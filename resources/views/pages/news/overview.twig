@@ -60,7 +60,10 @@
         {% endif %}
 
         <div class="card-body bg-body">
-            {{ news.text|raw|markdown(false) }}
+            {{ news.text(not is_overview)|raw|markdown(false) }}
+            {% if is_overview and news.text != news.text(false) %}
+                {{ m.button(__('news.read_more'), url('news/' ~ news.id), null, 'sm') }}
+            {% endif %}
         </div>
 
         <div class="card-footer {% if theme.type =='light' %}bg-light{% else %}bg-dark{% endif %} text-muted">
