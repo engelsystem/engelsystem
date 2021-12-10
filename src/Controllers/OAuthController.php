@@ -372,6 +372,7 @@ class OAuthController extends BaseController
                 'email'              => null,
                 'first_name'         => null,
                 'last_name'          => null,
+                'enable_password'    => false,
                 'allow_registration' => null,
                 'groups'             => null,
             ],
@@ -400,6 +401,7 @@ class OAuthController extends BaseController
         $this->session->set('oauth2_access_token', $accessToken->getToken());
         $this->session->set('oauth2_refresh_token', $accessToken->getRefreshToken());
         $this->session->set('oauth2_expires_at', $expirationTime);
+        $this->session->set('oauth2_enable_password', $config['enable_password']);
         $this->session->set('oauth2_allow_registration', $config['allow_registration']);
 
         return $this->redirector->to('/register');
