@@ -250,8 +250,8 @@ return [
     'min_password_length'     => env('PASSWORD_MINIMUM_LENGTH', 8),
 
     // Whether the Password field should be enabled on registration.
-    // If this is disabled, it means that no password can be set on registration so the user will
-    // not be able to log in unless linked to an oauth provider.
+    // This is useful when using oauth, disabling it also disables normal
+    // registration without oauth.
     'enable_password'         => (bool)env('ENABLE_PASSWORD', true),
 
     // Whether the DECT field should be enabled

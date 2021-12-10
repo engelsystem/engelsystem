@@ -37,6 +37,7 @@ function guest_register()
     $config = config();
     $request = request();
     $session = session();
+    $is_oauth = $session->has('oauth2_connect_provider');
 
     $msg = '';
     $nick = '';
@@ -76,8 +77,10 @@ function guest_register()
     }
 
     if (
-        !auth()->can('register')
-        || (!$authUser && !config('registration_enabled') && !$session->get('oauth2_allow_registration'))
+        !auth()->can('register') // No registration permission
+        // Not authenticated and
+        || (!$authUser && !config('registration_enabled') && !$session->get('oauth2_allow_registration')) // Registration disabled
+        || (!$authUser && !$enable_password && !$is_oauth) // Password disabled and not oauth
     ) {
         error(__('Registration is disabled.'));
 
