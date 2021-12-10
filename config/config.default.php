@@ -108,6 +108,8 @@ return [
             'hidden' => false,
             // Mark user as arrived when using this provider (optional)
             'mark_arrived' => false,
+            // If the password field should be enabled on registration (optional)
+            'enable_password' => false,
             // Allow registration even if disabled in config (optional)
             'allow_registration' => null,
             // Auto join teams

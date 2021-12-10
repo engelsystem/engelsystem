@@ -76,6 +76,11 @@ function guest_register()
         }
     }
 
+    $oauth_enable_password = $session->get('oauth2_enable_password');
+    if (!is_null($oauth_enable_password)) {
+        $enable_password = $oauth_enable_password;
+    }
+
     if (
         !auth()->can('register') // No registration permission
         // Not authenticated and
