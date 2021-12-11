@@ -83,6 +83,7 @@ class OAuthControllerTest extends TestCase
      * @covers \Engelsystem\Controllers\OAuthController::__construct
      * @covers \Engelsystem\Controllers\OAuthController::index
      * @covers \Engelsystem\Controllers\OAuthController::handleArrive
+     * @covers \Engelsystem\Controllers\OAuthController::getId
      */
     public function testIndexArrive()
     {
@@ -102,11 +103,9 @@ class OAuthControllerTest extends TestCase
         /** @var ResourceOwnerInterface|MockObject $resourceOwner */
         $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
         $this->setExpects($resourceOwner, 'toArray', null, [], $this->atLeastOnce());
-        $resourceOwner->expects($this->exactly(7))
+        $resourceOwner->expects($this->exactly(5))
             ->method('getId')
             ->willReturnOnConsecutiveCalls(
-                'other-provider-user-identifier',
-                'other-provider-user-identifier',
                 'other-provider-user-identifier',
                 'other-provider-user-identifier',
                 'provider-user-identifier',
@@ -442,6 +441,84 @@ class OAuthControllerTest extends TestCase
         $this->config->set('registration_enabled', false);
         $this->expectException(HttpNotFound::class);
         $controller->index($request);
+    }
+
+    /**
+     * @covers \Engelsystem\Controllers\OAuthController::index
+     * @covers \Engelsystem\Controllers\OAuthController::getId
+     * @covers \Engelsystem\Controllers\OAuthController::redirectRegister
+     */
+    public function testIndexRedirectRegisterNestedInfo()
+    {
+        $accessToken = $this->createMock(AccessToken::class);
+        $this->setExpects($accessToken, 'getToken', null, 'test-token', $this->atLeastOnce());
+        $this->setExpects($accessToken, 'getRefreshToken', null, 'test-refresh-token', $this->atLeastOnce());
+        $this->setExpects($accessToken, 'getExpires', null, 4242424242, $this->atLeastOnce());
+
+        $config = $this->config->get('oauth');
+        $config['testprovider'] = array_merge($config['testprovider'], [
+            'nested_info' => true,
+            'id'          => 'nested.id',
+            'email'       => 'nested.email',
+            'username'    => 'nested.name',
+            'first_name'  => 'nested.first',
+            'last_name'   => 'nested.last',
+        ]);
+        $this->config->set('oauth', $config);
+
+        $this->config->set('registration_enabled', true);
+
+        /** @var ResourceOwnerInterface|MockObject $resourceOwner */
+        $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
+        $this->setExpects($resourceOwner, 'getId', null, null, $this->never());
+        $this->setExpects(
+            $resourceOwner,
+            'toArray',
+            null,
+            [
+                'nested' => [
+                    'id'    => 'new-provider-user-identifier',
+                    'name'  => 'testuser',
+                    'email' => 'foo.bar@localhost',
+                    'first' => 'Test',
+                    'last'  => 'Tester',
+                ],
+            ],
+            $this->atLeastOnce()
+        );
+
+        /** @var GenericProvider|MockObject $provider */
+        $provider = $this->createMock(GenericProvider::class);
+        $this->setExpects(
+            $provider,
+            'getAccessToken',
+            ['authorization_code', ['code' => 'lorem-ipsum-code']],
+            $accessToken,
+            $this->atLeastOnce()
+        );
+        $this->setExpects($provider, 'getResourceOwner', [$accessToken], $resourceOwner, $this->atLeastOnce());
+
+        $this->session->set('oauth2_state', 'some-internal-state');
+
+        $this->setExpects($this->auth, 'user', null, null, $this->atLeastOnce());
+
+        $this->setExpects($this->redirect, 'to', ['/register']);
+
+        $request = new Request();
+        $request = $request
+            ->withAttribute('provider', 'testprovider')
+            ->withQueryParams(['code' => 'lorem-ipsum-code', 'state' => 'some-internal-state']);
+
+        $controller = $this->getMock(['getProvider']);
+        $this->setExpects($controller, 'getProvider', ['testprovider'], $provider, $this->atLeastOnce());
+
+        $controller->index($request);
+        $this->assertEquals([
+            'email'      => 'foo.bar@localhost',
+            'name'       => 'testuser',
+            'first_name' => 'Test',
+            'last_name'  => 'Tester',
+        ], $this->session->get('form_data'));
     }
 
 

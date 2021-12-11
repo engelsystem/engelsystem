@@ -11,6 +11,7 @@ use Engelsystem\Http\Request;
 use Engelsystem\Http\Response;
 use Engelsystem\Http\UrlGenerator;
 use Engelsystem\Models\OAuth;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
@@ -124,7 +125,7 @@ class OAuthController extends BaseController
         } catch (IdentityProviderException $e) {
             $this->handleOAuthError($e, $providerName);
         }
-        $resourceId = $resourceOwner->getId();
+        $resourceId = $this->getId($providerName, $resourceOwner);
 
         /** @var OAuth|null $oauth */
         $oauth = $this->oauth
@@ -156,7 +157,7 @@ class OAuthController extends BaseController
         if (!$oauth && $user && $connectProvider && $connectProvider == $providerName) {
             $oauth = new OAuth([
                 'provider'      => $providerName,
-                'identifier'    => $resourceOwner->getId(),
+                'identifier'    => $resourceId,
                 'access_token'  => $accessToken->getToken(),
                 'refresh_token' => $accessToken->getRefreshToken(),
                 'expires_at'    => $expirationTime,
@@ -167,17 +168,22 @@ class OAuthController extends BaseController
 
             $this->log->info(
                 'Connected OAuth user {user} using {provider}',
-                ['provider' => $providerName, 'user' => $resourceOwner->getId()]
+                ['provider' => $providerName, 'user' => $resourceId]
             );
             $this->addNotification('oauth.connected');
         }
 
         $config = $this->config->get('oauth')[$providerName];
-        $userdata = new Collection($resourceOwner->toArray());
+        $resourceData = $resourceOwner->toArray();
+        if (!empty($config['nested_info'])) {
+            $resourceData = Arr::dot($resourceData);
+        }
+
+        $userdata = new Collection($resourceData);
         if (!$oauth) {
             return $this->redirectRegister(
                 $providerName,
-                $resourceOwner->getId(),
+                $resourceId,
                 $accessToken,
                 $config,
                 $userdata
@@ -253,6 +259,22 @@ class OAuthController extends BaseController
     }
 
     /**
+     * @param string        $providerName
+     * @param ResourceOwner $resourceOwner
+     * @return mixed
+     */
+    protected function getId(string $providerName, ResourceOwner $resourceOwner)
+    {
+        $config = $this->config->get('oauth')[$providerName];
+        if (empty($config['nested_info'])) {
+            return $resourceOwner->getId();
+        }
+
+        $data = Arr::dot($resourceOwner->toArray());
+        return $data[$config['id']];
+    }
+
+    /**
      * @param string $provider
      */
     protected function requireProvider(string $provider): void
@@ -299,7 +321,7 @@ class OAuthController extends BaseController
             'Set user {name} ({id}) as arrived via {provider} user {user}',
             [
                 'provider' => $providerName,
-                'user'     => $resourceOwner->getId(),
+                'user'     => $this->getId($providerName, $resourceOwner),
                 'name'     => $user->name,
                 'id'       => $user->id
             ]
