@@ -101,6 +101,9 @@ return [
             'last_name' => 'last-name',
             // User URL to provider, linked on provider settings page (optional)
             'url' => '[provider page]',
+            // Whether info attributes are nested arrays (optional)
+            // For example {"user":{"name":"foo"}} can be accessed using user.name
+            'nested_info' => false,
             // Only show after clicking the page title (optional)
             'hidden' => false,
             // Mark user as arrived when using this provider (optional)
