@@ -154,7 +154,7 @@ msgid "news.is_meeting"
 msgstr "[Meeting]"
 
 msgid "news.read_more"
-msgstr "Continue reading »"
+msgstr "Continue reading"
 
 msgid "news.updated"
 msgstr "Updated"
