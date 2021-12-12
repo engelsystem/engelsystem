@@ -2884,7 +2884,7 @@ msgid "news.is_meeting"
 msgstr "[Treffen]"
 
 msgid "news.read_more"
-msgstr "Weiterlesen »"
+msgstr "Weiterlesen"
 
 msgid "news.updated"
 msgstr "Aktualisiert"
