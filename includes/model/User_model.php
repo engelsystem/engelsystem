@@ -152,13 +152,13 @@ function User_validate_planned_arrival_date($planned_arrival_date)
     $teardown = $config->get('teardown_end');
 
     /** @var Carbon $buildup */
-    if (!empty($buildup) && $buildup->greaterThan(Carbon::createFromTimestamp($planned_arrival_date))) {
+    if (!empty($buildup) && Carbon::createFromTimestamp($planned_arrival_date)->lessThan($buildup->setTime(0,0))) {
         // Planned arrival can not be before buildup start date
         return new ValidationResult(false, $buildup->getTimestamp());
     }
 
     /** @var Carbon $teardown */
-    if (!empty($teardown) && $teardown->lessThan(Carbon::createFromTimestamp($planned_arrival_date))) {
+    if (!empty($teardown) && Carbon::createFromTimestamp($planned_arrival_date)->greaterThanOrEqualTo($teardown->addDay()->setTime(0,0))) {
         // Planned arrival can not be after teardown end date
         return new ValidationResult(false, $teardown->getTimestamp());
     }
@@ -190,14 +190,14 @@ function User_validate_planned_departure_date($planned_arrival_date, $planned_de
     $teardown = $config->get('teardown_end');
 
     /** @var Carbon $buildup */
-    if (!empty($buildup) && $buildup->greaterThan(Carbon::createFromTimestamp($planned_departure_date))) {
-        // Planned arrival can not be before buildup start date
+    if (!empty($buildup) && Carbon::createFromTimestamp($planned_departure_date)->lessThan($buildup->setTime(0,0))) {
+        // Planned departure can not be before buildup start date
         return new ValidationResult(false, $buildup->getTimestamp());
     }
 
     /** @var Carbon $teardown */
-    if (!empty($teardown) && $teardown->lessThan(Carbon::createFromTimestamp($planned_departure_date))) {
-        // Planned arrival can not be after teardown end date
+    if (!empty($teardown) && Carbon::createFromTimestamp($planned_departure_date)->greaterThanOrEqualTo($teardown->addDay()->setTime(0,0))) {
+        // Planned departure can not be after teardown end date
         return new ValidationResult(false, $teardown->getTimestamp());
     }
 
