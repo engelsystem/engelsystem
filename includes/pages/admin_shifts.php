@@ -281,7 +281,8 @@ function admin_shifts()
                             'end'          => $shift_end,
                             'RID'          => $rid,
                             'title'        => $title,
-                            'shifttype_id' => $shifttype_id
+                            'shifttype_id' => $shifttype_id,
+                            'description'  => $description
                         ];
                     }
 
