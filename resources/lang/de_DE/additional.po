@@ -139,5 +139,14 @@ msgstr "Es gibt eine neue News: %1$s"
 msgid "notification.news.new.text"
 msgstr "Du kannst sie dir unter %3$s anschauen."
 
+msgid "notification.angeltype.confirmed"
+msgstr "Du wurdest als %s bestätigt"
+
+msgid "notification.angeltype.confirmed.introduction"
+msgstr "Du wurdest von einem Supporter als %1$s bestätigt."
+
+msgid "notification.angeltype.confirmed.text"
+msgstr "Eine Beschreibung findest du unter %2$s"
+
 msgid "user.edit.success"
 msgstr "Benutzer erfolgreich bearbeitet."

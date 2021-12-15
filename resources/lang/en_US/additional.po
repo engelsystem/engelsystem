@@ -135,5 +135,14 @@ msgstr "A new news is available: %1$s"
 msgid "notification.news.new.text"
 msgstr "You can watch it at %3$s"
 
+msgid "notification.angeltype.confirmed"
+msgstr "You have been confirmed as an %s"
+
+msgid "notification.angeltype.confirmed.introduction"
+msgstr "You have been confirmed as an %1$s by a supporter."
+
+msgid "notification.angeltype.confirmed.text"
+msgstr "You can find a description at %2$s"
+
 msgid "user.edit.success"
 msgstr "User edited successfully."
