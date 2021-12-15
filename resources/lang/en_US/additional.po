@@ -144,5 +144,14 @@ msgstr "You have been confirmed as an %1$s by a supporter."
 msgid "notification.angeltype.confirmed.text"
 msgstr "You can find a description at %2$s"
 
+msgid "notification.angeltype.added"
+msgstr "You have been added as an %s"
+
+msgid "notification.angeltype.added.introduction"
+msgstr "You have been added as an %1$s by a supporter."
+
+msgid "notification.angeltype.added.text"
+msgstr "You can find a description at %2$s"
+
 msgid "user.edit.success"
 msgstr "User edited successfully."

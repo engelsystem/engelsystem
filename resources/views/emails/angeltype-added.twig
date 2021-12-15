@@ -1,0 +1,11 @@
+{% extends "emails/mail.twig" %}
+
+{% set url=url('/angeltypes', {'action': 'view', 'angeltype_id': angeltype.id}) %}
+
+{% block introduction %}
+{{ __('notification.angeltype.added.introduction', [angeltype.name, url])|raw }}
+{% endblock %}
+
+{% block message %}
+{{ __('notification.angeltype.added.text', [angeltype.name, url])|raw }}
+{% endblock %}

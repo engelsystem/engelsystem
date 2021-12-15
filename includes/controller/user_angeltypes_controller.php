@@ -217,6 +217,36 @@ function user_angeltype_confirm_email(User $user, array $angeltype): void
 }
 
 /**
+ * @param User  $user
+ * @param array $angeltype
+ * @return void
+ */
+function user_angeltype_add_email(User $user, array $angeltype): void
+{
+    if (!$user->settings->email_shiftinfo || $user->id == auth()->user()->id) {
+        return;
+    }
+
+    try {
+        /** @var EngelsystemMailer $mailer */
+        $mailer = app(EngelsystemMailer::class);
+        $mailer->sendViewTranslated(
+            $user,
+            'notification.angeltype.added',
+            'emails/angeltype-added',
+            ['name' => $angeltype['name'], 'angeltype' => $angeltype, 'username' => $user->name]
+        );
+    } catch (SwiftException $e) {
+        /** @var LoggerInterface $logger */
+        $logger = app('logger');
+        $logger->error(
+            'Unable to send email "{title}" to user {user} with {exception}',
+            ['title' => __('notification.angeltype.added'), 'user' => $user->name, 'exception' => $e]
+        );
+    }
+}
+
+/**
  * Remove a user from an Angeltype.
  *
  * @return array
@@ -385,6 +415,8 @@ function user_angeltype_add_controller(): array
                 User_Nick_render($user_source, true),
                 AngelType_name_render($angeltype, true)
             ));
+
+            user_angeltype_add_email($user_source, $angeltype);
 
             throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
         }
