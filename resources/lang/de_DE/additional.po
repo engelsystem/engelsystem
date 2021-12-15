@@ -148,5 +148,14 @@ msgstr "Du wurdest von einem Supporter als %1$s bestätigt."
 msgid "notification.angeltype.confirmed.text"
 msgstr "Eine Beschreibung findest du unter %2$s"
 
+msgid "notification.angeltype.added"
+msgstr "Du wurdest als %s hinzugefügt"
+
+msgid "notification.angeltype.added.introduction"
+msgstr "Du wurdest von einem Supporter als %1$s hinzugefügt."
+
+msgid "notification.angeltype.added.text"
+msgstr "Eine Beschreibung findest du unter %2$s"
+
 msgid "user.edit.success"
 msgstr "Benutzer erfolgreich bearbeitet."
