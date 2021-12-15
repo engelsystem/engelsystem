@@ -143,6 +143,21 @@ function UserAngelTypes_confirm_all($angeltype_id, $confirm_user_id)
 }
 
 /**
+ * Get all unconfirmed Users for given Angeltype
+ *
+ * @param int $angeltype_id
+ */
+function UserAngelTypes_all_unconfirmed($angeltype_id)
+{
+    return DB::select('
+        SELECT *
+        FROM `UserAngelTypes`
+        WHERE `angeltype_id`=?
+        AND `confirm_user_id` IS NULL
+    ', [$angeltype_id]);
+}
+
+/**
  * Confirm an UserAngelType with confirming user.
  *
  * @param int $user_angeltype_id

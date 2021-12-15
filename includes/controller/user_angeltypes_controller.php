@@ -1,6 +1,9 @@
 <?php
 
+use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\User\User;
+use Psr\Log\LoggerInterface;
+use Swift_SwiftException as SwiftException;
 
 /**
  * Display a hint for team/angeltype supporters if there are unconfirmed users for his angeltype.
@@ -100,10 +103,17 @@ function user_angeltypes_confirm_all_controller(): array
     }
 
     if ($request->hasPostData('confirm_all')) {
+        $users = UserAngelTypes_all_unconfirmed($angeltype['id']);
         UserAngelTypes_confirm_all($angeltype['id'], $user->id);
 
         engelsystem_log(sprintf('Confirmed all users for angeltype %s', AngelType_name_render($angeltype, true)));
         success(sprintf(__('Confirmed all users for angeltype %s.'), AngelType_name_render($angeltype)));
+
+        foreach ($users as $user) {
+            $user = User::find($user['user_id']);
+            user_angeltype_confirm_email($user, $angeltype);
+        }
+
         throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
@@ -164,6 +174,9 @@ function user_angeltype_confirm_controller(): array
             User_Nick_render($user_source),
             AngelType_name_render($angeltype)
         ));
+
+        user_angeltype_confirm_email($user_source, $angeltype);
+
         throw_redirect(page_link_to('angeltypes', ['action' => 'view', 'angeltype_id' => $angeltype['id']]));
     }
 
@@ -171,6 +184,36 @@ function user_angeltype_confirm_controller(): array
         __('Confirm angeltype for user'),
         UserAngelType_confirm_view($user_angeltype, $user_source, $angeltype)
     ];
+}
+
+/**
+ * @param User  $user
+ * @param array $angeltype
+ * @return void
+ */
+function user_angeltype_confirm_email(User $user, array $angeltype): void
+{
+    if (!$user->settings->email_shiftinfo) {
+        return;
+    }
+
+    try {
+        /** @var EngelsystemMailer $mailer */
+        $mailer = app(EngelsystemMailer::class);
+        $mailer->sendViewTranslated(
+            $user,
+            'notification.angeltype.confirmed',
+            'emails/angeltype-confirmed',
+            ['name' => $angeltype['name'], 'angeltype' => $angeltype, 'username' => $user->name]
+        );
+    } catch (SwiftException $e) {
+        /** @var LoggerInterface $logger */
+        $logger = app('logger');
+        $logger->error(
+            'Unable to send email "{title}" to user {user} with {exception}',
+            ['title' => __('notification.angeltype.confirmed'), 'user' => $user->name, 'exception' => $e]
+        );
+    }
 }
 
 /**
