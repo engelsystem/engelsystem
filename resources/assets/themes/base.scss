@@ -106,6 +106,10 @@ table a > .icon-icon_angel {
   margin-bottom: 0;
 }
 
+.table-striped > tbody > tr:nth-of-type(2n+1) {
+  color: var(--bs-table-color);
+}
+
 .input-group.date,
 .input-group.datetime,
 .input-group.time {
@@ -170,6 +174,10 @@ table a > .icon-icon_angel {
 
 .select2-dropdown {
   background-color: $input-bg;
+
+  .select2-search__field {
+    background-color: lighten($input-bg, 10%) !important;
+  }
 }
 
 .selection .checkbox {
