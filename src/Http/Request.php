@@ -3,7 +3,6 @@
 namespace Engelsystem\Http;
 
 use Nyholm\Psr7\UploadedFile;
-use Nyholm\Psr7\Uri;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
@@ -192,22 +191,6 @@ class Request extends SymfonyRequest implements ServerRequestInterface
         }
 
         return $new;
-    }
-
-    /**
-     * Retrieves the URI instance.
-     *
-     * This method MUST return a UriInterface instance.
-     *
-     * @link http://tools.ietf.org/html/rfc3986#section-4.3
-     * @return string|UriInterface Returns a UriInterface instance
-     *     representing the URI of the request.
-     */
-    public function getUri()
-    {
-        $uri = parent::getUri();
-
-        return new Uri($uri);
     }
 
     /**
