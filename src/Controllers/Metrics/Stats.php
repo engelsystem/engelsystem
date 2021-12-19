@@ -15,6 +15,7 @@ use Engelsystem\Models\NewsComment;
 use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\Room;
+use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PasswordReset;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
@@ -232,24 +233,21 @@ class Stats
     /**
      * @param string|null $vehicle
      * @return int
-     * @codeCoverageIgnore
      */
-    public function licenses(string $vehicle = null): int
+    public function licenses(string $vehicle): int
     {
         $mapping = [
-            'forklift' => 'has_license_forklift',
-            'car'      => 'has_license_car',
-            '3.5t'     => 'has_license_3_5t_transporter',
-            '7.5t'     => 'has_license_7_5t_truck',
-            '12.5t'    => 'has_license_12_5t_truck',
+            'has_car'  => 'has_car',
+            'forklift' => 'drive_forklift',
+            'car'      => 'drive_car',
+            '3.5t'     => 'drive_3_5t',
+            '7.5t'     => 'drive_7_5t',
+            '12t'      => 'drive_12t',
         ];
 
-        $query = $this
-            ->getQuery('UserDriverLicenses');
-
-        if (!is_null($vehicle)) {
-            $query->where($mapping[$vehicle], '=', true);
-        }
+        $query = (new License())
+            ->getQuery()
+            ->where($mapping[$vehicle], true);
 
         return $query->count();
     }

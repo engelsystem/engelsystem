@@ -11,6 +11,7 @@ use Engelsystem\Models\OAuth;
 use Engelsystem\Models\Question;
 use Engelsystem\Models\User\Contact;
 use Engelsystem\Models\User\HasUserModel;
+use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\PersonalData;
 use Engelsystem\Models\User\Settings;
 use Engelsystem\Models\User\State;
@@ -69,11 +70,20 @@ class UserTest extends ModelTest
                     'force_active' => true,
                 ],
             ],
+            [
+                License::class,
+                'license',
+                [
+                    'has_car'   => true,
+                    'drive_car' => true,
+                ],
+            ],
         ];
     }
 
     /**
      * @covers       \Engelsystem\Models\User\User::contact
+     * @covers       \Engelsystem\Models\User\User::license
      * @covers       \Engelsystem\Models\User\User::personalData
      * @covers       \Engelsystem\Models\User\User::settings
      * @covers       \Engelsystem\Models\User\User::state

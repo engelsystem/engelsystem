@@ -12,14 +12,12 @@ function user_driver_license_required_hint()
 {
     $user = auth()->user();
 
-    $angeltypes = User_angeltypes($user->id);
-    $user_driver_license = UserDriverLicense($user->id);
-
     // User has already entered data, no hint needed.
-    if (!empty($user_driver_license)) {
+    if ($user->license->wantsToDrive()) {
         return null;
     }
 
+    $angeltypes = User_angeltypes($user->id);
     foreach ($angeltypes as $angeltype) {
         if ($angeltype['requires_driver_license']) {
             return sprintf(
@@ -105,38 +103,34 @@ function user_driver_license_edit_controller()
         throw_redirect(user_driver_license_edit_link());
     }
 
-    $user_driver_license = UserDriverLicense($user_source->id);
-    if (empty($user_driver_license)) {
-        $wants_to_drive = false;
-        $user_driver_license = UserDriverLicense_new();
-    } else {
-        $wants_to_drive = true;
-    }
-
+    $driverLicense = $user_source->license;
     if ($request->hasPostData('submit')) {
-        $wants_to_drive = $request->has('wants_to_drive');
-        if ($wants_to_drive) {
-            $user_driver_license['has_car'] = $request->has('has_car');
-            $user_driver_license['has_license_car'] = $request->has('has_license_car');
-            $user_driver_license['has_license_3_5t_transporter'] = $request->has('has_license_3_5t_transporter');
-            $user_driver_license['has_license_7_5t_truck'] = $request->has('has_license_7_5t_truck');
-            $user_driver_license['has_license_12_5t_truck'] = $request->has('has_license_12_5t_truck');
-            $user_driver_license['has_license_forklift'] = $request->has('has_license_forklift');
+        if ($request->has('wants_to_drive')) {
+            $driverLicense->has_car = $request->has('has_car');
+            $driverLicense->drive_car = $request->has('has_license_car');
+            $driverLicense->drive_3_5t = $request->has('has_license_3_5t_transporter');
+            $driverLicense->drive_7_5t = $request->has('has_license_7_5t_truck');
+            $driverLicense->drive_12t= $request->has('has_license_12t_truck');
+            $driverLicense->drive_forklift = $request->has('has_license_forklift');
 
-            if (UserDriverLicense_valid($user_driver_license)) {
-                if (empty($user_driver_license['user_id'])) {
-                    $user_driver_license = UserDriverLicenses_create($user_driver_license, $user_source->id);
-                } else {
-                    UserDriverLicenses_update($user_driver_license);
-                }
+            if ($driverLicense->wantsToDrive()) {
+                $driverLicense->save();
+
                 engelsystem_log('Driver license information updated.');
                 success(__('Your driver license information has been saved.'));
                 throw_redirect(user_link($user_source->id));
             } else {
                 error(__('Please select at least one driving license.'));
             }
-        } elseif (!empty($user_driver_license['user_id'])) {
-            UserDriverLicenses_delete($user_source->id);
+        } else {
+            $driverLicense->has_car = false;
+            $driverLicense->drive_car = false;
+            $driverLicense->drive_3_5t = false;
+            $driverLicense->drive_7_5t = false;
+            $driverLicense->drive_12t = false;
+            $driverLicense->drive_forklift = false;
+            $driverLicense->save();
+
             engelsystem_log('Driver license information removed.');
             success(__('Your driver license information has been removed.'));
             throw_redirect(user_link($user_source->id));
@@ -145,6 +139,6 @@ function user_driver_license_edit_controller()
 
     return [
         sprintf(__('Edit %s driving license information'), $user_source->name),
-        UserDriverLicense_edit_view($user_source, $wants_to_drive, $user_driver_license)
+        UserDriverLicense_edit_view($user_source, $driverLicense)
     ];
 }

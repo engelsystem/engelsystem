@@ -1821,8 +1821,8 @@ msgid "7,5t Truck"
 msgstr "Caminhão 7,5t"
 
 #: includes/view/AngelTypes_view.php:184
-msgid "12,5t Truck"
-msgstr "Caminhão 12,5t"
+msgid "12t Truck"
+msgstr "Caminhão 12t"
 
 #: includes/view/AngelTypes_view.php:185
 #: includes/view/UserDriverLicenses_view.php:31
@@ -2184,8 +2184,8 @@ msgid "Truck 7,5t"
 msgstr "Caminhão 7,5t"
 
 #: includes/view/UserDriverLicenses_view.php:30
-msgid "Truck 12,5t"
-msgstr "Caminhão 12,5t"
+msgid "Truck 12t"
+msgstr "Caminhão 12t"
 
 #: includes/view/User_view.php:7
 msgid "Please select..."

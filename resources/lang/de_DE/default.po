@@ -2059,8 +2059,8 @@ msgid "7,5t Truck"
 msgstr "7,5t LKW"
 
 #: includes/view/AngelTypes_view.php:305
-msgid "12,5t Truck"
-msgstr "12,5t LKW"
+msgid "12t Truck"
+msgstr "12t LKW"
 
 #: includes/view/AngelTypes_view.php:306
 #: includes/view/UserDriverLicenses_view.php:49
@@ -2462,8 +2462,8 @@ msgid "Truck 7,5t"
 msgstr "7,5t LKW"
 
 #: includes/view/UserDriverLicenses_view.php:44
-msgid "Truck 12,5t"
-msgstr "12,5t LKW"
+msgid "Truck 12t"
+msgstr "12t LKW"
 
 #: includes/view/UserWorkLog_view.php:15
 #, php-format

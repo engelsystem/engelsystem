@@ -110,11 +110,12 @@ class Controller extends BaseController
             'licenses'             => [
                 'type' => 'gauge',
                 'help' => 'The total number of licenses',
+                ['labels' => ['type' => 'has_car'], 'value' => $this->stats->licenses('has_car')],
                 ['labels' => ['type' => 'forklift'], 'value' => $this->stats->licenses('forklift')],
                 ['labels' => ['type' => 'car'], 'value' => $this->stats->licenses('car')],
                 ['labels' => ['type' => '3.5t'], 'value' => $this->stats->licenses('3.5t')],
                 ['labels' => ['type' => '7.5t'], 'value' => $this->stats->licenses('7.5t')],
-                ['labels' => ['type' => '12.5t'], 'value' => $this->stats->licenses('12.5t')],
+                ['labels' => ['type' => '12t'], 'value' => $this->stats->licenses('12t')],
             ],
             'users_email'          => [
                 'type' => 'gauge',

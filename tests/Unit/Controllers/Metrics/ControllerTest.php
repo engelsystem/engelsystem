@@ -84,10 +84,10 @@ class ControllerTest extends TestCase
             ->with('metrics return')
             ->willReturn($response);
 
-        $stats->expects($this->exactly(5))
+        $stats->expects($this->exactly(6))
             ->method('licenses')
-            ->withConsecutive(['forklift'], ['car'], ['3.5t'], ['7.5t'], ['12.5t'])
-            ->willReturnOnConsecutiveCalls(3, 15, 9, 7, 1);
+            ->withConsecutive(['has_car'], ['forklift'], ['car'], ['3.5t'], ['7.5t'], ['12t'])
+            ->willReturnOnConsecutiveCalls(6, 3, 15, 9, 7, 1);
         $stats->expects($this->exactly(2))
             ->method('arrivedUsers')
             ->withConsecutive([false], [true])
