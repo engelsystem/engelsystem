@@ -182,7 +182,6 @@ function angeltype_controller()
 
     $angeltype = load_angeltype();
     $user_angeltype = UserAngelType_by_User_and_AngelType($user->id, $angeltype);
-    $user_driver_license = UserDriverLicense($user->id);
     $members = Users_by_angeltype($angeltype);
 
     $days = angeltype_controller_shiftsFilterDays($angeltype);
@@ -209,7 +208,7 @@ function angeltype_controller()
             auth()->can('admin_user_angeltypes') || $isSupporter,
             auth()->can('admin_angel_types'),
             $isSupporter,
-            $user_driver_license,
+            $user->license,
             $user,
             $shiftsFilterRenderer,
             $shiftCalendarRenderer,

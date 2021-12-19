@@ -91,11 +91,10 @@ function Users_by_angeltype($angeltype)
             'UserAngelTypes.id AS user_angeltype_id',
             'UserAngelTypes.confirm_user_id',
             'UserAngelTypes.supporter',
-            'UserDriverLicenses.user_id AS wants_to_drive',
-            'UserDriverLicenses.*'
+            'users_licenses.*'
         )
         ->join('UserAngelTypes', 'users.id', '=', 'UserAngelTypes.user_id')
-        ->leftJoin('UserDriverLicenses', 'users.id', '=', 'UserDriverLicenses.user_id')
+        ->leftJoin('users_licenses', 'users.id', '=', 'users_licenses.user_id')
         ->where('UserAngelTypes.angeltype_id', '=', $angeltype['id'])
         ->orderBy('users.name')
         ->get();

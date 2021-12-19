@@ -1,5 +1,6 @@
 <?php
 
+use Engelsystem\Models\User\License;
 use Engelsystem\Models\User\User;
 use Engelsystem\ShiftCalendarRenderer;
 use Engelsystem\ShiftsFilterRenderer;
@@ -129,7 +130,7 @@ function AngelType_edit_view($angeltype, $supporter_mode)
  * @param array|null $user_angeltype
  * @param bool       $admin_angeltypes
  * @param bool       $supporter
- * @param array|null $user_driver_license
+ * @param License    $user_driver_license
  * @param User|null  $user
  * @return string
  */
@@ -153,7 +154,7 @@ function AngelType_view_buttons($angeltype, $user_angeltype, $admin_angeltypes, 
             'add'
         );
     } else {
-        if ($angeltype['requires_driver_license'] && empty($user_driver_license)) {
+        if ($angeltype['requires_driver_license'] && !$user_driver_license->wantsToDrive()) {
             error(__('This angeltype requires a driver license. Please enter your driver license information!'));
         }
 
@@ -205,13 +206,13 @@ function AngelType_view_members($angeltype, $members, $admin_user_angeltypes, $a
         $member->name = User_Nick_render($member) . User_Pronoun_render($member);
         $member['dect'] = $member->contact->dect;
         if ($angeltype['requires_driver_license']) {
-            $member['wants_to_drive'] = icon_bool($member['wants_to_drive']);
-            $member['has_car'] = icon_bool($member['has_car']);
-            $member['has_license_car'] = icon_bool($member['has_license_car']);
-            $member['has_license_3_5t_transporter'] = icon_bool($member['has_license_3_5t_transporter']);
-            $member['has_license_7_5t_truck'] = icon_bool($member['has_license_7_5t_truck']);
-            $member['has_license_12_5t_truck'] = icon_bool($member['has_license_12_5t_truck']);
-            $member['has_license_forklift'] = icon_bool($member['has_license_forklift']);
+            $member['wants_to_drive'] = icon_bool($member->license->wantsToDrive());
+            $member['has_car'] = icon_bool($member->license->has_car);
+            $member['has_license_car'] = icon_bool($member->license->drive_car);
+            $member['has_license_3_5t_transporter'] = icon_bool($member->license->drive_3_5t);
+            $member['has_license_7_5t_truck'] = icon_bool($member->license->drive_7_5t);
+            $member['has_license_12t_truck'] = icon_bool($member->license->drive_12t);
+            $member['has_license_forklift'] = icon_bool($member->license->drive_forklift);
         }
 
         if ($angeltype['restricted'] && empty($member['confirm_user_id'])) {
@@ -302,7 +303,7 @@ function AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes)
             'has_license_car'              => __('Car'),
             'has_license_3_5t_transporter' => __('3,5t Transporter'),
             'has_license_7_5t_truck'       => __('7,5t Truck'),
-            'has_license_12_5t_truck'      => __('12,5t Truck'),
+            'has_license_12t_truck'        => __('12t Truck'),
             'has_license_forklift'         => __('Forklift'),
             'actions'                      => ''
         ];
@@ -323,7 +324,7 @@ function AngelType_view_table_headers($angeltype, $supporter, $admin_angeltypes)
  * @param bool                  $admin_user_angeltypes
  * @param bool                  $admin_angeltypes
  * @param bool                  $supporter
- * @param array                 $user_driver_license
+ * @param License               $user_driver_license
  * @param User                  $user
  * @param ShiftsFilterRenderer  $shiftsFilterRenderer
  * @param ShiftCalendarRenderer $shiftCalendarRenderer

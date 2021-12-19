@@ -27,6 +27,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon                         $updated_at
  *
  * @property-read QueryBuilder|Contact      $contact
+ * @property-read QueryBuilder|License      $license
  * @property-read QueryBuilder|PersonalData $personalData
  * @property-read QueryBuilder|Settings     $settings
  * @property-read QueryBuilder|State        $state
@@ -90,6 +91,16 @@ class User extends BaseModel
     {
         return $this
             ->hasOne(Contact::class)
+            ->withDefault();
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function license()
+    {
+        return $this
+            ->hasOne(License::class)
             ->withDefault();
     }
 
