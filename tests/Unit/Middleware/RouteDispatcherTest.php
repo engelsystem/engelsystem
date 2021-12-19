@@ -140,13 +140,10 @@ class RouteDispatcherTest extends TestCase
             ->willReturn('HEAD');
         $request->expects($this->atLeastOnce())
             ->method('getUri')
-            ->willReturn($uriInterface);
+            ->willReturn('http://foo.bar/lorem/foo%21bar');
         $request->expects($this->atLeastOnce())
             ->method('getPathInfo')
             ->willReturn('/foo%21bar');
-        $uriInterface->expects($this->atLeastOnce())
-            ->method('getPath')
-            ->willReturn('/lorem/foo%21bar');
 
         return [$dispatcher, $response, $request, $handler];
     }
