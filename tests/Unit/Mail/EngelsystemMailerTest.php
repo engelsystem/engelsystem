@@ -108,7 +108,7 @@ class EngelsystemMailerTest extends TestCase
 
         $this->assertEquals('Mail test', $mailer->getSubjectPrefix());
 
-        $return = $mailer->send('to@xam.pel', 'Foo Bar', 'Lorem Ipsum!');
+        $return = $mailer->send('to@xam.pel', 'Foo Bar ', 'Lorem Ipsum!');
         $this->assertEquals(1, $return);
     }
 }
