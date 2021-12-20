@@ -11,8 +11,9 @@ use Engelsystem\Renderer\Renderer;
 use Engelsystem\Test\Unit\HasDatabase;
 use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use Swift_Mailer as SwiftMailer;
-use Swift_Message as SwiftMessage;
+use Symfony\Component\Mailer\Envelope;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\RawMessage;
 
 class EngelsystemMailerTest extends TestCase
 {
@@ -26,18 +27,17 @@ class EngelsystemMailerTest extends TestCase
     {
         /** @var Renderer|MockObject $view */
         $view = $this->createMock(Renderer::class);
-        /** @var SwiftMailer|MockObject $swiftMailer */
-        $swiftMailer = $this->createMock(SwiftMailer::class);
+        /** @var MailerInterface|MockObject $symfonyMailer */
+        $symfonyMailer = $this->getMockForAbstractClass(MailerInterface::class);
         /** @var EngelsystemMailer|MockObject $mailer */
         $mailer = $this->getMockBuilder(EngelsystemMailer::class)
-            ->setConstructorArgs(['mailer' => $swiftMailer, 'view' => $view])
+            ->setConstructorArgs(['mailer' => $symfonyMailer, 'view' => $view])
             ->onlyMethods(['send'])
             ->getMock();
-        $this->setExpects($mailer, 'send', ['foo@bar.baz', 'Lorem dolor', 'Rendered Stuff!'], 1);
+        $this->setExpects($mailer, 'send', ['foo@bar.baz', 'Lorem dolor', 'Rendered Stuff!']);
         $this->setExpects($view, 'render', ['test/template.tpl', ['dev' => true]], 'Rendered Stuff!');
 
-        $return = $mailer->sendView('foo@bar.baz', 'Lorem dolor', 'test/template.tpl', ['dev' => true]);
-        $this->assertEquals(1, $return);
+        $mailer->sendView('foo@bar.baz', 'Lorem dolor', 'test/template.tpl', ['dev' => true]);
     }
 
     /**
@@ -54,18 +54,18 @@ class EngelsystemMailerTest extends TestCase
 
         /** @var Renderer|MockObject $view */
         $view = $this->createMock(Renderer::class);
-        /** @var SwiftMailer|MockObject $swiftMailer */
-        $swiftMailer = $this->createMock(SwiftMailer::class);
+        /** @var MailerInterface|MockObject $symfonyMailer */
+        $symfonyMailer = $this->createMock(MailerInterface::class);
         /** @var Translator|MockObject $translator */
         $translator = $this->createMock(Translator::class);
 
         /** @var EngelsystemMailer|MockObject $mailer */
         $mailer = $this->getMockBuilder(EngelsystemMailer::class)
-            ->setConstructorArgs(['mailer' => $swiftMailer, 'view' => $view, 'translation' => $translator])
+            ->setConstructorArgs(['mailer' => $symfonyMailer, 'view' => $view, 'translation' => $translator])
             ->onlyMethods(['sendView'])
             ->getMock();
 
-        $this->setExpects($mailer, 'sendView', ['foo@bar.baz', 'Lorem dolor', 'test/template.tpl', ['dev' => true]], 1);
+        $this->setExpects($mailer, 'sendView', ['foo@bar.baz', 'Lorem dolor', 'test/template.tpl', ['dev' => true]]);
         $this->setExpects($translator, 'getLocales', null, ['de_DE' => 'de_DE', 'en_US' => 'en_US']);
         $this->setExpects($translator, 'getLocale', null, 'en_US');
         $this->setExpects($translator, 'translate', ['translatable.text', ['dev' => true]], 'Lorem dolor');
@@ -73,14 +73,13 @@ class EngelsystemMailerTest extends TestCase
             ->method('setLocale')
             ->withConsecutive(['de_DE'], ['en_US']);
 
-        $return = $mailer->sendViewTranslated(
+        $mailer->sendViewTranslated(
             $user,
             'translatable.text',
             'test/template.tpl',
             ['dev' => true],
             'de_DE'
         );
-        $this->assertEquals(1, $return);
     }
 
     /**
@@ -90,25 +89,26 @@ class EngelsystemMailerTest extends TestCase
      */
     public function testSend()
     {
-        /** @var SwiftMessage|MockObject $message */
-        $message = $this->createMock(SwiftMessage::class);
-        /** @var SwiftMailer|MockObject $swiftMailer */
-        $swiftMailer = $this->createMock(SwiftMailer::class);
-        $this->setExpects($swiftMailer, 'createMessage', null, $message);
-        $this->setExpects($swiftMailer, 'send', null, 1);
-        $this->setExpects($message, 'setTo', [['to@xam.pel']], $message);
-        $this->setExpects($message, 'setFrom', ['foo@bar.baz', 'Lorem Ipsum'], $message);
-        $this->setExpects($message, 'setSubject', ['[Mail test] Foo Bar'], $message);
-        $this->setExpects($message, 'setBody', ['Lorem Ipsum!'], $message);
+        /** @var MailerInterface|MockObject $symfonyMailer */
+        $symfonyMailer = $this->createMock(MailerInterface::class);
 
-        $mailer = new EngelsystemMailer($swiftMailer);
+        $symfonyMailer->expects($this->once())
+            ->method('send')
+            ->willReturnCallback(function (RawMessage $message, Envelope $envelope = null) {
+                $this->assertStringContainsString('foo@bar.baz', $message->toString());
+                $this->assertStringContainsString('Foo Bar', $message->toString());
+                $this->assertStringContainsString('Mail test', $message->toString());
+                $this->assertStringContainsString('to@xam.pel', $message->toString());
+                $this->assertStringContainsString('Lorem Ipsum!', $message->toString());
+            });
+
+        $mailer = new EngelsystemMailer($symfonyMailer);
         $mailer->setFromAddress('foo@bar.baz');
-        $mailer->setFromName('Lorem Ipsum');
+        $mailer->setFromName('Foo Bar');
         $mailer->setSubjectPrefix('Mail test');
 
         $this->assertEquals('Mail test', $mailer->getSubjectPrefix());
 
-        $return = $mailer->send('to@xam.pel', 'Foo Bar ', 'Lorem Ipsum!');
-        $this->assertEquals(1, $return);
+        $mailer->send('to@xam.pel', 'Foo Bar ', 'Lorem Ipsum!');
     }
 }

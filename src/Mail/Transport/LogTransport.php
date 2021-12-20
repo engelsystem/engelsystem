@@ -3,9 +3,10 @@
 namespace Engelsystem\Mail\Transport;
 
 use Psr\Log\LoggerInterface;
-use Swift_Mime_SimpleMessage as SimpleMessage;
+use Symfony\Component\Mailer\SentMessage;
+use Symfony\Component\Mailer\Transport\AbstractTransport;
 
-class LogTransport extends Transport
+class LogTransport extends AbstractTransport
 {
     /** @var LoggerInterface */
     protected $logger;
@@ -13,32 +14,37 @@ class LogTransport extends Transport
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
+
+        parent::__construct();
     }
 
     /**
-     * Send the given Message.
+     * Send the message to log
      *
-     * Recipient/sender data will be retrieved from the Message API.
-     * The return value is the number of recipients
-     *
-     * @param SimpleMessage $message
-     * @param string[]      $failedRecipients An array of failures by-reference
-     *
-     * @return int
+     * @param SentMessage $message
      */
-    public function send(
-        SimpleMessage $message,
-        &$failedRecipients = null
-    ): int {
+    protected function doSend(SentMessage $message): void
+    {
+        $recipients = [];
+        $messageRecipients = $message->getEnvelope()->getRecipients();
+        foreach ($messageRecipients as $recipient) {
+            $recipients[] = $recipient->toString();
+        }
+
         $this->logger->debug(
-            'Mail: Send mail "{title}" to "{recipients}":' . PHP_EOL . PHP_EOL . '{content}',
+            'Mail: Send mail to "{recipients}":' . PHP_EOL . PHP_EOL . '{content}',
             [
-                'title'      => $message->getSubject(),
-                'recipients' => $this->getTo($message),
+                'recipients' => implode(', ', $recipients),
                 'content'    => $message->toString(),
             ]
         );
+    }
 
-        return count($this->allRecipients($message));
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return 'log://';
     }
 }

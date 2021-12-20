@@ -11,10 +11,10 @@ use Engelsystem\Mail\Transport\LogTransport;
 use Engelsystem\Test\Unit\ServiceProviderTest;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use Swift_Mailer as SwiftMailer;
-use Swift_SendmailTransport as SendmailTransport;
-use Swift_SmtpTransport as SmtpTransport;
-use Swift_Transport as Transport;
+use Symfony\Component\Mailer\Mailer as SymfonyMailer;
+use Symfony\Component\Mailer\Transport\SendmailTransport;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 
 class MailerServiceProviderTest extends ServiceProviderTest
 {
@@ -37,7 +37,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
             'driver'     => 'smtp',
             'host'       => 'mail.foo.bar',
             'port'       => 587,
-            'encryption' => 'tls',
+            'tls'        => true,
             'username'   => 'foobar',
             'password'   => 'LoremIpsum123',
         ],
@@ -53,8 +53,8 @@ class MailerServiceProviderTest extends ServiceProviderTest
         $serviceProvider = new MailerServiceProvider($app);
         $serviceProvider->register();
 
-        $this->assertExistsInContainer(['mailer.transport', Transport::class], $app);
-        $this->assertExistsInContainer(['mailer.swift', SwiftMailer::class], $app);
+        $this->assertExistsInContainer(['mailer.transport', TransportInterface::class], $app);
+        $this->assertExistsInContainer(['mailer.symfony', SymfonyMailer::class], $app);
         $this->assertExistsInContainer(['mailer', EngelsystemMailer::class, Mailer::class], $app);
 
         /** @var EngelsystemMailer $mailer */
@@ -65,7 +65,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
 
         /** @var SendmailTransport $transport */
         $transport = $app->get('mailer.transport');
-        $this->assertEquals($this->defaultConfig['email']['sendmail'], $transport->getCommand());
+        $this->assertInstanceOf(SendmailTransport::class, $transport);
     }
 
     /**
@@ -78,7 +78,7 @@ class MailerServiceProviderTest extends ServiceProviderTest
             [SendmailTransport::class, ['email' => ['driver' => 'mail']]],
             [SendmailTransport::class, ['email' => ['driver' => 'sendmail']]],
             [
-                SmtpTransport::class,
+                EsmtpTransport::class,
                 $this->smtpConfig,
             ],
         ];
@@ -123,12 +123,9 @@ class MailerServiceProviderTest extends ServiceProviderTest
         $serviceProvider = new MailerServiceProvider($app);
         $serviceProvider->register();
 
-        /** @var SmtpTransport $transport */
+        /** @var EsmtpTransport $transport */
         $transport = $app->get('mailer.transport');
 
-        $this->assertEquals($this->smtpConfig['email']['host'], $transport->getHost());
-        $this->assertEquals($this->smtpConfig['email']['port'], $transport->getPort());
-        $this->assertEquals($this->smtpConfig['email']['encryption'], $transport->getEncryption());
         $this->assertEquals($this->smtpConfig['email']['username'], $transport->getUsername());
         $this->assertEquals($this->smtpConfig['email']['password'], $transport->getPassword());
     }
