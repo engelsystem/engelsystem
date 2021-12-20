@@ -3,7 +3,7 @@
 use Engelsystem\Mail\EngelsystemMailer;
 use Engelsystem\Models\User\User;
 use Psr\Log\LoggerInterface;
-use Swift_SwiftException as SwiftException;
+use Symfony\Component\Mailer\Exception\TransportException;
 
 /**
  * Display a hint for team/angeltype supporters if there are unconfirmed users for his angeltype.
@@ -206,7 +206,7 @@ function user_angeltype_confirm_email(User $user, array $angeltype): void
             'emails/angeltype-confirmed',
             ['name' => $angeltype['name'], 'angeltype' => $angeltype, 'username' => $user->name]
         );
-    } catch (SwiftException $e) {
+    } catch (TransportException $e) {
         /** @var LoggerInterface $logger */
         $logger = app('logger');
         $logger->error(
@@ -236,7 +236,7 @@ function user_angeltype_add_email(User $user, array $angeltype): void
             'emails/angeltype-added',
             ['name' => $angeltype['name'], 'angeltype' => $angeltype, 'username' => $user->name]
         );
-    } catch (SwiftException $e) {
+    } catch (TransportException $e) {
         /** @var LoggerInterface $logger */
         $logger = app('logger');
         $logger->error(

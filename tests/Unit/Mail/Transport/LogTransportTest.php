@@ -6,52 +6,39 @@ use Engelsystem\Mail\Transport\LogTransport;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Swift_Mime_SimpleMessage as SimpleMessage;
+use Psr\Log\Test\TestLogger;
+use Symfony\Component\Mime\Email;
 
 class LogTransportTest extends TestCase
 {
     /**
      * @covers \Engelsystem\Mail\Transport\LogTransport::__construct
-     * @covers \Engelsystem\Mail\Transport\LogTransport::send
+     * @covers \Engelsystem\Mail\Transport\LogTransport::doSend
      */
     public function testSend()
     {
+        $logger = new TestLogger();
+        $email = (new Email())
+            ->from('some@email.host')
+            ->to('foo@bar.baz', 'Test Tester <test@example.local>')
+            ->subject('Testing')
+            ->text('Message body');
+
+        $transport = new LogTransport($logger);
+        $transport->send($email);
+
+        $this->assertTrue($logger->hasDebugThatContains('Send mail to'));
+    }
+
+    /**
+     * @covers \Engelsystem\Mail\Transport\LogTransport::__toString
+     */
+    public function testToString()
+    {
         /** @var LoggerInterface|MockObject $logger */
         $logger = $this->getMockForAbstractClass(LoggerInterface::class);
-        /** @var SimpleMessage|MockObject $message */
-        $message = $this->createMock(SimpleMessage::class);
 
-        $message->expects($this->once())
-            ->method('getSubject')
-            ->willReturn('Some subject');
-        $message->expects($this->once())
-            ->method('toString')
-            ->willReturn("Head: er\n\nMessage body");
-
-        $logger->expects($this->once())
-            ->method('debug')
-            ->willReturnCallback(function ($message, $context = []) {
-                foreach (array_keys($context) as $key) {
-                    $this->assertStringContainsString(sprintf('{%s}', $key), $message);
-                }
-
-                $this->assertEquals('Some subject', $context['title']);
-                $this->assertEquals('foo@bar.batz,Lorem Ipsum <lor@em.ips>', $context['recipients']);
-                $this->assertStringContainsString('Head: er', $context['content']);
-                $this->assertStringContainsString('Message body', $context['content']);
-            });
-
-        /** @var LogTransport|MockObject $transport */
-        $transport = $this->getMockBuilder(LogTransport::class)
-            ->setConstructorArgs(['logger' => $logger])
-            ->onlyMethods(['allRecipients'])
-            ->getMock();
-        $transport->expects($this->exactly(2))
-            ->method('allRecipients')
-            ->with($message)
-            ->willReturn(['foo@bar.batz' => null, 'lor@em.ips' => 'Lorem Ipsum']);
-
-        $return = $transport->send($message);
-        $this->assertEquals(2, $return);
+        $transport = new LogTransport($logger);
+        $this->assertEquals('log://', (string)$transport);
     }
 }

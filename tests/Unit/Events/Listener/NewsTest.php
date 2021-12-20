@@ -12,7 +12,7 @@ use Engelsystem\Test\Unit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\Test\TestLogger;
-use Swift_SwiftException as SwiftException;
+use Symfony\Component\Mailer\Exception\TransportException;
 
 class NewsTest extends TestCase
 {
@@ -46,11 +46,9 @@ class NewsTest extends TestCase
                 $this->assertEquals('emails/news-new', $template);
                 $this->assertEquals('Foo', array_values($data)[0]);
 
-                if ($i++ > 0) {
-                    throw new SwiftException('Oops');
+                if ($i++ > 0) { // On second run
+                    throw new TransportException('Oops');
                 }
-
-                return 1;
             });
 
         /** @var News $listener */

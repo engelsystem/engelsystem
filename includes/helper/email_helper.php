@@ -22,19 +22,20 @@ function engelsystem_email_to_user($recipientUser, $title, $message, $notIfItsMe
     $translator = app()->get('translator');
     $locale = $translator->getLocale();
 
+    $status = true;
     try {
         /** @var EngelsystemMailer $mailer */
         $mailer = app('mailer');
 
         $translator->setLocale($recipientUser->settings->language);
-        $status = $mailer->sendView(
+        $mailer->sendView(
             $recipientUser->contact->email ? $recipientUser->contact->email : $recipientUser->email,
             $title,
             'emails/mail',
             ['username' => $recipientUser->name, 'message' => $message]
         );
     } catch (Exception $e) {
-        $status = 0;
+        $status = false;
         engelsystem_log(sprintf(
             'An exception occurred while sending a mail to %s in %s:%u: %s',
             $recipientUser->name,
@@ -51,5 +52,5 @@ function engelsystem_email_to_user($recipientUser, $title, $message, $notIfItsMe
         engelsystem_log(sprintf('User %s could not be notified by email due to an error.', $recipientUser->name));
     }
 
-    return (bool)$status;
+    return $status;
 }
