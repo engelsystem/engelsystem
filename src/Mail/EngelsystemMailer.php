@@ -98,7 +98,7 @@ class EngelsystemMailer extends Mailer
     public function send($to, string $subject, string $body): int
     {
         if ($this->subjectPrefix) {
-            $subject = sprintf('[%s] %s', $this->subjectPrefix, $subject);
+            $subject = sprintf('[%s] %s', $this->subjectPrefix, trim($subject));
         }
 
         return parent::send($to, $subject, $body);
