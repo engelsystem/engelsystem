@@ -150,6 +150,7 @@ function UserAngelType_add_view($angeltype, $users_source, $user_id)
         ]),
         form([
             form_info(__('Angeltype'), $angeltype['name']),
+            form_checkbox('auto_confirm_user', __('Confirm user'), true),
             form_select('user_id', __('User'), $users, $user_id),
             form_submit('submit', __('Add'))
         ])
@@ -171,6 +172,7 @@ function UserAngelType_join_view($user, $angeltype)
             $angeltype['name']
         ), true),
         form([
+            auth()->can('admin_user_angeltypes') ? form_checkbox('auto_confirm_user', __('Confirm user'), true) : '',
             buttons([
                 button(angeltype_link($angeltype['id']), icon('x-lg') . __('cancel')),
                 form_submit('submit', icon('check-lg') . __('save'), 'btn-primary', false)
