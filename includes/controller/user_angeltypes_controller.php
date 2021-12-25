@@ -392,7 +392,8 @@ function user_angeltype_add_controller(): array
     // Load possible users, that are not in the angeltype already
     $users_source = Users_by_angeltype_inverted($angeltype);
 
-    if (request()->hasPostData('submit')) {
+    $request = request();
+    if ($request->hasPostData('submit')) {
         $user_source = load_user();
 
         if (!UserAngelType_exists($user_source->id, $angeltype)) {
@@ -409,12 +410,14 @@ function user_angeltype_add_controller(): array
                 AngelType_name_render($angeltype)
             ));
 
-            UserAngelType_confirm($user_angeltype_id, $user_source->id);
-            engelsystem_log(sprintf(
-                'User %s confirmed as %s.',
-                User_Nick_render($user_source, true),
-                AngelType_name_render($angeltype, true)
-            ));
+            if ($request->hasPostData('auto_confirm_user')) {
+                UserAngelType_confirm($user_angeltype_id, $user_source->id);
+                engelsystem_log(sprintf(
+                    'User %s confirmed as %s.',
+                    User_Nick_render($user_source, true),
+                    AngelType_name_render($angeltype, true)
+                ));
+            }
 
             user_angeltype_add_email($user_source, $angeltype);
 
@@ -444,7 +447,8 @@ function user_angeltype_join_controller($angeltype)
         throw_redirect(page_link_to('angeltypes'));
     }
 
-    if (request()->hasPostData('submit')) {
+    $request = request();
+    if ($request->hasPostData('submit')) {
         $user_angeltype_id = UserAngelType_create($user->id, $angeltype);
 
         $success_message = sprintf(__('You joined %s.'), $angeltype['name']);
@@ -455,7 +459,7 @@ function user_angeltype_join_controller($angeltype)
         ));
         success($success_message);
 
-        if (auth()->can('admin_user_angeltypes')) {
+        if (auth()->can('admin_user_angeltypes') && $request->hasPostData('auto_confirm_user')) {
             UserAngelType_confirm($user_angeltype_id, $user->id);
             engelsystem_log(sprintf(
                 'User %s confirmed as %s.',

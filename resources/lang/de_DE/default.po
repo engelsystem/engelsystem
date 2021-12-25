@@ -2420,6 +2420,9 @@ msgstr "Möchtest Du wirklich %s von %s entfernen?"
 msgid "Do you really want to add %s to %s?"
 msgstr "Möchtest Du wirklich %s zu %s hinzufügen?"
 
+msgid "Confirm user"
+msgstr "Benutzer bestätigen"
+
 #: includes/view/UserAngelTypes_view.php:176
 msgid "save"
 msgstr "Speichern"
