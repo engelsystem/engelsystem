@@ -29,11 +29,11 @@
 
             {% block pagination %}
                 {% if pages|default(0) > 1 %}
-                    <div class="col-md-12 text-center">
-                        <ul class="pagination">
+                    <div class="col-md-12">
+                        <ul class="pagination justify-content-center">
                             {% for p in range(1, pages) %}
-                                <li{% if p == page %} class="active"{% endif %}>
-                                    <a href="{{ url('news', p == 1 ? {} : {'page': p}) }}">{{ p }}</a>
+                                <li class="page-item{% if p == page %} active{% endif %}">
+                                    <a class="page-link" href="{{ url('news', p == 1 ? {} : {'page': p}) }}">{{ p }}</a>
                                 </li>
                             {% endfor %}
                         </ul>
