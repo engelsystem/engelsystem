@@ -675,7 +675,7 @@ function User_view(
                     ])
                 ])
             ]),
-            div('row', [
+            div('row user-info', [
                 div('col-md-2', [
                     heading(icon('phone')
                         . '<a href="tel:' . $user_source->contact->dect . '">'

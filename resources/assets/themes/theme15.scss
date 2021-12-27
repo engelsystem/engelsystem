@@ -170,6 +170,7 @@ code {
 // Specials ===================================================================
 body {
   background: #000 url('theme15/background.jpg') no-repeat center center fixed;
+  background-size: cover;
 }
 
 h1, h2, h3, h4, h5 {
@@ -188,4 +189,22 @@ h1, h2, h3, h4, h5 {
 
 .shift-calendar .lane.time {
   width: 80px;
+}
+
+@include media-breakpoint-down(lg) {
+  .navbar {
+    background-color: #000 !important;
+  }
+}
+
+.user-info {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding-top: 1em 0;
+}
+
+.stats {
+  background-color:rgba(0, 0, 0, 0.5);
+  margin: 1em 0;
+  padding: 1em 0;
+  height: 200px;
 }
