@@ -126,6 +126,11 @@ return [
     'theme'                   => env('THEME', 1),
 
     'themes' => [
+        15 => [
+            'name' => 'Engelsystem rC3 (2021)',
+            'type' => 'dark',
+            'navbar_classes' => 'navbar-dark',
+        ],
         14 => [
             'name' => 'Engelsystem rC3 teal (2020)',
             'type' => 'dark',
