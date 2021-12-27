@@ -178,6 +178,10 @@ h1, h2, h3, h4, h5 {
   letter-spacing: 0.05em;
 }
 
+.nav-link {
+  text-transform: lowercase;
+}
+
 .navbar {
   background: rgba(0,0,0,0.5);
   backdrop-filter: blur(6px);
@@ -199,7 +203,8 @@ h1, h2, h3, h4, h5 {
 
 .user-info {
   background-color: rgba(0, 0, 0, 0.5);
-  padding-top: 1em 0;
+  margin: 1em 0;
+  padding: 1em 0;
 }
 
 .stats {
