@@ -17,7 +17,7 @@ class DayTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\Day::getStart
      * @covers \Engelsystem\Helpers\Schedule\Day::getEnd
      * @covers \Engelsystem\Helpers\Schedule\Day::getIndex
-     * @covers \Engelsystem\Helpers\Schedule\Day::getRoom
+     * @covers \Engelsystem\Helpers\Schedule\Day::getRooms
      */
     public function testCreate(): void
     {
@@ -31,7 +31,7 @@ class DayTest extends TestCase
         $this->assertEquals('2000-01-01T03:00:00+01:00', $day->getStart()->format(Carbon::RFC3339));
         $this->assertEquals('2000-01-02T05:59:00+00:00', $day->getEnd()->format(Carbon::RFC3339));
         $this->assertEquals(1, $day->getIndex());
-        $this->assertEquals([], $day->getRoom());
+        $this->assertEquals([], $day->getRooms());
 
         $rooms = [
             new Room('Foo'),
@@ -44,6 +44,6 @@ class DayTest extends TestCase
             1,
             $rooms
         );
-        $this->assertEquals($rooms, $day->getRoom());
+        $this->assertEquals($rooms, $day->getRooms());
     }
 }

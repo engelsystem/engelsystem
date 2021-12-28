@@ -498,13 +498,13 @@ class ScheduleController extends BaseController
         $locations = $this->getAllLocations();
         $eventTimeZone = Carbon::now()->timezone;
 
-        foreach ($schedule->getDay() as $day) {
-            foreach ($day->getRoom() as $room) {
+        foreach ($schedule->getDays() as $day) {
+            foreach ($day->getRooms() as $room) {
                 if (!$scheduleModel->activeLocations->where('name', $room->getName())->count()) {
                     continue;
                 }
 
-                foreach ($room->getEvent() as $event) {
+                foreach ($room->getEvents() as $event) {
                     $scheduleEvents[$event->getGuid()] = $event;
 
                     $event->getDate()->timezone($eventTimeZone)->subMinutes($minutesBefore);

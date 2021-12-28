@@ -6,23 +6,13 @@ namespace Engelsystem\Helpers\Schedule;
 
 class Room
 {
-    /** @var string required */
-    protected string $name;
-
-    /** @var Event[] */
-    protected array $event;
-
     /**
-     * Room constructor.
-     *
      * @param Event[] $events
      */
     public function __construct(
-        string $name,
-        array $events = []
+        protected string $name,
+        protected array $events = []
     ) {
-        $this->name = $name;
-        $this->event = $events;
     }
 
     public function getName(): string
@@ -33,16 +23,16 @@ class Room
     /**
      * @return Event[]
      */
-    public function getEvent(): array
+    public function getEvents(): array
     {
-        return $this->event;
+        return $this->events;
     }
 
     /**
-     * @param Event[] $event
+     * @param Event[] $events
      */
-    public function setEvent(array $event): void
+    public function setEvents(array $events): void
     {
-        $this->event = $event;
+        $this->events = $events;
     }
 }

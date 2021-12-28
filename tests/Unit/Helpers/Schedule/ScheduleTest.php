@@ -20,7 +20,7 @@ class ScheduleTest extends TestCase
      * @covers \Engelsystem\Helpers\Schedule\Schedule::__construct
      * @covers \Engelsystem\Helpers\Schedule\Schedule::getVersion
      * @covers \Engelsystem\Helpers\Schedule\Schedule::getConference
-     * @covers \Engelsystem\Helpers\Schedule\Schedule::getDay
+     * @covers \Engelsystem\Helpers\Schedule\Schedule::getDays
      */
     public function testCreate(): void
     {
@@ -30,7 +30,7 @@ class ScheduleTest extends TestCase
 
         $this->assertEquals('Foo\'ing stuff 1.0', $schedule->getVersion());
         $this->assertEquals($conference, $schedule->getConference());
-        $this->assertEquals($days, $schedule->getDay());
+        $this->assertEquals($days, $schedule->getDays());
     }
 
     /**
