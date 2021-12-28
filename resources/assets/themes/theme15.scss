@@ -93,11 +93,11 @@ $input-group-addon-bg:           $gray-lighter;
 
 //== Pagination
 
-$pagination-color:                     $black;
+$pagination-color:                     #fff;
 
-$pagination-hover-color:               $black;
+$pagination-hover-color:               #fff;
 
-$pagination-active-color:              $black;
+$pagination-active-color:              #fff;
 
 //== Form states and alerts
 
@@ -212,4 +212,12 @@ h1, h2, h3, h4, h5 {
   margin: 1em 0;
   padding: 1em 0;
   height: 200px;
+}
+
+.card a {
+  text-decoration: underline;
+}
+
+.card .btn {
+  text-decoration: none;
 }
