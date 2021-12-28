@@ -28,7 +28,9 @@ class XmlParser
     /**
      * Parse the predefined XML content
      *
-     * According to https://github.com/voc/voctosched/blob/master/schema/basic.xsd
+     * See also https://c3voc.de/wiki/schedule
+     *
+     * According to https://github.com/voc/schedule/blob/master/validator/xsd/schedule.xml.xsd
      */
     protected function parseXml(): void
     {
@@ -53,7 +55,7 @@ class XmlParser
                 );
 
                 $events = $this->parseEvents($roomElement->xpath('event'), $room);
-                $room->setEvent($events);
+                $room->setEvents($events);
                 $rooms[] = $room;
             }
 

@@ -14,16 +14,16 @@ class Event
     protected Carbon $endDate;
 
     /**
-     * @param string      $guid globally unique
-     * @param int         $id globally unique
-     * @param string      $start time (hh:mm:ss || hh:mm)
-     * @param string      $duration (h?h:mm:ss || h?h:mm)
-     * @param string      $slug globally unique
-     * @param string[]    $persons id => name
-     * @param string|null $language two letter code
+     * @param string $guid globally unique
+     * @param int $id globally unique
+     * @param string $start time (hh:mm:ss || hh:mm)
+     * @param string $duration (h?h:mm:ss || h?h:mm)
+     * @param string $slug globally unique
+     * @param string[] $persons id => name
+     * @param string|null $language two-letter code
      * @param string|null $recording license (and opt out in XML, null if not recorded, empty if no license defined)/
-     * @param array       $links href => title
-     * @param array       $attachments href => title
+     * @param array $links href => title
+     * @param array $attachments href => title
      */
     public function __construct(
         protected string $guid,

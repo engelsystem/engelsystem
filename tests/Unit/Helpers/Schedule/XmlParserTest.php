@@ -46,14 +46,14 @@ class XmlParserTest extends TestCase
         $this->assertEquals('Rooming', $room->getName());
 
         /** @var Day $day */
-        $day = Arr::first($schedule->getDay());
+        $day = Arr::first($schedule->getDays());
         $this->assertEquals('2042-01-01', $day->getDate());
         $this->assertEquals(1, $day->getIndex());
 
         /** @var Room $room */
-        $room = Arr::first($day->getRoom());
+        $room = Arr::first($day->getRooms());
         /** @var Event $event */
-        $event = Arr::first($room->getEvent());
+        $event = Arr::first($room->getEvents());
 
         $this->assertEquals('Foo Bar Test', $event->getTitle());
         $this->assertEquals('WTFPL', $event->getRecording());

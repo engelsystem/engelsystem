@@ -8,38 +8,16 @@ use Carbon\Carbon;
 
 class Day
 {
-    /** @var string required */
-    protected string $date;
-
-    /** @var Carbon required */
-    protected Carbon $start;
-
-    /** @var Carbon required */
-    protected Carbon $end;
-
-    /** @var int required */
-    protected int $index;
-
-    /** @var Room[] */
-    protected array $room;
-
     /**
-     * Day constructor.
-     *
      * @param Room[] $rooms
      */
     public function __construct(
-        string $date,
-        Carbon $start,
-        Carbon $end,
-        int $index,
-        array $rooms = []
+        protected string $date,
+        protected Carbon $start,
+        protected Carbon $end,
+        protected int $index,
+        protected array $rooms = []
     ) {
-        $this->date = $date;
-        $this->start = $start;
-        $this->end = $end;
-        $this->index = $index;
-        $this->room = $rooms;
     }
 
     public function getDate(): string
@@ -65,8 +43,8 @@ class Day
     /**
      * @return Room[]
      */
-    public function getRoom(): array
+    public function getRooms(): array
     {
-        return $this->room;
+        return $this->rooms;
     }
 }

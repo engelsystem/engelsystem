@@ -8,9 +8,6 @@ class Conference
 {
     use CalculatesTime;
 
-    /**
-     * Event constructor.
-     */
     public function __construct(
         protected string $title,
         protected string $acronym,
