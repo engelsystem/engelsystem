@@ -95,7 +95,7 @@ function shift_edit_controller()
     if ($request->hasPostData('submit')) {
         // Name/Bezeichnung der Schicht, darf leer sein
         $title = strip_request_item('title');
-        $description = strip_request_item('description');
+        $description = strip_request_item_nl('description');
 
         // Auswahl der sichtbaren Locations für die Schichten
         if (

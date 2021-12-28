@@ -72,7 +72,7 @@ function admin_shifts()
         $title = strip_request_item('title');
 
         // Beschreibung der Schicht, darf leer sein
-        $description = strip_request_item('description');
+        $description = strip_request_item_nl('description');
 
         // Auswahl der sichtbaren Locations für die Schichten
         if (
