@@ -37,7 +37,7 @@ function room_controller(): array
         AngelType_ids()
     );
     $selected_day = date('Y-m-d');
-    if (!empty($days)) {
+    if (!empty($days) && !in_array($selected_day, $days)) {
         $selected_day = $days[0];
     }
     if ($request->has('shifts_filter_day')) {
