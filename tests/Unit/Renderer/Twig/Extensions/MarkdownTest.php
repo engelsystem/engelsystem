@@ -13,10 +13,7 @@ class MarkdownTest extends ExtensionTest
      */
     public function testGeFilters()
     {
-        /** @var Parsedown|MockObject $renderer */
-        $renderer = $this->createMock(Parsedown::class);
-
-        $extension = new Markdown($renderer);
+        $extension = new Markdown(new Parsedown());
         $filters = $extension->getFilters();
 
         $this->assertExtensionExists('markdown', [$extension, 'render'], $filters);
@@ -29,17 +26,12 @@ class MarkdownTest extends ExtensionTest
      */
     public function testRender()
     {
-        /** @var Parsedown|MockObject $renderer */
-        $renderer = $this->createMock(Parsedown::class);
+        $extension = new Markdown(new Parsedown());
 
-        $return = '<p>Lorem <em>&quot;Ipsum&quot;</em></p>';
-        $renderer->expects($this->once())
-            ->method('text')
-            ->with('Lorem *&quot;Ipsum&quot;*')
-            ->willReturn($return);
-
-        $extension = new Markdown($renderer);
-        $this->assertEquals($return, $extension->render('Lorem *"Ipsum"*'));
+        $this->assertEquals(
+            '<p>&lt;i&gt;Lorem&lt;/i&gt; <em>&quot;Ipsum&quot;</em></p>',
+            $extension->render('<i>Lorem</i> *"Ipsum"*'),
+        );
     }
 
     /**
@@ -47,17 +39,12 @@ class MarkdownTest extends ExtensionTest
      */
     public function testRenderHtml()
     {
-        /** @var Parsedown|MockObject $renderer */
-        $renderer = $this->createMock(Parsedown::class);
-
-        $input = '<i>**test**</i>';
-        $return = '<p><strong><i>**test**</i></strong></p>';
-        $renderer->expects($this->once())
-            ->method('text')
-            ->with($input)
-            ->willReturn($return);
-
+        $renderer = new Parsedown();
         $extension = new Markdown($renderer);
-        $this->assertEquals($return, $extension->render($input, false));
+
+        $this->assertEquals(
+            '<p><i>Lorem</i> <em>&quot;Ipsum&quot;</em></p>',
+            $extension->render('<i>Lorem</i> *"Ipsum"*', false),
+        );
     }
 }
