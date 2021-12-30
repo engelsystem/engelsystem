@@ -84,9 +84,6 @@ msgstr "News successfully updated."
 msgid "news.delete.success"
 msgstr "News successfully deleted."
 
-msgid "news.edit.contains-html"
-msgstr "This message contains HTML. After saving the post some formatting will be lost!"
-
 msgid "oauth.invalid-state"
 msgstr "Invalid OAuth state"
 

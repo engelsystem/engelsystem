@@ -23,39 +23,10 @@ class NewsControllerTest extends ControllerTest
     protected $data = [
         [
             'title'      => 'Foo',
-            'text'       => '<b>foo</b>',
-            'is_meeting' => false,
+            'text'       => '**foo**',
             'user_id'    => 1,
         ]
     ];
-
-    /**
-     * @covers \Engelsystem\Controllers\Admin\NewsController::edit
-     * @covers \Engelsystem\Controllers\Admin\NewsController::showEdit
-     */
-    public function testEditHtmlWarning()
-    {
-        $this->request->attributes->set('id', 1);
-        $this->response->expects($this->once())
-            ->method('withView')
-            ->willReturnCallback(function ($view, $data) {
-                $this->assertEquals('pages/news/edit.twig', $view);
-
-                /** @var Collection $warnings */
-                $warnings = $data['warnings'];
-                $this->assertNotEmpty($data['news']);
-                $this->assertTrue($warnings->isNotEmpty());
-                $this->assertEquals('news.edit.contains-html', $warnings->first());
-
-                return $this->response;
-            });
-        $this->addUser();
-
-        /** @var NewsController $controller */
-        $controller = $this->app->make(NewsController::class);
-
-        $controller->edit($this->request);
-    }
 
     /**
      * @covers \Engelsystem\Controllers\Admin\NewsController::__construct
@@ -76,10 +47,6 @@ class NewsControllerTest extends ControllerTest
 
                 return $this->response;
             });
-        $this->auth->expects($this->once())
-            ->method('can')
-            ->with('admin_news_html')
-            ->willReturn(true);
 
         /** @var NewsController $controller */
         $controller = $this->app->make(NewsController::class);
@@ -103,10 +70,6 @@ class NewsControllerTest extends ControllerTest
                     return $this->response;
                 }
             );
-        $this->auth->expects($this->once())
-            ->method('can')
-            ->with('admin_news_html')
-            ->willReturn(true);
 
         /** @var NewsController $controller */
         $controller = $this->app->make(NewsController::class);
@@ -142,10 +105,10 @@ class NewsControllerTest extends ControllerTest
     public function saveCreateEditProvider(): array
     {
         return [
-            ['Some <b>test</b>', true, true, 'Some <b>test</b>'],
-            ['Some <b>test</b>', false, false, 'Some test'],
-            ['Some <b>test</b>', false, true, 'Some <b>test</b>', 1],
-            ['Some <b>test</b>', true, false, 'Some test', 1],
+            ['Some test', true],
+            ['Some test', false],
+            ['Some test', false, 1],
+            ['Some test', true, 1],
         ];
     }
 
@@ -155,15 +118,11 @@ class NewsControllerTest extends ControllerTest
      *
      * @param string $text
      * @param bool $isMeeting
-     * @param bool $canEditHtml
-     * @param string $result
      * @param int|null $id
      */
     public function testSaveCreateEdit(
         string $text,
         bool $isMeeting,
-        bool $canEditHtml,
-        string $result,
         int $id = null
     ) {
         $this->request->attributes->set('id', $id);
@@ -178,10 +137,6 @@ class NewsControllerTest extends ControllerTest
 
         $this->request = $this->request->withParsedBody($body);
         $this->addUser();
-        $this->auth->expects($this->once())
-            ->method('can')
-            ->with('admin_news_html')
-            ->willReturn($canEditHtml);
         $this->response->expects($this->once())
             ->method('redirectTo')
             ->with('http://localhost/news')
@@ -201,7 +156,7 @@ class NewsControllerTest extends ControllerTest
         $this->assertEquals('news.edit.success', $messages[0]);
 
         $news = (new News())->find($id);
-        $this->assertEquals($result, $news->text);
+        $this->assertEquals($text, $news->text);
         $this->assertEquals($isMeeting, (bool)$news->is_meeting);
     }
 
@@ -243,7 +198,7 @@ class NewsControllerTest extends ControllerTest
         // Assert no changes
         $news = News::find(1);
         $this->assertEquals('Foo', $news->title);
-        $this->assertEquals('<b>foo</b>', $news->text);
+        $this->assertEquals('**foo**', $news->text);
         $this->assertFalse($news->is_meeting);
         $this->assertFalse($news->is_pinned);
     }
@@ -305,8 +260,7 @@ class NewsControllerTest extends ControllerTest
 
         (new News([
             'title'      => 'Foo',
-            'text'       => '<b>foo</b>',
-            'is_meeting' => false,
+            'text'       => '**foo**',
             'user_id'    => 1,
         ]))->save();
     }
