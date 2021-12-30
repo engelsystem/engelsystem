@@ -2646,8 +2646,8 @@ msgid "Action"
 msgstr "Aktion"
 
 #: includes/view/User_view.php:576
-msgid "You have done enough to get a t-shirt."
-msgstr "Du hast genug für ein T-Shirt gemacht."
+msgid "You have done enough."
+msgstr "Du hast genug gemacht."
 
 #: includes/view/User_view.php:595
 msgid "driving license"

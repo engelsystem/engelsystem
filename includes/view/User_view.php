@@ -605,7 +605,7 @@ function User_view(
                 'actions'    => __('Action')
             ], $my_shifts);
         } elseif ($user_source->state->force_active) {
-            $myshifts_table = success(__('You have done enough to get a t-shirt.'), true);
+            $myshifts_table = success(__('You have done enough.'), true);
         }
     }
 
