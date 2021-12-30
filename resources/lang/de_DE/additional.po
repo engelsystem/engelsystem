@@ -86,11 +86,6 @@ msgstr "News erfolgreich aktualisiert."
 msgid "news.delete.success"
 msgstr "News erfolgreich gelöscht."
 
-msgid "news.edit.contains-html"
-msgstr ""
-"Diese Nachricht beinhaltet HTML. Wenn du sie speicherst gehen diese "
-"Formatierungen verloren!"
-
 msgid "oauth.invalid-state"
 msgstr "Ungültiger OAuth-Status"
 

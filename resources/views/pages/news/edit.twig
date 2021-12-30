@@ -73,7 +73,7 @@
                                 {{ news.title }}
                             </div>
                             <div class="card-body bg-body">
-                                {{ news.text|raw|markdown(false) }}
+                                {{ news.text|markdown }}
                             </div>
                         </div>
                     </div>

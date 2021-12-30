@@ -60,7 +60,7 @@
         {% endif %}
 
         <div class="card-body bg-body">
-            {{ news.text(not is_overview)|raw|markdown(false) }}
+            {{ news.text(not is_overview)|markdown }}
             {% if is_overview and news.text != news.text(false) %}
                 {{ m.button(__('news.read_more'), url('news/' ~ news.id), null, 'sm', null, null, 'chevron-double-right') }}
             {% endif %}
