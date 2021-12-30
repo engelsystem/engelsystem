@@ -75,6 +75,7 @@ class MailerServiceProvider extends ServiceProvider
             'host' => $config['host'] ?? 'localhost',
             'port' => $config['port'] ?? 0,
             'tls'  => $config['tls'] ?? null,
+            'logger' => null,
         ]);
 
         if (!empty($config['username'])) {
