@@ -137,7 +137,7 @@ function Shift_view($shift, $shifttype, Room $room, $angeltypes_source, ShiftSig
                 'TID'        => $type,
                 'count'      => 0,
                 'restricted' => true,
-                'taken'      => true,
+                'taken'      => $angelTypes->count(),
             ], $angeltypes, $shift, $user_shift_admin);
         }
     }
