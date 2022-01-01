@@ -31,6 +31,7 @@ class NewsControllerTest extends ControllerTest
     /**
      * @covers \Engelsystem\Controllers\Admin\NewsController::__construct
      * @covers \Engelsystem\Controllers\Admin\NewsController::edit
+     * @covers \Engelsystem\Controllers\Admin\NewsController::showEdit
      */
     public function testEdit()
     {
