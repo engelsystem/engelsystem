@@ -128,10 +128,13 @@ function Shift_view($shift, $shifttype, Room $room, $angeltypes_source, ShiftSig
         $needed_angels .= Shift_view_render_needed_angeltype($needed_angeltype, $angeltypes, $shift, $user_shift_admin);
     }
 
-    foreach ($shift['ShiftEntry'] as $shiftEntry) {
-        if (!$neededAngels->where('TID', $shiftEntry['TID'])->first()) {
+    $shiftEntry = new Collection($shift['ShiftEntry']);
+    foreach ($shiftEntry->groupBy('TID') as $angelTypes) {
+        /** @var Collection $angelTypes */
+        $type = $angelTypes->first()['TID'];
+        if (!$neededAngels->where('TID', $type)->first()) {
             $needed_angels .= Shift_view_render_needed_angeltype([
-                'TID'        => $shiftEntry['TID'],
+                'TID'        => $type,
                 'count'      => 0,
                 'restricted' => true,
                 'taken'      => true,
